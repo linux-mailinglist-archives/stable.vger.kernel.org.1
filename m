@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-22017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4871A85D9B5
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE54F85DC1A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:49:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03B15287C91
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:22:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E1E21C2360E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:49:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE1637BAE4;
-	Wed, 21 Feb 2024 13:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 109B27C09A;
+	Wed, 21 Feb 2024 13:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zXku7ROm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aKvhB5OI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2B653816;
-	Wed, 21 Feb 2024 13:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20FA7B3F2;
+	Wed, 21 Feb 2024 13:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521678; cv=none; b=TmPvaykgKSk6lrP0UngfKF+FDHt4yC9fA3NAhIgw2p9S+VDOo1XdQEnpsGsbTTu8aAF0EDqAcW3r56KG/zCwn/tMxPIoMvTOewYd1e54hH5Fe7T8EfkTtaTQ/i2VRQ/OQAt8bHJPGW4OfK2FHOsMyH1H57heuxFW0+WD45NtJI0=
+	t=1708523339; cv=none; b=qNb1gsL/WaanhAQfa2V8ghYRdwmHYb6TQnjCupk/1y1UELI5ZZ7/TaNZ5lEFfAP1+xqcBCgjd8yLw9/hhgjGXAIGYf8V4Ey6eAQAOil969ElXCDatyveaUNW8mNIWek8XQyYX3hAYGPQqXXvbAjpkCRXsu3Y7kScwZ+ilETKv6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521678; c=relaxed/simple;
-	bh=iI6NtBWolpdSeWyhVc5BQuZ8b1rp+4PcfjoV11EAFC0=;
+	s=arc-20240116; t=1708523339; c=relaxed/simple;
+	bh=o1N+EaROBu5losXiiovO3caepH0qrcvb3c8DKsW/Dg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KrAOuFzfCk8wXgvRHoK+ARjkgSxH+acBhtUiD3cWfXktGYeG8iG7o7UP6iQGr3DKIZ+OHFJ4Cv5nFzlzxdkrzEPIDsTAFh739smtQlL9HGTcmHAJej+b1rB9chyQmC3CjO3QkM9UFTjZHEk0UvutRF78OszBN4feNpOdKbkfbCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zXku7ROm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6AC5C433C7;
-	Wed, 21 Feb 2024 13:21:17 +0000 (UTC)
+	 MIME-Version; b=EzB95atvqtLm7T/1rkTV6YwtoPnbu2h1Sy1YjZiXdzbTfsik0GCz53BZqJ6lnq5I4HqDpgbEF/ZJI8wguoPOTXhLg49GFjtGPg3BkCZY4M3rYgWGM1cttihzQKqIKC2fJg5sQDklm7DlJ6BrKDbXV74QEZsSjgvFODIWCWF76O4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aKvhB5OI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303BDC433C7;
+	Wed, 21 Feb 2024 13:48:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521678;
-	bh=iI6NtBWolpdSeWyhVc5BQuZ8b1rp+4PcfjoV11EAFC0=;
+	s=korg; t=1708523339;
+	bh=o1N+EaROBu5losXiiovO3caepH0qrcvb3c8DKsW/Dg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zXku7ROmWGBc/v9Lcfst1Wz2ITZ62buW8yDNBDjleSawM1Y/7uJWGb7In3dpi3I5m
-	 TdTEHYLZfJDc/6zPSsvZ5nM+xOyJY68UtAL8HvYU/ITh1TrrKHDP1SI2nfPGVoW73w
-	 RnTbXVMLcdveQa2yMy6oH7WBofIbeeI6amXb52TU=
+	b=aKvhB5OIVu5Yk7ERBTk82HPo+qmlQHUwuatWrNTv/moJ4bS/7+6IcB6sMqKlLFqUG
+	 oLY9vHs1SD9nySwlwWpJe79PSKcBuzGQR9At9X2jB94BR6KCxQDx2JnS65+l5GbQdX
+	 EP3Mejc5Nnmm6cdgzORfUoy/gu3i9h9IIndEhLjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 138/202] netfilter: nf_log: replace BUG_ON by WARN_ON_ONCE when putting logger
-Date: Wed, 21 Feb 2024 14:07:19 +0100
-Message-ID: <20240221125936.170464956@linuxfoundation.org>
+	Wei Chen <harperchen1110@gmail.com>,
+	xingwei lee <xrivendell7@gmail.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.15 389/476] ext4: fix double-free of blocks due to wrong extents moved_len
+Date: Wed, 21 Feb 2024 14:07:20 +0100
+Message-ID: <20240221130022.412693242@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 259eb32971e9eb24d1777a28d82730659f50fdcb ]
+commit 55583e899a5357308274601364741a83e78d6ac4 upstream.
 
-Module reference is bumped for each user, this should not ever happen.
+In ext4_move_extents(), moved_len is only updated when all moves are
+successfully executed, and only discards orig_inode and donor_inode
+preallocations when moved_len is not zero. When the loop fails to exit
+after successfully moving some extents, moved_len is not updated and
+remains at 0, so it does not discard the preallocations.
 
-But BUG_ON check should use rcu_access_pointer() instead.
+If the moved extents overlap with the preallocated extents, the
+overlapped extents are freed twice in ext4_mb_release_inode_pa() and
+ext4_process_freed_data() (as described in commit 94d7c16cbbbd ("ext4:
+Fix double-free of blocks with EXT4_IOC_MOVE_EXT")), and bb_free is
+incremented twice. Hence when trim is executed, a zero-division bug is
+triggered in mb_update_avg_fragment_size() because bb_free is not zero
+and bb_fragments is zero.
 
-If this ever happens, do WARN_ON_ONCE() instead of BUG_ON() and
-consolidate pointer check under the rcu read side lock section.
+Therefore, update move_len after each extent move to avoid the issue.
 
-Fixes: fab4085f4e24 ("netfilter: log: nf_log_packet() as real unified interface")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Wei Chen <harperchen1110@gmail.com>
+Reported-by: xingwei lee <xrivendell7@gmail.com>
+Closes: https://lore.kernel.org/r/CAO4mrferzqBUnCag8R3m2zf897ts9UEuhjFQGPtODT92rYyR2Q@mail.gmail.com
+Fixes: fcf6b1b729bc ("ext4: refactor ext4_move_extents code base")
+CC:  <stable@vger.kernel.org> # 3.18
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240104142040.2835097-2-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_log.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/ext4/move_extent.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/net/netfilter/nf_log.c b/net/netfilter/nf_log.c
-index a61d6df6e5f6..75bdeee325eb 100644
---- a/net/netfilter/nf_log.c
-+++ b/net/netfilter/nf_log.c
-@@ -202,11 +202,12 @@ void nf_logger_put(int pf, enum nf_log_type type)
- 		return;
- 	}
+--- a/fs/ext4/move_extent.c
++++ b/fs/ext4/move_extent.c
+@@ -615,6 +615,7 @@ ext4_move_extents(struct file *o_filp, s
+ 		goto out;
+ 	o_end = o_start + len;
  
--	BUG_ON(loggers[pf][type] == NULL);
--
- 	rcu_read_lock();
- 	logger = rcu_dereference(loggers[pf][type]);
--	module_put(logger->me);
-+	if (!logger)
-+		WARN_ON_ONCE(1);
-+	else
-+		module_put(logger->me);
- 	rcu_read_unlock();
- }
- EXPORT_SYMBOL_GPL(nf_logger_put);
--- 
-2.43.0
-
++	*moved_len = 0;
+ 	while (o_start < o_end) {
+ 		struct ext4_extent *ex;
+ 		ext4_lblk_t cur_blk, next_blk;
+@@ -670,7 +671,7 @@ ext4_move_extents(struct file *o_filp, s
+ 		 */
+ 		ext4_double_up_write_data_sem(orig_inode, donor_inode);
+ 		/* Swap original branches with new branches */
+-		move_extent_per_page(o_filp, donor_inode,
++		*moved_len += move_extent_per_page(o_filp, donor_inode,
+ 				     orig_page_index, donor_page_index,
+ 				     offset_in_page, cur_len,
+ 				     unwritten, &ret);
+@@ -680,9 +681,6 @@ ext4_move_extents(struct file *o_filp, s
+ 		o_start += cur_len;
+ 		d_start += cur_len;
+ 	}
+-	*moved_len = o_start - orig_blk;
+-	if (*moved_len > len)
+-		*moved_len = len;
+ 
+ out:
+ 	if (*moved_len) {
 
 
 
