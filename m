@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-22994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 289BF85DEA9
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:20:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA7FE85DDE7
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:13:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 522C51C22AB0
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 620241F2428F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0D77E593;
-	Wed, 21 Feb 2024 14:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F6E27FBA1;
+	Wed, 21 Feb 2024 14:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vej+lSeI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vl4R3A8f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B13B7CF08;
-	Wed, 21 Feb 2024 14:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BAF67F7F1;
+	Wed, 21 Feb 2024 14:09:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525213; cv=none; b=hS9aqs06KiQZ9E2Q12zppaojEzL+zPm5IYnUalcPgJyYY+hFZPn7F4vBY2t4fJM7aPJw+c5yl4OaRCL2lQSUargDNxe78UKO1+KUUsuq9yax+rQwTrPwVRtyo2UqbFv+YWPAGwQM+VjVWlpK/Zjc82NDpuyilX00nChOa4Eo6+k=
+	t=1708524558; cv=none; b=Gw+1nCKVCxiCpk6ddAxhKDTvgG8jD6cRl0X4/5W5EBD6rb0mTHO+xvwIGmUEG4xZtqDrId7FMCSx0hE+L//Hj8GDuzLV9Ddm3mqdvOdSlzWcyGYuWIKdodSyDcAteGbPbiijLIBUAPVs0QmoHhN7c/Cmm3kgyEgMILWa0PhG1Ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525213; c=relaxed/simple;
-	bh=XQ58e9+KYPaz7Fohuk5Usxn8qCQgN1ZdDA80Z51rTKI=;
+	s=arc-20240116; t=1708524558; c=relaxed/simple;
+	bh=xJDbo8/nGslHvQrO4DfDS4B5fr/GTVPwrOGh2vEWf5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q7eWgkuuA8qmQmiqJLoCBunncyP42J7Z1yqvptOqUqfT5XkainqbeJebJ6F5DH3Wov3fd7i44GhG/kAB56JZkSREelL7ZSlxbZ08wETcGBLHIKRzfMCkxyGFNriay841alposmNJ7O72/HumrqAbFc/bXrgH5rSJiLoF1/2UBow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vej+lSeI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E54BC433C7;
-	Wed, 21 Feb 2024 14:20:12 +0000 (UTC)
+	 MIME-Version; b=bIjudngWy95Yri6PWvGo/kPeWs70DjnVUNf7pfPSsW/7iGdDl5oVyb01c5kPx7L6NWnJoWfkUeVrAz9cgc0pJQ4EC6CSTe+Ptmag/+P1QSFwlgT3LTPO4zEJZXTE4YOvVbBdM7mcLib4uQXKYs70arU391A6+4vim2AlsT0uQa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vl4R3A8f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2699EC433F1;
+	Wed, 21 Feb 2024 14:09:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525212;
-	bh=XQ58e9+KYPaz7Fohuk5Usxn8qCQgN1ZdDA80Z51rTKI=;
+	s=korg; t=1708524557;
+	bh=xJDbo8/nGslHvQrO4DfDS4B5fr/GTVPwrOGh2vEWf5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vej+lSeITl7+9CBQSlj88m3z0rtgJjBJppG0PnAJl3ozKRIvExjran6eEMZuuZ6O1
-	 ni3DZGVlWQx9a8nDLuohWE8Ph1baMJD8YXSp7GDqmwRhJkreaAje8VDyLv3Uanvn29
-	 isPR24SdTAN40j/HUvbI03Urxl1P6wvl3B03xzNQ=
+	b=Vl4R3A8f3MJea/uIwBeITZFGDSRxzXOcHDDkR2cyJCrs6IUTC+wa0Qraqt6ysjFef
+	 /bHNp83BX4sjlbkefysf8Ce0ivBU/E/kjm66E/CKUalxkijBdM3gDkTIwU2fvWionk
+	 4qT+mfoUMpSwax4tFLbstA33JE3xCsjPqZzySIVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiji Yang <yangshiji66@outlook.com>,
-	Stanislaw Gruszka <stf_xl@wp.pl>,
-	Kalle Valo <kvalo@kernel.org>,
+	Kuogee Hsieh <quic_khsieh@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 091/267] wifi: rt2x00: restart beacon queue when hardware reset
+Subject: [PATCH 5.10 253/379] drm/msm/dp: return correct Colorimetry for DP_TEST_DYNAMIC_RANGE_CEA case
 Date: Wed, 21 Feb 2024 14:07:12 +0100
-Message-ID: <20240221125942.813507509@linuxfoundation.org>
+Message-ID: <20240221130002.401957997@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shiji Yang <yangshiji66@outlook.com>
+From: Kuogee Hsieh <quic_khsieh@quicinc.com>
 
-[ Upstream commit a11d965a218f0cd95b13fe44d0bcd8a20ce134a8 ]
+[ Upstream commit fcccdafd91f8bdde568b86ff70848cf83f029add ]
 
-When a hardware reset is triggered, all registers are reset, so all
-queues are forced to stop in hardware interface. However, mac80211
-will not automatically stop the queue. If we don't manually stop the
-beacon queue, the queue will be deadlocked and unable to start again.
-This patch fixes the issue where Apple devices cannot connect to the
-AP after calling ieee80211_restart_hw().
+MSA MISC0 bit 1 to 7 contains Colorimetry Indicator Field.
+dp_link_get_colorimetry_config() returns wrong colorimetry value
+in the DP_TEST_DYNAMIC_RANGE_CEA case in the current implementation.
+Hence fix this problem by having dp_link_get_colorimetry_config()
+return defined CEA RGB colorimetry value in the case of
+DP_TEST_DYNAMIC_RANGE_CEA.
 
-Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
-Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/TYAP286MB031530EB6D98DCE4DF20766CBCA4A@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
+Changes in V2:
+-- drop retrieving colorimetry from colorspace
+-- drop dr = link->dp_link.test_video.test_dyn_range assignment
+
+Changes in V3:
+-- move defined MISCr0a Colorimetry vale to dp_reg.h
+-- rewording commit title
+-- rewording commit text to more precise describe this patch
+
+Fixes: c943b4948b58 ("drm/msm/dp: add displayPort driver support")
+Signed-off-by: Kuogee Hsieh <quic_khsieh@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/574888/
+Link: https://lore.kernel.org/r/1705526010-597-1-git-send-email-quic_khsieh@quicinc.com
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ralink/rt2x00/rt2x00dev.c |  3 +++
- drivers/net/wireless/ralink/rt2x00/rt2x00mac.c | 11 +++++++++++
- 2 files changed, 14 insertions(+)
+ drivers/gpu/drm/msm/dp/dp_link.c | 12 +++++++-----
+ drivers/gpu/drm/msm/dp/dp_reg.h  |  3 +++
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-index c3eab767bc21..f504f3529407 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-@@ -101,6 +101,7 @@ void rt2x00lib_disable_radio(struct rt2x00_dev *rt2x00dev)
- 	rt2x00link_stop_tuner(rt2x00dev);
- 	rt2x00queue_stop_queues(rt2x00dev);
- 	rt2x00queue_flush_queues(rt2x00dev, true);
-+	rt2x00queue_stop_queue(rt2x00dev->bcn);
+diff --git a/drivers/gpu/drm/msm/dp/dp_link.c b/drivers/gpu/drm/msm/dp/dp_link.c
+index be986da78c4a..172a33e8fd8f 100644
+--- a/drivers/gpu/drm/msm/dp/dp_link.c
++++ b/drivers/gpu/drm/msm/dp/dp_link.c
+@@ -7,6 +7,7 @@
  
- 	/*
- 	 * Disable radio.
-@@ -1283,6 +1284,7 @@ int rt2x00lib_start(struct rt2x00_dev *rt2x00dev)
- 	rt2x00dev->intf_ap_count = 0;
- 	rt2x00dev->intf_sta_count = 0;
- 	rt2x00dev->intf_associated = 0;
-+	rt2x00dev->intf_beaconing = 0;
+ #include <drm/drm_print.h>
  
- 	/* Enable the radio */
- 	retval = rt2x00lib_enable_radio(rt2x00dev);
-@@ -1310,6 +1312,7 @@ void rt2x00lib_stop(struct rt2x00_dev *rt2x00dev)
- 	rt2x00dev->intf_ap_count = 0;
- 	rt2x00dev->intf_sta_count = 0;
- 	rt2x00dev->intf_associated = 0;
-+	rt2x00dev->intf_beaconing = 0;
- }
++#include "dp_reg.h"
+ #include "dp_link.h"
+ #include "dp_panel.h"
  
- static inline void rt2x00lib_set_if_combinations(struct rt2x00_dev *rt2x00dev)
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c b/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
-index beb20c5faf5f..a0fb167b58fe 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
-@@ -578,6 +578,17 @@ void rt2x00mac_bss_info_changed(struct ieee80211_hw *hw,
+@@ -1078,7 +1079,7 @@ int dp_link_process_request(struct dp_link *dp_link)
+ 
+ int dp_link_get_colorimetry_config(struct dp_link *dp_link)
+ {
+-	u32 cc;
++	u32 cc = DP_MISC0_COLORIMERY_CFG_LEGACY_RGB;
+ 	struct dp_link_private *link;
+ 
+ 	if (!dp_link) {
+@@ -1092,10 +1093,11 @@ int dp_link_get_colorimetry_config(struct dp_link *dp_link)
+ 	 * Unless a video pattern CTS test is ongoing, use RGB_VESA
+ 	 * Only RGB_VESA and RGB_CEA supported for now
  	 */
- 	if (changes & BSS_CHANGED_BEACON_ENABLED) {
- 		mutex_lock(&intf->beacon_skb_mutex);
+-	if (dp_link_is_video_pattern_requested(link))
+-		cc = link->dp_link.test_video.test_dyn_range;
+-	else
+-		cc = DP_TEST_DYNAMIC_RANGE_VESA;
++	if (dp_link_is_video_pattern_requested(link)) {
++		if (link->dp_link.test_video.test_dyn_range &
++					DP_TEST_DYNAMIC_RANGE_CEA)
++			cc = DP_MISC0_COLORIMERY_CFG_CEA_RGB;
++	}
+ 
+ 	return cc;
+ }
+diff --git a/drivers/gpu/drm/msm/dp/dp_reg.h b/drivers/gpu/drm/msm/dp/dp_reg.h
+index 268602803d9a..176a503ece9c 100644
+--- a/drivers/gpu/drm/msm/dp/dp_reg.h
++++ b/drivers/gpu/drm/msm/dp/dp_reg.h
+@@ -129,6 +129,9 @@
+ #define DP_MISC0_COLORIMETRY_CFG_SHIFT		(0x00000001)
+ #define DP_MISC0_TEST_BITS_DEPTH_SHIFT		(0x00000005)
+ 
++#define DP_MISC0_COLORIMERY_CFG_LEGACY_RGB	(0)
++#define DP_MISC0_COLORIMERY_CFG_CEA_RGB		(0x04)
 +
-+		/*
-+		 * Clear the 'enable_beacon' flag and clear beacon because
-+		 * the beacon queue has been stopped after hardware reset.
-+		 */
-+		if (test_bit(DEVICE_STATE_RESET, &rt2x00dev->flags) &&
-+		    intf->enable_beacon) {
-+			intf->enable_beacon = false;
-+			rt2x00queue_clear_beacon(rt2x00dev, vif);
-+		}
-+
- 		if (!bss_conf->enable_beacon && intf->enable_beacon) {
- 			rt2x00dev->intf_beaconing--;
- 			intf->enable_beacon = false;
+ #define REG_DP_VALID_BOUNDARY			(0x00000030)
+ #define REG_DP_VALID_BOUNDARY_2			(0x00000034)
+ 
 -- 
 2.43.0
 
