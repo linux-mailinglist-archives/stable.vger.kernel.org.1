@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-22011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B2C85D9AF
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2ED885DEBA
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:21:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF472B2482C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:21:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D5962826B7
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5617994B;
-	Wed, 21 Feb 2024 13:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC98A7BB01;
+	Wed, 21 Feb 2024 14:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dimt/ojO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1jfRRcHr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B302763FE;
-	Wed, 21 Feb 2024 13:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 730866A8D6;
+	Wed, 21 Feb 2024 14:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521654; cv=none; b=WBH5Nbu2spsY2ZSiHzbR/yaVWGqaGZiREHPCb4XxQZQZQh7+9mo6ZEiZaaBN5HkoZMfsexPg/Q12s7kgpY2x0jBU5s+E2nUWFyIjz4YrqiMaEsmhZdA/BrhLlgsS1qed2UtsPOQMnu23q20rNG9SqjcjeSCsZTBfMApQOUdovUs=
+	t=1708525285; cv=none; b=OxrzgVOMB5NYLqB+Jj5Nkc64tZYAxDcctX27t/c9RhOHoIGzhpRQvQnv+rikQkTtL0R4hj8LoN2UqUsJH6c6FTl0NtV0i7xTH9M82imwHGV2pGFSRvtkdjFzf1YnOSsnBbAvXc8a+3Z/feQ4G1cg6dWA5DERMx4WE5HCcBoTPpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521654; c=relaxed/simple;
-	bh=2Cray4e2mIxdOeO+E9OMSosVPxqN+++uL6Te6bKWGvM=;
+	s=arc-20240116; t=1708525285; c=relaxed/simple;
+	bh=LpsVml/HRqemTNjBn2Gpumxk1xSJ0F2l4mfpYglaPGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u9GkRLaugee2zd4hezg9k/Aa4Kq4WIaY1bmcSUdTEde9kOG7+Ia5siqpmCqULeEp9/JDoYvqXAuRC1GAvxPCtrJdhUkcvPKvTmQrA/ppmXjZkfEkG1s6sAbd1LwSLBS/1dOVMRC6ds+DlNmPF6su0Aox4ukDtI76E7mjN3fd9KA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dimt/ojO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 915EEC433C7;
-	Wed, 21 Feb 2024 13:20:53 +0000 (UTC)
+	 MIME-Version; b=GlZoNA7DD43wmBId/m+bmi5wn5Sosd7qc2FjyKmnlFgprLNJD5vQlUxeLgTn9z7IaSN0V7mGGIi/axdEGjQR4+Z2aUXAr8+jLpb+gPx5FEC3WLMfnwk9vJRJAczUibBbEiBwpCepDL9OD6fRlTT/5BN1LczKYgpnOLPKD2cTpP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1jfRRcHr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 954BDC433F1;
+	Wed, 21 Feb 2024 14:21:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521654;
-	bh=2Cray4e2mIxdOeO+E9OMSosVPxqN+++uL6Te6bKWGvM=;
+	s=korg; t=1708525285;
+	bh=LpsVml/HRqemTNjBn2Gpumxk1xSJ0F2l4mfpYglaPGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dimt/ojOnygsdlIKTi9Qi9dpkn/uY1rU5JgE7oJ1If2TkDdCuUZ8Hb5OToyAM9uO7
-	 blULtEkcAvVVvexCV/oDYqfc+htb2ER8bifFYo+Yce+YLv+eqKcu8wX4hv+EhazxQK
-	 Z7t5U2+Af06E2i3pEtVlfzbdpwDACErdsY0ACBpU=
+	b=1jfRRcHr+xudHeNFwoCpTHlN2H6eKiev9czQZ88HnZMWlxtVi3n/8lT5G77mgdNIa
+	 wPJb0G88prmdKF19C/6eoTi/OiDjuXXhBXVkdq/4aIEh/tUy4rllI7qf7ahS9UBLtC
+	 X+5WOItBxWT6aBX4e5AybVYWk+77P8SNlVfISmlc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Henrie <alexhenrie24@gmail.com>,
-	Jiri Kosina <jkosina@suse.cz>,
-	Aseda Aboagye <aaboagye@chromium.org>
-Subject: [PATCH 4.19 142/202] HID: apple: Add support for the 2021 Magic Keyboard
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 102/267] scsi: libfc: Dont schedule abort twice
 Date: Wed, 21 Feb 2024 14:07:23 +0100
-Message-ID: <20240221125936.298626839@linuxfoundation.org>
+Message-ID: <20240221125943.141886096@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Henrie <alexhenrie24@gmail.com>
+From: Hannes Reinecke <hare@suse.de>
 
-commit 0cd3be51733febb4f8acb92bcf55b75fe824dd05 upstream.
+[ Upstream commit b57c4db5d23b9df0118a25e2441c9288edd73710 ]
 
-Signed-off-by: Alex Henrie <alexhenrie24@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Cc: Aseda Aboagye <aaboagye@chromium.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The current FC error recovery is sending up to three REC (recovery) frames
+in 10 second intervals, and as a final step sending an ABTS after 30
+seconds for the command itself.  Unfortunately sending an ABTS is also the
+action for the SCSI abort handler, and the default timeout for SCSI
+commands is also 30 seconds. This causes two ABTS to be scheduled, with the
+libfc one slightly earlier. The ABTS scheduled by SCSI EH then sees the
+command to be already aborted, and will always return with a 'GOOD' status
+irrespective on the actual result from the first ABTS.  This causes the
+SCSI EH abort handler to always succeed, and SCSI EH never to be engaged.
+Fix this by not issuing an ABTS when a SCSI command is present for the
+exchange, but rather wait for the abort scheduled from SCSI EH.  And warn
+if an abort is already scheduled to avoid similar errors in the future.
+
+Signed-off-by: Hannes Reinecke <hare@suse.de>
+Link: https://lore.kernel.org/r/20231129165832.224100-2-hare@kernel.org
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-apple.c  |    4 ++++
- drivers/hid/hid-ids.h    |    1 +
- drivers/hid/hid-quirks.c |    1 +
- 3 files changed, 6 insertions(+)
+ drivers/scsi/libfc/fc_fcp.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
---- a/drivers/hid/hid-apple.c
-+++ b/drivers/hid/hid-apple.c
-@@ -599,6 +599,10 @@ static const struct hid_device_id apple_
- 		.driver_data = APPLE_NUMLOCK_EMULATION | APPLE_HAS_FN },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_GEYSER1_TP_ONLY),
- 		.driver_data = APPLE_NUMLOCK_EMULATION | APPLE_HAS_FN },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021),
-+		.driver_data = APPLE_HAS_FN },
-+	{ HID_BLUETOOTH_DEVICE(BT_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021),
-+		.driver_data = APPLE_HAS_FN },
+diff --git a/drivers/scsi/libfc/fc_fcp.c b/drivers/scsi/libfc/fc_fcp.c
+index bf2cc9656e19..22e286f920f4 100644
+--- a/drivers/scsi/libfc/fc_fcp.c
++++ b/drivers/scsi/libfc/fc_fcp.c
+@@ -270,6 +270,11 @@ static int fc_fcp_send_abort(struct fc_fcp_pkt *fsp)
+ 	if (!fsp->seq_ptr)
+ 		return -EINVAL;
  
- 	{ }
- };
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -176,6 +176,7 @@
- #define USB_DEVICE_ID_APPLE_IRCONTROL3	0x8241
- #define USB_DEVICE_ID_APPLE_IRCONTROL4	0x8242
- #define USB_DEVICE_ID_APPLE_IRCONTROL5	0x8243
-+#define USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021   0x029c
++	if (fsp->state & FC_SRB_ABORT_PENDING) {
++		FC_FCP_DBG(fsp, "abort already pending\n");
++		return -EBUSY;
++	}
++
+ 	per_cpu_ptr(fsp->lp->stats, get_cpu())->FcpPktAborts++;
+ 	put_cpu();
  
- #define USB_VENDOR_ID_ASUS		0x0486
- #define USB_DEVICE_ID_ASUS_T91MT	0x0185
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -301,6 +301,7 @@ static const struct hid_device_id hid_ha
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_ANSI) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_FOUNTAIN_TP_ONLY) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_GEYSER1_TP_ONLY) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021) },
- #endif
- #if IS_ENABLED(CONFIG_HID_APPLEIR)
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, USB_DEVICE_ID_APPLE_IRCONTROL) },
+@@ -1698,11 +1703,12 @@ static void fc_fcp_recovery(struct fc_fcp_pkt *fsp, u8 code)
+ 	fsp->status_code = code;
+ 	fsp->cdb_status = 0;
+ 	fsp->io_status = 0;
+-	/*
+-	 * if this fails then we let the scsi command timer fire and
+-	 * scsi-ml escalate.
+-	 */
+-	fc_fcp_send_abort(fsp);
++	if (!fsp->cmd)
++		/*
++		 * Only abort non-scsi commands; otherwise let the
++		 * scsi command timer fire and scsi-ml escalate.
++		 */
++		fc_fcp_send_abort(fsp);
+ }
+ 
+ /**
+-- 
+2.43.0
+
 
 
 
