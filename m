@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-22794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 368A685DDE0
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:13:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A0A685DC10
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:49:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 682631C2285C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4183283588
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:49:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03BCC7F7C3;
-	Wed, 21 Feb 2024 14:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C613079DAE;
+	Wed, 21 Feb 2024 13:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQFGiQhw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YtsUS0ab"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B644C62;
-	Wed, 21 Feb 2024 14:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8419347A7C;
+	Wed, 21 Feb 2024 13:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524532; cv=none; b=cV5tK6zWIvVOPrARJ0Ux9x1u+QpiOMZ+mxAwXuKo4rfcg/OgtMYPAUcPOMFIzyaACK2sIGVaPTgsWpfmajm1IAxl2K5w2jaYEEBmwLwP4tLVslwuZUo7QVdJq+MGK4B77Fu0CdzQP+kWcouQJI2ChEf+FCbroYFehTqwSgK5Ouo=
+	t=1708523321; cv=none; b=lP5Inu+D+KQCORsAAHsBV7bnOqUzbiVvNR7zIAXOAM2+WB8xQHhdb13jgkVMt+jkVd2nLuoXc2lbyhuGru4b5VXpxkXUkrJUBAOb9j2gMZhPaU8wjdTgAFMF5XCh4TU1u6MumcjByWYLpeZyEtBdHfaqiWS92FioEFZ5tVNoCgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524532; c=relaxed/simple;
-	bh=kqhal68y5e1xglMa69VHlG00r1DVh9+ZcyvS1aMSG14=;
+	s=arc-20240116; t=1708523321; c=relaxed/simple;
+	bh=sCbiJp3pzgqZHK5q0qEHmFWJREqO3lLMi5aVvaT/+Uo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hfIS6fsiRJlwZmU+zcrzLjaV+D8dIKf7u33OwjQ+KeswKmXSbGfLZ7l11XZPZiZtornPvcnM51qsvGOUbGexNQmqlbP4144yau7i5No8ipYv7od1BRi7LMGHmczE6FMEiW+FmYWVWg0JZXtva6IT6VzKpUl8rM6SCpzrajIi2AI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQFGiQhw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3524C433C7;
-	Wed, 21 Feb 2024 14:08:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=B6FmkUH2zREmlvt8n1NjANRBoCc/R2GNR+eyERr2TEEqdmCZspFHRUiwAUBcao94qFRq24gFglVofx8VQ1KaP6I+QKoUoV19EWUgCWIf46u45eWsVxXwDDc9a+zE0VFMyR2pUqkQ/UJw4jBXT0w4nKJER8DloWDWNdoZaxcoNQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YtsUS0ab; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B0CC433F1;
+	Wed, 21 Feb 2024 13:48:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524532;
-	bh=kqhal68y5e1xglMa69VHlG00r1DVh9+ZcyvS1aMSG14=;
+	s=korg; t=1708523321;
+	bh=sCbiJp3pzgqZHK5q0qEHmFWJREqO3lLMi5aVvaT/+Uo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PQFGiQhwKlWHqlVcgGvYo+XPw1PMueqHazQhvKoIzF/r+0N7hZCQVD/ztJpLM29dq
-	 u73bZvPF+CLFsvaiD4pyQ3EFbkPqD4YxBwsLRAb9A/rbe4rpth0vlLBc90kUgWJyap
-	 bDTj/ourPSeyTzKDmnb3SozZOawNpjtfV5ma/I+g=
+	b=YtsUS0abupcbqGq+S169zveq8DzgWmdtP+nRBO6R4dXd8ONO3GhIEVdtND67wlPCc
+	 vCOomFeYjy9qC9MXjmh866joz2un+JpX1+R2xf10Qsria4egJYtSbXSZeHpetMbGJC
+	 m9pB+n3SdoN7BQj/xwnPqH4tZxfvRoXEF6B6PMuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julian Wiedmann <jwi@linux.ibm.com>,
-	Karsten Graul <kgraul@linux.ibm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 273/379] net/af_iucv: clean up a try_then_request_module()
+	=?UTF-8?q?Jan=20Kundr=C3=A1t?= <jan.kundrat@cesnet.cz>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH 5.15 401/476] serial: max310x: fail probe if clock crystal is unstable
 Date: Wed, 21 Feb 2024 14:07:32 +0100
-Message-ID: <20240221130002.983080743@linuxfoundation.org>
+Message-ID: <20240221130022.824994767@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +59,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julian Wiedmann <jwi@linux.ibm.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit 4eb9eda6ba64114d98827e2870e024d5ab7cd35b ]
+commit 8afa6c6decea37e7cb473d2c60473f37f46cea35 upstream.
 
-Use IS_ENABLED(CONFIG_IUCV) to determine whether the iucv_if symbol
-is available, and let depmod deal with the module dependency.
+A stable clock is really required in order to use this UART, so log an
+error message and bail out if the chip reports that the clock is not
+stable.
 
-This was introduced back with commit 6fcd61f7bf5d ("af_iucv: use
-loadable iucv interface"). And to avoid sprinkling IS_ENABLED() over
-all the code, we're keeping the indirection through pr_iucv->...().
-
-Signed-off-by: Julian Wiedmann <jwi@linux.ibm.com>
-Signed-off-by: Karsten Graul <kgraul@linux.ibm.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4cf9a888fd3c ("serial: max310x: Check the clock readiness")
+Cc: stable@vger.kernel.org
+Suggested-by: Jan Kundrát <jan.kundrat@cesnet.cz>
+Link: https://www.spinics.net/lists/linux-serial/msg35773.html
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20240116213001.3691629-4-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/iucv/af_iucv.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ drivers/tty/serial/max310x.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/net/iucv/af_iucv.c b/net/iucv/af_iucv.c
-index e14368ced21f..7c73faa5336c 100644
---- a/net/iucv/af_iucv.c
-+++ b/net/iucv/af_iucv.c
-@@ -2310,7 +2310,7 @@ static int __init afiucv_init(void)
- {
- 	int err;
- 
--	if (MACHINE_IS_VM) {
-+	if (MACHINE_IS_VM && IS_ENABLED(CONFIG_IUCV)) {
- 		cpcmd("QUERY USERID", iucv_userid, sizeof(iucv_userid), &err);
- 		if (unlikely(err)) {
- 			WARN_ON(err);
-@@ -2318,11 +2318,7 @@ static int __init afiucv_init(void)
- 			goto out;
- 		}
- 
--		pr_iucv = try_then_request_module(symbol_get(iucv_if), "iucv");
--		if (!pr_iucv) {
--			printk(KERN_WARNING "iucv_if lookup failed\n");
--			memset(&iucv_userid, 0, sizeof(iucv_userid));
--		}
-+		pr_iucv = &iucv_if;
- 	} else {
- 		memset(&iucv_userid, 0, sizeof(iucv_userid));
- 		pr_iucv = NULL;
-@@ -2356,17 +2352,13 @@ static int __init afiucv_init(void)
- out_proto:
- 	proto_unregister(&iucv_proto);
- out:
--	if (pr_iucv)
--		symbol_put(iucv_if);
- 	return err;
+--- a/drivers/tty/serial/max310x.c
++++ b/drivers/tty/serial/max310x.c
+@@ -556,7 +556,7 @@ static int max310x_update_best_err(unsig
+ 	return 1;
  }
  
- static void __exit afiucv_exit(void)
+-static u32 max310x_set_ref_clk(struct device *dev, struct max310x_port *s,
++static s32 max310x_set_ref_clk(struct device *dev, struct max310x_port *s,
+ 			       unsigned long freq, bool xtal)
  {
--	if (pr_iucv) {
-+	if (pr_iucv)
- 		afiucv_iucv_exit();
--		symbol_put(iucv_if);
--	}
+ 	unsigned int div, clksrc, pllcfg = 0;
+@@ -626,7 +626,8 @@ static u32 max310x_set_ref_clk(struct de
+ 		} while (!stable && (++try < MAX310X_XTAL_WAIT_RETRIES));
  
- 	unregister_netdevice_notifier(&afiucv_netdev_notifier);
- 	dev_remove_pack(&iucv_packet_type);
--- 
-2.43.0
-
+ 		if (!stable)
+-			dev_warn(dev, "clock is not stable yet\n");
++			return dev_err_probe(dev, -EAGAIN,
++					     "clock is not stable\n");
+ 	}
+ 
+ 	return bestfreq;
+@@ -1266,7 +1267,7 @@ static int max310x_probe(struct device *
+ {
+ 	int i, ret, fmin, fmax, freq;
+ 	struct max310x_port *s;
+-	u32 uartclk = 0;
++	s32 uartclk = 0;
+ 	bool xtal;
+ 
+ 	if (IS_ERR(regmap))
+@@ -1346,6 +1347,11 @@ static int max310x_probe(struct device *
+ 	}
+ 
+ 	uartclk = max310x_set_ref_clk(dev, s, freq, xtal);
++	if (uartclk < 0) {
++		ret = uartclk;
++		goto out_uart;
++	}
++
+ 	dev_dbg(dev, "Reference clock set to %i Hz\n", uartclk);
+ 
+ 	for (i = 0; i < devtype->nr; i++) {
 
 
 
