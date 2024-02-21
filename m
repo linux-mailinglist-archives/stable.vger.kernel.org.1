@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-21875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9957B85D8F0
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:12:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 795C185DD58
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:04:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55447282A20
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:12:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FA0A1F227E2
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:04:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBFF269D28;
-	Wed, 21 Feb 2024 13:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D3E87E571;
+	Wed, 21 Feb 2024 14:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GW2vADf4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZMcQ0VrI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA6183EA71;
-	Wed, 21 Feb 2024 13:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBD978B4F;
+	Wed, 21 Feb 2024 14:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521157; cv=none; b=bXzTYhMuCx3FxFUVqbKGijVv+5JPXrqMgf2LztT2kk8xkmLBh9K9APrvvTKfwekIzLiOsN8G+zw/h/bqLOkMkmuUo6YhcwBN+312Vs+NBaddQJaMDuOGjRVHmvQrwwERpMTW7nRz2U0I1rd8VbQbOL7mQlN+ga9R3lWewhqLcQ4=
+	t=1708524238; cv=none; b=q9k3spx8ZpTgOD41epxoPBV7dkODCLa8+z9jmZSda/1YVvPjaKnpAnxVaWJCfsDqkoCk1a2kjBomsJ3kw5y/mUmS5DOR4DpY0be2fEt3mO3ltTV86RcKjeF2M6LjBQwUhMfWLG1NnP3v+Xs844obAMPCJMHCKbzHtCq4TNRuhYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521157; c=relaxed/simple;
-	bh=UZqmsvAgn3CLj1Pi8WN2pWatDzZc3e41wD86qsJS33E=;
+	s=arc-20240116; t=1708524238; c=relaxed/simple;
+	bh=aieXPrLwbpuTZqBpQLAQBpu4XBzDuJWDyNF141QjgB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=roo7EF2mdZOaqAECF8prCvU/pwcngxTjkirI1OOeFBrS7183/dONo0Lw2cILHk0Mdk8b41+f8LiahVTsrR8XsIfzBm/rKHcgn2IVhUaRhl5qKgZY3HjvpJjszrgUigQoe05Uz4KS9xukySFjHtPsKboproAQZxhFlWCVjbtC2/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GW2vADf4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 210DCC433F1;
-	Wed, 21 Feb 2024 13:12:36 +0000 (UTC)
+	 MIME-Version; b=mInAMiFjdoMmqhTiPqajC6PMW69VOeIAVt+1OxCOxr/6magreJJL3pI8UOuyOQXhFgH9QKQ/nqX0z56upuUslA43zn7XkBBGec6KcxwRgWRvKb2YiHKh/eb+l5xumizY82zAHSTziEExYU6u9PIgHma2Lh50A0L36uUlyCofcl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZMcQ0VrI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70FE0C433C7;
+	Wed, 21 Feb 2024 14:03:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521157;
-	bh=UZqmsvAgn3CLj1Pi8WN2pWatDzZc3e41wD86qsJS33E=;
+	s=korg; t=1708524237;
+	bh=aieXPrLwbpuTZqBpQLAQBpu4XBzDuJWDyNF141QjgB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GW2vADf4ITpWBRWinpgqdW3JAHJG2s13lPGMrY0mYNpBFotofvQkyxGYYYWeMA+4L
-	 aRGXJXTWk+kvr7T5DCG86rmQuBeeSjilHhqNvcz3ouYsNITb12FNmOPUh/Xs7/NdMO
-	 wZoDOnvwB04Tq7Y2e4nVtghM5fVS5Vb6cj3yUEkQ=
+	b=ZMcQ0VrIP3Dn9s3hstwA8m6QOlHhBPwe7KACZD4yN/mmbHPQ+nCn+vA8US/9aaF16
+	 5TO16xDghZLiLoDitBA+0VdRRletYX2NgDcU8ISno+Mzp/9+x2+78XfwrlngnuzkBZ
+	 NxiTUxX+L/UHut/PaL37LMXAvMVGeYMOGWa1dshA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	kernel test robot <lkp@intel.com>,
+	"Md. Haris Iqbal" <haris.iqbal@ionos.com>,
+	Jack Wang <jinpu.wang@ionos.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	linux-block@vger.kernel.org,
+	Kees Cook <keescook@chromium.org>,
+	Guoqing Jiang <guoqing.jiang@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 036/202] net: fec: fix the unhandled context fault from smmu
+Subject: [PATCH 5.10 158/379] block/rnbd-srv: Check for unlikely string overflow
 Date: Wed, 21 Feb 2024 14:05:37 +0100
-Message-ID: <20240221125932.959786956@linuxfoundation.org>
+Message-ID: <20240221125959.591916770@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +67,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenwei Wang <shenwei.wang@nxp.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 5e344807735023cd3a67c37a1852b849caa42620 ]
+[ Upstream commit 9e4bf6a08d1e127bcc4bd72557f2dfafc6bc7f41 ]
 
-When repeatedly changing the interface link speed using the command below:
+Since "dev_search_path" can technically be as large as PATH_MAX,
+there was a risk of truncation when copying it and a second string
+into "full_path" since it was also PATH_MAX sized. The W=1 builds were
+reporting this warning:
 
-ethtool -s eth0 speed 100 duplex full
-ethtool -s eth0 speed 1000 duplex full
+drivers/block/rnbd/rnbd-srv.c: In function 'process_msg_open.isra':
+drivers/block/rnbd/rnbd-srv.c:616:51: warning: '%s' directive output may be truncated writing up to 254 bytes into a region of size between 0 and 4095 [-Wformat-truncation=]
+  616 |                 snprintf(full_path, PATH_MAX, "%s/%s",
+      |                                                   ^~
+In function 'rnbd_srv_get_full_path',
+    inlined from 'process_msg_open.isra' at drivers/block/rnbd/rnbd-srv.c:721:14: drivers/block/rnbd/rnbd-srv.c:616:17: note: 'snprintf' output between 2 and 4351 bytes into a destination of size 4096
+  616 |                 snprintf(full_path, PATH_MAX, "%s/%s",
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  617 |                          dev_search_path, dev_name);
+      |                          ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The following errors may sometimes be reported by the ARM SMMU driver:
+To fix this, unconditionally check for truncation (as was already done
+for the case where "%SESSNAME%" was present).
 
-[ 5395.035364] fec 5b040000.ethernet eth0: Link is Down
-[ 5395.039255] arm-smmu 51400000.iommu: Unhandled context fault:
-fsr=0x402, iova=0x00000000, fsynr=0x100001, cbfrsynra=0x852, cb=2
-[ 5398.108460] fec 5b040000.ethernet eth0: Link is Up - 100Mbps/Full -
-flow control off
-
-It is identified that the FEC driver does not properly stop the TX queue
-during the link speed transitions, and this results in the invalid virtual
-I/O address translations from the SMMU and causes the context faults.
-
-Fixes: dbc64a8ea231 ("net: fec: move calls to quiesce/resume packet processing out of fec_restart()")
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-Link: https://lore.kernel.org/r/20240123165141.2008104-1-shenwei.wang@nxp.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202312100355.lHoJPgKy-lkp@intel.com/
+Cc: Md. Haris Iqbal <haris.iqbal@ionos.com>
+Cc: Jack Wang <jinpu.wang@ionos.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc:  <linux-block@vger.kernel.org>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Acked-by: Guoqing Jiang <guoqing.jiang@linux.dev>
+Acked-by: Jack Wang <jinpu.wang@ionos.com>
+Link: https://lore.kernel.org/r/20231212214738.work.169-kees@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/block/rnbd/rnbd-srv.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1798,6 +1798,7 @@ static void fec_enet_adjust_link(struct
+diff --git a/drivers/block/rnbd/rnbd-srv.c b/drivers/block/rnbd/rnbd-srv.c
+index e1bc8b4cd592..9c5d52335e17 100644
+--- a/drivers/block/rnbd/rnbd-srv.c
++++ b/drivers/block/rnbd/rnbd-srv.c
+@@ -591,6 +591,7 @@ static char *rnbd_srv_get_full_path(struct rnbd_srv_session *srv_sess,
+ {
+ 	char *full_path;
+ 	char *a, *b;
++	int len;
  
- 		/* if any of the above changed restart the FEC */
- 		if (status_change) {
-+			netif_stop_queue(ndev);
- 			napi_disable(&fep->napi);
- 			netif_tx_lock_bh(ndev);
- 			fec_restart(ndev);
-@@ -1807,6 +1808,7 @@ static void fec_enet_adjust_link(struct
- 		}
+ 	full_path = kmalloc(PATH_MAX, GFP_KERNEL);
+ 	if (!full_path)
+@@ -602,19 +603,19 @@ static char *rnbd_srv_get_full_path(struct rnbd_srv_session *srv_sess,
+ 	 */
+ 	a = strnstr(dev_search_path, "%SESSNAME%", sizeof(dev_search_path));
+ 	if (a) {
+-		int len = a - dev_search_path;
++		len = a - dev_search_path;
+ 
+ 		len = snprintf(full_path, PATH_MAX, "%.*s/%s/%s", len,
+ 			       dev_search_path, srv_sess->sessname, dev_name);
+-		if (len >= PATH_MAX) {
+-			pr_err("Too long path: %s, %s, %s\n",
+-			       dev_search_path, srv_sess->sessname, dev_name);
+-			kfree(full_path);
+-			return ERR_PTR(-EINVAL);
+-		}
  	} else {
- 		if (fep->link) {
-+			netif_stop_queue(ndev);
- 			napi_disable(&fep->napi);
- 			netif_tx_lock_bh(ndev);
- 			fec_stop(ndev);
+-		snprintf(full_path, PATH_MAX, "%s/%s",
+-			 dev_search_path, dev_name);
++		len = snprintf(full_path, PATH_MAX, "%s/%s",
++			       dev_search_path, dev_name);
++	}
++	if (len >= PATH_MAX) {
++		pr_err("Too long path: %s, %s, %s\n",
++		       dev_search_path, srv_sess->sessname, dev_name);
++		kfree(full_path);
++		return ERR_PTR(-EINVAL);
+ 	}
+ 
+ 	/* eliminitate duplicated slashes */
+-- 
+2.43.0
+
 
 
 
