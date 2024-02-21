@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-22580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80AB985DCB8
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:56:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2409285DAD8
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:35:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A428F1C22CEB
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:56:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFD9E2826AF
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:35:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E379D7BAFF;
-	Wed, 21 Feb 2024 13:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C787BB0B;
+	Wed, 21 Feb 2024 13:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ELTCtgIN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZ97iLFm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FE07BAE5;
-	Wed, 21 Feb 2024 13:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7472169D21;
+	Wed, 21 Feb 2024 13:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523793; cv=none; b=tSot4767QHiPg+ovugHIscnKDEPzcxfdysOaTIlh/kdcFHIWfZgu/0BAl58wvWUYIbN92HobYoDjuEwDuZ55GFPNtgI0ol0TDvIwn4jfcR4jfEZPpO6CEgW/1YEU6csvvIxEJ7GeCxHy8rt5SEHWWnipvkKdpz4SrVZFGZmE+8c=
+	t=1708522421; cv=none; b=f6asXjJLvqHRcSAQWNj7lzoxM+edqhe6Az69CVnDzuzZSQa5aN+sFzvJiNw+rElnW23VLUythzhk8CIHcVZ0ilEiUJittODNkgQP4y9kmFe5iqfXxn7QtvAb1v2fQXVlH2TnzPGR9vhkri4VgL5IvPCUIOTqMqBMCRS1/pPT7as=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523793; c=relaxed/simple;
-	bh=FecpXzEzlzDlejtil/IhO//0GsXeAY14qlYdN/qSgmM=;
+	s=arc-20240116; t=1708522421; c=relaxed/simple;
+	bh=nQ5wuBZocZxytnQh++YdjBifz0ucFIE7Ha9PmtDXfCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QHwkZapG3bWGiAIvj0reGeSqRPlL1Ire5kCRMW8UQLBztAs+r2w2DgA99qnft+E9vyrT31B8PlifgyzyANqNVpnFMIBnRvbMV5rl7vfH2FMGGotnGhjZ/LcvBmRhKcGN+vthZcX/OBwxE+tqaUwAkQfJN6D2ZUY7PkZjR2fW5xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ELTCtgIN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE8ACC433C7;
-	Wed, 21 Feb 2024 13:56:32 +0000 (UTC)
+	 MIME-Version; b=Q+/j8TmgMm2Yw/3yu5cbBQm4It7WIfyPyKcMdoj9cwiMJc9007mu9GgZXvtcT/po4YbOkD1atB7zb6AV7SxKIHt9JLq2b50WkSdCLTtJjc5sFZelPiUB/iaz4MBHqq+fMvcB4ztjFj37R5JR11+2KzHUQoMdhUuybkrAOY9QtFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZ97iLFm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86066C433F1;
+	Wed, 21 Feb 2024 13:33:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523793;
-	bh=FecpXzEzlzDlejtil/IhO//0GsXeAY14qlYdN/qSgmM=;
+	s=korg; t=1708522421;
+	bh=nQ5wuBZocZxytnQh++YdjBifz0ucFIE7Ha9PmtDXfCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ELTCtgINBslmD4etQCzbu9U41Ms9IeiHTdG2R+B4dvrB58qbkZMSo/K3uOVxrd+qY
-	 /SSkQno4I50iusOJ5vgs94ynUorUwtMJrnb+p2DDQHawECeKUoVoEX07xTMi+PP4YR
-	 24ipiMui8L8VPYx+KwGvAsJhL/rMwOeEzWdiuSoA=
+	b=JZ97iLFmE+oC3QZp3/DSYGmNBAlMVFH7r/ALeHWwW7GkmkemBKKY8vYk2VLj5gkXO
+	 0BaeG/pFLneUwcqRWo2SHVDM4xD/b07FsZbgHyUtLWwOMyNcALSmbtoLiwvy4NmsgP
+	 ZIgQqkbT+ck5jiGlpoNdFLSs46A7UHgxyuItl4kg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.10 032/379] mmc: mmc_spi: remove custom DMA mapped buffers
+	Gabriel Krisman Bertazi <krisman@suse.de>,
+	Eric Biggers <ebiggers@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 160/476] ecryptfs: Reject casefold directory inodes
 Date: Wed, 21 Feb 2024 14:03:31 +0100
-Message-ID: <20240221125955.867640810@linuxfoundation.org>
+Message-ID: <20240221130013.851006472@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,453 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Gabriel Krisman Bertazi <krisman@suse.de>
 
-commit 84a6be7db9050dd2601c9870f65eab9a665d2d5d upstream.
+[ Upstream commit cd72c7ef5fed44272272a105b1da22810c91be69 ]
 
-There is no need to duplicate what SPI core or individual controller
-drivers already do, i.e. mapping the buffers for DMA capable transfers.
+Even though it seems to be able to resolve some names of
+case-insensitive directories, the lack of d_hash and d_compare means we
+end up with a broken state in the d_cache.  Considering it was never a
+goal to support these two together, and we are preparing to use
+d_revalidate in case-insensitive filesystems, which would make the
+combination even more broken, reject any attempt to get a casefolded
+inode from ecryptfs.
 
-Note, that the code, besides its redundancy, was buggy: strictly speaking
-there is no guarantee, while it's true for those which can use this code
-(see below), that the SPI host controller _is_ the device which does DMA.
-
-Also see the Link tags below.
-
-Additional notes. Currently only two SPI host controller drivers may use
-premapped (by the user) DMA buffers:
-
-  - drivers/spi/spi-au1550.c
-
-  - drivers/spi/spi-fsl-spi.c
-
-Both of them have DMA mapping support code. I don't expect that SPI host
-controller code is worse than what has been done in mmc_spi. Hence I do
-not expect any regressions here. Otherwise, I'm pretty much sure these
-regressions have to be fixed in the respective drivers, and not here.
-
-That said, remove all related pieces of DMA mapping code from mmc_spi.
-
-Link: https://lore.kernel.org/linux-mmc/c73b9ba9-1699-2aff-e2fd-b4b4f292a3ca@raspberrypi.org/
-Link: https://stackoverflow.com/questions/67620728/mmc-spi-issue-not-able-to-setup-mmc-sd-card-in-linux
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231207221901.3259962-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Reviewed-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/mmc_spi.c |  186 +--------------------------------------------
- 1 file changed, 5 insertions(+), 181 deletions(-)
+ fs/ecryptfs/inode.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/mmc/host/mmc_spi.c
-+++ b/drivers/mmc/host/mmc_spi.c
-@@ -15,7 +15,7 @@
- #include <linux/slab.h>
- #include <linux/module.h>
- #include <linux/bio.h>
--#include <linux/dma-mapping.h>
-+#include <linux/dma-direction.h>
- #include <linux/crc7.h>
- #include <linux/crc-itu-t.h>
- #include <linux/scatterlist.h>
-@@ -119,19 +119,14 @@ struct mmc_spi_host {
- 	struct spi_transfer	status;
- 	struct spi_message	readback;
+diff --git a/fs/ecryptfs/inode.c b/fs/ecryptfs/inode.c
+index 16d50dface59..bea4c2b0cd6b 100644
+--- a/fs/ecryptfs/inode.c
++++ b/fs/ecryptfs/inode.c
+@@ -76,6 +76,14 @@ static struct inode *__ecryptfs_get_inode(struct inode *lower_inode,
  
--	/* underlying DMA-aware controller, or null */
--	struct device		*dma_dev;
--
- 	/* buffer used for commands and for message "overhead" */
- 	struct scratch		*data;
--	dma_addr_t		data_dma;
- 
- 	/* Specs say to write ones most of the time, even when the card
- 	 * has no need to read its input data; and many cards won't care.
- 	 * This is our source of those ones.
- 	 */
- 	void			*ones;
--	dma_addr_t		ones_dma;
- };
- 
- 
-@@ -147,11 +142,8 @@ static inline int mmc_cs_off(struct mmc_
- 	return spi_setup(host->spi);
- }
- 
--static int
--mmc_spi_readbytes(struct mmc_spi_host *host, unsigned len)
-+static int mmc_spi_readbytes(struct mmc_spi_host *host, unsigned int len)
- {
--	int status;
--
- 	if (len > sizeof(*host->data)) {
- 		WARN_ON(1);
- 		return -EIO;
-@@ -159,19 +151,7 @@ mmc_spi_readbytes(struct mmc_spi_host *h
- 
- 	host->status.len = len;
- 
--	if (host->dma_dev)
--		dma_sync_single_for_device(host->dma_dev,
--				host->data_dma, sizeof(*host->data),
--				DMA_FROM_DEVICE);
--
--	status = spi_sync_locked(host->spi, &host->readback);
--
--	if (host->dma_dev)
--		dma_sync_single_for_cpu(host->dma_dev,
--				host->data_dma, sizeof(*host->data),
--				DMA_FROM_DEVICE);
--
--	return status;
-+	return spi_sync_locked(host->spi, &host->readback);
- }
- 
- static int mmc_spi_skip(struct mmc_spi_host *host, unsigned long timeout,
-@@ -513,23 +493,11 @@ mmc_spi_command_send(struct mmc_spi_host
- 	t = &host->t;
- 	memset(t, 0, sizeof(*t));
- 	t->tx_buf = t->rx_buf = data->status;
--	t->tx_dma = t->rx_dma = host->data_dma;
- 	t->len = cp - data->status;
- 	t->cs_change = 1;
- 	spi_message_add_tail(t, &host->m);
- 
--	if (host->dma_dev) {
--		host->m.is_dma_mapped = 1;
--		dma_sync_single_for_device(host->dma_dev,
--				host->data_dma, sizeof(*host->data),
--				DMA_BIDIRECTIONAL);
--	}
- 	status = spi_sync_locked(host->spi, &host->m);
--
--	if (host->dma_dev)
--		dma_sync_single_for_cpu(host->dma_dev,
--				host->data_dma, sizeof(*host->data),
--				DMA_BIDIRECTIONAL);
- 	if (status < 0) {
- 		dev_dbg(&host->spi->dev, "  ... write returned %d\n", status);
- 		cmd->error = status;
-@@ -547,9 +515,6 @@ mmc_spi_command_send(struct mmc_spi_host
-  * We always provide TX data for data and CRC.  The MMC/SD protocol
-  * requires us to write ones; but Linux defaults to writing zeroes;
-  * so we explicitly initialize it to all ones on RX paths.
-- *
-- * We also handle DMA mapping, so the underlying SPI controller does
-- * not need to (re)do it for each message.
-  */
- static void
- mmc_spi_setup_data_message(
-@@ -559,11 +524,8 @@ mmc_spi_setup_data_message(
- {
- 	struct spi_transfer	*t;
- 	struct scratch		*scratch = host->data;
--	dma_addr_t		dma = host->data_dma;
- 
- 	spi_message_init(&host->m);
--	if (dma)
--		host->m.is_dma_mapped = 1;
- 
- 	/* for reads, readblock() skips 0xff bytes before finding
- 	 * the token; for writes, this transfer issues that token.
-@@ -577,8 +539,6 @@ mmc_spi_setup_data_message(
- 		else
- 			scratch->data_token = SPI_TOKEN_SINGLE;
- 		t->tx_buf = &scratch->data_token;
--		if (dma)
--			t->tx_dma = dma + offsetof(struct scratch, data_token);
- 		spi_message_add_tail(t, &host->m);
- 	}
- 
-@@ -588,7 +548,6 @@ mmc_spi_setup_data_message(
- 	t = &host->t;
- 	memset(t, 0, sizeof(*t));
- 	t->tx_buf = host->ones;
--	t->tx_dma = host->ones_dma;
- 	/* length and actual buffer info are written later */
- 	spi_message_add_tail(t, &host->m);
- 
-@@ -598,14 +557,9 @@ mmc_spi_setup_data_message(
- 	if (direction == DMA_TO_DEVICE) {
- 		/* the actual CRC may get written later */
- 		t->tx_buf = &scratch->crc_val;
--		if (dma)
--			t->tx_dma = dma + offsetof(struct scratch, crc_val);
- 	} else {
- 		t->tx_buf = host->ones;
--		t->tx_dma = host->ones_dma;
- 		t->rx_buf = &scratch->crc_val;
--		if (dma)
--			t->rx_dma = dma + offsetof(struct scratch, crc_val);
- 	}
- 	spi_message_add_tail(t, &host->m);
- 
-@@ -628,10 +582,7 @@ mmc_spi_setup_data_message(
- 		memset(t, 0, sizeof(*t));
- 		t->len = (direction == DMA_TO_DEVICE) ? sizeof(scratch->status) : 1;
- 		t->tx_buf = host->ones;
--		t->tx_dma = host->ones_dma;
- 		t->rx_buf = scratch->status;
--		if (dma)
--			t->rx_dma = dma + offsetof(struct scratch, status);
- 		t->cs_change = 1;
- 		spi_message_add_tail(t, &host->m);
- 	}
-@@ -660,23 +611,13 @@ mmc_spi_writeblock(struct mmc_spi_host *
- 
- 	if (host->mmc->use_spi_crc)
- 		scratch->crc_val = cpu_to_be16(crc_itu_t(0, t->tx_buf, t->len));
--	if (host->dma_dev)
--		dma_sync_single_for_device(host->dma_dev,
--				host->data_dma, sizeof(*scratch),
--				DMA_BIDIRECTIONAL);
- 
- 	status = spi_sync_locked(spi, &host->m);
--
- 	if (status != 0) {
- 		dev_dbg(&spi->dev, "write error (%d)\n", status);
- 		return status;
- 	}
- 
--	if (host->dma_dev)
--		dma_sync_single_for_cpu(host->dma_dev,
--				host->data_dma, sizeof(*scratch),
--				DMA_BIDIRECTIONAL);
--
- 	/*
- 	 * Get the transmission data-response reply.  It must follow
- 	 * immediately after the data block we transferred.  This reply
-@@ -725,8 +666,6 @@ mmc_spi_writeblock(struct mmc_spi_host *
- 	}
- 
- 	t->tx_buf += t->len;
--	if (host->dma_dev)
--		t->tx_dma += t->len;
- 
- 	/* Return when not busy.  If we didn't collect that status yet,
- 	 * we'll need some more I/O.
-@@ -790,30 +729,12 @@ mmc_spi_readblock(struct mmc_spi_host *h
- 	}
- 	leftover = status << 1;
- 
--	if (host->dma_dev) {
--		dma_sync_single_for_device(host->dma_dev,
--				host->data_dma, sizeof(*scratch),
--				DMA_BIDIRECTIONAL);
--		dma_sync_single_for_device(host->dma_dev,
--				t->rx_dma, t->len,
--				DMA_FROM_DEVICE);
--	}
--
- 	status = spi_sync_locked(spi, &host->m);
- 	if (status < 0) {
- 		dev_dbg(&spi->dev, "read error %d\n", status);
- 		return status;
- 	}
- 
--	if (host->dma_dev) {
--		dma_sync_single_for_cpu(host->dma_dev,
--				host->data_dma, sizeof(*scratch),
--				DMA_BIDIRECTIONAL);
--		dma_sync_single_for_cpu(host->dma_dev,
--				t->rx_dma, t->len,
--				DMA_FROM_DEVICE);
--	}
--
- 	if (bitshift) {
- 		/* Walk through the data and the crc and do
- 		 * all the magic to get byte-aligned data.
-@@ -848,8 +769,6 @@ mmc_spi_readblock(struct mmc_spi_host *h
- 	}
- 
- 	t->rx_buf += t->len;
--	if (host->dma_dev)
--		t->rx_dma += t->len;
- 
- 	return 0;
- }
-@@ -864,7 +783,6 @@ mmc_spi_data_do(struct mmc_spi_host *hos
- 		struct mmc_data *data, u32 blk_size)
- {
- 	struct spi_device	*spi = host->spi;
--	struct device		*dma_dev = host->dma_dev;
- 	struct spi_transfer	*t;
- 	enum dma_data_direction	direction;
- 	struct scatterlist	*sg;
-@@ -891,31 +809,8 @@ mmc_spi_data_do(struct mmc_spi_host *hos
- 	 */
- 	for_each_sg(data->sg, sg, data->sg_len, n_sg) {
- 		int			status = 0;
--		dma_addr_t		dma_addr = 0;
- 		void			*kmap_addr;
- 		unsigned		length = sg->length;
--		enum dma_data_direction	dir = direction;
--
--		/* set up dma mapping for controller drivers that might
--		 * use DMA ... though they may fall back to PIO
--		 */
--		if (dma_dev) {
--			/* never invalidate whole *shared* pages ... */
--			if ((sg->offset != 0 || length != PAGE_SIZE)
--					&& dir == DMA_FROM_DEVICE)
--				dir = DMA_BIDIRECTIONAL;
--
--			dma_addr = dma_map_page(dma_dev, sg_page(sg), 0,
--						PAGE_SIZE, dir);
--			if (dma_mapping_error(dma_dev, dma_addr)) {
--				data->error = -EFAULT;
--				break;
--			}
--			if (direction == DMA_TO_DEVICE)
--				t->tx_dma = dma_addr + sg->offset;
--			else
--				t->rx_dma = dma_addr + sg->offset;
--		}
- 
- 		/* allow pio too; we don't allow highmem */
- 		kmap_addr = kmap(sg_page(sg));
-@@ -951,8 +846,6 @@ mmc_spi_data_do(struct mmc_spi_host *hos
- 		if (direction == DMA_FROM_DEVICE)
- 			flush_kernel_dcache_page(sg_page(sg));
- 		kunmap(sg_page(sg));
--		if (dma_dev)
--			dma_unmap_page(dma_dev, dma_addr, PAGE_SIZE, dir);
- 
- 		if (status < 0) {
- 			data->error = status;
-@@ -989,21 +882,9 @@ mmc_spi_data_do(struct mmc_spi_host *hos
- 		scratch->status[0] = SPI_TOKEN_STOP_TRAN;
- 
- 		host->early_status.tx_buf = host->early_status.rx_buf;
--		host->early_status.tx_dma = host->early_status.rx_dma;
- 		host->early_status.len = statlen;
- 
--		if (host->dma_dev)
--			dma_sync_single_for_device(host->dma_dev,
--					host->data_dma, sizeof(*scratch),
--					DMA_BIDIRECTIONAL);
--
- 		tmp = spi_sync_locked(spi, &host->m);
--
--		if (host->dma_dev)
--			dma_sync_single_for_cpu(host->dma_dev,
--					host->data_dma, sizeof(*scratch),
--					DMA_BIDIRECTIONAL);
--
- 		if (tmp < 0) {
- 			if (!data->error)
- 				data->error = tmp;
-@@ -1278,52 +1159,6 @@ mmc_spi_detect_irq(int irq, void *mmc)
- 	return IRQ_HANDLED;
- }
- 
--#ifdef CONFIG_HAS_DMA
--static int mmc_spi_dma_alloc(struct mmc_spi_host *host)
--{
--	struct spi_device *spi = host->spi;
--	struct device *dev;
--
--	if (!spi->master->dev.parent->dma_mask)
--		return 0;
--
--	dev = spi->master->dev.parent;
--
--	host->ones_dma = dma_map_single(dev, host->ones, MMC_SPI_BLOCKSIZE,
--					DMA_TO_DEVICE);
--	if (dma_mapping_error(dev, host->ones_dma))
--		return -ENOMEM;
--
--	host->data_dma = dma_map_single(dev, host->data, sizeof(*host->data),
--					DMA_BIDIRECTIONAL);
--	if (dma_mapping_error(dev, host->data_dma)) {
--		dma_unmap_single(dev, host->ones_dma, MMC_SPI_BLOCKSIZE,
--				 DMA_TO_DEVICE);
--		return -ENOMEM;
--	}
--
--	dma_sync_single_for_cpu(dev, host->data_dma, sizeof(*host->data),
--				DMA_BIDIRECTIONAL);
--
--	host->dma_dev = dev;
--	return 0;
--}
--
--static void mmc_spi_dma_free(struct mmc_spi_host *host)
--{
--	if (!host->dma_dev)
--		return;
--
--	dma_unmap_single(host->dma_dev, host->ones_dma, MMC_SPI_BLOCKSIZE,
--			 DMA_TO_DEVICE);
--	dma_unmap_single(host->dma_dev, host->data_dma,	sizeof(*host->data),
--			 DMA_BIDIRECTIONAL);
--}
--#else
--static inline int mmc_spi_dma_alloc(struct mmc_spi_host *host) { return 0; }
--static inline void mmc_spi_dma_free(struct mmc_spi_host *host) {}
--#endif
--
- static int mmc_spi_probe(struct spi_device *spi)
- {
- 	void			*ones;
-@@ -1415,24 +1250,17 @@ static int mmc_spi_probe(struct spi_devi
- 
- 	dev_set_drvdata(&spi->dev, mmc);
- 
--	/* preallocate dma buffers */
-+	/* Preallocate buffers */
- 	host->data = kmalloc(sizeof(*host->data), GFP_KERNEL);
- 	if (!host->data)
- 		goto fail_nobuf1;
- 
--	status = mmc_spi_dma_alloc(host);
--	if (status)
--		goto fail_dma;
--
- 	/* setup message for status/busy readback */
- 	spi_message_init(&host->readback);
--	host->readback.is_dma_mapped = (host->dma_dev != NULL);
- 
- 	spi_message_add_tail(&host->status, &host->readback);
- 	host->status.tx_buf = host->ones;
--	host->status.tx_dma = host->ones_dma;
- 	host->status.rx_buf = &host->data->status;
--	host->status.rx_dma = host->data_dma + offsetof(struct scratch, status);
- 	host->status.cs_change = 1;
- 
- 	/* register card detect irq */
-@@ -1477,9 +1305,8 @@ static int mmc_spi_probe(struct spi_devi
- 	if (!status)
- 		has_ro = true;
- 
--	dev_info(&spi->dev, "SD/MMC host %s%s%s%s%s\n",
-+	dev_info(&spi->dev, "SD/MMC host %s%s%s%s\n",
- 			dev_name(&mmc->class_dev),
--			host->dma_dev ? "" : ", no DMA",
- 			has_ro ? "" : ", no WP",
- 			(host->pdata && host->pdata->setpower)
- 				? "" : ", no poweroff",
-@@ -1490,8 +1317,6 @@ static int mmc_spi_probe(struct spi_devi
- fail_gpiod_request:
- 	mmc_remove_host(mmc);
- fail_glue_init:
--	mmc_spi_dma_free(host);
--fail_dma:
- 	kfree(host->data);
- fail_nobuf1:
- 	mmc_free_host(mmc);
-@@ -1513,7 +1338,6 @@ static int mmc_spi_remove(struct spi_dev
- 
- 	mmc_remove_host(mmc);
- 
--	mmc_spi_dma_free(host);
- 	kfree(host->data);
- 	kfree(host->ones);
- 
+ 	if (lower_inode->i_sb != ecryptfs_superblock_to_lower(sb))
+ 		return ERR_PTR(-EXDEV);
++
++	/* Reject dealing with casefold directories. */
++	if (IS_CASEFOLDED(lower_inode)) {
++		pr_err_ratelimited("%s: Can't handle casefolded directory.\n",
++				   __func__);
++		return ERR_PTR(-EREMOTE);
++	}
++
+ 	if (!igrab(lower_inode))
+ 		return ERR_PTR(-ESTALE);
+ 	inode = iget5_locked(sb, (unsigned long)lower_inode,
+-- 
+2.43.0
+
 
 
 
