@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-22878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9690C85DE27
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:15:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EC5185DF67
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:27:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 358C71F24258
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:15:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE76428423B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:27:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF177F469;
-	Wed, 21 Feb 2024 14:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 748D57BB1F;
+	Wed, 21 Feb 2024 14:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b0pjtA+p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XdWm2lzG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B5827EF1F;
-	Wed, 21 Feb 2024 14:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338197BAF7;
+	Wed, 21 Feb 2024 14:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524817; cv=none; b=OEWP0sT0bbRFBiOVGV4viqmDTruUl8i/oQiaQ0uMRRDRZhGTNlKyEy3WFPTmZU3VPHdtlJgHtAr7Ufhe0V5uNZjWi8l0YhHdpKy4pb4rDHeKIJ+3dtGJl9TGAmmZEKkR7xp4p+NlKkBAKz8EBy7uuB49/Azxv5RB5FpBWmhxrNo=
+	t=1708525660; cv=none; b=MJIppKCFguDSC830ILh0+Xwu+vd6lDGzG8DJZpOKgmT2uKxFv7Ov4vUjrtuzmFwKFNJQ5+YiIyJ2qFx98S8hStbeveHQoRPDfL6hC8/LweDNS/EcZ92eU0AELF0iAMn+Vq3HB458HpCJ5SBSTqD0e5NpVue0oD9AXCuENIOP2Zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524817; c=relaxed/simple;
-	bh=tFdjhN1HTSLKUWqHtPM+TzgyswL/prCKAaBjEI+kj7c=;
+	s=arc-20240116; t=1708525660; c=relaxed/simple;
+	bh=pjQOM65xJdRXI7riYmUkEaCcXSJoqpDuEMxvtZ97mfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IGaoB4FDRKFwtp/lhLN63fqPk8L2983a9hAJSZjTgoZZkqDqAbv8PbY32K0Ef+9MUV/D4X9E65cnz3NC0FLlkjpSuEJU+8+qdDfsYx5HOM2Vl4slqfSkGaUPjDuKU/uB234klx5koQOp14wB8FtRHxf+DgOHJDdh0I3Um5JRHuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b0pjtA+p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C9CDC433C7;
-	Wed, 21 Feb 2024 14:13:36 +0000 (UTC)
+	 MIME-Version; b=iOKXDtrb62MNLlA5Z2Uvw453WmWerFgO4hQU/V8WZIRhCKDpPP+ibhh2Ss6l2KksrIuH9FtMsgwfBUn+a+jXKTXdI9eRkUQ2IXkafUmd+UP+cS9dLQfcXcuc7oTUWoSmWJCZMY8pAHUfpXPdVmb3dNVHlr9Wmj7aKPBteuowLCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XdWm2lzG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 956C9C433C7;
+	Wed, 21 Feb 2024 14:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524817;
-	bh=tFdjhN1HTSLKUWqHtPM+TzgyswL/prCKAaBjEI+kj7c=;
+	s=korg; t=1708525660;
+	bh=pjQOM65xJdRXI7riYmUkEaCcXSJoqpDuEMxvtZ97mfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b0pjtA+peIgxp64lw0hmG8tLbpzaiAaU8rJZzItAwoZ3Ca9yZ4gvDffReBTyqtzjW
-	 euT29aEjUiaMNzcmIS4zvoVajlQYztG4T+7q9rDtt90nr+Y315rGf3mP1dsilEZ29r
-	 ST4/H3GA9scOr7eNeN8ldRVIgZ+hCW76xhDNy/kk=
+	b=XdWm2lzG1CXiTBNv4JJB4QixrdlgKvFUMGdF8PPxyj08DGPwxp3KYdBDGqZsqTitQ
+	 HShYF6aqEwUe5xmmMESAg2Ta+WV+aF5Vl7sKYhfHAumXCI/G2zF5CqczSOmBH/z30C
+	 ykuj8Ke6LZ8c8LYn7MCrXJxw5laze+/225XSOVdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 358/379] serial: Add rs485_supported to uart_port
+	Puliang Lu <puliang.lu@fibocom.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.4 196/267] USB: serial: option: add Fibocom FM101-GL variant
 Date: Wed, 21 Feb 2024 14:08:57 +0100
-Message-ID: <20240221130005.649188296@linuxfoundation.org>
+Message-ID: <20240221125946.296684760@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,58 +59,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Puliang Lu <puliang.lu@fibocom.com>
 
-[ Upstream commit 8925c31c1ac2f1e05da988581f2a70a2a8c4d638 ]
+commit b4a1f4eaf1d798066affc6ad040f76eb1a16e1c9 upstream.
 
-Preparing to move serial_rs485 struct sanitization into serial core,
-each driver has to provide what fields/flags it supports. This
-information is pointed into by rs485_supported.
+Update the USB serial option driver support for the Fibocom
+FM101-GL
+LTE modules as there are actually several different variants.
+- VID:PID 2cb7:01a3, FM101-GL are laptop M.2 cards (with
+MBIM interfaces for /Linux/Chrome OS)
 
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20220606100433.13793-4-ilpo.jarvinen@linux.intel.com
+0x01a3:mbim,gnss
+
+Here are the outputs of usb-devices:
+
+T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  3 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=2cb7 ProdID=01a3 Rev=05.04
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=Fibocom FM101-GL Module
+S:  SerialNumber=5ccd5cd4
+C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+
+Signed-off-by: Puliang Lu <puliang.lu@fibocom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 0c2a5f471ce5 ("serial: 8250_exar: Set missing rs485_supported flag")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_core.c | 1 +
- include/linux/serial_core.h         | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/usb/serial/option.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/tty/serial/8250/8250_core.c b/drivers/tty/serial/8250/8250_core.c
-index 43f2eed6df78..355ee338d752 100644
---- a/drivers/tty/serial/8250/8250_core.c
-+++ b/drivers/tty/serial/8250/8250_core.c
-@@ -1026,6 +1026,7 @@ int serial8250_register_8250_port(struct uart_8250_port *up)
- 		uart->port.throttle	= up->port.throttle;
- 		uart->port.unthrottle	= up->port.unthrottle;
- 		uart->port.rs485_config	= up->port.rs485_config;
-+		uart->port.rs485_supported = up->port.rs485_supported;
- 		uart->port.rs485	= up->port.rs485;
- 		uart->rs485_start_tx	= up->rs485_start_tx;
- 		uart->rs485_stop_tx	= up->rs485_stop_tx;
-diff --git a/include/linux/serial_core.h b/include/linux/serial_core.h
-index 6df4c3356ae6..46a21984c0b2 100644
---- a/include/linux/serial_core.h
-+++ b/include/linux/serial_core.h
-@@ -254,6 +254,7 @@ struct uart_port {
- 	struct attribute_group	*attr_group;		/* port specific attributes */
- 	const struct attribute_group **tty_groups;	/* all attributes (serial core use only) */
- 	struct serial_rs485     rs485;
-+	const struct serial_rs485	*rs485_supported;	/* Supported mask for serial_rs485 */
- 	struct gpio_desc	*rs485_term_gpio;	/* enable RS485 bus termination */
- 	struct serial_iso7816   iso7816;
- 	void			*private_data;		/* generic platform data pointer */
--- 
-2.43.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2269,6 +2269,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0111, 0xff) },			/* Fibocom FM160 (MBIM mode) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a0, 0xff) },			/* Fibocom NL668-AM/NL652-EU (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a2, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
++	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a3, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a4, 0xff),			/* Fibocom FM101-GL (laptop MBIM) */
+ 	  .driver_info = RSVD(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
 
 
 
