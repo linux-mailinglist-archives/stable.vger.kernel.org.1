@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-21881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2796885D8F6
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8ACB85DD40
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:04:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B75BD1F20FB0
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:13:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 827C5283A59
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:04:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE9969D2E;
-	Wed, 21 Feb 2024 13:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2B607E57B;
+	Wed, 21 Feb 2024 14:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kj0BK/LX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j5uhjYJ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4D13EA71;
-	Wed, 21 Feb 2024 13:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC5976037;
+	Wed, 21 Feb 2024 14:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521181; cv=none; b=htOEq0Swh/SicwN4EcoOqGcj7gdlyzl9Br3T+DhOqIvWn0E04tZ/LK+6koXWq6XSU8Ume7fJXieObKjY85BvNea80PGeLyGecvqb1M/jfrRZ4m7ZGN9cd0AVPf6uQUovi9QzCMHrZAgjJ9SrEdeOtB0ahkDt4qbsvHHvGQcOnP4=
+	t=1708524165; cv=none; b=Or4/WI5du+01Sez3rsJQ0k6qYi9cTXRoJ8Pqf6fx0oA8jdlV81le7PO7twftXJ55fYRysEQrus51q+Yqs5BzCbevOKzDQh8Ae3pCvaKHib/kXbKx/75Fs+2G1vOo0q4qc/k38T8jf5c1EUI0DTz5HPYnZhF05YQ3XkCvsvXqzso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521181; c=relaxed/simple;
-	bh=bBzYYVawFcMEN75xIRIwx47zSFgvhpjF7Nn/zrW6UKU=;
+	s=arc-20240116; t=1708524165; c=relaxed/simple;
+	bh=Wiait0EixbAO/kco6mS30t9s60DAlqWCTbN5sIBmXDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lEvsq5FEk2j2KeuR2iFA3ayssni3woNWVO7tJSG7whxK5JOff+mPb77RTP7Y03h+XrUSjmZS9R3A1SNmFgk6EyR6pkTqZEvwNNtEpmRr+G08FZ5OYKlBrD6QZwqiyxFnqN2pWMokAefZAjHgbU+DZ9MO7c4WE3cEJ6xomRo94wU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kj0BK/LX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B8FC433C7;
-	Wed, 21 Feb 2024 13:13:00 +0000 (UTC)
+	 MIME-Version; b=Ia7nZkGSuBWrO7XQBaY+jlHLrT+HgT8Sz37rzI1wCMG8IjytLIxBcBCfdMK+dgHq6I29Zy8h7yU9vmwsMHeXvGIJtRioWbHP6XuQf7+EHn8qBzgz+DjDE50J7zvjcj6kizPS3hdzgaPXjNZLdpvdBeztxN+FovBHLx1BLcXg67I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j5uhjYJ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85FC6C433F1;
+	Wed, 21 Feb 2024 14:02:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521181;
-	bh=bBzYYVawFcMEN75xIRIwx47zSFgvhpjF7Nn/zrW6UKU=;
+	s=korg; t=1708524165;
+	bh=Wiait0EixbAO/kco6mS30t9s60DAlqWCTbN5sIBmXDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kj0BK/LXS1516dRys0McEBanheauaH8Ers6CZSDJ1RuezLHp1BwfsBqyKNQVF7xL3
-	 3NPNKdFp6dRwjPAe84o3lQLFtEUKn6nd20eJxgn/61z2ShV804zNcoJGniFGmXUNm0
-	 KIHFPIxP1cdrm7yrbo0NvD+PWQU/rHc796g3BCjA=
+	b=j5uhjYJ5div6MKrp9eX97Z6TBAnDDS0ATmwqBrFGZwx0njOretYF5gSLLE2ySCJdV
+	 bVDvFq5KXa43jbXBvpALjmmj4NC82dZLDDqqZhgcb195DmlhadkentFCyUE+Ft8NKc
+	 GCF9JZ8oOyn/wC7PEy3a7yXd0slBF46o4lBP5mQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Javier Martinez Canillas <javierm@redhat.com>
-Subject: [PATCH 4.19 041/202] drm: Dont unref the same fb many times by mistake due to deadlock handling
-Date: Wed, 21 Feb 2024 14:05:42 +0100
-Message-ID: <20240221125933.120874811@linuxfoundation.org>
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Tobias Waldekranz <tobias@waldekranz.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 164/379] net: dsa: mv88e6xxx: Fix mv88e6352_serdes_get_stats error path
+Date: Wed, 21 Feb 2024 14:05:43 +0100
+Message-ID: <20240221125959.767449045@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,53 +62,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Tobias Waldekranz <tobias@waldekranz.com>
 
-commit cb4daf271302d71a6b9a7c01bd0b6d76febd8f0c upstream.
+[ Upstream commit fc82a08ae795ee6b73fb6b50785f7be248bec7b5 ]
 
-If we get a deadlock after the fb lookup in drm_mode_page_flip_ioctl()
-we proceed to unref the fb and then retry the whole thing from the top.
-But we forget to reset the fb pointer back to NULL, and so if we then
-get another error during the retry, before the fb lookup, we proceed
-the unref the same fb again without having gotten another reference.
-The end result is that the fb will (eventually) end up being freed
-while it's still in use.
+mv88e6xxx_get_stats, which collects stats from various sources,
+expects all callees to return the number of stats read. If an error
+occurs, 0 should be returned.
 
-Reset fb to NULL once we've unreffed it to avoid doing it again
-until we've done another fb lookup.
+Prevent future mishaps of this kind by updating the return type to
+reflect this contract.
 
-This turned out to be pretty easy to hit on a DG2 when doing async
-flips (and CONFIG_DEBUG_WW_MUTEX_SLOWPATH=y). The first symptom I
-saw that drm_closefb() simply got stuck in a busy loop while walking
-the framebuffer list. Fortunately I was able to convince it to oops
-instead, and from there it was easier to track down the culprit.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231211081625.25704-1-ville.syrjala@linux.intel.com
-Acked-by: Javier Martinez Canillas <javierm@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_plane.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/dsa/mv88e6xxx/chip.h   | 4 ++--
+ drivers/net/dsa/mv88e6xxx/serdes.c | 8 ++++----
+ drivers/net/dsa/mv88e6xxx/serdes.h | 8 ++++----
+ 3 files changed, 10 insertions(+), 10 deletions(-)
 
---- a/drivers/gpu/drm/drm_plane.c
-+++ b/drivers/gpu/drm/drm_plane.c
-@@ -1183,6 +1183,7 @@ retry:
- out:
- 	if (fb)
- 		drm_framebuffer_put(fb);
-+	fb = NULL;
- 	if (plane->old_fb)
- 		drm_framebuffer_put(plane->old_fb);
- 	plane->old_fb = NULL;
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.h b/drivers/net/dsa/mv88e6xxx/chip.h
+index 51a7ff44478e..67e52c481504 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.h
++++ b/drivers/net/dsa/mv88e6xxx/chip.h
+@@ -536,8 +536,8 @@ struct mv88e6xxx_ops {
+ 	int (*serdes_get_sset_count)(struct mv88e6xxx_chip *chip, int port);
+ 	int (*serdes_get_strings)(struct mv88e6xxx_chip *chip,  int port,
+ 				  uint8_t *data);
+-	int (*serdes_get_stats)(struct mv88e6xxx_chip *chip,  int port,
+-				uint64_t *data);
++	size_t (*serdes_get_stats)(struct mv88e6xxx_chip *chip, int port,
++				   uint64_t *data);
+ 
+ 	/* SERDES registers for ethtool */
+ 	int (*serdes_get_regs_len)(struct mv88e6xxx_chip *chip,  int port);
+diff --git a/drivers/net/dsa/mv88e6xxx/serdes.c b/drivers/net/dsa/mv88e6xxx/serdes.c
+index 6920e62c864d..9494d75eec62 100644
+--- a/drivers/net/dsa/mv88e6xxx/serdes.c
++++ b/drivers/net/dsa/mv88e6xxx/serdes.c
+@@ -314,8 +314,8 @@ static uint64_t mv88e6352_serdes_get_stat(struct mv88e6xxx_chip *chip,
+ 	return val;
+ }
+ 
+-int mv88e6352_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
+-			       uint64_t *data)
++size_t mv88e6352_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
++				  uint64_t *data)
+ {
+ 	struct mv88e6xxx_port *mv88e6xxx_port = &chip->ports[port];
+ 	struct mv88e6352_serdes_hw_stat *stat;
+@@ -631,8 +631,8 @@ static uint64_t mv88e6390_serdes_get_stat(struct mv88e6xxx_chip *chip, int lane,
+ 	return reg[0] | ((u64)reg[1] << 16) | ((u64)reg[2] << 32);
+ }
+ 
+-int mv88e6390_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
+-			       uint64_t *data)
++size_t mv88e6390_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
++				  uint64_t *data)
+ {
+ 	struct mv88e6390_serdes_hw_stat *stat;
+ 	int lane;
+diff --git a/drivers/net/dsa/mv88e6xxx/serdes.h b/drivers/net/dsa/mv88e6xxx/serdes.h
+index 14315f26228a..035688659b50 100644
+--- a/drivers/net/dsa/mv88e6xxx/serdes.h
++++ b/drivers/net/dsa/mv88e6xxx/serdes.h
+@@ -116,13 +116,13 @@ irqreturn_t mv88e6390_serdes_irq_status(struct mv88e6xxx_chip *chip, int port,
+ int mv88e6352_serdes_get_sset_count(struct mv88e6xxx_chip *chip, int port);
+ int mv88e6352_serdes_get_strings(struct mv88e6xxx_chip *chip,
+ 				 int port, uint8_t *data);
+-int mv88e6352_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
+-			       uint64_t *data);
++size_t mv88e6352_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
++				  uint64_t *data);
+ int mv88e6390_serdes_get_sset_count(struct mv88e6xxx_chip *chip, int port);
+ int mv88e6390_serdes_get_strings(struct mv88e6xxx_chip *chip,
+ 				 int port, uint8_t *data);
+-int mv88e6390_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
+-			       uint64_t *data);
++size_t mv88e6390_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
++				  uint64_t *data);
+ 
+ int mv88e6352_serdes_get_regs_len(struct mv88e6xxx_chip *chip, int port);
+ void mv88e6352_serdes_get_regs(struct mv88e6xxx_chip *chip, int port, void *_p);
+-- 
+2.43.0
+
 
 
 
