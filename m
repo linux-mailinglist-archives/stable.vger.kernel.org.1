@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-22614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7F3885DCDD
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:59:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EA5385DB05
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:37:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D367B26E80
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:59:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AA052844B0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:37:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C7077C0BA;
-	Wed, 21 Feb 2024 13:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0007A7BB14;
+	Wed, 21 Feb 2024 13:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sjydQO5r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jgydNUuI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B2F76C99;
-	Wed, 21 Feb 2024 13:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20EE6A8D6;
+	Wed, 21 Feb 2024 13:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523930; cv=none; b=tfVTleM8/xXTn8xQGdaHpR0wY1EvKn+uergsa+FS4oPM+VrOJhOElScd8IVd568Au7ewRYIj8ZDDsWesXZ/aY2EtJb5bXOfqw/uzDAM4MgCIm5JSuiLgJAY5ugHAYpXv75MEVjrV8gV2hgiTx4DmKG9C0G/bENXms4oic3DNNUY=
+	t=1708522546; cv=none; b=GqRJPk2UBgm5yHVddpDAC15q/AZ7EgKpxuE2DAfhcB0RQzczYnFyPPxpIUPBvOTUh2HX73n3H26O/H3MfXq4/Qlvb+zBsfzt1s0CEv4+tpRjunZfzzPgsCy7w1+IYFL6nHUaHGWzS1a7rXTvf6LAg7rl7AllfFWdsxlSktq1Jnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523930; c=relaxed/simple;
-	bh=OyMAS3JEWztgmpJq2G8uVLhawsGVp9xEmglmU6jrBY8=;
+	s=arc-20240116; t=1708522546; c=relaxed/simple;
+	bh=UDFh7LraWKsbane2TXP49SBG95G88vRTK4THOm+y8X0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j30F8z5+tyYnI6tGMM6bpT65EalkXEIhQ7hKcudeRsMIkHprZWFkb+Ge2/SwwSlvALrwgHm9BAL3/0QT8m9XBRXu8dc92HEEKzm2Z+7+YmibuOmrQOmoyYngEUkwbLGd/kzRCFQTH1oxa5B4GMslCQLL6Hqz03UmOyviryV39U8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sjydQO5r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B2CCC43390;
-	Wed, 21 Feb 2024 13:58:49 +0000 (UTC)
+	 MIME-Version; b=T9pdZeDvBzrahLGXXzx97OE3lBZMfGBRLpGCC17WLGKPnWx0CPYBvP/GZ7zR/g98mLvXpDyu7nqeEl/6gtcrlYh913FWWVgyD7on9ASI2rYovM7MNVh6NN8R/ZZLZHbIpbw8oo4qdw5wvi4NleHy6cC1jDWqMg9AF3mXwgCig1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jgydNUuI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3AE1C433F1;
+	Wed, 21 Feb 2024 13:35:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523929;
-	bh=OyMAS3JEWztgmpJq2G8uVLhawsGVp9xEmglmU6jrBY8=;
+	s=korg; t=1708522546;
+	bh=UDFh7LraWKsbane2TXP49SBG95G88vRTK4THOm+y8X0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sjydQO5ronEYAz0A6MUGdqrIH4BvpsQw9xf+If8jHVHGvbrhRm5mqMwq2ovE+h/Fc
-	 2FO9TfwI7AOjp9c2HiQCSrcoYEEnWRtR0hMZE7Yj53aFzAykIxNHXLeNSUXOQRZ21+
-	 8TrYTvSHSAJsZaRaveDzj6NW5GtGnZ5hRomBmTJ4=
+	b=jgydNUuIAQCfTfzwt6YSOUC1uqeQ7UdYv1CpIyfCjugagv/domVaYS10caQsMRT7D
+	 BtAPtezTwrzantgw7SJNjnzrVk1T6f5PrwdZPqZLzya9FgJCuuNXpY3SkZL1BXyYBh
+	 KzqqTWmC7YuXdViL/O1iThBYqTdb0B4nCWpsf5P4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4a4f1eba14eb5c3417d1@syzkaller.appspotmail.com,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Anand Jain <anand.jain@oracle.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.10 064/379] btrfs: dont warn if discard range is not aligned to sector
-Date: Wed, 21 Feb 2024 14:04:03 +0100
-Message-ID: <20240221125956.805927686@linuxfoundation.org>
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Tobias Waldekranz <tobias@waldekranz.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 193/476] net: dsa: mv88e6xxx: Fix mv88e6352_serdes_get_stats error path
+Date: Wed, 21 Feb 2024 14:04:04 +0100
+Message-ID: <20240221130015.046820543@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +64,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Tobias Waldekranz <tobias@waldekranz.com>
 
-commit a208b3f132b48e1f94f620024e66fea635925877 upstream.
+[ Upstream commit fc82a08ae795ee6b73fb6b50785f7be248bec7b5 ]
 
-There's a warning in btrfs_issue_discard() when the range is not aligned
-to 512 bytes, originally added in 4d89d377bbb0 ("btrfs:
-btrfs_issue_discard ensure offset/length are aligned to sector
-boundaries"). We can't do sub-sector writes anyway so the adjustment is
-the only thing that we can do and the warning is unnecessary.
+mv88e6xxx_get_stats, which collects stats from various sources,
+expects all callees to return the number of stats read. If an error
+occurs, 0 should be returned.
 
-CC: stable@vger.kernel.org # 4.19+
-Reported-by: syzbot+4a4f1eba14eb5c3417d1@syzkaller.appspotmail.com
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Prevent future mishaps of this kind by updating the return type to
+reflect this contract.
+
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent-tree.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/dsa/mv88e6xxx/chip.h   | 4 ++--
+ drivers/net/dsa/mv88e6xxx/serdes.c | 8 ++++----
+ drivers/net/dsa/mv88e6xxx/serdes.h | 8 ++++----
+ 3 files changed, 10 insertions(+), 10 deletions(-)
 
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -1202,7 +1202,8 @@ static int btrfs_issue_discard(struct bl
- 	u64 bytes_left, end;
- 	u64 aligned_start = ALIGN(start, 1 << 9);
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.h b/drivers/net/dsa/mv88e6xxx/chip.h
+index 8271b8aa7b71..6b7307edaf17 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.h
++++ b/drivers/net/dsa/mv88e6xxx/chip.h
+@@ -578,8 +578,8 @@ struct mv88e6xxx_ops {
+ 	int (*serdes_get_sset_count)(struct mv88e6xxx_chip *chip, int port);
+ 	int (*serdes_get_strings)(struct mv88e6xxx_chip *chip,  int port,
+ 				  uint8_t *data);
+-	int (*serdes_get_stats)(struct mv88e6xxx_chip *chip,  int port,
+-				uint64_t *data);
++	size_t (*serdes_get_stats)(struct mv88e6xxx_chip *chip, int port,
++				   uint64_t *data);
  
--	if (WARN_ON(start != aligned_start)) {
-+	/* Adjust the range to be aligned to 512B sectors if necessary. */
-+	if (start != aligned_start) {
- 		len -= aligned_start - start;
- 		len = round_down(len, 1 << 9);
- 		start = aligned_start;
+ 	/* SERDES registers for ethtool */
+ 	int (*serdes_get_regs_len)(struct mv88e6xxx_chip *chip,  int port);
+diff --git a/drivers/net/dsa/mv88e6xxx/serdes.c b/drivers/net/dsa/mv88e6xxx/serdes.c
+index 6ae7a0ed9e0b..e0e1a1b07886 100644
+--- a/drivers/net/dsa/mv88e6xxx/serdes.c
++++ b/drivers/net/dsa/mv88e6xxx/serdes.c
+@@ -338,8 +338,8 @@ static uint64_t mv88e6352_serdes_get_stat(struct mv88e6xxx_chip *chip,
+ 	return val;
+ }
+ 
+-int mv88e6352_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
+-			       uint64_t *data)
++size_t mv88e6352_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
++				  uint64_t *data)
+ {
+ 	struct mv88e6xxx_port *mv88e6xxx_port = &chip->ports[port];
+ 	struct mv88e6352_serdes_hw_stat *stat;
+@@ -787,8 +787,8 @@ static uint64_t mv88e6390_serdes_get_stat(struct mv88e6xxx_chip *chip, int lane,
+ 	return reg[0] | ((u64)reg[1] << 16) | ((u64)reg[2] << 32);
+ }
+ 
+-int mv88e6390_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
+-			       uint64_t *data)
++size_t mv88e6390_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
++				  uint64_t *data)
+ {
+ 	struct mv88e6390_serdes_hw_stat *stat;
+ 	int lane;
+diff --git a/drivers/net/dsa/mv88e6xxx/serdes.h b/drivers/net/dsa/mv88e6xxx/serdes.h
+index 8dd8ed225b45..02966e520dd6 100644
+--- a/drivers/net/dsa/mv88e6xxx/serdes.h
++++ b/drivers/net/dsa/mv88e6xxx/serdes.h
+@@ -163,13 +163,13 @@ irqreturn_t mv88e6393x_serdes_irq_status(struct mv88e6xxx_chip *chip, int port,
+ int mv88e6352_serdes_get_sset_count(struct mv88e6xxx_chip *chip, int port);
+ int mv88e6352_serdes_get_strings(struct mv88e6xxx_chip *chip,
+ 				 int port, uint8_t *data);
+-int mv88e6352_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
+-			       uint64_t *data);
++size_t mv88e6352_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
++				  uint64_t *data);
+ int mv88e6390_serdes_get_sset_count(struct mv88e6xxx_chip *chip, int port);
+ int mv88e6390_serdes_get_strings(struct mv88e6xxx_chip *chip,
+ 				 int port, uint8_t *data);
+-int mv88e6390_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
+-			       uint64_t *data);
++size_t mv88e6390_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
++				  uint64_t *data);
+ 
+ int mv88e6352_serdes_get_regs_len(struct mv88e6xxx_chip *chip, int port);
+ void mv88e6352_serdes_get_regs(struct mv88e6xxx_chip *chip, int port, void *_p);
+-- 
+2.43.0
+
 
 
 
