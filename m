@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-21889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C11D85D901
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C87985DB8C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:42:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B57731F23B43
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:13:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C37A1F22F5E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:42:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D161F69D2D;
-	Wed, 21 Feb 2024 13:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E79E78B53;
+	Wed, 21 Feb 2024 13:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="thLdHVAy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BTsSvJa3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F6F053816;
-	Wed, 21 Feb 2024 13:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5512A1D7;
+	Wed, 21 Feb 2024 13:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521211; cv=none; b=ABd1otd5+5AFxpj5xAeBQizp/lyKWEHUmwVlxAg6hFY2ITqqHA1iccSxuLg6hjn43K6i1I9dPDKO5QHWC/+zj3fxTA+B1eZQvBfdIKibnhZalcolgHdeS5Xg0JG6xmM0yROby/IzU2tqnMfzLtUHEth/Rl+lReaReCKuoYpoV9U=
+	t=1708522946; cv=none; b=aMZgIgboLEiG5O6/ezXOjt8UoLDahVPKLqvbOXTSexXHp9UxKJYr33ZdoRlyByo/d7eEFKlyKHg/b3CJwarjxRxBTi5QIuEfSjjGD9NYqJQ/Ffnk0izX+ucd7pA9qsiIEPebMYnmva72D1+Rdiug56DQ9b/qARD0WksBNx/G8b8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521211; c=relaxed/simple;
-	bh=8mRdwK5WYP6W4h9WizjksS3g3ltaV+vMqDwT7fVSN+k=;
+	s=arc-20240116; t=1708522946; c=relaxed/simple;
+	bh=rM2F9xu9V+Ai9Rtm8E+6rgmgFDxav7RZ/ig3ggeMPrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rbn3VIEL8Vngemn67PFIlM0jxhYmOOA4sqc9h9Fyfc7/W4l5OOQslgHO/7TQe4SJvem3HGiQLkzzfZm2RT+cM6fxOM727P/W3DtK9ZmX38N5SRhx3V/9GPjJLAM3AjeySvbypR4fj4C4FMsFcezOXo3j86gGSHqFZc1EAX0UIvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=thLdHVAy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A30C433F1;
-	Wed, 21 Feb 2024 13:13:30 +0000 (UTC)
+	 MIME-Version; b=cOISNHdxgGxcaBO0VuIXq3rfj6oZBJJ2wFKo0fQxRy2mw0EDzy+DRV1vByqKBVRGlRNrTdW6qf3kLOEpQXWDyjGx3VxvYodpSxtWD0rlHaSZxLwmkXXGfzW4Dedu+mksoW8kwdTgaap7OqCVnkuaeUJXIs26LdJno6E/b4HQ5jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BTsSvJa3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A99C433F1;
+	Wed, 21 Feb 2024 13:42:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521211;
-	bh=8mRdwK5WYP6W4h9WizjksS3g3ltaV+vMqDwT7fVSN+k=;
+	s=korg; t=1708522945;
+	bh=rM2F9xu9V+Ai9Rtm8E+6rgmgFDxav7RZ/ig3ggeMPrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=thLdHVAyusZx7217Jl+azIcO2oaaSq1AryjbEkW8JJjgqMfP56rq1LfTnJxw/d7/e
-	 LdlzMf6BSs2Rq2kPrGuC3/undzTvMok8C4B3siifpi4Q3/+q3q2qpQnlOVaOLH/EFF
-	 zAWyAtqdrJzYq/v4rsTPfwXzKvXuCC5n0fgtBstM=
+	b=BTsSvJa3hwQYw7+33YlFionMcWYtIEqJCjaf3XKB+CfZdqEwpTbzqreJvs4gL2WiB
+	 9FL1ivBljxzJXFcLuWI2ue7+fRhgfkGB/7XYfBWOGY6g4oI4xgFYCWAPMYdpNhob86
+	 1/4iKuCrNHBgdzIoEzbZoeyqqGYiNbMEzuTKFERM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH 4.19 020/202] driver core: Annotate dev_err_probe() with __must_check
+	Su Hui <suhui@nfschina.com>,
+	Artur Paszkiewicz <artur.paszkiewicz@intel.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 270/476] scsi: isci: Fix an error code problem in isci_io_request_build()
 Date: Wed, 21 Feb 2024 14:05:21 +0100
-Message-ID: <20240221125932.409208356@linuxfoundation.org>
+Message-ID: <20240221130017.840018733@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Su Hui <suhui@nfschina.com>
 
-commit e1f82a0dcf388d98bcc7ad195c03bd812405e6b2 upstream.
+[ Upstream commit 658365c6b0857e6a306436e315a8633937e3af42 ]
 
-We have got already new users of this API which interpret it differently
-and miss the opportunity to optimize their code.
+Clang static complains that Value stored to 'status' is never read. Return
+'status' rather than 'SCI_SUCCESS'.
 
-In order to avoid similar cases in the future, annotate dev_err_probe()
-with __must_check.
-
-Fixes: a787e5400a1c ("driver core: add device probe log helper")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20200826104459.81979-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f1f52e75939b ("isci: uplevel request infrastructure")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Link: https://lore.kernel.org/r/20240112041926.3924315-1-suhui@nfschina.com
+Reviewed-by: Artur Paszkiewicz <artur.paszkiewicz@intel.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/device.h |    2 +-
+ drivers/scsi/isci/request.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -1582,7 +1582,7 @@ do {									\
- 			dev_driver_string(dev), dev_name(dev), ## arg)
+diff --git a/drivers/scsi/isci/request.c b/drivers/scsi/isci/request.c
+index fcaa84a3c210..6ef40993906a 100644
+--- a/drivers/scsi/isci/request.c
++++ b/drivers/scsi/isci/request.c
+@@ -3390,7 +3390,7 @@ static enum sci_status isci_io_request_build(struct isci_host *ihost,
+ 		return SCI_FAILURE;
+ 	}
  
- extern __printf(3, 4)
--int dev_err_probe(const struct device *dev, int err, const char *fmt, ...);
-+int __must_check dev_err_probe(const struct device *dev, int err, const char *fmt, ...);
+-	return SCI_SUCCESS;
++	return status;
+ }
  
- /* Create alias, so I can be autoloaded. */
- #define MODULE_ALIAS_CHARDEV(major,minor) \
+ static struct isci_request *isci_request_from_tag(struct isci_host *ihost, u16 tag)
+-- 
+2.43.0
+
 
 
 
