@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-23001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4978D85DEB1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:20:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB1D85DC0A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:48:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04228281D1E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0F981C235B0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38C2D7E115;
-	Wed, 21 Feb 2024 14:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B562E7BB0D;
+	Wed, 21 Feb 2024 13:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YgoNr7+K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cKLtYhdk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4457578B5E;
-	Wed, 21 Feb 2024 14:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7151377A03;
+	Wed, 21 Feb 2024 13:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525236; cv=none; b=Ws4ZIRVRqDU6d5PJZCaoaVUQ6tT0oK+zZ6/n4Dxkw3w4/yRRwwzgfUpDgP4I4Rnbtmsv2thDaeG7Nyq6OIRjLlWSEue+HfLjygTBeImev9okssz2yt98AYTytanxd9MHfdISqy/zgnqCn5F4KAnAPuDli7cXnUDzqj1k8142VCk=
+	t=1708523305; cv=none; b=W+trKwqTrM4f4KqdUIsiLLKmO5eb2oTf/jTPvk05+JTorpGsAxB0kc3WNVgt+XJ9EhKTcTHQM12XYuJqUKw/YShb4TpKBNy4jfbhGf99qnop3QaQ8C3AnqpWnj2Zky8QXqgTeJY1I9OgDOok7VMViH1KPHB/vJeAxaCLCHgcQq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525236; c=relaxed/simple;
-	bh=l2YH2k3mnVICt+lMbM9UsQEbDQ0JSXlt1IjohPPPgcQ=;
+	s=arc-20240116; t=1708523305; c=relaxed/simple;
+	bh=knEsCc4GWtUgFMXcJApjir04yMu3mxes7hRiCF+Lc3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m15UOU5DdQSLNbKWVJD09rzKf5mR/GtpXAoew+ioWnSHHLsLvNT/p0K6ozWjSzXG5UUvl2MzCVhK85fMTpV6KBhpCWQyEvYEegDuiYRoCnG9E3c6QGSyJ3S3Q4njvS1sdSFQpKJwjcqC/jaIjEpfuErO78i6WgHND7IkzB1k50U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YgoNr7+K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DF4FC433C7;
-	Wed, 21 Feb 2024 14:20:34 +0000 (UTC)
+	 MIME-Version; b=aRmL4RsYzDsJAinffDti+RcJCeifH5b5V4DxReKyWkZz3zFW1oUPDq0kWYTx0gx+0liSIWX526A3abXjFdlK08RiVau4GIcq3ghYGl/iff51/0IXEsM5+Uo8PGu/owKlzq1Q1zQrQOGBgNpROVQ9VjUa89Ml0BkwFeP1+iZWa08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cKLtYhdk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D668FC433F1;
+	Wed, 21 Feb 2024 13:48:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525235;
-	bh=l2YH2k3mnVICt+lMbM9UsQEbDQ0JSXlt1IjohPPPgcQ=;
+	s=korg; t=1708523305;
+	bh=knEsCc4GWtUgFMXcJApjir04yMu3mxes7hRiCF+Lc3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YgoNr7+K3Mm45FVj7Catjpwg7zLEO47UJ7RAbtFJYWBBPHTjHW9HKZV5kcbc/SPAh
-	 lokgfQla0OkigdaSdEtFTQOWXN3GFUoNwkqMZKCQ83H8dU5jMjJR/avczSyuPGohsj
-	 9ADUwdIsw917IQaTgPWYmgs4GR8uvPmMjJZ2sZEo=
+	b=cKLtYhdkCnnitvUbpz9bweVUjM5WWbKh0CW47ctiPUkWc2u9NC1OgwRDBy6FRk/3t
+	 gd4o+eoOSQFsPjGJ30u3m3sIH2RoLbmg+dMinQtl0F80CIpZaHDE4jGp9GQw7N4pbH
+	 FfKTfk8YXDtq5D6vh2FYz0RP8OY3RCPUq25uwT/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 098/267] ARM: dts: imx7s: Fix lcdif compatible
+	stable <stable@kernel.org>,
+	Ekansh Gupta <quic_ekangupt@quicinc.com>
+Subject: [PATCH 5.15 388/476] misc: fastrpc: Mark all sessions as invalid in cb_remove
 Date: Wed, 21 Feb 2024 14:07:19 +0100
-Message-ID: <20240221125943.023945423@linuxfoundation.org>
+Message-ID: <20240221130022.383696412@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Ekansh Gupta <quic_ekangupt@quicinc.com>
 
-[ Upstream commit 5f55da4cc37051cda600ea870ce8cf29f1297715 ]
+commit a4e61de63e34860c36a71d1a364edba16fb6203b upstream.
 
-imx7d-lcdif is compatible to imx6sx-lcdif. MXSFB_V6 supports overlay
-by using LCDC_AS_CTRL register. This registers used by overlay plane:
-* LCDC_AS_CTRL
-* LCDC_AS_BUF
-* LCDC_AS_NEXT_BUF
-are listed in i.MX7D RM as well.
+In remoteproc shutdown sequence, rpmsg_remove will get called which
+would depopulate all the child nodes that have been created during
+rpmsg_probe. This would result in cb_remove call for all the context
+banks for the remoteproc. In cb_remove function, session 0 is
+getting skipped which is not correct as session 0 will never become
+available again. Add changes to mark session 0 also as invalid.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f6f9279f2bf0 ("misc: fastrpc: Add Qualcomm fastrpc basic driver model")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
+Link: https://lore.kernel.org/r/20240108114833.20480-1-quic_ekangupt@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/imx7s.dtsi | 2 +-
+ drivers/misc/fastrpc.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/imx7s.dtsi b/arch/arm/boot/dts/imx7s.dtsi
-index 33e9c210fd2f..a7ed880b12fc 100644
---- a/arch/arm/boot/dts/imx7s.dtsi
-+++ b/arch/arm/boot/dts/imx7s.dtsi
-@@ -769,7 +769,7 @@
- 			};
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -1594,7 +1594,7 @@ static int fastrpc_cb_remove(struct plat
+ 	int i;
  
- 			lcdif: lcdif@30730000 {
--				compatible = "fsl,imx7d-lcdif", "fsl,imx28-lcdif";
-+				compatible = "fsl,imx7d-lcdif", "fsl,imx6sx-lcdif";
- 				reg = <0x30730000 0x10000>;
- 				interrupts = <GIC_SPI 5 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clks IMX7D_LCDIF_PIXEL_ROOT_CLK>,
--- 
-2.43.0
-
+ 	spin_lock_irqsave(&cctx->lock, flags);
+-	for (i = 1; i < FASTRPC_MAX_SESSIONS; i++) {
++	for (i = 0; i < FASTRPC_MAX_SESSIONS; i++) {
+ 		if (cctx->session[i].sid == sess->sid) {
+ 			cctx->session[i].valid = false;
+ 			cctx->sesscount--;
 
 
 
