@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-21895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E08585D90C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3A1785DD53
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:04:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7073D1C228FD
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:14:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55FF4B24110
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:04:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1B469DF2;
-	Wed, 21 Feb 2024 13:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C387C097;
+	Wed, 21 Feb 2024 14:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CzWueY2h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="guzD8C0u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5E153816;
-	Wed, 21 Feb 2024 13:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E9278B4F;
+	Wed, 21 Feb 2024 14:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521230; cv=none; b=Z8wGR3hrG2CTeioIM6Em3VDE2LZXPY4uvIxnGeU+fuLb7IcpPNr5ITCEzD+Xj6Si2TEFFvuzGUxXL7Dxyh8hVwNqxwYlaG1+mrIGjWnlBy9gmiS/LsReB6DrrTA6AWnJfKPXgtkwkZ9khkaEU8PZA+yskQbO4s/CApIIpVvmBjU=
+	t=1708524216; cv=none; b=RSfj47uKfh6f/XB+OXqDo2gsCgqtkmFlOa+a8P8ZE3k33iK5J/mtsYy1EVmi9bQkfVCpc2adIJJ3XwAwoCy3UMgvRMt/wuSHo+bWXtCkbGGvO+pWCYt3eCIhV6DtD/CR5kYuT5bLGTqoUAroFSFnzSMi4DDOJDNoibQ6HjxOQKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521230; c=relaxed/simple;
-	bh=IKyvP14/+nMGcqfdTGeFthgamZ+ezuKCt5VNDgpmTf8=;
+	s=arc-20240116; t=1708524216; c=relaxed/simple;
+	bh=yzff06359oea/V9xluvZiaZacOqYkzSNw2O5/K5gb1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SVdkSytKjpcGKNgCMn4W0OdPb8SRyhuATVn6a8mFTFGbrl2P3oO9ZG6vm1CHvXmByKZKNN2puK98b9fS5cFXhrZVKaeNy9mBmsL0i6LOXNQY47TOZZJ/8Zj1+hcT22W/uvtan3LWjhXGijP+1zW0cCvQUR/QnaVyCqe3mPcJzTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CzWueY2h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D802C433F1;
-	Wed, 21 Feb 2024 13:13:50 +0000 (UTC)
+	 MIME-Version; b=XHTmJcwpOjhU0w3VWq2QoTlvS+YeL8FdS2yPlup827JxCnYoOXr7pxFt9zwy+ZJAwmjy5hjELCNF/wwOSj+22nmOmJd91X5o4LGHWRYf4282APWEQfrkldH83mHofIoUcI3Hb4LYLRruX+UiP5up7Cg+Y5+34ejLESAHXZzcg2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=guzD8C0u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E4B8C433C7;
+	Wed, 21 Feb 2024 14:03:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521230;
-	bh=IKyvP14/+nMGcqfdTGeFthgamZ+ezuKCt5VNDgpmTf8=;
+	s=korg; t=1708524215;
+	bh=yzff06359oea/V9xluvZiaZacOqYkzSNw2O5/K5gb1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CzWueY2hDZI1FgyQjrJPaN8XvvWW8b2KsrU+m5BVctaYz5i4PJm2oTcUnqDQsJU+s
-	 8vGFSU6KXMRjzPtgmo26XXHkehro96vjD4yMPTPaGJ4A4CwjKNn3jAvxlQTRnTpB82
-	 AcV0VZ6+PhHTOIdg7vaneX4OpMlqwgoxFzwgUfEQ=
+	b=guzD8C0ui2XXziJT9G8pJX6egzLv305v3O7tXvX4/ZfSsIRNa99ym9BggYOZw1tz7
+	 A/88ICdJnFV0d6zXgTknkZX0GEiFvaoY8dbHv43fM0Ill3NPiSCpA7AEhbKtzAd8XF
+	 LCnp87weulo5mg8glhvUhQUoZzAcvPjcvMtVeMQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prarit Bhargava <prarit@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Jack Wang <jinpu.wang@ionos.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 057/202] ACPI: extlog: fix NULL pointer dereference check
+Subject: [PATCH 5.10 179/379] RDMA/IPoIB: Fix error code return in ipoib_mcast_join
 Date: Wed, 21 Feb 2024 14:05:58 +0100
-Message-ID: <20240221125933.694759609@linuxfoundation.org>
+Message-ID: <20240221130000.205139175@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +60,38 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prarit Bhargava <prarit@redhat.com>
+From: Jack Wang <jinpu.wang@ionos.com>
 
-[ Upstream commit 72d9b9747e78979510e9aafdd32eb99c7aa30dd1 ]
+[ Upstream commit 753fff78f430704548f45eda52d6d55371a52c0f ]
 
-The gcc plugin -fanalyzer [1] tries to detect various
-patterns of incorrect behaviour.  The tool reports:
+Return the error code in case of ib_sa_join_multicast fail.
 
-drivers/acpi/acpi_extlog.c: In function ‘extlog_exit’:
-drivers/acpi/acpi_extlog.c:307:12: warning: check of ‘extlog_l1_addr’ for NULL after already dereferencing it [-Wanalyzer-deref-before-check]
-    |
-    |  306 |         ((struct extlog_l1_head *)extlog_l1_addr)->flags &= ~FLAG_OS_OPTIN;
-    |      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
-    |      |                                                  |
-    |      |                                                  (1) pointer ‘extlog_l1_addr’ is dereferenced here
-    |  307 |         if (extlog_l1_addr)
-    |      |            ~
-    |      |            |
-    |      |            (2) pointer ‘extlog_l1_addr’ is checked for NULL here but it was already dereferenced at (1)
-    |
-
-Fix the NULL pointer dereference check in extlog_exit().
-
-Link: https://gcc.gnu.org/onlinedocs/gcc-10.1.0/gcc/Static-Analyzer-Options.html # [1]
-
-Signed-off-by: Prarit Bhargava <prarit@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
+Link: https://lore.kernel.org/r/20231121130316.126364-2-jinpu.wang@ionos.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_extlog.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/infiniband/ulp/ipoib/ipoib_multicast.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-index e05309bc41cc..e148b0a28ec9 100644
---- a/drivers/acpi/acpi_extlog.c
-+++ b/drivers/acpi/acpi_extlog.c
-@@ -317,9 +317,10 @@ static void __exit extlog_exit(void)
- {
- 	edac_set_report_status(old_edac_report_status);
- 	mce_unregister_decode_chain(&extlog_mce_dec);
--	((struct extlog_l1_head *)extlog_l1_addr)->flags &= ~FLAG_OS_OPTIN;
--	if (extlog_l1_addr)
-+	if (extlog_l1_addr) {
-+		((struct extlog_l1_head *)extlog_l1_addr)->flags &= ~FLAG_OS_OPTIN;
- 		acpi_os_unmap_iomem(extlog_l1_addr, l1_size);
-+	}
- 	if (elog_addr)
- 		acpi_os_unmap_iomem(elog_addr, elog_size);
- 	release_mem_region(elog_base, elog_size);
+diff --git a/drivers/infiniband/ulp/ipoib/ipoib_multicast.c b/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
+index 86e4ed64e4e2..5633809dc61e 100644
+--- a/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
++++ b/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
+@@ -557,6 +557,7 @@ static int ipoib_mcast_join(struct net_device *dev, struct ipoib_mcast *mcast)
+ 		spin_unlock_irq(&priv->lock);
+ 		complete(&mcast->done);
+ 		spin_lock_irq(&priv->lock);
++		return ret;
+ 	}
+ 	return 0;
+ }
 -- 
 2.43.0
 
