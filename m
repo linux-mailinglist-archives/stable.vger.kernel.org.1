@@ -1,77 +1,56 @@
-Return-Path: <stable+bounces-22882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 311DE85DE5B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:18:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10D4B85DF6B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:27:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F225B21498
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:15:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFD61285701
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:27:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 890BE7F479;
-	Wed, 21 Feb 2024 14:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD857BAF7;
+	Wed, 21 Feb 2024 14:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wFFd0cDK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XgMeOr/P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6757F460;
-	Wed, 21 Feb 2024 14:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BDB04C62;
+	Wed, 21 Feb 2024 14:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524830; cv=none; b=d9nSpp4p1+iWCqrs+2tEmFMin6zpVLBd4QNuMo4E8KSE1/YdtA6GHcLWcJEdt7A1KhaJYI5ppPsBnpUajauZyIbjizqfs7JucBY/tJtP6QwikLUCUd7CjbHkJ8kU99bbHsZLaNCrK6QHKIuNaTVir4L5EbT8kC6+v+KuZMxL2w0=
+	t=1708525673; cv=none; b=WDg8R6kKeYcBn1H1jfwNyvqFECAxXTbmPXRN4TSCITitUfnr54HpC0/wNGfVI9MKBqvvapmR6HDfpfAkdNoVtDv+ovB95F2NU3mq5ovCl1ioI/60rj1ajgTmY4/OUfEj2UqVOZnEbgd+v2ptu/7VRz9Lou36yt3X+fykeJMOR5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524830; c=relaxed/simple;
-	bh=pFuiCuHBlZrIU1+IY7+ki2acwX+Y07C4NApi0miX7PY=;
+	s=arc-20240116; t=1708525673; c=relaxed/simple;
+	bh=1blcRQjkYk1q4VdC+6TctMW5xy6pnuEu6kzNfDb0ytY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rraBu75d3VyGynd61c6rL2C2ehDsODbLTFCj4TEkHbtB+AFLe7Fk19fm6Pn4hhkYzs+vfV+kb20dfe/Nkdc2ZB7989q8Lvz148tixSF1tqlpXLKaY38ryuD9qMsaMHj8rnQ99syJh7Eikk7XkuucdW3LK5LAWb+09B+aiu2k74o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wFFd0cDK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2101CC433C7;
-	Wed, 21 Feb 2024 14:13:49 +0000 (UTC)
+	 MIME-Version; b=qar5hxmZq8JTeKqHJparJKv/b1pveRCSuGcNAYpPG4QffS01iha7QAU/hQ/qkEnIiC6Yhe+Aw/AFCSKn1fkSGFvMd0+bIAtIIuJRNQ6IOWu2bBt4Lwv807CSHKIwxaCdBQKzynLai+k+XrM1yVKTxjkRdkRDgdtoEnNEbdj4KbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XgMeOr/P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E0F7C433F1;
+	Wed, 21 Feb 2024 14:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524829;
-	bh=pFuiCuHBlZrIU1+IY7+ki2acwX+Y07C4NApi0miX7PY=;
+	s=korg; t=1708525673;
+	bh=1blcRQjkYk1q4VdC+6TctMW5xy6pnuEu6kzNfDb0ytY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wFFd0cDKvCrFQvgPIFANbnKZbsL0z1THNfT+YHqORYtS9v/CRIzWaSNo9hiuhRQ7y
-	 Vm3C0Vjf6Z48SCqJvsjaq9u+51RIfQDo/aHjBMmWXsi4aoNiCrLAcQCFNrf4kLsJMC
-	 efacyg5NeU5vmxSgfaHqRg63uyw4CselBQn2X4wg=
+	b=XgMeOr/P+2oloGcmCHVE+PF0/gbb6W3oGjUV4hnUFshD57UcgDCzjXojPKN0fXivf
+	 nZ2pdoFsfCZBZCeRD9HZV/xSEPlCgvyjY9GWxyfMEHKChHQSec4QIFIwOi/f5/Qall
+	 0VO1voVqUpQTC7ZxugM7w7RqcGne77wuqTvFr5gU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Boyd <swboyd@chromium.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Jessica Yu <jeyu@kernel.org>,
-	Evan Green <evgreen@chromium.org>,
-	Hsin-Yi Wang <hsinyi@chromium.org>,
-	Konstantin Khlebnikov <khlebnikov@yandex-team.ru>,
-	Sasha Levin <sashal@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Baoquan He <bhe@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Dave Young <dyoung@redhat.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Petr Mladek <pmladek@suse.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vivek Goyal <vgoyal@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.10 361/379] scripts/decode_stacktrace.sh: silence stderr messages from addr2line/nm
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.4 199/267] Input: atkbd - skip ATKBD_CMD_SETLEDS when skipping ATKBD_CMD_GETID
 Date: Wed, 21 Feb 2024 14:09:00 +0100
-Message-ID: <20240221130005.745356091@linuxfoundation.org>
+Message-ID: <20240221125946.402885635@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -83,84 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Boyd <swboyd@chromium.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 5bf0f3bc377e5f87bfd61ccc9c1efb3c6261f2c3 ]
+commit 683cd8259a9b883a51973511f860976db2550a6e upstream.
 
-Sometimes if you're using tools that have linked things improperly or have
-new features/sections that older tools don't expect you'll see warnings
-printed to stderr.  We don't really care about these warnings, so let's
-just silence these messages to cleanup output of this script.
+After commit 936e4d49ecbc ("Input: atkbd - skip ATKBD_CMD_GETID in
+translated mode") the keyboard on Dell XPS 13 9350 / 9360 / 9370 models
+has stopped working after a suspend/resume.
 
-Link: https://lkml.kernel.org/r/20210511003845.2429846-10-swboyd@chromium.org
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Jessica Yu <jeyu@kernel.org>
-Cc: Evan Green <evgreen@chromium.org>
-Cc: Hsin-Yi Wang <hsinyi@chromium.org>
-Cc: Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
-Cc: Sasha Levin <sashal@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc: Sergey Senozhatsky <sergey.senozhatsky@gmail.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Vivek Goyal <vgoyal@redhat.com>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: efbd63983533 ("scripts/decode_stacktrace.sh: optionally use LLVM utilities")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The problem appears to be that atkbd_probe() fails when called
+from atkbd_reconnect() on resume, which on systems where
+ATKBD_CMD_GETID is skipped can only happen by ATKBD_CMD_SETLEDS
+failing. ATKBD_CMD_SETLEDS failing because ATKBD_CMD_GETID was
+skipped is weird, but apparently that is what is happening.
+
+Fix this by also skipping ATKBD_CMD_SETLEDS when skipping
+ATKBD_CMD_GETID.
+
+Fixes: 936e4d49ecbc ("Input: atkbd - skip ATKBD_CMD_GETID in translated mode")
+Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Closes: https://lore.kernel.org/linux-input/0aa4a61f-c939-46fe-a572-08022e8931c7@molgen.mpg.de/
+Closes: https://bbs.archlinux.org/viewtopic.php?pid=2146300
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218424
+Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2260517
+Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240126160724.13278-2-hdegoede@redhat.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/decode_stacktrace.sh | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/input/keyboard/atkbd.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/scripts/decode_stacktrace.sh b/scripts/decode_stacktrace.sh
-index 90398347e366..5bdf610f33d2 100755
---- a/scripts/decode_stacktrace.sh
-+++ b/scripts/decode_stacktrace.sh
-@@ -51,7 +51,7 @@ find_module() {
- 	find_module && return
+--- a/drivers/input/keyboard/atkbd.c
++++ b/drivers/input/keyboard/atkbd.c
+@@ -761,7 +761,6 @@ static int atkbd_probe(struct atkbd *atk
+ {
+ 	struct ps2dev *ps2dev = &atkbd->ps2dev;
+ 	unsigned char param[2];
+-	bool skip_getid;
  
- 	if [[ $release == "" ]] ; then
--		release=$(gdb -ex 'print init_uts_ns.name.release' -ex 'quit' -quiet -batch "$vmlinux" | sed -n 's/\$1 = "\(.*\)".*/\1/p')
-+		release=$(gdb -ex 'print init_uts_ns.name.release' -ex 'quit' -quiet -batch "$vmlinux" 2>/dev/null | sed -n 's/\$1 = "\(.*\)".*/\1/p')
- 	fi
+ /*
+  * Some systems, where the bit-twiddling when testing the io-lines of the
+@@ -775,6 +774,11 @@ static int atkbd_probe(struct atkbd *atk
+ 				 "keyboard reset failed on %s\n",
+ 				 ps2dev->serio->phys);
  
- 	for dn in {/usr/lib/debug,}/lib/modules/$release ; do
-@@ -105,7 +105,7 @@ parse_symbol() {
- 	if [[ "${cache[$module,$name]+isset}" == "isset" ]]; then
- 		local base_addr=${cache[$module,$name]}
- 	else
--		local base_addr=$(nm "$objfile" | awk '$3 == "'$name'" && ($2 == "t" || $2 == "T") {print $1; exit}')
-+		local base_addr=$(nm "$objfile" 2>/dev/null | awk '$3 == "'$name'" && ($2 == "t" || $2 == "T") {print $1; exit}')
- 		if [[ $base_addr == "" ]] ; then
- 			# address not found
- 			return
-@@ -129,7 +129,7 @@ parse_symbol() {
- 	if [[ "${cache[$module,$address]+isset}" == "isset" ]]; then
- 		local code=${cache[$module,$address]}
- 	else
--		local code=$(${CROSS_COMPILE}addr2line -i -e "$objfile" "$address")
-+		local code=$(${CROSS_COMPILE}addr2line -i -e "$objfile" "$address" 2>/dev/null)
- 		cache[$module,$address]=$code
- 	fi
++	if (atkbd_skip_getid(atkbd)) {
++		atkbd->id = 0xab83;
++		return 0;
++	}
++
+ /*
+  * Then we check the keyboard ID. We should get 0xab83 under normal conditions.
+  * Some keyboards report different values, but the first byte is always 0xab or
+@@ -783,18 +787,17 @@ static int atkbd_probe(struct atkbd *atk
+  */
  
--- 
-2.43.0
-
+ 	param[0] = param[1] = 0xa5;	/* initialize with invalid values */
+-	skip_getid = atkbd_skip_getid(atkbd);
+-	if (skip_getid || ps2_command(ps2dev, param, ATKBD_CMD_GETID)) {
++	if (ps2_command(ps2dev, param, ATKBD_CMD_GETID)) {
+ 
+ /*
+- * If the get ID command was skipped or failed, we check if we can at least set
++ * If the get ID command failed, we check if we can at least set
+  * the LEDs on the keyboard. This should work on every keyboard out there.
+  * It also turns the LEDs off, which we want anyway.
+  */
+ 		param[0] = 0;
+ 		if (ps2_command(ps2dev, param, ATKBD_CMD_SETLEDS))
+ 			return -1;
+-		atkbd->id = skip_getid ? 0xab83 : 0xabba;
++		atkbd->id = 0xabba;
+ 		return 0;
+ 	}
+ 
 
 
 
