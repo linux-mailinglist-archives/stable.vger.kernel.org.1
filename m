@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-22024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F28B485D9C3
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3423285DEFA
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:23:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A95DB1F2384B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:22:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4FAC1F22370
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761067BAF2;
-	Wed, 21 Feb 2024 13:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EF2269962;
+	Wed, 21 Feb 2024 14:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nl9WQMQ2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vLngDih1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325F37BAF7;
-	Wed, 21 Feb 2024 13:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15AE83CF42;
+	Wed, 21 Feb 2024 14:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521715; cv=none; b=BCLsuuZa3jjvNJjUMWU2H3loV74y2M9vWxLswcaD81hVRBK7oZ22Dd3Vppco/qyTZKfdySDIErfIDed6HCZaJEqmRd2BxjGs1oB2v32YYU2AI0mnJVY3KXEiXcxs/fb2EP+90ghXZNp1JlQjn2L/12JtD8inFv3pvCCPAH/nndg=
+	t=1708525405; cv=none; b=awkx4YQtZuQ+IXC/qN9tCc44hQRfxw8aSB7MaF63xjXcX5cCoiyZGo5HTjpgOsCXLW0YOPZ38NvHf9y1yCa0i0AIsMHXC45dSDdA+YfjTZzhzcoxBJPXECFubJX6/ZjmjQeYb1CBYDDXEzBdGbW6uQJ/kEOChPzs8HRqgCvSjzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521715; c=relaxed/simple;
-	bh=p34sylDwDvYT6SDqv6/Fvo4L/SXBavWYGlMKrlWtlbE=;
+	s=arc-20240116; t=1708525405; c=relaxed/simple;
+	bh=MV4iXCM5iaboXWC/JUo3D9mCs9HsDCsUbOk5wovwJDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XaH+OgW0xbhQUgZvJNqz493vneRO4aAMmDALUnx8slZeI9RJrdGxeBAa3Q9GvLxdPmDN6N403hggkla8sp1Fzo8zeSspqQOHQvPMwZkrUHrb/iq9Tr2DZPeuyLzUCcea4aRVaqxFc2TguEaqcdRj7YNbg2NyfdQTsDifLQhpe1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nl9WQMQ2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 942FCC433C7;
-	Wed, 21 Feb 2024 13:21:54 +0000 (UTC)
+	 MIME-Version; b=c7qk+YUYMhVyNC9zKpRWLMYSGExv1+78UeqPp+DWKso/HSOUB6u7iNKAL6jTXZtLp3pGC+ZPRlnCftrbahTw1clafFjEXGbkWZoc8CZ+OnJJMh2eAltGHpeQfcCB5X6AOqtx2BKcR6VZqB1nGGACLqYlVStvfl4Pq4rizErmfIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vLngDih1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40116C433C7;
+	Wed, 21 Feb 2024 14:23:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521715;
-	bh=p34sylDwDvYT6SDqv6/Fvo4L/SXBavWYGlMKrlWtlbE=;
+	s=korg; t=1708525404;
+	bh=MV4iXCM5iaboXWC/JUo3D9mCs9HsDCsUbOk5wovwJDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nl9WQMQ268gAtKhjv6iMUO6fZwShc5xZpMj33xTMmqZNct/k6TlpLoLPO4dEylxCq
-	 pZiJ1o48RDE9G60+OCAn0y8Z6Ezn9pN/pizCijzWFuBrF6NdLtTfPfQ18mVUA6jExY
-	 Xmd+Af97rAf0vdLApc2eONhztt1WsLPKPNInw6oA=
+	b=vLngDih1b4S4lHePkcTIE9lhibC2z49QKkr2VjFWaCRJG2yJLVGUBQqHIKJyozioJ
+	 cUfisa5MlKp1cONmu+YbIvwT4Z7Lq7NlXHyV00g5OeEcd6G7HDcpNbVXz53Sa06GuN
+	 sI6CJjXFogQ9UNKZKJvECkZF8prbUtxEqmJyLwV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Schiller <david.schiller@jku.at>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 4.19 185/202] staging: iio: ad5933: fix type mismatch regression
-Date: Wed, 21 Feb 2024 14:08:06 +0100
-Message-ID: <20240221125937.791865314@linuxfoundation.org>
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Huang Rui <ray.huang@amd.com>,
+	Vicki Pfau <vi@endrift.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 146/267] PCI: Only override AMD USB controller if required
+Date: Wed, 21 Feb 2024 14:08:07 +0100
+Message-ID: <20240221125944.641698076@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Schiller <david.schiller@jku.at>
+From: Guilherme G. Piccoli <gpiccoli@igalia.com>
 
-commit 6db053cd949fcd6254cea9f2cd5d39f7bd64379c upstream.
+[ Upstream commit e585a37e5061f6d5060517aed1ca4ccb2e56a34c ]
 
-Commit 4c3577db3e4f ("Staging: iio: impedance-analyzer: Fix sparse
-warning") fixed a compiler warning, but introduced a bug that resulted
-in one of the two 16 bit IIO channels always being zero (when both are
-enabled).
+By running a Van Gogh device (Steam Deck), the following message
+was noticed in the kernel log:
 
-This is because int is 32 bits wide on most architectures and in the
-case of a little-endian machine the two most significant bytes would
-occupy the buffer for the second channel as 'val' is being passed as a
-void pointer to 'iio_push_to_buffers()'.
+  pci 0000:04:00.3: PCI class overridden (0x0c03fe -> 0x0c03fe) so dwc3 driver can claim this instead of xhci
 
-Fix by defining 'val' as u16. Tested working on ARM64.
+Effectively this means the quirk executed but changed nothing, since the
+class of this device was already the proper one (likely adjusted by newer
+firmware versions).
 
-Fixes: 4c3577db3e4f ("Staging: iio: impedance-analyzer: Fix sparse warning")
-Signed-off-by: David Schiller <david.schiller@jku.at>
-Link: https://lore.kernel.org/r/20240122134916.2137957-1-david.schiller@jku.at
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Check and perform the override only if necessary.
+
+Link: https://lore.kernel.org/r/20231120160531.361552-1-gpiccoli@igalia.com
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Huang Rui <ray.huang@amd.com>
+Cc: Vicki Pfau <vi@endrift.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/iio/impedance-analyzer/ad5933.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/quirks.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/staging/iio/impedance-analyzer/ad5933.c
-+++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
-@@ -638,7 +638,7 @@ static void ad5933_work(struct work_stru
- 		struct ad5933_state, work.work);
- 	struct iio_dev *indio_dev = i2c_get_clientdata(st->client);
- 	__be16 buf[2];
--	int val[2];
-+	u16 val[2];
- 	unsigned char status;
- 	int ret;
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index d1fab1d27e4d..821e71a45849 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -609,10 +609,13 @@ static void quirk_amd_dwc_class(struct pci_dev *pdev)
+ {
+ 	u32 class = pdev->class;
  
+-	/* Use "USB Device (not host controller)" class */
+-	pdev->class = PCI_CLASS_SERIAL_USB_DEVICE;
+-	pci_info(pdev, "PCI class overridden (%#08x -> %#08x) so dwc3 driver can claim this instead of xhci\n",
+-		 class, pdev->class);
++	if (class != PCI_CLASS_SERIAL_USB_DEVICE) {
++		/* Use "USB Device (not host controller)" class */
++		pdev->class = PCI_CLASS_SERIAL_USB_DEVICE;
++		pci_info(pdev,
++			"PCI class overridden (%#08x -> %#08x) so dwc3 driver can claim this instead of xhci\n",
++			class, pdev->class);
++	}
+ }
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_NL_USB,
+ 		quirk_amd_dwc_class);
+-- 
+2.43.0
+
 
 
 
