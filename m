@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-22380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4B6085DBC1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:45:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C42EA85DEE2
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:22:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B93D1F247FC
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:45:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6855EB2B2C1
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A4479DAE;
-	Wed, 21 Feb 2024 13:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF8F27C097;
+	Wed, 21 Feb 2024 14:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTwwC8wb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQeWmDIv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901757993D;
-	Wed, 21 Feb 2024 13:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661657BB1B;
+	Wed, 21 Feb 2024 14:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523092; cv=none; b=CwYdskRPV1AdvV6hlKAydjdYR10a98dOsS1nxprGFWA4vioIx/6RUx3TOuSSPPSOmXTwknBN3NOxpDGJGhv7dV4GIidoNcwdEWRbyGSnaqaoDMt1Np1+iDtZMWiEQ9JtG5Up/8r36R92qtq7xMJqW0ycVvf3kPuzQLmP+6jV8Rw=
+	t=1708525149; cv=none; b=kTUt7fbHA74HS6yVwhJrXjRYSvmmYgQeKZ2AGi8rFoOyPz2vv6O9UdJ22dmz4YjsmKfr5lD77DO74LLg7I5R9TIRYc702TPeIgtn6ADxuR5EyRwRtFJTlwLfHzx4tE5rCyEv3k2Gu5GAyEIwJA6o5EAAAJzt96CUbU3jMZTZLGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523092; c=relaxed/simple;
-	bh=0bL1glqdxs2b69jfhLbtktSVc8lfLWO6DHxDYwrwz08=;
+	s=arc-20240116; t=1708525149; c=relaxed/simple;
+	bh=1IY4d0k13MTJHOBn9yv0dlnQXoB0LwhcoQpB6QIInmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g4mZ+XYZOZY5yljiDlx4/bg0tMQ5jn99AuxUw97K55b+/AeDNum4YhvLynjEbCttHleQiNb3KmSumFvUhjtfdcEvsFoizGvEU08P2wWA85cI5HB/5WL2gQ5Z4Q76bTdP3KoeS9pocnjkcpfq2vd7EDoQ26jhU9ojtpukqNGm3PQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GTwwC8wb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C9BC433C7;
-	Wed, 21 Feb 2024 13:44:51 +0000 (UTC)
+	 MIME-Version; b=tcizz73P0k2mp7qeYrPH58BeAQ7T+yNGsAIfwkAOV0Ll2iDhGHW2rLeFfTcuW7uDZXorqaHudOROsrRpM0Ssph3hqGyxqXARUBq9Zr6/SrHbPtTNvgdo2tQhrxAyXz663FHNat5kvUUN5wJgA7jqtrNDdMYjG0lPBxKww2nQQOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQeWmDIv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA287C43394;
+	Wed, 21 Feb 2024 14:19:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523092;
-	bh=0bL1glqdxs2b69jfhLbtktSVc8lfLWO6DHxDYwrwz08=;
+	s=korg; t=1708525149;
+	bh=1IY4d0k13MTJHOBn9yv0dlnQXoB0LwhcoQpB6QIInmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GTwwC8wbHaZvz6IaRAz0jH6Rm72whaYHA53YZGIZtSgNSHP/+oHA0lDyA7vK+iXsf
-	 GyQ8mXTJJEFCLYG3BMKs+OVUgzXjAVaRAM09o9ngpWY6Zu2rt+j/Sk78wk+a74pTa6
-	 f/iHtYd+JYrybB9M86bNsevT9RsA7DeyXOAiWS18=
+	b=AQeWmDIvyJRwocxJdUmcU9vJl7M1Nwx8JmK719widDTUQZZvbSGsYWLM8ISAiou2Z
+	 lQ0kuC+D4EQ4kpvdgW4ctZdVZk/itRTy7SSUqwvvUYYRmyiTQW2GG5xNZsQQMx6zzC
+	 CPb7wz8ct67oc19M2PsDw770rNLaXQhbCxUfDi4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.15 337/476] Input: i8042 - fix strange behavior of touchpad on Clevo NS70PU
+	Notselwyn <notselwyn@pwning.tech>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.4 047/267] netfilter: nf_tables: reject QUEUE/DROP verdict parameters
 Date: Wed, 21 Feb 2024 14:06:28 +0100
-Message-ID: <20240221130020.481916241@linuxfoundation.org>
+Message-ID: <20240221125941.489419143@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Sembach <wse@tuxedocomputers.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit a60e6c3918d20848906ffcdfcf72ca6a8cfbcf2e upstream.
+commit f342de4e2f33e0e39165d8639387aa6c19dff660 upstream.
 
-When closing the laptop lid with an external screen connected, the mouse
-pointer has a constant movement to the lower right corner. Opening the
-lid again stops this movement, but after that the touchpad does no longer
-register clicks.
+This reverts commit e0abdadcc6e1.
 
-The touchpad is connected both via i2c-hid and PS/2, the predecessor of
-this device (NS70MU) has the same layout in this regard and also strange
-behaviour caused by the psmouse and the i2c-hid driver fighting over
-touchpad control. This fix is reusing the same workaround by just
-disabling the PS/2 aux port, that is only used by the touchpad, to give the
-i2c-hid driver the lone control over the touchpad.
+core.c:nf_hook_slow assumes that the upper 16 bits of NF_DROP
+verdicts contain a valid errno, i.e. -EPERM, -EHOSTUNREACH or similar,
+or 0.
 
-v2: Rebased on current master
+Due to the reverted commit, its possible to provide a positive
+value, e.g. NF_ACCEPT (1), which results in use-after-free.
 
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Its not clear to me why this commit was made.
+
+NF_QUEUE is not used by nftables; "queue" rules in nftables
+will result in use of "nft_queue" expression.
+
+If we later need to allow specifiying errno values from userspace
+(do not know why), this has to call NF_DROP_GETERR and check that
+"err <= 0" holds true.
+
+Fixes: e0abdadcc6e1 ("netfilter: nf_tables: accept QUEUE/DROP verdict parameters")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231205163602.16106-1-wse@tuxedocomputers.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Reported-by: Notselwyn <notselwyn@pwning.tech>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h |    6 ++++++
- 1 file changed, 6 insertions(+)
+ net/netfilter/nf_tables_api.c |   16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -1173,6 +1173,12 @@ static const struct dmi_system_id i8042_
- 	},
- 	{
- 		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "NS5x_7xPU"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOAUX)
-+	},
-+	{
-+		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "NJ50_70CU"),
- 		},
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -8058,16 +8058,10 @@ static int nft_verdict_init(const struct
+ 	data->verdict.code = ntohl(nla_get_be32(tb[NFTA_VERDICT_CODE]));
+ 
+ 	switch (data->verdict.code) {
+-	default:
+-		switch (data->verdict.code & NF_VERDICT_MASK) {
+-		case NF_ACCEPT:
+-		case NF_DROP:
+-		case NF_QUEUE:
+-			break;
+-		default:
+-			return -EINVAL;
+-		}
+-		/* fall through */
++	case NF_ACCEPT:
++	case NF_DROP:
++	case NF_QUEUE:
++		break;
+ 	case NFT_CONTINUE:
+ 	case NFT_BREAK:
+ 	case NFT_RETURN:
+@@ -8087,6 +8081,8 @@ static int nft_verdict_init(const struct
+ 
+ 		data->verdict.chain = chain;
+ 		break;
++	default:
++		return -EINVAL;
+ 	}
+ 
+ 	desc->len = sizeof(data->verdict);
 
 
 
