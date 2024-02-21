@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49DF985D9CC
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2223385DE7B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:19:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C0051C232A8
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:22:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D09B7B2BE90
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:15:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34C4178B73;
-	Wed, 21 Feb 2024 13:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FA617E590;
+	Wed, 21 Feb 2024 14:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOrk0eRv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CILSNe19"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E713C53816;
-	Wed, 21 Feb 2024 13:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06B669942;
+	Wed, 21 Feb 2024 14:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521744; cv=none; b=U6nxdXc0XMgrt4lq8FNVof2mHrBBkZbQRsJm81veziCghjIaoZsaMuD6PRzQXuzhs5bg3b2vIz0ds/fviO3a/e6tBaUY6BpWtBUfuSAYay8fG+4Hzp5XlOILueF2ktQs0fXyTO9QHv1FrJrgpBQWq6EjooEFLVmIGZBlFhhP61A=
+	t=1708524772; cv=none; b=TZ4FrstsbW3p717dvjuvX6GTwj7ZZhjQRC1oAX2Vkz3q5yYMgRiHsSmJyA2H0rOT8Ur/JAkPzkxpIrzDb7qsfeeWvH7mRieE8QejC6oILz66dFpxLduJu7Q30Ex75jIDvIDbQhaXEJEk6ZWDbe6P+HHZlLQQI1z3OeawohIlWFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521744; c=relaxed/simple;
-	bh=1q6uWuXe8V5m/ivItWzkz3+sVWuwkUsHQFKiMix2jE0=;
+	s=arc-20240116; t=1708524772; c=relaxed/simple;
+	bh=MjxYe7NoAr9PbPGOv+U6Q0hc0OM2jwrMpuDauoueFH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sT0NUBUbLplOLbPpkg8RdYDQqQUl5P3cC7/UfzBuPuEZJzelaytJmlCwCLO+4886WwbYtZW29EUt6nbS24IlkMUMli9n/ZU6AHBmC8E5QMecgapTEuAhjozolkp65jR9chpibKG0UxUO5hZcPm3tfZgZAjVtRfYLekS+RmhJo9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOrk0eRv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A4CDC43390;
-	Wed, 21 Feb 2024 13:22:22 +0000 (UTC)
+	 MIME-Version; b=WQl2B39w4gH+UmYMAFWSt2jDprapiN7kwUtR7YcGw/GK1qU3NVLWSDytoPXEkzumCTp3BsEUIZPBteu9ZwkG7unB5HK8FwXQLn4iDNVvpaBlyn343siwTV9pSLRktkyf/D/nu1C02+lUO8SPPWJEBgRVvF+JOUVnzxqpnFqML/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CILSNe19; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 301F2C433F1;
+	Wed, 21 Feb 2024 14:12:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521743;
-	bh=1q6uWuXe8V5m/ivItWzkz3+sVWuwkUsHQFKiMix2jE0=;
+	s=korg; t=1708524772;
+	bh=MjxYe7NoAr9PbPGOv+U6Q0hc0OM2jwrMpuDauoueFH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jOrk0eRvNeQZ190wvzuAxNvivn6EECPDrXWo2J1XrDjYsPt1/tKAwXi0GM4pLzrT+
-	 tAeBFEWRleWBVhQMt0YngnDp3LCnwCKYcR/2PTK9uKPH3us2Y7PE45Aptyj1x6i+XV
-	 fQ6QZI2SeMXLWqNFNdKuIWFmpraNSX9aINoxt0w4=
+	b=CILSNe192EgyIVu3dbrLzw+Pt23u7SYBWt3TZS92bVk84r80c3NtaU/nU8HioAuld
+	 IRbqQg6YMPC/wse7EsqGrOXXowAEZh0aEG+F6f17dy54A45VJeC7T8b4mBXgRR4b6V
+	 jvfmqEZEH3sFdqJUsCKv8Q/oI1iwUBFOccZ2nLS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+ee2ae68da3b22d04cd8d@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 193/202] nilfs2: fix hang in nilfs_lookup_dirty_data_buffers()
+	syzbot+6b7c68d9c21e4ee4251b@syzkaller.appspotmail.com,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.10 315/379] nfc: nci: free rx_data_reassembly skb on NCI device cleanup
 Date: Wed, 21 Feb 2024 14:08:14 +0100
-Message-ID: <20240221125938.027014186@linuxfoundation.org>
+Message-ID: <20240221130004.250265951@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit 38296afe3c6ee07319e01bb249aa4bb47c07b534 upstream.
+commit bfb007aebe6bff451f7f3a4be19f4f286d0d5d9c upstream.
 
-Syzbot reported a hang issue in migrate_pages_batch() called by mbind()
-and nilfs_lookup_dirty_data_buffers() called in the log writer of nilfs2.
+rx_data_reassembly skb is stored during NCI data exchange for processing
+fragmented packets. It is dropped only when the last fragment is processed
+or when an NTF packet with NCI_OP_RF_DEACTIVATE_NTF opcode is received.
+However, the NCI device may be deallocated before that which leads to skb
+leak.
 
-While migrate_pages_batch() locks a folio and waits for the writeback to
-complete, the log writer thread that should bring the writeback to
-completion picks up the folio being written back in
-nilfs_lookup_dirty_data_buffers() that it calls for subsequent log
-creation and was trying to lock the folio.  Thus causing a deadlock.
+As by design the rx_data_reassembly skb is bound to the NCI device and
+nothing prevents the device to be freed before the skb is processed in
+some way and cleaned, free it on the NCI device cleanup.
 
-In the first place, it is unexpected that folios/pages in the middle of
-writeback will be updated and become dirty.  Nilfs2 adds a checksum to
-verify the validity of the log being written and uses it for recovery at
-mount, so data changes during writeback are suppressed.  Since this is
-broken, an unclean shutdown could potentially cause recovery to fail.
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-Investigation revealed that the root cause is that the wait for writeback
-completion in nilfs_page_mkwrite() is conditional, and if the backing
-device does not require stable writes, data may be modified without
-waiting.
-
-Fix these issues by making nilfs_page_mkwrite() wait for writeback to
-finish regardless of the stable write requirement of the backing device.
-
-Link: https://lkml.kernel.org/r/20240131145657.4209-1-konishi.ryusuke@gmail.com
-Fixes: 1d1d1a767206 ("mm: only enforce stable page writes if the backing device requires it")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+ee2ae68da3b22d04cd8d@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/00000000000047d819061004ad6c@google.com
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+6b7c68d9c21e4ee4251b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/lkml/000000000000f43987060043da7b@google.com/
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/file.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/nfc/nci/core.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/nilfs2/file.c
-+++ b/fs/nilfs2/file.c
-@@ -105,7 +105,13 @@ static vm_fault_t nilfs_page_mkwrite(str
- 	nilfs_transaction_commit(inode->i_sb);
- 
-  mapped:
--	wait_for_stable_page(page);
-+	/*
-+	 * Since checksumming including data blocks is performed to determine
-+	 * the validity of the log to be written and used for recovery, it is
-+	 * necessary to wait for writeback to finish here, regardless of the
-+	 * stable write requirement of the backing device.
-+	 */
-+	wait_on_page_writeback(page);
-  out:
- 	sb_end_pagefault(inode->i_sb);
- 	return block_page_mkwrite_return(ret);
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -1197,6 +1197,10 @@ void nci_free_device(struct nci_dev *nde
+ {
+ 	nfc_free_device(ndev->nfc_dev);
+ 	nci_hci_deallocate(ndev);
++
++	/* drop partial rx data packet if present */
++	if (ndev->rx_data_reassembly)
++		kfree_skb(ndev->rx_data_reassembly);
+ 	kfree(ndev);
+ }
+ EXPORT_SYMBOL(nci_free_device);
 
 
 
