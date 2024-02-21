@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-22335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 761AD85DB85
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:42:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C26F785DE3D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:16:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17957B2541D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:42:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38D721F21C98
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF5E79DD6;
-	Wed, 21 Feb 2024 13:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 750EE7C0BA;
+	Wed, 21 Feb 2024 14:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JOGUF4oq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="02DnsUmo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D78B78B4F;
-	Wed, 21 Feb 2024 13:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3264569317;
+	Wed, 21 Feb 2024 14:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522917; cv=none; b=MMDDBSOn86RQkA2cF0gvWqPFkIYQEWwNgCKtkiGesjAP1MRdq9uanNA8Ef79Ox5d3FyqePQIt6k+eGenL2+BKzO9IJbXnCYNYCWl/Go0CC3VHDm4qmpMcwTf08KhfTckY6u8by4IfdSLzipZM5P9q3ZjTKnsEpNk5FU8Mc3mWPM=
+	t=1708524935; cv=none; b=e5qvft6aGRVbzMztlpFpkRtbfFjiZp5hDyxPzuizHPGhidIy+w/6vsg73WGFAwFXSROr4VxAvwrjsaVP0+vOrha5wOg0PZYU8fY9Z8Nr/90+a3vZLWJnC2VOX2dAwWy1/JwcrCkpKLJNEGJydm+3DxuePHaECj4IIk3uSJdeHbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522917; c=relaxed/simple;
-	bh=OhVyYIJIp+ULses6Iio8NETouSlGCIhWpYy54in5oII=;
+	s=arc-20240116; t=1708524935; c=relaxed/simple;
+	bh=cafeoqCBnSBK5g4FUTP4UoWOjtBoGUf89kcnJmc+sRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TBaKmAhuO2pwrE/4uLllWMVbIS8StWe9+ts2LyB7EsY8nSTmsb7rTrN70wP0Hjlnn4ke4ADs5scD/Q4JZp2ZMJwuu+gkOVP0onuAhTz1UmKxhC0azgVEHh/p+VLlAvNYVs0lutyWPNw1X/yB2j22gMp7ys5CFHExtxPm4ZLod/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JOGUF4oq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C4DC433C7;
-	Wed, 21 Feb 2024 13:41:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AjClTXiuZQsCxv2S0+pTpmHMveOocNtJQGIf+DOMg6D2pw5RT+hmGeepTz7Az7yDDZdG1zp9/EefB/c8s4j5LHrjwL0xZYOSXg5fzAmFcJf4DUW/7kxFQDW+OvtQ/4NFth3V8qlViKLB+F7FTsYxhJ79YIrsyFJ8ALHz3+vFw3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=02DnsUmo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9374DC43390;
+	Wed, 21 Feb 2024 14:15:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522917;
-	bh=OhVyYIJIp+ULses6Iio8NETouSlGCIhWpYy54in5oII=;
+	s=korg; t=1708524935;
+	bh=cafeoqCBnSBK5g4FUTP4UoWOjtBoGUf89kcnJmc+sRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JOGUF4oqaei+jB19wLxtMwTQl4k4Cs2VzUTRhYa/LEzIs6KwNVQEP9UQf5r/b8+6d
-	 TIX14eeI5YM0tvJFLGVDQnbU+CzbB+++SfguTE57B648y5kEkNZARwtqZ4x0l/R+N4
-	 kBjgWegtGWvNBasnNAPIrZfXbzQLnmhFsQaeb53I=
+	b=02DnsUmo8o/16AUdrkTwR+XkCdlXNKHdTyvpSl0Sq1KpkiHBwkc9oQeAcoh3ckQvK
+	 9gszg/DXTPkcKouzdbozi+nYmOFHnKEGsNZtDonoSL1J7trKuXXUGvzpalTd6hrl5h
+	 idHZzDJ3zts28ybOrcr4Ip+KGAg8JVIhKfCKutDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Praveen Kaligineedi <pkaligineedi@google.com>,
-	Bailey Forrest <bcf@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jeroen de Borst <jeroendb@google.com>,
-	Kevin DeCabooter <decabooter@google.com>
-Subject: [PATCH 5.15 291/476] [PATCH 5.15 6.1] gve: Fix use-after-free vulnerability
+	qizhong cheng <qizhong.cheng@mediatek.com>,
+	Jianjun Wang <jianjun.wang@mediatek.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 001/267] PCI: mediatek: Clear interrupt status before dispatching handler
 Date: Wed, 21 Feb 2024 14:05:42 +0100
-Message-ID: <20240221130018.758454764@linuxfoundation.org>
+Message-ID: <20240221125940.106713023@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Praveen Kaligineedi <pkaligineedi@google.com>
+From: qizhong cheng <qizhong.cheng@mediatek.com>
 
-From: Bailey Forrest <bcf@google.com>
+[ Upstream commit 4e11c29873a8a296a20f99b3e03095e65ebf897d ]
 
-Call skb_shinfo() after gve_prep_tso() on DQO TX path.
-gve_prep_tso() calls skb_cow_head(), which may reallocate
-shinfo causing a use after free.
+We found a failure when using the iperf tool during WiFi performance
+testing, where some MSIs were received while clearing the interrupt
+status, and these MSIs cannot be serviced.
 
-This bug was unintentionally fixed by 'a6fb8d5a8b69
-("gve: Tx path for DQO-QPL")' while adding DQO-QPL format
-support in 6.6. That patch is not appropriate for stable releases.
+The interrupt status can be cleared even if the MSI status remains pending.
+As such, given the edge-triggered interrupt type, its status should be
+cleared before being dispatched to the handler of the underling device.
 
-Fixes: a57e5de476be ("gve: DQO: Add TX path")
-Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Signed-off-by: Bailey Forrest <bcf@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jeroen de Borst <jeroendb@google.com>
-Reviewed-by: Kevin DeCabooter <decabooter@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[kwilczynski: commit log, code comment wording]
+Link: https://lore.kernel.org/linux-pci/20231211094923.31967-1-jianjun.wang@mediatek.com
+Fixes: 43e6409db64d ("PCI: mediatek: Add MSI support for MT2712 and MT7622")
+Signed-off-by: qizhong cheng <qizhong.cheng@mediatek.com>
+Signed-off-by: Jianjun Wang <jianjun.wang@mediatek.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+[bhelgaas: rewrap comment]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/google/gve/gve_tx_dqo.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/pci/controller/pcie-mediatek.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-+++ b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-@@ -350,6 +350,7 @@ static void gve_tx_fill_pkt_desc_dqo(str
- /* Validates and prepares `skb` for TSO.
-  *
-  * Returns header length, or < 0 if invalid.
-+ * Warning : Might change skb->head (and thus skb_shinfo).
-  */
- static int gve_prep_tso(struct sk_buff *skb)
- {
-@@ -451,8 +452,8 @@ gve_tx_fill_general_ctx_desc(struct gve_
- static int gve_tx_add_skb_no_copy_dqo(struct gve_tx_ring *tx,
- 				      struct sk_buff *skb)
- {
--	const struct skb_shared_info *shinfo = skb_shinfo(skb);
- 	const bool is_gso = skb_is_gso(skb);
-+	struct skb_shared_info *shinfo;
- 	u32 desc_idx = tx->dqo_tx.tail;
+diff --git a/drivers/pci/controller/pcie-mediatek.c b/drivers/pci/controller/pcie-mediatek.c
+index 728a59655825..ff22bca818f3 100644
+--- a/drivers/pci/controller/pcie-mediatek.c
++++ b/drivers/pci/controller/pcie-mediatek.c
+@@ -623,14 +623,20 @@ static void mtk_pcie_intr_handler(struct irq_desc *desc)
+ 		if (status & MSI_STATUS){
+ 			unsigned long imsi_status;
  
- 	struct gve_tx_pending_packet_dqo *pkt;
-@@ -477,6 +478,8 @@ static int gve_tx_add_skb_no_copy_dqo(st
- 		desc_idx = (desc_idx + 1) & tx->mask;
++			/*
++			 * The interrupt status can be cleared even if the
++			 * MSI status remains pending. As such, given the
++			 * edge-triggered interrupt type, its status should
++			 * be cleared before being dispatched to the
++			 * handler of the underlying device.
++			 */
++			writel(MSI_STATUS, port->base + PCIE_INT_STATUS);
+ 			while ((imsi_status = readl(port->base + PCIE_IMSI_STATUS))) {
+ 				for_each_set_bit(bit, &imsi_status, MTK_MSI_IRQS_NUM) {
+ 					virq = irq_find_mapping(port->inner_domain, bit);
+ 					generic_handle_irq(virq);
+ 				}
+ 			}
+-			/* Clear MSI interrupt status */
+-			writel(MSI_STATUS, port->base + PCIE_INT_STATUS);
+ 		}
  	}
  
-+	/* Must get after gve_prep_tso(), which can change shinfo. */
-+	shinfo = skb_shinfo(skb);
- 	gve_tx_fill_general_ctx_desc(&tx->dqo.tx_ring[desc_idx].general_ctx,
- 				     &metadata);
- 	desc_idx = (desc_idx + 1) & tx->mask;
+-- 
+2.43.0
+
 
 
 
