@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-22502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CF8585DC52
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:52:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E54F985DF42
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:26:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F9BE1C232EC
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:52:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5C171C2133C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:26:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8534A7D414;
-	Wed, 21 Feb 2024 13:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A601F79DAE;
+	Wed, 21 Feb 2024 14:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Frcg588Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rNRMRxPZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771037C6E9;
-	Wed, 21 Feb 2024 13:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653153B287;
+	Wed, 21 Feb 2024 14:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523514; cv=none; b=kd9eWtbHMpECMKpCk9YWSKk2Ae/mrKVjjeXaWnOHD38JbLW7kz2aX5X1JgrgpeTWFr7qO0x/TX5LXrSoXs5srz90MdCmKk06zGJlMlWbaHw5pCZvNJEBU+YLhkJSRBnNxQgqh8m16WeF48JYv4bnh2SZl4mSEl9V+DvN5f7oYBc=
+	t=1708525577; cv=none; b=TSkvBvMnCmtl+t9HnYKgX0Aqm7rxDDKefODUQ954IVO7dwo6NaG2ikYNE//6j3ogwd+EuMB9R2zDh8cajRW4aMEp2plqCmW6EnPIcbTGyxRNE7lTaWz1Id+jTHqtFWHPVP6tTnYqmH1p+AReN3dEitKLReJBTtMSabGZkfdlO5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523514; c=relaxed/simple;
-	bh=d7AT2MkyzzwDRHlleUc3OTLyMgtOm0+NmurXvq+Twxs=;
+	s=arc-20240116; t=1708525577; c=relaxed/simple;
+	bh=vXnxTispsMbJPYakJG9wY3zCWagkmKz3G47BLI4n7Ng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RQWewFh6MnkwUNG70R3i9cTsF6FiPZwteSZXE+LtKJ/fwqnCggy30wtu+XPVJFuI+sPxxQmPdTnHWmpgeL3nkSTTAYTwjZyYmJU2KHqRHASuiLHDKrpfrJIo8UOo9L5oRwvw0puKwTweWM3LemSbwjboM+cj2rUmbeEg4RZMDec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Frcg588Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A03DC43390;
-	Wed, 21 Feb 2024 13:51:52 +0000 (UTC)
+	 MIME-Version; b=eLm767tZsJaQJu9WPoZgjDbOXrkxQ8giEDXHgbmtVCOIFCl3qqz/6A1138DyPM9CGMq5GGrD87Mly9iDo8aVXjv1TutC4NQr6u69Tsf0gr7m3Hwqbmx7FEf6TB0F7ZUgEjGNjAoVLezof0cxZMluigmsH6mRH3gU+/EqAJhWz5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rNRMRxPZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D381C433C7;
+	Wed, 21 Feb 2024 14:26:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523513;
-	bh=d7AT2MkyzzwDRHlleUc3OTLyMgtOm0+NmurXvq+Twxs=;
+	s=korg; t=1708525577;
+	bh=vXnxTispsMbJPYakJG9wY3zCWagkmKz3G47BLI4n7Ng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Frcg588YFkTKv6/69/cuYWLjHA/H9OhO3zpaQcrpITOXP0L4ocEhLdiB4vk9tZPXU
-	 6OCImyqeL4cafKKBYdbsfpETpNvkbXiSq6v2TT5gnEdldw0LX1Yf4cng7+CY9or+t0
-	 WcVb2kOSDEaCs30C0DBQjDGJtX20WSttTfHgwaoE=
+	b=rNRMRxPZDXTO7FXWv5P+zW0Tvzv+HDdyCC0PXWdO6i/yRxyQUq3jdwN8nzr4q2ZHR
+	 GmLOJYFGX59pgyOemCRZaHJY6tEy+1KksGxK0H5bCFY4ZKGnq4nMvnaKHbpm2owFWI
+	 hyS+Vhf5T0LMW6xRl4h2oKc4C3DLbqoL6tpiv38k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Zhipeng Lu <alexious@zju.edu.cn>,
 	Eric Dumazet <edumazet@google.com>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 459/476] net: prevent mss overflow in skb_segment()
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 169/267] net: ipv4: fix a memleak in ip_setup_cork
 Date: Wed, 21 Feb 2024 14:08:30 +0100
-Message-ID: <20240221130025.014102639@linuxfoundation.org>
+Message-ID: <20240221125945.440654326@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-commit 23d05d563b7e7b0314e65c8e882bc27eac2da8e7 upstream.
+[ Upstream commit 5dee6d6923458e26966717f2a3eae7d09fc10bf6 ]
 
-Once again syzbot is able to crash the kernel in skb_segment() [1]
+When inetdev_valid_mtu fails, cork->opt should be freed if it is
+allocated in ip_setup_cork. Otherwise there could be a memleak.
 
-GSO_BY_FRAGS is a forbidden value, but unfortunately the following
-computation in skb_segment() can reach it quite easily :
-
-	mss = mss * partial_segs;
-
-65535 = 3 * 5 * 17 * 257, so many initial values of mss can lead to
-a bad final result.
-
-Make sure to limit segmentation so that the new mss value is smaller
-than GSO_BY_FRAGS.
-
-[1]
-
-general protection fault, probably for non-canonical address 0xdffffc000000000e: 0000 [#1] PREEMPT SMP KASAN
-KASAN: null-ptr-deref in range [0x0000000000000070-0x0000000000000077]
-CPU: 1 PID: 5079 Comm: syz-executor993 Not tainted 6.7.0-rc4-syzkaller-00141-g1ae4cd3cbdd0 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/10/2023
-RIP: 0010:skb_segment+0x181d/0x3f30 net/core/skbuff.c:4551
-Code: 83 e3 02 e9 fb ed ff ff e8 90 68 1c f9 48 8b 84 24 f8 00 00 00 48 8d 78 70 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 04 02 84 c0 74 08 3c 03 0f 8e 8a 21 00 00 48 8b 84 24 f8 00
-RSP: 0018:ffffc900043473d0 EFLAGS: 00010202
-RAX: dffffc0000000000 RBX: 0000000000010046 RCX: ffffffff886b1597
-RDX: 000000000000000e RSI: ffffffff886b2520 RDI: 0000000000000070
-RBP: ffffc90004347578 R08: 0000000000000005 R09: 000000000000ffff
-R10: 000000000000ffff R11: 0000000000000002 R12: ffff888063202ac0
-R13: 0000000000010000 R14: 000000000000ffff R15: 0000000000000046
-FS: 0000555556e7e380(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000020010000 CR3: 0000000027ee2000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-<TASK>
-udp6_ufo_fragment+0xa0e/0xd00 net/ipv6/udp_offload.c:109
-ipv6_gso_segment+0x534/0x17e0 net/ipv6/ip6_offload.c:120
-skb_mac_gso_segment+0x290/0x610 net/core/gso.c:53
-__skb_gso_segment+0x339/0x710 net/core/gso.c:124
-skb_gso_segment include/net/gso.h:83 [inline]
-validate_xmit_skb+0x36c/0xeb0 net/core/dev.c:3626
-__dev_queue_xmit+0x6f3/0x3d60 net/core/dev.c:4338
-dev_queue_xmit include/linux/netdevice.h:3134 [inline]
-packet_xmit+0x257/0x380 net/packet/af_packet.c:276
-packet_snd net/packet/af_packet.c:3087 [inline]
-packet_sendmsg+0x24c6/0x5220 net/packet/af_packet.c:3119
-sock_sendmsg_nosec net/socket.c:730 [inline]
-__sock_sendmsg+0xd5/0x180 net/socket.c:745
-__sys_sendto+0x255/0x340 net/socket.c:2190
-__do_sys_sendto net/socket.c:2202 [inline]
-__se_sys_sendto net/socket.c:2198 [inline]
-__x64_sys_sendto+0xe0/0x1b0 net/socket.c:2198
-do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-do_syscall_64+0x40/0x110 arch/x86/entry/common.c:83
-entry_SYSCALL_64_after_hwframe+0x63/0x6b
-RIP: 0033:0x7f8692032aa9
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 d1 19 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fff8d685418 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f8692032aa9
-RDX: 0000000000010048 RSI: 00000000200000c0 RDI: 0000000000000003
-RBP: 00000000000f4240 R08: 0000000020000540 R09: 0000000000000014
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007fff8d685480
-R13: 0000000000000001 R14: 00007fff8d685480 R15: 0000000000000003
-</TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:skb_segment+0x181d/0x3f30 net/core/skbuff.c:4551
-Code: 83 e3 02 e9 fb ed ff ff e8 90 68 1c f9 48 8b 84 24 f8 00 00 00 48 8d 78 70 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 04 02 84 c0 74 08 3c 03 0f 8e 8a 21 00 00 48 8b 84 24 f8 00
-RSP: 0018:ffffc900043473d0 EFLAGS: 00010202
-RAX: dffffc0000000000 RBX: 0000000000010046 RCX: ffffffff886b1597
-RDX: 000000000000000e RSI: ffffffff886b2520 RDI: 0000000000000070
-RBP: ffffc90004347578 R08: 0000000000000005 R09: 000000000000ffff
-R10: 000000000000ffff R11: 0000000000000002 R12: ffff888063202ac0
-R13: 0000000000010000 R14: 000000000000ffff R15: 0000000000000046
-FS: 0000555556e7e380(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000020010000 CR3: 0000000027ee2000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-
-Fixes: 3953c46c3ac7 ("sk_buff: allow segmenting based on frag sizes")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20231212164621.4131800-1-edumazet@google.com
+Fixes: 501a90c94510 ("inet: protect against too small mtu values.")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240129091017.2938835-1-alexious@zju.edu.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skbuff.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ipv4/ip_output.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -4079,8 +4079,9 @@ struct sk_buff *skb_segment(struct sk_bu
- 		/* GSO partial only requires that we trim off any excess that
- 		 * doesn't fit into an MSS sized block, so take care of that
- 		 * now.
-+		 * Cap len to not accidentally hit GSO_BY_FRAGS.
- 		 */
--		partial_segs = len / mss;
-+		partial_segs = min(len, GSO_BY_FRAGS - 1U) / mss;
- 		if (partial_segs > 1)
- 			mss *= partial_segs;
- 		else
+diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+index 0f70c2dbbe5b..d57d484a929f 100644
+--- a/net/ipv4/ip_output.c
++++ b/net/ipv4/ip_output.c
+@@ -1255,6 +1255,12 @@ static int ip_setup_cork(struct sock *sk, struct inet_cork *cork,
+ 	if (unlikely(!rt))
+ 		return -EFAULT;
+ 
++	cork->fragsize = ip_sk_use_pmtu(sk) ?
++			 dst_mtu(&rt->dst) : READ_ONCE(rt->dst.dev->mtu);
++
++	if (!inetdev_valid_mtu(cork->fragsize))
++		return -ENETUNREACH;
++
+ 	/*
+ 	 * setup for corking.
+ 	 */
+@@ -1271,12 +1277,6 @@ static int ip_setup_cork(struct sock *sk, struct inet_cork *cork,
+ 		cork->addr = ipc->addr;
+ 	}
+ 
+-	cork->fragsize = ip_sk_use_pmtu(sk) ?
+-			 dst_mtu(&rt->dst) : READ_ONCE(rt->dst.dev->mtu);
+-
+-	if (!inetdev_valid_mtu(cork->fragsize))
+-		return -ENETUNREACH;
+-
+ 	cork->gso_size = ipc->gso_size;
+ 
+ 	cork->dst = &rt->dst;
+-- 
+2.43.0
+
 
 
 
