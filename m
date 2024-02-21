@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-22742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AC6A85DD94
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:07:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E48085DBAA
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:44:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4D5F284902
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:07:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F9BB1C23491
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:44:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6F87EF1F;
-	Wed, 21 Feb 2024 14:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4429E78B7C;
+	Wed, 21 Feb 2024 13:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0aNxp7SD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PcIyby3X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6CE7EF14;
-	Wed, 21 Feb 2024 14:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FC01E4B2;
+	Wed, 21 Feb 2024 13:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524365; cv=none; b=JP3dida8XHPhrquENKokAJ2RsXc9nfLS15m9CY1pVWcnXhbrDcAQ2502us6p8a7BDV4GvgR7rkMKs97Nkfhao3EBnMqgl1Kdd1HahZMgt2yoQeFDr9zfKJjmjXPG4P4fTV2Vo/OjuosDA2MFyWKpWIziu30B+O0PaMZVg8P/W4A=
+	t=1708523036; cv=none; b=Szinq7nkIec8Lkl/FKd/aDvU/NcBKrrj+rWUZzmQ/fknKN6wtJ65ZN24oQSqf7Ctro78yXEKi8YgoTBvVn9EV2fgRpaWzsjCvs8siwvkitNHe64oY5HP6tXknQc2ncpIbDyMMUC4NuYi/dLAIW+BLPaBWDIPcVJsaNvtV+CR3mI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524365; c=relaxed/simple;
-	bh=lbkcDwdZIg9h8YDuvPwYB195Upz7NpRIpynMVKmDOAg=;
+	s=arc-20240116; t=1708523036; c=relaxed/simple;
+	bh=DoYrstMneQxsRzIItpXslW2mAGarsUMY0YNRWZaK+34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WrHfed7chEcW5Kf+KnAkNeui5OojobUxmGwrg+SYHG2aWjJLEPLHn9pDjqDGA94apK7BzL6Oi0zF//rmhdDWFjsJAoy/SrlvPYNuEuaGQLDbSmqjT9MjdXiwMLWJp+FyhyD9QSBdpcwl+OdF2z04DhyrQa5A/dpTe25aZpEIG10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0aNxp7SD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49063C433C7;
-	Wed, 21 Feb 2024 14:06:04 +0000 (UTC)
+	 MIME-Version; b=I5eQUUgkhs91dQi0M8KJHok20mDZOE42XbpFQZfGpF4qP2DD2+/9cTnAMHPigRbzcfUNQt7DLh4WlpjILqyZ7efZNUk3oSPd21jTTPZkfDwl9xf/sRyuh2LBbUwbWArwATO5N/xluYdc2UXCuNmnwDF6Xkuvl+2CtB3e3YHVh9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PcIyby3X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18B37C433C7;
+	Wed, 21 Feb 2024 13:43:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524364;
-	bh=lbkcDwdZIg9h8YDuvPwYB195Upz7NpRIpynMVKmDOAg=;
+	s=korg; t=1708523035;
+	bh=DoYrstMneQxsRzIItpXslW2mAGarsUMY0YNRWZaK+34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0aNxp7SDca2RlpBayf27FdwwkPJZyMsc0KZCeJAkSiXPxzAnQwiNbIgypbRXrjU2T
-	 ikcuCDBf/TZhgZEevHytX18izRYXN9UwSjHue0uNzUrqR+WJsPhy+D3z0E0A7sIy8E
-	 pBzxrXYJatJVE0WmRp1WlLmDhbThGIkPkIblg7nA=
+	b=PcIyby3XkdRMT69RDohHhVrOnUqWYGC7OKzRod9FRl8ky55RcA2QB+d1byMy3Ap4D
+	 5PC3xybDRjdlmxfSb4dfAjkYn111jihX3kNFXfqqgdsxQIDBKnQSNMlO7d5yTKQ+VT
+	 MH+jYYZncHoi8fbEGNMTrQ0I9VRQ3xoR2l/51cJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robdclark@chromium.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Roman Li <Roman.Li@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 193/379] drm/msm/dpu: Ratelimit framedone timeout msgs
+Subject: [PATCH 5.15 321/476] drm/amd/display: Implement bounds check for stream encoder creation in DCN301
 Date: Wed, 21 Feb 2024 14:06:12 +0100
-Message-ID: <20240221130000.615793523@linuxfoundation.org>
+Message-ID: <20240221130019.878627648@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +66,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 2b72e50c62de60ad2d6bcd86aa38d4ccbdd633f2 ]
+[ Upstream commit 58fca355ad37dcb5f785d9095db5f748b79c5dc2 ]
 
-When we start getting these, we get a *lot*.  So ratelimit it to not
-flood dmesg.
+'stream_enc_regs' array is an array of dcn10_stream_enc_registers
+structures. The array is initialized with four elements, corresponding
+to the four calls to stream_enc_regs() in the array initializer. This
+means that valid indices for this array are 0, 1, 2, and 3.
 
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
-Patchwork: https://patchwork.freedesktop.org/patch/571584/
-Link: https://lore.kernel.org/r/20231211182000.218088-1-robdclark@gmail.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+The error message 'stream_enc_regs' 4 <= 5 below, is indicating that
+there is an attempt to access this array with an index of 5, which is
+out of bounds. This could lead to undefined behavior
+
+Here, eng_id is used as an index to access the stream_enc_regs array. If
+eng_id is 5, this would result in an out-of-bounds access on the
+stream_enc_regs array.
+
+Thus fixing Buffer overflow error in dcn301_stream_encoder_create
+reported by Smatch:
+drivers/gpu/drm/amd/amdgpu/../display/dc/resource/dcn301/dcn301_resource.c:1011 dcn301_stream_encoder_create() error: buffer overflow 'stream_enc_regs' 4 <= 5
+
+Fixes: 3a83e4e64bb1 ("drm/amd/display: Add dcn3.01 support to DC (v2)")
+Cc: Roman Li <Roman.Li@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Roman Li <roman.li@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 5 ++++-
- drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h     | 1 +
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dcn301/dcn301_resource.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-index 408fc6c8a6df..44033a639419 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-@@ -45,6 +45,9 @@
- 		(p) ? ((p)->hw_pp ? (p)->hw_pp->idx - PINGPONG_0 : -1) : -1, \
- 		##__VA_ARGS__)
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_resource.c b/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_resource.c
+index b6c363b462a7..a24f1c215da9 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_resource.c
+@@ -1195,7 +1195,7 @@ struct stream_encoder *dcn301_stream_encoder_create(
+ 	vpg = dcn301_vpg_create(ctx, vpg_inst);
+ 	afmt = dcn301_afmt_create(ctx, afmt_inst);
  
-+#define DPU_ERROR_ENC_RATELIMITED(e, fmt, ...) DPU_ERROR_RATELIMITED("enc%d " fmt,\
-+		(e) ? (e)->base.base.id : -1, ##__VA_ARGS__)
-+
- /*
-  * Two to anticipate panels that can do cmd/vid dynamic switching
-  * plan is to create all possible physical encoder types, and switch between
-@@ -2135,7 +2138,7 @@ static void dpu_encoder_frame_done_timeout(struct timer_list *t)
- 		return;
- 	}
- 
--	DPU_ERROR_ENC(dpu_enc, "frame done timeout\n");
-+	DPU_ERROR_ENC_RATELIMITED(dpu_enc, "frame done timeout\n");
- 
- 	event = DPU_ENCODER_FRAME_EVENT_ERROR;
- 	trace_dpu_enc_frame_done_timeout(DRMID(drm_enc), event);
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
-index 1c0e4c0c9ffb..bb7c7e437242 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
-@@ -52,6 +52,7 @@
- 	} while (0)
- 
- #define DPU_ERROR(fmt, ...) pr_err("[dpu error]" fmt, ##__VA_ARGS__)
-+#define DPU_ERROR_RATELIMITED(fmt, ...) pr_err_ratelimited("[dpu error]" fmt, ##__VA_ARGS__)
- 
- /**
-  * ktime_compare_safe - compare two ktime structures
+-	if (!enc1 || !vpg || !afmt) {
++	if (!enc1 || !vpg || !afmt || eng_id >= ARRAY_SIZE(stream_enc_regs)) {
+ 		kfree(enc1);
+ 		kfree(vpg);
+ 		kfree(afmt);
 -- 
 2.43.0
 
