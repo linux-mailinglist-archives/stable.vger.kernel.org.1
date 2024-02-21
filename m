@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B43D85DCA3
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:55:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBE7085DAE8
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:35:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7946228209F
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:55:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 211331C21831
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:35:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 308C67BAE5;
-	Wed, 21 Feb 2024 13:55:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB7297BAF7;
+	Wed, 21 Feb 2024 13:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CdkOwIwe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qksXCaGU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16097BB10;
-	Wed, 21 Feb 2024 13:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892804D5BA;
+	Wed, 21 Feb 2024 13:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523744; cv=none; b=adpXl4XA0TRJ3HJmthVGORHCDgTnRQ2kmnLFkutQu1NZbzvwSYuIqjQ3xKoO/JBLm2br0lySh0M05WWP8ZYUFPwo7NPt/aSl3CuwT2969EylpSoPJbwrjiW9JfUT3JcaTn94dKKMrQvZmvzGXZgJ37a1WspSgWomGY9Ir3bwXNc=
+	t=1708522485; cv=none; b=Q6PCf5aVp0JMVFmypWVN4ywGIGcZBXg4J1comVHVSYRDJCBSB3uf2ni8A6TzGztZekwQHS2zh/YRkeKXbdscEHVs3fya5WImQB7kA7WUIF7tzm4DfKPJnV/zKAUlOWzZWhoHMikI77cTl3gwYfRLmg/KIzNdbFlAP2uqLA01Des=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523744; c=relaxed/simple;
-	bh=x8dH9IAqoyq/5gUcg3UYfZenAPH/y3uyoZtJTEzD7tg=;
+	s=arc-20240116; t=1708522485; c=relaxed/simple;
+	bh=FoHFFSIlLMJz5FCSqqz9WWwPiAMYpoI8HGSw9k97TDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G7MOo4KDiDzpP/YD5DXFljhEBUUks3xqag/Fe+Af9k/9yqi4dWIur6rOnW880GbjwQpO/nri6CQINl+EEKfk8HaihKbJnqviaVJ6EmzB62ylMIHomc8CneNU0dZUa/uEjrbTpg796SvtQBP+Sfo2VaoIKpReZBp/V4lGtFIRLJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CdkOwIwe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32A7FC433C7;
-	Wed, 21 Feb 2024 13:55:43 +0000 (UTC)
+	 MIME-Version; b=W0CVrPab82gA65SAen9/O8mwLooj+Su4oWdFDeFRHftu4+3/p6qSXnY7XuHuMiLwcclmQbozU8avEGIggKpnyFNHPHPUXstFj7vY6xxsPFmmHKj5JJeB8Uv6lE7aSLDR3vfrNObC99sjKwaKGUeb86aIo1Z/tgHO0PWip3JH1B8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qksXCaGU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC28DC433F1;
+	Wed, 21 Feb 2024 13:34:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523744;
-	bh=x8dH9IAqoyq/5gUcg3UYfZenAPH/y3uyoZtJTEzD7tg=;
+	s=korg; t=1708522485;
+	bh=FoHFFSIlLMJz5FCSqqz9WWwPiAMYpoI8HGSw9k97TDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CdkOwIwehubGLdWzlIBfbr6DN5HOy0zgaDfG+gtxo0w2hOmkmK0OlOe1AANM9rhM4
-	 G8q/b83Yk6BX3dPE1IooKVGvbfr/gq4svtuBoSSJJgT+gh4RoZymKC4h41IOgB/Obb
-	 d9yHUbJ4muxQXPca1V43n0p7U7bkCwldDuhp82/o=
+	b=qksXCaGUwyHCeUGY2Dzn8vAAvDRdY+Lm+Lt9Hm7d7SUEAtxNQ5eou5JXxfImb9NFb
+	 Ofi3hAcuHH5zB6FODedYOejyWVIQ9I+NQiPgK5yC/UZSpdMN1M4HhAOK+w6jnvLWl5
+	 Ub2C+jWWIp+jATQRzMgwoY4GUkHHvFRpKPowmYrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lin Ma <linma@zju.edu.cn>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 045/379] vlan: skip nested type that is not IFLA_VLAN_QOS_MAPPING
-Date: Wed, 21 Feb 2024 14:03:44 +0100
-Message-ID: <20240221125956.250648160@linuxfoundation.org>
+Subject: [PATCH 5.15 174/476] ARM: dts: imx7s: Fix lcdif compatible
+Date: Wed, 21 Feb 2024 14:03:45 +0100
+Message-ID: <20240221130014.343175265@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 6c21660fe221a15c789dee2bc2fd95516bc5aeaf ]
+[ Upstream commit 5f55da4cc37051cda600ea870ce8cf29f1297715 ]
 
-In the vlan_changelink function, a loop is used to parse the nested
-attributes IFLA_VLAN_EGRESS_QOS and IFLA_VLAN_INGRESS_QOS in order to
-obtain the struct ifla_vlan_qos_mapping. These two nested attributes are
-checked in the vlan_validate_qos_map function, which calls
-nla_validate_nested_deprecated with the vlan_map_policy.
+imx7d-lcdif is compatible to imx6sx-lcdif. MXSFB_V6 supports overlay
+by using LCDC_AS_CTRL register. This registers used by overlay plane:
+* LCDC_AS_CTRL
+* LCDC_AS_BUF
+* LCDC_AS_NEXT_BUF
+are listed in i.MX7D RM as well.
 
-However, this deprecated validator applies a LIBERAL strictness, allowing
-the presence of an attribute with the type IFLA_VLAN_QOS_UNSPEC.
-Consequently, the loop in vlan_changelink may parse an attribute of type
-IFLA_VLAN_QOS_UNSPEC and believe it carries a payload of
-struct ifla_vlan_qos_mapping, which is not necessarily true.
-
-To address this issue and ensure compatibility, this patch introduces two
-type checks that skip attributes whose type is not IFLA_VLAN_QOS_MAPPING.
-
-Fixes: 07b5b17e157b ("[VLAN]: Use rtnl_link API")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240118130306.1644001-1-linma@zju.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/8021q/vlan_netlink.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm/boot/dts/imx7s.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/8021q/vlan_netlink.c b/net/8021q/vlan_netlink.c
-index 0db85aeb119b..99b277775257 100644
---- a/net/8021q/vlan_netlink.c
-+++ b/net/8021q/vlan_netlink.c
-@@ -118,12 +118,16 @@ static int vlan_changelink(struct net_device *dev, struct nlattr *tb[],
- 	}
- 	if (data[IFLA_VLAN_INGRESS_QOS]) {
- 		nla_for_each_nested(attr, data[IFLA_VLAN_INGRESS_QOS], rem) {
-+			if (nla_type(attr) != IFLA_VLAN_QOS_MAPPING)
-+				continue;
- 			m = nla_data(attr);
- 			vlan_dev_set_ingress_priority(dev, m->to, m->from);
- 		}
- 	}
- 	if (data[IFLA_VLAN_EGRESS_QOS]) {
- 		nla_for_each_nested(attr, data[IFLA_VLAN_EGRESS_QOS], rem) {
-+			if (nla_type(attr) != IFLA_VLAN_QOS_MAPPING)
-+				continue;
- 			m = nla_data(attr);
- 			err = vlan_dev_set_egress_priority(dev, m->from, m->to);
- 			if (err)
+diff --git a/arch/arm/boot/dts/imx7s.dtsi b/arch/arm/boot/dts/imx7s.dtsi
+index 6cdaaacd9e36..35ee179e5ae3 100644
+--- a/arch/arm/boot/dts/imx7s.dtsi
++++ b/arch/arm/boot/dts/imx7s.dtsi
+@@ -802,7 +802,7 @@
+ 			};
+ 
+ 			lcdif: lcdif@30730000 {
+-				compatible = "fsl,imx7d-lcdif", "fsl,imx28-lcdif";
++				compatible = "fsl,imx7d-lcdif", "fsl,imx6sx-lcdif";
+ 				reg = <0x30730000 0x10000>;
+ 				interrupts = <GIC_SPI 5 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks IMX7D_LCDIF_PIXEL_ROOT_CLK>,
 -- 
 2.43.0
 
