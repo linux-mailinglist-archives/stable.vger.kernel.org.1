@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-21980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 449EA85D97E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0B3385DF2A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:25:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA2CE1F21508
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:19:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F2FEB2B84A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12EA06EB77;
-	Wed, 21 Feb 2024 13:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14FD7D3F4;
+	Wed, 21 Feb 2024 14:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EsZha+Vv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uV80StZc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C295469E08;
-	Wed, 21 Feb 2024 13:19:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4357776037;
+	Wed, 21 Feb 2024 14:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521554; cv=none; b=DKAF7DPgWs8yfo1/qn5Z5OYz3Tflu8jyRDfg7s0lGWyian5HLGkkt/e5Ym1fPff5tgc0JvGNWzuO+YwA1b3KRX9Cc5PWz0UP1ptq2/S9mQ6v4CSILiTxqgYXzdCXWl3X1VBA/VIjN5Hji6wtcoC0fBk6Gy3eQ28BPbDOc61hNhU=
+	t=1708525243; cv=none; b=Rf3u6RII1vwakvLUFaslHyNKiDNuxLoAGV7iVea+KhIPA5Q2jPZ3yEBgdFbgKEpOGj3EH6aW8FmvirvMXHdHYBoIshwDNM9zFx+Ikj/+iZDzucWFLk2mfbMzbLbjwXj9ggbWhrU+mfjTlD3FSOBur65exCM7GQ9tKknYdqRlsbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521554; c=relaxed/simple;
-	bh=6+7JFT1hY/tG1cYKPQg1ZRHR/T1os9rmurpBubH79tk=;
+	s=arc-20240116; t=1708525243; c=relaxed/simple;
+	bh=yPxsJpA8xvqLMFGJf9lkQsWHLreNuqwJ/MwxUpOEZgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=evO94w956I/DVWmYRU36GBjLlFfjo1P4EEfzcORad4CzrxmTTnq6RtFwDNe86jjJ4iLKtuXIHw/PVzvsNWGhtIr9aaQAFT4l1YkCiDpX/J+rMOXXqKxmR9thJ+DgPfSR8hwA9WFQtDLiGOadhjnpJnL2NF/FOoOWfTZR2N+B7Oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EsZha+Vv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0FFBC433F1;
-	Wed, 21 Feb 2024 13:19:13 +0000 (UTC)
+	 MIME-Version; b=nLbxRwV8Nb5mUP3QvXNKoB+O9FRWyqpXdal7ZojORIU7EE4ONtcL4yyvGH2cuqtwnFSpQvhVZBXwJJlJSK8llwN1P/iKz5P0mhNIx/IaFar1iBORI5XGabh+1hcBAiznhctz+R+AC02dmbTR5kW1beLxW31TkhZ2KVwT7eFBciM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uV80StZc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E0FC433C7;
+	Wed, 21 Feb 2024 14:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521554;
-	bh=6+7JFT1hY/tG1cYKPQg1ZRHR/T1os9rmurpBubH79tk=;
+	s=korg; t=1708525241;
+	bh=yPxsJpA8xvqLMFGJf9lkQsWHLreNuqwJ/MwxUpOEZgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EsZha+VvnQ6yrykEJafUdjQyT9U/KmsTHvYd/g90UMvteHNuP6kMSLHlmoLdiv/AT
-	 efn076VF18eZJEEA3HJQ4H5fILeMu/RIxSZYsYrMQX44mM6AHBX6QvvWWm+RXxzbkU
-	 gRRU3rToWjqtUDEc4i1UZDCdCsx0iKQNLjI0pqhg=
+	b=uV80StZcmorJjyyMwvamadysc9CyFKZwocVv20kt4g7iqaViFZT+yayYi6jrx6l1Y
+	 htS3pU1gCzgb45kSew7lkPMRZzmH8SXYzvx/a37IUFWmcqDGNWx4+sKKs0HB6nlUhb
+	 myZzpTRiWQ5ZPHDJajq1VzscSPGVH+wlG3VXnVHo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aric Cyr <aric.cyr@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Josip Pavic <josip.pavic@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	syzbot+39ba34a099ac2e9bd3cb@syzkaller.appspotmail.com,
+	Osama Muhammad <osmtendev@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 113/202] drm/amd/display: make flip_timestamp_in_us a 64-bit variable
+Subject: [PATCH 5.4 073/267] FS:JFS:UBSAN:array-index-out-of-bounds in dbAdjTree
 Date: Wed, 21 Feb 2024 14:06:54 +0100
-Message-ID: <20240221125935.391317308@linuxfoundation.org>
+Message-ID: <20240221125942.271909258@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josip Pavic <josip.pavic@amd.com>
+From: Osama Muhammad <osmtendev@gmail.com>
 
-[ Upstream commit 6fb12518ca58412dc51054e2a7400afb41328d85 ]
+[ Upstream commit 9862ec7ac1cbc6eb5ee4a045b5d5b8edbb2f7e68 ]
 
-[Why]
-This variable currently overflows after about 71 minutes. This doesn't
-cause any known functional issues but it does make debugging more
-difficult.
+Syzkaller reported the following issue:
 
-[How]
-Make it a 64-bit variable.
+UBSAN: array-index-out-of-bounds in fs/jfs/jfs_dmap.c:2867:6
+index 196694 is out of range for type 's8[1365]' (aka 'signed char[1365]')
+CPU: 1 PID: 109 Comm: jfsCommit Not tainted 6.6.0-rc3-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/04/2023
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x1e7/0x2d0 lib/dump_stack.c:106
+ ubsan_epilogue lib/ubsan.c:217 [inline]
+ __ubsan_handle_out_of_bounds+0x11c/0x150 lib/ubsan.c:348
+ dbAdjTree+0x474/0x4f0 fs/jfs/jfs_dmap.c:2867
+ dbJoin+0x210/0x2d0 fs/jfs/jfs_dmap.c:2834
+ dbFreeBits+0x4eb/0xda0 fs/jfs/jfs_dmap.c:2331
+ dbFreeDmap fs/jfs/jfs_dmap.c:2080 [inline]
+ dbFree+0x343/0x650 fs/jfs/jfs_dmap.c:402
+ txFreeMap+0x798/0xd50 fs/jfs/jfs_txnmgr.c:2534
+ txUpdateMap+0x342/0x9e0
+ txLazyCommit fs/jfs/jfs_txnmgr.c:2664 [inline]
+ jfs_lazycommit+0x47a/0xb70 fs/jfs/jfs_txnmgr.c:2732
+ kthread+0x2d3/0x370 kernel/kthread.c:388
+ ret_from_fork+0x48/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
+ </TASK>
+================================================================================
+Kernel panic - not syncing: UBSAN: panic_on_warn set ...
+CPU: 1 PID: 109 Comm: jfsCommit Not tainted 6.6.0-rc3-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/04/2023
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x1e7/0x2d0 lib/dump_stack.c:106
+ panic+0x30f/0x770 kernel/panic.c:340
+ check_panic_on_warn+0x82/0xa0 kernel/panic.c:236
+ ubsan_epilogue lib/ubsan.c:223 [inline]
+ __ubsan_handle_out_of_bounds+0x13c/0x150 lib/ubsan.c:348
+ dbAdjTree+0x474/0x4f0 fs/jfs/jfs_dmap.c:2867
+ dbJoin+0x210/0x2d0 fs/jfs/jfs_dmap.c:2834
+ dbFreeBits+0x4eb/0xda0 fs/jfs/jfs_dmap.c:2331
+ dbFreeDmap fs/jfs/jfs_dmap.c:2080 [inline]
+ dbFree+0x343/0x650 fs/jfs/jfs_dmap.c:402
+ txFreeMap+0x798/0xd50 fs/jfs/jfs_txnmgr.c:2534
+ txUpdateMap+0x342/0x9e0
+ txLazyCommit fs/jfs/jfs_txnmgr.c:2664 [inline]
+ jfs_lazycommit+0x47a/0xb70 fs/jfs/jfs_txnmgr.c:2732
+ kthread+0x2d3/0x370 kernel/kthread.c:388
+ ret_from_fork+0x48/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
+ </TASK>
+Kernel Offset: disabled
+Rebooting in 86400 seconds..
 
-Reviewed-by: Aric Cyr <aric.cyr@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Josip Pavic <josip.pavic@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The issue is caused when the value of lp becomes greater than
+CTLTREESIZE which is the max size of stree. Adding a simple check
+solves this issue.
+
+Dave:
+As the function returns a void, good error handling
+would require a more intrusive code reorganization, so I modified
+Osama's patch at use WARN_ON_ONCE for lack of a cleaner option.
+
+The patch is tested via syzbot.
+
+Reported-by: syzbot+39ba34a099ac2e9bd3cb@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=39ba34a099ac2e9bd3cb
+Signed-off-by: Osama Muhammad <osmtendev@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dc_hw_types.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/jfs/jfs_dmap.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dc_hw_types.h b/drivers/gpu/drm/amd/display/dc/dc_hw_types.h
-index b789cb2b354b..c96ff10365d2 100644
---- a/drivers/gpu/drm/amd/display/dc/dc_hw_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc_hw_types.h
-@@ -357,7 +357,7 @@ union dc_tiling_info {
- 	} gfx8;
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index ea330ce921b1..e8c1f3738c39 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -2935,6 +2935,9 @@ static void dbAdjTree(dmtree_t * tp, int leafno, int newval)
+ 	/* is the current value the same as the old value ?  if so,
+ 	 * there is nothing to do.
+ 	 */
++	if (WARN_ON_ONCE(lp >= CTLTREESIZE))
++		return;
++
+ 	if (tp->dmt_stree[lp] == newval)
+ 		return;
  
- 	struct {
--		unsigned int num_pipes;
-+		unsigned long long num_pipes;
- 		unsigned int num_banks;
- 		unsigned int pipe_interleave;
- 		unsigned int num_shader_engines;
 -- 
 2.43.0
 
