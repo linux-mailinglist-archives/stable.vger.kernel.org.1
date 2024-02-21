@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-22276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33F7085DB35
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:38:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A75ED85DCED
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:59:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C68341F2398E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:38:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 478B61F223F0
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:59:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8576F7BAF6;
-	Wed, 21 Feb 2024 13:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73FAA7C089;
+	Wed, 21 Feb 2024 13:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FbSLl+wy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kMy8rZox"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C19C79DAE;
-	Wed, 21 Feb 2024 13:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F15B7BB16;
+	Wed, 21 Feb 2024 13:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522691; cv=none; b=J/OMaQFFSOc7qf84kK07vGgAN0xYzGnoEZsU3BgZM1SjNKkiHGd+B4MPfX3na/BY7U4lFo5jAUj91mRIciUvqS3oN4rVukroigo+JnmsyWfxEEhSZpU9PJxYLjGyZ5lznC8mLJXZvhCMtwQu+uWz+JVIxf/1su1GrM7Mm5EQAv0=
+	t=1708523961; cv=none; b=bXCxuU4fQO09HwmFp3Zp2eA49W+tgcalPlmdAP9wBlOgfVjhf95myzicy4ctyRbjwsl3+4PLkCf9ltQ8dTkN46gOiYQpDZtasUjIKNiWmE4Vn5bBtlZL/l6+JPXFVk8EZmdPDK3esLjc82zCD6DrAKzDW34VsMvojMMuBF03Ldk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522691; c=relaxed/simple;
-	bh=r9pwTylsLMakuzZMrdD8R5LY+q468eQDG5Kx8EL3SKw=;
+	s=arc-20240116; t=1708523961; c=relaxed/simple;
+	bh=HlngtkI1J5OCUkhIgGLQ1mzjETONitHHu2Seis6pUuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PhcMRWNpknIPeOJoBjcRFgQBJIY2oJYLzeJJOs0Q9oQxN7K58iaf9t+kGx8w3HGmpZa/YZlAAeXUwtYr/jFHzDnv3iltPxaNzGDn1dBUGAK6M6lYnLOQRoOeZ86oe7g9osILi229z14/5jVf30RbTFhD3RieC7KfE5S8YZuS6pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FbSLl+wy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A80ADC433F1;
-	Wed, 21 Feb 2024 13:38:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lkMXstJRI8QCmoZqSxFjngDYUPmdTeBpLc5o8Iv2D2YSChl8HOoSOsrne8wNnCJwGceMbFsinVNigVoZ19ReFqONbwS9dk9c6Y+kF31HUA2kKe2sZaB8+9opmVafGiEZDMrz9WIa1cQXowUzJyASp6+vy1myobVRnqKUY3R7Hmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kMy8rZox; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE62C433F1;
+	Wed, 21 Feb 2024 13:59:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522691;
-	bh=r9pwTylsLMakuzZMrdD8R5LY+q468eQDG5Kx8EL3SKw=;
+	s=korg; t=1708523961;
+	bh=HlngtkI1J5OCUkhIgGLQ1mzjETONitHHu2Seis6pUuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FbSLl+wyi/QB7N7kchx7IZsMMzgMznjKIzp0/2XmWY47LhPt/OnoCaCVjNIJbXNek
-	 sTBeQ3eqOpl+6dpLBfnD75na462oQFaSdxQaqdTIM5W0ISuBi1qffhDrzOEhfQLGZO
-	 2BRUN+Cr99HHMrAKIkqp13b5BeF4OAmSWnwFG0OM=
+	b=kMy8rZoxpEnvc+9BUmXLbHSL2nuH/iTc/H9WuQ0axgAF7gi/WNLhzhzXXhmtutLDf
+	 49skQiPpwsqlJYJyLEuIfPlLbKNrgKXTScmZUtZh5JxLZUKW8FaXBMV+OPJMgKZ+NJ
+	 5T4+Uesk0JVPXDDYFIn72yPstSYJKOYqROAhTMac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 232/476] clk: mmp: pxa168: Fix memory leak in pxa168_clk_init()
+Subject: [PATCH 5.10 104/379] powerpc/mm: Fix build failures due to arch_reserved_kernel_pages()
 Date: Wed, 21 Feb 2024 14:04:43 +0100
-Message-ID: <20240221130016.464331179@linuxfoundation.org>
+Message-ID: <20240221125957.995067824@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +59,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 2fbabea626b6467eb4e6c4cb7a16523da12e43b4 ]
+[ Upstream commit d8c3f243d4db24675b653f0568bb65dae34e6455 ]
 
-In cases where mapping of mpmu/apmu/apbc registers fails, the code path
-does not handle the failure gracefully, potentially leading to a memory
-leak. This fix ensures proper cleanup by freeing the allocated memory
-for 'pxa_unit' before returning.
+With NUMA=n and FA_DUMP=y or PRESERVE_FA_DUMP=y the build fails with:
 
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Link: https://lore.kernel.org/r/20231210175232.3414584-1-visitorckw@gmail.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+  arch/powerpc/kernel/fadump.c:1739:22: error: no previous prototype for ‘arch_reserved_kernel_pages’ [-Werror=missing-prototypes]
+  1739 | unsigned long __init arch_reserved_kernel_pages(void)
+       |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The prototype for arch_reserved_kernel_pages() is in include/linux/mm.h,
+but it's guarded by __HAVE_ARCH_RESERVED_KERNEL_PAGES. The powerpc
+headers define __HAVE_ARCH_RESERVED_KERNEL_PAGES in asm/mmzone.h, which
+is not included into the generic headers when NUMA=n.
+
+Move the definition of __HAVE_ARCH_RESERVED_KERNEL_PAGES into asm/mmu.h
+which is included regardless of NUMA=n.
+
+Additionally the ifdef around __HAVE_ARCH_RESERVED_KERNEL_PAGES needs to
+also check for CONFIG_PRESERVE_FA_DUMP.
+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231130114433.3053544-1-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mmp/clk-of-pxa168.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/powerpc/include/asm/mmu.h    | 4 ++++
+ arch/powerpc/include/asm/mmzone.h | 3 ---
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/mmp/clk-of-pxa168.c b/drivers/clk/mmp/clk-of-pxa168.c
-index f110c02e83cb..9674c6c06dca 100644
---- a/drivers/clk/mmp/clk-of-pxa168.c
-+++ b/drivers/clk/mmp/clk-of-pxa168.c
-@@ -258,18 +258,21 @@ static void __init pxa168_clk_init(struct device_node *np)
- 	pxa_unit->mpmu_base = of_iomap(np, 0);
- 	if (!pxa_unit->mpmu_base) {
- 		pr_err("failed to map mpmu registers\n");
-+		kfree(pxa_unit);
- 		return;
- 	}
+diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mmu.h
+index 255a1837e9f7..3a5a27318a0e 100644
+--- a/arch/powerpc/include/asm/mmu.h
++++ b/arch/powerpc/include/asm/mmu.h
+@@ -390,5 +390,9 @@ extern void *abatron_pteptrs[2];
+ #include <asm/nohash/mmu.h>
+ #endif
  
- 	pxa_unit->apmu_base = of_iomap(np, 1);
- 	if (!pxa_unit->apmu_base) {
- 		pr_err("failed to map apmu registers\n");
-+		kfree(pxa_unit);
- 		return;
- 	}
++#if defined(CONFIG_FA_DUMP) || defined(CONFIG_PRESERVE_FA_DUMP)
++#define __HAVE_ARCH_RESERVED_KERNEL_PAGES
++#endif
++
+ #endif /* __KERNEL__ */
+ #endif /* _ASM_POWERPC_MMU_H_ */
+diff --git a/arch/powerpc/include/asm/mmzone.h b/arch/powerpc/include/asm/mmzone.h
+index 6cda76b57c5d..bd1a8d7256ff 100644
+--- a/arch/powerpc/include/asm/mmzone.h
++++ b/arch/powerpc/include/asm/mmzone.h
+@@ -42,9 +42,6 @@ u64 memory_hotplug_max(void);
+ #else
+ #define memory_hotplug_max() memblock_end_of_DRAM()
+ #endif /* CONFIG_NEED_MULTIPLE_NODES */
+-#ifdef CONFIG_FA_DUMP
+-#define __HAVE_ARCH_RESERVED_KERNEL_PAGES
+-#endif
  
- 	pxa_unit->apbc_base = of_iomap(np, 2);
- 	if (!pxa_unit->apbc_base) {
- 		pr_err("failed to map apbc registers\n");
-+		kfree(pxa_unit);
- 		return;
- 	}
- 
+ #ifdef CONFIG_MEMORY_HOTPLUG
+ extern int create_section_mapping(unsigned long start, unsigned long end,
 -- 
 2.43.0
 
