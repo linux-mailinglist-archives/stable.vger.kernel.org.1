@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-23040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49CD085DEF2
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:23:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18CC785D98F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C1DC1C23C96
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2D3C1F228C7
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:20:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF037C097;
-	Wed, 21 Feb 2024 14:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0B697BB18;
+	Wed, 21 Feb 2024 13:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGzYXH0o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PMHaLnEk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323587BB01;
-	Wed, 21 Feb 2024 14:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B066A7BB12;
+	Wed, 21 Feb 2024 13:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525379; cv=none; b=H6wJwFtc29b9obtz+kIK3WP8VnkVUrq+XcP7igCcdoVdVXHEHqsKuTGKuyPWXNo25rrPMWFw1k1ZK8kaHFpq1DBg/e6mK/Mf8Low8KLk6wGFMSJCk+55UZgGuf+OKFVNMZKgaVqXga2GwlNOxLrCNgxWJeBa2SHFKcWeBUsZpcM=
+	t=1708521579; cv=none; b=TBcvMvzHxqCfDgOTIzQfrOSIH+LRJCr750CXJ/sFLtndoRJ5IShbGid648VfunObhMJwTeg8Zc8MIu+yaxdIQZJm934MXyPftIzAe9sDGrVsVWgAozsmR/aA5V1AZ1LZCqZ1Ja5WhNHfWIiff0iZwvLvV7MjMluJu4MKqUWbenM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525379; c=relaxed/simple;
-	bh=PAu5+3hhDe1/2UPNAi4IcEVKEzcdwfeAlwAaIa7YCaU=;
+	s=arc-20240116; t=1708521579; c=relaxed/simple;
+	bh=Ih0qyMy0n6m6BdzQ8sd7zz2Z/9jrsC9wa9wGvFjIVaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eJJTp/ZXp85pn8ueiPfHeQ6/wZ3ZY7ctIm2hhG48tpHHPlA7bJl/caq6fRitS6VG7lRcxnqTbXDmaS9hCpdqNXUUyt2YjqSZH93wmnTeSeD6OKttirn1Vd3TTvmdTu8saXgTp8CZNU5lIwCjmniRAqeeeoy4LxszCKxtCCKiOkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eGzYXH0o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8755C433C7;
-	Wed, 21 Feb 2024 14:22:58 +0000 (UTC)
+	 MIME-Version; b=htyy8KS341WRluCowP/3pjJnGX521sRTnKEObN5tCiUx/Ru41eRemkPcn3v0FklGe8jeeoIGmaOzlLgZM1C75YrofuoWl8LVoYCGgCcOx3fzKjiklAByHm7Xs28SPGB8q49CXxypBrbvocl+U2l+0SePwDDThutiwB+1WcTniAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PMHaLnEk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E9DCC433F1;
+	Wed, 21 Feb 2024 13:19:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525379;
-	bh=PAu5+3hhDe1/2UPNAi4IcEVKEzcdwfeAlwAaIa7YCaU=;
+	s=korg; t=1708521579;
+	bh=Ih0qyMy0n6m6BdzQ8sd7zz2Z/9jrsC9wa9wGvFjIVaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eGzYXH0ofmR7vPwiMDAkTgUpZicG49u2YrDuFbz/lZtQhd5DRzTuEfHkX+8/P/ziT
-	 Z2139oqMx8AL9GusewvwynUEtkHKNFHfrzaclELCGsvoZ2MzCAd2OqTtj5jfT1LSU/
-	 8vPpgPdKHNTL72EUkF3yF91/MfO5t3FL2/rOdAok=
+	b=PMHaLnEkSWGw7le+H4+I9nHuCT/+zcKgJtmLRP9xn6ezXY6OOwmsqE0caCSQ6FdfX
+	 WXmrQAElzNoxC0yUVvfDNl7o52C9oaAGC9PhvlzmoesXBwbWKggDRxAXS7Ao9+Ho+W
+	 On5H3AP5Obho0lGomnhdhk7g3en6DJcnbJdt/kzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 110/267] ARM: dts: imx27-apf27dev: Fix LED name
+Subject: [PATCH 4.19 150/202] hwmon: (coretemp) Fix out-of-bounds memory access
 Date: Wed, 21 Feb 2024 14:07:31 +0100
-Message-ID: <20240221125943.409746462@linuxfoundation.org>
+Message-ID: <20240221125936.546066126@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Zhang Rui <rui.zhang@intel.com>
 
-[ Upstream commit dc35e253d032b959d92e12f081db5b00db26ae64 ]
+[ Upstream commit 4e440abc894585a34c2904a32cd54af1742311b3 ]
 
-Per leds-gpio.yaml, the led names should start with 'led'.
+Fix a bug that pdata->cpu_map[] is set before out-of-bounds check.
+The problem might be triggered on systems with more than 128 cores per
+package.
 
-Change it to fix the following dt-schema warning:
-
-imx27-apf27dev.dtb: leds: 'user' does not match any of the regexes: '(^led-[0-9a-f]$|led)', 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/leds/leds-gpio.yaml#
-
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 7108b80a542b ("hwmon/coretemp: Handle large core ID value")
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240202092144.71180-2-rui.zhang@intel.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Stable-dep-of: fdaf0c8629d4 ("hwmon: (coretemp) Fix bogus core_id to attr name mapping")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx27-apf27dev.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/coretemp.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx27-apf27dev.dts b/arch/arm/boot/dts/imx27-apf27dev.dts
-index 68fcb5ce9a9e..3d9bb7fc3be2 100644
---- a/arch/arm/boot/dts/imx27-apf27dev.dts
-+++ b/arch/arm/boot/dts/imx27-apf27dev.dts
-@@ -47,7 +47,7 @@
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_gpio_leds>;
+diff --git a/drivers/hwmon/coretemp.c b/drivers/hwmon/coretemp.c
+index 33371f7a4c0f..6832569c9bac 100644
+--- a/drivers/hwmon/coretemp.c
++++ b/drivers/hwmon/coretemp.c
+@@ -480,18 +480,14 @@ static int create_core_data(struct platform_device *pdev, unsigned int cpu,
+ 	if (pkg_flag) {
+ 		attr_no = PKG_SYSFS_ATTR_NO;
+ 	} else {
+-		index = ida_alloc(&pdata->ida, GFP_KERNEL);
++		index = ida_alloc_max(&pdata->ida, NUM_REAL_CORES - 1, GFP_KERNEL);
+ 		if (index < 0)
+ 			return index;
++
+ 		pdata->cpu_map[index] = topology_core_id(cpu);
+ 		attr_no = index + BASE_SYSFS_ATTR_NO;
+ 	}
  
--		user {
-+		led-user {
- 			label = "Heartbeat";
- 			gpios = <&gpio6 14 GPIO_ACTIVE_HIGH>;
- 			linux,default-trigger = "heartbeat";
+-	if (attr_no > MAX_CORE_DATA - 1) {
+-		err = -ERANGE;
+-		goto ida_free;
+-	}
+-
+ 	tdata = init_temp_data(cpu, pkg_flag);
+ 	if (!tdata) {
+ 		err = -ENOMEM;
 -- 
 2.43.0
 
