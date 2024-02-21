@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-23035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 740B985DEE6
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:22:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E13385DDDA
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:13:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CEA8283A44
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1AB61F21C78
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:12:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A03DC7A708;
-	Wed, 21 Feb 2024 14:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACDCA7C09C;
+	Wed, 21 Feb 2024 14:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dIRhBPrh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QANHmhKm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA4F78B60;
-	Wed, 21 Feb 2024 14:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2C53CF42;
+	Wed, 21 Feb 2024 14:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525363; cv=none; b=oqlcnt4VVlTDHBUHzpM810c0t7pj1FB3wbRMqhqHfXEHd6JZfpM4XQW+vTpQf+Hbf1kC+DzxUSiGe+jod8JDo2Sxne7XGir6RGe005MO0BlL8YRLTsYnZ+uI5DhPWa98g3HLPVpgbeEtT/vyR7YmOGD9wr7fa2N+IkW57//xWiw=
+	t=1708524513; cv=none; b=ct1rF2XOvhsC/YSA7rTe81qN3oilBDOupK05cDj9jnEpVDR5gqDbNVqPAnwz44O2F8BQMrtq2HPy1pF3+mIKynu4VpECu8Lh3egw6EJUNqCE0aGrj1w5/xlAoF6uZbCW4KP81j5D1XJXLj4U2sD0UQMYCC9eL4QY9AqS9E5uhYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525363; c=relaxed/simple;
-	bh=GIYrQf72bgnAsO6E1+4UB70tl4NAyIFm4lEUFxLRl1Q=;
+	s=arc-20240116; t=1708524513; c=relaxed/simple;
+	bh=IkJMriH7RVh9HlaRMsKPlYNEcnJJhgll06OZotIcChI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rtj5be+/NoBBsKqNWwIizPoDm4OAxGTwIBwkPDzVwkfyWSYwr0y0g37aa2BW3F2b06s45KvROaj8LolPlnd5SQ8VFNkPVgTs9FrHBctp3uWVdr/fA9dPNowBtT9413bFooj1DdBLR4wyQrbvWEB+rC9jnC7QpsaNEA9k6fzYSac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dIRhBPrh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C7AC433C7;
-	Wed, 21 Feb 2024 14:22:42 +0000 (UTC)
+	 MIME-Version; b=QtDDCWBr/zv6LQc7tVuNigCuQ3txoiuNqJAK/xGlKHRR4l1QrR6j6NvSIVtAG6e06pEfaKDb3uJS+uvfSs8vX3BBL2Axc+8kyK5aOD88WcTMT5HZbmwAucXtZQvC893Ellburf1AqHpQX11+p8/5XISt1FMOjXnDP4iycrCGhfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QANHmhKm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6FB7C433A6;
+	Wed, 21 Feb 2024 14:08:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525363;
-	bh=GIYrQf72bgnAsO6E1+4UB70tl4NAyIFm4lEUFxLRl1Q=;
+	s=korg; t=1708524513;
+	bh=IkJMriH7RVh9HlaRMsKPlYNEcnJJhgll06OZotIcChI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dIRhBPrhCrtSwNIv4ikP1mZBqip1lSbX8wk/pW9dE8S6aHVyrukd7Hk3B3Z8i5Tf/
-	 w7oZ6KEG54ekHZHE6w7JXj6nqWjswo1BKcsrWvObuqyaMt65D6Fiit76knhxx0XU9r
-	 C2b0P/oTYK0J52MRVpiJdIMDZjBkY80s0N4UkBac=
+	b=QANHmhKmzKhUZFxsXCqYtQATs7n3Gv/xhhr2xdHENtMikgPtov/P50jcywqzG81IH
+	 mAjCd085Z1uQC9J3lG0eoPbyCLX+xaQW+uX7gFVyS4faHcztjw+EGhprOIPzjd+Z0Q
+	 xOyZSUXHFoc9VQK9A0IpotO9I4ZElbjZqltcMNok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 105/267] ARM: dts: imx25/27-eukrea: Fix RTC node name
+Subject: [PATCH 5.10 267/379] netfilter: nft_ct: reject direction for ct id
 Date: Wed, 21 Feb 2024 14:07:26 +0100
-Message-ID: <20240221125943.232703887@linuxfoundation.org>
+Message-ID: <20240221130002.809428006@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 68c711b882c262e36895547cddea2c2d56ce611d ]
+[ Upstream commit 38ed1c7062ada30d7c11e7a7acc749bf27aa14aa ]
 
-Node names should be generic. Use 'rtc' as node name to fix
-the following dt-schema warning:
+Direction attribute is ignored, reject it in case this ever needs to be
+supported
 
-imx25-eukrea-mbimxsd25-baseboard.dtb: pcf8563@51: $nodename:0: 'pcf8563@51' does not match '^rtc(@.*|-([0-9]|[1-9][0-9]+))?$'
-	from schema $id: http://devicetree.org/schemas/rtc/nxp,pcf8563.yaml#
-
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 3087c3f7c23b ("netfilter: nft_ct: Add ct id support")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx25-eukrea-cpuimx25.dtsi | 2 +-
- arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/nft_ct.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm/boot/dts/imx25-eukrea-cpuimx25.dtsi b/arch/arm/boot/dts/imx25-eukrea-cpuimx25.dtsi
-index 0703f62d10d1..93a6e4e680b4 100644
---- a/arch/arm/boot/dts/imx25-eukrea-cpuimx25.dtsi
-+++ b/arch/arm/boot/dts/imx25-eukrea-cpuimx25.dtsi
-@@ -27,7 +27,7 @@
- 	pinctrl-0 = <&pinctrl_i2c1>;
- 	status = "okay";
- 
--	pcf8563@51 {
-+	rtc@51 {
- 		compatible = "nxp,pcf8563";
- 		reg = <0x51>;
- 	};
-diff --git a/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi b/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi
-index 74110bbcd9d4..4b83e2918b55 100644
---- a/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi
-+++ b/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi
-@@ -33,7 +33,7 @@
- 	pinctrl-0 = <&pinctrl_i2c1>;
- 	status = "okay";
- 
--	pcf8563@51 {
-+	rtc@51 {
- 		compatible = "nxp,pcf8563";
- 		reg = <0x51>;
- 	};
+diff --git a/net/netfilter/nft_ct.c b/net/netfilter/nft_ct.c
+index 5b16161526e7..2b15dbbca98b 100644
+--- a/net/netfilter/nft_ct.c
++++ b/net/netfilter/nft_ct.c
+@@ -482,6 +482,9 @@ static int nft_ct_get_init(const struct nft_ctx *ctx,
+ 		break;
+ #endif
+ 	case NFT_CT_ID:
++		if (tb[NFTA_CT_DIRECTION])
++			return -EINVAL;
++
+ 		len = sizeof(u32);
+ 		break;
+ 	default:
 -- 
 2.43.0
 
