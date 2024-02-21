@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-22911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B5785DE42
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:17:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2E1A85D8FD
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:13:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 219E72852AE
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74377B2278F
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:13:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C33F7C09A;
-	Wed, 21 Feb 2024 14:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3381F6A35F;
+	Wed, 21 Feb 2024 13:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOezubbH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iY1VOzwV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD99B7E58F;
-	Wed, 21 Feb 2024 14:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E591653816;
+	Wed, 21 Feb 2024 13:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524941; cv=none; b=sxN7for4pHRow4q9C2aHFmdQBOKkYw9rHTW8M8vKmL0TXQUlMtycCSeCUFnUuUBva1dxx+vistXe+LUV96zmZK//LXsYIVXTR7a+wL4IgUvyY5xyHFWejXGjrQDmKQ0mkwNJZUK+tQwTg5R/kTKMOEkjy5yKU+Ds7kDIP/7HV4Y=
+	t=1708521188; cv=none; b=m1A/d7u22RA8duUxBcZmS2izmnPHZ79aGhz6HofdHJGvG9Kcm+ICkZ3vGURhP0rdBF3b+RCnnJBwWec+gSYPkd66fGQ4NsTv4j+ILSrQyAjdBvjPfnNAPvs05t9SAgbXdRrTWLlYdw/VnCskVVxmt9YFk82lbpM5MeWRsmEsFVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524941; c=relaxed/simple;
-	bh=n78mtXBf38NFbC9DY3q+rFWIRipZwAQpsHnkQ6YxJr4=;
+	s=arc-20240116; t=1708521188; c=relaxed/simple;
+	bh=ieUGH5NV2oyaxTqc5hA+dpBMa+kaeBKqhjYobkQIESU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IeFFoXv1J+STc3X5WrEAOkp6qzh0tvB/RqDak7qhIqkn3BRhiJrZPBVLQvM1unzOpvhF1Bo19Y+jE4rRqQkC0zeQa+ZIcl9skZxaaUwCX55YNa0z6berqG/3zIvOv10bE/AC6rp/ewDSuh01fqq5xlh2R2dipNtnib6qSYv3llE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOezubbH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C71C433F1;
-	Wed, 21 Feb 2024 14:15:40 +0000 (UTC)
+	 MIME-Version; b=e3S/Lg3ZlUKzb3nX6K/WjalXMvjcsh0+7t2hwp8BZ2Dt5R1tor/M9dNQ9fDdl9wi2ZSX3o/CGuHfVxatqM/9F5Rm5XbEFh6wUWP83N0hdwtnShFRlkDvIiLQIwclKsmWk9ZUZXt5oiJakOT3yPsljEglIGnGtu3ri5p3YW3baA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iY1VOzwV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BD6EC433C7;
+	Wed, 21 Feb 2024 13:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524941;
-	bh=n78mtXBf38NFbC9DY3q+rFWIRipZwAQpsHnkQ6YxJr4=;
+	s=korg; t=1708521187;
+	bh=ieUGH5NV2oyaxTqc5hA+dpBMa+kaeBKqhjYobkQIESU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rOezubbHitSWUUECZ6ULho9LADDQ0Xm7MYFqSkQL1dq2CdyUVKouKud7ijeGPrfZd
-	 /PTyScft/ZrKVKA+0TtFnlSrVxgkFfbyjvHwTGdE8GF5vxNhfsGrdg2Jm87GiTjjHQ
-	 Am1io1J7C1RMtYLYTZV8dyWeknK6Tu/dFgs/aboA=
+	b=iY1VOzwVSU/7kX3qltgXP/+nNYA8R/S7rScdgVXPTzYwWz01LIUolcLtIHFUyTmNq
+	 VnBNzFlT+KEkKNyPASmW3gqnVuoFrbzLkdUT9ksCHuwDN1f5i+UvMpbiLaLfQKfdte
+	 O00xz4uzrrc2fNZOmHu2TeFFHFsGy8wfFVWydeo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 003/267] units: Add Watt units
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Robert Foss <rfoss@kernel.org>
+Subject: [PATCH 4.19 043/202] drm/bridge: nxp-ptn3460: simplify some error checking
 Date: Wed, 21 Feb 2024 14:05:44 +0100
-Message-ID: <20240221125940.168645775@linuxfoundation.org>
+Message-ID: <20240221125933.188622033@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 2ee5f8f05949735fa2f4c463a5e13fcb3660c719 ]
+commit 28d3d0696688154cc04983f343011d07bf0508e4 upstream.
 
-As there are the temperature units, let's add the Watt macros definition.
+The i2c_master_send/recv() functions return negative error codes or
+they return "len" on success.  So the error handling here can be written
+as just normal checks for "if (ret < 0) return ret;".  No need to
+complicate things.
 
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 3ef79cd14122 ("serial: sc16is7xx: set safe default SPI clock frequency")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Btw, in this code the "len" parameter can never be zero, but even if
+it were, then I feel like this would still be the best way to write it.
+
+Fixes: 914437992876 ("drm/bridge: nxp-ptn3460: fix i2c_master_send() error checking")
+Suggested-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/04242630-42d8-4920-8c67-24ac9db6b3c9@moroto.mountain
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/units.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/bridge/nxp-ptn3460.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/units.h b/include/linux/units.h
-index aaf716364ec3..92c234e71cab 100644
---- a/include/linux/units.h
-+++ b/include/linux/units.h
-@@ -4,6 +4,10 @@
+--- a/drivers/gpu/drm/bridge/nxp-ptn3460.c
++++ b/drivers/gpu/drm/bridge/nxp-ptn3460.c
+@@ -64,15 +64,15 @@ static int ptn3460_read_bytes(struct ptn
+ 	int ret;
  
- #include <linux/kernel.h>
+ 	ret = i2c_master_send(ptn_bridge->client, &addr, 1);
+-	if (ret <= 0) {
++	if (ret < 0) {
+ 		DRM_ERROR("Failed to send i2c command, ret=%d\n", ret);
+-		return ret ?: -EIO;
++		return ret;
+ 	}
  
-+#define MILLIWATT_PER_WATT	1000L
-+#define MICROWATT_PER_MILLIWATT	1000L
-+#define MICROWATT_PER_WATT	1000000L
-+
- #define ABSOLUTE_ZERO_MILLICELSIUS -273150
+ 	ret = i2c_master_recv(ptn_bridge->client, buf, len);
+-	if (ret != len) {
++	if (ret < 0) {
+ 		DRM_ERROR("Failed to recv i2c data, ret=%d\n", ret);
+-		return ret < 0 ? ret : -EIO;
++		return ret;
+ 	}
  
- static inline long milli_kelvin_to_millicelsius(long t)
--- 
-2.43.0
-
+ 	return 0;
+@@ -88,9 +88,9 @@ static int ptn3460_write_byte(struct ptn
+ 	buf[1] = val;
+ 
+ 	ret = i2c_master_send(ptn_bridge->client, buf, ARRAY_SIZE(buf));
+-	if (ret != ARRAY_SIZE(buf)) {
++	if (ret < 0) {
+ 		DRM_ERROR("Failed to send i2c command, ret=%d\n", ret);
+-		return ret < 0 ? ret : -EIO;
++		return ret;
+ 	}
+ 
+ 	return 0;
 
 
 
