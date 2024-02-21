@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-22897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B93E685DE36
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:16:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7648C85DC6B
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:53:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72FE8284E9C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:16:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 168C5B2669C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:53:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46857E59A;
-	Wed, 21 Feb 2024 14:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C81A7C6E5;
+	Wed, 21 Feb 2024 13:52:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qd9ugOm6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLRI8Opw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F6D78B60;
-	Wed, 21 Feb 2024 14:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE177C0BD;
+	Wed, 21 Feb 2024 13:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524882; cv=none; b=Ii3XAHZXQr972qDWr2rRf6Msr+NSILC/NmyIPpCc/42tsD0/AyiTZTDI8bFJgycaFBgA3tARRH59i6+KtpE1eJm2G7HkCUgDLL9PS21N/U0c+SXw0WMlSZ73qVdndgB2kf9PL/R0zMSYyHS1A0lxIowVBBRhKT6y/Wmtz0vTzHE=
+	t=1708523576; cv=none; b=jrqiHqEZaCTcw/CF5Z+bt0+EMNfvm2gMhx8qgkSaoSixMYA4jTTE6mTHedxSNdGn39Bc/rFHZJ+Gi8wHJW7o+CxR4UfxO4MOIBSA3v4TqeqZvyPg6DvfSZw+Iu/DtPNhzhXvexa2USzTWKKkwlfBvhYKR5Vx+rb0KgxMfS4zKGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524882; c=relaxed/simple;
-	bh=/l6a0quw/cmb7+q9qmzSFaNkKm5NxF38k9m2AzHbklo=;
+	s=arc-20240116; t=1708523576; c=relaxed/simple;
+	bh=2CjHgdx1611UfKdHF+04xDBzMVrIqSuTfhRD7tIAvAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rRXAn76zcjIZifxOSCxCT3VBRYMjF2+BaMOhPXQhecAjCLhI7Il69iUy+qeWxLuKYV3uj0Q1c9ORIMElWVlL+P2mAoEP6zVxvFB55YVqi4I0UD6BbCCAK/iTJTQ94xALlXbPufnEZKbvLD/VZu1liebHwaqs4ocvO7iZPQ+Jqv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qd9ugOm6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C70C433F1;
-	Wed, 21 Feb 2024 14:14:41 +0000 (UTC)
+	 MIME-Version; b=fL7dom61txYlYQv74NuLn+0K9sN+8CsOEH5ng85w14zpjer6/xhUfbyGuSBpY+cqzo+1guO3o33HtHxNbtQBrJTTPd6FRWlfGX6ErikkWwb9kZrGeqtFWh27pKLiBeel0InhFG2b4oyZoXNYhFfu4KqZaI/uvjZyaIQz2EmttXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLRI8Opw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F089C433C7;
+	Wed, 21 Feb 2024 13:52:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524882;
-	bh=/l6a0quw/cmb7+q9qmzSFaNkKm5NxF38k9m2AzHbklo=;
+	s=korg; t=1708523576;
+	bh=2CjHgdx1611UfKdHF+04xDBzMVrIqSuTfhRD7tIAvAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qd9ugOm6ZFPCgf1W+OAfrKQi4od2EKTppkdY+02NW6dPeWZoCBe2eg8iV9+dFrcs2
-	 DF7H21SzZBcYWZb3N2XHLR3RmOZBTxVbQ+lBB/BQZQOkigAemev1f8ZmtMq35vy4iq
-	 eEzUY50udJ6Fg0A1EJgpx/AnczZGQdRQFKDizNE0=
+	b=OLRI8OpwXyC7qlnua8yZt2+LLy6KspCBAT6BxP/6cAuwBKE9RLtPXxAqM3SPjt7Rh
+	 Td8fOMrRM1ZW9I2rzUivS1bj6AAkElocEPXI4lzbS/ZYFA91yyDjz7C+P8YWUtb6eB
+	 Kwhu4NwDGNUOkq0R3Nk4WR1rmhWL0XbkJSkzlNtE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 5.10 348/379] tracing: Inform kmemleak of saved_cmdlines allocation
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.15 476/476] usb: dwc3: gadget: Ignore End Transfer delay on teardown
 Date: Wed, 21 Feb 2024 14:08:47 +0100
-Message-ID: <20240221130005.302066200@linuxfoundation.org>
+Message-ID: <20240221130025.577794706@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +60,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-commit 2394ac4145ea91b92271e675a09af2a9ea6840b7 upstream.
+commit c4e3ef5685393c5051b52cf1e94b8891d49793ab upstream.
 
-The allocation of the struct saved_cmdlines_buffer structure changed from:
+If we delay sending End Transfer for Setup TRB to be prepared, we need
+to check if the End Transfer was in preparation for a driver
+teardown/soft-disconnect. In those cases, just send the End Transfer
+command without delay.
 
-        s = kmalloc(sizeof(*s), GFP_KERNEL);
-	s->saved_cmdlines = kmalloc_array(TASK_COMM_LEN, val, GFP_KERNEL);
+In the case of soft-disconnect, there's a very small chance the command
+may not go through immediately. But should it happen, the Setup TRB will
+be prepared during the polling of the controller halted state, allowing
+the command to go through then.
 
-to:
+In the case of disabling endpoint due to reconfiguration (e.g.
+set_interface(alt-setting) or usb reset), then it's driven by the host.
+Typically the host wouldn't immediately cancel the control request and
+send another control transfer to trigger the End Transfer command
+timeout.
 
-	orig_size = sizeof(*s) + val * TASK_COMM_LEN;
-	order = get_order(orig_size);
-	size = 1 << (order + PAGE_SHIFT);
-	page = alloc_pages(GFP_KERNEL, order);
-	if (!page)
-		return NULL;
-
-	s = page_address(page);
-	memset(s, 0, sizeof(*s));
-
-	s->saved_cmdlines = kmalloc_array(TASK_COMM_LEN, val, GFP_KERNEL);
-
-Where that s->saved_cmdlines allocation looks to be a dangling allocation
-to kmemleak. That's because kmemleak only keeps track of kmalloc()
-allocations. For allocations that use page_alloc() directly, the kmemleak
-needs to be explicitly informed about it.
-
-Add kmemleak_alloc() and kmemleak_free() around the page allocation so
-that it doesn't give the following false positive:
-
-unreferenced object 0xffff8881010c8000 (size 32760):
-  comm "swapper", pid 0, jiffies 4294667296
-  hex dump (first 32 bytes):
-    ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-    ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
-  backtrace (crc ae6ec1b9):
-    [<ffffffff86722405>] kmemleak_alloc+0x45/0x80
-    [<ffffffff8414028d>] __kmalloc_large_node+0x10d/0x190
-    [<ffffffff84146ab1>] __kmalloc+0x3b1/0x4c0
-    [<ffffffff83ed7103>] allocate_cmdlines_buffer+0x113/0x230
-    [<ffffffff88649c34>] tracer_alloc_buffers.isra.0+0x124/0x460
-    [<ffffffff8864a174>] early_trace_init+0x14/0xa0
-    [<ffffffff885dd5ae>] start_kernel+0x12e/0x3c0
-    [<ffffffff885f5758>] x86_64_start_reservations+0x18/0x30
-    [<ffffffff885f582b>] x86_64_start_kernel+0x7b/0x80
-    [<ffffffff83a001c3>] secondary_startup_64_no_verify+0x15e/0x16b
-
-Link: https://lore.kernel.org/linux-trace-kernel/87r0hfnr9r.fsf@kernel.org/
-Link: https://lore.kernel.org/linux-trace-kernel/20240214112046.09a322d6@gandalf.local.home
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Fixes: 44dc5c41b5b1 ("tracing: Fix wasted memory in saved_cmdlines logic")
-Reported-by: Kalle Valo <kvalo@kernel.org>
-Tested-by: Kalle Valo <kvalo@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 4db0fbb60136 ("usb: dwc3: gadget: Don't delay End Transfer on delayed_status")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/f1617a323e190b9cc408fb8b65456e32b5814113.1670546756.git.Thinh.Nguyen@synopsys.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/dwc3/gadget.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -39,6 +39,7 @@
- #include <linux/slab.h>
- #include <linux/ctype.h>
- #include <linux/init.h>
-+#include <linux/kmemleak.h>
- #include <linux/poll.h>
- #include <linux/nmi.h>
- #include <linux/fs.h>
-@@ -2258,6 +2259,7 @@ static void free_saved_cmdlines_buffer(s
- 	int order = get_order(sizeof(*s) + s->cmdline_num * TASK_COMM_LEN);
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -1701,6 +1701,7 @@ static int __dwc3_stop_active_transfer(s
+ 		dep->flags |= DWC3_EP_END_TRANSFER_PENDING;
+ 	}
  
- 	kfree(s->map_cmdline_to_pid);
-+	kmemleak_free(s);
- 	free_pages((unsigned long)s, order);
++	dep->flags &= ~DWC3_EP_DELAY_STOP;
+ 	return ret;
  }
  
-@@ -2277,6 +2279,7 @@ static struct saved_cmdlines_buffer *all
- 		return NULL;
+@@ -3710,8 +3711,10 @@ void dwc3_stop_active_transfer(struct dw
+ 	if (dep->number <= 1 && dwc->ep0state != EP0_DATA_PHASE)
+ 		return;
  
- 	s = page_address(page);
-+	kmemleak_alloc(s, size, 1, GFP_KERNEL);
- 	memset(s, 0, sizeof(*s));
++	if (interrupt && (dep->flags & DWC3_EP_DELAY_STOP))
++		return;
++
+ 	if (!(dep->flags & DWC3_EP_TRANSFER_STARTED) ||
+-	    (dep->flags & DWC3_EP_DELAY_STOP) ||
+ 	    (dep->flags & DWC3_EP_END_TRANSFER_PENDING))
+ 		return;
  
- 	/* Round up to actual allocation */
 
 
 
