@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-22828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7656F85DDFD
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 860CC85DC3A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:50:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16A7C1F241C8
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B2301F2112E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:50:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 766FB8005C;
-	Wed, 21 Feb 2024 14:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5EF238398;
+	Wed, 21 Feb 2024 13:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IqgJueS3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XedqjC+2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3430D7C0BD;
-	Wed, 21 Feb 2024 14:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFAD7C092;
+	Wed, 21 Feb 2024 13:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524650; cv=none; b=MGjT4jXx5Ivk3J/CC2FVehfal94bbq/9uGquw/IOjqE8U1tRDnvBQiThUydoa3KN+sVsZQkRpZBDtq6E+gs+CIB7n0LOkdgPwcFUJKN2OEvQfe4hcQld7607qNUsIfhD7EjMQy/dElaDpPnN/+WXFhv9azBrhrlj5vpZCIvLRkA=
+	t=1708523431; cv=none; b=P/ZyJSjfo6n0rn6lYOgXY8MVxn+95UaAtfmDIwPK9+fMtXOBrGrBRmwS+G6npJk5lsH7eIp6SENIE2KFERKOB0wW1m7J3xUEWu9V8ZEtlM1OehmbXgvPGc0JdwW1/31bVgrX/znEdqxLIkYDLmGs8OHcZvqvyk2uufN1VgZYSDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524650; c=relaxed/simple;
-	bh=FaRaMoMXX4kfBKuQEyN4G8tP2OsNE0GESA6LkYOpTvI=;
+	s=arc-20240116; t=1708523431; c=relaxed/simple;
+	bh=qxtnmXtLJwhIeqr6U1/VkB2VCA58fUFQmEO/877sshI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=grFkesTyLHm2B1VylcH6rZKHyHJnZtRdNA+D9eURk5wIwZsNyzBjjsbHjWdcqXLj9mCJbibrEyLqKn8l46nCg8zEsr7Jul16y/GLckomfs5RLhqXD7Ale2GdKeZI4wglPyRQi/DEV3eyJXOVvvyBeBjxsOitgcUJ3qPI3vB9Izk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IqgJueS3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 984E8C433F1;
-	Wed, 21 Feb 2024 14:10:49 +0000 (UTC)
+	 MIME-Version; b=pFN2gbEZ4vFQBkOmzlPkVJoEJ55/ZEPg+/AFrwRMYzNPbtWKMEpKc6Zo1HIkII4OsCbNHpJjaXfyRbRJocX6h4ZE2Ce6C1n/4ZDaaXZPnLqriIn31pDAPkVg43zG0VG9ILwExQ3NNLuMT7GdpaFLDBncXOBblrvHuh9QnpKD0Ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XedqjC+2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E851EC433F1;
+	Wed, 21 Feb 2024 13:50:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524650;
-	bh=FaRaMoMXX4kfBKuQEyN4G8tP2OsNE0GESA6LkYOpTvI=;
+	s=korg; t=1708523431;
+	bh=qxtnmXtLJwhIeqr6U1/VkB2VCA58fUFQmEO/877sshI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IqgJueS3dTZjnxS7gd9752dJTauewKbTQ56s8a+c/zwbNKas8bciADITUaPJlQX9B
-	 N1PmuySkAntCYuLPtC2hJIh5Uy9FfpFfc7H//M+uYvy1pVtRam23uXoKIlmmyXWgvc
-	 oE5IN2MfQr55UrJCUbINbjRQiw/ZrzLEuQSZmIi8=
+	b=XedqjC+28xlUCzaGzUzUgWaSrJhf0lMPQhGM4o/wn5mWW36M/Cxub+KyxOooQYGvG
+	 ty3JajQN/kWrkPeBsnU0ctPhyqYd2H/Dv6ZqwRGN1P4GV/pIr8R5iTfgK/6c5KpDJG
+	 PxgW9Vjd/1ifestPjsjBe+MIzODAbYPeJxb/UVrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiangfeng Xiao <xiaojiangfeng@huawei.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 307/379] powerpc/kasan: Fix addr error caused by page alignment
+Subject: [PATCH 5.15 435/476] usb: dwc3: gadget: Only End Transfer for ep0 data phase
 Date: Wed, 21 Feb 2024 14:08:06 +0100
-Message-ID: <20240221130004.000704079@linuxfoundation.org>
+Message-ID: <20240221130024.106939141@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiangfeng Xiao <xiaojiangfeng@huawei.com>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-[ Upstream commit 4a7aee96200ad281a5cc4cf5c7a2e2a49d2b97b0 ]
+[ Upstream commit ace17b6ee4f92ab0375d12a1b42494f8590a96b6 ]
 
-In kasan_init_region, when k_start is not page aligned, at the begin of
-for loop, k_cur = k_start & PAGE_MASK is less than k_start, and then
-`va = block + k_cur - k_start` is less than block, the addr va is invalid,
-because the memory address space from va to block is not alloced by
-memblock_alloc, which will not be reserved by memblock_reserve later, it
-will be used by other places.
+The driver shouldn't be able to issue End Transfer to the control
+endpoint at anytime. Typically we should only do so in error cases such
+as invalid/unexpected direction of Data Phase as described in the
+control transfer flow of the programming guide. It _may_ end started
+data phase during controller deinitialization from soft disconnect or
+driver removal. However, that should not happen because the driver
+should be maintained in EP0_SETUP_PHASE during driver tear-down. On
+soft-connect, the controller should be reset from a soft-reset and there
+should be no issue starting the control endpoint.
 
-As a result, memory overwriting occurs.
-
-for example:
-int __init __weak kasan_init_region(void *start, size_t size)
-{
-[...]
-	/* if say block(dcd97000) k_start(feef7400) k_end(feeff3fe) */
-	block = memblock_alloc(k_end - k_start, PAGE_SIZE);
-	[...]
-	for (k_cur = k_start & PAGE_MASK; k_cur < k_end; k_cur += PAGE_SIZE) {
-		/* at the begin of for loop
-		 * block(dcd97000) va(dcd96c00) k_cur(feef7000) k_start(feef7400)
-		 * va(dcd96c00) is less than block(dcd97000), va is invalid
-		 */
-		void *va = block + k_cur - k_start;
-		[...]
-	}
-[...]
-}
-
-Therefore, page alignment is performed on k_start before
-memblock_alloc() to ensure the validity of the VA address.
-
-Fixes: 663c0c9496a6 ("powerpc/kasan: Fix shadow area set up for modules.")
-Signed-off-by: Jiangfeng Xiao <xiaojiangfeng@huawei.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/1705974359-43790-1-git-send-email-xiaojiangfeng@huawei.com
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/3c6643678863a26702e4115e9e19d7d94a30d49c.1650593829.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 730e12fbec53 ("usb: dwc3: gadget: Handle EP0 request dequeuing properly")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/kasan/kasan_init_32.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/dwc3/gadget.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/arch/powerpc/mm/kasan/kasan_init_32.c b/arch/powerpc/mm/kasan/kasan_init_32.c
-index f3e4d069e0ba..643fc525897d 100644
---- a/arch/powerpc/mm/kasan/kasan_init_32.c
-+++ b/arch/powerpc/mm/kasan/kasan_init_32.c
-@@ -64,6 +64,7 @@ int __init __weak kasan_init_region(void *start, size_t size)
- 	if (ret)
- 		return ret;
- 
-+	k_start = k_start & PAGE_MASK;
- 	block = memblock_alloc(k_end - k_start, PAGE_SIZE);
- 	if (!block)
- 		return -ENOMEM;
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 2afe6784f1df..4d830ba7d824 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -3647,6 +3647,17 @@ static void dwc3_reset_gadget(struct dwc3 *dwc)
+ void dwc3_stop_active_transfer(struct dwc3_ep *dep, bool force,
+ 	bool interrupt)
+ {
++	struct dwc3 *dwc = dep->dwc;
++
++	/*
++	 * Only issue End Transfer command to the control endpoint of a started
++	 * Data Phase. Typically we should only do so in error cases such as
++	 * invalid/unexpected direction as described in the control transfer
++	 * flow of the programming guide.
++	 */
++	if (dep->number <= 1 && dwc->ep0state != EP0_DATA_PHASE)
++		return;
++
+ 	if (!(dep->flags & DWC3_EP_TRANSFER_STARTED) ||
+ 	    (dep->flags & DWC3_EP_DELAY_STOP) ||
+ 	    (dep->flags & DWC3_EP_END_TRANSFER_PENDING))
 -- 
 2.43.0
 
