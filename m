@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-22521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B62AD85DC6C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:53:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E4A385D9DE
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E86251C236B2
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:53:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1ABF1C23284
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:23:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DAD37BB03;
-	Wed, 21 Feb 2024 13:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFFE763F6;
+	Wed, 21 Feb 2024 13:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6h63yz5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wqo2xWkD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B57955E5E;
-	Wed, 21 Feb 2024 13:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC52B69953;
+	Wed, 21 Feb 2024 13:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523580; cv=none; b=Kuyj6VpYTTlITf2VcAxzJbz34GlWWDevaJUtxeVWC6NLG1p+v3YEt7ZxJ2tQSJngP+kGKuTZUs5Dgp1DZy4pgqj7uxWLa2LjnosorZFIuzWCOjHZ9sT1Kt1766uLZCm4IZvDu8tfwwoEwQsbx/nYWRQZ/2zknd1y96rYXhUA5D4=
+	t=1708521800; cv=none; b=gAjMVfuKOj2R+ciEZ3ko0WydbiTNv/ntov6jtwYK5Tlce4TeKgn1sBqyVlvXJKjITvqzSz40fEKvgNwgFlheevxkrVyXHqqz7qhs9+4Q9E9nNPZGuJq5W24hquVpaCsDmWb8QwvtmcVBgNQPT/jXQwjCGqfOOlXHSlhzJJUcagM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523580; c=relaxed/simple;
-	bh=9HA8aK8k5PJCJe20XN1KcEQuVAVhK7mAKAIu8v5dWQw=;
+	s=arc-20240116; t=1708521800; c=relaxed/simple;
+	bh=Vrm8ti8HwhuQsFhF9RsR/JPbNFs3xAmKZSKfMZ8Ty0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LmbMQZYQASNLKD/DpZAYUBfK6KXH8SG48YNE0Wr6wbz7MZvjhWsdLFWso+z4zymVy9GAoxx+Cq9ynrw7cJCrMYGKIlX+ufi0WM9w3LrXxdkWrqpscR9nozTnpF5OhL4E76qsBoGz9WFr5znc0Ww+5Qqq1hqGQPvIrA9aNZKzzKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6h63yz5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 697BBC433F1;
-	Wed, 21 Feb 2024 13:52:59 +0000 (UTC)
+	 MIME-Version; b=rkhqv9j6MmIVzND8lQkgaY6ytU8pYbErhz0wojwFBCPAWbwNSGNwPqJsNdb1f/r7Ho2TAskGtCvhdMsqerJIz/z3zdpKx80vBGO/VBwfA18FdGVnx4YkJY3tQ0fKbOajD9hSxrUpXiMTHVGF/YxGtlYyW0PeqOVucAotygX3rqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wqo2xWkD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A711C433C7;
+	Wed, 21 Feb 2024 13:23:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523579;
-	bh=9HA8aK8k5PJCJe20XN1KcEQuVAVhK7mAKAIu8v5dWQw=;
+	s=korg; t=1708521800;
+	bh=Vrm8ti8HwhuQsFhF9RsR/JPbNFs3xAmKZSKfMZ8Ty0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R6h63yz5VEBEoYsxkC7yWXwE8GKkvmrfy87GioUJQ0GV2LdvDm9ZeePx908dMAIEA
-	 zFpiPlpcF38Ig9Tr26+DU5UYEWl2ofYLR87Q0bH43zzDvKq8KulGgHgmxJ3FbAtTxx
-	 bgOv8bVDxi6Iy+rTRn6u8UIDC25/obvs6ptxpRYg=
+	b=wqo2xWkDERg+46AFNmZnpWA9dFLgJB225XzCveomc7yN7Py4QzL79Ej14w/MWtU/a
+	 0fcnYAPh8sQtZfWrhioWOfJxdkULd1nYanQ9XJqZW0Go3N/U74gCwAJfRBN3fovPX0
+	 5G7ew4ugX6BZqVw+umf5xV8XBguMvmgWxGO9k9sc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Miko Larsson <mikoxyzzz@gmail.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 451/476] fbdev: Fix invalid page access after closing deferred I/O devices
+	Alfred Piccioni <alpic@google.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Eric Biggers <ebiggers@google.com>
+Subject: [PATCH 4.19 201/202] lsm: new security_file_ioctl_compat() hook
 Date: Wed, 21 Feb 2024 14:08:22 +0100
-Message-ID: <20240221130024.699469227@linuxfoundation.org>
+Message-ID: <20240221125938.279075353@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,98 +63,213 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Alfred Piccioni <alpic@google.com>
 
-[ Upstream commit 3efc61d95259956db25347e2a9562c3e54546e20 ]
+commit f1bb47a31dff6d4b34fb14e99850860ee74bb003 upstream.
 
-When a fbdev with deferred I/O is once opened and closed, the dirty
-pages still remain queued in the pageref list, and eventually later
-those may be processed in the delayed work.  This may lead to a
-corruption of pages, hitting an Oops.
+Some ioctl commands do not require ioctl permission, but are routed to
+other permissions such as FILE_GETATTR or FILE_SETATTR. This routing is
+done by comparing the ioctl cmd to a set of 64-bit flags (FS_IOC_*).
 
-This patch makes sure to cancel the delayed work and clean up the
-pageref list at closing the device for addressing the bug.  A part of
-the cleanup code is factored out as a new helper function that is
-called from the common fb_release().
+However, if a 32-bit process is running on a 64-bit kernel, it emits
+32-bit flags (FS_IOC32_*) for certain ioctl operations. These flags are
+being checked erroneously, which leads to these ioctl operations being
+routed to the ioctl permission, rather than the correct file
+permissions.
 
-Reviewed-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Tested-by: Miko Larsson <mikoxyzzz@gmail.com>
-Fixes: 56c134f7f1b5 ("fbdev: Track deferred-I/O pages in pageref struct")
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230129082856.22113-1-tiwai@suse.de
-Stable-dep-of: 33cd6ea9c067 ("fbdev: flush deferred IO before closing")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This was also noted in a RED-PEN finding from a while back -
+"/* RED-PEN how should LSM module know it's handling 32bit? */".
+
+This patch introduces a new hook, security_file_ioctl_compat(), that is
+called from the compat ioctl syscall. All current LSMs have been changed
+to support this hook.
+
+Reviewing the three places where we are currently using
+security_file_ioctl(), it appears that only SELinux needs a dedicated
+compat change; TOMOYO and SMACK appear to be functional without any
+change.
+
+Cc: stable@vger.kernel.org
+Fixes: 0b24dcb7f2f7 ("Revert "selinux: simplify ioctl checking"")
+Signed-off-by: Alfred Piccioni <alpic@google.com>
+Reviewed-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+[PM: subject tweak, line length fixes, and alignment corrections]
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/fb_defio.c | 10 +++++++++-
- drivers/video/fbdev/core/fbmem.c    |  4 ++++
- include/linux/fb.h                  |  1 +
- 3 files changed, 14 insertions(+), 1 deletion(-)
+ fs/compat_ioctl.c          |    3 +--
+ include/linux/lsm_hooks.h  |    9 +++++++++
+ include/linux/security.h   |    9 +++++++++
+ security/security.c        |   17 +++++++++++++++++
+ security/selinux/hooks.c   |   28 ++++++++++++++++++++++++++++
+ security/smack/smack_lsm.c |    1 +
+ security/tomoyo/tomoyo.c   |    1 +
+ 7 files changed, 66 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/fb_defio.c b/drivers/video/fbdev/core/fb_defio.c
-index 5faeca61d3dd..b3f41f432ec2 100644
---- a/drivers/video/fbdev/core/fb_defio.c
-+++ b/drivers/video/fbdev/core/fb_defio.c
-@@ -292,7 +292,7 @@ void fb_deferred_io_open(struct fb_info *info,
- }
- EXPORT_SYMBOL_GPL(fb_deferred_io_open);
+--- a/fs/compat_ioctl.c
++++ b/fs/compat_ioctl.c
+@@ -1370,8 +1370,7 @@ COMPAT_SYSCALL_DEFINE3(ioctl, unsigned i
+ 	if (!f.file)
+ 		goto out;
  
--void fb_deferred_io_cleanup(struct fb_info *info)
-+void fb_deferred_io_release(struct fb_info *info)
+-	/* RED-PEN how should LSM module know it's handling 32bit? */
+-	error = security_file_ioctl(f.file, cmd, arg);
++	error = security_file_ioctl_compat(f.file, cmd, arg);
+ 	if (error)
+ 		goto out_fput;
+ 
+--- a/include/linux/lsm_hooks.h
++++ b/include/linux/lsm_hooks.h
+@@ -466,6 +466,12 @@
+  *	simple integer value.  When @arg represents a user space pointer, it
+  *	should never be used by the security module.
+  *	Return 0 if permission is granted.
++ * @file_ioctl_compat:
++ *	@file contains the file structure.
++ *	@cmd contains the operation to perform.
++ *	@arg contains the operational arguments.
++ *	Check permission for a compat ioctl operation on @file.
++ *	Return 0 if permission is granted.
+  * @mmap_addr :
+  *	Check permissions for a mmap operation at @addr.
+  *	@addr contains virtual address that will be used for the operation.
+@@ -1563,6 +1569,8 @@ union security_list_options {
+ 	void (*file_free_security)(struct file *file);
+ 	int (*file_ioctl)(struct file *file, unsigned int cmd,
+ 				unsigned long arg);
++	int (*file_ioctl_compat)(struct file *file, unsigned int cmd,
++				unsigned long arg);
+ 	int (*mmap_addr)(unsigned long addr);
+ 	int (*mmap_file)(struct file *file, unsigned long reqprot,
+ 				unsigned long prot, unsigned long flags);
+@@ -1861,6 +1869,7 @@ struct security_hook_heads {
+ 	struct hlist_head file_alloc_security;
+ 	struct hlist_head file_free_security;
+ 	struct hlist_head file_ioctl;
++	struct hlist_head file_ioctl_compat;
+ 	struct hlist_head mmap_addr;
+ 	struct hlist_head mmap_file;
+ 	struct hlist_head file_mprotect;
+--- a/include/linux/security.h
++++ b/include/linux/security.h
+@@ -322,6 +322,8 @@ int security_file_permission(struct file
+ int security_file_alloc(struct file *file);
+ void security_file_free(struct file *file);
+ int security_file_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
++int security_file_ioctl_compat(struct file *file, unsigned int cmd,
++			       unsigned long arg);
+ int security_mmap_file(struct file *file, unsigned long prot,
+ 			unsigned long flags);
+ int security_mmap_addr(unsigned long addr);
+@@ -833,6 +835,13 @@ static inline int security_file_ioctl(st
  {
- 	struct fb_deferred_io *fbdefio = info->fbdefio;
- 	struct page *page;
-@@ -306,6 +306,14 @@ void fb_deferred_io_cleanup(struct fb_info *info)
- 		page = fb_deferred_io_page(info, i);
- 		page->mapping = NULL;
- 	}
-+}
-+EXPORT_SYMBOL_GPL(fb_deferred_io_release);
+ 	return 0;
+ }
 +
-+void fb_deferred_io_cleanup(struct fb_info *info)
++static inline int security_file_ioctl_compat(struct file *file,
++					     unsigned int cmd,
++					     unsigned long arg)
 +{
-+	struct fb_deferred_io *fbdefio = info->fbdefio;
++	return 0;
++}
+ 
+ static inline int security_mmap_file(struct file *file, unsigned long prot,
+ 				     unsigned long flags)
+--- a/security/security.c
++++ b/security/security.c
+@@ -890,6 +890,23 @@ int security_file_ioctl(struct file *fil
+ 	return call_int_hook(file_ioctl, 0, file, cmd, arg);
+ }
+ 
++/**
++ * security_file_ioctl_compat() - Check if an ioctl is allowed in compat mode
++ * @file: associated file
++ * @cmd: ioctl cmd
++ * @arg: ioctl arguments
++ *
++ * Compat version of security_file_ioctl() that correctly handles 32-bit
++ * processes running on 64-bit kernels.
++ *
++ * Return: Returns 0 if permission is granted.
++ */
++int security_file_ioctl_compat(struct file *file, unsigned int cmd,
++			       unsigned long arg)
++{
++	return call_int_hook(file_ioctl_compat, 0, file, cmd, arg);
++}
 +
-+	fb_deferred_io_release(info);
+ static inline unsigned long mmap_prot(struct file *file, unsigned long prot)
+ {
+ 	/*
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -3709,6 +3709,33 @@ static int selinux_file_ioctl(struct fil
+ 	return error;
+ }
  
- 	kvfree(info->pagerefs);
- 	mutex_destroy(&fbdefio->lock);
-diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
-index 1b288a613a6e..ec7a883715e3 100644
---- a/drivers/video/fbdev/core/fbmem.c
-+++ b/drivers/video/fbdev/core/fbmem.c
-@@ -1454,6 +1454,10 @@ __releases(&info->lock)
- 	struct fb_info * const info = file->private_data;
++static int selinux_file_ioctl_compat(struct file *file, unsigned int cmd,
++			      unsigned long arg)
++{
++	/*
++	 * If we are in a 64-bit kernel running 32-bit userspace, we need to
++	 * make sure we don't compare 32-bit flags to 64-bit flags.
++	 */
++	switch (cmd) {
++	case FS_IOC32_GETFLAGS:
++		cmd = FS_IOC_GETFLAGS;
++		break;
++	case FS_IOC32_SETFLAGS:
++		cmd = FS_IOC_SETFLAGS;
++		break;
++	case FS_IOC32_GETVERSION:
++		cmd = FS_IOC_GETVERSION;
++		break;
++	case FS_IOC32_SETVERSION:
++		cmd = FS_IOC_SETVERSION;
++		break;
++	default:
++		break;
++	}
++
++	return selinux_file_ioctl(file, cmd, arg);
++}
++
+ static int default_noexec;
  
- 	lock_fb_info(info);
-+#if IS_ENABLED(CONFIG_FB_DEFERRED_IO)
-+	if (info->fbdefio)
-+		fb_deferred_io_release(info);
-+#endif
- 	if (info->fbops->fb_release)
- 		info->fbops->fb_release(info,1);
- 	module_put(info->fbops->owner);
-diff --git a/include/linux/fb.h b/include/linux/fb.h
-index b322d30f6225..433cddf8442b 100644
---- a/include/linux/fb.h
-+++ b/include/linux/fb.h
-@@ -675,6 +675,7 @@ extern int  fb_deferred_io_init(struct fb_info *info);
- extern void fb_deferred_io_open(struct fb_info *info,
- 				struct inode *inode,
- 				struct file *file);
-+extern void fb_deferred_io_release(struct fb_info *info);
- extern void fb_deferred_io_cleanup(struct fb_info *info);
- extern int fb_deferred_io_fsync(struct file *file, loff_t start,
- 				loff_t end, int datasync);
--- 
-2.43.0
-
+ static int file_map_prot_check(struct file *file, unsigned long prot, int shared)
+@@ -7054,6 +7081,7 @@ static struct security_hook_list selinux
+ 	LSM_HOOK_INIT(file_alloc_security, selinux_file_alloc_security),
+ 	LSM_HOOK_INIT(file_free_security, selinux_file_free_security),
+ 	LSM_HOOK_INIT(file_ioctl, selinux_file_ioctl),
++	LSM_HOOK_INIT(file_ioctl_compat, selinux_file_ioctl_compat),
+ 	LSM_HOOK_INIT(mmap_file, selinux_mmap_file),
+ 	LSM_HOOK_INIT(mmap_addr, selinux_mmap_addr),
+ 	LSM_HOOK_INIT(file_mprotect, selinux_file_mprotect),
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -4737,6 +4737,7 @@ static struct security_hook_list smack_h
+ 	LSM_HOOK_INIT(file_alloc_security, smack_file_alloc_security),
+ 	LSM_HOOK_INIT(file_free_security, smack_file_free_security),
+ 	LSM_HOOK_INIT(file_ioctl, smack_file_ioctl),
++	LSM_HOOK_INIT(file_ioctl_compat, smack_file_ioctl),
+ 	LSM_HOOK_INIT(file_lock, smack_file_lock),
+ 	LSM_HOOK_INIT(file_fcntl, smack_file_fcntl),
+ 	LSM_HOOK_INIT(mmap_file, smack_mmap_file),
+--- a/security/tomoyo/tomoyo.c
++++ b/security/tomoyo/tomoyo.c
+@@ -516,6 +516,7 @@ static struct security_hook_list tomoyo_
+ 	LSM_HOOK_INIT(path_rename, tomoyo_path_rename),
+ 	LSM_HOOK_INIT(inode_getattr, tomoyo_inode_getattr),
+ 	LSM_HOOK_INIT(file_ioctl, tomoyo_file_ioctl),
++	LSM_HOOK_INIT(file_ioctl_compat, tomoyo_file_ioctl),
+ 	LSM_HOOK_INIT(path_chmod, tomoyo_path_chmod),
+ 	LSM_HOOK_INIT(path_chown, tomoyo_path_chown),
+ 	LSM_HOOK_INIT(path_chroot, tomoyo_path_chroot),
 
 
 
