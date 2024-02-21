@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-22437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBB0885DC08
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:48:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 540C985DEB3
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:21:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7CD95B27864
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:48:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 857B31C22963
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B05177BAF6;
-	Wed, 21 Feb 2024 13:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B04E776C99;
+	Wed, 21 Feb 2024 14:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0s2tQGc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p1LFbLGQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DAEE78B53;
-	Wed, 21 Feb 2024 13:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63DCE7BAFB;
+	Wed, 21 Feb 2024 14:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523299; cv=none; b=drJi8WwqN5m43q449ZLgUupgNpImsFkykGYU82hg/RZdNnU/ZmdkCqNin6VWzmnkupmDXH2jIhVbn7lAXOFpf+evy+wjT+x2nto3U1Ok3GBDqAtfNRcC9FyTGt42eoUIwLNLMlfMto1j+o43FjMACHxeMcyFRDFBi6iIO32nK0c=
+	t=1708525261; cv=none; b=oIKP2XAD1qMwuq5AgLrstv8uoJJS+iYbAt/LdHEM6ohhqvF4bZjYW0kvU91nVvCe6qHHEMOX3ao0DNGY3Ejb8awmmeI8m2iShi2WyZrxNAPVMzNkddjJSEDEMUhfA5IX+BZ8UJcKrpBLCOGx1lC1x0ffNjoE90j1uGycpmjS8Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523299; c=relaxed/simple;
-	bh=IEQaxgug0i+mPCVLFksrl+3FDZafmxEvnQ7ugYHvsFc=;
+	s=arc-20240116; t=1708525261; c=relaxed/simple;
+	bh=vkHuUg7K+rRIjab9Stc987kpyk37oFrqmkLICGBDVXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jl4Am6KMTdMYpB+ZfdEmolnJEluuwqWR/+PmQNpb27MZZ1dmRbbrJ0wvsyZTNzD5iAUQuIe6jwmVvcPmL+Lb1NUXFRvd5VDWablbdlTN394LPd3RO56k5dkpsdmK7NUViPosU+MZNQMieZ173r0Cgxz4PaOKiJDG06lK/uxwRXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0s2tQGc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D04DFC433C7;
-	Wed, 21 Feb 2024 13:48:18 +0000 (UTC)
+	 MIME-Version; b=Xu7PLi+PsB2dL5CZcWN/Xvg67Ug+P48ig/5QnsNFzioz5YT6boiF/20cdaJ84AfYj/ZZ396ybyAs3ZNYQZCsWxv0lR4MD0KI4SGOJ6PZ/aCeXgx0CeV6WYw9JY8pRakBHip6ihikW6T1GyZqmZQtgBXp1cyp8aEgtOHJsrEqsHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p1LFbLGQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9224C433C7;
+	Wed, 21 Feb 2024 14:21:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523299;
-	bh=IEQaxgug0i+mPCVLFksrl+3FDZafmxEvnQ7ugYHvsFc=;
+	s=korg; t=1708525261;
+	bh=vkHuUg7K+rRIjab9Stc987kpyk37oFrqmkLICGBDVXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W0s2tQGc575Ki0Pk8wtmwCKmtKqTEuLUJiTL0JIG3RSN1yrAvY/z9I0n2MzS6nQ94
-	 xAmBrFDtmsWxdWoQop5hnQ+72uvF67dvaULpUD9t+fWmor2O55pbI6tk1yyzbWzCvL
-	 eygRvgLD/M8+yfWK8VY/dBxE3uDR1tnPIVh2Kzt8=
+	b=p1LFbLGQIOr1sWf0a5eWaNNJrUGA6n2fu/zOqRBvPxU3qnm7FyFik28qhkd13Woar
+	 I+8Bupz6Ie6FNjt8/ZbokJJrp8SsvFEcb26AmH3/XvM0aMwY6SMIHfhmHe98B2dx3f
+	 0L/t96i9TPFsz+1ZE0MCDaZga9efUsoB/EcmU5VI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 365/476] iio: hid-sensor-als: Return 0 for HID_USAGE_SENSOR_TIME_TIMESTAMP
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Manas Ghandat <ghandatmanas@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 075/267] jfs: fix slab-out-of-bounds Read in dtSearch
 Date: Wed, 21 Feb 2024 14:06:56 +0100
-Message-ID: <20240221130021.515007278@linuxfoundation.org>
+Message-ID: <20240221125942.339109433@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Manas Ghandat <ghandatmanas@gmail.com>
 
-commit 621c6257128149e45b36ffb973a01c3f3461b893 upstream.
+[ Upstream commit fa5492ee89463a7590a1449358002ff7ef63529f ]
 
-When als_capture_sample() is called with usage ID
-HID_USAGE_SENSOR_TIME_TIMESTAMP, return 0. The HID sensor core ignores
-the return value for capture_sample() callback, so return value doesn't
-make difference. But correct the return value to return success instead
-of -EINVAL.
+Currently while searching for current page in the sorted entry table
+of the page there is a out of bound access. Added a bound check to fix
+the error.
 
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://lore.kernel.org/r/20240204125617.2635574-1-srinivas.pandruvada@linux.intel.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Dave:
+Set return code to -EIO
+
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202310241724.Ed02yUz9-lkp@intel.com/
+Signed-off-by: Manas Ghandat <ghandatmanas@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/light/hid-sensor-als.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/jfs/jfs_dtree.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/iio/light/hid-sensor-als.c
-+++ b/drivers/iio/light/hid-sensor-als.c
-@@ -228,6 +228,7 @@ static int als_capture_sample(struct hid
- 	case HID_USAGE_SENSOR_TIME_TIMESTAMP:
- 		als_state->timestamp = hid_sensor_convert_timestamp(&als_state->common_attributes,
- 								    *(s64 *)raw_data);
-+		ret = 0;
- 		break;
- 	default:
- 		break;
+diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
+index a6d42e49d156..077a87e53020 100644
+--- a/fs/jfs/jfs_dtree.c
++++ b/fs/jfs/jfs_dtree.c
+@@ -633,6 +633,11 @@ int dtSearch(struct inode *ip, struct component_name * key, ino_t * data,
+ 		for (base = 0, lim = p->header.nextindex; lim; lim >>= 1) {
+ 			index = base + (lim >> 1);
+ 
++			if (stbl[index] < 0) {
++				rc = -EIO;
++				goto out;
++			}
++
+ 			if (p->header.flag & BT_LEAF) {
+ 				/* uppercase leaf name to compare */
+ 				cmp =
+-- 
+2.43.0
+
 
 
 
