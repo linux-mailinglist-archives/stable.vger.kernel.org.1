@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-22182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62EFB85DAC0
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:34:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6B3E85DC7D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:54:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D7EE2831E4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:34:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AF1B1F22600
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6A77CF32;
-	Wed, 21 Feb 2024 13:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9CA67BB16;
+	Wed, 21 Feb 2024 13:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jO0ZKior"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FL1fi+wA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B24E79DA2;
-	Wed, 21 Feb 2024 13:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F567BB02;
+	Wed, 21 Feb 2024 13:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522350; cv=none; b=PTeO4kl+R/X+5kfx+V9dyop8TpSRNgA6EeX85X8/4kHK4KagzQoIvQGWUspbjpLT1Icex6DlgN+8+9s0NX5gymFsvhpoD1NEOVPpZKPi7ODrvR4y7lD1RhUqzLeamlk/dnuGicU8z0uwmkmz8skNK5s9axVDu9dwP2tU1lX83os=
+	t=1708523616; cv=none; b=ZhxlPRVuoxmqUHxpHcRrJDX5F8nvvgwPAdW7MfaHTKHSAJ6zX2PVF7hZegYSM4/ptUfb2SDugxNhEL1NmhCE3Uw4leLwy9TBy7NzLVqt6fmBnTllEY4ad74H0ZiiOq6WcOvwMCKRqSak9rdhL7rjwM08EcdxerZG9La1TuqBoJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522350; c=relaxed/simple;
-	bh=3yUF1gDzNmWnyRRWjSikalKqCatVxt8KtQopBCMZ5SM=;
+	s=arc-20240116; t=1708523616; c=relaxed/simple;
+	bh=O1mtQzytfF246fqnDcFYtVlFwHiKDzItq2aY9+crEoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XQ1OSh3C9nujvZ0qxjjsnjJ9Gk5Zy3CXXtFzYPXgddgGuwWZ5tlPxPWO68EFHr6Wc4jyIZ/bkbxGu82lJ2cbYpT+AudhYAxzS1LC/n6hLUmE9oSNUsm6a0HB9vqVE8pEmL8qfWoGLcHIQPloTH6LIica9GJA3dZOH67z5fJkEeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jO0ZKior; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6010CC43390;
-	Wed, 21 Feb 2024 13:32:29 +0000 (UTC)
+	 MIME-Version; b=bV/UgVAFLQEs/bxEfxgQzgl1tA3P2Hp8xnSB0bAk6eSDpm0vFOArOSfHZtrmSp1s8UpC6F7WR+4A6hOPhRegkfv1p4faa0vJxxn0wbv9sqwO64VO8MDDa8I0f/zOV89j8wnnrLTLH2kL3fsNFkFa2IMsdQhOUCHotbTrjQQN+68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FL1fi+wA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F204CC43390;
+	Wed, 21 Feb 2024 13:53:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522349;
-	bh=3yUF1gDzNmWnyRRWjSikalKqCatVxt8KtQopBCMZ5SM=;
+	s=korg; t=1708523616;
+	bh=O1mtQzytfF246fqnDcFYtVlFwHiKDzItq2aY9+crEoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jO0ZKiorYbfDa8IJMXBNO5/nmAHZsUg5ZqQ4I7QDcphPrfNSRs3XfU0kAngD7xhcd
-	 CjB7NgXc5qNrETggJhvS0Ik1t0GZ+VHPv1JaKnblG9jisoujowKGNcXn85CzirhpGY
-	 Ff4enBqyi8xRt30W83H/rQakPLPJknSqQ/fv+1VI=
+	b=FL1fi+wAAnZCfcw6KD4QDf/15/nriqGg0dmhSNFByX2yjO3+aq6OLpWeU1p6T0fut
+	 51vsfDyxlBu3tylJZdyhKacaHLDNf0k7rKNp8nSyJR2YT+sTNFEbK3JRn4ClbPjNyW
+	 tXRTScLSEX2tra646gQwyPJn1C3Wm3pyibRVs3SQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Riches <chris.riches@nutanix.com>,
-	Paul Moore <paul@paul-moore.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 138/476] audit: Send netlink ACK before setting connection in auditd_set
-Date: Wed, 21 Feb 2024 14:03:09 +0100
-Message-ID: <20240221130013.036500672@linuxfoundation.org>
+Subject: [PATCH 5.10 011/379] serial: sc16is7xx: add check for unsupported SPI modes during probe
+Date: Wed, 21 Feb 2024 14:03:10 +0100
+Message-ID: <20240221125955.256006545@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,119 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Riches <chris.riches@nutanix.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit 022732e3d846e197539712e51ecada90ded0572a ]
+[ Upstream commit 6d710b769c1f5f0d55c9ad9bb49b7dce009ec103 ]
 
-When auditd_set sets the auditd_conn pointer, audit messages can
-immediately be put on the socket by other kernel threads. If the backlog
-is large or the rate is high, this can immediately fill the socket
-buffer. If the audit daemon requested an ACK for this operation, a full
-socket buffer causes the ACK to get dropped, also setting ENOBUFS on the
-socket.
+The original comment is confusing because it implies that variants other
+than the SC16IS762 supports other SPI modes beside SPI_MODE_0.
 
-To avoid this race and ensure ACKs get through, fast-track the ACK in
-this specific case to ensure it is sent before auditd_conn is set.
+Extract from datasheet:
+    The SC16IS762 differs from the SC16IS752 in that it supports SPI clock
+    speeds up to 15 Mbit/s instead of the 4 Mbit/s supported by the
+    SC16IS752... In all other aspects, the SC16IS762 is functionally and
+    electrically the same as the SC16IS752.
 
-Signed-off-by: Chris Riches <chris.riches@nutanix.com>
-[PM: fix some tab vs space damage]
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+The same is also true of the SC16IS760 variant versus the SC16IS740 and
+SC16IS750 variants.
+
+For all variants, only SPI mode 0 is supported.
+
+Change comment and abort probing if the specified SPI mode is not
+SPI_MODE_0.
+
+Fixes: 2c837a8a8f9f ("sc16is7xx: spi interface is added")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20231221231823.2327894-3-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/audit.c | 31 ++++++++++++++++++++++++-------
- 1 file changed, 24 insertions(+), 7 deletions(-)
+ drivers/tty/serial/sc16is7xx.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/audit.c b/kernel/audit.c
-index 94ded5de9131..82b6fea46e20 100644
---- a/kernel/audit.c
-+++ b/kernel/audit.c
-@@ -490,15 +490,19 @@ static void auditd_conn_free(struct rcu_head *rcu)
-  * @pid: auditd PID
-  * @portid: auditd netlink portid
-  * @net: auditd network namespace pointer
-+ * @skb: the netlink command from the audit daemon
-+ * @ack: netlink ack flag, cleared if ack'd here
-  *
-  * Description:
-  * This function will obtain and drop network namespace references as
-  * necessary.  Returns zero on success, negative values on failure.
-  */
--static int auditd_set(struct pid *pid, u32 portid, struct net *net)
-+static int auditd_set(struct pid *pid, u32 portid, struct net *net,
-+		      struct sk_buff *skb, bool *ack)
- {
- 	unsigned long flags;
- 	struct auditd_connection *ac_old, *ac_new;
-+	struct nlmsghdr *nlh;
+diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+index dfaca09de79b..31e0c5c3ddea 100644
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -1450,7 +1450,10 @@ static int sc16is7xx_spi_probe(struct spi_device *spi)
  
- 	if (!pid || !net)
- 		return -EINVAL;
-@@ -510,6 +514,13 @@ static int auditd_set(struct pid *pid, u32 portid, struct net *net)
- 	ac_new->portid = portid;
- 	ac_new->net = get_net(net);
- 
-+	/* send the ack now to avoid a race with the queue backlog */
-+	if (*ack) {
-+		nlh = nlmsg_hdr(skb);
-+		netlink_ack(skb, nlh, 0, NULL);
-+		*ack = false;
-+	}
+ 	/* Setup SPI bus */
+ 	spi->bits_per_word	= 8;
+-	/* only supports mode 0 on SC16IS762 */
++	/* For all variants, only mode 0 is supported */
++	if ((spi->mode & SPI_MODE_X_MASK) != SPI_MODE_0)
++		return dev_err_probe(&spi->dev, -EINVAL, "Unsupported SPI mode\n");
 +
- 	spin_lock_irqsave(&auditd_conn_lock, flags);
- 	ac_old = rcu_dereference_protected(auditd_conn,
- 					   lockdep_is_held(&auditd_conn_lock));
-@@ -1203,7 +1214,8 @@ static int audit_replace(struct pid *pid)
- 	return auditd_send_unicast_skb(skb);
- }
- 
--static int audit_receive_msg(struct sk_buff *skb, struct nlmsghdr *nlh)
-+static int audit_receive_msg(struct sk_buff *skb, struct nlmsghdr *nlh,
-+			     bool *ack)
- {
- 	u32			seq;
- 	void			*data;
-@@ -1296,7 +1308,8 @@ static int audit_receive_msg(struct sk_buff *skb, struct nlmsghdr *nlh)
- 				/* register a new auditd connection */
- 				err = auditd_set(req_pid,
- 						 NETLINK_CB(skb).portid,
--						 sock_net(NETLINK_CB(skb).sk));
-+						 sock_net(NETLINK_CB(skb).sk),
-+						 skb, ack);
- 				if (audit_enabled != AUDIT_OFF)
- 					audit_log_config_change("audit_pid",
- 								new_pid,
-@@ -1541,9 +1554,10 @@ static int audit_receive_msg(struct sk_buff *skb, struct nlmsghdr *nlh)
-  * Parse the provided skb and deal with any messages that may be present,
-  * malformed skbs are discarded.
-  */
--static void audit_receive(struct sk_buff  *skb)
-+static void audit_receive(struct sk_buff *skb)
- {
- 	struct nlmsghdr *nlh;
-+	bool ack;
- 	/*
- 	 * len MUST be signed for nlmsg_next to be able to dec it below 0
- 	 * if the nlmsg_len was not aligned
-@@ -1556,9 +1570,12 @@ static void audit_receive(struct sk_buff  *skb)
- 
- 	audit_ctl_lock();
- 	while (nlmsg_ok(nlh, len)) {
--		err = audit_receive_msg(skb, nlh);
--		/* if err or if this message says it wants a response */
--		if (err || (nlh->nlmsg_flags & NLM_F_ACK))
-+		ack = nlh->nlmsg_flags & NLM_F_ACK;
-+		err = audit_receive_msg(skb, nlh, &ack);
-+
-+		/* send an ack if the user asked for one and audit_receive_msg
-+		 * didn't already do it, or if there was an error. */
-+		if (ack || err)
- 			netlink_ack(skb, nlh, err, NULL);
- 
- 		nlh = nlmsg_next(nlh, &len);
+ 	spi->mode		= spi->mode ? : SPI_MODE_0;
+ 	spi->max_speed_hz	= spi->max_speed_hz ? : 4 * HZ_PER_MHZ;
+ 	ret = spi_setup(spi);
 -- 
 2.43.0
 
