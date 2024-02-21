@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-21936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7053385D947
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2B6885DBD3
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:45:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9207F1C22E6A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:17:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53F261F2481C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:45:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3874E7993E;
-	Wed, 21 Feb 2024 13:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1130E7C6E5;
+	Wed, 21 Feb 2024 13:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vqg5Zenk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4jqshk1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD6C2C9A;
-	Wed, 21 Feb 2024 13:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38D979DBC;
+	Wed, 21 Feb 2024 13:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521386; cv=none; b=L3E29cvqysBB9DqHI1yYa1ym3tI1tOb0gkd7dobEh6IryeintsAuzs+DgVUJ5RhUytJaHZTXCk7RAbThGW4qLNGmbv4/+VjYfatZwFd0NFj8lVHbiJ6n1V4UlD8h3OoP89TpSl0UF/vjxth0W+o07Jo+WZAafGmIYVw1A0O3+8g=
+	t=1708523126; cv=none; b=sV47ouREZQcoDIQ/JxcL7RfynPvYAoHTXbjUCFt8vnRaHvaWbVDIcMp35WPTyvLjG4GbTlvaJUBLBxn4bWiSmWeiCI8o+Xj3DCgW6FIsBJve4ziHdg2mx1eX2+CXg4qSN4mrhDQN042IvlHgI6CeTsfvrp8X3BV4/POAn0CW3ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521386; c=relaxed/simple;
-	bh=1uYpvLpIkaAZwvUZu3uRPCdbKMIsPtCmRmGapb6n96c=;
+	s=arc-20240116; t=1708523126; c=relaxed/simple;
+	bh=TUOWCmHJFs5rU1Emt/V1NA0n16Aa+ZpTG432rziKkA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=twcw262b/M/6ifJLoisEd6dY7DRhMkWwMulZJaQ08l04D91OwBlEs9kqi8CaSHSJnwQPnCOKYB4xHCJT1tev6rlW2CU+W0iTpEJ0lc8BbZxBhdoQHYiSqPhvyAA2SQkPBFRQtCJ2eduEljGj7m+9+gCeOr+b+nRXlqTmh0yNcHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vqg5Zenk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B742C43390;
-	Wed, 21 Feb 2024 13:16:24 +0000 (UTC)
+	 MIME-Version; b=NXfUPCB075MNr9SD6CYa9eX2oUi5tLkrhKbV38H+gIa6snzwbL0wPkepFUyecliopCeAjv5U/FexaltUYZP5SXUbiq50N1EEdTXY3bcJh73meB+QJJqpG6ZYgnoMZgpTtkoQIDF2L2WqX51UIYQL/En3l/ZAqgv+dKr24p2Ujj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4jqshk1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32ED0C433C7;
+	Wed, 21 Feb 2024 13:45:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521385;
-	bh=1uYpvLpIkaAZwvUZu3uRPCdbKMIsPtCmRmGapb6n96c=;
+	s=korg; t=1708523126;
+	bh=TUOWCmHJFs5rU1Emt/V1NA0n16Aa+ZpTG432rziKkA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vqg5ZenkmWIOg9pifsf6q7sjwR2P3n/am7+Ffc76h9H9tA4Q6h8malGMiPzmqv8z6
-	 Am7wvh+YD4u9GZqTJ5swspFK7xd1WEi/gJY4l8owRafAmc+CKbKDxVAEhA7owRJ8oe
-	 LXCO//UDO7Pnz2lnZ4KeKyPj+waCpzqLbdJJk3B0=
+	b=Y4jqshk1r43r49u3ysF4FGdaaDjJziaqaVpGQbC6pwtO87S8d13Kswzm3UlMh+vF1
+	 so5mqmMB9SPSvbZ54GTSjWRINKtyAPYrpbQrHhIQ+ZSnI2n0cYR9KqG7uS6qiK1F/t
+	 UddB+BmSmGOf8RTKYiWbsXhQI6yEA7q6m12fSeS8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 097/202] ASoC: doc: Fix undefined SND_SOC_DAPM_NOPM argument
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.15 347/476] btrfs: send: return EOPNOTSUPP on unknown flags
 Date: Wed, 21 Feb 2024 14:06:38 +0100
-Message-ID: <20240221125934.915346942@linuxfoundation.org>
+Message-ID: <20240221130020.814105061@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit 67c7666fe808c3a7af3cc6f9d0a3dd3acfd26115 ]
+commit f884a9f9e59206a2d41f265e7e403f080d10b493 upstream.
 
-The virtual widget example makes use of an undefined SND_SOC_DAPM_NOPM
-argument passed to SND_SOC_DAPM_MIXER().  Replace with the correct
-SND_SOC_NOPM definition.
+When some ioctl flags are checked we return EOPNOTSUPP, like for
+BTRFS_SCRUB_SUPPORTED_FLAGS, BTRFS_SUBVOL_CREATE_ARGS_MASK or fallocate
+modes. The EINVAL is supposed to be for a supported but invalid
+values or combination of options. Fix that when checking send flags so
+it's consistent with the rest.
 
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://lore.kernel.org/r/20231121120751.77355-1-cristian.ciocaltea@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org # 4.14+
+Link: https://lore.kernel.org/linux-btrfs/CAL3q7H5rryOLzp3EKq8RTbjMHMHeaJubfpsVLF6H4qJnKCUR1w@mail.gmail.com/
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/sound/soc/dapm.rst | 2 +-
+ fs/btrfs/send.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/sound/soc/dapm.rst b/Documentation/sound/soc/dapm.rst
-index 8e44107933ab..c3154ce6e1b2 100644
---- a/Documentation/sound/soc/dapm.rst
-+++ b/Documentation/sound/soc/dapm.rst
-@@ -234,7 +234,7 @@ corresponding soft power control. In this case it is necessary to create
- a virtual widget - a widget with no control bits e.g.
- ::
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -7558,7 +7558,7 @@ long btrfs_ioctl_send(struct file *mnt_f
+ 	}
  
--  SND_SOC_DAPM_MIXER("AC97 Mixer", SND_SOC_DAPM_NOPM, 0, 0, NULL, 0),
-+  SND_SOC_DAPM_MIXER("AC97 Mixer", SND_SOC_NOPM, 0, 0, NULL, 0),
+ 	if (arg->flags & ~BTRFS_SEND_FLAG_MASK) {
+-		ret = -EINVAL;
++		ret = -EOPNOTSUPP;
+ 		goto out;
+ 	}
  
- This can be used to merge to signal paths together in software.
- 
--- 
-2.43.0
-
 
 
 
