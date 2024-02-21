@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D03585D9AE
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ACB185DEE5
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:22:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F17591F22B9D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:21:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 262F0283995
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:22:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDF367BB19;
-	Wed, 21 Feb 2024 13:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D967C099;
+	Wed, 21 Feb 2024 14:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I1pLDR4l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOdYek4r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFEB79DA2;
-	Wed, 21 Feb 2024 13:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1031B7BB16;
+	Wed, 21 Feb 2024 14:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521660; cv=none; b=eqhIPD1MSHCZW9ed3VBzKxcPgoHvatFDbnIdb+pfrvbU553AZClg3seFXszVG4YvUlee83bUBjaKg6iaFOyT0L6YfO+VC5cCWFsG/89UkSLl/ep23tjhGDwIDNPFvOElz3jqmuPRLdiD8r+gylSKEHd0gJ87sOVhpG7D6Pfj/sk=
+	t=1708525360; cv=none; b=mGH5Stiq+d5hnhP/XED3cdYYcOWsWoKt4Je7fnVKsRxZPAog5aj5qktVWvapZMfjYpuwzRWPLVVEyYw7SNBff5SGiI+SYreOEIlgvTsLH3TEUK4uK8ATE/RgQw2QBhrecOz2zLinJ+5OUq1sdWLljRFMQUGkNMbTl4SYxDqAekU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521660; c=relaxed/simple;
-	bh=V7fPD9fy8jj1a4ybw670FleYc61WywPLplHHU8Eydck=;
+	s=arc-20240116; t=1708525360; c=relaxed/simple;
+	bh=8NzoKZPo2u1BiPPA/nsGJ4DcxBiXL0dh05IaQ44RZv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RCtV0+RH+uHlec6F0dohM3ed1bAekZTOmmpPCIcw1G+9ZkcRr/UYmBwz9LUNhNclScNG5XuaUz/zCcnBRoMNr89UYhsUS2fbUzeEo+In/o5uY2bq9J7CqScNuz+bstCFEJgzxHp3K0FZzMuVcoNYEeROlFHil3muIEfZsDNAums=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I1pLDR4l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89C4C433C7;
-	Wed, 21 Feb 2024 13:20:59 +0000 (UTC)
+	 MIME-Version; b=Aq1N5gW5VYkz0e4snsGHBjmHHCsJq7MhDHprwC9QKB2P10rp5Ckhyq37ucnQp4TnG6BlGSb1vVd1apNf9/OlB+g0pg1OvOg8tC2tA0cOTW3+Cbvhc4iKvQpGh9k4FgSAxkCWcW/UdfrPK/wOmPoXAkaAyze1fEOPQsrx9UQIbho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOdYek4r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72ED6C433C7;
+	Wed, 21 Feb 2024 14:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521660;
-	bh=V7fPD9fy8jj1a4ybw670FleYc61WywPLplHHU8Eydck=;
+	s=korg; t=1708525359;
+	bh=8NzoKZPo2u1BiPPA/nsGJ4DcxBiXL0dh05IaQ44RZv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I1pLDR4lWQUIV1BVhqYxCvfp7AKoCcgNhduKOHlimOC0xgEb+fGv/Q+SjVY7lNN98
-	 wDgDyLw8H3xFvLXhJ/8n8zKa48v846jp1RbahniV7FG2svATVDwEnfsDf2doJS3MAO
-	 uPxs0cZ5xaLhwosZXcYIBuejNISLNnDotJsb2r/E=
+	b=cOdYek4rjiQKx8sC0s3ITcrzZyzqgWhYcu/WNcBAL0o6ySv3zrbgVmEdus6EzDlwZ
+	 yuWd+kQLndeWfbVqesla+Xk0i0N5Ar4Jqi03hLra1k+cU4uOZWQk4ufVMWIWsoFU6D
+	 4XrFNmLMVvrKAFiw5qR/gqsXLwIEXgojXI+KUaBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <bberg@redhat.com>,
-	Jiri Kosina <jkosina@suse.cz>,
-	Aseda Aboagye <aaboagye@chromium.org>
-Subject: [PATCH 4.19 144/202] HID: apple: Add 2021 magic keyboard FN key mapping
+	Johan Jonker <jbx6244@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 104/267] ARM: dts: rockchip: fix rk3036 hdmi ports node
 Date: Wed, 21 Feb 2024 14:07:25 +0100
-Message-ID: <20240221125936.364534073@linuxfoundation.org>
+Message-ID: <20240221125943.202649545@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <bberg@redhat.com>
+From: Johan Jonker <jbx6244@gmail.com>
 
-commit 531cb56972f2773c941499fcfb639cd5128dfb27 upstream.
+[ Upstream commit 27ded76ef0fcfcf939914532aae575cf23c221b4 ]
 
-The new 2021 apple models have a different FN key assignment. Add a new
-translation table and use that for the 2021 magic keyboard.
+Fix hdmi ports node so that it matches the
+rockchip,inno-hdmi.yaml binding.
 
-Signed-off-by: Benjamin Berg <bberg@redhat.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Cc: Aseda Aboagye <aaboagye@chromium.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
+Link: https://lore.kernel.org/r/9a2afac1-ed5c-382d-02b0-b2f5f1af3abb@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-apple.c |   29 ++++++++++++++++++++++++++++-
- 1 file changed, 28 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/rk3036.dtsi | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
---- a/drivers/hid/hid-apple.c
-+++ b/drivers/hid/hid-apple.c
-@@ -73,6 +73,28 @@ struct apple_key_translation {
- 	u8 flags;
- };
+diff --git a/arch/arm/boot/dts/rk3036.dtsi b/arch/arm/boot/dts/rk3036.dtsi
+index d282a7b638d8..cc2d596da7d4 100644
+--- a/arch/arm/boot/dts/rk3036.dtsi
++++ b/arch/arm/boot/dts/rk3036.dtsi
+@@ -337,12 +337,20 @@
+ 		pinctrl-0 = <&hdmi_ctl>;
+ 		status = "disabled";
  
-+static const struct apple_key_translation apple2021_fn_keys[] = {
-+	{ KEY_BACKSPACE, KEY_DELETE },
-+	{ KEY_ENTER,	KEY_INSERT },
-+	{ KEY_F1,	KEY_BRIGHTNESSDOWN, APPLE_FLAG_FKEY },
-+	{ KEY_F2,	KEY_BRIGHTNESSUP,   APPLE_FLAG_FKEY },
-+	{ KEY_F3,	KEY_SCALE,          APPLE_FLAG_FKEY },
-+	{ KEY_F4,	KEY_SEARCH,         APPLE_FLAG_FKEY },
-+	{ KEY_F5,	KEY_MICMUTE,        APPLE_FLAG_FKEY },
-+	{ KEY_F6,	KEY_SLEEP,          APPLE_FLAG_FKEY },
-+	{ KEY_F7,	KEY_PREVIOUSSONG,   APPLE_FLAG_FKEY },
-+	{ KEY_F8,	KEY_PLAYPAUSE,      APPLE_FLAG_FKEY },
-+	{ KEY_F9,	KEY_NEXTSONG,       APPLE_FLAG_FKEY },
-+	{ KEY_F10,	KEY_MUTE,           APPLE_FLAG_FKEY },
-+	{ KEY_F11,	KEY_VOLUMEDOWN,     APPLE_FLAG_FKEY },
-+	{ KEY_F12,	KEY_VOLUMEUP,       APPLE_FLAG_FKEY },
-+	{ KEY_UP,	KEY_PAGEUP },
-+	{ KEY_DOWN,	KEY_PAGEDOWN },
-+	{ KEY_LEFT,	KEY_HOME },
-+	{ KEY_RIGHT,	KEY_END },
-+	{ }
-+};
+-		hdmi_in: port {
++		ports {
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+-			hdmi_in_vop: endpoint@0 {
 +
- static const struct apple_key_translation macbookair_fn_keys[] = {
- 	{ KEY_BACKSPACE, KEY_DELETE },
- 	{ KEY_ENTER,	KEY_INSERT },
-@@ -207,7 +229,9 @@ static int hidinput_apple_event(struct h
- 	}
- 
- 	if (fnmode) {
--		if (hid->product >= USB_DEVICE_ID_APPLE_WELLSPRING4_ANSI &&
-+		if (hid->product == USB_DEVICE_ID_APPLE_MAGIC_KEYBOARD_2021)
-+			table = apple2021_fn_keys;
-+		else if (hid->product >= USB_DEVICE_ID_APPLE_WELLSPRING4_ANSI &&
- 				hid->product <= USB_DEVICE_ID_APPLE_WELLSPRING4A_JIS)
- 			table = macbookair_fn_keys;
- 		else if (hid->product < 0x21d || hid->product >= 0x300)
-@@ -366,6 +390,9 @@ static void apple_setup_input(struct inp
- 	for (trans = apple_iso_keyboard; trans->from; trans++)
- 		set_bit(trans->to, input->keybit);
- 
-+	for (trans = apple2021_fn_keys; trans->from; trans++)
-+		set_bit(trans->to, input->keybit);
++			hdmi_in: port@0 {
+ 				reg = <0>;
+-				remote-endpoint = <&vop_out_hdmi>;
 +
- 	if (swap_fn_leftctrl) {
- 		for (trans = swapped_fn_leftctrl_keys; trans->from; trans++)
- 			set_bit(trans->to, input->keybit);
++				hdmi_in_vop: endpoint {
++					remote-endpoint = <&vop_out_hdmi>;
++				};
++			};
++
++			hdmi_out: port@1 {
++				reg = <1>;
+ 			};
+ 		};
+ 	};
+-- 
+2.43.0
+
 
 
 
