@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-23046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EDBF85DEF8
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:23:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5050085DC39
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:50:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49E3A283366
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:23:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC1C42817F2
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:50:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F576A8D6;
-	Wed, 21 Feb 2024 14:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF5517BB0B;
+	Wed, 21 Feb 2024 13:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6B+NxSn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jVpbeLAh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF6369317;
-	Wed, 21 Feb 2024 14:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C54B69942;
+	Wed, 21 Feb 2024 13:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525398; cv=none; b=F1vEqY25K1g+fBH51zQ1gBQa/9mOnErqum6xruFkOQl+DgYMXfZNPifc2EilgpM+mewzRD2eVUf4J5lxALC3fntZciA4rbyW97OqPF6Pp0BCg1DBD4/5eeTAlDjsBJ3dgJlgJxRgdny5uLmzDvhZ2GMjs2lxeW11VVZxs4Z7Hpk=
+	t=1708523428; cv=none; b=Jd0oYxtRd3WM4Ytp7AAj8F9B4vt8C/34pPU7O1RHnuKMSQH9JUZTGWC4kNpFpzahXIe4hj1DfF86TfyBeIEmBXER6lvsHaGmSQRbfeSR/pDV/lt1hHgvbEO76PiCNxqtrXC0LHqgtG1ZQUwJKLRcGn1caxW06EGux37dgECmJVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525398; c=relaxed/simple;
-	bh=G61n1Q3sXlhXZ+TlPthGJmlwDhbtG7vGZR+AHLb4aRk=;
+	s=arc-20240116; t=1708523428; c=relaxed/simple;
+	bh=2MccHK4rRYkxAtfr/eIS4wrJYVhkj4KUsg66OJq7l3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E+79axwjvRDP2p3NRyBV7P0b+jmEqf9tmGiBZ2AjSvfSRFUSxw8sC063lYwa5YDWNDHYh+86/lejc51Ms19n5sgSL+hycsI50ZqJiAGRhi/9LCH+GuTkwAjbQjZa/qLuEnODQYOmcBM02U9Wi6F6Hm8D8cCU4EdXGicVemhxJrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6B+NxSn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D499CC433F1;
-	Wed, 21 Feb 2024 14:23:17 +0000 (UTC)
+	 MIME-Version; b=SY2L7kOlGntxlfdsUmMpoCji4XsBSLUgqXaOTVM4OIb88zBzIvP53mRroeLOd1+eSSRoLAPGpKFte95c6Raz8q4jVn+DkDKCjjF3Qbif5eeQu+YMUYJUA2XHRNfTxCT9KopgXU1DJLUEEXIsbdsU2wlWlw2evTInsMyW+SB1MeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jVpbeLAh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6EF1C433F1;
+	Wed, 21 Feb 2024 13:50:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525398;
-	bh=G61n1Q3sXlhXZ+TlPthGJmlwDhbtG7vGZR+AHLb4aRk=;
+	s=korg; t=1708523428;
+	bh=2MccHK4rRYkxAtfr/eIS4wrJYVhkj4KUsg66OJq7l3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R6B+NxSn4XdgUzRqOkeFAHDhcVdRJyRsNP6perQIQRziBlV2OC+IocxtaTP6P2j3d
-	 WawUqL3l7EG8Sp+1pl0PaXQOwlRTkJKzbIL12l5RnVeDMbARQ32A6h4QFuxsu829ZT
-	 sLlwllOWPz60OhoF4KxXcggLPTiW0Y6QdDuuegZA=
+	b=jVpbeLAh24D6SaFeMFN8sKA5nB6W4wvuE1Kd6o9GtC35QvzT6xsbclgZdlG2GVceX
+	 1f/7N2/EmAaU+VtaMKNgIlwHUbv0XCLugSAtZO34jPZ7h4Th1vHSRHe5bVnh+1ZanM
+	 vMxZEmWaI+7yoZRi5ptfyUWH9kWLC+314OiN6ZoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harshit Shah <harshitshah.opendev@gmail.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 144/267] i3c: master: cdns: Update maximum prescaler value for i2c clock
+Subject: [PATCH 5.15 434/476] usb: dwc3: ep0: Dont prepare beyond Setup stage
 Date: Wed, 21 Feb 2024 14:08:05 +0100
-Message-ID: <20240221125944.581703511@linuxfoundation.org>
+Message-ID: <20240221130024.062116191@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +61,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harshit Shah <harshitshah.opendev@gmail.com>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-[ Upstream commit 374c13f9080a1b9835a5ed3e7bea93cf8e2dc262 ]
+[ Upstream commit c96683798e272366866a5c0ce3073c0b5a256db7 ]
 
-As per the Cadence IP document fixed the I2C clock divider value limit from
-16 bits instead of 10 bits. Without this change setting up the I2C clock to
-low frequencies will not work as the prescaler value might be greater than
-10 bit number.
+Since we can't guarantee that the host won't send new Setup packet
+before going through the device-initiated disconnect, don't prepare
+beyond the Setup stage and keep the device in EP0_SETUP_PHASE. This
+ensures that the device-initated disconnect sequence can go through
+gracefully. Note that the controller won't service the End Transfer
+command if it can't DMA out the Setup packet.
 
-I3C clock divider value is 10 bits only. Updating the macro names for both.
-
-Signed-off-by: Harshit Shah <harshitshah.opendev@gmail.com>
-Link: https://lore.kernel.org/r/1703927483-28682-1-git-send-email-harshitshah.opendev@gmail.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/6bacec56ecabb2c6e49a09cedfcac281fdc97de0.1650593829.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 730e12fbec53 ("usb: dwc3: gadget: Handle EP0 request dequeuing properly")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/i3c-master-cdns.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/usb/dwc3/ep0.c    |  2 +-
+ drivers/usb/dwc3/gadget.c | 29 +++++++++++++++++------------
+ 2 files changed, 18 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/i3c/master/i3c-master-cdns.c b/drivers/i3c/master/i3c-master-cdns.c
-index cc0944e2d330..6e0621e730fa 100644
---- a/drivers/i3c/master/i3c-master-cdns.c
-+++ b/drivers/i3c/master/i3c-master-cdns.c
-@@ -74,7 +74,8 @@
- #define PRESCL_CTRL0			0x14
- #define PRESCL_CTRL0_I2C(x)		((x) << 16)
- #define PRESCL_CTRL0_I3C(x)		(x)
--#define PRESCL_CTRL0_MAX		GENMASK(9, 0)
-+#define PRESCL_CTRL0_I3C_MAX		GENMASK(9, 0)
-+#define PRESCL_CTRL0_I2C_MAX		GENMASK(15, 0)
+diff --git a/drivers/usb/dwc3/ep0.c b/drivers/usb/dwc3/ep0.c
+index 34cb8662e129..624de23782b5 100644
+--- a/drivers/usb/dwc3/ep0.c
++++ b/drivers/usb/dwc3/ep0.c
+@@ -816,7 +816,7 @@ static void dwc3_ep0_inspect_setup(struct dwc3 *dwc,
+ 	int ret = -EINVAL;
+ 	u32 len;
  
- #define PRESCL_CTRL1			0x18
- #define PRESCL_CTRL1_PP_LOW_MASK	GENMASK(15, 8)
-@@ -1212,7 +1213,7 @@ static int cdns_i3c_master_bus_init(struct i3c_master_controller *m)
- 		return -EINVAL;
+-	if (!dwc->gadget_driver)
++	if (!dwc->gadget_driver || !dwc->connected)
+ 		goto out;
  
- 	pres = DIV_ROUND_UP(sysclk_rate, (bus->scl_rate.i3c * 4)) - 1;
--	if (pres > PRESCL_CTRL0_MAX)
-+	if (pres > PRESCL_CTRL0_I3C_MAX)
- 		return -ERANGE;
+ 	trace_dwc3_ctrl_req(ctrl);
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 3a663d71d791..2afe6784f1df 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -2472,6 +2472,23 @@ static int dwc3_gadget_soft_disconnect(struct dwc3 *dwc)
+ 	spin_lock_irqsave(&dwc->lock, flags);
+ 	dwc->connected = false;
  
- 	bus->scl_rate.i3c = sysclk_rate / ((pres + 1) * 4);
-@@ -1225,7 +1226,7 @@ static int cdns_i3c_master_bus_init(struct i3c_master_controller *m)
- 	max_i2cfreq = bus->scl_rate.i2c;
++	/*
++	 * Per databook, when we want to stop the gadget, if a control transfer
++	 * is still in process, complete it and get the core into setup phase.
++	 */
++	if (dwc->ep0state != EP0_SETUP_PHASE) {
++		int ret;
++
++		reinit_completion(&dwc->ep0_in_setup);
++
++		spin_unlock_irqrestore(&dwc->lock, flags);
++		ret = wait_for_completion_timeout(&dwc->ep0_in_setup,
++				msecs_to_jiffies(DWC3_PULL_UP_TIMEOUT));
++		spin_lock_irqsave(&dwc->lock, flags);
++		if (ret == 0)
++			dev_warn(dwc->dev, "timed out waiting for SETUP phase\n");
++	}
++
+ 	/*
+ 	 * In the Synopsys DesignWare Cores USB3 Databook Rev. 3.30a
+ 	 * Section 4.1.8 Table 4-7, it states that for a device-initiated
+@@ -2516,18 +2533,6 @@ static int dwc3_gadget_pullup(struct usb_gadget *g, int is_on)
+ 	is_on = !!is_on;
  
- 	pres = (sysclk_rate / (max_i2cfreq * 5)) - 1;
--	if (pres > PRESCL_CTRL0_MAX)
-+	if (pres > PRESCL_CTRL0_I2C_MAX)
- 		return -ERANGE;
+ 	dwc->softconnect = is_on;
+-	/*
+-	 * Per databook, when we want to stop the gadget, if a control transfer
+-	 * is still in process, complete it and get the core into setup phase.
+-	 */
+-	if (!is_on && dwc->ep0state != EP0_SETUP_PHASE) {
+-		reinit_completion(&dwc->ep0_in_setup);
+-
+-		ret = wait_for_completion_timeout(&dwc->ep0_in_setup,
+-				msecs_to_jiffies(DWC3_PULL_UP_TIMEOUT));
+-		if (ret == 0)
+-			dev_warn(dwc->dev, "timed out waiting for SETUP phase\n");
+-	}
  
- 	bus->scl_rate.i2c = sysclk_rate / ((pres + 1) * 5);
+ 	/*
+ 	 * Avoid issuing a runtime resume if the device is already in the
 -- 
 2.43.0
 
