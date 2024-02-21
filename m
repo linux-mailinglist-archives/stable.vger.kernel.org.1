@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D58C85DDB9
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:10:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F3E685DC03
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:48:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59C40B2A001
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:09:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FE12B27662
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:48:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286BB8063B;
-	Wed, 21 Feb 2024 14:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4602D7BB0B;
+	Wed, 21 Feb 2024 13:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1TT5wIuG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJWRxcSk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67C48062C;
-	Wed, 21 Feb 2024 14:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05DA277A03;
+	Wed, 21 Feb 2024 13:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524402; cv=none; b=UH1+j73HszSSnQnvHKrce4lKIFVDU/ViclN0VWf+QgUQ9tq85znaMkUVjwyaDGUrRdkOM3+u+ecj1A5rM1G7iwEUCz84njj8fTsLoY6EmhE1+zrbbeQInwlKMIbRvIG8vzQqxEK/aUuj2RIryzi50XYZ4WpddXmnmq92oKPofQI=
+	t=1708523290; cv=none; b=dGHoa4TcNO+X5kxHeX0+3k349a6LWfQE7dE+HRG1IU6Ah6qGID2+bMthvewqZVNplAtTa23RH22uICgE3IsHb1J0hU7KxEs7Sqrx9XxPhxDQQfRpGWMtoieMdYfIBTi3iuQ2Nc6Q+8j6I/JsEAJYQccV88aMzmJ3Ta8BIdJ5SyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524402; c=relaxed/simple;
-	bh=Z6IyBh/MOPwz4+tJ/BvD5k9+e0JdrRhbOkOPqvVbRSI=;
+	s=arc-20240116; t=1708523290; c=relaxed/simple;
+	bh=o1yMgI+Nrf1Xo/OGw57HO7her2gBey9UbPPtteb9j4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EwCgPfRUUCMGw4xZXAZXymrycFA9OhbRoDUtCO4567WEyFFh5GHQ7etu1JJBIkGj9mHVbrZxyNSGO/yCKvFENCFkJpHRNpcqWWjRaXm93MHW1M0LIXqqSHVqrN2Hk4BO+Nf+5wlSZqAPiDiD4+RCOagzFqxFh0CIQoEp+tBpntw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1TT5wIuG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61978C433F1;
-	Wed, 21 Feb 2024 14:06:42 +0000 (UTC)
+	 MIME-Version; b=h3cn3WWfn6lkC6enEY0xbzXdL0VLZR8lKwaq3xt1xMogpTSiQAhQ3fVxZO8TmOoL2AX2TKLVSPBhlLdXcxTD5uJBvWekFp9CPhSekGXSE4OAPysjiAxWFuAWRJE0FjWbucHDLOMMReyLU0yf7D9+54FssBORsrTOrsObe+ZAOfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJWRxcSk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81D25C433C7;
+	Wed, 21 Feb 2024 13:48:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524402;
-	bh=Z6IyBh/MOPwz4+tJ/BvD5k9+e0JdrRhbOkOPqvVbRSI=;
+	s=korg; t=1708523289;
+	bh=o1yMgI+Nrf1Xo/OGw57HO7her2gBey9UbPPtteb9j4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1TT5wIuGAcGNyJfR65Czfkhte4q+KAQyND3ezEQ56N+5+tET8JiAbHC18S/i4LSrq
-	 pPCpaf12NMv7enPpk2HZIHa8I1o/8dVGtJjyrM/N4Iy1MEYCHyeaWGf3FfpCQysVeR
-	 M8gd/mG9KDY2ozoo0DuXQSdd09RGyeS9LopGeBsk=
+	b=gJWRxcSkmhQTOFFN07Oh8Bg67wMsIQk+40puBRL7Y3nPJbHFd7vr1HN67MSsRr8a0
+	 FMU1qJbYzCUHeLulEVUXNnZDo6Mfn68YmYWKw8H9rxxwGAosNM9/6l6cmSQIz5CA+V
+	 YZe6NJg6t8+C+OR6yl46SsXx3ywZFemx7RODDrQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 234/379] ipv6: Ensure natural alignment of const ipv6 loopback and router addresses
+	Douglas Anderson <dianders@chromium.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 5.15 362/476] HID: i2c-hid-of: fix NULL-deref on failed power up
 Date: Wed, 21 Feb 2024 14:06:53 +0100
-Message-ID: <20240221130001.836435782@linuxfoundation.org>
+Message-ID: <20240221130021.378692812@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@kernel.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 60365049ccbacd101654a66ddcb299abfabd4fc5 ]
+commit 00aab7dcb2267f2aef59447602f34501efe1a07f upstream.
 
-On a parisc64 kernel I sometimes notice this kernel warning:
-Kernel unaligned access to 0x40ff8814 at ndisc_send_skb+0xc0/0x4d8
+A while back the I2C HID implementation was split in an ACPI and OF
+part, but the new OF driver never initialises the client pointer which
+is dereferenced on power-up failures.
 
-The address 0x40ff8814 points to the in6addr_linklocal_allrouters
-variable and the warning simply means that some ipv6 function tries to
-read a 64-bit word directly from the not-64-bit aligned
-in6addr_linklocal_allrouters variable.
-
-Unaligned accesses are non-critical as the architecture or exception
-handlers usually will fix it up at runtime. Nevertheless it may trigger
-a performance penality for some architectures. For details read the
-"unaligned-memory-access" kernel documentation.
-
-The patch below ensures that the ipv6 loopback and router addresses will
-always be naturally aligned. This prevents the unaligned accesses for
-all architectures.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-Fixes: 034dfc5df99eb ("ipv6: export in6addr_loopback to modules")
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/ZbNuFM1bFqoH-UoY@p100
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b33752c30023 ("HID: i2c-hid: Reorganize so ACPI and OF are separate modules")
+Cc: stable@vger.kernel.org      # 5.12
+Cc: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/addrconf_core.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ drivers/hid/i2c-hid/i2c-hid-of.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv6/addrconf_core.c b/net/ipv6/addrconf_core.c
-index c70c192bc91b..5e0e2b5ba34e 100644
---- a/net/ipv6/addrconf_core.c
-+++ b/net/ipv6/addrconf_core.c
-@@ -213,19 +213,26 @@ const struct ipv6_stub *ipv6_stub __read_mostly = &(struct ipv6_stub) {
- EXPORT_SYMBOL_GPL(ipv6_stub);
+--- a/drivers/hid/i2c-hid/i2c-hid-of.c
++++ b/drivers/hid/i2c-hid/i2c-hid-of.c
+@@ -80,6 +80,7 @@ static int i2c_hid_of_probe(struct i2c_c
+ 	if (!ihid_of)
+ 		return -ENOMEM;
  
- /* IPv6 Wildcard Address and Loopback Address defined by RFC2553 */
--const struct in6_addr in6addr_loopback = IN6ADDR_LOOPBACK_INIT;
-+const struct in6_addr in6addr_loopback __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_LOOPBACK_INIT;
- EXPORT_SYMBOL(in6addr_loopback);
--const struct in6_addr in6addr_any = IN6ADDR_ANY_INIT;
-+const struct in6_addr in6addr_any __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_ANY_INIT;
- EXPORT_SYMBOL(in6addr_any);
--const struct in6_addr in6addr_linklocal_allnodes = IN6ADDR_LINKLOCAL_ALLNODES_INIT;
-+const struct in6_addr in6addr_linklocal_allnodes __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_LINKLOCAL_ALLNODES_INIT;
- EXPORT_SYMBOL(in6addr_linklocal_allnodes);
--const struct in6_addr in6addr_linklocal_allrouters = IN6ADDR_LINKLOCAL_ALLROUTERS_INIT;
-+const struct in6_addr in6addr_linklocal_allrouters __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_LINKLOCAL_ALLROUTERS_INIT;
- EXPORT_SYMBOL(in6addr_linklocal_allrouters);
--const struct in6_addr in6addr_interfacelocal_allnodes = IN6ADDR_INTERFACELOCAL_ALLNODES_INIT;
-+const struct in6_addr in6addr_interfacelocal_allnodes __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_INTERFACELOCAL_ALLNODES_INIT;
- EXPORT_SYMBOL(in6addr_interfacelocal_allnodes);
--const struct in6_addr in6addr_interfacelocal_allrouters = IN6ADDR_INTERFACELOCAL_ALLROUTERS_INIT;
-+const struct in6_addr in6addr_interfacelocal_allrouters __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_INTERFACELOCAL_ALLROUTERS_INIT;
- EXPORT_SYMBOL(in6addr_interfacelocal_allrouters);
--const struct in6_addr in6addr_sitelocal_allrouters = IN6ADDR_SITELOCAL_ALLROUTERS_INIT;
-+const struct in6_addr in6addr_sitelocal_allrouters __aligned(BITS_PER_LONG/8)
-+	= IN6ADDR_SITELOCAL_ALLROUTERS_INIT;
- EXPORT_SYMBOL(in6addr_sitelocal_allrouters);
++	ihid_of->client = client;
+ 	ihid_of->ops.power_up = i2c_hid_of_power_up;
+ 	ihid_of->ops.power_down = i2c_hid_of_power_down;
  
- static void snmp6_free_dev(struct inet6_dev *idev)
--- 
-2.43.0
-
 
 
 
