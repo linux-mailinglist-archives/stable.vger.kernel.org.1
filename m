@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-22522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FA3685DC6D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:53:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71CE185DE0C
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:14:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD7A728522D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:53:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3A511C23884
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:14:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B9F87BB0E;
-	Wed, 21 Feb 2024 13:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 264037E767;
+	Wed, 21 Feb 2024 14:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sPAQ87PX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RSp3gjhP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE4B55E5E;
-	Wed, 21 Feb 2024 13:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C047E590;
+	Wed, 21 Feb 2024 14:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523583; cv=none; b=hj23gd8G8vUBi+wAPhwm74qnwdS7iIEaAH67axpVxSpXfC0cfqnqmlCGZ+l1mJJT1VF/Ul7ogIRZz8U6AZuwUOD1nwYArpRJBYZYZ0GoWufqWCNWIF6pstEdg70H1QsTfTHfBWmVuJxgFpJR7e6wtt2g8vZ49lXYF9Xldcg3T0A=
+	t=1708524704; cv=none; b=edCt7F+y5z/FqWKmwyzCcQVu8R5fztsGsnHycm8UsolLEZ901vyH2FDxgbbGLcd/sMGCjdtTLWmYb7gUA++dK0094yTV3QXVIxXaF9VgRbP3zSywJ4YO4ZskrjPeyl4pDMikfIsTQ4V7vfvP+afOe8WZk5uJGe7eF6iSGMFWE3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523583; c=relaxed/simple;
-	bh=gb5dkwkecC5gTVcb9JC2n7E+9nrQFPAHLNMmkU4s8x8=;
+	s=arc-20240116; t=1708524704; c=relaxed/simple;
+	bh=zAY7/b5sxvAbDZMiojz84SEXcodvyww8gfz3PT8PUak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MnpaP4ELN8IBLeqaiWcS9jTfBH3sxS7rSo48oCO5AxPZQglG0AN3Wz51lE1fSYczikRDOJKyqSd6JdUGRyAGwt3rpbBueigUcTKYrBI0CXn9NXDh5jkwGSUduWaJb9JnHs09Cwsw3CvoItDL1OzvNyzzY18e3ilU8Cl8aN0oC/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sPAQ87PX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A58BC43394;
-	Wed, 21 Feb 2024 13:53:02 +0000 (UTC)
+	 MIME-Version; b=ejcxK7J8RRLZ3alj6y9Lh3XcAutwk0oV9UH69L5oGzIcxfcN2V0mlTVQ7/sy9zKUwdI6Wgcz2wOFU9CM6xlCg+WyrRdwPzwQDcI0RvWafLriMxPwIJ+0rML+mvP6y1Vh1AWSau+RKQr9unGzz/1fKPckECdHJHUEo4Fi0RA+0rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RSp3gjhP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A750C433F1;
+	Wed, 21 Feb 2024 14:11:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523582;
-	bh=gb5dkwkecC5gTVcb9JC2n7E+9nrQFPAHLNMmkU4s8x8=;
+	s=korg; t=1708524704;
+	bh=zAY7/b5sxvAbDZMiojz84SEXcodvyww8gfz3PT8PUak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sPAQ87PXnvxbi5cVTwqliNZziBKTQ6gsl7Oir8TuJDTv/rAVLGoFkE1BIJ6MpL9dW
-	 wM12Pc47CsVgztF7HunSPcv/09bdY6BQas+m6obD3CNa+I1efnHu0jriKJoDW4pOag
-	 fznU2ovF4lmLCq5UvZ3/VEgmHee/n4/AsT2Hx81c=
+	b=RSp3gjhPnX/qsLVL9INFEd6JwmsVJED2b3++aLP3gs1EfnEnXb4e1DsWCb709UHPP
+	 TrqTGaQFqiiwKed2dhSq/vhWQmLUR1VTzJ+hXvkFdbhiNSqlNub0x2KpU7z9bGpstb
+	 12gbgsDj/zfb6aQHOY3EAWNTl9oqIxmPSs7dNHko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 452/476] fbdev: Fix incorrect page mapping clearance at fb_deferred_io_release()
+	Zhouyi Zhou <zhouzhouyi@gmail.com>,
+	"zhili.liu" <zhili.liu@ucas.com.cn>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 324/379] iio: magnetometer: rm3100: add boundary check for the value read from RM3100_REG_TMRC
 Date: Wed, 21 Feb 2024 14:08:23 +0100
-Message-ID: <20240221130024.744202577@linuxfoundation.org>
+Message-ID: <20240221130004.539002982@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,110 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: zhili.liu <zhili.liu@ucas.com.cn>
 
-[ Upstream commit fe9ae05cfbe587dda724fcf537c00bc2f287da62 ]
+commit 792595bab4925aa06532a14dd256db523eb4fa5e upstream.
 
-The recent fix for the deferred I/O by the commit
-  3efc61d95259 ("fbdev: Fix invalid page access after closing deferred I/O devices")
-caused a regression when the same fb device is opened/closed while
-it's being used.  It resulted in a frozen screen even if something
-is redrawn there after the close.  The breakage is because the patch
-was made under a wrong assumption of a single open; in the current
-code, fb_deferred_io_release() cleans up the page mapping of the
-pageref list and it calls cancel_delayed_work_sync() unconditionally,
-where both are no correct behavior for multiple opens.
+Recently, we encounter kernel crash in function rm3100_common_probe
+caused by out of bound access of array rm3100_samp_rates (because of
+underlying hardware failures). Add boundary check to prevent out of
+bound access.
 
-This patch adds a refcount for the opens of the device, and applies
-the cleanup only when all files get closed.
-
-As both fb_deferred_io_open() and _close() are called always in the
-fb_info lock (mutex), it's safe to use the normal int for the
-refcounting.
-
-Also, a useless BUG_ON() is dropped.
-
-Fixes: 3efc61d95259 ("fbdev: Fix invalid page access after closing deferred I/O devices")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Reviewed-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230308105012.1845-1-tiwai@suse.de
-Stable-dep-of: 33cd6ea9c067 ("fbdev: flush deferred IO before closing")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 121354b2eceb ("iio: magnetometer: Add driver support for PNI RM3100")
+Suggested-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
+Signed-off-by: zhili.liu <zhili.liu@ucas.com.cn>
+Link: https://lore.kernel.org/r/1704157631-3814-1-git-send-email-zhouzhouyi@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/fb_defio.c | 17 +++++++++++++----
- include/linux/fb.h                  |  1 +
- 2 files changed, 14 insertions(+), 4 deletions(-)
+ drivers/iio/magnetometer/rm3100-core.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/fb_defio.c b/drivers/video/fbdev/core/fb_defio.c
-index b3f41f432ec2..7e76e53b83d5 100644
---- a/drivers/video/fbdev/core/fb_defio.c
-+++ b/drivers/video/fbdev/core/fb_defio.c
-@@ -288,17 +288,18 @@ void fb_deferred_io_open(struct fb_info *info,
- 			 struct inode *inode,
- 			 struct file *file)
- {
-+	struct fb_deferred_io *fbdefio = info->fbdefio;
+--- a/drivers/iio/magnetometer/rm3100-core.c
++++ b/drivers/iio/magnetometer/rm3100-core.c
+@@ -538,6 +538,7 @@ int rm3100_common_probe(struct device *d
+ 	struct rm3100_data *data;
+ 	unsigned int tmp;
+ 	int ret;
++	int samp_rate_index;
+ 
+ 	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
+ 	if (!indio_dev)
+@@ -596,9 +597,14 @@ int rm3100_common_probe(struct device *d
+ 	ret = regmap_read(regmap, RM3100_REG_TMRC, &tmp);
+ 	if (ret < 0)
+ 		return ret;
 +
- 	file->f_mapping->a_ops = &fb_deferred_io_aops;
-+	fbdefio->open_count++;
- }
- EXPORT_SYMBOL_GPL(fb_deferred_io_open);
++	samp_rate_index = tmp - RM3100_TMRC_OFFSET;
++	if (samp_rate_index < 0 || samp_rate_index >=  RM3100_SAMP_NUM) {
++		dev_err(dev, "The value read from RM3100_REG_TMRC is invalid!\n");
++		return -EINVAL;
++	}
+ 	/* Initializing max wait time, which is double conversion time. */
+-	data->conversion_time = rm3100_samp_rates[tmp - RM3100_TMRC_OFFSET][2]
+-				* 2;
++	data->conversion_time = rm3100_samp_rates[samp_rate_index][2] * 2;
  
--void fb_deferred_io_release(struct fb_info *info)
-+static void fb_deferred_io_lastclose(struct fb_info *info)
- {
--	struct fb_deferred_io *fbdefio = info->fbdefio;
- 	struct page *page;
- 	int i;
- 
--	BUG_ON(!fbdefio);
- 	cancel_delayed_work_sync(&info->deferred_work);
- 
- 	/* clear out the mapping that we setup */
-@@ -307,13 +308,21 @@ void fb_deferred_io_release(struct fb_info *info)
- 		page->mapping = NULL;
- 	}
- }
-+
-+void fb_deferred_io_release(struct fb_info *info)
-+{
-+	struct fb_deferred_io *fbdefio = info->fbdefio;
-+
-+	if (!--fbdefio->open_count)
-+		fb_deferred_io_lastclose(info);
-+}
- EXPORT_SYMBOL_GPL(fb_deferred_io_release);
- 
- void fb_deferred_io_cleanup(struct fb_info *info)
- {
- 	struct fb_deferred_io *fbdefio = info->fbdefio;
- 
--	fb_deferred_io_release(info);
-+	fb_deferred_io_lastclose(info);
- 
- 	kvfree(info->pagerefs);
- 	mutex_destroy(&fbdefio->lock);
-diff --git a/include/linux/fb.h b/include/linux/fb.h
-index 433cddf8442b..b79a833524ef 100644
---- a/include/linux/fb.h
-+++ b/include/linux/fb.h
-@@ -212,6 +212,7 @@ struct fb_deferred_io {
- 	/* delay between mkwrite and deferred handler */
- 	unsigned long delay;
- 	bool sort_pagereflist; /* sort pagelist by offset */
-+	int open_count; /* number of opened files; protected by fb_info lock */
- 	struct mutex lock; /* mutex that protects the pageref list */
- 	struct list_head pagereflist; /* list of pagerefs for touched pages */
- 	/* callback */
--- 
-2.43.0
-
+ 	/* Cycle count values may not be what we want. */
+ 	if ((tmp - RM3100_TMRC_OFFSET) == 0)
 
 
 
