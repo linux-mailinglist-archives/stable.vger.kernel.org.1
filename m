@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-22884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE96985DEE7
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:22:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 606F985DF6E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:28:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A188CB2C0FE
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:15:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91A321C23D5D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC787F480;
-	Wed, 21 Feb 2024 14:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 010787A708;
+	Wed, 21 Feb 2024 14:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s0aUuo2H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iLYhstWd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3D67BB1F;
-	Wed, 21 Feb 2024 14:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C6D7BB01;
+	Wed, 21 Feb 2024 14:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524836; cv=none; b=WW8obyNCPcd8ltxNavZV/O53PjyjHgcvWkY/LFMbzv1jDlzxd8YEQBlbfChvZ+YsuGDI7PDK3KM3aJjJKCEfSlx4i7vyRMnWDMGxc8P4lITgfZnnPE11uVxO1EmTCOsWNsuMDGOgJCQCOSfruzQ+soq1NKuYd50aBPxLZC0mcfw=
+	t=1708525682; cv=none; b=mYcUvkOKcpeIISCB9rj1HOp5y/qD7F9sjJloZrOdLCm57u+UgVDoa2mbiEu5i9/UAwuKr05mHKVqzrq7GUmFgphtlgCXYh4cOwh1h0b+tLQceOgD4a4/pILeqPlpOebTNBSIkrGJboS7HURL5QCgJ2dHKK7yiD99Wg5LJ1WyUhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524836; c=relaxed/simple;
-	bh=UEb7zeyuLRrcDmUObbMW8S74OZJMLyHcbxYg9FNaQi4=;
+	s=arc-20240116; t=1708525682; c=relaxed/simple;
+	bh=0A1r/NVEgMPDKEAynzfPrh+dBwoBhLHRzKEgZBT5tCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EFWslOov2yVJvKpi+5i3hLU0JaI4g2YKjPsgiETorjgORc4Dyxe5Ew7R0pUOY3cnhWKCQ4XKQb+HY3DtnK9yMFHhQbN3yAVX+Qcc9jvFn5KnoFV0DNxUZE5HE9d8V7NgG1k78r/0qyPocru32CTQ+ROiYAoSWrv1BUqflzRYHQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s0aUuo2H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7352C433C7;
-	Wed, 21 Feb 2024 14:13:55 +0000 (UTC)
+	 MIME-Version; b=BEiYhRbTtOrTA5f2OtjMWqk6QJ2mYePhojxihcsfpTkd1padAhHnO49v11s8C43wC0mWBSjb1Hugv3JIAgP3mnmJ6fg8JsiLuNZLNf8j813ZXRNyqXnBCotkbicj9Pt++sqg34eAmj3Ic0vig7levbc9pD5ClmsIhpwdlJRUd/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iLYhstWd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BCE0C433F1;
+	Wed, 21 Feb 2024 14:28:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524836;
-	bh=UEb7zeyuLRrcDmUObbMW8S74OZJMLyHcbxYg9FNaQi4=;
+	s=korg; t=1708525682;
+	bh=0A1r/NVEgMPDKEAynzfPrh+dBwoBhLHRzKEgZBT5tCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s0aUuo2HKg4qaa0I1EVeDQHgkAB7WztrCjWWFoUZgJ9hmhVeukQr1r63ONRoxdmFd
-	 DSvz8Uaskg+sB7NJYo09Ll9Tc2Sd/hckaCMwoUIViiGZLRVrJEoUj979qx4JrOymxQ
-	 L+7906YrI8Z8hdvGa4OriKWAo6G9wKS88Vimu2mA=
+	b=iLYhstWdtFhS+8LQsGULF//DJYvbUZExPXLO7LqnBAwbZxiUBDSqotZsobiH7+XJh
+	 1cOszEqBhmG1exPq3/YFxPa8+lE82gaLa5CVLpYefC0uUEA8r+zxV5YJW7FzN9gTi1
+	 OgGMcnTZiyqWzMJtYfw3kfhVHyl7j8zOe89qpTMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <keescook@chromium.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 363/379] scripts: decode_stacktrace: demangle Rust symbols
-Date: Wed, 21 Feb 2024 14:09:02 +0100
-Message-ID: <20240221130005.804185033@linuxfoundation.org>
+	Furong Xu <0x1207@gmail.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.4 202/267] net: stmmac: xgmac: fix a typo of register name in DPP safety handling
+Date: Wed, 21 Feb 2024 14:09:03 +0100
+Message-ID: <20240221125946.506587948@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Furong Xu <0x1207@gmail.com>
 
-[ Upstream commit 99115db4ecc87af73415939439ec604ea0531e6f ]
+commit 1ce2654d87e2fb91fea83b288bd9b2641045e42a upstream.
 
-Recent versions of both Binutils (`c++filt`) and LLVM (`llvm-cxxfilt`)
-provide Rust v0 mangling support.
+DDPP is copied from Synopsys Data book:
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Co-developed-by: Alex Gaynor <alex.gaynor@gmail.com>
-Signed-off-by: Alex Gaynor <alex.gaynor@gmail.com>
-Co-developed-by: Wedson Almeida Filho <wedsonaf@google.com>
-Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Stable-dep-of: efbd63983533 ("scripts/decode_stacktrace.sh: optionally use LLVM utilities")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+DDPP: Disable Data path Parity Protection.
+    When it is 0x0, Data path Parity Protection is enabled.
+    When it is 0x1, Data path Parity Protection is disabled.
+
+The macro name should be XGMAC_DPP_DISABLE.
+
+Fixes: 46eba193d04f ("net: stmmac: xgmac: fix handling of DPP safety error for DMA channels")
+Signed-off-by: Furong Xu <0x1207@gmail.com>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Link: https://lore.kernel.org/r/20240203053133.1129236-1-0x1207@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/decode_stacktrace.sh | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h      |    2 +-
+ drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/decode_stacktrace.sh b/scripts/decode_stacktrace.sh
-index 51d48bf65fd7..2157332750d5 100755
---- a/scripts/decode_stacktrace.sh
-+++ b/scripts/decode_stacktrace.sh
-@@ -9,6 +9,14 @@ if [[ $# < 1 ]]; then
- 	exit 1
- fi
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
+@@ -257,7 +257,7 @@
+ #define XGMAC_TXCEIE			BIT(0)
+ #define XGMAC_MTL_ECC_INT_STATUS	0x000010cc
+ #define XGMAC_MTL_DPP_CONTROL		0x000010e0
+-#define XGMAC_DDPP_DISABLE		BIT(0)
++#define XGMAC_DPP_DISABLE		BIT(0)
+ #define XGMAC_MTL_TXQ_OPMODE(x)		(0x00001100 + (0x80 * (x)))
+ #define XGMAC_TQS			GENMASK(25, 16)
+ #define XGMAC_TQS_SHIFT			16
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+@@ -852,7 +852,7 @@ static int dwxgmac3_safety_feat_config(v
+ 	/* 5. Enable Data Path Parity Protection */
+ 	value = readl(ioaddr + XGMAC_MTL_DPP_CONTROL);
+ 	/* already enabled by default, explicit enable it again */
+-	value &= ~XGMAC_DDPP_DISABLE;
++	value &= ~XGMAC_DPP_DISABLE;
+ 	writel(value, ioaddr + XGMAC_MTL_DPP_CONTROL);
  
-+# Try to find a Rust demangler
-+if type llvm-cxxfilt >/dev/null 2>&1 ; then
-+	cppfilt=llvm-cxxfilt
-+elif type c++filt >/dev/null 2>&1 ; then
-+	cppfilt=c++filt
-+	cppfilt_opts=-i
-+fi
-+
- if [[ $1 == "-r" ]] ; then
- 	vmlinux=""
- 	basepath="auto"
-@@ -157,6 +165,12 @@ parse_symbol() {
- 	# In the case of inlines, move everything to same line
- 	code=${code//$'\n'/' '}
- 
-+	# Demangle if the name looks like a Rust symbol and if
-+	# we got a Rust demangler
-+	if [[ $name =~ ^_R && $cppfilt != "" ]] ; then
-+		name=$("$cppfilt" "$cppfilt_opts" "$name")
-+	fi
-+
- 	# Replace old address with pretty line numbers
- 	symbol="$segment$name ($code)"
- }
--- 
-2.43.0
-
+ 	return 0;
 
 
 
