@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-22740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6516B85DD92
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:07:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D463785DBA9
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:44:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 790841C228EC
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:07:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F572285064
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:43:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 150617EF06;
-	Wed, 21 Feb 2024 14:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6BBC78B5E;
+	Wed, 21 Feb 2024 13:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cjz0Sr4h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yr3bPIk7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6DC97EF01;
-	Wed, 21 Feb 2024 14:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64EEB73161;
+	Wed, 21 Feb 2024 13:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524358; cv=none; b=PTUjGu+JL+1S6tXvqjJCqJegGVMjbZoYjnExJWE82Fs0uEj9tKzcXUxppOWbLQrrOnDQVJaqJxa8T0x9tc0RX+1fopmnUgLSEQNt5XbP5DasKKKWRSkGpnBootflnea3lN4kmwAxoPYBWrd3rN1QJYPKOjzCV2AcxastS8n4sZM=
+	t=1708523029; cv=none; b=kg5MU0wFYG7me4Fi1euZyBOxNvpMdAymBBdaIyN7ib4sXQuQbhRe7OS0B+P38tGOI8VMiMSPRl6Vu8Vf1MOGPRbHlqWk6Sbo5cRh9khimxc5pH3+8Y47mwno+BoF6ugH2RCOrvPN1Opfu01WT1qLV6eowLNtTYg4D2hiY0TDnz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524358; c=relaxed/simple;
-	bh=ygFmDiLgI3a4/0pJQvPVhZxk7o2ZU7jIidkbNxlid+4=;
+	s=arc-20240116; t=1708523029; c=relaxed/simple;
+	bh=Y3KJKnCSWR6dF2p/gREpLpBPT+u1xqDM9r1Br/J7nwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jjG7KPyP4489dyhaQoPOA/henhCrsdocN4NeBdrgPU+QULEG411y3c2pqytVGPUhBtmp8thTHqSrsrx/Y6X737VDuHpOHnn2f387Sd6pYl147GW/bL5jqPN+Lmck6fssM9qEts0lc20J8NWbtH814qrqZSnldUkSo6Yfh48KZN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cjz0Sr4h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F46CC433C7;
-	Wed, 21 Feb 2024 14:05:57 +0000 (UTC)
+	 MIME-Version; b=AqOGp//eIVtSsQCVvtUepMttrHCrUxEOffU1djakEj5KdiJYb2y3K6rvXJjSXfyqzg0Z1QzuXRmAx1bKL+Kfbhd+iDk0z+nRqOumlBfr7rNmsj5B6gwnOD5hFXye11GCBasJNSKngJymz8gv5Z/k6BZAk0m9L0lQgjurTSVE6PY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yr3bPIk7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C75C43390;
+	Wed, 21 Feb 2024 13:43:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524358;
-	bh=ygFmDiLgI3a4/0pJQvPVhZxk7o2ZU7jIidkbNxlid+4=;
+	s=korg; t=1708523029;
+	bh=Y3KJKnCSWR6dF2p/gREpLpBPT+u1xqDM9r1Br/J7nwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cjz0Sr4h6HHIx2GJJp/FBEz9HNyXGFVbFZBKPd87ilUM4tvralEbC1LOjGfuhT9Mc
-	 sa8NwpDnhAImIqIPN4NgrcIdLckVKnD69Skq6VOJkYdZQ/bQ8lRIcXf31FFdVhdFhv
-	 FodVZgZ31qtlp4VClBnCvFIgez2f/8WjhvL6szP0=
+	b=Yr3bPIk7NIHU7ttgy5N0FMQ3NEAK9viCQ3UdAP1Wz4N5AKQ+FXsIQDVHWQMzDrGUZ
+	 Zx1PsqKxjj13YL8Q+7ilECsRYiZfJ6Bu2bC46FeNz2y+Pyd4B69RtDoOS/4dr+57hC
+	 sHyqsNvS/Z9uvjY84NrmkIu/+xLX/nhDv0PMnK+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 191/379] IB/ipoib: Fix mcast list locking
+Subject: [PATCH 5.15 319/476] netfilter: nft_compat: restrict match/target protocol to u16
 Date: Wed, 21 Feb 2024 14:06:10 +0100
-Message-ID: <20240221130000.558417639@linuxfoundation.org>
+Message-ID: <20240221130019.806418139@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,96 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Vacek <neelx@redhat.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 4f973e211b3b1c6d36f7c6a19239d258856749f9 ]
+[ Upstream commit d694b754894c93fb4d71a7f3699439dec111decc ]
 
-Releasing the `priv->lock` while iterating the `priv->multicast_list` in
-`ipoib_mcast_join_task()` opens a window for `ipoib_mcast_dev_flush()` to
-remove the items while in the middle of iteration. If the mcast is removed
-while the lock was dropped, the for loop spins forever resulting in a hard
-lockup (as was reported on RHEL 4.18.0-372.75.1.el8_6 kernel):
+xt_check_{match,target} expects u16, but NFTA_RULE_COMPAT_PROTO is u32.
 
-    Task A (kworker/u72:2 below)       | Task B (kworker/u72:0 below)
-    -----------------------------------+-----------------------------------
-    ipoib_mcast_join_task(work)        | ipoib_ib_dev_flush_light(work)
-      spin_lock_irq(&priv->lock)       | __ipoib_ib_dev_flush(priv, ...)
-      list_for_each_entry(mcast,       | ipoib_mcast_dev_flush(dev = priv->dev)
-          &priv->multicast_list, list) |
-        ipoib_mcast_join(dev, mcast)   |
-          spin_unlock_irq(&priv->lock) |
-                                       |   spin_lock_irqsave(&priv->lock, flags)
-                                       |   list_for_each_entry_safe(mcast, tmcast,
-                                       |                  &priv->multicast_list, list)
-                                       |     list_del(&mcast->list);
-                                       |     list_add_tail(&mcast->list, &remove_list)
-                                       |   spin_unlock_irqrestore(&priv->lock, flags)
-          spin_lock_irq(&priv->lock)   |
-                                       |   ipoib_mcast_remove_list(&remove_list)
-   (Here, `mcast` is no longer on the  |     list_for_each_entry_safe(mcast, tmcast,
-    `priv->multicast_list` and we keep |                            remove_list, list)
-    spinning on the `remove_list` of   |  >>>  wait_for_completion(&mcast->done)
-    the other thread which is blocked  |
-    and the list is still valid on     |
-    it's stack.)
+NLA_POLICY_MAX(NLA_BE32, 65535) cannot be used because .max in
+nla_policy is s16, see 3e48be05f3c7 ("netlink: add attribute range
+validation to policy").
 
-Fix this by keeping the lock held and changing to GFP_ATOMIC to prevent
-eventual sleeps.
-Unfortunately we could not reproduce the lockup and confirm this fix but
-based on the code review I think this fix should address such lockups.
-
-crash> bc 31
-PID: 747      TASK: ff1c6a1a007e8000  CPU: 31   COMMAND: "kworker/u72:2"
---
-    [exception RIP: ipoib_mcast_join_task+0x1b1]
-    RIP: ffffffffc0944ac1  RSP: ff646f199a8c7e00  RFLAGS: 00000002
-    RAX: 0000000000000000  RBX: ff1c6a1a04dc82f8  RCX: 0000000000000000
-                                  work (&priv->mcast_task{,.work})
-    RDX: ff1c6a192d60ac68  RSI: 0000000000000286  RDI: ff1c6a1a04dc8000
-           &mcast->list
-    RBP: ff646f199a8c7e90   R8: ff1c699980019420   R9: ff1c6a1920c9a000
-    R10: ff646f199a8c7e00  R11: ff1c6a191a7d9800  R12: ff1c6a192d60ac00
-                                                         mcast
-    R13: ff1c6a1d82200000  R14: ff1c6a1a04dc8000  R15: ff1c6a1a04dc82d8
-           dev                    priv (&priv->lock)     &priv->multicast_list (aka head)
-    ORIG_RAX: ffffffffffffffff  CS: 0010  SS: 0018
-
+Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/ipoib/ipoib_multicast.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ net/netfilter/nft_compat.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/ulp/ipoib/ipoib_multicast.c b/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
-index 5633809dc61e..e009123c703b 100644
---- a/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
-+++ b/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
-@@ -542,21 +542,17 @@ static int ipoib_mcast_join(struct net_device *dev, struct ipoib_mcast *mcast)
- 			/* SM supports sendonly-fullmember, otherwise fallback to full-member */
- 			rec.join_state = SENDONLY_FULLMEMBER_JOIN;
- 	}
--	spin_unlock_irq(&priv->lock);
+diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
+index 4ef664a2bbe6..64a2a5f19589 100644
+--- a/net/netfilter/nft_compat.c
++++ b/net/netfilter/nft_compat.c
+@@ -200,6 +200,7 @@ static const struct nla_policy nft_rule_compat_policy[NFTA_RULE_COMPAT_MAX + 1]
+ static int nft_parse_compat(const struct nlattr *attr, u16 *proto, bool *inv)
+ {
+ 	struct nlattr *tb[NFTA_RULE_COMPAT_MAX+1];
++	u32 l4proto;
+ 	u32 flags;
+ 	int err;
  
- 	multicast = ib_sa_join_multicast(&ipoib_sa_client, priv->ca, priv->port,
--					 &rec, comp_mask, GFP_KERNEL,
-+					 &rec, comp_mask, GFP_ATOMIC,
- 					 ipoib_mcast_join_complete, mcast);
--	spin_lock_irq(&priv->lock);
- 	if (IS_ERR(multicast)) {
- 		ret = PTR_ERR(multicast);
- 		ipoib_warn(priv, "ib_sa_join_multicast failed, status %d\n", ret);
- 		/* Requeue this join task with a backoff delay */
- 		__ipoib_mcast_schedule_join_thread(priv, mcast, 1);
- 		clear_bit(IPOIB_MCAST_FLAG_BUSY, &mcast->flags);
--		spin_unlock_irq(&priv->lock);
- 		complete(&mcast->done);
--		spin_lock_irq(&priv->lock);
- 		return ret;
- 	}
+@@ -218,7 +219,12 @@ static int nft_parse_compat(const struct nlattr *attr, u16 *proto, bool *inv)
+ 	if (flags & NFT_RULE_COMPAT_F_INV)
+ 		*inv = true;
+ 
+-	*proto = ntohl(nla_get_be32(tb[NFTA_RULE_COMPAT_PROTO]));
++	l4proto = ntohl(nla_get_be32(tb[NFTA_RULE_COMPAT_PROTO]));
++	if (l4proto > U16_MAX)
++		return -EINVAL;
++
++	*proto = l4proto;
++
  	return 0;
+ }
+ 
 -- 
 2.43.0
 
