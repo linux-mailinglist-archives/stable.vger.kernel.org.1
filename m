@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-22134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A817E85DA85
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:32:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C29BD85DA98
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:33:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4694A1F21C13
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:32:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 630921F21271
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:33:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268BB7E773;
-	Wed, 21 Feb 2024 13:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256067FBB2;
+	Wed, 21 Feb 2024 13:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHiHnIq0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OaXOzRMl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67EC78B50;
-	Wed, 21 Feb 2024 13:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7DF27EEE7;
+	Wed, 21 Feb 2024 13:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522151; cv=none; b=rgg8gk2R/kjmoW8W+UqmSBF0jXF1fBherk/GSVRhyCX3L215DQLvGoKss/gQfJcKA57X7N4twq54rqpgdp34bhEURc+kxmVgTon0VTQ0KXZG/m3DabnU3Vlue9pL80COIiEII9ajQtOtCEc068UeZpcRWZBzCoFkzghk5EZILUQ=
+	t=1708522200; cv=none; b=AWGjs6vnaUOg5spPvbI/MJN4kagNZK9EEhlMqheWCL69OxwYGWolcctYE+EKd7H8dz1AeXmlDMyP32Tx3dHrUn0F2MCjbV9MEJJFt4HJhG+hTWhs4o+XsQDkRKpW1bSZ8caIuSoPZSh7YHEW3faRIR/M+fGzmXCvYeO9S+IZFRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522151; c=relaxed/simple;
-	bh=gEL7zdWIt0zjI8k4xFn25Rk0xzLoLl+TKqNVu4UFy4M=;
+	s=arc-20240116; t=1708522200; c=relaxed/simple;
+	bh=ppGXb7+LrvHzmpghAraMwVs6vMM5O7tzPB1FA/cDzn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jEgPRglGcUhdhSOrhqreRlhY9z87zaNaVVfEgCth/UpuBdXBN72raFTa1Uk94HAsHHbf0vf/KtPaGzo9vEm1BSZPkrYoC3OLIBAx8gvjwiw3iHy3e1aF9e442QZJ0QAcK9LWBOryunz+ict81AvngRqTvT7pZtZXDTyG55aUQqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHiHnIq0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E61C433C7;
-	Wed, 21 Feb 2024 13:29:10 +0000 (UTC)
+	 MIME-Version; b=Hfy6TTL5kEO2ZICggfCSGPjQLp3ZdUvnM0WeAawfw32cmP73yKsEy7TzJV2yxZRLSl5+pKMdPqqUT9Moa7iGOFybfCzjv1sMNKD//8G9tRM74sn+8lXaVNtb2+RqVyWiA4MdlR/zGdAJczw8+/gIfPgEs1x+nxyGMTQZkQ8fXLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OaXOzRMl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6127DC43390;
+	Wed, 21 Feb 2024 13:30:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522151;
-	bh=gEL7zdWIt0zjI8k4xFn25Rk0xzLoLl+TKqNVu4UFy4M=;
+	s=korg; t=1708522200;
+	bh=ppGXb7+LrvHzmpghAraMwVs6vMM5O7tzPB1FA/cDzn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QHiHnIq0gKkVNfugy0DEvrrFugqj+COkxQv5pxzQ4T9KF4BJGEY9Z5glHzN24yRhF
-	 a3eFSStXgwjEumSoQgri+5CaXXtHR+NbwcQCRtupqXoSNKnGzw2moN4/gYQKZrAvq6
-	 uXAB2d7n9SL5rSSSitSJ53z5PvNe7fDAm2eOQ7mM=
+	b=OaXOzRMltcEcmx/Gx5KXcnDdxV6pOvCmxJNcjpwSJf8Wc5sxuirqxH+YyvE+3Ds+1
+	 sjzvRdr8pGpcFbJxkSYfQQPcDz4O2yOk37+t02cckamWIMckEoOh++Wo8qzJSXgtZP
+	 w1DNihoyG3FJuJlHla9rJtBE1xcBtEVjIpKxUTpw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.15 084/476] wifi: iwlwifi: fix a memory corruption
-Date: Wed, 21 Feb 2024 14:02:15 +0100
-Message-ID: <20240221130011.084283708@linuxfoundation.org>
+	Michael Kelley <mhklinux@outlook.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 085/476] hv_netvsc: Calculate correct ring size when PAGE_SIZE is not 4 Kbytes
+Date: Wed, 21 Feb 2024 14:02:16 +0100
+Message-ID: <20240221130011.132590394@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
 References: <20240221130007.738356493@linuxfoundation.org>
@@ -66,37 +65,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Michael Kelley <mhklinux@outlook.com>
 
-commit cf4a0d840ecc72fcf16198d5e9c505ab7d5a5e4d upstream.
+commit 6941f67ad37d5465b75b9ffc498fcf6897a3c00e upstream.
 
-iwl_fw_ini_trigger_tlv::data is a pointer to a __le32, which means that
-if we copy to iwl_fw_ini_trigger_tlv::data + offset while offset is in
-bytes, we'll write past the buffer.
+Current code in netvsc_drv_init() incorrectly assumes that PAGE_SIZE
+is 4 Kbytes, which is wrong on ARM64 with 16K or 64K page size. As a
+result, the default VMBus ring buffer size on ARM64 with 64K page size
+is 8 Mbytes instead of the expected 512 Kbytes. While this doesn't break
+anything, a typical VM with 8 vCPUs and 8 netvsc channels wastes 120
+Mbytes (8 channels * 2 ring buffers/channel * 7.5 Mbytes/ring buffer).
 
-Cc: stable@vger.kernel.org
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218233
-Fixes: cf29c5b66b9f ("iwlwifi: dbg_ini: implement time point handling")
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240111150610.2d2b8b870194.I14ed76505a5cf87304e0c9cc05cc0ae85ed3bf91@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Unfortunately, the module parameter specifying the ring buffer size
+is in units of 4 Kbyte pages. Ideally, it should be in units that
+are independent of PAGE_SIZE, but backwards compatibility prevents
+changing that now.
+
+Fix this by having netvsc_drv_init() hardcode 4096 instead of using
+PAGE_SIZE when calculating the ring buffer size in bytes. Also
+use the VMBUS_RING_SIZE macro to ensure proper alignment when running
+with page size larger than 4K.
+
+Cc: <stable@vger.kernel.org> # 5.15.x
+Fixes: 7aff79e297ee ("Drivers: hv: Enable Hyper-V code to be built on ARM64")
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://lore.kernel.org/r/20240122162028.348885-1-mhklinux@outlook.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/hyperv/netvsc_drv.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-@@ -836,7 +836,7 @@ static int iwl_dbg_tlv_override_trig_nod
- 		node_trig = (void *)node_tlv->data;
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -44,7 +44,7 @@
+ 
+ static unsigned int ring_size __ro_after_init = 128;
+ module_param(ring_size, uint, 0444);
+-MODULE_PARM_DESC(ring_size, "Ring buffer size (# of pages)");
++MODULE_PARM_DESC(ring_size, "Ring buffer size (# of 4K pages)");
+ unsigned int netvsc_ring_bytes __ro_after_init;
+ 
+ static const u32 default_msg = NETIF_MSG_DRV | NETIF_MSG_PROBE |
+@@ -2824,7 +2824,7 @@ static int __init netvsc_drv_init(void)
+ 		pr_info("Increased ring_size to %u (min allowed)\n",
+ 			ring_size);
  	}
+-	netvsc_ring_bytes = ring_size * PAGE_SIZE;
++	netvsc_ring_bytes = VMBUS_RING_SIZE(ring_size * 4096);
  
--	memcpy(node_trig->data + offset, trig->data, trig_data_len);
-+	memcpy((u8 *)node_trig->data + offset, trig->data, trig_data_len);
- 	node_tlv->length = cpu_to_le32(size);
+ 	register_netdevice_notifier(&netvsc_netdev_notifier);
  
- 	if (policy & IWL_FW_INI_APPLY_POLICY_OVERRIDE_CFG) {
 
 
 
