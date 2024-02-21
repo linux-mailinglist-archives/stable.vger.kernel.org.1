@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 621BE85DAE1
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:35:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85D4A85DC9E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:55:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76B061C20A65
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:35:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2690FB23622
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:55:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 799CF7BB01;
-	Wed, 21 Feb 2024 13:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41B727BB10;
+	Wed, 21 Feb 2024 13:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K2wSlknS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swOI2eeG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3888553816;
-	Wed, 21 Feb 2024 13:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001AA7BAFB;
+	Wed, 21 Feb 2024 13:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522454; cv=none; b=SL+OXmEe9ty+WBFwZLNamQPW7M69/+/u+iu4OG3J4hnoosTlV1Li5HIaBQvar00ZXmMSfMEkW2a/01O2nFhRVbbAUZSqD+H0K6p4KOokDAhEaL1xJEz/T/3evhj1Gp3kv/UEjup32+wl0+k/gwdPNlIrk0uVtyEJN9rCXlx0ZCc=
+	t=1708523724; cv=none; b=rQt9WDAcAIE/R28FVdf9AIJAuPzhC4M7mpC8CRL1yJAQFUuD6fvF+EP5eAeJsKW1cbZDOLImqk8+CGRvyg479JO4U/UMqACPHwOMWa8+BniJ2c159tLB+agFdAbY8IWwd5rlJDkHyzR7unstNgyCFDxyP9dpZdzuzf/xGHfdzN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522454; c=relaxed/simple;
-	bh=qEc3VyBfjVimKB+hLNV9tYJYEyH48RLRFx+7V6QBvLI=;
+	s=arc-20240116; t=1708523724; c=relaxed/simple;
+	bh=HSFlTWYLrggUnjhdp3I1yDa+Vv1FzqVsZ/pzg5z7qrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=koMjkEoUcBnDlG/K9FF8wozil4akd+eypgJg3gCtp6aQ0VGFk84rk6EEEumP2ZkbBoSvGQ5A9o3go3NflBHvecQ5pSW+JADk5MgRWzu59xTSTVrKT0GQZpNQlxSM70vXRdh5LSfROhdAYA2BP9IToUfhNMRKYHM2TU74DWHNFi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K2wSlknS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99F1CC433F1;
-	Wed, 21 Feb 2024 13:34:13 +0000 (UTC)
+	 MIME-Version; b=RwD2FcMQxpXhZA9GlNNl5W6uxYnTEi/m3FRa4Km/W436zQn0U4OiLqOg1FHG0YDgfhmlUgmh0BYU/BRB31iTjYpAZQeHhd8Np/uPSOFoS5dkl1XfGYz6QloDi39g+E0vKHL4S9Q8Ae3Lo5MbbiGWDDFnK0ThH6jknfsgYiEBxF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swOI2eeG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CCC6C433C7;
+	Wed, 21 Feb 2024 13:55:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522454;
-	bh=qEc3VyBfjVimKB+hLNV9tYJYEyH48RLRFx+7V6QBvLI=;
+	s=korg; t=1708523723;
+	bh=HSFlTWYLrggUnjhdp3I1yDa+Vv1FzqVsZ/pzg5z7qrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K2wSlknS9PjUlTT/PtlRvhASFHFZCKOS3kJn/h57o+qGmRoDxzlsgEKxRPV90AJ4H
-	 rfUZHhmpcSVti+a7YmPEca/aThnyJvkB867l7VKvSHI+ba9vNHM+g5bTzHINNTGFiN
-	 cUWT7S+VxwuqC78BETFdVVvSuVXSWbQzan2jP43U=
+	b=swOI2eeGWbpImpOmPzQGFOxz6jTFo3e1BAuwxHs879H8WLv+4B98sys+xv2T7JkAW
+	 T4wjeS97A9NrvclI19CY8ZCp/b8OaoMbVjvyAzPpIEGiOoYU96YBkNYT2+8oVP+PVm
+	 I/u/ryrkdakTGSqMZkgUp6XWjD5hKx/S/WKr1Yxc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yafang Shao <laoar.shao@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 168/476] selftests/bpf: Fix issues in setup_classid_environment()
+	Michal Hocko <mhocko@suse.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Alexander Ofitserov <oficerovas@altlinux.org>
+Subject: [PATCH 5.10 040/379] mm: vmalloc: introduce array allocation functions
 Date: Wed, 21 Feb 2024 14:03:39 +0100
-Message-ID: <20240221130014.143675786@linuxfoundation.org>
+Message-ID: <20240221125956.103618087@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yafang Shao <laoar.shao@gmail.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-[ Upstream commit 4849775587844e44d215289c425bcd70f315efe7 ]
+commit a8749a35c39903120ec421ef2525acc8e0daa55c upstream.
 
-If the net_cls subsystem is already mounted, attempting to mount it again
-in setup_classid_environment() will result in a failure with the error code
-EBUSY. Despite this, tmpfs will have been successfully mounted at
-/sys/fs/cgroup/net_cls. Consequently, the /sys/fs/cgroup/net_cls directory
-will be empty, causing subsequent setup operations to fail.
+Linux has dozens of occurrences of vmalloc(array_size()) and
+vzalloc(array_size()).  Allow to simplify the code by providing
+vmalloc_array and vcalloc, as well as the underscored variants that let
+the caller specify the GFP flags.
 
-Here's an error log excerpt illustrating the issue when net_cls has already
-been mounted at /sys/fs/cgroup/net_cls prior to running
-setup_classid_environment():
-
-- Before that change
-
-  $ tools/testing/selftests/bpf/test_progs --name=cgroup_v1v2
-  test_cgroup_v1v2:PASS:server_fd 0 nsec
-  test_cgroup_v1v2:PASS:client_fd 0 nsec
-  test_cgroup_v1v2:PASS:cgroup_fd 0 nsec
-  test_cgroup_v1v2:PASS:server_fd 0 nsec
-  run_test:PASS:skel_open 0 nsec
-  run_test:PASS:prog_attach 0 nsec
-  test_cgroup_v1v2:PASS:cgroup-v2-only 0 nsec
-  (cgroup_helpers.c:248: errno: No such file or directory) Opening Cgroup Procs: /sys/fs/cgroup/net_cls/cgroup.procs
-  (cgroup_helpers.c:540: errno: No such file or directory) Opening cgroup classid: /sys/fs/cgroup/net_cls/cgroup-test-work-dir/net_cls.classid
-  run_test:PASS:skel_open 0 nsec
-  run_test:PASS:prog_attach 0 nsec
-  (cgroup_helpers.c:248: errno: No such file or directory) Opening Cgroup Procs: /sys/fs/cgroup/net_cls/cgroup-test-work-dir/cgroup.procs
-  run_test:FAIL:join_classid unexpected error: 1 (errno 2)
-  test_cgroup_v1v2:FAIL:cgroup-v1v2 unexpected error: -1 (errno 2)
-  (cgroup_helpers.c:248: errno: No such file or directory) Opening Cgroup Procs: /sys/fs/cgroup/net_cls/cgroup.procs
-  #44      cgroup_v1v2:FAIL
-  Summary: 0/0 PASSED, 0 SKIPPED, 1 FAILED
-
-- After that change
-  $ tools/testing/selftests/bpf/test_progs --name=cgroup_v1v2
-  #44      cgroup_v1v2:OK
-  Summary: 1/0 PASSED, 0 SKIPPED, 0 FAILED
-
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-Link: https://lore.kernel.org/r/20231111090034.4248-3-laoar.shao@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Alexander Ofitserov <oficerovas@altlinux.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/cgroup_helpers.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ include/linux/vmalloc.h |    5 ++++
+ mm/util.c               |   50 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 55 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/cgroup_helpers.c b/tools/testing/selftests/bpf/cgroup_helpers.c
-index f3daa44a8266..f63c7ee3d798 100644
---- a/tools/testing/selftests/bpf/cgroup_helpers.c
-+++ b/tools/testing/selftests/bpf/cgroup_helpers.c
-@@ -348,10 +348,20 @@ int setup_classid_environment(void)
- 		return 1;
- 	}
+--- a/include/linux/vmalloc.h
++++ b/include/linux/vmalloc.h
+@@ -112,6 +112,11 @@ extern void *__vmalloc_node_range(unsign
+ void *__vmalloc_node(unsigned long size, unsigned long align, gfp_t gfp_mask,
+ 		int node, const void *caller);
  
--	if (mount("net_cls", NETCLS_MOUNT_PATH, "cgroup", 0, "net_cls") &&
--	    errno != EBUSY) {
--		log_err("mount cgroup net_cls");
--		return 1;
-+	if (mount("net_cls", NETCLS_MOUNT_PATH, "cgroup", 0, "net_cls")) {
-+		if (errno != EBUSY) {
-+			log_err("mount cgroup net_cls");
-+			return 1;
-+		}
++extern void *__vmalloc_array(size_t n, size_t size, gfp_t flags);
++extern void *vmalloc_array(size_t n, size_t size);
++extern void *__vcalloc(size_t n, size_t size, gfp_t flags);
++extern void *vcalloc(size_t n, size_t size);
 +
-+		if (rmdir(NETCLS_MOUNT_PATH)) {
-+			log_err("rmdir cgroup net_cls");
-+			return 1;
-+		}
-+		if (umount(CGROUP_MOUNT_DFLT)) {
-+			log_err("umount cgroup base");
-+			return 1;
-+		}
- 	}
+ extern void vfree(const void *addr);
+ extern void vfree_atomic(const void *addr);
  
- 	cleanup_classid_environment();
--- 
-2.43.0
-
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -686,6 +686,56 @@ static inline void *__page_rmapping(stru
+ 	return (void *)mapping;
+ }
+ 
++/**
++ * __vmalloc_array - allocate memory for a virtually contiguous array.
++ * @n: number of elements.
++ * @size: element size.
++ * @flags: the type of memory to allocate (see kmalloc).
++ */
++void *__vmalloc_array(size_t n, size_t size, gfp_t flags)
++{
++	size_t bytes;
++
++	if (unlikely(check_mul_overflow(n, size, &bytes)))
++		return NULL;
++	return __vmalloc(bytes, flags);
++}
++EXPORT_SYMBOL(__vmalloc_array);
++
++/**
++ * vmalloc_array - allocate memory for a virtually contiguous array.
++ * @n: number of elements.
++ * @size: element size.
++ */
++void *vmalloc_array(size_t n, size_t size)
++{
++	return __vmalloc_array(n, size, GFP_KERNEL);
++}
++EXPORT_SYMBOL(vmalloc_array);
++
++/**
++ * __vcalloc - allocate and zero memory for a virtually contiguous array.
++ * @n: number of elements.
++ * @size: element size.
++ * @flags: the type of memory to allocate (see kmalloc).
++ */
++void *__vcalloc(size_t n, size_t size, gfp_t flags)
++{
++	return __vmalloc_array(n, size, flags | __GFP_ZERO);
++}
++EXPORT_SYMBOL(__vcalloc);
++
++/**
++ * vcalloc - allocate and zero memory for a virtually contiguous array.
++ * @n: number of elements.
++ * @size: element size.
++ */
++void *vcalloc(size_t n, size_t size)
++{
++	return __vmalloc_array(n, size, GFP_KERNEL | __GFP_ZERO);
++}
++EXPORT_SYMBOL(vcalloc);
++
+ /* Neutral page->mapping pointer to address_space or anon_vma or other */
+ void *page_rmapping(struct page *page)
+ {
 
 
 
