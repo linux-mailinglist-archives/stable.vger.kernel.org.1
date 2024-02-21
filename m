@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-22543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1118385DC8B
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:54:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EE0685DAEB
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:35:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF58128558C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:54:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C7EA1C21372
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:35:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BB767BB02;
-	Wed, 21 Feb 2024 13:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 891817C08D;
+	Wed, 21 Feb 2024 13:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bvo+S8F4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKQBJIk4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD4569942;
-	Wed, 21 Feb 2024 13:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C167C081;
+	Wed, 21 Feb 2024 13:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523665; cv=none; b=Myk8CioRpIkPlUQ0JjBCHvkaOx1EcPRYMQhBTkYvU8qyeXqZ1wDfPW7xWdHyd6ED/RHDAvZQhsthZ00VffsJnuNwrWJZRgWM5vnWBPkvsAwCP5HNrYvDDcIPKOmaBwxLpGzsw7n20v2Up4N+KFhs7YKIta7anBb9DqiJRZFdWpw=
+	t=1708522500; cv=none; b=IsfcbGDMFxrKVHTagHRKAnjuzF6sVKr/sQEK0uGSUTXA3GP4bzBc7t1Y4FVfX9bqXN35DdA/1Y237iRLtemgwGjnmIFjEeM1CGaXBfjxTlqYReN0KjXfqctPY9avwwVGa5umXl+Lbq4a4HgW/OyN252Q1Ss4AX8ehJaKmAIWRFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523665; c=relaxed/simple;
-	bh=bb5HGLmJw5ZM+cRsxrqqd3nP4T4mrEnPuiXcVKjvwO4=;
+	s=arc-20240116; t=1708522500; c=relaxed/simple;
+	bh=/IofiOhR7dVpi2qBnTgd9YB+5eHwwANY3NXA4boDFCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oJPl/SHoK+bKa0P92CiBudeTVVFAazlz3lialm2pqlOvJS1rMH8NO1I2GsEB8zeXyjouQd2v3WVohtHTZ5+URaxVt2ONymPhfB0iAoo3w6fXV+xSROAOGhnQkBw5Tp1J7ZNlh/b0/46LDxaAgtnHqjpDfocxX/vs74BhNM95dp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bvo+S8F4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EA5DC433F1;
-	Wed, 21 Feb 2024 13:54:24 +0000 (UTC)
+	 MIME-Version; b=pFB3Fq0ZiJIMkgJdGHhkblUqilFJGmjavJ1HdE62Lc1mk0/1cEBpBeLxTjF9hKehmZH7ww7s62AjEsplbzA60CyM3SPz1tvlO9fZ5FvtQI/6GvPfpIEMbhj0akbOsh4O1+W4zI9liH7gMMf530XipFJvUkeCzu/NVcjiDrg1QkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKQBJIk4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A7D5C433F1;
+	Wed, 21 Feb 2024 13:34:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523664;
-	bh=bb5HGLmJw5ZM+cRsxrqqd3nP4T4mrEnPuiXcVKjvwO4=;
+	s=korg; t=1708522499;
+	bh=/IofiOhR7dVpi2qBnTgd9YB+5eHwwANY3NXA4boDFCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bvo+S8F4q/PyONO8IuvmUiujm5U+NZjKozhi0gd4pL4TLOHXzuhtgdTAZlpVuPCaa
-	 fmaHd8mmVVYSGqbkln0LMcx1BXImlTzsFeJ1dlsl3BnvbpSw+mOhYOMSX1Wdere80Y
-	 Cu154UPx2b9rz5Z8b02SfyNhJupQ15ZqBz0Qw6Ug=
+	b=NKQBJIk47VGvZBDfCibcO3UPnwCch11NYbO/ead5U2sr75kpVE6FUwfnHS1UNJJfo
+	 OVJDQG0jgMTfFkZQBErUbjgh9SXUH1gJ+5sxCdWP/nl/kPeaJeUHkMOnDpwcy/ZHIH
+	 JbZd7uBJsV/HIiPK/1cOwNahlK4/W3hA16RYKHsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaolei Wang <xiaolei.wang@windriver.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>
-Subject: [PATCH 5.10 022/379] rpmsg: virtio: Free driver_override when rpmsg_remove()
+	Bharat Bhushan <bbhushan2@marvell.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 150/476] crypto: octeontx2 - Fix cptvf driver cleanup
 Date: Wed, 21 Feb 2024 14:03:21 +0100
-Message-ID: <20240221125955.575329864@linuxfoundation.org>
+Message-ID: <20240221130013.474048322@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Bharat Bhushan <bbhushan2@marvell.com>
 
-commit d5362c37e1f8a40096452fc201c30e705750e687 upstream.
+[ Upstream commit c480a421a4faf693c38e60b0fe6e554c9a3fee02 ]
 
-Free driver_override when rpmsg_remove(), otherwise
-the following memory leak will occur:
+This patch fixes following cleanup issues:
+ - Missing instruction queue free on cleanup. This
+   will lead to memory leak.
+ - lfs->lfs_num is set to zero before cleanup, which
+   will lead to improper cleanup.
 
-unreferenced object 0xffff0000d55d7080 (size 128):
-  comm "kworker/u8:2", pid 56, jiffies 4294893188 (age 214.272s)
-  hex dump (first 32 bytes):
-    72 70 6d 73 67 5f 6e 73 00 00 00 00 00 00 00 00  rpmsg_ns........
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<000000009c94c9c1>] __kmem_cache_alloc_node+0x1f8/0x320
-    [<000000002300d89b>] __kmalloc_node_track_caller+0x44/0x70
-    [<00000000228a60c3>] kstrndup+0x4c/0x90
-    [<0000000077158695>] driver_set_override+0xd0/0x164
-    [<000000003e9c4ea5>] rpmsg_register_device_override+0x98/0x170
-    [<000000001c0c89a8>] rpmsg_ns_register_device+0x24/0x30
-    [<000000008bbf8fa2>] rpmsg_probe+0x2e0/0x3ec
-    [<00000000e65a68df>] virtio_dev_probe+0x1c0/0x280
-    [<00000000443331cc>] really_probe+0xbc/0x2dc
-    [<00000000391064b1>] __driver_probe_device+0x78/0xe0
-    [<00000000a41c9a5b>] driver_probe_device+0xd8/0x160
-    [<000000009c3bd5df>] __device_attach_driver+0xb8/0x140
-    [<0000000043cd7614>] bus_for_each_drv+0x7c/0xd4
-    [<000000003b929a36>] __device_attach+0x9c/0x19c
-    [<00000000a94e0ba8>] device_initial_probe+0x14/0x20
-    [<000000003c999637>] bus_probe_device+0xa0/0xac
-
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Fixes: b0b03b811963 ("rpmsg: Release rpmsg devices in backends")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231215020049.78750-1-xiaolei.wang@windriver.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Bharat Bhushan <bbhushan2@marvell.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rpmsg/virtio_rpmsg_bus.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/crypto/marvell/octeontx2/otx2_cptlf.c      | 6 ++++--
+ drivers/crypto/marvell/octeontx2/otx2_cptvf_main.c | 3 +++
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/rpmsg/virtio_rpmsg_bus.c
-+++ b/drivers/rpmsg/virtio_rpmsg_bus.c
-@@ -387,6 +387,7 @@ static void virtio_rpmsg_release_device(
- 	struct rpmsg_device *rpdev = to_rpmsg_device(dev);
- 	struct virtio_rpmsg_channel *vch = to_virtio_rpmsg_channel(rpdev);
+diff --git a/drivers/crypto/marvell/octeontx2/otx2_cptlf.c b/drivers/crypto/marvell/octeontx2/otx2_cptlf.c
+index c8350fcd60fa..dc0c25f0a11a 100644
+--- a/drivers/crypto/marvell/octeontx2/otx2_cptlf.c
++++ b/drivers/crypto/marvell/octeontx2/otx2_cptlf.c
+@@ -414,8 +414,8 @@ int otx2_cptlf_init(struct otx2_cptlfs_info *lfs, u8 eng_grp_mask, int pri,
+ 	return 0;
  
-+	kfree(rpdev->driver_override);
- 	kfree(vch);
+ free_iq:
+-	otx2_cpt_free_instruction_queues(lfs);
+ 	cptlf_hw_cleanup(lfs);
++	otx2_cpt_free_instruction_queues(lfs);
+ detach_rsrcs:
+ 	otx2_cpt_detach_rsrcs_msg(lfs);
+ clear_lfs_num:
+@@ -425,9 +425,11 @@ int otx2_cptlf_init(struct otx2_cptlfs_info *lfs, u8 eng_grp_mask, int pri,
+ 
+ void otx2_cptlf_shutdown(struct otx2_cptlfs_info *lfs)
+ {
+-	lfs->lfs_num = 0;
+ 	/* Cleanup LFs hardware side */
+ 	cptlf_hw_cleanup(lfs);
++	/* Free instruction queues */
++	otx2_cpt_free_instruction_queues(lfs);
+ 	/* Send request to detach LFs */
+ 	otx2_cpt_detach_rsrcs_msg(lfs);
++	lfs->lfs_num = 0;
+ }
+diff --git a/drivers/crypto/marvell/octeontx2/otx2_cptvf_main.c b/drivers/crypto/marvell/octeontx2/otx2_cptvf_main.c
+index 3411e664cf50..73de61ebbbcf 100644
+--- a/drivers/crypto/marvell/octeontx2/otx2_cptvf_main.c
++++ b/drivers/crypto/marvell/octeontx2/otx2_cptvf_main.c
+@@ -249,8 +249,11 @@ static void cptvf_lf_shutdown(struct otx2_cptlfs_info *lfs)
+ 	otx2_cptlf_unregister_interrupts(lfs);
+ 	/* Cleanup LFs software side */
+ 	lf_sw_cleanup(lfs);
++	/* Free instruction queues */
++	otx2_cpt_free_instruction_queues(lfs);
+ 	/* Send request to detach LFs */
+ 	otx2_cpt_detach_rsrcs_msg(lfs);
++	lfs->lfs_num = 0;
  }
  
+ static int cptvf_lf_init(struct otx2_cptvf_dev *cptvf)
+-- 
+2.43.0
+
 
 
 
