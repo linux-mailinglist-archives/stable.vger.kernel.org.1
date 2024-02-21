@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-22880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B44ED85DE29
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:15:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1780A85DF27
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:25:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E53D11C2039A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:15:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C783928397E
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:25:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16D8D7C099;
-	Wed, 21 Feb 2024 14:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B9977BB16;
+	Wed, 21 Feb 2024 14:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zf11BH93"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MztxvLUG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94A03CF42;
-	Wed, 21 Feb 2024 14:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC78879DAE;
+	Wed, 21 Feb 2024 14:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524823; cv=none; b=gf3XV77cO5fC+VWu2nzLzYvic6e7D+9lQWvOgSwh35TvVBa3cqHmG2SIOLlVSnX6PyXfvkBpl15hsiUF67a+wFccGyQP1YE1gxyqi5bbCS9hodyaI1YHFVO2GX65K2WiOtLQpe6MjMnc4H/SdZPvP0gvdTuTaAyIDv8JSZqM0zQ=
+	t=1708525516; cv=none; b=phIJlbfnOoRrBMqD6QAv9JQFmwvw+nt9J5LwWhKYkKShu5R/jGhGhH65Mkdrqj4tUmr7N1yvKJ+ygieRqczkq/Anh2tO5HPWLxjMae32jBLnh9d+h3UR6JiZsZMw9toQ/4g/D2kN2wlKQXZNoWArjdP0LdHTMNcJXg1zePHewkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524823; c=relaxed/simple;
-	bh=yUVTMikuvSW7Z6o3hpw57LUzKJH4EnPK0tgSzCaFvYw=;
+	s=arc-20240116; t=1708525516; c=relaxed/simple;
+	bh=TOjAD8uaRuP29MNhcPRVhpCo+PbcJDUI2gNA6Kriq8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YJ2OW8Fpjk0MmXaxFibUaET/LPVwkA0tPKseW9ofg7C4cYlo8sAMs2GmJqSvmT6y+x66t5OVwYvpOW+wXZFid3hZLaxlY14qDrISSfiKPzYcHrLbE5u1ZzyxtEguK4936SpA6HC8eP2UY1hwbJzU2pUHnggVjJ6v3GLv1lQ/adY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zf11BH93; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1469C433C7;
-	Wed, 21 Feb 2024 14:13:42 +0000 (UTC)
+	 MIME-Version; b=S3/89hF6DQsb2QGmofEwCKtjBCM4bbLIwlxyS4PC1PZ3T42aizgSLKOS5P3bRy+KXgk/Jm82FKHp3Q9FyU28541jD80GVUktYND4H6AdNwduGM387OHoFEoaykp7BONt34w6k/EpcZG+uVP/3+dK0QyuZZbNgSpZuy2JpbOrAb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MztxvLUG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0952DC433F1;
+	Wed, 21 Feb 2024 14:25:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524823;
-	bh=yUVTMikuvSW7Z6o3hpw57LUzKJH4EnPK0tgSzCaFvYw=;
+	s=korg; t=1708525516;
+	bh=TOjAD8uaRuP29MNhcPRVhpCo+PbcJDUI2gNA6Kriq8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zf11BH93K7aSA0bfEgLO898qbVsptE7uf7irXsopv0iuYnmMvo52jkVLjIsCeJ/rC
-	 uBegTGUfzmJYDnHdnbbrdT1p28gLrH2fjb9MrhxiTAPEPmbm1TFB0OPsn0jfTtdO1v
-	 SBqK/gA/AtUjMLxmg8eK62mAqTkVwSok15j74YG0=
+	b=MztxvLUG9CuzZ5wLWPN3HGDbHNE1H0rVr+9NsfX/rIDgTVVj7UAp8oEqA50/SISFL
+	 h9qmqDi3SMqpmABN1WUeG9JyWUs1NuX1JqTuX3+Aqmpws2hcfVxh90SzRwlXdB1S/n
+	 PYTxIQl1XjuzGTSW2R5ZsZ27/VLoiAby/B1JWiCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunkun Jiang <jiangkunkun@huawei.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 5.10 342/379] irqchip/gic-v3-its: Fix GICv4.1 VPE affinity update
+	Tony Lindgren <tony@atomide.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 180/267] phy: ti: phy-omap-usb2: Fix NULL pointer dereference for SRP
 Date: Wed, 21 Feb 2024 14:08:41 +0100
-Message-ID: <20240221130005.105806928@linuxfoundation.org>
+Message-ID: <20240221125945.782119412@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Tony Lindgren <tony@atomide.com>
 
-commit af9acbfc2c4b72c378d0b9a2ee023ed01055d3e2 upstream.
+[ Upstream commit 7104ba0f1958adb250319e68a15eff89ec4fd36d ]
 
-When updating the affinity of a VPE, the VMOVP command is currently skipped
-if the two CPUs are part of the same VPE affinity.
+If the external phy working together with phy-omap-usb2 does not implement
+send_srp(), we may still attempt to call it. This can happen on an idle
+Ethernet gadget triggering a wakeup for example:
 
-But this is wrong, as the doorbell corresponding to this VPE is still
-delivered on the 'old' CPU, which screws up the balancing.  Furthermore,
-offlining that 'old' CPU results in doorbell interrupts generated for this
-VPE being discarded.
+configfs-gadget.g1 gadget.0: ECM Suspend
+configfs-gadget.g1 gadget.0: Port suspended. Triggering wakeup
+...
+Unable to handle kernel NULL pointer dereference at virtual address
+00000000 when execute
+...
+PC is at 0x0
+LR is at musb_gadget_wakeup+0x1d4/0x254 [musb_hdrc]
+...
+musb_gadget_wakeup [musb_hdrc] from usb_gadget_wakeup+0x1c/0x3c [udc_core]
+usb_gadget_wakeup [udc_core] from eth_start_xmit+0x3b0/0x3d4 [u_ether]
+eth_start_xmit [u_ether] from dev_hard_start_xmit+0x94/0x24c
+dev_hard_start_xmit from sch_direct_xmit+0x104/0x2e4
+sch_direct_xmit from __dev_queue_xmit+0x334/0xd88
+__dev_queue_xmit from arp_solicit+0xf0/0x268
+arp_solicit from neigh_probe+0x54/0x7c
+neigh_probe from __neigh_event_send+0x22c/0x47c
+__neigh_event_send from neigh_resolve_output+0x14c/0x1c0
+neigh_resolve_output from ip_finish_output2+0x1c8/0x628
+ip_finish_output2 from ip_send_skb+0x40/0xd8
+ip_send_skb from udp_send_skb+0x124/0x340
+udp_send_skb from udp_sendmsg+0x780/0x984
+udp_sendmsg from __sys_sendto+0xd8/0x158
+__sys_sendto from ret_fast_syscall+0x0/0x58
 
-The harsh reality is that VMOVP cannot be elided when a set_affinity()
-request occurs. It needs to be obeyed, and if an optimisation is to be
-made, it is at the point where the affinity change request is made (such as
-in KVM).
+Let's fix the issue by checking for send_srp() and set_vbus() before
+calling them. For USB peripheral only cases these both could be NULL.
 
-Drop the VMOVP elision altogether, and only use the vpe_table_mask
-to try and stay within the same ITS affinity group if at all possible.
-
-Fixes: dd3f050a216e (irqchip/gic-v4.1: Implement the v4.1 flavour of VMOVP)
-Reported-by: Kunkun Jiang <jiangkunkun@huawei.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240213101206.2137483-4-maz@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 657b306a7bdf ("usb: phy: add a new driver for omap usb2 phy")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20240128120556.8848-1-tony@atomide.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-gic-v3-its.c |   22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ drivers/phy/ti/phy-omap-usb2.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -3782,8 +3782,9 @@ static int its_vpe_set_affinity(struct i
- 				bool force)
+diff --git a/drivers/phy/ti/phy-omap-usb2.c b/drivers/phy/ti/phy-omap-usb2.c
+index 471fe2e80f4e..fc2fee6d532d 100644
+--- a/drivers/phy/ti/phy-omap-usb2.c
++++ b/drivers/phy/ti/phy-omap-usb2.c
+@@ -58,7 +58,7 @@ static int omap_usb_set_vbus(struct usb_otg *otg, bool enabled)
  {
- 	struct its_vpe *vpe = irq_data_get_irq_chip_data(d);
--	int from, cpu = cpumask_first(mask_val);
-+	struct cpumask common, *table_mask;
- 	unsigned long flags;
-+	int from, cpu;
+ 	struct omap_usb *phy = phy_to_omapusb(otg->usb_phy);
  
- 	/*
- 	 * Changing affinity is mega expensive, so let's be as lazy as
-@@ -3799,19 +3800,22 @@ static int its_vpe_set_affinity(struct i
- 	 * taken on any vLPI handling path that evaluates vpe->col_idx.
- 	 */
- 	from = vpe_to_cpuid_lock(vpe, &flags);
--	if (from == cpu)
--		goto out;
--
--	vpe->col_idx = cpu;
-+	table_mask = gic_data_rdist_cpu(from)->vpe_table_mask;
+-	if (!phy->comparator)
++	if (!phy->comparator || !phy->comparator->set_vbus)
+ 		return -ENODEV;
  
- 	/*
--	 * GICv4.1 allows us to skip VMOVP if moving to a cpu whose RD
--	 * is sharing its VPE table with the current one.
-+	 * If we are offered another CPU in the same GICv4.1 ITS
-+	 * affinity, pick this one. Otherwise, any CPU will do.
- 	 */
--	if (gic_data_rdist_cpu(cpu)->vpe_table_mask &&
--	    cpumask_test_cpu(from, gic_data_rdist_cpu(cpu)->vpe_table_mask))
-+	if (table_mask && cpumask_and(&common, mask_val, table_mask))
-+		cpu = cpumask_test_cpu(from, &common) ? from : cpumask_first(&common);
-+	else
-+		cpu = cpumask_first(mask_val);
-+
-+	if (from == cpu)
- 		goto out;
+ 	return phy->comparator->set_vbus(phy->comparator, enabled);
+@@ -68,7 +68,7 @@ static int omap_usb_start_srp(struct usb_otg *otg)
+ {
+ 	struct omap_usb *phy = phy_to_omapusb(otg->usb_phy);
  
-+	vpe->col_idx = cpu;
-+
- 	its_send_vmovp(vpe);
- 	its_vpe_db_proxy_move(vpe, from, cpu);
+-	if (!phy->comparator)
++	if (!phy->comparator || !phy->comparator->start_srp)
+ 		return -ENODEV;
  
+ 	return phy->comparator->start_srp(phy->comparator);
+-- 
+2.43.0
+
 
 
 
