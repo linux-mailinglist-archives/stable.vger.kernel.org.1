@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-22433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57F5E85DC00
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:48:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 837FA85DDA5
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:08:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EDD6AB23FCD
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:48:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D0B1285767
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:08:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5610978B50;
-	Wed, 21 Feb 2024 13:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410FB79DBF;
+	Wed, 21 Feb 2024 14:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="whQdZpRy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ND7Ta9B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138244D5B7;
-	Wed, 21 Feb 2024 13:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6BF78B4B;
+	Wed, 21 Feb 2024 14:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523287; cv=none; b=FsQ8T0qVeWdgzjwP3uMmzgdLVDC8UuA+OqTXCeq56iQOoi9hRVv03aGQX3Ydv9ThVW+1CKxUzVLOPUsZMWvSWWacfxOkCf+n4P3SODjl/QTPTbf+GYCKnYtUocsV4JzFtEphBskIY2dfmAAcUZjl/AdA1vs7F50ITUPhNydekzE=
+	t=1708524400; cv=none; b=F3WNH1DxA3DFOiR5NHFQz/i/bRiLH5CMpXqI0GUQlxte8pka7KX56YWMrGDhWorWOTj/BDVWQM7PguePYPMwdIqduYDzOnAUHjQ7iia8c4R6wipk5mGzVfdkKarY+EZbeuA2xu8AgxrTDskpbfgJLy0ZoRc/E7LmCViF0a/TyIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523287; c=relaxed/simple;
-	bh=ExaYNAbiUjGsIe96ev+rXTx0F6SsNWrTQOivoqiAAEc=;
+	s=arc-20240116; t=1708524400; c=relaxed/simple;
+	bh=+hU+LcNFV66JPS1W3whaUqvy+ozzDbBrsVlLSIENChk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mLmFPr/saa3s28tBp8TBxZhdUx0mXXgLEo5T8HdMEjfpaYNWrki94OLV12UMSgedrS6UDP2Bi70pia7ESoDt/GMsq8Mf4+dgq6fLXbZn3suQam8XkycDv3UCtfV3cdBfMFGxJ5nIKJt1KOe+Mr2Yqat8I9NhPm7F1PhlFF2w/04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=whQdZpRy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 715F0C433F1;
-	Wed, 21 Feb 2024 13:48:06 +0000 (UTC)
+	 MIME-Version; b=MJsamDvM+UpDDwZN+5euWg4T4BbBN4sac4QuXC/PL+6M9rTXv2p7gGckthHhpwPHM9POow6X24AzdoK6D3odY3XOLBrfhqa7YAsVLZEKaaxgO0GIeVQ1EOndcaZT805lO3BxN1ug5OOtc0MERiS0VFVl/i5A340gW0YaMRstx00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ND7Ta9B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62FA4C433F1;
+	Wed, 21 Feb 2024 14:06:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523286;
-	bh=ExaYNAbiUjGsIe96ev+rXTx0F6SsNWrTQOivoqiAAEc=;
+	s=korg; t=1708524399;
+	bh=+hU+LcNFV66JPS1W3whaUqvy+ozzDbBrsVlLSIENChk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=whQdZpRys+E38zq/g3A+Nup7wVevNKBuxexr1uNmedfNmoIDAJKXO2Hc5xUtpDdex
-	 7xWPXalw2CTTG8i7nvk3Yd8Nr729Z8DgwpaWXJsmItzV1hfQ40GTw+yOFpAl4EQ4x3
-	 aIVqYN1G6qsPGlnIO0hi5i1EO9AfjtlaE0O3uvYA=
+	b=1ND7Ta9BjW7TMBZ4AUiuXXF744bYY6D7CbZvb1aRWoWUhuT4JlGfPNON3BdTJAunc
+	 teCY3o4ZTMHQOZ6x1xhdtulSGPYp6WQcipw1/42igGLlTnqM76evNDzFBAl8xaIES6
+	 YUN+xHhmslr/gmkvC8/C1wrqnh+MD54tIQmJAb70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luka Guzenko <l.guzenko@web.de>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 361/476] ALSA: hda/realtek: Enable Mute LED on HP Laptop 14-fq0xxx
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 5.10 233/379] ixgbe: Fix an error handling path in ixgbe_read_iosf_sb_reg_x550()
 Date: Wed, 21 Feb 2024 14:06:52 +0100
-Message-ID: <20240221130021.341426530@linuxfoundation.org>
+Message-ID: <20240221130001.806015323@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luka Guzenko <l.guzenko@web.de>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit f0d78972f27dc1d1d51fbace2713ad3cdc60a877 upstream.
+[ Upstream commit bbc404d20d1b46d89b461918bc44587620eda200 ]
 
-This HP Laptop uses ALC236 codec with COEF 0x07 controlling the
-mute LED. Enable existing quirk for this device.
+All error handling paths, except this one, go to 'out' where
+release_swfw_sync() is called.
+This call balances the acquire_swfw_sync() call done at the beginning of
+the function.
 
-Signed-off-by: Luka Guzenko <l.guzenko@web.de>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240128155704.2333812-1-l.guzenko@web.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Branch to the error handling path in order to correctly release some
+resources in case of error.
+
+Fixes: ae14a1d8e104 ("ixgbe: Fix IOSF SB access issues")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9090,6 +9090,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8786, "HP OMEN 15", ALC285_FIXUP_HP_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8787, "HP OMEN 15", ALC285_FIXUP_HP_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8788, "HP OMEN 15", ALC285_FIXUP_HP_MUTE_LED),
-+	SND_PCI_QUIRK(0x103c, 0x87b7, "HP Laptop 14-fq0xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x87c8, "HP", ALC287_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87e5, "HP ProBook 440 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87e7, "HP ProBook 450 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
+index 73d1a8b85449..9347dc786b5b 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
+@@ -717,7 +717,8 @@ static s32 ixgbe_read_iosf_sb_reg_x550(struct ixgbe_hw *hw, u32 reg_addr,
+ 		error = (command & IXGBE_SB_IOSF_CTRL_CMPL_ERR_MASK) >>
+ 			 IXGBE_SB_IOSF_CTRL_CMPL_ERR_SHIFT;
+ 		hw_dbg(hw, "Failed to read, error %x\n", error);
+-		return -EIO;
++		ret = -EIO;
++		goto out;
+ 	}
+ 
+ 	if (!ret)
+-- 
+2.43.0
+
 
 
 
