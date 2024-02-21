@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-22702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7560285DD52
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:04:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63D4885DB9A
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:43:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C0F928446C
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:04:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F512284007
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:43:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 031077D413;
-	Wed, 21 Feb 2024 14:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24EBD6F074;
+	Wed, 21 Feb 2024 13:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IvwJTVpd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZBf17v8I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A505C78B4F;
-	Wed, 21 Feb 2024 14:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D741E1E4B2;
+	Wed, 21 Feb 2024 13:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708524222; cv=none; b=HoZOs/+lUrFeWluicQwUDhKdWv4urHrKVSfUPFd7mZraHoANFDgGHZ+sgIiouo1g/h7W5CnDbBonW+UpIJDlq9uhMoqzjPJIiRCCtcEExC/wbnPXH2Jjs114GfHX1rWxglKJ9gslXmznhIbDb5XjcrRzMExz/aEzjjO6QqwXY88=
+	t=1708522989; cv=none; b=K2mXAjtaR53drz7/GqcbLXEoBGr1r7kaqrZP4eEsttv0BBOqdYvT5qizomvgNLdXLRl0B4tQ7phB+SFjU4aiSnKO9BdAiztJ6ia7D4Wj7a4plmmtGf39V/TZYuudFPB+V5dBwQ187Q+alpA/RVdv5H2W+EJrxeIDdcwHq7wH328=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708524222; c=relaxed/simple;
-	bh=mGo0OK+XtskRMXXv7RWD7xvdPVeL6afqyrmbd5n8Ubo=;
+	s=arc-20240116; t=1708522989; c=relaxed/simple;
+	bh=Jr3YYsiHNTghKnHLTF71i1tUMHZwLtqVIvHuJkxZd6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OORNckMWrQPz3V/Nfd5A970zCZboSFxhwZU1rXf23MzFquZeExmtdA59U9bFVa/ZDLeh8TexTZO3Prtmjg50O+/51kE3xvlh5lAOAhoTMVYxjhpNzp0MPcx/CkmgPXt0jumcCXuS5Ni7QQMPRMHb49sNklXm1kD0vjPTEHjxWfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IvwJTVpd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7FA7C433C7;
-	Wed, 21 Feb 2024 14:03:41 +0000 (UTC)
+	 MIME-Version; b=XfG32JbJjxtpoXdOkNkgBJeILUP1xLLbOfIHCnYYbUuVEaP6tRRHaUS8nekv8zKRSp30QWxTkBla9709pzSOJyHESYEDHl98Y+2o+e6A+pgHkqMwGLrev67hw3BkEU1ErZT92dap+6/AnKPJZMFzv2y5mozIjr7ZOJoUps6Kz2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZBf17v8I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61462C433F1;
+	Wed, 21 Feb 2024 13:43:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708524222;
-	bh=mGo0OK+XtskRMXXv7RWD7xvdPVeL6afqyrmbd5n8Ubo=;
+	s=korg; t=1708522989;
+	bh=Jr3YYsiHNTghKnHLTF71i1tUMHZwLtqVIvHuJkxZd6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IvwJTVpdOXMep0nnTfdesg/o7EgU8c/OPRteJao1x8EeY57hMBCz6HplVeHXZkM/T
-	 m3c+IY5t3M/KneaptOo56rQsjmlEtpnnX+mcieI2E1o8jhE2/0QBWtCs+hVKVAnd56
-	 zTdDot+CdwQobdRwDYMCdA7di8Owk16N9rEXVtUI=
+	b=ZBf17v8IdZfMKnJ8Yo40YCEPjHNZ3BHvxEPeRc1HjSfrZso0O5yS9raVoC+/VV3z9
+	 rwtzRoD1oHU4KXVgBvW2W0AfCCdpttbJiyNTKA3KEL0q/oFyiJsy+ZvlZz76X6RKzk
+	 wCG5u7Ox/ZMWqi3LnHDaJT6DHw36qhqF1pa9icSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daeho Jeong <daehojeong@google.com>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Jiri Pirko <jiri@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 181/379] f2fs: fix write pointers on zoned device after roll forward
+Subject: [PATCH 5.15 309/476] octeontx2-pf: Fix a memleak otx2_sq_init
 Date: Wed, 21 Feb 2024 14:06:00 +0100
-Message-ID: <20240221130000.262412148@linuxfoundation.org>
+Message-ID: <20240221130019.435087479@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit 9dad4d964291295ef48243d4e03972b85138bc9f ]
+[ Upstream commit b09b58e31b0f43d76f79b9943da3fb7c2843dcbb ]
 
-1. do roll forward recovery
-2. update current segments pointers
-3. fix the entire zones' write pointers
-4. do checkpoint
+When qmem_alloc and pfvf->hw_ops->sq_aq_init fails, sq->sg should be
+freed to prevent memleak.
 
-Reviewed-by: Daeho Jeong <daehojeong@google.com>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: c9c12d339d93 ("octeontx2-pf: Add support for PTP clock")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Acked-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/recovery.c | 2 ++
- 1 file changed, 2 insertions(+)
+ .../ethernet/marvell/octeontx2/nic/otx2_common.c   | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/recovery.c b/fs/f2fs/recovery.c
-index 2700e0fdd3e0..cd56af93df42 100644
---- a/fs/f2fs/recovery.c
-+++ b/fs/f2fs/recovery.c
-@@ -855,6 +855,8 @@ int f2fs_recover_fsync_data(struct f2fs_sb_info *sbi, bool check_only)
- 	if (!err && fix_curseg_write_pointer && !f2fs_readonly(sbi->sb) &&
- 			f2fs_sb_has_blkzoned(sbi)) {
- 		err = f2fs_fix_curseg_write_pointer(sbi);
-+		if (!err)
-+			err = f2fs_check_write_pointer(sbi);
- 		ret = err;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+index 572c981171ba..6b024d29eaf3 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+@@ -856,8 +856,11 @@ static int otx2_sq_init(struct otx2_nic *pfvf, u16 qidx, u16 sqb_aura)
+ 	if (pfvf->ptp) {
+ 		err = qmem_alloc(pfvf->dev, &sq->timestamps, qset->sqe_cnt,
+ 				 sizeof(*sq->timestamps));
+-		if (err)
++		if (err) {
++			kfree(sq->sg);
++			sq->sg = NULL;
+ 			return err;
++		}
  	}
+ 
+ 	sq->head = 0;
+@@ -872,7 +875,14 @@ static int otx2_sq_init(struct otx2_nic *pfvf, u16 qidx, u16 sqb_aura)
+ 	sq->stats.bytes = 0;
+ 	sq->stats.pkts = 0;
+ 
+-	return pfvf->hw_ops->sq_aq_init(pfvf, qidx, sqb_aura);
++	err = pfvf->hw_ops->sq_aq_init(pfvf, qidx, sqb_aura);
++	if (err) {
++		kfree(sq->sg);
++		sq->sg = NULL;
++		return err;
++	}
++
++	return 0;
+ 
+ }
  
 -- 
 2.43.0
