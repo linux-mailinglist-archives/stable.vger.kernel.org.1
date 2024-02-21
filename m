@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-22327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3E6085DB72
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:41:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1310285D8EE
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:12:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97BEA1F219D4
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:41:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C109F282758
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:12:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 356DC76905;
-	Wed, 21 Feb 2024 13:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B61A69D33;
+	Wed, 21 Feb 2024 13:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVsrDur5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSA0yO3x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E547869951;
-	Wed, 21 Feb 2024 13:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA913EA71;
+	Wed, 21 Feb 2024 13:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522889; cv=none; b=FMwrJv+Vcc/Dy6Rqm9VflmGFxOvYOTvpvI5SvqtJydQ5KwBEmWChcEbIQvGU3GXSjbCIqXfzCE0jzkgenLTgrbJjg0gn4oxK9rFOWGF+RHM25+hMOde/O1ZCnyVUyteQHcK1Q8MMpoZjIFWcE5hZCdDJ4PnwYVdA2Uozp038toc=
+	t=1708521151; cv=none; b=ZYP3bOZtlsCTpIF8f10uVv19aqDMQz8rS+vaKiFYzKqZ+8nepdT+z7QfyuFO19vJDl3Mn7NRnOcBCn/1WiF0zxZRh7YlaMvgqicDYOxPAXz7toR67e9ohDK32i9jMXycUwMeZ/BDeAwYRrk0YUWNKDLLy9+poI8SMvnNk5Tv6bI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522889; c=relaxed/simple;
-	bh=h9/HYGKhkJGUW1OQCtqOIyKno/UK7rCco8hAXmvg1tU=;
+	s=arc-20240116; t=1708521151; c=relaxed/simple;
+	bh=rH8ollqpuPtxXPV3EAAbDp7T3EulW9tTgNV4GrSMHus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OMs24Po3EIY3P1SIYOxFNC7V5h14CRxEKyVnFtXSgSs97S6hdz09bBFH/L7kflc4HDlR2S+EbsIZ10fa5WNKkACdxPcaZYpSSVzFSWL9CS0+PXVnkwJLcYiIi3MbbQ+4aPhvy0UOuUneguvymd7KZDZmub+2MJRDBXI0tB48u5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVsrDur5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DAF3C433C7;
-	Wed, 21 Feb 2024 13:41:28 +0000 (UTC)
+	 MIME-Version; b=SEg9RHvCrBtZg0S7LR1GhUu/5Kd5+/IOT1UNUlLhuyHKWTTBoAM1N4qFfGcpUPNbR7APZ4/gw2lqTNP5fng8qpcvE5ebCQv4Z5nzRRKjdmaIwGgHKkeCSFDASCAHL0MqvJCTs40LLKmm7UbcDoEE+gBFK1MLly8n/UGXEWzd3Bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSA0yO3x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CE75C433C7;
+	Wed, 21 Feb 2024 13:12:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522888;
-	bh=h9/HYGKhkJGUW1OQCtqOIyKno/UK7rCco8hAXmvg1tU=;
+	s=korg; t=1708521151;
+	bh=rH8ollqpuPtxXPV3EAAbDp7T3EulW9tTgNV4GrSMHus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aVsrDur5z0JO3EpgITuUvokPgTWfJsvEyWSTXk3vsihcXYcwoNIAw+bIu9CTvYMy3
-	 XlvzciWhaNK6iPkQUS1lx/BEmwaIhNhNg+ZUDJ11mZq2yVTZGafg97pNiiCvNoHBob
-	 Z25/BBfo5iMzb1q8ya8uhyGH4/ungsrH15INPBdI=
+	b=rSA0yO3xFAYtViRv4EiUtAllSMPHortuwgr3NaD9mZJPCh+8TY+ltrFlTd/uT0ydx
+	 +5eRBrA8350riL99reAA/nkdbAhca3Hj5HEGZHJsYLe/Tb5pgeMS1PoEqMbfJqCPGV
+	 IVxduBByfdPw2rcqSU/sWiDLgDlvW1q977SYHonY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Florian Westphal <fw@strlen.de>,
 	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 284/476] netfilter: nf_log: replace BUG_ON by WARN_ON_ONCE when putting logger
+Subject: [PATCH 4.19 034/202] netfilter: nf_tables: restrict anonymous set and map names to 16 bytes
 Date: Wed, 21 Feb 2024 14:05:35 +0100
-Message-ID: <20240221130018.501398574@linuxfoundation.org>
+Message-ID: <20240221125932.896992620@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 259eb32971e9eb24d1777a28d82730659f50fdcb ]
+[ Upstream commit b462579b2b86a8f5230543cadd3a4836be27baf7 ]
 
-Module reference is bumped for each user, this should not ever happen.
+nftables has two types of sets/maps, one where userspace defines the
+name, and anonymous sets/maps, where userspace defines a template name.
 
-But BUG_ON check should use rcu_access_pointer() instead.
+For the latter, kernel requires presence of exactly one "%d".
+nftables uses "__set%d" and "__map%d" for this.  The kernel will
+expand the format specifier and replaces it with the smallest unused
+number.
 
-If this ever happens, do WARN_ON_ONCE() instead of BUG_ON() and
-consolidate pointer check under the rcu read side lock section.
+As-is, userspace could define a template name that allows to move
+the set name past the 256 bytes upperlimit (post-expansion).
 
-Fixes: fab4085f4e24 ("netfilter: log: nf_log_packet() as real unified interface")
+I don't see how this could be a problem, but I would prefer if userspace
+cannot do this, so add a limit of 16 bytes for the '%d' template name.
+
+16 bytes is the old total upper limit for set names that existed when
+nf_tables was merged initially.
+
+Fixes: 387454901bd6 ("netfilter: nf_tables: Allow set names of up to 255 chars")
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_log.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/netfilter/nf_tables_api.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/netfilter/nf_log.c b/net/netfilter/nf_log.c
-index edee7fa944c1..8f5362a19b15 100644
---- a/net/netfilter/nf_log.c
-+++ b/net/netfilter/nf_log.c
-@@ -193,11 +193,12 @@ void nf_logger_put(int pf, enum nf_log_type type)
- 		return;
- 	}
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index e0c224dea316..4465b832305f 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -26,6 +26,7 @@
+ #include <net/sock.h>
  
--	BUG_ON(loggers[pf][type] == NULL);
--
- 	rcu_read_lock();
- 	logger = rcu_dereference(loggers[pf][type]);
--	module_put(logger->me);
-+	if (!logger)
-+		WARN_ON_ONCE(1);
-+	else
-+		module_put(logger->me);
- 	rcu_read_unlock();
- }
- EXPORT_SYMBOL_GPL(nf_logger_put);
+ #define NFT_MODULE_AUTOLOAD_LIMIT (MODULE_NAME_LEN - sizeof("nft-expr-255-"))
++#define NFT_SET_MAX_ANONLEN 16
+ 
+ unsigned int nf_tables_net_id __read_mostly;
+ 
+@@ -3184,6 +3185,9 @@ static int nf_tables_set_alloc_name(struct nft_ctx *ctx, struct nft_set *set,
+ 		if (p[1] != 'd' || strchr(p + 2, '%'))
+ 			return -EINVAL;
+ 
++		if (strnlen(name, NFT_SET_MAX_ANONLEN) >= NFT_SET_MAX_ANONLEN)
++			return -EINVAL;
++
+ 		inuse = (unsigned long *)get_zeroed_page(GFP_KERNEL);
+ 		if (inuse == NULL)
+ 			return -ENOMEM;
 -- 
 2.43.0
 
