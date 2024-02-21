@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-22423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26AFF85DBF6
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:47:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1A5085D970
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E9441C23577
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:47:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D137B24A81
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:18:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65E773161;
-	Wed, 21 Feb 2024 13:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640BE7867B;
+	Wed, 21 Feb 2024 13:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="czBxnmfO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylNmbpkb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65EE63C2F;
-	Wed, 21 Feb 2024 13:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22FFE77638;
+	Wed, 21 Feb 2024 13:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523255; cv=none; b=CtTFQC/vopldq1c805ItagZQusvn1Y6buDad3MFYY2XztisenunSepQDokwOLdU1PSuaeizBoLGuotij5Sv0eEvhJqJPBZzQG2EZb8bNKEcmhr/XqgB72rjnZVT914fYGqEHEP2y7YfQXA0B9+a35dE0YKevxB5sHm5ziyEnpZE=
+	t=1708521504; cv=none; b=YeE7NuC7vmYkY6RRALd7ls2NVJKoWysSBoxa0v0EpXiYMQ13Te+i2ISBy/o2IZFK6+6bjt4NH2a+s+JimLCYf93gOlZgDrbSrZolrUo4IcUKqrl50tER6MtVdbGxpNEbdEsblQPzyleYQgr6ZLpAaeFxH3Pi45Y+t/+cGeEUK1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523255; c=relaxed/simple;
-	bh=3pATa4OXR6fOzB0XU85Ijc/nBFJIBV1MI7kAeYaLasU=;
+	s=arc-20240116; t=1708521504; c=relaxed/simple;
+	bh=i7ATDTVQq2Hq+xiSL5lAif+ni97HAW5RfAWyr9115ZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mjrz/urA4F/zyS/x4ExhEFeENQFulLnxr4GCjcqf44CKQla8lITlMAK/HFs1PsiJZ1fCm2rtJkd5WsTODq2lt26PC15Dq1DlC/tb4bzkJ58PQ5hJSn17eEQiyXllQmBXLcQfcvGV91uY/QSUe2si31P7TgeBGJBh9gLiPNOMwf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=czBxnmfO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C77C4C433F1;
-	Wed, 21 Feb 2024 13:47:34 +0000 (UTC)
+	 MIME-Version; b=VJHvv+NuHn4rYNWw9Xk/0vK5JeWItGwceRvjbuxZGMw6Ui8As0y9yKbvC2IzC2yXqV4YYABFvL3cebfBAAJwaw7f358C9DU6IB6SZ57M/sXc2xczJXhPmk4u1dxOkXm2eLRNsU0rveXaQgb4uxVu3gDemwCdUTyHe1QXNI8DptI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylNmbpkb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9164CC433F1;
+	Wed, 21 Feb 2024 13:18:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523255;
-	bh=3pATa4OXR6fOzB0XU85Ijc/nBFJIBV1MI7kAeYaLasU=;
+	s=korg; t=1708521504;
+	bh=i7ATDTVQq2Hq+xiSL5lAif+ni97HAW5RfAWyr9115ZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=czBxnmfOebXZFVKRVX1Oh6E5lnNsPysjW3uY/mc2lzTvkxZS8zCMey2pr/UWIr8SB
-	 XajWW8p9Y1UKCsYAU9nWjs9KVAcOv54NxGa5eJ3XPdxVUFPMnLk5M2VfqgrL5oeaxn
-	 dQBEEkHEdm5YkOqG9FvU7ZXvQilPDqKXvt604lTY=
+	b=ylNmbpkboCK/XsAyKvHa4RtjAZaVH0+QL4iUKkQJuHRP8oPaT/boGhlO64Lt2D6qP
+	 KvHQ3WSyLDFZWKWnLDxUxXYpqZtoRKQRcOBI3yWOI1Iy8yLyl+/rrqb0deI1cb5F1L
+	 3YXZ1IrI0Gqgp3+AGekLFdqfDqngV65HFxpvfy24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Subject: [PATCH 5.15 379/476] firewire: core: correct documentation of fw_csr_string() kernel API
-Date: Wed, 21 Feb 2024 14:07:10 +0100
-Message-ID: <20240221130022.065931063@linuxfoundation.org>
+	Su Hui <suhui@nfschina.com>,
+	Artur Paszkiewicz <artur.paszkiewicz@intel.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 130/202] scsi: isci: Fix an error code problem in isci_io_request_build()
+Date: Wed, 21 Feb 2024 14:07:11 +0100
+Message-ID: <20240221125935.910837123@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+From: Su Hui <suhui@nfschina.com>
 
-commit 5f9ab17394f831cb7986ec50900fa37507a127f1 upstream.
+[ Upstream commit 658365c6b0857e6a306436e315a8633937e3af42 ]
 
-Against its current description, the kernel API can accepts all types of
-directory entries.
+Clang static complains that Value stored to 'status' is never read. Return
+'status' rather than 'SCI_SUCCESS'.
 
-This commit corrects the documentation.
-
-Cc: stable@vger.kernel.org
-Fixes: 3c2c58cb33b3 ("firewire: core: fw_csr_string addendum")
-Link: https://lore.kernel.org/r/20240130100409.30128-2-o-takashi@sakamocchi.jp
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f1f52e75939b ("isci: uplevel request infrastructure")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Link: https://lore.kernel.org/r/20240112041926.3924315-1-suhui@nfschina.com
+Reviewed-by: Artur Paszkiewicz <artur.paszkiewicz@intel.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firewire/core-device.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/scsi/isci/request.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/firewire/core-device.c
-+++ b/drivers/firewire/core-device.c
-@@ -100,10 +100,9 @@ static int textual_leaf_to_string(const
-  * @buf:	where to put the string
-  * @size:	size of @buf, in bytes
-  *
-- * The string is taken from a minimal ASCII text descriptor leaf after
-- * the immediate entry with @key.  The string is zero-terminated.
-- * An overlong string is silently truncated such that it and the
-- * zero byte fit into @size.
-+ * The string is taken from a minimal ASCII text descriptor leaf just after the entry with the
-+ * @key. The string is zero-terminated. An overlong string is silently truncated such that it
-+ * and the zero byte fit into @size.
-  *
-  * Returns strlen(buf) or a negative error code.
-  */
+diff --git a/drivers/scsi/isci/request.c b/drivers/scsi/isci/request.c
+index 2f151708b59a..13ecf554762e 100644
+--- a/drivers/scsi/isci/request.c
++++ b/drivers/scsi/isci/request.c
+@@ -3398,7 +3398,7 @@ static enum sci_status isci_io_request_build(struct isci_host *ihost,
+ 		return SCI_FAILURE;
+ 	}
+ 
+-	return SCI_SUCCESS;
++	return status;
+ }
+ 
+ static struct isci_request *isci_request_from_tag(struct isci_host *ihost, u16 tag)
+-- 
+2.43.0
+
 
 
 
