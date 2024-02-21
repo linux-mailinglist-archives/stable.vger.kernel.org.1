@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-22410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 737FC85DBE9
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:46:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75B6B85DEB5
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:21:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 129741F21137
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:46:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82B061C237B5
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:21:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4934677A03;
-	Wed, 21 Feb 2024 13:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F21762C1;
+	Wed, 21 Feb 2024 14:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a+jEomft"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vuwPrxJo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082C51E4B2;
-	Wed, 21 Feb 2024 13:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 877E04C62;
+	Wed, 21 Feb 2024 14:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523205; cv=none; b=b2L0pdZlvrfY0pGSv5uJnNHOE9kJr6Vt67fFk7+SOc/keEoiPnngSP1e0EzOJIWChDJ1zUFTnOWbTOFrcxcVoGK6Z9ceRRm0sjtjvk453MXS6TFviAtkv5XC7VkOhXj2MyQuvjc7vR3Qqm08tBqjeSNcgyW5kQFXvInCNOja8Kg=
+	t=1708525268; cv=none; b=McxWHJSsLBW3HYsRnB96otP1jDdavABcySD2X5ZnGclyq2WskcqWtcErtRwYPRf+0c7JNsrKlNX3ZbVJvowd7z92HjGedNm1L9f69zW7eE84BtN4RgYolgG8K/CyeuLgPMU5aHWqKo2U/c5MmViEO+c+PO+AneP4C1m9mCKPiYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523205; c=relaxed/simple;
-	bh=xS8puSolasXwKy9m2X4SqetjbC2BRBb2cZYyutOl4V0=;
+	s=arc-20240116; t=1708525268; c=relaxed/simple;
+	bh=StDN7G5NwUoB3jN8q3WSkLAV4EFAgxxsoMFfDF+tlMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W1Rf2dtCYIeQUvoLxkXvqxyvvAsyVfl3S06+dQymkwfv+qobErgKIYSrXD+g0fCt33ZpGOyjDTutD4g/iehqRhlZUWtl2sAczmnbwWEU01vXUOS1AUsASG1/Sw/Zv9zC/syYdRExApbkOzwZfaLe3PCIio+NgTA+I0Icr1tjct4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a+jEomft; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88D01C433F1;
-	Wed, 21 Feb 2024 13:46:44 +0000 (UTC)
+	 MIME-Version; b=ot87v7ATw8PEgi7K+qHn8kFc5k/rB9WS4y6LoVIurP1NvEcTQ/0o4karXOEub25PJJILXhOprHH0tu4wxjcGO6dgDnkzyPaxzUySELXQXvubIbT/JFyiqOHdwZPSN0UpiJBnYDGTdPkwHOtReX/EX5Pb4nQVAA701DPR7Hec2Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vuwPrxJo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9669DC433C7;
+	Wed, 21 Feb 2024 14:21:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523204;
-	bh=xS8puSolasXwKy9m2X4SqetjbC2BRBb2cZYyutOl4V0=;
+	s=korg; t=1708525268;
+	bh=StDN7G5NwUoB3jN8q3WSkLAV4EFAgxxsoMFfDF+tlMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a+jEomfttXuhqqDurR1bAVJuK9vJHfIzxdLw7BwsXb2r42cHdyvryaCFyhS9rq0pS
-	 G/E1B2yOUpxzVF2z1R8Q/BX0pK5xa6d5tXLy/boPrGhlUQsbCwgCTezMvIO4Q608Ta
-	 BmF2aVvwUD22viqhbZwKtjjCBdTwzPUi3J9LzGew=
+	b=vuwPrxJoR69lu22wYLuphcLLHx7fUZ48wYmfzRbEnvnm29UdHHnnn/2jgS3cLCmTk
+	 UrEk9FCdQnDhFSqnXR/MbWUeATuwq5zIiMQkomcw1hvevNJsqaUgAPXAKwQbjPRggc
+	 JBF7/QKgVUVeIcQ2LDr80fYI9j7H8LyfmYOFqseU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.15 367/476] USB: hub: check for alternate port before enabling A_ALT_HNP_SUPPORT
+	Edward Adam Davis <eadavis@qq.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+01cf2dbcbe2022454388@syzkaller.appspotmail.com
+Subject: [PATCH 5.4 077/267] jfs: fix uaf in jfs_evict_inode
 Date: Wed, 21 Feb 2024 14:06:58 +0100
-Message-ID: <20240221130021.602312434@linuxfoundation.org>
+Message-ID: <20240221125942.398939068@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,84 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-commit f17c34ffc792bbb520e4b61baa16b6cfc7d44b13 upstream.
+[ Upstream commit e0e1958f4c365e380b17ccb35617345b31ef7bf3 ]
 
-The OTG 1.3 spec has the feature A_ALT_HNP_SUPPORT, which tells
-a device that it is connected to the wrong port. Some devices
-refuse to operate if you enable that feature, because it indicates
-to them that they ought to request to be connected to another port.
+When the execution of diMount(ipimap) fails, the object ipimap that has been
+released may be accessed in diFreeSpecial(). Asynchronous ipimap release occurs
+when rcu_core() calls jfs_free_node().
 
-According to the spec this feature may be used based only the following
-three conditions:
+Therefore, when diMount(ipimap) fails, sbi->ipimap should not be initialized as
+ipimap.
 
-6.5.3 a_alt_hnp_support
-Setting this feature indicates to the B-device that it is connected to
-an A-device port that is not capable of HNP, but that the A-device does
-have an alternate port that is capable of HNP.
-The A-device is required to set this feature under the following conditions:
-• the A-device has multiple receptacles
-• the A-device port that connects to the B-device does not support HNP
-• the A-device has another port that does support HNP
-
-A check for the third and first condition is missing. Add it.
-
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Cc: stable <stable@kernel.org>
-Fixes: 7d2d641c44269 ("usb: otg: don't set a_alt_hnp_support feature for OTG 2.0 device")
-Link: https://lore.kernel.org/r/20240122153545.12284-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-and-tested-by: syzbot+01cf2dbcbe2022454388@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/hub.c |   30 +++++++++++++++++++-----------
- 1 file changed, 19 insertions(+), 11 deletions(-)
+ fs/jfs/jfs_mount.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -2368,17 +2368,25 @@ static int usb_enumerate_device_otg(stru
- 			}
- 		} else if (desc->bLength == sizeof
- 				(struct usb_otg_descriptor)) {
--			/* Set a_alt_hnp_support for legacy otg device */
--			err = usb_control_msg(udev,
--				usb_sndctrlpipe(udev, 0),
--				USB_REQ_SET_FEATURE, 0,
--				USB_DEVICE_A_ALT_HNP_SUPPORT,
--				0, NULL, 0,
--				USB_CTRL_SET_TIMEOUT);
--			if (err < 0)
--				dev_err(&udev->dev,
--					"set a_alt_hnp_support failed: %d\n",
--					err);
-+			/*
-+			 * We are operating on a legacy OTP device
-+			 * These should be told that they are operating
-+			 * on the wrong port if we have another port that does
-+			 * support HNP
-+			 */
-+			if (bus->otg_port != 0) {
-+				/* Set a_alt_hnp_support for legacy otg device */
-+				err = usb_control_msg(udev,
-+					usb_sndctrlpipe(udev, 0),
-+					USB_REQ_SET_FEATURE, 0,
-+					USB_DEVICE_A_ALT_HNP_SUPPORT,
-+					0, NULL, 0,
-+					USB_CTRL_SET_TIMEOUT);
-+				if (err < 0)
-+					dev_err(&udev->dev,
-+						"set a_alt_hnp_support failed: %d\n",
-+						err);
-+			}
- 		}
+diff --git a/fs/jfs/jfs_mount.c b/fs/jfs/jfs_mount.c
+index d41733540df9..459324f3570a 100644
+--- a/fs/jfs/jfs_mount.c
++++ b/fs/jfs/jfs_mount.c
+@@ -171,15 +171,15 @@ int jfs_mount(struct super_block *sb)
  	}
- #endif
+ 	jfs_info("jfs_mount: ipimap:0x%p", ipimap);
+ 
+-	/* map further access of per fileset inodes by the fileset inode */
+-	sbi->ipimap = ipimap;
+-
+ 	/* initialize fileset inode allocation map */
+ 	if ((rc = diMount(ipimap))) {
+ 		jfs_err("jfs_mount: diMount failed w/rc = %d", rc);
+ 		goto err_ipimap;
+ 	}
+ 
++	/* map further access of per fileset inodes by the fileset inode */
++	sbi->ipimap = ipimap;
++
+ 	return rc;
+ 
+ 	/*
+-- 
+2.43.0
+
 
 
 
