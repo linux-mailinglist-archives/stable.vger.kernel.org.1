@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-22399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-21945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53D4B85DBDE
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:46:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EDBE85D951
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:17:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC5A9281430
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:46:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44EB41C22F02
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:17:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA7F78B50;
-	Wed, 21 Feb 2024 13:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0CDB6BB52;
+	Wed, 21 Feb 2024 13:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gy4efiFx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1a6j8rxf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD444D5B7;
-	Wed, 21 Feb 2024 13:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70AD669E08;
+	Wed, 21 Feb 2024 13:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523167; cv=none; b=bSlUKEz2vrccR9hva3tpgNrwpoighTUHnWkKlUScjcui0qoVh4W/a1jR68eovPmfKS5BdRK903nTZE67RcdjPP08oo2jMvr7ftRZ9vF6R7a4ZmmG4cE+gUoJsFIvEx8K/t7Ve/9m/KkG4ORIRWsnZO9LVBK3wLmEzmO4/+DQpeA=
+	t=1708521423; cv=none; b=U+tgl76GVlnIcwvNrgobp4xAJzOqnC/M/XlEKkx1/+m7IJqJHX+88Ot0cOWGVYMAs55pCYiuiVbhlTKxlL0HmwAvT2FXuWtrWCvgqy5Youl0HWEvkaDoX1meShfEmdqkZE6HPu/6iMjEVpqsg2oM+coNJo2U6epFe42rRJ+KILE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523167; c=relaxed/simple;
-	bh=5h2skk5KFC7l5nzCti3arsOGGB0bz5D5WoyzPWyqohg=;
+	s=arc-20240116; t=1708521423; c=relaxed/simple;
+	bh=HfhBu3tLtq/iHKbe2MlUePbDGhmil53galBpEn5O+BY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gcEsmoEPj4orUSY04cKbylSOGE697/0ktAl04gCp6gO2tYCcOfrPU9Q6aNWLWYYToCgKdCxpo72gSgUkDVyoKCbQgVX5h5jMWGAVfKqGLlLz/mR5IvvFqsph295NBSpSAu+Gc4kDzpJWk6b1iUXkdDnHiwM7eMAE0Atd9MbVPok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gy4efiFx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54832C433C7;
-	Wed, 21 Feb 2024 13:46:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aJb2a3xbfB0PYqOwCmkOY25bNj2MW0dlffO9GO2V4wf47GiXE5ErN6DD0ZVdiySwYpNR4y7rcsZ1cEpYXW4fuB40AccYJuTNbbp3Hk/TAQj+GXK9s5ZdfuUL62J5qZo/hVerc8Vvnnl5gAlmalb3g6+H/uYxTSGkEdwXjvbIPHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1a6j8rxf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3E29C433C7;
+	Wed, 21 Feb 2024 13:17:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523166;
-	bh=5h2skk5KFC7l5nzCti3arsOGGB0bz5D5WoyzPWyqohg=;
+	s=korg; t=1708521423;
+	bh=HfhBu3tLtq/iHKbe2MlUePbDGhmil53galBpEn5O+BY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gy4efiFx1K0TlOq8IYi7iC2S1ji7mRqTza2mUpZL3ImNVlFZOMU1OIJF1uPTQUvGI
-	 z3wSJQahkbTk7Upss0viYhQSMMFoFp2wZiYBXT5RFIroUUgP0N8QEqDUn68weynxFq
-	 4TGZI7Fk0LJU+r/LkDFKM+kbJIlZLyzp3l2d2rZI=
+	b=1a6j8rxfCU9b/U4td7INthxKHi/sRVB5Z4bEvib15mEDRriM55Hg8ekbb9jA/lR2/
+	 AONmyx8uEz85Q/Wytrwjwphh05HYZzNrMSj5h2Qbj5VIfI5vkLUi5TqugGCN0DGGgQ
+	 8kDgBpq73HIQUk2OHASsr9tzB2y3wdOdHMkVkvIA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Vecera <ivecera@redhat.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 5.15 355/476] i40e: Fix waiting for queues of all VSIs to be disabled
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 105/202] PCI: add INTEL_HDA_ARL to pci_ids.h
 Date: Wed, 21 Feb 2024 14:06:46 +0100
-Message-ID: <20240221130021.118794671@linuxfoundation.org>
+Message-ID: <20240221125935.151177470@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
-References: <20240221130007.738356493@linuxfoundation.org>
+In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
+References: <20240221125931.742034354@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit c73729b64bb692186da080602cd13612783f52ac ]
+[ Upstream commit 5ec42bf04d72fd6d0a6855810cc779e0ee31dfd7 ]
 
-The function i40e_pf_wait_queues_disabled() iterates all PF's VSIs
-up to 'pf->hw.func_caps.num_vsis' but this is incorrect because
-the real number of VSIs can be up to 'pf->num_alloc_vsi' that
-can be higher. Fix this loop.
+The PCI ID insertion follows the increasing order in the table, but
+this hardware follows MTL (MeteorLake).
 
-Fixes: 69129dc39fac ("i40e: Modify Tx disable wait flow in case of DCB reconfiguration")
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Acked-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20231204212710.185976-2-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/pci_ids.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 10737418565f..3d2b92a952a6 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -5323,7 +5323,7 @@ static int i40e_pf_wait_queues_disabled(struct i40e_pf *pf)
- {
- 	int v, ret = 0;
- 
--	for (v = 0; v < pf->hw.func_caps.num_vsis; v++) {
-+	for (v = 0; v < pf->num_alloc_vsi; v++) {
- 		if (pf->vsi[v]) {
- 			ret = i40e_vsi_wait_queues_disabled(pf->vsi[v]);
- 			if (ret)
+diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+index 76d5490231a7..3ac7b92b35b9 100644
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -3004,6 +3004,7 @@
+ #define PCI_DEVICE_ID_INTEL_82443GX_0	0x71a0
+ #define PCI_DEVICE_ID_INTEL_82443GX_2	0x71a2
+ #define PCI_DEVICE_ID_INTEL_82372FB_1	0x7601
++#define PCI_DEVICE_ID_INTEL_HDA_ARL	0x7728
+ #define PCI_DEVICE_ID_INTEL_SCH_LPC	0x8119
+ #define PCI_DEVICE_ID_INTEL_SCH_IDE	0x811a
+ #define PCI_DEVICE_ID_INTEL_E6XX_CU	0x8183
 -- 
 2.43.0
 
