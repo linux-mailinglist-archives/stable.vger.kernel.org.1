@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-22308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3186685DB5E
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:40:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67E7585DB60
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:40:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60D451C233B2
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:40:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D17C1F23F88
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:40:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 897B5763F6;
-	Wed, 21 Feb 2024 13:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1E9177A03;
+	Wed, 21 Feb 2024 13:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXpezb9A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQHqkPTo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498943C2F;
-	Wed, 21 Feb 2024 13:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2683C2F;
+	Wed, 21 Feb 2024 13:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522806; cv=none; b=WDxAtog9SyBfuuh2UhMXrFCHrhyXSKmbSSLetCb92Q6x5LclJzDA+M0cm6am+UkWz++kjLsDvCMRWFQZ2IWugrppqPEVRroEvQhfWik89VxwZtNuMS6iEZ5yAXq3hjq65TY7ncRM1qRMN1QgHFZChsABr4eargBqvgWtzGWB+Gw=
+	t=1708522812; cv=none; b=trNORXo0fxRfjM5Or+EaecxWqbS6v42mil806l49abDGllZztWLdcPeyy2wUR6d7/QA+pxe578GJIIg3rAJWYagaldhnXYGnc7W1m337SdSSpeyDz7WzxwRJKL/MYIc7EwV+/476VH7SQBj/C7YT+KgP26TliC0X89SOvV5ppMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522806; c=relaxed/simple;
-	bh=97KYGg8IJiShj2O9xGCTISHRoGptnUHIT+HWXc2CPxE=;
+	s=arc-20240116; t=1708522812; c=relaxed/simple;
+	bh=WbQikY2yGhI21ZRI5XFre8iVD7cG+ed6PZb0rqkcmRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mBrjp7HV5Zmm211xqa9biEQAI2EqVIATAAnk5okydZ0N9CUdh+chE4Xs05o26ZQkw0wZBv+8jPjiP+xTreSJsKO5cFh/OjUZ9FwI7GFyRqJZVDmAwJ6BWF+PuHQUszDHPTg1yil5ejt7gmwxz3z5l01eRVvSVFWzn22eyiq9bEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXpezb9A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBADBC43390;
-	Wed, 21 Feb 2024 13:40:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=heBJ+KdUQGqm7ZQcg3KW/2sIxyUZiGL7urD28hwfU8e3pkF4mF52dRZ+/QJ3ij2K5Yxmj12qPMUm581+KaUEuQP628GkRtIQEhppoiDHxLqXHCDFSrFVaveS21QcPxjCMqGJUHDvqSJ+Pz2RnoLXKY3z6wovWH4LrlyA57uX8uA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQHqkPTo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDC7C43390;
+	Wed, 21 Feb 2024 13:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708522806;
-	bh=97KYGg8IJiShj2O9xGCTISHRoGptnUHIT+HWXc2CPxE=;
+	s=korg; t=1708522812;
+	bh=WbQikY2yGhI21ZRI5XFre8iVD7cG+ed6PZb0rqkcmRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LXpezb9ArIihPCRWEuTny0uqWoHkhyr9JhXX9g/RQa0JEVRxcozL+9Gri1s58JMla
-	 QTaOyfaQ9cpOzj3EX1esBQ9JQFRWKc+1PVc9KBw2JE+g3qfJvZrOMyI6jqtfxaESeF
-	 zqPmVSb4wPfINooQxNDNuGEsle2NXPwHkm/2HmP0=
+	b=KQHqkPTo36/4iGThKnCY4/zzGrSErPrjmhT5OPt0BSg4W91Wu/lti9myv84p53l5g
+	 v8cduNy+6rv+s37GtJ7KUwXhQy+WwzY+fl0SqndlMeZkB+xO5Mpa28zQKHPYJO+sUK
+	 nBjLhPQUvrM00gAHM6Fk2amqJuErvp9fdODj+ZZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Huang <JinHuiEric.Huang@amd.com>,
+	Monk Liu <Monk.Liu@amd.com>,
 	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 264/476] drm/amd/powerplay: Fix kzalloc parameter ATOM_Tonga_PPM_Table in get_platform_power_management_table()
-Date: Wed, 21 Feb 2024 14:05:15 +0100
-Message-ID: <20240221130017.606436250@linuxfoundation.org>
+Subject: [PATCH 5.15 265/476] drm/amdgpu: Release adev->pm.fw before return in amdgpu_device_need_post()
+Date: Wed, 21 Feb 2024 14:05:16 +0100
+Message-ID: <20240221130017.642445631@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
 References: <20240221130007.738356493@linuxfoundation.org>
@@ -71,39 +72,40 @@ Content-Transfer-Encoding: 8bit
 
 From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 6616b5e1999146b1304abe78232af810080c67e3 ]
+[ Upstream commit 8a44fdd3cf91debbd09b43bd2519ad2b2486ccf4 ]
 
-In 'struct phm_ppm_table *ptr' allocation using kzalloc, an incorrect
-structure type is passed to sizeof() in kzalloc, larger structure types
-were used, thus using correct type 'struct phm_ppm_table' fixes the
-below:
+In function 'amdgpu_device_need_post(struct amdgpu_device *adev)' -
+'adev->pm.fw' may not be released before return.
 
-drivers/gpu/drm/amd/amdgpu/../pm/powerplay/hwmgr/process_pptables_v1_0.c:203 get_platform_power_management_table() warn: struct type mismatch 'phm_ppm_table vs _ATOM_Tonga_PPM_Table'
+Using the function release_firmware() to release adev->pm.fw.
 
-Cc: Eric Huang <JinHuiEric.Huang@amd.com>
+Thus fixing the below:
+drivers/gpu/drm/amd/amdgpu/amdgpu_device.c:1571 amdgpu_device_need_post() warn: 'adev->pm.fw' from request_firmware() not released on lines: 1554.
+
+Cc: Monk Liu <Monk.Liu@amd.com>
 Cc: Christian König <christian.koenig@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Suggested-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/process_pptables_v1_0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/process_pptables_v1_0.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/process_pptables_v1_0.c
-index f2a55c1413f5..17882f8dfdd3 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/process_pptables_v1_0.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/process_pptables_v1_0.c
-@@ -200,7 +200,7 @@ static int get_platform_power_management_table(
- 		struct pp_hwmgr *hwmgr,
- 		ATOM_Tonga_PPM_Table *atom_ppm_table)
- {
--	struct phm_ppm_table *ptr = kzalloc(sizeof(ATOM_Tonga_PPM_Table), GFP_KERNEL);
-+	struct phm_ppm_table *ptr = kzalloc(sizeof(*ptr), GFP_KERNEL);
- 	struct phm_ppt_v1_information *pp_table_information =
- 		(struct phm_ppt_v1_information *)(hwmgr->pptable);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 19e32f38a4c4..816dd59212c1 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -1292,6 +1292,7 @@ bool amdgpu_device_need_post(struct amdgpu_device *adev)
+ 				return true;
  
+ 			fw_ver = *((uint32_t *)adev->pm.fw->data + 69);
++			release_firmware(adev->pm.fw);
+ 			if (fw_ver < 0x00160e00)
+ 				return true;
+ 		}
 -- 
 2.43.0
 
