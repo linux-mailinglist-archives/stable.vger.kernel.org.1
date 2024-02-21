@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-22942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FC0F85DE60
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:18:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A71485DD4D
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:04:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3910E285722
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:18:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA1402816E5
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:04:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A937D3E3;
-	Wed, 21 Feb 2024 14:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39567EEE7;
+	Wed, 21 Feb 2024 14:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UHmz7uG/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIpyGoFI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA8D7CF08;
-	Wed, 21 Feb 2024 14:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFF27D3E3;
+	Wed, 21 Feb 2024 14:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708525037; cv=none; b=NgqQ1mV0MQmN3m5mGeQmxwvxmCVFw/W+mBfqQaJb5FfqQzoc1iJ/Ax7vpaPbn/oZKyTb9suPTXYxWFnBpPjwXOe1099x3fuAP6jTQNEql9PvEH3D8wpwiYZIncLX7So7qbvViG7pedLxWJ1T+sysP9qRc+NPaIbeIyQ530w3U2Y=
+	t=1708524203; cv=none; b=XomtRKqa8fsyXCsn8DLebxwLXpVJ7dtd6yqhgzqDXmqA1uoQsXTzDKvbKUoBNdv5Ku1vQfmPaGRWSF58uJALybWbzZjrS3xH0eVJTQJqA/IP3DK5WE066h8XL4QnVl4WEjsLulMeal5VlEWFqalIzgWlA6iNZEq4V2Qky3Pu2e8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708525037; c=relaxed/simple;
-	bh=N2LFya0fl/sBaZoS4R5Xd9KqXk8GeplQN2SZ/I87D0Y=;
+	s=arc-20240116; t=1708524203; c=relaxed/simple;
+	bh=/YviRCb/IzLYCo+Na9mfjkGoUwB38lQPoVNUPQFNwAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YMa0m7/DVITT3PGpHU7wLUIO3tnP5WDNQqy1lexIAM++fjsD/djE4WZG4TdSIuUNNT9IqKnsn8glbYpgA1f/Ioi3C5rloggsuCXuCYOPyrNfmDfnLGXap9oEb8LTYKOngY9bZA4P5+Ojraj0rW3Mp05Q2G33Yy/wWDwSG1KJdcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UHmz7uG/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D31C43390;
-	Wed, 21 Feb 2024 14:17:16 +0000 (UTC)
+	 MIME-Version; b=iZLdZ6ktayDofI1G7B70AhAj3KQQ5XJSQihDHhBgU9qS0HQ3H5z5LVvkmKyr5iaXBKBOPdz3iRUSSYP7gORtQFkIbww58BXSZMSfLZ9sGKqfn9abIyMrVFwCvANiM3TnrO4k1MrFUaNl2+bmNYvx/TclaDnGgOAMgMjL/9ThJoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIpyGoFI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFAD3C433C7;
+	Wed, 21 Feb 2024 14:03:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708525037;
-	bh=N2LFya0fl/sBaZoS4R5Xd9KqXk8GeplQN2SZ/I87D0Y=;
+	s=korg; t=1708524203;
+	bh=/YviRCb/IzLYCo+Na9mfjkGoUwB38lQPoVNUPQFNwAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UHmz7uG/ytk0YHpXRTTnIifhFm/o4gTMNxyGDESTl7mG2+PwsBEdK7enjbNf4u609
-	 UUczTFzsp/wT8AZKq0iQkVRLliUZ0SOa4GePQZsUOQFZH+gJ8opAUD6GUkM+hgK6vN
-	 2kHHP+H/9PFEXGgsEOcaGmrO6pkacbmvQKLwGFRk=
+	b=AIpyGoFIkutKB6ZIUwekia0PiQYiYWIsbHKtlHZJhbqpuWg/ZReEeuMJKBIZdAxza
+	 MLwvNm0d7w7ONduBf32RAGIrHoLj3DZ3Kw3Ot+0v8KmiJ/RcOreIfaP6P6afmQH+iP
+	 aztIq5j2ss9OK2HPMEtLud4h4lp0ONTxfr3tpwQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaolei Wang <xiaolei.wang@windriver.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>
-Subject: [PATCH 5.4 013/267] rpmsg: virtio: Free driver_override when rpmsg_remove()
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 175/379] f2fs: fix to check return value of f2fs_reserve_new_block()
 Date: Wed, 21 Feb 2024 14:05:54 +0100
-Message-ID: <20240221125940.472799699@linuxfoundation.org>
+Message-ID: <20240221130000.091324513@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
-References: <20240221125940.058369148@linuxfoundation.org>
+In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
+References: <20240221125954.917878865@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Chao Yu <chao@kernel.org>
 
-commit d5362c37e1f8a40096452fc201c30e705750e687 upstream.
+[ Upstream commit 956fa1ddc132e028f3b7d4cf17e6bfc8cb36c7fd ]
 
-Free driver_override when rpmsg_remove(), otherwise
-the following memory leak will occur:
+Let's check return value of f2fs_reserve_new_block() in do_recover_data()
+rather than letting it fails silently.
 
-unreferenced object 0xffff0000d55d7080 (size 128):
-  comm "kworker/u8:2", pid 56, jiffies 4294893188 (age 214.272s)
-  hex dump (first 32 bytes):
-    72 70 6d 73 67 5f 6e 73 00 00 00 00 00 00 00 00  rpmsg_ns........
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<000000009c94c9c1>] __kmem_cache_alloc_node+0x1f8/0x320
-    [<000000002300d89b>] __kmalloc_node_track_caller+0x44/0x70
-    [<00000000228a60c3>] kstrndup+0x4c/0x90
-    [<0000000077158695>] driver_set_override+0xd0/0x164
-    [<000000003e9c4ea5>] rpmsg_register_device_override+0x98/0x170
-    [<000000001c0c89a8>] rpmsg_ns_register_device+0x24/0x30
-    [<000000008bbf8fa2>] rpmsg_probe+0x2e0/0x3ec
-    [<00000000e65a68df>] virtio_dev_probe+0x1c0/0x280
-    [<00000000443331cc>] really_probe+0xbc/0x2dc
-    [<00000000391064b1>] __driver_probe_device+0x78/0xe0
-    [<00000000a41c9a5b>] driver_probe_device+0xd8/0x160
-    [<000000009c3bd5df>] __device_attach_driver+0xb8/0x140
-    [<0000000043cd7614>] bus_for_each_drv+0x7c/0xd4
-    [<000000003b929a36>] __device_attach+0x9c/0x19c
-    [<00000000a94e0ba8>] device_initial_probe+0x14/0x20
-    [<000000003c999637>] bus_probe_device+0xa0/0xac
+Also refactoring check condition on return value of f2fs_reserve_new_block()
+as below:
+- trigger f2fs_bug_on() only for ENOSPC case;
+- use do-while statement to avoid redundant codes;
 
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Fixes: b0b03b811963 ("rpmsg: Release rpmsg devices in backends")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231215020049.78750-1-xiaolei.wang@windriver.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rpmsg/virtio_rpmsg_bus.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/f2fs/recovery.c | 23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
 
---- a/drivers/rpmsg/virtio_rpmsg_bus.c
-+++ b/drivers/rpmsg/virtio_rpmsg_bus.c
-@@ -381,6 +381,7 @@ static void virtio_rpmsg_release_device(
- 	struct rpmsg_device *rpdev = to_rpmsg_device(dev);
- 	struct virtio_rpmsg_channel *vch = to_virtio_rpmsg_channel(rpdev);
+diff --git a/fs/f2fs/recovery.c b/fs/f2fs/recovery.c
+index c3c527afdd07..2700e0fdd3e0 100644
+--- a/fs/f2fs/recovery.c
++++ b/fs/f2fs/recovery.c
+@@ -641,7 +641,16 @@ static int do_recover_data(struct f2fs_sb_info *sbi, struct inode *inode,
+ 		 */
+ 		if (dest == NEW_ADDR) {
+ 			f2fs_truncate_data_blocks_range(&dn, 1);
+-			f2fs_reserve_new_block(&dn);
++			do {
++				err = f2fs_reserve_new_block(&dn);
++				if (err == -ENOSPC) {
++					f2fs_bug_on(sbi, 1);
++					break;
++				}
++			} while (err &&
++				IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION));
++			if (err)
++				goto err;
+ 			continue;
+ 		}
  
-+	kfree(rpdev->driver_override);
- 	kfree(vch);
- }
+@@ -649,12 +658,14 @@ static int do_recover_data(struct f2fs_sb_info *sbi, struct inode *inode,
+ 		if (f2fs_is_valid_blkaddr(sbi, dest, META_POR)) {
  
+ 			if (src == NULL_ADDR) {
+-				err = f2fs_reserve_new_block(&dn);
+-				while (err &&
+-				       IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION))
++				do {
+ 					err = f2fs_reserve_new_block(&dn);
+-				/* We should not get -ENOSPC */
+-				f2fs_bug_on(sbi, err);
++					if (err == -ENOSPC) {
++						f2fs_bug_on(sbi, 1);
++						break;
++					}
++				} while (err &&
++					IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION));
+ 				if (err)
+ 					goto err;
+ 			}
+-- 
+2.43.0
+
 
 
 
