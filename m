@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-21979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE6A185D97D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:19:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A24E585DEA6
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 15:20:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FDD11F2293A
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:19:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42F341F24550
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6337762C1;
-	Wed, 21 Feb 2024 13:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C894D7C0A4;
+	Wed, 21 Feb 2024 14:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PdMVbgeE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDqXylkG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7271C3FB21;
-	Wed, 21 Feb 2024 13:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787457C093;
+	Wed, 21 Feb 2024 14:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521551; cv=none; b=tGelUNJoAmGSSvMHLENVgG5VXDEqLbYkOqNcDlGWQ2ajVRlm49/RIhTtLmx4HMOWFYJqilcO+a7Q/q/3AuOglsqrVgiTR2e1833Yafd1dCDa1A60uo6lm3DAJ8o9BVw1aXN10dQo30zBGqk0uHVz1VSJYuW/agdlJJcZsEw3sOA=
+	t=1708525201; cv=none; b=jylYlZ2ubyNZImhrLOxKUTPMmfME821EGOdPcTk+4VSZQaW8OLClWutEOrUPxnYQ7IafWb3nMbYXGMbHzkYopgtP7H/cf0IKV1+q2O22dLOrwuKy3WNbumlBEWbfAyQ3r4q2/adkaf3jppzo/BW1zY3YLjVhJmFx/qkfiNGr3UU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521551; c=relaxed/simple;
-	bh=XVo0XqrrB3wJCeQ7WAru9cZbVWvvCV0K53sTFVR6TL4=;
+	s=arc-20240116; t=1708525201; c=relaxed/simple;
+	bh=6pXTjIiLZldG1VU68QDu98PbiuddL3okW3IxoAIHM4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X4dgdf0vE2LFkEKUqpUnHSjVZbJzyXU987xZEPcXq1ee+bmb1UjJ+jv0DuLmua02d/GzqU2S8d7JMTQdkjZihUmvAaKltaA78JrIg7qySMbukvslcvUS04rqjQVqtuXWKHDUr10md+vdR8DJqz9Wx19pvOycEwBQX92oAx05xdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PdMVbgeE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C79C433C7;
-	Wed, 21 Feb 2024 13:19:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JQUlyC3hj27UIchhKncw+SC9C/MIT8XybGcyZlRGt2G7YsQhv7oNfwhvyIFNEFdLuD+Fxu5EWKH5SwY3m4ZlsSOGltxdkWFhlc7Xl0pqaRCeBby+pFCFBOe9rDfhd/q/ASDfzlq2BiQcz2p3n+LntGIuNl68ISSNSB+SkZGgHVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDqXylkG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF420C433C7;
+	Wed, 21 Feb 2024 14:20:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708521551;
-	bh=XVo0XqrrB3wJCeQ7WAru9cZbVWvvCV0K53sTFVR6TL4=;
+	s=korg; t=1708525201;
+	bh=6pXTjIiLZldG1VU68QDu98PbiuddL3okW3IxoAIHM4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PdMVbgeE/yp1MAjKVc6wnN8sZ3n3omtt4ybX8dbn+h1r6/VrhBFqAoRI9dYB8QSRl
-	 pXqxp2fxKgImYK0YlfOJyw22kpP/PktLpgXOid1XW+jj036v/pJRdgdxkh6t9VuMnP
-	 VXNGLM2614MtzxX/Qo0LZnnM+GPIZv1kE7zrg9iY=
+	b=sDqXylkG9pzcI6X+RaevZpMAWpWgsvVrZhSAJ7zi8jWABlhSIuu7Lq0/kk8XLqUQj
+	 UBxpWbSlgfn6ievNYzRy4w422MOVQQy8JldSfpHen5SFBCsZTIXYPzgWz1mika7/Kr
+	 /2lRZt+Rmck7mjkOtqa/skJXnTs0rY1+QSp6mlnY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Prarit Bhargava <prarit@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 112/202] clk: mmp: pxa168: Fix memory leak in pxa168_clk_init()
+Subject: [PATCH 5.4 072/267] ACPI: extlog: fix NULL pointer dereference check
 Date: Wed, 21 Feb 2024 14:06:53 +0100
-Message-ID: <20240221125935.361570474@linuxfoundation.org>
+Message-ID: <20240221125942.242104584@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125931.742034354@linuxfoundation.org>
-References: <20240221125931.742034354@linuxfoundation.org>
+In-Reply-To: <20240221125940.058369148@linuxfoundation.org>
+References: <20240221125940.058369148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Prarit Bhargava <prarit@redhat.com>
 
-[ Upstream commit 2fbabea626b6467eb4e6c4cb7a16523da12e43b4 ]
+[ Upstream commit 72d9b9747e78979510e9aafdd32eb99c7aa30dd1 ]
 
-In cases where mapping of mpmu/apmu/apbc registers fails, the code path
-does not handle the failure gracefully, potentially leading to a memory
-leak. This fix ensures proper cleanup by freeing the allocated memory
-for 'pxa_unit' before returning.
+The gcc plugin -fanalyzer [1] tries to detect various
+patterns of incorrect behaviour.  The tool reports:
 
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Link: https://lore.kernel.org/r/20231210175232.3414584-1-visitorckw@gmail.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+drivers/acpi/acpi_extlog.c: In function ‘extlog_exit’:
+drivers/acpi/acpi_extlog.c:307:12: warning: check of ‘extlog_l1_addr’ for NULL after already dereferencing it [-Wanalyzer-deref-before-check]
+    |
+    |  306 |         ((struct extlog_l1_head *)extlog_l1_addr)->flags &= ~FLAG_OS_OPTIN;
+    |      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+    |      |                                                  |
+    |      |                                                  (1) pointer ‘extlog_l1_addr’ is dereferenced here
+    |  307 |         if (extlog_l1_addr)
+    |      |            ~
+    |      |            |
+    |      |            (2) pointer ‘extlog_l1_addr’ is checked for NULL here but it was already dereferenced at (1)
+    |
+
+Fix the NULL pointer dereference check in extlog_exit().
+
+Link: https://gcc.gnu.org/onlinedocs/gcc-10.1.0/gcc/Static-Analyzer-Options.html # [1]
+
+Signed-off-by: Prarit Bhargava <prarit@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/mmp/clk-of-pxa168.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/acpi/acpi_extlog.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/mmp/clk-of-pxa168.c b/drivers/clk/mmp/clk-of-pxa168.c
-index f110c02e83cb..9674c6c06dca 100644
---- a/drivers/clk/mmp/clk-of-pxa168.c
-+++ b/drivers/clk/mmp/clk-of-pxa168.c
-@@ -258,18 +258,21 @@ static void __init pxa168_clk_init(struct device_node *np)
- 	pxa_unit->mpmu_base = of_iomap(np, 0);
- 	if (!pxa_unit->mpmu_base) {
- 		pr_err("failed to map mpmu registers\n");
-+		kfree(pxa_unit);
- 		return;
- 	}
- 
- 	pxa_unit->apmu_base = of_iomap(np, 1);
- 	if (!pxa_unit->apmu_base) {
- 		pr_err("failed to map apmu registers\n");
-+		kfree(pxa_unit);
- 		return;
- 	}
- 
- 	pxa_unit->apbc_base = of_iomap(np, 2);
- 	if (!pxa_unit->apbc_base) {
- 		pr_err("failed to map apbc registers\n");
-+		kfree(pxa_unit);
- 		return;
- 	}
- 
+diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
+index 4c05c3828c9e..5dc91aa0ed61 100644
+--- a/drivers/acpi/acpi_extlog.c
++++ b/drivers/acpi/acpi_extlog.c
+@@ -316,9 +316,10 @@ static void __exit extlog_exit(void)
+ {
+ 	edac_set_report_status(old_edac_report_status);
+ 	mce_unregister_decode_chain(&extlog_mce_dec);
+-	((struct extlog_l1_head *)extlog_l1_addr)->flags &= ~FLAG_OS_OPTIN;
+-	if (extlog_l1_addr)
++	if (extlog_l1_addr) {
++		((struct extlog_l1_head *)extlog_l1_addr)->flags &= ~FLAG_OS_OPTIN;
+ 		acpi_os_unmap_iomem(extlog_l1_addr, l1_size);
++	}
+ 	if (elog_addr)
+ 		acpi_os_unmap_iomem(elog_addr, elog_size);
+ 	release_mem_region(elog_base, elog_size);
 -- 
 2.43.0
 
