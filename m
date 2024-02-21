@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-22531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-22183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6B3E85DC7D
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:54:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0218F85DAC3
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 14:34:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AF1B1F22600
-	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:54:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97BD0B22EC9
+	for <lists+stable@lfdr.de>; Wed, 21 Feb 2024 13:34:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9CA67BB16;
-	Wed, 21 Feb 2024 13:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AEC57992D;
+	Wed, 21 Feb 2024 13:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FL1fi+wA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CnNUxS7k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F567BB02;
-	Wed, 21 Feb 2024 13:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267E03D96B;
+	Wed, 21 Feb 2024 13:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708523616; cv=none; b=ZhxlPRVuoxmqUHxpHcRrJDX5F8nvvgwPAdW7MfaHTKHSAJ6zX2PVF7hZegYSM4/ptUfb2SDugxNhEL1NmhCE3Uw4leLwy9TBy7NzLVqt6fmBnTllEY4ad74H0ZiiOq6WcOvwMCKRqSak9rdhL7rjwM08EcdxerZG9La1TuqBoJQ=
+	t=1708522353; cv=none; b=oHIca6mNQDk5wVOEckCKgev0KQkpYMTqpUrT7dJ1eduGO0xQyGtGea23ooApYaNoYBHCX1GCQP6JkGnVHLmAGiKQTgvj7adMilv/jbHde4CkZh7QfdNb62uMhNDZvKfBaWSlb02sNOAoomYPfJX4Lt+Aren2spHQ3WP0uA7AOy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708523616; c=relaxed/simple;
-	bh=O1mtQzytfF246fqnDcFYtVlFwHiKDzItq2aY9+crEoQ=;
+	s=arc-20240116; t=1708522353; c=relaxed/simple;
+	bh=ZSDhEgzeiWbBdfa+WNY1wORTWCqJXs93PNZLNtZxh1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bV/UgVAFLQEs/bxEfxgQzgl1tA3P2Hp8xnSB0bAk6eSDpm0vFOArOSfHZtrmSp1s8UpC6F7WR+4A6hOPhRegkfv1p4faa0vJxxn0wbv9sqwO64VO8MDDa8I0f/zOV89j8wnnrLTLH2kL3fsNFkFa2IMsdQhOUCHotbTrjQQN+68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FL1fi+wA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F204CC43390;
-	Wed, 21 Feb 2024 13:53:35 +0000 (UTC)
+	 MIME-Version; b=GEiFFCqzadAfmFP5ATgP1Q4z45iDNccl0djTqQPWKbY1oP63pfGV5ORVSo+ubwmfxiqigYfKm9lrttMc2b6T4uKSTZpTd0SG1ISQyARhO668kBp7vJi+HMSpB60MnAMPxFBgY46QcsgHR3jPXBiumYNgSRgyZ6V17as8SgL60Tg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CnNUxS7k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88EEBC43390;
+	Wed, 21 Feb 2024 13:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708523616;
-	bh=O1mtQzytfF246fqnDcFYtVlFwHiKDzItq2aY9+crEoQ=;
+	s=korg; t=1708522353;
+	bh=ZSDhEgzeiWbBdfa+WNY1wORTWCqJXs93PNZLNtZxh1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FL1fi+wAAnZCfcw6KD4QDf/15/nriqGg0dmhSNFByX2yjO3+aq6OLpWeU1p6T0fut
-	 51vsfDyxlBu3tylJZdyhKacaHLDNf0k7rKNp8nSyJR2YT+sTNFEbK3JRn4ClbPjNyW
-	 tXRTScLSEX2tra646gQwyPJn1C3Wm3pyibRVs3SQ=
+	b=CnNUxS7kdYNHq6qYnfc/KCQMwGyp9NqkIX1zJlv1r8iJGznFURByYyBHRvVDeK6Ss
+	 ta8o9fCt8SDNDehgBN5DcU0OOIIAYj1zdLolfwVEgUR5WICO3+eMk3FqOdlOMnduz/
+	 X8zEk5pnG7O0BkXqrOwPuu8wQ+sQXPT43sasALLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	Yuluo Qiu <qyl27@outlook.com>,
+	Celeste Liu <CoelacanthusHex@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 011/379] serial: sc16is7xx: add check for unsupported SPI modes during probe
+Subject: [PATCH 5.15 139/476] ACPI: video: Add quirk for the Colorful X15 AT 23 Laptop
 Date: Wed, 21 Feb 2024 14:03:10 +0100
-Message-ID: <20240221125955.256006545@linuxfoundation.org>
+Message-ID: <20240221130013.073458486@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240221125954.917878865@linuxfoundation.org>
-References: <20240221125954.917878865@linuxfoundation.org>
+In-Reply-To: <20240221130007.738356493@linuxfoundation.org>
+References: <20240221130007.738356493@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Yuluo Qiu <qyl27@outlook.com>
 
-[ Upstream commit 6d710b769c1f5f0d55c9ad9bb49b7dce009ec103 ]
+[ Upstream commit 143176a46bdd3bfbe9ba2462bf94458e80d65ebf ]
 
-The original comment is confusing because it implies that variants other
-than the SC16IS762 supports other SPI modes beside SPI_MODE_0.
+The Colorful X15 AT 23 ACPI video-bus device report spurious
+ACPI_VIDEO_NOTIFY_CYCLE events resulting in spurious KEY_SWITCHVIDEOMODE
+events being reported to userspace (and causing trouble there) when
+an external screen plugged in.
 
-Extract from datasheet:
-    The SC16IS762 differs from the SC16IS752 in that it supports SPI clock
-    speeds up to 15 Mbit/s instead of the 4 Mbit/s supported by the
-    SC16IS752... In all other aspects, the SC16IS762 is functionally and
-    electrically the same as the SC16IS752.
+Add a quirk setting the report_key_events mask to
+REPORT_BRIGHTNESS_KEY_EVENTS so that the ACPI_VIDEO_NOTIFY_CYCLE
+events will be ignored, while still reporting brightness up/down
+hotkey-presses to userspace normally.
 
-The same is also true of the SC16IS760 variant versus the SC16IS740 and
-SC16IS750 variants.
-
-For all variants, only SPI mode 0 is supported.
-
-Change comment and abort probing if the specified SPI mode is not
-SPI_MODE_0.
-
-Fixes: 2c837a8a8f9f ("sc16is7xx: spi interface is added")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231221231823.2327894-3-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yuluo Qiu <qyl27@outlook.com>
+Co-developed-by: Celeste Liu <CoelacanthusHex@gmail.com>
+Signed-off-by: Celeste Liu <CoelacanthusHex@gmail.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/acpi/acpi_video.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index dfaca09de79b..31e0c5c3ddea 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -1450,7 +1450,10 @@ static int sc16is7xx_spi_probe(struct spi_device *spi)
- 
- 	/* Setup SPI bus */
- 	spi->bits_per_word	= 8;
--	/* only supports mode 0 on SC16IS762 */
-+	/* For all variants, only mode 0 is supported */
-+	if ((spi->mode & SPI_MODE_X_MASK) != SPI_MODE_0)
-+		return dev_err_probe(&spi->dev, -EINVAL, "Unsupported SPI mode\n");
-+
- 	spi->mode		= spi->mode ? : SPI_MODE_0;
- 	spi->max_speed_hz	= spi->max_speed_hz ? : 4 * HZ_PER_MHZ;
- 	ret = spi_setup(spi);
+diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
+index 61bcdc75bee7..c8eb69d3e1d6 100644
+--- a/drivers/acpi/acpi_video.c
++++ b/drivers/acpi/acpi_video.c
+@@ -566,6 +566,15 @@ static const struct dmi_system_id video_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "Vostro 3350"),
+ 		},
+ 	},
++	{
++	 .callback = video_set_report_key_events,
++	 .driver_data = (void *)((uintptr_t)REPORT_BRIGHTNESS_KEY_EVENTS),
++	 .ident = "COLORFUL X15 AT 23",
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "COLORFUL"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "X15 AT 23"),
++		},
++	},
+ 	/*
+ 	 * Some machines change the brightness themselves when a brightness
+ 	 * hotkey gets pressed, despite us telling them not to. In this case
 -- 
 2.43.0
 
