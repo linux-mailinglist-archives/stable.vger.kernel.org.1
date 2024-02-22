@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-23320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8872E85F80C
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 13:24:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE52585F832
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 13:30:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 368BC1F2262A
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 12:24:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BD651C249D2
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 12:30:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F533D54D;
-	Thu, 22 Feb 2024 12:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A97146557;
+	Thu, 22 Feb 2024 12:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="isDtrnur"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lnvJ6qYY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809675B5A3;
-	Thu, 22 Feb 2024 12:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5B460BAB;
+	Thu, 22 Feb 2024 12:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708604641; cv=none; b=SlQ7U6WXCKVvgBsEC5HdAwxQwrmSWq3ONagJrnYIjXE3Qq7izCyLQaxnPjUyHpiNW18ABZMhEEpifIpotd1ekYHdBYJvFY3tdSWSijR5s4MVMHsUKJLDFC7VqH5w13HOS9ZBH41NN1uTlVtF9l2/2XVPbbYh1Db5IS76jf5fK3o=
+	t=1708604999; cv=none; b=hcghllMH2mkrsGMV9qpSA3biPIRG/deh1FBjBpqNwGucuqHcJg12w3Ujr1gT1srfj2hgG/t9ggTSM/GbDQIsLlJUMLtsYArYSIokfwwxTj2Vi5dtsvRsov/zk2PkrHI7zZO05GbopZM6ctEIunWUiPX6Q5f9ZgOFtHP8NNExVEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708604641; c=relaxed/simple;
-	bh=UQcJF0MxGv8FI6zkieEqniVVC2e2rV9dcda8hmiOZeU=;
+	s=arc-20240116; t=1708604999; c=relaxed/simple;
+	bh=HJIZQiDobf5GxOwMaLIptvld+RatnI/3K+JbnfdVwzc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nxgXGkHkpMKVkGPtZKqrn5yhcyKjHlu8kYdjwLaCIujRY9kfqWzkCmQsVqCNq5wZnNRT+vDSahzClCruAU5sPwUnmchJa6+k095QxzxaQB8Uam5wv/3OytaS/Z3tdGlWuVAJ2Bzjy+viIcDrWfVP1V+RkfHEffVkx0BBj81D10k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=isDtrnur; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C60C433F1;
-	Thu, 22 Feb 2024 12:24:00 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=VqVuG4cJ4z7GYN+NvQ22Sy6w55cHAW9ffsXskBIMV56yovV6mi0jh0sE2E+TVI1tKpnR/7+/3ba8PJGkjOc3VtO+CQ8faXf9zLUztFXjIv763dS/kfkDks7HJ9hSUFNKJbrQ/XWnPk7+mWKEGeZWcZBtQMiI7SiCLx41Ae5kZI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lnvJ6qYY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD46C433C7;
+	Thu, 22 Feb 2024 12:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708604641;
-	bh=UQcJF0MxGv8FI6zkieEqniVVC2e2rV9dcda8hmiOZeU=;
+	s=k20201202; t=1708604998;
+	bh=HJIZQiDobf5GxOwMaLIptvld+RatnI/3K+JbnfdVwzc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=isDtrnurIw+5Awb+A0d791uKs9I8QT3zdq69bW1sofnwb5nAt8Kac80quAWL5f3RV
-	 P0+Jf36cR2xhYg4PTXu7SSFojqatfSknDlf+AF3Q29HmyfPVs1in/4OXO8zPTOKbfI
-	 QNBkantiKyCCvPLHlSF965Sk67dW7xv143FncXNIkPjzypclgtw24uIPs5j1XsjRbh
-	 Fm+NW7BsRao4R1z2VB7SftScm3I3iOmFrO9L08phdYEM8bPmwPwpIuZK6uX2EqVQXr
-	 nPyLhD8MF5u7g1FNwOvciDMhL6+0+crtpTgBQHvPfe5nZcPZunwlu6Z6E0z83gsZiy
-	 Uo0qWYln/uhuQ==
-Date: Thu, 22 Feb 2024 07:24:00 -0500
+	b=lnvJ6qYYOLeVoKfveH91sfsUv4Aqc9QDaj//vVCMo6S2qg+13cO4nIVAJsnwMjs4+
+	 nbqdnsa7BCVoTajiZZsxYQ26uIcl+4mwmtqrHQeZVuTUIbiexKM7ustMujn/SRqDYc
+	 JzQISeDOcRGwtjjNFJWujyf+afGySG/Uh5vBqq70Oz+5yXJ8F0pAzGKKaLt3Hd/ACb
+	 xnm7msWQ+AGdtAEE6xTVknCVpO2t5eB40vQGXWfYrqVzhf39nDi3SeH0QU6w4Tq0R7
+	 LksmBG7Uj4J5ea5d3NXlakAdln8KNbMXlGndzfWAV5RLP7d8sOSEEYfm17Qg1+KSDL
+	 lD4kAPJP4cYkg==
+Date: Thu, 22 Feb 2024 07:29:58 -0500
 From: Sasha Levin <sashal@kernel.org>
-To: Pavel Machek <pavel@ucw.cz>
+To: Mark Brown <broonie@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Daniel Wagner <dwagner@suse.de>, Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>, Keith Busch <kbusch@kernel.org>,
-	james.smart@broadcom.com, sagi@grimberg.me, kch@nvidia.com,
-	linux-nvme@lists.infradead.org
-Subject: Re: [PATCH AUTOSEL 5.10 13/16] nvmet-fc: do not tack refs on
- tgtports from assoc
-Message-ID: <Zdc84CT6LXmbz2DQ@sashalap>
-References: <20240207212700.4287-1-sashal@kernel.org>
- <20240207212700.4287-13-sashal@kernel.org>
- <ZdJVw8PbwTDngATQ@duo.ucw.cz>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	srinivas.kandagatla@linaro.org, bgoswami@quicinc.com,
+	lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com,
+	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.7 07/44] ASoC: codecs: wcd934x: drop unneeded
+ regulator include
+Message-ID: <Zdc-RtG4-FXYIkxk@sashalap>
+References: <20240207212142.1399-1-sashal@kernel.org>
+ <20240207212142.1399-7-sashal@kernel.org>
+ <ZcS9EmcM1rtsNYy0@finisterre.sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,23 +63,20 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <ZdJVw8PbwTDngATQ@duo.ucw.cz>
+In-Reply-To: <ZcS9EmcM1rtsNYy0@finisterre.sirena.org.uk>
 
-On Sun, Feb 18, 2024 at 08:08:51PM +0100, Pavel Machek wrote:
->Hi!
->
->> From: Daniel Wagner <dwagner@suse.de>
+On Thu, Feb 08, 2024 at 11:37:54AM +0000, Mark Brown wrote:
+>On Wed, Feb 07, 2024 at 04:20:34PM -0500, Sasha Levin wrote:
+>> From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 >>
->> [ Upstream commit 1c110588dd95d21782397ff3cbaa55820b4e1fad ]
+>> [ Upstream commit 35314e39dabcfb256832654ad0e856a9fba744bd ]
 >>
->> The association life time is tied to the life time of the target port.
->> That means we should not take extra a refcount when creating a
->> association.
+>> Driver does not use any regulator code, so drop redundant include of
+>> regulator/consumer.h header.
 >
->I don't see this one queued for 6.1 or 6.6. What went wrong here?
+>This doesn't seem like an obvious stable candidate...
 
-Yup, this should have been dropped from all trees. Thanks!
-
+Dropped, thanks!
 
 -- 
 Thanks,
