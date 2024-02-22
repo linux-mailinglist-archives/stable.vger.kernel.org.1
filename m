@@ -1,113 +1,120 @@
-Return-Path: <stable+bounces-23266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0B7F85ED83
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 01:04:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD57A85EDEE
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 01:25:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CCC2284733
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 00:04:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D87E283555
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 00:25:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B8E12B7F;
-	Thu, 22 Feb 2024 00:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34C278BF3;
+	Thu, 22 Feb 2024 00:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Lk00iwCh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hkl9h2/K"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5164811C8B;
-	Thu, 22 Feb 2024 00:03:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894CAA35;
+	Thu, 22 Feb 2024 00:24:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708560217; cv=none; b=c/H7bIbhzUSgjH52qQq6WjxAYb6xxpwnCQjuSoiDJjpgHjK4txi3gny/FM/p8kfYo00HKw0FPnwh4QGmynKYUMPsvbU9Ji6QR8ZHrXDZb49z01RUXZWhQArFqBR6hMHWHCeaP0C/jm0fgM/NDXENJG1GJBkQxmJ8JqvG6b+YH38=
+	t=1708561501; cv=none; b=dmGK76qewutXqLLLN3ykuGm7EPy6J/hU/FTWA041lQzgvDuMspBxV1CTcCXSqWU65s3ovQtcBnOUy9GD5MHEogibeea/jQtCbKCKG2FzeUMf4hGdl/nShD7j6LRsB2TECnE4yGSToRvNo9VZufVYbVVlh34gmxLj0T1dahY1LUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708560217; c=relaxed/simple;
-	bh=NCLBDF1aWq1vjCKSbdviULZqVSrZVvXw0hGMSa3udjg=;
-	h=Date:To:From:Subject:Message-Id; b=W5cVvkxgMjJ9jkIzATdpUNmiTeSRQ4vS4JWMzV1j8f3pqIC1RwrkBzdAregE5Kb+xaeIDxqDNk05Fwx8H9GaPuBxmeGPEwOh6oFYni0N+JmKYq7FSFTHx4xC4yLYeyUr6eVOIbaQeR3Ut07qzwsXa5WxX1rnq/wXnSg9iOTd/gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Lk00iwCh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 262BDC433F1;
-	Thu, 22 Feb 2024 00:03:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1708560217;
-	bh=NCLBDF1aWq1vjCKSbdviULZqVSrZVvXw0hGMSa3udjg=;
-	h=Date:To:From:Subject:From;
-	b=Lk00iwChkZ8YaU7AmUhrMZlpILEYgKqX+GRIYZrn8pzovqN8jr9y6cSPL6+tDeP+c
-	 rSc3ElxRX0eF5LneXOUD2M+SP1cI67RypiMiJ5B9DF7L5xNMmkEdUhjEg3NoTSn95J
-	 9XGpMFV1sUbaXgeA6XShnxewJJWBqACwYGC6D7XE=
-Date: Wed, 21 Feb 2024 16:03:36 -0800
-To: mm-commits@vger.kernel.org,vincenzo.frascino@arm.com,stable@vger.kernel.org,ryabinin.a.a@gmail.com,glider@google.com,elver@google.com,dvyukov@google.com,andreyknvl@gmail.com,arnd@arndb.de,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] kasan-test-avoid-gcc-warning-for-intentional-overflow.patch removed from -mm tree
-Message-Id: <20240222000337.262BDC433F1@smtp.kernel.org>
+	s=arc-20240116; t=1708561501; c=relaxed/simple;
+	bh=6cM1nNU4sUYIudgP5How1TvdFL1U8i4R9xzk/u45MW8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VEp4ZTqqp5CNe+5WcSsURNnGSQpnBGsiJqAhQcAddFSKh9PAqon3tKK73BVI5jZb2KSbNdULmr0XrlyEVpnQqI5W9/uxC6P7PSfLIuL9L0LYnmpOAKgsEqqDmgkZhjEXMBdkT2XEL9G8uTZME2ydRmKIQfUqe/O6uVlWKeJgZYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hkl9h2/K; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-68f51ba7043so31252016d6.3;
+        Wed, 21 Feb 2024 16:24:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708561498; x=1709166298; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=anqGFlBV+rsLg3vMhzVMgDCSwtexSsDpUKQLzjs1Ooo=;
+        b=hkl9h2/KRoGtY3ilhTyM8pdImGfzthuwP6dh7LPfEo+1RJXvhOt8XMk1XQcyXCmTCx
+         0fjfmZnMOa9jgvYvyuBLXpKpTucoMQSCz1OO5aXdeU/R5f31nrJikDE4qq9BmY3OOQ5r
+         b1iPAwFpzBb4zCT2DqLtxVt1Zb+K3arFAsu6kqQfvzdzIJ7EZpEW2YEPWc+4R1hYkjYJ
+         LOVB0+1j6aSksuXZbEk5ZbtSf4AOn3NjkEVIefI3Twu5eUIZu0vj6/qSnX+z+/Oks3/Q
+         fV3++Lh1bnIudDCMENorRPymbJAl5UDkluSisl3M0DBSpFxLv6EAp1e/iDpZi1N1tWFG
+         E3nQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708561498; x=1709166298;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=anqGFlBV+rsLg3vMhzVMgDCSwtexSsDpUKQLzjs1Ooo=;
+        b=WxX66Nb+na9my4n8bs1oSVt/s57E4IHwOTw1AfBhwu78OBvYWtkpiSAx6hXPxEv9QU
+         /AMQXMZpoVt3Pw4NTJR5ekodrBV2MW/0+W1MGbhq0v8JA6n2PmBgITWcb1EUu1Qp9pIu
+         GHs/MqdwBe65KJnUCtYmRrfdLlEqpjycMPX0ham3dvMRERqjLif5+b88iGlR0XeCnOmx
+         dtNca/XoMGZCjlMvtXRNojONKBUnpdnNyT/V1Y1847mOMNyP5SGTuyb+lqudrXbdvdin
+         XiJ1b+wOgmdwFtfba7PenLbpZ1Utij740kaS9xidOYKWxq7C4uA407mFAovAoVWBKsbP
+         NehQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWEg0s+wgYFUz/ypDdI5Edo4sk3iz0eMg4z+cdu5BR/w63uzuA2gJTYgT+3Y/yW9sWw0MWJPK9kGYQ2qI8Oh08IY+c5//6WFQOXdN0BOW6EbFJZA4ycxF6wApVnFeyurwBcP++6
+X-Gm-Message-State: AOJu0YyOb6GXROsWRtxfwQXIjcWjTKNgzAb7fP9JqrcpKB+o6+sOOSAX
+	43HSxiEqP7WAG3wXZwOwRAMsDFhkRaaeoRkOEXuQZ9r2+vCwWAOt
+X-Google-Smtp-Source: AGHT+IEEGx4qOQu1n7xW61AL2JSTReDsufs5qC56cdZ3yIFGqrRdkeZ7gcw9oBgnuzV4cOIWbbFgiA==
+X-Received: by 2002:a05:6214:2422:b0:68f:6dc5:149b with SMTP id gy2-20020a056214242200b0068f6dc5149bmr10959031qvb.58.1708561498418;
+        Wed, 21 Feb 2024 16:24:58 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id db15-20020a056214170f00b0068fa7e73367sm1160611qvb.42.2024.02.21.16.24.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Feb 2024 16:24:57 -0800 (PST)
+Message-ID: <58d5141a-6813-4831-ae44-9ccfcf79893b@gmail.com>
+Date: Wed, 21 Feb 2024 16:24:54 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 000/206] 6.1.79-rc2 review
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com
+References: <20240221130223.073542172@linuxfoundation.org>
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20240221130223.073542172@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 2/21/24 05:03, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.79 release.
+> There are 206 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 23 Feb 2024 13:01:46 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.79-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-The quilt patch titled
-     Subject: kasan/test: avoid gcc warning for intentional overflow
-has been removed from the -mm tree.  Its filename was
-     kasan-test-avoid-gcc-warning-for-intentional-overflow.patch
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-This patch was dropped because it was merged into the mm-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-------------------------------------------------------
-From: Arnd Bergmann <arnd@arndb.de>
-Subject: kasan/test: avoid gcc warning for intentional overflow
-Date: Mon, 12 Feb 2024 12:15:52 +0100
-
-The out-of-bounds test allocates an object that is three bytes too short
-in order to validate the bounds checking.  Starting with gcc-14, this
-causes a compile-time warning as gcc has grown smart enough to understand
-the sizeof() logic:
-
-mm/kasan/kasan_test.c: In function 'kmalloc_oob_16':
-mm/kasan/kasan_test.c:443:14: error: allocation of insufficient size '13' for type 'struct <anonymous>' with size '16' [-Werror=alloc-size]
-  443 |         ptr1 = kmalloc(sizeof(*ptr1) - 3, GFP_KERNEL);
-      |              ^
-
-Hide the actual computation behind a RELOC_HIDE() that ensures
-the compiler misses the intentional bug.
-
-Link: https://lkml.kernel.org/r/20240212111609.869266-1-arnd@kernel.org
-Fixes: 3f15801cdc23 ("lib: add kasan test module")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Marco Elver <elver@google.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/kasan/kasan_test.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
---- a/mm/kasan/kasan_test.c~kasan-test-avoid-gcc-warning-for-intentional-overflow
-+++ a/mm/kasan/kasan_test.c
-@@ -440,7 +440,8 @@ static void kmalloc_oob_16(struct kunit
- 	/* This test is specifically crafted for the generic mode. */
- 	KASAN_TEST_NEEDS_CONFIG_ON(test, CONFIG_KASAN_GENERIC);
- 
--	ptr1 = kmalloc(sizeof(*ptr1) - 3, GFP_KERNEL);
-+	/* RELOC_HIDE to prevent gcc from warning about short alloc */
-+	ptr1 = RELOC_HIDE(kmalloc(sizeof(*ptr1) - 3, GFP_KERNEL), 0);
- 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ptr1);
- 
- 	ptr2 = kmalloc(sizeof(*ptr2), GFP_KERNEL);
-_
-
-Patches currently in -mm which might be from arnd@arndb.de are
-
-mm-mmu_gather-add-tlb_remove_tlb_entries-fix.patch
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
 
