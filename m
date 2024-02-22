@@ -1,172 +1,200 @@
-Return-Path: <stable+bounces-23403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A06428604A2
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 22:19:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EA0D8604A5
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 22:20:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB1D61C223B6
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 21:19:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA6841F248EB
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 21:20:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB7D173F20;
-	Thu, 22 Feb 2024 21:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF4B973F13;
+	Thu, 22 Feb 2024 21:19:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seagate.com header.i=@seagate.com header.b="dY1I6vGF";
-	dkim=pass (1024-bit key) header.d=seagate.com header.i=@seagate.com header.b="cIqJsB97"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="nTH7S3Pa";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="klL58VXW";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="nTH7S3Pa";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="klL58VXW"
 X-Original-To: stable@vger.kernel.org
-Received: from esa.hc4959-67.iphmx.com (esa.hc4959-67.iphmx.com [139.138.35.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C77F6AF97;
-	Thu, 22 Feb 2024 21:19:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.138.35.140
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708636744; cv=fail; b=KIHwX85En8d6vd/lpuIrgUkehNNr8aFisBg+UtbCMzGy1RNSnDTv8gE3jpx6YhFZyzeGO0blHm7oZH0Z/5XUZSOgj78kYw0jAgz3iXdOdsqwDywlWm3hVsztJ/4YQCuIJMR4RPZnEzc/LRfShSIE4E5nFRqprx38Tah981UbRRw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708636744; c=relaxed/simple;
-	bh=JNVVi396xa2NT0d8ZYJ2mo33jD9euRVOh7oeAnHzPq4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oy65GT8bQM1mpqnE1/U2r0/MbcravHTtGz2CBSmm5J+irNLHqiWhjqYsy4GWxH0N85pxxki3tuumRHbSHbC5ETYob7WEPb6W2wiHLQRfB8nVrlm2I5Y6eOElpiGoLHAjni9alIRs6ykRM7mgahTXHcLbzUV8/8RKEkNxfzlGD7Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seagate.com; spf=pass smtp.mailfrom=seagate.com; dkim=pass (1024-bit key) header.d=seagate.com header.i=@seagate.com header.b=dY1I6vGF; dkim=pass (1024-bit key) header.d=seagate.com header.i=@seagate.com header.b=cIqJsB97; arc=fail smtp.client-ip=139.138.35.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seagate.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seagate.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=seagate.com; i=@seagate.com; q=dns/txt; s=stxiport;
-  t=1708636742; x=1740172742;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=JNVVi396xa2NT0d8ZYJ2mo33jD9euRVOh7oeAnHzPq4=;
-  b=dY1I6vGFy6FpzX65CVOpsQ+iinqqTRBpynWpuJC5L9nxE6YqTWtV6TRH
-   WFJKvwiCQ1EwQsVaI/E8dRgoh9zuMoW0g+beHnVEF0uWX7DILSdS9LuZN
-   YK1tstFo9j8dsFn9IQa3foz0y+gyWFH50YQYoBZ99huKMNGFVCPNou9A7
-   A=;
-Received: from mail-mw2nam10lp2101.outbound.protection.outlook.com (HELO NAM10-MW2-obe.outbound.protection.outlook.com) ([104.47.55.101])
-  by ob1.hc4959-67.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2024 13:18:55 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JdCKYn+YFOPfBGCvyAO0gx0tErqpuDiRyaHCmjYCQa0P4gzvu/iyPaVEXaTVA/WLfUcj2wrHtswhskWxAN13Oaub56Nwz7ORa1s9s8pcxatMDHiuPO+idMWlbe6Bg2ljj6V8sNQHi2uzuC6mQ2lHDP0Aqc1koq+XR1PMR+7Kb//+XPxbQIK0ycYc7G1zgNkoQph4wtPAMW5bfc/0eNhaDUZF6RhvltCpK2qswiAQ9w2m7XEAb05/8/M7DME9SxOU6XUbAKU+LA6k7/NL/GcQ8GOc/3/41rCupsB2SQJmn1QD34WlNh6f0r+36y6NeD3l7Z5tBeP95CN6CEDSJksXvw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vbTru4NpSzd4dLsf2NWBCpxiTGNnAhW2bzL5MXGRl4s=;
- b=USsV3NZuuD17ATWToEooE4EAM/eTjVh8eQ5mkCS+LFXU/Bhi22/IpPoogpzX3R4DaXsBkua+cG5kMsplgE51txB5ltd/WbN2fggdQv4S/+CkTMgyqpLQOxj51lQ1Wnim67opAf49QdrHVMsp96DGEhCALMI5wCEnww2JY0FxCr7rRxQ7tDMhBgwQFYjZY8cy/Bf0FqNwE40c8/dmscOKbWm6S78l1EdWhg+VNn7cS5cqkxbEjhnc+Kd9MbHdDYymQA6WEwHyJSFUjwT72sX4tabQgMJxrw3echhVLoIZBGijX7xjYL2Em9F4C0K24OUtOpbMYgnCwaiI9KjJJLdCSA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
- is 192.55.16.51) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=seagate.com;
- dmarc=fail (p=reject sp=reject pct=100) action=oreject
- header.from=seagate.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seagate.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vbTru4NpSzd4dLsf2NWBCpxiTGNnAhW2bzL5MXGRl4s=;
- b=cIqJsB97ast7Au1ZsttSzKFAuBAAlIKlPsfn9EEmaSCxmgacBxcyDHo0jDssYdDYcInPYnSYn62XKxk8HhMMXdbbrRnZZFg5mqsDsELsKRlfX8+e9OeuceJLzVTLCWKX2+tWg7MsdpRZb9jOpF0ccMdWMygOBFmfF3t0AASsQrY=
-Received: from CY5PR15CA0158.namprd15.prod.outlook.com (2603:10b6:930:67::20)
- by BL3PR20MB4922.namprd20.prod.outlook.com (2603:10b6:208:3b1::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.22; Thu, 22 Feb
- 2024 21:18:51 +0000
-Received: from CY4PEPF0000E9D5.namprd05.prod.outlook.com
- (2603:10b6:930:67:cafe::69) by CY5PR15CA0158.outlook.office365.com
- (2603:10b6:930:67::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.43 via Frontend
- Transport; Thu, 22 Feb 2024 21:18:51 +0000
-X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is 192.55.16.51)
- smtp.mailfrom=seagate.com; dkim=none (message not signed)
- header.d=none;dmarc=fail action=oreject header.from=seagate.com;
-Received: from sgspzesaa002.seagate.com (192.55.16.51) by
- CY4PEPF0000E9D5.mail.protection.outlook.com (10.167.241.76) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7292.25 via Frontend Transport; Thu, 22 Feb 2024 21:18:49 +0000
-Received: from sgspiesaa001.seagate.com ([10.4.144.52])
-  by sgspzesaa002.seagate.com with ESMTP; 22 Feb 2024 13:11:41 -0800
-X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
-   d="scan'208";a="114056584"
-STX-Internal-Mailhost: TRUE
-Received: from unknown (HELO nick-desk.colo.seagate.com) ([10.37.50.20])
-  by sgspiesaa001.seagate.com with ESMTP; 22 Feb 2024 13:03:50 -0800
-From: Nick Spooner <nicholas.spooner@seagate.com>
-To: gregkh@linuxfoundation.org
-Cc: akpm@linux-foundation.org,
-	allen.lkml@gmail.com,
-	conor@kernel.org,
-	f.fainelli@gmail.com,
-	jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	lkft-triage@lists.linaro.org,
-	patches@kernelci.org,
-	patches@lists.linux.dev,
-	pavel@denx.de,
-	rwarsow@gmx.de,
-	shuah@kernel.org,
-	srw@sladewatkins.net,
-	stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org,
-	Nick Spooner <nicholas.spooner@seagate.com>
-Subject: Re: [PATCH 6.7 000/313] 6.7.6-rc2 review
-Date: Thu, 22 Feb 2024 14:18:18 -0700
-Message-Id: <20240222211817.24480-1-nicholas.spooner@seagate.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240221125951.434262489@linuxfoundation.org>
-References: <20240221125951.434262489@linuxfoundation.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E6914B832;
+	Thu, 22 Feb 2024 21:19:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708636796; cv=none; b=thjx5Drd4ZrlytC5DLcSBhsGnu7Ixzh9kLrlIKBPhWYW0GvHJW3ZDcKEXJV8wblrI8ov9rCbMoM43pVZYjbrehLsbarLlQr3ZzIevd5jco0CUb1MOlpKJnXj1Aw/6vll4Wwcugu+SjCgu/rcsqJWYZN95ohZfHQns+XXR+Va8lc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708636796; c=relaxed/simple;
+	bh=a0WLqrpp2l3G1FiWSHQkOMJyuTQ+z8ar0GIz5jZCnIU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=hjwGq3R/Hxb8hT7XkOfDn/9mgElaj1L/4HmyMsN2mi0sKUapQSMHfKgna0vHVSvsEKKZJFMNuwaHI9NYmkhdow+t22bbSOJMi6M9f9rI6AaoUAukyBHEeaUb60hW33OXiKkiwQhMl/cBgdDBHdiN+htDh4/TK2LdPNG4v2GJ/wM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=nTH7S3Pa; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=klL58VXW; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=nTH7S3Pa; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=klL58VXW; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 9F4231FBB6;
+	Thu, 22 Feb 2024 21:19:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1708636792; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Nmwy2si2pJ2mNU0MlM/z5AaEWl08Athx/4vltay9xWM=;
+	b=nTH7S3PanwNm0vSUAJGfofhoWbap77NuQWPXpHbQ1p7+vVMIlw2H6L+4fv8xNbT/5bIVRP
+	/phzpnBch87802xFXGhA3UOKXzuh7SlC2vBUXS0vISLNPddWML0M4zO+Gz7M2RIoHO02DM
+	haUdYTIkowYrr+g/xV3yoByT2O9W+8M=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1708636792;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Nmwy2si2pJ2mNU0MlM/z5AaEWl08Athx/4vltay9xWM=;
+	b=klL58VXW0qULmuuzYQPKnVJUsqc30dJTQ/BQnFmCOK6IyMR2r2OHG7tTqCzhoo6DGh+Dxd
+	LyCGHxjDZeogT/Aw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1708636792; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Nmwy2si2pJ2mNU0MlM/z5AaEWl08Athx/4vltay9xWM=;
+	b=nTH7S3PanwNm0vSUAJGfofhoWbap77NuQWPXpHbQ1p7+vVMIlw2H6L+4fv8xNbT/5bIVRP
+	/phzpnBch87802xFXGhA3UOKXzuh7SlC2vBUXS0vISLNPddWML0M4zO+Gz7M2RIoHO02DM
+	haUdYTIkowYrr+g/xV3yoByT2O9W+8M=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1708636792;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Nmwy2si2pJ2mNU0MlM/z5AaEWl08Athx/4vltay9xWM=;
+	b=klL58VXW0qULmuuzYQPKnVJUsqc30dJTQ/BQnFmCOK6IyMR2r2OHG7tTqCzhoo6DGh+Dxd
+	LyCGHxjDZeogT/Aw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7A69513A8C;
+	Thu, 22 Feb 2024 21:19:52 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id GnyhHHi612WzKgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 22 Feb 2024 21:19:52 +0000
+Message-ID: <18565605-7f68-4950-b66f-496c1f3c393b@suse.cz>
+Date: Thu, 22 Feb 2024 22:19:52 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D5:EE_|BL3PR20MB4922:EE_
-Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: 01a32c59-c978-41bf-ddd0-08dc33ebdd97
-STX-Hosted-IronPort-Oubound: True
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	Kq/k5AlsaMfBaXukzuJswda4dJt3igv7Nc+pBINHNpGjhU0m1dMSoXqSM2L03FMSC9mRNlM/qe957kvz7H0IMTf6hBzEO1YPqmzq6G8TWzokQwBl8vmswZMycEJfFKhiN3pDgciVfNWGB9MqtSodm6kGxkrxzMsOwIHJNqe/1uc8SV9TnaV5GyeuGarCFuwkFGj32Aued4ClM31dXtMbklNhR1hfssqfMvClFAojUwA0DNNCDD7k5h6cceZClue/PJftgQGqGUPmJAoOzL67Tejv4gT0hPnoajkYNXWb2/Ndk7+EvYnRU/4c9a6FpWKLGe8UX51rTjQPdkB1ZMI1OW3Wh91cHdP5yCxkP5JKYUcK3KcjXN9cYc9RIhEu6BX/9H+gt7dFWTssf9yDj85WtojF0zoHCki4KM2ies9dghMGDm1c3zIR/rKG29j9DvUKhXBvh6koZeIbdN3WBB6iCNzp6YC2EU932T84khhPVBLNJ9ElehVYSS3xOC501gbljl5CK4mtXedPEy9ArWAbf+qcfOiqywl19CFc/YPahTcScPlbQ3CTpdDlhLzVezA7VowXKbR0O5EdVssW8WuD+Dss4dJ/MthGu3sIIvkcX8xLKhVUsYM+zFxHtmj9TCJTJ/r8uHL1kI1Mme7yQi478Q==
-X-Forefront-Antispam-Report:
-	CIP:192.55.16.51;CTRY:SG;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:sgspzesaa002.seagate.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(36860700004)(40470700004)(46966006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	fcqIkdSuodgUiAPVjs4bAHo0+7F5VJsfGSDGPo4WE5d8ZCuTOuAwdzCpVHGjNXS4Huu8r5TxbUSkwkfRQv8vgAStm0Oig46poStDDyZxUTZ5gA1i37WcPCAJ8Ni5e/t+Vn7FjeJTgQOdELlF0u4RITa9PajFLHSXOktq2cXGShOfGEagUC2Lj/bUkXuILMjQOMlgirgaOLHsJcs+hK9ssjBGfMPCVx6el269PaxSUC61mHadPYMPbnVe+qryKFJ5hOOmMbfjnpwIUMc5D7BVLIRo7HIdYnEo1YW+C1o/BV+O8vM7hhUCvCB3+3ng1TQvSnInU+XFt3BlR66CBQi60D1ucALJ2b146QF8xQ5gz52m7P9fdRjubvFUjO4m7SWAqrEW2+TqrD+1oqakQY9H370icN9CWjgt6ksu3pXdGIC3KCpfh2lqQAWW8r/8n9ga0ap8F6b7oGSsdyhbZ/u8lkzWg1M0pjT3mpPYk7TvOSSC3LcqTijxbAcgCM3Ig9dmNXSZxGadoen4zsKIQvsfwEQeLNxa6B5CDYsrGqkiniQX8AkF/lwmMKStSGIDWSHB353mS/2/RkRY4BKtaxZZMbhxMUnTX6mge8k73VA2UZ9YKF6xzfwuShw3Ck+f2sgF
-X-OriginatorOrg: seagate.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Feb 2024 21:18:49.7972
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 01a32c59-c978-41bf-ddd0-08dc33ebdd97
-X-MS-Exchange-CrossTenant-Id: d466216a-c643-434a-9c2e-057448c17cbe
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=d466216a-c643-434a-9c2e-057448c17cbe;Ip=[192.55.16.51];Helo=[sgspzesaa002.seagate.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000E9D5.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR20MB4922
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm, mmap: fix vma_merge() case 7 with vma_ops->close
+To: "Liam R. Howlett" <Liam.Howlett@Oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Lorenzo Stoakes <lstoakes@gmail.com>,
+ Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org
+References: <20240222165549.32753-2-vbabka@suse.cz>
+ <20240222185642.rmnp76oquu5wfo6c@revolver>
+ <20240222192746.cb65qvtmhaikfeko@revolver>
+Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <20240222192746.cb65qvtmhaikfeko@revolver>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Level: 
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nTH7S3Pa;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=klL58VXW
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-3.00 / 50.00];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 ARC_NA(0.00)[];
+	 R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 XM_UA_NO_VERSION(0.01)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 RCVD_DKIM_ARC_DNSWL_HI(-1.00)[];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 MX_GOOD(-0.01)[];
+	 DKIM_TRACE(0.00)[suse.cz:+];
+	 RCPT_COUNT_SEVEN(0.00)[7];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 FREEMAIL_TO(0.00)[Oracle.com,linux-foundation.org,kvack.org,vger.kernel.org,gmail.com,suse.com];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_IN_DNSWL_HI(-0.50)[2a07:de40:b281:106:10:150:64:167:received];
+	 RCVD_TLS_ALL(0.00)[];
+	 MID_RHS_MATCH_FROM(0.00)[]
+X-Spam-Score: -3.00
+X-Rspamd-Queue-Id: 9F4231FBB6
+X-Spam-Flag: NO
 
-> This is the start of the stable review cycle for the 6.7.6 release.
-> There are 313 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 23 Feb 2024 12:59:02 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.6-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On 2/22/24 20:27, Liam R. Howlett wrote:
+> * Liam R. Howlett <Liam.Howlett@Oracle.com> [240222 13:56]:
+>> * Vlastimil Babka <vbabka@suse.cz> [240222 11:56]:
+>> This separates the check for potentially merging previous to a later
+>> failure case.  Would it be better to check:
+>> 	if (curr && curr->vm_ops && curr->vm_ops->close)
+>> 
+>> and not set merge_prev = true, ie we cannot merge with the predecessor?
 
-Compiled and tested on my x86 machine, found no regressions.
+Good suggestion, thanks!
 
-Tested-by: Nick Spooner <nicholas.spooner@seagate.com>
+>> That way we would exit as merge_prev == false.
+>> 
+>> We would have the added benefit of not having to look at merge_prev &
+>> merge_next case with this vm_ops->close in mind (case 1 and 6).. because
+>> I'm pretty sure we can currently get to case 6 in this way:
+>> 
+>> merge_prev = true
+>> check for merge_next.. can_vma_merge_before(next...);
+>> is_mergeable_vma(next.... , true);
+>> if (true && next->vm_ops && next->vm_ops->close) /* Fine for next.. */
+>> 
+>> Remove curr by case 6 without checking curr->vm_ops &&
+>> curr->vm_ops->close
+>> 
+>> If I am correct, then are we blaming the right commit?
 
-Thanks,
-Nick Spooner
+It was bisected with no nondeterminism in the test, so yeah.
+
+> I am not correct.
+> The file check will ensure the same ops, so the file and ops must match.
+> As long as both are checked on one VMA then it will work as required.
+
+Right, otherwise we would have bigger issues even before the buggy commit,
+we were never checking curr's vma_ops before.
+
+>> 
+>> Perhaps we should just fail earlier when we find a curr with the close
+>> ops?
+> 
+> I'd rather fail earlier, but it's not a big deal.
+
+Your suggestion will indeed result in a nicer and more obvious code, so will
+do, thanks!
+
+>> 
+>> >  			} else {			/* case 5 */
+>> > +				err = dup_anon_vma(prev, curr, &anon_dup);
+>> >  				adjust = curr;
+>> >  				adj_start = (end - curr->vm_start);
+>> >  			}
+>> > -- 
+>> > 2.43.1
+>> > 
+
 
