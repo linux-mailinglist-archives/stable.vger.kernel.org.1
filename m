@@ -1,154 +1,132 @@
-Return-Path: <stable+bounces-23385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86E29860279
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 20:18:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A16686032D
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 20:50:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 427FD289DE6
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 19:18:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D274B32226
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 19:19:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113F46AF97;
-	Thu, 22 Feb 2024 19:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0DA238FB2;
+	Thu, 22 Feb 2024 19:19:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="R90OHXsV"
+	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="jWtKaN2e"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7257C6AF93;
-	Thu, 22 Feb 2024 19:17:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C902814B804;
+	Thu, 22 Feb 2024 19:19:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708629453; cv=none; b=GUnhhOjQmbM4f6lu6Q6pMs7vG52nSjBW17DKvUiQAlgTFsM1eAIYKaOazig/OOJRHaOIo2D0awau0z1mkFx26SiXUJQvSAINo9NSySHVoa6RJjIusGkO4hgnefgQG/73rIGC404G0E3wp+vUT3b8YKN/+LgqI+iPbCtbC7vmmjo=
+	t=1708629551; cv=none; b=HfJeR8+N7GRahZxOg7NlwLqD4yLaWd/baVzcGYJBjfu1nPIIAThQziFVyAxREWR0xLW0rDXPo0NlndFOTxdbw9Jap05ZutUkE+Fftpnnr0/Lr1DKGxEBSDuA6BeDm73gqAuI5W358p7Xm6Qnb+cQkytwqSZZY5W5jkF2jYHC7L8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708629453; c=relaxed/simple;
-	bh=FfzSgsSo035o7ryEhcxVsVQV058O7HGFw3aTLS/NzeI=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jbq1Vpr1Dj0zZ4J5ojPdhvHXqt7kOMhBiz8e4gCAHQl9pVpew1eVhVvt1RZIff4iNQdFKLJwC7UBRWpYW3yfG9IynvLTCsV+8KFlubkFMsfJzfdIfsR7v2VsoxB0SU6u+SC6+FP00sJTlC2xbNGYJdrpcvZVAJDNWStpZT8Qh54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=none smtp.helo=mx0b-0016f401.pphosted.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=R90OHXsV; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mx0b-0016f401.pphosted.com
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41M9CMCY023744;
-	Thu, 22 Feb 2024 11:17:29 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding:content-type; s=
-	pfpt0220; bh=HrWkWQ/kQqJLWulKnPDqvSBRFwR5PnOwvL6KFpRQKR4=; b=R90
-	OHXsVOxwziBdF3svqwAS3CamiSiN1+xFqnRetLsBUuKogtODL9wmegcTkJFotnBC
-	bSAzizAZ9LNfblT2ON8qjD5X/C5Azj1vYs1v+QsSsX3bCyoRzjlZqnyktw/rGx3x
-	lFxP/ZmcnBodyB4mGj1/ZIJc96uh/CRAH9AKe+T+Ihb3zMX9KGvvFqaY3Yfyubk+
-	hMlmEUGMVSYHamj5B9OIa/8060Vq7g1ymnsabYByhIv43F5OJg2Vqsy6dVEp+Lhk
-	hebFV1IwTasyVsnWtzeYHZB+BFTsT6GuGqpaXfTzDcRwur2EtOW9NVqsnrph2coq
-	Tp5JZ6i9y7Fyfll3gCQ==
-Received: from dc5-exch02.marvell.com ([199.233.59.182])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 3we3dwah9f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-	Thu, 22 Feb 2024 11:17:29 -0800 (PST)
-Received: from DC5-EXCH02.marvell.com (10.69.176.39) by DC5-EXCH02.marvell.com
- (10.69.176.39) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Thu, 22 Feb
- 2024 11:17:28 -0800
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH02.marvell.com
- (10.69.176.39) with Microsoft SMTP Server id 15.0.1497.48 via Frontend
- Transport; Thu, 22 Feb 2024 11:17:28 -0800
-Received: from dc3lp-swdev041.marvell.com (dc3lp-swdev041.marvell.com [10.6.60.191])
-	by maili.marvell.com (Postfix) with ESMTP id 022903F71A7;
-	Thu, 22 Feb 2024 11:17:25 -0800 (PST)
-From: Elad Nachman <enachman@marvell.com>
-To: <huziji@marvell.com>, <ulf.hansson@linaro.org>, <adrian.hunter@intel.com>,
-        <linux-mmc@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: <enachman@marvell.com>, <stable@vger.kernel.org>
-Subject: [PATCH v3 2/2] mmc: xenon: add timeout for PHY init complete
-Date: Thu, 22 Feb 2024 21:17:14 +0200
-Message-ID: <20240222191714.1216470-3-enachman@marvell.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240222191714.1216470-1-enachman@marvell.com>
-References: <20240222191714.1216470-1-enachman@marvell.com>
+	s=arc-20240116; t=1708629551; c=relaxed/simple;
+	bh=qhLehXJeOerzMpqJ0h4GqLLY/DHCVpEfMMpWFb2pWGA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PBZR+ZsXMvx2Wa2+PUqlCZDY4I/ikCPqMJJIderfBqH3ohDUYs3FZRuHg2JjVWaNdv7eofBX+pBrQ7lB4QiG24KN5lkOZtPcEpDdhuP7ypEvmMu2I21W5SqNDbX87M+LG/B/YIP2voKFCIlhQHntk2biLgtIsC2CennyO+5eZIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=jWtKaN2e; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 9E3FF1C0080; Thu, 22 Feb 2024 20:19:06 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+	t=1708629546;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1CReOHfu8cM+87GmnCZWyhephfKgSIBTovz2lAsV5Kc=;
+	b=jWtKaN2e9fc60EjhziDDwBilk8Gj6DB8OqD4KR+qd5CNP8cczOyqkEbFnzGX8JiNZlBj4a
+	Zs64RPijgEDBx5Mjm40pWTvxRhxAuejqcjNq3dDh47O/BBF/ayqzB7R0A7VoSdIpesRIJd
+	jgr29KeXc2RcHrpc9kZDjgFzBR1gEeo=
+Date: Thu, 22 Feb 2024 20:19:06 +0100
+From: Pavel Machek <pavel@ucw.cz>
+To: Vlastimil Babka <vbabka@suse.cz>,
+	kernel list <linux-kernel@vger.kernel.org>
+Cc: Greg KH <gregkh@linuxfoundation.org>,
+	Oleksandr Natalenko <oleksandr@natalenko.name>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Jiri Benc <jbenc@redhat.com>, Sasha Levin <sashal@kernel.org>,
+	stable@vger.kernel.org,
+	Thorsten Leemhuis <regressions@leemhuis.info>
+Subject: stable-kernel-rules was Re: fs/bcachefs/
+Message-ID: <ZdeeKiTXc7WidRcs@duo.ucw.cz>
+References: <g6el7eghhdk2v5osukhobvi4pige5bsfu5koqtmoyeknat36t7@irmmk7zo7edh>
+ <uknxc26o6td7g6rawxffvsez46djmvcy2532kza2zyjuj33k7p@4jdywourgtqg>
+ <2024022103-municipal-filter-fb3f@gregkh>
+ <4900587.31r3eYUQgx@natalenko.name>
+ <2024022155-reformat-scorer-98ae@gregkh>
+ <aaf2f030-b6f4-437b-bb4e-79aa4891ae56@suse.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: DACLmym6ivxWFILuGJkemDOU3edTaUwM
-X-Proofpoint-ORIG-GUID: DACLmym6ivxWFILuGJkemDOU3edTaUwM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-22_15,2024-02-22_01,2023-05-22_02
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="s+LkKkXk95XsNqZb"
+Content-Disposition: inline
+In-Reply-To: <aaf2f030-b6f4-437b-bb4e-79aa4891ae56@suse.cz>
 
-From: Elad Nachman <enachman@marvell.com>
 
-AC5X spec says PHY init complete bit must be polled until zero.
-We see cases in which timeout can take longer than the standard
-calculation on AC5X, which is expected following the spec comment above.
-According to the spec, we must wait as long as it takes for that bit to
-toggle on AC5X.
-Cap that with 100 delay loops so we won't get stuck forever.
+--s+LkKkXk95XsNqZb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: 06c8b667ff5b ("mmc: sdhci-xenon: Add support to PHYs of Marvell Xenon SDHC")
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Elad Nachman <enachman@marvell.com>
----
- drivers/mmc/host/sdhci-xenon-phy.c | 29 ++++++++++++++++++++---------
- 1 file changed, 20 insertions(+), 9 deletions(-)
+Hi!
 
-diff --git a/drivers/mmc/host/sdhci-xenon-phy.c b/drivers/mmc/host/sdhci-xenon-phy.c
-index c3096230a969..cc9d28b75eb9 100644
---- a/drivers/mmc/host/sdhci-xenon-phy.c
-+++ b/drivers/mmc/host/sdhci-xenon-phy.c
-@@ -110,6 +110,8 @@
- #define XENON_EMMC_PHY_LOGIC_TIMING_ADJUST	(XENON_EMMC_PHY_REG_BASE + 0x18)
- #define XENON_LOGIC_TIMING_VALUE		0x00AA8977
- 
-+#define XENON_MAX_PHY_TIMEOUT_LOOPS		100
-+
- /*
-  * List offset of PHY registers and some special register values
-  * in eMMC PHY 5.0 or eMMC PHY 5.1
-@@ -278,18 +280,27 @@ static int xenon_emmc_phy_init(struct sdhci_host *host)
- 	/* get the wait time */
- 	wait /= clock;
- 	wait++;
--	/* wait for host eMMC PHY init completes */
--	udelay(wait);
- 
--	reg = sdhci_readl(host, phy_regs->timing_adj);
--	reg &= XENON_PHY_INITIALIZAION;
--	if (reg) {
-+	/*
-+	 * AC5X spec says bit must be polled until zero.
-+	 * We see cases in which timeout can take longer
-+	 * than the standard calculation on AC5X, which is
-+	 * expected following the spec comment above.
-+	 * According to the spec, we must wait as long as
-+	 * it takes for that bit to toggle on AC5X.
-+	 * Cap that with 100 delay loops so we won't get
-+	 * stuck here forever:
-+	 */
-+
-+	ret = read_poll_timeout(sdhci_readl, reg,
-+				!(reg & XENON_PHY_INITIALIZAION),
-+				wait, XENON_MAX_PHY_TIMEOUT_LOOPS * wait,
-+				false, host, phy_regs->timing_adj);
-+	if (ret)
- 		dev_err(mmc_dev(host->mmc), "eMMC PHY init cannot complete after %d us\n",
--			wait);
--		return -ETIMEDOUT;
--	}
-+			wait * XENON_MAX_PHY_TIMEOUT_LOOPS);
- 
--	return 0;
-+	return ret;
- }
- 
- #define ARMADA_3700_SOC_PAD_1_8V	0x1
--- 
-2.25.1
+> > Personally I think we are not taking enough, and are still missing real
+> > fixes.  Overall, this is only a very small % of what goes into Linus's
+> > tree every day, so by that measure alone, we know we are missing things.
+>=20
+> What % of what goes into Linus's tree do you think fits within the rules
+> stated in Documentation/process/stable-kernel-rules.rst ? I don't know but
+> "very small" would be my guess, so we should be fine as it is?
+>=20
+> Or are the rules actually still being observed? I doubt e.g. many of the
+> AUTOSEL backports fit them? Should we rename the file to
+> stable-rules-nonsense.rst?
 
+There seems to be just one rule being observed: "It or an equivalent
+fix must already exist in Linus' tree (upstream).". Every other rule is
+broken pretty much all the time.
+
+AUTOSEL is a problem.
+
+Plus there's problem with dependencies -- if a patch A is need for fix
+B, the rules pretty much go out of the window, huge patches are
+applied, whitespace fixes are applied, etc.
+
+There are even known-bad patches being applied, and then
+reverted. Greg explained that it heps his process somehow.
+
+For example in 6.1.53 review, my notes say 30% of the patches did not
+match the documented rules. 42% for v6.1.76.
+
+OTOH ammount of patches that cause "real" problems is not that great,
+and we seem to have enough testing. Still, updating the documentation
+to match the reality would be good (perhaps explaining that stable
+does not have manpower to re-do the dependencies, and how "apply bad
+and revert" works).
+
+Best regards,
+								Pavel
+--=20
+People of Russia, stop Putin before his war on Ukraine escalates.
+
+--s+LkKkXk95XsNqZb
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZdeeKgAKCRAw5/Bqldv6
+8vdCAJ0RFoBCe44jaM/9Yby4MDmhD7BKnwCgow91ieOFc1Kq+uvHpe2550KDnV0=
+=f+89
+-----END PGP SIGNATURE-----
+
+--s+LkKkXk95XsNqZb--
 
