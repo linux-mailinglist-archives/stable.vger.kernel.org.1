@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-23333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F9E385FA16
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 14:44:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD6CA85FA6F
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 14:56:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A5B92893F8
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 13:44:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BC17B26BE9
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 13:56:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29229134CCC;
-	Thu, 22 Feb 2024 13:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4FF136678;
+	Thu, 22 Feb 2024 13:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uoVKWye8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fgED2uSd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE52412FF73;
-	Thu, 22 Feb 2024 13:43:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5D41332B1;
+	Thu, 22 Feb 2024 13:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708609408; cv=none; b=D8I/YcWylraW4dzC7esMDFWaOPsNgKxG12jAlss+zcocVb7A9XDNWva9hOeeXBdPu+I+p02QBwlQIqjnC/I0Lj9XEcAicOVMyLF0DRpEVxpz9fSpnfgj0Uv9hfE334RsNKz4a7Ug+mxcjZaV55i2avUl2Raa4nEJvZfFO+N6mNI=
+	t=1708610188; cv=none; b=ZBxJRX7hk5imfW4VO2a4AEhtXrRiUvhfxFwOJiaRznofjd7KXhrmrabk/um16t5xrpW+4JVuEFmABpeQlD/lWsCnQkHg/MZXEMetSkExmPJ34tphXq4hq12BfBhk+fSbcy56DxqBSYqLKfwcpsc19ukKzN9jHFh/odOTkMZww2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708609408; c=relaxed/simple;
-	bh=rx7UwmETgtrLzfEQSyPdVWoy1hp//7HkK8bRiXM/Z2k=;
+	s=arc-20240116; t=1708610188; c=relaxed/simple;
+	bh=MqoH/IOMmub+1LbZRsNMRZZ4RRoQgIMbnId83nDHWHU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tumg+MIOjbexnk7gl9ALEMhGmVjf6VA8PAyOa1o3Uk80gXwLCWGGMAz8O3QCLVusiqd/qPnTNHaJbQDP2zDM5TsHKsOQXrfp1qcXGVIzyDgjVmIyOmzDFif9bUVhfwRIsmFiKR1evf5ekDHsaU7v+3yf7DDTu7U+HhYQw2/aZiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uoVKWye8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8148CC433C7;
-	Thu, 22 Feb 2024 13:43:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708609408;
-	bh=rx7UwmETgtrLzfEQSyPdVWoy1hp//7HkK8bRiXM/Z2k=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=eruveQ22c/S1SugcOO/oFMiCQbnw0XGIhRijT9GA96p6ty97XzR0TfJ8NNTihcdZJ1cEpYGXnELoVpBXIlW9msgF2ct6murzjtxf/Ish06coka7kwwHTIJse+NEws/+dyN4h9lHMFlkmwNN8RRcJ1cDHzkH04gZGgoQbobjEhXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fgED2uSd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27054C433C7;
+	Thu, 22 Feb 2024 13:56:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708610187;
+	bh=MqoH/IOMmub+1LbZRsNMRZZ4RRoQgIMbnId83nDHWHU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uoVKWye8X8C4wWu4eKu1KPMGTZE26Yp8rWA7aWjcfjM9UVVQMUJQpcoBbyrbkTeFE
-	 /SoIhjbUyvGGFRklcRiwb8D7aSKu1oZQY/S5iCBLP7CX91x8DnsSQ9yzeWRZaT5vUW
-	 HgRyQYrszxy8WgQLgT37AlWD+cHonzKDEd7VCTbI=
-Date: Thu, 22 Feb 2024 14:43:25 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com,
-	Beyond <Wang.Beyond@amd.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: Re: [PATCH 5.4 000/267] 5.4.269-rc1 review
-Message-ID: <2024022214-afflicted-gestate-4b88@gregkh>
-References: <20240221125940.058369148@linuxfoundation.org>
- <CA+G9fYua_rKjdmKMgYrRY_HRyMWPdJNz5=O0K4+M9P9wBWLPcw@mail.gmail.com>
- <2024022214-unselect-scrounger-14d8@gregkh>
+	b=fgED2uSdV26bmPjcjKgSvl5QoBplk92aKt2fml1vwu6eyULr31kq1flV8HdEnXHiZ
+	 FqmiL3243+Cvi/pepo5M7OMjS+cFk9TSQuj0YF5sry40RskU7G5BytN7NTwvPjWdGR
+	 RjGgKxy9U/tmjE29F0l9AyG8ZjxUUWt/ZCrNP+lVPNSqlyNgBoBY/ztfNikMQ4aYUQ
+	 YPtrCQ4x3cJvlK6Jd2hm7t8ETlERCYLHulHJDEavef/dCaA0feyGwUkAjoZE//Raxt
+	 E5byi1qXLbiVoVQAaGSIe9OMCoWp6vsCblZhQkqYhJJ4SjAx3bzmZU/4IfIaI5YYKt
+	 OtzTMGBv58jiA==
+Date: Thu, 22 Feb 2024 19:26:23 +0530
+From: Vinod Koul <vkoul@kernel.org>
+To: Tadeusz Struk <tstruk@gmail.com>
+Cc: Raju Rangoju <Raju.Rangoju@amd.com>,
+	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Sanjay R Mehta <sanju.mehta@amd.com>,
+	Eric Pilmore <epilmore@gigaio.com>, dmaengine@vger.kernel.org,
+	Tadeusz Struk <tstruk@gigaio.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] dmaengine: ptdma: use consistent DMA masks
+Message-ID: <ZddShyFNaozKwB66@matsya>
+References: <6a447bd4-f6f1-fc1f-9a0d-2810357fb1b5@amd.com>
+ <20240219201039.40379-1-tstruk@gigaio.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,49 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2024022214-unselect-scrounger-14d8@gregkh>
+In-Reply-To: <20240219201039.40379-1-tstruk@gigaio.com>
 
-On Thu, Feb 22, 2024 at 02:28:39PM +0100, Greg Kroah-Hartman wrote:
-> On Thu, Feb 22, 2024 at 04:25:36PM +0530, Naresh Kamboju wrote:
-> > On Wed, 21 Feb 2024 at 19:46, Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > This is the start of the stable review cycle for the 5.4.269 release.
-> > > There are 267 patches in this series, all will be posted as a response
-> > > to this one.  If anyone has any issues with these being applied, please
-> > > let me know.
-> > >
-> > > Responses should be made by Fri, 23 Feb 2024 12:59:02 +0000.
-> > > Anything received after that time might be too late.
-> > >
-> > > The whole patch series can be found in one patch at:
-> > >         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.269-rc1.gz
-> > > or in the git tree and branch at:
-> > >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-> > > and the diffstat can be found below.
-> > >
-> > > thanks,
-> > >
-> > > greg k-h
-> > 
-> > The i386 allmodconfig builds failed on stable-rc 5.15, 5.10 and 5.4.
-> > 
-> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> > 
-> > ERROR: modpost: "__udivdi3" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
-> > make[2]: *** [/builds/linux/scripts/Makefile.modpost:133:
-> > modules-only.symvers] Error 1
-> > 
-> > Steps to reproduce:
-> >  tuxmake --runtime podman --target-arch i386 --toolchain gcc-12
-> > --kconfig allmodconfig
+On 19-02-24, 21:10, Tadeusz Struk wrote:
+> The PTDMA driver sets DMA masks in two different places for the same
+> device inconsistently. First call is in pt_pci_probe(), where it uses
+> 48bit mask. The second call is in pt_dmaengine_register(), where it
+> uses a 64bit mask. Using 64bit dma mask causes IO_PAGE_FAULT errors
+> on DMA transfers between main memory and other devices.
+> Without the extra call it works fine. Additionally the second call
+> doesn't check the return value so it can silently fail.
+> Remove the superfluous dma_set_mask() call and only use 48bit mask.
 > 
-> Thanks, I've tracked this down to commit 6fb12518ca58 ("drm/amd/display:
-> make flip_timestamp_in_us a 64-bit variable")
+> Cc: stable@vger.kernel.org
+> Fixes: b0b4a6b10577 ("dmaengine: ptdma: register PTDMA controller as a DMA resource")
 > 
-> Let me see if I can find a fix, if not, I'll just drop it, thanks!
+No empty line here please
 
-I've just dropped it from everywhere now, thanks.
+> Signed-off-by: Tadeusz Struk <tstruk@gigaio.com>
 
-greg k-h
+I cant pick this, it was sent by email which this patch was not
+signed-off by, please either resend from same id as sob or sign with
+both
+
+> ---
+>  drivers/dma/ptdma/ptdma-dmaengine.c | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/drivers/dma/ptdma/ptdma-dmaengine.c b/drivers/dma/ptdma/ptdma-dmaengine.c
+> index 1aa65e5de0f3..f79240734807 100644
+> --- a/drivers/dma/ptdma/ptdma-dmaengine.c
+> +++ b/drivers/dma/ptdma/ptdma-dmaengine.c
+> @@ -385,8 +385,6 @@ int pt_dmaengine_register(struct pt_device *pt)
+>  	chan->vc.desc_free = pt_do_cleanup;
+>  	vchan_init(&chan->vc, dma_dev);
+>  
+> -	dma_set_mask_and_coherent(pt->dev, DMA_BIT_MASK(64));
+> -
+>  	ret = dma_async_device_register(dma_dev);
+>  	if (ret)
+>  		goto err_reg;
+> -- 
+> 2.43.2
+
+-- 
+~Vinod
 
