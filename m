@@ -1,145 +1,73 @@
-Return-Path: <stable+bounces-23303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B29E85F317
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 09:36:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16A0285F311
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 09:35:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FCF21F26655
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 08:36:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C37692837FC
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 08:35:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85B222375F;
-	Thu, 22 Feb 2024 08:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8D15225AD;
+	Thu, 22 Feb 2024 08:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="TAZkXbiB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m1Wkm9Z0"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8CA5101C2;
-	Thu, 22 Feb 2024 08:35:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C78317998;
+	Thu, 22 Feb 2024 08:35:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708590959; cv=none; b=a3tvo04Bml8UGYXZ547TCw3H/ZPjkonjcOJYyxbTwDyIfzLYrXZhD0oItZ2Pm481GdPH967Uzyzhf7aMBSr/EIH/g0tjKylA6pGFl0byXG8MasN1FUa5FCLUye2L1sfEZzeOSFR66moJb2G380iNvA1cgsdF1W5wtqCMLH3FfQ4=
+	t=1708590934; cv=none; b=NqL+mh0UmCbWLtjO5xRbMVS8TZ+PtA+ponpa1SmGIcMyxuTFqkNWI2qP5xjHow3/HlMinPrrjZbEH08nm2ODyuhHkr+4iTEwrkDfCZWvaBvz0pUMhohRekDym7W7219YgEgZQ5OKE6HpPSRpegAwm3RU/DHwBnriNHnuQPcRVKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708590959; c=relaxed/simple;
-	bh=zDaKnyithl6OHzhgLveEH/2y+xN3MZ7oYAM+dHUYzMc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DDLfp0x2ZMkAvTWTw8pgu/gwEKbKGWXJN5iXSiGqFGTphLdJl0FPK0MaVk6nM4ZyE66KTw1upuKyG4jyPbipNhqVFjvL4zuWOhiWJbsvZcoUUhJ9rJ2NX4Sj8pNjLuUgkYoBSeVntUR81lwzXBGceuJwq99BWGNj5WAKx9tXFGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=TAZkXbiB; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41M1TFdI030580;
-	Thu, 22 Feb 2024 08:35:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding:content-type; s=qcppdkim1; bh=RyvY7D5
-	kwxmNjfCTlpzX6mhKqRWYnDZna4huJoRzCkY=; b=TAZkXbiB18MmAzvUCqAY5Mn
-	8Y7sOZ+MOoxDL2ZjLEPUZQhjOS2HmLrxrYBBAkXizxeeqQCVOcICuVLikCQROOTp
-	tPvhVNZNV2PdEqZ0AjroEXc+qFEsyu4sAgHRy3Fah4d1kV1vrUeXAw2kofE0FjyN
-	kHnZwUr4o8hkp9qPZWe8IagO0g6Gw/Arlgr8DBSZ4pYRypZTNsDb4FNEbORkiMng
-	agOVcgW/pERenJsNGFT8mVQw32EyJhYFQk3omoFxX/1VgC76wGjW5l7y49/XZx3h
-	IK1o63aO6ZdjHPTwRVpfa30HxFXKB1hDDoLI5+amnK30QuR0g8p4DxA8IcpF42w=
-	=
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wdsk4s7hd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 22 Feb 2024 08:35:50 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41M8Zn4O011157
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 22 Feb 2024 08:35:49 GMT
-Received: from hu-kshivnan-hyd.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Thu, 22 Feb 2024 00:35:43 -0800
-From: Shivnandan Kumar <quic_kshivnan@quicinc.com>
-To: "Rafael J . Wysocki" <rafael@kernel.org>,
-        Viresh Kumar
-	<viresh.kumar@linaro.org>
-CC: <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel@quicinc.com>, <quic_pkondeti@quicinc.com>,
-        <quic_namajain@quicinc.com>, <stable@vger.kernel.org>,
-        Shivnandan Kumar
-	<quic_kshivnan@quicinc.com>
-Subject: [PATCH] cpufreq: Limit resolving a frequency to policy min/max
-Date: Thu, 22 Feb 2024 14:05:15 +0530
-Message-ID: <20240222083515.1065025-1-quic_kshivnan@quicinc.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1708590934; c=relaxed/simple;
+	bh=4MEKBoMdgYR1x9jmQ1KIYhwwWveqb3+fP/5f0Ugfsic=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HQl+fW8RlXTmYETHCa4OVgPN3WLPxi9CXlDFq0naNMPSNYtk7R3G0ENKWW8libXlB4hXUaLv3fKUvtpaQf29BRXko+YCotI6IWep5aPs7blihjIOFgOWRu038BvDV+IdovbXLj5bnlf2tsS37Gj/qwrSfz9/NlywCjgqXAzpZZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m1Wkm9Z0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60AF9C433C7;
+	Thu, 22 Feb 2024 08:35:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1708590933;
+	bh=4MEKBoMdgYR1x9jmQ1KIYhwwWveqb3+fP/5f0Ugfsic=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=m1Wkm9Z0it0fXdM/Va5AppnYI+q4ksORzpgthQXzEaQDQDXee2Tpbhv038ma23LBp
+	 Pf+khGaZxQTeTOVzZ40WtQamSGEDSVc+t2U/J4gosKqC/3gejx13qB8kNPoyKrIaDs
+	 F31jtJJRNNIowJcBrlTpSaiCjn0E3hrt8DmHkeqA=
+Date: Thu, 22 Feb 2024 09:35:31 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Alvin =?utf-8?Q?=C5=A0ipraga?= <ALSI@bang-olufsen.dk>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"patches@lists.linux.dev" <patches@lists.linux.dev>,
+	Andrejs Cainikovs <andrejs.cainikovs@toradex.com>,
+	Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.10 350/379] mwifiex: Select firmware based on strapping
+Message-ID: <2024022227-percent-wielder-3d24@gregkh>
+References: <20240221125954.917878865@linuxfoundation.org>
+ <20240221130005.373885693@linuxfoundation.org>
+ <xxg5asor55x4yz4nvg5sn6reliefneaotvdbnl5hkvmxd3gnsr@5u3tvfhf2oyy>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: c_Pn0TXMvAFxGOdkq490IRMQQALF-utb
-X-Proofpoint-GUID: c_Pn0TXMvAFxGOdkq490IRMQQALF-utb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-22_06,2024-02-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 adultscore=0
- impostorscore=0 clxscore=1011 bulkscore=0 phishscore=0 mlxscore=0
- lowpriorityscore=0 spamscore=0 malwarescore=0 suspectscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2402120000 definitions=main-2402220067
+In-Reply-To: <xxg5asor55x4yz4nvg5sn6reliefneaotvdbnl5hkvmxd3gnsr@5u3tvfhf2oyy>
 
-Resolving a frequency to an efficient one should not transgress policy->max
-(which can be set for thermal reason) and policy->min. Currently there is
-possibility where scaling_cur_freq can exceed scaling_max_freq when
-scaling_max_freq is inefficient frequency. Add additional check to ensure
-that resolving a frequency will respect policy->min/max.
+On Wed, Feb 21, 2024 at 02:20:02PM +0000, Alvin Šipraga wrote:
+> On Wed, Feb 21, 2024 at 02:08:49PM +0100, Greg Kroah-Hartman wrote:
+> > 5.10-stable review patch.  If anyone has any objections, please let me know.
+> 
+> Same comment here as on the 5.15 review: drop patches 350 and 351.
 
-Fixes: 1f39fa0dccff ("cpufreq: Introducing CPUFREQ_RELATION_E")
-Signed-off-by: Shivnandan Kumar <quic_kshivnan@quicinc.com>
----
- include/linux/cpufreq.h | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+I'll go drop them all, thanks!
 
-diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
-index afda5f24d3dd..42d98b576a36 100644
---- a/include/linux/cpufreq.h
-+++ b/include/linux/cpufreq.h
-@@ -1021,6 +1021,19 @@ static inline int cpufreq_table_find_index_c(struct cpufreq_policy *policy,
- 						   efficiencies);
- }
- 
-+static inline bool cpufreq_table_index_is_in_limits(struct cpufreq_policy *policy,
-+						    int idx)
-+{
-+	unsigned int freq;
-+
-+	if (idx < 0)
-+		return false;
-+
-+	freq = policy->freq_table[idx].frequency;
-+
-+	return (freq == clamp_val(freq, policy->min, policy->max));
-+}
-+
- static inline int cpufreq_frequency_table_target(struct cpufreq_policy *policy,
- 						 unsigned int target_freq,
- 						 unsigned int relation)
-@@ -1054,7 +1067,10 @@ static inline int cpufreq_frequency_table_target(struct cpufreq_policy *policy,
- 		return 0;
- 	}
- 
--	if (idx < 0 && efficiencies) {
-+	/*
-+	 * Limit frequency index to honor policy->min/max
-+	 */
-+	if (!cpufreq_table_index_is_in_limits(policy, idx) && efficiencies) {
- 		efficiencies = false;
- 		goto retry;
- 	}
--- 
-2.25.1
-
+greg k-h
 
