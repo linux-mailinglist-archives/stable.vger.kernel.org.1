@@ -1,94 +1,101 @@
-Return-Path: <stable+bounces-23330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC80485F9DC
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 14:33:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9E4F85F925
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 14:06:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A45AB23CA1
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 13:33:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 906B8287032
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 13:06:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3117C4652F;
-	Thu, 22 Feb 2024 13:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F1912EBCC;
+	Thu, 22 Feb 2024 13:06:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J5d5bhrV"
 X-Original-To: stable@vger.kernel.org
-Received: from out28-68.mail.aliyun.com (out28-68.mail.aliyun.com [115.124.28.68])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3504C12F5B5
-	for <stable@vger.kernel.org>; Thu, 22 Feb 2024 13:33:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F9F77A722;
+	Thu, 22 Feb 2024 13:06:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708608795; cv=none; b=ki0KHH0/97DU11y/pg8qOVhKWgw4T+44Rt6Dzf/7EXZC7keh53BUXK7XKe6JiHMKCHOe9PBAuC02cdSpBk5DFcqt0BJfo9hJcqh+qGIEIyAr7bsHy17Fs/plUv0yp2u4Fl9dvydzRZ4wr9ULFLkhhfAjiJTaGpMRoc1RNR2iMxk=
+	t=1708607212; cv=none; b=LSJE16qpeY9KrlD29d1SkRqGTQ9nzb/fjgPM7msyTjRewWJ1/57HKy3/Bq0OfhBmNrdU8kwtgRKVO+d9wXH9zySg1QivcM0Yfx7q/0jRmhsc+qlzf6EvZGN37JOhzqQ+D7P7F11rForSlLBH+oWbKBU1EBVfWkm8I7RPc2GdG44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708608795; c=relaxed/simple;
-	bh=7dY0J6tWUfZDjRXqq+3RTmoIss7uMaGRscXZvaR85HE=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:Message-Id:
-	 MIME-Version:Content-Type; b=n3CvJusPGyVJeU1ErB3NtqvETKU6x5wv0LGrmc5tkVgWuJGdvgsJ3P02BBYak7UUigJNzBPXTzRGodiGC8JZZ6i0lGd0ybyQ+JBK1FXIP5G5FwvzumZKDOvHn8O3dnKk/6N9E3SuFecrhT30E7CTDtKvSIF8ESeqClbSoBRc6bA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=e16-tech.com; spf=pass smtp.mailfrom=e16-tech.com; arc=none smtp.client-ip=115.124.28.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=e16-tech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=e16-tech.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.09046134|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_enroll_verification|0.082199-0.00234652-0.915454;FP=0|0|0|0|0|-1|-1|-1;HT=ay29a033018047202;MF=wangyugui@e16-tech.com;NM=1;PH=DS;RN=5;RT=5;SR=0;TI=SMTPD_---.WX5xhwP_1708606924;
-Received: from 192.168.2.112(mailfrom:wangyugui@e16-tech.com fp:SMTPD_---.WX5xhwP_1708606924)
-          by smtp.aliyun-inc.com;
-          Thu, 22 Feb 2024 21:02:05 +0800
-Date: Thu, 22 Feb 2024 21:02:05 +0800
-From: Wang Yugui <wangyugui@e16-tech.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	s=arc-20240116; t=1708607212; c=relaxed/simple;
+	bh=2UlY9J14QuVf01GXSbvFb1AcRgD6WwAfnIMlxam6Nm8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u4NVbVzQlf6MxqehkxhANWTKZ3pXpvtmJfbkaxvcO/nRNYKSw9caLX6PC5TOAgQp9eFuVjO3gFTfFl0D31fBtirnCySzDLnwiHJGkkOyUMqG+6deBFYtGbSEOd9GMaAIdlR+g/t/AU5t+T3RpbHd+rKs7Mhe4b86Hv/jIvScmuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J5d5bhrV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF43C433C7;
+	Thu, 22 Feb 2024 13:06:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1708607212;
+	bh=2UlY9J14QuVf01GXSbvFb1AcRgD6WwAfnIMlxam6Nm8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=J5d5bhrVFcjQ0mMMHh4vJH98ceejWQBIRiu5mkac10tSrNdUspv2XiuRvYRCFstdJ
+	 aRUSzcbrd5Qw1fuGQfsS054oKJ3LcryRL0AS8uv3oCZiRvBv/uiM2l+WkchzVCpL8s
+	 qEa6I2+tmTiGlEr5zGwK/PF0xccS//NC7NKJtZns=
+Date: Thu, 22 Feb 2024 14:06:47 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Wang Yugui <wangyugui@e16-tech.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
 Subject: Re: [PATCH 5.15 111/476] NFSD: Modernize nfsd4_release_lockowner()
-Cc: stable@vger.kernel.org,
- patches@lists.linux.dev,
- Chuck Lever <chuck.lever@oracle.com>,
- Sasha Levin <sashal@kernel.org>
-In-Reply-To: <2024022213-salami-earflap-aec9@gregkh>
-References: <20240222061911.6F1A.409509F4@e16-tech.com> <2024022213-salami-earflap-aec9@gregkh>
-Message-Id: <20240222210204.4F83.409509F4@e16-tech.com>
+Message-ID: <2024022234-endurance-unlaced-e06c@gregkh>
+References: <20240222061911.6F1A.409509F4@e16-tech.com>
+ <2024022213-salami-earflap-aec9@gregkh>
+ <20240222210204.4F83.409509F4@e16-tech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Becky! ver. 2.81.05 [en]
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240222210204.4F83.409509F4@e16-tech.com>
 
-Hi,
-
-> On Thu, Feb 22, 2024 at 06:19:12AM +0800, Wang Yugui wrote:
-> > Hi,
-> > 
-> > 
-> > > 5.15-stable review patch.  If anyone has any objections, please let me know.
-> > > 
-> > > ------------------
-> > > 
-> > > From: Chuck Lever <chuck.lever@oracle.com>
-> > > 
-> > > [ Upstream commit bd8fdb6e545f950f4654a9a10d7e819ad48146e5 ]
-> > > 
-> > > Refactor: Use existing helpers that other lock operations use. This
-> > > change removes several automatic variables, so re-organize the
-> > > variable declarations for readability.
-> > > 
-> > > Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-> > > Stable-dep-of: edcf9725150e ("nfsd: fix RELEASE_LOCKOWNER")
-> > > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > 
-> > 
-> > "nfsd: fix RELEASE_LOCKOWNER" is yet not in 5.15.149-rc1?
-> > or I missed something?
+On Thu, Feb 22, 2024 at 09:02:05PM +0800, Wang Yugui wrote:
+> Hi,
 > 
-> Good catch, you are correct!  I'll go drop this, and the other nfsd
-> "dep-of" commit in this queue, and in the 5.10 and 5.4 queues.
+> > On Thu, Feb 22, 2024 at 06:19:12AM +0800, Wang Yugui wrote:
+> > > Hi,
+> > > 
+> > > 
+> > > > 5.15-stable review patch.  If anyone has any objections, please let me know.
+> > > > 
+> > > > ------------------
+> > > > 
+> > > > From: Chuck Lever <chuck.lever@oracle.com>
+> > > > 
+> > > > [ Upstream commit bd8fdb6e545f950f4654a9a10d7e819ad48146e5 ]
+> > > > 
+> > > > Refactor: Use existing helpers that other lock operations use. This
+> > > > change removes several automatic variables, so re-organize the
+> > > > variable declarations for readability.
+> > > > 
+> > > > Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+> > > > Stable-dep-of: edcf9725150e ("nfsd: fix RELEASE_LOCKOWNER")
+> > > > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > > 
+> > > 
+> > > "nfsd: fix RELEASE_LOCKOWNER" is yet not in 5.15.149-rc1?
+> > > or I missed something?
+> > 
+> > Good catch, you are correct!  I'll go drop this, and the other nfsd
+> > "dep-of" commit in this queue, and in the 5.10 and 5.4 queues.
+> 
+> Will we add "nfsd: fix RELEASE_LOCKOWNER" to 5.15.y later?
+> 
+> It seems that at least 5.15.y need "nfsd: fix RELEASE_LOCKOWNER".
 
-Will we add "nfsd: fix RELEASE_LOCKOWNER" to 5.15.y later?
+If someone sends a properly tested and backported series, sure!
 
-It seems that at least 5.15.y need "nfsd: fix RELEASE_LOCKOWNER".
+thanks,
 
-Best Regards
-Wang Yugui (wangyugui@e16-tech.com)
-2024/02/22
-
+greg k-h
 
