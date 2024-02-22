@@ -1,315 +1,202 @@
-Return-Path: <stable+bounces-23419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC0D78605BC
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 23:33:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C796286062A
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 00:01:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BB471C21125
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 22:33:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49DD2B2284C
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 23:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FECD18032;
-	Thu, 22 Feb 2024 22:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E96ED1865B;
+	Thu, 22 Feb 2024 23:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ml1ldaw2"
+	dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b="fbbFD+E7"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx.manguebit.com (mx.manguebit.com [167.235.159.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6654B17C67
-	for <stable@vger.kernel.org>; Thu, 22 Feb 2024 22:33:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59F717BDC;
+	Thu, 22 Feb 2024 23:01:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=167.235.159.17
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708641216; cv=fail; b=Cs0JAFRfGE1m5z7zDFgSVYlMfEv4Ie2E0x60VOzU1olP6Y0pOt8crKD68ODFXq5qBJqZBEevcp8dDEyQoXmigFmOSHeRK3XSqzd+9K1GxJjPtmLUYMECcBVevam+RE+gBWf6Y74nBgzJOOe91zZDHeCgi9SGMCnA5Ie6VEYZb5I=
+	t=1708642872; cv=pass; b=Qw7Lv+skgjLFHU0QPABSAF7A5fnIoPVSOAPelRZNUE8BRN6bDA00RUx1qqO4j3NUqSVu7hTPaAk6WANeKzuS9MmEkOiii4aCRPnxMlYlWGkfbri32Wuj+UQz3fB9gI4LeK77m40sflo3WxEtzCkIhLvzNxHQBTgiSCFzvLnlmEo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708641216; c=relaxed/simple;
-	bh=j7qvCrd+Qp4a5AJMa1zadJqPcLFmdSkyknsE0qMuuww=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=U70O0rvOfraeJBbsnDLH6vv3+c5eLhqHhaH56QAr0ZbOt1RlkgNsz6JFDxfNo7umSirT2q83djybl5Zm/ZsoOitHfHbutBkWoUTQEo5dTCf9mCedAVrvw8rjyPZKFhFPVeRgmYkVy80sla8wi51plr5MspvlLNqn0AoqIBFO21s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ml1ldaw2; arc=fail smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708641215; x=1740177215;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=j7qvCrd+Qp4a5AJMa1zadJqPcLFmdSkyknsE0qMuuww=;
-  b=Ml1ldaw2rm+gmh4whivE3am+AMhauYjVrzirm7+RQdrvh1LcERQzoNpP
-   7qKM5SPI7gnhylAJtyeSIU4KXb2i5Rd5vNIH2jSe1tD8y4FbqXEw82LzU
-   zbT1IcH44cO4j3H6JS9pXh0txexqbS1+oIGKEMpU0gehmFOnAQZMI/a+w
-   Ls/vEs0nWN2+kvO1iy0aB1VMSHqzIEOShV1H8Mz7TG640ZiPWDPk8fhH9
-   6fV0Be11+HQOVyKcLJK5k53kr+DRsbQmv0B+N+vKfpgJKKNPPB07TMVg6
-   H9q7GrkOqpZQ1O10HGAR180ePPStHRumQ7c3oUKEBc5OeYuAF/XpaSv2A
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="3015075"
-X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
-   d="scan'208";a="3015075"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2024 14:33:34 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
-   d="scan'208";a="10321965"
-Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
-  by orviesa003.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 22 Feb 2024 14:33:34 -0800
-Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
- ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 22 Feb 2024 14:33:33 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Thu, 22 Feb 2024 14:33:33 -0800
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.168)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 22 Feb 2024 14:33:32 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IdnsGFs3J1+sw12NYXZCgy/7jAukIzSj/ZPZOr2g3e5363mFhFaLKqmfD+MVjAb3BEgtomLNXEhTyMo4lToSIS36YO8QucCqtriJxZujzXOvw8ci2UqtF9QKz2XlYxTIIhxz/SteyhWIt0HIAndgoSjfAtoQcO6EN6pI8DGQpwVm/67FZIBcic9CJp8cyCc4wgnajtq66hSl+wSWdvSaBvIxd5Z0EviRNVPluYrkJ2NBsAJf7qv+OMy2/o4iTy74uY9yxuXzcm/9hEAZdS/D4AkPxjIZpgwvFo1rs3Dal2GckA1uIDjanTBPV24dve7re5J+bXCyCcKoPZIRVdYMuw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BntB1V7dOTQxKfg1OVQUQ07pHkIP1dMiWufimAwoCbM=;
- b=a4hP6by8dqK9wXk13yyW1YlQqidluqwwbQXNrhTsAXT/eUA+HoQYDflRrHK/aGNMP7PN1z+Rg+E0EkiXci3Vn3Z+uYXlQp9zT+tH0UldQ7B8hL6U+Eb6JY9XZ8FWtUDM3nG8/K+Soqn1QOE8G5UZ33qxWzImMUD58ZiaCoIsbr+wX8E+ubsU1Ncm2BLZgidBnsRwySfA64yfKCgGbb+0FhmdsCdg+GUcDYTkbIj5cTvEHPEAoDWqHSTuNmtqh3yGQjorColCZgHlP+qMkKddPuWysOAthRjQlswresX/DJ6vhwapVGRp2lvdMdSalegd/eNvXZQh4ED0gJrK+tXDwA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH3PR11MB8185.namprd11.prod.outlook.com (2603:10b6:610:159::12)
- by SA2PR11MB4825.namprd11.prod.outlook.com (2603:10b6:806:111::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.39; Thu, 22 Feb
- 2024 22:33:30 +0000
-Received: from CH3PR11MB8185.namprd11.prod.outlook.com
- ([fe80::c59:e321:133a:3515]) by CH3PR11MB8185.namprd11.prod.outlook.com
- ([fe80::c59:e321:133a:3515%5]) with mapi id 15.20.7316.023; Thu, 22 Feb 2024
- 22:33:30 +0000
-Date: Thu, 22 Feb 2024 14:33:27 -0800
-From: Matt Roper <matthew.d.roper@intel.com>
-To: Andi Shyti <andi.shyti@linux.intel.com>
-CC: intel-gfx <intel-gfx@lists.freedesktop.org>, dri-devel
-	<dri-devel@lists.freedesktop.org>, Chris Wilson
-	<chris.p.wilson@linux.intel.com>, Joonas Lahtinen
-	<joonas.lahtinen@linux.intel.com>, John Harrison <John.C.Harrison@intel.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>, <stable@vger.kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: Re: [PATCH v2 2/2] drm/i915/gt: Enable only one CCS for compute
- workload
-Message-ID: <20240222223327.GP718896@mdroper-desk1.amr.corp.intel.com>
-References: <20240220143526.259109-1-andi.shyti@linux.intel.com>
- <20240220143526.259109-3-andi.shyti@linux.intel.com>
- <20240220233918.GG5347@mdroper-desk1.amr.corp.intel.com>
- <ZdU_4okr8GcSpTtm@ashyti-mobl2.lan>
- <20240221205104.GM718896@mdroper-desk1.amr.corp.intel.com>
- <ZdfEr2AyPNaq2Xh_@ashyti-mobl2.lan>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <ZdfEr2AyPNaq2Xh_@ashyti-mobl2.lan>
-X-ClientProxiedBy: BYAPR03CA0021.namprd03.prod.outlook.com
- (2603:10b6:a02:a8::34) To CH3PR11MB8185.namprd11.prod.outlook.com
- (2603:10b6:610:159::12)
+	s=arc-20240116; t=1708642872; c=relaxed/simple;
+	bh=n3Ye9S6cNTU5mKO/NgYU/i/NCjN1QNFvHc5YgXu4FRo=;
+	h=Message-ID:From:To:Cc:Subject:In-Reply-To:References:Date:
+	 MIME-Version:Content-Type; b=NOKIn3o7ZT2hBEEi91jj/7X913PrXKVkhCqdhbsjCZc5Ud23UMeHrvEb4rUDG0VQGASNSx97OXGLC37UkmxMbOAx3RDIDmXHO2/VJ4ltPdJIYJfx2bWNmD31kmewGUGLfsuEShhq2BBArQIJGZlV+uT4SVNUwCkiSs/H4ELawSA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.com; spf=pass smtp.mailfrom=manguebit.com; dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b=fbbFD+E7; arc=pass smtp.client-ip=167.235.159.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.com
+Message-ID: <181e4ae5b2ea3c2316e577cae4b62cc6@manguebit.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
+	s=dkim; t=1708642862;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ULMiVdbvyYhzOmWmU+Y+KH9Pc9rIv3u9RYwV7FVrAFs=;
+	b=fbbFD+E7/+ovmwu/xae3wADXP3lDbuUaLq/+QR96kFyOp6fIiNbHahpR40IvMQMd9leOwH
+	sN06E/UhAUFkvZpyb16fB6EVLL2x6v7LXseJqKioZ+y0TU699JCV6f99n8QyvPY5CNRmJY
+	8eODRbmrI3jKP/XfcyI2e/H8YALRUBHI6siTCuLHNvaZ5nQtjHk1pheXXbUJyskVie+q3w
+	+h4wPKyxcDDKhuVopDZd6Isz4YyjaKHcANXL+l3zzbATfqZMzF/EcFxsiDKvlWSI/RRvU2
+	P5Whd6SUnO6xOiQ7qF9uftMW6ilIhUUTYXyV3KFV2RKYoDX6voKBrqBexWH1Gg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
+	s=dkim; t=1708642862; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ULMiVdbvyYhzOmWmU+Y+KH9Pc9rIv3u9RYwV7FVrAFs=;
+	b=AE0cvVTyOToK3izTUAV6csmJvBSHPC3yq+cVIf22xm7jqCwU9G3c6o+iz+d/N5QClfi7YM
+	dpSi4em7aKR8ngAUAKXq1rpGYOLgLHd0vfQJ9pN+14NIqpeyUmLxfX1napIVR5gblceEDZ
+	E8KnA5ifStd3hHDTan7V94InJUEqWxdaIrQHGZMoEVUcaRQqz1vUyIoWej4KF60YQX9neK
+	LAWozNNmY9YFSS77jJILIvQw9TXwLp79vSwwaPOLckBKYVpBfbykA9D53hiBpeqhZ4lcw+
+	dwN2WpGGhrxIqY2x7dOSRfBBAYM1C1zOHXWMkPocNdXMfZuSX+S8Q1GrlD7CLQ==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.mailfrom=pc@manguebit.com
+ARC-Seal: i=1; s=dkim; d=manguebit.com; t=1708642862; a=rsa-sha256;
+	cv=none;
+	b=WkWbHtBlHb4sIwsRUcLKu9bZOTaK8C22Kmtl+MgPajtuTLFqeZXAqASFCxlZBcWZpv/KoA
+	+4LBJcNamqmSgdiHPKx/ul6Xf8vmsrDaTfJzqgWPcgDMQhgIipu3MJXEp9N0JP7sR0YDOA
+	rme2aAsrCsV3xVfR7I8RJ/WakdWlhrTjssiurayDNywz1A8imMnLPdyKExq3EDLZ5G5idH
+	dnInOrEsRwF5RMOXE0pkrLZMXOB71sP6/l2+eun5Sl6KbanHtpfPN2u2EEIhwCSjYd1nNt
+	k26UF9q/Ap3T8fBSOJlUpjGHQTtSExnx2KzXb32fW3IBX/MOOwiCC7IMbP14qQ==
+From: Paulo Alcantara <pc@manguebit.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Salvatore Bonaccorso
+ <carnil@debian.org>
+Cc: Jan =?utf-8?B?xIxlcm3DoWs=?= <sairon@sairon.cz>, Leonardo Brondani
+ Schenkel
+ <leonardo@schenkel.net>, stable@vger.kernel.org,
+ regressions@lists.linux.dev, linux-cifs@vger.kernel.org, Mathias
+ =?utf-8?Q?Wei=C3=9Fbach?=
+ <m.weissbach@info-gate.de>
+Subject: Re: [REGRESSION 6.1.70] system calls with CIFS mounts failing with
+ "Resource temporarily unavailable"
+In-Reply-To: <2024022137-ducky-upgrade-e50a@gregkh>
+References: <8ad7c20e-0645-40f3-96e6-75257b4bd31a@schenkel.net>
+ <7425b05a-d9a1-4c06-89a2-575504e132c3@sairon.cz>
+ <446860c571d0699ed664175262a9e84b@manguebit.com>
+ <2024010846-hefty-program-09c0@gregkh>
+ <88a9efbd0718039e6214fd23978250d1@manguebit.com>
+ <Zbl7qIcpekgPmLDP@eldamar.lan> <Zbl881W5S-nL7iof@eldamar.lan>
+ <2024022058-scrubber-canola-37d2@gregkh> <ZdUYvHe6u3LcUHDf@eldamar.lan>
+ <2024022137-ducky-upgrade-e50a@gregkh>
+Date: Thu, 22 Feb 2024 20:00:58 -0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB8185:EE_|SA2PR11MB4825:EE_
-X-MS-Office365-Filtering-Correlation-Id: adff819f-17e3-484c-1caa-08dc33f64b56
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: XVv6oc0F6Z46PoLCEsZhnF7H1QA9Yw1mnCikeDhb57bgTa5N+wSE+m0DGpoGxG9VsJBSvjQn9Mmd/+bXGixukWdTFcptEMuHOJfKSPj9SRvSnrkQFul3UdezEH2SvOgDDPs21CF8RzqV+XtxaKoh4kJEYY4jSOLrz/DSZOdRFm9vxUYRPPc4lgpXJ47BN5aEjWngJCAeFJZnLdm+Z4CrQ9fr14PbUkYv7QAtggzJYNsgGu/dJVZdW1fLeJaHiCIMLXFZmKFYHIh7a7xTHPirY+mjlwUCiHi0aPyqnJBcRP2vd5JRwUd5zIzUwPO8bJSTTJOgT7LDckzJEonT/lFuleAKV/T4XMIPl+ZrQSM4HX2oH5vOy68UM0l9zxLM4xOvPvd4AE/e0igPs+1j3/94Ik+V7CD0IESizj7PvJhzCYAd+cVnx2TslVOvXXG0U4oQwmkawLC9YF2b61UJfs3rbHOofczCzzkRBOlbO5k4bmWQlfFtbjEEZfH33bgHzuqi7KqCyJ4d0w/bAxydEjLnl1KF6jgm+b94ihxxxYKSMyA=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8185.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?lSTIfkJnXyB0E+eTqLuWnsxs1t9KltFCvKsgubMDJCURoFvWKW2nRYyHdkb+?=
- =?us-ascii?Q?SoJ8pg8SCL35IYp9EYJSf/nZxgzpCBRpmL7ChZWpjbVpUn9FiKApvOC8tgo0?=
- =?us-ascii?Q?4WduW2MqBmX8xjAw++m1T/4b03/Tpk4qFhaDP7FKwqC7wXjDQGv+IziYoGaB?=
- =?us-ascii?Q?3Scv6OqUuoNSiB180UL/UdPH8oPvITiM554U5i+WQESANCH/L/x1b3UbsAzL?=
- =?us-ascii?Q?5W3R1eLMCvbMpqLCDHdMsU7iqORYxA1zzRHhOs7h02Crnq6lS3vdFZCSMrDa?=
- =?us-ascii?Q?8F+Wz3/ENy91Ax94af4HeL02mwjqUjCqEwPDRrjqzO2S1xBYMeaFz2LJF056?=
- =?us-ascii?Q?kriBi4QaVdqOgjgWDUBVaOjQA/s6jLrjw8ZYFzkl6bA/mwbyfAAwNRDG0NGY?=
- =?us-ascii?Q?MfXlnTWbjEsVUjL9M7dheV2+0SuAio18UGZbUBgzcCdTfKUypABFgODJzOg4?=
- =?us-ascii?Q?YSHjE/9Bbfh0JPFP7W9cLRWMoPCEAVss3WFqJFGW/Koi2s+ke3hZFxAP9Oao?=
- =?us-ascii?Q?O0gxGqs7nW76iBFL8yPK/CAt6RYMEcd/d7CE8ZmROMQVCbbnwI82mvHFnxTY?=
- =?us-ascii?Q?6idpXaJDFEsORlPScnMYhk8wkNGCv3HumXoWq69LrKb7O2OhsqXkYaObX/QL?=
- =?us-ascii?Q?3ClRrJ7cZsijQ0q7X6o66q4uV5wyiW5NLNMujd8J/wR8Q09l53Zj+bHSRDJ8?=
- =?us-ascii?Q?kfcUNUYQhSLMoMKtvUyrCJE4/1QFFYigaUocW2yQp/odzBsWP3aEBQ8wfBZW?=
- =?us-ascii?Q?thmK2bDpyI7R/7a5btewqTtM5A+GU7Ccl+lZzTMe6JPqpGpXt6RM7TJvKQ9E?=
- =?us-ascii?Q?CUtipEXZSv34SrN7Za60ApNPY9vQ6hkK597ZrGVDOxWmzU2g8PWtzEqlfiCx?=
- =?us-ascii?Q?XvLukXufd3D8gcNMfjvzJ8L52uWWRsyi1OQMe5BJteAI5vmjr71l0638L0M2?=
- =?us-ascii?Q?AY8/pj76DZmdUukdkUmwYNSzTZSI6mbcGn6pgmT/qPm8rLAVT39LKvpxDleV?=
- =?us-ascii?Q?Eqm4VNkMWjZe7+68gWD6C6Otbcmyp4ibmbHGU5jXqSA5US2FiMax0mQbO++0?=
- =?us-ascii?Q?bpCiz6fYENivn1k7cvqjqtTWW+LKjjkPfTQUVhSmniuiY77yjBHGJq9oZGXf?=
- =?us-ascii?Q?sB9UL3pVfaE6grhkuhq1hV2zXgepx1IEtCOEkf49TnkFv4ilua5PauoI+z20?=
- =?us-ascii?Q?ktHveCtfnJwMEx3kH9k/VG1d7mSNdHna0WDOMK0C8M6G8AOkhZA6Kj7jgq+V?=
- =?us-ascii?Q?3TUJ59ixfnRHQBGPfXl/Yxu9wxsiu2zdEKMcGWYpJNNdjQ2Fq2EVtWNGHGeY?=
- =?us-ascii?Q?Z2viDshJZ4KKyD3dn3XNgVDXVork+DtHnkl36j0wEfihnH4/8+n9nZTCKGIX?=
- =?us-ascii?Q?0ehzWk6yjLcLWsYCWoeJlBdxX+lmfSuQwY+zYIZIvqwBW/NUBgi+RvO8jLP1?=
- =?us-ascii?Q?5BOalCBj97PlQru2/tTtE/wiALznDMS0+T7FJj5/Nei3YUCtQlleTS2IXEHZ?=
- =?us-ascii?Q?mDwf09mFlCRDtJ94/0tHlRC+BrBCIk+tETu901074YwQ2KB9oyZ+5nQgdfZX?=
- =?us-ascii?Q?mLrTWLOAWM0wMp5mCvVLB0l6MAHE6z23M6/hteVLjr1ANgiDM1Jc5P8FI/bW?=
- =?us-ascii?Q?2Q=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: adff819f-17e3-484c-1caa-08dc33f64b56
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8185.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Feb 2024 22:33:30.0822
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 21aVyDUi7dI3QBlOQaBL70zErxRAswOuap3QxU23guDCnM9wOyKf7yn6evpcltCbDN8DAlZrXJTsAESSXEVrwgB+Cjk3oMe2acESPLaqInk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB4825
-X-OriginatorOrg: intel.com
+Content-Type: text/plain
 
-On Thu, Feb 22, 2024 at 11:03:27PM +0100, Andi Shyti wrote:
-> Hi Matt,
-> 
-> first of all thanks a lot for the observations you are raising.
-> 
-> On Wed, Feb 21, 2024 at 12:51:04PM -0800, Matt Roper wrote:
-> > On Wed, Feb 21, 2024 at 01:12:18AM +0100, Andi Shyti wrote:
-> > > On Tue, Feb 20, 2024 at 03:39:18PM -0800, Matt Roper wrote:
-> > > > On Tue, Feb 20, 2024 at 03:35:26PM +0100, Andi Shyti wrote:
-> 
-> ...
-> 
-> > > > > diff --git a/drivers/gpu/drm/i915/gt/intel_gt.c b/drivers/gpu/drm/i915/gt/intel_gt.c
-> > > > > index a425db5ed3a2..e19df4ef47f6 100644
-> > > > > --- a/drivers/gpu/drm/i915/gt/intel_gt.c
-> > > > > +++ b/drivers/gpu/drm/i915/gt/intel_gt.c
-> > > > > @@ -168,6 +168,14 @@ static void init_unused_rings(struct intel_gt *gt)
-> > > > >  	}
-> > > > >  }
-> > > > >  
-> > > > > +static void intel_gt_apply_ccs_mode(struct intel_gt *gt)
-> > > > > +{
-> > > > > +	if (!IS_DG2(gt->i915))
-> > > > > +		return;
-> > > > > +
-> > > > > +	intel_uncore_write(gt->uncore, XEHP_CCS_MODE, 0);
-> > > > 
-> > > > This doesn't look right to me.  A value of 0 means every cslice gets
-> > > > associated with CCS0.
-> > > 
-> > > Yes, that's what I'm trying to do. The behavior I'm looking for
-> > > is this one:
-> > > 
-> > > 	 /*
-> > > 	  ...
-> > >           * With 1 engine (ccs0):
-> > >           *   slice 0, 1, 2, 3: ccs0
-> > >           *
-> > >           * With 2 engines (ccs0, ccs1):
-> > >           *   slice 0, 2: ccs0
-> > >           *   slice 1, 3: ccs1
-> > >           *
-> > >           * With 4 engines (ccs0, ccs1, ccs2, ccs3):
-> > >           *   slice 0: ccs0
-> > >           *   slice 1: ccs1
-> > >           *   slice 2: ccs2
-> > >           *   slice 3: ccs3
-> > > 	  ...
-> > > 	  */
-> > > 
-> > > where the user can configure runtime the mode, making sure that
-> > > no client is connected to i915.
-> > > 
-> > > But, this needs to be written 
-> > > 
-> > > As we are now forcing mode '1', then all cslices are connected
-> > > with ccs0.
-> > 
-> > Right --- and that's what I'm pointing out as illegal.  I think that
-> > code comment above was taken out of context from a different RFC series;
-> > that's not an accurate description of the behavior we want here.
-> > 
-> > First, the above comment is using ccs# to refer to userspace engines,
-> > not hardware engines.  As a simple example, DG2-G11 only ever has a
-> > single CCS which userspace sees as "instance 0" but which is actually
-> > CCS1 at the hardware level.  If you try to follow the comment above when
-> > programming CCS_MODE, you've assigned all of the cslices to a
-> > non-existent engine and assigned no cslices to the CCS engine that
-> > actually exists.  For DG2-G10 (and I think DG2-G12), there are different
-> > combinations of fused-off / not-fused-off engines that will always show
-> > up in userspace as CCS0-CCSn, even if those don't match the hardware
-> > IDs.
-> > 
-> > Second, the above comment is assuming that you have a part with a
-> > maximum fusing config (i.e., all cslices present).  Using DG2-G11 again
-> > as an example, there's also only a single cslice (cslice1), so if you
-> > tell CCS1 that it's allowed to use EUs from non-existent cslice0,
-> > cslice2, and cslice3, you might not get the behavior you were hoping
-> > for.
-> 
-> if the hardware slices are fused off we wouldn't see them in a
-> first place, right? And that's anyway a permanent configuration
-> that wouldn't affect the patch.
+Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
 
-There are physically four possible cslices in the IP design.  The
-presence/absence of each of those cslices can vary both by SKU and by
-part-specific fusing.  Some SKUs (DG2-G11) wind up only ever having a
-single possible configuration as far as I know, but the larger SKUs have
-more part-to-part variation in terms of exactly which specific subset of
-DSS (and by extension cslices) are present/absent.  The KMD determines
-the configuration at runtime by reading the DSS fuse registers and
-deriving the cslice presence/absence from that.
+> On Tue, Feb 20, 2024 at 10:25:16PM +0100, Salvatore Bonaccorso wrote:
+>> Hi Greg,
+>> 
+>> On Tue, Feb 20, 2024 at 09:27:49PM +0100, Greg Kroah-Hartman wrote:
+>> > On Tue, Jan 30, 2024 at 11:49:23PM +0100, Salvatore Bonaccorso wrote:
+>> > > Hi Paulo, hi Greg,
+>> > > 
+>> > > On Tue, Jan 30, 2024 at 11:43:52PM +0100, Salvatore Bonaccorso wrote:
+>> > > > Hi Paulo, hi Greg,
+>> > > > 
+>> > > > Note this is about the 5.10.y backports of the cifs issue, were system
+>> > > > calls fail with "Resource temporarily unavailable".
+>> > > > 
+>> > > > On Mon, Jan 08, 2024 at 12:58:49PM -0300, Paulo Alcantara wrote:
+>> > > > > Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
+>> > > > > 
+>> > > > > > Why can't we just include eb3e28c1e89b ("smb3: Replace smb2pdu 1-element
+>> > > > > > arrays with flex-arrays") to resolve this?
+>> > > > > 
+>> > > > > Yep, this is the right way to go.
+>> > > > > 
+>> > > > > > I've queued it up now.
+>> > > > > 
+>> > > > > Thanks!
+>> > > > 
+>> > > > Is the underlying issue by picking the three commits:
+>> > > > 
+>> > > > 3080ea5553cc ("stddef: Introduce DECLARE_FLEX_ARRAY() helper")
+>> > > > eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays with flex-arrays")
+>> > > > 
+>> > > > and the last commit in linux-stable-rc for 5.10.y:
+>> > > > 
+>> > > > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit?id=a280ecca48beb40ca6c0fc20dd5a7fdd9b3ee0b7
+>> > > > 
+>> > > > really fixing the issue?
+>> > > > 
+>> > > > Since we need to release a new update in Debian, I picked those three
+>> > > > for testing on top of the 5.10.209-1 and while testing explicitly a
+>> > > > cifs mount, I still get:
+>> > > > 
+>> > > > statfs(".", 0x7ffd809d5a70)             = -1 EAGAIN (Resource temporarily unavailable)
+>> > > > 
+>> > > > The same happens if I build
+>> > > > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit?id=a280ecca48beb40ca6c0fc20dd5a7fdd9b3ee0b7
+>> > > > (knowing that it is not yet ready for review).
+>> > > > 
+>> > > > I'm slight confused as a280ecca48be ("cifs: fix off-by-one in
+>> > > > SMB2_query_info_init()") says in the commit message:
+>> > > > 
+>> > > > [...]
+>> > > > 	v5.10.y doesn't have
+>> > > > 
+>> > > >         eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays with flex-arrays")
+>> > > > 
+>> > > > 	and the commit does
+>> > > > [...]
+>> > > > 
+>> > > > and in meanwhile though the eb3e28c1e89b was picked (in a backported
+>> > > > version). As 6.1.75-rc2 itself does not show the same problem, might
+>> > > > there be a prerequisite missing in the backports for 5.10.y or a
+>> > > > backport being wrong?
+>> > > 
+>> > > The problem seems to be that we are picking the backport for
+>> > > eb3e28c1e89b, but then still applying 
+>> > > 
+>> > > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit?id=a280ecca48beb40ca6c0fc20dd5
+>> > > 
+>> > > which was made for the case in 5.10.y where eb3e28c1e89b is not
+>> > > present.
+>> > > 
+>> > > I reverted a280ecca48beb40ca6c0fc20dd5 and now:
+>> > > 
+>> > > statfs(".", {f_type=SMB2_MAGIC_NUMBER, f_bsize=4096, f_blocks=2189197, f_bfree=593878, f_bavail=593878, f_files=0, f_ffree=0, f_fsid={val=[2004816114, 0]}, f_namelen=255, f_frsize=4096, f_flags=ST_VALID|ST_RELATIME}) = 0
+>> > 
+>> > So this works?  Would that just be easier to do overall?  I feel like
+>> > that might be best here.
+>> > 
+>> > Again, a set of simple "do this and this and this" would be nice to
+>> > have, as there are too many threads here, some incomplete and missing
+>> > commits on my end.
+>> > 
+>> > confused,
+>> 
+>> It is quite chaotic, since I believe multiple people worked on trying
+>> to resolve the issue, and then for the 5.10.y and 5.15.y branches
+>> different initial commits were applied. 
+>> 
+>> For 5.10.y it's the case: Keep the backport of eb3e28c1e89b and drop
+>> a280ecca48be (as it is not true that v5.10.y does not have
+>> eb3e28c1e89b, as it is actually in the current 5.10.y queue).
+>
+> I think we are good now.
+>
+>> Paulo can you please give Greg an authoratitative set of commits to
+>> keep/apply in the 5.10.y and 5.15.y series.
+>
+> Yes, anything I missed?
 
-The register you're writing in this patch tells the CCS engine which
-cslice(s) it can use to execute work.  If the KMD already knows that
-cslice<x> doesn't exist, but it tells CCS<y> that it can go ahead and
-use it anyway, things probably won't work properly.  That's why the spec
-mandates that we always program 0x7 in the register for any cslices that
-we know aren't present so that none of the CCS engines will incorrectly
-try to utilize them.  If we ignore that rule, then it's a driver bug.
+The one-liner fix (a280ecca48be) provided by Harshit was only required
+if not backporting eb3e28c1e89b.  As both 5.10.y and 5.15.y now have
+eb3e28c1e89b queued up, LGTM.
 
-> 
-> BTW, is there any machine I can test this scenario?
-
-There should differently-fused DG2 systems in our internal pool,
-although I'm not sure what the breakdown is.  I don't think the
-reservation system makes the low-level cslice configuration immediately
-obvious on the summary page, so you might just need to log into a few
-systems and read the fuse registers to check which ones are best for
-testing these cases.
-
-> 
-> > > > On a DG2-G11 platform, that will flat out break
-> > > > compute since CCS0 is never present (G11 only has a single CCS and it's
-> > > > always the hardware's CCS1).  Even on a G10 or G12 this could also break
-> > > > things depending on the fusing of your card if the hardware CCS0 happens
-> > > > to be missing.
-> > > > 
-> > > > Also, the register says that we need a field value of 0x7 for each
-> > > > cslice that's fused off.  By passing 0, we're telling the CCS engine
-> > > > that it can use cslices that may not actually exist.
-> > > 
-> > > does it? Or do I need to write the id (0x0-0x3) of the user
-> > > engine? That's how the mode is calculated in this algorithm.
-> > 
-> > 0x0 - 0x3 are how you specify that a specific CCS engine can use the
-> > cslice.  If the cslice can't be used at all (i.e., it's fused off), then
-> > you need to program a 0x7 to ensure no engines try to use the
-> > non-existent DSS/EUs.
-> 
-> I planned to limit this to the only DG2 (and ATSM, of course).
-> Do you think it would it help?
-
-Yes, definitely.  It's mandatory programming for these platforms.
-
-
-Matt
-
-> 
-> Andi
-
--- 
-Matt Roper
-Graphics Software Engineer
-Linux GPU Platform Enablement
-Intel Corporation
+Salvatore, please let us know if you can still hit the issue with
+eb3e28c1e89b applied.
 
