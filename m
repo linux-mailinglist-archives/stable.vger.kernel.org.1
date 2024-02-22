@@ -1,133 +1,110 @@
-Return-Path: <stable+bounces-23422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 702CD860700
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 00:32:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9CD8860713
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 00:39:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9536C1C230DD
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 23:32:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E9141F23C73
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 23:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AB1A225AF;
-	Thu, 22 Feb 2024 23:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7CF7137906;
+	Thu, 22 Feb 2024 23:39:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="leoZsO9J"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ItWMVVKO"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70223224E0;
-	Thu, 22 Feb 2024 23:32:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B4D17BBA;
+	Thu, 22 Feb 2024 23:39:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708644743; cv=none; b=NIVqJeAu18bleBMRkgFm8pSms47mri+3A/uFJQujz0AezJ+TGCQq7gX8mZ4vdmrH6sBU+pZC/AWznigudk1uPKPfSStehdJc4yo3UYdyz62t84RtDlIuvWAVi5A+V8inOdh5ndKBm1TOtUmcpPYc6qgx527ryqG3P1kcT2s5v0A=
+	t=1708645166; cv=none; b=mexrVnv1NLzkVzPzZk2QiAqHWVvI/qGNdNFhTavFSkfm95TRbplf7v3l7OYYT7CDP08i7dNzNDUC3S9A/seazcTaGZrFfwf4Lcop54AR7Yt5hk2TypSuhwj0Xylm5WZTthM8seH+SyYyz2jkbxuX5Z6mE5cMaSO0TGkccjXRGwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708644743; c=relaxed/simple;
-	bh=CO0bRk7BiXCkxxzdXJ2RPi/v5jTeOrDQR52gxk/ci0o=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pQqtIoxisIvtrytG1Eh2L/vV65xNuHKAj9oscU+ARbCf/+8BtW0m37wibwP08QkGtPVUMZCFmw8hT+jTX3Y8P13HL9FKtI+GyBOdDt2uJyvJfKxs8DmcotOb7Cu83h2Cn2Bntzd7gO4B8vlCgknKKHcJ7x88VopPFri0E50q3qc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=leoZsO9J; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708644737; x=1740180737;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=CO0bRk7BiXCkxxzdXJ2RPi/v5jTeOrDQR52gxk/ci0o=;
-  b=leoZsO9J4m9gR1x1a6ZE0U/wQZZCEJMxgg+7hHsOMbkF5XhsAcSLctdJ
-   NGBZNVKChbp8BhG/poUgNqPZGUi7VdYYcBoVTHE/cgGDFEmfCHiByO9RX
-   JNPhrBqj2HWFRdGLaFJVKHBkNFTr+fwx+/8arG18wFTTRtgZWb+aoguZQ
-   8iSROrhh9Qb0/YXdYQx/FfSblh/J9dn4kKxjEhGkIWRCaDAgBtlCiIxJF
-   iMBl4yygmvPMfLuVey8UqPMCKsRipNqKVglDAtpyLFpG5LZ+OBHOS1ZTY
-   EB4eimJ7Mic48JisI4X3Wi6LanYgNUNWyiVLeeIy/TVPUGyuRPH+qjlr1
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="6692147"
-X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
-   d="scan'208";a="6692147"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2024 15:32:13 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="936921441"
-X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
-   d="scan'208";a="936921441"
-Received: from mattu-haswell.fi.intel.com ([10.237.72.199])
-  by fmsmga001.fm.intel.com with ESMTP; 22 Feb 2024 15:32:11 -0800
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-To: <gregkh@linuxfoundation.org>
-Cc: linux-usb@vger.kernel.org,
-	<stern@rowland.harvard.edu>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] usb: port: Don't try to peer unused USB ports based on location
-Date: Fri, 23 Feb 2024 01:33:43 +0200
-Message-Id: <20240222233343.71856-1-mathias.nyman@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1708645166; c=relaxed/simple;
+	bh=7Zz9N2qREAhZwfH7evuuc/XT4gBx9hbfdzNuiYDkEA0=;
+	h=Date:To:From:Subject:Message-Id; b=VmnYA+L9mmMof43SMoclhnafREeDhDPGGL3JT2EriS11Psz9I+ij7+EvZK3P3HgIwCdm7IfyAkYcVPA4Hzt+eV2VYK5hpdHV1MmI4yXn1ebowyTMM5i/ZJpiTL/CzA81kTRJ+j168G9ucJ6rXCfh8klkT4RWvDT5Z/enFjRHZOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ItWMVVKO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF575C433F1;
+	Thu, 22 Feb 2024 23:39:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1708645166;
+	bh=7Zz9N2qREAhZwfH7evuuc/XT4gBx9hbfdzNuiYDkEA0=;
+	h=Date:To:From:Subject:From;
+	b=ItWMVVKOVit+9SnGpHLCewpuKWf/LjA1H09pBoLorMKZfNqicV3+deELn3dILvpfq
+	 C/8eo431o3QPg1SNbZWX9rLq7CPFmL4N84hXzYpC6LRKwChL409HavMJkdZjV41MAC
+	 sSdyudk1fn4QD6CzbewzNhm20zZx8NRoVYmG4UIA=
+Date: Thu, 22 Feb 2024 15:39:25 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,riel@surriel.com,peterz@infradead.org,mingo@kernel.org,mgorman@techsingularity.net,willy@infradead.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] bounds-support-non-power-of-two-config_nr_cpus.patch removed from -mm tree
+Message-Id: <20240222233925.DF575C433F1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Unused USB ports may have bogus location data in ACPI PLD tables.
-This causes port peering failures as these unused USB2 and USB3 ports
-location may match.
 
-Due to these failures the driver prints a
-"usb: port power management may be unreliable" warning, and
-unnecessarily blocks port power off during runtime suspend.
+The quilt patch titled
+     Subject: bounds: support non-power-of-two CONFIG_NR_CPUS
+has been removed from the -mm tree.  Its filename was
+     bounds-support-non-power-of-two-config_nr_cpus.patch
 
-This was debugged on a couple DELL systems where the unused ports
-all returned zeroes in their location data.
-Similar bugreports exist for other systems.
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Don't try to peer or match ports that have connect type set to
-USB_PORT_NOT_USED.
+------------------------------------------------------
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Subject: bounds: support non-power-of-two CONFIG_NR_CPUS
+Date: Tue, 10 Oct 2023 15:55:49 +0100
 
-Fixes: 3bfd659baec8 ("usb: find internal hub tier mismatch via acpi")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218465
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218486
-Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Link: https://lore.kernel.org/linux-usb/5406d361-f5b7-4309-b0e6-8c94408f7d75@molgen.mpg.de
-Cc: stable@vger.kernel.org # v3.16+
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+ilog2() rounds down, so for example when PowerPC 85xx sets CONFIG_NR_CPUS
+to 24, we will only allocate 4 bits to store the number of CPUs instead of
+5.  Use bits_per() instead, which rounds up.  Found by code inspection. 
+The effect of this would probably be a misaccounting when doing NUMA
+balancing, so to a user, it would only be a performance penalty.  The
+effects may be more wide-spread; it's hard to tell.
+
+Link: https://lkml.kernel.org/r/20231010145549.1244748-1-willy@infradead.org
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Fixes: 90572890d202 ("mm: numa: Change page last {nid,pid} into {cpu,pid}")
+Reviewed-by: Rik van Riel <riel@surriel.com>
+Acked-by: Mel Gorman <mgorman@techsingularity.net>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
-v1 -> v2
-  - Improve commit message
-  - Add missing Fixes, Closes and Link tags
-  - send this patch separately for easier picking to usb-linus
 
- drivers/usb/core/port.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ kernel/bounds.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/core/port.c b/drivers/usb/core/port.c
-index c628c1abc907..4d63496f98b6 100644
---- a/drivers/usb/core/port.c
-+++ b/drivers/usb/core/port.c
-@@ -573,7 +573,7 @@ static int match_location(struct usb_device *peer_hdev, void *p)
- 	struct usb_hub *peer_hub = usb_hub_to_struct_hub(peer_hdev);
- 	struct usb_device *hdev = to_usb_device(port_dev->dev.parent->parent);
- 
--	if (!peer_hub)
-+	if (!peer_hub || port_dev->connect_type == USB_PORT_NOT_USED)
- 		return 0;
- 
- 	hcd = bus_to_hcd(hdev->bus);
-@@ -584,7 +584,8 @@ static int match_location(struct usb_device *peer_hdev, void *p)
- 
- 	for (port1 = 1; port1 <= peer_hdev->maxchild; port1++) {
- 		peer = peer_hub->ports[port1 - 1];
--		if (peer && peer->location == port_dev->location) {
-+		if (peer && peer->connect_type != USB_PORT_NOT_USED &&
-+		    peer->location == port_dev->location) {
- 			link_peers_report(port_dev, peer);
- 			return 1; /* done */
- 		}
--- 
-2.25.1
+--- a/kernel/bounds.c~bounds-support-non-power-of-two-config_nr_cpus
++++ a/kernel/bounds.c
+@@ -19,7 +19,7 @@ int main(void)
+ 	DEFINE(NR_PAGEFLAGS, __NR_PAGEFLAGS);
+ 	DEFINE(MAX_NR_ZONES, __MAX_NR_ZONES);
+ #ifdef CONFIG_SMP
+-	DEFINE(NR_CPUS_BITS, ilog2(CONFIG_NR_CPUS));
++	DEFINE(NR_CPUS_BITS, bits_per(CONFIG_NR_CPUS));
+ #endif
+ 	DEFINE(SPINLOCK_SIZE, sizeof(spinlock_t));
+ #ifdef CONFIG_LRU_GEN
+_
+
+Patches currently in -mm which might be from willy@infradead.org are
+
+writeback-remove-a-duplicate-prototype-for-tag_pages_for_writeback.patch
+writeback-factor-folio_prepare_writeback-out-of-write_cache_pages.patch
+writeback-factor-writeback_get_batch-out-of-write_cache_pages.patch
+writeback-simplify-the-loops-in-write_cache_pages.patch
+pagevec-add-ability-to-iterate-a-queue.patch
+writeback-use-the-folio_batch-queue-iterator.patch
+writeback-move-the-folio_prepare_writeback-loop-out-of-write_cache_pages.patch
+writeback-remove-a-use-of-write_cache_pages-from-do_writepages.patch
 
 
