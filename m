@@ -1,233 +1,188 @@
-Return-Path: <stable+bounces-23275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B887C85EEE7
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 03:07:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B66285EF0A
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 03:12:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC308B23F86
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 02:07:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6BF7B229C1
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 02:12:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 428CA168BD;
-	Thu, 22 Feb 2024 02:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE506175AC;
+	Thu, 22 Feb 2024 02:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="e60CWs9O"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ceMt1Rzd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93CC17558;
-	Thu, 22 Feb 2024 02:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664D413FF1;
+	Thu, 22 Feb 2024 02:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708567606; cv=none; b=iZdLxf8moKleonzMGN2jYYHd+kOcRXjYh4DTYW5jCEtEuySgJSjEmp+Pz0yvFrxHuwSYkB7Ybj5MdGoaaiI+nYPOa69r1qCVt5y8FcIoq3INRa6NKC4959dVC9AlmMZxn4eOY78qmKdG1NlcTl4GywxeiuLfyxXaTSJyezF8Ro4=
+	t=1708567913; cv=none; b=aMF7NFObg76LCTxp2TJfgEbM78gljDTRyg6+noLmfkWq2rZbKw01V5v+ujK/Bs/aIup3c2FH+kK2+AFI7iTXVWXuD5t9wHM5N4iKfLarrN5grcPoZ3efh20yOxqNivUFpff6h37lKmIgylpzsl6Tc1fgvePzsBVllN7B+ZppJDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708567606; c=relaxed/simple;
-	bh=7su2uc/qjT5uiRB7c3q8axt/+BDQygJevCLmMZSgwVE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jYNJZAeZNN6+SMYOcqw4CcMSVPhc/aTYbysP8iYjZm5tHtb1KxQljjc8EbkluKYtol2G54O7U15opL5a4KiwQiLhCL5G5USOmmuCSDK91Z37w7iMlxaP8SdVAkuDEaxJZcvoB9SKcUutfQw0H5YoXF5eCrbV/d8pe49Iv2vuMqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=e60CWs9O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0385DC433C7;
-	Thu, 22 Feb 2024 02:06:43 +0000 (UTC)
-Authentication-Results: smtp.kernel.org;
-	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="e60CWs9O"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
-	t=1708567601;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kSpZ9HfMHwwDA3D6imETo1Lc+vWLLY3fMavVn1pGHck=;
-	b=e60CWs9OyzstH4poKO4dJoti0RWaX5QLMQKIQK/dNOEZTsHUjUGa10VU3HzyJLG2TpYszN
-	n8oeI9VNpNXcOnsdiiz+w8WMkLdaiMZyJasn7EeJiZyyCcWTd3EdTtOMnwJscKYdyuT9o+
-	BRg5jJfopa5NgNgsZ6uHW1+y+gZ8iV8=
-Received: 
-	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 3b5d701a (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Thu, 22 Feb 2024 02:06:41 +0000 (UTC)
-From: "Jason A. Donenfeld" <Jason@zx2c4.com>
-To: x86@kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Borislav Petkov <bp@alien8.de>,
-	=?UTF-8?q?Daniel=20P=20=2E=20Berrang=C3=A9?= <berrange@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	stable@vger.kernel.org,
-	Elena Reshetova <elena.reshetova@intel.com>,
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-	Theodore Ts'o <tytso@mit.edu>
-Subject: [PATCH v4] x86/coco: Require seeding RNG with RDRAND on CoCo systems
-Date: Thu, 22 Feb 2024 03:05:51 +0100
-Message-ID: <20240222020616.2315199-1-Jason@zx2c4.com>
-In-Reply-To: <5648f43d-76e4-4396-b626-411d60657c93@intel.com>
-References: <5648f43d-76e4-4396-b626-411d60657c93@intel.com>
+	s=arc-20240116; t=1708567913; c=relaxed/simple;
+	bh=M/LNj2djdadRBLnihuPfV+nXCo2lDk/by1hjZhfOOrE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l2CxxTKMdOxwGeDHWrmaaOb5a6z7nLnGbiK/eNp8jUkYTxOv+9j0mfL7dyD4u6eQNPvXlDI0vxNtfIymM/T/AgpIScMaq6yhHG3/x6uEFX8xalaCfQmvWRctM3pWIj7qQcbB/NUocEkN2dMumyvzoHFcZUDEVFk7JjWmcqshgAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ceMt1Rzd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2220AC433C7;
+	Thu, 22 Feb 2024 02:11:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708567912;
+	bh=M/LNj2djdadRBLnihuPfV+nXCo2lDk/by1hjZhfOOrE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ceMt1Rzd7rPR2fLcW0o6/G3AO0GuPW5KiJezWHudADeCnPdFtLXVnCb9mMc7A0+U8
+	 LYhGkJToiZ26la2+nbSBXbbost77718rd4igDO0r8tptdBhPZ9fxI8Pb9wDQy+LNNM
+	 jTDvvToQCZx46T0YjsNveqqMbGLkNW4deTOEmlZaoFwPXGta4EuPcaXxU8/gRpkQ15
+	 Dtaz7toKwvoJCuPxZjqjyRiR1FGMuGq6+oRNP1kyOnnkjkCSMhYbI80u9b8NW1DtmQ
+	 v/CT4QiXs8ub4oNyZka5FYYmP3I96LXkSChg+kLRhSEGwPyUChDVu4epzdN1CajMkB
+	 g2YhTUd/+LB6Q==
+Date: Wed, 21 Feb 2024 20:11:49 -0600
+From: Bjorn Andersson <andersson@kernel.org>
+To: Johan Hovold <johan+linaro@kernel.org>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+	Daniel Vetter <daniel@ffwll.ch>, Vinod Koul <vkoul@kernel.org>, Jonas Karlman <jonas@kwiboo.se>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Konrad Dybcio <konrad.dybcio@linaro.org>, Kishon Vijay Abraham I <kishon@kernel.org>, 
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, Rob Clark <robdclark@gmail.com>, 
+	Abhinav Kumar <quic_abhinavk@quicinc.com>, Kuogee Hsieh <quic_khsieh@quicinc.com>, 
+	freedreno@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH 3/6] soc: qcom: pmic_glink_altmode: fix drm bridge
+ use-after-free
+Message-ID: <qtin352q26twl3fjhqkpz3mczgb4i4fxaacpecl4fk55mwgmaz@varmvcitzx3a>
+References: <20240217150228.5788-1-johan+linaro@kernel.org>
+ <20240217150228.5788-4-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240217150228.5788-4-johan+linaro@kernel.org>
 
-There are few uses of CoCo that don't rely on working cryptography and
-hence a working RNG. Unfortunately, the CoCo threat model means that the
-VM host cannot be trusted and may actively work against guests to
-extract secrets or manipulate computation. Since a malicious host can
-modify or observe nearly all inputs to guests, the only remaining source
-of entropy for CoCo guests is RDRAND.
+On Sat, Feb 17, 2024 at 04:02:25PM +0100, Johan Hovold wrote:
+> A recent DRM series purporting to simplify support for "transparent
+> bridges" and handling of probe deferrals ironically exposed a
+> use-after-free issue on pmic_glink_altmode probe deferral.
+> 
+> This has manifested itself as the display subsystem occasionally failing
+> to initialise and NULL-pointer dereferences during boot of machines like
+> the Lenovo ThinkPad X13s.
+> 
+> Specifically, the dp-hpd bridge is currently registered before all
+> resources have been acquired which means that it can also be
+> deregistered on probe deferrals.
+> 
+> In the meantime there is a race window where the new aux bridge driver
+> (or PHY driver previously) may have looked up the dp-hpd bridge and
+> stored a (non-reference-counted) pointer to the bridge which is about to
+> be deallocated.
+> 
+> When the display controller is later initialised, this triggers a
+> use-after-free when attaching the bridges:
+> 
+> 	dp -> aux -> dp-hpd (freed)
+> 
+> which may, for example, result in the freed bridge failing to attach:
+> 
+> 	[drm:drm_bridge_attach [drm]] *ERROR* failed to attach bridge /soc@0/phy@88eb000 to encoder TMDS-31: -16
+> 
+> or a NULL-pointer dereference:
+> 
+> 	Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+> 	...
+> 	Call trace:
+> 	  drm_bridge_attach+0x70/0x1a8 [drm]
+> 	  drm_aux_bridge_attach+0x24/0x38 [aux_bridge]
+> 	  drm_bridge_attach+0x80/0x1a8 [drm]
+> 	  dp_bridge_init+0xa8/0x15c [msm]
+> 	  msm_dp_modeset_init+0x28/0xc4 [msm]
+> 
+> The DRM bridge implementation is clearly fragile and implicitly built on
+> the assumption that bridges may never go away. In this case, the fix is
+> to move the bridge registration in the pmic_glink_altmode driver to
+> after all resources have been looked up.
+> 
+> Incidentally, with the new dp-hpd bridge implementation, which registers
+> child devices, this is also a requirement due to a long-standing issue
+> in driver core that can otherwise lead to a probe deferral loop (see
+> fbc35b45f9f6 ("Add documentation on meaning of -EPROBE_DEFER")).
+> 
+> Fixes: 080b4e24852b ("soc: qcom: pmic_glink: Introduce altmode support")
+> Fixes: 2bcca96abfbf ("soc: qcom: pmic-glink: switch to DRM_AUX_HPD_BRIDGE")
+> Cc: stable@vger.kernel.org      # 6.3
+> Cc: Bjorn Andersson <andersson@kernel.org>
+> Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 
-If RDRAND is broken -- due to CPU hardware fault -- the RNG as a whole
-is meant to gracefully continue on gathering entropy from other sources,
-but since there aren't other sources on CoCo, this is catastrophic.
-This is mostly a concern at boot time when initially seeding the RNG, as
-after that the consequences of a broken RDRAND are much more
-theoretical.
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
 
-So, try at boot to seed the RNG using 256 bits of RDRAND output. If this
-fails, panic(). This will also trigger if the system is booted without
-RDRAND, as RDRAND is essential for a safe CoCo boot.
+Regards,
+Bjorn
 
-This patch is deliberately written to be "just a CoCo x86 driver
-feature" and not part of the RNG itself. Many device drivers and
-platforms have some desire to contribute something to the RNG, and
-add_device_randomness() is specifically meant for this purpose. Any
-driver can call this with seed data of any quality, or even garbage
-quality, and it can only possibly make the quality of the RNG better or
-have no effect, but can never make it worse. Rather than trying to
-build something into the core of the RNG, this patch interprets the
-particular CoCo issue as just a CoCo issue, and therefore separates this
-all out into driver (well, arch/platform) code.
-
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Daniel P. Berrangé <berrange@redhat.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Reviewed-by: Elena Reshetova <elena.reshetova@intel.com>
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
----
-Changes v3->v4:
-- Add stable@ tag and reviewed-by lines.
-- Add comment for Dave explaining where the "32" comes from.
-
- arch/x86/coco/core.c        | 40 +++++++++++++++++++++++++++++++++++++
- arch/x86/include/asm/coco.h |  2 ++
- arch/x86/kernel/setup.c     |  2 ++
- 3 files changed, 44 insertions(+)
-
-diff --git a/arch/x86/coco/core.c b/arch/x86/coco/core.c
-index eeec9986570e..0e988bff4aec 100644
---- a/arch/x86/coco/core.c
-+++ b/arch/x86/coco/core.c
-@@ -3,13 +3,16 @@
-  * Confidential Computing Platform Capability checks
-  *
-  * Copyright (C) 2021 Advanced Micro Devices, Inc.
-+ * Copyright (C) 2024 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
-  *
-  * Author: Tom Lendacky <thomas.lendacky@amd.com>
-  */
- 
- #include <linux/export.h>
- #include <linux/cc_platform.h>
-+#include <linux/random.h>
- 
-+#include <asm/archrandom.h>
- #include <asm/coco.h>
- #include <asm/processor.h>
- 
-@@ -153,3 +156,40 @@ __init void cc_set_mask(u64 mask)
- {
- 	cc_mask = mask;
- }
-+
-+__init void cc_random_init(void)
-+{
-+	/*
-+	 * The seed is 32 bytes (in units of longs), which is 256 bits, which
-+	 * is the security level that the RNG is targeting.
-+	 */
-+	unsigned long rng_seed[32 / sizeof(long)];
-+	size_t i, longs;
-+
-+	if (cc_vendor == CC_VENDOR_NONE)
-+		return;
-+
-+	/*
-+	 * Since the CoCo threat model includes the host, the only reliable
-+	 * source of entropy that can be neither observed nor manipulated is
-+	 * RDRAND. Usually, RDRAND failure is considered tolerable, but since
-+	 * CoCo guests have no other unobservable source of entropy, it's
-+	 * important to at least ensure the RNG gets some initial random seeds.
-+	 */
-+	for (i = 0; i < ARRAY_SIZE(rng_seed); i += longs) {
-+		longs = arch_get_random_longs(&rng_seed[i], ARRAY_SIZE(rng_seed) - i);
-+
-+		/*
-+		 * A zero return value means that the guest doesn't have RDRAND
-+		 * or the CPU is physically broken, and in both cases that
-+		 * means most crypto inside of the CoCo instance will be
-+		 * broken, defeating the purpose of CoCo in the first place. So
-+		 * just panic here because it's absolutely unsafe to continue
-+		 * executing.
-+		 */
-+		if (longs == 0)
-+			panic("RDRAND is defective.");
-+	}
-+	add_device_randomness(rng_seed, sizeof(rng_seed));
-+	memzero_explicit(rng_seed, sizeof(rng_seed));
-+}
-diff --git a/arch/x86/include/asm/coco.h b/arch/x86/include/asm/coco.h
-index 76c310b19b11..e9d059449885 100644
---- a/arch/x86/include/asm/coco.h
-+++ b/arch/x86/include/asm/coco.h
-@@ -15,6 +15,7 @@ extern enum cc_vendor cc_vendor;
- void cc_set_mask(u64 mask);
- u64 cc_mkenc(u64 val);
- u64 cc_mkdec(u64 val);
-+void cc_random_init(void);
- #else
- #define cc_vendor (CC_VENDOR_NONE)
- 
-@@ -27,6 +28,7 @@ static inline u64 cc_mkdec(u64 val)
- {
- 	return val;
- }
-+static inline void cc_random_init(void) { }
- #endif
- 
- #endif /* _ASM_X86_COCO_H */
-diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
-index 84201071dfac..30a653cfc7d2 100644
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -36,6 +36,7 @@
- #include <asm/bios_ebda.h>
- #include <asm/bugs.h>
- #include <asm/cacheinfo.h>
-+#include <asm/coco.h>
- #include <asm/cpu.h>
- #include <asm/efi.h>
- #include <asm/gart.h>
-@@ -994,6 +995,7 @@ void __init setup_arch(char **cmdline_p)
- 	 * memory size.
- 	 */
- 	mem_encrypt_setup_arch();
-+	cc_random_init();
- 
- 	efi_fake_memmap();
- 	efi_find_mirror();
--- 
-2.43.2
-
+> ---
+>  drivers/soc/qcom/pmic_glink_altmode.c | 16 +++++++++++++---
+>  1 file changed, 13 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/soc/qcom/pmic_glink_altmode.c b/drivers/soc/qcom/pmic_glink_altmode.c
+> index 5fcd0fdd2faa..b3808fc24c69 100644
+> --- a/drivers/soc/qcom/pmic_glink_altmode.c
+> +++ b/drivers/soc/qcom/pmic_glink_altmode.c
+> @@ -76,7 +76,7 @@ struct pmic_glink_altmode_port {
+>  
+>  	struct work_struct work;
+>  
+> -	struct device *bridge;
+> +	struct auxiliary_device *bridge;
+>  
+>  	enum typec_orientation orientation;
+>  	u16 svid;
+> @@ -230,7 +230,7 @@ static void pmic_glink_altmode_worker(struct work_struct *work)
+>  	else
+>  		pmic_glink_altmode_enable_usb(altmode, alt_port);
+>  
+> -	drm_aux_hpd_bridge_notify(alt_port->bridge,
+> +	drm_aux_hpd_bridge_notify(&alt_port->bridge->dev,
+>  				  alt_port->hpd_state ?
+>  				  connector_status_connected :
+>  				  connector_status_disconnected);
+> @@ -454,7 +454,7 @@ static int pmic_glink_altmode_probe(struct auxiliary_device *adev,
+>  		alt_port->index = port;
+>  		INIT_WORK(&alt_port->work, pmic_glink_altmode_worker);
+>  
+> -		alt_port->bridge = drm_dp_hpd_bridge_register(dev, to_of_node(fwnode));
+> +		alt_port->bridge = devm_drm_dp_hpd_bridge_alloc(dev, to_of_node(fwnode));
+>  		if (IS_ERR(alt_port->bridge)) {
+>  			fwnode_handle_put(fwnode);
+>  			return PTR_ERR(alt_port->bridge);
+> @@ -510,6 +510,16 @@ static int pmic_glink_altmode_probe(struct auxiliary_device *adev,
+>  		}
+>  	}
+>  
+> +	for (port = 0; port < ARRAY_SIZE(altmode->ports); port++) {
+> +		alt_port = &altmode->ports[port];
+> +		if (!alt_port->bridge)
+> +			continue;
+> +
+> +		ret = devm_drm_dp_hpd_bridge_add(dev, alt_port->bridge);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+>  	altmode->client = devm_pmic_glink_register_client(dev,
+>  							  altmode->owner_id,
+>  							  pmic_glink_altmode_callback,
+> -- 
+> 2.43.0
+> 
 
