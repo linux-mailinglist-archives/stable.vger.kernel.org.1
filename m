@@ -1,147 +1,91 @@
-Return-Path: <stable+bounces-23357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B2B185FD11
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 16:52:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F1F885FD34
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 16:55:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07621282995
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 15:52:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C03F61C253BF
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 15:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D1A114E2E8;
-	Thu, 22 Feb 2024 15:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBE741468FB;
+	Thu, 22 Feb 2024 15:55:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="nB0CSrmR"
 X-Original-To: stable@vger.kernel.org
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB60A14D44C;
-	Thu, 22 Feb 2024 15:52:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0890014E2E8
+	for <stable@vger.kernel.org>; Thu, 22 Feb 2024 15:54:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708617132; cv=none; b=KawgG8DDOXsUWrgqH6J0ZkFo3T+JehoI6Qz1WnsETQldnOpmWtQ76g44C499WvW3tpNF7kPqRFNDH9MG7L+4nM2vyOHB0qAu1UczurxwlIDZK+56It8dy3kEfHS8w68smletFKnVeWGcf3QLpTOabDyiCbZnAPcDyI6zEZLzpIg=
+	t=1708617300; cv=none; b=M4TPLJj1g81ACMuFSqws33CMsJ0PRx/B6Nu1bd2SLvCdT0DnOwnRpkQJ2aoLi+I1nFzalfyfHyjl/XJGAo5dSnnF6ifBJul7aE4tiHsZteidiIOe5Y+OeKZMnGs2uihMfdYWPGE7FJw+zFgpXu/6mCjF0dSaog9VotNajFqxyZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708617132; c=relaxed/simple;
-	bh=jVuLW6VuRNUR1+1AtUBWQPIkc6l0VQn/JByX1iGH/Cg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WCs0oHou9k+MfuZa3vjq6hTTNW3TZZdx2P7bX1SVrfXZp5ERA2SxBNR4gTEY6EadNJF9pHZU3lzdtoIf7eSZc9RQsbnsmeAz0Uz9ST2vJxPTVmjPeimBUuRSwS9THykKlgp47+5z0Se/O/FhmQNzp9VwKueGAxB7nBEj/vW/Evc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [141.14.220.34] (g34.guest.molgen.mpg.de [141.14.220.34])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 852D261E5FE05;
-	Thu, 22 Feb 2024 16:51:51 +0100 (CET)
-Message-ID: <ea027251-8fd1-4267-8484-452860e0c464@molgen.mpg.de>
-Date: Thu, 22 Feb 2024 16:51:51 +0100
+	s=arc-20240116; t=1708617300; c=relaxed/simple;
+	bh=3gudls+qOVnJJ2Z6I9k9ViRZ5gG6pFI5d3hFmaBqiQk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bY9iJc+Bgg1/Jr2SFeXj/c7j81rncM++8dRULESr3teTj/B9W4JrQVEaTJwmNpPE94cM3wFe82sW8towaWINSBntsO50D9tCgQASKiVd75GI/npY7WdSsmqCoJdyZHKUxjbnDI8YyWXPYlb5uqTUDPlEUeSOPjr6ePQZnzfxdtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=nB0CSrmR; arc=none smtp.client-ip=18.9.28.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
+Received: from cwcc.thunk.org (pool-173-48-102-198.bstnma.fios.verizon.net [173.48.102.198])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 41MFsecV030805
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 22 Feb 2024 10:54:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1708617282; bh=4KEodA6HsyUJpOvCLWhuiNIE3cmXsNuj9MIhHoVGIbg=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	b=nB0CSrmRqnuPeJ6MRMK9Lmu+KQ1kiW6i+QPDCS9EHP61D74dRvAl7ReMpf4OGR+ru
+	 llQPE/s8QafEMOwvPx8PvsnPzYJBlYo3KGWa+sj1u6HKvMoUwwNHCv9HkaTZZ3bAm0
+	 Sc7S30hAxxAakHQkj8Cwwj7lb9S8khafxxA0t7QKzP7jOkff70DOpFx9uVqUX+q6rv
+	 q3UG3UZQaxXwuYq9D/OlD3qzC5SyBjccYz+8t+mHRzqgTAXQZ5cHbv+nQNiiZe0/Y+
+	 pKHwQU8ThMPnPQkoXdE05idJjyCov2r54JFTF5w0bZJBmOru75B0pIEgojIqxaX5SW
+	 pc0XEKO1Nu8bw==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+	id 3A90F15C1443; Thu, 22 Feb 2024 10:54:40 -0500 (EST)
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: Maximilian Heyne <mheyne@amazon.de>
+Cc: "Theodore Ts'o" <tytso@mit.edu>, ravib@amazon.com, stable@vger.kernel.org,
+        Andreas Dilger <adilger.kernel@dilger.ca>,
+        Yongqiang Yang <xiaoqiangnk@gmail.com>, linux-ext4@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] ext4: fix corruption during on-line resize
+Date: Thu, 22 Feb 2024 10:54:32 -0500
+Message-ID: <170861726754.823885.5472128846628604301.b4-ty@mit.edu>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240215155009.94493-1-mheyne@amazon.de>
+References: <20240215155009.94493-1-mheyne@amazon.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] usb: port: Don't try to peer unused USB ports based
- on location
-Content-Language: en-US
-To: Mathias Nyman <mathias.nyman@linux.intel.com>
-Cc: gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
- stern@rowland.harvard.edu, stable@vger.kernel.org,
- Mike Jones <mike@mjones.io>
-References: <20240222133819.4149388-1-mathias.nyman@linux.intel.com>
- <20240222133819.4149388-2-mathias.nyman@linux.intel.com>
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20240222133819.4149388-2-mathias.nyman@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-Dear Mathias,
 
-
-Thank you for your patches fixing the problem.
-
-Am 22.02.24 um 14:38 schrieb Mathias Nyman:
-> Unused USB ports may have bogus location data in ACPI PLD tables.
-> This causes port peering failures as these unused USB2 and USB3 ports
-> location may match.
-
-I comment here, although it should probably be in another branch of this 
-thread.
-
-If it is a firmware issue, this check should be added to FirmWare Test 
-Suite (fwts) [1] too (I can report it there), and maybe some debug log 
-should report this firmware error too.
-
-> This is seen on DELL systems where all unused ports return zeroed
-> location data.
-
-As noted in the post scriptum in [2], much more systems seem to be affected.
-
-> Don't try to peer or match ports that have connect type set to
-> USB_PORT_NOT_USED.
-
-When grepping the git history, pasting the warning message would help 
-me. Maybe:
-
-This fixes the warning below on the affected systems:
-
-     usb: port power management may be unreliable
-
-If you want to add add the Linux Kernel Bugzilla URLs:
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218465
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218486
-
-I wasn’t able to test the other two systems yet, but maybe it is obvious 
-from the ACPI tables/ASL code:
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218487 (Dell OptiPlex 
-5055)
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218490 (Dell PowerEdge 
-T440)
-
-> Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-> ---
->   drivers/usb/core/port.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
+On Thu, 15 Feb 2024 15:50:09 +0000, Maximilian Heyne wrote:
+> We observed a corruption during on-line resize of a file system that is
+> larger than 16 TiB with 4k block size. With having more then 2^32 blocks
+> resize_inode is turned off by default by mke2fs. The issue can be
+> reproduced on a smaller file system for convenience by explicitly
+> turning off resize_inode. An on-line resize across an 8 GiB boundary (the
+> size of a meta block group in this setup) then leads to a corruption:
 > 
-> diff --git a/drivers/usb/core/port.c b/drivers/usb/core/port.c
-> index c628c1abc907..4d63496f98b6 100644
-> --- a/drivers/usb/core/port.c
-> +++ b/drivers/usb/core/port.c
-> @@ -573,7 +573,7 @@ static int match_location(struct usb_device *peer_hdev, void *p)
->   	struct usb_hub *peer_hub = usb_hub_to_struct_hub(peer_hdev);
->   	struct usb_device *hdev = to_usb_device(port_dev->dev.parent->parent);
->   
-> -	if (!peer_hub)
-> +	if (!peer_hub || port_dev->connect_type == USB_PORT_NOT_USED)
->   		return 0;
->   
->   	hcd = bus_to_hcd(hdev->bus);
-> @@ -584,7 +584,8 @@ static int match_location(struct usb_device *peer_hdev, void *p)
->   
->   	for (port1 = 1; port1 <= peer_hdev->maxchild; port1++) {
->   		peer = peer_hub->ports[port1 - 1];
-> -		if (peer && peer->location == port_dev->location) {
-> +		if (peer && peer->connect_type != USB_PORT_NOT_USED &&
-> +		    peer->location == port_dev->location) {
->   			link_peers_report(port_dev, peer);
->   			return 1; /* done */
->   		}
+> [...]
 
+Applied, thanks!
 
-Thank you again and kind regards,
+[1/1] ext4: fix corruption during on-line resize
+      commit: 3a944549dd26ccaf1f898a4be952e75a42bf37dd
 
-Paul
-
-
-[1]: https://wiki.ubuntu.com/FirmwareTestSuite/
-[2]: 
-https://lore.kernel.org/linux-usb/5406d361-f5b7-4309-b0e6-8c94408f7d75@molgen.mpg.de/
+Best regards,
+-- 
+Theodore Ts'o <tytso@mit.edu>
 
