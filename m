@@ -1,126 +1,158 @@
-Return-Path: <stable+bounces-23298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9F8085F2A5
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 09:19:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D126685F2DE
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 09:27:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8194B211DD
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 08:19:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0BF1B22653
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 08:27:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 154A01803A;
-	Thu, 22 Feb 2024 08:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23AEC1BDC2;
+	Thu, 22 Feb 2024 08:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bvDHYiSr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zd/79A7k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45D21B263;
-	Thu, 22 Feb 2024 08:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C88F11BC47;
+	Thu, 22 Feb 2024 08:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708589951; cv=none; b=YN3LevsLojFNlFARXIfCV5aNFuT3a+gST6zpc46xJL/IQqzkjpTvEpdluQe92hDWsfT3AQwhvPL/UmmHdDw8NwGCEo0EWN2DRnfn/RoWfb8LcNYykYAS+dtBXVoCc8mN2t6syb8QC1fL8wFUkWGJEN3FLThW5T0+OijhfcPAWtA=
+	t=1708590455; cv=none; b=SUV9wP+JbxrVg7r8xbWxI4nHJaxD5ClGz221RKlWPuFCUjM14LAbisNP5ZGvSVPFn9oUpNBi2MWv3DS4Nwb5Dx+mlY18oXKaR32DmhPl8NifjPKLPJNmFgvRhAZX1Xm4utSTGI2LHGIgtkoazO9Z6YHdgR6Ujk5BbU0/NmNubjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708589951; c=relaxed/simple;
-	bh=vS7S3JhxkbwRX4DFeskeDy6mHgoSepoNa465jqU9o/s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V05T4Mrl/syr7ythSiXMHJmsYoGSr5Jc+VKu02SvpKpdjs4jN+tyYMa20usOYMcdp8iD8SWwdprtJkRffO0SIaOa1mlQECREiolPDElhW3MG5yPkSTHc2B9d3qdL88JJ1FOtjfqcBuDUqvqJrtlF+uhJQCVbmQTuVQDOmtA7b20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bvDHYiSr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5416BC43394;
-	Thu, 22 Feb 2024 08:19:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708589951;
-	bh=vS7S3JhxkbwRX4DFeskeDy6mHgoSepoNa465jqU9o/s=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=bvDHYiSr7olryX4OEgArbxtV/4R7EOQQuVZBgCQZ5FGKaKZfZlnoHN6/tS4kTmFtD
-	 R7V/vSUKQnDxfZntEJt4NLAti4bGLnrYbMClQbEnAgV2JmvgIDEOAe2dK65dElFa3H
-	 pradVYpu6RUlIBmfKSodaW7erWbP1hAM47HfGOzhCGR8/nmvxgBKK92QlTmqg49U5a
-	 nUEDgwQ/O+jX1VPTZx8Pm3JtLduYhdDa6pESDHWZCVGJBC0QJ8ivPGgnhJL9w1OXRm
-	 gNtnbbslL3D/IKGglohwj++r8KtUME24sCyly8IEQepdTz5dnm+F7ftczTBwhDwQIe
-	 gnGAKDHir0wbg==
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-512a65cd2c7so6103393e87.0;
-        Thu, 22 Feb 2024 00:19:11 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUjoGJ/bFB/x2+Ox/0IkQCbt0Uh4hsV/GKRhliiX4oTZ4IS0pHgzYBGlha9JmAWNHaxZopiKQbO4toXm3Hi/G7nmICwKdWgTVKnctD/ltOE7cmjgBagPvay//W3WdyHCrpy0kl3
-X-Gm-Message-State: AOJu0YxiyipgSuNjpTzhIAyJOGYUWX0DMhi5LBdIFG82L12u1bHWgOXp
-	Niy9PC7xHZlNSMbUkqgwjScfJQPWocszIL7l3TUaqeQeu8fG9ZLAXliRqrVEr9qdxTijdoKhWzM
-	XLDuNOZGd0p9rAketEYKAtUmTrDM=
-X-Google-Smtp-Source: AGHT+IHV5gOtaICNnyDxbMw5c6d9fdwZQsZW+AoMdXSTbSE+z6mmRgO6x1FRbA2RnlVtZ8grhv+KcXVkf9HjRS25WGE=
-X-Received: by 2002:ac2:544c:0:b0:511:9e5a:922d with SMTP id
- d12-20020ac2544c000000b005119e5a922dmr12986471lfn.14.1708589949519; Thu, 22
- Feb 2024 00:19:09 -0800 (PST)
+	s=arc-20240116; t=1708590455; c=relaxed/simple;
+	bh=p3VlxVj/5wDXjcpnhxerm7Qtm3/1EiqMF+SiT1FG7LM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=murW9/+U5i/I8U0fQLiqAwDjCsaRJ7m9Wtd3teDlhZWgM+kOEWodO2WgX2RYcxjy4TT8Cqiof2ptDl/8JyWgoPcCieCqz/Fl8mmBrjJKNZ1UCuXdEQkBm0KjjpZIG1/LGrNpgvu+OzB6XUepbQI/6RgkUVfOxAuUbFKLv2joH4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zd/79A7k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A516CC433F1;
+	Thu, 22 Feb 2024 08:27:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1708590455;
+	bh=p3VlxVj/5wDXjcpnhxerm7Qtm3/1EiqMF+SiT1FG7LM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=zd/79A7klRgyePIIDwFq15NRBqyM0vOTM6jk0rSa2WyXqOV/A3aFGtPNqlMRSeLwP
+	 c63/iiNRKizMkev3s/kxUljYmnHsB/84O2zN8HyX5hH+LH2AGO55cst5mvpzfFr/lP
+	 m5qIUc3FU91dkoCbrl9vOM6pywju4cGaACy2vi2o=
+Date: Thu, 22 Feb 2024 09:27:31 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Fangrui Song <maskray@google.com>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Kees Cook <keescook@chromium.org>,
+	Justin Stitt <justinstitt@google.com>
+Subject: Re: [PATCH 5.15 380/476] kbuild: Fix changing ELF file type for
+ output of gen_btf for big endian
+Message-ID: <2024022253-skewed-bobble-1d5c@gregkh>
+References: <20240221130007.738356493@linuxfoundation.org>
+ <20240221130022.096353982@linuxfoundation.org>
+ <20240221165424.GC1782141@dev-arch.thelio-3990X>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240217161151.3987164-2-ardb+git@google.com> <20240222063433.GA37580@sol.localdomain>
-In-Reply-To: <20240222063433.GA37580@sol.localdomain>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Thu, 22 Feb 2024 09:18:56 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXG1aFudSnFWzcJrG8DOeErDTSZ5EWpS60fxaU3c=ZTKAA@mail.gmail.com>
-Message-ID: <CAMj1kXG1aFudSnFWzcJrG8DOeErDTSZ5EWpS60fxaU3c=ZTKAA@mail.gmail.com>
-Subject: Re: [PATCH] crypto: arm64/neonbs - fix out-of-bounds access on short input
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: Ard Biesheuvel <ardb+git@google.com>, linux-crypto@vger.kernel.org, 
-	herbert@gondor.apana.org.au, stable@vger.kernel.org, 
-	syzbot+f1ceaa1a09ab891e1934@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240221165424.GC1782141@dev-arch.thelio-3990X>
 
-On Thu, 22 Feb 2024 at 07:34, Eric Biggers <ebiggers@kernel.org> wrote:
->
-> On Sat, Feb 17, 2024 at 05:11:52PM +0100, Ard Biesheuvel wrote:
-> > From: Ard Biesheuvel <ardb@kernel.org>
-> >
-> > The bit-sliced implementation of AES-CTR operates on blocks of 128
-> > bytes, and will fall back to the plain NEON version for tail blocks or
-> > inputs that are shorter than 128 bytes to begin with.
-> >
-> > It will call straight into the plain NEON asm helper, which performs all
-> > memory accesses in granules of 16 bytes (the size of a NEON register).
-> > For this reason, the associated plain NEON glue code will copy inputs
-> > shorter than 16 bytes into a temporary buffer, given that this is a rare
-> > occurrence and it is not worth the effort to work around this in the asm
-> > code.
-> >
-> > The fallback from the bit-sliced NEON version fails to take this into
-> > account, potentially resulting in out-of-bounds accesses. So clone the
-> > same workaround, and use a temp buffer for short in/outputs.
-> >
-> > Cc: <stable@vger.kernel.org>
-> > Reported-by: syzbot+f1ceaa1a09ab891e1934@syzkaller.appspotmail.com
-> > Tested-by: syzbot+f1ceaa1a09ab891e1934@syzkaller.appspotmail.com
-> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
->
-> Looks like this could use:
->
-> Fixes: fc074e130051 ("crypto: arm64/aes-neonbs-ctr - fallback to plain NEON for final chunk")
->
+On Wed, Feb 21, 2024 at 09:54:24AM -0700, Nathan Chancellor wrote:
+> Hi Greg,
+> 
+> On Wed, Feb 21, 2024 at 02:07:11PM +0100, Greg Kroah-Hartman wrote:
+> > 5.15-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: Nathan Chancellor <nathan@kernel.org>
+> > 
+> > commit e3a9ee963ad8ba677ca925149812c5932b49af69 upstream.
+> > 
+> > Commit 90ceddcb4950 ("bpf: Support llvm-objcopy for vmlinux BTF")
+> > changed the ELF type of .btf.vmlinux.bin.o to ET_REL via dd, which works
+> > fine for little endian platforms:
+> > 
+> >    00000000  7f 45 4c 46 02 01 01 00  00 00 00 00 00 00 00 00  |.ELF............|
+> >   -00000010  03 00 b7 00 01 00 00 00  00 00 00 80 00 80 ff ff  |................|
+> >   +00000010  01 00 b7 00 01 00 00 00  00 00 00 80 00 80 ff ff  |................|
+> > 
+> > However, for big endian platforms, it changes the wrong byte, resulting
+> > in an invalid ELF file type, which ld.lld rejects:
+> > 
+> >    00000000  7f 45 4c 46 02 02 01 00  00 00 00 00 00 00 00 00  |.ELF............|
+> >   -00000010  00 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
+> >   +00000010  01 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
+> > 
+> >   Type:                              <unknown>: 103
+> > 
+> >   ld.lld: error: .btf.vmlinux.bin.o: unknown file type
+> > 
+> > Fix this by updating the entire 16-bit e_type field rather than just a
+> > single byte, so that everything works correctly for all platforms and
+> > linkers.
+> > 
+> >    00000000  7f 45 4c 46 02 02 01 00  00 00 00 00 00 00 00 00  |.ELF............|
+> >   -00000010  00 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
+> >   +00000010  00 01 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
+> > 
+> >   Type:                              REL (Relocatable file)
+> > 
+> > While in the area, update the comment to mention that binutils 2.35+
+> > matches LLD's behavior of rejecting an ET_EXEC input, which occurred
+> > after the comment was added.
+> > 
+> > Cc: stable@vger.kernel.org
+> > Fixes: 90ceddcb4950 ("bpf: Support llvm-objcopy for vmlinux BTF")
+> > Link: https://github.com/llvm/llvm-project/pull/75643
+> > Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
+> > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> > Reviewed-by: Fangrui Song <maskray@google.com>
+> > Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
+> > Reviewed-by: Kees Cook <keescook@chromium.org>
+> > Reviewed-by: Justin Stitt <justinstitt@google.com>
+> > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > ---
+> >  scripts/link-vmlinux.sh |    9 +++++++--
+> >  1 file changed, 7 insertions(+), 2 deletions(-)
+> > 
+> > --- a/scripts/link-vmlinux.sh
+> > +++ b/scripts/link-vmlinux.sh
+> > @@ -236,8 +236,13 @@ gen_btf()
+> >  	${OBJCOPY} --only-section=.BTF --set-section-flags .BTF=alloc,readonly \
+> >  		--strip-all ${1} ${2} 2>/dev/null
+> >  	# Change e_type to ET_REL so that it can be used to link final vmlinux.
+> > -	# Unlike GNU ld, lld does not allow an ET_EXEC input.
+> > -	printf '\1' | dd of=${2} conv=notrunc bs=1 seek=16 status=none
+> > +	# GNU ld 2.35+ and lld do not allow an ET_EXEC input.
+> > +	if is_enabled CONFIG_CPU_BIG_ENDIAN; then
+> 
+> You may have missed my mail on the email saying this had been applied (I
+> didn't cc a lore list so no link):
 
-Indeed.
+Ick, I did get it but it got lost in the shuffle, my fault.
 
-> > +                     if (unlikely(nbytes < AES_BLOCK_SIZE))
-> > +                             src = dst = memcpy(buf + sizeof(buf) - nbytes,
-> > +                                                src, nbytes);
-> > +
-> >                       neon_aes_ctr_encrypt(dst, src, ctx->enc, ctx->key.rounds,
-> >                                            nbytes, walk.iv);
-> > +
-> > +                     if (unlikely(nbytes < AES_BLOCK_SIZE))
-> > +                             memcpy(d, buf + sizeof(buf) - nbytes, nbytes);
->
-> The second one could use 'dst' instead of 'buf + sizeof(buf) - nbytes', right?
->
+> I do not think this backport is correct for trees that do not have
+> commit 7d153696e5db ("kbuild: do not include include/config/auto.conf
+> from shell scripts"), even if it applies cleanly, as is_enabled() is not
+> available.
+> 
+> I think this diff should be squashed in to the patch for 5.15 and
+> earlier, you can add
+> 
+>   [nathan: Fix silent conflict due to lack of 7d153696e5db in older trees]
+>   Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> 
+> to the resulting patch if you would like.
 
-Correct.
+I'll go add that now, thanks for catching this!
 
-> Otherwise this looks good.
->
-> Reviewed-by: Eric Biggers <ebiggers@google.com>
->
-
-I'll respin with these changes. Thanks.
+greg k-h
 
