@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-23423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9CD8860713
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 00:39:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C826E860716
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 00:40:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E9141F23C73
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 23:39:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 052CA1C21226
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 23:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7CF7137906;
-	Thu, 22 Feb 2024 23:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3392F140399;
+	Thu, 22 Feb 2024 23:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ItWMVVKO"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Sc1CtNuT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B4D17BBA;
-	Thu, 22 Feb 2024 23:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E549D13BAFD;
+	Thu, 22 Feb 2024 23:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708645166; cv=none; b=mexrVnv1NLzkVzPzZk2QiAqHWVvI/qGNdNFhTavFSkfm95TRbplf7v3l7OYYT7CDP08i7dNzNDUC3S9A/seazcTaGZrFfwf4Lcop54AR7Yt5hk2TypSuhwj0Xylm5WZTthM8seH+SyYyz2jkbxuX5Z6mE5cMaSO0TGkccjXRGwM=
+	t=1708645220; cv=none; b=KRbpMXmetp6ITmaK6JOCgPKlyd6TR/2cIdBpY/kCyrjgF0UU4ymlKrfIDcCHfNuapw9p2ioAqcPVU/dV9dqLKN+AL6Vf6o3t/CgxDO9CnVaAMU1j4lJ07jZFwRuONMGhbDzhmVUT5YzmM6mkl1SDDPxyWg744xhulkq+ZnGv45o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708645166; c=relaxed/simple;
-	bh=7Zz9N2qREAhZwfH7evuuc/XT4gBx9hbfdzNuiYDkEA0=;
-	h=Date:To:From:Subject:Message-Id; b=VmnYA+L9mmMof43SMoclhnafREeDhDPGGL3JT2EriS11Psz9I+ij7+EvZK3P3HgIwCdm7IfyAkYcVPA4Hzt+eV2VYK5hpdHV1MmI4yXn1ebowyTMM5i/ZJpiTL/CzA81kTRJ+j168G9ucJ6rXCfh8klkT4RWvDT5Z/enFjRHZOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ItWMVVKO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF575C433F1;
-	Thu, 22 Feb 2024 23:39:25 +0000 (UTC)
+	s=arc-20240116; t=1708645220; c=relaxed/simple;
+	bh=npZGDo35/7mN8tFn53WkdHOnHt8Tyf/3fzVC4oTjv3Q=;
+	h=Date:To:From:Subject:Message-Id; b=nNBpVwTymrtw7/Vqh+6PRijvW5QMum+uCTJag6Y/i05MlaFebVVcuwi8AiEwGFzmC0sYJEo92xBFNxqTMGYYdrLu9MCYJg+IqOUfD+EXvNMXW+B7Y1zFK1TwmHpTtQot5FE7kB8N0OBKAiP7LCtgkQmsyLPFUCn611msXBdwcg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Sc1CtNuT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79533C433C7;
+	Thu, 22 Feb 2024 23:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1708645166;
-	bh=7Zz9N2qREAhZwfH7evuuc/XT4gBx9hbfdzNuiYDkEA0=;
+	s=korg; t=1708645219;
+	bh=npZGDo35/7mN8tFn53WkdHOnHt8Tyf/3fzVC4oTjv3Q=;
 	h=Date:To:From:Subject:From;
-	b=ItWMVVKOVit+9SnGpHLCewpuKWf/LjA1H09pBoLorMKZfNqicV3+deELn3dILvpfq
-	 C/8eo431o3QPg1SNbZWX9rLq7CPFmL4N84hXzYpC6LRKwChL409HavMJkdZjV41MAC
-	 sSdyudk1fn4QD6CzbewzNhm20zZx8NRoVYmG4UIA=
-Date: Thu, 22 Feb 2024 15:39:25 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,riel@surriel.com,peterz@infradead.org,mingo@kernel.org,mgorman@techsingularity.net,willy@infradead.org,akpm@linux-foundation.org
+	b=Sc1CtNuTXD38tjMP5kBU0nWqr5sky/c0CR9f6dP676MAqDleT0Jx1PKQWbi6VsU+o
+	 eQm1/0j3Wq1OBK923MTTpYhothMhkKnlAe5lt8+oDNNams8GERp5w80C0wRxFvbipe
+	 GTLJyUNG7LthziThpplUAy2alFWlgdcvyAN6o1Xw=
+Date: Thu, 22 Feb 2024 15:40:18 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,hirofumi@mail.parknet.co.jp,amir73il@gmail.com,jack@suse.cz,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] bounds-support-non-power-of-two-config_nr_cpus.patch removed from -mm tree
-Message-Id: <20240222233925.DF575C433F1@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] fat-fix-uninitialized-field-in-nostale-filehandles.patch removed from -mm tree
+Message-Id: <20240222234019.79533C433C7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,61 +50,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: bounds: support non-power-of-two CONFIG_NR_CPUS
+     Subject: fat: fix uninitialized field in nostale filehandles
 has been removed from the -mm tree.  Its filename was
-     bounds-support-non-power-of-two-config_nr_cpus.patch
+     fat-fix-uninitialized-field-in-nostale-filehandles.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: bounds: support non-power-of-two CONFIG_NR_CPUS
-Date: Tue, 10 Oct 2023 15:55:49 +0100
+From: Jan Kara <jack@suse.cz>
+Subject: fat: fix uninitialized field in nostale filehandles
+Date: Mon, 5 Feb 2024 13:26:26 +0100
 
-ilog2() rounds down, so for example when PowerPC 85xx sets CONFIG_NR_CPUS
-to 24, we will only allocate 4 bits to store the number of CPUs instead of
-5.  Use bits_per() instead, which rounds up.  Found by code inspection. 
-The effect of this would probably be a misaccounting when doing NUMA
-balancing, so to a user, it would only be a performance penalty.  The
-effects may be more wide-spread; it's hard to tell.
+When fat_encode_fh_nostale() encodes file handle without a parent it
+stores only first 10 bytes of the file handle. However the length of the
+file handle must be a multiple of 4 so the file handle is actually 12
+bytes long and the last two bytes remain uninitialized. This is not
+great at we potentially leak uninitialized information with the handle
+to userspace. Properly initialize the full handle length.
 
-Link: https://lkml.kernel.org/r/20231010145549.1244748-1-willy@infradead.org
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Fixes: 90572890d202 ("mm: numa: Change page last {nid,pid} into {cpu,pid}")
-Reviewed-by: Rik van Riel <riel@surriel.com>
-Acked-by: Mel Gorman <mgorman@techsingularity.net>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@kernel.org>
+Link: https://lkml.kernel.org/r/20240205122626.13701-1-jack@suse.cz
+Reported-by: syzbot+3ce5dea5b1539ff36769@syzkaller.appspotmail.com
+Fixes: ea3983ace6b7 ("fat: restructure export_operations")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Acked-by: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
+Cc: Amir Goldstein <amir73il@gmail.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- kernel/bounds.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/fat/nfs.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/kernel/bounds.c~bounds-support-non-power-of-two-config_nr_cpus
-+++ a/kernel/bounds.c
-@@ -19,7 +19,7 @@ int main(void)
- 	DEFINE(NR_PAGEFLAGS, __NR_PAGEFLAGS);
- 	DEFINE(MAX_NR_ZONES, __MAX_NR_ZONES);
- #ifdef CONFIG_SMP
--	DEFINE(NR_CPUS_BITS, ilog2(CONFIG_NR_CPUS));
-+	DEFINE(NR_CPUS_BITS, bits_per(CONFIG_NR_CPUS));
- #endif
- 	DEFINE(SPINLOCK_SIZE, sizeof(spinlock_t));
- #ifdef CONFIG_LRU_GEN
+--- a/fs/fat/nfs.c~fat-fix-uninitialized-field-in-nostale-filehandles
++++ a/fs/fat/nfs.c
+@@ -130,6 +130,12 @@ fat_encode_fh_nostale(struct inode *inod
+ 		fid->parent_i_gen = parent->i_generation;
+ 		type = FILEID_FAT_WITH_PARENT;
+ 		*lenp = FAT_FID_SIZE_WITH_PARENT;
++	} else {
++		/*
++		 * We need to initialize this field because the fh is actually
++		 * 12 bytes long
++		 */
++		fid->parent_i_pos_hi = 0;
+ 	}
+ 
+ 	return type;
 _
 
-Patches currently in -mm which might be from willy@infradead.org are
+Patches currently in -mm which might be from jack@suse.cz are
 
-writeback-remove-a-duplicate-prototype-for-tag_pages_for_writeback.patch
-writeback-factor-folio_prepare_writeback-out-of-write_cache_pages.patch
-writeback-factor-writeback_get_batch-out-of-write_cache_pages.patch
-writeback-simplify-the-loops-in-write_cache_pages.patch
-pagevec-add-ability-to-iterate-a-queue.patch
-writeback-use-the-folio_batch-queue-iterator.patch
-writeback-move-the-folio_prepare_writeback-loop-out-of-write_cache_pages.patch
-writeback-remove-a-use-of-write_cache_pages-from-do_writepages.patch
+shmem-properly-report-quota-mount-options.patch
 
 
