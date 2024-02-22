@@ -1,325 +1,113 @@
-Return-Path: <stable+bounces-23265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F4BF85ED7F
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 01:03:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0B7F85ED83
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 01:04:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9607F1C22AF9
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 00:03:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CCC2284733
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 00:04:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FB6134C9;
-	Thu, 22 Feb 2024 00:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B8E12B7F;
+	Thu, 22 Feb 2024 00:03:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Lk00iwCh"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE4813AEA
-	for <stable@vger.kernel.org>; Thu, 22 Feb 2024 00:03:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5164811C8B;
+	Thu, 22 Feb 2024 00:03:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708560190; cv=none; b=iLLlDvqLMcgaCU2HbOKqdIDJH64400QyrmlxaOQbbYlE+Eky6SJSioCDOQwBTprBhSvxkwEaRnYAZM1SaIRIvlAo2/5sVJ8LkyM3E27GGuqRJlh0y1x6dqSgF+550y3Ku8vyU0S+ToOU3xabkudXUviD2V4W0TJF+HhJ1LDVJXk=
+	t=1708560217; cv=none; b=c/H7bIbhzUSgjH52qQq6WjxAYb6xxpwnCQjuSoiDJjpgHjK4txi3gny/FM/p8kfYo00HKw0FPnwh4QGmynKYUMPsvbU9Ji6QR8ZHrXDZb49z01RUXZWhQArFqBR6hMHWHCeaP0C/jm0fgM/NDXENJG1GJBkQxmJ8JqvG6b+YH38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708560190; c=relaxed/simple;
-	bh=CRm2/J2tmxJvfyj/dvWAkWX3iQ5AB5xxi9YWHB4X8ws=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MI0brkpJ2kU7C2miZ8LJYLhYRpBLMkgx3P9gVknUgCyzzo0RwvM+2OudKQgtJkhmncj0Kks2vXRTPpOnPBIcV09IK1r2Lcc0JwOSlZLG7gUI8xoh+9P+ELU8l0x4Eig7FTt8s2u8w62mKCp41maJWWbDyBJey0DfUxG3cq/v+bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mgr@pengutronix.de>)
-	id 1rcwYA-0004FG-J6; Thu, 22 Feb 2024 01:02:54 +0100
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mgr@pengutronix.de>)
-	id 1rcwY8-0027zR-Sz; Thu, 22 Feb 2024 01:02:52 +0100
-Received: from mgr by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mgr@pengutronix.de>)
-	id 1rcwY8-001QME-2N;
-	Thu, 22 Feb 2024 01:02:52 +0100
-Date: Thu, 22 Feb 2024 01:02:52 +0100
-From: Michael Grzeschik <mgr@pengutronix.de>
-To: Dan Vacura <w36195@motorola.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Cc: linux-usb@vger.kernel.org, Daniel Scally <dan.scally@ideasonboard.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Jeff Vanhoof <qjv001@motorola.com>, stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Felipe Balbi <balbi@kernel.org>,
-	Paul Elder <paul.elder@ideasonboard.com>,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v3 2/6] usb: dwc3: gadget: cancel requests instead of
- release after missed isoc
-Message-ID: <ZdaPLGTbsBo4F4pK@pengutronix.de>
-References: <20221017205446.523796-1-w36195@motorola.com>
- <20221017205446.523796-3-w36195@motorola.com>
+	s=arc-20240116; t=1708560217; c=relaxed/simple;
+	bh=NCLBDF1aWq1vjCKSbdviULZqVSrZVvXw0hGMSa3udjg=;
+	h=Date:To:From:Subject:Message-Id; b=W5cVvkxgMjJ9jkIzATdpUNmiTeSRQ4vS4JWMzV1j8f3pqIC1RwrkBzdAregE5Kb+xaeIDxqDNk05Fwx8H9GaPuBxmeGPEwOh6oFYni0N+JmKYq7FSFTHx4xC4yLYeyUr6eVOIbaQeR3Ut07qzwsXa5WxX1rnq/wXnSg9iOTd/gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Lk00iwCh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 262BDC433F1;
+	Thu, 22 Feb 2024 00:03:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1708560217;
+	bh=NCLBDF1aWq1vjCKSbdviULZqVSrZVvXw0hGMSa3udjg=;
+	h=Date:To:From:Subject:From;
+	b=Lk00iwChkZ8YaU7AmUhrMZlpILEYgKqX+GRIYZrn8pzovqN8jr9y6cSPL6+tDeP+c
+	 rSc3ElxRX0eF5LneXOUD2M+SP1cI67RypiMiJ5B9DF7L5xNMmkEdUhjEg3NoTSn95J
+	 9XGpMFV1sUbaXgeA6XShnxewJJWBqACwYGC6D7XE=
+Date: Wed, 21 Feb 2024 16:03:36 -0800
+To: mm-commits@vger.kernel.org,vincenzo.frascino@arm.com,stable@vger.kernel.org,ryabinin.a.a@gmail.com,glider@google.com,elver@google.com,dvyukov@google.com,andreyknvl@gmail.com,arnd@arndb.de,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-stable] kasan-test-avoid-gcc-warning-for-intentional-overflow.patch removed from -mm tree
+Message-Id: <20240222000337.262BDC433F1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="7167IsNR9GtUxaC9"
-Content-Disposition: inline
-In-Reply-To: <20221017205446.523796-3-w36195@motorola.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mgr@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
 
 
---7167IsNR9GtUxaC9
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The quilt patch titled
+     Subject: kasan/test: avoid gcc warning for intentional overflow
+has been removed from the -mm tree.  Its filename was
+     kasan-test-avoid-gcc-warning-for-intentional-overflow.patch
 
-Sorry for digging up this grave! :)
+This patch was dropped because it was merged into the mm-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-I once more came accross the whole situation we are still encountering
-since one year or so again and found the some reasons why:
+------------------------------------------------------
+From: Arnd Bergmann <arnd@arndb.de>
+Subject: kasan/test: avoid gcc warning for intentional overflow
+Date: Mon, 12 Feb 2024 12:15:52 +0100
 
-#1 there are so many latencies, so that the system is not fast enough to
-enqueue requests back into an running HW-Transfer. At least on our
-system setup.
+The out-of-bounds test allocates an object that is three bytes too short
+in order to validate the bounds checking.  Starting with gcc-14, this
+causes a compile-time warning as gcc has grown smart enough to understand
+the sizeof() logic:
 
-and
+mm/kasan/kasan_test.c: In function 'kmalloc_oob_16':
+mm/kasan/kasan_test.c:443:14: error: allocation of insufficient size '13' for type 'struct <anonymous>' with size '16' [-Werror=alloc-size]
+  443 |         ptr1 = kmalloc(sizeof(*ptr1) - 3, GFP_KERNEL);
+      |              ^
 
-#2 there are so many missed transfers leading to broken frames
-when adding request with no_interrupt set.
+Hide the actual computation behind a RELOC_HIDE() that ensures
+the compiler misses the intentional bug.
 
-For #1: There sometimes are situations in the system where the threaded
-interrupt handler for the dwc3 is not called fast enough, although the
-HW-irq was called early and enqueued the irq event and woke the irq
-thread early. In our case this often happens, when there are other tasks
-involved on the same CPU and the scheduler is not able to pipeline the
-irq thread in the necessary time. In our case the main issue is an
-HW-irq handler of the ethernet controller (cadence macb) that runs
-berserk on CPU0 and therefor is taking a lot of CPU time. Per default on
-our system all irq handlers are running on the same CPU. As per
-definition all interrupt threads will be started on the same CPU as the
-irq was called, this forces a lot of pressure on one Core. So changing
-the smp_affinity of the dwc3 irq to the second CPU only, already solves
-a lot of the underruns.
+Link: https://lkml.kernel.org/r/20240212111609.869266-1-arnd@kernel.org
+Fixes: 3f15801cdc23 ("lib: add kasan test module")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Marco Elver <elver@google.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
 
-For #2: I found an issue in the handling of the completion of requests in
-the started list. When the interrupt handler is *explicitly* calling
-stop_active_transfer if the overall event of the request was an missed
-event. This event value only represents the value of the request that
-was actually triggering the interrupt.
+ mm/kasan/kasan_test.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-It also calls ep_cleanup_completed_requests and is iterating over the
-started requests and will call giveback/complete functions of the
-requests with the proper request status.
+--- a/mm/kasan/kasan_test.c~kasan-test-avoid-gcc-warning-for-intentional-overflow
++++ a/mm/kasan/kasan_test.c
+@@ -440,7 +440,8 @@ static void kmalloc_oob_16(struct kunit
+ 	/* This test is specifically crafted for the generic mode. */
+ 	KASAN_TEST_NEEDS_CONFIG_ON(test, CONFIG_KASAN_GENERIC);
+ 
+-	ptr1 = kmalloc(sizeof(*ptr1) - 3, GFP_KERNEL);
++	/* RELOC_HIDE to prevent gcc from warning about short alloc */
++	ptr1 = RELOC_HIDE(kmalloc(sizeof(*ptr1) - 3, GFP_KERNEL), 0);
+ 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ptr1);
+ 
+ 	ptr2 = kmalloc(sizeof(*ptr2), GFP_KERNEL);
+_
 
-So this will also catch missed requests in the queue. However, since
-there might be, lets say 5 good requests and one missed request, what
-will happen is, that each complete call for the first good requests will
-enqueue new requests into the started list and will also call the
-updatecmd on that transfer that was already missed until the loop will
-reach the one request with the MISSED status bit set.
+Patches currently in -mm which might be from arnd@arndb.de are
 
-So in my opinion the patch from Jeff makes sense when adding the
-following change aswell. With those both changes the underruns and
-broken frames finally disappear. I am still unsure about the complete
-solution about that, since with this the mentioned 5 good requests
-will be cancelled aswell. So this is still a WIP status here.
+mm-mmu_gather-add-tlb_remove_tlb_entries-fix.patch
 
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index e031813c5769b..b991d25bbf897 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -3509,6 +3509,45 @@ static int dwc3_gadget_ep_cleanup_completed_request(=
-struct dwc3_ep *dep,
-         return ret;
-  }
-
-+static int dwc3_gadget_ep_check_missed_requests(struct dwc3_ep *dep)
-+{
-+       struct dwc3_request     *req;
-+       struct dwc3_request     *tmp;
-+       int ret =3D 0;
-+
-+       list_for_each_entry_safe(req, tmp, &dep->started_list, list) {
-+               struct dwc3_trb *trb;
-+
-+               /* TOOD: check if the trb association is correct */
-+               trb =3D req->trb;
-+               switch (DWC3_TRB_SIZE_TRBSTS(trb->size)) {
-+               case DWC3_TRBSTS_MISSED_ISOC:
-+                       /* Isoc endpoint only */
-+                       ret =3D -EXDEV;
-+                       break;
-+               case DWC3_TRB_STS_XFER_IN_PROG:
-+                       /* Applicable when End Transfer with ForceRM=3D0 */
-+               case DWC3_TRBSTS_SETUP_PENDING:
-+                       /* Control endpoint only */
-+               case DWC3_TRBSTS_OK:
-+               default:
-+                       ret =3D 0;
-+                       break;
-+               }
-+       }
-+
-+       return ret;
-+}
-+
-  static void dwc3_gadget_ep_cleanup_completed_requests(struct dwc3_ep *dep,
-                 const struct dwc3_event_depevt *event, int status)
-  {
-@@ -3566,7 +3605,7 @@ static bool dwc3_gadget_endpoint_trbs_complete(struct=
- dwc3_ep *dep,
-         struct dwc3             *dwc =3D dep->dwc;
-         bool                    no_started_trb =3D true;
-
--       if (status =3D=3D -EXDEV) {
-+       if (status =3D=3D -EXDEV || dwc3_gadget_ep_check_missed_requests(de=
-p)) {
-                 struct dwc3_request *tmp;
-                 struct dwc3_request *req;
-
-
-On Mon, Oct 17, 2022 at 03:54:40PM -0500, Dan Vacura wrote:
->From: Jeff Vanhoof <qjv001@motorola.com>
->
->arm-smmu related crashes seen after a Missed ISOC interrupt when
->no_interrupt=3D1 is used. This can happen if the hardware is still using
->the data associated with a TRB after the usb_request's ->complete call
->has been made.  Instead of immediately releasing a request when a Missed
->ISOC interrupt has occurred, this change will add logic to cancel the
->request instead where it will eventually be released when the
->END_TRANSFER command has completed. This logic is similar to some of the
->cleanup done in dwc3_gadget_ep_dequeue.
->
->Fixes: 6d8a019614f3 ("usb: dwc3: gadget: check for Missed Isoc from event =
-status")
->Cc: <stable@vger.kernel.org>
->Signed-off-by: Jeff Vanhoof <qjv001@motorola.com>
->Co-developed-by: Dan Vacura <w36195@motorola.com>
->Signed-off-by: Dan Vacura <w36195@motorola.com>
->---
->V1 -> V3:
->- no change, new patch in series
->
-> drivers/usb/dwc3/core.h   |  1 +
-> drivers/usb/dwc3/gadget.c | 38 ++++++++++++++++++++++++++------------
-> 2 files changed, 27 insertions(+), 12 deletions(-)
->
->diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
->index 8f9959ba9fd4..9b005d912241 100644
->--- a/drivers/usb/dwc3/core.h
->+++ b/drivers/usb/dwc3/core.h
->@@ -943,6 +943,7 @@ struct dwc3_request {
-> #define DWC3_REQUEST_STATUS_DEQUEUED		3
-> #define DWC3_REQUEST_STATUS_STALLED		4
-> #define DWC3_REQUEST_STATUS_COMPLETED		5
->+#define DWC3_REQUEST_STATUS_MISSED_ISOC		6
-> #define DWC3_REQUEST_STATUS_UNKNOWN		-1
->
-> 	u8			epnum;
->diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
->index 079cd333632e..411532c5c378 100644
->--- a/drivers/usb/dwc3/gadget.c
->+++ b/drivers/usb/dwc3/gadget.c
->@@ -2021,6 +2021,9 @@ static void dwc3_gadget_ep_cleanup_cancelled_request=
-s(struct dwc3_ep *dep)
-> 		case DWC3_REQUEST_STATUS_STALLED:
-> 			dwc3_gadget_giveback(dep, req, -EPIPE);
-> 			break;
->+		case DWC3_REQUEST_STATUS_MISSED_ISOC:
->+			dwc3_gadget_giveback(dep, req, -EXDEV);
->+			break;
-> 		default:
-> 			dev_err(dwc->dev, "request cancelled with wrong reason:%d\n", req->sta=
-tus);
-> 			dwc3_gadget_giveback(dep, req, -ECONNRESET);
->@@ -3402,21 +3405,32 @@ static bool dwc3_gadget_endpoint_trbs_complete(str=
-uct dwc3_ep *dep,
-> 	struct dwc3		*dwc =3D dep->dwc;
-> 	bool			no_started_trb =3D true;
->
->-	dwc3_gadget_ep_cleanup_completed_requests(dep, event, status);
->+	if (status =3D=3D -EXDEV) {
->+		struct dwc3_request *tmp;
->+		struct dwc3_request *req;
->
->-	if (dep->flags & DWC3_EP_END_TRANSFER_PENDING)
->-		goto out;
->+		if (!(dep->flags & DWC3_EP_END_TRANSFER_PENDING))
->+			dwc3_stop_active_transfer(dep, true, true);
->
->-	if (!dep->endpoint.desc)
->-		return no_started_trb;
->+		list_for_each_entry_safe(req, tmp, &dep->started_list, list)
->+			dwc3_gadget_move_cancelled_request(req,
->+					DWC3_REQUEST_STATUS_MISSED_ISOC);
->+	} else {
->+		dwc3_gadget_ep_cleanup_completed_requests(dep, event, status);
->
->-	if (usb_endpoint_xfer_isoc(dep->endpoint.desc) &&
->-		list_empty(&dep->started_list) &&
->-		(list_empty(&dep->pending_list) || status =3D=3D -EXDEV))
->-		dwc3_stop_active_transfer(dep, true, true);
->-	else if (dwc3_gadget_ep_should_continue(dep))
->-		if (__dwc3_gadget_kick_transfer(dep) =3D=3D 0)
->-			no_started_trb =3D false;
->+		if (dep->flags & DWC3_EP_END_TRANSFER_PENDING)
->+			goto out;
->+
->+		if (!dep->endpoint.desc)
->+			return no_started_trb;
->+
->+		if (usb_endpoint_xfer_isoc(dep->endpoint.desc) &&
->+			list_empty(&dep->started_list) && list_empty(&dep->pending_list))
->+			dwc3_stop_active_transfer(dep, true, true);
->+		else if (dwc3_gadget_ep_should_continue(dep))
->+			if (__dwc3_gadget_kick_transfer(dep) =3D=3D 0)
->+				no_started_trb =3D false;
->+	}
->
-> out:
-> 	/*
->--=20
->2.34.1
->
-
---=20
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
---7167IsNR9GtUxaC9
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEElXvEUs6VPX6mDPT8C+njFXoeLGQFAmXWjykACgkQC+njFXoe
-LGRNBg/9Ggqr8dqyPbcVNqwQ76whL7PXxMgDlxYZVgyaH/muk5JSxnGVD4LzbNAn
-gq2kWbkWRV9qqlMICcniXSlDlumccR6PznVmC9SRcWm8sxY+3L8dAHGc1mJ6IyPy
-dgtbiBLitH0dRdBRN6Oo3cZoxE1zMkiKumaZDO7/U851glEgQ+/jgUPWTksbU7x0
-GNrvOHlK7S5IKnB25hcfYYtzsQOWobnyfEEBdgxkUd0tBfUjGNmHgP4tBVelbDAQ
-lKl8OBdazijiDs0JO1cW0Y2uQ8fUhVWi+b3SgUsTVj8eMMoz65xxEqHJla5x462t
-uNnRf2PDdjSGg5OloG6NmvvPin5NNAVKW9kCb6s6VDmun0XmpAG2e/rQdcwyAfpX
-62Uc7FzJxilMq1yT7RDI/sl82qYaLIvmLvgcDOGdqg4Ofl/pyj7Ck47Q71YMxwuQ
-bxiKZC+pzkifx6dw/MIKaA3JWj/0aMAGAToEPMEKxgAdyMlO0edIqNK9nvIx7wkr
-I74aaks+reY6CZxtv7wHHVuVH1leAtVL0xVtm5aq2deHx5ssJGQz+83AUYSwZPZY
-6dWZ7gUYM7v/0PpQeVLO10VJsnLZfHC40JWH7FQbTKyUbhA9zMdrH4dbQ2DtkGDV
-vHN8dgm5mDmUr5CrxybAK/OFAMrz/vSumAN8bKVmPkG/oVlPt5Q=
-=FhI4
------END PGP SIGNATURE-----
-
---7167IsNR9GtUxaC9--
 
