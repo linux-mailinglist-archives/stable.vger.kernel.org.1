@@ -1,91 +1,82 @@
-Return-Path: <stable+bounces-23370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB81885FEA0
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 18:06:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCAB285FEA2
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 18:06:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B1C81F289A9
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 17:06:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72BF1287A4D
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 17:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A31E21509A1;
-	Thu, 22 Feb 2024 17:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1565D153BC5;
+	Thu, 22 Feb 2024 17:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="H6ZYTuMV";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="tW35bk7l";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="H6ZYTuMV";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="tW35bk7l"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="GcGU39Nq";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="DJUn1we0";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="GcGU39Nq";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="DJUn1we0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09F1153BF8
-	for <stable@vger.kernel.org>; Thu, 22 Feb 2024 17:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348FC1468F2
+	for <stable@vger.kernel.org>; Thu, 22 Feb 2024 17:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708621558; cv=none; b=a0faMGqfrBAZPOWNvyT+Y2YtIQ7H/doW8PdyCXWNIIspzosph5WtIgJaL3+iBrwwHcRxK2n2o7HpIKXn7EH5T2H3Jb1bVlBT/lYy7rJ3N0QJEgQ1mov2jb1KGL4kQeCfDXTRCJAFC2mrrFSawhfFNmkBqfjeGO1A1bmdjfi/I64=
+	t=1708621563; cv=none; b=uJXhNWxuBLWlRahhgjnHj9HMnjOGUCzoYYWJpdMHxvZuQDfniCMmyAkZfdysSFFIbT0lmEgmJdiFdX0x4CRLnAgm6j3RYUiUEp4wm+wq/HDfJDuUDFlREGOJpZPK8t+7uwbQJ5HqWuDO452Ug8brOYSw4WTZU2e5wjchq+1jHSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708621558; c=relaxed/simple;
-	bh=QTxy8bL73qr00IetAgvkHZGXbMCN8U1ynqtqOT8s2MQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TjbbdOVtkoWoW5kxl6dcFjKz2EkRqaYvvFa+aT0draaPi4LynGOLzQ70ZYir02TEOopvfJAkdUKMQ01BBJcDv+0BD8ahX6gESS1GD6ZGjav2lSQMOgz5iUFeBrq52SRKt7r+LY7iaroMVeKTHc5PGZ86ce8gTMm2bOwPAFeUTTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=H6ZYTuMV; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=tW35bk7l; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=H6ZYTuMV; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=tW35bk7l; arc=none smtp.client-ip=195.135.223.131
+	s=arc-20240116; t=1708621563; c=relaxed/simple;
+	bh=WrQRtwGxgKv5JgTYTvpalhHa7C6QKQMVIManRM4mTCo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GQbW+3UmPIM2QbrZTAdAamwf/R7aB5eTRDX8Hcoka0Zy6XAGzHanhibbCvlpGp8KEycABUsseGxoViQ/W8Arb1T6vS9vx6IFy5WfUoenamHF6XZ5ypUO3mH53EJ8weThY5oOVDIFxiHI97IePpazlVXQdZHYCqf3c1rHPiF185k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=GcGU39Nq; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=DJUn1we0; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=GcGU39Nq; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=DJUn1we0; arc=none smtp.client-ip=195.135.223.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E453F1FB9A;
-	Thu, 22 Feb 2024 17:05:54 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 58C961F787;
+	Thu, 22 Feb 2024 17:06:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1708621554; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B6zfD6uMhBid5UXrPDvdB/lEEreebvQKH9FiN/dlPTA=;
-	b=H6ZYTuMVZmCDSImAiVcyq2SvoNPemVstTqLKbhz7TGnWX3/xRU0BHFHGiOzoBLul22DsRh
-	F9PD7E1Q7L438Cr0BJoNs+taFdzBg464O1reyXMHjHd4FRVnZlSNr4sgTspdVpELDB5bNp
-	06QkXbEBGPOM8nb3BRAASRJ94hRYnF0=
+	t=1708621560; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=l5vVovxyeD+nnWOv6O3fy/4kaar0qv/WkuYoRGgLvU0=;
+	b=GcGU39NqN+9M/+maVuMi8nHOdONXu30dw0j9FPtwdMHNMu/5tthEa9n6lXidGbpIS+W8RY
+	N5K6/4WOm3Pwf8nmyLMCKKtrpiqfI+8tGefsOKhVa8KkvBopH5Hxq/M2MrXaTF07LLwss4
+	e+ypF4qV7dxS2gqTKgZ1ycJwO+VNjVE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1708621554;
+	s=susede2_ed25519; t=1708621560;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B6zfD6uMhBid5UXrPDvdB/lEEreebvQKH9FiN/dlPTA=;
-	b=tW35bk7l9L447EME3mVGQZLgGuV5C6lm1SY4zZ/V8AhXPu0+233vaUwd1I1BHTLg+Gbt1E
-	LBDtQgsbvFwERNBA==
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=l5vVovxyeD+nnWOv6O3fy/4kaar0qv/WkuYoRGgLvU0=;
+	b=DJUn1we0MTJEd4BRlJAcG3TgERGLiAFkMXG8HuT4QJAgiHQhClYm00KGo0evMK7Sm57MDE
+	SnHncamr0XnGV2AA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1708621554; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B6zfD6uMhBid5UXrPDvdB/lEEreebvQKH9FiN/dlPTA=;
-	b=H6ZYTuMVZmCDSImAiVcyq2SvoNPemVstTqLKbhz7TGnWX3/xRU0BHFHGiOzoBLul22DsRh
-	F9PD7E1Q7L438Cr0BJoNs+taFdzBg464O1reyXMHjHd4FRVnZlSNr4sgTspdVpELDB5bNp
-	06QkXbEBGPOM8nb3BRAASRJ94hRYnF0=
+	t=1708621560; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=l5vVovxyeD+nnWOv6O3fy/4kaar0qv/WkuYoRGgLvU0=;
+	b=GcGU39NqN+9M/+maVuMi8nHOdONXu30dw0j9FPtwdMHNMu/5tthEa9n6lXidGbpIS+W8RY
+	N5K6/4WOm3Pwf8nmyLMCKKtrpiqfI+8tGefsOKhVa8KkvBopH5Hxq/M2MrXaTF07LLwss4
+	e+ypF4qV7dxS2gqTKgZ1ycJwO+VNjVE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1708621554;
+	s=susede2_ed25519; t=1708621560;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=B6zfD6uMhBid5UXrPDvdB/lEEreebvQKH9FiN/dlPTA=;
-	b=tW35bk7l9L447EME3mVGQZLgGuV5C6lm1SY4zZ/V8AhXPu0+233vaUwd1I1BHTLg+Gbt1E
-	LBDtQgsbvFwERNBA==
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=l5vVovxyeD+nnWOv6O3fy/4kaar0qv/WkuYoRGgLvU0=;
+	b=DJUn1we0MTJEd4BRlJAcG3TgERGLiAFkMXG8HuT4QJAgiHQhClYm00KGo0evMK7Sm57MDE
+	SnHncamr0XnGV2AA==
 Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 8BA5A13A71;
-	Thu, 22 Feb 2024 17:05:54 +0000 (UTC)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 4C6DF13419;
+	Thu, 22 Feb 2024 17:05:59 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
 	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id WGUEIPJ+12WGCAAAn2gu4w
-	(envelope-from <pvorel@suse.cz>); Thu, 22 Feb 2024 17:05:54 +0000
+	id KH6CC/d+12WJCAAAn2gu4w
+	(envelope-from <pvorel@suse.cz>); Thu, 22 Feb 2024 17:05:59 +0000
 From: Petr Vorel <pvorel@suse.cz>
 To: stable@vger.kernel.org
 Cc: Cyril Hrubis <chrubis@suse.cz>,
@@ -93,13 +84,12 @@ Cc: Cyril Hrubis <chrubis@suse.cz>,
 	Sasha Levin <sashal@kernel.org>,
 	Ingo Molnar <mingo@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>,
-	Petr Vorel <pvorel@suse.cz>
-Subject: [PATCH 5.15, 5.10 v2 3/3] sched/rt: Disallow writing invalid values to sched_rt_period_us
-Date: Thu, 22 Feb 2024 18:05:48 +0100
-Message-ID: <20240222170548.1375992-3-pvorel@suse.cz>
+	Petr Vorel <pvorel@suse.cz>,
+	Mel Gorman <mgorman@suse.de>
+Subject: [PATCH 5.4 v2 1/3] sched/rt: Fix sysctl_sched_rr_timeslice intial value
+Date: Thu, 22 Feb 2024 18:05:53 +0100
+Message-ID: <20240222170555.1376055-1-pvorel@suse.cz>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240222170548.1375992-1-pvorel@suse.cz>
-References: <20240222170548.1375992-1-pvorel@suse.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -107,13 +97,17 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Spam-Level: *
+X-Spamd-Bar: +
 Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Level: ***
-X-Spam-Score: 3.70
-X-Spamd-Result: default: False [3.70 / 50.00];
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=GcGU39Nq;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=DJUn1we0
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [1.99 / 50.00];
 	 ARC_NA(0.00)[];
 	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 RCVD_DKIM_ARC_DNSWL_HI(-1.00)[];
 	 FROM_HAS_DN(0.00)[];
 	 TO_DN_SOME(0.00)[];
 	 R_MISSING_CHARSET(2.50)[];
@@ -123,108 +117,90 @@ X-Spamd-Result: default: False [3.70 / 50.00];
 	 NEURAL_HAM_LONG(-1.00)[-1.000];
 	 RCVD_COUNT_THREE(0.00)[3];
 	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 NEURAL_HAM_SHORT(-0.20)[-0.992];
-	 RCPT_COUNT_SEVEN(0.00)[7];
+	 DKIM_TRACE(0.00)[suse.cz:+];
+	 MX_GOOD(-0.01)[];
+	 RCPT_COUNT_SEVEN(0.00)[8];
 	 MID_CONTAINS_FROM(1.00)[];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.cz:email,suse.de:email];
 	 FUZZY_BLOCKED(0.00)[rspamd.com];
 	 FROM_EQ_ENVFROM(0.00)[];
 	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[]
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 RCVD_IN_DNSWL_HI(-0.50)[2a07:de40:b281:104:10:150:64:98:from];
+	 RCVD_TLS_ALL(0.00)[];
+	 BAYES_HAM(-0.00)[15.98%]
+X-Spam-Score: 1.99
+X-Rspamd-Queue-Id: 58C961F787
 X-Spam-Flag: NO
 
 From: Cyril Hrubis <chrubis@suse.cz>
 
-[ Upstream commit 079be8fc630943d9fc70a97807feb73d169ee3fc ]
+[ Upstream commit c7fcb99877f9f542c918509b2801065adcaf46fa ]
 
-The validation of the value written to sched_rt_period_us was broken
-because:
+There is a 10% rounding error in the intial value of the
+sysctl_sched_rr_timeslice with CONFIG_HZ_300=y.
 
-  - the sysclt_sched_rt_period is declared as unsigned int
-  - parsed by proc_do_intvec()
-  - the range is asserted after the value parsed by proc_do_intvec()
+This was found with LTP test sched_rr_get_interval01:
 
-Because of this negative values written to the file were written into a
-unsigned integer that were later on interpreted as large positive
-integers which did passed the check:
+sched_rr_get_interval01.c:57: TPASS: sched_rr_get_interval() passed
+sched_rr_get_interval01.c:64: TPASS: Time quantum 0s 99999990ns
+sched_rr_get_interval01.c:72: TFAIL: /proc/sys/kernel/sched_rr_timeslice_ms != 100 got 90
+sched_rr_get_interval01.c:57: TPASS: sched_rr_get_interval() passed
+sched_rr_get_interval01.c:64: TPASS: Time quantum 0s 99999990ns
+sched_rr_get_interval01.c:72: TFAIL: /proc/sys/kernel/sched_rr_timeslice_ms != 100 got 90
 
-  if (sysclt_sched_rt_period <= 0)
-	return EINVAL;
+What this test does is to compare the return value from the
+sched_rr_get_interval() and the sched_rr_timeslice_ms sysctl file and
+fails if they do not match.
 
-This commit fixes the parsing by setting explicit range for both
-perid_us and runtime_us into the sched_rt_sysctls table and processes
-the values with proc_dointvec_minmax() instead.
+The problem it found is the intial sysctl file value which was computed as:
 
-Alternatively if we wanted to use full range of unsigned int for the
-period value we would have to split the proc_handler and use
-proc_douintvec() for it however even the
-Documentation/scheduller/sched-rt-group.rst describes the range as 1 to
-INT_MAX.
+static int sysctl_sched_rr_timeslice = (MSEC_PER_SEC / HZ) * RR_TIMESLICE;
 
-As far as I can tell the only problem this causes is that the sysctl
-file allows writing negative values which when read back may confuse
-userspace.
+which works fine as long as MSEC_PER_SEC is multiple of HZ, however it
+introduces 10% rounding error for CONFIG_HZ_300:
 
-There is also a LTP test being submitted for these sysctl files at:
+(MSEC_PER_SEC / HZ) * (100 * HZ / 1000)
 
-  http://patchwork.ozlabs.org/project/ltp/patch/20230901144433.2526-1-chrubis@suse.cz/
+(1000 / 300) * (100 * 300 / 1000)
 
+3 * 30 = 90
+
+This can be easily fixed by reversing the order of the multiplication
+and division. After this fix we get:
+
+(MSEC_PER_SEC * (100 * HZ / 1000)) / HZ
+
+(1000 * (100 * 300 / 1000)) / 300
+
+(1000 * 30) / 300 = 100
+
+Fixes: 975e155ed873 ("sched/rt: Show the 'sched_rr_timeslice' SCHED_RR timeslice tuning knob in milliseconds")
 Signed-off-by: Cyril Hrubis <chrubis@suse.cz>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20231002115553.3007-2-chrubis@suse.cz
-[ pvorel: rebased for 5.15, 5.10 ]
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Petr Vorel <pvorel@suse.cz>
+Acked-by: Mel Gorman <mgorman@suse.de>
+Tested-by: Petr Vorel <pvorel@suse.cz>
+Link: https://lore.kernel.org/r/20230802151906.25258-2-chrubis@suse.cz
+[ pvorel: rebased for 5.4 ]
 Signed-off-by: Petr Vorel <pvorel@suse.cz>
 ---
- kernel/sched/rt.c | 5 +----
- kernel/sysctl.c   | 4 ++++
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ kernel/sched/rt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
-index b05684202b20..5fc99dce5145 100644
+index 186e7d78ded5..e40f32e3ab06 100644
 --- a/kernel/sched/rt.c
 +++ b/kernel/sched/rt.c
-@@ -2806,9 +2806,6 @@ static int sched_rt_global_constraints(void)
+@@ -8,7 +8,7 @@
+ #include "pelt.h"
  
- static int sched_rt_global_validate(void)
- {
--	if (sysctl_sched_rt_period <= 0)
--		return -EINVAL;
--
- 	if ((sysctl_sched_rt_runtime != RUNTIME_INF) &&
- 		((sysctl_sched_rt_runtime > sysctl_sched_rt_period) ||
- 		 ((u64)sysctl_sched_rt_runtime *
-@@ -2839,7 +2836,7 @@ int sched_rt_handler(struct ctl_table *table, int write, void *buffer,
- 	old_period = sysctl_sched_rt_period;
- 	old_runtime = sysctl_sched_rt_runtime;
+ int sched_rr_timeslice = RR_TIMESLICE;
+-int sysctl_sched_rr_timeslice = (MSEC_PER_SEC / HZ) * RR_TIMESLICE;
++int sysctl_sched_rr_timeslice = (MSEC_PER_SEC * RR_TIMESLICE) / HZ;
+ /* More than 4 hours if BW_SHIFT equals 20. */
+ static const u64 max_rt_runtime = MAX_BW;
  
--	ret = proc_dointvec(table, write, buffer, lenp, ppos);
-+	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
- 
- 	if (!ret && write) {
- 		ret = sched_rt_global_validate();
-diff --git a/kernel/sysctl.c b/kernel/sysctl.c
-index 928798f89ca1..4554e80c4272 100644
---- a/kernel/sysctl.c
-+++ b/kernel/sysctl.c
-@@ -1821,6 +1821,8 @@ static struct ctl_table kern_table[] = {
- 		.maxlen		= sizeof(unsigned int),
- 		.mode		= 0644,
- 		.proc_handler	= sched_rt_handler,
-+		.extra1		= SYSCTL_ONE,
-+		.extra2		= SYSCTL_INT_MAX,
- 	},
- 	{
- 		.procname	= "sched_rt_runtime_us",
-@@ -1828,6 +1830,8 @@ static struct ctl_table kern_table[] = {
- 		.maxlen		= sizeof(int),
- 		.mode		= 0644,
- 		.proc_handler	= sched_rt_handler,
-+		.extra1		= SYSCTL_NEG_ONE,
-+		.extra2		= SYSCTL_INT_MAX,
- 	},
- 	{
- 		.procname	= "sched_deadline_period_max_us",
 -- 
 2.35.3
 
