@@ -1,93 +1,49 @@
-Return-Path: <stable+bounces-23404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EA0D8604A5
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 22:20:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BAE28604A9
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 22:21:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA6841F248EB
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 21:20:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01FF41F25111
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 21:21:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF4B973F13;
-	Thu, 22 Feb 2024 21:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3720F73F05;
+	Thu, 22 Feb 2024 21:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="nTH7S3Pa";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="klL58VXW";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="nTH7S3Pa";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="klL58VXW"
+	dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b="tb+GnFAx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx-out.tlen.pl (mx-out.tlen.pl [193.222.135.142])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E6914B832;
-	Thu, 22 Feb 2024 21:19:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8FCB73F02
+	for <stable@vger.kernel.org>; Thu, 22 Feb 2024 21:21:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.222.135.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708636796; cv=none; b=thjx5Drd4ZrlytC5DLcSBhsGnu7Ixzh9kLrlIKBPhWYW0GvHJW3ZDcKEXJV8wblrI8ov9rCbMoM43pVZYjbrehLsbarLlQr3ZzIevd5jco0CUb1MOlpKJnXj1Aw/6vll4Wwcugu+SjCgu/rcsqJWYZN95ohZfHQns+XXR+Va8lc=
+	t=1708636877; cv=none; b=hWcgWz5z/8IGvizdFL+dooWpHKh4Vcbm1O05FoJsnSNAu+h99ANu52mRchghCs0C0yke59v5JE1tjgDZzenWG1XycIwl+VXh6k/aBt6tJxa9v99pQb6O1yDcELu35wIQdxeA5/3ztykQRgo39b0BsfjFhOWjdb/gG6rKW3bdi0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708636796; c=relaxed/simple;
-	bh=a0WLqrpp2l3G1FiWSHQkOMJyuTQ+z8ar0GIz5jZCnIU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=hjwGq3R/Hxb8hT7XkOfDn/9mgElaj1L/4HmyMsN2mi0sKUapQSMHfKgna0vHVSvsEKKZJFMNuwaHI9NYmkhdow+t22bbSOJMi6M9f9rI6AaoUAukyBHEeaUb60hW33OXiKkiwQhMl/cBgdDBHdiN+htDh4/TK2LdPNG4v2GJ/wM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=nTH7S3Pa; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=klL58VXW; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=nTH7S3Pa; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=klL58VXW; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 9F4231FBB6;
-	Thu, 22 Feb 2024 21:19:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1708636792; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Nmwy2si2pJ2mNU0MlM/z5AaEWl08Athx/4vltay9xWM=;
-	b=nTH7S3PanwNm0vSUAJGfofhoWbap77NuQWPXpHbQ1p7+vVMIlw2H6L+4fv8xNbT/5bIVRP
-	/phzpnBch87802xFXGhA3UOKXzuh7SlC2vBUXS0vISLNPddWML0M4zO+Gz7M2RIoHO02DM
-	haUdYTIkowYrr+g/xV3yoByT2O9W+8M=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1708636792;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Nmwy2si2pJ2mNU0MlM/z5AaEWl08Athx/4vltay9xWM=;
-	b=klL58VXW0qULmuuzYQPKnVJUsqc30dJTQ/BQnFmCOK6IyMR2r2OHG7tTqCzhoo6DGh+Dxd
-	LyCGHxjDZeogT/Aw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1708636792; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Nmwy2si2pJ2mNU0MlM/z5AaEWl08Athx/4vltay9xWM=;
-	b=nTH7S3PanwNm0vSUAJGfofhoWbap77NuQWPXpHbQ1p7+vVMIlw2H6L+4fv8xNbT/5bIVRP
-	/phzpnBch87802xFXGhA3UOKXzuh7SlC2vBUXS0vISLNPddWML0M4zO+Gz7M2RIoHO02DM
-	haUdYTIkowYrr+g/xV3yoByT2O9W+8M=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1708636792;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Nmwy2si2pJ2mNU0MlM/z5AaEWl08Athx/4vltay9xWM=;
-	b=klL58VXW0qULmuuzYQPKnVJUsqc30dJTQ/BQnFmCOK6IyMR2r2OHG7tTqCzhoo6DGh+Dxd
-	LyCGHxjDZeogT/Aw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7A69513A8C;
-	Thu, 22 Feb 2024 21:19:52 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id GnyhHHi612WzKgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 22 Feb 2024 21:19:52 +0000
-Message-ID: <18565605-7f68-4950-b66f-496c1f3c393b@suse.cz>
-Date: Thu, 22 Feb 2024 22:19:52 +0100
+	s=arc-20240116; t=1708636877; c=relaxed/simple;
+	bh=f9r36LypinrXYotUrDaklORfX75uae8BlizUhegJRaw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PVh7j3Q+xtiMXF5eAW7VchS3ygHfgZlf9sY/uWFm55xr8qsvQsT315uO39HxFbBDczrIaiFmNmbtfz0uDklMGYU3FV1SSshNlw1croliimpmX+CnomvdtLz06D8ptofNMIW1JrZI5AjY7bx/cqE0tJqEoqyzbY5bnR/aqDb39+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl; spf=pass smtp.mailfrom=o2.pl; dkim=pass (1024-bit key) header.d=o2.pl header.i=@o2.pl header.b=tb+GnFAx; arc=none smtp.client-ip=193.222.135.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=o2.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=o2.pl
+Received: (wp-smtpd smtp.tlen.pl 26775 invoked from network); 22 Feb 2024 22:21:04 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=o2.pl; s=1024a;
+          t=1708636864; bh=mR5kNHrBS/OpvPKYvUbCAnYA7GvOo+BD11BPV54CqAw=;
+          h=Subject:To:Cc:From;
+          b=tb+GnFAxmbGh+Gn7QM0yfbKKJL0ZAStZwNTLkqYt7SShDU0X5BjuTxFeRluS9Kmcc
+           zWaubg/CHsiTP5863ow2FnDi6F2PnKz/xnojuYH+huUc4B8Yp+Zyq3vADgGAy88bLN
+           P6benzReS8y8R5RdrLCvAdU19JDXnmCz0Ridzj8w=
+Received: from aaet38.neoplus.adsl.tpnet.pl (HELO [192.168.1.22]) (mat.jonczyk@o2.pl@[83.4.123.38])
+          (envelope-sender <mat.jonczyk@o2.pl>)
+          by smtp.tlen.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <gregkh@linuxfoundation.org>; 22 Feb 2024 22:21:04 +0100
+Message-ID: <2d56ca31-f88c-4383-a43a-5c4781cd1eac@o2.pl>
+Date: Thu, 22 Feb 2024 22:21:04 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -95,106 +51,125 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm, mmap: fix vma_merge() case 7 with vma_ops->close
-To: "Liam R. Howlett" <Liam.Howlett@Oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Lorenzo Stoakes <lstoakes@gmail.com>,
- Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org
-References: <20240222165549.32753-2-vbabka@suse.cz>
- <20240222185642.rmnp76oquu5wfo6c@revolver>
- <20240222192746.cb65qvtmhaikfeko@revolver>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <20240222192746.cb65qvtmhaikfeko@revolver>
+Subject: Re: [PATCH 6.1 000/206] 6.1.79-rc2 review
+Content-Language: en-GB
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org
+References: <20240221130223.073542172@linuxfoundation.org>
+From: =?UTF-8?Q?Mateusz_Jo=C5=84czyk?= <mat.jonczyk@o2.pl>
+Autocrypt: addr=mat.jonczyk@o2.pl; keydata=
+ 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
+ TANkZ3QqXNX2
+In-Reply-To: <20240221130223.073542172@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Level: 
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nTH7S3Pa;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=klL58VXW
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-3.00 / 50.00];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 ARC_NA(0.00)[];
-	 R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 XM_UA_NO_VERSION(0.01)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 RCVD_DKIM_ARC_DNSWL_HI(-1.00)[];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 MX_GOOD(-0.01)[];
-	 DKIM_TRACE(0.00)[suse.cz:+];
-	 RCPT_COUNT_SEVEN(0.00)[7];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 FREEMAIL_TO(0.00)[Oracle.com,linux-foundation.org,kvack.org,vger.kernel.org,gmail.com,suse.com];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_IN_DNSWL_HI(-0.50)[2a07:de40:b281:106:10:150:64:167:received];
-	 RCVD_TLS_ALL(0.00)[];
-	 MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Score: -3.00
-X-Rspamd-Queue-Id: 9F4231FBB6
-X-Spam-Flag: NO
+Content-Transfer-Encoding: 8bit
+X-WP-MailID: a202cee8236f960cc876d0c076d09e9c
+X-WP-AV: skaner antywirusowy Poczty o2
+X-WP-SPAM: NO 0000000 [oVOU]                               
 
-On 2/22/24 20:27, Liam R. Howlett wrote:
-> * Liam R. Howlett <Liam.Howlett@Oracle.com> [240222 13:56]:
->> * Vlastimil Babka <vbabka@suse.cz> [240222 11:56]:
->> This separates the check for potentially merging previous to a later
->> failure case.  Would it be better to check:
->> 	if (curr && curr->vm_ops && curr->vm_ops->close)
->> 
->> and not set merge_prev = true, ie we cannot merge with the predecessor?
+W dniu 21.02.2024 o 14:03, Greg Kroah-Hartman pisze:
+> This is the start of the stable review cycle for the 6.1.79 release.
+> There are 206 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 23 Feb 2024 13:01:46 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.79-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Good suggestion, thanks!
+Hello,
 
->> That way we would exit as merge_prev == false.
->> 
->> We would have the added benefit of not having to look at merge_prev &
->> merge_next case with this vm_ops->close in mind (case 1 and 6).. because
->> I'm pretty sure we can currently get to case 6 in this way:
->> 
->> merge_prev = true
->> check for merge_next.. can_vma_merge_before(next...);
->> is_mergeable_vma(next.... , true);
->> if (true && next->vm_ops && next->vm_ops->close) /* Fine for next.. */
->> 
->> Remove curr by case 6 without checking curr->vm_ops &&
->> curr->vm_ops->close
->> 
->> If I am correct, then are we blaming the right commit?
+Tested on a HP 17-by0001nw laptop with an Intel Kaby Lake CPU and Ubuntu 20.04.
 
-It was bisected with no nondeterminism in the test, so yeah.
+Used technologies:
+- ext4, vfat,
+- LUKS, LVM,
+- mdraid on top of NVMe and SATA drives (the SATA drive in a write-mostly mode).
 
-> I am not correct.
-> The file check will ensure the same ops, so the file and ops must match.
-> As long as both are checked on one VMA then it will work as required.
+Tested (lightly):
+- GPU (Intel Corporation HD Graphics 620, with a Duke Nukem 3D game on Proton and several Unigine benchmarks)
+- suspend to disk, suspend to RAM,
+- WiFi (Realtek RTL8822BE),
+- Bluetooth (Realtek RTL8822BE),
+- USB soundcard (Logitech Pro X),
+- PCI soundcard (Intel HD Audio),
+- webcam,
+- NFS,
+- NTFS via FUSE
+- exFAT
 
-Right, otherwise we would have bigger issues even before the buggy commit,
-we were never checking curr's vma_ops before.
+Nitpicks:
+- Steam Linux launcher segfaults, connected with display of the
+  advertisement banner at launch:
 
->> 
->> Perhaps we should just fail earlier when we find a curr with the close
->> ops?
-> 
-> I'd rather fail earlier, but it's not a big deal.
+       [ 4965.741395] GpuWatchdog[34955]: segfault at 0 ip 00007f3035f9e906 sp 00007f302c0c8410 error 6 in libcef.so[7f3031afb000+7770000] likely on
+CPU 3 (core 1, socket 0)
 
-Your suggestion will indeed result in a nicer and more obvious code, so will
-do, thanks!
+  did not impact the overall functioning of the program much,
+  it was just one process out of many. This happened in the past
+  on Linux 6.7.0-rc7 though,
 
->> 
->> >  			} else {			/* case 5 */
->> > +				err = dup_anon_vma(prev, curr, &anon_dup);
->> >  				adjust = curr;
->> >  				adj_start = (end - curr->vm_start);
->> >  			}
->> > -- 
->> > 2.43.1
->> > 
+- GPU hangs with the Unigine Heaven GPU benchmark, AFAIK when
+  I switched out (Alt+Tab) from the program during launch. Not able to reproduce.
+
+    Asynchronous wait on fence 0000:00:02.0:gnome-shell[3648]:2513e timed out (hint:intel_atomic_commit_ready [i915])
+    i915 0000:00:02.0: [drm] Resetting rcs0 for preemption time out
+    i915 0000:00:02.0: [drm] heaven_x64[33871] context reset due to GPU hang
+    i915 0000:00:02.0: [drm] GPU HANG: ecode 9:1:85df7cff, in heaven_x64 [33871]
+
+Tested-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+
+Greetings,
+
+Mateusz
 
 
