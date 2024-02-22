@@ -1,108 +1,125 @@
-Return-Path: <stable+bounces-23292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5956B85F187
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 07:34:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D299C85F1C3
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 08:08:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9B571F22F34
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 06:34:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EC551C20F61
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 07:08:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD558C8E2;
-	Thu, 22 Feb 2024 06:34:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sZLZenrS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7613917583;
+	Thu, 22 Feb 2024 07:08:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68976A3F;
-	Thu, 22 Feb 2024 06:34:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE86C7469;
+	Thu, 22 Feb 2024 07:08:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708583675; cv=none; b=gHm8Tlw8EcxSlJFGyYkNdUEOHoeCk5qcyEz47bLp4p9s2SXlYXiaMGw/HxZtwdipPd5uvIl7RrWpqmdj6EGsNIXRqcX9VS1fD4tCblvc6V/1Bo1PiqtyKUrDS5g8V3TiyKEK+c6uthw6Tp0Yje4Wm3kWTLtxArjRB7gjxsWa6sY=
+	t=1708585694; cv=none; b=CDKxdixJanvm2ycXjiwvYAde2DeHf2g4WPL4Btk8/wTSJ5rqiVYIccHdx3jiHg70zI9I80NhEWJHkmu7Z19bs6Y6xZ28RVqyWGB2HnMLEs54Po0+UijzVPKXJi7kKkI53dsxTLYVhhYaz9bCH9BPpSUsS6qYTd0GHB9TQUu2Pa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708583675; c=relaxed/simple;
-	bh=utVGYA1jsUbTdSF23TVfYNwr3Dv1enzZmeupdecEtGQ=;
+	s=arc-20240116; t=1708585694; c=relaxed/simple;
+	bh=E5w37cV2AfWcKZkEVnT1YF4RZvFBCkYgBD97N+YjcJ8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c7cSOZGpzoahL1PRY2wpAOmi20fR9YcOQDRW2dWFsq+q51vYettn9T8OWPuhC1vJAsFYq8uC07hDoQk8VpE/Ab3uCm7LtJCv/rduHrjh0R+2ZHvjp8qmShtVelQO/p7Gic4R4yY1X1N60clXFvHz1vZaxmJBrlQbHl2OvXGS0cY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sZLZenrS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00E47C433C7;
-	Thu, 22 Feb 2024 06:34:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708583675;
-	bh=utVGYA1jsUbTdSF23TVfYNwr3Dv1enzZmeupdecEtGQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sZLZenrSVbyJviQNkgxmlnf/7S1zEl2jTPaWA4SLmKis08BO3WMzPodwBt0ae30fT
-	 S/4teASk2F3zV8283yPvHZJTcz/hwhMRlW45sEnuC9QAqw56KcO5ySFF2z4kWMT0Sn
-	 xjnqbcy9c0dKIxGCtdqW8QSbAk0g22pJUT1bLsbJw/exxm/bHQCZx9vpVMPna5gV79
-	 TrRRr0k60LFvvO/BcJcHYA5aytnHerMHQlrXL5zabTTo2zvFrgv+KjrIOMzF42dfPA
-	 6Xr6jcpkdJWyIo67pD1b4/7C5ydQThpL+OMM2RrnetEPT/fPy3XNbBmN5fLLtzdJwj
-	 AkUR/vBYsSdCQ==
-Date: Wed, 21 Feb 2024 22:34:33 -0800
-From: Eric Biggers <ebiggers@kernel.org>
-To: Ard Biesheuvel <ardb+git@google.com>
-Cc: linux-crypto@vger.kernel.org, herbert@gondor.apana.org.au,
-	Ard Biesheuvel <ardb@kernel.org>, stable@vger.kernel.org,
-	syzbot+f1ceaa1a09ab891e1934@syzkaller.appspotmail.com
-Subject: Re: [PATCH] crypto: arm64/neonbs - fix out-of-bounds access on short
- input
-Message-ID: <20240222063433.GA37580@sol.localdomain>
-References: <20240217161151.3987164-2-ardb+git@google.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y4b5FDm85VvqF1b/Wi67Huo8xR+Ilh8Bw8xKlmBhf16+WxFvDY6kwfq3PidbQMnlR/hlQzF/gbn9v2N7gWPFGIa9yPhxih6Mxlt4RQ4pxgf0mJabh2/QUisN2OF8LrSI9hvfp3Zfp+2cGowmRvwnTD7JpguWjstG6jtgnG4u8pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
+	by vmicros1.altlinux.org (Postfix) with ESMTP id 1B1DC72C90D;
+	Thu, 22 Feb 2024 10:08:03 +0300 (MSK)
+Received: from altlinux.org (sole.flsd.net [185.75.180.6])
+	by imap.altlinux.org (Postfix) with ESMTPSA id 0B90536D016F;
+	Thu, 22 Feb 2024 10:08:03 +0300 (MSK)
+Date: Thu, 22 Feb 2024 10:08:02 +0300
+From: Vitaly Chikunov <vt@altlinux.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+	Kees Cook <keescook@chromium.org>, linux-cifs@vger.kernel.org
+Subject: Re: [PATCH] cifs: Convert struct fealist away from 1-element array
+Message-ID: <20240222070802.pdxetqgin7cxdp7x@altlinux.org>
+References: <20230215000832.never.591-kees@kernel.org>
+ <qjyfz2xftsbch6aozgplxyjfyqnuhn7j44udrucls4pqa5ey35@adxvvrdtagqf>
+ <202402091559.52D7C2AC@keescook>
+ <20240210003314.jyrvg57z6ox3is5u@altlinux.org>
+ <2024021034-populace-aerospace-03f3@gregkh>
+ <20240210102145.p4diskhnevicn6am@altlinux.org>
+ <20240217215016.emqr3stdm3yrh4dq@altlinux.org>
+ <2024021808-coach-wired-41cb@gregkh>
+ <20240221171346.iur7yuuogg2bu3lq@altlinux.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=koi8-r
 Content-Disposition: inline
-In-Reply-To: <20240217161151.3987164-2-ardb+git@google.com>
+In-Reply-To: <20240221171346.iur7yuuogg2bu3lq@altlinux.org>
 
-On Sat, Feb 17, 2024 at 05:11:52PM +0100, Ard Biesheuvel wrote:
-> From: Ard Biesheuvel <ardb@kernel.org>
+Greg,
+
+On Wed, Feb 21, 2024 at 08:13:46PM +0300, Vitaly Chikunov wrote:
+> On Sun, Feb 18, 2024 at 10:31:29AM +0100, Greg Kroah-Hartman wrote:
+> > On Sun, Feb 18, 2024 at 12:50:16AM +0300, Vitaly Chikunov wrote:
+> > > 
+> > > On Sat, Feb 10, 2024 at 01:21:45PM +0300, Vitaly Chikunov wrote:
+> > > > On Sat, Feb 10, 2024 at 10:19:46AM +0000, Greg Kroah-Hartman wrote:
+> > > > > On Sat, Feb 10, 2024 at 03:33:14AM +0300, Vitaly Chikunov wrote:
+> > > > > > 
+> > > > > > Can you please backport this commit (below) to a stable 6.1.y tree, it's
+> > > > > > confirmed be Kees this could cause kernel panic due to false positive
+> > > > > > strncpy fortify, and this is already happened for some users.
+> > > > > 
+> > > > > What is the git commit id?
+> > > > 
+> > > > 398d5843c03261a2b68730f2f00643826bcec6ba
+> > > 
+> > > Can you please apply this to the next 6.1.y release?
+> > > 
+> > > There is still non-theoretical crash as reported in
+> > >   https://lore.kernel.org/all/qjyfz2xftsbch6aozgplxyjfyqnuhn7j44udrucls4pqa5ey35@adxvvrdtagqf/
+> > > 
+> > > If commit hash was not enough:
+> > > 
+> > >   commit 398d5843c03261a2b68730f2f00643826bcec6ba
+> > >   Author:     Kees Cook <keescook@chromium.org>
+> > >   AuthorDate: Tue Feb 14 16:08:39 2023 -0800
+> > > 
+> > >       cifs: Convert struct fealist away from 1-element array
+> > > 
+> > > The commit is in mainline and is applying well to linux-6.1.y:
+> > > 
+> > >   (linux-6.1.y)$ git cherry-pick 398d5843c03261a2b68730f2f00643826bcec6ba
+> > >   Auto-merging fs/smb/client/cifspdu.h
+> > >   Auto-merging fs/smb/client/cifssmb.c
+> > >   [linux-6.1.y 4a80b516f202] cifs: Convert struct fealist away from 1-element array
+> > >    Author: Kees Cook <keescook@chromium.org>
+> > >    Date: Tue Feb 14 16:08:39 2023 -0800
+> > >    2 files changed, 10 insertions(+), 10 deletions(-)
+> > 
+> > It does not apply cleanly due to renames, can you provide a backported,
+> > and tested, patch please?
 > 
-> The bit-sliced implementation of AES-CTR operates on blocks of 128
-> bytes, and will fall back to the plain NEON version for tail blocks or
-> inputs that are shorter than 128 bytes to begin with.
+> I sent the backported patch as you suggested[1] but I don't see it
+> appearing in 6.1.79-rc1 review. Did I make some mistake while sending
+> it?
+
+Testing update - user (who had the kernel panic) tested and reported to
+me that 6.1.78 with the patch applied does not cause the kernel panic
+anymore in their workflow.
+
+Thanks,
+
 > 
-> It will call straight into the plain NEON asm helper, which performs all
-> memory accesses in granules of 16 bytes (the size of a NEON register).
-> For this reason, the associated plain NEON glue code will copy inputs
-> shorter than 16 bytes into a temporary buffer, given that this is a rare
-> occurrence and it is not worth the effort to work around this in the asm
-> code.
+> Thanks,
 > 
-> The fallback from the bit-sliced NEON version fails to take this into
-> account, potentially resulting in out-of-bounds accesses. So clone the
-> same workaround, and use a temp buffer for short in/outputs.
+> [1] https://lore.kernel.org/stable/20240218111538.2592901-1-vt@altlinux.org/
 > 
-> Cc: <stable@vger.kernel.org>
-> Reported-by: syzbot+f1ceaa1a09ab891e1934@syzkaller.appspotmail.com
-> Tested-by: syzbot+f1ceaa1a09ab891e1934@syzkaller.appspotmail.com
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-
-Looks like this could use:
-
-Fixes: fc074e130051 ("crypto: arm64/aes-neonbs-ctr - fallback to plain NEON for final chunk")
-
-> +			if (unlikely(nbytes < AES_BLOCK_SIZE))
-> +				src = dst = memcpy(buf + sizeof(buf) - nbytes,
-> +						   src, nbytes);
-> +
->  			neon_aes_ctr_encrypt(dst, src, ctx->enc, ctx->key.rounds,
->  					     nbytes, walk.iv);
-> +
-> +			if (unlikely(nbytes < AES_BLOCK_SIZE))
-> +				memcpy(d, buf + sizeof(buf) - nbytes, nbytes);
-
-The second one could use 'dst' instead of 'buf + sizeof(buf) - nbytes', right?
-
-Otherwise this looks good.
-
-Reviewed-by: Eric Biggers <ebiggers@google.com>
-
-- Eric
+> > 
+> > thanks,
+> > 
+> > greg k-h
 
