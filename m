@@ -1,59 +1,53 @@
-Return-Path: <stable+bounces-23334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD6CA85FA6F
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 14:56:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65B4285FAC8
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 15:08:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BC17B26BE9
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 13:56:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04EFE1F234B0
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 14:08:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4FF136678;
-	Thu, 22 Feb 2024 13:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41B0E1474B1;
+	Thu, 22 Feb 2024 14:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fgED2uSd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EzWNLqGh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5D41332B1;
-	Thu, 22 Feb 2024 13:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC02F145FF6;
+	Thu, 22 Feb 2024 14:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708610188; cv=none; b=ZBxJRX7hk5imfW4VO2a4AEhtXrRiUvhfxFwOJiaRznofjd7KXhrmrabk/um16t5xrpW+4JVuEFmABpeQlD/lWsCnQkHg/MZXEMetSkExmPJ34tphXq4hq12BfBhk+fSbcy56DxqBSYqLKfwcpsc19ukKzN9jHFh/odOTkMZww2A=
+	t=1708610800; cv=none; b=lcEHABBhp+Tt8OEBgxVcz+SOFK1b3ONno4vmhZ5XCATXKkod4p2Z7zeG8mM50tJ5sBKTzsEgw+VcmEOuEBwjk/0m0tADNcLbOxa1WJVXk1gn0Bqip+Xce/g2s2Z6l2ymUKTWx8J1buLRZNY+mm2tp89SOe3LlbLTR+Cm1eLUyU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708610188; c=relaxed/simple;
-	bh=MqoH/IOMmub+1LbZRsNMRZZ4RRoQgIMbnId83nDHWHU=;
+	s=arc-20240116; t=1708610800; c=relaxed/simple;
+	bh=fl8k89dEcdPl2nmfpb3JV5SActGiwtcJ9mg3xz1qfFI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eruveQ22c/S1SugcOO/oFMiCQbnw0XGIhRijT9GA96p6ty97XzR0TfJ8NNTihcdZJ1cEpYGXnELoVpBXIlW9msgF2ct6murzjtxf/Ish06coka7kwwHTIJse+NEws/+dyN4h9lHMFlkmwNN8RRcJ1cDHzkH04gZGgoQbobjEhXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fgED2uSd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27054C433C7;
-	Thu, 22 Feb 2024 13:56:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708610187;
-	bh=MqoH/IOMmub+1LbZRsNMRZZ4RRoQgIMbnId83nDHWHU=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=WjDjJTpk3Lbv83zekKFsJsW4m8pMK0IbVgLfllLnGUjL/8H425X5u/p8x41ntUz1Nui4zM8bw2wXKiQCLob2WCayFCMHSIN258QAvSsRM7qWEB5dMpb7jmYhiSE8xzqbsJl1bM3hwqbiPeKEe4SeeS7JUkMUVt8R1NkUT9hNXyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EzWNLqGh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E99D1C433F1;
+	Thu, 22 Feb 2024 14:06:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1708610799;
+	bh=fl8k89dEcdPl2nmfpb3JV5SActGiwtcJ9mg3xz1qfFI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fgED2uSdV26bmPjcjKgSvl5QoBplk92aKt2fml1vwu6eyULr31kq1flV8HdEnXHiZ
-	 FqmiL3243+Cvi/pepo5M7OMjS+cFk9TSQuj0YF5sry40RskU7G5BytN7NTwvPjWdGR
-	 RjGgKxy9U/tmjE29F0l9AyG8ZjxUUWt/ZCrNP+lVPNSqlyNgBoBY/ztfNikMQ4aYUQ
-	 YPtrCQ4x3cJvlK6Jd2hm7t8ETlERCYLHulHJDEavef/dCaA0feyGwUkAjoZE//Raxt
-	 E5byi1qXLbiVoVQAaGSIe9OMCoWp6vsCblZhQkqYhJJ4SjAx3bzmZU/4IfIaI5YYKt
-	 OtzTMGBv58jiA==
-Date: Thu, 22 Feb 2024 19:26:23 +0530
-From: Vinod Koul <vkoul@kernel.org>
-To: Tadeusz Struk <tstruk@gmail.com>
-Cc: Raju Rangoju <Raju.Rangoju@amd.com>,
-	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Sanjay R Mehta <sanju.mehta@amd.com>,
-	Eric Pilmore <epilmore@gigaio.com>, dmaengine@vger.kernel.org,
-	Tadeusz Struk <tstruk@gigaio.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] dmaengine: ptdma: use consistent DMA masks
-Message-ID: <ZddShyFNaozKwB66@matsya>
-References: <6a447bd4-f6f1-fc1f-9a0d-2810357fb1b5@amd.com>
- <20240219201039.40379-1-tstruk@gigaio.com>
+	b=EzWNLqGh4vp9/dWfsh530WKjgF/e71zbHDCit+qkEeZwDB9u2XNdVgko1HFtB6Bxr
+	 HtM9SWI0iRxzn80lDpBZ3/JMcYHFtGqG61MQDRwBxUdJ9LJv+ms9Xb9NTskRUNd5b4
+	 CDEvsGBp4gLy9QdfpObYW+x/zy/oPfK3xg0JWNc4=
+Date: Thu, 22 Feb 2024 15:06:36 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Mathias Nyman <mathias.nyman@linux.intel.com>
+Cc: linux-usb@vger.kernel.org, stern@rowland.harvard.edu,
+	Paul Menzel <pmenzel@molgen.mpg.de>, stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] usb: port: Don't try to peer unused USB ports based
+ on location
+Message-ID: <2024022220-untried-routine-15e5@gregkh>
+References: <20240222133819.4149388-1-mathias.nyman@linux.intel.com>
+ <20240222133819.4149388-2-mathias.nyman@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,49 +56,26 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240219201039.40379-1-tstruk@gigaio.com>
+In-Reply-To: <20240222133819.4149388-2-mathias.nyman@linux.intel.com>
 
-On 19-02-24, 21:10, Tadeusz Struk wrote:
-> The PTDMA driver sets DMA masks in two different places for the same
-> device inconsistently. First call is in pt_pci_probe(), where it uses
-> 48bit mask. The second call is in pt_dmaengine_register(), where it
-> uses a 64bit mask. Using 64bit dma mask causes IO_PAGE_FAULT errors
-> on DMA transfers between main memory and other devices.
-> Without the extra call it works fine. Additionally the second call
-> doesn't check the return value so it can silently fail.
-> Remove the superfluous dma_set_mask() call and only use 48bit mask.
+On Thu, Feb 22, 2024 at 03:38:19PM +0200, Mathias Nyman wrote:
+> Unused USB ports may have bogus location data in ACPI PLD tables.
+> This causes port peering failures as these unused USB2 and USB3 ports
+> location may match.
 > 
+> This is seen on DELL systems where all unused ports return zeroed
+> location data.
+> 
+> Don't try to peer or match ports that have connect type set to
+> USB_PORT_NOT_USED.
+> 
+> Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
 > Cc: stable@vger.kernel.org
-> Fixes: b0b4a6b10577 ("dmaengine: ptdma: register PTDMA controller as a DMA resource")
-> 
-No empty line here please
+> Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-> Signed-off-by: Tadeusz Struk <tstruk@gigaio.com>
+What commit does this fix?  "all" of them?
 
-I cant pick this, it was sent by email which this patch was not
-signed-off by, please either resend from same id as sob or sign with
-both
+thanks,
 
-> ---
->  drivers/dma/ptdma/ptdma-dmaengine.c | 2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/drivers/dma/ptdma/ptdma-dmaengine.c b/drivers/dma/ptdma/ptdma-dmaengine.c
-> index 1aa65e5de0f3..f79240734807 100644
-> --- a/drivers/dma/ptdma/ptdma-dmaengine.c
-> +++ b/drivers/dma/ptdma/ptdma-dmaengine.c
-> @@ -385,8 +385,6 @@ int pt_dmaengine_register(struct pt_device *pt)
->  	chan->vc.desc_free = pt_do_cleanup;
->  	vchan_init(&chan->vc, dma_dev);
->  
-> -	dma_set_mask_and_coherent(pt->dev, DMA_BIT_MASK(64));
-> -
->  	ret = dma_async_device_register(dma_dev);
->  	if (ret)
->  		goto err_reg;
-> -- 
-> 2.43.2
-
--- 
-~Vinod
+greg k-h
 
