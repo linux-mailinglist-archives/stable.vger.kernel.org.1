@@ -1,107 +1,151 @@
-Return-Path: <stable+bounces-23337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECDB585FBC5
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 16:02:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECD8785FC05
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 16:14:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C555B24830
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 15:02:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A08A1C23C76
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 15:14:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39DBC14C584;
-	Thu, 22 Feb 2024 15:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3479114A4E4;
+	Thu, 22 Feb 2024 15:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YENSmMmS"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="nhx+iYzv";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="hWcbZGme";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="nhx+iYzv";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="hWcbZGme"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99AE14A092;
-	Thu, 22 Feb 2024 15:02:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D50149002
+	for <stable@vger.kernel.org>; Thu, 22 Feb 2024 15:13:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708614138; cv=none; b=GYZANpNksr1XLx2hDB1r1u3AmUvAv5aYoB/08Yto67aaJGjSrIcAcM+HGxbE9PXu6+NUB0X1kUuyIiXAy6HZEIXaq+/BiTyoe9183JBLyRnUxf5/cz1nmCIL/rALQcERAaz6GlsNm4ElQLS6KyRxAyGJNTrzW92tsxhSyz0GNzM=
+	t=1708614830; cv=none; b=U1b7DB5cGDFsOTgF5oL3Wjoprl++6Dt39WGWhioiS8ytMpYQKb5zx1M6qKHidQ8iSRNaHcrgk4tVTfWIqSiUCrdAbLsAVYRrkwHU7mAZmJ1Zdj2e1RRKBOxHLGBhg0bOTiYPiu2QvWeRtkDni+qY3WVf25xKuDikiiPPdGuTccM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708614138; c=relaxed/simple;
-	bh=w5mnCeymnLIC/eznEyxIwcFYzutKK+SMgOy8M+ypElw=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:From:Subject:
-	 In-Reply-To:Content-Type; b=S4rutqg/knF6tqvSjhsN5Nw2z9skWvAR3rWEjHBhnE0PXMT58cUM8+FByzPB4SukqQMaE/XSK2JCB3uPJiaDYDQ9acRVcqaq+bD27jb/2+liV3/6ld934JsZ3yf3p9syWgn28upCQkdG2KahULyhY3ozI4HOPybDMLvsBuwuXOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YENSmMmS; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708614136; x=1740150136;
-  h=message-id:date:mime-version:to:cc:references:from:
-   subject:in-reply-to:content-transfer-encoding;
-  bh=w5mnCeymnLIC/eznEyxIwcFYzutKK+SMgOy8M+ypElw=;
-  b=YENSmMmSF1H0nqVq+73uJ/ya1Vr8FXaCLydLl1pmuqrqXXxe/+Jd/t6N
-   lr477ZMn0ZTRS2qL07SK4Co9S7ujW8ESmbzws4bo+PtJhxmjbjS2ekC+O
-   ninYGKBZecfyawVVjIYdpXu8OwR8W+q127Q4wC1f/XKkNhVpWnPf1I4b1
-   rxUbNC2NIUBggWnyurUfdQYp5kVsPZn2FR0F/89o1uuW2OrAPvaItGpk+
-   kla4xaRhftq/fPEES7f5/CjHEoJArdOTQPWNzVAiPeC1MSiUMqf/xUMti
-   i6mQbfd5aPkbHNyXTlDgCEZQh6lK4iBPXf8drwMjYew8eKvC4VYuMr0Qv
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="2951061"
-X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
-   d="scan'208";a="2951061"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2024 07:02:01 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="936859185"
-X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
-   d="scan'208";a="936859185"
-Received: from mattu-haswell.fi.intel.com (HELO [10.237.72.199]) ([10.237.72.199])
-  by fmsmga001.fm.intel.com with ESMTP; 22 Feb 2024 07:01:59 -0800
-Message-ID: <2989954e-fe0c-c0de-7e72-345762492ebf@linux.intel.com>
-Date: Thu, 22 Feb 2024 17:03:39 +0200
+	s=arc-20240116; t=1708614830; c=relaxed/simple;
+	bh=cPFhSSMvP6hDs+3gM2jkAe3flILgDvf9JIchBkSbrtk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rF074Rvs6Yv89hPOJuCSfl0ohMGwHsjD2deEgsMrEy7+NZtyF+8IF8MCz7yWkVxCMc274HobtR5jEx8u6eerhogndhs9/1jWkoLWAEVq3b7yx8Fq7J+IiJaoneLYHVBdGBMdYzRLdXO2c8zBuWgKMDg5fIdG7pJ5H+8iM0TIwRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=nhx+iYzv; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=hWcbZGme; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=nhx+iYzv; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=hWcbZGme; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 2449F1F76C;
+	Thu, 22 Feb 2024 15:13:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1708614826; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=TDLpuLSS+CuO+xbvkVOTlVWb1RA8upN5YGYCriWA4AE=;
+	b=nhx+iYzvqAy7/fKhL2aviIvfBMaz1HHjpIaTvnEq3NePPPfbZoopzRNQi3le+wYLyfB2dY
+	uqin29LJuwJ4I64ABT9Muj5ibtc/gFsL84vPjoXLYhSBE1rnvJ5MGeeoyDmljY4d8WNWs4
+	+5j3Arfoh+NEXa0G6cgHc34/Odjy3qk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1708614826;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=TDLpuLSS+CuO+xbvkVOTlVWb1RA8upN5YGYCriWA4AE=;
+	b=hWcbZGmewzzE2msYRA25v+iGHBaNe+k7uSDx4+jr0BfHHZrUurMyKIXPiZE4naKUfaVY+P
+	ZwPrLLc6M1AUC/Cw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1708614826; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=TDLpuLSS+CuO+xbvkVOTlVWb1RA8upN5YGYCriWA4AE=;
+	b=nhx+iYzvqAy7/fKhL2aviIvfBMaz1HHjpIaTvnEq3NePPPfbZoopzRNQi3le+wYLyfB2dY
+	uqin29LJuwJ4I64ABT9Muj5ibtc/gFsL84vPjoXLYhSBE1rnvJ5MGeeoyDmljY4d8WNWs4
+	+5j3Arfoh+NEXa0G6cgHc34/Odjy3qk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1708614826;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=TDLpuLSS+CuO+xbvkVOTlVWb1RA8upN5YGYCriWA4AE=;
+	b=hWcbZGmewzzE2msYRA25v+iGHBaNe+k7uSDx4+jr0BfHHZrUurMyKIXPiZE4naKUfaVY+P
+	ZwPrLLc6M1AUC/Cw==
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id BA87113419;
+	Thu, 22 Feb 2024 15:13:45 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id 01BGK6lk12WlbgAAn2gu4w
+	(envelope-from <pvorel@suse.cz>); Thu, 22 Feb 2024 15:13:45 +0000
+From: Petr Vorel <pvorel@suse.cz>
+To: stable@vger.kernel.org
+Cc: Petr Vorel <pvorel@suse.cz>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Cyril Hrubis <chrubis@suse.cz>,
+	Ingo Molnar <mingo@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: [PATCH 0/3] sched/rt fixes for 4.19
+Date: Thu, 22 Feb 2024 16:13:21 +0100
+Message-ID: <20240222151333.1364818-1-pvorel@suse.cz>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.13.0
-Content-Language: en-US
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: linux-usb@vger.kernel.org, stern@rowland.harvard.edu,
- Paul Menzel <pmenzel@molgen.mpg.de>, stable@vger.kernel.org
-References: <20240222133819.4149388-1-mathias.nyman@linux.intel.com>
- <20240222133819.4149388-2-mathias.nyman@linux.intel.com>
- <2024022220-untried-routine-15e5@gregkh>
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: Re: [PATCH 2/2] usb: port: Don't try to peer unused USB ports based
- on location
-In-Reply-To: <2024022220-untried-routine-15e5@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: ***
+X-Spamd-Bar: +++
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nhx+iYzv;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=hWcbZGme
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [3.49 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:98:from];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 R_MISSING_CHARSET(2.50)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 BROKEN_CONTENT_TYPE(1.50)[];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 DKIM_TRACE(0.00)[suse.cz:+];
+	 MX_GOOD(-0.01)[];
+	 RCPT_COUNT_SEVEN(0.00)[7];
+	 MID_CONTAINS_FROM(1.00)[];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 RCVD_TLS_ALL(0.00)[];
+	 BAYES_HAM(-0.00)[14.10%]
+X-Spam-Score: 3.49
+X-Rspamd-Queue-Id: 2449F1F76C
+X-Spam-Flag: NO
 
-On 22.2.2024 16.06, Greg KH wrote:
-> On Thu, Feb 22, 2024 at 03:38:19PM +0200, Mathias Nyman wrote:
->> Unused USB ports may have bogus location data in ACPI PLD tables.
->> This causes port peering failures as these unused USB2 and USB3 ports
->> location may match.
->>
->> This is seen on DELL systems where all unused ports return zeroed
->> location data.
->>
->> Don't try to peer or match ports that have connect type set to
->> USB_PORT_NOT_USED.
->>
->> Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-> 
-> What commit does this fix?  "all" of them?
+Hi,
 
-Right, git blame shows the code this fixes was added 10 years ago in 3.16
+maybe you will not like introducing 'static int int_max = INT_MAX;' for
+this old kernel which EOL in 10 months.
 
-Fixes: 3bfd659baec8 ("usb: find internal hub tier mismatch via acpi")
-Cc: stable@vger.kernel.org # v3.16+
+Cyril Hrubis (3):
+  sched/rt: Fix sysctl_sched_rr_timeslice intial value
+  sched/rt: sysctl_sched_rr_timeslice show default timeslice after reset
+  sched/rt: Disallow writing invalid values to sched_rt_period_us
 
-Thanks
-Mathias
+ kernel/sched/rt.c | 10 +++++-----
+ kernel/sysctl.c   |  5 +++++
+ 2 files changed, 10 insertions(+), 5 deletions(-)
+
+-- 
+2.35.3
+
 
