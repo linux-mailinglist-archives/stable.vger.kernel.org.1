@@ -1,200 +1,144 @@
-Return-Path: <stable+bounces-23281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B6F585EF55
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 03:56:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D13B85EFBE
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 04:19:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F8C01C2180E
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 02:56:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C50BAB2181F
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 03:19:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 825CA14A8F;
-	Thu, 22 Feb 2024 02:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1D3814A8F;
+	Thu, 22 Feb 2024 03:19:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="w7PD8r1N"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13EBB11C82;
-	Thu, 22 Feb 2024 02:56:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE67156E4;
+	Thu, 22 Feb 2024 03:19:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708570586; cv=none; b=H5eK+12rWZ3Qmn1iw17XSP+969gxkr/ZipMN+SDjd7bjCUChIRXUsWJ2tfpsLc1xLn5MPQZAw0UKE34+xrWzMAaT94uJCOQR9UVRv3siz5DHFmDsD6n8puCzWH1vyC5SKqaHxEQZxmK0B9JBm4Ow/O3lbX40IZmOQQdxAJNUhpI=
+	t=1708571986; cv=none; b=iuLBS5m7GYZ9qzrU+U5Zj8cBZ0ftzpvktRvG3f2qaYjFWjDYjiiuVvViEmOcxYhVtzK6pCG0V5ImKAm7Ek79qQE2YqrGIPR9RTb0WOAZHJymby5Z095SZMEG2DMEbk9rFWKnHF5mA3LM//tQvzypUuedeJzmjpeSvqAGsUEgfXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708570586; c=relaxed/simple;
-	bh=owZ8qqgeTtYrNFwZVsLbpW5ktf+EvacwmKJTqWLTSME=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=E/K9By7QUHTFunyxGmCg9vGl2TQDO47Mu2OzDmLOgzoDZ3rOai3snTJbXXU9w70b9Jw3w5AZgfJE+BZ6GJWiRoyXF/pfOZH6bHV8hWZQsoydVVC/HrJiMrjVfja1BlbktScBta2EbnGm2bnNhdDI73+kr4teFxzyxtlYHdWozkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4TgHm92VknzvVwW;
-	Thu, 22 Feb 2024 10:54:17 +0800 (CST)
-Received: from dggpemd100002.china.huawei.com (unknown [7.185.36.164])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7BA5418005D;
-	Thu, 22 Feb 2024 10:56:20 +0800 (CST)
-Received: from huawei.com (10.67.174.33) by dggpemd100002.china.huawei.com
- (7.185.36.164) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1258.28; Thu, 22 Feb
- 2024 10:56:20 +0800
-From: "GONG, Ruiqi" <gongruiqi1@huawei.com>
-To: <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, Johannes Weiner
-	<hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, Roman Gushchin
-	<roman.gushchin@linux.dev>, Shakeel Butt <shakeelb@google.com>, Muchun Song
-	<muchun.song@linux.dev>
-CC: <cgroups@vger.kernel.org>, <linux-mm@kvack.org>, Wang Weiyang
-	<wangweiyang2@huawei.com>, Xiu Jianfeng <xiujianfeng@huawei.com>
-Subject: [PATCH v2 stable] memcg: add refcnt for pcpu stock to avoid UAF problem in drain_all_stock()
-Date: Thu, 22 Feb 2024 11:02:37 +0800
-Message-ID: <20240222030237.82486-1-gongruiqi1@huawei.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1708571986; c=relaxed/simple;
+	bh=ZR4uoLQTiEOwo3CnieSljcC/pC2fqYtStebX1jAXWJA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eSCR4ac1oDWsSFnQvbxgfxc4Posn7XLEuw/nLLU6r88kMHXooeTE+tkXTonpVUx5TVndC47aVNKbnC1xmIedInLdTJYoldQKzsUEIgbuJKh7tpFBA8F+DE/alVmwwHLGGmuYKRxTE1TTpaYZ6/WK4x00wEUHSebZ2rqjcqfLIlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=w7PD8r1N; arc=none smtp.client-ip=115.124.30.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1708571981; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=V9/JqdFP6+H5ZwF5GLxGFsL2hRG+X43V/o/Ie5ISJlI=;
+	b=w7PD8r1NPQ2OClkdgI7DKPnp8Of/q/UEv9hYF3u3DZjeKfgslGyn+f5a1phMX83XibkpD2+8jOU4Doox+YtB3uIt1ct38PlNHQlASziveVFTUucvoEx/9l6kfum10V3+jJMX0cD2/2TX6n4Mnr0RR8WgK25UlIF0hU9Y6RQLgy0=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045192;MF=jefflexu@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0W1.d02z_1708571979;
+Received: from 30.221.147.146(mailfrom:jefflexu@linux.alibaba.com fp:SMTPD_---0W1.d02z_1708571979)
+          by smtp.aliyun-inc.com;
+          Thu, 22 Feb 2024 11:19:40 +0800
+Message-ID: <27a77b2a-ad9c-4247-9ddb-61fdf5bb3891@linux.alibaba.com>
+Date: Thu, 22 Feb 2024 11:19:38 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemd100002.china.huawei.com (7.185.36.164)
-
-commit 1a3e1f40962c445b997151a542314f3c6097f8c3 upstream.
-
-NOTE: This is a partial backport since we only need the refcnt between
-memcg and stock to fix the problem stated below, and in this way
-multiple versions use the same code and align with each other.
-
----
-
-There was a kernel panic happened on an in-house environment running
-3.10, and the same problem was reproduced on 4.19:
-
-general protection fault: 0000 [#1] SMP PTI
-CPU: 1 PID: 2085 Comm: bash Kdump: loaded Tainted: G             L    4.19.90+ #7
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.15.0-0-g2dd4b9b3f840-prebuilt.qemu.org 04/01/2014
-RIP: 0010 drain_all_stock+0xad/0x140
-Code: 00 00 4d 85 ff 74 2c 45 85 c9 74 27 4d 39 fc 74 42 41 80 bc 24 28 04 00 00 00 74 17 49 8b 04 24 49 8b 17 48 8b 88 90 02 00 00 <48> 39 8a 90 02 00 00 74 02 eb 86 48 63 88 3c 01 00 00 39 8a 3c 01
-RSP: 0018:ffffa7efc5813d70 EFLAGS: 00010202
-RAX: ffff8cb185548800 RBX: ffff8cb89f420160 RCX: ffff8cb1867b6000
-RDX: babababababababa RSI: 0000000000000001 RDI: 0000000000231876
-RBP: 0000000000000000 R08: 0000000000000415 R09: 0000000000000002
-R10: 0000000000000000 R11: 0000000000000001 R12: ffff8cb186f89040
-R13: 0000000000020160 R14: 0000000000000001 R15: ffff8cb186b27040
-FS:  00007f4a308d3740(0000) GS:ffff8cb89f440000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffe4d634a68 CR3: 000000010b022000 CR4: 00000000000006e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- mem_cgroup_force_empty_write+0x31/0xb0
- cgroup_file_write+0x60/0x140
- ? __check_object_size+0x136/0x147
- kernfs_fop_write+0x10e/0x190
- __vfs_write+0x37/0x1b0
- ? selinux_file_permission+0xe8/0x130
- ? security_file_permission+0x2e/0xb0
- vfs_write+0xb6/0x1a0
- ksys_write+0x57/0xd0
- do_syscall_64+0x63/0x250
- ? async_page_fault+0x8/0x30
- entry_SYSCALL_64_after_hwframe+0x5c/0xc1
-Modules linked in: ...
-
-It is found that in case of stock->nr_pages == 0, the memcg on
-stock->cached could be freed due to its refcnt decreased to 0, which
-made stock->cached become a dangling pointer. It could cause a UAF
-problem in drain_all_stock() in the following concurrent scenario. Note
-that drain_all_stock() doesn't disable irq but only preemption.
-
-CPU1                             CPU2
-==============================================================================
-stock->cached = memcgA (freed)
-                                 drain_all_stock(memcgB)
-                                  rcu_read_lock()
-                                  memcg = CPU1's stock->cached (memcgA)
-                                  (interrupted)
-refill_stock(memcgC)
- drain_stock(memcgA)
- stock->cached = memcgC
- stock->nr_pages += xxx (> 0)
-                                  stock->nr_pages > 0
-                                  mem_cgroup_is_descendant(memcgA, memcgB) [UAF]
-                                  rcu_read_unlock()
-
-This problem is, unintentionally, fixed at 5.9, where commit
-1a3e1f40962c ("mm: memcontrol: decouple reference counting from page
-accounting") adds memcg refcnt for stock. Therefore affected LTS
-versions include 4.19 and 5.4.
-
-For 4.19, memcg's css offline process doesn't call drain_all_stock(). so
-it's easier for the released memcg to be left on the stock. For 5.4,
-although mem_cgroup_css_offline() does call drain_all_stock(), but the
-flushing could be skipped when stock->nr_pages happens to be 0, and
-besides the async draining could be delayed and take place after the UAF
-problem has happened.
-
-Fix this problem by adding (and decreasing) memcg's refcnt when memcg is
-put onto (and removed from) stock, just like how commit 1a3e1f40962c
-("mm: memcontrol: decouple reference counting from page accounting")
-does. After all, "being on the stock" is a kind of reference with
-regards to memcg. As such, it's guaranteed that a css on stock would not
-be freed.
-
-It's good to mention that refill_stock() is executed in an irq-disabled
-context, so the drain_stock() patched with css_put() would not actually
-free memcgA until the end of refill_stock(), since css_put() is an RCU
-free and it's still in grace period. For CPU2, the access to CPU1's
-stock->cached is protected by rcu_read_lock(), so in this case it gets
-either NULL from stock->cached or a memcgA that is still good.
-
-Cc: stable@vger.kernel.org      # 4.19 5.4
-Fixes: cdec2e4265df ("memcg: coalesce charging via percpu storage")
-Signed-off-by: GONG, Ruiqi <gongruiqi1@huawei.com>
-Acked-by: Michal Hocko <mhocko@suse.com>
----
-
-v2:
-- Add a statement of this patch being a partial backport
-- Add a paragraph to mention the grace period in refill_stock()
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] erofs: fix refcount on the metabuf used for inode
+ lookup
+Content-Language: en-US
+To: Sandeep Dhavale <dhavale@google.com>, Gao Xiang <xiang@kernel.org>,
+ Chao Yu <chao@kernel.org>, Yue Hu <huyue2@coolpad.com>
+Cc: quic_wenjieli@quicinc.com, stable@vger.kernel.org,
+ kernel-team@android.com, linux-erofs@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+References: <20240221210348.3667795-1-dhavale@google.com>
+From: Jingbo Xu <jefflexu@linux.alibaba.com>
+In-Reply-To: <20240221210348.3667795-1-dhavale@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
 
- mm/memcontrol.c | 6 ++++++
- 1 file changed, 6 insertions(+)
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 5a366cf79821..8c04296df1c7 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -2015,6 +2015,9 @@ static void drain_stock(struct memcg_stock_pcp *stock)
- {
- 	struct mem_cgroup *old = stock->cached;
- 
-+	if (!old)
-+		return;
-+
- 	if (stock->nr_pages) {
- 		page_counter_uncharge(&old->memory, stock->nr_pages);
- 		if (do_memsw_account())
-@@ -2022,6 +2025,8 @@ static void drain_stock(struct memcg_stock_pcp *stock)
- 		css_put_many(&old->css, stock->nr_pages);
- 		stock->nr_pages = 0;
- 	}
-+
-+	css_put(&old->css);
- 	stock->cached = NULL;
- }
- 
-@@ -2057,6 +2062,7 @@ static void refill_stock(struct mem_cgroup *memcg, unsigned int nr_pages)
- 	stock = this_cpu_ptr(&memcg_stock);
- 	if (stock->cached != memcg) { /* reset if necessary */
- 		drain_stock(stock);
-+		css_get(&memcg->css);
- 		stock->cached = memcg;
- 	}
- 	stock->nr_pages += nr_pages;
+On 2/22/24 5:03 AM, Sandeep Dhavale wrote:
+> In erofs_find_target_block() when erofs_dirnamecmp() returns 0,
+> we do not assign the target metabuf. This causes the caller
+> erofs_namei()'s erofs_put_metabuf() at the end to be not effective
+> leaving the refcount on the page.
+> As the page from metabuf (buf->page) is never put, such page cannot be
+> migrated or reclaimed. Fix it now by putting the metabuf from
+> previous loop and assigning the current metabuf to target before
+> returning so caller erofs_namei() can do the final put as it was
+> intended.
+> 
+> Fixes: 500edd095648 ("erofs: use meta buffers for inode lookup")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Sandeep Dhavale <dhavale@google.com>
+
+
+LGTM.
+
+Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
+
+
+> ---
+> Changes since v1
+> - Rearrange the cases as suggested by Gao so there is less duplication
+>     of the code and it is more readable
+> 
+>  fs/erofs/namei.c | 28 ++++++++++++++--------------
+>  1 file changed, 14 insertions(+), 14 deletions(-)
+> 
+> diff --git a/fs/erofs/namei.c b/fs/erofs/namei.c
+> index d4f631d39f0f..f0110a78acb2 100644
+> --- a/fs/erofs/namei.c
+> +++ b/fs/erofs/namei.c
+> @@ -130,24 +130,24 @@ static void *erofs_find_target_block(struct erofs_buf *target,
+>  			/* string comparison without already matched prefix */
+>  			diff = erofs_dirnamecmp(name, &dname, &matched);
+>  
+> -			if (!diff) {
+> -				*_ndirents = 0;
+> -				goto out;
+> -			} else if (diff > 0) {
+> -				head = mid + 1;
+> -				startprfx = matched;
+> -
+> -				if (!IS_ERR(candidate))
+> -					erofs_put_metabuf(target);
+> -				*target = buf;
+> -				candidate = de;
+> -				*_ndirents = ndirents;
+> -			} else {
+> +			if (diff < 0) {
+>  				erofs_put_metabuf(&buf);
+> -
+>  				back = mid - 1;
+>  				endprfx = matched;
+> +				continue;
+> +			}
+> +
+> +			if (!IS_ERR(candidate))
+> +				erofs_put_metabuf(target);
+> +			*target = buf;
+> +			if (!diff) {
+> +				*_ndirents = 0;
+> +				return de;
+>  			}
+> +			head = mid + 1;
+> +			startprfx = matched;
+> +			candidate = de;
+> +			*_ndirents = ndirents;
+>  			continue;
+>  		}
+>  out:		/* free if the candidate is valid */
+
 -- 
-2.25.1
-
+Thanks,
+Jingbo
 
