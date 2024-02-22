@@ -1,193 +1,128 @@
-Return-Path: <stable+bounces-23284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58DA485F083
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 05:47:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6926485F0DA
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 06:18:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CB691C215D7
-	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 04:47:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AD821C21941
+	for <lists+stable@lfdr.de>; Thu, 22 Feb 2024 05:18:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F9515BB;
-	Thu, 22 Feb 2024 04:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5774279CB;
+	Thu, 22 Feb 2024 05:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gUZxXtRv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NhErK52/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C4110E6;
-	Thu, 22 Feb 2024 04:47:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC70A7490;
+	Thu, 22 Feb 2024 05:18:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708577267; cv=none; b=rRQxPVuyxySzOI6I0M0UPR6R5gGKn/F55E8+VkuCTup/wygYR//c40OGOv5opj1tHy4a33PD0zOFEUR/2txjGkGQSz6x/gP0Oakwm2+7NL6SFuAJd9vveW5eP6zgbKubYJdJEQmoa3yT7JhKRN1son/Zr6ZD4kC3xS1m0OyZ8Do=
+	t=1708579087; cv=none; b=mnZil/PYjlqh9C1INSMvoiEvi4K+g3yWwR7TmWZzM4AgAlW0nRRcmyOGsA0ucB9IxTcziZz8tiwfv+tDHdGekvh4Ma8a8IgZtPgKtXeYXuR4DV/ZnUBkT6TEMEm7PPyl3NrU4si7OZG49VHXcB1m07IaprHpZsXWvfHyxgCPQDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708577267; c=relaxed/simple;
-	bh=UeNo7Treptz3RUyiQTbwwLEw6a+8/F6tea3I16MzUxc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Eq7i1Vs0oSj939y8P+cOK2G7ULyDICHwzkJFYduktA0X4UiIBjBmtVY7VKdFNSFp6HbsbOGhZcoERgSkgP0m+tUmJHaAuYBUzl9csCpPsizqw+3HyzKX919NjYrwkGdjHYkTfc0kogVaOlPN1Hv/R2P80xjuFBEsXWxUdAnsz8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gUZxXtRv; arc=none smtp.client-ip=209.85.161.49
+	s=arc-20240116; t=1708579087; c=relaxed/simple;
+	bh=E6kxIjupRfQ6whETQdBAa7XObspVL8EosoRw1aQIIVs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=snNlqTUoQMeYt9NX1Y5ScUh9ydz+3294biAkIKGD/2UQuA5EOxVF4fcu+ZGvVUlomhGiMPXUqskaIOjFmO2mtPegcne4qhySUF983BJ50VjYRE5livRBE08IOkMMt8x+kneYmGaRBC9cfNJgfB004Qt1TZZFB+VJtY4JRBoLV3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NhErK52/; arc=none smtp.client-ip=209.85.167.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-595aa5b1fe0so4864510eaf.2;
-        Wed, 21 Feb 2024 20:47:45 -0800 (PST)
+Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-3c17ac08a38so129129b6e.1;
+        Wed, 21 Feb 2024 21:18:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708577264; x=1709182064; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+0AD0YCnQqqjpDGFWW9RzaHFEvNTNgA3R308dgKQBK0=;
-        b=gUZxXtRvgbVGvAOidc1qfrexj0Ae8g9f98Iu64/LILGAGg1sMxYIi+atw6rFFLuMcm
-         FeGJ/d7hMeiIT9KJMX3gyvEuBoPv/Tmasx+2GaaPQUiIFufReOATGRBslaudGTt8g02W
-         IWm6UVT1dPsdHsRi7BEU/faBKIlQBgbgfVUX1cOqqhFfZiuIaD5lyJUIbAabSFJGBk9z
-         ZfzCeLfWq1eRNYtmfO9ws1zHkUJwgtiNsUWCqu3ja3TqRiqe2cOjl1ceVfB4bxRTkZit
-         A3Y9NVqZuIN04tefs/DY70EvGt2QyBsa9OaAH614Y14au08XuyPn4to54zdW9OZRnnkV
-         chig==
+        d=gmail.com; s=20230601; t=1708579085; x=1709183885; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gwERMhLydUQbM63HHAS3nRnQy7Lq2lbonIyWMpCTEio=;
+        b=NhErK52/aMFn3CJL+qC/E2dSdVbwnUrPkpXT2yYuZb8gUsbtz8Cdmic8Ff6ERxg620
+         ovK3u2DrP2xHP0vjIxlXMJsny0Ke9gpSeH4mjuU8if9TNJ+Bj3kcENB6sJ6N2GxOwDOD
+         OPkw9Rj4aBa0oTFb/Gc6WERtNAZkfLD6anaOFkIZgKuaZBRyJRPrKQuXXvaDcvl1EfSn
+         Fs6PodaOpceHTakJz2AgmH9xWcLNueAdtNP5T+yjwNQyoiy1P9rCwYiueXMxYX0fVM/a
+         DqJMHHoVK5lhbv7BuCVj3LiIgGcwNTZwPZCZ384f/6gY+URKA95y+vZ535vLnjZm50nZ
+         ON0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708577264; x=1709182064;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+0AD0YCnQqqjpDGFWW9RzaHFEvNTNgA3R308dgKQBK0=;
-        b=a99jMzKZ/ACwKNak0idrkenFZbu9gzxuhBk1SAXwLqFcNNBgaFSerrTEGtYQH7wULl
-         qYAbFYoIFOKLBQX/gH1X43TjS0xlL1IScAp+032/6KKWPUMie+gEc11eNyDna1cczIi+
-         kfmHr0Y+cm37wLZKlYHAxdUwLg/J9xHKmDdfDihpjqZp/dymkZBFvU8Z+v+4yWfOgw+p
-         hoPNJWo2OYFDoWBhE6mqhgj4fAgnT9/COILObn+SkRw86Xf/PMfev+xXSTX1JbB9RaJN
-         Jg25gdGkTfRYp6t2bQxOA6fubOhJ7mDmGI73xDRmYu2OWnKQTlKrFS/nOwAAT0GXDTvI
-         EErw==
-X-Forwarded-Encrypted: i=1; AJvYcCU4UcVGiNTd6D7zZZyQL+rQqtsyeokuKsBUn0h7LFeYsid85bX4fkSG+dIueIKZEyZTQy0380/CEstudOY4h/PL3OgwCH1NOYm1R2hveThL3UX+Gq8zSGSjjx2T/d0KA31j9NCj1/+88qhDC6YRVnpzxOK/Y4nvBJY3rRyQjA==
-X-Gm-Message-State: AOJu0YxlF9MbMYaDIzhK8aPUEbCPL2aAbNtxOpVjdgwW/BcN5YMQslC3
-	JE4WQowVvJpVZoYRGBnAZpyE5QS9MksxnOMalpCwc40XdJmiq4CqZ2BanH7LeFid2KahQ2zoDAO
-	0+YZulUhO3gGVH0TbsrV+DmVcUNLGfcuk
-X-Google-Smtp-Source: AGHT+IFT4RsENCibuAcCOiaUsVyVQ3wUtPOaylT8Cu8LEgQ8tuVRqR0bf6JV5jnLIMhZ0nuBWenDTxAl3yi1UozFGBE=
-X-Received: by 2002:a05:6358:5919:b0:176:cf18:d0bb with SMTP id
- g25-20020a056358591900b00176cf18d0bbmr21288902rwf.13.1708577264582; Wed, 21
- Feb 2024 20:47:44 -0800 (PST)
+        d=1e100.net; s=20230601; t=1708579085; x=1709183885;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gwERMhLydUQbM63HHAS3nRnQy7Lq2lbonIyWMpCTEio=;
+        b=Y4iqdAiUt+UgF5/0WfH/R6pkNsvPU97U7fUR9pgj9P0knxlUlB7A47SWmxpAjZmUh7
+         MXDV9FUU5fs25lxjb8LCzjhFBtguyBgMcU2vo4ehfglXz6WZkGDxUxMm7XDn4ZESXOVD
+         HiaIoJUuQjLklbBLc1grJUrJ+OAurN3ZejjgGUBiBWse0uNCOUw1pSPSEugrFyd0YHLh
+         W190ngrM2vO619JuudSpxwo21tN23SsHPeClLCXibpuRl2/VluIARO2zi7YYC8eiQxby
+         TlCsgFrEMmo2bl811OlNTIj4qXGsecx47SZkeE3vDr2TdEuydfWziVZxQif7lXZ1vvc+
+         Ebng==
+X-Forwarded-Encrypted: i=1; AJvYcCVNYMeQ56/BjEGHEwk/vS1Mp+rAqvR+FPPfXS8lTtor4mIr4iZX6k3aiFYwAxnpY3FQxL5JyD7vTVnox80zioADueSl9GhZt9tyCvtYD6bC07tUpgRfzMJYfGhJAQtNzn1Mc7vd
+X-Gm-Message-State: AOJu0YyOGrityr6CyqKl26pRK3mCfFQafleFyO+Px13FZe91nXQtTaG2
+	GdwU5Bt9Hze+J/IruD/j0NDHBJM37dikk7jhItsRWSdjFQNf9OYz
+X-Google-Smtp-Source: AGHT+IEtdRoPxkdmxHgLnLRefjYoG5PSBEkg4YZ8kfOrcvTyfRPEb3/2j3ZwvzmyIHFUKJq6GH54Kw==
+X-Received: by 2002:a05:6808:2f08:b0:3c1:7aa3:166e with SMTP id gu8-20020a0568082f0800b003c17aa3166emr1121361oib.24.1708579084639;
+        Wed, 21 Feb 2024 21:18:04 -0800 (PST)
+Received: from archie.me ([103.124.138.155])
+        by smtp.gmail.com with ESMTPSA id c18-20020aa78812000000b006e1464e71f9sm7701488pfo.47.2024.02.21.21.18.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Feb 2024 21:18:03 -0800 (PST)
+Received: by archie.me (Postfix, from userid 1000)
+	id CCF411848BD3F; Thu, 22 Feb 2024 12:18:00 +0700 (WIB)
+Date: Thu, 22 Feb 2024 12:18:00 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com
+Subject: Re: [PATCH 6.6 000/338] 6.6.18-rc2 review
+Message-ID: <ZdbZCP-Tiv3-43L_@archie.me>
+References: <20240221125953.770767246@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240131042509.4034723-1-jcmvbkbc@gmail.com>
-In-Reply-To: <20240131042509.4034723-1-jcmvbkbc@gmail.com>
-From: Max Filippov <jcmvbkbc@gmail.com>
-Date: Wed, 21 Feb 2024 20:47:33 -0800
-Message-ID: <CAMo8BfLXW1tYG9bNQZciBC+NSS+1debXLSYkjNOQe200+aWFEg@mail.gmail.com>
-Subject: Re: [PATCH v2] kbuild: tools: drop overridden CFLAGS from MAKEOVERRIDES
-To: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
-	linux-gpio@vger.kernel.org
-Cc: Jiri Olsa <jolsa@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>, Kent Gibson <warthog618@gmail.com>, 
-	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="mGK27+qIopmdpltJ"
+Content-Disposition: inline
+In-Reply-To: <20240221125953.770767246@linuxfoundation.org>
+
+
+--mGK27+qIopmdpltJ
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Ping?
+On Wed, Feb 21, 2024 at 02:01:21PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.18 release.
+> There are 338 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
 
-On Tue, Jan 30, 2024 at 8:25=E2=80=AFPM Max Filippov <jcmvbkbc@gmail.com> w=
-rote:
->
-> Some Makefiles under tools/ use the 'override CFLAGS +=3D ...' construct
-> to add a few required options to CFLAGS passed by the user.
-> Unfortunately that only works when user passes CFLAGS as an environment
-> variable, i.e.
->   CFLAGS=3D... make ...
-> and not in case when CFLAGS are passed as make command line arguments:
->   make ... CFLAGS=3D...
-> It happens because in the latter case CFLAGS=3D... is recorded in the mak=
-e
-> variable MAKEOVERRIDES and this variable is passed in its original form
-> to all $(MAKE) subcommands, taking precedence over modified CFLAGS value
-> passed in the environment variable. E.g. this causes build failure for
-> gpio and iio tools when the build is run with user CFLAGS because of
-> missing _GNU_SOURCE definition needed for the asprintf().
->
-> One way to fix it is by removing overridden variables from the
-> MAKEOVERRIDES. Add macro 'drop-var-from-overrides' that removes a
-> definition of a variable passed to it from the MAKEOVERRIDES and use it
-> to fix CFLAGS passing for tools/gpio and tools/iio.
->
-> This implementation tries to be precise in string processing and handle
-> variables with embedded spaces and backslashes correctly. To achieve
-> that it replaces every '\\' sequence with '\-' to make sure that every
-> '\' in the resulting string is an escape character. It then replaces
-> every '\ ' sequence with '\_' to turn string values with embedded spaces
-> into single words. After filtering the overridden variable definition
-> out of the resulting string these two transformations are reversed.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 4ccc98a48958 ("tools gpio: Allow overriding CFLAGS")
-> Fixes: 572974610273 ("tools iio: Override CFLAGS assignments")
-> Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
-> ---
-> Changes v1->v2:
-> - make drop-var-from-overrides-code work correctly with arbitrary
->   variables, including thoses ending with '\'.
->
->  tools/gpio/Makefile            | 1 +
->  tools/iio/Makefile             | 1 +
->  tools/scripts/Makefile.include | 9 +++++++++
->  3 files changed, 11 insertions(+)
->
-> diff --git a/tools/gpio/Makefile b/tools/gpio/Makefile
-> index d29c9c49e251..46fc38d51639 100644
-> --- a/tools/gpio/Makefile
-> +++ b/tools/gpio/Makefile
-> @@ -24,6 +24,7 @@ ALL_PROGRAMS :=3D $(patsubst %,$(OUTPUT)%,$(ALL_TARGETS=
-))
->  all: $(ALL_PROGRAMS)
->
->  export srctree OUTPUT CC LD CFLAGS
-> +$(call drop-var-from-overrides,CFLAGS)
->  include $(srctree)/tools/build/Makefile.include
->
->  #
-> diff --git a/tools/iio/Makefile b/tools/iio/Makefile
-> index fa720f062229..04307588dd3f 100644
-> --- a/tools/iio/Makefile
-> +++ b/tools/iio/Makefile
-> @@ -20,6 +20,7 @@ ALL_PROGRAMS :=3D $(patsubst %,$(OUTPUT)%,$(ALL_TARGETS=
-))
->  all: $(ALL_PROGRAMS)
->
->  export srctree OUTPUT CC LD CFLAGS
-> +$(call drop-var-from-overrides,CFLAGS)
->  include $(srctree)/tools/build/Makefile.include
->
->  #
-> diff --git a/tools/scripts/Makefile.include b/tools/scripts/Makefile.incl=
-ude
-> index 6fba29f3222d..0f68b95cf55c 100644
-> --- a/tools/scripts/Makefile.include
-> +++ b/tools/scripts/Makefile.include
-> @@ -51,6 +51,15 @@ define allow-override
->      $(eval $(1) =3D $(2)))
->  endef
->
-> +# When a Makefile overrides a variable and exports it for the nested $(M=
-AKE)
-> +# invocations to use its modified value, it must remove that variable de=
-finition
-> +# from the MAKEOVERRIDES variable, otherwise the original definition fro=
-m the
-> +# MAKEOVERRIDES takes precedence over the exported value.
-> +drop-var-from-overrides =3D $(eval $(drop-var-from-overrides-code))
-> +define drop-var-from-overrides-code
-> +MAKEOVERRIDES :=3D $(subst \-,\\,$(subst \_,\ ,$(filter-out $(1)=3D%,$(s=
-ubst \ ,\_,$(subst \\,\-,$(MAKEOVERRIDES))))))
-> +endef
-> +
->  ifneq ($(LLVM),)
->  ifneq ($(filter %/,$(LLVM)),)
->  LLVM_PREFIX :=3D $(LLVM)
-> --
-> 2.39.2
->
+Successfully compiled and installed the kernel on my computer (Acer
+Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
 
+Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
 
 --=20
-Thanks.
--- Max
+An old man doll... just what I always wanted! - Clara
+
+--mGK27+qIopmdpltJ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZdbZAwAKCRD2uYlJVVFO
+o3GKAQDqIwME+Q56DodiHbWqEX1GMJbRA2DZLnntnw6o9SkpRgEAhKw/eq3y+H3f
+gsXpYGMe/dxDlFCt4pNiQMpOwXT8CAE=
+=ij2T
+-----END PGP SIGNATURE-----
+
+--mGK27+qIopmdpltJ--
 
