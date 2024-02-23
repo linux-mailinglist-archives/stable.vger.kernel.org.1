@@ -1,91 +1,110 @@
-Return-Path: <stable+bounces-23479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4BFD86135B
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 14:52:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E63A686146D
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 15:46:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 859F6B25C92
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 13:52:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 124551C22C1A
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 14:46:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DFE47F7E8;
-	Fri, 23 Feb 2024 13:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BEE321364;
+	Fri, 23 Feb 2024 14:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="Micciz/v"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aCPiZqGI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2F07EEEF;
-	Fri, 23 Feb 2024 13:52:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E6622329;
+	Fri, 23 Feb 2024 14:45:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708696341; cv=none; b=U0yM+wKqCx8+FXudgM7Jjk2gPNqaELIJUNqpgCEvBfbwzqvTTDd+KyRBnhe5koE5XBNUCxQBHhEjsFjohTPzjMmUsVP+r/9CCY3yh8opvN49eYjjuroASbgrtnYAgiJo3U4bGSDBuO8jm4mIxxhw6684/jAgQPTjakLGdbO3ANc=
+	t=1708699525; cv=none; b=lZUiI6A1yqBFqOaxWt7hRj9srJBV7wJiZwLglO9F03B30oaeF3tvFC/2IjPjdjAosaBmDCrnN3tsZTWtG6k+FWF5QSFPHJmZ0CYfnzK+YUzQUjQAMOomk8uNs6wJoA91OT7iz9/d+NtWXBaFP0wKE+1+rd0zET5NZGvy/HYnNA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708696341; c=relaxed/simple;
-	bh=SSbcekuKU37u4iVwr4v1BamUBWLf7HRQlSNIexqrmUg=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=fdNBT3UkifCUMpy8GNky160ZGdCNwpVBe2B8bqix1G7sUm3V+giCmCCcsrMQRpYq1HmcKUVbwT6P4Kp/mIbUP/n/PWEcPZOwsXOFkVhBPpwOHTbBwvfS6RIfKujy3/NTZTHTr9Q+/ivX14YqjwHkEtCKj5f0idq4zp7q9ZNQhMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=Micciz/v; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from [192.168.1.114] (unknown [185.145.125.130])
-	by mail.ispras.ru (Postfix) with ESMTPSA id C677740F1DCF;
-	Fri, 23 Feb 2024 13:52:12 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru C677740F1DCF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1708696333;
-	bh=wGQQwmvAj0Pr85DaZXbE5myrycMIAmGkPsozBb2dZhw=;
-	h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-	b=Micciz/vvQ6zbKhkOD8kAazqyBmZsTQPv1bkvQ6s8tniNnEx6m3nVMHY919s8ZRVA
-	 56Wovr8rexRyJtOl/LcQz/pfXCA/+ZvdHHcmdfFLc1Ei/Vy22anjMIASgFfhK5s4da
-	 5w7jZ28VBNtO764szi9zMIxZdTSZgW4RKfgeaI54=
-Subject: Re: Linux 5.10.210
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
- torvalds@linux-foundation.org, stable@vger.kernel.org
-Cc: lwn@lwn.net, jslaby@suse.cz
-References: <2024022358-routine-selector-0770@gregkh>
- <2024022358-cope-dividend-760c@gregkh>
-From: Alexey Khoroshilov <khoroshilov@ispras.ru>
-Message-ID: <7806f609-35df-747f-1166-b83df8c25d82@ispras.ru>
-Date: Fri, 23 Feb 2024 16:52:11 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+	s=arc-20240116; t=1708699525; c=relaxed/simple;
+	bh=FYS368qujw0WANetUJ0YWVVEYUneG/dCxdwk6stMB3o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ljzmNRBwhWR9NY8L3h3ZqJvH7hkp4Bg1ArpdOf7CNY4ojcEHaJRMgPXG2PZ8LaoqBkai/WqaPp8A3FZOXDO8Jz6vJBvEPC1fulFsGiIZlM8mi1A3zbHG4VeCtf3NV/vzoRbpmDIDQbwOuX8X6XlKhUXDwpB1ZH9E50hl3ex0xTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aCPiZqGI; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1dc0e5b223eso7151005ad.1;
+        Fri, 23 Feb 2024 06:45:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708699524; x=1709304324; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FYS368qujw0WANetUJ0YWVVEYUneG/dCxdwk6stMB3o=;
+        b=aCPiZqGIS+AKK5+7Zad6rGgsXk+4VkEKBkDY/PKQGqIzFAnf5FTIfk7usvQ/6JBLZb
+         YDdy3NYTNfaWiwooUxIyBacSdkId7POMChbaLxvKCny/VoVQrqA+W+mrvofzL2K8JrD+
+         MG1zj81k/+4pNEgnp/um/l7+2VOz4yPMUbXGh3DF0ncugE6a3Jb9HB4S+90eKV0H3T1m
+         f5HogaACDAU0+CWr28Eq4uHl6HEryvbipW0PavQbRI4RBPEezp6yH+tvoXnCb4B8MS9e
+         B/zp5BRBAThQfYji3tvGQaeqEC1i5pLH816LXgHbDu8KeV5rn+87EpJDx1Q3hPX9N0J4
+         pXog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708699524; x=1709304324;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FYS368qujw0WANetUJ0YWVVEYUneG/dCxdwk6stMB3o=;
+        b=SpjAmB7gVLi0Y6Ubj9z3lPmumaTaO4rE7txSRUca7mrEWzJrHA69eKuk1YPGMj93Ai
+         eb3FV4Q2xlrgKdYTgAXANL9PdGbVBya+6xit6gzzSbMz0wVl/OgTC5PktQX1X0RTDmVl
+         8mKovSyGXZ6+zEQTrkAVwNq7LeUKSC08zXRrbk2lNrB7htoxd/lPKF7nAXi0inkjeug2
+         Wtj4BYRgo1BP/4NYPHz8jP5Ub094AgcHsv2gStDFmji+736IIMmjEBdibjzyvIpFBxMI
+         WEDaiLaoIBp2QYJdrwuVpRPqm+qrKAbtHTmWUw2jGHp7T7UR0qU/MO5qo0pKDdiTx/FF
+         sTPA==
+X-Forwarded-Encrypted: i=1; AJvYcCVYiA+a8BOgOS3zJuREVRO+Ma0pQLnhP9VhQVs688bvfBPqn+/Ec5eM0NcSAtGIHCKM/cQhv5AMScKhblfY9uKx6KpVwPNJyrCnHRcIOMhDpO0vomr5QutW2qYlNEws2n8mgXT49j1ykrbda4UdNx2VRoRTm7orqS2nHVpqdHB0EjMHLab3nLtX2hJ/bKFXSrvQiSQqVj6J5ou8HbEDt6Y=
+X-Gm-Message-State: AOJu0Yz7OZh0s9Cm0X/qDHfcrw8nKAxB7atBS2FD2S0KsMDPuDH5ft0H
+	H7pGpX+6q6WExfV2BPlR2n4apklhc5ms0q/VK2aqcV/fUbeWuSg37rNa8wQFzHgpsJCMaZ9+nss
+	dOEeAggfDT5TQVN0tmAyd9nmi+gM=
+X-Google-Smtp-Source: AGHT+IGQh4Gasx98EwmKbpWjx7oNjPOHi30hzceQIltFlR3Zv8xEu09Tzkr96XjYz57W4Vc5AnxGSufwQh5QIluHSa4=
+X-Received: by 2002:a17:902:f811:b0:1d9:7095:7e3c with SMTP id
+ ix17-20020a170902f81100b001d970957e3cmr1600961plb.57.1708699522325; Fri, 23
+ Feb 2024 06:45:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <2024022358-cope-dividend-760c@gregkh>
-Content-Type: text/plain; charset=utf-8
-Content-Language: ru-RU
-Content-Transfer-Encoding: 7bit
+References: <20240223-leverage-walmart-5424542cd8bd@spud> <20240223-perjury-preshow-fc2cf73d552e@spud>
+In-Reply-To: <20240223-perjury-preshow-fc2cf73d552e@spud>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 23 Feb 2024 15:45:10 +0100
+Message-ID: <CANiq72=mCnm0mKOw5K44PmZ+jF=67jxEEkcXP-E0O8CaUrps=w@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] rust: make mutually exclusive with CFI_CLANG
+To: Conor Dooley <conor@kernel.org>, Matthew Maurer <mmaurer@google.com>
+Cc: linux-riscv@lists.infradead.org, Conor Dooley <conor.dooley@microchip.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Tom Rix <trix@redhat.com>, 
+	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, stable@vger.kernel.org, 
+	Sami Tolvanen <samitolvanen@google.com>, Ramon de C Valle <rcvalle@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 23.02.2024 11:18, Greg Kroah-Hartman wrote:
-> 16ad71c250c180a095f9d11b02579b81a47aaa84
-> diff --git a/Makefile b/Makefile
-> index a4b42141ba1b..613b25d330b0 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -1,7 +1,7 @@
->  # SPDX-License-Identifier: GPL-2.0
->  VERSION = 5
->  PATCHLEVEL = 10
-> -SUBLEVEL = 208
-> +SUBLEVEL = 209
->  EXTRAVERSION =
->  NAME = Dare mighty things
->  
-> 
+On Fri, Feb 23, 2024 at 2:38=E2=80=AFPM Conor Dooley <conor@kernel.org> wro=
+te:
+>
+> configuring a kernel without symmetrical support for kfi.
 
-Looks like something goes wrong with scripts here.
+Nit: typo.
 
---
-Alexey Khoroshilov
-Linux Verification Center, ISPRAS
-web: http://linuxtesting.org
+> This probably needs to go to stable. The correct fixes tag for that I am
+> not sure of however, but since CFI_CLANG predates RUST, I blamed the
+> commit adding rust support.
+
+Cc'ing Matthew et al. in case this is a problem for them, but I guess
+we can relax it later as needed.
+
+Cheers,
+Miguel
 
