@@ -1,79 +1,99 @@
-Return-Path: <stable+bounces-23516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA0938618CD
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 18:05:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DFB7861A78
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 18:49:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 270981C21C0D
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 17:05:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E9D51C258B4
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 17:49:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3681D20DF8;
-	Fri, 23 Feb 2024 17:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2925B14CACD;
+	Fri, 23 Feb 2024 17:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IR2YFhgL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W2DiHODe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78C51292DF;
-	Fri, 23 Feb 2024 17:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D468314CAC6;
+	Fri, 23 Feb 2024 17:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708707940; cv=none; b=A0Wwlr7so9e5hffEmyDnclNizFDPYiVgeHG9UVvl//b5IR+TcXj2DJF///bEwWQ2E1wLxkIopOAjlaACHvLJ5ZVZDIpRIFsy1WgiDzXn2D6yHWqqQXsl3HvmL8KvIwZ91gk1/CZSNCRAwI4pCnTqz34MW+VGG0ZIgac4pge8I9E=
+	t=1708710199; cv=none; b=bWVh2iz3cdAd1hOa+XKWU5KVCB7toCReQLFikXomdgkR7LPWVI6E5bbiCpsBgggWivQ6cnSU96H2xPk1udCzIM0xahoTEX6KOx2AWILSVUa3EL/Br8oj2OY+H/+lNT5jNkROCPDuWhqbuJkzE8PL0p28NwF6JM37sVRR/VyAFVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708707940; c=relaxed/simple;
-	bh=johfqZ8/uBnH7uqzkmV6AcXLgah6W50lRu9i7z7bF0E=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=SgRPlUo3HU00PhW9Uzl3R1+1gbDK14ZGN2cA8wNpiuHZ8QLrsYFiF+45JXA74EG7t/4VBGDMduzx4Dak3cRPDaTV8phGoMLtosfP+4to86D4vTRO0DnNKmtRyDFei+7fhtW2zt6JGRjleToHhE4BTyrR1lLn974HES8AdlUggZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IR2YFhgL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53D13C433C7;
-	Fri, 23 Feb 2024 17:05:38 +0000 (UTC)
+	s=arc-20240116; t=1708710199; c=relaxed/simple;
+	bh=h0Z6febrHHLV18pVzOViZljOJbK5UtwzTaH1fctKaJ0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gTioDZt3cdDQ9wblaFfytJ2Re3LeFz8fVyzGqeBqXLqQMIxrLxMJ+j5zNZR9JIsSovFNxyGkCuGZaJqKSrZAtFdhGd9kaqRE8hTFdge0v5XSGljrhCuTf4Oj5AHobjxVc1AtZ8Hg/l6EZvbMEKuy+1gU/Kij4qmOVanxO5gs1ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W2DiHODe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0130AC433C7;
+	Fri, 23 Feb 2024 17:43:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708707939;
-	bh=johfqZ8/uBnH7uqzkmV6AcXLgah6W50lRu9i7z7bF0E=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=IR2YFhgLttzGw771mx97cV3koKjdmGLoe8PXtURoC8ocNMzDg2SeGOnE44JQbI/qg
-	 qC62s9C4qsnuVrYtv8LKlgznrdUos0aymlZIw6JZQEBHOEWmiWOanHKmXWiuf5Vpr5
-	 X6xbtccmiE8mJnwMhWYyI+OTxoep0TKGVTvxixRAGjLQ25vTXxh5oP1VXZkKI6E8Af
-	 42TapFVVYiFuzzuGhhSqjzKGQKcan6CusmgKoaB680YWovz/TWMDWF1rkbJ5iQ5ils
-	 ohufe5FSgPIJqVViAG/Zi0I8NVFrhsKTWIzmJ89ztnR8azpyt9rHnujB2zVmNPM9Mr
-	 de7X9Yecw7u8Q==
-From: Lee Jones <lee@kernel.org>
-To: linux-kernel@vger.kernel.org, 
- "A. Sverdlin" <alexander.sverdlin@siemens.com>
-Cc: Lee Jones <lee@kernel.org>, Andreas Kemnade <andreas@kemnade.info>, 
- stable@vger.kernel.org
-In-Reply-To: <20240221143021.3542736-1-alexander.sverdlin@siemens.com>
-References: <20240221143021.3542736-1-alexander.sverdlin@siemens.com>
-Subject: Re: (subset) [PATCH] mfd: twl: select MFD_CORE
-Message-Id: <170870793806.1758312.295203260299451071.b4-ty@kernel.org>
-Date: Fri, 23 Feb 2024 17:05:38 +0000
+	s=k20201202; t=1708710199;
+	bh=h0Z6febrHHLV18pVzOViZljOJbK5UtwzTaH1fctKaJ0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=W2DiHODe4yWCvhz6ISI0S5PdnMER7aKAtq/IhRypfHKMcyRzzcBciIyH4OOZ7bkKp
+	 lqKo1rjk9vxhrP89HRF8wEU9BCEy6TKZ/rMf/UpSeIBbCHDqTpO3ZIyxiWO+W7iWYH
+	 JZ92LpswcV81kmCbWb+zneIFpiP7RMLCnU6kJh1rJcPebc6fT9xmxN7qkHtk/ddR+3
+	 dUjFFlW2z2t6A/QZFg0FZ9n/8dHROZRzqmj5DFFT/DdWP5lZVJftnzZCKKqiv0ju0R
+	 phxvZzUQc0gxPspWdOXK+4I2AmZb48g6BBEPHB2VAgkq3eDf6BY828HFv2MZ3anQ+3
+	 WJGVkKaKs88gQ==
+Date: Fri, 23 Feb 2024 17:43:13 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	allen.lkml@gmail.com
+Subject: Re: [PATCH 6.1 000/206] 6.1.79-rc2 review
+Message-ID: <20240223-conceded-ungraded-3bf06dcac60b@spud>
+References: <20240221130223.073542172@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.12.4
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="N8inhLCaiHO09vQN"
+Content-Disposition: inline
+In-Reply-To: <20240221130223.073542172@linuxfoundation.org>
 
-On Wed, 21 Feb 2024 15:30:18 +0100, A. Sverdlin wrote:
-> Fix link error:
-> ld.bfd: drivers/mfd/twl-core.o: in function `twl_probe':
-> git/drivers/mfd/twl-core.c:846: undefined reference to `devm_mfd_add_devices'
-> 
-> 
 
-Applied, thanks!
+--N8inhLCaiHO09vQN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-[1/1] mfd: twl: select MFD_CORE
-      commit: 3bb36528d46e494987ee5e9682d08318928ae041
+On Wed, Feb 21, 2024 at 02:03:19PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.79 release.
+> There are 206 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
---
-Lee Jones [李琼斯]
+I know I am late, the perils of being sick alongside manual reporting,
+but better late than never.
 
+Tested-by: Conor Dooley <conor.dooley@microchip.com>
+
+Thanks,
+Conor.
+
+--N8inhLCaiHO09vQN
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZdjZMQAKCRB4tDGHoIJi
+0qCHAP9Av/dZq0bSBqxiUuafVJSeiV3qkeWsa4l8qoRKEX75vwEA6u43CalY+eUq
+B0WRcDYuTm5F8OVb9kh5SfSHec7k/gg=
+=E5Zu
+-----END PGP SIGNATURE-----
+
+--N8inhLCaiHO09vQN--
 
