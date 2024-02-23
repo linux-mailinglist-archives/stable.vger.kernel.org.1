@@ -1,97 +1,124 @@
-Return-Path: <stable+bounces-23519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E42C861A8A
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 18:50:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0158A861C25
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 19:51:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18A1228630D
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 17:50:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB7DF1F239DD
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 18:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 077DC1419AC;
-	Fri, 23 Feb 2024 17:47:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42951448DE;
+	Fri, 23 Feb 2024 18:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mh9u3Exs"
+	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="rzQC+UUs"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B650F141993;
-	Fri, 23 Feb 2024 17:47:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE00142645;
+	Fri, 23 Feb 2024 18:50:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708710460; cv=none; b=GjTqEc8pfzFz/LFRWTp1fQuVFNrvLbxz4A68wWVgAXM5TxuG+YgpdzXWYDV4PsZBPgOdw0EnpxiYIDbI7omnj/9McKtT3Eztvkrls3pRnLB0ePYRAlMKS8i/248vIsQpz8533EQYM1f8AiXSfRUtqKLby0xeXuGEPB23QGoCoUQ=
+	t=1708714243; cv=none; b=uMB2OW16FlCTbzolU4RqWeBEU+I59v8zSjEuDB10N7d6pA2Wj5F7kpKJpHBgaBnblLN6NFxC0z86Rfx5TKFbzoQdcu2TG6lxPnyMtzTWO8OulKuO8Uvlw5EV4jrrjHwCuAKV2D4aQ1pXr0554+VxU+hezn6sYE2Rey//H+onXoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708710460; c=relaxed/simple;
-	bh=uyN4IXL3t5aphJYztaDQ+uPEstUMDnIE+PmrsESAGI8=;
+	s=arc-20240116; t=1708714243; c=relaxed/simple;
+	bh=DhL+o3TBv9wTdewu3RZDH83BAQtweFRzwwjac4VyAmQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RbaLzmug8P+VMktakgGtgqnF5AqtqF5v18Bf6VONXMDepleOHtm0qHNa2VvdCZDZsJqjBMu1fL3jg7lOdYLcj4sx0o6b6my7SRfMKc1Sm4bPn1kLAurdTCXkEg9E94lBn+uFRCKhOY9SCCut4xr9NS6RTxpMsFNEzcdU9Ypn3vE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mh9u3Exs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51935C43390;
-	Fri, 23 Feb 2024 17:47:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708710460;
-	bh=uyN4IXL3t5aphJYztaDQ+uPEstUMDnIE+PmrsESAGI8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mh9u3Exslu0MqDrVFqUUkB2SDK8mmTevN16BWFQ9/MwkTriUDHh3mgdz8dgWhRDQI
-	 Zteohm4vpDosBFvv604oJM+yQCJMff92KkSjf/0ox1iHbffkMMbQuarRcihvjX1xJg
-	 8y+FONY94nucnADTXins3nK8SzFUsGk7uYDWyj7hVmFWKGKFGeOAE6Thk1ON4dc0Oj
-	 FE1fp8g59xbrwDSTUz4aVvDQtolbTms5tO9vjaqAFsOJmNeGlt952WqpWMebxZBca5
-	 SDLm9erxotX8nshRESd9rqfnAmWANy9s8EYyVxDulL++9EgxcczMjmNi9/vJj2YdPK
-	 lb9MsdWiM8vXA==
-Date: Fri, 23 Feb 2024 17:47:35 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	allen.lkml@gmail.com
-Subject: Re: [PATCH 6.6 000/338] 6.6.18-rc2 review
-Message-ID: <20240223-speckled-active-1efb9e182114@spud>
-References: <20240221125953.770767246@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ptjRk73cQdlnjfmzMtpBnAlHusR1fAy6RcLRZkBrsoLrdpVXsxgT32kPYqWxaIT6Z5DvzfaDBPja21Dx38Z0PHSXTk0gkBMBAeT7IaGAawZnP+9Zf/k/FSM19jGk4IrbB/qSCRj871lZJVGEUe+a7atw3UcClQ55V9XmhQ5J7/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=rzQC+UUs; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id D19971C0081; Fri, 23 Feb 2024 19:50:36 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
+	t=1708714236;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=N5THRV7c4OguqZqtxRyAd4aFwhAeBHnTNbl2Gj2YB8I=;
+	b=rzQC+UUsFYyriraM5TQkTbiALnJrX/ttY9RMMeRia5fd/0YPxmstJoPqHuzpCzMq0nn4JG
+	+jtXtMON8C6dPIb9W53Qp5ujdt3dvfI5WOqwOHCbMWA4UZqmSHiqToNBUkxjVHHZiSakkt
+	LW8x54za/0EZbqjE+SMKhpXYbUVXf40=
+Date: Fri, 23 Feb 2024 19:50:36 +0100
+From: Pavel Machek <pavel@ucw.cz>
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Vlastimil Babka <vbabka@suse.cz>,
+	kernel list <linux-kernel@vger.kernel.org>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Oleksandr Natalenko <oleksandr@natalenko.name>,
+	Jiri Benc <jbenc@redhat.com>, Sasha Levin <sashal@kernel.org>,
+	stable@vger.kernel.org,
+	Thorsten Leemhuis <regressions@leemhuis.info>
+Subject: Re: stable-kernel-rules was Re: fs/bcachefs/
+Message-ID: <Zdjo/D8dZ/gJ4vz4@duo.ucw.cz>
+References: <g6el7eghhdk2v5osukhobvi4pige5bsfu5koqtmoyeknat36t7@irmmk7zo7edh>
+ <uknxc26o6td7g6rawxffvsez46djmvcy2532kza2zyjuj33k7p@4jdywourgtqg>
+ <2024022103-municipal-filter-fb3f@gregkh>
+ <4900587.31r3eYUQgx@natalenko.name>
+ <2024022155-reformat-scorer-98ae@gregkh>
+ <aaf2f030-b6f4-437b-bb4e-79aa4891ae56@suse.cz>
+ <ZdeeKiTXc7WidRcs@duo.ucw.cz>
+ <bhqwmyfmd3a5mgsdbfom6hz2cvhf75felzf2bu3aiusr6f3ael@6qo7buimzot2>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="xV04cpaxN+od26Hl"
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="+wZgcwm10bI8HAca"
 Content-Disposition: inline
-In-Reply-To: <20240221125953.770767246@linuxfoundation.org>
+In-Reply-To: <bhqwmyfmd3a5mgsdbfom6hz2cvhf75felzf2bu3aiusr6f3ael@6qo7buimzot2>
 
 
---xV04cpaxN+od26Hl
+--+wZgcwm10bI8HAca
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 21, 2024 at 02:01:21PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.18 release.
-> There are 338 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Hi!
 
-Better late than not at all,
-Tested-by: Conor Dooley <conor.dooley@microchip.com>
+> > There seems to be just one rule being observed: "It or an equivalent
+> > fix must already exist in Linus' tree (upstream).". Every other rule is
+> > broken pretty much all the time.
+> >=20
+> > AUTOSEL is a problem.
+> >=20
+> > Plus there's problem with dependencies -- if a patch A is need for fix
+> > B, the rules pretty much go out of the window, huge patches are
+> > applied, whitespace fixes are applied, etc.
+> >=20
+> > There are even known-bad patches being applied, and then
+> > reverted. Greg explained that it heps his process somehow.
+>=20
+> This seems to be a pretty consistent theme theme - thins are done baesd
+> on whatever makes Greg's process easier, not input from the people
+> stable ought to be working with. Pretty questionable set of priorities
+> if you ask me.
 
-Cheers,
-Conor.
+Well, I'd not mind stable process following the documented rules.
 
---xV04cpaxN+od26Hl
+But fixing the documentation to match the reality would also be an
+improvement, because some people actually read it and expect it to be
+followed.
+
+Best regards,
+								Pavel
+--=20
+People of Russia, stop Putin before his war on Ukraine escalates.
+
+--+wZgcwm10bI8HAca
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZdjaNgAKCRB4tDGHoIJi
-0mpeAQDUt1Ob3uZIlmZp0WzJOE6wUBLHijO+TLBL8+rzdPERygEAtO7j95RUzF/b
-C6dbfQb+evE/c4GyejidhEFBa/7cdwk=
-=7/eK
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZdjo/AAKCRAw5/Bqldv6
+8hT1AKCNAauh3IxGbhZqKnYZ40ZpkG3lCQCfY8dSbOtuGWBuqkhzTC2wX47Wptw=
+=5ekV
 -----END PGP SIGNATURE-----
 
---xV04cpaxN+od26Hl--
+--+wZgcwm10bI8HAca--
 
