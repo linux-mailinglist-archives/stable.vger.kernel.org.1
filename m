@@ -1,256 +1,102 @@
-Return-Path: <stable+bounces-23437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0140A860B9F
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 08:54:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B952E860BB4
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 09:07:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 798731F22BC2
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 07:54:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA6931C2250B
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 08:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E6216419;
-	Fri, 23 Feb 2024 07:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C250168D9;
+	Fri, 23 Feb 2024 08:07:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="t5wfrjZC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2C813AF3;
-	Fri, 23 Feb 2024 07:54:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06FA4125AF;
+	Fri, 23 Feb 2024 08:07:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708674867; cv=none; b=Tc3jjrSeJlFYGkfQSYMZe3nvlaX5Xjj6wOv2pCySfWs/lpZsIDQ4WIopC0bnXwySfLv4OE0q2gOIFP4DNx9iYRAbrOswk7YI9oK0HZcze6jJyLFjuFOX3MWnTu0irJfTUkQS3aXGXMuFI8t/qbl+8km3jxRcW97kmaPtlHZKMQU=
+	t=1708675666; cv=none; b=EIT3Qh3oSIc8clGSlDb0PgaApcRa1JJiTC/QC+2EKxXQaUK3MzjJiAIB0Aft/fWcZeqQnv9S4k2mcdxMJBHlr0wL6hiRf6THTHOn3+9mRtH8BEf5aIyKZtdcA0XWDNmlUSdtcfQjO/fRj2O7VSAMfELH5v63fGpEVocxWpyjQxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708674867; c=relaxed/simple;
-	bh=s9WEmS1JeaRfuBaRo5YOQgJKXJEVSk9vt5/AjGo1kXw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=odph0DwtgRwmQwypJdH/FN/yJQn7FC6wtq30WdIJ68DtdjEG9jLUQmZC9iax1cM5c/1rd7da/XnK299HULYyVXNPXjpMNCRkBAocgRQQzCcM7sgdRbkgf1dAQXMW1oLi/XX6JyIo/jX25qGghU0MSkRFmC92Vk+PjKgHnJg/eMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E9DBC433C7;
-	Fri, 23 Feb 2024 07:54:24 +0000 (UTC)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: loongarch@lists.linux.dev,
-	Guo Ren <guoren@kernel.org>,
-	Xuerui Wang <kernel@xen0n.name>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	linux-kernel@vger.kernel.org,
-	loongson-kernel@lists.loongnix.cn,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] LoongArch: Update cpu_sibling_map when disabling nonboot CPUs
-Date: Fri, 23 Feb 2024 15:54:04 +0800
-Message-ID: <20240223075404.1550127-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1708675666; c=relaxed/simple;
+	bh=ypenPyTF5ynt/pDgjgx+1rh7Y2dHoKZRn8wHfY2ebxo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=i7mhWCnXyJ5ntvFo6dN5KxHMutNEwWTakNA4IVwSrInTbfXUPoDbZukPZi3YNt3b091zFw/i7Lm/XkE3JmwCANxGXCAyJvrjSQM4cS92yGFlrKSPrCAq0FwWfh9t7IrJrHZ64M11rvo5lPegtnfPRItcxdtPoOM/jCp02yScBW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=t5wfrjZC; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=ypenPyTF5ynt/pDgjgx+1rh7Y2dHoKZRn8wHfY2ebxo=;
+	t=1708675664; x=1709107664; b=t5wfrjZCgikmySYj/9KBDxrZK6s2thCgvJl3Z74x/1veNCl
+	0iXa4pm9sVFJwdXbqq4uGXQZqVJm51cjPkJS/T8BzVzvdhj0GuUIlvhPaNcOHUDUD/safcGnnCMVZ
+	agGDm2tOkcG/AG6J5s7w7u6BhA+hv4r1zU3TYDWVEr7mtoBBjXdcG+OCnlCNzxJIm6zW3/2/xUcfm
+	xZTqZ+tHLGWJyvf8s9cwuGpKcIExEIr3PLKjMbbEaFANdokrB+uzTROWmu0MiaK8H0UcGn+8AKKhX
+	PA7ushcDk4JGo2OI8f2oep77VS6HZ6Bm0k9/FwSHTLrFfD2UdsNfPjCkSzBJm/Eg==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rdQar-0007xw-Lf; Fri, 23 Feb 2024 09:07:41 +0100
+Message-ID: <7efac6e0-32df-457e-9d21-4945c69328f8@leemhuis.info>
+Date: Fri, 23 Feb 2024 09:07:41 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] 6.7.1: md: raid5 hang and unresponsive system;
+ successfully bisected
+Content-Language: en-US, de-DE
+To: song@kernel.org
+Cc: gregkh@linuxfoundation.org, junxiao.bi@oracle.com,
+ linux-kernel@vger.kernel.org, linux-raid@vger.kernel.org,
+ regressions@lists.linux.dev, stable@vger.kernel.org,
+ Dan Moulding <dan@danm.net>
+References: <20240123005700.9302-1-dan@danm.net>
+ <20240220230658.11069-1-dan@danm.net>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <20240220230658.11069-1-dan@danm.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1708675664;98875bf2;
+X-HE-SMSGID: 1rdQar-0007xw-Lf
 
-Update cpu_sibling_map when disabling nonboot CPUs by defining & calling
-clear_cpu_sibling_map(), otherwise we get such errors on SMT systems:
+On 21.02.24 00:06, Dan Moulding wrote:
+> Just a friendly reminder that this regression still exists on the
+> mainline. It has been reverted in 6.7 stable. But I upgraded a
+> development system to 6.8-rc5 today and immediately hit this issue
+> again. Then I saw that it hasn't yet been reverted in Linus' tree.
 
-jump label: negative count!
-WARNING: CPU: 6 PID: 45 at kernel/jump_label.c:263 __static_key_slow_dec_cpuslocked+0xec/0x100
-CPU: 6 PID: 45 Comm: cpuhp/6 Not tainted 6.8.0-rc5+ #1340
-pc 90000000004c302c ra 90000000004c302c tp 90000001005bc000 sp 90000001005bfd20
-a0 000000000000001b a1 900000000224c278 a2 90000001005bfb58 a3 900000000224c280
-a4 900000000224c278 a5 90000001005bfb50 a6 0000000000000001 a7 0000000000000001
-t0 ce87a4763eb5234a t1 ce87a4763eb5234a t2 0000000000000000 t3 0000000000000000
-t4 0000000000000006 t5 0000000000000000 t6 0000000000000064 t7 0000000000001964
-t8 000000000009ebf6 u0 9000000001f2a068 s9 0000000000000000 s0 900000000246a2d8
-s1 ffffffffffffffff s2 ffffffffffffffff s3 90000000021518c0 s4 0000000000000040
-s5 9000000002151058 s6 9000000009828e40 s7 00000000000000b4 s8 0000000000000006
-   ra: 90000000004c302c __static_key_slow_dec_cpuslocked+0xec/0x100
-  ERA: 90000000004c302c __static_key_slow_dec_cpuslocked+0xec/0x100
- CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
- PRMD: 00000004 (PPLV0 +PIE -PWE)
- EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
- ECFG: 00071c1c (LIE=2-4,10-12 VS=7)
-ESTAT: 000c0000 [BRK] (IS= ECode=12 EsubCode=0)
- PRID: 0014d000 (Loongson-64bit, Loongson-3A6000-HV)
-CPU: 6 PID: 45 Comm: cpuhp/6 Not tainted 6.8.0-rc5+ #1340
-Stack : 0000000000000000 900000000203f258 900000000179afc8 90000001005bc000
-        90000001005bf980 0000000000000000 90000001005bf988 9000000001fe0be0
-        900000000224c280 900000000224c278 90000001005bf8c0 0000000000000001
-        0000000000000001 ce87a4763eb5234a 0000000007f38000 90000001003f8cc0
-        0000000000000000 0000000000000006 0000000000000000 4c206e6f73676e6f
-        6f4c203a656d616e 000000000009ec99 0000000007f38000 0000000000000000
-        900000000214b000 9000000001fe0be0 0000000000000004 0000000000000000
-        0000000000000107 0000000000000009 ffffffffffafdabe 00000000000000b4
-        0000000000000006 90000000004c302c 9000000000224528 00005555939a0c7c
-        00000000000000b0 0000000000000004 0000000000000000 0000000000071c1c
-        ...
-Call Trace:
-[<9000000000224528>] show_stack+0x48/0x1a0
-[<900000000179afc8>] dump_stack_lvl+0x78/0xa0
-[<9000000000263ed0>] __warn+0x90/0x1a0
-[<90000000017419b8>] report_bug+0x1b8/0x280
-[<900000000179c564>] do_bp+0x264/0x420
-[<90000000004c302c>] __static_key_slow_dec_cpuslocked+0xec/0x100
-[<90000000002b4d7c>] sched_cpu_deactivate+0x2fc/0x300
-[<9000000000266498>] cpuhp_invoke_callback+0x178/0x8a0
-[<9000000000267f70>] cpuhp_thread_fun+0xf0/0x240
-[<90000000002a117c>] smpboot_thread_fn+0x1dc/0x2e0
-[<900000000029a720>] kthread+0x140/0x160
-[<9000000000222288>] ret_from_kernel_thread+0xc/0xa4
+Song Liu, what's the status here? I aware that you fixed with quite a
+few regressions recently, but it seems like resolving this one is
+stalled. Or were you able to reproduce the issue or make some progress
+and I just missed it?
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
----
- arch/loongarch/kernel/smp.c | 121 ++++++++++++++++++++----------------
- 1 file changed, 68 insertions(+), 53 deletions(-)
+And if not, what's the way forward here wrt to the release of 6.8?
+Revert the culprit and try again later? Or is that not an option for one
+reason or another?
 
-diff --git a/arch/loongarch/kernel/smp.c b/arch/loongarch/kernel/smp.c
-index 87b7190fe48e..aabee0b280fe 100644
---- a/arch/loongarch/kernel/smp.c
-+++ b/arch/loongarch/kernel/smp.c
-@@ -88,6 +88,73 @@ void show_ipi_list(struct seq_file *p, int prec)
- 	}
- }
- 
-+static inline void set_cpu_core_map(int cpu)
-+{
-+	int i;
-+
-+	cpumask_set_cpu(cpu, &cpu_core_setup_map);
-+
-+	for_each_cpu(i, &cpu_core_setup_map) {
-+		if (cpu_data[cpu].package == cpu_data[i].package) {
-+			cpumask_set_cpu(i, &cpu_core_map[cpu]);
-+			cpumask_set_cpu(cpu, &cpu_core_map[i]);
-+		}
-+	}
-+}
-+
-+static inline void set_cpu_sibling_map(int cpu)
-+{
-+	int i;
-+
-+	cpumask_set_cpu(cpu, &cpu_sibling_setup_map);
-+
-+	for_each_cpu(i, &cpu_sibling_setup_map) {
-+		if (cpus_are_siblings(cpu, i)) {
-+			cpumask_set_cpu(i, &cpu_sibling_map[cpu]);
-+			cpumask_set_cpu(cpu, &cpu_sibling_map[i]);
-+		}
-+	}
-+}
-+
-+static inline void clear_cpu_sibling_map(int cpu)
-+{
-+	int i;
-+
-+	for_each_cpu(i, &cpu_sibling_setup_map) {
-+		if (cpus_are_siblings(cpu, i)) {
-+			cpumask_clear_cpu(i, &cpu_sibling_map[cpu]);
-+			cpumask_clear_cpu(cpu, &cpu_sibling_map[i]);
-+		}
-+	}
-+
-+	cpumask_clear_cpu(cpu, &cpu_sibling_setup_map);
-+}
-+
-+/*
-+ * Calculate a new cpu_foreign_map mask whenever a
-+ * new cpu appears or disappears.
-+ */
-+void calculate_cpu_foreign_map(void)
-+{
-+	int i, k, core_present;
-+	cpumask_t temp_foreign_map;
-+
-+	/* Re-calculate the mask */
-+	cpumask_clear(&temp_foreign_map);
-+	for_each_online_cpu(i) {
-+		core_present = 0;
-+		for_each_cpu(k, &temp_foreign_map)
-+			if (cpus_are_siblings(i, k))
-+				core_present = 1;
-+		if (!core_present)
-+			cpumask_set_cpu(i, &temp_foreign_map);
-+	}
-+
-+	for_each_online_cpu(i)
-+		cpumask_andnot(&cpu_foreign_map[i],
-+			       &temp_foreign_map, &cpu_sibling_map[i]);
-+}
-+
- /* Send mailbox buffer via Mail_Send */
- static void csr_mail_send(uint64_t data, int cpu, int mailbox)
- {
-@@ -303,6 +370,7 @@ int loongson_cpu_disable(void)
- 	numa_remove_cpu(cpu);
- #endif
- 	set_cpu_online(cpu, false);
-+	clear_cpu_sibling_map(cpu);
- 	calculate_cpu_foreign_map();
- 	local_irq_save(flags);
- 	irq_migrate_all_off_this_cpu();
-@@ -380,59 +448,6 @@ static int __init ipi_pm_init(void)
- core_initcall(ipi_pm_init);
- #endif
- 
--static inline void set_cpu_sibling_map(int cpu)
--{
--	int i;
--
--	cpumask_set_cpu(cpu, &cpu_sibling_setup_map);
--
--	for_each_cpu(i, &cpu_sibling_setup_map) {
--		if (cpus_are_siblings(cpu, i)) {
--			cpumask_set_cpu(i, &cpu_sibling_map[cpu]);
--			cpumask_set_cpu(cpu, &cpu_sibling_map[i]);
--		}
--	}
--}
--
--static inline void set_cpu_core_map(int cpu)
--{
--	int i;
--
--	cpumask_set_cpu(cpu, &cpu_core_setup_map);
--
--	for_each_cpu(i, &cpu_core_setup_map) {
--		if (cpu_data[cpu].package == cpu_data[i].package) {
--			cpumask_set_cpu(i, &cpu_core_map[cpu]);
--			cpumask_set_cpu(cpu, &cpu_core_map[i]);
--		}
--	}
--}
--
--/*
-- * Calculate a new cpu_foreign_map mask whenever a
-- * new cpu appears or disappears.
-- */
--void calculate_cpu_foreign_map(void)
--{
--	int i, k, core_present;
--	cpumask_t temp_foreign_map;
--
--	/* Re-calculate the mask */
--	cpumask_clear(&temp_foreign_map);
--	for_each_online_cpu(i) {
--		core_present = 0;
--		for_each_cpu(k, &temp_foreign_map)
--			if (cpus_are_siblings(i, k))
--				core_present = 1;
--		if (!core_present)
--			cpumask_set_cpu(i, &temp_foreign_map);
--	}
--
--	for_each_online_cpu(i)
--		cpumask_andnot(&cpu_foreign_map[i],
--			       &temp_foreign_map, &cpu_sibling_map[i]);
--}
--
- /* Preload SMP state for boot cpu */
- void smp_prepare_boot_cpu(void)
- {
--- 
-2.43.0
+Or do we assume that this is not a real issue? That it's caused by some
+oddity (bit-flip in the metadata or something like that?) only to be
+found in Dan's setup?
 
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
+
+#regzbot poke
 
