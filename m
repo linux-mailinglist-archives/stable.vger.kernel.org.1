@@ -1,53 +1,51 @@
-Return-Path: <stable+bounces-23465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8767861221
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 13:59:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97235861236
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 14:04:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1D082863BD
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 12:59:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 580BF285F10
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 13:04:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90B597E103;
-	Fri, 23 Feb 2024 12:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB59E7D413;
+	Fri, 23 Feb 2024 13:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nuk4Ox3b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EPFWB1XH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED687BAE3;
-	Fri, 23 Feb 2024 12:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4C96FBF
+	for <stable@vger.kernel.org>; Fri, 23 Feb 2024 13:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708693192; cv=none; b=tg+kpuvhvlOCijB1H8XTHYHPltXnXYmFU4NdG8pELvyzLlNkdd44uL1bJ+oCmF+4upQ+8b2QMil1vIA77XzjZN2i01Uf9IY7szOepQvU48xixblFRJdVXAOcEaXT2MW/7OzxRhHYF4yxHBNkMPoTecGoE2PpbkN9S1qS4SwUZGM=
+	t=1708693436; cv=none; b=Ks2wk/TI/WgxLV6VSO51IGUMMSoXpDYA/vley67yfiPvuaP83p/bljwHVY7XnqpbPTNH/0Eiw+G1nDnMhnIPJAInskelf3jhQFe2U9P0cW46ANbfWkIkSlnmIiF8+fs+Hog0nw+YD6t5O3cNp0UFOqn23FNTPB5RlV/Gq4Y7h2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708693192; c=relaxed/simple;
-	bh=e3AB1jM0eDGAg/c6YR/8B/AbSQNwUgxeBnXIZTcmOl0=;
+	s=arc-20240116; t=1708693436; c=relaxed/simple;
+	bh=9sBsslBZlStAox7vCImyp1Zx43FQ8puH/KUGko18yWI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NbOVmSdrNIeTH6+9nDELT30jmNs6EC15jnuoY9rTGAX/6qgYpe9/7qohF0jgpT2C7AAegafiy7UaivnAvYiv+b+SBGhYo+yg/HkVQZ7mzL+6WYUMjWruMhXZVaqnq39DHLS1dASrEbDJ3fxORYqFjAX8264Foy04YHqQT0oXhLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nuk4Ox3b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FFBDC433C7;
-	Fri, 23 Feb 2024 12:59:51 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=sx9eqUB+qtrAcix9fZAlN6y2WWk/8XcSCBc/gaNY6L3Qc8ABKXamrerNE/JIuSc141zYjzvXL++/ofp2ItB9lv3bhLLXY9XoOMKcTb5yklal95jxInUOLyvphUc52npL23vwneVoQLmnfwOc40sADee7k+3Q69YaP5rAwbwBGM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPFWB1XH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98783C433F1;
+	Fri, 23 Feb 2024 13:03:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708693191;
-	bh=e3AB1jM0eDGAg/c6YR/8B/AbSQNwUgxeBnXIZTcmOl0=;
+	s=korg; t=1708693436;
+	bh=9sBsslBZlStAox7vCImyp1Zx43FQ8puH/KUGko18yWI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Nuk4Ox3bpskDob64TgbwGh046xGJ3UdbwLa5kgYaOxgr0lfjp0e0RLQPjBnI1gsTi
-	 yVn03CdLKexMBIDjvDQq4ZCeI4XKkRAJ4+eni7EbyWo+6tHNIVngiYXza6asTn8cNO
-	 B4UlPCyXmipPxSS/bf+hOeQOwFRZd0zRfSGDwWJk=
-Date: Fri, 23 Feb 2024 13:59:49 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Ronald Warsow <rwarsow@gmx.de>
-Cc: Luna Jernberg <droidbittin@gmail.com>, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.7 000/313] 6.7.6-rc2 review
-Message-ID: <2024022326-wheat-heat-e4ba@gregkh>
-References: <ed9e1bca-d07b-42fa-9ceb-d0eef3976168@gmx.de>
- <CADo9pHg2jgYqE1qxpV40E6GHL1s+G+mNm1JCcB9GgA-4XM59+w@mail.gmail.com>
- <2cc27421-8791-47bd-a3d6-83188332ad3c@gmx.de>
+	b=EPFWB1XHjfWq09a7wKB2O6DmklU5YMrPeWuH69RZeRF8VvAaPXhyUiv/CnmAXoODV
+	 z79AOhRBDA6iGslim1n021gaHYAplTFPD0tmuZzoYOOdR0Z9uyYYdnnqKf3XG+RlLd
+	 tUoYXMYRh9YRGk5Y5dZQUR6lZ76klr/ajpE1djjE=
+Date: Fri, 23 Feb 2024 14:03:53 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Roxana Nicolescu <roxana.nicolescu@canonical.com>
+Cc: stable@vger.kernel.org
+Subject: Re: Backport commit be80e9cdbca8 ("libbpf: Rename
+ DECLARE_LIBBPF_OPTS into LIBBPF_OPTS") to 5.15
+Message-ID: <2024022318-greedless-unshaven-764a@gregkh>
+References: <8a078070-19db-4ca7-8210-077818224f67@canonical.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,21 +55,26 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2cc27421-8791-47bd-a3d6-83188332ad3c@gmx.de>
+In-Reply-To: <8a078070-19db-4ca7-8210-077818224f67@canonical.com>
 
-On Wed, Feb 21, 2024 at 03:47:23PM +0100, Ronald Warsow wrote:
-> On 21.02.24 15:25, Luna Jernberg wrote:
-> > Works fine on my desktop with model name    : AMD Ryzen 5 5600 6-Core
-> > Processor and Arch Linux
-> > 
-> > Tested-by: Luna Jernberg <droidbittin@gmail.com>
-> > 
+On Thu, Feb 22, 2024 at 05:02:19PM +0100, Roxana Nicolescu wrote:
+> Hi,
 > 
-> du meine deinem Scheiss Top Posting immer !!!
-> :-(
+> Please include commit  be80e9cdbca8 ("libbpf: Rename DECLARE_LIBBPF_OPTS
+> into LIBBPF_OPTS")
+> to the 5.15 stable branch.
 > 
-> get the fuck out of it !
+> Commit  3eefb2fbf4ec ("selftests/bpf: Test tail call counting with bpf2bpf
+> and data on stack")
+> introduced in v5.15.39 is dependent on it, and now building selftests fails
+> with:
 
-Ik kan ook vloeken, maar dat is niet oké!
+Does 5.15.149 still need this?  We fixed up something like this in that
+release.
 
+If not, let us know and I'll add this.
+
+thanks,
+
+greg k-h
 
