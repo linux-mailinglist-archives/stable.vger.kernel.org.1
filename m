@@ -1,42 +1,45 @@
-Return-Path: <stable+bounces-23455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32361861067
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 12:31:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A168861078
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 12:35:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAEBD1F23147
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 11:31:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04FD7282458
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 11:35:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B3F1657DA;
-	Fri, 23 Feb 2024 11:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0FEE77A05;
+	Fri, 23 Feb 2024 11:34:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from irl.hu (irl.hu [95.85.9.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A99E5C911
-	for <stable@vger.kernel.org>; Fri, 23 Feb 2024 11:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA001758D;
+	Fri, 23 Feb 2024 11:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.85.9.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708687867; cv=none; b=Lj1yR6kDkWfPt4NdGCmPM+aIHBo6Zx+BY5wEaq9LQT9yvNwaRXW4rdlFqTuyVvyzb2VSLtEJOPWXNpPBu+FwdvyjMVs8DTAknMBZ/bsFh9PdAbmq49C2EJgHgVBqU0xGyLOeGIOvNPqdEOZ8GehbeuQfOPATJskemUVaU3voQJM=
+	t=1708688096; cv=none; b=pFvCA1mpO+p0/XVpOSkg9c7MYekXBH+Fp5I/LAB41THDDa9avQOxVSEeRwjwwLmFnbaDk/ZpzQkfKbnwF2vfULzRMIwWcDPu7SkTBUU4nQHrrZYPhd0t5i2YLRAZym1hl17gxOXXNeicO4YJOWDF73T+F+heRJpnCjvPilVbkXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708687867; c=relaxed/simple;
+	s=arc-20240116; t=1708688096; c=relaxed/simple;
 	bh=IYOdq5sD1YmRKu7QJkXS/lwxV/Q8L01LSzl/baU/5A8=;
-	h=From:To:Cc:Subject:Date:Message-ID:Mime-Version:Content-Type; b=UtiEd/Df+sDs3ybf8pey1UiJUAEA2bs1X2iBY1JsUYRLa9hOyB9S/y/OQmEvwnLfN+VKrAIQT7r8TBP7XiFm6mtXRwsaTeog77YuCPIhXrUiSrPLcKjXFdz9CJx1lOs+QXtvvGTKQJ3aQ7U9w1tz12X/YQh+8TzrS6Eq7iowddo=
+	h=From:To:Cc:Subject:Date:Message-ID:Mime-Version:Content-Type; b=nYzM8qnibq8E72mu3p04DnDS/8oFUXtC5hc557WteLwQEzJhoS+ppHmZn2E0GvcMFb0bZ4xvgiSbYo5cYiOvF/OttG5xiQPGIGSyqeJsUmYHGbwq8Cy6hyQamkQW1ogHBX32FqHPc3TEsOmyQ+64E03TgKMtyTIUYje+9dFRQtc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu; spf=pass smtp.mailfrom=irl.hu; arc=none smtp.client-ip=95.85.9.111
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=irl.hu
 Received: from fedori.lan (51b68dc5.dsl.pool.telekom.hu [::ffff:81.182.141.197])
   (AUTH: CRAM-MD5 soyer@irl.hu, )
   by irl.hu with ESMTPSA
-  id 0000000000074708.0000000065D881F1.001DC1C7; Fri, 23 Feb 2024 12:30:57 +0100
+  id 0000000000075253.0000000065D882DC.001DC1EC; Fri, 23 Feb 2024 12:34:52 +0100
 From: Gergo Koteles <soyer@irl.hu>
-To: soyer@irl.hu
-Cc: stable@vger.kernel.org
+To: Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+  Shenghao Ding <shenghao-ding@ti.com>
+Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+  alsa-devel@alsa-project.org, Gergo Koteles <soyer@irl.hu>,
+  stable@vger.kernel.org
 Subject: [PATCH] ALSA: hda/realtek: tas2781: enable subwoofer volume control
-Date: Fri, 23 Feb 2024 12:30:55 +0100
+Date: Fri, 23 Feb 2024 12:34:30 +0100
 Message-ID: <7ffae10ebba58601d25fe2ff8381a6ae3a926e62.1708687813.git.soyer@irl.hu>
 X-Mailer: git-send-email 2.43.2
 Precedence: bulk
