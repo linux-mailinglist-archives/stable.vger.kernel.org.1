@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-23461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3B3C86110A
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 13:08:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF0FA861114
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 13:09:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D1DE2859A8
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 12:08:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEE7EB20DAA
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 12:09:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4021F7C0BF;
-	Fri, 23 Feb 2024 12:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2374A7E77C;
+	Fri, 23 Feb 2024 12:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W//bwjjj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RFmwcVpH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10637C0A0;
-	Fri, 23 Feb 2024 12:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35C97E779;
+	Fri, 23 Feb 2024 12:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708690105; cv=none; b=Fml9qDZHzUFHSArmDnQh4I58+9a/Y4ii3mkCYyV/Qax1LJ12KY0FitJ/u2LCnWvDpHY4ehWmUmGR2x0FCEEgFGYV4dR8tst/2md4/QJeYQIbrAmJ4QCfHMJNIkZcYSeL45HB/qg+MCIuqiFbdGDQxlv5MvWXwgddAjDliyCraI4=
+	t=1708690111; cv=none; b=M5umEEN3ymE8Z12CZhWFgBicEpZPJpaAG4bOMJwsV24RYvspKpDdod8/EgMh6subFEx0IdfBMPrLJ4gMRxD4DBD9FvTX2nmH0hXIGYAoY5YFZ+6qbmi5VU4pYG9qZOYiQV/ZFXLS9orbu52SXhwe20Yu7EFBD7th5eIw0K/RWLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708690105; c=relaxed/simple;
-	bh=U6JgLu1gHhoatRBKMbgHyiudk3w6hVrl6B+NK2QWmrs=;
+	s=arc-20240116; t=1708690111; c=relaxed/simple;
+	bh=J/rPf8/KIVOA/sYjkOjBSAd10WY/zQUZn82ZiXvJ25s=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=BUVFHk/7WD1RQiB7/395jHzNNP/juaPAtujp8FR4p/aVsKimmEoJG6OnVN0lY1kCmk58wdtn+672t8JZchPPjWN9FwsZtf6W5EIcLGlTXSTzB2F6FCQiWLTta75UeMFlVODvpqG0/NvaG3866cjWgssg5JKJKYNIbOBmE7rdjyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W//bwjjj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C82C433C7;
-	Fri, 23 Feb 2024 12:08:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RhMfUiCGa+ywgnJx336IpAeQGNmtk4n6/2jCnZg8qc1HMyQRBlGbDeQ4mWwKsXy7PsZRtx+cJWmKl3PwfP3zkVZpoht9vQ0OX5TC/+6dv7n0sHkTET0NHx91Y7iQlEXn+G4gz3uNFue++Hol51mJkdQnNwpc9H1aDie034BkSds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RFmwcVpH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 385F1C43330;
+	Fri, 23 Feb 2024 12:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708690104;
-	bh=U6JgLu1gHhoatRBKMbgHyiudk3w6hVrl6B+NK2QWmrs=;
+	s=k20201202; t=1708690111;
+	bh=J/rPf8/KIVOA/sYjkOjBSAd10WY/zQUZn82ZiXvJ25s=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=W//bwjjjxygLppEx62N32zSXmCxP/81AgYftGxvfi1vlPu+Hm9w1R9hAIREe1EpC+
-	 VoP6y0QMolkJqKklsy/stjFvNdKn4KnnuQhI+j7D4i3noaDlsRbBYH344KE/e1jJrY
-	 6+lnpE7JD3EJtl7tMWq1D5bHIo18WlgxxfsOLiCphTqxYxyU3Mfa8kfGecjPoHxdO8
-	 3nc1s9u6wvLIvlfYMhiN6EOBKD0BHV7m5AQzwxGCuwHIJSBMJ2uG6PckHFqkSXNhvt
-	 dEHkjO71WPtGSNrt9Zin90jYstB+WxVBmKj350oEPigmYzUA8giA5BhBEtiZhlJ2C+
-	 8y060dA5LYNVg==
+	b=RFmwcVpHyGTpwGoXW2ouik9uOnpVwn5uESe2GCEpMvuAMoVfOJeU8nhmdK+M5v703
+	 sSq8cyNN9VUAZeB7imz++Ou+AqCjXljcBe92e8+Edfd+vmcpMMJ0d7Ki21sbA4cWQa
+	 VtDVeM5/EWhFtnOcxt5RD+DeJ4mkqZ1sTAfZBMzzwKQumqQxGNOL1GiLStkmjZZwmU
+	 JE6pnesbpx5WM2oZzX727BQ52cnDdnxe27udcEhQfeENoTlRvHr7Je2yphQDgNhckp
+	 NpVrwBEC432zXJnRZywW/t7xkUV6DNkpwts1036FYTxIHhXxLII+X8iDq+qpqR2xfK
+	 x0fxdGyb/PbbA==
 From: Vinod Koul <vkoul@kernel.org>
 To: Tadeusz Struk <tstruk@gmail.com>
-Cc: Raju Rangoju <Raju.Rangoju@amd.com>, 
- Basavaraj Natikar <Basavaraj.Natikar@amd.com>, 
- Tom Lendacky <thomas.lendacky@amd.com>, 
- Sanjay R Mehta <sanju.mehta@amd.com>, Eric Pilmore <epilmore@gigaio.com>, 
+Cc: Basavaraj Natikar <Basavaraj.Natikar@amd.com>, 
+ Tom Lendacky <thomas.lendacky@amd.com>, Eric Pilmore <epilmore@gigaio.com>, 
  dmaengine@vger.kernel.org, Tadeusz Struk <tstruk@gigaio.com>, 
  stable@vger.kernel.org
-In-Reply-To: <20240219201039.40379-1-tstruk@gigaio.com>
-References: <6a447bd4-f6f1-fc1f-9a0d-2810357fb1b5@amd.com>
- <20240219201039.40379-1-tstruk@gigaio.com>
-Subject: Re: [PATCH] dmaengine: ptdma: use consistent DMA masks
-Message-Id: <170869010159.529426.17575318371522129090.b4-ty@kernel.org>
-Date: Fri, 23 Feb 2024 17:38:21 +0530
+In-Reply-To: <20240222163053.13842-1-tstruk@gigaio.com>
+References: <ZddShyFNaozKwB66@matsya>
+ <20240222163053.13842-1-tstruk@gigaio.com>
+Subject: Re: [PATCH RESEND] dmaengine: ptdma: use consistent DMA masks
+Message-Id: <170869010887.529426.9005710614380749711.b4-ty@kernel.org>
+Date: Fri, 23 Feb 2024 17:38:28 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,7 +64,7 @@ Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 
 
-On Mon, 19 Feb 2024 21:10:39 +0100, Tadeusz Struk wrote:
+On Thu, 22 Feb 2024 17:30:53 +0100, Tadeusz Struk wrote:
 > The PTDMA driver sets DMA masks in two different places for the same
 > device inconsistently. First call is in pt_pci_probe(), where it uses
 > 48bit mask. The second call is in pt_dmaengine_register(), where it
