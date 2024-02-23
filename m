@@ -1,80 +1,83 @@
-Return-Path: <stable+bounces-23466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97235861236
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 14:04:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A40586123A
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 14:07:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 580BF285F10
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 13:04:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE1171F237CA
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 13:07:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB59E7D413;
-	Fri, 23 Feb 2024 13:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 629C07E595;
+	Fri, 23 Feb 2024 13:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EPFWB1XH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFYkctMu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4C96FBF
-	for <stable@vger.kernel.org>; Fri, 23 Feb 2024 13:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 193057AE78
+	for <stable@vger.kernel.org>; Fri, 23 Feb 2024 13:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708693436; cv=none; b=Ks2wk/TI/WgxLV6VSO51IGUMMSoXpDYA/vley67yfiPvuaP83p/bljwHVY7XnqpbPTNH/0Eiw+G1nDnMhnIPJAInskelf3jhQFe2U9P0cW46ANbfWkIkSlnmIiF8+fs+Hog0nw+YD6t5O3cNp0UFOqn23FNTPB5RlV/Gq4Y7h2Q=
+	t=1708693628; cv=none; b=HoDugqQgx1c0r0JAj6WiS/6YcQLpUAS5t4XYn9AGquxBwx2wfgF5doLNfw4IipwERJ51HcIt7fjoFXKQWSyvNMeSD5ObehqDGKGmSzsDlu3ZcBmVihA96GHrJmV4KYAL7/QyHXURaqvRwsx6A5HiyA4k9xl20LRL8UUQQi2s42I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708693436; c=relaxed/simple;
-	bh=9sBsslBZlStAox7vCImyp1Zx43FQ8puH/KUGko18yWI=;
+	s=arc-20240116; t=1708693628; c=relaxed/simple;
+	bh=8gZt050z+v0eCcMuwYfs/Rkdvt+l6RduyVyuFFF7LxQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sx9eqUB+qtrAcix9fZAlN6y2WWk/8XcSCBc/gaNY6L3Qc8ABKXamrerNE/JIuSc141zYjzvXL++/ofp2ItB9lv3bhLLXY9XoOMKcTb5yklal95jxInUOLyvphUc52npL23vwneVoQLmnfwOc40sADee7k+3Q69YaP5rAwbwBGM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPFWB1XH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98783C433F1;
-	Fri, 23 Feb 2024 13:03:55 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=QqYyWT4+yvSAoy2Z1BDaZkK6Srk/BRBVqlbsaYWmN2QtnjN5Uvd+PF5Qa43BgdMZppW+dyFopFiogStBUOT0AgMtD2Wts5tSgUCIRkLbnq3fdWl6Cu14I4TkyBs1ox44WcJ5u5nnDQMYkyStxI8TUuJq18Q5Z1kGv9zs77Mc0F8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFYkctMu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 416CBC433C7;
+	Fri, 23 Feb 2024 13:07:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708693436;
-	bh=9sBsslBZlStAox7vCImyp1Zx43FQ8puH/KUGko18yWI=;
+	s=korg; t=1708693627;
+	bh=8gZt050z+v0eCcMuwYfs/Rkdvt+l6RduyVyuFFF7LxQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EPFWB1XHjfWq09a7wKB2O6DmklU5YMrPeWuH69RZeRF8VvAaPXhyUiv/CnmAXoODV
-	 z79AOhRBDA6iGslim1n021gaHYAplTFPD0tmuZzoYOOdR0Z9uyYYdnnqKf3XG+RlLd
-	 tUoYXMYRh9YRGk5Y5dZQUR6lZ76klr/ajpE1djjE=
-Date: Fri, 23 Feb 2024 14:03:53 +0100
+	b=jFYkctMujm7AGW5B6HlymtHOYTEChNSBUs6nmOnt/EEUIMH7i/CamFlniXK+0QmoQ
+	 I8AjCqZYlaQ09ocFjruJQzcKm4a4EhWBHhTm5NcCPrwCGF9+ErFB55+xlHVQlN/RVg
+	 ShAqcQAjUK8HXtyYkZ4KCKRs+MPIVnSlXDK0sNS0=
+Date: Fri, 23 Feb 2024 14:07:04 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Roxana Nicolescu <roxana.nicolescu@canonical.com>
-Cc: stable@vger.kernel.org
-Subject: Re: Backport commit be80e9cdbca8 ("libbpf: Rename
- DECLARE_LIBBPF_OPTS into LIBBPF_OPTS") to 5.15
-Message-ID: <2024022318-greedless-unshaven-764a@gregkh>
-References: <8a078070-19db-4ca7-8210-077818224f67@canonical.com>
+To: Guruswamy Basavaiah <guruswamy.basavaiah@broadcom.com>
+Cc: stable@vger.kernel.org, ajay.kaher@broadcom.com,
+	tapas.kundu@broadcom.com
+Subject: Re: [PATCH 5.10.y 0/3] Backport Fixes to 5.10.y
+Message-ID: <2024022356-renewable-armhole-93da@gregkh>
+References: <20240210201445.3089482-1-guruswamy.basavaiah@broadcom.com>
+ <20240210201445.3089482-4-guruswamy.basavaiah@broadcom.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8a078070-19db-4ca7-8210-077818224f67@canonical.com>
+In-Reply-To: <20240210201445.3089482-4-guruswamy.basavaiah@broadcom.com>
 
-On Thu, Feb 22, 2024 at 05:02:19PM +0100, Roxana Nicolescu wrote:
-> Hi,
+On Sun, Feb 11, 2024 at 01:44:45AM +0530, Guruswamy Basavaiah wrote:
+> Here are the three backported patches aimed at addressing a potential
+> crash and an actual crash.
 > 
-> Please include commit  be80e9cdbca8 ("libbpf: Rename DECLARE_LIBBPF_OPTS
-> into LIBBPF_OPTS")
-> to the 5.15 stable branch.
+> Patch 1 Fix potential OOB access in receive_encrypted_standard() if
+> server returned a large shdr->NextCommand in cifs.
 > 
-> Commit  3eefb2fbf4ec ("selftests/bpf: Test tail call counting with bpf2bpf
-> and data on stack")
-> introduced in v5.15.39 is dependent on it, and now building selftests fails
-> with:
+> Patch 2 fix validate offsets and lengths before dereferencing create
+> contexts in smb2_parse_contexts().
+> 
+> Patch 3 fix issue in patch 2.
+> 
+> The original patches were authored by Paulo Alcantara <pc@manguebit.com>.
+> Original Patches:
+> 1. eec04ea11969 ("smb: client: fix OOB in receive_encrypted_standard()")
+> 2. af1689a9b770 ("smb: client: fix potential OOBs in smb2_parse_contexts()")
+> 3. 76025cc2285d ("smb: client: fix parsing of SMB3.1.1 POSIX create context")
+> 
+> Please review and consider applying these patches.
 
-Does 5.15.149 still need this?  We fixed up something like this in that
-release.
-
-If not, let us know and I'll add this.
-
-thanks,
+All now qeued up, thanks!
 
 greg k-h
 
