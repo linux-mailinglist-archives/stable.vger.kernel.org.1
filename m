@@ -1,99 +1,88 @@
-Return-Path: <stable+bounces-23517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DFB7861A78
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 18:49:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E369D861A80
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 18:49:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E9D51C258B4
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 17:49:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0286289083
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 17:49:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2925B14CACD;
-	Fri, 23 Feb 2024 17:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFC3C13EFEE;
+	Fri, 23 Feb 2024 17:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W2DiHODe"
+	dkim=pass (2048-bit key) header.d=danm.net header.i=@danm.net header.b="CB5hM1IU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mr85p00im-zteg06021501.me.com (mr85p00im-zteg06021501.me.com [17.58.23.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D468314CAC6;
-	Fri, 23 Feb 2024 17:43:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276F2133296
+	for <stable@vger.kernel.org>; Fri, 23 Feb 2024 17:44:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708710199; cv=none; b=bWVh2iz3cdAd1hOa+XKWU5KVCB7toCReQLFikXomdgkR7LPWVI6E5bbiCpsBgggWivQ6cnSU96H2xPk1udCzIM0xahoTEX6KOx2AWILSVUa3EL/Br8oj2OY+H/+lNT5jNkROCPDuWhqbuJkzE8PL0p28NwF6JM37sVRR/VyAFVg=
+	t=1708710296; cv=none; b=AvIG31xfWJRIVihwmpEAoo9XqP1VIHqcMUpRFWFO8nRA0FnVmhKgehHU9SRtVp1fLRkOIG4LjvEphvcgTXEl6+THYJODqJ+US6US6EgwHsv2J+sKsxBB/rgktY6hhMtbt7rEojhd3icKymMaHv9+GeMBkeMznnsO4OZD0+kGNJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708710199; c=relaxed/simple;
-	bh=h0Z6febrHHLV18pVzOViZljOJbK5UtwzTaH1fctKaJ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gTioDZt3cdDQ9wblaFfytJ2Re3LeFz8fVyzGqeBqXLqQMIxrLxMJ+j5zNZR9JIsSovFNxyGkCuGZaJqKSrZAtFdhGd9kaqRE8hTFdge0v5XSGljrhCuTf4Oj5AHobjxVc1AtZ8Hg/l6EZvbMEKuy+1gU/Kij4qmOVanxO5gs1ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W2DiHODe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0130AC433C7;
-	Fri, 23 Feb 2024 17:43:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708710199;
-	bh=h0Z6febrHHLV18pVzOViZljOJbK5UtwzTaH1fctKaJ0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=W2DiHODe4yWCvhz6ISI0S5PdnMER7aKAtq/IhRypfHKMcyRzzcBciIyH4OOZ7bkKp
-	 lqKo1rjk9vxhrP89HRF8wEU9BCEy6TKZ/rMf/UpSeIBbCHDqTpO3ZIyxiWO+W7iWYH
-	 JZ92LpswcV81kmCbWb+zneIFpiP7RMLCnU6kJh1rJcPebc6fT9xmxN7qkHtk/ddR+3
-	 dUjFFlW2z2t6A/QZFg0FZ9n/8dHROZRzqmj5DFFT/DdWP5lZVJftnzZCKKqiv0ju0R
-	 phxvZzUQc0gxPspWdOXK+4I2AmZb48g6BBEPHB2VAgkq3eDf6BY828HFv2MZ3anQ+3
-	 WJGVkKaKs88gQ==
-Date: Fri, 23 Feb 2024 17:43:13 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	allen.lkml@gmail.com
-Subject: Re: [PATCH 6.1 000/206] 6.1.79-rc2 review
-Message-ID: <20240223-conceded-ungraded-3bf06dcac60b@spud>
-References: <20240221130223.073542172@linuxfoundation.org>
+	s=arc-20240116; t=1708710296; c=relaxed/simple;
+	bh=ISpRbHIDoHxLfDN7k/rYb+hc7AVPOYDIgOoZFSxpWxQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=IIDZ8dZ3stDnvrrv+YdgBBek2iTmEVplYoTAfZG+ZTSUp7OVh29piWGaQN6LsQFATw+gp/ojzG1D0cPXDyG5IHVCFwL83TqI2jezSi4G4SyTRRlqXxF4uLANW3mGhUvDg3YVN/OsFoelHnA4KxH8dzymITkicA4O9loES6tIJe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=danm.net; spf=pass smtp.mailfrom=danm.net; dkim=pass (2048-bit key) header.d=danm.net header.i=@danm.net header.b=CB5hM1IU; arc=none smtp.client-ip=17.58.23.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=danm.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=danm.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=danm.net; s=sig1;
+	t=1708710294; bh=ISpRbHIDoHxLfDN7k/rYb+hc7AVPOYDIgOoZFSxpWxQ=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=CB5hM1IUoALNX07oGgjXBP1FYi5Ias7TKzEBLe2aeqABzQV2AeQX5nrws4SOf6s8N
+	 zRZN+s87txjlmIOaaeP12dLwxFX6ZaRNvI6PU3/9ViITxpQoH1eUfWKy4KtJX4Dv6J
+	 PPYBEaxjVKlVDQJ9ISQj/Gby8RPctMsJc8RWVIb0xUL9VRVY9Z1Uiu2eVV/j214r1z
+	 t5PJeFgm4QTDjFTmAkV9l5qwxtFLc9THqh+peJZ0CwDIaxC6f6oOCEEcG8wIxQvUI8
+	 wvuojGujPJPvtzfhNktGbDYLJuW5/UAaKl8KEppVNkNN1z6pYFooK9k1jy10wjSCwT
+	 XliOrrKEL3cEQ==
+Received: from hitch.danm.net (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
+	by mr85p00im-zteg06021501.me.com (Postfix) with ESMTPSA id 805DB279409C;
+	Fri, 23 Feb 2024 17:44:53 +0000 (UTC)
+From: Dan Moulding <dan@danm.net>
+To: junxiao.bi@oracle.com
+Cc: dan@danm.net,
+	gregkh@linuxfoundation.org,
+	linux-kernel@vger.kernel.org,
+	linux-raid@vger.kernel.org,
+	regressions@lists.linux.dev,
+	song@kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [REGRESSION] 6.7.1: md: raid5 hang and unresponsive system; successfully bisected
+Date: Fri, 23 Feb 2024 10:44:52 -0700
+Message-ID: <20240223174452.10209-1-dan@danm.net>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <f32cd478-a905-4e98-a46c-0612bc10c38e@oracle.com>
+References: <f32cd478-a905-4e98-a46c-0612bc10c38e@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="N8inhLCaiHO09vQN"
-Content-Disposition: inline
-In-Reply-To: <20240221130223.073542172@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: xV9SYKzsJ77FnJ1FBGeY4h0_shv3Ktry
+X-Proofpoint-ORIG-GUID: xV9SYKzsJ77FnJ1FBGeY4h0_shv3Ktry
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-23_04,2024-02-23_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=471 clxscore=1030
+ spamscore=0 suspectscore=0 mlxscore=0 adultscore=0 bulkscore=0
+ phishscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2308100000 definitions=main-2402230130
 
+Hi Junxiao,
 
---N8inhLCaiHO09vQN
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Thanks for your time so far on this problem. It took some time,
+because I've never had to generate a vmcore before, but I have one now
+and it looks usable from what I've seen using crash and gdb on
+it. It's a bit large, 1.1GB. How can I share it? Also, I'm assuming
+you'll also need the vmlinux image that it came from? It's also a bit
+big, 251MB.
 
-On Wed, Feb 21, 2024 at 02:03:19PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.79 release.
-> There are 206 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-
-I know I am late, the perils of being sick alongside manual reporting,
-but better late than never.
-
-Tested-by: Conor Dooley <conor.dooley@microchip.com>
-
-Thanks,
-Conor.
-
---N8inhLCaiHO09vQN
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZdjZMQAKCRB4tDGHoIJi
-0qCHAP9Av/dZq0bSBqxiUuafVJSeiV3qkeWsa4l8qoRKEX75vwEA6u43CalY+eUq
-B0WRcDYuTm5F8OVb9kh5SfSHec7k/gg=
-=E5Zu
------END PGP SIGNATURE-----
-
---N8inhLCaiHO09vQN--
+-- Dan
 
