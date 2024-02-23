@@ -1,107 +1,121 @@
-Return-Path: <stable+bounces-23526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2B3C861C9F
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 20:37:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D1A1861CA1
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 20:37:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 105D41C224D2
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 19:37:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2C031F23396
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 19:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A919A143C7F;
-	Fri, 23 Feb 2024 19:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B0241448E6;
+	Fri, 23 Feb 2024 19:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=joelfernandes.org header.i=@joelfernandes.org header.b="YrSmxdmM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JGcPNKSZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8CA12AAE0
-	for <stable@vger.kernel.org>; Fri, 23 Feb 2024 19:36:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F228012AAE0;
+	Fri, 23 Feb 2024 19:37:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708717015; cv=none; b=pHg37N73Rd4okpvkEcrVL1UqUwBD2b9SJmXlTu5fyWQwZPa5ujKkj/IhL5lGJIRm5PY+7XeamEqwucmOtnqaUsYCHtTEHr+3OrPEzVRXBaeUTmG7z3YJTdhOHEooJREz6Xu1WGH7LRF8pNO5UAwb6YnaGkJU77CWUiJks1E58Rg=
+	t=1708717025; cv=none; b=PkRVM8T0b/WITTI7FXpJPQJkhN4iz71sDc0sis25CuJgp8ybuvSsb0W5MR7JQxtIFmDLW3QBZjuOy0fQjYITsPETCTvVEGOZ9W9RRbvV3eQGSyr3FSFGw5UAKPlthZZOhY2BXjVEuQqKEMbHd1h8tcEhUYDkMt/5v9+wOYoIk30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708717015; c=relaxed/simple;
-	bh=WNfkHchNYQlXF3zrF0ZpwFGveUd+gVRX739raeL2qM4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OQvlfU5gujaV/SxscFqidFeOQqIqwALAUtud3mvDbFAu+wTQ35oIbC335KhfLQ6uCKwmOw1A1sMW9FHn3tlh/atPYVxJ3yVP605oTKbwRp2iUhLNP3qI4R+IfGTwPRYUyKHqFsMBPx16cZ5X55JRHj2RYPFutaCWh/sviA0RFe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=joelfernandes.org; spf=pass smtp.mailfrom=joelfernandes.org; dkim=pass (1024-bit key) header.d=joelfernandes.org header.i=@joelfernandes.org header.b=YrSmxdmM; arc=none smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=joelfernandes.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=joelfernandes.org
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2d0cdbd67f0so9178451fa.3
-        for <stable@vger.kernel.org>; Fri, 23 Feb 2024 11:36:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1708717012; x=1709321812; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WNfkHchNYQlXF3zrF0ZpwFGveUd+gVRX739raeL2qM4=;
-        b=YrSmxdmMWYpMCP7MFEpedL7P+r+lKBaYH8wa7V6aoBnK5Xl1l2+XUnHl91bpWSLsca
-         aJjyLc4lKOMHzdnlVyLF5z7Liv/hTQUYvhgFJPPKr37rctyzee5nX+VHeij1q+rviQVz
-         tJFGTPZ+lBQ1wAFkfErmP+QWifpmUnENrmblg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708717012; x=1709321812;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WNfkHchNYQlXF3zrF0ZpwFGveUd+gVRX739raeL2qM4=;
-        b=qqZjvZvLNVPCcTTL46rvv2+wQN6SHznIT4Opvu4Hq2m390nJQqMWKPCNKG71ipohzw
-         bmuZtXXk7rj5A2NeIxvaj8tTs4pwdOKMDMcWr/Ta6c2mtbdHcCSIL5lh+iq5JU+dj4dq
-         +Z/BIJRhDdJ6qxqJZjMpP2cWQYBdTha1BrLffYOdZ7Cytq11Yjza1fd5nYctSG+IY6LG
-         7ztg4h21c4c7eCFeojjigzaPJvQkoLiH+/H7UuOBZEd8fYs8bk+1AEnY6GJ5kxCA74li
-         ysFf0bhDQBQHToq6vHjPiukDZPG338WBWvgtQarT9lg0gGK+CpELX3LCMIJCOqk3nQG1
-         Qlmg==
-X-Forwarded-Encrypted: i=1; AJvYcCUYruTssdAEXCSPdJYSuTNy7KIGeFS6dyGnRqxJYt7GXwvcRnnMPl/5M4UAKvIF/fE/eoe3j+TNh3468uOMU7yYnXS2pxPx
-X-Gm-Message-State: AOJu0Yx8GQ0NyW/GP43nWP9VRLl2mQ4rhLhr2Vx4rbsHbYaDQ9WT9xCp
-	o6CI/Ig/rGmu2Na46y2SEDf6tiLoQd7YMip50Kc6Yi4eEn2ziRiz4JVTQrf1UTfJlkWKW6pYxhZ
-	/DD0oMcH/idc1tPKe3Dqo0cr7U8yNDNi9wmzeCg==
-X-Google-Smtp-Source: AGHT+IFMr5HxHcowGDJxIZiF/4hzCTmVH2gW6bkX4Dn1NbwB2kzEAU63dqBByUz+Db5CZXCHyemXbkYWJsh90O/Y8tE=
-X-Received: by 2002:a2e:95d2:0:b0:2d2:796b:7e81 with SMTP id
- y18-20020a2e95d2000000b002d2796b7e81mr54494ljh.46.1708717011665; Fri, 23 Feb
- 2024 11:36:51 -0800 (PST)
+	s=arc-20240116; t=1708717025; c=relaxed/simple;
+	bh=1FvHo9ZAqFnYQ8+JzpM97RGyfU19vXDAXyiInWFH3to=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=n0yG/1/WTolKIUi+qB5THr5yeKqiKILUjf5xvpKLQbGM7f0ddD7bPesSjsDA2MQAwzkl+k/RaK1O3epOJsBbYRGceyzUYodQzVoNxtq76NtvG9QfZfkWd7GESGBeCgyGIOhuOgh74i13OBGh9LzrHtOwXAZxlOt5CsNsqnZutKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JGcPNKSZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 96C61C433F1;
+	Fri, 23 Feb 2024 19:37:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708717024;
+	bh=1FvHo9ZAqFnYQ8+JzpM97RGyfU19vXDAXyiInWFH3to=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=JGcPNKSZsGCtUWEX2qEdV8p/t5Et1tS2t6AcLIFAunVLmlT5oFVKIY9InzxLMnB3U
+	 cNS34KNgZPMb6Z43XTF21JOU74WlDyDS9JXQn0qrtPAYKwppGyG2PgwRZtgfyAsuNI
+	 6LLwc8yMxTrECFRwX3JOzSZZ+L2wHPIJyOqqsIxto4cxadeSNWf1zsVPPIQS7NPn4N
+	 C/hRCRtwXFmPaFknp/vvcRZrdxmiRb8DrXoRemTKaULnwfUrqn2kaxlJNxE2zoZ029
+	 MqZPYFvIMhicxoC7lebjNC53+7O9gkq041CNtVQxTU9BtYnTAeMJQA1lBdEKIUws96
+	 WrOrXCxG/SVug==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 72FC3C5478C;
+	Fri, 23 Feb 2024 19:37:04 +0000 (UTC)
+From: Sam Ravnborg via B4 Relay <devnull+sam.ravnborg.org@kernel.org>
+Subject: [PATCH 0/6] sparc32: build fixes for all{yes,mod}config builds
+Date: Fri, 23 Feb 2024 20:36:46 +0100
+Message-Id:
+ <20240223-sam-fix-sparc32-all-builds-v1-0-5c60fd5c9250@ravnborg.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240207110951.27831-1-qiang.zhang1211@gmail.com> <2024022359-busboy-empower-900c@gregkh>
-In-Reply-To: <2024022359-busboy-empower-900c@gregkh>
-From: Joel Fernandes <joel@joelfernandes.org>
-Date: Fri, 23 Feb 2024 14:36:37 -0500
-Message-ID: <CAEXW_YSgDhXzxfrMceceuNBsYap+v-1nXsL4B=5_7s_wKYCWYw@mail.gmail.com>
-Subject: Re: [PATCH] linux-5.10/rcu-tasks: Eliminate deadlocks involving
- do_exit() and RCU tasks
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Zqiang <qiang.zhang1211@gmail.com>, paulmck@kernel.org, chenzhongjin@huawei.com, 
-	rcu@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAM7z2GUC/x3MwQqDMAyA4VeRnA2kqeywV5Edoo0u0FVpmAjiu
+ 6/s+MHPf4FrNXV4dhdUPcxtKw2h72B+S1kVLTUDEw/EHNHlg4ud6LvUOTJKzjh9LSdHEhoopoe
+ GKUIb7FVb+Z+Pr/v+Ae9UgjtsAAAA
+To: Miquel Raynal <miquel.raynal@bootlin.com>, 
+ "Maciej W. Rozycki" <macro@orcam.me.uk>
+Cc: sparclinux@vger.kernel.org, linux-parport@lists.infradead.org, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Andreas Larsson <andreas@gaisler.com>, Randy Dunlap <rdunlap@infradead.org>, 
+ Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org, 
+ Sam Ravnborg <sam@ravnborg.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1708717023; l=1522;
+ i=sam@ravnborg.org; s=20230107; h=from:subject:message-id;
+ bh=1FvHo9ZAqFnYQ8+JzpM97RGyfU19vXDAXyiInWFH3to=; =?utf-8?q?b=3DOFnhZ7qFaVRY?=
+ =?utf-8?q?iAb/ePV4/EKaLsohB7PongJrPCQXAqPZ35oim3gVrrekQ3I1NJ3unFNJfEnR2G6s?=
+ y4Eguzo1Bt73Ka8AN51+alJxGvzS42SSt5Gjy9Nu0m3rc2TXMMGS
+X-Developer-Key: i=sam@ravnborg.org; a=ed25519;
+ pk=R0+pqV7BRYOAeOIGkyOrSNke7arx5y3LkEuNi37YEyU=
+X-Endpoint-Received: by B4 Relay for sam@ravnborg.org/20230107 with auth_id=22
+X-Original-From: Sam Ravnborg <sam@ravnborg.org>
+Reply-To: <sam@ravnborg.org>
 
-On Fri, Feb 23, 2024 at 8:15=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Wed, Feb 07, 2024 at 07:09:51PM +0800, Zqiang wrote:
-> > From: Paul E. McKenney <paulmck@kernel.org>
-> >
-> > commit bc31e6cb27a9334140ff2f0a209d59b08bc0bc8c upstream.
->
-> This is not a valid commit in Linus's tree :(
->
-> Also, what about 5.4?
+This is a small set of patches that address build breakage with
+allyesconfig / allmodconfig.
 
-Hey Zqiang,
+This solves some, but not all, build breakage.
+The parport fix depends on the previous patch, the rest are independent
+fixes.
 
-Do you mind resending these backports to stable once it lands in Linus
-tree, with the correct commit ID?
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+---
+Sam Ravnborg (6):
+      sparc32: Use generic cmpdi2/ucmpdi2 variants
+      sparc32: Fix build with trapbase
+      mtd: maps: sun_uflash: Declare uflash_devinit static
+      usb: host: uhci-grlib.c: Fix build, add platform_device
+      sparc32: Do not select GENERIC_ISA_DMA
+      sparc32: Fix parport build with sparc32
 
-I will also apply it to my stable trees so it is not missed in the
-future but I appreciate if you can send.
+ arch/sparc/Kconfig                  |   6 +-
+ arch/sparc/include/asm/parport.h    | 259 +-----------------------------------
+ arch/sparc/include/asm/parport_64.h | 256 +++++++++++++++++++++++++++++++++++
+ arch/sparc/kernel/irq_32.c          |   6 +-
+ arch/sparc/kernel/kernel.h          |   8 +-
+ arch/sparc/kernel/kgdb_32.c         |   4 +-
+ arch/sparc/kernel/leon_smp.c        |   6 +-
+ arch/sparc/kernel/setup_32.c        |   4 +-
+ arch/sparc/lib/Makefile             |   4 +-
+ arch/sparc/lib/cmpdi2.c             |  28 ----
+ arch/sparc/lib/ucmpdi2.c            |  20 ---
+ drivers/mtd/maps/sun_uflash.c       |   2 +-
+ drivers/usb/host/uhci-grlib.c       |   1 +
+ 13 files changed, 283 insertions(+), 321 deletions(-)
+---
+base-commit: 626db6ee8ee1edac206610db407114aa83b53fd3
+change-id: 20240223-sam-fix-sparc32-all-builds-0a0403d6e1b3
 
-thanks,
+Best regards,
+-- 
+Sam Ravnborg <sam@ravnborg.org>
 
- - Joel
 
