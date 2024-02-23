@@ -1,112 +1,102 @@
-Return-Path: <stable+bounces-23484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD638861507
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 16:00:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71FA4861529
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 16:06:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90F901F24BAD
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 15:00:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8B81B20CA1
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 15:06:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8E8D60DD1;
-	Fri, 23 Feb 2024 15:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E98C823B1;
+	Fri, 23 Feb 2024 15:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EyyFnYft"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A55PzkeE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66BE121364;
-	Fri, 23 Feb 2024 15:00:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67DF78BE7;
+	Fri, 23 Feb 2024 15:06:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708700440; cv=none; b=lriB3wyOt+VOtbr+7GxvN2MyNeksXKcKCybjeIQO5skpKPDR0J+7Btr544K8SE5wNecGaA7H51SslkHq/CX7JO4moBCgUXiOVNZGK1i9SBBGv3U1yu2dReWYPtoZTcaDNURLSNLvzlfkvSc7wMbfIyfgFt+6Fzh7gwL5jtaVCQU=
+	t=1708700784; cv=none; b=PJI4EsW/0nTp89ZaNy5BG0uAfsAXg+ptopougNM/b8fh50dfPGNlZOke8AIiI821V0udlVvD5BGF5UMaSB3etqo6sAgFTYfM/Qb8eLd8jf0fDYYZwPMVHreuDKWNK2V7unXgbPrRVjzbySBOr0t/yyNK5V9hinMJ8UVJKvt45nE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708700440; c=relaxed/simple;
-	bh=VgUlltsMr74niDfQ33mjF/yfLalcfE+W+x+KMUOuyVw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=b47mL1dtNuiwEFSEsi+7NOnT0ScxLJqpwVQ+/IInsj/o8+Figrv9spkEsNuiDiD8qG0rXuhYVEfJ7KwGYdqVTxOLVUjb9Kqt9Atrc+c7j3hNBqdurYRehZBj5pW3VklEJOJwwAE1u3TYyDguW5hlvEXRiHE10f9yLfRk8T6SLJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EyyFnYft; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-29a950152bcso9087a91.1;
-        Fri, 23 Feb 2024 07:00:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708700439; x=1709305239; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UuiW3vgYamUonIgJifnWsdJ41+amBUZpTSrVUyXFt1U=;
-        b=EyyFnYftso9DrHFua3wIMf8ykogWSe4vWkPEOAszMFrbYUrIWfefnB05UIsT3ufc47
-         OXfIVTx4FB1STGWbHYVgPPxmNjxE+eZBrEXW93Sr5D3S7F37seCilsjROyqawhJllzbo
-         xYd4ylRQ7RA92rge7f2QbQEPFGrLXqxhftjg1hkUk1Fxn9LICNUDKd0RTGAZIYEiWF6U
-         MTRsXxFZ6uqwiI8CJKfP6B0DAw9PhpiNFLyqTYnoVTlid6Cs99QogyfjeGAr09MjomT8
-         aEA8POErgLLuOSHm2Nahs6QSTr+LGY/Mx4ord8zCU1nNnqpyvkVamAdirF/NxyoS3uLy
-         9qLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708700439; x=1709305239;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UuiW3vgYamUonIgJifnWsdJ41+amBUZpTSrVUyXFt1U=;
-        b=EyayzB4fJDZtcPQEKqa3HVFW1Oh/a1P/BODQ0q76rQYXi9REwOpzpauy2NZWmxhqqx
-         CcFOEz7yLXNefT4QO6rHuhMXJNxFe7v/S1KXFz1OpihDnyK9m0ZPuk6CUp3biNwGpxQJ
-         ITk1B/RDtf7q6uZvezKh8yCy6Lap4i2VxZ3QcjrR78luKEq39G0b/0DqtWFVhMpjoe8m
-         Kjq4kQPPBpUb3pzev33+Lb+Bsh8uH/93qulLv00huU5LVpxadPvOXJlmrUDC/spxPhlN
-         xwschvbJ67XpM4JssiWbZBn87HhVE5Z23/Tc3BGrnFtWqtoImRq3WOH5xpxOHaX8CVtO
-         F1Lw==
-X-Forwarded-Encrypted: i=1; AJvYcCWfDYnboA8GgXJk8XGSfX/7v45TBu2t4/+MQOlpH1g1oEDC1UKKViRV/yjHhduE/92qa4F7WBXHgBhliWLY3lJLPtlL61TnqbHAKmcY/wYjVXd100PI7aAcoBmUC+e6SnrS5bSk
-X-Gm-Message-State: AOJu0Yzbp7k+XowdmzKst5QAlGHl14aRKt/cgwjUu/H0xiWVLpPmbzed
-	c1Uk5Ir0OxeWBatE2vOp5U7dlj4M/b9BzFLfSxOdVJBsWQjj3TwdteehvhMC+UvNes7zD9T+Y95
-	zK1Wf1+0AOXfyB88E5Zn70C7L2uI=
-X-Google-Smtp-Source: AGHT+IGZGAqQ4Z+lKDdINw8JgTnWczel16tJ9w9dUi0R7tIHS4tgrZpBIDjoSZIuhhJsPtR6FsmUCrBc2ciVrayq/ok=
-X-Received: by 2002:a17:90b:364b:b0:299:10c8:9c95 with SMTP id
- nh11-20020a17090b364b00b0029910c89c95mr58077pjb.20.1708700438618; Fri, 23 Feb
- 2024 07:00:38 -0800 (PST)
+	s=arc-20240116; t=1708700784; c=relaxed/simple;
+	bh=DhqludqxWEdWFzaOd3Ag7hr7K/+Tti9ixKhnUJKWKMs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VCwgtVvRPKv99K9cCC805VwvT2d5lMjBywEsBtbxewvCqrO0qgumHRwqQz7gWBFnxu4vvzZzBU7NQLxwdJVhwIgGtcWT7csrg3tYY7asiU+v6Tk8+L3OXYZm719njynUeD9RHkO3NWKKitgE8a6uXe/tXqm95VG8wvwmeoep+yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A55PzkeE; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708700784; x=1740236784;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=DhqludqxWEdWFzaOd3Ag7hr7K/+Tti9ixKhnUJKWKMs=;
+  b=A55PzkeELhnEgtn0Q2Ol++fD7lZEYBfoLlRWKjtx/qCJk0fELznqSEtA
+   3sJI1LccFZTKWImmhGD3zTs6okQtKRlTfCVQlHEqMSfU91JMFMQa3i/4r
+   cmbNvTOdi6lUUsK7jVmP4JKXd7yaOJUMOtP4jAy1OKKgjiq6qQ4xnvGfF
+   2BEUuEDot34ZOWP7+eMZJ67qgsbFv0cY3Jsqca4idMeK89x3cC6d1BWyj
+   jHmPMovLDIH6BXMg2Zq9h8fI76TIb8Ua1vgqkwvmuSkuGKrkjgVGl/gmw
+   Lx/hB2OBDMygCy8v6f5mfevgk+w1qoyt9amvHNxaOxz2yf0ST20p78sIE
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10993"; a="6834917"
+X-IronPort-AV: E=Sophos;i="6.06,180,1705392000"; 
+   d="scan'208";a="6834917"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2024 07:04:28 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10993"; a="913748434"
+X-IronPort-AV: E=Sophos;i="6.06,180,1705392000"; 
+   d="scan'208";a="913748434"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2024 07:04:25 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rdX66-00000006viO-3Fyz;
+	Fri, 23 Feb 2024 17:04:22 +0200
+Date: Fri, 23 Feb 2024 17:04:22 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Peter Collingbourne <pcc@google.com>
+Cc: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] serial: 8250_dw: Do not reclock if already at correct
+ rate
+Message-ID: <Zdiz9lWiCJ9Sg0bQ@smile.fi.intel.com>
+References: <20240222192635.1050502-1-pcc@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240223-x86-insn-decoder-line-fix-v2-1-cde49c69f402@valentinobst.de>
-In-Reply-To: <20240223-x86-insn-decoder-line-fix-v2-1-cde49c69f402@valentinobst.de>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 23 Feb 2024 16:00:25 +0100
-Message-ID: <CANiq72=2T9br4G2E5Ky-NgX-VgM2PJoDZ0NGTrzG7xXmd0C=hg@mail.gmail.com>
-Subject: Re: [PATCH v2] x86/tools: fix line number reported for malformed lines
-To: Valentin Obst <kernel@valentinobst.de>
-Cc: Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, John Baublitz <john.m.baublitz@gmail.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, 
-	=?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240222192635.1050502-1-pcc@google.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Fri, Feb 23, 2024 at 2:17=E2=80=AFPM Valentin Obst <kernel@valentinobst.=
-de> wrote:
->
-> - Explain why this patch fixes the commit mentioned in the 'Fixes' tag.
+On Thu, Feb 22, 2024 at 11:26:34AM -0800, Peter Collingbourne wrote:
+> When userspace opens the console, we call set_termios() passing a
+> termios with the console's configured baud rate. Currently this causes
+> dw8250_set_termios() to disable and then re-enable the UART clock at
+> the same frequency as it was originally. This can cause corruption
+> of any concurrent console output. Fix it by skipping the reclocking
+> if we are already at the correct rate.
 
-Thanks for this!
+Makes sense to me from code perspective.
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-> - CCed the stable list and sent to all x86 maintainers.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Sorry if I was not clear -- the "Cc: stable@vger.kernel.org" needs to
-be in the commit message itself, see:
 
-    https://docs.kernel.org/process/submitting-patches.html#select-the-reci=
-pients-for-your-patch
-
-But I would wait a few days for a v3 to see if x86 says something
-meanwhile -- patches to stable need to arrive in mainline anyway :)
-
-Cheers,
-Miguel
 
