@@ -1,124 +1,97 @@
-Return-Path: <stable+bounces-23520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0158A861C25
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 19:51:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28C17861C48
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 20:06:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB7DF1F239DD
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 18:51:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A1771C22E6C
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 19:06:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42951448DE;
-	Fri, 23 Feb 2024 18:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01834128831;
+	Fri, 23 Feb 2024 19:06:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="rzQC+UUs"
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="1N9Om1Cl"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from smtp-8fa9.mail.infomaniak.ch (smtp-8fa9.mail.infomaniak.ch [83.166.143.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE00142645;
-	Fri, 23 Feb 2024 18:50:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5FC11420C1
+	for <stable@vger.kernel.org>; Fri, 23 Feb 2024 19:06:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.166.143.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708714243; cv=none; b=uMB2OW16FlCTbzolU4RqWeBEU+I59v8zSjEuDB10N7d6pA2Wj5F7kpKJpHBgaBnblLN6NFxC0z86Rfx5TKFbzoQdcu2TG6lxPnyMtzTWO8OulKuO8Uvlw5EV4jrrjHwCuAKV2D4aQ1pXr0554+VxU+hezn6sYE2Rey//H+onXoQ=
+	t=1708715168; cv=none; b=Jn7ZfUGYrEVhFLwVCBxTkJqedCStwcpjEvtK9fxv+78wFtEmYUWkyDoEptWgHjFQTgmm6OKTnlw8w6Lq2dbJogB96T7qXTj/bbdgQn4bTrJFsRH1UnRKf6EZx0yT4Kjejanu7HEoVf0eXlPkLNH1BC8cSGawvK2WbgWvsqv0LKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708714243; c=relaxed/simple;
-	bh=DhL+o3TBv9wTdewu3RZDH83BAQtweFRzwwjac4VyAmQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ptjRk73cQdlnjfmzMtpBnAlHusR1fAy6RcLRZkBrsoLrdpVXsxgT32kPYqWxaIT6Z5DvzfaDBPja21Dx38Z0PHSXTk0gkBMBAeT7IaGAawZnP+9Zf/k/FSM19jGk4IrbB/qSCRj871lZJVGEUe+a7atw3UcClQ55V9XmhQ5J7/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz; spf=pass smtp.mailfrom=ucw.cz; dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b=rzQC+UUs; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id D19971C0081; Fri, 23 Feb 2024 19:50:36 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-	t=1708714236;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=N5THRV7c4OguqZqtxRyAd4aFwhAeBHnTNbl2Gj2YB8I=;
-	b=rzQC+UUsFYyriraM5TQkTbiALnJrX/ttY9RMMeRia5fd/0YPxmstJoPqHuzpCzMq0nn4JG
-	+jtXtMON8C6dPIb9W53Qp5ujdt3dvfI5WOqwOHCbMWA4UZqmSHiqToNBUkxjVHHZiSakkt
-	LW8x54za/0EZbqjE+SMKhpXYbUVXf40=
-Date: Fri, 23 Feb 2024 19:50:36 +0100
-From: Pavel Machek <pavel@ucw.cz>
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Vlastimil Babka <vbabka@suse.cz>,
-	kernel list <linux-kernel@vger.kernel.org>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Oleksandr Natalenko <oleksandr@natalenko.name>,
-	Jiri Benc <jbenc@redhat.com>, Sasha Levin <sashal@kernel.org>,
-	stable@vger.kernel.org,
-	Thorsten Leemhuis <regressions@leemhuis.info>
-Subject: Re: stable-kernel-rules was Re: fs/bcachefs/
-Message-ID: <Zdjo/D8dZ/gJ4vz4@duo.ucw.cz>
-References: <g6el7eghhdk2v5osukhobvi4pige5bsfu5koqtmoyeknat36t7@irmmk7zo7edh>
- <uknxc26o6td7g6rawxffvsez46djmvcy2532kza2zyjuj33k7p@4jdywourgtqg>
- <2024022103-municipal-filter-fb3f@gregkh>
- <4900587.31r3eYUQgx@natalenko.name>
- <2024022155-reformat-scorer-98ae@gregkh>
- <aaf2f030-b6f4-437b-bb4e-79aa4891ae56@suse.cz>
- <ZdeeKiTXc7WidRcs@duo.ucw.cz>
- <bhqwmyfmd3a5mgsdbfom6hz2cvhf75felzf2bu3aiusr6f3ael@6qo7buimzot2>
+	s=arc-20240116; t=1708715168; c=relaxed/simple;
+	bh=qpzM6NBYR7WpVcp9/HBiZFKK8JElis+2lrx2b9BJFms=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jvsa5OKu4kzfUU3etj7a1ZiNW8EG8xWVmNA8lEexnkl4xI9Lx3NuNBQH25M6PHqLWfVxuTnnFVck6kdUBJ9MaYsH65229L+B3NWJFOSV6Yw8g7K0fpvYoRvPMyVlPzzD9/akGFnkW64WQLaCOEhTdTASX9wf4odPWm2jqXTJG0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=1N9Om1Cl; arc=none smtp.client-ip=83.166.143.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
+Received: from smtp-4-0001.mail.infomaniak.ch (smtp-4-0001.mail.infomaniak.ch [10.7.10.108])
+	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4ThKGt4rmsz2TC;
+	Fri, 23 Feb 2024 20:05:58 +0100 (CET)
+Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4ThKGs49MCzjsT;
+	Fri, 23 Feb 2024 20:05:57 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
+	s=20191114; t=1708715158;
+	bh=qpzM6NBYR7WpVcp9/HBiZFKK8JElis+2lrx2b9BJFms=;
+	h=From:To:Cc:Subject:Date:From;
+	b=1N9Om1ClO+r+L8Qkam4EJkqyN1SiVBZqs5lER3lgzN2iIjXSyXKUsBnEwslb1urAP
+	 jw9IIgIu8sDs1Q4U5Oe/6uKx2AlVRr4rQwt/lIGGpkjJ1kHax1FNIiJsD+DMzXzo78
+	 KnimjfuRbCak8dfFUJl1/GYfQfvSCPQEYotFWX+c=
+From: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+To: Casey Schaufler <casey@schaufler-ca.com>,
+	John Johansen <john.johansen@canonical.com>,
+	Paul Moore <paul@paul-moore.com>
+Cc: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	James Morris <jmorris@namei.org>,
+	"Serge E . Hallyn" <serge@hallyn.com>,
+	linux-kernel@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] SELinux: Fix lsm_get_self_attr()
+Date: Fri, 23 Feb 2024 20:05:45 +0100
+Message-ID: <20240223190546.3329966-1-mic@digikod.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="+wZgcwm10bI8HAca"
-Content-Disposition: inline
-In-Reply-To: <bhqwmyfmd3a5mgsdbfom6hz2cvhf75felzf2bu3aiusr6f3ael@6qo7buimzot2>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Infomaniak-Routing: alpha
 
+selinux_lsm_getattr() may not initialize the value's pointer in some
+case.  As for proc_pid_attr_read(), initialize this pointer to NULL in
+selinux_getselfattr() to avoid an UAF in the kfree() call.
 
---+wZgcwm10bI8HAca
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Cc: Casey Schaufler <casey@schaufler-ca.com>
+Cc: Paul Moore <paul@paul-moore.com>
+Cc: stable@vger.kernel.org
+Fixes: 762c934317e6 ("SELinux: Add selfattr hooks")
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+---
+ security/selinux/hooks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Hi!
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index a6bf90ace84c..338b023a8c3e 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -6559,7 +6559,7 @@ static int selinux_getselfattr(unsigned int attr, struct lsm_ctx __user *ctx,
+ 			       size_t *size, u32 flags)
+ {
+ 	int rc;
+-	char *val;
++	char *val = NULL;
+ 	int val_len;
+ 
+ 	val_len = selinux_lsm_getattr(attr, current, &val);
+-- 
+2.43.0
 
-> > There seems to be just one rule being observed: "It or an equivalent
-> > fix must already exist in Linus' tree (upstream).". Every other rule is
-> > broken pretty much all the time.
-> >=20
-> > AUTOSEL is a problem.
-> >=20
-> > Plus there's problem with dependencies -- if a patch A is need for fix
-> > B, the rules pretty much go out of the window, huge patches are
-> > applied, whitespace fixes are applied, etc.
-> >=20
-> > There are even known-bad patches being applied, and then
-> > reverted. Greg explained that it heps his process somehow.
->=20
-> This seems to be a pretty consistent theme theme - thins are done baesd
-> on whatever makes Greg's process easier, not input from the people
-> stable ought to be working with. Pretty questionable set of priorities
-> if you ask me.
-
-Well, I'd not mind stable process following the documented rules.
-
-But fixing the documentation to match the reality would also be an
-improvement, because some people actually read it and expect it to be
-followed.
-
-Best regards,
-								Pavel
---=20
-People of Russia, stop Putin before his war on Ukraine escalates.
-
---+wZgcwm10bI8HAca
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZdjo/AAKCRAw5/Bqldv6
-8hT1AKCNAauh3IxGbhZqKnYZ40ZpkG3lCQCfY8dSbOtuGWBuqkhzTC2wX47Wptw=
-=5ekV
------END PGP SIGNATURE-----
-
---+wZgcwm10bI8HAca--
 
