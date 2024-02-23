@@ -1,138 +1,205 @@
-Return-Path: <stable+bounces-23514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 641408617CC
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 17:25:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64EC586181C
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 17:37:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F65A285710
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 16:25:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83627B2AE93
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 16:35:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E9382C60;
-	Fri, 23 Feb 2024 16:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2DB127B51;
+	Fri, 23 Feb 2024 16:35:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pUZyt7eo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b80dq8jX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B777184A43
-	for <stable@vger.kernel.org>; Fri, 23 Feb 2024 16:25:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBF883A0D;
+	Fri, 23 Feb 2024 16:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708705526; cv=none; b=EP6YREARtbHeeeCjsyvnubM5ujBzzZ4uEjgv1+dxt/+xmEh3scmp7GqNpsaDrt/gRvV7g9/hQLuQuVfkWC+9cq35xrxhYg8knwdYl9a4dmzq73weKTBp2vbwJkXIXhXFyFLg4yXnPEDT6iqAfuajXxlJobGELG/G7+wipRogPfk=
+	t=1708706136; cv=none; b=DGWSUQ8QhzIrxVDM/FfSE/1rb1962EohaXB4qeVz2Xhz9HAxP7bQq5HV2z24nLkQt9hEVn6jhMGZUOwlN46ERcmnhcTCwyXCcKj6K+N1rVpYrVY6FuTAPxhudcKb2WDK5koa3E1NVpTg8E8UHSjtUSKJvnDuX0+CL8DLu6QSsec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708705526; c=relaxed/simple;
-	bh=IyyFF0IS6sJIXTOl70nZ+3oIWRYJNBotTgtD2cQhipQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X5tHevGgH8QY1lAUxW1zkK4QjA/nDefkgb222g7ZdFMPoevtomV7/UciKSj1KMmrygi/bxyS7CJVFIA+sa/YvcUvUbUtAY4Alq8p+Bq3hpNzrkKCHqPoh7mnvF5eFIi0nslf1PBPFwfFZQnD2ULloYI0grW4zfCT+MO7bi38mFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pUZyt7eo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B29C433C7;
-	Fri, 23 Feb 2024 16:25:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708705526;
-	bh=IyyFF0IS6sJIXTOl70nZ+3oIWRYJNBotTgtD2cQhipQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pUZyt7eoGmOv0//pG/lPfYfAEpdXklB0hV0HLG1zg5AiBfgsQc+L5oPR+Pz5EPziK
-	 EvX8C2ZV7HZVuZvmEk11YarCa4R3zUw5GbaUK6vlKeXe7eMTKN0cHxzjtqYzR8DpkV
-	 7CFqHdkArqXo9BJ2XVHrSpxyZfyW1hYByW4d2Wno=
-Date: Fri, 23 Feb 2024 17:25:23 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Petr Vorel <pvorel@suse.cz>
-Cc: stable@vger.kernel.org, Cyril Hrubis <chrubis@suse.cz>,
-	Sasha Levin <sashal@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>, Mel Gorman <mgorman@suse.de>
-Subject: Re: [PATCH 4.19 v2 1/3] sched/rt: Fix sysctl_sched_rr_timeslice
- intial value
-Message-ID: <2024022318-define-geometry-06c9@gregkh>
-References: <20240222170540.1375962-1-pvorel@suse.cz>
+	s=arc-20240116; t=1708706136; c=relaxed/simple;
+	bh=RPr5WYlLx6M3L4Dw9KUBr4Cz5XuyraokgeEyTWWJV1Y=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To; b=qLEb7hviXvZbJbdJno2tgbmE7BcSofEkmOaXIG7qCWSoSQT2xCGwd9u2YDso2tTwrlRr4YRg2E2CL25xNM1nBy0Z2cZgderWhRmvGpWv0lnb3CrrTytypNLDtAAVMcJTP7K6kTsE7y/6Nau67cqfqNWFFHEuYCIGzmwhJAmgdzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b80dq8jX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A03C433F1;
+	Fri, 23 Feb 2024 16:35:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708706136;
+	bh=RPr5WYlLx6M3L4Dw9KUBr4Cz5XuyraokgeEyTWWJV1Y=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=b80dq8jX/zrX40B3maeIYgDYTOGPui2gaqVvhE9KIH7jYSsHfZY3IIJ+TIvY8rGDC
+	 AAKs59P+pd21UVPmZNrZ63AQXjsCvGjBuWHFDLXwvKDkZhpl1L1dh+AHTCL9MIFGt3
+	 gUcldfAJZP/QxiZVyk/kAmNlkeXNB/yyGIxnX6whlMlG1gyBe1LA3K/NU4m1ZUOa/t
+	 ZJypPqRsedt7t5Vzmo20eQiYTA0Ez4G7VgImUoECRRdR2EQbizO5gNBMZFNcnCkgTm
+	 NDydEzmnx7Ou24bHXuBzfM1CGaTafCopsv05SBSCIiZz5JgTJJjWexY1gm5blFLpOI
+	 ORzs+l5spTPUQ==
+Content-Type: multipart/mixed; boundary="------------iOB1UcdNFo69IXo0qRTmA46w"
+Message-ID: <0585f8a1-e0ca-483d-a21f-20617192cb28@kernel.org>
+Date: Fri, 23 Feb 2024 17:35:30 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240222170540.1375962-1-pvorel@suse.cz>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 05/10] mptcp: fix snd_wnd initialization for passive
+ socket: manual merge
+Content-Language: en-GB, fr-BE
+To: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
+ Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Florian Westphal <fw@strlen.de>,
+ Kishen Maloor <kishen.maloor@intel.com>, Shuah Khan <shuah@kernel.org>,
+ Peter Krystad <peter.krystad@linux.intel.com>,
+ Christoph Paasch <cpaasch@apple.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20240223-upstream-net-20240223-misc-fixes-v1-0-162e87e48497@kernel.org>
+ <20240223-upstream-net-20240223-misc-fixes-v1-5-162e87e48497@kernel.org>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20240223-upstream-net-20240223-misc-fixes-v1-5-162e87e48497@kernel.org>
 
-On Thu, Feb 22, 2024 at 06:05:38PM +0100, Petr Vorel wrote:
-> From: Cyril Hrubis <chrubis@suse.cz>
+This is a multi-part message in MIME format.
+--------------iOB1UcdNFo69IXo0qRTmA46w
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Hi Jakub, Paolo, Stephen,
+
+On 23/02/2024 5:14 pm, Matthieu Baerts (NGI0) wrote:
+> From: Paolo Abeni <pabeni@redhat.com>
 > 
-> [ Upstream commit c7fcb99877f9f542c918509b2801065adcaf46fa ]
+> Such value should be inherited from the first subflow, but
+> passive sockets always used 'rsk_rcv_wnd'.
 > 
-> There is a 10% rounding error in the intial value of the
-> sysctl_sched_rr_timeslice with CONFIG_HZ_300=y.
-> 
-> This was found with LTP test sched_rr_get_interval01:
-> 
-> sched_rr_get_interval01.c:57: TPASS: sched_rr_get_interval() passed
-> sched_rr_get_interval01.c:64: TPASS: Time quantum 0s 99999990ns
-> sched_rr_get_interval01.c:72: TFAIL: /proc/sys/kernel/sched_rr_timeslice_ms != 100 got 90
-> sched_rr_get_interval01.c:57: TPASS: sched_rr_get_interval() passed
-> sched_rr_get_interval01.c:64: TPASS: Time quantum 0s 99999990ns
-> sched_rr_get_interval01.c:72: TFAIL: /proc/sys/kernel/sched_rr_timeslice_ms != 100 got 90
-> 
-> What this test does is to compare the return value from the
-> sched_rr_get_interval() and the sched_rr_timeslice_ms sysctl file and
-> fails if they do not match.
-> 
-> The problem it found is the intial sysctl file value which was computed as:
-> 
-> static int sysctl_sched_rr_timeslice = (MSEC_PER_SEC / HZ) * RR_TIMESLICE;
-> 
-> which works fine as long as MSEC_PER_SEC is multiple of HZ, however it
-> introduces 10% rounding error for CONFIG_HZ_300:
-> 
-> (MSEC_PER_SEC / HZ) * (100 * HZ / 1000)
-> 
-> (1000 / 300) * (100 * 300 / 1000)
-> 
-> 3 * 30 = 90
-> 
-> This can be easily fixed by reversing the order of the multiplication
-> and division. After this fix we get:
-> 
-> (MSEC_PER_SEC * (100 * HZ / 1000)) / HZ
-> 
-> (1000 * (100 * 300 / 1000)) / 300
-> 
-> (1000 * 30) / 300 = 100
-> 
-> Fixes: 975e155ed873 ("sched/rt: Show the 'sched_rr_timeslice' SCHED_RR timeslice tuning knob in milliseconds")
-> Signed-off-by: Cyril Hrubis <chrubis@suse.cz>
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Reviewed-by: Petr Vorel <pvorel@suse.cz>
-> Acked-by: Mel Gorman <mgorman@suse.de>
-> Tested-by: Petr Vorel <pvorel@suse.cz>
-> Link: https://lore.kernel.org/r/20230802151906.25258-2-chrubis@suse.cz
-> [ pvorel: rebased for 4.19 ]
-> Signed-off-by: Petr Vorel <pvorel@suse.cz>
+> Fixes: 6f8a612a33e4 ("mptcp: keep track of advertised windows right edge")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+> Reviewed-by: Mat Martineau <martineau@kernel.org>
+> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 > ---
->  kernel/sched/rt.c | 2 +-
+>  net/mptcp/protocol.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
-> index 394c66442cff..ce4594215728 100644
-> --- a/kernel/sched/rt.c
-> +++ b/kernel/sched/rt.c
-> @@ -8,7 +8,7 @@
->  #include "pelt.h"
+> diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+> index 442fa7d9b57a..2c8f931c6d5b 100644
+> --- a/net/mptcp/protocol.c
+> +++ b/net/mptcp/protocol.c
+> @@ -3211,7 +3211,7 @@ struct sock *mptcp_sk_clone_init(const struct sock *sk,
+>  	msk->write_seq = subflow_req->idsn + 1;
+>  	msk->snd_nxt = msk->write_seq;
+>  	msk->snd_una = msk->write_seq;
+> -	msk->wnd_end = msk->snd_nxt + req->rsk_rcv_wnd;
+> +	msk->wnd_end = msk->snd_nxt + tcp_sk(ssk)->snd_wnd;
+
+Please note that this patch will conflict with the following commit from
+net-next:
+
+  3f83d8a77eee ("mptcp: fix more tx path fields initialization")
+
+That's because this commit modifies the same line as the one modified
+here. We cannot avoid a conflict here. To fix it, please use
+'WRITE_ONCE()' with the new line from -net:
+
+  WRITE_ONCE(msk->wnd_end, msk->snd_nxt + tcp_sk(ssk)->snd_wnd);
+
+A 3-way diff has been attached to this email.
+
+>  	msk->setsockopt_seq = mptcp_sk(sk)->setsockopt_seq;
+>  	mptcp_init_sched(msk, mptcp_sk(sk)->sched);
 >  
->  int sched_rr_timeslice = RR_TIMESLICE;
-> -int sysctl_sched_rr_timeslice = (MSEC_PER_SEC / HZ) * RR_TIMESLICE;
-> +int sysctl_sched_rr_timeslice = (MSEC_PER_SEC * RR_TIMESLICE) / HZ;
->  
->  static int do_sched_rt_period_timer(struct rt_bandwidth *rt_b, int overrun);
->  
-> -- 
-> 2.35.3
-> 
 > 
 
-All now queued up, thanks!
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
+--------------iOB1UcdNFo69IXo0qRTmA46w
+Content-Type: text/x-patch; charset=UTF-8;
+ name="conflict-mptcp-fix-more-tx-path-fields-initialization.diff"
+Content-Disposition: attachment;
+ filename*0="conflict-mptcp-fix-more-tx-path-fields-initialization.diff"
+Content-Transfer-Encoding: base64
 
-greg k-h
+ZGlmZiAtLWNjIG5ldC9tcHRjcC9wcm90b2NvbC5jCmluZGV4IDc4MzNhNDlmNjIxNCw5ZGY0
+ZWFkZGZkNDguLjAwMDAwMDAwMDAwMAotLS0gYS9uZXQvbXB0Y3AvcHJvdG9jb2wuYworKysg
+Yi9uZXQvbXB0Y3AvcHJvdG9jb2wuYwpAQEAgLTMyNDIsMjUgLTMyMDQsMTggKzMyNDcsMjUg
+QEBAIHN0cnVjdCBzb2NrICptcHRjcF9za19jbG9uZV9pbml0KGNvbnN0IAogIAogIAlfX21w
+dGNwX2luaXRfc29jayhuc2spOwogIAogKyNpZiBJU19FTkFCTEVEKENPTkZJR19NUFRDUF9J
+UFY2KQogKwlpZiAobnNrLT5za19mYW1pbHkgPT0gQUZfSU5FVDYpCiArCQltcHRjcF9jb3B5
+X2lwNl9vcHRpb25zKG5zaywgc2spOwogKwllbHNlCiArI2VuZGlmCiArCQltcHRjcF9jb3B5
+X2lwX29wdGlvbnMobnNrLCBzayk7CiArCiAgCW1zayA9IG1wdGNwX3NrKG5zayk7Ci0gCW1z
+ay0+bG9jYWxfa2V5ID0gc3ViZmxvd19yZXEtPmxvY2FsX2tleTsKLSAJbXNrLT50b2tlbiA9
+IHN1YmZsb3dfcmVxLT50b2tlbjsKKyAJV1JJVEVfT05DRShtc2stPmxvY2FsX2tleSwgc3Vi
+Zmxvd19yZXEtPmxvY2FsX2tleSk7CisgCVdSSVRFX09OQ0UobXNrLT50b2tlbiwgc3ViZmxv
+d19yZXEtPnRva2VuKTsKICAJbXNrLT5pbl9hY2NlcHRfcXVldWUgPSAxOwogIAlXUklURV9P
+TkNFKG1zay0+ZnVsbHlfZXN0YWJsaXNoZWQsIGZhbHNlKTsKICAJaWYgKG1wX29wdC0+c3Vi
+b3B0aW9ucyAmIE9QVElPTl9NUFRDUF9DU1VNUkVRRCkKICAJCVdSSVRFX09OQ0UobXNrLT5j
+c3VtX2VuYWJsZWQsIHRydWUpOwogIAotIAltc2stPndyaXRlX3NlcSA9IHN1YmZsb3dfcmVx
+LT5pZHNuICsgMTsKLSAJbXNrLT5zbmRfbnh0ID0gbXNrLT53cml0ZV9zZXE7Ci0gCW1zay0+
+c25kX3VuYSA9IG1zay0+d3JpdGVfc2VxOwotIAltc2stPnduZF9lbmQgPSBtc2stPnNuZF9u
+eHQgKyB0Y3Bfc2soc3NrKS0+c25kX3duZDsKKyAJV1JJVEVfT05DRShtc2stPndyaXRlX3Nl
+cSwgc3ViZmxvd19yZXEtPmlkc24gKyAxKTsKKyAJV1JJVEVfT05DRShtc2stPnNuZF9ueHQs
+IG1zay0+d3JpdGVfc2VxKTsKKyAJV1JJVEVfT05DRShtc2stPnNuZF91bmEsIG1zay0+d3Jp
+dGVfc2VxKTsKIC0JV1JJVEVfT05DRShtc2stPnduZF9lbmQsIG1zay0+c25kX254dCArIHJl
+cS0+cnNrX3Jjdl93bmQpOworKwlXUklURV9PTkNFKG1zay0+d25kX2VuZCwgbXNrLT5zbmRf
+bnh0ICsgdGNwX3NrKHNzayktPnNuZF93bmQpOwogIAltc2stPnNldHNvY2tvcHRfc2VxID0g
+bXB0Y3Bfc2soc2spLT5zZXRzb2Nrb3B0X3NlcTsKICAJbXB0Y3BfaW5pdF9zY2hlZChtc2ss
+IG1wdGNwX3NrKHNrKS0+c2NoZWQpOwogIAo=
+
+--------------iOB1UcdNFo69IXo0qRTmA46w--
 
