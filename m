@@ -1,149 +1,115 @@
-Return-Path: <stable+bounces-23475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E849A8612C4
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 14:33:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8364E8612DF
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 14:39:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 257FD1C21080
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 13:33:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DAD3285FF1
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 13:39:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 401097EF00;
-	Fri, 23 Feb 2024 13:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7758811FD;
+	Fri, 23 Feb 2024 13:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="sQOGblkp";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="//qkOW96";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="sQOGblkp";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="//qkOW96"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Na5p+TP8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8157E779;
-	Fri, 23 Feb 2024 13:33:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B137FBA7;
+	Fri, 23 Feb 2024 13:38:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708695226; cv=none; b=ET1xoc9RxMb5Vt+2GgyHUcsnSgcj9ocpD+eN7XQcJUlewETQYH20bpcOGv8V3O5QedkQPjFLzQdc9vuRil2/duGpxAuSxvDi4uywRW5oCF05kgc3ch5JN7CAQhhUi0DCLHWaFccEeJuAMdtdikvUMpe4cODqTtOhzyBVwUTBHsI=
+	t=1708695517; cv=none; b=kBZSFmSfE/Jn3LdahfFsWEAwaF7nRMeGOwzPWlo5WCGZGbWC+jZVMC19g5mAXtHYBlUwW1OCChZTzj5tr3r7XmX3OfWwzu+qT7xV0Jm+kNw73u9cXmzlkzh+or7CjQwbwdZowrMlSXdOce8UzFbaZhSL+AWBgcVsXZAOSw9Az/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708695226; c=relaxed/simple;
-	bh=oUxqSzZqQBYpocUGl1L/RrfzZGEAqSdrli9rsNXnAEA=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ag0ZB5+ue0jrSmBW9sMJg2pI+20vEGDG88cbkaorL4YafyHhn/bodMh4ghe1K/EjwSyBhv05YYWNe6wBUcoSHYRiKUafQTwRjoLMQ2BuP/2iYaXPmZwOvxNIVZ+qkTFciAtxeFWY5afaRGNclhl/6mk88iSD1SJEZr+pkajgqjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=sQOGblkp; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=//qkOW96; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=sQOGblkp; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=//qkOW96; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 99DB51F7AF;
-	Fri, 23 Feb 2024 13:33:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1708695222; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Xy9QEdTXAj64w03PMB8hpvq3C4fgdJIvBJUiHqeCNKs=;
-	b=sQOGblkpudeS/4GVdYO+y0hfRHjGaS7DtI/EnNv/KSA+SCT57X8lkNvhpsFlkURQoIT1PX
-	TCuKiNYMXBzPNwu02XHUOozDQKVkFIlpAHfNAYfZGFFEQNPlFgHfBZ7SZXzpLXREQ5mxwD
-	onad0O8k+eR7QwMQsAKRNe3pdENv040=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1708695222;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Xy9QEdTXAj64w03PMB8hpvq3C4fgdJIvBJUiHqeCNKs=;
-	b=//qkOW966GRBJzkU2tmypU/yzAVNh+/8vKquYBxXQvmyVVCFoh/4fnprfPCKNObLLjmP/A
-	w/oFQsoXgYc0d5DQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1708695222; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Xy9QEdTXAj64w03PMB8hpvq3C4fgdJIvBJUiHqeCNKs=;
-	b=sQOGblkpudeS/4GVdYO+y0hfRHjGaS7DtI/EnNv/KSA+SCT57X8lkNvhpsFlkURQoIT1PX
-	TCuKiNYMXBzPNwu02XHUOozDQKVkFIlpAHfNAYfZGFFEQNPlFgHfBZ7SZXzpLXREQ5mxwD
-	onad0O8k+eR7QwMQsAKRNe3pdENv040=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1708695222;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Xy9QEdTXAj64w03PMB8hpvq3C4fgdJIvBJUiHqeCNKs=;
-	b=//qkOW966GRBJzkU2tmypU/yzAVNh+/8vKquYBxXQvmyVVCFoh/4fnprfPCKNObLLjmP/A
-	w/oFQsoXgYc0d5DQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5756A132C7;
-	Fri, 23 Feb 2024 13:33:42 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 9TTVE7ae2GXyBQAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Fri, 23 Feb 2024 13:33:42 +0000
-Date: Fri, 23 Feb 2024 14:33:41 +0100
-Message-ID: <87v86f2tl6.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Gergo Koteles <soyer@irl.hu>
-Cc: Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Shenghao Ding <shenghao-ding@ti.com>,
-	linux-sound@vger.kernel.org,
+	s=arc-20240116; t=1708695517; c=relaxed/simple;
+	bh=VltUvQLlmLwkpl8kRnLO58R3H1pbUYjiNeAYAhm4vK4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QaJ/c/2exwFYr1WSrg1BoI1QlYDXCqk0PchzXrx/RWF8J1/TPYimKKSI+VjDa67THgBilCwWf6dJ0jucvN6y9fcuk/T16lBSh4Tyv5DNVL8V+NGF8H060BAU4pTDMqQo6hI3AE68nxlnPwYa3r+mmCMN/x3ZYuqeqoIYEmjHiB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Na5p+TP8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 611A5C433A6;
+	Fri, 23 Feb 2024 13:38:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708695517;
+	bh=VltUvQLlmLwkpl8kRnLO58R3H1pbUYjiNeAYAhm4vK4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Na5p+TP86HhyZXIS9INaL8dQBTOiswdRzULSa5FNq46+4a22pnBtTtloyqFR8cWc8
+	 n8yn1MMy2W7P2cqPCBcS0OBpjP8xSadnJJcXmWRnWauvwKGLaTU4cll8SATYAhUv17
+	 cYr9GnNe6g5JhklC6GcTpLtBe8w85TjlaGno0uWLbIrlH/aNG/uJRDYpZM3bkdYj3O
+	 6K09xONc0jMaq1Kpvw0KdV/Jv/lw63QSQ/NRvdyygkYqtcjNvcy+e76orulwxLVITl
+	 SAMd1plaBCYXZCO4bQkgBlK3+NOpjLRsMt5hBqFLEl/aBsq/mk/quDjslSCEZG5OE4
+	 rVGmCyn2+AIGw==
+From: Conor Dooley <conor@kernel.org>
+To: linux-riscv@lists.infradead.org
+Cc: conor@kernel.org,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Tom Rix <trix@redhat.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	alsa-devel@alsa-project.org,
+	llvm@lists.linux.dev,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] ALSA: hda/realtek: tas2781: enable subwoofer volume control
-In-Reply-To: <7ffae10ebba58601d25fe2ff8381a6ae3a926e62.1708687813.git.soyer@irl.hu>
-References: <7ffae10ebba58601d25fe2ff8381a6ae3a926e62.1708687813.git.soyer@irl.hu>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+Subject: [PATCH v2 1/3] rust: make mutually exclusive with CFI_CLANG
+Date: Fri, 23 Feb 2024 13:38:03 +0000
+Message-ID: <20240223-perjury-preshow-fc2cf73d552e@spud>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240223-leverage-walmart-5424542cd8bd@spud>
+References: <20240223-leverage-walmart-5424542cd8bd@spud>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Level: 
-X-Spam-Score: -3.27
-X-Spamd-Result: default: False [-3.27 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 MIME_GOOD(-0.10)[text/plain];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 RCPT_COUNT_SEVEN(0.00)[8];
-	 MID_CONTAINS_FROM(1.00)[];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-2.97)[99.87%]
-X-Spam-Flag: NO
+MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1069; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=CGpXuPYcXKOyMHoYWd5SM3467xfR+bc0vpqwYOI3iyQ=; b=owGbwMvMwCFWscWwfUFT0iXG02pJDKk35u8JtHm+ZsH5Sc/CPbpmzj1yYUtL5lVNtfKQGyezj SYVXz8p0FHKwiDGwSArpsiSeLuvRWr9H5cdzj1vYeawMoEMYeDiFICJzJRhZHj+yWvHNJapDg0f b5+5HpMl+Cir0HdTfvXKf1lxFjVqwf4M/4v2a3lvq1kyS7umuGfKg7ig3pUBuwU4+zsuViUvVFZ YygsA
+X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
+Content-Transfer-Encoding: 8bit
 
-On Fri, 23 Feb 2024 12:34:30 +0100,
-Gergo Koteles wrote:
-> 
-> The volume of subwoofer channels is always at maximum with the
-> ALC269_FIXUP_THINKPAD_ACPI chain.
-> 
-> Use ALC285_FIXUP_THINKPAD_HEADSET_JACK to align it to the master volume.
-> 
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=208555#c827
-> 
-> Fixes: 3babae915f4c ("ALSA: hda/tas2781: Add tas2781 HDA driver")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Gergo Koteles <soyer@irl.hu>
+From: Conor Dooley <conor.dooley@microchip.com>
 
-Thanks, applied.
+On RISC-V, and presumably x86/arm64, if CFI_CLANG is enabled loading a
+rust module will trigger a kernel panic. Support for sanitisers,
+including kcfi (CFI_CLANG), is in the works, but for now they're
+nightly-only options in rustc. Make RUST depend on !CFI_CLANG to prevent
+configuring a kernel without symmetrical support for kfi.
 
+Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
+cc: stable@vger.kernel.org
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+---
+This probably needs to go to stable. The correct fixes tag for that I am
+not sure of however, but since CFI_CLANG predates RUST, I blamed the
+commit adding rust support.
+---
+ init/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-Takashi
+diff --git a/init/Kconfig b/init/Kconfig
+index 8d4e836e1b6b..6cf05824859e 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1895,6 +1895,7 @@ config RUST
+ 	bool "Rust support"
+ 	depends on HAVE_RUST
+ 	depends on RUST_IS_AVAILABLE
++	depends on !CFI_CLANG
+ 	depends on !MODVERSIONS
+ 	depends on !GCC_PLUGINS
+ 	depends on !RANDSTRUCT
+-- 
+2.43.0
+
 
