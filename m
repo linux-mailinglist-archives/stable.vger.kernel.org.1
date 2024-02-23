@@ -1,110 +1,133 @@
-Return-Path: <stable+bounces-23452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8EA1860F7C
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 11:36:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF9DB860FBE
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 11:45:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D984B25B5E
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 10:36:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A728B28678F
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 10:45:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE5B63104;
-	Fri, 23 Feb 2024 10:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31DA576412;
+	Fri, 23 Feb 2024 10:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fQNsh2OK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K20sDKCU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C64756166C
-	for <stable@vger.kernel.org>; Fri, 23 Feb 2024 10:36:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C18E7E76C;
+	Fri, 23 Feb 2024 10:41:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708684605; cv=none; b=WziFBjce33W3S+Sz0i+xkDZldNEE2UlAMNxtWvVezLsnR1mF+ysWYZBeoy/f7JSEKQuPRQHNcd2iOYqEqi5cuYft4m7thGIjoO4qSz4RzK4HtLJrTzDo02A79BeMIQa9ICLEnltBkOF+BVUNh5eKo5UUIjnesUq5/MHF25TV4vw=
+	t=1708684868; cv=none; b=Ofx0zeZgFR61qI9ZzQO6GzH+fLGdni83jzG49NMCZU1Vd3aV6hqwdRPfRaMH02f3w2iI/3l1Fjcm38Jo/LrwsZ/xV5dd3eWR+hvxKF1S8+nQ4j0yq9ltWAAsca1CsT12/76T023+WpQDo9J1bzhgIeSdZFJvhTx1kLzL2MiDdXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708684605; c=relaxed/simple;
-	bh=oGa9d8hXuiijz2WQcWWqfhlvaB3jirIqqRv0WuyyLd8=;
+	s=arc-20240116; t=1708684868; c=relaxed/simple;
+	bh=bS1VlWWtfMYZsf4Vr4MMGRqT9FuitId+v7MsAAu5Wqo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Cg2Y11WXy3zVfbEikqiXab/9cO1Rv6K4XbRCh0mt4tWLdYd9ZLBgf4KJG3Xt1d9R1GZM+tYqSzNrafMTvLFtkHGbfOVN1yBlzRu/V7ishVLCj4LRqREdNR2cu+IVSfjAC/Vi7GC1WlYDrLumZaZEQCtwJudI9S9jBlWAhAOyMwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fQNsh2OK; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-563d56ee65cso687140a12.2
-        for <stable@vger.kernel.org>; Fri, 23 Feb 2024 02:36:43 -0800 (PST)
+	 To:Cc:Content-Type; b=MNITKTbBlL0hGf669WkAHUKnRayhdnv3863tamWfT301hYfW1zbphNURMpWODHIqKugR8u2SDyvXw3OlZ/aVThalES3DUEq1GDlOJwcv3N2+Y23pJ1Ti2FqPuOPVF+bhSCPUEQ7bTR3xakYbZpFQb789ChfLISuecys9z7qK5HA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K20sDKCU; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-6e46b5e7c43so72832b3a.2;
+        Fri, 23 Feb 2024 02:41:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708684602; x=1709289402; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1708684866; x=1709289666; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oGa9d8hXuiijz2WQcWWqfhlvaB3jirIqqRv0WuyyLd8=;
-        b=fQNsh2OKUBgnb5FP0MIFgb3d/zuraki6pSWU1EC+QQzscEskxBX3+AG1e1a1QPvd0B
-         hr/r6dLshp+BvzTAYA2Zau6LG+yrD8YznsM50ToHcnWOfQcNaY9/0pQ+1sOsQ9hIPIb3
-         cI5ElA0W+w2DcgFUWmUZCfLsut0jK5w/aP4hZReuZfHZxjdoA6SheufDCCIZed/IBOW7
-         hNoFAXmZeNUx3BBXomv2gsuXv/zaL0sbxRvAKc31q97AlDRCy7ZA0tMDcHoAxCB6t3HZ
-         4cJKO8Huez7q3DtnQADWBGxNp4krR7xcO7/qs4/Vl2/mvjr9hUj4qmz6g3yZ4dGESN0b
-         1trw==
+        bh=bS1VlWWtfMYZsf4Vr4MMGRqT9FuitId+v7MsAAu5Wqo=;
+        b=K20sDKCUCM6MHLusjSvzCijr5rH7jEaufI4EWyO7ugYGEGdg9iea4nnIFtWVUlHROe
+         NyiTbDAyLE3PnqtuQ48RtG77cwVQVXUHKe09nh5tBtsWY0m7f5U8VYOsCwwc11IYxgfW
+         dAdeCwg8ySfhWF+1yfepQEyCi98bx8pnBX3G8k9rgQN0l8iOiV9blsZPpq4uwEK5wkvK
+         x2D131Cg3XKD5MQTmxk7aVaICLROZFco5LmmFfDYZMJkxCc/YMiTwpiIT1126k0C4XOE
+         2/y6sw37i56neYVzv5Wo73hFux50uwwLux9k19Qc78uHEkdUve1nT6GC3k4dsUp4schK
+         RPSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708684602; x=1709289402;
+        d=1e100.net; s=20230601; t=1708684866; x=1709289666;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=oGa9d8hXuiijz2WQcWWqfhlvaB3jirIqqRv0WuyyLd8=;
-        b=EDfBZ3dBPVApejxXs0mChVpdA0jl0OfSC84AXbcEB6AnJDWwM8o9Cu3a02FG+Ri9xb
-         mcFGrosE7EK2HDabpc0XYVtoGkPCedTBJujw9zwF+Lqmz3fWHXRH7QQBIvs7B1kzoxNF
-         JwEb3GnKdDlPrxVwoqq9LMvh7jo/dXDyvO7OpbO15wF0L2K5mrSATvQsdJtbjH2fnvtX
-         BWYlyGZXXKhFg5OOKGj4gXY67sbY5Vwkan5RGHS80sYHqzuQUkhRn5Bp49Hhiu8NYbEp
-         sX18PNvZU8TKZx8PhOaJ40YIhHPW8J0fYaFWQHmBPzDLyPq3MCIUtLIEb9BF3W3fJexz
-         PkpA==
-X-Forwarded-Encrypted: i=1; AJvYcCU04E7xsqsQGAtOVXp/hEJZZeeuN2/qaDFPtk/zEoz4NJ6mYIoqGbiokuLBBq+w5MFkE3UDchOQQCa8ocuTjxwvBn88hGJZ
-X-Gm-Message-State: AOJu0Yy19QZDFNjlyi35NvwL1i6Gh+AmA/kMlcyD3iKEDpl3/Vts40qT
-	uArDwHeFkp87TDeADzntAFCaUJevYuj7XvvNUmxdWJ8QB7IB6XNoAhaB2EXdaCUg0Yrrqp3B2dL
-	lkR5pbzJx6SXyDZ9fFMlZLAavx/lUOnsumumZ
-X-Google-Smtp-Source: AGHT+IHUav3spNKZz8TuROOuLqr44AG4XeF8yBOYDiOk8XKBPI8yc/QGOy9I7fCdiFaLDT3fTvD/WiTk7Gr2b1xnDxE=
-X-Received: by 2002:aa7:d50a:0:b0:565:6424:6ad1 with SMTP id
- y10-20020aa7d50a000000b0056564246ad1mr843919edq.14.1708684601764; Fri, 23 Feb
- 2024 02:36:41 -0800 (PST)
+        bh=bS1VlWWtfMYZsf4Vr4MMGRqT9FuitId+v7MsAAu5Wqo=;
+        b=aKdasx/oEqgv+CdjpcyBMUu+6URH2zgliZlZ84hzAEZ94ON4uLpXkYGDTByEBFGKrs
+         4I1jvJBUNiOl9P2gKTKuI8mMXlGbL3HcNVv8mGyW56Y83X9kZRzEmET3DcYno8iEhxTX
+         dVHPdaHbFzLHM7Qmjdu2kpG72zQU3lVla0oAa30S+YrzYwDDx/XboPqHQLwG1vgj1/IK
+         PpFAu4TzwGXsuRED1g66yLA6dy/AsvadOsDdUswJlkI1spci5faAgzVy2D4ZdvAsFeD2
+         IKQBEMt14neLj6XXQrzPrO7X8w7Q8Tm1oPGMaHuckhGT7sWSRXHLaf9X55zjmSdCrxZU
+         ilCA==
+X-Forwarded-Encrypted: i=1; AJvYcCXm/XAY79cy1EM6tQUUYiy84WPnFOFjzekEvaRszz92I3pfhL4prmN/Tymlh+AeV/3C4W6tT0PppD3Fg2gOR1Gtg5qB2AvvUlbJiqposOlALqQGtD9UUF3yXA2alyVRaeVDvT/e
+X-Gm-Message-State: AOJu0Yy58WDDa07U+fuvOTDLOZxBA7w1oGrsA4Q6aLWbD5uCvyrhs18F
+	Pd2AdlV+JZFICkNKq7Vz1XIdr0xZJYxaa808Cudg+kM0Ek0nPGIgOl6jI5EW735q5tAI/2Qd9mz
+	E+upMTp7lI/J04R41ddAubV2Tawo=
+X-Google-Smtp-Source: AGHT+IGTNc9DAuoK5dbDsDxbrKxA8UrZIc5SuUO2JlymGhYz29b4KU/AshwgM7WkIh4GJLy3MTwifj08Jf/BARUheMY=
+X-Received: by 2002:a05:6a20:a3a6:b0:19e:9143:2ab5 with SMTP id
+ w38-20020a056a20a3a600b0019e91432ab5mr985913pzk.25.1708684865861; Fri, 23 Feb
+ 2024 02:41:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240220081205.135063-1-raychi@google.com> <2024022024-trout-kennel-6d14@gregkh>
- <4d62d4d0-3f28-486b-8132-4cc571b6f721@quicinc.com> <CAPBYUsD=3ux8RXgRcroVsmpqNs0D+2NeLhqPHh3TBB_oq=ziXA@mail.gmail.com>
- <2024022033-broom-anime-6dd5@gregkh>
-In-Reply-To: <2024022033-broom-anime-6dd5@gregkh>
-From: Ray Chi <raychi@google.com>
-Date: Fri, 23 Feb 2024 18:36:04 +0800
-Message-ID: <CAPBYUsAapQin9ioDggDk_ZE2dGxBRFwSUcf8JGt4eRqrYd9m6w@mail.gmail.com>
-Subject: Re: [PATCH] usb: dwc3: gadget: remove warning during kernel boot
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Krishna Kurapati PSSNV <quic_kriskura@quicinc.com>, Thinh.Nguyen@synopsys.com, 
-	quic_uaggarwa@quicinc.com, albertccwang@google.com, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <CANiq72=gYWZ24EEqRL71Vh+YjjK9Bu0QfxGEBzee16QAf4Q6XA@mail.gmail.com>
+ <20240221214939.4715-1-kernel@valentinobst.de>
+In-Reply-To: <20240221214939.4715-1-kernel@valentinobst.de>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 23 Feb 2024 11:40:53 +0100
+Message-ID: <CANiq72mHk4E2fr+6w2zn0t=Fy+-CCqE6uTFou=2+3uLiTDr_gw@mail.gmail.com>
+Subject: Re: [PATCH] x86/tools: fix line number reported for malformed lines
+To: Valentin Obst <kernel@valentinobst.de>
+Cc: a.hindborg@samsung.com, david@readahead.eu, gregkh@linuxfoundation.org, 
+	hpa@zytor.com, john.m.baublitz@gmail.com, linux-kernel@vger.kernel.org, 
+	mhiramat@kernel.org, mingo@kernel.org, mingo@redhat.com, ojeda@kernel.org, 
+	peterz@infradead.org, sergio.collado@gmail.com, stable@vger.kernel.org, 
+	tglx@linutronix.de, x86@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 20, 2024 at 9:56=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
+On Wed, Feb 21, 2024 at 10:51=E2=80=AFPM Valentin Obst <kernel@valentinobst=
+.de> wrote:
 >
-> On Tue, Feb 20, 2024 at 05:42:56PM +0800, Ray Chi wrote:
-> > Hi Krishna,
-> >
-> > I verified the Thinh's patch and the warning could be
-> > fixed. Thanks for the information.
+> Thanks!
 >
-> Can you provide a tested-by for that one?
+> Cross checked this as well, can confirm your assessment. Thanks for
+> bringing this up.
 
-Since the solution has been merged, do I still need to provide tested-by?
-If tested-by is required, should I reply to the email thread for the
-merged patch or the reported patch?
+My pleasure!
 
-> And please do not top post :(
+> Absolutely, without him reporting the test failure and narrowing down the
+> config I'd have never looked at this file. Adding him for **both** is fai=
+r.
+> (This particular fix was not discussed on Zulip though, its just somethin=
+g
+> I noticed along the way.)
 
-Thanks for the tips and your patience.
+In that case, up to you -- whatever you consider fair for this particular p=
+atch.
 
-Regards,
-Ray
+> Didn't add it because the discussion does not mention this particular
+> issue, but it might indeed be good for some context.
+
+Makes sense -- I saw the [1] reference and I thought it could be a
+nice complement to it, but it is true that it may be not that useful,
+so please feel free to leave it out.
+
+> Will this need a v2, or are all of the 'Fixes', 'Reported-By',
+> 'Debugged-By', 'Tested-By', 'Reviewed-By' and 'Link' tags something that
+> maintainers may add when merging?
+
+Typically, tags are picked up by maintainers when they apply the patch
+(if it is the last version, otherwise you would already pick them up
+in the next version you send).
+
+However, in this case, since we have the Cc stable@ and you also have
+the most context to decide on the tags (e.g. for the Reported-by
+etc.), I would send a v2.
+
+Thanks!
+
+Cheers,
+Miguel
 
