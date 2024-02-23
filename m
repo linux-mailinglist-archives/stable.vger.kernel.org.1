@@ -1,152 +1,238 @@
-Return-Path: <stable+bounces-23459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 696BD8610DB
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 12:56:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7F08610FB
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 13:06:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 044A0B23313
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 11:56:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADC741C2120C
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 12:06:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 822517A722;
-	Fri, 23 Feb 2024 11:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E5897A731;
+	Fri, 23 Feb 2024 12:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="WcErOA83"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="mcJfWEPi";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="iapIi0NM";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="mcJfWEPi";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="iapIi0NM"
 X-Original-To: stable@vger.kernel.org
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B43478B4F
-	for <stable@vger.kernel.org>; Fri, 23 Feb 2024 11:55:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0876576911;
+	Fri, 23 Feb 2024 12:05:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708689361; cv=none; b=joaajdq/Z/9j6fp+ThNbBMySAaqxC4kXrZP87dW4yx8ba/vgCXADOYa2NFgaA4xPZcGXK0FH7MXdhDM2jZJ6tvpbzPvvPHn6woYVhXAHtGRUsuoM2md/oufrUvZ3jbaMHsVvSejyYVpRSwleFv34yL4ujmUxoj0dgxbrSAk+qXo=
+	t=1708689955; cv=none; b=pzaWjFJQ9e3WwmsEndbVaZPFpv2FzHPseFSbzci86a9XXmebpeTce4gsFWgV0r0iHNY7zLAxQTfrGyjtRq0Pg53G2/FeuBfQ7GGPItD5XVgIQqxXmhu9LqOJlvNiA0bkDJksEEjbXzgiSUKq72KBVZ0pQ/Jm/l2uZkwkLX5IZmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708689361; c=relaxed/simple;
-	bh=g1M0Ia5P8ctilwma0Jg/wu7TnCsymxAIrtD7TstdTA8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CW3RsgJoH6GdXomVR3fiEblNNe5rrtE9C7OE4ABNyRELXw+/uYCVEIauHF0VCzAm6K1CO16WETz7XnN9ZHii89Nr5Vv7JY5iwrgcxHKozl0ucMoui4G9Q1X2V9jgQ0ToBufLJrif4C5pxRHVeL9J6sOT5RKBB1hWipLgNLtLmj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=WcErOA83; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id AA410C0011;
-	Fri, 23 Feb 2024 11:55:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1708689352;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	s=arc-20240116; t=1708689955; c=relaxed/simple;
+	bh=LxF02MxBvElqLAXQXoh2lLPVWCY4GC4g+MqRuLP11Bo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fedhYCQH1a15KCNILGn0EZUl7KmreOKWKLXWli1885aPNSz6m+zIN7TcKh6y0u0HW9saRAKtwSagUDV9TmyXpvRbEkbD+SEq5jk8T1Z/DwnmMwhBviF9Ue4/J/wQD1wFKG0gkcuJVsbPu90uw27m+8XfbUx3ZNsD0dTYjEZp7Nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=mcJfWEPi; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=iapIi0NM; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=mcJfWEPi; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=iapIi0NM; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 01FBA1FBDE;
+	Fri, 23 Feb 2024 12:05:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1708689952; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=QrEN5TvhX5/r3qsoC4vp32SJepM9NsZrN5JkiWr7IcI=;
-	b=WcErOA83RYMMh38XrwuXrvfqtTUJltPjlqhY+/HmZTbFP2fAdAqOy4qsbSQki41OvsMtqX
-	8sfLN+1QF1Yjn2CFuronLxOAB8Hsa+uJd/bnb0LqyKeaOZG956rLjxgeOzjbPwCvermdXs
-	c6xpiH/6bvYXF3gAxTO/gLCAkTLWZvTUQqXCAaGOCG946zkc3cl3jUv5ZAKlikN/k4XMhF
-	QStfP3iqMu8orfvVOP3hHSsck0cOaE162Ne3TQyYTz3APab4bzn3U8or2vvNbslWjiiguo
-	Q9R8wsCLDKOwTGd8iSdjJhYcBQrCGMZHWyGRLYt5GBZEXBlt73Kzf0R1/hUQ1g==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Michael Walle <michael@walle.cc>,
-	<linux-mtd@lists.infradead.org>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Julien Su <juliensu@mxic.com.tw>,
-	Jaime Liao <jaimeliao@mxic.com.tw>,
-	Jaime Liao <jaimeliao.tw@gmail.com>,
-	Alvin Zhou <alvinzhou@mxic.com.tw>,
-	Christophe Kerello <christophe.kerello@foss.st.com>,
-	eagle.alexander923@gmail.com,
-	mans@mansr.com,
-	martin@geanix.com,
-	=?UTF-8?q?Sean=20Nyekj=C3=A6r?= <sean@geanix.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	bh=DLhNAwr1dv81yHeZN1C7tmYQH/LBtZA4FtP8mootK6c=;
+	b=mcJfWEPiRB9FIyNi7Dae3CyA1gqyxPpdu7Aw955h+j3mgK2jyYLB4/iVb85JXO+DPBW9PT
+	wzwtxSuSFC2MJoPu+1ssYVPG4CQtb5F4KAycWb1wiyvKo1oSS/57AqTMFbuKJ0UxbfUSXF
+	suyiYFRQEyzugNW4j1RT8SC6Ma/ordU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1708689952;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DLhNAwr1dv81yHeZN1C7tmYQH/LBtZA4FtP8mootK6c=;
+	b=iapIi0NMPjT1r/YUEq2Wd6uHQ2zV4blLY8pHn7HRIRMTP+a8hz33paRYYTDH3u9grF5tOZ
+	I1MoG6ZRBoe4LIBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1708689952; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DLhNAwr1dv81yHeZN1C7tmYQH/LBtZA4FtP8mootK6c=;
+	b=mcJfWEPiRB9FIyNi7Dae3CyA1gqyxPpdu7Aw955h+j3mgK2jyYLB4/iVb85JXO+DPBW9PT
+	wzwtxSuSFC2MJoPu+1ssYVPG4CQtb5F4KAycWb1wiyvKo1oSS/57AqTMFbuKJ0UxbfUSXF
+	suyiYFRQEyzugNW4j1RT8SC6Ma/ordU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1708689952;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DLhNAwr1dv81yHeZN1C7tmYQH/LBtZA4FtP8mootK6c=;
+	b=iapIi0NMPjT1r/YUEq2Wd6uHQ2zV4blLY8pHn7HRIRMTP+a8hz33paRYYTDH3u9grF5tOZ
+	I1MoG6ZRBoe4LIBw==
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id D30E113419;
+	Fri, 23 Feb 2024 12:05:51 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id x1yCMx+K2GXIZgAAn2gu4w
+	(envelope-from <jack@suse.cz>); Fri, 23 Feb 2024 12:05:51 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 754EFA07D1; Fri, 23 Feb 2024 13:05:47 +0100 (CET)
+Date: Fri, 23 Feb 2024 13:05:47 +0100
+From: Jan Kara <jack@suse.cz>
+To: Baokun Li <libaokun1@huawei.com>
+Cc: Jan Kara <jack@suse.cz>, linux-ext4@vger.kernel.org, tytso@mit.edu,
+	adilger.kernel@dilger.ca, ritesh.list@gmail.com,
+	linux-kernel@vger.kernel.org, yi.zhang@huawei.com,
+	yangerkun@huawei.com, chengzhihao1@huawei.com, yukuai3@huawei.com,
 	stable@vger.kernel.org
-Subject: [PATCH 3/3] mtd: rawnand: Ensure all continuous terms are always in sync
-Date: Fri, 23 Feb 2024 12:55:45 +0100
-Message-Id: <20240223115545.354541-4-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240223115545.354541-1-miquel.raynal@bootlin.com>
-References: <20240223115545.354541-1-miquel.raynal@bootlin.com>
+Subject: Re: [PATCH 4/7] ext4: add positive int attr pointer to avoid sysfs
+ variables overflow
+Message-ID: <20240223120547.lojc4ccfewi6iotw@quack3>
+References: <20240126085716.1363019-1-libaokun1@huawei.com>
+ <20240126085716.1363019-5-libaokun1@huawei.com>
+ <20240213165810.3k4lnxaqzdwrdj35@quack3>
+ <83c16b1a-832d-2ffd-6100-1f2b80ca2f35@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: miquel.raynal@bootlin.com
+In-Reply-To: <83c16b1a-832d-2ffd-6100-1f2b80ca2f35@huawei.com>
+X-Spam-Level: 
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mcJfWEPi;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=iapIi0NM
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-2.51 / 50.00];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:98:from];
+	 TO_DN_SOME(0.00)[];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_TRACE(0.00)[suse.cz:+];
+	 MX_GOOD(-0.01)[];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 BAYES_HAM(-3.00)[100.00%];
+	 ARC_NA(0.00)[];
+	 R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 FROM_HAS_DN(0.00)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 TAGGED_RCPT(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 RCPT_COUNT_TWELVE(0.00)[12];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.com:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 MID_RHS_NOT_FQDN(0.50)[];
+	 FREEMAIL_CC(0.00)[suse.cz,vger.kernel.org,mit.edu,dilger.ca,gmail.com,huawei.com];
+	 RCVD_TLS_ALL(0.00)[];
+	 SUSPICIOUS_RECIPS(1.50)[]
+X-Spam-Score: -2.51
+X-Rspamd-Queue-Id: 01FBA1FBDE
+X-Spam-Flag: NO
 
-While crossing a LUN boundary, it is probably safer (and clearer) to
-keep all members of the continuous read structure aligned, including the
-pause page (which is the last page of the lun or the last page of the
-continuous read). Once these members properly in sync, we can use the
-rawnand_cap_cont_reads() helper everywhere to "prepare" the next
-continuous read if there is one.
+On Sat 17-02-24 15:41:43, Baokun Li wrote:
+> On 2024/2/14 0:58, Jan Kara wrote:
+> > On Fri 26-01-24 16:57:13, Baokun Li wrote:
+> > > We can easily trigger a BUG_ON by using the following commands:
+> > > 
+> > >      mount /dev/$disk /tmp/test
+> > >      echo 2147483650 > /sys/fs/ext4/$disk/mb_group_prealloc
+> > >      echo test > /tmp/test/file && sync
+> > > 
+> > > ==================================================================
+> > > kernel BUG at fs/ext4/mballoc.c:2029!
+> > > invalid opcode: 0000 [#1] PREEMPT SMP PTI
+> > > CPU: 3 PID: 320 Comm: kworker/u36:1 Not tainted 6.8.0-rc1 #462
+> > > RIP: 0010:mb_mark_used+0x358/0x370
+> > > [...]
+> > > Call Trace:
+> > >   ext4_mb_use_best_found+0x56/0x140
+> > >   ext4_mb_complex_scan_group+0x196/0x2f0
+> > >   ext4_mb_regular_allocator+0xa92/0xf00
+> > >   ext4_mb_new_blocks+0x302/0xbc0
+> > >   ext4_ext_map_blocks+0x95a/0xef0
+> > >   ext4_map_blocks+0x2b1/0x680
+> > >   ext4_do_writepages+0x733/0xbd0
+> > > [...]
+> > > ==================================================================
+> > > 
+> > > In ext4_mb_normalize_group_request():
+> > >      ac->ac_g_ex.fe_len = EXT4_SB(sb)->s_mb_group_prealloc;
+> > > 
+> > > Here fe_len is of type int, but s_mb_group_prealloc is of type unsigned
+> > > int, so setting s_mb_group_prealloc to 2147483650 overflows fe_len to a
+> > > negative number, which ultimately triggers a BUG_ON() in mb_mark_used().
+> > > 
+> > > Therefore, we add attr_pointer_pi (aka positive int attr pointer) with a
+> > > value range of 0-INT_MAX to avoid the above problem. In addition to the
+> > > mb_group_prealloc sysfs interface, the following interfaces also have uint
+> > > to int conversions that result in overflows, and are also fixed.
+> > > 
+> > >    err_ratelimit_burst
+> > >    msg_ratelimit_burst
+> > >    warning_ratelimit_burst
+> > >    err_ratelimit_interval_ms
+> > >    msg_ratelimit_interval_ms
+> > >    warning_ratelimit_interval_ms
+> > >    mb_best_avail_max_trim_order
+> > > 
+> > > CC: stable@vger.kernel.org
+> > > Signed-off-by: Baokun Li <libaokun1@huawei.com>
+> > I don't think you need to change s_mb_group_prealloc here and then restrict
+> > it even further in the next patch. I'd just leave it alone here.
+> Yes, we could put the next patch before this one, but using
+> s_mb_group_prealloc as an example makes it easier to understand
+> why the attr_pointer_pi case is added here.There are several other
+> variables that don't have more convincing examples.
 
-Fixes: bbcd80f53a5e ("mtd: rawnand: Prevent crossing LUN boundaries during sequential reads")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
----
-This is not 100% a fix but I believe it is worth backporting as there
-may be corner cases which were not identified with the initial
-implementation.
----
- drivers/mtd/nand/raw/nand_base.c | 23 ++++++++++++++---------
- 1 file changed, 14 insertions(+), 9 deletions(-)
+Yes, I think reordering would be good. Because I've read the convertion and
+started wondering: "is this enough?"
 
-diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
-index d6a27e08b112..4d5a663e4e05 100644
---- a/drivers/mtd/nand/raw/nand_base.c
-+++ b/drivers/mtd/nand/raw/nand_base.c
-@@ -1232,6 +1232,15 @@ static void rawnand_cap_cont_reads(struct nand_chip *chip)
- 		chip->cont_read.pause_page = rawnand_last_page_of_lun(ppl, first_lun);
- 	else
- 		chip->cont_read.pause_page = chip->cont_read.last_page;
-+
-+	if (chip->cont_read.first_page == chip->cont_read.pause_page) {
-+		chip->cont_read.first_page++;
-+		chip->cont_read.pause_page = min(chip->cont_read.last_page,
-+						 rawnand_last_page_of_lun(ppl, first_lun + 1));
-+	}
-+
-+	if (chip->cont_read.first_page >= chip->cont_read.last_page)
-+		chip->cont_read.ongoing = false;
- }
- 
- static int nand_lp_exec_cont_read_page_op(struct nand_chip *chip, unsigned int page,
-@@ -1298,12 +1307,11 @@ static int nand_lp_exec_cont_read_page_op(struct nand_chip *chip, unsigned int p
- 	if (!chip->cont_read.ongoing)
- 		return 0;
- 
--	if (page == chip->cont_read.pause_page &&
--	    page != chip->cont_read.last_page) {
--		chip->cont_read.first_page = chip->cont_read.pause_page + 1;
--		rawnand_cap_cont_reads(chip);
--	} else if (page == chip->cont_read.last_page) {
-+	if (page == chip->cont_read.last_page) {
- 		chip->cont_read.ongoing = false;
-+	} else if (page == chip->cont_read.pause_page) {
-+		chip->cont_read.first_page++;
-+		rawnand_cap_cont_reads(chip);
- 	}
- 
- 	return 0;
-@@ -3510,10 +3518,7 @@ static void rawnand_cont_read_skip_first_page(struct nand_chip *chip, unsigned i
- 		return;
- 
- 	chip->cont_read.first_page++;
--	if (chip->cont_read.first_page == chip->cont_read.pause_page)
--		chip->cont_read.first_page++;
--	if (chip->cont_read.first_page >= chip->cont_read.last_page)
--		chip->cont_read.ongoing = false;
-+	rawnand_cap_cont_reads(chip);
- }
- 
- /**
+> > Also I think that limiting mb_best_avail_max_trim_order to 64 instead of
+> > INT_MAX will make us more resilient to surprises in the future :) But I
+> > don't really insist.
+> > 
+> > 								Honza
+> I think it's enough here to make sure that mb_best_avail_max_trim_order
+> is a positive number, since we always make sure that min_order
+> is not less than 0, as follows:
+> 
+>          order = fls(ac->ac_g_ex.fe_len) - 1;
+>          min_order = order - sbi->s_mb_best_avail_max_trim_order;
+>          if (min_order < 0)
+>                  min_order = 0;
+> 
+> An oversized mb_best_avail_max_trim_order can be interpreted as
+> always being CR_ANY_FREE. 😄
+
+Well, s_mb_best_avail_max_trim_order is not about allocation passes but
+about how many times are we willing to shorten the goal extent to half and
+still use the advanced free blocks search. And I agree that the mballoc
+code is careful enough that large numbers don't matter there but still why
+allowing storing garbage values? It is nicer to tell sysadmin he did
+something wrong right away.
+
+								Honza
 -- 
-2.34.1
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
