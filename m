@@ -1,78 +1,138 @@
-Return-Path: <stable+bounces-23486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C37E86154C
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 16:11:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E12EE861583
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 16:23:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8C001C213B3
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 15:11:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E7EC1C23F74
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 15:23:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 308FC811F9;
-	Fri, 23 Feb 2024 15:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C4384A47;
+	Fri, 23 Feb 2024 15:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YvcNnp3T"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fOTuRidG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC11381ACA;
-	Fri, 23 Feb 2024 15:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE2583A03;
+	Fri, 23 Feb 2024 15:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708701092; cv=none; b=py8RQZBJA1BweCypFCXlswN1BBx/atD4DWRMC40hPf5qUB5hYX/k2mgXJb/7dskZuAzxxZOgkk5wNwz5aSUORrmPslzn4ANnl96O/3+geguMz871OjlS2JB5qkKwWgxzgN9tLqJqEKWk7qJEyZ5mlFAMMu22xnd47NV8XcVBjeM=
+	t=1708701788; cv=none; b=hbec8dflC5S7s91RBP6pVaAgDhMczjQ7wEyy5Yo9ZrJVGcfFchxQWiTTQKq1z2Zz4IqMIHmJnXiNB2vcLevcdsIrjBSuXWhrGF5xjPX6GjmKkomLRgByRkJFR8vQjS2zWQTsfCNmYvgnXbcw/WOTDK2cmURmfcXVqv4NTWYkkps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708701092; c=relaxed/simple;
-	bh=xjJW8CImIsyMr1OKn14hnhNByQTkOaqts6vEi/9jsh4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gKln4ETtmprwcdDgqEmL6OACMyapzKUR/w3f6fK8fbZ+m2cLmdrOx1lpCRKQPmH9flQLxhyOpdMZdld1ErWkrBSXbTtB3pwYmPKx7MbOTiQzkv6FE/FiaHLls2ed3jDxMtmxuqmkJn7d+yDgULiK3CdbidKnm7iGFqwHZ+0Z8kI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YvcNnp3T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06AB3C433F1;
-	Fri, 23 Feb 2024 15:11:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708701091;
-	bh=xjJW8CImIsyMr1OKn14hnhNByQTkOaqts6vEi/9jsh4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YvcNnp3TMt/LRzYcqbCp/m4akQkIexqbMtitQatF2zLrVJ7bCmrFFc846qJGx/EqA
-	 KowZdORJJF7tDasNZniZ7uCVaU79HVbN23C2wox65thWq9LSKaeKBvbMgg9chz+bWX
-	 qQv4uhX/YdczScOf+MZ6BaUX7XnuOCQwfjIjakrY=
-Date: Fri, 23 Feb 2024 16:11:28 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Shyam Prasad N <nspmangalore@gmail.com>
-Cc: Stable <stable@vger.kernel.org>, CIFS <linux-cifs@vger.kernel.org>,
-	Steve French <smfrench@gmail.com>
-Subject: Re: Request to include a couple of fixes to stable branches
-Message-ID: <2024022347-blinking-dingo-1411@gregkh>
-References: <CANT5p=rYFOkpnB_SMGd0dAV5orX--Z53O-gjVg4qRkgrH6HiqA@mail.gmail.com>
+	s=arc-20240116; t=1708701788; c=relaxed/simple;
+	bh=+MZNQen3wcYHTNycJniWNvbay9tcVWDXKsVdslC0djE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=IBtIAcMEr1r2cRjLnROtygymYwemCt1EbYte3qNRWSONDkGq4D0j7ivfV3cvZyzdirUfdnnLjDdg3GJB7soglysIxE7hUU3e22+jKrCH1OpVWK8oc+59VcLCD+hJA6Nq8HL6JZ5231nBHgn2YXp8JYts7bJ4rTsGK7TERsfoHG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fOTuRidG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98205C433B1;
+	Fri, 23 Feb 2024 15:23:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708701786;
+	bh=+MZNQen3wcYHTNycJniWNvbay9tcVWDXKsVdslC0djE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=fOTuRidGnMQVuYfe+pILwzBb1KejZ6SdNH5TybZzzp0ZE51C+sdgTDdjy3KDp19HJ
+	 zmvwwGLN7Z/gL9Kd2jBapVUZ/AN9825OlvtsFegQ+AWLMPq9uML2LKUj+sYKgMAgqf
+	 M7O+Qm0MHlzYf9FiHAZFV48eJEE3VGan9R9QP09tapmCPAiOU5WqeLwP5GFd4gV+6C
+	 +3PWB/iSV/+mEhlUoOts/CCQI584PNxJCPq4+T7zyE6GEePehLNTKfZAkNtzp9yHZG
+	 Dq53LJql+qwxam9g4WJU3cHTjIMqdtiODX+x4leBpT2cYWjsZBvQ6DXNlANPeCcgk/
+	 fjkNuQfBDW8GA==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan+linaro@kernel.org>)
+	id 1rdXOJ-000000005Fb-0VmY;
+	Fri, 23 Feb 2024 16:23:11 +0100
+From: Johan Hovold <johan+linaro@kernel.org>
+To: Bjorn Helgaas <bhelgaas@google.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Cc: Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	linux-arm-msm@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan+linaro@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 04/12] PCI: qcom: Add support for disabling ASPM L0s in devicetree
+Date: Fri, 23 Feb 2024 16:21:16 +0100
+Message-ID: <20240223152124.20042-5-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240223152124.20042-1-johan+linaro@kernel.org>
+References: <20240223152124.20042-1-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANT5p=rYFOkpnB_SMGd0dAV5orX--Z53O-gjVg4qRkgrH6HiqA@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Feb 23, 2024 at 07:11:48PM +0530, Shyam Prasad N wrote:
-> Hi stable maintainers,
-> 
-> We seem to have missed adding the stable tag to a couple of important
-> patches that went upstream for fs/smb/client. Can you please include
-> them in all the stable trees?
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=4f1fffa2376922f3d1d506e49c0fd445b023a28e
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=79520587fe42cd4988aff8695d60621e689109cb
+Commit 9f4f3dfad8cf ("PCI: qcom: Enable ASPM for platforms supporting
+1.9.0 ops") started enabling ASPM unconditionally when the hardware
+claims to support it. This triggers Correctable Errors for some PCIe
+devices on machines like the Lenovo ThinkPad X13s, which could indicate
+an incomplete driver ASPM implementation or that the hardware does in
+fact not support L0s.
 
-These do not apply properly at all to any stable kernel trees, did you
-get them to work?  How did you test this?
+Add support for disabling ASPM L0s in the devicetree when it is not
+supported on a particular machine and controller.
 
-Please send a set of working backports and we will be glad to apply
-them.
+Note that only the 1.9.0 ops enable ASPM currently.
 
-thanks,
+Fixes: 9f4f3dfad8cf ("PCI: qcom: Enable ASPM for platforms supporting 1.9.0 ops")
+Cc: stable@vger.kernel.org      # 6.7
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+---
+ drivers/pci/controller/dwc/pcie-qcom.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-greg k-h
+diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+index 09d485df34b9..0fb5dc06d2ef 100644
+--- a/drivers/pci/controller/dwc/pcie-qcom.c
++++ b/drivers/pci/controller/dwc/pcie-qcom.c
+@@ -273,6 +273,25 @@ static int qcom_pcie_start_link(struct dw_pcie *pci)
+ 	return 0;
+ }
+ 
++static void qcom_pcie_clear_aspm_l0s(struct dw_pcie *pci)
++{
++	u16 offset;
++	u32 val;
++
++	if (!of_property_read_bool(pci->dev->of_node, "aspm-no-l0s"))
++		return;
++
++	offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
++
++	dw_pcie_dbi_ro_wr_en(pci);
++
++	val = readl(pci->dbi_base + offset + PCI_EXP_LNKCAP);
++	val &= ~PCI_EXP_LNKCAP_ASPM_L0S;
++	writel(val, pci->dbi_base + offset + PCI_EXP_LNKCAP);
++
++	dw_pcie_dbi_ro_wr_dis(pci);
++}
++
+ static void qcom_pcie_clear_hpc(struct dw_pcie *pci)
+ {
+ 	u16 offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
+@@ -962,6 +981,7 @@ static int qcom_pcie_init_2_7_0(struct qcom_pcie *pcie)
+ 
+ static int qcom_pcie_post_init_2_7_0(struct qcom_pcie *pcie)
+ {
++	qcom_pcie_clear_aspm_l0s(pcie->pci);
+ 	qcom_pcie_clear_hpc(pcie->pci);
+ 
+ 	return 0;
+-- 
+2.43.0
+
 
