@@ -1,95 +1,110 @@
-Return-Path: <stable+bounces-23451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EA73860E9A
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 10:51:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8EA1860F7C
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 11:36:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF841B27C60
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 09:51:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D984B25B5E
+	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 10:36:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 909165D47F;
-	Fri, 23 Feb 2024 09:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE5B63104;
+	Fri, 23 Feb 2024 10:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I1nZibiH"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fQNsh2OK"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F245C8E2
-	for <stable@vger.kernel.org>; Fri, 23 Feb 2024 09:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C64756166C
+	for <stable@vger.kernel.org>; Fri, 23 Feb 2024 10:36:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708681641; cv=none; b=HyqK553KiXKZPIJq3f6QFDQbCvQIFkmgSmiN4iB8m888w/rkYZBZcSRe4NpkdY1qpU5Fq7PnsipcuayqCUtmsoGedGluXqC5VhVyDBs80ukMOEJeUc0fMgodN1dQdhXiGt9lu4JxFz4LX0UCV6VJjZqAdaXUi1C5SoZPtYn+gxw=
+	t=1708684605; cv=none; b=WziFBjce33W3S+Sz0i+xkDZldNEE2UlAMNxtWvVezLsnR1mF+ysWYZBeoy/f7JSEKQuPRQHNcd2iOYqEqi5cuYft4m7thGIjoO4qSz4RzK4HtLJrTzDo02A79BeMIQa9ICLEnltBkOF+BVUNh5eKo5UUIjnesUq5/MHF25TV4vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708681641; c=relaxed/simple;
-	bh=Rt6ckNSmYobf07owV1oOk3uLlu9BtoPU4Rk0tDifgOs=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=JFQhEBfKe11cagSGSsd60wk6AWGgI/V6SAvoMGF2R+cyvXTgw6gDAoI2m7j4Pb/+XHOqOkqiUkDvY2aiQGmO//qxtx43lH3qa3YTZiem+X3epOCN5mbkFnXrhC06kCSHyoAProjbpM5rjQ4+1gaeIUkutyqq3Cc50RZWYYwuSI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I1nZibiH; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708681638; x=1740217638;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=Rt6ckNSmYobf07owV1oOk3uLlu9BtoPU4Rk0tDifgOs=;
-  b=I1nZibiH2t5970h+F0f462+tHl0qyqhs/VUOqt8TA4qEVqQ2Kp4rj/EF
-   +lhdOUv4ZFlAg7w2eZGPhJhxyq/Zmgv6l6NSf9wWSzdPBMfTiUIfCyrBn
-   gCUVB4d3Pfa56HTiGqIuBGL/F2WkR9j7hm8q6WxClzLRcAQTTOgvc8nPr
-   hYOiQDgPJ1QyMMl0dq05JKUUuSzm2ZmmVyRBThsTVjHivte2CPJo11z8U
-   KyFOdQasfbt3iUYdD2GvcIrnUJ9FX6nr0k8OtkqWMLPhbFl/YXsJCuSZf
-   cfYi7qDRDwQQH+q44LP3mCVzSJIQuHDzQ+B0Lm9TR6SHnvWG8sgMINTgS
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10992"; a="2837980"
-X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
-   d="scan'208";a="2837980"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2024 01:47:17 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,179,1705392000"; 
-   d="scan'208";a="5831521"
-Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
-  by orviesa010.jf.intel.com with ESMTP; 23 Feb 2024 01:47:16 -0800
-Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rdS8r-0007IE-05;
-	Fri, 23 Feb 2024 09:47:04 +0000
-Date: Fri, 23 Feb 2024 17:44:08 +0800
-From: kernel test robot <lkp@intel.com>
-To: Nikhil V <quic_nprakash@quicinc.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] iommu: Avoid races around default domain allocations
-Message-ID: <Zdho6DA_H2a4j2pO@fdb2c0c3c270>
+	s=arc-20240116; t=1708684605; c=relaxed/simple;
+	bh=oGa9d8hXuiijz2WQcWWqfhlvaB3jirIqqRv0WuyyLd8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Cg2Y11WXy3zVfbEikqiXab/9cO1Rv6K4XbRCh0mt4tWLdYd9ZLBgf4KJG3Xt1d9R1GZM+tYqSzNrafMTvLFtkHGbfOVN1yBlzRu/V7ishVLCj4LRqREdNR2cu+IVSfjAC/Vi7GC1WlYDrLumZaZEQCtwJudI9S9jBlWAhAOyMwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fQNsh2OK; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-563d56ee65cso687140a12.2
+        for <stable@vger.kernel.org>; Fri, 23 Feb 2024 02:36:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1708684602; x=1709289402; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oGa9d8hXuiijz2WQcWWqfhlvaB3jirIqqRv0WuyyLd8=;
+        b=fQNsh2OKUBgnb5FP0MIFgb3d/zuraki6pSWU1EC+QQzscEskxBX3+AG1e1a1QPvd0B
+         hr/r6dLshp+BvzTAYA2Zau6LG+yrD8YznsM50ToHcnWOfQcNaY9/0pQ+1sOsQ9hIPIb3
+         cI5ElA0W+w2DcgFUWmUZCfLsut0jK5w/aP4hZReuZfHZxjdoA6SheufDCCIZed/IBOW7
+         hNoFAXmZeNUx3BBXomv2gsuXv/zaL0sbxRvAKc31q97AlDRCy7ZA0tMDcHoAxCB6t3HZ
+         4cJKO8Huez7q3DtnQADWBGxNp4krR7xcO7/qs4/Vl2/mvjr9hUj4qmz6g3yZ4dGESN0b
+         1trw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708684602; x=1709289402;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oGa9d8hXuiijz2WQcWWqfhlvaB3jirIqqRv0WuyyLd8=;
+        b=EDfBZ3dBPVApejxXs0mChVpdA0jl0OfSC84AXbcEB6AnJDWwM8o9Cu3a02FG+Ri9xb
+         mcFGrosE7EK2HDabpc0XYVtoGkPCedTBJujw9zwF+Lqmz3fWHXRH7QQBIvs7B1kzoxNF
+         JwEb3GnKdDlPrxVwoqq9LMvh7jo/dXDyvO7OpbO15wF0L2K5mrSATvQsdJtbjH2fnvtX
+         BWYlyGZXXKhFg5OOKGj4gXY67sbY5Vwkan5RGHS80sYHqzuQUkhRn5Bp49Hhiu8NYbEp
+         sX18PNvZU8TKZx8PhOaJ40YIhHPW8J0fYaFWQHmBPzDLyPq3MCIUtLIEb9BF3W3fJexz
+         PkpA==
+X-Forwarded-Encrypted: i=1; AJvYcCU04E7xsqsQGAtOVXp/hEJZZeeuN2/qaDFPtk/zEoz4NJ6mYIoqGbiokuLBBq+w5MFkE3UDchOQQCa8ocuTjxwvBn88hGJZ
+X-Gm-Message-State: AOJu0Yy19QZDFNjlyi35NvwL1i6Gh+AmA/kMlcyD3iKEDpl3/Vts40qT
+	uArDwHeFkp87TDeADzntAFCaUJevYuj7XvvNUmxdWJ8QB7IB6XNoAhaB2EXdaCUg0Yrrqp3B2dL
+	lkR5pbzJx6SXyDZ9fFMlZLAavx/lUOnsumumZ
+X-Google-Smtp-Source: AGHT+IHUav3spNKZz8TuROOuLqr44AG4XeF8yBOYDiOk8XKBPI8yc/QGOy9I7fCdiFaLDT3fTvD/WiTk7Gr2b1xnDxE=
+X-Received: by 2002:aa7:d50a:0:b0:565:6424:6ad1 with SMTP id
+ y10-20020aa7d50a000000b0056564246ad1mr843919edq.14.1708684601764; Fri, 23 Feb
+ 2024 02:36:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cbf1295589bd90083ad6f75a7fbced01f327c047.1708680521.git.quic_nprakash@quicinc.com>
+References: <20240220081205.135063-1-raychi@google.com> <2024022024-trout-kennel-6d14@gregkh>
+ <4d62d4d0-3f28-486b-8132-4cc571b6f721@quicinc.com> <CAPBYUsD=3ux8RXgRcroVsmpqNs0D+2NeLhqPHh3TBB_oq=ziXA@mail.gmail.com>
+ <2024022033-broom-anime-6dd5@gregkh>
+In-Reply-To: <2024022033-broom-anime-6dd5@gregkh>
+From: Ray Chi <raychi@google.com>
+Date: Fri, 23 Feb 2024 18:36:04 +0800
+Message-ID: <CAPBYUsAapQin9ioDggDk_ZE2dGxBRFwSUcf8JGt4eRqrYd9m6w@mail.gmail.com>
+Subject: Re: [PATCH] usb: dwc3: gadget: remove warning during kernel boot
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Krishna Kurapati PSSNV <quic_kriskura@quicinc.com>, Thinh.Nguyen@synopsys.com, 
+	quic_uaggarwa@quicinc.com, albertccwang@google.com, linux-usb@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Tue, Feb 20, 2024 at 9:56=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
+>
+> On Tue, Feb 20, 2024 at 05:42:56PM +0800, Ray Chi wrote:
+> > Hi Krishna,
+> >
+> > I verified the Thinh's patch and the warning could be
+> > fixed. Thanks for the information.
+>
+> Can you provide a tested-by for that one?
 
-Thanks for your patch.
+Since the solution has been merged, do I still need to provide tested-by?
+If tested-by is required, should I reply to the email thread for the
+merged patch or the reported patch?
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+> And please do not top post :(
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Thanks for the tips and your patience.
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] iommu: Avoid races around default domain allocations
-Link: https://lore.kernel.org/stable/cbf1295589bd90083ad6f75a7fbced01f327c047.1708680521.git.quic_nprakash%40quicinc.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+Regards,
+Ray
 
