@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-23575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44F998625F8
-	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 17:14:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04F568625F5
+	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 17:12:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 323CF1C20C4D
-	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 16:14:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4034F1C20C3F
+	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 16:12:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87BB646548;
-	Sat, 24 Feb 2024 16:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F11914288;
+	Sat, 24 Feb 2024 16:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=willian.wang header.i=@willian.wang header.b="QKwpnXoV"
+	dkim=pass (1024-bit key) header.d=willian.wang header.i=@willian.wang header.b="xpgAxafK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-200160.simplelogin.co (mail-200160.simplelogin.co [176.119.200.160])
+Received: from mail-200165.simplelogin.co (mail-200165.simplelogin.co [176.119.200.165])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E4914288
-	for <stable@vger.kernel.org>; Sat, 24 Feb 2024 16:13:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=176.119.200.160
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91DA547F57
+	for <stable@vger.kernel.org>; Sat, 24 Feb 2024 16:12:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=176.119.200.165
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708791236; cv=pass; b=nCMSqpcKVcYY1tkJHLva4H3/IYk/rwl0UJZNF7T94qxSc3ZA+0F3qXmB3dSgGiO4l5aB64685R5WBdDT/UCiZlRF+aAPFAh9vlWnp8WrEHn0sFVCBmXPU46dfRB9fPErAMAldm7wjQZfr2TlwJk/llxfTDSfz34inp2no3XtMGs=
+	t=1708791127; cv=pass; b=WSWQzCn5CWNF7gKfSdN2QBWYVkRhirYGb5cpivUM0SH1ZNTM3eQDs1AuMgcPXZprRB7IpdqLKGEsjvvo5GS/VbVFC6OY+EIDSfUsPvGxjfGIoX8/2JhdDV38WS4cIGbhdAaqdsxLOXm+jB3CtsAN3yuo6l7qONS0/qUpHhSxPk0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708791236; c=relaxed/simple;
-	bh=h0hPeZexorvRjBOVCo9UBs0NdH+7IqeMM4uqu0E9a0k=;
-	h=Subject:Date:MIME-Version:From:To:Cc:Message-ID; b=SvSXnYNAhnJN0KG0Ci6ELxdRhlXNhqkoOWYep1g68WQa8/g/D+rzUcsIsUFBhfooX19rVT8tDxCOp5/ujF2xNLsVvOWFVkK3J0Jw1ockYTjRgnQM6X+FqjqfbzOeKGsLEvXKThEEnQcKjI2OpEqyZCK2sSDlRMKWG73ppxHDrcE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=willian.wang; spf=pass smtp.mailfrom=willian.wang; dkim=pass (1024-bit key) header.d=willian.wang header.i=@willian.wang header.b=QKwpnXoV; arc=pass smtp.client-ip=176.119.200.160
+	s=arc-20240116; t=1708791127; c=relaxed/simple;
+	bh=U/wcljAf4AANc6QDw+IQ0KO00PBVdngL7aa7qn719J0=;
+	h=Subject:Date:MIME-Version:From:To:Cc:Message-ID; b=s6aEf6TbadLekjb73N3DYMAHfsak5sHHt5i1JaLrKpo3Uopura4PniLgzACPEilvixT/awIn/6i7xy2WQ+QxBibhx5LP4O1JalpV+YhTNQnEy1P7pbMpAnDX5APnrhecDDnH98Oz37W8LWFPd6CWQS6NiSJganq5lARPYPI9+0k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=willian.wang; spf=pass smtp.mailfrom=willian.wang; dkim=pass (1024-bit key) header.d=willian.wang header.i=@willian.wang header.b=xpgAxafK; arc=pass smtp.client-ip=176.119.200.165
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=willian.wang
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=willian.wang
-ARC-Seal: i=1; a=rsa-sha256; d=simplelogin.co; s=arc-20230626; t=1708790673;
-	cv=none; b=J4ATsWzi0KVHJAXpXLQ/7cMhSdoiPVUCnw+CXI3/sVDoxMWHBL8TKq6djzhOROoBhcoRaWZLZhPesyF7VO9JsBXklf42hdF57mBNisaLl5Ly5Z5+/SLEvTxKPvxWbk3NAUEYd9g8Lvqem9xNXQ5VQU9nQHPATiidXno5y2d1NAik8x6ai8VVu2oAWMK4K1OAdYYfDIer+oKOhgw22gwjuiuc9MBcY0BU9FfnxDsDXqSIHMYeEwAEsDUr+7FCpOVJ+dGT++lAsaOY02rUhQRcTOwR+Adj6JltHz/M6n7SVMyHXDT4OzvoHKFW+u5jznkzsmgh2FOeQfILUxO67nipiw==
+ARC-Seal: i=1; a=rsa-sha256; d=simplelogin.co; s=arc-20230626; t=1708791118;
+	cv=none; b=dNeApRfHn0PNlCV8M6BJ9lLjVdyrRO/xAa0RqijoKYY68N3jsp5yyHoR0bOmSE4CSn5CdInqPYEASfqTjfTtOZESawDqh9v+NoqyYo9BxaHKsiCbkc4piaKNOrryDRSDRrooakNqvvsqiabUPXDuTn6oReMY8XT3YEIZO758JheYU+NlWf4099NvxlkKcvVb0C0lH4Eged8cPpHbv/rzrFDdJJ8RLOD4aKx/FQsKHUxGHK1jk7ZaPNHM6SsqKLOicIyd3lMg/SeyGO4S+W8vpMX/YSSArfcIuQM8BvdIhjbmMSuRiK2Mq9lWTIpXnguQrx9ZBC1KiCxxOtYaJh3SPQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=simplelogin.co; s=arc-20230626;
-	t=1708790673; c=relaxed/simple;
-	bh=h0hPeZexorvRjBOVCo9UBs0NdH+7IqeMM4uqu0E9a0k=;
-	h=Subject:Date:From:To:Cc; b=rTB3RGWsfCJN2pBfuNrH+9OMZpzcTroz2FSsdZkpWMzYz0rcuPUMIABXZ+JD+zFM8BMG+Rudt2ri8bMjjsUO4bVGY7Avsts6nhpIrm9Mxa4SoJS8rAVaHy/CgLea3O2iKADS6UFdMJALyjhHPZkjWMfgWWYjS9Oi6ZdPadipcwCNJPoP9QLaVt+TbTsqX47UksKv2qH0qFVbgf+/gYuY9stHJ0O7iRvM4v0YOmrvdik20msE13u/XkIPyn2mwtyGhnNga9Ez3mVSzQy8rBPx027hl4Eywu8Rvk5PSvyW3ehsjo+24f8o/HJRRoWvenBt33KymcE6155oll84t/wMNg==
+	t=1708791118; c=relaxed/simple;
+	bh=U/wcljAf4AANc6QDw+IQ0KO00PBVdngL7aa7qn719J0=;
+	h=Subject:Date:From:To:Cc; b=1jR0Om+G9gKkAld5BCGDKroMyIyHpLff5Fu3oAIgwMYfwZWSQgckOYV7eOuvwZQr8fWFmQmzjmm4Oof8psrH7D9YMV6hsfr6cF4S0p30WukosLHUC84EqMvU5HcOaMS2LgxWqGyVpENSoW/XmPboqNZmtPGNFN+EUBHehJHAB8pSo0B9WLl6QT5WpG/6QmaDGTMsWUA+rg09LORcRhwfiPcyU6BA+t5OR+JiqLQUMR/i0IC8L3z4OK2TUZTwOA5NbWb9/ODjLORTRGbIdV7j2VoSYSjo8C3ZqwJMk9w1TovehMVxtCAYBQttZuyKPsf3AcaKcV+TVF+N2BcS/BH5Xw==
 ARC-Authentication-Results: i=1; mail.protonmail.ch
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=willian.wang;
-	s=dkim; t=1708790673;
+	s=dkim; t=1708791118;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=vxEt94OslLQARm0iOm4GJ/410eyItb+v7kq9UDLi6CA=;
-	b=QKwpnXoV2G26NxNtNKR8fujQOwR5HNDzWQF2P3DipZ9D+Qj3Iq5+dAyO+zNJMHh5DZ/TFm
-	Q+gyZ1VI1BQPDRhryTVG+67mA4fuqnIohQLH2YyKO/AkWWLDZoU8JeROiCyLTH0FtjcLTH
-	rUFRkg5fTXMO6Le9vwlD5B8HFRcQvKo=
-Subject: [PATCH v2] ALSA: hda/realtek: Add special fixup for Lenovo 14IRP8
-Date: Sat, 24 Feb 2024 13:04:25 -0300
+	bh=PbQ4SLsny4bFWDjPuLR76KvUDSBLgo9Lb0WGrwi11bY=;
+	b=xpgAxafKolY3zX2kr0bAvYrk5dun8TyrOIADUi09tmvSNbIefSukYfX9dqWoTPRFVNeBJ5
+	sdWc74FAo6/8VsFIwn46NT7P85IuO8IZbhtFpd/72uZqsDrdwVViVQq4m/ZyL8eQaL6IS4
+	ZSW2rceFqM5ztMCT5OoKEDZVO0cDc0E=
+Subject: [PATCH v3] ALSA: hda/realtek: Add special fixup for Lenovo 14IRP8
+Date: Sat, 24 Feb 2024 13:11:49 -0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,25 +59,26 @@ From: Willian Wang <git@willian.wang>
 To: linux-sound@vger.kernel.org
 Cc: 
  linux-kernel@vger.kernel.org,tiwai@suse.com,perex@perex.cz,stable@vger.kernel.org
-Message-ID: <170879067313.7.13109583407458288321.273807771@willian.wang>
+Message-ID: <170879111795.8.6687687359006700715.273812184@willian.wang>
 X-SimpleLogin-Type: Reply
-X-SimpleLogin-EmailLog-ID: 273807772
+X-SimpleLogin-EmailLog-ID: 273812188
 X-SimpleLogin-Want-Signing: yes
 
 Lenovo Slim/Yoga Pro 9 14IRP8 requires a special fixup because there is
 a collision of its PCI SSID (17aa:3802) with Lenovo Yoga DuetITL 2021
 codec SSID.
 
-Cc: stable@vger.kernel.org
+Fixes: 3babae915f4c ("ALSA: hda/tas2781: Add tas2781 HDA driver")
 Link: https://bugzilla.kernel.org/show_bug.cgi?id=208555
 Link: https://lore.kernel.org/all/d5b42e483566a3815d229270abd668131a0d9f3a.camel@irl.hu
+Cc: stable@vger.kernel.org
 Signed-off-by: Willian Wang <git@willian.wang>
 ---
  sound/pci/hda/patch_realtek.c | 27 ++++++++++++++++++++++++++-
  1 file changed, 26 insertions(+), 1 deletion(-)
 
 diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 0ec1312bffd5..3f2541b61e8c 100644
+index 0ec1312bffd5..f3b847f38153 100644
 --- a/sound/pci/hda/patch_realtek.c
 +++ b/sound/pci/hda/patch_realtek.c
 @@ -7444,6 +7444,7 @@ enum {
@@ -94,10 +95,10 @@ index 0ec1312bffd5..3f2541b61e8c 100644
  
 +/* A special fixup for Lenovo Slim/Yoga Pro 9 14IRP8 and Yoga DuetITL 2021;
 + * 14IRP8 PCI SSID will mistakenly be matched with the DuetITL codec SSID,
-+ * so we need to apply different fixup on this case. The only DuetITL codec
-+ * SSID reported so far is the 17aa:3802, while the 14IRP8 has the 17aa:38be
++ * so we need to apply a different fixup in this case. The only DuetITL codec
++ * SSID reported so far is the 17aa:3802 while the 14IRP8 has the 17aa:38be
 + * and 17aa:38bf. If it weren't for the PCI SSID, the 14IRP8 models would
-+ * have matched correctly.
++ * have matched correctly by their codecs.
 + */
 +static void alc287_fixup_lenovo_14irp8_duetitl(struct hda_codec *codec,
 +					      const struct hda_fixup *fix,
