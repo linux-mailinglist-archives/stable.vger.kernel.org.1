@@ -1,164 +1,126 @@
-Return-Path: <stable+bounces-23566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17273862491
-	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 12:41:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9BFC862497
+	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 12:42:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15A5B1C21518
-	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 11:41:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 751A9283E4A
+	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 11:42:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 750B539FE1;
-	Sat, 24 Feb 2024 11:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF702868D;
+	Sat, 24 Feb 2024 11:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="l8oztB5N"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wr6LcHWr"
 X-Original-To: Stable@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D25286BF
-	for <Stable@vger.kernel.org>; Sat, 24 Feb 2024 11:40:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B065439FE1
+	for <Stable@vger.kernel.org>; Sat, 24 Feb 2024 11:41:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708774859; cv=none; b=DAuF7OGUrFUfkzPrTFQdZ9Sy+iQ1U3099DObrwOiqz7TZQpQEUK4tVLrTcFkLJI8FzKxWcZp+WAEWQJO7SBT+2KaSN2OwfNJMqkqUhmwzMw/IF3Be+u80+RvG5EFClcURoaNUkUY5oSWbQe4uACTWLw2bg+5nQTNTV18sCaUK5E=
+	t=1708774913; cv=none; b=sAAABY05HTXhWSOgK1zCrNVMT6fyubiZVMUyYn7lAzsOQV90yKLEnFWxj+LxEZJh1+uDkc+Mt11ymXjXq8fbJLBCpuib3qVyA7LRAf3PrEqE48ayfflGb7pk/LDQM0tf2FqDmuxbMRSGQyDlbVS+xvDL7nK1aVF8eMmOpDschVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708774859; c=relaxed/simple;
-	bh=ylGBRgBKlf7zqEum8qz3cmgz4fiIdpr66g9UmUjC3yY=;
+	s=arc-20240116; t=1708774913; c=relaxed/simple;
+	bh=Lrcpd/5UpAf/i4hlW7coh7EUhBfakwpQOHR0r4s+vcQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=K6gfguupNl/7xDl6G6UWYA2pqa0RrPDqlCnPIxIWLy/qIlumgbkmVAZEw9fl4h5z/QLpSI7BK+rMR2DMGIHT9sgH7ijt6fhkfoNcCSjcq0OofJZs/egsVb0SNth6KOlFhIdere6jAEl1sEIc45ffmtKIK30mVIn1EkN/zKUKEG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=l8oztB5N; arc=none smtp.client-ip=209.85.218.41
+	 MIME-Version; b=CMZ00Ut3EoHGni04AQtJ19z9TzEW+JnVhprftzRNHwyZnsD0QhVY6Traebxl7zeNA4GzTWCIqmB+M9WWmBB+N6w/xIUGjc8SHqCT+yQaudiGUaivnjXiPJVG4M7v4TO3aFzQhHuI6e/QGM5CQ8C7SvfiREOZOBYjXmw83qgBDJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wr6LcHWr; arc=none smtp.client-ip=209.85.208.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a3e706f50beso214129366b.0
-        for <Stable@vger.kernel.org>; Sat, 24 Feb 2024 03:40:57 -0800 (PST)
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-565a3910f86so547806a12.3
+        for <Stable@vger.kernel.org>; Sat, 24 Feb 2024 03:41:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1708774856; x=1709379656; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1708774910; x=1709379710; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kLf1bZRvPVBFsx9bIK9Q5wCkUaQ96MfiepUQxmTKpHI=;
-        b=l8oztB5NAVJW8k2+PEUUuR8cY+/d5yKt18HSdNvAQ8/nouSmmdRK4C+DjmOdICSxno
-         Lv5yDlvj9MUs8ia/cSpFqv0JwbQGCQYglp7YsEwMAWN1pjh3B82AqnXir4Eh/Ss4+Pqo
-         i08IpGfkNBxkrvOrshArh++BloImStc0nC6e3W9ZjWv3Ib9vlutm6uO+2tWh9AXoGefv
-         UHYaRRJ7EktPjQNR4IyuJVmhVUXVqVT8F8uiFbSip3t9gcUocMMl6T31qV0dl0pdL07Z
-         HfHSt4nMIVVcbpLHfdWHOVyaBcmYZTKaRiCQpTrRXE2lqn7AeoMAsvktqdsWAJ7pGuuT
-         QlRA==
+        bh=3Yath7VHW7z/WtxSbQ8YWwyCMrpMBbCsul+1XKfwfDA=;
+        b=wr6LcHWr0XI26HFXXhUx4NlKrPA3HJIC7fRSWvmhOGawqST+kOnoWw8CFTalf6fPKf
+         HzpuF/WeqhZDK+GJHHPCDxtCsxC7burWLsURDX52zmK6Gp+MFYk9Bo4B99VljefdLoS/
+         oOe7kAsTn5FqzR/+SHwwRtx+NrWxVsc/nnxFZTnddnTXfb4QoPxcGSzptO0rABM7kjQK
+         /9Jg4/8dWJ31RyKqzcPGh1+F7Zfj84ZPHkWmdb7FYxFxA8BsUB/LCqZt6s9Z5ORfKQ2J
+         N2Q29gmWlaJf1RLUSMsEVRU8bCkXc3OCD09o3Yr2ncXk0DnIv2iJawIdAbytZsqToaPs
+         8rqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708774856; x=1709379656;
+        d=1e100.net; s=20230601; t=1708774910; x=1709379710;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kLf1bZRvPVBFsx9bIK9Q5wCkUaQ96MfiepUQxmTKpHI=;
-        b=XLimIElmCddyprZRPW9Nz2Y8+z/tOAQ9Xtq6AIumldEiw7+IokRi4Q3IokOx4+DFCw
-         S8OnBZ6tjzCAtqUsXFtL8zgTaomn7C9iQ25Om/n/H4I5dlI3Ru2VlVSMPUxtYt4jRIcn
-         CRRQcyfggzyQfSNUS8WQ1xL9NGq3YO7LYKfqEyPdM3jxfsv41aAOIf7AMNm5fY7HRffe
-         I+RR6RngnJqEwxS/XrgXFoPG07LNQOeAFs96f2dS3vbmHK76N9NhjSTscAvCTvGKHPWH
-         y0G67KiTAQo4NdRcZv77vG/0vvACEl1KLvBgouoQc1tnjg159yxmOff38ezbabFdWGu4
-         IPHA==
-X-Forwarded-Encrypted: i=1; AJvYcCU/pnhUa9zHd1NXX4KJtJayaHHQCCyCUP956wRjq7464DsYU5fjO3aScIiQuGQQBKI3g/I0QSqU9sJYFbiDqNIuoLsCuVmf
-X-Gm-Message-State: AOJu0Yyk+xZSVYedKA6sjNIPLICvRSTlN4WIdL7c7pRbpTlb9z9NBsQL
-	SBvsE1N+dq1SkamerJz5HmgKb9+Vsi2WJ215lasnlePHnOXCYXdqKQBnPv8/Ud0=
-X-Google-Smtp-Source: AGHT+IEl1fLPEPpa5yDqJAlZGIWtJI7AKuvrlUW22SPic9KZSVTWhkY5euUk4uhmQJZLwQHhTeZDew==
-X-Received: by 2002:a17:906:16cd:b0:a3e:a951:4087 with SMTP id t13-20020a17090616cd00b00a3ea9514087mr1466517ejd.76.1708774855853;
-        Sat, 24 Feb 2024 03:40:55 -0800 (PST)
+        bh=3Yath7VHW7z/WtxSbQ8YWwyCMrpMBbCsul+1XKfwfDA=;
+        b=KDsh+ICWnSCewT+EaVgW2dwtnM57kdqsmk0E9+7GUb8iTbq2yrgnIk9oF4EHi6UMTS
+         OF+4uww3OgXPGHOIDMiMDas3uP5iuidgxxfCrLNOkOH4ZwWYaEdH7g/rXf5fAEO5HOIA
+         jMVYbDJ9kzlacyQI70axo+MADgzO2v0ROCJN5obgMAT4QbexKYoHPkSY+tCGL0+c+8lC
+         qD8fImkjtybnRDXUJC8v7wYj4a7GpQlI4WPg2ZbVIbrq4dNz8BHUoaBgEX9zyrTFI5Zv
+         7qKXwt13LDgLDOaq56mS1bilIN2w2VRPBW+3OVTwOYvVQHHMDYN5qBozJddOvjoM50u9
+         HqKw==
+X-Forwarded-Encrypted: i=1; AJvYcCVqixfue+SXKH3yfmM2hhwEj54jpVIACBsXLD8D33Ec6dk+UQmG4ychNvxvr/qHKjbh4VLAVjS7bJ5h/YMDoIxvm0tk5YTb
+X-Gm-Message-State: AOJu0Yy16kimTdFTECGH1UfhO9gK6jVZIfqV24jOopZSm0TPQzV8iGXl
+	fEMn7lLfd1GxVb+OBSN8+R1Ofo+waUTJQoWLROUtn/HEzHH5fNNuCDuPBJ8Zq1M=
+X-Google-Smtp-Source: AGHT+IEeat1QReLUI0OyR0PeXa141FDVBDhat8pXwxedQ9Ty16jxR8KZCZ0Pg1jr590YNaIeoxzpeg==
+X-Received: by 2002:a05:6402:1513:b0:565:6e34:da30 with SMTP id f19-20020a056402151300b005656e34da30mr1283503edw.21.1708774910083;
+        Sat, 24 Feb 2024 03:41:50 -0800 (PST)
 Received: from localhost.localdomain (82-132-212-111.dab.02.net. [82.132.212.111])
-        by smtp.gmail.com with ESMTPSA id k8-20020a1709063e0800b00a412d3d509fsm509335eji.181.2024.02.24.03.40.53
+        by smtp.gmail.com with ESMTPSA id et8-20020a056402378800b005655c44ac01sm453779edb.89.2024.02.24.03.41.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Feb 2024 03:40:55 -0800 (PST)
+        Sat, 24 Feb 2024 03:41:49 -0800 (PST)
 From: srinivas.kandagatla@linaro.org
 To: gregkh@linuxfoundation.org
 Cc: linux-kernel@vger.kernel.org,
-	Jerome Brunet <jbrunet@baylibre.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
 	Stable@vger.kernel.org,
-	Arnd Bergmann <arnd@arndb.de>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Justin Stitt <justinstitt@google.com>,
 	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 1/1] nvmem: meson-efuse: fix function pointer type mismatch
-Date: Sat, 24 Feb 2024 11:40:23 +0000
-Message-Id: <20240224114023.85535-2-srinivas.kandagatla@linaro.org>
+Subject: [PATCH 1/1] slimbus: core: Remove usage of the deprecated ida_simple_xx() API
+Date: Sat, 24 Feb 2024 11:41:37 +0000
+Message-Id: <20240224114137.85781-2-srinivas.kandagatla@linaro.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240224114023.85535-1-srinivas.kandagatla@linaro.org>
-References: <20240224114023.85535-1-srinivas.kandagatla@linaro.org>
+In-Reply-To: <20240224114137.85781-1-srinivas.kandagatla@linaro.org>
+References: <20240224114137.85781-1-srinivas.kandagatla@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2401; i=srinivas.kandagatla@linaro.org; h=from:subject; bh=jqd2R16EWEqdcbDXcRsGdVV9252ZH7ZMdbnqJsQFjug=; b=owEBbQGS/pANAwAKAXqh/VnHNFU3AcsmYgBl2dWne6ybY8wxwLxYkBZD6tyXVyvXMQ4nJKWi7 7ix/YkJO6iJATMEAAEKAB0WIQQi509axvzi9vce3Y16of1ZxzRVNwUCZdnVpwAKCRB6of1ZxzRV Nw1IB/9v//b/yEDwizGp5L2Bcgb+7csEIjS8lW7y8ahfS5F+GwkrwyPQfBM2nWgPNyLf3nMaFJ/ gl7qQMcrySIX7Mj6EDe1cC6Q0FKfpSRH3sOgVInijnBCD5HSQOFDbWDHpepEhnCBaboONrrgPDv 1BiM8cIXNYoP29qB2k9CZW75u4YqX3y2kjXDinisWoH5yJ71JVSsSqk4jJoxUH5oMh7uRFy0Af2 hEdccIXXAMr4+P3wRxacyW3u9AM3hRt2ysdUOooXQaqnaXjBSSlRt6lmXufYDjz5ZXiQuNjSnHI sYymOhO++/kSkVHnvRJD3NhT3Ae1Cq5ZmNn+zImo5X0bZg8U
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1170; i=srinivas.kandagatla@linaro.org; h=from:subject; bh=Xh3R9iRbEMjVSCJR4o35AiNg3AXIY41qxHjPnz3p3P0=; b=owEBbQGS/pANAwAKAXqh/VnHNFU3AcsmYgBl2dXx2ClmF1Dgnr9A4F8aF4fEGwACTo7uSqyx2 cpKXGePNLKJATMEAAEKAB0WIQQi509axvzi9vce3Y16of1ZxzRVNwUCZdnV8QAKCRB6of1ZxzRV N1OiCACOOZw18PUi2Wx+xXUG35htO/lLZReHvqGvYJbZmDkjr4gnyZp753E9yv0wcqowcNShTHl ShEzVfb+2Bvj52u1L7+2A6w9Ak97PWnTatr+z4T97AK9NggecaoKmzKNo/fzUR1TCECzSjCIK7N cHYLbPLMRQH5KvPMeE8/sHpXOH0h82YVd2RHDNUWkm+GLnaymYLvEIwpa88OM84hsVB9yiWXGTY FcMA2A+eyCpnD1DpvAMPqVyce/jjKe5auCm/sBb5BHrXXxc4DXvtbiX/k9eVHMVsi94VcZZflph iSLvxWaH8IOzzM6fOTYMEt6ucfova0DLgh+2snfIqQhKS8nq
 X-Developer-Key: i=srinivas.kandagatla@linaro.org; a=openpgp; fpr=ED6472765AB36EC43B3EF97AD77E3FC0562560D6
 Content-Transfer-Encoding: 8bit
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-clang-16 warns about casting functions to incompatible types, as is done
-here to call clk_disable_unprepare:
+ida_alloc() and ida_free() should be preferred to the deprecated
+ida_simple_get() and ida_simple_remove().
 
-drivers/nvmem/meson-efuse.c:78:12: error: cast from 'void (*)(struct clk *)' to 'void (*)(void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
-   78 |                                        (void(*)(void *))clk_disable_unprepare,
+Note that the upper limit of ida_simple_get() is exclusive, but the one of
+ida_alloc_range() is inclusive. So change this change allows one more
+device. Previously address 0xFE was never used.
 
-The pattern of getting, enabling and setting a disable callback for a
-clock can be replaced with devm_clk_get_enabled(), which also fixes
-this warning.
-
-Fixes: 611fbca1c861 ("nvmem: meson-efuse: add peripheral clock")
+Fixes: 46a2bb5a7f7e ("slimbus: core: Add slim controllers support")
 Cc: <Stable@vger.kernel.org>
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Justin Stitt <justinstitt@google.com>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 ---
- drivers/nvmem/meson-efuse.c | 25 +++----------------------
- 1 file changed, 3 insertions(+), 22 deletions(-)
+ drivers/slimbus/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvmem/meson-efuse.c b/drivers/nvmem/meson-efuse.c
-index b922df99f9bc..33678d0af2c2 100644
---- a/drivers/nvmem/meson-efuse.c
-+++ b/drivers/nvmem/meson-efuse.c
-@@ -47,7 +47,6 @@ static int meson_efuse_probe(struct platform_device *pdev)
- 	struct nvmem_config *econfig;
- 	struct clk *clk;
- 	unsigned int size;
--	int ret;
+diff --git a/drivers/slimbus/core.c b/drivers/slimbus/core.c
+index d43873bb5fe6..01cbd4621981 100644
+--- a/drivers/slimbus/core.c
++++ b/drivers/slimbus/core.c
+@@ -436,8 +436,8 @@ static int slim_device_alloc_laddr(struct slim_device *sbdev,
+ 		if (ret < 0)
+ 			goto err;
+ 	} else if (report_present) {
+-		ret = ida_simple_get(&ctrl->laddr_ida,
+-				     0, SLIM_LA_MANAGER - 1, GFP_KERNEL);
++		ret = ida_alloc_max(&ctrl->laddr_ida,
++				    SLIM_LA_MANAGER - 1, GFP_KERNEL);
+ 		if (ret < 0)
+ 			goto err;
  
- 	sm_np = of_parse_phandle(pdev->dev.of_node, "secure-monitor", 0);
- 	if (!sm_np) {
-@@ -60,27 +59,9 @@ static int meson_efuse_probe(struct platform_device *pdev)
- 	if (!fw)
- 		return -EPROBE_DEFER;
- 
--	clk = devm_clk_get(dev, NULL);
--	if (IS_ERR(clk)) {
--		ret = PTR_ERR(clk);
--		if (ret != -EPROBE_DEFER)
--			dev_err(dev, "failed to get efuse gate");
--		return ret;
--	}
--
--	ret = clk_prepare_enable(clk);
--	if (ret) {
--		dev_err(dev, "failed to enable gate");
--		return ret;
--	}
--
--	ret = devm_add_action_or_reset(dev,
--				       (void(*)(void *))clk_disable_unprepare,
--				       clk);
--	if (ret) {
--		dev_err(dev, "failed to add disable callback");
--		return ret;
--	}
-+	clk = devm_clk_get_enabled(dev, NULL);
-+	if (IS_ERR(clk))
-+		return dev_err_probe(dev, PTR_ERR(clk), "failed to get efuse gate");
- 
- 	if (meson_sm_call(fw, SM_EFUSE_USER_MAX, &size, 0, 0, 0, 0, 0) < 0) {
- 		dev_err(dev, "failed to get max user");
 -- 
 2.25.1
 
