@@ -1,127 +1,168 @@
-Return-Path: <stable+bounces-23551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B16186223E
-	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 03:13:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2402862259
+	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 03:46:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C06A1C22EB8
-	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 02:13:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FFDF1C2206D
+	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 02:46:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40933DDDF;
-	Sat, 24 Feb 2024 02:13:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="epJrPS6A"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F97E101CE;
+	Sat, 24 Feb 2024 02:46:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F5CDF5A;
-	Sat, 24 Feb 2024 02:13:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 907834416;
+	Sat, 24 Feb 2024 02:46:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708740810; cv=none; b=eSV7tUmEDNuuzSm53mxa6y4jDasPt0tErsYtO5NBQpp8i5VLbPYrdMlPthXqXS8kW8fQdt0Xb9v5XhyHKjc6O/L5taSdW41+C0dtDwCOD9RtPfZfoG8wWwD+pYb5oTYao6+jYKxRWcKCfJ57QvLNcQWx59xZAZBPyjSm6CRiaAc=
+	t=1708742786; cv=none; b=Tqp46cNzBz8ooBkEu9E9VCKnGNYZof9h5OT4CZYYvS+yUdgg5CRfEwMuNg4Fz7Ic5+Hi7AriiLl4rOOmBuOPel0WKQ16bgUS9Ns0iwZ08ZtmJBirHBGojNZvlRIfIn0Fvpu/c2/M0NjYP1PJ3/bNlW2vlEjZ2n5bCUrcaJvuJGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708740810; c=relaxed/simple;
-	bh=X67Qts2eYsMFcbAMnSp7VaC/EkqgWhHXXWuQo770d2A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hc5svJW3tDtAP8urmLa8+m/MT7fEI3fIf433Z1tqseaZ5rXKClyhIVI4i2J/Bwf6J8fLowE6weQekGm2gFG30BNyAYLqoH3fv3ZpkametgeMPQEPCUYBat6ewvXFFJCdfp/DjIEdz/UaVeSg7briFXRpy0/foUBKxCuGn3hwAuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=epJrPS6A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F410C43390;
-	Sat, 24 Feb 2024 02:13:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708740809;
-	bh=X67Qts2eYsMFcbAMnSp7VaC/EkqgWhHXXWuQo770d2A=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=epJrPS6A1G6bhoIZjuzU/0ubkgBn07/pCB5RR8HXzDWXrG/xEvxUHYmcLXGfU/imQ
-	 yb07Bd8uXulcrwxp7aNSgzcQBG2+We+oKXCANEBeFVFkVqYjdpLyM0y/nq+pFM67JD
-	 3OpCquGADVgzVl8p3bXdxUsaosy4lW9/nrjXL7O8eSTqAiicRNdQxXUNlerxC0Jf7E
-	 nDkXxiI8s3ubv+oXywnwEH98e3D7axWyqtVtfK68a1PZxFqQIPN0NNOIV1rpoi2Ajj
-	 ELilxBNyOKFe3CJmdbuUIMKtjwQlj0xJ88g3CkehpyNkX8OTjdFIoKF8yargSJNXSW
-	 2MsK+9AK959lQ==
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2d23114b19dso19496791fa.3;
-        Fri, 23 Feb 2024 18:13:29 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVgAstgcztgI5+scEVFLyCwOQTudLIgKPDglQub1CEs6Z+D7jjpml/VA4NlXYEQ4uUlWNYh+UWuXF3eqCG7au+83Op16aLG+r141mUEAhX0Stc0DMJZ8htpVCVh6WnPDVE1E6XuVj8KdW/UrOgoR+UaGLu3efXsInIvZqxc9eXGMA==
-X-Gm-Message-State: AOJu0Yx3Q+O1pADBglGqEwGk/IgHBjnt2NirdI2NlqrNqGarMlfh16PQ
-	IjOEdXI0BHGj2BiOsO8zQmtcInZnwE6j61vYFAcSinLJ4yyXFEnMHeHwzyxrfDAyEwOTh069wPj
-	cdX7KjMCqB4VbO7NaDHEmf99VGK8=
-X-Google-Smtp-Source: AGHT+IHbx3gA6OyO539gNo1sNSfaF1AyeEak6jD3EkmuCjjvLRhSzK5c5KY4qJTW9EiP3SWDHxOeEPsGqtLi/aA7Mzk=
-X-Received: by 2002:a2e:a227:0:b0:2d2:63bc:952 with SMTP id
- i7-20020a2ea227000000b002d263bc0952mr450013ljm.35.1708740807610; Fri, 23 Feb
- 2024 18:13:27 -0800 (PST)
+	s=arc-20240116; t=1708742786; c=relaxed/simple;
+	bh=HWJlQsFECB33Mr/v6+zkBFxjz6TamDpqLpDUv+jZaMw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=YPCuY67tiNSzBCpAGpbB3FdoSMUgWkY8gwcqDHwRi4MFDzvqSAuL8VQfbfgC/PGZBVPQgVzzRFVmURHocT/n4g8ORxOCBAwPjUJbsXY6VlVIae23S+Xc/cjYtz8lyDdnDbOyJQYCiYbDg6CTu6ns021smppATJXAN7PDsSGRymk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4ThWSP50FtzNlln;
+	Sat, 24 Feb 2024 10:44:53 +0800 (CST)
+Received: from dggpeml500021.china.huawei.com (unknown [7.185.36.21])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9C3791400DD;
+	Sat, 24 Feb 2024 10:46:19 +0800 (CST)
+Received: from [10.174.177.174] (10.174.177.174) by
+ dggpeml500021.china.huawei.com (7.185.36.21) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Sat, 24 Feb 2024 10:46:18 +0800
+Message-ID: <c276f6d9-38e0-0113-a134-bedd3f16298f@huawei.com>
+Date: Sat, 24 Feb 2024 10:46:18 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240123005700.9302-1-dan@danm.net> <20240220230658.11069-1-dan@danm.net>
- <7efac6e0-32df-457e-9d21-4945c69328f8@leemhuis.info>
-In-Reply-To: <7efac6e0-32df-457e-9d21-4945c69328f8@leemhuis.info>
-From: Song Liu <song@kernel.org>
-Date: Fri, 23 Feb 2024 18:13:16 -0800
-X-Gmail-Original-Message-ID: <CAPhsuW5QYTjBvjAjf8SdcKmPGO20e5-p57n6af5FaXudSiOCmg@mail.gmail.com>
-Message-ID: <CAPhsuW5QYTjBvjAjf8SdcKmPGO20e5-p57n6af5FaXudSiOCmg@mail.gmail.com>
-Subject: Re: [REGRESSION] 6.7.1: md: raid5 hang and unresponsive system;
- successfully bisected
-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: gregkh@linuxfoundation.org, junxiao.bi@oracle.com, 
-	linux-kernel@vger.kernel.org, linux-raid@vger.kernel.org, 
-	stable@vger.kernel.org, Dan Moulding <dan@danm.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.1.2
+Subject: Re: [PATCH 4/7] ext4: add positive int attr pointer to avoid sysfs
+ variables overflow
+Content-Language: en-US
+To: Jan Kara <jack@suse.cz>
+CC: <linux-ext4@vger.kernel.org>, <tytso@mit.edu>, <adilger.kernel@dilger.ca>,
+	<ritesh.list@gmail.com>, <linux-kernel@vger.kernel.org>,
+	<yi.zhang@huawei.com>, <yangerkun@huawei.com>, <chengzhihao1@huawei.com>,
+	<yukuai3@huawei.com>, <stable@vger.kernel.org>, Baokun Li
+	<libaokun1@huawei.com>
+References: <20240126085716.1363019-1-libaokun1@huawei.com>
+ <20240126085716.1363019-5-libaokun1@huawei.com>
+ <20240213165810.3k4lnxaqzdwrdj35@quack3>
+ <83c16b1a-832d-2ffd-6100-1f2b80ca2f35@huawei.com>
+ <20240223120547.lojc4ccfewi6iotw@quack3>
+From: Baokun Li <libaokun1@huawei.com>
+In-Reply-To: <20240223120547.lojc4ccfewi6iotw@quack3>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpeml500021.china.huawei.com (7.185.36.21)
 
-Hi,
-
-On Fri, Feb 23, 2024 at 12:07=E2=80=AFAM Linux regression tracking (Thorste=
-n
-Leemhuis) <regressions@leemhuis.info> wrote:
+On 2024/2/23 20:05, Jan Kara wrote:
+> On Sat 17-02-24 15:41:43, Baokun Li wrote:
+>> On 2024/2/14 0:58, Jan Kara wrote:
+>>> On Fri 26-01-24 16:57:13, Baokun Li wrote:
+>>>> We can easily trigger a BUG_ON by using the following commands:
+>>>>
+>>>>       mount /dev/$disk /tmp/test
+>>>>       echo 2147483650 > /sys/fs/ext4/$disk/mb_group_prealloc
+>>>>       echo test > /tmp/test/file && sync
+>>>>
+>>>> ==================================================================
+>>>> kernel BUG at fs/ext4/mballoc.c:2029!
+>>>> invalid opcode: 0000 [#1] PREEMPT SMP PTI
+>>>> CPU: 3 PID: 320 Comm: kworker/u36:1 Not tainted 6.8.0-rc1 #462
+>>>> RIP: 0010:mb_mark_used+0x358/0x370
+>>>> [...]
+>>>> Call Trace:
+>>>>    ext4_mb_use_best_found+0x56/0x140
+>>>>    ext4_mb_complex_scan_group+0x196/0x2f0
+>>>>    ext4_mb_regular_allocator+0xa92/0xf00
+>>>>    ext4_mb_new_blocks+0x302/0xbc0
+>>>>    ext4_ext_map_blocks+0x95a/0xef0
+>>>>    ext4_map_blocks+0x2b1/0x680
+>>>>    ext4_do_writepages+0x733/0xbd0
+>>>> [...]
+>>>> ==================================================================
+>>>>
+>>>> In ext4_mb_normalize_group_request():
+>>>>       ac->ac_g_ex.fe_len = EXT4_SB(sb)->s_mb_group_prealloc;
+>>>>
+>>>> Here fe_len is of type int, but s_mb_group_prealloc is of type unsigned
+>>>> int, so setting s_mb_group_prealloc to 2147483650 overflows fe_len to a
+>>>> negative number, which ultimately triggers a BUG_ON() in mb_mark_used().
+>>>>
+>>>> Therefore, we add attr_pointer_pi (aka positive int attr pointer) with a
+>>>> value range of 0-INT_MAX to avoid the above problem. In addition to the
+>>>> mb_group_prealloc sysfs interface, the following interfaces also have uint
+>>>> to int conversions that result in overflows, and are also fixed.
+>>>>
+>>>>     err_ratelimit_burst
+>>>>     msg_ratelimit_burst
+>>>>     warning_ratelimit_burst
+>>>>     err_ratelimit_interval_ms
+>>>>     msg_ratelimit_interval_ms
+>>>>     warning_ratelimit_interval_ms
+>>>>     mb_best_avail_max_trim_order
+>>>>
+>>>> CC: stable@vger.kernel.org
+>>>> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+>>> I don't think you need to change s_mb_group_prealloc here and then restrict
+>>> it even further in the next patch. I'd just leave it alone here.
+>> Yes, we could put the next patch before this one, but using
+>> s_mb_group_prealloc as an example makes it easier to understand
+>> why the attr_pointer_pi case is added here.There are several other
+>> variables that don't have more convincing examples.
+> Yes, I think reordering would be good. Because I've read the convertion and
+> started wondering: "is this enough?"
+Well, I will put the next patch before this one in the next version.
+>>> Also I think that limiting mb_best_avail_max_trim_order to 64 instead of
+>>> INT_MAX will make us more resilient to surprises in the future :) But I
+>>> don't really insist.
+>>>
+>>> 								Honza
+>> I think it's enough here to make sure that mb_best_avail_max_trim_order
+>> is a positive number, since we always make sure that min_order
+>> is not less than 0, as follows:
+>>
+>>           order = fls(ac->ac_g_ex.fe_len) - 1;
+>>           min_order = order - sbi->s_mb_best_avail_max_trim_order;
+>>           if (min_order < 0)
+>>                   min_order = 0;
+>>
+>> An oversized mb_best_avail_max_trim_order can be interpreted as
+>> always being CR_ANY_FREE. 😄
+> Well, s_mb_best_avail_max_trim_order is not about allocation passes but
+> about how many times are we willing to shorten the goal extent to half and
+> still use the advanced free blocks search.
+Yes, this means that in CR1.5, in case the original request is satisfied,
+we allow allocation of blocks with an order of (goal_extent_order -
+s_mb_best_avail_max_trim_order) to accelerate block allocation.
+> And I agree that the mballoc
+> code is careful enough that large numbers don't matter there but still why
+> allowing storing garbage values? It is nicer to tell sysadmin he did
+> something wrong right away.
 >
-> On 21.02.24 00:06, Dan Moulding wrote:
-> > Just a friendly reminder that this regression still exists on the
-> > mainline. It has been reverted in 6.7 stable. But I upgraded a
-> > development system to 6.8-rc5 today and immediately hit this issue
-> > again. Then I saw that it hasn't yet been reverted in Linus' tree.
->
-> Song Liu, what's the status here? I aware that you fixed with quite a
-> few regressions recently, but it seems like resolving this one is
-> stalled. Or were you able to reproduce the issue or make some progress
-> and I just missed it?
+> 								Honza
+Yes, we shouldn't allow storing rubbish values, otherwise it may
+mislead admins, I will add an extra type to check it.
 
-Sorry for the delay with this issue. I have been occupied with some
-other stuff this week.
 
-I haven't got luck to reproduce this issue. I will spend more time looking
-into it next week.
-
->
-> And if not, what's the way forward here wrt to the release of 6.8?
-> Revert the culprit and try again later? Or is that not an option for one
-> reason or another?
-
-If we don't make progress with it in the next week, we will do the revert,
-same as we did with stable kernels.
-
->
-> Or do we assume that this is not a real issue? That it's caused by some
-> oddity (bit-flip in the metadata or something like that?) only to be
-> found in Dan's setup?
-
-I don't think this is because of oddities. Hopefully we can get more
-information about this soon.
-
-Thanks,
-Song
-
->
-> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
-> --
-> Everything you wanna know about Linux kernel regression tracking:
-> https://linux-regtracking.leemhuis.info/about/#tldr
-> If I did something stupid, please tell me, as explained on that page.
->
-> #regzbot poke
->
+Thanks!
+-- 
+With Best Regards,
+Baokun Li
+.
 
