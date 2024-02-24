@@ -1,179 +1,160 @@
-Return-Path: <stable+bounces-23572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 740F88625CD
-	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 16:23:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0707A8625DD
+	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 16:51:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE9251F22739
-	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 15:23:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 837211F218D4
+	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 15:51:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEBAC46521;
-	Sat, 24 Feb 2024 15:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65EF446544;
+	Sat, 24 Feb 2024 15:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="EwTh/2ha"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BWG/fSaZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17AE01E49D;
-	Sat, 24 Feb 2024 15:23:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF9F1E49D
+	for <stable@vger.kernel.org>; Sat, 24 Feb 2024 15:51:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708788227; cv=none; b=MIHJ/keDsN5L10B3+2a/O8rN1Wln9B8Dso8VgCMxS79ryHoZRH+0TpbaWip7TMkgCes41Xo5mknIPZMJVFCw6nO/w7MAt38lfUtV3PzvjnFJoSD64DZkB2Bd/7cPRNsHbtwLA7FM07cCeHMzwriAy2Pn459CFquw+TJhdbcvRE4=
+	t=1708789900; cv=none; b=gieUmwFQfPAuuQXvN36BZ/E8FZ/ZRFYCuS5iW1/2wWG/iCO+3dOw4ej7+blJ+u90itoFZp/pAYy6qBY2Lgx09eK3UwwTN89xw+XNuSTZvhQwTd/Y07YUbeULqLTPuZXz7CJLyuGDbc3DHSrJ//3piVlNyA+bcvAY8JAQz7p1xcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708788227; c=relaxed/simple;
-	bh=6nrakddqbtIAKcQx+Akt7IgDKGs7jLI9EnzDIr41adM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=M2+uA8Qf86r7R8x9kU0HWXxe1MPvCpmg8LCipJptUd8XhHEKpywGya5+Cds+RKZp2wIataVuID8smdYSGp/5KtwzYmGe9uNkWTKumeq1OTRUtnsdEDU3ioxP8tl80vsGQeOJhBZdRN38dVFQUpouaKpEr4sXo8e+RZNDFQf4Fg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=EwTh/2ha; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41OFHmtr030560;
-	Sat, 24 Feb 2024 15:23:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=CiHDP0Zv4SsHMLEVKB76n+d60+Sr/8nVq0fUSf9nGcc=; b=Ew
-	Th/2haOHI8nutPRZenvjgXR62M19jJ2auIh+BN9LbaB9kEN3UPW/Mcoojm7LZoJX
-	C6ccEAtxrLyyFnMagIKNctngjM306MiPzfHe9mfiBDaIj2bfW7Nh/qzZ4AZjZZfV
-	cE8DILaixvCCrvo0z1ygzRj17iY9k9yzmalYtU3dYbUgibdhjN5yM0v1uwxpVTIK
-	CNXnlpx8xj6TCc0C5+jKKR9BFMCN7rWWqiD6hV4ITIXJ19dXrlBj2RqhSaiWiFzg
-	OmtFwaWLDLxdGB45akd6es058nw2YwDjN171YiWiuKe397N6JHhWAxoCSRq0CKzE
-	mNXGK7o1lu84DYw0jyNA==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wf9rfgnf6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 24 Feb 2024 15:23:35 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41OFNY1t020228
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 24 Feb 2024 15:23:34 GMT
-Received: from [10.216.12.97] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Sat, 24 Feb
- 2024 07:23:29 -0800
-Message-ID: <7afe540b-05c9-4b45-a8ef-622e32f6de97@quicinc.com>
-Date: Sat, 24 Feb 2024 20:53:25 +0530
+	s=arc-20240116; t=1708789900; c=relaxed/simple;
+	bh=U/wcljAf4AANc6QDw+IQ0KO00PBVdngL7aa7qn719J0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=THrEp17a2I7hbt09BUQrgAwgcK/RN8p0e6jsx4MXK7lT33SQyre7BCbjOysd8n/Z5/giOfwqLyRfNIVoZzZdX0jm7aGYLHGrPKqGFNNkZ22nvIQrjnMIG/FYH5ikGDH84CpuWNVJryZQ6WJNypQ6eEt8sFmV97CLHdB+MABEsmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BWG/fSaZ; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-6da9c834646so1736466b3a.3
+        for <stable@vger.kernel.org>; Sat, 24 Feb 2024 07:51:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708789898; x=1709394698; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PbQ4SLsny4bFWDjPuLR76KvUDSBLgo9Lb0WGrwi11bY=;
+        b=BWG/fSaZ0HKrKPpvJ6PZFaDlSeqeKCHApj5AKh3bqyvngtYtQa9dEQ0j5s2dm1oFcK
+         urcjMuLLkcveEDgs6X+IUYiNeqBgsmbpoDA6LVek6YKUSxKoc0Z3dIoLbg/XzmmevZol
+         23LH/4LSSyFDWuWflGVcsA13Cbf9/J2cxBlTOyS3nTgm/QXioIRBVnum6K8AmwTAFDf1
+         dGMcGhSaN5RL1fNG5V2x8BgzIMtPIvfmA92XL9w3agYtfFoQSIMnoY8do+dVRXFRu1Mj
+         LXK6iqdP63da3tKPSNsd55iJ2qonc7TUwDcj0zSXXWWB+fZViMOqQ7AEEq5kn6xNFH84
+         iE7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708789898; x=1709394698;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PbQ4SLsny4bFWDjPuLR76KvUDSBLgo9Lb0WGrwi11bY=;
+        b=kFL0PAGDYlLppAQYL3jSZ0vH7ESdM8CEF9/kvONbovfaYbLEN2p263WQbxYWbOWW9V
+         lJGLBEW1+2eyNZFfKT3i0f7vZ6PeGifl+Gp4TggwQRQQh5Kgfrx93D3kOTdGyjVTce34
+         PfpHR4aJx1djmA+65eskHKJCuK3jM95C5+0bh/KUI4zabfVwbIJUDiqqntKTKbv5BXR8
+         2PqBX02Ws1VSx6NBpEpk0Gb3NP5QtEc920GVrhERZLlAZXQwkavs4LyRAQCo3CDkP+57
+         9/LsPdmnmBKZ0dK0eLfAXFYkhH7UxzarxSE9htnENZEsqJAXGMSasNC6dMqH2Cv/LknH
+         Vgmg==
+X-Forwarded-Encrypted: i=1; AJvYcCV9yrsHgtLNLDg3E3BCvzFnNElRiRH+e/KNa8rtlGnwLGs+habhEvQO/d4svZEbi1FjK7DKSHSlukkO/Pd+FTUSVX17WK6B
+X-Gm-Message-State: AOJu0YwJWIYeZVUInbJ7IJHUwJxWzipnYvZNqJMPicHvRAVN9BmYqzwT
+	elBNO18Xn71AXIGQUEqTtrC+6dqFEgOXS0bREP0hxbnQwfACNBKoo735tXUfPZk=
+X-Google-Smtp-Source: AGHT+IFsw0VHBKLsPADE/Zyzt+AJ02imoqLC4ZNIbFns+RhGglF1KoNoiADkNHkc95OUccOxx9K1IA==
+X-Received: by 2002:a05:6a00:4403:b0:6e5:265:fd38 with SMTP id br3-20020a056a00440300b006e50265fd38mr1040874pfb.18.1708789897891;
+        Sat, 24 Feb 2024 07:51:37 -0800 (PST)
+Received: from localhost.localdomain (201-13-160-44.dial-up.telesp.net.br. [201.13.160.44])
+        by smtp.gmail.com with ESMTPSA id m20-20020a63f614000000b005b7dd356f75sm1263123pgh.32.2024.02.24.07.51.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 24 Feb 2024 07:51:37 -0800 (PST)
+From: Willian Wang <wilwxk@gmail.com>
+X-Google-Original-From: Willian Wang <git@willian.wang>
+To: wilwxk+test@gmail.com
+Cc: Willian Wang <git@willian.wang>,
+	stable@vger.kernel.org
+Subject: [PATCH] ALSA: hda/realtek: Add special fixup for Lenovo 14IRP8
+Date: Sat, 24 Feb 2024 12:51:27 -0300
+Message-ID: <20240224155127.1142896-1-git@willian.wang>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] cpufreq: Limit resolving a frequency to policy min/max
-Content-Language: en-US
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-CC: Viresh Kumar <viresh.kumar@linaro.org>, <linux-pm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel@quicinc.com>,
-        <quic_pkondeti@quicinc.com>, <quic_namajain@quicinc.com>,
-        <stable@vger.kernel.org>, <quic_rgottimu@quicinc.com>
-References: <20240222083515.1065025-1-quic_kshivnan@quicinc.com>
- <CAJZ5v0gDeCbQ5rGOfCdpsVUpAsq3L=9DoLFChHc5=Zdq9Jc_7g@mail.gmail.com>
-From: Shivnandan Kumar <quic_kshivnan@quicinc.com>
-In-Reply-To: <CAJZ5v0gDeCbQ5rGOfCdpsVUpAsq3L=9DoLFChHc5=Zdq9Jc_7g@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: xqzEhWvtDoB_FJcfPGTCHBkxnNGV-hYR
-X-Proofpoint-GUID: xqzEhWvtDoB_FJcfPGTCHBkxnNGV-hYR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-24_10,2024-02-23_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 impostorscore=0
- lowpriorityscore=0 spamscore=0 mlxscore=0 mlxlogscore=999 clxscore=1015
- malwarescore=0 suspectscore=0 adultscore=0 bulkscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2402120000
- definitions=main-2402240129
 
-Hi Rafael,
+Lenovo Slim/Yoga Pro 9 14IRP8 requires a special fixup because there is
+a collision of its PCI SSID (17aa:3802) with Lenovo Yoga DuetITL 2021
+codec SSID.
 
-Thanks for reviewing the change.
+Fixes: 3babae915f4c ("ALSA: hda/tas2781: Add tas2781 HDA driver")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=208555
+Link: https://lore.kernel.org/all/d5b42e483566a3815d229270abd668131a0d9f3a.camel@irl.hu
+Cc: stable@vger.kernel.org
+Signed-off-by: Willian Wang <git@willian.wang>
+---
+ sound/pci/hda/patch_realtek.c | 27 ++++++++++++++++++++++++++-
+ 1 file changed, 26 insertions(+), 1 deletion(-)
 
-On 2/23/2024 12:52 AM, Rafael J. Wysocki wrote:
-> On Thu, Feb 22, 2024 at 9:35 AM Shivnandan Kumar
-> <quic_kshivnan@quicinc.com> wrote:
->>
->> Resolving a frequency to an efficient one should not transgress policy->max
->> (which can be set for thermal reason) and policy->min. Currently there is
->> possibility where scaling_cur_freq can exceed scaling_max_freq when
->> scaling_max_freq is inefficient frequency. Add additional check to ensure
->> that resolving a frequency will respect policy->min/max.
->>
->> Fixes: 1f39fa0dccff ("cpufreq: Introducing CPUFREQ_RELATION_E")
->> Signed-off-by: Shivnandan Kumar <quic_kshivnan@quicinc.com>
->> ---
->>   include/linux/cpufreq.h | 18 +++++++++++++++++-
->>   1 file changed, 17 insertions(+), 1 deletion(-)
->>
->> diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
->> index afda5f24d3dd..42d98b576a36 100644
->> --- a/include/linux/cpufreq.h
->> +++ b/include/linux/cpufreq.h
->> @@ -1021,6 +1021,19 @@ static inline int cpufreq_table_find_index_c(struct cpufreq_policy *policy,
->>                                                     efficiencies);
->>   }
->>
->> +static inline bool cpufreq_table_index_is_in_limits(struct cpufreq_policy *policy,
->> +                                                   int idx)
-> 
-> This is not really about the index only, but about the frequency at
-> that index too, so I'd call the function differently.
-> 
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 0ec1312bffd5..f3b847f38153 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -7444,6 +7444,7 @@ enum {
+ 	ALC287_FIXUP_LEGION_15IMHG05_AUTOMUTE,
+ 	ALC287_FIXUP_YOGA7_14ITL_SPEAKERS,
+ 	ALC298_FIXUP_LENOVO_C940_DUET7,
++	ALC287_FIXUP_LENOVO_14IRP8_DUETITL,
+ 	ALC287_FIXUP_13S_GEN2_SPEAKERS,
+ 	ALC256_FIXUP_SET_COEF_DEFAULTS,
+ 	ALC256_FIXUP_SYSTEM76_MIC_NO_PRESENCE,
+@@ -7495,6 +7496,26 @@ static void alc298_fixup_lenovo_c940_duet7(struct hda_codec *codec,
+ 	__snd_hda_apply_fixup(codec, id, action, 0);
+ }
+ 
++/* A special fixup for Lenovo Slim/Yoga Pro 9 14IRP8 and Yoga DuetITL 2021;
++ * 14IRP8 PCI SSID will mistakenly be matched with the DuetITL codec SSID,
++ * so we need to apply a different fixup in this case. The only DuetITL codec
++ * SSID reported so far is the 17aa:3802 while the 14IRP8 has the 17aa:38be
++ * and 17aa:38bf. If it weren't for the PCI SSID, the 14IRP8 models would
++ * have matched correctly by their codecs.
++ */
++static void alc287_fixup_lenovo_14irp8_duetitl(struct hda_codec *codec,
++					      const struct hda_fixup *fix,
++					      int action)
++{
++	int id;
++
++	if (codec->core.subsystem_id == 0x17aa3802)
++		id = ALC287_FIXUP_YOGA7_14ITL_SPEAKERS; /* DuetITL */
++	else
++		id = ALC287_FIXUP_TAS2781_I2C; /* 14IRP8 */
++	__snd_hda_apply_fixup(codec, id, action, 0);
++}
++
+ static const struct hda_fixup alc269_fixups[] = {
+ 	[ALC269_FIXUP_GPIO2] = {
+ 		.type = HDA_FIXUP_FUNC,
+@@ -9379,6 +9400,10 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc298_fixup_lenovo_c940_duet7,
+ 	},
++	[ALC287_FIXUP_LENOVO_14IRP8_DUETITL] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc287_fixup_lenovo_14irp8_duetitl,
++	},
+ 	[ALC287_FIXUP_13S_GEN2_SPEAKERS] = {
+ 		.type = HDA_FIXUP_VERBS,
+ 		.v.verbs = (const struct hda_verb[]) {
+@@ -10247,7 +10272,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x17aa, 0x31af, "ThinkCentre Station", ALC623_FIXUP_LENOVO_THINKSTATION_P340),
+ 	SND_PCI_QUIRK(0x17aa, 0x334b, "Lenovo ThinkCentre M70 Gen5", ALC283_FIXUP_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x17aa, 0x3801, "Lenovo Yoga9 14IAP7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
+-	SND_PCI_QUIRK(0x17aa, 0x3802, "Lenovo Yoga DuetITL 2021", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
++	SND_PCI_QUIRK(0x17aa, 0x3802, "Lenovo Yoga Pro 9 14IRP8 / DuetITL 2021", ALC287_FIXUP_LENOVO_14IRP8_DUETITL),
+ 	SND_PCI_QUIRK(0x17aa, 0x3813, "Legion 7i 15IMHG05", ALC287_FIXUP_LEGION_15IMHG05_SPEAKERS),
+ 	SND_PCI_QUIRK(0x17aa, 0x3818, "Lenovo C940 / Yoga Duet 7", ALC298_FIXUP_LENOVO_C940_DUET7),
+ 	SND_PCI_QUIRK(0x17aa, 0x3819, "Lenovo 13s Gen2 ITL", ALC287_FIXUP_13S_GEN2_SPEAKERS),
+-- 
+2.43.2
 
-ACK
-
->> +{
->> +       unsigned int freq;
->> +
->> +       if (idx < 0)
->> +               return false;
->> +
->> +       freq = policy->freq_table[idx].frequency;
->> +
->> +       return (freq == clamp_val(freq, policy->min, policy->max));
-> 
-> Redundant outer parens.
-> 
-
-ACK
-
-
->> +}
->> +
->>   static inline int cpufreq_frequency_table_target(struct cpufreq_policy *policy,
->>                                                   unsigned int target_freq,
->>                                                   unsigned int relation)
->> @@ -1054,7 +1067,10 @@ static inline int cpufreq_frequency_table_target(struct cpufreq_policy *policy,
->>                  return 0;
->>          }
->>
->> -       if (idx < 0 && efficiencies) {
->> +       /*
->> +        * Limit frequency index to honor policy->min/max
->> +        */
-> 
-> This comment need not be multi-line.
-> 
-
-ACK
-I will make the changes in next patch set.
-
-Thanks
-Shivnandan
-
->> +       if (!cpufreq_table_index_is_in_limits(policy, idx) && efficiencies) {
->>                  efficiencies = false;
->>                  goto retry;
->>          }
->> --
-> 
-> Thanks!
 
