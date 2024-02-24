@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-23548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5D598621E9
-	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 02:27:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8433B8621EA
+	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 02:28:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04F1A1C2193A
-	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 01:27:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E3401F213AD
+	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 01:27:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9408C4691;
-	Sat, 24 Feb 2024 01:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DBD84C85;
+	Sat, 24 Feb 2024 01:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="mgcKDGH+"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="PMsQ9lNh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E78433D5;
-	Sat, 24 Feb 2024 01:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8434A15;
+	Sat, 24 Feb 2024 01:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708738072; cv=none; b=Vzd2SO0A7+PI0hixb9Xr1N+eCD5P0IR/fuacCJ0AymN7ELLqRZo7ByvHTZd9h0Nl/91Pszpjo1Ff23RACRGvv/Wkp9mWPUpa9u0NS1hOEYxg/9wQ81NmUdwxkEQTo6mRzGo55zMgV/uXrSsVXOOz5tdsWX1Mp8ZmhCNf5p0s0z0=
+	t=1708738074; cv=none; b=YxJK6Ultn/4ImfZowIoLSk3CYE0/JonC+uTGRzltKCl1pouAbL4x/hb57ICMWzsrIZgZ4bCzHh4+3Kc04s98ikkXpDD9rkUBm4x6E4dFjdc2FyY1mzkK5QsMnCEMnxM29kUrZOOPyqRrXXRWaQZR9ayZxaSPk11DrBSq/rxOtrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708738072; c=relaxed/simple;
-	bh=8ZAAk5VgMUnKuccmnCOoGGYPN3supMsTtoCZnsWaOos=;
-	h=Date:To:From:Subject:Message-Id; b=ZQMQZsD12YMpFknO4nMzUBPxa/QgflKQ424u2nnd9r4HWoBv/dp7sXVOpGxoFBF6LZA3M+nNYAaSpT6U8e8i8GPj1TFUo3yLeN6SqIJpRm4WOYlAylF6cBKRd7kR5O3iA1qiWgJl4hNEaVLE5026fidThm46FgL3xmOsQVLtKdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=mgcKDGH+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A89E2C433F1;
-	Sat, 24 Feb 2024 01:27:51 +0000 (UTC)
+	s=arc-20240116; t=1708738074; c=relaxed/simple;
+	bh=oB1CSDYISluEC0of0ux0+itcH/N+XzxwZNV1VXWZSVA=;
+	h=Date:To:From:Subject:Message-Id; b=hnbvV3W/cYGYHqW3e/4k36kO/YoKZ8F5PiB7PTfCoiTMFVUrmyfjDm6hZUA6s7cgrkt+4bwC+1u20pQS7lOq/hMYLx29z+tNdfOQL+clHKP4MaZ2O1h7GTRTa/k/qcIBHsLNTE4I6nJr8CXtrmEGP3jTpsbc3qvo9z/uolRj6qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=PMsQ9lNh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE8EC433C7;
+	Sat, 24 Feb 2024 01:27:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1708738071;
-	bh=8ZAAk5VgMUnKuccmnCOoGGYPN3supMsTtoCZnsWaOos=;
+	s=korg; t=1708738073;
+	bh=oB1CSDYISluEC0of0ux0+itcH/N+XzxwZNV1VXWZSVA=;
 	h=Date:To:From:Subject:From;
-	b=mgcKDGH++Q1pE3lhzH5PlM9NWuYLUH5WfqO/ofYEl2DewVmy6YCQgCvpBtraDx2xz
-	 OKiM6CIkilV7xdmG8/79AmFEUM1OCy7gpdyW6EpfpcKFRif/ZcuKTGx3izyQthv3KP
-	 Hdi+n7QC3/rUNs3cP8z6rY+z/wEX42Cz39hbAEAQ=
-Date: Fri, 23 Feb 2024 17:27:51 -0800
-To: mm-commits@vger.kernel.org,ying.huang@intel.com,stable@vger.kernel.org,osalvador@suse.de,hyeongtak.ji@sk.com,hannes@cmpxchg.org,baolin.wang@linux.alibaba.com,byungchul@sk.com,akpm@linux-foundation.org
+	b=PMsQ9lNhnngzLRFlIenB6eatYkUp6ij3M7Y4NH0ojU4FUdQg7xqAgxsxhlKOP7Oja
+	 zumvYDy4nWVk//occkQsoCc8wqw53y8fjZgu532rwjnY7PiSGTgEf0sdWll/A9+Yr9
+	 dvpOLPzwm/jNgGRdm1zl7REdVQ5kSv5m8V+jpKyM=
+Date: Fri, 23 Feb 2024 17:27:53 -0800
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,jannh@google.com,hannes@cmpxchg.org,nphamcs@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-vmscan-fix-a-bug-calling-wakeup_kswapd-with-a-wrong-zone-index.patch removed from -mm tree
-Message-Id: <20240224012751.A89E2C433F1@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-cachestat-fix-folio-read-after-free-in-cache-walk.patch removed from -mm tree
+Message-Id: <20240224012753.CFE8EC433C7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,107 +50,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/vmscan: fix a bug calling wakeup_kswapd() with a wrong zone index
+     Subject: mm: cachestat: fix folio read-after-free in cache walk
 has been removed from the -mm tree.  Its filename was
-     mm-vmscan-fix-a-bug-calling-wakeup_kswapd-with-a-wrong-zone-index.patch
+     mm-cachestat-fix-folio-read-after-free-in-cache-walk.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Byungchul Park <byungchul@sk.com>
-Subject: mm/vmscan: fix a bug calling wakeup_kswapd() with a wrong zone index
-Date: Fri, 16 Feb 2024 20:15:02 +0900
+From: Nhat Pham <nphamcs@gmail.com>
+Subject: mm: cachestat: fix folio read-after-free in cache walk
+Date: Mon, 19 Feb 2024 19:01:21 -0800
 
-With numa balancing on, when a numa system is running where a numa node
-doesn't have its local memory so it has no managed zones, the following
-oops has been observed.  It's because wakeup_kswapd() is called with a
-wrong zone index, -1.  Fixed it by checking the index before calling
-wakeup_kswapd().
+In cachestat, we access the folio from the page cache's xarray to compute
+its page offset, and check for its dirty and writeback flags.  However, we
+do not hold a reference to the folio before performing these actions,
+which means the folio can concurrently be released and reused as another
+folio/page/slab.
 
-> BUG: unable to handle page fault for address: 00000000000033f3
-> #PF: supervisor read access in kernel mode
-> #PF: error_code(0x0000) - not-present page
-> PGD 0 P4D 0
-> Oops: 0000 [#1] PREEMPT SMP NOPTI
-> CPU: 2 PID: 895 Comm: masim Not tainted 6.6.0-dirty #255
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
->    rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-> RIP: 0010:wakeup_kswapd (./linux/mm/vmscan.c:7812)
-> Code: (omitted)
-> RSP: 0000:ffffc90004257d58 EFLAGS: 00010286
-> RAX: ffffffffffffffff RBX: ffff88883fff0480 RCX: 0000000000000003
-> RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88883fff0480
-> RBP: ffffffffffffffff R08: ff0003ffffffffff R09: ffffffffffffffff
-> R10: ffff888106c95540 R11: 0000000055555554 R12: 0000000000000003
-> R13: 0000000000000000 R14: 0000000000000000 R15: ffff88883fff0940
-> FS:  00007fc4b8124740(0000) GS:ffff888827c00000(0000) knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: 00000000000033f3 CR3: 000000026cc08004 CR4: 0000000000770ee0
-> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-> PKRU: 55555554
-> Call Trace:
->  <TASK>
-> ? __die
-> ? page_fault_oops
-> ? __pte_offset_map_lock
-> ? exc_page_fault
-> ? asm_exc_page_fault
-> ? wakeup_kswapd
-> migrate_misplaced_page
-> __handle_mm_fault
-> handle_mm_fault
-> do_user_addr_fault
-> exc_page_fault
-> asm_exc_page_fault
-> RIP: 0033:0x55b897ba0808
-> Code: (omitted)
-> RSP: 002b:00007ffeefa821a0 EFLAGS: 00010287
-> RAX: 000055b89983acd0 RBX: 00007ffeefa823f8 RCX: 000055b89983acd0
-> RDX: 00007fc2f8122010 RSI: 0000000000020000 RDI: 000055b89983acd0
-> RBP: 00007ffeefa821a0 R08: 0000000000000037 R09: 0000000000000075
-> R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
-> R13: 00007ffeefa82410 R14: 000055b897ba5dd8 R15: 00007fc4b8340000
->  </TASK>
+Get around this altogether by just using xarray's existing machinery for
+the folio page offsets and dirty/writeback states.
 
-Link: https://lkml.kernel.org/r/20240216111502.79759-1-byungchul@sk.com
-Signed-off-by: Byungchul Park <byungchul@sk.com>
-Reported-by: Hyeongtak Ji <hyeongtak.ji@sk.com>
-Fixes: c574bbe917036 ("NUMA balancing: optimize page placement for memory tiering system")
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: "Huang, Ying" <ying.huang@intel.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: <stable@vger.kernel.org>
+This changes behavior for tmpfs files to now always report zeroes in their
+dirty and writeback counters.  This is okay as tmpfs doesn't follow
+conventional writeback cache behavior: its pages get "cleaned" during
+swapout, after which they're no longer resident etc.
+
+Link: https://lkml.kernel.org/r/20240220153409.GA216065@cmpxchg.org
+Fixes: cf264e1329fb ("cachestat: implement cachestat syscall")
+Reported-by: Jann Horn <jannh@google.com>
+Suggested-by: Matthew Wilcox <willy@infradead.org>
+Signed-off-by: Nhat Pham <nphamcs@gmail.com>
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+Tested-by: Jann Horn <jannh@google.com>
+Cc: <stable@vger.kernel.org>	[6.4+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/migrate.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ mm/filemap.c |   51 ++++++++++++++++++++++++-------------------------
+ 1 file changed, 26 insertions(+), 25 deletions(-)
 
---- a/mm/migrate.c~mm-vmscan-fix-a-bug-calling-wakeup_kswapd-with-a-wrong-zone-index
-+++ a/mm/migrate.c
-@@ -2519,6 +2519,14 @@ static int numamigrate_isolate_folio(pg_
- 			if (managed_zone(pgdat->node_zones + z))
- 				break;
- 		}
-+
+--- a/mm/filemap.c~mm-cachestat-fix-folio-read-after-free-in-cache-walk
++++ a/mm/filemap.c
+@@ -4111,28 +4111,40 @@ static void filemap_cachestat(struct add
+ 
+ 	rcu_read_lock();
+ 	xas_for_each(&xas, folio, last_index) {
++		int order;
+ 		unsigned long nr_pages;
+ 		pgoff_t folio_first_index, folio_last_index;
+ 
 +		/*
-+		 * If there are no managed zones, it should not proceed
-+		 * further.
++		 * Don't deref the folio. It is not pinned, and might
++		 * get freed (and reused) underneath us.
++		 *
++		 * We *could* pin it, but that would be expensive for
++		 * what should be a fast and lightweight syscall.
++		 *
++		 * Instead, derive all information of interest from
++		 * the rcu-protected xarray.
 +		 */
-+		if (z < 0)
-+			return 0;
 +
- 		wakeup_kswapd(pgdat->node_zones + z, 0,
- 			      folio_order(folio), ZONE_MOVABLE);
- 		return 0;
+ 		if (xas_retry(&xas, folio))
+ 			continue;
+ 
++		order = xa_get_order(xas.xa, xas.xa_index);
++		nr_pages = 1 << order;
++		folio_first_index = round_down(xas.xa_index, 1 << order);
++		folio_last_index = folio_first_index + nr_pages - 1;
++
++		/* Folios might straddle the range boundaries, only count covered pages */
++		if (folio_first_index < first_index)
++			nr_pages -= first_index - folio_first_index;
++
++		if (folio_last_index > last_index)
++			nr_pages -= folio_last_index - last_index;
++
+ 		if (xa_is_value(folio)) {
+ 			/* page is evicted */
+ 			void *shadow = (void *)folio;
+ 			bool workingset; /* not used */
+-			int order = xa_get_order(xas.xa, xas.xa_index);
+-
+-			nr_pages = 1 << order;
+-			folio_first_index = round_down(xas.xa_index, 1 << order);
+-			folio_last_index = folio_first_index + nr_pages - 1;
+-
+-			/* Folios might straddle the range boundaries, only count covered pages */
+-			if (folio_first_index < first_index)
+-				nr_pages -= first_index - folio_first_index;
+-
+-			if (folio_last_index > last_index)
+-				nr_pages -= folio_last_index - last_index;
+ 
+ 			cs->nr_evicted += nr_pages;
+ 
+@@ -4150,24 +4162,13 @@ static void filemap_cachestat(struct add
+ 			goto resched;
+ 		}
+ 
+-		nr_pages = folio_nr_pages(folio);
+-		folio_first_index = folio_pgoff(folio);
+-		folio_last_index = folio_first_index + nr_pages - 1;
+-
+-		/* Folios might straddle the range boundaries, only count covered pages */
+-		if (folio_first_index < first_index)
+-			nr_pages -= first_index - folio_first_index;
+-
+-		if (folio_last_index > last_index)
+-			nr_pages -= folio_last_index - last_index;
+-
+ 		/* page is in cache */
+ 		cs->nr_cache += nr_pages;
+ 
+-		if (folio_test_dirty(folio))
++		if (xas_get_mark(&xas, PAGECACHE_TAG_DIRTY))
+ 			cs->nr_dirty += nr_pages;
+ 
+-		if (folio_test_writeback(folio))
++		if (xas_get_mark(&xas, PAGECACHE_TAG_WRITEBACK))
+ 			cs->nr_writeback += nr_pages;
+ 
+ resched:
 _
 
-Patches currently in -mm which might be from byungchul@sk.com are
+Patches currently in -mm which might be from nphamcs@gmail.com are
 
-sched-numa-mm-do-not-try-to-migrate-memory-to-memoryless-nodes.patch
-mm-vmscan-do-not-turn-on-cache_trim_mode-if-it-doesnt-work.patch
 
 
