@@ -1,111 +1,107 @@
-Return-Path: <stable+bounces-23545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77A50862141
-	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 01:34:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFF278621AD
+	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 02:15:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DC711F26534
-	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 00:34:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBD8F1C2082A
+	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 01:15:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D31A515A4;
-	Sat, 24 Feb 2024 00:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B16F58C1F;
+	Sat, 24 Feb 2024 01:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="w///kqWz"
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="Z0erciKR"
 X-Original-To: stable@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326A4A59;
-	Sat, 24 Feb 2024 00:34:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666476FB8;
+	Sat, 24 Feb 2024 01:15:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708734868; cv=none; b=mmeeH/MgJBzoz2lcVZ8cf/T1xXy+5n5Mw48NLUdZNqxSEm1p7xFcH00m2e9Upxpa1UyUq9wAUUAumd/Wg74l0dUqRi1eMqQZsnulD7mgH2NPpq7u2GLDW8iPtTIiZelbM8nehuSaLOP627NYnijg2cUQkoIIqnSlunR5oBNuwb0=
+	t=1708737315; cv=none; b=DWQWs2B1PBMLSMF/361WPvYDRu5v1Pe6BJyj/0pAfAMeNJtZsBogkU7azgUC+3w8x9gyd1WB+0EaFNFo/veO3fzBKyRoTYMBfIa3wJbO4owpmknrlOfEvxoXW162Htwhhi1m4me79gqeITmstprUgotDA3bY0gWFKVFtgacniLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708734868; c=relaxed/simple;
-	bh=NyZC7DMt9AaOWyzhLHalvlIineDokNGezKhcwMO0G0U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mlPcIVXDfXO5oH7Ux09nUbxu22DjiBiqIx5MRJt/hZIZrU/qCuBEtuqtf3i6K/X/n2zK9BTI46Ej+JaQTqInO6YsZ6Epe4PD6VQiXo6cDorzOUL854eT17oYF5z8K/rqOCE5+D2Jw3Dz0hwqR17jvDqczDWEnCfJbw5hS/LcmgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=w///kqWz; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=+78lHf6wE1V3WvNZO4eC3Ft1qvYeNcUsJdGOhWgLsHc=; b=w///kqWz7t4I9I5u3Ax8UN47Qh
-	tgOJUr6O1eUMIuIJyXxuKnQ1ziqZslIU5GaIqI/djIYeEoc9mQbf7LXRKOiSxjtAYWedd9hcKe3SH
-	1K0KR6TbPzUF83VqncPipDwAbRGOcCRjqmRDk/HljYzvcNJlQw07wtI1WPtDb7hXXLb7FhETQDZ8W
-	ljzsvIkmN78gxdV9CZiR+1qKEuPLXAJwB+3fYdYJkHWILyCD2KhryCvZJHcQPR4dOWZA+Zd+jixyJ
-	Fm6aN6pkq92EtpPu2yJkY9yOhSaIjaW/BASxRGJ/LPODLcFICL59hJpdRHRGLAuKbvCc+s7LDvcWM
-	9LY+68mA==;
-Received: from [50.53.50.0] (helo=[192.168.254.15])
-	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rdfzl-0000000BhS0-0u0z;
-	Sat, 24 Feb 2024 00:34:25 +0000
-Message-ID: <874c4cbb-d904-4aa3-9c87-cb3d639d3661@infradead.org>
-Date: Fri, 23 Feb 2024 16:34:24 -0800
+	s=arc-20240116; t=1708737315; c=relaxed/simple;
+	bh=+9h2xKjOMwpJ6vwxTee5GD98+h73IuypecWdP3G2C1s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u9CDyxZEFYpzTfp+6kilbHhy17SWp2uIouIbBgcd0x/tIN+jLf97deVL1GbQdDbQ+pfJmkVdIEv2qbQnzuWixsk+7J403f+PEiwrkN74n6+tfocikoOKnSFB78ATC67ObwIiTdzqbLVhzkcTwLJCDBl0ErJqFzrrYu0K6VfoeZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=Z0erciKR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 143CBC43394;
+	Sat, 24 Feb 2024 01:15:15 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="Z0erciKR"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1708737310;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CGk4NO32L+GTr1TJMRmS6aztEVWTdCZhKoXaii4F4RU=;
+	b=Z0erciKRHPcL03p/Km/9laNjKwRKAAKzxR/3cuVhoON+3+vQXgmmw61V83+ZOcmcqM+1/f
+	NWLqfHwaqdar+ay2Murv7jjYPjZiQ0aLyYpAjaAJ9Ja+Mx72TeEwSw5Fb2vSn0KBcFz1PJ
+	jTs91fAt5OxAsYyk0Wb34Lckpm4yDKA=
+Received: 
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id 8615405f (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Sat, 24 Feb 2024 01:15:09 +0000 (UTC)
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-60853ad17f9so16506907b3.0;
+        Fri, 23 Feb 2024 17:15:09 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWap626kgmEYf7VRI2uAc8KLNSFXhTENYLIW3nB4cJthcpfDKcJz8FuWF/PmDG424DOul5LxAyubCqMdFK9C80LdwdVo3mRQ+oA8p8YGubMSCQlGRCw9ZNOOnoJa3tM57QsgrLL
+X-Gm-Message-State: AOJu0YyvYfyPyiXrF+RqPpjukk1dthhlYZy3uUdt5APMCtJLiS9SfvWB
+	1vHoya125MBylKclqjIy2mRXORI4xwU9RTTISEJeBOLJKG5RBIJKIYoQRPijukjJ/bTs0gb9+HE
+	k+rBzuppn4rRsyMyFlzhrOVSnZ5s=
+X-Google-Smtp-Source: AGHT+IEgMvsUKNoqUqJ8XZiWuzsWmr4gdvUGtKEu7ZPJUyYRkG+YxkdPu+bBfZBw/GzEuvyVQeQr+XYSMf9dj0FgxVM=
+X-Received: by 2002:a81:f20e:0:b0:607:7c26:7e14 with SMTP id
+ i14-20020a81f20e000000b006077c267e14mr1356621ywm.34.1708737307407; Fri, 23
+ Feb 2024 17:15:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/6] sparc32: Fix parport build with sparc32
-Content-Language: en-US
-To: sam@ravnborg.org, Miquel Raynal <miquel.raynal@bootlin.com>,
- "Maciej W. Rozycki" <macro@orcam.me.uk>
-Cc: sparclinux@vger.kernel.org, linux-parport@lists.infradead.org,
- "David S. Miller" <davem@davemloft.net>,
- Andreas Larsson <andreas@gaisler.com>, Arnd Bergmann <arnd@arndb.de>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240223-sam-fix-sparc32-all-builds-v1-0-5c60fd5c9250@ravnborg.org>
- <20240223-sam-fix-sparc32-all-builds-v1-6-5c60fd5c9250@ravnborg.org>
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20240223-sam-fix-sparc32-all-builds-v1-6-5c60fd5c9250@ravnborg.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <5648f43d-76e4-4396-b626-411d60657c93@intel.com>
+ <20240222020616.2315199-1-Jason@zx2c4.com> <9cec487f-ce7d-809d-b4a7-9b7a8a6c9c93@amd.com>
+In-Reply-To: <9cec487f-ce7d-809d-b4a7-9b7a8a6c9c93@amd.com>
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date: Sat, 24 Feb 2024 02:14:55 +0100
+X-Gmail-Original-Message-ID: <CAHmME9oN+7rbLYcvQN=+KMjwrokvARy_7khLWJvDK=K_S5uHqg@mail.gmail.com>
+Message-ID: <CAHmME9oN+7rbLYcvQN=+KMjwrokvARy_7khLWJvDK=K_S5uHqg@mail.gmail.com>
+Subject: Re: [PATCH v4] x86/coco: Require seeding RNG with RDRAND on CoCo systems
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	Borislav Petkov <bp@alien8.de>, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?= <berrange@redhat.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin" <hpa@zytor.com>, 
+	Ingo Molnar <mingo@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, 
+	Elena Reshetova <elena.reshetova@intel.com>, 
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, "Theodore Ts'o" <tytso@mit.edu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hi Tom,
+
+On Fri, Feb 23, 2024 at 11:05=E2=80=AFPM Tom Lendacky <thomas.lendacky@amd.=
+com> wrote:
+>
+> On 2/21/24 20:05, Jason A. Donenfeld wrote:
+> > +
+> > +     if (cc_vendor =3D=3D CC_VENDOR_NONE)
+>
+> I responded to an earlier version of this patch, adding that response her=
+e:
+>
+> You probably want to use:
+>
+>      if (!cc_platform_has(CC_GUEST_MEM_ENCRYPT))
+>          return;
+>
+> Otherwise, you can hit the bare-metal case where AMD SME is active and
+> then cc_vendor will not be CC_VENDOR_NONE.
+
+Nice catch, thanks. I'll do that for v+1.
 
 
-
-On 2/23/24 11:36, Sam Ravnborg via B4 Relay wrote:
-> From: Sam Ravnborg <sam@ravnborg.org>
-> 
-> include/asm/parport.h is sparc64 specific.
-> Rename it to parport_64.h and use the generic version for sparc32.
-> 
-> This fixed all{mod,yes}config build errors like:
-> 
-> parport_pc.c:(.text):undefined-reference-to-ebus_dma_enable
-> parport_pc.c:(.text):undefined-reference-to-ebus_dma_irq_enable
-> parport_pc.c:(.text):undefined-reference-to-ebus_dma_register
-> 
-> The errors occur as the sparc32 build references sparc64 symbols.
-> 
-> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Andreas Larsson <andreas@gaisler.com>
-> Cc: Randy Dunlap <rdunlap@infradead.org>
-> Cc: Maciej W. Rozycki <macro@orcam.me.uk>
-> Closes: https://lore.kernel.org/r/20230406160548.25721-1-rdunlap@infradead.org/
-> Fixes: 66bcd06099bb ("parport_pc: Also enable driver for PCI systems")
-> Cc: stable@vger.kernel.org # v5.18+
-
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
-
-Thanks.
-
-> ---
->  arch/sparc/include/asm/parport.h    | 259 +-----------------------------------
->  arch/sparc/include/asm/parport_64.h | 256 +++++++++++++++++++++++++++++++++++
->  2 files changed, 263 insertions(+), 252 deletions(-)
-> 
-
-
--- 
-#Randy
+Jason
 
