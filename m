@@ -1,148 +1,138 @@
-Return-Path: <stable+bounces-23543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69BEB861F8B
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 23:21:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B580D86211C
+	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 01:19:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8189B22C87
-	for <lists+stable@lfdr.de>; Fri, 23 Feb 2024 22:21:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E67EC1C21555
+	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 00:19:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7740C14DFDC;
-	Fri, 23 Feb 2024 22:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E2139B;
+	Sat, 24 Feb 2024 00:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="DGeG1NJ2"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="qWNBgcUA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D433414CAD2
-	for <stable@vger.kernel.org>; Fri, 23 Feb 2024 22:21:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93EA619A;
+	Sat, 24 Feb 2024 00:19:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708726898; cv=none; b=Ys09cGu7D8/4El2FI/1TGx4qf/Y/xilH6uOzuvbrCLlYq01TNatJy1qYgaJywdOjZlVDC2aZmKHSLfdullxLv+xwvWaKqonzRfR+BKOCd5K4lZcFKaYKsEm8GDnrcmokXq7/Bm8lJN1blyI7PK0l7aQy1ELzfd6W966AOkcE9s8=
+	t=1708733941; cv=none; b=L+U6CjHQPrnJa5F9pxS/PFHJl4pAhLQPdJUK5DHptNhl3GLxo8FbgbCDJ/WcQ7nqaec1HQKmeRGzu6nk0AS59tXq+46q9BWffpbipN6T9gMKt8BIAMMP6jkBMz2P5cEdEEw3vlzc6GM/YqHHDfydrdzUtBP8KBVss83LzJ1RP2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708726898; c=relaxed/simple;
-	bh=tCxLkZaiXV0zdt3VLXgnun/1lqJgVCO7ceU56CFwRpU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PqGMrPYQeuRjp7ZjjqHxsj5wcLJTOauzpeRg1fmAMYa/yeJHl9wSNGWnV8vMFEFSgbVybhEgfzJ4dtyXSXgLXtTMe5AcM21GeFYHvStlywNcxODvH2NtGZiKzH2ZIbObscbu8q+EAlGQanUYewKMAJyCoFe0PTdraonXx+8ibdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=DGeG1NJ2; arc=none smtp.client-ip=209.85.219.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-dc6dcd9124bso1435089276.1
-        for <stable@vger.kernel.org>; Fri, 23 Feb 2024 14:21:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1708726892; x=1709331692; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZSHK5epAuKvdBFEuYnQb3nyTXVxrBoDNXBYJr9NtKwo=;
-        b=DGeG1NJ2i9WQOHMWBbz9z8nrmtXaogxgI5TGhyK4p/hjJMW8UG7NVPc/g7B467Iihv
-         yuIQvf/mi1PSkisYQja3NlvZP/ibnX59/wVuAXrotALE5Rml7Cr2RMT7TJYtszr0xzpc
-         Xz7bSENYj9Ebn6oiSA9GzRUx7TvCbCspCQG/KunAEF2QghjvI+o5GirNRqaL63z8x7J8
-         NCMCe4PhEVJj5lntgr6zco47iNn6EAEbFIAd8XBrHXJkZeZY+kwjmSGdgp+XTlhZu0sE
-         yMs+M7TvEMAQ3jYyBcnK1cTplkAmac6d6fjlYAXbK4rjAfpNVTOw7X2wQ5INnUqVFlzG
-         CK5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708726892; x=1709331692;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZSHK5epAuKvdBFEuYnQb3nyTXVxrBoDNXBYJr9NtKwo=;
-        b=Wy8Id2FIh2I8OZqG6rlfwLf6PothgprI6TQIXj+1RWaMG1mLJeIj05V6wzO3eNsPWy
-         +jt8cxr0cfvRm0y3hLGY4OjyklmQmMO6sKqOUCyNYC0rKWPbEDLUJAiB2vdPadKWeAG4
-         3hCUvvBQb6uEcgYA88Jhp3yg//gXxvFjnibvCGoZk67Hm/1qj01uDlBbcK8g9TB37NXq
-         kmdOD1tDC65UhVc9d9c5fqjtYw9nSqeCo8RH7kGDvPcZkZHAVXfS9z8H87EQtf+zm28L
-         DvoaLcCQugIZvf5/DoPk9bSxrXrL9MEwhkXMSnIch4Cj6S7rS3oCMuYWFKeGWGf76uUW
-         m8AQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUVhB0B0IpJzV+Def/s0SmtaR9NuX39HSB7KNKk0jaXT6AR9wdI/3MSrtNwQcjaPp/hkaRxxVCtEEm82zDRKLUTbNiufQ+V
-X-Gm-Message-State: AOJu0YzqR+BWqBpSICTtonRlxQx4MC8wKqJ41+j1q5ri1+u+UdUeo9TK
-	18io03xgJiJ+yepRfQoMapvMJI+kdSNlaytdJAmODeALSqFr4b3IwbkTuyCldBJHcx0uA+YK9tm
-	SleP+hbLynsjIlNSLWjr9vNLS2DkypxUVrwsK
-X-Google-Smtp-Source: AGHT+IHoS06SEmuSwB42FEj2Tv0jydKO5BLvQbKa4zVmj3/4z7CKsbNK/04Q5C3FEGLnLUWZFAf1+v3Y+5eZxxScozA=
-X-Received: by 2002:a25:d0d4:0:b0:dcc:9dcc:a433 with SMTP id
- h203-20020a25d0d4000000b00dcc9dcca433mr1335893ybg.54.1708726891747; Fri, 23
- Feb 2024 14:21:31 -0800 (PST)
+	s=arc-20240116; t=1708733941; c=relaxed/simple;
+	bh=Z4Ip5Uq33WoTzQTHGO6CRnXk7192eWoaFxRkEvFISe8=;
+	h=Date:To:From:Subject:Message-Id; b=HoRD0U+sP7Hxtkf7N4KIyTQ6L2falFJqaBbCtpPrqQ6kmce+C28uk8QJtLqEjdccgnQ2b0x7FckyxBXmYmyZhXrpSZNES9CD203MQ7qefY53ZWHORGcAGUXQqePbKZP92Y+5ZJR8X1d2Z1ikNU2XxcbajLBMcSwHmrbeEaYJkvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=qWNBgcUA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11868C433F1;
+	Sat, 24 Feb 2024 00:19:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1708733941;
+	bh=Z4Ip5Uq33WoTzQTHGO6CRnXk7192eWoaFxRkEvFISe8=;
+	h=Date:To:From:Subject:From;
+	b=qWNBgcUAXQlvzeeY03hMO4Z/0d4K1MYgVlsednyxH/Q2lxPJwT7eaBh4su/jkb4l2
+	 jRyknRegyMDVU7VpVOk5FJQZ2e9IyqW8/0+DfnB7Cx0ho6qug5Pf+L48MbaqhcWGDI
+	 p5BPcFVJxO8H5tvLDcwO2VuglAMsgn5NIlvUu+kY=
+Date: Fri, 23 Feb 2024 16:19:00 -0800
+To: mm-commits@vger.kernel.org,yaolu@kylinos.cn,tsi@tuyoix.net,surenb@google.com,stable@vger.kernel.org,rdunlap@infradead.org,pmladek@suse.com,paul@paul-moore.com,nphamcs@gmail.com,nathan@kernel.org,masahiroy@kernel.org,hannes@cmpxchg.org,gustavoars@kernel.org,gregkh@linuxfoundation.org,christophe.leroy@csgroup.eu,ardb@kernel.org,keescook@chromium.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + init-kconfig-lower-gcc-version-check-for-warray-bounds.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240224001901.11868C433F1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240223190546.3329966-1-mic@digikod.net> <20240223.ieSh2aegurig@digikod.net>
- <20240223.eij0Oudai0Ia@digikod.net> <CAHC9VhRdRK3FztE-Th=3M+0ZjCZQJ+5sTiXPwfK6xXX_=SFHhA@mail.gmail.com>
- <20240223.goo9Xei0xa9S@digikod.net>
-In-Reply-To: <20240223.goo9Xei0xa9S@digikod.net>
-From: Paul Moore <paul@paul-moore.com>
-Date: Fri, 23 Feb 2024 17:21:20 -0500
-Message-ID: <CAHC9VhQh4R6x7+giLBQV_YvRconZAqjW=vRBrzwVw2jzYqFu+A@mail.gmail.com>
-Subject: Re: [PATCH 1/2] SELinux: Fix lsm_get_self_attr()
-To: =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>
-Cc: Casey Schaufler <casey@schaufler-ca.com>, John Johansen <john.johansen@canonical.com>, 
-	James Morris <jmorris@namei.org>, "Serge E . Hallyn" <serge@hallyn.com>, linux-kernel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, stable@vger.kernel.org, 
-	selinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 23, 2024 at 5:03=E2=80=AFPM Micka=C3=ABl Sala=C3=BCn <mic@digik=
-od.net> wrote:
-> On Fri, Feb 23, 2024 at 04:05:16PM -0500, Paul Moore wrote:
-> > On Fri, Feb 23, 2024 at 3:04=E2=80=AFPM Micka=C3=ABl Sala=C3=BCn <mic@d=
-igikod.net> wrote:
-> > >
-> > > On Fri, Feb 23, 2024 at 08:59:34PM +0100, Micka=C3=ABl Sala=C3=BCn wr=
-ote:
-> > > > On Fri, Feb 23, 2024 at 08:05:45PM +0100, Micka=C3=ABl Sala=C3=BCn =
-wrote:
-> > > > > selinux_lsm_getattr() may not initialize the value's pointer in s=
-ome
-> > > > > case.  As for proc_pid_attr_read(), initialize this pointer to NU=
-LL in
-> > > > > selinux_getselfattr() to avoid an UAF in the kfree() call.
-> > > >
-> > > > Not UAF but NULL pointer dereference (both patches)...
-> > >
-> > > Well, that may be the result (as observed with the kfree() call), but
-> > > the cause is obviously an uninitialized pointer.
-> >
-> > Adding the SELinux list to the CC line; SELinux folks the original post=
- is here:
-> >
-> > * https://lore.kernel.org/all/20240223190546.3329966-1-mic@digikod.net
-> >
-> > Thanks for finding this and testing the patch, based on our off-list
-> > discussion, do you mind if I add a Suggested-by?  Looking at this a
->
-> Sure! I was in a hurry and didn't give it the attention it needed...
->
-> > bit more I think we'll want to make a few changes to
-> > selinux_lsm_getattr() later, but this patch is a good one for stable
-> > as it not only fixes the bug, but it is a trivial one-liner with very
-> > low risk.
-> >
-> > I do think we need to tweak the commit description a bit, what do you
-> > think of the following?
-> >
-> >   "selinux_getselfattr() doesn't properly initialize the string
-> >    pointer it passes to selinux_lsm_getattr() which can cause a
-> >    problem when an attribute hasn't been explicitly set;
-> >    selinux_lsm_getattr() returns 0/success, but does not set or
-> >    initialize the string label/attribute.  Failure to properly
-> >    initialize the string causes problems later in
-> >    selinux_getselfattr() when the function attempts to kfree()
-> >    the string."
->
-> Much better!
 
-Great :)  I just went ahead and merged this into the lsm/stable-6.8
-branch to get this some testing in linux-next, although I'm going to
-be *shocked* if this commit causes a regression.  I'll send this up to
-Linus early next week, and if John wants me to send the AppArmor patch
-I'll do that at the same time.
+The patch titled
+     Subject: init/Kconfig: lower GCC version check for -Warray-bounds
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     init-kconfig-lower-gcc-version-check-for-warray-bounds.patch
 
---=20
-paul-moore.com
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/init-kconfig-lower-gcc-version-check-for-warray-bounds.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Kees Cook <keescook@chromium.org>
+Subject: init/Kconfig: lower GCC version check for -Warray-bounds
+Date: Fri, 23 Feb 2024 09:08:27 -0800
+
+We continue to see false positives from -Warray-bounds even in GCC 10,
+which is getting reported in a few places[1] still:
+
+security/security.c:811:2: warning: `memcpy' offset 32 is out of the bounds [0, 0] [-Warray-bounds]
+
+Lower the GCC version check from 11 to 10.
+
+Link: https://lkml.kernel.org/r/20240223170824.work.768-kees@kernel.org
+Reported-by: Lu Yao <yaolu@kylinos.cn>
+Closes: https://lore.kernel.org/lkml/20240117014541.8887-1-yaolu@kylinos.cn/
+Link: https://lore.kernel.org/linux-next/65d84438.620a0220.7d171.81a7@mx.google.com [1]
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Marc Aurèle La France <tsi@tuyoix.net>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: Paul Moore <paul@paul-moore.com>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ init/Kconfig |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+--- a/init/Kconfig~init-kconfig-lower-gcc-version-check-for-warray-bounds
++++ a/init/Kconfig
+@@ -876,14 +876,14 @@ config CC_IMPLICIT_FALLTHROUGH
+ 	default "-Wimplicit-fallthrough=5" if CC_IS_GCC && $(cc-option,-Wimplicit-fallthrough=5)
+ 	default "-Wimplicit-fallthrough" if CC_IS_CLANG && $(cc-option,-Wunreachable-code-fallthrough)
+ 
+-# Currently, disable gcc-11+ array-bounds globally.
++# Currently, disable gcc-10+ array-bounds globally.
+ # It's still broken in gcc-13, so no upper bound yet.
+-config GCC11_NO_ARRAY_BOUNDS
++config GCC10_NO_ARRAY_BOUNDS
+ 	def_bool y
+ 
+ config CC_NO_ARRAY_BOUNDS
+ 	bool
+-	default y if CC_IS_GCC && GCC_VERSION >= 110000 && GCC11_NO_ARRAY_BOUNDS
++	default y if CC_IS_GCC && GCC_VERSION >= 100000 && GCC10_NO_ARRAY_BOUNDS
+ 
+ # Currently, disable -Wstringop-overflow for GCC globally.
+ config GCC_NO_STRINGOP_OVERFLOW
+_
+
+Patches currently in -mm which might be from keescook@chromium.org are
+
+init-kconfig-lower-gcc-version-check-for-warray-bounds.patch
+
 
