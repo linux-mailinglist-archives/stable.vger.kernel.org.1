@@ -1,162 +1,146 @@
-Return-Path: <stable+bounces-23570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82515862560
-	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 14:53:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41D0F8625C4
+	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 16:13:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A66FC1C20F97
-	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 13:53:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9E9C282B60
+	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 15:13:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2656D3EA93;
-	Sat, 24 Feb 2024 13:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D68A424B54;
+	Sat, 24 Feb 2024 15:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZvYuW3zV"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="pzWGQLyz"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AF3051021;
-	Sat, 24 Feb 2024 13:51:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7DFFE559
+	for <stable@vger.kernel.org>; Sat, 24 Feb 2024 15:13:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708782690; cv=none; b=MtxTORyh6uPxG4AVTeSvDceBh6wl700XaplR6Pf6jGrxKJfKGEZD9oHeD+dDNaZpVMJXcwIR1CUO5G+wb5fe1Vb8Mg6T2YIQMCcO2/tIFXv/eutPypr4/E2NAgfXBPrxUK0TFraWSIOfGyVi/aifm4bxmc6CPflYBBzwgthLvGs=
+	t=1708787611; cv=none; b=ZCcDNu8SYC+Lxa6kEKn9oOvwb1MbbHLRPtcW2KeW152uysTCpJ3Dz8Aa0NHtb7hSm5Sz0NhpAbVx5e+dI5OEE/4CfLgOFn/ABIBtVMPe8H555gfqhzUA7S+z2xLNFZvUKarJ9nWUJK2IQAqd2QqgkZ2GApcFA7XcW573OnkB1So=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708782690; c=relaxed/simple;
-	bh=S5n5HU2q/sZRcK5Ft/p5wtTUiswM69Vb7OOQu1x6S2g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RGmsrvY/GHblLDDpwvgFpdF0bMC2mZyT4yp6jp0fA/QiY1IqvU/YnZKhZUIUtB8kZw2Q5i0JEylRfTnR5WWidDpfBDKAP0sCbUl/QB6z3JE4ttP9DIV1mTeLsu0Z/bTMa8doiDWL1W71DcwA7fDg7lmf27PwcgvrL0Kz6saFaDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZvYuW3zV; arc=none smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2d269b2ff48so14860301fa.3;
-        Sat, 24 Feb 2024 05:51:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708782687; x=1709387487; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AkSriGHeGBPTD+6EMyhWxKkWSym1Gvc05wjRdmGKnU4=;
-        b=ZvYuW3zVEwqXECzMrIKmV8peUmIlICFl2YzKh4/lueHbLFy3GGytfFw4K6dOeRY18+
-         bqCSsfOQd1Sl8UZo8VMu0a+ijiC8u7YvEccKt6P3zlDWzPtMjSxrN1j5IjXyUTAJquDs
-         UzLxi1JwNoxPfqivBxW6nWz5CqjH8ueoDSvGma/qfIsDWe92pIQzdcUhi+Fj0e8LjIZa
-         qfqRyzhD/II79db1DpRtj8tAA/bo/irPDV2pQDTCvkHw9CCXiB+Og+p+jRUFp6N66GpY
-         fljO7JQGCgjcZegPlpuhBLj/+7X34d6W0icRMjZHu22K16OiW76h7YSx4vNMWsaoCI5d
-         WdMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708782687; x=1709387487;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AkSriGHeGBPTD+6EMyhWxKkWSym1Gvc05wjRdmGKnU4=;
-        b=tIta/MJIQUsEv+mkvd2YueuZ7SCeQfqbODk4C62KQdNxBekFIbeL8A4956Qvzgafdl
-         ccs8Z6/EnoF+Donl/m4OXPnjBoRk2MgkT3Lsl2vDfNgSUnTMkCbVDo+AatLYkm040qVz
-         wwx+2HplEybNmpMNwuNvpMpOX7lMkekFyhUL1AQQGmRTecq/y02LUMRSvXcgcZJrAr8F
-         o/xy0fbUiu4vZUgui+i4aRg4VkDIoNBCcuf7zc6F+uX5A19XQ6vI/jAOBSNto94TGaDJ
-         uTeYfy/VlgeqF30uWYzc1H7bt3CzV0YY4t5I08V31RNTM3BNDT27z2HJVqaqjbOyq6af
-         G6Aw==
-X-Forwarded-Encrypted: i=1; AJvYcCXuetOE+9MLZKFGmCcqQqS1J5s7YGM68GXV5x8QOfxpAXubP/+LOOZ0fqymLf01YClDhGKh0R4k0iZMn4BNI398vC34ld7T
-X-Gm-Message-State: AOJu0Yyt8LHZo9ZTrnkRZupcZPhefP5UiaZVRpFmn7PkbcIcrasOLssG
-	JAeT0hVHJAhOFTaHpcb6F5RhOFmsUnvubruw74WPn8SypzT7vEuT
-X-Google-Smtp-Source: AGHT+IG+aPu7WCir06lTu+bsAphOwfYhsD/DcxmncH46zxHN7hdw9vOCyKqs4a0dpcq/pIJIh9TuXQ==
-X-Received: by 2002:a19:7419:0:b0:512:aaba:7657 with SMTP id v25-20020a197419000000b00512aaba7657mr1580780lfe.26.1708782687004;
-        Sat, 24 Feb 2024 05:51:27 -0800 (PST)
-Received: from ?IPV6:2a01:e34:ec5f:c111:ab46:ec03:bf48:53f1? ([2a01:e34:ec5f:c111:ab46:ec03:bf48:53f1])
-        by smtp.gmail.com with ESMTPSA id t21-20020a199115000000b00512dd729430sm219562lfd.91.2024.02.24.05.51.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 24 Feb 2024 05:51:26 -0800 (PST)
-Message-ID: <7a8d9d60-a151-4b25-882b-48e6929339a4@gmail.com>
-Date: Sat, 24 Feb 2024 14:51:24 +0100
+	s=arc-20240116; t=1708787611; c=relaxed/simple;
+	bh=iH0cmn/PzDVCeYjVzbKKlG/flQNqKVr7ns0XcjV4cMA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QzbCj24b6kSU1I7FrkdJczRWLAsC5xoD2w8Hm4YVoTefcPhT7sqcP9mc13afA7w8KZ3zMYKWWea1SYBumTUjsTG8/bBP23bEVjXUaJnulXoQ9WkLTamnbnf0tXCoLbXL8OUYEmka3tNdiJapKl6GskwQ5f3J+itRnLj4bUtF5UY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=pzWGQLyz; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41OFDMVq009703;
+	Sat, 24 Feb 2024 15:13:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=vm43AHf
+	KrpEAmlriQ1rL1f2nqgUvYYMyaY7EE4JlVIo=; b=pzWGQLyzR6oJu9mn6tZladH
+	orC2cyCf8neoVusEn6g8e7fqk8v9DPJrWj0WsC2tEqqxYg7742rsBwTy/ndvJ1E1
+	DR7WWGxAm1OpLw9+eViU5uwUhFnj9Vj54Fq7/oWmVbWDuP9SIJ+gVhGeDswKY+2k
+	ifdGAznNPhec2ehtY3/0EM6SFQmvnmEbjOZbPkcB5yrXhASt3Si6XIOIQA1QFpMJ
+	AL2si5Lx/Z1sIS+KDivYLOJN7GKA0F6/h8nkYYHJ1mxxyvp+rd3xXmh1/8dkKSZq
+	NQLbQ91Tk6YkQIGcNLsc4MOmRGC6jQV+RMO9E5mQ/TZuAVvPtYEx2zc2jBGViVw=
+	=
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wf7sngrsq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Sat, 24 Feb 2024 15:13:22 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41OFDLY2011129
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Sat, 24 Feb 2024 15:13:21 GMT
+Received: from hu-kshivnan-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Sat, 24 Feb 2024 07:13:20 -0800
+From: Shivnandan Kumar <quic_kshivnan@quicinc.com>
+To: <quic_namajain@quicinc.com>
+CC: Shivnandan Kumar <quic_kshivnan@quicinc.com>, <stable@vger.kernel.org>
+Subject: [PATCH v2] cpufreq: Limit resolving a frequency to policy min/max
+Date: Sat, 24 Feb 2024 20:43:00 +0530
+Message-ID: <20240224151300.2243534-1-quic_kshivnan@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Regression with Lenovo ThinkPad Compact USB Keyboard
-Content-Language: fr-FR, en-US
-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: Linux Input Mailing List <linux-input@vger.kernel.org>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, Jiri Kosina <jikos@jikos.cz>,
- Benjamin Tissoires <benjamin.tissoires@redhat.com>,
- Mikhail Khvainitski <me@khvoinitsky.org>,
- "Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info>,
- Linux Stable Mailing List <stable@vger.kernel.org>
-References: <a29d56d2-c440-4a26-a9ac-014595d2ae8c@gmail.com>
- <21370dc5-94a3-442c-ae04-76f9f94b1b96@leemhuis.info>
- <c8986411-2bf7-4b7d-8ac1-f702dc7c725a@gmail.com>
- <7a5fc584-1520-4e52-9c77-d67a656524c6@gmail.com>
- <10022b0c-89c3-43e1-89ba-00e458fe1dfd@leemhuis.info>
-From: =?UTF-8?Q?Rapha=C3=ABl_Halimi?= <raphael.halimi@gmail.com>
-Autocrypt: addr=raphael.halimi@gmail.com; keydata=
- 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
- Wxcwwn0N
-In-Reply-To: <10022b0c-89c3-43e1-89ba-00e458fe1dfd@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: os5BCl-kPgFj1R_ThU9Sa5l9MtRx3Eh_
+X-Proofpoint-GUID: os5BCl-kPgFj1R_ThU9Sa5l9MtRx3Eh_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-24_10,2024-02-23_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 clxscore=1015
+ impostorscore=0 bulkscore=0 mlxlogscore=999 spamscore=0 phishscore=0
+ malwarescore=0 lowpriorityscore=0 suspectscore=0 adultscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2402120000 definitions=main-2402240128
 
-Le 24/02/2024 à 14:08, Thorsten Leemhuis a écrit :
-> Raphaël: would nevertheless still be good if you could identify which of
-> the three causes the problem, as then the developers might consider
-> simply reverting it.
+Resolving a frequency to an efficient one should not transgress policy->max
+(which can be set for thermal reason) and policy->min. Currently there is
+possibility where scaling_cur_freq can exceed scaling_max_freq when
+scaling_max_freq is inefficient frequency. Add additional check to ensure
+that resolving a frequency will respect policy->min/max.
 
-Hi,
+Cc: <stable@vger.kernel.org>
+Fixes: 1f39fa0dccff ("cpufreq: Introducing CPUFREQ_RELATION_E")
+Signed-off-by: Shivnandan Kumar <quic_kshivnan@quicinc.com>
+--
 
-It can't be the third one (43527a0) since I clearly remember that I 
-experienced the regression before it was applied to the Debian kernel.
+Changes in v2:
+-rename function name from cpufreq_table_index_is_in_limits to cpufreq_is_in_limits
+-remove redundant outer parenthesis in return statement
+-Make comment single line
 
-So I'll try applying only the first one (46a0a2c), and report.
+--
+---
+ include/linux/cpufreq.h | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-(in the meantime I crafted a quick and dirty Debian package to build the 
-module with DKMS, so it will be easy)
-
-Regards,
-
+diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
+index afda5f24d3dd..7741244dee6e 100644
+--- a/include/linux/cpufreq.h
++++ b/include/linux/cpufreq.h
+@@ -1021,6 +1021,19 @@ static inline int cpufreq_table_find_index_c(struct cpufreq_policy *policy,
+ 						   efficiencies);
+ }
+ 
++static inline bool cpufreq_is_in_limits(struct cpufreq_policy *policy,
++						    int idx)
++{
++	unsigned int freq;
++
++	if (idx < 0)
++		return false;
++
++	freq = policy->freq_table[idx].frequency;
++
++	return freq == clamp_val(freq, policy->min, policy->max);
++}
++
+ static inline int cpufreq_frequency_table_target(struct cpufreq_policy *policy,
+ 						 unsigned int target_freq,
+ 						 unsigned int relation)
+@@ -1054,7 +1067,8 @@ static inline int cpufreq_frequency_table_target(struct cpufreq_policy *policy,
+ 		return 0;
+ 	}
+ 
+-	if (idx < 0 && efficiencies) {
++	/* Limit frequency index to honor policy->min/max */
++	if (!cpufreq_is_in_limits(policy, idx) && efficiencies) {
+ 		efficiencies = false;
+ 		goto retry;
+ 	}
 -- 
-Raphaël Halimi
+2.25.1
 
 
