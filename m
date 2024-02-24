@@ -1,162 +1,123 @@
-Return-Path: <stable+bounces-23576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 781428625FA
-	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 17:15:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62FE0862600
+	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 17:22:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25FAF281D64
-	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 16:15:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C1971C20D50
+	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 16:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B4847A55;
-	Sat, 24 Feb 2024 16:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C3147A6C;
+	Sat, 24 Feb 2024 16:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RsPGnFNI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U9Covv1n"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98F047A6C;
-	Sat, 24 Feb 2024 16:15:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D22814288;
+	Sat, 24 Feb 2024 16:22:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708791321; cv=none; b=FhUhoTCf4F0lRwUltBVGRDG1eJ0aUOOCs6FvhGm6XDloRVbRVtDuATRk3xHLJ0Oa+TJ4V7Z2QOw3NyccC04wOhpFToCU+HdgLiLFjkRBmlUQ5FPp1ZPke43NbTB6YhCayN/h1ZwoPE90JbUzI3EHdXXy55WanmL33FqWi6dtF3Y=
+	t=1708791742; cv=none; b=r5zjJ8g8jKCM25VWj6pIx8whWmYzM318+Hjtm4o4LoJ9GlkuMsWuCD3G2tV/DuvjFPo56lVHmRgPAbFUBxJ6hoHLkdTN8/s2iw6rhfT7nyvAhQIOH78y+7hTEhDwW1j0lwvacnzlu0EoyUUZ6Yr0iOgqwW5hhuWqCC3VH/RYm1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708791321; c=relaxed/simple;
-	bh=g+DTbQCprT09ui/iajZuZwaiHYmxNTwsRxuBYrt6p28=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=TC8t89PkGeYL5DGl+0g+6De0YYOBcSRWkHoFpR44DnBEZhkLAepGbVuiFulAYn9uOzv9tU6nllK1JkghiydaZkXUc1JbH6DFq5DisCt6T8Le4YzkEeqU8fQlZoSPGwM4ati7FQKqBHfJJEArI4yYBgMM8lM0KBTE2aMLIEwV1Ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RsPGnFNI; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2d22b8801b9so30104901fa.0;
-        Sat, 24 Feb 2024 08:15:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708791318; x=1709396118; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=JyhmGWcuUbEjVhEB7bKU+F0sM3z5qyWYqCSve3HLVM4=;
-        b=RsPGnFNIascB+EAbAkO3S5N/zr78xH82b84zYCf9N1i+RCCTzQeVyJQKv0JVsdvPmN
-         Lq0RUDGL2S8HOUK/BNiALbUBneX5HFIQTSYhCIR7WtiKK4tXucIgLiDHYQql9freKppJ
-         z8iaynvOkTcc44wVxlM68sIqBB1WGMVQ70EEJGPrKizrzmvpSg5EmYKFbkcYCvoMQvxP
-         Slyu9CrXfOMwaeelHyPqzjhfi6iObkcfbRAfLq6TBOQEn3ddkrTOfKmllJsjg9FMpk0O
-         33/N5MN5IXwYDbeWpuAqtBI23J1dLjLmlxDAPKH4dTyXEBI6P0c70TiRzJC2p8ea99sv
-         1jKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708791318; x=1709396118;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JyhmGWcuUbEjVhEB7bKU+F0sM3z5qyWYqCSve3HLVM4=;
-        b=RYUtpdmMZtlscp/xnUH7eqQdyZU0Ikicx2ctL0GmUSHsUtq5/gvLjMIEYP2M3Y+xXG
-         D6J+iibI0Dhzi5Lz+Yj+yUSoZFXDFfNZmOymtBlhzwdZaXBBfmixKat1UyC/VZ24dZeB
-         3AIaEC597rfzW7T/dXXQfepq5frTCqhFSTg9DpigjFm54bRFQCnjB7mQRBusMJ/rUOJa
-         CAaoXWOH6FbFSJp3odQk0TbWSzEGy1oXSDdUKxj6Pr7h1TSePZu/DXFuIB78uDecAxdD
-         i7XFODlIiIhDvsxaLKk38W7EWj/WZmZKf5EpSFiHSILOpVPH8WWK6cgsozv5DCz+6Jj3
-         YSoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWJykb865C+8vG2fKnHmaSIpyDDMEAEbL6e06Uk3WaCdGmQflHXiUvR8AeaPLS9hcQm+MO3jaw8eiCuu6t/Z+ukkAVy0vTa
-X-Gm-Message-State: AOJu0YyQdF2dS0QPdZSqgrwgHJBakwZLS5aGySeKg2gG6ODVMDhxinf9
-	rA01wlHDi+Ici7U1Bc+bOX0/ls7+tIBj0dzqTdNc4RPo8FSxGL3Z
-X-Google-Smtp-Source: AGHT+IHVRMMz7iNRFF2Edvrc/ipJh31i8mijV3rF4fE6vaaPChoOH6mtiD8M8KNx/U0vIrVBdN5aiA==
-X-Received: by 2002:a2e:a7d3:0:b0:2d2:777e:70f3 with SMTP id x19-20020a2ea7d3000000b002d2777e70f3mr1704709ljp.3.1708791317489;
-        Sat, 24 Feb 2024 08:15:17 -0800 (PST)
-Received: from ?IPV6:2a01:e34:ec5f:c111:ab46:ec03:bf48:53f1? ([2a01:e34:ec5f:c111:ab46:ec03:bf48:53f1])
-        by smtp.gmail.com with ESMTPSA id u16-20020a05600c211000b004126732390asm6406182wml.37.2024.02.24.08.15.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 24 Feb 2024 08:15:16 -0800 (PST)
-Message-ID: <9db59ae4-be28-4ab3-a2ae-0b0f661f56be@gmail.com>
-Date: Sat, 24 Feb 2024 17:15:16 +0100
+	s=arc-20240116; t=1708791742; c=relaxed/simple;
+	bh=KLo40E4PB52yveKuCkrscFWPGbPteMmFmLS11zYQWps=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=W0vEFdRhGWWx8WilM7SrKAvEBSdkEmfD7ieRYFiydK1Iocy57YHTdPuiSLw9/+KZBPkuSUt5U/BeKZf30nvp4uIoy4gdP2O2FXGOxPRdFTe8jpuh29KJ+iUTal79iaZ1/Qb1LfhzF9mt5rKhy0cs5WeMAOLBzsEVEum++YAB+x0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U9Covv1n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 190E4C433F1;
+	Sat, 24 Feb 2024 16:22:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708791741;
+	bh=KLo40E4PB52yveKuCkrscFWPGbPteMmFmLS11zYQWps=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=U9Covv1ngc+4wHuxObler4Avp2oqEAOD2S1IwDLlhiMLD1yomxgQ1PcpfUdEUY+1m
+	 U/XKQCXsZD4PwWPoq1TAVdbWDroTat3YW3v/+EGUYW7mlbTfz/Je7yT2Go+OYp3nl3
+	 kqD0dFfk9bh7Dmlx+gsaobU9AO/0iaz4zBNDKyiDvLPmrJN9OaDXBGI0Q/5ENjW3+y
+	 9CBHLs57HAPTDwkeLanx0qNan8THESkQLP3IJbVt5+3pTmQ7HRC2+BIwkAnrdyjWm6
+	 c3decOkDdjxmh+/BlSZOkyATnbca0erddTb+ci9JPo83yQYHdm2DQJp95U6R9YO37C
+	 1mdeXckZEbn0A==
+Date: Sat, 24 Feb 2024 16:22:08 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: inv.git-commit@tdk.com
+Cc: lars@metafoo.de, linux-iio@vger.kernel.org, stable@vger.kernel.org,
+ Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Subject: Re: [PATCH v2] iio: imu: inv_mpu6050: fix frequency setting when
+ chip is off
+Message-ID: <20240224162208.02d28bcd@jic23-huawei>
+In-Reply-To: <20240219154741.90601-1-inv.git-commit@tdk.com>
+References: <20240219154741.90601-1-inv.git-commit@tdk.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Regression with Lenovo ThinkPad Compact USB Keyboard
-From: =?UTF-8?Q?Rapha=C3=ABl_Halimi?= <raphael.halimi@gmail.com>
-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: Linux Input Mailing List <linux-input@vger.kernel.org>,
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, Jiri Kosina <jikos@jikos.cz>,
- Benjamin Tissoires <benjamin.tissoires@redhat.com>,
- Mikhail Khvainitski <me@khvoinitsky.org>,
- "Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info>,
- Linux Stable Mailing List <stable@vger.kernel.org>
-References: <a29d56d2-c440-4a26-a9ac-014595d2ae8c@gmail.com>
- <21370dc5-94a3-442c-ae04-76f9f94b1b96@leemhuis.info>
- <c8986411-2bf7-4b7d-8ac1-f702dc7c725a@gmail.com>
- <7a5fc584-1520-4e52-9c77-d67a656524c6@gmail.com>
- <10022b0c-89c3-43e1-89ba-00e458fe1dfd@leemhuis.info>
- <7a8d9d60-a151-4b25-882b-48e6929339a4@gmail.com>
-Content-Language: fr-FR, en-US
-Autocrypt: addr=raphael.halimi@gmail.com; keydata=
- xsFNBFHHpQ0BEACk0BWTsWRBSZEB0UKcmchP5//yAHIp1qWR9ctmDjlOSFtLAIJaak/onkbd
- WB2X/0sfUOl78OSuLxoL2aNE9EH+pKMquIZFNfcmUIkbnRGlBXPe1fUwLweXl5Jv88F92+pN
- 4ERbYUi9CltA1r0Cu0XpyLyqJAExzAscwaaAq8crA6eUj6nijt882WJogYv5V1Is9BpuyQTv
- r8o4oqyhTseLZwHnqijmXqfviZMmbZx07gbUhsvYrP9A386DOFHzXZbVbSwxtGsxszvsPOsh
- m8Zgsb9hptgP4Si7y11pbCiYW15/LjqP1EnnDHbZLll9tfGpyZw6ybJbfg78s2u4xjQAJxfl
- JD92VKCIQzmSNoIZO66OohPkqeamnKdS3T6/W1HgWF/bnBNCbXp3gyWQVojhmyIMgKtZ0vl6
- KlQPlYycMIhD8/wnqwcfxf6ZtLc+Of7TurpUhNuUUTv2+10TxSDVfE2ATr7RPJrXYMpzQEbD
- DIbkTzH3ikNKhHWvt48ria03jAc19VjNLFYDr5QWl4+fSHXhmFH5y//1h6Ks6et0wFO5uyRa
- KD0AKXCTyW9Th024Xvt2Fs94WSR1yiOZ+JtBJoQSWd/SoOmu//S57xayIFjnbR0oXbYseIuN
- K8gcaWdLRGmYgLcA1ggBiNH2g4uRrDJXxx0MPRP/nc+4q9K2UwARAQABzSpSYXBoYcOrbCBI
- YWxpbWkgPHJhcGhhZWwuaGFsaW1pQGdtYWlsLmNvbT7CwZQEEwEKAD4CGwMFCwkIBwMFFQoJ
- CAsFFgMCAQACHgECF4AWIQRvqU7F0oyNaL55Ku9NmfZmClmCewUCZWnaKAUJFa2YmwAKCRBN
- mfZmClmCe4WkEACDpb3/tmwFQm1Vut/VlaEh6JUZW+72bKBScfaIo1wKu3LPG5cXYpS+FWU4
- PFMrj8VXdq8JXHgFNQU8fr35lJ7W8lgW6uyb98bV3U4kcMakyV2rCNFZ2ID4RzNL/ZbIH8kp
- MF48007k72n0+TRMrzz6gAX49AnokSu2R1F9k6kDG2v/s2k/cXcF3l8nEt3W30xegCeBIIV5
- Hwsj0mGVrakqNYxX17ZQ09lfaluLO64C/kYzinRVVBlZ4fhcF0tBRwNsWHc0RK9yplq3TRHw
- +yLffp5I8WlqJWFi+kOQ8X+NF4NrxpKC5fGjUwvDZPMxQvrtlP9MDPO7vQjd2LkF8CGZz+qh
- RdOff9nFt5dRlKIuGxcseXEHAQR6IOx1o+jPnlZTUoeXwHIDrQnTNZfAyhNbvZaowMbIdQrN
- qiy3lZ0OXqbrexKGXBJ7dQP2mMCsfnj/imIbgQrIhaQ5Ma4s59a/C/ZDyF2T8Zs4zNCSeCIf
- oT674KqotlFZrUIu1FHQa3Hzk/c3B1ipJvNaGb4F/VrmSemg+FWkfQ/LCql8AE3yReVmQ0rH
- /a7zb/6V+cNZkDJsPIOUu9/0K6qrPl+MPzloGUIi1Ft9byGHzbFZpMwgB6tPnScLUVukTrX+
- 8s/RCZ5A9aYeWyNWB1zeWGlhesBvUxol3EE1noJgwjnyg6NU2M7BTQRRx6UNARAAzATj1uJt
- dEH7pt3B4Xt2sd5OF81pFwBZBfPXVadNAAqpgsY8cRpkoPdt4qNBbsQ5EwzEYozCmPY5msrg
- wceNUwngeKtqSCira1SwAMtgddhj4kxAR+8ll8//+vLNluP4nQxn0aTaPGLpg1EozEvO+lQT
- BPDySGf5Ek0fA+EQn8FWLBbruKobCr3ocETEi523F1h3GqmxrSdy55ayebl8WVibelDZfXQD
- wgYQFOrUX+Efun9HtVS4FCNztIqUYbaIvJ3o5ppL42x2teZHN2417IthUzgGnCDfAHmqiSbc
- R+2FZ9OMu8e6/HmZoSTGHX9NtazXqcpN5sG7/lKX718Z3qikgTCwjMoCnvIxGIePS2J+cYyT
- n/uGJTB/k0oKLHoFpGINKRFc7LHdykakQuOGpyyWGVOeezJh0MOe4+c6IE16b2c4/d7XSBPY
- uEizGpfun0Kja4/hTgV2+Y3x6+D7uyzNUZLIvjPyt7zsx59ciToK0eKGZBLmI18K9QuiI4Dl
- LYv0lfzzH/fvyeHOzhvPOQY7kGWFa71/M2omhnwMwalcguAh9T5ZDH36q8QN1OQgDLLIxEMl
- 1Zt7u3Sd55czaU0jxyyseL8VqK6VrTfV6lr0jIb6fyEwOZIoYejBJqYb51Q23an11wZcJ0M+
- 5d6WGPqou7ZETOQ1hbfjKNDQP3UAEQEAAcLBfAQYAQoAJgIbDBYhBG+pTsXSjI1ovnkq702Z
- 9mYKWYJ7BQJladpIBQkVrZi7AAoJEE2Z9mYKWYJ72I4P/iY+kAgcLq9B9lW2zOpnIwfPYGV0
- I3AlfUiFICjTzz7u6Tfehj9DvzFRkk6rYgPfULlzGjoO2B9i1iHZOgZWV6jBNl85x5hsNy9M
- u8XWnicutmWsyVOo1rDY9l7LmqlhzW4l4261rwFeJhjt01RB907lFhxdr/5RT0EI/60mD9m2
- gFs3D9EDQYUBvqiSLTeD/JvwKFEQjttpVog4xvYJeF9WWukdZs5XfZAMv31OG4sEibceO1Sc
- GXauUy/waRSrgLzzMD/w32aItQlP1eaSFrdFZhXr7Gl9T1pjbhwAAcyTCZ9DXtsAeagpm0Yg
- 2uVKAPF6pmz6Z6UV8fqIGGtZsS4nGHYL5Wm79bXwURfqbAs1SVXgdnvj9xMAugU1CX3ajAsQ
- olaM+qCHPqlNv5TxCFJngvtRJ+WPvco+FPmRZBgRd3H7VEf3pAVtvvrP18OyHHBJCebcb6rb
- QfHp2aqz6Zs+vl6WmemK1I3mL9wKFlahYsj6HTu0sI1MQogU4w63e1KFUHJ1WBJ/wb4FwjyW
- Kv7Z6lI3hQvsHu0NoqU8lmwJDQD60AnUTaZd8jXDRR8yMrEToVSwOzKj7nBB/6kcmhxQ06x5
- 8b7QRZ5EBDl7xs/qibIcXW3g/pKGrxuG7JFs9z0xQHswf0OW7YsLNV0v3IS8Pm4lRRUMdFto
- Wxcwwn0N
-In-Reply-To: <7a8d9d60-a151-4b25-882b-48e6929339a4@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Le 24/02/2024 à 14:51, Raphaël Halimi a écrit :
-> It can't be the third one (43527a0) since I clearly remember that I 
-> experienced the regression before it was applied to the Debian kernel.
+On Mon, 19 Feb 2024 15:47:41 +0000
+inv.git-commit@tdk.com wrote:
+
+> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 > 
-> So I'll try applying only the first one (46a0a2c), and report.
+> Track correctly FIFO state and apply ODR change before starting
+> the chip. Without the fix, you cannot change ODR more than 1 time
+> when data buffering is off.
 
-I can confirm that the module compiled with 46a0a2c alone does produces 
-spurious middle-clicks.
+Hi Jean-Baptiste.
 
-Maybe "ThinkPad Compact Keyboard with TrackPoint" should also be 
-excluded, like "ThinkPad TrackPoint Keyboard II" was in commit 43527a0 ?
+I think this patch needs a little more explanation.
+1) Why has state changed such that we need to update these cached values?
+2) What does that have to do with ODR - or is this two unrelated fixes?
 
-But then, would 46a0a2c still be relevant ?
+I'm sure the fix is right - I just don't fully understand the issues!
+> 
+> Fixes: 111e1abd0045 ("iio: imu: inv_mpu6050: use the common inv_sensors timestamp module")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> ---
+> V2: add missing stable tag
+> 
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+> index 676704f9151f..e6e6e94452a3 100644
+> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+> @@ -111,6 +111,7 @@ int inv_mpu6050_prepare_fifo(struct inv_mpu6050_state *st, bool enable)
+>  	if (enable) {
+>  		/* reset timestamping */
+>  		inv_sensors_timestamp_reset(&st->timestamp);
+> +		inv_sensors_timestamp_apply_odr(&st->timestamp, 0, 0, 0);
+>  		/* reset FIFO */
+>  		d = st->chip_config.user_ctrl | INV_MPU6050_BIT_FIFO_RST;
+>  		ret = regmap_write(st->map, st->reg->user_ctrl, d);
+> @@ -184,6 +185,10 @@ static int inv_mpu6050_set_enable(struct iio_dev *indio_dev, bool enable)
+>  		if (result)
+>  			goto error_power_off;
+>  	} else {
+> +		st->chip_config.gyro_fifo_enable = 0;
+> +		st->chip_config.accl_fifo_enable = 0;
+> +		st->chip_config.temp_fifo_enable = 0;
+> +		st->chip_config.magn_fifo_enable = 0;
+I think the write to actually do this is in prepare_fifo and it's not
+conditional on these, so why do we care?
 
-Regards,
+Are these effectively paired with inv_scan_query in the enable path?
 
--- 
-Raphaël Halimi
+
+>  		result = inv_mpu6050_prepare_fifo(st, false);
+>  		if (result)
+>  			goto error_power_off;
+> --
+> 2.34.1
+> 
+
 
