@@ -1,89 +1,91 @@
-Return-Path: <stable+bounces-23553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62481862269
-	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 04:02:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D5018622B3
+	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 06:16:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 066052848B4
-	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 03:02:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F21D31F21263
+	for <lists+stable@lfdr.de>; Sat, 24 Feb 2024 05:16:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D14611CB0;
-	Sat, 24 Feb 2024 03:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82BDA14AA1;
+	Sat, 24 Feb 2024 05:16:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xL2fmeJa"
 X-Original-To: stable@vger.kernel.org
-Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09827DF56;
-	Sat, 24 Feb 2024 03:02:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.133.224.34
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 346AF2563;
+	Sat, 24 Feb 2024 05:16:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708743744; cv=none; b=fcz9Nx5pcZ5o5pm7vqQDJ1m8oGejM7fMkgkGsCjPW9TgauBUgBK1ryB7acWwtCElsf/Ce/hZnn/GPVTJ8wcoJThmHPrVawv1Otd8hns4LHamwla0A+LQepfIOAoBHX23hahejMd7EXb/1seIYQgx5XcwAeiCwR6XBOypfqY+r4s=
+	t=1708751784; cv=none; b=Utexi2hmqy5d3UdxtLdkPfRMW6IjfRUnTA+dh+liB2qmE3q1fSkvcqjfNrJMn3rnjL+3CkthK5WKvR60QuHEQHnksuGpum6Zz/oIBcFoMmzXe5LiHWPoyWSIUQK6T79AuOl7aPGq8Np49muneUZJbADPUx2ac1yKtBRPTRXGTrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708743744; c=relaxed/simple;
-	bh=42qckR7sEklLzyLtRQ2dN5IEexo3aslIAHZ9vNape+s=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=M+agRVYs/hSWmlj6K520Mej0SNLnLuOO1udU4LuSKg2m6I+AbGkQI3TbQEEcESkPr8nBkS6AqdJPRRH2YDyaWtRG9AheGbCTlIyPt1HuSG8uKf/uK5dvDWhR08GF0mhhJcMnzU1Iz2gGWqIHfSMtzbdM0cDBa/CFr0LCvUbsT5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none smtp.mailfrom=orcam.me.uk; arc=none smtp.client-ip=78.133.224.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=orcam.me.uk
-Received: by angie.orcam.me.uk (Postfix, from userid 500)
-	id 5618992009C; Sat, 24 Feb 2024 04:02:20 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by angie.orcam.me.uk (Postfix) with ESMTP id 4721892009B;
-	Sat, 24 Feb 2024 03:02:20 +0000 (GMT)
-Date: Sat, 24 Feb 2024 03:02:20 +0000 (GMT)
-From: "Maciej W. Rozycki" <macro@orcam.me.uk>
-To: Sam Ravnborg <sam@ravnborg.org>
-cc: Miquel Raynal <miquel.raynal@bootlin.com>, sparclinux@vger.kernel.org, 
-    linux-parport@lists.infradead.org, "David S. Miller" <davem@davemloft.net>, 
-    Andreas Larsson <andreas@gaisler.com>, 
-    Randy Dunlap <rdunlap@infradead.org>, Arnd Bergmann <arnd@arndb.de>, 
-    linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 6/6] sparc32: Fix parport build with sparc32
-In-Reply-To: <20240223-sam-fix-sparc32-all-builds-v1-6-5c60fd5c9250@ravnborg.org>
-Message-ID: <alpine.DEB.2.21.2402240252130.61493@angie.orcam.me.uk>
-References: <20240223-sam-fix-sparc32-all-builds-v1-0-5c60fd5c9250@ravnborg.org> <20240223-sam-fix-sparc32-all-builds-v1-6-5c60fd5c9250@ravnborg.org>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+	s=arc-20240116; t=1708751784; c=relaxed/simple;
+	bh=qJQALefOKH14wsuu3PAv+A5odVp628cpkHWR7VQUk2U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n6U/C3x87usBbnCKM3eAYen/XzGhlDqfOlQncjLF7YmwreAcLiTJbk2mQHKoZ77KMJssXNvXVphJdd79QbM7vSSDgSQXFg8F6x2lmJ+d3OIUnmyURSdyTb77YkHfgNsrMPGXaaId7+MGiwGhd1Ew+Ou3W90s3MB3t6DkQ+c3KKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xL2fmeJa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 102EAC433F1;
+	Sat, 24 Feb 2024 05:16:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1708751783;
+	bh=qJQALefOKH14wsuu3PAv+A5odVp628cpkHWR7VQUk2U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=xL2fmeJaNR2AMiJkHPL18g6nK42RhXLSw+MSmGAVNw9QRTJivv3mXstdQLpYR9WQ2
+	 SYwlX0b5VLkQYkRjlHtVbcEjn5alUn2x/ixQeONtEnKEt17mUbI9AwNee1x272NwtV
+	 blLh7lNrm4DWrKt9uVcHC9YN6vvl44DxC1zTfPk8=
+Date: Sat, 24 Feb 2024 06:16:24 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Zqiang <qiang.zhang1211@gmail.com>, joel@joelfernandes.org,
+	chenzhongjin@huawei.com, rcu@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] linux-4.19/rcu-tasks: Eliminate deadlocks involving
+ do_exit() and RCU tasks
+Message-ID: <2024022430-uninsured-zoom-f78c@gregkh>
+References: <20240207110846.25168-1-qiang.zhang1211@gmail.com>
+ <2024022323-profile-dreaded-3ac7@gregkh>
+ <ec2482a6-a19b-4152-b51d-13c812eacf64@paulmck-laptop>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ec2482a6-a19b-4152-b51d-13c812eacf64@paulmck-laptop>
 
-On Fri, 23 Feb 2024, Sam Ravnborg via B4 Relay wrote:
-
-> include/asm/parport.h is sparc64 specific.
-> Rename it to parport_64.h and use the generic version for sparc32.
+On Fri, Feb 23, 2024 at 11:48:49AM -0800, Paul E. McKenney wrote:
+> On Fri, Feb 23, 2024 at 02:15:30PM +0100, Greg KH wrote:
+> > On Wed, Feb 07, 2024 at 07:08:46PM +0800, Zqiang wrote:
+> > > From: Paul E. McKenney <paulmck@kernel.org>
+> > > 
+> > > commit bc31e6cb27a9334140ff2f0a209d59b08bc0bc8c upstream.
+> > 
+> > Again, not a valid commit id :(
 > 
-> This fixed all{mod,yes}config build errors like:
+> Apologies!  With luck, there will be a valid ID next merge window.
+> This one does not backport cleanly, so we were trying to get ahead of
+> the game.  Also, some of the people testing needed the backport due
+> to the usual issues.  :-/
 > 
-> parport_pc.c:(.text):undefined-reference-to-ebus_dma_enable
-> parport_pc.c:(.text):undefined-reference-to-ebus_dma_irq_enable
-> parport_pc.c:(.text):undefined-reference-to-ebus_dma_register
-> 
-> The errors occur as the sparc32 build references sparc64 symbols.
-> 
-> Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: Andreas Larsson <andreas@gaisler.com>
-> Cc: Randy Dunlap <rdunlap@infradead.org>
-> Cc: Maciej W. Rozycki <macro@orcam.me.uk>
-> Closes: https://lore.kernel.org/r/20230406160548.25721-1-rdunlap@infradead.org/
-> Fixes: 66bcd06099bb ("parport_pc: Also enable driver for PCI systems")
-> Cc: stable@vger.kernel.org # v5.18+
-> ---
+> Any advice to handle this better next time around?  (Aside from us
+> avoiding CCing stable too soon...)
 
- LGTM, it relies on SPARC never to enable ISA.
+You can just wait until it hits Linus's tree, otherwise we do get
+confused :)
 
-Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Tested-by: Maciej W. Rozycki <macro@orcam.me.uk> # build-tested
+Or if you don't want to wait, put it in the notes section below the ---
+line and say "this isn't in Linus's tree yet, the git id mentioned is a
+lie!" or something like that.  Give us a chance to figure it out
+please...
 
- The other changes in this patch series address issues that do not appear 
-with my ad-hoc SPARC test configuration, so I have no immediate way to 
-verify them.
+thanks,
 
-  Maciej
+greg k-h
 
