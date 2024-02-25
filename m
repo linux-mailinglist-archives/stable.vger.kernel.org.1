@@ -1,145 +1,130 @@
-Return-Path: <stable+bounces-23584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5B3F8629C0
-	for <lists+stable@lfdr.de>; Sun, 25 Feb 2024 09:40:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EE3E8629DF
+	for <lists+stable@lfdr.de>; Sun, 25 Feb 2024 10:46:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E8DCB2139C
-	for <lists+stable@lfdr.de>; Sun, 25 Feb 2024 08:40:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82CC51F2157F
+	for <lists+stable@lfdr.de>; Sun, 25 Feb 2024 09:46:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2F3DF4E;
-	Sun, 25 Feb 2024 08:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF22DEED4;
+	Sun, 25 Feb 2024 09:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="k1PYwpu1";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="NYTbIS6R";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ksRXk5YP";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="P7auLrYg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FqUGw+17"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0BA2DF46;
-	Sun, 25 Feb 2024 08:40:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8F2E55F;
+	Sun, 25 Feb 2024 09:46:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708850425; cv=none; b=Gsf7jtgMnwTXk35jsu3oKVvz00OsVJj4gKti1h5yJwrdIyiISmWwy2lX8g9HM960ZCzHOVCCF9lRvNDOu3+fsVIrx4+Z1EOSQOBYiHObt3j5XDfdvOq5hLksmSQ16fVtl7FcGegWLy4vpg9wZSqPohYT2GHhfJMe8/FiF1ADqgk=
+	t=1708854367; cv=none; b=cDnbE5Q5HsNE/7+hiEoV1rn53YNEqjiP2M6vGzh/eqLerAUzHzDBJSAUoxiayuMyfh0U12Dd+PvZKlcpYB0PT059cH7C8+3Aa5odudZ+lOqscWMHlAKb2luagI/5b0R9wl20g1Abnj/FI8KRyAvYq6KaLvUJf67gY/qqTJ+XByQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708850425; c=relaxed/simple;
-	bh=ketke7tFLj0W8MMVEzVgtUROAbel8yTey4ilIGnwHrU=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tNdhgR3GlOSJqOxqJBv6P2ajLfZ5cT/QUi55Cyq6Qoi2OTxrw8S6Y8JqF9rqkH0Erlv5z5G/DaYhGwwfyvtpsNcsp3AKxOe4EfOKutPSYxnB+Znm3vf5WXtH3Ttdc+seYpy9RCF4F78JmYJVErByITHFZr1FDqQlAMcUmkrKDVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=k1PYwpu1; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=NYTbIS6R; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ksRXk5YP; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=P7auLrYg; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C0951222F4;
-	Sun, 25 Feb 2024 08:30:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1708849830; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WDxev0PzOXwqIR40xYrI8UNdhC0AQO6nDkCM+OfJivk=;
-	b=k1PYwpu1b7NJaS+JByRbY3PK482Mq4ex0XgaLxYHL8zDG6w8md7Hcb3fE2QdnsUI3Whrep
-	7J//GcFCY8Mb69IvhmGf08LZ+01akiNF9CGpbEyFQS9fzxuFsk6accg1PoknJYRd4yINxZ
-	nwdwxeeE28e5g0qcuAbHPjuO6FJa6jQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1708849830;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WDxev0PzOXwqIR40xYrI8UNdhC0AQO6nDkCM+OfJivk=;
-	b=NYTbIS6RDdj0mwR+M2V4qNjN4z7fa+Wx9AjRc9i0t+j770jyPnwmDiqd1b4gwA53ZlzAlm
-	HChCV9SIB9rRLhDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1708849828; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WDxev0PzOXwqIR40xYrI8UNdhC0AQO6nDkCM+OfJivk=;
-	b=ksRXk5YPcn1hazrhtyUby9e8MzsOIdBjnfVA4DIrBTW4OL1t9CGm/mQiLRdAtLF9Vw56Vf
-	7v+L5jozHmi/M1d3hHS1CcT915QoIa+5FBO3y1TjapdhAJUmSYLPc9jLl4esSLI0cwGjwm
-	YEUGPja0hlcMCJaK7kwMsSjlLqn06ys=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1708849828;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WDxev0PzOXwqIR40xYrI8UNdhC0AQO6nDkCM+OfJivk=;
-	b=P7auLrYgY4e3P8wEmCINY5ybv9rtJsO6qKIRvrksvS4PFO4QfVGmIC01iZE+r+Yd85TzYQ
-	bjtYIrwHvdlgXiAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 85DC313A5B;
-	Sun, 25 Feb 2024 08:30:28 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id IRbeHqT62mUkdQAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Sun, 25 Feb 2024 08:30:28 +0000
-Date: Sun, 25 Feb 2024 09:30:28 +0100
-Message-ID: <87frxh0wuz.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Willian Wang <git@willian.wang>
-Cc: linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	tiwai@suse.com,
-	perex@perex.cz,
+	s=arc-20240116; t=1708854367; c=relaxed/simple;
+	bh=+J9dFU96sObiU1k7DpFEuhlVkOu9THDg+xzPF1EdpU8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=dUQIXxa/F9VPcsVkZzMq2deqH7qgUaG0vSFYXnl+DJeSh456A5jN/lNw56eJERepgcxZV3BVHGlFEfXaT8ViEEx+czWaV4u4ZuIj/CGohQqiGrNw10N/57ocndax4sEcbFWE2s2msUXBXItaQ7ltz/d3td5Zkhis+h2xfYajda4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FqUGw+17; arc=none smtp.client-ip=209.85.167.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-3bd4e6a7cb0so1646411b6e.3;
+        Sun, 25 Feb 2024 01:46:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708854365; x=1709459165; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4PWLiUv2Ui5IM/yx8Jmqgxoc3szSjkoAxJcl+KBEwhs=;
+        b=FqUGw+17/gUfzOdrj7aU5zWa6kVcpqBdqjTKx5dZ5hR+7rma5ADSfqdGYbXcNagVuw
+         uMFoQzrUntxfrlD0DX5DVVZW0YUQynEe76Hrw+PJ2PsTlQHKDF4j8Y+CuyeSB986sTfJ
+         bp/+Og+hVyPRQecln6QZrjvwpWABCGpCOek+8lVFzkewxoFFAvKNeYSEDxPhukAPQJb9
+         ehf7KYX/DfiHiMkXP24JktwJr/ppoiFFcIh77RlGgYjNWLdn+XKce3ZzTbJnHdNfQphg
+         w/HhMOdTiOTp8qXLaZ1QOqh0oXG7X7ObPToTd0Mwb/QxaH+YsgzVw4fYGEyGhDzDwkDX
+         asNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708854365; x=1709459165;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4PWLiUv2Ui5IM/yx8Jmqgxoc3szSjkoAxJcl+KBEwhs=;
+        b=kHq0ORhfkXkTiN3yGAq5xdHoVAaFOsREkUbkBnsXGemmMXIrzXFJFnxV1JYYjlvKFF
+         FT7fdsv4XoZkXJQC19cAVXIE80w7uUGNEjIPrwhwqMPA2CmxJ/yipqa9FqRpvmFo9Y5R
+         yR/+ofdp0uUsM8CjM3L2aJ/6LNUE+IPNTyfqr6+EY3Z4W/btDfqrSyQPC9RvfX489w2O
+         IAiI4FZvck6Mv8xU3ZNh0xxpi8e5xxN5LjJFZazGtNBMvV0JqKp7AcCPdwFUeNo8OSvv
+         IRiVz43iXRTb7oXNiKYIgvyAI6dVLsIS33ycitOZ3GzEZ4uJCfX45HjNZOvFUHht+iyJ
+         uThg==
+X-Forwarded-Encrypted: i=1; AJvYcCUUqxjCS8lycpvFYKGAbNupleddiixG1ErJugNCkNqD9i9eH2snPLF0UYVLYPmYlVvvghMv+reosnzhdcVz+p4hVvddX8MdoB6NB8BCBr5bIxDcPL/b/ZJ+X6POzATFBZPq
+X-Gm-Message-State: AOJu0Yw/dDwJubiPef+TwRUExKtFoFRCWdbN0Js+3eN878zCJ4nZvcYb
+	QD0XVAugPh7jIE0txPG9rNS2Zcno3g6DEW0T82OhlqfYgZpqZOAw
+X-Google-Smtp-Source: AGHT+IGrH4ucGAxOXXJFCFXyI0PiHLXbYvKpYh1OsRavSlzn/T4L4qfLVBRmCuH1UuYT+H091x9ZVg==
+X-Received: by 2002:a05:6808:a8f:b0:3c1:5c1d:f567 with SMTP id q15-20020a0568080a8f00b003c15c1df567mr3931711oij.37.1708854365010;
+        Sun, 25 Feb 2024 01:46:05 -0800 (PST)
+Received: from ubuntu-2204.. (KD106167171201.ppp-bb.dion.ne.jp. [106.167.171.201])
+        by smtp.gmail.com with ESMTPSA id v188-20020a6261c5000000b006e4c4c3d4cfsm2213344pfb.207.2024.02.25.01.46.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 Feb 2024 01:46:04 -0800 (PST)
+From: Akira Yokosawa <akiyks@gmail.com>
+To: Jonathan Corbet <corbet@lwn.net>,
+	linux-doc@vger.kernel.org
+Cc: Akira Yokosawa <akiyks@gmail.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v3] ALSA: hda/realtek: Add special fixup for Lenovo 14IRP8
-In-Reply-To: <170879111795.8.6687687359006700715.273812184@willian.wang>
-References: <170879111795.8.6687687359006700715.273812184@willian.wang>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+Subject: [PATCH] docs: Restore "smart quotes" for quotes
+Date: Sun, 25 Feb 2024 18:46:00 +0900
+Message-Id: <20240225094600.65628-1-akiyks@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spamd-Result: default: False [-2.06 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 RCPT_COUNT_FIVE(0.00)[6];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 MID_CONTAINS_FROM(1.00)[];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[willian.wang:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-2.96)[99.83%]
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spam-Score: -2.06
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sat, 24 Feb 2024 17:11:49 +0100,
-Willian Wang wrote:
-> 
-> Lenovo Slim/Yoga Pro 9 14IRP8 requires a special fixup because there is
-> a collision of its PCI SSID (17aa:3802) with Lenovo Yoga DuetITL 2021
-> codec SSID.
-> 
-> Fixes: 3babae915f4c ("ALSA: hda/tas2781: Add tas2781 HDA driver")
-> Link: https://bugzilla.kernel.org/show_bug.cgi?id=208555
-> Link: https://lore.kernel.org/all/d5b42e483566a3815d229270abd668131a0d9f3a.camel@irl.hu
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Willian Wang <git@willian.wang>
+Commit eaae75754d81 ("docs: turn off "smart quotes" in the HTML build")
+disabled conversion of quote marks along with that of dashes.
+Despite the short summary, the change affects not only HTML build
+but also other build targets including PDF.
 
-Applied now.  Thanks.
+However, as "smart quotes" had been enabled for more than half a
+decade already, quite a few readers of HTML pages are likely expecting
+conversions of "foo" -> “foo” and 'bar' -> ‘bar’.
 
+Furthermore, in LaTeX typesetting convention, it is common to use
+distinct marks for opening and closing quote marks.
 
-Takashi
+To satisfy such readers' expectation, restore conversion of quotes
+only by setting smartquotes_action [1].
+
+Link: [1] https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-smartquotes_action
+Cc: stable@vger.kernel.org  # v6.4
+Signed-off-by: Akira Yokosawa <akiyks@gmail.com>
+---
+ Documentation/conf.py | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/Documentation/conf.py b/Documentation/conf.py
+index da64c9fb7e07..d148f3e8dd57 100644
+--- a/Documentation/conf.py
++++ b/Documentation/conf.py
+@@ -346,9 +346,9 @@ sys.stderr.write("Using %s theme\n" % html_theme)
+ html_static_path = ['sphinx-static']
+ 
+ # If true, Docutils "smart quotes" will be used to convert quotes and dashes
+-# to typographically correct entities.  This will convert "--" to "—",
+-# which is not always what we want, so disable it.
+-smartquotes = False
++# to typographically correct entities.  However, conversion of "--" to "—"
++# is not always what we want, so enable only quotes.
++smartquotes_action = 'q'
+ 
+ # Custom sidebar templates, maps document names to template names.
+ # Note that the RTD theme ignores this
+
+base-commit: 32ed7930304ca7600a54c2e702098bd2ce7086af
+-- 
+2.34.1
+
 
