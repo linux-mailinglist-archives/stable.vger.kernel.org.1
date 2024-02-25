@@ -1,130 +1,151 @@
-Return-Path: <stable+bounces-23585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EE3E8629DF
-	for <lists+stable@lfdr.de>; Sun, 25 Feb 2024 10:46:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1DC18629E8
+	for <lists+stable@lfdr.de>; Sun, 25 Feb 2024 11:03:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82CC51F2157F
-	for <lists+stable@lfdr.de>; Sun, 25 Feb 2024 09:46:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D487B1C208C8
+	for <lists+stable@lfdr.de>; Sun, 25 Feb 2024 10:03:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF22DEED4;
-	Sun, 25 Feb 2024 09:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 152BCDDCA;
+	Sun, 25 Feb 2024 10:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FqUGw+17"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lV+UwGkX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8F2E55F;
-	Sun, 25 Feb 2024 09:46:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02C4D528
+	for <stable@vger.kernel.org>; Sun, 25 Feb 2024 10:03:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708854367; cv=none; b=cDnbE5Q5HsNE/7+hiEoV1rn53YNEqjiP2M6vGzh/eqLerAUzHzDBJSAUoxiayuMyfh0U12Dd+PvZKlcpYB0PT059cH7C8+3Aa5odudZ+lOqscWMHlAKb2luagI/5b0R9wl20g1Abnj/FI8KRyAvYq6KaLvUJf67gY/qqTJ+XByQ=
+	t=1708855384; cv=none; b=KEeEX7YU25nR2S7uFauNWqOKlZCOxGM6bgIOptAMO3sIcJxN3QKsKOApfw6UUlUJjY/3V/7mZLCe/GGDAaplipYo+zxldeL9/a3WS296lJEMXoP1SCEAXy0qqnn4SBP0xAT2cS7ym0Kp/Lj62jCUVXKeQc8ac2DRDbC068Cpcq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708854367; c=relaxed/simple;
-	bh=+J9dFU96sObiU1k7DpFEuhlVkOu9THDg+xzPF1EdpU8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=dUQIXxa/F9VPcsVkZzMq2deqH7qgUaG0vSFYXnl+DJeSh456A5jN/lNw56eJERepgcxZV3BVHGlFEfXaT8ViEEx+czWaV4u4ZuIj/CGohQqiGrNw10N/57ocndax4sEcbFWE2s2msUXBXItaQ7ltz/d3td5Zkhis+h2xfYajda4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FqUGw+17; arc=none smtp.client-ip=209.85.167.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-3bd4e6a7cb0so1646411b6e.3;
-        Sun, 25 Feb 2024 01:46:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708854365; x=1709459165; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4PWLiUv2Ui5IM/yx8Jmqgxoc3szSjkoAxJcl+KBEwhs=;
-        b=FqUGw+17/gUfzOdrj7aU5zWa6kVcpqBdqjTKx5dZ5hR+7rma5ADSfqdGYbXcNagVuw
-         uMFoQzrUntxfrlD0DX5DVVZW0YUQynEe76Hrw+PJ2PsTlQHKDF4j8Y+CuyeSB986sTfJ
-         bp/+Og+hVyPRQecln6QZrjvwpWABCGpCOek+8lVFzkewxoFFAvKNeYSEDxPhukAPQJb9
-         ehf7KYX/DfiHiMkXP24JktwJr/ppoiFFcIh77RlGgYjNWLdn+XKce3ZzTbJnHdNfQphg
-         w/HhMOdTiOTp8qXLaZ1QOqh0oXG7X7ObPToTd0Mwb/QxaH+YsgzVw4fYGEyGhDzDwkDX
-         asNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708854365; x=1709459165;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4PWLiUv2Ui5IM/yx8Jmqgxoc3szSjkoAxJcl+KBEwhs=;
-        b=kHq0ORhfkXkTiN3yGAq5xdHoVAaFOsREkUbkBnsXGemmMXIrzXFJFnxV1JYYjlvKFF
-         FT7fdsv4XoZkXJQC19cAVXIE80w7uUGNEjIPrwhwqMPA2CmxJ/yipqa9FqRpvmFo9Y5R
-         yR/+ofdp0uUsM8CjM3L2aJ/6LNUE+IPNTyfqr6+EY3Z4W/btDfqrSyQPC9RvfX489w2O
-         IAiI4FZvck6Mv8xU3ZNh0xxpi8e5xxN5LjJFZazGtNBMvV0JqKp7AcCPdwFUeNo8OSvv
-         IRiVz43iXRTb7oXNiKYIgvyAI6dVLsIS33ycitOZ3GzEZ4uJCfX45HjNZOvFUHht+iyJ
-         uThg==
-X-Forwarded-Encrypted: i=1; AJvYcCUUqxjCS8lycpvFYKGAbNupleddiixG1ErJugNCkNqD9i9eH2snPLF0UYVLYPmYlVvvghMv+reosnzhdcVz+p4hVvddX8MdoB6NB8BCBr5bIxDcPL/b/ZJ+X6POzATFBZPq
-X-Gm-Message-State: AOJu0Yw/dDwJubiPef+TwRUExKtFoFRCWdbN0Js+3eN878zCJ4nZvcYb
-	QD0XVAugPh7jIE0txPG9rNS2Zcno3g6DEW0T82OhlqfYgZpqZOAw
-X-Google-Smtp-Source: AGHT+IGrH4ucGAxOXXJFCFXyI0PiHLXbYvKpYh1OsRavSlzn/T4L4qfLVBRmCuH1UuYT+H091x9ZVg==
-X-Received: by 2002:a05:6808:a8f:b0:3c1:5c1d:f567 with SMTP id q15-20020a0568080a8f00b003c15c1df567mr3931711oij.37.1708854365010;
-        Sun, 25 Feb 2024 01:46:05 -0800 (PST)
-Received: from ubuntu-2204.. (KD106167171201.ppp-bb.dion.ne.jp. [106.167.171.201])
-        by smtp.gmail.com with ESMTPSA id v188-20020a6261c5000000b006e4c4c3d4cfsm2213344pfb.207.2024.02.25.01.46.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Feb 2024 01:46:04 -0800 (PST)
-From: Akira Yokosawa <akiyks@gmail.com>
-To: Jonathan Corbet <corbet@lwn.net>,
-	linux-doc@vger.kernel.org
-Cc: Akira Yokosawa <akiyks@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] docs: Restore "smart quotes" for quotes
-Date: Sun, 25 Feb 2024 18:46:00 +0900
-Message-Id: <20240225094600.65628-1-akiyks@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1708855384; c=relaxed/simple;
+	bh=0HiEztjG/PKrWjhSVIeWAu4UPeQ2blKov0r/oWfcFIU=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=WN476G/ZaNBfGDov6B7L2zDae+fShwPpaLQmR4KcAUWKZ48/1Cy/QH3XPuBZwZxZUOiY3NFa+J4o87hBGl2GJrSoV5ZnKftKdop27/UAUdcXq+LjmaaneWu66dx6DsO+oU9+6V6NNrL0eUSPKS8o07d3EfxviMLGfzNm1pR7ZL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lV+UwGkX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 338EDC43390
+	for <stable@vger.kernel.org>; Sun, 25 Feb 2024 10:03:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708855384;
+	bh=0HiEztjG/PKrWjhSVIeWAu4UPeQ2blKov0r/oWfcFIU=;
+	h=From:Date:Subject:To:From;
+	b=lV+UwGkXS4IWmT3MYFGynBsCORqyR8D9v8NEYaoXbyJoTPUkO24e1XRZkn1h4wiO9
+	 Ob6sT8qp67F4wig1BKhXUyNF2+2cEY3yj+db8WPujRUwiAWDLe+8aL5FSK8777/M3o
+	 awEmW9r/z8WZB1MccIPP9yW1hOPnWI1UJ13/5h+7pehjNRSd/EywbivBhebCASydum
+	 X8t3NPJ18Vo4P7sGzeo30KfqquTf1+ctbpinU9u/nYeu2352wyYlUoU9X9jxVfGlKH
+	 3i9yWPfsQ/Z6bR9jsUeFVqHExEob3AnGOzVILqcH14TXJ8nY302fhlT9Ekwvk/9O95
+	 4f1JfApJ3wpNw==
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2d269b2ff48so21822691fa.3
+        for <stable@vger.kernel.org>; Sun, 25 Feb 2024 02:03:04 -0800 (PST)
+X-Gm-Message-State: AOJu0Yx0gpYKMykHZI2XyU+iYnoc72au9o8P4Rcg3wijLspaIBxJFmLD
+	uPT60Ja7SBR5T3HyYLUE0t2lQlDJMva+4ByGusrozl+Jo/bo+iBxYHb28r8NHJ1DLWSVZ3a3GSU
+	p1hz79qe65fIUTWAF69OMiITUDcI=
+X-Google-Smtp-Source: AGHT+IFvPaG+mDdY2T1nCyLxRFLw8fgVjCu+WDs+/nRxM+fTYWuwInawuvOQLNkncUSV79vY7p6VYNp8hXNiVsls714=
+X-Received: by 2002:a2e:a0c3:0:b0:2d2:5c4a:f764 with SMTP id
+ f3-20020a2ea0c3000000b002d25c4af764mr2229716ljm.46.1708855381782; Sun, 25 Feb
+ 2024 02:03:01 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Sun, 25 Feb 2024 11:02:50 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXE5y+6Fef1SqsePO1p8eGEL_qKR9ZkNPNKb-y6P8-7YmQ@mail.gmail.com>
+Message-ID: <CAMj1kXE5y+6Fef1SqsePO1p8eGEL_qKR9ZkNPNKb-y6P8-7YmQ@mail.gmail.com>
+Subject: EFI/x86 backports for v6.1
+To: "# 3.4.x" <stable@vger.kernel.org>, Dimitri John Ledkov <xnox@ubuntu.com>, jan.setjeeilers@oracle.com
+Content-Type: text/plain; charset="UTF-8"
 
-Commit eaae75754d81 ("docs: turn off "smart quotes" in the HTML build")
-disabled conversion of quote marks along with that of dashes.
-Despite the short summary, the change affects not only HTML build
-but also other build targets including PDF.
+Please consider the patches below for backporting to v6.1. They should
+all apply cleanly in the given order.
 
-However, as "smart quotes" had been enabled for more than half a
-decade already, quite a few readers of HTML pages are likely expecting
-conversions of "foo" -> “foo” and 'bar' -> ‘bar’.
+These are prerequisites for NX compat support on x86, but the
+remaining changes do not apply cleanly and will be sent as a patch
+series at a later date.
+By themselves, these changes not only constitute a reasonable cleanup,
+they are also needed for future support of x86s [0] CPUs that are no
+longer able to transition out of long mode.
 
-Furthermore, in LaTeX typesetting convention, it is common to use
-distinct marks for opening and closing quote marks.
+ Documentation/x86/boot.rst                 |   2 +-
+ arch/x86/Kconfig                           |  17 +
+ arch/x86/boot/compressed/Makefile          |   8 +-
+ arch/x86/boot/compressed/efi_mixed.S       | 383 +++++++++++++++++++
+ arch/x86/boot/compressed/efi_thunk_64.S    | 195 ----------
+ arch/x86/boot/compressed/head_32.S         |  25 +-
+ arch/x86/boot/compressed/head_64.S         | 566 ++++++-----------------------
+ arch/x86/boot/compressed/mem_encrypt.S     | 152 +++++++-
+ arch/x86/boot/compressed/misc.c            |  34 +-
+ arch/x86/boot/compressed/misc.h            |   2 -
+ arch/x86/boot/compressed/pgtable.h         |  10 +-
+ arch/x86/boot/compressed/pgtable_64.c      |  87 ++---
+ arch/x86/boot/header.S                     |   2 +-
+ arch/x86/boot/tools/build.c                |   2 +
+ drivers/firmware/efi/efi.c                 |  22 ++
+ drivers/firmware/efi/libstub/alignedmem.c  |   5 +-
+ drivers/firmware/efi/libstub/arm64-stub.c  |   6 +-
+ drivers/firmware/efi/libstub/efistub.h     |   6 +-
+ drivers/firmware/efi/libstub/mem.c         |   3 +-
+ drivers/firmware/efi/libstub/randomalloc.c |   5 +-
+ drivers/firmware/efi/libstub/x86-stub.c    |  53 ++-
+ drivers/firmware/efi/vars.c                |  13 +-
+ include/linux/decompress/mm.h              |   2 +-
+ 23 files changed, 805 insertions(+), 795 deletions(-)
 
-To satisfy such readers' expectation, restore conversion of quotes
-only by setting smartquotes_action [1].
+[0] https://www.intel.com/content/www/us/en/developer/articles/technical/envisioning-future-simplified-architecture.html
 
-Link: [1] https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-smartquotes_action
-Cc: stable@vger.kernel.org  # v6.4
-Signed-off-by: Akira Yokosawa <akiyks@gmail.com>
----
- Documentation/conf.py | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/conf.py b/Documentation/conf.py
-index da64c9fb7e07..d148f3e8dd57 100644
---- a/Documentation/conf.py
-+++ b/Documentation/conf.py
-@@ -346,9 +346,9 @@ sys.stderr.write("Using %s theme\n" % html_theme)
- html_static_path = ['sphinx-static']
- 
- # If true, Docutils "smart quotes" will be used to convert quotes and dashes
--# to typographically correct entities.  This will convert "--" to "—",
--# which is not always what we want, so disable it.
--smartquotes = False
-+# to typographically correct entities.  However, conversion of "--" to "—"
-+# is not always what we want, so enable only quotes.
-+smartquotes_action = 'q'
- 
- # Custom sidebar templates, maps document names to template names.
- # Note that the RTD theme ignores this
-
-base-commit: 32ed7930304ca7600a54c2e702098bd2ce7086af
--- 
-2.34.1
-
+9cf42bca30e9 efi: libstub: use EFI_LOADER_CODE region when moving the
+kernel in memory
+cb8bda8ad443 x86/boot/compressed: Rename efi_thunk_64.S to efi-mixed.S
+e2ab9eab324c x86/boot/compressed: Move 32-bit entrypoint code into .text section
+5c3a85f35b58 x86/boot/compressed: Move bootargs parsing out of 32-bit
+startup code
+91592b5c0c2f x86/boot/compressed: Move efi32_pe_entry into .text section
+73a6dec80e2a x86/boot/compressed: Move efi32_entry out of head_64.S
+7f22ca396778 x86/boot/compressed: Move efi32_pe_entry() out of head_64.S
+4b52016247ae x86/boot/compressed, efi: Merge multiple definitions of
+image_offset into one
+630f337f0c4f x86/boot/compressed: Simplify IDT/GDT preserve/restore in
+the EFI thunk
+6aac80a8da46 x86/boot/compressed: Avoid touching ECX in
+startup32_set_idt_entry()
+d73a257f7f86 x86/boot/compressed: Pull global variable reference into
+startup32_load_idt()
+c6355995ba47 x86/boot/compressed: Move startup32_load_idt() into .text section
+9ea813be3d34 x86/boot/compressed: Move startup32_load_idt() out of head_64.S
+b5d854cd4b6a x86/boot/compressed: Move startup32_check_sev_cbit() into .text
+9d7eaae6a071 x86/boot/compressed: Move startup32_check_sev_cbit() out
+of head_64.S
+30c9ca16a527 x86/boot/compressed: Adhere to calling convention in
+get_sev_encryption_bit()
+61de13df9590 x86/boot/compressed: Only build mem_encrypt.S if AMD_MEM_ENCRYPT=y
+bad267f9e18f efi: verify that variable services are supported
+0217a40d7ba6 efi: efivars: prevent double registration
+cc3fdda2876e x86/efi: Make the deprecated EFI handover protocol optional
+7734a0f31e99 x86/boot: Robustify calling startup_{32,64}() from the
+decompressor code
+d2d7a54f69b6 x86/efistub: Branch straight to kernel entry point from C code
+df9215f15206 x86/efistub: Simplify and clean up handover entry code
+127920645876 x86/decompressor: Avoid magic offsets for EFI handover entrypoint
+d7156b986d4c x86/efistub: Clear BSS in EFI handover protocol entrypoint
+8b63cba746f8 x86/decompressor: Store boot_params pointer in callee save register
+00c6b0978ec1 x86/decompressor: Assign paging related global variables earlier
+e8972a76aa90 x86/decompressor: Call trampoline as a normal function
+918a7a04e717 x86/decompressor: Use standard calling convention for trampoline
+bd328aa01ff7 x86/decompressor: Avoid the need for a stack in the
+32-bit trampoline
+64ef578b6b68 x86/decompressor: Call trampoline directly from C code
+f97b67a773cd x86/decompressor: Only call the trampoline when changing
+paging levels
+cb83cece57e1 x86/decompressor: Pass pgtable address to trampoline directly
+03dda95137d3 x86/decompressor: Merge trampoline cleanup with switching code
+24388292e2d7 x86/decompressor: Move global symbol references to C code
+8217ad0a435f decompress: Use 8 byte alignment
 
