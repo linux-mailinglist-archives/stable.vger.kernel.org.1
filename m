@@ -1,186 +1,83 @@
-Return-Path: <stable+bounces-23589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA904862C5B
-	for <lists+stable@lfdr.de>; Sun, 25 Feb 2024 18:36:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B652D862C89
+	for <lists+stable@lfdr.de>; Sun, 25 Feb 2024 19:54:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC5971C20CBC
-	for <lists+stable@lfdr.de>; Sun, 25 Feb 2024 17:36:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C5661F21452
+	for <lists+stable@lfdr.de>; Sun, 25 Feb 2024 18:54:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C1416415;
-	Sun, 25 Feb 2024 17:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4043412E47;
+	Sun, 25 Feb 2024 18:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b="NyB6hhut"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="3IM3DLXW";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="rfhqanPd"
 X-Original-To: stable@vger.kernel.org
-Received: from 0.smtp.remotehost.it (0.smtp.remotehost.it [213.190.28.75])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88E4618641
-	for <stable@vger.kernel.org>; Sun, 25 Feb 2024 17:36:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.190.28.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AAA78C05
+	for <stable@vger.kernel.org>; Sun, 25 Feb 2024 18:54:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708882585; cv=none; b=han05sVhE26OQfzBg1R/H9JpJ3jn1p+y5tcTKijQ8oSURTKuAUiwirE/9HCC6ZaM4HY2DrzGPZm7Oa/i/6SMgsRN76yLr9YjdQDyGqfwSAvrSUkgTnBsXdAmq44RTULjkhm9VSIHWGlZ1tXBPf8RTUxJ1mdvINsdcSd3fAcLH+E=
+	t=1708887257; cv=none; b=O7Phr+ix0z649gUbmSbo8RfH5M0Kp6PnbuRKaQ1GDvXGeH2pLcLixZp2UPwDprZk9hQTZ4lEoVlo2cGECcSY6aclNj3bmMVXAgFZBLVMRfuHCNblyQIMmhxq2j4AntY/aHvILT7SmiblsxBlkZwc+Rlh9cKrTJezonMu2I3zt18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708882585; c=relaxed/simple;
-	bh=Pbm3RzxbQ2SWdmzRSuTpOsZgs+kWh29GujagVcBRVkQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
-	 In-Reply-To:Content-Type; b=THN2WFg+oZrFpgW+CelucsLGBZ+vrO0kITntvjPlYg2a9Y4aLwKfG91EuNyU7m6s91imxZMvR4Zt+0Q8gLiaaEsZGan+ZAgcr41xMnisbsEkCs5mGi6yrIIwsV7xR8+J6i0h8ZH8V1wMlS2X5K/zZjT2XH8iKYQVApnWDbNK7Po=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net; spf=pass smtp.mailfrom=hardfalcon.net; dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b=NyB6hhut; arc=none smtp.client-ip=213.190.28.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hardfalcon.net
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=hardfalcon.net;
-	s=dkim_2024-02-03; t=1708882265;
+	s=arc-20240116; t=1708887257; c=relaxed/simple;
+	bh=iCjni3fC3LjowVFjuFFoVwSAhgr69zxlBq9viG+TEFQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=dwtbHvbbuRkm7byIE70Pd+XrohyYBYSWVaWONpILd9vDyQoPPN7zgjdhLkdvuclOTA+VTWGXu8nFjWRY91c0ji+8MSxcq8+zxMu8ZH7aJ/UhZ4hwSMWe8gxjssbdGLcopcSsD2FB/4R929VIxSVb1J8IxgLOImMuBWq4zyWEoC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=3IM3DLXW; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=rfhqanPd; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1708887253;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Vtii81rRpnJMNSlXpfeG8JgKCpg4AFzMMvt6UXWe7j4=;
-	b=NyB6hhut8kvJGxUBKVFWRcib4KqFWzsQcFMgKtVjjkDegy2Wu/KM8q8v83YSegVzqsYI/p
-	lVYvCq3re91ldZBA==
-Message-ID: <977d5a90-4c4e-446c-aeb7-fb31f7281f17@hardfalcon.net>
-Date: Sun, 25 Feb 2024 18:31:04 +0100
+	bh=6i28l4ZxXSrdEMsihYIbK7sj02rvP5cqkz85Pn85zFI=;
+	b=3IM3DLXWSyZwmevOxR+9H59tnhp7wNN9KG0Uam95Vju+WtME8Xfv5mZj86vXl76GBehyAj
+	ulLW+F5RsWcZnWK4+f4ShYZmfbh+mOdi+W+A545pqkbMnF2YYYm25SXpVKqzG2vP/PmT7c
+	n1TKseo0sPbhemstRWCGQrdwBT2s2fGXgdC+HGjbBiFTNYxGsogiQ/gFzCKQcJtrbYzI7m
+	jN2GfKDDiCkm+DhPBW4iREFsgZeJYpSxfGAS1u9oCD3TMSWtPa7jf+HYqWemsvDeiKmZQQ
+	S2gTW1msJpz9VbpEkGf9LoNFzeRIooA5k+5y7KhG80HjkEbeYyLYsqfKblo4Fg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1708887253;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6i28l4ZxXSrdEMsihYIbK7sj02rvP5cqkz85Pn85zFI=;
+	b=rfhqanPdIQQf4gx3vayKcJQgiE/bbX9LBPIE1/AoZpdd2uleMHDUlAknGMfCvbGkPoukcG
+	MzAwROLJ5h3YixCw==
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: avagin@google.com, bogomolov@google.com, dave.hansen@linux.intel.com,
+ stable@vger.kernel.org
+Subject: Re: [PATCH linux-5.15.y] x86/fpu: Stop relying on userspace for
+ info to fault in xsave
+In-Reply-To: <2024022312-bulginess-contend-ac94@gregkh>
+References: <2024021941-reprimand-grudge-7734@gregkh> <87msrtftnv.ffs@tglx>
+ <2024022312-bulginess-contend-ac94@gregkh>
+Date: Sun, 25 Feb 2024 19:54:12 +0100
+Message-ID: <8734tgcr3f.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: Patch "xhci: fix possible null pointer deref during xhci urb
- enqueue" has been added to the 6.7-stab
-Content-Language: en-US
-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-References: <20240223174501.3260504-1-sashal () kernel ! org>
-From: Pascal Ernster <git@hardfalcon.net>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-In-Reply-To: <20240223174501.3260504-1-sashal () kernel ! org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-[2024-02-23 18:45] Sasha Levin:
-> This is a note to let you know that I've just added the patch titled
-> 
->      xhci: fix possible null pointer deref during xhci urb enqueue
-> 
-> to the 6.7-stable tree which can be found at:
->      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->       xhci-fix-possible-null-pointer-deref-during-xhci-urb.patch
-> and it can be found in the queue-6.7 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
-> 
-> 
-> 
-> commit fb9100c2c6b7b172650ba25283cc4cf9af1d082c
-> Author: Mathias Nyman <mathias.nyman@linux.intel.com>
-> Date:   Fri Dec 1 17:06:47 2023 +0200
-> 
->      xhci: fix possible null pointer deref during xhci urb enqueue
->      
->      [ Upstream commit e2e2aacf042f52854c92775b7800ba668e0bdfe4 ]
->      
->      There is a short gap between urb being submitted and actually added to the
->      endpoint queue (linked). If the device is disconnected during this time
->      then usb core is not yet aware of the pending urb, and device may be freed
->      just before xhci_urq_enqueue() continues, dereferencing the freed device.
->      
->      Freeing the device is protected by the xhci spinlock, so make sure we take
->      and keep the lock while checking that device exists, dereference it, and
->      add the urb to the queue.
->      
->      Remove the unnecessary URB check, usb core checks it before calling
->      xhci_urb_enqueue()
->      
->      Suggested-by: Kuen-Han Tsai <khtsai@google.com>
->      Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
->      Link: https://lore.kernel.org/r/20231201150647.1307406-20-mathias.nyman@linux.intel.com
->      Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->      Signed-off-by: Sasha Levin <sashal@kernel.org>
-> 
-> diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-> index 884b0898d9c95..ddb686301af5d 100644
-> --- a/drivers/usb/host/xhci.c
-> +++ b/drivers/usb/host/xhci.c
-> @@ -1522,24 +1522,7 @@ static int xhci_urb_enqueue(struct usb_hcd *hcd, struct urb *urb, gfp_t mem_flag
->   	struct urb_priv	*urb_priv;
->   	int num_tds;
->   
-> -	if (!urb)
-> -		return -EINVAL;
-> -	ret = xhci_check_args(hcd, urb->dev, urb->ep,
-> -					true, true, __func__);
-> -	if (ret <= 0)
-> -		return ret ? ret : -EINVAL;
-> -
-> -	slot_id = urb->dev->slot_id;
->   	ep_index = xhci_get_endpoint_index(&urb->ep->desc);
-> -	ep_state = &xhci->devs[slot_id]->eps[ep_index].ep_state;
-> -
-> -	if (!HCD_HW_ACCESSIBLE(hcd))
-> -		return -ESHUTDOWN;
-> -
-> -	if (xhci->devs[slot_id]->flags & VDEV_PORT_ERROR) {
-> -		xhci_dbg(xhci, "Can't queue urb, port error, link inactive\n");
-> -		return -ENODEV;
-> -	}
->   
->   	if (usb_endpoint_xfer_isoc(&urb->ep->desc))
->   		num_tds = urb->number_of_packets;
-> @@ -1578,12 +1561,35 @@ static int xhci_urb_enqueue(struct usb_hcd *hcd, struct urb *urb, gfp_t mem_flag
->   
->   	spin_lock_irqsave(&xhci->lock, flags);
->   
-> +	ret = xhci_check_args(hcd, urb->dev, urb->ep,
-> +			      true, true, __func__);
-> +	if (ret <= 0) {
-> +		ret = ret ? ret : -EINVAL;
-> +		goto free_priv;
-> +	}
-> +
-> +	slot_id = urb->dev->slot_id;
-> +
-> +	if (!HCD_HW_ACCESSIBLE(hcd)) {
-> +		ret = -ESHUTDOWN;
-> +		goto free_priv;
-> +	}
-> +
-> +	if (xhci->devs[slot_id]->flags & VDEV_PORT_ERROR) {
-> +		xhci_dbg(xhci, "Can't queue urb, port error, link inactive\n");
-> +		ret = -ENODEV;
-> +		goto free_priv;
-> +	}
-> +
->   	if (xhci->xhc_state & XHCI_STATE_DYING) {
->   		xhci_dbg(xhci, "Ep 0x%x: URB %p submitted for non-responsive xHCI host.\n",
->   			 urb->ep->desc.bEndpointAddress, urb);
->   		ret = -ESHUTDOWN;
->   		goto free_priv;
->   	}
-> +
-> +	ep_state = &xhci->devs[slot_id]->eps[ep_index].ep_state;
-> +
->   	if (*ep_state & (EP_GETTING_STREAMS | EP_GETTING_NO_STREAMS)) {
->   		xhci_warn(xhci, "WARN: Can't enqueue URB, ep in streams transition state %x\n",
->   			  *ep_state);
+On Fri, Feb 23 2024 at 17:04, Greg KH wrote:
+> Nit, you forgot to give me a hint what the git id was :(
 
+Ooops. Sorry.
 
-Hi, this patch is causing my laptop (Dell Precision 7530) to crash 
-during early boot with a kernel 6.7.6 with all the patches from your 
-current stable-queue applied on top 
-(https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/queue-6.7?id=8294c8ea0d96dc8271e87053f7b6731ee5b986ca).
+> I figured it out, now queued up, thanks.
 
-Booting with "module_blacklist=xhci_pci,xhci_pci_renesas" stops the 
-crashes. This patch was already thrown out a few weeks ago because it 
-was causing problems:
+Thank you!
 
-https://lore.kernel.org/stable/2024020331-confetti-ducking-8afb@gregkh/
-
-
-Regards
-Pascal
+      Thomas
 
