@@ -1,102 +1,190 @@
-Return-Path: <stable+bounces-23587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F09A8629FC
-	for <lists+stable@lfdr.de>; Sun, 25 Feb 2024 11:45:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A6B6862A20
+	for <lists+stable@lfdr.de>; Sun, 25 Feb 2024 12:46:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A72291F21228
-	for <lists+stable@lfdr.de>; Sun, 25 Feb 2024 10:45:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 307F51F2158B
+	for <lists+stable@lfdr.de>; Sun, 25 Feb 2024 11:46:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9AEF9F2;
-	Sun, 25 Feb 2024 10:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48EF5101F2;
+	Sun, 25 Feb 2024 11:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bElAIKkS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vop8WFZO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC23EAFA
-	for <stable@vger.kernel.org>; Sun, 25 Feb 2024 10:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0501C10940;
+	Sun, 25 Feb 2024 11:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708857949; cv=none; b=WRdvRjNbxHeQaXftBu1Mcd9TcGNLli2xQNOFRvf9CN86wrsSpmR0qWSK9yxZi4ka2w41POci5RaMrhQSo2aW2XVWE2rF7KS1xvtuszKCTnX1Qv5St3Gi0GdMf9qJ8WSK6fqqpNda0AeqJm+7KPmODxUg/qlgXzFhG2M0ntvCWn8=
+	t=1708861607; cv=none; b=cQahLtgkV2f5bxJ6B0vR08B/XIodNFih6wp6zOnrz240h6zefuZUXsX2GKxLi5m2V3KWsmHFeiZhX/Z6bcl1Kgx0//ootipkgSZVCmTPYyitsZgFg4DN2TDzPLbN/6tjRweiB2/455xOr79fHFpT/nbO0qKye4RVFBaOia0NwJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708857949; c=relaxed/simple;
-	bh=xaEEwq+zhwXXlXUsjzZ1qKHdigMxUKVoFzGsp+eDLQo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gWCwj/zQS5bhbL3vacOcBhGASMWmWNqJs2jpf4iHMmUkPxeuDYWZvAuHxqS1Tr0+gGq+lZDrM6iB06AmaDljOT8xkOIK9CPJsNDC4rg7dss9WrWICnSINzizO2lOD2RA3vJKwkGNLIShrsruIZ/+K9cI2ogVqLFr4EszaxTPthI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bElAIKkS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C45C433C7;
-	Sun, 25 Feb 2024 10:45:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708857949;
-	bh=xaEEwq+zhwXXlXUsjzZ1qKHdigMxUKVoFzGsp+eDLQo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bElAIKkS0nZ5nI2Igh69rC7Xfk/xt7Sv1fU0GpVr6WHie65ArcfLGblmx6+f/eKmd
-	 1pSeTX+oGvXb8s3DWKZG03NiGEHdFFSX/1jgRFPa/78p05yW8jC5DAwAZD1GaVUSXk
-	 Y92kQYZ+TjMbOJNcWv1CPzKKjKWU02x1ncaGURW4=
-Date: Sun, 25 Feb 2024 11:45:43 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Gao Xiang <hsiangkao@linux.alibaba.com>
-Cc: stable@vger.kernel.org, linux-erofs@lists.ozlabs.org,
-	Juhyung Park <qkrwngud825@gmail.com>,
-	Yifan Zhao <zhaoyifan@sjtu.edu.cn>
-Subject: Re: [PATCH 5.10.y] erofs: fix lz4 inplace decompression
-Message-ID: <2024022527-voicing-overbite-04be@gregkh>
-References: <2024012650-altitude-gush-572f@gregkh>
- <20240224063248.2157885-1-hsiangkao@linux.alibaba.com>
+	s=arc-20240116; t=1708861607; c=relaxed/simple;
+	bh=KDkYWIe7wiZmqCmivXbkUqK02LzeTUDMYcV6Xrp8TSM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=F4JyDG4n4TozpiYsypae9WU/ZVYKKCW/s4XwXJ2zygQarBy2m2AW3GoXIgW30nvio3EFuvkM9f5snPC5cegiUzjd3BQkjXQsD1plA5H7pp/rVzT2WhPPVNB5X1qbdRf0bG1YxMZbDWzBNpd3aDCXXFHjfkQ/K/8X/cy2Cn/doDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vop8WFZO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50DDAC433C7;
+	Sun, 25 Feb 2024 11:46:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708861606;
+	bh=KDkYWIe7wiZmqCmivXbkUqK02LzeTUDMYcV6Xrp8TSM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Vop8WFZOi9QXeQWkODy+8PSuzqp6Rdeh0YBVhQhVS0ocpxk4zJyVNQV2EuXXc1nwJ
+	 1fI+P8BtTHCcKnR9spaw1N1fzgfiGpBYeYGGdfYOlUhXAckZapgVv4aRdRvROP4clf
+	 d+hxf3fpmUwtYY0yBDe+p7SYEKiYvHjZkfoxlB//NfDaXRwrark3Av+rfs0JSYDNxc
+	 wMIzgBnURi24Ij8v1juT/EAO/yLSUq4uNKX+D+rsSdPE1Wy00un5ifjDBvsbuJYz26
+	 7mp+LoyXT46u3gyRGeFdbNImtrJy20ZhD2rFEBHjhkuJw0lkdYMsK8EIe33tPIB3hP
+	 +jQjxO+AtyFKg==
+Date: Sun, 25 Feb 2024 11:46:34 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
+Cc: INV Git Commit <INV.git-commit@tdk.com>, "lars@metafoo.de"
+ <lars@metafoo.de>, "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH v2] iio: imu: inv_mpu6050: fix frequency setting when
+ chip is off
+Message-ID: <20240225114634.36c735ef@jic23-huawei>
+In-Reply-To: <FR3P281MB1757A98D6B0EC6B48526C849CE542@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+References: <20240219154741.90601-1-inv.git-commit@tdk.com>
+	<20240224162208.02d28bcd@jic23-huawei>
+	<FR3P281MB1757A98D6B0EC6B48526C849CE542@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240224063248.2157885-1-hsiangkao@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Feb 24, 2024 at 02:32:48PM +0800, Gao Xiang wrote:
-> commit 3c12466b6b7bf1e56f9b32c366a3d83d87afb4de upstream.
-> 
-> Currently EROFS can map another compressed buffer for inplace
-> decompression, that was used to handle the cases that some pages of
-> compressed data are actually not in-place I/O.
-> 
-> However, like most simple LZ77 algorithms, LZ4 expects the compressed
-> data is arranged at the end of the decompressed buffer and it
-> explicitly uses memmove() to handle overlapping:
->   __________________________________________________________
->  |_ direction of decompression --> ____ |_ compressed data _|
-> 
-> Although EROFS arranges compressed data like this, it typically maps two
-> individual virtual buffers so the relative order is uncertain.
-> Previously, it was hardly observed since LZ4 only uses memmove() for
-> short overlapped literals and x86/arm64 memmove implementations seem to
-> completely cover it up and they don't have this issue.  Juhyung reported
-> that EROFS data corruption can be found on a new Intel x86 processor.
-> After some analysis, it seems that recent x86 processors with the new
-> FSRM feature expose this issue with "rep movsb".
-> 
-> Let's strictly use the decompressed buffer for lz4 inplace
-> decompression for now.  Later, as an useful improvement, we could try
-> to tie up these two buffers together in the correct order.
-> 
-> Reported-and-tested-by: Juhyung Park <qkrwngud825@gmail.com>
-> Closes: https://lore.kernel.org/r/CAD14+f2AVKf8Fa2OO1aAUdDNTDsVzzR6ctU_oJSmTyd6zSYR2Q@mail.gmail.com
-> Fixes: 0ffd71bcc3a0 ("staging: erofs: introduce LZ4 decompression inplace")
-> Fixes: 598162d05080 ("erofs: support decompress big pcluster for lz4 backend")
-> Cc: stable <stable@vger.kernel.org> # 5.4+
-> Tested-by: Yifan Zhao <zhaoyifan@sjtu.edu.cn>
-> Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-> Link: https://lore.kernel.org/r/20231206045534.3920847-1-hsiangkao@linux.alibaba.com
-> ---
-> Adapt 5.10.y codebase due to non-trivial conflicts out of
-> recent new features & cleanups.
+On Sat, 24 Feb 2024 17:50:26 +0000
+Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com> wrote:
 
-Both now queued up, thanks.
+> Hello Jonathan,
+>=20
+> the problem comes from the fifo rate setting code that is now using these=
+ states to compute if FIFO is on:
+> fifo_on =3D st->chip_config.accl_fifo_enable ||
+>           st->chip_config.gyro_fifo_enable ||
+>           st->chip_config.magn_fifo_enable;
+> result =3D inv_sensors_timestamp_update_odr(&st->timestamp, fifo_period, =
+fifo_on);
+> if (result)
+>         goto fifo_rate_fail_unlock;
+>=20
+> It was not the case before using the inv_sensors_timestamp module.
+>=20
+> If we don't set these states back to false, it is not possible to change =
+frequency more than 1 time. This restriction comes from inv_sensors_timesta=
+mp module that is not able to handle accurately more than 1 frequency chang=
+e when sensor FIFO is on. This restriction obviously doesn't exist when FIF=
+O is off.
 
-greg k-h
+Thanks, now I understand.  I've added a note to say the restriction
+to a single pending update of ODR should only apply when the fifo
+is on.  Along with a link to this thread that should be enough to
+help people understand the issue when consider whether to backport this
+fix.
+
+Applied to the fixes-togreg branch of iio.git.
+
+Thanks,
+
+Jonathan
+
+>=20
+> Thanks,
+> JB
+>=20
+>=20
+> From: Jonathan Cameron <jic23@kernel.org>
+> Sent: Saturday, February 24, 2024 17:22
+> To: INV Git Commit <INV.git-commit@tdk.com>
+> Cc: lars@metafoo.de <lars@metafoo.de>; linux-iio@vger.kernel.org <linux-i=
+io@vger.kernel.org>; stable@vger.kernel.org <stable@vger.kernel.org>; Jean-=
+Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
+> Subject: Re: [PATCH v2] iio: imu: inv_mpu6050: fix frequency setting when=
+ chip is off=20
+> =C2=A0
+> On Mon, 19 Feb 2024 15:=E2=80=8A47:=E2=80=8A41 +0000 inv.=E2=80=8Agit-com=
+mit@=E2=80=8Atdk.=E2=80=8Acom wrote: > From: Jean-Baptiste Maneyrol <jean-b=
+aptiste.=E2=80=8Amaneyrol@=E2=80=8Atdk.=E2=80=8Acom> > > Track correctly FI=
+FO state and apply ODR change before starting > the chip. Without the fix,=
+=20
+> ZjQcmQRYFpfptBannerStart
+> This Message Is From an External Sender=20
+> This message came from outside your organization.=20
+> =C2=A0
+> ZjQcmQRYFpfptBannerEnd
+> On Mon, 19 Feb 2024 15:47:41 +0000
+> inv.git-commit@tdk.com wrote:
+>=20
+> > From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> >=20
+> > Track correctly FIFO state and apply ODR change before starting
+> > the chip. Without the fix, you cannot change ODR more than 1 time
+> > when data buffering is off. =20
+>=20
+> Hi Jean-Baptiste.
+>=20
+> I think this patch needs a little more explanation.
+> 1) Why has state changed such that we need to update these cached values?
+> 2) What does that have to do with ODR - or is this two unrelated fixes?
+>=20
+> I'm sure the fix is right - I just don't fully understand the issues!
+> >=20
+> > Fixes: 111e1abd0045 ("iio: imu: inv_mpu6050: use the common inv_sensors=
+ timestamp module")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> > ---
+> > V2: add missing stable tag
+> >=20
+> >  drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c | 5 +++++
+> >  1 file changed, 5 insertions(+)
+> >=20
+> > diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/ii=
+o/imu/inv_mpu6050/inv_mpu_trigger.c
+> > index 676704f9151f..e6e6e94452a3 100644
+> > --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+> > +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+> > @@ -111,6 +111,7 @@ int inv_mpu6050_prepare_fifo(struct inv_mpu6050_sta=
+te *st, bool enable)
+> >  	if (enable) {
+> >  		/* reset timestamping */
+> >  		inv_sensors_timestamp_reset(&st->timestamp);
+> > +		inv_sensors_timestamp_apply_odr(&st->timestamp, 0, 0, 0);
+> >  		/* reset FIFO */
+> >  		d =3D st->chip_config.user_ctrl | INV_MPU6050_BIT_FIFO_RST;
+> >  		ret =3D regmap_write(st->map, st->reg->user_ctrl, d);
+> > @@ -184,6 +185,10 @@ static int inv_mpu6050_set_enable(struct iio_dev *=
+indio_dev, bool enable)
+> >  		if (result)
+> >  			goto error_power_off;
+> >  	} else {
+> > +		st->chip_config.gyro_fifo_enable =3D 0;
+> > +		st->chip_config.accl_fifo_enable =3D 0;
+> > +		st->chip_config.temp_fifo_enable =3D 0;
+> > +		st->chip_config.magn_fifo_enable =3D 0; =20
+> I think the write to actually do this is in prepare_fifo and it's not
+> conditional on these, so why do we care?
+>=20
+> Are these effectively paired with inv_scan_query in the enable path?
+>=20
+>=20
+> >  		result =3D inv_mpu6050_prepare_fifo(st, false);
+> >  		if (result)
+> >  			goto error_power_off;
+> > --
+> > 2.34.1
+> >  =20
+>=20
+
 
