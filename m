@@ -1,177 +1,101 @@
-Return-Path: <stable+bounces-23733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23CD5867ADF
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 16:54:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07F08867B10
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 17:03:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 249F31C2764A
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 15:54:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5F6D293F6F
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 16:03:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838CF8592F;
-	Mon, 26 Feb 2024 15:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BB5112C547;
+	Mon, 26 Feb 2024 16:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="MZ4Pdb3B";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="wqg1nf1v";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="MZ4Pdb3B";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="wqg1nf1v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wyQBHbGb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8A41292ED
-	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 15:54:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DDD12BF00
+	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 16:03:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708962879; cv=none; b=Zr2PKVvZxynr4Q/qpZBOugiSqfatWwoFDrfrhl9Mf1KaLHG+Wd6lMoA4P6d09KG8CXknfq5W6yWvrl4IU3cHI9RayTiZARDoh6mlmQSSNAAYtoRiszaeBb9I39X39n4m6VTDLWeJ2Dr3HOLN2xemxP+lPX72xYAuy0aQoItK3DU=
+	t=1708963407; cv=none; b=rzE9EyB36iJBsW8HLvnIMPvNfxf2yuuFMD/5uTWj9wwqPEtLfU4mVnaT+Ek/a4Ac3qNmn8JWsHVPqyqgMgAvTxerLmuT4mC0NebUuVyEwhI1hRjAIuRHNxFe3j5vpxK1lQYtNTh6adz/JCTwVNKgfXY3Cq6ZmeDbJzkSvQHOEIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708962879; c=relaxed/simple;
-	bh=uKA8cFcS63jP5xi+kpE8TshkDcQDdXGd7AvHLfQ1UNM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s0OcdsmWEuobxAttbikJ800O2kqxvZ2hGnO6mUsVj+4DxPWvLQgS8rT+RFr+cgo6S/glRg9ek0+JY5AyO8bUoSwuHcTMWeoXc+badBqGfJTzLqxQ2+AEszqKxClzhN7eUJSIo6po5Hdg2fOVQfaYZ+y5Y/mMSlYu8MCtQmuGA4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=MZ4Pdb3B; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=wqg1nf1v; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=MZ4Pdb3B; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=wqg1nf1v; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 043701FB62;
-	Mon, 26 Feb 2024 15:54:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1708962876; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EGsCQ/fnCVcNvnOb2GZ5PlfH6NIJ2juObDF2VySNH9Q=;
-	b=MZ4Pdb3BIFA2yzPvrDb7TkIOMRiDuQrbURpJvJccZOFpCui5Mk+at9lzGcfx8tIcLR5/h/
-	GSlKcA1Qhbz7MGEqUTUFDAPNl7GLzzZ86cMlLwUhhQmb0JOykHtzJp5TT3L4iKr+mbgFDt
-	StOCyQnc+MsP1JH92KtpEQoPKmy0t5A=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1708962876;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EGsCQ/fnCVcNvnOb2GZ5PlfH6NIJ2juObDF2VySNH9Q=;
-	b=wqg1nf1vCj6ppzs4YgE55jbx6GF0GMSOfIGftfDkEkg9QanQp3G3hjjgvxmKn5+wtQbyw3
-	0aDKx8fGqgEm1MDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1708962876; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EGsCQ/fnCVcNvnOb2GZ5PlfH6NIJ2juObDF2VySNH9Q=;
-	b=MZ4Pdb3BIFA2yzPvrDb7TkIOMRiDuQrbURpJvJccZOFpCui5Mk+at9lzGcfx8tIcLR5/h/
-	GSlKcA1Qhbz7MGEqUTUFDAPNl7GLzzZ86cMlLwUhhQmb0JOykHtzJp5TT3L4iKr+mbgFDt
-	StOCyQnc+MsP1JH92KtpEQoPKmy0t5A=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1708962876;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EGsCQ/fnCVcNvnOb2GZ5PlfH6NIJ2juObDF2VySNH9Q=;
-	b=wqg1nf1vCj6ppzs4YgE55jbx6GF0GMSOfIGftfDkEkg9QanQp3G3hjjgvxmKn5+wtQbyw3
-	0aDKx8fGqgEm1MDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1466A13A3A;
-	Mon, 26 Feb 2024 15:54:34 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 9DfSOTq03GUkBwAAD6G6ig
-	(envelope-from <jdelvare@suse.de>); Mon, 26 Feb 2024 15:54:34 +0000
-Date: Mon, 26 Feb 2024 16:54:30 +0100
-From: Jean Delvare <jdelvare@suse.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, Heiner Kallweit
- <hkallweit1@gmail.com>, Wolfram Sang <wsa@kernel.org>, Sasha Levin
- <sashal@kernel.org>
-Subject: Re: [PATCH 5.15 372/476] i2c: i801: Remove
- i801_set_block_buffer_mode
-Message-ID: <20240226165430.0e7bea8f@endymion.delvare>
-In-Reply-To: <2024022630-scone-factoid-02e6@gregkh>
-References: <20240221130007.738356493@linuxfoundation.org>
-	<20240221130021.778800241@linuxfoundation.org>
-	<20240226142935.62cac532@endymion.delvare>
-	<2024022630-scone-factoid-02e6@gregkh>
-Organization: SUSE Linux
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-suse-linux-gnu)
+	s=arc-20240116; t=1708963407; c=relaxed/simple;
+	bh=h2JbLZHCkRS7vyjN+KGuZhcxwKn200R0DcSHLoaqRcs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h8NTvCI/+w0Ah3+QswZb/9NYVv4fEKmYaZ9tIJrz1Q3wI9QzQFD44wwgj6WL9L+YeqSiLLD0gY27FGfgfEj14TWot7z8bkjwThL6Y6l7yKwJy9b5hZ29l2y1d8zCrh2PGWct9CqErO1ML6Y2oKJDirRLVp2C+d6I/FSdcAqnOJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wyQBHbGb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D73C433F1;
+	Mon, 26 Feb 2024 16:03:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1708963405;
+	bh=h2JbLZHCkRS7vyjN+KGuZhcxwKn200R0DcSHLoaqRcs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=wyQBHbGbzQrHglsWKdkUR4O9bXz6lI7txiOXI4GQnbO2Dcwu/hCBca2ZZEXqodrN9
+	 X5z0IC7FVQMQ79VOEiTTbI7Mbvyi5mJPxs4UK92PTm67aYb48z26HkR282MOh6w/4y
+	 Xi20OCd0kOExgZLIwG+9tR5mFQHAR3YJLbElrxvk=
+Date: Mon, 26 Feb 2024 17:03:23 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: =?utf-8?B?0KDQsNC00L7RgdC70LDQsiDQndC10L3Rh9C+0LLRgdC60Lg=?= <stalliondrift@gmail.com>,
+	stable@vger.kernel.org
+Cc: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Subject: Re: Kernel 6.6.17-LTS breaks almost all bash scripts involving a
+ directory
+Message-ID: <2024022645-zoology-oppose-ea92@gregkh>
+References: <fa4cd67e-906d-4702-90e2-b9c047320c34@gmail.com>
+ <20240226-porcupine-of-splendid-excellence-22defc@meerkat>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Level: 
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 RCPT_COUNT_FIVE(0.00)[6];
-	 HAS_ORG_HEADER(0.00)[];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,gmail.com,kernel.org];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%]
-X-Spam-Flag: NO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240226-porcupine-of-splendid-excellence-22defc@meerkat>
 
-On Mon, 26 Feb 2024 15:56:47 +0100, Greg Kroah-Hartman wrote:
-> On Mon, Feb 26, 2024 at 02:29:35PM +0100, Jean Delvare wrote:
-> > On Wed, 21 Feb 2024 14:07:03 +0100, Greg Kroah-Hartman wrote:  
-> > > 5.15-stable review patch.  If anyone has any objections, please let me know.
-> > > 
-> > > ------------------
-> > > 
-> > > From: Heiner Kallweit <hkallweit1@gmail.com>
-> > > 
-> > > [ Upstream commit 1e1d6582f483a4dba4ea03445e6f2f05d9de5bcf ]
-> > > 
-> > > If FEATURE_BLOCK_BUFFER is set then bit SMBAUXCTL_E32B is supported
-> > > and there's no benefit in reading it back. Origin of this check
-> > > seems to be 14 yrs ago when people were not completely sure which
-> > > chip versions support the block buffer mode.
-> > > 
-> > > Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-> > > Reviewed-by: Jean Delvare <jdelvare@suse.de>
-> > > Tested-by: Jean Delvare <jdelvare@suse.de>
-> > > Signed-off-by: Wolfram Sang <wsa@kernel.org>
-> > > Stable-dep-of: c1c9d0f6f7f1 ("i2c: i801: Fix block process call transactions")  
+On Mon, Feb 26, 2024 at 10:52:50AM -0500, Konstantin Ryabitsev wrote:
+> > In the past 4 or 5 years I've been using this script (with an alias) to
+> > compress a single folder:
+> > 7z a "$1.7z" "$1"/ -mx=0 -mmt=8
 > > 
-> > There is no functional dependency between these 2 commits. The context
-> > change which causes the second commit to fail to apply without the
-> > first commit is trivial to fix. I can provide a patch for version 5.15
-> > and older. I think it is preferable to backporting an extra patch which
-> > wouldn't otherwise qualify for stable trees.  
-> 
-> This is already in a released kernel.  We can revert them, if you want
-> us to, is it worth it?
+> > I know it doesn't look like much but essentially it creates a 7z archive
+> > (with "store" level of compression) with a name I've entered right after the
+> > alias. For instance: 7z0 "my dir" will create "my dir.7z".
+> > And in the past 4 or 5 years this script was working just fine because it
+> > was recognizing the slash as an indication that the target to compress is a
+> > directory.
+> > However, ever since 6.6.17-LTS arrived (altough I've heard the same
+> > complaints from people who use the regular rolling kernel, but they didn't
+> > tell me which version) bash stopped recognizing the slash as an indication
+> > for directory and thinks of it as the entire root directory, thus it
+> > attempts to compress not only "my dir" but also the whole root (/)
+> > directory. And it doesn't matter whether I'll put the slash between the
+> > quotes or outside of them - the result is the same. And, naturally, it
+> > throws out an unlimited number of errors about "access denied" to everything
+> > in root. I can't even begin to comprehend why on Earth you or whoever writes
+> > the kernel would make this change. Forget about me but ALL linux sysadmins I
+> > know use all kinds of scripts and changing the slash at the end of a word to
+> > mean "root" instead of a sign for directory is a rude way to ruin their
+> > work. Since this change occurred, I can no longer put a directory in an
+> > archive through CLI and I have to do it through GUI, which is about 10 times
+> > slower. I have a DE and I can do that but what about the sysadmins who
+> > usually use linux without a DE or directly SSH into the distro they're
+> > admins of? With this change you're literally hindering their job!
+> > 
+> > I downgraded the kernel to 6.6.15-LTS and the problem disappeared - now the
+> > slash is properly recognized as a sign for directory.
 
-Oops, I'm just back from vacation and did not realize this was already
-released. Let it be then, no big deal.
 
--- 
-Jean Delvare
-SUSE L3 Support
+Any chance you can run 'git bisect' to find the offending commit?
+
+Also, what filesystem type are you seeing this issue on?
+
+thanks,
+
+greg k-h
 
