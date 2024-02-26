@@ -1,114 +1,125 @@
-Return-Path: <stable+bounces-23605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE099866A8C
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 08:16:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 889D7866B4C
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 08:48:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C0A71C213A7
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 07:16:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41884285F5E
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 07:48:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E5C71BDD5;
-	Mon, 26 Feb 2024 07:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DE521BF3B;
+	Mon, 26 Feb 2024 07:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I1rcZf1X"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="etGaf4uA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C36D9175BE;
-	Mon, 26 Feb 2024 07:16:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5151BF37;
+	Mon, 26 Feb 2024 07:48:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708931779; cv=none; b=LVcL3oiqr8jfU0m7BH4wpi45ADAx4D6fNXkCycOWwrJqxB5+Jt4U4+ujZmxLM54ke66pV0EqHe3+V5HEs8K/Y/Kz/K/sRvsGF0j0VrgLuepVpaqqXacTjaiLlvIuXq31WSK4T+k5qanoiqmJDmVa/pmlerwPZ9UuTLt9Fp9YYcc=
+	t=1708933700; cv=none; b=dTlY5cu7bfqzTgFKrH3IeJp1eUjufMQ1oI6BANz4vgHG106TNokpXjlyVso8O7u25OlLWYbeqgIybLtCry9X7uhW137ZHcMz5pyRKGxB3DJ3UAdb+MNioGJ8VufXfFCj2bQqpNyr8+B+gDi4ctjPDg99tJ/f/rW13iOr6QAoS50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708931779; c=relaxed/simple;
-	bh=2RlYg33BiX3NtOsnhjj8RG35wYd23faEZA9/J7KHbxQ=;
+	s=arc-20240116; t=1708933700; c=relaxed/simple;
+	bh=YskQDqRYulrxgcJz1QYPkqijA0rMI2I1ULyE9kL6McA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=snIQ4VNmGA0Ag7I7+LlzwsutMARbsR1Pp2JaHMMG0QWZ8T6vwgz6NxdmuxFIPtCFNEqGoIl0uXYQU7fTukHCWh+gO3Xg1RCyrcvh7RUOZ1CUEYa0sMELVzapfFVgeiuZxzE+khbLJnTy+s+ZIf+z8VgadLiw4Ysb0OM/IW5/PQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I1rcZf1X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE762C433F1;
-	Mon, 26 Feb 2024 07:16:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708931778;
-	bh=2RlYg33BiX3NtOsnhjj8RG35wYd23faEZA9/J7KHbxQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=I1rcZf1XGpMfTaBMYLeAoV171MgKE7m65z3JRw0SEcLJ55iYD094dU3ftd7qu+Agr
-	 4VwA93Kx7VlL7e5sNXNEyCO093O3vbnt+ry+xgxcxSMqRjCJIlZ/Oqx6V40OD+orGJ
-	 kz+zTkP1eGflBYXA22cnP2SsmKicWPey+bHi6ag8=
-Date: Mon, 26 Feb 2024 08:16:10 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: "GONG, Ruiqi" <gongruiqi1@huawei.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=XG3H7e8Hs8RiRDWJwOufkyIwhpg2op6DRnUfrbGFddEmYw2i7OW0vWzh4tgMMzjF3WIdpbZ/YKdE3tA5p/80s6eM2TH8mSEFtDySHWMb8TObO2K/z8/epYBO7Jpi76+6TD+KDgefJr1fSlYFRs/dEe/qsicdplQkCrHCR+8rmgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=etGaf4uA; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708933699; x=1740469699;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=YskQDqRYulrxgcJz1QYPkqijA0rMI2I1ULyE9kL6McA=;
+  b=etGaf4uAMSLe/4XWXzJAfhiyDeuriP6QZdb5G2mnXaW7VuECEVUxMVku
+   /f6O4rWrp+EYhdBMTlccZl6H5VK882gLklLl64Gf1jnqoffvA3UggSj58
+   ZWPXwm2rbZgqTpvFJE07CR6sK4KBixKW5PCgtIfwtEqkkBZkKE95ns34p
+   4KQR+XprjMTTMkVu0EkYtIOSRXvidilX/SKhjukFSUbw30leUSHk3ahB+
+   qiyZ5v3wFaqs6qfa6yQCvP9Q8yAHa3wMnh8Ey7CIfSgU163m9UK67yOdQ
+   BIfNJ2jaLeu/ubOyky5z4rybjImDYalpPliCEOCB/r3OUaRuFKNowsPR+
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="14334338"
+X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
+   d="scan'208";a="14334338"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2024 23:48:18 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="937029441"
+X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
+   d="scan'208";a="937029441"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmsmga001.fm.intel.com with SMTP; 25 Feb 2024 23:48:14 -0800
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 26 Feb 2024 09:48:14 +0200
+Date: Mon, 26 Feb 2024 09:48:14 +0200
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeelb@google.com>,
-	Muchun Song <muchun.song@linux.dev>, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, Wang Weiyang <wangweiyang2@huawei.com>,
-	Xiu Jianfeng <xiujianfeng@huawei.com>
-Subject: Re: [PATCH stable 4.19] mm: memcontrol: switch to rcu protection in
- drain_all_stock()
-Message-ID: <2024022601-flavorful-gerbil-da52@gregkh>
-References: <20240226030140.129822-1-gongruiqi1@huawei.com>
+	Guenter Roeck <linux@roeck-us.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	"open list:USB TYPEC PORT CONTROLLER DRIVERS" <linux-usb@vger.kernel.org>
+Subject: Re: [PATCH] Revert "usb: typec: tcpm: reset counter when enter into
+ unattached state after try role"
+Message-ID: <ZdxCPn6ulER0OjC1@kuha.fi.intel.com>
+References: <20240217162023.1719738-1-megi@xff.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240226030140.129822-1-gongruiqi1@huawei.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240217162023.1719738-1-megi@xff.cz>
 
-On Mon, Feb 26, 2024 at 11:01:40AM +0800, GONG, Ruiqi wrote:
-> From: Roman Gushchin <guro@fb.com>
+On Sat, Feb 17, 2024 at 05:20:21PM +0100, Ondřej Jirman wrote:
+> From: Ondrej Jirman <megi@xff.cz>
 > 
-> commit e1a366be5cb4f849ec4de170d50eebc08bb0af20 upstream.
+> The reverted commit makes the state machine only ever go from SRC_ATTACH_WAIT
+> to SNK_TRY in endless loop when toggling. After revert it goes to SRC_ATTACHED
+> after initially trying SNK_TRY earlier, as it should for toggling to ever detect
+> the power source mode and the port is again able to provide power to attached
+> power sinks.
 > 
-> Commit 72f0184c8a00 ("mm, memcg: remove hotplug locking from try_charge")
-> introduced css_tryget()/css_put() calls in drain_all_stock(), which are
-> supposed to protect the target memory cgroup from being released during
-> the mem_cgroup_is_descendant() call.
+> This reverts commit 2d6d80127006ae3da26b1f21a65eccf957f2d1e5.
 > 
-> However, it's not completely safe.  In theory, memcg can go away between
-> reading stock->cached pointer and calling css_tryget().
-> 
-> This can happen if drain_all_stock() races with drain_local_stock()
-> performed on the remote cpu as a result of a work, scheduled by the
-> previous invocation of drain_all_stock().
-> 
-> The race is a bit theoretical and there are few chances to trigger it, but
-> the current code looks a bit confusing, so it makes sense to fix it
-> anyway.  The code looks like as if css_tryget() and css_put() are used to
-> protect stocks drainage.  It's not necessary because stocked pages are
-> holding references to the cached cgroup.  And it obviously won't work for
-> works, scheduled on other cpus.
-> 
-> So, let's read the stock->cached pointer and evaluate the memory cgroup
-> inside a rcu read section, and get rid of css_tryget()/css_put() calls.
-> 
-> Link: http://lkml.kernel.org/r/20190802192241.3253165-1-guro@fb.com
-> Signed-off-by: Roman Gushchin <guro@fb.com>
-> Acked-by: Michal Hocko <mhocko@suse.com>
-> Cc: Hillf Danton <hdanton@sina.com>
-> Cc: Johannes Weiner <hannes@cmpxchg.org>
-> Cc: Vladimir Davydov <vdavydov.dev@gmail.com>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-> Cc: stable@vger.kernel.org  # 4.19
-> Fixes: cdec2e4265df ("memcg: coalesce charging via percpu storage")
-> Signed-off-by: GONG, Ruiqi <gongruiqi1@huawei.com>
+> Cc: stable@vger.kernel.org
+> Fixes: 2d6d80127006 ("usb: typec: tcpm: reset counter when enter into unattached state after try role")
+> Signed-of-by: Ondrej Jirman <megi@xff.cz>
+
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+
 > ---
+>  drivers/usb/typec/tcpm/tcpm.c | 3 ---
+>  1 file changed, 3 deletions(-)
 > 
-> This patch [1] fixed a UAF problem in drain_all_stock() existed prior to
-> 5.9, and following discussions [2] mentioned that the fix depends on an
-> RCU read protection to stock->cached (introduced in 5.4), which doesn't
-> existed in 4.19. So backport this part to 4.19 as well.
+> See https://lore.kernel.org/all/odggrbbgjpardze76qiv57mw6tllisyu5sbrta37iadjzwamcv@qr3ubwnlzqqt/
+> for more.
+> 
+> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+> index f7d7daa60c8d..295ae7eb912c 100644
+> --- a/drivers/usb/typec/tcpm/tcpm.c
+> +++ b/drivers/usb/typec/tcpm/tcpm.c
+> @@ -3743,9 +3743,6 @@ static void tcpm_detach(struct tcpm_port *port)
+>  	if (tcpm_port_is_disconnected(port))
+>  		port->hard_reset_count = 0;
+>  
+> -	port->try_src_count = 0;
+> -	port->try_snk_count = 0;
+> -
+>  	if (!port->attached)
+>  		return;
+>  
+> -- 
+> 2.43.0
 
-Now queued up, thanks.
-
-greg k-h
+-- 
+heikki
 
