@@ -1,129 +1,117 @@
-Return-Path: <stable+bounces-23602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D49508669E9
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 07:09:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D68AF866A33
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 07:45:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11EF51C212D3
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 06:09:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D34C1F22DB2
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 06:45:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABF2A1BC39;
-	Mon, 26 Feb 2024 06:09:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NkhixDM4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CCD51AACB;
+	Mon, 26 Feb 2024 06:45:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC2A1B968;
-	Mon, 26 Feb 2024 06:09:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817C418E2A;
+	Mon, 26 Feb 2024 06:45:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708927783; cv=none; b=HWnigoYgZuo65Rua7v7ar/AkmJx3hI0ZojEMrNfObglieuqXavArT14341CL+WYh0kA4Zqu5lPq/5qtnpOLf66WBRWAZFgCh35gaJzrKxkiErjZQMvUsTP+GP6UWSu83SWyIz4uDpYK2Zpz2lOYFrg6cDWberUnWdvI8IPKDXjc=
+	t=1708929927; cv=none; b=OpihSQFR9UiM5HP/NWDKrMpWjUxhhVBWoF2/XdNC6LuHEyfI6WjfBhU5tujaAB0FlX5hr9TDRvOC7NIh6lUNsz+Frh8NYc9JLaD1HsovpQ+PRLshbG4dFXeN0Rm7OkcgLZktRJTnM/iFRBj7BEzfq1oXpk64vyiOhdfUUhccFLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708927783; c=relaxed/simple;
-	bh=Wg0yZ4YD42v7JFgC4GCKHPnWFfnRgGsgvkto9DA5mpg=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=fkJAmbQUNi5I1rAzHZEpt/6TCc38k2oJXVVy8oTpJ8OfjGB4iRacwCrwkyjJvl9jKDET8sg8lwkG4fTCKve+YI/PE0WAc4CmsH7/LvcKazyOMfqBy5ZaBT1/wTZCkXsTlXeVtS6Z3KAbdJc+fMp9TG7cRPpzGNL2OIaXUDsIDcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NkhixDM4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E751C433C7;
-	Mon, 26 Feb 2024 06:09:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708927782;
-	bh=Wg0yZ4YD42v7JFgC4GCKHPnWFfnRgGsgvkto9DA5mpg=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=NkhixDM4clXdmyPifKygz4j+8mlYVFKXuWlUHCsap8pE/3CxfUcMA7zlQ9gjkyxLy
-	 Iv4TlijA9xZAQjIgBfU/gUL0uKcC2KdZ8vP8Y63SH/rMmULJFV982dYvrQMOmVHvFs
-	 krod4G3aGgoLVClGpryu4iCyZhd5xRg9/ncYvfsKTXYxA0e9fWXewK56PDP9urJrSU
-	 jV0g5KLYyIeB0giOvCK43Zpkl+/79BtrkDgCECZyPF5xSJkrf1MLAH2uYRBlc4Peih
-	 I3ivGxIqTSSurO9cJFGrZrDwuVW16oNWCmAGi2bM2hB2mGpcGohfkm7dHrWchA5iNa
-	 HpoO7UkPk/qxA==
-Date: Mon, 26 Feb 2024 15:09:38 +0900
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To: Yuanhe Shu <xiangzao@linux.alibaba.com>, Shuah Khan <shuah@kernel.org>
-Cc: rostedt@goodmis.org, mathieu.desnoyers@efficios.com, shuah@kernel.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] selftests/ftrace: Limit length in subsystem-enable
- tests
-Message-Id: <20240226150938.7f0d8fd639bab79199d8556b@kernel.org>
-In-Reply-To: <20240226031816.88715-1-xiangzao@linux.alibaba.com>
-References: <20240226031816.88715-1-xiangzao@linux.alibaba.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1708929927; c=relaxed/simple;
+	bh=bG/RoSHx8Aj05SCpiRuRNhObfYppzS0/xR+nU9px41s=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=N5bQ5wmUq0WbGq3NOhlWF+U7LDhh4Hp+84H3LB/yrjtOAx0srWX/mTmUwOIGZHSZYR8ldzB/S7khmUnac3JBGhJ9B1oe/A5Hiba0yU7BFWrRz9mSaszULKSDsIFGUF1rnFoyWjesGAee5XWtia9/YsMSmqhtCJJ9dIgfSkU/ffY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
+Received: from msexch01.omp.ru (10.188.4.12) by msexch02.omp.ru (10.188.4.13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Mon, 26 Feb
+ 2024 09:45:13 +0300
+Received: from msexch01.omp.ru ([fe80::485b:1c4a:fb7f:c753]) by
+ msexch01.omp.ru ([fe80::485b:1c4a:fb7f:c753%5]) with mapi id 15.02.1258.012;
+ Mon, 26 Feb 2024 09:45:13 +0300
+From: Roman Smirnov <r.smirnov@omp.ru>
+To: "stable@vger.kernel.org" <stable@vger.kernel.org>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>
+CC: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton
+	<akpm@linux-foundation.org>, Alexey Khoroshilov <khoroshilov@ispras.ru>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>, Karina Yankevich <k.yankevich@omp.ru>,
+	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>
+Subject: Re: [PATCH 5.10/5.15 v2 0/1 RESEND] mm/truncate: fix WARNING in
+ ext4_set_page_dirty()
+Thread-Topic: [PATCH 5.10/5.15 v2 0/1 RESEND] mm/truncate: fix WARNING in
+ ext4_set_page_dirty()
+Thread-Index: AQHaXoZYls/GR/0zTEaYvL5Vg1anPrEcPxk2
+Date: Mon, 26 Feb 2024 06:45:12 +0000
+Message-ID: <f406f7b3901e4471ab1ecd432aba695b@omp.ru>
+References: <20240213140933.632481-1-r.smirnov@omp.ru>
+In-Reply-To: <20240213140933.632481-1-r.smirnov@omp.ru>
+Accept-Language: ru-RU, en-US
+Content-Language: ru-RU
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-kse-serverinfo: msexch02.omp.ru, 9
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: Clean, bases: 2/26/2024 4:56:00 AM
+x-kse-attachment-filter-triggered-rules: Clean
+x-kse-attachment-filter-triggered-filters: Clean
+x-kse-bulkmessagesfiltering-scan-result: InTheLimit
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
 
-On Mon, 26 Feb 2024 11:18:16 +0800
-Yuanhe Shu <xiangzao@linux.alibaba.com> wrote:
+On Tue, 13 Feb, 2024 14:09:33 +0000, Roman Smirnov wrote:
+> Syzkaller reports warning in ext4_set_page_dirty() in 5.10 and 5.15
+> stable releases. It happens because invalidate_inode_page() frees pages
+> that are needed for the system. To fix this we need to add additional
+> checks to the function. page_mapped() checks if a page exists in the
+> page tables, but this is not enough. The page can be used in other places=
+:
+> https://elixir.bootlin.com/linux/v6.8-rc1/source/include/linux/page_ref.h=
+#L71
+>
+> Kernel outputs an error line related to direct I/O:
+> https://syzkaller.appspot.com/text?tag=3DCrashLog&x=3D14ab52dac80000
+>
+> The problem can be fixed in 5.10 and 5.15 stable releases by the
+> following patch.
+>
+> The patch replaces page_mapped() call with check that finds additional
+> references to the page excluding page cache and filesystem private data.
+> If additional references exist, the page cannot be freed.
+>
+> This version does not include the first patch from the first version.
+> The problem can be fixed without it.
+>
+> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+>
+> Link: https://syzkaller.appspot.com/bug?extid=3D02f21431b65c214aa1d6
+>
+> Previous discussion:
+> https://lore.kernel.org/all/20240125130947.600632-1-r.smirnov@omp.ru/T/
+>
+> Matthew Wilcox (Oracle) (1):
+>   mm/truncate: Replace page_mapped() call in invalidate_inode_page()
+>
+>  mm/truncate.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 
-> While sched* events being traced and sched* events continuously happen,
-> "[xx] event tracing - enable/disable with subsystem level files" would
-> not stop as on some slower systems it seems to take forever.
-> Select the first 100 lines of output would be enough to judge whether
-> there are more than 3 types of sched events.
+Hello.=20
 
-Looks good to me.
+Sorry to bother you, do you have any comments on the patch?
 
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-
-Hi Shuah, can you pick this as a fix?
-
-Thank you,
-
-> 
-> Fixes: 815b18ea66d6 ("ftracetest: Add basic event tracing test cases")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
-> ---
->  .../selftests/ftrace/test.d/event/subsystem-enable.tc       | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc b/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
-> index b1ede6249866..b7c8f29c09a9 100644
-> --- a/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
-> @@ -18,7 +18,7 @@ echo 'sched:*' > set_event
->  
->  yield
->  
-> -count=`cat trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
-> +count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
->  if [ $count -lt 3 ]; then
->      fail "at least fork, exec and exit events should be recorded"
->  fi
-> @@ -29,7 +29,7 @@ echo 1 > events/sched/enable
->  
->  yield
->  
-> -count=`cat trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
-> +count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
->  if [ $count -lt 3 ]; then
->      fail "at least fork, exec and exit events should be recorded"
->  fi
-> @@ -40,7 +40,7 @@ echo 0 > events/sched/enable
->  
->  yield
->  
-> -count=`cat trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
-> +count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
->  if [ $count -ne 0 ]; then
->      fail "any of scheduler events should not be recorded"
->  fi
-> -- 
-> 2.39.3
-> 
-> 
-
-
--- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
