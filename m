@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-23642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41DE1867146
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 11:35:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03D6D867150
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 11:37:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6649E1C27193
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 10:35:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8483628A4F9
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 10:37:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E6AF1CD3A;
-	Mon, 26 Feb 2024 10:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32174524BE;
+	Mon, 26 Feb 2024 10:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZbM1bYoV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vv3FvlQ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609CC17551
-	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 10:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6AD021A0B
+	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 10:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708943206; cv=none; b=XOJGTR3WXqGx1R8DBqP0lelAzeoH1ebA7Rks9QVtxf+ZiMChOynW+4WsMsol4OXdNUdtqpsezxp09Vg5taCZpwlezfN29JeIftdIa8b9mcokS66uaLsFOUq2eHpFsBOenU0CUjrYMjznEbdzsysgnYV2FuDmUWFuwMNF66ELjSk=
+	t=1708943342; cv=none; b=nOnj4SNpca8ATBC8UjY6BpSAWM6PX63TqiTE4exPhQyx0VWno8sSFh7B0DVR7p9uIFw8J9dV9YXT8BIQpM6kljKwHEGX3kSsZPmluM+1uVDu/LiwFJDWlaKhaEzMSxL+kEHZvwrm56+v3yI10agRayOTS6MeuJrPQ5hXAfMRBb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708943206; c=relaxed/simple;
-	bh=r7qG9Iba5zejulfZqph2X6/phMrf4unaeLnQDECE8UM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nKs0Cq9jnbBGA8wBK+Xq/JbXL6vNjGrKAuG5k3imBeVRcY4hvwqaAQLtNP9KrKiqYRxSbhoynrjn2zGicdW75vodT6SwAaAscX9LlQN0WN6GWS+6sAFbnb8gt1GV9FaZ+OpiU7M7xIj/oRjKzwgV0XTaxF0/lOPNZNPYvPNh0EU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZbM1bYoV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD1A0C43390;
-	Mon, 26 Feb 2024 10:26:45 +0000 (UTC)
+	s=arc-20240116; t=1708943342; c=relaxed/simple;
+	bh=pxjnam1RykyJGEt3crt2IbZsq5rwNgNKFYnkfXtb4u4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=uvW5XAh7UEZqpuDFpP8t8wazR9H505NqeJ31FSla5ubeLRm0UgpFeqS6snl21xf79O6/k0EdsglqpPQFB/943FGsjbBJ08sDfvgGZfN386vTC++JYlQsHngS2l4satpvjSLBvAtdER2LrJqIXDeG+6ffbfoiWcNtYjcilDmq1gU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vv3FvlQ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17DA4C433C7;
+	Mon, 26 Feb 2024 10:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708943206;
-	bh=r7qG9Iba5zejulfZqph2X6/phMrf4unaeLnQDECE8UM=;
+	s=korg; t=1708943341;
+	bh=pxjnam1RykyJGEt3crt2IbZsq5rwNgNKFYnkfXtb4u4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ZbM1bYoV4vXujMbRgKaWfUP3rFF77LIBjjnBxruRHa3ChnbgIaENchc7mRnY4KKI9
-	 yLFrroPuevCwuRyp4LFHLVl+TI6emn0M1PXoL5UsPTKwaqGEla804BhIHMCNEnwr4W
-	 c+BkMsGh50w0qvFHKJNoa3alHw0K/sYlLUzezqlM=
-Subject: FAILED: patch "[PATCH] cxl/acpi: Fix load failures due to single window creation" failed to apply to 6.1-stable tree
-To: dan.j.williams@intel.com,alison.schofield@intel.com,leitao@debian.org,stable@vger.kernel.org,vishal.l.verma@intel.com
+	b=Vv3FvlQ69k6XOUzHGVfeB6oS60NtRjrB9jIzYtNgsS61m+6K23jX8kGoI/FBbiZj8
+	 cBpgT7AUQWE2CmxeAJthkkABmsfPEtLQyfwtkbTW87VCB1T/o/9zfHKgwcCHKhvyJx
+	 13QVfU0eiOhkS9fryFzbO0p2mXtZ4FpLDXu09eUo=
+Subject: FAILED: patch "[PATCH] mm/swap: fix race when skipping swapcache" failed to apply to 5.15-stable tree
+To: kasong@tencent.com,21cnbao@gmail.com,akpm@linux-foundation.org,chrisl@kernel.org,david@redhat.com,hannes@cmpxchg.org,hughd@google.com,mhocko@suse.com,minchan@kernel.org,sj@kernel.org,stable@vger.kernel.org,willy@infradead.org,ying.huang@intel.com,yosryahmed@google.com,yuzhao@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 26 Feb 2024 11:26:43 +0100
-Message-ID: <2024022643-rearview-spouse-b8a1@gregkh>
+Date: Mon, 26 Feb 2024 11:28:58 +0100
+Message-ID: <2024022658-expensive-autograph-1b92@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,34 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5c6224bfabbf7f3e491c51ab50fd2c6f92ba1141
+git cherry-pick -x 13ddaf26be324a7f951891ecd9ccd04466d27458
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024022643-rearview-spouse-b8a1@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024022658-expensive-autograph-1b92@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-5c6224bfabbf ("cxl/acpi: Fix load failures due to single window creation failure")
-790815902ec6 ("cxl: Add support for _DSM Function for retrieving QTG ID")
-91019b5bc7c2 ("cxl/acpi: Return 'rc' instead of '0' in cxl_parse_cfmws()")
-4cf67d3cc999 ("cxl/acpi: Fix a use-after-free in cxl_parse_cfmws()")
-d35b495ddf92 ("cxl/port: Fix find_cxl_root() for RCDs and simplify it")
-a32320b71f08 ("cxl/region: Add region autodiscovery")
-32ce3f185bbb ("cxl/port: Split endpoint and switch port probe")
-9995576cef48 ("cxl/region: Move region-position validation to a helper")
-86987c766276 ("cxl/region: Cleanup target list on attach error")
-1b9b7a6fd618 ("cxl/region: Validate region mode vs decoder mode")
-7d505f982f53 ("cxl/region: Add a mode attribute for regions")
-02fedf146656 ("Merge branch 'for-6.2/cxl-xor' into for-6.2/cxl")
+13ddaf26be32 ("mm/swap: fix race when skipping swapcache")
+c9edc242811d ("swap: add swap_cache_get_folio()")
+1baec203b77c ("mm/khugepaged: try to free transhuge swapcache when possible")
+442701e7058b ("mm/swap: remove swap_cache_info statistics")
+014bb1de4fc1 ("mm: create new mm/swap.h header file")
+1493a1913e34 ("mm/swap: remember PG_anon_exclusive via a swp pte bit")
+6c287605fd56 ("mm: remember exclusively mapped anonymous pages with PG_anon_exclusive")
+78fbe906cc90 ("mm/page-flags: reuse PG_mappedtodisk as PG_anon_exclusive for PageAnon() pages")
+6c54dc6c7437 ("mm/rmap: use page_move_anon_rmap() when reusing a mapped PageAnon() page exclusively")
+28c5209dfd5f ("mm/rmap: pass rmap flags to hugepage_add_anon_rmap()")
+f1e2db12e45b ("mm/rmap: remove do_page_add_anon_rmap()")
+14f9135d5470 ("mm/rmap: convert RMAP flags to a proper distinct rmap_t type")
+fb3d824d1a46 ("mm/rmap: split page_dup_rmap() into page_dup_file_rmap() and page_try_dup_anon_rmap()")
+b51ad4f8679e ("mm/memory: slightly simplify copy_present_pte()")
+623a1ddfeb23 ("mm/hugetlb: take src_mm->write_protect_seq in copy_hugetlb_page_range()")
+3bff7e3f1f16 ("mm/huge_memory: streamline COW logic in do_huge_pmd_wp_page()")
+c145e0b47c77 ("mm: streamline COW logic in do_swap_page()")
+84d60fdd3733 ("mm: slightly clarify KSM logic in do_swap_page()")
+53a05ad9f21d ("mm: optimize do_wp_page() for exclusive pages in the swapcache")
+6b1f86f8e9c7 ("Merge tag 'folio-5.18b' of git://git.infradead.org/users/willy/pagecache")
 
 thanks,
 
@@ -88,139 +96,228 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5c6224bfabbf7f3e491c51ab50fd2c6f92ba1141 Mon Sep 17 00:00:00 2001
-From: Dan Williams <dan.j.williams@intel.com>
-Date: Fri, 16 Feb 2024 19:11:34 -0800
-Subject: [PATCH] cxl/acpi: Fix load failures due to single window creation
- failure
+From 13ddaf26be324a7f951891ecd9ccd04466d27458 Mon Sep 17 00:00:00 2001
+From: Kairui Song <kasong@tencent.com>
+Date: Wed, 7 Feb 2024 02:25:59 +0800
+Subject: [PATCH] mm/swap: fix race when skipping swapcache
 
-The expectation is that cxl_parse_cfwms() continues in the face the of
-failure as evidenced by code like:
+When skipping swapcache for SWP_SYNCHRONOUS_IO, if two or more threads
+swapin the same entry at the same time, they get different pages (A, B).
+Before one thread (T0) finishes the swapin and installs page (A) to the
+PTE, another thread (T1) could finish swapin of page (B), swap_free the
+entry, then swap out the possibly modified page reusing the same entry.
+It breaks the pte_same check in (T0) because PTE value is unchanged,
+causing ABA problem.  Thread (T0) will install a stalled page (A) into the
+PTE and cause data corruption.
 
-    cxlrd = cxl_root_decoder_alloc(root_port, ways, cxl_calc_hb);
-    if (IS_ERR(cxlrd))
-    	return 0;
+One possible callstack is like this:
 
-There are other error paths in that function which mistakenly follow
-idiomatic expectations and return an error when they should not. Most of
-those mistakes are innocuous checks that hardly ever fail in practice.
-However, a recent change succeed in making the implementation more
-fragile by applying an idiomatic, but still wrong "fix" [1]. In this
-failure case the kernel reports:
+CPU0                                 CPU1
+----                                 ----
+do_swap_page()                       do_swap_page() with same entry
+<direct swapin path>                 <direct swapin path>
+<alloc page A>                       <alloc page B>
+swap_read_folio() <- read to page A  swap_read_folio() <- read to page B
+<slow on later locks or interrupt>   <finished swapin first>
+...                                  set_pte_at()
+                                     swap_free() <- entry is free
+                                     <write to page B, now page A stalled>
+                                     <swap out page B to same swap entry>
+pte_same() <- Check pass, PTE seems
+              unchanged, but page A
+              is stalled!
+swap_free() <- page B content lost!
+set_pte_at() <- staled page A installed!
 
-    cxl root0: Failed to populate active decoder targets
-    cxl_acpi ACPI0017:00: Failed to add decode range: [mem 0x00000000-0x7fffffff flags 0x200]
+And besides, for ZRAM, swap_free() allows the swap device to discard the
+entry content, so even if page (B) is not modified, if swap_read_folio()
+on CPU0 happens later than swap_free() on CPU1, it may also cause data
+loss.
 
-...which is a real issue with that one window (to be fixed separately),
-but ends up failing the entirety of cxl_acpi_probe().
+To fix this, reuse swapcache_prepare which will pin the swap entry using
+the cache flag, and allow only one thread to swap it in, also prevent any
+parallel code from putting the entry in the cache.  Release the pin after
+PT unlocked.
 
-Undo that recent breakage while also removing the confusion about
-ignoring errors. Update all exits paths to return an error per typical
-expectations and let an outer wrapper function handle dropping the
-error.
+Racers just loop and wait since it's a rare and very short event.  A
+schedule_timeout_uninterruptible(1) call is added to avoid repeated page
+faults wasting too much CPU, causing livelock or adding too much noise to
+perf statistics.  A similar livelock issue was described in commit
+029c4628b2eb ("mm: swap: get rid of livelock in swapin readahead")
 
-Fixes: 91019b5bc7c2 ("cxl/acpi: Return 'rc' instead of '0' in cxl_parse_cfmws()") [1]
+Reproducer:
+
+This race issue can be triggered easily using a well constructed
+reproducer and patched brd (with a delay in read path) [1]:
+
+With latest 6.8 mainline, race caused data loss can be observed easily:
+$ gcc -g -lpthread test-thread-swap-race.c && ./a.out
+  Polulating 32MB of memory region...
+  Keep swapping out...
+  Starting round 0...
+  Spawning 65536 workers...
+  32746 workers spawned, wait for done...
+  Round 0: Error on 0x5aa00, expected 32746, got 32743, 3 data loss!
+  Round 0: Error on 0x395200, expected 32746, got 32743, 3 data loss!
+  Round 0: Error on 0x3fd000, expected 32746, got 32737, 9 data loss!
+  Round 0 Failed, 15 data loss!
+
+This reproducer spawns multiple threads sharing the same memory region
+using a small swap device.  Every two threads updates mapped pages one by
+one in opposite direction trying to create a race, with one dedicated
+thread keep swapping out the data out using madvise.
+
+The reproducer created a reproduce rate of about once every 5 minutes, so
+the race should be totally possible in production.
+
+After this patch, I ran the reproducer for over a few hundred rounds and
+no data loss observed.
+
+Performance overhead is minimal, microbenchmark swapin 10G from 32G
+zram:
+
+Before:     10934698 us
+After:      11157121 us
+Cached:     13155355 us (Dropping SWP_SYNCHRONOUS_IO flag)
+
+[kasong@tencent.com: v4]
+  Link: https://lkml.kernel.org/r/20240219082040.7495-1-ryncsn@gmail.com
+Link: https://lkml.kernel.org/r/20240206182559.32264-1-ryncsn@gmail.com
+Fixes: 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchronous device")
+Reported-by: "Huang, Ying" <ying.huang@intel.com>
+Closes: https://lore.kernel.org/lkml/87bk92gqpx.fsf_-_@yhuang6-desk2.ccr.corp.intel.com/
+Link: https://github.com/ryncsn/emm-test-project/tree/master/swap-stress-race [1]
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
+Acked-by: Yu Zhao <yuzhao@google.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Chris Li <chrisl@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Yosry Ahmed <yosryahmed@google.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: Barry Song <21cnbao@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>
 Cc: <stable@vger.kernel.org>
-Cc: Breno Leitao <leitao@debian.org>
-Cc: Alison Schofield <alison.schofield@intel.com>
-Cc: Vishal Verma <vishal.l.verma@intel.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/drivers/cxl/acpi.c b/drivers/cxl/acpi.c
-index dcf2b39e1048..1a3e6aafbdcc 100644
---- a/drivers/cxl/acpi.c
-+++ b/drivers/cxl/acpi.c
-@@ -316,31 +316,27 @@ static const struct cxl_root_ops acpi_root_ops = {
- 	.qos_class = cxl_acpi_qos_class,
- };
- 
--static int cxl_parse_cfmws(union acpi_subtable_headers *header, void *arg,
--			   const unsigned long end)
-+static int __cxl_parse_cfmws(struct acpi_cedt_cfmws *cfmws,
-+			     struct cxl_cfmws_context *ctx)
- {
- 	int target_map[CXL_DECODER_MAX_INTERLEAVE];
--	struct cxl_cfmws_context *ctx = arg;
- 	struct cxl_port *root_port = ctx->root_port;
- 	struct resource *cxl_res = ctx->cxl_res;
- 	struct cxl_cxims_context cxims_ctx;
- 	struct cxl_root_decoder *cxlrd;
- 	struct device *dev = ctx->dev;
--	struct acpi_cedt_cfmws *cfmws;
- 	cxl_calc_hb_fn cxl_calc_hb;
- 	struct cxl_decoder *cxld;
- 	unsigned int ways, i, ig;
- 	struct resource *res;
- 	int rc;
- 
--	cfmws = (struct acpi_cedt_cfmws *) header;
--
- 	rc = cxl_acpi_cfmws_verify(dev, cfmws);
- 	if (rc) {
- 		dev_err(dev, "CFMWS range %#llx-%#llx not registered\n",
- 			cfmws->base_hpa,
- 			cfmws->base_hpa + cfmws->window_size - 1);
--		return 0;
-+		return rc;
- 	}
- 
- 	rc = eiw_to_ways(cfmws->interleave_ways, &ways);
-@@ -376,7 +372,7 @@ static int cxl_parse_cfmws(union acpi_subtable_headers *header, void *arg,
- 
- 	cxlrd = cxl_root_decoder_alloc(root_port, ways, cxl_calc_hb);
- 	if (IS_ERR(cxlrd))
--		return 0;
-+		return PTR_ERR(cxlrd);
- 
- 	cxld = &cxlrd->cxlsd.cxld;
- 	cxld->flags = cfmws_to_decoder_flags(cfmws->restrictions);
-@@ -420,16 +416,7 @@ static int cxl_parse_cfmws(union acpi_subtable_headers *header, void *arg,
- 		put_device(&cxld->dev);
- 	else
- 		rc = cxl_decoder_autoremove(dev, cxld);
--	if (rc) {
--		dev_err(dev, "Failed to add decode range: %pr", res);
--		return rc;
--	}
--	dev_dbg(dev, "add: %s node: %d range [%#llx - %#llx]\n",
--		dev_name(&cxld->dev),
--		phys_to_target_node(cxld->hpa_range.start),
--		cxld->hpa_range.start, cxld->hpa_range.end);
--
--	return 0;
-+	return rc;
- 
- err_insert:
- 	kfree(res->name);
-@@ -438,6 +425,29 @@ static int cxl_parse_cfmws(union acpi_subtable_headers *header, void *arg,
- 	return -ENOMEM;
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 4db00ddad261..8d28f6091a32 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -549,6 +549,11 @@ static inline int swap_duplicate(swp_entry_t swp)
+ 	return 0;
  }
  
-+static int cxl_parse_cfmws(union acpi_subtable_headers *header, void *arg,
-+			   const unsigned long end)
++static inline int swapcache_prepare(swp_entry_t swp)
 +{
-+	struct acpi_cedt_cfmws *cfmws = (struct acpi_cedt_cfmws *)header;
-+	struct cxl_cfmws_context *ctx = arg;
-+	struct device *dev = ctx->dev;
-+	int rc;
-+
-+	rc = __cxl_parse_cfmws(cfmws, ctx);
-+	if (rc)
-+		dev_err(dev,
-+			"Failed to add decode range: [%#llx - %#llx] (%d)\n",
-+			cfmws->base_hpa,
-+			cfmws->base_hpa + cfmws->window_size - 1, rc);
-+	else
-+		dev_dbg(dev, "decode range: node: %d range [%#llx - %#llx]\n",
-+			phys_to_target_node(cfmws->base_hpa), cfmws->base_hpa,
-+			cfmws->base_hpa + cfmws->window_size - 1);
-+
-+	/* never fail cxl_acpi load for a single window failure */
 +	return 0;
 +}
 +
- __mock struct acpi_device *to_cxl_host_bridge(struct device *host,
- 					      struct device *dev)
+ static inline void swap_free(swp_entry_t swp)
  {
+ }
+diff --git a/mm/memory.c b/mm/memory.c
+index 15f8b10ea17c..0bfc8b007c01 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -3799,6 +3799,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 	struct page *page;
+ 	struct swap_info_struct *si = NULL;
+ 	rmap_t rmap_flags = RMAP_NONE;
++	bool need_clear_cache = false;
+ 	bool exclusive = false;
+ 	swp_entry_t entry;
+ 	pte_t pte;
+@@ -3867,6 +3868,20 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 	if (!folio) {
+ 		if (data_race(si->flags & SWP_SYNCHRONOUS_IO) &&
+ 		    __swap_count(entry) == 1) {
++			/*
++			 * Prevent parallel swapin from proceeding with
++			 * the cache flag. Otherwise, another thread may
++			 * finish swapin first, free the entry, and swapout
++			 * reusing the same entry. It's undetectable as
++			 * pte_same() returns true due to entry reuse.
++			 */
++			if (swapcache_prepare(entry)) {
++				/* Relax a bit to prevent rapid repeated page faults */
++				schedule_timeout_uninterruptible(1);
++				goto out;
++			}
++			need_clear_cache = true;
++
+ 			/* skip swapcache */
+ 			folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0,
+ 						vma, vmf->address, false);
+@@ -4117,6 +4132,9 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 	if (vmf->pte)
+ 		pte_unmap_unlock(vmf->pte, vmf->ptl);
+ out:
++	/* Clear the swap cache pin for direct swapin after PTL unlock */
++	if (need_clear_cache)
++		swapcache_clear(si, entry);
+ 	if (si)
+ 		put_swap_device(si);
+ 	return ret;
+@@ -4131,6 +4149,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 		folio_unlock(swapcache);
+ 		folio_put(swapcache);
+ 	}
++	if (need_clear_cache)
++		swapcache_clear(si, entry);
+ 	if (si)
+ 		put_swap_device(si);
+ 	return ret;
+diff --git a/mm/swap.h b/mm/swap.h
+index 758c46ca671e..fc2f6ade7f80 100644
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -41,6 +41,7 @@ void __delete_from_swap_cache(struct folio *folio,
+ void delete_from_swap_cache(struct folio *folio);
+ void clear_shadow_from_swap_cache(int type, unsigned long begin,
+ 				  unsigned long end);
++void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry);
+ struct folio *swap_cache_get_folio(swp_entry_t entry,
+ 		struct vm_area_struct *vma, unsigned long addr);
+ struct folio *filemap_get_incore_folio(struct address_space *mapping,
+@@ -97,6 +98,10 @@ static inline int swap_writepage(struct page *p, struct writeback_control *wbc)
+ 	return 0;
+ }
+ 
++static inline void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry)
++{
++}
++
+ static inline struct folio *swap_cache_get_folio(swp_entry_t entry,
+ 		struct vm_area_struct *vma, unsigned long addr)
+ {
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 556ff7347d5f..746aa9da5302 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -3365,6 +3365,19 @@ int swapcache_prepare(swp_entry_t entry)
+ 	return __swap_duplicate(entry, SWAP_HAS_CACHE);
+ }
+ 
++void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry)
++{
++	struct swap_cluster_info *ci;
++	unsigned long offset = swp_offset(entry);
++	unsigned char usage;
++
++	ci = lock_cluster_or_swap_info(si, offset);
++	usage = __swap_entry_free_locked(si, offset, SWAP_HAS_CACHE);
++	unlock_cluster_or_swap_info(si, ci);
++	if (!usage)
++		free_swap_slot(entry);
++}
++
+ struct swap_info_struct *swp_swap_info(swp_entry_t entry)
+ {
+ 	return swap_type_to_swap_info(swp_type(entry));
 
 
