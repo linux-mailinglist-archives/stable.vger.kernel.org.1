@@ -1,140 +1,107 @@
-Return-Path: <stable+bounces-23779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B33C18683FF
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 23:50:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C0E086840E
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 23:54:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CF4A286FEF
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 22:50:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58776289CB6
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 22:54:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60ADE13540F;
-	Mon, 26 Feb 2024 22:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7D4135417;
+	Mon, 26 Feb 2024 22:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FMmsHU7b";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1wr0HsCM"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="pkl4HWtD"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B824E1E878;
-	Mon, 26 Feb 2024 22:50:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B0B1E878;
+	Mon, 26 Feb 2024 22:54:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708987817; cv=none; b=kvDh684bTl9eJsEq1bEmCVmOpKh6GUEbS7LDnJ2oFrgwzXtxZN/lqJe1wrkq8vUs6WevWr7RfhblZ/M2wH2GoHFdYe6rDte1LH53fcS4lQIW7xJfdMftjKhOVxYOJB6mjYOi9xgmjXEGwehClEROEy8n9BNo+IB22SafXi326xg=
+	t=1708988058; cv=none; b=fkdm7lCmScaFFf6U1RbpnUhiIi/0+Q1ZuaY4tQh6u/M+k9k2Ag8sGhd4+WqvT1GC2X+6cbHlHu70UATc4t2Ui9DqLl+hP2UltLnRJhkuwypU8nHD2TCCYBLSndKCEPlgu+G2JINCnr+g7U1NzpQak0ERgZXwPHAUdS6OBIjIdmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708987817; c=relaxed/simple;
-	bh=o7Wcn1KDPwCffzlOKpbzPY01A2cadSqrF1Y1I3x4atI=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=KwOx/PqaaUz7PbiKn9wWqj343KGzTBwA/WOfPeyG3bUXTW9uyaOR2d5eP0iFynTVkMgSh6LbOkt1RTmTLN6ErxQ7vfuPIZ83aCmcBoqTggS0SjuXfPPdlaExVrQgcdt4TD+SqTCJs5H7Rx5cCaM8dz4MB0AQuMipOcd6xan5cBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FMmsHU7b; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1wr0HsCM; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 26 Feb 2024 22:50:12 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708987814;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/h88iFjljQgpYh/U4AubUDEoroAqEk0EzYMiCox+oTM=;
-	b=FMmsHU7b2w0cZ4Suf+UwrNN4XcWUMxmIuDyc/FW0SLky6Hq87YpApK36cwhHRTLrziWEV0
-	y9GDly0itTTVGUdLRJ0Lo98ycFISfsLDmDDVVUYXdoTV3UIukSgFtTy1SwhnDjqx2rMz0I
-	xrlC1++NgkaG+UwqUe2C9EthkbSJY0tr/Vx8fOSBq8s/jApp1OPfWcYpGYosgfNgiPmpp+
-	VY33DkrHKnN7ebSgoR1kT5T9cMYDbegkmcob3DDwMjGSD5hS/stIBIJT4NZUuHgoumXM8x
-	2fzH2ALK/TtmnRbZhho5e+JY4NzJSJLz6PbMLpaNXVozYSjZyfrwn6mtG2ntkA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708987814;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/h88iFjljQgpYh/U4AubUDEoroAqEk0EzYMiCox+oTM=;
-	b=1wr0HsCMJHsbM13Jqtnnzmz75H+tD7gmBC3SztS5navJlBxj08OGmqOeOFn6IlCygKcdRO
-	oIsi4FgXZkHFDzCg==
-From: "tip-bot2 for Breno Leitao" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/misc] x86/nmi: Fix the inverse "in NMI handler" check
-Cc: Breno Leitao <leitao@debian.org>, Thomas Gleixner <tglx@linutronix.de>,
- "Paul E. McKenney" <paulmck@kernel.org>, stable@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240207165237.1048837-1-leitao@debian.org>
-References: <20240207165237.1048837-1-leitao@debian.org>
+	s=arc-20240116; t=1708988058; c=relaxed/simple;
+	bh=R7yJHhMUzALWUVwkqwEb0QPTmDVjJOjmsFPrpsU34/s=;
+	h=Subject:Message-ID:Date:MIME-Version:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=WwgELkyiQS4csYc+1YE50gf83Jf6E0eAvL8lIRMqxp95/HYYEhi+E2mdsq3DWniVEqCJPJCkvU3nTq5kk9/a7mzLWYh5nJ4oyd9vGuyEXdHLmWI8ZNked0D5XK17fNChMGYlzN42wTDma/1P7EiWG7Tl7OQFbFeRPcxOuwX20R8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=pkl4HWtD; arc=none smtp.client-ip=99.78.197.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1708988057; x=1740524057;
+  h=message-id:date:mime-version:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:subject;
+  bh=EBOK6+JFDrs7P79a2vp69jn0JzK7kVNq2lvjt1XUtPg=;
+  b=pkl4HWtD023Oa4Y88bQNxdZrEHkpxk2XuL/zACHCAIJotQfDo8dCKLNT
+   S+kJrXIx6AXFgMtafbUKHTB7eiv/lMTlWsORCcd0ZeaPC0VBHfZS5IAzI
+   PSwlQJD6DAb3+ci7kFl/agG4/BhAIOUyO2O3llrbOtYOLdU29B1LaRVHa
+   E=;
+X-IronPort-AV: E=Sophos;i="6.06,186,1705363200"; 
+   d="scan'208";a="276895848"
+Subject: Re: [REGRESSION 6.1.70] system calls with CIFS mounts failing with "Resource
+ temporarily unavailable"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2024 22:54:15 +0000
+Received: from EX19MTAEUA001.ant.amazon.com [10.0.43.254:51768]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.45.210:2525] with esmtp (Farcaster)
+ id 42027716-0bfb-4a9f-a713-883e7afe5f50; Mon, 26 Feb 2024 22:54:13 +0000 (UTC)
+X-Farcaster-Flow-ID: 42027716-0bfb-4a9f-a713-883e7afe5f50
+Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
+ EX19MTAEUA001.ant.amazon.com (10.252.50.192) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Mon, 26 Feb 2024 22:54:13 +0000
+Received: from [192.168.17.69] (10.106.82.23) by EX19D018EUA004.ant.amazon.com
+ (10.252.50.85) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.28; Mon, 26 Feb
+ 2024 22:54:13 +0000
+Message-ID: <fd3af426-ee53-45be-9220-2ff253ea255b@amazon.com>
+Date: Mon, 26 Feb 2024 22:54:12 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170898781297.398.379688708307726561.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+CC: Linux regressions mailing list <regressions@lists.linux.dev>, "SeongJae
+ Park" <sj@kernel.org>, "pc@manguebit.com" <pc@manguebit.com>,
+	"leonardo@schenkel.net" <leonardo@schenkel.net>, "linux-cifs@vger.kernel.org"
+	<linux-cifs@vger.kernel.org>, "m.weissbach@info-gate.de"
+	<m.weissbach@info-gate.de>, "sairon@sairon.cz" <sairon@sairon.cz>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20240126191351.56183-1-sj@kernel.org>
+ <2ab43584-8b6f-4c39-ae49-401530570c7a@leemhuis.info>
+ <fd0174a5-8319-436d-bf05-0f6a3794f6f9@amazon.com>
+ <2024022604-encrypt-dullness-8127@gregkh>
+From: "Mohamed Abuelfotoh, Hazem" <abuehaze@amazon.com>
+In-Reply-To: <2024022604-encrypt-dullness-8127@gregkh>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: EX19D008EUA003.ant.amazon.com (10.252.50.155) To
+ EX19D018EUA004.ant.amazon.com (10.252.50.85)
 
-The following commit has been merged into the x86/misc branch of tip:
+On 26/02/2024 14:55, gregkh@linuxfoundation.org wrote:
 
-Commit-ID:     d54e56f31a34fa38fcb5e91df609f9633419a79a
-Gitweb:        https://git.kernel.org/tip/d54e56f31a34fa38fcb5e91df609f9633419a79a
-Author:        Breno Leitao <leitao@debian.org>
-AuthorDate:    Wed, 07 Feb 2024 08:52:35 -08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Mon, 26 Feb 2024 23:41:30 +01:00
+> 
+> Please send this as a patch series, in a new thread, so we can properly
+> track this, we have too many different threads here (and the subject
+> line is wrong...)
+> 
+> thanks,
+> 
+> greg k-h
 
-x86/nmi: Fix the inverse "in NMI handler" check
+Thanks Greg and apologize for the noise, I figured out that this has 
+something to do with our test environment setup. I have redone the test 
+manually and a looks good so I'd say we can close this thread for now :)
 
-Commit 344da544f177 ("x86/nmi: Print reasons why backtrace NMIs are
-ignored") creates a super nice framework to diagnose NMIs.
+Hazem
 
-Every time nmi_exc() is called, it increments a per_cpu counter
-(nsp->idt_nmi_seq). At its exit, it also increments the same counter.  By
-reading this counter it can be seen how many times that function was called
-(dividing by 2), and, if the function is still being executed, by checking
-the idt_nmi_seq's least significant bit.
-
-On the check side (nmi_backtrace_stall_check()), that variable is queried
-to check if the NMI is still being executed, but, there is a mistake in the
-bitwise operation. That code wants to check if the least significant bit of
-the idt_nmi_seq is set or not, but does the opposite, and checks for all
-the other bits, which will always be true after the first exc_nmi()
-executed successfully.
-
-This appends the misleading string to the dump "(CPU currently in NMI
-handler function)"
-
-Fix it by checking the least significant bit, and if it is set, append the
-string.
-
-Fixes: 344da544f177 ("x86/nmi: Print reasons why backtrace NMIs are ignored")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240207165237.1048837-1-leitao@debian.org
-
----
- arch/x86/kernel/nmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
-index d238679..c95dc1b 100644
---- a/arch/x86/kernel/nmi.c
-+++ b/arch/x86/kernel/nmi.c
-@@ -639,7 +639,7 @@ void nmi_backtrace_stall_check(const struct cpumask *btp)
- 			msgp = nmi_check_stall_msg[idx];
- 			if (nsp->idt_ignored_snap != READ_ONCE(nsp->idt_ignored) && (idx & 0x1))
- 				modp = ", but OK because ignore_nmis was set";
--			if (nmi_seq & ~0x1)
-+			if (nmi_seq & 0x1)
- 				msghp = " (CPU currently in NMI handler function)";
- 			else if (nsp->idt_nmi_seq_snap + 1 == nmi_seq)
- 				msghp = " (CPU exited one NMI handler function)";
 
