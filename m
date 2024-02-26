@@ -1,58 +1,79 @@
-Return-Path: <stable+bounces-23680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D04518674B5
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 13:22:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 927128674B4
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 13:22:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A3D4288A35
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 12:22:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B40241C24E5B
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 12:22:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D6E604BA;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E60D605A0;
 	Mon, 26 Feb 2024 12:22:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="fM+UHNL/";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="fM+UHNL/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD5D604B7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61E4604BA
 	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 12:22:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708950165; cv=none; b=VeNwrOWkG5Y1REFxrXFttQi0AQVqX2zc/upsI0mT2/BJJ6LgTZXCJN+YeWerujs+i2yhZPxLc9hz6z7azoJuVUmhe2O3sxw9p/qpP5EbCd/jhmK2XVaQD3HhKFkm1y/CwhS6/8rh15pX23XBErsBqCwCZham42EREUQq4EFrMKg=
+	t=1708950164; cv=none; b=FDB1YN7f2aZXaLlItt3KxaVfa+tSdYCp025FVEHQpQdRHwgTItSvxQwvmhJdkOIOGhTOGmBuc6a3rQuelu/LQaOKILhVKE0TXpc2qXkXu8GQEMm9o6ZEltASwlkfs/Q3VlsvbL/b+xbzfkQjnvt0S5jWLR6bmubtM/q0W4Ci5RM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708950165; c=relaxed/simple;
-	bh=6y6Lwt+QHAe6D9A9OHqvgyNxnG3uSOUfVJ9dA5yjLCc=;
+	s=arc-20240116; t=1708950164; c=relaxed/simple;
+	bh=wlcM0GA1fxNAWeER2/4NjzcsTjOmDNYK/AKVMb9NowY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SVbn0ByMNL6ht9vrSNZnI06tEYMMBeR5ScJqQuSu1XkxO+QvFiqTG0foGQX56O4OVHKHPHViPTBMzYKteFcmGOdY8lgcEIZPs8NN2QDy0jryL9BKNs8koKsA0tdu5YfAnclppbT8zXyJ4rIbSOIkmDtuYITV/FIJ866Kxixn7nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; arc=none smtp.client-ip=195.135.223.131
+	 MIME-Version; b=XjSw8ARJAbg9qKJQtnmcZ+I5KcWriEyY+aM5ZmZKHUARHbTjj7Dfl2TyDG4Tw7TpT6mrL0nubdd7BFzsvO5C0sZxGOm/SUNcmWJSvABZouf5yAWn4W9Gf3GkAtM3tkkQUcjxGN1Y/f0/OE6IaXaVQTyta8k3RqLPEjdQtiyds40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=fM+UHNL/; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=fM+UHNL/; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B517F1FB4D;
-	Mon, 26 Feb 2024 12:22:40 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0B4C122585;
+	Mon, 26 Feb 2024 12:22:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1708950161; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J0Ave3OvOLpr/cNMUpFLA6JvTuWTFvSTA2se5UlS474=;
+	b=fM+UHNL/riQbIL101D0+zaj97A2wGxV07NcioXZbJpvdyeIFRQ07mOH/V0GpeXl6iyk8Nt
+	tz1Cp6DS1HJ2PBNtSxW84ErJMBqCykvUOeFyQzCO1gTF7PfZ+vgsCOoZd2WSeBUaefeJeE
+	ixo3kJB6zc24arf37/dsi6imFsfgSZI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1708950161; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J0Ave3OvOLpr/cNMUpFLA6JvTuWTFvSTA2se5UlS474=;
+	b=fM+UHNL/riQbIL101D0+zaj97A2wGxV07NcioXZbJpvdyeIFRQ07mOH/V0GpeXl6iyk8Nt
+	tz1Cp6DS1HJ2PBNtSxW84ErJMBqCykvUOeFyQzCO1gTF7PfZ+vgsCOoZd2WSeBUaefeJeE
+	ixo3kJB6zc24arf37/dsi6imFsfgSZI=
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7833113AA6;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C3F9913AA1;
 	Mon, 26 Feb 2024 12:22:40 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([10.150.64.162])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 6IkYG5CC3GU9TQAAD6G6ig
+	id eLSbLZCC3GU9TQAAD6G6ig
 	(envelope-from <nik.borisov@suse.com>); Mon, 26 Feb 2024 12:22:40 +0000
 From: Nikolay Borisov <nik.borisov@suse.com>
 To: stable@vger.kernel.org
 Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Nikolay Borisov <nik.borisov@suse.com>
-Subject: [PATCH v2 4/7] x86/entry_32: Add VERW just before userspace transition
-Date: Mon, 26 Feb 2024 14:22:34 +0200
-Message-Id: <20240226122237.198921-5-nik.borisov@suse.com>
+Subject: [PATCH v2 5/7] x86/bugs: Use ALTERNATIVE() instead of mds_user_clear static key
+Date: Mon, 26 Feb 2024 14:22:35 +0200
+Message-Id: <20240226122237.198921-6-nik.borisov@suse.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240226122237.198921-1-nik.borisov@suse.com>
 References: <20240226122237.198921-1-nik.borisov@suse.com>
@@ -63,58 +84,243 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out2.suse.de;
+Authentication-Results: smtp-out1.suse.de;
 	none
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	 REPLY(-4.00)[]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: B517F1FB4D
 X-Spam-Level: 
-X-Spam-Score: -4.00
+X-Spam-Score: -3.30
+X-Spamd-Result: default: False [-3.30 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 RCPT_COUNT_THREE(0.00)[4];
+	 R_MISSING_CHARSET(2.50)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 REPLY(-4.00)[];
+	 BROKEN_CONTENT_TYPE(1.50)[];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 TO_DN_SOME(0.00)[];
+	 DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 MID_CONTAINS_FROM(1.00)[];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,suse.com:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_TLS_ALL(0.00)[];
+	 BAYES_HAM(-3.00)[100.00%]
 X-Spam-Flag: NO
 
 From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-[ Upstream commit a0e2dab44d22b913b4c228c8b52b2a104434b0b3 ]
-As done for entry_64, add support for executing VERW late in exit to
-user path for 32-bit mode.
+[ Upstream commit 6613d82e617dd7eb8b0c40b2fe3acea655b1d611 ]
+
+The VERW mitigation at exit-to-user is enabled via a static branch
+mds_user_clear. This static branch is never toggled after boot, and can
+be safely replaced with an ALTERNATIVE() which is convenient to use in
+asm.
+
+Switch to ALTERNATIVE() to use the VERW mitigation late in exit-to-user
+path. Also remove the now redundant VERW in exc_nmi() and
+arch_exit_to_user_mode().
 
 Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20240213-delay-verw-v8-3-a6216d83edb7%40linux.intel.com
+Link: https://lore.kernel.org/all/20240213-delay-verw-v8-4-a6216d83edb7%40linux.intel.com
 Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
 ---
- arch/x86/entry/entry_32.S | 3 +++
- 1 file changed, 3 insertions(+)
+ Documentation/x86/mds.rst            | 38 ++++++++++++++++++++--------
+ arch/x86/entry/common.c              |  2 --
+ arch/x86/include/asm/nospec-branch.h | 12 ---------
+ arch/x86/kernel/cpu/bugs.c           | 15 +++++------
+ arch/x86/kernel/nmi.c                |  3 ---
+ arch/x86/kvm/vmx/vmx.c               |  2 +-
+ 6 files changed, 34 insertions(+), 38 deletions(-)
 
-diff --git a/arch/x86/entry/entry_32.S b/arch/x86/entry/entry_32.S
-index 740df9cc2196..45419307fa1a 100644
---- a/arch/x86/entry/entry_32.S
-+++ b/arch/x86/entry/entry_32.S
-@@ -1013,6 +1013,7 @@ ENTRY(entry_SYSENTER_32)
- 	BUG_IF_WRONG_CR3 no_user_check=1
- 	popfl
- 	popl	%eax
-+	CLEAR_CPU_BUFFERS
+diff --git a/Documentation/x86/mds.rst b/Documentation/x86/mds.rst
+index 5d4330be200f..e801df0bb3a8 100644
+--- a/Documentation/x86/mds.rst
++++ b/Documentation/x86/mds.rst
+@@ -95,6 +95,9 @@ enters a C-state.
+ 
+     mds_clear_cpu_buffers()
+ 
++Also macro CLEAR_CPU_BUFFERS can be used in ASM late in exit-to-user path.
++Other than CFLAGS.ZF, this macro doesn't clobber any registers.
++
+ The mitigation is invoked on kernel/userspace, hypervisor/guest and C-state
+ (idle) transitions.
+ 
+@@ -138,17 +141,30 @@ Mitigation points
+ 
+    When transitioning from kernel to user space the CPU buffers are flushed
+    on affected CPUs when the mitigation is not disabled on the kernel
+-   command line. The migitation is enabled through the static key
+-   mds_user_clear.
+-
+-   The mitigation is invoked in prepare_exit_to_usermode() which covers
+-   all but one of the kernel to user space transitions.  The exception
+-   is when we return from a Non Maskable Interrupt (NMI), which is
+-   handled directly in do_nmi().
+-
+-   (The reason that NMI is special is that prepare_exit_to_usermode() can
+-    enable IRQs.  In NMI context, NMIs are blocked, and we don't want to
+-    enable IRQs with NMIs blocked.)
++   command line. The mitigation is enabled through the feature flag
++   X86_FEATURE_CLEAR_CPU_BUF.
++
++   The mitigation is invoked just before transitioning to userspace after
++   user registers are restored. This is done to minimize the window in
++   which kernel data could be accessed after VERW e.g. via an NMI after
++   VERW.
++
++   **Corner case not handled**
++   Interrupts returning to kernel don't clear CPUs buffers since the
++   exit-to-user path is expected to do that anyways. But, there could be
++   a case when an NMI is generated in kernel after the exit-to-user path
++   has cleared the buffers. This case is not handled and NMI returning to
++   kernel don't clear CPU buffers because:
++
++   1. It is rare to get an NMI after VERW, but before returning to userspace.
++   2. For an unprivileged user, there is no known way to make that NMI
++      less rare or target it.
++   3. It would take a large number of these precisely-timed NMIs to mount
++      an actual attack.  There's presumably not enough bandwidth.
++   4. The NMI in question occurs after a VERW, i.e. when user state is
++      restored and most interesting data is already scrubbed. Whats left
++      is only the data that NMI touches, and that may or may not be of
++      any interest.
+ 
+ 
+ 2. C-State transition
+diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
+index 3f8e22615812..c93c9f3a6a25 100644
+--- a/arch/x86/entry/common.c
++++ b/arch/x86/entry/common.c
+@@ -216,8 +216,6 @@ __visible inline void prepare_exit_to_usermode(struct pt_regs *regs)
+ #endif
+ 
+ 	user_enter_irqoff();
+-
+-	mds_user_clear_cpu_buffers();
+ }
+ 
+ #define SYSCALL_EXIT_WORK_FLAGS				\
+diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
+index ba069ed16f94..649d734d90bd 100644
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -353,7 +353,6 @@ DECLARE_STATIC_KEY_FALSE(switch_to_cond_stibp);
+ DECLARE_STATIC_KEY_FALSE(switch_mm_cond_ibpb);
+ DECLARE_STATIC_KEY_FALSE(switch_mm_always_ibpb);
+ 
+-DECLARE_STATIC_KEY_FALSE(mds_user_clear);
+ DECLARE_STATIC_KEY_FALSE(mds_idle_clear);
+ 
+ DECLARE_STATIC_KEY_FALSE(mmio_stale_data_clear);
+@@ -385,17 +384,6 @@ static __always_inline void mds_clear_cpu_buffers(void)
+ 	asm volatile("verw %[ds]" : : [ds] "m" (ds) : "cc");
+ }
+ 
+-/**
+- * mds_user_clear_cpu_buffers - Mitigation for MDS and TAA vulnerability
+- *
+- * Clear CPU buffers if the corresponding static key is enabled
+- */
+-static __always_inline void mds_user_clear_cpu_buffers(void)
+-{
+-	if (static_branch_likely(&mds_user_clear))
+-		mds_clear_cpu_buffers();
+-}
+-
+ /**
+  * mds_idle_clear_cpu_buffers - Mitigation for MDS vulnerability
+  *
+diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
+index 48ae44cf7795..dfac90db22a0 100644
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -102,9 +102,6 @@ DEFINE_STATIC_KEY_FALSE(switch_mm_cond_ibpb);
+ /* Control unconditional IBPB in switch_mm() */
+ DEFINE_STATIC_KEY_FALSE(switch_mm_always_ibpb);
+ 
+-/* Control MDS CPU buffer clear before returning to user space */
+-DEFINE_STATIC_KEY_FALSE(mds_user_clear);
+-EXPORT_SYMBOL_GPL(mds_user_clear);
+ /* Control MDS CPU buffer clear before idling (halt, mwait) */
+ DEFINE_STATIC_KEY_FALSE(mds_idle_clear);
+ EXPORT_SYMBOL_GPL(mds_idle_clear);
+@@ -236,7 +233,7 @@ static void __init mds_select_mitigation(void)
+ 		if (!boot_cpu_has(X86_FEATURE_MD_CLEAR))
+ 			mds_mitigation = MDS_MITIGATION_VMWERV;
+ 
+-		static_branch_enable(&mds_user_clear);
++		setup_force_cpu_cap(X86_FEATURE_CLEAR_CPU_BUF);
+ 
+ 		if (!boot_cpu_has(X86_BUG_MSBDS_ONLY) &&
+ 		    (mds_nosmt || cpu_mitigations_auto_nosmt()))
+@@ -333,7 +330,7 @@ static void __init taa_select_mitigation(void)
+ 	 * For guests that can't determine whether the correct microcode is
+ 	 * present on host, enable the mitigation for UCODE_NEEDED as well.
+ 	 */
+-	static_branch_enable(&mds_user_clear);
++	setup_force_cpu_cap(X86_FEATURE_CLEAR_CPU_BUF);
+ 
+ 	if (taa_nosmt || cpu_mitigations_auto_nosmt())
+ 		cpu_smt_disable(false);
+@@ -401,7 +398,7 @@ static void __init mmio_select_mitigation(void)
+ 	 */
+ 	if (boot_cpu_has_bug(X86_BUG_MDS) || (boot_cpu_has_bug(X86_BUG_TAA) &&
+ 					      boot_cpu_has(X86_FEATURE_RTM)))
+-		static_branch_enable(&mds_user_clear);
++		setup_force_cpu_cap(X86_FEATURE_CLEAR_CPU_BUF);
+ 	else
+ 		static_branch_enable(&mmio_stale_data_clear);
+ 
+@@ -461,12 +458,12 @@ static void __init md_clear_update_mitigation(void)
+ 	if (cpu_mitigations_off())
+ 		return;
+ 
+-	if (!static_key_enabled(&mds_user_clear))
++	if (!boot_cpu_has(X86_FEATURE_CLEAR_CPU_BUF))
+ 		goto out;
  
  	/*
- 	 * Return back to the vDSO, which will pop ecx and edx.
-@@ -1094,6 +1095,7 @@ ENTRY(entry_INT80_32)
+-	 * mds_user_clear is now enabled. Update MDS, TAA and MMIO Stale Data
+-	 * mitigation, if necessary.
++	 * X86_FEATURE_CLEAR_CPU_BUF is now enabled. Update MDS, TAA and MMIO
++	 * Stale Data mitigation, if necessary.
+ 	 */
+ 	if (mds_mitigation == MDS_MITIGATION_OFF &&
+ 	    boot_cpu_has_bug(X86_BUG_MDS)) {
+diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
+index 5bb001c0c771..b0caa7185922 100644
+--- a/arch/x86/kernel/nmi.c
++++ b/arch/x86/kernel/nmi.c
+@@ -553,9 +553,6 @@ do_nmi(struct pt_regs *regs, long error_code)
+ 		write_cr2(this_cpu_read(nmi_cr2));
+ 	if (this_cpu_dec_return(nmi_state))
+ 		goto nmi_restart;
+-
+-	if (user_mode(regs))
+-		mds_user_clear_cpu_buffers();
+ }
+ NOKPROBE_SYMBOL(do_nmi);
  
- 	/* Restore user state */
- 	RESTORE_REGS pop=4			# skip orig_eax/error_code
-+	CLEAR_CPU_BUFFERS
- .Lirq_return:
- 	/*
- 	 * ARCH_HAS_MEMBARRIER_SYNC_CORE rely on IRET core serialization
-@@ -1567,6 +1569,7 @@ ENTRY(nmi)
- 
- 	/* Not on SYSENTER stack. */
- 	call	do_nmi
-+	CLEAR_CPU_BUFFERS
- 	jmp	.Lnmi_return
- 
- .Lnmi_from_sysenter_stack:
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index c93070829790..4bf0c6221ec8 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -6662,7 +6662,7 @@ static void vmx_vcpu_run(struct kvm_vcpu *vcpu)
+ 	/* L1D Flush includes CPU buffer clear to mitigate MDS */
+ 	if (static_branch_unlikely(&vmx_l1d_should_flush))
+ 		vmx_l1d_flush(vcpu);
+-	else if (static_branch_unlikely(&mds_user_clear))
++	else if (cpu_feature_enabled(X86_FEATURE_CLEAR_CPU_BUF))
+ 		mds_clear_cpu_buffers();
+ 	else if (static_branch_unlikely(&mmio_stale_data_clear) &&
+ 		 kvm_arch_has_assigned_device(vcpu->kvm))
 -- 
 2.34.1
 
