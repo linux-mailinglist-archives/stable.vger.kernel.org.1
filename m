@@ -1,111 +1,146 @@
-Return-Path: <stable+bounces-23743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67127867DBF
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 18:13:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61050867DD3
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 18:15:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FE5128506C
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 17:13:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D03B1F2C1C0
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 17:15:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1CCC1339BD;
-	Mon, 26 Feb 2024 17:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C61C12F367;
+	Mon, 26 Feb 2024 17:05:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="J5hwbTHq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-out.aladdin-rd.ru (mail-out.aladdin-rd.ru [91.199.251.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-bc0b.mail.infomaniak.ch (smtp-bc0b.mail.infomaniak.ch [45.157.188.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 868ED133429;
-	Mon, 26 Feb 2024 17:00:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.199.251.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85EF8135A48
+	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 17:05:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.157.188.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708966836; cv=none; b=hhlQRbgi9vqcTBihtF1YMM32PXXFQTv7FzAFQNHB98eJdPzTwXHzy8yq5diuU/lsHQ33WhtXKLhZq3iOH9UJI+oCzHUdLo66KLALvh7snEQevxFjjjLxnpcGkU4yFJvVNvi9GoTVRaSM812eIvb5zTwBcSM0Gf+McnJz0XZEjqY=
+	t=1708967148; cv=none; b=atGg2OybywzXDCyFajh3sxh3leUBNbkZfWxx3rWiKPLIyd3ZuN4JY0Fj5q4+QVRwYcWDZlOuRFHNfb+Y6FrXl8/x3oQVYXHP5HKQQHo9zdCuS4XpxAlAobiOSHwbduGc+zvgiy8rastYreArN/Kg/w6Xmg5QIJgkFUjL5Up1HCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708966836; c=relaxed/simple;
-	bh=TJQajcvykBMBxUEeqy/MVrgfkPcyDTbvbZrHw1dY2c0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DAuNCR0gcAoHJ6QZnlAKHYlayDYYHesBlPlImpGgyQa7xYyqcHM3xWgbxYNRXwHhmL/SfN/GEI90IwgwUmt0KiG8lmfFMo5CrPEJpW3E1ACAP0bg1uCbFYdszuDr9iVkhitaUiApol8w3Vhp5eFdRjpJW5npu8rFYKyBM0+VrnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aladdin.ru; spf=pass smtp.mailfrom=aladdin.ru; arc=none smtp.client-ip=91.199.251.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aladdin.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aladdin.ru
-From: Daniil Dulov <d.dulov@aladdin.ru>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
-CC: Daniil Dulov <d.dulov@aladdin.ru>, Davidlohr Bueso <dave@stgolabs.net>,
-	"Paul E. McKenney" <paulmck@kernel.org>, Josh Triplett
-	<josh@joshtriplett.org>, Steven Rostedt <rostedt@goodmis.org>, Mathieu
- Desnoyers <mathieu.desnoyers@efficios.com>, Lai Jiangshan
-	<jiangshanlai@gmail.com>, Joel Fernandes <joel@joelfernandes.org>,
-	<linux-kernel@vger.kernel.org>, <rcu@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>, David Vernet <void@manifault.com>
-Subject: [PATCH 5.10 1/1] rcutorture: Add missing return and use __func__ in warning
-Date: Mon, 26 Feb 2024 20:00:11 +0300
-Message-ID: <20240226170011.22798-2-d.dulov@aladdin.ru>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240226170011.22798-1-d.dulov@aladdin.ru>
-References: <20240226170011.22798-1-d.dulov@aladdin.ru>
+	s=arc-20240116; t=1708967148; c=relaxed/simple;
+	bh=TEpQO8oVhWg12vbtVS68hwoIFoQZycElKAGrNEzuM9o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bpasQneow025Y64dPwVjD+3xcvZQ3Wc4Rry/4MgAWT8ISCUVS5E4bk/vxEThD2w762YQhwlQGZRVan6s1XK2+NxshLfvHa5DBkT5WRh2NTIZCsHYs80YMUl9QW9aqKIy+KSPtb72WmvqzP8vEbFVbpYV+0k+WBq9eaE9Vo3z4FA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=J5hwbTHq; arc=none smtp.client-ip=45.157.188.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
+Received: from smtp-4-0001.mail.infomaniak.ch (smtp-4-0001.mail.infomaniak.ch [10.7.10.108])
+	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4Tk6Sk4MjfzQkL;
+	Mon, 26 Feb 2024 18:05:42 +0100 (CET)
+Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4Tk6Sj5blNz1sr;
+	Mon, 26 Feb 2024 18:05:41 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
+	s=20191114; t=1708967142;
+	bh=TEpQO8oVhWg12vbtVS68hwoIFoQZycElKAGrNEzuM9o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=J5hwbTHqlvYD7XVRvMUl+1yLrl1IYNrSHFaPd8XOBjVbSlYpYstl5VbR9fB/ZR0zT
+	 JMGK2lOQSwEMUYdDl7Dyk0mcgPxC3oA1Jqi097/QPKxFi0rLGPUkh6CUmXtp72Ifs7
+	 JsByWA9GE4IGe2H/Z8jBwKANLAlE0JkMPCdJXydE=
+Date: Mon, 26 Feb 2024 18:05:33 +0100
+From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
+To: =?utf-8?Q?G=C3=BCnther?= Noack <gnoack3000@gmail.com>
+Cc: =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, 
+	Paul Moore <paul@paul-moore.com>, "Serge E . Hallyn" <serge@hallyn.com>, 
+	Konstantin Meskhidze <konstantin.meskhidze@huawei.com>, Shervin Oloumi <enlightened@chromium.org>, 
+	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] landlock: Warn once if a Landlock action is requested
+ while disabled
+Message-ID: <20240226.Ceemai4ahxei@digikod.net>
+References: <20240219191804.2978911-1-mic@digikod.net>
+ <20240221.b8dcd9590c37@gnoack.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EXCH-2016-01.aladdin.ru (192.168.1.101) To
- EXCH-2016-01.aladdin.ru (192.168.1.101)
+In-Reply-To: <20240221.b8dcd9590c37@gnoack.org>
+X-Infomaniak-Routing: alpha
 
-From: David Vernet <void@manifault.com>
+On Wed, Feb 21, 2024 at 10:35:50PM +0100, Günther Noack wrote:
+> Hello!
+> 
+> I think this is a good idea.
+> Some minor implementation remarks below.
+> 
+> On Mon, Feb 19, 2024 at 08:18:04PM +0100, Mickaël Salaün wrote:
+> > Because sandboxing can be used as an opportunistic security measure,
+> > user space may not log unsupported features.  Let the system
+> > administrator know if an application tries to use Landlock but failed
+> > because it isn't enabled at boot time.  This may be caused by bootloader
+> > configurations with outdated "lsm" kernel's command-line parameter.
+> > 
+> > Cc: Günther Noack <gnoack@google.com>
+> > Cc: stable@vger.kernel.org
+> > Fixes: 265885daf3e5 ("landlock: Add syscall implementations")
+> > Signed-off-by: Mickaël Salaün <mic@digikod.net>
+> > ---
+> >  security/landlock/syscalls.c | 18 +++++++++++++++---
+> >  1 file changed, 15 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/security/landlock/syscalls.c b/security/landlock/syscalls.c
+> > index f0bc50003b46..b5b424819dee 100644
+> > --- a/security/landlock/syscalls.c
+> > +++ b/security/landlock/syscalls.c
+> > @@ -33,6 +33,18 @@
+> >  #include "ruleset.h"
+> >  #include "setup.h"
+> >  
+> > +static bool is_not_initialized(void)
+> > +{
+> > +	if (likely(landlock_initialized))
+> > +		return false;
+> 
+> Optional stylistic remark; I try to avoid predicate functions which
+> have a "negated" meaning, because double negations are slightly more
+> error prone.  (We return false here, so Landlock is not not
+> initialized.)
 
-commit 80dcee695143255261f30c7cc2a041ba413717a4 upstream.
+I agree, I was also bothered about this double negation. I'll send a v2
+with the same behavior but an is_initialized() helper instead.
 
-The rcutorture module has an rcu_torture_writer task that repeatedly
-performs writes, synchronizations, and deletes. There is a corner-case
-check in rcu_torture_writer() wherein if nsynctypes is 0, a warning is
-issued and the task waits to be stopped via a call to
-torture_kthread_stopping() rather than performing any work.
+> 
+> > +
+> > +	pr_warn_once(
+> > +		"Disabled but requested by user space. "
+> > +		"You should enable Landlock at boot time: "
+> > +		"https://docs.kernel.org/userspace-api/landlock.html#kernel-support\n");
+> > +	return true;
+> > +}
+> > +
+> >  /**
+> >   * copy_min_struct_from_user - Safe future-proof argument copying
+> >   *
+> > @@ -173,7 +185,7 @@ SYSCALL_DEFINE3(landlock_create_ruleset,
+> >  	/* Build-time checks. */
+> >  	build_check_abi();
+> >  
+> > -	if (!landlock_initialized)
+> > +	if (is_not_initialized())
+> >  		return -EOPNOTSUPP;
+> 
+> Technically, any Landlock user needs to go through the
+> landlock_create_ruleset() system call anyway; it might be enough to
+> just add it in that place and leave the other system calls as they
+> were.  Then you could also omit the special function.
 
-There should be a return statement following this call to
-torture_kthread_stopping(), as the intention with issuing the call to
-torture_kthread_stopping() in the first place is to avoid the
-rcu_torture_writer task from performing any work. Some of the work may even
-be dangerous to perform, such as potentially causing a #DE due to
-nsynctypes being used in a modulo operator when querying for sync updates
-to issue.
+True, but we never know. I prefer to cover all entry points the same
+way.  It makes things more consistent and easier to review.
 
-This patch adds the missing return call.  As a bonus, it also fixes a
-checkpatch warning that was emitted due to the WARN_ONCE() call using the
-name of the function rather than __func__.
-
-Signed-off-by: David Vernet <void@manifault.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
----
- kernel/rcu/rcutorture.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/kernel/rcu/rcutorture.c b/kernel/rcu/rcutorture.c
-index 6c1aea48a79a..69856904838c 100644
---- a/kernel/rcu/rcutorture.c
-+++ b/kernel/rcu/rcutorture.c
-@@ -1063,7 +1063,7 @@ rcu_torture_writer(void *arg)
- 		pr_alert("%s: gp_sync without primitives.\n", __func__);
- 	}
- 	if (WARN_ONCE(nsynctypes == 0,
--		      "rcu_torture_writer: No update-side primitives.\n")) {
-+		      "%s: No update-side primitives.\n", __func__)) {
- 		/*
- 		 * No updates primitives, so don't try updating.
- 		 * The resulting test won't be testing much, hence the
-@@ -1071,6 +1071,7 @@ rcu_torture_writer(void *arg)
- 		 */
- 		rcu_torture_writer_state = RTWS_STOPPING;
- 		torture_kthread_stopping("rcu_torture_writer");
-+		return 0;
- 	}
- 
- 	do {
--- 
-2.25.1
-
+> 
+> Reviewed-by: Günther Noack <gnoack3000@gmail.com>
+> 
+> –Günther
+> 
 
