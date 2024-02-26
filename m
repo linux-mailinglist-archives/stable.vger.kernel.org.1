@@ -1,79 +1,58 @@
-Return-Path: <stable+bounces-23741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF28C867DA6
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 18:11:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B13C0867DB8
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 18:13:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A80EB333C4
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 17:10:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 690EF2932C2
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 17:13:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04DEB131E48;
-	Mon, 26 Feb 2024 16:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10EDA131E29;
+	Mon, 26 Feb 2024 17:00:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-out.aladdin-rd.ru (mail-out.aladdin-rd.ru [91.199.251.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B31131748;
-	Mon, 26 Feb 2024 16:57:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0414112CD8E;
+	Mon, 26 Feb 2024 17:00:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.199.251.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708966664; cv=none; b=OeD5MeNKEqYjGMSuOXISscCSEcIyRO+dit2MNsMYsC+1no0RZxDhtAkBQPz+mZFdOORHpMn5wZoeuwGJeAe1LXcPXfm7M3of5/lwGtuq/WvIEXR2GWWEcLkTDq4IFUYPbH3Y5DL0nxgzuyrBr5XIARFZBgrv54waRVll/x+leas=
+	t=1708966829; cv=none; b=DoGWO5vZPd9XfSDvFDcswfp7CQDatPchvOT0hbqgubNlprvdGATqDQjYEmSeLGq6a2ZEXKf6SLu9kJoVMw8N7/CY2yZtkzPPqPF+emD4brAYF4ttsMHM55A/ApvR3l7wAMfMQiLhF1502A+qgRqtHImJ9L2UmK36ZCZ9LJe1Jjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708966664; c=relaxed/simple;
-	bh=HcRKm6vApqzrzvFikMkQEsVjpTXQNlTNc66ff3SA20M=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DVYRyjI3c9cEizL4vCl+AOIwLmIe6Avmfhh00Km6jMLuuuhgj19hM64fKqU67L3umTqAopLKZPKAYdq+2auwTNSCfUVAZSbI92fn4MNQLp3JUmH9F4An096iEGVs9Nho7dEGQsq7REE/ExKqanFfnuzRveCH1JKYyqj4rmbr+/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47C3FC433C7;
-	Mon, 26 Feb 2024 16:57:43 +0000 (UTC)
-Date: Mon, 26 Feb 2024 11:59:42 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc: Yuanhe Shu <xiangzao@linux.alibaba.com>, Shuah Khan <shuah@kernel.org>,
- mathieu.desnoyers@efficios.com, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- stable@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [PATCH v2] selftests/ftrace: Limit length in subsystem-enable
- tests
-Message-ID: <20240226115942.1213cff4@gandalf.local.home>
-In-Reply-To: <20240226150938.7f0d8fd639bab79199d8556b@kernel.org>
-References: <20240226031816.88715-1-xiangzao@linux.alibaba.com>
-	<20240226150938.7f0d8fd639bab79199d8556b@kernel.org>
-X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1708966829; c=relaxed/simple;
+	bh=sxy+LatajuR8Cqdw6yJ8oXQH6SsVfQp6uEG50xmQ4AE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=U+8UVvx9KAFI4vKqo3kcCRZ8agraCllT3eoRCNRTezd0+IyQqEO/DtKbIEzspAixS7LvX1ncLdzOkMZtqO9yFRrbAtHL4omJETKCkpNYCA+w+35n5fp+vLybX2IAjgOO4ZprXiWLBG5zhkKsvk2bwMOdVpflMuyII30/fcVCAbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aladdin.ru; spf=pass smtp.mailfrom=aladdin.ru; arc=none smtp.client-ip=91.199.251.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aladdin.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aladdin.ru
+From: Daniil Dulov <d.dulov@aladdin.ru>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
+CC: Daniil Dulov <d.dulov@aladdin.ru>, Davidlohr Bueso <dave@stgolabs.net>,
+	"Paul E. McKenney" <paulmck@kernel.org>, Josh Triplett
+	<josh@joshtriplett.org>, Steven Rostedt <rostedt@goodmis.org>, Mathieu
+ Desnoyers <mathieu.desnoyers@efficios.com>, Lai Jiangshan
+	<jiangshanlai@gmail.com>, Joel Fernandes <joel@joelfernandes.org>,
+	<linux-kernel@vger.kernel.org>, <rcu@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>
+Subject: [PATCH 5.10 0/1] rcutorture: Add missing return and use __func__ in warning
+Date: Mon, 26 Feb 2024 20:00:10 +0300
+Message-ID: <20240226170011.22798-1-d.dulov@aladdin.ru>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EXCH-2016-01.aladdin.ru (192.168.1.101) To
+ EXCH-2016-01.aladdin.ru (192.168.1.101)
 
-On Mon, 26 Feb 2024 15:09:38 +0900
-Masami Hiramatsu (Google) <mhiramat@kernel.org> wrote:
-
-> On Mon, 26 Feb 2024 11:18:16 +0800
-> Yuanhe Shu <xiangzao@linux.alibaba.com> wrote:
-> 
-> > While sched* events being traced and sched* events continuously happen,
-> > "[xx] event tracing - enable/disable with subsystem level files" would
-> > not stop as on some slower systems it seems to take forever.
-> > Select the first 100 lines of output would be enough to judge whether
-> > there are more than 3 types of sched events.
-> 
-> Looks good to me.
-> 
-> Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-> 
-> Hi Shuah, can you pick this as a fix?
-> 
-
-Yes please.
-
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-
--- Steve
+Svacer reports a potential division by zero at rcu_torture_writer() in
+5.10 stable release. The problem has been fixed by the following patch
+that can be cleanly applied to 5.10 branches.
 
