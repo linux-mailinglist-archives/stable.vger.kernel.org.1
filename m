@@ -1,114 +1,82 @@
-Return-Path: <stable+bounces-23717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11CC68679CE
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 16:15:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A96BA8679D2
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 16:15:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE34128EF3E
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 15:15:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8ED251C27EA0
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 15:15:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C12F1369B9;
-	Mon, 26 Feb 2024 15:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F088912B159;
+	Mon, 26 Feb 2024 15:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Zo8GnIBm";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="9qzAfDA7"
+	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="ap4iv2vj"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A8712FF76
-	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 15:03:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0F112FF65
+	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 15:05:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708959830; cv=none; b=nONBeYZbHaJN4q0MLGAQ8GlhCUxzsFsEeOK05pXjE6ARZ+srGHXjEzlcLq/aHGI2PXGIeeLvWz+R/0IphNABG/QoxX1hXrZpGheSzkgXpfeR1zNNy3YqoNuNr5KjwpPC4ICe+VZ3+GYbT4WcKQ/apXQ0urm8jxfU6P/aXKbIW5I=
+	t=1708959926; cv=none; b=TlgjaQ5Drh/nsJy/pjqLoGOh/9jFGeJhObuRZ1XJfzBn622jVbl1Sq9+/BN/gXKjheMZ2FWBWUNbPdJkOFhOXieY/dIgPxkIppQpeo/PjTev9LBwnyzBf0aZOmQAVxfsgKoputvDMFBfy7IG7HirhMTiZwTFElJ1adMm/vDnUGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708959830; c=relaxed/simple;
-	bh=bFiRvSqI79dr8UML85xQ5TUoN9Nl3VEzJu7t8Aj1j48=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=SWCCDFNtiaO1gdzY0PTyZlc+0DqAhDn3q1QMIqoPHsbFvEVayMYm2h2VY4RGhkCQp1Tg2VEWmUMaackVySlb8M55HurG+RybjvpQRkIWNn8/ZtEP5WptNoPKPrwm+U9YsO3mUk2F+M5Subf5rVZGGJ7uF9CT2QvoVMxUB6DTYYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Zo8GnIBm; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=9qzAfDA7; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708959826;
+	s=arc-20240116; t=1708959926; c=relaxed/simple;
+	bh=oX+C8FKX3HLR2gHI6r1HajiLzpFpoVhzhE+d2X0A7JA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=i5GlzniDxXcd1Z2mDRdh8xUWnQ8suWNoC05UcMT8Ylj3pHkpbpAX1ysx0ivZXRscpv433HGWdYt1levw1gz2d6407ihlkWVH5Nrqyp6ktZUdPEaP4+PYGLqqxiQyVIiP4QM1AamxLp+KnkqhxErcc2L/F/7/F7hxQ7847wAsy8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=ap4iv2vj; arc=none smtp.client-ip=116.203.91.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+Message-ID: <1d327f8d-a099-4373-aee7-a5b443d52859@manjaro.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
+	t=1708959920;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=adgPOP5opoCsXQA5vvJQMdh0DK4NK4c/OLbz9zs6OHg=;
-	b=Zo8GnIBmXcx+9/R5fbwkuDmEcCdtj9PWhU/CDHS+xZdaVsi5G+UHsyJF2q3Jgj9PoTQTzY
-	WCe2B4XJ5gYYEtTFabxlWqU+XPfGC1XVAhzlsmLQPAx3e75kBEmjT/3zesKyYcdJza/EU4
-	aUZTfbi+OVVdIDaXBtS2HNKY6w1uW+awk1/HyIkcEWMTN6hRUPR6PIGmiBIh9P3po/DYqG
-	sUYSos4AtBseXV+nbxoN5ISk/CSgwEAOYU2msonLbLVwzJE0AGQs95MTzbHFqDKWCfrADx
-	yBeDAFJ/dB9TuvL40K/5BP8UpZszuVqVZI5w7QAqfcV3JtDBHp1ZyCuEKPbYxQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708959826;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=adgPOP5opoCsXQA5vvJQMdh0DK4NK4c/OLbz9zs6OHg=;
-	b=9qzAfDA7B8yu5L241F+Wl8w3uaaln2UyxMRbdYpp1yxH9oOvpJeEeSkU9ZJ722jz3/1H7U
-	wASlcDtcK6EqgFCQ==
-To: gregkh@linuxfoundation.org, vidyas@nvidia.com, sdonthineni@nvidia.com
-Cc: stable@vger.kernel.org
-Subject: [PATCH linux-4.19.y] PCI/MSI: Prevent MSI hardware interrupt number
- truncation
-In-Reply-To: <2024022609-womanless-imprison-678c@gregkh>
-References: <2024022609-womanless-imprison-678c@gregkh>
-Date: Mon, 26 Feb 2024 16:03:46 +0100
-Message-ID: <8734tfb73h.ffs@tglx>
+	bh=2oQfvjpONC85dPB9ZuGHSrXpAf3xJR1zoLdorYfiH6A=;
+	b=ap4iv2vjVHqgIgN2i9LP3jSFCeppk0WeHm9zll6rJVqKACTuqSuzUgidb6pf8f6I80TC5Y
+	qcCkSWra0QSYUDZIg/fy2PIXmQb6L4XvdH8Y+KEsmcWEYvsthsTSUgcUhSJQzYuZzVJMhh
+	GRURBgKaIDqsl6jH94LGd/h7yWfk8y+CTAA8TL/hAfXgxYS0H2yQjmwjTBzVYVPwJWlmgs
+	MwbjYEMU29e88dTsN9FB2TdKi81PcVU2YrYrhB4ALUj7cqeLni0SNxKmrSV79lZscZ+v6L
+	DWtVRIrYnFSyQLFcn6NNSSzh2v7nVGrtVdIj7KZfxG44fywBHMEwT5EBQdaxNg==
+Date: Mon, 26 Feb 2024 22:05:16 +0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Subject: =?UTF-8?Q?Re=3A_=5BRegression=5D_5=2E4=2E269_fails_to_build_due_to_?=
+ =?UTF-8?Q?security/apparmor/af=5Funix=2Ec=3A583=3A17=3A_error=3A_too_few_ar?=
+ =?UTF-8?B?Z3VtZW50cyB0byBmdW5jdGlvbiDigJh1bml4X3N0YXRlX2xvY2tfbmVzdGVk4oCZ?=
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ 'Roman Gilg' <romangg@manjaro.org>, Mark Wagie <mark@manjaro.org>
+References: <0ca1f9f0-6a09-4beb-bbdb-101b3fc19c45@manjaro.org>
+ <2024022453-showcase-antonym-f49b@gregkh>
+From: =?UTF-8?Q?Philip_M=C3=BCller?= <philm@manjaro.org>
+Organization: Manjaro Community
+Disposition-Notification-To: =?UTF-8?Q?Philip_M=C3=BCller?=
+ <philm@manjaro.org>
+In-Reply-To: <2024022453-showcase-antonym-f49b@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=philm@manjaro.org smtp.mailfrom=philm@manjaro.org
 
+On 24/02/2024 16:11, Greg Kroah-Hartman wrote:
+> the issue might be due to this patch:
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/releases/5.4.269/af_unix-fix-lockdep-positive-in-sk_diag_dump_icons.patch
 
-From: Vidya Sagar <vidyas@nvidia.com>
+Yes, reverting this commit makes it build again on my end ...
 
-Commit db744ddd59be798c2627efbfc71f707f5a935a40 upstream.
+-- 
+Best, Philip
 
-While calculating the hardware interrupt number for a MSI interrupt, the
-higher bits (i.e. from bit-5 onwards a.k.a domain_nr >= 32) of the PCI
-domain number gets truncated because of the shifted value casting to return
-type of pci_domain_nr() which is 'int'. This for example is resulting in
-same hardware interrupt number for devices 0019:00:00.0 and 0039:00:00.0.
-
-To address this cast the PCI domain number to 'irq_hw_number_t' before left
-shifting it to calculate the hardware interrupt number.
-
-Please note that this fixes the issue only on 64-bit systems and doesn't
-change the behavior for 32-bit systems i.e. the 32-bit systems continue to
-have the issue. Since the issue surfaces only if there are too many PCIe
-controllers in the system which usually is the case in modern server
-systems and they don't tend to run 32-bit kernels.
-
-Fixes: 3878eaefb89a ("PCI/MSI: Enhance core to support hierarchy irqdomain")
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-[ tglx: Backport to linux-4.19.y ]
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Shanker Donthineni <sdonthineni@nvidia.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240115135649.708536-1-vidyas@nvidia.com
----
- drivers/pci/msi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/drivers/pci/msi.c
-+++ b/drivers/pci/msi.c
-@@ -1311,7 +1311,7 @@ static irq_hw_number_t pci_msi_domain_ca
- 
- 	return (irq_hw_number_t)desc->msi_attrib.entry_nr |
- 		pci_dev_id(dev) << 11 |
--		(pci_domain_nr(dev->bus) & 0xFFFFFFFF) << 27;
-+		((irq_hw_number_t)(pci_domain_nr(dev->bus) & 0xFFFFFFFF)) << 27;
- }
- 
- static inline bool pci_msi_desc_is_multi_msi(struct msi_desc *desc)
 
