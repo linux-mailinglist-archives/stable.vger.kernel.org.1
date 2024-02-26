@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-23689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC9188675E9
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 14:01:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A7778675F3
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 14:05:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82AD71F241D6
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 13:01:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09DA82880EF
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 13:05:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA9F47F7F9;
-	Mon, 26 Feb 2024 13:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C08627F7DE;
+	Mon, 26 Feb 2024 13:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fsGmzLeR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aT/hYp4M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF955A7B9
-	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 13:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B365A7B9
+	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 13:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708952503; cv=none; b=gJWfdebvHtFLIG8g4SBII5dwY8+j3+SI/CykxYUn+/ia6FzJmoFEx6GqtCev4wUjC5yVSAjC/uljqTupaDKVux2p+fwJrxNXVU3PBTtOcjuilG0j9w16ZjVYqswydwh/fNWAxwCgqCh9UMukkhexgXq7krN1hcgAVlBxlje2fIA=
+	t=1708952697; cv=none; b=dmXqfhuhPE5m/W3tu5cxMR2v6rgRqdmieLlRAGXpMHug15yhOqI6U66psb0M3Bin64owAB83ayNHMwgspM6QP1ohtl78xyug7U488QYAto2d0f3VwYN44cWv0Bp1Q52X3hwWPrVue/DnJ0y32Hcpr2lcxZyABJcLsLxTwMhICdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708952503; c=relaxed/simple;
-	bh=+RGBByuYFhyK92UpvEbeHlmZA3ykbVo83BHYtF6pKvY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eYGPaevZHtM/VxTsE0/eDoveMbLX31MakU5y3ILb36Ann34vCSEta1UdsgqSrjIjzy9DubTOaSkHiZZtqN1QT2/r2c1e/sVhcPKrERsCofY6wJjQoSEaUGyZDDn3GikGRy6bySIgHwV2MKS1szbmGol8cYLzs65KI/8iOv/K2fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fsGmzLeR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD85C433C7;
-	Mon, 26 Feb 2024 13:01:42 +0000 (UTC)
+	s=arc-20240116; t=1708952697; c=relaxed/simple;
+	bh=/EDcZp3lF8lr3aOZqEDoFyQK0h5pyhF4fMeE6drQTkU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=J8nEce/xvh8LyLh8Vnsvfm5GojYFjHm4oRtD9RHFFlo/GRNZuDtEmwqUfckudtM0QoF8tPQrmLFzaFH4zvhi6RhsoeDUp+2j/aqjuf2ps6xw7/SCPfwBUg6f/upm425yxYAeMyaPjvFMM1Af+RvDbnn0NP1+GaKbwtFehDaN76Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aT/hYp4M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE629C433C7;
+	Mon, 26 Feb 2024 13:04:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708952502;
-	bh=+RGBByuYFhyK92UpvEbeHlmZA3ykbVo83BHYtF6pKvY=;
+	s=korg; t=1708952697;
+	bh=/EDcZp3lF8lr3aOZqEDoFyQK0h5pyhF4fMeE6drQTkU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=fsGmzLeRUtJQ2ELXLnb0XLTIga2+HcOgkfrPDe4Bgv2bqZRBEg/vubUuu12/2i9Hb
-	 fWLON9XwRp4GXVONGWuiY0dPno89PcVQ6InarfZS+Gef70sSDh68sFI2RpBGsrrwSc
-	 X9zkFW2ffEhEsvCQkocZLHJL0+hvukWFr8u0MVy8=
-Subject: FAILED: patch "[PATCH] usb: roles: fix NULL pointer issue when put module's" failed to apply to 4.19-stable tree
-To: xu.yang_2@nxp.com,gregkh@linuxfoundation.org,heikki.krogerus@linux.intel.com
+	b=aT/hYp4MZ5ijq8Nc8SvzoOcxmfy7G3M3Ub9s4j6KwqJFTKViHWblVB8TMq/UktE75
+	 oMOYkMkSPleJntguMI9CXilFK0BgZGx/Wt8hD0DIs6MYEVxsNSXGRWz+vU0WasW4Pz
+	 5QQoTMNWkYkRWHWXLvczt55wRtFYhMSoTJLBYZXQ=
+Subject: FAILED: patch "[PATCH] mptcp: add needs_id for netlink appending addr" failed to apply to 6.6-stable tree
+To: tanggeliang@kylinos.cn,davem@davemloft.net,martineau@kernel.org,matttbe@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 26 Feb 2024 14:01:32 +0100
-Message-ID: <2024022632-wise-dose-46ed@gregkh>
+Date: Mon, 26 Feb 2024 14:04:54 +0100
+Message-ID: <2024022654-senate-unleaded-7ae3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,28 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1c9be13846c0b2abc2480602f8ef421360e1ad9e
+git cherry-pick -x 584f3894262634596532cf43a5e782e34a0ce374
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024022632-wise-dose-46ed@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024022654-senate-unleaded-7ae3@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-1c9be13846c0 ("usb: roles: fix NULL pointer issue when put module's reference")
-044a61158b9e ("USB: roles: make role_class a static const structure")
-1aaba11da9aa ("driver core: class: remove module * from class_create()")
-6e30a66433af ("driver core: class: remove struct module owner out of struct class")
-0b2a1a3938aa ("driver core: class: Clear private pointer on registration failures")
-71a7507afbc3 ("Merge tag 'driver-core-6.2-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core")
+584f38942626 ("mptcp: add needs_id for netlink appending addr")
+aab4d8564947 ("net: mptcp: use policy generated by YAML spec")
+1e07938e29c5 ("net: mptcp: rename netlink handlers to mptcp_pm_nl_<blah>_{doit,dumpit}")
+1d0507f46843 ("net: mptcp: convert netlink from small_ops to ops")
 
 thanks,
 
@@ -82,97 +80,97 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1c9be13846c0b2abc2480602f8ef421360e1ad9e Mon Sep 17 00:00:00 2001
-From: Xu Yang <xu.yang_2@nxp.com>
-Date: Mon, 29 Jan 2024 17:37:38 +0800
-Subject: [PATCH] usb: roles: fix NULL pointer issue when put module's
- reference
+From 584f3894262634596532cf43a5e782e34a0ce374 Mon Sep 17 00:00:00 2001
+From: Geliang Tang <tanggeliang@kylinos.cn>
+Date: Thu, 15 Feb 2024 19:25:29 +0100
+Subject: [PATCH] mptcp: add needs_id for netlink appending addr
 
-In current design, usb role class driver will get usb_role_switch parent's
-module reference after the user get usb_role_switch device and put the
-reference after the user put the usb_role_switch device. However, the
-parent device of usb_role_switch may be removed before the user put the
-usb_role_switch. If so, then, NULL pointer issue will be met when the user
-put the parent module's reference.
+Just the same as userspace PM, a new parameter needs_id is added for
+in-kernel PM mptcp_pm_nl_append_new_local_addr() too.
 
-This will save the module pointer in structure of usb_role_switch. Then,
-we don't need to find module by iterating long relations.
+Add a new helper mptcp_pm_has_addr_attr_id() to check whether an address
+ID is set from PM or not.
 
-Fixes: 5c54fcac9a9d ("usb: roles: Take care of driver module reference counting")
-cc: stable@vger.kernel.org
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240129093739.2371530-1-xu.yang_2@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In mptcp_pm_nl_get_local_id(), needs_id is always true, but in
+mptcp_pm_nl_add_addr_doit(), pass mptcp_pm_has_addr_attr_id() to
+needs_it.
 
-diff --git a/drivers/usb/roles/class.c b/drivers/usb/roles/class.c
-index ae41578bd014..2bad038fb9ad 100644
---- a/drivers/usb/roles/class.c
-+++ b/drivers/usb/roles/class.c
-@@ -21,6 +21,7 @@ static const struct class role_class = {
- struct usb_role_switch {
- 	struct device dev;
- 	struct mutex lock; /* device lock*/
-+	struct module *module; /* the module this device depends on */
- 	enum usb_role role;
- 
- 	/* From descriptor */
-@@ -135,7 +136,7 @@ struct usb_role_switch *usb_role_switch_get(struct device *dev)
- 						  usb_role_switch_match);
- 
- 	if (!IS_ERR_OR_NULL(sw))
--		WARN_ON(!try_module_get(sw->dev.parent->driver->owner));
-+		WARN_ON(!try_module_get(sw->module));
- 
- 	return sw;
+Fixes: efd5a4c04e18 ("mptcp: add the address ID assignment bitmap")
+Cc: stable@vger.kernel.org
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index 287a60381eae..a24c9128dee9 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -901,7 +901,8 @@ static void __mptcp_pm_release_addr_entry(struct mptcp_pm_addr_entry *entry)
  }
-@@ -157,7 +158,7 @@ struct usb_role_switch *fwnode_usb_role_switch_get(struct fwnode_handle *fwnode)
- 		sw = fwnode_connection_find_match(fwnode, "usb-role-switch",
- 						  NULL, usb_role_switch_match);
- 	if (!IS_ERR_OR_NULL(sw))
--		WARN_ON(!try_module_get(sw->dev.parent->driver->owner));
-+		WARN_ON(!try_module_get(sw->module));
  
- 	return sw;
- }
-@@ -172,7 +173,7 @@ EXPORT_SYMBOL_GPL(fwnode_usb_role_switch_get);
- void usb_role_switch_put(struct usb_role_switch *sw)
+ static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
+-					     struct mptcp_pm_addr_entry *entry)
++					     struct mptcp_pm_addr_entry *entry,
++					     bool needs_id)
  {
- 	if (!IS_ERR_OR_NULL(sw)) {
--		module_put(sw->dev.parent->driver->owner);
-+		module_put(sw->module);
- 		put_device(&sw->dev);
+ 	struct mptcp_pm_addr_entry *cur, *del_entry = NULL;
+ 	unsigned int addr_max;
+@@ -949,7 +950,7 @@ static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
+ 		}
  	}
+ 
+-	if (!entry->addr.id) {
++	if (!entry->addr.id && needs_id) {
+ find_next:
+ 		entry->addr.id = find_next_zero_bit(pernet->id_bitmap,
+ 						    MPTCP_PM_MAX_ADDR_ID + 1,
+@@ -960,7 +961,7 @@ static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
+ 		}
+ 	}
+ 
+-	if (!entry->addr.id)
++	if (!entry->addr.id && needs_id)
+ 		goto out;
+ 
+ 	__set_bit(entry->addr.id, pernet->id_bitmap);
+@@ -1092,7 +1093,7 @@ int mptcp_pm_nl_get_local_id(struct mptcp_sock *msk, struct mptcp_addr_info *skc
+ 	entry->ifindex = 0;
+ 	entry->flags = MPTCP_PM_ADDR_FLAG_IMPLICIT;
+ 	entry->lsk = NULL;
+-	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry);
++	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry, true);
+ 	if (ret < 0)
+ 		kfree(entry);
+ 
+@@ -1285,6 +1286,18 @@ static int mptcp_nl_add_subflow_or_signal_addr(struct net *net)
+ 	return 0;
  }
-@@ -189,15 +190,18 @@ struct usb_role_switch *
- usb_role_switch_find_by_fwnode(const struct fwnode_handle *fwnode)
+ 
++static bool mptcp_pm_has_addr_attr_id(const struct nlattr *attr,
++				      struct genl_info *info)
++{
++	struct nlattr *tb[MPTCP_PM_ADDR_ATTR_MAX + 1];
++
++	if (!nla_parse_nested_deprecated(tb, MPTCP_PM_ADDR_ATTR_MAX, attr,
++					 mptcp_pm_address_nl_policy, info->extack) &&
++	    tb[MPTCP_PM_ADDR_ATTR_ID])
++		return true;
++	return false;
++}
++
+ int mptcp_pm_nl_add_addr_doit(struct sk_buff *skb, struct genl_info *info)
  {
- 	struct device *dev;
-+	struct usb_role_switch *sw = NULL;
- 
- 	if (!fwnode)
- 		return NULL;
- 
- 	dev = class_find_device_by_fwnode(&role_class, fwnode);
--	if (dev)
--		WARN_ON(!try_module_get(dev->parent->driver->owner));
-+	if (dev) {
-+		sw = to_role_switch(dev);
-+		WARN_ON(!try_module_get(sw->module));
-+	}
- 
--	return dev ? to_role_switch(dev) : NULL;
-+	return sw;
- }
- EXPORT_SYMBOL_GPL(usb_role_switch_find_by_fwnode);
- 
-@@ -338,6 +342,7 @@ usb_role_switch_register(struct device *parent,
- 	sw->set = desc->set;
- 	sw->get = desc->get;
- 
-+	sw->module = parent->driver->owner;
- 	sw->dev.parent = parent;
- 	sw->dev.fwnode = desc->fwnode;
- 	sw->dev.class = &role_class;
+ 	struct nlattr *attr = info->attrs[MPTCP_PM_ENDPOINT_ADDR];
+@@ -1326,7 +1339,8 @@ int mptcp_pm_nl_add_addr_doit(struct sk_buff *skb, struct genl_info *info)
+ 			goto out_free;
+ 		}
+ 	}
+-	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry);
++	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry,
++						!mptcp_pm_has_addr_attr_id(attr, info));
+ 	if (ret < 0) {
+ 		GENL_SET_ERR_MSG_FMT(info, "too many addresses or duplicate one: %d", ret);
+ 		goto out_free;
 
 
