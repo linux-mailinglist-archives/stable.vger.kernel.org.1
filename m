@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-23694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B22A0867644
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 14:17:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8DC1867645
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 14:17:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F1FF1F2961E
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 13:17:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E87C286712
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 13:17:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 917681272AE;
-	Mon, 26 Feb 2024 13:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EAF084A4F;
+	Mon, 26 Feb 2024 13:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wfo71Spp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NhSi/lES"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52211126F1A
-	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 13:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D982126F39
+	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 13:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708953444; cv=none; b=iC6Hz4TyJR/D/JZ3A6uoc4ifaoIluviFVbJP/gBb9h4DDx770JEu/hxeiP+JINdXktROyHiqoTsK2s7qTrd9TS5mNkktkOZAIvgAkBcEciTooPyQ/58jNogWNMfYBCU1GMGqyE8BqU1J+A9HYqUfcqfpai5ELHa9WEpEH00se4k=
+	t=1708953470; cv=none; b=iz/y/m9gIrg6mYPP23qp5NwnP5XswlfQXPrl7nmdXVUqGjEnhjwJuYOsgnT+Ho4CCDpb0ISkQSovDlVA28QKH5/fuklFAd8kpmekP7YuYOSnNxlI3Vogzfw7UsZmGaKIBlLrXGlka8ISm+SyKEdclHop4faHCdNZMhqROBPf0pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708953444; c=relaxed/simple;
-	bh=112sRDahYrmJuCUnKQfejUKTX9jmavhvFV2rvk1Tt2s=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VR+Ywwbc7ABRnpcQvlOUVdj1gMNgEbQDAN8BRlS62FZd0Vyt5WxAauglWq8/Mb4Ed1jjYS+zqF394JQygBvYK6memb0o/dj2PH6Zohwm7AafbuS3rypQBlNLHcAeNt0WtVDlmwdoIAuOsDUEz0JCTtZJaRDBrKVcexmdRtMwwVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wfo71Spp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D10C0C433F1;
-	Mon, 26 Feb 2024 13:17:23 +0000 (UTC)
+	s=arc-20240116; t=1708953470; c=relaxed/simple;
+	bh=SU6AhLxtZ+8X8eh+nTkfYUMgtBtU6PbXM8gT807pMe4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eyBbOddPE2nZNrLXsY884sw83whmur4s37QQDRtEFUu6j+g5jIp1vAyaPY75S0aDr6uLsBHz0khVESXZ6lPFhsP5kYVRvD2pkJuHAX5JaKtnj3JewMuHjkxGSl4zr3L7fxEjeLZqH9f9NEK0ONm5onZH4CujoKg319uZKRGRFOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NhSi/lES; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E050C433C7;
+	Mon, 26 Feb 2024 13:17:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708953444;
-	bh=112sRDahYrmJuCUnKQfejUKTX9jmavhvFV2rvk1Tt2s=;
+	s=korg; t=1708953469;
+	bh=SU6AhLxtZ+8X8eh+nTkfYUMgtBtU6PbXM8gT807pMe4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Wfo71SppPRJ1n4/izuL/o9OvBX/fiwr42qT3O6zoOPmcrqMLKQAVXlZHXXktGSB5J
-	 FJnmleqgk1ihxXsdohHK3HdKX2g/cmDeV56kT2TDreJxnZNzF9P5t2WA+S7Z0t9cHX
-	 CylS0ASdGWIv3iIFQwCP7tu05gmaNvCrn/A6cRZQ=
-Subject: FAILED: patch "[PATCH] mptcp: fix data races on local_id" failed to apply to 5.10-stable tree
+	b=NhSi/lESnBl7jUYa5Z7hlpFk9SZ8yS6NB3KYyTAMVmn6fYzCUdyxcBOzoXdCqd7Bm
+	 Ctr9yc61+MIPmGdaqbzkXNbF4EuDAUv01db0i67i7pSfcXvmelaFszZNdFNl/26Riv
+	 NeAiEXhBSQjqaHGlzcEy/1zl+wJmrqBkcqeIaBDE=
+Subject: FAILED: patch "[PATCH] mptcp: fix data races on remote_id" failed to apply to 6.1-stable tree
 To: pabeni@redhat.com,davem@davemloft.net,martineau@kernel.org,matttbe@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 26 Feb 2024 14:17:11 +0100
-Message-ID: <2024022611-duh-rising-d12e@gregkh>
+Date: Mon, 26 Feb 2024 14:17:42 +0100
+Message-ID: <2024022642-overjoyed-retying-c027@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,22 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x a7cfe776637004a4c938fde78be4bd608c32c3ef
+git cherry-pick -x 967d3c27127e71a10ff5c083583a038606431b61
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024022611-duh-rising-d12e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024022642-overjoyed-retying-c027@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
+967d3c27127e ("mptcp: fix data races on remote_id")
 a7cfe7766370 ("mptcp: fix data races on local_id")
 84c531f54ad9 ("mptcp: userspace pm send RM_ADDR for ID 0")
 f1f26512a9bf ("mptcp: use plain bool instead of custom binary enum")
@@ -85,186 +86,86 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a7cfe776637004a4c938fde78be4bd608c32c3ef Mon Sep 17 00:00:00 2001
+From 967d3c27127e71a10ff5c083583a038606431b61 Mon Sep 17 00:00:00 2001
 From: Paolo Abeni <pabeni@redhat.com>
-Date: Thu, 15 Feb 2024 19:25:31 +0100
-Subject: [PATCH] mptcp: fix data races on local_id
+Date: Thu, 15 Feb 2024 19:25:32 +0100
+Subject: [PATCH] mptcp: fix data races on remote_id
 
-The local address id is accessed lockless by the NL PM, add
-all the required ONCE annotation. There is a caveat: the local
-id can be initialized late in the subflow life-cycle, and its
-validity is controlled by the local_id_valid flag.
+Similar to the previous patch, address the data race on
+remote_id, adding the suitable ONCE annotations.
 
-Remove such flag and encode the validity in the local_id field
-itself with negative value before initialization. That allows
-accessing the field consistently with a single read operation.
-
-Fixes: 0ee4261a3681 ("mptcp: implement mptcp_pm_remove_subflow")
+Fixes: bedee0b56113 ("mptcp: address lookup improvements")
 Cc: stable@vger.kernel.org
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 
-diff --git a/net/mptcp/diag.c b/net/mptcp/diag.c
-index e57c5f47f035..6ff6f14674aa 100644
---- a/net/mptcp/diag.c
-+++ b/net/mptcp/diag.c
-@@ -65,7 +65,7 @@ static int subflow_get_info(struct sock *sk, struct sk_buff *skb)
- 			sf->map_data_len) ||
- 	    nla_put_u32(skb, MPTCP_SUBFLOW_ATTR_FLAGS, flags) ||
- 	    nla_put_u8(skb, MPTCP_SUBFLOW_ATTR_ID_REM, sf->remote_id) ||
--	    nla_put_u8(skb, MPTCP_SUBFLOW_ATTR_ID_LOC, sf->local_id)) {
-+	    nla_put_u8(skb, MPTCP_SUBFLOW_ATTR_ID_LOC, subflow_get_local_id(sf))) {
- 		err = -EMSGSIZE;
- 		goto nla_failure;
- 	}
 diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index a24c9128dee9..912e25077437 100644
+index 912e25077437..ed6983af1ab2 100644
 --- a/net/mptcp/pm_netlink.c
 +++ b/net/mptcp/pm_netlink.c
-@@ -800,7 +800,7 @@ static void mptcp_pm_nl_rm_addr_or_subflow(struct mptcp_sock *msk,
+@@ -443,7 +443,7 @@ static unsigned int fill_remote_addresses_vec(struct mptcp_sock *msk,
+ 		mptcp_for_each_subflow(msk, subflow) {
+ 			ssk = mptcp_subflow_tcp_sock(subflow);
+ 			remote_address((struct sock_common *)ssk, &addrs[i]);
+-			addrs[i].id = subflow->remote_id;
++			addrs[i].id = READ_ONCE(subflow->remote_id);
+ 			if (deny_id0 && !addrs[i].id)
+ 				continue;
+ 
+@@ -799,18 +799,18 @@ static void mptcp_pm_nl_rm_addr_or_subflow(struct mptcp_sock *msk,
+ 
  		mptcp_for_each_subflow_safe(msk, subflow, tmp) {
  			struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
++			u8 remote_id = READ_ONCE(subflow->remote_id);
  			int how = RCV_SHUTDOWN | SEND_SHUTDOWN;
--			u8 id = subflow->local_id;
-+			u8 id = subflow_get_local_id(subflow);
+ 			u8 id = subflow_get_local_id(subflow);
  
- 			if (rm_type == MPTCP_MIB_RMADDR && subflow->remote_id != rm_id)
+-			if (rm_type == MPTCP_MIB_RMADDR && subflow->remote_id != rm_id)
++			if (rm_type == MPTCP_MIB_RMADDR && remote_id != rm_id)
  				continue;
-@@ -809,7 +809,7 @@ static void mptcp_pm_nl_rm_addr_or_subflow(struct mptcp_sock *msk,
+ 			if (rm_type == MPTCP_MIB_RMSUBFLOW && !mptcp_local_id_match(msk, id, rm_id))
+ 				continue;
  
  			pr_debug(" -> %s rm_list_ids[%d]=%u local_id=%u remote_id=%u mpc_id=%u",
  				 rm_type == MPTCP_MIB_RMADDR ? "address" : "subflow",
--				 i, rm_id, subflow->local_id, subflow->remote_id,
-+				 i, rm_id, id, subflow->remote_id,
- 				 msk->mpc_endpoint_id);
+-				 i, rm_id, id, subflow->remote_id,
+-				 msk->mpc_endpoint_id);
++				 i, rm_id, id, remote_id, msk->mpc_endpoint_id);
  			spin_unlock_bh(&msk->pm.lock);
  			mptcp_subflow_shutdown(sk, ssk, how);
-@@ -1994,7 +1994,7 @@ static int mptcp_event_add_subflow(struct sk_buff *skb, const struct sock *ssk)
- 	if (WARN_ON_ONCE(!sf))
- 		return -EINVAL;
  
--	if (nla_put_u8(skb, MPTCP_ATTR_LOC_ID, sf->local_id))
-+	if (nla_put_u8(skb, MPTCP_ATTR_LOC_ID, subflow_get_local_id(sf)))
- 		return -EMSGSIZE;
- 
- 	if (nla_put_u8(skb, MPTCP_ATTR_REM_ID, sf->remote_id))
-diff --git a/net/mptcp/pm_userspace.c b/net/mptcp/pm_userspace.c
-index e582b3b2d174..d396a5973429 100644
---- a/net/mptcp/pm_userspace.c
-+++ b/net/mptcp/pm_userspace.c
-@@ -234,7 +234,7 @@ static int mptcp_userspace_pm_remove_id_zero_address(struct mptcp_sock *msk,
- 
- 	lock_sock(sk);
- 	mptcp_for_each_subflow(msk, subflow) {
--		if (subflow->local_id == 0) {
-+		if (READ_ONCE(subflow->local_id) == 0) {
- 			has_id_0 = true;
- 			break;
- 		}
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 8ef2927ebca2..948606a537da 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -85,7 +85,7 @@ static int __mptcp_socket_create(struct mptcp_sock *msk)
- 	subflow->subflow_id = msk->subflow_id++;
- 
- 	/* This is the first subflow, always with id 0 */
--	subflow->local_id_valid = 1;
-+	WRITE_ONCE(subflow->local_id, 0);
- 	mptcp_sock_graft(msk->first, sk->sk_socket);
- 	iput(SOCK_INODE(ssock));
- 
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index ed50f2015dc3..631a7f445f34 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -491,10 +491,9 @@ struct mptcp_subflow_context {
- 		remote_key_valid : 1,        /* received the peer key from */
- 		disposable : 1,	    /* ctx can be free at ulp release time */
- 		stale : 1,	    /* unable to snd/rcv data, do not use for xmit */
--		local_id_valid : 1, /* local_id is correctly initialized */
- 		valid_csum_seen : 1,        /* at least one csum validated */
- 		is_mptfo : 1,	    /* subflow is doing TFO */
--		__unused : 9;
-+		__unused : 10;
- 	bool	data_avail;
- 	bool	scheduled;
- 	u32	remote_nonce;
-@@ -505,7 +504,7 @@ struct mptcp_subflow_context {
- 		u8	hmac[MPTCPOPT_HMAC_LEN]; /* MPJ subflow only */
- 		u64	iasn;	    /* initial ack sequence number, MPC subflows only */
- 	};
--	u8	local_id;
-+	s16	local_id;	    /* if negative not initialized yet */
- 	u8	remote_id;
- 	u8	reset_seen:1;
- 	u8	reset_transient:1;
-@@ -556,6 +555,7 @@ mptcp_subflow_ctx_reset(struct mptcp_subflow_context *subflow)
- {
- 	memset(&subflow->reset, 0, sizeof(subflow->reset));
- 	subflow->request_mptcp = 1;
-+	WRITE_ONCE(subflow->local_id, -1);
- }
- 
- static inline u64
-@@ -1022,6 +1022,15 @@ int mptcp_pm_get_local_id(struct mptcp_sock *msk, struct sock_common *skc);
- int mptcp_pm_nl_get_local_id(struct mptcp_sock *msk, struct mptcp_addr_info *skc);
- int mptcp_userspace_pm_get_local_id(struct mptcp_sock *msk, struct mptcp_addr_info *skc);
- 
-+static inline u8 subflow_get_local_id(const struct mptcp_subflow_context *subflow)
-+{
-+	int local_id = READ_ONCE(subflow->local_id);
-+
-+	if (local_id < 0)
-+		return 0;
-+	return local_id;
-+}
-+
- void __init mptcp_pm_nl_init(void);
- void mptcp_pm_nl_work(struct mptcp_sock *msk);
- void mptcp_pm_nl_rm_subflow_received(struct mptcp_sock *msk,
 diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index c34ecadee120..015184bbf06c 100644
+index 015184bbf06c..71ba86246ff8 100644
 --- a/net/mptcp/subflow.c
 +++ b/net/mptcp/subflow.c
-@@ -577,8 +577,8 @@ static void subflow_finish_connect(struct sock *sk, const struct sk_buff *skb)
+@@ -535,7 +535,7 @@ static void subflow_finish_connect(struct sock *sk, const struct sk_buff *skb)
+ 		subflow->backup = mp_opt.backup;
+ 		subflow->thmac = mp_opt.thmac;
+ 		subflow->remote_nonce = mp_opt.nonce;
+-		subflow->remote_id = mp_opt.join_id;
++		WRITE_ONCE(subflow->remote_id, mp_opt.join_id);
+ 		pr_debug("subflow=%p, thmac=%llu, remote_nonce=%u backup=%d",
+ 			 subflow, subflow->thmac, subflow->remote_nonce,
+ 			 subflow->backup);
+@@ -1567,7 +1567,7 @@ int __mptcp_subflow_connect(struct sock *sk, const struct mptcp_addr_info *loc,
+ 	pr_debug("msk=%p remote_token=%u local_id=%d remote_id=%d", msk,
+ 		 remote_token, local_id, remote_id);
+ 	subflow->remote_token = remote_token;
+-	subflow->remote_id = remote_id;
++	WRITE_ONCE(subflow->remote_id, remote_id);
+ 	subflow->request_join = 1;
+ 	subflow->request_bkup = !!(flags & MPTCP_PM_ADDR_FLAG_BACKUP);
+ 	subflow->subflow_id = msk->subflow_id++;
+@@ -1974,7 +1974,7 @@ static void subflow_ulp_clone(const struct request_sock *req,
+ 		new_ctx->fully_established = 1;
+ 		new_ctx->remote_key_valid = 1;
+ 		new_ctx->backup = subflow_req->backup;
+-		new_ctx->remote_id = subflow_req->remote_id;
++		WRITE_ONCE(new_ctx->remote_id, subflow_req->remote_id);
+ 		new_ctx->token = subflow_req->token;
+ 		new_ctx->thmac = subflow_req->thmac;
  
- static void subflow_set_local_id(struct mptcp_subflow_context *subflow, int local_id)
- {
--	subflow->local_id = local_id;
--	subflow->local_id_valid = 1;
-+	WARN_ON_ONCE(local_id < 0 || local_id > 255);
-+	WRITE_ONCE(subflow->local_id, local_id);
- }
- 
- static int subflow_chk_local_id(struct sock *sk)
-@@ -587,7 +587,7 @@ static int subflow_chk_local_id(struct sock *sk)
- 	struct mptcp_sock *msk = mptcp_sk(subflow->conn);
- 	int err;
- 
--	if (likely(subflow->local_id_valid))
-+	if (likely(subflow->local_id >= 0))
- 		return 0;
- 
- 	err = mptcp_pm_get_local_id(msk, (struct sock_common *)sk);
-@@ -1731,6 +1731,7 @@ static struct mptcp_subflow_context *subflow_create_ctx(struct sock *sk,
- 	pr_debug("subflow=%p", ctx);
- 
- 	ctx->tcp_sock = sk;
-+	WRITE_ONCE(ctx->local_id, -1);
- 
- 	return ctx;
- }
-@@ -1966,7 +1967,7 @@ static void subflow_ulp_clone(const struct request_sock *req,
- 		new_ctx->idsn = subflow_req->idsn;
- 
- 		/* this is the first subflow, id is always 0 */
--		new_ctx->local_id_valid = 1;
-+		subflow_set_local_id(new_ctx, 0);
- 	} else if (subflow_req->mp_join) {
- 		new_ctx->ssn_offset = subflow_req->ssn_offset;
- 		new_ctx->mp_join = 1;
 
 
