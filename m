@@ -1,43 +1,52 @@
-Return-Path: <stable+bounces-23713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C13986798F
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 16:09:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DE65867AA8
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 16:48:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B223C1F27020
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 15:09:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 934B9B30315
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 15:11:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCE1A12CDB8;
-	Mon, 26 Feb 2024 14:53:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17B1712DD83;
+	Mon, 26 Feb 2024 14:55:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="X5BvDma6"
 X-Original-To: stable@vger.kernel.org
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87904128368;
-	Mon, 26 Feb 2024 14:53:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A11F17FBAA;
+	Mon, 26 Feb 2024 14:55:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708959193; cv=none; b=oGwnoqgJZvIDCbdQVUCTb2JdkOecYeWq3kRlBjD0MmgU/78Dv5IrLHmf+yuY8NSICkajfC6H7spnaKFNs6mmM8/DZTDzoAcm+c03aHoKU6D+oY7c2j3xuf7aWm/jGE+6/QPeUOmavipNVmnT+QZH+gMIl+R9V9WRCMISo3WLA/c=
+	t=1708959303; cv=none; b=YkSL68had9z6M2/aaX0s0qjE8TuX5ILcDjR9lXSD/QNVm7rojM/0amq7xg4MdAvBpeV9tMMtJEQXvYvB0Ca4ZnQ2DMbqoFLympzLe2SkT/giinKwOrf/mixDFKnndEv8H5PeeeEzZQcDwp2r3beP7MHbH+MWE74O6BCanffVCpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708959193; c=relaxed/simple;
-	bh=hZdW92wKtpC15HVD9lT89vdv8fzQoI5i2f/txb1VViM=;
+	s=arc-20240116; t=1708959303; c=relaxed/simple;
+	bh=BxYZ9LdSRKDiHLKUEgpXGQTsOcHVROg0YnCSVaDW/9g=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T88YrWnT/0PUkP9221nIkUEgKwzWtMC4FSrzSpk5doj+DokAWLcwrPsGVlTx8L6wKMeVBq+4Bdl8KCKsI2eQekiojzb3uWvjm+IJ9lcqvhofuCmx8OWYrXY031n9vVnQc5aq8ryio+q7IAuG8fkorYvQ1m7oP8UewZj6FcY0J8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [141.14.220.34] (g34.guest.molgen.mpg.de [141.14.220.34])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id BB40561E5FE01;
-	Mon, 26 Feb 2024 15:52:45 +0100 (CET)
-Message-ID: <ec827479-3561-4155-91c9-82c39a687c49@molgen.mpg.de>
-Date: Mon, 26 Feb 2024 15:52:45 +0100
+	 In-Reply-To:Content-Type; b=bYqx6X2LHiSoODk2a8YkjrVWwBPpTjHQd72dcgashsG3/LwVcf/zsNeFDxwvFYrRosczF8ex4sFHTufECuNS4eZvcbyiliaVvxLROFtqdaVvxpj/GZDbQDLa/YwtUDfQRegWb7PUvXxNx/ytjaqIGQ2A/xPdFFrB0K/FEyVq82U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=X5BvDma6; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=qU6uGJ5gCCJaB1zEIQmziYSPL2tGMFcFQnLaHWsOaP4=;
+	t=1708959301; x=1709391301; b=X5BvDma6YbpRSfya0spaKW8+xuQZb6G5fCWBsJr0Yqg0WsR
+	xvS5dCcZ1PgRldexbD4lyN9AP8+eLoPHwb4Yx4+3HXUOpFQDCzPSZr78MnPzn6IlC0WzlakXN7nig
+	K9zki7TFG92ktdmD9ycNPHUN9ImyXui74WyQuRoUPfpImsQn0wYELGwmb5XbOxZByOZu1D8Ibpxzf
+	wQqhMIUsEx16+NqpAOzFYkwHcnRoZrYF4t4IW7cv4SiTHLHdvcQpE+x2NbBqWHEQvJir1D2Ua45j4
+	qK/LhyHIoCRLaTXlsvZEoSlRgp4gk56HxV7nvn/00uniSMEEf1Js8ys1as6eWIQw==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1recNe-0002Cw-Lp; Mon, 26 Feb 2024 15:54:58 +0100
+Message-ID: <abf80818-3c8c-47e1-b1d2-5fd65d65b247@leemhuis.info>
+Date: Mon, 26 Feb 2024 15:54:57 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,54 +54,64 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] usb: port: Don't try to peer unused USB ports based on
- location
-Content-Language: en-US
-To: Mathias Nyman <mathias.nyman@linux.intel.com>
-Cc: gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
- stern@rowland.harvard.edu, stable@vger.kernel.org
-References: <20240222233343.71856-1-mathias.nyman@linux.intel.com>
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20240222233343.71856-1-mathias.nyman@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: Re: [REGRESSION 6.1.70] system calls with CIFS mounts failing with
+ "Resource temporarily unavailable"
+Content-Language: en-US, de-DE
+To: "Mohamed Abuelfotoh, Hazem" <abuehaze@amazon.com>,
+ Linux regressions mailing list <regressions@lists.linux.dev>,
+ SeongJae Park <sj@kernel.org>
+Cc: "pc@manguebit.com" <pc@manguebit.com>,
+ "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+ "leonardo@schenkel.net" <leonardo@schenkel.net>,
+ "linux-cifs@vger.kernel.org" <linux-cifs@vger.kernel.org>,
+ "m.weissbach@info-gate.de" <m.weissbach@info-gate.de>,
+ "sairon@sairon.cz" <sairon@sairon.cz>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Vasiliy Kovalev <kovalev@altlinux.org>,
+ Guruswamy Basavaiah <guruswamy.basavaiah@broadcom.com>,
+ ajay.kaher@broadcom.com, tapas.kundu@broadcom.com
+References: <20240126191351.56183-1-sj@kernel.org>
+ <2ab43584-8b6f-4c39-ae49-401530570c7a@leemhuis.info>
+ <fd0174a5-8319-436d-bf05-0f6a3794f6f9@amazon.com>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <fd0174a5-8319-436d-bf05-0f6a3794f6f9@amazon.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1708959301;3c6287ca;
+X-HE-SMSGID: 1recNe-0002Cw-Lp
 
-Dear Mathias,
+[CCing a few people that afaics were involved in trying to fix the CIFS
+problems on 5.15/5.10 (to be honest I lost a bit track of that
+situation; sorry if I added too many people; at the same time I hope I
+did not forget anyone...)]
 
+Anyway: it seems 5.15.149 created a new CIFS problem, see the quoted
+mail below for details. Ciao, Thorsten
 
-Am 23.02.24 um 00:33 schrieb Mathias Nyman:
-> Unused USB ports may have bogus location data in ACPI PLD tables.
-> This causes port peering failures as these unused USB2 and USB3 ports
-> location may match.
+On 26.02.24 15:28, Mohamed Abuelfotoh, Hazem wrote:
+> On 23/02/2024 06:14, Linux regression tracking #update (Thorsten
+> Leemhuis) wrote:
+>
+>> Thx. Took a while (among others because the stable team worked a bit
+>> slower that usual), but from what Paulo Alcantara and Salvatore
+>> Bonaccorso recently said everything is afaics now fixed or on track to
+>> be fixed in all affected stable/longterm branches:
+>> https://lore.kernel.org/all/ZdgyEfNsev8WGIl5@eldamar.lan/
+>>
+>> If I got this wrong and that's not the case, please holler.
 > 
-> Due to these failures the driver prints a
-> "usb: port power management may be unreliable" warning, and
-> unnecessarily blocks port power off during runtime suspend.
-> 
-> This was debugged on a couple DELL systems where the unused ports
-> all returned zeroes in their location data.
-> Similar bugreports exist for other systems.
-> 
-> Don't try to peer or match ports that have connect type set to
-> USB_PORT_NOT_USED.
-> 
-> Fixes: 3bfd659baec8 ("usb: find internal hub tier mismatch via acpi")
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218465
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218486
-> Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
-> Link: https://lore.kernel.org/linux-usb/5406d361-f5b7-4309-b0e6-8c94408f7d75@molgen.mpg.de
-> Cc: stable@vger.kernel.org # v3.16+
-> Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-
-[…]
-
-I was able to successfully test it on the Dell PowerEdge T440, and the 
-warning is gone there too.
-
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218490
-
-
-Kind regards,
-
-Paul
+> We are seeing CIFS mount failures after upgrading from v5.15.148 to
+> v5.15.149, I have reverted eb3e28c1e8 ("smb3: Replace smb2pdu 1-element
+> arrays with flex-arrays") and I no longer see the regression. It looks
+> like the issue is also impacting v5.10.y as the mentioned reverted patch
+> has also been merged to v5.10.210. I am currently running the CIFS mount
+> test manually and will update the thread with the exact mount failure
+> error. I think we should revert eb3e28c1e8 ("smb3: Replace smb2pdu
+> 1-element arrays with flex-arrays") from both v5.15.y & v5.10.y until we
+> come up with a proper fix on this versions, please note that if we will
+> take this path then we will need to re-introduce. b3632baa5045 ("cifs:
+> fix off-by-one in SMB2_query_info_init()") which has been removed from
+> latest v5.10.y and v5.15.y releases.
 
