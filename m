@@ -1,128 +1,107 @@
-Return-Path: <stable+bounces-23710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19B2A867876
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 15:30:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2C1F86794E
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 16:01:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC9CF1F2DF01
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 14:30:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FCE71C2AA73
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 15:01:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B109812BEA7;
-	Mon, 26 Feb 2024 14:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6940E14CAC3;
+	Mon, 26 Feb 2024 14:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="pb0l6H3N"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="i36GNJFU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-52005.amazon.com (smtp-fw-52005.amazon.com [52.119.213.156])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2CB1292D9;
-	Mon, 26 Feb 2024 14:28:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7D9C14AD2D;
+	Mon, 26 Feb 2024 14:39:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708957734; cv=none; b=PPJCcTeHQs9XDCJLysqyPMs8aRXVovAAXJqcNog8+F4hDp2rJAOVAIDHH679DQANsxqoZwn9AdasZcGYYAF+avErZyKWG6CeXmQkYMCrLZohM6r4+N1JVVwMBIrHkCpSW/o1TtXAChWqD1gi50q51US3lYuy0d2MimWNCVglfag=
+	t=1708958362; cv=none; b=V/NybaR+DA7/X4GtxnFH7ztOtRvOz4KHXpvq7aFBOnAfkWbGOAgFgDTvLBmTW0YMD5Kqxe9vb24kEmSd8RDARZ8uDRduhhIgLIpLYgFPNMvLgXmK45nkFhEqEw4vF6kyWiTv9EF8qLzuxYPyFCmw1L+eQmi553wictYUprz7mLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708957734; c=relaxed/simple;
-	bh=0BRotfMPalXo5hqdz05sY70qLfIXoUMYoqgjhMDvYlY=;
-	h=Subject:Message-ID:Date:MIME-Version:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=PUdogk3H1GiVUc6BPv1sbgY8JhYzAIC67fBn+jbl8XTfryJjCon/l84R6kWVTCWzT94KCICRxQnAYXAvq+z+U/ut7ziL2gF1zjcNNAe89QgZiX/+I1eJG+wLCfaMU+SQ0GZxchBNp6BsWvu8WYEKLIqyMNZOfkwEVffK4c8M1Cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=pb0l6H3N; arc=none smtp.client-ip=52.119.213.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1708957734; x=1740493734;
-  h=message-id:date:mime-version:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:subject;
-  bh=RMTQzJS8lecM3Zt817XwKvIJXzxu0vlxx0W01zNW6N4=;
-  b=pb0l6H3NZLnVv8K8Y6tyNY84sy75BHDCQ0avgNSqCuAbXKU8i601hJws
-   6mHWVSxgKIIWZ50t47hWfYjsyQIPhWgCxAlREoV+wNjf3nj+X3+4ZcYWu
-   Etlder+IdxJb0TD2db/6H8Nh7NrbVYWs2BQZ2nZilOlZsZvgsTZeLkycG
-   s=;
-X-IronPort-AV: E=Sophos;i="6.06,185,1705363200"; 
-   d="scan'208";a="636818919"
-Subject: Re: [REGRESSION 6.1.70] system calls with CIFS mounts failing with "Resource
- temporarily unavailable"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-52005.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2024 14:28:50 +0000
-Received: from EX19MTAEUC001.ant.amazon.com [10.0.43.254:32633]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.37.70:2525] with esmtp (Farcaster)
- id 91a80cc8-7a22-4c01-9163-242ce4817eeb; Mon, 26 Feb 2024 14:28:47 +0000 (UTC)
-X-Farcaster-Flow-ID: 91a80cc8-7a22-4c01-9163-242ce4817eeb
-Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
- EX19MTAEUC001.ant.amazon.com (10.252.51.193) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Mon, 26 Feb 2024 14:28:43 +0000
-Received: from [192.168.17.69] (10.106.82.23) by EX19D018EUA004.ant.amazon.com
- (10.252.50.85) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.28; Mon, 26 Feb
- 2024 14:28:43 +0000
-Message-ID: <fd0174a5-8319-436d-bf05-0f6a3794f6f9@amazon.com>
-Date: Mon, 26 Feb 2024 14:28:41 +0000
+	s=arc-20240116; t=1708958362; c=relaxed/simple;
+	bh=u6Nlj9aFWUkGtMphlgtcfzyYeMBYqT2bTgNnhxzd4PA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QOFpq6rrWE0okhZIUPbi8cnh+KMKhcwFhWKRPRNHlu9JP70LF27zruBxHAJ2VKdOZAMN3gHqUZs+5PdEgOtHTqceH53goStOPdkdVhhOCO0DrHjwVIC2NOyno00zWDbUQQSvxQ3dp0okeGauYhIGFnEU3SFVAUslzJfvibj3I6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=i36GNJFU; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=XPs0zPZIiUMU61zxAetpvc6AZcILYC4oTZnxDxpcdNc=; b=i36GNJFUnA++Z4gOewmHXVagLb
+	6ejWEec7cnUdo6EPzUZnziutrcncOvwrvq/t31x4xz5gInslKYJbXQH9/Nu7s/CARGxVrP/eckNPc
+	YocpXU/nvYsaKSb9a23T84FaOIQ/5Vh9ZMRPJbmLWOQL2dk6OfvW2cRHs6gMThumQ6p4XDdEW9/9r
+	iSimuM7vxqGMMNyTL1WEmsiovJdAj/4R77IJtcGI+LKG/FQBiTlyh741voW9xicVhea+DTRbbB3uI
+	WQq2A+H6aS4g40j10/cZRZsa7FRSrJa53olqCx2KCIxKgmxG72NpIDwb9mPlR10OMVmdTCJ20KoLA
+	4ar5Lq4A==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:45490)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1rec8K-0003qd-23;
+	Mon, 26 Feb 2024 14:39:08 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1rec8I-0006VD-77; Mon, 26 Feb 2024 14:39:06 +0000
+Date: Mon, 26 Feb 2024 14:39:06 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Shengyu Qu <wiagn233@outlook.com>
+Cc: andrew@lunn.ch, hkallweit1@gmail.com, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v1] net: sfp: add quirks for ODI DFP-34X-2C2
+Message-ID: <ZdyiigYNGf8WVZNu@shell.armlinux.org.uk>
+References: <TY3P286MB2611C0FA24318AA397DB689B985A2@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
+ <ZdyahVYAhPgf2Xqn@shell.armlinux.org.uk>
+ <TY3P286MB2611BD62C30B37A5BE02D3C5985A2@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Linux regressions mailing list <regressions@lists.linux.dev>, "SeongJae
- Park" <sj@kernel.org>
-CC: "pc@manguebit.com" <pc@manguebit.com>, "gregkh@linuxfoundation.org"
-	<gregkh@linuxfoundation.org>, "leonardo@schenkel.net"
-	<leonardo@schenkel.net>, "linux-cifs@vger.kernel.org"
-	<linux-cifs@vger.kernel.org>, "m.weissbach@info-gate.de"
-	<m.weissbach@info-gate.de>, "sairon@sairon.cz" <sairon@sairon.cz>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20240126191351.56183-1-sj@kernel.org>
- <2ab43584-8b6f-4c39-ae49-401530570c7a@leemhuis.info>
-Content-Language: en-US
-From: "Mohamed Abuelfotoh, Hazem" <abuehaze@amazon.com>
-In-Reply-To: <2ab43584-8b6f-4c39-ae49-401530570c7a@leemhuis.info>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: EX19D015EUA004.ant.amazon.com (10.252.50.202) To
- EX19D018EUA004.ant.amazon.com (10.252.50.85)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <TY3P286MB2611BD62C30B37A5BE02D3C5985A2@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On 23/02/2024 06:14, Linux regression tracking #update (Thorsten 
-Leemhuis) wrote:
-> CAUTION: This email originated from outside of the organization. Do not click links or open attachments unless you can confirm the sender and know the content is safe.
+On Mon, Feb 26, 2024 at 10:16:46PM +0800, Shengyu Qu wrote:
+> Hi Russell,
 > 
-> 
+> > On Mon, Feb 26, 2024 at 09:23:46PM +0800, Shengyu Qu wrote:
+> > > ODI DFP-34X-2C2 is capable of 2500base-X, but incorrectly report its
+> > > capabilities in the EEPROM.
+> > > So use sfp_quirk_2500basex for this module to allow 2500Base-X mode.
+> > This was previously submitted by Sergio Palumbo, and comes in two
+> > different forms - an OEM version and non-OEM. There was extensive
+> > discussion about this, and the result is that I'm not accepting this
+> > quirk for this module.
+> > 
+> > The reason is that the module _defaults_ to 1000base-X and requires
+> > manual reconfiguration by the user to operate at 2500base-X.
+> > Unfortunately, there is no way for the kernel to know whether that
+> > reconfiguration has occurred.
+> No, In the firmware of this stick, the speed rate is configured to auto
+> negotiation rather than fixed 1000base-X.
 
-> Thx. Took a while (among others because the stable team worked a bit
-> slower that usual), but from what Paulo Alcantara and Salvatore
-> Bonaccorso recently said everything is afaics now fixed or on track to
-> be fixed in all affected stable/longterm branches:
-> https://lore.kernel.org/all/ZdgyEfNsev8WGIl5@eldamar.lan/
-> 
-> If I got this wrong and that's not the case, please holler.
-> 
-> #regzbot resolve: apparently fixed in all affected stable/longterm
-> branches with various commits
-> #regzbot ignore-activity
-> 
-> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
-> --
-> Everything you wanna know about Linux kernel regression tracking:
-> https://linux-regtracking.leemhuis.info/about/#tldr
-> That page also explains what to do if mails like this annoy you.
-> 
-> 
+How does this "auto negotiation" work?
 
-We are seeing CIFS mount failures after upgrading from v5.15.148 to 
-v5.15.149, I have reverted eb3e28c1e8 ("smb3: Replace smb2pdu 1-element 
-arrays with flex-arrays") and I no longer see the regression. It looks 
-like the issue is also impacting v5.10.y as the mentioned reverted patch 
-has also been merged to v5.10.210. I am currently running the CIFS mount 
-test manually and will update the thread with the exact mount failure 
-error. I think we should revert eb3e28c1e8 ("smb3: Replace smb2pdu 
-1-element arrays with flex-arrays") from both v5.15.y & v5.10.y until we 
-come up with a proper fix on this versions, please note that if we will 
-take this path then we will need to re-introduce. b3632baa5045 ("cifs: 
-fix off-by-one in SMB2_query_info_init()") which has been removed from 
-latest v5.10.y and v5.15.y releases.
+I mean *exactly* how does it work? How does it know whether the host is
+operating at 1000base-X or 2500base-X?
 
+There is *no* inband protocol to allow this to be negotiated.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
