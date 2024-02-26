@@ -1,82 +1,80 @@
-Return-Path: <stable+bounces-23718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A96BA8679D2
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 16:15:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 825F48679D4
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 16:15:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8ED251C27EA0
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 15:15:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1AB21C2B536
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 15:15:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F088912B159;
-	Mon, 26 Feb 2024 15:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4478C12BF03;
+	Mon, 26 Feb 2024 15:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="ap4iv2vj"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="qgABhc4V"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0F112FF65
-	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 15:05:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502C412B157;
+	Mon, 26 Feb 2024 15:06:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708959926; cv=none; b=TlgjaQ5Drh/nsJy/pjqLoGOh/9jFGeJhObuRZ1XJfzBn622jVbl1Sq9+/BN/gXKjheMZ2FWBWUNbPdJkOFhOXieY/dIgPxkIppQpeo/PjTev9LBwnyzBf0aZOmQAVxfsgKoputvDMFBfy7IG7HirhMTiZwTFElJ1adMm/vDnUGA=
+	t=1708960013; cv=none; b=Vr5LFyDmqvqg2+ooVh6mloLSIIjDt4Z319z5rk25llo++nhhztWvoC9vRTijLXuJ1MCXIPnvZ7HKlPnPcXl0CP+U2e6PBFklcxVLtOeE4sWqZ2LXk6m9kcNLasOxU/FvECcRU/1L/QWhn8OyxbWbHg4Ude8L9CV5T7RVNzfRMyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708959926; c=relaxed/simple;
-	bh=oX+C8FKX3HLR2gHI6r1HajiLzpFpoVhzhE+d2X0A7JA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=i5GlzniDxXcd1Z2mDRdh8xUWnQ8suWNoC05UcMT8Ylj3pHkpbpAX1ysx0ivZXRscpv433HGWdYt1levw1gz2d6407ihlkWVH5Nrqyp6ktZUdPEaP4+PYGLqqxiQyVIiP4QM1AamxLp+KnkqhxErcc2L/F/7/F7hxQ7847wAsy8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=ap4iv2vj; arc=none smtp.client-ip=116.203.91.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
-Message-ID: <1d327f8d-a099-4373-aee7-a5b443d52859@manjaro.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1708959920;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2oQfvjpONC85dPB9ZuGHSrXpAf3xJR1zoLdorYfiH6A=;
-	b=ap4iv2vjVHqgIgN2i9LP3jSFCeppk0WeHm9zll6rJVqKACTuqSuzUgidb6pf8f6I80TC5Y
-	qcCkSWra0QSYUDZIg/fy2PIXmQb6L4XvdH8Y+KEsmcWEYvsthsTSUgcUhSJQzYuZzVJMhh
-	GRURBgKaIDqsl6jH94LGd/h7yWfk8y+CTAA8TL/hAfXgxYS0H2yQjmwjTBzVYVPwJWlmgs
-	MwbjYEMU29e88dTsN9FB2TdKi81PcVU2YrYrhB4ALUj7cqeLni0SNxKmrSV79lZscZ+v6L
-	DWtVRIrYnFSyQLFcn6NNSSzh2v7nVGrtVdIj7KZfxG44fywBHMEwT5EBQdaxNg==
-Date: Mon, 26 Feb 2024 22:05:16 +0700
+	s=arc-20240116; t=1708960013; c=relaxed/simple;
+	bh=gTTT/xt37ba6unWv4bWQIlsiwtT9vCOYF4yilWXM058=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hjRbzcuudHRpS2JBPp979ZuRJHQbOOiM3q1REE0S4NmQ6mkkdaZE7c5uoEFy3UGL6FZ1vY2guO3YeyUrAbrwrx3hDf8B0EQci3UDzMIpBuJAFCd1qmp+hN+bF0NlxJEuKO3tVA8bh3x3eEss//fcClDuxlAZ2jHo41gNzg+7S1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=qgABhc4V; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=nGdq6XXk/UeuFTtMavMdttmSA0H2jvS5cq8hYJMXAAE=; b=qgABhc4VCew3o6bM8DM/zk3Nhx
+	6ofzYt23vaaOqwho9Sz+QjCExHO1D3JxIxkJJDbw4CuELj+2CXQ2RjUQBdJem0lb1nG5DzYXsS323
+	ejPk9phPb7CiS59mMOLbmyv4W6GmHBzTGnN6/V3b2uDlEKYf+UDlIkczFDY3MjEcgJT8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1recZ7-008jZO-R1; Mon, 26 Feb 2024 16:06:49 +0100
+Date: Mon, 26 Feb 2024 16:06:49 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Shengyu Qu <wiagn233@outlook.com>
+Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>, hkallweit1@gmail.com,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v1] net: sfp: add quirks for ODI DFP-34X-2C2
+Message-ID: <b8fdb5df-57e4-491a-b310-e8e13a89d331@lunn.ch>
+References: <TY3P286MB2611C0FA24318AA397DB689B985A2@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
+ <ZdyahVYAhPgf2Xqn@shell.armlinux.org.uk>
+ <TY3P286MB2611BD62C30B37A5BE02D3C5985A2@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
+ <ZdyiigYNGf8WVZNu@shell.armlinux.org.uk>
+ <TY3P286MB261155090B2D07593901C0DE985A2@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: =?UTF-8?Q?Re=3A_=5BRegression=5D_5=2E4=2E269_fails_to_build_due_to_?=
- =?UTF-8?Q?security/apparmor/af=5Funix=2Ec=3A583=3A17=3A_error=3A_too_few_ar?=
- =?UTF-8?B?Z3VtZW50cyB0byBmdW5jdGlvbiDigJh1bml4X3N0YXRlX2xvY2tfbmVzdGVk4oCZ?=
-Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
- 'Roman Gilg' <romangg@manjaro.org>, Mark Wagie <mark@manjaro.org>
-References: <0ca1f9f0-6a09-4beb-bbdb-101b3fc19c45@manjaro.org>
- <2024022453-showcase-antonym-f49b@gregkh>
-From: =?UTF-8?Q?Philip_M=C3=BCller?= <philm@manjaro.org>
-Organization: Manjaro Community
-Disposition-Notification-To: =?UTF-8?Q?Philip_M=C3=BCller?=
- <philm@manjaro.org>
-In-Reply-To: <2024022453-showcase-antonym-f49b@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=philm@manjaro.org smtp.mailfrom=philm@manjaro.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <TY3P286MB261155090B2D07593901C0DE985A2@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
 
-On 24/02/2024 16:11, Greg Kroah-Hartman wrote:
-> the issue might be due to this patch:
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/releases/5.4.269/af_unix-fix-lockdep-positive-in-sk_diag_dump_icons.patch
+> Well, that seems some kind weird trick implemented in that chip's SDK (maybe
+> hardware?). It would automatically detect the speed rate that host uses and
+> switch to that rate. The system log of the stick shows that.
 
-Yes, reverting this commit makes it build again on my end ...
+Please could you show some examples from the system log.
 
--- 
-Best, Philip
+If this patch is accepted, these details need to be in the commit
+message, to explain how this actually works, when it should not
+actually work....
 
+       Andrew
 
