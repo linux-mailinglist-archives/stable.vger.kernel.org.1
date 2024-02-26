@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-23757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D957C86811C
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 20:36:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DADC86811F
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 20:36:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9C84B2288C
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 19:34:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 581D0289A2D
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 19:36:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4387212F5A6;
-	Mon, 26 Feb 2024 19:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B5C212F586;
+	Mon, 26 Feb 2024 19:36:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E21B12B165
-	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 19:34:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA0591947E
+	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 19:36:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708976070; cv=none; b=jIgCURLy5eiCOEVmcD4j7ceKpcGC6VKVQVMhXdeX6Hys+bnyOenOJGmbyUi0qXgDN5HdqFWRhJ5We3Z9mU2/RQ75vgt4ez7sJoBsQlykoLgYhAdw1ACbMifrr6Ikj7qEYU6T/TyhKSRIUaQL2QpLeuGVb4TFtX21NWoE+2/+iRs=
+	t=1708976174; cv=none; b=PMNu6jZe/KSJWPfJdXIWooZIvONZM4PPzcJpT+Bp74rjBDwb+hm7hfNUwNn2XBy0CdHkofgCur5EArM6w+dyrZJPeMm4fLpht3dCf8+jK/JuBGCH/o744R0abcYVwKyizI06FuW8MXcqN9gTAdUQsczqpqloyOhR5uHdZHvzEpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708976070; c=relaxed/simple;
-	bh=0sgyTHAe+RVQP5AKGrYts+uqCmon0r/fOrNl6LFqwBk=;
+	s=arc-20240116; t=1708976174; c=relaxed/simple;
+	bh=otY6vsUl8Xa5aWZcJ0n6DE5m6wDGBtX+NOcpuCgUAYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T8se97OTWV6MyrhuGXYiNUmeCWFNYURX/BTECp3p7LMJGQnpQvRdhQwsC7nmeDzucmxxqLD9wivFN5s1Fi6poV19bk1S87y23hRCt9OWQRltBq/xSxPJwef9G9PshM/UMaU6gqQ7wA+BO77Y2OtgzvGVDEoJcgPWXB93RQzoBNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.46
+	 MIME-Version; b=E+shCbyjpydF9ll/02hzwE1VrDaKhd2AQ8qpPScnSH1jY+rl3dwYpkzH9rDKRhnEc7sPdaDcEScnYSTsZoreYVm5DETcwllfeoQqvTemtWhse+kjUuxWpC95uYj+s2FmYDt1lpzWj9s2EcHt8NU5LjbEA+CWrt2bZQ5qfHXLf70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-59ffbff2841so1639657eaf.2
-        for <stable@vger.kernel.org>; Mon, 26 Feb 2024 11:34:28 -0800 (PST)
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-6e54451edc6so306240b3a.1
+        for <stable@vger.kernel.org>; Mon, 26 Feb 2024 11:36:12 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708976067; x=1709580867;
+        d=1e100.net; s=20230601; t=1708976172; x=1709580972;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VMMDrkP7m1wOhjF4IESaho0H4YF1+DhoKgEedsEq7cE=;
-        b=APgBcUswezgCVRk2ReyZQWV7ijRRpKArQbAdhI1SQduVEieGTLtNXkQ0W2V62dxSqz
-         pirh5p0ZjFkDxI0al2ra8621n34xZTSQ/HpDSfiaccbXq7TneOQ9eIBdtIOI5MRjaTpn
-         j7eX93rP+XyofBzwhl8lXFks0tZwOtoFirUsLO+N1ajx908trzFQr1/Sc3qTUzJpWKLg
-         vDyC4PufVzkQVMi4trRuuhsd2r9930LHBS3I3oVS1Y3vbf64c5iWrJY1IQ4cV7hgiQ6j
-         QdZQUUiuizgqEKiHQ+wbduYK8JqRICp4EeAoxBjM5TwLUFm5a1wOSelDWRRMRQU2O7cx
-         Iz+w==
-X-Gm-Message-State: AOJu0Yw25A6r4nt5hSFhBNFmw6eqRBuiaw0L7DKN2nCpyYnz3zqPNENi
-	25O4Mg1YarqeY/cXAYJ8+CPaGVw15w7toQvkC3BG0l1s+4zg9VpiwyMq+Dd7
-X-Google-Smtp-Source: AGHT+IHGMlgfHLpXvd82YR8asFLwZ2jpzcHOXfrLGZMiAGG3L1c7OEAJfdPM8aVupsLNHreq73hrdA==
-X-Received: by 2002:a05:6358:6495:b0:179:1a1:ca9b with SMTP id g21-20020a056358649500b0017901a1ca9bmr11452582rwh.24.1708976067011;
-        Mon, 26 Feb 2024 11:34:27 -0800 (PST)
+        bh=UlKSMrmJD5FaTy/qPxfW725zb7MJHFj8m43jsS7f1fc=;
+        b=sEm04vjY/w2MrHdWDqRwzPFQUHRUOLa3HoWTQBlNzHprVVLPaPoR8kk183JZv3CKFZ
+         GxZ3giWesXX7kwGiEGcp1NfrMCqmiIY3onET9OoBQAKiXqRPgl2ztNyFzj8Vi9tm5+gW
+         YkgI1OOgzNMO7IjbgZ267Tm6noiN23ce4Q1rW8tdFp3i78XX5gitpvdRJbTEo+XLN4VD
+         a9r8pa8tBCWowI+PYe8KuI8jhLfA+1hhydVAF7NSbizglod4hOqu2mxqtdeWDtGmMoqX
+         xol7mkQxcMh8i4yk+7q8tTx+P1A1+X5GLnWdcnpW84gkrqshJi2EdZRs4qkWvyzZiVoq
+         fr2w==
+X-Gm-Message-State: AOJu0YxL3seFWkJDUUBi02FLGMv2u+dCgV4XIVXlik0T9gzhRR70bJho
+	8p+fN9mErrkzCGnpYjrhKFjHqz3o4YAOuNgGlrNeb10B2/CsFLXt7vvPmIeu
+X-Google-Smtp-Source: AGHT+IGWoX1xeqTRRxGMa59NL55NY8KMJfPGEbVwjpDcNG0hjrqPslgmewhni4cwxp6BvnrNBoR0bQ==
+X-Received: by 2002:a05:6a00:178b:b0:6e4:fe2c:d766 with SMTP id s11-20020a056a00178b00b006e4fe2cd766mr8556311pfg.17.1708976171641;
+        Mon, 26 Feb 2024 11:36:11 -0800 (PST)
 Received: from bvanassche-linux.mtv.corp.google.com ([2620:0:1000:8411:9150:3974:b45e:e425])
-        by smtp.gmail.com with ESMTPSA id e17-20020a635451000000b005dc8c301b9dsm4471139pgm.2.2024.02.26.11.34.26
+        by smtp.gmail.com with ESMTPSA id p21-20020a631e55000000b005cfbf96c733sm4384085pgm.30.2024.02.26.11.36.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Feb 2024 11:34:26 -0800 (PST)
+        Mon, 26 Feb 2024 11:36:11 -0800 (PST)
 From: Bart Van Assche <bvanassche@acm.org>
 To: stable@vger.kernel.org
 Cc: Bart Van Assche <bvanassche@acm.org>,
@@ -62,12 +62,12 @@ Cc: Bart Van Assche <bvanassche@acm.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Kent Overstreet <kent.overstreet@linux.dev>,
 	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.10.y] fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via libaio
-Date: Mon, 26 Feb 2024 11:34:21 -0800
-Message-ID: <20240226193421.16169-1-bvanassche@acm.org>
+Subject: [PATCH 5.4.y] fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via libaio
+Date: Mon, 26 Feb 2024 11:36:04 -0800
+Message-ID: <20240226193604.59623-1-bvanassche@acm.org>
 X-Mailer: git-send-email 2.44.0.rc1.240.g4c46232300-goog
-In-Reply-To: <2024022654-stainless-aground-196f@gregkh>
-References: <2024022654-stainless-aground-196f@gregkh>
+In-Reply-To: <2024022601-stem-comfort-1bb5@gregkh>
+References: <2024022601-stem-comfort-1bb5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -117,10 +117,10 @@ Signed-off-by: Bart Van Assche <bvanassche@acm.org>
  2 files changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/fs/aio.c b/fs/aio.c
-index 5934ea84b499..900ed5207540 100644
+index 1ec5a773d09c..7a50c97cffc0 100644
 --- a/fs/aio.c
 +++ b/fs/aio.c
-@@ -569,6 +569,13 @@ void kiocb_set_cancel_fn(struct kiocb *iocb, kiocb_cancel_fn *cancel)
+@@ -570,6 +570,13 @@ void kiocb_set_cancel_fn(struct kiocb *iocb, kiocb_cancel_fn *cancel)
  	struct kioctx *ctx = req->ki_ctx;
  	unsigned long flags;
  
@@ -134,7 +134,7 @@ index 5934ea84b499..900ed5207540 100644
  	if (WARN_ON_ONCE(!list_empty(&req->ki_list)))
  		return;
  
-@@ -1454,7 +1461,7 @@ static int aio_prep_rw(struct kiocb *req, const struct iocb *iocb)
+@@ -1455,7 +1462,7 @@ static int aio_prep_rw(struct kiocb *req, const struct iocb *iocb)
  	req->ki_complete = aio_complete_rw;
  	req->private = NULL;
  	req->ki_pos = iocb->aio_offset;
@@ -144,13 +144,13 @@ index 5934ea84b499..900ed5207540 100644
  		req->ki_flags |= IOCB_EVENTFD;
  	req->ki_hint = ki_hint_validate(file_write_hint(req->ki_filp));
 diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 82316863c71f..6de70634e547 100644
+index d9b97ccd65e5..e009b52ab6b0 100644
 --- a/include/linux/fs.h
 +++ b/include/linux/fs.h
-@@ -316,6 +316,8 @@ enum rw_hint {
- /* iocb->ki_waitq is valid */
- #define IOCB_WAITQ		(1 << 19)
- #define IOCB_NOIO		(1 << 20)
+@@ -314,6 +314,8 @@ enum rw_hint {
+ #define IOCB_SYNC		(1 << 5)
+ #define IOCB_WRITE		(1 << 6)
+ #define IOCB_NOWAIT		(1 << 7)
 +/* kiocb is a read or write operation submitted by fs/aio.c. */
 +#define IOCB_AIO_RW		(1 << 23)
  
