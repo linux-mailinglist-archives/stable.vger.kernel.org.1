@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-23636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CB008672E2
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 12:19:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97BF68672B7
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 12:11:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A422B257C0
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 10:34:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB37AB2F197
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 10:37:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101BB1F94B;
-	Mon, 26 Feb 2024 10:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805BF52F9E;
+	Mon, 26 Feb 2024 10:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mz9xA32T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E16RFPWZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8663200DB
-	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 10:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401B252F98
+	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 10:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708942990; cv=none; b=XceSJ5XeAb35bXPpQiWiCK2pwFOBmurf5Bcabvj7yiitMWmyh3gFcjtjK0rOfdT/Zvdj1I1OQIECr2k48WsCl4q0ogRVVN5JonqW80c590IwAYcinnvR/U+E8wLSl68jWI/wUEALMEGFkb/8JK3DP8p67zHxJVLH2kJjb16qizI=
+	t=1708943348; cv=none; b=DIGdrPN2+2KACBcBEJayaTuJhaSZVM2AXM1DfIekOg1oKN9YFZUOalMD93qSNV/qLUqqhASBmDkXs8FEYWcMzQgPPcgRCgYEHv0jeLYI92qO3Z7uY1Y7+zAuzECZfY8/tEahfsyJn/LeDXximDgoPZPirRCcSt7SqWSpfs69qwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708942990; c=relaxed/simple;
-	bh=7UqI/NgA23w9q4+bGAhJtWotfg0SOgFXXBXE4+US1LM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nFMTIOtQyZ/n0cFgrM/DJqRYQDUWABSr+MavtEx7L53WrSPV+hTs688tnHH1YVRrmTr7IPySw/4wgWSxhTPBxV5qdtJDYgcykIoc10CY8vnGmFFG7Duwz7Tj/Qo/y90SQmLIVGX0+aU1DIGoMuU6uGxTLURKtRUnLRt6fvSLstY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mz9xA32T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA3CFC433F1;
-	Mon, 26 Feb 2024 10:23:09 +0000 (UTC)
+	s=arc-20240116; t=1708943348; c=relaxed/simple;
+	bh=JCOLuir94LOPO7qjoZZsJn1dZc8ynKtgdSSyvzEmPiI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lRS4V3ATG3iM3jgbdei1g4RQf7kGQ7HhZKj6N8/MFCQwRSASyFUt0SAODqOjKUupWOhWqVZXrH27ZSD3oMXzUzeP+Lgq3C2XCHlzRID5t5aNrIHtwFI6y73ynJJuMkvGhSVaIMFGyFFXJld38Nlbz/8c0bpKQSVCoTvpyoVwPmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E16RFPWZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BBEDC433F1;
+	Mon, 26 Feb 2024 10:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708942990;
-	bh=7UqI/NgA23w9q4+bGAhJtWotfg0SOgFXXBXE4+US1LM=;
+	s=korg; t=1708943347;
+	bh=JCOLuir94LOPO7qjoZZsJn1dZc8ynKtgdSSyvzEmPiI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=mz9xA32TRfFdbc6bm1iBjRdszIRakNy4vInnMc9VivKwjuEW7w5/VNEoQ5w6rNyHS
-	 Q3GUCWo0TDSjSmJMxitfS3Ns9wuBoIQmZSrol3yfGa4UjCbilckgQXohEPiO/e4m4N
-	 Co5EtmcSiup16OR/V3sb1LhSFT2Txf/jT2T4/PP0=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Only allow dig mapping to pwrseq in new asic" failed to apply to 6.6-stable tree
-To: lewis.huang@amd.com,alexander.deucher@amd.com,anthony.koo@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com,rodrigo.siqueira@amd.com,stable@vger.kernel.org
+	b=E16RFPWZ367aABtu8AOgKKp2wgDjt8T+HCOkLezlDcnRxggCd+vDNW4iGowqP+vFL
+	 4mhusOoeWtn1K4NUaA/zkCyldM9cZiK7nBQjfHqGNAk3f04++fiLjeGumF+anTbQeT
+	 XP7oaGGW1JT23iFhIwB03wqos+RqnFMsJpQ7Ro3k=
+Subject: FAILED: patch "[PATCH] mm/swap: fix race when skipping swapcache" failed to apply to 5.4-stable tree
+To: kasong@tencent.com,21cnbao@gmail.com,akpm@linux-foundation.org,chrisl@kernel.org,david@redhat.com,hannes@cmpxchg.org,hughd@google.com,mhocko@suse.com,minchan@kernel.org,sj@kernel.org,stable@vger.kernel.org,willy@infradead.org,ying.huang@intel.com,yosryahmed@google.com,yuzhao@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 26 Feb 2024 11:23:02 +0100
-Message-ID: <2024022602-handshake-spoiled-e4a5@gregkh>
+Date: Mon, 26 Feb 2024 11:29:05 +0100
+Message-ID: <2024022604-labrador-edgy-5b56@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 4e73826089ce899357580bbf6e0afe4e6f9900b7
+git cherry-pick -x 13ddaf26be324a7f951891ecd9ccd04466d27458
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024022602-handshake-spoiled-e4a5@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024022604-labrador-edgy-5b56@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
-4e73826089ce ("drm/amd/display: Only allow dig mapping to pwrseq in new asic")
-b17ef04bf3a4 ("drm/amd/display: Pass pwrseq inst for backlight and ABM")
+13ddaf26be32 ("mm/swap: fix race when skipping swapcache")
+c9edc242811d ("swap: add swap_cache_get_folio()")
+1baec203b77c ("mm/khugepaged: try to free transhuge swapcache when possible")
+442701e7058b ("mm/swap: remove swap_cache_info statistics")
+014bb1de4fc1 ("mm: create new mm/swap.h header file")
+1493a1913e34 ("mm/swap: remember PG_anon_exclusive via a swp pte bit")
+6c287605fd56 ("mm: remember exclusively mapped anonymous pages with PG_anon_exclusive")
+78fbe906cc90 ("mm/page-flags: reuse PG_mappedtodisk as PG_anon_exclusive for PageAnon() pages")
+6c54dc6c7437 ("mm/rmap: use page_move_anon_rmap() when reusing a mapped PageAnon() page exclusively")
+28c5209dfd5f ("mm/rmap: pass rmap flags to hugepage_add_anon_rmap()")
+f1e2db12e45b ("mm/rmap: remove do_page_add_anon_rmap()")
+14f9135d5470 ("mm/rmap: convert RMAP flags to a proper distinct rmap_t type")
+fb3d824d1a46 ("mm/rmap: split page_dup_rmap() into page_dup_file_rmap() and page_try_dup_anon_rmap()")
+b51ad4f8679e ("mm/memory: slightly simplify copy_present_pte()")
+623a1ddfeb23 ("mm/hugetlb: take src_mm->write_protect_seq in copy_hugetlb_page_range()")
+3bff7e3f1f16 ("mm/huge_memory: streamline COW logic in do_huge_pmd_wp_page()")
+c145e0b47c77 ("mm: streamline COW logic in do_swap_page()")
+84d60fdd3733 ("mm: slightly clarify KSM logic in do_swap_page()")
+53a05ad9f21d ("mm: optimize do_wp_page() for exclusive pages in the swapcache")
+6b1f86f8e9c7 ("Merge tag 'folio-5.18b' of git://git.infradead.org/users/willy/pagecache")
 
 thanks,
 
@@ -78,134 +96,228 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4e73826089ce899357580bbf6e0afe4e6f9900b7 Mon Sep 17 00:00:00 2001
-From: Lewis Huang <lewis.huang@amd.com>
-Date: Wed, 31 Jan 2024 17:20:17 +0800
-Subject: [PATCH] drm/amd/display: Only allow dig mapping to pwrseq in new asic
+From 13ddaf26be324a7f951891ecd9ccd04466d27458 Mon Sep 17 00:00:00 2001
+From: Kairui Song <kasong@tencent.com>
+Date: Wed, 7 Feb 2024 02:25:59 +0800
+Subject: [PATCH] mm/swap: fix race when skipping swapcache
 
-[Why]
-The old asic only have 1 pwrseq hw.
-We don't need to map the diginst to pwrseq inst in old asic.
+When skipping swapcache for SWP_SYNCHRONOUS_IO, if two or more threads
+swapin the same entry at the same time, they get different pages (A, B).
+Before one thread (T0) finishes the swapin and installs page (A) to the
+PTE, another thread (T1) could finish swapin of page (B), swap_free the
+entry, then swap out the possibly modified page reusing the same entry.
+It breaks the pte_same check in (T0) because PTE value is unchanged,
+causing ABA problem.  Thread (T0) will install a stalled page (A) into the
+PTE and cause data corruption.
 
-[How]
-1. Only mapping dig to pwrseq for new asic.
-2. Move mapping function into dcn specific panel control component
+One possible callstack is like this:
 
-Cc: Stable <stable@vger.kernel.org> # v6.6+
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3122
-Reviewed-by: Anthony Koo <anthony.koo@amd.com>
-Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Lewis Huang <lewis.huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+CPU0                                 CPU1
+----                                 ----
+do_swap_page()                       do_swap_page() with same entry
+<direct swapin path>                 <direct swapin path>
+<alloc page A>                       <alloc page B>
+swap_read_folio() <- read to page A  swap_read_folio() <- read to page B
+<slow on later locks or interrupt>   <finished swapin first>
+...                                  set_pte_at()
+                                     swap_free() <- entry is free
+                                     <write to page B, now page A stalled>
+                                     <swap out page B to same swap entry>
+pte_same() <- Check pass, PTE seems
+              unchanged, but page A
+              is stalled!
+swap_free() <- page B content lost!
+set_pte_at() <- staled page A installed!
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_panel_cntl.c b/drivers/gpu/drm/amd/display/dc/dce/dce_panel_cntl.c
-index e8570060d007..5bca67407c5b 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dce_panel_cntl.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dce_panel_cntl.c
-@@ -290,4 +290,5 @@ void dce_panel_cntl_construct(
- 	dce_panel_cntl->base.funcs = &dce_link_panel_cntl_funcs;
- 	dce_panel_cntl->base.ctx = init_data->ctx;
- 	dce_panel_cntl->base.inst = init_data->inst;
-+	dce_panel_cntl->base.pwrseq_inst = 0;
+And besides, for ZRAM, swap_free() allows the swap device to discard the
+entry content, so even if page (B) is not modified, if swap_read_folio()
+on CPU0 happens later than swap_free() on CPU1, it may also cause data
+loss.
+
+To fix this, reuse swapcache_prepare which will pin the swap entry using
+the cache flag, and allow only one thread to swap it in, also prevent any
+parallel code from putting the entry in the cache.  Release the pin after
+PT unlocked.
+
+Racers just loop and wait since it's a rare and very short event.  A
+schedule_timeout_uninterruptible(1) call is added to avoid repeated page
+faults wasting too much CPU, causing livelock or adding too much noise to
+perf statistics.  A similar livelock issue was described in commit
+029c4628b2eb ("mm: swap: get rid of livelock in swapin readahead")
+
+Reproducer:
+
+This race issue can be triggered easily using a well constructed
+reproducer and patched brd (with a delay in read path) [1]:
+
+With latest 6.8 mainline, race caused data loss can be observed easily:
+$ gcc -g -lpthread test-thread-swap-race.c && ./a.out
+  Polulating 32MB of memory region...
+  Keep swapping out...
+  Starting round 0...
+  Spawning 65536 workers...
+  32746 workers spawned, wait for done...
+  Round 0: Error on 0x5aa00, expected 32746, got 32743, 3 data loss!
+  Round 0: Error on 0x395200, expected 32746, got 32743, 3 data loss!
+  Round 0: Error on 0x3fd000, expected 32746, got 32737, 9 data loss!
+  Round 0 Failed, 15 data loss!
+
+This reproducer spawns multiple threads sharing the same memory region
+using a small swap device.  Every two threads updates mapped pages one by
+one in opposite direction trying to create a race, with one dedicated
+thread keep swapping out the data out using madvise.
+
+The reproducer created a reproduce rate of about once every 5 minutes, so
+the race should be totally possible in production.
+
+After this patch, I ran the reproducer for over a few hundred rounds and
+no data loss observed.
+
+Performance overhead is minimal, microbenchmark swapin 10G from 32G
+zram:
+
+Before:     10934698 us
+After:      11157121 us
+Cached:     13155355 us (Dropping SWP_SYNCHRONOUS_IO flag)
+
+[kasong@tencent.com: v4]
+  Link: https://lkml.kernel.org/r/20240219082040.7495-1-ryncsn@gmail.com
+Link: https://lkml.kernel.org/r/20240206182559.32264-1-ryncsn@gmail.com
+Fixes: 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchronous device")
+Reported-by: "Huang, Ying" <ying.huang@intel.com>
+Closes: https://lore.kernel.org/lkml/87bk92gqpx.fsf_-_@yhuang6-desk2.ccr.corp.intel.com/
+Link: https://github.com/ryncsn/emm-test-project/tree/master/swap-stress-race [1]
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
+Acked-by: Yu Zhao <yuzhao@google.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Chris Li <chrisl@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Yosry Ahmed <yosryahmed@google.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: Barry Song <21cnbao@gmail.com>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 4db00ddad261..8d28f6091a32 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -549,6 +549,11 @@ static inline int swap_duplicate(swp_entry_t swp)
+ 	return 0;
  }
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_panel_cntl.c b/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_panel_cntl.c
-index ad0df1a72a90..9e96a3ace207 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_panel_cntl.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_panel_cntl.c
-@@ -215,4 +215,5 @@ void dcn301_panel_cntl_construct(
- 	dcn301_panel_cntl->base.funcs = &dcn301_link_panel_cntl_funcs;
- 	dcn301_panel_cntl->base.ctx = init_data->ctx;
- 	dcn301_panel_cntl->base.inst = init_data->inst;
-+	dcn301_panel_cntl->base.pwrseq_inst = 0;
- }
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_panel_cntl.c b/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_panel_cntl.c
-index 03248422d6ff..281be20b1a10 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_panel_cntl.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_panel_cntl.c
-@@ -154,8 +154,24 @@ void dcn31_panel_cntl_construct(
- 	struct dcn31_panel_cntl *dcn31_panel_cntl,
- 	const struct panel_cntl_init_data *init_data)
- {
-+	uint8_t pwrseq_inst = 0xF;
-+
- 	dcn31_panel_cntl->base.funcs = &dcn31_link_panel_cntl_funcs;
- 	dcn31_panel_cntl->base.ctx = init_data->ctx;
- 	dcn31_panel_cntl->base.inst = init_data->inst;
--	dcn31_panel_cntl->base.pwrseq_inst = init_data->pwrseq_inst;
-+
-+	switch (init_data->eng_id) {
-+	case ENGINE_ID_DIGA:
-+		pwrseq_inst = 0;
-+		break;
-+	case ENGINE_ID_DIGB:
-+		pwrseq_inst = 1;
-+		break;
-+	default:
-+		DC_LOG_WARNING("Unsupported pwrseq engine id: %d!\n", init_data->eng_id);
-+		ASSERT(false);
-+		break;
-+	}
-+
-+	dcn31_panel_cntl->base.pwrseq_inst = pwrseq_inst;
- }
-diff --git a/drivers/gpu/drm/amd/display/dc/inc/hw/panel_cntl.h b/drivers/gpu/drm/amd/display/dc/inc/hw/panel_cntl.h
-index 5dcbaa2db964..e97d964a1791 100644
---- a/drivers/gpu/drm/amd/display/dc/inc/hw/panel_cntl.h
-+++ b/drivers/gpu/drm/amd/display/dc/inc/hw/panel_cntl.h
-@@ -57,7 +57,7 @@ struct panel_cntl_funcs {
- struct panel_cntl_init_data {
- 	struct dc_context *ctx;
- 	uint32_t inst;
--	uint32_t pwrseq_inst;
-+	uint32_t eng_id;
- };
  
- struct panel_cntl {
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_factory.c b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
-index 37d3027c32dc..cf22b8f28ba6 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_factory.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
-@@ -370,30 +370,6 @@ static enum transmitter translate_encoder_to_transmitter(
++static inline int swapcache_prepare(swp_entry_t swp)
++{
++	return 0;
++}
++
+ static inline void swap_free(swp_entry_t swp)
+ {
+ }
+diff --git a/mm/memory.c b/mm/memory.c
+index 15f8b10ea17c..0bfc8b007c01 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -3799,6 +3799,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 	struct page *page;
+ 	struct swap_info_struct *si = NULL;
+ 	rmap_t rmap_flags = RMAP_NONE;
++	bool need_clear_cache = false;
+ 	bool exclusive = false;
+ 	swp_entry_t entry;
+ 	pte_t pte;
+@@ -3867,6 +3868,20 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 	if (!folio) {
+ 		if (data_race(si->flags & SWP_SYNCHRONOUS_IO) &&
+ 		    __swap_count(entry) == 1) {
++			/*
++			 * Prevent parallel swapin from proceeding with
++			 * the cache flag. Otherwise, another thread may
++			 * finish swapin first, free the entry, and swapout
++			 * reusing the same entry. It's undetectable as
++			 * pte_same() returns true due to entry reuse.
++			 */
++			if (swapcache_prepare(entry)) {
++				/* Relax a bit to prevent rapid repeated page faults */
++				schedule_timeout_uninterruptible(1);
++				goto out;
++			}
++			need_clear_cache = true;
++
+ 			/* skip swapcache */
+ 			folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0,
+ 						vma, vmf->address, false);
+@@ -4117,6 +4132,9 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 	if (vmf->pte)
+ 		pte_unmap_unlock(vmf->pte, vmf->ptl);
+ out:
++	/* Clear the swap cache pin for direct swapin after PTL unlock */
++	if (need_clear_cache)
++		swapcache_clear(si, entry);
+ 	if (si)
+ 		put_swap_device(si);
+ 	return ret;
+@@ -4131,6 +4149,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+ 		folio_unlock(swapcache);
+ 		folio_put(swapcache);
  	}
++	if (need_clear_cache)
++		swapcache_clear(si, entry);
+ 	if (si)
+ 		put_swap_device(si);
+ 	return ret;
+diff --git a/mm/swap.h b/mm/swap.h
+index 758c46ca671e..fc2f6ade7f80 100644
+--- a/mm/swap.h
++++ b/mm/swap.h
+@@ -41,6 +41,7 @@ void __delete_from_swap_cache(struct folio *folio,
+ void delete_from_swap_cache(struct folio *folio);
+ void clear_shadow_from_swap_cache(int type, unsigned long begin,
+ 				  unsigned long end);
++void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry);
+ struct folio *swap_cache_get_folio(swp_entry_t entry,
+ 		struct vm_area_struct *vma, unsigned long addr);
+ struct folio *filemap_get_incore_folio(struct address_space *mapping,
+@@ -97,6 +98,10 @@ static inline int swap_writepage(struct page *p, struct writeback_control *wbc)
+ 	return 0;
  }
  
--static uint8_t translate_dig_inst_to_pwrseq_inst(struct dc_link *link)
--{
--	uint8_t pwrseq_inst = 0xF;
--	struct dc_context *dc_ctx = link->dc->ctx;
--
--	DC_LOGGER_INIT(dc_ctx->logger);
--
--	switch (link->eng_id) {
--	case ENGINE_ID_DIGA:
--		pwrseq_inst = 0;
--		break;
--	case ENGINE_ID_DIGB:
--		pwrseq_inst = 1;
--		break;
--	default:
--		DC_LOG_WARNING("Unsupported pwrseq engine id: %d!\n", link->eng_id);
--		ASSERT(false);
--		break;
--	}
--
--	return pwrseq_inst;
--}
--
--
- static void link_destruct(struct dc_link *link)
++static inline void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry)
++{
++}
++
+ static inline struct folio *swap_cache_get_folio(swp_entry_t entry,
+ 		struct vm_area_struct *vma, unsigned long addr)
  {
- 	int i;
-@@ -657,7 +633,7 @@ static bool construct_phy(struct dc_link *link,
- 			link->link_id.id == CONNECTOR_ID_LVDS)) {
- 		panel_cntl_init_data.ctx = dc_ctx;
- 		panel_cntl_init_data.inst = panel_cntl_init_data.ctx->dc_edp_id_count;
--		panel_cntl_init_data.pwrseq_inst = translate_dig_inst_to_pwrseq_inst(link);
-+		panel_cntl_init_data.eng_id = link->eng_id;
- 		link->panel_cntl =
- 			link->dc->res_pool->funcs->panel_cntl_create(
- 								&panel_cntl_init_data);
+diff --git a/mm/swapfile.c b/mm/swapfile.c
+index 556ff7347d5f..746aa9da5302 100644
+--- a/mm/swapfile.c
++++ b/mm/swapfile.c
+@@ -3365,6 +3365,19 @@ int swapcache_prepare(swp_entry_t entry)
+ 	return __swap_duplicate(entry, SWAP_HAS_CACHE);
+ }
+ 
++void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry)
++{
++	struct swap_cluster_info *ci;
++	unsigned long offset = swp_offset(entry);
++	unsigned char usage;
++
++	ci = lock_cluster_or_swap_info(si, offset);
++	usage = __swap_entry_free_locked(si, offset, SWAP_HAS_CACHE);
++	unlock_cluster_or_swap_info(si, ci);
++	if (!usage)
++		free_swap_slot(entry);
++}
++
+ struct swap_info_struct *swp_swap_info(swp_entry_t entry)
+ {
+ 	return swap_type_to_swap_info(swp_type(entry));
 
 
