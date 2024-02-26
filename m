@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-23756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CFFD86811A
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 20:36:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D957C86811C
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 20:36:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B67CB223EB
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 19:32:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9C84B2288C
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 19:34:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F00EB12F5A1;
-	Mon, 26 Feb 2024 19:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4387212F5A6;
+	Mon, 26 Feb 2024 19:34:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6112812F588
-	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 19:32:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E21B12B165
+	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 19:34:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708975963; cv=none; b=nMeI0p44Vg2BlA4HyXxyTh+hNgdjx4QcuTFu/rNg8IO2iCyBkN5hfME6Mm5BNFMNbyEnEm/aPvo3tuqfon2fxmSUI6IVQ5H9k/orGbrY5k01QO5DSldXcoDyuDf7Ux9ZFPNdHKya4EF8uHIuO9sBnzzHNJR9N/HhJ5FKNPmhPxQ=
+	t=1708976070; cv=none; b=jIgCURLy5eiCOEVmcD4j7ceKpcGC6VKVQVMhXdeX6Hys+bnyOenOJGmbyUi0qXgDN5HdqFWRhJ5We3Z9mU2/RQ75vgt4ez7sJoBsQlykoLgYhAdw1ACbMifrr6Ikj7qEYU6T/TyhKSRIUaQL2QpLeuGVb4TFtX21NWoE+2/+iRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708975963; c=relaxed/simple;
-	bh=sc/rnAvuXTpi5Z0g9g4tDTbi5MOYpG4nD0+hI60VVTw=;
+	s=arc-20240116; t=1708976070; c=relaxed/simple;
+	bh=0sgyTHAe+RVQP5AKGrYts+uqCmon0r/fOrNl6LFqwBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pDFNaFgXdbY/U4PxNTsZTfac5WLWe0OvYkqUKMvu7KnMLSTKoSGMWBJxS46ffixg4jq7rJjHCeshk8bL5T4LPtqaFQss/Gjl0CKbHX3Q0t2J8LDb6vleufZ433PNRyRM+zbtitnS9HSycgp+kE8VVIxe7Ks+Y0LDEXzoStLQLwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.178
+	 MIME-Version; b=T8se97OTWV6MyrhuGXYiNUmeCWFNYURX/BTECp3p7LMJGQnpQvRdhQwsC7nmeDzucmxxqLD9wivFN5s1Fi6poV19bk1S87y23hRCt9OWQRltBq/xSxPJwef9G9PshM/UMaU6gqQ7wA+BO77Y2OtgzvGVDEoJcgPWXB93RQzoBNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-1dc13fb0133so25457665ad.3
-        for <stable@vger.kernel.org>; Mon, 26 Feb 2024 11:32:42 -0800 (PST)
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-59ffbff2841so1639657eaf.2
+        for <stable@vger.kernel.org>; Mon, 26 Feb 2024 11:34:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708975961; x=1709580761;
+        d=1e100.net; s=20230601; t=1708976067; x=1709580867;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+stZri2hBEpjJaJkaOlHzLaLUHdTwc5gxxhzsXAmI9Y=;
-        b=f5chENx0WcS4GLrljvDhxLCi36ATq0YON6heJ7VXByceQ+uQDsMg+5Dc6RwAVsKpnB
-         ROeYPHxunQ4l+O5xNmdj+6RkUtBprxD9SMznIUQlTV2BJCsKMIQqhtV2ISJEqQ3Dpajg
-         zaolchaHfWovzavENk4SVNxXN7F7MeNSeUER4/60NiDxQhBW/A+auDYLnR9hcVSM4RyD
-         LzyxTEYEbRCF0SZqzXCW7YVvxCSgf3Hcnc17NH5YLHpJt0Tz7UUCTVaE+1mOxXljyPUQ
-         /bltj55m8f98Q+lkvFU4ikTDMr9QMlD3su1yWBLuEL/PTK71GbXbSOV0YY9NIidZY3Ya
-         Mpgw==
-X-Gm-Message-State: AOJu0YxmLpMXsyVigPNhWTe00nm7jEa28cN6eLNUGzTI+FA3CUSwUdAX
-	OWPq/VOlTEj35cmzJdJIoOIbb7df6VoL/r5R+xacns3utWGWe33SytKQhdM0
-X-Google-Smtp-Source: AGHT+IFhUvimVogkVu6PqL57buHnm/Y4eYmljtKGmqUIKnH5HamhB2gms5CefkyBRCwJR/Xlo+sapg==
-X-Received: by 2002:a17:902:7793:b0:1dc:42da:bad with SMTP id o19-20020a170902779300b001dc42da0badmr7063406pll.62.1708975961283;
-        Mon, 26 Feb 2024 11:32:41 -0800 (PST)
+        bh=VMMDrkP7m1wOhjF4IESaho0H4YF1+DhoKgEedsEq7cE=;
+        b=APgBcUswezgCVRk2ReyZQWV7ijRRpKArQbAdhI1SQduVEieGTLtNXkQ0W2V62dxSqz
+         pirh5p0ZjFkDxI0al2ra8621n34xZTSQ/HpDSfiaccbXq7TneOQ9eIBdtIOI5MRjaTpn
+         j7eX93rP+XyofBzwhl8lXFks0tZwOtoFirUsLO+N1ajx908trzFQr1/Sc3qTUzJpWKLg
+         vDyC4PufVzkQVMi4trRuuhsd2r9930LHBS3I3oVS1Y3vbf64c5iWrJY1IQ4cV7hgiQ6j
+         QdZQUUiuizgqEKiHQ+wbduYK8JqRICp4EeAoxBjM5TwLUFm5a1wOSelDWRRMRQU2O7cx
+         Iz+w==
+X-Gm-Message-State: AOJu0Yw25A6r4nt5hSFhBNFmw6eqRBuiaw0L7DKN2nCpyYnz3zqPNENi
+	25O4Mg1YarqeY/cXAYJ8+CPaGVw15w7toQvkC3BG0l1s+4zg9VpiwyMq+Dd7
+X-Google-Smtp-Source: AGHT+IHGMlgfHLpXvd82YR8asFLwZ2jpzcHOXfrLGZMiAGG3L1c7OEAJfdPM8aVupsLNHreq73hrdA==
+X-Received: by 2002:a05:6358:6495:b0:179:1a1:ca9b with SMTP id g21-20020a056358649500b0017901a1ca9bmr11452582rwh.24.1708976067011;
+        Mon, 26 Feb 2024 11:34:27 -0800 (PST)
 Received: from bvanassche-linux.mtv.corp.google.com ([2620:0:1000:8411:9150:3974:b45e:e425])
-        by smtp.gmail.com with ESMTPSA id v11-20020a170902d68b00b001dca9b21267sm50355ply.186.2024.02.26.11.32.40
+        by smtp.gmail.com with ESMTPSA id e17-20020a635451000000b005dc8c301b9dsm4471139pgm.2.2024.02.26.11.34.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Feb 2024 11:32:40 -0800 (PST)
+        Mon, 26 Feb 2024 11:34:26 -0800 (PST)
 From: Bart Van Assche <bvanassche@acm.org>
 To: stable@vger.kernel.org
 Cc: Bart Van Assche <bvanassche@acm.org>,
@@ -62,12 +62,12 @@ Cc: Bart Van Assche <bvanassche@acm.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Kent Overstreet <kent.overstreet@linux.dev>,
 	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.15.y] fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via libaio
-Date: Mon, 26 Feb 2024 11:32:33 -0800
-Message-ID: <20240226193234.4177638-1-bvanassche@acm.org>
+Subject: [PATCH 5.10.y] fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via libaio
+Date: Mon, 26 Feb 2024 11:34:21 -0800
+Message-ID: <20240226193421.16169-1-bvanassche@acm.org>
 X-Mailer: git-send-email 2.44.0.rc1.240.g4c46232300-goog
-In-Reply-To: <2024022653-schedule-unloaded-e4ed@gregkh>
-References: <2024022653-schedule-unloaded-e4ed@gregkh>
+In-Reply-To: <2024022654-stainless-aground-196f@gregkh>
+References: <2024022654-stainless-aground-196f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -117,10 +117,10 @@ Signed-off-by: Bart Van Assche <bvanassche@acm.org>
  2 files changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/fs/aio.c b/fs/aio.c
-index e88fd9b58f3f..e24eb82b2b58 100644
+index 5934ea84b499..900ed5207540 100644
 --- a/fs/aio.c
 +++ b/fs/aio.c
-@@ -568,6 +568,13 @@ void kiocb_set_cancel_fn(struct kiocb *iocb, kiocb_cancel_fn *cancel)
+@@ -569,6 +569,13 @@ void kiocb_set_cancel_fn(struct kiocb *iocb, kiocb_cancel_fn *cancel)
  	struct kioctx *ctx = req->ki_ctx;
  	unsigned long flags;
  
@@ -134,7 +134,7 @@ index e88fd9b58f3f..e24eb82b2b58 100644
  	if (WARN_ON_ONCE(!list_empty(&req->ki_list)))
  		return;
  
-@@ -1453,7 +1460,7 @@ static int aio_prep_rw(struct kiocb *req, const struct iocb *iocb)
+@@ -1454,7 +1461,7 @@ static int aio_prep_rw(struct kiocb *req, const struct iocb *iocb)
  	req->ki_complete = aio_complete_rw;
  	req->private = NULL;
  	req->ki_pos = iocb->aio_offset;
@@ -144,13 +144,13 @@ index e88fd9b58f3f..e24eb82b2b58 100644
  		req->ki_flags |= IOCB_EVENTFD;
  	req->ki_hint = ki_hint_validate(file_write_hint(req->ki_filp));
 diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 6f287fac0ece..f32723d937fb 100644
+index 82316863c71f..6de70634e547 100644
 --- a/include/linux/fs.h
 +++ b/include/linux/fs.h
-@@ -322,6 +322,8 @@ enum rw_hint {
+@@ -316,6 +316,8 @@ enum rw_hint {
+ /* iocb->ki_waitq is valid */
+ #define IOCB_WAITQ		(1 << 19)
  #define IOCB_NOIO		(1 << 20)
- /* can use bio alloc cache */
- #define IOCB_ALLOC_CACHE	(1 << 21)
 +/* kiocb is a read or write operation submitted by fs/aio.c. */
 +#define IOCB_AIO_RW		(1 << 23)
  
