@@ -1,258 +1,159 @@
-Return-Path: <stable+bounces-23754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 504608680E4
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 20:23:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA0C1868119
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 20:36:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4994298268
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 19:23:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5883EB2AF58
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 19:30:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C16412FB10;
-	Mon, 26 Feb 2024 19:23:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BGKIAXvq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E59E912FB39;
+	Mon, 26 Feb 2024 19:29:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3DC622069
-	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 19:23:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B13212FF61
+	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 19:29:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708975420; cv=none; b=MBmwvS3sRb9WrkxJyOb6XEndhgQJ/lJ/aSZSLh0TK14v6MEGvQMkMph6kqb+DcOqpusVhPAkhxoMKKhChwQJVErrJwQXn8uKtAiWl1zcVGM/xXkh/XRh30LXkLK73Flz474V6H03vBg1IhMElWv14gQjCoqFoy/eXpf3gpG8o58=
+	t=1708975798; cv=none; b=Qu+jB7qqSN6yXMS3MdDzjMRgiam3D/nSZdSvKavIdm9GqPSAutLopxzDOCnhnF/eqEMgeN8lTereEpe4+ATbyuoz9VTC+mymYsI2dS6Whgx2rkmh0sBYuKlzHWVqJrH7KCwtscnoXqXKSlFG995xm+2roYTfKoHD99jnhCDdQ+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708975420; c=relaxed/simple;
-	bh=RIaUJYfd1turT62O8XqlowDKwrAPQEYnub3MbudaHOc=;
-	h=Date:Message-Id:Mime-Version:Subject:From:To:Cc:Content-Type; b=bdUc9/8xseSFPhxeZxCXQsV8SDWbRsAVLIY/fnAgvkwViTeGpJPYlk1YGAOTwQDVWnAoBaH9XLNCYiPmJFuv2nFsMrCF868SXTIJUQH/Z8EQrOGrxandXrAAh7S/4WWklqeweaYtZ600dk5nvfB34CfK2nf4hZ1MJL3guUvtDmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--pcc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BGKIAXvq; arc=none smtp.client-ip=209.85.128.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--pcc.bounces.google.com
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-608ad239f8fso59292897b3.0
-        for <stable@vger.kernel.org>; Mon, 26 Feb 2024 11:23:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708975417; x=1709580217; darn=vger.kernel.org;
-        h=cc:to:from:subject:mime-version:message-id:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=srrm+S8jUudlxyacmT7eG3M+AguE7ufuIMxy9ow2wbY=;
-        b=BGKIAXvq2iHLOk0s5wguMNmoAAVkhDm8x4KWg1aaIS2WowbcZBMuJ6x9bLuiwxvG0l
-         jeG+jLXZnSGZRsZap6bCFnk5p+4PyB+dhSyYE7KIvbU/tAkKX4xeN8eluG5fuXRziXe0
-         0MDQ59gKJURS0PEMxRP2itj4Oht8GrjDiPDIlgBSzXC+CmcSnOBGop/ndiq0gaJAgiuR
-         sUu+Be8smG8LQCEMuYVtyM46WrXtrEEkO8R0OEB7UCLnGufPKQNW7a6tBIXu+eJu4xYi
-         voxai8+63kOyNkCSWrzFDbVri6DjuGW8dMnWC056EHZSH/NOwJpA+fuBnwA4t0tnCMts
-         COCA==
+	s=arc-20240116; t=1708975798; c=relaxed/simple;
+	bh=1TptQ2/QuTbXYR4FLgrU1xRQAqKivUhaJW1B94TmSm8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ffACXUAAYSTUr/YbQj00Vvt5WTF0JywPMbRVYHG8sOkHQPLB6qDDeZACzDRZ8o/8JTVHFxhTfqcayk48n0QAsXDalI83yDrys9C+ehzmKAinP1AzMBhcCT7xQTA12TAz0PpAV2Z762XjU7FD2zBIDLHqJFc/OzIZ7qAwJ4fDjQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-29acdf99d5aso639487a91.2
+        for <stable@vger.kernel.org>; Mon, 26 Feb 2024 11:29:57 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708975417; x=1709580217;
-        h=cc:to:from:subject:mime-version:message-id:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=srrm+S8jUudlxyacmT7eG3M+AguE7ufuIMxy9ow2wbY=;
-        b=ZaFBueAocMinmJDraWPkXWKllSGh75M0VIb7SF6I1YxNrktbgU+URz7plHH1eUzYbx
-         6R0hrBfO4qeRaSmMR6Z+zuO59Rx3qLPEsVaoorjnhu2gOYk/8j7eAagvJXRw1fosQ+Hz
-         D+pw/Apq+VdO9q7lC+m+O46z3q36Mr1U1JS1COtt65L2cEu1Saamemv91TpQKSKiWIEn
-         ZHfNydFpP2AprVsKJahe/+X5jUH6ZXKFKaS4Z/ThQ4TojJCFvBxnV7ip7F0Du8l6I6vX
-         7j8pYbW41QCrUH8uQf6uu+gvXgjYBX4rhZUheP2x81SQ7BMUsI1szD4P6Q0jvgf/MaJq
-         CvXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXCTRobcmskOu/ZlrNOTKqwhgp/bWtahiDPpU64Zzteh/PEg78mtiCyDzvuvgemx1wxpQEoqnjmvskmMERhv3bqI17eeT00
-X-Gm-Message-State: AOJu0YxHAIdHItShYebRUkAXE+fcm9o3tJHvMlCKFXrKey896Edd3rgh
-	fAkgyaAgZuoEd8tXzeUE0uqy8wjXR4jwQoJEXMRBwffA9tLHNdNUevfL8nOrHtbioA==
-X-Google-Smtp-Source: AGHT+IE8s0uZISIgBWhNjntfNra4t7Ryjt70aLX4nP2xwzdXstJkzSJ9+ZStoyuI3mzgt3AMV9AAZGw=
-X-Received: from pcc-desktop.svl.corp.google.com ([2620:15c:2d3:205:f53b:71ca:7113:2c2b])
- (user=pcc job=sendgmr) by 2002:a05:6902:34b:b0:dcc:6065:2b3d with SMTP id
- e11-20020a056902034b00b00dcc60652b3dmr35640ybs.8.1708975416968; Mon, 26 Feb
- 2024 11:23:36 -0800 (PST)
-Date: Mon, 26 Feb 2024 11:23:26 -0800
-Message-Id: <20240226192329.3281301-1-pcc@google.com>
+        d=1e100.net; s=20230601; t=1708975796; x=1709580596;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jlzKFXJoEIb6QxSD0s+PZnE3DQxTQrXdtu1hyvZlGlI=;
+        b=MlLL3aP3CcxlV3jsPvYTOdAI8ySwHwstq6leXziI2A9/kcCIP47TEEFpaIA/vDWkh/
+         8SCXJhwbwlJFFXngGlfIhA0R89HRM9Ihj8RBM1Cpk+3lh3btV/eWZ9w5MAloouQ6WHgt
+         pRLUQrlz7LOiaT+76SVbrtHQV63jqSe9xLWT/9DesMmYROJPRpIksVKCrDdYINQr+STt
+         W5F0c/6M6/trK7D4ubLaOgyoLqPdJGnKyDEZlTcQUYCeqh3VybemFr6d+ShDsxlq4syk
+         YLoqZJzB7zTe02czvP9k2SWGdRfY6ybx9L2hVgi2QH7mH4yrywHrY3GcMThCdtjlZD/v
+         1ZkA==
+X-Gm-Message-State: AOJu0YwxbqzBSjgte5yDhbjZ+N2vEktPZO4UIrufcB2RrZCIwOfMOkdP
+	IBPzvQb0balfGAdv/witiB28Z3fvAgE7XMm1MpN8MVSQC29lrNPTLGhz2RZ0
+X-Google-Smtp-Source: AGHT+IFcCTDW+Q1qjvaP+4RLzdzbptkj2CZbk1b2Og/4QlfrUXVVL8xRKsNRKvRYe8TnDsK5thtTIQ==
+X-Received: by 2002:a17:90a:f682:b0:29a:a3e1:7ab4 with SMTP id cl2-20020a17090af68200b0029aa3e17ab4mr4087470pjb.20.1708975796119;
+        Mon, 26 Feb 2024 11:29:56 -0800 (PST)
+Received: from bvanassche-linux.mtv.corp.google.com ([2620:0:1000:8411:9150:3974:b45e:e425])
+        by smtp.gmail.com with ESMTPSA id 2-20020a17090a0c0200b0029abb8b1265sm3145877pjs.49.2024.02.26.11.29.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Feb 2024 11:29:55 -0800 (PST)
+From: Bart Van Assche <bvanassche@acm.org>
+To: stable@vger.kernel.org
+Cc: Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@lst.de>,
+	Avi Kivity <avi@scylladb.com>,
+	Sandeep Dhavale <dhavale@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.1.y] fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via libaio
+Date: Mon, 26 Feb 2024 11:29:50 -0800
+Message-ID: <20240226192950.4136472-1-bvanassche@acm.org>
+X-Mailer: git-send-email 2.44.0.rc1.240.g4c46232300-goog
+In-Reply-To: <2024022651-shrimp-freezing-6b17@gregkh>
+References: <2024022651-shrimp-freezing-6b17@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.44.0.rc1.240.g4c46232300-goog
-Subject: [PATCH v2] serial: Lock console when calling into driver before registration
-From: Peter Collingbourne <pcc@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
-	Petr Mladek <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	John Ogness <john.ogness@linutronix.de>, Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Peter Collingbourne <pcc@google.com>, linux-kernel@vger.kernel.org, 
-	linux-serial@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-During the handoff from earlycon to the real console driver, we have
-two separate drivers operating on the same device concurrently. In the
-case of the 8250 driver these concurrent accesses cause problems due
-to the driver's use of banked registers, controlled by LCR.DLAB. It is
-possible for the setup(), config_port(), pm() and set_mctrl() callbacks
-to set DLAB, which can cause the earlycon code that intends to access
-TX to instead access DLL, leading to missed output and corruption on
-the serial line due to unintended modifications to the baud rate.
+If kiocb_set_cancel_fn() is called for I/O submitted via io_uring, the
+following kernel warning appears:
 
-In particular, for setup() we have:
+WARNING: CPU: 3 PID: 368 at fs/aio.c:598 kiocb_set_cancel_fn+0x9c/0xa8
+Call trace:
+ kiocb_set_cancel_fn+0x9c/0xa8
+ ffs_epfile_read_iter+0x144/0x1d0
+ io_read+0x19c/0x498
+ io_issue_sqe+0x118/0x27c
+ io_submit_sqes+0x25c/0x5fc
+ __arm64_sys_io_uring_enter+0x104/0xab0
+ invoke_syscall+0x58/0x11c
+ el0_svc_common+0xb4/0xf4
+ do_el0_svc+0x2c/0xb0
+ el0_svc+0x2c/0xa4
+ el0t_64_sync_handler+0x68/0xb4
+ el0t_64_sync+0x1a4/0x1a8
 
-univ8250_console_setup()
--> serial8250_console_setup()
--> uart_set_options()
--> serial8250_set_termios()
--> serial8250_do_set_termios()
--> serial8250_do_set_divisor()
+Fix this by setting the IOCB_AIO_RW flag for read and write I/O that is
+submitted by libaio.
 
-For config_port() we have:
-
-serial8250_config_port()
--> autoconfig()
-
-For pm() we have:
-
-serial8250_pm()
--> serial8250_do_pm()
--> serial8250_set_sleep()
-
-For set_mctrl() we have (for some devices):
-
-serial8250_set_mctrl()
--> omap8250_set_mctrl()
--> __omap8250_set_mctrl()
-
-To avoid such problems, let's make it so that the console is locked
-during pre-registration calls to these callbacks, which will prevent
-the earlycon driver from running concurrently.
-
-Remove the partial solution to this problem in the 8250 driver
-that locked the console only during autoconfig_irq(), as this would
-result in a deadlock with the new approach. The console continues
-to be locked during autoconfig_irq() because it can only be called
-through uart_configure_port().
-
-Although this patch introduces more locking than strictly necessary
-(and in particular it also locks during the call to rs485_config()
-which is not affected by this issue as far as I can tell), it follows
-the principle that it is the responsibility of the generic console
-code to manage the earlycon handoff by ensuring that earlycon and real
-console driver code cannot run concurrently, and not the individual
-drivers.
-
-Signed-off-by: Peter Collingbourne <pcc@google.com>
-Reviewed-by: John Ogness <john.ogness@linutronix.de>
-Link: https://linux-review.googlesource.com/id/I7cf8124dcebf8618e6b2ee543fa5b25532de55d8
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Suggested-by: Jens Axboe <axboe@kernel.dk>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Avi Kivity <avi@scylladb.com>
+Cc: Sandeep Dhavale <dhavale@google.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
 Cc: stable@vger.kernel.org
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240215204739.2677806-2-bvanassche@acm.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+(cherry picked from commit b820de741ae48ccf50dd95e297889c286ff4f760)
+[ bvanassche: resolved a merge conflict in include/linux/fs.h ]
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
 ---
- drivers/tty/serial/8250/8250_port.c |  6 ------
- drivers/tty/serial/serial_core.c    | 12 ++++++++++++
- kernel/printk/printk.c              | 21 ++++++++++++++++++---
- 3 files changed, 30 insertions(+), 9 deletions(-)
+ fs/aio.c           | 9 ++++++++-
+ include/linux/fs.h | 2 ++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
-index 8ca061d3bbb9..1d65055dde27 100644
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -1329,9 +1329,6 @@ static void autoconfig_irq(struct uart_8250_port *up)
- 		inb_p(ICP);
- 	}
+diff --git a/fs/aio.c b/fs/aio.c
+index e85ba0b77f59..849c3e3ed558 100644
+--- a/fs/aio.c
++++ b/fs/aio.c
+@@ -595,6 +595,13 @@ void kiocb_set_cancel_fn(struct kiocb *iocb, kiocb_cancel_fn *cancel)
+ 	struct kioctx *ctx = req->ki_ctx;
+ 	unsigned long flags;
  
--	if (uart_console(port))
--		console_lock();
--
- 	/* forget possible initially masked and pending IRQ */
- 	probe_irq_off(probe_irq_on());
- 	save_mcr = serial8250_in_MCR(up);
-@@ -1371,9 +1368,6 @@ static void autoconfig_irq(struct uart_8250_port *up)
- 	if (port->flags & UPF_FOURPORT)
- 		outb_p(save_ICP, ICP);
- 
--	if (uart_console(port))
--		console_unlock();
--
- 	port->irq = (irq > 0) ? irq : 0;
- }
- 
-diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-index d6a58a9e072a..ff85ebd3a007 100644
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -2608,7 +2608,12 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
- 			port->type = PORT_UNKNOWN;
- 			flags |= UART_CONFIG_TYPE;
- 		}
-+		/* Synchronize with possible boot console. */
-+		if (uart_console(port))
-+			console_lock();
- 		port->ops->config_port(port, flags);
-+		if (uart_console(port))
-+			console_unlock();
- 	}
- 
- 	if (port->type != PORT_UNKNOWN) {
-@@ -2616,6 +2621,10 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
- 
- 		uart_report_port(drv, port);
- 
-+		/* Synchronize with possible boot console. */
-+		if (uart_console(port))
-+			console_lock();
++	/*
++	 * kiocb didn't come from aio or is neither a read nor a write, hence
++	 * ignore it.
++	 */
++	if (!(iocb->ki_flags & IOCB_AIO_RW))
++		return;
 +
- 		/* Power up port for set_mctrl() */
- 		uart_change_pm(state, UART_PM_STATE_ON);
- 
-@@ -2632,6 +2641,9 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
- 
- 		uart_rs485_config(port);
- 
-+		if (uart_console(port))
-+			console_unlock();
-+
- 		/*
- 		 * If this driver supports console, and it hasn't been
- 		 * successfully registered yet, try to re-register it.
-diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-index f2444b581e16..f51e4e5a869d 100644
---- a/kernel/printk/printk.c
-+++ b/kernel/printk/printk.c
-@@ -3263,6 +3263,21 @@ static int __init keep_bootcon_setup(char *str)
- 
- early_param("keep_bootcon", keep_bootcon_setup);
- 
-+static int console_call_setup(struct console *newcon, char *options)
-+{
-+	int err;
-+
-+	if (!newcon->setup)
-+		return 0;
-+
-+	/* Synchronize with possible boot console. */
-+	console_lock();
-+	err = newcon->setup(newcon, options);
-+	console_unlock();
-+
-+	return err;
-+}
-+
- /*
-  * This is called by register_console() to try to match
-  * the newly registered console with any of the ones selected
-@@ -3298,8 +3313,8 @@ static int try_enable_preferred_console(struct console *newcon,
- 			if (_braille_register_console(newcon, c))
- 				return 0;
- 
--			if (newcon->setup &&
--			    (err = newcon->setup(newcon, c->options)) != 0)
-+			err = console_call_setup(newcon, c->options);
-+			if (err != 0)
- 				return err;
- 		}
- 		newcon->flags |= CON_ENABLED;
-@@ -3325,7 +3340,7 @@ static void try_enable_default_console(struct console *newcon)
- 	if (newcon->index < 0)
- 		newcon->index = 0;
- 
--	if (newcon->setup && newcon->setup(newcon, NULL) != 0)
-+	if (console_call_setup(newcon, NULL) != 0)
+ 	if (WARN_ON_ONCE(!list_empty(&req->ki_list)))
  		return;
  
- 	newcon->flags |= CON_ENABLED;
--- 
-2.44.0.rc1.240.g4c46232300-goog
-
+@@ -1476,7 +1483,7 @@ static int aio_prep_rw(struct kiocb *req, const struct iocb *iocb)
+ 	req->ki_complete = aio_complete_rw;
+ 	req->private = NULL;
+ 	req->ki_pos = iocb->aio_offset;
+-	req->ki_flags = req->ki_filp->f_iocb_flags;
++	req->ki_flags = req->ki_filp->f_iocb_flags | IOCB_AIO_RW;
+ 	if (iocb->aio_flags & IOCB_FLAG_RESFD)
+ 		req->ki_flags |= IOCB_EVENTFD;
+ 	if (iocb->aio_flags & IOCB_FLAG_IOPRIO) {
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 4a1911dcf834..67313881f8ac 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -337,6 +337,8 @@ enum rw_hint {
+ #define IOCB_NOIO		(1 << 20)
+ /* can use bio alloc cache */
+ #define IOCB_ALLOC_CACHE	(1 << 21)
++/* kiocb is a read or write operation submitted by fs/aio.c. */
++#define IOCB_AIO_RW		(1 << 23)
+ 
+ struct kiocb {
+ 	struct file		*ki_filp;
 
