@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-23662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBFAF8671A1
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 11:43:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC6978671A2
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 11:43:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77D261F2BF4C
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6D4B292CF4
 	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 10:43:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E24681CD06;
-	Mon, 26 Feb 2024 10:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A81DF1D545;
+	Mon, 26 Feb 2024 10:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SD7p+PZ1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P4op/pIM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BBB1D52B
-	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 10:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DFA1D532
+	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 10:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708943617; cv=none; b=PBVftfufVR1OMwjdv328tESAW1/9bJ5iF2UCzWc+W2pb2BShKgMqkhO0/7VyKI/YJA/0T9HcMefkk2ujzlDn3NSbTqbrJF4QP/rR3/gy2mM8oZHiFUcbZZf4rMcw25jCCMdzr/d66bFe3kH86Z1e538TZ5wGOgFq4cYIFgGpaEY=
+	t=1708943626; cv=none; b=LlUn9EfpVkTisqppgkKX47xPpoCjpFEeiZQpzMOw1/h0/YAZBHGbPM7Pr+cWW5lhScjZHBT/2XsI0MX+aD986gRP/f/oWtZ7fJvP56NnoofWhFgJqmaxYjT/drxp2GyPX03Fs73sCx+ilyWuUsITNHnj7rfDlu/6O3aErLQ110s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708943617; c=relaxed/simple;
-	bh=ec0IJV20UMnm/+d1CFIsiVyHPEXE+iitGdeHyEPVNAM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BiyvAL/4yjcScvvLb5SHv7OugZAxaVwwrvClCvxEcCbYlc7IjNPRgsQRldDoeoL6Er+b+To2iO9syWlR49FkbcM+H64idWvmjjaKImi/CLNPGYhvBgjBfKVaiNKZrepDr7JpOMrd23rBHMQCXPEjAtphZMPRBJXBc4JWeuMXABw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SD7p+PZ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FB19C433C7;
-	Mon, 26 Feb 2024 10:33:37 +0000 (UTC)
+	s=arc-20240116; t=1708943626; c=relaxed/simple;
+	bh=lHaxNs/9kLEwv+KjZzfyk97VR+W5q8a8ig18qmfCEkA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WjvE9fCROTDRbwDSSXpNlSfcezmslcr44N2M5gYy0i824WDjHw4bc7Ap4obMYHRweM3573YhVOZ6emO0SsotAdnPwCLWrRP4SllEQA9uw+Fe/gLyFSk+1ChixXtnun9A+q3hYS+MOARUJoMQ2VgYJ0kNX4k7ukAjpKq3qiZBFsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4op/pIM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED8F9C433C7;
+	Mon, 26 Feb 2024 10:33:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708943617;
-	bh=ec0IJV20UMnm/+d1CFIsiVyHPEXE+iitGdeHyEPVNAM=;
+	s=korg; t=1708943626;
+	bh=lHaxNs/9kLEwv+KjZzfyk97VR+W5q8a8ig18qmfCEkA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=SD7p+PZ1/AVLy/xSEp00EOGgNwTz2prakT+/+tONDq9iVDceAWPT1mQNhXtYy8AhM
-	 XPr0+R3ECr+FYxirt34Jt4lWznf04bbKbl6se7j+wUq23iOIJWn8/cVJ6ZR3W31iCr
-	 Rn+a1h16S5y3aZDEljWg8vLwouoBRvad28fE7Yq8=
-Subject: FAILED: patch "[PATCH] KVM: arm64: vgic-its: Test for valid IRQ in" failed to apply to 5.4-stable tree
+	b=P4op/pIM3gTtsy19XAGcj59Qnk+2PXFXCyiHypB8TlBsICft0355N90t6QKEcIAmD
+	 1r0pn/+lzifsQh5+2qxh5n1Ot0uaNnpZruFyWouGfCgxr3H9+2OXkdxTziV/WCG/yI
+	 FuRDytWThh/avdRSGfZkpXRjffTZuQBpcBHX1a7E=
+Subject: FAILED: patch "[PATCH] KVM: arm64: vgic-its: Test for valid IRQ in" failed to apply to 4.19-stable tree
 To: oliver.upton@linux.dev,maz@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 26 Feb 2024 11:33:34 +0100
-Message-ID: <2024022634-rut-premises-24cc@gregkh>
+Date: Mon, 26 Feb 2024 11:33:35 +0100
+Message-ID: <2024022635-thinner-disinfect-f761@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,27 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 8d3a7dfb801d157ac423261d7cd62c33e95375f8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024022634-rut-premises-24cc@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024022635-thinner-disinfect-f761@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
 8d3a7dfb801d ("KVM: arm64: vgic-its: Test for valid IRQ in its_sync_lpi_pending_table()")
+9ed24f4b712b ("KVM: arm64: Move virt/kvm/arm to arch/arm64")
+3b50142d8528 ("MAINTAINERS: sort field names for all entries")
+4400b7d68f6e ("MAINTAINERS: sort entries by entry name")
+b032227c6293 ("Merge tag 'nios2-v5.7-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/lftan/nios2")
 
 thanks,
 
