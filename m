@@ -1,269 +1,118 @@
-Return-Path: <stable+bounces-23672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BBF386735E
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 12:38:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43B7A867441
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 13:04:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D77D11F27FA3
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 11:38:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F269C290902
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 12:04:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1D3245C15;
-	Mon, 26 Feb 2024 11:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D999A5B1EE;
+	Mon, 26 Feb 2024 12:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="r3gQ/FSS";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0Pcj5SVw"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mPbWIPfk"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967B02376A;
-	Mon, 26 Feb 2024 11:37:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234755B67A;
+	Mon, 26 Feb 2024 12:04:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708947440; cv=none; b=HKf2Yka++FTRo+8UelImnOF4bOSPGvujGAYqK2o6i5XDg5cQ5BnC4WqzEoIcqAckdvgjz2Vbs/0BLOLXyn94XwC6+M2//UETKKaEIfVpSc/Wv1h8ySVwVtQM1pfM2tBU2YcgMBgldKcNr/ZUw65ACCnyuLLPIMhGyx9XnUh/v60=
+	t=1708949047; cv=none; b=ncM7R6RLgkY4DMe70mhtxk/oZTQC8Ot/75iL2dqlrQ2Rqt6uTwZt7L59YW/L2LG9KD9UAz3fk60N7UcT9px5AAFeQdv5bcZe1ckLUbokO3xgpwFLFSN3DVJdz4kT2tCN3tSFjGAlM024OgbG42SS6kVZWJ/ovO57lgNXtgkr5hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708947440; c=relaxed/simple;
-	bh=zAAJLho0cCO/HNTiCV3588QnktmmlyE4Z01Qd0pjWN0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Dahxsfpc51RiBY3Mcdt4QfCSlJTvtCowSdcm1jfb03zUUkTB4z0ZnUGIrgJj6YT4OBp17oCyOiFAbmUOuhGwJ7rWvfU/MOcUjR3Nv6U9i22zpoTC/0SSKhNZ3lK/6fnDIfgZARDUXiR4t04VepQ+MgXIguETQBpuISji7JmdWWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=r3gQ/FSS; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0Pcj5SVw; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: John Ogness <john.ogness@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708947431;
+	s=arc-20240116; t=1708949047; c=relaxed/simple;
+	bh=bryulsiKq3ve8zKcjTqag/EYyIM+Iaohm5MG5leshDI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ORDDysv55F49S06l1WQKnBsJiWEfwxDiIhPPYeqKCna6/HpsKcjteMMTjSpl7Kt4/l530V0xDspjJSSgUs4POGOHuvY9e8hE2N5w9L5GQMarNOKaTqWZ3KPk8mmir6e1bG2w9eJjhetrQ5ShMztEqu0hRrUGbSqQZ83MjCnKixw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=mPbWIPfk; arc=none smtp.client-ip=217.70.183.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C8880240006;
+	Mon, 26 Feb 2024 12:04:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1708949043;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0BT9tAymdgF12edcAn5jaXSRSblrBPjimcTyWY1gKVQ=;
-	b=r3gQ/FSS8tZI+vRzbrg42znqs4XhLBKCA3FHP41fG49mpUAKYPSFTBfnwBI0vl9DvSJth+
-	3s1nQcIMV4JRDi19ntwTmgiZIHCBaYuyXsnx/y+ZF97BO2GjRQSNSTvBXB9DuS2aqSiatR
-	T2z9z4DEzFaIVG+B5fGgyYXOSvvka49c0Mm1mDuLVbsd4Qfj9jPD3DNSxflBjlrhvdS5DL
-	UyrO/18gCgb9Kj5Jy+n/V2yvL41DWIZ0lJ3g6XGwly4eY/youC3cBprwjDWNIYXIoseLl7
-	mhBUJbsHaHusHD6fTVcYodfe7/s9cOfeuIn+qonaNq6TNEnX3hrzaPrkyJdEsg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708947431;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0BT9tAymdgF12edcAn5jaXSRSblrBPjimcTyWY1gKVQ=;
-	b=0Pcj5SVwVRMEILNtAi9Fm3gU1VFrH64Z4wHM04nWiSG26uri1Nb1O4aYF3UpFIrbYKJvx+
-	/zO9Y0UcNtwM0yAg==
-To: Peter Collingbourne <pcc@google.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, Petr
- Mladek <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>, Sergey
- Senozhatsky <senozhatsky@chromium.org>
-Cc: Peter Collingbourne <pcc@google.com>, linux-kernel@vger.kernel.org,
- linux-serial@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] serial: Lock console when calling into driver before
- registration
-In-Reply-To: <20240222192329.1047386-1-pcc@google.com>
-References: <20240222192329.1047386-1-pcc@google.com>
-Date: Mon, 26 Feb 2024 12:42:43 +0106
-Message-ID: <878r37mp84.fsf@jogness.linutronix.de>
+	bh=bryulsiKq3ve8zKcjTqag/EYyIM+Iaohm5MG5leshDI=;
+	b=mPbWIPfknva1dRICGDzC5GN1JsKtBztxWr7Q4iSmzWegwLJRDa6bMg4CBajkbQcGJCBh5b
+	cmkt7qOszyCrrpQgU3FQDkxCEcWhrlQcI/x52fEjaIyY7dlbJy82awsLLvXy+x6JKiuPP4
+	ypQMLlUl7QHaHbKCfhbN4DbUFePGZEZ95drCYolQkigdsSG8R1BYixmLupzj1hfIkf7OXR
+	3RbcuzQsKKxJOORmFLOTTs1MXqOOLt9ZuFY5gjEi1b0eNovR7DVTYt4frloptzoXEiQWxS
+	qDSVLQYoxBlakIiRmmOjXNe24+Zm5QfB/3hEh6J2tfiqGidJ/O1XH66W1xxNaQ==
+Date: Mon, 26 Feb 2024 13:04:01 +0100
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Saravana Kannan <saravanak@google.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>
+Cc: Rob Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
+ =?UTF-8?Q?Herv=C3=A9?= Codina <herve.codina@bootlin.com>,
+ kernel-team@android.com, Rob Herring <robh@kernel.org>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, stable
+ <stable@vger.kernel.org>
+Subject: Re: [PATCH] of: property: fw_devlink: Fix stupid bug in
+ remote-endpoint parsing
+Message-ID: <20240226130401.7565f0da@booty>
+In-Reply-To: <CAGETcx_m22xLSDz_kk9ovw5veKaij49+LdcRx0iyzEk8iEz_+A@mail.gmail.com>
+References: <20240224052436.3552333-1-saravanak@google.com>
+	<CAGETcx_m22xLSDz_kk9ovw5veKaij49+LdcRx0iyzEk8iEz_+A@mail.gmail.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: luca.ceresoli@bootlin.com
 
-On 2024-02-22, Peter Collingbourne <pcc@google.com> wrote:
-> During the handoff from earlycon to the real console driver, we have
-> two separate drivers operating on the same device concurrently. In the
-> case of the 8250 driver these concurrent accesses cause problems due
-> to the driver's use of banked registers, controlled by LCR.DLAB. It is
-> possible for the setup(), config_port(), pm() and set_mctrl() callbacks
-> to set DLAB, which can cause the earlycon code that intends to access
-> TX to instead access DLL, leading to missed output and corruption on
-> the serial line due to unintended modifications to the baud rate.
->
-> In particular, for setup() we have:
->
-> univ8250_console_setup()
-> -> serial8250_console_setup()
-> -> uart_set_options()
-> -> serial8250_set_termios()
-> -> serial8250_do_set_termios()
-> -> serial8250_do_set_divisor()
->
-> For config_port() we have:
->
-> serial8250_config_port()
-> -> autoconfig()
->
-> For pm() we have:
->
-> serial8250_pm()
-> -> serial8250_do_pm()
-> -> serial8250_set_sleep()
->
-> For set_mctrl() we have (for some devices):
->
-> serial8250_set_mctrl()
-> -> omap8250_set_mctrl()
-> -> __omap8250_set_mctrl()
->
-> To avoid such problems, let's make it so that the console is locked
-> during pre-registration calls to these callbacks, which will prevent
-> the earlycon driver from running concurrently.
+Hello Greg, Saravana,
 
-Even after the current atomic/threaded print rework is completed, the
-console lock will be used to synchronize boot consoles with non-boot
-consoles. I am fine with this solution.
+On Fri, 23 Feb 2024 21:28:18 -0800
+Saravana Kannan <saravanak@google.com> wrote:
 
-Comments below...
+> On Fri, Feb 23, 2024 at 9:24=E2=80=AFPM Saravana Kannan <saravanak@google=
+.com> wrote:
+> >
+> > Introduced a stupid bug in commit 782bfd03c3ae ("of: property: Improve
+> > finding the supplier of a remote-endpoint property") due to a last minu=
+te
+> > incorrect edit of "index !=3D0" into "!index". This patch fixes it to be
+> > "index > 0" to match the comment right next to it. =20
+>=20
+> Greg, this needs to land in the stable branches once Rob picks it up
+> for the next 6.8-rc.
+>=20
+> -Saravana
+>=20
+> >
+> > Reported-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> > Link: https://lore.kernel.org/lkml/20240223171849.10f9901d@booty/
+> > Fixes: 782bfd03c3ae ("of: property: Improve finding the supplier of a r=
+emote-endpoint property")
+> > Signed-off-by: Saravana Kannan <saravanak@google.com>
+> > ---
+> > Using Link: instead of Closes: because Luca reported two separate issue=
+s.
 
-> Remove the partial solution to this problem in the 8250 driver
-> that locked the console only during autoconfig_irq(), as this would
-> result in a deadlock with the new approach. The console continues
-> to be locked during autoconfig_irq() because it can only be called
-> through uart_configure_port().
->
-> Although this patch introduces more locking than strictly necessary
-> (and in particular it also locks during the call to rs485_config()
-> which is not affected by this issue as far as I can tell), it follows
-> the principle that it is the responsibility of the generic console
-> code to manage the earlycon handoff by ensuring that earlycon and real
-> console driver code cannot run concurrently, and not the individual
-> drivers.
->
-> Signed-off-by: Peter Collingbourne <pcc@google.com>
-> Link: https://linux-review.googlesource.com/id/I7cf8124dcebf8618e6b2ee543fa5b25532de55d8
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> ---
->  drivers/tty/serial/8250/8250_port.c |  6 ------
->  drivers/tty/serial/serial_core.c    | 10 ++++++++++
->  kernel/printk/printk.c              | 20 +++++++++++++++++---
->  3 files changed, 27 insertions(+), 9 deletions(-)
->
-> diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
-> index 8ca061d3bbb9..1d65055dde27 100644
-> --- a/drivers/tty/serial/8250/8250_port.c
-> +++ b/drivers/tty/serial/8250/8250_port.c
-> @@ -1329,9 +1329,6 @@ static void autoconfig_irq(struct uart_8250_port *up)
->  		inb_p(ICP);
->  	}
->  
-> -	if (uart_console(port))
-> -		console_lock();
-> -
->  	/* forget possible initially masked and pending IRQ */
->  	probe_irq_off(probe_irq_on());
->  	save_mcr = serial8250_in_MCR(up);
-> @@ -1371,9 +1368,6 @@ static void autoconfig_irq(struct uart_8250_port *up)
->  	if (port->flags & UPF_FOURPORT)
->  		outb_p(save_ICP, ICP);
->  
-> -	if (uart_console(port))
-> -		console_unlock();
-> -
->  	port->irq = (irq > 0) ? irq : 0;
->  }
->  
-> diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-> index d6a58a9e072a..128aa0e0ae24 100644
-> --- a/drivers/tty/serial/serial_core.c
-> +++ b/drivers/tty/serial/serial_core.c
-> @@ -2608,7 +2608,11 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
->  			port->type = PORT_UNKNOWN;
->  			flags |= UART_CONFIG_TYPE;
->  		}
+As Saravana mentioned, this fixes only one bug in the original commit.
 
-It would be nice to add a comment here mentioning why the console_lock
-is taken. Even if it is something brief like:
+Unless there is a quick solution for the other bug, we are still left with
+a regression since that got merged in 6.8-rc5.
 
-     /* Sychronize with possible boot console. */
+So I propose to revert 782bfd03c3ae instead of applying this one, to
+leave the needed time for a correct solution to be deviesd.
 
-> +		if (uart_console(port))
-> +			console_lock();
->  		port->ops->config_port(port, flags);
-> +		if (uart_console(port))
-> +			console_unlock();
->  	}
->  
->  	if (port->type != PORT_UNKNOWN) {
-> @@ -2616,6 +2620,9 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
->  
->  		uart_report_port(drv, port);
->  
+Luca
 
-Also, here a brief comment.
-
-> +		if (uart_console(port))
-> +			console_lock();
-> +
->  		/* Power up port for set_mctrl() */
->  		uart_change_pm(state, UART_PM_STATE_ON);
->  
-> @@ -2632,6 +2639,9 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
->  
->  		uart_rs485_config(port);
->  
-> +		if (uart_console(port))
-> +			console_unlock();
-> +
->  		/*
->  		 * If this driver supports console, and it hasn't been
->  		 * successfully registered yet, try to re-register it.
-> diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-> index f2444b581e16..db69545e6250 100644
-> --- a/kernel/printk/printk.c
-> +++ b/kernel/printk/printk.c
-> @@ -3263,6 +3263,20 @@ static int __init keep_bootcon_setup(char *str)
->  
->  early_param("keep_bootcon", keep_bootcon_setup);
->  
-
-And here. Maybe slightly more verbose since there is an entire wrapper
-function created for the purpose.
-
-> +static int console_call_setup(struct console *newcon, char *options)
-> +{
-> +	int err;
-> +
-> +	if (!newcon->setup)
-> +		return 0;
-> +
-> +	console_lock();
-> +	err = newcon->setup(newcon, options);
-> +	console_unlock();
-> +
-> +	return err;
-> +}
-> +
->  /*
->   * This is called by register_console() to try to match
->   * the newly registered console with any of the ones selected
-> @@ -3298,8 +3312,8 @@ static int try_enable_preferred_console(struct console *newcon,
->  			if (_braille_register_console(newcon, c))
->  				return 0;
->  
-> -			if (newcon->setup &&
-> -			    (err = newcon->setup(newcon, c->options)) != 0)
-> +			err = console_call_setup(newcon, c->options);
-> +			if (err != 0)
->  				return err;
->  		}
->  		newcon->flags |= CON_ENABLED;
-> @@ -3325,7 +3339,7 @@ static void try_enable_default_console(struct console *newcon)
->  	if (newcon->index < 0)
->  		newcon->index = 0;
->  
-> -	if (newcon->setup && newcon->setup(newcon, NULL) != 0)
-> +	if (console_call_setup(newcon, NULL) != 0)
->  		return;
->  
->  	newcon->flags |= CON_ENABLED;
-> -- 
-> 2.44.0.rc1.240.g4c46232300-goog
-
-With comments added:
-
-Reviewed-by: John Ogness <john.ogness@linutronix.de>
+--=20
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
