@@ -1,179 +1,159 @@
-Return-Path: <stable+bounces-23697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B77586764A
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 14:18:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1F06867665
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 14:24:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CDD31C228A2
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 13:18:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7637928AC5A
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 13:24:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B871272AE;
-	Mon, 26 Feb 2024 13:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33D9B127B79;
+	Mon, 26 Feb 2024 13:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dy5k7NE/"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="oWIiRWSI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from JPN01-TYC-obe.outbound.protection.outlook.com (mail-tycjpn01olkn2048.outbound.protection.outlook.com [40.92.99.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E9984FD5
-	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 13:18:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708953494; cv=none; b=iaXn9ZtFZcNVOJvLCZgIIYkygkmvQEmRTOFvIDmDRyasyNsio19p70YFn37MDyYcNsZy9qUJSDFIvOSTuUAKvrhCW+GovSPJJB7dKjVK5tfpoD8plDU7N86p0TwiJrE4wCXpAFcRfNWSn2nbyW3Tsj07bstbxW4AYC8tZjHyV24=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708953494; c=relaxed/simple;
-	bh=u0qHizDn/BS29zpFhVRDukUkLCuxGCjiMVPKSHQe93g=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZjFgvtOtMaZLFt+wkpyAqhFGFyAhgdSDR7PgOFHcjL20aTDfpcU+VeebBBhmVLu7oq4LrFJ7s5A3/P5sh0ZnJHzoOunIycLiQgGGwkIZnBfzMJ//3lY8nQbVadaAMFlaS3KX8zejv7fbyxtHLWyLG6QMe3ZP9R0HsSEBAWUwh1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dy5k7NE/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1410C433C7;
-	Mon, 26 Feb 2024 13:18:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708953494;
-	bh=u0qHizDn/BS29zpFhVRDukUkLCuxGCjiMVPKSHQe93g=;
-	h=Subject:To:Cc:From:Date:From;
-	b=Dy5k7NE/4DUcW2/wdqFBqp2e/tdEHR/TLmV3kZrr4sZ6P83PoWVmTGtk3dDLGm+xx
-	 zXvrDV90wa7EYLecK2HNrH3wP+ZmJoVnwWE+gabNkHQ+jO5HTtKne708YsLJySvjna
-	 LnCtxNHUMns6dykDMBHprllKtYGkjDHEHtVeTwOg=
-Subject: FAILED: patch "[PATCH] mptcp: fix duplicate subflow creation" failed to apply to 5.15-stable tree
-To: pabeni@redhat.com,davem@davemloft.net,martineau@kernel.org,matttbe@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 26 Feb 2024 14:18:03 +0100
-Message-ID: <2024022602-extended-buffer-5cf7@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0936B8005E;
+	Mon, 26 Feb 2024 13:24:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.99.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708953879; cv=fail; b=kW5yDy6cxA7GIVbDT+jmE+vHOAXR4y9R2WI8jf7wkrfuOQJe8tPa53VyRfWT3PwBxpFip5QzP52v4nGU3r3nbbF6MdQG5+3CVlnzzRv2iXSZiuQNeuvc7mA8s1C3WWoWClmDM3/yCUBvZnQa5s0ZVoT9kkTljZWil3hBWjSqy88=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708953879; c=relaxed/simple;
+	bh=nXAwtj7wD0TCMKrFjoN0e3i4JnzJCMOfgeKLk4fK/8M=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=VF09hyo/cOn82s4hhIBQM4Yj8weQemyJkZ+RXP/9S/Q042jr14v05XfzN7eES5MJ1+NBOb0Z1St+GdGfQFAE7rVKL7H9Tx6At8eqh6Fi4C0M7j11jHGCtgzHenOBqpTV0f2SCvFyul+KnMs+t4J3hY1fUZTa1jont9tuPw7j3fs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=oWIiRWSI; arc=fail smtp.client-ip=40.92.99.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=KX9U2jAt3Du1dpl0782chcpsWKbaRj4QEpkRW+8zM4zMPZO1XMYW7c47yrUFV1zKr+ww/k5Wx9ihXliXNgnswhcInvVgMRCvlVAzNSYwATfl5ePhJcSIiGWrH4qxQpMmiqbXVwNWPJfD2iJxNf32gp3QUI8m/KS8X7Q9npoqF5A0nhI012ivR73XaTy9bMsKva+dG9sLmj4qtyR0OE9RvEWZYGBdqLIQTQY9bZ4iEkg0EySRJmlMBWZaRCK+fQt/WTwMaVKZ67hWDv41GJ04Lzti0NniyZRFb/km/MlTC2mzmB9KJmB7zEwbYQNZ3nnYbcASFBLcMhT0AqL2BvGU+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=K2fr+M/gLOUDqrJoMfFa20GMUP5OeoSrCXW8BTQSIwk=;
+ b=k8+qkXyh8gRrfmpBqHc70g162Ll8z7gw8mpdcluIiD738c4ITiygtk5NtYkLRUPIRWybwVQ+D91rmHmn431WL11pRWTGlCU3/p1pngKRnFgBBOtORJio+eA+cZiLntdlI/W91etx1ceJCCTvTFPl/9pkl9um1ddJTBXDFIjd7vKEZcDDE/6JLxorcn3j8JDQhALlI7XhAARW2GHl4r4nRbNwSI7HbgJx3H+MZZaIy+Vj4eyaiSAnDiU11w2vDtMbpS9vEsrvdogJxtqM8dCCb0GDcQIgwRSPLKwDqC/PhBeiIR4Oqq2ss4XTOmaZm0782J/3ICm1Xnld7Tphj38Okg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=K2fr+M/gLOUDqrJoMfFa20GMUP5OeoSrCXW8BTQSIwk=;
+ b=oWIiRWSIXZ3xVXXBB7vQGfy4V9KQw3J/gfM9AFC6g2R1NbPLJyfgX3Qs2IES5QXn9Rp12Ve+6ELOLYi/hLY9jP2ocoJvjE1RZwxu+R5XCywlQLYi7r4s1J2vQp7ufWviP4x60GbZlQIlStGwaNdZeenCe+J1QkA0HGa1gYr3TPiqddLj/V96TJ9m0/ykVzcM+1CdOTbi+Fo1Yb4/4YQEKiS7whQp+eBAAd0FcmbH9J7L0+SGqAzKu6Sft/YTn65TTR9ilCD9VrKvUSotoWfWTOXkoCy5QT1LsuXE3jSnpKfsMi8SUeEoDlIFiaR3G5vFESev4OEXDHGCVeKNd0irDg==
+Received: from TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:23e::10)
+ by TYCP286MB3427.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:2ce::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.34; Mon, 26 Feb
+ 2024 13:24:33 +0000
+Received: from TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::58f5:1590:22a9:6f6]) by TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::58f5:1590:22a9:6f6%4]) with mapi id 15.20.7316.034; Mon, 26 Feb 2024
+ 13:24:33 +0000
+From: Shengyu Qu <wiagn233@outlook.com>
+To: linux@armlinux.org.uk,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Shengyu Qu <wiagn233@outlook.com>
+Subject: [PATCH v1] net: sfp: add quirks for ODI DFP-34X-2C2
+Date: Mon, 26 Feb 2024 21:23:46 +0800
+Message-ID:
+ <TY3P286MB2611C0FA24318AA397DB689B985A2@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
+X-Mailer: git-send-email 2.39.2
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TMN: [ffUVxoTrwJkx9AQFUnET/LjLusg4OZUy]
+X-ClientProxiedBy: SG2PR04CA0180.apcprd04.prod.outlook.com
+ (2603:1096:4:14::18) To TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:23e::10)
+X-Microsoft-Original-Message-ID: <20240226132346.12019-1-wiagn233@outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY3P286MB2611:EE_|TYCP286MB3427:EE_
+X-MS-Office365-Filtering-Correlation-Id: abaf2053-4451-41c0-07ab-08dc36ce4516
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	argETSp414OuhWZlX3vO+0K+z2CSvSsT1isTTSf0IW5et13XvPAHSu6sbxehUh2aIU3w5VrF3zF5fE2GcpSVnG4Rtm0TSjb3Rj5YQPtsi8xIqw23fdLn5SWmJ6hSkQeV4y36MilMY7Z0PYDj1EqaIFZ91G/7YvaK1OGu+gER+nHitV7z6x8hHS3Irp7UBQ9y4kMr6JHML7iBgtLAODQh6MPCun1+fhO2NN7v0gI1DIK18ctgZCrZ7urdAMRhveTDdE+YuPZPGnNKx11yyLIRyLpAypf/aykPNuQfT9xRj3Cog+qrKwxd03wxnyGhbN3LHBgNK1xwaCbW9RoFY/4QV/3GGG7Y/k2rxVvqibr7BWrG1pOQR/5Gd7kyhxOJ09bwAn65/RfFlS6+C7139xXIGIBFFlJW18LqL2I7d5fAfUUUtevnkpZ6LRjI9/s+4s5NNU2BLMV2KOyrpeJYVQ/J3LTsNvmxcfpVQXz3TsDaiA2h4kz6S2nbTBqmpIEc47bkauYZ+h1u+AglEyERPvqEhoPwjBx4gwT8Vfg2wB2IU3A2CF2jMhoT7NjcuKUURjSDhAxYtAqy6JDedC8foYQ17XEK5dIr3sJjEoKvVFmDVZhKE51pEOmRrRurhet03Mnb
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?sXhQA6qf3k4zGvNZGs4KZjRaMD3PGLGwqwGCzhLIxwNPo3DUYcUvwcfZZ6Va?=
+ =?us-ascii?Q?4lTK9fYzw3XonXc5pUIKbJsT4+tK/lFVymFGfI7AiVkoFIyKblwt/VKJNhcG?=
+ =?us-ascii?Q?Mf/0YUUMU8RRaU5XVv6T0Ja4uz5Uczv4b8+6Vmd+bhm9VvH+pnJ6yMT0svoZ?=
+ =?us-ascii?Q?uMVEdKNoMAYMOMxhtuxX+mS0XJqc5c3j4urTKoEDqFCtk2D97BjoV8IBgdW3?=
+ =?us-ascii?Q?y49gYqgk6LFjOPZ1efMkj3eOYx9TggWQX6eYhE0jdV7Cf/UVcuRhPyFqbYkB?=
+ =?us-ascii?Q?Vezhj5w2O7jfKwG3yTlYoeSnCLVZOKKc1UlgrPIjAynIpf8HZaU1x0QlCBsi?=
+ =?us-ascii?Q?5r+iWl71hVUURq2HfLofv2uK5fDD/IhaKGQFDoi+OS64lQgOmVPYGU3jp1Zy?=
+ =?us-ascii?Q?2C9boxugbgTnl3TC14vERhUlLyZeDRwjIG1Uk5t69/FlHCbAwBgPrxSIOs3S?=
+ =?us-ascii?Q?0BFax1cHMdcVbmb/92kaOGTmmmb3yRSRkD4lU30V/heQA0cLnQdCVXlk9a5r?=
+ =?us-ascii?Q?g82jKakryPv3twy6LgVlS9Okeaxs0Pck9XEcfRp8jvUCcEPSnS0uWxeuWITB?=
+ =?us-ascii?Q?ajf2WrZUgpEP5+VenUkjPLJO4b1L//zC/SPPe3tZEbRmt6Qdla8xDZZCCMbi?=
+ =?us-ascii?Q?OgV3JOi83fnXAvUkWs+Kv/Yg+wd2yjtEBudhjmYKCzXPEWJyzjwuZ5xhzb7Y?=
+ =?us-ascii?Q?MVSu8lu1lNeYQR0RIYHXgmTcO1TJddX0YbGInoKb+OjOJDOwIxEw1G4dwYiv?=
+ =?us-ascii?Q?RIFAf+GN+YVEnesQHx66eX70Npmd+a8Z3D+p6xKT2MwoeRHtqZS5MTKZzPIy?=
+ =?us-ascii?Q?/HBRL1RMV4TgiMwMN/4HkOpsb0540M6R1vxz+Kyg5WeZ8Bb61EU+0TRmSI/G?=
+ =?us-ascii?Q?6/bTVBIH2DT6MR8/M+PHf0skDVkVXJsUf3I9xB6uMo2WqXxXIpALLLCZGxlQ?=
+ =?us-ascii?Q?KSmNLBC0++DPkpXBT3H+LEkgmk3L3rLZKQCrnKaeQvodb7OuZyr0bRhQ6hdY?=
+ =?us-ascii?Q?/stvgq74laQxBzPdzBIztQXf8X2qzJPMmwhqccOtL1EPKVBA4d+RyDOAXjCD?=
+ =?us-ascii?Q?yNhXWWeqvqqifPabiqb3znmEZfBi1CpOp7C2n9QZ91aHCqea8RwO5mAxunWB?=
+ =?us-ascii?Q?gYO6Birfj9Pr2gveBKDLaFKbHiKx0aWBhMfda5Vz74POZUkd2VL5pelS0aWR?=
+ =?us-ascii?Q?QpoQGrTULcirwqdDZXo7LfvQGWo/M2lELt73Sm4oATvdeR0nKyaKA6HMWhY?=
+ =?us-ascii?Q?=3D?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: abaf2053-4451-41c0-07ab-08dc36ce4516
+X-MS-Exchange-CrossTenant-AuthSource: TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2024 13:24:33.3626
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCP286MB3427
 
+ODI DFP-34X-2C2 is capable of 2500base-X, but incorrectly report its
+capabilities in the EEPROM.
+So use sfp_quirk_2500basex for this module to allow 2500Base-X mode.
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Signed-off-by: Shengyu Qu <wiagn233@outlook.com>
+---
+ drivers/net/phy/sfp.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 045e9d812868a2d80b7a57b224ce8009444b7bbc
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024022602-extended-buffer-5cf7@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
-
-Possible dependencies:
-
-045e9d812868 ("mptcp: fix duplicate subflow creation")
-b9d69db87fb7 ("mptcp: let the in-kernel PM use mixed IPv4 and IPv6 addresses")
-bedee0b56113 ("mptcp: address lookup improvements")
-4638de5aefe5 ("mptcp: handle local addrs announced by userspace PMs")
-c682bf536cf4 ("mptcp: add pm_nl_pernet helpers")
-4cf86ae84c71 ("mptcp: strict local address ID selection")
-d045b9eb95a9 ("mptcp: introduce implicit endpoints")
-aaa25a2fa796 ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 045e9d812868a2d80b7a57b224ce8009444b7bbc Mon Sep 17 00:00:00 2001
-From: Paolo Abeni <pabeni@redhat.com>
-Date: Thu, 15 Feb 2024 19:25:33 +0100
-Subject: [PATCH] mptcp: fix duplicate subflow creation
-
-Fullmesh endpoints could end-up unexpectedly generating duplicate
-subflows - same local and remote addresses - when multiple incoming
-ADD_ADDR are processed before the PM creates the subflow for the local
-endpoints.
-
-Address the issue explicitly checking for duplicates at subflow
-creation time.
-
-To avoid a quadratic computational complexity, track the unavailable
-remote address ids in a temporary bitmap and initialize such bitmap
-with the remote ids of all the existing subflows matching the local
-address currently processed.
-
-The above allows additionally replacing the existing code checking
-for duplicate entry in the current set with a simple bit test
-operation.
-
-Fixes: 2843ff6f36db ("mptcp: remote addresses fullmesh")
-Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/435
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index ed6983af1ab2..58d17d9604e7 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -396,19 +396,6 @@ void mptcp_pm_free_anno_list(struct mptcp_sock *msk)
- 	}
- }
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index f75c9eb3958e..2021cb4ff2f6 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -495,6 +495,13 @@ static const struct sfp_quirk sfp_quirks[] = {
+ 	// 2500MBd NRZ in their EEPROM
+ 	SFP_QUIRK_M("Lantech", "8330-262D-E", sfp_quirk_2500basex),
  
--static bool lookup_address_in_vec(const struct mptcp_addr_info *addrs, unsigned int nr,
--				  const struct mptcp_addr_info *addr)
--{
--	int i;
--
--	for (i = 0; i < nr; i++) {
--		if (addrs[i].id == addr->id)
--			return true;
--	}
--
--	return false;
--}
--
- /* Fill all the remote addresses into the array addrs[],
-  * and return the array size.
-  */
-@@ -440,6 +427,16 @@ static unsigned int fill_remote_addresses_vec(struct mptcp_sock *msk,
- 		msk->pm.subflows++;
- 		addrs[i++] = remote;
- 	} else {
-+		DECLARE_BITMAP(unavail_id, MPTCP_PM_MAX_ADDR_ID + 1);
++	// ODI DFP-34X-2C2 can operate at 2500base-X, but incorrectly report 1300MBd
++	// NRZ in the EEPROM.
++	// Besides, In early batches, vendor id is set to OEM, but that is fixed in
++	// newer batches.
++	SFP_QUIRK_M("ODI", "DFP-34X-2C2", sfp_quirk_2500basex),
++	SFP_QUIRK_M("OEM", "DFP-34X-2C2", sfp_quirk_2500basex),
 +
-+		/* Forbid creation of new subflows matching existing
-+		 * ones, possibly already created by incoming ADD_ADDR
-+		 */
-+		bitmap_zero(unavail_id, MPTCP_PM_MAX_ADDR_ID + 1);
-+		mptcp_for_each_subflow(msk, subflow)
-+			if (READ_ONCE(subflow->local_id) == local->id)
-+				__set_bit(subflow->remote_id, unavail_id);
-+
- 		mptcp_for_each_subflow(msk, subflow) {
- 			ssk = mptcp_subflow_tcp_sock(subflow);
- 			remote_address((struct sock_common *)ssk, &addrs[i]);
-@@ -447,11 +444,17 @@ static unsigned int fill_remote_addresses_vec(struct mptcp_sock *msk,
- 			if (deny_id0 && !addrs[i].id)
- 				continue;
+ 	SFP_QUIRK_M("UBNT", "UF-INSTANT", sfp_quirk_ubnt_uf_instant),
  
-+			if (test_bit(addrs[i].id, unavail_id))
-+				continue;
-+
- 			if (!mptcp_pm_addr_families_match(sk, local, &addrs[i]))
- 				continue;
- 
--			if (!lookup_address_in_vec(addrs, i, &addrs[i]) &&
--			    msk->pm.subflows < subflows_max) {
-+			if (msk->pm.subflows < subflows_max) {
-+				/* forbid creating multiple address towards
-+				 * this id
-+				 */
-+				__set_bit(addrs[i].id, unavail_id);
- 				msk->pm.subflows++;
- 				i++;
- 			}
+ 	// Walsun HXSX-ATR[CI]-1 don't identify as copper, and use the
+-- 
+2.39.2
 
 
