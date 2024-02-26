@@ -1,132 +1,164 @@
-Return-Path: <stable+bounces-23737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67658867C1A
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 17:33:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91E36867C5B
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 17:45:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1ED7A293D5F
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 16:33:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47062294582
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 16:45:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E5F760BA4;
-	Mon, 26 Feb 2024 16:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E213B12C53E;
+	Mon, 26 Feb 2024 16:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="th6fRVQ0"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="FoK8cc2d";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="5/ZXCHY5";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="MteP/CWz";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="YSPc2zIj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087321E519;
-	Mon, 26 Feb 2024 16:33:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A046127B4D;
+	Mon, 26 Feb 2024 16:45:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708965190; cv=none; b=GIn1dS96DEEMkBLhz3M4Ygk8nMdfefeftDbeK2fFcHC4oqEusHbTxUF68eyY9xUjxE0vzdwNVydksFnhWwh+HEys6GZQknkBtOORymCJcrl1OSXl3yths7JVSu5kO7ampebKJMs8oko8iOs/pGahnxe3Cyn6n6aK3pK1VemW69c=
+	t=1708965922; cv=none; b=Yd4rHA88I57+egCSEJr0Obb6tnIq9Rp61DHThH1MBahkl83+uYvXn3KwHrY8YpoCZr7zJ7nmOX8A2H7fIR1kj8fMS9Zbbp+ktTCZ8/718XvhTdogPMrFrYtYoPESTTK7C73I8IShNySx9iSBuQlcjlPt1GL5HJjuySC1xCxM1gM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708965190; c=relaxed/simple;
-	bh=yYV+NOkGvP4l7r0h+cUCgge3vZjLcjysa5VuSKBMHg8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=G9x0vTv6Pgpelqy0+fMoPJRfT8PCoOsr4qkRrG2WHsmzu/LYGzLl+7++wc1XWH26osbOnP1EqXBZBXxFHBRnVkeBZepCbT/KClb86ioYSOTtdnyzbr4N9pw3RTuzh2ngpk7nyE5QJcOUkuBq1Omrzxul6UCu5k3auHs8b4GgwsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=th6fRVQ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D7F8C433F1;
-	Mon, 26 Feb 2024 16:33:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708965187;
-	bh=yYV+NOkGvP4l7r0h+cUCgge3vZjLcjysa5VuSKBMHg8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=th6fRVQ0Rb4Q2YNsbKLVS7GanbHdNDCZDcqWwqnBCz2Ug8QE40TEa87/G9R7j3967
-	 OXJ5CkHwRuTC661MYNSw0jkOpwurjfNhR1HFdySBSZLM2VWvOj7IrtX1yGs3VFR+5g
-	 FyBnvMvKIRmWM3zoEZr7+KRoVVsiQgFOwpSmcHZHv51r/yRyWUp+ToE5fkvu7rceIL
-	 Pl1jXJhHR1P6XvVNt/t4aOKhH+i533BTci1PISSiuQvEpHCdvqOQALiLC7XJynMBVp
-	 QFkP45AaLhO8gXjaII30HwFgd0GQIzCpJZNyk1W0QUG9MTrqf7penpnD5gVtZSWcNv
-	 Or+VYZ7/Mylsw==
-Date: Mon, 26 Feb 2024 10:33:05 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Matthew W Carlis <mattc@purestorage.com>,
-	Keith Busch <kbusch@kernel.org>, Lukas Wunner <lukas@wunner.de>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Jesse Brandeburg <jesse.brandeburg@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] PCI/DPC: Request DPC only if also requesting AER
-Message-ID: <20240226163305.GA202015@bhelgaas>
+	s=arc-20240116; t=1708965922; c=relaxed/simple;
+	bh=htcnUineXKuRIijMZZzqAZpIfeDz5CJu5ZzPoiE2Ql0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Un2+ZaWcFqw99bfHaxurj/QltNilqiyhyB5hek9yPjUpM6Cu5KyI/TUBukG3CqmORKYAb2wJL9wOYe5D3r1BjtsxjPmnAZ/oNkcDMF3L1NyVOHVYoOdgH94kjxT3Hnm/XwXqMC268U1rrXMMIrEWwthWqvPNCNpufseq9gxOkC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=FoK8cc2d; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=5/ZXCHY5; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=MteP/CWz; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=YSPc2zIj; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id E490E225AF;
+	Mon, 26 Feb 2024 16:45:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1708965919; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VNKQOvX+alm4LCMtGGNsFDsIgNEjmJS+VHB4k1BcnoI=;
+	b=FoK8cc2d/IpT93Anet6ZMgVmF0417NNt8kEwHcm8oR9msOJZjAsH0abIEf+b6Hi6yYnsgT
+	0b7jSvdAvoKaxcdm4PhUFyPDDfunqMrKqjc9DmpjJCG1v8l3tE+DAf8iafAGutEPc9m5rf
+	wL5cgfaBVgoStqphXUuG1JXhaEfj9q8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1708965919;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VNKQOvX+alm4LCMtGGNsFDsIgNEjmJS+VHB4k1BcnoI=;
+	b=5/ZXCHY5e9+HWvqCTBBUuURJzTIrP5tHzUpUBcEy0uabtOxhTPUjXeX/uC8YnNKdIF5+IP
+	X1FHWhuqlzrxSUCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1708965918; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VNKQOvX+alm4LCMtGGNsFDsIgNEjmJS+VHB4k1BcnoI=;
+	b=MteP/CWzWhn+dK0SaqUbv3rWE+O04xwyDiSMHgV1mF33vP1MPioucBzdaF8rq3EKJavEj4
+	n81Alg6YGa6VdWOfWA2mjYG14MEWQ7FrHfqcar1ZvqWd5BGffFYXP6Dp2yp/irPNNJGfyt
+	NiPemduGs6+mIj9h9s0Q3jVVHZrnjjM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1708965918;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VNKQOvX+alm4LCMtGGNsFDsIgNEjmJS+VHB4k1BcnoI=;
+	b=YSPc2zIjtp7PO4Rtt9tam47ZoWA8VrgLgOl/mblznZcDxJ7YLNw1CjpA89ezIaRa8Ml/r/
+	r4AFMyPi0nDKNlDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8D1EB13A58;
+	Mon, 26 Feb 2024 16:45:18 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id b4jJIR7A3GWrFAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 26 Feb 2024 16:45:18 +0000
+Message-ID: <3b539d8d-e529-45b0-aa83-545248bc0670@suse.cz>
+Date: Mon, 26 Feb 2024 17:45:18 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <dfc9692b-1a9a-4d53-9e3e-33b2e88d0d37@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm, vmscan: prevent infinite loop for costly GFP_NOIO |
+ __GFP_RETRY_MAYFAIL allocations
+Content-Language: en-US
+To: Sven van Ashbrook <svenva@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, bgeffon@google.com,
+ cujomalainey@chromium.org, kramasub@chromium.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-sound@vger.kernel.org, perex@perex.cz, stable@vger.kernel.org,
+ tiwai@suse.com, tiwai@suse.de, Michal Hocko <mhocko@kernel.org>,
+ Mel Gorman <mgorman@techsingularity.net>
+References: <CAG-rBihs_xMKb3wrMO1+-+p4fowP9oy1pa_OTkfxBzPUVOZF+g@mail.gmail.com>
+ <20240221114357.13655-2-vbabka@suse.cz>
+ <CAG-rBijH3GaHN2zA2_cby-RsQCVHou-WjZnxudMebPrS9imgfg@mail.gmail.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <CAG-rBijH3GaHN2zA2_cby-RsQCVHou-WjZnxudMebPrS9imgfg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="MteP/CWz";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YSPc2zIj
+X-Spamd-Result: default: False [-0.75 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 XM_UA_NO_VERSION(0.01)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 BAYES_HAM(-0.45)[78.91%];
+	 MIME_GOOD(-0.10)[text/plain];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 DKIM_TRACE(0.00)[suse.cz:+];
+	 MX_GOOD(-0.01)[];
+	 RCPT_COUNT_TWELVE(0.00)[14];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_TLS_ALL(0.00)[];
+	 MID_RHS_MATCH_FROM(0.00)[]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Score: -0.75
+X-Rspamd-Queue-Id: E490E225AF
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spamd-Bar: /
 
-On Mon, Feb 26, 2024 at 07:46:05AM -0800, Kuppuswamy Sathyanarayanan wrote:
+On 2/26/24 17:09, Sven van Ashbrook wrote:
+> Vlastimil,
 > 
-> On 2/26/24 7:18 AM, Bjorn Helgaas wrote:
-> > On Sun, Feb 25, 2024 at 11:46:07AM -0800, Kuppuswamy Sathyanarayanan wrote:
-> >> On 2/22/24 2:15 PM, Bjorn Helgaas wrote:
-> >>> From: Bjorn Helgaas <bhelgaas@google.com>
-> >>>
-> >>> When booting with "pci=noaer", we don't request control of AER, but we
-> >>> previously *did* request control of DPC, as in the dmesg log attached at
-> >>> the bugzilla below:
-> >>>
-> >>>   Command line: ... pci=noaer
-> >>>   acpi PNP0A08:00: _OSC: OS supports [ExtendedConfig ASPM ClockPM Segments MSI EDR HPX-Type3]
-> >>>   acpi PNP0A08:00: _OSC: OS now controls [PCIeHotplug SHPCHotplug PME PCIeCapability LTR DPC]
-> >>>
-> >>> That's illegal per PCI Firmware Spec, r3.3, sec 4.5.1, table 4-5, which
-> >>> says:
-> >>>
-> >>>   If the operating system sets this bit [OSC_PCI_EXPRESS_DPC_CONTROL], it
-> >>>   must also set bit 7 of the Support field (indicating support for Error
-> >>>   Disconnect Recover notifications) and bits 3 and 4 of the Control field
-> >>>   (requesting control of PCI Express Advanced Error Reporting and the PCI
-> >>>   Express Capability Structure).
-> >>
-> >> IIUC, this dependency is discussed in sec 4.5.2.4. "Dependencies
-> >> Between _OSC Control Bits".
-> >>
-> >> Because handling of Downstream Port Containment has a dependency on
-> >> Advanced Error Reporting, the operating system is required to
-> >> request control over Advanced Error Reporting (bit 3 of the Control
-> >> field) while requesting control over Downstream Port Containment
-> >> Configuration (bit 7 of the Control field). If the operating system
-> >> attempts to claim control of Downstream Port Containment
-> >> Configuration without also claiming control over Advanced Error
-> >> Reporting, firmware is required to refuse control of the feature
-> >> being illegally claimed and mask the corresponding bit.  Firmware is
-> >> required to maintain ownership of Advanced Error Reporting if it
-> >> retains ownership of Downstream Port Containment Configuration.  If
-> >> the operating system sets bit 7 of the Control field, it must set
-> >> bit 7 of the Support field, indicating support for the Error
-> >> Disconnect Recover event.
-> >
-> > So I guess you're suggesting that there are two defects here?
-> >
-> >   1) Linux requested DPC control without requesting AER control.
-> >
-> >   2) Platform granted DPC control when it shouldn't have.
-> >
-> > I do agree with that, but obviously we can only fix 1) in Linux.
+> We noticed that this patch is now added to Andrew Morton's
+> mm-hotfixes-unstable branch.
 > 
-> Sorry, maybe my comment was not clear. I was just suggesting to
-> change the spec reference from r3.3, sec 4.5.1, table 4-5 to r3.3,
-> sec 4.5.2.4 "Dependencies Between _OSC Control Bits".
+> How can we help to get this into mm-hotfixes-stable
+> and from there, into mainline ?
 
-The requirement that the OS request AER control whenever it requests
-DPC control is mentioned in both sec 4.5.1 and sec 4.5.2.4.  IMO sec
-4.5.2.4 should not exist because the per-bit table in sec 4.5.1 is a
-better place for implementation guidance.  4.5.2.4 is easy to miss,
-mostly redundant, and hard to integrate with the 4.5.1 table.
+A Tested-by: can't hurt, but of course you need to finish the testing first.
+It's encouraging you didn't hit the bug yet anymore, thought!
 
-What advantage do you see for citing 4.5.2.4 instead of 4.5.1?  The
-only real difference I see is that it also points out a firmware
-problem.  I don't think the extra text is worth it since it doesn't
-motivate the Linux change.
+> We are still stress-testing using low memory suspend. Anything else
+> that is required, and we can help with?
 
-Bjorn
+I think that's already great enough, thanks!
+
+> Sven
+
 
