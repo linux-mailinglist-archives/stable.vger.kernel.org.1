@@ -1,125 +1,220 @@
-Return-Path: <stable+bounces-23606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 889D7866B4C
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 08:48:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51858866B66
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 08:53:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41884285F5E
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 07:48:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07A191F22724
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 07:53:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DE521BF3B;
-	Mon, 26 Feb 2024 07:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A87031BF2A;
+	Mon, 26 Feb 2024 07:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="etGaf4uA"
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="UBqnKylB"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5151BF37;
-	Mon, 26 Feb 2024 07:48:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9963C1C68A
+	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 07:53:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708933700; cv=none; b=dTlY5cu7bfqzTgFKrH3IeJp1eUjufMQ1oI6BANz4vgHG106TNokpXjlyVso8O7u25OlLWYbeqgIybLtCry9X7uhW137ZHcMz5pyRKGxB3DJ3UAdb+MNioGJ8VufXfFCj2bQqpNyr8+B+gDi4ctjPDg99tJ/f/rW13iOr6QAoS50=
+	t=1708934016; cv=none; b=uHXf1OTlTA7Upi+UZakWJTJ49d8b/i+ZGr88qf9K/Gce1lrKOujC7TkLe/byAR20zuPqQDFjZHtWf0Emd8Fz4vEDdoyITDKt3NoAr3K8m3eYndMCEvCEfiWWlt+3nu6sfFdonW1YOpXn5b/TTeV4h5yQrL47rpKxSX/4APAuL/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708933700; c=relaxed/simple;
-	bh=YskQDqRYulrxgcJz1QYPkqijA0rMI2I1ULyE9kL6McA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XG3H7e8Hs8RiRDWJwOufkyIwhpg2op6DRnUfrbGFddEmYw2i7OW0vWzh4tgMMzjF3WIdpbZ/YKdE3tA5p/80s6eM2TH8mSEFtDySHWMb8TObO2K/z8/epYBO7Jpi76+6TD+KDgefJr1fSlYFRs/dEe/qsicdplQkCrHCR+8rmgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=etGaf4uA; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708933699; x=1740469699;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=YskQDqRYulrxgcJz1QYPkqijA0rMI2I1ULyE9kL6McA=;
-  b=etGaf4uAMSLe/4XWXzJAfhiyDeuriP6QZdb5G2mnXaW7VuECEVUxMVku
-   /f6O4rWrp+EYhdBMTlccZl6H5VK882gLklLl64Gf1jnqoffvA3UggSj58
-   ZWPXwm2rbZgqTpvFJE07CR6sK4KBixKW5PCgtIfwtEqkkBZkKE95ns34p
-   4KQR+XprjMTTMkVu0EkYtIOSRXvidilX/SKhjukFSUbw30leUSHk3ahB+
-   qiyZ5v3wFaqs6qfa6yQCvP9Q8yAHa3wMnh8Ey7CIfSgU163m9UK67yOdQ
-   BIfNJ2jaLeu/ubOyky5z4rybjImDYalpPliCEOCB/r3OUaRuFKNowsPR+
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="14334338"
-X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
-   d="scan'208";a="14334338"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2024 23:48:18 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="937029441"
-X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
-   d="scan'208";a="937029441"
-Received: from kuha.fi.intel.com ([10.237.72.185])
-  by fmsmga001.fm.intel.com with SMTP; 25 Feb 2024 23:48:14 -0800
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 26 Feb 2024 09:48:14 +0200
-Date: Mon, 26 Feb 2024 09:48:14 +0200
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Guenter Roeck <linux@roeck-us.net>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Xu Yang <xu.yang_2@nxp.com>,
-	"open list:USB TYPEC PORT CONTROLLER DRIVERS" <linux-usb@vger.kernel.org>
-Subject: Re: [PATCH] Revert "usb: typec: tcpm: reset counter when enter into
- unattached state after try role"
-Message-ID: <ZdxCPn6ulER0OjC1@kuha.fi.intel.com>
-References: <20240217162023.1719738-1-megi@xff.cz>
+	s=arc-20240116; t=1708934016; c=relaxed/simple;
+	bh=H1/68T6vtEI19f2OwbzYGbUoeQTa60oidED9lAkt07k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=r2An8CDIADte+6DC0fHxWqohlUZjN2YGQqjpBy/LYxDQhKiGMAOywcAbY8bcdwTr3zQHNL3K42hJm21bw24pfkSeVqczXsqnJZTDNvGyPPdfZuai3rb5/Zdt/XQvt8VW2mkRaJet/GnYoczYKKmVLOPClFshY7U1pAADEusCKsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=UBqnKylB; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a3ed9cae56fso427413266b.1
+        for <stable@vger.kernel.org>; Sun, 25 Feb 2024 23:53:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=amarulasolutions.com; s=google; t=1708934013; x=1709538813; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0DLWa7NcP4etKwAniB6QuHD07G5jSHGqKq2CbdXaCTc=;
+        b=UBqnKylBLQ/njzmb6jfdu45pAv7Jq9vmv3/Xq6ftDeMrCSi/p4F6w4Lc2s+E9NOUtM
+         dRCBi19q4rmcOlwi4j0hiDJfNipAj2tPx0acJ1incJN38HS0Z9CBcdkV3wdrrcsumMTI
+         /7AQXK4oVhmg9Iq61eVDv+ZJ51GoAw1pk2yTw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708934013; x=1709538813;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0DLWa7NcP4etKwAniB6QuHD07G5jSHGqKq2CbdXaCTc=;
+        b=PpvRBgcN2EiDDxNx5eug+kySYAfmocXEeKyNRXSjQjDRXigKB0RulJLM9tumo9cyu4
+         M81DHANfcINSLOnnpsfSjidH4hRJ4leM56TlLBIUE4GLg0H1t2TYCC7lh9Oy8tnzwz26
+         iwPsKW/dj57ixexRk8Jp/kAWuxFH8ml8a15rafmJRiecc/XgkakSFOhspU4A4CcB8vA1
+         zXCpZyHX9VLxHiowpnmfusiFCUzEOogZg3KPUwA8Ryq4od8H6EcgbBLVuq4u9fluEhK0
+         7MwirzqabZmU8lqDqDWXrplyDlPIZGpNLmbGoK0fKKWjW4f0icFznRlsV122QGQZhH55
+         5a0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU3V2eWP9sVJoSJNCZAA8LIG8/3/yN+VwFg4WXb/f6Tp6R+3geb0w6MupXtzoIHS0KUBpCZ3qDeMpZJaS18t/ovP9ERsVg2
+X-Gm-Message-State: AOJu0YxQWCu7r4sTqkP6qWB2DIIA9tzxxQGqZX/5rwb1YyxgKG1WX1zZ
+	xasensw6Gk8Izis5S1iPnly1hKR8M4EPIvc3NyyItpZC/eww5meJxBaIkxdWx6FrvEW57vCGhVp
+	PIdd/4PxPjaF7BkGLTudYyk2MKz3hs1snPA34iw==
+X-Google-Smtp-Source: AGHT+IEhOCKWXEBEZgQAKtk2f60JhvlK6LnyTrP3IE8mObADY6Ur4vqS9GaLdac9/qnxIORF2bcbkB4Pe4oF+dX3X4A=
+X-Received: by 2002:a17:906:b798:b0:a41:3d8b:80d with SMTP id
+ dt24-20020a170906b79800b00a413d8b080dmr4627327ejb.37.1708934012843; Sun, 25
+ Feb 2024 23:53:32 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240217162023.1719738-1-megi@xff.cz>
+References: <20240226070348.1703879-1-michael@amarulasolutions.com>
+In-Reply-To: <20240226070348.1703879-1-michael@amarulasolutions.com>
+From: Michael Nazzareno Trimarchi <michael@amarulasolutions.com>
+Date: Mon, 26 Feb 2024 08:53:21 +0100
+Message-ID: <CAOf5uw=P0UYXP8ujHpF+hnGR_cg90gqv9na7cVH1sQ-BtEgrTA@mail.gmail.com>
+Subject: Re: [PATCH V2] usb: dwc3: gadget: Fix suspend/resume warning when
+ no-gadget is connected
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-amarula@amarulasolutions.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Feb 17, 2024 at 05:20:21PM +0100, Ondřej Jirman wrote:
-> From: Ondrej Jirman <megi@xff.cz>
-> 
-> The reverted commit makes the state machine only ever go from SRC_ATTACH_WAIT
-> to SNK_TRY in endless loop when toggling. After revert it goes to SRC_ATTACHED
-> after initially trying SNK_TRY earlier, as it should for toggling to ever detect
-> the power source mode and the port is again able to provide power to attached
-> power sinks.
-> 
-> This reverts commit 2d6d80127006ae3da26b1f21a65eccf957f2d1e5.
-> 
+Hi all
+
+Please don't review, I'm not happy with it and even it's broken. I
+need to find better solution
+
+On Mon, Feb 26, 2024 at 8:03=E2=80=AFAM Michael Trimarchi
+<michael@amarulasolutions.com> wrote:
+>
+> This patch restore the logic but protects the variable using a spinlock
+> without moving the code
+>
+> [   45.597274] dwc3 31000000.usb: wait for SETUP phase timed out
+> [   45.599140] dwc3 31000000.usb: failed to set STALL on ep0out
+> [   45.601069] ------------[ cut here ]------------
+> [   45.601073] WARNING: CPU: 0 PID: 150 at drivers/usb/dwc3/ep0.c:289 dwc=
+3_ep0_out_start+0xcc/0xd4
+> [   45.601102] Modules linked in: cfg80211 rfkill ipv6 rpmsg_ctrl rpmsg_c=
+har crct10dif_ce rti_wdt k3_j72xx_bandgap rtc_ti_k3 omap_mailbox sa2ul auth=
+enc [last unloaded: ti_k3_r5_remoteproc]
+> [   45.601151] CPU: 0 PID: 150 Comm: sh Not tainted 6.8.0-rc5 #1
+> [   45.601159] Hardware name: BSH - CCM-M3 (DT)
+> [   45.601164] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BTYP=
+E=3D--)
+> [   45.601172] pc : dwc3_ep0_out_start+0xcc/0xd4
+> [   45.601179] lr : dwc3_ep0_out_start+0x50/0xd4
+> [   45.601186] sp : ffff8000832739e0
+> [   45.601189] x29: ffff8000832739e0 x28: ffff800082a21000 x27: ffff80008=
+08dc630
+> [   45.601200] x26: 0000000000000002 x25: ffff800082530a44 x24: 000000000=
+0000000
+> [   45.601210] x23: ffff000000e079a0 x22: ffff000000e07a68 x21: 000000000=
+0000001
+> [   45.601219] x20: ffff000000e07880 x19: ffff000000e07880 x18: 000000000=
+0000040
+> [   45.601229] x17: ffff7fff8e1ce000 x16: ffff800080000000 x15: fffffffff=
+ffe5260
+> [   45.601239] x14: 0000000000000000 x13: 206e6f204c4c4154 x12: 532074657=
+3206f74
+> [   45.601249] x11: 0000000000000001 x10: 000000000000000a x9 : ffff80008=
+3273930
+> [   45.601259] x8 : 000000000000000a x7 : ffffffffffff3f0c x6 : fffffffff=
+fff3f00
+> [   45.601268] x5 : ffffffffffff3f0c x4 : 0000000000000000 x3 : 000000000=
+0000000
+> [   45.601278] x2 : 0000000000000000 x1 : ffff000004e7e600 x0 : 00000000f=
+fffff92
+> [   45.601289] Call trace:
+> [   45.601293]  dwc3_ep0_out_start+0xcc/0xd4
+> [   45.601301]  dwc3_ep0_stall_and_restart+0x98/0xbc
+> [   45.601309]  dwc3_ep0_reset_state+0x5c/0x88
+> [   45.601315]  dwc3_gadget_soft_disconnect+0x144/0x160
+> [   45.601323]  dwc3_gadget_suspend+0x18/0xb0
+> [   45.601329]  dwc3_suspend_common+0x5c/0x18c
+> [   45.601341]  dwc3_suspend+0x20/0x44
+> [   45.601350]  platform_pm_suspend+0x2c/0x6c
+> [   45.601360]  __device_suspend+0x10c/0x34c
+> [   45.601372]  dpm_suspend+0x1a8/0x240
+> [   45.601382]  dpm_suspend_start+0x80/0x9c
+> [   45.601391]  suspend_devices_and_enter+0x1c4/0x584
+> [   45.601402]  pm_suspend+0x1b0/0x264
+> [   45.601408]  state_store+0x80/0xec
+> [   45.601415]  kobj_attr_store+0x18/0x2c
+> [   45.601426]  sysfs_kf_write+0x44/0x54
+> [   45.601434]  kernfs_fop_write_iter+0x120/0x1ec
+> [   45.601445]  vfs_write+0x23c/0x358
+> [   45.601458]  ksys_write+0x70/0x104
+> [   45.601467]  __arm64_sys_write+0x1c/0x28
+> [   45.601477]  invoke_syscall+0x48/0x114
+> [   45.601488]  el0_svc_common.constprop.0+0x40/0xe0
+> [   45.601498]  do_el0_svc+0x1c/0x28
+> [   45.601506]  el0_svc+0x34/0xb8
+> [   45.601516]  el0t_64_sync_handler+0x100/0x12c
+> [   45.601522]  el0t_64_sync+0x190/0x194
+> [   45.601531] ---[ end trace 0000000000000000 ]---
+> [   45.608794] Disabling non-boot CPUs ...
+> [   45.611029] psci: CPU1 killed (polled 0 ms)
+> [   45.611837] Enabling non-boot CPUs ...
+> [   45.612247] Detected VIPT I-cache on CPU1
+>
+> Tested on a am62x board
+>
+> Fixes: 61a348857e86 ("usb: dwc3: gadget: Fix NULL pointer dereference in =
+dwc3_gadget_suspend)
 > Cc: stable@vger.kernel.org
-> Fixes: 2d6d80127006 ("usb: typec: tcpm: reset counter when enter into unattached state after try role")
-> Signed-of-by: Ondrej Jirman <megi@xff.cz>
-
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-
+> Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
 > ---
->  drivers/usb/typec/tcpm/tcpm.c | 3 ---
->  1 file changed, 3 deletions(-)
-> 
-> See https://lore.kernel.org/all/odggrbbgjpardze76qiv57mw6tllisyu5sbrta37iadjzwamcv@qr3ubwnlzqqt/
-> for more.
-> 
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index f7d7daa60c8d..295ae7eb912c 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -3743,9 +3743,6 @@ static void tcpm_detach(struct tcpm_port *port)
->  	if (tcpm_port_is_disconnected(port))
->  		port->hard_reset_count = 0;
->  
-> -	port->try_src_count = 0;
-> -	port->try_snk_count = 0;
-> -
->  	if (!port->attached)
->  		return;
->  
-> -- 
-> 2.43.0
+> V1->V2:
+>         Add cc to stable
+> ---
+>  drivers/usb/dwc3/gadget.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+> index 4c8dd6724678..4c88e44127b5 100644
+> --- a/drivers/usb/dwc3/gadget.c
+> +++ b/drivers/usb/dwc3/gadget.c
+> @@ -4703,13 +4703,19 @@ int dwc3_gadget_suspend(struct dwc3 *dwc)
+>         unsigned long flags;
+>         int ret;
+>
+> +       spin_lock_irqsave(&dwc->lock, flags);
+> +       if (!dwc->gadget_driver) {
+> +               spin_unlock_irqrestore(&dwc->lock, flags);
+> +               return 0;
+> +       }
+> +       spin_unlock_irqrestore(&dwc->lock, flags);
+> +
+>         ret =3D dwc3_gadget_soft_disconnect(dwc);
+>         if (ret)
+>                 goto err;
+>
+>         spin_lock_irqsave(&dwc->lock, flags);
+> -       if (dwc->gadget_driver)
+> -               dwc3_disconnect_gadget(dwc);
+> +       dwc3_disconnect_gadget(dwc);
+>         spin_unlock_irqrestore(&dwc->lock, flags);
+>
+>         return 0;
+> --
+> 2.40.1
+>
 
--- 
-heikki
+
+--=20
+Michael Nazzareno Trimarchi
+Co-Founder & Chief Executive Officer
+M. +39 347 913 2170
+michael@amarulasolutions.com
+__________________________________
+
+Amarula Solutions BV
+Joop Geesinkweg 125, 1114 AB, Amsterdam, NL
+T. +31 (0)85 111 9172
+info@amarulasolutions.com
+www.amarulasolutions.com
 
