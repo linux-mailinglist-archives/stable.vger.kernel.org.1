@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-23684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 036F9867500
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 13:31:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EE25867501
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 13:31:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B183E282FE5
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 12:31:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F0ED1C25002
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 12:31:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5C064CE9;
-	Mon, 26 Feb 2024 12:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BCBD60BB7;
+	Mon, 26 Feb 2024 12:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LC/eABii"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OxqOlv/K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F21464CD9
-	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 12:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0458651B9
+	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 12:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708950658; cv=none; b=FzS47uL5De6VnjpUGLX7cRHgoEyRAD/Eqpqjbhyg0DlskemKm7XBJPwYy3ijRikBdWPWYEOswBOBdtOPTAI8P0xlyb6FcsIII9f77+wX+TySEtbwCV0n/nojoBzSwa479P6Ck49yufyrs9xFvy2qIuegOrAD+8Tp77V0kWOXeZ0=
+	t=1708950661; cv=none; b=aHGDJ9r9L0XTDdMS/g1FgyI7KcMgGYFXLxtH7RJ1kn0Idxyy+nmWAtCpjwXoeOywpe6R2HGpHtCmWwDlShieUrQbqxq7+NBruY9v7guJW8nGJCfHHGKG0UWgJeYbpt8eZMV9LS+R//NkzQag0KA95G0CROkKtFtqAW+/PJDMB8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708950658; c=relaxed/simple;
-	bh=rMzdHIvmC3E7TWGpZZzJI5UzYdtDDkcLdOmqnZqo+7c=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Faq64RPHnnOhWjq5l6Ym6PxU4S21QKwkCSrJEBEy/pm5gbgPUQJtPo6zEFDvAKktRr2fvD3ZacnemIVCq8XtEuAnf78YoT1Xb1UJrofGXoZmXFRkOOEIWPSOumpkBKca07kOtqn4X6ppRE+0O3WmTOGaktjTlOA0Sx2R7FUgaUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LC/eABii; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4281DC433F1;
-	Mon, 26 Feb 2024 12:30:57 +0000 (UTC)
+	s=arc-20240116; t=1708950661; c=relaxed/simple;
+	bh=7S8CSbTsptRUuvqfUwZehKV8tg7me0NMIX511eT9ek8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Gg9h9ZhXzMlrf0p4awGGGZVSbgomjkaf2Ak/Pm0yyaZU0QY3YUN5SCndL95mkVzflaEkPnaxOmdJxg99NMWIkG0LsG3/GHI8OU5Jm+kXa6wdbHhi2w8kiWUWBbHmp0CERapkY2l39JZjs6dMDKwUadeB0lIt0kabgwUYf6JFsZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OxqOlv/K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13050C433F1;
+	Mon, 26 Feb 2024 12:31:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708950657;
-	bh=rMzdHIvmC3E7TWGpZZzJI5UzYdtDDkcLdOmqnZqo+7c=;
+	s=korg; t=1708950661;
+	bh=7S8CSbTsptRUuvqfUwZehKV8tg7me0NMIX511eT9ek8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=LC/eABii0ymaEhEnmqC85iFV4DjOKWbhxVxGsuY5zNcKdq9RFkOPag8JlluSz9J6L
-	 btXvBs4AH+whajcd2t30O/qt+9D3HjGB0H4QU+ZLCcm6pGKZwCJQZM6j1Uz287hQiK
-	 +68WXFRuEjJpUzbNkbUjNi+wXLf10IUd5aRErEjU=
-Subject: FAILED: patch "[PATCH] irqchip/gic-v3-its: Do not assume vPE tables are preallocated" failed to apply to 5.10-stable tree
+	b=OxqOlv/K7sSC3X/prHuWZT0GE291sOVrCv3/azcpc/A8ZeyREeeIcFAm4kS9cRjJR
+	 wR+dv39lLuXk2Sf3RinVL61uAYa7AcecvY7xe/Zk3Hc5hoibqX/1kSN0lMc2Xq6mon
+	 bFGvg18ZU5u0xYwpyHG1Jfbky5T9M7Aw4YXqzplE=
+Subject: FAILED: patch "[PATCH] irqchip/gic-v3-its: Do not assume vPE tables are preallocated" failed to apply to 5.4-stable tree
 To: oliver.upton@linux.dev,gcherian@marvell.com,maz@kernel.org,tglx@linutronix.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 26 Feb 2024 13:30:54 +0100
-Message-ID: <2024022654-drained-afterglow-ddb6@gregkh>
+Date: Mon, 26 Feb 2024 13:30:58 +0100
+Message-ID: <2024022658-brethren-stopper-8b5e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,29 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x ec4308ecfc887128a468f03fb66b767559c57c23
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024022654-drained-afterglow-ddb6@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024022658-brethren-stopper-8b5e@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
 ec4308ecfc88 ("irqchip/gic-v3-its: Do not assume vPE tables are preallocated")
 c0cdc89072a3 ("irqchip/gic-v3-its: Give the percpu rdist struct its own flags field")
+5e5168461c22 ("irqchip/gic-v4.1: VPE table (aka GICR_VPROPBASER) allocation")
+b25319d279b6 ("irqchip/gic-v3: Detect GICv4.1 supporting RVPEID")
+576a83429757 ("irqchip/gic-v3-its: Kill its->device_ids and use TYPER copy instead")
+ffedbf0cba15 ("irqchip/gic-v3-its: Kill its->ite_size and use TYPER copy instead")
+0dd57fed6b46 ("irqchip/gic-v3-its: Make is_v4 use a TYPER copy")
 
 thanks,
 
