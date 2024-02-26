@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-23655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7F33867188
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 11:41:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFF748671AD
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 11:44:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7230128E554
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 10:41:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47734B316D8
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 10:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98EDA58AA7;
-	Mon, 26 Feb 2024 10:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4B559158;
+	Mon, 26 Feb 2024 10:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DknBfXFH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fgPsDifg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D87F381A1
-	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 10:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB91C1DDF2
+	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 10:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708943479; cv=none; b=WnTK0+0W0jBZII631Qnwc6nKJIsdFzdykL47kOgJg9wYn39d5J1ifQpoo8huKs/ReRrP7mQL3Es06WYddFL1aIOYzfV5BEKFj49w87D9k/WU6cuj9A1f5CzW5912fPfYjhb0JQnBUSFarmei+aI6GQPKop5FjJMgLAtxPUKa6LY=
+	t=1708943498; cv=none; b=ixJuKh76eXSSPubqk6D9+qH2bazJnmKBi/JHjpi/raV7NFP27qWyD7O+Ku+Se/VLuvQ7UDRV2eE+Usg1S+m4DXZzhEGktu1qF8Y0vOmhFY/4ec+mqfZjzXQcnPifLZNtG+OPdY6HHMwnPFMbOygSKURFtLiFYUk7yackKf5jd9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708943479; c=relaxed/simple;
-	bh=y265TzFF0ZMAe4rf0VFJJ9NTdcx1iH3X3133T8Wek4U=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=A8DIKbe6WD+CmFMgJkf2076WRQhVNDm31djbqnRS5ad0/GrfFA8OkQHZ6ZShL7VnaFHTYgof8I6xLOlE/hFrUeUItEwf0S4MWNUSmi9jflLF1RA05M70U5arVpYfYVpk9Gx0SDrPaBnctByz1gxb7VphgOHSyg41ZZFl+ovZmS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DknBfXFH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4AA8C433F1;
-	Mon, 26 Feb 2024 10:31:18 +0000 (UTC)
+	s=arc-20240116; t=1708943498; c=relaxed/simple;
+	bh=VbnL+p4W0N4yiqVE/WBQPofOHh2acP8Gv68nkU+Wy4s=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pXk6d+hwyAiG0olGa6KzXHcd5/2SfsjZrJNw/fCAjHWbNE/oVvYuTnaCc3wVZuqRzl3PkK1938ewFnj2aJH0NhD3FQDjjDpXiVErd2JCXrcI1bGcQGKW8Ker2aVnS3EoouwZGzPCzXfp+8sy/McvDg2tDOpyEmjVNb5+cZLNKe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fgPsDifg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0537C433C7;
+	Mon, 26 Feb 2024 10:31:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708943479;
-	bh=y265TzFF0ZMAe4rf0VFJJ9NTdcx1iH3X3133T8Wek4U=;
+	s=korg; t=1708943498;
+	bh=VbnL+p4W0N4yiqVE/WBQPofOHh2acP8Gv68nkU+Wy4s=;
 	h=Subject:To:Cc:From:Date:From;
-	b=DknBfXFHeLR2S7AYGtxAkTSZ97kaQeAANogVpID/ADH/cS7RAE7+Q0/fLEULoWqJD
-	 Zxfeia8oyK7m8IFduEZ9wU8/uNzidzqzwNboClXrCS25aNV8H9uOis5+ppnEIG3KP3
-	 8n0BNhZnXifgYGSC+VHsoizn1cZPsEINvsIT/CQg=
-Subject: FAILED: patch "[PATCH] platform/x86: touchscreen_dmi: Allow partial (prefix) matches" failed to apply to 5.4-stable tree
-To: hdegoede@redhat.com,sathyanarayanan.kuppuswamy@linux.intel.com
+	b=fgPsDifgOSvSPPK9PBuGgtUjnigh0/u/JNqCwa6wnAlu0F3ROSQtGswsS7DRO+4Pr
+	 sYq4otYWfncEX74yd0RGoQpHsd55LDl19LZTYOqj5vta+3GpK7zsFfy3Mf8aPIrrER
+	 c5Eu1Lr9S7tKpGp1SBEsmhGgpXrmBNJEoooKTzQ4=
+Subject: FAILED: patch "[PATCH] cachefiles: fix memory leak in cachefiles_add_cache()" failed to apply to 5.15-stable tree
+To: libaokun1@huawei.com,brauner@kernel.org,dhowells@redhat.com,jefflexu@linux.alibaba.com,jlayton@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 26 Feb 2024 11:31:08 +0100
-Message-ID: <2024022608-trombone-banker-5ed4@gregkh>
+Date: Mon, 26 Feb 2024 11:31:35 +0100
+Message-ID: <2024022635-princess-penniless-bfa6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,36 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x dbcbfd662a725641d118fb3ae5ffb7be4e3d0fb0
+git cherry-pick -x e21a2f17566cbd64926fb8f16323972f7a064444
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024022608-trombone-banker-5ed4@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024022635-princess-penniless-bfa6@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-dbcbfd662a72 ("platform/x86: touchscreen_dmi: Allow partial (prefix) matches for ACPI names")
-87eaede45385 ("platform/x86: touchscreen_dmi: Handle device properties with software node API")
+e21a2f17566c ("cachefiles: fix memory leak in cachefiles_add_cache()")
+d1065b0a6fd9 ("cachefiles: Implement cache registration and withdrawal")
+32759f7d7af5 ("cachefiles: Implement a function to get/create a directory in the cache")
+1bd9c4e4f049 ("vfs, cachefiles: Mark a backing file in use with an inode flag")
+80f94f29f677 ("cachefiles: Provide a function to check how much space there is")
+8667d434b2a9 ("cachefiles: Register a miscdev and parse commands over it")
+254947d47945 ("cachefiles: Add security derivation")
+1493bf74bcf2 ("cachefiles: Add cache error reporting macro")
+ecf5a6ce15f9 ("cachefiles: Add a couple of tracepoints for logging errors")
+a70f6526267e ("cachefiles: Add some error injection support")
+8390fbc46570 ("cachefiles: Define structs")
+77443f6171f3 ("cachefiles: Introduce rewritten driver")
+850cba069c26 ("cachefiles: Delete the cachefiles driver pending rewrite")
+b6773cdb0e9f ("Merge tag 'for-5.16/ki_complete-2021-10-29' of git://git.kernel.dk/linux-block")
 
 thanks,
 
@@ -78,58 +90,68 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From dbcbfd662a725641d118fb3ae5ffb7be4e3d0fb0 Mon Sep 17 00:00:00 2001
-From: Hans de Goede <hdegoede@redhat.com>
-Date: Mon, 12 Feb 2024 13:06:07 +0100
-Subject: [PATCH] platform/x86: touchscreen_dmi: Allow partial (prefix) matches
- for ACPI names
+From e21a2f17566cbd64926fb8f16323972f7a064444 Mon Sep 17 00:00:00 2001
+From: Baokun Li <libaokun1@huawei.com>
+Date: Sat, 17 Feb 2024 16:14:31 +0800
+Subject: [PATCH] cachefiles: fix memory leak in cachefiles_add_cache()
 
-On some devices the ACPI name of the touchscreen is e.g. either
-MSSL1680:00 or MSSL1680:01 depending on the BIOS version.
+The following memory leak was reported after unbinding /dev/cachefiles:
 
-This happens for example on the "Chuwi Hi8 Air" tablet where the initial
-commit's ts_data uses "MSSL1680:00" but the tablets from the github issue
-and linux-hardware.org probe linked below both use "MSSL1680:01".
+==================================================================
+unreferenced object 0xffff9b674176e3c0 (size 192):
+  comm "cachefilesd2", pid 680, jiffies 4294881224
+  hex dump (first 32 bytes):
+    01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace (crc ea38a44b):
+    [<ffffffff8eb8a1a5>] kmem_cache_alloc+0x2d5/0x370
+    [<ffffffff8e917f86>] prepare_creds+0x26/0x2e0
+    [<ffffffffc002eeef>] cachefiles_determine_cache_security+0x1f/0x120
+    [<ffffffffc00243ec>] cachefiles_add_cache+0x13c/0x3a0
+    [<ffffffffc0025216>] cachefiles_daemon_write+0x146/0x1c0
+    [<ffffffff8ebc4a3b>] vfs_write+0xcb/0x520
+    [<ffffffff8ebc5069>] ksys_write+0x69/0xf0
+    [<ffffffff8f6d4662>] do_syscall_64+0x72/0x140
+    [<ffffffff8f8000aa>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
+==================================================================
 
-Replace the strcmp() match on ts_data->acpi_name with a strstarts()
-check to allow using a partial match on just the ACPI HID of "MSSL1680"
-and change the ts_data->acpi_name for the "Chuwi Hi8 Air" accordingly
-to fix the touchscreen not working on models where it is "MSSL1680:01".
+Put the reference count of cache_cred in cachefiles_daemon_unbind() to
+fix the problem. And also put cache_cred in cachefiles_add_cache() error
+branch to avoid memory leaks.
 
-Note this drops the length check for I2C_NAME_SIZE. This never was
-necessary since the ACPI names used are never more then 11 chars and
-I2C_NAME_SIZE is 20 so the replaced strncmp() would always stop long
-before reaching I2C_NAME_SIZE.
+Fixes: 9ae326a69004 ("CacheFiles: A cache that backs onto a mounted filesystem")
+CC: stable@vger.kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240217081431.796809-1-libaokun1@huawei.com
+Acked-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 
-Link: https://linux-hardware.org/?computer=AC4301C0542A
-Fixes: bbb97d728f77 ("platform/x86: touchscreen_dmi: Add info for the Chuwi Hi8 Air tablet")
-Closes: https://github.com/onitake/gsl-firmware/issues/91
-Cc: stable@vger.kernel.org
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240212120608.30469-1-hdegoede@redhat.com
-
-diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
-index 7aee5e9ff2b8..969477c83e56 100644
---- a/drivers/platform/x86/touchscreen_dmi.c
-+++ b/drivers/platform/x86/touchscreen_dmi.c
-@@ -81,7 +81,7 @@ static const struct property_entry chuwi_hi8_air_props[] = {
- };
+diff --git a/fs/cachefiles/cache.c b/fs/cachefiles/cache.c
+index 7077f72e6f47..f449f7340aad 100644
+--- a/fs/cachefiles/cache.c
++++ b/fs/cachefiles/cache.c
+@@ -168,6 +168,8 @@ int cachefiles_add_cache(struct cachefiles_cache *cache)
+ 	dput(root);
+ error_open_root:
+ 	cachefiles_end_secure(cache, saved_cred);
++	put_cred(cache->cache_cred);
++	cache->cache_cred = NULL;
+ error_getsec:
+ 	fscache_relinquish_cache(cache_cookie);
+ 	cache->cache = NULL;
+diff --git a/fs/cachefiles/daemon.c b/fs/cachefiles/daemon.c
+index 3f24905f4066..6465e2574230 100644
+--- a/fs/cachefiles/daemon.c
++++ b/fs/cachefiles/daemon.c
+@@ -816,6 +816,7 @@ static void cachefiles_daemon_unbind(struct cachefiles_cache *cache)
+ 	cachefiles_put_directory(cache->graveyard);
+ 	cachefiles_put_directory(cache->store);
+ 	mntput(cache->mnt);
++	put_cred(cache->cache_cred);
  
- static const struct ts_dmi_data chuwi_hi8_air_data = {
--	.acpi_name	= "MSSL1680:00",
-+	.acpi_name	= "MSSL1680",
- 	.properties	= chuwi_hi8_air_props,
- };
- 
-@@ -1821,7 +1821,7 @@ static void ts_dmi_add_props(struct i2c_client *client)
- 	int error;
- 
- 	if (has_acpi_companion(dev) &&
--	    !strncmp(ts_data->acpi_name, client->name, I2C_NAME_SIZE)) {
-+	    strstarts(client->name, ts_data->acpi_name)) {
- 		error = device_create_managed_software_node(dev, ts_data->properties, NULL);
- 		if (error)
- 			dev_err(dev, "failed to add properties: %d\n", error);
+ 	kfree(cache->rootdirname);
+ 	kfree(cache->secctx);
 
 
