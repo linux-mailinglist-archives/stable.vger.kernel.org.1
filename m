@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-23635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A8AC867135
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 11:34:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7E8C86713F
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 11:35:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9EAB1F2DC63
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 10:34:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D92F31C252FC
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 10:35:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 658641EB2B;
-	Mon, 26 Feb 2024 10:22:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEA2F22626;
+	Mon, 26 Feb 2024 10:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLhirKwI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kE79dmef"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263B9EEDA
-	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 10:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9204F5FD
+	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 10:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708942966; cv=none; b=IjcoxGcLXbe6puqjxudKlyX2IYDc8htCQgdQ/7mX3stCsTh5q0VclmaNM5O2rp24CRgPlItAHaOFBnaNWZWJdcu/IzPXOS80HoP8JFAE96gsOf3lazNgKrlytNZ6OaU9lStp6pg2UQG0danfGL2ImPGfSEvK6v36XW5lt8VORG8=
+	t=1708943095; cv=none; b=uYXcMZwSKat7/XsZeOtcIMA8f0APSXzpv//kSgxajHmONyAo8dAEl9bAsGiU1JqllTRUpdQFQw8Bpl2h1V8YjZyegnt2SvIATuTbmhW/DqA0yzg9tg1VwErTHexuOPSyK91As4/Heo2J8YVpR8OY9RedyV05CLjECCcqpyZ0aGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708942966; c=relaxed/simple;
-	bh=dJbLxgX8HG4PQdo3uf7haAj7Kyn3ttm2fBatAhsimP0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MFtH8G+oqG8aLf3jANYybxRbZBr0NY4Jbrw6GePAgpvpgCosFgXdktARCM8IIOaMscAOTVOHpdy+Epsp/z5VnDc5ll4X6etTXwWinrKN58bIe1ckyS8ih6YztpzyQXjHzmRyWKgEZzvCtpsh7d+cEzthk3BhRMqb6S9Wrks1xkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLhirKwI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B881C433F1;
-	Mon, 26 Feb 2024 10:22:45 +0000 (UTC)
+	s=arc-20240116; t=1708943095; c=relaxed/simple;
+	bh=ogyyLIj+L3iZBgP93tfBVXpSHYbngBbAeKFLdw9oFLo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BCJS+0ajW4nMQfYADsF6rL4hrek6K3ALou6ArPvlsI/KjqyAIaC+LgnG0LQILVWGXTiomnhKZJmDorD7wsbNH57kdCXmEJ5iTkI/EQvGzzo++MDiVov14UVaWyPc9FDD/sN7mB7i95GvZ14jo5OKJojlYUz0JrXBqkdbCGgRTms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kE79dmef; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93527C433C7;
+	Mon, 26 Feb 2024 10:24:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1708942965;
-	bh=dJbLxgX8HG4PQdo3uf7haAj7Kyn3ttm2fBatAhsimP0=;
+	s=korg; t=1708943095;
+	bh=ogyyLIj+L3iZBgP93tfBVXpSHYbngBbAeKFLdw9oFLo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=jLhirKwItI8NDHukMvOfYWLirlWSbNmUKC3MAQbApbwKMRyrAEQYSDup9NVYPGw+4
-	 c2uCWBqSHUJjBXnaeeWBDwfx/VGOAbS5d5JECZasQnBCdI7lzS02ZEs8VbslPI6m8J
-	 3vxn+gdtGKk+audIU2SEdkWt+/AkH3SLPdYbOgtU=
-Subject: FAILED: patch "[PATCH] drm/meson: Don't remove bridges which are created by other" failed to apply to 6.1-stable tree
-To: martin.blumenstingl@googlemail.com,neil.armstrong@linaro.org,stable@vger.kernel.org,stevemorvai@hotmail.com
+	b=kE79dmefiMl4Y2qb0bocDxTb6cFZV/ocxemMlm7tnQWPk/4mGPtVhV/uh+Ycrp+vn
+	 RlR2/TcoPc7crbvAFRqZIAtQM7WU7rBbFx+hDmZx8cz7ULEGvtKymKaQSv2q9QvFkO
+	 FjWtb+yl4vkMZRTg1vJvKpxgPc7oku+v7gXkfwQs=
+Subject: FAILED: patch "[PATCH] fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via" failed to apply to 6.1-stable tree
+To: bvanassche@acm.org,avi@scylladb.com,axboe@kernel.dk,brauner@kernel.org,dhavale@google.com,gregkh@linuxfoundation.org,hch@lst.de,kent.overstreet@linux.dev
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 26 Feb 2024 11:22:43 +0100
-Message-ID: <2024022642-retool-clover-ecd7@gregkh>
+Date: Mon, 26 Feb 2024 11:24:52 +0100
+Message-ID: <2024022651-shrimp-freezing-6b17@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,16 +62,16 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x bd915ae73a2d78559b376ad2caf5e4ef51de2455
+git cherry-pick -x b820de741ae48ccf50dd95e297889c286ff4f760
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024022642-retool-clover-ecd7@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024022651-shrimp-freezing-6b17@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-bd915ae73a2d ("drm/meson: Don't remove bridges which are created by other drivers")
-42dcf15f901c ("drm/meson: add DSI encoder")
-6a044642988b ("drm/meson: fix unbind path if HDMI fails to bind")
+b820de741ae4 ("fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via libaio")
+9cf3516c29e6 ("fs: add IOCB flags related to passing back dio completions")
+f6c73a11133e ("fs.h: Add TRACE_IOCB_STRINGS for use in trace points")
 
 thanks,
 
@@ -79,68 +79,84 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From bd915ae73a2d78559b376ad2caf5e4ef51de2455 Mon Sep 17 00:00:00 2001
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date: Thu, 15 Feb 2024 23:04:42 +0100
-Subject: [PATCH] drm/meson: Don't remove bridges which are created by other
- drivers
+From b820de741ae48ccf50dd95e297889c286ff4f760 Mon Sep 17 00:00:00 2001
+From: Bart Van Assche <bvanassche@acm.org>
+Date: Thu, 15 Feb 2024 12:47:38 -0800
+Subject: [PATCH] fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via
+ libaio
 
-Stop calling drm_bridge_remove() for bridges allocated/managed by other
-drivers in the remove paths of meson_encoder_{cvbs,dsi,hdmi}.
-drm_bridge_remove() unregisters the bridge so it cannot be used
-anymore. Doing so for bridges we don't own can lead to the video
-pipeline not being able to come up after -EPROBE_DEFER of the VPU
-because we're unregistering a bridge that's managed by another driver.
-The other driver doesn't know that we have unregistered it's bridge
-and on subsequent .probe() we're not able to find those bridges anymore
-(since nobody re-creates them).
+If kiocb_set_cancel_fn() is called for I/O submitted via io_uring, the
+following kernel warning appears:
 
-This fixes probe errors on Meson8b boards with the CVBS outputs enabled.
+WARNING: CPU: 3 PID: 368 at fs/aio.c:598 kiocb_set_cancel_fn+0x9c/0xa8
+Call trace:
+ kiocb_set_cancel_fn+0x9c/0xa8
+ ffs_epfile_read_iter+0x144/0x1d0
+ io_read+0x19c/0x498
+ io_issue_sqe+0x118/0x27c
+ io_submit_sqes+0x25c/0x5fc
+ __arm64_sys_io_uring_enter+0x104/0xab0
+ invoke_syscall+0x58/0x11c
+ el0_svc_common+0xb4/0xf4
+ do_el0_svc+0x2c/0xb0
+ el0_svc+0x2c/0xa4
+ el0t_64_sync_handler+0x68/0xb4
+ el0t_64_sync+0x1a4/0x1a8
 
-Fixes: 09847723c12f ("drm/meson: remove drm bridges at aggregate driver unbind time")
-Fixes: 42dcf15f901c ("drm/meson: add DSI encoder")
-Cc:  <stable@vger.kernel.org>
-Reported-by: Steve Morvai <stevemorvai@hotmail.com>
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Tested-by: Steve Morvai <stevemorvai@hotmail.com>
-Link: https://lore.kernel.org/r/20240215220442.1343152-1-martin.blumenstingl@googlemail.com
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240215220442.1343152-1-martin.blumenstingl@googlemail.com
+Fix this by setting the IOCB_AIO_RW flag for read and write I/O that is
+submitted by libaio.
 
-diff --git a/drivers/gpu/drm/meson/meson_encoder_cvbs.c b/drivers/gpu/drm/meson/meson_encoder_cvbs.c
-index 3f73b211fa8e..3407450435e2 100644
---- a/drivers/gpu/drm/meson/meson_encoder_cvbs.c
-+++ b/drivers/gpu/drm/meson/meson_encoder_cvbs.c
-@@ -294,6 +294,5 @@ void meson_encoder_cvbs_remove(struct meson_drm *priv)
- 	if (priv->encoders[MESON_ENC_CVBS]) {
- 		meson_encoder_cvbs = priv->encoders[MESON_ENC_CVBS];
- 		drm_bridge_remove(&meson_encoder_cvbs->bridge);
--		drm_bridge_remove(meson_encoder_cvbs->next_bridge);
- 	}
- }
-diff --git a/drivers/gpu/drm/meson/meson_encoder_dsi.c b/drivers/gpu/drm/meson/meson_encoder_dsi.c
-index 3f93c70488ca..311b91630fbe 100644
---- a/drivers/gpu/drm/meson/meson_encoder_dsi.c
-+++ b/drivers/gpu/drm/meson/meson_encoder_dsi.c
-@@ -168,6 +168,5 @@ void meson_encoder_dsi_remove(struct meson_drm *priv)
- 	if (priv->encoders[MESON_ENC_DSI]) {
- 		meson_encoder_dsi = priv->encoders[MESON_ENC_DSI];
- 		drm_bridge_remove(&meson_encoder_dsi->bridge);
--		drm_bridge_remove(meson_encoder_dsi->next_bridge);
- 	}
- }
-diff --git a/drivers/gpu/drm/meson/meson_encoder_hdmi.c b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
-index 25ea76558690..c4686568c9ca 100644
---- a/drivers/gpu/drm/meson/meson_encoder_hdmi.c
-+++ b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
-@@ -474,6 +474,5 @@ void meson_encoder_hdmi_remove(struct meson_drm *priv)
- 	if (priv->encoders[MESON_ENC_HDMI]) {
- 		meson_encoder_hdmi = priv->encoders[MESON_ENC_HDMI];
- 		drm_bridge_remove(&meson_encoder_hdmi->bridge);
--		drm_bridge_remove(meson_encoder_hdmi->next_bridge);
- 	}
- }
+Suggested-by: Jens Axboe <axboe@kernel.dk>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Avi Kivity <avi@scylladb.com>
+Cc: Sandeep Dhavale <dhavale@google.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: stable@vger.kernel.org
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240215204739.2677806-2-bvanassche@acm.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+
+diff --git a/fs/aio.c b/fs/aio.c
+index bb2ff48991f3..da18dbcfcb22 100644
+--- a/fs/aio.c
++++ b/fs/aio.c
+@@ -593,6 +593,13 @@ void kiocb_set_cancel_fn(struct kiocb *iocb, kiocb_cancel_fn *cancel)
+ 	struct kioctx *ctx = req->ki_ctx;
+ 	unsigned long flags;
+ 
++	/*
++	 * kiocb didn't come from aio or is neither a read nor a write, hence
++	 * ignore it.
++	 */
++	if (!(iocb->ki_flags & IOCB_AIO_RW))
++		return;
++
+ 	if (WARN_ON_ONCE(!list_empty(&req->ki_list)))
+ 		return;
+ 
+@@ -1509,7 +1516,7 @@ static int aio_prep_rw(struct kiocb *req, const struct iocb *iocb)
+ 	req->ki_complete = aio_complete_rw;
+ 	req->private = NULL;
+ 	req->ki_pos = iocb->aio_offset;
+-	req->ki_flags = req->ki_filp->f_iocb_flags;
++	req->ki_flags = req->ki_filp->f_iocb_flags | IOCB_AIO_RW;
+ 	if (iocb->aio_flags & IOCB_FLAG_RESFD)
+ 		req->ki_flags |= IOCB_EVENTFD;
+ 	if (iocb->aio_flags & IOCB_FLAG_IOPRIO) {
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index ed5966a70495..c2dcc98cb4c8 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -352,6 +352,8 @@ enum rw_hint {
+  * unrelated IO (like cache flushing, new IO generation, etc).
+  */
+ #define IOCB_DIO_CALLER_COMP	(1 << 22)
++/* kiocb is a read or write operation submitted by fs/aio.c. */
++#define IOCB_AIO_RW		(1 << 23)
+ 
+ /* for use in trace events */
+ #define TRACE_IOCB_STRINGS \
 
 
