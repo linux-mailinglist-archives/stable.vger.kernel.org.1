@@ -1,189 +1,96 @@
-Return-Path: <stable+bounces-23626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C68B48670DB
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 11:27:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91CB08670E9
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 11:28:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 540A71F28774
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 10:27:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C53528C523
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 10:28:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 126E65B5B8;
-	Mon, 26 Feb 2024 10:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05C55D479;
+	Mon, 26 Feb 2024 10:13:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="b9baJZl3";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="b9baJZl3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fUb0rwi3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E635B1F3
-	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 10:12:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459615D470
+	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 10:13:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708942372; cv=none; b=WqGVTI3uuptD5eN6Wbe/2y3xmcUJ6IQQ9ppSTTplqATnL9WJnUfD6rwNvE+Nkh+BsmGO9M65ZRcr5j4zW7WcdsTCKSqDYqKNsLz+HwvNAaVfeOzkO4b6FH1pBn0cPCpb6dXa22Jhu/hsLCBFs+wxGex7bCYv6oIt8vt2KUVUmOc=
+	t=1708942409; cv=none; b=kvk/7o4JGGqc2YxqkgG7K01WqQaypOTyGmHhPqQxEvZHCLSUhUuUpTP8PQ1JflPpZrIFqIHgFP1HP1FexSxA5X0ptx4BTI0f48RnvMMGALYjdvuoVI7YxmeLF5huPwfFT9o0XXZzgoK5Q/EUKs70uxqnew6LWeAjQocDE4peSDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708942372; c=relaxed/simple;
-	bh=DOLW+xrPulei+H7JihwhLmdZ2EUdJRMYzbK8LPkiR80=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Y2e1/xxBWo9cQCbY6BoRT8NjTaQHRM5/WVqtEoNrR1PN7FWctxJbjQjCnHRgR96rVsfwRZO4P8eUfHU9TBxX6gVKcJhrRCAMmHqiy4MhtF2OL2Hjfxh3KQjcr46E9M+UfIMwRUR0YtGlOs5P3br6Q+eoG+y5ONtsdcPlWt7g3mM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=b9baJZl3; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=b9baJZl3; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id F3D8D1FB48;
-	Mon, 26 Feb 2024 10:12:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1708942369; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sG0SVan3jLALRIZK70zXcM+rJBI7n+4/E5hwb5ksyxo=;
-	b=b9baJZl3wx/zIT7atlIEDxDzlAbza6JJ1aeizutVBhvWxQkcoyk+RFs1D8IKt9K62TR1Yk
-	+1i7KHfBOGQj/YP96Rf8L4d8ZIIDqX5LRRgzywx0FmJSsgGYeZJLnsYnEQKvNaPtHwoyBt
-	6BRQ4cjGwal+qsPRjDVK8+yNH8vr/to=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1708942369; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sG0SVan3jLALRIZK70zXcM+rJBI7n+4/E5hwb5ksyxo=;
-	b=b9baJZl3wx/zIT7atlIEDxDzlAbza6JJ1aeizutVBhvWxQkcoyk+RFs1D8IKt9K62TR1Yk
-	+1i7KHfBOGQj/YP96Rf8L4d8ZIIDqX5LRRgzywx0FmJSsgGYeZJLnsYnEQKvNaPtHwoyBt
-	6BRQ4cjGwal+qsPRjDVK8+yNH8vr/to=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AA53C13A3A;
-	Mon, 26 Feb 2024 10:12:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id aFFMJyBk3GX/LAAAD6G6ig
-	(envelope-from <nik.borisov@suse.com>); Mon, 26 Feb 2024 10:12:48 +0000
-From: Nikolay Borisov <nik.borisov@suse.com>
-To: stable@vger.kernel.org
-Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Nikolay Borisov <nik.borisov@suse.com>
-Subject: [PATCH 7/7] KVM/VMX: Move VERW closer to VMentry for MDS mitigation
-Date: Mon, 26 Feb 2024 12:12:39 +0200
-Message-Id: <20240226101239.17633-8-nik.borisov@suse.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240226101239.17633-1-nik.borisov@suse.com>
-References: <20240226101239.17633-1-nik.borisov@suse.com>
+	s=arc-20240116; t=1708942409; c=relaxed/simple;
+	bh=xQl4Y5Xf2tWR3JxdHU2jdE068lsasi2wz4L1l27WpRo=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=bXXGrnL+Vij/LtJZHqLQA0RSmhRAJqilf67r4GYU8DK8Mk/iT2qhSSl3WTG0UryoJiP/BuHbrQ5R1hSCEm+cv+ze2E+PjNM0DtaQ5iZRfU62fyLWNEub7MIV/7CGZ+j2y3uCuH1TORal5Abkdga5qI0vU7g76fA+GPl3mCe2Do4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fUb0rwi3; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708942408; x=1740478408;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=xQl4Y5Xf2tWR3JxdHU2jdE068lsasi2wz4L1l27WpRo=;
+  b=fUb0rwi3eoKDTuNz9fofeowbyIuxEvOVSDebTaFH9Hi6YKFbvq66N4uQ
+   aNBaHaTMEW9hzdxOKN0vesTLhmNya4crqnfZC5VwDy86YYLaieT62gDjk
+   cNo+pqrr+MhMuRJd9GkLAu9PJf8bwKECYK8kD4uaKnpx5ZcwbuNLrP1/X
+   EeZnYdLdFJX/Eozlg+VIWJ3PfVGmLuIRx7cZmnHTUU8S5KNntIjCw0T34
+   1E4DsgF0+H13uV5UIctO70qcpxRwpiWg0WBaO6M+UdGmnHsec1SQUyVmZ
+   8SOjEz2+9CX5HGFjAjvz+o+zDkJFss9wsVt5zH1uCvkWlzdvWm+zsB0QS
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="28642556"
+X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
+   d="scan'208";a="28642556"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2024 02:13:26 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
+   d="scan'208";a="6609537"
+Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
+  by orviesa010.jf.intel.com with ESMTP; 26 Feb 2024 02:13:25 -0800
+Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1reXz7-000AF9-36;
+	Mon, 26 Feb 2024 10:13:22 +0000
+Date: Mon, 26 Feb 2024 18:12:59 +0800
+From: kernel test robot <lkp@intel.com>
+To: Rui Qi <qirui.001@bytedance.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 3/3] x86/speculation: Support intra-function call
+ validation
+Message-ID: <ZdxkK5uArTDX6I5d@fdb2c0c3c270>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spamd-Result: default: False [-2.10 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 R_MISSING_CHARSET(2.50)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 REPLY(-4.00)[];
-	 BROKEN_CONTENT_TYPE(1.50)[];
-	 RCPT_COUNT_FIVE(0.00)[5];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	 MID_CONTAINS_FROM(1.00)[];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,eflags.cf:url,suse.com:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%]
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spam-Score: -2.10
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240226094925.95835-4-qirui.001@bytedance.com>
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Hi,
 
-During VMentry VERW is executed to mitigate MDS. After VERW, any memory
-access like register push onto stack may put host data in MDS affected
-CPU buffers. A guest can then use MDS to sample host data.
+Thanks for your patch.
 
-Although likelihood of secrets surviving in registers at current VERW
-callsite is less, but it can't be ruled out. Harden the MDS mitigation
-by moving the VERW mitigation late in VMentry path.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Note that VERW for MMIO Stale Data mitigation is unchanged because of
-the complexity of per-guest conditional VERW which is not easy to handle
-that late in asm with no GPRs available. If the CPU is also affected by
-MDS, VERW is unconditionally executed late in asm regardless of guest
-having MMIO access.
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Sean Christopherson <seanjc@google.com>
-Link: https://lore.kernel.org/all/20240213-delay-verw-v8-6-a6216d83edb7%40linux.intel.com
-Signed-off-by: Nikolay Borisov <nik.borisov@suse.com>
----
- arch/x86/kvm/vmx/vmenter.S |  3 +++
- arch/x86/kvm/vmx/vmx.c     | 12 ++++++++----
- 2 files changed, 11 insertions(+), 4 deletions(-)
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH 3/3] x86/speculation: Support intra-function call validation
+Link: https://lore.kernel.org/stable/20240226094925.95835-4-qirui.001%40bytedance.com
 
-diff --git a/arch/x86/kvm/vmx/vmenter.S b/arch/x86/kvm/vmx/vmenter.S
-index 04517546e3dc..1ca759f74bb5 100644
---- a/arch/x86/kvm/vmx/vmenter.S
-+++ b/arch/x86/kvm/vmx/vmenter.S
-@@ -98,6 +98,9 @@ ENTRY(__vmx_vcpu_run)
- 	/* Load guest RAX.  This kills the @regs pointer! */
- 	mov VCPU_RAX(%_ASM_AX), %_ASM_AX
- 
-+	/* Clobbers EFLAGS.ZF */
-+	CLEAR_CPU_BUFFERS
-+
- 	/* Check EFLAGS.CF from the VMX_RUN_VMRESUME bit test above. */
- 	jnc .Lvmlaunch
- 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 4bf0c6221ec8..56f044854c29 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -377,7 +377,8 @@ static __always_inline void vmx_enable_fb_clear(struct vcpu_vmx *vmx)
- 
- static void vmx_update_fb_clear_dis(struct kvm_vcpu *vcpu, struct vcpu_vmx *vmx)
- {
--	vmx->disable_fb_clear = vmx_fb_clear_ctrl_available;
-+	vmx->disable_fb_clear = !cpu_feature_enabled(X86_FEATURE_CLEAR_CPU_BUF) &&
-+		vmx_fb_clear_ctrl_available;
- 
- 	/*
- 	 * If guest will not execute VERW, there is no need to set FB_CLEAR_DIS
-@@ -6659,11 +6660,14 @@ static void vmx_vcpu_run(struct kvm_vcpu *vcpu)
- 	 */
- 	x86_spec_ctrl_set_guest(vmx->spec_ctrl, 0);
- 
--	/* L1D Flush includes CPU buffer clear to mitigate MDS */
-+       /*
-+        * L1D Flush includes CPU buffer clear to mitigate MDS, but VERW
-+        * mitigation for MDS is done late in VMentry and is still
-+        * executed in spite of L1D Flush. This is because an extra VERW
-+        * should not matter much after the big hammer L1D Flush.
-+        */
- 	if (static_branch_unlikely(&vmx_l1d_should_flush))
- 		vmx_l1d_flush(vcpu);
--	else if (cpu_feature_enabled(X86_FEATURE_CLEAR_CPU_BUF))
--		mds_clear_cpu_buffers();
- 	else if (static_branch_unlikely(&mmio_stale_data_clear) &&
- 		 kvm_arch_has_assigned_device(vcpu->kvm))
- 		mds_clear_cpu_buffers();
 -- 
-2.34.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
