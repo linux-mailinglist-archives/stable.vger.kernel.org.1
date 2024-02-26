@@ -1,87 +1,107 @@
-Return-Path: <stable+bounces-23731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F2BD867BD1
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 17:25:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6902D867AD4
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 16:54:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9FB23B36617
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 15:53:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22F7E2892CF
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 15:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFB912C557;
-	Mon, 26 Feb 2024 15:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81F5C12D761;
+	Mon, 26 Feb 2024 15:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="mZX7B+8e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oeOn/qsy"
 X-Original-To: stable@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718A012BF0C;
-	Mon, 26 Feb 2024 15:52:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E5D12C7F0
+	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 15:52:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708962740; cv=none; b=EGNqyxJE0r01NvdgU3MaUE4HjJNz0Xihj/X4W40kTZDKrc/n7Zvx7oHpKeLniHYUUUuRtx1gkfG2h/c+W2RY1oIe/IYrQcYHNl5l7dJdB0+3xR8wECYup6IMVvvSP5037IgIKxfb/wHSRaBP1pTLqEpsH13QtpHxqbBSjQdWQ9I=
+	t=1708962775; cv=none; b=AwUrWUeVICrywf//G9/Rf+QvzLOjY7TKI+oysOuQkAF8uqCQ9vuP5Z9iflgRg9cx3Od3+HMOXNUxS9r3IpbMe4wcEIY7WNPzX5lyZF306VLhdNulhEgjGHKAY+pVHq5AHP0dXcIqQBgVl1DACp8W5n50jeGhBX7T3F15JdKx/40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708962740; c=relaxed/simple;
-	bh=zfFSrlx6q7/zq/izozDGFE+JawPbXOp/Z4mndgPjXHA=;
+	s=arc-20240116; t=1708962775; c=relaxed/simple;
+	bh=7/Tlnj8WtZFpkRZ9esTBPHd8LStIfIfoQK6oPYOq23s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y6ef5jLOS+c1u8W4SRzmiDWCG7e9hYDtPanNt2eZHRLZr4NoRUYfbAuJB5I8tURywqo7VaTUlF+OAYLlOsfFrwpUNXYzWjFtXa2vEJLqetMElSnYPtxVAfwHRovbypj/bYImZ/jjPp54eRGVNw/2Q4+djU/+X9ifaF/n5KUwk44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=mZX7B+8e; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Y+x/bJfh4HN/QSpeHGkXOfMB2CgBRknyhVgfmsHeiVE=; b=mZX7B+8er8ccXQBq1LsEtLuRW0
-	vU4GnRFehemfB5K77CW8SH491NcIfDvKHOwlMTmWhCkwgK7nunMa7v/I0oL13KpGV2F7z2GunR6qs
-	xIixbVMrZGuYihPYXf+swXq7GIYHJMv4+Qa9nBtOZaxSK3hAWK18reIj5wDBjirHXkv4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1redHG-008jt7-2D; Mon, 26 Feb 2024 16:52:26 +0100
-Date: Mon, 26 Feb 2024 16:52:26 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Shengyu Qu <wiagn233@outlook.com>
-Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>, hkallweit1@gmail.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v1] net: sfp: add quirks for ODI DFP-34X-2C2
-Message-ID: <b601e76e-47ac-4670-9ab6-bfec9beedd8f@lunn.ch>
-References: <TY3P286MB2611C0FA24318AA397DB689B985A2@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
- <ZdyahVYAhPgf2Xqn@shell.armlinux.org.uk>
- <TY3P286MB2611BD62C30B37A5BE02D3C5985A2@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
- <ZdyiigYNGf8WVZNu@shell.armlinux.org.uk>
- <TY3P286MB261155090B2D07593901C0DE985A2@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
- <b8fdb5df-57e4-491a-b310-e8e13a89d331@lunn.ch>
- <TY3P286MB2611E440DA1D914C1A0307F7985A2@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
+	 Content-Type:Content-Disposition:In-Reply-To; b=PzrV0zKjGrKwl6TkINFlSkVhqaLojyB6DUxf5EheOuDW978UHBw8Y+UlRLObe4RugX6kyeBaSrT6okVyhMNrvG9fipBJ63XZv6WAQpUkdZYUr63j4s6I1BR2k7YPC4Xz84Mhnioy4nAQXJIMswToWG5B/aFYP3jFdqI3oMNszX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oeOn/qsy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A098FC43390;
+	Mon, 26 Feb 2024 15:52:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1708962774;
+	bh=7/Tlnj8WtZFpkRZ9esTBPHd8LStIfIfoQK6oPYOq23s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oeOn/qsy384SQHABFMKBtbCMSPa69fuOJU+c+y5goLdvTXXU/v0eKyKHaCNF1HzcR
+	 QZdU0xxiSucXi/vAfNciIFBWj/qIt6ntPhRRS/NDziSq7Qtm4TTuj7zcHtLsVGFcHM
+	 DDxFS1SGxe4IVST02yfAwS+G2NZUllZe1/2guhDA=
+Date: Mon, 26 Feb 2024 10:52:50 -0500
+From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+To: 
+	=?utf-8?B?0KDQsNC00L7RgdC70LDQsiDQndC10L3Rh9C+0LLRgdC60Lg=?= <stalliondrift@gmail.com>
+Cc: stable@vger.kernel.org
+Subject: Re: Kernel 6.6.17-LTS breaks almost all bash scripts involving a
+ directory
+Message-ID: <20240226-porcupine-of-splendid-excellence-22defc@meerkat>
+References: <fa4cd67e-906d-4702-90e2-b9c047320c34@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <TY3P286MB2611E440DA1D914C1A0307F7985A2@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <fa4cd67e-906d-4702-90e2-b9c047320c34@gmail.com>
 
-On Mon, Feb 26, 2024 at 11:42:49PM +0800, Shengyu Qu wrote:
-> Hi Andrew,
+On Mon, Feb 26, 2024 at 05:27:50PM +0200, Радослав Ненчовски wrote:
+> Hi. IDK how more clear to write it in the title, so let me explain what the
+> problem is.
+
+I'm sending your message to stable instead, because helpdesk is only for
+requesting help with kernel.org infrastructure.
+
+Stable folks, please see below.
+
+-K
+
+> In the past 4 or 5 years I've been using this script (with an alias) to
+> compress a single folder:
+> 7z a "$1.7z" "$1"/ -mx=0 -mmt=8
 > 
-> So I should describe in commit message that user should set the stick to
-> 2.5g/automatic mode and include the link in previous mail? Is that enough?
-
-As Russell pointed out, this sounds racy. We need lots of details in
-the commit message to convince us this is safe, and is not going to
-cause a regression. If it does break and cause a regression, having
-those details will also help us decide what to do, other than just
-revert the change.
-
-The further the devices get from well defined standardised behaviour,
-the more details are needed.
-
-       Andrew
+> I know it doesn't look like much but essentially it creates a 7z archive
+> (with "store" level of compression) with a name I've entered right after the
+> alias. For instance: 7z0 "my dir" will create "my dir.7z".
+> And in the past 4 or 5 years this script was working just fine because it
+> was recognizing the slash as an indication that the target to compress is a
+> directory.
+> However, ever since 6.6.17-LTS arrived (altough I've heard the same
+> complaints from people who use the regular rolling kernel, but they didn't
+> tell me which version) bash stopped recognizing the slash as an indication
+> for directory and thinks of it as the entire root directory, thus it
+> attempts to compress not only "my dir" but also the whole root (/)
+> directory. And it doesn't matter whether I'll put the slash between the
+> quotes or outside of them - the result is the same. And, naturally, it
+> throws out an unlimited number of errors about "access denied" to everything
+> in root. I can't even begin to comprehend why on Earth you or whoever writes
+> the kernel would make this change. Forget about me but ALL linux sysadmins I
+> know use all kinds of scripts and changing the slash at the end of a word to
+> mean "root" instead of a sign for directory is a rude way to ruin their
+> work. Since this change occurred, I can no longer put a directory in an
+> archive through CLI and I have to do it through GUI, which is about 10 times
+> slower. I have a DE and I can do that but what about the sysadmins who
+> usually use linux without a DE or directly SSH into the distro they're
+> admins of? With this change you're literally hindering their job!
+> 
+> I downgraded the kernel to 6.6.15-LTS and the problem disappeared - now the
+> slash is properly recognized as a sign for directory.
+> 
+> The point is: *it is urgent that you undo this change back to the way it
+> was! I'm pretty sure sysadmins will begin to email you about this, if they
+> haven't already.
+> *
 
