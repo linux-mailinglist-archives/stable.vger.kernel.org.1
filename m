@@ -1,289 +1,117 @@
-Return-Path: <stable+bounces-23669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4E3B867313
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 12:29:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D60F867332
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 12:34:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE995B23574
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 11:02:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 115831F252C6
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 11:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 799361F619;
-	Mon, 26 Feb 2024 11:01:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB5211D54F;
+	Mon, 26 Feb 2024 11:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RBl+rhKt"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="K++EOJnY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72AD01F606
-	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 11:01:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94F22CCD5
+	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 11:34:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708945291; cv=none; b=GazqFUVljLZu2DDJsfOnFs/9SNN5015I52Sa08cXN30U6NKrJGbusund65wdiAvepvZcWDjfVi3qPDSJkFLPQpAp4YsBcpR4hr0YDtWxyLTAlOxEMj1uJHTmY4gU6HoKxOrUVpnkgMPLyVpTZYl+X/XqZ9LV+GFhG7yD2p83urk=
+	t=1708947243; cv=none; b=WeYXENerP+4MYJtSvnts5LOwNFNk/T07yV7Xh5gCv3dDgLuSewosVn4xTWQCFL75LYUI0RU+3zodYkdg2OQhsevqJSFk0ToE1/3gnVZ8hLbUIEKv4ppL5QIe7XJTOMXScGmweVq/rwLOIpDc0iMp4SWkGscmqN/8EHcRr8cVHS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708945291; c=relaxed/simple;
-	bh=2W7nqze4rfbsAhYpOX7xXRIshq8YxH4CarHFMpSi5lo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PdQkmUK9pQMRhOXmM+LC5ngt/jfEMkRtTyuAXdV8R9/4SLX2XjxINVtQJZSzNS8Vtjiue7f3qe6QAmwGoHqDfmyV+3PthMXD3btyUeTWrqNiear18K2wmUO8YhMDdyEMTn4pbffSrm5YHcOdf6qPoASFs3P37cICBNvPIVz4u68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RBl+rhKt; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-512ed314881so2645608e87.2
-        for <stable@vger.kernel.org>; Mon, 26 Feb 2024 03:01:29 -0800 (PST)
+	s=arc-20240116; t=1708947243; c=relaxed/simple;
+	bh=d0kydW1Yxuo1MsG4YJurMo9qxI32GA5maZXnljWXEGQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=t/Kp6PT0+eh4YZjRpXL+GIX9g6DLBITT8k3XIGXSfxqhT3BSjARGcy5onadNuP19jYJspE5K2D5DXKDew+ehsb7B6xv4J7zAgk7jbFBG9hKGcK3LrnYhvipWFyWE7pqbrbqJ5VMUm/ANKR5O5dWSK929h1LgTD5t9ajntyaWOQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=K++EOJnY; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-6da4a923b1bso2178707b3a.2
+        for <stable@vger.kernel.org>; Mon, 26 Feb 2024 03:34:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708945288; x=1709550088; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=bytedance.com; s=google; t=1708947240; x=1709552040; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=foivR3XXAX+qVJySQb+oa4MFfW/tnV+glYPQlPN2YIU=;
-        b=RBl+rhKtr11RQZqN5FzPm82aSli3WFmT+Lase1CvP8OM0kfzEaDeS7o4N19XhLbYWx
-         Q1nvQZ/nsCeN+4R9mjKnqN4WGp7//2sG+UCHnZaZQKxVtebFIzHnvAppRwrWBNidgIbZ
-         WlybBxfvrW2O2RAtInlojFixvuyRd4N4W/F/QDJRv913tDcJ8vYG/PQu1bzmEk6269Ga
-         kibAJl9lIufqXjUGDfpo0H31qZrWMH0EOEIgOenU8NfgAG9GFLhQ1pU7uCoJTibuk7+x
-         kj1hpoiZ0/cKtYZQPVycviJSaFtChnfov+zpnPXlb3GvM/+7SMzeH+90SiNnKJ2zTuvz
-         KQmw==
+        bh=Wdsp0gMDY9ztgsqYmpfOLfIwYX7WF34YfJrpayCYhWs=;
+        b=K++EOJnYUCNPr0CYwYChswGetVdU8ZYqtdMelvpfIiCYLsZX0Vr+hv2l9zThbiPMS2
+         eC+7nM4BgXJHsFYUAwQGgNJQd1ImXPUaoKNmxqZBjMBb/cL5nwnSPk9sugyb5Jo9N0e7
+         fO+aV0SBAPxcPvaS3K+r6zPDOuOCGquieNrtKW9cyk0Uu0iZnpwKkD+u901UbKwWewi0
+         gtNspoHsbDKSD8IDtghmjEKoz0LoSNWpIM7h72iRbczvkBqiF6PLOxFOPFMLgLawdPG0
+         21nMkvT3gBd7dYJhCHXN1jvperYQAl3FM0XWBQ4ih+Zea8zFIWSJ/PRRbRkyTLMERdRh
+         rnpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708945288; x=1709550088;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=foivR3XXAX+qVJySQb+oa4MFfW/tnV+glYPQlPN2YIU=;
-        b=VODJMqicwhY/+WgKRKZJiSytcBzMk5Sxk0IugqHLqQqHUIEWCqDztmjpm+MMJw9tSN
-         xjI8xJXMs/b/pSX5qkXEI2hrWNQYdbcxVQY2UriIYJMMjC6j8tyTGepvlKLTCGIXKmJ7
-         ujqnsTAFD08/RiIcZBH9+zuQKFofGw5wa1qD7+ZCQS28DH7GMRs28RdrE0b6oWV1NNnF
-         rcExESXse5qy5hAgyiup15KEuS5hwYGDpUUDEAj+7y8LGWpjBV++T0Nxrq3S52ffoB0J
-         IickFWQ6kvy0hrej4L5hzkn1JS8/v+oguaC1rvURUr9zVSSMEOrQD7yin7jFGHVsLd5b
-         WIHg==
-X-Forwarded-Encrypted: i=1; AJvYcCVh1IUaioH+DBQq4kLdCHAfUGwdGQlvhsWL1jG5/jyEPwAGk5lxe5jbkaoh2nMzo/FRdu2oItZLEXnUMnrt+HxtkbsRo7Z/
-X-Gm-Message-State: AOJu0Yw6RNWt1hORfQL6H74l+PGkqSFNVe2zyMZpazFw9JQ32g48iUyP
-	Kn5bM4hoYaYyQLsi0Y/1UuV6DF3eO0z7k59zwqclwFfOXyehW//o0m7aep7TboDtb+Qpzlp9vwd
-	iufnhGLCIH/nVGBFtgaXYdkKg3eOZrUaKyms=
-X-Google-Smtp-Source: AGHT+IEnp8hw3NCW/ZwuIs5tYNmiDyKzNIkcoWwLOaSNKRCMHKEYOETi3ktqPqqjg8UdyxvajoVtR36nLACgDM25h0k=
-X-Received: by 2002:a19:9103:0:b0:512:caa2:18db with SMTP id
- t3-20020a199103000000b00512caa218dbmr3817932lfd.35.1708945287402; Mon, 26 Feb
- 2024 03:01:27 -0800 (PST)
+        d=1e100.net; s=20230601; t=1708947240; x=1709552040;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Wdsp0gMDY9ztgsqYmpfOLfIwYX7WF34YfJrpayCYhWs=;
+        b=r7TXFqHUMlfqT6S0GC0J0jqfklcUvlmKP+jH4n8aIc8SyU1PbWfoCLLdmuEU1efg6r
+         MBjfQLSbTHqLEucHT75wAFddhmpShrgWPZIwvwFUvtbJXZuo1YNRsEx+mlQLoxI1aLs+
+         4mkNOILXCBBD2eSoRQzpDqT3co3KCtXhVfJK1b4l9mL/GLH40JYlh5Lx3+bS8aiJJqwP
+         CLLYkTbglvhuMqoBA4TfPSNmrJglXdD4dNuS524Vf+cQt6dn4zRWZA2U5pEYC8SCxBdc
+         n7Ru5jr9Fe5EJrsyLldkvkw9fXLs3yaiTTmEXpI1eC8CVSe8wxherP7g4DUTKe+avQvx
+         DiGg==
+X-Forwarded-Encrypted: i=1; AJvYcCXVDiDhEl2OZgUBgobiAw+Ftc2ruDl/hJVloF/QevG8qzJkfU+5H7KqZSq2x9pwZZk7z18JvsraQgF0jkL9HFRlqrcvdYlH
+X-Gm-Message-State: AOJu0Ywr44EDKVF8/XpCFAhc8RBhk4h4HlA1KFJJGzPd3MLlK0MXcSin
+	HigBUM+c9oL0751bKoadyBjWFhWvDwcKsiIhucYUHh/2cWQU7PBqjcyYD883Jow=
+X-Google-Smtp-Source: AGHT+IFrqop9IWtx6Qj69nWqO1n/SWu8DT5ggnEUyrLz2QTvgJxjukIRIrGPsQX+Am24ajuetLPWRg==
+X-Received: by 2002:a05:6a21:1693:b0:1a1:3dc:6686 with SMTP id np19-20020a056a21169300b001a103dc6686mr801467pzb.59.1708947240327;
+        Mon, 26 Feb 2024 03:34:00 -0800 (PST)
+Received: from [10.74.73.182] ([203.208.189.12])
+        by smtp.gmail.com with ESMTPSA id d20-20020a170903209400b001dc95205b56sm2320016plc.53.2024.02.26.03.33.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 Feb 2024 03:33:59 -0800 (PST)
+Message-ID: <f516eb83-c393-af67-803f-4cf664865cf8@bytedance.com>
+Date: Mon, 26 Feb 2024 19:33:53 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240226103025.736067-1-harshit.m.mogalapalli@oracle.com>
-In-Reply-To: <20240226103025.736067-1-harshit.m.mogalapalli@oracle.com>
-From: Shyam Prasad N <nspmangalore@gmail.com>
-Date: Mon, 26 Feb 2024 16:31:16 +0530
-Message-ID: <CANT5p=qNgSXsBg8Str6Er3noBdMwsB2gH5EMB+NbX59O=r_nNg@mail.gmail.com>
-Subject: Re: [PATCH 5.15.y] cifs: fix mid leak during reconnection after
- timeout threshold
-To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Cc: smfrench@gmail.com, stable@vger.kernel.org, sprasad@microsoft.com, 
-	stfrench@microsoft.com, darren.kenny@oracle.com, dai.ngo@oracle.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH 0/3] Support intra-function call validation
+To: bp@alien8.de, mingo@redhat.com, tglx@linutronix.de, hpa@zytor.com,
+ jpoimboe@redhat.com, peterz@infradead.org, mbenes@suse.cz,
+ gregkh@linuxfoundation.org, stable@vger.kernel.org,
+ alexandre.chartre@oracle.com
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org
+References: <20240226094925.95835-1-qirui.001@bytedance.com>
+From: qirui <qirui.001@bytedance.com>
+In-Reply-To: <20240226094925.95835-1-qirui.001@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Feb 26, 2024 at 4:00=E2=80=AFPM Harshit Mogalapalli
-<harshit.m.mogalapalli@oracle.com> wrote:
->
-> From: Shyam Prasad N <nspmangalore@gmail.com>
->
-> commit 69cba9d3c1284e0838ae408830a02c4a063104bc upstream.
->
-> When the number of responses with status of STATUS_IO_TIMEOUT
-> exceeds a specified threshold (NUM_STATUS_IO_TIMEOUT), we reconnect
-> the connection. But we do not return the mid, or the credits
-> returned for the mid, or reduce the number of in-flight requests.
->
-> This bug could result in the server->in_flight count to go bad,
-> and also cause a leak in the mids.
->
-> This change moves the check to a few lines below where the
-> response is decrypted, even of the response is read from the
-> transform header. This way, the code for returning the mids
-> can be reused.
->
-> Also, the cifs_reconnect was reconnecting just the transport
-> connection before. In case of multi-channel, this may not be
-> what we want to do after several timeouts. Changed that to
-> reconnect the session and the tree too.
->
-> Also renamed NUM_STATUS_IO_TIMEOUT to a more appropriate name
-> MAX_STATUS_IO_TIMEOUT.
->
-> Fixes: 8e670f77c4a5 ("Handle STATUS_IO_TIMEOUT gracefully")
-> Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-> Signed-off-by: Steve French <stfrench@microsoft.com>
-> [Harshit: Backport to 5.15.y]
->  Conflicts:
->         fs/cifs/connect.c -- 5.15.y doesn't have commit 183eea2ee5ba
->         ("cifs: reconnect only the connection and not smb session where
->  possible") -- User cifs_reconnect(server) instead of
-> cifs_reconnect(server, true)
->
-> Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-> ---
-> Would be nice to get a review from author/maintainer of the upstream patc=
-h.
->
-> A backport request was made previously but the patch didnot apply
-> cleanly then:
-> https://lore.kernel.org/all/CANT5p=3DoPGnCd4H5ppMbAiHsAKMor3LT_aQRqU7tKu=
-=3Dq6q1BGQg@mail.gmail.com/
->
-> xfstests with cifs done: before and after patching with this patch on 5.1=
-5.149.
-> There is no change in test results before and after the patch.
->
-> Ran: cifs/001 generic/001 generic/002 generic/005 generic/006 generic/007
-> generic/010 generic/011 generic/013 generic/014 generic/023 generic/024
-> generic/028 generic/029 generic/030 generic/036 generic/069 generic/074
-> generic/075 generic/084 generic/091 generic/095 generic/098 generic/100
-> generic/109 generic/112 generic/113 generic/124 generic/127 generic/129
-> generic/130 generic/132 generic/133 generic/135 generic/141 generic/169
-> generic/198 generic/207 generic/208 generic/210 generic/211 generic/212
-> generic/221 generic/239 generic/241 generic/245 generic/246 generic/247
-> generic/248 generic/249 generic/257 generic/263 generic/285 generic/286
-> generic/308 generic/309 generic/310 generic/315 generic/323 generic/339
-> generic/340 generic/344 generic/345 generic/346 generic/354 generic/360
-> generic/393 generic/394
-> Not run: generic/010 generic/286 generic/315
-> Failures: generic/075 generic/112 generic/127 generic/285
-> Failed 4 of 68 tests
->
-> SECTION       -- smb3
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D
-> Ran: cifs/001 generic/001 generic/002 generic/005 generic/006 generic/007
-> generic/010 generic/011 generic/013 generic/014 generic/023 generic/024
-> generic/028 generic/029 generic/030 generic/036 generic/069 generic/074
-> generic/075 generic/084 generic/091 generic/095 generic/098 generic/100
-> generic/109 generic/112 generic/113 generic/124 generic/127 generic/129
-> generic/130 generic/132 generic/133 generic/135 generic/141 generic/169
-> generic/198 generic/207 generic/208 generic/210 generic/211 generic/212
-> generic/221 generic/239 generic/241 generic/245 generic/246 generic/247
-> generic/248 generic/249 generic/257 generic/263 generic/285 generic/286
-> generic/308 generic/309 generic/310 generic/315 generic/323 generic/339
-> generic/340 generic/344 generic/345 generic/346 generic/354 generic/360
-> generic/393 generic/394
-> Not run: generic/010 generic/014 generic/129 generic/130 generic/239
-> Failures: generic/075 generic/091 generic/112 generic/127 generic/263 gen=
-eric/285 generic/286
-> Failed 7 of 68 tests
->
-> SECTION       -- smb21
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D
-> Ran: cifs/001 generic/001 generic/002 generic/005 generic/006 generic/007
-> generic/010 generic/011 generic/013 generic/014 generic/023 generic/024
-> generic/028 generic/029 generic/030 generic/036 generic/069 generic/074
-> generic/075 generic/084 generic/091 generic/095 generic/098 generic/100
-> generic/109 generic/112 generic/113 generic/124 generic/127 generic/129
-> generic/130 generic/132 generic/133 generic/135 generic/141 generic/169
-> generic/198 generic/207 generic/208 generic/210 generic/211 generic/212
-> generic/221 generic/239 generic/241 generic/245 generic/246 generic/247
-> generic/248 generic/249 generic/257 generic/263 generic/285 generic/286
-> generic/308 generic/309 generic/310 generic/315 generic/323 generic/339
-> generic/340 generic/344 generic/345 generic/346 generic/354 generic/360
-> generic/393 generic/394
-> Not run: generic/010 generic/014 generic/129 generic/130 generic/239 gene=
-ric/286 generic/315
-> Failures: generic/075 generic/112 generic/127 generic/285
-> Failed 4 of 68 tests
->
-> SECTION       -- smb2
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D
-> Ran: cifs/001 generic/001 generic/002 generic/005 generic/006 generic/007
-> generic/010 generic/011 generic/013 generic/014 generic/023 generic/024
-> generic/028 generic/029 generic/030 generic/036 generic/069 generic/074
-> generic/075 generic/084 generic/091 generic/095 generic/098 generic/100
-> generic/109 generic/112 generic/113 generic/124 generic/127 generic/129
-> generic/130 generic/132 generic/133 generic/135 generic/141 generic/169
-> generic/198 generic/207 generic/208 generic/210 generic/211 generic/212
-> generic/221 generic/239 generic/241 generic/245 generic/246 generic/247
-> generic/248 generic/249 generic/257 generic/263 generic/285 generic/286
-> generic/308 generic/309 generic/310 generic/315 generic/323 generic/339
-> generic/340 generic/344 generic/345 generic/346 generic/354 generic/360
-> generic/393 generic/394
-> Not run: generic/010 generic/286 generic/315
-> Failures: generic/075 generic/112 generic/127 generic/285
-> Failed 4 of 68 tests
-> ---
->  fs/cifs/connect.c | 19 +++++++++++++++----
->  1 file changed, 15 insertions(+), 4 deletions(-)
->
-> diff --git a/fs/cifs/connect.c b/fs/cifs/connect.c
-> index a521c705b0d7..a3e4811b7871 100644
-> --- a/fs/cifs/connect.c
-> +++ b/fs/cifs/connect.c
-> @@ -59,7 +59,7 @@ extern bool disable_legacy_dialects;
->  #define TLINK_IDLE_EXPIRE      (600 * HZ)
->
->  /* Drop the connection to not overload the server */
-> -#define NUM_STATUS_IO_TIMEOUT   5
-> +#define MAX_STATUS_IO_TIMEOUT   5
->
->  struct mount_ctx {
->         struct cifs_sb_info *cifs_sb;
-> @@ -965,6 +965,7 @@ cifs_demultiplex_thread(void *p)
->         struct mid_q_entry *mids[MAX_COMPOUND];
->         char *bufs[MAX_COMPOUND];
->         unsigned int noreclaim_flag, num_io_timeout =3D 0;
-> +       bool pending_reconnect =3D false;
->
->         noreclaim_flag =3D memalloc_noreclaim_save();
->         cifs_dbg(FYI, "Demultiplex PID: %d\n", task_pid_nr(current));
-> @@ -1004,6 +1005,8 @@ cifs_demultiplex_thread(void *p)
->                 cifs_dbg(FYI, "RFC1002 header 0x%x\n", pdu_length);
->                 if (!is_smb_response(server, buf[0]))
->                         continue;
-> +
-> +               pending_reconnect =3D false;
->  next_pdu:
->                 server->pdu_size =3D pdu_length;
->
-> @@ -1063,10 +1066,13 @@ cifs_demultiplex_thread(void *p)
->                 if (server->ops->is_status_io_timeout &&
->                     server->ops->is_status_io_timeout(buf)) {
->                         num_io_timeout++;
-> -                       if (num_io_timeout > NUM_STATUS_IO_TIMEOUT) {
-> -                               cifs_reconnect(server);
-> +                       if (num_io_timeout > MAX_STATUS_IO_TIMEOUT) {
-> +                               cifs_server_dbg(VFS,
-> +                                               "Number of request timeou=
-ts exceeded %d. Reconnecting",
-> +                                               MAX_STATUS_IO_TIMEOUT);
-> +
-> +                               pending_reconnect =3D true;
->                                 num_io_timeout =3D 0;
-> -                               continue;
->                         }
->                 }
->
-> @@ -1113,6 +1119,11 @@ cifs_demultiplex_thread(void *p)
->                         buf =3D server->smallbuf;
->                         goto next_pdu;
->                 }
-> +
-> +               /* do this reconnect at the very end after processing all=
- MIDs */
-> +               if (pending_reconnect)
-> +                       cifs_reconnect(server);
-> +
->         } /* end while !EXITING */
->
->         /* buffer usually freed in free_mid - need to free it here on exi=
-t */
-> --
-> 2.43.0
->
+This issue only occurs in 5.4 LTS versions after LTS 5.4.250 (inclusive), and this patchset is based on commit 6e1f54a4985b63bc1b55a09e5e75a974c5d6719b (Linux 5.4.269)
 
-These changes look good to me.
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-
---=20
-Regards,
-Shyam
+On 2/26/24 5:49 PM, Rui Qi wrote:
+> Since kernel version 5.4.250 LTS, there has been an issue with the kernel live patching feature becoming unavailable. When compiling the sample code for kernel live patching, the following message is displayed when enabled:
+> 
+> livepatch: klp_check_stack: kworker/u256:6:23490 has an unreliable stack
+> 
+> After investigation, it was found that this is due to objtool not supporting intra-function calls, resulting in incorrect orc entry generation.
+> 
+> This patchset adds support for intra-function calls, allowing the kernel live patching feature to work correctly.
+> 
+> Alexandre Chartre (2):
+>    objtool: is_fentry_call() crashes if call has no destination
+>    objtool: Add support for intra-function calls
+> 
+> Rui Qi (1):
+>    x86/speculation: Support intra-function call validation
+> 
+>   arch/x86/include/asm/nospec-branch.h          |  7 ++
+>   include/linux/frame.h                         | 11 ++++
+>   .../Documentation/stack-validation.txt        |  8 +++
+>   tools/objtool/arch/x86/decode.c               |  6 ++
+>   tools/objtool/check.c                         | 64 +++++++++++++++++--
+>   5 files changed, 91 insertions(+), 5 deletions(-)
+> 
 
