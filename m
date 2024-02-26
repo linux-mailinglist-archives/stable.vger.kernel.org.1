@@ -1,231 +1,211 @@
-Return-Path: <stable+bounces-23631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B86018672DB
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 12:17:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CB008672E2
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 12:19:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCC46B24103
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 10:33:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A422B257C0
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 10:34:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 366724C631;
-	Mon, 26 Feb 2024 10:19:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101BB1F94B;
+	Mon, 26 Feb 2024 10:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="gLydUfzo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mz9xA32T"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137331CAB9
-	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 10:19:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8663200DB
+	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 10:23:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708942791; cv=none; b=AJNO5DlldVIhkhicAtl8io+4E8TDqE4XGZzVedrsXy9qjK/0MoXVuAVdITJGWRNwf6hIeDOhSWEdYKTq8sP9tDlK9RR+GohNms1LQi4n9MgAbNe4tkWRAXq5OGMkebLrb0+L3fFBLmDmz+L8cJuTbT1Lx0uJ3gJjpUTAM/XOxwU=
+	t=1708942990; cv=none; b=XceSJ5XeAb35bXPpQiWiCK2pwFOBmurf5Bcabvj7yiitMWmyh3gFcjtjK0rOfdT/Zvdj1I1OQIECr2k48WsCl4q0ogRVVN5JonqW80c590IwAYcinnvR/U+E8wLSl68jWI/wUEALMEGFkb/8JK3DP8p67zHxJVLH2kJjb16qizI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708942791; c=relaxed/simple;
-	bh=naM3nrCEoGKVPNMnNa/U9dLb592lAQ5Uqmk/rEeHMTM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U3UDEqkMiOLGCZLcmYS2IwZ44ukGEPVEFr2TRPG9wSMpkGfkp0zNM4TjkZlJea83FtYhcnzJtvlQnPKvJMbsLn4bNCnoIOnSdOIb9s2jpfgP95PiTsnCaga6TWoOYWgQwi2dIqSSTRMBEETBvjNutkyoOWs57HW2N1PFIF5bLUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=gLydUfzo; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-564e4df00f3so3646993a12.3
-        for <stable@vger.kernel.org>; Mon, 26 Feb 2024 02:19:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=amarulasolutions.com; s=google; t=1708942787; x=1709547587; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mAMdRwp6uD10Sj7sMKu/Xy/lMXUaiG3hTaGl/25oH/w=;
-        b=gLydUfzo7OQI1HYHR9I8mNS5rg/lgN81c8XQA9Lbk6ic8y9ZHFBu61h80CmAhm8OOn
-         8kyVC5veJw//5lcOb+6jPU64ZLokp333agmf004uRKiSbVOmPk0Ukj2k/UlVn0lU7Ucf
-         sOZTMd3MSqEM4QtulQCNJq8VOnqt+HCbGKxgU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708942787; x=1709547587;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mAMdRwp6uD10Sj7sMKu/Xy/lMXUaiG3hTaGl/25oH/w=;
-        b=g184jis7F8zilv69jiWZ/vfa8kiqTgTjfd22+E7Yb22SnzUapy0n8fGuU0QtURIH17
-         vV59kZuq1mFBHc1lPdaicdhpiIeArSxLoaz1deO3QmckGsGnf8J2r+10RLhsndBA1Bme
-         WfKYo6Ur5mvXsr83Jo570RbK757Y/XaOgv3+C6+8/AWGVC+0TifNJKDyZE0Gbus5ctlS
-         oRKwbAg5OC9Pee/9wS4oC95rFl4BXD7/5ASohfxjpveIOJZTEY8Let50huM2eFOYpq4o
-         onBzt3Rdlp4N+qFmON0C4jc6kcv8vBKxXVEWcbZIU+CqisCqIqV23stdD2G0y2aDxtzx
-         gNlw==
-X-Forwarded-Encrypted: i=1; AJvYcCXlFll/W45tO6afgD7mXH9PnQZwV/G9rnCzv9jbxse+uUQy3BZwxGLUN7CaaIqiuKggd0K8jy0xyC8DBc32HOynP4cnIlUV
-X-Gm-Message-State: AOJu0Yz1yucizyLN37Lor1pzGvPH8uJKGDxA/x9gAME+YTc/om095iKm
-	6Sb+jhIaX4eIHosQ1hlHemd92aBclPg+XNJZGi67h3xOhLwhO/4EuAROMZhnXdHA1iKNacKTT+l
-	XQlZPz5wltX+faaUpYL3DhcgQUr68adj6XAlplw==
-X-Google-Smtp-Source: AGHT+IE1EqdtdQGTPAKqsGiEVNv3lYWX9sCbBopDAeFZ7Civ8FBPUesqVAT7wDSWNEPhNpzhb6vML07R7iwhlPK/Gxw=
-X-Received: by 2002:aa7:d052:0:b0:565:a252:e171 with SMTP id
- n18-20020aa7d052000000b00565a252e171mr3633761edo.39.1708942787332; Mon, 26
- Feb 2024 02:19:47 -0800 (PST)
+	s=arc-20240116; t=1708942990; c=relaxed/simple;
+	bh=7UqI/NgA23w9q4+bGAhJtWotfg0SOgFXXBXE4+US1LM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=nFMTIOtQyZ/n0cFgrM/DJqRYQDUWABSr+MavtEx7L53WrSPV+hTs688tnHH1YVRrmTr7IPySw/4wgWSxhTPBxV5qdtJDYgcykIoc10CY8vnGmFFG7Duwz7Tj/Qo/y90SQmLIVGX0+aU1DIGoMuU6uGxTLURKtRUnLRt6fvSLstY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mz9xA32T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA3CFC433F1;
+	Mon, 26 Feb 2024 10:23:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1708942990;
+	bh=7UqI/NgA23w9q4+bGAhJtWotfg0SOgFXXBXE4+US1LM=;
+	h=Subject:To:Cc:From:Date:From;
+	b=mz9xA32TRfFdbc6bm1iBjRdszIRakNy4vInnMc9VivKwjuEW7w5/VNEoQ5w6rNyHS
+	 Q3GUCWo0TDSjSmJMxitfS3Ns9wuBoIQmZSrol3yfGa4UjCbilckgQXohEPiO/e4m4N
+	 Co5EtmcSiup16OR/V3sb1LhSFT2Txf/jT2T4/PP0=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Only allow dig mapping to pwrseq in new asic" failed to apply to 6.6-stable tree
+To: lewis.huang@amd.com,alexander.deucher@amd.com,anthony.koo@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com,rodrigo.siqueira@amd.com,stable@vger.kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 26 Feb 2024 11:23:02 +0100
+Message-ID: <2024022602-handshake-spoiled-e4a5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240226100502.1845284-1-michael@amarulasolutions.com> <2024022609-groom-passably-909c@gregkh>
-In-Reply-To: <2024022609-groom-passably-909c@gregkh>
-From: Michael Nazzareno Trimarchi <michael@amarulasolutions.com>
-Date: Mon, 26 Feb 2024 11:19:36 +0100
-Message-ID: <CAOf5uwnd+qh0PZgXhPN21Eng7HN+_Vjgjad7UxZ79-b1gZEhOw@mail.gmail.com>
-Subject: Re: [PATCH V3] usb: dwc3: gadget: Fix suspend/resume warning when
- no-gadget is connected
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Thinh Nguyen <Thinh.Nguyen@synopsys.com>, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-Hi Greg
-
-On Mon, Feb 26, 2024 at 11:14=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Mon, Feb 26, 2024 at 11:05:02AM +0100, Michael Trimarchi wrote:
-> > This patch avoid to disconnect an already gadget in not connected state
-> >
-> > [   45.597274] dwc3 31000000.usb: wait for SETUP phase timed out
-> > [   45.599140] dwc3 31000000.usb: failed to set STALL on ep0out
-> > [   45.601069] ------------[ cut here ]------------
-> > [   45.601073] WARNING: CPU: 0 PID: 150 at drivers/usb/dwc3/ep0.c:289 d=
-wc3_ep0_out_start+0xcc/0xd4
-> > [   45.601102] Modules linked in: cfg80211 rfkill ipv6 rpmsg_ctrl rpmsg=
-_char crct10dif_ce rti_wdt k3_j72xx_bandgap rtc_ti_k3 omap_mailbox sa2ul au=
-thenc [last unloaded: ti_k3_r5_remoteproc]
-> > [   45.601151] CPU: 0 PID: 150 Comm: sh Not tainted 6.8.0-rc5 #1
-> > [   45.601159] Hardware name: BSH - CCM-M3 (DT)
-> > [   45.601164] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BT=
-YPE=3D--)
-> > [   45.601172] pc : dwc3_ep0_out_start+0xcc/0xd4
-> > [   45.601179] lr : dwc3_ep0_out_start+0x50/0xd4
-> > [   45.601186] sp : ffff8000832739e0
-> > [   45.601189] x29: ffff8000832739e0 x28: ffff800082a21000 x27: ffff800=
-0808dc630
-> > [   45.601200] x26: 0000000000000002 x25: ffff800082530a44 x24: 0000000=
-000000000
-> > [   45.601210] x23: ffff000000e079a0 x22: ffff000000e07a68 x21: 0000000=
-000000001
-> > [   45.601219] x20: ffff000000e07880 x19: ffff000000e07880 x18: 0000000=
-000000040
-> > [   45.601229] x17: ffff7fff8e1ce000 x16: ffff800080000000 x15: fffffff=
-ffffe5260
-> > [   45.601239] x14: 0000000000000000 x13: 206e6f204c4c4154 x12: 5320746=
-573206f74
-> > [   45.601249] x11: 0000000000000001 x10: 000000000000000a x9 : ffff800=
-083273930
-> > [   45.601259] x8 : 000000000000000a x7 : ffffffffffff3f0c x6 : fffffff=
-fffff3f00
-> > [   45.601268] x5 : ffffffffffff3f0c x4 : 0000000000000000 x3 : 0000000=
-000000000
-> > [   45.601278] x2 : 0000000000000000 x1 : ffff000004e7e600 x0 : 0000000=
-0ffffff92
-> > [   45.601289] Call trace:
-> > [   45.601293]  dwc3_ep0_out_start+0xcc/0xd4
-> > [   45.601301]  dwc3_ep0_stall_and_restart+0x98/0xbc
-> > [   45.601309]  dwc3_ep0_reset_state+0x5c/0x88
-> > [   45.601315]  dwc3_gadget_soft_disconnect+0x144/0x160
-> > [   45.601323]  dwc3_gadget_suspend+0x18/0xb0
-> > [   45.601329]  dwc3_suspend_common+0x5c/0x18c
-> > [   45.601341]  dwc3_suspend+0x20/0x44
-> > [   45.601350]  platform_pm_suspend+0x2c/0x6c
-> > [   45.601360]  __device_suspend+0x10c/0x34c
-> > [   45.601372]  dpm_suspend+0x1a8/0x240
-> > [   45.601382]  dpm_suspend_start+0x80/0x9c
-> > [   45.601391]  suspend_devices_and_enter+0x1c4/0x584
-> > [   45.601402]  pm_suspend+0x1b0/0x264
-> > [   45.601408]  state_store+0x80/0xec
-> > [   45.601415]  kobj_attr_store+0x18/0x2c
-> > [   45.601426]  sysfs_kf_write+0x44/0x54
-> > [   45.601434]  kernfs_fop_write_iter+0x120/0x1ec
-> > [   45.601445]  vfs_write+0x23c/0x358
-> > [   45.601458]  ksys_write+0x70/0x104
-> > [   45.601467]  __arm64_sys_write+0x1c/0x28
-> > [   45.601477]  invoke_syscall+0x48/0x114
-> > [   45.601488]  el0_svc_common.constprop.0+0x40/0xe0
-> > [   45.601498]  do_el0_svc+0x1c/0x28
-> > [   45.601506]  el0_svc+0x34/0xb8
-> > [   45.601516]  el0t_64_sync_handler+0x100/0x12c
-> > [   45.601522]  el0t_64_sync+0x190/0x194
-> > [   45.601531] ---[ end trace 0000000000000000 ]---
-> > [   45.608794] Disabling non-boot CPUs ...
-> > [   45.611029] psci: CPU1 killed (polled 0 ms)
-> > [   45.611837] Enabling non-boot CPUs ...
-> > [   45.612247] Detected VIPT I-cache on CPU1
-> >
-> > Tested on a am62x board with a usbnet gadget
-> >
-> > Fixes: 61a348857e86 ("usb: dwc3: gadget: Fix NULL pointer dereference i=
-n dwc3_gadget_suspend)
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
-> > ---
-> > V2->V3:
-> >       - Change the logic of the patch using the gadget connected state
-> >       - Change of the commit message
-> > V1->V2:
-> >       - Add stable in CC
-> > ---
-> >  drivers/usb/dwc3/gadget.c | 9 +++++++++
-> >  1 file changed, 9 insertions(+)
-> >
-> > diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-> > index 4c8dd6724678..a7316a1703ad 100644
-> > --- a/drivers/usb/dwc3/gadget.c
-> > +++ b/drivers/usb/dwc3/gadget.c
-> > @@ -2650,6 +2650,15 @@ static int dwc3_gadget_soft_disconnect(struct dw=
-c3 *dwc)
-> >       int ret;
-> >
-> >       spin_lock_irqsave(&dwc->lock, flags);
-> > +     /*
-> > +      * Attempt to disconnect a no connected gadget
->
-> What does this mean?  And why a 3 line comment?
->
-> > +      */
-> > +     if (!dwc->connected) {
-> > +             dev_warn(dwc->dev, "No connected device\n");
->
-> You are printing while a spinlock is held?  What can userspace do with
-> this message?
-
-I will drop it.
-
->
-> > +             spin_unlock_irqrestore(&dwc->lock, flags);
-> > +             return 0;
->
-> No error handling?  Why not?
-
-The function tries to disconnect an already disconnected gadget, so in
-this case is a nop. If we want to handle
-an error I can check the impact on the dwc3 gadget.
-
-Michael
-
->
-> thanks,
->
-> greg k-h
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
 
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
---=20
-Michael Nazzareno Trimarchi
-Co-Founder & Chief Executive Officer
-M. +39 347 913 2170
-michael@amarulasolutions.com
-__________________________________
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Amarula Solutions BV
-Joop Geesinkweg 125, 1114 AB, Amsterdam, NL
-T. +31 (0)85 111 9172
-info@amarulasolutions.com
-www.amarulasolutions.com
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 4e73826089ce899357580bbf6e0afe4e6f9900b7
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024022602-handshake-spoiled-e4a5@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+
+4e73826089ce ("drm/amd/display: Only allow dig mapping to pwrseq in new asic")
+b17ef04bf3a4 ("drm/amd/display: Pass pwrseq inst for backlight and ABM")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 4e73826089ce899357580bbf6e0afe4e6f9900b7 Mon Sep 17 00:00:00 2001
+From: Lewis Huang <lewis.huang@amd.com>
+Date: Wed, 31 Jan 2024 17:20:17 +0800
+Subject: [PATCH] drm/amd/display: Only allow dig mapping to pwrseq in new asic
+
+[Why]
+The old asic only have 1 pwrseq hw.
+We don't need to map the diginst to pwrseq inst in old asic.
+
+[How]
+1. Only mapping dig to pwrseq for new asic.
+2. Move mapping function into dcn specific panel control component
+
+Cc: Stable <stable@vger.kernel.org> # v6.6+
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3122
+Reviewed-by: Anthony Koo <anthony.koo@amd.com>
+Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Lewis Huang <lewis.huang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_panel_cntl.c b/drivers/gpu/drm/amd/display/dc/dce/dce_panel_cntl.c
+index e8570060d007..5bca67407c5b 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dce_panel_cntl.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dce_panel_cntl.c
+@@ -290,4 +290,5 @@ void dce_panel_cntl_construct(
+ 	dce_panel_cntl->base.funcs = &dce_link_panel_cntl_funcs;
+ 	dce_panel_cntl->base.ctx = init_data->ctx;
+ 	dce_panel_cntl->base.inst = init_data->inst;
++	dce_panel_cntl->base.pwrseq_inst = 0;
+ }
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_panel_cntl.c b/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_panel_cntl.c
+index ad0df1a72a90..9e96a3ace207 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_panel_cntl.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_panel_cntl.c
+@@ -215,4 +215,5 @@ void dcn301_panel_cntl_construct(
+ 	dcn301_panel_cntl->base.funcs = &dcn301_link_panel_cntl_funcs;
+ 	dcn301_panel_cntl->base.ctx = init_data->ctx;
+ 	dcn301_panel_cntl->base.inst = init_data->inst;
++	dcn301_panel_cntl->base.pwrseq_inst = 0;
+ }
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_panel_cntl.c b/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_panel_cntl.c
+index 03248422d6ff..281be20b1a10 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_panel_cntl.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn31/dcn31_panel_cntl.c
+@@ -154,8 +154,24 @@ void dcn31_panel_cntl_construct(
+ 	struct dcn31_panel_cntl *dcn31_panel_cntl,
+ 	const struct panel_cntl_init_data *init_data)
+ {
++	uint8_t pwrseq_inst = 0xF;
++
+ 	dcn31_panel_cntl->base.funcs = &dcn31_link_panel_cntl_funcs;
+ 	dcn31_panel_cntl->base.ctx = init_data->ctx;
+ 	dcn31_panel_cntl->base.inst = init_data->inst;
+-	dcn31_panel_cntl->base.pwrseq_inst = init_data->pwrseq_inst;
++
++	switch (init_data->eng_id) {
++	case ENGINE_ID_DIGA:
++		pwrseq_inst = 0;
++		break;
++	case ENGINE_ID_DIGB:
++		pwrseq_inst = 1;
++		break;
++	default:
++		DC_LOG_WARNING("Unsupported pwrseq engine id: %d!\n", init_data->eng_id);
++		ASSERT(false);
++		break;
++	}
++
++	dcn31_panel_cntl->base.pwrseq_inst = pwrseq_inst;
+ }
+diff --git a/drivers/gpu/drm/amd/display/dc/inc/hw/panel_cntl.h b/drivers/gpu/drm/amd/display/dc/inc/hw/panel_cntl.h
+index 5dcbaa2db964..e97d964a1791 100644
+--- a/drivers/gpu/drm/amd/display/dc/inc/hw/panel_cntl.h
++++ b/drivers/gpu/drm/amd/display/dc/inc/hw/panel_cntl.h
+@@ -57,7 +57,7 @@ struct panel_cntl_funcs {
+ struct panel_cntl_init_data {
+ 	struct dc_context *ctx;
+ 	uint32_t inst;
+-	uint32_t pwrseq_inst;
++	uint32_t eng_id;
+ };
+ 
+ struct panel_cntl {
+diff --git a/drivers/gpu/drm/amd/display/dc/link/link_factory.c b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
+index 37d3027c32dc..cf22b8f28ba6 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/link_factory.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
+@@ -370,30 +370,6 @@ static enum transmitter translate_encoder_to_transmitter(
+ 	}
+ }
+ 
+-static uint8_t translate_dig_inst_to_pwrseq_inst(struct dc_link *link)
+-{
+-	uint8_t pwrseq_inst = 0xF;
+-	struct dc_context *dc_ctx = link->dc->ctx;
+-
+-	DC_LOGGER_INIT(dc_ctx->logger);
+-
+-	switch (link->eng_id) {
+-	case ENGINE_ID_DIGA:
+-		pwrseq_inst = 0;
+-		break;
+-	case ENGINE_ID_DIGB:
+-		pwrseq_inst = 1;
+-		break;
+-	default:
+-		DC_LOG_WARNING("Unsupported pwrseq engine id: %d!\n", link->eng_id);
+-		ASSERT(false);
+-		break;
+-	}
+-
+-	return pwrseq_inst;
+-}
+-
+-
+ static void link_destruct(struct dc_link *link)
+ {
+ 	int i;
+@@ -657,7 +633,7 @@ static bool construct_phy(struct dc_link *link,
+ 			link->link_id.id == CONNECTOR_ID_LVDS)) {
+ 		panel_cntl_init_data.ctx = dc_ctx;
+ 		panel_cntl_init_data.inst = panel_cntl_init_data.ctx->dc_edp_id_count;
+-		panel_cntl_init_data.pwrseq_inst = translate_dig_inst_to_pwrseq_inst(link);
++		panel_cntl_init_data.eng_id = link->eng_id;
+ 		link->panel_cntl =
+ 			link->dc->res_pool->funcs->panel_cntl_create(
+ 								&panel_cntl_init_data);
+
 
