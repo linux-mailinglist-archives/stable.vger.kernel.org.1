@@ -1,135 +1,121 @@
-Return-Path: <stable+bounces-23749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B26F4867FF7
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 19:45:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B12B86800B
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 19:50:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3F961C24269
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 18:45:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CB8C1C2795D
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 18:50:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 355A612F395;
-	Mon, 26 Feb 2024 18:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 955EC12DDBB;
+	Mon, 26 Feb 2024 18:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NIaQONGi";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="s4JGeO0/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EbhwLYpF"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62AC212C522;
-	Mon, 26 Feb 2024 18:44:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535C61DFF4;
+	Mon, 26 Feb 2024 18:50:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708973099; cv=none; b=ZUFwMSohNnbf2uqMdDxI0JcKubWCTgDQeruNtS6Pne47J/jkgQfvOmqTFJW9r5fog2rpQSku4uzpiNQcpZCeWyX3uamWklQUL2oV/tFCDaqaep/CVghgoncspbwoBPfimctbHbYIw2PC21nQzoWUZQ9fxR/c4OtBPZ7p6+NsXAE=
+	t=1708973449; cv=none; b=NDOrlYF85M+N480ItAP9V8Se6cM0nDF+y3JKu4eYyDj6rybSKSz8j6plwKbCTHItediZ/esNIbqXimVCYzKs/ktUWTveK87Zh/6XrE0v0fVL+K1G0O0kqaq4oqFsD6SJE3wg5MjLD1eKw/cBIj0G88vKNFJ/NNHQIfR9H4oaEkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708973099; c=relaxed/simple;
-	bh=GS9gp4VWJdv3Hua02gaR8hLCNcDTZXmN4IufTEOI7P8=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=qGJf/I8eqF7bRkbJBXplx/MLUw26VCExVoRmG/EAte/8tizvlezT8DE6546VPXeQb93qk3hOtLXhVsr8rpxbS5gsfOkHOtbecGT1fBFXa+gZ8/sW1PuIR98ulHxqd00pA2gLfpfeW1oxfnB/k0ZX3+CiJYh+nT5EU5baFOW+1rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NIaQONGi; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=s4JGeO0/; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 26 Feb 2024 18:44:55 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1708973095;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=enCiCbZJXdvA+exzx6jm5HR+LaOpH1BSeM0RAR+839A=;
-	b=NIaQONGiZrV6tvOmXJAcajmiD2Z8bk+YdO5qEII9+vm0+SI9yiDQbB/FltbsHEyw281RaL
-	0hw6HNdJtI60EAkJ02yYJOhuVBdTf1KkV6CiKr2zRynDFlijK9EMR9vx5mDAH839H9aaBs
-	HHU59FHq0FenOWZbwFS1XPMWIB58yPytfivbkIF2NBhwo5P1aQNmNagP0DaiwenYanepTi
-	iDClAVFRdHXYFPuOBT4l3uFQ4oEyQZKwgVuAvNv5JX43NHwmKoNi4HImTj5L17SYoezPSf
-	Ctlr99nPeZz21cBbzKNz27OAApxEDhGOl/MCCWdnHmXzHIW81fb5tLdGnuPJww==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1708973095;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=enCiCbZJXdvA+exzx6jm5HR+LaOpH1BSeM0RAR+839A=;
-	b=s4JGeO0/CC6oNTJCYW5QKUjHgcyV4UR/caPpfsWxgLaM4C6ENE/MOaFnhbeWtBi0D6asFf
-	bjNhsAMyQ3Ej3XDQ==
-From: "tip-bot2 for Paolo Bonzini" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/cpu: Allow reducing x86_phys_bits during
- early_identify_cpu()
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, stable@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1708973449; c=relaxed/simple;
+	bh=1LDz9k/WIYEGkftI9LRKZ0K+QjD2ND5CIN2Ozj+3DtM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qLnGag/R/jqEQrQMoPN3O0CbRPIEKldBd7aAWniRP1lG18H0s5WJIOaDeHC/ioKBEuBs4EP9ChDTtMiFs90/DhvnmQZV516nSBSEyCWVACChn2PFKK7Xc6vXT2q2o4B3KQ1hqXR2ELMVRzlctWrWob7+jeMNOAY3UrgYwHc1gNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EbhwLYpF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D8AEC433C7;
+	Mon, 26 Feb 2024 18:50:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708973448;
+	bh=1LDz9k/WIYEGkftI9LRKZ0K+QjD2ND5CIN2Ozj+3DtM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=EbhwLYpFcxYboGS4AklZhV7JkBc4+nxUmmVbT5CIoi3/qAV8AI82uQ3GhLb7Z7Uid
+	 vlkrk1E8SlZDvRowOUoU+yy3C0eAAcJC6I5Gk/VGyyfcp7sHh+Q0bxYLJF5OtPuvdY
+	 iXbS3QLJS6ZaFkghIisbdY6PyduAffr6cGUq/zzEsSZvmGUiQkISSG6SO2WdkzM5dT
+	 FttuT+BW9BHqID2KDGBwlLix8DudxyRAh6zoEQCg3mIcTAgv/a6J1/SuPwrxlfoHyE
+	 XafcEAGtgs0BfScVkFcc4d/G5GzxMBU+mrhJqvjoui5gfnlG88Y60s5UcooJuLSFF4
+	 buMzPX+AP2MoA==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.7.y] selftests: mptcp: join: stop transfer when check is done (part 1)
+Date: Mon, 26 Feb 2024 19:50:16 +0100
+Message-ID: <20240226185015.446712-2-matttbe@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2024021916-striking-evoke-4847@gregkh>
+References: <2024021916-striking-evoke-4847@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170897309511.398.3611355957607833957.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2076; i=matttbe@kernel.org; h=from:subject; bh=1LDz9k/WIYEGkftI9LRKZ0K+QjD2ND5CIN2Ozj+3DtM=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBl3N1niWZdRLs3sJ7Q50oeg6J4lR6oOhwtiTUvL ZrqEuvz2EGJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZdzdZwAKCRD2t4JPQmmg cw0OD/97IEBAgmhbaomBBfNb4MUkNd1hKNlvtu349KFSaqS2T0srj/E9O1Qug4+Fs8Dv+lsSabE 141d0C9ADe7VTXfYPTBVtq//wJtex1xe/BTaXjRN1j5H7rHoRS6rRGR+eimcVTinT4gJEdn/Acd JMVCEwF9Khf1P/GdFVGbFj8BWVVi0bSwZw2H6Z60oa0nbj0kOXfe0Uo5xgSK9NRUGZb+qrNL0A2 zrlJpawEWA+1Fo2pR7T2B+dVvz9D31sQI/396RMCDRkv/UD0ObfjXUMWqWQKUJIi1zwUC8eonfh TQsJp+WCta3zKYJd/lGTZvRnsl6V1mXzj2bRXcm2bKU046UBlUaNEzxOJEmokTDhLaEC/N3CvD4 hBcv+sareRYtfPd4XBgo8379JIX0MUYW3X36IsISLSA7jMOddtYAXAxEWvuTdrYv9z7uBv0UruA hp0XivqTs+qnTzJ6/Bm8Rf2UmdKkV/CwieSTm9XnvviR48TBIbCll4v4q+Vs2tuQOnvNe8+0cyq MIGcYezcppU89n4rYUTiuN/7ECx7Sginosc448VYyQi6F1FMYLmns2viar+Nz7q4OHnwz5Y3Mcj t/+m0Wy0ovzAR9lU1pdt/NnmDe9dBOpMogFs7iLgaWEfeF8N3U+1nfhr8Ac2xLpIDVP1VyZ4ZoF jav14wEei+GvX9Q==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
 
-The following commit has been merged into the x86/urgent branch of tip:
+Since the "Fixes" commit mentioned below, "userspace pm" subtests of
+mptcp_join selftests introduced in v6.5 are launching the whole transfer
+in the background, do the required checks, then wait for the end of
+transfer.
 
-Commit-ID:     9a458198eba98b7207669a166e64d04b04cb651b
-Gitweb:        https://git.kernel.org/tip/9a458198eba98b7207669a166e64d04b04cb651b
-Author:        Paolo Bonzini <pbonzini@redhat.com>
-AuthorDate:    Thu, 01 Feb 2024 00:09:01 +01:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Mon, 26 Feb 2024 08:16:15 -08:00
+There is no need to wait longer, especially because the checks at the
+end of the transfer are ignored (which is fine). This saves quite a few
+seconds in slow environments.
 
-x86/cpu: Allow reducing x86_phys_bits during early_identify_cpu()
+Note that old versions will need commit bdbef0a6ff10 ("selftests: mptcp:
+add mptcp_lib_kill_wait") as well to get 'mptcp_lib_kill_wait()' helper.
 
-In commit fbf6449f84bf ("x86/sev-es: Set x86_virt_bits to the correct
-value straight away, instead of a two-phase approach"), the initialization
-of c->x86_phys_bits was moved after this_cpu->c_early_init(c).  This is
-incorrect because early_init_amd() expected to be able to reduce the
-value according to the contents of CPUID leaf 0x8000001f.
-
-Fortunately, the bug was negated by init_amd()'s call to early_init_amd(),
-which does reduce x86_phys_bits in the end.  However, this is very
-late in the boot process and, most notably, the wrong value is used for
-x86_phys_bits when setting up MTRRs.
-
-To fix this, call get_cpu_address_sizes() as soon as X86_FEATURE_CPUID is
-set/cleared, and c->extended_cpuid_level is retrieved.
-
-Fixes: fbf6449f84bf ("x86/sev-es: Set x86_virt_bits to the correct value straight away, instead of a two-phase approach")
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240131230902.1867092-2-pbonzini%40redhat.com
+Fixes: 4369c198e599 ("selftests: mptcp: test userspace pm out of transfer")
+Cc: stable@vger.kernel.org # 6.5.x: bdbef0a6ff10: selftests: mptcp: add mptcp_lib_kill_wait
+Cc: stable@vger.kernel.org # 6.5.x
+Reviewed-and-tested-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240131-upstream-net-20240131-mptcp-ci-issues-v1-8-4c1c11e571ff@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+(cherry picked from commit 31ee4ad86afd6ed6f4bb1b38c43011216080c42a)
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- arch/x86/kernel/cpu/common.c | 4 ++--
+Notes:
+ - conflicts because "userspace pm create id 0 subflow" test is not in
+   v6.7.x
+---
+ tools/testing/selftests/net/mptcp/mptcp_join.sh | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 0b97bcd..fbc4e60 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1589,6 +1589,7 @@ static void __init early_identify_cpu(struct cpuinfo_x86 *c)
- 		get_cpu_vendor(c);
- 		get_cpu_cap(c);
- 		setup_force_cpu_cap(X86_FEATURE_CPUID);
-+		get_cpu_address_sizes(c);
- 		cpu_parse_early_param();
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+index ed665e0057d3..99674dafa698 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3433,7 +3433,7 @@ userspace_tests()
+ 		chk_rm_nr 1 1 invert
+ 		chk_mptcp_info subflows 0 subflows 0
+ 		kill_events_pids
+-		wait $tests_pid
++		mptcp_lib_kill_wait $tests_pid
+ 	fi
  
- 		if (this_cpu->c_early_init)
-@@ -1601,10 +1602,9 @@ static void __init early_identify_cpu(struct cpuinfo_x86 *c)
- 			this_cpu->c_bsp_init(c);
- 	} else {
- 		setup_clear_cpu_cap(X86_FEATURE_CPUID);
-+		get_cpu_address_sizes(c);
- 	}
+ 	# userspace pm create destroy subflow
+@@ -3452,7 +3452,7 @@ userspace_tests()
+ 		chk_rm_nr 1 1
+ 		chk_mptcp_info subflows 0 subflows 0
+ 		kill_events_pids
+-		wait $tests_pid
++		mptcp_lib_kill_wait $tests_pid
+ 	fi
+ }
  
--	get_cpu_address_sizes(c);
--
- 	setup_force_cpu_cap(X86_FEATURE_ALWAYS);
- 
- 	cpu_set_bug_bits(c);
+-- 
+2.43.0
+
 
