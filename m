@@ -1,95 +1,128 @@
-Return-Path: <stable+bounces-23667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABE858671F1
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 11:51:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6705867252
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 11:57:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66EA528CD2A
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 10:51:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6016B289BEA
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 10:57:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7AB495CB;
-	Mon, 26 Feb 2024 10:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8655E1CFB6;
+	Mon, 26 Feb 2024 10:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="TRaofYXQ"
-X-Original-To: Stable@vger.kernel.org
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KRlAPXWv"
+X-Original-To: stable@vger.kernel.org
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619E455C3F;
-	Mon, 26 Feb 2024 10:45:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C721CD2F;
+	Mon, 26 Feb 2024 10:56:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708944305; cv=none; b=oZyehISizpJS4mqNZXGwxOneMdSvsKopSSR5DEGhEQnF16sWhn52Oz8PtR8TaXbVPJxRElBPOMpBgcLw10mMPlHuRtpH1byZt1RBA0ItItacPoe7wXutdYBk4+/Q7IBVC8h4Mz4VO36RCensA/t7fVxz9ZfjN5VPgP0WyMJan2Y=
+	t=1708944988; cv=none; b=EfjvphxCRxFjKe5BRbjYNv2swNnoimwSKkILXfyW0lAujtp4m8eqUajlRr/nE9BxJLjjStBx1jApT6crc5a0NW1yODXoZEcqnktCcO4xtU2DvrIU6he+ZVAfniw1nb9Bnm7Cu/FHZvtV+yfa0oGVakqH5pIXoyeLY8aY1J4aOM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708944305; c=relaxed/simple;
-	bh=snSn7ccEbLZ+7kSkKsYvWViDDDORgIjM64c02g9kvwE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fFH2M28VgcbSycvFnlmBgvBYPiiKft9oYXc7BPVVtZTAA/NUMQ/9sa6pXxA3WKYlmFmdgo48htLOOGu+5sv3uRbJACX7bVfnwioPip569+3a1YNRH/S6vf66sVz3n41ofBLB//ZSFrGW4/zzVizaLMWOM/Vj+3lVifgUoQjOyPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=TRaofYXQ; arc=none smtp.client-ip=217.70.183.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 0A7AA60009;
-	Mon, 26 Feb 2024 10:45:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1708944302;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fPexO6DRjAqEh41hFAbTYxuEnPMPjtTxwMJrh7MLMNs=;
-	b=TRaofYXQ2zaSq+Ppu6StTVFrg1zN2D0YPWob5XALDQrTurFWqQcigGboAQdnVCPwhZNcqf
-	40B1yCw8sqby8K7KbFd2GP7zaYzyOMvi6XbUKGNjiSP/zd21Q9MoM2iIZyQDI7oPipQAcC
-	nNppCVoDguyhEZf1As6CmfcvFf/a+OTPpbMPEHrK1yTtZjCnWPX7wZSsi8sWCIU8E46oMz
-	1ZnI8InnR/Peru/Jv6fF9PDB4qtAJGebmpb8yHkSovZxaq87t/GAMOhJUlOM9wIBiW6LEq
-	4fM8kjOb23t6L7TSXNl9VCmL85fKqlbPeuu4uzJw12yvh7IHYpvKDPSE1Rtb/Q==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Yixun Lan <yixun.lan@amlogic.com>,
-	Jianxin Pan <jianxin.pan@amlogic.com>
-Cc: oxffffaa@gmail.com,
-	linux-mtd@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	kernel@sberdevices.ru,
-	Stable@vger.kernel.org
-Subject: Re: [PATCH v1] mtd: rawnand: meson: fix scrambling mode value in command macro
-Date: Mon, 26 Feb 2024 11:45:00 +0100
-Message-Id: <20240226104500.490108-1-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240210214551.441610-1-avkrasnov@salutedevices.com>
-References: 
+	s=arc-20240116; t=1708944988; c=relaxed/simple;
+	bh=SI0ijatx+CA+XCLUPsJKOZ7njhSleBQdAsZ2YXXWjaI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HphfS9mvyBuz/x9+QJoUmvJETfJGYnKqgDoFQlHp74upKKx7SI50rvTc4bM6Yui+sPcky/aomcZ9FHKf8XXlllYoSNxofUXrmwjS5+1Ct3xFbwqw/ylKBQhE2tthlY9bdJ7+u1H4vLZcISF8LF+jr2l/zfkWNwXNzo4/Tfxdfu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KRlAPXWv; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-512d6bcd696so2619449e87.1;
+        Mon, 26 Feb 2024 02:56:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708944985; x=1709549785; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h7fB0a/5ZcbNw+Zj1uUC8jy+nhy/LiwshbicAgHsNIg=;
+        b=KRlAPXWvGbaMl/3MX0FlcROnRKyBF47oaYLT3OxITWFoyakiwox38OW9DgoN+czz/g
+         vHO6lv5w25Yrg3uDHuqgsO0GygDWO/iu2lHlYFe2fVAUcv9MgCgKs/c+WnBFJlF4ofAX
+         NqIe0QzsdZxQtsDaHZMBQDIzFp2RCQrmqglma0kZV9zA5jW/IKEib5U8wHwleDWapDcK
+         Cv2q5h9AqvzAq26MwpgiOAqkVHclpLrOcTVoChtJT945h21dmAdX9/Sf4Z2aW1iCDIqh
+         7mZ2rmCdCn537U8YhT48C6BeIoC7/fmJe/HuYe2KW7WW1lHawREF4uWLxRk5o0GtKOni
+         B4Og==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708944985; x=1709549785;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=h7fB0a/5ZcbNw+Zj1uUC8jy+nhy/LiwshbicAgHsNIg=;
+        b=nH3cbMz1PPh2SUPmXyhrkyiYLV4/AlXTRXtz2hu+2QJqVh/k3FClTeVMaK2zIKAGpA
+         n5tIcB3NJb+C0t4+I0JtIrGMkskBVcci0k/vLZwd6EmWtvaDJoVpEIaLeTGGuc9hk3eB
+         euhFWlfI7i3M5Ycix2K7A8JiwZF1vXIpK7SU+cVqNDoUtFFH5pSlj10c4nPhsGTLhRrt
+         p+Xu9tz4uAqfFtOxlOxP3B6zxnx7odYP0goq6bm7fNqmdd3Q//RIw+X3uZkAujatXHLZ
+         +EWTIuQ1t27cujD/DvjqAHPdgUdG00qg8evM4XFkHTPvdHwGP+DlR0EYxUqXgZXEUJsu
+         a7DQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVIqgtzk2H/5otm5UYvYA+YNSVxl+X2YLN6AvWk9owHncLyyMy5Ly72tX7/FTfu7v5mevJqldWVCSGrW/L1LEAXsJ5IjPJJL4ipGQ==
+X-Gm-Message-State: AOJu0YzT3x5ToUHmoi7+3YrIo+APVLVxZ/nzo/8fjtKVHV1r04lGXcKo
+	VNSXLlnqGvJ+PZpFgyejOs2qu6JpATr1wj64J4TV2xICStIf1UICywY9sMG/S3UYkZ2OBn0kWWL
+	xk9GC6vXVL2h1xj6hUznePo8fSCOToPAgbrI=
+X-Google-Smtp-Source: AGHT+IGWZejTrnXyiwIqx/+lXlbxX3JTiyKintL4lQKrwfz6ujFLgEmkjGHcl/yKez/mE0xqMEn1SjcuGnXks0B3hiE=
+X-Received: by 2002:a05:6512:1093:b0:513:d1:770e with SMTP id
+ j19-20020a056512109300b0051300d1770emr435234lfg.21.1708944984590; Mon, 26 Feb
+ 2024 02:56:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-linux-mtd-patch-notification: thanks
-X-linux-mtd-patch-commit: b'ef6f463599e16924cdd02ce5056ab52879dc008c'
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: miquel.raynal@bootlin.com
+References: <CANT5p=rYFOkpnB_SMGd0dAV5orX--Z53O-gjVg4qRkgrH6HiqA@mail.gmail.com>
+ <2024022347-blinking-dingo-1411@gregkh>
+In-Reply-To: <2024022347-blinking-dingo-1411@gregkh>
+From: Shyam Prasad N <nspmangalore@gmail.com>
+Date: Mon, 26 Feb 2024 16:26:13 +0530
+Message-ID: <CANT5p=qsAtUCp0W=gZ=-8sjoUtg8uUKda04=ou+ABx-mjVUeUA@mail.gmail.com>
+Subject: Re: Request to include a couple of fixes to stable branches
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Stable <stable@vger.kernel.org>, CIFS <linux-cifs@vger.kernel.org>, 
+	Steve French <smfrench@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, 2024-02-10 at 21:45:51 UTC, Arseniy Krasnov wrote:
-> Scrambling mode is enabled by value (1 << 19). NFC_CMD_SCRAMBLER_ENABLE
-> is already (1 << 19), so there is no need to shift it again in CMDRWGEN
-> macro.
-> 
-> Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
-> Cc: <Stable@vger.kernel.org>
-> Fixes: 8fae856c5350 ("mtd: rawnand: meson: add support for Amlogic NAND flash controller")
+On Fri, Feb 23, 2024 at 8:41=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
+>
+> On Fri, Feb 23, 2024 at 07:11:48PM +0530, Shyam Prasad N wrote:
+> > Hi stable maintainers,
+> >
+> > We seem to have missed adding the stable tag to a couple of important
+> > patches that went upstream for fs/smb/client. Can you please include
+> > them in all the stable trees?
+> >
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/comm=
+it/?id=3D4f1fffa2376922f3d1d506e49c0fd445b023a28e
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/comm=
+it/?id=3D79520587fe42cd4988aff8695d60621e689109cb
+>
+> These do not apply properly at all to any stable kernel trees, did you
+> get them to work?  How did you test this?
+>
+> Please send a set of working backports and we will be glad to apply
+> them.
+>
+> thanks,
+>
+> greg k-h
 
-Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git nand/next, thanks.
+Hi Greg,
 
-Miquel
+I have not applied these to stable kernel versions yet.
+So no testing has been run on stable trees yet.
+Let me work on patches to the stable trees and share them with you soon.
+
+All the tests so far have been with the mainline kernel.
+The testing involved simulated network disconnects when the Linux
+kernel source code was being copied into the SMB share.
+Our team has been running stress tests on the mainline kernel, and
+there's nothing alarming seen so far.
+Also, these changes have not regressed any of the xfstests.
+
+--=20
+Regards,
+Shyam
 
