@@ -1,111 +1,102 @@
-Return-Path: <stable+bounces-23597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7963D86688D
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 04:19:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C344D86695F
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 05:28:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C16D1F2128D
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 03:19:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C280D1C212DD
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 04:28:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A92EB12E55;
-	Mon, 26 Feb 2024 03:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 119A0199DC;
+	Mon, 26 Feb 2024 04:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="bq3sJS9V"
+	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="ceAQ1rFW"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.manjaro.org (mail.manjaro.org [116.203.91.91])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA95DF4D;
-	Mon, 26 Feb 2024 03:18:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BFCB1947E
+	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 04:28:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.91.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708917537; cv=none; b=VJhbp/j2ND0TLn7imVEMHmxEq7E1kzw+lheRQFO9lQdQCUnLfI/C0XPkHWep+PIoMdDLbMbyyxe3qCSjIGMZ78ib3YWr9vc/2IzYHfXQK/ih59o+aNq3C8wSTE/PyOPh0z+l1MaCeVGaACLh/bkDVicApqCgtY190gQL7klNh1Q=
+	t=1708921722; cv=none; b=TN/FgJlmsYm2Q3KtoFCk/qPMv+Jynzel45tuEe3ovxhuVuqlrmgLf/nuVTCXrz1wEABddMar/qjTsEx0YbPm8Yk27BO4EAXX3I0J/LPln0FoVYYboLatnEJ4evZK8uADqySuHUv6lBezta2JCdHxuETieJxc9VtHy0i5vpvGJWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708917537; c=relaxed/simple;
-	bh=MXL6VcPZBWyMQPrfjTrEpeHJCu9JL55Z5etYKoyrgX8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HJ+aeKup25ccyUetDkt7LRm+RWOCMWnrnHwAqT/fZvDoI0UIknjf+7NpZCg6vHOEIo6yqM8u4QvIewz5VDYztVc5ueEZ55kNAeEmLXbjXO8Qe0ZSIdPW8ZXu4zvaw0aLa0bkez3gef2/X6sH4hJ2Frd+h3SPDMg4l3HStg/YDSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=bq3sJS9V; arc=none smtp.client-ip=115.124.30.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1708917531; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=mLCk/YbBkqEYhn5Q5sMxmBvYHKM1K5bF4wYuOkh2FwE=;
-	b=bq3sJS9ViK35UmFygOAgZqjsPFxl24/tn+mM3IZPLecktO654M8Zb+VPZLqbp9T8Ii+f6CsW/buReGZO37N9xeqYeQ5di6ddYzDb4dTdL5qcrJXsg+76NoK4XfTYA5qZR+5O5tNRpy4JUOPXeopu2d9mFfJhPyb9kdFR5jfuDFk=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045176;MF=xiangzao@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0W1ACl3C_1708917520;
-Received: from localhost.localdomain(mailfrom:xiangzao@linux.alibaba.com fp:SMTPD_---0W1ACl3C_1708917520)
-          by smtp.aliyun-inc.com;
-          Mon, 26 Feb 2024 11:18:50 +0800
-From: Yuanhe Shu <xiangzao@linux.alibaba.com>
-To: rostedt@goodmis.org,
-	mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com,
-	shuah@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	xiangzao@linux.alibaba.com,
-	stable@vger.kernel.org
-Subject: [PATCH v2] selftests/ftrace: Limit length in subsystem-enable tests
-Date: Mon, 26 Feb 2024 11:18:16 +0800
-Message-Id: <20240226031816.88715-1-xiangzao@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.3
+	s=arc-20240116; t=1708921722; c=relaxed/simple;
+	bh=AF+uR3pQ9Hx8cz0BuZcu8o2LVnFFSm7wOphYeYVsrJE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UgFP969jwd0H4rm1eQP4P92jNTDYKcsw0860I03UJ/3EOFlJNm07i58reBg/Bkxf8iTezV38I+Pd+MJEnWHqRtz/sydOARPALMr6C93d118ZNGJnoUgWtxBdZPb5pKvlwZBtGpSspuGX/mi9znMKK1u1npxnWXYPY5UX6Le1+Wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org; spf=pass smtp.mailfrom=manjaro.org; dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b=ceAQ1rFW; arc=none smtp.client-ip=116.203.91.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manjaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manjaro.org
+Message-ID: <fa878f45-3b59-40e5-b909-29dc0b1acd11@manjaro.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
+	t=1708921716;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DCCNqyfBm5Bv5Uz2neWfDS1ewcwWAynnTOpcYHGEalI=;
+	b=ceAQ1rFW2za8QbKvRre7xNZfrdkav9THDQU2PktbZCEbm6pgxXxac3UoIfRu4QXBlB1P4e
+	kT8YCB3wYgPlQYRj+21i7AomrA1yWTDAdCs0C3F0Ox3eHZMheislxcQVowLWjH9tqQJsU1
+	E5JkXdsAzfapcfTQDINyO4kX8dXOxvBjcmZqyVQCXrOAcwP7iXGKzNC9chD2iXpE2Ug0zY
+	16HXwbeQ+0VCbvK2PncR/bcZt9XGvUfnRnfwXpPMcGX1j3Bk/zGO8quH6i/Jc4JGhjA0Yk
+	83YlvAmapjPRQDpCQ48JGGWl00RsfLBxIf2mIC6vilOdWqr4p1rUq0jm2moU+g==
+Date: Mon, 26 Feb 2024 11:28:33 +0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?UTF-8?Q?Re=3A_=5BRegression=5D_5=2E4=2E269_fails_to_build_due_to_?=
+ =?UTF-8?Q?security/apparmor/af=5Funix=2Ec=3A583=3A17=3A_error=3A_too_few_ar?=
+ =?UTF-8?B?Z3VtZW50cyB0byBmdW5jdGlvbiDigJh1bml4X3N0YXRlX2xvY2tfbmVzdGVk4oCZ?=
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ 'Roman Gilg' <romangg@manjaro.org>, Mark Wagie <mark@manjaro.org>
+References: <0ca1f9f0-6a09-4beb-bbdb-101b3fc19c45@manjaro.org>
+ <2024022453-showcase-antonym-f49b@gregkh>
+From: =?UTF-8?Q?Philip_M=C3=BCller?= <philm@manjaro.org>
+Organization: Manjaro Community
+Disposition-Notification-To: =?UTF-8?Q?Philip_M=C3=BCller?=
+ <philm@manjaro.org>
+In-Reply-To: <2024022453-showcase-antonym-f49b@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=philm@manjaro.org smtp.mailfrom=philm@manjaro.org
 
-While sched* events being traced and sched* events continuously happen,
-"[xx] event tracing - enable/disable with subsystem level files" would
-not stop as on some slower systems it seems to take forever.
-Select the first 100 lines of output would be enough to judge whether
-there are more than 3 types of sched events.
+On 24/02/2024 16:11, Greg Kroah-Hartman wrote:
+> 
+> Odd line wrapping :(
+> 
+> Anyway, what config options are you using?  I can't see this here and
+> none of the CI systems caught it either.
+> 
+> thanks,
+> 
+> greg k-h
 
-Fixes: 815b18ea66d6 ("ftracetest: Add basic event tracing test cases")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yuanhe Shu <xiangzao@linux.alibaba.com>
----
- .../selftests/ftrace/test.d/event/subsystem-enable.tc       | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+The config should be this one:
 
-diff --git a/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc b/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
-index b1ede6249866..b7c8f29c09a9 100644
---- a/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
-+++ b/tools/testing/selftests/ftrace/test.d/event/subsystem-enable.tc
-@@ -18,7 +18,7 @@ echo 'sched:*' > set_event
- 
- yield
- 
--count=`cat trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
-+count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
- if [ $count -lt 3 ]; then
-     fail "at least fork, exec and exit events should be recorded"
- fi
-@@ -29,7 +29,7 @@ echo 1 > events/sched/enable
- 
- yield
- 
--count=`cat trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
-+count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
- if [ $count -lt 3 ]; then
-     fail "at least fork, exec and exit events should be recorded"
- fi
-@@ -40,7 +40,7 @@ echo 0 > events/sched/enable
- 
- yield
- 
--count=`cat trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
-+count=`head -n 100 trace | grep -v ^# | awk '{ print $5 }' | sort -u | wc -l`
- if [ $count -ne 0 ]; then
-     fail "any of scheduler events should not be recorded"
- fi
+https://gitlab.manjaro.org/packages/core/linux54/-/blob/cb28712a0dd32966c25b3d1463db29fec4c4157f/config
+
+Latest functional build was 5.4.268:
+
+https://github.com/manjaro-kernels/linux54/releases
+
+Full build log of 5.4.269 can be found here:
+
+https://pipelinesghubeus25.actions.githubusercontent.com/IX0HkTGyy7sqAEfMIwU74grK3vJhhYEQ6R3IOeb6PZvzd3ERQo/_apis/pipelines/1/runs/193/signedlogcontent/2?urlExpires=2024-02-26T04%3A26%3A26.8692425Z&urlSigningMethod=HMACV1&urlSignature=Wmey7xXmswXsqnn%2Fd1SD2cQ%2FM2A62bQ8rW3M0sOJntc%3D
+
+I will check if reverting the patch I think might create this issue 
+might fix it. Let's see ...
+
 -- 
-2.39.3
+Best, Philip
 
 
