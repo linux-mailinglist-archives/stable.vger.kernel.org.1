@@ -1,74 +1,71 @@
-Return-Path: <stable+bounces-23613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E866A866FE1
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 11:05:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9D0A867013
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 11:10:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4FDA2882F6
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 10:05:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7930C289C31
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 10:10:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10F495FEF1;
-	Mon, 26 Feb 2024 09:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E9021DDF2;
+	Mon, 26 Feb 2024 09:49:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="CGosVka7"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="glzpOUSo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF2C5FDC7
-	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 09:41:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C02200CB
+	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 09:49:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708940490; cv=none; b=uTF+jYqekkVqOo0JmsHAZM3egfZhHZQ/hNNaQcNLBOEKYqTqIiwq6Ei5XTAb6YIN5slg4Kasof8Z0KRiEHBsm8nHGLcgXnMZAdrF3LQX9bqAy2Eq+3/8MOE88UNvVYZxpsWpyXz5268mS1Ia8FgDqMkmkBu+DD67aouH6rcfh54=
+	t=1708940980; cv=none; b=KxQXI7eJmbq9VKQpyfhmlXjvZmtFxdHCRD6ucvxlEBkrNHMygR4pN6mvhP+G3hgC0Gac3s19pXw42uzkiQzNjr+lIwl1UoM6i7mC94B6wVpa3e/EJ9f+AFDtx7qO5dMr+PGiXguTqkUJSh2F24m+krrG9eNrxM+A6UtG+i7LWm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708940490; c=relaxed/simple;
-	bh=GVSij7Ng2ZnL6ItLte5S5qesoG2Gu5vTbGRvnRyWD94=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HhJWY8msBhlOezAdjuFStxL8D9qfdR+l/d9NfPNBXZO6iN2P8dhlJts76x9K8Iv/R6WmgMyr+oKOE6tWW3h0GLdoo8R8Dl3ZaC81Lm/p9bpa9HjH8yKzh707W5lgpK8Eeq8z5iU6XVRieQ2DL815pXVW+I3nhE8rZ9m5juKpY7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=CGosVka7; arc=none smtp.client-ip=209.85.210.177
+	s=arc-20240116; t=1708940980; c=relaxed/simple;
+	bh=Fwm8S8Vb+z4RwJL7/WDN7b9qb2t2HZ9vae8gSBT44uE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mcIvtwNlsqm1UaDNEVm8l4Ah0aa6qaaB4cMRSUSfzISAVhoUADc5zQ/FPrGqM/6yWHgMnI9LFmbO8cRXj9mkNJi6EoZZxuYGDZat4+MT+YFqvpMFf8Uka2k1s3Pd4DRyiTPStnmGu46mAO408trSTVFhrOYeDSHWM+KzMkYOFf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=glzpOUSo; arc=none smtp.client-ip=209.85.215.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-6e537d0ba06so171845b3a.2
-        for <stable@vger.kernel.org>; Mon, 26 Feb 2024 01:41:29 -0800 (PST)
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-5c66b093b86so1709126a12.0
+        for <stable@vger.kernel.org>; Mon, 26 Feb 2024 01:49:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1708940489; x=1709545289; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lYE4VOh0Esz26qF5nAL3o0bNyOzXw7ZQ+0pcNpsCkTI=;
-        b=CGosVka7qjKnY0yXUtD2+62cpEv1B8Qhi+1DxsL2sdF7UyOq45eSF3NGmH12bPKjmI
-         41tjaSsU4mkqSagFIk63eyKyMxNYCe0CHq644jSJgVNddKoqyRXooeJ0/TvJCY3fFIMh
-         aaoeZXQaGO9mDUUbGBpppzK5kvPPymtCZbG8smCpwCcOaFtQt+/+MxGl0Tf0WYKjtafo
-         AMVtWfJULiR5JfTWhbrjXYN29/aCRfZycpfXmXDyO209XS+5jAIHwiB0YDnBmEhKAjIb
-         ZbAgugfeZHio/fm/SED3g7gXzspnXhwfnRRp7YUB8gM+9gt9wYfbVvj6OBcxFNjr3nuL
-         FyhQ==
+        d=bytedance.com; s=google; t=1708940976; x=1709545776; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5d69Z1hSg4N+Xx0zsmQeCV2rcSQlkCkO33X0RouPP+g=;
+        b=glzpOUSoJgz/9ISO9ub1FrCf9qJ97TOvWpBA7tXcNw7IpUPPc3f2oKgurqtY3VuQM2
+         aUsxG7ZVU+TSbWvSFate/XYq08iexAv0u39N4Ra8AF0p/PPaWyAk6VZUwTAzo3/Btlbe
+         j1SrfHjkdchw+k9xAw4VdgrDPIB68eQCjkI4WVdIRH2LsHIKhRK+ogMo8JCBc4y/gGEt
+         5TU+gwlIcFIXjM8U2KHWxR0nNTu5AZQvN6JlHcudcxD3hGhJPODKDkzY6fOJDEXjwBrf
+         tpyPs52OYnVU7pbPDjebp35A/AGbcoEEdN9LGXxBfw3dQ0PNoaYnQ2NUARM/p4S0uVrD
+         /H+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708940489; x=1709545289;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lYE4VOh0Esz26qF5nAL3o0bNyOzXw7ZQ+0pcNpsCkTI=;
-        b=r14s4a4xWYtPvAkVAbhL8RYM3X477YGjcJGFpbVHI0bxUyyUCLau47+EetP5tVl3BV
-         wX9TJToB+a51vgDw9mDzzRXfA2FH+im9oQuPTOwOwm11Jl12mfs75L1ZUWIvmcQoBCMg
-         X28wEq1hhLsi+f9QRJWRa3Lo1pEccCd2j32QuPYNqdp7YtOhGwUQXeSA1JDXZ1GKWUIr
-         3J0rW1BGEcu9OUDUGJ4XxqPJu98noP16ydkIW8w3WduLf4Q7lItKsdFo2aP+jIuNwIbP
-         e8H1EflYWPxHoIXGhbyXlHi0VfI2oHXzZzGO7XJ40ZYesqwSfNtBboePvJhQwDCKO4Ab
-         2JjA==
-X-Forwarded-Encrypted: i=1; AJvYcCUOu8jlcbNvDQhTvTp18uERBscehe9mHKsOCce7YL4OweVUPRGb1GRTuphAV0PlIyzUFwpuQ15fstxSmEeUJxRcCGfAG7KG
-X-Gm-Message-State: AOJu0YzyxMcSfX/OqrF79u8hw4sXoqSCsSAArTAGCEJMkDGlgx1kGtvv
-	r+EXXt7BtEWg+HJVccbAJkCWnGCkhTR1csZjLykeaumGUliFMAihpY+fyj8GjSU=
-X-Google-Smtp-Source: AGHT+IGvZV8jHTxyMl8ODdufQaI3tZxW0Qibr0287grfFaY6EgP+oyydN3lDJlq23rMorsZ0fuDe2g==
-X-Received: by 2002:aa7:8edd:0:b0:6e4:1a29:7332 with SMTP id b29-20020aa78edd000000b006e41a297332mr6304473pfr.8.1708940488829;
-        Mon, 26 Feb 2024 01:41:28 -0800 (PST)
-Received: from C02CV19DML87.bytedance.net ([203.208.189.6])
-        by smtp.gmail.com with ESMTPSA id ls22-20020a056a00741600b006e533caee00sm949194pfb.155.2024.02.26.01.41.23
+        d=1e100.net; s=20230601; t=1708940976; x=1709545776;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5d69Z1hSg4N+Xx0zsmQeCV2rcSQlkCkO33X0RouPP+g=;
+        b=dZpoQL7v34SRB6pgITeybjl1L3g7zBuIgWVe8s0VhIyLLUit1qbhXA34V6aoaxpluM
+         RbKPddk7RhT64l0ax6xC/EoPf/cmN5xbgAwKoz7ocT5BujNJ3921QrIBnNy98MmIxWRD
+         vnODT5fgmF0R2viVGDBNbvhbm594BQhIo4V9GhmlFPIDHQeFw+Aq9SQ0LG2E4IwUTV/p
+         s7GG4BZTe43cLv3tgHYRlTdpv6gQ9D8eRZ5jEhymkXhlObz1AGMjkHI72C46KuL6rejA
+         lqpdxMH/7WCJG19OYN7sOAW17niWKGrUYng1yUpseKVpJCdlLfYCRPYj2My3nN0NegsO
+         ZXtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWWsN7iNvBb2QausOWS7P6pa2QVcS193L0SLfsKV1R+/8wwrf2j7FJBFuYduESx00cKeqTU+KitggSZzH2QxKchb4t79LtG
+X-Gm-Message-State: AOJu0Yy6nEjLmvZTss7o8Kc4DLtuh+3/z4bNvqNxqttHY2bxw5N12um4
+	YEo85Y+aDX7LPPpSNtEryvKmmQiguHX7nkE2yqfedKxPJMgSVjfelf0yHs9EcYQ=
+X-Google-Smtp-Source: AGHT+IHQlCKe1gWPQWI8gLJq36L4Evc2tMwIj+p6bpMpgWSjgjrhDFw53mUfU9ROkT7T+2g0RMH8+w==
+X-Received: by 2002:a17:90a:fd8c:b0:296:e8e3:13c7 with SMTP id cx12-20020a17090afd8c00b00296e8e313c7mr8665219pjb.10.1708940976196;
+        Mon, 26 Feb 2024 01:49:36 -0800 (PST)
+Received: from C02CV19DML87.bytedance.net ([203.208.189.12])
+        by smtp.gmail.com with ESMTPSA id x19-20020a17090ab01300b002990d91d31dsm5934779pjq.15.2024.02.26.01.49.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Feb 2024 01:41:28 -0800 (PST)
-From: "$(name)" <qirui.001@bytedance.com>
-X-Google-Original-From: "$(name)" <$(mail address)>
+        Mon, 26 Feb 2024 01:49:35 -0800 (PST)
+From: Rui Qi <qirui.001@bytedance.com>
 To: bp@alien8.de,
 	mingo@redhat.com,
 	tglx@linutronix.de,
@@ -81,13 +78,11 @@ To: bp@alien8.de,
 	alexandre.chartre@oracle.com
 Cc: x86@kernel.org,
 	linux-kernel@vger.kernel.org,
-	qirui.001@bytedance.com
-Subject: [PATCH 3/3] x86/speculation: Support intra-function call validation
-Date: Mon, 26 Feb 2024 17:41:01 +0800
-Message-Id: <20240226094101.95544-4-qirui.001@bytedance.com>
+	Rui Qi <qirui.001@bytedance.com>
+Subject: [PATCH 0/3] Support intra-function call validation
+Date: Mon, 26 Feb 2024 17:49:22 +0800
+Message-Id: <20240226094925.95835-1-qirui.001@bytedance.com>
 X-Mailer: git-send-email 2.39.2 (Apple Git-143)
-In-Reply-To: <20240226094101.95544-1-qirui.001@bytedance.com>
-References: <20240226094101.95544-1-qirui.001@bytedance.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,61 +91,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Rui Qi <qirui.001@bytedance.com>
+Since kernel version 5.4.250 LTS, there has been an issue with the kernel live patching feature becoming unavailable. When compiling the sample code for kernel live patching, the following message is displayed when enabled:
 
-commit 8afd1c7da2b0 ("x86/speculation: Change FILL_RETURN_BUFFER
- to work with objtool") does not support intra-function call
- stack validation, which causes kernel live patching to fail.
-This commit adds support for this, and after testing, the kernel
- live patching feature is restored to normal.
+livepatch: klp_check_stack: kworker/u256:6:23490 has an unreliable stack
 
-Fixes: 8afd1c7da2b0 ("x86/speculation: Change FILL_RETURN_BUFFER to work with objtool")
+After investigation, it was found that this is due to objtool not supporting intra-function calls, resulting in incorrect orc entry generation.
 
-Signed-off-by: Rui Qi <qirui.001@bytedance.com>
----
- arch/x86/include/asm/nospec-branch.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+This patchset adds support for intra-function calls, allowing the kernel live patching feature to work correctly.
 
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index c8819358a332..a88135c358c0 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -13,6 +13,8 @@
- #include <asm/unwind_hints.h>
- #include <asm/percpu.h>
- 
-+#include <linux/frame.h>
-+#include <asm/unwind_hints.h>
- /*
-  * This should be used immediately before a retpoline alternative. It tells
-  * objtool where the retpolines are so that it can make sense of the control
-@@ -51,14 +53,18 @@
- #define __FILL_RETURN_BUFFER(reg, nr, sp)	\
- 	mov	$(nr/2), reg;			\
- 771:						\
-+	ANNOTATE_INTRA_FUNCTION_CALL;           \
- 	call	772f;				\
- 773:	/* speculation trap */			\
-+	UNWIND_HINT_EMPTY;		\
- 	pause;					\
- 	lfence;					\
- 	jmp	773b;				\
- 772:						\
-+	ANNOTATE_INTRA_FUNCTION_CALL;           \
- 	call	774f;				\
- 775:	/* speculation trap */			\
-+	UNWIND_HINT_EMPTY;                      \
- 	pause;					\
- 	lfence;					\
- 	jmp	775b;				\
-@@ -152,6 +158,7 @@
- .endm
- 
- .macro ISSUE_UNBALANCED_RET_GUARD
-+	ANNOTATE_INTRA_FUNCTION_CALL;
- 	call .Lunbalanced_ret_guard_\@
- 	int3
- .Lunbalanced_ret_guard_\@:
+Alexandre Chartre (2):
+  objtool: is_fentry_call() crashes if call has no destination
+  objtool: Add support for intra-function calls
+
+Rui Qi (1):
+  x86/speculation: Support intra-function call validation
+
+ arch/x86/include/asm/nospec-branch.h          |  7 ++
+ include/linux/frame.h                         | 11 ++++
+ .../Documentation/stack-validation.txt        |  8 +++
+ tools/objtool/arch/x86/decode.c               |  6 ++
+ tools/objtool/check.c                         | 64 +++++++++++++++++--
+ 5 files changed, 91 insertions(+), 5 deletions(-)
+
 -- 
 2.39.2 (Apple Git-143)
 
