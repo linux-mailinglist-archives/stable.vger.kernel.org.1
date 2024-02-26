@@ -1,128 +1,231 @@
-Return-Path: <stable+bounces-23668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6705867252
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 11:57:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B86018672DB
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 12:17:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6016B289BEA
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 10:57:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCC46B24103
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 10:33:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8655E1CFB6;
-	Mon, 26 Feb 2024 10:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 366724C631;
+	Mon, 26 Feb 2024 10:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KRlAPXWv"
+	dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b="gLydUfzo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C721CD2F;
-	Mon, 26 Feb 2024 10:56:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137331CAB9
+	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 10:19:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708944988; cv=none; b=EfjvphxCRxFjKe5BRbjYNv2swNnoimwSKkILXfyW0lAujtp4m8eqUajlRr/nE9BxJLjjStBx1jApT6crc5a0NW1yODXoZEcqnktCcO4xtU2DvrIU6he+ZVAfniw1nb9Bnm7Cu/FHZvtV+yfa0oGVakqH5pIXoyeLY8aY1J4aOM8=
+	t=1708942791; cv=none; b=AJNO5DlldVIhkhicAtl8io+4E8TDqE4XGZzVedrsXy9qjK/0MoXVuAVdITJGWRNwf6hIeDOhSWEdYKTq8sP9tDlK9RR+GohNms1LQi4n9MgAbNe4tkWRAXq5OGMkebLrb0+L3fFBLmDmz+L8cJuTbT1Lx0uJ3gJjpUTAM/XOxwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708944988; c=relaxed/simple;
-	bh=SI0ijatx+CA+XCLUPsJKOZ7njhSleBQdAsZ2YXXWjaI=;
+	s=arc-20240116; t=1708942791; c=relaxed/simple;
+	bh=naM3nrCEoGKVPNMnNa/U9dLb592lAQ5Uqmk/rEeHMTM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HphfS9mvyBuz/x9+QJoUmvJETfJGYnKqgDoFQlHp74upKKx7SI50rvTc4bM6Yui+sPcky/aomcZ9FHKf8XXlllYoSNxofUXrmwjS5+1Ct3xFbwqw/ylKBQhE2tthlY9bdJ7+u1H4vLZcISF8LF+jr2l/zfkWNwXNzo4/Tfxdfu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KRlAPXWv; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-512d6bcd696so2619449e87.1;
-        Mon, 26 Feb 2024 02:56:26 -0800 (PST)
+	 To:Cc:Content-Type; b=U3UDEqkMiOLGCZLcmYS2IwZ44ukGEPVEFr2TRPG9wSMpkGfkp0zNM4TjkZlJea83FtYhcnzJtvlQnPKvJMbsLn4bNCnoIOnSdOIb9s2jpfgP95PiTsnCaga6TWoOYWgQwi2dIqSSTRMBEETBvjNutkyoOWs57HW2N1PFIF5bLUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com; spf=pass smtp.mailfrom=amarulasolutions.com; dkim=pass (1024-bit key) header.d=amarulasolutions.com header.i=@amarulasolutions.com header.b=gLydUfzo; arc=none smtp.client-ip=209.85.208.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amarulasolutions.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amarulasolutions.com
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-564e4df00f3so3646993a12.3
+        for <stable@vger.kernel.org>; Mon, 26 Feb 2024 02:19:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708944985; x=1709549785; darn=vger.kernel.org;
+        d=amarulasolutions.com; s=google; t=1708942787; x=1709547587; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=h7fB0a/5ZcbNw+Zj1uUC8jy+nhy/LiwshbicAgHsNIg=;
-        b=KRlAPXWvGbaMl/3MX0FlcROnRKyBF47oaYLT3OxITWFoyakiwox38OW9DgoN+czz/g
-         vHO6lv5w25Yrg3uDHuqgsO0GygDWO/iu2lHlYFe2fVAUcv9MgCgKs/c+WnBFJlF4ofAX
-         NqIe0QzsdZxQtsDaHZMBQDIzFp2RCQrmqglma0kZV9zA5jW/IKEib5U8wHwleDWapDcK
-         Cv2q5h9AqvzAq26MwpgiOAqkVHclpLrOcTVoChtJT945h21dmAdX9/Sf4Z2aW1iCDIqh
-         7mZ2rmCdCn537U8YhT48C6BeIoC7/fmJe/HuYe2KW7WW1lHawREF4uWLxRk5o0GtKOni
-         B4Og==
+        bh=mAMdRwp6uD10Sj7sMKu/Xy/lMXUaiG3hTaGl/25oH/w=;
+        b=gLydUfzo7OQI1HYHR9I8mNS5rg/lgN81c8XQA9Lbk6ic8y9ZHFBu61h80CmAhm8OOn
+         8kyVC5veJw//5lcOb+6jPU64ZLokp333agmf004uRKiSbVOmPk0Ukj2k/UlVn0lU7Ucf
+         sOZTMd3MSqEM4QtulQCNJq8VOnqt+HCbGKxgU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708944985; x=1709549785;
+        d=1e100.net; s=20230601; t=1708942787; x=1709547587;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=h7fB0a/5ZcbNw+Zj1uUC8jy+nhy/LiwshbicAgHsNIg=;
-        b=nH3cbMz1PPh2SUPmXyhrkyiYLV4/AlXTRXtz2hu+2QJqVh/k3FClTeVMaK2zIKAGpA
-         n5tIcB3NJb+C0t4+I0JtIrGMkskBVcci0k/vLZwd6EmWtvaDJoVpEIaLeTGGuc9hk3eB
-         euhFWlfI7i3M5Ycix2K7A8JiwZF1vXIpK7SU+cVqNDoUtFFH5pSlj10c4nPhsGTLhRrt
-         p+Xu9tz4uAqfFtOxlOxP3B6zxnx7odYP0goq6bm7fNqmdd3Q//RIw+X3uZkAujatXHLZ
-         +EWTIuQ1t27cujD/DvjqAHPdgUdG00qg8evM4XFkHTPvdHwGP+DlR0EYxUqXgZXEUJsu
-         a7DQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVIqgtzk2H/5otm5UYvYA+YNSVxl+X2YLN6AvWk9owHncLyyMy5Ly72tX7/FTfu7v5mevJqldWVCSGrW/L1LEAXsJ5IjPJJL4ipGQ==
-X-Gm-Message-State: AOJu0YzT3x5ToUHmoi7+3YrIo+APVLVxZ/nzo/8fjtKVHV1r04lGXcKo
-	VNSXLlnqGvJ+PZpFgyejOs2qu6JpATr1wj64J4TV2xICStIf1UICywY9sMG/S3UYkZ2OBn0kWWL
-	xk9GC6vXVL2h1xj6hUznePo8fSCOToPAgbrI=
-X-Google-Smtp-Source: AGHT+IGWZejTrnXyiwIqx/+lXlbxX3JTiyKintL4lQKrwfz6ujFLgEmkjGHcl/yKez/mE0xqMEn1SjcuGnXks0B3hiE=
-X-Received: by 2002:a05:6512:1093:b0:513:d1:770e with SMTP id
- j19-20020a056512109300b0051300d1770emr435234lfg.21.1708944984590; Mon, 26 Feb
- 2024 02:56:24 -0800 (PST)
+        bh=mAMdRwp6uD10Sj7sMKu/Xy/lMXUaiG3hTaGl/25oH/w=;
+        b=g184jis7F8zilv69jiWZ/vfa8kiqTgTjfd22+E7Yb22SnzUapy0n8fGuU0QtURIH17
+         vV59kZuq1mFBHc1lPdaicdhpiIeArSxLoaz1deO3QmckGsGnf8J2r+10RLhsndBA1Bme
+         WfKYo6Ur5mvXsr83Jo570RbK757Y/XaOgv3+C6+8/AWGVC+0TifNJKDyZE0Gbus5ctlS
+         oRKwbAg5OC9Pee/9wS4oC95rFl4BXD7/5ASohfxjpveIOJZTEY8Let50huM2eFOYpq4o
+         onBzt3Rdlp4N+qFmON0C4jc6kcv8vBKxXVEWcbZIU+CqisCqIqV23stdD2G0y2aDxtzx
+         gNlw==
+X-Forwarded-Encrypted: i=1; AJvYcCXlFll/W45tO6afgD7mXH9PnQZwV/G9rnCzv9jbxse+uUQy3BZwxGLUN7CaaIqiuKggd0K8jy0xyC8DBc32HOynP4cnIlUV
+X-Gm-Message-State: AOJu0Yz1yucizyLN37Lor1pzGvPH8uJKGDxA/x9gAME+YTc/om095iKm
+	6Sb+jhIaX4eIHosQ1hlHemd92aBclPg+XNJZGi67h3xOhLwhO/4EuAROMZhnXdHA1iKNacKTT+l
+	XQlZPz5wltX+faaUpYL3DhcgQUr68adj6XAlplw==
+X-Google-Smtp-Source: AGHT+IE1EqdtdQGTPAKqsGiEVNv3lYWX9sCbBopDAeFZ7Civ8FBPUesqVAT7wDSWNEPhNpzhb6vML07R7iwhlPK/Gxw=
+X-Received: by 2002:aa7:d052:0:b0:565:a252:e171 with SMTP id
+ n18-20020aa7d052000000b00565a252e171mr3633761edo.39.1708942787332; Mon, 26
+ Feb 2024 02:19:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANT5p=rYFOkpnB_SMGd0dAV5orX--Z53O-gjVg4qRkgrH6HiqA@mail.gmail.com>
- <2024022347-blinking-dingo-1411@gregkh>
-In-Reply-To: <2024022347-blinking-dingo-1411@gregkh>
-From: Shyam Prasad N <nspmangalore@gmail.com>
-Date: Mon, 26 Feb 2024 16:26:13 +0530
-Message-ID: <CANT5p=qsAtUCp0W=gZ=-8sjoUtg8uUKda04=ou+ABx-mjVUeUA@mail.gmail.com>
-Subject: Re: Request to include a couple of fixes to stable branches
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Stable <stable@vger.kernel.org>, CIFS <linux-cifs@vger.kernel.org>, 
-	Steve French <smfrench@gmail.com>
+References: <20240226100502.1845284-1-michael@amarulasolutions.com> <2024022609-groom-passably-909c@gregkh>
+In-Reply-To: <2024022609-groom-passably-909c@gregkh>
+From: Michael Nazzareno Trimarchi <michael@amarulasolutions.com>
+Date: Mon, 26 Feb 2024 11:19:36 +0100
+Message-ID: <CAOf5uwnd+qh0PZgXhPN21Eng7HN+_Vjgjad7UxZ79-b1gZEhOw@mail.gmail.com>
+Subject: Re: [PATCH V3] usb: dwc3: gadget: Fix suspend/resume warning when
+ no-gadget is connected
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Thinh Nguyen <Thinh.Nguyen@synopsys.com>, linux-usb@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-amarula@amarulasolutions.com, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 23, 2024 at 8:41=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
+Hi Greg
+
+On Mon, Feb 26, 2024 at 11:14=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> On Fri, Feb 23, 2024 at 07:11:48PM +0530, Shyam Prasad N wrote:
-> > Hi stable maintainers,
+> On Mon, Feb 26, 2024 at 11:05:02AM +0100, Michael Trimarchi wrote:
+> > This patch avoid to disconnect an already gadget in not connected state
 > >
-> > We seem to have missed adding the stable tag to a couple of important
-> > patches that went upstream for fs/smb/client. Can you please include
-> > them in all the stable trees?
+> > [   45.597274] dwc3 31000000.usb: wait for SETUP phase timed out
+> > [   45.599140] dwc3 31000000.usb: failed to set STALL on ep0out
+> > [   45.601069] ------------[ cut here ]------------
+> > [   45.601073] WARNING: CPU: 0 PID: 150 at drivers/usb/dwc3/ep0.c:289 d=
+wc3_ep0_out_start+0xcc/0xd4
+> > [   45.601102] Modules linked in: cfg80211 rfkill ipv6 rpmsg_ctrl rpmsg=
+_char crct10dif_ce rti_wdt k3_j72xx_bandgap rtc_ti_k3 omap_mailbox sa2ul au=
+thenc [last unloaded: ti_k3_r5_remoteproc]
+> > [   45.601151] CPU: 0 PID: 150 Comm: sh Not tainted 6.8.0-rc5 #1
+> > [   45.601159] Hardware name: BSH - CCM-M3 (DT)
+> > [   45.601164] pstate: 600000c5 (nZCv daIF -PAN -UAO -TCO -DIT -SSBS BT=
+YPE=3D--)
+> > [   45.601172] pc : dwc3_ep0_out_start+0xcc/0xd4
+> > [   45.601179] lr : dwc3_ep0_out_start+0x50/0xd4
+> > [   45.601186] sp : ffff8000832739e0
+> > [   45.601189] x29: ffff8000832739e0 x28: ffff800082a21000 x27: ffff800=
+0808dc630
+> > [   45.601200] x26: 0000000000000002 x25: ffff800082530a44 x24: 0000000=
+000000000
+> > [   45.601210] x23: ffff000000e079a0 x22: ffff000000e07a68 x21: 0000000=
+000000001
+> > [   45.601219] x20: ffff000000e07880 x19: ffff000000e07880 x18: 0000000=
+000000040
+> > [   45.601229] x17: ffff7fff8e1ce000 x16: ffff800080000000 x15: fffffff=
+ffffe5260
+> > [   45.601239] x14: 0000000000000000 x13: 206e6f204c4c4154 x12: 5320746=
+573206f74
+> > [   45.601249] x11: 0000000000000001 x10: 000000000000000a x9 : ffff800=
+083273930
+> > [   45.601259] x8 : 000000000000000a x7 : ffffffffffff3f0c x6 : fffffff=
+fffff3f00
+> > [   45.601268] x5 : ffffffffffff3f0c x4 : 0000000000000000 x3 : 0000000=
+000000000
+> > [   45.601278] x2 : 0000000000000000 x1 : ffff000004e7e600 x0 : 0000000=
+0ffffff92
+> > [   45.601289] Call trace:
+> > [   45.601293]  dwc3_ep0_out_start+0xcc/0xd4
+> > [   45.601301]  dwc3_ep0_stall_and_restart+0x98/0xbc
+> > [   45.601309]  dwc3_ep0_reset_state+0x5c/0x88
+> > [   45.601315]  dwc3_gadget_soft_disconnect+0x144/0x160
+> > [   45.601323]  dwc3_gadget_suspend+0x18/0xb0
+> > [   45.601329]  dwc3_suspend_common+0x5c/0x18c
+> > [   45.601341]  dwc3_suspend+0x20/0x44
+> > [   45.601350]  platform_pm_suspend+0x2c/0x6c
+> > [   45.601360]  __device_suspend+0x10c/0x34c
+> > [   45.601372]  dpm_suspend+0x1a8/0x240
+> > [   45.601382]  dpm_suspend_start+0x80/0x9c
+> > [   45.601391]  suspend_devices_and_enter+0x1c4/0x584
+> > [   45.601402]  pm_suspend+0x1b0/0x264
+> > [   45.601408]  state_store+0x80/0xec
+> > [   45.601415]  kobj_attr_store+0x18/0x2c
+> > [   45.601426]  sysfs_kf_write+0x44/0x54
+> > [   45.601434]  kernfs_fop_write_iter+0x120/0x1ec
+> > [   45.601445]  vfs_write+0x23c/0x358
+> > [   45.601458]  ksys_write+0x70/0x104
+> > [   45.601467]  __arm64_sys_write+0x1c/0x28
+> > [   45.601477]  invoke_syscall+0x48/0x114
+> > [   45.601488]  el0_svc_common.constprop.0+0x40/0xe0
+> > [   45.601498]  do_el0_svc+0x1c/0x28
+> > [   45.601506]  el0_svc+0x34/0xb8
+> > [   45.601516]  el0t_64_sync_handler+0x100/0x12c
+> > [   45.601522]  el0t_64_sync+0x190/0x194
+> > [   45.601531] ---[ end trace 0000000000000000 ]---
+> > [   45.608794] Disabling non-boot CPUs ...
+> > [   45.611029] psci: CPU1 killed (polled 0 ms)
+> > [   45.611837] Enabling non-boot CPUs ...
+> > [   45.612247] Detected VIPT I-cache on CPU1
 > >
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/comm=
-it/?id=3D4f1fffa2376922f3d1d506e49c0fd445b023a28e
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/comm=
-it/?id=3D79520587fe42cd4988aff8695d60621e689109cb
+> > Tested on a am62x board with a usbnet gadget
+> >
+> > Fixes: 61a348857e86 ("usb: dwc3: gadget: Fix NULL pointer dereference i=
+n dwc3_gadget_suspend)
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Michael Trimarchi <michael@amarulasolutions.com>
+> > ---
+> > V2->V3:
+> >       - Change the logic of the patch using the gadget connected state
+> >       - Change of the commit message
+> > V1->V2:
+> >       - Add stable in CC
+> > ---
+> >  drivers/usb/dwc3/gadget.c | 9 +++++++++
+> >  1 file changed, 9 insertions(+)
+> >
+> > diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+> > index 4c8dd6724678..a7316a1703ad 100644
+> > --- a/drivers/usb/dwc3/gadget.c
+> > +++ b/drivers/usb/dwc3/gadget.c
+> > @@ -2650,6 +2650,15 @@ static int dwc3_gadget_soft_disconnect(struct dw=
+c3 *dwc)
+> >       int ret;
+> >
+> >       spin_lock_irqsave(&dwc->lock, flags);
+> > +     /*
+> > +      * Attempt to disconnect a no connected gadget
 >
-> These do not apply properly at all to any stable kernel trees, did you
-> get them to work?  How did you test this?
+> What does this mean?  And why a 3 line comment?
 >
-> Please send a set of working backports and we will be glad to apply
-> them.
+> > +      */
+> > +     if (!dwc->connected) {
+> > +             dev_warn(dwc->dev, "No connected device\n");
+>
+> You are printing while a spinlock is held?  What can userspace do with
+> this message?
+
+I will drop it.
+
+>
+> > +             spin_unlock_irqrestore(&dwc->lock, flags);
+> > +             return 0;
+>
+> No error handling?  Why not?
+
+The function tries to disconnect an already disconnected gadget, so in
+this case is a nop. If we want to handle
+an error I can check the impact on the dwc3 gadget.
+
+Michael
+
 >
 > thanks,
 >
 > greg k-h
 
-Hi Greg,
 
-I have not applied these to stable kernel versions yet.
-So no testing has been run on stable trees yet.
-Let me work on patches to the stable trees and share them with you soon.
-
-All the tests so far have been with the mainline kernel.
-The testing involved simulated network disconnects when the Linux
-kernel source code was being copied into the SMB share.
-Our team has been running stress tests on the mainline kernel, and
-there's nothing alarming seen so far.
-Also, these changes have not regressed any of the xfstests.
 
 --=20
-Regards,
-Shyam
+Michael Nazzareno Trimarchi
+Co-Founder & Chief Executive Officer
+M. +39 347 913 2170
+michael@amarulasolutions.com
+__________________________________
+
+Amarula Solutions BV
+Joop Geesinkweg 125, 1114 AB, Amsterdam, NL
+T. +31 (0)85 111 9172
+info@amarulasolutions.com
+www.amarulasolutions.com
 
