@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-23745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0751B867E10
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 18:21:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27A7C867E77
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 18:28:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B29A71F2CFFC
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 17:21:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5959C1C28296
+	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 17:28:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90BDE12F368;
-	Mon, 26 Feb 2024 17:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C542B12D775;
+	Mon, 26 Feb 2024 17:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="ByQIpJxH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E2fBDFx0"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-190c.mail.infomaniak.ch (smtp-190c.mail.infomaniak.ch [185.125.25.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 563EA12EBDE
-	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 17:16:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.25.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8298712B166;
+	Mon, 26 Feb 2024 17:28:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708967784; cv=none; b=j8XRPtkGKfJoDYsRlHGWepH62BKfOREQ4daFlq2Bur0Hk2VRC79TnMagUonBii7BALUS0nOUbaXyEfHI4UQnBoBUsk75H/XMM7jwbCt/eXe89GsDcsDK+TZk3QmyzcnOO+Lk7gkUVCRl58f/EjwFT95XETPij6MrCOB8C7z3YwU=
+	t=1708968526; cv=none; b=eky3dwQycYaieqN2OBTiNmKOZzzOOFtMJBBv6JMvvTDqs7UdUsiivs9/agzLPU7xizRnJrO5SHhzNUVt8hDaU4wFmDtwwG48R+5fn6MVxeAyPDsv2047NO/d2l1jr0Rz1429ZySuZfFliSK61lCX6k7Amf/OswfZm8/xVzPXBS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708967784; c=relaxed/simple;
-	bh=oE8hrpoUSR9N67ZJZXv3erGxT2tzDmf9YxuB+DY4Wss=;
+	s=arc-20240116; t=1708968526; c=relaxed/simple;
+	bh=qr8UAbrHBfF/FTQvruGhcxy521yYQVPtZG8O7nIIvxo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HsrPIy5/lzmQh389ds9qpnfcp67A+TDqf7aF3+9+CxAN2jzu0HKhIOqdA0t/SwqVnzuCVvBYC8jUueooGlOBk/yNfuKwwdO6jeVJv879LEA7FrTTc5ruaLWuREsxE65Z/HJpvix+ce4IamJkpWSqnHyAKz9Qs5ew5FjpAYtlaQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=ByQIpJxH; arc=none smtp.client-ip=185.125.25.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
-Received: from smtp-3-0001.mail.infomaniak.ch (unknown [10.4.36.108])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4Tk6hz36YLzMq1N3;
-	Mon, 26 Feb 2024 18:16:19 +0100 (CET)
-Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4Tk6hy5x0KzMpnPs;
-	Mon, 26 Feb 2024 18:16:18 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
-	s=20191114; t=1708967779;
-	bh=oE8hrpoUSR9N67ZJZXv3erGxT2tzDmf9YxuB+DY4Wss=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZnBS32lI2hgv+3nYIyTu3on/dvc01k4O4+P5gk8QK6qHUR40GRVaR+FcBXPQ0ubSSRvfhSzlONCSfx6Ef4diA6bIrwVLiIlOFHkXIFH0BcaHtO0TfzJPJzgf8D577sAr0bKNmlJATqlkGCUndIxcVRXWM6W8AcFTanhQxDX0Z2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E2fBDFx0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F905C43390;
+	Mon, 26 Feb 2024 17:28:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708968526;
+	bh=qr8UAbrHBfF/FTQvruGhcxy521yYQVPtZG8O7nIIvxo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ByQIpJxHSGgdthDGkZsHgkIajVMAPN9ctSDwfU4e9sd4231s+G/sTgW6XXXwu0C2a
-	 nv524ywUOinsIC/TRRPPcIrN4c+EcCGNz2TxguG4qEYDgkRNC3W3r+5zwwT5J5JrLr
-	 /3OrmT/Y5n1Dgmtf8zFBK0GmQmpMPXhbi4qYc/2s=
-Date: Mon, 26 Feb 2024 18:16:10 +0100
-From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
-To: Kees Cook <keescook@chromium.org>
-Cc: =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, 
-	Paul Moore <paul@paul-moore.com>, "Serge E . Hallyn" <serge@hallyn.com>, 
-	Konstantin Meskhidze <konstantin.meskhidze@huawei.com>, Shervin Oloumi <enlightened@chromium.org>, 
-	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] landlock: Warn once if a Landlock action is requested
- while disabled
-Message-ID: <20240226.wu2ageiPi6Ch@digikod.net>
-References: <20240219191804.2978911-1-mic@digikod.net>
- <202402191304.ED03339B@keescook>
+	b=E2fBDFx0N1Qyd8hMgB3M/cH7CYvs08xDWGCChpmnS5F7VFMeqcXeDiau2OVx5YPXA
+	 C+hx8g91jGqVi+4zYpuqJ1bC2NDLcokadOViOr9sQfJwnaP8qj7RyG2XHBDk0l0Y6n
+	 wt3Kz5M2EzOKa4cXAEGWtK02UgZsv8uZ6VkE6FMzYSGfja5jtBezmOOauMVpap2kmF
+	 qiTAUZtOMLy6X5+agampnWOftfCoIzAY/sI9s7aUzxzmhylf/d1kh86Za6h6XjIwha
+	 UQErqz5ChxQe4Ux8pAZrlM03f5NbPp0tITGmzw7GuPXaQ3Go072R+Yq1T3lSuR0hwq
+	 GUUZXLV5tLfCw==
+Date: Mon, 26 Feb 2024 09:28:43 -0800
+From: Josh Poimboeuf <jpoimboe@kernel.org>
+To: qirui <qirui.001@bytedance.com>
+Cc: bp@alien8.de, mingo@redhat.com, tglx@linutronix.de, hpa@zytor.com,
+	jpoimboe@redhat.com, peterz@infradead.org, mbenes@suse.cz,
+	gregkh@linuxfoundation.org, stable@vger.kernel.org,
+	alexandre.chartre@oracle.com, x86@kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/3] Support intra-function call validation
+Message-ID: <20240226172843.52zidtcasjw4wbmh@treble>
+References: <20240226094925.95835-1-qirui.001@bytedance.com>
+ <f516eb83-c393-af67-803f-4cf664865cf8@bytedance.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,71 +61,15 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <202402191304.ED03339B@keescook>
-X-Infomaniak-Routing: alpha
+In-Reply-To: <f516eb83-c393-af67-803f-4cf664865cf8@bytedance.com>
 
-On Mon, Feb 19, 2024 at 01:07:48PM -0800, Kees Cook wrote:
-> On Mon, Feb 19, 2024 at 08:18:04PM +0100, Mickaël Salaün wrote:
-> > Because sandboxing can be used as an opportunistic security measure,
-> > user space may not log unsupported features.  Let the system
-> > administrator know if an application tries to use Landlock but failed
-> > because it isn't enabled at boot time.  This may be caused by bootloader
-> > configurations with outdated "lsm" kernel's command-line parameter.
-> > 
-> > Cc: Günther Noack <gnoack@google.com>
-> > Cc: stable@vger.kernel.org
-> > Fixes: 265885daf3e5 ("landlock: Add syscall implementations")
-> > Signed-off-by: Mickaël Salaün <mic@digikod.net>
-> > ---
-> >  security/landlock/syscalls.c | 18 +++++++++++++++---
-> >  1 file changed, 15 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/security/landlock/syscalls.c b/security/landlock/syscalls.c
-> > index f0bc50003b46..b5b424819dee 100644
-> > --- a/security/landlock/syscalls.c
-> > +++ b/security/landlock/syscalls.c
-> > @@ -33,6 +33,18 @@
-> >  #include "ruleset.h"
-> >  #include "setup.h"
-> >  
-> > +static bool is_not_initialized(void)
-> > +{
-> > +	if (likely(landlock_initialized))
-> > +		return false;
-> > +
-> > +	pr_warn_once(
-> > +		"Disabled but requested by user space. "
-> > +		"You should enable Landlock at boot time: "
-> > +		"https://docs.kernel.org/userspace-api/landlock.html#kernel-support\n");
-> 
-> Perhaps update this docs to be really explicit with a example, maybe...
-> 
-> If `landlock` is not present in `CONFIG_LSM`, you can add it. For
-> example, if this was the current config::
-> 
->   $ zgrep -h ^CONFIG_LSM= /boot/config-$(uname -r) /proc/config.gz 2>/dev/null
->   CONFIG_LSM="lockdown,yama,integrity,apparmor"
-> 
-> You can boot with::
-> 
->   lsm=landlock,lockdown,yama,integrity,apparmor
-> 
+On Mon, Feb 26, 2024 at 07:33:53PM +0800, qirui wrote:
+> This issue only occurs in 5.4 LTS versions after LTS 5.4.250
+> (inclusive), and this patchset is based on commit
+> 6e1f54a4985b63bc1b55a09e5e75a974c5d6719b (Linux 5.4.269)
 
-Indeed, I'll send a dedicated patch and update the link accordingly.
+Does the bug also exist in mainline?  If not, why?
 
-> 
-> I *still* wish we had the "+" operator for lsm=. It would be SO much
-> easier to say "boot with lsm=+landlock". *shrug*
-
-I guess it's still possible and it would need to be backported to be
-more useful.
-
-> 
-> 
-> Reviewed-by: Kees Cook <keescook@chromium.org>
-> 
-> -- 
-> Kees Cook
-> 
+-- 
+Josh
 
