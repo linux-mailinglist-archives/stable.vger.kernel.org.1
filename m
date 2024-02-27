@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-25067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D0C4869795
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:22:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCA3886973F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:19:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE2D71C23718
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:22:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 776CB288124
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:19:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E0B13EFE9;
-	Tue, 27 Feb 2024 14:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816171419A1;
+	Tue, 27 Feb 2024 14:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sjOQucGj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RaJs3zYR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB75E13B2B4;
-	Tue, 27 Feb 2024 14:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB5F78B61;
+	Tue, 27 Feb 2024 14:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043768; cv=none; b=h5uL7auxOZuH8dWpkh2cT399YaeDTrFdBsdQEjTUgGLoVhpFKuqaQgUqg4J9DOu8aSZQLqpkYMWm+WuaPw/NdaBxP+f6RMrbfNDNPgnaKnd616utbGHQvleGlOVt7nvBgjkfIyaYlBS92LHXDBWL2W/t0tiPKB3aSZFJQtaIXJs=
+	t=1709043569; cv=none; b=rWWHgT/dzvKct1q/fiLFWWSlNHOYFMZYtv8/qiTodna6Grj5+mC5tmh6E7+7Ut5xNIDk9EDJKcNiGjOa6EqfR39VWZDWcwM233FHa1OuFmI5DknupkFqSFGoMudPQ46ACfwateuMrATVuBwykIqHj6QNaGfav9VJGoo2aTIWT48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043768; c=relaxed/simple;
-	bh=Vy4bz89GiJK5LHjx2nSctwct9Ond9jsHG4/n46BlzL4=;
+	s=arc-20240116; t=1709043569; c=relaxed/simple;
+	bh=iSIrMGASVnfSA6HbP8HQM0hy3AO0FmYARCzc+y2lgWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rjv/Qka2deTIn36L9I2lzynvpDE5yvdbZ+NW7AyeNvTZQ3RPDxipbX8P0mN+QF9kHzGAKPmBdB2ss7yY+y/DM4makaKylDaVmY6ELcz5k+FvAokW5uh+QETyvvt/wiHmmQnTguQuxMSpsQPL0oHXIX1D4FeQRXSPscotauf0ySI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sjOQucGj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F263C43390;
-	Tue, 27 Feb 2024 14:22:48 +0000 (UTC)
+	 MIME-Version; b=KBT73ro/KjM7YNN9+jjkrGGmhSvVIhH2JGq33pSVzrAZf3LL77TT6D7C5xuppvEaK1Wmc/fGz8XsQo5HiZpDnd5+5SXHGGYUmyx20P8rMHdDTgq/1BMKCGLysA4RRL+gKtm/wd4s1aHGJTHJySRjXbCCzGtUQJe17z0NEq+HQXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RaJs3zYR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C267BC433C7;
+	Tue, 27 Feb 2024 14:19:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043768;
-	bh=Vy4bz89GiJK5LHjx2nSctwct9Ond9jsHG4/n46BlzL4=;
+	s=korg; t=1709043569;
+	bh=iSIrMGASVnfSA6HbP8HQM0hy3AO0FmYARCzc+y2lgWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sjOQucGjF++XCyyIKSXh/tbX2r0Q7Lbxq0bGV+dKsjvxd5Q3U/3NBRkZcwsHJR3Ct
-	 LkwVo95XaJgGzFVjb4XTpn7mAkGrP8BZcwcsIVFHCMs+PKQ/HYwDmsrov/jBTd22qu
-	 vHmtglOuFoRlKNalEBgsAz12IZ5RfZP9fOFjF3fQ=
+	b=RaJs3zYRuZT3bWH8ogAaRgUHGZN5tQ9G18rv6dqh0D4CDjHbTCDtcAXobISo8I1AF
+	 zWMQxW+LTNMmpiWpYmnNnp16GNoa3ZBDIJgosy3WVJxPYW50NvGXJgU5obZfScKADV
+	 sS/kW14sWbc1Ia6QTZ8zOcbyJ3fZLJnlenAI/KFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Daniel Wagner <dwagner@suse.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 29/84] scsi: lpfc: Use unsigned type for num_sge
+Subject: [PATCH 6.1 155/195] ipv6: properly combine dev_base_seq and ipv6.dev_addr_genid
 Date: Tue, 27 Feb 2024 14:26:56 +0100
-Message-ID: <20240227131553.813731040@linuxfoundation.org>
+Message-ID: <20240227131615.536290462@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@suse.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit d6c1b19153f92e95e5e1801d540e98771053afae ]
+[ Upstream commit e898e4cd1aab271ca414f9ac6e08e4c761f6913c ]
 
-LUNs going into "failed ready running" state observed on >1T and on even
-numbers of size (2T, 4T, 6T, 8T and 10T). The issue occurs when DIF is
-enabled at the host.
+net->dev_base_seq and ipv6.dev_addr_genid are monotonically increasing.
 
-The kernel logs:
+If we XOR their values, we could miss to detect if both values
+were changed with the same amount.
 
-  Cannot setup S/G List for HBAIO segs 1/1 SGL 512 SCSI 256: 3 0
+Fixes: 63998ac24f83 ("ipv6: provide addr and netconf dump consistency info")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 
-The host lpfc driver is failing to setup scatter/gather list (protection
-data) for the I/Os.
-
-The return type lpfc_bg_setup_sgl()/lpfc_bg_setup_sgl_prot() causes the
-compiler to remove the most significant bit. Use an unsigned type instead.
-
-Signed-off-by: Hannes Reinecke <hare@suse.de>
-[dwagner: added commit message]
-Signed-off-by: Daniel Wagner <dwagner@suse.de>
-Link: https://lore.kernel.org/r/20231220162658.12392-1-dwagner@suse.de
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_scsi.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/ipv6/addrconf.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
-index cbab15d299ca2..816235ccd2992 100644
---- a/drivers/scsi/lpfc/lpfc_scsi.c
-+++ b/drivers/scsi/lpfc/lpfc_scsi.c
-@@ -1942,7 +1942,7 @@ lpfc_bg_setup_bpl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
-  *
-  * Returns the number of SGEs added to the SGL.
-  **/
--static int
-+static uint32_t
- lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
- 		struct sli4_sge *sgl, int datasegcnt,
- 		struct lpfc_io_buf *lpfc_cmd)
-@@ -1950,8 +1950,8 @@ lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
- 	struct scatterlist *sgde = NULL; /* s/g data entry */
- 	struct sli4_sge_diseed *diseed = NULL;
- 	dma_addr_t physaddr;
--	int i = 0, num_sge = 0, status;
--	uint32_t reftag;
-+	int i = 0, status;
-+	uint32_t reftag, num_sge = 0;
- 	uint8_t txop, rxop;
- #ifdef CONFIG_SCSI_LPFC_DEBUG_FS
- 	uint32_t rc;
-@@ -2122,7 +2122,7 @@ lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
-  *
-  * Returns the number of SGEs added to the SGL.
-  **/
--static int
-+static uint32_t
- lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
- 		struct sli4_sge *sgl, int datacnt, int protcnt,
- 		struct lpfc_io_buf *lpfc_cmd)
-@@ -2146,8 +2146,8 @@ lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
- 	uint32_t rc;
- #endif
- 	uint32_t checking = 1;
--	uint32_t dma_offset = 0;
--	int num_sge = 0, j = 2;
-+	uint32_t dma_offset = 0, num_sge = 0;
-+	int j = 2;
- 	struct sli4_hybrid_sgl *sgl_xtra = NULL;
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index b8dc20fe7a4e2..46527b5cc8f0c 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -706,6 +706,22 @@ static int inet6_netconf_get_devconf(struct sk_buff *in_skb,
+ 	return err;
+ }
  
- 	sgpe = scsi_prot_sglist(sc);
++/* Combine dev_addr_genid and dev_base_seq to detect changes.
++ */
++static u32 inet6_base_seq(const struct net *net)
++{
++	u32 res = atomic_read(&net->ipv6.dev_addr_genid) +
++		  net->dev_base_seq;
++
++	/* Must not return 0 (see nl_dump_check_consistent()).
++	 * Chose a value far away from 0.
++	 */
++	if (!res)
++		res = 0x80000000;
++	return res;
++}
++
++
+ static int inet6_netconf_dump_devconf(struct sk_buff *skb,
+ 				      struct netlink_callback *cb)
+ {
+@@ -739,8 +755,7 @@ static int inet6_netconf_dump_devconf(struct sk_buff *skb,
+ 		idx = 0;
+ 		head = &net->dev_index_head[h];
+ 		rcu_read_lock();
+-		cb->seq = atomic_read(&net->ipv6.dev_addr_genid) ^
+-			  net->dev_base_seq;
++		cb->seq = inet6_base_seq(net);
+ 		hlist_for_each_entry_rcu(dev, head, index_hlist) {
+ 			if (idx < s_idx)
+ 				goto cont;
+@@ -5326,7 +5341,7 @@ static int inet6_dump_addr(struct sk_buff *skb, struct netlink_callback *cb,
+ 	}
+ 
+ 	rcu_read_lock();
+-	cb->seq = atomic_read(&tgt_net->ipv6.dev_addr_genid) ^ tgt_net->dev_base_seq;
++	cb->seq = inet6_base_seq(tgt_net);
+ 	for (h = s_h; h < NETDEV_HASHENTRIES; h++, s_idx = 0) {
+ 		idx = 0;
+ 		head = &tgt_net->dev_index_head[h];
 -- 
 2.43.0
 
