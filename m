@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-24559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E82D869525
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:59:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 057428693C8
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:48:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B10411C23CB8
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:59:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3733A1C220C8
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:48:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EFCD1419A9;
-	Tue, 27 Feb 2024 13:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4A0145B26;
+	Tue, 27 Feb 2024 13:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PRe1Htm0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ROpqcM1Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E7713B2B4;
-	Tue, 27 Feb 2024 13:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190F8145B24;
+	Tue, 27 Feb 2024 13:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042355; cv=none; b=SUBtfE4cuRYtsVBzUaOKBEgPLP5OnO9N/RUA1TM3TcTV+HmeumjsNlbCTgGp6joWEaM+Yjurjg6vdUe7if5FQPrbOci8n64vhdwwQSQjfvQ/4pN0p88d4KRTAxcGBfZtcjGW/9f1CJA5JGWwry/k7GjHvtIQRpCE+wET/TjIDpM=
+	t=1709041608; cv=none; b=sQRWeHlZgKsEglhUZdmMC3R3+toZ3M9l95qFS7o+dM0EjEX3Dg8Ufi2z0cVwZmHH2sNbJ6vtOHHdjeorlRXBEPei3q+5Ebnxz0fHFu0n57kkeSoyrWIG6MZVB3v6RDLvPoNjSUj/vOeM0vB3XGgDyD8ZsEJqUkxcB8C+x8CaeAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042355; c=relaxed/simple;
-	bh=e9dqhGhYobPSAym9wSnKro7E76lERKHV5xhuzRDLRLc=;
+	s=arc-20240116; t=1709041608; c=relaxed/simple;
+	bh=aB50/IYL4du53ZSPFgX2xc7FXhL3vUfaNu9qKRiaNao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OtMvG4RHjXiYjbQrKXaw3HTP6kcEm0r1P3v/VdwTWg4ziNuk2UgDEs/e0WExttJ33JKXkzsK3ZAQdizIKYTzAFjDBRokwwQ+mcgCNYdeP7sLFyx+D1iX7oG1TB5bPE/QpSaeWwJpmgTvnAomw4vUvKcqmqORoFNZh7f6L66XXpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PRe1Htm0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B769FC433F1;
-	Tue, 27 Feb 2024 13:59:14 +0000 (UTC)
+	 MIME-Version; b=r1Z8p7iXA+lHgOF5w9LyD0gu/EPA9U+Qc6vm36CsPCjg6K6Ktihf1CT7Gd5H7cHDl83OwYPCNnIUvpjXI3QYfwQHMiegXbw4UwlIgODkx2/5wrddAYUxXcH9xQKMW1LLBanh7tVi9r8aK5+Nem1V6lu6ZzO3KBQEKwge7B2k0XY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ROpqcM1Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 982FEC433C7;
+	Tue, 27 Feb 2024 13:46:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042355;
-	bh=e9dqhGhYobPSAym9wSnKro7E76lERKHV5xhuzRDLRLc=;
+	s=korg; t=1709041608;
+	bh=aB50/IYL4du53ZSPFgX2xc7FXhL3vUfaNu9qKRiaNao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PRe1Htm0CnhHWP16+XTzToNrB5PkH8XdywXnHZImsjKDpca8iP6Uu2NpPz+uZtV/m
-	 rdn6o5oARtzhpnh/uaezJN9+jbnEFu0H2g57npfpUk8FVVpAGSPSmWq4pQ7bUSFdWp
-	 mIoijqsYiT0jRE/lajxf81Q4+lW9n1/gGQ+yn3qg=
+	b=ROpqcM1Z/B/G7Xo5YA87Nw0hTLCVNOfilOTuZz4rCEM/DQuD2qGh/syLyRR0nRJcI
+	 JEYvkTCqSYs0em2LW5lORKqwBV9qaeZxWZH+VyAEsJ+hIgBWnZGefn1moFB3+8HN9h
+	 JfyuZ1WSqB4EcNUmZDLH82mG2CPr0UY2cq+DCvSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+fd7b34375c1c8ce29c93@syzkaller.appspotmail.com,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 265/299] bpf, sockmap: Fix NULL pointer dereference in sk_psock_verdict_data_ready()
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 4.19 29/52] dm-crypt: dont modify the data when using authenticated encryption
 Date: Tue, 27 Feb 2024 14:26:16 +0100
-Message-ID: <20240227131634.220340952@linuxfoundation.org>
+Message-ID: <20240227131549.488413493@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
+References: <20240227131548.514622258@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 4cd12c6065dfcdeba10f49949bffcf383b3952d8 ]
+commit 50c70240097ce41fe6bce6478b80478281e4d0f7 upstream.
 
-syzbot reported the following NULL pointer dereference issue [1]:
+It was said that authenticated encryption could produce invalid tag when
+the data that is being encrypted is modified [1]. So, fix this problem by
+copying the data into the clone bio first and then encrypt them inside the
+clone bio.
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000000
-  [...]
-  RIP: 0010:0x0
-  [...]
-  Call Trace:
-   <TASK>
-   sk_psock_verdict_data_ready+0x232/0x340 net/core/skmsg.c:1230
-   unix_stream_sendmsg+0x9b4/0x1230 net/unix/af_unix.c:2293
-   sock_sendmsg_nosec net/socket.c:730 [inline]
-   __sock_sendmsg+0x221/0x270 net/socket.c:745
-   ____sys_sendmsg+0x525/0x7d0 net/socket.c:2584
-   ___sys_sendmsg net/socket.c:2638 [inline]
-   __sys_sendmsg+0x2b0/0x3a0 net/socket.c:2667
-   do_syscall_64+0xf9/0x240
-   entry_SYSCALL_64_after_hwframe+0x6f/0x77
+This may reduce performance, but it is needed to prevent the user from
+corrupting the device by writing data with O_DIRECT and modifying them at
+the same time.
 
-If sk_psock_verdict_data_ready() and sk_psock_stop_verdict() are called
-concurrently, psock->saved_data_ready can be NULL, causing the above issue.
+[1] https://lore.kernel.org/all/20240207004723.GA35324@sol.localdomain/T/
 
-This patch fixes this issue by calling the appropriate data ready function
-using the sk_psock_data_ready() helper and protecting it from concurrency
-with sk->sk_callback_lock.
-
-Fixes: 6df7f764cd3c ("bpf, sockmap: Wake up polling after data copy")
-Reported-by: syzbot+fd7b34375c1c8ce29c93@syzkaller.appspotmail.com
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: syzbot+fd7b34375c1c8ce29c93@syzkaller.appspotmail.com
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=fd7b34375c1c8ce29c93 [1]
-Link: https://lore.kernel.org/bpf/20240218150933.6004-1-syoshida@redhat.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/skmsg.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/md/dm-crypt.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index 93ecfceac1bc4..4d75ef9d24bfa 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -1226,8 +1226,11 @@ static void sk_psock_verdict_data_ready(struct sock *sk)
+--- a/drivers/md/dm-crypt.c
++++ b/drivers/md/dm-crypt.c
+@@ -1734,6 +1734,12 @@ static void kcryptd_crypt_write_convert(
+ 	io->ctx.bio_out = clone;
+ 	io->ctx.iter_out = clone->bi_iter;
  
- 		rcu_read_lock();
- 		psock = sk_psock(sk);
--		if (psock)
--			psock->saved_data_ready(sk);
-+		if (psock) {
-+			read_lock_bh(&sk->sk_callback_lock);
-+			sk_psock_data_ready(sk, psock);
-+			read_unlock_bh(&sk->sk_callback_lock);
-+		}
- 		rcu_read_unlock();
- 	}
- }
--- 
-2.43.0
-
++	if (crypt_integrity_aead(cc)) {
++		bio_copy_data(clone, io->base_bio);
++		io->ctx.bio_in = clone;
++		io->ctx.iter_in = clone->bi_iter;
++	}
++
+ 	sector += bio_sectors(clone);
+ 
+ 	crypt_inc_pending(io);
 
 
 
