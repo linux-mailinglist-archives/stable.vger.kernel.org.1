@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-24284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DADBE8693AD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:48:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B5F28697F8
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:27:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BAB7291A4B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:47:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4A8A291D63
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:27:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6AC31448FE;
-	Tue, 27 Feb 2024 13:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526C1145B11;
+	Tue, 27 Feb 2024 14:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OMVygS/P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f6dT2rOn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A422E13B2B9;
-	Tue, 27 Feb 2024 13:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1094A145B0C;
+	Tue, 27 Feb 2024 14:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041551; cv=none; b=nYjaOvwIspbT0fzQ2y+JEd1yXhqsc0t1vXA0N74QoLn3YaLoSR1ABWz7kEAtNuGCNWdNCz9bjlcmwsJxcFwlLZMwBbpCwutjkoLfcheiI1vHYz20Dz/UNE6+e8jE9SnH5513/0TugKgBawMWYg/KErwx2M6x2h23YbUyyQHAX0I=
+	t=1709044012; cv=none; b=TeF34HHElOLr/kZJlALWno+V0c9pkUSRuvazBqAoiUpOTOGcelxNaPD7BiyxNop+7xNz3erdI5n552pGbjhAzzywbdWKoex514N3iP1MjyhBO95jrZN48ViXhVhBe9QRo4h7hQiq/l2V/P56C4tWS7+Nd25Gfs5wrdWgSgrtvoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041551; c=relaxed/simple;
-	bh=0t6bQujChL++YSyyGglJ4E54wmPSW/u3juzNWHbMrlw=;
+	s=arc-20240116; t=1709044012; c=relaxed/simple;
+	bh=5kdp+UfTCq/epXcY4XDLKmSwIR0/BwLCjW73mWc9684=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s63uf2djI+R6f9QxuKpSz6E6UDnovIgt2jslCSXBh0et/cvD+KKZ/7mNJELGzu/nkGv5o1Mq6Pu1E7v40FYj589eeFWDJ7/Ork8LVHiRPgLgkoSYLjn64QOM+YXINMz9+gZ9ilUSRPbuTtfZOoLTXRzxVKj08+G4MiuDl0caU0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OMVygS/P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D41D7C433F1;
-	Tue, 27 Feb 2024 13:45:50 +0000 (UTC)
+	 MIME-Version; b=tvld2Jafyf9iAowBVZIIDZgksOvmdBiu9dU4if6w1hocKdJr9y7BfEmDwd8z86nPM8aLxDuLxOWgoPC6sTDETe7bJ6ycsxwE0gNqswIfAnTUnGN4hMCP/fWbAcyxnfM1pdn/10Oj9bZlhXm14wQxTa7Yyqbph0keobKnRw16lJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f6dT2rOn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93033C43394;
+	Tue, 27 Feb 2024 14:26:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041551;
-	bh=0t6bQujChL++YSyyGglJ4E54wmPSW/u3juzNWHbMrlw=;
+	s=korg; t=1709044011;
+	bh=5kdp+UfTCq/epXcY4XDLKmSwIR0/BwLCjW73mWc9684=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OMVygS/P3sXAe9YBcLITui/mGe6WZS8qtpwfohm+/V8w1s7cuT5+qR+pE2GO4R2Zl
-	 ieXwDWEeNlM3J0qyNCKfJPF8RHEX3oB2GEWV3+loFmApoB9fKGS+AuG5o0m1BEfw9n
-	 m/LyKrMr7fmSTiB5lYeEX/lvzZl23FNY6JNHnuBg=
+	b=f6dT2rOnu1pkPiXTmq95Y5JVc1P3V8kq+ZjRlW9AeDcJcKKCnpROpnmLRpGyLQllc
+	 tEm1I+mSBmThsx0EXo1nhCldryug9VOD1gMsTHNPo7/yLuFgjd3tgyEyq6dkkwYwjj
+	 5g+aZHKEKmoXYf0lI8eRm36nEbXOXsDVgNZ8KnO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Danilo Krummrich <dakr@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Hannes Reinecke <hare@suse.de>,
+	Daniel Wagner <dwagner@suse.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 44/52] nouveau: fix function cast warnings
+Subject: [PATCH 5.10 030/122] nvme-fc: do not wait in vain when unloading module
 Date: Tue, 27 Feb 2024 14:26:31 +0100
-Message-ID: <20240227131549.982093662@linuxfoundation.org>
+Message-ID: <20240227131559.693533668@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
-References: <20240227131548.514622258@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +64,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Daniel Wagner <dwagner@suse.de>
 
-[ Upstream commit 0affdba22aca5573f9d989bcb1d71d32a6a03efe ]
+[ Upstream commit 70fbfc47a392b98e5f8dba70c6efc6839205c982 ]
 
-clang-16 warns about casting between incompatible function types:
+The module exit path has race between deleting all controllers and
+freeing 'left over IDs'. To prevent double free a synchronization
+between nvme_delete_ctrl and ida_destroy has been added by the initial
+commit.
 
-drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c:161:10: error: cast from 'void (*)(const struct firmware *)' to 'void (*)(void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
-  161 |         .fini = (void(*)(void *))release_firmware,
+There is some logic around trying to prevent from hanging forever in
+wait_for_completion, though it does not handling all cases. E.g.
+blktests is able to reproduce the situation where the module unload
+hangs forever.
 
-This one was done to use the generic shadow_fw_release() function as a
-callback for struct nvbios_source. Change it to use the same prototype
-as the other five instances, with a trivial helper function that actually
-calls release_firmware.
+If we completely rely on the cleanup code executed from the
+nvme_delete_ctrl path, all IDs will be freed eventually. This makes
+calling ida_destroy unnecessary. We only have to ensure that all
+nvme_delete_ctrl code has been executed before we leave
+nvme_fc_exit_module. This is done by flushing the nvme_delete_wq
+workqueue.
 
-Fixes: 70c0f263cc2e ("drm/nouveau/bios: pull in basic vbios subdev, more to come later")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240213095753.455062-1-arnd@kernel.org
+While at it, remove the unused nvme_fc_wq workqueue too.
+
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Daniel Wagner <dwagner@suse.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/nvme/host/fc.c | 47 ++++++------------------------------------
+ 1 file changed, 6 insertions(+), 41 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c
-index 4b571cc6bc70f..6597def18627e 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c
-@@ -154,11 +154,17 @@ shadow_fw_init(struct nvkm_bios *bios, const char *name)
- 	return (void *)fw;
+diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
+index 906cab35afe7a..8e05239073ef2 100644
+--- a/drivers/nvme/host/fc.c
++++ b/drivers/nvme/host/fc.c
+@@ -220,11 +220,6 @@ static LIST_HEAD(nvme_fc_lport_list);
+ static DEFINE_IDA(nvme_fc_local_port_cnt);
+ static DEFINE_IDA(nvme_fc_ctrl_cnt);
+ 
+-static struct workqueue_struct *nvme_fc_wq;
+-
+-static bool nvme_fc_waiting_to_unload;
+-static DECLARE_COMPLETION(nvme_fc_unload_proceed);
+-
+ /*
+  * These items are short-term. They will eventually be moved into
+  * a generic FC class. See comments in module init.
+@@ -254,8 +249,6 @@ nvme_fc_free_lport(struct kref *ref)
+ 	/* remove from transport list */
+ 	spin_lock_irqsave(&nvme_fc_lock, flags);
+ 	list_del(&lport->port_list);
+-	if (nvme_fc_waiting_to_unload && list_empty(&nvme_fc_lport_list))
+-		complete(&nvme_fc_unload_proceed);
+ 	spin_unlock_irqrestore(&nvme_fc_lock, flags);
+ 
+ 	ida_simple_remove(&nvme_fc_local_port_cnt, lport->localport.port_num);
+@@ -3823,10 +3816,6 @@ static int __init nvme_fc_init_module(void)
+ {
+ 	int ret;
+ 
+-	nvme_fc_wq = alloc_workqueue("nvme_fc_wq", WQ_MEM_RECLAIM, 0);
+-	if (!nvme_fc_wq)
+-		return -ENOMEM;
+-
+ 	/*
+ 	 * NOTE:
+ 	 * It is expected that in the future the kernel will combine
+@@ -3844,7 +3833,7 @@ static int __init nvme_fc_init_module(void)
+ 	ret = class_register(&fc_class);
+ 	if (ret) {
+ 		pr_err("couldn't register class fc\n");
+-		goto out_destroy_wq;
++		return ret;
+ 	}
+ 
+ 	/*
+@@ -3868,8 +3857,6 @@ static int __init nvme_fc_init_module(void)
+ 	device_destroy(&fc_class, MKDEV(0, 0));
+ out_destroy_class:
+ 	class_unregister(&fc_class);
+-out_destroy_wq:
+-	destroy_workqueue(nvme_fc_wq);
+ 
+ 	return ret;
+ }
+@@ -3889,45 +3876,23 @@ nvme_fc_delete_controllers(struct nvme_fc_rport *rport)
+ 	spin_unlock(&rport->lock);
  }
  
-+static void
-+shadow_fw_release(void *fw)
-+{
-+	release_firmware(fw);
-+}
-+
- static const struct nvbios_source
- shadow_fw = {
- 	.name = "firmware",
- 	.init = shadow_fw_init,
--	.fini = (void(*)(void *))release_firmware,
-+	.fini = shadow_fw_release,
- 	.read = shadow_fw_read,
- 	.rw = false,
- };
+-static void
+-nvme_fc_cleanup_for_unload(void)
++static void __exit nvme_fc_exit_module(void)
+ {
+ 	struct nvme_fc_lport *lport;
+ 	struct nvme_fc_rport *rport;
+-
+-	list_for_each_entry(lport, &nvme_fc_lport_list, port_list) {
+-		list_for_each_entry(rport, &lport->endp_list, endp_list) {
+-			nvme_fc_delete_controllers(rport);
+-		}
+-	}
+-}
+-
+-static void __exit nvme_fc_exit_module(void)
+-{
+ 	unsigned long flags;
+-	bool need_cleanup = false;
+ 
+ 	spin_lock_irqsave(&nvme_fc_lock, flags);
+-	nvme_fc_waiting_to_unload = true;
+-	if (!list_empty(&nvme_fc_lport_list)) {
+-		need_cleanup = true;
+-		nvme_fc_cleanup_for_unload();
+-	}
++	list_for_each_entry(lport, &nvme_fc_lport_list, port_list)
++		list_for_each_entry(rport, &lport->endp_list, endp_list)
++			nvme_fc_delete_controllers(rport);
+ 	spin_unlock_irqrestore(&nvme_fc_lock, flags);
+-	if (need_cleanup) {
+-		pr_info("%s: waiting for ctlr deletes\n", __func__);
+-		wait_for_completion(&nvme_fc_unload_proceed);
+-		pr_info("%s: ctrl deletes complete\n", __func__);
+-	}
++	flush_workqueue(nvme_delete_wq);
+ 
+ 	nvmf_unregister_transport(&nvme_fc_transport);
+ 
+-	ida_destroy(&nvme_fc_local_port_cnt);
+-	ida_destroy(&nvme_fc_ctrl_cnt);
+-
+ 	device_destroy(&fc_class, MKDEV(0, 0));
+ 	class_unregister(&fc_class);
+-	destroy_workqueue(nvme_fc_wq);
+ }
+ 
+ module_init(nvme_fc_init_module);
 -- 
 2.43.0
 
