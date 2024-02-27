@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C03D686943F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91C81869575
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:02:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 783EE28EC94
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3174B1F29A47
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A99291420A3;
-	Tue, 27 Feb 2024 13:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7238113DB83;
+	Tue, 27 Feb 2024 14:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IM02fJen"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r8JalUnM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3D61419AE;
-	Tue, 27 Feb 2024 13:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323B316423;
+	Tue, 27 Feb 2024 14:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041884; cv=none; b=tp+E891fPpjyu2V/th5NgKeRa2sLwqgPseIjWF2b26RxtCezJg1vjLSIWj5IINQIjuALOHqemkbOcImziDWXyFOAiCDI26SroeGu3+nEWZd0SQKkQXBrnQ9jF9RKIfs1lLFUgL225eJaUUsisZ84aFrLFhGIQJS7tuREnES3mJU=
+	t=1709042523; cv=none; b=RUv8dmuFlWKbuq06OV1pteBDwKxnBQOPifTqld9nfhzxU2OEYkRxUlSvlozFVHs2IaR8+Lq0qVY7brW8Nz6XQ6Ags5TLUMF6PyFVPGPBOs/xtLQd3k2iKkYV5RJ5cXLLn2oSq7xqDfFIMRLh3QP2CDA0QlAcE1EKQ5iQNCXisTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041884; c=relaxed/simple;
-	bh=l1endiXnyGbBIWnhJWsASqrtkHWI3Ci4a6aDqQHm7P4=;
+	s=arc-20240116; t=1709042523; c=relaxed/simple;
+	bh=MWMDAXsKgBb3ZWPg5CuGkRtd+IQ7ZHIMnc+Kg8Nu8M0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kqjnZXWAkonXGZKLchuKeqdP3VU4GrzrBKedW0Y6bbLtoBdSZ5eFnvudAE1oOjJ/P0/c29KYZnx5EP+AXKX/nplHYCHXFMOpdgBp8iDE0RCRnzuMMj11/XAW77MNAOTitt1n/Bke25FIhnZjLeZ8Y+aYI85kgHY56f/MvAv63LM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IM02fJen; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C37F2C433C7;
-	Tue, 27 Feb 2024 13:51:23 +0000 (UTC)
+	 MIME-Version; b=epQ35q1A8+1q4G5gKwnBdrLLn3DmDeFZGlSdQ2SfcJtex/Zh1Z8ZdBpK0evM8MztvZKS2fNYWDVNEd6GtIbi8aBnuCqGiAK3CRMcmVAktO6xKl3plLMBY+nt2Mt34i9vQJnpYu7BNt9MuE0dE6u3gkFamqyOP3pHKQDbABOn4ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r8JalUnM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70ED3C433C7;
+	Tue, 27 Feb 2024 14:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041884;
-	bh=l1endiXnyGbBIWnhJWsASqrtkHWI3Ci4a6aDqQHm7P4=;
+	s=korg; t=1709042522;
+	bh=MWMDAXsKgBb3ZWPg5CuGkRtd+IQ7ZHIMnc+Kg8Nu8M0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IM02fJenheRB0aa1nfxFGqkxSyuqeCXTIH9JIW7H5VODWrRWJ2aYI7OTuEfRkmA2/
-	 WEd08ud7vea1dgMpJhwaIm6Fd3ln6yrPFys48hyWLybVGhM3nfM9dXfwZ4PUBUHvIM
-	 kP5weah6zyUhox1oDyVG2uLTRF2WaWlmlrSVc++U=
+	b=r8JalUnMJsoj3Rmd1gMtyQQqMWRkbsxrMEvDOF3UVNzpw2yP9m47GKANxjE+khNs3
+	 JLqkFVXmZtmRV76UxaFn24oOR8JhvvKWU3UdHNfGCoQBWzPXpdUtLGnzpKNKpoFLtM
+	 M9KTxWVrhL+7gZdLhuc1hlKUfA/AUtr0msRSfIKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Conrad Kostecki <conikost@gentoo.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 103/299] LoongArch: Select HAVE_ARCH_SECCOMP to use the common SECCOMP menu
+Subject: [PATCH 5.15 026/245] ahci: asm1166: correct count of reported ports
 Date: Tue, 27 Feb 2024 14:23:34 +0100
-Message-ID: <20240227131629.201727257@linuxfoundation.org>
+Message-ID: <20240227131615.966966532@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Conrad Kostecki <conikost@gentoo.org>
 
-[ Upstream commit 6b79ecd084c99b31c8b4d0beda08893716d5558e ]
+[ Upstream commit 0077a504e1a4468669fd2e011108db49133db56e ]
 
-LoongArch missed the refactoring made by commit 282a181b1a0d ("seccomp:
-Move config option SECCOMP to arch/Kconfig") because LoongArch was not
-mainlined at that time.
+The ASM1166 SATA host controller always reports wrongly,
+that it has 32 ports. But in reality, it only has six ports.
 
-The 'depends on PROC_FS' statement is stale as described in that commit.
-Select HAVE_ARCH_SECCOMP, and remove the duplicated config entry.
+This seems to be a hardware issue, as all tested ASM1166
+SATA host controllers reports such high count of ports.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Example output: ahci 0000:09:00.0: AHCI 0001.0301
+32 slots 32 ports 6 Gbps 0xffffff3f impl SATA mode.
+
+By adjusting the port_map, the count is limited to six ports.
+
+New output: ahci 0000:09:00.0: AHCI 0001.0301
+32 slots 32 ports 6 Gbps 0x3f impl SATA mode.
+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=211873
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218346
+Signed-off-by: Conrad Kostecki <conikost@gentoo.org>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/Kconfig | 18 +-----------------
- 1 file changed, 1 insertion(+), 17 deletions(-)
+ drivers/ata/ahci.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
-index f29a0f2a4f187..9fd8644a9a4c6 100644
---- a/arch/loongarch/Kconfig
-+++ b/arch/loongarch/Kconfig
-@@ -98,6 +98,7 @@ config LOONGARCH
- 	select HAVE_ARCH_KFENCE
- 	select HAVE_ARCH_KGDB if PERF_EVENTS
- 	select HAVE_ARCH_MMAP_RND_BITS if MMU
-+	select HAVE_ARCH_SECCOMP
- 	select HAVE_ARCH_SECCOMP_FILTER
- 	select HAVE_ARCH_TRACEHOOK
- 	select HAVE_ARCH_TRANSPARENT_HUGEPAGE
-@@ -604,23 +605,6 @@ config RANDOMIZE_BASE_MAX_OFFSET
- 
- 	  This is limited by the size of the lower address memory, 256MB.
- 
--config SECCOMP
--	bool "Enable seccomp to safely compute untrusted bytecode"
--	depends on PROC_FS
--	default y
--	help
--	  This kernel feature is useful for number crunching applications
--	  that may need to compute untrusted bytecode during their
--	  execution. By using pipes or other transports made available to
--	  the process as file descriptors supporting the read/write
--	  syscalls, it's possible to isolate those applications in
--	  their own address space using seccomp. Once seccomp is
--	  enabled via /proc/<pid>/seccomp, it cannot be disabled
--	  and the task is only allowed to execute a few safe syscalls
--	  defined by each seccomp mode.
--
--	  If unsure, say Y. Only embedded should say N here.
--
- endmenu
- 
- config ARCH_SELECT_MEMORY_MODEL
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 3147b2e6cd8c9..56fcb1dec6af8 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -658,6 +658,11 @@ MODULE_PARM_DESC(mobile_lpm_policy, "Default LPM policy for mobile chipsets");
+ static void ahci_pci_save_initial_config(struct pci_dev *pdev,
+ 					 struct ahci_host_priv *hpriv)
+ {
++	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA && pdev->device == 0x1166) {
++		dev_info(&pdev->dev, "ASM1166 has only six ports\n");
++		hpriv->saved_port_map = 0x3f;
++	}
++
+ 	if (pdev->vendor == PCI_VENDOR_ID_JMICRON && pdev->device == 0x2361) {
+ 		dev_info(&pdev->dev, "JMB361 has only one port\n");
+ 		hpriv->force_port_map = 1;
 -- 
 2.43.0
 
