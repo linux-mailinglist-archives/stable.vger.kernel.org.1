@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-25188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1202E86982A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:29:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CBD5869674
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:11:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBD471F2CED0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:29:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D02871F2E496
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:11:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F738145B23;
-	Tue, 27 Feb 2024 14:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE4113B78E;
+	Tue, 27 Feb 2024 14:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNUJU0RV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2a7Re039"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C1B1420B3;
-	Tue, 27 Feb 2024 14:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B86E13AA4C;
+	Tue, 27 Feb 2024 14:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044109; cv=none; b=KYyDXmKK+bop2zRIPvJc46W19jw6jQfoNwFhR7MsF8LLgR2j+NPSAQ0ChtCT1j+YjRwHLZ6Ea5/9dvuN/Sk2786S9EK4PX91J+7tBg6YhguFAtwLSfpAoFaRK8tRki9dmfP6MmVnIRFnQUvZDCeCSNeG7hNCmfMLBJZ2v2WGh9E=
+	t=1709043113; cv=none; b=csGa0noO/0hfc1hKlLOOVAxht7SyVR6djVg5Z4eULll/3L7FzgkRl1e9VfJrK5HfMLwPzjpIGea0Wz1rhaPsuY7r7N2DxSKBwzgAac8ZQbIRRgpH7OYNjpcwA+ZjeAFWCu7ElqCuBY4xU90FZ9kkbZQjSiRucKukFqACaDD4Wqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044109; c=relaxed/simple;
-	bh=q7MRvqhoINgS5o2/IQY3c2ZPEzu70ViMQoyIYMkqDKc=;
+	s=arc-20240116; t=1709043113; c=relaxed/simple;
+	bh=2FOaGcfrqOVfDImTVlZS5Roheq3vQ9MXJVsP81OZ8cw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i532tC9KKaGPoYHE3Pg1/N91Qjx1iHCqJ+caWyN2izLsRONl2n4eFH5cf8vCxSMkFOjd1N98xXd/R22hwVutGhOmYCqOE9AnJGgHgTNI59mclB8zNpW37nJyT/ujoIMQWbmua8yMbP8KdRzLulIHF6N7wg9YBtvV/Dnfkw8miwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNUJU0RV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 652DCC433F1;
-	Tue, 27 Feb 2024 14:28:28 +0000 (UTC)
+	 MIME-Version; b=XdKJtjQuqgRtHbuchWXm1NJgzk7LAzysEQUIM4hFckPdCIKFy4IkF8XmXNuuHCxsqakm0l49ANz0/2GOW8lFbmElxyhH2HEK81aCfKJrRqbURxIPBFjSa5/dujmMs3pAOPZqWBs5Sgk4JWPN+Xs5NrFt3W+2Ksj5skjoK5pez3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2a7Re039; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B90AC433F1;
+	Tue, 27 Feb 2024 14:11:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044108;
-	bh=q7MRvqhoINgS5o2/IQY3c2ZPEzu70ViMQoyIYMkqDKc=;
+	s=korg; t=1709043112;
+	bh=2FOaGcfrqOVfDImTVlZS5Roheq3vQ9MXJVsP81OZ8cw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TNUJU0RVj7l+y5yu05TDfrPMhOXoNxt2hu1N3yA1+nhLGCYMmCRmaTtvwvK7z23wk
-	 FSwH/uBl3luKA6cE1s4aiNZ9dv8sBMiDQCjsyQkG5ykgMQOEwlBE6c/lfQoftQSXj0
-	 CADAuxSePZOb/DDNwjPBEBTpJF4Q8xgotof2WYMQ=
+	b=2a7Re039BmG1QfpnjfKgiRWPPoP8sraa9G0cbOpzAVcAE4I4x+YyyyFfVWbT9mGAF
+	 2HH7ZsvdASqeiCDFVREfS/SfItJsw1xhoC5xue7QjesVgTYAvFp5LJMvI9WPU9cm3a
+	 D21ilzwu1njjtl7GpDdtR3DxKTTeWFT8PCqBLbzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergej Bauer <sbauer@blackbox.su>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Corey Minyard <minyard@acm.org>,
+	Andrew Manley <andrew.manley@sealingtech.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 065/122] lan743x: fix for potential NULL pointer dereference with bare card
+Subject: [PATCH 5.15 238/245] i2c: imx: when being a target, mark the last read as processed
 Date: Tue, 27 Feb 2024 14:27:06 +0100
-Message-ID: <20240227131600.830937903@linuxfoundation.org>
+Message-ID: <20240227131622.901148156@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergej Bauer <sbauer@blackbox.su>
+From: Corey Minyard <minyard@acm.org>
 
-[ Upstream commit e9e13b6adc338be1eb88db87bcb392696144bd02 ]
+[ Upstream commit 87aec499368d488c20292952d6d4be7cb9e49c5e ]
 
-This is the 3rd revision of the patch fix for potential null pointer dereference
-with lan743x card.
+When being a target, NAK from the controller means that all bytes have
+been transferred. So, the last byte needs also to be marked as
+'processed'. Otherwise index registers of backends may not increase.
 
-The simpliest way to reproduce: boot with bare lan743x and issue "ethtool ethN"
-commant where ethN is the interface with lan743x card. Example:
-
-$ sudo ethtool eth7
-dmesg:
-[  103.510336] BUG: kernel NULL pointer dereference, address: 0000000000000340
-...
-[  103.510836] RIP: 0010:phy_ethtool_get_wol+0x5/0x30 [libphy]
-...
-[  103.511629] Call Trace:
-[  103.511666]  lan743x_ethtool_get_wol+0x21/0x40 [lan743x]
-[  103.511724]  dev_ethtool+0x1507/0x29d0
-[  103.511769]  ? avc_has_extended_perms+0x17f/0x440
-[  103.511820]  ? tomoyo_init_request_info+0x84/0x90
-[  103.511870]  ? tomoyo_path_number_perm+0x68/0x1e0
-[  103.511919]  ? tty_insert_flip_string_fixed_flag+0x82/0xe0
-[  103.511973]  ? inet_ioctl+0x187/0x1d0
-[  103.512016]  dev_ioctl+0xb5/0x560
-[  103.512055]  sock_do_ioctl+0xa0/0x140
-[  103.512098]  sock_ioctl+0x2cb/0x3c0
-[  103.512139]  __x64_sys_ioctl+0x84/0xc0
-[  103.512183]  do_syscall_64+0x33/0x80
-[  103.512224]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
-[  103.512274] RIP: 0033:0x7f54a9cba427
-...
-
-Previous versions can be found at:
-v1:
-initial version
-    https://lkml.org/lkml/2020/10/28/921
-
-v2:
-do not return from lan743x_ethtool_set_wol if netdev->phydev == NULL, just skip
-the call of phy_ethtool_set_wol() instead.
-    https://lkml.org/lkml/2020/10/31/380
-
-v3:
-in function lan743x_ethtool_set_wol:
-use ternary operator instead of if-else sentence (review by Markus Elfring)
-return -ENETDOWN insted of -EIO (review by Andrew Lunn)
-
-Signed-off-by: Sergej Bauer <sbauer@blackbox.su>
-
-Link: https://lore.kernel.org/r/20201101223556.16116-1-sbauer@blackbox.su
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: f7414cd6923f ("i2c: imx: support slave mode for imx I2C driver")
+Signed-off-by: Corey Minyard <minyard@acm.org>
+Tested-by: Andrew Manley <andrew.manley@sealingtech.com>
+Reviewed-by: Andrew Manley <andrew.manley@sealingtech.com>
+Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+[wsa: fixed comment and commit message to properly describe the case]
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/lan743x_ethtool.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/i2c/busses/i2c-imx.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/microchip/lan743x_ethtool.c b/drivers/net/ethernet/microchip/lan743x_ethtool.c
-index dcde496da7fb4..c5de8f46cdd35 100644
---- a/drivers/net/ethernet/microchip/lan743x_ethtool.c
-+++ b/drivers/net/ethernet/microchip/lan743x_ethtool.c
-@@ -780,7 +780,9 @@ static void lan743x_ethtool_get_wol(struct net_device *netdev,
- 
- 	wol->supported = 0;
- 	wol->wolopts = 0;
--	phy_ethtool_get_wol(netdev->phydev, wol);
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index d545547c89ca7..fae674969628b 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -771,6 +771,11 @@ static irqreturn_t i2c_imx_slave_handle(struct imx_i2c_struct *i2c_imx,
+ 		ctl &= ~I2CR_MTX;
+ 		imx_i2c_write_reg(ctl, i2c_imx, IMX_I2C_I2CR);
+ 		imx_i2c_read_reg(i2c_imx, IMX_I2C_I2DR);
 +
-+	if (netdev->phydev)
-+		phy_ethtool_get_wol(netdev->phydev, wol);
- 
- 	wol->supported |= WAKE_BCAST | WAKE_UCAST | WAKE_MCAST |
- 		WAKE_MAGIC | WAKE_PHY | WAKE_ARP;
-@@ -809,9 +811,8 @@ static int lan743x_ethtool_set_wol(struct net_device *netdev,
- 
- 	device_set_wakeup_enable(&adapter->pdev->dev, (bool)wol->wolopts);
- 
--	phy_ethtool_set_wol(netdev->phydev, wol);
--
--	return 0;
-+	return netdev->phydev ? phy_ethtool_set_wol(netdev->phydev, wol)
-+			: -ENETDOWN;
- }
- #endif /* CONFIG_PM */
- 
++		/* flag the last byte as processed */
++		i2c_imx_slave_event(i2c_imx,
++				    I2C_SLAVE_READ_PROCESSED, &value);
++
+ 		i2c_imx_slave_finish_op(i2c_imx);
+ 		return IRQ_HANDLED;
+ 	}
 -- 
 2.43.0
 
