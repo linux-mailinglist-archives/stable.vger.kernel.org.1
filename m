@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-24449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 880D8869487
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:54:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 564E6869593
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:03:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EB921F22A07
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:54:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B8061F2B562
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:03:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67CE2145354;
-	Tue, 27 Feb 2024 13:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A45013B798;
+	Tue, 27 Feb 2024 14:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="04Y1l7+Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZSbkIXsi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254DC13B79F;
-	Tue, 27 Feb 2024 13:53:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0792C78B61;
+	Tue, 27 Feb 2024 14:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042036; cv=none; b=iXzSqnN5QE5iMdW1LkbgpfleAIngFDNkz1rWteX9aS+ASqkFmlf6Cpmnj5H03Hb7tYYm6fgx/fNxNd7E5v1P/bYBWxQKRUGLZWCQTiEbUiNb+3C89U/rUbesiCwjzYRfMEP80eAh/mwFKEiFmt/tf/z5T2459XhFj88K/WxLL2U=
+	t=1709042600; cv=none; b=n3yMMxY+GocDhGxLRaCKpXkHM2jR0AZ01dbKz0/ZPlYm1zlX/4TR53ydc4UJPWlueY9etvnyOZzgT2rcHo08GnW9Zmxgl6ibemg0DVV96oxZ+eSgd05CtafWAKeD7A3Fwg8twO4qFXAzynjfFePwHRRzwS0QFF5s52J9MSz1rFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042036; c=relaxed/simple;
-	bh=86QwbxP5UKYPw/rF2JoMWi8MaZS1HNNS/IrnF8S4QHI=;
+	s=arc-20240116; t=1709042600; c=relaxed/simple;
+	bh=fqgXT4qp7JeMqUwnKwZhCUyYuGkwnk57+001eSjWBXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mAmCe59OBnFbh33Ics8UOl/RdU1qSs0QjwkhPI8TcPjfksc5k+Kv4FzC+/Q/hdbs+oUWpjWB8dK9BeRixXDAAEd+QEYwnu2foth44z1xM/P3xDGcBN9SU29YRHw0umD1S67wn/pQxnr7gIwebVAmvITIhO79JbKy8elEn2xRsbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=04Y1l7+Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6682CC433F1;
-	Tue, 27 Feb 2024 13:53:55 +0000 (UTC)
+	 MIME-Version; b=sAwP5jyC/1OdRGiqNXgbwuKEr7Q7Uj9THRoJFsvyXJL1igpd3czKsOLWNmm/c7CSttnD4uiptKL9Jqv3VgA3qYASnVRTkFKK5dd8+And3KBvqzYGR2pXOYjb9EWpEFyRjsGgo/Tg+q3+LXfF42kBPDMBcOkitVOHau0Jj92aD18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZSbkIXsi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D463C433F1;
+	Tue, 27 Feb 2024 14:03:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042035;
-	bh=86QwbxP5UKYPw/rF2JoMWi8MaZS1HNNS/IrnF8S4QHI=;
+	s=korg; t=1709042599;
+	bh=fqgXT4qp7JeMqUwnKwZhCUyYuGkwnk57+001eSjWBXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=04Y1l7+Z/harscf1Ni/9QiaBKw4SUwX2MrNThqLK2ZtrVnoBL35PZATaGELEh+wHz
-	 UAgi6f4sm0bc3Qq/zskRU9VdcVOS3avJYNMf/GZAVvBnFQUyHLwsg439qRLXi8GGFE
-	 VVQTqWRVp+nd0pjz1ASPXeLL9J6Y6X0XXP4VBbaI=
+	b=ZSbkIXsiqFMeW0jeejO7H4358taB8M4fEQ04nqXxdtghSF1rAOnqq52lq/dar6bWK
+	 qOT0FCg6SJHXk+coe4CwYoUKtfwFQYbsanQ6B9th8Ua5tg7uA30g/CQOkvtHxRiQl5
+	 s2D4gTwaW0RudCvUGRpeThCpulnVc1qF3DPPMWGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Gross <jgross@suse.com>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 128/299] xen/events: reduce externally visible helper functions
-Date: Tue, 27 Feb 2024 14:23:59 +0100
-Message-ID: <20240227131629.980265940@linuxfoundation.org>
+Subject: [PATCH 5.15 052/245] fs/ntfs3: Modified fix directory element type detection
+Date: Tue, 27 Feb 2024 14:24:00 +0100
+Message-ID: <20240227131616.815729237@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,131 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 686464514fbebb6c8de4415238319e414c3500a4 ]
+[ Upstream commit 22457c047ed971f2f2e33be593ddfabd9639a409 ]
 
-get_evtchn_to_irq() has only one external user while irq_from_evtchn()
-provides the same functionality and is exported for a wider user base.
-Modify the only external user of get_evtchn_to_irq() to use
-irq_from_evtchn() instead and make get_evtchn_to_irq() static.
+Unfortunately reparse attribute is used for many purposes (several dozens).
+It is not possible here to know is this name symlink or not.
+To get exactly the type of name we should to open inode (read mft).
+getattr for opened file (fstat) correctly returns symlink.
 
-evtchn_from_irq() and irq_from_virq() have a single external user and
-can easily be combined to a new helper irq_evtchn_from_virq() allowing
-to drop irq_from_virq() and to make evtchn_from_irq() static.
-
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Stable-dep-of: fa765c4b4aed ("xen/events: close evtchn after mapping cleanup")
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/events/events_2l.c       |  8 ++++----
- drivers/xen/events/events_base.c     | 13 +++++++++----
- drivers/xen/events/events_internal.h |  1 -
- include/xen/events.h                 |  4 ++--
- 4 files changed, 15 insertions(+), 11 deletions(-)
+ fs/ntfs3/dir.c | 30 +++++++++++++++++++++++++-----
+ 1 file changed, 25 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/xen/events/events_2l.c b/drivers/xen/events/events_2l.c
-index b8f2f971c2f0f..e3585330cf98b 100644
---- a/drivers/xen/events/events_2l.c
-+++ b/drivers/xen/events/events_2l.c
-@@ -171,11 +171,11 @@ static void evtchn_2l_handle_events(unsigned cpu, struct evtchn_loop_ctrl *ctrl)
- 	int i;
- 	struct shared_info *s = HYPERVISOR_shared_info;
- 	struct vcpu_info *vcpu_info = __this_cpu_read(xen_vcpu);
-+	evtchn_port_t evtchn;
+diff --git a/fs/ntfs3/dir.c b/fs/ntfs3/dir.c
+index d4d9f4ffb6d9a..c2fb76bb28f47 100644
+--- a/fs/ntfs3/dir.c
++++ b/fs/ntfs3/dir.c
+@@ -309,11 +309,31 @@ static inline int ntfs_filldir(struct ntfs_sb_info *sbi, struct ntfs_inode *ni,
+ 		return 0;
+ 	}
  
- 	/* Timer interrupt has highest priority. */
--	irq = irq_from_virq(cpu, VIRQ_TIMER);
-+	irq = irq_evtchn_from_virq(cpu, VIRQ_TIMER, &evtchn);
- 	if (irq != -1) {
--		evtchn_port_t evtchn = evtchn_from_irq(irq);
- 		word_idx = evtchn / BITS_PER_LONG;
- 		bit_idx = evtchn % BITS_PER_LONG;
- 		if (active_evtchns(cpu, s, word_idx) & (1ULL << bit_idx))
-@@ -328,9 +328,9 @@ irqreturn_t xen_debug_interrupt(int irq, void *dev_id)
- 	for (i = 0; i < EVTCHN_2L_NR_CHANNELS; i++) {
- 		if (sync_test_bit(i, BM(sh->evtchn_pending))) {
- 			int word_idx = i / BITS_PER_EVTCHN_WORD;
--			printk("  %d: event %d -> irq %d%s%s%s\n",
-+			printk("  %d: event %d -> irq %u%s%s%s\n",
- 			       cpu_from_evtchn(i), i,
--			       get_evtchn_to_irq(i),
-+			       irq_from_evtchn(i),
- 			       sync_test_bit(word_idx, BM(&v->evtchn_pending_sel))
- 			       ? "" : " l2-clear",
- 			       !sync_test_bit(i, BM(sh->evtchn_mask))
-diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
-index cd33a418344a8..57dfb512cdc5d 100644
---- a/drivers/xen/events/events_base.c
-+++ b/drivers/xen/events/events_base.c
-@@ -248,7 +248,7 @@ static int set_evtchn_to_irq(evtchn_port_t evtchn, unsigned int irq)
- 	return 0;
- }
- 
--int get_evtchn_to_irq(evtchn_port_t evtchn)
-+static int get_evtchn_to_irq(evtchn_port_t evtchn)
- {
- 	if (evtchn >= xen_evtchn_max_channels())
- 		return -1;
-@@ -415,7 +415,7 @@ static void xen_irq_info_cleanup(struct irq_info *info)
- /*
-  * Accessors for packed IRQ information.
-  */
--evtchn_port_t evtchn_from_irq(unsigned irq)
-+static evtchn_port_t evtchn_from_irq(unsigned int irq)
- {
- 	const struct irq_info *info = NULL;
- 
-@@ -433,9 +433,14 @@ unsigned int irq_from_evtchn(evtchn_port_t evtchn)
- }
- EXPORT_SYMBOL_GPL(irq_from_evtchn);
- 
--int irq_from_virq(unsigned int cpu, unsigned int virq)
-+int irq_evtchn_from_virq(unsigned int cpu, unsigned int virq,
-+			 evtchn_port_t *evtchn)
- {
--	return per_cpu(virq_to_irq, cpu)[virq];
-+	int irq = per_cpu(virq_to_irq, cpu)[virq];
+-	/* NTFS: symlinks are "dir + reparse" or "file + reparse" */
+-	if (fname->dup.fa & FILE_ATTRIBUTE_REPARSE_POINT)
+-		dt_type = DT_LNK;
+-	else
+-		dt_type = (fname->dup.fa & FILE_ATTRIBUTE_DIRECTORY) ? DT_DIR : DT_REG;
++	/*
++	 * NTFS: symlinks are "dir + reparse" or "file + reparse"
++	 * Unfortunately reparse attribute is used for many purposes (several dozens).
++	 * It is not possible here to know is this name symlink or not.
++	 * To get exactly the type of name we should to open inode (read mft).
++	 * getattr for opened file (fstat) correctly returns symlink.
++	 */
++	dt_type = (fname->dup.fa & FILE_ATTRIBUTE_DIRECTORY) ? DT_DIR : DT_REG;
 +
-+	*evtchn = evtchn_from_irq(irq);
-+
-+	return irq;
++	/*
++	 * It is not reliable to detect the type of name using duplicated information
++	 * stored in parent directory.
++	 * The only correct way to get the type of name - read MFT record and find ATTR_STD.
++	 * The code below is not good idea.
++	 * It does additional locks/reads just to get the type of name.
++	 * Should we use additional mount option to enable branch below?
++	 */
++	if ((fname->dup.fa & FILE_ATTRIBUTE_REPARSE_POINT) &&
++	    ino != ni->mi.rno) {
++		struct inode *inode = ntfs_iget5(sbi->sb, &e->ref, NULL);
++		if (!IS_ERR_OR_NULL(inode)) {
++			dt_type = fs_umode_to_dtype(inode->i_mode);
++			iput(inode);
++		}
++	}
+ 
+ 	return !dir_emit(ctx, (s8 *)name, name_len, ino, dt_type);
  }
- 
- static enum ipi_vector ipi_from_irq(unsigned irq)
-diff --git a/drivers/xen/events/events_internal.h b/drivers/xen/events/events_internal.h
-index 4d3398eff9cdf..19ae31695edcf 100644
---- a/drivers/xen/events/events_internal.h
-+++ b/drivers/xen/events/events_internal.h
-@@ -33,7 +33,6 @@ struct evtchn_ops {
- 
- extern const struct evtchn_ops *evtchn_ops;
- 
--int get_evtchn_to_irq(evtchn_port_t evtchn);
- void handle_irq_for_port(evtchn_port_t port, struct evtchn_loop_ctrl *ctrl);
- 
- unsigned int cpu_from_evtchn(evtchn_port_t evtchn);
-diff --git a/include/xen/events.h b/include/xen/events.h
-index 23932b0673dc7..7488cd51fbf4f 100644
---- a/include/xen/events.h
-+++ b/include/xen/events.h
-@@ -101,8 +101,8 @@ void xen_poll_irq_timeout(int irq, u64 timeout);
- 
- /* Determine the IRQ which is bound to an event channel */
- unsigned int irq_from_evtchn(evtchn_port_t evtchn);
--int irq_from_virq(unsigned int cpu, unsigned int virq);
--evtchn_port_t evtchn_from_irq(unsigned irq);
-+int irq_evtchn_from_virq(unsigned int cpu, unsigned int virq,
-+			 evtchn_port_t *evtchn);
- 
- int xen_set_callback_via(uint64_t via);
- int xen_evtchn_do_upcall(void);
 -- 
 2.43.0
 
