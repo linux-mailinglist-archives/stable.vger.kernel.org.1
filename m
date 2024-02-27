@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-25024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B470869761
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:20:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DAE986983F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:30:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BBCA1C245DD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:20:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C96CC287159
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:30:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF0F13B798;
-	Tue, 27 Feb 2024 14:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3818B146915;
+	Tue, 27 Feb 2024 14:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TS2UVFux"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UmmgYT3K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1BA78B61;
-	Tue, 27 Feb 2024 14:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA17414690A;
+	Tue, 27 Feb 2024 14:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043644; cv=none; b=hb8kZp1VZP48Ev7qvYXQThaQb3zWsJ7P66PNMsSVm1+miorZHyv02zvOgdDY17VS7KnFAyEJ3J4/KruIeVSenoK6/w+ojGhzyCvUgFdRhCmkhmgFrgeUz4J0pf3ieB8x2qG+jpPpfwRNhGssB65PYNpq6BbcXnFP5BG4eIOVZi0=
+	t=1709044156; cv=none; b=CeV+Oj3VTuDmJEpT8t6y7/Q+5hEnX30x1J85SDSCoFjKNSikRpeJ1sGA4S/sov+RKuSg+s8gVYm0N4p86tekOLcmR43s86qrbbLwez/X++lb1/fGmmfoVsWqBETfBpoiEMaEqVnqPI1OCfOe3saTtmXhMiecbjA35H4aGR0MnsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043644; c=relaxed/simple;
-	bh=SBdzCBEBoY+/3c3JekS/I7l2o2Fvh2F7vfMuqVypJjU=;
+	s=arc-20240116; t=1709044156; c=relaxed/simple;
+	bh=syD7NxbW8LaxVz2YfDjv7jQZqqbUDqrf6yP+fqbHQM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iyvW3JQZKKYL0dgqCJgleB6EqgY2eN7A1DMljDDbb0X6VIK3xc9HrQVXuU0I53JFIZtskVE2Jobf29Q7MA5rpnAKiRT9PT0rCoPXnMKSXHU+K128fuaSC+sCth2dCRxm5gtH3HWqCJChfFUUiOu9hYMx4hBE2Wh3uiLar9Yur3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TS2UVFux; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE743C433F1;
-	Tue, 27 Feb 2024 14:20:43 +0000 (UTC)
+	 MIME-Version; b=HeOWodHRBMzdqj/al8kh7AtMzR79uxh+ZNQ4aVllhufQeO2d5cIi6vTGYOWSm5VFOk/WAeTizsDxB3wsqM8MZFGH5ntebwNQOmObt8jEJZyru/ykzaibXLVYmjTLol0gbEYalUloNUe001iqpObFER63NjLKfNmfDEm9GDGTIaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UmmgYT3K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7866DC43390;
+	Tue, 27 Feb 2024 14:29:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043644;
-	bh=SBdzCBEBoY+/3c3JekS/I7l2o2Fvh2F7vfMuqVypJjU=;
+	s=korg; t=1709044155;
+	bh=syD7NxbW8LaxVz2YfDjv7jQZqqbUDqrf6yP+fqbHQM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TS2UVFuxYskGVcjHoE8eY6TO49QxpcjAxyHTY7pIivk/yjpdhfRHwsgAt5x8423fG
-	 vDhX6l9xfkWJK+Ta++j9OtzJ6ubf/1sduIvUCkmA9MaMD6H8P+gXoiAiZbbcSB3Ll6
-	 QB3GKdMfOlx8jnXgMLVa9ZPokwRxEQa/yOFzSuUU=
+	b=UmmgYT3KA27AzbHeLWpxdGsRFrO2Hal79JkAEgAKWtADOohTB5j0azEekcauvXT/a
+	 DkEh6PTKXl6tGZh5l9BUG8Y9cck++M4MVffTL+J69nhiUYAVGYBJ2vZLBI6ti+u+DM
+	 RpCxLw6APh25kSKJbepxkR8zfuQmgzlO5xWSlU+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erik Kurzinger <ekurzinger@nvidia.com>,
-	Simon Ser <contact@emersion.fr>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 182/195] drm/syncobj: call drm_syncobj_fence_add_wait when WAIT_AVAILABLE flag is set
-Date: Tue, 27 Feb 2024 14:27:23 +0100
-Message-ID: <20240227131616.413213860@linuxfoundation.org>
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 5.10 083/122] Revert "x86/ftrace: Use alternative RET encoding"
+Date: Tue, 27 Feb 2024 14:27:24 +0100
+Message-ID: <20240227131601.423307712@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +60,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erik Kurzinger <ekurzinger@nvidia.com>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-[ Upstream commit 3c43177ffb54ea5be97505eb8e2690e99ac96bc9 ]
+This reverts commit 3eb602ad6a94a76941f93173131a71ad36fa1324.
 
-When waiting for a syncobj timeline point whose fence has not yet been
-submitted with the WAIT_FOR_SUBMIT flag, a callback is registered using
-drm_syncobj_fence_add_wait and the thread is put to sleep until the
-timeout expires. If the fence is submitted before then,
-drm_syncobj_add_point will wake up the sleeping thread immediately which
-will proceed to wait for the fence to be signaled.
+Revert the backport of upstream commit
 
-However, if the WAIT_AVAILABLE flag is used instead,
-drm_syncobj_fence_add_wait won't get called, meaning the waiting thread
-will always sleep for the full timeout duration, even if the fence gets
-submitted earlier. If it turns out that the fence *has* been submitted
-by the time it eventually wakes up, it will still indicate to userspace
-that the wait completed successfully (it won't return -ETIME), but it
-will have taken much longer than it should have.
+  1f001e9da6bb ("x86/ftrace: Use alternative RET encoding")
 
-To fix this, we must call drm_syncobj_fence_add_wait if *either* the
-WAIT_FOR_SUBMIT flag or the WAIT_AVAILABLE flag is set. The only
-difference being that with WAIT_FOR_SUBMIT we will also wait for the
-fence to be signaled after it has been submitted while with
-WAIT_AVAILABLE we will return immediately.
+in favor of a proper backport after backporting the commit which adds
+__text_gen_insn().
 
-IGT test patch: https://lists.freedesktop.org/archives/igt-dev/2024-January/067537.html
-
-v1 -> v2: adjust lockdep_assert_none_held_once condition
-
-(cherry picked from commit 8c44ea81634a4a337df70a32621a5f3791be23df)
-
-Fixes: 01d6c3578379 ("drm/syncobj: add support for timeline point wait v8")
-Signed-off-by: Erik Kurzinger <ekurzinger@nvidia.com>
-Signed-off-by: Simon Ser <contact@emersion.fr>
-Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Reviewed-by: Simon Ser <contact@emersion.fr>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240119163208.3723457-1-ekurzinger@nvidia.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_syncobj.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/x86/kernel/ftrace.c |    9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_syncobj.c b/drivers/gpu/drm/drm_syncobj.c
-index da0145bc104a8..8f2737075dc2f 100644
---- a/drivers/gpu/drm/drm_syncobj.c
-+++ b/drivers/gpu/drm/drm_syncobj.c
-@@ -980,7 +980,8 @@ static signed long drm_syncobj_array_wait_timeout(struct drm_syncobj **syncobjs,
- 	uint64_t *points;
- 	uint32_t signaled_count, i;
+--- a/arch/x86/kernel/ftrace.c
++++ b/arch/x86/kernel/ftrace.c
+@@ -311,7 +311,7 @@ union ftrace_op_code_union {
+ 	} __attribute__((packed));
+ };
  
--	if (flags & DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT)
-+	if (flags & (DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT |
-+		     DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE))
- 		lockdep_assert_none_held_once();
+-#define RET_SIZE		(IS_ENABLED(CONFIG_RETPOLINE) ? 5 : 1 + IS_ENABLED(CONFIG_SLS))
++#define RET_SIZE		1 + IS_ENABLED(CONFIG_SLS)
  
- 	points = kmalloc_array(count, sizeof(*points), GFP_KERNEL);
-@@ -1049,7 +1050,8 @@ static signed long drm_syncobj_array_wait_timeout(struct drm_syncobj **syncobjs,
- 	 * fallthough and try a 0 timeout wait!
- 	 */
+ static unsigned long
+ create_trampoline(struct ftrace_ops *ops, unsigned int *tramp_size)
+@@ -367,12 +367,7 @@ create_trampoline(struct ftrace_ops *ops
+ 		goto fail;
  
--	if (flags & DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT) {
-+	if (flags & (DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT |
-+		     DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE)) {
- 		for (i = 0; i < count; ++i)
- 			drm_syncobj_fence_add_wait(syncobjs[i], &entries[i]);
- 	}
--- 
-2.43.0
-
+ 	ip = trampoline + size;
+-
+-	/* The trampoline ends with ret(q) */
+-	if (cpu_feature_enabled(X86_FEATURE_RETHUNK))
+-		memcpy(ip, text_gen_insn(JMP32_INSN_OPCODE, ip, &__x86_return_thunk), JMP32_INSN_SIZE);
+-	else
+-		memcpy(ip, retq, sizeof(retq));
++	memcpy(ip, retq, RET_SIZE);
+ 
+ 	/* No need to test direct calls on created trampolines */
+ 	if (ops->flags & FTRACE_OPS_FL_SAVE_REGS) {
 
 
 
