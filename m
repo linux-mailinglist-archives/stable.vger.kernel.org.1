@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-23963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 830B6869206
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:32:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93DE18691E7
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:30:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 228411F28FDB
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:32:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 477611F23D1B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:30:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B763413B2BA;
-	Tue, 27 Feb 2024 13:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF9A1420D2;
+	Tue, 27 Feb 2024 13:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uBSxlGy5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oDHEtMPl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7710213B2B3;
-	Tue, 27 Feb 2024 13:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C741420C9;
+	Tue, 27 Feb 2024 13:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709040647; cv=none; b=XocVcKNvtqaZIfHsvmrpwVFfDS+K5WL+liclmBRsEvDBj2087WzXeINK6GsptSMUEPrlamwIz+aVlr2u1Bj9IpEXztp9avUyW9iIGS4+PdVu6//EXu5K2PTvhuMlIS0ZhOEU8BJDOK43JdhoS7zeIWgjHIqVZSYMWMjFjYbQRWA=
+	t=1709040570; cv=none; b=Nnasy09ipqBnsZRp8EhdXQ1Id+GUWlLGA9IPNnifGjR+GB3euQlPRsaK6wDOeehLIFc5i9qG6DBzLF73pwQjyG6m2zj4YMUGsMrlMhG11az521C/QbJauZUEUL32560f8+/WfpolG3PH8K0gTmTfcFi4bCx0gSdLIVa09dnMYYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709040647; c=relaxed/simple;
-	bh=LQndOUGCHBvBUVIxwUxiZeB0W5I2AJWqx0jW2sTcmiQ=;
+	s=arc-20240116; t=1709040570; c=relaxed/simple;
+	bh=OSOzUElWVvYR3xWZoaSXaO5Soi+fTUQcr90DFE9TJYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PEUCaAG2gLbRLgNePlLbuIcA+lgyA+0biZws6LNmP6cngUDsfM3Avi0aW8m2USZc6xV04+crrBBK5KNWqCLzLyDo8BxPYhNbE/eeOkjl0CVx+mzu9ZZNoQbYsW+QlOmdSwuFWErZSSwRiYX8JpTZ/Dp1kXjQfVwU6FYJRgQTfDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBSxlGy5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A4DCC433F1;
-	Tue, 27 Feb 2024 13:30:46 +0000 (UTC)
+	 MIME-Version; b=azm0W3uWnEb/NOp2s5W4kJUsoi9mW/T8tSoS7PZyDgwU7hc0hOBWac4rYV3+UB2CO5TgvTKPnflQBKDAph5s3B8ERXB/F71dyA2SDsLmUD8ZP0SMlvZPze+QXDLZLDSgN2Z6CuFOTo6eWKgCZKYt3C2P/FHK6n6R3CYfcz7TyxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oDHEtMPl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEDA3C433F1;
+	Tue, 27 Feb 2024 13:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709040647;
-	bh=LQndOUGCHBvBUVIxwUxiZeB0W5I2AJWqx0jW2sTcmiQ=;
+	s=korg; t=1709040570;
+	bh=OSOzUElWVvYR3xWZoaSXaO5Soi+fTUQcr90DFE9TJYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uBSxlGy518yHv+lTo3VqQQ8sDdvXU0hjD0rwzz5FIqjJVuVJ5cG5uiGxrg7so1jHg
-	 E9hjWqR1TymSsu2FOxPNFoHr4N5mC1ZQZcTlRm8PoqL9UHO4kfutQZhg63WaGdUcab
-	 V9mNC9wUvJXHzfvSFPwmTquhqT1NBQlNQLXBJ3dY=
+	b=oDHEtMPlkB6DTjILCZeMZWYulLilUbunp0BYUtkf4vVoNBG9BUs3gNylToUfg/Eb/
+	 R6wGHrExxGA1Z/A9NwlK4kjFfgE6jJMSHemjnlkQct7kGtZm3CabnCMxdG0nfbZXQ6
+	 dPmWL9lVrhB7q09NTLb6bNY/tLsvOYzBtRziuUCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Li <Roman.Li@amd.com>,
-	Mark Broadworth <mark.broadworth@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Huang Pei <huangpei@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 031/334] drm/amd/display: Disable ips before dc interrupt setting
-Date: Tue, 27 Feb 2024 14:18:09 +0100
-Message-ID: <20240227131631.597231736@linuxfoundation.org>
+Subject: [PATCH 6.7 032/334] MIPS: reserve exception vector space ONLY ONCE
+Date: Tue, 27 Feb 2024 14:18:10 +0100
+Message-ID: <20240227131631.631484841@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
 References: <20240227131630.636392135@linuxfoundation.org>
@@ -68,50 +66,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Roman Li <Roman.Li@amd.com>
+From: Huang Pei <huangpei@loongson.cn>
 
-[ Upstream commit 8894b9283afd35b8d22ae07a0c118eb5f7d2e78b ]
+[ Upstream commit abcabb9e30a1f9a69c76776f8abffc31c377b542 ]
 
-[Why]
-While in IPS2 an access to dcn registers is not allowed.
-If interrupt results in dc call, we should disable IPS.
+"cpu_probe" is called both by BP and APs, but reserving exception vector
+(like 0x0-0x1000) called by "cpu_probe" need once and calling on APs is
+too late since memblock is unavailable at that time.
 
-[How]
-Safeguard register access in IPS2 by disabling idle optimization
-before calling dc interrupt setting api.
+So, reserve exception vector ONLY by BP.
 
-Signed-off-by: Roman Li <Roman.Li@amd.com>
-Tested-by: Mark Broadworth <mark.broadworth@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Suggested-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Huang Pei <huangpei@loongson.cn>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/mips/kernel/traps.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c
-index 51467f132c260..d595030c3359e 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c
-@@ -711,7 +711,7 @@ static inline int dm_irq_state(struct amdgpu_device *adev,
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index 246c6a6b02614..5b778995d4483 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -2007,7 +2007,13 @@ unsigned long vi_handlers[64];
+ 
+ void reserve_exception_space(phys_addr_t addr, unsigned long size)
  {
- 	bool st;
- 	enum dc_irq_source irq_source;
--
-+	struct dc *dc = adev->dm.dc;
- 	struct amdgpu_crtc *acrtc = adev->mode_info.crtcs[crtc_id];
- 
- 	if (!acrtc) {
-@@ -729,6 +729,9 @@ static inline int dm_irq_state(struct amdgpu_device *adev,
- 
- 	st = (state == AMDGPU_IRQ_STATE_ENABLE);
- 
-+	if (dc && dc->caps.ips_support && dc->idle_optimizations_allowed)
-+		dc_allow_idle_optimizations(dc, false);
-+
- 	dc_interrupt_set(adev->dm.dc, irq_source, st);
- 	return 0;
+-	memblock_reserve(addr, size);
++	/*
++	 * reserve exception space on CPUs other than CPU0
++	 * is too late, since memblock is unavailable when APs
++	 * up
++	 */
++	if (smp_processor_id() == 0)
++		memblock_reserve(addr, size);
  }
+ 
+ void __init *set_except_vector(int n, void *addr)
 -- 
 2.43.0
 
