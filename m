@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-24241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71A2D86934E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:43:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B41AC86940B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDDAB1F210AD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:43:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67FC81F21958
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA26D13B2B4;
-	Tue, 27 Feb 2024 13:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2468A145B01;
+	Tue, 27 Feb 2024 13:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dyrTWTHW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OkL1f6GD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85FA2F2D;
-	Tue, 27 Feb 2024 13:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCEAA13DB98;
+	Tue, 27 Feb 2024 13:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041424; cv=none; b=QCXN1VIcsayTscqivS34wQbkSFMkgUFsdQ8hNEwtAIYrOWZcAWojJ8KxGPGcRlwP+CT74U0d1sQvqqZVkxYnZk7pRjC0UlJwTcnkPoqCgLO2PN+qFxlMe/dyUUgo/xm7uTVU7A1/TTzj75t/XxvFMhm15trlw0nSjUm0MW/ZDb0=
+	t=1709041752; cv=none; b=qOI9PGYTcdWWw4CdiSFC6yOPA2AvNSi/n8KbkpxXemLUuLz90mnVL5UL54Jy8YBZRU/a/E1l1vXbWsNY0CXc8aZ9329khjs+x5LGUuw7vhj9zAJ7L8582tJW5Z1zEfa+XO1+SxO0bk4Slq2UIIPcM6URH4AzTGA9l5MphKavbd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041424; c=relaxed/simple;
-	bh=3k2Twma1ykmS4RgbiCVwh57AZon0QiB/o8lVy9MqwCU=;
+	s=arc-20240116; t=1709041752; c=relaxed/simple;
+	bh=0bZwtsoM59erayj6dG2VT1O2iszEaiV2nKGmvAaOgck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qh81jkMF0p/awR8RmxOMiQFAkQQtH4lHTMQ6zFYXKhM/LYQ4K85hz98otxJnlil5FteK9Lu/n/PVfHz/NDDG8ZSkTQBEBxlJfHOxss8q1yJkLVQ5PiF5HuSBvEK3c523gRw36msZMpZvnwxNQjvwgNq3TSYZwoOhseHbq8+Wlu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dyrTWTHW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3530DC433C7;
-	Tue, 27 Feb 2024 13:43:44 +0000 (UTC)
+	 MIME-Version; b=PPmapWfrj7rxGFAO+wAkrpfWY1ReqOm8sEO9firjSc1lntELo9D0jfsAsQeCIPtIRzRa7wdPUm3jzqn23p6nMw2Qo8gdW7DBr91+l5UJTeBk+4hnhc0qfIjGD4UJ73dYQofbmYpklxNB6ymF68SQXhD1Y/Bv4rLqdUjMCZulXFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OkL1f6GD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5539CC43390;
+	Tue, 27 Feb 2024 13:49:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041424;
-	bh=3k2Twma1ykmS4RgbiCVwh57AZon0QiB/o8lVy9MqwCU=;
+	s=korg; t=1709041752;
+	bh=0bZwtsoM59erayj6dG2VT1O2iszEaiV2nKGmvAaOgck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dyrTWTHWx4RkvEZvOQDS8eyyNDuGBeSgPMkSpXXe5TGc6oHa9To1P3f4V7kLBdooh
-	 1EUO35kyPUalPjid8Cjy3o/N0+gc5fLmnHu+UwfVnAJUiZBl/1uBXq2m8oCwXx158w
-	 kggbS6basUJxXMyea4exlfb3RpTZbWupz+rU72DQ=
+	b=OkL1f6GDYkJnirGM4yoT/kKn09xIV8ATH4Mc/qJk0z7nahX3aZ9asXjkyqIiIi+su
+	 QuSHfhw75KSsXjxjjN9D2WYwRuoGgclTCQ8hVQxuiVF+EAeeeLheSX0U/LI6tZi5r8
+	 NOcSQ0cfq5QK/IXHVLyTuw3Td05/YGXCwde4J/tk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 309/334] netfilter: nf_tables: register hooks last when adding new chain/flowtable
+Subject: [PATCH 6.6 056/299] ASoC: wm_adsp: Dont overwrite fwf_name with the default
 Date: Tue, 27 Feb 2024 14:22:47 +0100
-Message-ID: <20240227131641.034073635@linuxfoundation.org>
+Message-ID: <20240227131627.766654333@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,192 +62,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit d472e9853d7b46a6b094224d131d09ccd3a03daf ]
+[ Upstream commit daf3f0f99cde93a066240462b7a87cdfeedc04c0 ]
 
-Register hooks last when adding chain/flowtable to ensure that packets do
-not walk over datastructure that is being released in the error path
-without waiting for the rcu grace period.
+There's no need to overwrite fwf_name with a kstrdup() of the cs_dsp part
+name. It is trivial to select either fwf_name or cs_dsp.part as the string
+to use when building the filename in wm_adsp_request_firmware_file().
 
-Fixes: 91c7b38dc9f0 ("netfilter: nf_tables: use new transaction infrastructure to handle chain")
-Fixes: 3b49e2e94e6e ("netfilter: nf_tables: add flow table netlink frontend")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+This leaves fwf_name entirely owned by the codec driver.
+
+It also avoids problems with freeing the pointer. With the original code
+fwf_name was either a pointer owned by the codec driver, or a kstrdup()
+created by wm_adsp. This meant wm_adsp must free it if it set it, but not
+if the codec driver set it. The code was handling this by using
+devm_kstrdup().
+But there is no absolute requirement that wm_adsp_common_init() must be
+called from probe(), so this was a pseudo-memory leak - each new call to
+wm_adsp_common_init() would allocate another block of memory but these
+would only be freed if the owning codec driver was removed.
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://msgid.link/r/20240129162737.497-3-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 78 ++++++++++++++++++-----------------
- 1 file changed, 40 insertions(+), 38 deletions(-)
+ sound/soc/codecs/wm_adsp.c | 29 ++++++++++++-----------------
+ 1 file changed, 12 insertions(+), 17 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index dc26986fd4b93..6901067d715dc 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -684,15 +684,16 @@ static int nft_delobj(struct nft_ctx *ctx, struct nft_object *obj)
- 	return err;
- }
- 
--static int nft_trans_flowtable_add(struct nft_ctx *ctx, int msg_type,
--				   struct nft_flowtable *flowtable)
-+static struct nft_trans *
-+nft_trans_flowtable_add(struct nft_ctx *ctx, int msg_type,
-+		        struct nft_flowtable *flowtable)
+diff --git a/sound/soc/codecs/wm_adsp.c b/sound/soc/codecs/wm_adsp.c
+index cb654f1b09f10..72b90a7ee4b68 100644
+--- a/sound/soc/codecs/wm_adsp.c
++++ b/sound/soc/codecs/wm_adsp.c
+@@ -739,19 +739,25 @@ static int wm_adsp_request_firmware_file(struct wm_adsp *dsp,
+ 					 const char *filetype)
  {
- 	struct nft_trans *trans;
+ 	struct cs_dsp *cs_dsp = &dsp->cs_dsp;
++	const char *fwf;
+ 	char *s, c;
+ 	int ret = 0;
  
- 	trans = nft_trans_alloc(ctx, msg_type,
- 				sizeof(struct nft_trans_flowtable));
- 	if (trans == NULL)
--		return -ENOMEM;
-+		return ERR_PTR(-ENOMEM);
++	if (dsp->fwf_name)
++		fwf = dsp->fwf_name;
++	else
++		fwf = dsp->cs_dsp.name;
++
+ 	if (system_name && asoc_component_prefix)
+ 		*filename = kasprintf(GFP_KERNEL, "%s%s-%s-%s-%s-%s.%s", dir, dsp->part,
+-				      dsp->fwf_name, wm_adsp_fw[dsp->fw].file, system_name,
++				      fwf, wm_adsp_fw[dsp->fw].file, system_name,
+ 				      asoc_component_prefix, filetype);
+ 	else if (system_name)
+ 		*filename = kasprintf(GFP_KERNEL, "%s%s-%s-%s-%s.%s", dir, dsp->part,
+-				      dsp->fwf_name, wm_adsp_fw[dsp->fw].file, system_name,
++				      fwf, wm_adsp_fw[dsp->fw].file, system_name,
+ 				      filetype);
+ 	else
+-		*filename = kasprintf(GFP_KERNEL, "%s%s-%s-%s.%s", dir, dsp->part, dsp->fwf_name,
++		*filename = kasprintf(GFP_KERNEL, "%s%s-%s-%s.%s", dir, dsp->part, fwf,
+ 				      wm_adsp_fw[dsp->fw].file, filetype);
  
- 	if (msg_type == NFT_MSG_NEWFLOWTABLE)
- 		nft_activate_next(ctx->net, flowtable);
-@@ -701,22 +702,22 @@ static int nft_trans_flowtable_add(struct nft_ctx *ctx, int msg_type,
- 	nft_trans_flowtable(trans) = flowtable;
- 	nft_trans_commit_list_add_tail(ctx->net, trans);
- 
--	return 0;
-+	return trans;
- }
- 
- static int nft_delflowtable(struct nft_ctx *ctx,
- 			    struct nft_flowtable *flowtable)
- {
--	int err;
-+	struct nft_trans *trans;
- 
--	err = nft_trans_flowtable_add(ctx, NFT_MSG_DELFLOWTABLE, flowtable);
--	if (err < 0)
--		return err;
-+	trans = nft_trans_flowtable_add(ctx, NFT_MSG_DELFLOWTABLE, flowtable);
-+	if (IS_ERR(trans))
-+		return PTR_ERR(trans);
- 
- 	nft_deactivate_next(ctx->net, flowtable);
- 	nft_use_dec(&ctx->table->use);
- 
--	return err;
-+	return 0;
- }
- 
- static void __nft_reg_track_clobber(struct nft_regs_track *track, u8 dreg)
-@@ -2504,19 +2505,15 @@ static int nf_tables_addchain(struct nft_ctx *ctx, u8 family, u8 genmask,
- 	RCU_INIT_POINTER(chain->blob_gen_0, blob);
- 	RCU_INIT_POINTER(chain->blob_gen_1, blob);
- 
--	err = nf_tables_register_hook(net, table, chain);
--	if (err < 0)
--		goto err_destroy_chain;
--
- 	if (!nft_use_inc(&table->use)) {
- 		err = -EMFILE;
--		goto err_use;
-+		goto err_destroy_chain;
+ 	if (*filename == NULL)
+@@ -863,29 +869,18 @@ static int wm_adsp_request_firmware_files(struct wm_adsp *dsp,
  	}
  
- 	trans = nft_trans_chain_add(ctx, NFT_MSG_NEWCHAIN);
- 	if (IS_ERR(trans)) {
- 		err = PTR_ERR(trans);
--		goto err_unregister_hook;
-+		goto err_trans;
- 	}
+ 	adsp_err(dsp, "Failed to request firmware <%s>%s-%s-%s<-%s<%s>>.wmfw\n",
+-		 cirrus_dir, dsp->part, dsp->fwf_name, wm_adsp_fw[dsp->fw].file,
+-		 system_name, asoc_component_prefix);
++		 cirrus_dir, dsp->part,
++		 dsp->fwf_name ? dsp->fwf_name : dsp->cs_dsp.name,
++		 wm_adsp_fw[dsp->fw].file, system_name, asoc_component_prefix);
  
- 	nft_trans_chain_policy(trans) = NFT_CHAIN_POLICY_UNSET;
-@@ -2524,17 +2521,22 @@ static int nf_tables_addchain(struct nft_ctx *ctx, u8 family, u8 genmask,
- 		nft_trans_chain_policy(trans) = policy;
+ 	return -ENOENT;
+ }
  
- 	err = nft_chain_add(table, chain);
--	if (err < 0) {
--		nft_trans_destroy(trans);
--		goto err_unregister_hook;
--	}
-+	if (err < 0)
-+		goto err_chain_add;
-+
-+	/* This must be LAST to ensure no packets are walking over this chain. */
-+	err = nf_tables_register_hook(net, table, chain);
-+	if (err < 0)
-+		goto err_register_hook;
+ static int wm_adsp_common_init(struct wm_adsp *dsp)
+ {
+-	char *p;
+-
+ 	INIT_LIST_HEAD(&dsp->compr_list);
+ 	INIT_LIST_HEAD(&dsp->buffer_list);
  
- 	return 0;
- 
--err_unregister_hook:
-+err_register_hook:
-+	nft_chain_del(chain);
-+err_chain_add:
-+	nft_trans_destroy(trans);
-+err_trans:
- 	nft_use_dec_restore(&table->use);
--err_use:
--	nf_tables_unregister_hook(net, table, chain);
- err_destroy_chain:
- 	nf_tables_chain_destroy(ctx);
- 
-@@ -8373,9 +8375,9 @@ static int nf_tables_newflowtable(struct sk_buff *skb,
- 	u8 family = info->nfmsg->nfgen_family;
- 	const struct nf_flowtable_type *type;
- 	struct nft_flowtable *flowtable;
--	struct nft_hook *hook, *next;
- 	struct net *net = info->net;
- 	struct nft_table *table;
-+	struct nft_trans *trans;
- 	struct nft_ctx ctx;
- 	int err;
- 
-@@ -8455,34 +8457,34 @@ static int nf_tables_newflowtable(struct sk_buff *skb,
- 	err = nft_flowtable_parse_hook(&ctx, nla, &flowtable_hook, flowtable,
- 				       extack, true);
- 	if (err < 0)
--		goto err4;
-+		goto err_flowtable_parse_hooks;
- 
- 	list_splice(&flowtable_hook.list, &flowtable->hook_list);
- 	flowtable->data.priority = flowtable_hook.priority;
- 	flowtable->hooknum = flowtable_hook.num;
- 
-+	trans = nft_trans_flowtable_add(&ctx, NFT_MSG_NEWFLOWTABLE, flowtable);
-+	if (IS_ERR(trans)) {
-+		err = PTR_ERR(trans);
-+		goto err_flowtable_trans;
-+	}
-+
-+	/* This must be LAST to ensure no packets are walking over this flowtable. */
- 	err = nft_register_flowtable_net_hooks(ctx.net, table,
- 					       &flowtable->hook_list,
- 					       flowtable);
--	if (err < 0) {
--		nft_hooks_destroy(&flowtable->hook_list);
--		goto err4;
+-	if (!dsp->fwf_name) {
+-		p = devm_kstrdup(dsp->cs_dsp.dev, dsp->cs_dsp.name, GFP_KERNEL);
+-		if (!p)
+-			return -ENOMEM;
+-
+-		dsp->fwf_name = p;
+-		for (; *p != 0; ++p)
+-			*p = tolower(*p);
 -	}
 -
--	err = nft_trans_flowtable_add(&ctx, NFT_MSG_NEWFLOWTABLE, flowtable);
- 	if (err < 0)
--		goto err5;
-+		goto err_flowtable_hooks;
- 
- 	list_add_tail_rcu(&flowtable->list, &table->flowtables);
- 
  	return 0;
--err5:
--	list_for_each_entry_safe(hook, next, &flowtable->hook_list, list) {
--		nft_unregister_flowtable_hook(net, flowtable, hook);
--		list_del_rcu(&hook->list);
--		kfree_rcu(hook, rcu);
--	}
--err4:
-+
-+err_flowtable_hooks:
-+	nft_trans_destroy(trans);
-+err_flowtable_trans:
-+	nft_hooks_destroy(&flowtable->hook_list);
-+err_flowtable_parse_hooks:
- 	flowtable->data.type->free(&flowtable->data);
- err3:
- 	module_put(type->owner);
+ }
+ 
 -- 
 2.43.0
 
