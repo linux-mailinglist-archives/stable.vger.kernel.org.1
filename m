@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-24874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3809A8696AE
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F80F8694C5
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:56:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E677A295859
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:14:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36A411F22E1B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:56:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C71A14534F;
-	Tue, 27 Feb 2024 14:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C9713B7AA;
+	Tue, 27 Feb 2024 13:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1K1jhMN3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+rXptCI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8AC1420D3;
-	Tue, 27 Feb 2024 14:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FEC813B2B4;
+	Tue, 27 Feb 2024 13:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043233; cv=none; b=HGlDPWNjyOr6Vvupcdn07LY9pv2e9u9yaDaVKgyh2UUN0xkdo9GwJHooYnOAWW91z/nK83F/ICQuhq28kgr5y1egAM4+u8XEVM9ij+w1Ub0ttRdlwL6BBfl1LCEGH+ftbNk6Ipu+MauUYsuf1m1yjdYTSGfSA02ZMuOWgakJYmE=
+	t=1709042163; cv=none; b=V4A/GNa196mZVRhDPnz4o/igdQwu92ZFMqyD/XE0DIeBCFuXetZLNv90g8qxkSy96PEV+GHKl5xINzCnOhVRJMyOqw1OV6NQFOqDU/p3rtPOZKPIj4eBu8501vfJx+9sGrH1DWcq2OyaDa35VZkXDYW5OsJ+D2S0pMx8gvEMbe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043233; c=relaxed/simple;
-	bh=2Dfeo/7qxEJlyfum1Ih+y1w2XDD7csvFornZNw+/pho=;
+	s=arc-20240116; t=1709042163; c=relaxed/simple;
+	bh=cszjtEhGSPo4RCw44BfgpUNhJIKVY5B1pUphwCVdz1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Su3HzPSHLCbJj8kIEejdsNQfNKbJkIfAJLPmuh6GbeyKT1vLl5PdP+oa13HC/a0sUf+4MUpn5DvgFiE1j6yVL7D5kQXcaJMFiY7hjvjpIeVDBfhvgDbcSIS2Q8X7imkMiO9b5bVyD763ErCfwXQvR9SunKz0zRaMQOP9UtfXVYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1K1jhMN3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77873C433F1;
-	Tue, 27 Feb 2024 14:13:52 +0000 (UTC)
+	 MIME-Version; b=CjsKpXiByzH2Oe123J422uoZJBJ9R5+LfsSucetACs5MFMq5md5DoKrtujVMI+JYpSjRQS+N02Y5yMTYbu/UmirL66/4GojcZb5vU/O3RPu87hr3i8Sej8ftRYH3T38Sf+6qx8eOzTzAVfzUXQz8qCciysN6Vw87FF/a0ZsyQeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+rXptCI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFA65C433C7;
+	Tue, 27 Feb 2024 13:56:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043232;
-	bh=2Dfeo/7qxEJlyfum1Ih+y1w2XDD7csvFornZNw+/pho=;
+	s=korg; t=1709042163;
+	bh=cszjtEhGSPo4RCw44BfgpUNhJIKVY5B1pUphwCVdz1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1K1jhMN38RgaxqWFuKAX5t4FQAahyAIBqlc5o8HFlkk7VM8R/GN6MpEVxbZZHAzKd
-	 K0LM4gqbX9+drCY3MBjZ4xgw9j2zYMYOwtTX54LEop8AVaNCXS4trA1QiqNFylr9/A
-	 NA10F4W4PeWUp4T4WhjQoqYAxajsEmvygMYFqwYQ=
+	b=z+rXptCI7RGKARZwgaWsqxssy2U9sVMvb8gPzefdlv6peNY9C5JpKnKd7qOqAETFv
+	 23uBaBPTIieDLDPZ5npcChqSaKpNz0MNAXCme0sDSj0MXd0rdX+MoyM7BuQHt2kjh+
+	 ujiNaWDGq1iEdI+eo1bfGUJLLMkcrFVxUxR4FWao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 033/195] usb: ucsi_acpi: Quirk to ack a connector change ack cmd
-Date: Tue, 27 Feb 2024 14:24:54 +0100
-Message-ID: <20240227131611.486346913@linuxfoundation.org>
+	Pawel Laszczak <pawell@cadence.com>
+Subject: [PATCH 6.6 184/299] usb: cdnsp: blocked some cdns3 specific code
+Date: Tue, 27 Feb 2024 14:24:55 +0100
+Message-ID: <20240227131631.760568546@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,151 +60,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Pawel Laszczak <pawell@cadence.com>
 
-[ Upstream commit f3be347ea42dbb0358cd8b2d8dc543a23b70a976 ]
+commit 18a6be674306c9acb05c08e5c3fd376ef50a917c upstream.
 
-The PPM on some Dell laptops seems to expect that the ACK_CC_CI
-command to clear the connector change notification is in turn
-followed by another ACK_CC_CI to acknowledge the ACK_CC_CI command
-itself. This is in violation of the UCSI spec that states:
+host.c file has some parts of code that were introduced for CDNS3 driver
+and should not be used with CDNSP driver.
+This patch blocks using these parts of codes by CDNSP driver.
+These elements include:
+- xhci_plat_cdns3_xhci object
+- cdns3 specific XECP_PORT_CAP_REG register
+- cdns3 specific XECP_AUX_CTRL_REG1 register
 
-    "The only notification that is not acknowledged by the OPM is
-     the command completion notification for the ACK_CC_CI or the
-     PPM_RESET command."
-
-Add a quirk to send this ack anyway.
-Apply the quirk to all Dell systems.
-
-On the first command that acks a connector change send a dummy
-command to determine if it runs into a timeout. Only activate
-the quirk if it does. This ensure that we do not break Dell
-systems that do not need the quirk.
-
-Signed-off-by: "Christian A. Ehrhardt" <lk@c--e.de>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240121204123.275441-4-lk@c--e.de
+cc: stable@vger.kernel.org
+Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+Link: https://lore.kernel.org/r/20240206104018.48272-1-pawell@cadence.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/ucsi/ucsi_acpi.c | 71 ++++++++++++++++++++++++++++--
- 1 file changed, 68 insertions(+), 3 deletions(-)
+ drivers/usb/cdns3/host.c |   16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/typec/ucsi/ucsi_acpi.c b/drivers/usb/typec/ucsi/ucsi_acpi.c
-index 26171c5d3c61c..48130d636a020 100644
---- a/drivers/usb/typec/ucsi/ucsi_acpi.c
-+++ b/drivers/usb/typec/ucsi/ucsi_acpi.c
-@@ -25,6 +25,8 @@ struct ucsi_acpi {
- 	unsigned long flags;
- 	guid_t guid;
- 	u64 cmd;
-+	bool dell_quirk_probed;
-+	bool dell_quirk_active;
- };
+--- a/drivers/usb/cdns3/host.c
++++ b/drivers/usb/cdns3/host.c
+@@ -18,6 +18,11 @@
+ #include "../host/xhci.h"
+ #include "../host/xhci-plat.h"
  
- static int ucsi_acpi_dsm(struct ucsi_acpi *ua, int func)
-@@ -126,12 +128,73 @@ static const struct ucsi_operations ucsi_zenbook_ops = {
- 	.async_write = ucsi_acpi_async_write
- };
- 
--static const struct dmi_system_id zenbook_dmi_id[] = {
 +/*
-+ * Some Dell laptops expect that an ACK command with the
-+ * UCSI_ACK_CONNECTOR_CHANGE bit set is followed by a (separate)
-+ * ACK command that only has the UCSI_ACK_COMMAND_COMPLETE bit set.
-+ * If this is not done events are not delivered to OSPM and
-+ * subsequent commands will timeout.
++ * The XECP_PORT_CAP_REG and XECP_AUX_CTRL_REG1 exist only
++ * in Cadence USB3 dual-role controller, so it can't be used
++ * with Cadence CDNSP dual-role controller.
 + */
-+static int
-+ucsi_dell_sync_write(struct ucsi *ucsi, unsigned int offset,
-+		     const void *val, size_t val_len)
-+{
-+	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
-+	u64 cmd = *(u64 *)val, ack = 0;
-+	int ret;
-+
-+	if (UCSI_COMMAND(cmd) == UCSI_ACK_CC_CI &&
-+	    cmd & UCSI_ACK_CONNECTOR_CHANGE)
-+		ack = UCSI_ACK_CC_CI | UCSI_ACK_COMMAND_COMPLETE;
-+
-+	ret = ucsi_acpi_sync_write(ucsi, offset, val, val_len);
-+	if (ret != 0)
-+		return ret;
-+	if (ack == 0)
-+		return ret;
-+
-+	if (!ua->dell_quirk_probed) {
-+		ua->dell_quirk_probed = true;
-+
-+		cmd = UCSI_GET_CAPABILITY;
-+		ret = ucsi_acpi_sync_write(ucsi, UCSI_CONTROL, &cmd,
-+					   sizeof(cmd));
-+		if (ret == 0)
-+			return ucsi_acpi_sync_write(ucsi, UCSI_CONTROL,
-+						    &ack, sizeof(ack));
-+		if (ret != -ETIMEDOUT)
-+			return ret;
-+
-+		ua->dell_quirk_active = true;
-+		dev_err(ua->dev, "Firmware bug: Additional ACK required after ACKing a connector change.\n");
-+		dev_err(ua->dev, "Firmware bug: Enabling workaround\n");
-+	}
-+
-+	if (!ua->dell_quirk_active)
-+		return ret;
-+
-+	return ucsi_acpi_sync_write(ucsi, UCSI_CONTROL, &ack, sizeof(ack));
-+}
-+
-+static const struct ucsi_operations ucsi_dell_ops = {
-+	.read = ucsi_acpi_read,
-+	.sync_write = ucsi_dell_sync_write,
-+	.async_write = ucsi_acpi_async_write
-+};
-+
-+static const struct dmi_system_id ucsi_acpi_quirks[] = {
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "ZenBook UX325UA_UM325UA"),
- 		},
-+		.driver_data = (void *)&ucsi_zenbook_ops,
-+	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+		},
-+		.driver_data = (void *)&ucsi_dell_ops,
- 	},
- 	{ }
+ #define XECP_PORT_CAP_REG	0x8000
+ #define XECP_AUX_CTRL_REG1	0x8120
+ 
+@@ -57,6 +62,8 @@ static const struct xhci_plat_priv xhci_
+ 	.resume_quirk = xhci_cdns3_resume_quirk,
  };
-@@ -160,6 +223,7 @@ static int ucsi_acpi_probe(struct platform_device *pdev)
+ 
++static const struct xhci_plat_priv xhci_plat_cdnsp_xhci;
++
+ static int __cdns_host_init(struct cdns *cdns)
  {
- 	struct acpi_device *adev = ACPI_COMPANION(&pdev->dev);
- 	const struct ucsi_operations *ops = &ucsi_acpi_ops;
-+	const struct dmi_system_id *id;
- 	struct ucsi_acpi *ua;
- 	struct resource *res;
- 	acpi_status status;
-@@ -189,8 +253,9 @@ static int ucsi_acpi_probe(struct platform_device *pdev)
- 	init_completion(&ua->complete);
- 	ua->dev = &pdev->dev;
+ 	struct platform_device *xhci;
+@@ -81,8 +88,13 @@ static int __cdns_host_init(struct cdns
+ 		goto err1;
+ 	}
  
--	if (dmi_check_system(zenbook_dmi_id))
--		ops = &ucsi_zenbook_ops;
-+	id = dmi_first_match(ucsi_acpi_quirks);
-+	if (id)
-+		ops = id->driver_data;
- 
- 	ua->ucsi = ucsi_create(&pdev->dev, ops);
- 	if (IS_ERR(ua->ucsi))
--- 
-2.43.0
-
+-	cdns->xhci_plat_data = kmemdup(&xhci_plat_cdns3_xhci,
+-			sizeof(struct xhci_plat_priv), GFP_KERNEL);
++	if (cdns->version < CDNSP_CONTROLLER_V2)
++		cdns->xhci_plat_data = kmemdup(&xhci_plat_cdns3_xhci,
++				sizeof(struct xhci_plat_priv), GFP_KERNEL);
++	else
++		cdns->xhci_plat_data = kmemdup(&xhci_plat_cdnsp_xhci,
++				sizeof(struct xhci_plat_priv), GFP_KERNEL);
++
+ 	if (!cdns->xhci_plat_data) {
+ 		ret = -ENOMEM;
+ 		goto err1;
 
 
 
