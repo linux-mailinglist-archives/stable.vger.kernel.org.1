@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-25100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DE358697D4
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:25:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFD7286976B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:21:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85309B2C7EE
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:24:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C06D2860C7
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:21:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C6713F016;
-	Tue, 27 Feb 2024 14:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D6E13B7AB;
+	Tue, 27 Feb 2024 14:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AgDT0gTk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlnvX6Bu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2072613B2B4;
-	Tue, 27 Feb 2024 14:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E289913B2B8;
+	Tue, 27 Feb 2024 14:21:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043865; cv=none; b=k9kt8O0Tx8UtdWE2OZpN6VqF9sjpSQrvnq3LYq22NuqLCV7b3+89oANhl83i4OEu9F68VbrKRD/S1RYLXHXqOkF3A9JUaBxUFNLSxogp7fsHzwq1kyJlNhJ2kgxwaddPr+u2M8h9TeMRzYby3swANnlpxd/MD+uFqd5hdIEIJKE=
+	t=1709043664; cv=none; b=eYo7Bsv2gLGWWTItsiuKA3PbhhCbHoSzqUPGX8qM2lBTuPn095pwi9h1znQo1XL2IZidUwiIjl6PXw0+lmjBRMjbXp+0XpK8u0Q4ZXCccJYT/zOu4sCOefEtExccFf8AXItu9hxqT8DpARiAMEzRoO7pXLB3eWPxfI8fzZVGHb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043865; c=relaxed/simple;
-	bh=oy7FPWfNCDlOrgObzUK13GEVVOsNt2B8V5ztzMfLho4=;
+	s=arc-20240116; t=1709043664; c=relaxed/simple;
+	bh=Rl8zk2vz8mMeKSZyBPK4W2tOjw9TzWaEGzZ2F05eHUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jgu6UNrdPyfXWlXhOvX21d7GnMtxDEZ4Vw/NpkCFyobRDleHfBUZ18fUjYwWRoaq1NDApfzmDfl68IdCvHv02s2u18GbCPmXTgQ9x5FNj3/6mFMJMQzjJ66BQlE1JkbataEhzVVqnqVU6muNGpCNU0J44SrpqHB7HS6EcZrC12U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AgDT0gTk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0AB4C433C7;
-	Tue, 27 Feb 2024 14:24:24 +0000 (UTC)
+	 MIME-Version; b=Cr1t3TlKYSYpFN6KLCLMcj9EKOAB8vkylcqikspLczCgGqiuAhLRSj1o2o1tMKzLaoQ4H9ATSsoqBphsDuBTl2o5dSTBLs/AB/eE2u98KQjIB0FMe3tZGRa60OgVC/9gLydclCA7VeRtoSDV+ImjWB0cA3hjudf6+/F4UEKBDtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlnvX6Bu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2879FC433C7;
+	Tue, 27 Feb 2024 14:21:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043865;
-	bh=oy7FPWfNCDlOrgObzUK13GEVVOsNt2B8V5ztzMfLho4=;
+	s=korg; t=1709043663;
+	bh=Rl8zk2vz8mMeKSZyBPK4W2tOjw9TzWaEGzZ2F05eHUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AgDT0gTk2Ynv2ocB4zlMT1rVP13fNtMVqzxKvR6tVRVpV9DtDaOvlF1y7cltocII+
-	 JYbVbPxDsUXz21FKpJhe2Y/Qsmkrp5fUV2G4/q1LMXqKdl+aHVi4eI0fH7TeGpfY5V
-	 djyzLLviQ8kIDxP2JaRIE7tu7EfjT5UPKcv/A/s8=
+	b=jlnvX6Bu6A7L+lbH/UtbHDMBhQhPXjA9YkAmjHEhNa3qp3z56Rbvs4bsBMA9Q/Wlk
+	 D1vG4j6rbv0OnGf27E6nQrTv00Bs+E9Xft49zkqrjeVUxSoxiHZnFtfZLoR/Gnha84
+	 GmiuVXHv5uKjpptIPXTswC5QEpStqPzYSngBiad0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.4 62/84] usb: roles: dont get/set_role() when usb_role_switch is unregistered
-Date: Tue, 27 Feb 2024 14:27:29 +0100
-Message-ID: <20240227131554.889882065@linuxfoundation.org>
+	Yosry Ahmed <yosryahmed@google.com>,
+	Chengming Zhou <zhouchengming@bytedance.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Domenico Cerasuolo <cerasuolodomenico@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 189/195] mm: zswap: fix missing folio cleanup in writeback race path
+Date: Tue, 27 Feb 2024 14:27:30 +0100
+Message-ID: <20240227131616.645069638@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +65,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Yosry Ahmed <yosryahmed@google.com>
 
-commit b787a3e781759026a6212736ef8e52cf83d1821a upstream.
+commit e3b63e966cac0bf78aaa1efede1827a252815a1d upstream.
 
-There is a possibility that usb_role_switch device is unregistered before
-the user put usb_role_switch. In this case, the user may still want to
-get/set_role() since the user can't sense the changes of usb_role_switch.
+In zswap_writeback_entry(), after we get a folio from
+__read_swap_cache_async(), we grab the tree lock again to check that the
+swap entry was not invalidated and recycled.  If it was, we delete the
+folio we just added to the swap cache and exit.
 
-This will add a flag to show if usb_role_switch is already registered and
-avoid unwanted behaviors.
+However, __read_swap_cache_async() returns the folio locked when it is
+newly allocated, which is always true for this path, and the folio is
+ref'd.  Make sure to unlock and put the folio before returning.
 
-Fixes: fde0aa6c175a ("usb: common: Small class for USB role switches")
-cc: stable@vger.kernel.org
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240129093739.2371530-2-xu.yang_2@nxp.com
+This was discovered by code inspection, probably because this path handles
+a race condition that should not happen often, and the bug would not crash
+the system, it will only strand the folio indefinitely.
+
+Link: https://lkml.kernel.org/r/20240125085127.1327013-1-yosryahmed@google.com
+Fixes: 04fc7816089c ("mm: fix zswap writeback race condition")
+Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
+Reviewed-by: Chengming Zhou <zhouchengming@bytedance.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+Cc: Domenico Cerasuolo <cerasuolodomenico@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/roles/class.c |   12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ mm/zswap.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/roles/class.c
-+++ b/drivers/usb/roles/class.c
-@@ -20,6 +20,7 @@ struct usb_role_switch {
- 	struct device dev;
- 	struct mutex lock; /* device lock*/
- 	enum usb_role role;
-+	bool registered;
- 
- 	/* From descriptor */
- 	struct device *usb2_port;
-@@ -46,6 +47,9 @@ int usb_role_switch_set_role(struct usb_
- 	if (IS_ERR_OR_NULL(sw))
- 		return 0;
- 
-+	if (!sw->registered)
-+		return -EOPNOTSUPP;
-+
- 	mutex_lock(&sw->lock);
- 
- 	ret = sw->set(sw->dev.parent, role);
-@@ -69,7 +73,7 @@ enum usb_role usb_role_switch_get_role(s
- {
- 	enum usb_role role;
- 
--	if (IS_ERR_OR_NULL(sw))
-+	if (IS_ERR_OR_NULL(sw) || !sw->registered)
- 		return USB_ROLE_NONE;
- 
- 	mutex_lock(&sw->lock);
-@@ -319,6 +323,8 @@ usb_role_switch_register(struct device *
- 		return ERR_PTR(ret);
- 	}
- 
-+	sw->registered = true;
-+
- 	/* TODO: Symlinks for the host port and the device controller. */
- 
- 	return sw;
-@@ -333,8 +339,10 @@ EXPORT_SYMBOL_GPL(usb_role_switch_regist
-  */
- void usb_role_switch_unregister(struct usb_role_switch *sw)
- {
--	if (!IS_ERR_OR_NULL(sw))
-+	if (!IS_ERR_OR_NULL(sw)) {
-+		sw->registered = false;
- 		device_unregister(&sw->dev);
-+	}
- }
- EXPORT_SYMBOL_GPL(usb_role_switch_unregister);
- 
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1013,6 +1013,8 @@ static int zswap_writeback_entry(struct
+ 		if (zswap_rb_search(&tree->rbroot, entry->offset) != entry) {
+ 			spin_unlock(&tree->lock);
+ 			delete_from_swap_cache(page_folio(page));
++			unlock_page(page);
++			put_page(page);
+ 			ret = -ENOMEM;
+ 			goto fail;
+ 		}
 
 
 
