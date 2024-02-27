@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-24165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FEF08692F9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:40:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B33B28693F6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA4B9282F2E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:40:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B28F41C213BD
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90C2E13DB98;
-	Tue, 27 Feb 2024 13:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97957143C4B;
+	Tue, 27 Feb 2024 13:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwU017XM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y3gV+Veo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CBFA13B2B9;
-	Tue, 27 Feb 2024 13:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491F954BD4;
+	Tue, 27 Feb 2024 13:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041212; cv=none; b=Y1Sn01GXtS6FNyuc7HpMHl0C4UsI2UKGJDc5T0OR4uIjQbbNNbSBi/ZvrFnVvkoC4JqsH6zGHp07kxoUSq4tprORoilI0m615jJn2xbcBhiWXhun3E/SAm5NVkeWCyfw+GsUbmLpYxKkEie00nxPlXCKcJhH1p7lihN5szdmfCA=
+	t=1709041693; cv=none; b=I3B2wx2jCDvoNw6GBNeskK3EOZm2Ltjncf895rT9x0NVtwXrNOOwjFHkAslJgXvvmZBt2LF54DbAMRFG96tW2RfUEZsRe2oAhJkROJy8ihN3HTMf7YFBGU6a/zlGZeTQOMZWB7VNmw4P3zOjGD1kokCPNyRkWFPD7AhGyxq3eIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041212; c=relaxed/simple;
-	bh=fnvvyI1IVtIjkgLmwfcvVvTYlQTyX6ZCUnbdR7nELv8=;
+	s=arc-20240116; t=1709041693; c=relaxed/simple;
+	bh=bvGcDNjITsuVu8s3/W0VFuuNGb5az1u8R2DQCD3LzS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d0FroBcjteLuQLvAwbG8OSmI5yvi8VX8wnKnG/qVn1vHlv+iLVqqroaXdSeUi1rfxT9rB0rWJZTt3ATrkhNibmcsh+CucsfTuxhkM7ElMQYjmRQ2rjjU5GFkcsa3nvPtKR6XFGaNBNqq4RZfdrfg0SDSChzpXnHjydy+aJKWn58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwU017XM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0ACFC433F1;
-	Tue, 27 Feb 2024 13:40:11 +0000 (UTC)
+	 MIME-Version; b=fs6KlnK30QPLKxZDpAsZEJIpcxzmW6oav5dXWJtkj0ZlKtrbVk0LsWSc0BF/SOdV6aSTaRv9HLzGEO3drDQRR5O11bw+HmgxeyIIflVQEzNZs8e3RyVRB7nazJt2Rld7BNB1MvdphyIbbpGeah5MzZVyiicHy3/ouyAVq2AjJ7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y3gV+Veo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 626DAC433C7;
+	Tue, 27 Feb 2024 13:48:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041212;
-	bh=fnvvyI1IVtIjkgLmwfcvVvTYlQTyX6ZCUnbdR7nELv8=;
+	s=korg; t=1709041692;
+	bh=bvGcDNjITsuVu8s3/W0VFuuNGb5az1u8R2DQCD3LzS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hwU017XMW62gM3YzopO80L6e99rWI2J2w92X6EmtKoO0PCaEgrGDa9pvgtO/MKktv
-	 gldj7uaW3KpkzABYkAQu4VaDSxLjZAH5tV3KQ/v0I6hohNABcdsOdfN0r6NIEYk1ai
-	 cdGJN2z9jnf9au2jAabpejkkolvqeN2zooz1v+WM=
+	b=y3gV+Veo/VP9H6IpGqOxqfkVddoHCq5NCVtJiGZ5xAORClPVBHMxQpjrV/+13ouj1
+	 /0RJhN7+rN476fah05RO10LpSPZkgBgcydcVrtlqU5EwmKXkH4QPlDMueRyP3jMo5c
+	 ysAynWAvbV1pUIkIfcgDOXv/ObXnNm+GB50tfiaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Dmitry Bogdanov <d.bogdanov@yadro.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 261/334] net/sched: act_mirred: Create function tcf_mirred_to_dev and improve readability
-Date: Tue, 27 Feb 2024 14:21:59 +0100
-Message-ID: <20240227131639.359941100@linuxfoundation.org>
+Subject: [PATCH 6.6 009/299] scsi: target: core: Add TMF to tmr_list handling
+Date: Tue, 27 Feb 2024 14:22:00 +0100
+Message-ID: <20240227131626.141975022@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,220 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: Dmitry Bogdanov <d.bogdanov@yadro.com>
 
-[ Upstream commit 16085e48cb48aeb50a1178dc276747749910b0f2 ]
+[ Upstream commit 83ab68168a3d990d5ff39ab030ad5754cbbccb25 ]
 
-As a preparation for adding block ID to mirred, separate the part of
-mirred that redirect/mirrors to a dev into a specific function so that it
-can be called by blockcast for each dev.
+An abort that is responded to by iSCSI itself is added to tmr_list but does
+not go to target core. A LUN_RESET that goes through tmr_list takes a
+refcounter on the abort and waits for completion. However, the abort will
+be never complete because it was not started in target core.
 
-Also improve readability. Eg. rename use_reinsert to dont_clone and skb2
-to skb_to_send.
+ Unable to locate ITT: 0x05000000 on CID: 0
+ Unable to locate RefTaskTag: 0x05000000 on CID: 0.
+ wait_for_tasks: Stopping tmf LUN_RESET with tag 0x0 ref_task_tag 0x0 i_state 34 t_state ISTATE_PROCESSING refcnt 2 transport_state active,stop,fabric_stop
+ wait for tasks: tmf LUN_RESET with tag 0x0 ref_task_tag 0x0 i_state 34 t_state ISTATE_PROCESSING refcnt 2 transport_state active,stop,fabric_stop
+...
+ INFO: task kworker/0:2:49 blocked for more than 491 seconds.
+ task:kworker/0:2     state:D stack:    0 pid:   49 ppid:     2 flags:0x00000800
+ Workqueue: events target_tmr_work [target_core_mod]
+Call Trace:
+ __switch_to+0x2c4/0x470
+ _schedule+0x314/0x1730
+ schedule+0x64/0x130
+ schedule_timeout+0x168/0x430
+ wait_for_completion+0x140/0x270
+ target_put_cmd_and_wait+0x64/0xb0 [target_core_mod]
+ core_tmr_lun_reset+0x30/0xa0 [target_core_mod]
+ target_tmr_work+0xc8/0x1b0 [target_core_mod]
+ process_one_work+0x2d4/0x5d0
+ worker_thread+0x78/0x6c0
 
-Co-developed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Co-developed-by: Pedro Tammela <pctammela@mojatatu.com>
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 52f671db1882 ("net/sched: act_mirred: use the backlog for mirred ingress")
+To fix this, only add abort to tmr_list if it will be handled by target
+core.
+
+Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
+Link: https://lore.kernel.org/r/20240111125941.8688-1-d.bogdanov@yadro.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_mirred.c | 129 +++++++++++++++++++++++------------------
- 1 file changed, 72 insertions(+), 57 deletions(-)
+ drivers/target/target_core_device.c    | 5 -----
+ drivers/target/target_core_transport.c | 4 ++++
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
-index 0a711c184c29b..6f2544c1e3961 100644
---- a/net/sched/act_mirred.c
-+++ b/net/sched/act_mirred.c
-@@ -225,48 +225,26 @@ static int tcf_mirred_forward(bool want_ingress, struct sk_buff *skb)
- 	return err;
+diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
+index b6523d4b9259e..86590a7e29f6a 100644
+--- a/drivers/target/target_core_device.c
++++ b/drivers/target/target_core_device.c
+@@ -147,7 +147,6 @@ int transport_lookup_tmr_lun(struct se_cmd *se_cmd)
+ 	struct se_session *se_sess = se_cmd->se_sess;
+ 	struct se_node_acl *nacl = se_sess->se_node_acl;
+ 	struct se_tmr_req *se_tmr = se_cmd->se_tmr_req;
+-	unsigned long flags;
+ 
+ 	rcu_read_lock();
+ 	deve = target_nacl_find_deve(nacl, se_cmd->orig_fe_lun);
+@@ -178,10 +177,6 @@ int transport_lookup_tmr_lun(struct se_cmd *se_cmd)
+ 	se_cmd->se_dev = rcu_dereference_raw(se_lun->lun_se_dev);
+ 	se_tmr->tmr_dev = rcu_dereference_raw(se_lun->lun_se_dev);
+ 
+-	spin_lock_irqsave(&se_tmr->tmr_dev->se_tmr_lock, flags);
+-	list_add_tail(&se_tmr->tmr_list, &se_tmr->tmr_dev->dev_tmr_list);
+-	spin_unlock_irqrestore(&se_tmr->tmr_dev->se_tmr_lock, flags);
+-
+ 	return 0;
  }
+ EXPORT_SYMBOL(transport_lookup_tmr_lun);
+diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
+index 0686882bcbda3..fb93d74c5d0b2 100644
+--- a/drivers/target/target_core_transport.c
++++ b/drivers/target/target_core_transport.c
+@@ -3627,6 +3627,10 @@ int transport_generic_handle_tmr(
+ 	unsigned long flags;
+ 	bool aborted = false;
  
--TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
--				     const struct tc_action *a,
--				     struct tcf_result *res)
-+static int tcf_mirred_to_dev(struct sk_buff *skb, struct tcf_mirred *m,
-+			     struct net_device *dev,
-+			     const bool m_mac_header_xmit, int m_eaction,
-+			     int retval)
- {
--	struct tcf_mirred *m = to_mirred(a);
--	struct sk_buff *skb2 = skb;
--	bool m_mac_header_xmit;
--	struct net_device *dev;
--	unsigned int nest_level;
--	int retval, err = 0;
--	bool use_reinsert;
-+	struct sk_buff *skb_to_send = skb;
- 	bool want_ingress;
- 	bool is_redirect;
- 	bool expects_nh;
- 	bool at_ingress;
--	int m_eaction;
-+	bool dont_clone;
- 	int mac_len;
- 	bool at_nh;
-+	int err;
- 
--	nest_level = __this_cpu_inc_return(mirred_nest_level);
--	if (unlikely(nest_level > MIRRED_NEST_LIMIT)) {
--		net_warn_ratelimited("Packet exceeded mirred recursion limit on dev %s\n",
--				     netdev_name(skb->dev));
--		__this_cpu_dec(mirred_nest_level);
--		return TC_ACT_SHOT;
--	}
--
--	tcf_lastuse_update(&m->tcf_tm);
--	tcf_action_update_bstats(&m->common, skb);
--
--	m_mac_header_xmit = READ_ONCE(m->tcfm_mac_header_xmit);
--	m_eaction = READ_ONCE(m->tcfm_eaction);
--	retval = READ_ONCE(m->tcf_action);
--	dev = rcu_dereference_bh(m->tcfm_dev);
--	if (unlikely(!dev)) {
--		pr_notice_once("tc mirred: target device is gone\n");
--		goto out;
--	}
--
-+	is_redirect = tcf_mirred_is_act_redirect(m_eaction);
- 	if (unlikely(!(dev->flags & IFF_UP)) || !netif_carrier_ok(dev)) {
- 		net_notice_ratelimited("tc mirred to Houston: device %s is down\n",
- 				       dev->name);
-+		err = -ENODEV;
- 		goto out;
- 	}
- 
-@@ -274,61 +252,98 @@ TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
- 	 * since we can't easily detect the clsact caller, skip clone only for
- 	 * ingress - that covers the TC S/W datapath.
- 	 */
--	is_redirect = tcf_mirred_is_act_redirect(m_eaction);
- 	at_ingress = skb_at_tc_ingress(skb);
--	use_reinsert = at_ingress && is_redirect &&
--		       tcf_mirred_can_reinsert(retval);
--	if (!use_reinsert) {
--		skb2 = skb_clone(skb, GFP_ATOMIC);
--		if (!skb2)
-+	dont_clone = skb_at_tc_ingress(skb) && is_redirect &&
-+		tcf_mirred_can_reinsert(retval);
-+	if (!dont_clone) {
-+		skb_to_send = skb_clone(skb, GFP_ATOMIC);
-+		if (!skb_to_send) {
-+			err =  -ENOMEM;
- 			goto out;
-+		}
- 	}
- 
- 	want_ingress = tcf_mirred_act_wants_ingress(m_eaction);
- 
- 	/* All mirred/redirected skbs should clear previous ct info */
--	nf_reset_ct(skb2);
-+	nf_reset_ct(skb_to_send);
- 	if (want_ingress && !at_ingress) /* drop dst for egress -> ingress */
--		skb_dst_drop(skb2);
-+		skb_dst_drop(skb_to_send);
- 
- 	expects_nh = want_ingress || !m_mac_header_xmit;
- 	at_nh = skb->data == skb_network_header(skb);
- 	if (at_nh != expects_nh) {
--		mac_len = skb_at_tc_ingress(skb) ? skb->mac_len :
-+		mac_len = at_ingress ? skb->mac_len :
- 			  skb_network_offset(skb);
- 		if (expects_nh) {
- 			/* target device/action expect data at nh */
--			skb_pull_rcsum(skb2, mac_len);
-+			skb_pull_rcsum(skb_to_send, mac_len);
- 		} else {
- 			/* target device/action expect data at mac */
--			skb_push_rcsum(skb2, mac_len);
-+			skb_push_rcsum(skb_to_send, mac_len);
- 		}
- 	}
- 
--	skb2->skb_iif = skb->dev->ifindex;
--	skb2->dev = dev;
-+	skb_to_send->skb_iif = skb->dev->ifindex;
-+	skb_to_send->dev = dev;
- 
--	/* mirror is always swallowed */
- 	if (is_redirect) {
--		skb_set_redirected(skb2, skb2->tc_at_ingress);
--
--		/* let's the caller reinsert the packet, if possible */
--		if (use_reinsert) {
--			err = tcf_mirred_forward(want_ingress, skb);
--			if (err)
--				tcf_action_inc_overlimit_qstats(&m->common);
--			__this_cpu_dec(mirred_nest_level);
--			return TC_ACT_CONSUMED;
--		}
-+		if (skb == skb_to_send)
-+			retval = TC_ACT_CONSUMED;
++	spin_lock_irqsave(&cmd->se_dev->se_tmr_lock, flags);
++	list_add_tail(&cmd->se_tmr_req->tmr_list, &cmd->se_dev->dev_tmr_list);
++	spin_unlock_irqrestore(&cmd->se_dev->se_tmr_lock, flags);
 +
-+		skb_set_redirected(skb_to_send, skb_to_send->tc_at_ingress);
-+
-+		err = tcf_mirred_forward(want_ingress, skb_to_send);
-+	} else {
-+		err = tcf_mirred_forward(want_ingress, skb_to_send);
- 	}
- 
--	err = tcf_mirred_forward(want_ingress, skb2);
- 	if (err) {
- out:
- 		tcf_action_inc_overlimit_qstats(&m->common);
--		if (tcf_mirred_is_act_redirect(m_eaction))
-+		if (is_redirect)
- 			retval = TC_ACT_SHOT;
- 	}
-+
-+	return retval;
-+}
-+
-+TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
-+				     const struct tc_action *a,
-+				     struct tcf_result *res)
-+{
-+	struct tcf_mirred *m = to_mirred(a);
-+	int retval = READ_ONCE(m->tcf_action);
-+	unsigned int nest_level;
-+	bool m_mac_header_xmit;
-+	struct net_device *dev;
-+	int m_eaction;
-+
-+	nest_level = __this_cpu_inc_return(mirred_nest_level);
-+	if (unlikely(nest_level > MIRRED_NEST_LIMIT)) {
-+		net_warn_ratelimited("Packet exceeded mirred recursion limit on dev %s\n",
-+				     netdev_name(skb->dev));
-+		retval = TC_ACT_SHOT;
-+		goto dec_nest_level;
-+	}
-+
-+	tcf_lastuse_update(&m->tcf_tm);
-+	tcf_action_update_bstats(&m->common, skb);
-+
-+	dev = rcu_dereference_bh(m->tcfm_dev);
-+	if (unlikely(!dev)) {
-+		pr_notice_once("tc mirred: target device is gone\n");
-+		tcf_action_inc_overlimit_qstats(&m->common);
-+		goto dec_nest_level;
-+	}
-+
-+	m_mac_header_xmit = READ_ONCE(m->tcfm_mac_header_xmit);
-+	m_eaction = READ_ONCE(m->tcfm_eaction);
-+
-+	retval = tcf_mirred_to_dev(skb, m, dev, m_mac_header_xmit, m_eaction,
-+				   retval);
-+
-+dec_nest_level:
- 	__this_cpu_dec(mirred_nest_level);
- 
- 	return retval;
+ 	spin_lock_irqsave(&cmd->t_state_lock, flags);
+ 	if (cmd->transport_state & CMD_T_ABORTED) {
+ 		aborted = true;
 -- 
 2.43.0
 
