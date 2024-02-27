@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0B538693C4
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:48:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACE45869715
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:18:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56F2C1F242B0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:48:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6844128978D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:18:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30513145B14;
-	Tue, 27 Feb 2024 13:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CE6D1420DA;
+	Tue, 27 Feb 2024 14:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nX2GiyGh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="otd+lkRv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E400413B2B3;
-	Tue, 27 Feb 2024 13:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0B614037E;
+	Tue, 27 Feb 2024 14:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041597; cv=none; b=FWznBXOc9HJnHS+4TIycfz5lNYYmQmL6BmJ4QnsN8/5W79J0oRP39wu6Gh2usG5OlIfn42309JPPRPxsZ2KFnSIsaH9bdqDLz5uiXmSCsq8qqJij0f60AbmiGftZd4Cz4reh2YAqxtKi9ncTjRwM/kqROwTxCnPoniUZqx/lPRk=
+	t=1709043475; cv=none; b=ghKE9s0P3SCGNMi0Qv3RWw2I9iZNpMMLZ1X18nG2yK43PZp0E3MbGGb0BQhqDInXcXBKxteAhNjHDNKio1cjLenRQRV/PFaZh33vpPs4F+x6mwa/quEQZ6TMMMg7UspERPMZem9fMbVilON4z7IULmnV/zd0mNLnAq7DyBsBvZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041597; c=relaxed/simple;
-	bh=p34U8IJIGbXbJu+uA6C3v2mstGwEnDBhE8jVHtyRfz8=;
+	s=arc-20240116; t=1709043475; c=relaxed/simple;
+	bh=W4+yHan5tkEkFLJYsQnYokvEXaLl+LGXRb12bIrBr2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hiy8OE4wD+HUfzHXN6Wj6fx8KBhFRpFuArtt9blvMkhyTmjiTXEbYhCYRCSdUKmYbE1fZzOfpBhekpN0jkXoM4gSg994o9gY+y5A1huLySM/ro7K5s2BsgxcQFwM+TSO5LxcMlH/falRPwP+VN3HAZCiuCiGRsmZZgUYB46T3/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nX2GiyGh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75B85C433F1;
-	Tue, 27 Feb 2024 13:46:36 +0000 (UTC)
+	 MIME-Version; b=QGVtvZJJjk4+g+xNGtVch+5CD9SRUonpd9WMvJ3SAvCpVRO1NW1ibJHtOBu4EECbLTJ+H5QXpsAMfFoFKAxvkhvgcsAYuAK5cQt6JSfB1gyPeygZTgV06ePgR2c67usP+vkQtWndOe408BASf8UPQfcheH17GSadZGT9rlYCzv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=otd+lkRv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AFC9C433F1;
+	Tue, 27 Feb 2024 14:17:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041596;
-	bh=p34U8IJIGbXbJu+uA6C3v2mstGwEnDBhE8jVHtyRfz8=;
+	s=korg; t=1709043475;
+	bh=W4+yHan5tkEkFLJYsQnYokvEXaLl+LGXRb12bIrBr2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nX2GiyGhOH6lYpDpZqVUxLeZBpD7AvH26jKuxHl01Sq4WoWW2NmXtJdcYJZWnRZrW
-	 UNW40Xn6RFZFP0GIUl6dkRdgiGWjMslXJ5o5ILJTovdesFfkf71LU0cltDQkIa0Hbj
-	 GEVbl+2XetkHXJJ37L+8wrCLqrJh+q+Z+AlYgrv0=
+	b=otd+lkRvf384Ql9acMLMJTRJxHJb41jL8j2kyRI7qLjHbwYam8Vg2U5grvpkCpoHB
+	 4ROLqPuMflnEOCUl3CyHv3gTKpv5FkBQ44Y8oYn15EgWV2ZoZI+43eXI4EdO6ndr+P
+	 oCI79MNyyqU6dc3dA74usGorwgkT7XUgP2yUGuWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 35/52] IB/hfi1: Fix a memleak in init_credit_return
+	Frank Li <Frank.Li@nxp.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.1 121/195] usb: cdns3: fixed memory use after free at cdns3_gadget_ep_disable()
 Date: Tue, 27 Feb 2024 14:26:22 +0100
-Message-ID: <20240227131549.685969024@linuxfoundation.org>
+Message-ID: <20240227131614.449676450@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
-References: <20240227131548.514622258@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit 809aa64ebff51eb170ee31a95f83b2d21efa32e2 ]
+commit cd45f99034b0c8c9cb346dd0d6407a95ca3d36f6 upstream.
 
-When dma_alloc_coherent fails to allocate dd->cr_base[i].va,
-init_credit_return should deallocate dd->cr_base and
-dd->cr_base[i] that allocated before. Or those resources
-would be never freed and a memleak is triggered.
+  ...
+  cdns3_gadget_ep_free_request(&priv_ep->endpoint, &priv_req->request);
+  list_del_init(&priv_req->list);
+  ...
 
-Fixes: 7724105686e7 ("IB/hfi1: add driver files")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Link: https://lore.kernel.org/r/20240112085523.3731720-1-alexious@zju.edu.cn
-Acked-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+'priv_req' actually free at cdns3_gadget_ep_free_request(). But
+list_del_init() use priv_req->list after it.
+
+[ 1542.642868][  T534] BUG: KFENCE: use-after-free read in __list_del_entry_valid+0x10/0xd4
+[ 1542.642868][  T534]
+[ 1542.653162][  T534] Use-after-free read at 0x000000009ed0ba99 (in kfence-#3):
+[ 1542.660311][  T534]  __list_del_entry_valid+0x10/0xd4
+[ 1542.665375][  T534]  cdns3_gadget_ep_disable+0x1f8/0x388 [cdns3]
+[ 1542.671571][  T534]  usb_ep_disable+0x44/0xe4
+[ 1542.675948][  T534]  ffs_func_eps_disable+0x64/0xc8
+[ 1542.680839][  T534]  ffs_func_set_alt+0x74/0x368
+[ 1542.685478][  T534]  ffs_func_disable+0x18/0x28
+
+Move list_del_init() before cdns3_gadget_ep_free_request() to resolve this
+problem.
+
+Cc: stable@vger.kernel.org
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20240202154217.661867-1-Frank.Li@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hfi1/pio.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/usb/cdns3/cdns3-gadget.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hfi1/pio.c b/drivers/infiniband/hw/hfi1/pio.c
-index 3fcbf56f8be23..c2a129ed17743 100644
---- a/drivers/infiniband/hw/hfi1/pio.c
-+++ b/drivers/infiniband/hw/hfi1/pio.c
-@@ -2118,7 +2118,7 @@ int init_credit_return(struct hfi1_devdata *dd)
- 				   "Unable to allocate credit return DMA range for NUMA %d\n",
- 				   i);
- 			ret = -ENOMEM;
--			goto done;
-+			goto free_cr_base;
- 		}
- 	}
- 	set_dev_node(&dd->pcidev->dev, dd->node);
-@@ -2126,6 +2126,10 @@ int init_credit_return(struct hfi1_devdata *dd)
- 	ret = 0;
- done:
- 	return ret;
-+
-+free_cr_base:
-+	free_credit_return(dd);
-+	goto done;
- }
+--- a/drivers/usb/cdns3/cdns3-gadget.c
++++ b/drivers/usb/cdns3/cdns3-gadget.c
+@@ -2537,11 +2537,11 @@ static int cdns3_gadget_ep_disable(struc
  
- void free_credit_return(struct hfi1_devdata *dd)
--- 
-2.43.0
-
+ 	while (!list_empty(&priv_ep->wa2_descmiss_req_list)) {
+ 		priv_req = cdns3_next_priv_request(&priv_ep->wa2_descmiss_req_list);
++		list_del_init(&priv_req->list);
+ 
+ 		kfree(priv_req->request.buf);
+ 		cdns3_gadget_ep_free_request(&priv_ep->endpoint,
+ 					     &priv_req->request);
+-		list_del_init(&priv_req->list);
+ 		--priv_ep->wa2_counter;
+ 	}
+ 
 
 
 
