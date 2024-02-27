@@ -1,57 +1,65 @@
-Return-Path: <stable+bounces-25169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B601C86980D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:28:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BF6F869683
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:12:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70BED292FA0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:28:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C0F41C22E72
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:12:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE94A1420D2;
-	Tue, 27 Feb 2024 14:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25B213B798;
+	Tue, 27 Feb 2024 14:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rzkoI1MC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZRYeIeB6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7FB145FE2;
-	Tue, 27 Feb 2024 14:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C0013AA4C;
+	Tue, 27 Feb 2024 14:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044056; cv=none; b=LCXpiju6S4+3soa3Yg6w5dkZePGgfCpKGnLlRM1CpJw0kue6n+Drf11+N3EkfEE4MZFtT0mufu2k3jev6rp30o5mCZdmz1jj3yvCQ85RO+jwy2Z64kSq/449HPww5QO5oNEEkRUM4rKe1Lsyu4Nb+8Smzc42fbRX9ebi5RHIz6I=
+	t=1709043145; cv=none; b=PXBn7kkSbpZrmIl6/oJpVlH4L7thSmfYvJyYzImmcmRto/dyK7k+40HCkYAa4jHlfUynqNfLDvo5cVyuz7VioOhYU1Fxm/WgeLDrMmf+otKwxVpUMGqMf7Z/ckG2tLpaqsIWfAp7b/ma02UP89p7a5tU53hQwu43aNoeRw8R3QQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044056; c=relaxed/simple;
-	bh=KijjZTtmrt7LZjEzotS0Mm6ZwNOJ4IWCJ7W58qOZUoM=;
+	s=arc-20240116; t=1709043145; c=relaxed/simple;
+	bh=GDqF3eZttv8I5nffzcnWAWrShh9NPmYOPKLpF/LYiW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X8ijO5/7D3QGw5M+yUs8Phjd9EnV+NzIcxBj5ALvlT+apsk+PgNVrgkYqNEJLF1fDMr9DUbHiZnD+1vxdRS6HC2Ob0KTcIgq60+F9FvgOuwKA3B4gKPqd1dwNbw2oPezWRlqfG1EPgTF3byB4He3xkgZOdD2PJ28ZWkLjDrZEeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rzkoI1MC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC010C433F1;
-	Tue, 27 Feb 2024 14:27:35 +0000 (UTC)
+	 MIME-Version; b=hMlhQziEVxsYjSHG9gPL4jY4uGyt7gRonrn4axbTIIMXj1tVHjlWu56WOKETfG56MRT1maB619cmZ5DE0fa5+bCVEc51jjm/R4YgtBQgcyN5ZcrJFy0b84uRGWodLQcMsDjTxb11HbK4nO95j+nc6R/yAM4FtgyHlaAvhLFnEUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRYeIeB6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D944C433F1;
+	Tue, 27 Feb 2024 14:12:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044056;
-	bh=KijjZTtmrt7LZjEzotS0Mm6ZwNOJ4IWCJ7W58qOZUoM=;
+	s=korg; t=1709043143;
+	bh=GDqF3eZttv8I5nffzcnWAWrShh9NPmYOPKLpF/LYiW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rzkoI1MC4BD4/4+TrpvyFaFZoCS4DFjYnlSoHIvLMf3Mc+7JV3oQL4atIj8tdD71D
-	 qvDXXhxY962OljhXntVPVGLTddeitF4eeVnNmO1OEgfCvJaXAEvkS9c4eH6keC7ltK
-	 WvnKRDPVXcqB3Epi6KIdgHbAsmzdKxAcYrd3GfI0=
+	b=ZRYeIeB6jyapIVk7WM59zc7Tz5iL2h0IuNlkjY5aENrcx680Tj4zOAsRmR+FpQpt6
+	 5WHdVXZYTxFaH7ubYxSjdoIjqrndfjkVfpzMSBp07JZppv0xbKvtpIXTNGVNHd1q2e
+	 sjO3axFrc4D9DEBHgC5S0Dme7FHhyIWdYnP0hlCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Daniel Wagner <dwagner@suse.de>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	linux-mips@vger.kernel.org,
+	Arnd Bergmann <arnd@arndb.de>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	"James E.J. Bottomley" <jejb@linux.ibm.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	linux-scsi@vger.kernel.org,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	kernel test robot <lkp@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 039/122] scsi: lpfc: Use unsigned type for num_sge
+Subject: [PATCH 5.15 212/245] scsi: jazz_esp: Only build if SCSI core is builtin
 Date: Tue, 27 Feb 2024 14:26:40 +0100
-Message-ID: <20240227131559.986085986@linuxfoundation.org>
+Message-ID: <20240227131622.093437879@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +71,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@suse.de>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit d6c1b19153f92e95e5e1801d540e98771053afae ]
+[ Upstream commit 9ddf190a7df77b77817f955fdb9c2ae9d1c9c9a3 ]
 
-LUNs going into "failed ready running" state observed on >1T and on even
-numbers of size (2T, 4T, 6T, 8T and 10T). The issue occurs when DIF is
-enabled at the host.
+JAZZ_ESP is a bool kconfig symbol that selects SCSI_SPI_ATTRS.  When
+CONFIG_SCSI=m, this results in SCSI_SPI_ATTRS=m while JAZZ_ESP=y, which
+causes many undefined symbol linker errors.
 
-The kernel logs:
+Fix this by only offering to build this driver when CONFIG_SCSI=y.
 
-  Cannot setup S/G List for HBAIO segs 1/1 SGL 512 SCSI 256: 3 0
+[mkp: JAZZ_ESP is unique in that it does not support being compiled as a
+module unlike the remaining SPI SCSI HBA drivers]
 
-The host lpfc driver is failing to setup scatter/gather list (protection
-data) for the I/Os.
-
-The return type lpfc_bg_setup_sgl()/lpfc_bg_setup_sgl_prot() causes the
-compiler to remove the most significant bit. Use an unsigned type instead.
-
-Signed-off-by: Hannes Reinecke <hare@suse.de>
-[dwagner: added commit message]
-Signed-off-by: Daniel Wagner <dwagner@suse.de>
-Link: https://lore.kernel.org/r/20231220162658.12392-1-dwagner@suse.de
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://lore.kernel.org/r/20240214055953.9612-1-rdunlap@infradead.org
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: linux-mips@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: James E.J. Bottomley <jejb@linux.ibm.com>
+Cc: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: linux-scsi@vger.kernel.org
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202402112222.Gl0udKyU-lkp@intel.com/
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_scsi.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/scsi/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
-index 983eeb0e3d07e..b4b87e5d8b291 100644
---- a/drivers/scsi/lpfc/lpfc_scsi.c
-+++ b/drivers/scsi/lpfc/lpfc_scsi.c
-@@ -1944,7 +1944,7 @@ lpfc_bg_setup_bpl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
-  *
-  * Returns the number of SGEs added to the SGL.
-  **/
--static int
-+static uint32_t
- lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
- 		struct sli4_sge *sgl, int datasegcnt,
- 		struct lpfc_io_buf *lpfc_cmd)
-@@ -1952,8 +1952,8 @@ lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
- 	struct scatterlist *sgde = NULL; /* s/g data entry */
- 	struct sli4_sge_diseed *diseed = NULL;
- 	dma_addr_t physaddr;
--	int i = 0, num_sge = 0, status;
--	uint32_t reftag;
-+	int i = 0, status;
-+	uint32_t reftag, num_sge = 0;
- 	uint8_t txop, rxop;
- #ifdef CONFIG_SCSI_LPFC_DEBUG_FS
- 	uint32_t rc;
-@@ -2124,7 +2124,7 @@ lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
-  *
-  * Returns the number of SGEs added to the SGL.
-  **/
--static int
-+static uint32_t
- lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
- 		struct sli4_sge *sgl, int datacnt, int protcnt,
- 		struct lpfc_io_buf *lpfc_cmd)
-@@ -2148,8 +2148,8 @@ lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
- 	uint32_t rc;
- #endif
- 	uint32_t checking = 1;
--	uint32_t dma_offset = 0;
--	int num_sge = 0, j = 2;
-+	uint32_t dma_offset = 0, num_sge = 0;
-+	int j = 2;
- 	struct sli4_hybrid_sgl *sgl_xtra = NULL;
+diff --git a/drivers/scsi/Kconfig b/drivers/scsi/Kconfig
+index eea574e89b872..43e6f86e08c33 100644
+--- a/drivers/scsi/Kconfig
++++ b/drivers/scsi/Kconfig
+@@ -1296,7 +1296,7 @@ source "drivers/scsi/arm/Kconfig"
  
- 	sgpe = scsi_prot_sglist(sc);
+ config JAZZ_ESP
+ 	bool "MIPS JAZZ FAS216 SCSI support"
+-	depends on MACH_JAZZ && SCSI
++	depends on MACH_JAZZ && SCSI=y
+ 	select SCSI_SPI_ATTRS
+ 	help
+ 	  This is the driver for the onboard SCSI host adapter of MIPS Magnum
 -- 
 2.43.0
 
