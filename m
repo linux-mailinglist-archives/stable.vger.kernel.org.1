@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E40E2869464
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:53:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D739869571
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:01:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1391A1C22C12
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:53:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EFEB1C2537A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:01:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05FF2145346;
-	Tue, 27 Feb 2024 13:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCE1813EFE9;
+	Tue, 27 Feb 2024 14:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vx7FN+Zy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qrwLJkzT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B850513B79F;
-	Tue, 27 Feb 2024 13:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B70B78B61;
+	Tue, 27 Feb 2024 14:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041953; cv=none; b=sVJoWJAD+Zsa6VCJSAeT+QERBAz//FVq6mvIKDgAF63d8TVJ9tjVEgfG8c90H2rrn/Bm/tOBe2rYUpR1sldXTr97Ey//CXlldg6nIkAx0v1eG0Ckl36PKEPRrSdonkYAnwbwE7QXz1vyBN0cltgLZkQHcBzdaAHhzU/Npw4tMs8=
+	t=1709042512; cv=none; b=mNHZ329UUZJJbKFm/2ha16SQs0cY7s8WLQdqSXsB4MsL4c7yrhi+l/Imt8qORH613OV9po4+/29k9dPPSV9TT/uH0fAtmiFFPgIc5zrh5FISIP+V6krGmYIyZeCL3ZmH7KkOWerhAQXrxBuA3D/SnTyd6UVCTBJBqtmVb0wtmnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041953; c=relaxed/simple;
-	bh=v2e//Y6xLlYVHYNptzwBn+4uVmB4Vk69A/JNZy/kcPY=;
+	s=arc-20240116; t=1709042512; c=relaxed/simple;
+	bh=EdsKlsi7hPb4wYSm0oXpCZyW0p0JCbFP54zhcyW6IlM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OHFhyhBk4ooS377XKNuXG8xkrH7cOk5dFQtohbQY0Hd/Hufq+hnbiu+gDz21wll3axSn0R3GP8CK1lMmefIhc0NSVlkmGWBzfAKGAXwqI9IQQRLclGMW1dG55+3ooRT4m6mEzorjeuvyO6iL+TnYGo34SCKhxBrkG1l1LWGfuBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vx7FN+Zy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450D8C43390;
-	Tue, 27 Feb 2024 13:52:33 +0000 (UTC)
+	 MIME-Version; b=hE6Tc837NyywI/ZBlM3DY2Guvv7TztUnPzylg7XoJQZ2zzAC0RvNL1tqW3+5kSer0XvZOYi6S3xGZL83t513Sym9w+gzLSJjwVNzRzifmdTlbRMGhxxkDTkIw7jyzIfGVrP+E1tkmtGRZ5KWZjtcezD/HVAuCfGY20usEv7Zy14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qrwLJkzT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F1DC433F1;
+	Tue, 27 Feb 2024 14:01:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041953;
-	bh=v2e//Y6xLlYVHYNptzwBn+4uVmB4Vk69A/JNZy/kcPY=;
+	s=korg; t=1709042512;
+	bh=EdsKlsi7hPb4wYSm0oXpCZyW0p0JCbFP54zhcyW6IlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vx7FN+Zyn6o5tdY+Tyyxya6AFrGj7Ubhb/yrmZYZ7bGmWLqf8ZhFQ4nMkNMT4Zwhq
-	 uzwgxpE9TfLBFCocRwC3WiCE8FqgAOVz1yLZ7EJw7bLkOpvgqHpdtzWwgHJ5112DH/
-	 OlHCf8OBL5DpysWVfIzsh47ApCnwIX06LYVHmA8A=
+	b=qrwLJkzTdFH8ziYKg++XjAJuIiZUeU27+RIvOzqIhseKU2UCYYfzwIfo+Gl1VhLwF
+	 wSFSkb2SBklW+HtI3CybjL/Dg/qg388mD4QvkiNLV4v0LHF5HqaYlR6Mwzr3Rw67tu
+	 g3TgPEU/HRD9LnN+KKUbC7ZsHcYgEgAi9y89c5B0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Daniel Wagner <dwagner@suse.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 099/299] scsi: lpfc: Use unsigned type for num_sge
+Subject: [PATCH 5.15 022/245] wifi: mac80211: fix race condition on enabling fast-xmit
 Date: Tue, 27 Feb 2024 14:23:30 +0100
-Message-ID: <20240227131629.079919285@linuxfoundation.org>
+Message-ID: <20240227131615.838024499@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@suse.de>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit d6c1b19153f92e95e5e1801d540e98771053afae ]
+[ Upstream commit bcbc84af1183c8cf3d1ca9b78540c2185cd85e7f ]
 
-LUNs going into "failed ready running" state observed on >1T and on even
-numbers of size (2T, 4T, 6T, 8T and 10T). The issue occurs when DIF is
-enabled at the host.
+fast-xmit must only be enabled after the sta has been uploaded to the driver,
+otherwise it could end up passing the not-yet-uploaded sta via drv_tx calls
+to the driver, leading to potential crashes because of uninitialized drv_priv
+data.
+Add a missing sta->uploaded check and re-check fast xmit after inserting a sta.
 
-The kernel logs:
-
-  Cannot setup S/G List for HBAIO segs 1/1 SGL 512 SCSI 256: 3 0
-
-The host lpfc driver is failing to setup scatter/gather list (protection
-data) for the I/Os.
-
-The return type lpfc_bg_setup_sgl()/lpfc_bg_setup_sgl_prot() causes the
-compiler to remove the most significant bit. Use an unsigned type instead.
-
-Signed-off-by: Hannes Reinecke <hare@suse.de>
-[dwagner: added commit message]
-Signed-off-by: Daniel Wagner <dwagner@suse.de>
-Link: https://lore.kernel.org/r/20231220162658.12392-1-dwagner@suse.de
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://msgid.link/20240104181059.84032-1-nbd@nbd.name
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_scsi.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/mac80211/sta_info.c | 2 ++
+ net/mac80211/tx.c       | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
-index d26941b131fdb..bf879d81846b6 100644
---- a/drivers/scsi/lpfc/lpfc_scsi.c
-+++ b/drivers/scsi/lpfc/lpfc_scsi.c
-@@ -1918,7 +1918,7 @@ lpfc_bg_setup_bpl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
-  *
-  * Returns the number of SGEs added to the SGL.
-  **/
--static int
-+static uint32_t
- lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
- 		struct sli4_sge *sgl, int datasegcnt,
- 		struct lpfc_io_buf *lpfc_cmd)
-@@ -1926,8 +1926,8 @@ lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
- 	struct scatterlist *sgde = NULL; /* s/g data entry */
- 	struct sli4_sge_diseed *diseed = NULL;
- 	dma_addr_t physaddr;
--	int i = 0, num_sge = 0, status;
--	uint32_t reftag;
-+	int i = 0, status;
-+	uint32_t reftag, num_sge = 0;
- 	uint8_t txop, rxop;
- #ifdef CONFIG_SCSI_LPFC_DEBUG_FS
- 	uint32_t rc;
-@@ -2099,7 +2099,7 @@ lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
-  *
-  * Returns the number of SGEs added to the SGL.
-  **/
--static int
-+static uint32_t
- lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
- 		struct sli4_sge *sgl, int datacnt, int protcnt,
- 		struct lpfc_io_buf *lpfc_cmd)
-@@ -2123,8 +2123,8 @@ lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
- 	uint32_t rc;
- #endif
- 	uint32_t checking = 1;
--	uint32_t dma_offset = 0;
--	int num_sge = 0, j = 2;
-+	uint32_t dma_offset = 0, num_sge = 0;
-+	int j = 2;
- 	struct sli4_hybrid_sgl *sgl_xtra = NULL;
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index e10bcfa20526d..f4deee1926e58 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -696,6 +696,8 @@ static int sta_info_insert_finish(struct sta_info *sta) __acquires(RCU)
+ 	if (ieee80211_vif_is_mesh(&sdata->vif))
+ 		mesh_accept_plinks_update(sdata);
  
- 	sgpe = scsi_prot_sglist(sc);
++	ieee80211_check_fast_xmit(sta);
++
+ 	return 0;
+  out_remove:
+ 	sta_info_hash_del(local, sta);
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 481b6b34797da..c4e6fbe4343ee 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -2965,7 +2965,7 @@ void ieee80211_check_fast_xmit(struct sta_info *sta)
+ 	    sdata->vif.type == NL80211_IFTYPE_STATION)
+ 		goto out;
+ 
+-	if (!test_sta_flag(sta, WLAN_STA_AUTHORIZED))
++	if (!test_sta_flag(sta, WLAN_STA_AUTHORIZED) || !sta->uploaded)
+ 		goto out;
+ 
+ 	if (test_sta_flag(sta, WLAN_STA_PS_STA) ||
 -- 
 2.43.0
 
