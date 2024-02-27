@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-24480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 806E18694B4
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:55:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3273F8696B4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0E901C26393
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:55:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64C891C2397E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4701420A3;
-	Tue, 27 Feb 2024 13:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372ED145B13;
+	Tue, 27 Feb 2024 14:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dnsAxz2b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dls0gRjL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5F814533E;
-	Tue, 27 Feb 2024 13:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB6913B798;
+	Tue, 27 Feb 2024 14:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042121; cv=none; b=HxLnVsouzPY7PCorZR2XgSuj0CFJ3H6WdeTmmdeqzCPsbWyKPfRdVdElhJR/rWfys6YRt4+DW2M/6L+jcZxKMT2i+qJ0byXl+p1IdeeEAG/5tSGP0vu6gF25l8heP9wyRlZoc0g2RqFW2Umy9YsMg+T3AEKMue4AJBDa/pJxIbk=
+	t=1709043244; cv=none; b=JxvGclLduWdzZOa5roh6YbOYdGymD/XHv7gQHUSENZjUfvd0tGMiN0Tg60wODDl7qyXS87vdFm592VMY3qyBi5SMu7gBjMh27XjaYzSb4HZHevGg1OglDBc+6AyiHw4Q8h9rixJXFQUks0KLedFqQE/dU/7dzDRdwmlYq3YPlbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042121; c=relaxed/simple;
-	bh=HXbMIeAfjAeJJ949pWg4Ghe7PAESmwtUZY9GZtrrhTE=;
+	s=arc-20240116; t=1709043244; c=relaxed/simple;
+	bh=uVNkVtlasTX/8R5A+9PvDvz9n68vpd4EKFuEPLpTVQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nWzdz+o/9sNAi9ueNyhs6qmp0+mfORr4loG7GL/2eMaaBPXQf61vu8vBEJ4o7C9qbYiZ/fCIEypt8KJFoSc80Vd+8oR8/yNiHxSidq2BppOuCtObAofLjkvvRabK//CdiYy1NpjcCiVhsVXSC97j7HMigwlFmf4etNvj0Yg7mIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dnsAxz2b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29D9AC433C7;
-	Tue, 27 Feb 2024 13:55:20 +0000 (UTC)
+	 MIME-Version; b=WA0bbguxKFqppWb6cEE+dJC/tdyK/scAY0IUu0Pn98aaPVTC1qcfW0RF3jp42RSCYD7XMF3MasCcNT9bjOEbiZ8kdxQNujr6De2/em+0LdIE++qYUZF+/If7GrD1s4VKv6UV9cmIuVm/15PVClZHDf5qHehM697HrYeOyhz5GiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dls0gRjL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 728CDC433C7;
+	Tue, 27 Feb 2024 14:14:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042121;
-	bh=HXbMIeAfjAeJJ949pWg4Ghe7PAESmwtUZY9GZtrrhTE=;
+	s=korg; t=1709043243;
+	bh=uVNkVtlasTX/8R5A+9PvDvz9n68vpd4EKFuEPLpTVQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dnsAxz2bIOekBdBOok65nQI49bNcZVnVB6L9ZBmK4O5n9CRQsEjbphrAzVmmkclLA
-	 Pu80Ff4LFULLV1gjhBpEY74Ub6bWdKhv6cqvYh/woBn/4hPzQwzbtYzLhnuWlKmFCX
-	 i/BoZs0Gxun0ik7xwMznfp9ydBTPRNL61zd3vnWc=
+	b=dls0gRjLgsvd07f0mzFAl201Wipij7zU+TwuZKXyTY+hm/RcabjkYiHQkoqHBj+Pl
+	 QqkMnNi/6iyehdHLSPjxyHPEMZNgpA/i/aBqlSNeRLSSOEu2aWy+T9ocnwGigKut1y
+	 /eCiKCpRA5p5AzhP0WV3lLnlZtgqFdTseOOvsH5s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 159/299] mm/damon/lru_sort: fix quota status loss due to online tunings
+	Dmitry Bogdanov <d.bogdanov@yadro.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 009/195] scsi: target: core: Add TMF to tmr_list handling
 Date: Tue, 27 Feb 2024 14:24:30 +0100
-Message-ID: <20240227131630.972857586@linuxfoundation.org>
+Message-ID: <20240227131610.710482906@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,106 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Dmitry Bogdanov <d.bogdanov@yadro.com>
 
-commit 13d0599ab3b2ff17f798353f24bcbef1659d3cfc upstream.
+[ Upstream commit 83ab68168a3d990d5ff39ab030ad5754cbbccb25 ]
 
-For online parameters change, DAMON_LRU_SORT creates new schemes based on
-latest values of the parameters and replaces the old schemes with the new
-one.  When creating it, the internal status of the quotas of the old
-schemes is not preserved.  As a result, charging of the quota starts from
-zero after the online tuning.  The data that collected to estimate the
-throughput of the scheme's action is also reset, and therefore the
-estimation should start from the scratch again.  Because the throughput
-estimation is being used to convert the time quota to the effective size
-quota, this could result in temporal time quota inaccuracy.  It would be
-recovered over time, though.  In short, the quota accuracy could be
-temporarily degraded after online parameters update.
+An abort that is responded to by iSCSI itself is added to tmr_list but does
+not go to target core. A LUN_RESET that goes through tmr_list takes a
+refcounter on the abort and waits for completion. However, the abort will
+be never complete because it was not started in target core.
 
-Fix the problem by checking the case and copying the internal fields for
-the status.
+ Unable to locate ITT: 0x05000000 on CID: 0
+ Unable to locate RefTaskTag: 0x05000000 on CID: 0.
+ wait_for_tasks: Stopping tmf LUN_RESET with tag 0x0 ref_task_tag 0x0 i_state 34 t_state ISTATE_PROCESSING refcnt 2 transport_state active,stop,fabric_stop
+ wait for tasks: tmf LUN_RESET with tag 0x0 ref_task_tag 0x0 i_state 34 t_state ISTATE_PROCESSING refcnt 2 transport_state active,stop,fabric_stop
+...
+ INFO: task kworker/0:2:49 blocked for more than 491 seconds.
+ task:kworker/0:2     state:D stack:    0 pid:   49 ppid:     2 flags:0x00000800
+ Workqueue: events target_tmr_work [target_core_mod]
+Call Trace:
+ __switch_to+0x2c4/0x470
+ _schedule+0x314/0x1730
+ schedule+0x64/0x130
+ schedule_timeout+0x168/0x430
+ wait_for_completion+0x140/0x270
+ target_put_cmd_and_wait+0x64/0xb0 [target_core_mod]
+ core_tmr_lun_reset+0x30/0xa0 [target_core_mod]
+ target_tmr_work+0xc8/0x1b0 [target_core_mod]
+ process_one_work+0x2d4/0x5d0
+ worker_thread+0x78/0x6c0
 
-Link: https://lkml.kernel.org/r/20240216194025.9207-3-sj@kernel.org
-Fixes: 40e983cca927 ("mm/damon: introduce DAMON-based LRU-lists Sorting")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.0+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To fix this, only add abort to tmr_list if it will be handled by target
+core.
+
+Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
+Link: https://lore.kernel.org/r/20240111125941.8688-1-d.bogdanov@yadro.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/damon/lru_sort.c |   43 ++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 36 insertions(+), 7 deletions(-)
+ drivers/target/target_core_device.c    | 5 -----
+ drivers/target/target_core_transport.c | 4 ++++
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
---- a/mm/damon/lru_sort.c
-+++ b/mm/damon/lru_sort.c
-@@ -183,9 +183,21 @@ static struct damos *damon_lru_sort_new_
- 	return damon_lru_sort_new_scheme(&pattern, DAMOS_LRU_DEPRIO);
+diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
+index 301fe376a1206..13558cbd9b82e 100644
+--- a/drivers/target/target_core_device.c
++++ b/drivers/target/target_core_device.c
+@@ -147,7 +147,6 @@ int transport_lookup_tmr_lun(struct se_cmd *se_cmd)
+ 	struct se_session *se_sess = se_cmd->se_sess;
+ 	struct se_node_acl *nacl = se_sess->se_node_acl;
+ 	struct se_tmr_req *se_tmr = se_cmd->se_tmr_req;
+-	unsigned long flags;
+ 
+ 	rcu_read_lock();
+ 	deve = target_nacl_find_deve(nacl, se_cmd->orig_fe_lun);
+@@ -178,10 +177,6 @@ int transport_lookup_tmr_lun(struct se_cmd *se_cmd)
+ 	se_cmd->se_dev = rcu_dereference_raw(se_lun->lun_se_dev);
+ 	se_tmr->tmr_dev = rcu_dereference_raw(se_lun->lun_se_dev);
+ 
+-	spin_lock_irqsave(&se_tmr->tmr_dev->se_tmr_lock, flags);
+-	list_add_tail(&se_tmr->tmr_list, &se_tmr->tmr_dev->dev_tmr_list);
+-	spin_unlock_irqrestore(&se_tmr->tmr_dev->se_tmr_lock, flags);
+-
+ 	return 0;
  }
+ EXPORT_SYMBOL(transport_lookup_tmr_lun);
+diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
+index 0686882bcbda3..fb93d74c5d0b2 100644
+--- a/drivers/target/target_core_transport.c
++++ b/drivers/target/target_core_transport.c
+@@ -3627,6 +3627,10 @@ int transport_generic_handle_tmr(
+ 	unsigned long flags;
+ 	bool aborted = false;
  
-+static void damon_lru_sort_copy_quota_status(struct damos_quota *dst,
-+		struct damos_quota *src)
-+{
-+	dst->total_charged_sz = src->total_charged_sz;
-+	dst->total_charged_ns = src->total_charged_ns;
-+	dst->charged_sz = src->charged_sz;
-+	dst->charged_from = src->charged_from;
-+	dst->charge_target_from = src->charge_target_from;
-+	dst->charge_addr_from = src->charge_addr_from;
-+}
++	spin_lock_irqsave(&cmd->se_dev->se_tmr_lock, flags);
++	list_add_tail(&cmd->se_tmr_req->tmr_list, &cmd->se_dev->dev_tmr_list);
++	spin_unlock_irqrestore(&cmd->se_dev->se_tmr_lock, flags);
 +
- static int damon_lru_sort_apply_parameters(void)
- {
--	struct damos *scheme;
-+	struct damos *scheme, *hot_scheme, *cold_scheme;
-+	struct damos *old_hot_scheme = NULL, *old_cold_scheme = NULL;
- 	unsigned int hot_thres, cold_thres;
- 	int err = 0;
- 
-@@ -193,18 +205,35 @@ static int damon_lru_sort_apply_paramete
- 	if (err)
- 		return err;
- 
-+	damon_for_each_scheme(scheme, ctx) {
-+		if (!old_hot_scheme) {
-+			old_hot_scheme = scheme;
-+			continue;
-+		}
-+		old_cold_scheme = scheme;
-+	}
-+
- 	hot_thres = damon_max_nr_accesses(&damon_lru_sort_mon_attrs) *
- 		hot_thres_access_freq / 1000;
--	scheme = damon_lru_sort_new_hot_scheme(hot_thres);
--	if (!scheme)
-+	hot_scheme = damon_lru_sort_new_hot_scheme(hot_thres);
-+	if (!hot_scheme)
- 		return -ENOMEM;
--	damon_set_schemes(ctx, &scheme, 1);
-+	if (old_hot_scheme)
-+		damon_lru_sort_copy_quota_status(&hot_scheme->quota,
-+				&old_hot_scheme->quota);
- 
- 	cold_thres = cold_min_age / damon_lru_sort_mon_attrs.aggr_interval;
--	scheme = damon_lru_sort_new_cold_scheme(cold_thres);
--	if (!scheme)
-+	cold_scheme = damon_lru_sort_new_cold_scheme(cold_thres);
-+	if (!cold_scheme) {
-+		damon_destroy_scheme(hot_scheme);
- 		return -ENOMEM;
--	damon_add_scheme(ctx, scheme);
-+	}
-+	if (old_cold_scheme)
-+		damon_lru_sort_copy_quota_status(&cold_scheme->quota,
-+				&old_cold_scheme->quota);
-+
-+	damon_set_schemes(ctx, &hot_scheme, 1);
-+	damon_add_scheme(ctx, cold_scheme);
- 
- 	return damon_set_region_biggest_system_ram_default(target,
- 					&monitor_region_start,
+ 	spin_lock_irqsave(&cmd->t_state_lock, flags);
+ 	if (cmd->transport_state & CMD_T_ABORTED) {
+ 		aborted = true;
+-- 
+2.43.0
+
 
 
 
