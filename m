@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-24735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2011F869609
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCB3C86950F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:58:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 073831C2074B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DAF71F22B56
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:58:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF2B113B7AB;
-	Tue, 27 Feb 2024 14:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA2513EFFB;
+	Tue, 27 Feb 2024 13:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+29EW+u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TA0anSrs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA4313F016;
-	Tue, 27 Feb 2024 14:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF4B13DB98;
+	Tue, 27 Feb 2024 13:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042845; cv=none; b=maeDzH2OaiJ3xNnFLOlLwKfutSeqJrd/QNAjdDEXTFFvYSzsqSdhVOSUIjvjTrhefyWFS1kK2orUZcb8yqshgqboqLnK81k6dh8eQNKZWD9baF6PP0CChQ2voEfNjBAiaF58lZhP+NR8Dg8uUPIg7+lIeT7q7H2EZf89Su5xvIM=
+	t=1709042295; cv=none; b=I0JbWBR6c1GANqyzfGLCz+FuPmxKXSDVh8aCez9iml/OUVQD6IyOjIf6KFvrathhAECCF0ON91VsDKPfmw02z7hZdyAWs32CvdDqICOVFSAjF+6H4bTgPkGuA+sHOxaZX7AxLWAQtJuiO8Uscm05ODCrYnCXt5n/tzB6pPXm8aA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042845; c=relaxed/simple;
-	bh=LUKLz1YQGC/+oH/eXus/9fD7fUdlm/2eE3stRmaXPsA=;
+	s=arc-20240116; t=1709042295; c=relaxed/simple;
+	bh=EnNTSI6uA7VNThEzIQlR0N4K0vkPar2gXQdwZaQyTXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sGF/xvVfALZnF1VknZeaIRC6qXpqmz5JxdVXkwmAbbLClKyjPkLCm2eysiT53723P9jeokv23OIPEoO8XjLlNRynQoQBNMUnJEUqozV+q2cE0yhEgFYENYdeaz0LxEWM6pjYzIZxHMxdDpJ6a56SQGNtG1NkB7+4EyC+hfjnE4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+29EW+u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDAF8C433C7;
-	Tue, 27 Feb 2024 14:07:24 +0000 (UTC)
+	 MIME-Version; b=dEkeM5Bxuqf6C4Z8wm9LdGcYLdyFnvaWbGj+sFUDx9HC9jBWYYlMnDEW5UrWpFFYTWY2/0uh30FBy2EOGx/z2WM6SegUGB4MB73l0g/bQ6SPrQNoOf4zmgDnPTzXOu/ezRWg42Wo+YN/6PT6zX3+gAmTX8otJuE8tP6uoDB92DY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TA0anSrs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98BC9C433F1;
+	Tue, 27 Feb 2024 13:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042845;
-	bh=LUKLz1YQGC/+oH/eXus/9fD7fUdlm/2eE3stRmaXPsA=;
+	s=korg; t=1709042295;
+	bh=EnNTSI6uA7VNThEzIQlR0N4K0vkPar2gXQdwZaQyTXU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q+29EW+u3WWPDgEb66cJMtCzsNUMTHJsi8BeZd/LSm/DKlYJ0UYr4DiaasYops56B
-	 LiREAHGoX2P1ZtlibZa4r7vythQSI6fTwS4UUCAc4Gvv2g5tbLLe90u1aZC39PD1yO
-	 i97mTDbaomYZe6d1xOwgFmS6FeF4UZwOQor3ir9o=
+	b=TA0anSrsVdY317ENgzki3C3MuQtTsA6Gvue4vviUT1rxHOj0boxmTtJoihmpu/GUb
+	 VW2TxfLSMB3hut1Taen9zDJueCs6gv11SAv+sl/EQJ0Sir3mR6BnvD957IHpEb+Nke
+	 Y304C4ebAaFfhY4sy7kgcIl/ro7mSN2PfRul7aD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao.yu@oppo.com>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Mustafa Ismail <mustafa.ismail@intel.com>,
+	Shiraz Saleem <shiraz.saleem@intel.com>,
+	Sindhu Devale <sindhu.devale@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 141/245] f2fs: dont set GC_FAILURE_PIN for background GC
+Subject: [PATCH 6.6 218/299] RDMA/irdma: Set the CQ read threshold for GEN 1
 Date: Tue, 27 Feb 2024 14:25:29 +0100
-Message-ID: <20240227131619.798727314@linuxfoundation.org>
+Message-ID: <20240227131632.790371694@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Mustafa Ismail <mustafa.ismail@intel.com>
 
-[ Upstream commit 642c0969916eaa4878cb74f36752108e590b0389 ]
+[ Upstream commit 666047f3ece9f991774c1fe9b223139a9ef8908d ]
 
-So that it can reduce the possibility that file be unpinned forcely by
-foreground GC due to .i_gc_failures[GC_FAILURE_PIN] exceeds threshold.
+The CQ shadow read threshold is currently not set for GEN 2.  This could
+cause an invalid CQ overflow condition, so remove the GEN check that
+exclused GEN 1.
 
-Signed-off-by: Chao Yu <chao.yu@oppo.com>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
+Signed-off-by: Mustafa Ismail <mustafa.ismail@intel.com>
+Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
+Signed-off-by: Sindhu Devale <sindhu.devale@intel.com>
+Link: https://lore.kernel.org/r/20240131233849.400285-4-sindhu.devale@intel.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/gc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/irdma/verbs.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index 7010440cb64c8..d016504fad4b9 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -1199,7 +1199,8 @@ static int move_data_block(struct inode *inode, block_t bidx,
+diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
+index d9750901c5990..60618b2046b97 100644
+--- a/drivers/infiniband/hw/irdma/verbs.c
++++ b/drivers/infiniband/hw/irdma/verbs.c
+@@ -2186,9 +2186,8 @@ static int irdma_create_cq(struct ib_cq *ibcq,
+ 		info.cq_base_pa = iwcq->kmem.pa;
  	}
  
- 	if (f2fs_is_pinned_file(inode)) {
--		f2fs_pin_file_control(inode, true);
-+		if (gc_type == FG_GC)
-+			f2fs_pin_file_control(inode, true);
- 		err = -EAGAIN;
- 		goto out;
- 	}
+-	if (dev->hw_attrs.uk_attrs.hw_rev >= IRDMA_GEN_2)
+-		info.shadow_read_threshold = min(info.cq_uk_init_info.cq_size / 2,
+-						 (u32)IRDMA_MAX_CQ_READ_THRESH);
++	info.shadow_read_threshold = min(info.cq_uk_init_info.cq_size / 2,
++					 (u32)IRDMA_MAX_CQ_READ_THRESH);
+ 
+ 	if (irdma_sc_cq_init(cq, &info)) {
+ 		ibdev_dbg(&iwdev->ibdev, "VERBS: init cq fail\n");
 -- 
 2.43.0
 
