@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C038695A2
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:03:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFC2386944B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5760E1C23B7A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:03:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0D8D1F21C29
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A388A13B798;
-	Tue, 27 Feb 2024 14:03:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 355511420DE;
+	Tue, 27 Feb 2024 13:51:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVAzuu5F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qhkHUh3l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6347016423;
-	Tue, 27 Feb 2024 14:03:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8D8813B29B;
+	Tue, 27 Feb 2024 13:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042627; cv=none; b=YguPQB38EUzELSf3n3puwSs7qKShWtAKo88Pe0+v4eEsGss2QoLyhJTP2V2z7AJh+4bPgl/M0PEMes3C0ngBzrtlD42IwN6r95yQXpQid6wmmOwSxYtGUEQwXNJ18M3Y1oy3S21fezIf3AkRzNksFawFPFMpYGC6JJ18Nn9RIII=
+	t=1709041910; cv=none; b=FAlwEfEy/oAlNhgEEJ3fKAItIqksvHbMsxrTz+glMlY4h+evVwTmw69pIZTBVgXPd7O4qCeYNJwfYI67H140VCiniv+F05G4sB9Ev9bL9KT9+oQuKXRKfqM/E0sQYd0g4KUyQKvf6eK0GEp6IgGIZ1JDaHC6zI/2Wl6aSySv6Zc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042627; c=relaxed/simple;
-	bh=r50VYOBJ6DVYL+VmPPdJuzNQZe2oE+H2JLou+/zY7Nw=;
+	s=arc-20240116; t=1709041910; c=relaxed/simple;
+	bh=cpPqt5mf0O05Vbbr9vUdBulN60//WttDzil9Nu1nINA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pZWQlSEPn98scBtc4mmMN02ANLUJf/Nz71Z1wdtDIN8n+4F066KhbyA2al5K/FKmqGYG5dh2hNKh51mRrGJEVQlLJswKHgbdgh55YsbdpahLG53HcDbjWJ8Ue+I491CjwiupepCcyM+nMMI5C7zU5vPWGluzNTWj5OGdVdab7g0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVAzuu5F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4487C433F1;
-	Tue, 27 Feb 2024 14:03:46 +0000 (UTC)
+	 MIME-Version; b=G2OBUSwssjYg9nwyg+AHJ158HPdIF0sgJzukfLv+QdC6oGeEQ73f2rx4KbB/sg1PAQH8I/yzVpg5nemqmJflcwLs0/EkgUHxMu2mjG7yBGU6+IRMO4mUOL5tBDpopeaHeg26OszOCVQtWTG7n7ijI4k0q39C9puS5xa0evLw4yQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qhkHUh3l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B14CC433C7;
+	Tue, 27 Feb 2024 13:51:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042627;
-	bh=r50VYOBJ6DVYL+VmPPdJuzNQZe2oE+H2JLou+/zY7Nw=;
+	s=korg; t=1709041909;
+	bh=cpPqt5mf0O05Vbbr9vUdBulN60//WttDzil9Nu1nINA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KVAzuu5FztSs8kxPvMCCq76WvxnIpkjvE1f24KY/YBJWYxSl2MVG8JRyGojXdhyUY
-	 xioV5G2RqE7hhiunYzfjxyvcmivVZVP5f+dPQR/pTRAnaMNjV1nJEtFiefjL19P4L4
-	 3oE9EAs/IqCzjZibHIQRSlyZsciw+WCKOB3CUPuM=
+	b=qhkHUh3luNST4tLxWBfRW17ZnclbjjgPBobX07I1OwKRkgH8bGvtoJU6BD7tRuj/q
+	 AXeSEAPxkuiS40zMU8rQX8Sht0n7YUieS+cfV2GlGrwmO74cqFNd+pWs6kpvIWVE+f
+	 800sloC9sZ7CgABoL+ka8me4fl+/0mNfcSgdxk9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Prike Liang <Prike.Liang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 034/245] regulator: pwm-regulator: Add validity checks in continuous .get_voltage
+Subject: [PATCH 6.6 111/299] drm/amdgpu: skip to program GFXDEC registers for suspend abort
 Date: Tue, 27 Feb 2024 14:23:42 +0100
-Message-ID: <20240227131616.227543981@linuxfoundation.org>
+Message-ID: <20240227131629.447354417@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +60,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Prike Liang <Prike.Liang@amd.com>
 
-[ Upstream commit c92688cac239794e4a1d976afa5203a4d3a2ac0e ]
+[ Upstream commit 93bafa32a6918154aa0caf9f66679a32c2431357 ]
 
-Continuous regulators can be configured to operate only in a certain
-duty cycle range (for example from 0..91%). Add a check to error out if
-the duty cycle translates to an unsupported (or out of range) voltage.
+In the suspend abort cases, the gfx power rail doesn't turn off so
+some GFXDEC registers/CSB can't reset to default value and at this
+moment reinitialize GFXDEC/CSB will result in an unexpected error.
+So let skip those program sequence for the suspend abort case.
 
-Suggested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://msgid.link/r/20240113224628.377993-2-martin.blumenstingl@googlemail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Prike Liang <Prike.Liang@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/pwm-regulator.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu.h     | 2 ++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c | 2 ++
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c   | 8 ++++++++
+ 3 files changed, 12 insertions(+)
 
-diff --git a/drivers/regulator/pwm-regulator.c b/drivers/regulator/pwm-regulator.c
-index 7629476d94aeb..f4d9d9455dea6 100644
---- a/drivers/regulator/pwm-regulator.c
-+++ b/drivers/regulator/pwm-regulator.c
-@@ -158,6 +158,9 @@ static int pwm_regulator_get_voltage(struct regulator_dev *rdev)
- 	pwm_get_state(drvdata->pwm, &pstate);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+index a79d53bdbe136..85efd686e538d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+@@ -1009,6 +1009,8 @@ struct amdgpu_device {
+ 	bool				in_s3;
+ 	bool				in_s4;
+ 	bool				in_s0ix;
++	/* indicate amdgpu suspension status */
++	bool				suspend_complete;
  
- 	voltage = pwm_get_relative_duty_cycle(&pstate, duty_unit);
-+	if (voltage < min(max_uV_duty, min_uV_duty) ||
-+	    voltage > max(max_uV_duty, min_uV_duty))
-+		return -ENOTRECOVERABLE;
+ 	enum pp_mp1_state               mp1_state;
+ 	struct amdgpu_doorbell_index doorbell_index;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+index 2c35036e4ba25..3204c3a42f2a3 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -2409,6 +2409,7 @@ static int amdgpu_pmops_suspend(struct device *dev)
+ 	struct drm_device *drm_dev = dev_get_drvdata(dev);
+ 	struct amdgpu_device *adev = drm_to_adev(drm_dev);
  
- 	/*
- 	 * The dutycycle for min_uV might be greater than the one for max_uV.
++	adev->suspend_complete = false;
+ 	if (amdgpu_acpi_is_s0ix_active(adev))
+ 		adev->in_s0ix = true;
+ 	else if (amdgpu_acpi_is_s3_active(adev))
+@@ -2423,6 +2424,7 @@ static int amdgpu_pmops_suspend_noirq(struct device *dev)
+ 	struct drm_device *drm_dev = dev_get_drvdata(dev);
+ 	struct amdgpu_device *adev = drm_to_adev(drm_dev);
+ 
++	adev->suspend_complete = true;
+ 	if (amdgpu_acpi_should_gpu_reset(adev))
+ 		return amdgpu_asic_reset(adev);
+ 
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+index 2e23d08b45f4a..d7d15b618c374 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+@@ -3033,6 +3033,14 @@ static int gfx_v9_0_cp_gfx_start(struct amdgpu_device *adev)
+ 
+ 	gfx_v9_0_cp_gfx_enable(adev, true);
+ 
++	/* Now only limit the quirk on the APU gfx9 series and already
++	 * confirmed that the APU gfx10/gfx11 needn't such update.
++	 */
++	if (adev->flags & AMD_IS_APU &&
++			adev->in_s3 && !adev->suspend_complete) {
++		DRM_INFO(" Will skip the CSB packet resubmit\n");
++		return 0;
++	}
+ 	r = amdgpu_ring_alloc(ring, gfx_v9_0_get_csb_size(adev) + 4 + 3);
+ 	if (r) {
+ 		DRM_ERROR("amdgpu: cp failed to lock ring (%d).\n", r);
 -- 
 2.43.0
 
