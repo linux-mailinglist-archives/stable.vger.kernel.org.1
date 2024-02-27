@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C08A8694BC
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:55:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F39FE8695EE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 113E11F225E6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:55:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3146E1C20D66
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E82F613F007;
-	Tue, 27 Feb 2024 13:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D6113EFF4;
+	Tue, 27 Feb 2024 14:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0hDjNhF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y9dW2kO2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65A413B2B4;
-	Tue, 27 Feb 2024 13:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B452D13B2B3;
+	Tue, 27 Feb 2024 14:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042143; cv=none; b=tAiX8oj7KW/k7u8Qq8qt974PQ9pwOceBu8XXlb7qjtcS4f1c/ceiH93gahLURMPnIMeXATozfj971Yh5lsHQvH6eJjJbVjqmKlGS3LSPjyNFtIojnMpy39qkNenydqMZ78Orlb6B+O0tJ9JkoDDlL+pvANV0SfIFseJLTgjZsWE=
+	t=1709042781; cv=none; b=BEaUFwYY8+1BlvRkcmMvL5Z3wB7xuvJXMySLFeoZuQSgspHMJpH3pL6GEoyRIXLgSNPHhb897wDCXwMcwubj1Kf0cn1HBhl+baUOwFRC1o0WAiu97hx8o5S7GUFEzsD52guiqgYwx/W4Nwzkk+pN9hvoP6iIhHocs51+OtnlA8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042143; c=relaxed/simple;
-	bh=VJqwydWvyGBInKQVNRF5juxOkyzGtEuhuiUbFvobKiw=;
+	s=arc-20240116; t=1709042781; c=relaxed/simple;
+	bh=Z0C7FwkHrg1FU6vasdlmJp/9mTLvSLRE79lt7CSfhi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GiBmZMowPkZd6jOJdYu+gcR4ODQyCVSvlk0E6BtSBQhfIEEjJU58rsn4Rh15wzq/6Ik9jjxh9jY1ein86w3fsUU9nO1Uo8UzKRgmyDtZs+yPyE6atBKCou4RW+2Zd6jiGzAYHvBTShBSeOROh4DXYuBTyuAbnLYatePFZlEiBhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0hDjNhF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 332B5C433C7;
-	Tue, 27 Feb 2024 13:55:43 +0000 (UTC)
+	 MIME-Version; b=CdAbDKzsBf76jw9gOfhuV9ZNKpWGrA1GdSddQHm5d5k9k6kAJQPnyqRqFLYKtdeor1XyY7yChUQu495UTltTGRQiPZb/9+nfUNR3A0W99vLatKPF61S+6v+RN9WvjBikSx6MHTGm+s0PtKmhDvWHC4VSTli6TsoDni309MJk050=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y9dW2kO2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4437DC433C7;
+	Tue, 27 Feb 2024 14:06:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042143;
-	bh=VJqwydWvyGBInKQVNRF5juxOkyzGtEuhuiUbFvobKiw=;
+	s=korg; t=1709042781;
+	bh=Z0C7FwkHrg1FU6vasdlmJp/9mTLvSLRE79lt7CSfhi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K0hDjNhFZdJb6q9iQcWtTYFh2mMoEEZiuX5r+8NTxNnRDNDJ7eTl/HYp7aZh6G2WE
-	 c8QcUVLYkI/JdPKXieASgmrpkY+6VI/Z2LsSw/ZQB5d+buS8BOeMvs6CzdtS++IW3N
-	 cCgBTTeHyCXcrNpuxunBxWDqiz4dkdlDJeKAjpf4=
+	b=y9dW2kO2A8WWZSb1B2LT0L5zfs22C3pCtLiPWZUbpdHvnE5MIr4j06OuICyLe7sUC
+	 WFnDVB93maNh9SNHeh53qp+rUX3JV24o9WlAFw9offjsyudBitj5kwQpCwLczm4dPG
+	 QI021IbScmu1JelvulgYwji6yoTPSyol9qqcamBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 195/299] mptcp: fix data races on remote_id
+	Luca Ellero <l.ellero@asem.it>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 118/245] Input: ads7846 - dont check penirq immediately for 7845
 Date: Tue, 27 Feb 2024 14:25:06 +0100
-Message-ID: <20240227131632.092012127@linuxfoundation.org>
+Message-ID: <20240227131619.064415009@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,91 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Luca Ellero <l.ellero@asem.it>
 
-commit 967d3c27127e71a10ff5c083583a038606431b61 upstream.
+[ Upstream commit fa9f4275b20ec7b2a8fb05c66362d10b36f9efec ]
 
-Similar to the previous patch, address the data race on
-remote_id, adding the suitable ONCE annotations.
+To discard false readings, one should use "ti,penirq-recheck-delay-usecs".
+Checking get_pendown_state() at the beginning, most of the time fails
+causing malfunctioning.
 
-Fixes: bedee0b56113 ("mptcp: address lookup improvements")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ffa458c1bd9b ("spi: ads7846 driver")
+Signed-off-by: Luca Ellero <l.ellero@asem.it>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20230126105227.47648-4-l.ellero@asem.it
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c |    8 ++++----
- net/mptcp/subflow.c    |    6 +++---
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ drivers/input/touchscreen/ads7846.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -443,7 +443,7 @@ static unsigned int fill_remote_addresse
- 		mptcp_for_each_subflow(msk, subflow) {
- 			ssk = mptcp_subflow_tcp_sock(subflow);
- 			remote_address((struct sock_common *)ssk, &addrs[i]);
--			addrs[i].id = subflow->remote_id;
-+			addrs[i].id = READ_ONCE(subflow->remote_id);
- 			if (deny_id0 && !addrs[i].id)
- 				continue;
+diff --git a/drivers/input/touchscreen/ads7846.c b/drivers/input/touchscreen/ads7846.c
+index f416a4bcd72bf..1db61185f7bec 100644
+--- a/drivers/input/touchscreen/ads7846.c
++++ b/drivers/input/touchscreen/ads7846.c
+@@ -851,14 +851,8 @@ static void ads7846_report_state(struct ads7846 *ts)
+ 	if (x == MAX_12BIT)
+ 		x = 0;
  
-@@ -799,18 +799,18 @@ static void mptcp_pm_nl_rm_addr_or_subfl
- 
- 		mptcp_for_each_subflow_safe(msk, subflow, tmp) {
- 			struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
-+			u8 remote_id = READ_ONCE(subflow->remote_id);
- 			int how = RCV_SHUTDOWN | SEND_SHUTDOWN;
- 			u8 id = subflow_get_local_id(subflow);
- 
--			if (rm_type == MPTCP_MIB_RMADDR && subflow->remote_id != rm_id)
-+			if (rm_type == MPTCP_MIB_RMADDR && remote_id != rm_id)
- 				continue;
- 			if (rm_type == MPTCP_MIB_RMSUBFLOW && !mptcp_local_id_match(msk, id, rm_id))
- 				continue;
- 
- 			pr_debug(" -> %s rm_list_ids[%d]=%u local_id=%u remote_id=%u mpc_id=%u",
- 				 rm_type == MPTCP_MIB_RMADDR ? "address" : "subflow",
--				 i, rm_id, id, subflow->remote_id,
--				 msk->mpc_endpoint_id);
-+				 i, rm_id, id, remote_id, msk->mpc_endpoint_id);
- 			spin_unlock_bh(&msk->pm.lock);
- 			mptcp_subflow_shutdown(sk, ssk, how);
- 
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -535,7 +535,7 @@ static void subflow_finish_connect(struc
- 		subflow->backup = mp_opt.backup;
- 		subflow->thmac = mp_opt.thmac;
- 		subflow->remote_nonce = mp_opt.nonce;
--		subflow->remote_id = mp_opt.join_id;
-+		WRITE_ONCE(subflow->remote_id, mp_opt.join_id);
- 		pr_debug("subflow=%p, thmac=%llu, remote_nonce=%u backup=%d",
- 			 subflow, subflow->thmac, subflow->remote_nonce,
- 			 subflow->backup);
-@@ -1561,7 +1561,7 @@ int __mptcp_subflow_connect(struct sock
- 	pr_debug("msk=%p remote_token=%u local_id=%d remote_id=%d", msk,
- 		 remote_token, local_id, remote_id);
- 	subflow->remote_token = remote_token;
--	subflow->remote_id = remote_id;
-+	WRITE_ONCE(subflow->remote_id, remote_id);
- 	subflow->request_join = 1;
- 	subflow->request_bkup = !!(flags & MPTCP_PM_ADDR_FLAG_BACKUP);
- 	subflow->subflow_id = msk->subflow_id++;
-@@ -1966,7 +1966,7 @@ static void subflow_ulp_clone(const stru
- 		new_ctx->fully_established = 1;
- 		new_ctx->remote_key_valid = 1;
- 		new_ctx->backup = subflow_req->backup;
--		new_ctx->remote_id = subflow_req->remote_id;
-+		WRITE_ONCE(new_ctx->remote_id, subflow_req->remote_id);
- 		new_ctx->token = subflow_req->token;
- 		new_ctx->thmac = subflow_req->thmac;
- 
+-	if (ts->model == 7843) {
++	if (ts->model == 7843 || ts->model == 7845) {
+ 		Rt = ts->pressure_max / 2;
+-	} else if (ts->model == 7845) {
+-		if (get_pendown_state(ts))
+-			Rt = ts->pressure_max / 2;
+-		else
+-			Rt = 0;
+-		dev_vdbg(&ts->spi->dev, "x/y: %d/%d, PD %d\n", x, y, Rt);
+ 	} else if (likely(x && z1)) {
+ 		/* compute touch pressure resistance using equation #2 */
+ 		Rt = z2;
+-- 
+2.43.0
+
 
 
 
