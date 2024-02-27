@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A06AB869706
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:17:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 548B48694E1
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:57:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C03AEB2A3FF
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:17:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 867131C255CA
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:57:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B3E113B798;
-	Tue, 27 Feb 2024 14:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EA5813DB9B;
+	Tue, 27 Feb 2024 13:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tP5OrgZ5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LnefQSe1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6CC13B78F;
-	Tue, 27 Feb 2024 14:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC4954BD4;
+	Tue, 27 Feb 2024 13:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043420; cv=none; b=Ax02ze1apCidV3C15IQF9t8UuVn6AT3fKHuycBHsNQApmO8n1jRxaKFHZnrYvkOFULVAA+md1SLigWMRuxTNE5HOS8e2zr9togwfHooc686bdRiw89rHN4u9+/6w/5vtXeG6hWOSYMcn4IEwJuHfTRpTUDd+b2u/Kcr0n7w2kf8=
+	t=1709042226; cv=none; b=qbPeEMKOHlexeGmvsotYmIm/iCECQChzby9ZNSlkDqx84wW4ug60OObnIU8tTyVUaquGXWC01J3cJiGdrUXuXaddy+NQgpdFEwN70voRUZS4aamZZVMK3nEd51Z0Q+Dv/DeVzD3RHUxmq0N2YfV+WaXUlqaSzxEo0UL01acJhvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043420; c=relaxed/simple;
-	bh=kjQ0gNpmhU0GqCDxZ83zDmZIaoUoIyciHy5GsNuj7lo=;
+	s=arc-20240116; t=1709042226; c=relaxed/simple;
+	bh=MQlifOGa5JfunQ5wcmyFAJ+0SftqrH8emq1znIpci+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aUG9eDUfADUI9HlEmGZVSi8qsj3LIgSreMFieis9Z82KnWr8JiNvAsSmvLqeb4jJz8f1VYr8Z5v8PL9mwNtqnEbNJNuX9kFwm56tsDs8wYKSEhVUs43LRhdERyoQrrc0eYhbVnv9rbFJ2iYHoHpEGuzf5HLeq/ogkO0bQCl9y2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tP5OrgZ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB06C433F1;
-	Tue, 27 Feb 2024 14:17:00 +0000 (UTC)
+	 MIME-Version; b=noX17pu+hcjFs5eb1/HQhzk7LztRvecV3df2mU0Uskh2/zcCyek0cicxhf5iVS4TOpbekavi/aDQk57zOdnb438ydfqVAodFThtu7wE7RPBCTLHxsXzGMqcX+uDnmOZEixDgQytNGoeHLsWDR5eIqh7GHtMsIp1oEhXdW4WITXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LnefQSe1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 666B7C433C7;
+	Tue, 27 Feb 2024 13:57:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043420;
-	bh=kjQ0gNpmhU0GqCDxZ83zDmZIaoUoIyciHy5GsNuj7lo=;
+	s=korg; t=1709042225;
+	bh=MQlifOGa5JfunQ5wcmyFAJ+0SftqrH8emq1znIpci+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tP5OrgZ5YjmvvOLi8shh6NY5H3sXHkJByosK3moQ+TYssEQZbVJhfSz00UwadIsJE
-	 8sVObuCqc9cKo7/zJpgsUZ1mlabvUukqEbiCJ/kTdtH6nLqOTWixemvUpsLlpgLkuF
-	 9PmsK7EXxDqd4BmAw5QeJgN15g3pIH6QtcOED408=
+	b=LnefQSe1dp8WyPHxw/UD7L/asPHqXQwbiM/I0zNh9n1nz26jk4Nyc1KbCElcHUnZO
+	 Lq5QlQoZ2riIXDbYVrrO0PHZsFc4QNSbtQ0BDBfDAQvlMuNnN2CMOARqDfawmG75GX
+	 ZvfpLeOKTN2iFEqiG32kc5nGEfJK2pYp1kaErwcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Avihai Horon <avihaih@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 073/195] LoongArch: Select ARCH_ENABLE_THP_MIGRATION instead of redefining it
+Subject: [PATCH 6.6 223/299] iommufd/iova_bitmap: Bounds check mapped::pages access
 Date: Tue, 27 Feb 2024 14:25:34 +0100
-Message-ID: <20240227131612.908362800@linuxfoundation.org>
+Message-ID: <20240227131632.939756745@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Joao Martins <joao.m.martins@oracle.com>
 
-[ Upstream commit b3ff2d9c3a9c64cd0a011cdd407ffc38a6ea8788 ]
+[ Upstream commit a4ab7dedaee0e39b15653c5fd0367e420739f7ef ]
 
-ARCH_ENABLE_THP_MIGRATION is supposed to be selected by arch Kconfig.
+Dirty IOMMU hugepages reported on a base page page-size granularity can
+lead to an attempt to set dirty pages in the bitmap beyond the limits that
+are pinned.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Bounds check the page index of the array we are trying to access is within
+the limits before we kmap() and return otherwise.
+
+While it is also a defensive check, this is also in preparation to defer
+setting bits (outside the mapped range) to the next iteration(s) when the
+pages become available.
+
+Fixes: b058ea3ab5af ("vfio/iova_bitmap: refactor iova_bitmap_set() to better handle page boundaries")
+Link: https://lore.kernel.org/r/20240202133415.23819-2-joao.m.martins@oracle.com
+Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+Tested-by: Avihai Horon <avihaih@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/Kconfig | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/vfio/iova_bitmap.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
-index e737dc8cd660c..b1b4396dbac6c 100644
---- a/arch/loongarch/Kconfig
-+++ b/arch/loongarch/Kconfig
-@@ -9,6 +9,7 @@ config LOONGARCH
- 	select ARCH_BINFMT_ELF_STATE
- 	select ARCH_ENABLE_MEMORY_HOTPLUG
- 	select ARCH_ENABLE_MEMORY_HOTREMOVE
-+	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
- 	select ARCH_HAS_ACPI_TABLE_UPGRADE	if ACPI
- 	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
- 	select ARCH_HAS_PTE_SPECIAL
-@@ -495,10 +496,6 @@ config ARCH_SPARSEMEM_ENABLE
- 	  or have huge holes in the physical address space for other reasons.
- 	  See <file:Documentation/mm/numa.rst> for more.
+diff --git a/drivers/vfio/iova_bitmap.c b/drivers/vfio/iova_bitmap.c
+index 0848f920efb7c..997134a24c025 100644
+--- a/drivers/vfio/iova_bitmap.c
++++ b/drivers/vfio/iova_bitmap.c
+@@ -406,6 +406,7 @@ void iova_bitmap_set(struct iova_bitmap *bitmap,
+ 			mapped->pgshift) + mapped->pgoff * BITS_PER_BYTE;
+ 	unsigned long last_bit = (((iova + length - 1) - mapped->iova) >>
+ 			mapped->pgshift) + mapped->pgoff * BITS_PER_BYTE;
++	unsigned long last_page_idx = mapped->npages - 1;
  
--config ARCH_ENABLE_THP_MIGRATION
--	def_bool y
--	depends on TRANSPARENT_HUGEPAGE
--
- config ARCH_MEMORY_PROBE
- 	def_bool y
- 	depends on MEMORY_HOTPLUG
+ 	do {
+ 		unsigned int page_idx = cur_bit / BITS_PER_PAGE;
+@@ -414,6 +415,9 @@ void iova_bitmap_set(struct iova_bitmap *bitmap,
+ 					 last_bit - cur_bit + 1);
+ 		void *kaddr;
+ 
++		if (unlikely(page_idx > last_page_idx))
++			break;
++
+ 		kaddr = kmap_local_page(mapped->pages[page_idx]);
+ 		bitmap_set(kaddr, offset, nbits);
+ 		kunmap_local(kaddr);
 -- 
 2.43.0
 
