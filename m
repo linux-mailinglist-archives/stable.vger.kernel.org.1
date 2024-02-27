@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-24906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EADA28696CD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71E0D869604
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28D601C24067
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B9412886C5
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F21C313DB92;
-	Tue, 27 Feb 2024 14:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B906E13B2B3;
+	Tue, 27 Feb 2024 14:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tbmxs/ng"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jH8I2ztC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B043278B61;
-	Tue, 27 Feb 2024 14:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 792F113A26F;
+	Tue, 27 Feb 2024 14:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043318; cv=none; b=K0YX/coQLp6GVJyrPA1O1sh8bvX/LKc0vuIDLax54ogdg0Qml8XXOGavU740hJv8eQVIz91z7Kdb8iRBpYPxVFDbXD04iAbkHjqf539+uaDLf0JNAuzOfB3J2PHlDwisUruTMKDQRuhX4S56z7OcZpyEs0MpAGrC2Cf8huE82tU=
+	t=1709042831; cv=none; b=TgBgAqvbcxxzYqwe+NlLfEfzkGPN+HtcJPEc2WMuXciWPycBJfFelM8hjPV4KQH+qOFJ4YV7PaiEckfwlMehHEHuwd+pxpTkjtX8VxHciP8HF3x+yplNX+Qy6XdmKo0VIgN9GT+XWq1P2ajLzSE/GxzMhs9DeBlOLDj0ZpDxugg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043318; c=relaxed/simple;
-	bh=6XTMu0JsUZq11pwSeEClFbrm6AuznHW6lzVbhxFqwRo=;
+	s=arc-20240116; t=1709042831; c=relaxed/simple;
+	bh=QjHpztoayL6ivD+mdvnVbI/UVlJIRNZIBMSFxM/xpXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iopDAl+TDYLin4BtyOp5oSSUSE7hZ1lOELeMS0SHAfKsUDknmsBO8dLBxvkZRAV0zhQr+iDXycuRzVCO/sGWskcw2R0x/ApZzdCHD6ejG08J9+Za/7IdIGRag2fHQkxejsXIFFCGInmD68YaPn2eR63Pvaxv2g+P7lxAUPqEHMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tbmxs/ng; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF088C433C7;
-	Tue, 27 Feb 2024 14:15:17 +0000 (UTC)
+	 MIME-Version; b=Pm0z1DDFyNbgSKoHHp4c6fvk1GWTK/ExB+nQ9RQ1oW6gV3FkoJ3WugKK3ERUISTiAnQxi7MmTion36jhq6dmAXI67eSLyMgajA29rgojz1fzNdjgHYYhjg2xTeWVm3sJIGSu3DIQfcBeJv3VgfnzFeL1Ysw/C5flfu/hzWK1RkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jH8I2ztC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1915C433F1;
+	Tue, 27 Feb 2024 14:07:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043318;
-	bh=6XTMu0JsUZq11pwSeEClFbrm6AuznHW6lzVbhxFqwRo=;
+	s=korg; t=1709042831;
+	bh=QjHpztoayL6ivD+mdvnVbI/UVlJIRNZIBMSFxM/xpXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tbmxs/ngWQ8MHSRZIyFscelvHzOzyZfQoHZc6r/9EqhKCtmwzV8lw98FDXo75gcef
-	 nfQjlyOFf3RgP+0Ea9BRRI/TyZAAHbr1WQrElsc4YMLTdtqHq3z9n9SoPud/GdKbTl
-	 GHo6mW5EVYx6OIsskpGa+qLDpP2tjYkHbHPQAdeU=
+	b=jH8I2ztC8KJZdnHd7rQiQaeeLDQXjlFnM3kSjxQ82fQ8JPEbbjT/rtUUo+cPkEx5r
+	 nUpl5ysWUyC3Z0CHu6hdwt3zYE203fMEO8OLj1FDZGxR85LCXfnAOYUF6ns2aPU51S
+	 rYsduOzC/QzVCUZdanaUOfEUJ511Hw7TYif9SpgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Giovanni Santini <giovannisantini93@yahoo.it>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Nathan Huckleberry <nhuck@google.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 064/195] fs/ntfs3: Update inode->i_size after success write into compressed file
+Subject: [PATCH 5.15 137/245] tools headers UAPI: Sync linux/fscrypt.h with the kernel sources
 Date: Tue, 27 Feb 2024 14:25:25 +0100
-Message-ID: <20240227131612.617477837@linuxfoundation.org>
+Message-ID: <20240227131619.665539473@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,34 +67,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit d68968440b1a75dee05cfac7f368f1aa139e1911 ]
+[ Upstream commit fabe0c61d842637b722344bcd49bfb1b76e2cc68 ]
 
-Reported-by: Giovanni Santini <giovannisantini93@yahoo.it>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+To pick the changes from:
+
+  6b2a51ff03bf0c54 ("fscrypt: Add HCTR2 support for filename encryption")
+
+That don't result in any changes in tooling, just causes this to be
+rebuilt:
+
+  CC      /tmp/build/perf-urgent/trace/beauty/sync_file_range.o
+  LD      /tmp/build/perf-urgent/trace/beauty/perf-in.o
+
+addressing this perf build warning:
+
+  Warning: Kernel ABI header at 'tools/include/uapi/linux/fscrypt.h' differs from latest version at 'include/uapi/linux/fscrypt.h'
+  diff -u tools/include/uapi/linux/fscrypt.h include/uapi/linux/fscrypt.h
+
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Nathan Huckleberry <nhuck@google.com>
+Link: https://lore.kernel.org/lkml/Yvzl8C7O1b+hf9GS@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/file.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/include/uapi/linux/fscrypt.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
-index f31c0389a2e7d..14efe46df91ef 100644
---- a/fs/ntfs3/file.c
-+++ b/fs/ntfs3/file.c
-@@ -1110,6 +1110,8 @@ static ssize_t ntfs_compress_write(struct kiocb *iocb, struct iov_iter *from)
- 	iocb->ki_pos += written;
- 	if (iocb->ki_pos > ni->i_valid)
- 		ni->i_valid = iocb->ki_pos;
-+	if (iocb->ki_pos > i_size)
-+		i_size_write(inode, iocb->ki_pos);
+diff --git a/tools/include/uapi/linux/fscrypt.h b/tools/include/uapi/linux/fscrypt.h
+index 9f4428be3e362..a756b29afcc23 100644
+--- a/tools/include/uapi/linux/fscrypt.h
++++ b/tools/include/uapi/linux/fscrypt.h
+@@ -27,7 +27,8 @@
+ #define FSCRYPT_MODE_AES_128_CBC		5
+ #define FSCRYPT_MODE_AES_128_CTS		6
+ #define FSCRYPT_MODE_ADIANTUM			9
+-/* If adding a mode number > 9, update FSCRYPT_MODE_MAX in fscrypt_private.h */
++#define FSCRYPT_MODE_AES_256_HCTR2		10
++/* If adding a mode number > 10, update FSCRYPT_MODE_MAX in fscrypt_private.h */
  
- 	return written;
- }
+ /*
+  * Legacy policy version; ad-hoc KDF and no key verification.
 -- 
 2.43.0
 
