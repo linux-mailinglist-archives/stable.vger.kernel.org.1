@@ -1,55 +1,51 @@
-Return-Path: <stable+bounces-24681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E05468695C3
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:05:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E2728695C5
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:05:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F25691C20F4E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:05:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C5071C210D6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:05:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BFB61420D4;
-	Tue, 27 Feb 2024 14:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2B913EFE4;
+	Tue, 27 Feb 2024 14:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dkn7BRFr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lcmi/vJ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40BA51419AD;
-	Tue, 27 Feb 2024 14:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9F013B2A2;
+	Tue, 27 Feb 2024 14:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042696; cv=none; b=K5ReaOH1v+EqcGbwSRDOrY4J3OVlrzHdHn5z2RhMPIKdvruWCrLugizurnziuXcoKCQ6KmmK4eJWX8GuNnNPNokXPICmkRj/qAyW5VrasHRFv4Km2//Gq9Z5EvyRvLjHWe6m0NNJS/s2kLukSlEdoaFfN2zct8iI8Y1zZ35Hggo=
+	t=1709042701; cv=none; b=P7QL7g44Iig8aD6usVwW08/F7ul+Tf6NaDPwBXCf3EZUFsaWkHNOXyofaD4M2Art884kaYm77tUanR3dO79+HjYzPUzValBq7N6iOG8def2I2ZDNPJvRbmkfmpkIbB7WDEm0l4SPXzacWBOJ/1mqCCHwQSDf0UppvC3IjBHDS6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042696; c=relaxed/simple;
-	bh=nyWg11nl1d7d8yLjs9Me55wirWD1kctyrQejdN2U8e8=;
+	s=arc-20240116; t=1709042701; c=relaxed/simple;
+	bh=IVmoN8oaRaBekEtMQjwcTe1k9hLzO957nYAr8w/ZXSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ABEdVWoGBrT0KDD17K+ILrEYDtsVK/HMIupLe6zDg98u5Kz7zmIQ5+oxJdHTNHYzdhyLUlKU+5+T8mYHCARGpkoiOsYR71iMdJjJ0G/I4SdzJdnmBorWjYpwmG6SrGhXEsFxN3F+a5nGkEcXPJZWulwvAGYWc+bkfdcwqi1hdtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dkn7BRFr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0233C43399;
-	Tue, 27 Feb 2024 14:04:55 +0000 (UTC)
+	 MIME-Version; b=dmkMJXuRUq8jBTLgs9EAc6DIE+aJ8s4HVwiDOx8bnS0x317GI5eoDTtexacKjCY0QRaXdP1u8XrVM70IK1t2uyFOtyIcph24pGo3+Ek2sc58UQtEsHz+dL1jAO2hrDHfuCWmiDvXTkAuSLMu5+xUZnvu09WPqcEXpDd5RzAs4XA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lcmi/vJ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47866C433C7;
+	Tue, 27 Feb 2024 14:05:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042696;
-	bh=nyWg11nl1d7d8yLjs9Me55wirWD1kctyrQejdN2U8e8=;
+	s=korg; t=1709042701;
+	bh=IVmoN8oaRaBekEtMQjwcTe1k9hLzO957nYAr8w/ZXSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dkn7BRFrfS57Fx8PqM6iYdUnDKWZDxqrbjitRFAQu/rtWfdD97norxAjBP8sNGHdA
-	 dlLgYhZKGw8rN1LOZM2xnuSoxTzJsjlJMa9h8LM/G7mkBNUT1dL2tHQCZNycf6eYgy
-	 PPhJh2eTXKGwigxz3ZlGQfyc7h/lmnXeE70eU63s=
+	b=Lcmi/vJ183iAycKYP08yWamrOMD4jp5ogBynCiZnkzC2tEekfIV8zTm6MFQvPGc6H
+	 UNw0Qt8RJqaEqinO1xSL2jPtk/3svKMXKQcMICO1NNCLPTD85Hu5XTe+5aKQKxLj5b
+	 UqUbnYANZsLJQNnsp6uCKEDC5TC43nx4aE6utlrw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Nikita Shubin <nikita.shubin@maquefel.me>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 5.15 087/245] ARM: ep93xx: Add terminator to gpiod_lookup_table
-Date: Tue, 27 Feb 2024 14:24:35 +0100
-Message-ID: <20240227131618.053495467@linuxfoundation.org>
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 5.15 088/245] Revert "x86/ftrace: Use alternative RET encoding"
+Date: Tue, 27 Feb 2024 14:24:36 +0100
+Message-ID: <20240227131618.084327879@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
 References: <20240227131615.098467438@linuxfoundation.org>
@@ -68,38 +64,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nikita Shubin <nikita.shubin@maquefel.me>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-commit fdf87a0dc26d0550c60edc911cda42f9afec3557 upstream.
+This reverts commit 3eb602ad6a94a76941f93173131a71ad36fa1324.
 
-Without the terminator, if a con_id is passed to gpio_find() that
-does not exist in the lookup table the function will not stop looping
-correctly, and eventually cause an oops.
+Revert the backport of upstream commit
 
-Cc: stable@vger.kernel.org
-Fixes: b2e63555592f ("i2c: gpio: Convert to use descriptors")
-Reported-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Nikita Shubin <nikita.shubin@maquefel.me>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Acked-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Link: https://lore.kernel.org/r/20240205102337.439002-1-alexander.sverdlin@gmail.com
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+  1f001e9da6bb ("x86/ftrace: Use alternative RET encoding")
+
+in favor of a proper backport after backporting the commit which adds
+__text_gen_insn().
+
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-ep93xx/core.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/ftrace.c |    9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
---- a/arch/arm/mach-ep93xx/core.c
-+++ b/arch/arm/mach-ep93xx/core.c
-@@ -337,6 +337,7 @@ static struct gpiod_lookup_table ep93xx_
- 				GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN),
- 		GPIO_LOOKUP_IDX("G", 0, NULL, 1,
- 				GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN),
-+		{ }
- 	},
+--- a/arch/x86/kernel/ftrace.c
++++ b/arch/x86/kernel/ftrace.c
+@@ -311,7 +311,7 @@ union ftrace_op_code_union {
+ 	} __attribute__((packed));
  };
  
+-#define RET_SIZE		(IS_ENABLED(CONFIG_RETPOLINE) ? 5 : 1 + IS_ENABLED(CONFIG_SLS))
++#define RET_SIZE		1 + IS_ENABLED(CONFIG_SLS)
+ 
+ static unsigned long
+ create_trampoline(struct ftrace_ops *ops, unsigned int *tramp_size)
+@@ -367,12 +367,7 @@ create_trampoline(struct ftrace_ops *ops
+ 		goto fail;
+ 
+ 	ip = trampoline + size;
+-
+-	/* The trampoline ends with ret(q) */
+-	if (cpu_feature_enabled(X86_FEATURE_RETHUNK))
+-		memcpy(ip, text_gen_insn(JMP32_INSN_OPCODE, ip, &__x86_return_thunk), JMP32_INSN_SIZE);
+-	else
+-		memcpy(ip, retq, sizeof(retq));
++	memcpy(ip, retq, RET_SIZE);
+ 
+ 	/* No need to test direct calls on created trampolines */
+ 	if (ops->flags & FTRACE_OPS_FL_SAVE_REGS) {
 
 
 
