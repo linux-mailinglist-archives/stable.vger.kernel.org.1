@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-24356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F9D5869411
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DBC7869311
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:41:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 740441C244D0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA66C1F22094
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:41:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9016A13EFFB;
-	Tue, 27 Feb 2024 13:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBF4A13B78F;
+	Tue, 27 Feb 2024 13:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKDAPqaS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bLvW2ITY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA1654BD4;
-	Tue, 27 Feb 2024 13:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA60713AA4C;
+	Tue, 27 Feb 2024 13:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041769; cv=none; b=ndIYipwz5z3sg1VhwgqJAg9qTzz1QOBaYgJF45zUXiY48ckwwU2PQt9Nvdomf5lAHdzaq2nAWtkiLwo0ZKlExWjR2im/7O3EvIsX+VKSDATRRsKuROWvNKT+UQqknfx/q58NwKHk4iaQeTBohz2qMLNtvVjHL6hi0YVnQT8ANlc=
+	t=1709041291; cv=none; b=oWyLl5whDqt4WEbHH7ds+HyTHQ4rY5LdJRP2Qm6qL/0epzLG7tWnhIW7Vrn8qxJlw+laDoENxmu6DT0fd0CQm+mM+6Ysm/HKF9Jv+tXdw7NhXuNRYbyi010UHJMFmBznyPhHDNN7RUALJY7dcmjwKzFcIQaKjxy1koU86v0Yj9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041769; c=relaxed/simple;
-	bh=tkQWR8C6C+ftoO+B/JnWrvwOop/eOeU+CayNUDriJHU=;
+	s=arc-20240116; t=1709041291; c=relaxed/simple;
+	bh=yz289ehJzLRLLGtPp+melPFph5wulFZCYmRuxM3Ay+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mTl0REXMYEPc57bt8xpGUYka7H1ZVFgAqbAHCJyZ5xkpwJG5N4iwK7JInvXG0iM8mbQJJtbc2kKCOaKUd5Ba7rS/uG/XOI2RlYunfUJ1vepNxul4RPNaPpMBW9rHPGhjitkKxrkiMMRiPIVssZkFUWm1cZkMTRLswqPj4JM+GSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKDAPqaS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D029AC433C7;
-	Tue, 27 Feb 2024 13:49:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GxLsCIt3hV00JKWKCWFqRuA5m57/LBb2mnITU3j+Vfh6N1slC1IjhiqfNz/wBq+KtQxBJSPQwuk5X5BQlk4JPuY9a3rTZOlXGp2Ifaaa0UtBt2TGqCmGhq1vfQyuuflswMvkvuFqquMoldEWBBSGdV0jcXItmhGXWe+6zIqXKKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bLvW2ITY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B6EFC433C7;
+	Tue, 27 Feb 2024 13:41:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041769;
-	bh=tkQWR8C6C+ftoO+B/JnWrvwOop/eOeU+CayNUDriJHU=;
+	s=korg; t=1709041291;
+	bh=yz289ehJzLRLLGtPp+melPFph5wulFZCYmRuxM3Ay+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WKDAPqaStUAi5m8Ofes33/g5Dy65lFH3CjbK2tV4pDMSlisu4aNyHWn/Pamljisxz
-	 AJ+tH9lWsLj/iEsPoHPZR6daXzuGbW745KTD0cuZ42HMIq0qt6UuAlIKikh34bf+kN
-	 AZZuhsI07UscqUvNxMZ87OVxWH8lEETBG+76Xe7M=
+	b=bLvW2ITYT9W9rboH8c+ZIbyAbHHxvn+dpEpjixchkHd5zfxA03ANQNV10q4tN2zP2
+	 OkYCJ7BwIZPYdEgccvZXBUXDNX8rB05zjcQN6tMZUfhMFSD5b9WUY083EQFuo0dt1z
+	 lW+XlO/vi5zR2mJGfIEnj8RNoipmn/Xx3ViCIsFk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 034/299] ext4: avoid allocating blocks from corrupted group in ext4_mb_try_best_found()
-Date: Tue, 27 Feb 2024 14:22:25 +0100
-Message-ID: <20240227131626.919643431@linuxfoundation.org>
+Subject: [PATCH 6.7 288/334] drm/i915/tv: Fix TV mode
+Date: Tue, 27 Feb 2024 14:22:26 +0100
+Message-ID: <20240227131640.300610856@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +62,144 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Maxime Ripard <mripard@kernel.org>
 
-[ Upstream commit 4530b3660d396a646aad91a787b6ab37cf604b53 ]
+[ Upstream commit fb1e881273f432e593f8789f99e725b09304cc97 ]
 
-Determine if the group block bitmap is corrupted before using ac_b_ex in
-ext4_mb_try_best_found() to avoid allocating blocks from a group with a
-corrupted block bitmap in the following concurrency and making the
-situation worse.
+Commit 1fd4a5a36f9f ("drm/connector: Rename legacy TV property") failed
+to update all the users of the struct drm_tv_connector_state mode field,
+which resulted in a build failure in i915.
 
-ext4_mb_regular_allocator
-  ext4_lock_group(sb, group)
-  ext4_mb_good_group
-   // check if the group bbitmap is corrupted
-  ext4_mb_complex_scan_group
-   // Scan group gets ac_b_ex but doesn't use it
-  ext4_unlock_group(sb, group)
-                           ext4_mark_group_bitmap_corrupted(group)
-                           // The block bitmap was corrupted during
-                           // the group unlock gap.
-  ext4_mb_try_best_found
-    ext4_lock_group(ac->ac_sb, group)
-    ext4_mb_use_best_found
-      mb_mark_used
-      // Allocating blocks in block bitmap corrupted group
+However, a subsequent commit in the same series reintroduced a mode
+field in that structure, with a different semantic but the same type,
+with the assumption that all previous users were updated.
 
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240104142040.2835097-7-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Since that didn't happen, the i915 driver now compiles, but mixes
+accesses to the legacy_mode field and the newer mode field, but with the
+previous semantics.
+
+This obviously doesn't work very well, so we need to update the accesses
+that weren't in the legacy renaming commit.
+
+Fixes: 1fd4a5a36f9f ("drm/connector: Rename legacy TV property")
+Reported-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240220131251.453060-1-mripard@kernel.org
+(cherry picked from commit bf7626f19d6ff14b9722273e23700400cc4d78ba)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/i915/display/intel_sdvo.c | 10 +++++-----
+ drivers/gpu/drm/i915/display/intel_tv.c   | 10 +++++-----
+ 2 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 9eac63e5a251c..bc9630f4c09cb 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -2304,6 +2304,9 @@ void ext4_mb_try_best_found(struct ext4_allocation_context *ac,
- 		return;
+diff --git a/drivers/gpu/drm/i915/display/intel_sdvo.c b/drivers/gpu/drm/i915/display/intel_sdvo.c
+index a9ac7d45d1f33..312f88d90af95 100644
+--- a/drivers/gpu/drm/i915/display/intel_sdvo.c
++++ b/drivers/gpu/drm/i915/display/intel_sdvo.c
+@@ -1208,7 +1208,7 @@ static bool intel_sdvo_set_tv_format(struct intel_sdvo *intel_sdvo,
+ 	struct intel_sdvo_tv_format format;
+ 	u32 format_map;
  
- 	ext4_lock_group(ac->ac_sb, group);
-+	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)))
-+		goto out;
-+
- 	max = mb_find_extent(e4b, ex.fe_start, ex.fe_len, &ex);
+-	format_map = 1 << conn_state->tv.mode;
++	format_map = 1 << conn_state->tv.legacy_mode;
+ 	memset(&format, 0, sizeof(format));
+ 	memcpy(&format, &format_map, min(sizeof(format), sizeof(format_map)));
  
- 	if (max > 0) {
-@@ -2311,6 +2314,7 @@ void ext4_mb_try_best_found(struct ext4_allocation_context *ac,
- 		ext4_mb_use_best_found(ac, e4b);
+@@ -2288,7 +2288,7 @@ static int intel_sdvo_get_tv_modes(struct drm_connector *connector)
+ 	 * Read the list of supported input resolutions for the selected TV
+ 	 * format.
+ 	 */
+-	format_map = 1 << conn_state->tv.mode;
++	format_map = 1 << conn_state->tv.legacy_mode;
+ 	memcpy(&tv_res, &format_map,
+ 	       min(sizeof(format_map), sizeof(struct intel_sdvo_sdtv_resolution_request)));
+ 
+@@ -2353,7 +2353,7 @@ intel_sdvo_connector_atomic_get_property(struct drm_connector *connector,
+ 		int i;
+ 
+ 		for (i = 0; i < intel_sdvo_connector->format_supported_num; i++)
+-			if (state->tv.mode == intel_sdvo_connector->tv_format_supported[i]) {
++			if (state->tv.legacy_mode == intel_sdvo_connector->tv_format_supported[i]) {
+ 				*val = i;
+ 
+ 				return 0;
+@@ -2409,7 +2409,7 @@ intel_sdvo_connector_atomic_set_property(struct drm_connector *connector,
+ 	struct intel_sdvo_connector_state *sdvo_state = to_intel_sdvo_connector_state(state);
+ 
+ 	if (property == intel_sdvo_connector->tv_format) {
+-		state->tv.mode = intel_sdvo_connector->tv_format_supported[val];
++		state->tv.legacy_mode = intel_sdvo_connector->tv_format_supported[val];
+ 
+ 		if (state->crtc) {
+ 			struct drm_crtc_state *crtc_state =
+@@ -3066,7 +3066,7 @@ static bool intel_sdvo_tv_create_property(struct intel_sdvo *intel_sdvo,
+ 		drm_property_add_enum(intel_sdvo_connector->tv_format, i,
+ 				      tv_format_names[intel_sdvo_connector->tv_format_supported[i]]);
+ 
+-	intel_sdvo_connector->base.base.state->tv.mode = intel_sdvo_connector->tv_format_supported[0];
++	intel_sdvo_connector->base.base.state->tv.legacy_mode = intel_sdvo_connector->tv_format_supported[0];
+ 	drm_object_attach_property(&intel_sdvo_connector->base.base.base,
+ 				   intel_sdvo_connector->tv_format, 0);
+ 	return true;
+diff --git a/drivers/gpu/drm/i915/display/intel_tv.c b/drivers/gpu/drm/i915/display/intel_tv.c
+index 2ee4f0d958513..f790fd10ba00a 100644
+--- a/drivers/gpu/drm/i915/display/intel_tv.c
++++ b/drivers/gpu/drm/i915/display/intel_tv.c
+@@ -949,7 +949,7 @@ intel_disable_tv(struct intel_atomic_state *state,
+ 
+ static const struct tv_mode *intel_tv_mode_find(const struct drm_connector_state *conn_state)
+ {
+-	int format = conn_state->tv.mode;
++	int format = conn_state->tv.legacy_mode;
+ 
+ 	return &tv_modes[format];
+ }
+@@ -1710,7 +1710,7 @@ static void intel_tv_find_better_format(struct drm_connector *connector)
+ 			break;
  	}
  
-+out:
- 	ext4_unlock_group(ac->ac_sb, group);
- 	ext4_mb_unload_buddy(e4b);
+-	connector->state->tv.mode = i;
++	connector->state->tv.legacy_mode = i;
  }
+ 
+ static int
+@@ -1865,7 +1865,7 @@ static int intel_tv_atomic_check(struct drm_connector *connector,
+ 	old_state = drm_atomic_get_old_connector_state(state, connector);
+ 	new_crtc_state = drm_atomic_get_new_crtc_state(state, new_state->crtc);
+ 
+-	if (old_state->tv.mode != new_state->tv.mode ||
++	if (old_state->tv.legacy_mode != new_state->tv.legacy_mode ||
+ 	    old_state->tv.margins.left != new_state->tv.margins.left ||
+ 	    old_state->tv.margins.right != new_state->tv.margins.right ||
+ 	    old_state->tv.margins.top != new_state->tv.margins.top ||
+@@ -1902,7 +1902,7 @@ static void intel_tv_add_properties(struct drm_connector *connector)
+ 	conn_state->tv.margins.right = 46;
+ 	conn_state->tv.margins.bottom = 37;
+ 
+-	conn_state->tv.mode = 0;
++	conn_state->tv.legacy_mode = 0;
+ 
+ 	/* Create TV properties then attach current values */
+ 	for (i = 0; i < ARRAY_SIZE(tv_modes); i++) {
+@@ -1916,7 +1916,7 @@ static void intel_tv_add_properties(struct drm_connector *connector)
+ 
+ 	drm_object_attach_property(&connector->base,
+ 				   i915->drm.mode_config.legacy_tv_mode_property,
+-				   conn_state->tv.mode);
++				   conn_state->tv.legacy_mode);
+ 	drm_object_attach_property(&connector->base,
+ 				   i915->drm.mode_config.tv_left_margin_property,
+ 				   conn_state->tv.margins.left);
 -- 
 2.43.0
 
