@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4893D869521
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:59:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 301D286938A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:46:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F27FA1F219CC
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:59:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D74EF1F21A16
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:46:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E2ED13DB90;
-	Tue, 27 Feb 2024 13:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF3A14535A;
+	Tue, 27 Feb 2024 13:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="psN08IIw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GxvAjJb+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DBF113AA50;
-	Tue, 27 Feb 2024 13:59:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2BF13B7A2;
+	Tue, 27 Feb 2024 13:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042344; cv=none; b=Y/SewaNu9Q6lVbLNhDrYzasrH0A99EdX3il9VVkLJV0ujLPgEFMo3JoWUkL2dZbMXaogo+34UVyOaLbieCy0CClX90Y0Kv8ThZQpmDqhQjOHGveKq959JEMF0Js+JLiA83QFWmuXp9osPJi4I0PCb3JxrCVq8mFjnUWRJJ8YaqE=
+	t=1709041504; cv=none; b=hgQopjcM3fpW++aovBtwvsGCdet2o+rK4n1wJaXZFsBUv3N5WGbB+ySDpIAGKe+SdPRO0AQtvOD7Mb+aWRmLm5BQIMzPGAL/YvE/I4Di5mvvh6YuTWliD4vWTMU0gz4YeNAY2JSEAOtb43vrY69wYdtgpDQU9XbJb7PG8LtUIO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042344; c=relaxed/simple;
-	bh=L4cB2vYsuLmcds+stWhgKFBVm867HR8LxDhgwB549ww=;
+	s=arc-20240116; t=1709041504; c=relaxed/simple;
+	bh=roFazU2GadqBttgLJp4chUpCCTLPTHfOIwWiht/1y4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N4hm5EYCiuUJMygnbUndHf8Pr1BXqCwNWM2iPuPHmiBXPgwzwwDv7CTHsuGleHcCwJoo/AW06jOZ0rFXEaQQcnp0ovYFnJUV4xmtyP+TSiJbv+zCExq6zJJWQ3Gzed5cIakVtZSQn2mUJfhd6RSYex6ggN0zMwVp/flCBEv4Irg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=psN08IIw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCEDBC433C7;
-	Tue, 27 Feb 2024 13:59:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ym+ns25OUldNXWLYPaZB0aAV98oCzqafmwADaXi4IFIdELszki3gnxpIoTmKdT/001NlZwh7qZY5cVybKqVuSgH8ykA5Oj5LUMh9JmAj1oM7I/agUcl978Z4f2rVNejFb1RwBXo/bQHNav1DTLSVVkZx30wpLcOJrDSVb6fUMXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GxvAjJb+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE90C433C7;
+	Tue, 27 Feb 2024 13:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042344;
-	bh=L4cB2vYsuLmcds+stWhgKFBVm867HR8LxDhgwB549ww=;
+	s=korg; t=1709041504;
+	bh=roFazU2GadqBttgLJp4chUpCCTLPTHfOIwWiht/1y4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=psN08IIwzlsnO0IU/6q1MDD/5sxXpKjaeKQrRj4Rry9kVlbrC+p1oxBRf2Xr0PMO6
-	 HrvZL4mJBDiMzw9dlMI2NZTheUc8VzCFtdZ4Qr8kOb8k1HVLzcEYVGUzkrXs0XVN7N
-	 8RlNDPp08w33UfFXw/L5lf03fBFcGQj1vXp2FOvw=
+	b=GxvAjJb+4xrzlL20nBVyvpTtRyCGMgDG0Nlf2cZqALyHgr+DNibSJxzvdtFtQ7KiG
+	 vIJy5K6+/v0/m2F+HbPbJ1xnI8OqYxgpZ/1xTJ3QoDa6VePDLqJ5hUqC/PXwjHM/8+
+	 SbI2jB//8s69Jq4Hj8DMyRJSNVulBwEY7Vh7PPUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 262/299] octeontx2-af: Consider the action set by PF
+Subject: [PATCH 4.19 26/52] pmdomain: renesas: r8a77980-sysc: CR7 must be always on
 Date: Tue, 27 Feb 2024 14:26:13 +0100
-Message-ID: <20240227131634.130459863@linuxfoundation.org>
+Message-ID: <20240227131549.391116066@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
+References: <20240227131548.514622258@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Subbaraya Sundeep <sbhatta@marvell.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 3b1ae9b71c2a97f848b00fb085a2bd29bddbe8d9 ]
+[ Upstream commit f0e4a1356466ec1858ae8e5c70bea2ce5e55008b ]
 
-AF reserves MCAM entries for each PF, VF present in the
-system and populates the entry with DMAC and action with
-default RSS so that basic packet I/O works. Since PF/VF is
-not aware of the RSS action installed by AF, AF only fixup
-the actions of the rules installed by PF/VF with corresponding
-default RSS action. This worked well for rules installed by
-PF/VF for features like RX VLAN offload and DMAC filters but
-rules involving action like drop/forward to queue are also
-getting modified by AF. Hence fix it by setting the default
-RSS action only if requested by PF/VF.
+The power domain containing the Cortex-R7 CPU core on the R-Car V3H SoC
+must always be in power-on state, unlike on other SoCs in the R-Car Gen3
+family.  See Table 9.4 "Power domains" in the R-Car Series, 3rd
+Generation Hardware User’s Manual Rev.1.00 and later.
 
-Fixes: 967db3529eca ("octeontx2-af: add support for multicast/promisc packet replication feature")
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fix this by marking the domain as a CPU domain without control
+registers, so the driver will not touch it.
+
+Fixes: 41d6d8bd8ae9 ("soc: renesas: rcar-sysc: add R8A77980 support")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/fdad9a86132d53ecddf72b734dac406915c4edc0.1705076735.git.geert+renesas@glider.be
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/soc/renesas/r8a77980-sysc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-index 3784347b6fd88..55639c133dd02 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-@@ -437,6 +437,10 @@ static void npc_fixup_vf_rule(struct rvu *rvu, struct npc_mcam *mcam,
- 			return;
- 	}
- 
-+	/* AF modifies given action iff PF/VF has requested for it */
-+	if ((entry->action & 0xFULL) != NIX_RX_ACTION_DEFAULT)
-+		return;
-+
- 	/* copy VF default entry action to the VF mcam entry */
- 	rx_action = npc_get_default_entry_action(rvu, mcam, blkaddr,
- 						 target_func);
+diff --git a/drivers/soc/renesas/r8a77980-sysc.c b/drivers/soc/renesas/r8a77980-sysc.c
+index a8dbe55e8ba82..3d1ea245681b0 100644
+--- a/drivers/soc/renesas/r8a77980-sysc.c
++++ b/drivers/soc/renesas/r8a77980-sysc.c
+@@ -25,7 +25,8 @@ static const struct rcar_sysc_area r8a77980_areas[] __initconst = {
+ 	  PD_CPU_NOCR },
+ 	{ "ca53-cpu3",	0x200, 3, R8A77980_PD_CA53_CPU3, R8A77980_PD_CA53_SCU,
+ 	  PD_CPU_NOCR },
+-	{ "cr7",	0x240, 0, R8A77980_PD_CR7,	R8A77980_PD_ALWAYS_ON },
++	{ "cr7",	0x240, 0, R8A77980_PD_CR7,	R8A77980_PD_ALWAYS_ON,
++	  PD_CPU_NOCR },
+ 	{ "a3ir",	0x180, 0, R8A77980_PD_A3IR,	R8A77980_PD_ALWAYS_ON },
+ 	{ "a2ir0",	0x400, 0, R8A77980_PD_A2IR0,	R8A77980_PD_A3IR },
+ 	{ "a2ir1",	0x400, 1, R8A77980_PD_A2IR1,	R8A77980_PD_A3IR },
 -- 
 2.43.0
 
