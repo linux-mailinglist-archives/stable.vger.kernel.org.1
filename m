@@ -1,65 +1,57 @@
-Return-Path: <stable+bounces-25108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B86D8697C6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:25:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BBE4869849
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:31:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1483A283FE9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:25:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE0AE1C20AF7
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69EEB145345;
-	Tue, 27 Feb 2024 14:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D5113EFF4;
+	Tue, 27 Feb 2024 14:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PMANkhtQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gMK/UfuH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0CF145339;
-	Tue, 27 Feb 2024 14:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A1513EFEC;
+	Tue, 27 Feb 2024 14:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043887; cv=none; b=SHIpZszL2tifcZIY+4mz/rtU0N3d5U2yx3rbSUr35xvSeiMDKfaNyy3Ufz/ymX/D3ATIn5bWtlB9BzVdRrHnGMLUWEZJL7+02gI6HKlgLl/HkFdqydGZNLLR6XRa7x6w7ZZwNSv7MOK2n+GDfbjU3oBWpDFwvDEK2rVjDOenDbg=
+	t=1709044192; cv=none; b=n6ODbp4wzJKa8xD6rpUh/1YhKr7P1m2l/JAqxnQrAgGt4juD0AmgW4JXwaQu3577gJz3bJGKTpayRHJGxaNrYY5ODgd/Dl/8WNa/oxyzy4M/IdoRGzMhqdPcoPowfGvvV0wqz3fcYGr3qYr2i5u40kC8DVPQbn8ctQo6ScRLsok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043887; c=relaxed/simple;
-	bh=DCqJMQ7xrttugh9SJCioyCWUWhkVuGpEROc6wsdqI0w=;
+	s=arc-20240116; t=1709044192; c=relaxed/simple;
+	bh=/Q9OUfQ4SJAn40kbI48VLV5MEfPbXTqtrntsjwT19eE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m+dlZWf6aEBVqlR5M+eujuTRt13WzxCa8EyFlWtfdlmiakGb9MUNjIvyVU+p7QN1aAOqfgziBY6wyQikxL3B/onRkCWiwZxvviN3s4QZX0+TDktpHvx8DMWc3UIFxxVoM1iOmfiM3LID1qhX/KDBNVWkY+bP445Yt3g3UTayAzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PMANkhtQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E87CC43399;
-	Tue, 27 Feb 2024 14:24:46 +0000 (UTC)
+	 MIME-Version; b=XDP+u4bwQqxQitnzpIRE7hGDaa9ulUPyqtmyYHEGDw2AgkKIqU4Nef6hXDs8qmjcwMkE5EVSK/btYnsMrZdsWCafSaSNUIcoKtbfSPUdFSUblQcmQ+XI7NSHXH6h4I/wbxf2Dr28WGWb7yTYztczQFApJKSMLXnOKW5nMp9KpG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gMK/UfuH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7392C433C7;
+	Tue, 27 Feb 2024 14:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043887;
-	bh=DCqJMQ7xrttugh9SJCioyCWUWhkVuGpEROc6wsdqI0w=;
+	s=korg; t=1709044192;
+	bh=/Q9OUfQ4SJAn40kbI48VLV5MEfPbXTqtrntsjwT19eE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PMANkhtQZPsPe3GnC0Ie1FufglSA7nqGp6bUdhO9ftS9DhDZax5PRqWdiJF7QxLJU
-	 p4Qc1ERR2R5+LWYubEPCdS+JCIz0A++f6V8PERnoNlFHZk2Cn3mBXKI86hKWuVD0oI
-	 bL3RDopB98dwRhMxHc2DtE8I8Hfrk1e5lGy85xb4=
+	b=gMK/UfuH3+sRfMwQH+n8CW4t38aGB5+8diI0mbyqsdEeMbmAojCsdACr8ftbc28LA
+	 7QNmuRQLcUANmruOB/eyguhUgEi266cfBNS9IvPuMyi9ZtM7gPNMKp+zKsDJFrO1q5
+	 X9UWNnOpLKwTXEjW9MbKcbBFrTq1Rdgy+Ya0mUvY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	linux-mips@vger.kernel.org,
-	Arnd Bergmann <arnd@arndb.de>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	"James E.J. Bottomley" <jejb@linux.ibm.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	linux-scsi@vger.kernel.org,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	kernel test robot <lkp@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 69/84] scsi: jazz_esp: Only build if SCSI core is builtin
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.10 095/122] mptcp: fix lockless access in subflow ULP diag
 Date: Tue, 27 Feb 2024 14:27:36 +0100
-Message-ID: <20240227131555.116557092@linuxfoundation.org>
+Message-ID: <20240227131601.812174675@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,59 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 9ddf190a7df77b77817f955fdb9c2ae9d1c9c9a3 ]
+commit b8adb69a7d29c2d33eb327bca66476fb6066516b upstream.
 
-JAZZ_ESP is a bool kconfig symbol that selects SCSI_SPI_ATTRS.  When
-CONFIG_SCSI=m, this results in SCSI_SPI_ATTRS=m while JAZZ_ESP=y, which
-causes many undefined symbol linker errors.
+Since the introduction of the subflow ULP diag interface, the
+dump callback accessed all the subflow data with lockless.
 
-Fix this by only offering to build this driver when CONFIG_SCSI=y.
+We need either to annotate all the read and write operation accordingly,
+or acquire the subflow socket lock. Let's do latter, even if slower, to
+avoid a diffstat havoc.
 
-[mkp: JAZZ_ESP is unique in that it does not support being compiled as a
-module unlike the remaining SPI SCSI HBA drivers]
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://lore.kernel.org/r/20240214055953.9612-1-rdunlap@infradead.org
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: linux-mips@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: James E.J. Bottomley <jejb@linux.ibm.com>
-Cc: Martin K. Petersen <martin.petersen@oracle.com>
-Cc: linux-scsi@vger.kernel.org
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202402112222.Gl0udKyU-lkp@intel.com/
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5147dfb50832 ("mptcp: allow dumping subflow context to userspace")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/tcp.h  |    2 +-
+ net/mptcp/diag.c   |    6 +++++-
+ net/tls/tls_main.c |    2 +-
+ 3 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/Kconfig b/drivers/scsi/Kconfig
-index 51bbc858a944c..cab6e67ea606b 100644
---- a/drivers/scsi/Kconfig
-+++ b/drivers/scsi/Kconfig
-@@ -1286,7 +1286,7 @@ source "drivers/scsi/arm/Kconfig"
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -2224,7 +2224,7 @@ struct tcp_ulp_ops {
+ 	/* cleanup ulp */
+ 	void (*release)(struct sock *sk);
+ 	/* diagnostic */
+-	int (*get_info)(const struct sock *sk, struct sk_buff *skb);
++	int (*get_info)(struct sock *sk, struct sk_buff *skb);
+ 	size_t (*get_info_size)(const struct sock *sk);
+ 	/* clone ulp */
+ 	void (*clone)(const struct request_sock *req, struct sock *newsk,
+--- a/net/mptcp/diag.c
++++ b/net/mptcp/diag.c
+@@ -13,17 +13,19 @@
+ #include <uapi/linux/mptcp.h>
+ #include "protocol.h"
  
- config JAZZ_ESP
- 	bool "MIPS JAZZ FAS216 SCSI support"
--	depends on MACH_JAZZ && SCSI
-+	depends on MACH_JAZZ && SCSI=y
- 	select SCSI_SPI_ATTRS
- 	help
- 	  This is the driver for the onboard SCSI host adapter of MIPS Magnum
--- 
-2.43.0
-
+-static int subflow_get_info(const struct sock *sk, struct sk_buff *skb)
++static int subflow_get_info(struct sock *sk, struct sk_buff *skb)
+ {
+ 	struct mptcp_subflow_context *sf;
+ 	struct nlattr *start;
+ 	u32 flags = 0;
++	bool slow;
+ 	int err;
+ 
+ 	start = nla_nest_start_noflag(skb, INET_ULP_INFO_MPTCP);
+ 	if (!start)
+ 		return -EMSGSIZE;
+ 
++	slow = lock_sock_fast(sk);
+ 	rcu_read_lock();
+ 	sf = rcu_dereference(inet_csk(sk)->icsk_ulp_data);
+ 	if (!sf) {
+@@ -69,11 +71,13 @@ static int subflow_get_info(const struct
+ 	}
+ 
+ 	rcu_read_unlock();
++	unlock_sock_fast(sk, slow);
+ 	nla_nest_end(skb, start);
+ 	return 0;
+ 
+ nla_failure:
+ 	rcu_read_unlock();
++	unlock_sock_fast(sk, slow);
+ 	nla_nest_cancel(skb, start);
+ 	return err;
+ }
+--- a/net/tls/tls_main.c
++++ b/net/tls/tls_main.c
+@@ -800,7 +800,7 @@ static void tls_update(struct sock *sk,
+ 	}
+ }
+ 
+-static int tls_get_info(const struct sock *sk, struct sk_buff *skb)
++static int tls_get_info(struct sock *sk, struct sk_buff *skb)
+ {
+ 	u16 version, cipher_type;
+ 	struct tls_context *ctx;
 
 
 
