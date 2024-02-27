@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-24764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FEEF869629
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:08:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D31C6869702
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:17:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EEAA8B209CF
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:08:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0646B2A3B0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B43313AA43;
-	Tue, 27 Feb 2024 14:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFDC513B2B4;
+	Tue, 27 Feb 2024 14:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/y91JX7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogBzNq6n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C2313B2B9;
-	Tue, 27 Feb 2024 14:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7AD78B61;
+	Tue, 27 Feb 2024 14:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042926; cv=none; b=uJZBxrHfQjePQTU/XHD2vM7UAtt74iqCrai1cEUsaBptlgPrN2JlIPZE9rcXPwHm8jXX6v5/zkojC5Qu1LNuFhaZcTG80elWr9IWRrqSmDzIWEKdNEROC5y8hvt/6LgobbI5UBScH3e2fme1mY+ABq+5pSFPoue0GcX4mjTdRto=
+	t=1709043412; cv=none; b=VeEvmvwScK5v/79hfXHilnZWOhw3SQwa6q2YWu4YHIuQ0XgspWdUq2NMbjCDueCf1QX9DwY2ZQk35UudLZUxotLBugrSFOwidIo+Um568VIlDlI6W4hsrV+tky+b+xWDBu2jy3ETorOVQi8JD4knDgNc2GGGejCnenBLRZXlxzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042926; c=relaxed/simple;
-	bh=0drjwJSdzUMmVXMFmFflNdUWRqZgT7Oer6ppKgyab1E=;
+	s=arc-20240116; t=1709043412; c=relaxed/simple;
+	bh=LrOthxNILau0lMEHEK5+dZD0+SVoohuBkvHgY1pnyQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oCssOV/kQLDhzBGJyW6meNiXkrwv/BS0o1QcnOmQiOKVUpgB8yE1UkjzoI3IZJSTA3libY/p5FVXjWO5JJj2pL8S5obHVqxAhsVx+zqj/QmAKuu0A2wZUpOsL1k3lHz2Dwo2yijSwLUC7g4JOR/HzLzxKFnAv8v5F+S1yXSTpu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/y91JX7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87763C433C7;
-	Tue, 27 Feb 2024 14:08:45 +0000 (UTC)
+	 MIME-Version; b=gefuAjPqF3NvbX3cki2RixZNczCLRv8VJg+C7Ni+lFUtMlY6bz6i2o+h8VSa9A5cOjIrS9zf11aLw97zvl8gUNlF1eWmzzY/m/4BhJff2D5efCIfv16Lu8NzIBSIeBbVlea1jEc6EttUF0HOtF5N+Gl3X3YjzcPZjWu1rJbYSjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogBzNq6n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA852C433F1;
+	Tue, 27 Feb 2024 14:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042925;
-	bh=0drjwJSdzUMmVXMFmFflNdUWRqZgT7Oer6ppKgyab1E=;
+	s=korg; t=1709043412;
+	bh=LrOthxNILau0lMEHEK5+dZD0+SVoohuBkvHgY1pnyQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y/y91JX7aXUZga47Mn/uzd8JHvB7HYSgN16Dv9PQSlWsL/TeyjQoFPaCWAYXuVgKI
-	 X3Ta6jd5qnWTkINKtTXpjF9qwkNyYXrxheSWgQeAGhR52K4EZp2NxgvvPp3eGT8pwO
-	 MJm4I54bqQHwxyHkL428qeQxrIpGhDyPqtGJARug=
+	b=ogBzNq6nJW8yxUKD5ByqQY4zn8j1ExiwGvjSpVKDlqiuxspBvQqS9ElbVDEhGQBvU
+	 +ZOu2ad+QjE7eli7kKGL5bDUT16MeZPReKwBdbuwuHMEH4tKHrS1ac7dH7YWzooiRH
+	 YuaDNBcphi0qVedorfXj+3zGMPA7R9d3Hoq3U7bs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 170/245] btrfs: add xxhash to fast checksum implementations
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 097/195] mm/damon/lru_sort: fix quota status loss due to online tunings
 Date: Tue, 27 Feb 2024 14:25:58 +0100
-Message-ID: <20240227131620.736214736@linuxfoundation.org>
+Message-ID: <20240227131613.676788177@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +61,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit efcfcbc6a36195c42d98e0ee697baba36da94dc8 ]
+commit 13d0599ab3b2ff17f798353f24bcbef1659d3cfc upstream.
 
-The implementation of XXHASH is now CPU only but still fast enough to be
-considered for the synchronous checksumming, like non-generic crc32c.
+For online parameters change, DAMON_LRU_SORT creates new schemes based on
+latest values of the parameters and replaces the old schemes with the new
+one.  When creating it, the internal status of the quotas of the old
+schemes is not preserved.  As a result, charging of the quota starts from
+zero after the online tuning.  The data that collected to estimate the
+throughput of the scheme's action is also reset, and therefore the
+estimation should start from the scratch again.  Because the throughput
+estimation is being used to convert the time quota to the effective size
+quota, this could result in temporal time quota inaccuracy.  It would be
+recovered over time, though.  In short, the quota accuracy could be
+temporarily degraded after online parameters update.
 
-A userspace benchmark comparing it to various implementations (patched
-hash-speedtest from btrfs-progs):
+Fix the problem by checking the case and copying the internal fields for
+the status.
 
-  Block size:     4096
-  Iterations:     1000000
-  Implementation: builtin
-  Units:          CPU cycles
-
-	NULL-NOP: cycles:     73384294, cycles/i       73
-     NULL-MEMCPY: cycles:    228033868, cycles/i      228,    61664.320 MiB/s
-      CRC32C-ref: cycles:  24758559416, cycles/i    24758,      567.950 MiB/s
-       CRC32C-NI: cycles:   1194350470, cycles/i     1194,    11773.433 MiB/s
-  CRC32C-ADLERSW: cycles:   6150186216, cycles/i     6150,     2286.372 MiB/s
-  CRC32C-ADLERHW: cycles:    626979180, cycles/i      626,    22427.453 MiB/s
-      CRC32C-PCL: cycles:    466746732, cycles/i      466,    30126.699 MiB/s
-	  XXHASH: cycles:    860656400, cycles/i      860,    16338.188 MiB/s
-
-Comparing purely software implementation (ref), current outdated
-accelerated using crc32q instruction (NI), optimized implementations by
-M. Adler (https://stackoverflow.com/questions/17645167/implementing-sse-4-2s-crc32c-in-software/17646775#17646775)
-and the best one that was taken from kernel using the PCLMULQDQ
-instruction (PCL).
-
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240216194025.9207-3-sj@kernel.org
+Fixes: 40e983cca927 ("mm/damon: introduce DAMON-based LRU-lists Sorting")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[6.0+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/disk-io.c | 3 +++
- 1 file changed, 3 insertions(+)
+ mm/damon/lru_sort.c |   43 ++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 36 insertions(+), 7 deletions(-)
 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index 9ae7c12668cda..c1dfde886b1e3 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -2338,6 +2338,9 @@ static int btrfs_init_csum_hash(struct btrfs_fs_info *fs_info, u16 csum_type)
- 		if (!strstr(crypto_shash_driver_name(csum_shash), "generic"))
- 			set_bit(BTRFS_FS_CSUM_IMPL_FAST, &fs_info->flags);
- 		break;
-+	case BTRFS_CSUM_TYPE_XXHASH:
-+		set_bit(BTRFS_FS_CSUM_IMPL_FAST, &fs_info->flags);
-+		break;
- 	default:
- 		break;
- 	}
--- 
-2.43.0
-
+--- a/mm/damon/lru_sort.c
++++ b/mm/damon/lru_sort.c
+@@ -185,9 +185,21 @@ static struct damos *damon_lru_sort_new_
+ 	return damon_lru_sort_new_scheme(&pattern, DAMOS_LRU_DEPRIO);
+ }
+ 
++static void damon_lru_sort_copy_quota_status(struct damos_quota *dst,
++		struct damos_quota *src)
++{
++	dst->total_charged_sz = src->total_charged_sz;
++	dst->total_charged_ns = src->total_charged_ns;
++	dst->charged_sz = src->charged_sz;
++	dst->charged_from = src->charged_from;
++	dst->charge_target_from = src->charge_target_from;
++	dst->charge_addr_from = src->charge_addr_from;
++}
++
+ static int damon_lru_sort_apply_parameters(void)
+ {
+-	struct damos *scheme;
++	struct damos *scheme, *hot_scheme, *cold_scheme;
++	struct damos *old_hot_scheme = NULL, *old_cold_scheme = NULL;
+ 	unsigned int hot_thres, cold_thres;
+ 	int err = 0;
+ 
+@@ -195,18 +207,35 @@ static int damon_lru_sort_apply_paramete
+ 	if (err)
+ 		return err;
+ 
++	damon_for_each_scheme(scheme, ctx) {
++		if (!old_hot_scheme) {
++			old_hot_scheme = scheme;
++			continue;
++		}
++		old_cold_scheme = scheme;
++	}
++
+ 	hot_thres = damon_max_nr_accesses(&damon_lru_sort_mon_attrs) *
+ 		hot_thres_access_freq / 1000;
+-	scheme = damon_lru_sort_new_hot_scheme(hot_thres);
+-	if (!scheme)
++	hot_scheme = damon_lru_sort_new_hot_scheme(hot_thres);
++	if (!hot_scheme)
+ 		return -ENOMEM;
+-	damon_set_schemes(ctx, &scheme, 1);
++	if (old_hot_scheme)
++		damon_lru_sort_copy_quota_status(&hot_scheme->quota,
++				&old_hot_scheme->quota);
+ 
+ 	cold_thres = cold_min_age / damon_lru_sort_mon_attrs.aggr_interval;
+-	scheme = damon_lru_sort_new_cold_scheme(cold_thres);
+-	if (!scheme)
++	cold_scheme = damon_lru_sort_new_cold_scheme(cold_thres);
++	if (!cold_scheme) {
++		damon_destroy_scheme(hot_scheme);
+ 		return -ENOMEM;
+-	damon_add_scheme(ctx, scheme);
++	}
++	if (old_cold_scheme)
++		damon_lru_sort_copy_quota_status(&cold_scheme->quota,
++				&old_cold_scheme->quota);
++
++	damon_set_schemes(ctx, &hot_scheme, 1);
++	damon_add_scheme(ctx, cold_scheme);
+ 
+ 	return damon_set_region_biggest_system_ram_default(target,
+ 					&monitor_region_start,
 
 
 
