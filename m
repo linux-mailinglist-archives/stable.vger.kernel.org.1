@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-24646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 564E6869593
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:03:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE123869488
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:54:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B8061F2B562
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:03:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26CFE1F226EB
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:54:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A45013B798;
-	Tue, 27 Feb 2024 14:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 034AD14534C;
+	Tue, 27 Feb 2024 13:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZSbkIXsi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IbnvVAit"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0792C78B61;
-	Tue, 27 Feb 2024 14:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0BD1420A2;
+	Tue, 27 Feb 2024 13:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042600; cv=none; b=n3yMMxY+GocDhGxLRaCKpXkHM2jR0AZ01dbKz0/ZPlYm1zlX/4TR53ydc4UJPWlueY9etvnyOZzgT2rcHo08GnW9Zmxgl6ibemg0DVV96oxZ+eSgd05CtafWAKeD7A3Fwg8twO4qFXAzynjfFePwHRRzwS0QFF5s52J9MSz1rFI=
+	t=1709042038; cv=none; b=KfhwH1+n/oys1HkYK/8rCbEZambcwpPLXlsd1lZmBfpIzW9wYWHs/lJE0kbWaYSfF6O07SHfial2fYvicqDkiGyvSIfP8YGG25lO24mQjmBs6q2wjvJqpuKrefw9H9eil85TZ9fc5CoGwUEYxAQs+enCQd8pEfdoLk7ZgTKYSQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042600; c=relaxed/simple;
-	bh=fqgXT4qp7JeMqUwnKwZhCUyYuGkwnk57+001eSjWBXI=;
+	s=arc-20240116; t=1709042038; c=relaxed/simple;
+	bh=NMiLemjLUQt/9mYnTy4qggHJPPto3Ln/M/VYRJuwMlI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sAwP5jyC/1OdRGiqNXgbwuKEr7Q7Uj9THRoJFsvyXJL1igpd3czKsOLWNmm/c7CSttnD4uiptKL9Jqv3VgA3qYASnVRTkFKK5dd8+And3KBvqzYGR2pXOYjb9EWpEFyRjsGgo/Tg+q3+LXfF42kBPDMBcOkitVOHau0Jj92aD18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZSbkIXsi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D463C433F1;
-	Tue, 27 Feb 2024 14:03:19 +0000 (UTC)
+	 MIME-Version; b=eNmk3fO4pdtbnluml5kSpLK9zJ/l0lczqM8mmqz51At78znEIQYjb8HKeH1phuoY54pnG4xscLl+KmTv+LICd8EycLizA5XuEa51ZdCpznobkzsRsk3/teFi5EwhjPfYH5FSuczBHSXVapz86vTZSXEtqrsRjk6sAumOcFnqYhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IbnvVAit; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34829C43390;
+	Tue, 27 Feb 2024 13:53:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042599;
-	bh=fqgXT4qp7JeMqUwnKwZhCUyYuGkwnk57+001eSjWBXI=;
+	s=korg; t=1709042038;
+	bh=NMiLemjLUQt/9mYnTy4qggHJPPto3Ln/M/VYRJuwMlI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZSbkIXsiqFMeW0jeejO7H4358taB8M4fEQ04nqXxdtghSF1rAOnqq52lq/dar6bWK
-	 qOT0FCg6SJHXk+coe4CwYoUKtfwFQYbsanQ6B9th8Ua5tg7uA30g/CQOkvtHxRiQl5
-	 s2D4gTwaW0RudCvUGRpeThCpulnVc1qF3DPPMWGs=
+	b=IbnvVAitW5PRAzUX9C5+JhsoHZV0+VTfh5QPTn35BeQdTAUNpYoqrgPZvcv+yT5aV
+	 DPo7cnAnuwclzJ3NY8H0BYtgU36hHffN1ZzsXk6PL+o62fG/EiZJUK3bHcvdzcmSqw
+	 D94DGIWft2DvRM0/2FyR8lqnl3Ly1PhND3fQ300s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Juergen Gross <jgross@suse.com>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 052/245] fs/ntfs3: Modified fix directory element type detection
+Subject: [PATCH 6.6 129/299] xen/events: remove some simple helpers from events_base.c
 Date: Tue, 27 Feb 2024 14:24:00 +0100
-Message-ID: <20240227131616.815729237@linuxfoundation.org>
+Message-ID: <20240227131630.011371260@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +62,265 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit 22457c047ed971f2f2e33be593ddfabd9639a409 ]
+[ Upstream commit 3bdb0ac350fe5e6301562143e4573971dd01ae0b ]
 
-Unfortunately reparse attribute is used for many purposes (several dozens).
-It is not possible here to know is this name symlink or not.
-To get exactly the type of name we should to open inode (read mft).
-getattr for opened file (fstat) correctly returns symlink.
+The helper functions type_from_irq() and cpu_from_irq() are just one
+line functions used only internally.
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Open code them where needed. At the same time modify and rename
+get_evtchn_to_irq() to return a struct irq_info instead of the IRQ
+number.
+
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Stable-dep-of: fa765c4b4aed ("xen/events: close evtchn after mapping cleanup")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/dir.c | 30 +++++++++++++++++++++++++-----
- 1 file changed, 25 insertions(+), 5 deletions(-)
+ drivers/xen/events/events_base.c | 97 +++++++++++++-------------------
+ 1 file changed, 38 insertions(+), 59 deletions(-)
 
-diff --git a/fs/ntfs3/dir.c b/fs/ntfs3/dir.c
-index d4d9f4ffb6d9a..c2fb76bb28f47 100644
---- a/fs/ntfs3/dir.c
-+++ b/fs/ntfs3/dir.c
-@@ -309,11 +309,31 @@ static inline int ntfs_filldir(struct ntfs_sb_info *sbi, struct ntfs_inode *ni,
- 		return 0;
+diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
+index 57dfb512cdc5d..d3d7501628381 100644
+--- a/drivers/xen/events/events_base.c
++++ b/drivers/xen/events/events_base.c
+@@ -248,15 +248,6 @@ static int set_evtchn_to_irq(evtchn_port_t evtchn, unsigned int irq)
+ 	return 0;
+ }
+ 
+-static int get_evtchn_to_irq(evtchn_port_t evtchn)
+-{
+-	if (evtchn >= xen_evtchn_max_channels())
+-		return -1;
+-	if (evtchn_to_irq[EVTCHN_ROW(evtchn)] == NULL)
+-		return -1;
+-	return READ_ONCE(evtchn_to_irq[EVTCHN_ROW(evtchn)][EVTCHN_COL(evtchn)]);
+-}
+-
+ /* Get info for IRQ */
+ static struct irq_info *info_for_irq(unsigned irq)
+ {
+@@ -274,6 +265,19 @@ static void set_info_for_irq(unsigned int irq, struct irq_info *info)
+ 		irq_set_chip_data(irq, info);
+ }
+ 
++static struct irq_info *evtchn_to_info(evtchn_port_t evtchn)
++{
++	int irq;
++
++	if (evtchn >= xen_evtchn_max_channels())
++		return NULL;
++	if (evtchn_to_irq[EVTCHN_ROW(evtchn)] == NULL)
++		return NULL;
++	irq = READ_ONCE(evtchn_to_irq[EVTCHN_ROW(evtchn)][EVTCHN_COL(evtchn)]);
++
++	return (irq < 0) ? NULL : info_for_irq(irq);
++}
++
+ /* Per CPU channel accounting */
+ static void channels_on_cpu_dec(struct irq_info *info)
+ {
+@@ -429,7 +433,9 @@ static evtchn_port_t evtchn_from_irq(unsigned int irq)
+ 
+ unsigned int irq_from_evtchn(evtchn_port_t evtchn)
+ {
+-	return get_evtchn_to_irq(evtchn);
++	struct irq_info *info = evtchn_to_info(evtchn);
++
++	return info ? info->irq : -1;
+ }
+ EXPORT_SYMBOL_GPL(irq_from_evtchn);
+ 
+@@ -473,25 +479,11 @@ static unsigned pirq_from_irq(unsigned irq)
+ 	return info->u.pirq.pirq;
+ }
+ 
+-static enum xen_irq_type type_from_irq(unsigned irq)
+-{
+-	return info_for_irq(irq)->type;
+-}
+-
+-static unsigned cpu_from_irq(unsigned irq)
+-{
+-	return info_for_irq(irq)->cpu;
+-}
+-
+ unsigned int cpu_from_evtchn(evtchn_port_t evtchn)
+ {
+-	int irq = get_evtchn_to_irq(evtchn);
+-	unsigned ret = 0;
+-
+-	if (irq != -1)
+-		ret = cpu_from_irq(irq);
++	struct irq_info *info = evtchn_to_info(evtchn);
+ 
+-	return ret;
++	return info ? info->cpu : 0;
+ }
+ 
+ static void do_mask(struct irq_info *info, u8 reason)
+@@ -540,13 +532,12 @@ static bool pirq_needs_eoi_flag(unsigned irq)
+ static void bind_evtchn_to_cpu(evtchn_port_t evtchn, unsigned int cpu,
+ 			       bool force_affinity)
+ {
+-	int irq = get_evtchn_to_irq(evtchn);
+-	struct irq_info *info = info_for_irq(irq);
++	struct irq_info *info = evtchn_to_info(evtchn);
+ 
+-	BUG_ON(irq == -1);
++	BUG_ON(info == NULL);
+ 
+ 	if (IS_ENABLED(CONFIG_SMP) && force_affinity) {
+-		struct irq_data *data = irq_get_irq_data(irq);
++		struct irq_data *data = irq_get_irq_data(info->irq);
+ 
+ 		irq_data_update_affinity(data, cpumask_of(cpu));
+ 		irq_data_update_effective_affinity(data, cpumask_of(cpu));
+@@ -979,13 +970,13 @@ static void __unbind_from_irq(unsigned int irq)
  	}
  
--	/* NTFS: symlinks are "dir + reparse" or "file + reparse" */
--	if (fname->dup.fa & FILE_ATTRIBUTE_REPARSE_POINT)
--		dt_type = DT_LNK;
--	else
--		dt_type = (fname->dup.fa & FILE_ATTRIBUTE_DIRECTORY) ? DT_DIR : DT_REG;
-+	/*
-+	 * NTFS: symlinks are "dir + reparse" or "file + reparse"
-+	 * Unfortunately reparse attribute is used for many purposes (several dozens).
-+	 * It is not possible here to know is this name symlink or not.
-+	 * To get exactly the type of name we should to open inode (read mft).
-+	 * getattr for opened file (fstat) correctly returns symlink.
-+	 */
-+	dt_type = (fname->dup.fa & FILE_ATTRIBUTE_DIRECTORY) ? DT_DIR : DT_REG;
-+
-+	/*
-+	 * It is not reliable to detect the type of name using duplicated information
-+	 * stored in parent directory.
-+	 * The only correct way to get the type of name - read MFT record and find ATTR_STD.
-+	 * The code below is not good idea.
-+	 * It does additional locks/reads just to get the type of name.
-+	 * Should we use additional mount option to enable branch below?
-+	 */
-+	if ((fname->dup.fa & FILE_ATTRIBUTE_REPARSE_POINT) &&
-+	    ino != ni->mi.rno) {
-+		struct inode *inode = ntfs_iget5(sbi->sb, &e->ref, NULL);
-+		if (!IS_ERR_OR_NULL(inode)) {
-+			dt_type = fs_umode_to_dtype(inode->i_mode);
-+			iput(inode);
-+		}
-+	}
+ 	if (VALID_EVTCHN(evtchn)) {
+-		unsigned int cpu = cpu_from_irq(irq);
++		unsigned int cpu = info->cpu;
+ 		struct xenbus_device *dev;
  
- 	return !dir_emit(ctx, (s8 *)name, name_len, ino, dt_type);
+ 		if (!info->is_static)
+ 			xen_evtchn_close(evtchn);
+ 
+-		switch (type_from_irq(irq)) {
++		switch (info->type) {
+ 		case IRQT_VIRQ:
+ 			per_cpu(virq_to_irq, cpu)[virq_from_irq(irq)] = -1;
+ 			break;
+@@ -1208,15 +1199,16 @@ static int bind_evtchn_to_irq_chip(evtchn_port_t evtchn, struct irq_chip *chip,
+ {
+ 	int irq;
+ 	int ret;
++	struct irq_info *info;
+ 
+ 	if (evtchn >= xen_evtchn_max_channels())
+ 		return -ENOMEM;
+ 
+ 	mutex_lock(&irq_mapping_update_lock);
+ 
+-	irq = get_evtchn_to_irq(evtchn);
++	info = evtchn_to_info(evtchn);
+ 
+-	if (irq == -1) {
++	if (!info) {
+ 		irq = xen_allocate_irq_dynamic();
+ 		if (irq < 0)
+ 			goto out;
+@@ -1239,9 +1231,9 @@ static int bind_evtchn_to_irq_chip(evtchn_port_t evtchn, struct irq_chip *chip,
+ 		 */
+ 		bind_evtchn_to_cpu(evtchn, 0, false);
+ 	} else {
+-		struct irq_info *info = info_for_irq(irq);
+-		if (!WARN_ON(!info || info->type != IRQT_EVTCHN))
++		if (!WARN_ON(info->type != IRQT_EVTCHN))
+ 			info->refcnt++;
++		irq = info->irq;
+ 	}
+ 
+ out:
+@@ -1579,13 +1571,7 @@ EXPORT_SYMBOL_GPL(xen_set_irq_priority);
+ 
+ int evtchn_make_refcounted(evtchn_port_t evtchn, bool is_static)
+ {
+-	int irq = get_evtchn_to_irq(evtchn);
+-	struct irq_info *info;
+-
+-	if (irq == -1)
+-		return -ENOENT;
+-
+-	info = info_for_irq(irq);
++	struct irq_info *info = evtchn_to_info(evtchn);
+ 
+ 	if (!info)
+ 		return -ENOENT;
+@@ -1601,7 +1587,6 @@ EXPORT_SYMBOL_GPL(evtchn_make_refcounted);
+ 
+ int evtchn_get(evtchn_port_t evtchn)
+ {
+-	int irq;
+ 	struct irq_info *info;
+ 	int err = -ENOENT;
+ 
+@@ -1610,11 +1595,7 @@ int evtchn_get(evtchn_port_t evtchn)
+ 
+ 	mutex_lock(&irq_mapping_update_lock);
+ 
+-	irq = get_evtchn_to_irq(evtchn);
+-	if (irq == -1)
+-		goto done;
+-
+-	info = info_for_irq(irq);
++	info = evtchn_to_info(evtchn);
+ 
+ 	if (!info)
+ 		goto done;
+@@ -1634,10 +1615,11 @@ EXPORT_SYMBOL_GPL(evtchn_get);
+ 
+ void evtchn_put(evtchn_port_t evtchn)
+ {
+-	int irq = get_evtchn_to_irq(evtchn);
+-	if (WARN_ON(irq == -1))
++	struct irq_info *info = evtchn_to_info(evtchn);
++
++	if (WARN_ON(!info))
+ 		return;
+-	unbind_from_irq(irq);
++	unbind_from_irq(info->irq);
  }
+ EXPORT_SYMBOL_GPL(evtchn_put);
+ 
+@@ -1667,12 +1649,10 @@ struct evtchn_loop_ctrl {
+ 
+ void handle_irq_for_port(evtchn_port_t port, struct evtchn_loop_ctrl *ctrl)
+ {
+-	int irq;
+-	struct irq_info *info;
++	struct irq_info *info = evtchn_to_info(port);
+ 	struct xenbus_device *dev;
+ 
+-	irq = get_evtchn_to_irq(port);
+-	if (irq == -1)
++	if (!info)
+ 		return;
+ 
+ 	/*
+@@ -1697,7 +1677,6 @@ void handle_irq_for_port(evtchn_port_t port, struct evtchn_loop_ctrl *ctrl)
+ 		}
+ 	}
+ 
+-	info = info_for_irq(irq);
+ 	if (xchg_acquire(&info->is_active, 1))
+ 		return;
+ 
+@@ -1711,7 +1690,7 @@ void handle_irq_for_port(evtchn_port_t port, struct evtchn_loop_ctrl *ctrl)
+ 		info->eoi_time = get_jiffies_64() + event_eoi_delay;
+ 	}
+ 
+-	generic_handle_irq(irq);
++	generic_handle_irq(info->irq);
+ }
+ 
+ int xen_evtchn_do_upcall(void)
+@@ -1769,7 +1748,7 @@ void rebind_evtchn_irq(evtchn_port_t evtchn, int irq)
+ 	mutex_lock(&irq_mapping_update_lock);
+ 
+ 	/* After resume the irq<->evtchn mappings are all cleared out */
+-	BUG_ON(get_evtchn_to_irq(evtchn) != -1);
++	BUG_ON(evtchn_to_info(evtchn));
+ 	/* Expect irq to have been bound before,
+ 	   so there should be a proper type */
+ 	BUG_ON(info->type == IRQT_UNBOUND);
 -- 
 2.43.0
 
