@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AADD8693AE
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:48:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61F5586973A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:19:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13D77291A69
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:48:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0205E1F2405B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:19:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 479AC145327;
-	Tue, 27 Feb 2024 13:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65BF81419B4;
+	Tue, 27 Feb 2024 14:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L8h10WEt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJMdkjZq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FD71448F1;
-	Tue, 27 Feb 2024 13:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2644B78B61;
+	Tue, 27 Feb 2024 14:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041554; cv=none; b=NyKJOYpKo45aenCIU/HKJxFv9kE/JdZCQJcXPQ1MGvwUCbvJE5eRLi6u0OP7kGvuunisSsmcgvaYjSIJhH9BvN+c/bQsAm9DSPkiVg/OBQ50+kzkMS6rUFaBqgyN2c0qAm1nDynclyAk24hLEa1l1CMMqE34G8Lbbf9GhIAQ6kI=
+	t=1709043550; cv=none; b=VytvVhtvw8iQYXE5trczcdoRAKWp2Wj4UJIZoR1XAnlkhyEFsbO5d5Ra8QiTK7DAM7sTWDm7LmSxAS4VCvzCCa82vszEnfUtA0Ax2QM1xzVHAcXgLx2LgF7PNegVhUUz7qBy3uxfE+xWG/241yWhiVlETxPa7AKXikioFelD87g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041554; c=relaxed/simple;
-	bh=pabyUPGumAtK5LkNQfxRny6vvotcj6hyWS+DXAC7Lvk=;
+	s=arc-20240116; t=1709043550; c=relaxed/simple;
+	bh=GJFMKHmBU68Cy7mALJAe234vMhGUFEIS+WBhdKX/WWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aQsbRy5b7aN8niuGIQppozfqwejhqC+BdZcrZcy5yTN7SsGTCMl1VRTnnTLOav/XJjuoi3pN3qLY08GnXX7vFk1dMNrdjSrKal1kZOD56pKQXP+CvEXHJl+qnolwfRG8zIknMcXp9Aum8VPxJGtdkmLzVoFz1ZT/mvb6IGy+QzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L8h10WEt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87BB1C433C7;
-	Tue, 27 Feb 2024 13:45:53 +0000 (UTC)
+	 MIME-Version; b=EMdyPbyn/Ws31tiwLrlnqRI1WluHgu8qMq8i6CdBx4mDrXuE8mH6D+G7iovLiLCsD5H9cqgYSmaRaRJcuOis/xIhs/ysfpi+41nj08WP5+R1/+CvBlnACPUCTh2mkMn9BiNqyya+ZCTeXlfeEZppOh/ESW0LEpSb6dUYH3XHSws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJMdkjZq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A827BC433C7;
+	Tue, 27 Feb 2024 14:19:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041553;
-	bh=pabyUPGumAtK5LkNQfxRny6vvotcj6hyWS+DXAC7Lvk=;
+	s=korg; t=1709043550;
+	bh=GJFMKHmBU68Cy7mALJAe234vMhGUFEIS+WBhdKX/WWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L8h10WEtX7YfI5qUvLT7OCsedCRajAX74u786zYxbatviGsWSqoj6II2BeGgwoucM
-	 d0K2wkUlvW90JbdPn/IdnpdiUpEbga2rOVzUGS850vQn55G7GaPS5Afhgrf5Xh4oj8
-	 0F+wtOpu8g4io/a4fEBcx1IaQrmeH7xt7kpkaZKc=
+	b=wJMdkjZqpm7vyDkbuNNl7VMd6LfhPWLAe52BuJe7dOSdgaVqOLXlo4w7bcVetXJEQ
+	 D4dDdz+hy4QE8+scSVXK/wvSlG+DwjLipt0w93SBHUjeUL9JY4drG3axCGzKPoeP/o
+	 en9WPOcT7HDK7ogAQ2uos1LpJpPlCX2d2EBYzNlw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 45/52] ipv6: sr: fix possible use-after-free and null-ptr-deref
+Subject: [PATCH 6.1 131/195] RDMA/bnxt_re: Return error for SRQ resize
 Date: Tue, 27 Feb 2024 14:26:32 +0100
-Message-ID: <20240227131550.015311375@linuxfoundation.org>
+Message-ID: <20240227131614.766619003@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
-References: <20240227131548.514622258@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-[ Upstream commit 5559cea2d5aa3018a5f00dd2aca3427ba09b386b ]
+[ Upstream commit 3687b450c5f32e80f179ce4b09e0454da1449eac ]
 
-The pernet operations structure for the subsystem must be registered
-before registering the generic netlink family.
+SRQ resize is not supported in the driver. But driver is not
+returning error from bnxt_re_modify_srq() for SRQ resize.
 
-Fixes: 915d7e5e5930 ("ipv6: sr: add code base for control plane support of SR-IPv6")
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Link: https://lore.kernel.org/r/20240215202717.29815-1-kovalev@altlinux.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 37cb11acf1f7 ("RDMA/bnxt_re: Add SRQ support for Broadcom adapters")
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://lore.kernel.org/r/1705985677-15551-5-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/seg6.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
-index 89d55770ac74b..4bd601c964343 100644
---- a/net/ipv6/seg6.c
-+++ b/net/ipv6/seg6.c
-@@ -445,22 +445,24 @@ int __init seg6_init(void)
- {
- 	int err = -ENOMEM;
- 
--	err = genl_register_family(&seg6_genl_family);
-+	err = register_pernet_subsys(&ip6_segments_ops);
- 	if (err)
- 		goto out;
- 
--	err = register_pernet_subsys(&ip6_segments_ops);
-+	err = genl_register_family(&seg6_genl_family);
- 	if (err)
--		goto out_unregister_genl;
-+		goto out_unregister_pernet;
- 
- #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
- 	err = seg6_iptunnel_init();
- 	if (err)
--		goto out_unregister_pernet;
-+		goto out_unregister_genl;
- 
- 	err = seg6_local_init();
--	if (err)
--		goto out_unregister_pernet;
-+	if (err) {
-+		seg6_iptunnel_exit();
-+		goto out_unregister_genl;
-+	}
- #endif
- 
- #ifdef CONFIG_IPV6_SEG6_HMAC
-@@ -481,11 +483,11 @@ int __init seg6_init(void)
- #endif
- #endif
- #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
--out_unregister_pernet:
--	unregister_pernet_subsys(&ip6_segments_ops);
--#endif
- out_unregister_genl:
- 	genl_unregister_family(&seg6_genl_family);
-+#endif
-+out_unregister_pernet:
-+	unregister_pernet_subsys(&ip6_segments_ops);
- 	goto out;
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index 4ed8814efde6f..6ed0568747eaa 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -1710,7 +1710,7 @@ int bnxt_re_modify_srq(struct ib_srq *ib_srq, struct ib_srq_attr *srq_attr,
+ 	switch (srq_attr_mask) {
+ 	case IB_SRQ_MAX_WR:
+ 		/* SRQ resize is not supported */
+-		break;
++		return -EINVAL;
+ 	case IB_SRQ_LIMIT:
+ 		/* Change the SRQ threshold */
+ 		if (srq_attr->srq_limit > srq->qplib_srq.max_wqe)
+@@ -1725,13 +1725,12 @@ int bnxt_re_modify_srq(struct ib_srq *ib_srq, struct ib_srq_attr *srq_attr,
+ 		/* On success, update the shadow */
+ 		srq->srq_limit = srq_attr->srq_limit;
+ 		/* No need to Build and send response back to udata */
+-		break;
++		return 0;
+ 	default:
+ 		ibdev_err(&rdev->ibdev,
+ 			  "Unsupported srq_attr_mask 0x%x", srq_attr_mask);
+ 		return -EINVAL;
+ 	}
+-	return 0;
  }
  
+ int bnxt_re_query_srq(struct ib_srq *ib_srq, struct ib_srq_attr *srq_attr)
 -- 
 2.43.0
 
