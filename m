@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C0FF86930F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:41:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBB4E86940F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBE192850B0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:41:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B99D1F216B4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71B6E13B2B4;
-	Tue, 27 Feb 2024 13:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C0313F01E;
+	Tue, 27 Feb 2024 13:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a0eNuLm8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XirP35BX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3194E2F2D;
-	Tue, 27 Feb 2024 13:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6FF9141995;
+	Tue, 27 Feb 2024 13:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041286; cv=none; b=VwHHU+SrqjH5m2COGDARxSK12PPBT5UdSZCFZTnG5iQBICsQNVe8k8YtlJc/7myVhmSAy30PwZd+Jt/2TRNWAwq9OO38l1ahJGFlGfzTX317TgJxExEkxBGbWOT+JLI+n1Eo+KmsQiZ4hC5GVohw/t5+wyo5ZORYzqvn9LiY6lg=
+	t=1709041763; cv=none; b=Oye414MNO+ixLRIRbEGccdh56gONON5yggJyH75g3OxHWIXZl6IbEX4InX1pfIeT+UuSN6YSjABEbErl0QuTfzFnrDtItBoRs4+PMvS5MSzWXMlxrc37f6ffVmpIlgDfc4tfkraPxv3/dn3Nf7efZ54gV9udCN0kY9ZOXEAzX4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041286; c=relaxed/simple;
-	bh=InUYOBRgxThMqum0hFNllBbYgm5KZ4aQZASxAhkgJvQ=;
+	s=arc-20240116; t=1709041763; c=relaxed/simple;
+	bh=Ua/s5L4oxwf+G/YUx4GD6nFXwDQLS2r57qq4sh4Qyag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FNh4RfGEQULDmk1tLZu8AuOTCo3158fPOUgzdnXdxid4hrt37KUM5E8AUU4IVWEEe+7UPeCOnYvo2HYjqumFg3DoAqubu3bD2zG6StpeD1FSVSG6xA3mT9u4g4+utBm7Of/mnirb5mBKcjZH0hvgeKXmS317p+9wrfOFXqkCLYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a0eNuLm8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C0BC433C7;
-	Tue, 27 Feb 2024 13:41:25 +0000 (UTC)
+	 MIME-Version; b=dpnGQULc8Hc6Xb1NYOigPIJQLmMSB/iWhCvVR7ySA30s8a8F3098fyQ+bxdAlPYip9CCZ/RQZ6kQztJDV2jZXjEMhl7CFoy6ka8be1hrfbTdChAjLYe7W+twyyLurZsv914qrLrdudLeWExWCkcRIiLFAskHxDbmdtyp4TyS1rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XirP35BX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CAA0C433F1;
+	Tue, 27 Feb 2024 13:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041286;
-	bh=InUYOBRgxThMqum0hFNllBbYgm5KZ4aQZASxAhkgJvQ=;
+	s=korg; t=1709041763;
+	bh=Ua/s5L4oxwf+G/YUx4GD6nFXwDQLS2r57qq4sh4Qyag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a0eNuLm8Ni6JvorFyVv6XBrC47Qhvd+stYxfn3TflClsGqdmmYSlTh8vyHlkZbPp+
-	 OW09a2tx83RbSETmFjoUz/OBNU1C1bnDjOlZJ6+jUgTGHsVrKrekbqFRWI7JPkDE3N
-	 38KMkOAeQ3B/ZtpFWlTwAx4Q5nWpFYJkcjvFdK6I=
+	b=XirP35BXtEBVMG1ot4D9T8LaO5urMfWFSQbpzRMpiYM8HiexJxSmTBs8RUddHJrII
+	 gEqeB8839ZzaUr5lBdHqtPiuii11pWGA44tDzzw1rLcX/vkmMJHRV5LocNBjoAIFmr
+	 sVSVGUmnihl4Dc5/3MxoxZWEr7mak3G1PkcRzhtE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jackson Cooper-Driver <Jackson.Cooper-Driver@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 286/334] arm64/sme: Restore SMCR_EL1.EZT0 on exit from suspend
+Subject: [PATCH 6.6 033/299] ext4: avoid dividing by 0 in mb_update_avg_fragment_size() when block bitmap corrupt
 Date: Tue, 27 Feb 2024 14:22:24 +0100
-Message-ID: <20240227131640.219652875@linuxfoundation.org>
+Message-ID: <20240227131626.888900968@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit d7b77a0d565b048cb0808fa8a4fb031352b22a01 ]
+[ Upstream commit 993bf0f4c393b3667830918f9247438a8f6fdb5b ]
 
-The fields in SMCR_EL1 reset to an architecturally UNKNOWN value. Since we
-do not otherwise manage the traps configured in this register at runtime we
-need to reconfigure them after a suspend in case nothing else was kind
-enough to preserve them for us. Do so for SMCR_EL1.EZT0.
+Determine if bb_fragments is 0 instead of determining bb_free to eliminate
+the risk of dividing by zero when the block bitmap is corrupted.
 
-Fixes: d4913eee152d ("arm64/sme: Add basic enumeration for SME2")
-Reported-by: Jackson Cooper-Driver <Jackson.Cooper-Driver@arm.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20240213-arm64-sme-resume-v3-2-17e05e493471@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240104142040.2835097-6-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/fpsimd.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/ext4/mballoc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
-index db1eba8d5f66d..0898ac9979045 100644
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -1348,6 +1348,8 @@ void sme_suspend_exit(void)
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 7a2d42a84807a..9eac63e5a251c 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -841,7 +841,7 @@ mb_update_avg_fragment_size(struct super_block *sb, struct ext4_group_info *grp)
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	int new_order;
  
- 	if (system_supports_fa64())
- 		smcr |= SMCR_ELx_FA64;
-+	if (system_supports_sme2())
-+		smcr |= SMCR_ELx_EZT0;
+-	if (!test_opt2(sb, MB_OPTIMIZE_SCAN) || grp->bb_free == 0)
++	if (!test_opt2(sb, MB_OPTIMIZE_SCAN) || grp->bb_fragments == 0)
+ 		return;
  
- 	write_sysreg_s(smcr, SYS_SMCR_EL1);
- 	write_sysreg_s(0, SYS_SMPRI_EL1);
+ 	new_order = mb_avg_fragment_size_order(sb,
 -- 
 2.43.0
 
