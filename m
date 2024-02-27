@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-24567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D79986952F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:59:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FED3869627
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:08:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3865628FA1C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:59:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2BD21C21847
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F87413DB92;
-	Tue, 27 Feb 2024 13:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B623213B2B4;
+	Tue, 27 Feb 2024 14:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFfB8H05"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OvrTV9wN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB7654BD4;
-	Tue, 27 Feb 2024 13:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7607013A26F;
+	Tue, 27 Feb 2024 14:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042377; cv=none; b=EX4BNQ2JhljJOQGQQ89MMNZ4fXI09pGFZx3+8q+Zgmm8KUqO8ZLF7/89efHxGbY1o6j9iSDm7nKtmmBshHgoYOnpdRkvMmid8Ccy2q3oIpqTAHBILtE2ZKbLcm8wV7BFQZp424lbqYD5SLvAciJraTIo5IYDioUDn/hMdC7kH9Q=
+	t=1709042920; cv=none; b=V3l3LtT+VFw9H1GhHE0extpEhQ9Evh2W+WZNnbgd8VyE63v92ML6j/oG+IOYnJaqzRug2ZmXYHemjz2TvGHWZi0AKaMnelVsZtGpfTv7UgZqMx+ggtpzBddzOSrE53SFjAxvh6C5yJlFduRK5289aewQ5QzaxFHTB56Wi5vX87g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042377; c=relaxed/simple;
-	bh=udkftGs+UCI78iMSZgtrTx5ntkGLlCrwI7Yq2l9pMA0=;
+	s=arc-20240116; t=1709042920; c=relaxed/simple;
+	bh=QaqqNl8tyqajLncTtmAjzLOHZQSwV3JhH718OeT7vtw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bcPjUTdDGBOySxgR/Gp/wYzfKsStz+SBnJjN1ctvj3My5ndQDp0twf7Sf2u5W94eDqSS/kyMqFsH/e72k3N7AQhiXItJdEytScziISlmaSIDNlgOpI5KtMM91ZjM+zkRATOP0FeYGQnCfv1WxQJl0HhSo/nhADk1dWd4CjyZgkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFfB8H05; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE13C43394;
-	Tue, 27 Feb 2024 13:59:36 +0000 (UTC)
+	 MIME-Version; b=ciP+S2BdjXFPa42t52YOJ6+ZkObNL0gfo+dBt7oSRBsgVEYC6vkcaMvkVgoAsgRvLgbik8d8QGnjvowdLu0R4/KdCYu/ovoYCc5WhAl9JsNGgaZpnnZpSFkzeivU8boFynSlmvLUPYfBiTKke7hw0bjO3gv0VCEaf1WfpB0VN9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OvrTV9wN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F03C433F1;
+	Tue, 27 Feb 2024 14:08:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042377;
-	bh=udkftGs+UCI78iMSZgtrTx5ntkGLlCrwI7Yq2l9pMA0=;
+	s=korg; t=1709042920;
+	bh=QaqqNl8tyqajLncTtmAjzLOHZQSwV3JhH718OeT7vtw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IFfB8H05dQvzZkAFvcak8C7IyvLIsEXzA8sb2O22yeQKOfPpvZbtKZbiYbDAbX0m4
-	 jE46rck0izJO6SjEyUe6ugW9kg9LL0wgtsyEWP4HqnvSnnVyFYttcDnCBPZcgDwDPa
-	 bPrtT0ub0BHWDKw4RZG4Nj3AMZY1RbZuN46G+UcU=
+	b=OvrTV9wNTyyJ4j//0QuH1aMZBKNz5OjUIfNPb+oH8vN2GRnPf+T0gfvCYIweGc0G9
+	 NvD0GFVlFrfN60vYVDcq2kuCWVBJ1XVyTFm/MDGf0fK+THdFjiGr4Gs9/+5azpSVIb
+	 kZKnXoO5wM20N5xs6VJD67h55LO65Sxu1e+sYR0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	syzbot+5c54bd3eb218bb595aa9@syzkaller.appspotmail.com,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 246/299] ipv6: properly combine dev_base_seq and ipv6.dev_addr_genid
+Subject: [PATCH 5.15 169/245] posix-timers: Ensure timer ID search-loop limit is valid
 Date: Tue, 27 Feb 2024 14:25:57 +0100
-Message-ID: <20240227131633.649852759@linuxfoundation.org>
+Message-ID: <20240227131620.705467363@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +64,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit e898e4cd1aab271ca414f9ac6e08e4c761f6913c ]
+[ Upstream commit 8ce8849dd1e78dadcee0ec9acbd259d239b7069f ]
 
-net->dev_base_seq and ipv6.dev_addr_genid are monotonically increasing.
+posix_timer_add() tries to allocate a posix timer ID by starting from the
+cached ID which was stored by the last successful allocation.
 
-If we XOR their values, we could miss to detect if both values
-were changed with the same amount.
+This is done in a loop searching the ID space for a free slot one by
+one. The loop has to terminate when the search wrapped around to the
+starting point.
 
-Fixes: 63998ac24f83 ("ipv6: provide addr and netconf dump consistency info")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+But that's racy vs. establishing the starting point. That is read out
+lockless, which leads to the following problem:
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+CPU0	  	      	     	   CPU1
+posix_timer_add()
+  start = sig->posix_timer_id;
+  lock(hash_lock);
+  ...				   posix_timer_add()
+  if (++sig->posix_timer_id < 0)
+      			             start = sig->posix_timer_id;
+     sig->posix_timer_id = 0;
+
+So CPU1 can observe a negative start value, i.e. -1, and the loop break
+never happens because the condition can never be true:
+
+  if (sig->posix_timer_id == start)
+     break;
+
+While this is unlikely to ever turn into an endless loop as the ID space is
+huge (INT_MAX), the racy read of the start value caught the attention of
+KCSAN and Dmitry unearthed that incorrectness.
+
+Rewrite it so that all id operations are under the hash lock.
+
+Reported-by: syzbot+5c54bd3eb218bb595aa9@syzkaller.appspotmail.com
+Reported-by: Dmitry Vyukov <dvyukov@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lore.kernel.org/r/87bkhzdn6g.ffs@tglx
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/addrconf.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ include/linux/sched/signal.h |  2 +-
+ kernel/time/posix-timers.c   | 31 ++++++++++++++++++-------------
+ 2 files changed, 19 insertions(+), 14 deletions(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index b007d098ffe2e..7881446a46c4f 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -706,6 +706,22 @@ static int inet6_netconf_get_devconf(struct sk_buff *in_skb,
- 	return err;
+diff --git a/include/linux/sched/signal.h b/include/linux/sched/signal.h
+index 5f0e8403e8ceb..9743f7d173a0b 100644
+--- a/include/linux/sched/signal.h
++++ b/include/linux/sched/signal.h
+@@ -125,7 +125,7 @@ struct signal_struct {
+ #ifdef CONFIG_POSIX_TIMERS
+ 
+ 	/* POSIX.1b Interval Timers */
+-	int			posix_timer_id;
++	unsigned int		next_posix_timer_id;
+ 	struct list_head	posix_timers;
+ 
+ 	/* ITIMER_REAL timer for the process */
+diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
+index ed3c4a9543982..2d6cf93ca370a 100644
+--- a/kernel/time/posix-timers.c
++++ b/kernel/time/posix-timers.c
+@@ -140,25 +140,30 @@ static struct k_itimer *posix_timer_by_id(timer_t id)
+ static int posix_timer_add(struct k_itimer *timer)
+ {
+ 	struct signal_struct *sig = current->signal;
+-	int first_free_id = sig->posix_timer_id;
+ 	struct hlist_head *head;
+-	int ret = -ENOENT;
++	unsigned int cnt, id;
+ 
+-	do {
++	/*
++	 * FIXME: Replace this by a per signal struct xarray once there is
++	 * a plan to handle the resulting CRIU regression gracefully.
++	 */
++	for (cnt = 0; cnt <= INT_MAX; cnt++) {
+ 		spin_lock(&hash_lock);
+-		head = &posix_timers_hashtable[hash(sig, sig->posix_timer_id)];
+-		if (!__posix_timers_find(head, sig, sig->posix_timer_id)) {
++		id = sig->next_posix_timer_id;
++
++		/* Write the next ID back. Clamp it to the positive space */
++		sig->next_posix_timer_id = (id + 1) & INT_MAX;
++
++		head = &posix_timers_hashtable[hash(sig, id)];
++		if (!__posix_timers_find(head, sig, id)) {
+ 			hlist_add_head_rcu(&timer->t_hash, head);
+-			ret = sig->posix_timer_id;
++			spin_unlock(&hash_lock);
++			return id;
+ 		}
+-		if (++sig->posix_timer_id < 0)
+-			sig->posix_timer_id = 0;
+-		if ((sig->posix_timer_id == first_free_id) && (ret == -ENOENT))
+-			/* Loop over all possible ids completed */
+-			ret = -EAGAIN;
+ 		spin_unlock(&hash_lock);
+-	} while (ret == -ENOENT);
+-	return ret;
++	}
++	/* POSIX return code when no timer ID could be allocated */
++	return -EAGAIN;
  }
  
-+/* Combine dev_addr_genid and dev_base_seq to detect changes.
-+ */
-+static u32 inet6_base_seq(const struct net *net)
-+{
-+	u32 res = atomic_read(&net->ipv6.dev_addr_genid) +
-+		  net->dev_base_seq;
-+
-+	/* Must not return 0 (see nl_dump_check_consistent()).
-+	 * Chose a value far away from 0.
-+	 */
-+	if (!res)
-+		res = 0x80000000;
-+	return res;
-+}
-+
-+
- static int inet6_netconf_dump_devconf(struct sk_buff *skb,
- 				      struct netlink_callback *cb)
- {
-@@ -739,8 +755,7 @@ static int inet6_netconf_dump_devconf(struct sk_buff *skb,
- 		idx = 0;
- 		head = &net->dev_index_head[h];
- 		rcu_read_lock();
--		cb->seq = atomic_read(&net->ipv6.dev_addr_genid) ^
--			  net->dev_base_seq;
-+		cb->seq = inet6_base_seq(net);
- 		hlist_for_each_entry_rcu(dev, head, index_hlist) {
- 			if (idx < s_idx)
- 				goto cont;
-@@ -5358,7 +5373,7 @@ static int inet6_dump_addr(struct sk_buff *skb, struct netlink_callback *cb,
- 	}
- 
- 	rcu_read_lock();
--	cb->seq = atomic_read(&tgt_net->ipv6.dev_addr_genid) ^ tgt_net->dev_base_seq;
-+	cb->seq = inet6_base_seq(tgt_net);
- 	for (h = s_h; h < NETDEV_HASHENTRIES; h++, s_idx = 0) {
- 		idx = 0;
- 		head = &tgt_net->dev_index_head[h];
+ static inline void unlock_timer(struct k_itimer *timr, unsigned long flags)
 -- 
 2.43.0
 
