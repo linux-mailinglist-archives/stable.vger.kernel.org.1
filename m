@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66DA686933B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:43:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CED7869438
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E58D28DA41
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:43:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1169A28EAF4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABEB313B2BA;
-	Tue, 27 Feb 2024 13:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E7BE54BD4;
+	Tue, 27 Feb 2024 13:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FfQi6/fs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eqa7OdRo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD2B13B2B4;
-	Tue, 27 Feb 2024 13:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C258813B29B;
+	Tue, 27 Feb 2024 13:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041380; cv=none; b=p08Pu4oAdfQ+GEaUCEOvERIVwGFXRz3UK0t02MxheAMxU0K5BSh1kI5I53efdUheZh27pd2x0OuDpQEmVI1mvqdCQJbZ7d7bSlsM/wXSaFgWCi9VLghNpj4voULGkgjJ1WCqWaEUsn+8+Ha9SGX/LcE8Kj7DNfcLL+/Gt2eyEAY=
+	t=1709041864; cv=none; b=keqhpsKX56VdntJvyx8Z2fShRaowxaycXIiGGIftqSiJrRe3olTVs64A1d9PpFl81LCdlbH+53UVyEDKKNUprcGMD6L+4+csp49z5e43ZA0EEJUqS90mbGdaqDSCGgDctb++2PAAwZrg1Q7Y+Sl8QbFYb9bcbQIpZGrdPvIVkZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041380; c=relaxed/simple;
-	bh=bP8NpHM9o3485cld4Om+VHR+B6iE5zEv2ZUe5BXl7Fo=;
+	s=arc-20240116; t=1709041864; c=relaxed/simple;
+	bh=HVFsUvvZPW33hvbGZt1obaDj2zzHnCq74FzKpQaRc2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lNltmkmiJSZJtrM4DPsc/q6VvoF6PB+ew01Z9ky+PzJBuyFSUWeyryc/pxz7duAIb5R6GpAqbvymrtVBHDItP2gv2aU9KtOJR8iISegAPflGL+VQGl6w8Ah5/RBM+Pi0tFKHA2sntr0/DxvqTvOqUWBhhdJOfkEba+EKq3ktBwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FfQi6/fs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF81C433C7;
-	Tue, 27 Feb 2024 13:42:59 +0000 (UTC)
+	 MIME-Version; b=sCBe3b5RDUIKbBRuezrcdt8LS4P2JHdXQ9Pv8H7fiOfdPRD4Hwxr5hiMfX/14dGXOdwHcvaDXYJz43kfrR3syHHLSKY0vSv5DNwV8DoLtYHfrqjJ0em2txpXeT9nq4YrZ/eiuI39KMFW0gcdEIGZmdoXTUopNbcsMPOvwQzuFIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eqa7OdRo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C74BC43390;
+	Tue, 27 Feb 2024 13:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041380;
-	bh=bP8NpHM9o3485cld4Om+VHR+B6iE5zEv2ZUe5BXl7Fo=;
+	s=korg; t=1709041864;
+	bh=HVFsUvvZPW33hvbGZt1obaDj2zzHnCq74FzKpQaRc2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FfQi6/fs3La5bDjkk8Khr5EKYAKw1HTQ7eI0jevsKV84uzPTJRf9+BiHHyutAFZbj
-	 zPQGBIMiDYe33ynmRwoEIwJIscOiI3lJyrY97qUB2buslzJT93bMk6+j4LRNqB/HJN
-	 px4bYVxWuSSZeyxFtDKtRiQK23edqlCAb5k2152I=
+	b=Eqa7OdRoxaEiuCixAp6NL3SpsKXRlnJ95v88HL8cjK+PRt2tDcNXir01xD6Y3+T8y
+	 6YJsPTlC39/zuvZIeGMfF5m+fN1t1ukarTPjDoCMWja7J0SaXpaW/TKSVuX65SUCsD
+	 VK/7YInbvBC2srtz1uuFDVIo+hch+FamB+gkN6qQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 320/334] net: phy: realtek: Fix rtl8211f_config_init() for RTL8211F(D)(I)-VD-CG PHY
-Date: Tue, 27 Feb 2024 14:22:58 +0100
-Message-ID: <20240227131641.424978510@linuxfoundation.org>
+Subject: [PATCH 6.6 068/299] ext4: correct the hole length returned by ext4_map_blocks()
+Date: Tue, 27 Feb 2024 14:22:59 +0100
+Message-ID: <20240227131628.133819526@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,191 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 3489182b11d35f1944c1245fc9c4867cf622c50f ]
+[ Upstream commit 6430dea07e85958fa87d0276c0c4388dd51e630b ]
 
-Commit bb726b753f75 ("net: phy: realtek: add support for
-RTL8211F(D)(I)-VD-CG") extended support of the driver from the existing
-support for RTL8211F(D)(I)-CG PHY to the newer RTL8211F(D)(I)-VD-CG PHY.
+In ext4_map_blocks(), if we can't find a range of mapping in the
+extents cache, we are calling ext4_ext_map_blocks() to search the real
+path and ext4_ext_determine_hole() to determine the hole range. But if
+the querying range was partially or completely overlaped by a delalloc
+extent, we can't find it in the real extent path, so the returned hole
+length could be incorrect.
 
-While that commit indicated that the RTL8211F_PHYCR2 register is not
-supported by the "VD-CG" PHY model and therefore updated the corresponding
-section in rtl8211f_config_init() to be invoked conditionally, the call to
-"genphy_soft_reset()" was left as-is, when it should have also been invoked
-conditionally. This is because the call to "genphy_soft_reset()" was first
-introduced by the commit 0a4355c2b7f8 ("net: phy: realtek: add dt property
-to disable CLKOUT clock") since the RTL8211F guide indicates that a PHY
-reset should be issued after setting bits in the PHYCR2 register.
+Fortunately, ext4_ext_put_gap_in_cache() have already handle delalloc
+extent, but it searches start from the expanded hole_start, doesn't
+start from the querying range, so the delalloc extent found could not be
+the one that overlaped the querying range, plus, it also didn't adjust
+the hole length. Let's just remove ext4_ext_put_gap_in_cache(), handle
+delalloc and insert adjusted hole extent in ext4_ext_determine_hole().
 
-As the PHYCR2 register is not applicable to the "VD-CG" PHY model, fix the
-rtl8211f_config_init() function by invoking "genphy_soft_reset()"
-conditionally based on the presence of the "PHYCR2" register.
-
-Fixes: bb726b753f75 ("net: phy: realtek: add support for RTL8211F(D)(I)-VD-CG")
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240220070007.968762-1-s-vadapalli@ti.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Suggested-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240127015825.1608160-4-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/realtek.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/ext4/extents.c | 111 +++++++++++++++++++++++++++++-----------------
+ 1 file changed, 70 insertions(+), 41 deletions(-)
 
-diff --git a/drivers/net/phy/realtek.c b/drivers/net/phy/realtek.c
-index 894172a3e15fe..337899c69738e 100644
---- a/drivers/net/phy/realtek.c
-+++ b/drivers/net/phy/realtek.c
-@@ -421,9 +421,11 @@ static int rtl8211f_config_init(struct phy_device *phydev)
- 				ERR_PTR(ret));
- 			return ret;
- 		}
-+
-+		return genphy_soft_reset(phydev);
- 	}
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 4c3e2f38349de..d393df22431a0 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -2229,7 +2229,7 @@ static int ext4_fill_es_cache_info(struct inode *inode,
  
--	return genphy_soft_reset(phydev);
-+	return 0;
+ 
+ /*
+- * ext4_ext_determine_hole - determine hole around given block
++ * ext4_ext_find_hole - find hole around given block according to the given path
+  * @inode:	inode we lookup in
+  * @path:	path in extent tree to @lblk
+  * @lblk:	pointer to logical block around which we want to determine hole
+@@ -2241,9 +2241,9 @@ static int ext4_fill_es_cache_info(struct inode *inode,
+  * The function returns the length of a hole starting at @lblk. We update @lblk
+  * to the beginning of the hole if we managed to find it.
+  */
+-static ext4_lblk_t ext4_ext_determine_hole(struct inode *inode,
+-					   struct ext4_ext_path *path,
+-					   ext4_lblk_t *lblk)
++static ext4_lblk_t ext4_ext_find_hole(struct inode *inode,
++				      struct ext4_ext_path *path,
++				      ext4_lblk_t *lblk)
+ {
+ 	int depth = ext_depth(inode);
+ 	struct ext4_extent *ex;
+@@ -2270,30 +2270,6 @@ static ext4_lblk_t ext4_ext_determine_hole(struct inode *inode,
+ 	return len;
  }
  
- static int rtl821x_suspend(struct phy_device *phydev)
+-/*
+- * ext4_ext_put_gap_in_cache:
+- * calculate boundaries of the gap that the requested block fits into
+- * and cache this gap
+- */
+-static void
+-ext4_ext_put_gap_in_cache(struct inode *inode, ext4_lblk_t hole_start,
+-			  ext4_lblk_t hole_len)
+-{
+-	struct extent_status es;
+-
+-	ext4_es_find_extent_range(inode, &ext4_es_is_delayed, hole_start,
+-				  hole_start + hole_len - 1, &es);
+-	if (es.es_len) {
+-		/* There's delayed extent containing lblock? */
+-		if (es.es_lblk <= hole_start)
+-			return;
+-		hole_len = min(es.es_lblk - hole_start, hole_len);
+-	}
+-	ext_debug(inode, " -> %u:%u\n", hole_start, hole_len);
+-	ext4_es_insert_extent(inode, hole_start, hole_len, ~0,
+-			      EXTENT_STATUS_HOLE);
+-}
+-
+ /*
+  * ext4_ext_rm_idx:
+  * removes index from the index block.
+@@ -4062,6 +4038,69 @@ static int get_implied_cluster_alloc(struct super_block *sb,
+ 	return 0;
+ }
+ 
++/*
++ * Determine hole length around the given logical block, first try to
++ * locate and expand the hole from the given @path, and then adjust it
++ * if it's partially or completely converted to delayed extents, insert
++ * it into the extent cache tree if it's indeed a hole, finally return
++ * the length of the determined extent.
++ */
++static ext4_lblk_t ext4_ext_determine_insert_hole(struct inode *inode,
++						  struct ext4_ext_path *path,
++						  ext4_lblk_t lblk)
++{
++	ext4_lblk_t hole_start, len;
++	struct extent_status es;
++
++	hole_start = lblk;
++	len = ext4_ext_find_hole(inode, path, &hole_start);
++again:
++	ext4_es_find_extent_range(inode, &ext4_es_is_delayed, hole_start,
++				  hole_start + len - 1, &es);
++	if (!es.es_len)
++		goto insert_hole;
++
++	/*
++	 * There's a delalloc extent in the hole, handle it if the delalloc
++	 * extent is in front of, behind and straddle the queried range.
++	 */
++	if (lblk >= es.es_lblk + es.es_len) {
++		/*
++		 * The delalloc extent is in front of the queried range,
++		 * find again from the queried start block.
++		 */
++		len -= lblk - hole_start;
++		hole_start = lblk;
++		goto again;
++	} else if (in_range(lblk, es.es_lblk, es.es_len)) {
++		/*
++		 * The delalloc extent containing lblk, it must have been
++		 * added after ext4_map_blocks() checked the extent status
++		 * tree, adjust the length to the delalloc extent's after
++		 * lblk.
++		 */
++		len = es.es_lblk + es.es_len - lblk;
++		return len;
++	} else {
++		/*
++		 * The delalloc extent is partially or completely behind
++		 * the queried range, update hole length until the
++		 * beginning of the delalloc extent.
++		 */
++		len = min(es.es_lblk - hole_start, len);
++	}
++
++insert_hole:
++	/* Put just found gap into cache to speed up subsequent requests */
++	ext_debug(inode, " -> %u:%u\n", hole_start, len);
++	ext4_es_insert_extent(inode, hole_start, len, ~0, EXTENT_STATUS_HOLE);
++
++	/* Update hole_len to reflect hole size after lblk */
++	if (hole_start != lblk)
++		len -= lblk - hole_start;
++
++	return len;
++}
+ 
+ /*
+  * Block allocation/map/preallocation routine for extents based files
+@@ -4179,22 +4218,12 @@ int ext4_ext_map_blocks(handle_t *handle, struct inode *inode,
+ 	 * we couldn't try to create block if create flag is zero
+ 	 */
+ 	if ((flags & EXT4_GET_BLOCKS_CREATE) == 0) {
+-		ext4_lblk_t hole_start, hole_len;
++		ext4_lblk_t len;
+ 
+-		hole_start = map->m_lblk;
+-		hole_len = ext4_ext_determine_hole(inode, path, &hole_start);
+-		/*
+-		 * put just found gap into cache to speed up
+-		 * subsequent requests
+-		 */
+-		ext4_ext_put_gap_in_cache(inode, hole_start, hole_len);
++		len = ext4_ext_determine_insert_hole(inode, path, map->m_lblk);
+ 
+-		/* Update hole_len to reflect hole size after map->m_lblk */
+-		if (hole_start != map->m_lblk)
+-			hole_len -= map->m_lblk - hole_start;
+ 		map->m_pblk = 0;
+-		map->m_len = min_t(unsigned int, map->m_len, hole_len);
+-
++		map->m_len = min_t(unsigned int, map->m_len, len);
+ 		goto out;
+ 	}
+ 
 -- 
 2.43.0
 
