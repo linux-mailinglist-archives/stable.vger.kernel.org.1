@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 566BB869519
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:58:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3489869723
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:18:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 886041C24B18
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:58:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E55B31C23931
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:18:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9DB13DB92;
-	Tue, 27 Feb 2024 13:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE45E13B7AB;
+	Tue, 27 Feb 2024 14:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jeSu2ge7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="geGgQQ8M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CB354BD4;
-	Tue, 27 Feb 2024 13:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C65D78B61;
+	Tue, 27 Feb 2024 14:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042327; cv=none; b=LR4BAOWxs6c5hK54pQxDUJawwBvTO2+XxcKnMs53Q/uUNkof4gWSVFJk6vphMQ/0bYNQFC8219fLIsZ5hfYRUCIbuZmqrNBEpeEKZlXEPTJRpvXS0seQJX5VlnjDvDO2c4nB/HRSUNcjjJ3kI8NHnkkr6TBsMhJ+Vi7BPz7TIow=
+	t=1709043514; cv=none; b=KO896msQvwfc2tp05f640R0P5IM/hIxjGkeIRGLXqM/Im10F53E5VAP4aSvGzQQvrHI+pwkj3KhkyurBtBzj7pdFNaZT8N/2Jb+2Okqq3aPHVXHKIjaWargiLUQ9PFRODwX90nlai46a4wzfyYsD46rIwIhDKOJ3kWlBvb0AjJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042327; c=relaxed/simple;
-	bh=VVWed+cj1A0J9+E9DR0DKcYUT5XvBZz03R9MGTL2BQU=;
+	s=arc-20240116; t=1709043514; c=relaxed/simple;
+	bh=c48MLmMz8M0vFaIZoWI5ozEe+dMZx2CB2wYo7ZddTKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IzFuXADhey5gwTCeJYjeiuQ2IFHTb/baaOgAp6gtHDui0PrtU0+feJ6CRA5OceT4TKQ6u50RTaBzmaDM9SQLTqfegEa40C6lhvUw8Lg+D5Sa8kmAmaLzRJidMMk6iJBSu930lghSzmOmF6wZHKRm45ttg1yVAr1o+M945RzIeKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jeSu2ge7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC32C433F1;
-	Tue, 27 Feb 2024 13:58:47 +0000 (UTC)
+	 MIME-Version; b=VKzMckOOo0HZuaxB0eirNoiNbWgf0IGUHvJSKucFMIrodmsbJQp1bfX5XizPsFjllIHJjLmRJkvR36vLAeGdKTvgKrWGCdVtibTWt3rWBO0ZveT/L6vJBYTCs9fwmCC6WnoVjLp8uLUFNvhtIe9R316LlmyOjtABSrnmStH3OK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=geGgQQ8M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE977C433F1;
+	Tue, 27 Feb 2024 14:18:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042327;
-	bh=VVWed+cj1A0J9+E9DR0DKcYUT5XvBZz03R9MGTL2BQU=;
+	s=korg; t=1709043514;
+	bh=c48MLmMz8M0vFaIZoWI5ozEe+dMZx2CB2wYo7ZddTKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jeSu2ge7LYyVHx7t4DP6zD7u6trk6hmpwKZOAyNmpfhj/g/qfyjZYH7K+bwCOXmvp
-	 njDel5sLqbiJArL3k97xz3Ai147YUkV7NktPvP/CBRXcAUbCXxan2hQ9AP3WsKKgq8
-	 VXZ4Twy64QR+rIlfZANgs5R7fbhYhkggO/FPX+u0=
+	b=geGgQQ8McbvyfAcFe8NjiefHsqHyNX04e8BjNxGHJEMpg2801BFvC3WZlz7g+K4jF
+	 d45rDTEyBxWB6eXUBvplPYAM6X3NW7NolgvFU8KMUpj0cgpMsTq7t8pmSrypTPKNYa
+	 dd888lmJo1Ss6RPwO974hrYqTA2MAGiiQK4S7YMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 256/299] devlink: fix possible use-after-free and memory leaks in devlink_init()
-Date: Tue, 27 Feb 2024 14:26:07 +0100
-Message-ID: <20240227131633.951234831@linuxfoundation.org>
+	George Cherian <gcherian@marvell.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.1 107/195] irqchip/gic-v3-its: Do not assume vPE tables are preallocated
+Date: Tue, 27 Feb 2024 14:26:08 +0100
+Message-ID: <20240227131613.999700324@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Oliver Upton <oliver.upton@linux.dev>
 
-[ Upstream commit def689fc26b9a9622d2e2cb0c4933dd3b1c8071c ]
+commit ec4308ecfc887128a468f03fb66b767559c57c23 upstream.
 
-The pernet operations structure for the subsystem must be registered
-before registering the generic netlink family.
+The GIC/ITS code is designed to ensure to pick up any preallocated LPI
+tables on the redistributors, as enabling LPIs is a one-way switch. There
+is no such restriction for vLPIs, and for GICv4.1 it is expected to
+allocate a new vPE table at boot.
 
-Make an unregister in case of unsuccessful registration.
+This works as intended when initializing an ITS, however when setting up a
+redistributor in cpu_init_lpis() the early return for preallocated RD
+tables skips straight past the GICv4 setup. This all comes to a head when
+trying to kexec() into a new kernel, as the new kernel silently fails to
+set up GICv4, leading to a complete loss of SGIs and LPIs for KVM VMs.
 
-Fixes: 687125b5799c ("devlink: split out core code")
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Link: https://lore.kernel.org/r/20240215203400.29976-1-kovalev@altlinux.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Slap a band-aid on the problem by ensuring its_cpu_init_lpis() always
+initializes GICv4 on the way out, even if the other RD tables were
+preallocated.
+
+Fixes: 6479450f72c1 ("irqchip/gic-v4: Fix occasional VLPI drop")
+Reported-by: George Cherian <gcherian@marvell.com>
+Co-developed-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240219185809.286724-2-oliver.upton@linux.dev
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/devlink/core.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/devlink/core.c b/net/devlink/core.c
-index 6cec4afb01fbd..451f2bc141a05 100644
---- a/net/devlink/core.c
-+++ b/net/devlink/core.c
-@@ -308,14 +308,20 @@ static int __init devlink_init(void)
- {
- 	int err;
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -3161,6 +3161,7 @@ static void its_cpu_init_lpis(void)
+ 	val |= GICR_CTLR_ENABLE_LPIS;
+ 	writel_relaxed(val, rbase + GICR_CTLR);
  
--	err = genl_register_family(&devlink_nl_family);
--	if (err)
--		goto out;
- 	err = register_pernet_subsys(&devlink_pernet_ops);
- 	if (err)
- 		goto out;
-+	err = genl_register_family(&devlink_nl_family);
-+	if (err)
-+		goto out_unreg_pernet_subsys;
- 	err = register_netdevice_notifier(&devlink_port_netdevice_nb);
-+	if (!err)
-+		return 0;
-+
-+	genl_unregister_family(&devlink_nl_family);
++out:
+ 	if (gic_rdists->has_vlpis && !gic_rdists->has_rvpeid) {
+ 		void __iomem *vlpi_base = gic_data_rdist_vlpi_base();
  
-+out_unreg_pernet_subsys:
-+	unregister_pernet_subsys(&devlink_pernet_ops);
- out:
- 	WARN_ON(err);
- 	return err;
--- 
-2.43.0
-
+@@ -3196,7 +3197,6 @@ static void its_cpu_init_lpis(void)
+ 
+ 	/* Make sure the GIC has seen the above */
+ 	dsb(sy);
+-out:
+ 	gic_data_rdist()->flags |= RD_LOCAL_LPI_ENABLED;
+ 	pr_info("GICv3: CPU%d: using %s LPI pending table @%pa\n",
+ 		smp_processor_id(),
 
 
 
