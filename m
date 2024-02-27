@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-24888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F1708696BE
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 018308695FB
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 997C91C22775
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96C1C1F2C804
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7E4B145322;
-	Tue, 27 Feb 2024 14:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BADC6145354;
+	Tue, 27 Feb 2024 14:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2elS8OpU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RAggJR/L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B2F13A26F;
-	Tue, 27 Feb 2024 14:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1DC13B2B4;
+	Tue, 27 Feb 2024 14:06:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043268; cv=none; b=euzTB8q64bapXh6BRfnsDDSgXRtp3wvHXCC/vDSyik5PXsxwnno90y0dn3Yn+u+12zudlJag1WUpDRYsa+EmfCbds3Gk4xK1yMJu4BczFzT5EmHPVnKrcjIYeRUYx6mBtGgTQ+LUoTTY9GTFhO9rkT40cMevxEWnh8wDHrb6JdY=
+	t=1709042809; cv=none; b=mhL7iE0XHT1Y2CuK7gjpNyjwDHmLoSAcxYkpGSpy8/Z75sBfeNHqo6wbOs7E3BD7JIXP+zDHxei9Ll/TgtbR5mf1pbn9nG4caZZNGCktvHVMzGbz7Qx6OSegBIiijM7FB77Uo4XuYuCsvCgpTWeAEOBRMXiE7GooXg5rt13tmNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043268; c=relaxed/simple;
-	bh=DNwXWSlUqBcCyZ5lvN1KstTS1RZiwZxRqifoayIGYiA=;
+	s=arc-20240116; t=1709042809; c=relaxed/simple;
+	bh=H0UDLC83fdJH8Szk1uJlT6tg/2Ivhgrh3YL1kHOgMSU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hg7rKBLzyHmBBmEIX8PGuNR65tSk1g/u7qtdRKrNLSjuUmqIq6n4Q/2Xt74iWIwWs5FfB9OEKh9TOT28zsBH7He5azYyJ6eCRfRpp/cQVEiZoj/WKqu/qu9e035axbfhO2bNUQIYrR0gxNypqa4T0oJoubJ3EDiMLxy7Eow77G8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2elS8OpU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0466DC433C7;
-	Tue, 27 Feb 2024 14:14:27 +0000 (UTC)
+	 MIME-Version; b=tcyLmedf3KQwCXuz7wh5OHvpk2o3iQ//CEE+2O+ihCxPiu+J8hNEOWHZSNKJzYiZWvjDnNrwNOfdzuZJywebwcWOpkUoR88lcQNaD9h6kBL8N7vlWvF9ipVTlX39V41sEN86d+KOjW2UeFg9nwa9KgXSvW+idGxcJ5+uUiaFRkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RAggJR/L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB17C433C7;
+	Tue, 27 Feb 2024 14:06:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043268;
-	bh=DNwXWSlUqBcCyZ5lvN1KstTS1RZiwZxRqifoayIGYiA=;
+	s=korg; t=1709042809;
+	bh=H0UDLC83fdJH8Szk1uJlT6tg/2Ivhgrh3YL1kHOgMSU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2elS8OpUKE8nWJ6w4WrQWpJTF1HS9wQ5Y5gZLUa0/8wMDvQTSUjqx/6friUJvptmb
-	 Y6DM9thY9AWqytyJTvpGcKyXXE3WdfIpJ2lG4YPNl0/HJPDcMQ7mCRCrUmlkNJ0PZ2
-	 FNsNoeg00ee0agzhRbO53jLt9GiUlMSAI186/HVg=
+	b=RAggJR/LRHPdXbcADGr7NueOscDIHNKZd04ovUhSQxN5F0a2ZP9o2PtbjPr2WLxRs
+	 3xwngf+IQA3ylcqHmEgmZWMv3QlQY7JczesdmUoZNs2rD3kbMKfceaqy4my5aSXalp
+	 8IHkQ71OcPoLI/yhqePRMAkSQXLHXCjIpJ9coYMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	Daniel Wagner <dwagner@suse.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 047/195] nvmet-fc: hold reference on hostport match
-Date: Tue, 27 Feb 2024 14:25:08 +0100
-Message-ID: <20240227131611.941196368@linuxfoundation.org>
+Subject: [PATCH 5.15 121/245] clk: qcom: gpucc-sdm845: fix clk_dis_wait being programmed for CX GDSC
+Date: Tue, 27 Feb 2024 14:25:09 +0100
+Message-ID: <20240227131619.157417812@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <dwagner@suse.de>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit ca121a0f7515591dba0eb5532bfa7ace4dc153ce ]
+[ Upstream commit cb81719e3c1165ef1bc33137dc628f750eed8ea4 ]
 
-The hostport data structure is shared between the association, this why
-we keep track of the users via a refcount. So we should not decrement
-the refcount on a match and free the hostport several times.
+The gdsc_init() function will rewrite the CLK_DIS_WAIT field while
+registering the GDSC (writing the value 0x2 by default). This will
+override the setting done in the driver's probe function.
 
-Reported by KASAN.
+Set cx_gdsc.clk_dis_wait_val to 8 to follow the intention of the probe
+function.
 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Daniel Wagner <dwagner@suse.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 453361cdd757 ("clk: qcom: Add graphics clock controller driver for SDM845")
+Reviewed-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230201172305.993146-2-dmitry.baryshkov@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/fc.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/clk/qcom/gpucc-sdm845.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/nvme/target/fc.c b/drivers/nvme/target/fc.c
-index c9ef642313c8f..64c26b703860c 100644
---- a/drivers/nvme/target/fc.c
-+++ b/drivers/nvme/target/fc.c
-@@ -1069,8 +1069,6 @@ nvmet_fc_alloc_hostport(struct nvmet_fc_tgtport *tgtport, void *hosthandle)
- 		/* new allocation not needed */
- 		kfree(newhost);
- 		newhost = match;
--		/* no new allocation - release reference */
--		nvmet_fc_tgtport_put(tgtport);
- 	} else {
- 		newhost->tgtport = tgtport;
- 		newhost->hosthandle = hosthandle;
+diff --git a/drivers/clk/qcom/gpucc-sdm845.c b/drivers/clk/qcom/gpucc-sdm845.c
+index 110b54401bc6d..970d7414bdf0e 100644
+--- a/drivers/clk/qcom/gpucc-sdm845.c
++++ b/drivers/clk/qcom/gpucc-sdm845.c
+@@ -22,8 +22,6 @@
+ #define CX_GMU_CBCR_SLEEP_SHIFT		4
+ #define CX_GMU_CBCR_WAKE_MASK		0xf
+ #define CX_GMU_CBCR_WAKE_SHIFT		8
+-#define CLK_DIS_WAIT_SHIFT		12
+-#define CLK_DIS_WAIT_MASK		(0xf << CLK_DIS_WAIT_SHIFT)
+ 
+ enum {
+ 	P_BI_TCXO,
+@@ -121,6 +119,7 @@ static struct clk_branch gpu_cc_cxo_clk = {
+ static struct gdsc gpu_cx_gdsc = {
+ 	.gdscr = 0x106c,
+ 	.gds_hw_ctrl = 0x1540,
++	.clk_dis_wait_val = 0x8,
+ 	.pd = {
+ 		.name = "gpu_cx_gdsc",
+ 	},
+@@ -193,10 +192,6 @@ static int gpu_cc_sdm845_probe(struct platform_device *pdev)
+ 	value = 0xf << CX_GMU_CBCR_WAKE_SHIFT | 0xf << CX_GMU_CBCR_SLEEP_SHIFT;
+ 	regmap_update_bits(regmap, 0x1098, mask, value);
+ 
+-	/* Configure clk_dis_wait for gpu_cx_gdsc */
+-	regmap_update_bits(regmap, 0x106c, CLK_DIS_WAIT_MASK,
+-						8 << CLK_DIS_WAIT_SHIFT);
+-
+ 	return qcom_cc_really_probe(pdev, &gpu_cc_sdm845_desc, regmap);
+ }
+ 
 -- 
 2.43.0
 
