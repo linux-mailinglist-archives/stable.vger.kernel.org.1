@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-24302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 285FE8693C9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:48:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D3C58693DB
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:49:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D702029245F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:48:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1335D1F23E7B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:49:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 095E3145B2B;
-	Tue, 27 Feb 2024 13:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF1C145FF3;
+	Tue, 27 Feb 2024 13:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AAwL3s5g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/PkjiLX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA07314532D;
-	Tue, 27 Feb 2024 13:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E271419AE;
+	Tue, 27 Feb 2024 13:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041610; cv=none; b=ZmfGF5NWowZYYKcA+F6ZJFC4SaV2odsg0TjcxLs9BgGHp3e1jJqSFvx1XJ6tBwym3k5IYH3ex/kmnoIBUkZFo8m39Z7wYFNJ0QVLZ9lw6bUsXWCAs4d7MfE6VuF0Erz+LqE/cEGzsbQwKAokV/RGkTZSZnDR8MC4hzSq0lBi9lg=
+	t=1709041640; cv=none; b=PKqae7l8RwoLxcU73XplMvn1iJpgh4QpkiScH0F2RBlwBZn+E2Ap3UmNbOkiuMNgkzBaSGSYECAQhF7QjMyYTHmePX5zajw3uDxl7tPzOvtAp6XAqdo2jPRd9xvuOjXzRwfCZRlRxUz8vnQW0OEXyaf0/RiuCggZCYALxP5+QoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041610; c=relaxed/simple;
-	bh=Ux27qv4run7Vn004bCaIc5+9bs/99OlFQznwcq5T3ew=;
+	s=arc-20240116; t=1709041640; c=relaxed/simple;
+	bh=fk0srsabfFKssPzuZlsG06H+s40/Ap5oUBM8TwtSalU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pMrsAd83Tb6A5Hpxeg/qMkHbr7d1/B0VJIUzEsv/T6wiW6mwcjSOQQMGn88VucoHpt9IZoZJ9cyjdClL5NrpsIdIc7sqZdX25PVf3HU438ZNARP45nwuf+868c7QIDxLf2cLAnUa4hgBi0099kh2J5xmfQWdQcQyncildE/AJr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AAwL3s5g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B9DDC433F1;
-	Tue, 27 Feb 2024 13:46:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=adOVT6/gOXRWx1vYY+3ZMirgK05Ti4Pv688EtETSKiUYBk5/85DwvtI2ABzbO2FrADD5fqdGB9UIiWJrTwD349KMxVedQpVCw4ZjYqd1KRRgDFJfOlKltsfWVIZdadJONYA4s9xijk8v7rwFOUBFctNeeiizCs89Ca/qdmIU0IM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/PkjiLX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B6F5C433C7;
+	Tue, 27 Feb 2024 13:47:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041610;
-	bh=Ux27qv4run7Vn004bCaIc5+9bs/99OlFQznwcq5T3ew=;
+	s=korg; t=1709041640;
+	bh=fk0srsabfFKssPzuZlsG06H+s40/Ap5oUBM8TwtSalU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AAwL3s5gkLIMGJ+3xsaIkfiNlBg5jExbZoaRsT0H+rxi3DGCNURC9gpGqHElxKQns
-	 YIJRbO429HeS+3YfFGDkd4HGP5CKLvc7vuPhDGgRSVbOLsHjJK/yC4iIje6BqBxYNJ
-	 NVbB/AJtHvwdsYWSr39IThNCgwBUi+AFdPxx0Nro=
+	b=a/PkjiLXc2BeJ3j9vqweR8C84b3qleULOjoKwPAgTq3rcZoMBfaj1tg9iRR5dD7L+
+	 YYIXT/pf1/Z/3ELDDtgHYzMyZj9GbD/te0hD1LQSH3oHL8My99r28ZqgmOKvZ8EsCo
+	 yTuE+Yb820l2cpe0k6aEO19bAi7f/FkpIA6XN41A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cyril Hrubis <chrubis@suse.cz>,
-	Ingo Molnar <mingo@kernel.org>,
-	Mahmoud Adam <mngyadam@amazon.com>,
-	Petr Vorel <pvorel@suse.cz>
-Subject: [PATCH 6.6 001/299] sched/rt: Disallow writing invalid values to sched_rt_period_us
-Date: Tue, 27 Feb 2024 14:21:52 +0100
-Message-ID: <20240227131625.897283185@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 6.6 002/299] PCI: dwc: Fix a 64bit bug in dw_pcie_ep_raise_msix_irq()
+Date: Tue, 27 Feb 2024 14:21:53 +0100
+Message-ID: <20240227131625.927684742@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
 References: <20240227131625.847743063@linuxfoundation.org>
@@ -61,97 +62,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cyril Hrubis <chrubis@suse.cz>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 079be8fc630943d9fc70a97807feb73d169ee3fc upstream.
+commit b5d1b4b46f856da1473c7ba9a5cdfcb55c9b2478 upstream.
 
-The validation of the value written to sched_rt_period_us was broken
-because:
+The "msg_addr" variable is u64.  However, the "aligned_offset" is an
+unsigned int.  This means that when the code does:
 
-  - the sysclt_sched_rt_period is declared as unsigned int
-  - parsed by proc_do_intvec()
-  - the range is asserted after the value parsed by proc_do_intvec()
+  msg_addr &= ~aligned_offset;
 
-Because of this negative values written to the file were written into a
-unsigned integer that were later on interpreted as large positive
-integers which did passed the check:
+it will unintentionally zero out the high 32 bits.  Use ALIGN_DOWN() to do
+the alignment instead.
 
-  if (sysclt_sched_rt_period <= 0)
-	return EINVAL;
-
-This commit fixes the parsing by setting explicit range for both
-perid_us and runtime_us into the sched_rt_sysctls table and processes
-the values with proc_dointvec_minmax() instead.
-
-Alternatively if we wanted to use full range of unsigned int for the
-period value we would have to split the proc_handler and use
-proc_douintvec() for it however even the
-Documentation/scheduller/sched-rt-group.rst describes the range as 1 to
-INT_MAX.
-
-As far as I can tell the only problem this causes is that the sysctl
-file allows writing negative values which when read back may confuse
-userspace.
-
-There is also a LTP test being submitted for these sysctl files at:
-
-  http://patchwork.ozlabs.org/project/ltp/patch/20230901144433.2526-1-chrubis@suse.cz/
-
-Signed-off-by: Cyril Hrubis <chrubis@suse.cz>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20231002115553.3007-2-chrubis@suse.cz
-Cc: Mahmoud Adam <mngyadam@amazon.com>
-Signed-off-by: Petr Vorel <pvorel@suse.cz>
+Fixes: 2217fffcd63f ("PCI: dwc: endpoint: Fix dw_pcie_ep_raise_msix_irq() alignment support")
+Link: https://lore.kernel.org/r/af59c7ad-ab93-40f7-ad4a-7ac0b14d37f5@moroto.mountain
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/rt.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/pci/controller/dwc/pcie-designware-ep.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -37,6 +37,8 @@ static struct ctl_table sched_rt_sysctls
- 		.maxlen         = sizeof(unsigned int),
- 		.mode           = 0644,
- 		.proc_handler   = sched_rt_handler,
-+		.extra1         = SYSCTL_ONE,
-+		.extra2         = SYSCTL_INT_MAX,
- 	},
- 	{
- 		.procname       = "sched_rt_runtime_us",
-@@ -44,6 +46,8 @@ static struct ctl_table sched_rt_sysctls
- 		.maxlen         = sizeof(int),
- 		.mode           = 0644,
- 		.proc_handler   = sched_rt_handler,
-+		.extra1         = SYSCTL_NEG_ONE,
-+		.extra2         = SYSCTL_INT_MAX,
- 	},
- 	{
- 		.procname       = "sched_rr_timeslice_ms",
-@@ -2989,9 +2993,6 @@ static int sched_rt_global_constraints(v
- #ifdef CONFIG_SYSCTL
- static int sched_rt_global_validate(void)
- {
--	if (sysctl_sched_rt_period <= 0)
--		return -EINVAL;
--
- 	if ((sysctl_sched_rt_runtime != RUNTIME_INF) &&
- 		((sysctl_sched_rt_runtime > sysctl_sched_rt_period) ||
- 		 ((u64)sysctl_sched_rt_runtime *
-@@ -3022,7 +3023,7 @@ static int sched_rt_handler(struct ctl_t
- 	old_period = sysctl_sched_rt_period;
- 	old_runtime = sysctl_sched_rt_runtime;
+--- a/drivers/pci/controller/dwc/pcie-designware-ep.c
++++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+@@ -6,6 +6,7 @@
+  * Author: Kishon Vijay Abraham I <kishon@ti.com>
+  */
  
--	ret = proc_dointvec(table, write, buffer, lenp, ppos);
-+	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
++#include <linux/align.h>
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
  
- 	if (!ret && write) {
- 		ret = sched_rt_global_validate();
+@@ -598,7 +599,7 @@ int dw_pcie_ep_raise_msix_irq(struct dw_
+ 	}
+ 
+ 	aligned_offset = msg_addr & (epc->mem->window.page_size - 1);
+-	msg_addr &= ~aligned_offset;
++	msg_addr = ALIGN_DOWN(msg_addr, epc->mem->window.page_size);
+ 	ret = dw_pcie_ep_map_addr(epc, func_no, 0, ep->msi_mem_phys, msg_addr,
+ 				  epc->mem->window.page_size);
+ 	if (ret)
 
 
 
