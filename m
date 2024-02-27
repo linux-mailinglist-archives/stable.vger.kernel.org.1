@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-24184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A806869309
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:41:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A87638692EA
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:39:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 314041F2D7C6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:41:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E1161F2D7C0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:39:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC65713B2B8;
-	Tue, 27 Feb 2024 13:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE3D13B2BA;
+	Tue, 27 Feb 2024 13:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WQ8Y5lmR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ue2CvbWY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4562F2D;
-	Tue, 27 Feb 2024 13:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4962013B7A0;
+	Tue, 27 Feb 2024 13:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041269; cv=none; b=UxD51WW9An0gLWc3Y395vkHAslcPlu+atXA6sarKMIf3Gu7KIItfmuZBMaLtOvvnBxhoz+2WXdGWhK7WCa5UiY5Smb1ll3O1/jznHJ9gaWnY4YstXMdW8WkpbfCgCNd0Yv7FgqSNE/r83U/BUXSj/s0Mg/r9vlDV4qMO1z6tTe8=
+	t=1709041187; cv=none; b=Q0L024gaU/TUxyurIYlA5Hv0+1iRmOhX2PfRx7MgViGLI8SwcPYN9h/AStKe5jwM6e3BHCFsUF1M4PFEpnmVtt42W7Av9EgIdRzctdkIOsQPJOkEYLGB7siUE1aXW9iKGqWwT88dhKr3xiWeDuR04L860fFLkImP2q4BdOSo8BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041269; c=relaxed/simple;
-	bh=kTuSzsbQBi3yu0BX85erbFmdqCpMLGkSQycgaK0gcLI=;
+	s=arc-20240116; t=1709041187; c=relaxed/simple;
+	bh=/VbhQ9cbUsgzzHTZ7bI+WfvjqaTeRDuTImjJFG0MtbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uZVdSLF35Lmodh+0NEgw3FW7+1VGLVPjG1B86n1NNcfRqZYdUBAoXIYIilTzEIVaPl0WlCpvHvKiVIINKw/Fxt8fsBw/3yd6286nmkFOJ1c3SfWG9V5pHGFDGtNBl1hNEEn1Kq9bp678GkkviBd8BbRHrHci6ojU9QN1ggS65IQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WQ8Y5lmR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19DC0C433F1;
-	Tue, 27 Feb 2024 13:41:08 +0000 (UTC)
+	 MIME-Version; b=SQtURRiNxOWK+bD7tGgdBKdiur3TBBEi+IOUEmwXu4WLz7iYPO4gT+eZe5Le4RjWX/yer5ESRMhuYa/2UrjzGWfZA4Nl930hWTG6UpCkIIFOh/I7Gl1fI6y3hwvXmNNl2bc74FgXqW5r2afrz9GpXhcNrY4LM2kdG1Q97wOx1Ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ue2CvbWY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD2F9C43394;
+	Tue, 27 Feb 2024 13:39:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041269;
-	bh=kTuSzsbQBi3yu0BX85erbFmdqCpMLGkSQycgaK0gcLI=;
+	s=korg; t=1709041187;
+	bh=/VbhQ9cbUsgzzHTZ7bI+WfvjqaTeRDuTImjJFG0MtbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WQ8Y5lmRrvpes80yn1idcRKemKss5kdc1GqJIUAbw01m1LnUU587YXlhNXtMzCGzK
-	 AmUmHPiOe/KzdXdhrCBSMtJQzHaF4+hFSaIeauj1IbDx6rAgeHcFoUe6CCbemx0Gfd
-	 yhPCAMIFwljMfptz7bpTGQ8BiabqapxRhfu4BjSk=
+	b=ue2CvbWYkGTaLilzvFMRpYRwVjEbDRxSp78RnWWY+U4sYVIKjEqAlJacPgDzltvDP
+	 Vc3Qwsl8k+g3Jutu3QonG6qATKZ/tk9HQkSZVGwPO1wRm2IspVwrs5NoLGO0skWv/h
+	 SyERkQMhS8HnImkQ1pw0lkJQ3wrJiIUaXTESazJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 251/334] xsk: Add truesize to skb_add_rx_frag().
-Date: Tue, 27 Feb 2024 14:21:49 +0100
-Message-ID: <20240227131639.014926286@linuxfoundation.org>
+Subject: [PATCH 6.7 252/334] RDMA/srpt: fix function pointer cast warnings
+Date: Tue, 27 Feb 2024 14:21:50 +0100
+Message-ID: <20240227131639.045152294@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
 References: <20240227131630.636392135@linuxfoundation.org>
@@ -67,46 +67,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 2127c604383666675789fd4a5fc2aead46c73aad ]
+[ Upstream commit eb5c7465c3240151cd42a55c7ace9da0026308a1 ]
 
-xsk_build_skb() allocates a page and adds it to the skb via
-skb_add_rx_frag() and specifies 0 for truesize. This leads to a warning
-in skb_add_rx_frag() with CONFIG_DEBUG_NET enabled because size is
-larger than truesize.
+clang-16 notices that srpt_qp_event() gets called through an incompatible
+pointer here:
 
-Increasing truesize requires to add the same amount to socket's
-sk_wmem_alloc counter in order not to underflow the counter during
-release in the destructor (sock_wfree()).
+drivers/infiniband/ulp/srpt/ib_srpt.c:1815:5: error: cast from 'void (*)(struct ib_event *, struct srpt_rdma_ch *)' to 'void (*)(struct ib_event *, void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+ 1815 |                 = (void(*)(struct ib_event *, void*))srpt_qp_event;
 
-Pass the size of the allocated page as truesize to skb_add_rx_frag().
-Add this mount to socket's sk_wmem_alloc counter.
+Change srpt_qp_event() to use the correct prototype and adjust the
+argument inside of it.
 
-Fixes: cf24f5a5feea ("xsk: add support for AF_XDP multi-buffer on Tx path")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://lore.kernel.org/bpf/20240202163221.2488589-1-bigeasy@linutronix.de
+Fixes: a42d985bd5b2 ("ib_srpt: Initial SRP Target merge for v3.3-rc1")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240213100728.458348-1-arnd@kernel.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xdp/xsk.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/ulp/srpt/ib_srpt.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index 688e641cd2784..da1582de6e84a 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -711,7 +711,8 @@ static struct sk_buff *xsk_build_skb(struct xdp_sock *xs,
- 			memcpy(vaddr, buffer, len);
- 			kunmap_local(vaddr);
+diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
+index d2dce6ce30a94..040234c01be4d 100644
+--- a/drivers/infiniband/ulp/srpt/ib_srpt.c
++++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
+@@ -214,10 +214,12 @@ static const char *get_ch_state_name(enum rdma_ch_state s)
+ /**
+  * srpt_qp_event - QP event callback function
+  * @event: Description of the event that occurred.
+- * @ch: SRPT RDMA channel.
++ * @ptr: SRPT RDMA channel.
+  */
+-static void srpt_qp_event(struct ib_event *event, struct srpt_rdma_ch *ch)
++static void srpt_qp_event(struct ib_event *event, void *ptr)
+ {
++	struct srpt_rdma_ch *ch = ptr;
++
+ 	pr_debug("QP event %d on ch=%p sess_name=%s-%d state=%s\n",
+ 		 event->event, ch, ch->sess_name, ch->qp->qp_num,
+ 		 get_ch_state_name(ch->state));
+@@ -1811,8 +1813,7 @@ static int srpt_create_ch_ib(struct srpt_rdma_ch *ch)
+ 	ch->cq_size = ch->rq_size + sq_size;
  
--			skb_add_rx_frag(skb, nr_frags, page, 0, len, 0);
-+			skb_add_rx_frag(skb, nr_frags, page, 0, len, PAGE_SIZE);
-+			refcount_add(PAGE_SIZE, &xs->sk.sk_wmem_alloc);
- 		}
- 	}
- 
+ 	qp_init->qp_context = (void *)ch;
+-	qp_init->event_handler
+-		= (void(*)(struct ib_event *, void*))srpt_qp_event;
++	qp_init->event_handler = srpt_qp_event;
+ 	qp_init->send_cq = ch->cq;
+ 	qp_init->recv_cq = ch->cq;
+ 	qp_init->sq_sig_type = IB_SIGNAL_REQ_WR;
 -- 
 2.43.0
 
