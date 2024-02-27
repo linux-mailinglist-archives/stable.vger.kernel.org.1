@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F4F88696DE
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:16:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D264486963A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:09:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90AF6288088
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:16:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 605091F2D3A9
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:09:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7197913B7AB;
-	Tue, 27 Feb 2024 14:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D11DF13B2B4;
+	Tue, 27 Feb 2024 14:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wsNm8yW+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iT7ydwt9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E84413B2B3;
-	Tue, 27 Feb 2024 14:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90DCC13A26F;
+	Tue, 27 Feb 2024 14:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043368; cv=none; b=i+PrDMoBHBeuByPjZb6w3OD1QFMmhIR/YNNEcWpmCgX2koWpFepKUGcEQtEKY44RdoFdUxHtJQynAG/jwBRJePsnDw57imhCC4HqODPZxSf5BRvl1ZzpLHbSiAXJgjcE851WGp8UjImky7w89jn+xDgSNq+90cKqryK+JSqsBzY=
+	t=1709042964; cv=none; b=PWjNbpH1hLD8aJ5STzg2jw/hjoXpiJvfNQz+Gwj5TOiWH9sWB1hc3SV3eNw9Mo90oeM8TrdTVJh+KVD8iXv2p5/eWpPVBLzVzCa5FnN952OobxRATgzbs1vdsjiysIrRj2lU8WWmYzZarcxLCNBZZg3OYwEBg6+0tnG6UHXV8V4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043368; c=relaxed/simple;
-	bh=9+wLVyX8Qggs+IQr408V3Sni0pBD6I2ARpdgFc2qli4=;
+	s=arc-20240116; t=1709042964; c=relaxed/simple;
+	bh=yKgkIFciIP37QXNS9WrwETwXbnhVpZ+koMhM6fggBSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g5EJ3ogxSKGNq6o+Y3M73GqkqSz92UrSIaEqsRTPTlnWuJ7J49rzA6a2teW8B+qODSJvMKd4lG4C1MXZYEDz8QyyyzKFg9FtrdQQxbhZSG/ZrHmAgs3E5tB1TX8ZKzGyQ8otS56/brqaYaguwM6aMugTNcV48o2pFhnndO7jyTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wsNm8yW+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1082C433C7;
-	Tue, 27 Feb 2024 14:16:07 +0000 (UTC)
+	 MIME-Version; b=Q0c8vwyZQ2nVTOd5xtVBvVyF7JAppQJpFCWeGoQyEK8O7z1w4/ujkC3BbT61F6vlCwNjT5QuN/vcHyjHY6V1gF+LtKndIg70nhVfe6G/ukKODcWF79ImYwZvI0QsiWgScwqGgSLXS/K/TIO1Wbu7Mtr6bLExTR/XA9hrb2RqA80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iT7ydwt9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16D20C433F1;
+	Tue, 27 Feb 2024 14:09:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043368;
-	bh=9+wLVyX8Qggs+IQr408V3Sni0pBD6I2ARpdgFc2qli4=;
+	s=korg; t=1709042964;
+	bh=yKgkIFciIP37QXNS9WrwETwXbnhVpZ+koMhM6fggBSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wsNm8yW+GpMlWwCKNeqjBHitP7Tg0zTCOK5wFatv4VbeXsUIPc6YqpQB9c4GJM7Cr
-	 kaf9f9pvt3HJ3AVa5KNbKBWDsBtk1IGoG0G8MJo87JLDb3j8AmbtSjCkS8j4Th8v3X
-	 7isBaRJVfL/nwFVqD/TyOWsMA4C5TR/zO0mhRGXE=
+	b=iT7ydwt9f44f2s0l4IjjTZBqljvwY7NQzklb4pHlalYZVt4UaAMe6pK5YRTxzrvpA
+	 uX0KbwxDuiQ7G3hpkm6z1Tw2VyGHiisnMv6ccQTjrNnPaKp68rDBPZ+AGz5xSRnZZT
+	 dFUP39q5CkFs57Yr4WqkW/cEnJySat8qe0mdYCLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mats Kronberg <kronberg@nsc.liu.se>,
-	Daniel Vacek <neelx@redhat.com>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 6.1 083/195] IB/hfi1: Fix sdma.h tx->num_descs off-by-one error
+	Paul Cercueil <paul@crapouillou.net>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 156/245] PM: core: Add new *_PM_OPS macros, deprecate old ones
 Date: Tue, 27 Feb 2024 14:25:44 +0100
-Message-ID: <20240227131613.227628685@linuxfoundation.org>
+Message-ID: <20240227131620.288936357@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +63,202 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Vacek <neelx@redhat.com>
+From: Paul Cercueil <paul@crapouillou.net>
 
-commit e6f57c6881916df39db7d95981a8ad2b9c3458d6 upstream.
+[ Upstream commit 1a3c7bb088266fa2db017be299f91f1c1894c857 ]
 
-Unfortunately the commit `fd8958efe877` introduced another error
-causing the `descs` array to overflow. This reults in further crashes
-easily reproducible by `sendmsg` system call.
+This commit introduces the following macros:
 
-[ 1080.836473] general protection fault, probably for non-canonical address 0x400300015528b00a: 0000 [#1] PREEMPT SMP PTI
-[ 1080.869326] RIP: 0010:hfi1_ipoib_build_ib_tx_headers.constprop.0+0xe1/0x2b0 [hfi1]
---
-[ 1080.974535] Call Trace:
-[ 1080.976990]  <TASK>
-[ 1081.021929]  hfi1_ipoib_send_dma_common+0x7a/0x2e0 [hfi1]
-[ 1081.027364]  hfi1_ipoib_send_dma_list+0x62/0x270 [hfi1]
-[ 1081.032633]  hfi1_ipoib_send+0x112/0x300 [hfi1]
-[ 1081.042001]  ipoib_start_xmit+0x2a9/0x2d0 [ib_ipoib]
-[ 1081.046978]  dev_hard_start_xmit+0xc4/0x210
---
-[ 1081.148347]  __sys_sendmsg+0x59/0xa0
+SYSTEM_SLEEP_PM_OPS()
+LATE_SYSTEM_SLEEP_PM_OPS()
+NOIRQ_SYSTEM_SLEEP_PM_OPS()
+RUNTIME_PM_OPS()
 
-crash> ipoib_txreq 0xffff9cfeba229f00
-struct ipoib_txreq {
-  txreq = {
-    list = {
-      next = 0xffff9cfeba229f00,
-      prev = 0xffff9cfeba229f00
-    },
-    descp = 0xffff9cfeba229f40,
-    coalesce_buf = 0x0,
-    wait = 0xffff9cfea4e69a48,
-    complete = 0xffffffffc0fe0760 <hfi1_ipoib_sdma_complete>,
-    packet_len = 0x46d,
-    tlen = 0x0,
-    num_desc = 0x0,
-    desc_limit = 0x6,
-    next_descq_idx = 0x45c,
-    coalesce_idx = 0x0,
-    flags = 0x0,
-    descs = {{
-        qw = {0x8024000120dffb00, 0x4}  # SDMA_DESC0_FIRST_DESC_FLAG (bit 63)
-      }, {
-        qw = {  0x3800014231b108, 0x4}
-      }, {
-        qw = { 0x310000e4ee0fcf0, 0x8}
-      }, {
-        qw = {  0x3000012e9f8000, 0x8}
-      }, {
-        qw = {  0x59000dfb9d0000, 0x8}
-      }, {
-        qw = {  0x78000e02e40000, 0x8}
-      }}
-  },
-  sdma_hdr =  0x400300015528b000,  <<< invalid pointer in the tx request structure
-  sdma_status = 0x0,                   SDMA_DESC0_LAST_DESC_FLAG (bit 62)
-  complete = 0x0,
-  priv = 0x0,
-  txq = 0xffff9cfea4e69880,
-  skb = 0xffff9d099809f400
-}
+These new macros are very similar to their SET_*_PM_OPS() equivalent.
+They however differ in the fact that the callbacks they set will always
+be seen as referenced by the compiler. This means that the callback
+functions don't need to be wrapped with a #ifdef CONFIG_PM guard, or
+tagged with __maybe_unused, to prevent the compiler from complaining
+about unused static symbols. The compiler will then simply evaluate at
+compile time whether or not these symbols are dead code.
 
-If an SDMA send consists of exactly 6 descriptors and requires dword
-padding (in the 7th descriptor), the sdma_txreq descriptor array is not
-properly expanded and the packet will overflow into the container
-structure. This results in a panic when the send completion runs. The
-exact panic varies depending on what elements of the container structure
-get corrupted. The fix is to use the correct expression in
-_pad_sdma_tx_descs() to test the need to expand the descriptor array.
+The callbacks that are only useful with CONFIG_PM_SLEEP is enabled, are
+now also wrapped with a new pm_sleep_ptr() macro, which is inspired from
+pm_ptr(). This is needed for drivers that use different callbacks for
+sleep and runtime PM, to handle the case where CONFIG_PM is set and
+CONFIG_PM_SLEEP is not.
 
-With this patch the crashes are no longer reproducible and the machine is
-stable.
+This commit also deprecates the following macros:
 
-Fixes: fd8958efe877 ("IB/hfi1: Fix sdma.h tx->num_descs off-by-one errors")
-Cc: stable@vger.kernel.org
-Reported-by: Mats Kronberg <kronberg@nsc.liu.se>
-Tested-by: Mats Kronberg <kronberg@nsc.liu.se>
-Signed-off-by: Daniel Vacek <neelx@redhat.com>
-Link: https://lore.kernel.org/r/20240201081009.1109442-1-neelx@redhat.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+SIMPLE_DEV_PM_OPS()
+UNIVERSAL_DEV_PM_OPS()
+
+And introduces the following macros:
+
+DEFINE_SIMPLE_DEV_PM_OPS()
+DEFINE_UNIVERSAL_DEV_PM_OPS()
+
+These macros are similar to the functions they were created to replace,
+with the following differences:
+
+ - They use the new macros introduced above, and as such always
+   reference the provided callback functions.
+
+ - They are not tagged with __maybe_unused. They are meant to be used
+   with pm_ptr() or pm_sleep_ptr() for DEFINE_UNIVERSAL_DEV_PM_OPS()
+   and DEFINE_SIMPLE_DEV_PM_OPS() respectively.
+
+ - They declare the symbol static, since every driver seems to do that
+   anyway; and if a non-static use-case is needed an indirection pointer
+   could be used.
+
+The point of this change, is to progressively switch from a code model
+where PM callbacks are all protected behind CONFIG_PM guards, to a code
+model where the PM callbacks are always seen by the compiler, but
+discarded if not used.
+
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 18ab69c8ca56 ("Input: iqs269a - do not poll during suspend or resume")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hfi1/sdma.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/pm.h | 74 +++++++++++++++++++++++++++++++---------------
+ 1 file changed, 50 insertions(+), 24 deletions(-)
 
---- a/drivers/infiniband/hw/hfi1/sdma.c
-+++ b/drivers/infiniband/hw/hfi1/sdma.c
-@@ -3158,7 +3158,7 @@ int _pad_sdma_tx_descs(struct hfi1_devda
- {
- 	int rval = 0;
+diff --git a/include/linux/pm.h b/include/linux/pm.h
+index b88ac7dcf2a20..fc9691cb01b4f 100644
+--- a/include/linux/pm.h
++++ b/include/linux/pm.h
+@@ -300,47 +300,59 @@ struct dev_pm_ops {
+ 	int (*runtime_idle)(struct device *dev);
+ };
  
--	if ((unlikely(tx->num_desc + 1 == tx->desc_limit))) {
-+	if ((unlikely(tx->num_desc == tx->desc_limit))) {
- 		rval = _extend_sdma_tx_descs(dd, tx);
- 		if (rval) {
- 			__sdma_txclean(dd, tx);
++#define SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
++	.suspend = pm_sleep_ptr(suspend_fn), \
++	.resume = pm_sleep_ptr(resume_fn), \
++	.freeze = pm_sleep_ptr(suspend_fn), \
++	.thaw = pm_sleep_ptr(resume_fn), \
++	.poweroff = pm_sleep_ptr(suspend_fn), \
++	.restore = pm_sleep_ptr(resume_fn),
++
++#define LATE_SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
++	.suspend_late = pm_sleep_ptr(suspend_fn), \
++	.resume_early = pm_sleep_ptr(resume_fn), \
++	.freeze_late = pm_sleep_ptr(suspend_fn), \
++	.thaw_early = pm_sleep_ptr(resume_fn), \
++	.poweroff_late = pm_sleep_ptr(suspend_fn), \
++	.restore_early = pm_sleep_ptr(resume_fn),
++
++#define NOIRQ_SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
++	.suspend_noirq = pm_sleep_ptr(suspend_fn), \
++	.resume_noirq = pm_sleep_ptr(resume_fn), \
++	.freeze_noirq = pm_sleep_ptr(suspend_fn), \
++	.thaw_noirq = pm_sleep_ptr(resume_fn), \
++	.poweroff_noirq = pm_sleep_ptr(suspend_fn), \
++	.restore_noirq = pm_sleep_ptr(resume_fn),
++
++#define RUNTIME_PM_OPS(suspend_fn, resume_fn, idle_fn) \
++	.runtime_suspend = suspend_fn, \
++	.runtime_resume = resume_fn, \
++	.runtime_idle = idle_fn,
++
+ #ifdef CONFIG_PM_SLEEP
+ #define SET_SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
+-	.suspend = suspend_fn, \
+-	.resume = resume_fn, \
+-	.freeze = suspend_fn, \
+-	.thaw = resume_fn, \
+-	.poweroff = suspend_fn, \
+-	.restore = resume_fn,
++	SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn)
+ #else
+ #define SET_SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn)
+ #endif
+ 
+ #ifdef CONFIG_PM_SLEEP
+ #define SET_LATE_SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
+-	.suspend_late = suspend_fn, \
+-	.resume_early = resume_fn, \
+-	.freeze_late = suspend_fn, \
+-	.thaw_early = resume_fn, \
+-	.poweroff_late = suspend_fn, \
+-	.restore_early = resume_fn,
++	LATE_SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn)
+ #else
+ #define SET_LATE_SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn)
+ #endif
+ 
+ #ifdef CONFIG_PM_SLEEP
+ #define SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
+-	.suspend_noirq = suspend_fn, \
+-	.resume_noirq = resume_fn, \
+-	.freeze_noirq = suspend_fn, \
+-	.thaw_noirq = resume_fn, \
+-	.poweroff_noirq = suspend_fn, \
+-	.restore_noirq = resume_fn,
++	NOIRQ_SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn)
+ #else
+ #define SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn)
+ #endif
+ 
+ #ifdef CONFIG_PM
+ #define SET_RUNTIME_PM_OPS(suspend_fn, resume_fn, idle_fn) \
+-	.runtime_suspend = suspend_fn, \
+-	.runtime_resume = resume_fn, \
+-	.runtime_idle = idle_fn,
++	RUNTIME_PM_OPS(suspend_fn, resume_fn, idle_fn)
+ #else
+ #define SET_RUNTIME_PM_OPS(suspend_fn, resume_fn, idle_fn)
+ #endif
+@@ -349,9 +361,9 @@ struct dev_pm_ops {
+  * Use this if you want to use the same suspend and resume callbacks for suspend
+  * to RAM and hibernation.
+  */
+-#define SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
+-const struct dev_pm_ops __maybe_unused name = { \
+-	SET_SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
++#define DEFINE_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
++static const struct dev_pm_ops name = { \
++	SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
+ }
+ 
+ /*
+@@ -367,6 +379,19 @@ const struct dev_pm_ops __maybe_unused name = { \
+  * .resume_early(), to the same routines as .runtime_suspend() and
+  * .runtime_resume(), respectively (and analogously for hibernation).
+  */
++#define DEFINE_UNIVERSAL_DEV_PM_OPS(name, suspend_fn, resume_fn, idle_fn) \
++static const struct dev_pm_ops name = { \
++	SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
++	RUNTIME_PM_OPS(suspend_fn, resume_fn, idle_fn) \
++}
++
++/* Deprecated. Use DEFINE_SIMPLE_DEV_PM_OPS() instead. */
++#define SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
++const struct dev_pm_ops __maybe_unused name = { \
++	SET_SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
++}
++
++/* Deprecated. Use DEFINE_UNIVERSAL_DEV_PM_OPS() instead. */
+ #define UNIVERSAL_DEV_PM_OPS(name, suspend_fn, resume_fn, idle_fn) \
+ const struct dev_pm_ops __maybe_unused name = { \
+ 	SET_SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
+@@ -374,6 +399,7 @@ const struct dev_pm_ops __maybe_unused name = { \
+ }
+ 
+ #define pm_ptr(_ptr) PTR_IF(IS_ENABLED(CONFIG_PM), (_ptr))
++#define pm_sleep_ptr(_ptr) PTR_IF(IS_ENABLED(CONFIG_PM_SLEEP), (_ptr))
+ 
+ /*
+  * PM_EVENT_ messages
+-- 
+2.43.0
+
 
 
 
