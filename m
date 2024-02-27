@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-24261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36DA286936D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:45:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BBFB869722
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:18:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB7A51F21221
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:45:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD1AD1C23397
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:18:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 172B013DB90;
-	Tue, 27 Feb 2024 13:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E77CD1448C7;
+	Tue, 27 Feb 2024 14:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ezV2hKsw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v5Zb0TW6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C052913DB83;
-	Tue, 27 Feb 2024 13:44:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5DEF78B61;
+	Tue, 27 Feb 2024 14:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041482; cv=none; b=cKkzZLD0eM3TCpl3DLxxx2tIH1lLBfG+XC/PlqJ6GeLE1dsSj4lR6NatxfduHFMZOH+TWWR8YTLZcKc6bdt9Z0A7Wv+4k5AMz1PfgpxTZUewdaIfD5/l9Qn1D0DoS8wQt6FAM8xzipu7ydiT9C3UnTX8Lj9CFrRyQqHKYF8gBio=
+	t=1709043511; cv=none; b=YrRAf+3PsGOCEPg592f8Blnd4c4L3Qke/288J7FyPq+kgE+ZNMl/krBagy/NxBcP7qT7yNABZ7cHrM85aqOT7R/RgytLvBHftfJbTCMkx+K+HHOY2m4IzpE2LhVadLFgO/xejoSUN+F+Gjups8BehAqotx3PuJBC+9l8aFfNCUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041482; c=relaxed/simple;
-	bh=KdDCwOwNcilrJyLwYGP/IDXRl77LbNLWOim0QDe9Ars=;
+	s=arc-20240116; t=1709043511; c=relaxed/simple;
+	bh=NOHSWGr4Ic29x3+ulHbJ2FfxvyVAE6CJzhvPLVcBIhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RhmJ5fRvummxZm126DHYFz4CN2izIGhi7EJshDCXBmYm8AEUqElq75Y9hgyg6oJZFnoJHVnTHODNA+rPuepNkEyN2NyfbDBh0pI6UVAcmacuNWbqAFEReI2oG2yoJJ4WH+SLRbrsOCS/4ounA7XCmyh+iBMY9ngXrsr+/sUvPnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ezV2hKsw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F7B0C433F1;
-	Tue, 27 Feb 2024 13:44:42 +0000 (UTC)
+	 MIME-Version; b=lnSsYiuUiQIhffatrhiMCtaR17dF7wFeReOv7oeItPJd1Ag4AFvnWQVLJaAL/vOcTSaD3cXy6eNcTUxZul/0f/Ufx4tWhvG6kY+FgBPxXqtctrgCt4SkglC8BlMf6MS/d+O5A8Cp7djg/z2iQAggUOzOuIE0RKQ9iVzs3lYGNe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v5Zb0TW6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C8B4C43390;
+	Tue, 27 Feb 2024 14:18:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041482;
-	bh=KdDCwOwNcilrJyLwYGP/IDXRl77LbNLWOim0QDe9Ars=;
+	s=korg; t=1709043511;
+	bh=NOHSWGr4Ic29x3+ulHbJ2FfxvyVAE6CJzhvPLVcBIhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ezV2hKsw1/iE9ouQEMuPdm7EXGK9C0YLdvdANQR3deQGiX0z+s1IlgXF64b/HNg0B
-	 62ju0MyNkkTos9IjZhBeSRASmPaJaFzxowsily04OUyqEJnAWaKwl/Ay7g5vDfiKLb
-	 RmJYi0Xwwgik/lFVgVGCjb4eTqXX1iPEaHM3oBmw=
+	b=v5Zb0TW6oBWKnYfdYBx3TzhWjLcRveVaTOmi9FwHDKdy/l7TtZFBKr9l3d8xXHqH5
+	 nTRB+qARLeQOG/QU5brWnl0Qpb7ACev0bM8Dpv1jXDQhkj+FWdMS1CK+jnuohhQc3T
+	 WL8gbrti2tFq0j74dwp68rWw4a5WD+OIAfDz1434=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 20/52] ext4: avoid allocating blocks from corrupted group in ext4_mb_find_by_goal()
+	zhenwei pi <pizhenwei@bytedance.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 6.1 106/195] crypto: virtio/akcipher - Fix stack overflow on memcpy
 Date: Tue, 27 Feb 2024 14:26:07 +0100
-Message-ID: <20240227131549.196146986@linuxfoundation.org>
+Message-ID: <20240227131613.965849715@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
-References: <20240227131548.514622258@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: zhenwei pi <pizhenwei@bytedance.com>
 
-[ Upstream commit 832698373a25950942c04a512daa652c18a9b513 ]
+commit c0ec2a712daf133d9996a8a1b7ee2d4996080363 upstream.
 
-Places the logic for checking if the group's block bitmap is corrupt under
-the protection of the group lock to avoid allocating blocks from the group
-with a corrupted block bitmap.
+sizeof(struct virtio_crypto_akcipher_session_para) is less than
+sizeof(struct virtio_crypto_op_ctrl_req::u), copying more bytes from
+stack variable leads stack overflow. Clang reports this issue by
+commands:
+make -j CC=clang-14 mrproper >/dev/null 2>&1
+make -j O=/tmp/crypto-build CC=clang-14 allmodconfig >/dev/null 2>&1
+make -j O=/tmp/crypto-build W=1 CC=clang-14 drivers/crypto/virtio/
+  virtio_crypto_akcipher_algs.o
 
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240104142040.2835097-8-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 59ca6c93387d ("virtio-crypto: implement RSA algorithm")
+Link: https://lore.kernel.org/all/0a194a79-e3a3-45e7-be98-83abd3e1cb7e@roeck-us.net/
+Cc: <stable@vger.kernel.org>
+Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
+Tested-by: Nathan Chancellor <nathan@kernel.org> # build
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/crypto/virtio/virtio_crypto_akcipher_algs.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index e0dd01cb1a0e7..5af5ad53e0ada 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1839,12 +1839,10 @@ int ext4_mb_find_by_goal(struct ext4_allocation_context *ac,
- 	if (err)
- 		return err;
+--- a/drivers/crypto/virtio/virtio_crypto_akcipher_algs.c
++++ b/drivers/crypto/virtio/virtio_crypto_akcipher_algs.c
+@@ -104,7 +104,8 @@ static void virtio_crypto_dataq_akcipher
+ }
  
--	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info))) {
--		ext4_mb_unload_buddy(e4b);
--		return 0;
--	}
--
- 	ext4_lock_group(ac->ac_sb, group);
-+	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)))
-+		goto out;
-+
- 	max = mb_find_extent(e4b, ac->ac_g_ex.fe_start,
- 			     ac->ac_g_ex.fe_len, &ex);
- 	ex.fe_logical = 0xDEADFA11; /* debug value */
-@@ -1877,6 +1875,7 @@ int ext4_mb_find_by_goal(struct ext4_allocation_context *ac,
- 		ac->ac_b_ex = ex;
- 		ext4_mb_use_best_found(ac, e4b);
- 	}
-+out:
- 	ext4_unlock_group(ac->ac_sb, group);
- 	ext4_mb_unload_buddy(e4b);
+ static int virtio_crypto_alg_akcipher_init_session(struct virtio_crypto_akcipher_ctx *ctx,
+-		struct virtio_crypto_ctrl_header *header, void *para,
++		struct virtio_crypto_ctrl_header *header,
++		struct virtio_crypto_akcipher_session_para *para,
+ 		const uint8_t *key, unsigned int keylen)
+ {
+ 	struct scatterlist outhdr_sg, key_sg, inhdr_sg, *sgs[3];
+@@ -128,7 +129,7 @@ static int virtio_crypto_alg_akcipher_in
  
--- 
-2.43.0
-
+ 	ctrl = &vc_ctrl_req->ctrl;
+ 	memcpy(&ctrl->header, header, sizeof(ctrl->header));
+-	memcpy(&ctrl->u, para, sizeof(ctrl->u));
++	memcpy(&ctrl->u.akcipher_create_session.para, para, sizeof(*para));
+ 	input = &vc_ctrl_req->input;
+ 	input->status = cpu_to_le32(VIRTIO_CRYPTO_ERR);
+ 
 
 
 
