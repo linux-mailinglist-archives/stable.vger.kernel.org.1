@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-24028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CA3E86924A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:34:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4895886922A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:33:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EA431C21390
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:34:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DAF8B1F2B7C6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B5A13B295;
-	Tue, 27 Feb 2024 13:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED61E13AA2F;
+	Tue, 27 Feb 2024 13:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zR/VxuOD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ek1uL5k8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0A02F2D;
-	Tue, 27 Feb 2024 13:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC7F13B2A7;
+	Tue, 27 Feb 2024 13:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709040829; cv=none; b=iPzp0q2tdjbxuAhwtaESNzvUOxEjCXXK3CIkX44RSwI/KKYgvNY0ON7z1u2Ie6EUtBuxlU/DNuGmULIj6Ahl6wfqX+O3MMN0obpZmKkhPgboeQ41XCoVIZOGyHpG72SVYtvAy70Khcdl6FGPfjQfyDoThF2D9A4OJr5eNRw/fuA=
+	t=1709040744; cv=none; b=SfjizNYGkOYDTJqkgjYR5OJlDJ+4Ci68c9h1hGxY5mkUO3JNEmbRmItEOgtJRwB7Tr77UOzKiwvl0mbqVCcLuYJ6hBpwI84/GgAGI49qTpXt//1Lyw4J1rvvKj7F59Lk0G6rk75vQZWhUtUfYSfaWqcT24/TwjastYpMqsqepgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709040829; c=relaxed/simple;
-	bh=DJqKSSfPwLOwJ0UttebUwkqnm9WYv0wu7LqQKDIxvVQ=;
+	s=arc-20240116; t=1709040744; c=relaxed/simple;
+	bh=SYbgp3pTBKfuq9q6B9up3iVKscQMnV970rvDlUX5LlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GfZ1aUncV6Zgfx35TUeJlR+wR7hRQQ+i4pH4tjIoDWa8fZLPdHzja++WELJ6MGWSwonXofWwqelaHPTcbaZO4E+DyGAEPnH8tb01QOg3yNeHnJwpEAu1CU0KRDIQg0QH/mdZNlqP77yXWNxtIhkKfLkgG2xRVEgKYNyVHiN5PU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zR/VxuOD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21A8DC433C7;
-	Tue, 27 Feb 2024 13:33:48 +0000 (UTC)
+	 MIME-Version; b=kRvS3DPL8LCUh7vBPNaTcyZJAT5dWl/S5lAVXxyd/dwK6JbmNnh1Bf0eYcbgO8hqg2A67tSSSzadpo3ONSqLGaIOBf0A7sCMXu79uGQyULbBQhvvmY3JwKrWEWHheb1/euFFm/6LocXlDYTabHyEGX3bf9hFwOnyNl/J5K0Zgno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ek1uL5k8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DBF9C433F1;
+	Tue, 27 Feb 2024 13:32:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709040829;
-	bh=DJqKSSfPwLOwJ0UttebUwkqnm9WYv0wu7LqQKDIxvVQ=;
+	s=korg; t=1709040744;
+	bh=SYbgp3pTBKfuq9q6B9up3iVKscQMnV970rvDlUX5LlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zR/VxuODLRtOr933bIAucGbdAb/bJgwTLXrpIOJB/B4Ie8WUKGCJDYy4iAVdC2e9v
-	 hYNc6sFwrE52dEQ0VtT72vmtT0o6lL7TftxpB7M2TBn507yOm9UMoizlqEvQN9faf3
-	 mSYcGcZ9QPvFTvfccso0KJpO1YzFqJn/EylpM4iQ=
+	b=ek1uL5k83zUBS3TYSh+YqrxA+Ec48msJFcZfmQd79myIrVVRgfExxY6lCXlOibici
+	 XjhYu78TO+PYfirVQ2BkJkGtFEl/QV8++EQt6h4TY8LIgKcV6ugfhjwbQv+E8GLUVO
+	 K9HTFSfyVM1lXIku/FM+LD5Rs70HrHTvYdcjd5W4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ism Hong <ism.hong@gmail.com>,
 	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 094/334] fs/ntfs3: use non-movable memory for ntfs3 MFT buffer cache
-Date: Tue, 27 Feb 2024 14:19:12 +0100
-Message-ID: <20240227131633.543939509@linuxfoundation.org>
+Subject: [PATCH 6.7 095/334] fs/ntfs3: Prevent generic message "attempt to access beyond end of device"
+Date: Tue, 27 Feb 2024 14:19:13 +0100
+Message-ID: <20240227131633.574331154@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
 References: <20240227131630.636392135@linuxfoundation.org>
@@ -66,77 +65,86 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ism Hong <ism.hong@gmail.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit d6d33f03baa43d763fe094ca926eeae7d3421d07 ]
+[ Upstream commit 5ca87d01eba7bdfe9536a157ca33c1455bb8d16c ]
 
-Since the buffer cache for ntfs3 metadata is not released until the file
-system is unmounted, allocating from the movable zone may result in cma
-allocation failures. This is due to the page still being used by ntfs3,
-leading to migration failures.
+It used in test environment.
 
-To address this, this commit use sb_bread_umovable() instead of
-sb_bread(). This change prevents allocation from the movable zone,
-ensuring compatibility with scenarios where the buffer head is not
-released until unmount. This patch is inspired by commit
-a8ac900b8163("ext4: use non-movable memory for the ext4 superblock").
-
-The issue is found when playing video files stored in NTFS on the
-Android TV platform. During this process, the media parser reads the
-video file, causing ntfs3 to allocate buffer cache from the CMA area.
-Subsequently, the hardware decoder attempts to allocate memory from the
-same CMA area. However, the page is still in use by ntfs3, resulting in
-a migrate failure in alloc_contig_range().
-
-The pinned page and allocating stacktrace reported by page owner shows
-below:
-
-page:ffffffff00b68880 refcount:3 mapcount:0 mapping:ffffff80046aa828
-        index:0xc0040 pfn:0x20fa4
-    aops:def_blk_aops ino:0
-    flags: 0x2020(active|private)
-    page dumped because: migration failure
-    page last allocated via order 0, migratetype Movable,
-        gfp_mask 0x108c48
-        (GFP_NOFS|__GFP_NOFAIL|__GFP_HARDWALL|__GFP_MOVABLE),
-    page_owner tracks the page as allocated
-     prep_new_page
-     get_page_from_freelist
-     __alloc_pages_nodemask
-     pagecache_get_page
-     __getblk_gfp
-     __bread_gfp
-     ntfs_read_run_nb
-     ntfs_read_bh
-     mi_read
-     ntfs_iget5
-     dir_search_u
-     ntfs_lookup
-     __lookup_slow
-     lookup_slow
-     walk_component
-     path_lookupat
-
-Signed-off-by: Ism Hong <ism.hong@gmail.com>
 Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/ntfs_fs.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ntfs3/fsntfs.c  | 24 ++++++++++++++++++++++++
+ fs/ntfs3/ntfs_fs.h | 14 +-------------
+ 2 files changed, 25 insertions(+), 13 deletions(-)
 
+diff --git a/fs/ntfs3/fsntfs.c b/fs/ntfs3/fsntfs.c
+index 321978019407f..ae2ef5c11868c 100644
+--- a/fs/ntfs3/fsntfs.c
++++ b/fs/ntfs3/fsntfs.c
+@@ -1007,6 +1007,30 @@ static inline __le32 security_hash(const void *sd, size_t bytes)
+ 	return cpu_to_le32(hash);
+ }
+ 
++/*
++ * simple wrapper for sb_bread_unmovable.
++ */
++struct buffer_head *ntfs_bread(struct super_block *sb, sector_t block)
++{
++	struct ntfs_sb_info *sbi = sb->s_fs_info;
++	struct buffer_head *bh;
++
++	if (unlikely(block >= sbi->volume.blocks)) {
++		/* prevent generic message "attempt to access beyond end of device" */
++		ntfs_err(sb, "try to read out of volume at offset 0x%llx",
++			 (u64)block << sb->s_blocksize_bits);
++		return NULL;
++	}
++
++	bh = sb_bread_unmovable(sb, block);
++	if (bh)
++		return bh;
++
++	ntfs_err(sb, "failed to read volume at offset 0x%llx",
++		 (u64)block << sb->s_blocksize_bits);
++	return NULL;
++}
++
+ int ntfs_sb_read(struct super_block *sb, u64 lbo, size_t bytes, void *buffer)
+ {
+ 	struct block_device *bdev = sb->s_bdev;
 diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
-index 8079f3069a1bf..38e0570729c6f 100644
+index 38e0570729c6f..627419bd6f778 100644
 --- a/fs/ntfs3/ntfs_fs.h
 +++ b/fs/ntfs3/ntfs_fs.h
-@@ -1035,7 +1035,7 @@ static inline u64 bytes_to_block(const struct super_block *sb, u64 size)
- static inline struct buffer_head *ntfs_bread(struct super_block *sb,
- 					     sector_t block)
- {
--	struct buffer_head *bh = sb_bread(sb, block);
-+	struct buffer_head *bh = sb_bread_unmovable(sb, block);
+@@ -586,6 +586,7 @@ bool check_index_header(const struct INDEX_HDR *hdr, size_t bytes);
+ int log_replay(struct ntfs_inode *ni, bool *initialized);
  
- 	if (bh)
- 		return bh;
+ /* Globals from fsntfs.c */
++struct buffer_head *ntfs_bread(struct super_block *sb, sector_t block);
+ bool ntfs_fix_pre_write(struct NTFS_RECORD_HEADER *rhdr, size_t bytes);
+ int ntfs_fix_post_read(struct NTFS_RECORD_HEADER *rhdr, size_t bytes,
+ 		       bool simple);
+@@ -1032,19 +1033,6 @@ static inline u64 bytes_to_block(const struct super_block *sb, u64 size)
+ 	return (size + sb->s_blocksize - 1) >> sb->s_blocksize_bits;
+ }
+ 
+-static inline struct buffer_head *ntfs_bread(struct super_block *sb,
+-					     sector_t block)
+-{
+-	struct buffer_head *bh = sb_bread_unmovable(sb, block);
+-
+-	if (bh)
+-		return bh;
+-
+-	ntfs_err(sb, "failed to read volume at offset 0x%llx",
+-		 (u64)block << sb->s_blocksize_bits);
+-	return NULL;
+-}
+-
+ static inline struct ntfs_inode *ntfs_i(struct inode *inode)
+ {
+ 	return container_of(inode, struct ntfs_inode, vfs_inode);
 -- 
 2.43.0
 
