@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4993E86970A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:17:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9964E86960D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED6E6B2A7BB
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3920CB25C77
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2378413A26F;
-	Tue, 27 Feb 2024 14:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35CE61420A2;
+	Tue, 27 Feb 2024 14:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YY3creQv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iwkj2udy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1CB613B78F;
-	Tue, 27 Feb 2024 14:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A0F13B2B4;
+	Tue, 27 Feb 2024 14:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043348; cv=none; b=oMhkKhfwAU3evaR/4J8aHHiwOFZs7KvPdt6RhIGijN0Q2Ue1eIf7+1T4AGa377B+iZI5V0R01/sCt/YvRxCB5BgjSCV06ZhSghjgWVEYiCng5DVllkpwQ9MjZf+rvAaJuffQ/PCGjR1yqCLSYylkJAMAFo7L+2gkEKQ3Lr5tBsQ=
+	t=1709042848; cv=none; b=aaabOtx6N/xhWRAbQoKWNLM/kprYdo9/NR4Eos+ikz84kJj3ZABMACESk7W9SQzzzswNll/o8mPE2ZQnuumn8/3wruzPoJOSejlJC5scSLSWlvjBRevBJOWrmzuAEGaJSeVwupdmPJw0FI6TIpNeSVinDrbLe80vXondR3z/RgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043348; c=relaxed/simple;
-	bh=oOQWcHrudQuPTnJzvVq8n/06mdfTyd/rN4Lc7Mwgi0A=;
+	s=arc-20240116; t=1709042848; c=relaxed/simple;
+	bh=abQCwja0iB4c2gGxgn8swbcrtpEUbuB+Jm71TgpMe+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SkJWxCpmQLbwBTgjK/reL7fkizc8woB/ZN1DQIGXwLiJFWcl0Bbw/iuc2s6nzhJvHp7poxk+nZX7MOOEnn9EkBBh7qaBrGQ7NIxFbxFGSOgS2yCSyXN2yWWLAcUCHSpdjw7YEvx8bHcoqMXMLpLzFWobLuHSd8A1jZNzDS5KMhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YY3creQv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DF8AC433F1;
-	Tue, 27 Feb 2024 14:15:48 +0000 (UTC)
+	 MIME-Version; b=iKQiu6SN9X/BSZK8BdFD+8mrz/l/8Q2JzrsCrrC4/wgS0aRLUdIXWrVjVxWGzVzOAfSTclCZU6h3cFPhCzDIss2F2wkNpphWXN983tMlzwdL+OPaim1oivHit1fjviPdBX7nCYUeqGZACNfsl+FjiPqmvzcXDw4KTmCGaanQUj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iwkj2udy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C3FC43390;
+	Tue, 27 Feb 2024 14:07:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043348;
-	bh=oOQWcHrudQuPTnJzvVq8n/06mdfTyd/rN4Lc7Mwgi0A=;
+	s=korg; t=1709042847;
+	bh=abQCwja0iB4c2gGxgn8swbcrtpEUbuB+Jm71TgpMe+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YY3creQvqbqbieceAmZ3rlpH7PTOpMd9C/Ll95aKNtig0v1QnGYPOkVl4c4LP9vvH
-	 5/4zRXPAucR6dNWJZ3RGhq64PR7s4l6k0T9g2JCpktW9KNS6ZNG5SQfm8mli0a7daI
-	 G+CrAExrJdvddpXyeJpnlP8x/Jdyv/IH973FzMCc=
+	b=iwkj2udyRCCiltSrtqFG07ov/T2U3U1r7aq1fyVYZhHtILyKX/aElGtiQAl0myuPP
+	 AIjlHIf5DSXdL7zDywyF3Q8P4eH3nr6QI2TIRiZN7HNznPim4VruEli+V2T1yaCz7p
+	 u8W7hu4nUNuuwCjx8rg4ifZt/RdcrDi8/79xFOis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Bresticker <abrestic@rivosinc.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Byungki Lee <dominicus79@gmail.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 068/195] efi: runtime: Fix potential overflow of soft-reserved region size
-Date: Tue, 27 Feb 2024 14:25:29 +0100
-Message-ID: <20240227131612.746084413@linuxfoundation.org>
+Subject: [PATCH 5.15 142/245] f2fs: write checkpoint during FG_GC
+Date: Tue, 27 Feb 2024 14:25:30 +0100
+Message-ID: <20240227131619.829058930@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Bresticker <abrestic@rivosinc.com>
+From: Byungki Lee <dominicus79@gmail.com>
 
-[ Upstream commit de1034b38a346ef6be25fe8792f5d1e0684d5ff4 ]
+[ Upstream commit a9163b947ae8f7af7cb8d63606cd87b9facbfe74 ]
 
-md_size will have been narrowed if we have >= 4GB worth of pages in a
-soft-reserved region.
+If there's not enough free sections each of which consistis of large segments,
+we can hit no free section for upcoming section allocation. Let's reclaim some
+prefree segments by writing checkpoints.
 
-Signed-off-by: Andrew Bresticker <abrestic@rivosinc.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Byungki Lee <dominicus79@gmail.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/arm-runtime.c   | 2 +-
- drivers/firmware/efi/riscv-runtime.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ fs/f2fs/gc.c | 38 +++++++++++++++++++++++---------------
+ 1 file changed, 23 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/firmware/efi/arm-runtime.c b/drivers/firmware/efi/arm-runtime.c
-index 7c48c380d722c..1995f0a2e0fc0 100644
---- a/drivers/firmware/efi/arm-runtime.c
-+++ b/drivers/firmware/efi/arm-runtime.c
-@@ -107,7 +107,7 @@ static int __init arm_enable_runtime_services(void)
- 		efi_memory_desc_t *md;
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index d016504fad4b9..2c13f308c74e3 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -1782,23 +1782,31 @@ int f2fs_gc(struct f2fs_sb_info *sbi, bool sync,
+ 	if (sync)
+ 		goto stop;
  
- 		for_each_efi_memory_desc(md) {
--			int md_size = md->num_pages << EFI_PAGE_SHIFT;
-+			u64 md_size = md->num_pages << EFI_PAGE_SHIFT;
- 			struct resource *res;
+-	if (has_not_enough_free_secs(sbi, sec_freed, 0)) {
+-		if (skipped_round <= MAX_SKIP_GC_COUNT ||
+-					skipped_round * 2 < round) {
+-			segno = NULL_SEGNO;
+-			goto gc_more;
+-		}
++	if (!has_not_enough_free_secs(sbi, sec_freed, 0))
++		goto stop;
  
- 			if (!(md->attribute & EFI_MEMORY_SP))
-diff --git a/drivers/firmware/efi/riscv-runtime.c b/drivers/firmware/efi/riscv-runtime.c
-index d0daacd2c903f..6b142aa35389e 100644
---- a/drivers/firmware/efi/riscv-runtime.c
-+++ b/drivers/firmware/efi/riscv-runtime.c
-@@ -85,7 +85,7 @@ static int __init riscv_enable_runtime_services(void)
- 		efi_memory_desc_t *md;
- 
- 		for_each_efi_memory_desc(md) {
--			int md_size = md->num_pages << EFI_PAGE_SHIFT;
-+			u64 md_size = md->num_pages << EFI_PAGE_SHIFT;
- 			struct resource *res;
- 
- 			if (!(md->attribute & EFI_MEMORY_SP))
+-		if (first_skipped < last_skipped &&
+-				(last_skipped - first_skipped) >
+-						sbi->skipped_gc_rwsem) {
+-			f2fs_drop_inmem_pages_all(sbi, true);
+-			segno = NULL_SEGNO;
+-			goto gc_more;
+-		}
+-		if (gc_type == FG_GC && !is_sbi_flag_set(sbi, SBI_CP_DISABLED))
++	if (skipped_round <= MAX_SKIP_GC_COUNT || skipped_round * 2 < round) {
++
++		/* Write checkpoint to reclaim prefree segments */
++		if (free_sections(sbi) < NR_CURSEG_PERSIST_TYPE &&
++				prefree_segments(sbi) &&
++				!is_sbi_flag_set(sbi, SBI_CP_DISABLED)) {
+ 			ret = f2fs_write_checkpoint(sbi, &cpc);
+-	}
++			if (ret)
++				goto stop;
++		}
++		segno = NULL_SEGNO;
++		goto gc_more;
++	}
++	if (first_skipped < last_skipped &&
++			(last_skipped - first_skipped) >
++					sbi->skipped_gc_rwsem) {
++		f2fs_drop_inmem_pages_all(sbi, true);
++		segno = NULL_SEGNO;
++		goto gc_more;
++	}
++	if (gc_type == FG_GC && !is_sbi_flag_set(sbi, SBI_CP_DISABLED))
++		ret = f2fs_write_checkpoint(sbi, &cpc);
+ stop:
+ 	SIT_I(sbi)->last_victim[ALLOC_NEXT] = 0;
+ 	SIT_I(sbi)->last_victim[FLUSH_DEVICE] = init_segno;
 -- 
 2.43.0
 
