@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-24474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6CFD8694A6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:55:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A1018696AB
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:14:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92E401F22985
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:55:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B3541C237A7
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:14:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88631420DE;
-	Tue, 27 Feb 2024 13:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99459145341;
+	Tue, 27 Feb 2024 14:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQ59Q7O0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dm75kG3N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8812113B2AC;
-	Tue, 27 Feb 2024 13:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD7213B2B3;
+	Tue, 27 Feb 2024 14:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042104; cv=none; b=AegY7av3Zr9k/Lz03PKLFk5hlaihNPWbzNfhQyxQLoy6LZdhmvmsXVnkeAOt+7gAl79RO1mEHmQk0VICM3YRqdYZh6upBuKUF+E/LYq4bQEITxBwXDJFISRYR5nwRxns/2vzaaLeU6Z4M+vUAM+Vj4lyDubME1HEi8VgOVc56o8=
+	t=1709043224; cv=none; b=jVkjOwrKna7vJoyN52taGfNH+M4qNhkHJsSaBuHqMQeqnOTXQnggkkL86fyOTURJp9rYCEORk0ba+IyPTQ4LDuZCRfZmpLLgQkDS2ps0efiEJo8vGyMHqHUDJkjfAyCGqJDPkJUdLb9R2UfOzzWmOd7PN8+WiuOBINRh5+8l05I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042104; c=relaxed/simple;
-	bh=CST0yNY+E4jTEouVy09CndSggp9RQhmZ/Mm1y0pNXzc=;
+	s=arc-20240116; t=1709043224; c=relaxed/simple;
+	bh=6WcJ6hmMvvrY5tFHi6N8ISUhD5ut3vCL4dr0/IZFtzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f9zX6RqZBgSXFNENqVlcKURhZPi+g94lC2hwunvpVgGkf4JIbu7Hp4yiUZIyulgHG2L7ILOEbaJQNsqLtpRhltX2MSmk6GKxAt6WhQI8m/CFJHTpj4VmPlerORhTxQOVbfEh+TAQ77KenmS2OMD7FOFzHXp/XcY24spTOslKudU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gQ59Q7O0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 170F6C433F1;
-	Tue, 27 Feb 2024 13:55:03 +0000 (UTC)
+	 MIME-Version; b=R7nIhPqLHJvdL/XvyBhW65u2nYjIIyLLQkGiVCaYQwWUdS1GG3Kix9r/tQrcOPvRlAwOUenBXOf4zTOQagrZdGWmouz6BxQlWLCB/EJULERXJA2NNcXIRED8mfTCQgC2Iq6IKyHpiLzljMRfjnfqn7NisjjofQZjz/exNAbUTpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dm75kG3N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9876C43390;
+	Tue, 27 Feb 2024 14:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042104;
-	bh=CST0yNY+E4jTEouVy09CndSggp9RQhmZ/Mm1y0pNXzc=;
+	s=korg; t=1709043224;
+	bh=6WcJ6hmMvvrY5tFHi6N8ISUhD5ut3vCL4dr0/IZFtzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gQ59Q7O0sm6ylKnu76lg/4lWhcMJIZHG1aO/rBXivay1gAw2coHJZqS6pFr92ZVGW
-	 bpEp5rUgPe4xUwdggINYTGEPCbdUs+2Had8xY3OAhmDg1J72sCEL06pWt19Qw/kAhN
-	 Ii5hp73ry17i5gGU6uCAJtEgglzyPFWbhzC1j7nc=
+	b=Dm75kG3Nfu3oiW4Ab7iLvtx3GXFmVOudEcHw6KePoaS4zYpCPsuCVm4F42MYTdK5d
+	 egYDH2E8lHu880wa/2N+e0EAQuJHLgPciEcg517cr1t90o06wqYI9QNrMbW9VZEzan
+	 tSLFuNArszL7CDOSvSsROYEZy1si/2DW2J6YpmAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ondrej Jirman <megi@xff.cz>
-Subject: [PATCH 6.6 180/299] Revert "usb: typec: tcpm: reset counter when enter into unattached state after try role"
+	Kunwu Chan <chentao@kylinos.cn>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 030/195] dmaengine: ti: edma: Add some null pointer checks to the edma_probe
 Date: Tue, 27 Feb 2024 14:24:51 +0100
-Message-ID: <20240227131631.638534915@linuxfoundation.org>
+Message-ID: <20240227131611.388138193@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ondrej Jirman <megi@xff.cz>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-commit 23b1d2d99b0f55326f05e7d757fa197c4a95dc5c upstream.
+[ Upstream commit 6e2276203ac9ff10fc76917ec9813c660f627369 ]
 
-The reverted commit makes the state machine only ever go from SRC_ATTACH_WAIT
-to SNK_TRY in endless loop when toggling. After revert it goes to SRC_ATTACHED
-after initially trying SNK_TRY earlier, as it should for toggling to ever detect
-the power source mode and the port is again able to provide power to attached
-power sinks.
+devm_kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure. Ensure the allocation was successful
+by checking the pointer validity.
 
-This reverts commit 2d6d80127006ae3da26b1f21a65eccf957f2d1e5.
-
-Cc: stable@vger.kernel.org
-Fixes: 2d6d80127006 ("usb: typec: tcpm: reset counter when enter into unattached state after try role")
-Signed-off-by: Ondrej Jirman <megi@xff.cz>
-Link: https://lore.kernel.org/r/20240217162023.1719738-1-megi@xff.cz
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Link: https://lore.kernel.org/r/20240118031929.192192-1-chentao@kylinos.cn
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    3 ---
- 1 file changed, 3 deletions(-)
+ drivers/dma/ti/edma.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -3730,9 +3730,6 @@ static void tcpm_detach(struct tcpm_port
- 	if (tcpm_port_is_disconnected(port))
- 		port->hard_reset_count = 0;
- 
--	port->try_src_count = 0;
--	port->try_snk_count = 0;
--
- 	if (!port->attached)
- 		return;
- 
+diff --git a/drivers/dma/ti/edma.c b/drivers/dma/ti/edma.c
+index 7ec6e5d728b03..9212ac9f978f2 100644
+--- a/drivers/dma/ti/edma.c
++++ b/drivers/dma/ti/edma.c
+@@ -2413,6 +2413,11 @@ static int edma_probe(struct platform_device *pdev)
+ 	if (irq > 0) {
+ 		irq_name = devm_kasprintf(dev, GFP_KERNEL, "%s_ccint",
+ 					  dev_name(dev));
++		if (!irq_name) {
++			ret = -ENOMEM;
++			goto err_disable_pm;
++		}
++
+ 		ret = devm_request_irq(dev, irq, dma_irq_handler, 0, irq_name,
+ 				       ecc);
+ 		if (ret) {
+@@ -2429,6 +2434,11 @@ static int edma_probe(struct platform_device *pdev)
+ 	if (irq > 0) {
+ 		irq_name = devm_kasprintf(dev, GFP_KERNEL, "%s_ccerrint",
+ 					  dev_name(dev));
++		if (!irq_name) {
++			ret = -ENOMEM;
++			goto err_disable_pm;
++		}
++
+ 		ret = devm_request_irq(dev, irq, dma_ccerr_handler, 0, irq_name,
+ 				       ecc);
+ 		if (ret) {
+-- 
+2.43.0
+
 
 
 
