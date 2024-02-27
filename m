@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-25073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44D986979B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:23:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0517086975E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:20:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F01C288A1D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:23:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 998DB1F21AA7
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:20:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56AF13B798;
-	Tue, 27 Feb 2024 14:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C44641420A8;
+	Tue, 27 Feb 2024 14:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KIuN0uNo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s9Gpk/ac"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7598713B2B4;
-	Tue, 27 Feb 2024 14:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B2178B61;
+	Tue, 27 Feb 2024 14:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043785; cv=none; b=hDgdIa+F9ZPF3/J4otzz1UHDaDGpIgW+TKVCsCi7JWG19AQ/ADT2qwiZG8ZVtlnEad8z/twdQI7/69IrDXjGKFzE3PPI2CWaU0yTEXOJNEXW+JwhyKgIjkUUIVYQgnvpQXbkWEoBI3cUQTygF99feI1zpVTt0VrmvNKMDlbpTiA=
+	t=1709043636; cv=none; b=rQF4IipZFHNgF35dQx/RFamZCAxMbV8mDETvlZefPaCHwh2yZi0Whm0ZEPrRLxbOHyx6q9elPCefLcAJpvDzemKKrkDNQRVY3sUZ4SCXwitYEDjAHggpXOmdBnoUo6nF2ytGZAcyV8izpa8rtITOcZJZfuzYwJFXsU/lxwefyjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043785; c=relaxed/simple;
-	bh=5tQWivTUYJLJ7WLigxHq3MuF0VJ4HNwsZYouSyqxQKw=;
+	s=arc-20240116; t=1709043636; c=relaxed/simple;
+	bh=w9WzCQ9FtAumBqlioULiDnWJLifsamx8FUfFpLDIc/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BpDMgFQMOWS1auHn3fsTsaw75MU310Cokzl1JevYjotwLMvsdnHyUPjCh5WpMW5JRC/Yzayj7oLYYVCRVWyxb/JRGC/s7YdWi7+mqfSlN+wLPXlMLEitcNdEwuGDi1XZr9E3zDzqWTNBZKbIqMtwi6sS6qOEwLDghj2NhYlBFd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KIuN0uNo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01597C433F1;
-	Tue, 27 Feb 2024 14:23:04 +0000 (UTC)
+	 MIME-Version; b=jMXHx17/bEHsn+lAmxOcdH6h/4csNGiLVhj0o/7iEMtF335yx9FzaUcldMQDewr9WSbFu/E1VCvohR8Q67K3dmndsVrd5nIuH/9twNZ73W13MVwjpYWN+ohMIwci2QBExWpOnX20afHNWpzaPxEz7lWSnnyZUBmdcncQ5K5fAWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s9Gpk/ac; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97956C433F1;
+	Tue, 27 Feb 2024 14:20:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043785;
-	bh=5tQWivTUYJLJ7WLigxHq3MuF0VJ4HNwsZYouSyqxQKw=;
+	s=korg; t=1709043636;
+	bh=w9WzCQ9FtAumBqlioULiDnWJLifsamx8FUfFpLDIc/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KIuN0uNoUzVRR10UcbmLqb8jHOFYeMDnL3MpAIRYB+R5X4m/CAyENUTQW++x4to7o
-	 xzbODmNu7jVcirpniJ6v+QgI8n6WGftW1nbP+PLEFKnaQ9Ju4gks0iUIZ68MzhmcP9
-	 mZhc0naj7X5H2EsHGYZCdA72Fp/GbqKAAuVvGVCY=
+	b=s9Gpk/acKAkcq9+xCJ0jhBR2JwilB9RHaqixFmv25hyQgeo99YFn3DBzu5qV9sB57
+	 9sAF+VO0kECahvREMhqjCvyIHE2pDrwoeDXBqbk5HRtyqjZPpVYMwTlNqX3VZno2sw
+	 TiSo+hEjd1L97cDA1CTx65tM6IgT2QDK9hdqdcm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Soheil Hassas Yeganeh <soheil@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 35/84] tcp: return EPOLLOUT from tcp_poll only when notsent_bytes is half the limit
-Date: Tue, 27 Feb 2024 14:27:02 +0100
-Message-ID: <20240227131554.012093065@linuxfoundation.org>
+Subject: [PATCH 6.1 162/195] platform/x86: thinkpad_acpi: Only update profile if successfully converted
+Date: Tue, 27 Feb 2024 14:27:03 +0100
+Message-ID: <20240227131615.762204358@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Soheil Hassas Yeganeh <soheil@google.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 8ba3c9d1c6d75d1e6af2087278b30e17f68e1fff ]
+[ Upstream commit 427c70dec738318b7f71e1b9d829ff0e9771d493 ]
 
-If there was any event available on the TCP socket, tcp_poll()
-will be called to retrieve all the events.  In tcp_poll(), we call
-sk_stream_is_writeable() which returns true as long as we are at least
-one byte below notsent_lowat.  This will result in quite a few
-spurious EPLLOUT and frequent tiny sendmsg() calls as a result.
+Randomly a Lenovo Z13 will trigger a kernel warning traceback from this
+condition:
 
-Similar to sk_stream_write_space(), use __sk_stream_is_writeable
-with a wake value of 1, so that we set EPOLLOUT only if half the
-space is available for write.
+```
+if (WARN_ON((profile < 0) || (profile >= ARRAY_SIZE(profile_names))))
+```
 
-Signed-off-by: Soheil Hassas Yeganeh <soheil@google.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+This happens because thinkpad-acpi always assumes that
+convert_dytc_to_profile() successfully updated the profile. On the
+contrary a condition can occur that when dytc_profile_refresh() is called
+the profile doesn't get updated as there is a -EOPNOTSUPP branch.
+
+Catch this situation and avoid updating the profile. Also log this into
+dynamic debugging in case any other modes should be added in the future.
+
+Fixes: c3bfcd4c6762 ("platform/x86: thinkpad_acpi: Add platform profile support")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20240217022311.113879-1-mario.limonciello@amd.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/platform/x86/thinkpad_acpi.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 6a52fdcf9e4ef..e45c09977c600 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -566,7 +566,7 @@ __poll_t tcp_poll(struct file *file, struct socket *sock, poll_table *wait)
- 			mask |= EPOLLIN | EPOLLRDNORM;
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index 6edd2e294750e..c2fb19af10705 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -10511,6 +10511,7 @@ static int convert_dytc_to_profile(int funcmode, int dytcmode,
+ 		return 0;
+ 	default:
+ 		/* Unknown function */
++		pr_debug("unknown function 0x%x\n", funcmode);
+ 		return -EOPNOTSUPP;
+ 	}
+ 	return 0;
+@@ -10696,8 +10697,8 @@ static void dytc_profile_refresh(void)
+ 		return;
  
- 		if (!(sk->sk_shutdown & SEND_SHUTDOWN)) {
--			if (sk_stream_is_writeable(sk)) {
-+			if (__sk_stream_is_writeable(sk, 1)) {
- 				mask |= EPOLLOUT | EPOLLWRNORM;
- 			} else {  /* send SIGIO later */
- 				sk_set_bit(SOCKWQ_ASYNC_NOSPACE, sk);
-@@ -578,7 +578,7 @@ __poll_t tcp_poll(struct file *file, struct socket *sock, poll_table *wait)
- 				 * pairs with the input side.
- 				 */
- 				smp_mb__after_atomic();
--				if (sk_stream_is_writeable(sk))
-+				if (__sk_stream_is_writeable(sk, 1))
- 					mask |= EPOLLOUT | EPOLLWRNORM;
- 			}
- 		} else
+ 	perfmode = (output >> DYTC_GET_MODE_BIT) & 0xF;
+-	convert_dytc_to_profile(funcmode, perfmode, &profile);
+-	if (profile != dytc_current_profile) {
++	err = convert_dytc_to_profile(funcmode, perfmode, &profile);
++	if (!err && profile != dytc_current_profile) {
+ 		dytc_current_profile = profile;
+ 		platform_profile_notify();
+ 	}
 -- 
 2.43.0
 
