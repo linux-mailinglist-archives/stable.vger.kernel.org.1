@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D458B8696D7
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:16:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 995DE869634
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:09:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D99B2851E7
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:16:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54F4F2930D1
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:09:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46C2F13B29C;
-	Tue, 27 Feb 2024 14:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E569413B7AB;
+	Tue, 27 Feb 2024 14:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="puW71W2Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i4Q8p0Nd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D171386CB;
-	Tue, 27 Feb 2024 14:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A520713A26F;
+	Tue, 27 Feb 2024 14:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043360; cv=none; b=S0RhwX4UMxL4r+i+EkOQPX/Dgdos6j3CbeIZaKA8qL9uZn5ptCnLWGcu/qbQO1Bvp0o90HB7eppPQcb/lLvMjpDp1GJ+AzO/QMxdAeEZpXNfvTO9KZvgGiMnTMKdBNLNB/lZ9pkz+GIC44Jw92w5GG8O68q+6/cEeJgt9UShxUc=
+	t=1709042953; cv=none; b=o0Iya5Re3FYpwU923os1XavMKoGZUvrapFW5WFVXFoRITT9Ye0IT2SQ2eVDPjCsqtNIArEZyNvek5gIn5H8e0ORVHnA0cfRiYml9k2NlWdcxj/o2EFfNbvE12wZdagjhs2UE8uQozG12caS8p/BGOXjxuyOYgqTYdlgHbXTU9D4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043360; c=relaxed/simple;
-	bh=OC+rZDBBaI0AeYiAvDV45KX3sTV7POUjLrEztzn0BxE=;
+	s=arc-20240116; t=1709042953; c=relaxed/simple;
+	bh=z9f8TkcscV/K1WDIm6iO8B05+k7D2SjnfwAzKGiJy0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eUE7owRHsOI1fMvqybS4yGsjWjL7mStF27+4zeowGd5HllcvZfHfATGpZxNEhwUC/ZgnOAiEwqMPa+w5NByvmYOM2s7iCCye6JzO0dUWzhM1vsT+NzrBYjfuMmF7kCk8YdpoFb8oaXPOLnRgd/OLFyeIJkAdE4FJQsOAMuM0uxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=puW71W2Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87213C433C7;
-	Tue, 27 Feb 2024 14:15:59 +0000 (UTC)
+	 MIME-Version; b=uMkApn3dvsI0QJ94XgUtASyZcVswGK10t4obG21kgWjsg3FEwM7fTopW6EUCL/p1DSIrXY+D4IZBUxG59N9KpeK1mQr2olYJ8uWHoCqq4FbOwb3fWqj58/AQgVlzRQc+qP03RxYs25Yki2JiQvoEO7AB3TOQrKV6VrzU64uo4Jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i4Q8p0Nd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32634C433F1;
+	Tue, 27 Feb 2024 14:09:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043359;
-	bh=OC+rZDBBaI0AeYiAvDV45KX3sTV7POUjLrEztzn0BxE=;
+	s=korg; t=1709042953;
+	bh=z9f8TkcscV/K1WDIm6iO8B05+k7D2SjnfwAzKGiJy0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=puW71W2YZ2+Avo7DfBQSOuI4yGYKRMGmGZr6QEpfiKvvjOLFcsMTRjgGmr4A1/It9
-	 tNRTzIQVNnT7geMTZc0CAeZcTxPYkUR4FMbqYDL/b/cS+yjnC+CW2LiSvxnedD8ElS
-	 fZe0rdNPYjPyCaHM05Zx0GxjOHuogjDtDInsCfX8=
+	b=i4Q8p0NdwdddWz7qUVIrBCiJP+LwmAefQOIeviYKePeTlR44vxLP4Gq3uesENLi/y
+	 MmAajT9ZGX9RaOY4fQ22TFV2txAe5g7zPulunIVKZlLApInynFI5KXwKpE4wcO54Zq
+	 XFYpy92d1raCT7J32J8H7qhF9TRHMc0DTMf+jUeE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
+	Daniel Axtens <dja@axtens.net>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 080/195] smb3: clarify mount warning
+Subject: [PATCH 5.15 153/245] powerpc/eeh: Small refactor of eeh_handle_normal_event()
 Date: Tue, 27 Feb 2024 14:25:41 +0100
-Message-ID: <20240227131613.132322071@linuxfoundation.org>
+Message-ID: <20240227131620.190746245@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Daniel Axtens <dja@axtens.net>
 
-[ Upstream commit a5cc98eba2592d6e3c5a4351319595ddde2a5901 ]
+[ Upstream commit 10b34ece132ee46dc4e6459c765d180c422a09fa ]
 
-When a user tries to use the "sec=krb5p" mount parameter to encrypt
-data on connection to a server (when authenticating with Kerberos), we
-indicate that it is not supported, but do not note the equivalent
-recommended mount parameter ("sec=krb5,seal") which turns on encryption
-for that mount (and uses Kerberos for auth).  Update the warning message.
+The control flow of eeh_handle_normal_event() is a bit tricky.
 
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Break out one of the error handling paths - rather than be in an else
+block, we'll make it part of the regular body of the function and put a
+'goto out;' in the true limb of the if.
+
+Signed-off-by: Daniel Axtens <dja@axtens.net>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20211015070628.1331635-1-dja@axtens.net
+Stable-dep-of: 9efcdaac36e1 ("powerpc/eeh: Set channel state after notifying the drivers")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/fs_context.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kernel/eeh_driver.c | 69 ++++++++++++++++----------------
+ 1 file changed, 35 insertions(+), 34 deletions(-)
 
-diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
-index f4818599c00a2..4d5302b58b534 100644
---- a/fs/smb/client/fs_context.c
-+++ b/fs/smb/client/fs_context.c
-@@ -209,7 +209,7 @@ cifs_parse_security_flavors(struct fs_context *fc, char *value, struct smb3_fs_c
+diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
+index 3eff6a4888e79..cb3ac555c9446 100644
+--- a/arch/powerpc/kernel/eeh_driver.c
++++ b/arch/powerpc/kernel/eeh_driver.c
+@@ -1054,45 +1054,46 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
+ 		}
  
- 	switch (match_token(value, cifs_secflavor_tokens, args)) {
- 	case Opt_sec_krb5p:
--		cifs_errorf(fc, "sec=krb5p is not supported!\n");
-+		cifs_errorf(fc, "sec=krb5p is not supported. Use sec=krb5,seal instead\n");
- 		return 1;
- 	case Opt_sec_krb5i:
- 		ctx->sign = true;
+ 		pr_info("EEH: Recovery successful.\n");
+-	} else  {
+-		/*
+-		 * About 90% of all real-life EEH failures in the field
+-		 * are due to poorly seated PCI cards. Only 10% or so are
+-		 * due to actual, failed cards.
+-		 */
+-		pr_err("EEH: Unable to recover from failure from PHB#%x-PE#%x.\n"
+-		       "Please try reseating or replacing it\n",
+-			pe->phb->global_number, pe->addr);
++		goto out;
++	}
+ 
+-		eeh_slot_error_detail(pe, EEH_LOG_PERM);
++	/*
++	 * About 90% of all real-life EEH failures in the field
++	 * are due to poorly seated PCI cards. Only 10% or so are
++	 * due to actual, failed cards.
++	 */
++	pr_err("EEH: Unable to recover from failure from PHB#%x-PE#%x.\n"
++		"Please try reseating or replacing it\n",
++		pe->phb->global_number, pe->addr);
+ 
+-		/* Notify all devices that they're about to go down. */
+-		eeh_set_channel_state(pe, pci_channel_io_perm_failure);
+-		eeh_set_irq_state(pe, false);
+-		eeh_pe_report("error_detected(permanent failure)", pe,
+-			      eeh_report_failure, NULL);
++	eeh_slot_error_detail(pe, EEH_LOG_PERM);
+ 
+-		/* Mark the PE to be removed permanently */
+-		eeh_pe_state_mark(pe, EEH_PE_REMOVED);
++	/* Notify all devices that they're about to go down. */
++	eeh_set_channel_state(pe, pci_channel_io_perm_failure);
++	eeh_set_irq_state(pe, false);
++	eeh_pe_report("error_detected(permanent failure)", pe,
++		      eeh_report_failure, NULL);
+ 
+-		/*
+-		 * Shut down the device drivers for good. We mark
+-		 * all removed devices correctly to avoid access
+-		 * the their PCI config any more.
+-		 */
+-		if (pe->type & EEH_PE_VF) {
+-			eeh_pe_dev_traverse(pe, eeh_rmv_device, NULL);
+-			eeh_pe_dev_mode_mark(pe, EEH_DEV_REMOVED);
+-		} else {
+-			eeh_pe_state_clear(pe, EEH_PE_PRI_BUS, true);
+-			eeh_pe_dev_mode_mark(pe, EEH_DEV_REMOVED);
++	/* Mark the PE to be removed permanently */
++	eeh_pe_state_mark(pe, EEH_PE_REMOVED);
+ 
+-			pci_lock_rescan_remove();
+-			pci_hp_remove_devices(bus);
+-			pci_unlock_rescan_remove();
+-			/* The passed PE should no longer be used */
+-			return;
+-		}
++	/*
++	 * Shut down the device drivers for good. We mark
++	 * all removed devices correctly to avoid access
++	 * the their PCI config any more.
++	 */
++	if (pe->type & EEH_PE_VF) {
++		eeh_pe_dev_traverse(pe, eeh_rmv_device, NULL);
++		eeh_pe_dev_mode_mark(pe, EEH_DEV_REMOVED);
++	} else {
++		eeh_pe_state_clear(pe, EEH_PE_PRI_BUS, true);
++		eeh_pe_dev_mode_mark(pe, EEH_DEV_REMOVED);
++
++		pci_lock_rescan_remove();
++		pci_hp_remove_devices(bus);
++		pci_unlock_rescan_remove();
++		/* The passed PE should no longer be used */
++		return;
+ 	}
+ 
+ out:
 -- 
 2.43.0
 
