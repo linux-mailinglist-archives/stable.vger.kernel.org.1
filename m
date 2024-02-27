@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5F7086936A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:45:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4508869632
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:09:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B67828ED5B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:45:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E62F11C2183E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:09:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 896CB13B7A2;
-	Tue, 27 Feb 2024 13:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AA3E13B78E;
+	Tue, 27 Feb 2024 14:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5EBEX1i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xdX8qWcd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479A413AA2F;
-	Tue, 27 Feb 2024 13:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCEB513A26F;
+	Tue, 27 Feb 2024 14:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041477; cv=none; b=XcY79vOHCGqppWxah38xC9cTnXwd3S9IfTHneeY6P4R49MFjsE6261S45NSF1fXYm+3Ivdz8wJWBARsk6X3SzFBwKEMpL1uoiGgfI84e0z0e5eAZZGZJ6drPUYBrwXjirRRQ4aSTqcCSAQoXBeUffXaFV9EjQ9OPSX2PMKXuDWo=
+	t=1709042951; cv=none; b=ccn6e1dR67SMeaLFhTU8EK62L7y7mP3He8TqhKJwLZNR1wmstIJ8r6R3XSrZasUEkCal0aaMkXZ6qBzFZgax1NT4d4hJf80YH64ZeRhocJAz4RyM0i3QRQBthNPYiLMZB4v9Dm3EYdbyuxs7E71Gdyuh4qZXhIW1lv8gCESA8xM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041477; c=relaxed/simple;
-	bh=pNk/U3NLJNfNxUPc6U9HPAfg3fjB8suFvXbsCnI8jN0=;
+	s=arc-20240116; t=1709042951; c=relaxed/simple;
+	bh=gTBmbKgV6ZOiU7weCMK0MKBvV7m7CWqH+nDTQvc16vE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PMohRfWpgTmIrZf/CdM28erUvsu/DLYgig5Inhe3Uu6w1D/LRcsNG4szzK/N1bwcr5l7hf3ONKRqQIhFdtuxDj0wrOQnIeacxmLXTZUFo4uxLJuNEcM2K/XYPZLWyqj2nh8N7RaQmfIr0on+200U1oALVObiuKXurLPJq3ynZF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5EBEX1i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C62C43390;
-	Tue, 27 Feb 2024 13:44:36 +0000 (UTC)
+	 MIME-Version; b=a1Uh9AfnoA340e0uD94Pr3jS60/nPGXvp4h6vyN+5dhU7mWRhf3Ai+aF/C988+m5iTwANGGNpjhZ+Y1+sBjk02IZoq0TMjWB24zwcvG4wVGe2m6wDY9AyazDlSkSv7SWxV/BJ4wDl40TOyweJWvzUasd9nJJSC3XBlc3ho8To5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xdX8qWcd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 683E2C433F1;
+	Tue, 27 Feb 2024 14:09:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041477;
-	bh=pNk/U3NLJNfNxUPc6U9HPAfg3fjB8suFvXbsCnI8jN0=;
+	s=korg; t=1709042950;
+	bh=gTBmbKgV6ZOiU7weCMK0MKBvV7m7CWqH+nDTQvc16vE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b5EBEX1iGxLliQ8nEQtcAGWuYcOyULNpiYNEDCKD4h0++X4j6i2ckhD5c91YGfzeT
-	 e8JVrNBpxpnK7mozSQ+xPrHpDNo9KB7Ys3YrZ3WIlSP74YFYv2OvMXku1BR0RWkxhk
-	 Xa/duUe0xRGbATepQ17ud7ANEZC8wJBbkrM50QPU=
+	b=xdX8qWcd6R0nWb6bMSG3CHQmqe9sr1DW3QnUBIaH34ByEMb20ZFGsnUPi2XcN/VO8
+	 /8t2RyI8dq3kfV7MS6yvrOKeUQXvfrZOKZfq5paPE1iEmypq4B1jdbwnzVY4drK/Hu
+	 M0ZNcyi6VsJWARkgbVr9eY2/CRIp8SSKJ7Bu3h44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Petr Oros <poros@redhat.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 19/52] ext4: avoid allocating blocks from corrupted group in ext4_mb_try_best_found()
-Date: Tue, 27 Feb 2024 14:26:06 +0100
-Message-ID: <20240227131549.165300344@linuxfoundation.org>
+Subject: [PATCH 5.15 179/245] devlink: report devlink_port_type_warn source device
+Date: Tue, 27 Feb 2024 14:26:07 +0100
+Message-ID: <20240227131621.027787255@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
-References: <20240227131548.514622258@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Petr Oros <poros@redhat.com>
 
-[ Upstream commit 4530b3660d396a646aad91a787b6ab37cf604b53 ]
+[ Upstream commit a52305a81d6bb74b90b400dfa56455d37872fe4b ]
 
-Determine if the group block bitmap is corrupted before using ac_b_ex in
-ext4_mb_try_best_found() to avoid allocating blocks from a group with a
-corrupted block bitmap in the following concurrency and making the
-situation worse.
+devlink_port_type_warn is scheduled for port devlink and warning
+when the port type is not set. But from this warning it is not easy
+found out which device (driver) has no devlink port set.
 
-ext4_mb_regular_allocator
-  ext4_lock_group(sb, group)
-  ext4_mb_good_group
-   // check if the group bbitmap is corrupted
-  ext4_mb_complex_scan_group
-   // Scan group gets ac_b_ex but doesn't use it
-  ext4_unlock_group(sb, group)
-                           ext4_mark_group_bitmap_corrupted(group)
-                           // The block bitmap was corrupted during
-                           // the group unlock gap.
-  ext4_mb_try_best_found
-    ext4_lock_group(ac->ac_sb, group)
-    ext4_mb_use_best_found
-      mb_mark_used
-      // Allocating blocks in block bitmap corrupted group
+[ 3709.975552] Type was not set for devlink port.
+[ 3709.975579] WARNING: CPU: 1 PID: 13092 at net/devlink/leftover.c:6775 devlink_port_type_warn+0x11/0x20
+[ 3709.993967] Modules linked in: openvswitch nf_conncount nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nfnetlink bluetooth rpcsec_gss_krb5 auth_rpcgss nfsv4 dns_resolver nfs lockd grace fscache netfs vhost_net vhost vhost_iotlb tap tun bridge stp llc qrtr intel_rapl_msr intel_rapl_common i10nm_edac nfit libnvdimm x86_pkg_temp_thermal mlx5_ib intel_powerclamp coretemp dell_wmi ledtrig_audio sparse_keymap ipmi_ssif kvm_intel ib_uverbs rfkill ib_core video kvm iTCO_wdt acpi_ipmi intel_vsec irqbypass ipmi_si iTCO_vendor_support dcdbas ipmi_devintf mei_me ipmi_msghandler rapl mei intel_cstate isst_if_mmio isst_if_mbox_pci dell_smbios intel_uncore isst_if_common i2c_i801 dell_wmi_descriptor wmi_bmof i2c_smbus intel_pch_thermal pcspkr acpi_power_meter xfs libcrc32c sd_mod sg nvme_tcp mgag200 i2c_algo_bit nvme_fabrics drm_shmem_helper drm_kms_helper nvme syscopyarea ahci sysfillrect sysimgblt nvme_core fb_sys_fops crct10dif_pclmul libahci mlx5_core sfc crc32_pclmul nvme_common drm
+[ 3709.994030]  crc32c_intel mtd t10_pi mlxfw libata tg3 mdio megaraid_sas psample ghash_clmulni_intel pci_hyperv_intf wmi dm_multipath sunrpc dm_mirror dm_region_hash dm_log dm_mod be2iscsi bnx2i cnic uio cxgb4i cxgb4 tls libcxgbi libcxgb qla4xxx iscsi_boot_sysfs iscsi_tcp libiscsi_tcp libiscsi scsi_transport_iscsi fuse
+[ 3710.108431] CPU: 1 PID: 13092 Comm: kworker/1:1 Kdump: loaded Not tainted 5.14.0-319.el9.x86_64 #1
+[ 3710.108435] Hardware name: Dell Inc. PowerEdge R750/0PJ80M, BIOS 1.8.2 09/14/2022
+[ 3710.108437] Workqueue: events devlink_port_type_warn
+[ 3710.108440] RIP: 0010:devlink_port_type_warn+0x11/0x20
+[ 3710.108443] Code: 84 76 fe ff ff 48 c7 03 20 0e 1a ad 31 c0 e9 96 fd ff ff 66 0f 1f 44 00 00 0f 1f 44 00 00 48 c7 c7 18 24 4e ad e8 ef 71 62 ff <0f> 0b c3 cc cc cc cc 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 f6 87
+[ 3710.108445] RSP: 0018:ff3b6d2e8b3c7e90 EFLAGS: 00010282
+[ 3710.108447] RAX: 0000000000000000 RBX: ff366d6580127080 RCX: 0000000000000027
+[ 3710.108448] RDX: 0000000000000027 RSI: 00000000ffff86de RDI: ff366d753f41f8c8
+[ 3710.108449] RBP: ff366d658ff5a0c0 R08: ff366d753f41f8c0 R09: ff3b6d2e8b3c7e18
+[ 3710.108450] R10: 0000000000000001 R11: 0000000000000023 R12: ff366d753f430600
+[ 3710.108451] R13: ff366d753f436900 R14: 0000000000000000 R15: ff366d753f436905
+[ 3710.108452] FS:  0000000000000000(0000) GS:ff366d753f400000(0000) knlGS:0000000000000000
+[ 3710.108453] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 3710.108454] CR2: 00007f1c57bc74e0 CR3: 000000111d26a001 CR4: 0000000000773ee0
+[ 3710.108456] PKRU: 55555554
+[ 3710.108457] Call Trace:
+[ 3710.108458]  <TASK>
+[ 3710.108459]  process_one_work+0x1e2/0x3b0
+[ 3710.108466]  ? rescuer_thread+0x390/0x390
+[ 3710.108468]  worker_thread+0x50/0x3a0
+[ 3710.108471]  ? rescuer_thread+0x390/0x390
+[ 3710.108473]  kthread+0xdd/0x100
+[ 3710.108477]  ? kthread_complete_and_exit+0x20/0x20
+[ 3710.108479]  ret_from_fork+0x1f/0x30
+[ 3710.108485]  </TASK>
+[ 3710.108486] ---[ end trace 1b4b23cd0c65d6a0 ]---
 
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240104142040.2835097-7-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+After patch:
+[  402.473064] ice 0000:41:00.0: Type was not set for devlink port.
+[  402.473064] ice 0000:41:00.1: Type was not set for devlink port.
+
+Signed-off-by: Petr Oros <poros@redhat.com>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/20230615095447.8259-1-poros@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/core/devlink.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index df390979058fd..e0dd01cb1a0e7 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1802,6 +1802,9 @@ int ext4_mb_try_best_found(struct ext4_allocation_context *ac,
- 		return err;
+diff --git a/net/core/devlink.c b/net/core/devlink.c
+index db76c55e1a6d7..7113ae79f5228 100644
+--- a/net/core/devlink.c
++++ b/net/core/devlink.c
+@@ -9055,7 +9055,10 @@ EXPORT_SYMBOL_GPL(devlink_free);
  
- 	ext4_lock_group(ac->ac_sb, group);
-+	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)))
-+		goto out;
-+
- 	max = mb_find_extent(e4b, ex.fe_start, ex.fe_len, &ex);
+ static void devlink_port_type_warn(struct work_struct *work)
+ {
+-	WARN(true, "Type was not set for devlink port.");
++	struct devlink_port *port = container_of(to_delayed_work(work),
++						 struct devlink_port,
++						 type_warn_dw);
++	dev_warn(port->devlink->dev, "Type was not set for devlink port.");
+ }
  
- 	if (max > 0) {
-@@ -1809,6 +1812,7 @@ int ext4_mb_try_best_found(struct ext4_allocation_context *ac,
- 		ext4_mb_use_best_found(ac, e4b);
- 	}
- 
-+out:
- 	ext4_unlock_group(ac->ac_sb, group);
- 	ext4_mb_unload_buddy(e4b);
- 
+ static bool devlink_port_type_should_warn(struct devlink_port *devlink_port)
 -- 
 2.43.0
 
