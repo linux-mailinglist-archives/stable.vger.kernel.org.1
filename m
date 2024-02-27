@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-25191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C45EB86982D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:29:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71978869728
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:18:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FE052949C6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:29:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C26228C0A2
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:18:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A56A13F016;
-	Tue, 27 Feb 2024 14:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65BD613DB92;
+	Tue, 27 Feb 2024 14:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6ScsPSg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9U4AoxU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354A91420DC;
-	Tue, 27 Feb 2024 14:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24EF113DBB3;
+	Tue, 27 Feb 2024 14:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044117; cv=none; b=cu9lrKklXsEWFyXN8c01HJVXW7v6EvLAOHKGwGRjr7Sjbixt5S3dC4Vi72RFGctpVzrdWqDAH2qaNFumlaHiGz11DUsnZ+kho7InShaJzj19/moYY6GpgKQS1hx+qGKei/cHFxQEoilq2OLPnjl+ToaYJc50E3JBwXbw0G8tOG0=
+	t=1709043528; cv=none; b=GKJ5I/Zv9cdhSzGgJPak52uxzcnBV+Ib2IMxkQEKaJc54P+xQxoAyL7ogrxa+fOAlv3jk7hBhjzdmFFaBVJ2hORpg4j/yTj3IAogiF7au1bQpzTFFbTDA296+T84huF6DECRH7r/MkTv05cfdWxW25CSfzcbkho5fwMHOk/fN88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044117; c=relaxed/simple;
-	bh=UO4DAPSjHv4VK6ZcAOcTurMS0S/pp6MbHQUGtm3MmWs=;
+	s=arc-20240116; t=1709043528; c=relaxed/simple;
+	bh=AoIQbTSLxz1LeWoI0WqdwmlXofzGk020ZByK2YVXidE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tdx2AswUDFX6+F+Rg26CL1TK/sieORGS/i0Dvx7RKchlieJ4+Pn72B/VZzL3hpwZKN0c9c11TzUgvETe/jGyKc0qo1r5nF1r3uo188YHnDOqy/jjMOGLiwEp9LNKIZ8dcnX10g3vFj9lrPOPq6QPsTD0Z+rxzUGQmt5bDdaKKx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l6ScsPSg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3250C433C7;
-	Tue, 27 Feb 2024 14:28:36 +0000 (UTC)
+	 MIME-Version; b=HBrVoYU2hxXW+LK6zjnP0tPRJKtaD9N1aeUj2IOAXIhtVP9Kqw0Fd/wR0D2Nu8ONuGnkEGQ96361XEWTf69K5wfDh9CPKxskb6apf2NTzdQ4dH9lnlAl7KsNIDtB7B+e1hlOzYHSpXUzkqpW/gjGia9MPWc5iuEdVIMk7xznLwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9U4AoxU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E4EBC433C7;
+	Tue, 27 Feb 2024 14:18:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044117;
-	bh=UO4DAPSjHv4VK6ZcAOcTurMS0S/pp6MbHQUGtm3MmWs=;
+	s=korg; t=1709043528;
+	bh=AoIQbTSLxz1LeWoI0WqdwmlXofzGk020ZByK2YVXidE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l6ScsPSgZXg1G0Uwcn6/pIgqe+Ejsspe/2W+MLGK8gNZOEmrMhB/+uNN/cpebVZju
-	 0ZvOpktI1wgaGekTJqvNcrkW2llGsEy4vQNgyYFMGN8eTnadWAswAdJ5wcjuiyKTEk
-	 q3LpdjIXzBuD1WgK0p0iwD57qpSacTu2wbbvZbVU=
+	b=c9U4AoxUW13uhFJkqTBt5hLyVvZYvTFp4FZ6gGBhlbGVrWRhSGpz/uaKaSbCKKPTe
+	 j12JI5GaUeedXZTaTO9Sng1i6Hom1Y+N00ik+ytjvBDz3gm5DefQw+i4OACURiaVmp
+	 Z/JhAHLI27gJzgMHgs6LbaUZF9rmex1R+QQ2QYTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Sun <yi.sun@unisoc.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Heiko Stuebner <heiko.stuebner@cherry.de>,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 041/122] virtio-blk: Ensure no requests in virtqueues before deleting vqs.
+Subject: [PATCH 6.1 141/195] arm64: dts: rockchip: set num-cs property for spi on px30
 Date: Tue, 27 Feb 2024 14:26:42 +0100
-Message-ID: <20240227131600.051968766@linuxfoundation.org>
+Message-ID: <20240227131615.086308556@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Sun <yi.sun@unisoc.com>
+From: Heiko Stuebner <heiko.stuebner@cherry.de>
 
-[ Upstream commit 4ce6e2db00de8103a0687fb0f65fd17124a51aaa ]
+[ Upstream commit 334bf0710c98d391f4067b72f535d6c4c84dfb6f ]
 
-Ensure no remaining requests in virtqueues before resetting vdev and
-deleting virtqueues. Otherwise these requests will never be completed.
-It may cause the system to become unresponsive.
+The px30 has two spi controllers with two chip-selects each.
+The num-cs property is specified as the total number of chip
+selects a controllers has and is used since 2020 to find uses
+of chipselects outside that range in the Rockchip spi driver.
 
-Function blk_mq_quiesce_queue() can ensure that requests have become
-in_flight status, but it cannot guarantee that requests have been
-processed by the device. Virtqueues should never be deleted before
-all requests become complete status.
+Without the property set, the default is 1, so spi devices
+using the second chipselect will not be created.
 
-Function blk_mq_freeze_queue() ensure that all requests in virtqueues
-become complete status. And no requests can enter in virtqueues.
-
-Signed-off-by: Yi Sun <yi.sun@unisoc.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Link: https://lore.kernel.org/r/20240129085250.1550594-1-yi.sun@unisoc.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: eb1262e3cc8b ("spi: spi-rockchip: use num-cs property and ctlr->enable_gpiods")
+Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
+Reviewed-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Link: https://lore.kernel.org/r/20240119101656.965744-1-heiko@sntech.de
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/virtio_blk.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/rockchip/px30.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
-index 9b54eec9b17eb..7eae3f3732336 100644
---- a/drivers/block/virtio_blk.c
-+++ b/drivers/block/virtio_blk.c
-@@ -952,14 +952,15 @@ static int virtblk_freeze(struct virtio_device *vdev)
- {
- 	struct virtio_blk *vblk = vdev->priv;
- 
-+	/* Ensure no requests in virtqueues before deleting vqs. */
-+	blk_mq_freeze_queue(vblk->disk->queue);
-+
- 	/* Ensure we don't receive any more interrupts */
- 	vdev->config->reset(vdev);
- 
- 	/* Make sure no work handler is accessing the device. */
- 	flush_work(&vblk->config_work);
- 
--	blk_mq_quiesce_queue(vblk->disk->queue);
--
- 	vdev->config->del_vqs(vdev);
- 	kfree(vblk->vqs);
- 
-@@ -977,7 +978,7 @@ static int virtblk_restore(struct virtio_device *vdev)
- 
- 	virtio_device_ready(vdev);
- 
--	blk_mq_unquiesce_queue(vblk->disk->queue);
-+	blk_mq_unfreeze_queue(vblk->disk->queue);
- 	return 0;
- }
- #endif
+diff --git a/arch/arm64/boot/dts/rockchip/px30.dtsi b/arch/arm64/boot/dts/rockchip/px30.dtsi
+index bfa3580429d10..61f0186447dad 100644
+--- a/arch/arm64/boot/dts/rockchip/px30.dtsi
++++ b/arch/arm64/boot/dts/rockchip/px30.dtsi
+@@ -607,6 +607,7 @@
+ 		clock-names = "spiclk", "apb_pclk";
+ 		dmas = <&dmac 12>, <&dmac 13>;
+ 		dma-names = "tx", "rx";
++		num-cs = <2>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&spi0_clk &spi0_csn &spi0_miso &spi0_mosi>;
+ 		#address-cells = <1>;
+@@ -622,6 +623,7 @@
+ 		clock-names = "spiclk", "apb_pclk";
+ 		dmas = <&dmac 14>, <&dmac 15>;
+ 		dma-names = "tx", "rx";
++		num-cs = <2>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&spi1_clk &spi1_csn0 &spi1_csn1 &spi1_miso &spi1_mosi>;
+ 		#address-cells = <1>;
 -- 
 2.43.0
 
