@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-24526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2C438694F0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:57:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFFC286950D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:58:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FB2D1C22B00
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:57:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 767DA1F22FA7
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E82FF1420A8;
-	Tue, 27 Feb 2024 13:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7F813B7A0;
+	Tue, 27 Feb 2024 13:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H2jte5S7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OrLngdB0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994221419B5;
-	Tue, 27 Feb 2024 13:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02432140391;
+	Tue, 27 Feb 2024 13:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042254; cv=none; b=Mf7jFPRfjnFHShIx6TgK1tSoS18dwLlstcQZTbF0Lo91fPyhFYTGiRKB3Vxipo+T0N7iOIE9qdRCKDXP14Q8XC1UJItBZ8uyqKrEly1p+h9lqnWk12QPrWeBLLgVEKqOyV8tPO1MAXDQz9o5eqTHvWdpFlUb40ctIBjA5nPnCKE=
+	t=1709042285; cv=none; b=nx4bOOUf0lm0YM7nq+I78GnZPPnpyEBEyR/LhxFz3X4EUzaQcvN41CH2bDdwxBhxoQ/aMvXZ3SU7sJmQddZ0HLO7DJy9V2FrASq8kl8sNBN31AjrbExqkeT1wMUfkT35rSC5U2XyIvFri/Ol+YhphWwo8l5OjV2TzexUtmhpqjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042254; c=relaxed/simple;
-	bh=f7K5HBNtrAz74U/GybPyGCFskuO9XYU4DTrQzZE6w1E=;
+	s=arc-20240116; t=1709042285; c=relaxed/simple;
+	bh=HdKixfIMBuQdwwlnxTbmwSRHQLZqqdQp5658KCvEM74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZcdKn0xyJ8/55a961+0fGkJmi7VRDBEsewS/lPyiWWf573YkGrkXOmo4teP5saKsxBGLUhIylMFDx2oOocUh+y9p3mPVhOZyKi8H65Z6/67k/YrYnamRgZJSrvmBSwVg6fWlI9d30UVeL0ZoWqU0Jhanlm23tIQtH+joe/hXv3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H2jte5S7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7591C433F1;
-	Tue, 27 Feb 2024 13:57:33 +0000 (UTC)
+	 MIME-Version; b=K1+el1b2+k+6l5ZYgYr6ZXj9avC0BRHwBG6cX6UwHAUnAjWSjKEgNv8ggiNx64Z8D4xecgDlVEdlQ7oxVJwHmF6qsmKM+fVBh8RM+lzoLqVhsFv9sCw71AzP5KWcfAUiPB386m++PKiLXfwFnhuCHmf04dOgDpKlO4v5LZ39qIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OrLngdB0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1998FC433F1;
+	Tue, 27 Feb 2024 13:58:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042254;
-	bh=f7K5HBNtrAz74U/GybPyGCFskuO9XYU4DTrQzZE6w1E=;
+	s=korg; t=1709042284;
+	bh=HdKixfIMBuQdwwlnxTbmwSRHQLZqqdQp5658KCvEM74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H2jte5S7H9xYXvTPrDbxvx0UvCZ+9sBuUnDFib0tRyrFoALoyYm1gEXd0Et0CBi41
-	 2sCkWyM/6xY96TEa8gDAnzkRoqcQEosTj6a8+QCA3c2jZEjPZkOkrCJke1hRTkq0DX
-	 uZhXk5TVFHhzHzI2DdFsCfIH8R6cAXIYl6u/129c=
+	b=OrLngdB0exaDFHpSyzECa88RLeuz2MldffqCB60ymcum+bdHCx16/ABIaY7Q/l/Vw
+	 w6ohCCC03nc2Kw2ka6GTMiWTj3eS5S897WycrjGdE3nTs2ILU1Gb7kcKvZ5H9ozq3n
+	 WTAlupIiibTkcnfUfdMC8rvHkVISkL5+4gBNopJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@denx.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Mike Marciniszyn <mike.marciniszyn@intel.com>,
+	Shiraz Saleem <shiraz.saleem@intel.com>,
+	Sindhu Devale <sindhu.devale@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 215/299] arm64: dts: imx8mp: Disable UART4 by default on Data Modul i.MX8M Plus eDM SBC
-Date: Tue, 27 Feb 2024 14:25:26 +0100
-Message-ID: <20240227131632.700619143@linuxfoundation.org>
+Subject: [PATCH 6.6 216/299] RDMA/irdma: Fix KASAN issue with tasklet
+Date: Tue, 27 Feb 2024 14:25:27 +0100
+Message-ID: <20240227131632.730441145@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
 References: <20240227131625.847743063@linuxfoundation.org>
@@ -67,38 +68,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Mike Marciniszyn <mike.marciniszyn@intel.com>
 
-[ Upstream commit f03869698bc3bd6d9d2d9f216b20da08a8c2508a ]
+[ Upstream commit bd97cea7b18a0a553773af806dfbfac27a7c4acb ]
 
-UART4 is used as CM7 coprocessor debug UART and may not be accessible from
-Linux in case it is protected by RDC. The RDC protection is set up by the
-platform firmware. UART4 is not used on this platform by Linux. Disable
-UART4 by default to prevent boot hangs, which occur when the RDC protection
-is in place.
+KASAN testing revealed the following issue assocated with freeing an IRQ.
 
-Fixes: 562d222f23f0 ("arm64: dts: imx8mp: Add support for Data Modul i.MX8M Plus eDM SBC")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+[50006.466686] Call Trace:
+[50006.466691]  <IRQ>
+[50006.489538]  dump_stack+0x5c/0x80
+[50006.493475]  print_address_description.constprop.6+0x1a/0x150
+[50006.499872]  ? irdma_sc_process_ceq+0x483/0x790 [irdma]
+[50006.505742]  ? irdma_sc_process_ceq+0x483/0x790 [irdma]
+[50006.511644]  kasan_report.cold.11+0x7f/0x118
+[50006.516572]  ? irdma_sc_process_ceq+0x483/0x790 [irdma]
+[50006.522473]  irdma_sc_process_ceq+0x483/0x790 [irdma]
+[50006.528232]  irdma_process_ceq+0xb2/0x400 [irdma]
+[50006.533601]  ? irdma_hw_flush_wqes_callback+0x370/0x370 [irdma]
+[50006.540298]  irdma_ceq_dpc+0x44/0x100 [irdma]
+[50006.545306]  tasklet_action_common.isra.14+0x148/0x2c0
+[50006.551096]  __do_softirq+0x1d0/0xaf8
+[50006.555396]  irq_exit_rcu+0x219/0x260
+[50006.559670]  irq_exit+0xa/0x20
+[50006.563320]  smp_apic_timer_interrupt+0x1bf/0x690
+[50006.568645]  apic_timer_interrupt+0xf/0x20
+[50006.573341]  </IRQ>
+
+The issue is that a tasklet could be pending on another core racing
+the delete of the irq.
+
+Fix by insuring any scheduled tasklet is killed after deleting the
+irq.
+
+Fixes: 44d9e52977a1 ("RDMA/irdma: Implement device initialization definitions")
+Signed-off-by: Mike Marciniszyn <mike.marciniszyn@intel.com>
+Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
+Signed-off-by: Sindhu Devale <sindhu.devale@intel.com>
+Link: https://lore.kernel.org/r/20240131233849.400285-2-sindhu.devale@intel.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/irdma/hw.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
-index 13674dc64be9d..116bf9738a8a4 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-data-modul-edm-sbc.dts
-@@ -484,7 +484,7 @@
- &uart4 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pinctrl_uart4>;
--	status = "okay";
-+	status = "disabled";
- };
+diff --git a/drivers/infiniband/hw/irdma/hw.c b/drivers/infiniband/hw/irdma/hw.c
+index 564c9188e1f84..aff68aa8dfad4 100644
+--- a/drivers/infiniband/hw/irdma/hw.c
++++ b/drivers/infiniband/hw/irdma/hw.c
+@@ -570,6 +570,13 @@ static void irdma_destroy_irq(struct irdma_pci_f *rf,
+ 	dev->irq_ops->irdma_dis_irq(dev, msix_vec->idx);
+ 	irq_update_affinity_hint(msix_vec->irq, NULL);
+ 	free_irq(msix_vec->irq, dev_id);
++	if (rf == dev_id) {
++		tasklet_kill(&rf->dpc_tasklet);
++	} else {
++		struct irdma_ceq *iwceq = (struct irdma_ceq *)dev_id;
++
++		tasklet_kill(&iwceq->dpc_tasklet);
++	}
+ }
  
- &usb3_phy0 {
+ /**
 -- 
 2.43.0
 
