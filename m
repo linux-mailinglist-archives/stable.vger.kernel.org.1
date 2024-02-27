@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-24629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B58A6869582
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:02:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71016869441
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B5C41F2ABD7
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:02:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2BA91C23DF8
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92EC513EFE4;
-	Tue, 27 Feb 2024 14:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EE941420DA;
+	Tue, 27 Feb 2024 13:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KOFD62MK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sNJpqmlR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F22B13B2B4;
-	Tue, 27 Feb 2024 14:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCEE81419B1;
+	Tue, 27 Feb 2024 13:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042548; cv=none; b=Tbh9+atsqo0oJ0IexbZvRkLU/BI5jEz+7wwj1nLwIPdtEzaO3qY+zv9JhfJeonM+MBQ36DSQtYo3AnM7sro6p7/aq5V5nebjEctuZ/6TL0ydH3AEmtE8scA5CZn1KjDMHPEan6KM9FJTY/7Ak4beuCCcbTBKjxMIJbjxVNd6jVY=
+	t=1709041890; cv=none; b=pj4WIKPqDam8kfOtth9LDDwBYdDa/70es8O0t6zqrxsJICmbmWIg5flFioU0L8Y9hL3ncm1l/Sqb7wO29sX9dM90hDuu6LKyVXvFZcVk9VF6g9mht6kRPvgnlA+O9ftq/9FwJu0qVdfDfqHslX8cbeKP2PpuyxDESKt/+pwNT/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042548; c=relaxed/simple;
-	bh=/TJrwYkaMBP5PK7CVezi1Fmsm7hAEyaEqrPB0b3Go4Q=;
+	s=arc-20240116; t=1709041890; c=relaxed/simple;
+	bh=whtIR4Ui0sW7an6vdql5d0SUkYIZojnIZ1HdNxRvrVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nb1c1rsHBQaOaH/OQC9KTcX/q5mFwlV3DwqXnzrGfOMm3IIR3Go5kE1JpXmS9PcBJqEwCK9xDw2/hdyDkxRIyDTYUVR1FoJZu0JbvhjZCUCQdlIqu2uazIpAo1bx+8sePHnd1StYtIYcNv/OseMW49dROwNs5TLNdFf92QqzXJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KOFD62MK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A22AC433F1;
-	Tue, 27 Feb 2024 14:02:27 +0000 (UTC)
+	 MIME-Version; b=AvmuwY2iRlXWHxuzxf3bQ1bjT+4UnmeY1Aor/9ePJlLXjTsZGRyWAg0XDY4p3lg8imjnkXMP+M17UIwQZ9+ygjO/8FfKPIOnSEcgRWNNtVOGWBZ70H5zMx1KlKOog9aeuVgyJRKNtZn14oT+F95xkUUjUxRdj2F15ia1OTMfPgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sNJpqmlR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 335EBC433C7;
+	Tue, 27 Feb 2024 13:51:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042548;
-	bh=/TJrwYkaMBP5PK7CVezi1Fmsm7hAEyaEqrPB0b3Go4Q=;
+	s=korg; t=1709041889;
+	bh=whtIR4Ui0sW7an6vdql5d0SUkYIZojnIZ1HdNxRvrVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KOFD62MKf1QZH7erhVkHaWsUxGaSelvyGrW4VlyZWo2HOMWMXzUdgieguFg1BwHXv
-	 uots90d5UArApbGU/m2YTBuQX1c95pxcVepTOkyGGHcAf1s2G3mbGNmWpNzOYgTDjV
-	 ZxkvAiAKSTotmXm8OcXxjv7ryetveN0sO0FfOhqY=
+	b=sNJpqmlR6M4Z6z4UO1mE8AuESPu2tPfWZWHUPY6Csb5Iu/9hhJA6ZC6O3Q7+YnwCc
+	 K4m5h77wHxEn3UN/fXStKHG5aBOOWxY3vW2GawX0+T+Qffjc0lFvNZRtChiVB2Hn/i
+	 yd/HaXaWMKTPxGHrF31GGRuJgY1VFL19uYCbDopM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Huang Pei <huangpei@loongson.cn>,
+	kernel test robot <lkp@intel.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Fangrui Song <maskray@google.com>,
+	loongarch@lists.linux.dev,
+	Kees Cook <keescook@chromium.org>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 028/245] MIPS: reserve exception vector space ONLY ONCE
+Subject: [PATCH 6.6 105/299] LoongArch: vDSO: Disable UBSAN instrumentation
 Date: Tue, 27 Feb 2024 14:23:36 +0100
-Message-ID: <20240227131616.031161607@linuxfoundation.org>
+Message-ID: <20240227131629.263693450@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +70,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huang Pei <huangpei@loongson.cn>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit abcabb9e30a1f9a69c76776f8abffc31c377b542 ]
+[ Upstream commit cca5efe77a6a2d02b3da4960f799fa233e460ab1 ]
 
-"cpu_probe" is called both by BP and APs, but reserving exception vector
-(like 0x0-0x1000) called by "cpu_probe" need once and calling on APs is
-too late since memblock is unavailable at that time.
+The vDSO executes in userspace, so the kernel's UBSAN should not
+instrument it. Solves these kind of build errors:
 
-So, reserve exception vector ONLY by BP.
+  loongarch64-linux-ld: arch/loongarch/vdso/vgettimeofday.o: in function `vdso_shift_ns':
+  lib/vdso/gettimeofday.c:23:(.text+0x3f8): undefined reference to `__ubsan_handle_shift_out_of_bounds'
 
-Suggested-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Huang Pei <huangpei@loongson.cn>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202401310530.lZHCj1Zl-lkp@intel.com/
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: WANG Xuerui <kernel@xen0n.name>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Fangrui Song <maskray@google.com>
+Cc: loongarch@lists.linux.dev
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/kernel/traps.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/loongarch/vdso/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index afb2c955d99ef..5c01a21a216b9 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -2001,7 +2001,13 @@ unsigned long vi_handlers[64];
+diff --git a/arch/loongarch/vdso/Makefile b/arch/loongarch/vdso/Makefile
+index 5c97d14633282..4305d99b33130 100644
+--- a/arch/loongarch/vdso/Makefile
++++ b/arch/loongarch/vdso/Makefile
+@@ -2,6 +2,7 @@
+ # Objects to go into the VDSO.
  
- void reserve_exception_space(phys_addr_t addr, unsigned long size)
- {
--	memblock_reserve(addr, size);
-+	/*
-+	 * reserve exception space on CPUs other than CPU0
-+	 * is too late, since memblock is unavailable when APs
-+	 * up
-+	 */
-+	if (smp_processor_id() == 0)
-+		memblock_reserve(addr, size);
- }
+ KASAN_SANITIZE := n
++UBSAN_SANITIZE := n
+ KCOV_INSTRUMENT := n
  
- void __init *set_except_vector(int n, void *addr)
+ # Include the generic Makefile to check the built vdso.
 -- 
 2.43.0
 
