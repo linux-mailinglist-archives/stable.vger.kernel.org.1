@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-24365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7E51869419
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:51:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E80F869340
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:43:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E0CB1F219A5
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:51:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 553E61F24FA9
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:43:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2860A145B22;
-	Tue, 27 Feb 2024 13:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FC3A13B2B9;
+	Tue, 27 Feb 2024 13:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fpB+uJad"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BCIzbdln"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E081420B3;
-	Tue, 27 Feb 2024 13:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4037D13A25D;
+	Tue, 27 Feb 2024 13:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041793; cv=none; b=C6SdsAfW3jQm1odTED/KSjfcJVDuwpLG3vUciW4sUX2dBD+pLiv7yTTS5bcNlQ1n9EZjr/0waYvhpwBHqVRpZhrw2hy3ZLuIl0ztm0q3OIopckrXrQpx/Rh5jnxos1yRy/rzvFz2fheyLX8YUEQQ6s/FGBLrY9znb4DrZVSw76g=
+	t=1709041394; cv=none; b=aayAyvdNWALYjr0U7u99g5BqLpxdrQ3FWkVDcoqcV+iuEkp/jWVRDvPdoMuylnff5E//HuQbgCWnViv2opJu00sL1FiDnU8Pl3kvwSOYAb5cIbVdWlB30Ur78RKXhd56Yb/OH2zoKMRw8MN4ewk7G9inLE6ZzQr9tDz0W93RQj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041793; c=relaxed/simple;
-	bh=Cnnr1I8w0IiVogJv9eEuDHn0muKU2M9mvNk0CQvn0aE=;
+	s=arc-20240116; t=1709041394; c=relaxed/simple;
+	bh=4afOWf19tEbgXVvyZN0FQSfrY6fQQ5bQt1I4RNAN6yo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=egk3W23LBdxrYYklu3IkmTyXN2UDw9L+VXY/E7Mc1mLpSL0icusRUetl6DPMD/WhipzUHhQh861AIK719FNCsxeCj5cNe1DM0+cjkulPZ3JZnolfPpUa5ZPnkzqStSUxPnDKQSjE1gDmQjN7+7bYLFvDXKLuoGJnw1mRD1i7DKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fpB+uJad; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A933C43394;
-	Tue, 27 Feb 2024 13:49:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Dm0I9sB1MFpHnS4XnsaG+fuNuCwwPI1K0wnFKWnVSBLx3PQ7vy9zYwnGPxyQ6ObIlq5vq0EEfoPdvnEqtgHjT9/ZE/JvzmXbKkjT0yyw+maipPa/Q3v1AW/fYI53dJNXRPgt79pvyYIA6Xk1uVCqmRav4m7xr05yzg91eavdXQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BCIzbdln; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C18E7C433F1;
+	Tue, 27 Feb 2024 13:43:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041793;
-	bh=Cnnr1I8w0IiVogJv9eEuDHn0muKU2M9mvNk0CQvn0aE=;
+	s=korg; t=1709041394;
+	bh=4afOWf19tEbgXVvyZN0FQSfrY6fQQ5bQt1I4RNAN6yo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fpB+uJadHqFLqxLbfffho5ATX9hsSA613mLJpHEgg5uRyeoNv9AtNMzAZrwfbzphF
-	 6OLCipVwOlAeSulPmKbEb1uzLoYYArvluaHChrHZaz9Pk1hBf9fib2QnxKQPYQPHIM
-	 btmpAKjaOH8TDRvBiKSUsAXt4i8cwY8dJbROKuwY=
+	b=BCIzbdlnhGWo6D8NBZt2XaMGlSKsjWbqIXDCQoob1xZBiF7mLKgisTvsdogfVdSau
+	 Y0uTChbiojN7fb2Rf42mW0URrw5RyA4ugIyRcEzphUdhgFY80o1ZnzxaGR3ONyQ7L+
+	 ocSBoHFCVSrQTdVRSJVVWV/SInWHO64S9noHQN24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 072/299] fs/ntfs3: Improve ntfs_dir_count
+Subject: [PATCH 6.7 325/334] selftests/iommu: fix the config fragment
 Date: Tue, 27 Feb 2024 14:23:03 +0100
-Message-ID: <20240227131628.259379239@linuxfoundation.org>
+Message-ID: <20240227131641.606330166@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,66 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-[ Upstream commit 6a799c928b78b14999b7705c4cca0f88e297fe96 ]
+[ Upstream commit 510325e5ac5f45c1180189d3bfc108c54bf64544 ]
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+The config fragment doesn't follow the correct format to enable those
+config options which make the config options getting missed while
+merging with other configs.
+
+➜ merge_config.sh -m .config tools/testing/selftests/iommu/config
+Using .config as base
+Merging tools/testing/selftests/iommu/config
+➜ make olddefconfig
+.config:5295:warning: unexpected data: CONFIG_IOMMUFD
+.config:5296:warning: unexpected data: CONFIG_IOMMUFD_TEST
+
+While at it, add CONFIG_FAULT_INJECTION as well which is needed for
+CONFIG_IOMMUFD_TEST. If CONFIG_FAULT_INJECTION isn't present in base
+config (such as x86 defconfig), CONFIG_IOMMUFD_TEST doesn't get enabled.
+
+Fixes: 57f0988706fe ("iommufd: Add a selftest")
+Link: https://lore.kernel.org/r/20240222074934.71380-1-usama.anjum@collabora.com
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/dir.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ tools/testing/selftests/iommu/config | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ntfs3/dir.c b/fs/ntfs3/dir.c
-index 22ede4da04502..726122ecd39b4 100644
---- a/fs/ntfs3/dir.c
-+++ b/fs/ntfs3/dir.c
-@@ -515,11 +515,9 @@ static int ntfs_dir_count(struct inode *dir, bool *is_empty, size_t *dirs,
- 	struct INDEX_HDR *hdr;
- 	const struct ATTR_FILE_NAME *fname;
- 	u32 e_size, off, end;
--	u64 vbo = 0;
- 	size_t drs = 0, fles = 0, bit = 0;
--	loff_t i_size = ni->vfs_inode.i_size;
- 	struct indx_node *node = NULL;
--	u8 index_bits = ni->dir.index_bits;
-+	size_t max_indx = ni->vfs_inode.i_size >> ni->dir.index_bits;
- 
- 	if (is_empty)
- 		*is_empty = true;
-@@ -563,7 +561,7 @@ static int ntfs_dir_count(struct inode *dir, bool *is_empty, size_t *dirs,
- 				fles += 1;
- 		}
- 
--		if (vbo >= i_size)
-+		if (bit >= max_indx)
- 			goto out;
- 
- 		err = indx_used_bit(&ni->dir, ni, &bit);
-@@ -573,8 +571,7 @@ static int ntfs_dir_count(struct inode *dir, bool *is_empty, size_t *dirs,
- 		if (bit == MINUS_ONE_T)
- 			goto out;
- 
--		vbo = (u64)bit << index_bits;
--		if (vbo >= i_size)
-+		if (bit >= max_indx)
- 			goto out;
- 
- 		err = indx_read(&ni->dir, ni, bit << ni->dir.idx2vbn_bits,
-@@ -584,7 +581,6 @@ static int ntfs_dir_count(struct inode *dir, bool *is_empty, size_t *dirs,
- 
- 		hdr = &node->index->ihdr;
- 		bit += 1;
--		vbo = (u64)bit << ni->dir.idx2vbn_bits;
- 	}
- 
- out:
+diff --git a/tools/testing/selftests/iommu/config b/tools/testing/selftests/iommu/config
+index 6c4f901d6fed3..110d73917615d 100644
+--- a/tools/testing/selftests/iommu/config
++++ b/tools/testing/selftests/iommu/config
+@@ -1,2 +1,3 @@
+-CONFIG_IOMMUFD
+-CONFIG_IOMMUFD_TEST
++CONFIG_IOMMUFD=y
++CONFIG_FAULT_INJECTION=y
++CONFIG_IOMMUFD_TEST=y
 -- 
 2.43.0
 
