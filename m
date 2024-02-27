@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-25010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91EA886974C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:20:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D44D986979B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:23:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC653283314
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:20:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F01C288A1D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:23:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 543141419A1;
-	Tue, 27 Feb 2024 14:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56AF13B798;
+	Tue, 27 Feb 2024 14:23:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vheWNNBn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KIuN0uNo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1249213EFEC;
-	Tue, 27 Feb 2024 14:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7598713B2B4;
+	Tue, 27 Feb 2024 14:23:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043605; cv=none; b=QerEGzj6h0Awd2dlunc4mkHcKc8GqDYFi35G9w27q8NXhNGVLTM7aVMQUufC9ty00J2NWOf3SMwq/tDo9iUcQ+ScpF7SZYduoftOzWW5eCX52kHuC+ddX+9MlRdyaAJhYdix/DItGZCuIu1AFLBoZl2yL5ah4byFLrmF800xkik=
+	t=1709043785; cv=none; b=hDgdIa+F9ZPF3/J4otzz1UHDaDGpIgW+TKVCsCi7JWG19AQ/ADT2qwiZG8ZVtlnEad8z/twdQI7/69IrDXjGKFzE3PPI2CWaU0yTEXOJNEXW+JwhyKgIjkUUIVYQgnvpQXbkWEoBI3cUQTygF99feI1zpVTt0VrmvNKMDlbpTiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043605; c=relaxed/simple;
-	bh=Jn+jwQOl+6cG5JM5yK0n1XpNLt9/Kc/ci/UjasMmqE0=;
+	s=arc-20240116; t=1709043785; c=relaxed/simple;
+	bh=5tQWivTUYJLJ7WLigxHq3MuF0VJ4HNwsZYouSyqxQKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DkmWkD68m+WyUA4EPi7VL5WRKlzKjq8hSpVukcN2xOFpbKfcwYcqyLw5ACWPE4VdT0q9nHnODvkh2XqIsoxeGlP3Su1FyaFhYDCW6aaeZbctrT9Z3nqKqMtbaNykkNXwHaMLVH7su4xJHBhcMFK9ZpYuk0RqlR3qBfsBFkOKItE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vheWNNBn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9299AC433F1;
-	Tue, 27 Feb 2024 14:20:04 +0000 (UTC)
+	 MIME-Version; b=BpDMgFQMOWS1auHn3fsTsaw75MU310Cokzl1JevYjotwLMvsdnHyUPjCh5WpMW5JRC/Yzayj7oLYYVCRVWyxb/JRGC/s7YdWi7+mqfSlN+wLPXlMLEitcNdEwuGDi1XZr9E3zDzqWTNBZKbIqMtwi6sS6qOEwLDghj2NhYlBFd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KIuN0uNo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01597C433F1;
+	Tue, 27 Feb 2024 14:23:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043604;
-	bh=Jn+jwQOl+6cG5JM5yK0n1XpNLt9/Kc/ci/UjasMmqE0=;
+	s=korg; t=1709043785;
+	bh=5tQWivTUYJLJ7WLigxHq3MuF0VJ4HNwsZYouSyqxQKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vheWNNBni3wN/SRWKGJhV1g6x1oIH0bqvkYRdj8DmtUSB2IzI8FnaeyNRMxrpBBKr
-	 kSWsRR5KyJYN5uTZcy1a4W6vhdTt3rFm+mqQsxa2SnCCsz1hByi9nugtJSFsIoBJeM
-	 2rpDSDHSsItfqh5q+T0RQ3FCm2N8yntflCS9Ii6A=
+	b=KIuN0uNoUzVRR10UcbmLqb8jHOFYeMDnL3MpAIRYB+R5X4m/CAyENUTQW++x4to7o
+	 xzbODmNu7jVcirpniJ6v+QgI8n6WGftW1nbP+PLEFKnaQ9Ju4gks0iUIZ68MzhmcP9
+	 mZhc0naj7X5H2EsHGYZCdA72Fp/GbqKAAuVvGVCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jackson Cooper-Driver <Jackson.Cooper-Driver@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
+	Soheil Hassas Yeganeh <soheil@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 161/195] arm64/sme: Restore SME registers on exit from suspend
+Subject: [PATCH 5.4 35/84] tcp: return EPOLLOUT from tcp_poll only when notsent_bytes is half the limit
 Date: Tue, 27 Feb 2024 14:27:02 +0100
-Message-ID: <20240227131615.728895625@linuxfoundation.org>
+Message-ID: <20240227131554.012093065@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Soheil Hassas Yeganeh <soheil@google.com>
 
-[ Upstream commit 9533864816fb4a6207c63b7a98396351ce1a9fae ]
+[ Upstream commit 8ba3c9d1c6d75d1e6af2087278b30e17f68e1fff ]
 
-The fields in SMCR_EL1 and SMPRI_EL1 reset to an architecturally UNKNOWN
-value. Since we do not otherwise manage the traps configured in this
-register at runtime we need to reconfigure them after a suspend in case
-nothing else was kind enough to preserve them for us.
+If there was any event available on the TCP socket, tcp_poll()
+will be called to retrieve all the events.  In tcp_poll(), we call
+sk_stream_is_writeable() which returns true as long as we are at least
+one byte below notsent_lowat.  This will result in quite a few
+spurious EPLLOUT and frequent tiny sendmsg() calls as a result.
 
-The vector length will be restored as part of restoring the SME state for
-the next SME using task.
+Similar to sk_stream_write_space(), use __sk_stream_is_writeable
+with a wake value of 1, so that we set EPOLLOUT only if half the
+space is available for write.
 
-Fixes: a1f4ccd25cc2 ("arm64/sme: Provide Kconfig for SME")
-Reported-by: Jackson Cooper-Driver <Jackson.Cooper-Driver@arm.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20240213-arm64-sme-resume-v3-1-17e05e493471@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Soheil Hassas Yeganeh <soheil@google.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/fpsimd.h |  2 ++
- arch/arm64/kernel/fpsimd.c      | 14 ++++++++++++++
- arch/arm64/kernel/suspend.c     |  3 +++
- 3 files changed, 19 insertions(+)
+ net/ipv4/tcp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/fpsimd.h b/arch/arm64/include/asm/fpsimd.h
-index d720b6f7e5f9c..da18413712c04 100644
---- a/arch/arm64/include/asm/fpsimd.h
-+++ b/arch/arm64/include/asm/fpsimd.h
-@@ -343,6 +343,7 @@ extern void sme_alloc(struct task_struct *task, bool flush);
- extern unsigned int sme_get_vl(void);
- extern int sme_set_current_vl(unsigned long arg);
- extern int sme_get_current_vl(void);
-+extern void sme_suspend_exit(void);
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 6a52fdcf9e4ef..e45c09977c600 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -566,7 +566,7 @@ __poll_t tcp_poll(struct file *file, struct socket *sock, poll_table *wait)
+ 			mask |= EPOLLIN | EPOLLRDNORM;
  
- /*
-  * Return how many bytes of memory are required to store the full SME
-@@ -372,6 +373,7 @@ static inline int sme_max_vl(void) { return 0; }
- static inline int sme_max_virtualisable_vl(void) { return 0; }
- static inline int sme_set_current_vl(unsigned long arg) { return -EINVAL; }
- static inline int sme_get_current_vl(void) { return -EINVAL; }
-+static inline void sme_suspend_exit(void) { }
- 
- static inline size_t za_state_size(struct task_struct const *task)
- {
-diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
-index 8c226d79abdfc..59b5a16bab5d6 100644
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -1347,6 +1347,20 @@ void __init sme_setup(void)
- 		get_sme_default_vl());
- }
- 
-+void sme_suspend_exit(void)
-+{
-+	u64 smcr = 0;
-+
-+	if (!system_supports_sme())
-+		return;
-+
-+	if (system_supports_fa64())
-+		smcr |= SMCR_ELx_FA64;
-+
-+	write_sysreg_s(smcr, SYS_SMCR_EL1);
-+	write_sysreg_s(0, SYS_SMPRI_EL1);
-+}
-+
- #endif /* CONFIG_ARM64_SME */
- 
- static void sve_init_regs(void)
-diff --git a/arch/arm64/kernel/suspend.c b/arch/arm64/kernel/suspend.c
-index 8b02d310838f9..064d996cc55b2 100644
---- a/arch/arm64/kernel/suspend.c
-+++ b/arch/arm64/kernel/suspend.c
-@@ -11,6 +11,7 @@
- #include <asm/daifflags.h>
- #include <asm/debug-monitors.h>
- #include <asm/exec.h>
-+#include <asm/fpsimd.h>
- #include <asm/mte.h>
- #include <asm/memory.h>
- #include <asm/mmu_context.h>
-@@ -77,6 +78,8 @@ void notrace __cpu_suspend_exit(void)
- 	 */
- 	spectre_v4_enable_mitigation(NULL);
- 
-+	sme_suspend_exit();
-+
- 	/* Restore additional feature-specific configuration */
- 	ptrauth_suspend_exit();
- }
+ 		if (!(sk->sk_shutdown & SEND_SHUTDOWN)) {
+-			if (sk_stream_is_writeable(sk)) {
++			if (__sk_stream_is_writeable(sk, 1)) {
+ 				mask |= EPOLLOUT | EPOLLWRNORM;
+ 			} else {  /* send SIGIO later */
+ 				sk_set_bit(SOCKWQ_ASYNC_NOSPACE, sk);
+@@ -578,7 +578,7 @@ __poll_t tcp_poll(struct file *file, struct socket *sock, poll_table *wait)
+ 				 * pairs with the input side.
+ 				 */
+ 				smp_mb__after_atomic();
+-				if (sk_stream_is_writeable(sk))
++				if (__sk_stream_is_writeable(sk, 1))
+ 					mask |= EPOLLOUT | EPOLLWRNORM;
+ 			}
+ 		} else
 -- 
 2.43.0
 
