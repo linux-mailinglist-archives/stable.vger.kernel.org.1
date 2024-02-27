@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-25074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEE1786979C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:23:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EBE1869671
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:11:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DD001C20D60
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:23:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF92E1C223EE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C5E213EFF4;
-	Tue, 27 Feb 2024 14:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20E713B798;
+	Tue, 27 Feb 2024 14:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Siaq4Uom"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UUbLERk/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C64B13B2B4;
-	Tue, 27 Feb 2024 14:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF5813B29C;
+	Tue, 27 Feb 2024 14:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043788; cv=none; b=nXuqkCgmovA9TRTGRXvYwvUa4xC6ZWZS9rHpjK9Uvc3QMLKZ+NjePqq/x5xePtdarOr/PMm4KUZUsiCKAYzFNh2f/BXWag17EF6VGhtw1dF6U2jmHhZ2rXVwaZUEtDiYwGBmzDB3WTc8Nm6OephE4tGXC/mtjNsBL3XzMunYCr4=
+	t=1709043104; cv=none; b=o7NYKgFZgnuNZzvZMl9l3BfVeELlBi3jS+ynbKUm+fZoLdM5Hu/H7zOPjSAz7Nhu3eeKEsur6F0SXVrqR8ceQEmE8CKPdamqVaf3kPFvFymbozMlG3NH+Dh/Vk1Vhc3SV646sa97PmYWRYo+9p3G0AJcWHA/pK2kigqDcLZjQz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043788; c=relaxed/simple;
-	bh=u7+6vDuOoU3ip1bEnNktgYXhb2cjNKsU+SwA6gkiFJc=;
+	s=arc-20240116; t=1709043104; c=relaxed/simple;
+	bh=fJ/mwrOoYhACXa3/MmDGPvenbZf/1ldv1G53LVEhoQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LACMXgXdZGpnRLwCoh+RRD+YUyXJ9+sLBFbPUXJSk+9QeGm7RiSR4AmJ2f2Wv0pNncz1ZNQZCW+uLPpdiwIH6Nn4tlbD90+m9P+kz8n4sKTyCCSxtAIVIfYdHzDc/VlVM6VR32CFZNRxrv8wDESzpmpcnm2Z6yHThLn/rKvfUFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Siaq4Uom; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1AA6C433C7;
-	Tue, 27 Feb 2024 14:23:07 +0000 (UTC)
+	 MIME-Version; b=oEzCHVaWX8sILuHnSpO+x5msYiWE/ZDZYeQksA3GO3KbFSL2AaAsK5bGcEJebT70JReIeNb5w2+NpUogaIWK/gC1Bz6UtsDjQWoTYVId319D/FW/iRIfBN1dKlHBOMjiCTXLioo7PrU1xqykjWH0EpC5Prybxrosxdg5/yqT87o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UUbLERk/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB19C433C7;
+	Tue, 27 Feb 2024 14:11:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043788;
-	bh=u7+6vDuOoU3ip1bEnNktgYXhb2cjNKsU+SwA6gkiFJc=;
+	s=korg; t=1709043104;
+	bh=fJ/mwrOoYhACXa3/MmDGPvenbZf/1ldv1G53LVEhoQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Siaq4Uom35jpUENXTBvKbHXTTmOeOFRENhsc5uRRkEiXcSXHckxf36zyxJm72bC66
-	 /O2Q72cYxUgn6CchCd4A0nIPEnACuOkmaweOwoyQiLwbzmGa2ajvwIBstsoN9wTFK7
-	 jIV0SfWC1BPi7zcKjY/A96Yvj5NW2COoBiKq5L44=
+	b=UUbLERk/CfaV3WOAPoA7o69r9gOpes7WUILhsqjzsdCsY43IT6hLYvIxJtmPhzBeK
+	 ByH42aQXSdAdQVL3a9GySDxyqeP5dcqI1FudQ3BXdMRuukQCZ2+FyIqLryRFTH9fNB
+	 UB3JVWJuR4ZlBP14mtQ8mj4zynAiPFypW0dEKr/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Erik Kurzinger <ekurzinger@nvidia.com>,
+	Simon Ser <contact@emersion.fr>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 36/84] tcp: add annotations around sk->sk_shutdown accesses
+Subject: [PATCH 5.15 235/245] drm/syncobj: call drm_syncobj_fence_add_wait when WAIT_AVAILABLE flag is set
 Date: Tue, 27 Feb 2024 14:27:03 +0100
-Message-ID: <20240227131554.044499554@linuxfoundation.org>
+Message-ID: <20240227131622.810454944@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,160 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Erik Kurzinger <ekurzinger@nvidia.com>
 
-[ Upstream commit e14cadfd80d76f01bfaa1a8d745b1db19b57d6be ]
+[ Upstream commit 3c43177ffb54ea5be97505eb8e2690e99ac96bc9 ]
 
-Now sk->sk_shutdown is no longer a bitfield, we can add
-standard READ_ONCE()/WRITE_ONCE() annotations to silence
-KCSAN reports like the following:
+When waiting for a syncobj timeline point whose fence has not yet been
+submitted with the WAIT_FOR_SUBMIT flag, a callback is registered using
+drm_syncobj_fence_add_wait and the thread is put to sleep until the
+timeout expires. If the fence is submitted before then,
+drm_syncobj_add_point will wake up the sleeping thread immediately which
+will proceed to wait for the fence to be signaled.
 
-BUG: KCSAN: data-race in tcp_disconnect / tcp_poll
+However, if the WAIT_AVAILABLE flag is used instead,
+drm_syncobj_fence_add_wait won't get called, meaning the waiting thread
+will always sleep for the full timeout duration, even if the fence gets
+submitted earlier. If it turns out that the fence *has* been submitted
+by the time it eventually wakes up, it will still indicate to userspace
+that the wait completed successfully (it won't return -ETIME), but it
+will have taken much longer than it should have.
 
-write to 0xffff88814588582c of 1 bytes by task 3404 on cpu 1:
-tcp_disconnect+0x4d6/0xdb0 net/ipv4/tcp.c:3121
-__inet_stream_connect+0x5dd/0x6e0 net/ipv4/af_inet.c:715
-inet_stream_connect+0x48/0x70 net/ipv4/af_inet.c:727
-__sys_connect_file net/socket.c:2001 [inline]
-__sys_connect+0x19b/0x1b0 net/socket.c:2018
-__do_sys_connect net/socket.c:2028 [inline]
-__se_sys_connect net/socket.c:2025 [inline]
-__x64_sys_connect+0x41/0x50 net/socket.c:2025
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
+To fix this, we must call drm_syncobj_fence_add_wait if *either* the
+WAIT_FOR_SUBMIT flag or the WAIT_AVAILABLE flag is set. The only
+difference being that with WAIT_FOR_SUBMIT we will also wait for the
+fence to be signaled after it has been submitted while with
+WAIT_AVAILABLE we will return immediately.
 
-read to 0xffff88814588582c of 1 bytes by task 3374 on cpu 0:
-tcp_poll+0x2e6/0x7d0 net/ipv4/tcp.c:562
-sock_poll+0x253/0x270 net/socket.c:1383
-vfs_poll include/linux/poll.h:88 [inline]
-io_poll_check_events io_uring/poll.c:281 [inline]
-io_poll_task_func+0x15a/0x820 io_uring/poll.c:333
-handle_tw_list io_uring/io_uring.c:1184 [inline]
-tctx_task_work+0x1fe/0x4d0 io_uring/io_uring.c:1246
-task_work_run+0x123/0x160 kernel/task_work.c:179
-get_signal+0xe64/0xff0 kernel/signal.c:2635
-arch_do_signal_or_restart+0x89/0x2a0 arch/x86/kernel/signal.c:306
-exit_to_user_mode_loop+0x6f/0xe0 kernel/entry/common.c:168
-exit_to_user_mode_prepare+0x6c/0xb0 kernel/entry/common.c:204
-__syscall_exit_to_user_mode_work kernel/entry/common.c:286 [inline]
-syscall_exit_to_user_mode+0x26/0x140 kernel/entry/common.c:297
-do_syscall_64+0x4d/0xc0 arch/x86/entry/common.c:86
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
+IGT test patch: https://lists.freedesktop.org/archives/igt-dev/2024-January/067537.html
 
-value changed: 0x03 -> 0x00
+v1 -> v2: adjust lockdep_assert_none_held_once condition
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from commit 8c44ea81634a4a337df70a32621a5f3791be23df)
+
+Fixes: 01d6c3578379 ("drm/syncobj: add support for timeline point wait v8")
+Signed-off-by: Erik Kurzinger <ekurzinger@nvidia.com>
+Signed-off-by: Simon Ser <contact@emersion.fr>
+Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Reviewed-by: Simon Ser <contact@emersion.fr>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240119163208.3723457-1-ekurzinger@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/af_inet.c   |  2 +-
- net/ipv4/tcp.c       | 14 ++++++++------
- net/ipv4/tcp_input.c |  4 ++--
- 3 files changed, 11 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/drm_syncobj.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
-index e05cdc6088507..d7ebee3c048d5 100644
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -876,7 +876,7 @@ int inet_shutdown(struct socket *sock, int how)
- 		   EPOLLHUP, even on eg. unconnected UDP sockets -- RR */
- 		/* fall through */
- 	default:
--		sk->sk_shutdown |= how;
-+		WRITE_ONCE(sk->sk_shutdown, sk->sk_shutdown | how);
- 		if (sk->sk_prot->shutdown)
- 			sk->sk_prot->shutdown(sk, how);
- 		break;
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index e45c09977c600..8d7933989de0e 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -505,6 +505,7 @@ __poll_t tcp_poll(struct file *file, struct socket *sock, poll_table *wait)
- 	__poll_t mask;
- 	struct sock *sk = sock->sk;
- 	const struct tcp_sock *tp = tcp_sk(sk);
-+	u8 shutdown;
- 	int state;
+diff --git a/drivers/gpu/drm/drm_syncobj.c b/drivers/gpu/drm/drm_syncobj.c
+index c26f916996352..2de679ffd88de 100644
+--- a/drivers/gpu/drm/drm_syncobj.c
++++ b/drivers/gpu/drm/drm_syncobj.c
+@@ -1021,7 +1021,8 @@ static signed long drm_syncobj_array_wait_timeout(struct drm_syncobj **syncobjs,
+ 	uint64_t *points;
+ 	uint32_t signaled_count, i;
  
- 	sock_poll_wait(file, sock, wait);
-@@ -547,9 +548,10 @@ __poll_t tcp_poll(struct file *file, struct socket *sock, poll_table *wait)
- 	 * NOTE. Check for TCP_CLOSE is added. The goal is to prevent
- 	 * blocking on fresh not-connected or disconnected socket. --ANK
+-	if (flags & DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT)
++	if (flags & (DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT |
++		     DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE))
+ 		lockdep_assert_none_held_once();
+ 
+ 	points = kmalloc_array(count, sizeof(*points), GFP_KERNEL);
+@@ -1090,7 +1091,8 @@ static signed long drm_syncobj_array_wait_timeout(struct drm_syncobj **syncobjs,
+ 	 * fallthough and try a 0 timeout wait!
  	 */
--	if (sk->sk_shutdown == SHUTDOWN_MASK || state == TCP_CLOSE)
-+	shutdown = READ_ONCE(sk->sk_shutdown);
-+	if (shutdown == SHUTDOWN_MASK || state == TCP_CLOSE)
- 		mask |= EPOLLHUP;
--	if (sk->sk_shutdown & RCV_SHUTDOWN)
-+	if (shutdown & RCV_SHUTDOWN)
- 		mask |= EPOLLIN | EPOLLRDNORM | EPOLLRDHUP;
  
- 	/* Connected or passive Fast Open socket? */
-@@ -565,7 +567,7 @@ __poll_t tcp_poll(struct file *file, struct socket *sock, poll_table *wait)
- 		if (tcp_stream_is_readable(tp, target, sk))
- 			mask |= EPOLLIN | EPOLLRDNORM;
- 
--		if (!(sk->sk_shutdown & SEND_SHUTDOWN)) {
-+		if (!(shutdown & SEND_SHUTDOWN)) {
- 			if (__sk_stream_is_writeable(sk, 1)) {
- 				mask |= EPOLLOUT | EPOLLWRNORM;
- 			} else {  /* send SIGIO later */
-@@ -2357,7 +2359,7 @@ void __tcp_close(struct sock *sk, long timeout)
- 	int data_was_unread = 0;
- 	int state;
- 
--	sk->sk_shutdown = SHUTDOWN_MASK;
-+	WRITE_ONCE(sk->sk_shutdown, SHUTDOWN_MASK);
- 
- 	if (sk->sk_state == TCP_LISTEN) {
- 		tcp_set_state(sk, TCP_CLOSE);
-@@ -2629,7 +2631,7 @@ int tcp_disconnect(struct sock *sk, int flags)
- 	if (!(sk->sk_userlocks & SOCK_BINDADDR_LOCK))
- 		inet_reset_saddr(sk);
- 
--	sk->sk_shutdown = 0;
-+	WRITE_ONCE(sk->sk_shutdown, 0);
- 	sock_reset_flag(sk, SOCK_DONE);
- 	tp->srtt_us = 0;
- 	tp->mdev_us = jiffies_to_usecs(TCP_TIMEOUT_INIT);
-@@ -3905,7 +3907,7 @@ void tcp_done(struct sock *sk)
- 	if (req)
- 		reqsk_fastopen_remove(sk, req, false);
- 
--	sk->sk_shutdown = SHUTDOWN_MASK;
-+	WRITE_ONCE(sk->sk_shutdown, SHUTDOWN_MASK);
- 
- 	if (!sock_flag(sk, SOCK_DEAD))
- 		sk->sk_state_change(sk);
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 982fe464156a4..61243531a7f4c 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -4216,7 +4216,7 @@ void tcp_fin(struct sock *sk)
- 
- 	inet_csk_schedule_ack(sk);
- 
--	sk->sk_shutdown |= RCV_SHUTDOWN;
-+	WRITE_ONCE(sk->sk_shutdown, sk->sk_shutdown | RCV_SHUTDOWN);
- 	sock_set_flag(sk, SOCK_DONE);
- 
- 	switch (sk->sk_state) {
-@@ -6354,7 +6354,7 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
- 			break;
- 
- 		tcp_set_state(sk, TCP_FIN_WAIT2);
--		sk->sk_shutdown |= SEND_SHUTDOWN;
-+		WRITE_ONCE(sk->sk_shutdown, sk->sk_shutdown | SEND_SHUTDOWN);
- 
- 		sk_dst_confirm(sk);
- 
+-	if (flags & DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT) {
++	if (flags & (DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT |
++		     DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE)) {
+ 		for (i = 0; i < count; ++i)
+ 			drm_syncobj_fence_add_wait(syncobjs[i], &entries[i]);
+ 	}
 -- 
 2.43.0
 
