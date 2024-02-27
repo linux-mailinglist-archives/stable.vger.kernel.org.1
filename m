@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-24816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59E21869664
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:11:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5624B86978F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:22:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15CB9293F20
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:11:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E32801F25950
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEFFF13EFE9;
-	Tue, 27 Feb 2024 14:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F477140391;
+	Tue, 27 Feb 2024 14:22:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uznSxXDn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+3ginOA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C12313B29C;
-	Tue, 27 Feb 2024 14:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BE413EFE9;
+	Tue, 27 Feb 2024 14:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043069; cv=none; b=luUCdfo3f9BLfusMQlIsQMM9pYNW0b8KTNOUHw2XhOFvp99EVcdvCwSu/Sq2oLNyJV3xn6SpYtStfXoSQI/b27vSF52TFcgkq8NMODSxPFriWf5In91CFEcy7kuNhKmVjMKSkHzr+zqTlUuWbMB8petLtj8/27/wRZ55xqYQIgI=
+	t=1709043751; cv=none; b=VVBSkpEf2NwLhyff8ZbXcmd40HTPAW3iSfKEJpZULSpwAZ0nfgIwz9MF/gqaVuHAraOloAuUYtwMQo42gP4XlleRbNNME3tjMS7J4afNwINsRWLWqJ2GdubJFgXKc17Llqh734jplDMVkH9iU+Vrs99xEyFwTA9f4xsvQ79aU1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043069; c=relaxed/simple;
-	bh=aWAwSp4d1qsS6WLy4197VDB607HePfE3Ubm56GyVnVk=;
+	s=arc-20240116; t=1709043751; c=relaxed/simple;
+	bh=WMXqdPlSXe2J3aJ1ywfJUYb3AmW9e3+6UYBB71Ud0Bw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UJLny4icwCpP0lAYrb40paO3nSfBb2yeijitsDzLKsZZe4h259SlYkLmeRJszW2ri4vmxzotmRFob1IAMoCol3QKYIzooX1VQeyAx1y+Cct931u3v3ink3kQkMvNhEY9zwb7BiI4/wazC04jq9N0jDZEgLrKXa3LXIgCU9OYopg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uznSxXDn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD9B1C433F1;
-	Tue, 27 Feb 2024 14:11:08 +0000 (UTC)
+	 MIME-Version; b=sK/XYBQ0dSJGEuiUm/vwvXBdiawxD+piaSf1GDngdtQdEkh8IOBi7UKjKijUABGKmVWIpRtPBZiA7glf3UOdGZTW/eOcKxGDku8UoaCHLbJPc+oseDN+OIoIQ4J7Xt63yvGDntVuNP7iy9MOtX8ldzT2oCqgcGy4VfZgjFAEjo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+3ginOA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ED4DC433F1;
+	Tue, 27 Feb 2024 14:22:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043069;
-	bh=aWAwSp4d1qsS6WLy4197VDB607HePfE3Ubm56GyVnVk=;
+	s=korg; t=1709043751;
+	bh=WMXqdPlSXe2J3aJ1ywfJUYb3AmW9e3+6UYBB71Ud0Bw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uznSxXDnvJPiVRIOR91Dvd0R4PM6SGFjGx5AgIynA5LSsnLjgMnmFxvPOMH1A8Lo2
-	 YkKPyi+k0VYdMjezboBx6GUJzj2hzHyiK2dFGH/fveOMq5Nq3y5O+sO0r3bnAIGDgo
-	 O9He28UUSoW43FFInWH06OlTBVAargVyAhNLG6bs=
+	b=z+3ginOAsdihIr8ZVcCUXjOOjwdB9J6gS+4IAihzY5Eejx3l78Xc6Q5FLAYDq2jpk
+	 6FFbvuUfqtNb9B3p+a8eXoAeW+ufKZBNEf8Emancjvx5h8RtTl1hJ7yF3THpdBt10V
+	 UyLfw9QexHzP76BbfaxI7LlwUP8TRg45BqwvlvlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Guixin Liu <kanie@linux.alibaba.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 223/245] packet: move from strlcpy with unused retval to strscpy
+Subject: [PATCH 5.4 24/84] nvmet-tcp: fix nvme tcp ida memory leak
 Date: Tue, 27 Feb 2024 14:26:51 +0100
-Message-ID: <20240227131622.438595259@linuxfoundation.org>
+Message-ID: <20240227131553.651441605@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +64,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Guixin Liu <kanie@linux.alibaba.com>
 
-[ Upstream commit 8fc9d51ea2d32a05f7d7cf86a25cc86ecc57eb45 ]
+[ Upstream commit 47c5dd66c1840524572dcdd956f4af2bdb6fbdff ]
 
-Follow the advice of the below link and prefer 'strscpy' in this
-subsystem. Conversion is 1:1 because the return value is not used.
-Generated by a coccinelle script.
+The nvmet_tcp_queue_ida should be destroy when the nvmet-tcp module
+exit.
 
-Link: https://lore.kernel.org/r/CAHk-=wgfRnXz0W3D37d01q3JFkr_i_uTL=V6A6G1oUZcprmknw@mail.gmail.com/
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Link: https://lore.kernel.org/r/20220818210227.8611-1-wsa+renesas@sang-engineering.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: a7d6027790ac ("arp: Prevent overflow in arp_req_get().")
+Signed-off-by: Guixin Liu <kanie@linux.alibaba.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/packet/af_packet.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/nvme/target/tcp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index e7b54f7214110..d62f79cf873dd 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -1874,7 +1874,7 @@ static int packet_rcv_spkt(struct sk_buff *skb, struct net_device *dev,
- 	 */
+diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
+index be9e976575578..d40bd57537ba1 100644
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -1817,6 +1817,7 @@ static void __exit nvmet_tcp_exit(void)
+ 	flush_scheduled_work();
  
- 	spkt->spkt_family = dev->type;
--	strlcpy(spkt->spkt_device, dev->name, sizeof(spkt->spkt_device));
-+	strscpy(spkt->spkt_device, dev->name, sizeof(spkt->spkt_device));
- 	spkt->spkt_protocol = skb->protocol;
+ 	destroy_workqueue(nvmet_tcp_wq);
++	ida_destroy(&nvmet_tcp_queue_ida);
+ }
  
- 	/*
-@@ -3540,7 +3540,7 @@ static int packet_getname_spkt(struct socket *sock, struct sockaddr *uaddr,
- 	rcu_read_lock();
- 	dev = dev_get_by_index_rcu(sock_net(sk), READ_ONCE(pkt_sk(sk)->ifindex));
- 	if (dev)
--		strlcpy(uaddr->sa_data, dev->name, sizeof(uaddr->sa_data));
-+		strscpy(uaddr->sa_data, dev->name, sizeof(uaddr->sa_data));
- 	rcu_read_unlock();
- 
- 	return sizeof(*uaddr);
+ module_init(nvmet_tcp_init);
 -- 
 2.43.0
 
