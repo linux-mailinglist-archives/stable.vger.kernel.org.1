@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-25046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C02D8869792
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:22:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28A3B869553
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:01:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B412B2C647
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:21:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AAD61C23076
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:00:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC1413B2B8;
-	Tue, 27 Feb 2024 14:21:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0FDD1420A2;
+	Tue, 27 Feb 2024 14:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j68BGm7V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGE/JJ7p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4D313B798;
-	Tue, 27 Feb 2024 14:21:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953161419A9;
+	Tue, 27 Feb 2024 14:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043710; cv=none; b=sc4zGcnr+36mMGnS9u7qza5YuzayA1PxQDzVmF9VeonZViP/p6VyaMebi6XfAtaz14Qh6JkrbqHfQLVrxLZaHINx6+vsvTUv5PckMrybtOqM4Y3h9QL7rgnizzeti0dOfbZ/vHJMc4X/EvU7jUY/O9bL0/d2L1ynypjbRcPadT8=
+	t=1709042454; cv=none; b=LaLvPoJLibxFY9De4wPPPYSlpoRhI9QAKYz8dA3gBvK3Bvxod5kzaie4s18kbJwygY/+8W0nsBitMrsdo+/wJ7dcx4NbVexg4jWX5vmPbsVsvoamp2oN+oFi4n3qchoKhupX55AIzduCCXFbrSVVf5gztJ6ykDzmDi0tlUNZKdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043710; c=relaxed/simple;
-	bh=eJmj4o4TN3GhGf9rCFgEAyMxshZCbfAZhmyYD9CJqOc=;
+	s=arc-20240116; t=1709042454; c=relaxed/simple;
+	bh=ZjXtgJoow3GfODO79skYr3w/YHPPtY/OQHYwqSXO0ng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uDWJTXExyzrXrPaRUruVsI/ews0QJDT66cblOaU+Zki99LJoeW+3JmwP2v4NNXYf17iAiD5/LVRSGQSWXxvOB0LevMHwClk73hpLqkNV5BunQDm0GCNOuQ08mg/Y/GCqcnWoS+FSg7aS0PA459WBR4YNn2xTrMOEb072pqwqB8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j68BGm7V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C112C433C7;
-	Tue, 27 Feb 2024 14:21:49 +0000 (UTC)
+	 MIME-Version; b=XIgV5T9CvO33ltIijGdF2RFaErvAibYKyce3C7QloUpQxR+EfwLeo7l0t6t2qMbD5BVU6jCH1o8Scxek3v3lviQDSabkddqIytJoiuvdcmaRAKh1vKX+ICKoBGxxJpwL0f7h2By3XDgH9jz4+/tECHrZ6bqfwI+cTbIz/h4FF68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGE/JJ7p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FF5CC43390;
+	Tue, 27 Feb 2024 14:00:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043709;
-	bh=eJmj4o4TN3GhGf9rCFgEAyMxshZCbfAZhmyYD9CJqOc=;
+	s=korg; t=1709042454;
+	bh=ZjXtgJoow3GfODO79skYr3w/YHPPtY/OQHYwqSXO0ng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j68BGm7V6uAlEyHHXbcc6oL+JQAQphKwegeYVjx+t0BE5NJMAHnY+24NRmhhIccte
-	 k8HFJjH5dVFy9GwBUiv+zWPDfo/881TPnobfCBjQi/OBUa2UxaJMFnvL4XhROkrjhU
-	 FyXZjbeuCoeYzJg3bkgubea8mKJmCXvPx+0qbzUQ=
+	b=CGE/JJ7pdj7YkLKYxkUxN8CkfdUD3nlI+H/niIA3lfRoxchniS/euPKtbOdx0gqSo
+	 kHcT+i1FN+hhxAz3XgQRzMvBmK9SyjIUkmituSp0IH2WiH8kjSdUScnMsGCdrK6s2j
+	 fwxlUQ07xeBW7mCc8gCyGq62G1qmY/pH5Pao4pAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 5.4 01/84] KVM: arm64: vgic-its: Test for valid IRQ in its_sync_lpi_pending_table()
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 277/299] tools: ynl: make sure we always pass yarg to mnl_cb_run
 Date: Tue, 27 Feb 2024 14:26:28 +0100
-Message-ID: <20240227131552.915484885@linuxfoundation.org>
+Message-ID: <20240227131634.593776416@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Upton <oliver.upton@linux.dev>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 8d3a7dfb801d157ac423261d7cd62c33e95375f8 upstream.
+[ Upstream commit e4fe082c38cd74a8fa384bc7542cf3edf1cb7318 ]
 
-vgic_get_irq() may not return a valid descriptor if there is no ITS that
-holds a valid translation for the specified INTID. If that is the case,
-it is safe to silently ignore it and continue processing the LPI pending
-table.
+There is one common error handler in ynl - ynl_cb_error().
+It expects priv to be a pointer to struct ynl_parse_arg AKA yarg.
+To avoid potential crashes if we encounter a stray NLMSG_ERROR
+always pass yarg as priv (or a struct which has it as the first
+member).
 
-Cc: stable@vger.kernel.org
-Fixes: 33d3bc9556a7 ("KVM: arm64: vgic-its: Read initial LPI pending table")
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20240221092732.4126848-2-oliver.upton@linux.dev
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ynl_cb_null() has a similar problem directly - it expects yarg
+but priv passed by the caller is ys.
+
+Found by code inspection.
+
+Fixes: 86878f14d71a ("tools: ynl: user space helpers")
+Acked-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Link: https://lore.kernel.org/r/20240220161112.2735195-2-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- virt/kvm/arm/vgic/vgic-its.c |    3 +++
- 1 file changed, 3 insertions(+)
+ tools/net/ynl/lib/ynl.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/virt/kvm/arm/vgic/vgic-its.c
-+++ b/virt/kvm/arm/vgic/vgic-its.c
-@@ -459,6 +459,9 @@ static int its_sync_lpi_pending_table(st
- 		}
+diff --git a/tools/net/ynl/lib/ynl.c b/tools/net/ynl/lib/ynl.c
+index 514e0d69e7310..0a7fe6a13f7b9 100644
+--- a/tools/net/ynl/lib/ynl.c
++++ b/tools/net/ynl/lib/ynl.c
+@@ -450,6 +450,8 @@ ynl_gemsg_start_dump(struct ynl_sock *ys, __u32 id, __u8 cmd, __u8 version)
  
- 		irq = vgic_get_irq(vcpu->kvm, NULL, intids[i]);
-+		if (!irq)
-+			continue;
+ int ynl_recv_ack(struct ynl_sock *ys, int ret)
+ {
++	struct ynl_parse_arg yarg = { .ys = ys, };
 +
- 		raw_spin_lock_irqsave(&irq->irq_lock, flags);
- 		irq->pending_latch = pendmask & (1U << bit_nr);
- 		vgic_queue_irq_unlock(vcpu->kvm, irq, flags);
+ 	if (!ret) {
+ 		yerr(ys, YNL_ERROR_EXPECT_ACK,
+ 		     "Expecting an ACK but nothing received");
+@@ -462,7 +464,7 @@ int ynl_recv_ack(struct ynl_sock *ys, int ret)
+ 		return ret;
+ 	}
+ 	return mnl_cb_run(ys->rx_buf, ret, ys->seq, ys->portid,
+-			  ynl_cb_null, ys);
++			  ynl_cb_null, &yarg);
+ }
+ 
+ int ynl_cb_null(const struct nlmsghdr *nlh, void *data)
+@@ -725,11 +727,14 @@ static int ynl_ntf_parse(struct ynl_sock *ys, const struct nlmsghdr *nlh)
+ 
+ static int ynl_ntf_trampoline(const struct nlmsghdr *nlh, void *data)
+ {
+-	return ynl_ntf_parse((struct ynl_sock *)data, nlh);
++	struct ynl_parse_arg *yarg = data;
++
++	return ynl_ntf_parse(yarg->ys, nlh);
+ }
+ 
+ int ynl_ntf_check(struct ynl_sock *ys)
+ {
++	struct ynl_parse_arg yarg = { .ys = ys, };
+ 	ssize_t len;
+ 	int err;
+ 
+@@ -751,7 +756,7 @@ int ynl_ntf_check(struct ynl_sock *ys)
+ 			return len;
+ 
+ 		err = mnl_cb_run2(ys->rx_buf, len, ys->seq, ys->portid,
+-				  ynl_ntf_trampoline, ys,
++				  ynl_ntf_trampoline, &yarg,
+ 				  ynl_cb_array, NLMSG_MIN_TYPE);
+ 		if (err < 0)
+ 			return err;
+-- 
+2.43.0
+
 
 
 
