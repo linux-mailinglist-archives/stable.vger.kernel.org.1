@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-24229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87C66869358
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:44:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D803C869418
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:51:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC37BB2E259
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:43:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 730AC1F216FF
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:51:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21EE713B2B4;
-	Tue, 27 Feb 2024 13:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66BD454BD4;
+	Tue, 27 Feb 2024 13:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZeF1HmTz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+gJec5L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E742F2D;
-	Tue, 27 Feb 2024 13:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243A613B78A;
+	Tue, 27 Feb 2024 13:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041391; cv=none; b=ZR+wSV6GNT3Q0M/8zqx98tbyNwkqHIJFaiV5wNBv4aJSNNkdGXS0nXft6PtfTrWj0AUgbsmb2kcYecXzmsEvg4t3NF1kmdezWE+qajNbU3d75/Wmrehzh+Z2AXA7LGbcd1ruEjP3CjpuruSekGiKV2KibW2/COpIJpgl7RswJG0=
+	t=1709041791; cv=none; b=au7pGHTVQHwZo13/1ASHNlRQr5HBys/Xr7Fl7jEtsMDNcZeMGj8l0c79pEBniaJCBQCLHQ9k6FYRDuSA4HaUh3DcufRXM//FRXkPcDLaD59Z19NmuP6BwjLcVDzwiG6Ij/ydsi+YOToy+8ntmb0OPkPIHplh8+pqdptNeNG7O6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041391; c=relaxed/simple;
-	bh=TsnonfW5RhqFDBLCUr3HhIaS+eDLsVf7wtV5wn4GOoQ=;
+	s=arc-20240116; t=1709041791; c=relaxed/simple;
+	bh=ar15W5HQG3EEikNw49bKItNkoVdiPLTs58eeDAd0Cjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R5red+2r0OX0jUw0DQASksg94ChETI2v8XzNCLmL/SzjlyxYf2lKDFDjrkrSkGFaFnziW+4wt1J0PuQn7cFgy37UxHB3FOwTDJ2TiVGAX54b2QnrTThLl6Io0u10s0qXehvWcrPzJkZ0RuS/PBdOP1UxyuL286FCF1+cNYr2X8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZeF1HmTz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 192C1C433C7;
-	Tue, 27 Feb 2024 13:43:10 +0000 (UTC)
+	 MIME-Version; b=vBsPsa9dzb0VTpTm5mOQtPgF7kpI+JjP74ReOeNz9mWymalTE+/6FoLKat/dFozydbWbKKvGtqW58fOwzzOi63FcD1mB7gaHs5wMf5Pbi06fr0EjVOyrEddcVqfIqrg/Qfu8kprvlnslMuW91KGLcZAt3MYrfD8STVUjvIZ+PvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+gJec5L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A944CC433F1;
+	Tue, 27 Feb 2024 13:49:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041391;
-	bh=TsnonfW5RhqFDBLCUr3HhIaS+eDLsVf7wtV5wn4GOoQ=;
+	s=korg; t=1709041791;
+	bh=ar15W5HQG3EEikNw49bKItNkoVdiPLTs58eeDAd0Cjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZeF1HmTzJuZFSe4cQMA+fNIbROoQUR6lFZDUjMUQIsmryRepfp4icZ7DcfK8rKFhG
-	 kjP58BCntoJRj+hNdSd80eCBL3ksUg6jCvPMU+pbXDHk+ZKDW82km/eHBGkFwQKPIT
-	 OPrVpi7RR2knVDqL0KMiro+34qNGJ6YW/QHr0AIo=
+	b=P+gJec5LtWCByBCaP/AMlpJ+NDsNWPAlFBXT9Gtt4COSNOimgdoG0Xzt+irD5gSrf
+	 s4CYcdb0PWhRh6tDRmhNqtaTgfmgZ7j/3zX0xzGZwoT+Iw3LWU152r2143FMIGZaEj
+	 DxzFqfz33ltvjR1/j5DBCF0XaBAl8UKdnLX+7kcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erik Kurzinger <ekurzinger@nvidia.com>,
-	Simon Ser <contact@emersion.fr>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 324/334] drm/syncobj: handle NULL fence in syncobj_eventfd_entry_func
+Subject: [PATCH 6.6 071/299] fs/ntfs3: Modified fix directory element type detection
 Date: Tue, 27 Feb 2024 14:23:02 +0100
-Message-ID: <20240227131641.568941687@linuxfoundation.org>
+Message-ID: <20240227131628.228948364@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erik Kurzinger <ekurzinger@nvidia.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 2aa6f5b0fd052e363bb9d4b547189f0bf6b3d6d3 ]
+[ Upstream commit 22457c047ed971f2f2e33be593ddfabd9639a409 ]
 
-During syncobj_eventfd_entry_func, dma_fence_chain_find_seqno may set
-the fence to NULL if the given seqno is signaled and a later seqno has
-already been submitted. In that case, the eventfd should be signaled
-immediately which currently does not happen.
+Unfortunately reparse attribute is used for many purposes (several dozens).
+It is not possible here to know is this name symlink or not.
+To get exactly the type of name we should to open inode (read mft).
+getattr for opened file (fstat) correctly returns symlink.
 
-This is a similar issue to the one addressed by commit b19926d4f3a6
-("drm/syncobj: Deal with signalled fences in drm_syncobj_find_fence.").
-
-As a fix, if the return value of dma_fence_chain_find_seqno indicates
-success but it sets the fence to NULL, we will assign a stub fence to
-ensure the following code still signals the eventfd.
-
-v1 -> v2: assign a stub fence instead of signaling the eventfd
-
-Signed-off-by: Erik Kurzinger <ekurzinger@nvidia.com>
-Fixes: c7a472297169 ("drm/syncobj: add IOCTL to register an eventfd")
-Signed-off-by: Simon Ser <contact@emersion.fr>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240221184527.37667-1-ekurzinger@nvidia.com
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_syncobj.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ fs/ntfs3/dir.c | 30 +++++++++++++++++++++++++-----
+ 1 file changed, 25 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_syncobj.c b/drivers/gpu/drm/drm_syncobj.c
-index b3433265be6ab..5860428da8de8 100644
---- a/drivers/gpu/drm/drm_syncobj.c
-+++ b/drivers/gpu/drm/drm_syncobj.c
-@@ -1380,10 +1380,21 @@ syncobj_eventfd_entry_func(struct drm_syncobj *syncobj,
- 
- 	/* This happens inside the syncobj lock */
- 	fence = dma_fence_get(rcu_dereference_protected(syncobj->fence, 1));
-+	if (!fence)
-+		return;
-+
- 	ret = dma_fence_chain_find_seqno(&fence, entry->point);
--	if (ret != 0 || !fence) {
-+	if (ret != 0) {
-+		/* The given seqno has not been submitted yet. */
- 		dma_fence_put(fence);
- 		return;
-+	} else if (!fence) {
-+		/* If dma_fence_chain_find_seqno returns 0 but sets the fence
-+		 * to NULL, it implies that the given seqno is signaled and a
-+		 * later seqno has already been submitted. Assign a stub fence
-+		 * so that the eventfd still gets signaled below.
-+		 */
-+		fence = dma_fence_get_stub();
+diff --git a/fs/ntfs3/dir.c b/fs/ntfs3/dir.c
+index ec0566b322d5d..22ede4da04502 100644
+--- a/fs/ntfs3/dir.c
++++ b/fs/ntfs3/dir.c
+@@ -309,11 +309,31 @@ static inline int ntfs_filldir(struct ntfs_sb_info *sbi, struct ntfs_inode *ni,
+ 		return 0;
  	}
  
- 	list_del_init(&entry->node);
+-	/* NTFS: symlinks are "dir + reparse" or "file + reparse" */
+-	if (fname->dup.fa & FILE_ATTRIBUTE_REPARSE_POINT)
+-		dt_type = DT_LNK;
+-	else
+-		dt_type = (fname->dup.fa & FILE_ATTRIBUTE_DIRECTORY) ? DT_DIR : DT_REG;
++	/*
++	 * NTFS: symlinks are "dir + reparse" or "file + reparse"
++	 * Unfortunately reparse attribute is used for many purposes (several dozens).
++	 * It is not possible here to know is this name symlink or not.
++	 * To get exactly the type of name we should to open inode (read mft).
++	 * getattr for opened file (fstat) correctly returns symlink.
++	 */
++	dt_type = (fname->dup.fa & FILE_ATTRIBUTE_DIRECTORY) ? DT_DIR : DT_REG;
++
++	/*
++	 * It is not reliable to detect the type of name using duplicated information
++	 * stored in parent directory.
++	 * The only correct way to get the type of name - read MFT record and find ATTR_STD.
++	 * The code below is not good idea.
++	 * It does additional locks/reads just to get the type of name.
++	 * Should we use additional mount option to enable branch below?
++	 */
++	if ((fname->dup.fa & FILE_ATTRIBUTE_REPARSE_POINT) &&
++	    ino != ni->mi.rno) {
++		struct inode *inode = ntfs_iget5(sbi->sb, &e->ref, NULL);
++		if (!IS_ERR_OR_NULL(inode)) {
++			dt_type = fs_umode_to_dtype(inode->i_mode);
++			iput(inode);
++		}
++	}
+ 
+ 	return !dir_emit(ctx, (s8 *)name, name_len, ino, dt_type);
+ }
 -- 
 2.43.0
 
