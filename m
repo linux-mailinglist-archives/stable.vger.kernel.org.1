@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-25193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BC2F869877
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:33:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F48F869729
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:18:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74E72B2EFD5
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:29:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A7EC28C156
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:18:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03882143C46;
-	Tue, 27 Feb 2024 14:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C95F13EFF4;
+	Tue, 27 Feb 2024 14:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q0LyNtVF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="saKw0T9f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B528C13DBBC;
-	Tue, 27 Feb 2024 14:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF09A13DBB3;
+	Tue, 27 Feb 2024 14:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044122; cv=none; b=mu29YD9/XWJidzteosh/HtDug5yz4z3rEDSWogzNBYzkMI1v5cRT62e6njq0QvHbE9/r6JdYxYZNMZJiFT/fVMcI5Tkeb/HSalpONwRJBBCeakd/s7jftxa4sJYEfSaCxjUNNHO5+vkq98m+LXrWUMJ5RrNGoWVfZqSuosr4EjQ=
+	t=1709043530; cv=none; b=AkB2BW1rf2OYZ+O4hKAw8JxA5fML/YKjXOy3HSZMOXov7mWkLS5+Y1fT51sPTuFGIMsA+QaQog6fMRubjDYfueFjbKUOdjKpk8DOzXlyz22sNPq8vQCKD9L1P3FfcQH9gLefae4rlM6dJsLxq136KuGmA2U75bY7pw2RS6/YRrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044122; c=relaxed/simple;
-	bh=Y6GQ3NhJcjsthDQUjVAKYjy1w1v0OhbosZDOijBAmbw=;
+	s=arc-20240116; t=1709043530; c=relaxed/simple;
+	bh=YLy7cKoeRfvFleNuemOdsfqdoeug5HSd3ne16tU4PBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qbv+eQzDL0HXsJhiZveyzFOWJv6ozpuQoZr+0zsrgUzhYAJ6UPV3sHGqk88yJqfpXGJlo1s2AOoAtgsqwih3OKAnTWAo+JnHFcjht9uLG3j7PQrbVkKUdIfb3Ptk6MLlVurhMVFPy1evKLTsmnMsyER+0ks7MHgCVqsmpEjZ6eU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q0LyNtVF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EAF9C433C7;
-	Tue, 27 Feb 2024 14:28:42 +0000 (UTC)
+	 MIME-Version; b=h/8q/mhQbuBDt0TJA2NMT78pSCEo0uk/ZiZ6VSB8n9taR0DvhfNtGSvlsuEie3g8S8kLmIUC0iHUkR1dpFAE7kif0trQhdIxYi7Zk8VYHj2W3eYnMxpxufS9ijCOkG0X9m71J7ZSWyUAGGidJbiKAOYjNFnamWhFsGQn8kJPy7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=saKw0T9f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B3E2C433C7;
+	Tue, 27 Feb 2024 14:18:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044122;
-	bh=Y6GQ3NhJcjsthDQUjVAKYjy1w1v0OhbosZDOijBAmbw=;
+	s=korg; t=1709043530;
+	bh=YLy7cKoeRfvFleNuemOdsfqdoeug5HSd3ne16tU4PBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q0LyNtVFrJtrPidbsH7mjfLXahB/lK3mJsjknmG1pbPwKT/hfz4uJF/79vIoiQC56
-	 cvqIXjGgWMz50/T3AYHatMPbr3Ms+8ISa3RGrxi0DiOu/AOrxa792i7A/VEDdcZBAt
-	 aKbMyDuH1vhJ3AUVUayRfrqSBIGTMsuloAaUpZqE=
+	b=saKw0T9fv07dQh4LFIdEuiOQH4pJnnPd55r2ZFAN1vFCNn106ZJdo55K79WRXLJJD
+	 jguxWplKsFbLzKf3dVeZ2aoU5f4frxJFIpGwzDyoKFJhzUd2tPn+mpC6dTdXEFRyKb
+	 +XGmHpbneVwiDRI+e5eMRLWvmIoJjrbNGvVL+DyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 042/122] pmdomain: renesas: r8a77980-sysc: CR7 must be always on
+Subject: [PATCH 6.1 142/195] RDMA/srpt: fix function pointer cast warnings
 Date: Tue, 27 Feb 2024 14:26:43 +0100
-Message-ID: <20240227131600.085326148@linuxfoundation.org>
+Message-ID: <20240227131615.118647596@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +61,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit f0e4a1356466ec1858ae8e5c70bea2ce5e55008b ]
+[ Upstream commit eb5c7465c3240151cd42a55c7ace9da0026308a1 ]
 
-The power domain containing the Cortex-R7 CPU core on the R-Car V3H SoC
-must always be in power-on state, unlike on other SoCs in the R-Car Gen3
-family.  See Table 9.4 "Power domains" in the R-Car Series, 3rd
-Generation Hardware User’s Manual Rev.1.00 and later.
+clang-16 notices that srpt_qp_event() gets called through an incompatible
+pointer here:
 
-Fix this by marking the domain as a CPU domain without control
-registers, so the driver will not touch it.
+drivers/infiniband/ulp/srpt/ib_srpt.c:1815:5: error: cast from 'void (*)(struct ib_event *, struct srpt_rdma_ch *)' to 'void (*)(struct ib_event *, void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+ 1815 |                 = (void(*)(struct ib_event *, void*))srpt_qp_event;
 
-Fixes: 41d6d8bd8ae9 ("soc: renesas: rcar-sysc: add R8A77980 support")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/fdad9a86132d53ecddf72b734dac406915c4edc0.1705076735.git.geert+renesas@glider.be
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Change srpt_qp_event() to use the correct prototype and adjust the
+argument inside of it.
+
+Fixes: a42d985bd5b2 ("ib_srpt: Initial SRP Target merge for v3.3-rc1")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240213100728.458348-1-arnd@kernel.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/renesas/r8a77980-sysc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/ulp/srpt/ib_srpt.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/soc/renesas/r8a77980-sysc.c b/drivers/soc/renesas/r8a77980-sysc.c
-index 39ca84a67daad..621e411fc9991 100644
---- a/drivers/soc/renesas/r8a77980-sysc.c
-+++ b/drivers/soc/renesas/r8a77980-sysc.c
-@@ -25,7 +25,8 @@ static const struct rcar_sysc_area r8a77980_areas[] __initconst = {
- 	  PD_CPU_NOCR },
- 	{ "ca53-cpu3",	0x200, 3, R8A77980_PD_CA53_CPU3, R8A77980_PD_CA53_SCU,
- 	  PD_CPU_NOCR },
--	{ "cr7",	0x240, 0, R8A77980_PD_CR7,	R8A77980_PD_ALWAYS_ON },
-+	{ "cr7",	0x240, 0, R8A77980_PD_CR7,	R8A77980_PD_ALWAYS_ON,
-+	  PD_CPU_NOCR },
- 	{ "a3ir",	0x180, 0, R8A77980_PD_A3IR,	R8A77980_PD_ALWAYS_ON },
- 	{ "a2ir0",	0x400, 0, R8A77980_PD_A2IR0,	R8A77980_PD_A3IR },
- 	{ "a2ir1",	0x400, 1, R8A77980_PD_A2IR1,	R8A77980_PD_A3IR },
+diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
+index 4607d37b9224a..cffa93f114a73 100644
+--- a/drivers/infiniband/ulp/srpt/ib_srpt.c
++++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
+@@ -214,10 +214,12 @@ static const char *get_ch_state_name(enum rdma_ch_state s)
+ /**
+  * srpt_qp_event - QP event callback function
+  * @event: Description of the event that occurred.
+- * @ch: SRPT RDMA channel.
++ * @ptr: SRPT RDMA channel.
+  */
+-static void srpt_qp_event(struct ib_event *event, struct srpt_rdma_ch *ch)
++static void srpt_qp_event(struct ib_event *event, void *ptr)
+ {
++	struct srpt_rdma_ch *ch = ptr;
++
+ 	pr_debug("QP event %d on ch=%p sess_name=%s-%d state=%s\n",
+ 		 event->event, ch, ch->sess_name, ch->qp->qp_num,
+ 		 get_ch_state_name(ch->state));
+@@ -1811,8 +1813,7 @@ static int srpt_create_ch_ib(struct srpt_rdma_ch *ch)
+ 	ch->cq_size = ch->rq_size + sq_size;
+ 
+ 	qp_init->qp_context = (void *)ch;
+-	qp_init->event_handler
+-		= (void(*)(struct ib_event *, void*))srpt_qp_event;
++	qp_init->event_handler = srpt_qp_event;
+ 	qp_init->send_cq = ch->cq;
+ 	qp_init->recv_cq = ch->cq;
+ 	qp_init->sq_sig_type = IB_SIGNAL_REQ_WR;
 -- 
 2.43.0
 
