@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-24702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 315DD8695E5
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:06:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50CC0869496
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:55:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 616E01C2266D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:06:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0ADC8281BFB
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:55:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745CA145B05;
-	Tue, 27 Feb 2024 14:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15BF913B7A0;
+	Tue, 27 Feb 2024 13:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HCRWmKZB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B0uFc/+9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322BC13B2BA;
-	Tue, 27 Feb 2024 14:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C675D13EFE9;
+	Tue, 27 Feb 2024 13:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042754; cv=none; b=pNmgcRs9Gb4tlxVD0qQy2CH3aszyo/TnVtbWSBzgnvhYbcuM+d0E8168h1UHvlxAghB7PIIs2b3tJt0kzphgexpadqZIN+O6LjFzbAJ/aPpzHrfjGFPqUfTss+dvL4X98APZAE/XmCBmsznhQNNMP5w5LzEPwYTSHoqKBJ3julo=
+	t=1709042068; cv=none; b=G6r16tY8fVwDJ9dPTlx+dFTnNsbBCFKzDhRFuqEWBpoqQ9meRSc5Swd48B5PszYGxiYpIFPxYHCq2s36OvSCKXJWhtPYb4OwtEAay7/8TP1UjtsV/uNlQDEfpbIOY0wWD5XOX2rShAQhsBJEimgozKnLLRV4yIvcyRFKgaWb/YU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042754; c=relaxed/simple;
-	bh=y+U2muLKmQITe4dLSnwDdcZViXq/ZE26fVBsc5gKsNw=;
+	s=arc-20240116; t=1709042068; c=relaxed/simple;
+	bh=IczSpMrQAuXycmiLz/mVygy8boBfPU43NqT2y7p8wVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DHOwpAXfQvclQWRpRo6jXVETJKB3E9PuZspKI8vQQ6iFPY6BtOblUjrjtynuzTUuHOpXTniXIB+Sr7LlA0jSyX1s2aycJ72dpe42nwuYz1VnfKw0QOZ7mqqFjZ38iB9N1va01mJYpkJcu4HJ0JI14jWSGw1RL/uygGLSU2bAjpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HCRWmKZB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4059C433F1;
-	Tue, 27 Feb 2024 14:05:53 +0000 (UTC)
+	 MIME-Version; b=UOJJUF1c3qKhfNLGXCeV1d1O/ROQaXL8jPalJGuEZnsw3I2RwYQVpoUyAVH0lEYRY+RqWeJiiM3Cp3kC8hOFj5EHwjeNkOiZ0e0B7eQACq592EAh5YJ3W1mrXqrXdhS4kvGLoKEbs7Ux0nfQqRoUjo/bdcwUP9COW5iNqRAarnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B0uFc/+9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B11C433C7;
+	Tue, 27 Feb 2024 13:54:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042754;
-	bh=y+U2muLKmQITe4dLSnwDdcZViXq/ZE26fVBsc5gKsNw=;
+	s=korg; t=1709042068;
+	bh=IczSpMrQAuXycmiLz/mVygy8boBfPU43NqT2y7p8wVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HCRWmKZBuYUFYEx5SqyfSNlSfx/jH0cfIWC+XRl7aYZcwd8k9N6C3msNK2PQB1Pyp
-	 piRu64u+/XAiJn03fMFXGZZ98aD5ghlVorsjL499M8AxRwGbjcKNKsy01vqyUoyQ5D
-	 qAGnGLseeyM9/NEXA1nS9aPppagspb7J0h1pskGc=
+	b=B0uFc/+9sa2GDpQUPNKeeNVIYtXVv42MIAAfaWCFFN+6pCqGCE0xo0gGWqdpSVY4K
+	 j2mjh4eDTsxKFGA2VMZw3o6O9ZA/+LX8hKRqq0nA8dz/uEAYWU+NK1p7zA1wGwn3pn
+	 oVUfYgwvzgq7AuwbrfMXFTPNLXgl1wtJd+KwSHSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Borislav Petkov <bp@suse.de>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 5.15 091/245] x86/ftrace: Use alternative RET encoding
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.6 168/299] KVM: arm64: vgic-its: Test for valid IRQ in its_sync_lpi_pending_table()
 Date: Tue, 27 Feb 2024 14:24:39 +0100
-Message-ID: <20240227131618.183360714@linuxfoundation.org>
+Message-ID: <20240227131631.250930034@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Oliver Upton <oliver.upton@linux.dev>
 
-Upstream commit: 1f001e9da6bbf482311e45e48f53c2bd2179e59c
+commit 8d3a7dfb801d157ac423261d7cd62c33e95375f8 upstream.
 
-Use the return thunk in ftrace trampolines, if needed.
+vgic_get_irq() may not return a valid descriptor if there is no ITS that
+holds a valid translation for the specified INTID. If that is the case,
+it is safe to silently ignore it and continue processing the LPI pending
+table.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Fixes: 33d3bc9556a7 ("KVM: arm64: vgic-its: Read initial LPI pending table")
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20240221092732.4126848-2-oliver.upton@linux.dev
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/ftrace.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/arm64/kvm/vgic/vgic-its.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/x86/kernel/ftrace.c
-+++ b/arch/x86/kernel/ftrace.c
-@@ -311,7 +311,7 @@ union ftrace_op_code_union {
- 	} __attribute__((packed));
- };
+--- a/arch/arm64/kvm/vgic/vgic-its.c
++++ b/arch/arm64/kvm/vgic/vgic-its.c
+@@ -462,6 +462,9 @@ static int its_sync_lpi_pending_table(st
+ 		}
  
--#define RET_SIZE		1 + IS_ENABLED(CONFIG_SLS)
-+#define RET_SIZE		(IS_ENABLED(CONFIG_RETPOLINE) ? 5 : 1 + IS_ENABLED(CONFIG_SLS))
- 
- static unsigned long
- create_trampoline(struct ftrace_ops *ops, unsigned int *tramp_size)
-@@ -367,7 +367,10 @@ create_trampoline(struct ftrace_ops *ops
- 		goto fail;
- 
- 	ip = trampoline + size;
--	memcpy(ip, retq, RET_SIZE);
-+	if (cpu_feature_enabled(X86_FEATURE_RETHUNK))
-+		__text_gen_insn(ip, JMP32_INSN_OPCODE, ip, &__x86_return_thunk, JMP32_INSN_SIZE);
-+	else
-+		memcpy(ip, retq, sizeof(retq));
- 
- 	/* No need to test direct calls on created trampolines */
- 	if (ops->flags & FTRACE_OPS_FL_SAVE_REGS) {
+ 		irq = vgic_get_irq(vcpu->kvm, NULL, intids[i]);
++		if (!irq)
++			continue;
++
+ 		raw_spin_lock_irqsave(&irq->irq_lock, flags);
+ 		irq->pending_latch = pendmask & (1U << bit_nr);
+ 		vgic_queue_irq_unlock(vcpu->kvm, irq, flags);
 
 
 
