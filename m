@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-24704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54AB38695E7
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:06:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63E8B8694DB
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:56:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 861A01C216F4
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:06:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 047B91F22931
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D83D145B00;
-	Tue, 27 Feb 2024 14:06:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F2713B2B4;
+	Tue, 27 Feb 2024 13:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lOxK8yD7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmMO96fy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D4D513A26F;
-	Tue, 27 Feb 2024 14:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AEC13AA55;
+	Tue, 27 Feb 2024 13:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042760; cv=none; b=blufx/MAZ2m/p8oyJ59tUpMsYppy0MY5ykfRc7cS3w5Szm0aspJuwZ9gPOGSU+vb7wBhIYvPCkl2KzvoIoJNvr8yAcSX6HKRE773FUcKT3pnUXpzXnUYxypVdLUeQRSaXAhZsqzB7esvqcdC04dApbr76jiWRZHlBQyh++xdelQ=
+	t=1709042209; cv=none; b=HCyyAqzrKhtI9HHKvpuL95XIJ8uNA3+NXlUjhBVf2irfAnMVqEGZSJh62aEuDdU9Qyl5Xqv+rAhfo9wKxS6rsIwPT2XJ7fu72brjQk63GYP5RzGxYFqkZtj+I6yXro/8y6FpU0HGHHnXJI8VTLpyryoHF81vNwn0yF3yQOPlSzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042760; c=relaxed/simple;
-	bh=e8QA2LP1Rz80ZtVzJz5JvTlxfCuIYnm2Ppk5UVeLeV0=;
+	s=arc-20240116; t=1709042209; c=relaxed/simple;
+	bh=DenDbxBQ8hphjAauSJ1jECLu6E7kE/dFI8xr4t/TpvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bgX4+odo5Ip0k2fPSLGiCjXUrNyCSKe1/JSSU7HI9eiAw9eXACdBznm3zxibtqVO//eDCUYpZF6cv6xdPp54D+2KmvQD/Xhjwkm5amcuofglNHDWrfmHXc6CP1CjkHN+vRP3iuHjtXgGvVbD+LY/PcRBiiMU/f5EGtsUowQX86o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lOxK8yD7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45956C433C7;
-	Tue, 27 Feb 2024 14:05:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FCwUQoMulh3nw1TWDopOhOmuJ4EXUl0178dkYqsjHErcvIfot1kSl7BiacBz1hX/1XipH3Xl09wMdmRHgiscyEA18bPvhhM/PlgWciWHREmwYR6OC6M6Q0yAfQE+F2/Ggf8Afx3Q5SJTNq5kdE3mFup+2mt/vVgASoR0g5fH2/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmMO96fy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8F10C433C7;
+	Tue, 27 Feb 2024 13:56:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042759;
-	bh=e8QA2LP1Rz80ZtVzJz5JvTlxfCuIYnm2Ppk5UVeLeV0=;
+	s=korg; t=1709042209;
+	bh=DenDbxBQ8hphjAauSJ1jECLu6E7kE/dFI8xr4t/TpvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lOxK8yD7dgkVrduzYm+GfZuzFMDm1hcHNzVBa+tOnyTQqbnEvREhUHza0bM4Xp3Wl
-	 xhBuqXbVd6l5LBVMavShAKO5I+Ie0nwoIwXwxvXjhhFDeMWb+hrWprRYqOY5yHjL8Q
-	 W/C7aYrqf+qadmgqnxtsMg1KacctzyqaDcnjJiWs=
+	b=XmMO96fyIdXZfrM65EoCBBTkyIlsIskCdZm4KbHRd4U+5kXowGRmdjIrvPC+FIo0G
+	 QVWSorQROaEUlPlZIGMI3kH08HEU7Erdz4MTeJQU1yZPo2FA0jOI69Et957YhbxZHN
+	 hVWaBzyUpzLs6KBr1eB5TmW7QpbrxZXGTJLU/yZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff LaBundy <jeff@labundy.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 110/245] Input: iqs269a - drop unused device node references
-Date: Tue, 27 Feb 2024 14:24:58 +0100
-Message-ID: <20240227131618.798323197@linuxfoundation.org>
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>
+Subject: [PATCH 6.6 188/299] usb: gadget: ncm: Avoid dropping datagrams of properly parsed NTBs
+Date: Tue, 27 Feb 2024 14:24:59 +0100
+Message-ID: <20240227131631.881161079@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,79 +59,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff LaBundy <jeff@labundy.com>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-[ Upstream commit 59bc9cb3b80abaa42643abede0d5db8477901d9c ]
+commit 76c51146820c5dac629f21deafab0a7039bc3ccd upstream.
 
-Each call to device/fwnode_get_named_child_node() must be matched
-with a call to fwnode_handle_put() once the corresponding node is
-no longer in use. This ensures a reference count remains balanced
-in the case of dynamic device tree support.
+It is observed sometimes when tethering is used over NCM with Windows 11
+as host, at some instances, the gadget_giveback has one byte appended at
+the end of a proper NTB. When the NTB is parsed, unwrap call looks for
+any leftover bytes in SKB provided by u_ether and if there are any pending
+bytes, it treats them as a separate NTB and parses it. But in case the
+second NTB (as per unwrap call) is faulty/corrupt, all the datagrams that
+were parsed properly in the first NTB and saved in rx_list are dropped.
 
-Currently, the driver does not call fwnode_handle_put() on nested
-event nodes. This patch solves this problem by adding the missing
-instances of fwnode_handle_put().
+Adding a few custom traces showed the following:
+[002] d..1  7828.532866: dwc3_gadget_giveback: ep1out:
+req 000000003868811a length 1025/16384 zsI ==> 0
+[002] d..1  7828.532867: ncm_unwrap_ntb: K: ncm_unwrap_ntb toprocess: 1025
+[002] d..1  7828.532867: ncm_unwrap_ntb: K: ncm_unwrap_ntb nth: 1751999342
+[002] d..1  7828.532868: ncm_unwrap_ntb: K: ncm_unwrap_ntb seq: 0xce67
+[002] d..1  7828.532868: ncm_unwrap_ntb: K: ncm_unwrap_ntb blk_len: 0x400
+[002] d..1  7828.532868: ncm_unwrap_ntb: K: ncm_unwrap_ntb ndp_len: 0x10
+[002] d..1  7828.532869: ncm_unwrap_ntb: K: Parsed NTB with 1 frames
 
-As part of this change, the logic which parses each channel's key
-code is gently refactored in order to reduce the number of places
-from which fwnode_handle_put() is called.
+In this case, the giveback is of 1025 bytes and block length is 1024.
+The rest 1 byte (which is 0x00) won't be parsed resulting in drop of
+all datagrams in rx_list.
 
-Fixes: 04e49867fad1 ("Input: add support for Azoteq IQS269A")
-Signed-off-by: Jeff LaBundy <jeff@labundy.com>
-Link: https://lore.kernel.org/r/Y7Rsx68k/gvDVXAt@nixie71
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Same is case with packets of size 2048:
+[002] d..1  7828.557948: dwc3_gadget_giveback: ep1out:
+req 0000000011dfd96e length 2049/16384 zsI ==> 0
+[002] d..1  7828.557949: ncm_unwrap_ntb: K: ncm_unwrap_ntb nth: 1751999342
+[002] d..1  7828.557950: ncm_unwrap_ntb: K: ncm_unwrap_ntb blk_len: 0x800
+
+Lecroy shows one byte coming in extra confirming that the byte is coming
+in from PC:
+
+ Transfer 2959 - Bytes Transferred(1025)  Timestamp((18.524 843 590)
+ - Transaction 8391 - Data(1025 bytes) Timestamp(18.524 843 590)
+ --- Packet 4063861
+       Data(1024 bytes)
+       Duration(2.117us) Idle(14.700ns) Timestamp(18.524 843 590)
+ --- Packet 4063863
+       Data(1 byte)
+       Duration(66.160ns) Time(282.000ns) Timestamp(18.524 845 722)
+
+According to Windows driver, no ZLP is needed if wBlockLength is non-zero,
+because the non-zero wBlockLength has already told the function side the
+size of transfer to be expected. However, there are in-market NCM devices
+that rely on ZLP as long as the wBlockLength is multiple of wMaxPacketSize.
+To deal with such devices, it pads an extra 0 at end so the transfer is no
+longer multiple of wMaxPacketSize.
+
+Cc: <stable@vger.kernel.org>
+Fixes: 9f6ce4240a2b ("usb: gadget: f_ncm.c added")
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Reviewed-by: Maciej Żenczykowski <maze@google.com>
+Link: https://lore.kernel.org/r/20240205074650.200304-1-quic_kriskura@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/misc/iqs269a.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/function/f_ncm.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/input/misc/iqs269a.c b/drivers/input/misc/iqs269a.c
-index a348247d3d38f..ea3c97c5f764f 100644
---- a/drivers/input/misc/iqs269a.c
-+++ b/drivers/input/misc/iqs269a.c
-@@ -694,6 +694,7 @@ static int iqs269_parse_chan(struct iqs269_private *iqs269,
- 				dev_err(&client->dev,
- 					"Invalid channel %u threshold: %u\n",
- 					reg, val);
-+				fwnode_handle_put(ev_node);
- 				return -EINVAL;
- 			}
+--- a/drivers/usb/gadget/function/f_ncm.c
++++ b/drivers/usb/gadget/function/f_ncm.c
+@@ -1325,7 +1325,15 @@ parse_ntb:
+ 	     "Parsed NTB with %d frames\n", dgram_counter);
  
-@@ -707,6 +708,7 @@ static int iqs269_parse_chan(struct iqs269_private *iqs269,
- 				dev_err(&client->dev,
- 					"Invalid channel %u hysteresis: %u\n",
- 					reg, val);
-+				fwnode_handle_put(ev_node);
- 				return -EINVAL;
- 			}
- 
-@@ -721,8 +723,16 @@ static int iqs269_parse_chan(struct iqs269_private *iqs269,
- 			}
- 		}
- 
--		if (fwnode_property_read_u32(ev_node, "linux,code", &val))
-+		error = fwnode_property_read_u32(ev_node, "linux,code", &val);
-+		fwnode_handle_put(ev_node);
-+		if (error == -EINVAL) {
- 			continue;
-+		} else if (error) {
-+			dev_err(&client->dev,
-+				"Failed to read channel %u code: %d\n", reg,
-+				error);
-+			return error;
-+		}
- 
- 		switch (reg) {
- 		case IQS269_CHx_HALL_ACTIVE:
--- 
-2.43.0
-
+ 	to_process -= block_len;
+-	if (to_process != 0) {
++
++	/*
++	 * Windows NCM driver avoids USB ZLPs by adding a 1-byte
++	 * zero pad as needed.
++	 */
++	if (to_process == 1 &&
++	    (*(unsigned char *)(ntb_ptr + block_len) == 0x00)) {
++		to_process--;
++	} else if (to_process > 0) {
+ 		ntb_ptr = (unsigned char *)(ntb_ptr + block_len);
+ 		goto parse_ntb;
+ 	}
 
 
 
