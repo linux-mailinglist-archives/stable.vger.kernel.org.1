@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-24408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDAD386944E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D524869583
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:02:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78C932839CA
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C12021F2AF25
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:02:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71614143C7B;
-	Tue, 27 Feb 2024 13:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AE9313F016;
+	Tue, 27 Feb 2024 14:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ebd2pUOq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wE89x0TS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E8F6143C75;
-	Tue, 27 Feb 2024 13:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A76C16423;
+	Tue, 27 Feb 2024 14:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041918; cv=none; b=UIHynDWccFF+yTfvmyuq6phqjxMxB7xLtwR+UMwG9ti9mFzOG/E73L2sSlqxmWMlk7hDT4MrvTlqu9zKvWL50TErusNhKGiYwIgJ48XYDNLAe1f2uW6npafa3fiHFwcvKsePsLWHFihxsjouRenDzrxXJt3fbG9yIfHeG0ZAqZ0=
+	t=1709042551; cv=none; b=QF0D3cIUuFmPW8+iHTE5/C4bp1yUDhxrA/YSNavntF0fQk4aCYPDO1dZtvK18CCnL9AyoLy4PDJrKl2RvwOnJuc1/WD0XrLC+wYlNQCzn4cNua1OslfZdMUhEC8LsH9tGjOQ0Kpj2Kuvn01EFAWXEERlspy1e1oAgyiIeyqM6GY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041918; c=relaxed/simple;
-	bh=KxsuNYdkDIOh8vasdPy7cQUO+9S2Ff7jieYYjLFOBqE=;
+	s=arc-20240116; t=1709042551; c=relaxed/simple;
+	bh=VnHSnlfvV21hIq7tWrweshDeCboUZncTJBFjOYPrny4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L19ZTUNNjwhta4QbffurFzzhUEyoFvxvnWXvHgZH/cFLi8FgkwSmK1B681v4TqB9z8bXFgmDKypnfBJNdjxxYpGUU+GLpkypuJnYFDKLV66y/HiocC9qJNMbCDt0d5LkV1ZT+xJO6ZK0dw1fWwcrOHoS9uWqVBGtqKXyxLyChm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ebd2pUOq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A96B1C433F1;
-	Tue, 27 Feb 2024 13:51:57 +0000 (UTC)
+	 MIME-Version; b=l76RyHXN8v57GPt/4Jj77S+S76JqRHzsD4NSe7nxhrVDGQZ4Bx6taQ+ZxwSb3vNoJnLNbPZ7MVwULN+rBoaNHPjic8xr4nTCEt5g4M5DuETFTGOgHmIW+jrWm0LMtybCxqspa2n6hryxjqj2hgCNQ6T6JxtTNg3tmWwr/Wb6mgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wE89x0TS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AFDDC433F1;
+	Tue, 27 Feb 2024 14:02:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041918;
-	bh=KxsuNYdkDIOh8vasdPy7cQUO+9S2Ff7jieYYjLFOBqE=;
+	s=korg; t=1709042551;
+	bh=VnHSnlfvV21hIq7tWrweshDeCboUZncTJBFjOYPrny4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ebd2pUOqEE6WHdQyXZdFKYFgo64H6qcz8XvxGigiR6G1hpyfLDXmMzqB6jzP/PFld
-	 kuNIoJR4/mjF608XAMetOiMXhj2oe9lcHVnYOGJ1mIKm68+wbssjIS3+yaGA3NuDen
-	 vYBiEiRO3N3d8M3A2HnTq87F47aSODNWnnqJ3dis=
+	b=wE89x0TSakqcFpHfHMpCtA3VMl65ObHJSdjuCCTkU4k9cWimGs8VeSw3dwQfV5dE4
+	 R/3L/3h8gK3nbE2CbnJW5J7rFTDRCHRp6+A+PtPcfrIrSfVxsAFx5D7l9qln8eYubn
+	 ByatpEgowovmw+NqCNg+bKpQ4ZVljCQhFVtTz1OE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 114/299] drm/amdgpu: Fix HDP flush for VFs on nbio v7.9
+Subject: [PATCH 5.15 037/245] ASoC: sunxi: sun4i-spdif: Add support for Allwinner H616
 Date: Tue, 27 Feb 2024 14:23:45 +0100
-Message-ID: <20240227131629.538897172@linuxfoundation.org>
+Message-ID: <20240227131616.325507404@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Chen-Yu Tsai <wens@csie.org>
 
-[ Upstream commit 534c8a5b9d5d41d30cdcac93cfa1bca5e17be009 ]
+[ Upstream commit 0adf963b8463faa44653e22e56ce55f747e68868 ]
 
-HDP flush remapping is not done for VFs. Keep the original offsets in VF
-environment.
+The SPDIF hardware block found in the H616 SoC has the same layout as
+the one found in the H6 SoC, except that it is missing the receiver
+side.
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Since the driver currently only supports the transmit function, support
+for the H616 is identical to what is currently done for the H6.
+
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Reviewed-by: Andre Przywara <andre.przywara@arm.com>
+Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Link: https://msgid.link/r/20240127163247.384439-4-wens@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ sound/soc/sunxi/sun4i-spdif.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c b/drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c
-index ae45656eb8779..0a601336cf697 100644
---- a/drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c
-+++ b/drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c
-@@ -426,6 +426,12 @@ static void nbio_v7_9_init_registers(struct amdgpu_device *adev)
- 	u32 inst_mask;
- 	int i;
- 
-+	if (amdgpu_sriov_vf(adev))
-+		adev->rmmio_remap.reg_offset =
-+			SOC15_REG_OFFSET(
-+				NBIO, 0,
-+				regBIF_BX_DEV0_EPF0_VF0_HDP_MEM_COHERENCY_FLUSH_CNTL)
-+			<< 2;
- 	WREG32_SOC15(NBIO, 0, regXCC_DOORBELL_FENCE,
- 		0xff & ~(adev->gfx.xcc_mask));
- 
+diff --git a/sound/soc/sunxi/sun4i-spdif.c b/sound/soc/sunxi/sun4i-spdif.c
+index a10949bf0ca1e..dd8d13f3fd121 100644
+--- a/sound/soc/sunxi/sun4i-spdif.c
++++ b/sound/soc/sunxi/sun4i-spdif.c
+@@ -464,6 +464,11 @@ static const struct of_device_id sun4i_spdif_of_match[] = {
+ 		.compatible = "allwinner,sun50i-h6-spdif",
+ 		.data = &sun50i_h6_spdif_quirks,
+ 	},
++	{
++		.compatible = "allwinner,sun50i-h616-spdif",
++		/* Essentially the same as the H6, but without RX */
++		.data = &sun50i_h6_spdif_quirks,
++	},
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, sun4i_spdif_of_match);
 -- 
 2.43.0
 
