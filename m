@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-24434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 795EF869476
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:54:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F25D869478
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:54:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FDE11F22331
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:54:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7099C1C239E8
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:54:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A76C313EFE4;
-	Tue, 27 Feb 2024 13:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A602013F007;
+	Tue, 27 Feb 2024 13:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NdPaIXL/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SlRcPxz3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6431F13AA2F;
-	Tue, 27 Feb 2024 13:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657C854BD4;
+	Tue, 27 Feb 2024 13:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041994; cv=none; b=EfB7sfUgsN0JkQvPKKoybtZDJQB5XMoZOKW5GP3E9T5O/e2bo9uLcZdsUFGqCIBLn71kpglPmaIjOa0+mUXaklddsOO53wHRbI4YJD8gyNMUz+uZf0SjJiLDaqYvBJtkIeUIW/9mqY1uc91sOdqYGzM00BrxNVFHhS2Qgssam+0=
+	t=1709042000; cv=none; b=c5my4NKqhHW0sv8+8pJPcsXheH2lEioXCnsjxtXZ0+MLzHZvogLwLo5XU0V7uyDmoYIQ6PRDZP5BDM4/Sy6sFlbRKHMGaqInPVEdfGiH9EMVeofltCyY8uT4v9R61MIJShbYPl0h9G4rhw1KqT2lqH/vKWdJL6btxQvnjQY8mDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041994; c=relaxed/simple;
-	bh=8HFGIwpnrN3EuyznFBkLuu2TwlaF1It+VWB+Z2TM9Dk=;
+	s=arc-20240116; t=1709042000; c=relaxed/simple;
+	bh=BU3ARFB6twQWfNu+5z7Z+E4GeHOvHxD/qv+Qtg/uTh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sj5y4+KkzaB0ghR/WCSjRs2Zp3EI2Ul/JxMR2wlNJA+dwXxNtz0ilhVgOldQWyTdGkwi+wOlpJPqOxF6cKqj6qd1/Lso5qzzhWgk4ZbieMPvc4ME0bjqQu0kvA+BeBqlFXboRy2+wPvjwbG0pOIcgTBtM4txFzOH7QvIW9x4PKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NdPaIXL/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4EAAC433F1;
-	Tue, 27 Feb 2024 13:53:13 +0000 (UTC)
+	 MIME-Version; b=RVir82B65OwyKPlQQBvxOEt8Aa7+cpHzyTM038O0QHjOBYlfBqdsqLG2C4VC8azGsjbG3Q1T5n+QvrkH2IDhf7aMo8NgBiOJLRbe8fe+Kf6fyyYn/+yP33xzxMgCMs74sVkSfv9xvTcIUxENRqm6WD60z5fl80h/astqPMgzbZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SlRcPxz3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A61C433C7;
+	Tue, 27 Feb 2024 13:53:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041994;
-	bh=8HFGIwpnrN3EuyznFBkLuu2TwlaF1It+VWB+Z2TM9Dk=;
+	s=korg; t=1709041999;
+	bh=BU3ARFB6twQWfNu+5z7Z+E4GeHOvHxD/qv+Qtg/uTh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NdPaIXL/plDg9buUjRtyBwk0+f/ZR2qvbjLVoJXn5dUcaAfdivHYQm2Xn10ABr5QN
-	 6zD+s2j6bsRw7Wej858vWsyHyKGX1/qvs32/W+c6VfVFMSBfPFTEb/kqS+bPYClHQL
-	 b8MQP2bhFequkTnHHAWdEKylqIcAhbiPi6tWtum0=
+	b=SlRcPxz3VmaDN98OQnrYsYlKB5gxDE414k0yZh4eHmw5rp1o0gGW4QqasF9ezbpgw
+	 EbX3tSaoFncTSEN39+MCSkxHusmM1QJuTY3lJ6WC0Db3aJdFs8T+/Yg7Vbnhy5xVrh
+	 oR3TacSUrn6qSo5hbo4sPOsdd+X/+xT+YcTgLWrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve Morvai <stevemorvai@hotmail.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.6 141/299] drm/meson: Dont remove bridges which are created by other drivers
-Date: Tue, 27 Feb 2024 14:24:12 +0100
-Message-ID: <20240227131630.393243437@linuxfoundation.org>
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 142/299] drm/amd/display: adjust few initialization order in dm
+Date: Tue, 27 Feb 2024 14:24:13 +0100
+Message-ID: <20240227131630.424816053@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
 References: <20240227131625.847743063@linuxfoundation.org>
@@ -66,67 +68,108 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Wayne Lin <wayne.lin@amd.com>
 
-commit bd915ae73a2d78559b376ad2caf5e4ef51de2455 upstream.
+commit 22e1dc4b2fec17af70f297a4295c5f19a0f3fbeb upstream.
 
-Stop calling drm_bridge_remove() for bridges allocated/managed by other
-drivers in the remove paths of meson_encoder_{cvbs,dsi,hdmi}.
-drm_bridge_remove() unregisters the bridge so it cannot be used
-anymore. Doing so for bridges we don't own can lead to the video
-pipeline not being able to come up after -EPROBE_DEFER of the VPU
-because we're unregistering a bridge that's managed by another driver.
-The other driver doesn't know that we have unregistered it's bridge
-and on subsequent .probe() we're not able to find those bridges anymore
-(since nobody re-creates them).
+[Why]
+Observe error message "Can't retrieve aconnector in hpd_rx_irq_offload_work"
+when boot up with a mst tbt4 dock connected. After analyzing, there are few
+parts needed to be adjusted:
 
-This fixes probe errors on Meson8b boards with the CVBS outputs enabled.
+1. hpd_rx_offload_wq[].aconnector is not initialzed before the dmub outbox
+hpd_irq handler get registered which causes the error message.
 
-Fixes: 09847723c12f ("drm/meson: remove drm bridges at aggregate driver unbind time")
-Fixes: 42dcf15f901c ("drm/meson: add DSI encoder")
-Cc:  <stable@vger.kernel.org>
-Reported-by: Steve Morvai <stevemorvai@hotmail.com>
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Tested-by: Steve Morvai <stevemorvai@hotmail.com>
-Link: https://lore.kernel.org/r/20240215220442.1343152-1-martin.blumenstingl@googlemail.com
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240215220442.1343152-1-martin.blumenstingl@googlemail.com
+2. registeration of hpd and hpd_rx_irq event for usb4 dp tunneling is not
+aligned with legacy interface sequence
+
+[How]
+Put DMUB_NOTIFICATION_HPD and DMUB_NOTIFICATION_HPD_IRQ handler
+registration into register_hpd_handlers() to align other interfaces and
+get hpd_rx_offload_wq[].aconnector initialized earlier than that.
+
+Leave DMUB_NOTIFICATION_AUX_REPLY registered as it was since we need that
+while calling dc_link_detect(). USB4 connection status will be proactively
+detected by dc_link_detect_connection_type() in amdgpu_dm_initialize_drm_device()
+
+Cc: Stable <stable@vger.kernel.org>
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/meson/meson_encoder_cvbs.c |    1 -
- drivers/gpu/drm/meson/meson_encoder_dsi.c  |    1 -
- drivers/gpu/drm/meson/meson_encoder_hdmi.c |    1 -
- 3 files changed, 3 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   37 ++++++++++------------
+ 1 file changed, 18 insertions(+), 19 deletions(-)
 
---- a/drivers/gpu/drm/meson/meson_encoder_cvbs.c
-+++ b/drivers/gpu/drm/meson/meson_encoder_cvbs.c
-@@ -294,6 +294,5 @@ void meson_encoder_cvbs_remove(struct me
- 	if (priv->encoders[MESON_ENC_CVBS]) {
- 		meson_encoder_cvbs = priv->encoders[MESON_ENC_CVBS];
- 		drm_bridge_remove(&meson_encoder_cvbs->bridge);
--		drm_bridge_remove(meson_encoder_cvbs->next_bridge);
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -1816,21 +1816,12 @@ static int amdgpu_dm_init(struct amdgpu_
+ 			DRM_ERROR("amdgpu: fail to register dmub aux callback");
+ 			goto error;
+ 		}
+-		if (!register_dmub_notify_callback(adev, DMUB_NOTIFICATION_HPD, dmub_hpd_callback, true)) {
+-			DRM_ERROR("amdgpu: fail to register dmub hpd callback");
+-			goto error;
+-		}
+-		if (!register_dmub_notify_callback(adev, DMUB_NOTIFICATION_HPD_IRQ, dmub_hpd_callback, true)) {
+-			DRM_ERROR("amdgpu: fail to register dmub hpd callback");
+-			goto error;
+-		}
+-	}
+-
+-	/* Enable outbox notification only after IRQ handlers are registered and DMUB is alive.
+-	 * It is expected that DMUB will resend any pending notifications at this point, for
+-	 * example HPD from DPIA.
+-	 */
+-	if (dc_is_dmub_outbox_supported(adev->dm.dc)) {
++		/* Enable outbox notification only after IRQ handlers are registered and DMUB is alive.
++		 * It is expected that DMUB will resend any pending notifications at this point. Note
++		 * that hpd and hpd_irq handler registration are deferred to register_hpd_handlers() to
++		 * align legacy interface initialization sequence. Connection status will be proactivly
++		 * detected once in the amdgpu_dm_initialize_drm_device.
++		 */
+ 		dc_enable_dmub_outbox(adev->dm.dc);
+ 
+ 		/* DPIA trace goes to dmesg logs only if outbox is enabled */
+@@ -3484,6 +3475,14 @@ static void register_hpd_handlers(struct
+ 	int_params.requested_polarity = INTERRUPT_POLARITY_DEFAULT;
+ 	int_params.current_polarity = INTERRUPT_POLARITY_DEFAULT;
+ 
++	if (dc_is_dmub_outbox_supported(adev->dm.dc)) {
++		if (!register_dmub_notify_callback(adev, DMUB_NOTIFICATION_HPD, dmub_hpd_callback, true))
++			DRM_ERROR("amdgpu: fail to register dmub hpd callback");
++
++		if (!register_dmub_notify_callback(adev, DMUB_NOTIFICATION_HPD_IRQ, dmub_hpd_callback, true))
++			DRM_ERROR("amdgpu: fail to register dmub hpd callback");
++	}
++
+ 	list_for_each_entry(connector,
+ 			&dev->mode_config.connector_list, head)	{
+ 
+@@ -3509,10 +3508,6 @@ static void register_hpd_handlers(struct
+ 					handle_hpd_rx_irq,
+ 					(void *) aconnector);
+ 		}
+-
+-		if (adev->dm.hpd_rx_offload_wq)
+-			adev->dm.hpd_rx_offload_wq[connector->index].aconnector =
+-				aconnector;
  	}
  }
---- a/drivers/gpu/drm/meson/meson_encoder_dsi.c
-+++ b/drivers/gpu/drm/meson/meson_encoder_dsi.c
-@@ -168,6 +168,5 @@ void meson_encoder_dsi_remove(struct mes
- 	if (priv->encoders[MESON_ENC_DSI]) {
- 		meson_encoder_dsi = priv->encoders[MESON_ENC_DSI];
- 		drm_bridge_remove(&meson_encoder_dsi->bridge);
--		drm_bridge_remove(meson_encoder_dsi->next_bridge);
- 	}
- }
---- a/drivers/gpu/drm/meson/meson_encoder_hdmi.c
-+++ b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
-@@ -474,6 +474,5 @@ void meson_encoder_hdmi_remove(struct me
- 	if (priv->encoders[MESON_ENC_HDMI]) {
- 		meson_encoder_hdmi = priv->encoders[MESON_ENC_HDMI];
- 		drm_bridge_remove(&meson_encoder_hdmi->bridge);
--		drm_bridge_remove(meson_encoder_hdmi->next_bridge);
- 	}
- }
+ 
+@@ -4481,6 +4476,10 @@ static int amdgpu_dm_initialize_drm_devi
+ 
+ 		link = dc_get_link_at_index(dm->dc, i);
+ 
++		if (dm->hpd_rx_offload_wq)
++			dm->hpd_rx_offload_wq[aconnector->base.index].aconnector =
++				aconnector;
++
+ 		if (!dc_link_detect_connection_type(link, &new_connection_type))
+ 			DRM_ERROR("KMS: Failed to detect connector\n");
+ 
 
 
 
