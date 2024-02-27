@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-24501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D61748694CD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:56:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 040938695FC
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BFBF1F22A25
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:56:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2C7528F229
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C949C13DBAA;
-	Tue, 27 Feb 2024 13:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2EB9145322;
+	Tue, 27 Feb 2024 14:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GtUYGJ6h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0f6+Oi8i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D8313B78A;
-	Tue, 27 Feb 2024 13:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902781419A1;
+	Tue, 27 Feb 2024 14:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042179; cv=none; b=EZsNV/wS1Mfa56Rl1idPxu0q7PyAqMdWwaZZVExXo4zxQva6XfwmHnjo2R6riEISs6K4le5T4hgZrm08tQnohH5VJFBQWt/trCb7wTtwQUmp+deOxO4Yflyt2uuSN7eXwiHRFhOGr5RkWib3bpEZduU3lpXX7kf6VKTwfo/0pLQ=
+	t=1709042812; cv=none; b=MXT+PBbyymvHC2sJlY2u+DMTceA9Z3BqWTWfs3d+1A3iO64uAEC2HkZZbpEWPqkcQc9jxSM34NHduJLMRjczaY+VFOWbYBdhrGn6BpVUGIbBnG9y5oiMJu6YgB63NmekRL/joZH7XDGh6TbwCWqpk6GBm3o3QJAqalTI7uSNdJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042179; c=relaxed/simple;
-	bh=3oCtFxkFqntxu1zboWLW4ImIv2R5+6azK5kaBj01V6I=;
+	s=arc-20240116; t=1709042812; c=relaxed/simple;
+	bh=smSzktnpvWvRDzmh+cIm7PWdvFILjrKEUS4+UgguX4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sYv2/AqTxKD87hfFGNS1d8P+cuQhJYiAsgomKGXLibb4pBJ0XMEDqHWQ+Lh554h6Mq3bMYOU1dMUkjBj1hOqt8MLBR2BDyaUdGmAuxHVdWaq+SHtbMwq2XFm8wsQdw/VRfXLsd6qetkwcdwmpLUv9maZ7s3t5/XhFS1XrKU5+To=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GtUYGJ6h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16FC8C433F1;
-	Tue, 27 Feb 2024 13:56:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uJl6VJgW2v/4HJN5R9kGmjx7llFxf19ycZhLi0/kTA0KrB0vMWpJf1ujgGFAV1rvxhX4AYNJjhMMhF8oJyNegpFtPoR3fWQCIIm0J5hMIuW4zyFl+ALGCukZB7tbTRPjEphGKRpo6KcwEMrpDNNDOE3gHlJHo5xKd7/HFNweqhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0f6+Oi8i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAB51C433C7;
+	Tue, 27 Feb 2024 14:06:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042179;
-	bh=3oCtFxkFqntxu1zboWLW4ImIv2R5+6azK5kaBj01V6I=;
+	s=korg; t=1709042812;
+	bh=smSzktnpvWvRDzmh+cIm7PWdvFILjrKEUS4+UgguX4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GtUYGJ6hDmj9xQfYSGb2elSgprz9vo/wSAQYBM3JCpzB2AOKzv49lBiHukepKMi+W
-	 oBldwU1V94m7MgomK+zo9WoTpp9pzxU0MGKdlJha+5siw6iddPRTFIw+PWclUFW8pt
-	 GkWiarLh1DPYPCzLD1omjHfOtNZUfRwkdmx/6h7k=
+	b=0f6+Oi8iJSaibMgcgIXZ0oafxnuyxC936iStueZ68BwcEG5KS7J8pY++LP4H4CDRh
+	 20S5BAudafqdKEWQItkRWwJ0RL40y/MYucMQjTpWdD6EnQ3pzsM9Knq1RbUduUkNtH
+	 iupNTX5BGP0WWvOhLBpK2iZZDAjUGOEam3PDkpxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	PeiChen Huang <peichen.huang@amd.com>,
-	Aric Cyr <aric.cyr@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 207/299] drm/amd/display: Fix buffer overflow in get_host_router_total_dp_tunnel_bw()
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 130/245] ARM: dts: BCM53573: Drop nonexistent #usb-cells
 Date: Tue, 27 Feb 2024 14:25:18 +0100
-Message-ID: <20240227131632.459948745@linuxfoundation.org>
+Message-ID: <20240227131619.441857299@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,57 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-commit 97cba232549b9fe7e491fb60a69cf93075015f29 upstream.
+[ Upstream commit 05d2c3d552b8c92fc397377d9d1112fc58e2cd59 ]
 
-The error message buffer overflow 'dc->links' 12 <= 12 suggests that the
-code is trying to access an element of the dc->links array that is
-beyond its bounds. In C, arrays are zero-indexed, so an array with 12
-elements has valid indices from 0 to 11. Trying to access dc->links[12]
-would be an attempt to access the 13th element of a 12-element array,
-which is a buffer overflow.
+Such property simply doesn't exist (is not documented or used anywhere).
 
-To fix this, ensure that the loop does not go beyond the last valid
-index when accessing dc->links[i + 1] by subtracting 1 from the loop
-condition.
+This fixes:
+arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dtb: usb@d000: Unevaluated properties are not allowed ('#usb-cells' was unexpected)
+        From schema: Documentation/devicetree/bindings/usb/generic-ohci.yaml
 
-This would ensure that i + 1 is always a valid index in the array.
-
-Fixes the below:
-drivers/gpu/drm/amd/amdgpu/../display/dc/link/protocols/link_dp_dpia_bw.c:208 get_host_router_total_dp_tunnel_bw() error: buffer overflow 'dc->links' 12 <= 12
-
-Fixes: 59f1622a5f05 ("drm/amd/display: Add dpia display mode validation logic")
-Cc: PeiChen Huang <peichen.huang@amd.com>
-Cc: Aric Cyr <aric.cyr@amd.com>
-Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Link: https://lore.kernel.org/r/20230707114004.2740-2-zajec5@gmail.com
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/bcm53573.dtsi | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c
-@@ -196,7 +196,7 @@ static int get_host_router_total_dp_tunn
- 	struct dc_link *link_dpia_primary, *link_dpia_secondary;
- 	int total_bw = 0;
+diff --git a/arch/arm/boot/dts/bcm53573.dtsi b/arch/arm/boot/dts/bcm53573.dtsi
+index 933b6a380c367..85a23dc52423c 100644
+--- a/arch/arm/boot/dts/bcm53573.dtsi
++++ b/arch/arm/boot/dts/bcm53573.dtsi
+@@ -159,8 +159,6 @@ ehci_port2: port@2 {
+ 			};
  
--	for (uint8_t i = 0; i < MAX_PIPES * 2; ++i) {
-+	for (uint8_t i = 0; i < (MAX_PIPES * 2) - 1; ++i) {
- 
- 		if (!dc->links[i] || dc->links[i]->ep_type != DISPLAY_ENDPOINT_USB4_DPIA)
- 			continue;
+ 			ohci: usb@d000 {
+-				#usb-cells = <0>;
+-
+ 				compatible = "generic-ohci";
+ 				reg = <0xd000 0x1000>;
+ 				interrupt-parent = <&gic>;
+-- 
+2.43.0
+
 
 
 
