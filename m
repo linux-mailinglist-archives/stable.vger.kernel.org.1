@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-24323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE6298693ED
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A3D869392
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:46:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8357A292C62
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45E44B2FCA8
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:42:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E26951420D3;
-	Tue, 27 Feb 2024 13:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 854DC13AA2F;
+	Tue, 27 Feb 2024 13:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dE3kMBpO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9RQZPhT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 928621420D2;
-	Tue, 27 Feb 2024 13:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42ED22F2D;
+	Tue, 27 Feb 2024 13:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041668; cv=none; b=uBoe7bD3HqhGirKhrF1WIF18Fb/zqVJP62g5ce7NxhrEa2dtmWHrDFWgil3e9sOoundnc36PHJ1rcpkm79XBOzRHwL/t1Tc9UDCQQWjJI5Lmdc5FeIh3kuZsZN7tdTeNsmPmaAXHmW0TMZolIknxMSgUsy1twi1LSws11fUpRqA=
+	t=1709041361; cv=none; b=MDtxvwIgiGqg8Vil5M44dUeXPetJ4HgdmhZvCNBxzYM1GgvGcGDG2IiPHWURfXqAUk2kwi9/FEs+mmpY+sXR+atGHAVNXWPfSzvIwrb6rU3GNH3hX4golH2FlkicZFFyXtflfru0WlUw6JInk2YZHUbvLjA0dRdeIA6nqSznNg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041668; c=relaxed/simple;
-	bh=0za/+E+I5SyRuGqhG1ChRvJmVCKiBS2AmQ7h4O2apYQ=;
+	s=arc-20240116; t=1709041361; c=relaxed/simple;
+	bh=dBFeTYGazdvXcF0wkdpgUBhkpIM2Es+vPEyNfAksN7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t2VS2np7Dw5WktW6++BDIcDjgcMnJXTI2pdim2gZKe3G4zalDFXYas10+GTAidXoZt38oQgRzWgrSxeS14B4WX0PTmEAx7e4WepRrtH4SEC0NV/k7W2XIotQMOHO0HEhHj92az08pYPsY4lEoWBAEXMQ1lWcx2Hk2bE93XacOH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dE3kMBpO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223B8C433C7;
-	Tue, 27 Feb 2024 13:47:47 +0000 (UTC)
+	 MIME-Version; b=Iq0ADGvVXN+GfVtv1P1HOxlReooMgoNKo734wSIMsnT7T9SX1mXNyFxMbDlGtrV9pLiZZpDxVawf014td2feCRpWGm4B4Mf7uqBbFKpDOHnwsv86QqQiX8pckSgGD10DxtfrsaEKJ2pOJBHcv1YR9xKH9BdiziqnZo7oeGJm33s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P9RQZPhT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6EE9C433C7;
+	Tue, 27 Feb 2024 13:42:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041668;
-	bh=0za/+E+I5SyRuGqhG1ChRvJmVCKiBS2AmQ7h4O2apYQ=;
+	s=korg; t=1709041361;
+	bh=dBFeTYGazdvXcF0wkdpgUBhkpIM2Es+vPEyNfAksN7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dE3kMBpORXsp8Ht+kJ37aAyavSre4ORNObVMEKSWPieFGICLjVdXW7wgaAL66ceja
-	 fdcwadHLSDNQiSPK2+kcWndr2UOeWXBuf2XcU/Po9CbPA5wB5Mngxs7qUMqyvQpWK2
-	 IX9YE4xFUtCpWDY1mklFqQCexG9G2tsnCNAzP8MI=
+	b=P9RQZPhTWk238gbG56PACgW03UNAh0Po402qvtv0jfKXNi5Ciz0El3bxNBRZjOiFw
+	 ZSaszC+hosa7qF3q5VhneEa5WNBTQ14wZAhA+dpOL3AKoThQfMAJpvfO6l5kqVKsdt
+	 9xMZuJdcd7zu1wS+RoGuikvNg75P4ZvbSkYgo1vw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lennert Buytenhek <kernel@wantstofly.org>,
-	Niklas Cassel <cassel@kernel.org>,
+	syzkaller <syzkaller@googlegroups.com>,
+	Bjoern Doebel <doebel@amazon.de>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 029/299] ahci: add 43-bit DMA address quirk for ASMedia ASM1061 controllers
+Subject: [PATCH 6.7 282/334] arp: Prevent overflow in arp_req_get().
 Date: Tue, 27 Feb 2024 14:22:20 +0100
-Message-ID: <20240227131626.762952699@linuxfoundation.org>
+Message-ID: <20240227131640.082407006@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,161 +64,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lennert Buytenhek <kernel@wantstofly.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 20730e9b277873deeb6637339edcba64468f3da3 ]
+[ Upstream commit a7d6027790acea24446ddd6632d394096c0f4667 ]
 
-With one of the on-board ASM1061 AHCI controllers (1b21:0612) on an
-ASUSTeK Pro WS WRX80E-SAGE SE WIFI mainboard, a controller hang was
-observed that was immediately preceded by the following kernel
-messages:
+syzkaller reported an overflown write in arp_req_get(). [0]
 
-ahci 0000:28:00.0: Using 64-bit DMA addresses
-ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00000 flags=0x0000]
-ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00300 flags=0x0000]
-ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00380 flags=0x0000]
-ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00400 flags=0x0000]
-ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00680 flags=0x0000]
-ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00700 flags=0x0000]
+When ioctl(SIOCGARP) is issued, arp_req_get() looks up an neighbour
+entry and copies neigh->ha to struct arpreq.arp_ha.sa_data.
 
-The first message is produced by code in drivers/iommu/dma-iommu.c
-which is accompanied by the following comment that seems to apply:
+The arp_ha here is struct sockaddr, not struct sockaddr_storage, so
+the sa_data buffer is just 14 bytes.
 
-        /*
-         * Try to use all the 32-bit PCI addresses first. The original SAC vs.
-         * DAC reasoning loses relevance with PCIe, but enough hardware and
-         * firmware bugs are still lurking out there that it's safest not to
-         * venture into the 64-bit space until necessary.
-         *
-         * If your device goes wrong after seeing the notice then likely either
-         * its driver is not setting DMA masks accurately, the hardware has
-         * some inherent bug in handling >32-bit addresses, or not all the
-         * expected address bits are wired up between the device and the IOMMU.
-         */
+In the splat below, 2 bytes are overflown to the next int field,
+arp_flags.  We initialise the field just after the memcpy(), so it's
+not a problem.
 
-Asking the ASM1061 on a discrete PCIe card to DMA from I/O virtual
-address 0xffffffff00000000 produces the following I/O page faults:
+However, when dev->addr_len is greater than 22 (e.g. MAX_ADDR_LEN),
+arp_netmask is overwritten, which could be set as htonl(0xFFFFFFFFUL)
+in arp_ioctl() before calling arp_req_get().
 
-vfio-pci 0000:07:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0021 address=0x7ff00000000 flags=0x0010]
-vfio-pci 0000:07:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0021 address=0x7ff00000500 flags=0x0010]
+To avoid the overflow, let's limit the max length of memcpy().
 
-Note that the upper 21 bits of the logged DMA address are zero.  (When
-asking a different PCIe device in the same PCIe slot to DMA to the
-same I/O virtual address, we do see all the upper 32 bits of the DMA
-address as 1, so this is not an issue with the chipset or IOMMU
-configuration on the test system.)
+Note that commit b5f0de6df6dc ("net: dev: Convert sa_data to flexible
+array in struct sockaddr") just silenced syzkaller.
 
-Also, hacking libahci to always set the upper 21 bits of all DMA
-addresses to 1 produces no discernible effect on the behavior of the
-ASM1061, and mkfs/mount/scrub/etc work as without this hack.
+[0]:
+memcpy: detected field-spanning write (size 16) of single field "r->arp_ha.sa_data" at net/ipv4/arp.c:1128 (size 14)
+WARNING: CPU: 0 PID: 144638 at net/ipv4/arp.c:1128 arp_req_get+0x411/0x4a0 net/ipv4/arp.c:1128
+Modules linked in:
+CPU: 0 PID: 144638 Comm: syz-executor.4 Not tainted 6.1.74 #31
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.0-debian-1.16.0-5 04/01/2014
+RIP: 0010:arp_req_get+0x411/0x4a0 net/ipv4/arp.c:1128
+Code: fd ff ff e8 41 42 de fb b9 0e 00 00 00 4c 89 fe 48 c7 c2 20 6d ab 87 48 c7 c7 80 6d ab 87 c6 05 25 af 72 04 01 e8 5f 8d ad fb <0f> 0b e9 6c fd ff ff e8 13 42 de fb be 03 00 00 00 4c 89 e7 e8 a6
+RSP: 0018:ffffc900050b7998 EFLAGS: 00010286
+RAX: 0000000000000000 RBX: ffff88803a815000 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: ffffffff8641a44a RDI: 0000000000000001
+RBP: ffffc900050b7a98 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000000 R11: 203a7970636d656d R12: ffff888039c54000
+R13: 1ffff92000a16f37 R14: ffff88803a815084 R15: 0000000000000010
+FS:  00007f172bf306c0(0000) GS:ffff88805aa00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f172b3569f0 CR3: 0000000057f12005 CR4: 0000000000770ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ arp_ioctl+0x33f/0x4b0 net/ipv4/arp.c:1261
+ inet_ioctl+0x314/0x3a0 net/ipv4/af_inet.c:981
+ sock_do_ioctl+0xdf/0x260 net/socket.c:1204
+ sock_ioctl+0x3ef/0x650 net/socket.c:1321
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:870 [inline]
+ __se_sys_ioctl fs/ioctl.c:856 [inline]
+ __x64_sys_ioctl+0x18e/0x220 fs/ioctl.c:856
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x37/0x90 arch/x86/entry/common.c:81
+ entry_SYSCALL_64_after_hwframe+0x64/0xce
+RIP: 0033:0x7f172b262b8d
+Code: 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f172bf300b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007f172b3abf80 RCX: 00007f172b262b8d
+RDX: 0000000020000000 RSI: 0000000000008954 RDI: 0000000000000003
+RBP: 00007f172b2d3493 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 000000000000000b R14: 00007f172b3abf80 R15: 00007f172bf10000
+ </TASK>
 
-This all strongly suggests that the ASM1061 has a 43 bit DMA address
-limit, and this commit therefore adds a quirk to deal with this limit.
-
-This issue probably applies to (some of) the other supported ASMedia
-parts as well, but we limit it to the PCI IDs known to refer to
-ASM1061 parts, as that's the only part we know for sure to be affected
-by this issue at this point.
-
-Link: https://lore.kernel.org/linux-ide/ZaZ2PIpEId-rl6jv@wantstofly.org/
-Signed-off-by: Lennert Buytenhek <kernel@wantstofly.org>
-[cassel: drop date from error messages in commit log]
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Reported-by: Bjoern Doebel <doebel@amazon.de>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240215230516.31330-1-kuniyu@amazon.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci.c | 29 +++++++++++++++++++++++------
- drivers/ata/ahci.h |  1 +
- 2 files changed, 24 insertions(+), 6 deletions(-)
+ net/ipv4/arp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 2b8f0c3c3879a..20761eeea4100 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -48,6 +48,7 @@ enum {
- enum board_ids {
- 	/* board IDs by feature in alphabetical order */
- 	board_ahci,
-+	board_ahci_43bit_dma,
- 	board_ahci_ign_iferr,
- 	board_ahci_low_power,
- 	board_ahci_no_debounce_delay,
-@@ -128,6 +129,13 @@ static const struct ata_port_info ahci_port_info[] = {
- 		.udma_mask	= ATA_UDMA6,
- 		.port_ops	= &ahci_ops,
- 	},
-+	[board_ahci_43bit_dma] = {
-+		AHCI_HFLAGS	(AHCI_HFLAG_43BIT_ONLY),
-+		.flags		= AHCI_FLAG_COMMON,
-+		.pio_mask	= ATA_PIO4,
-+		.udma_mask	= ATA_UDMA6,
-+		.port_ops	= &ahci_ops,
-+	},
- 	[board_ahci_ign_iferr] = {
- 		AHCI_HFLAGS	(AHCI_HFLAG_IGN_IRQ_IF_ERR),
- 		.flags		= AHCI_FLAG_COMMON,
-@@ -596,11 +604,11 @@ static const struct pci_device_id ahci_pci_tbl[] = {
- 	{ PCI_VDEVICE(PROMISE, 0x3f20), board_ahci },	/* PDC42819 */
- 	{ PCI_VDEVICE(PROMISE, 0x3781), board_ahci },   /* FastTrak TX8660 ahci-mode */
- 
--	/* Asmedia */
-+	/* ASMedia */
- 	{ PCI_VDEVICE(ASMEDIA, 0x0601), board_ahci },	/* ASM1060 */
- 	{ PCI_VDEVICE(ASMEDIA, 0x0602), board_ahci },	/* ASM1060 */
--	{ PCI_VDEVICE(ASMEDIA, 0x0611), board_ahci },	/* ASM1061 */
--	{ PCI_VDEVICE(ASMEDIA, 0x0612), board_ahci },	/* ASM1062 */
-+	{ PCI_VDEVICE(ASMEDIA, 0x0611), board_ahci_43bit_dma },	/* ASM1061 */
-+	{ PCI_VDEVICE(ASMEDIA, 0x0612), board_ahci_43bit_dma },	/* ASM1061/1062 */
- 	{ PCI_VDEVICE(ASMEDIA, 0x0621), board_ahci },   /* ASM1061R */
- 	{ PCI_VDEVICE(ASMEDIA, 0x0622), board_ahci },   /* ASM1062R */
- 	{ PCI_VDEVICE(ASMEDIA, 0x0624), board_ahci },   /* ASM1062+JMB575 */
-@@ -948,11 +956,20 @@ static int ahci_pci_device_resume(struct device *dev)
- 
- #endif /* CONFIG_PM */
- 
--static int ahci_configure_dma_masks(struct pci_dev *pdev, int using_dac)
-+static int ahci_configure_dma_masks(struct pci_dev *pdev,
-+				    struct ahci_host_priv *hpriv)
- {
--	const int dma_bits = using_dac ? 64 : 32;
-+	int dma_bits;
- 	int rc;
- 
-+	if (hpriv->cap & HOST_CAP_64) {
-+		dma_bits = 64;
-+		if (hpriv->flags & AHCI_HFLAG_43BIT_ONLY)
-+			dma_bits = 43;
-+	} else {
-+		dma_bits = 32;
-+	}
-+
- 	/*
- 	 * If the device fixup already set the dma_mask to some non-standard
- 	 * value, don't extend it here. This happens on STA2X11, for example.
-@@ -1925,7 +1942,7 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	ahci_gtf_filter_workaround(host);
- 
- 	/* initialize adapter */
--	rc = ahci_configure_dma_masks(pdev, hpriv->cap & HOST_CAP_64);
-+	rc = ahci_configure_dma_masks(pdev, hpriv);
- 	if (rc)
- 		return rc;
- 
-diff --git a/drivers/ata/ahci.h b/drivers/ata/ahci.h
-index 4bae95b06ae3c..df8f8a1a3a34c 100644
---- a/drivers/ata/ahci.h
-+++ b/drivers/ata/ahci.h
-@@ -247,6 +247,7 @@ enum {
- 	AHCI_HFLAG_SUSPEND_PHYS		= BIT(26), /* handle PHYs during
- 						      suspend/resume */
- 	AHCI_HFLAG_NO_SXS		= BIT(28), /* SXS not supported */
-+	AHCI_HFLAG_43BIT_ONLY		= BIT(29), /* 43bit DMA addr limit */
- 
- 	/* ap->flags bits */
- 
+diff --git a/net/ipv4/arp.c b/net/ipv4/arp.c
+index 9456f5bb35e5d..0d0d725b46ad0 100644
+--- a/net/ipv4/arp.c
++++ b/net/ipv4/arp.c
+@@ -1125,7 +1125,8 @@ static int arp_req_get(struct arpreq *r, struct net_device *dev)
+ 	if (neigh) {
+ 		if (!(READ_ONCE(neigh->nud_state) & NUD_NOARP)) {
+ 			read_lock_bh(&neigh->lock);
+-			memcpy(r->arp_ha.sa_data, neigh->ha, dev->addr_len);
++			memcpy(r->arp_ha.sa_data, neigh->ha,
++			       min(dev->addr_len, sizeof(r->arp_ha.sa_data_min)));
+ 			r->arp_flags = arp_state_to_flags(neigh);
+ 			read_unlock_bh(&neigh->lock);
+ 			r->arp_ha.sa_family = dev->type;
 -- 
 2.43.0
 
