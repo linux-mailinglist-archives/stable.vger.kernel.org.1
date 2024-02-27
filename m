@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-24144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07FDA8692D1
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:39:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6427F8692DF
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:39:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C31C1F2D7AD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:39:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90F2E1C216E2
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0AE13B78A;
-	Tue, 27 Feb 2024 13:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A54013B78F;
+	Tue, 27 Feb 2024 13:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U7HNqkGb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ea0ZWH/w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D89913B2B9;
-	Tue, 27 Feb 2024 13:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3533413B2A2;
+	Tue, 27 Feb 2024 13:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041154; cv=none; b=GWG/7g16vdq/rB7JjieVe3ceTZtk06VV8futzadlDCM6/iunsAS7kCRHLeWRc3oY5vD1nOAVgUripMdhqriWPfPEFVgZ9Ig2e2RCQRjw9YOjg2NdmTspxqbWl6VxL2ZvYVnEyHIxNIe5xC/29R7ezvGyfxxFd5WUdGvfLsViFJk=
+	t=1709041160; cv=none; b=U6b2Dzn1qeejXTaUiCo6l+LMEMiI7punhty4gN+ExoArbc4OyC3VXuytjlUgx+y+5nCLmUeTwqPLMapwFFxVtpxpR9r4Ouj15pXreEdFO2BgG3e7jasm5WRCTZJ7shaj5IlTi0xYx5nzMLGvIPt7cKMq/6Y/AwZUdUc5MwvLxDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041154; c=relaxed/simple;
-	bh=OGcAB7iwVyjO5WB//nhE11nkYWF9XSTr8TPwpayNhIY=;
+	s=arc-20240116; t=1709041160; c=relaxed/simple;
+	bh=eTXOlJTEm6k3qXfOgpy+xHaSqLwlzHm6aP+3uHJZnEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SKB4RohY56RKL0/o44xPBmRue1zUBT32GtQTeZI7N7Y7R3zoRBfpEmiuQ4D3P6Cm9BSEaC9dBzgEo0K9lcm3HR2jGpffZS8EZlLhDzBd9ecHeT8FGo2+1feXf1AV+MqIcCIyFX9wCz8Sl6DaqbJhO76IQAq+eCYrKkoZVij4LGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U7HNqkGb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C638BC43394;
-	Tue, 27 Feb 2024 13:39:13 +0000 (UTC)
+	 MIME-Version; b=JF5wjJ+ZQ5aOnW7YZqLuoWG7EXgsWGUVAk33qMT+C3oa6ljlpQYf8JziPX8rFA3L1f7Ki0KwYrehvpSac867m1l8kW8BbCmUSoXuR7mGEGs80lDYHymV4pS1SDyxx/ciukpvAEFF6ObhCvFFjQpSMI0ba4fkyhUz+o67hEnAskM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ea0ZWH/w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FFBDC433C7;
+	Tue, 27 Feb 2024 13:39:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041154;
-	bh=OGcAB7iwVyjO5WB//nhE11nkYWF9XSTr8TPwpayNhIY=;
+	s=korg; t=1709041159;
+	bh=eTXOlJTEm6k3qXfOgpy+xHaSqLwlzHm6aP+3uHJZnEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U7HNqkGbBRKFTiQxY6f6+yXgtzYUrnbArt6p/0yr+G5kcFbPt4vEs6+09u46zjtqm
-	 +xVuNQDBL8sU2oBUdRaVXhNmdRoxk76wQ4Jl3TSR1JbbGwhh9Z0FFYcdv4etFINPaz
-	 399PL/hkF5pa5JnjpbqE7VWV9oQiqq3KjtKQGTy4=
+	b=ea0ZWH/w8Xwfszmr+JgjMdCCAvwhVH2xhkow+nMvneOQ5GNjWQIBG90J1UGSI4pFQ
+	 OTr2njRRiQtQuwV3uDe+ir+lQSQ1lm656gu03KBlIhCouOLcgB7rA8uoH6tQtyQneN
+	 YfXEgWjS5hSyppbi9FzNBn4uR/S+C+DObcpyc/ao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Mustafa Ismail <mustafa.ismail@intel.com>,
 	Shiraz Saleem <shiraz.saleem@intel.com>,
-	Sindhu Devale <sindhu.devale@intel.com>,
+	Sindhu Devale <sindhu.devale@gmail.com>,
 	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 239/334] RDMA/irdma: Set the CQ read threshold for GEN 1
-Date: Tue, 27 Feb 2024 14:21:37 +0100
-Message-ID: <20240227131638.593906613@linuxfoundation.org>
+Subject: [PATCH 6.7 240/334] RDMA/irdma: Add AE for too many RNRS
+Date: Tue, 27 Feb 2024 14:21:38 +0100
+Message-ID: <20240227131638.623129798@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
 References: <20240227131630.636392135@linuxfoundation.org>
@@ -70,39 +70,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Mustafa Ismail <mustafa.ismail@intel.com>
 
-[ Upstream commit 666047f3ece9f991774c1fe9b223139a9ef8908d ]
+[ Upstream commit 630bdb6f28ca9e5ff79e244030170ac788478332 ]
 
-The CQ shadow read threshold is currently not set for GEN 2.  This could
-cause an invalid CQ overflow condition, so remove the GEN check that
-exclused GEN 1.
+Add IRDMA_AE_LLP_TOO_MANY_RNRS to the list of AE's processed as an
+abnormal asyncronous event.
 
 Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
 Signed-off-by: Mustafa Ismail <mustafa.ismail@intel.com>
 Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
-Signed-off-by: Sindhu Devale <sindhu.devale@intel.com>
-Link: https://lore.kernel.org/r/20240131233849.400285-4-sindhu.devale@intel.com
+Signed-off-by: Sindhu Devale <sindhu.devale@gmail.com>
+Link: https://lore.kernel.org/r/20240131233849.400285-5-sindhu.devale@intel.com
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/verbs.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/infiniband/hw/irdma/defs.h | 1 +
+ drivers/infiniband/hw/irdma/hw.c   | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
-index cb828e3da478e..0b046c061742b 100644
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -2186,9 +2186,8 @@ static int irdma_create_cq(struct ib_cq *ibcq,
- 		info.cq_base_pa = iwcq->kmem.pa;
- 	}
- 
--	if (dev->hw_attrs.uk_attrs.hw_rev >= IRDMA_GEN_2)
--		info.shadow_read_threshold = min(info.cq_uk_init_info.cq_size / 2,
--						 (u32)IRDMA_MAX_CQ_READ_THRESH);
-+	info.shadow_read_threshold = min(info.cq_uk_init_info.cq_size / 2,
-+					 (u32)IRDMA_MAX_CQ_READ_THRESH);
- 
- 	if (irdma_sc_cq_init(cq, &info)) {
- 		ibdev_dbg(&iwdev->ibdev, "VERBS: init cq fail\n");
+diff --git a/drivers/infiniband/hw/irdma/defs.h b/drivers/infiniband/hw/irdma/defs.h
+index 8fb752f2eda29..2cb4b96db7212 100644
+--- a/drivers/infiniband/hw/irdma/defs.h
++++ b/drivers/infiniband/hw/irdma/defs.h
+@@ -346,6 +346,7 @@ enum irdma_cqp_op_type {
+ #define IRDMA_AE_LLP_TOO_MANY_KEEPALIVE_RETRIES				0x050b
+ #define IRDMA_AE_LLP_DOUBT_REACHABILITY					0x050c
+ #define IRDMA_AE_LLP_CONNECTION_ESTABLISHED				0x050e
++#define IRDMA_AE_LLP_TOO_MANY_RNRS					0x050f
+ #define IRDMA_AE_RESOURCE_EXHAUSTION					0x0520
+ #define IRDMA_AE_RESET_SENT						0x0601
+ #define IRDMA_AE_TERMINATE_SENT						0x0602
+diff --git a/drivers/infiniband/hw/irdma/hw.c b/drivers/infiniband/hw/irdma/hw.c
+index 2f8d18d8be3b7..ad50b77282f8a 100644
+--- a/drivers/infiniband/hw/irdma/hw.c
++++ b/drivers/infiniband/hw/irdma/hw.c
+@@ -387,6 +387,7 @@ static void irdma_process_aeq(struct irdma_pci_f *rf)
+ 		case IRDMA_AE_LLP_TOO_MANY_RETRIES:
+ 		case IRDMA_AE_LCE_QP_CATASTROPHIC:
+ 		case IRDMA_AE_LCE_FUNCTION_CATASTROPHIC:
++		case IRDMA_AE_LLP_TOO_MANY_RNRS:
+ 		case IRDMA_AE_LCE_CQ_CATASTROPHIC:
+ 		case IRDMA_AE_UDA_XMIT_DGRAM_TOO_LONG:
+ 		default:
 -- 
 2.43.0
 
