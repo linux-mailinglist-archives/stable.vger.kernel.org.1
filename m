@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-23990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADF9086922D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:33:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC69886924D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:34:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F2ADDB25625
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:32:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65F1B293E79
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:34:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E2DF1420D2;
-	Tue, 27 Feb 2024 13:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E20013AA4F;
+	Tue, 27 Feb 2024 13:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKZP35oe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wOHNUctW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CCF513A25D;
-	Tue, 27 Feb 2024 13:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF452F2D;
+	Tue, 27 Feb 2024 13:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709040719; cv=none; b=G2SIorKuYr4NjjhgnuHcuO68ww9oCSAkZARY2xArBGYNqKwM2QafzL7naIWQW3FA7uU0LrQkHnrgZJTse6qIp4XyS9xDtK7Nkrw854rYgQFvQEJI9sgnZjDQlfGr2zvmyhYchgHPnS5MNMA8gHG2kUcd6wlUc4d+hEaM8Yzr+SA=
+	t=1709040832; cv=none; b=QVN3bjqw5kk3OIB7grZGFC3cA287QZ08Kqm7pe1skdHlXPlZzk4YlA4+uNZSb+5Bm75b97HXv6T5/A+z3uT8kQpuo644ZKLOOxwF7mrUlMmOlbhUfzP4sStzUXslf45q//y3mnpq2OZN50GFuuxNqzenSNcO3bhBCu+HQCq8pg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709040719; c=relaxed/simple;
-	bh=F3KRkCtKgIlBsu0PAyJFF4Yflu4TQ1wg6/hyIfRcGR0=;
+	s=arc-20240116; t=1709040832; c=relaxed/simple;
+	bh=QXDdmCkpFPXFNPH5UR0ZjO7wTAHIO+/XpI/vSwRhIzw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iYuUvUz80AG+1eSWk0xoQ1PocyhbLPkVe2MEmvHa/ELcsZlbj3fzjD2+8nRtDHkhBAtZ9BAeGm9RyLlC66S07r9Ey2sAHeW5Qu71njms1aksBLD4hMQ/jVKQ7PBvHZBPkUm2q7K725lOUepzg1T81hw1Q7Sve2SUNOp0IejbWoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKZP35oe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA4ADC433C7;
-	Tue, 27 Feb 2024 13:31:58 +0000 (UTC)
+	 MIME-Version; b=WCFCUu+MkorBoIXFbgV9rH+psroPEC/YiRH+DmxUpJ8VXa+/WPa9inkRjF38vpL5jjhec+IYJ8ZdgRZtmhNdAZLwdHdQ1ePORIPpgrp4cLltTmwRUdmnk2fgYkDprOHElUQqip1euC9zMkS6bnFORxJLeS7OrYpsboIWJ5GLDsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wOHNUctW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E4AC433C7;
+	Tue, 27 Feb 2024 13:33:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709040719;
-	bh=F3KRkCtKgIlBsu0PAyJFF4Yflu4TQ1wg6/hyIfRcGR0=;
+	s=korg; t=1709040832;
+	bh=QXDdmCkpFPXFNPH5UR0ZjO7wTAHIO+/XpI/vSwRhIzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dKZP35oeJWHnExg59SCPhgw48/kFfs3rJoQ5OZnYMl3FBUegC23aXbpIAERfNhHo9
-	 wwH4ToB3mCxFjUL74VfTHJGTzc7jCXvxEaastQhJG66TrkfJMnWd7FCxARROWRozY/
-	 Cc6IxM/yMQEJIEdEFl4MB+f2qE/8/SvMU/qrIyUE=
+	b=wOHNUctWRzpX6YkIOmAH/fyQ0oR/yptb51ROB7DOYYUVXfi1HvDqrCqdDZMY+8a5H
+	 EwD73vPRoIQU9oIBW/tL8ENmPCsU84RQl+X1pTx1dMn8uXiopOBCJ9ti9UIWzeF92N
+	 XZralcyfm5Yym1a5e8Rwy1IPaY2PUImWt7ndSDvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 084/334] fs/ntfs3: Correct use bh_read
-Date: Tue, 27 Feb 2024 14:19:02 +0100
-Message-ID: <20240227131633.240614582@linuxfoundation.org>
+Subject: [PATCH 6.7 085/334] fs/ntfs3: Add file_modified
+Date: Tue, 27 Feb 2024 14:19:03 +0100
+Message-ID: <20240227131633.270369212@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
 References: <20240227131630.636392135@linuxfoundation.org>
@@ -67,92 +67,57 @@ Content-Transfer-Encoding: 8bit
 
 From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit a40b73f608e7de2120fdb9ddc8970421b3c50bc9 ]
+[ Upstream commit 4dea9cd522424d3002894c20b729c6fbfb6fc22b ]
 
 Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/file.c  | 19 +++++++++----------
- fs/ntfs3/inode.c |  7 +++----
- 2 files changed, 12 insertions(+), 14 deletions(-)
+ fs/ntfs3/file.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
 diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
-index a5a30a24ce5df..5691f04e6751a 100644
+index 5691f04e6751a..bb80ce2eec2f7 100644
 --- a/fs/ntfs3/file.c
 +++ b/fs/ntfs3/file.c
-@@ -188,6 +188,7 @@ static int ntfs_zero_range(struct inode *inode, u64 vbo, u64 vbo_to)
- 	u32 bh_next, bh_off, to;
- 	sector_t iblock;
- 	struct folio *folio;
-+	bool dirty = false;
- 
- 	for (; idx < idx_end; idx += 1, from = 0) {
- 		page_off = (loff_t)idx << PAGE_SHIFT;
-@@ -223,29 +224,27 @@ static int ntfs_zero_range(struct inode *inode, u64 vbo, u64 vbo_to)
- 			/* Ok, it's mapped. Make sure it's up-to-date. */
- 			if (folio_test_uptodate(folio))
- 				set_buffer_uptodate(bh);
--
--			if (!buffer_uptodate(bh)) {
--				err = bh_read(bh, 0);
--				if (err < 0) {
--					folio_unlock(folio);
--					folio_put(folio);
--					goto out;
--				}
-+			else if (bh_read(bh, 0) < 0) {
-+				err = -EIO;
-+				folio_unlock(folio);
-+				folio_put(folio);
+@@ -632,11 +632,17 @@ static long ntfs_fallocate(struct file *file, int mode, loff_t vbo, loff_t len)
+ 					    &ni->file.run, i_size, &ni->i_valid,
+ 					    true, NULL);
+ 			ni_unlock(ni);
++			if (err)
 +				goto out;
- 			}
- 
- 			mark_buffer_dirty(bh);
--
- 		} while (bh_off = bh_next, iblock += 1,
- 			 head != (bh = bh->b_this_page));
- 
- 		folio_zero_segment(folio, from, to);
-+		dirty = true;
- 
- 		folio_unlock(folio);
- 		folio_put(folio);
- 		cond_resched();
- 	}
- out:
--	mark_inode_dirty(inode);
-+	if (dirty)
-+		mark_inode_dirty(inode);
- 	return err;
- }
- 
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index fa6c7965473c8..bba0208c4afde 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -345,9 +345,7 @@ static struct inode *ntfs_read_mft(struct inode *inode,
- 			inode->i_size = le16_to_cpu(rp.SymbolicLinkReparseBuffer
- 							    .PrintNameLength) /
- 					sizeof(u16);
--
- 			ni->i_valid = inode->i_size;
--
- 			/* Clear directory bit. */
- 			if (ni->ni_flags & NI_FLAG_DIR) {
- 				indx_clear(&ni->dir);
-@@ -653,9 +651,10 @@ static noinline int ntfs_get_block_vbo(struct inode *inode, u64 vbo,
- 			off = vbo & (PAGE_SIZE - 1);
- 			folio_set_bh(bh, folio, off);
- 
--			err = bh_read(bh, 0);
--			if (err < 0)
-+			if (bh_read(bh, 0) < 0) {
-+				err = -EIO;
- 				goto out;
-+			}
- 			folio_zero_segment(folio, off + voff, off + block_size);
+ 		} else if (new_size > i_size) {
+ 			inode->i_size = new_size;
  		}
  	}
+ 
++	err = file_modified(file);
++	if (err)
++		goto out;
++
+ out:
+ 	if (map_locked)
+ 		filemap_invalidate_unlock(mapping);
+@@ -1040,6 +1046,7 @@ static ssize_t ntfs_file_write_iter(struct kiocb *iocb, struct iov_iter *from)
+ 	struct address_space *mapping = file->f_mapping;
+ 	struct inode *inode = mapping->host;
+ 	ssize_t ret;
++	int err;
+ 	struct ntfs_inode *ni = ntfs_i(inode);
+ 
+ 	if (is_encrypted(ni)) {
+@@ -1067,6 +1074,12 @@ static ssize_t ntfs_file_write_iter(struct kiocb *iocb, struct iov_iter *from)
+ 	if (ret <= 0)
+ 		goto out;
+ 
++	err = file_modified(iocb->ki_filp);
++	if (err) {
++		ret = err;
++		goto out;
++	}
++
+ 	if (WARN_ON(ni->ni_flags & NI_FLAG_COMPRESSED_MASK)) {
+ 		/* Should never be here, see ntfs_file_open(). */
+ 		ret = -EOPNOTSUPP;
 -- 
 2.43.0
 
