@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-24294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16C0F8693C2
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:48:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19F2C869640
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:09:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB0FC1F26C5F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:48:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BE431C21F2E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:09:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03EEF145B03;
-	Tue, 27 Feb 2024 13:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6216C13B7AB;
+	Tue, 27 Feb 2024 14:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eDhHfXzV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YgsWnIDs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F8313B7A0;
-	Tue, 27 Feb 2024 13:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE7813A26F;
+	Tue, 27 Feb 2024 14:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041588; cv=none; b=fUB4XoDVot4n+rcGr8YtS2byikVKaWozf7e46RhOawIsfLhQcKHvEYU3LwoYRN8sFyAoomak36hO6OobVUWVaq5Ev1nJrNDFDerEam0g4MbSKxXShAinsEQL+3gSpKtc7YPPKiL3nLPuVau3WSpJCQRF4y/YYzVYyz83Jv99/VY=
+	t=1709042981; cv=none; b=psbEB/74n2YzGJPlfxtL1JNxzR+lzVLvx97IQlV4XFJJ75MUpu2yQtk949bxHR5bDGTAkhK9Z8k1t3/Cv0RxfradQ79VWBYCtyAs5UIztcl1wBRF0Ts1V8in2oYzZ2GSE2IVP4yTeGIhu+2ASe8RUMO7R6IqgcO7FCMnMm8TdDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041588; c=relaxed/simple;
-	bh=PCFLJr9hlKzaxCl9comiBXMlkLC1AGkqat01wtgxMJo=;
+	s=arc-20240116; t=1709042981; c=relaxed/simple;
+	bh=ceL+e+2VY1tIlXk6NhMwPp2B2IBQ7aRUVvrCseTMHfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CMrg7LTXKurQKwEpM1SfF8HdXI8ouIjcG3ovfFwKlfv8aRDYykZ4X9iVMl7PG2prDVbXsO212FYTey8h9Q2xybhckzmUEwWp7VDJ22dXFNlqkyMC0YkEBWT2e2AvnqRRPmq4EqMsRLGXGy8ixhVvkMBzfGwnYpzAeQdbOBH85As=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eDhHfXzV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44665C43394;
-	Tue, 27 Feb 2024 13:46:28 +0000 (UTC)
+	 MIME-Version; b=ma5ZsVEwrWJkLFqjpr6KdokkFhXuoJhjfn2RHLFmgsMAacws4MtvDUsIgNPJlfzpgmjUwnUVn1sdXfQXMz+zfvGzEg6ATDLHDlj6oeQt0nVcRlo2MVJPejzM9s8waNsZt4Ruj1WVcklgZIYqhEGrQIhGSy4f1RqGJsJlyueXX7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YgsWnIDs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C689C433F1;
+	Tue, 27 Feb 2024 14:09:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041588;
-	bh=PCFLJr9hlKzaxCl9comiBXMlkLC1AGkqat01wtgxMJo=;
+	s=korg; t=1709042981;
+	bh=ceL+e+2VY1tIlXk6NhMwPp2B2IBQ7aRUVvrCseTMHfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eDhHfXzV1f1GOIJ0Sy7BgLNoaopsyke2sXh8bI6+Ez8oxakKxucZjlVDVTEcxYau8
-	 neC+FH2E9epeU4ARJWcUOYNPFp7/Xo/qRLZvqGiC360MZX64z+5QBxO8p8chX8Z9kN
-	 STPFi/epJnnkxsttF9N/mOD+4l+doVZRLcAxGtLU=
+	b=YgsWnIDs9M6nrJc+KdgIxT96ODoNrzxBd3zSCmGcr7tTHSEFPWAXuoJUHVEADMv9T
+	 qb9mAYOcd4Q1cqU35VEjsGljVZ1y3kF+lisFjxSf8tgtWAQwlN/fU5AMbDxEZF404u
+	 2jmz+STqtL3IznsvinRlKn6744RHE2VvnKuW0G3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Nikita Shubin <nikita.shubin@maquefel.me>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 4.19 32/52] ARM: ep93xx: Add terminator to gpiod_lookup_table
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 191/245] ACPI: resource: Add Asus ExpertBook B2502 to Asus quirks
 Date: Tue, 27 Feb 2024 14:26:19 +0100
-Message-ID: <20240227131549.588085742@linuxfoundation.org>
+Message-ID: <20240227131621.400037196@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
-References: <20240227131548.514622258@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Shubin <nikita.shubin@maquefel.me>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit fdf87a0dc26d0550c60edc911cda42f9afec3557 upstream.
+[ Upstream commit 7203481fd12b1257938519efb2460ea02b9236ee ]
 
-Without the terminator, if a con_id is passed to gpio_find() that
-does not exist in the lookup table the function will not stop looping
-correctly, and eventually cause an oops.
+The Asus ExpertBook B2502 has the same keyboard issue as Asus Vivobook
+K3402ZA/K3502ZA. The kernel overrides IRQ 1 to Edge_High when it
+should be Active_Low.
 
-Cc: stable@vger.kernel.org
-Fixes: b2e63555592f ("i2c: gpio: Convert to use descriptors")
-Reported-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Nikita Shubin <nikita.shubin@maquefel.me>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Acked-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Link: https://lore.kernel.org/r/20240205102337.439002-1-alexander.sverdlin@gmail.com
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch adds the ExpertBook B2502 model to the existing
+quirk list of Asus laptops with this issue.
+
+Fixes: b5f9223a105d ("ACPI: resource: Skip IRQ override on Asus Vivobook S5602ZA")
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2142574
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 77c724888238 ("ACPI: resource: Skip IRQ override on Asus Expertbook B2402CBA")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-ep93xx/core.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/resource.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/arch/arm/mach-ep93xx/core.c
-+++ b/arch/arm/mach-ep93xx/core.c
-@@ -330,6 +330,7 @@ static struct gpiod_lookup_table ep93xx_
- 				GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN),
- 		GPIO_LOOKUP_IDX("G", 0, NULL, 1,
- 				GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN),
-+		{ }
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 5f56839ed71df..a5d2a81902038 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -435,6 +435,13 @@ static const struct dmi_system_id asus_laptop[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "S5602ZA"),
+ 		},
  	},
++	{
++		.ident = "Asus ExpertBook B2502",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "B2502CBA"),
++		},
++	},
+ 	{ }
  };
  
+-- 
+2.43.0
+
 
 
 
