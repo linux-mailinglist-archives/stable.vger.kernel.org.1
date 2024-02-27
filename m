@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CA43869658
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:10:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08278869800
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:27:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3536B293A57
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:10:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 971B21F2C752
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:27:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE01E13B78F;
-	Tue, 27 Feb 2024 14:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D931448FE;
+	Tue, 27 Feb 2024 14:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RsnrZWmU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hlyH1kAZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4C213A26F;
-	Tue, 27 Feb 2024 14:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E7EA1448C3;
+	Tue, 27 Feb 2024 14:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043044; cv=none; b=eR5XxPXUlgXyBqRvjsE9vM6l1DHHWWm6agFG/cDuG20b9utfxV318WVAGrkyc48QhxrWwk8tHW0XG0aNMQgyRaAKLeRvntd/zlD23OLXqRq/oSaDZOinYddPud/xqTEKIZJ14ehaS+b9ttJUNKYGk/80IfADy7OV2a4M56vU/fc=
+	t=1709044042; cv=none; b=D1iaBNRyCYHifG17ryxITOL/pfu+JBquGxwg2gcZn2FLuqvfblmtUUSKxZzH0WGaPbggQBzvyWg3f3i4Zffas1FP//7Ev83RaveqH36ilOtBqsjMUD5rAKfka7NVRQ58AExHy/1ORoM8Hrb0B9MLvkErJdbC7LOAhFTjBr3etUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043044; c=relaxed/simple;
-	bh=6adyS3NF2FE6Om2weYEx0/NZinQy4tajziot4hFCEAE=;
+	s=arc-20240116; t=1709044042; c=relaxed/simple;
+	bh=/sQZlpq7rfzc6H/AquHN8d/C0JNaNbzQS9gdhcjPUWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cNX1Sj1s/Z3/lNp0OCo0kTaXcl8rPgB+AECaHL6HKzZGxmU2JolPCk+37vu9KD7DvilUeyNvkpZYpbTRUXOebCU2JRiiqapBfvR3IEPalks+n7cObEL+wmm/8AA+fUh/2y7+TRQAOG2fwcx1paYCV3h7YAQGRxGgbFfEmGzME0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RsnrZWmU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E153BC433C7;
-	Tue, 27 Feb 2024 14:10:43 +0000 (UTC)
+	 MIME-Version; b=mwnvmGPEf/Q6BIzaZJUzxWxHmbggo00+g0zlo55ZrOvIhkaMP0az+GYVjnke93SM0SfnmM6nBMR9OTze8oPvCsW9z/GX9xvjXeX9977fPhFLnVi4jYEah6nFNwvL9vTwbazQvdwzVtBlNQPVa2OIIw09ayxdPk+j1kmoIB8C5Ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hlyH1kAZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD361C433F1;
+	Tue, 27 Feb 2024 14:27:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043044;
-	bh=6adyS3NF2FE6Om2weYEx0/NZinQy4tajziot4hFCEAE=;
+	s=korg; t=1709044042;
+	bh=/sQZlpq7rfzc6H/AquHN8d/C0JNaNbzQS9gdhcjPUWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RsnrZWmUkI1AQxPMm5YgYcuvu8SyONnBlcq0pwSNJjLG4fe7tuV618wRzfstta9GE
-	 puOtQmhihZOwcVQfDkxrsbK+8Qh1BqEkGBwlWJMy8ck6vNDTYNZPQ0KO/67MLEieBW
-	 BBE3iTcjfJGeHNQngBbAgZaCGDusHiZexPhpN2SY=
+	b=hlyH1kAZGWcFEUWY+0myfiRz7RPqnZdT6niN3sQiz+35hI5aJOBNvzUX798ueQMre
+	 pRfjsnXw7iMsMAK3I2QORzx2xb6Ib2f4xAjYTCW55nM37LxAj2i5ps686UVGYreF1p
+	 BHv1o72rSuNFsqMHCmmrHyWPepV3O7srC5J47V0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Bee <knaerzche@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Dmitry Bogdanov <d.bogdanov@yadro.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 185/245] arm64: dts: rockchip: add ES8316 codec for ROCK Pi 4
+Subject: [PATCH 5.10 012/122] scsi: target: core: Add TMF to tmr_list handling
 Date: Tue, 27 Feb 2024 14:26:13 +0100
-Message-ID: <20240227131621.215839616@linuxfoundation.org>
+Message-ID: <20240227131559.109002927@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Bee <knaerzche@gmail.com>
+From: Dmitry Bogdanov <d.bogdanov@yadro.com>
 
-[ Upstream commit 65bd2b8bdb3bddc37bea695789713916327e1c1f ]
+[ Upstream commit 83ab68168a3d990d5ff39ab030ad5754cbbccb25 ]
 
-ROCK Pi 4 boards have the codec connected to i2s0 and it is accessible
-via i2c1 address 0x11.
-Add an audio-graph-card for it.
+An abort that is responded to by iSCSI itself is added to tmr_list but does
+not go to target core. A LUN_RESET that goes through tmr_list takes a
+refcounter on the abort and waits for completion. However, the abort will
+be never complete because it was not started in target core.
 
-Signed-off-by: Alex Bee <knaerzche@gmail.com>
-Link: https://lore.kernel.org/r/20210618181256.27992-5-knaerzche@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+ Unable to locate ITT: 0x05000000 on CID: 0
+ Unable to locate RefTaskTag: 0x05000000 on CID: 0.
+ wait_for_tasks: Stopping tmf LUN_RESET with tag 0x0 ref_task_tag 0x0 i_state 34 t_state ISTATE_PROCESSING refcnt 2 transport_state active,stop,fabric_stop
+ wait for tasks: tmf LUN_RESET with tag 0x0 ref_task_tag 0x0 i_state 34 t_state ISTATE_PROCESSING refcnt 2 transport_state active,stop,fabric_stop
+...
+ INFO: task kworker/0:2:49 blocked for more than 491 seconds.
+ task:kworker/0:2     state:D stack:    0 pid:   49 ppid:     2 flags:0x00000800
+ Workqueue: events target_tmr_work [target_core_mod]
+Call Trace:
+ __switch_to+0x2c4/0x470
+ _schedule+0x314/0x1730
+ schedule+0x64/0x130
+ schedule_timeout+0x168/0x430
+ wait_for_completion+0x140/0x270
+ target_put_cmd_and_wait+0x64/0xb0 [target_core_mod]
+ core_tmr_lun_reset+0x30/0xa0 [target_core_mod]
+ target_tmr_work+0xc8/0x1b0 [target_core_mod]
+ process_one_work+0x2d4/0x5d0
+ worker_thread+0x78/0x6c0
+
+To fix this, only add abort to tmr_list if it will be handled by target
+core.
+
+Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
+Link: https://lore.kernel.org/r/20240111125941.8688-1-d.bogdanov@yadro.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/rockchip/rk3399-rock-pi-4.dtsi   | 28 +++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/target/target_core_device.c    | 5 -----
+ drivers/target/target_core_transport.c | 4 ++++
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
-index 203460d46f182..0af694540c1eb 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
-@@ -36,6 +36,12 @@ sdio_pwrseq: sdio-pwrseq {
- 		reset-gpios = <&gpio0 RK_PB2 GPIO_ACTIVE_LOW>;
- 	};
+diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
+index 9aeedcff7d02e..daa4d06ce2336 100644
+--- a/drivers/target/target_core_device.c
++++ b/drivers/target/target_core_device.c
+@@ -150,7 +150,6 @@ int transport_lookup_tmr_lun(struct se_cmd *se_cmd)
+ 	struct se_session *se_sess = se_cmd->se_sess;
+ 	struct se_node_acl *nacl = se_sess->se_node_acl;
+ 	struct se_tmr_req *se_tmr = se_cmd->se_tmr_req;
+-	unsigned long flags;
  
-+	sound {
-+		compatible = "audio-graph-card";
-+		label = "Analog";
-+		dais = <&i2s0_p0>;
-+	};
-+
- 	vcc12v_dcin: dc-12v {
- 		compatible = "regulator-fixed";
- 		regulator-name = "vcc12v_dcin";
-@@ -423,6 +429,20 @@ &i2c1 {
- 	i2c-scl-rising-time-ns = <300>;
- 	i2c-scl-falling-time-ns = <15>;
- 	status = "okay";
-+
-+	es8316: codec@11 {
-+		compatible = "everest,es8316";
-+		reg = <0x11>;
-+		clocks = <&cru SCLK_I2S_8CH_OUT>;
-+		clock-names = "mclk";
-+		#sound-dai-cells = <0>;
-+
-+		port {
-+			es8316_p0_0: endpoint {
-+				remote-endpoint = <&i2s0_p0_0>;
-+			};
-+		};
-+	};
- };
+ 	rcu_read_lock();
+ 	deve = target_nacl_find_deve(nacl, se_cmd->orig_fe_lun);
+@@ -181,10 +180,6 @@ int transport_lookup_tmr_lun(struct se_cmd *se_cmd)
+ 	se_cmd->se_dev = rcu_dereference_raw(se_lun->lun_se_dev);
+ 	se_tmr->tmr_dev = rcu_dereference_raw(se_lun->lun_se_dev);
  
- &i2c3 {
-@@ -442,6 +462,14 @@ &i2s0 {
- 	rockchip,capture-channels = <2>;
- 	rockchip,playback-channels = <2>;
- 	status = "okay";
-+
-+	i2s0_p0: port {
-+		i2s0_p0_0: endpoint {
-+			dai-format = "i2s";
-+			mclk-fs = <256>;
-+			remote-endpoint = <&es8316_p0_0>;
-+		};
-+	};
- };
+-	spin_lock_irqsave(&se_tmr->tmr_dev->se_tmr_lock, flags);
+-	list_add_tail(&se_tmr->tmr_list, &se_tmr->tmr_dev->dev_tmr_list);
+-	spin_unlock_irqrestore(&se_tmr->tmr_dev->se_tmr_lock, flags);
+-
+ 	return 0;
+ }
+ EXPORT_SYMBOL(transport_lookup_tmr_lun);
+diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
+index 2e97937f005ff..8d294b658592c 100644
+--- a/drivers/target/target_core_transport.c
++++ b/drivers/target/target_core_transport.c
+@@ -3436,6 +3436,10 @@ int transport_generic_handle_tmr(
+ 	unsigned long flags;
+ 	bool aborted = false;
  
- &i2s1 {
++	spin_lock_irqsave(&cmd->se_dev->se_tmr_lock, flags);
++	list_add_tail(&cmd->se_tmr_req->tmr_list, &cmd->se_dev->dev_tmr_list);
++	spin_unlock_irqrestore(&cmd->se_dev->se_tmr_lock, flags);
++
+ 	spin_lock_irqsave(&cmd->t_state_lock, flags);
+ 	if (cmd->transport_state & CMD_T_ABORTED) {
+ 		aborted = true;
 -- 
 2.43.0
 
