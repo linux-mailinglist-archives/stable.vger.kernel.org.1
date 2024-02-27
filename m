@@ -1,132 +1,92 @@
-Return-Path: <stable+bounces-23902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3924586913B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:03:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05D5F869155
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:06:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3E401F22883
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:03:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 359B01C23513
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:06:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0AEA13AA45;
-	Tue, 27 Feb 2024 13:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F88713AA2A;
+	Tue, 27 Feb 2024 13:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="dbMq4gCk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ac6uDRK6"
 X-Original-To: stable@vger.kernel.org
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A001913AA2C;
-	Tue, 27 Feb 2024 13:03:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDFA8135A43;
+	Tue, 27 Feb 2024 13:06:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709039006; cv=none; b=BRQFAIJyzCKgOuz+3pDjSe5wmopX/B3Qrnnjl1aivp0/gj9TeYRr6fpPV84ySuWslj1SZyhriBj5SfFgZ/CbiZ81zVtmKRfSW2xwl6ZbkRDrYqHp+Ed6PyziGuJyHeRxaiYsA83D0f0QizBaseMLZEK544HsL7fJzw8t5XHEaHM=
+	t=1709039203; cv=none; b=ZYR+bZUxwDkoyZk+9FHIJsNbqCa0nr7KtTqehmmxBhUuEZZOpVetR92ZGPs0eCiUFqRS2BqwG3Dq48jGRIu7GfrDeeE7XNSTrE1iTQFQchJ/QoCheah+t7cWV9fKBf8wWuxJUBSDAid+uo+hhRSB2R0lCAZzbtbKKngQRziNlaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709039006; c=relaxed/simple;
-	bh=MXbXhXbeu0cQ9TFbNb7UEonPBK55rX+buvq6bECICU8=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F7OIe5VDQ/v7G4APezyu2OUS/qX3Q1M70mxZlN7vCF9E2sibfZUVJFmReBsSxVcW0fhxYas4Ndj16OLelmNGweN1LSgB1gQgB2h5bdBjrojocndDp2k4UikoGo4jym3kVussvlQ1dsMFv1Kz6F87K1wcCPi5qKlMDb+PHjtzlwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=dbMq4gCk; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1709039005; x=1740575005;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=MXbXhXbeu0cQ9TFbNb7UEonPBK55rX+buvq6bECICU8=;
-  b=dbMq4gCkgozKQM5P+r2OnRtqJAfxkPSoSuC2Zgw2UNuY9q1ijh1RLmXV
-   sZEJVlpjTv3wDoDknTPqIC7OkS1qdafgu3GLasjzJ7ViVJ5AW2B5/GDxw
-   riu1M+HgBYPD7IEY7XSJevkxT9mainLserfXEvSATCXXrHzpJ8NJi8bfi
-   nDKw0u0IGC/LBItZW64iQ1AA6ORVuMW/uq/kO26lVzrIf47umGCN1UiZ+
-   3S5BJWs0kljGsKRgMUh9qticT61N54/SxRfM3qSJ8Vvjk6U09n0rXFTJD
-   3XcBN2Y1c/iTwKVMJhf6skHXOtpewFpssw+TbRKEXlWVg0MRd96Y7amsT
-   g==;
-X-CSE-ConnectionGUID: we5qw0mfT+K6Mg0u+ozr0g==
-X-CSE-MsgGUID: mMGKrDnoRIqlIlHrvTgxew==
-X-IronPort-AV: E=Sophos;i="6.06,187,1705388400"; 
-   d="asc'?scan'208";a="247636234"
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 27 Feb 2024 06:03:22 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 27 Feb 2024 06:02:58 -0700
-Received: from wendy (10.10.85.11) by chn-vm-ex02.mchp-main.com (10.10.85.144)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35 via Frontend
- Transport; Tue, 27 Feb 2024 06:02:54 -0700
-Date: Tue, 27 Feb 2024 13:02:11 +0000
-From: Conor Dooley <conor.dooley@microchip.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-CC: Nathan Chancellor <nathan@kernel.org>, Conor Dooley <conor@kernel.org>,
-	Matthew Maurer <mmaurer@google.com>, <linux-riscv@lists.infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson
- Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary
- Guo <gary@garyguo.net>, =?iso-8859-1?Q?Bj=F6rn?= Roy Baron
-	<bjorn3_gh@protonmail.com>, Jonathan Corbet <corbet@lwn.net>, Paul Walmsley
-	<paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Nick
- Desaulniers <ndesaulniers@google.com>, Tom Rix <trix@redhat.com>,
-	<rust-for-linux@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <llvm@lists.linux.dev>,
-	<stable@vger.kernel.org>, Sami Tolvanen <samitolvanen@google.com>, Ramon de C
- Valle <rcvalle@google.com>
-Subject: Re: [PATCH v2 1/3] rust: make mutually exclusive with CFI_CLANG
-Message-ID: <20240227-unwind-canteen-3da9b07af10c@wendy>
-References: <20240223-leverage-walmart-5424542cd8bd@spud>
- <20240223-perjury-preshow-fc2cf73d552e@spud>
- <CANiq72=mCnm0mKOw5K44PmZ+jF=67jxEEkcXP-E0O8CaUrps=w@mail.gmail.com>
- <20240227-uncertain-amaze-6197e627ad95@wendy>
- <CANiq72=geBobqM0Dc2yv=NjAc3MWXhOrDHfuJ84TgQ+XVxBo0w@mail.gmail.com>
+	s=arc-20240116; t=1709039203; c=relaxed/simple;
+	bh=cWrp7k8207wfYiJiyKnbllOkvNE+9uygA5yZwMOmx9c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nWjw+WttirsdZhQsXt9aBshlVgtaZlxS/Qmq5wXYTnkDCayFeX5zqHLBNH5EA2U8WzjeIxqIDLobIVA6A+sJyLW03xVPFB1Bis7jXuoF/4N9oWlDgY47BtZ9oowFnIy7Z85E+kxEc3syeX4EJOreHveui+zmY7DKBCcNUseQJy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ac6uDRK6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5229C433C7;
+	Tue, 27 Feb 2024 13:06:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1709039202;
+	bh=cWrp7k8207wfYiJiyKnbllOkvNE+9uygA5yZwMOmx9c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ac6uDRK6umKJlCmO8tXY3wE5EOfhF0ihyBNRb7YZMcHorpnAHHtEdhoof9/DpKpZm
+	 LD49jPch2O/agkevAw6JpFxmeonQGXHZmNxhSdruw1vmJJC0dBXLNwj72oSv0OkmbN
+	 a0aB4bZSNJ40BtbJ0ih2GSqiQqp1BNGUOIIkNU9Y=
+Date: Tue, 27 Feb 2024 14:06:39 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Baokun Li <libaokun1@huawei.com>
+Cc: stable@vger.kernel.org, sashal@kernel.org, tytso@mit.edu, jack@suse.cz,
+	patches@lists.linux.dev, yi.zhang@huawei.com, yangerkun@huawei.com
+Subject: Re: [PATCH 5.15 2/2] ext4: avoid bb_free and bb_fragments
+ inconsistency in mb_free_blocks()
+Message-ID: <2024022725-broadly-gave-6b16@gregkh>
+References: <20240227130050.805571-1-libaokun1@huawei.com>
+ <20240227130050.805571-2-libaokun1@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="W8J+rAw6y6pbbfl0"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CANiq72=geBobqM0Dc2yv=NjAc3MWXhOrDHfuJ84TgQ+XVxBo0w@mail.gmail.com>
+In-Reply-To: <20240227130050.805571-2-libaokun1@huawei.com>
 
---W8J+rAw6y6pbbfl0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Tue, Feb 27, 2024 at 09:00:50PM +0800, Baokun Li wrote:
+> commit 2331fd4a49864e1571b4f50aa3aa1536ed6220d0 upstream.
+> 
+> After updating bb_free in mb_free_blocks, it is possible to return without
+> updating bb_fragments because the block being freed is found to have
+> already been freed, which leads to inconsistency between bb_free and
+> bb_fragments.
+> 
+> Since the group may be unlocked in ext4_grp_locked_error(), this can lead
+> to problems such as dividing by zero when calculating the average fragment
+> length. Hence move the update of bb_free to after the block double-free
+> check guarantees that the corresponding statistics are updated only after
+> the core block bitmap is modified.
+> 
+> Fixes: eabe0444df90 ("ext4: speed-up releasing blocks on commit")
+> CC:  <stable@vger.kernel.org> # 3.10
+> Suggested-by: Jan Kara <jack@suse.cz>
+> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+> Reviewed-by: Jan Kara <jack@suse.cz>
+> Link: https://lore.kernel.org/r/20240104142040.2835097-5-libaokun1@huawei.com
+> Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+> ---
+>  fs/ext4/mballoc.c | 39 +++++++++++++++++++++------------------
+>  1 file changed, 21 insertions(+), 18 deletions(-)
 
-On Tue, Feb 27, 2024 at 01:34:14PM +0100, Miguel Ojeda wrote:
-> On Tue, Feb 27, 2024 at 11:54=E2=80=AFAM Conor Dooley
-> <conor.dooley@microchip.com> wrote:
-> >
-> > I did try to test it but I ran into too many toolchain issues - my
-> > older copies of LLVM (pre 17) are not multiarch as I built them by hand
-> > with PGO for x86 and RISC-V. My LLVM 17 is from kernel.org and has no
-> > libclang. And then the copy of LLVM 18 on kernel.org apparently does not
-> > support kcfi at all. I gave up there, but I don't see how this would not
->=20
-> I asked Nathan to add libclang a few days ago, and he very quickly did
-> it for LLVM 18 -- though I don't know the plan for the others. I just
-> pinged in that thread.
+We also need this for 5.10.y and older, right?
 
-I had actually said it to him on IRC already (although he is CCed here)
-but I just noticed that this was my fault - I symlinked incorrectly
-after downloading the toolchain. kcfi is detected fine with llvm18.
-I'll give testing another try.
+Queued up now, thanks!
 
---W8J+rAw6y6pbbfl0
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZd3dUwAKCRB4tDGHoIJi
-0iscAQCFqXISaMEU8lWDJeRHwsnAImvV4ocTSMxS5RJFKcJHqQD/a/u0vuVtSyp7
-18rvQE+YASYYpq5tCU08KsgXCbSU7gI=
-=o4T8
------END PGP SIGNATURE-----
-
---W8J+rAw6y6pbbfl0--
+greg k-h
 
