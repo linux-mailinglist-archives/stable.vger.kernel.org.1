@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11FC386964D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:10:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14C2A8697F4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:27:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9CF9285DFD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:10:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E4891F2C2A6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:27:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 997E113DBB3;
-	Tue, 27 Feb 2024 14:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D578314532D;
+	Tue, 27 Feb 2024 14:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cXtknlNZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fZGD+t0Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A29213B78F;
-	Tue, 27 Feb 2024 14:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864F813B29C;
+	Tue, 27 Feb 2024 14:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043011; cv=none; b=ec/rRMS+OCI9r6wgRu9yCvuhJnWAR3rCgPFMSuWeDUKANqc0cn0XbIvegNUynd9uhkuuftyP+b3TRmDmF6B2YirNKizhFu1s0NZHBcsUX7zYlNF12N1RIPfkQmuqnGeOzjK9bsJOa568C7xk3rLa+my7MNRSOroAMhiBNnCE5Q0=
+	t=1709044006; cv=none; b=GplTOw34SzYQylEKFl0BIf/bn8S6v1GlqTgpnhd7LOb08DW4Kj8G8sWzcPmR1jadkZiu8bo/kG2FUp1ODY7CZuoIn3CBvgY7xa2TmkKjfuuMjYqNHWkMYAxjILugPVnplz9ewExCkPyrFxsUYwj3zEmEL/bj6+AtnZ5VCZxKbUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043011; c=relaxed/simple;
-	bh=2Y3QioGc46u34od13nLkDa5s1x6DrI4eBIB4Jm884Ic=;
+	s=arc-20240116; t=1709044006; c=relaxed/simple;
+	bh=Gbk+rw2JcJBKOiS6LFXXCbGyXVZPgrKHFfoXA9ganbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kjpK12uy5eyME6l2oxGF5Vzc03GD0JEwm6T31QYpJuGKPB3scMV2haHtJyy8KVSH9DsHdQhswwnH9sje3TVgAomg9MnzAIFbrumM7Rxhsa1q1DL3ZHUGTqPNc67UPXErqAEbkQIfvP+BQPqktKEH9ZRTvwCZhiDZqIPmbOxwaS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cXtknlNZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3F6C433C7;
-	Tue, 27 Feb 2024 14:10:10 +0000 (UTC)
+	 MIME-Version; b=NHKA9tRdy5WlHCbmI+OtWxZvpnKpNsrymNchKLvrG2zQ2BMLwOH6l4huX7HmTqOL8cu7ozpzc5UrQOsdpzQJeUeKaqx41YSFhBUnTJye3GMSw0UnW9SSaaHftGlpikGilIiWNAGs+d99vOVho/xoyxwPLAlUfWntS/nRHUPbVnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fZGD+t0Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09554C433C7;
+	Tue, 27 Feb 2024 14:26:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043011;
-	bh=2Y3QioGc46u34od13nLkDa5s1x6DrI4eBIB4Jm884Ic=;
+	s=korg; t=1709044006;
+	bh=Gbk+rw2JcJBKOiS6LFXXCbGyXVZPgrKHFfoXA9ganbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cXtknlNZbzZgsQEjC/hlgiYdjE7DPo6qCCxLH6HDAgJFXKVJVRRlJMysCraOuJygF
-	 Qa2pPfpYBR/5gvJ6ysbs/k/TSIBMnOvzKkFxTfpbbA0rbTNA5h+oPzScmppsFxfmXc
-	 3USYsu8Ve3HMBt0NUoRKGFZcOGXi+4J6ZSpoO7jg=
+	b=fZGD+t0Y2zFg1uYf9I9/sBijkBl7Y08ClH5RKCTFj12IbOT1TE1nzPT5G50KZNczn
+	 neUzK5eGU9cpsqj0FbP2gLyPU+Luu5FPGegr8544sOtxKIwWqcGC9K/oTDjLaygSoS
+	 VQ/8+IIB5m945u6e9orRZGUOCs9EQd+eUR3il4L8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 201/245] IB/hfi1: Fix a memleak in init_credit_return
+Subject: [PATCH 5.10 028/122] spi: sh-msiof: avoid integer overflow in constants
 Date: Tue, 27 Feb 2024 14:26:29 +0100
-Message-ID: <20240227131621.720164357@linuxfoundation.org>
+Message-ID: <20240227131559.627671897@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 809aa64ebff51eb170ee31a95f83b2d21efa32e2 ]
+[ Upstream commit 6500ad28fd5d67d5ca0fee9da73c463090842440 ]
 
-When dma_alloc_coherent fails to allocate dd->cr_base[i].va,
-init_credit_return should deallocate dd->cr_base and
-dd->cr_base[i] that allocated before. Or those resources
-would be never freed and a memleak is triggered.
+cppcheck rightfully warned:
 
-Fixes: 7724105686e7 ("IB/hfi1: add driver files")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Link: https://lore.kernel.org/r/20240112085523.3731720-1-alexious@zju.edu.cn
-Acked-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+ drivers/spi/spi-sh-msiof.c:792:28: warning: Signed integer overflow for expression '7<<29'. [integerOverflow]
+ sh_msiof_write(p, SIFCTR, SIFCTR_TFWM_1 | SIFCTR_RFWM_1);
+
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://msgid.link/r/20240130094053.10672-1-wsa+renesas@sang-engineering.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hfi1/pio.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/spi/spi-sh-msiof.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hfi1/pio.c b/drivers/infiniband/hw/hfi1/pio.c
-index 51ae58c02b15c..802b0e5801a7d 100644
---- a/drivers/infiniband/hw/hfi1/pio.c
-+++ b/drivers/infiniband/hw/hfi1/pio.c
-@@ -2089,7 +2089,7 @@ int init_credit_return(struct hfi1_devdata *dd)
- 				   "Unable to allocate credit return DMA range for NUMA %d\n",
- 				   i);
- 			ret = -ENOMEM;
--			goto done;
-+			goto free_cr_base;
- 		}
- 	}
- 	set_dev_node(&dd->pcidev->dev, dd->node);
-@@ -2097,6 +2097,10 @@ int init_credit_return(struct hfi1_devdata *dd)
- 	ret = 0;
- done:
- 	return ret;
-+
-+free_cr_base:
-+	free_credit_return(dd);
-+	goto done;
- }
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 35d30378256f6..12fd02f92e37b 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -137,14 +137,14 @@ struct sh_msiof_spi_priv {
  
- void free_credit_return(struct hfi1_devdata *dd)
+ /* SIFCTR */
+ #define SIFCTR_TFWM_MASK	GENMASK(31, 29)	/* Transmit FIFO Watermark */
+-#define SIFCTR_TFWM_64		(0 << 29)	/*  Transfer Request when 64 empty stages */
+-#define SIFCTR_TFWM_32		(1 << 29)	/*  Transfer Request when 32 empty stages */
+-#define SIFCTR_TFWM_24		(2 << 29)	/*  Transfer Request when 24 empty stages */
+-#define SIFCTR_TFWM_16		(3 << 29)	/*  Transfer Request when 16 empty stages */
+-#define SIFCTR_TFWM_12		(4 << 29)	/*  Transfer Request when 12 empty stages */
+-#define SIFCTR_TFWM_8		(5 << 29)	/*  Transfer Request when 8 empty stages */
+-#define SIFCTR_TFWM_4		(6 << 29)	/*  Transfer Request when 4 empty stages */
+-#define SIFCTR_TFWM_1		(7 << 29)	/*  Transfer Request when 1 empty stage */
++#define SIFCTR_TFWM_64		(0UL << 29)	/*  Transfer Request when 64 empty stages */
++#define SIFCTR_TFWM_32		(1UL << 29)	/*  Transfer Request when 32 empty stages */
++#define SIFCTR_TFWM_24		(2UL << 29)	/*  Transfer Request when 24 empty stages */
++#define SIFCTR_TFWM_16		(3UL << 29)	/*  Transfer Request when 16 empty stages */
++#define SIFCTR_TFWM_12		(4UL << 29)	/*  Transfer Request when 12 empty stages */
++#define SIFCTR_TFWM_8		(5UL << 29)	/*  Transfer Request when 8 empty stages */
++#define SIFCTR_TFWM_4		(6UL << 29)	/*  Transfer Request when 4 empty stages */
++#define SIFCTR_TFWM_1		(7UL << 29)	/*  Transfer Request when 1 empty stage */
+ #define SIFCTR_TFUA_MASK	GENMASK(26, 20) /* Transmit FIFO Usable Area */
+ #define SIFCTR_TFUA_SHIFT	20
+ #define SIFCTR_TFUA(i)		((i) << SIFCTR_TFUA_SHIFT)
 -- 
 2.43.0
 
