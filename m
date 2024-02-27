@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-24663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94A858695A9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:04:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C0D786947E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:54:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E773285BE5
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:04:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2D3C1F212DF
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC22913B798;
-	Tue, 27 Feb 2024 14:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43E3145322;
+	Tue, 27 Feb 2024 13:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cYIfBZFL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t/vlwDNC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBF316423;
-	Tue, 27 Feb 2024 14:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EF913F01E;
+	Tue, 27 Feb 2024 13:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042646; cv=none; b=CnGAWO0X80V54MoORWgvdfXW1bhPK4vLbE/YOUPzcFfQxZmStP5eGwAdwyFJ6t6TFyvqNGIr37uUs++C+a61hnAIcEutjX+fzsR6ZpozChIh2fNTwLiWwbib+U+qfZqPJHaOvyYH3splolQFAf9m2MYyh0QHevh14qi3DiN9sbg=
+	t=1709042013; cv=none; b=Ygk9HffKnwMNCMx1AiO9PCdZrjPNWYg8YTeRrYzUOw1ktGf5gMzS4oRqS3CKeKa0qS/ZvhIeLzzVr5aHdNDqt+sm/jrNC8POTxot/YWOFGUL4AKWDqbeiHQLiRkJ/53qE059wwqk4jDD1gs8XT96b8QiLjv/XMVKjsvDXARJ5KA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042646; c=relaxed/simple;
-	bh=UE5fvXEGZYX+XrgjFtcMMEP9UXy1fXIxMj+1akei+WE=;
+	s=arc-20240116; t=1709042013; c=relaxed/simple;
+	bh=jptOVTGV8q3JjweMoC/sF2XHn1ByWPi1SxwnH6AyMXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hiLlsqt50Z04meikfjRdi7Ov5XdJjalTATwDIgBQlkYHpHxBNNeRuKLbYDX1laanfGlDKGGSYsZurBGvoGB1qL0E1N0liDnX5UpX+6mI12ir7rHcpkoL04V/l5ksQFh9U0bOkzF2Mi9NGp6I96yfuHL7idMOt5Clt2o+VFxBwhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cYIfBZFL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B694C433F1;
-	Tue, 27 Feb 2024 14:04:05 +0000 (UTC)
+	 MIME-Version; b=Os9lKoNp+UBGMOkWfMBw/HTF052pVr9xLkZHPMNe8GqYvTxEqt0kgwy/NfKnTHjh9JW6iopwaGjM8f31aOsKSGCKMkbQc+2nNI2ZjmmrFrWUpgt59cZ2QowGkVK0sIRoOw5AwN7y9MtuCxJLooJqmUcF78zlU3TVKvGrX9QCga0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t/vlwDNC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DE63C433F1;
+	Tue, 27 Feb 2024 13:53:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042646;
-	bh=UE5fvXEGZYX+XrgjFtcMMEP9UXy1fXIxMj+1akei+WE=;
+	s=korg; t=1709042013;
+	bh=jptOVTGV8q3JjweMoC/sF2XHn1ByWPi1SxwnH6AyMXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cYIfBZFLmGsjBOfZs2DSRYE7RTgb9Y+cD1bRLnUtnXAcWvamh6/TwRdMYfOxHUtQz
-	 ln1LCSV1M0ThpUq0j1b7NZTvSHTSsqN9p50fYgdSZUjdq5h60QI9CdX8RWEct7ZX99
-	 wRWu7sYR7X5mDzNT+nO7figvAMQxox/O8eH8Uf/k=
+	b=t/vlwDNCeJI6Ve73VxyZxzkg7mbLemH8V67MbkKyJrDVRFpe2xH7p3nvJoEadXa39
+	 TaGe9Wwbum5kn4bXGK0/+eeWuEGxvl0LLK5HXUuWKnl5zmUNU6ak4k1S4u+NVWVWFi
+	 R4MevX12awJt/4QPUWyQpfGQSD4PBpU8aMqH5gLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prike Liang <Prike.Liang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 070/245] drm/amdgpu: skip to program GFXDEC registers for suspend abort
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 6.6 147/299] dm-crypt: recheck the integrity tag after a failure
 Date: Tue, 27 Feb 2024 14:24:18 +0100
-Message-ID: <20240227131617.515531837@linuxfoundation.org>
+Message-ID: <20240227131630.595180886@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +61,217 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prike Liang <Prike.Liang@amd.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 93bafa32a6918154aa0caf9f66679a32c2431357 ]
+commit 42e15d12070b4ff9af2b980f1b65774c2dab0507 upstream.
 
-In the suspend abort cases, the gfx power rail doesn't turn off so
-some GFXDEC registers/CSB can't reset to default value and at this
-moment reinitialize GFXDEC/CSB will result in an unexpected error.
-So let skip those program sequence for the suspend abort case.
+If a userspace process reads (with O_DIRECT) multiple blocks into the same
+buffer, dm-crypt reports an authentication error [1]. The error is
+reported in a log and it may cause RAID leg being kicked out of the
+array.
 
-Signed-off-by: Prike Liang <Prike.Liang@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This commit fixes dm-crypt, so that if integrity verification fails, the
+data is read again into a kernel buffer (where userspace can't modify it)
+and the integrity tag is rechecked. If the recheck succeeds, the content
+of the kernel buffer is copied into the user buffer; if the recheck fails,
+an integrity error is reported.
+
+[1] https://people.redhat.com/~mpatocka/testcases/blk-auth-modify/read2.c
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu.h     | 2 ++
- drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c | 2 ++
- drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c   | 8 ++++++++
- 3 files changed, 12 insertions(+)
+ drivers/md/dm-crypt.c |   89 +++++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 73 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-index 1f1e7966beb51..dbef22f56482e 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
-@@ -1045,6 +1045,8 @@ struct amdgpu_device {
- 	bool				in_s3;
- 	bool				in_s4;
- 	bool				in_s0ix;
-+	/* indicate amdgpu suspension status */
-+	bool				suspend_complete;
+--- a/drivers/md/dm-crypt.c
++++ b/drivers/md/dm-crypt.c
+@@ -62,6 +62,8 @@ struct convert_context {
+ 		struct skcipher_request *req;
+ 		struct aead_request *req_aead;
+ 	} r;
++	bool aead_recheck;
++	bool aead_failed;
  
- 	atomic_t 			in_gpu_reset;
- 	enum pp_mp1_state               mp1_state;
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-index deae92fde3b88..57943e9008710 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-@@ -2252,6 +2252,7 @@ static int amdgpu_pmops_suspend(struct device *dev)
- 	struct drm_device *drm_dev = dev_get_drvdata(dev);
- 	struct amdgpu_device *adev = drm_to_adev(drm_dev);
+ };
  
-+	adev->suspend_complete = false;
- 	if (amdgpu_acpi_is_s0ix_active(adev))
- 		adev->in_s0ix = true;
- 	else
-@@ -2264,6 +2265,7 @@ static int amdgpu_pmops_suspend_noirq(struct device *dev)
- 	struct drm_device *drm_dev = dev_get_drvdata(dev);
- 	struct amdgpu_device *adev = drm_to_adev(drm_dev);
+@@ -82,6 +84,8 @@ struct dm_crypt_io {
+ 	blk_status_t error;
+ 	sector_t sector;
  
-+	adev->suspend_complete = true;
- 	if (amdgpu_acpi_should_gpu_reset(adev))
- 		return amdgpu_asic_reset(adev);
++	struct bvec_iter saved_bi_iter;
++
+ 	struct rb_node rb_node;
+ } CRYPTO_MINALIGN_ATTR;
  
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-index de1fab165041f..fb37c0d4b35b4 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-@@ -3268,6 +3268,14 @@ static int gfx_v9_0_cp_gfx_start(struct amdgpu_device *adev)
+@@ -1376,10 +1380,13 @@ static int crypt_convert_block_aead(stru
+ 	if (r == -EBADMSG) {
+ 		sector_t s = le64_to_cpu(*sector);
  
- 	gfx_v9_0_cp_gfx_enable(adev, true);
+-		DMERR_LIMIT("%pg: INTEGRITY AEAD ERROR, sector %llu",
+-			    ctx->bio_in->bi_bdev, s);
+-		dm_audit_log_bio(DM_MSG_PREFIX, "integrity-aead",
+-				 ctx->bio_in, s, 0);
++		ctx->aead_failed = true;
++		if (ctx->aead_recheck) {
++			DMERR_LIMIT("%pg: INTEGRITY AEAD ERROR, sector %llu",
++				    ctx->bio_in->bi_bdev, s);
++			dm_audit_log_bio(DM_MSG_PREFIX, "integrity-aead",
++					 ctx->bio_in, s, 0);
++		}
+ 	}
  
-+	/* Now only limit the quirk on the APU gfx9 series and already
-+	 * confirmed that the APU gfx10/gfx11 needn't such update.
-+	 */
-+	if (adev->flags & AMD_IS_APU &&
-+			adev->in_s3 && !adev->suspend_complete) {
-+		DRM_INFO(" Will skip the CSB packet resubmit\n");
+ 	if (!r && cc->iv_gen_ops && cc->iv_gen_ops->post)
+@@ -1763,6 +1770,8 @@ static void crypt_io_init(struct dm_cryp
+ 	io->base_bio = bio;
+ 	io->sector = sector;
+ 	io->error = 0;
++	io->ctx.aead_recheck = false;
++	io->ctx.aead_failed = false;
+ 	io->ctx.r.req = NULL;
+ 	io->integrity_metadata = NULL;
+ 	io->integrity_metadata_from_pool = false;
+@@ -1774,6 +1783,8 @@ static void crypt_inc_pending(struct dm_
+ 	atomic_inc(&io->io_pending);
+ }
+ 
++static void kcryptd_queue_read(struct dm_crypt_io *io);
++
+ /*
+  * One of the bios was finished. Check for completion of
+  * the whole request and correctly clean up the buffer.
+@@ -1787,6 +1798,15 @@ static void crypt_dec_pending(struct dm_
+ 	if (!atomic_dec_and_test(&io->io_pending))
+ 		return;
+ 
++	if (likely(!io->ctx.aead_recheck) && unlikely(io->ctx.aead_failed) &&
++	    cc->on_disk_tag_size && bio_data_dir(base_bio) == READ) {
++		io->ctx.aead_recheck = true;
++		io->ctx.aead_failed = false;
++		io->error = 0;
++		kcryptd_queue_read(io);
++		return;
++	}
++
+ 	if (io->ctx.r.req)
+ 		crypt_free_req(cc, io->ctx.r.req, base_bio);
+ 
+@@ -1822,15 +1842,19 @@ static void crypt_endio(struct bio *clon
+ 	struct dm_crypt_io *io = clone->bi_private;
+ 	struct crypt_config *cc = io->cc;
+ 	unsigned int rw = bio_data_dir(clone);
+-	blk_status_t error;
++	blk_status_t error = clone->bi_status;
++
++	if (io->ctx.aead_recheck && !error) {
++		kcryptd_queue_crypt(io);
++		return;
++	}
+ 
+ 	/*
+ 	 * free the processed pages
+ 	 */
+-	if (rw == WRITE)
++	if (rw == WRITE || io->ctx.aead_recheck)
+ 		crypt_free_buffer_pages(cc, clone);
+ 
+-	error = clone->bi_status;
+ 	bio_put(clone);
+ 
+ 	if (rw == READ && !error) {
+@@ -1851,6 +1875,22 @@ static int kcryptd_io_read(struct dm_cry
+ 	struct crypt_config *cc = io->cc;
+ 	struct bio *clone;
+ 
++	if (io->ctx.aead_recheck) {
++		if (!(gfp & __GFP_DIRECT_RECLAIM))
++			return 1;
++		crypt_inc_pending(io);
++		clone = crypt_alloc_buffer(io, io->base_bio->bi_iter.bi_size);
++		if (unlikely(!clone)) {
++			crypt_dec_pending(io);
++			return 1;
++		}
++		clone->bi_iter.bi_sector = cc->start + io->sector;
++		crypt_convert_init(cc, &io->ctx, clone, clone, io->sector);
++		io->saved_bi_iter = clone->bi_iter;
++		dm_submit_bio_remap(io->base_bio, clone);
 +		return 0;
 +	}
- 	r = amdgpu_ring_alloc(ring, gfx_v9_0_get_csb_size(adev) + 4 + 3);
- 	if (r) {
- 		DRM_ERROR("amdgpu: cp failed to lock ring (%d).\n", r);
--- 
-2.43.0
-
++
+ 	/*
+ 	 * We need the original biovec array in order to decrypt the whole bio
+ 	 * data *afterwards* -- thanks to immutable biovecs we don't need to
+@@ -2113,6 +2153,14 @@ dec:
+ 
+ static void kcryptd_crypt_read_done(struct dm_crypt_io *io)
+ {
++	if (io->ctx.aead_recheck) {
++		if (!io->error) {
++			io->ctx.bio_in->bi_iter = io->saved_bi_iter;
++			bio_copy_data(io->base_bio, io->ctx.bio_in);
++		}
++		crypt_free_buffer_pages(io->cc, io->ctx.bio_in);
++		bio_put(io->ctx.bio_in);
++	}
+ 	crypt_dec_pending(io);
+ }
+ 
+@@ -2142,11 +2190,17 @@ static void kcryptd_crypt_read_convert(s
+ 
+ 	crypt_inc_pending(io);
+ 
+-	crypt_convert_init(cc, &io->ctx, io->base_bio, io->base_bio,
+-			   io->sector);
++	if (io->ctx.aead_recheck) {
++		io->ctx.cc_sector = io->sector + cc->iv_offset;
++		r = crypt_convert(cc, &io->ctx,
++				  test_bit(DM_CRYPT_NO_READ_WORKQUEUE, &cc->flags), true);
++	} else {
++		crypt_convert_init(cc, &io->ctx, io->base_bio, io->base_bio,
++				   io->sector);
+ 
+-	r = crypt_convert(cc, &io->ctx,
+-			  test_bit(DM_CRYPT_NO_READ_WORKQUEUE, &cc->flags), true);
++		r = crypt_convert(cc, &io->ctx,
++				  test_bit(DM_CRYPT_NO_READ_WORKQUEUE, &cc->flags), true);
++	}
+ 	/*
+ 	 * Crypto API backlogged the request, because its queue was full
+ 	 * and we're in softirq context, so continue from a workqueue
+@@ -2188,10 +2242,13 @@ static void kcryptd_async_done(void *dat
+ 	if (error == -EBADMSG) {
+ 		sector_t s = le64_to_cpu(*org_sector_of_dmreq(cc, dmreq));
+ 
+-		DMERR_LIMIT("%pg: INTEGRITY AEAD ERROR, sector %llu",
+-			    ctx->bio_in->bi_bdev, s);
+-		dm_audit_log_bio(DM_MSG_PREFIX, "integrity-aead",
+-				 ctx->bio_in, s, 0);
++		ctx->aead_failed = true;
++		if (ctx->aead_recheck) {
++			DMERR_LIMIT("%pg: INTEGRITY AEAD ERROR, sector %llu",
++				    ctx->bio_in->bi_bdev, s);
++			dm_audit_log_bio(DM_MSG_PREFIX, "integrity-aead",
++					 ctx->bio_in, s, 0);
++		}
+ 		io->error = BLK_STS_PROTECTION;
+ 	} else if (error < 0)
+ 		io->error = BLK_STS_IOERR;
+@@ -3117,7 +3174,7 @@ static int crypt_ctr_optional(struct dm_
+ 			sval = strchr(opt_string + strlen("integrity:"), ':') + 1;
+ 			if (!strcasecmp(sval, "aead")) {
+ 				set_bit(CRYPT_MODE_INTEGRITY_AEAD, &cc->cipher_flags);
+-			} else  if (strcasecmp(sval, "none")) {
++			} else if (strcasecmp(sval, "none")) {
+ 				ti->error = "Unknown integrity profile";
+ 				return -EINVAL;
+ 			}
 
 
 
