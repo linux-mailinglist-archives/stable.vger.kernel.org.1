@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-25025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68E6A869762
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:20:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D5C186988A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:38:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 176B42812DF
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:20:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A90D8B2F7E6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:30:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 644C813EFEC;
-	Tue, 27 Feb 2024 14:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52CD1146E95;
+	Tue, 27 Feb 2024 14:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kfTIqYjA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVIMIEt5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226D313DBBC;
-	Tue, 27 Feb 2024 14:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122B114690D;
+	Tue, 27 Feb 2024 14:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043647; cv=none; b=sl6QqyktEW6srebNCgUl8nsl1knlheOJyuOoaD3/RTiSUczMfoeO7OmSoqCCEzGPY4c/qFHeDtzIS73FGLiQ72bquQ+lt5bfIMIF8yW/+p8LkME+9IEUXA/VCdfUa5g0eGTUXOvGXNdymCp4BzN63SvgMwI/QPfr5bL8XQdhHSg=
+	t=1709044159; cv=none; b=l1tZlwz+TU16u3Vzv3Gypz6hallSS0oa2gXOBQ3kSaOE64vx6pRydmZXq6ViwIwgOKVgzDdyVsHB5e1N+XGfBIHxscUJipuYTs8QFLTeN3xx4cN106PiF1HfGJoTv27Yhg1Rt1FZHSnM+4rUhZmrsTnHmerSRJvPktl5FVh5XjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043647; c=relaxed/simple;
-	bh=WRdWjeUZK3WEeVVrEcOBlJS0zrR6IjKc+Jrou6s7iMk=;
+	s=arc-20240116; t=1709044159; c=relaxed/simple;
+	bh=/cxfsjS9ce0xZwu+utZq6moiUwkbDiuCMrxRByO67Gg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vhw83wdQzjmjkQB8GZY/kYAH/UE/ZtuNK7RY/JHTNTR1XhcZYVb8+NiD30ayrh+ueLwafFYCm+X8TNV85T0t49t3dWnR5lOIHh+HyHm8+gDryhgLO0yzosoEAyIPrGw7/LuuOEfbaExTvM1VrXtqenagkvhd1JBu6lI4kf3CSnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kfTIqYjA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A134BC433C7;
-	Tue, 27 Feb 2024 14:20:46 +0000 (UTC)
+	 MIME-Version; b=OcVMud8aNfcgY3cyByXSzZNyaMJAzPTaqjek1CAOgjdblXTEMNX2SjkzgRsrNOLrl0E/Cpm8veSoZGGonFpLGEZXsIhGOZohEBkJyCC3QQbtaaqH0T2gAk3JljuKnT8jnfnEyixD/04dpaZn/LSodYNV1MUsuFnB32NYBuuCRY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVIMIEt5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C1DEC43390;
+	Tue, 27 Feb 2024 14:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043647;
-	bh=WRdWjeUZK3WEeVVrEcOBlJS0zrR6IjKc+Jrou6s7iMk=;
+	s=korg; t=1709044158;
+	bh=/cxfsjS9ce0xZwu+utZq6moiUwkbDiuCMrxRByO67Gg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kfTIqYjAMKtGThJlGemsAXxbpBE/9Sks1NvYbl3+Vrs08eCqjwTryBBMEKiHlO5xz
-	 BoXYsmdMkdyyJMxe04NiF/nkacLYNa/vKm77V1/BT1uiYMGtqn1SkpBg+/I9tQxV0V
-	 hQKVDzPZ6kcpYAMY+ARe8wYkB4eI2+JeHsEwZREc=
+	b=MVIMIEt5WNK6CKS4sqsx9IXNURxtrPoSJKDYCQNmSXXV5x7eSYBvy7xn7sB18IDmH
+	 Ri9cbAELSUifpnDIA0Rugdn5EUTkqrbFnH04fOEwlDueJVIDjZNg2K9qjUNuEKAsgT
+	 Ib9lTpRRrXfdAHrjVx1AqpEb5ZZQ5tGtdq96lWp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 183/195] drm/amd/display: Fix memory leak in dm_sw_fini()
-Date: Tue, 27 Feb 2024 14:27:24 +0100
-Message-ID: <20240227131616.446566361@linuxfoundation.org>
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Josh Poimboeuf <jpoimboe@redhat.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 5.10 084/122] x86/text-patching: Make text_gen_insn() play nice with ANNOTATE_NOENDBR
+Date: Tue, 27 Feb 2024 14:27:25 +0100
+Message-ID: <20240227131601.455452544@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit bae67893578d608e35691dcdfa90c4957debf1d3 ]
+Upstream commit: bbf92368b0b1fe472d489e62d3340d7897e9c697
 
-After destroying dmub_srv, the memory associated with it is
-not freed, causing a memory leak:
-
-unreferenced object 0xffff896302b45800 (size 1024):
-  comm "(udev-worker)", pid 222, jiffies 4294894636
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace (crc 6265fd77):
-    [<ffffffff993495ed>] kmalloc_trace+0x29d/0x340
-    [<ffffffffc0ea4a94>] dm_dmub_sw_init+0xb4/0x450 [amdgpu]
-    [<ffffffffc0ea4e55>] dm_sw_init+0x15/0x2b0 [amdgpu]
-    [<ffffffffc0ba8557>] amdgpu_device_init+0x1417/0x24e0 [amdgpu]
-    [<ffffffffc0bab285>] amdgpu_driver_load_kms+0x15/0x190 [amdgpu]
-    [<ffffffffc0ba09c7>] amdgpu_pci_probe+0x187/0x4e0 [amdgpu]
-    [<ffffffff9968fd1e>] local_pci_probe+0x3e/0x90
-    [<ffffffff996918a3>] pci_device_probe+0xc3/0x230
-    [<ffffffff99805872>] really_probe+0xe2/0x480
-    [<ffffffff99805c98>] __driver_probe_device+0x78/0x160
-    [<ffffffff99805daf>] driver_probe_device+0x1f/0x90
-    [<ffffffff9980601e>] __driver_attach+0xce/0x1c0
-    [<ffffffff99803170>] bus_for_each_dev+0x70/0xc0
-    [<ffffffff99804822>] bus_add_driver+0x112/0x210
-    [<ffffffff99807245>] driver_register+0x55/0x100
-    [<ffffffff990012d1>] do_one_initcall+0x41/0x300
-
-Fix this by freeing dmub_srv after destroying it.
-
-Fixes: 743b9786b14a ("drm/amd/display: Hook up the DMUB service in DM")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Link: https://lore.kernel.org/r/20220308154317.638561109@infradead.org
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/include/asm/text-patching.h |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index a826c92933199..da16048bf1004 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2255,6 +2255,7 @@ static int dm_sw_fini(void *handle)
+--- a/arch/x86/include/asm/text-patching.h
++++ b/arch/x86/include/asm/text-patching.h
+@@ -101,13 +101,21 @@ void *text_gen_insn(u8 opcode, const voi
+ 	static union text_poke_insn insn; /* per instance */
+ 	int size = text_opcode_size(opcode);
  
- 	if (adev->dm.dmub_srv) {
- 		dmub_srv_destroy(adev->dm.dmub_srv);
-+		kfree(adev->dm.dmub_srv);
- 		adev->dm.dmub_srv = NULL;
- 	}
++	/*
++	 * Hide the addresses to avoid the compiler folding in constants when
++	 * referencing code, these can mess up annotations like
++	 * ANNOTATE_NOENDBR.
++	 */
++	OPTIMIZER_HIDE_VAR(addr);
++	OPTIMIZER_HIDE_VAR(dest);
++
+ 	insn.opcode = opcode;
  
--- 
-2.43.0
-
+ 	if (size > 1) {
+ 		insn.disp = (long)dest - (long)(addr + size);
+ 		if (size == 2) {
+ 			/*
+-			 * Ensure that for JMP9 the displacement
++			 * Ensure that for JMP8 the displacement
+ 			 * actually fits the signed byte.
+ 			 */
+ 			BUG_ON((insn.disp >> 31) != (insn.disp >> 7));
 
 
 
