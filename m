@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14EB38695D1
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:05:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7184869452
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6848EB21D4E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:02:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 708DB2837F6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77E0013B79F;
-	Tue, 27 Feb 2024 14:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F2B13DB90;
+	Tue, 27 Feb 2024 13:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIJkHeul"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mFfxT6tq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B9F16423;
-	Tue, 27 Feb 2024 14:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31B478B61;
+	Tue, 27 Feb 2024 13:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042567; cv=none; b=hO/1jBXt8hOHcq7RD4kgnx9YQUQxC3GgvnyimWkjyc3qDSD5g4ZT9edWfwxAOoPUYgCwa51VwThkWW+ll0GodkhXx54C3cJQ2sHAVCAqW29wJGSNRLHLr95BWEVEN32NbYYy3EgTmZxBvDwJ2PUBx93xmlW50XMzPiadAyMw6pU=
+	t=1709041929; cv=none; b=kjT/xwvCfBkgJCqYQNoPuuQm16gieEnhnbSZvARAK5VXOUHyaqCNGMtFqsrrVB449cH44rmvHjhgp6/17eN7SEjrk2GqHErIJizuhHa6e97yno4ZKMxgDaYBfwNw/d4ImQlWT4aYlrgwhxSpX2I/Zv62AkMRCpSL9MrXNHoy3Vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042567; c=relaxed/simple;
-	bh=owP6z8qhKIPLuGkHrOwAZT0QeDOmvc/eu9Kv0V0NUr4=;
+	s=arc-20240116; t=1709041929; c=relaxed/simple;
+	bh=vjQWJYy29YWy8jKp3PMk5drchu3RB+pOcpxSDNKML7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nk34yDtdplGxd40M7b4F1t8eliWIGvSPI3OgZgiw6efDxJPz/hDL5Z4EblWtL94vqyKTf7xhVAdzaBsVs+gl0QoupPi/eh3SkI9OM4aAjYtKQbDomY1T7r23i5zkURaz5HqSTOcMgDTB8TkI1SwLzsuGYUQ2Ov5RWDiW9gajcws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIJkHeul; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D3AC433F1;
-	Tue, 27 Feb 2024 14:02:46 +0000 (UTC)
+	 MIME-Version; b=Ugsz/ALA04sVTPqlYqGpE4IovM4Zjj8tpb/iDXA6PhqXC0SDsQ1Z3df6GhZJMw2Bgz00zsBrAhTnoK7CNKYyaGS834FS14+oxrOoJWEQltXWRqxPI6f9T6jZHtqmCAOe7uDLr4qlQfx3LES/I0x5Fk61UxBaFkESCDbLn2eWG/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mFfxT6tq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E56C433C7;
+	Tue, 27 Feb 2024 13:52:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042567;
-	bh=owP6z8qhKIPLuGkHrOwAZT0QeDOmvc/eu9Kv0V0NUr4=;
+	s=korg; t=1709041928;
+	bh=vjQWJYy29YWy8jKp3PMk5drchu3RB+pOcpxSDNKML7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jIJkHeulK5BnY6QT9H/q00i/+Db3wTEv4cIPaHSTNIEHpqjRMWawvwk7paISNJM0j
-	 FJeoQ+I7ytWJusMBURLocACI8Rc+PkVOX9G99KoqGi2lZR2FLeyfK8p4BIz82UP0KY
-	 wLWbnuDNqYgBGbbxc/HMYcfx2no6I1n/Jv77ogdk=
+	b=mFfxT6tqkjfvetyYfP852tBbyIKhoMfTFF+Ymvk+0Op8V7ZYnTzXL8jafskmVM6BY
+	 XyWpRSLCLyKYVP3J8HmBChjZh9BxEWrRZTBWelDiEZKPR6319PbatI57zLaeqNFtSR
+	 5E6pvYbNXd727vKsSIjwxzB8MyJBfxk8v3jYUlbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Tsoy <alexander@tsoy.me>,
-	Takashi Iwai <tiwai@suse.de>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 041/245] ALSA: usb-audio: Ignore clock selector errors for single connection
+Subject: [PATCH 6.6 118/299] cifs: handle cases where multiple sessions share connection
 Date: Tue, 27 Feb 2024 14:23:49 +0100
-Message-ID: <20240227131616.456609471@linuxfoundation.org>
+Message-ID: <20240227131629.660465007@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Tsoy <alexander@tsoy.me>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit eaa1b01fe709d6a236a9cec74813e0400601fd23 ]
+[ Upstream commit a39c757bf0596b17482a507f31c3ef0af0d1d2b4 ]
 
-For devices with multiple clock sources connected to a selector, we need
-to check what a clock selector control request has returned. This is
-needed to ensure that a requested clock source is indeed selected and for
-autoclock feature to work.
+Based on our implementation of multichannel, it is entirely
+possible that a server struct may not be found in any channel
+of an SMB session.
 
-For devices with single clock source connected, if we get an error there
-is nothing else we can do about it. We can't skip clock selector setup as
-it is required by some devices. So lets just ignore error in this case.
+In such cases, we should be prepared to move on and search for
+the server struct in the next session.
 
-This should fix various buggy Mackie devices:
-
-[  649.109785] usb 1-1.3: parse_audio_format_rates_v2v3(): unable to find clock source (clock -32)
-[  649.111946] usb 1-1.3: parse_audio_format_rates_v2v3(): unable to find clock source (clock -32)
-[  649.113822] usb 1-1.3: parse_audio_format_rates_v2v3(): unable to find clock source (clock -32)
-
-There is also interesting info from the Windows documentation [1] (this
-is probably why manufacturers dont't even test this feature):
-
-"The USB Audio 2.0 driver doesn't support clock selection. The driver
-uses the Clock Source Entity, which is selected by default and never
-issues a Clock Selector Control SET CUR request."
-
-Link: https://learn.microsoft.com/en-us/windows-hardware/drivers/audio/usb-2-0-audio-drivers [1]
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217314
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218175
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218342
-Signed-off-by: Alexander Tsoy <alexander@tsoy.me>
-Link: https://lore.kernel.org/r/20240201115308.17838-1-alexander@tsoy.me
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/clock.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ fs/smb/client/connect.c | 6 ++++++
+ fs/smb/client/sess.c    | 1 -
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/sound/usb/clock.c b/sound/usb/clock.c
-index ccca9efa7d33f..970e14ff54d14 100644
---- a/sound/usb/clock.c
-+++ b/sound/usb/clock.c
-@@ -328,8 +328,16 @@ static int __uac_clock_find_source(struct snd_usb_audio *chip,
- 			if (chip->quirk_flags & QUIRK_FLAG_SKIP_CLOCK_SELECTOR)
- 				return ret;
- 			err = uac_clock_selector_set_val(chip, entity_id, cur);
--			if (err < 0)
-+			if (err < 0) {
-+				if (pins == 1) {
-+					usb_audio_dbg(chip,
-+						      "%s(): selector returned an error, "
-+						      "assuming a firmware bug, id %d, ret %d\n",
-+						      __func__, clock_id, err);
-+					return ret;
-+				}
- 				return err;
-+			}
- 		}
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index c19eae07fa69a..a4147e999736a 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -229,6 +229,12 @@ cifs_mark_tcp_ses_conns_for_reconnect(struct TCP_Server_Info *server,
+ 	list_for_each_entry_safe(ses, nses, &pserver->smb_ses_list, smb_ses_list) {
+ 		/* check if iface is still active */
+ 		spin_lock(&ses->chan_lock);
++		if (cifs_ses_get_chan_index(ses, server) ==
++		    CIFS_INVAL_CHAN_INDEX) {
++			spin_unlock(&ses->chan_lock);
++			continue;
++		}
++
+ 		if (!cifs_chan_is_iface_active(ses, server)) {
+ 			spin_unlock(&ses->chan_lock);
+ 			cifs_chan_update_iface(ses, server);
+diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
+index 52f7a411e2bbf..07726b456a0a8 100644
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -88,7 +88,6 @@ cifs_ses_get_chan_index(struct cifs_ses *ses,
+ 	if (server)
+ 		cifs_dbg(VFS, "unable to get chan index for server: 0x%llx",
+ 			 server->conn_id);
+-	WARN_ON(1);
+ 	return CIFS_INVAL_CHAN_INDEX;
+ }
  
- 		if (!validate || ret > 0 || !chip->autoclock)
 -- 
 2.43.0
 
