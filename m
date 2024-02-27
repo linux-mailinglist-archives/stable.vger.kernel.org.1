@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C8E886967F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:12:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 605E186978E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:22:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E6741C22950
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:12:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 017551F256E4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A2B1419B4;
-	Tue, 27 Feb 2024 14:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508611420DC;
+	Tue, 27 Feb 2024 14:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DpDANVjV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FuwLGVPf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7805513EFE9;
-	Tue, 27 Feb 2024 14:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E87113EFE9;
+	Tue, 27 Feb 2024 14:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043140; cv=none; b=bCUwFBEEHV5QuVgivRddkCEl26d9+9brHY+Bvy8Dt1opjMkSqnsfBgXIYAeUoE2ji3Hu7byP/EkeA7/eJoxwxpkB4Q16+ZctSCxjioZGBsq/FixaA27IvK+g9dgGZxVP+E2rkd/3ffjSNPfQVZsb1IbTFmdP/A7cKYkAoNlMJDM=
+	t=1709043749; cv=none; b=T6m3rhBsXmYbxG9YHi0ycRcrAUI3zg0940DbTPCICWbvo1Kc6iTiApwXUAcJsN4DfjT+73uv2/MUyvlwYjAqtGv+AyR6ClOWuwKjxz8eouwEyXpThtPAjSzN+qZTsVDNj98Ho3Y1CIFaLa4uhRbd5sniz/kXJXUUNo15kB0s9J0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043140; c=relaxed/simple;
-	bh=xUkwcD1F9qpmHR5Ceeg8rvPo0oBppN817Yeg8jlCSqc=;
+	s=arc-20240116; t=1709043749; c=relaxed/simple;
+	bh=RyyU+57vru81qLXOjufNpaSepU9x4MIkAOjPA+ypVx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q0CQCTVLUjVm2UBG4WRy0j4V5VEMUIjlvCdA2+YvkbeGlRMSilN8AgWMwMr04T2AvfS1BXIlZcykIxnsG2FRdWIflFMVaHkXhggQUfnorDTk8TdA2wCoz3CBNgFsxaYZRphCPvOaQyiw75buXXlxU4sjyS0+UhtK60Wbxubx39s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DpDANVjV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0454DC433F1;
-	Tue, 27 Feb 2024 14:12:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MoMeXv6/pGNMeQFKDOj6VB2CXfm3yK28cWCsKj8/MUhXpCXUfvSrylHAHZDnKu6+qYBoTdCBAICZT069JLgwWJHT2qErg7wRRvpirx25pxJRAMPgneCcyy4De59XBN9H8fXC9Vn9saolpynzvYTrzm5L40NwOVBsWgAV/2BWCP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FuwLGVPf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92AA3C433F1;
+	Tue, 27 Feb 2024 14:22:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043140;
-	bh=xUkwcD1F9qpmHR5Ceeg8rvPo0oBppN817Yeg8jlCSqc=;
+	s=korg; t=1709043748;
+	bh=RyyU+57vru81qLXOjufNpaSepU9x4MIkAOjPA+ypVx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DpDANVjVakZki/EWMZTEF3BMN5DoB9QPia5F1q07UlRFx76cRTajGqgURxmhUs9/0
-	 /u0OrBHFZt+Jhl5LmXPSfkoWyBxtcinVJRU2NNKZJj9oEhSuIormkA6bS3XLG5LfSv
-	 eVyRZKk96R0zgZWMuYBGJ2f3tDGJB9nr5+EQFRys=
+	b=FuwLGVPfDeyobF+G74d6Mocuv1NxNix2CrEHX0kjiY2gtOOjLZCAkhUr3waSH0CSM
+	 jIT98qPBZCtgvU8EyU7J5uw2EHkYmrR54+xiEmPMNGFW3qCLj9f4BDd3W8K6VdQOxH
+	 f+MzZDJFbYRZ53Oela1CU8Uj+U3JVHW6cyy1Em60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniil Dulov <d.dulov@aladdin.ru>,
-	David Howells <dhowells@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 221/245] afs: Increase buffer size in afs_update_volume_status()
-Date: Tue, 27 Feb 2024 14:26:49 +0100
-Message-ID: <20240227131622.378220623@linuxfoundation.org>
+Subject: [PATCH 5.4 23/84] regulator: pwm-regulator: Add validity checks in continuous .get_voltage
+Date: Tue, 27 Feb 2024 14:26:50 +0100
+Message-ID: <20240227131553.621814513@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniil Dulov <d.dulov@aladdin.ru>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-[ Upstream commit 6ea38e2aeb72349cad50e38899b0ba6fbcb2af3d ]
+[ Upstream commit c92688cac239794e4a1d976afa5203a4d3a2ac0e ]
 
-The max length of volume->vid value is 20 characters.
-So increase idbuf[] size up to 24 to avoid overflow.
+Continuous regulators can be configured to operate only in a certain
+duty cycle range (for example from 0..91%). Add a check to error out if
+the duty cycle translates to an unsupported (or out of range) voltage.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-[DH: Actually, it's 20 + NUL, so increase it to 24 and use snprintf()]
-
-Fixes: d2ddc776a458 ("afs: Overhaul volume and server record caching and fileserver rotation")
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/20240211150442.3416-1-d.dulov@aladdin.ru/ # v1
-Link: https://lore.kernel.org/r/20240212083347.10742-1-d.dulov@aladdin.ru/ # v2
-Link: https://lore.kernel.org/r/20240219143906.138346-3-dhowells@redhat.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Suggested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://msgid.link/r/20240113224628.377993-2-martin.blumenstingl@googlemail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/volume.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/regulator/pwm-regulator.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/afs/volume.c b/fs/afs/volume.c
-index 137a970c19fb3..3d39ce5a23f22 100644
---- a/fs/afs/volume.c
-+++ b/fs/afs/volume.c
-@@ -327,7 +327,7 @@ static int afs_update_volume_status(struct afs_volume *volume, struct key *key)
- {
- 	struct afs_server_list *new, *old, *discard;
- 	struct afs_vldb_entry *vldb;
--	char idbuf[16];
-+	char idbuf[24];
- 	int ret, idsz;
+diff --git a/drivers/regulator/pwm-regulator.c b/drivers/regulator/pwm-regulator.c
+index 0a9d61a91f436..1b06aaaaf8b8e 100644
+--- a/drivers/regulator/pwm-regulator.c
++++ b/drivers/regulator/pwm-regulator.c
+@@ -158,6 +158,9 @@ static int pwm_regulator_get_voltage(struct regulator_dev *rdev)
+ 	pwm_get_state(drvdata->pwm, &pstate);
  
- 	_enter("");
-@@ -335,7 +335,7 @@ static int afs_update_volume_status(struct afs_volume *volume, struct key *key)
- 	/* We look up an ID by passing it as a decimal string in the
- 	 * operation's name parameter.
- 	 */
--	idsz = sprintf(idbuf, "%llu", volume->vid);
-+	idsz = snprintf(idbuf, sizeof(idbuf), "%llu", volume->vid);
+ 	voltage = pwm_get_relative_duty_cycle(&pstate, duty_unit);
++	if (voltage < min(max_uV_duty, min_uV_duty) ||
++	    voltage > max(max_uV_duty, min_uV_duty))
++		return -ENOTRECOVERABLE;
  
- 	vldb = afs_vl_lookup_vldb(volume->cell, key, idbuf, idsz);
- 	if (IS_ERR(vldb)) {
+ 	/*
+ 	 * The dutycycle for min_uV might be greater than the one for max_uV.
 -- 
 2.43.0
 
