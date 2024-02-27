@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2D8C8694D6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:56:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 820028696E9
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:16:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7920A1F21C9B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:56:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD42DB2A76D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F11D213AA55;
-	Tue, 27 Feb 2024 13:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5892F13DBBC;
+	Tue, 27 Feb 2024 14:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zkbc0RfR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lPPJugLh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FB013B295;
-	Tue, 27 Feb 2024 13:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B5013B2B4;
+	Tue, 27 Feb 2024 14:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042203; cv=none; b=S/Ul2MhpQjX3zcbkxmE7zcj5ranlZCdzYoliYAZgXgrvcSw5F7pLBNQP1+L0qJ18IH6Au8qL/C1GEcBeoTY1+WQWNMmakrpx7IswjUN3IXyVfVXM0SEJZkG/96tJearf+aAVEFJtqcoZ+B5DIAVwvsNS3TYiM0UebENU0r1HIrg=
+	t=1709043346; cv=none; b=nhZ1FA9ugcHj3AwiVctzN/H6/hGrwoJu8sWVkIzlJv6/xr+RW5YP3bnXbO63XZYIniCFjWE6eRiMO8DyxTgemMKTKusJKALbCnGqawjA9uhaW3Tb12TXWYnnYvq5LZf75vnPpDTbfGdrYWuZK6jQg11t83/TWwIHcWWN8aQgRcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042203; c=relaxed/simple;
-	bh=y1FPBb0XwSr+KEQHaR0zjyUaD6lTfndyafD6zomCFJY=;
+	s=arc-20240116; t=1709043346; c=relaxed/simple;
+	bh=G/rxBysktIPP9tXZiOIlf2oYoro+3VKR7DgzKdtB0A4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sR0RBRr2opTj7USBCAlsej0+Yc63+iwLtMTC4z10OAdCuHI/xBQUyiGN+4ZsoOaZUefEPF3eejvsrDQn3iyq4dmLGacaZbjxPyEIUPDC7f+JjyN9Egy23/cPO2XKkehcu57at0PT2Litcut1Z3Gy0d20ODwz2uJku3X2YiiQZa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zkbc0RfR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E7DC433F1;
-	Tue, 27 Feb 2024 13:56:43 +0000 (UTC)
+	 MIME-Version; b=ZzRQRADzzmcCP26P9vNdn2FYJbGvj/BlUEbmlCGYqibR31mUFOLYDQydCA/5NsM+Fqt5gou9gPV49ywHxGa0WH4NeTgJdS5+SxHpQENvd0eAnmEs5Sdd+lhh12LGO/EtleYrFBoZBrRUv+SJWEro9upc7+y6AfarKlic8YSU6Bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lPPJugLh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93455C433F1;
+	Tue, 27 Feb 2024 14:15:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042203;
-	bh=y1FPBb0XwSr+KEQHaR0zjyUaD6lTfndyafD6zomCFJY=;
+	s=korg; t=1709043345;
+	bh=G/rxBysktIPP9tXZiOIlf2oYoro+3VKR7DgzKdtB0A4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zkbc0RfREREhaRyUzPS9B+KztMBZpLnsDPwnmrIcYQVggDiK63AcWBKQ+I+6fWVzV
-	 qfuulKRlKaruk7bbbL+Dwdgy53o7z8Zeur8RtGEAQXIIYXNq8zzDRrGdZFtoF9yX+N
-	 q21E5FjqHa/F9e8NAAffMZ1oOkpvgCcDEiO8lPbc=
+	b=lPPJugLhXczFeu7MACqZdoUmIgvtg7o3NgG3OMM/vnzTu/KzQrw57oGBkgerkmXbM
+	 SvyJ4KULSr7A6KNjCkMj1SxXjooM5M7rKy+DnZ3gRvHXO9RDF2e5prAieH4B9ahGmf
+	 s0xAN+Vm+yhVRYcreVF+o8XUHGKIoGIDQRoVEU88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 6.6 186/299] usb: cdns3: fixed memory use after free at cdns3_gadget_ep_disable()
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 036/195] spi: sh-msiof: avoid integer overflow in constants
 Date: Tue, 27 Feb 2024 14:24:57 +0100
-Message-ID: <20240227131631.820997901@linuxfoundation.org>
+Message-ID: <20240227131611.583538232@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit cd45f99034b0c8c9cb346dd0d6407a95ca3d36f6 upstream.
+[ Upstream commit 6500ad28fd5d67d5ca0fee9da73c463090842440 ]
 
-  ...
-  cdns3_gadget_ep_free_request(&priv_ep->endpoint, &priv_req->request);
-  list_del_init(&priv_req->list);
-  ...
+cppcheck rightfully warned:
 
-'priv_req' actually free at cdns3_gadget_ep_free_request(). But
-list_del_init() use priv_req->list after it.
+ drivers/spi/spi-sh-msiof.c:792:28: warning: Signed integer overflow for expression '7<<29'. [integerOverflow]
+ sh_msiof_write(p, SIFCTR, SIFCTR_TFWM_1 | SIFCTR_RFWM_1);
 
-[ 1542.642868][  T534] BUG: KFENCE: use-after-free read in __list_del_entry_valid+0x10/0xd4
-[ 1542.642868][  T534]
-[ 1542.653162][  T534] Use-after-free read at 0x000000009ed0ba99 (in kfence-#3):
-[ 1542.660311][  T534]  __list_del_entry_valid+0x10/0xd4
-[ 1542.665375][  T534]  cdns3_gadget_ep_disable+0x1f8/0x388 [cdns3]
-[ 1542.671571][  T534]  usb_ep_disable+0x44/0xe4
-[ 1542.675948][  T534]  ffs_func_eps_disable+0x64/0xc8
-[ 1542.680839][  T534]  ffs_func_set_alt+0x74/0x368
-[ 1542.685478][  T534]  ffs_func_disable+0x18/0x28
-
-Move list_del_init() before cdns3_gadget_ep_free_request() to resolve this
-problem.
-
-Cc: stable@vger.kernel.org
-Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20240202154217.661867-1-Frank.Li@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://msgid.link/r/20240130094053.10672-1-wsa+renesas@sang-engineering.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/cdns3-gadget.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-sh-msiof.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/drivers/usb/cdns3/cdns3-gadget.c
-+++ b/drivers/usb/cdns3/cdns3-gadget.c
-@@ -2539,11 +2539,11 @@ static int cdns3_gadget_ep_disable(struc
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index 51ceaa4857249..ec3a4939ee984 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -137,14 +137,14 @@ struct sh_msiof_spi_priv {
  
- 	while (!list_empty(&priv_ep->wa2_descmiss_req_list)) {
- 		priv_req = cdns3_next_priv_request(&priv_ep->wa2_descmiss_req_list);
-+		list_del_init(&priv_req->list);
- 
- 		kfree(priv_req->request.buf);
- 		cdns3_gadget_ep_free_request(&priv_ep->endpoint,
- 					     &priv_req->request);
--		list_del_init(&priv_req->list);
- 		--priv_ep->wa2_counter;
- 	}
- 
+ /* SIFCTR */
+ #define SIFCTR_TFWM_MASK	GENMASK(31, 29)	/* Transmit FIFO Watermark */
+-#define SIFCTR_TFWM_64		(0 << 29)	/*  Transfer Request when 64 empty stages */
+-#define SIFCTR_TFWM_32		(1 << 29)	/*  Transfer Request when 32 empty stages */
+-#define SIFCTR_TFWM_24		(2 << 29)	/*  Transfer Request when 24 empty stages */
+-#define SIFCTR_TFWM_16		(3 << 29)	/*  Transfer Request when 16 empty stages */
+-#define SIFCTR_TFWM_12		(4 << 29)	/*  Transfer Request when 12 empty stages */
+-#define SIFCTR_TFWM_8		(5 << 29)	/*  Transfer Request when 8 empty stages */
+-#define SIFCTR_TFWM_4		(6 << 29)	/*  Transfer Request when 4 empty stages */
+-#define SIFCTR_TFWM_1		(7 << 29)	/*  Transfer Request when 1 empty stage */
++#define SIFCTR_TFWM_64		(0UL << 29)	/*  Transfer Request when 64 empty stages */
++#define SIFCTR_TFWM_32		(1UL << 29)	/*  Transfer Request when 32 empty stages */
++#define SIFCTR_TFWM_24		(2UL << 29)	/*  Transfer Request when 24 empty stages */
++#define SIFCTR_TFWM_16		(3UL << 29)	/*  Transfer Request when 16 empty stages */
++#define SIFCTR_TFWM_12		(4UL << 29)	/*  Transfer Request when 12 empty stages */
++#define SIFCTR_TFWM_8		(5UL << 29)	/*  Transfer Request when 8 empty stages */
++#define SIFCTR_TFWM_4		(6UL << 29)	/*  Transfer Request when 4 empty stages */
++#define SIFCTR_TFWM_1		(7UL << 29)	/*  Transfer Request when 1 empty stage */
+ #define SIFCTR_TFUA_MASK	GENMASK(26, 20) /* Transmit FIFO Usable Area */
+ #define SIFCTR_TFUA_SHIFT	20
+ #define SIFCTR_TFUA(i)		((i) << SIFCTR_TFUA_SHIFT)
+-- 
+2.43.0
+
 
 
 
