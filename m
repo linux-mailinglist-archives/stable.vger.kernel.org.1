@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-25133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96E768697E5
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:26:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DE37869515
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:58:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B7542902FD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:26:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F1011C2130C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:58:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 180FC13B7AB;
-	Tue, 27 Feb 2024 14:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA16C13DB90;
+	Tue, 27 Feb 2024 13:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uqXuT0I4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qjlosi1e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F5A13B797;
-	Tue, 27 Feb 2024 14:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68EBC54BD4;
+	Tue, 27 Feb 2024 13:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043956; cv=none; b=AP6h60f6DjVvhRBGhiwyJrWU2IMUUGXAQtk6nMbVnj4OgGpFhUgSruMLczaG4GtODXbz3/7Qwa7OwmKk0O0zvHyOnN1iFrdASBISuTPwi152pJqGjtRL72I6R+x/2xH6RdvBDqPQVKHogCqiLBgDIt2sGMwTzZjG217eqnE2MwU=
+	t=1709042314; cv=none; b=O5N9dnIu/FvAJZ0ynYq4mS70T1h3Wgt4IVbpBkTAxOw8TfYGRgvj8+2JKuSkPypqFG0qb2pJhyGF0w4FY/3hoqXJGcVr0A8Zj7BpDwLA54FH0CAiaO8onNHqkd+yQF4YSSpapAOAYQduCzbknj8k6V1/a+CsH4GIeJYABwBySTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043956; c=relaxed/simple;
-	bh=vBFQPuoVDxGmst12Y2WlC8D3IMs/sm9srzBVqdSkAnE=;
+	s=arc-20240116; t=1709042314; c=relaxed/simple;
+	bh=tkWIgMZJG3xOq9A3wdQJN1BNTk9SIef/tpf0JP+urFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Repss7Qw/us32fKdd9qQaIsRdy3uSlOClRMmINK3VDi3Z1vo0Ag6/IB91d6mSWNAOwbUHcpkuVKPFMrnSorxppza+b2Y9EWS5fSGui4jf0iisbupBK8oLGJMKyWWdWA8bDs3vgGGlZnmCf4hfR565ylreuIU7AdDo/uH9xviHHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uqXuT0I4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5276BC433C7;
-	Tue, 27 Feb 2024 14:25:56 +0000 (UTC)
+	 MIME-Version; b=NHdiNDPBLVa3Zrclwe4iLafcogwHtrozs6d5z2QTe/oV6aPUT0eK6rqkVQjjkawFj6AK+7NghUCAYGJQ5oqOzibp7U1o9kTSNfbgHpzSlyRP8nLirZNFL7Dyxl/K+9nIJbtAyLBf6XIknNqPixzGe697ieju66AL5JI6jysKgNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qjlosi1e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA392C433F1;
+	Tue, 27 Feb 2024 13:58:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043956;
-	bh=vBFQPuoVDxGmst12Y2WlC8D3IMs/sm9srzBVqdSkAnE=;
+	s=korg; t=1709042314;
+	bh=tkWIgMZJG3xOq9A3wdQJN1BNTk9SIef/tpf0JP+urFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uqXuT0I4CysSp/hol968OV61cZnY02luFI0OazgdkCiHVp1WMQ9c4rkMOh7eeGkGJ
-	 TtmH9ZVS72eh4ndI2GX5KexUp5xsu1n/MIGPuBXDcR1n/n4l97DknFztwnhCDIBbbW
-	 P0JNH8wczMzQ/YIxdPWmTQTyHWShqPd6nq2KyUDQ=
+	b=Qjlosi1e/+TbSpeL/c8K6YUeHV16T05mz3IrnQlr8c06o5Hpk04Td+8cTk3jRSH/U
+	 I7wXVl71TIVnFgLVZDxcyim2GisXkEYgJGwEBuM3vRz27t6ex8Vr9jKfwQc/mpGLpJ
+	 1lwzAb5dwow8h+/6mwVLKDPxTIw+izte+5AmALNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.10 003/122] net/sched: Retire dsmark qdisc
+	Helge Deller <deller@gmx.de>,
+	Sven Schnelle <svens@stackframe.org>,
+	John David Anglin <dave.anglin@bell.net>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	David Laight <David.Laight@ACULAB.COM>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 253/299] parisc: Fix stack unwinder
 Date: Tue, 27 Feb 2024 14:26:04 +0100
-Message-ID: <20240227131558.813775931@linuxfoundation.org>
+Message-ID: <20240227131633.860842006@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,585 +66,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-commit bbe77c14ee6185a61ba6d5e435c1cbb489d2a9ed upstream.
+[ Upstream commit 882a2a724ee964c1ebe7268a91d5c8c8ddc796bf ]
 
-The dsmark qdisc has served us well over the years for diffserv but has not
-been getting much attention due to other more popular approaches to do diffserv
-services. Most recently it has become a shooting target for syzkaller. For this
-reason, we are retiring it.
+Debugging shows a large number of unaligned access traps in the unwinder
+code. Code analysis reveals a number of issues with this code:
 
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Acked-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+- handle_interruption is passed twice through
+  dereference_kernel_function_descriptor()
+- ret_from_kernel_thread, syscall_exit, intr_return,
+  _switch_to_ret, and _call_on_stack are passed through
+  dereference_kernel_function_descriptor() even though they are
+  not declared as function pointers.
+
+To fix the problems, drop one of the calls to
+dereference_kernel_function_descriptor() for handle_interruption,
+and compare the other pointers directly.
+
+Fixes: 6414b30b39f9 ("parisc: unwind: Avoid missing prototype warning for handle_interruption()")
+Fixes: 8e0ba125c2bf ("parisc/unwind: fix unwinder when CONFIG_64BIT is enabled")
+Cc: Helge Deller <deller@gmx.de>
+Cc: Sven Schnelle <svens@stackframe.org>
+Cc: John David Anglin <dave.anglin@bell.net>
+Cc: Charlie Jenkins <charlie@rivosinc.com>
+Cc: David Laight <David.Laight@ACULAB.COM>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/Kconfig      |   11 -
- net/sched/Makefile     |    1 
- net/sched/sch_dsmark.c |  521 -------------------------------------------------
- 3 files changed, 533 deletions(-)
- delete mode 100644 net/sched/sch_dsmark.c
- delete mode 100644 tools/testing/selftests/tc-testing/tc-tests/qdiscs/dsmark.json
+ arch/parisc/kernel/unwind.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
---- a/net/sched/Kconfig
-+++ b/net/sched/Kconfig
-@@ -186,17 +186,6 @@ config NET_SCH_GRED
- 	  To compile this code as a module, choose M here: the
- 	  module will be called sch_gred.
+diff --git a/arch/parisc/kernel/unwind.c b/arch/parisc/kernel/unwind.c
+index 27ae40a443b80..f7e0fee5ee55a 100644
+--- a/arch/parisc/kernel/unwind.c
++++ b/arch/parisc/kernel/unwind.c
+@@ -228,10 +228,8 @@ static int unwind_special(struct unwind_frame_info *info, unsigned long pc, int
+ #ifdef CONFIG_IRQSTACKS
+ 	extern void * const _call_on_stack;
+ #endif /* CONFIG_IRQSTACKS */
+-	void *ptr;
  
--config NET_SCH_DSMARK
--	tristate "Differentiated Services marker (DSMARK)"
--	help
--	  Say Y if you want to schedule packets according to the
--	  Differentiated Services architecture proposed in RFC 2475.
--	  Technical information on this method, with pointers to associated
--	  RFCs, is available at <http://www.gta.ufrj.br/diffserv/>.
--
--	  To compile this code as a module, choose M here: the
--	  module will be called sch_dsmark.
--
- config NET_SCH_NETEM
- 	tristate "Network emulator (NETEM)"
- 	help
---- a/net/sched/Makefile
-+++ b/net/sched/Makefile
-@@ -37,7 +37,6 @@ obj-$(CONFIG_NET_SCH_HFSC)	+= sch_hfsc.o
- obj-$(CONFIG_NET_SCH_RED)	+= sch_red.o
- obj-$(CONFIG_NET_SCH_GRED)	+= sch_gred.o
- obj-$(CONFIG_NET_SCH_INGRESS)	+= sch_ingress.o
--obj-$(CONFIG_NET_SCH_DSMARK)	+= sch_dsmark.o
- obj-$(CONFIG_NET_SCH_SFB)	+= sch_sfb.o
- obj-$(CONFIG_NET_SCH_SFQ)	+= sch_sfq.o
- obj-$(CONFIG_NET_SCH_TBF)	+= sch_tbf.o
---- a/net/sched/sch_dsmark.c
-+++ /dev/null
-@@ -1,521 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/* net/sched/sch_dsmark.c - Differentiated Services field marker */
--
--/* Written 1998-2000 by Werner Almesberger, EPFL ICA */
--
--
--#include <linux/module.h>
--#include <linux/init.h>
--#include <linux/slab.h>
--#include <linux/types.h>
--#include <linux/string.h>
--#include <linux/errno.h>
--#include <linux/skbuff.h>
--#include <linux/rtnetlink.h>
--#include <linux/bitops.h>
--#include <net/pkt_sched.h>
--#include <net/pkt_cls.h>
--#include <net/dsfield.h>
--#include <net/inet_ecn.h>
--#include <asm/byteorder.h>
--
--/*
-- * classid	class		marking
-- * -------	-----		-------
-- *   n/a	  0		n/a
-- *   x:0	  1		use entry [0]
-- *   ...	 ...		...
-- *   x:y y>0	 y+1		use entry [y]
-- *   ...	 ...		...
-- * x:indices-1	indices		use entry [indices-1]
-- *   ...	 ...		...
-- *   x:y	 y+1		use entry [y & (indices-1)]
-- *   ...	 ...		...
-- * 0xffff	0x10000		use entry [indices-1]
-- */
--
--
--#define NO_DEFAULT_INDEX	(1 << 16)
--
--struct mask_value {
--	u8			mask;
--	u8			value;
--};
--
--struct dsmark_qdisc_data {
--	struct Qdisc		*q;
--	struct tcf_proto __rcu	*filter_list;
--	struct tcf_block	*block;
--	struct mask_value	*mv;
--	u16			indices;
--	u8			set_tc_index;
--	u32			default_index;	/* index range is 0...0xffff */
--#define DSMARK_EMBEDDED_SZ	16
--	struct mask_value	embedded[DSMARK_EMBEDDED_SZ];
--};
--
--static inline int dsmark_valid_index(struct dsmark_qdisc_data *p, u16 index)
--{
--	return index <= p->indices && index > 0;
--}
--
--/* ------------------------- Class/flow operations ------------------------- */
--
--static int dsmark_graft(struct Qdisc *sch, unsigned long arg,
--			struct Qdisc *new, struct Qdisc **old,
--			struct netlink_ext_ack *extack)
--{
--	struct dsmark_qdisc_data *p = qdisc_priv(sch);
--
--	pr_debug("%s(sch %p,[qdisc %p],new %p,old %p)\n",
--		 __func__, sch, p, new, old);
--
--	if (new == NULL) {
--		new = qdisc_create_dflt(sch->dev_queue, &pfifo_qdisc_ops,
--					sch->handle, NULL);
--		if (new == NULL)
--			new = &noop_qdisc;
--	}
--
--	*old = qdisc_replace(sch, new, &p->q);
--	return 0;
--}
--
--static struct Qdisc *dsmark_leaf(struct Qdisc *sch, unsigned long arg)
--{
--	struct dsmark_qdisc_data *p = qdisc_priv(sch);
--	return p->q;
--}
--
--static unsigned long dsmark_find(struct Qdisc *sch, u32 classid)
--{
--	return TC_H_MIN(classid) + 1;
--}
--
--static unsigned long dsmark_bind_filter(struct Qdisc *sch,
--					unsigned long parent, u32 classid)
--{
--	pr_debug("%s(sch %p,[qdisc %p],classid %x)\n",
--		 __func__, sch, qdisc_priv(sch), classid);
--
--	return dsmark_find(sch, classid);
--}
--
--static void dsmark_unbind_filter(struct Qdisc *sch, unsigned long cl)
--{
--}
--
--static const struct nla_policy dsmark_policy[TCA_DSMARK_MAX + 1] = {
--	[TCA_DSMARK_INDICES]		= { .type = NLA_U16 },
--	[TCA_DSMARK_DEFAULT_INDEX]	= { .type = NLA_U16 },
--	[TCA_DSMARK_SET_TC_INDEX]	= { .type = NLA_FLAG },
--	[TCA_DSMARK_MASK]		= { .type = NLA_U8 },
--	[TCA_DSMARK_VALUE]		= { .type = NLA_U8 },
--};
--
--static int dsmark_change(struct Qdisc *sch, u32 classid, u32 parent,
--			 struct nlattr **tca, unsigned long *arg,
--			 struct netlink_ext_ack *extack)
--{
--	struct dsmark_qdisc_data *p = qdisc_priv(sch);
--	struct nlattr *opt = tca[TCA_OPTIONS];
--	struct nlattr *tb[TCA_DSMARK_MAX + 1];
--	int err = -EINVAL;
--
--	pr_debug("%s(sch %p,[qdisc %p],classid %x,parent %x), arg 0x%lx\n",
--		 __func__, sch, p, classid, parent, *arg);
--
--	if (!dsmark_valid_index(p, *arg)) {
--		err = -ENOENT;
--		goto errout;
--	}
--
--	if (!opt)
--		goto errout;
--
--	err = nla_parse_nested_deprecated(tb, TCA_DSMARK_MAX, opt,
--					  dsmark_policy, NULL);
--	if (err < 0)
--		goto errout;
--
--	if (tb[TCA_DSMARK_VALUE])
--		p->mv[*arg - 1].value = nla_get_u8(tb[TCA_DSMARK_VALUE]);
--
--	if (tb[TCA_DSMARK_MASK])
--		p->mv[*arg - 1].mask = nla_get_u8(tb[TCA_DSMARK_MASK]);
--
--	err = 0;
--
--errout:
--	return err;
--}
--
--static int dsmark_delete(struct Qdisc *sch, unsigned long arg)
--{
--	struct dsmark_qdisc_data *p = qdisc_priv(sch);
--
--	if (!dsmark_valid_index(p, arg))
--		return -EINVAL;
--
--	p->mv[arg - 1].mask = 0xff;
--	p->mv[arg - 1].value = 0;
--
--	return 0;
--}
--
--static void dsmark_walk(struct Qdisc *sch, struct qdisc_walker *walker)
--{
--	struct dsmark_qdisc_data *p = qdisc_priv(sch);
--	int i;
--
--	pr_debug("%s(sch %p,[qdisc %p],walker %p)\n",
--		 __func__, sch, p, walker);
--
--	if (walker->stop)
--		return;
--
--	for (i = 0; i < p->indices; i++) {
--		if (p->mv[i].mask == 0xff && !p->mv[i].value)
--			goto ignore;
--		if (walker->count >= walker->skip) {
--			if (walker->fn(sch, i + 1, walker) < 0) {
--				walker->stop = 1;
--				break;
--			}
--		}
--ignore:
--		walker->count++;
--	}
--}
--
--static struct tcf_block *dsmark_tcf_block(struct Qdisc *sch, unsigned long cl,
--					  struct netlink_ext_ack *extack)
--{
--	struct dsmark_qdisc_data *p = qdisc_priv(sch);
--
--	return p->block;
--}
--
--/* --------------------------- Qdisc operations ---------------------------- */
--
--static int dsmark_enqueue(struct sk_buff *skb, struct Qdisc *sch,
--			  struct sk_buff **to_free)
--{
--	unsigned int len = qdisc_pkt_len(skb);
--	struct dsmark_qdisc_data *p = qdisc_priv(sch);
--	int err;
--
--	pr_debug("%s(skb %p,sch %p,[qdisc %p])\n", __func__, skb, sch, p);
--
--	if (p->set_tc_index) {
--		int wlen = skb_network_offset(skb);
--
--		switch (skb_protocol(skb, true)) {
--		case htons(ETH_P_IP):
--			wlen += sizeof(struct iphdr);
--			if (!pskb_may_pull(skb, wlen) ||
--			    skb_try_make_writable(skb, wlen))
--				goto drop;
--
--			skb->tc_index = ipv4_get_dsfield(ip_hdr(skb))
--				& ~INET_ECN_MASK;
--			break;
--
--		case htons(ETH_P_IPV6):
--			wlen += sizeof(struct ipv6hdr);
--			if (!pskb_may_pull(skb, wlen) ||
--			    skb_try_make_writable(skb, wlen))
--				goto drop;
--
--			skb->tc_index = ipv6_get_dsfield(ipv6_hdr(skb))
--				& ~INET_ECN_MASK;
--			break;
--		default:
--			skb->tc_index = 0;
--			break;
--		}
--	}
--
--	if (TC_H_MAJ(skb->priority) == sch->handle)
--		skb->tc_index = TC_H_MIN(skb->priority);
--	else {
--		struct tcf_result res;
--		struct tcf_proto *fl = rcu_dereference_bh(p->filter_list);
--		int result = tcf_classify(skb, fl, &res, false);
--
--		pr_debug("result %d class 0x%04x\n", result, res.classid);
--
--		switch (result) {
--#ifdef CONFIG_NET_CLS_ACT
--		case TC_ACT_QUEUED:
--		case TC_ACT_STOLEN:
--		case TC_ACT_TRAP:
--			__qdisc_drop(skb, to_free);
--			return NET_XMIT_SUCCESS | __NET_XMIT_STOLEN;
--
--		case TC_ACT_SHOT:
--			goto drop;
--#endif
--		case TC_ACT_OK:
--			skb->tc_index = TC_H_MIN(res.classid);
--			break;
--
--		default:
--			if (p->default_index != NO_DEFAULT_INDEX)
--				skb->tc_index = p->default_index;
--			break;
--		}
--	}
--
--	err = qdisc_enqueue(skb, p->q, to_free);
--	if (err != NET_XMIT_SUCCESS) {
--		if (net_xmit_drop_count(err))
--			qdisc_qstats_drop(sch);
--		return err;
--	}
--
--	sch->qstats.backlog += len;
--	sch->q.qlen++;
--
--	return NET_XMIT_SUCCESS;
--
--drop:
--	qdisc_drop(skb, sch, to_free);
--	return NET_XMIT_SUCCESS | __NET_XMIT_BYPASS;
--}
--
--static struct sk_buff *dsmark_dequeue(struct Qdisc *sch)
--{
--	struct dsmark_qdisc_data *p = qdisc_priv(sch);
--	struct sk_buff *skb;
--	u32 index;
--
--	pr_debug("%s(sch %p,[qdisc %p])\n", __func__, sch, p);
--
--	skb = qdisc_dequeue_peeked(p->q);
--	if (skb == NULL)
--		return NULL;
--
--	qdisc_bstats_update(sch, skb);
--	qdisc_qstats_backlog_dec(sch, skb);
--	sch->q.qlen--;
--
--	index = skb->tc_index & (p->indices - 1);
--	pr_debug("index %d->%d\n", skb->tc_index, index);
--
--	switch (skb_protocol(skb, true)) {
--	case htons(ETH_P_IP):
--		ipv4_change_dsfield(ip_hdr(skb), p->mv[index].mask,
--				    p->mv[index].value);
--			break;
--	case htons(ETH_P_IPV6):
--		ipv6_change_dsfield(ipv6_hdr(skb), p->mv[index].mask,
--				    p->mv[index].value);
--			break;
--	default:
--		/*
--		 * Only complain if a change was actually attempted.
--		 * This way, we can send non-IP traffic through dsmark
--		 * and don't need yet another qdisc as a bypass.
--		 */
--		if (p->mv[index].mask != 0xff || p->mv[index].value)
--			pr_warn("%s: unsupported protocol %d\n",
--				__func__, ntohs(skb_protocol(skb, true)));
--		break;
--	}
--
--	return skb;
--}
--
--static struct sk_buff *dsmark_peek(struct Qdisc *sch)
--{
--	struct dsmark_qdisc_data *p = qdisc_priv(sch);
--
--	pr_debug("%s(sch %p,[qdisc %p])\n", __func__, sch, p);
--
--	return p->q->ops->peek(p->q);
--}
--
--static int dsmark_init(struct Qdisc *sch, struct nlattr *opt,
--		       struct netlink_ext_ack *extack)
--{
--	struct dsmark_qdisc_data *p = qdisc_priv(sch);
--	struct nlattr *tb[TCA_DSMARK_MAX + 1];
--	int err = -EINVAL;
--	u32 default_index = NO_DEFAULT_INDEX;
--	u16 indices;
--	int i;
--
--	pr_debug("%s(sch %p,[qdisc %p],opt %p)\n", __func__, sch, p, opt);
--
--	if (!opt)
--		goto errout;
--
--	err = tcf_block_get(&p->block, &p->filter_list, sch, extack);
--	if (err)
--		return err;
--
--	err = nla_parse_nested_deprecated(tb, TCA_DSMARK_MAX, opt,
--					  dsmark_policy, NULL);
--	if (err < 0)
--		goto errout;
--
--	err = -EINVAL;
--	if (!tb[TCA_DSMARK_INDICES])
--		goto errout;
--	indices = nla_get_u16(tb[TCA_DSMARK_INDICES]);
--
--	if (hweight32(indices) != 1)
--		goto errout;
--
--	if (tb[TCA_DSMARK_DEFAULT_INDEX])
--		default_index = nla_get_u16(tb[TCA_DSMARK_DEFAULT_INDEX]);
--
--	if (indices <= DSMARK_EMBEDDED_SZ)
--		p->mv = p->embedded;
--	else
--		p->mv = kmalloc_array(indices, sizeof(*p->mv), GFP_KERNEL);
--	if (!p->mv) {
--		err = -ENOMEM;
--		goto errout;
--	}
--	for (i = 0; i < indices; i++) {
--		p->mv[i].mask = 0xff;
--		p->mv[i].value = 0;
--	}
--	p->indices = indices;
--	p->default_index = default_index;
--	p->set_tc_index = nla_get_flag(tb[TCA_DSMARK_SET_TC_INDEX]);
--
--	p->q = qdisc_create_dflt(sch->dev_queue, &pfifo_qdisc_ops, sch->handle,
--				 NULL);
--	if (p->q == NULL)
--		p->q = &noop_qdisc;
--	else
--		qdisc_hash_add(p->q, true);
--
--	pr_debug("%s: qdisc %p\n", __func__, p->q);
--
--	err = 0;
--errout:
--	return err;
--}
--
--static void dsmark_reset(struct Qdisc *sch)
--{
--	struct dsmark_qdisc_data *p = qdisc_priv(sch);
--
--	pr_debug("%s(sch %p,[qdisc %p])\n", __func__, sch, p);
--	if (p->q)
--		qdisc_reset(p->q);
--}
--
--static void dsmark_destroy(struct Qdisc *sch)
--{
--	struct dsmark_qdisc_data *p = qdisc_priv(sch);
--
--	pr_debug("%s(sch %p,[qdisc %p])\n", __func__, sch, p);
--
--	tcf_block_put(p->block);
--	qdisc_put(p->q);
--	if (p->mv != p->embedded)
--		kfree(p->mv);
--}
--
--static int dsmark_dump_class(struct Qdisc *sch, unsigned long cl,
--			     struct sk_buff *skb, struct tcmsg *tcm)
--{
--	struct dsmark_qdisc_data *p = qdisc_priv(sch);
--	struct nlattr *opts = NULL;
--
--	pr_debug("%s(sch %p,[qdisc %p],class %ld\n", __func__, sch, p, cl);
--
--	if (!dsmark_valid_index(p, cl))
--		return -EINVAL;
--
--	tcm->tcm_handle = TC_H_MAKE(TC_H_MAJ(sch->handle), cl - 1);
--	tcm->tcm_info = p->q->handle;
--
--	opts = nla_nest_start_noflag(skb, TCA_OPTIONS);
--	if (opts == NULL)
--		goto nla_put_failure;
--	if (nla_put_u8(skb, TCA_DSMARK_MASK, p->mv[cl - 1].mask) ||
--	    nla_put_u8(skb, TCA_DSMARK_VALUE, p->mv[cl - 1].value))
--		goto nla_put_failure;
--
--	return nla_nest_end(skb, opts);
--
--nla_put_failure:
--	nla_nest_cancel(skb, opts);
--	return -EMSGSIZE;
--}
--
--static int dsmark_dump(struct Qdisc *sch, struct sk_buff *skb)
--{
--	struct dsmark_qdisc_data *p = qdisc_priv(sch);
--	struct nlattr *opts = NULL;
--
--	opts = nla_nest_start_noflag(skb, TCA_OPTIONS);
--	if (opts == NULL)
--		goto nla_put_failure;
--	if (nla_put_u16(skb, TCA_DSMARK_INDICES, p->indices))
--		goto nla_put_failure;
--
--	if (p->default_index != NO_DEFAULT_INDEX &&
--	    nla_put_u16(skb, TCA_DSMARK_DEFAULT_INDEX, p->default_index))
--		goto nla_put_failure;
--
--	if (p->set_tc_index &&
--	    nla_put_flag(skb, TCA_DSMARK_SET_TC_INDEX))
--		goto nla_put_failure;
--
--	return nla_nest_end(skb, opts);
--
--nla_put_failure:
--	nla_nest_cancel(skb, opts);
--	return -EMSGSIZE;
--}
--
--static const struct Qdisc_class_ops dsmark_class_ops = {
--	.graft		=	dsmark_graft,
--	.leaf		=	dsmark_leaf,
--	.find		=	dsmark_find,
--	.change		=	dsmark_change,
--	.delete		=	dsmark_delete,
--	.walk		=	dsmark_walk,
--	.tcf_block	=	dsmark_tcf_block,
--	.bind_tcf	=	dsmark_bind_filter,
--	.unbind_tcf	=	dsmark_unbind_filter,
--	.dump		=	dsmark_dump_class,
--};
--
--static struct Qdisc_ops dsmark_qdisc_ops __read_mostly = {
--	.next		=	NULL,
--	.cl_ops		=	&dsmark_class_ops,
--	.id		=	"dsmark",
--	.priv_size	=	sizeof(struct dsmark_qdisc_data),
--	.enqueue	=	dsmark_enqueue,
--	.dequeue	=	dsmark_dequeue,
--	.peek		=	dsmark_peek,
--	.init		=	dsmark_init,
--	.reset		=	dsmark_reset,
--	.destroy	=	dsmark_destroy,
--	.change		=	NULL,
--	.dump		=	dsmark_dump,
--	.owner		=	THIS_MODULE,
--};
--
--static int __init dsmark_module_init(void)
--{
--	return register_qdisc(&dsmark_qdisc_ops);
--}
--
--static void __exit dsmark_module_exit(void)
--{
--	unregister_qdisc(&dsmark_qdisc_ops);
--}
--
--module_init(dsmark_module_init)
--module_exit(dsmark_module_exit)
--
--MODULE_LICENSE("GPL");
+-	ptr = dereference_kernel_function_descriptor(&handle_interruption);
+-	if (pc_is_kernel_fn(pc, ptr)) {
++	if (pc_is_kernel_fn(pc, handle_interruption)) {
+ 		struct pt_regs *regs = (struct pt_regs *)(info->sp - frame_size - PT_SZ_ALGN);
+ 		dbg("Unwinding through handle_interruption()\n");
+ 		info->prev_sp = regs->gr[30];
+@@ -239,13 +237,13 @@ static int unwind_special(struct unwind_frame_info *info, unsigned long pc, int
+ 		return 1;
+ 	}
+ 
+-	if (pc_is_kernel_fn(pc, ret_from_kernel_thread) ||
+-	    pc_is_kernel_fn(pc, syscall_exit)) {
++	if (pc == (unsigned long)&ret_from_kernel_thread ||
++	    pc == (unsigned long)&syscall_exit) {
+ 		info->prev_sp = info->prev_ip = 0;
+ 		return 1;
+ 	}
+ 
+-	if (pc_is_kernel_fn(pc, intr_return)) {
++	if (pc == (unsigned long)&intr_return) {
+ 		struct pt_regs *regs;
+ 
+ 		dbg("Found intr_return()\n");
+@@ -257,14 +255,14 @@ static int unwind_special(struct unwind_frame_info *info, unsigned long pc, int
+ 	}
+ 
+ 	if (pc_is_kernel_fn(pc, _switch_to) ||
+-	    pc_is_kernel_fn(pc, _switch_to_ret)) {
++	    pc == (unsigned long)&_switch_to_ret) {
+ 		info->prev_sp = info->sp - CALLEE_SAVE_FRAME_SIZE;
+ 		info->prev_ip = *(unsigned long *)(info->prev_sp - RP_OFFSET);
+ 		return 1;
+ 	}
+ 
+ #ifdef CONFIG_IRQSTACKS
+-	if (pc_is_kernel_fn(pc, _call_on_stack)) {
++	if (pc == (unsigned long)&_call_on_stack) {
+ 		info->prev_sp = *(unsigned long *)(info->sp - FRAME_SIZE - REG_SZ);
+ 		info->prev_ip = *(unsigned long *)(info->sp - FRAME_SIZE - RP_OFFSET);
+ 		return 1;
+-- 
+2.43.0
+
 
 
 
