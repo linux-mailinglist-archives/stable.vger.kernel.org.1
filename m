@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-24155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FC628692E9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:39:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65BCD8692FA
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:40:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BB1E28412B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:39:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20AE22830D2
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B1E13B78F;
-	Tue, 27 Feb 2024 13:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FA8213B79F;
+	Tue, 27 Feb 2024 13:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZ81kxVq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="owzp3rtS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9787278B61;
-	Tue, 27 Feb 2024 13:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08FC13AA50;
+	Tue, 27 Feb 2024 13:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041184; cv=none; b=vGXcEZ2syDz+BBCUJqxvXyPy6/GxOfqFCINSY7HgTZmgYdSVFvc/TT1FzYZaIJg3L9HfxYDv+3uC+CziUN4URP5wf54RWgdfxyTUZwbe6Bhc9R6meqUpHZCUZTqtVW2A91b5mSc5HmagkDSXEK91uj3r46XdpcBn2m5LQG7CvcE=
+	t=1709041215; cv=none; b=h5voe2gylNzOjYBURPh8mdbefKTZJfsJxUlQhQg/Cw4PusOJSiR6ziR3/SKU4X7Wni8+PUmezXvNitSALNRjcRgC2uJvESECddvp4caLJXb5H+vE3yc+i6UtB1ECanzeDC7AkbFa/U6xOwbWREnNrNLwicc/DITYt74IRkyYp20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041184; c=relaxed/simple;
-	bh=W1eQje+MsB/8IQVc1ytDmWsf+4F8FZsfCu5WzHGvsdI=;
+	s=arc-20240116; t=1709041215; c=relaxed/simple;
+	bh=GwSB29VyHojcvQqBIo4oM5s9fuzt6TPPdM5J+WOEfDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cQiTfFtxj9J3ne2GGjiVx6yA0PVjdkmeDEN+TYPeXGoWj5PR1ZAxXv5YE01a7pMUf5sDf0r7Nlrv0oCbdAmtfRVNR7S7uPAMGXEMsWqh81QUDBeomX/DCIDhHmaMujyLUPob01gh2K0SY164zVMAGmJLUoPG085gJF5n3EB5Po4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZ81kxVq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22987C433C7;
-	Tue, 27 Feb 2024 13:39:43 +0000 (UTC)
+	 MIME-Version; b=rWX+pDx16HTWp710+X4JP7lIbShrAd2iatXWxd3txjkEOx9p03JsuvC+hHcJmGrKYG88PZIsD2Afpk7odWfcduuAlil9iJtltPh0rvzDy64hJx9BXyLEI2OLdIp3OE+E9dCJYcPAy58GoXmMmbQjbP1fAarBAUtWxaplY3Jp6Kw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=owzp3rtS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E5E9C433C7;
+	Tue, 27 Feb 2024 13:40:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041184;
-	bh=W1eQje+MsB/8IQVc1ytDmWsf+4F8FZsfCu5WzHGvsdI=;
+	s=korg; t=1709041214;
+	bh=GwSB29VyHojcvQqBIo4oM5s9fuzt6TPPdM5J+WOEfDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NZ81kxVq5iy9DP1hhrKuV9gl4pXDhvZtqwiWGzofwQbdN+a7RuqgbHZOeEzkIEfiI
-	 4KhcL6Dq3Z766q4FcflpDg4wAczFHtqCImn+AhM+OqQNrbWl9yC50MBlAp2dhvpZok
-	 J1Q7eFazUU/JZWFGxo81F4ynvR2lkUj8XjLEAxIU=
+	b=owzp3rtSl5lmtvRn25S3ZsN2L+ybjlL0IUJ4wm5bacWGKadrYqsdbiKn7yAOeqa3K
+	 lV+sV0vcLyiKibNct93Mq1ZymtFUcdJ+0Ar7GEo62Dt2Dnl9U9mUzYPv5kFlGR8HTo
+	 EIcyk+ziVM9dqbJHuqj03xEQhEz9yOgwdwVYdE4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Avihai Horon <avihaih@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 243/334] bus: imx-weim: fix valid range check
-Date: Tue, 27 Feb 2024 14:21:41 +0100
-Message-ID: <20240227131638.712810419@linuxfoundation.org>
+Subject: [PATCH 6.7 244/334] iommufd/iova_bitmap: Bounds check mapped::pages access
+Date: Tue, 27 Feb 2024 14:21:42 +0100
+Message-ID: <20240227131638.749206398@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
 References: <20240227131630.636392135@linuxfoundation.org>
@@ -66,37 +67,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lucas Stach <l.stach@pengutronix.de>
+From: Joao Martins <joao.m.martins@oracle.com>
 
-[ Upstream commit 7bca405c986075c99b9f729d3587b5c45db39d01 ]
+[ Upstream commit a4ab7dedaee0e39b15653c5fd0367e420739f7ef ]
 
-When the range parsing was open-coded the number of u32 entries to
-parse had to be a multiple of 4 and the driver checks this. With
-the range parsing converted to the range parser the counting changes
-from individual u32 entries to a complete range, so the check must
-not reject counts not divisible by 4.
+Dirty IOMMU hugepages reported on a base page page-size granularity can
+lead to an attempt to set dirty pages in the bitmap beyond the limits that
+are pinned.
 
-Fixes: 2a88e4792c6d ("bus: imx-weim: Remove open coded "ranges" parsing")
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Bounds check the page index of the array we are trying to access is within
+the limits before we kmap() and return otherwise.
+
+While it is also a defensive check, this is also in preparation to defer
+setting bits (outside the mapped range) to the next iteration(s) when the
+pages become available.
+
+Fixes: b058ea3ab5af ("vfio/iova_bitmap: refactor iova_bitmap_set() to better handle page boundaries")
+Link: https://lore.kernel.org/r/20240202133415.23819-2-joao.m.martins@oracle.com
+Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+Tested-by: Avihai Horon <avihaih@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/imx-weim.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/iommufd/iova_bitmap.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/bus/imx-weim.c b/drivers/bus/imx-weim.c
-index 42c9386a7b423..f9fd1582f150d 100644
---- a/drivers/bus/imx-weim.c
-+++ b/drivers/bus/imx-weim.c
-@@ -117,7 +117,7 @@ static int imx_weim_gpr_setup(struct platform_device *pdev)
- 		i++;
- 	}
+diff --git a/drivers/iommu/iommufd/iova_bitmap.c b/drivers/iommu/iommufd/iova_bitmap.c
+index 0a92c9eeaf7f5..a3606b4c22292 100644
+--- a/drivers/iommu/iommufd/iova_bitmap.c
++++ b/drivers/iommu/iommufd/iova_bitmap.c
+@@ -409,6 +409,7 @@ void iova_bitmap_set(struct iova_bitmap *bitmap,
+ 			mapped->pgshift) + mapped->pgoff * BITS_PER_BYTE;
+ 	unsigned long last_bit = (((iova + length - 1) - mapped->iova) >>
+ 			mapped->pgshift) + mapped->pgoff * BITS_PER_BYTE;
++	unsigned long last_page_idx = mapped->npages - 1;
  
--	if (i == 0 || i % 4)
-+	if (i == 0)
- 		goto err;
+ 	do {
+ 		unsigned int page_idx = cur_bit / BITS_PER_PAGE;
+@@ -417,6 +418,9 @@ void iova_bitmap_set(struct iova_bitmap *bitmap,
+ 					 last_bit - cur_bit + 1);
+ 		void *kaddr;
  
- 	for (i = 0; i < ARRAY_SIZE(gprvals); i++) {
++		if (unlikely(page_idx > last_page_idx))
++			break;
++
+ 		kaddr = kmap_local_page(mapped->pages[page_idx]);
+ 		bitmap_set(kaddr, offset, nbits);
+ 		kunmap_local(kaddr);
 -- 
 2.43.0
 
