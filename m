@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-24830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D4B4869672
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:11:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 861E086979D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:23:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F2CA1C21D4E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:11:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 171901F2681E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:23:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBAB613B2B4;
-	Tue, 27 Feb 2024 14:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 318E013DBBC;
+	Tue, 27 Feb 2024 14:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IyDBoLZc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G2PRAAw6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A15B16423;
-	Tue, 27 Feb 2024 14:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E470D13B2B4;
+	Tue, 27 Feb 2024 14:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043107; cv=none; b=KXMYrdoWadBx0uN7btxUeX2mOfpGo+GMgioUHhbrMg1D8FwtlYnUq68jmAAVpSnFmLY2I5+ol5x14r0rjTa91DlPzMvOAbZaCpZHaX3wNprLVfztCj5lom46lA/beMQ8l3RHw5Oia8e8TjFf321+rKdM7xRXdGnjQlHE2Xe8MMU=
+	t=1709043791; cv=none; b=ss0RIh5/3bxqeOCR5kMTevmgEpiHB5sOJj4joiP6PkoF+II+EuOB4m9em3HutvCa4VYZmwYkCdj/4nJRDyi0hz8qrNKi0ep1KYNV3qvsVoDueGFHrSLh2n+b7l7rwiQ9BAZms1b8Nyey217+xDX0FbLnlkvy0c+tq0uSs+E75D4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043107; c=relaxed/simple;
-	bh=pNBOwL2LIJL9rxs8rhLCPwIY3/mziuJx4g968srNJCI=;
+	s=arc-20240116; t=1709043791; c=relaxed/simple;
+	bh=57ux6UIzQcSapR3cqiGBhPQDaQT/IFsDIlTxiihUuiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AMGNyQ2hspuEt1CJfDcEdB0LY7rpIDWy9BmyVEDTAkLqHHK5r9UQFFTp+ZgB4ad78RbAoNtui8LiQsBVRK0zJ0jqnE3FzVo6YFa1SFHuEOXQHkqEtUKxWsZMbFyn09Saw1kctxpHDkESmUPeLul15zE2wMyvS7X/nf2uxsxilnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IyDBoLZc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E10C433F1;
-	Tue, 27 Feb 2024 14:11:46 +0000 (UTC)
+	 MIME-Version; b=WsEsEebW7TlqimTV1FljPKDAV361KBsJUswjRbllTu9ZxFDW2xgjFqJkk4Y4uYmJN3LLHpM1lb9qJr/9w9mpqgyTS04bvizjbH40kzqYQcsqpiDpqiXZCyKj07BItjK7x+h/O+J3v/KJYqvwTylY4F1/eaIS4N4nUEiOaCcHtHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G2PRAAw6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70AA0C433C7;
+	Tue, 27 Feb 2024 14:23:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043107;
-	bh=pNBOwL2LIJL9rxs8rhLCPwIY3/mziuJx4g968srNJCI=;
+	s=korg; t=1709043790;
+	bh=57ux6UIzQcSapR3cqiGBhPQDaQT/IFsDIlTxiihUuiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IyDBoLZcQ8kykRqDrKpUijxxPSk2txx8kh7bpvn+XGhuIXJv0NVfV5K1sKEX4iBQ2
-	 s29iGj7U5vvac6WN3N5/TqtmDN07zf2HTHMaE94XmIrmdwDjFq6y9Df5adjEIeNNNO
-	 8LF2RryNyG6i7ShOrHidGGizjuBaJq3wBnMtjxIM=
+	b=G2PRAAw6b9TLkCJ6T2i3SrWyhXGUgjN0QZY5B42gJ8ZGbMybVD2apeB/gQvKpBTT5
+	 CEe2q1FziPeNpveEQ/3ArzRGafCh2Tlhy8gM3CtnB+b8PGRBx1FUmDEbzCpDk195pU
+	 AqIJtu8cN+EbVOscbmUNqRs3eH0aGow7ee/pbjwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Lee Jones <lee.jones@linaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>,
+	linux-rockchip@lists.infradead.org,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 236/245] drm/amd/display: Fix memory leak in dm_sw_fini()
+Subject: [PATCH 5.4 37/84] pinctrl: pinctrl-rockchip: Fix a bunch of kerneldoc misdemeanours
 Date: Tue, 27 Feb 2024 14:27:04 +0100
-Message-ID: <20240227131622.840452253@linuxfoundation.org>
+Message-ID: <20240227131554.078818207@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +65,156 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Lee Jones <lee.jones@linaro.org>
 
-[ Upstream commit bae67893578d608e35691dcdfa90c4957debf1d3 ]
+[ Upstream commit e1524ea84af7172acc20827f8dca3fc8f72b8f37 ]
 
-After destroying dmub_srv, the memory associated with it is
-not freed, causing a memory leak:
+Demote headers which are clearly not kerneldoc, provide titles for
+struct definition blocks, fix API slip (bitrot) misspellings and
+provide some missing entries.
 
-unreferenced object 0xffff896302b45800 (size 1024):
-  comm "(udev-worker)", pid 222, jiffies 4294894636
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace (crc 6265fd77):
-    [<ffffffff993495ed>] kmalloc_trace+0x29d/0x340
-    [<ffffffffc0ea4a94>] dm_dmub_sw_init+0xb4/0x450 [amdgpu]
-    [<ffffffffc0ea4e55>] dm_sw_init+0x15/0x2b0 [amdgpu]
-    [<ffffffffc0ba8557>] amdgpu_device_init+0x1417/0x24e0 [amdgpu]
-    [<ffffffffc0bab285>] amdgpu_driver_load_kms+0x15/0x190 [amdgpu]
-    [<ffffffffc0ba09c7>] amdgpu_pci_probe+0x187/0x4e0 [amdgpu]
-    [<ffffffff9968fd1e>] local_pci_probe+0x3e/0x90
-    [<ffffffff996918a3>] pci_device_probe+0xc3/0x230
-    [<ffffffff99805872>] really_probe+0xe2/0x480
-    [<ffffffff99805c98>] __driver_probe_device+0x78/0x160
-    [<ffffffff99805daf>] driver_probe_device+0x1f/0x90
-    [<ffffffff9980601e>] __driver_attach+0xce/0x1c0
-    [<ffffffff99803170>] bus_for_each_dev+0x70/0xc0
-    [<ffffffff99804822>] bus_add_driver+0x112/0x210
-    [<ffffffff99807245>] driver_register+0x55/0x100
-    [<ffffffff990012d1>] do_one_initcall+0x41/0x300
+Fixes the following W=1 kernel build warning(s):
 
-Fix this by freeing dmub_srv after destroying it.
+ drivers/pinctrl/pinctrl-rockchip.c:82: warning: cannot understand function prototype: 'struct rockchip_iomux '
+ drivers/pinctrl/pinctrl-rockchip.c:97: warning: Enum value 'DRV_TYPE_IO_DEFAULT' not described in enum 'rockchip_pin_drv_type'
+ drivers/pinctrl/pinctrl-rockchip.c:97: warning: Enum value 'DRV_TYPE_IO_1V8_OR_3V0' not described in enum 'rockchip_pin_drv_type'
+ drivers/pinctrl/pinctrl-rockchip.c:97: warning: Enum value 'DRV_TYPE_IO_1V8_ONLY' not described in enum 'rockchip_pin_drv_type'
+ drivers/pinctrl/pinctrl-rockchip.c:97: warning: Enum value 'DRV_TYPE_IO_1V8_3V0_AUTO' not described in enum 'rockchip_pin_drv_type'
+ drivers/pinctrl/pinctrl-rockchip.c:97: warning: Enum value 'DRV_TYPE_IO_3V3_ONLY' not described in enum 'rockchip_pin_drv_type'
+ drivers/pinctrl/pinctrl-rockchip.c:97: warning: Enum value 'DRV_TYPE_MAX' not described in enum 'rockchip_pin_drv_type'
+ drivers/pinctrl/pinctrl-rockchip.c:106: warning: Enum value 'PULL_TYPE_IO_DEFAULT' not described in enum 'rockchip_pin_pull_type'
+ drivers/pinctrl/pinctrl-rockchip.c:106: warning: Enum value 'PULL_TYPE_IO_1V8_ONLY' not described in enum 'rockchip_pin_pull_type'
+ drivers/pinctrl/pinctrl-rockchip.c:106: warning: Enum value 'PULL_TYPE_MAX' not described in enum 'rockchip_pin_pull_type'
+ drivers/pinctrl/pinctrl-rockchip.c:109: warning: Cannot understand  * @drv_type: drive strength variant using rockchip_perpin_drv_type
+ on line 109 - I thought it was a doc line
+ drivers/pinctrl/pinctrl-rockchip.c:122: warning: Cannot understand  * @reg_base: register base of the gpio bank
+ on line 109 - I thought it was a doc line
+ drivers/pinctrl/pinctrl-rockchip.c:325: warning: Function parameter or member 'route_location' not described in 'rockchip_mux_route_data'
+ drivers/pinctrl/pinctrl-rockchip.c:328: warning: Cannot understand  */
+ on line 109 - I thought it was a doc line
+ drivers/pinctrl/pinctrl-rockchip.c:375: warning: Function parameter or member 'data' not described in 'rockchip_pin_group'
+ drivers/pinctrl/pinctrl-rockchip.c:387: warning: Function parameter or member 'ngroups' not described in 'rockchip_pmx_func'
 
-Fixes: 743b9786b14a ("drm/amd/display: Hook up the DMUB service in DM")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Lee Jones <lee.jones@linaro.org>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Cc: Heiko Stuebner <heiko@sntech.de>
+Cc: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Cc: linux-rockchip@lists.infradead.org
+Link: https://lore.kernel.org/r/20200713144930.1034632-20-lee.jones@linaro.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pinctrl/pinctrl-rockchip.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index f5b257cb32cbd..7385efe699f88 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2088,6 +2088,7 @@ static int dm_sw_fini(void *handle)
+diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
+index 4b972be3487f9..a44c2680c4230 100644
+--- a/drivers/pinctrl/pinctrl-rockchip.c
++++ b/drivers/pinctrl/pinctrl-rockchip.c
+@@ -62,7 +62,7 @@ enum rockchip_pinctrl_type {
+ 	RK3399,
+ };
  
- 	if (adev->dm.dmub_srv) {
- 		dmub_srv_destroy(adev->dm.dmub_srv);
-+		kfree(adev->dm.dmub_srv);
- 		adev->dm.dmub_srv = NULL;
- 	}
+-/**
++/*
+  * Encode variants of iomux registers into a type variable
+  */
+ #define IOMUX_GPIO_ONLY		BIT(0)
+@@ -72,6 +72,7 @@ enum rockchip_pinctrl_type {
+ #define IOMUX_WIDTH_3BIT	BIT(4)
  
+ /**
++ * struct rockchip_iomux
+  * @type: iomux variant using IOMUX_* constants
+  * @offset: if initialized to -1 it will be autocalculated, by specifying
+  *	    an initial offset value the relevant source offset can be reset
+@@ -82,7 +83,7 @@ struct rockchip_iomux {
+ 	int				offset;
+ };
+ 
+-/**
++/*
+  * enum type index corresponding to rockchip_perpin_drv_list arrays index.
+  */
+ enum rockchip_pin_drv_type {
+@@ -94,7 +95,7 @@ enum rockchip_pin_drv_type {
+ 	DRV_TYPE_MAX
+ };
+ 
+-/**
++/*
+  * enum type index corresponding to rockchip_pull_list arrays index.
+  */
+ enum rockchip_pin_pull_type {
+@@ -104,6 +105,7 @@ enum rockchip_pin_pull_type {
+ };
+ 
+ /**
++ * struct rockchip_drv
+  * @drv_type: drive strength variant using rockchip_perpin_drv_type
+  * @offset: if initialized to -1 it will be autocalculated, by specifying
+  *	    an initial offset value the relevant source offset can be reset
+@@ -117,8 +119,9 @@ struct rockchip_drv {
+ };
+ 
+ /**
++ * struct rockchip_pin_bank
+  * @reg_base: register base of the gpio bank
+- * @reg_pull: optional separate register for additional pull settings
++ * @regmap_pull: optional separate register for additional pull settings
+  * @clk: clock of the gpio bank
+  * @irq: interrupt of the gpio bank
+  * @saved_masks: Saved content of GPIO_INTEN at suspend time.
+@@ -136,6 +139,8 @@ struct rockchip_drv {
+  * @gpio_chip: gpiolib chip
+  * @grange: gpio range
+  * @slock: spinlock for the gpio bank
++ * @toggle_edge_mode: bit mask to toggle (falling/rising) edge mode
++ * @recalced_mask: bit mask to indicate a need to recalulate the mask
+  * @route_mask: bits describing the routing pins of per bank
+  */
+ struct rockchip_pin_bank {
+@@ -310,6 +315,7 @@ enum rockchip_mux_route_location {
+  * @bank_num: bank number.
+  * @pin: index at register or used to calc index.
+  * @func: the min pin.
++ * @route_location: the mux route location (same, pmu, grf).
+  * @route_offset: the max pin.
+  * @route_val: the register offset.
+  */
+@@ -322,8 +328,6 @@ struct rockchip_mux_route_data {
+ 	u32 route_val;
+ };
+ 
+-/**
+- */
+ struct rockchip_pin_ctrl {
+ 	struct rockchip_pin_bank	*pin_banks;
+ 	u32				nr_banks;
+@@ -361,9 +365,7 @@ struct rockchip_pin_config {
+  * @name: name of the pin group, used to lookup the group.
+  * @pins: the pins included in this group.
+  * @npins: number of pins included in this group.
+- * @func: the mux function number to be programmed when selected.
+- * @configs: the config values to be set for each pin
+- * @nconfigs: number of configs for each pin
++ * @data: local pin configuration
+  */
+ struct rockchip_pin_group {
+ 	const char			*name;
+@@ -376,7 +378,7 @@ struct rockchip_pin_group {
+  * struct rockchip_pmx_func: represent a pin function.
+  * @name: name of the pin function, used to lookup the function.
+  * @groups: one or more names of pin groups that provide this function.
+- * @num_groups: number of groups included in @groups.
++ * @ngroups: number of groups included in @groups.
+  */
+ struct rockchip_pmx_func {
+ 	const char		*name;
 -- 
 2.43.0
 
