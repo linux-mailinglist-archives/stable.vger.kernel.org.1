@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-25144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BA3B8697F0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:26:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0998A869557
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:01:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E25B1C23081
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:26:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B62BE28979D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:01:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 911921420D0;
-	Tue, 27 Feb 2024 14:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67ED71420DC;
+	Tue, 27 Feb 2024 14:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZ7YGycb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q5Cqk07M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510F813B797;
-	Tue, 27 Feb 2024 14:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1B61420A5;
+	Tue, 27 Feb 2024 14:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043987; cv=none; b=flC1qZPD0BKfdrwQag/LTmqqkp+taNTPuOWgFRJPlDjpK+1X15VAoVGRd/0mH2SdjbRPCxeayUQ18utbcMY5PXzRLC9SMfCvstBdsrEo8p7IEeo1Ido3it5fQFbQu7vHsJDq/xc0QC2pRrU56Ho2T29Zt/uS+Q/adertzErQJtU=
+	t=1709042471; cv=none; b=Mwv7WX4QLcWXT5WzRKu8/pn9R/NcH2THfnhVJu3tYPF/ocU3tLLU2ccyLBbyBDTQhSwEJufZMrmpmcdPp/D0h7uxIStsq7SH9KjZIc6s30j7YmVzmusqUPJhs0aEHZvZ4+17eTGxB/ahse/2s9mKpImDSY66n8nlA0wbhPIGFVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043987; c=relaxed/simple;
-	bh=ARCzzac8ZyaJmK920P1lCLO9xOzZgzEEKxLgqGaM2s8=;
+	s=arc-20240116; t=1709042471; c=relaxed/simple;
+	bh=tymbMX35c4EvM6lftbxTZE5GhUtg8nt2rcanNJ+5RBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ypqjkn1MIFlzaIElrMpz2hp76c7dQWYxnGeuIWTIUPh1TuXsWnHU8NV1jMtnrVizEjl3v6mbnbphdjL8dCY7jkDbmoJvEbS9Fc3W1AwI1+dSUZfCBkhTAODDqNsPIJVcIybVx8ALdLflpmX3PGDCEOzLmd5HAfHVnR8PjcnJxeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZ7YGycb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D64D4C433C7;
-	Tue, 27 Feb 2024 14:26:26 +0000 (UTC)
+	 MIME-Version; b=mmLHMCd9mskgogxHrxL25XhXQ6W9feJeXHXi0FkUXEXDFo3zGZoLgZJgQjoYfKq0mPNTeIGklJBDMomBFvxYx8JsNJBgV1d3VKMqbc0qpKiGUKs3FhNpK27lsC1KswirNjBubrRrVWWZXk0esl6tGUawNf8NwltH3rstPcyl4WY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q5Cqk07M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3386C433C7;
+	Tue, 27 Feb 2024 14:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043987;
-	bh=ARCzzac8ZyaJmK920P1lCLO9xOzZgzEEKxLgqGaM2s8=;
+	s=korg; t=1709042471;
+	bh=tymbMX35c4EvM6lftbxTZE5GhUtg8nt2rcanNJ+5RBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oZ7YGycbcBSdtBpdcKobPf7qddzHq0zG6GvxcFQm3UhdQYzL2W0fSdeQB0iTHI9Wc
-	 3wKVV2Vf+louZOpCKWfJ6x1CdVfBAF52R9Zx51rUOvVpeOBXj/u3bUexr6iYe3hEbV
-	 CgUepc8jaZC6rgM3snAUV4MeGQCFS7wDASnDLuJc=
+	b=q5Cqk07Mt7i52rlkCjp77WrsD9DW9/jJNheJ1lgLrQ6/Wn7RRRX07O1eeqIV01iX+
+	 FEnpGN5gZ/JKqWIW1dRnFGTUPQjokyM+VwcmT0bOxvcg6IiCY+7gyNced1WAzxykIl
+	 ee/WNbZXt2xxMYN2pn9AYJme47LK7QrwfsqSYqMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 022/122] ext4: avoid allocating blocks from corrupted group in ext4_mb_try_best_found()
-Date: Tue, 27 Feb 2024 14:26:23 +0100
-Message-ID: <20240227131559.432907393@linuxfoundation.org>
+Subject: [PATCH 6.6 273/299] netfilter: nft_flow_offload: release dst in case direct xmit path is used
+Date: Tue, 27 Feb 2024 14:26:24 +0100
+Message-ID: <20240227131634.465588695@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 4530b3660d396a646aad91a787b6ab37cf604b53 ]
+[ Upstream commit 8762785f459be1cfe6fcf7285c123aad6a3703f0 ]
 
-Determine if the group block bitmap is corrupted before using ac_b_ex in
-ext4_mb_try_best_found() to avoid allocating blocks from a group with a
-corrupted block bitmap in the following concurrency and making the
-situation worse.
+Direct xmit does not use it since it calls dev_queue_xmit() to send
+packets, hence it calls dst_release().
 
-ext4_mb_regular_allocator
-  ext4_lock_group(sb, group)
-  ext4_mb_good_group
-   // check if the group bbitmap is corrupted
-  ext4_mb_complex_scan_group
-   // Scan group gets ac_b_ex but doesn't use it
-  ext4_unlock_group(sb, group)
-                           ext4_mark_group_bitmap_corrupted(group)
-                           // The block bitmap was corrupted during
-                           // the group unlock gap.
-  ext4_mb_try_best_found
-    ext4_lock_group(ac->ac_sb, group)
-    ext4_mb_use_best_found
-      mb_mark_used
-      // Allocating blocks in block bitmap corrupted group
+kmemleak reports:
 
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240104142040.2835097-7-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+unreferenced object 0xffff88814f440900 (size 184):
+  comm "softirq", pid 0, jiffies 4294951896
+  hex dump (first 32 bytes):
+    00 60 5b 04 81 88 ff ff 00 e6 e8 82 ff ff ff ff  .`[.............
+    21 0b 50 82 ff ff ff ff 00 00 00 00 00 00 00 00  !.P.............
+  backtrace (crc cb2bf5d6):
+    [<000000003ee17107>] kmem_cache_alloc+0x286/0x340
+    [<0000000021a5de2c>] dst_alloc+0x43/0xb0
+    [<00000000f0671159>] rt_dst_alloc+0x2e/0x190
+    [<00000000fe5092c9>] __mkroute_output+0x244/0x980
+    [<000000005fb96fb0>] ip_route_output_flow+0xc0/0x160
+    [<0000000045367433>] nf_ip_route+0xf/0x30
+    [<0000000085da1d8e>] nf_route+0x2d/0x60
+    [<00000000d1ecd1cb>] nft_flow_route+0x171/0x6a0 [nft_flow_offload]
+    [<00000000d9b2fb60>] nft_flow_offload_eval+0x4e8/0x700 [nft_flow_offload]
+    [<000000009f447dbb>] expr_call_ops_eval+0x53/0x330 [nf_tables]
+    [<00000000072e1be6>] nft_do_chain+0x17c/0x840 [nf_tables]
+    [<00000000d0551029>] nft_do_chain_inet+0xa1/0x210 [nf_tables]
+    [<0000000097c9d5c6>] nf_hook_slow+0x5b/0x160
+    [<0000000005eccab1>] ip_forward+0x8b6/0x9b0
+    [<00000000553a269b>] ip_rcv+0x221/0x230
+    [<00000000412872e5>] __netif_receive_skb_one_core+0xfe/0x110
+
+Fixes: fa502c865666 ("netfilter: flowtable: simplify route logic")
+Reported-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/netfilter/nf_flow_table_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 9bec75847b856..ebb79f10330a8 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1854,6 +1854,9 @@ int ext4_mb_try_best_found(struct ext4_allocation_context *ac,
- 		return err;
- 
- 	ext4_lock_group(ac->ac_sb, group);
-+	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)))
-+		goto out;
-+
- 	max = mb_find_extent(e4b, ex.fe_start, ex.fe_len, &ex);
- 
- 	if (max > 0) {
-@@ -1861,6 +1864,7 @@ int ext4_mb_try_best_found(struct ext4_allocation_context *ac,
- 		ext4_mb_use_best_found(ac, e4b);
- 	}
- 
-+out:
- 	ext4_unlock_group(ac->ac_sb, group);
- 	ext4_mb_unload_buddy(e4b);
- 
+diff --git a/net/netfilter/nf_flow_table_core.c b/net/netfilter/nf_flow_table_core.c
+index 7502d6d73a600..a0571339239c4 100644
+--- a/net/netfilter/nf_flow_table_core.c
++++ b/net/netfilter/nf_flow_table_core.c
+@@ -132,6 +132,7 @@ static int flow_offload_fill_route(struct flow_offload *flow,
+ 		       ETH_ALEN);
+ 		flow_tuple->out.ifidx = route->tuple[dir].out.ifindex;
+ 		flow_tuple->out.hw_ifidx = route->tuple[dir].out.hw_ifindex;
++		dst_release(dst);
+ 		break;
+ 	case FLOW_OFFLOAD_XMIT_XFRM:
+ 	case FLOW_OFFLOAD_XMIT_NEIGH:
 -- 
 2.43.0
 
