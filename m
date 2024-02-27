@@ -1,283 +1,141 @@
-Return-Path: <stable+bounces-23803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F191B8687A3
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 04:16:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F7768687AC
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 04:19:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A635B288F38
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 03:16:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 340641F23130
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 03:19:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F191B28D;
-	Tue, 27 Feb 2024 03:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF8A91B949;
+	Tue, 27 Feb 2024 03:19:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="HaZAfJ2H";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="AG4ejUXE"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ZBA3rHCJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190E01B27D;
-	Tue, 27 Feb 2024 03:16:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F0761EB31;
+	Tue, 27 Feb 2024 03:19:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709003763; cv=none; b=ual9wi80V0KTnZCOgCUkhskt3H7iY2GTg3v70s2G37nYV0dVCEGf7hPcSF38rTSykRMCtpOBSj6nE7LdTaVnor7fSQITsy8wKZSV6Sf6L9nYuK0A6U9Lqn4Lgu3Bi0e4oG8svHV6hVE5ncCoA5RUfrMNVdNjdSaxKZeFH5pYbds=
+	t=1709003957; cv=none; b=JCZQnyb2dq/k0ObnRO1FQOSigxm+icxnW8pZYR4DezmgsUfypntqLKTM5YQ0XVlWg0qGIiiUizO7Ij9sdT6oqsGJdTHf215NELcFmrJJyUDpQYjj4Pc17oKyl4PNG4Xeihq+xNxWQo5VM0ub+PVv2KM3dQ86BDTZko9xGDTppEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709003763; c=relaxed/simple;
-	bh=UrM7wTpq4+dmPWPePjxgFqA69mKlm97Ulf9b+n6ijaQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pmeUN5Axz6BFdPeuiFRna33EepRxq3XevRBhssp1L2zdQU+7UKaIvVhJ52GB7giLYIveLh6pIGkI1zjt1PufQKwaFfCrGbxr37o0sJ4gK7EA7wKrd9F1yYq4XSBqoM5mOu2Z+1bOiNiH/m6FMCHoxtTrTmXIzuQgl3ozHupVs4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=HaZAfJ2H; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=AG4ejUXE; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id E20F02274E;
-	Tue, 27 Feb 2024 03:15:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1709003759; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=W5Ef0/U5YnlZfi8ZjQ3e3gx56JTtT3S0QwsgnGFnK7o=;
-	b=HaZAfJ2HAA62guvcQj4QkGGKaccHFpPozMZ8NjWoMCTu63ArKzJexvubdO2Pnz46SGMTqC
-	GxZxJ4vUoCGp3hrrtDtuIFwC8iqeKpWPyQYKc73vRXo+d5FPaURVtTemhQP13Vp/62kafS
-	+Wa+3b2tmEVZU+zKTv0lImRMwbU1mLo=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1709003758; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=W5Ef0/U5YnlZfi8ZjQ3e3gx56JTtT3S0QwsgnGFnK7o=;
-	b=AG4ejUXEAzWdPMMuCwLBedo1ZLvIbQGVBSfrHD9RLtBN+RU9EW3n2tNqPwVGlYa7nc/FSZ
-	in9d9lX63lqM3CCuABrL5mRENopa9JUVs7A3KyxhW5GnicAqYehIVhDzhht8zZfLaFu4fN
-	rACwVFkzqDzqdWPmSplueUq2v9yB8IE=
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id AFC7D13419;
-	Tue, 27 Feb 2024 03:15:57 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id A4z2G+1T3WXhbwAAn2gu4w
-	(envelope-from <wqu@suse.com>); Tue, 27 Feb 2024 03:15:57 +0000
-From: Qu Wenruo <wqu@suse.com>
-To: linux-btrfs@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] btrfs: qgroup: verify btrfs_qgroup_inherit parameter
-Date: Tue, 27 Feb 2024 13:45:35 +1030
-Message-ID: <bde2887da38aaa473ca60801b37ac735b3ab2d6d.1709003728.git.wqu@suse.com>
-X-Mailer: git-send-email 2.43.2
+	s=arc-20240116; t=1709003957; c=relaxed/simple;
+	bh=HyQeAkfIsrXp7lnK7bPc8oR0V4wM6K6OMlQPcGXMiCA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=bMsCJnmZ6ayBj6psaR+ijZew/WlshXS6p57HzgymN8azXpgOPEI1Vw/l/pWXwJKJe5SPkR0sBIWsPIaaMecc+vZhOQCksyLmHV/kHEdHWTus1KdIymPhkc53soKf80x+pj83FgmEWo/RThRFnTOxmXMwgQEOHjwWUqjFylluGnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ZBA3rHCJ; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41QNsnxr009857;
+	Tue, 27 Feb 2024 03:19:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=y2+n+K4VEk1Ekg1azTwyrDXlJqc1pengbDN8GywlNTw=; b=ZB
+	A3rHCJaWDsBiegF2zvodsukg1pD1JG4gPWKXNA3srNI2ikI5wRk7yRFRWelAVHIM
+	HqcYH9wkb8lC0wd5Vy5y4KUTtg8Nafx8UaboGI8VUWW3rdlRzl9eTpapvwyGwiEb
+	DNRmO1CXDGLmgnJIlIxQlyjjHun/Maoa5l4pv3XdLt7aILg5uPIVQl7FKqmktppm
+	CBf7wX/rHXyZ0UTTA6l3eOXaKlEZeAGCloZ+TrsT1H/EKUd83PdspvRhTRxX52EI
+	Ndldz8e+1CBAtUmTjaVd/sX5iEr8gfOnrixvEYDBOyTJODcUIPXS5XfC0w696rsN
+	BKLYER30F4DanIvfav5g==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wgkxq2r7k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Feb 2024 03:19:08 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41R3J7ae006121
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Feb 2024 03:19:07 GMT
+Received: from [10.110.56.192] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 26 Feb
+ 2024 19:19:06 -0800
+Message-ID: <adb2956b-c600-4e86-8c56-87ceb70162d6@quicinc.com>
+Date: Mon, 26 Feb 2024 19:19:05 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spamd-Result: default: False [1.90 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 R_MISSING_CHARSET(2.50)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 TO_DN_NONE(0.00)[];
-	 BROKEN_CONTENT_TYPE(1.50)[];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	 RCPT_COUNT_TWO(0.00)[2];
-	 MID_CONTAINS_FROM(1.00)[];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%]
-X-Spam-Level: *
-X-Spam-Score: 1.90
-X-Spam-Flag: NO
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH] pmdomain: qcom: rpmhpd: Fix enabled_corner aggregation
+Content-Language: en-US
+To: <quic_bjorande@quicinc.com>, Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Ulf Hansson
+	<ulf.hansson@linaro.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Johan Hovold
+	<johan+linaro@kernel.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+CC: <linux-arm-msm@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, Johan Hovold <johan@kernel.org>,
+        <stable@vger.kernel.org>
+References: <20240226-rpmhpd-enable-corner-fix-v1-1-68c004cec48c@quicinc.com>
+From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+In-Reply-To: <20240226-rpmhpd-enable-corner-fix-v1-1-68c004cec48c@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: qZ-77PHJpcQJTzmczVJLxZopCVLGS0C9
+X-Proofpoint-ORIG-GUID: qZ-77PHJpcQJTzmczVJLxZopCVLGS0C9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-26_11,2024-02-26_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ bulkscore=0 lowpriorityscore=0 mlxlogscore=999 suspectscore=0 adultscore=0
+ spamscore=0 clxscore=1011 malwarescore=0 impostorscore=0 phishscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2402120000 definitions=main-2402270025
 
-[BUG]
-Currently btrfs can create subvolume with an invalid qgroup inherit
-without triggering any error:
 
- # mkfs.btrfs -O quota -f $dev
- # mount $dev $mnt
- # btrfs subvolume create -i 2/0 $mnt/subv1
- # btrfs qgroup show -prce --sync $mnt
- Qgroupid    Referenced    Exclusive   Path
- --------    ----------    ---------   ----
- 0/5           16.00KiB     16.00KiB   <toplevel>
- 0/256         16.00KiB     16.00KiB   subv1
 
-[CAUSE]
-We only do a very basic size check for btrfs_qgroup_inherit structure,
-but never really verify if the values are correct.
+On 2/26/2024 5:49 PM, Bjorn Andersson via B4 Relay wrote:
+> From: Bjorn Andersson <quic_bjorande@quicinc.com>
+> 
+> Commit 'e3e56c050ab6 ("soc: qcom: rpmhpd: Make power_on actually enable
+> the domain")' aimed to make sure that a power-domain that is being
+> enabled without any particular performance-state requested will at least
+> turn the rail on, to avoid filling DeviceTree with otherwise unnecessary
+> required-opps properties.
+> 
+> But in the event that aggregation happens on a disabled power-domain, with
+> an enabled peer without performance-state, both the local and peer
+> corner are 0. The peer's enabled_corner is not considered, with the
+> result that the underlying (shared) resource is disabled.
+> 
+> One case where this can be observed is when the display stack keeps mmcx
+> enabled (but without a particular performance-state vote) in order to
+> access registers and sync_state happens in the rpmhpd driver. As mmcx_ao
+> is flushed the state of the peer (mmcx) is not considered and mmcx_ao
+> ends up turning off "mmcx.lvl" underneath mmcx. This has been observed
+> several times, but has been painted over in DeviceTree by adding an
+> explicit vote for the lowest non-disabled performance-state.
+> 
+> Fixes: e3e56c050ab6 ("soc: qcom: rpmhpd: Make power_on actually enable the domain")
+> Reported-by: Johan Hovold <johan@kernel.org>
+> Closes: https://lore.kernel.org/linux-arm-msm/ZdMwZa98L23mu3u6@hovoldconsulting.com/
+> Cc:  <stable@vger.kernel.org>
+> Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+> ---
+> This issue is the root cause of a display regression on SC8280XP boards,
+> resulting in the system often resetting during boot. It was exposed by
+> the refactoring of the DisplayPort driver in v6.8-rc1.
+> ---
+>   drivers/pmdomain/qcom/rpmhpd.c | 7 +++++--
+>   1 file changed, 5 insertions(+), 2 deletions(-)
+> 
 
-Thus in btrfs_qgroup_inherit() function, we have to skip non-existing
-qgroups, and never return any error.
-
-[FIX]
-Fix the behavior and introduce extra checks:
-
-- Introduce early check for btrfs_qgroup_inherit structure
-  Not only the size, but also all the qgroup ids would be verifyed.
-
-  And the timing is very early, so we can return error early.
-  This early check is very important for snapshot creation, as snapshot
-  is delayed to transaction commit.
-
-- Drop support for btrfs_qgroup_inherit::num_ref_copies and
-  num_excl_copies
-  Those two members are used to specify to copy refr/excl numbers from
-  other qgroups.
-  This would definitely mark qgroup inconsistent, and btrfs-progs has
-  dropped the support for them for a long time.
-  It's time to drop the support for kernel.
-
-- Verify the supported btrfs_qgroup_inherit::flags
-  Just in case we want to add extra flags for btrfs_qgroup_inherit.
-
-Now above subvolume creation would fail with -ENOENT other than silently
-ignore the non-existing qgroup.
-
-CC: stable@vger.kernel.org
-Signed-off-by: Qu Wenruo <wqu@suse.com>
----
- fs/btrfs/ioctl.c           | 16 +++---------
- fs/btrfs/qgroup.c          | 52 ++++++++++++++++++++++++++++++++++++++
- fs/btrfs/qgroup.h          |  3 +++
- include/uapi/linux/btrfs.h |  1 +
- 4 files changed, 59 insertions(+), 13 deletions(-)
-
-diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
-index 8b80fbea1e72..c19ce2e292dc 100644
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -1382,7 +1382,7 @@ static noinline int btrfs_ioctl_snap_create_v2(struct file *file,
- 	if (vol_args->flags & BTRFS_SUBVOL_RDONLY)
- 		readonly = true;
- 	if (vol_args->flags & BTRFS_SUBVOL_QGROUP_INHERIT) {
--		u64 nums;
-+		struct btrfs_fs_info *fs_info = inode_to_fs_info(file_inode(file));
- 
- 		if (vol_args->size < sizeof(*inherit) ||
- 		    vol_args->size > PAGE_SIZE) {
-@@ -1395,19 +1395,9 @@ static noinline int btrfs_ioctl_snap_create_v2(struct file *file,
- 			goto free_args;
- 		}
- 
--		if (inherit->num_qgroups > PAGE_SIZE ||
--		    inherit->num_ref_copies > PAGE_SIZE ||
--		    inherit->num_excl_copies > PAGE_SIZE) {
--			ret = -EINVAL;
-+		ret = btrfs_qgroup_check_inherit(fs_info, inherit, vol_args->size);
-+		if (ret < 0)
- 			goto free_inherit;
--		}
--
--		nums = inherit->num_qgroups + 2 * inherit->num_ref_copies +
--		       2 * inherit->num_excl_copies;
--		if (vol_args->size != struct_size(inherit, qgroups, nums)) {
--			ret = -EINVAL;
--			goto free_inherit;
--		}
- 	}
- 
- 	ret = __btrfs_ioctl_snap_create(file, file_mnt_idmap(file),
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index 4fa83c76b37b..66968092b554 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -3046,6 +3046,58 @@ int btrfs_run_qgroups(struct btrfs_trans_handle *trans)
- 	return ret;
- }
- 
-+int btrfs_qgroup_check_inherit(struct btrfs_fs_info *fs_info,
-+			       struct btrfs_qgroup_inherit *inherit,
-+			       size_t size)
-+{
-+	if (inherit->flags & ~BTRFS_QGROUP_INHERIT_FLAGS_SUPP)
-+		return -EOPNOTSUPP;
-+	if (size < sizeof(*inherit) || size > PAGE_SIZE)
-+		return -EINVAL;
-+
-+	/*
-+	 * In the past we allow btrfs_qgroup_inherit to specify to copy
-+	 * refr/excl numbers directly from other qgroups.
-+	 * This behavior has been disable in btrfs-progs for a very long time,
-+	 * but here we should also disable them for kernel, as this behavior
-+	 * is known to mark qgroup inconsistent, and a rescan would wipe out the
-+	 * change anyway.
-+	 *
-+	 * So here we just reject any btrfs_qgroup_inherit with num_ref_copies or
-+	 * num_excl_copies.
-+	 */
-+	if (inherit->num_ref_copies || inherit->num_excl_copies)
-+		return -EINVAL;
-+
-+	if (inherit->num_qgroups > PAGE_SIZE)
-+		return -EINVAL;
-+
-+	if (size != struct_size(inherit, qgroups, inherit->num_qgroups))
-+		return -EINVAL;
-+
-+	/*
-+	 * Now check all the remaining qgroups, they should all:
-+	 * - Exist
-+	 * - Be higher level qgroups.
-+	 */
-+	for (int i = 0; i < inherit->num_qgroups; i++) {
-+		struct btrfs_qgroup *qgroup;
-+		u64 qgroupid = inherit->qgroups[i];
-+
-+		if (btrfs_qgroup_level(qgroupid) == 0)
-+			return -EINVAL;
-+
-+		spin_lock(&fs_info->qgroup_lock);
-+		qgroup = find_qgroup_rb(fs_info, qgroupid);
-+		if (!qgroup) {
-+			spin_unlock(&fs_info->qgroup_lock);
-+			return -ENOENT;
-+		}
-+		spin_unlock(&fs_info->qgroup_lock);
-+	}
-+	return 0;
-+}
-+
- static int qgroup_auto_inherit(struct btrfs_fs_info *fs_info,
- 			       u64 inode_rootid,
- 			       struct btrfs_qgroup_inherit **inherit)
-diff --git a/fs/btrfs/qgroup.h b/fs/btrfs/qgroup.h
-index 1f664261c064..706640be0ec2 100644
---- a/fs/btrfs/qgroup.h
-+++ b/fs/btrfs/qgroup.h
-@@ -350,6 +350,9 @@ int btrfs_qgroup_account_extent(struct btrfs_trans_handle *trans, u64 bytenr,
- 				struct ulist *new_roots);
- int btrfs_qgroup_account_extents(struct btrfs_trans_handle *trans);
- int btrfs_run_qgroups(struct btrfs_trans_handle *trans);
-+int btrfs_qgroup_check_inherit(struct btrfs_fs_info *fs_info,
-+			       struct btrfs_qgroup_inherit *inherit,
-+			       size_t size);
- int btrfs_qgroup_inherit(struct btrfs_trans_handle *trans, u64 srcid,
- 			 u64 objectid, u64 inode_rootid,
- 			 struct btrfs_qgroup_inherit *inherit);
-diff --git a/include/uapi/linux/btrfs.h b/include/uapi/linux/btrfs.h
-index f8bc34a6bcfa..cdf6ad872149 100644
---- a/include/uapi/linux/btrfs.h
-+++ b/include/uapi/linux/btrfs.h
-@@ -92,6 +92,7 @@ struct btrfs_qgroup_limit {
-  * struct btrfs_qgroup_inherit.flags
-  */
- #define BTRFS_QGROUP_INHERIT_SET_LIMITS	(1ULL << 0)
-+#define BTRFS_QGROUP_INHERIT_FLAGS_SUPP (BTRFS_QGROUP_INHERIT_SET_LIMITS)
- 
- struct btrfs_qgroup_inherit {
- 	__u64	flags;
--- 
-2.43.2
-
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 
