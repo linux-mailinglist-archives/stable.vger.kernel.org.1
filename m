@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-24029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC69886924D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:34:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7A4B869229
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:33:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65F1B293E79
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:34:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A22CA293DE4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:33:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E20013AA4F;
-	Tue, 27 Feb 2024 13:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CBF613DB90;
+	Tue, 27 Feb 2024 13:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wOHNUctW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pDKFPheq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF452F2D;
-	Tue, 27 Feb 2024 13:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09A913B2A7;
+	Tue, 27 Feb 2024 13:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709040832; cv=none; b=QVN3bjqw5kk3OIB7grZGFC3cA287QZ08Kqm7pe1skdHlXPlZzk4YlA4+uNZSb+5Bm75b97HXv6T5/A+z3uT8kQpuo644ZKLOOxwF7mrUlMmOlbhUfzP4sStzUXslf45q//y3mnpq2OZN50GFuuxNqzenSNcO3bhBCu+HQCq8pg0=
+	t=1709040742; cv=none; b=GWjnMy1LOPWVNgCe22XzVaXNq4GNE5133RX7pJNtuT0yx8/dCZB5VabJ5ZNOb3+E3vuxCqIpU6K4N5XqvY85ytP5xqrvvHeddb6x1y22US9EkGcrX4crFKpfU9Ku7LuU+SRPxY6vI8x+rphZ+gVOdahf959t2kpaM9T/hnVaOEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709040832; c=relaxed/simple;
-	bh=QXDdmCkpFPXFNPH5UR0ZjO7wTAHIO+/XpI/vSwRhIzw=;
+	s=arc-20240116; t=1709040742; c=relaxed/simple;
+	bh=4wupQrzjWk6uINCKq1go0UG4xFJS69wzTux+wM1gb7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WCFCUu+MkorBoIXFbgV9rH+psroPEC/YiRH+DmxUpJ8VXa+/WPa9inkRjF38vpL5jjhec+IYJ8ZdgRZtmhNdAZLwdHdQ1ePORIPpgrp4cLltTmwRUdmnk2fgYkDprOHElUQqip1euC9zMkS6bnFORxJLeS7OrYpsboIWJ5GLDsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wOHNUctW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E4AC433C7;
-	Tue, 27 Feb 2024 13:33:51 +0000 (UTC)
+	 MIME-Version; b=Sc9LAYqrGq689KOrQzn8/iJEwUaevNzTG6wpDIlPHVeqKGIJ1rpA+FymBOVWy5wCCGzucO4mSsTCn1C21fMQcblkvRbszpao0qSpikhO+97WRK4hTe5W2ctzKVSe5JhU6eWhlXMuv2jw8iOcG/7/tslxuvIa8q1F9SsmSEk7VMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pDKFPheq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C896C433F1;
+	Tue, 27 Feb 2024 13:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709040832;
-	bh=QXDdmCkpFPXFNPH5UR0ZjO7wTAHIO+/XpI/vSwRhIzw=;
+	s=korg; t=1709040741;
+	bh=4wupQrzjWk6uINCKq1go0UG4xFJS69wzTux+wM1gb7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wOHNUctWRzpX6YkIOmAH/fyQ0oR/yptb51ROB7DOYYUVXfi1HvDqrCqdDZMY+8a5H
-	 EwD73vPRoIQU9oIBW/tL8ENmPCsU84RQl+X1pTx1dMn8uXiopOBCJ9ti9UIWzeF92N
-	 XZralcyfm5Yym1a5e8Rwy1IPaY2PUImWt7ndSDvg=
+	b=pDKFPheq8fXq7DyA9yDCQ5/iO2zAbKR7Oq3rOjSMOJ0xq//0Yr+MkhZtPStiA1Xu0
+	 VCVP3C+pz268cwzkg77GTGvzsli5KZPmbPGR0LJ5EmEZdhdyNKHa+513X3dw2Sj2Um
+	 z1dpAn9v1cQ2uiCRzOArNV65e1AWV/MVsewA9wIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 085/334] fs/ntfs3: Add file_modified
-Date: Tue, 27 Feb 2024 14:19:03 +0100
-Message-ID: <20240227131633.270369212@linuxfoundation.org>
+Subject: [PATCH 6.7 086/334] fs/ntfs3: Drop suid and sgid bits as a part of fpunch
+Date: Tue, 27 Feb 2024 14:19:04 +0100
+Message-ID: <20240227131633.300517531@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
 References: <20240227131630.636392135@linuxfoundation.org>
@@ -67,57 +67,59 @@ Content-Transfer-Encoding: 8bit
 
 From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 4dea9cd522424d3002894c20b729c6fbfb6fc22b ]
+[ Upstream commit e50f9560b8168a625703a3e7fe1fde9fa53f0837 ]
 
 Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/file.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ fs/ntfs3/file.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
-index 5691f04e6751a..bb80ce2eec2f7 100644
+index bb80ce2eec2f7..0ff5d3af28897 100644
 --- a/fs/ntfs3/file.c
 +++ b/fs/ntfs3/file.c
-@@ -632,11 +632,17 @@ static long ntfs_fallocate(struct file *file, int mode, loff_t vbo, loff_t len)
- 					    &ni->file.run, i_size, &ni->i_valid,
- 					    true, NULL);
+@@ -498,10 +498,14 @@ static long ntfs_fallocate(struct file *file, int mode, loff_t vbo, loff_t len)
+ 		ni_lock(ni);
+ 		err = attr_punch_hole(ni, vbo, len, &frame_size);
+ 		ni_unlock(ni);
++		if (!err)
++			goto ok;
++
+ 		if (err != E_NTFS_NOTALIGNED)
+ 			goto out;
+ 
+ 		/* Process not aligned punch. */
++		err = 0;
+ 		mask = frame_size - 1;
+ 		vbo_a = (vbo + mask) & ~mask;
+ 		end_a = end & ~mask;
+@@ -524,6 +528,8 @@ static long ntfs_fallocate(struct file *file, int mode, loff_t vbo, loff_t len)
+ 			ni_lock(ni);
+ 			err = attr_punch_hole(ni, vbo_a, end_a - vbo_a, NULL);
  			ni_unlock(ni);
 +			if (err)
 +				goto out;
- 		} else if (new_size > i_size) {
- 			inode->i_size = new_size;
+ 		}
+ 	} else if (mode & FALLOC_FL_COLLAPSE_RANGE) {
+ 		/*
+@@ -563,6 +569,8 @@ static long ntfs_fallocate(struct file *file, int mode, loff_t vbo, loff_t len)
+ 		ni_lock(ni);
+ 		err = attr_insert_range(ni, vbo, len);
+ 		ni_unlock(ni);
++		if (err)
++			goto out;
+ 	} else {
+ 		/* Check new size. */
+ 		u8 cluster_bits = sbi->cluster_bits;
+@@ -639,6 +647,7 @@ static long ntfs_fallocate(struct file *file, int mode, loff_t vbo, loff_t len)
  		}
  	}
  
-+	err = file_modified(file);
-+	if (err)
-+		goto out;
-+
- out:
- 	if (map_locked)
- 		filemap_invalidate_unlock(mapping);
-@@ -1040,6 +1046,7 @@ static ssize_t ntfs_file_write_iter(struct kiocb *iocb, struct iov_iter *from)
- 	struct address_space *mapping = file->f_mapping;
- 	struct inode *inode = mapping->host;
- 	ssize_t ret;
-+	int err;
- 	struct ntfs_inode *ni = ntfs_i(inode);
- 
- 	if (is_encrypted(ni)) {
-@@ -1067,6 +1074,12 @@ static ssize_t ntfs_file_write_iter(struct kiocb *iocb, struct iov_iter *from)
- 	if (ret <= 0)
++ok:
+ 	err = file_modified(file);
+ 	if (err)
  		goto out;
- 
-+	err = file_modified(iocb->ki_filp);
-+	if (err) {
-+		ret = err;
-+		goto out;
-+	}
-+
- 	if (WARN_ON(ni->ni_flags & NI_FLAG_COMPRESSED_MASK)) {
- 		/* Should never be here, see ntfs_file_open(). */
- 		ret = -EOPNOTSUPP;
 -- 
 2.43.0
 
