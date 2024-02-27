@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-24815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ED26869663
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:11:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71821869551
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:00:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D43041F2DF67
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:11:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1280C1F26106
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD47513DBBC;
-	Tue, 27 Feb 2024 14:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4921F1419B4;
+	Tue, 27 Feb 2024 14:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="srwGCqsr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y3ORNonE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798A913B29C;
-	Tue, 27 Feb 2024 14:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0324213DB98;
+	Tue, 27 Feb 2024 14:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043066; cv=none; b=W8EjOa2SEfghxRLLnJL2mZjMUmkgMnWYMsAQG531xnvAAxQd2ZAQtottbw8SKck6RmliQI8eE51i3Kn/vQnBkVvW74/1nyFLH8505ZLngCIqA+TOC/rpmw5pnDPqcHhC+MwU8rhCEaSVuyUUPHTlhoUg0UHLPjYF6K04lQGavks=
+	t=1709042449; cv=none; b=nsymhDRVSdIszBTbThj8/NukgkgCbDDgRTHorYe0vRp1SiF8IP8Kc4isvJAFVXYq6XiHVYLR54i44SOaTl3lBpejWasqT/juGabr2Cw8rzlGvQa2lYfu6hS7MeAj6w2Ie0cKgkhauiXxvku8WtnrxZwEOZBUFF0p+eUv+0y7n90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043066; c=relaxed/simple;
-	bh=jkehg+eXcDioMsPphQP2MpdCeS3Ex0BiC9A/5AkwxAA=;
+	s=arc-20240116; t=1709042449; c=relaxed/simple;
+	bh=2JaFrwy/XC2ohPPZ0ZFenxXKEQN7qOuL4defGRcS0Xc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YiC3Yto3xbSJUO5cMD3CP+5qOAiYg82Cta4xu24GQVi3+C/mY3PlnaEOD02du4hUAcf7aZsfnAFSwwYPXREm/uLOGYKbLEHAhcd2lbe2rx7CI5385QbviEwMMzKWOiIdmBzJX8DQe7poXDH1dUsVZCddarnnWsVZW5boR6LGIRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=srwGCqsr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 083B9C43394;
-	Tue, 27 Feb 2024 14:11:05 +0000 (UTC)
+	 MIME-Version; b=tP9U3lweUJ/lWiH+e/Eh48LF473i7eHO75gUIIYKXVhFc1pgdJc/aqSLoPBDu6n0CPGAWQcqEtcYRaEOxQ0ig6RjE1mcbX87EhFTV4Qv1F5VUCEA2bH78XMCqFzQ/Dik5LtFDJyww3jx8meaHYigsE4BbDvg7N66zo3wMcIga8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y3ORNonE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D37C43390;
+	Tue, 27 Feb 2024 14:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043066;
-	bh=jkehg+eXcDioMsPphQP2MpdCeS3Ex0BiC9A/5AkwxAA=;
+	s=korg; t=1709042448;
+	bh=2JaFrwy/XC2ohPPZ0ZFenxXKEQN7qOuL4defGRcS0Xc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=srwGCqsr021tspbE4yCE18dn4+jd6qtQqoL5EzmFSp8RWPaGfwXdxra1/jQg5VB5w
-	 nCxHneKPqfFGTgccrIwxeidT5FPN+zRzgx/DbRcZte3ni2/NlFLvMzy7jhF3MGJ/60
-	 0cJiIKr22ZeT30wIRFw9vdEGyY3RqK9jg5oQFjiQ=
+	b=Y3ORNonEer3+VoxyPND75r87WHK7xIuU82nlHqX3pLn3Y+yn3fhfV8EU8Vtg0HtBH
+	 LfUcSU0gjhtZW8UbEKHW9h4Xeoox3P2UWInb3JZdL3oETE2xK/cHOAtkMl5jd/I/0C
+	 71HeRKj9u5zPJifLMqERqcmLHo5EWTO6hocAjYQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 222/245] ipv6: sr: fix possible use-after-free and null-ptr-deref
+	Lennert Buytenhek <kernel@wantstofly.org>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.6 299/299] ahci: Extend ASM1061 43-bit DMA address quirk to other ASM106x parts
 Date: Tue, 27 Feb 2024 14:26:50 +0100
-Message-ID: <20240227131622.408368232@linuxfoundation.org>
+Message-ID: <20240227131635.283671753@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Lennert Buytenhek <kernel@wantstofly.org>
 
-[ Upstream commit 5559cea2d5aa3018a5f00dd2aca3427ba09b386b ]
+commit 51af8f255bdaca6d501afc0d085b808f67b44d91 upstream.
 
-The pernet operations structure for the subsystem must be registered
-before registering the generic netlink family.
+ASMedia have confirmed that all ASM106x parts currently listed in
+ahci_pci_tbl[] suffer from the 43-bit DMA address limitation that we ran
+into on the ASM1061, and therefore, we need to apply the quirk added by
+commit 20730e9b2778 ("ahci: add 43-bit DMA address quirk for ASMedia
+ASM1061 controllers") to the other supported ASM106x parts as well.
 
-Fixes: 915d7e5e5930 ("ipv6: sr: add code base for control plane support of SR-IPv6")
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Link: https://lore.kernel.org/r/20240215202717.29815-1-kovalev@altlinux.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/linux-ide/ZbopwKZJAKQRA4Xv@x1-carbon/
+Signed-off-by: Lennert Buytenhek <kernel@wantstofly.org>
+[cassel: add link to ASMedia confirmation email]
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/seg6.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ drivers/ata/ahci.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
-index 0c7c6fc16c3c3..dc434e4ee6d66 100644
---- a/net/ipv6/seg6.c
-+++ b/net/ipv6/seg6.c
-@@ -507,22 +507,24 @@ int __init seg6_init(void)
- {
- 	int err;
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -605,13 +605,13 @@ static const struct pci_device_id ahci_p
+ 	{ PCI_VDEVICE(PROMISE, 0x3781), board_ahci },   /* FastTrak TX8660 ahci-mode */
  
--	err = genl_register_family(&seg6_genl_family);
-+	err = register_pernet_subsys(&ip6_segments_ops);
- 	if (err)
- 		goto out;
- 
--	err = register_pernet_subsys(&ip6_segments_ops);
-+	err = genl_register_family(&seg6_genl_family);
- 	if (err)
--		goto out_unregister_genl;
-+		goto out_unregister_pernet;
- 
- #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
- 	err = seg6_iptunnel_init();
- 	if (err)
--		goto out_unregister_pernet;
-+		goto out_unregister_genl;
- 
- 	err = seg6_local_init();
--	if (err)
--		goto out_unregister_pernet;
-+	if (err) {
-+		seg6_iptunnel_exit();
-+		goto out_unregister_genl;
-+	}
- #endif
- 
- #ifdef CONFIG_IPV6_SEG6_HMAC
-@@ -543,11 +545,11 @@ int __init seg6_init(void)
- #endif
- #endif
- #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
--out_unregister_pernet:
--	unregister_pernet_subsys(&ip6_segments_ops);
--#endif
- out_unregister_genl:
- 	genl_unregister_family(&seg6_genl_family);
-+#endif
-+out_unregister_pernet:
-+	unregister_pernet_subsys(&ip6_segments_ops);
- 	goto out;
- }
- 
--- 
-2.43.0
-
+ 	/* ASMedia */
+-	{ PCI_VDEVICE(ASMEDIA, 0x0601), board_ahci },	/* ASM1060 */
+-	{ PCI_VDEVICE(ASMEDIA, 0x0602), board_ahci },	/* ASM1060 */
++	{ PCI_VDEVICE(ASMEDIA, 0x0601), board_ahci_43bit_dma },	/* ASM1060 */
++	{ PCI_VDEVICE(ASMEDIA, 0x0602), board_ahci_43bit_dma },	/* ASM1060 */
+ 	{ PCI_VDEVICE(ASMEDIA, 0x0611), board_ahci_43bit_dma },	/* ASM1061 */
+ 	{ PCI_VDEVICE(ASMEDIA, 0x0612), board_ahci_43bit_dma },	/* ASM1061/1062 */
+-	{ PCI_VDEVICE(ASMEDIA, 0x0621), board_ahci },   /* ASM1061R */
+-	{ PCI_VDEVICE(ASMEDIA, 0x0622), board_ahci },   /* ASM1062R */
+-	{ PCI_VDEVICE(ASMEDIA, 0x0624), board_ahci },   /* ASM1062+JMB575 */
++	{ PCI_VDEVICE(ASMEDIA, 0x0621), board_ahci_43bit_dma },	/* ASM1061R */
++	{ PCI_VDEVICE(ASMEDIA, 0x0622), board_ahci_43bit_dma },	/* ASM1062R */
++	{ PCI_VDEVICE(ASMEDIA, 0x0624), board_ahci_43bit_dma },	/* ASM1062+JMB575 */
+ 	{ PCI_VDEVICE(ASMEDIA, 0x1062), board_ahci },	/* ASM1062A */
+ 	{ PCI_VDEVICE(ASMEDIA, 0x1064), board_ahci },	/* ASM1064 */
+ 	{ PCI_VDEVICE(ASMEDIA, 0x1164), board_ahci },   /* ASM1164 */
 
 
 
