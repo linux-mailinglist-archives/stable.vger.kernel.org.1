@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-24548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E003869518
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:58:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFBEC869633
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:09:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC84E1C24B97
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:58:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20EE3B22EE6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:09:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90DB713B7A0;
-	Tue, 27 Feb 2024 13:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 717F213B2B4;
+	Tue, 27 Feb 2024 14:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8s1W9eE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SKt08T2U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1D013AA50;
-	Tue, 27 Feb 2024 13:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F77813A26F;
+	Tue, 27 Feb 2024 14:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042325; cv=none; b=HDM9UF6m451hHr18Z27VPe9rqm+T0pQo1z5ebhimBpZ+WNPmpVX/jOiEQzr0njcI0SICUzI+iDPKcxK8BvsKFxDswfmdH/sZfwA2ha69o/ZRzLJLPsPP1/rXVGdz9FF+PChHv10W/SbrQnAn5v+JnPMcQTOcsgcWIRCKlX8mC5g=
+	t=1709042948; cv=none; b=D9nkYPAdh9XGU5zhxeoKBe4DqEsl0AhbeBPB3zmBtGsEThKxi9NAmNWXwpRXNdUQkxdxG/PV9IvVOqDJ5ZYW2poCLiS4/vfK4SkP58UTaLaJtPTSxV1qOQBc6ZJyMRO0aDPk6WVd7UCx0opXYFnIP1hug8ry2VrQa1LVDbSIMpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042325; c=relaxed/simple;
-	bh=t6RNuksHA304SAb96gv3H/8SXMZ3VOayYgfefcSF2Yg=;
+	s=arc-20240116; t=1709042948; c=relaxed/simple;
+	bh=UPS40LtNeJiQcW7y61i2qm0nQyelygsWhAuoOnbvVl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bdwo9p8R33wvttWDABlZfyoloA6E4fkSo7wuUVj+dwTTnGdouzP/D9gHOBkuD8iuAlbp0UNbeVntGfKHRQgJl8vZSKW/4REFRnFDMgEwZwQVXvT+FseIv205Qwo+5Hj75K9FmV4zel2XDY2LRnwow+DB5lTwxfysquqWY0/J5nE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8s1W9eE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B9AC433F1;
-	Tue, 27 Feb 2024 13:58:44 +0000 (UTC)
+	 MIME-Version; b=J599x4eh3AAkuEnpvzrUHWa6hB+llUUr0PWTi9dJV4InRiutwuYe9/YvSNOiMtiId2vUJ1ColDdkrhPIMdV+kqHEexapxVwmH0RsacOSGSoHvUx6EJDDgTt4Eliqamx9qIzhOcxbTK0dMFNCyHAbte/DlDnngjJw8l5hdlw1ey0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SKt08T2U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFAFCC433C7;
+	Tue, 27 Feb 2024 14:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042324;
-	bh=t6RNuksHA304SAb96gv3H/8SXMZ3VOayYgfefcSF2Yg=;
+	s=korg; t=1709042948;
+	bh=UPS40LtNeJiQcW7y61i2qm0nQyelygsWhAuoOnbvVl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u8s1W9eEV3qPlgF6vYoviMI/9rJKPezpnRNK6bOL1XoDBgLiVqIb5cSxnyDnrNKlC
-	 LDSxyczLLv8crqOeDkUhrHbe7NsCcYRpcwB/zmj1TAd2kSojAmXjCGq/XvT1fFbkm4
-	 fDREC00GVnkToVMD/LbHTti5OvKoPXlG28hDaANs=
+	b=SKt08T2UbZSvqQE9BndIJgU33HxCID76wxFg9MVSFbfUY1EVr7P1IPYW90EDzYRty
+	 aAW91Vo8NQU9Ss/GcjEWQqzz+oAEZLwja7p2ef5C7wMZsfRovWAJVX4bl907TUIMQ3
+	 n2t5K16dgLymGDqbTV8pyh691j6CdSnQIQf3AMro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	syzbot+ebe648a84e8784763f82@syzkaller.appspotmail.com,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Yonghong Song <yhs@fb.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 255/299] ipv6: sr: fix possible use-after-free and null-ptr-deref
+Subject: [PATCH 5.15 178/245] bpf: Address KCSAN report on bpf_lru_list
 Date: Tue, 27 Feb 2024 14:26:06 +0100
-Message-ID: <20240227131633.921117022@linuxfoundation.org>
+Message-ID: <20240227131620.992679247@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +64,179 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Martin KaFai Lau <martin.lau@kernel.org>
 
-[ Upstream commit 5559cea2d5aa3018a5f00dd2aca3427ba09b386b ]
+[ Upstream commit ee9fd0ac3017c4313be91a220a9ac4c99dde7ad4 ]
 
-The pernet operations structure for the subsystem must be registered
-before registering the generic netlink family.
+KCSAN reported a data-race when accessing node->ref.
+Although node->ref does not have to be accurate,
+take this chance to use a more common READ_ONCE() and WRITE_ONCE()
+pattern instead of data_race().
 
-Fixes: 915d7e5e5930 ("ipv6: sr: add code base for control plane support of SR-IPv6")
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Link: https://lore.kernel.org/r/20240215202717.29815-1-kovalev@altlinux.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+There is an existing bpf_lru_node_is_ref() and bpf_lru_node_set_ref().
+This patch also adds bpf_lru_node_clear_ref() to do the
+WRITE_ONCE(node->ref, 0) also.
+
+==================================================================
+BUG: KCSAN: data-race in __bpf_lru_list_rotate / __htab_lru_percpu_map_update_elem
+
+write to 0xffff888137038deb of 1 bytes by task 11240 on cpu 1:
+__bpf_lru_node_move kernel/bpf/bpf_lru_list.c:113 [inline]
+__bpf_lru_list_rotate_active kernel/bpf/bpf_lru_list.c:149 [inline]
+__bpf_lru_list_rotate+0x1bf/0x750 kernel/bpf/bpf_lru_list.c:240
+bpf_lru_list_pop_free_to_local kernel/bpf/bpf_lru_list.c:329 [inline]
+bpf_common_lru_pop_free kernel/bpf/bpf_lru_list.c:447 [inline]
+bpf_lru_pop_free+0x638/0xe20 kernel/bpf/bpf_lru_list.c:499
+prealloc_lru_pop kernel/bpf/hashtab.c:290 [inline]
+__htab_lru_percpu_map_update_elem+0xe7/0x820 kernel/bpf/hashtab.c:1316
+bpf_percpu_hash_update+0x5e/0x90 kernel/bpf/hashtab.c:2313
+bpf_map_update_value+0x2a9/0x370 kernel/bpf/syscall.c:200
+generic_map_update_batch+0x3ae/0x4f0 kernel/bpf/syscall.c:1687
+bpf_map_do_batch+0x2d9/0x3d0 kernel/bpf/syscall.c:4534
+__sys_bpf+0x338/0x810
+__do_sys_bpf kernel/bpf/syscall.c:5096 [inline]
+__se_sys_bpf kernel/bpf/syscall.c:5094 [inline]
+__x64_sys_bpf+0x43/0x50 kernel/bpf/syscall.c:5094
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+read to 0xffff888137038deb of 1 bytes by task 11241 on cpu 0:
+bpf_lru_node_set_ref kernel/bpf/bpf_lru_list.h:70 [inline]
+__htab_lru_percpu_map_update_elem+0x2f1/0x820 kernel/bpf/hashtab.c:1332
+bpf_percpu_hash_update+0x5e/0x90 kernel/bpf/hashtab.c:2313
+bpf_map_update_value+0x2a9/0x370 kernel/bpf/syscall.c:200
+generic_map_update_batch+0x3ae/0x4f0 kernel/bpf/syscall.c:1687
+bpf_map_do_batch+0x2d9/0x3d0 kernel/bpf/syscall.c:4534
+__sys_bpf+0x338/0x810
+__do_sys_bpf kernel/bpf/syscall.c:5096 [inline]
+__se_sys_bpf kernel/bpf/syscall.c:5094 [inline]
+__x64_sys_bpf+0x43/0x50 kernel/bpf/syscall.c:5094
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+value changed: 0x01 -> 0x00
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 PID: 11241 Comm: syz-executor.3 Not tainted 6.3.0-rc7-syzkaller-00136-g6a66fdd29ea1 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/30/2023
+==================================================================
+
+Reported-by: syzbot+ebe648a84e8784763f82@syzkaller.appspotmail.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: Yonghong Song <yhs@fb.com>
+Link: https://lore.kernel.org/r/20230511043748.1384166-1-martin.lau@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/seg6.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ kernel/bpf/bpf_lru_list.c | 21 +++++++++++++--------
+ kernel/bpf/bpf_lru_list.h |  7 ++-----
+ 2 files changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
-index 29346a6eec9ff..35508abd76f43 100644
---- a/net/ipv6/seg6.c
-+++ b/net/ipv6/seg6.c
-@@ -512,22 +512,24 @@ int __init seg6_init(void)
+diff --git a/kernel/bpf/bpf_lru_list.c b/kernel/bpf/bpf_lru_list.c
+index d99e89f113c43..3dabdd137d102 100644
+--- a/kernel/bpf/bpf_lru_list.c
++++ b/kernel/bpf/bpf_lru_list.c
+@@ -41,7 +41,12 @@ static struct list_head *local_pending_list(struct bpf_lru_locallist *loc_l)
+ /* bpf_lru_node helpers */
+ static bool bpf_lru_node_is_ref(const struct bpf_lru_node *node)
  {
- 	int err;
- 
--	err = genl_register_family(&seg6_genl_family);
-+	err = register_pernet_subsys(&ip6_segments_ops);
- 	if (err)
- 		goto out;
- 
--	err = register_pernet_subsys(&ip6_segments_ops);
-+	err = genl_register_family(&seg6_genl_family);
- 	if (err)
--		goto out_unregister_genl;
-+		goto out_unregister_pernet;
- 
- #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
- 	err = seg6_iptunnel_init();
- 	if (err)
--		goto out_unregister_pernet;
-+		goto out_unregister_genl;
- 
- 	err = seg6_local_init();
--	if (err)
--		goto out_unregister_pernet;
-+	if (err) {
-+		seg6_iptunnel_exit();
-+		goto out_unregister_genl;
-+	}
- #endif
- 
- #ifdef CONFIG_IPV6_SEG6_HMAC
-@@ -548,11 +550,11 @@ int __init seg6_init(void)
- #endif
- #endif
- #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
--out_unregister_pernet:
--	unregister_pernet_subsys(&ip6_segments_ops);
--#endif
- out_unregister_genl:
- 	genl_unregister_family(&seg6_genl_family);
-+#endif
-+out_unregister_pernet:
-+	unregister_pernet_subsys(&ip6_segments_ops);
- 	goto out;
+-	return node->ref;
++	return READ_ONCE(node->ref);
++}
++
++static void bpf_lru_node_clear_ref(struct bpf_lru_node *node)
++{
++	WRITE_ONCE(node->ref, 0);
  }
  
+ static void bpf_lru_list_count_inc(struct bpf_lru_list *l,
+@@ -89,7 +94,7 @@ static void __bpf_lru_node_move_in(struct bpf_lru_list *l,
+ 
+ 	bpf_lru_list_count_inc(l, tgt_type);
+ 	node->type = tgt_type;
+-	node->ref = 0;
++	bpf_lru_node_clear_ref(node);
+ 	list_move(&node->list, &l->lists[tgt_type]);
+ }
+ 
+@@ -110,7 +115,7 @@ static void __bpf_lru_node_move(struct bpf_lru_list *l,
+ 		bpf_lru_list_count_inc(l, tgt_type);
+ 		node->type = tgt_type;
+ 	}
+-	node->ref = 0;
++	bpf_lru_node_clear_ref(node);
+ 
+ 	/* If the moving node is the next_inactive_rotation candidate,
+ 	 * move the next_inactive_rotation pointer also.
+@@ -353,7 +358,7 @@ static void __local_list_add_pending(struct bpf_lru *lru,
+ 	*(u32 *)((void *)node + lru->hash_offset) = hash;
+ 	node->cpu = cpu;
+ 	node->type = BPF_LRU_LOCAL_LIST_T_PENDING;
+-	node->ref = 0;
++	bpf_lru_node_clear_ref(node);
+ 	list_add(&node->list, local_pending_list(loc_l));
+ }
+ 
+@@ -419,7 +424,7 @@ static struct bpf_lru_node *bpf_percpu_lru_pop_free(struct bpf_lru *lru,
+ 	if (!list_empty(free_list)) {
+ 		node = list_first_entry(free_list, struct bpf_lru_node, list);
+ 		*(u32 *)((void *)node + lru->hash_offset) = hash;
+-		node->ref = 0;
++		bpf_lru_node_clear_ref(node);
+ 		__bpf_lru_node_move(l, node, BPF_LRU_LIST_T_INACTIVE);
+ 	}
+ 
+@@ -522,7 +527,7 @@ static void bpf_common_lru_push_free(struct bpf_lru *lru,
+ 		}
+ 
+ 		node->type = BPF_LRU_LOCAL_LIST_T_FREE;
+-		node->ref = 0;
++		bpf_lru_node_clear_ref(node);
+ 		list_move(&node->list, local_free_list(loc_l));
+ 
+ 		raw_spin_unlock_irqrestore(&loc_l->lock, flags);
+@@ -568,7 +573,7 @@ static void bpf_common_lru_populate(struct bpf_lru *lru, void *buf,
+ 
+ 		node = (struct bpf_lru_node *)(buf + node_offset);
+ 		node->type = BPF_LRU_LIST_T_FREE;
+-		node->ref = 0;
++		bpf_lru_node_clear_ref(node);
+ 		list_add(&node->list, &l->lists[BPF_LRU_LIST_T_FREE]);
+ 		buf += elem_size;
+ 	}
+@@ -594,7 +599,7 @@ static void bpf_percpu_lru_populate(struct bpf_lru *lru, void *buf,
+ 		node = (struct bpf_lru_node *)(buf + node_offset);
+ 		node->cpu = cpu;
+ 		node->type = BPF_LRU_LIST_T_FREE;
+-		node->ref = 0;
++		bpf_lru_node_clear_ref(node);
+ 		list_add(&node->list, &l->lists[BPF_LRU_LIST_T_FREE]);
+ 		i++;
+ 		buf += elem_size;
+diff --git a/kernel/bpf/bpf_lru_list.h b/kernel/bpf/bpf_lru_list.h
+index 6b12f06ee18c3..9c12ee453c616 100644
+--- a/kernel/bpf/bpf_lru_list.h
++++ b/kernel/bpf/bpf_lru_list.h
+@@ -63,11 +63,8 @@ struct bpf_lru {
+ 
+ static inline void bpf_lru_node_set_ref(struct bpf_lru_node *node)
+ {
+-	/* ref is an approximation on access frequency.  It does not
+-	 * have to be very accurate.  Hence, no protection is used.
+-	 */
+-	if (!node->ref)
+-		node->ref = 1;
++	if (!READ_ONCE(node->ref))
++		WRITE_ONCE(node->ref, 1);
+ }
+ 
+ int bpf_lru_init(struct bpf_lru *lru, bool percpu, u32 hash_offset,
 -- 
 2.43.0
 
