@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-24088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 340BE8693BD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:48:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72751869298
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:37:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1684EB2E687
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D4B428EDAA
 	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:37:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 722E713B2BF;
-	Tue, 27 Feb 2024 13:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C6E313B2B8;
+	Tue, 27 Feb 2024 13:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y7mmwGlx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E4Y2leNR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3028213B295;
-	Tue, 27 Feb 2024 13:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11FA13B295;
+	Tue, 27 Feb 2024 13:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041000; cv=none; b=lesbG5EeE1B59ZnVGrlMruRd2bb/7K5ZeoqE+0kb7pEUEWLZpABTlBfpHdvCpXc3oWUkKM1HjGrWmLiVk4X9u/RG5Cq1gea1eK++ySnmrw5rBECFLOio7vf8Yy7PgqlFyQBuAIgMJDZxmq/EtMdeVrymGSWeOGQyXEmJErv7O24=
+	t=1709041003; cv=none; b=k75b/LVdpECv8Zr6dQfXuIYXjkbGETQD8KbC9L4nvwFEg6ELoQLIH2ekx3764Ox/Il0rNMpQbrp1uzex34G0Xzhm4AL+u9U5ZKckLc2tp5zIyirQVzVzMfiUPyAzK2t0FZVcWSZuJG1GcVy4ALAMvnfJKWXLOTOUyQCrH3icpiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041000; c=relaxed/simple;
-	bh=4u2BGRFNgXQHTh3O7FiATlBYyE42X8RQcAcKJgdwY0A=;
+	s=arc-20240116; t=1709041003; c=relaxed/simple;
+	bh=25sFedtMhfuwShsPp6/ncZAlRSMZ/osQ6Xlu2fo9NkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i+jljfaf7ez0AwpP7MTTM9GuJxCLYY2dq3wnwkLwVEqMbugfxSdOkaFzWCh1xIQ5hW+ugIrs9CNl8B0s2tNcXFrGIaGWdmGxn+2PlHxeNWmyUtZZ2adNKqVMqCD91qVFzdRGoZtw2hZ5w4jWswIavw+NCR59mKxxkGlYig84bCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y7mmwGlx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DEA7C433F1;
-	Tue, 27 Feb 2024 13:36:39 +0000 (UTC)
+	 MIME-Version; b=oXBvNsj5u40mBPY4VQd/6No1UusV6OWQ1mzt/JcNJlP/M+xMAsXO7xqGecZnQGQhVRuPDLF9FQj48CgT9f5oUl+cX6ilI12M+Y8Y/XpF6E7o9tam+LnuVAtI7kmzVWpCpQHZfNAKM7629BJc0CSUjzXgA0JcWMIaK8+d1pqmVEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E4Y2leNR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31479C43390;
+	Tue, 27 Feb 2024 13:36:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709040999;
-	bh=4u2BGRFNgXQHTh3O7FiATlBYyE42X8RQcAcKJgdwY0A=;
+	s=korg; t=1709041002;
+	bh=25sFedtMhfuwShsPp6/ncZAlRSMZ/osQ6Xlu2fo9NkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y7mmwGlx63Kt3bbHkaQyOAJLp5uCdGZWaNAPrRZerD/b9xBbXHR62wHqpNH1CJ5Z8
-	 vD90As7sBgzzvMNEKtNuoNI9ZXehdP0Z1iFkLmIbdf53I1IVglmXezdVAQBmBSQEKh
-	 R3JX0RGMs8k1rr65TNgUITTKBS3lGjeWXoc+WGuM=
+	b=E4Y2leNRLk+ahg6StTVVpHfNXxCvYiQrdwDfrl4b8fU+V4l03gJogfhlVRanLy1Mm
+	 HMoBWdNF+qBDl0KwDWWUVpYtoFzy4rLIjqbll96mjglO1AITyq42OQHeGUpHc+TQm1
+	 8ClXzOlt6FHkEp9gyXHSjTssTsi2XEuUp2IRzVl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Damien Le Moal <dlemoal@kernel.org>,
 	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.7 155/334] ata: libata-core: Do not try to set sleeping devices to standby
-Date: Tue, 27 Feb 2024 14:20:13 +0100
-Message-ID: <20240227131635.457581337@linuxfoundation.org>
+Subject: [PATCH 6.7 156/334] ata: libata-core: Do not call ata_dev_power_set_standby() twice
+Date: Tue, 27 Feb 2024 14:20:14 +0100
+Message-ID: <20240227131635.500998589@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
 References: <20240227131630.636392135@linuxfoundation.org>
@@ -67,33 +67,107 @@ Content-Transfer-Encoding: 8bit
 
 From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 4b085736e44dbbe69b5eea1a8a294f404678a1f4 upstream.
+commit 9cec467d0502b24660f413a0e8fc782903b46d5b upstream.
 
-In ata ata_dev_power_set_standby(), check that the target device is not
-sleeping. If it is, there is no need to do anything.
+For regular system shutdown, ata_dev_power_set_standby() will be
+executed twice: once the scsi device is removed and another when
+ata_pci_shutdown_one() executes and EH completes unloading the devices.
 
-Fixes: aa3998dbeb3a ("ata: libata-scsi: Disable scsi device manage_system_start_stop")
+Make the second call to ata_dev_power_set_standby() do nothing by using
+ata_dev_power_is_active() and return if the device is already in
+standby.
+
+Fixes: 2da4c5e24e86 ("ata: libata-core: Improve ata_dev_power_set_active()")
 Cc: stable@vger.kernel.org
 Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-core.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/ata/libata-core.c |   59 +++++++++++++++++++++++-----------------------
+ 1 file changed, 30 insertions(+), 29 deletions(-)
 
 --- a/drivers/ata/libata-core.c
 +++ b/drivers/ata/libata-core.c
-@@ -2017,6 +2017,10 @@ void ata_dev_power_set_standby(struct at
+@@ -2001,6 +2001,33 @@ bool ata_dev_power_init_tf(struct ata_de
+ 	return true;
+ }
+ 
++static bool ata_dev_power_is_active(struct ata_device *dev)
++{
++	struct ata_taskfile tf;
++	unsigned int err_mask;
++
++	ata_tf_init(dev, &tf);
++	tf.flags |= ATA_TFLAG_DEVICE | ATA_TFLAG_ISADDR;
++	tf.protocol = ATA_PROT_NODATA;
++	tf.command = ATA_CMD_CHK_POWER;
++
++	err_mask = ata_exec_internal(dev, &tf, NULL, DMA_NONE, NULL, 0, 0);
++	if (err_mask) {
++		ata_dev_err(dev, "Check power mode failed (err_mask=0x%x)\n",
++			    err_mask);
++		/*
++		 * Assume we are in standby mode so that we always force a
++		 * spinup in ata_dev_power_set_active().
++		 */
++		return false;
++	}
++
++	ata_dev_dbg(dev, "Power mode: 0x%02x\n", tf.nsect);
++
++	/* Active or idle */
++	return tf.nsect == 0xff;
++}
++
+ /**
+  *	ata_dev_power_set_standby - Set a device power mode to standby
+  *	@dev: target device
+@@ -2017,8 +2044,9 @@ void ata_dev_power_set_standby(struct at
  	struct ata_taskfile tf;
  	unsigned int err_mask;
  
-+	/* If the device is already sleeping, do nothing. */
-+	if (dev->flags & ATA_DFLAG_SLEEPING)
-+		return;
-+
+-	/* If the device is already sleeping, do nothing. */
+-	if (dev->flags & ATA_DFLAG_SLEEPING)
++	/* If the device is already sleeping or in standby, do nothing. */
++	if ((dev->flags & ATA_DFLAG_SLEEPING) ||
++	    !ata_dev_power_is_active(dev))
+ 		return;
+ 
  	/*
- 	 * Some odd clown BIOSes issue spindown on power off (ACPI S4 or S5)
- 	 * causing some drives to spin up and down again. For these, do nothing
+@@ -2046,33 +2074,6 @@ void ata_dev_power_set_standby(struct at
+ 			    err_mask);
+ }
+ 
+-static bool ata_dev_power_is_active(struct ata_device *dev)
+-{
+-	struct ata_taskfile tf;
+-	unsigned int err_mask;
+-
+-	ata_tf_init(dev, &tf);
+-	tf.flags |= ATA_TFLAG_DEVICE | ATA_TFLAG_ISADDR;
+-	tf.protocol = ATA_PROT_NODATA;
+-	tf.command = ATA_CMD_CHK_POWER;
+-
+-	err_mask = ata_exec_internal(dev, &tf, NULL, DMA_NONE, NULL, 0, 0);
+-	if (err_mask) {
+-		ata_dev_err(dev, "Check power mode failed (err_mask=0x%x)\n",
+-			    err_mask);
+-		/*
+-		 * Assume we are in standby mode so that we always force a
+-		 * spinup in ata_dev_power_set_active().
+-		 */
+-		return false;
+-	}
+-
+-	ata_dev_dbg(dev, "Power mode: 0x%02x\n", tf.nsect);
+-
+-	/* Active or idle */
+-	return tf.nsect == 0xff;
+-}
+-
+ /**
+  *	ata_dev_power_set_active -  Set a device power mode to active
+  *	@dev: target device
 
 
 
