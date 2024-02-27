@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-24879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBBBD8696B5
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83E2C8695C4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:05:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F0781F2E68A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FCD9B21862
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:04:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D867A145B18;
-	Tue, 27 Feb 2024 14:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFA513DB92;
+	Tue, 27 Feb 2024 14:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h24G/j4Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TWMX2XhU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94ED3145B12;
-	Tue, 27 Feb 2024 14:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A6713B2B9;
+	Tue, 27 Feb 2024 14:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043246; cv=none; b=V39igBLAY1ynnE8Rf+83YORbd3aXwe7iT7TYMtrqf56916OG3Z8pATnElxfc2u6HNzPODJecoOdZHWTXJkCEXHp+J3t1AWy+z5Fic4Ed9QD4JvFqbNGpPfNz1fI5TdtUZkWBC/stw5pdvd4qGO4is0dVno8YGii7aVuqDIu+9w0=
+	t=1709042685; cv=none; b=IQbl51ZhkVmZq01zBoT4mM9u1TK0BVbBjGc8pXbH/sFlpQI76DubEFLJBB3yRtx2JUKnrBZddXN7XSyCMtmWu5iYzqfRMHwgtiWkQtVTv0UkWNar+FFHGvQ8AS1WxKcaLsgdamLUPN+qxjAVtvmuI9y+UfyzofiCm7ceLO7LJas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043246; c=relaxed/simple;
-	bh=IetuZnkCMQH7VeI7bdgGji5i9jrwEab0J9P60QL6VHE=;
+	s=arc-20240116; t=1709042685; c=relaxed/simple;
+	bh=/CnZykrpNMvLy00gf+AoHAXkqii+5jFwul4PUvPWcnI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JMWNKzIWGxPWPW69jS1g6wwKjVjJQyJjiDdmrLh53r25e1Q7SG4do1Jx4f2Mj0t9hlqOlXTGo+ZiyJdwKtyJXm6XsEZjOuS4xchironE9iU3cVC5BQFDwdLUhcHaThrXW3X0WpzjnLRyEKmsw8iHBP5eLFFzl+8u7RY9N2tAxic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h24G/j4Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2391EC433C7;
-	Tue, 27 Feb 2024 14:14:05 +0000 (UTC)
+	 MIME-Version; b=PADNgDHa+ODk++vRqGylD+tiOsPJTYpGxFKXnSS5iwvdussOGF0YpYZ7sFrY9RqPr2ixd6x3xSelqWNoru9+pi7kRnEyV6NpKRaUKjJdlsMJp5YBn9bl6IVDxl3J4PwSljN/jvdCrTmHNCG16iqaZl8xjeYcOAwy6nhCg7TNJ4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TWMX2XhU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC8D4C433C7;
+	Tue, 27 Feb 2024 14:04:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043246;
-	bh=IetuZnkCMQH7VeI7bdgGji5i9jrwEab0J9P60QL6VHE=;
+	s=korg; t=1709042685;
+	bh=/CnZykrpNMvLy00gf+AoHAXkqii+5jFwul4PUvPWcnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h24G/j4QRIommy3q2bW98wDXikQIv21ueEe6Hr6xA7O3Urku43c1f0Bx1URQGhfCT
-	 hkAItVrMThuRuHrNszbxAh9E8OGGU938i7F95cFtpKpfy3O3mDNKYlux5R8s4d0O3+
-	 96z017rqb3IwZhpqMNDIi53lXCS/+Win70hqz4Wc=
+	b=TWMX2XhUC4kiSScn4g9SOWqya7A7qOX75Cvpc1KsXIt1hSTSLnk5bCupMIw4JWlRF
+	 OwyiKJe9qZ8xoMEoOh4PGaZceNS6ULyVMRCQtbvQBhDn8NmrtzTUyBGB0hYKQpcj+x
+	 Bzl7ACHG2Od1EOR3GKh7AzjqXi29YItNRDSRAxsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 010/195] cifs: open_cached_dir should not rely on primary channel
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 5.15 083/245] KVM: arm64: vgic-its: Test for valid IRQ in its_sync_lpi_pending_table()
 Date: Tue, 27 Feb 2024 14:24:31 +0100
-Message-ID: <20240227131610.742166482@linuxfoundation.org>
+Message-ID: <20240227131617.932501709@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Oliver Upton <oliver.upton@linux.dev>
 
-[ Upstream commit 936eba9cfb5cfbf6a2c762cd163605f2b784e03e ]
+commit 8d3a7dfb801d157ac423261d7cd62c33e95375f8 upstream.
 
-open_cached_dir today selects ses->server a.k.a primary channel
-to send requests. When multichannel is used, the primary
-channel maybe down. So it does not make sense to rely only
-on that channel.
+vgic_get_irq() may not return a valid descriptor if there is no ITS that
+holds a valid translation for the specified INTID. If that is the case,
+it is safe to silently ignore it and continue processing the LPI pending
+table.
 
-This fix makes this function pick a channel with the standard
-helper function cifs_pick_channel.
-
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 33d3bc9556a7 ("KVM: arm64: vgic-its: Read initial LPI pending table")
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20240221092732.4126848-2-oliver.upton@linux.dev
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cached_dir.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/kvm/vgic/vgic-its.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/smb/client/cached_dir.c b/fs/smb/client/cached_dir.c
-index 6f4d7aa70e5a2..fd082151c5f9b 100644
---- a/fs/smb/client/cached_dir.c
-+++ b/fs/smb/client/cached_dir.c
-@@ -149,7 +149,7 @@ int open_cached_dir(unsigned int xid, struct cifs_tcon *tcon,
- 		return -EOPNOTSUPP;
+--- a/arch/arm64/kvm/vgic/vgic-its.c
++++ b/arch/arm64/kvm/vgic/vgic-its.c
+@@ -462,6 +462,9 @@ static int its_sync_lpi_pending_table(st
+ 		}
  
- 	ses = tcon->ses;
--	server = ses->server;
-+	server = cifs_pick_channel(ses);
- 	cfids = tcon->cfids;
- 
- 	if (!server->ops->new_lease_key)
--- 
-2.43.0
-
+ 		irq = vgic_get_irq(vcpu->kvm, NULL, intids[i]);
++		if (!irq)
++			continue;
++
+ 		raw_spin_lock_irqsave(&irq->irq_lock, flags);
+ 		irq->pending_latch = pendmask & (1U << bit_nr);
+ 		vgic_queue_irq_unlock(vcpu->kvm, irq, flags);
 
 
 
