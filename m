@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-25103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 123BD8697BE
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:24:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F82E86977F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:21:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 440091C2291D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:24:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D09781F24029
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:21:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42FE1420A6;
-	Tue, 27 Feb 2024 14:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BFF31420DD;
+	Tue, 27 Feb 2024 14:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bgmYrlgz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJ8PYRTm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F46613EFF4;
-	Tue, 27 Feb 2024 14:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD2413F016;
+	Tue, 27 Feb 2024 14:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043873; cv=none; b=t3FYbYAcv7w/xELYFjYktkHaWpdYmackr2gUZIf+owJKRPcdJE0p2IFZJUs8QbNo0B33+ZidX6jerYjkaYdQrpei6MhOsCzoeWbAh1BIUqdHY/qki5VDszJSytILZzK3JR2z5CZuDF8VmEqAeBAZYXPD+KfMWfVhnAiWJf0j3N0=
+	t=1709043702; cv=none; b=QiduEE9MXqLxK+xiSKLAOfJjowWiY0ilqH/rwIpH+OoeX36Cpp5eoq7yjkOY8/Kqd427ZbQB31kHQo+G8BozSa8GtfuIa2OeB/c6BtqVPtN2x1Op4ASJBmc75nbyb5RDPFs1MYFQSXelD7PtFCD1r4Wh8Zte5WdOksdndj6m214=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043873; c=relaxed/simple;
-	bh=oV9aRpHn8ZgjD2JjVolkA4Hj4lDn+ll6oIVuIG467pc=;
+	s=arc-20240116; t=1709043702; c=relaxed/simple;
+	bh=k7ckbAXJ9PE3jw9SjqoUTO95O8sZHk5tZu53OXOJHGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pkq+F0p/8spJvf1hksRTx0UpB9IqTiteBZW6EOCqSPWlogDIiPHkpelI7hIz00vFH49LQjEZnKkCv17Wmd+AxE4L4T+26jTlwHPB+OevUdCfvO8LrTnewkiMLtfzX7roGsPY011go3JA2Hd1p6Sio49gejsABs7nDv7UgIt+Blc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bgmYrlgz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D5AC433C7;
-	Tue, 27 Feb 2024 14:24:32 +0000 (UTC)
+	 MIME-Version; b=C3BhhWBFMpbKt18swy7G/nniStij0CT5tInti4q4D56xeUvc+SHg62xQWND+w6UN25ENiq4Gp4bBBZGMTnMn1qmNAlXI78PbL1+kreeqnkIu4a7MZWVS+71F4kZjkRU2isZKrrJ18dgm2h7tM8t1JmrcPPxKfQCSjWlvQHRtB6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJ8PYRTm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC1FBC433F1;
+	Tue, 27 Feb 2024 14:21:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043873;
-	bh=oV9aRpHn8ZgjD2JjVolkA4Hj4lDn+ll6oIVuIG467pc=;
+	s=korg; t=1709043702;
+	bh=k7ckbAXJ9PE3jw9SjqoUTO95O8sZHk5tZu53OXOJHGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bgmYrlgzkmECtXgs7yHPwVWBkoNoa7KCgoGSp4lBRwylCTPva7ahmfIUgaqay0Aqm
-	 or7id0XZXtBbACQ+gbs5qKrJdLT9M4xd9iGaKengHSsxuoHth3o7kpsKCdEY2HG0oF
-	 fdr7sZOQyvILX6LpZTCnJ6qTtTpOrvd5Y98iCXYg=
+	b=hJ8PYRTmlLoE2SxLZzuDfNZLoxi3/eAwhu5bhIVnyUKWutObT0zsOUUEG/tm6oFBr
+	 LBDWK3mMhfhQK5wZhkMWWJlxHACsGJSlo5KFSs/fFRPHAVBUX+HnR77GyqjtKhJpoU
+	 dY6RAFljkfXUWvoF7US59wIusu+gxRHdiiyzhAIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jason Gunthorpe <jgg@mellanox.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 65/84] RDMA/srpt: Make debug output more detailed
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 191/195] mptcp: add needs_id for netlink appending addr
 Date: Tue, 27 Feb 2024 14:27:32 +0100
-Message-ID: <20240227131554.987927116@linuxfoundation.org>
+Message-ID: <20240227131616.709399360@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-[ Upstream commit d4ee7f3a4445ec1b0b88af216f4032c4d30abf5a ]
+commit 584f3894262634596532cf43a5e782e34a0ce374 upstream.
 
-Since the session name by itself is not sufficient to uniquely identify a
-queue pair, include the queue pair number. Show the ASCII channel state
-name instead of the numeric value. This change makes the ib_srpt debug
-output more consistent.
+Just the same as userspace PM, a new parameter needs_id is added for
+in-kernel PM mptcp_pm_nl_append_new_local_addr() too.
 
-Link: https://lore.kernel.org/r/20200525172212.14413-3-bvanassche@acm.org
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Jason Gunthorpe <jgg@mellanox.com>
-Stable-dep-of: eb5c7465c324 ("RDMA/srpt: fix function pointer cast warnings")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add a new helper mptcp_pm_has_addr_attr_id() to check whether an address
+ID is set from PM or not.
+
+In mptcp_pm_nl_get_local_id(), needs_id is always true, but in
+mptcp_pm_nl_add_addr_doit(), pass mptcp_pm_has_addr_attr_id() to
+needs_it.
+
+Fixes: efd5a4c04e18 ("mptcp: add the address ID assignment bitmap")
+Cc: stable@vger.kernel.org
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/ulp/srpt/ib_srpt.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ net/mptcp/pm_netlink.c |   24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
-index 2822ca5e82779..ccd9811c6c1e2 100644
---- a/drivers/infiniband/ulp/srpt/ib_srpt.c
-+++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
-@@ -217,8 +217,9 @@ static const char *get_ch_state_name(enum rdma_ch_state s)
-  */
- static void srpt_qp_event(struct ib_event *event, struct srpt_rdma_ch *ch)
- {
--	pr_debug("QP event %d on ch=%p sess_name=%s state=%d\n",
--		 event->event, ch, ch->sess_name, ch->state);
-+	pr_debug("QP event %d on ch=%p sess_name=%s-%d state=%s\n",
-+		 event->event, ch, ch->sess_name, ch->qp->qp_num,
-+		 get_ch_state_name(ch->state));
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -900,7 +900,8 @@ static void __mptcp_pm_release_addr_entr
+ }
  
- 	switch (event->event) {
- 	case IB_EVENT_COMM_EST:
-@@ -2005,8 +2006,8 @@ static void __srpt_close_all_ch(struct srpt_port *sport)
- 	list_for_each_entry(nexus, &sport->nexus_list, entry) {
- 		list_for_each_entry(ch, &nexus->ch_list, list) {
- 			if (srpt_disconnect_ch(ch) >= 0)
--				pr_info("Closing channel %s because target %s_%d has been disabled\n",
--					ch->sess_name,
-+				pr_info("Closing channel %s-%d because target %s_%d has been disabled\n",
-+					ch->sess_name, ch->qp->qp_num,
- 					dev_name(&sport->sdev->device->dev),
- 					sport->port);
- 			srpt_close_ch(ch);
--- 
-2.43.0
-
+ static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
+-					     struct mptcp_pm_addr_entry *entry)
++					     struct mptcp_pm_addr_entry *entry,
++					     bool needs_id)
+ {
+ 	struct mptcp_pm_addr_entry *cur, *del_entry = NULL;
+ 	unsigned int addr_max;
+@@ -942,7 +943,7 @@ static int mptcp_pm_nl_append_new_local_
+ 		}
+ 	}
+ 
+-	if (!entry->addr.id) {
++	if (!entry->addr.id && needs_id) {
+ find_next:
+ 		entry->addr.id = find_next_zero_bit(pernet->id_bitmap,
+ 						    MPTCP_PM_MAX_ADDR_ID + 1,
+@@ -953,7 +954,7 @@ find_next:
+ 		}
+ 	}
+ 
+-	if (!entry->addr.id)
++	if (!entry->addr.id && needs_id)
+ 		goto out;
+ 
+ 	__set_bit(entry->addr.id, pernet->id_bitmap);
+@@ -1095,7 +1096,7 @@ int mptcp_pm_nl_get_local_id(struct mptc
+ 	entry->ifindex = 0;
+ 	entry->flags = MPTCP_PM_ADDR_FLAG_IMPLICIT;
+ 	entry->lsk = NULL;
+-	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry);
++	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry, true);
+ 	if (ret < 0)
+ 		kfree(entry);
+ 
+@@ -1311,6 +1312,18 @@ next:
+ 	return 0;
+ }
+ 
++static bool mptcp_pm_has_addr_attr_id(const struct nlattr *attr,
++				      struct genl_info *info)
++{
++	struct nlattr *tb[MPTCP_PM_ADDR_ATTR_MAX + 1];
++
++	if (!nla_parse_nested_deprecated(tb, MPTCP_PM_ADDR_ATTR_MAX, attr,
++					 mptcp_pm_addr_policy, info->extack) &&
++	    tb[MPTCP_PM_ADDR_ATTR_ID])
++		return true;
++	return false;
++}
++
+ static int mptcp_nl_cmd_add_addr(struct sk_buff *skb, struct genl_info *info)
+ {
+ 	struct nlattr *attr = info->attrs[MPTCP_PM_ATTR_ADDR];
+@@ -1352,7 +1365,8 @@ static int mptcp_nl_cmd_add_addr(struct
+ 			goto out_free;
+ 		}
+ 	}
+-	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry);
++	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry,
++						!mptcp_pm_has_addr_attr_id(attr, info));
+ 	if (ret < 0) {
+ 		GENL_SET_ERR_MSG(info, "too many addresses or duplicate one");
+ 		goto out_free;
 
 
 
