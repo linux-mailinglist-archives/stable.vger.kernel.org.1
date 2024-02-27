@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0825E869339
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:42:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CDB4869435
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CCE91F249A4
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:42:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1682428EAAF
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A0913A25D;
-	Tue, 27 Feb 2024 13:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B988513DB87;
+	Tue, 27 Feb 2024 13:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uyrMozSa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7o/zUcE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E865013AA4C;
-	Tue, 27 Feb 2024 13:42:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C04D13B2B3;
+	Tue, 27 Feb 2024 13:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041375; cv=none; b=AJr7viodNnu/NQjqFxcEm4AXH+bHzFKaCbPJsuNXzSPh5dGLI9OwSwER+GbAbvB+sJvzPgo6YDXWepiQONOLxjNUi7xtaO3E9IY+RrAquI9yooQVJczByWSbN71xSWSThZCeZMKso3ohuF8mjv9ej7ZoNGXSeq+cwZxGfCLPccI=
+	t=1709041856; cv=none; b=dnsadG7Q15BbX66R2L/8+YamKDL/NB+VWoRc3Dr4pRJrONo2WyItpwQzIKeXVOLVEmKzpXirZloWzipX3w7UQjhRgfvkZvN+cS4LqNC68iUA0H8NDLy98Xd9i4nTe/uaTBEE7arhJdOn2UPGw0aNJ1bxL5KleDANf80pTcTl6bA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041375; c=relaxed/simple;
-	bh=pQ+sh3a0csUHp1ZVIw7rRam+w7apIvYu2o/jbjnvZjo=;
+	s=arc-20240116; t=1709041856; c=relaxed/simple;
+	bh=jX3ODlRu2Jl7eReh0oDtj+HJZgCRh4AmTfz2LeKfvsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UY2FD3DFaphTEbXnLcPos1cwzofgj1JkCLbKK3PTPx5f33pP0tESOasCTN58OKfGGG487KkqZJ5gikwxvAJbM+euTHAlqv2NLrgX8sze68V3NsaBl2TtuYLs0mwBSBfcve74kwRZHUlMbEqsFwzp6QOlf79+DtDKxcwXXYbBAdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uyrMozSa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 772EFC433F1;
-	Tue, 27 Feb 2024 13:42:54 +0000 (UTC)
+	 MIME-Version; b=NtnCIIfdhg863zd2LHxTpF4UQIvF9p2BQMm1uXAN0ZaJTmtLnzAPwPUlPSMM1SWowQaR1ePig5M9qX8P2eTiJGSI0DcBBcmHXt/S+ycKYx/9ciLWxMSfBjpZA8isvK6CBdfWz64MrZLMHmiYftABC8UEON0XzEKAz1blnv4Tbno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7o/zUcE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECEABC433C7;
+	Tue, 27 Feb 2024 13:50:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041374;
-	bh=pQ+sh3a0csUHp1ZVIw7rRam+w7apIvYu2o/jbjnvZjo=;
+	s=korg; t=1709041856;
+	bh=jX3ODlRu2Jl7eReh0oDtj+HJZgCRh4AmTfz2LeKfvsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uyrMozSaT6rfY4PWbz0Ch57XMPHBP+UagxwOxRqgykDgG6h0KA3ql+nD9geDzxLp7
-	 el//W9oEFtcacJef+7p4/4JG5g0PJ29TCAEJUqmJr8tl862UMSkZAyH+4438LshfPz
-	 LjU8dMmvBOweOvQU6ORwYdfN6wqg9k9bSq62l6do=
+	b=T7o/zUcEsbg5gkd5S0EjZvTcJrX+2plZqWecuraSLGgSm+y9IA6CSTolPiNY/XWRo
+	 o4Rub7yUR3zDaBFJb5JaroPnX8mORp5ruAJwwQs4DrNMUO/lZFJbzdP3krOaBggCnL
+	 BrldUo3IMJvVV4fb99xcCwkkdKCFTi4YwuMefE84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <courmisch@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Daniel Wagner <dwagner@suse.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 318/334] phonet/pep: fix racy skb_queue_empty() use
+Subject: [PATCH 6.6 065/299] nvmet-fc: take ref count on tgtport before delete assoc
 Date: Tue, 27 Feb 2024 14:22:56 +0100
-Message-ID: <20240227131641.356956716@linuxfoundation.org>
+Message-ID: <20240227131628.041768626@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,89 +61,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rémi Denis-Courmont <courmisch@gmail.com>
+From: Daniel Wagner <dwagner@suse.de>
 
-[ Upstream commit 7d2a894d7f487dcb894df023e9d3014cf5b93fe5 ]
+[ Upstream commit fe506a74589326183297d5abdda02d0c76ae5a8b ]
 
-The receive queues are protected by their respective spin-lock, not
-the socket lock. This could lead to skb_peek() unexpectedly
-returning NULL or a pointer to an already dequeued socket buffer.
+We have to ensure that the tgtport is not going away
+before be have remove all the associations.
 
-Fixes: 9641458d3ec4 ("Phonet: Pipe End Point for Phonet Pipes protocol")
-Signed-off-by: Rémi Denis-Courmont <courmisch@gmail.com>
-Link: https://lore.kernel.org/r/20240218081214.4806-2-remi@remlab.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Daniel Wagner <dwagner@suse.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/phonet/pep.c | 41 ++++++++++++++++++++++++++++++++---------
- 1 file changed, 32 insertions(+), 9 deletions(-)
+ drivers/nvme/target/fc.c | 31 +++++++++++++++++++++++--------
+ 1 file changed, 23 insertions(+), 8 deletions(-)
 
-diff --git a/net/phonet/pep.c b/net/phonet/pep.c
-index faba31f2eff29..3dd5f52bc1b58 100644
---- a/net/phonet/pep.c
-+++ b/net/phonet/pep.c
-@@ -917,6 +917,37 @@ static int pep_sock_enable(struct sock *sk, struct sockaddr *addr, int len)
- 	return 0;
+diff --git a/drivers/nvme/target/fc.c b/drivers/nvme/target/fc.c
+index 36cae038eb045..8a02ed63b1566 100644
+--- a/drivers/nvme/target/fc.c
++++ b/drivers/nvme/target/fc.c
+@@ -1092,13 +1092,28 @@ nvmet_fc_alloc_hostport(struct nvmet_fc_tgtport *tgtport, void *hosthandle)
  }
  
-+static unsigned int pep_first_packet_length(struct sock *sk)
+ static void
+-nvmet_fc_delete_assoc(struct work_struct *work)
++nvmet_fc_delete_assoc(struct nvmet_fc_tgt_assoc *assoc)
 +{
-+	struct pep_sock *pn = pep_sk(sk);
-+	struct sk_buff_head *q;
-+	struct sk_buff *skb;
-+	unsigned int len = 0;
-+	bool found = false;
-+
-+	if (sock_flag(sk, SOCK_URGINLINE)) {
-+		q = &pn->ctrlreq_queue;
-+		spin_lock_bh(&q->lock);
-+		skb = skb_peek(q);
-+		if (skb) {
-+			len = skb->len;
-+			found = true;
-+		}
-+		spin_unlock_bh(&q->lock);
-+	}
-+
-+	if (likely(!found)) {
-+		q = &sk->sk_receive_queue;
-+		spin_lock_bh(&q->lock);
-+		skb = skb_peek(q);
-+		if (skb)
-+			len = skb->len;
-+		spin_unlock_bh(&q->lock);
-+	}
-+
-+	return len;
++	nvmet_fc_delete_target_assoc(assoc);
++	nvmet_fc_tgt_a_put(assoc);
 +}
 +
- static int pep_ioctl(struct sock *sk, int cmd, int *karg)
++static void
++nvmet_fc_delete_assoc_work(struct work_struct *work)
  {
- 	struct pep_sock *pn = pep_sk(sk);
-@@ -929,15 +960,7 @@ static int pep_ioctl(struct sock *sk, int cmd, int *karg)
- 			break;
+ 	struct nvmet_fc_tgt_assoc *assoc =
+ 		container_of(work, struct nvmet_fc_tgt_assoc, del_work);
++	struct nvmet_fc_tgtport *tgtport = assoc->tgtport;
+ 
+-	nvmet_fc_delete_target_assoc(assoc);
+-	nvmet_fc_tgt_a_put(assoc);
++	nvmet_fc_delete_assoc(assoc);
++	nvmet_fc_tgtport_put(tgtport);
++}
++
++static void
++nvmet_fc_schedule_delete_assoc(struct nvmet_fc_tgt_assoc *assoc)
++{
++	nvmet_fc_tgtport_get(assoc->tgtport);
++	queue_work(nvmet_wq, &assoc->del_work);
+ }
+ 
+ static struct nvmet_fc_tgt_assoc *
+@@ -1132,7 +1147,7 @@ nvmet_fc_alloc_target_assoc(struct nvmet_fc_tgtport *tgtport, void *hosthandle)
+ 	assoc->a_id = idx;
+ 	INIT_LIST_HEAD(&assoc->a_list);
+ 	kref_init(&assoc->ref);
+-	INIT_WORK(&assoc->del_work, nvmet_fc_delete_assoc);
++	INIT_WORK(&assoc->del_work, nvmet_fc_delete_assoc_work);
+ 	atomic_set(&assoc->terminating, 0);
+ 
+ 	while (needrandom) {
+@@ -1491,7 +1506,7 @@ __nvmet_fc_free_assocs(struct nvmet_fc_tgtport *tgtport)
+ 	list_for_each_entry_rcu(assoc, &tgtport->assoc_list, a_list) {
+ 		if (!nvmet_fc_tgt_a_get(assoc))
+ 			continue;
+-		queue_work(nvmet_wq, &assoc->del_work);
++		nvmet_fc_schedule_delete_assoc(assoc);
+ 		nvmet_fc_tgt_a_put(assoc);
+ 	}
+ 	rcu_read_unlock();
+@@ -1545,7 +1560,7 @@ nvmet_fc_invalidate_host(struct nvmet_fc_target_port *target_port,
+ 			continue;
+ 		assoc->hostport->invalid = 1;
+ 		noassoc = false;
+-		queue_work(nvmet_wq, &assoc->del_work);
++		nvmet_fc_schedule_delete_assoc(assoc);
+ 		nvmet_fc_tgt_a_put(assoc);
+ 	}
+ 	spin_unlock_irqrestore(&tgtport->lock, flags);
+@@ -1590,7 +1605,7 @@ nvmet_fc_delete_ctrl(struct nvmet_ctrl *ctrl)
+ 		nvmet_fc_tgtport_put(tgtport);
+ 
+ 		if (found_ctrl) {
+-			queue_work(nvmet_wq, &assoc->del_work);
++			nvmet_fc_schedule_delete_assoc(assoc);
+ 			nvmet_fc_tgt_a_put(assoc);
+ 			return;
  		}
+@@ -1897,7 +1912,7 @@ nvmet_fc_ls_disconnect(struct nvmet_fc_tgtport *tgtport,
+ 		nvmet_fc_xmt_ls_rsp(tgtport, oldls);
+ 	}
  
--		lock_sock(sk);
--		if (sock_flag(sk, SOCK_URGINLINE) &&
--		    !skb_queue_empty(&pn->ctrlreq_queue))
--			*karg = skb_peek(&pn->ctrlreq_queue)->len;
--		else if (!skb_queue_empty(&sk->sk_receive_queue))
--			*karg = skb_peek(&sk->sk_receive_queue)->len;
--		else
--			*karg = 0;
--		release_sock(sk);
-+		*karg = pep_first_packet_length(sk);
- 		ret = 0;
- 		break;
+-	queue_work(nvmet_wq, &assoc->del_work);
++	nvmet_fc_schedule_delete_assoc(assoc);
+ 	nvmet_fc_tgt_a_put(assoc);
  
+ 	return false;
 -- 
 2.43.0
 
