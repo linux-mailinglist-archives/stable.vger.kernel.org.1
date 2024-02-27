@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E87E0869531
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:59:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51460869361
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:44:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A535228FA4D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:59:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0864B1F2100E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24DA854BD4;
-	Tue, 27 Feb 2024 13:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6804C13DBBF;
+	Tue, 27 Feb 2024 13:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ns8c5p+Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CtOM72AU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F2F13B7A0;
-	Tue, 27 Feb 2024 13:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273A113A25D;
+	Tue, 27 Feb 2024 13:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042379; cv=none; b=CXJSO1rwr0EUoKwkcOxCd7eGU6qcYmrZBgevyMYaqW+DB7IVDZQ+S3Pj3vSP6Jfuy0QorxKSynagzIpQpwdd7p8H84Aj7xDRQq9bMTaxywiPpzw3wQcrN5o5DkbzZNGvs6u+vVmpGWbNOaGF1TzhIh8eq9bEJdD3tGWa0TAID+s=
+	t=1709041455; cv=none; b=OlTlCO3wt+xhUobU98P/6rqIyPkB+lRXs740U7OxgDbeXBR+VxptmC2f9xlRvgw1ByxfZFebG8pBYoeFljTjh+yPJAJnrNsj0oqiUu7U6E3H2oVwg6WYrY1jFwqKiHNfMfbc6gG2KcKVMprPzDdsqkdsRtkyHTcLRWiH3AyCGGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042379; c=relaxed/simple;
-	bh=SKCxCjMXx+uhVAKq+FSQB9EvqT+YUdL044bh9kA+49k=;
+	s=arc-20240116; t=1709041455; c=relaxed/simple;
+	bh=OOrHrfRxqmMlCzcTN7kRrxUYyDdGYgK9kZmkiAH1cOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iNOEt/6oxB0n+lQT+rkjq0481pEuSK4JqpBFO5VNfgOV9JhFdhnFJ8zlzt/gLDRIQDXtqwV9w1xA4e+bDluhn7FhKW2Lv0Y84v+QbZtbRXLPeOYASOVOlfp3O9blFLSDnSyRqjv8IfDA+zuXWbIENkidqLxHVqA1K2BG/omh6+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ns8c5p+Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63AD3C433F1;
-	Tue, 27 Feb 2024 13:59:39 +0000 (UTC)
+	 MIME-Version; b=nfE21zgz2jqVlQkSKWLVEnUS621iGSao/0E6dEgOj/cEoFIQUXC4lio8q4Jm5LeN6yXLwOf2eONO1jmy/AYizJ8ETsF05ikybviF0+pxKs4qJAzY0dVF82GBhe0a5I1IKatv10yH9VQVJC0RGbr43v5vWwO/wlxl3EoRg5EL9TM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CtOM72AU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F9D5C433F1;
+	Tue, 27 Feb 2024 13:44:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042379;
-	bh=SKCxCjMXx+uhVAKq+FSQB9EvqT+YUdL044bh9kA+49k=;
+	s=korg; t=1709041455;
+	bh=OOrHrfRxqmMlCzcTN7kRrxUYyDdGYgK9kZmkiAH1cOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ns8c5p+Y7CKqiL8aLZi9DybuMy9K3cAChlSal3aSjxR/+bwfmUkZRpiPgYF3BKewf
-	 NQC8EekM9UsQ360d7Xms9+8kVL5kdNQickiB5fSJB25OgFLEhR/Ox9tc1jnJhJAmIl
-	 fvz5gnwRYZW+VRVqHYN/hteswDK0TPFPqmGL7t0M=
+	b=CtOM72AU/i9INvo+OWWDhRpnjuX3lQbnTXQBZQ3YKrlvrcSW/SMTwPkBX4+ggNyaw
+	 YaudurBlJyysvhJiT72GAmwzCMdfKbLdVmTO5eqkrdN0y0ughlWwk9BasTyif0yHAR
+	 kLVsZu1DuSg529/bjdMniDBxWG3ZWXLXYbv174Ew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Justin Chen <justin.chen@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 247/299] net: bcmasp: Indicate MAC is in charge of PHY PM
+	Cyril Hrubis <chrubis@suse.cz>,
+	Ingo Molnar <mingo@kernel.org>,
+	Petr Vorel <pvorel@suse.cz>
+Subject: [PATCH 4.19 11/52] sched/rt: Disallow writing invalid values to sched_rt_period_us
 Date: Tue, 27 Feb 2024 14:25:58 +0100
-Message-ID: <20240227131633.680254534@linuxfoundation.org>
+Message-ID: <20240227131548.904890318@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
+References: <20240227131548.514622258@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Fainelli <florian.fainelli@broadcom.com>
+From: Cyril Hrubis <chrubis@suse.cz>
 
-[ Upstream commit 5b76d928f8b779a1b19c5842e7cabee4cbb610c3 ]
+[ Upstream commit 079be8fc630943d9fc70a97807feb73d169ee3fc ]
 
-Avoid the PHY library call unnecessarily into the suspend/resume
-functions by setting phydev->mac_managed_pm to true. The ASP driver
-essentially does exactly what mdio_bus_phy_resume() does.
+The validation of the value written to sched_rt_period_us was broken
+because:
 
-Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet controller")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  - the sysclt_sched_rt_period is declared as unsigned int
+  - parsed by proc_do_intvec()
+  - the range is asserted after the value parsed by proc_do_intvec()
+
+Because of this negative values written to the file were written into a
+unsigned integer that were later on interpreted as large positive
+integers which did passed the check:
+
+  if (sysclt_sched_rt_period <= 0)
+	return EINVAL;
+
+This commit fixes the parsing by setting explicit range for both
+perid_us and runtime_us into the sched_rt_sysctls table and processes
+the values with proc_dointvec_minmax() instead.
+
+Alternatively if we wanted to use full range of unsigned int for the
+period value we would have to split the proc_handler and use
+proc_douintvec() for it however even the
+Documentation/scheduller/sched-rt-group.rst describes the range as 1 to
+INT_MAX.
+
+As far as I can tell the only problem this causes is that the sysctl
+file allows writing negative values which when read back may confuse
+userspace.
+
+There is also a LTP test being submitted for these sysctl files at:
+
+  http://patchwork.ozlabs.org/project/ltp/patch/20230901144433.2526-1-chrubis@suse.cz/
+
+Signed-off-by: Cyril Hrubis <chrubis@suse.cz>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20231002115553.3007-2-chrubis@suse.cz
+[ pvorel: rebased for 4.19 ]
+Reviewed-by: Petr Vorel <pvorel@suse.cz>
+Signed-off-by: Petr Vorel <pvorel@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/sched/rt.c |    5 +----
+ kernel/sysctl.c   |    5 +++++
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
-index 53e5428812552..9cae5a3090000 100644
---- a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
-+++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
-@@ -1048,6 +1048,9 @@ static int bcmasp_netif_init(struct net_device *dev, bool phy_connect)
- 			netdev_err(dev, "could not attach to PHY\n");
- 			goto err_phy_disable;
- 		}
-+
-+		/* Indicate that the MAC is responsible for PHY PM */
-+		phydev->mac_managed_pm = true;
- 	} else if (!intf->wolopts) {
- 		ret = phy_resume(dev->phydev);
- 		if (ret)
--- 
-2.43.0
-
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -2658,9 +2658,6 @@ static int sched_rt_global_constraints(v
+ 
+ static int sched_rt_global_validate(void)
+ {
+-	if (sysctl_sched_rt_period <= 0)
+-		return -EINVAL;
+-
+ 	if ((sysctl_sched_rt_runtime != RUNTIME_INF) &&
+ 		(sysctl_sched_rt_runtime > sysctl_sched_rt_period))
+ 		return -EINVAL;
+@@ -2690,7 +2687,7 @@ int sched_rt_handler(struct ctl_table *t
+ 	old_period = sysctl_sched_rt_period;
+ 	old_runtime = sysctl_sched_rt_runtime;
+ 
+-	ret = proc_dointvec(table, write, buffer, lenp, ppos);
++	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
+ 
+ 	if (!ret && write) {
+ 		ret = sched_rt_global_validate();
+--- a/kernel/sysctl.c
++++ b/kernel/sysctl.c
+@@ -127,6 +127,7 @@ static int zero;
+ static int __maybe_unused one = 1;
+ static int __maybe_unused two = 2;
+ static int __maybe_unused four = 4;
++static int int_max = INT_MAX;
+ static unsigned long zero_ul;
+ static unsigned long one_ul = 1;
+ static unsigned long long_max = LONG_MAX;
+@@ -464,6 +465,8 @@ static struct ctl_table kern_table[] = {
+ 		.maxlen		= sizeof(unsigned int),
+ 		.mode		= 0644,
+ 		.proc_handler	= sched_rt_handler,
++		.extra1		= &one,
++		.extra2		= &int_max,
+ 	},
+ 	{
+ 		.procname	= "sched_rt_runtime_us",
+@@ -471,6 +474,8 @@ static struct ctl_table kern_table[] = {
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+ 		.proc_handler	= sched_rt_handler,
++		.extra1		= &neg_one,
++		.extra2		= &int_max,
+ 	},
+ 	{
+ 		.procname	= "sched_rr_timeslice_ms",
 
 
 
