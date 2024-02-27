@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-24481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A95B28694B5
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:55:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DB908696B6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5117A2877E8
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:55:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D00191C2397D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B847B140391;
-	Tue, 27 Feb 2024 13:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 914F9145B14;
+	Tue, 27 Feb 2024 14:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jID8VYAR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wWKhFNV+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76DEA13AA55;
-	Tue, 27 Feb 2024 13:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500BF1420DD;
+	Tue, 27 Feb 2024 14:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042124; cv=none; b=Se9TNAZFq9gw0paXv34EDqCsWG2Ur5ceQ6LiHoQiwY35D1JRZGu9IuCTE4SkfsyzcwUmKE24RuNvuikKeGycQqyKRe104ttdnupTF9jBWJn0pnYrVmAgMtDuZY0XFHmn0XEcdFhdMDCUYKTTjLB+rRlxOytqSRfTzhXoHYkViwU=
+	t=1709043249; cv=none; b=jrFoXtKdmRhMtGXtnV1eEEiLS7ZNRCAWumxcUF4o+zisMN0R8JeaLsWt4XvH2vKGS16z2rQ/bWBwHCcFvg7oMuUIailhGewP4PPHG7soTpwjgI5Dn8fC7rGGYB2Vt2C5qTNoatxfzYn0mG78SxrEwmDiOKvfBFqZsz3zYhDBhzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042124; c=relaxed/simple;
-	bh=uVqjvABWR6SrMUtKij+VIVevZwLr/rd559aw9tX8WOw=;
+	s=arc-20240116; t=1709043249; c=relaxed/simple;
+	bh=D9h8e1jYbbBcUqZInDBpXMdwS7HM2l2lded92GPaPS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PXg1X0obP6eB7ir0MG1IJscDlbc8qItRIuVHFQsCQ41rpxRtWsd3tigMhpI+ZhOjw+b/E0qZAFh+CGl7o7XaUqPHcFYKSCJR38M11R93G6XgPg8rQdxyca8x0v0HuDo+D7MgHebqGIe5NZSOFWkBxkGRz1RZHgFitrLtmQxfUx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jID8VYAR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0171BC433F1;
-	Tue, 27 Feb 2024 13:55:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aTp9+X9/YNiRO9ip+1ee181cqpQNLbUt/X6L8iALRKF+8s7b/tRYzAz6+/ls2F0eN0nxWYDOr4e7Hxz2COYwHwzDpcfm9ZrLezsUOYhYWZslEGZYPXmQkBKQUFKV/ISo81DNPe+qKDri+2e9MQ8WdLMX5NpZQb9VDiI+yBmYBng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wWKhFNV+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D28BAC433F1;
+	Tue, 27 Feb 2024 14:14:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042124;
-	bh=uVqjvABWR6SrMUtKij+VIVevZwLr/rd559aw9tX8WOw=;
+	s=korg; t=1709043249;
+	bh=D9h8e1jYbbBcUqZInDBpXMdwS7HM2l2lded92GPaPS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jID8VYARWyWay+5JIV01oeiNmF9CqDlTpp0KZzKhgLizod6xlaRH74pw50Kbx6wut
-	 +geaSL8wm7stj5SCAXbn/Tw0b1/CiJtaF1oLqMb0pvr/nA5V1t652D6X9aUETS25/n
-	 AOwMvN9HgxsPEtZpWbH/ImKksB4PM98MrnhpQRtU=
+	b=wWKhFNV+Wpub5whXx2a+UIUslvynf2+P4XwPpwPDa8gRGOaXk+aT5gtT+9sXsnJm8
+	 kYlwUO/qFucGkKgjJuLF22o6Gw8uuyeprY6pbEUbz++zIutSc+1qxOxkk/TwYBQ9NC
+	 ujmxIYtKNhFU5KEODBEH0GLLagthLSExTvRwXpOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	=?UTF-8?q?Jonas=20Sch=C3=A4fer?= <jonas@wielicki.name>,
-	Narcis Garcia <debianlists@actiu.net>,
-	Yosry Ahmed <yosryahmed@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Shakeel Butt <shakeelb@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 160/299] mm: memcontrol: clarify swapaccount=0 deprecation warning
-Date: Tue, 27 Feb 2024 14:24:31 +0100
-Message-ID: <20240227131631.009790249@linuxfoundation.org>
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 011/195] dmaengine: shdma: increase size of dev_id
+Date: Tue, 27 Feb 2024 14:24:32 +0100
+Message-ID: <20240227131610.775163076@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,61 +62,55 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Weiner <hannes@cmpxchg.org>
+From: Vinod Koul <vkoul@kernel.org>
 
-commit 118642d7f606fc9b9c92ee611275420320290ffb upstream.
+[ Upstream commit 404290240827c3bb5c4e195174a8854eef2f89ac ]
 
-The swapaccount deprecation warning is throwing false positives.  Since we
-deprecated the knob and defaulted to enabling, the only reports we've been
-getting are from folks that set swapaccount=1.  While this is a nice
-affirmation that always-enabling was the right choice, we certainly don't
-want to warn when users request the supported mode.
+We seem to have hit warnings of 'output may be truncated' which is fixed
+by increasing the size of 'dev_id'
 
-Only warn when disabling is requested, and clarify the warning.
+drivers/dma/sh/shdmac.c: In function ‘sh_dmae_probe’:
+drivers/dma/sh/shdmac.c:541:34: error: ‘%d’ directive output may be truncated writing between 1 and 10 bytes into a region of size 9 [-Werror=format-truncation=]
+  541 |                          "sh-dmae%d.%d", pdev->id, id);
+      |                                  ^~
+In function ‘sh_dmae_chan_probe’,
+    inlined from ‘sh_dmae_probe’ at drivers/dma/sh/shdmac.c:845:9:
+drivers/dma/sh/shdmac.c:541:26: note: directive argument in the range [0, 2147483647]
+  541 |                          "sh-dmae%d.%d", pdev->id, id);
+      |                          ^~~~~~~~~~~~~~
+drivers/dma/sh/shdmac.c:541:26: note: directive argument in the range [0, 19]
+drivers/dma/sh/shdmac.c:540:17: note: ‘snprintf’ output between 11 and 21 bytes into a destination of size 16
+  540 |                 snprintf(sh_chan->dev_id, sizeof(sh_chan->dev_id),
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  541 |                          "sh-dmae%d.%d", pdev->id, id);
+      |                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-[colin.i.king@gmail.com: spelling: "commdandline" -> "commandline"]
-  Link: https://lkml.kernel.org/r/20240215090544.1649201-1-colin.i.king@gmail.com
-Link: https://lkml.kernel.org/r/20240213081634.3652326-1-hannes@cmpxchg.org
-Fixes: b25806dcd3d5 ("mm: memcontrol: deprecate swapaccounting=0 mode")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Reported-by: "Jonas Schäfer" <jonas@wielicki.name>
-Reported-by: Narcis Garcia <debianlists@actiu.net>
-Suggested-by: Yosry Ahmed <yosryahmed@google.com>
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Yosry Ahmed <yosryahmed@google.com>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Acked-by: Shakeel Butt <shakeelb@google.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memcontrol.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/dma/sh/shdma.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -7613,9 +7613,13 @@ bool mem_cgroup_swap_full(struct folio *
- 
- static int __init setup_swap_account(char *s)
- {
--	pr_warn_once("The swapaccount= commandline option is deprecated. "
--		     "Please report your usecase to linux-mm@kvack.org if you "
--		     "depend on this functionality.\n");
-+	bool res;
-+
-+	if (!kstrtobool(s, &res) && !res)
-+		pr_warn_once("The swapaccount=0 commandline option is deprecated "
-+			     "in favor of configuring swap control via cgroupfs. "
-+			     "Please report your usecase to linux-mm@kvack.org if you "
-+			     "depend on this functionality.\n");
- 	return 1;
- }
- __setup("swapaccount=", setup_swap_account);
+diff --git a/drivers/dma/sh/shdma.h b/drivers/dma/sh/shdma.h
+index 9c121a4b33ad8..f97d80343aea4 100644
+--- a/drivers/dma/sh/shdma.h
++++ b/drivers/dma/sh/shdma.h
+@@ -25,7 +25,7 @@ struct sh_dmae_chan {
+ 	const struct sh_dmae_slave_config *config; /* Slave DMA configuration */
+ 	int xmit_shift;			/* log_2(bytes_per_xfer) */
+ 	void __iomem *base;
+-	char dev_id[16];		/* unique name per DMAC of channel */
++	char dev_id[32];		/* unique name per DMAC of channel */
+ 	int pm_error;
+ 	dma_addr_t slave_addr;
+ };
+-- 
+2.43.0
+
 
 
 
