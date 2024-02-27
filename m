@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-25021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0517086975E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:20:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0350869827
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:29:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 998DB1F21AA7
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:20:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D1F91F2CEB8
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C44641420A8;
-	Tue, 27 Feb 2024 14:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAEE3145B11;
+	Tue, 27 Feb 2024 14:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s9Gpk/ac"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1R3eEfqG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B2178B61;
-	Tue, 27 Feb 2024 14:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8879F13EFEC;
+	Tue, 27 Feb 2024 14:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043636; cv=none; b=rQF4IipZFHNgF35dQx/RFamZCAxMbV8mDETvlZefPaCHwh2yZi0Whm0ZEPrRLxbOHyx6q9elPCefLcAJpvDzemKKrkDNQRVY3sUZ4SCXwitYEDjAHggpXOmdBnoUo6nF2ytGZAcyV8izpa8rtITOcZJZfuzYwJFXsU/lxwefyjg=
+	t=1709044100; cv=none; b=OWM7XGjzsTpOG0WFd+ebF/k08rb9/pVNbW1OWRy734TOBIUsZ4cB0ERV0XCYd6ZMb+VSdZ2AnFQ0EmzZayBBk38z1WjZH9zUJAqXncoy04MIak/gWfP9+dRf4Y1TcUPJaJzyZoMw7e9/OKmwG3iQ5CFotWUSNr2DZu3/ZwKI0Ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043636; c=relaxed/simple;
-	bh=w9WzCQ9FtAumBqlioULiDnWJLifsamx8FUfFpLDIc/I=;
+	s=arc-20240116; t=1709044100; c=relaxed/simple;
+	bh=qbpuj0WgGES7hcJxvhXLIfzV7L8F42Bj+LcGqUt1JJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jMXHx17/bEHsn+lAmxOcdH6h/4csNGiLVhj0o/7iEMtF335yx9FzaUcldMQDewr9WSbFu/E1VCvohR8Q67K3dmndsVrd5nIuH/9twNZ73W13MVwjpYWN+ohMIwci2QBExWpOnX20afHNWpzaPxEz7lWSnnyZUBmdcncQ5K5fAWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s9Gpk/ac; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97956C433F1;
-	Tue, 27 Feb 2024 14:20:35 +0000 (UTC)
+	 MIME-Version; b=Vih1lfyDkVjylY8m98r7zPyZeALqHYWJfWSZx+84ak5MXPwdAnfHWGxL3j9m43Y/WYAbjP5lFN8EJMhrqQxgV5TT5q6aKsG6M/2FqEMTPP4YLNHJLqS6YHWDdwVRWA9/lgMAs/rmo++DIByPKKjLbcSeAEBNp8tFUtRZFKLDaX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1R3eEfqG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A43C433C7;
+	Tue, 27 Feb 2024 14:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043636;
-	bh=w9WzCQ9FtAumBqlioULiDnWJLifsamx8FUfFpLDIc/I=;
+	s=korg; t=1709044100;
+	bh=qbpuj0WgGES7hcJxvhXLIfzV7L8F42Bj+LcGqUt1JJU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s9Gpk/acKAkcq9+xCJ0jhBR2JwilB9RHaqixFmv25hyQgeo99YFn3DBzu5qV9sB57
-	 9sAF+VO0kECahvREMhqjCvyIHE2pDrwoeDXBqbk5HRtyqjZPpVYMwTlNqX3VZno2sw
-	 TiSo+hEjd1L97cDA1CTx65tM6IgT2QDK9hdqdcm4=
+	b=1R3eEfqG5DCL7HHZwBF+BLamgnjigTRCL0GK4eUY9Q6D017DR17nbshNSBR1JsDQd
+	 8Q0jYEN/zZx5SpZVL76Wv2XgYdsJwABVExT1S334LA1fckIhmQEIfyoI9T+N+3IrWy
+	 ni/74LR/KSd8hxsfJX+gr1S7+07ICvGU0xLkQW+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Marcos Paulo de Souza <mpdesouza@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 162/195] platform/x86: thinkpad_acpi: Only update profile if successfully converted
+Subject: [PATCH 5.10 062/122] btrfs: introduce btrfs_lookup_match_dir
 Date: Tue, 27 Feb 2024 14:27:03 +0100
-Message-ID: <20240227131615.762204358@linuxfoundation.org>
+Message-ID: <20240227131600.733132161@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,178 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Marcos Paulo de Souza <mpdesouza@suse.com>
 
-[ Upstream commit 427c70dec738318b7f71e1b9d829ff0e9771d493 ]
+[ Upstream commit a7d1c5dc8632e9b370ad26478c468d4e4e29f263 ]
 
-Randomly a Lenovo Z13 will trigger a kernel warning traceback from this
-condition:
+btrfs_search_slot is called in multiple places in dir-item.c to search
+for a dir entry, and then calling btrfs_match_dir_name to return a
+btrfs_dir_item.
 
-```
-if (WARN_ON((profile < 0) || (profile >= ARRAY_SIZE(profile_names))))
-```
+In order to reduce the number of callers of btrfs_search_slot, create a
+common function that looks for the dir key, and if found call
+btrfs_match_dir_item_name.
 
-This happens because thinkpad-acpi always assumes that
-convert_dytc_to_profile() successfully updated the profile. On the
-contrary a condition can occur that when dytc_profile_refresh() is called
-the profile doesn't get updated as there is a -EOPNOTSUPP branch.
-
-Catch this situation and avoid updating the profile. Also log this into
-dynamic debugging in case any other modes should be added in the future.
-
-Fixes: c3bfcd4c6762 ("platform/x86: thinkpad_acpi: Add platform profile support")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20240217022311.113879-1-mario.limonciello@amd.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Marcos Paulo de Souza <mpdesouza@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 8dcbc26194eb ("btrfs: unify lookup return value when dir entry is missing")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/thinkpad_acpi.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/btrfs/dir-item.c | 76 +++++++++++++++++++++++----------------------
+ 1 file changed, 39 insertions(+), 37 deletions(-)
 
-diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-index 6edd2e294750e..c2fb19af10705 100644
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -10511,6 +10511,7 @@ static int convert_dytc_to_profile(int funcmode, int dytcmode,
- 		return 0;
- 	default:
- 		/* Unknown function */
-+		pr_debug("unknown function 0x%x\n", funcmode);
- 		return -EOPNOTSUPP;
- 	}
+diff --git a/fs/btrfs/dir-item.c b/fs/btrfs/dir-item.c
+index 863367c2c6205..1c0a7cd6b9b0a 100644
+--- a/fs/btrfs/dir-item.c
++++ b/fs/btrfs/dir-item.c
+@@ -171,6 +171,25 @@ int btrfs_insert_dir_item(struct btrfs_trans_handle *trans, const char *name,
  	return 0;
-@@ -10696,8 +10697,8 @@ static void dytc_profile_refresh(void)
- 		return;
+ }
  
- 	perfmode = (output >> DYTC_GET_MODE_BIT) & 0xF;
--	convert_dytc_to_profile(funcmode, perfmode, &profile);
--	if (profile != dytc_current_profile) {
-+	err = convert_dytc_to_profile(funcmode, perfmode, &profile);
-+	if (!err && profile != dytc_current_profile) {
- 		dytc_current_profile = profile;
- 		platform_profile_notify();
++static struct btrfs_dir_item *btrfs_lookup_match_dir(
++			struct btrfs_trans_handle *trans,
++			struct btrfs_root *root, struct btrfs_path *path,
++			struct btrfs_key *key, const char *name,
++			int name_len, int mod)
++{
++	const int ins_len = (mod < 0 ? -1 : 0);
++	const int cow = (mod != 0);
++	int ret;
++
++	ret = btrfs_search_slot(trans, root, key, path, ins_len, cow);
++	if (ret < 0)
++		return ERR_PTR(ret);
++	if (ret > 0)
++		return ERR_PTR(-ENOENT);
++
++	return btrfs_match_dir_item_name(root->fs_info, path, name, name_len);
++}
++
+ /*
+  * lookup a directory item based on name.  'dir' is the objectid
+  * we're searching in, and 'mod' tells us if you plan on deleting the
+@@ -182,23 +201,18 @@ struct btrfs_dir_item *btrfs_lookup_dir_item(struct btrfs_trans_handle *trans,
+ 					     const char *name, int name_len,
+ 					     int mod)
+ {
+-	int ret;
+ 	struct btrfs_key key;
+-	int ins_len = mod < 0 ? -1 : 0;
+-	int cow = mod != 0;
++	struct btrfs_dir_item *di;
+ 
+ 	key.objectid = dir;
+ 	key.type = BTRFS_DIR_ITEM_KEY;
+-
+ 	key.offset = btrfs_name_hash(name, name_len);
+ 
+-	ret = btrfs_search_slot(trans, root, &key, path, ins_len, cow);
+-	if (ret < 0)
+-		return ERR_PTR(ret);
+-	if (ret > 0)
++	di = btrfs_lookup_match_dir(trans, root, path, &key, name, name_len, mod);
++	if (IS_ERR(di) && PTR_ERR(di) == -ENOENT)
+ 		return NULL;
+ 
+-	return btrfs_match_dir_item_name(root->fs_info, path, name, name_len);
++	return di;
+ }
+ 
+ int btrfs_check_dir_item_collision(struct btrfs_root *root, u64 dir,
+@@ -212,7 +226,6 @@ int btrfs_check_dir_item_collision(struct btrfs_root *root, u64 dir,
+ 	int slot;
+ 	struct btrfs_path *path;
+ 
+-
+ 	path = btrfs_alloc_path();
+ 	if (!path)
+ 		return -ENOMEM;
+@@ -221,20 +234,20 @@ int btrfs_check_dir_item_collision(struct btrfs_root *root, u64 dir,
+ 	key.type = BTRFS_DIR_ITEM_KEY;
+ 	key.offset = btrfs_name_hash(name, name_len);
+ 
+-	ret = btrfs_search_slot(NULL, root, &key, path, 0, 0);
+-
+-	/* return back any errors */
+-	if (ret < 0)
+-		goto out;
++	di = btrfs_lookup_match_dir(NULL, root, path, &key, name, name_len, 0);
++	if (IS_ERR(di)) {
++		ret = PTR_ERR(di);
++		/* Nothing found, we're safe */
++		if (ret == -ENOENT) {
++			ret = 0;
++			goto out;
++		}
+ 
+-	/* nothing found, we're safe */
+-	if (ret > 0) {
+-		ret = 0;
+-		goto out;
++		if (ret < 0)
++			goto out;
  	}
+ 
+ 	/* we found an item, look for our name in the item */
+-	di = btrfs_match_dir_item_name(root->fs_info, path, name, name_len);
+ 	if (di) {
+ 		/* our exact name was found */
+ 		ret = -EEXIST;
+@@ -275,21 +288,13 @@ btrfs_lookup_dir_index_item(struct btrfs_trans_handle *trans,
+ 			    u64 objectid, const char *name, int name_len,
+ 			    int mod)
+ {
+-	int ret;
+ 	struct btrfs_key key;
+-	int ins_len = mod < 0 ? -1 : 0;
+-	int cow = mod != 0;
+ 
+ 	key.objectid = dir;
+ 	key.type = BTRFS_DIR_INDEX_KEY;
+ 	key.offset = objectid;
+ 
+-	ret = btrfs_search_slot(trans, root, &key, path, ins_len, cow);
+-	if (ret < 0)
+-		return ERR_PTR(ret);
+-	if (ret > 0)
+-		return ERR_PTR(-ENOENT);
+-	return btrfs_match_dir_item_name(root->fs_info, path, name, name_len);
++	return btrfs_lookup_match_dir(trans, root, path, &key, name, name_len, mod);
+ }
+ 
+ struct btrfs_dir_item *
+@@ -346,21 +351,18 @@ struct btrfs_dir_item *btrfs_lookup_xattr(struct btrfs_trans_handle *trans,
+ 					  const char *name, u16 name_len,
+ 					  int mod)
+ {
+-	int ret;
+ 	struct btrfs_key key;
+-	int ins_len = mod < 0 ? -1 : 0;
+-	int cow = mod != 0;
++	struct btrfs_dir_item *di;
+ 
+ 	key.objectid = dir;
+ 	key.type = BTRFS_XATTR_ITEM_KEY;
+ 	key.offset = btrfs_name_hash(name, name_len);
+-	ret = btrfs_search_slot(trans, root, &key, path, ins_len, cow);
+-	if (ret < 0)
+-		return ERR_PTR(ret);
+-	if (ret > 0)
++
++	di = btrfs_lookup_match_dir(trans, root, path, &key, name, name_len, mod);
++	if (IS_ERR(di) && PTR_ERR(di) == -ENOENT)
+ 		return NULL;
+ 
+-	return btrfs_match_dir_item_name(root->fs_info, path, name, name_len);
++	return di;
+ }
+ 
+ /*
 -- 
 2.43.0
 
