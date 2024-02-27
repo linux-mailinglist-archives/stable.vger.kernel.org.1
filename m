@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA10686954C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:00:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79DA386950B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:58:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64509B31220
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:47:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6B601C28693
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:58:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2622F141995;
-	Tue, 27 Feb 2024 13:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD821419A1;
+	Tue, 27 Feb 2024 13:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x8yULE3O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jBlTiB2E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2D013DBBF;
-	Tue, 27 Feb 2024 13:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4C013AA50;
+	Tue, 27 Feb 2024 13:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041517; cv=none; b=et82oWKfrXMK5wX3mrejdsUpBuPLxWbG+CbHNv68Q3SvU4IZ0/0oIGsHYvd4H1oXNU8TdfUYY2pLHpbIZoKYEgGloI/QmnJ5lbvCziXNLTzfexpxCBqGXTd+li0AAxOwfareSx/+B/V3YlwJPgUQsNquB6pMESYoOPx/2Cvx/t0=
+	t=1709042279; cv=none; b=cHftyNoSA6hnO4tkrkxC456HPNMD/tRUx4czNjrXi+KTUordaUU4s4NV7tctifuVn8P0RdqRMfM/nkQL0U0rtJ8lWcXZIYCZfRNoVFFl0tRIBFcvXkcvSVJAc+W39E8UPtO7dPAlcDOO24K03qo6hEZVt0P7nqVel/0ypfOlOZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041517; c=relaxed/simple;
-	bh=mMgN0pdeyztAazltMhpIHv6h9ZEOFLUtmAe+xGwYtsg=;
+	s=arc-20240116; t=1709042279; c=relaxed/simple;
+	bh=gxjDHtLYhFnQIRZQLhK/3li7RWkTZnzbp9q5qi2db8A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nKPPtfCVEqKgeCHm8IhOqKim7LtDMkXumFH1HbHxovZ/VOSXjOjkKRhq1yaBiheUl1t0FGdspQ6gnJ0lnfnOrVpazqUJEV6/sFIVYw79H771ndPUkDQef7+tq3cZMelh4b7Z6mcHWBqUpEBCylBR8xsF8D0NBTkR4xfppo5E2iQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x8yULE3O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66204C433C7;
-	Tue, 27 Feb 2024 13:45:17 +0000 (UTC)
+	 MIME-Version; b=EBA9hH2ek7mLf2OUee2hSAH5VwFtypW37dLA1DVUz/atKldKWPwGOJMrxObnLtln0Wr/8wbCfHXITcQ2ikwe13Q5IG9uCASPoKAMAID4pP6IYsI369DbzeVydjqRH3i7DbqrbNSf8bqjGs9FZNQSzsQFboDMcj+XnTJTlHf2EBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jBlTiB2E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0470C43390;
+	Tue, 27 Feb 2024 13:57:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041517;
-	bh=mMgN0pdeyztAazltMhpIHv6h9ZEOFLUtmAe+xGwYtsg=;
+	s=korg; t=1709042279;
+	bh=gxjDHtLYhFnQIRZQLhK/3li7RWkTZnzbp9q5qi2db8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x8yULE3Og9hAI0HzGm8HxuQDmKiqN9gFLnh8V0EE8SooSlXE1ldOav7554NoHuV2R
-	 XClAMhOPHbbVEVl+tdp7+aivI1uFwAjRnbdOUYBBG/UtGO9z7XKidpVnCKvY6k8kxN
-	 /Q7orfKOgORHTffryXsWCQVI/lll2f+S2Qo1MzS8=
+	b=jBlTiB2ER0Z0/O8UvK4CKuP6xDiNJXD++EXWxtCNK0D53kg1raUQt9MIVr3yVPuOX
+	 jNEOyh+DKJCTqBcSLHO52rXxyrY65I8pZsIzkGVa6o52iXsPgqzgQDnxj7xA2QwS1R
+	 2dYItV3dk21mpV5khTVu/RzA/k/U0HpjaXfhGXU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaro Koskinen <aaro.koskinen@nokia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
-Subject: [PATCH 4.19 05/52] net: stmmac: fix notifier registration
+	Arnd Bergmann <arnd@arndb.de>,
+	Danilo Krummrich <dakr@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 241/299] nouveau: fix function cast warnings
 Date: Tue, 27 Feb 2024 14:25:52 +0100
-Message-ID: <20240227131548.701928211@linuxfoundation.org>
+Message-ID: <20240227131633.488941819@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
-References: <20240227131548.514622258@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaro Koskinen <aaro.koskinen@nokia.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 474a31e13a4e9749fb3ee55794d69d0f17ee0998 upstream.
+[ Upstream commit 0affdba22aca5573f9d989bcb1d71d32a6a03efe ]
 
-We cannot register the same netdev notifier multiple times when probing
-stmmac devices. Register the notifier only once in module init, and also
-make debugfs creation/deletion safe against simultaneous notifier call.
+clang-16 warns about casting between incompatible function types:
 
-Fixes: 481a7d154cbb ("stmmac: debugfs entry name is not be changed when udev rename device name.")
-Signed-off-by: Aaro Koskinen <aaro.koskinen@nokia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c:161:10: error: cast from 'void (*)(const struct firmware *)' to 'void (*)(void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+  161 |         .fini = (void(*)(void *))release_firmware,
+
+This one was done to use the generic shadow_fw_release() function as a
+callback for struct nvbios_source. Change it to use the same prototype
+as the other five instances, with a trivial helper function that actually
+calls release_firmware.
+
+Fixes: 70c0f263cc2e ("drm/nouveau/bios: pull in basic vbios subdev, more to come later")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240213095753.455062-1-arnd@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4067,6 +4067,8 @@ static void stmmac_init_fs(struct net_de
- {
- 	struct stmmac_priv *priv = netdev_priv(dev);
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c
+index 19188683c8fca..8c2bf1c16f2a9 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c
+@@ -154,11 +154,17 @@ shadow_fw_init(struct nvkm_bios *bios, const char *name)
+ 	return (void *)fw;
+ }
  
-+	rtnl_lock();
++static void
++shadow_fw_release(void *fw)
++{
++	release_firmware(fw);
++}
 +
- 	/* Create per netdev entries */
- 	priv->dbgfs_dir = debugfs_create_dir(dev->name, stmmac_fs_dir);
- 
-@@ -4078,14 +4080,13 @@ static void stmmac_init_fs(struct net_de
- 	debugfs_create_file("dma_cap", 0444, priv->dbgfs_dir, dev,
- 			    &stmmac_dma_cap_fops);
- 
--	register_netdevice_notifier(&stmmac_notifier);
-+	rtnl_unlock();
- }
- 
- static void stmmac_exit_fs(struct net_device *dev)
- {
- 	struct stmmac_priv *priv = netdev_priv(dev);
- 
--	unregister_netdevice_notifier(&stmmac_notifier);
- 	debugfs_remove_recursive(priv->dbgfs_dir);
- }
- #endif /* CONFIG_DEBUG_FS */
-@@ -4455,14 +4456,14 @@ int stmmac_dvr_remove(struct device *dev
- 
- 	netdev_info(priv->dev, "%s: removing driver", __func__);
- 
--#ifdef CONFIG_DEBUG_FS
--	stmmac_exit_fs(ndev);
--#endif
- 	stmmac_stop_all_dma(priv);
- 
- 	stmmac_mac_set(priv, priv->ioaddr, false);
- 	netif_carrier_off(ndev);
- 	unregister_netdev(ndev);
-+#ifdef CONFIG_DEBUG_FS
-+	stmmac_exit_fs(ndev);
-+#endif
- 	if (priv->plat->stmmac_rst)
- 		reset_control_assert(priv->plat->stmmac_rst);
- 	clk_disable_unprepare(priv->plat->pclk);
-@@ -4679,6 +4680,7 @@ static int __init stmmac_init(void)
- 	/* Create debugfs main directory if it doesn't exist yet */
- 	if (!stmmac_fs_dir)
- 		stmmac_fs_dir = debugfs_create_dir(STMMAC_RESOURCE_NAME, NULL);
-+	register_netdevice_notifier(&stmmac_notifier);
- #endif
- 
- 	return 0;
-@@ -4687,6 +4689,7 @@ static int __init stmmac_init(void)
- static void __exit stmmac_exit(void)
- {
- #ifdef CONFIG_DEBUG_FS
-+	unregister_netdevice_notifier(&stmmac_notifier);
- 	debugfs_remove_recursive(stmmac_fs_dir);
- #endif
- }
+ static const struct nvbios_source
+ shadow_fw = {
+ 	.name = "firmware",
+ 	.init = shadow_fw_init,
+-	.fini = (void(*)(void *))release_firmware,
++	.fini = shadow_fw_release,
+ 	.read = shadow_fw_read,
+ 	.rw = false,
+ };
+-- 
+2.43.0
+
 
 
 
