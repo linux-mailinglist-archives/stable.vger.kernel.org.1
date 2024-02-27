@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-24433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9C438695B1
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:04:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25E458695CC
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:05:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8261FB25634
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:54:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B84D21F2BDD8
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:05:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E3713B7AB;
-	Tue, 27 Feb 2024 13:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DF88140391;
+	Tue, 27 Feb 2024 14:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOfwVg4D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFsA1TOq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C4B78B61;
-	Tue, 27 Feb 2024 13:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BF691419A1;
+	Tue, 27 Feb 2024 14:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041986; cv=none; b=d3Tp+8wkBmdB94XJoagBrzGACAGdvKMds/WQltH2l13x4p44qs63Pt8oOrwyhsrhN/zzHSn/w5tplmgImorEX1v/Kzu8o+1Nkew5o2yyt8l7WQswpmmrLRBKImhNZUC6ITaE2FSWEnjNtKKESY8I39ifNrzlt34YQdoqYcwq5AE=
+	t=1709042710; cv=none; b=VdekZeWAnVVBOkZ8tMIuMo8ua14drrZgmwTuXhc80qXS6lZi0Mg+aeyTfxOkY1bTFq18Hwg5D/w16VmQMzWNaII10iVvd4V78acXmzH5NPU+wntAnrcR2wy5fFuAMfwNu3nvBYgl5rGp4El4K5FB+weElrvLd/ObJQN0t6rZtBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041986; c=relaxed/simple;
-	bh=CP4O3SR7g26tSZZ2ZCohLjOkCqPz/SmR7XK1e5g34kM=;
+	s=arc-20240116; t=1709042710; c=relaxed/simple;
+	bh=jvHyEx+XGN2MEQu636Hvvo+5QIxkIcRaH8R28Y7KAjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q+nqLzW6HEgS3woYOj8eCLqunzj6R7SLaNKjDnJtT8UBh1nWY4/gCBSX4Tn2UDYwb8Czy6Z2AUYNwiNHaohHe6uH7g8tSocStw7g9crQ0cY9n061Ds8933HQ01gDAjARX1G6he6Rc5akhu+YjN1UjxcVghbFUfgW4wsX+C37Ijo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOfwVg4D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2395FC433F1;
-	Tue, 27 Feb 2024 13:53:05 +0000 (UTC)
+	 MIME-Version; b=aK8YCVVOhRGgbciXZ+k4Bi2s9x6nOUnGilO/tRt76ciHcRgIQi0j9HpOPr9jC/0yKhXT2AA7fyQuS9rSTWyi69OcDJ3AKU/ul8nbajIi7Sxu72+sOGmXThDgh+V85xeJ5mvBzLKepbtZWrE8Lj7+X9j1Cph5zgT7gwlGqXo5Cdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFsA1TOq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87A17C433F1;
+	Tue, 27 Feb 2024 14:05:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041986;
-	bh=CP4O3SR7g26tSZZ2ZCohLjOkCqPz/SmR7XK1e5g34kM=;
+	s=korg; t=1709042709;
+	bh=jvHyEx+XGN2MEQu636Hvvo+5QIxkIcRaH8R28Y7KAjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cOfwVg4DtZxj9kr5XnzrsF5LaEdJoHDvFScIJzM2jsLcjn1V0QvTjX8rvq0UpjooR
-	 Ymyy1ciOCKcu99obvfNirYCO0A9HNMoyr7vZ6PzWXJ4HjaghW4KQgNb54ORK01Icsv
-	 7u4x1+Zkhvij8oICJZY3ikGr5Pb9J55WKOB0FlA0=
+	b=lFsA1TOqg2RQnScLrcsgfVunwe6OKZTzdb/gOQQBMZbbDEbWJGBU72nArEAhWgjXz
+	 y83lRDvLvqgiK0DpA3+DF+kK2lpqgfuuAhlUyJahg6n+cI/50mJQDY5oHPS29jlMrI
+	 sJntcQTOe8GLEEmCJn5+FLoMu5tHPxaP9OpNk8VY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Dave Airlie <airlied@redhat.com>,
-	Huang Rui <ray.huang@amd.com>,
-	dri-devel@lists.freedesktop.org,
-	Matthew Auld <matthew.auld@intel.com>
-Subject: [PATCH 6.6 140/299] drm/ttm: Fix an invalid freeing on already freed page in error path
-Date: Tue, 27 Feb 2024 14:24:11 +0100
-Message-ID: <20240227131630.361371422@linuxfoundation.org>
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 064/245] wifi: mac80211: adding missing drv_mgd_complete_tx() call
+Date: Tue, 27 Feb 2024 14:24:12 +0100
+Message-ID: <20240227131617.324083024@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +59,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 40510a941d27d405a82dc3320823d875f94625df upstream.
+[ Upstream commit c042600c17d8c490279f0ae2baee29475fe8047d ]
 
-If caching mode change fails due to, for example, OOM we
-free the allocated pages in a two-step process. First the pages
-for which the caching change has already succeeded. Secondly
-the pages for which a caching change did not succeed.
+There's a call to drv_mgd_prepare_tx() and so there should
+be one to drv_mgd_complete_tx(), but on this path it's not.
+Add it.
 
-However the second step was incorrectly freeing the pages already
-freed in the first step.
-
-Fix.
-
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Fixes: 379989e7cbdc ("drm/ttm/pool: Fix ttm_pool_alloc error path")
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: Christian Koenig <christian.koenig@amd.com>
-Cc: Huang Rui <ray.huang@amd.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.4+
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240221073324.3303-1-thomas.hellstrom@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://msgid.link/20240131164824.2f0922a514e1.I5aac89b93bcead88c374187d70cad0599d29d2c8@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/ttm/ttm_pool.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/mlme.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/ttm/ttm_pool.c
-+++ b/drivers/gpu/drm/ttm/ttm_pool.c
-@@ -384,7 +384,7 @@ static void ttm_pool_free_range(struct t
- 				enum ttm_caching caching,
- 				pgoff_t start_page, pgoff_t end_page)
- {
--	struct page **pages = tt->pages;
-+	struct page **pages = &tt->pages[start_page];
- 	unsigned int order;
- 	pgoff_t i, nr;
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index cc6d38a2e6d5a..5da0c2a2e293e 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -5923,6 +5923,7 @@ int ieee80211_mgd_deauth(struct ieee80211_sub_if_data *sdata,
+ 		ieee80211_report_disconnect(sdata, frame_buf,
+ 					    sizeof(frame_buf), true,
+ 					    req->reason_code, false);
++		drv_mgd_complete_tx(sdata->local, sdata, &info);
+ 		return 0;
+ 	}
  
+-- 
+2.43.0
+
 
 
 
