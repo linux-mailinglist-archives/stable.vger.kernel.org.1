@@ -1,54 +1,83 @@
-Return-Path: <stable+bounces-23884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4892868D68
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 11:22:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21881868D7B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 11:25:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F43F1C22F1E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 10:22:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFFA328E7BD
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 10:25:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12BB7138485;
-	Tue, 27 Feb 2024 10:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B022137C5D;
+	Tue, 27 Feb 2024 10:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j8MOH3b/"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="X3o4ZMum"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB6A137C34;
-	Tue, 27 Feb 2024 10:22:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902FF137C42;
+	Tue, 27 Feb 2024 10:24:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709029367; cv=none; b=t2hpFdJxm+VkzJ/DVp6C42wgg+kmwOZtNJ3xljqnqsmSCSjOx40PMb/5SNHEYV2bUOH8Nv0wItpFTXbYUeVa03LpVamhQMWZIFfEa3Ph8a0Hr8aHbDowWRLfv9t3Bz1qnpTVKePb/VV2+sUqTpqiGDgRquHpYtQVqmPY2C5HAng=
+	t=1709029499; cv=none; b=jNE7IP8vw6XoYG9pOJFU1YUBIo87YAp6emEiIMtzj6tydS2OVG7zjzoRPUl5tHL9w3WvFAv7NSYU+YaEMTja+8hwH1m9HXSmEeMlWaMSPhOGJ0Nm5yukiJ6JQA7K1Qu0hHUzFYhNKCdRbPTscd88Lq9E0/p5vno5aKWpdn7vRz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709029367; c=relaxed/simple;
-	bh=qm8wFI+1Egat3oNnenRSK4qlJu5G+Cp4exr54+xDBiM=;
+	s=arc-20240116; t=1709029499; c=relaxed/simple;
+	bh=Nnpde2MjTfV728iSxOzMQcbJzt7c4u2O0FM7Rw5PJgw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S0rHwvmJDo161jlGssSqgS+ts8oyBFQQ/gRxo+tzIDxev1JQzZa3YjW5DlVAE2qnl+qnFGE/kRZ0T9kw821U46YE/b0pKbebw6PkvylRsNh+8TWzIhhZpNjgsukv3DH6k+sZk4EHpaIoMlf+Q3f7cczvk7Z8tGy1GQJKB2UERx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j8MOH3b/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8178C433C7;
-	Tue, 27 Feb 2024 10:22:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709029367;
-	bh=qm8wFI+1Egat3oNnenRSK4qlJu5G+Cp4exr54+xDBiM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=j8MOH3b/WKzDkfzUyxkYLa3Pi+t5gogMbZ6rDLwqSMgruo7ApzCT5+oXSdnDSb78A
-	 ShhZ+yr/melnfgL4sAFd0Dn0ziFvATQeHjr2O4u8wK3cYhgQQTO3C21dtcqx2V5drK
-	 oakZuJL/b/SlpYPLqdtJftk7j73PF3mFfwJuWoCs=
-Date: Tue, 27 Feb 2024 11:22:44 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Cc: stable@vger.kernel.org, MPTCP Upstream <mptcp@lists.linux.dev>,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	Mat Martineau <martineau@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>
-Subject: Re: [PATCH 6.6.y] mptcp: add needs_id for netlink appending addr
-Message-ID: <2024022723-outshoot-unkind-734f@gregkh>
-References: <2024022654-senate-unleaded-7ae3@gregkh>
- <20240226215620.757784-2-matttbe@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=NRSWtc9PXT+GYYiEzKldkpmdDjllIzR1EvzsAZQ20HpxRQXkkT97SHCSzOrSc0kuaKBBmunUExsGT8weKVXYZfLio9r9tLsKQZNCYWgNaNrKDLUpBhc36GcKAwb0LzgwdOy3HoLHIx+jc44JKnxDrLvJgImJwNhNGLGMsRIu69M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=X3o4ZMum; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=JCdHzu2wkDIMV3N9KhEnaZn7nt+SUq/lt3fcc9JJLCM=; b=X3o4ZMumh+WSsbya++ZFhtGQtB
+	3jMjGFRyAKDrQ6bMJQKbd5y2qsY7D3/VmDpfzHkMH6PakulAFqF4HNgsDc+owbvCfZ25CP4XYfCH8
+	UI1Bniqs7Jl4UNl7QATUXCDQ4jt5ilvkda3mO8VTmuqAWYPbOZo1ZNyepxPTNnIe0Hn8zYSQ1TKht
+	bIHEJ2YbLwz0NAk4PA2pJ8O6+fUsmTVV+IlhQK6S+xBqMUsrvHTTA032uvVTQJ9WktNmcvAj3bs18
+	X05XBlfCFGcbmJCi8KFVH92pbunbs7dz9v//Po5GYryvsw2rE6JPZ2AUOoV+6jgR8tKVzoKMDTHe2
+	k+PD2pug==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:36722)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1reudi-0007kH-1R;
+	Tue, 27 Feb 2024 10:24:46 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1reudc-0007J2-Nc; Tue, 27 Feb 2024 10:24:40 +0000
+Date: Tue, 27 Feb 2024 10:24:40 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Zev Weiss <zev@bewilderbeest.net>
+Cc: linux-parisc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Helge Deller <deller@gmx.de>, Florent Revest <revest@chromium.org>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Yin Fengwei <fengwei.yin@intel.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kees Cook <keescook@chromium.org>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	Stefan Roesch <shr@devkernel.io>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>, linux-kernel@vger.kernel.org,
+	openbmc@lists.ozlabs.org, Sam James <sam@gentoo.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH RESEND 1/2] prctl: Generalize PR_SET_MDWE support check
+ to be per-arch
+Message-ID: <Zd24aCps4xD28c74@shell.armlinux.org.uk>
+References: <20240227013546.15769-4-zev@bewilderbeest.net>
+ <20240227013546.15769-5-zev@bewilderbeest.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,45 +86,29 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240226215620.757784-2-matttbe@kernel.org>
+In-Reply-To: <20240227013546.15769-5-zev@bewilderbeest.net>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Mon, Feb 26, 2024 at 10:56:21PM +0100, Matthieu Baerts (NGI0) wrote:
-> From: Geliang Tang <tanggeliang@kylinos.cn>
+On Mon, Feb 26, 2024 at 05:35:41PM -0800, Zev Weiss wrote:
+> There exist systems other than PARISC where MDWE may not be feasible
+> to support; rather than cluttering up the generic code with additional
+> arch-specific logic let's add a generic function for checking MDWE
+> support and allow each arch to override it as needed.
 > 
-> Just the same as userspace PM, a new parameter needs_id is added for
-> in-kernel PM mptcp_pm_nl_append_new_local_addr() too.
-> 
-> Add a new helper mptcp_pm_has_addr_attr_id() to check whether an address
-> ID is set from PM or not.
-> 
-> In mptcp_pm_nl_get_local_id(), needs_id is always true, but in
-> mptcp_pm_nl_add_addr_doit(), pass mptcp_pm_has_addr_attr_id() to
-> needs_it.
-> 
-> Fixes: efd5a4c04e18 ("mptcp: add the address ID assignment bitmap")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-> Reviewed-by: Mat Martineau <martineau@kernel.org>
-> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> Signed-off-by: David S. Miller <davem@davemloft.net>
-> (cherry picked from commit 584f3894262634596532cf43a5e782e34a0ce374)
-> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> ---
-> Notes:
->  - conflicts in pm_netlink.c because the new helper function expected to
->    be on top of mptcp_pm_nl_add_addr_doit() which has been recently
->    renamed in commit 1e07938e29c5 ("net: mptcp: rename netlink handlers
->    to mptcp_pm_nl_<blah>_{doit,dumpit}").
->  - use mptcp_pm_addr_policy instead of mptcp_pm_address_nl_policy, the
->    new name after commit 1d0507f46843 ("net: mptcp: convert netlink from
->    small_ops to ops").
-> ---
->  net/mptcp/pm_netlink.c | 24 +++++++++++++++++++-----
->  1 file changed, 19 insertions(+), 5 deletions(-)
+> Signed-off-by: Zev Weiss <zev@bewilderbeest.net>
+> Cc: <stable@vger.kernel.org> # v6.3+
 
-Don't we also need a 5.15.y version of this commit?
+PA-RISC folk need to ack/review-by this patch. Alternatively, it needs
+to be restructured to add the arch_memory_deny_write_exec_supported()
+override without touching the PA-RISC code, which then makes the Arm
+patch independent of the status of the PA-RISC patch. That will allow
+the Arm issue to be solved even if an ack is not forthcoming for the
+PA-RISC parts.
 
-All of the backports you sent are now queued up, thanks!
+Alternatively, I wonder whether akpm would be willing to pick up this
+patch set as-is.
 
-greg k-h
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
