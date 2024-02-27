@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-24342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8C64869403
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB36E869405
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8195E285C68
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 953CC285BB5
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B8513B7A2;
-	Tue, 27 Feb 2024 13:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB30145B0E;
+	Tue, 27 Feb 2024 13:48:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zg07um0e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bRWoM15O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B048354BD4;
-	Tue, 27 Feb 2024 13:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C11D13AA55;
+	Tue, 27 Feb 2024 13:48:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041725; cv=none; b=O1UXcsy9rhYcRxUtGkOUmWKxpQnfvOQsD6/+4SFS11MkxQBtjA63SmFP6ljAJS4Jpu/H5PhxQzw7dIxXP4o0amtyqvDm4DmTsmPndObfNstrSuqweCXGbBdfxjV8BZKb/NbZKyGDiPVUkfPZMYCSTx1X4VVZHHp6wtbHDaAsOko=
+	t=1709041736; cv=none; b=eUm/eNdep5Hxgox82hptciw+gpFe99diE9t3JZVWG6HsH/5OZ2jTSIPkXh5zb1meHc5UWUPB2gdCTRcx5RKjX8LiaW2BHC7YtkIwUFSFvdE6BFK0KrpallUPQKd8JQMu3J4vYxSBoJoPI204JQSP2lUnu1kJmGUGAtaz8bin+EM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041725; c=relaxed/simple;
-	bh=42n2OoVh/hsZN7O/gLlj6Ss4m7k+wEz56T5KI3y4eDo=;
+	s=arc-20240116; t=1709041736; c=relaxed/simple;
+	bh=niul0sj8YXJ8AWBdyAk3JlTI8Gcb6dj/W5B8IVO08UE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rvHN0k4wf87+YR+WvIdenahJ4absP9yUC8P6kCn0V9A67SHhrNML8L3tixRLpvaE6qyOf+7l3cOOnZ/x2Z4tWms2UQPooFJpyqNKZqYp7+t2UDesib4xRL9UmP9PtB0ZxcOu3rk4OWSO+Ai+v1fRuxU7+VohOaISa8TK2ZnOtPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zg07um0e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FCDBC43394;
-	Tue, 27 Feb 2024 13:48:45 +0000 (UTC)
+	 MIME-Version; b=EiPLQuZo3hK0/8nlZF7Wb9rYcNeWdvKmomMZnllg9gGUQpNlUiaTz7qgOMTNCBVlbe/nNr6jJmzcFVbAY2Wt1asnOplmVdncOOi4VIq6TybMPzFgJh7WXkH6ahJEazFwVMrLj4JUi3+4x2hv0eONPH95NLH+b3YgTLg2TcZSXDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bRWoM15O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCB24C433C7;
+	Tue, 27 Feb 2024 13:48:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041725;
-	bh=42n2OoVh/hsZN7O/gLlj6Ss4m7k+wEz56T5KI3y4eDo=;
+	s=korg; t=1709041736;
+	bh=niul0sj8YXJ8AWBdyAk3JlTI8Gcb6dj/W5B8IVO08UE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zg07um0eSgr0odmYUi1UWTNrvyPnJnv11g4UK6iJLYYqqdwIR86BcZZYN4FePdqHH
-	 DETo5E8HkYUNz1oZL5HIk2guLRxgkIuheMgla/3AiLgiX16e8fo0ZXzAndgNmK86oF
-	 1DL+n06f0BwqDaferIyZZafUem0ZM85w9Ppksw8E=
+	b=bRWoM15OjYz8mnOu4pxem76Ix8+AZ6T+/xy0+CRLs3fbOAQhKWOOCvDYbFC4EM/zM
+	 d7pZ4KaOfTHSQdeNg4zytTapqle5ghAOc26s4TYFhNGxpOPecsyrm0ZLN3bG1Pyvdg
+	 QWjp7MO3tpg58Btd4hnAXtuVZucQLvJd+whudWlc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Mark Brown <broonie@kernel.org>,
+	Brenton Simpson <appsforartists@google.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 049/299] spi: sh-msiof: avoid integer overflow in constants
-Date: Tue, 27 Feb 2024 14:22:40 +0100
-Message-ID: <20240227131627.554567515@linuxfoundation.org>
+Subject: [PATCH 6.6 050/299] Input: xpad - add Lenovo Legion Go controllers
+Date: Tue, 27 Feb 2024 14:22:41 +0100
+Message-ID: <20240227131627.585074880@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
 References: <20240227131625.847743063@linuxfoundation.org>
@@ -67,51 +66,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Brenton Simpson <appsforartists@google.com>
 
-[ Upstream commit 6500ad28fd5d67d5ca0fee9da73c463090842440 ]
+[ Upstream commit 80441f76ee67002437db61f3b317ed80cce085d2 ]
 
-cppcheck rightfully warned:
+The Lenovo Legion Go is a handheld gaming system, similar to a Steam Deck.
+It has a gamepad (including rear paddles), 3 gyroscopes, a trackpad,
+volume buttons, a power button, and 2 LED ring lights.
 
- drivers/spi/spi-sh-msiof.c:792:28: warning: Signed integer overflow for expression '7<<29'. [integerOverflow]
- sh_msiof_write(p, SIFCTR, SIFCTR_TFWM_1 | SIFCTR_RFWM_1);
+The Legion Go firmware presents these controls as a USB hub with various
+devices attached.  In its default state, the gamepad is presented as an
+Xbox controller connected to this hub.  (By holding a combination of
+buttons, it can be changed to use the older DirectInput API.)
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://msgid.link/r/20240130094053.10672-1-wsa+renesas@sang-engineering.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This patch teaches the existing Xbox controller module `xpad` to bind to
+the controller in the Legion Go, which enables support for the:
+
+- directional pad,
+- analog sticks (including clicks),
+- X, Y, A, B,
+- start and select (or menu and capture),
+- shoulder buttons, and
+- rumble.
+
+The trackpad, touchscreen, volume controls, and power button are already
+supported via existing kernel modules.  Two of the face buttons, the
+gyroscopes, rear paddles, and LEDs are not.
+
+After this patch lands, the Legion Go will be mostly functional in Linux,
+out-of-the-box.  The various components of the USB hub can be synthesized
+into a single logical controller (including the additional buttons) in
+userspace with [Handheld Daemon](https://github.com/hhd-dev/hhd), which
+makes the Go fully functional.
+
+Signed-off-by: Brenton Simpson <appsforartists@google.com>
+Link: https://lore.kernel.org/r/20240118183546.418064-1-appsforartists@google.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-sh-msiof.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/input/joystick/xpad.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index cfc3b1ddbd229..6f12e4fb2e2e1 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -136,14 +136,14 @@ struct sh_msiof_spi_priv {
- 
- /* SIFCTR */
- #define SIFCTR_TFWM_MASK	GENMASK(31, 29)	/* Transmit FIFO Watermark */
--#define SIFCTR_TFWM_64		(0 << 29)	/*  Transfer Request when 64 empty stages */
--#define SIFCTR_TFWM_32		(1 << 29)	/*  Transfer Request when 32 empty stages */
--#define SIFCTR_TFWM_24		(2 << 29)	/*  Transfer Request when 24 empty stages */
--#define SIFCTR_TFWM_16		(3 << 29)	/*  Transfer Request when 16 empty stages */
--#define SIFCTR_TFWM_12		(4 << 29)	/*  Transfer Request when 12 empty stages */
--#define SIFCTR_TFWM_8		(5 << 29)	/*  Transfer Request when 8 empty stages */
--#define SIFCTR_TFWM_4		(6 << 29)	/*  Transfer Request when 4 empty stages */
--#define SIFCTR_TFWM_1		(7 << 29)	/*  Transfer Request when 1 empty stage */
-+#define SIFCTR_TFWM_64		(0UL << 29)	/*  Transfer Request when 64 empty stages */
-+#define SIFCTR_TFWM_32		(1UL << 29)	/*  Transfer Request when 32 empty stages */
-+#define SIFCTR_TFWM_24		(2UL << 29)	/*  Transfer Request when 24 empty stages */
-+#define SIFCTR_TFWM_16		(3UL << 29)	/*  Transfer Request when 16 empty stages */
-+#define SIFCTR_TFWM_12		(4UL << 29)	/*  Transfer Request when 12 empty stages */
-+#define SIFCTR_TFWM_8		(5UL << 29)	/*  Transfer Request when 8 empty stages */
-+#define SIFCTR_TFWM_4		(6UL << 29)	/*  Transfer Request when 4 empty stages */
-+#define SIFCTR_TFWM_1		(7UL << 29)	/*  Transfer Request when 1 empty stage */
- #define SIFCTR_TFUA_MASK	GENMASK(26, 20) /* Transmit FIFO Usable Area */
- #define SIFCTR_TFUA_SHIFT	20
- #define SIFCTR_TFUA(i)		((i) << SIFCTR_TFUA_SHIFT)
+diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
+index e2c1848182de9..d0bb3edfd0a09 100644
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -294,6 +294,7 @@ static const struct xpad_device {
+ 	{ 0x1689, 0xfd00, "Razer Onza Tournament Edition", 0, XTYPE_XBOX360 },
+ 	{ 0x1689, 0xfd01, "Razer Onza Classic Edition", 0, XTYPE_XBOX360 },
+ 	{ 0x1689, 0xfe00, "Razer Sabertooth", 0, XTYPE_XBOX360 },
++	{ 0x17ef, 0x6182, "Lenovo Legion Controller for Windows", 0, XTYPE_XBOX360 },
+ 	{ 0x1949, 0x041a, "Amazon Game Controller", 0, XTYPE_XBOX360 },
+ 	{ 0x1bad, 0x0002, "Harmonix Rock Band Guitar", 0, XTYPE_XBOX360 },
+ 	{ 0x1bad, 0x0003, "Harmonix Rock Band Drumkit", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360 },
+@@ -491,6 +492,7 @@ static const struct usb_device_id xpad_table[] = {
+ 	XPAD_XBOX360_VENDOR(0x15e4),		/* Numark Xbox 360 controllers */
+ 	XPAD_XBOX360_VENDOR(0x162e),		/* Joytech Xbox 360 controllers */
+ 	XPAD_XBOX360_VENDOR(0x1689),		/* Razer Onza */
++	XPAD_XBOX360_VENDOR(0x17ef),		/* Lenovo */
+ 	XPAD_XBOX360_VENDOR(0x1949),		/* Amazon controllers */
+ 	XPAD_XBOX360_VENDOR(0x1bad),		/* Harmonix Rock Band guitar and drums */
+ 	XPAD_XBOX360_VENDOR(0x20d6),		/* PowerA controllers */
 -- 
 2.43.0
 
