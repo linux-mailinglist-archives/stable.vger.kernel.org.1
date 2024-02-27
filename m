@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-25113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1DBB8697C9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:25:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12C5F869755
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:20:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DB022835CD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:25:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB61728481A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:20:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4906A141995;
-	Tue, 27 Feb 2024 14:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F1C1419AE;
+	Tue, 27 Feb 2024 14:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVy71mx1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4goXNFY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08AFC13B2B8;
-	Tue, 27 Feb 2024 14:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63AA578B61;
+	Tue, 27 Feb 2024 14:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043901; cv=none; b=Eo+E97+FegwPHDKl36ILtWJrLNZAJWtuwR39NV4bdw/ysKex205kHad3n37BMPhXZh5cFlKO40d1Ui6OZG2jK3aglR+1Ur727TljDtvpmJJq8d4irjYndJ0Ovr7QBmrDKXHIWb0Kw5PhNIxEMxCpOJ6GezeUYE8pscVD96SqdQ0=
+	t=1709043619; cv=none; b=lH+iP9d+3zqDs7Fc2OEWADDjWgarhdc1RDQSrz7xF3wWQ3P1H1IA+EdrWIDnCrqaSBUKvQBg5VIE9qqPzMzIWGa/SAVBAQvD5onIjmVq2lNKmCwIb+t9oFN0dkTC1Mrt9QzJjnucPpYt5FICPWiIyIUwbsaub9G0/s6RSFUvAss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043901; c=relaxed/simple;
-	bh=SsFKL5kUxnYBMCRlebLm6t0sR32ljhtGJgEabGzZlEk=;
+	s=arc-20240116; t=1709043619; c=relaxed/simple;
+	bh=/Mk05vCtIBwHV+WDMsULaE3XlxNVfiwcvQqk0rEquHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NlH07IRkuc39TmtMAnvJ0tH6FpXQrLr8z+6bj36lCUHxyFz1pVLdauxV6cdKNHUYms6aNIb9QO9dOq8/Aatln5i3SNxnc2sumxsFEJYB5m7xIB1LjamU+0OvuaMZRwHkYN37ccwTU2SRdJzBoFkieXJVI02ShrNwnepE1GqJ0Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVy71mx1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57818C433C7;
-	Tue, 27 Feb 2024 14:25:00 +0000 (UTC)
+	 MIME-Version; b=FjwgHoVgYgFi5rnMbyVoUzeM8qAPCX1HsZ8KX0SWb3st1znSrzsRGHKWAyev/8X5ILtev42Bzna2RRsN+4PcsG9LmJbeTk2IOnI2/9+QCjuZCMGpjVFd9D0BaQLodEkRSzj4mSCgwGXqzd7DDg6Br6tc4vqiQC2FFLiwD9v1dAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4goXNFY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3849C433C7;
+	Tue, 27 Feb 2024 14:20:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043900;
-	bh=SsFKL5kUxnYBMCRlebLm6t0sR32ljhtGJgEabGzZlEk=;
+	s=korg; t=1709043619;
+	bh=/Mk05vCtIBwHV+WDMsULaE3XlxNVfiwcvQqk0rEquHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JVy71mx1HyL38BI0oiJ7qLke3X4wTdRughwFxtrSmturSVPw/VssylPQrUnzySixP
-	 0uTaR2SHdyEXzBNO57ApG+PWAZ7pW9iy4VCyOu3+XZltfVIl12eUa6x6McKq90cJe2
-	 QvxfmoPixWa+PFb2zcusc1H2XruaDHsOJ009z+Fs=
+	b=s4goXNFYpc3BcVPBw6DwooViefGXPLnAUWLgpT3IWywSuJ992YV23onZnjpDkGuqc
+	 mL6qi9AWAwMbhyPqlDMfRg0EHUEeGc1Mugk7s3hWaY7x4dC/Q8KsnLfZFDeTycIiCE
+	 k5tYE/BDEojM5KwhyDy4KVEHamqWnn5+GBmUElFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 47/84] dm-integrity: dont modify bios immutable bio_vec in integrity_metadata()
-Date: Tue, 27 Feb 2024 14:27:14 +0100
-Message-ID: <20240227131554.401660652@linuxfoundation.org>
+Subject: [PATCH 6.1 174/195] netfilter: nf_tables: register hooks last when adding new chain/flowtable
+Date: Tue, 27 Feb 2024 14:27:15 +0100
+Message-ID: <20240227131616.151468141@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +61,192 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit b86f4b790c998afdbc88fe1aa55cfe89c4068726 upstream.
+[ Upstream commit d472e9853d7b46a6b094224d131d09ccd3a03daf ]
 
-__bio_for_each_segment assumes that the first struct bio_vec argument
-doesn't change - it calls "bio_advance_iter_single((bio), &(iter),
-(bvl).bv_len)" to advance the iterator. Unfortunately, the dm-integrity
-code changes the bio_vec with "bv.bv_len -= pos". When this code path
-is taken, the iterator would be out of sync and dm-integrity would
-report errors. This happens if the machine is out of memory and
-"kmalloc" fails.
+Register hooks last when adding chain/flowtable to ensure that packets do
+not walk over datastructure that is being released in the error path
+without waiting for the rcu grace period.
 
-Fix this bug by making a copy of "bv" and changing the copy instead.
-
-Fixes: 7eada909bfd7 ("dm: add integrity target")
-Cc: stable@vger.kernel.org	# v4.12+
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 91c7b38dc9f0 ("netfilter: nf_tables: use new transaction infrastructure to handle chain")
+Fixes: 3b49e2e94e6e ("netfilter: nf_tables: add flow table netlink frontend")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-integrity.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ net/netfilter/nf_tables_api.c | 78 ++++++++++++++++++-----------------
+ 1 file changed, 40 insertions(+), 38 deletions(-)
 
-diff --git a/drivers/md/dm-integrity.c b/drivers/md/dm-integrity.c
-index 81157801a3dc6..f3246f7407d61 100644
---- a/drivers/md/dm-integrity.c
-+++ b/drivers/md/dm-integrity.c
-@@ -1582,11 +1582,12 @@ static void integrity_metadata(struct work_struct *w)
- 		}
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index c7b543d1a0516..a29313e0aaa4d 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -686,15 +686,16 @@ static int nft_delobj(struct nft_ctx *ctx, struct nft_object *obj)
+ 	return err;
+ }
  
- 		__bio_for_each_segment(bv, bio, iter, dio->bio_details.bi_iter) {
-+			struct bio_vec bv_copy = bv;
- 			unsigned pos;
- 			char *mem, *checksums_ptr;
+-static int nft_trans_flowtable_add(struct nft_ctx *ctx, int msg_type,
+-				   struct nft_flowtable *flowtable)
++static struct nft_trans *
++nft_trans_flowtable_add(struct nft_ctx *ctx, int msg_type,
++		        struct nft_flowtable *flowtable)
+ {
+ 	struct nft_trans *trans;
  
- again:
--			mem = (char *)kmap_atomic(bv.bv_page) + bv.bv_offset;
-+			mem = (char *)kmap_atomic(bv_copy.bv_page) + bv_copy.bv_offset;
- 			pos = 0;
- 			checksums_ptr = checksums;
- 			do {
-@@ -1595,7 +1596,7 @@ static void integrity_metadata(struct work_struct *w)
- 				sectors_to_process -= ic->sectors_per_block;
- 				pos += ic->sectors_per_block << SECTOR_SHIFT;
- 				sector += ic->sectors_per_block;
--			} while (pos < bv.bv_len && sectors_to_process && checksums != checksums_onstack);
-+			} while (pos < bv_copy.bv_len && sectors_to_process && checksums != checksums_onstack);
- 			kunmap_atomic(mem);
+ 	trans = nft_trans_alloc(ctx, msg_type,
+ 				sizeof(struct nft_trans_flowtable));
+ 	if (trans == NULL)
+-		return -ENOMEM;
++		return ERR_PTR(-ENOMEM);
  
- 			r = dm_integrity_rw_tag(ic, checksums, &dio->metadata_block, &dio->metadata_offset,
-@@ -1615,9 +1616,9 @@ static void integrity_metadata(struct work_struct *w)
- 			if (!sectors_to_process)
- 				break;
+ 	if (msg_type == NFT_MSG_NEWFLOWTABLE)
+ 		nft_activate_next(ctx->net, flowtable);
+@@ -703,22 +704,22 @@ static int nft_trans_flowtable_add(struct nft_ctx *ctx, int msg_type,
+ 	nft_trans_flowtable(trans) = flowtable;
+ 	nft_trans_commit_list_add_tail(ctx->net, trans);
  
--			if (unlikely(pos < bv.bv_len)) {
--				bv.bv_offset += pos;
--				bv.bv_len -= pos;
-+			if (unlikely(pos < bv_copy.bv_len)) {
-+				bv_copy.bv_offset += pos;
-+				bv_copy.bv_len -= pos;
- 				goto again;
- 			}
- 		}
+-	return 0;
++	return trans;
+ }
+ 
+ static int nft_delflowtable(struct nft_ctx *ctx,
+ 			    struct nft_flowtable *flowtable)
+ {
+-	int err;
++	struct nft_trans *trans;
+ 
+-	err = nft_trans_flowtable_add(ctx, NFT_MSG_DELFLOWTABLE, flowtable);
+-	if (err < 0)
+-		return err;
++	trans = nft_trans_flowtable_add(ctx, NFT_MSG_DELFLOWTABLE, flowtable);
++	if (IS_ERR(trans))
++		return PTR_ERR(trans);
+ 
+ 	nft_deactivate_next(ctx->net, flowtable);
+ 	nft_use_dec(&ctx->table->use);
+ 
+-	return err;
++	return 0;
+ }
+ 
+ static void __nft_reg_track_clobber(struct nft_regs_track *track, u8 dreg)
+@@ -2459,19 +2460,15 @@ static int nf_tables_addchain(struct nft_ctx *ctx, u8 family, u8 genmask,
+ 	RCU_INIT_POINTER(chain->blob_gen_0, blob);
+ 	RCU_INIT_POINTER(chain->blob_gen_1, blob);
+ 
+-	err = nf_tables_register_hook(net, table, chain);
+-	if (err < 0)
+-		goto err_destroy_chain;
+-
+ 	if (!nft_use_inc(&table->use)) {
+ 		err = -EMFILE;
+-		goto err_use;
++		goto err_destroy_chain;
+ 	}
+ 
+ 	trans = nft_trans_chain_add(ctx, NFT_MSG_NEWCHAIN);
+ 	if (IS_ERR(trans)) {
+ 		err = PTR_ERR(trans);
+-		goto err_unregister_hook;
++		goto err_trans;
+ 	}
+ 
+ 	nft_trans_chain_policy(trans) = NFT_CHAIN_POLICY_UNSET;
+@@ -2479,17 +2476,22 @@ static int nf_tables_addchain(struct nft_ctx *ctx, u8 family, u8 genmask,
+ 		nft_trans_chain_policy(trans) = policy;
+ 
+ 	err = nft_chain_add(table, chain);
+-	if (err < 0) {
+-		nft_trans_destroy(trans);
+-		goto err_unregister_hook;
+-	}
++	if (err < 0)
++		goto err_chain_add;
++
++	/* This must be LAST to ensure no packets are walking over this chain. */
++	err = nf_tables_register_hook(net, table, chain);
++	if (err < 0)
++		goto err_register_hook;
+ 
+ 	return 0;
+ 
+-err_unregister_hook:
++err_register_hook:
++	nft_chain_del(chain);
++err_chain_add:
++	nft_trans_destroy(trans);
++err_trans:
+ 	nft_use_dec_restore(&table->use);
+-err_use:
+-	nf_tables_unregister_hook(net, table, chain);
+ err_destroy_chain:
+ 	nf_tables_chain_destroy(ctx);
+ 
+@@ -8031,9 +8033,9 @@ static int nf_tables_newflowtable(struct sk_buff *skb,
+ 	u8 family = info->nfmsg->nfgen_family;
+ 	const struct nf_flowtable_type *type;
+ 	struct nft_flowtable *flowtable;
+-	struct nft_hook *hook, *next;
+ 	struct net *net = info->net;
+ 	struct nft_table *table;
++	struct nft_trans *trans;
+ 	struct nft_ctx ctx;
+ 	int err;
+ 
+@@ -8113,34 +8115,34 @@ static int nf_tables_newflowtable(struct sk_buff *skb,
+ 	err = nft_flowtable_parse_hook(&ctx, nla[NFTA_FLOWTABLE_HOOK],
+ 				       &flowtable_hook, flowtable, true);
+ 	if (err < 0)
+-		goto err4;
++		goto err_flowtable_parse_hooks;
+ 
+ 	list_splice(&flowtable_hook.list, &flowtable->hook_list);
+ 	flowtable->data.priority = flowtable_hook.priority;
+ 	flowtable->hooknum = flowtable_hook.num;
+ 
++	trans = nft_trans_flowtable_add(&ctx, NFT_MSG_NEWFLOWTABLE, flowtable);
++	if (IS_ERR(trans)) {
++		err = PTR_ERR(trans);
++		goto err_flowtable_trans;
++	}
++
++	/* This must be LAST to ensure no packets are walking over this flowtable. */
+ 	err = nft_register_flowtable_net_hooks(ctx.net, table,
+ 					       &flowtable->hook_list,
+ 					       flowtable);
+-	if (err < 0) {
+-		nft_hooks_destroy(&flowtable->hook_list);
+-		goto err4;
+-	}
+-
+-	err = nft_trans_flowtable_add(&ctx, NFT_MSG_NEWFLOWTABLE, flowtable);
+ 	if (err < 0)
+-		goto err5;
++		goto err_flowtable_hooks;
+ 
+ 	list_add_tail_rcu(&flowtable->list, &table->flowtables);
+ 
+ 	return 0;
+-err5:
+-	list_for_each_entry_safe(hook, next, &flowtable->hook_list, list) {
+-		nft_unregister_flowtable_hook(net, flowtable, hook);
+-		list_del_rcu(&hook->list);
+-		kfree_rcu(hook, rcu);
+-	}
+-err4:
++
++err_flowtable_hooks:
++	nft_trans_destroy(trans);
++err_flowtable_trans:
++	nft_hooks_destroy(&flowtable->hook_list);
++err_flowtable_parse_hooks:
+ 	flowtable->data.type->free(&flowtable->data);
+ err3:
+ 	module_put(type->owner);
 -- 
 2.43.0
 
