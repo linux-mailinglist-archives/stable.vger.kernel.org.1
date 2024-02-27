@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-25085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D650D8697A7
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:23:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93C0186977E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:21:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1390C1C2192F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:23:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69DEEB2B026
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:21:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB071140391;
-	Tue, 27 Feb 2024 14:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F7B13B7AB;
+	Tue, 27 Feb 2024 14:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9hgVJif"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q/FCooUS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980A213B2B8;
-	Tue, 27 Feb 2024 14:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6514313B2B4;
+	Tue, 27 Feb 2024 14:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043818; cv=none; b=kpGzmnM4HOjnZTUBNX7NQDy62Lpey7PBIH72+4mFb4nyEGloq/ZwIsRNfE1cq34IQAWsiUQGxR6mYPQ0u9K8LL0Z8QIVgEraXvm3j1p5yfUdmhgsUXbZBLtBqjICOor7ypneLjV3bbgJqD43soJDRHCByf10ifZTqfEI3X3WB28=
+	t=1709043677; cv=none; b=kXDc1ZOxADJYNpAyAbumci/nxzfivQyzQrJ5hN5JzgkNtpO6xZSzYm7A0qUr0Qa+VRCsMMjInhSFp7YdSYGCJvln5TCPailf1xyfTDCJ6gJF5phNaLv2hVMWl6VxDSriFBjYsfBV2qIA3cIYOXr+U7jCt9D68qxYlADnlYLZ2BI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043818; c=relaxed/simple;
-	bh=d9v14ZSnIRnJ6tAtQoN6AjQ7QpU0yJOtCdigfn88OTs=;
+	s=arc-20240116; t=1709043677; c=relaxed/simple;
+	bh=JKiG8+C1Ja4pMwg3vPAO3Dvp9Y88xyfB+H2XYvVI8uM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tKemQ6quacuiCvZJdpgm7g9HXcPD6/V4T0WWsYHb0i7Ux31ZnjVm5nnYb1opStU9gXkhv/VOq/myEsMbYcw4vciIFp27VJf4dwdVxhFAy0hvfH7GsIjnhdAckI5neKVxfdPnuAmBbMlurnxZ0TfUCKiAHIt4tj2eQDqM+dM0H5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9hgVJif; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22DBAC433C7;
-	Tue, 27 Feb 2024 14:23:37 +0000 (UTC)
+	 MIME-Version; b=rZFGNlPBM9h6M8xL8wAPLnrR6ZssSgE2XY3z1VJcNzKRqIxTAuTEh3ZP9RXfjLFA0bMe7UBEVcN8a5AV2/vaqzPAqm3AsCCsHZ5a1bH0N0NsM1nxe64p1fER5Fi1mGhHtnQgv4J+2XcelxovxPsBlHq7PFRTZZs3wvpI5walElI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q/FCooUS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E62F1C433C7;
+	Tue, 27 Feb 2024 14:21:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043818;
-	bh=d9v14ZSnIRnJ6tAtQoN6AjQ7QpU0yJOtCdigfn88OTs=;
+	s=korg; t=1709043677;
+	bh=JKiG8+C1Ja4pMwg3vPAO3Dvp9Y88xyfB+H2XYvVI8uM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p9hgVJifgCKQ9WHZupxKeqdvNnFheopuKWDhQGqgr9Ck0bYp6DjH3bha4+YsqAaRT
-	 8aJu7iDS5O6BP20Z8StnYrf9RNt9BwGJ9IYhOZTj0wPYPdmLkAAeMgTvip4dvc641b
-	 ZWkU2/gy2yI/AdsXi0a6kf/jP8HxPrAS0Cy5EkrM=
+	b=Q/FCooUSevWL6Ycjl+V52pThDVOeZEhOfng/2hEu6N1KhUJ8V2kIS6LEWkC2nVjv/
+	 TlkMwThN32hPJVEpES+czdIaJXbxai1Gmx/X5Q6XuZzXZajHZEmcoLxRWd/ySTn7Og
+	 uQUImKNPUIcXq/FC22taU5R+dVSzMX3cFLfiP3QE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 40/84] spi: mt7621: Fix an error message in mt7621_spi_probe()
+Subject: [PATCH 6.1 166/195] tls: break out of main loop when PEEK gets a non-data record
 Date: Tue, 27 Feb 2024 14:27:07 +0100
-Message-ID: <20240227131554.178091720@linuxfoundation.org>
+Message-ID: <20240227131615.891632388@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 2b2bf6b7faa9010fae10dc7de76627a3fdb525b3 ]
+[ Upstream commit 10f41d0710fc81b7af93fa6106678d57b1ff24a7 ]
 
-'status' is known to be 0 at this point. The expected error code is
-PTR_ERR(clk).
+PEEK needs to leave decrypted records on the rx_list so that we can
+receive them later on, so it jumps back into the async code that
+queues the skb. Unfortunately that makes us skip the
+TLS_RECORD_TYPE_DATA check at the bottom of the main loop, so if two
+records of the same (non-DATA) type are queued, we end up merging
+them.
 
-Switch to dev_err_probe() in order to display the expected error code (in a
-human readable way).
-This also filters -EPROBE_DEFER cases, should it happen.
+Add the same record type check, and make it unlikely to not penalize
+the async fastpath. Async decrypt only applies to data record, so this
+check is only needed for PEEK.
 
-Fixes: 1ab7f2a43558 ("staging: mt7621-spi: add mt7621 support")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Link: https://lore.kernel.org/r/928f3fb507d53ba0774df27cea0bbba4b055993b.1661599671.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Mark Brown <broonie@kernel.org>
+process_rx_list also has similar issues.
+
+Fixes: 692d7b5d1f91 ("tls: Fix recvmsg() to be able to peek across multiple records")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/3df2eef4fdae720c55e69472b5bea668772b45a2.1708007371.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-mt7621.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ net/tls/tls_sw.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/spi/spi-mt7621.c b/drivers/spi/spi-mt7621.c
-index b4b9b7309b5e9..351b0ef52bbc8 100644
---- a/drivers/spi/spi-mt7621.c
-+++ b/drivers/spi/spi-mt7621.c
-@@ -340,11 +340,9 @@ static int mt7621_spi_probe(struct platform_device *pdev)
- 		return PTR_ERR(base);
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index c8cbdd02a784e..cd86c271c1348 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -2137,6 +2137,8 @@ int tls_sw_recvmsg(struct sock *sk,
+ 				decrypted += chunk;
+ 				len -= chunk;
+ 				__skb_queue_tail(&ctx->rx_list, skb);
++				if (unlikely(control != TLS_RECORD_TYPE_DATA))
++					break;
+ 				continue;
+ 			}
  
- 	clk = devm_clk_get(&pdev->dev, NULL);
--	if (IS_ERR(clk)) {
--		dev_err(&pdev->dev, "unable to get SYS clock, err=%d\n",
--			status);
--		return PTR_ERR(clk);
--	}
-+	if (IS_ERR(clk))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(clk),
-+				     "unable to get SYS clock\n");
- 
- 	status = clk_prepare_enable(clk);
- 	if (status)
 -- 
 2.43.0
 
