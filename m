@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5433869615
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:08:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C2598696C4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60B8928F7C6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 434481F2E6F2
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6818813AA43;
-	Tue, 27 Feb 2024 14:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 299C11386CB;
+	Tue, 27 Feb 2024 14:14:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LaVRhrP3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CuSdi7F5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C3113B2B3;
-	Tue, 27 Feb 2024 14:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB08713B2B4;
+	Tue, 27 Feb 2024 14:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042876; cv=none; b=mrjBjuJGB6L5UtUB/VDs3a9juvKQ2+IvhSlS3IUCwKc9K3TV8GsDd7UbK3bvPDmFdPA0KUEciovEl4thVvMVKC/dHZa36XfcYcn3OI/oYqdRm/ymqIfCiTcCfDLT+VGX+WXJaZQnwXNQBdrtAUshbCSUdrpIX9tEWs+dEFBHb1k=
+	t=1709043285; cv=none; b=ZW0qF6G+2Ai4vT4nl0rxWvda7pq6KPr57JoCYwZ7g8d1fHKZK5VcM2+emzO+M26xsuE2ajr0841TdhwDBj1m8RCvc/5mK+dUaV0airTmz2fWzCwaJpKDOUwE7EowyBcYpNjypkDJiZezUEkhDXszRHEoXJwzpHqZfcKkxL6BFNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042876; c=relaxed/simple;
-	bh=L8XruvLyz0eF9cBJCaTPyF9rIOkFD4zd2pHD86+/1jI=;
+	s=arc-20240116; t=1709043285; c=relaxed/simple;
+	bh=FhA+WTkfX1YsoQ2hEkWNbR5YKfHdGkJlFPLhDwJtkbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lshYTklfq/uja8VFFwfNuKvtmkEnQwQmCtRCMpYsol1kMKhEVXSBBCwdlZpOH4GAjcIlKUe9oiFsgzUrLzB+kX7k6GI3uVZRZumjbxsdqi2G8setL9bj0HVlWpoUVD3gKU7+Q5WUgBCM83AD86+QI+jp0RJfLp0EuG5FMMCsuj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LaVRhrP3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6959C433C7;
-	Tue, 27 Feb 2024 14:07:55 +0000 (UTC)
+	 MIME-Version; b=uElctx/rVXQ/33Q+n/qE4nUIURPbIPhACfp2GhUnEw7zZKXKYk4+jw/bYBQowhnDdk6UCp+UpfKtAcgtt2tMPPaZFTsW3SoMJYQUnlJ1OYTQAni2gTUC8qy2/2G4wQ/IwgVguqnxzAHp1qGrAeR/kwLZFUhcwY76zKYLTrSbAfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CuSdi7F5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69D65C433C7;
+	Tue, 27 Feb 2024 14:14:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042876;
-	bh=L8XruvLyz0eF9cBJCaTPyF9rIOkFD4zd2pHD86+/1jI=;
+	s=korg; t=1709043284;
+	bh=FhA+WTkfX1YsoQ2hEkWNbR5YKfHdGkJlFPLhDwJtkbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LaVRhrP3UjWibdF/+ld/nmTjci8/joUDqJPK3op7D7A/N00kvo9gfctT7SOGjrnNG
-	 Y2oPsbH/ApMoAmA9FFch6HQyGZSVbtJ5KyE05mmNtn57wptqisD9gD34VrlvPDfxeG
-	 OoT9BLKuxx1ieQemIMFdNoPniugZN350ZedK0Kho=
+	b=CuSdi7F57MRbnC0GpQaHoJqVmT0u89NNc3V95d/W2nHC5VibdqnmliFuNpami0AqI
+	 /tcv3zz353X17wO43Yz/6dwzK6tOc5d3sMDNuuIY/APYyFMNoQZL9aNeiWvdPjd5Po
+	 yiB/Bpdo4y6DMTSoOXnjjAqL7dsD5pmRgTyJKApw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Lynch <nathanl@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Szilard Fabian <szfabian@bluemarch.art>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 125/245] powerpc/pseries/lpar: add missing RTAS retry status handling
-Date: Tue, 27 Feb 2024 14:25:13 +0100
-Message-ID: <20240227131619.288479890@linuxfoundation.org>
+Subject: [PATCH 6.1 053/195] Input: i8042 - add Fujitsu Lifebook U728 to i8042 quirk table
+Date: Tue, 27 Feb 2024 14:25:14 +0100
+Message-ID: <20240227131612.259774090@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: Szilard Fabian <szfabian@bluemarch.art>
 
-[ Upstream commit daa8ab59044610aa8ef2ee45a6c157b5e11635e9 ]
+[ Upstream commit 4255447ad34c5c3785fcdcf76cfa0271d6e5ed39 ]
 
-The ibm,get-system-parameter RTAS function may return -2 or 990x,
-which indicate that the caller should try again.
+Another Fujitsu-related patch.
 
-pseries_lpar_read_hblkrm_characteristics() ignores this, making it
-possible to incorrectly detect TLB block invalidation characteristics
-at boot.
+In the initial boot stage the integrated keyboard of Fujitsu Lifebook U728
+refuses to work and it's not possible to type for example a dm-crypt
+passphrase without the help of an external keyboard.
 
-Move the RTAS call into a coventional rtas_busy_delay()-based loop.
+i8042.nomux kernel parameter resolves this issue but using that a PS/2
+mouse is detected. This input device is unused even when the i2c-hid-acpi
+kernel module is blacklisted making the integrated ELAN touchpad
+(04F3:3092) not working at all.
 
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Fixes: 1211ee61b4a8 ("powerpc/pseries: Read TLB Block Invalidate Characteristics")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20230125-b4-powerpc-rtas-queue-v3-3-26929c8cce78@linux.ibm.com
+So this notebook uses a hid-over-i2c touchpad which is managed by the
+i2c_designware input driver. Since you can't find a PS/2 mouse port on this
+computer and you can't connect a PS/2 mouse to it even with an official
+port replicator I think it's safe to not use the PS/2 mouse port at all.
+
+Signed-off-by: Szilard Fabian <szfabian@bluemarch.art>
+Link: https://lore.kernel.org/r/20240103014717.127307-2-szfabian@bluemarch.art
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/lpar.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/input/serio/i8042-acpipnpio.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
-index fce0237b07155..6c196b9413553 100644
---- a/arch/powerpc/platforms/pseries/lpar.c
-+++ b/arch/powerpc/platforms/pseries/lpar.c
-@@ -1434,22 +1434,22 @@ static inline void __init check_lp_set_hblkrm(unsigned int lp,
- 
- void __init pseries_lpar_read_hblkrm_characteristics(void)
- {
-+	const s32 token = rtas_token("ibm,get-system-parameter");
- 	unsigned char local_buffer[SPLPAR_TLB_BIC_MAXLENGTH];
- 	int call_status, len, idx, bpsize;
- 
- 	if (!firmware_has_feature(FW_FEATURE_BLOCK_REMOVE))
- 		return;
- 
--	spin_lock(&rtas_data_buf_lock);
--	memset(rtas_data_buf, 0, RTAS_DATA_BUF_SIZE);
--	call_status = rtas_call(rtas_token("ibm,get-system-parameter"), 3, 1,
--				NULL,
--				SPLPAR_TLB_BIC_TOKEN,
--				__pa(rtas_data_buf),
--				RTAS_DATA_BUF_SIZE);
--	memcpy(local_buffer, rtas_data_buf, SPLPAR_TLB_BIC_MAXLENGTH);
--	local_buffer[SPLPAR_TLB_BIC_MAXLENGTH - 1] = '\0';
--	spin_unlock(&rtas_data_buf_lock);
-+	do {
-+		spin_lock(&rtas_data_buf_lock);
-+		memset(rtas_data_buf, 0, RTAS_DATA_BUF_SIZE);
-+		call_status = rtas_call(token, 3, 1, NULL, SPLPAR_TLB_BIC_TOKEN,
-+					__pa(rtas_data_buf), RTAS_DATA_BUF_SIZE);
-+		memcpy(local_buffer, rtas_data_buf, SPLPAR_TLB_BIC_MAXLENGTH);
-+		local_buffer[SPLPAR_TLB_BIC_MAXLENGTH - 1] = '\0';
-+		spin_unlock(&rtas_data_buf_lock);
-+	} while (rtas_busy_delay(call_status));
- 
- 	if (call_status != 0) {
- 		pr_warn("%s %s Error calling get-system-parameter (0x%x)\n",
+diff --git a/drivers/input/serio/i8042-acpipnpio.h b/drivers/input/serio/i8042-acpipnpio.h
+index cd45a65e17f2c..dfc6c581873b7 100644
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -634,6 +634,14 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
+ 		},
+ 		.driver_data = (void *)(SERIO_QUIRK_NOAUX)
+ 	},
++	{
++		/* Fujitsu Lifebook U728 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "LIFEBOOK U728"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_NOAUX)
++	},
+ 	{
+ 		/* Gigabyte M912 */
+ 		.matches = {
 -- 
 2.43.0
 
