@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-25211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C065869844
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:31:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DE358697D4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:25:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94DED1C2225B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:31:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85309B2C7EE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:24:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F991474AA;
-	Tue, 27 Feb 2024 14:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C6713F016;
+	Tue, 27 Feb 2024 14:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZi5W3za"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AgDT0gTk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022D4146E8A;
-	Tue, 27 Feb 2024 14:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2072613B2B4;
+	Tue, 27 Feb 2024 14:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044170; cv=none; b=jBgDGOAYaXDC87uF1C63TbLctQs4FMiGAdSRyu2T5uVjqyMAvEWwPkPuvNv7fpu/UgfK/dWQbVLRsSu0OPJXLmFYzpMyJ1XUJ6W7e1j+6YElFYFl5e5jxr5fAvF/jlpYkI7ogpOVzEsYR6ATewLvsTLscezyDJqq1Jw/KNRGfFw=
+	t=1709043865; cv=none; b=k9kt8O0Tx8UtdWE2OZpN6VqF9sjpSQrvnq3LYq22NuqLCV7b3+89oANhl83i4OEu9F68VbrKRD/S1RYLXHXqOkF3A9JUaBxUFNLSxogp7fsHzwq1kyJlNhJ2kgxwaddPr+u2M8h9TeMRzYby3swANnlpxd/MD+uFqd5hdIEIJKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044170; c=relaxed/simple;
-	bh=7fgr7qrCdtDhMdpwvl11pc5cdhIW4RKzcywWv4z7yYc=;
+	s=arc-20240116; t=1709043865; c=relaxed/simple;
+	bh=oy7FPWfNCDlOrgObzUK13GEVVOsNt2B8V5ztzMfLho4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T0bAaLWrFr2HYenaMvSW4aE/dyTF/uSXXJ4gDfw7sdrngaf8uq0o7CQO1rKiQHv09xiQBAi1PAifyFd9JVOcDgyfSRwbQn/zeLL8Jm4KWxunOWz2DT3K8Udc7iJtzyQYvZoZOphJwe04JE5r9Qn9luiOKPIV8qwaUS/wU4567iU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZi5W3za; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85508C433C7;
-	Tue, 27 Feb 2024 14:29:29 +0000 (UTC)
+	 MIME-Version; b=Jgu6UNrdPyfXWlXhOvX21d7GnMtxDEZ4Vw/NpkCFyobRDleHfBUZ18fUjYwWRoaq1NDApfzmDfl68IdCvHv02s2u18GbCPmXTgQ9x5FNj3/6mFMJMQzjJ66BQlE1JkbataEhzVVqnqVU6muNGpCNU0J44SrpqHB7HS6EcZrC12U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AgDT0gTk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0AB4C433C7;
+	Tue, 27 Feb 2024 14:24:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044169;
-	bh=7fgr7qrCdtDhMdpwvl11pc5cdhIW4RKzcywWv4z7yYc=;
+	s=korg; t=1709043865;
+	bh=oy7FPWfNCDlOrgObzUK13GEVVOsNt2B8V5ztzMfLho4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pZi5W3zaM55HKAMr5HqPhPoAj2EXD5IJtoQuCloXML/F4ARFbWcBSsyBoVgTcIdkj
-	 Jq5miRPtRjhIp2Dv12LxYZyZXNYDq40ybk84DxxJNidrLUSYw0gSJh9wunmGN9VajG
-	 d7Qr1fcFOniXN1ibUjaSMmnO0zd2rYREzQOxRPII=
+	b=AgDT0gTk2Ynv2ocB4zlMT1rVP13fNtMVqzxKvR6tVRVpV9DtDaOvlF1y7cltocII+
+	 JYbVbPxDsUXz21FKpJhe2Y/Qsmkrp5fUV2G4/q1LMXqKdl+aHVi4eI0fH7TeGpfY5V
+	 djyzLLviQ8kIDxP2JaRIE7tu7EfjT5UPKcv/A/s8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 5.10 088/122] Revert "x86/alternative: Make custom return thunk unconditional"
+	Xu Yang <xu.yang_2@nxp.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.4 62/84] usb: roles: dont get/set_role() when usb_role_switch is unregistered
 Date: Tue, 27 Feb 2024 14:27:29 +0100
-Message-ID: <20240227131601.585873985@linuxfoundation.org>
+Message-ID: <20240227131554.889882065@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +61,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-This reverts commit 08f7cfd44f77b2796582bc26164fdef44dd33b6c.
+commit b787a3e781759026a6212736ef8e52cf83d1821a upstream.
 
-Revert the backport of upstream commit:
+There is a possibility that usb_role_switch device is unregistered before
+the user put usb_role_switch. In this case, the user may still want to
+get/set_role() since the user can't sense the changes of usb_role_switch.
 
-  095b8303f383 ("x86/alternative: Make custom return thunk unconditional")
+This will add a flag to show if usb_role_switch is already registered and
+avoid unwanted behaviors.
 
-in order to backport the full version now that
-
-  770ae1b70952 ("x86/returnthunk: Allow different return thunks")
-
-has been backported.
-
-Revert it here so that the build breakage is kept at minimum.
-
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Fixes: fde0aa6c175a ("usb: common: Small class for USB role switches")
+cc: stable@vger.kernel.org
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240129093739.2371530-2-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/nospec-branch.h |    4 ----
- arch/x86/kernel/cpu/bugs.c           |    4 ----
- 2 files changed, 8 deletions(-)
+ drivers/usb/roles/class.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -190,11 +190,7 @@
- 	_ASM_PTR " 999b\n\t"					\
- 	".popsection\n\t"
+--- a/drivers/usb/roles/class.c
++++ b/drivers/usb/roles/class.c
+@@ -20,6 +20,7 @@ struct usb_role_switch {
+ 	struct device dev;
+ 	struct mutex lock; /* device lock*/
+ 	enum usb_role role;
++	bool registered;
  
--#ifdef CONFIG_RETHUNK
- extern void __x86_return_thunk(void);
--#else
--static inline void __x86_return_thunk(void) {}
--#endif
+ 	/* From descriptor */
+ 	struct device *usb2_port;
+@@ -46,6 +47,9 @@ int usb_role_switch_set_role(struct usb_
+ 	if (IS_ERR_OR_NULL(sw))
+ 		return 0;
  
- extern void retbleed_return_thunk(void);
- extern void srso_return_thunk(void);
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -61,10 +61,6 @@ EXPORT_SYMBOL_GPL(x86_pred_cmd);
++	if (!sw->registered)
++		return -EOPNOTSUPP;
++
+ 	mutex_lock(&sw->lock);
  
- static DEFINE_MUTEX(spec_ctrl_mutex);
- 
--#ifdef CONFIG_CALL_THUNKS
--void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
--#endif
--
- /* Update SPEC_CTRL MSR and its cached copy unconditionally */
- static void update_spec_ctrl(u64 val)
+ 	ret = sw->set(sw->dev.parent, role);
+@@ -69,7 +73,7 @@ enum usb_role usb_role_switch_get_role(s
  {
+ 	enum usb_role role;
+ 
+-	if (IS_ERR_OR_NULL(sw))
++	if (IS_ERR_OR_NULL(sw) || !sw->registered)
+ 		return USB_ROLE_NONE;
+ 
+ 	mutex_lock(&sw->lock);
+@@ -319,6 +323,8 @@ usb_role_switch_register(struct device *
+ 		return ERR_PTR(ret);
+ 	}
+ 
++	sw->registered = true;
++
+ 	/* TODO: Symlinks for the host port and the device controller. */
+ 
+ 	return sw;
+@@ -333,8 +339,10 @@ EXPORT_SYMBOL_GPL(usb_role_switch_regist
+  */
+ void usb_role_switch_unregister(struct usb_role_switch *sw)
+ {
+-	if (!IS_ERR_OR_NULL(sw))
++	if (!IS_ERR_OR_NULL(sw)) {
++		sw->registered = false;
+ 		device_unregister(&sw->dev);
++	}
+ }
+ EXPORT_SYMBOL_GPL(usb_role_switch_unregister);
+ 
 
 
 
