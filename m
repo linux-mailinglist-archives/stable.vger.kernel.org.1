@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B6E08693F7
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D32A186930E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:41:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AFA91C23033
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48FE61F2D7DF
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:41:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A88C714533E;
-	Tue, 27 Feb 2024 13:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B90F813B2BA;
+	Tue, 27 Feb 2024 13:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9UAL6ut"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2O6aC1mg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F55145327;
-	Tue, 27 Feb 2024 13:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783F52F2D;
+	Tue, 27 Feb 2024 13:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041698; cv=none; b=mcnFdA7GncAxf5q5uQvzWIRxp7zv6AX3Ncexag4uGCOcjDshamacezzC0LmupvUVfoy2GL/gP00IjqW2T4CzRNXElEb8L4di5POzl9wexG3YYcw+zuVV4i/FEd5/FTTZjPXebdXjNvEzIfVkEhPcIHgDRtu1wo97Eg3rVa6q9X8=
+	t=1709041283; cv=none; b=NHs13tlxHoJYj/6hBkmHf3gDW/Jel1YcwmjwkfEng0mFOPD6usY5H2A4jRmu1cZG50sLw4Frpt0FkwTu/Njh3fzpN4NLdZRQcx8nwikMvyNZPXMJqMx3ni/DSnH423pIhJUc2+mqGR1zdL3FU8quxWqA8moPQo8S2+PuQQFkYyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041698; c=relaxed/simple;
-	bh=jBlmmCuzu6c10jAVdMAntK5URkJtrJZsfFqxanKl9KQ=;
+	s=arc-20240116; t=1709041283; c=relaxed/simple;
+	bh=XtsKVF6UXEDK+BcX0reOcXFPAh03F473Okmlka/LylQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LFtISu/2Eg8gvBVF8D5WGE5Q8GVL0Szx633+BC5Nsh/PcO1hUvyHLM+ENRoR2V31vVi4nqp34p3Jk0LQfkM5QEFgAwDB3AxYvKkScjSqg/4Glc0r+epsFyI6NR2nFxMT8q9sQXeA3rBhbHqhOlCFeFZq7UFrY+rOD6f/ZntOqgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9UAL6ut; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAF12C433F1;
-	Tue, 27 Feb 2024 13:48:17 +0000 (UTC)
+	 MIME-Version; b=bD5XQBdXLaA/mZfvQpbo7HYgMI+7V9EH4FuYTk8Z/SdpE73h5JglmdyBRYu2gde5HSfgKzWjoUFkC+zuy9O0KO0qgClgyZitVwsn6uP58HX+e3TisHDFB9WpVnSTFj6y45luqqytPqbVIvL4LKaI8QjjsoaPYaWCS2/5Eu+ZVpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2O6aC1mg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B83C433F1;
+	Tue, 27 Feb 2024 13:41:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041698;
-	bh=jBlmmCuzu6c10jAVdMAntK5URkJtrJZsfFqxanKl9KQ=;
+	s=korg; t=1709041283;
+	bh=XtsKVF6UXEDK+BcX0reOcXFPAh03F473Okmlka/LylQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o9UAL6utPay19Z+bAPJBkB5N8g6sJ66Ws0DpjsHTiNjwyCNlgJ2L7rTDV4qLAJq9P
-	 QIsKJZ5PQHHYSVtOR3Re7mMJEXK8XfQmmtHT1Sv0ig+oBjXBQ8N8lT8AY8alclqxXX
-	 Gr2QSeZnZk4o1m7w95Fj3MILEyNCDQmB6//26Ly8=
+	b=2O6aC1mgR/s/19XGjAPUc4Y0eGz13HFcmXiFA2vA+xFBXqsYQhuFb7mfqKbN+uYOW
+	 pjInNS360Out2tLuuJeATsKLbpP8Oso+4Trmd5h+bthFgfRDqSjVBZVzxgZjFq3ucm
+	 73jl44hck17nEd+Ad8gxlCPFhkcHssI8ZErek3Ns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Huang Pei <huangpei@loongson.cn>,
+	Jackson Cooper-Driver <Jackson.Cooper-Driver@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 031/299] MIPS: reserve exception vector space ONLY ONCE
-Date: Tue, 27 Feb 2024 14:22:22 +0100
-Message-ID: <20240227131626.828243745@linuxfoundation.org>
+Subject: [PATCH 6.7 285/334] arm64/sme: Restore SME registers on exit from suspend
+Date: Tue, 27 Feb 2024 14:22:23 +0100
+Message-ID: <20240227131640.189313429@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huang Pei <huangpei@loongson.cn>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit abcabb9e30a1f9a69c76776f8abffc31c377b542 ]
+[ Upstream commit 9533864816fb4a6207c63b7a98396351ce1a9fae ]
 
-"cpu_probe" is called both by BP and APs, but reserving exception vector
-(like 0x0-0x1000) called by "cpu_probe" need once and calling on APs is
-too late since memblock is unavailable at that time.
+The fields in SMCR_EL1 and SMPRI_EL1 reset to an architecturally UNKNOWN
+value. Since we do not otherwise manage the traps configured in this
+register at runtime we need to reconfigure them after a suspend in case
+nothing else was kind enough to preserve them for us.
 
-So, reserve exception vector ONLY by BP.
+The vector length will be restored as part of restoring the SME state for
+the next SME using task.
 
-Suggested-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Huang Pei <huangpei@loongson.cn>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: a1f4ccd25cc2 ("arm64/sme: Provide Kconfig for SME")
+Reported-by: Jackson Cooper-Driver <Jackson.Cooper-Driver@arm.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20240213-arm64-sme-resume-v3-1-17e05e493471@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/kernel/traps.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/fpsimd.h |  2 ++
+ arch/arm64/kernel/fpsimd.c      | 14 ++++++++++++++
+ arch/arm64/kernel/suspend.c     |  3 +++
+ 3 files changed, 19 insertions(+)
 
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 246c6a6b02614..5b778995d4483 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -2007,7 +2007,13 @@ unsigned long vi_handlers[64];
+diff --git a/arch/arm64/include/asm/fpsimd.h b/arch/arm64/include/asm/fpsimd.h
+index 50e5f25d3024c..7780d343ef080 100644
+--- a/arch/arm64/include/asm/fpsimd.h
++++ b/arch/arm64/include/asm/fpsimd.h
+@@ -386,6 +386,7 @@ extern void sme_alloc(struct task_struct *task, bool flush);
+ extern unsigned int sme_get_vl(void);
+ extern int sme_set_current_vl(unsigned long arg);
+ extern int sme_get_current_vl(void);
++extern void sme_suspend_exit(void);
  
- void reserve_exception_space(phys_addr_t addr, unsigned long size)
+ /*
+  * Return how many bytes of memory are required to store the full SME
+@@ -421,6 +422,7 @@ static inline int sme_max_vl(void) { return 0; }
+ static inline int sme_max_virtualisable_vl(void) { return 0; }
+ static inline int sme_set_current_vl(unsigned long arg) { return -EINVAL; }
+ static inline int sme_get_current_vl(void) { return -EINVAL; }
++static inline void sme_suspend_exit(void) { }
+ 
+ static inline size_t sme_state_size(struct task_struct const *task)
  {
--	memblock_reserve(addr, size);
-+	/*
-+	 * reserve exception space on CPUs other than CPU0
-+	 * is too late, since memblock is unavailable when APs
-+	 * up
-+	 */
-+	if (smp_processor_id() == 0)
-+		memblock_reserve(addr, size);
+diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
+index f7d8f5d81cfe9..db1eba8d5f66d 100644
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -1339,6 +1339,20 @@ void __init sme_setup(void)
+ 		get_sme_default_vl());
  }
  
- void __init *set_except_vector(int n, void *addr)
++void sme_suspend_exit(void)
++{
++	u64 smcr = 0;
++
++	if (!system_supports_sme())
++		return;
++
++	if (system_supports_fa64())
++		smcr |= SMCR_ELx_FA64;
++
++	write_sysreg_s(smcr, SYS_SMCR_EL1);
++	write_sysreg_s(0, SYS_SMPRI_EL1);
++}
++
+ #endif /* CONFIG_ARM64_SME */
+ 
+ static void sve_init_regs(void)
+diff --git a/arch/arm64/kernel/suspend.c b/arch/arm64/kernel/suspend.c
+index eca4d04352118..eaaff94329cdd 100644
+--- a/arch/arm64/kernel/suspend.c
++++ b/arch/arm64/kernel/suspend.c
+@@ -12,6 +12,7 @@
+ #include <asm/daifflags.h>
+ #include <asm/debug-monitors.h>
+ #include <asm/exec.h>
++#include <asm/fpsimd.h>
+ #include <asm/mte.h>
+ #include <asm/memory.h>
+ #include <asm/mmu_context.h>
+@@ -80,6 +81,8 @@ void notrace __cpu_suspend_exit(void)
+ 	 */
+ 	spectre_v4_enable_mitigation(NULL);
+ 
++	sme_suspend_exit();
++
+ 	/* Restore additional feature-specific configuration */
+ 	ptrauth_suspend_exit();
+ }
 -- 
 2.43.0
 
