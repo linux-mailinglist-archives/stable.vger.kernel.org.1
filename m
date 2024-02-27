@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-25232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D4C9869856
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:32:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F7708697D7
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:25:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D5751C20869
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:32:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34D8C1F2B611
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:25:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F60F1482F0;
-	Tue, 27 Feb 2024 14:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0FA01420B3;
+	Tue, 27 Feb 2024 14:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJ1aNSbC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="slcYW9Wq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E647145FF7;
-	Tue, 27 Feb 2024 14:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F59213EFE9;
+	Tue, 27 Feb 2024 14:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044228; cv=none; b=j0ls9uuBwr3VmYA9IMFwGGfMADX/q1WimAfE/2KnCzs7/ajF6bTBYDIuBlDy8uyHs6aGG4Ogfrrx/vyhpHz4akAZ1wrw3s4NsB9THTD5GME/f9wrpbNBSLLMKWS/4ycCl+bm7bq6fZv5t843Tbi35f3cQ5zu/kgjArnq9jKfMvY=
+	t=1709043920; cv=none; b=qS+Rd5lfPD7Wvx8a+4W2l3R2SifnJ6VjJxei7E2/9GHcRzbvQ+gwhuJ6qlfc2F4cwNCcNk5MoZuflmxIfFYcpG7+h1Nzvs65ua94B3SmvgHdQdWHlAaWB0rZSC+EHurZR5zCNqZSXtLokeosdPMCmJAW2hZ3j/qFUzfX4N9Vg4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044228; c=relaxed/simple;
-	bh=06cWg8BQ6QuH5w45Smx8Lu1uGJFBZoachE1HYWycMtE=;
+	s=arc-20240116; t=1709043920; c=relaxed/simple;
+	bh=cySr/GMR3/1PrlZE658pwPrkJTfCpzBqHcphQNwIAB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jUyySMTcf/xOqSDqn2gmXJOU6QUflIAGpNl9Yln5eXEXkWmvCVxpOZV1W+Du31OcLSNkhrah42OarwVZBOD6qTG24HqcXXaHKYjHHOOtKX3fIoUaWg2xee9rZEmZRhPedn41F4j3SOOXV/DBsf+AfQ/idDhfIgofuqp/uqRrP5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xJ1aNSbC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0791C433C7;
-	Tue, 27 Feb 2024 14:30:27 +0000 (UTC)
+	 MIME-Version; b=rbvdHdfvkSavh4jz9+3siaS56/9Qf1RVUEpKTLc9psnu5vu7Yjy28qTDoDmzBmWi6wGfFFhUpUbqh6OtodnhcfC8HdXkNOAtrnceIBODY4jcGWAjvGsGRA68Gr4xWEh3Nj5PpRxPd54QURdMiSnhko5iWGksnCtenKgggyy0Fhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=slcYW9Wq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A394C433F1;
+	Tue, 27 Feb 2024 14:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044228;
-	bh=06cWg8BQ6QuH5w45Smx8Lu1uGJFBZoachE1HYWycMtE=;
+	s=korg; t=1709043920;
+	bh=cySr/GMR3/1PrlZE658pwPrkJTfCpzBqHcphQNwIAB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xJ1aNSbCsyBdPaR6qSkGihtuDpoVT1MjzfgPJjHQE5zDnSRLp10DYMRGQVUPJAp38
-	 rq6lNFZMiQpt5xRoXDrydTx5UoqWk1sOhOHq+4Z0VEZa47rbByZP1H5FQ3C+IzICUp
-	 1r1HuebA4Mc9kulG4/ckA7JPxKx7oyJxt7Ep0fSA=
+	b=slcYW9Wq5RvvP4wEJvrWvSJnrhBdt49DarE90TaL8eDSovcZiK/fbyoiQDvfOgPuk
+	 xgFWveDDOJqtlEMmWI/BduaWGrnneBcSPQKsrU0RSysrm9AwvJnS2zcgVsXkop3nkb
+	 8zf7jZ7SDms290fjhua9h7H6ZkjmWcz+DJt/uNKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 109/122] packet: move from strlcpy with unused retval to strscpy
+	Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@lst.de>,
+	Avi Kivity <avi@scylladb.com>,
+	Sandeep Dhavale <dhavale@google.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.4 83/84] fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via libaio
 Date: Tue, 27 Feb 2024 14:27:50 +0100
-Message-ID: <20240227131602.270790620@linuxfoundation.org>
+Message-ID: <20240227131555.580101633@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +66,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 8fc9d51ea2d32a05f7d7cf86a25cc86ecc57eb45 ]
+commit b820de741ae48ccf50dd95e297889c286ff4f760 upstream.
 
-Follow the advice of the below link and prefer 'strscpy' in this
-subsystem. Conversion is 1:1 because the return value is not used.
-Generated by a coccinelle script.
+If kiocb_set_cancel_fn() is called for I/O submitted via io_uring, the
+following kernel warning appears:
 
-Link: https://lore.kernel.org/r/CAHk-=wgfRnXz0W3D37d01q3JFkr_i_uTL=V6A6G1oUZcprmknw@mail.gmail.com/
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Link: https://lore.kernel.org/r/20220818210227.8611-1-wsa+renesas@sang-engineering.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: a7d6027790ac ("arp: Prevent overflow in arp_req_get().")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+WARNING: CPU: 3 PID: 368 at fs/aio.c:598 kiocb_set_cancel_fn+0x9c/0xa8
+Call trace:
+ kiocb_set_cancel_fn+0x9c/0xa8
+ ffs_epfile_read_iter+0x144/0x1d0
+ io_read+0x19c/0x498
+ io_issue_sqe+0x118/0x27c
+ io_submit_sqes+0x25c/0x5fc
+ __arm64_sys_io_uring_enter+0x104/0xab0
+ invoke_syscall+0x58/0x11c
+ el0_svc_common+0xb4/0xf4
+ do_el0_svc+0x2c/0xb0
+ el0_svc+0x2c/0xa4
+ el0t_64_sync_handler+0x68/0xb4
+ el0t_64_sync+0x1a4/0x1a8
+
+Fix this by setting the IOCB_AIO_RW flag for read and write I/O that is
+submitted by libaio.
+
+Suggested-by: Jens Axboe <axboe@kernel.dk>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Avi Kivity <avi@scylladb.com>
+Cc: Sandeep Dhavale <dhavale@google.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: stable@vger.kernel.org
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240215204739.2677806-2-bvanassche@acm.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/packet/af_packet.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/aio.c           |    9 ++++++++-
+ include/linux/fs.h |    2 ++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index b292d58fdcc4c..1052cbcdd3c8d 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -1871,7 +1871,7 @@ static int packet_rcv_spkt(struct sk_buff *skb, struct net_device *dev,
- 	 */
+--- a/fs/aio.c
++++ b/fs/aio.c
+@@ -570,6 +570,13 @@ void kiocb_set_cancel_fn(struct kiocb *i
+ 	struct kioctx *ctx = req->ki_ctx;
+ 	unsigned long flags;
  
- 	spkt->spkt_family = dev->type;
--	strlcpy(spkt->spkt_device, dev->name, sizeof(spkt->spkt_device));
-+	strscpy(spkt->spkt_device, dev->name, sizeof(spkt->spkt_device));
- 	spkt->spkt_protocol = skb->protocol;
++	/*
++	 * kiocb didn't come from aio or is neither a read nor a write, hence
++	 * ignore it.
++	 */
++	if (!(iocb->ki_flags & IOCB_AIO_RW))
++		return;
++
+ 	if (WARN_ON_ONCE(!list_empty(&req->ki_list)))
+ 		return;
  
- 	/*
-@@ -3540,7 +3540,7 @@ static int packet_getname_spkt(struct socket *sock, struct sockaddr *uaddr,
- 	rcu_read_lock();
- 	dev = dev_get_by_index_rcu(sock_net(sk), READ_ONCE(pkt_sk(sk)->ifindex));
- 	if (dev)
--		strlcpy(uaddr->sa_data, dev->name, sizeof(uaddr->sa_data));
-+		strscpy(uaddr->sa_data, dev->name, sizeof(uaddr->sa_data));
- 	rcu_read_unlock();
+@@ -1455,7 +1462,7 @@ static int aio_prep_rw(struct kiocb *req
+ 	req->ki_complete = aio_complete_rw;
+ 	req->private = NULL;
+ 	req->ki_pos = iocb->aio_offset;
+-	req->ki_flags = iocb_flags(req->ki_filp);
++	req->ki_flags = iocb_flags(req->ki_filp) | IOCB_AIO_RW;
+ 	if (iocb->aio_flags & IOCB_FLAG_RESFD)
+ 		req->ki_flags |= IOCB_EVENTFD;
+ 	req->ki_hint = ki_hint_validate(file_write_hint(req->ki_filp));
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -314,6 +314,8 @@ enum rw_hint {
+ #define IOCB_SYNC		(1 << 5)
+ #define IOCB_WRITE		(1 << 6)
+ #define IOCB_NOWAIT		(1 << 7)
++/* kiocb is a read or write operation submitted by fs/aio.c. */
++#define IOCB_AIO_RW		(1 << 23)
  
- 	return sizeof(*uaddr);
--- 
-2.43.0
-
+ struct kiocb {
+ 	struct file		*ki_filp;
 
 
 
