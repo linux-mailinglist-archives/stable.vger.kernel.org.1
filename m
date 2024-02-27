@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-24975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C829869738
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:19:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5F7086936A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:45:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E382EB2B1FA
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:18:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B67828ED5B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:45:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4459C13DBBC;
-	Tue, 27 Feb 2024 14:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 896CB13B7A2;
+	Tue, 27 Feb 2024 13:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNSniUdt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5EBEX1i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04CA11419A1;
-	Tue, 27 Feb 2024 14:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479A413AA2F;
+	Tue, 27 Feb 2024 13:44:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043509; cv=none; b=iIkybYsdxBHO4f8RX51htlzP0NZBXE34Ln1TRboD3SIGc0Xw0II3Xsuh1iOOwMkntOGTRk06iHSbvmNQsfAR7yJ51papyAh+Vi/BA7VS4mLSS58Vi/EyYgnVXoxW4rlBjVd1mu+fhWTf+oMAqiz9JYFVdKWv+iiZDqkXrF7ndvY=
+	t=1709041477; cv=none; b=XcY79vOHCGqppWxah38xC9cTnXwd3S9IfTHneeY6P4R49MFjsE6261S45NSF1fXYm+3Ivdz8wJWBARsk6X3SzFBwKEMpL1uoiGgfI84e0z0e5eAZZGZJ6drPUYBrwXjirRRQ4aSTqcCSAQoXBeUffXaFV9EjQ9OPSX2PMKXuDWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043509; c=relaxed/simple;
-	bh=B5N+0XO5IH4b1XJzSf2/P8QaeZdafkZd5PjpEs46JrQ=;
+	s=arc-20240116; t=1709041477; c=relaxed/simple;
+	bh=pNk/U3NLJNfNxUPc6U9HPAfg3fjB8suFvXbsCnI8jN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NObIvBIit6qd6+IgSxGX78KK+OiOM8wL7Pu425azr1PP0xAM3wxP8XEXOr/RneIHI5Bfx3u2n1YtsrVGagM5u2Jk6r/w5y3ajpxEP0bf94+Vu6T6Qi4eRt7piZRKxCVlcBQ6OWx21dYRVphuXOJsQRs6pU38P3yaj43dSPCyGJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNSniUdt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E64C43390;
-	Tue, 27 Feb 2024 14:18:28 +0000 (UTC)
+	 MIME-Version; b=PMohRfWpgTmIrZf/CdM28erUvsu/DLYgig5Inhe3Uu6w1D/LRcsNG4szzK/N1bwcr5l7hf3ONKRqQIhFdtuxDj0wrOQnIeacxmLXTZUFo4uxLJuNEcM2K/XYPZLWyqj2nh8N7RaQmfIr0on+200U1oALVObiuKXurLPJq3ynZF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5EBEX1i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C62C43390;
+	Tue, 27 Feb 2024 13:44:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043508;
-	bh=B5N+0XO5IH4b1XJzSf2/P8QaeZdafkZd5PjpEs46JrQ=;
+	s=korg; t=1709041477;
+	bh=pNk/U3NLJNfNxUPc6U9HPAfg3fjB8suFvXbsCnI8jN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TNSniUdtKNtTfQk1qL8lnyxM6vWrQZgDENN3ikGhex+hKotoDRmuYUwZrvX+0VNHy
-	 qDwzrVv57sRzIeF0Uil07Dpo/6MRrq9EUQXyzVl5rTTykkxI+xBjR22QMXSXbJ79jJ
-	 92ryfl6CYX5iIqg7qd+D836LhGqF7JVo1kk1BHzE=
+	b=b5EBEX1iGxLliQ8nEQtcAGWuYcOyULNpiYNEDCKD4h0++X4j6i2ckhD5c91YGfzeT
+	 e8JVrNBpxpnK7mozSQ+xPrHpDNo9KB7Ys3YrZ3WIlSP74YFYv2OvMXku1BR0RWkxhk
+	 Xa/duUe0xRGbATepQ17ud7ANEZC8wJBbkrM50QPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 105/195] gtp: fix use-after-free and null-ptr-deref in gtp_genl_dump_pdp()
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 19/52] ext4: avoid allocating blocks from corrupted group in ext4_mb_try_best_found()
 Date: Tue, 27 Feb 2024 14:26:06 +0100
-Message-ID: <20240227131613.933962722@linuxfoundation.org>
+Message-ID: <20240227131549.165300344@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
+References: <20240227131548.514622258@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,102 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 136cfaca22567a03bbb3bf53a43d8cb5748b80ec upstream.
+[ Upstream commit 4530b3660d396a646aad91a787b6ab37cf604b53 ]
 
-The gtp_net_ops pernet operations structure for the subsystem must be
-registered before registering the generic netlink family.
+Determine if the group block bitmap is corrupted before using ac_b_ex in
+ext4_mb_try_best_found() to avoid allocating blocks from a group with a
+corrupted block bitmap in the following concurrency and making the
+situation worse.
 
-Syzkaller hit 'general protection fault in gtp_genl_dump_pdp' bug:
+ext4_mb_regular_allocator
+  ext4_lock_group(sb, group)
+  ext4_mb_good_group
+   // check if the group bbitmap is corrupted
+  ext4_mb_complex_scan_group
+   // Scan group gets ac_b_ex but doesn't use it
+  ext4_unlock_group(sb, group)
+                           ext4_mark_group_bitmap_corrupted(group)
+                           // The block bitmap was corrupted during
+                           // the group unlock gap.
+  ext4_mb_try_best_found
+    ext4_lock_group(ac->ac_sb, group)
+    ext4_mb_use_best_found
+      mb_mark_used
+      // Allocating blocks in block bitmap corrupted group
 
-general protection fault, probably for non-canonical address
-0xdffffc0000000002: 0000 [#1] PREEMPT SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
-CPU: 1 PID: 5826 Comm: gtp Not tainted 6.8.0-rc3-std-def-alt1 #1
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.0-alt1 04/01/2014
-RIP: 0010:gtp_genl_dump_pdp+0x1be/0x800 [gtp]
-Code: c6 89 c6 e8 64 e9 86 df 58 45 85 f6 0f 85 4e 04 00 00 e8 c5 ee 86
-      df 48 8b 54 24 18 48 b8 00 00 00 00 00 fc ff df 48 c1 ea 03 <80>
-      3c 02 00 0f 85 de 05 00 00 48 8b 44 24 18 4c 8b 30 4c 39 f0 74
-RSP: 0018:ffff888014107220 EFLAGS: 00010202
-RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: 0000000000000002 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-R13: ffff88800fcda588 R14: 0000000000000001 R15: 0000000000000000
-FS:  00007f1be4eb05c0(0000) GS:ffff88806ce80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f1be4e766cf CR3: 000000000c33e000 CR4: 0000000000750ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? show_regs+0x90/0xa0
- ? die_addr+0x50/0xd0
- ? exc_general_protection+0x148/0x220
- ? asm_exc_general_protection+0x22/0x30
- ? gtp_genl_dump_pdp+0x1be/0x800 [gtp]
- ? __alloc_skb+0x1dd/0x350
- ? __pfx___alloc_skb+0x10/0x10
- genl_dumpit+0x11d/0x230
- netlink_dump+0x5b9/0xce0
- ? lockdep_hardirqs_on_prepare+0x253/0x430
- ? __pfx_netlink_dump+0x10/0x10
- ? kasan_save_track+0x10/0x40
- ? __kasan_kmalloc+0x9b/0xa0
- ? genl_start+0x675/0x970
- __netlink_dump_start+0x6fc/0x9f0
- genl_family_rcv_msg_dumpit+0x1bb/0x2d0
- ? __pfx_genl_family_rcv_msg_dumpit+0x10/0x10
- ? genl_op_from_small+0x2a/0x440
- ? cap_capable+0x1d0/0x240
- ? __pfx_genl_start+0x10/0x10
- ? __pfx_genl_dumpit+0x10/0x10
- ? __pfx_genl_done+0x10/0x10
- ? security_capable+0x9d/0xe0
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Fixes: 459aa660eb1d ("gtp: add initial driver for datapath of GPRS Tunneling Protocol (GTP-U)")
-Link: https://lore.kernel.org/r/20240214162733.34214-1-kovalev@altlinux.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240104142040.2835097-7-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/gtp.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/ext4/mballoc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/net/gtp.c
-+++ b/drivers/net/gtp.c
-@@ -1906,20 +1906,20 @@ static int __init gtp_init(void)
- 	if (err < 0)
- 		goto error_out;
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index df390979058fd..e0dd01cb1a0e7 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -1802,6 +1802,9 @@ int ext4_mb_try_best_found(struct ext4_allocation_context *ac,
+ 		return err;
  
--	err = genl_register_family(&gtp_genl_family);
-+	err = register_pernet_subsys(&gtp_net_ops);
- 	if (err < 0)
- 		goto unreg_rtnl_link;
+ 	ext4_lock_group(ac->ac_sb, group);
++	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)))
++		goto out;
++
+ 	max = mb_find_extent(e4b, ex.fe_start, ex.fe_len, &ex);
  
--	err = register_pernet_subsys(&gtp_net_ops);
-+	err = genl_register_family(&gtp_genl_family);
- 	if (err < 0)
--		goto unreg_genl_family;
-+		goto unreg_pernet_subsys;
+ 	if (max > 0) {
+@@ -1809,6 +1812,7 @@ int ext4_mb_try_best_found(struct ext4_allocation_context *ac,
+ 		ext4_mb_use_best_found(ac, e4b);
+ 	}
  
- 	pr_info("GTP module loaded (pdp ctx size %zd bytes)\n",
- 		sizeof(struct pdp_ctx));
- 	return 0;
++out:
+ 	ext4_unlock_group(ac->ac_sb, group);
+ 	ext4_mb_unload_buddy(e4b);
  
--unreg_genl_family:
--	genl_unregister_family(&gtp_genl_family);
-+unreg_pernet_subsys:
-+	unregister_pernet_subsys(&gtp_net_ops);
- unreg_rtnl_link:
- 	rtnl_link_unregister(&gtp_link_ops);
- error_out:
+-- 
+2.43.0
+
 
 
 
