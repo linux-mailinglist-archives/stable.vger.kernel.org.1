@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-24090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09326869299
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:37:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DDC8869273
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:35:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C47F1F2D1FD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:37:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4D36282D7D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:35:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A370A140391;
-	Tue, 27 Feb 2024 13:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DFE113B2A2;
+	Tue, 27 Feb 2024 13:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lmsX5rjQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZcHnRFxY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CCB13F01E;
-	Tue, 27 Feb 2024 13:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08E81E534;
+	Tue, 27 Feb 2024 13:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041005; cv=none; b=BAQDpLF+G1COid3DgAaZVPgiU+P1XlJ4FyC3XZYLTvybkQOlHSDC3vZwbaZg+UQGm/mKFo/4LcRSRR8rqzovQ7Pf37fnXpb/fKKBDygk1PLNXKaDwiq6aS1plzGWDD2d1aqkcOM8SlOY+wvS3igjN4+h4KpKuY4PRZx6XiSNuZc=
+	t=1709040922; cv=none; b=OHO/2Sqq1XXaLOgLdzy7ZJoqyf1zD0JI3x+ICRwVkHwCizEh6Tr9I+w0oEW1XhBdX1vQxRty9LkcuDoJzmLfn4OTbLmmkspPCPyBMm2zVaI3h+rwCbfYP4my47tq0wDvIvFfKr16q+3u/qHSDlNA7eZxEtLYxg8QPhD2xLJlh7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041005; c=relaxed/simple;
-	bh=wqUXqCbQh3OaPBL4PPpedbayzg4HSVcDChYRxeS820s=;
+	s=arc-20240116; t=1709040922; c=relaxed/simple;
+	bh=AGKNVRvHuSC01turs7w63LGWQTUOaj7vqNBmFf9NS3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LxnbZp9JAZ8e/GoABWre27mlHyms5gkx7tzDpYcdEeVCQWQoMO1hMwrXiJwEWNBbSTR9q7SYch56Qry5YN6kJM1UINWgkbtWO2p653IdukTpUCsh7PvdI64skSq9wCizYHE7WwLV91ltA32L5P7bMh9VAGRGApImKG5nRYQ1Ah4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lmsX5rjQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E69D5C433F1;
-	Tue, 27 Feb 2024 13:36:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gkwga84EQxck4FSGUe9PqQ67zrHWhRMiJM5OlEigFPRx5s2eDH0LOEQ9H3nEQU17AYFOX8i2pZ2JoYI217by85oe5v6cKeeK1WcZP6N+2Y3ol6F2+ASAOcI+57CP/3PMae3N67E7drwzpCRiH0/9oaG6uCKxWFEMLoLjiKgzjTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZcHnRFxY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F56EC433C7;
+	Tue, 27 Feb 2024 13:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041005;
-	bh=wqUXqCbQh3OaPBL4PPpedbayzg4HSVcDChYRxeS820s=;
+	s=korg; t=1709040922;
+	bh=AGKNVRvHuSC01turs7w63LGWQTUOaj7vqNBmFf9NS3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lmsX5rjQ0tK7x3E+k/68PWyFbfkpiM4rvvaBTpUEzYlU+B25bhQdSP++zbzQp4Uge
-	 R+wqpIfzB1elIEiske4h5yyP3miQrNXRZkt94bd/iMXqsKCnJj+oTC3b0yAwqdUnC1
-	 lZfa/gwA/lnYEG34B4Wy21y49V4zEGV/xA566RWU=
+	b=ZcHnRFxYyk0OHbmwdXSdBm9QvldLgV/2X+6KIUziZw2BazgZemqo1aRqvmuvVe73/
+	 mIY4PSmRg1XJU/aylcC+uQ8awumOEmGlnpiVdZ0prp8sNxZ0zYMFulE3/QQ81WkTnT
+	 i+COi3tuNLbhe0Db5Tbct3rwPU1MVLw/U7qqRRgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.7 147/334] btrfs: defrag: avoid unnecessary defrag caused by incorrect extent size
-Date: Tue, 27 Feb 2024 14:20:05 +0100
-Message-ID: <20240227131635.199179400@linuxfoundation.org>
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Huang Rui <ray.huang@amd.com>,
+	dri-devel@lists.freedesktop.org,
+	Matthew Auld <matthew.auld@intel.com>
+Subject: [PATCH 6.7 148/334] drm/ttm: Fix an invalid freeing on already freed page in error path
+Date: Tue, 27 Feb 2024 14:20:06 +0100
+Message-ID: <20240227131635.229615976@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
 References: <20240227131630.636392135@linuxfoundation.org>
@@ -61,118 +63,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-commit e42b9d8b9ea2672811285e6a7654887ff64d23f3 upstream.
+commit 40510a941d27d405a82dc3320823d875f94625df upstream.
 
-[BUG]
-With the following file extent layout, defrag would do unnecessary IO
-and result more on-disk space usage.
+If caching mode change fails due to, for example, OOM we
+free the allocated pages in a two-step process. First the pages
+for which the caching change has already succeeded. Secondly
+the pages for which a caching change did not succeed.
 
-  # mkfs.btrfs -f $dev
-  # mount $dev $mnt
-  # xfs_io -f -c "pwrite 0 40m" $mnt/foobar
-  # sync
-  # xfs_io -f -c "pwrite 40m 16k" $mnt/foobar
-  # sync
+However the second step was incorrectly freeing the pages already
+freed in the first step.
 
-Above command would lead to the following file extent layout:
+Fix.
 
-        item 6 key (257 EXTENT_DATA 0) itemoff 15816 itemsize 53
-                generation 7 type 1 (regular)
-                extent data disk byte 298844160 nr 41943040
-                extent data offset 0 nr 41943040 ram 41943040
-                extent compression 0 (none)
-        item 7 key (257 EXTENT_DATA 41943040) itemoff 15763 itemsize 53
-                generation 8 type 1 (regular)
-                extent data disk byte 13631488 nr 16384
-                extent data offset 0 nr 16384 ram 16384
-                extent compression 0 (none)
-
-Which is mostly fine. We can allow the final 16K to be merged with the
-previous 40M, but it's upon the end users' preference.
-
-But if we defrag the file using the default parameters, it would result
-worse file layout:
-
- # btrfs filesystem defrag $mnt/foobar
- # sync
-
-        item 6 key (257 EXTENT_DATA 0) itemoff 15816 itemsize 53
-                generation 7 type 1 (regular)
-                extent data disk byte 298844160 nr 41943040
-                extent data offset 0 nr 8650752 ram 41943040
-                extent compression 0 (none)
-        item 7 key (257 EXTENT_DATA 8650752) itemoff 15763 itemsize 53
-                generation 9 type 1 (regular)
-                extent data disk byte 340787200 nr 33292288
-                extent data offset 0 nr 33292288 ram 33292288
-                extent compression 0 (none)
-        item 8 key (257 EXTENT_DATA 41943040) itemoff 15710 itemsize 53
-                generation 8 type 1 (regular)
-                extent data disk byte 13631488 nr 16384
-                extent data offset 0 nr 16384 ram 16384
-                extent compression 0 (none)
-
-Note the original 40M extent is still there, but a new 32M extent is
-created for no benefit at all.
-
-[CAUSE]
-There is an existing check to make sure we won't defrag a large enough
-extent (the threshold is by default 32M).
-
-But the check is using the length to the end of the extent:
-
-	range_len = em->len - (cur - em->start);
-
-	/* Skip too large extent */
-	if (range_len >= extent_thresh)
-		goto next;
-
-This means, for the first 8MiB of the extent, the range_len is always
-smaller than the default threshold, and would not be defragged.
-But after the first 8MiB, the remaining part would fit the requirement,
-and be defragged.
-
-Such different behavior inside the same extent caused the above problem,
-and we should avoid different defrag decision inside the same extent.
-
-[FIX]
-Instead of using @range_len, just use @em->len, so that we have a
-consistent decision among the same file extent.
-
-Now with this fix, we won't touch the extent, thus not making it any
-worse.
-
-Reported-by: Filipe Manana <fdmanana@suse.com>
-Fixes: 0cb5950f3f3b ("btrfs: fix deadlock when reserving space during defrag")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Fixes: 379989e7cbdc ("drm/ttm/pool: Fix ttm_pool_alloc error path")
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Huang Rui <ray.huang@amd.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.4+
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240221073324.3303-1-thomas.hellstrom@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/defrag.c |    2 +-
+ drivers/gpu/drm/ttm/ttm_pool.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/defrag.c
-+++ b/fs/btrfs/defrag.c
-@@ -1047,7 +1047,7 @@ static int defrag_collect_targets(struct
- 			goto add;
+--- a/drivers/gpu/drm/ttm/ttm_pool.c
++++ b/drivers/gpu/drm/ttm/ttm_pool.c
+@@ -387,7 +387,7 @@ static void ttm_pool_free_range(struct t
+ 				enum ttm_caching caching,
+ 				pgoff_t start_page, pgoff_t end_page)
+ {
+-	struct page **pages = tt->pages;
++	struct page **pages = &tt->pages[start_page];
+ 	unsigned int order;
+ 	pgoff_t i, nr;
  
- 		/* Skip too large extent */
--		if (range_len >= extent_thresh)
-+		if (em->len >= extent_thresh)
- 			goto next;
- 
- 		/*
 
 
 
