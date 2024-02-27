@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-25080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CC1A8697A3
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:23:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6C76869662
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:11:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 204321F28134
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:23:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8823A1F2E126
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:11:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07149141995;
-	Tue, 27 Feb 2024 14:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F7611420DD;
+	Tue, 27 Feb 2024 14:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMSEckmJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCOldF8V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B889813B2B8;
-	Tue, 27 Feb 2024 14:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FA71420DA;
+	Tue, 27 Feb 2024 14:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043804; cv=none; b=JGOhvz95mJeyyTWoG8Ssv99HWlpXHdugGI70LnJmduqaNpMbNLKf7LMs4Q9E4eCMc9wwV665HS35gH6CRx6kvuAdvkEDZpKU2vpbeDqdoxHIr5SFVA6i17+jgQH97trRyCJbcQGfVKcfDRe86Z1Fr6XQnrVgwqS7GTe9+h+FSJ8=
+	t=1709043063; cv=none; b=FScU9/ZBtWa/JRBf0mRt4AXjvcChbu063H/c9o4PFIr/YVmPp27GYdetiJMDsb/HnbZgDfW85Hg0UJNqCyi9gCuN9doKq+bkA3HhdYOsNi5tCmsRuwOScTH2c21U4VZKcgIbz1Q6L2djiaSkzik3Ic5nZbs8xFT2xfEZ9uAdXJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043804; c=relaxed/simple;
-	bh=9Y1RhPk6jbsC4wq59g47vj5OFhlURLnuRu4SfHM5kdo=;
+	s=arc-20240116; t=1709043063; c=relaxed/simple;
+	bh=vw2tkzQcvH24IYtBtA0NsLmKlAoy7UGBrFfCvChtTpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oc8M3KTLwFKrdCABsyNaIWrdv3PreblElcZQCUkv4NJUkyR1VqFa7LqvfM+fboJKuGEAdzi2kcWOU8WgVuBxT81S92vD/Dp9xthOHZvllbsGfXXp0WVIW5wphcDIWOOQvF3ETrs8vIEjNC7nS5SIklPf6S3ba0wZqKFPy7RNNBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMSEckmJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47687C433C7;
-	Tue, 27 Feb 2024 14:23:24 +0000 (UTC)
+	 MIME-Version; b=kA2vO1Q9EqYuWyPryby2bnTshXRZmCjPxuQyFVLuUvut9gk5JptVVIjgBlpHv2RRGsIzdMH62FPAo872+4Z7zIxlwiPrsK995vt6QW+NNK/LIqjea9tYUOrQ7NKYQm7Xl+34ubpDl2gCYAeYnGsjKykUNc/zv5agvIHTYpDLH20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCOldF8V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C607C43399;
+	Tue, 27 Feb 2024 14:11:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043804;
-	bh=9Y1RhPk6jbsC4wq59g47vj5OFhlURLnuRu4SfHM5kdo=;
+	s=korg; t=1709043063;
+	bh=vw2tkzQcvH24IYtBtA0NsLmKlAoy7UGBrFfCvChtTpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qMSEckmJMBYmR3XV3AGtmYw7cARJGsqcgBfJMc8Df/7/K/XcveYYq8N8l0+uqataW
-	 +R54eLsfrHXoEz3EGFyYhMvDD2AQg6+935cmnwatR7LufPWxgl/89Wyf5p1myyNQk5
-	 8xAbq75HITtyA2Sdrabew2IUFUA8ls/TQNyx6F30=
+	b=GCOldF8VbChda/SG08O+J9/AZPay9ZKgnxlU+juVMP8vwccbTlHbcbxeu4P1YXUVY
+	 hDtQZAuomUAAUycnleo8hrywfWpnfn8RW3RSNaDE+Th/2XctSmkQ7mPFJI9iEmnBPK
+	 epoZv54GaHsJ3ChSSyfpcXZXWXoA0r4U7wVqKQZo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vinod Koul <vkoul@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Danilo Krummrich <dakr@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 14/84] dmaengine: fsl-qdma: increase size of irq_name
+Subject: [PATCH 5.15 213/245] nouveau: fix function cast warnings
 Date: Tue, 27 Feb 2024 14:26:41 +0100
-Message-ID: <20240227131553.336200740@linuxfoundation.org>
+Message-ID: <20240227131622.124379232@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,50 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinod Koul <vkoul@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 6386f6c995b3ab91c72cfb76e4465553c555a8da ]
+[ Upstream commit 0affdba22aca5573f9d989bcb1d71d32a6a03efe ]
 
-We seem to have hit warnings of 'output may be truncated' which is fixed
-by increasing the size of 'irq_name'
+clang-16 warns about casting between incompatible function types:
 
-drivers/dma/fsl-qdma.c: In function ‘fsl_qdma_irq_init’:
-drivers/dma/fsl-qdma.c:824:46: error: ‘%d’ directive writing between 1 and 11 bytes into a region of size 10 [-Werror=format-overflow=]
-  824 |                 sprintf(irq_name, "qdma-queue%d", i);
-      |                                              ^~
-drivers/dma/fsl-qdma.c:824:35: note: directive argument in the range [-2147483641, 2147483646]
-  824 |                 sprintf(irq_name, "qdma-queue%d", i);
-      |                                   ^~~~~~~~~~~~~~
-drivers/dma/fsl-qdma.c:824:17: note: ‘sprintf’ output between 12 and 22 bytes into a destination of size 20
-  824 |                 sprintf(irq_name, "qdma-queue%d", i);
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c:161:10: error: cast from 'void (*)(const struct firmware *)' to 'void (*)(void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+  161 |         .fini = (void(*)(void *))release_firmware,
 
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+This one was done to use the generic shadow_fw_release() function as a
+callback for struct nvbios_source. Change it to use the same prototype
+as the other five instances, with a trivial helper function that actually
+calls release_firmware.
+
+Fixes: 70c0f263cc2e ("drm/nouveau/bios: pull in basic vbios subdev, more to come later")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240213095753.455062-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/fsl-qdma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/fsl-qdma.c b/drivers/dma/fsl-qdma.c
-index ad5818c0ce223..f2f10aeeea319 100644
---- a/drivers/dma/fsl-qdma.c
-+++ b/drivers/dma/fsl-qdma.c
-@@ -754,7 +754,7 @@ fsl_qdma_irq_init(struct platform_device *pdev,
- 	int i;
- 	int cpu;
- 	int ret;
--	char irq_name[20];
-+	char irq_name[32];
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c
+index 4b571cc6bc70f..6597def18627e 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c
+@@ -154,11 +154,17 @@ shadow_fw_init(struct nvkm_bios *bios, const char *name)
+ 	return (void *)fw;
+ }
  
- 	fsl_qdma->error_irq =
- 		platform_get_irq_byname(pdev, "qdma-error");
++static void
++shadow_fw_release(void *fw)
++{
++	release_firmware(fw);
++}
++
+ static const struct nvbios_source
+ shadow_fw = {
+ 	.name = "firmware",
+ 	.init = shadow_fw_init,
+-	.fini = (void(*)(void *))release_firmware,
++	.fini = shadow_fw_release,
+ 	.read = shadow_fw_read,
+ 	.rw = false,
+ };
 -- 
 2.43.0
 
