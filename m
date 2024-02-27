@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-24958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD68D869710
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:18:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B52F86965E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:11:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B0171C231FA
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:18:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAF27293B1E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:10:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32CAD13EFF4;
-	Tue, 27 Feb 2024 14:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C37613B78F;
+	Tue, 27 Feb 2024 14:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKhHnNdh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N6UPjU14"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E368713B798;
-	Tue, 27 Feb 2024 14:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B76713A259;
+	Tue, 27 Feb 2024 14:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043462; cv=none; b=S4Tu0EsmvgTqlSQVw5pJV3+nAzvk+B3k/WuSe8GAKtphrQK/tMVR9yItZOA/GSWlqJpo4nLJ/CKJcL8j3uvkihD1WAhk7Dl3+zx3EU67R+TITsndVeCQplikwvy27LLMU+OfyvuEs03Ct4I960Vbiz6xqCKanRUQGhiZkTmgk5U=
+	t=1709043058; cv=none; b=AkGmt6VXSvwYyuJjPGuI5m7cTpkBrwY6TzwEwidOSuKKkudjJe66Jvgecydembs5ldlwSbf+xWU5vlJWRKriFwL3u6MOGyren1CJSuiZVBR15dMcjY3IKvImKI9xmEvRgP8fVaUwDQFBTtIwJ+YWz6SzS0QrhLnEgmxW+DB7SYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043462; c=relaxed/simple;
-	bh=nMRE3jXaske+y3uz8bWTo1O3Wv4MIh7rogM1cwgdnkI=;
+	s=arc-20240116; t=1709043058; c=relaxed/simple;
+	bh=B5Sledx1v2Mp3YWDl5ddsiSrnwlkbAnZUGVv9gq0EVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SEdSuoErRcCF2inN9L7oBmaktDjcvihk10dme6mHqDVI3Ldznu7sbTvUChOjZYllO6rS/mkYSsalAZ51etbZPTkenXj9mXAkGVaB7WdWdWl8cA3ERZ2q0uhGeq4Wz5Rll/BdtHuZy3IEP7magP9t4OtIdFURjkrfQIWlYWwIdpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKhHnNdh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B2DEC433F1;
-	Tue, 27 Feb 2024 14:17:41 +0000 (UTC)
+	 MIME-Version; b=ah+ZVG5TsZlkQCafw4Opm7SmhAVmVdpStikiDt+ubPuUS2fES6Hctc/p8a2aSr5y2S/Uy3hL47vG2jMdDCLXd1ecKDBV2NB4H5WRpGEsJb+ovowrf5vg4nX37Bg6vUah2EgUFCBX8FESUvyOYbvsYAghtnn+wPexZ3gHZiNqmXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N6UPjU14; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDBD1C433F1;
+	Tue, 27 Feb 2024 14:10:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043461;
-	bh=nMRE3jXaske+y3uz8bWTo1O3Wv4MIh7rogM1cwgdnkI=;
+	s=korg; t=1709043058;
+	bh=B5Sledx1v2Mp3YWDl5ddsiSrnwlkbAnZUGVv9gq0EVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fKhHnNdhG7RtF1fd9IWTp2M0gd/h8Dp9dUjuHrxFRuYap1a403PGQTVCby+k0Z0jc
-	 ZsEC9R9SkDBhYyd5FwmUwknpo1sNK2j/I3nqZL5ursZVFLaZ+MBTXSD7Waf3snt5Im
-	 W5GiOl+ctbw6/Y/C4ZFB2mWjC6/PMLllfK9EMaf4=
+	b=N6UPjU140DpOkdKsQnxIIsmthiabvvgrrkgiE+VhMwcrDdC9+L9UR8Rm96xYWCe4A
+	 EQOuBeN+HBpfl6RNczF40qKDtT0IGazeA7z7xnozRmN4IPMzw//g70j50Mgdw3JpIj
+	 gNheDaQBeEmZZnNvlc/Atvp5qse7k13mgxDSgN+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Subject: [PATCH 6.1 117/195] serial: amba-pl011: Fix DMA transmission in RS485 mode
+	Dzmitry <wrkedm@gmail.com>,
+	Tamim Khan <tamim@fusetak.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 190/245] ACPI: resource: Skip IRQ override on Asus Vivobook S5602ZA
 Date: Tue, 27 Feb 2024 14:26:18 +0100
-Message-ID: <20240227131614.322002624@linuxfoundation.org>
+Message-ID: <20240227131621.368873707@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,113 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Tamim Khan <tamim@fusetak.com>
 
-commit 3b69e32e151bc4a4e3c785cbdb1f918d5ee337ed upstream.
+[ Upstream commit b5f9223a105d9b56954ad1ca3eace4eaf26c99ed ]
 
-When DMA is used in RS485 mode make sure that the UARTs tx section is
-enabled before the DMA buffers are queued for transmission.
+Like the Asus Vivobook K3402ZA/K3502ZA/S5402ZA Asus Vivobook S5602ZA
+has an ACPI DSDT table the describes IRQ 1 as ActiveLow while the kernel
+overrides it to Edge_High. This prevents the keyboard on this laptop
+from working. To fix this add this laptop to the skip_override_table so
+that the kernel does not override IRQ 1.
 
-Cc: stable@vger.kernel.org
-Fixes: 8d479237727c ("serial: amba-pl011: add RS485 support")
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Link: https://lore.kernel.org/r/20240216224709.9928-2-l.sanfilippo@kunbus.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216579
+Tested-by: Dzmitry <wrkedm@gmail.com>
+Signed-off-by: Tamim Khan <tamim@fusetak.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/amba-pl011.c |   60 ++++++++++++++++++++--------------------
- 1 file changed, 30 insertions(+), 30 deletions(-)
+ drivers/acpi/resource.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/tty/serial/amba-pl011.c
-+++ b/drivers/tty/serial/amba-pl011.c
-@@ -1345,11 +1345,41 @@ static void pl011_start_tx_pio(struct ua
- 	}
- }
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 4d1db2def7ae4..5f56839ed71df 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -428,6 +428,13 @@ static const struct dmi_system_id asus_laptop[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "S5402ZA"),
+ 		},
+ 	},
++	{
++		.ident = "Asus Vivobook S5602ZA",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "S5602ZA"),
++		},
++	},
+ 	{ }
+ };
  
-+static void pl011_rs485_tx_start(struct uart_amba_port *uap)
-+{
-+	struct uart_port *port = &uap->port;
-+	u32 cr;
-+
-+	/* Enable transmitter */
-+	cr = pl011_read(uap, REG_CR);
-+	cr |= UART011_CR_TXE;
-+
-+	/* Disable receiver if half-duplex */
-+	if (!(port->rs485.flags & SER_RS485_RX_DURING_TX))
-+		cr &= ~UART011_CR_RXE;
-+
-+	if (port->rs485.flags & SER_RS485_RTS_ON_SEND)
-+		cr &= ~UART011_CR_RTS;
-+	else
-+		cr |= UART011_CR_RTS;
-+
-+	pl011_write(cr, uap, REG_CR);
-+
-+	if (port->rs485.delay_rts_before_send)
-+		mdelay(port->rs485.delay_rts_before_send);
-+
-+	uap->rs485_tx_started = true;
-+}
-+
- static void pl011_start_tx(struct uart_port *port)
- {
- 	struct uart_amba_port *uap =
- 	    container_of(port, struct uart_amba_port, port);
- 
-+	if ((uap->port.rs485.flags & SER_RS485_ENABLED) &&
-+	    !uap->rs485_tx_started)
-+		pl011_rs485_tx_start(uap);
-+
- 	if (!pl011_dma_tx_start(uap))
- 		pl011_start_tx_pio(uap);
- }
-@@ -1431,42 +1461,12 @@ static bool pl011_tx_char(struct uart_am
- 	return true;
- }
- 
--static void pl011_rs485_tx_start(struct uart_amba_port *uap)
--{
--	struct uart_port *port = &uap->port;
--	u32 cr;
--
--	/* Enable transmitter */
--	cr = pl011_read(uap, REG_CR);
--	cr |= UART011_CR_TXE;
--
--	/* Disable receiver if half-duplex */
--	if (!(port->rs485.flags & SER_RS485_RX_DURING_TX))
--		cr &= ~UART011_CR_RXE;
--
--	if (port->rs485.flags & SER_RS485_RTS_ON_SEND)
--		cr &= ~UART011_CR_RTS;
--	else
--		cr |= UART011_CR_RTS;
--
--	pl011_write(cr, uap, REG_CR);
--
--	if (port->rs485.delay_rts_before_send)
--		mdelay(port->rs485.delay_rts_before_send);
--
--	uap->rs485_tx_started = true;
--}
--
- /* Returns true if tx interrupts have to be (kept) enabled  */
- static bool pl011_tx_chars(struct uart_amba_port *uap, bool from_irq)
- {
- 	struct circ_buf *xmit = &uap->port.state->xmit;
- 	int count = uap->fifosize >> 1;
- 
--	if ((uap->port.rs485.flags & SER_RS485_ENABLED) &&
--	    !uap->rs485_tx_started)
--		pl011_rs485_tx_start(uap);
--
- 	if (uap->port.x_char) {
- 		if (!pl011_tx_char(uap, uap->port.x_char, from_irq))
- 			return true;
+-- 
+2.43.0
+
 
 
 
