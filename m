@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-24071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 409B8869322
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:42:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21CAA869293
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:37:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12FB9B2DC41
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:35:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB6441F2D0EF
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:36:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5128A13B295;
-	Tue, 27 Feb 2024 13:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF30813DBA5;
+	Tue, 27 Feb 2024 13:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSGxrR13"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tz3EAa4K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8BC1E534;
-	Tue, 27 Feb 2024 13:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E40013B791;
+	Tue, 27 Feb 2024 13:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709040953; cv=none; b=dTPd4RBTFKM8fRcgicM5V/aBBlH13WNgQj1xASGpVVoR62zQ+ezT371Rt/g14N/rlH664hSLJlMv7g50mfU73U/6FdgBJbfjAirAuvwv7yOv4yaXIgmEjwfX69Ig04x0RWAsaqw9LeA0UcwD4BCof5Wq9iJVTVTyPAtJTc9hkZI=
+	t=1709040983; cv=none; b=DQiWSbN4b4iFyK8nTFX1uKv1pTLh8YvuA4TZirCkbnE2ZMW/+Au92iK8GPVnVLV8pzufUXg6wiTAp8TdhjbVVP13lkUZstwzvVRdpPVxr8dHuWm9axhafsCUz5eLF2ZPjFa1MGhFQ9Lr4+KrTfKGBRsTpO76/w55smUMW3JmkyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709040953; c=relaxed/simple;
-	bh=BTCsDAy9rL1CgMN1yJVlaLUW8vvUW0Lcf9DW6Q6d7GE=;
+	s=arc-20240116; t=1709040983; c=relaxed/simple;
+	bh=2KL+3kvGVnn4fh2czcuBXfjyYJnHYencw8V+2FfV4ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JNUaH2KqZwwF/qujCwa+Z3WIBOc+JyBJTzKJruSIULreljq/TgrOIFWZ2VvhTjwJACZHa59s37sXXHqjI5awfbNmUA8R/Eu8Nb5wvisBRoQuwh/PxXpsLvoGHFb1/ldwreI8rMPKXMto3fxn3DRCuvxdkLwY23KgfesFM4PBYRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vSGxrR13; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9093CC433C7;
-	Tue, 27 Feb 2024 13:35:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CEsSo1QgdaWJKMSZx74EPPL0m/vo8/bHY2259PQfE9W/5/0sIX0YVTyKj8SjwFo9HkctNkp5fsOnwytmtAU9h/zoPODKZv/SnlQX9gAxJsKJXzYZh7akxDDN3ylEIBxR1AXs/RG0KKoHvt0SkuCL/bzXeXlg/pxR5gNqP3aA2Ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tz3EAa4K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E79B3C433F1;
+	Tue, 27 Feb 2024 13:36:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709040952;
-	bh=BTCsDAy9rL1CgMN1yJVlaLUW8vvUW0Lcf9DW6Q6d7GE=;
+	s=korg; t=1709040983;
+	bh=2KL+3kvGVnn4fh2czcuBXfjyYJnHYencw8V+2FfV4ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vSGxrR13tSZLMpqUfnNPvIfch0dwFjo6HWvnxC0+Hm6SxjLr0QR8sgCc3L2Fo6Kqh
-	 TVzvhjCzr4gzeWftsYG5xsp6crjl55BpQdashbeHj7uqfzYJegUAO4SGHJDlZW1oh8
-	 1WzGK81kSv+KSrfZ15R5fvkgHjMfPUfTFcFH78Ns=
+	b=Tz3EAa4KZgy2mBxaL2WiDMkIOFo+vBXP5jzArnVjG8n26Q8YJUwg+3vOVp6zPOt+o
+	 20aasSS0oKwmdV8Ve6zik+NkGBuuN/MtodZj1aYcDiAqOnobUkUsgADkKL5MMUpO1M
+	 4kzFyPsjl4EZbS8uloBTKN/kPvEwVCs+tSReEKgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve Morvai <stevemorvai@hotmail.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.7 149/334] drm/meson: Dont remove bridges which are created by other drivers
-Date: Tue, 27 Feb 2024 14:20:07 +0100
-Message-ID: <20240227131635.260335900@linuxfoundation.org>
+	Bert Karwatzki <spasswolf@web.de>,
+	Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
+	Matthew Auld <matthew.auld@intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Subject: [PATCH 6.7 150/334] drm/buddy: Modify duplicate list_splice_tail call
+Date: Tue, 27 Feb 2024 14:20:08 +0100
+Message-ID: <20240227131635.303005747@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
 References: <20240227131630.636392135@linuxfoundation.org>
@@ -60,73 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
 
-commit bd915ae73a2d78559b376ad2caf5e4ef51de2455 upstream.
+commit 02f76a9cd4494719600baf1ab278930df39431ab upstream.
 
-Stop calling drm_bridge_remove() for bridges allocated/managed by other
-drivers in the remove paths of meson_encoder_{cvbs,dsi,hdmi}.
-drm_bridge_remove() unregisters the bridge so it cannot be used
-anymore. Doing so for bridges we don't own can lead to the video
-pipeline not being able to come up after -EPROBE_DEFER of the VPU
-because we're unregistering a bridge that's managed by another driver.
-The other driver doesn't know that we have unregistered it's bridge
-and on subsequent .probe() we're not able to find those bridges anymore
-(since nobody re-creates them).
+Remove the duplicate list_splice_tail call when the
+total_allocated < size condition is true.
 
-This fixes probe errors on Meson8b boards with the CVBS outputs enabled.
-
-Fixes: 09847723c12f ("drm/meson: remove drm bridges at aggregate driver unbind time")
-Fixes: 42dcf15f901c ("drm/meson: add DSI encoder")
-Cc:  <stable@vger.kernel.org>
-Reported-by: Steve Morvai <stevemorvai@hotmail.com>
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Tested-by: Steve Morvai <stevemorvai@hotmail.com>
-Link: https://lore.kernel.org/r/20240215220442.1343152-1-martin.blumenstingl@googlemail.com
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240215220442.1343152-1-martin.blumenstingl@googlemail.com
+Cc: <stable@vger.kernel.org> # 6.7+
+Fixes: 8746c6c9dfa3 ("drm/buddy: Fix alloc_range() error handling code")
+Reported-by: Bert Karwatzki <spasswolf@web.de>
+Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240216100048.4101-1-Arunpravin.PaneerSelvam@amd.com
+Signed-off-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/meson/meson_encoder_cvbs.c |    1 -
- drivers/gpu/drm/meson/meson_encoder_dsi.c  |    1 -
- drivers/gpu/drm/meson/meson_encoder_hdmi.c |    1 -
- 3 files changed, 3 deletions(-)
+ drivers/gpu/drm/drm_buddy.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/meson/meson_encoder_cvbs.c
-+++ b/drivers/gpu/drm/meson/meson_encoder_cvbs.c
-@@ -294,6 +294,5 @@ void meson_encoder_cvbs_remove(struct me
- 	if (priv->encoders[MESON_ENC_CVBS]) {
- 		meson_encoder_cvbs = priv->encoders[MESON_ENC_CVBS];
- 		drm_bridge_remove(&meson_encoder_cvbs->bridge);
--		drm_bridge_remove(meson_encoder_cvbs->next_bridge);
+diff --git a/drivers/gpu/drm/drm_buddy.c b/drivers/gpu/drm/drm_buddy.c
+index c1a99bf4dffd..c4222b886db7 100644
+--- a/drivers/gpu/drm/drm_buddy.c
++++ b/drivers/gpu/drm/drm_buddy.c
+@@ -538,13 +538,13 @@ static int __alloc_range(struct drm_buddy *mm,
+ 		list_add(&block->left->tmp_link, dfs);
+ 	} while (1);
+ 
+-	list_splice_tail(&allocated, blocks);
+-
+ 	if (total_allocated < size) {
+ 		err = -ENOSPC;
+ 		goto err_free;
  	}
- }
---- a/drivers/gpu/drm/meson/meson_encoder_dsi.c
-+++ b/drivers/gpu/drm/meson/meson_encoder_dsi.c
-@@ -168,6 +168,5 @@ void meson_encoder_dsi_remove(struct mes
- 	if (priv->encoders[MESON_ENC_DSI]) {
- 		meson_encoder_dsi = priv->encoders[MESON_ENC_DSI];
- 		drm_bridge_remove(&meson_encoder_dsi->bridge);
--		drm_bridge_remove(meson_encoder_dsi->next_bridge);
- 	}
- }
---- a/drivers/gpu/drm/meson/meson_encoder_hdmi.c
-+++ b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
-@@ -474,6 +474,5 @@ void meson_encoder_hdmi_remove(struct me
- 	if (priv->encoders[MESON_ENC_HDMI]) {
- 		meson_encoder_hdmi = priv->encoders[MESON_ENC_HDMI];
- 		drm_bridge_remove(&meson_encoder_hdmi->bridge);
--		drm_bridge_remove(meson_encoder_hdmi->next_bridge);
- 	}
- }
+ 
++	list_splice_tail(&allocated, blocks);
++
+ 	return 0;
+ 
+ err_undo:
+-- 
+2.44.0
+
 
 
 
