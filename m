@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-24147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E99D18692E0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:39:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 075398693F2
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8992D1F2D720
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:39:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32F9FB2795B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5597F13B79B;
-	Tue, 27 Feb 2024 13:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8487513B2B9;
+	Tue, 27 Feb 2024 13:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c0JVC3Qr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yU+Pu8cz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097B813B2A2;
-	Tue, 27 Feb 2024 13:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446B713AA4C;
+	Tue, 27 Feb 2024 13:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041163; cv=none; b=PstXSwZFi4unHEzt+vyDsZUAxOBVhtvIeEHwaPuTYD87ke5gPT+vaOfWYcKbjIR4QWO91fXgoiPbFI7RwE+SnWZm+d41E7OMeFfBZpD6ruPCVFR2Lt9N63pJEOr7jVcgiLMSReZ05rxifB8Ab8X9J8i+mci4adEhIRoLFaW3SZ0=
+	t=1709041272; cv=none; b=BsUv8EtlTd7DxCaqsNCJKDI6aZkY9TPYyXfWloNdwnBWl4ympmhE4HIvV1XEFeDybZeNw3NYaPa+oUaBWSt94bzyb+Wc7J+KAghvkhnhsEGAPYTy5KV2Ll5PtYoF+xaD22Nexv2OWjK4IfC2RuMJM1I7PGaXfXaDlgW96s9ue8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041163; c=relaxed/simple;
-	bh=cqPKplUFaAYDmNf4DSib52HT+arog18Ed5NpwT213xM=;
+	s=arc-20240116; t=1709041272; c=relaxed/simple;
+	bh=TmbaytMUNPnMReqU0GknpyqKvaC6UQGfCRohTYNKsiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DSoXLATfO6PHXLferc++LXBkmfyLFcTbYsTXssVL2szruy0mLHY59beKzah/uaxHSrh9JfZ9Sk47ov0QuK0vzEDXS3fk8tOPWdXoFc+tPi41q7pbnht2EfUP3nqiNunjBmDHtB9c+FILcH1m6ez+xpGd5w6gjTKzejECSyfKKyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c0JVC3Qr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 313FDC433C7;
-	Tue, 27 Feb 2024 13:39:22 +0000 (UTC)
+	 MIME-Version; b=YXvp9QjtnD2cE0b4tfMDBDaJYIrEWSRAlH9p0YCpJjSELHvxAgOv3jowyfnvPKCEAN4kgWKkS8FAqzIeu9BFMnkqrC8J742iam/b8eiFtKejeUmb5aaYUtNrVqcFQ+2eIMm6yHucL5zwp0VgfR8bUFTfqVOIJ/KS2eyqdqbdBKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yU+Pu8cz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C78B1C43390;
+	Tue, 27 Feb 2024 13:41:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041162;
-	bh=cqPKplUFaAYDmNf4DSib52HT+arog18Ed5NpwT213xM=;
+	s=korg; t=1709041272;
+	bh=TmbaytMUNPnMReqU0GknpyqKvaC6UQGfCRohTYNKsiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c0JVC3QrCwypfFoeyTe6zraLButxIquuMlbnBPqYme6EL0ZjUb7EA2Gl0dBJtAFwJ
-	 0rZrZYzSAsndyJFz+8aDw4tT80bVZ+Di2HdDrO4UAypWPJXGxwKtTHB+MAIU/kmdcw
-	 dhGVzHbQYwlJgHRr6GQPfvgvZl9wTux4Qzy9SfOM=
+	b=yU+Pu8cz0GqzChJj8dqa0N65/IzRRHzK/oqY6NHfpKyaGAHi3VrYSjMvoOzLE3rIF
+	 Foz2qXeQSk7lqKFWpUEQoW2XwiSGPOrZJPHyvpGw9oEdL+ZxtrFNLNyEj5/X1v/KZr
+	 U+PJSy8hoPdohio5IH6nstW0fU3MbkzAkZ2ymL6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	LiHonggang <honggangli@163.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Leon Romanovsky <leon@kernel.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 241/334] RDMA/srpt: Support specifying the srpt_service_guid parameter
-Date: Tue, 27 Feb 2024 14:21:39 +0100
-Message-ID: <20240227131638.653413286@linuxfoundation.org>
+Subject: [PATCH 6.7 242/334] arm64: dts: tqma8mpql: fix audio codec iov-supply
+Date: Tue, 27 Feb 2024 14:21:40 +0100
+Message-ID: <20240227131638.682843800@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
 References: <20240227131630.636392135@linuxfoundation.org>
@@ -67,59 +66,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit fdfa083549de5d50ebf7f6811f33757781e838c0 ]
+[ Upstream commit a620a7f2ae8b08c5beea6369f61e87064ee222dc ]
 
-Make loading ib_srpt with this parameter set work. The current behavior is
-that setting that parameter while loading the ib_srpt kernel module
-triggers the following kernel crash:
+IOVDD is supplied by 1.8V, fix the referenced regulator.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-Call Trace:
- <TASK>
- parse_one+0x18c/0x1d0
- parse_args+0xe1/0x230
- load_module+0x8de/0xa60
- init_module_from_file+0x8b/0xd0
- idempotent_init_module+0x181/0x240
- __x64_sys_finit_module+0x5a/0xb0
- do_syscall_64+0x5f/0xe0
- entry_SYSCALL_64_after_hwframe+0x6e/0x76
-
-Cc: LiHonggang <honggangli@163.com>
-Reported-by: LiHonggang <honggangli@163.com>
-Fixes: a42d985bd5b2 ("ib_srpt: Initial SRP Target merge for v3.3-rc1")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20240205004207.17031-1-bvanassche@acm.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: d8f9d8126582d ("arm64: dts: imx8mp: Add analog audio output on i.MX8MP TQMa8MPxL/MBa8MPxL")
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/srpt/ib_srpt.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ .../boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts     | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
-index 58f70cfec45a7..d2dce6ce30a94 100644
---- a/drivers/infiniband/ulp/srpt/ib_srpt.c
-+++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
-@@ -79,12 +79,16 @@ module_param(srpt_srq_size, int, 0444);
- MODULE_PARM_DESC(srpt_srq_size,
- 		 "Shared receive queue (SRQ) size.");
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
+index 4240e20d38ac3..258e90cc16ff3 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
+@@ -168,6 +168,13 @@
+ 		enable-active-high;
+ 	};
  
-+static int srpt_set_u64_x(const char *buffer, const struct kernel_param *kp)
-+{
-+	return kstrtou64(buffer, 16, (u64 *)kp->arg);
-+}
- static int srpt_get_u64_x(char *buffer, const struct kernel_param *kp)
- {
- 	return sprintf(buffer, "0x%016llx\n", *(u64 *)kp->arg);
- }
--module_param_call(srpt_service_guid, NULL, srpt_get_u64_x, &srpt_service_guid,
--		  0444);
-+module_param_call(srpt_service_guid, srpt_set_u64_x, srpt_get_u64_x,
-+		  &srpt_service_guid, 0444);
- MODULE_PARM_DESC(srpt_service_guid,
- 		 "Using this value for ioc_guid, id_ext, and cm_listen_id instead of using the node_guid of the first HCA.");
++	reg_vcc_1v8: regulator-1v8 {
++		compatible = "regulator-fixed";
++		regulator-name = "VCC_1V8";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++	};
++
+ 	reg_vcc_3v3: regulator-3v3 {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "VCC_3V3";
+@@ -464,7 +471,7 @@
+ 		clock-names = "mclk";
+ 		clocks = <&audio_blk_ctrl IMX8MP_CLK_AUDIOMIX_SAI3_MCLK1>;
+ 		reset-gpios = <&gpio4 29 GPIO_ACTIVE_LOW>;
+-		iov-supply = <&reg_vcc_3v3>;
++		iov-supply = <&reg_vcc_1v8>;
+ 		ldoin-supply = <&reg_vcc_3v3>;
+ 	};
  
 -- 
 2.43.0
