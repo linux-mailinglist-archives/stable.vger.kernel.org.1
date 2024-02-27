@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-24544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08200869513
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:58:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 400FB8694E0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:57:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D9401F21861
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:58:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 718261C2458F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:57:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E38213AA50;
-	Tue, 27 Feb 2024 13:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB46A2F2D;
+	Tue, 27 Feb 2024 13:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zqz2OSGm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TL9c//oG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF94C13B2B4;
-	Tue, 27 Feb 2024 13:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A69354BD4;
+	Tue, 27 Feb 2024 13:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042309; cv=none; b=IEPGnFr/Paq3KNYDrxq23f0Z2ahLIlCs9HlRDuSBzpbO8Do8cmpe37rwqciTcJWETZUrLKBKzf0GITlTkxtwK5/xGxrP/qPc2WMiLulHJPReCZn+02mV3SNzfgPOGxo6KwsQVtH3dwVcyGZpuCve5l7Tgz3pt2eEBuzrtDhp7vU=
+	t=1709042223; cv=none; b=pJiKQYnRWZV6snaV6PGahPK5S5sM+SBauVjmUw39wcS2yCpk9dw6UZrtJNScXl9BNWQU9t60ECu6ShsiOLnt39+1+dGBS4AE1E0gmeV8412u/W/E0dGzWiJkf+NdF0m932uUKEgGX9A+nBkY6XHCssFrsGX7jc6nR6nWL614fgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042309; c=relaxed/simple;
-	bh=6H573TBLsvjGDzSoLX7GAOaLjrMxEzcb/gsKD9depcs=;
+	s=arc-20240116; t=1709042223; c=relaxed/simple;
+	bh=KOAjKEEH9u003kvICTRN0RcQnmW/mIctr+MIpihvHqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SjuVPRAjgzwxGtI6Tfco/EA5Hmzj1nnlgaIGPOCCXgx9XZ9I+83xTbPOj+LkuNUxQfK23b4R/9u5GGWsAO0F5lPX8wxWSu1s4aHvikN7LcZlBtZHD8XFtfbE/gvwpjvVVjcECrMEgcqTxbcQxJStrsRezONU1lgNwJVjGViRSc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zqz2OSGm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77957C433F1;
-	Tue, 27 Feb 2024 13:58:28 +0000 (UTC)
+	 MIME-Version; b=aRWp9l3jwkoPLYw80g/20FTyinqixyUDBXCD6u7nOFGP1KhcAIw1HEqXzpKGyF7txHjL96V4MuFSWv1CYGXDzhxl5E+77ADrCrwiFE7TzSIMuO5mgQGbSKQ4x1fs4Lld5ml0QfPHnAmUE+hLbL7JVgsdieXitZY/ko9K+ZlpB00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TL9c//oG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA360C433F1;
+	Tue, 27 Feb 2024 13:57:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042308;
-	bh=6H573TBLsvjGDzSoLX7GAOaLjrMxEzcb/gsKD9depcs=;
+	s=korg; t=1709042223;
+	bh=KOAjKEEH9u003kvICTRN0RcQnmW/mIctr+MIpihvHqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zqz2OSGm0g3xQ11qAJSZx3ZJVRdMxrj6gJA0IkqP+9pbwEzEM38iIPS1RPiP9d+uR
-	 2tPsuO+4AEysmeP4kkJmYhi97i2gSVjM+ZkIG4d7lPj8HLuIQpFzKD08ldU4fMd+9/
-	 bXG/MchxTkc0s1fgRi/Ro9onItyR5hB3BbLMgjEg=
+	b=TL9c//oGXR/pb7oVXlpGcAhUzQLuBdw34uSSQq1z79dG4O7Z+ffLfnpPCYW0qiFL7
+	 JRU7+6b70gLlXmsdIk10nwDKCxnM2ziu3nz0j5UoqfVwVEffajf/i0Hz/+xW7EFxBC
+	 pLiASdK4bmMw/8/Oi+lC/M5nwrP7a7W8LJ37sm9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Edward Srouji <edwards@nvidia.com>,
+	Mark Zhang <markzhang@nvidia.com>,
 	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 213/299] RDMA/bnxt_re: Add a missing check in bnxt_qplib_query_srq
-Date: Tue, 27 Feb 2024 14:25:24 +0100
-Message-ID: <20240227131632.640221809@linuxfoundation.org>
+Subject: [PATCH 6.6 214/299] IB/mlx5: Dont expose debugfs entries for RRoCE general parameters if not supported
+Date: Tue, 27 Feb 2024 14:25:25 +0100
+Message-ID: <20240227131632.670181978@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
 References: <20240227131625.847743063@linuxfoundation.org>
@@ -67,37 +67,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Mark Zhang <markzhang@nvidia.com>
 
-[ Upstream commit 80dde187f734cf9ccf988d5c2ef1a46b990660fd ]
+[ Upstream commit 43fdbd140238d44e7e847232719fef7d20f9d326 ]
 
-Before populating the response, driver has to check the status
-of HWRM command.
+debugfs entries for RRoCE general CC parameters must be exposed only when
+they are supported, otherwise when accessing them there may be a syndrome
+error in kernel log, for example:
 
-Fixes: 37cb11acf1f7 ("RDMA/bnxt_re: Add SRQ support for Broadcom adapters")
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://lore.kernel.org/r/1705985677-15551-6-git-send-email-selvin.xavier@broadcom.com
+$ cat /sys/kernel/debug/mlx5/0000:08:00.1/cc_params/rtt_resp_dscp
+cat: '/sys/kernel/debug/mlx5/0000:08:00.1/cc_params/rtt_resp_dscp': Invalid argument
+$ dmesg
+ mlx5_core 0000:08:00.1: mlx5_cmd_out_err:805:(pid 1253): QUERY_CONG_PARAMS(0x824) op_mod(0x0) failed, status bad parameter(0x3), syndrome (0x325a82), err(-22)
+
+Fixes: 66fb1d5df6ac ("IB/mlx5: Extend debug control for CC parameters")
+Reviewed-by: Edward Srouji <edwards@nvidia.com>
+Signed-off-by: Mark Zhang <markzhang@nvidia.com>
+Link: https://lore.kernel.org/r/e7ade70bad52b7468bdb1de4d41d5fad70c8b71c.1706433934.git.leon@kernel.org
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_fp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx5/cong.c | 6 ++++++
+ include/linux/mlx5/mlx5_ifc.h     | 2 +-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.c b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-index abbabea7f5fa3..2a62239187622 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.c
-@@ -748,7 +748,8 @@ int bnxt_qplib_query_srq(struct bnxt_qplib_res *res,
- 	bnxt_qplib_fill_cmdqmsg(&msg, &req, &resp, &sbuf, sizeof(req),
- 				sizeof(resp), 0);
- 	rc = bnxt_qplib_rcfw_send_message(rcfw, &msg);
--	srq->threshold = le16_to_cpu(sb->srq_limit);
-+	if (!rc)
-+		srq->threshold = le16_to_cpu(sb->srq_limit);
- 	dma_free_coherent(&rcfw->pdev->dev, sbuf.size,
- 			  sbuf.sb, sbuf.dma_addr);
+diff --git a/drivers/infiniband/hw/mlx5/cong.c b/drivers/infiniband/hw/mlx5/cong.c
+index f87531318feb8..a78a067e3ce7f 100644
+--- a/drivers/infiniband/hw/mlx5/cong.c
++++ b/drivers/infiniband/hw/mlx5/cong.c
+@@ -458,6 +458,12 @@ void mlx5_ib_init_cong_debugfs(struct mlx5_ib_dev *dev, u32 port_num)
+ 	dbg_cc_params->root = debugfs_create_dir("cc_params", mlx5_debugfs_get_dev_root(mdev));
  
+ 	for (i = 0; i < MLX5_IB_DBG_CC_MAX; i++) {
++		if ((i == MLX5_IB_DBG_CC_GENERAL_RTT_RESP_DSCP_VALID ||
++		     i == MLX5_IB_DBG_CC_GENERAL_RTT_RESP_DSCP))
++			if (!MLX5_CAP_GEN(mdev, roce) ||
++			    !MLX5_CAP_ROCE(mdev, roce_cc_general))
++				continue;
++
+ 		dbg_cc_params->params[i].offset = i;
+ 		dbg_cc_params->params[i].dev = dev;
+ 		dbg_cc_params->params[i].port_num = port_num;
+diff --git a/include/linux/mlx5/mlx5_ifc.h b/include/linux/mlx5/mlx5_ifc.h
+index 51eb83f779388..643e9ba4e64bd 100644
+--- a/include/linux/mlx5/mlx5_ifc.h
++++ b/include/linux/mlx5/mlx5_ifc.h
+@@ -1102,7 +1102,7 @@ struct mlx5_ifc_roce_cap_bits {
+ 	u8         sw_r_roce_src_udp_port[0x1];
+ 	u8         fl_rc_qp_when_roce_disabled[0x1];
+ 	u8         fl_rc_qp_when_roce_enabled[0x1];
+-	u8         reserved_at_7[0x1];
++	u8         roce_cc_general[0x1];
+ 	u8	   qp_ooo_transmit_default[0x1];
+ 	u8         reserved_at_9[0x15];
+ 	u8	   qp_ts_format[0x2];
 -- 
 2.43.0
 
