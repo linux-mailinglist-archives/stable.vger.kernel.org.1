@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-24352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4702886940D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EE6286934F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:43:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 781C91C243DA
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23D481F27116
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:43:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E6A13DBB3;
-	Tue, 27 Feb 2024 13:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68F1C13B78F;
+	Tue, 27 Feb 2024 13:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vezDXoK0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WsSkcsvp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B3213B7AB;
-	Tue, 27 Feb 2024 13:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2980B2F2D;
+	Tue, 27 Feb 2024 13:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041758; cv=none; b=lwSUzC22+zAqCdJMb/ZEXNaIILrW0WP5wPD8xICuBzzjDgFtJwlurH1IVxohA8ERZzCHliEPBZhdS/700PVeiIq+k1RRGhjQ7Xl26hnSXWFR5YpNkb6S/v3U1mk1CHV0DsPwhYf2QMr0mHsQJ2tCq8OCyKj/OMf7UN9har7M79Q=
+	t=1709041430; cv=none; b=rnRb2i6J6OQ+erI1N4hDjd0/Xh9RerDZf4/00TJDmYP7qt+gVqBXuYc7XJvUQnQZ5yjCB4SPXlW+7FI1Cf6eln13EWmhiv/iSlIqJV4hFSkNyDtF2x5JtagpaFqIsFBj1W46uLAy9QkTuPeD0hh8pzPY+e1mPR3oRSdNSqG2I1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041758; c=relaxed/simple;
-	bh=xwRBeDg2YfBSGp7G14TZq/8e2EUkUeLNYpVi/cL06to=;
+	s=arc-20240116; t=1709041430; c=relaxed/simple;
+	bh=cZWHZRFD8XPxvINbQMM/5St0eNaaq3PQkWuChWxLOUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IoTsFslBPivkH7M6J2kM1PBQfe5N13XP+g8wQjZGCySMgYrgBJPvpBtgQ62IXnTcnZteYduA0TTd1sMPXAlG0docK13IieCXhlqNN5Zf0QLz0VfhCKupmUO1aJk6VVTINgCyc2RfzITvGDCdVm0IxllhOVc/cFzelVzCRnOED4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vezDXoK0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5017C433F1;
-	Tue, 27 Feb 2024 13:49:17 +0000 (UTC)
+	 MIME-Version; b=XvbroAx4TyBIsjEXV9wIo6kHyQL6snLqNvhrrjqmUdhrZ322+9qr7xileodHuQV37wPit1dQ3eypu2VKt+kKxhTANP8aOFDRW6Qud6gOUl+ummd2e+NBduJm4BPlMv5bbnETx0j015tBP2q3k2uaCCt0xUSYGvb8o5RFcjs0SD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WsSkcsvp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A45C43390;
+	Tue, 27 Feb 2024 13:43:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041758;
-	bh=xwRBeDg2YfBSGp7G14TZq/8e2EUkUeLNYpVi/cL06to=;
+	s=korg; t=1709041430;
+	bh=cZWHZRFD8XPxvINbQMM/5St0eNaaq3PQkWuChWxLOUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vezDXoK0jal17zQDvd7aanstX07QSShC7Ty+TzcStxlQik8IoCbO2s+NCQE4D1UWO
-	 KXCN6zjxh2/SxUjYQ6b8+DUNYtqhff+BCa0Cvrr5zdFeuCS6QhFN1q1EQi/hmIIccT
-	 nbt3BK4zEAgaL0UoULZmn4zdxV9+A2pIiptBtUOY=
+	b=WsSkcsvpHgfzHpMX1JEI0ZSGJx1R+cSfrOe1dw5cOqSrDpRda4RsxoXGEnJjglLaN
+	 xdXKpLks3HRKzRIrNOm5KDYmTCqWx6X6eIynr2i9NTs8VMRpDUhTENizmKvfjefYAH
+	 mmYgLGiuwj6ckeEm9gMAxdOak3qO2Vy5hMpYtnaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	Daniel Wagner <dwagner@suse.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Jeremy Kerr <jk@codeconstruct.com.au>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 058/299] nvme-fc: do not wait in vain when unloading module
+Subject: [PATCH 6.7 311/334] net: mctp: put sock on tag allocation failure
 Date: Tue, 27 Feb 2024 14:22:49 +0100
-Message-ID: <20240227131627.827463826@linuxfoundation.org>
+Message-ID: <20240227131641.102198188@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,147 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <dwagner@suse.de>
+From: Jeremy Kerr <jk@codeconstruct.com.au>
 
-[ Upstream commit 70fbfc47a392b98e5f8dba70c6efc6839205c982 ]
+[ Upstream commit 9990889be14288d4f1743e4768222d5032a79c27 ]
 
-The module exit path has race between deleting all controllers and
-freeing 'left over IDs'. To prevent double free a synchronization
-between nvme_delete_ctrl and ida_destroy has been added by the initial
-commit.
+We may hold an extra reference on a socket if a tag allocation fails: we
+optimistically allocate the sk_key, and take a ref there, but do not
+drop if we end up not using the allocated key.
 
-There is some logic around trying to prevent from hanging forever in
-wait_for_completion, though it does not handling all cases. E.g.
-blktests is able to reproduce the situation where the module unload
-hangs forever.
+Ensure we're dropping the sock on this failure by doing a proper unref
+rather than directly kfree()ing.
 
-If we completely rely on the cleanup code executed from the
-nvme_delete_ctrl path, all IDs will be freed eventually. This makes
-calling ida_destroy unnecessary. We only have to ensure that all
-nvme_delete_ctrl code has been executed before we leave
-nvme_fc_exit_module. This is done by flushing the nvme_delete_wq
-workqueue.
-
-While at it, remove the unused nvme_fc_wq workqueue too.
-
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Daniel Wagner <dwagner@suse.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: de8a6b15d965 ("net: mctp: add an explicit reference from a mctp_sk_key to sock")
+Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/ce9b61e44d1cdae7797be0c5e3141baf582d23a0.1707983487.git.jk@codeconstruct.com.au
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/fc.c | 47 ++++++------------------------------------
- 1 file changed, 6 insertions(+), 41 deletions(-)
+ net/mctp/route.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
-index 46cce0ec35e9a..cdb1e706f855e 100644
---- a/drivers/nvme/host/fc.c
-+++ b/drivers/nvme/host/fc.c
-@@ -221,11 +221,6 @@ static LIST_HEAD(nvme_fc_lport_list);
- static DEFINE_IDA(nvme_fc_local_port_cnt);
- static DEFINE_IDA(nvme_fc_ctrl_cnt);
+diff --git a/net/mctp/route.c b/net/mctp/route.c
+index 7a47a58aa54b4..6218dcd07e184 100644
+--- a/net/mctp/route.c
++++ b/net/mctp/route.c
+@@ -663,7 +663,7 @@ struct mctp_sk_key *mctp_alloc_local_tag(struct mctp_sock *msk,
+ 	spin_unlock_irqrestore(&mns->keys_lock, flags);
  
--static struct workqueue_struct *nvme_fc_wq;
--
--static bool nvme_fc_waiting_to_unload;
--static DECLARE_COMPLETION(nvme_fc_unload_proceed);
--
- /*
-  * These items are short-term. They will eventually be moved into
-  * a generic FC class. See comments in module init.
-@@ -255,8 +250,6 @@ nvme_fc_free_lport(struct kref *ref)
- 	/* remove from transport list */
- 	spin_lock_irqsave(&nvme_fc_lock, flags);
- 	list_del(&lport->port_list);
--	if (nvme_fc_waiting_to_unload && list_empty(&nvme_fc_lport_list))
--		complete(&nvme_fc_unload_proceed);
- 	spin_unlock_irqrestore(&nvme_fc_lock, flags);
- 
- 	ida_free(&nvme_fc_local_port_cnt, lport->localport.port_num);
-@@ -3893,10 +3886,6 @@ static int __init nvme_fc_init_module(void)
- {
- 	int ret;
- 
--	nvme_fc_wq = alloc_workqueue("nvme_fc_wq", WQ_MEM_RECLAIM, 0);
--	if (!nvme_fc_wq)
--		return -ENOMEM;
--
- 	/*
- 	 * NOTE:
- 	 * It is expected that in the future the kernel will combine
-@@ -3914,7 +3903,7 @@ static int __init nvme_fc_init_module(void)
- 	ret = class_register(&fc_class);
- 	if (ret) {
- 		pr_err("couldn't register class fc\n");
--		goto out_destroy_wq;
-+		return ret;
+ 	if (!tagbits) {
+-		kfree(key);
++		mctp_key_unref(key);
+ 		return ERR_PTR(-EBUSY);
  	}
  
- 	/*
-@@ -3938,8 +3927,6 @@ static int __init nvme_fc_init_module(void)
- 	device_destroy(&fc_class, MKDEV(0, 0));
- out_destroy_class:
- 	class_unregister(&fc_class);
--out_destroy_wq:
--	destroy_workqueue(nvme_fc_wq);
- 
- 	return ret;
- }
-@@ -3959,45 +3946,23 @@ nvme_fc_delete_controllers(struct nvme_fc_rport *rport)
- 	spin_unlock(&rport->lock);
- }
- 
--static void
--nvme_fc_cleanup_for_unload(void)
-+static void __exit nvme_fc_exit_module(void)
- {
- 	struct nvme_fc_lport *lport;
- 	struct nvme_fc_rport *rport;
--
--	list_for_each_entry(lport, &nvme_fc_lport_list, port_list) {
--		list_for_each_entry(rport, &lport->endp_list, endp_list) {
--			nvme_fc_delete_controllers(rport);
--		}
--	}
--}
--
--static void __exit nvme_fc_exit_module(void)
--{
- 	unsigned long flags;
--	bool need_cleanup = false;
- 
- 	spin_lock_irqsave(&nvme_fc_lock, flags);
--	nvme_fc_waiting_to_unload = true;
--	if (!list_empty(&nvme_fc_lport_list)) {
--		need_cleanup = true;
--		nvme_fc_cleanup_for_unload();
--	}
-+	list_for_each_entry(lport, &nvme_fc_lport_list, port_list)
-+		list_for_each_entry(rport, &lport->endp_list, endp_list)
-+			nvme_fc_delete_controllers(rport);
- 	spin_unlock_irqrestore(&nvme_fc_lock, flags);
--	if (need_cleanup) {
--		pr_info("%s: waiting for ctlr deletes\n", __func__);
--		wait_for_completion(&nvme_fc_unload_proceed);
--		pr_info("%s: ctrl deletes complete\n", __func__);
--	}
-+	flush_workqueue(nvme_delete_wq);
- 
- 	nvmf_unregister_transport(&nvme_fc_transport);
- 
--	ida_destroy(&nvme_fc_local_port_cnt);
--	ida_destroy(&nvme_fc_ctrl_cnt);
--
- 	device_destroy(&fc_class, MKDEV(0, 0));
- 	class_unregister(&fc_class);
--	destroy_workqueue(nvme_fc_wq);
- }
- 
- module_init(nvme_fc_init_module);
 -- 
 2.43.0
 
