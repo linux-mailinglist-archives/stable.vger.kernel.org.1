@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-24381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 833B1869430
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D6DC86955B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:01:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D92A1F216D5
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E6251C23E06
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:01:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43F9413B7A0;
-	Tue, 27 Feb 2024 13:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99661419B3;
+	Tue, 27 Feb 2024 14:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1zOKSVp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6zM9AKJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02EA078B61;
-	Tue, 27 Feb 2024 13:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 877AC13F016;
+	Tue, 27 Feb 2024 14:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041843; cv=none; b=e4qjLel4hXmPj8vNcGnWctGQxrombm4+s88IHYVurjWYMbB/MIr3CkqQjvGXof5XVNGG23nA6ke3IHtqcY5lEXizDlvGzzTz41IQ3MO2SdnfGR4LmJTOn0oPCLC193/X0BlyBGWgi3zOATJGyh8Rak+R8d9oBoVk3MBJCw95LE8=
+	t=1709042479; cv=none; b=ClNPdRKeWuLsC1zViCqVfnN6NDbVW5jpKL2K0mAvRaGiIZYVXuK92UV6gPp/3+hjMUpnN9V/bbcywI7UFZmJ8L3V+rR3i08xCMnAJtJNn3bsAqeviQG5DSfpa5RslKAyFKC3Z5w/btf+0u8TLqW9YjMUG/Ao+oUI2uP8DXluBcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041843; c=relaxed/simple;
-	bh=twNkx0ojqXU2dfxCzE7VKgeDu0D827Ef9G/b41o2Dmk=;
+	s=arc-20240116; t=1709042479; c=relaxed/simple;
+	bh=7A12yH7fCGPugFYFIfAV432yJRSRe8sKyklQ+vjXQ7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TDXdgvKEXpP5cSkmPtgoKPEkK42tRYqt4jxbmh7xTbOohNNFNfnF4y6M776egpsh7iz3usDVQkgwp7d/a0KsP9VwXjf+R/M9P3DbI9djnhNgYEZ7HtxFX4QG3++ttJxKvO8KJYptCK/PzrdvIsdCePZcyuuFqjdaeiadDXUIOsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1zOKSVp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C6AC433F1;
-	Tue, 27 Feb 2024 13:50:42 +0000 (UTC)
+	 MIME-Version; b=H3h8ZuB5IiCpV7RDiVhZ7tPhlnFlk96kcLythuX1Osvi5o+tw+Zh1FS3RbeTU/9ldbpvxZElH9ITLE7+18j+Z3h4EjvoUrFa83HAPVVUQRk48beahhzuvwhhbDnobG+1dY94Bkv8HE9EU9Kig+5AJjEoVKQSJseDvwYebwVxa0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6zM9AKJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 146CEC433F1;
+	Tue, 27 Feb 2024 14:01:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041842;
-	bh=twNkx0ojqXU2dfxCzE7VKgeDu0D827Ef9G/b41o2Dmk=;
+	s=korg; t=1709042479;
+	bh=7A12yH7fCGPugFYFIfAV432yJRSRe8sKyklQ+vjXQ7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y1zOKSVpaURhc+VRBq4oHWwcZEs6OKF5J7nSaP3gPorsqibg4hItzmoaP0pGxWsXu
-	 LHSt9JrPN6WCsyLJzPWn1vlam+Ca0O/aeWaySf0Q3EP279pubJZKOLAsZhmRXAYEl3
-	 YzcnuhYgvRBbnHviPHPM6su/6MKM+svZM5EU8B7U=
+	b=h6zM9AKJP9nIpoX7Dw1hz0aAh7k1NpjHcS7ofqfjFKvBAwiAv0Y+26ICtW5NVepC8
+	 dW56ujfeTA+r6OIrzKl2VEbX4e1Jgr7nDQNKbhxSiW7WSPBbVyk8DkTE2nveK7gbtz
+	 iYV8iEjsmc3pRb5muCcypqJ7e1u3SaLaZj7uY3o0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 087/299] fs/ntfs3: Use i_size_read and i_size_write
-Date: Tue, 27 Feb 2024 14:23:18 +0100
-Message-ID: <20240227131628.713630424@linuxfoundation.org>
+	Jiri Olsa <jolsa@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Yonghong Song <yhs@fb.com>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 5.15 011/245] bpf: Do cleanup in bpf_bprintf_cleanup only when needed
+Date: Tue, 27 Feb 2024 14:23:19 +0100
+Message-ID: <20240227131615.478080020@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,215 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Jiri Olsa <jolsa@kernel.org>
 
-[ Upstream commit 4fd6c08a16d7f1ba10212c9ef7bc73218144b463 ]
+commit f19a4050455aad847fb93f18dc1fe502eb60f989 upstream.
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Currently we always cleanup/decrement bpf_bprintf_nest_level variable
+in bpf_bprintf_cleanup if it's > 0.
+
+There's possible scenario where this could cause a problem, when
+bpf_bprintf_prepare does not get bin_args buffer (because num_args is 0)
+and following bpf_bprintf_cleanup call decrements bpf_bprintf_nest_level
+variable, like:
+
+  in task context:
+    bpf_bprintf_prepare(num_args != 0) increments 'bpf_bprintf_nest_level = 1'
+    -> first irq :
+       bpf_bprintf_prepare(num_args == 0)
+       bpf_bprintf_cleanup decrements 'bpf_bprintf_nest_level = 0'
+    -> second irq:
+       bpf_bprintf_prepare(num_args != 0) bpf_bprintf_nest_level = 1
+       gets same buffer as task context above
+
+Adding check to bpf_bprintf_cleanup and doing the real cleanup only if we
+got bin_args data in the first place.
+
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Yonghong Song <yhs@fb.com>
+Link: https://lore.kernel.org/bpf/20221215214430.1336195-3-jolsa@kernel.org
+[cascardo: there is no bpf_trace_vprintk in 5.15]
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/attrib.c  |  4 ++--
- fs/ntfs3/dir.c     |  2 +-
- fs/ntfs3/file.c    | 11 ++++++-----
- fs/ntfs3/frecord.c | 10 +++++-----
- fs/ntfs3/index.c   |  8 ++++----
- fs/ntfs3/inode.c   |  2 +-
- 6 files changed, 19 insertions(+), 18 deletions(-)
+ include/linux/bpf.h      |    2 +-
+ kernel/bpf/helpers.c     |   16 +++++++++-------
+ kernel/trace/bpf_trace.c |    4 ++--
+ 3 files changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
-index 646e2dad1b757..7aadf50109994 100644
---- a/fs/ntfs3/attrib.c
-+++ b/fs/ntfs3/attrib.c
-@@ -2084,7 +2084,7 @@ int attr_collapse_range(struct ntfs_inode *ni, u64 vbo, u64 bytes)
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -2299,6 +2299,6 @@ struct bpf_bprintf_data {
  
- 	/* Update inode size. */
- 	ni->i_valid = valid_size;
--	ni->vfs_inode.i_size = data_size;
-+	i_size_write(&ni->vfs_inode, data_size);
- 	inode_set_bytes(&ni->vfs_inode, total_size);
- 	ni->ni_flags |= NI_FLAG_UPDATE_PARENT;
- 	mark_inode_dirty(&ni->vfs_inode);
-@@ -2499,7 +2499,7 @@ int attr_insert_range(struct ntfs_inode *ni, u64 vbo, u64 bytes)
- 	mi_b->dirty = true;
+ int bpf_bprintf_prepare(char *fmt, u32 fmt_size, const u64 *raw_args,
+ 			u32 num_args, struct bpf_bprintf_data *data);
+-void bpf_bprintf_cleanup(void);
++void bpf_bprintf_cleanup(struct bpf_bprintf_data *data);
  
- done:
--	ni->vfs_inode.i_size += bytes;
-+	i_size_write(&ni->vfs_inode, ni->vfs_inode.i_size + bytes);
- 	ni->ni_flags |= NI_FLAG_UPDATE_PARENT;
- 	mark_inode_dirty(&ni->vfs_inode);
+ #endif /* _LINUX_BPF_H */
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -738,12 +738,14 @@ static int try_get_fmt_tmp_buf(char **tm
+ 	return 0;
+ }
  
-diff --git a/fs/ntfs3/dir.c b/fs/ntfs3/dir.c
-index 726122ecd39b4..2c73ca469d514 100644
---- a/fs/ntfs3/dir.c
-+++ b/fs/ntfs3/dir.c
-@@ -517,7 +517,7 @@ static int ntfs_dir_count(struct inode *dir, bool *is_empty, size_t *dirs,
- 	u32 e_size, off, end;
- 	size_t drs = 0, fles = 0, bit = 0;
- 	struct indx_node *node = NULL;
--	size_t max_indx = ni->vfs_inode.i_size >> ni->dir.index_bits;
-+	size_t max_indx = i_size_read(&ni->vfs_inode) >> ni->dir.index_bits;
- 
- 	if (is_empty)
- 		*is_empty = true;
-diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
-index a5bbf7b5775af..0f6a78aef90fe 100644
---- a/fs/ntfs3/file.c
-+++ b/fs/ntfs3/file.c
-@@ -646,7 +646,7 @@ static long ntfs_fallocate(struct file *file, int mode, loff_t vbo, loff_t len)
- 			if (err)
- 				goto out;
- 		} else if (new_size > i_size) {
--			inode->i_size = new_size;
-+			i_size_write(inode, new_size);
- 		}
- 	}
- 
-@@ -696,7 +696,7 @@ int ntfs3_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
- 			goto out;
- 		}
- 		inode_dio_wait(inode);
--		oldsize = inode->i_size;
-+		oldsize = i_size_read(inode);
- 		newsize = attr->ia_size;
- 
- 		if (newsize <= oldsize)
-@@ -708,7 +708,7 @@ int ntfs3_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
- 			goto out;
- 
- 		ni->ni_flags |= NI_FLAG_UPDATE_PARENT;
--		inode->i_size = newsize;
-+		i_size_write(inode, newsize);
- 	}
- 
- 	setattr_copy(idmap, inode, attr);
-@@ -847,7 +847,7 @@ static ssize_t ntfs_compress_write(struct kiocb *iocb, struct iov_iter *from)
- 	size_t count = iov_iter_count(from);
- 	loff_t pos = iocb->ki_pos;
- 	struct inode *inode = file_inode(file);
--	loff_t i_size = inode->i_size;
-+	loff_t i_size = i_size_read(inode);
- 	struct address_space *mapping = inode->i_mapping;
- 	struct ntfs_inode *ni = ntfs_i(inode);
- 	u64 valid = ni->i_valid;
-@@ -1177,7 +1177,8 @@ static int ntfs_file_release(struct inode *inode, struct file *file)
- 		down_write(&ni->file.run_lock);
- 
- 		err = attr_set_size(ni, ATTR_DATA, NULL, 0, &ni->file.run,
--				    inode->i_size, &ni->i_valid, false, NULL);
-+				    i_size_read(inode), &ni->i_valid, false,
-+				    NULL);
- 
- 		up_write(&ni->file.run_lock);
- 		ni_unlock(ni);
-diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
-index a918d7283aca5..61c51650266ef 100644
---- a/fs/ntfs3/frecord.c
-+++ b/fs/ntfs3/frecord.c
-@@ -2099,7 +2099,7 @@ int ni_readpage_cmpr(struct ntfs_inode *ni, struct page *page)
- 	gfp_t gfp_mask;
- 	struct page *pg;
- 
--	if (vbo >= ni->vfs_inode.i_size) {
-+	if (vbo >= i_size_read(&ni->vfs_inode)) {
- 		SetPageUptodate(page);
- 		err = 0;
- 		goto out;
-@@ -2173,7 +2173,7 @@ int ni_decompress_file(struct ntfs_inode *ni)
+-void bpf_bprintf_cleanup(void)
++void bpf_bprintf_cleanup(struct bpf_bprintf_data *data)
  {
- 	struct ntfs_sb_info *sbi = ni->mi.sbi;
- 	struct inode *inode = &ni->vfs_inode;
--	loff_t i_size = inode->i_size;
-+	loff_t i_size = i_size_read(inode);
- 	struct address_space *mapping = inode->i_mapping;
- 	gfp_t gfp_mask = mapping_gfp_mask(mapping);
- 	struct page **pages = NULL;
-@@ -2457,6 +2457,7 @@ int ni_read_frame(struct ntfs_inode *ni, u64 frame_vbo, struct page **pages,
- 	struct ATTR_LIST_ENTRY *le = NULL;
- 	struct runs_tree *run = &ni->file.run;
- 	u64 valid_size = ni->i_valid;
-+	loff_t i_size = i_size_read(&ni->vfs_inode);
- 	u64 vbo_disk;
- 	size_t unc_size;
- 	u32 frame_size, i, npages_disk, ondisk_size;
-@@ -2548,7 +2549,7 @@ int ni_read_frame(struct ntfs_inode *ni, u64 frame_vbo, struct page **pages,
- 			}
- 		}
+-	if (this_cpu_read(bpf_bprintf_nest_level)) {
+-		this_cpu_dec(bpf_bprintf_nest_level);
+-		preempt_enable();
+-	}
++	if (!data->bin_args)
++		return;
++	if (WARN_ON_ONCE(this_cpu_read(bpf_bprintf_nest_level) == 0))
++		return;
++	this_cpu_dec(bpf_bprintf_nest_level);
++	preempt_enable();
+ }
  
--		frames = (ni->vfs_inode.i_size - 1) >> frame_bits;
-+		frames = (i_size - 1) >> frame_bits;
+ /*
+@@ -975,7 +977,7 @@ nocopy_fmt:
+ 	err = 0;
+ out:
+ 	if (err)
+-		bpf_bprintf_cleanup();
++		bpf_bprintf_cleanup(data);
+ 	return err;
+ }
  
- 		err = attr_wof_frame_info(ni, attr, run, frame64, frames,
- 					  frame_bits, &ondisk_size, &vbo_data);
-@@ -2556,8 +2557,7 @@ int ni_read_frame(struct ntfs_inode *ni, u64 frame_vbo, struct page **pages,
- 			goto out2;
+@@ -1001,7 +1003,7 @@ BPF_CALL_5(bpf_snprintf, char *, str, u3
  
- 		if (frame64 == frames) {
--			unc_size = 1 + ((ni->vfs_inode.i_size - 1) &
--					(frame_size - 1));
-+			unc_size = 1 + ((i_size - 1) & (frame_size - 1));
- 			ondisk_size = attr_size(attr) - vbo_data;
- 		} else {
- 			unc_size = frame_size;
-diff --git a/fs/ntfs3/index.c b/fs/ntfs3/index.c
-index cf92b2433f7a7..daabaad63aaf6 100644
---- a/fs/ntfs3/index.c
-+++ b/fs/ntfs3/index.c
-@@ -1462,7 +1462,7 @@ static int indx_create_allocate(struct ntfs_index *indx, struct ntfs_inode *ni,
- 		goto out2;
+ 	err = bstr_printf(str, str_size, fmt, data.bin_args);
  
- 	if (in->name == I30_NAME) {
--		ni->vfs_inode.i_size = data_size;
-+		i_size_write(&ni->vfs_inode, data_size);
- 		inode_set_bytes(&ni->vfs_inode, alloc_size);
- 	}
+-	bpf_bprintf_cleanup();
++	bpf_bprintf_cleanup(&data);
  
-@@ -1544,7 +1544,7 @@ static int indx_add_allocate(struct ntfs_index *indx, struct ntfs_inode *ni,
- 	}
+ 	return err + 1;
+ }
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -387,7 +387,7 @@ BPF_CALL_5(bpf_trace_printk, char *, fmt
+ 	trace_bpf_trace_printk(buf);
+ 	raw_spin_unlock_irqrestore(&trace_printk_lock, flags);
  
- 	if (in->name == I30_NAME)
--		ni->vfs_inode.i_size = data_size;
-+		i_size_write(&ni->vfs_inode, data_size);
+-	bpf_bprintf_cleanup();
++	bpf_bprintf_cleanup(&data);
  
- 	*vbn = bit << indx->idx2vbn_bits;
+ 	return ret;
+ }
+@@ -435,7 +435,7 @@ BPF_CALL_5(bpf_seq_printf, struct seq_fi
  
-@@ -2090,7 +2090,7 @@ static int indx_shrink(struct ntfs_index *indx, struct ntfs_inode *ni,
- 		return err;
+ 	seq_bprintf(m, fmt, data.bin_args);
  
- 	if (in->name == I30_NAME)
--		ni->vfs_inode.i_size = new_data;
-+		i_size_write(&ni->vfs_inode, new_data);
+-	bpf_bprintf_cleanup();
++	bpf_bprintf_cleanup(&data);
  
- 	bpb = bitmap_size(bit);
- 	if (bpb * 8 == nbits)
-@@ -2576,7 +2576,7 @@ int indx_delete_entry(struct ntfs_index *indx, struct ntfs_inode *ni,
- 		err = attr_set_size(ni, ATTR_ALLOC, in->name, in->name_len,
- 				    &indx->alloc_run, 0, NULL, false, NULL);
- 		if (in->name == I30_NAME)
--			ni->vfs_inode.i_size = 0;
-+			i_size_write(&ni->vfs_inode, 0);
- 
- 		err = ni_remove_attr(ni, ATTR_ALLOC, in->name, in->name_len,
- 				     false, NULL);
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index 012dbc8ac5ec7..34f2e16f3f5b6 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -983,7 +983,7 @@ int ntfs_write_end(struct file *file, struct address_space *mapping, loff_t pos,
- 		}
- 
- 		if (pos + err > inode->i_size) {
--			inode->i_size = pos + err;
-+			i_size_write(inode, pos + err);
- 			dirty = true;
- 		}
- 
--- 
-2.43.0
-
+ 	return seq_has_overflowed(m) ? -EOVERFLOW : 0;
+ }
 
 
 
