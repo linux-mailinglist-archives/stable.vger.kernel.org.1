@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AB168696D8
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:16:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90BD7869637
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:09:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACD991F2E6E2
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:16:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 311E71F2D356
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:09:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A82C13B798;
-	Tue, 27 Feb 2024 14:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C134813B78F;
+	Tue, 27 Feb 2024 14:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BQjNQquA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZLZ/A1e9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE19278B61;
-	Tue, 27 Feb 2024 14:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0B713A26F;
+	Tue, 27 Feb 2024 14:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043362; cv=none; b=IbReL/mhhI/AJXxSyv58NL0wnzJhJHmVEv3iFMZLhZvXZ+W2+Hiz8KTFshzWWdLStiU/7qbjEYbmO1ZQ3ePz10Fs2BUi1zBspk87Znp9jKlCf0xKWmbZ7m8vlHwHQ8jjdV7UD+tl4WCF7/jkJjkLAN9e9vwqN7vTQJaoe5y1Wjc=
+	t=1709042959; cv=none; b=jirSNtO2DkxMjG6KfZN7fu69BixhyoHb0xafLrtY09cWzuWHWeJNwlPSWm81CwR7JMp00lHaVX0oiR/8itmEPtilsgKmEFRF+v2IKA9aPWd/NIdXiizX8vnvYBpdoXM8tIyo5mVuM+LPwcZVpD6W/IGz2JDtze7olHIVouIrtw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043362; c=relaxed/simple;
-	bh=QTdxjl4S0vDuwM362glNowwqOS+ZcNR03nKL1bKuuS8=;
+	s=arc-20240116; t=1709042959; c=relaxed/simple;
+	bh=yqEX0taDLPUCYTMeHwvd/MiFtqFs4Oym672OyR/d1vo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rLIlDRq+8PldkBneaKwtwIfFZVOngKczDDpbf2RS6lP29zhDkLmpm7lto5COdPD0FWSpdELlJU/qxJj4Q6nUTozJvRMW6+R/0JgQyYVITEbY/TVcOvn9jS3ao0i2hnyelNjzsirovUwibBkn+/SWUk9sFpcYadhGx096NQ+1+6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BQjNQquA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E179C433C7;
-	Tue, 27 Feb 2024 14:16:02 +0000 (UTC)
+	 MIME-Version; b=b/Kx3BpcW2zCXurjztK5XZ7NJmWzdMGVC0QowZOUi4xlQOjEHKsGWB/doS7rkG47H4jnU86GNZJANd5LwbyHCHXIEgg5xUKnEDd5f12AImqSHVZSd6K3E8K1/OGm620vumZGrAkuqfBC3g8dOPiGB1w+T/REg9MZIhaSmbwpJh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZLZ/A1e9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2EFAC433C7;
+	Tue, 27 Feb 2024 14:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043362;
-	bh=QTdxjl4S0vDuwM362glNowwqOS+ZcNR03nKL1bKuuS8=;
+	s=korg; t=1709042959;
+	bh=yqEX0taDLPUCYTMeHwvd/MiFtqFs4Oym672OyR/d1vo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BQjNQquAaTo3dqS7JqgjAZJZBEzORBK1q7apc06z19Xny83xdgiO/W6wTRsPFk0kN
-	 a+2GlQrIPL9mtypgODQrMRwc8PU5GSTSgpiuUp4AXXstIqUmRBjgwIHpaIPf3sw1ry
-	 s/jGgPJsRBoBBPAKOEMMQ34r4M3wYtaxLFF+DxzQ=
+	b=ZLZ/A1e9EE/2fvPox1BfewUds2D+DzH9ZdaKCZasewSrV94mpKulwybztdJuNZX3A
+	 OHrj53RmvgE9anagTmA3GIvfkk8aNAdiqPKoKg9N7QJ68mzc24JoIRuf1Ez4hgtUo/
+	 0OqZ4OPJUMtqtUwxh1QDl1gP3aBMcVqE0lk5+CX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eugen Hristev <eugen.hristev@collabora.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+	Ganesh Goudar <ganeshgr@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 081/195] pmdomain: mediatek: fix race conditions with genpd
+Subject: [PATCH 5.15 154/245] powerpc/eeh: Set channel state after notifying the drivers
 Date: Tue, 27 Feb 2024 14:25:42 +0100
-Message-ID: <20240227131613.164562141@linuxfoundation.org>
+Message-ID: <20240227131620.222271732@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eugen Hristev <eugen.hristev@collabora.com>
+From: Ganesh Goudar <ganeshgr@linux.ibm.com>
 
-[ Upstream commit c41336f4d69057cbf88fed47951379b384540df5 ]
+[ Upstream commit 9efcdaac36e1643a1b7f5337e6143ce142d381b1 ]
 
-If the power domains are registered first with genpd and *after that*
-the driver attempts to power them on in the probe sequence, then it is
-possible that a race condition occurs if genpd tries to power them on
-in the same time.
-The same is valid for powering them off before unregistering them
-from genpd.
-Attempt to fix race conditions by first removing the domains from genpd
-and *after that* powering down domains.
-Also first power up the domains and *after that* register them
-to genpd.
+When a PCI error is encountered 6th time in an hour we
+set the channel state to perm_failure and notify the
+driver about the permanent failure.
 
-Fixes: 59b644b01cf4 ("soc: mediatek: Add MediaTek SCPSYS power domains")
-Signed-off-by: Eugen Hristev <eugen.hristev@collabora.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231225133615.78993-1-eugen.hristev@collabora.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+However, after upstream commit 38ddc011478e ("powerpc/eeh:
+Make permanently failed devices non-actionable"), EEH handler
+stops calling any routine once the device is marked as
+permanent failure. This issue can lead to fatal consequences
+like kernel hang with certain PCI devices.
+
+Following log is observed with lpfc driver, with and without
+this change, Without this change kernel hangs, If PCI error
+is encountered 6 times for a device in an hour.
+
+Without the change
+
+ EEH: Beginning: 'error_detected(permanent failure)'
+ PCI 0132:60:00.0#600000: EEH: not actionable (1,1,1)
+ PCI 0132:60:00.1#600000: EEH: not actionable (1,1,1)
+ EEH: Finished:'error_detected(permanent failure)'
+
+With the change
+
+ EEH: Beginning: 'error_detected(permanent failure)'
+ EEH: Invoking lpfc->error_detected(permanent failure)
+ EEH: lpfc driver reports: 'disconnect'
+ EEH: Invoking lpfc->error_detected(permanent failure)
+ EEH: lpfc driver reports: 'disconnect'
+ EEH: Finished:'error_detected(permanent failure)'
+
+To fix the issue, set channel state to permanent failure after
+notifying the drivers.
+
+Fixes: 38ddc011478e ("powerpc/eeh: Make permanently failed devices non-actionable")
+Suggested-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20230209105649.127707-1-ganeshgr@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/mediatek/mtk-pm-domains.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ arch/powerpc/kernel/eeh_driver.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soc/mediatek/mtk-pm-domains.c b/drivers/soc/mediatek/mtk-pm-domains.c
-index 474b272f9b02d..832adb570b501 100644
---- a/drivers/soc/mediatek/mtk-pm-domains.c
-+++ b/drivers/soc/mediatek/mtk-pm-domains.c
-@@ -499,6 +499,11 @@ static int scpsys_add_subdomain(struct scpsys *scpsys, struct device_node *paren
- 			goto err_put_node;
- 		}
+diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
+index cb3ac555c9446..665d847ef9b5a 100644
+--- a/arch/powerpc/kernel/eeh_driver.c
++++ b/arch/powerpc/kernel/eeh_driver.c
+@@ -1069,10 +1069,10 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
+ 	eeh_slot_error_detail(pe, EEH_LOG_PERM);
  
-+		/* recursive call to add all subdomains */
-+		ret = scpsys_add_subdomain(scpsys, child);
-+		if (ret)
-+			goto err_put_node;
-+
- 		ret = pm_genpd_add_subdomain(parent_pd, child_pd);
- 		if (ret) {
- 			dev_err(scpsys->dev, "failed to add %s subdomain to parent %s\n",
-@@ -508,11 +513,6 @@ static int scpsys_add_subdomain(struct scpsys *scpsys, struct device_node *paren
- 			dev_dbg(scpsys->dev, "%s add subdomain: %s\n", parent_pd->name,
- 				child_pd->name);
- 		}
--
--		/* recursive call to add all subdomains */
--		ret = scpsys_add_subdomain(scpsys, child);
--		if (ret)
--			goto err_put_node;
- 	}
+ 	/* Notify all devices that they're about to go down. */
+-	eeh_set_channel_state(pe, pci_channel_io_perm_failure);
+ 	eeh_set_irq_state(pe, false);
+ 	eeh_pe_report("error_detected(permanent failure)", pe,
+ 		      eeh_report_failure, NULL);
++	eeh_set_channel_state(pe, pci_channel_io_perm_failure);
  
- 	return 0;
-@@ -526,9 +526,6 @@ static void scpsys_remove_one_domain(struct scpsys_domain *pd)
- {
- 	int ret;
+ 	/* Mark the PE to be removed permanently */
+ 	eeh_pe_state_mark(pe, EEH_PE_REMOVED);
+@@ -1189,10 +1189,10 @@ void eeh_handle_special_event(void)
  
--	if (scpsys_domain_is_on(pd))
--		scpsys_power_off(&pd->genpd);
--
- 	/*
- 	 * We're in the error cleanup already, so we only complain,
- 	 * but won't emit another error on top of the original one.
-@@ -538,6 +535,8 @@ static void scpsys_remove_one_domain(struct scpsys_domain *pd)
- 		dev_err(pd->scpsys->dev,
- 			"failed to remove domain '%s' : %d - state may be inconsistent\n",
- 			pd->genpd.name, ret);
-+	if (scpsys_domain_is_on(pd))
-+		scpsys_power_off(&pd->genpd);
+ 			/* Notify all devices to be down */
+ 			eeh_pe_state_clear(pe, EEH_PE_PRI_BUS, true);
+-			eeh_set_channel_state(pe, pci_channel_io_perm_failure);
+ 			eeh_pe_report(
+ 				"error_detected(permanent failure)", pe,
+ 				eeh_report_failure, NULL);
++			eeh_set_channel_state(pe, pci_channel_io_perm_failure);
  
- 	clk_bulk_put(pd->num_clks, pd->clks);
- 	clk_bulk_put(pd->num_subsys_clks, pd->subsys_clks);
+ 			pci_lock_rescan_remove();
+ 			list_for_each_entry(hose, &hose_list, list_node) {
 -- 
 2.43.0
 
