@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-24533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DF7B869509
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:58:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC6A1869620
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:08:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7838C1F23508
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:58:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A103128FAC8
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E7513EFFB;
-	Tue, 27 Feb 2024 13:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3583913DB83;
+	Tue, 27 Feb 2024 14:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGiAtn8g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nh+WEW66"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15481448C3;
-	Tue, 27 Feb 2024 13:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E664713AA43;
+	Tue, 27 Feb 2024 14:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042273; cv=none; b=Ohh2bqiwQ16uv5NV6mtUl3DHETnKS8FUBa7vyuhIyYVSOL9T0aYp7E3KMl8mK57AbZLtXfsSRY70KjLUHDhuoqRlwHmItyRw1CGR8ITdEvl8x4CvOvxY/3Qu0NXw0vfBbKyT8AYR+Hw8ZtD3b6d3Qv2hxIymcKhg3YWfqbnpLWo=
+	t=1709042901; cv=none; b=D7v9EAWPL2ydvF97LPSP8qdgS8eYmVOD6KE7/pUua7XBBQcLTdHRNPdnqBOH9l+qXy/ZdPoCiXiHBTzWsTzQxZyoIYjLNedRdaYHp4TGVB2mmFiuz8FvT4EBxm06gZ07W1C0OB+Md8a/de9UPkr3IVf+k/Utj1YfAw6Pws9dFBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042273; c=relaxed/simple;
-	bh=s1hEwIby6vTFiwKjtr+rUmpnrRcwVIvktI1kNqHedc4=;
+	s=arc-20240116; t=1709042901; c=relaxed/simple;
+	bh=6D0Hv8g9i9AryDFMOyi9JHwGNyi4cYFfZs9euXg3sCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fsxzLdb8DVnHbhD9CzLCPnuhGvGQgpJ45Lracx6KRIeBoIiKqbIYEL5AhPEf1mXMxQqEHQkP20C4rE1WppMqw10Bly3t3SBou4z3RAHrDUpb+tTVW11sg+5qWj44boOQDoY3wX2kfaWs7ilbRId8kdVRknJ67E1T0mnOY6URiDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HGiAtn8g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C648C433A6;
-	Tue, 27 Feb 2024 13:57:53 +0000 (UTC)
+	 MIME-Version; b=B+7f8fjPitPNQRGCBpN7flsJTX709h779fVHHBYKpQSrvDOQbvNZuJa5qvchzFROA4sVPdZLo1ITmf7s7sI5hoSsaiQR0QFadZmKWpt9h9IokUW3K/X/FQ7/ADmBuLgbKsP7945d/RPTGLbNIRHSrWc1Yh4sPUiDshhySNCwWIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nh+WEW66; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74016C433C7;
+	Tue, 27 Feb 2024 14:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042273;
-	bh=s1hEwIby6vTFiwKjtr+rUmpnrRcwVIvktI1kNqHedc4=;
+	s=korg; t=1709042900;
+	bh=6D0Hv8g9i9AryDFMOyi9JHwGNyi4cYFfZs9euXg3sCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HGiAtn8goU9Ya8yM7t7oBsaJo3GVr6dP91bku3arysX/ah6QLAl6BWJs8d01j3MI5
-	 yOV9qjRHU92TOM/v/Amp+LLhCc8/Tje+TJubFycE9Ba92t2GxkAAndhfy5219/GkYr
-	 iI76c9zaUFbqtPq84h25Zi1CyzeRlYT1PRCBYZOg=
+	b=Nh+WEW669fXhUvS62c5/tlqXMQBPRDq0sTTlgFWWJ2ILwOCbXw52NqTUzpeP6BX6U
+	 nXznhf0QwUBEzGRAj6pyaH3JLFLsDa1evQb6HGeT79UBCQDB0QU0AqFeoCinbXdvU0
+	 lOXbltzAluA8paMFLwVw2DTM5mGB4oYRFqhEllQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Davide Caratti <dcaratti@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jeff LaBundy <jeff@labundy.com>,
+	Mattijs Korpershoek <mkorpershoek@baylibre.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 239/299] net/sched: act_mirred: use the backlog for mirred ingress
+Subject: [PATCH 5.15 162/245] Input: iqs269a - do not poll during ATI
 Date: Tue, 27 Feb 2024 14:25:50 +0100
-Message-ID: <20240227131633.427351794@linuxfoundation.org>
+Message-ID: <20240227131620.474273800@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,96 +63,287 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Jeff LaBundy <jeff@labundy.com>
 
-[ Upstream commit 52f671db18823089a02f07efc04efdb2272ddc17 ]
+[ Upstream commit b08134eb254db56e9ce8170d9b82f0d7a616b6f8 ]
 
-The test Davide added in commit ca22da2fbd69 ("act_mirred: use the backlog
-for nested calls to mirred ingress") hangs our testing VMs every 10 or so
-runs, with the familiar tcp_v4_rcv -> tcp_v4_rcv deadlock reported by
-lockdep.
+After initial start-up, the driver triggers ATI (calibration) with
+the newly loaded register configuration in place. Next, the driver
+polls a register field to ensure ATI completed in a timely fashion
+and that the device is ready to sense.
 
-The problem as previously described by Davide (see Link) is that
-if we reverse flow of traffic with the redirect (egress -> ingress)
-we may reach the same socket which generated the packet. And we may
-still be holding its socket lock. The common solution to such deadlocks
-is to put the packet in the Rx backlog, rather than run the Rx path
-inline. Do that for all egress -> ingress reversals, not just once
-we started to nest mirred calls.
+However, communicating with the device over I2C while ATI is under-
+way may induce noise in the device and cause ATI to fail. As such,
+the vendor recommends not to poll the device during ATI.
 
-In the past there was a concern that the backlog indirection will
-lead to loss of error reporting / less accurate stats. But the current
-workaround does not seem to address the issue.
+To solve this problem, let the device naturally signal to the host
+that ATI is complete by way of an interrupt. A completion prevents
+the device from successfully probing until this happens.
 
-Fixes: 53592b364001 ("net/sched: act_mirred: Implement ingress actions")
-Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Suggested-by: Davide Caratti <dcaratti@redhat.com>
-Link: https://lore.kernel.org/netdev/33dc43f587ec1388ba456b4915c75f02a8aae226.1663945716.git.dcaratti@redhat.com/
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+As an added benefit, initial switch states are now reported in the
+interrupt handler at the same time ATI status is checked. As such,
+duplicate code that reports initial switch states has been removed
+from iqs269_input_init().
+
+The former logic that scaled ATI timeout and filter settling delay
+is not carried forward with the new implementation, as it produces
+overly conservative delays at the lower clock rate.
+
+Rather, a single timeout that covers both clock rates is used. The
+filter settling delay does not happen to be necessary and has been
+removed as well.
+
+Fixes: 04e49867fad1 ("Input: add support for Azoteq IQS269A")
+Signed-off-by: Jeff LaBundy <jeff@labundy.com>
+Reviewed-by: Mattijs Korpershoek <mkorpershoek@baylibre.com>
+Link: https://lore.kernel.org/r/Y7RtB2T7AF9rYMjK@nixie71
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_mirred.c                             | 14 +++++---------
- .../testing/selftests/net/forwarding/tc_actions.sh |  3 ---
- 2 files changed, 5 insertions(+), 12 deletions(-)
+ drivers/input/misc/iqs269a.c | 97 +++++++++++++++++-------------------
+ 1 file changed, 46 insertions(+), 51 deletions(-)
 
-diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
-index 6f2544c1e3961..bab090bb5e80a 100644
---- a/net/sched/act_mirred.c
-+++ b/net/sched/act_mirred.c
-@@ -206,18 +206,14 @@ static int tcf_mirred_init(struct net *net, struct nlattr *nla,
- 	return err;
- }
+diff --git a/drivers/input/misc/iqs269a.c b/drivers/input/misc/iqs269a.c
+index ff6cbc2f5d76c..f4c3aff3895bc 100644
+--- a/drivers/input/misc/iqs269a.c
++++ b/drivers/input/misc/iqs269a.c
+@@ -9,6 +9,7 @@
+  * axial sliders presented by the device.
+  */
  
--static bool is_mirred_nested(void)
--{
--	return unlikely(__this_cpu_read(mirred_nest_level) > 1);
--}
++#include <linux/completion.h>
+ #include <linux/delay.h>
+ #include <linux/device.h>
+ #include <linux/err.h>
+@@ -144,10 +145,6 @@
+ #define IQS269_NUM_CH				8
+ #define IQS269_NUM_SL				2
+ 
+-#define IQS269_ATI_POLL_SLEEP_US		(iqs269->delay_mult * 10000)
+-#define IQS269_ATI_POLL_TIMEOUT_US		(iqs269->delay_mult * 500000)
+-#define IQS269_ATI_STABLE_DELAY_MS		(iqs269->delay_mult * 150)
 -
--static int tcf_mirred_forward(bool want_ingress, struct sk_buff *skb)
-+static int
-+tcf_mirred_forward(bool at_ingress, bool want_ingress, struct sk_buff *skb)
+ #define iqs269_irq_wait()			usleep_range(200, 250)
+ 
+ enum iqs269_local_cap_size {
+@@ -289,10 +286,10 @@ struct iqs269_private {
+ 	struct mutex lock;
+ 	struct iqs269_switch_desc switches[ARRAY_SIZE(iqs269_events)];
+ 	struct iqs269_sys_reg sys_reg;
++	struct completion ati_done;
+ 	struct input_dev *keypad;
+ 	struct input_dev *slider[IQS269_NUM_SL];
+ 	unsigned int keycode[ARRAY_SIZE(iqs269_events) * IQS269_NUM_CH];
+-	unsigned int delay_mult;
+ 	unsigned int ch_num;
+ 	bool hall_enable;
+ 	bool ati_current;
+@@ -973,13 +970,8 @@ static int iqs269_parse_prop(struct iqs269_private *iqs269)
+ 
+ 	general = be16_to_cpu(sys_reg->general);
+ 
+-	if (device_property_present(&client->dev, "azoteq,clk-div")) {
++	if (device_property_present(&client->dev, "azoteq,clk-div"))
+ 		general |= IQS269_SYS_SETTINGS_CLK_DIV;
+-		iqs269->delay_mult = 4;
+-	} else {
+-		general &= ~IQS269_SYS_SETTINGS_CLK_DIV;
+-		iqs269->delay_mult = 1;
+-	}
+ 
+ 	/*
+ 	 * Configure the device to automatically switch between normal and low-
+@@ -1036,7 +1028,6 @@ static int iqs269_parse_prop(struct iqs269_private *iqs269)
+ 
+ static int iqs269_dev_init(struct iqs269_private *iqs269)
  {
- 	int err;
+-	unsigned int val;
+ 	int error;
  
- 	if (!want_ingress)
- 		err = tcf_dev_queue_xmit(skb, dev_queue_xmit);
--	else if (is_mirred_nested())
-+	else if (!at_ingress)
- 		err = netif_rx(skb);
- 	else
- 		err = netif_receive_skb(skb);
-@@ -293,9 +289,9 @@ static int tcf_mirred_to_dev(struct sk_buff *skb, struct tcf_mirred *m,
+ 	mutex_lock(&iqs269->lock);
+@@ -1052,14 +1043,12 @@ static int iqs269_dev_init(struct iqs269_private *iqs269)
+ 	if (error)
+ 		goto err_mutex;
  
- 		skb_set_redirected(skb_to_send, skb_to_send->tc_at_ingress);
+-	error = regmap_read_poll_timeout(iqs269->regmap, IQS269_SYS_FLAGS, val,
+-					!(val & IQS269_SYS_FLAGS_IN_ATI),
+-					 IQS269_ATI_POLL_SLEEP_US,
+-					 IQS269_ATI_POLL_TIMEOUT_US);
+-	if (error)
+-		goto err_mutex;
++	/*
++	 * The following delay gives the device time to deassert its RDY output
++	 * so as to prevent an interrupt from being serviced prematurely.
++	 */
++	usleep_range(2000, 2100);
  
--		err = tcf_mirred_forward(want_ingress, skb_to_send);
-+		err = tcf_mirred_forward(at_ingress, want_ingress, skb_to_send);
- 	} else {
--		err = tcf_mirred_forward(want_ingress, skb_to_send);
-+		err = tcf_mirred_forward(at_ingress, want_ingress, skb_to_send);
+-	msleep(IQS269_ATI_STABLE_DELAY_MS);
+ 	iqs269->ati_current = true;
+ 
+ err_mutex:
+@@ -1071,10 +1060,8 @@ static int iqs269_dev_init(struct iqs269_private *iqs269)
+ static int iqs269_input_init(struct iqs269_private *iqs269)
+ {
+ 	struct i2c_client *client = iqs269->client;
+-	struct iqs269_flags flags;
+ 	unsigned int sw_code, keycode;
+ 	int error, i, j;
+-	u8 dir_mask, state;
+ 
+ 	iqs269->keypad = devm_input_allocate_device(&client->dev);
+ 	if (!iqs269->keypad)
+@@ -1087,23 +1074,7 @@ static int iqs269_input_init(struct iqs269_private *iqs269)
+ 	iqs269->keypad->name = "iqs269a_keypad";
+ 	iqs269->keypad->id.bustype = BUS_I2C;
+ 
+-	if (iqs269->hall_enable) {
+-		error = regmap_raw_read(iqs269->regmap, IQS269_SYS_FLAGS,
+-					&flags, sizeof(flags));
+-		if (error) {
+-			dev_err(&client->dev,
+-				"Failed to read initial status: %d\n", error);
+-			return error;
+-		}
+-	}
+-
+ 	for (i = 0; i < ARRAY_SIZE(iqs269_events); i++) {
+-		dir_mask = flags.states[IQS269_ST_OFFS_DIR];
+-		if (!iqs269_events[i].dir_up)
+-			dir_mask = ~dir_mask;
+-
+-		state = flags.states[iqs269_events[i].st_offs] & dir_mask;
+-
+ 		sw_code = iqs269->switches[i].code;
+ 
+ 		for (j = 0; j < IQS269_NUM_CH; j++) {
+@@ -1116,13 +1087,9 @@ static int iqs269_input_init(struct iqs269_private *iqs269)
+ 			switch (j) {
+ 			case IQS269_CHx_HALL_ACTIVE:
+ 				if (iqs269->hall_enable &&
+-				    iqs269->switches[i].enabled) {
++				    iqs269->switches[i].enabled)
+ 					input_set_capability(iqs269->keypad,
+ 							     EV_SW, sw_code);
+-					input_report_switch(iqs269->keypad,
+-							    sw_code,
+-							    state & BIT(j));
+-				}
+ 				fallthrough;
+ 
+ 			case IQS269_CHx_HALL_INACTIVE:
+@@ -1138,14 +1105,6 @@ static int iqs269_input_init(struct iqs269_private *iqs269)
+ 		}
  	}
  
- 	if (err) {
-diff --git a/tools/testing/selftests/net/forwarding/tc_actions.sh b/tools/testing/selftests/net/forwarding/tc_actions.sh
-index b0f5e55d2d0b2..5896296365022 100755
---- a/tools/testing/selftests/net/forwarding/tc_actions.sh
-+++ b/tools/testing/selftests/net/forwarding/tc_actions.sh
-@@ -235,9 +235,6 @@ mirred_egress_to_ingress_tcp_test()
- 	check_err $? "didn't mirred redirect ICMP"
- 	tc_check_packets "dev $h1 ingress" 102 10
- 	check_err $? "didn't drop mirred ICMP"
--	local overlimits=$(tc_rule_stats_get ${h1} 101 egress .overlimits)
--	test ${overlimits} = 10
--	check_err $? "wrong overlimits, expected 10 got ${overlimits}"
+-	input_sync(iqs269->keypad);
+-
+-	error = input_register_device(iqs269->keypad);
+-	if (error) {
+-		dev_err(&client->dev, "Failed to register keypad: %d\n", error);
+-		return error;
+-	}
+-
+ 	for (i = 0; i < IQS269_NUM_SL; i++) {
+ 		if (!iqs269->sys_reg.slider_select[i])
+ 			continue;
+@@ -1205,6 +1164,9 @@ static int iqs269_report(struct iqs269_private *iqs269)
+ 		return error;
+ 	}
  
- 	tc filter del dev $h1 egress protocol ip pref 100 handle 100 flower
- 	tc filter del dev $h1 egress protocol ip pref 101 handle 101 flower
++	if (be16_to_cpu(flags.system) & IQS269_SYS_FLAGS_IN_ATI)
++		return 0;
++
+ 	error = regmap_raw_read(iqs269->regmap, IQS269_SLIDER_X, slider_x,
+ 				sizeof(slider_x));
+ 	if (error) {
+@@ -1267,6 +1229,12 @@ static int iqs269_report(struct iqs269_private *iqs269)
+ 
+ 	input_sync(iqs269->keypad);
+ 
++	/*
++	 * The following completion signals that ATI has finished, any initial
++	 * switch states have been reported and the keypad can be registered.
++	 */
++	complete_all(&iqs269->ati_done);
++
+ 	return 0;
+ }
+ 
+@@ -1298,6 +1266,9 @@ static ssize_t counts_show(struct device *dev,
+ 	if (!iqs269->ati_current || iqs269->hall_enable)
+ 		return -EPERM;
+ 
++	if (!completion_done(&iqs269->ati_done))
++		return -EBUSY;
++
+ 	/*
+ 	 * Unsolicited I2C communication prompts the device to assert its RDY
+ 	 * pin, so disable the interrupt line until the operation is finished
+@@ -1554,7 +1525,9 @@ static ssize_t ati_trigger_show(struct device *dev,
+ {
+ 	struct iqs269_private *iqs269 = dev_get_drvdata(dev);
+ 
+-	return scnprintf(buf, PAGE_SIZE, "%u\n", iqs269->ati_current);
++	return scnprintf(buf, PAGE_SIZE, "%u\n",
++			 iqs269->ati_current &&
++			 completion_done(&iqs269->ati_done));
+ }
+ 
+ static ssize_t ati_trigger_store(struct device *dev,
+@@ -1574,6 +1547,7 @@ static ssize_t ati_trigger_store(struct device *dev,
+ 		return count;
+ 
+ 	disable_irq(client->irq);
++	reinit_completion(&iqs269->ati_done);
+ 
+ 	error = iqs269_dev_init(iqs269);
+ 
+@@ -1583,6 +1557,10 @@ static ssize_t ati_trigger_store(struct device *dev,
+ 	if (error)
+ 		return error;
+ 
++	if (!wait_for_completion_timeout(&iqs269->ati_done,
++					 msecs_to_jiffies(2000)))
++		return -ETIMEDOUT;
++
+ 	return count;
+ }
+ 
+@@ -1641,6 +1619,7 @@ static int iqs269_probe(struct i2c_client *client)
+ 	}
+ 
+ 	mutex_init(&iqs269->lock);
++	init_completion(&iqs269->ati_done);
+ 
+ 	error = regmap_raw_read(iqs269->regmap, IQS269_VER_INFO, &ver_info,
+ 				sizeof(ver_info));
+@@ -1676,6 +1655,22 @@ static int iqs269_probe(struct i2c_client *client)
+ 		return error;
+ 	}
+ 
++	if (!wait_for_completion_timeout(&iqs269->ati_done,
++					 msecs_to_jiffies(2000))) {
++		dev_err(&client->dev, "Failed to complete ATI\n");
++		return -ETIMEDOUT;
++	}
++
++	/*
++	 * The keypad may include one or more switches and is not registered
++	 * until ATI is complete and the initial switch states are read.
++	 */
++	error = input_register_device(iqs269->keypad);
++	if (error) {
++		dev_err(&client->dev, "Failed to register keypad: %d\n", error);
++		return error;
++	}
++
+ 	error = devm_device_add_group(&client->dev, &iqs269_attr_group);
+ 	if (error)
+ 		dev_err(&client->dev, "Failed to add attributes: %d\n", error);
 -- 
 2.43.0
 
