@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F48F869729
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:18:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C675F86967A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:12:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A7EC28C156
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:18:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81C9B294732
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:12:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C95F13EFF4;
-	Tue, 27 Feb 2024 14:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B7D31420DD;
+	Tue, 27 Feb 2024 14:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="saKw0T9f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0NTZSrHL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF09A13DBB3;
-	Tue, 27 Feb 2024 14:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074A513F016;
+	Tue, 27 Feb 2024 14:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043530; cv=none; b=AkB2BW1rf2OYZ+O4hKAw8JxA5fML/YKjXOy3HSZMOXov7mWkLS5+Y1fT51sPTuFGIMsA+QaQog6fMRubjDYfueFjbKUOdjKpk8DOzXlyz22sNPq8vQCKD9L1P3FfcQH9gLefae4rlM6dJsLxq136KuGmA2U75bY7pw2RS6/YRrY=
+	t=1709043124; cv=none; b=nzmeuh8S1s631Im66vzFmgRNbK34sbAEo6dFC03EnrXLGpR2TZLDErqZLJRf70l1RQaLtb2ThPAwK97F3vE6vVgkz609V3VvMNU/gOCfWgjoCRtbkMtv5zdbzoVwz7uiCaDiWy+HiLIKw2k0V8Zy0V7hGEEp4d9KyUHKUoXnhM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043530; c=relaxed/simple;
-	bh=YLy7cKoeRfvFleNuemOdsfqdoeug5HSd3ne16tU4PBA=;
+	s=arc-20240116; t=1709043124; c=relaxed/simple;
+	bh=PXI+p5ppr6XHEo3SZN4lee1hyx6TqcmcWnfhokaX3ik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h/8q/mhQbuBDt0TJA2NMT78pSCEo0uk/ZiZ6VSB8n9taR0DvhfNtGSvlsuEie3g8S8kLmIUC0iHUkR1dpFAE7kif0trQhdIxYi7Zk8VYHj2W3eYnMxpxufS9ijCOkG0X9m71J7ZSWyUAGGidJbiKAOYjNFnamWhFsGQn8kJPy7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=saKw0T9f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B3E2C433C7;
-	Tue, 27 Feb 2024 14:18:50 +0000 (UTC)
+	 MIME-Version; b=fqxUeQ/fhu2S2kAp57TRhX0hR4AK+9N0uzZON2ChN0Ze0mIt+LUGYRJv53dRYKs3vIlYGFsQCBJelZdwC15mboR+2j/snvswuC3HU3sRfgnCrgUFwYsLRUiUlhFjwTaSmniF1KOHqE1ccNUl5BnCTZpBFMW4kj7Cy481sWYKgAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0NTZSrHL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85679C433F1;
+	Tue, 27 Feb 2024 14:12:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043530;
-	bh=YLy7cKoeRfvFleNuemOdsfqdoeug5HSd3ne16tU4PBA=;
+	s=korg; t=1709043123;
+	bh=PXI+p5ppr6XHEo3SZN4lee1hyx6TqcmcWnfhokaX3ik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=saKw0T9fv07dQh4LFIdEuiOQH4pJnnPd55r2ZFAN1vFCNn106ZJdo55K79WRXLJJD
-	 jguxWplKsFbLzKf3dVeZ2aoU5f4frxJFIpGwzDyoKFJhzUd2tPn+mpC6dTdXEFRyKb
-	 +XGmHpbneVwiDRI+e5eMRLWvmIoJjrbNGvVL+DyI=
+	b=0NTZSrHLv8n1mYXHblGS5px46DF0yp0gXL251SD1KOkyGjiU4ApOYQjUksMBvXoLP
+	 R+1QBP8ZuIvL54VmLKGdYxbrDgzzAQN+MWUf/cRYQ/6STTR0WoHbubvNPRtwXUNjuQ
+	 n60TqKcp4Ghssmkp4MBkS2UU2m0/9zqmPrFH/Vcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Leon Romanovsky <leon@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 142/195] RDMA/srpt: fix function pointer cast warnings
+Subject: [PATCH 5.15 215/245] ipv4: properly combine dev_base_seq and ipv4.dev_addr_genid
 Date: Tue, 27 Feb 2024 14:26:43 +0100
-Message-ID: <20240227131615.118647596@linuxfoundation.org>
+Message-ID: <20240227131622.195048004@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit eb5c7465c3240151cd42a55c7ace9da0026308a1 ]
+[ Upstream commit 081a0e3b0d4c061419d3f4679dec9f68725b17e4 ]
 
-clang-16 notices that srpt_qp_event() gets called through an incompatible
-pointer here:
+net->dev_base_seq and ipv4.dev_addr_genid are monotonically increasing.
 
-drivers/infiniband/ulp/srpt/ib_srpt.c:1815:5: error: cast from 'void (*)(struct ib_event *, struct srpt_rdma_ch *)' to 'void (*)(struct ib_event *, void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
- 1815 |                 = (void(*)(struct ib_event *, void*))srpt_qp_event;
+If we XOR their values, we could miss to detect if both values
+were changed with the same amount.
 
-Change srpt_qp_event() to use the correct prototype and adjust the
-argument inside of it.
-
-Fixes: a42d985bd5b2 ("ib_srpt: Initial SRP Target merge for v3.3-rc1")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20240213100728.458348-1-arnd@kernel.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 0465277f6b3f ("ipv4: provide addr and netconf dump consistency info")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Acked-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/srpt/ib_srpt.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ net/ipv4/devinet.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
-index 4607d37b9224a..cffa93f114a73 100644
---- a/drivers/infiniband/ulp/srpt/ib_srpt.c
-+++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
-@@ -214,10 +214,12 @@ static const char *get_ch_state_name(enum rdma_ch_state s)
- /**
-  * srpt_qp_event - QP event callback function
-  * @event: Description of the event that occurred.
-- * @ch: SRPT RDMA channel.
-+ * @ptr: SRPT RDMA channel.
-  */
--static void srpt_qp_event(struct ib_event *event, struct srpt_rdma_ch *ch)
-+static void srpt_qp_event(struct ib_event *event, void *ptr)
- {
-+	struct srpt_rdma_ch *ch = ptr;
-+
- 	pr_debug("QP event %d on ch=%p sess_name=%s-%d state=%s\n",
- 		 event->event, ch, ch->sess_name, ch->qp->qp_num,
- 		 get_ch_state_name(ch->state));
-@@ -1811,8 +1813,7 @@ static int srpt_create_ch_ib(struct srpt_rdma_ch *ch)
- 	ch->cq_size = ch->rq_size + sq_size;
+diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
+index c511751c2f41a..425dfa8e4fd0a 100644
+--- a/net/ipv4/devinet.c
++++ b/net/ipv4/devinet.c
+@@ -1797,6 +1797,21 @@ static int in_dev_dump_addr(struct in_device *in_dev, struct sk_buff *skb,
+ 	return err;
+ }
  
- 	qp_init->qp_context = (void *)ch;
--	qp_init->event_handler
--		= (void(*)(struct ib_event *, void*))srpt_qp_event;
-+	qp_init->event_handler = srpt_qp_event;
- 	qp_init->send_cq = ch->cq;
- 	qp_init->recv_cq = ch->cq;
- 	qp_init->sq_sig_type = IB_SIGNAL_REQ_WR;
++/* Combine dev_addr_genid and dev_base_seq to detect changes.
++ */
++static u32 inet_base_seq(const struct net *net)
++{
++	u32 res = atomic_read(&net->ipv4.dev_addr_genid) +
++		  net->dev_base_seq;
++
++	/* Must not return 0 (see nl_dump_check_consistent()).
++	 * Chose a value far away from 0.
++	 */
++	if (!res)
++		res = 0x80000000;
++	return res;
++}
++
+ static int inet_dump_ifaddr(struct sk_buff *skb, struct netlink_callback *cb)
+ {
+ 	const struct nlmsghdr *nlh = cb->nlh;
+@@ -1848,8 +1863,7 @@ static int inet_dump_ifaddr(struct sk_buff *skb, struct netlink_callback *cb)
+ 		idx = 0;
+ 		head = &tgt_net->dev_index_head[h];
+ 		rcu_read_lock();
+-		cb->seq = atomic_read(&tgt_net->ipv4.dev_addr_genid) ^
+-			  tgt_net->dev_base_seq;
++		cb->seq = inet_base_seq(tgt_net);
+ 		hlist_for_each_entry_rcu(dev, head, index_hlist) {
+ 			if (idx < s_idx)
+ 				goto cont;
+@@ -2250,8 +2264,7 @@ static int inet_netconf_dump_devconf(struct sk_buff *skb,
+ 		idx = 0;
+ 		head = &net->dev_index_head[h];
+ 		rcu_read_lock();
+-		cb->seq = atomic_read(&net->ipv4.dev_addr_genid) ^
+-			  net->dev_base_seq;
++		cb->seq = inet_base_seq(net);
+ 		hlist_for_each_entry_rcu(dev, head, index_hlist) {
+ 			if (idx < s_idx)
+ 				goto cont;
 -- 
 2.43.0
 
