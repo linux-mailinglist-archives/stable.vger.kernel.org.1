@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-25220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F77D86984A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:31:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4104B8697E1
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:26:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 559C22952B9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:31:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 685301C21F1B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:26:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 335801420D3;
-	Tue, 27 Feb 2024 14:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A28D1448D7;
+	Tue, 27 Feb 2024 14:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GJcnQUHg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FX5yxVJY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7225145B14;
-	Tue, 27 Feb 2024 14:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2FE143C4B;
+	Tue, 27 Feb 2024 14:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044195; cv=none; b=XMRTbn/yTxCgPS/wBms0gn1CFZS/iwG/suoMZpRAhJeZu26zXV7vH81NX+IYSsaqEO41WpjNMJIDdSWJCohdHN92pZew8wmPnnb7clsyVG0LpLjxsvzkdu1mOJuqZGc+4M86i8ehu9TDLQgNVyVyLL+QszIrmQpv6ySOsglkxvs=
+	t=1709043948; cv=none; b=LQCNGe1cd66LMb09WFnR5xwKSroe1NerDfwx2XqWto4Y6VjXNkE4KcbrveVgWshze6bh5IqZ6g9Fur1e928s4gd4cVBJRZrMXMP59AYyhASzdUXkTrSQ1IgJSAFTZ11XvONOov3xM0nAiZKa9kWUJsriSMOWD++5mmgWodBzdLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044195; c=relaxed/simple;
-	bh=iq+BY2Bryyljm99zozJ1TV8mL2aoXregJqWaUHf3/SI=;
+	s=arc-20240116; t=1709043948; c=relaxed/simple;
+	bh=uwHWwHmq+Bw6glb8C8V4D0r0OYRRAf333y164P74jTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S0rodBU+DhY4xkx/FKbANO9q3br2tknjFERdD59Ur+MUjKdQJnWpD1vpw972RZTCwOC8uIVU08LhMzUdSGJ9ML4t50SrUp4YLuAybsWT8BUOwxbIRIBoKLeCLdFnM7d9KI0UxFeOryQOJljW4Hxus55SOvT4q181gxZoa/kNYTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GJcnQUHg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73864C433C7;
-	Tue, 27 Feb 2024 14:29:54 +0000 (UTC)
+	 MIME-Version; b=qukxg2rNua4OYonfLRQW0iX5LaN817BpxuxfETqA66RNdO355dTL1xWTuyO6NLhI/iP8hgNyentXJVPxuhQXflAIR5nCtb2g9uwuIVWktn9RODJ+penVOjtqzlC4HWBRtLP2CO83wdAMs8fu2t/nE5aJlKxRk5bIgIYv06IFGPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FX5yxVJY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD81C433F1;
+	Tue, 27 Feb 2024 14:25:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044194;
-	bh=iq+BY2Bryyljm99zozJ1TV8mL2aoXregJqWaUHf3/SI=;
+	s=korg; t=1709043948;
+	bh=uwHWwHmq+Bw6glb8C8V4D0r0OYRRAf333y164P74jTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GJcnQUHgG7cgcGOfBy+UIR4B6ezGBvWpY2IneXMEV7bpU/Wdazla8twfhSBxaun4Y
-	 +8DaudyLIsBZBo9X0k9yugrObi3VsayWmduC8CbV0vWmkKWv+NFXwVyCuoyXk2T7WH
-	 5lQEKNCV0/OoMuKM+tg2uhh9eGvlo7ndYeUemSeg=
+	b=FX5yxVJYhfWfuDPnTjkTO8JUIL4YZvP2J0d+Tgxh02VJEM5yH/hdbUs0nCUBJk8SG
+	 YNtGqYG1wd8OiyyCi5l9/yTNIhi+vokcqHAdQmcIUHREuTjzMKWqQJ5AtmJvVwauSl
+	 ucfMSfQX4QJScV7h0zUrmmvgfRj6PEGzOjlUa9P0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Danilo Krummrich <dakr@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 096/122] IB/hfi1: Fix a memleak in init_credit_return
+Subject: [PATCH 5.4 70/84] nouveau: fix function cast warnings
 Date: Tue, 27 Feb 2024 14:27:37 +0100
-Message-ID: <20240227131601.844289647@linuxfoundation.org>
+Message-ID: <20240227131555.148627504@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 809aa64ebff51eb170ee31a95f83b2d21efa32e2 ]
+[ Upstream commit 0affdba22aca5573f9d989bcb1d71d32a6a03efe ]
 
-When dma_alloc_coherent fails to allocate dd->cr_base[i].va,
-init_credit_return should deallocate dd->cr_base and
-dd->cr_base[i] that allocated before. Or those resources
-would be never freed and a memleak is triggered.
+clang-16 warns about casting between incompatible function types:
 
-Fixes: 7724105686e7 ("IB/hfi1: add driver files")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Link: https://lore.kernel.org/r/20240112085523.3731720-1-alexious@zju.edu.cn
-Acked-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c:161:10: error: cast from 'void (*)(const struct firmware *)' to 'void (*)(void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+  161 |         .fini = (void(*)(void *))release_firmware,
+
+This one was done to use the generic shadow_fw_release() function as a
+callback for struct nvbios_source. Change it to use the same prototype
+as the other five instances, with a trivial helper function that actually
+calls release_firmware.
+
+Fixes: 70c0f263cc2e ("drm/nouveau/bios: pull in basic vbios subdev, more to come later")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240213095753.455062-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hfi1/pio.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hfi1/pio.c b/drivers/infiniband/hw/hfi1/pio.c
-index 60eb3a64518f3..969004258692b 100644
---- a/drivers/infiniband/hw/hfi1/pio.c
-+++ b/drivers/infiniband/hw/hfi1/pio.c
-@@ -2131,7 +2131,7 @@ int init_credit_return(struct hfi1_devdata *dd)
- 				   "Unable to allocate credit return DMA range for NUMA %d\n",
- 				   i);
- 			ret = -ENOMEM;
--			goto done;
-+			goto free_cr_base;
- 		}
- 	}
- 	set_dev_node(&dd->pcidev->dev, dd->node);
-@@ -2139,6 +2139,10 @@ int init_credit_return(struct hfi1_devdata *dd)
- 	ret = 0;
- done:
- 	return ret;
-+
-+free_cr_base:
-+	free_credit_return(dd);
-+	goto done;
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c
+index 4b571cc6bc70f..6597def18627e 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c
+@@ -154,11 +154,17 @@ shadow_fw_init(struct nvkm_bios *bios, const char *name)
+ 	return (void *)fw;
  }
  
- void free_credit_return(struct hfi1_devdata *dd)
++static void
++shadow_fw_release(void *fw)
++{
++	release_firmware(fw);
++}
++
+ static const struct nvbios_source
+ shadow_fw = {
+ 	.name = "firmware",
+ 	.init = shadow_fw_init,
+-	.fini = (void(*)(void *))release_firmware,
++	.fini = shadow_fw_release,
+ 	.read = shadow_fw_read,
+ 	.rw = false,
+ };
 -- 
 2.43.0
 
