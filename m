@@ -1,67 +1,56 @@
-Return-Path: <stable+bounces-25040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F447869774
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:21:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99C4986988C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:38:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 802631C24A33
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:21:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02EE2B2E502
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC3213EFE9;
-	Tue, 27 Feb 2024 14:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68002145B0D;
+	Tue, 27 Feb 2024 14:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KAxGQsqE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+heiPdi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B32413B2B4;
-	Tue, 27 Feb 2024 14:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28175145B0B;
+	Tue, 27 Feb 2024 14:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043688; cv=none; b=uD4ljJgxMskJmRo/FzHoEEQoEBQZscKmbwowHj2QxbiYJ0l2PagRjFwA8D1DSa0PsZ/Rbo7rcnAyBZ71JxEwvsXcSkYtQXmXQT7ohNXwQqCy/oyOfUb245fxUbPIRPsRQsTszbhU3PXh8t1UIkHaENIdzjEKjYYRhoJMIj77FxM=
+	t=1709044095; cv=none; b=lZU81HkSIcoj7wZ2Q/7lHWidwgGHXLAvbP4+Q6mPLCSu3nz2iqmUOJ4HTioDZickYWy5Df7nEUgzZzwhDu9O/b9eakZoCYiTCLKYL5INJGwXH74w1z6hTRWCwHXMj53VadH6qywo4OR0HDnO2pSXGqeAz30WDVN9t8d8R70NlJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043688; c=relaxed/simple;
-	bh=eH+jLccZYf2r8PBQE0LPdiYCVngsMli3qGrp4EAx9pE=;
+	s=arc-20240116; t=1709044095; c=relaxed/simple;
+	bh=8HwEkuRgXD2ksPH81p0RCLNaD1aYKfALWpFq8ccu+KE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rCuxs3u0p7v1bD3Lxg7Kw/nVNC2NOSAF4CDupBQIfX7G51belQ2StygXHCuQWJU/hePREJN3lKXTe54wrYEaf1Sg1VCKm5Eoqe8wF0nJKh9fzKKPlUjJaT9gMVSC7NhM5EsAKEpMRqJl0t8TqPIorSHjVzoRfKfrNPQm46gkduE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KAxGQsqE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C306CC43390;
-	Tue, 27 Feb 2024 14:21:27 +0000 (UTC)
+	 MIME-Version; b=WDjLDHHQWh93ZGEjakZ3soxwYPsbO7QwAywBJdUucCAiV36iVKgMpIC24rCscMX0GaKp1mEnLJjtTqSs6eSPKbXMnzn01tJBMHZZoXUNLEA9zs8egebytGzox5/0tg8hMt9Eu/qy4feSFbWd0fsd3liIt7XZ6O5YdGfQLAbuduI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+heiPdi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6180C433C7;
+	Tue, 27 Feb 2024 14:28:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043688;
-	bh=eH+jLccZYf2r8PBQE0LPdiYCVngsMli3qGrp4EAx9pE=;
+	s=korg; t=1709044095;
+	bh=8HwEkuRgXD2ksPH81p0RCLNaD1aYKfALWpFq8ccu+KE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KAxGQsqE+nM28XH+14thdUv3x0GBrzX+FvajlKYbY9jDNePlchbSRfVZpoesJ/NjN
-	 PymAPUnP05Gqqcl0Ux4jW7KjVuK2GTbLY3FqSrwF37mdyR7MqVpPW3yPFNI6eA0Orr
-	 6b0z7UoyEcPJh5lm8m0xGWcN6Q++QdcKPZuZET94=
+	b=r+heiPdiFs87hTeZIqZDm2VfdCoQ7QQLn4RZRztEWBOvYxsJHV/JEwjNDme4ddWK+
+	 4fBe4YK9o7hBe9ulR51YFtTB2VLI12aJdml68N/TF+WGdV4UOJ5tEwBd/vCFc2oqQH
+	 VRz6uiw+iOHpRNvZL00JU2ykvwu7KANsabdBdG1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	David Ahern <dsahern@kernel.org>,
-	Dylan Yudaken <dylany@fb.com>,
-	Yajun Deng <yajun.deng@linux.dev>,
-	Petr Machata <petrm@nvidia.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	syzbot <syzkaller@googlegroups.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Kees Cook <keescook@chromium.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Borislav Petkov <bp@suse.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 160/195] net: dev: Convert sa_data to flexible array in struct sockaddr
+Subject: [PATCH 5.10 060/122] task_stack, x86/cea: Force-inline stack helpers
 Date: Tue, 27 Feb 2024 14:27:01 +0100
-Message-ID: <20240227131615.695445494@linuxfoundation.org>
+Message-ID: <20240227131600.670336905@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,137 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Borislav Petkov <bp@suse.de>
 
-[ Upstream commit b5f0de6df6dce8d641ef58ef7012f3304dffb9a1 ]
+[ Upstream commit e87f4152e542610d0b4c6c8548964a68a59d2040 ]
 
-One of the worst offenders of "fake flexible arrays" is struct sockaddr,
-as it is the classic example of why GCC and Clang have been traditionally
-forced to treat all trailing arrays as fake flexible arrays: in the
-distant misty past, sa_data became too small, and code started just
-treating it as a flexible array, even though it was fixed-size. The
-special case by the compiler is specifically that sizeof(sa->sa_data)
-and FORTIFY_SOURCE (which uses __builtin_object_size(sa->sa_data, 1))
-do not agree (14 and -1 respectively), which makes FORTIFY_SOURCE treat
-it as a flexible array.
+Force-inline two stack helpers to fix the following objtool warnings:
 
-However, the coming -fstrict-flex-arrays compiler flag will remove
-these special cases so that FORTIFY_SOURCE can gain coverage over all
-the trailing arrays in the kernel that are _not_ supposed to be treated
-as a flexible array. To deal with this change, convert sa_data to a true
-flexible array. To keep the structure size the same, move sa_data into
-a union with a newly introduced sa_data_min with the original size. The
-result is that FORTIFY_SOURCE can continue to have no idea how large
-sa_data may actually be, but anything using sizeof(sa->sa_data) must
-switch to sizeof(sa->sa_data_min).
+  vmlinux.o: warning: objtool: in_task_stack()+0xc: call to task_stack_page() leaves .noinstr.text section
+  vmlinux.o: warning: objtool: in_entry_stack()+0x10: call to cpu_entry_stack() leaves .noinstr.text section
 
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Pavel Begunkov <asml.silence@gmail.com>
-Cc: David Ahern <dsahern@kernel.org>
-Cc: Dylan Yudaken <dylany@fb.com>
-Cc: Yajun Deng <yajun.deng@linux.dev>
-Cc: Petr Machata <petrm@nvidia.com>
-Cc: Hangbin Liu <liuhangbin@gmail.com>
-Cc: Leon Romanovsky <leon@kernel.org>
-Cc: syzbot <syzkaller@googlegroups.com>
-Cc: Willem de Bruijn <willemb@google.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20221018095503.never.671-kees@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: a7d6027790ac ("arp: Prevent overflow in arp_req_get().")
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20220324183607.31717-2-bp@alien8.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/socket.h |  5 ++++-
- net/core/dev.c         |  2 +-
- net/core/dev_ioctl.c   |  2 +-
- net/packet/af_packet.c | 10 +++++-----
- 4 files changed, 11 insertions(+), 8 deletions(-)
+ arch/x86/include/asm/cpu_entry_area.h | 2 +-
+ include/linux/sched/task_stack.h      | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/socket.h b/include/linux/socket.h
-index b3c58042bd254..d79efd0268809 100644
---- a/include/linux/socket.h
-+++ b/include/linux/socket.h
-@@ -33,7 +33,10 @@ typedef __kernel_sa_family_t	sa_family_t;
+diff --git a/arch/x86/include/asm/cpu_entry_area.h b/arch/x86/include/asm/cpu_entry_area.h
+index dd5ea1bdf04c5..75efc4c6f0766 100644
+--- a/arch/x86/include/asm/cpu_entry_area.h
++++ b/arch/x86/include/asm/cpu_entry_area.h
+@@ -143,7 +143,7 @@ extern void cea_set_pte(void *cea_vaddr, phys_addr_t pa, pgprot_t flags);
  
- struct sockaddr {
- 	sa_family_t	sa_family;	/* address family, AF_xxx	*/
--	char		sa_data[14];	/* 14 bytes of protocol address	*/
-+	union {
-+		char sa_data_min[14];		/* Minimum 14 bytes of protocol address	*/
-+		DECLARE_FLEX_ARRAY(char, sa_data);
-+	};
- };
+ extern struct cpu_entry_area *get_cpu_entry_area(int cpu);
  
- struct linger {
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 1ba3662faf0aa..60619fe8af5fc 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -8861,7 +8861,7 @@ EXPORT_SYMBOL(dev_set_mac_address_user);
- 
- int dev_get_mac_address(struct sockaddr *sa, struct net *net, char *dev_name)
+-static inline struct entry_stack *cpu_entry_stack(int cpu)
++static __always_inline struct entry_stack *cpu_entry_stack(int cpu)
  {
--	size_t size = sizeof(sa->sa_data);
-+	size_t size = sizeof(sa->sa_data_min);
- 	struct net_device *dev;
- 	int ret = 0;
- 
-diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
-index 7674bb9f3076c..5cdbfbf9a7dcf 100644
---- a/net/core/dev_ioctl.c
-+++ b/net/core/dev_ioctl.c
-@@ -342,7 +342,7 @@ static int dev_ifsioc(struct net *net, struct ifreq *ifr, void __user *data,
- 		if (ifr->ifr_hwaddr.sa_family != dev->type)
- 			return -EINVAL;
- 		memcpy(dev->broadcast, ifr->ifr_hwaddr.sa_data,
--		       min(sizeof(ifr->ifr_hwaddr.sa_data),
-+		       min(sizeof(ifr->ifr_hwaddr.sa_data_min),
- 			   (size_t)dev->addr_len));
- 		call_netdevice_notifiers(NETDEV_CHANGEADDR, dev);
- 		return 0;
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 51882f07ef70c..c3117350f5fbb 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -3284,7 +3284,7 @@ static int packet_bind_spkt(struct socket *sock, struct sockaddr *uaddr,
- 			    int addr_len)
- {
- 	struct sock *sk = sock->sk;
--	char name[sizeof(uaddr->sa_data) + 1];
-+	char name[sizeof(uaddr->sa_data_min) + 1];
- 
- 	/*
- 	 *	Check legality
-@@ -3295,8 +3295,8 @@ static int packet_bind_spkt(struct socket *sock, struct sockaddr *uaddr,
- 	/* uaddr->sa_data comes from the userspace, it's not guaranteed to be
- 	 * zero-terminated.
- 	 */
--	memcpy(name, uaddr->sa_data, sizeof(uaddr->sa_data));
--	name[sizeof(uaddr->sa_data)] = 0;
-+	memcpy(name, uaddr->sa_data, sizeof(uaddr->sa_data_min));
-+	name[sizeof(uaddr->sa_data_min)] = 0;
- 
- 	return packet_do_bind(sk, name, 0, 0);
+ 	return &get_cpu_entry_area(cpu)->entry_stack_page.stack;
  }
-@@ -3566,11 +3566,11 @@ static int packet_getname_spkt(struct socket *sock, struct sockaddr *uaddr,
- 		return -EOPNOTSUPP;
- 
- 	uaddr->sa_family = AF_PACKET;
--	memset(uaddr->sa_data, 0, sizeof(uaddr->sa_data));
-+	memset(uaddr->sa_data, 0, sizeof(uaddr->sa_data_min));
- 	rcu_read_lock();
- 	dev = dev_get_by_index_rcu(sock_net(sk), READ_ONCE(pkt_sk(sk)->ifindex));
- 	if (dev)
--		strscpy(uaddr->sa_data, dev->name, sizeof(uaddr->sa_data));
-+		strscpy(uaddr->sa_data, dev->name, sizeof(uaddr->sa_data_min));
- 	rcu_read_unlock();
- 
- 	return sizeof(*uaddr);
+diff --git a/include/linux/sched/task_stack.h b/include/linux/sched/task_stack.h
+index f24575942dabe..879a5c8f930b6 100644
+--- a/include/linux/sched/task_stack.h
++++ b/include/linux/sched/task_stack.h
+@@ -16,7 +16,7 @@
+  * try_get_task_stack() instead.  task_stack_page will return a pointer
+  * that could get freed out from under you.
+  */
+-static inline void *task_stack_page(const struct task_struct *task)
++static __always_inline void *task_stack_page(const struct task_struct *task)
+ {
+ 	return task->stack;
+ }
 -- 
 2.43.0
 
