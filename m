@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD14B86954F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:00:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFDB1869737
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:19:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D7CB1C21E78
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:00:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A19A283B28
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:19:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0E71420A5;
-	Tue, 27 Feb 2024 14:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C54B1420DD;
+	Tue, 27 Feb 2024 14:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqvDyVH0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O9o4pcZE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4CC13DB92;
-	Tue, 27 Feb 2024 14:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE75B13B797;
+	Tue, 27 Feb 2024 14:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042443; cv=none; b=Cr7aD39RVVnXS/Y935OhmC7TCVqtu5VnNynmZJeQxXLaQ8fnVFlFaiIIU5XtQm2j+Rb69e2LppcBZKpS2Wb6sPejEyXDggNKeDmxAWu+/278qNwtpTmLksgLP+Xd9+5Zn/H2PvIrwUiRybFBwakHXPmaW4Q3OUkMKjaOTkpXmPI=
+	t=1709043545; cv=none; b=r2ISVrJwaoxZVe5Vo5cRMaXHSaqa5gmqB4b8U9nKOuLcJEuqPckb00iVfJ50osWp9cmAqN+q73CT6G42I8U7ux+oSty7Qm4z8JU609Mesy1dO6DUo94WstR5xM2mNEG+rfvRWF5/cToHPj56crDyyr9Of007afZlNwJzTAQDXxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042443; c=relaxed/simple;
-	bh=l4F6TNNY5G/M9guiXmPypx65HkOhXoIuqS/gD09wyCc=;
+	s=arc-20240116; t=1709043545; c=relaxed/simple;
+	bh=Oyvudb2gY4EXDN4EX/nOnfBevw6j1BrjZFKIM4AadaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jwSf9ffdKGsdBoTJ2opf30J07fw27xDjbya2BitdD8Q2gZ7Dq2CWntLvsmqyw09FBot+V47bx/rA3x9wDFrs3bGyxPlQjmQXIhlBpP5M/FkzIWzkUZXfwbDTOw0ia18yY9ow2hTBKnWtOJ4bnYfEVYuT5qH8T8CC7d5Rz3EbbEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqvDyVH0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A7AC433F1;
-	Tue, 27 Feb 2024 14:00:42 +0000 (UTC)
+	 MIME-Version; b=HlQfzT43DF27F1LosTcPl3rANS14ngMy8krWd9PahFv6IT/cu5O4hLslTa5JeWWo5rSIqHyA6Wi+b+v1O1jh/7LErJudDogTT0rSCyA3Ekd+Urdabk5LVpkP9O32uITSlOFtXiz6oIm7qdU0qvegAsaqpE47ZlyIBr2lNGLS91w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O9o4pcZE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC8CC43390;
+	Tue, 27 Feb 2024 14:19:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042443;
-	bh=l4F6TNNY5G/M9guiXmPypx65HkOhXoIuqS/gD09wyCc=;
+	s=korg; t=1709043544;
+	bh=Oyvudb2gY4EXDN4EX/nOnfBevw6j1BrjZFKIM4AadaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fqvDyVH0qJOtIHclFbaDxPtvCWy+a23MSMGDDF27eek9h/biw47WKA+Iup4Od8dB9
-	 DH6yDYu72cWzJgWsNDiqOK2yZEbc0FfCoCNtGQcqow6I+2qW9JghbjSDUW8cBBoh9H
-	 vMUsVK7ol2xboM5pktMNwzhcpKbO5P66IhX4EUXw=
+	b=O9o4pcZEkWX3+7a3xiHpub2jyijJtu+f7dCqCRivqx4kOEj56WXw3HN2V1PCNSILJ
+	 eFhEIHZocW6tJy8C4YZqWzirnvXk7Ju5FEQuSDVBqhGxX0Jzvm2rtVg4V1MiPMhZHT
+	 uWggy1nCGmk9OFCkuJkq5Mzc73lESVEpGUrJ3X7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 297/299] mptcp: add needs_id for netlink appending addr
+	Tobias Waldekranz <tobias@waldekranz.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 147/195] net: bridge: switchdev: Ensure deferred event delivery on unoffload
 Date: Tue, 27 Feb 2024 14:26:48 +0100
-Message-ID: <20240227131635.218651774@linuxfoundation.org>
+Message-ID: <20240227131615.275107720@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Tobias Waldekranz <tobias@waldekranz.com>
 
-commit 584f3894262634596532cf43a5e782e34a0ce374 upstream.
+[ Upstream commit f7a70d650b0b6b0134ccba763d672c8439d9f09b ]
 
-Just the same as userspace PM, a new parameter needs_id is added for
-in-kernel PM mptcp_pm_nl_append_new_local_addr() too.
+When unoffloading a device, it is important to ensure that all
+relevant deferred events are delivered to it before it disassociates
+itself from the bridge.
 
-Add a new helper mptcp_pm_has_addr_attr_id() to check whether an address
-ID is set from PM or not.
+Before this change, this was true for the normal case when a device
+maps 1:1 to a net_bridge_port, i.e.
 
-In mptcp_pm_nl_get_local_id(), needs_id is always true, but in
-mptcp_pm_nl_add_addr_doit(), pass mptcp_pm_has_addr_attr_id() to
-needs_it.
+   br0
+   /
+swp0
 
-Fixes: efd5a4c04e18 ("mptcp: add the address ID assignment bitmap")
-Cc: stable@vger.kernel.org
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+When swp0 leaves br0, the call to switchdev_deferred_process() in
+del_nbp() makes sure to process any outstanding events while the
+device is still associated with the bridge.
+
+In the case when the association is indirect though, i.e. when the
+device is attached to the bridge via an intermediate device, like a
+LAG...
+
+    br0
+    /
+  lag0
+  /
+swp0
+
+...then detaching swp0 from lag0 does not cause any net_bridge_port to
+be deleted, so there was no guarantee that all events had been
+processed before the device disassociated itself from the bridge.
+
+Fix this by always synchronously processing all deferred events before
+signaling completion of unoffloading back to the driver.
+
+Fixes: 4e51bf44a03a ("net: bridge: move the switchdev object replay helpers to "push" mode")
+Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c |   24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ net/bridge/br_switchdev.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -904,7 +904,8 @@ static void __mptcp_pm_release_addr_entr
+diff --git a/net/bridge/br_switchdev.c b/net/bridge/br_switchdev.c
+index 65567d1c8b853..b61ef2dff7a4b 100644
+--- a/net/bridge/br_switchdev.c
++++ b/net/bridge/br_switchdev.c
+@@ -798,6 +798,16 @@ static void nbp_switchdev_unsync_objs(struct net_bridge_port *p,
+ 	br_switchdev_mdb_replay(br_dev, dev, ctx, false, blocking_nb, NULL);
+ 
+ 	br_switchdev_vlan_replay(br_dev, ctx, false, blocking_nb, NULL);
++
++	/* Make sure that the device leaving this bridge has seen all
++	 * relevant events before it is disassociated. In the normal
++	 * case, when the device is directly attached to the bridge,
++	 * this is covered by del_nbp(). If the association was indirect
++	 * however, e.g. via a team or bond, and the device is leaving
++	 * that intermediate device, then the bridge port remains in
++	 * place.
++	 */
++	switchdev_deferred_process();
  }
  
- static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
--					     struct mptcp_pm_addr_entry *entry)
-+					     struct mptcp_pm_addr_entry *entry,
-+					     bool needs_id)
- {
- 	struct mptcp_pm_addr_entry *cur, *del_entry = NULL;
- 	unsigned int addr_max;
-@@ -952,7 +953,7 @@ static int mptcp_pm_nl_append_new_local_
- 		}
- 	}
- 
--	if (!entry->addr.id) {
-+	if (!entry->addr.id && needs_id) {
- find_next:
- 		entry->addr.id = find_next_zero_bit(pernet->id_bitmap,
- 						    MPTCP_PM_MAX_ADDR_ID + 1,
-@@ -963,7 +964,7 @@ find_next:
- 		}
- 	}
- 
--	if (!entry->addr.id)
-+	if (!entry->addr.id && needs_id)
- 		goto out;
- 
- 	__set_bit(entry->addr.id, pernet->id_bitmap);
-@@ -1095,7 +1096,7 @@ int mptcp_pm_nl_get_local_id(struct mptc
- 	entry->ifindex = 0;
- 	entry->flags = MPTCP_PM_ADDR_FLAG_IMPLICIT;
- 	entry->lsk = NULL;
--	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry);
-+	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry, true);
- 	if (ret < 0)
- 		kfree(entry);
- 
-@@ -1311,6 +1312,18 @@ next:
- 	return 0;
- }
- 
-+static bool mptcp_pm_has_addr_attr_id(const struct nlattr *attr,
-+				      struct genl_info *info)
-+{
-+	struct nlattr *tb[MPTCP_PM_ADDR_ATTR_MAX + 1];
-+
-+	if (!nla_parse_nested_deprecated(tb, MPTCP_PM_ADDR_ATTR_MAX, attr,
-+					 mptcp_pm_addr_policy, info->extack) &&
-+	    tb[MPTCP_PM_ADDR_ATTR_ID])
-+		return true;
-+	return false;
-+}
-+
- static int mptcp_nl_cmd_add_addr(struct sk_buff *skb, struct genl_info *info)
- {
- 	struct nlattr *attr = info->attrs[MPTCP_PM_ATTR_ADDR];
-@@ -1352,7 +1365,8 @@ static int mptcp_nl_cmd_add_addr(struct
- 			goto out_free;
- 		}
- 	}
--	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry);
-+	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry,
-+						!mptcp_pm_has_addr_attr_id(attr, info));
- 	if (ret < 0) {
- 		GENL_SET_ERR_MSG_FMT(info, "too many addresses or duplicate one: %d", ret);
- 		goto out_free;
+ /* Let the bridge know that this port is offloaded, so that it can assign a
+-- 
+2.43.0
+
 
 
 
