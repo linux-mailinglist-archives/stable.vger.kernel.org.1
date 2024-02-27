@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-24486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25CC18694BA
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:55:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCFA5869705
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:17:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BB761C2694C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:55:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29A22B28CC3
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60EF513DBB3;
-	Tue, 27 Feb 2024 13:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D831420A6;
+	Tue, 27 Feb 2024 14:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tsd0wGVA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aoHp1S0r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD7B13B78A;
-	Tue, 27 Feb 2024 13:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFADD13B29C;
+	Tue, 27 Feb 2024 14:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042138; cv=none; b=ofeWQIS8qQsoIbslQvKjpK0W0ZZMqCeDqCi88pcOdfPO61yFAnge9FDPS45CZ14qJJr+UlXoLFMvlLSn5ChxTfaJnRw9ixG4lFrzmKE40Cx5W6dXB00pNgEm6FJ+Pv5vri2Ul78qwhWtz+uXIbowGgVIG28Hd7phUbAGWzGN46Q=
+	t=1709043337; cv=none; b=LEslHIJy4svxyfDcx4l8K8dzY0Pz3q+h0WEpH2296tbh6mU59cwFS/pce7zi9U6hrTiejsFJLjhqCY5m1Ll0dmOEo2LsmSsR/tJIu3SrG/k5l01csiwwYEd/RUFf/aW6iF1WBd1xKGXDr8mAIS8+sNQzJTX++Mq4Vn1uFDw4eTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042138; c=relaxed/simple;
-	bh=Qy43K0awz/mmBXlLpTnV42oC2WbzIw48xEAwAk/a9ns=;
+	s=arc-20240116; t=1709043337; c=relaxed/simple;
+	bh=qMYRkll+72sN3b7AXs0sl8G9rtPuyhkrB03iWHvuDSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=He2epGG+ZR8Z2Yuw7yU3du4pjxviaQw094cWOamhBsoCy/Lkues8VoXGipbXdqX12o3agAoxuo5cNMPPe/7OHaI1h6i0KKC2Ix5egvzQxlhZ7nKP9GnbC40HHTzJcyDp9gHY3zCx5Zs9m+K6erm/pmiIQIeIMnTcETdi7xKtig4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tsd0wGVA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA22C433F1;
-	Tue, 27 Feb 2024 13:55:37 +0000 (UTC)
+	 MIME-Version; b=q4PWDklL+roCaFgw8MZ84uCHkG0sLxoWRvZzhWB25pE0iEIjYoEThZfrE7DF9H143n7YmZob2Rj8qDNZoBLvsTOtQHTlbvsg0vgW+ltWtgkkpOdpqvbz2T1QO/MsdA4OvE+041Czahc9z4wi3/TAvRv9XVc8cJdteROBqnjiSzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aoHp1S0r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B2ADC433C7;
+	Tue, 27 Feb 2024 14:15:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042138;
-	bh=Qy43K0awz/mmBXlLpTnV42oC2WbzIw48xEAwAk/a9ns=;
+	s=korg; t=1709043337;
+	bh=qMYRkll+72sN3b7AXs0sl8G9rtPuyhkrB03iWHvuDSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tsd0wGVAn0pv3w3daWlJhah4JXqn3k6prubo/W2ERJdJIjgdZSD7HzQ3ZxbqFM3Dn
-	 xpdKKREAv8mMcnDf959a8942VCrTikmFCFx1+tCZ4z+q2WNk2HsJ4+PHKrY8+pEGOO
-	 Fc5BkgICW//zlmStSQsIM2d9OxjAmBZb0GVB7e2k=
+	b=aoHp1S0rFWGIUOarSBLazl0ELIznOUAINlmgZDBONryiWvsMTyzzyRFdoILebSE7i
+	 AUfehT4AaHesF0vrGHcuO/BmMoRV8ozjMBRR+i9mH13HEK9mD3mrieAImEtNrc/C3d
+	 2YAZit0/tpcLnEhAKt5D78dQDsv4GVC4We7X68PA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 193/299] mptcp: fix lockless access in subflow ULP diag
+	Christoph Hellwig <hch@lst.de>,
+	Hannes Reinecke <hare@suse.de>,
+	Daniel Wagner <dwagner@suse.de>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 043/195] nvme-fc: do not wait in vain when unloading module
 Date: Tue, 27 Feb 2024 14:25:04 +0100
-Message-ID: <20240227131632.032246466@linuxfoundation.org>
+Message-ID: <20240227131611.811436281@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +64,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Daniel Wagner <dwagner@suse.de>
 
-commit b8adb69a7d29c2d33eb327bca66476fb6066516b upstream.
+[ Upstream commit 70fbfc47a392b98e5f8dba70c6efc6839205c982 ]
 
-Since the introduction of the subflow ULP diag interface, the
-dump callback accessed all the subflow data with lockless.
+The module exit path has race between deleting all controllers and
+freeing 'left over IDs'. To prevent double free a synchronization
+between nvme_delete_ctrl and ida_destroy has been added by the initial
+commit.
 
-We need either to annotate all the read and write operation accordingly,
-or acquire the subflow socket lock. Let's do latter, even if slower, to
-avoid a diffstat havoc.
+There is some logic around trying to prevent from hanging forever in
+wait_for_completion, though it does not handling all cases. E.g.
+blktests is able to reproduce the situation where the module unload
+hangs forever.
 
-Fixes: 5147dfb50832 ("mptcp: allow dumping subflow context to userspace")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If we completely rely on the cleanup code executed from the
+nvme_delete_ctrl path, all IDs will be freed eventually. This makes
+calling ida_destroy unnecessary. We only have to ensure that all
+nvme_delete_ctrl code has been executed before we leave
+nvme_fc_exit_module. This is done by flushing the nvme_delete_wq
+workqueue.
+
+While at it, remove the unused nvme_fc_wq workqueue too.
+
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Daniel Wagner <dwagner@suse.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tcp.h  |    2 +-
- net/mptcp/diag.c   |    6 +++++-
- net/tls/tls_main.c |    2 +-
- 3 files changed, 7 insertions(+), 3 deletions(-)
+ drivers/nvme/host/fc.c | 47 ++++++------------------------------------
+ 1 file changed, 6 insertions(+), 41 deletions(-)
 
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -2343,7 +2343,7 @@ struct tcp_ulp_ops {
- 	/* cleanup ulp */
- 	void (*release)(struct sock *sk);
- 	/* diagnostic */
--	int (*get_info)(const struct sock *sk, struct sk_buff *skb);
-+	int (*get_info)(struct sock *sk, struct sk_buff *skb);
- 	size_t (*get_info_size)(const struct sock *sk);
- 	/* clone ulp */
- 	void (*clone)(const struct request_sock *req, struct sock *newsk,
---- a/net/mptcp/diag.c
-+++ b/net/mptcp/diag.c
-@@ -13,17 +13,19 @@
- #include <uapi/linux/mptcp.h>
- #include "protocol.h"
+diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
+index 177a365b8ec55..3dbf926fd99fd 100644
+--- a/drivers/nvme/host/fc.c
++++ b/drivers/nvme/host/fc.c
+@@ -221,11 +221,6 @@ static LIST_HEAD(nvme_fc_lport_list);
+ static DEFINE_IDA(nvme_fc_local_port_cnt);
+ static DEFINE_IDA(nvme_fc_ctrl_cnt);
  
--static int subflow_get_info(const struct sock *sk, struct sk_buff *skb)
-+static int subflow_get_info(struct sock *sk, struct sk_buff *skb)
+-static struct workqueue_struct *nvme_fc_wq;
+-
+-static bool nvme_fc_waiting_to_unload;
+-static DECLARE_COMPLETION(nvme_fc_unload_proceed);
+-
+ /*
+  * These items are short-term. They will eventually be moved into
+  * a generic FC class. See comments in module init.
+@@ -255,8 +250,6 @@ nvme_fc_free_lport(struct kref *ref)
+ 	/* remove from transport list */
+ 	spin_lock_irqsave(&nvme_fc_lock, flags);
+ 	list_del(&lport->port_list);
+-	if (nvme_fc_waiting_to_unload && list_empty(&nvme_fc_lport_list))
+-		complete(&nvme_fc_unload_proceed);
+ 	spin_unlock_irqrestore(&nvme_fc_lock, flags);
+ 
+ 	ida_free(&nvme_fc_local_port_cnt, lport->localport.port_num);
+@@ -3869,10 +3862,6 @@ static int __init nvme_fc_init_module(void)
  {
- 	struct mptcp_subflow_context *sf;
- 	struct nlattr *start;
- 	u32 flags = 0;
-+	bool slow;
- 	int err;
+ 	int ret;
  
- 	start = nla_nest_start_noflag(skb, INET_ULP_INFO_MPTCP);
- 	if (!start)
- 		return -EMSGSIZE;
- 
-+	slow = lock_sock_fast(sk);
- 	rcu_read_lock();
- 	sf = rcu_dereference(inet_csk(sk)->icsk_ulp_data);
- 	if (!sf) {
-@@ -69,11 +71,13 @@ static int subflow_get_info(const struct
+-	nvme_fc_wq = alloc_workqueue("nvme_fc_wq", WQ_MEM_RECLAIM, 0);
+-	if (!nvme_fc_wq)
+-		return -ENOMEM;
+-
+ 	/*
+ 	 * NOTE:
+ 	 * It is expected that in the future the kernel will combine
+@@ -3890,7 +3879,7 @@ static int __init nvme_fc_init_module(void)
+ 	ret = class_register(&fc_class);
+ 	if (ret) {
+ 		pr_err("couldn't register class fc\n");
+-		goto out_destroy_wq;
++		return ret;
  	}
  
- 	rcu_read_unlock();
-+	unlock_sock_fast(sk, slow);
- 	nla_nest_end(skb, start);
- 	return 0;
+ 	/*
+@@ -3914,8 +3903,6 @@ static int __init nvme_fc_init_module(void)
+ 	device_destroy(&fc_class, MKDEV(0, 0));
+ out_destroy_class:
+ 	class_unregister(&fc_class);
+-out_destroy_wq:
+-	destroy_workqueue(nvme_fc_wq);
  
- nla_failure:
- 	rcu_read_unlock();
-+	unlock_sock_fast(sk, slow);
- 	nla_nest_cancel(skb, start);
- 	return err;
+ 	return ret;
  }
---- a/net/tls/tls_main.c
-+++ b/net/tls/tls_main.c
-@@ -1001,7 +1001,7 @@ static u16 tls_user_config(struct tls_co
- 	return 0;
+@@ -3935,45 +3922,23 @@ nvme_fc_delete_controllers(struct nvme_fc_rport *rport)
+ 	spin_unlock(&rport->lock);
  }
  
--static int tls_get_info(const struct sock *sk, struct sk_buff *skb)
-+static int tls_get_info(struct sock *sk, struct sk_buff *skb)
+-static void
+-nvme_fc_cleanup_for_unload(void)
++static void __exit nvme_fc_exit_module(void)
  {
- 	u16 version, cipher_type;
- 	struct tls_context *ctx;
+ 	struct nvme_fc_lport *lport;
+ 	struct nvme_fc_rport *rport;
+-
+-	list_for_each_entry(lport, &nvme_fc_lport_list, port_list) {
+-		list_for_each_entry(rport, &lport->endp_list, endp_list) {
+-			nvme_fc_delete_controllers(rport);
+-		}
+-	}
+-}
+-
+-static void __exit nvme_fc_exit_module(void)
+-{
+ 	unsigned long flags;
+-	bool need_cleanup = false;
+ 
+ 	spin_lock_irqsave(&nvme_fc_lock, flags);
+-	nvme_fc_waiting_to_unload = true;
+-	if (!list_empty(&nvme_fc_lport_list)) {
+-		need_cleanup = true;
+-		nvme_fc_cleanup_for_unload();
+-	}
++	list_for_each_entry(lport, &nvme_fc_lport_list, port_list)
++		list_for_each_entry(rport, &lport->endp_list, endp_list)
++			nvme_fc_delete_controllers(rport);
+ 	spin_unlock_irqrestore(&nvme_fc_lock, flags);
+-	if (need_cleanup) {
+-		pr_info("%s: waiting for ctlr deletes\n", __func__);
+-		wait_for_completion(&nvme_fc_unload_proceed);
+-		pr_info("%s: ctrl deletes complete\n", __func__);
+-	}
++	flush_workqueue(nvme_delete_wq);
+ 
+ 	nvmf_unregister_transport(&nvme_fc_transport);
+ 
+-	ida_destroy(&nvme_fc_local_port_cnt);
+-	ida_destroy(&nvme_fc_ctrl_cnt);
+-
+ 	device_destroy(&fc_class, MKDEV(0, 0));
+ 	class_unregister(&fc_class);
+-	destroy_workqueue(nvme_fc_wq);
+ }
+ 
+ module_init(nvme_fc_init_module);
+-- 
+2.43.0
+
 
 
 
