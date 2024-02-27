@@ -1,75 +1,109 @@
-Return-Path: <stable+bounces-25255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A78486988E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:38:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4101486932D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:42:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F747B30C73
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:32:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E6ED1C21AA0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:42:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF5041420DC;
-	Tue, 27 Feb 2024 14:31:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cBIG+Dzp"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E7613DB98;
+	Tue, 27 Feb 2024 13:42:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7133A13B29B
-	for <stable@vger.kernel.org>; Tue, 27 Feb 2024 14:31:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F0D13AA55
+	for <stable@vger.kernel.org>; Tue, 27 Feb 2024 13:42:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044292; cv=none; b=t5OKAhvqo9U5U5ljJUQdWqdxpBV7IDf7F3BPjxgiqXhwHFtGRKoiukIPNMHR/Or+FsURatynA+0LvW5Ntzd32XdwxT1nFdlQu71p7pJPxlc8FCUf0h7uFNqGzLSqtBgDZFyqVX1cW4UXgCM/zoULkrauN+34qqqc9P6SfWyIXJM=
+	t=1709041340; cv=none; b=FKkoyL7Hwx4P0tZvH7RiaWsKODVMky8FMNOu5ibz7uO4Tbnt1cpyzeNxC6gIiOwpHkQPLkOaQrECoQ/Zaw2oXEQ4bzaykoswDogZLqHvWw7NHTKh0s+TwBICwgZ86whCF9ur8Oir2tqZgjqjtgRncQ4aeK2zlOt2rXLnP7qp9uM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044292; c=relaxed/simple;
-	bh=5cVuEAGxUnNBCp9YXWKrEWckBQYMl7EBw7ySs6hG/yo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lwEgtHvkjP/0g9NkYcUqvJTFMZGSIFJhIz/TFzFd1RInvaCOPI3trYnKAw9QsfVMVVF8G7ntHQf1qpNQyXAutnVSUE/2moPI0iylt5DPAmekbHd/wprMkYiEqS54bk2PLRQlOYcbdip/Fd7vrziAZvUtq5/zsqq5MWf87ihKO88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cBIG+Dzp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3FE7C433F1;
-	Tue, 27 Feb 2024 14:31:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044292;
-	bh=5cVuEAGxUnNBCp9YXWKrEWckBQYMl7EBw7ySs6hG/yo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cBIG+DzpUegEw3VeuPUCwAkf5xeJW6Ja0SOnrOu+h0PzrTo5g9aPEcfZLdi7soVhT
-	 TEInMgV8iFvzMdxBj+1eSSG3TtEO2LNUmH0RuXMo4iAoYBmEudESY4frfMiwyXZUNo
-	 X3wdsTlDxYCPHtv3E3l2g/l78fzKQmDNzDMur94o=
-Date: Tue, 27 Feb 2024 14:32:20 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Michal Hocko <mhocko@suse.com>
-Cc: akpm@linux-foundation.org, guro@fb.com, hannes@cmpxchg.org,
-	hughd@google.com, shakeelb@google.com,
-	torvalds@linux-foundation.org, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] memcg: fix use-after-free in
- uncharge_batch" failed to apply to 5.4-stable tree
-Message-ID: <2024022704-overjoyed-display-b5cb@gregkh>
-References: <2024022759-crave-busily-bef7@gregkh>
- <Zd3jqLMSktEpZPM4@tiehlicka>
+	s=arc-20240116; t=1709041340; c=relaxed/simple;
+	bh=6OR8pYM7suBpE4VlEJa7l0D5FXGcWyQjXvn2iIAyXQk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=IYi/sma23t6DkF57gnFsN+bsP4pi/QgPhsYXimryJr+j/DFQE+fQzIScyCnjxEPUPQ04wXzpJrcoMqMOg82h1JPBSmvwXQ9USD+nk6VFYyhAJnVCM+/7xed9dhxTKx4JBswx3qdlUNkfGCzDJ2n8gfTx3DJd/WdgtVDrOoda+Ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4Tkdtk66WYzqhms;
+	Tue, 27 Feb 2024 21:41:34 +0800 (CST)
+Received: from dggpeml500021.china.huawei.com (unknown [7.185.36.21])
+	by mail.maildlp.com (Postfix) with ESMTPS id AAFF1140336;
+	Tue, 27 Feb 2024 21:42:11 +0800 (CST)
+Received: from [10.174.177.174] (10.174.177.174) by
+ dggpeml500021.china.huawei.com (7.185.36.21) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 27 Feb 2024 21:42:11 +0800
+Message-ID: <5a95aeb6-d070-fb3e-d619-8f26164b293c@huawei.com>
+Date: Tue, 27 Feb 2024 21:42:10 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zd3jqLMSktEpZPM4@tiehlicka>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.1.2
+Subject: Re: [PATCH 5.15 2/2] ext4: avoid bb_free and bb_fragments
+ inconsistency in mb_free_blocks()
+Content-Language: en-US
+To: Greg KH <gregkh@linuxfoundation.org>
+CC: <stable@vger.kernel.org>, <sashal@kernel.org>, <tytso@mit.edu>,
+	<jack@suse.cz>, <patches@lists.linux.dev>, <yi.zhang@huawei.com>,
+	<yangerkun@huawei.com>, Baokun Li <libaokun1@huawei.com>
+References: <20240227130050.805571-1-libaokun1@huawei.com>
+ <20240227130050.805571-2-libaokun1@huawei.com>
+ <2024022725-broadly-gave-6b16@gregkh>
+From: Baokun Li <libaokun1@huawei.com>
+In-Reply-To: <2024022725-broadly-gave-6b16@gregkh>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpeml500021.china.huawei.com (7.185.36.21)
 
-On Tue, Feb 27, 2024 at 02:29:12PM +0100, Michal Hocko wrote:
-> Why is this applied to 5.4?
-> $ git describe-ver 1a3e1f40962c
-> v5.9-rc1~97^2~97
-> 
-> I do not see 1a3e1f40962c in 5.4 stable tree. What am I missing?
+On 2024/2/27 21:06, Greg KH wrote:
+> On Tue, Feb 27, 2024 at 09:00:50PM +0800, Baokun Li wrote:
+>> commit 2331fd4a49864e1571b4f50aa3aa1536ed6220d0 upstream.
+>>
+>> After updating bb_free in mb_free_blocks, it is possible to return without
+>> updating bb_fragments because the block being freed is found to have
+>> already been freed, which leads to inconsistency between bb_free and
+>> bb_fragments.
+>>
+>> Since the group may be unlocked in ext4_grp_locked_error(), this can lead
+>> to problems such as dividing by zero when calculating the average fragment
+>> length. Hence move the update of bb_free to after the block double-free
+>> check guarantees that the corresponding statistics are updated only after
+>> the core block bitmap is modified.
+>>
+>> Fixes: eabe0444df90 ("ext4: speed-up releasing blocks on commit")
+>> CC:  <stable@vger.kernel.org> # 3.10
+>> Suggested-by: Jan Kara <jack@suse.cz>
+>> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+>> Reviewed-by: Jan Kara <jack@suse.cz>
+>> Link: https://lore.kernel.org/r/20240104142040.2835097-5-libaokun1@huawei.com
+>> Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+>> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+>> ---
+>>   fs/ext4/mballoc.c | 39 +++++++++++++++++++++------------------
+>>   1 file changed, 21 insertions(+), 18 deletions(-)
+> We also need this for 5.10.y and older, right?
+>
+> Queued up now, thanks!
+>
+> greg k-h
+>
+5.4.y and older will regenerate the buddy on error, so this is not needed.
 
-It is queued up for this next round of releases in the 5.4.y and 4.19.y
-trees.
 
-thanks,
+-- 
+With Best Regards,
+Baokun Li
+.
 
-greg k-h
 
