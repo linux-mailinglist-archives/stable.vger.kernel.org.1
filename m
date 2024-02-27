@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-24404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF79C869449
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA79486945A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:53:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E115A1C22A8C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75E121F21CC6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99654145B09;
-	Tue, 27 Feb 2024 13:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ACD814533E;
+	Tue, 27 Feb 2024 13:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dfyy+oQi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJecveGf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58CA713B29B;
-	Tue, 27 Feb 2024 13:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A108145334;
+	Tue, 27 Feb 2024 13:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041907; cv=none; b=N7C6X+y8Dfsua9c58uoh8RDg9fHb9Y4WhiElDz6oykmZdbFUERMqIDu+lgW1cxqFkEwIi/rZjaOxOkCvUNyM+zoHFGbRoXL5m2UqTi1Cg65zJDVlAU+v2mY7rfCST9PaMxZyFP1qbpwVmwREc4YscaYOKu/I0Vtz6CEMSIGr5Cw=
+	t=1709041937; cv=none; b=M7sHhrIicHMumt0qZWm0jEJRKVoltfPZ7nNUTpgh4X1rZPPKlelPRzgZ4uGRp0XquiNoJDneptrIqILLWBoQTs2WKT7t2NgpBn1OTqbsQjK4viYaW3ZD1SUZmEi/uqUbnrBlH7Io/u9H60+dY5+FIaY2Wo6OfisUNC9S+u+lOnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041907; c=relaxed/simple;
-	bh=UuzSS+dV3SQUjzt4f1g7j4YMsuaPWssr2ZMt7LMsRVQ=;
+	s=arc-20240116; t=1709041937; c=relaxed/simple;
+	bh=VDG+ZyRXLXw3myYggA+9A0H71Uey06pKn1RAXV4+ZVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NlQq7A1EIU9rAiVq74WkDx6R9iPZ6GMH/dgxTlLbYXFim8ykkcALX0IwmsmUJhHhqyEn4MV+XvTWJ5OfdYfnOQQKmP/LY5AStiXDOpldweQr6W9A7UyPn9a3nlbfbj+Sl2DoXv9+2Z27+w6GSFFd3djdoRfiEe2SjFw9tQ6Khew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dfyy+oQi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5244C433F1;
-	Tue, 27 Feb 2024 13:51:46 +0000 (UTC)
+	 MIME-Version; b=CjLxgYeO82EZJo+Xb7dBwVkp/VotTFsoPZHlNx3APMdv9kLm3R5bCMIx8KWQkGWzg7535QVORTj9nKgp+Lf+Ldv0xQ8U9X6FbvM+xZiDvdIes+4CXAM1dzv+dsyVOIV232VfZd8ypLb73JDZnZHlECr5e+zHoZkCDHAWUERIQp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJecveGf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BBF6C433B1;
+	Tue, 27 Feb 2024 13:52:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041907;
-	bh=UuzSS+dV3SQUjzt4f1g7j4YMsuaPWssr2ZMt7LMsRVQ=;
+	s=korg; t=1709041937;
+	bh=VDG+ZyRXLXw3myYggA+9A0H71Uey06pKn1RAXV4+ZVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dfyy+oQi7hfYFQnlfd9OOSwdGBPIk91pUzCCyFjmdnyH6UbKqkY4U3CGpj3QD8d2a
-	 +LVxeKBiC//Ydo/lL1/knqTnPU0OAaNah0gHqGHY4RU+qGDr+zI+5WII4IZZ3ZEXjd
-	 9rCB9gOch+kgzvfwEvwb5Qd2XlNo3p+iZeK//D2w=
+	b=oJecveGfumYdTg0FMWz3KaB+/vgy2B9lvEb/mXbMmG7yILQQaVKYNZvA7jg6uSGYs
+	 WeexSrVu/UIYYzK1hz3/HKsGFbr2/lpE9IWSyOKcpWu280NDq0oYfpSqe25h0q3kLO
+	 YxBuYhKcpIX26zQGtSacMImKxyCNY7urqScGq7WI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 093/299] wifi: mac80211: adding missing drv_mgd_complete_tx() call
-Date: Tue, 27 Feb 2024 14:23:24 +0100
-Message-ID: <20240227131628.898372651@linuxfoundation.org>
+Subject: [PATCH 6.6 094/299] wifi: mac80211: accept broadcast probe responses on 6 GHz
+Date: Tue, 27 Feb 2024 14:23:25 +0100
+Message-ID: <20240227131628.928954046@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
 References: <20240227131625.847743063@linuxfoundation.org>
@@ -67,31 +67,93 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit c042600c17d8c490279f0ae2baee29475fe8047d ]
+[ Upstream commit 62a6183c13319e4d2227473a04abd104c4f56dcf ]
 
-There's a call to drv_mgd_prepare_tx() and so there should
-be one to drv_mgd_complete_tx(), but on this path it's not.
-Add it.
+On the 6 GHz band, probe responses are sent as broadcast to
+optimise medium usage. However, without OCE configuration
+we weren't accepting them, which is wrong, even if wpa_s is
+by default enabling OCE. Accept them without the OCE config
+as well.
 
-Link: https://msgid.link/20240131164824.2f0922a514e1.I5aac89b93bcead88c374187d70cad0599d29d2c8@changeid
+Link: https://msgid.link/20240129200907.5a89c2821897.I92e9dfa0f9b350bc7f37dd4bb38031d156d78d8a@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/mac80211/scan.c | 30 ++++++++++++++++++------------
+ 1 file changed, 18 insertions(+), 12 deletions(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index d9e716f38b0e9..c6044ab4e7fc1 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -7800,6 +7800,7 @@ int ieee80211_mgd_deauth(struct ieee80211_sub_if_data *sdata,
- 		ieee80211_report_disconnect(sdata, frame_buf,
- 					    sizeof(frame_buf), true,
- 					    req->reason_code, false);
-+		drv_mgd_complete_tx(sdata->local, sdata, &info);
- 		return 0;
+diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
+index 68ec2124c3db5..a52813f2b08cb 100644
+--- a/net/mac80211/scan.c
++++ b/net/mac80211/scan.c
+@@ -9,7 +9,7 @@
+  * Copyright 2007, Michael Wu <flamingice@sourmilk.net>
+  * Copyright 2013-2015  Intel Mobile Communications GmbH
+  * Copyright 2016-2017  Intel Deutschland GmbH
+- * Copyright (C) 2018-2023 Intel Corporation
++ * Copyright (C) 2018-2024 Intel Corporation
+  */
+ 
+ #include <linux/if_arp.h>
+@@ -222,14 +222,18 @@ ieee80211_bss_info_update(struct ieee80211_local *local,
+ }
+ 
+ static bool ieee80211_scan_accept_presp(struct ieee80211_sub_if_data *sdata,
++					struct ieee80211_channel *channel,
+ 					u32 scan_flags, const u8 *da)
+ {
+ 	if (!sdata)
+ 		return false;
+-	/* accept broadcast for OCE */
+-	if (scan_flags & NL80211_SCAN_FLAG_ACCEPT_BCAST_PROBE_RESP &&
+-	    is_broadcast_ether_addr(da))
++
++	/* accept broadcast on 6 GHz and for OCE */
++	if (is_broadcast_ether_addr(da) &&
++	    (channel->band == NL80211_BAND_6GHZ ||
++	     scan_flags & NL80211_SCAN_FLAG_ACCEPT_BCAST_PROBE_RESP))
+ 		return true;
++
+ 	if (scan_flags & NL80211_SCAN_FLAG_RANDOM_ADDR)
+ 		return true;
+ 	return ether_addr_equal(da, sdata->vif.addr);
+@@ -278,6 +282,12 @@ void ieee80211_scan_rx(struct ieee80211_local *local, struct sk_buff *skb)
+ 		wiphy_delayed_work_queue(local->hw.wiphy, &local->scan_work, 0);
  	}
  
++	channel = ieee80211_get_channel_khz(local->hw.wiphy,
++					    ieee80211_rx_status_to_khz(rx_status));
++
++	if (!channel || channel->flags & IEEE80211_CHAN_DISABLED)
++		return;
++
+ 	if (ieee80211_is_probe_resp(mgmt->frame_control)) {
+ 		struct cfg80211_scan_request *scan_req;
+ 		struct cfg80211_sched_scan_request *sched_scan_req;
+@@ -295,19 +305,15 @@ void ieee80211_scan_rx(struct ieee80211_local *local, struct sk_buff *skb)
+ 		/* ignore ProbeResp to foreign address or non-bcast (OCE)
+ 		 * unless scanning with randomised address
+ 		 */
+-		if (!ieee80211_scan_accept_presp(sdata1, scan_req_flags,
++		if (!ieee80211_scan_accept_presp(sdata1, channel,
++						 scan_req_flags,
+ 						 mgmt->da) &&
+-		    !ieee80211_scan_accept_presp(sdata2, sched_scan_req_flags,
++		    !ieee80211_scan_accept_presp(sdata2, channel,
++						 sched_scan_req_flags,
+ 						 mgmt->da))
+ 			return;
+ 	}
+ 
+-	channel = ieee80211_get_channel_khz(local->hw.wiphy,
+-					ieee80211_rx_status_to_khz(rx_status));
+-
+-	if (!channel || channel->flags & IEEE80211_CHAN_DISABLED)
+-		return;
+-
+ 	bss = ieee80211_bss_info_update(local, rx_status,
+ 					mgmt, skb->len,
+ 					channel);
 -- 
 2.43.0
 
