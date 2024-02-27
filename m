@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2DEF869570
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:01:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E40E2869464
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:53:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 537A51F29146
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:01:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1391A1C22C12
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:53:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B8813DBB3;
-	Tue, 27 Feb 2024 14:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05FF2145346;
+	Tue, 27 Feb 2024 13:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+cWH1pv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vx7FN+Zy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5BB313DBA4;
-	Tue, 27 Feb 2024 14:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B850513B79F;
+	Tue, 27 Feb 2024 13:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042509; cv=none; b=Us2hfev4bR/F+F615SchvA5P+MVIRTj2DifcgIQ6sCRJbLi/FfSmW2lO746Y5D1CVxU+ntT/UiJuMFGJ3pH3UdL4+cL+1P7FY92ygntwGchXD5Vr5xcXN3UDeU7hCnXB+isD7kwnRz5aBfXRlO71T6+xqD4GYv2XFes+wIQS9IU=
+	t=1709041953; cv=none; b=sVJoWJAD+Zsa6VCJSAeT+QERBAz//FVq6mvIKDgAF63d8TVJ9tjVEgfG8c90H2rrn/Bm/tOBe2rYUpR1sldXTr97Ey//CXlldg6nIkAx0v1eG0Ckl36PKEPRrSdonkYAnwbwE7QXz1vyBN0cltgLZkQHcBzdaAHhzU/Npw4tMs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042509; c=relaxed/simple;
-	bh=kKM+borb2Pwr3TlEPDo67F71+YVgXfQK6cy52LGyoUY=;
+	s=arc-20240116; t=1709041953; c=relaxed/simple;
+	bh=v2e//Y6xLlYVHYNptzwBn+4uVmB4Vk69A/JNZy/kcPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KrR32AS5+4Utbyu/j0TA95A6tb/BSebtkP4ltflbF9xocXHibXPMO71ydaUefbXPYKSm+YerLA1dDjBOTgjwA8xMwW5J65Eru4qsUSDpEWNm011O8UAG95pt55oXiceW1sbhz1FgXZ7R+G23lrYIiecWJe53iESaf1xlTto6Ask=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+cWH1pv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33483C43390;
-	Tue, 27 Feb 2024 14:01:49 +0000 (UTC)
+	 MIME-Version; b=OHFhyhBk4ooS377XKNuXG8xkrH7cOk5dFQtohbQY0Hd/Hufq+hnbiu+gDz21wll3axSn0R3GP8CK1lMmefIhc0NSVlkmGWBzfAKGAXwqI9IQQRLclGMW1dG55+3ooRT4m6mEzorjeuvyO6iL+TnYGo34SCKhxBrkG1l1LWGfuBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vx7FN+Zy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450D8C43390;
+	Tue, 27 Feb 2024 13:52:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042509;
-	bh=kKM+borb2Pwr3TlEPDo67F71+YVgXfQK6cy52LGyoUY=;
+	s=korg; t=1709041953;
+	bh=v2e//Y6xLlYVHYNptzwBn+4uVmB4Vk69A/JNZy/kcPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I+cWH1pvWHny08/SHx8xpcYmmAZyQWc6VQ9DVZ56Ipc6ljTLQ7CraiKmP3mrFpc/X
-	 yArkxyOCTHdHEkCIGv/v+M5ng27a//4QgWnO9mF2glWW/FrhxXnVovT6WOe2WQVIhX
-	 Jowq6ozgcwp2UZm+KGcXzMeaHSUnCRTkK285wZng=
+	b=vx7FN+Zyn6o5tdY+Tyyxya6AFrGj7Ubhb/yrmZYZ7bGmWLqf8ZhFQ4nMkNMT4Zwhq
+	 uzwgxpE9TfLBFCocRwC3WiCE8FqgAOVz1yLZ7EJw7bLkOpvgqHpdtzWwgHJ5112DH/
+	 OlHCf8OBL5DpysWVfIzsh47ApCnwIX06LYVHmA8A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Kazior <michal@plume.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Daniel Wagner <dwagner@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 021/245] wifi: cfg80211: fix missing interfaces when dumping
-Date: Tue, 27 Feb 2024 14:23:29 +0100
-Message-ID: <20240227131615.805570860@linuxfoundation.org>
+Subject: [PATCH 6.6 099/299] scsi: lpfc: Use unsigned type for num_sge
+Date: Tue, 27 Feb 2024 14:23:30 +0100
+Message-ID: <20240227131629.079919285@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Kazior <michal@plume.com>
+From: Hannes Reinecke <hare@suse.de>
 
-[ Upstream commit a6e4f85d3820d00694ed10f581f4c650445dbcda ]
+[ Upstream commit d6c1b19153f92e95e5e1801d540e98771053afae ]
 
-The nl80211_dump_interface() supports resumption
-in case nl80211_send_iface() doesn't have the
-resources to complete its work.
+LUNs going into "failed ready running" state observed on >1T and on even
+numbers of size (2T, 4T, 6T, 8T and 10T). The issue occurs when DIF is
+enabled at the host.
 
-The logic would store the progress as iteration
-offsets for rdev and wdev loops.
+The kernel logs:
 
-However the logic did not properly handle
-resumption for non-last rdev. Assuming a system
-with 2 rdevs, with 2 wdevs each, this could
-happen:
+  Cannot setup S/G List for HBAIO segs 1/1 SGL 512 SCSI 256: 3 0
 
- dump(cb=[0, 0]):
-  if_start=cb[1] (=0)
-  send rdev0.wdev0 -> ok
-  send rdev0.wdev1 -> yield
-  cb[1] = 1
+The host lpfc driver is failing to setup scatter/gather list (protection
+data) for the I/Os.
 
- dump(cb=[0, 1]):
-  if_start=cb[1] (=1)
-  send rdev0.wdev1 -> ok
-  // since if_start=1 the rdev0.wdev0 got skipped
-  // through if_idx < if_start
-  send rdev1.wdev1 -> ok
+The return type lpfc_bg_setup_sgl()/lpfc_bg_setup_sgl_prot() causes the
+compiler to remove the most significant bit. Use an unsigned type instead.
 
-The if_start needs to be reset back to 0 upon wdev
-loop end.
-
-The problem is actually hard to hit on a desktop,
-and even on most routers. The prerequisites for
-this manifesting was:
- - more than 1 wiphy
- - a few handful of interfaces
- - dump without rdev or wdev filter
-
-I was seeing this with 4 wiphys 9 interfaces each.
-It'd miss 6 interfaces from the last wiphy
-reported to userspace.
-
-Signed-off-by: Michal Kazior <michal@plume.com>
-Link: https://msgid.link/20240116142340.89678-1-kazikcz@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Hannes Reinecke <hare@suse.de>
+[dwagner: added commit message]
+Signed-off-by: Daniel Wagner <dwagner@suse.de>
+Link: https://lore.kernel.org/r/20231220162658.12392-1-dwagner@suse.de
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/scsi/lpfc/lpfc_scsi.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 82b93380afec4..4a8b701440ebd 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -3737,6 +3737,7 @@ static int nl80211_dump_interface(struct sk_buff *skb, struct netlink_callback *
- 			if_idx++;
- 		}
+diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
+index d26941b131fdb..bf879d81846b6 100644
+--- a/drivers/scsi/lpfc/lpfc_scsi.c
++++ b/drivers/scsi/lpfc/lpfc_scsi.c
+@@ -1918,7 +1918,7 @@ lpfc_bg_setup_bpl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
+  *
+  * Returns the number of SGEs added to the SGL.
+  **/
+-static int
++static uint32_t
+ lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
+ 		struct sli4_sge *sgl, int datasegcnt,
+ 		struct lpfc_io_buf *lpfc_cmd)
+@@ -1926,8 +1926,8 @@ lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
+ 	struct scatterlist *sgde = NULL; /* s/g data entry */
+ 	struct sli4_sge_diseed *diseed = NULL;
+ 	dma_addr_t physaddr;
+-	int i = 0, num_sge = 0, status;
+-	uint32_t reftag;
++	int i = 0, status;
++	uint32_t reftag, num_sge = 0;
+ 	uint8_t txop, rxop;
+ #ifdef CONFIG_SCSI_LPFC_DEBUG_FS
+ 	uint32_t rc;
+@@ -2099,7 +2099,7 @@ lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
+  *
+  * Returns the number of SGEs added to the SGL.
+  **/
+-static int
++static uint32_t
+ lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
+ 		struct sli4_sge *sgl, int datacnt, int protcnt,
+ 		struct lpfc_io_buf *lpfc_cmd)
+@@ -2123,8 +2123,8 @@ lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
+ 	uint32_t rc;
+ #endif
+ 	uint32_t checking = 1;
+-	uint32_t dma_offset = 0;
+-	int num_sge = 0, j = 2;
++	uint32_t dma_offset = 0, num_sge = 0;
++	int j = 2;
+ 	struct sli4_hybrid_sgl *sgl_xtra = NULL;
  
-+		if_start = 0;
- 		wp_idx++;
- 	}
-  out:
+ 	sgpe = scsi_prot_sglist(sc);
 -- 
 2.43.0
 
