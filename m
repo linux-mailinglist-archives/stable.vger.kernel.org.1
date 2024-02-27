@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-24695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9E018695DB
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:06:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CEB48694A4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:55:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 279F71C23594
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:06:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A025A1F22880
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C119143C75;
-	Tue, 27 Feb 2024 14:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 725011420DA;
+	Tue, 27 Feb 2024 13:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cs0dGn6w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2K0aN6G5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFB413EFF4;
-	Tue, 27 Feb 2024 14:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305F413AA4C;
+	Tue, 27 Feb 2024 13:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042735; cv=none; b=hEEXFYLfCZVdYgnb3FU5W3xViG9G/Eyz4Mh3jcubPm8vHrg6dzzr8+kqR8GGiih156cC38NwAGfjeVRwcC70fSVKKD3035W+N08XF5PRZYzbDAC0SDxGd9hEEYH5QpfOT1pUMxXJATLVieRUdntx814wjzi4hFLUMOZUVEtBd4c=
+	t=1709042102; cv=none; b=hW4yXcJbjHGN5xX2HCmCWTfEQ1AJw1uYEEtyhEp56yeNYXR4uc5V1sz8lT9P0/xFdqrldXOFwobzl88n3VH7oEKbfWY1cgeh9xzYmUXEo4TxgnKluEQ8gL3uRyLd5H60WIzbUEXTJHxp3AGpSWXV4Rrxb/DbVLvoGVhdrVn0ZXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042735; c=relaxed/simple;
-	bh=Qp36fLL6cD0uPjQATxA20II6tHrWI4S21U9d/j81oOs=;
+	s=arc-20240116; t=1709042102; c=relaxed/simple;
+	bh=DfZgH3Rbj/ZDj1I0ib7167oE8aKmwzz3x8ecXr9YmAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EXKGWYIu9s5nlk38dEmZVxkyYv4zOq1sttjTTuzKQkWvWuUcEqgu5AlV1pJM1XB/HsS67TdK7lBgouZ+O2Ws3JQ93GAtS8X2ZGwqL4e/xNnPv9tJxpe2C/tkfUwg5pTSUofeb9DRH+kSS9dxpUNWPH41O4fj6AFw/yTgS2Ls9sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cs0dGn6w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ABFEC433C7;
-	Tue, 27 Feb 2024 14:05:34 +0000 (UTC)
+	 MIME-Version; b=patjx7I0gDSdy3Vdseo6ms7UBGApLAFLqWQi1MgOkNh3+oZFSfpk4pA2VDomQqFx+eXJizaEGgCqBR/y5t6z6y7ojQ+x+tLpaRzsmp+S01qt4CuiZyoY6b/Tyj9FGuqk5QtzXzW5IzyrTB7kJHt3X+vml2k5xBQBofwX/5qV78E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2K0aN6G5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E171C433C7;
+	Tue, 27 Feb 2024 13:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042734;
-	bh=Qp36fLL6cD0uPjQATxA20II6tHrWI4S21U9d/j81oOs=;
+	s=korg; t=1709042101;
+	bh=DfZgH3Rbj/ZDj1I0ib7167oE8aKmwzz3x8ecXr9YmAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cs0dGn6wQKzmTDBEWtVKOLrG5++iv7cQMUoTQkJmaTtAf5A5/P56j9WW0GGoA+G60
-	 INI9TfIay/4Xjqic8NhjKkC47E6NZcXbv+oflP+AUvxHw9zzXixWtFEnJAzfyoFwYR
-	 gBZCIiT/mZgzs1uby93PpT6TSgHN7fDnIbnghOOU=
+	b=2K0aN6G5PX6ftYF9exMf1vzsQCnMY8ntuWjKTyaQnU5NLw8LzbfN/xU+Irb6Ev0Ka
+	 WltSSqiCKBgROma2AJmIcYkfu4rWy+eqpSBR4n4WIeMOYJ/U37HuBA/HfHuwS4Q5ef
+	 Xjapu//NhnE29QXl5t264Nq3ePgRg5VZQtC87WcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.15 102/245] usb: roles: fix NULL pointer issue when put modules reference
+	Sandeep Dhavale <dhavale@google.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Jingbo Xu <jefflexu@linux.alibaba.com>,
+	Chao Yu <chao@kernel.org>
+Subject: [PATCH 6.6 179/299] erofs: fix refcount on the metabuf used for inode lookup
 Date: Tue, 27 Feb 2024 14:24:50 +0100
-Message-ID: <20240227131618.529249007@linuxfoundation.org>
+Message-ID: <20240227131631.598850593@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,101 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Sandeep Dhavale <dhavale@google.com>
 
-commit 1c9be13846c0b2abc2480602f8ef421360e1ad9e upstream.
+commit 56ee7db31187dc36d501622cb5f1415e88e01c2a upstream.
 
-In current design, usb role class driver will get usb_role_switch parent's
-module reference after the user get usb_role_switch device and put the
-reference after the user put the usb_role_switch device. However, the
-parent device of usb_role_switch may be removed before the user put the
-usb_role_switch. If so, then, NULL pointer issue will be met when the user
-put the parent module's reference.
+In erofs_find_target_block() when erofs_dirnamecmp() returns 0,
+we do not assign the target metabuf. This causes the caller
+erofs_namei()'s erofs_put_metabuf() at the end to be not effective
+leaving the refcount on the page.
+As the page from metabuf (buf->page) is never put, such page cannot be
+migrated or reclaimed. Fix it now by putting the metabuf from
+previous loop and assigning the current metabuf to target before
+returning so caller erofs_namei() can do the final put as it was
+intended.
 
-This will save the module pointer in structure of usb_role_switch. Then,
-we don't need to find module by iterating long relations.
-
-Fixes: 5c54fcac9a9d ("usb: roles: Take care of driver module reference counting")
-cc: stable@vger.kernel.org
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240129093739.2371530-1-xu.yang_2@nxp.com
+Fixes: 500edd095648 ("erofs: use meta buffers for inode lookup")
+Cc: <stable@vger.kernel.org> # 5.18+
+Signed-off-by: Sandeep Dhavale <dhavale@google.com>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Link: https://lore.kernel.org/r/20240221210348.3667795-1-dhavale@google.com
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/roles/class.c |   17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ fs/erofs/namei.c |   28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
---- a/drivers/usb/roles/class.c
-+++ b/drivers/usb/roles/class.c
-@@ -19,6 +19,7 @@ static struct class *role_class;
- struct usb_role_switch {
- 	struct device dev;
- 	struct mutex lock; /* device lock*/
-+	struct module *module; /* the module this device depends on */
- 	enum usb_role role;
+--- a/fs/erofs/namei.c
++++ b/fs/erofs/namei.c
+@@ -130,24 +130,24 @@ static void *erofs_find_target_block(str
+ 			/* string comparison without already matched prefix */
+ 			diff = erofs_dirnamecmp(name, &dname, &matched);
  
- 	/* From descriptor */
-@@ -133,7 +134,7 @@ struct usb_role_switch *usb_role_switch_
- 						  usb_role_switch_match);
- 
- 	if (!IS_ERR_OR_NULL(sw))
--		WARN_ON(!try_module_get(sw->dev.parent->driver->owner));
-+		WARN_ON(!try_module_get(sw->module));
- 
- 	return sw;
- }
-@@ -155,7 +156,7 @@ struct usb_role_switch *fwnode_usb_role_
- 		sw = fwnode_connection_find_match(fwnode, "usb-role-switch",
- 						  NULL, usb_role_switch_match);
- 	if (!IS_ERR_OR_NULL(sw))
--		WARN_ON(!try_module_get(sw->dev.parent->driver->owner));
-+		WARN_ON(!try_module_get(sw->module));
- 
- 	return sw;
- }
-@@ -170,7 +171,7 @@ EXPORT_SYMBOL_GPL(fwnode_usb_role_switch
- void usb_role_switch_put(struct usb_role_switch *sw)
- {
- 	if (!IS_ERR_OR_NULL(sw)) {
--		module_put(sw->dev.parent->driver->owner);
-+		module_put(sw->module);
- 		put_device(&sw->dev);
- 	}
- }
-@@ -187,15 +188,18 @@ struct usb_role_switch *
- usb_role_switch_find_by_fwnode(const struct fwnode_handle *fwnode)
- {
- 	struct device *dev;
-+	struct usb_role_switch *sw = NULL;
- 
- 	if (!fwnode)
- 		return NULL;
- 
- 	dev = class_find_device_by_fwnode(role_class, fwnode);
--	if (dev)
--		WARN_ON(!try_module_get(dev->parent->driver->owner));
-+	if (dev) {
-+		sw = to_role_switch(dev);
-+		WARN_ON(!try_module_get(sw->module));
-+	}
- 
--	return dev ? to_role_switch(dev) : NULL;
-+	return sw;
- }
- EXPORT_SYMBOL_GPL(usb_role_switch_find_by_fwnode);
- 
-@@ -337,6 +341,7 @@ usb_role_switch_register(struct device *
- 	sw->set = desc->set;
- 	sw->get = desc->get;
- 
-+	sw->module = parent->driver->owner;
- 	sw->dev.parent = parent;
- 	sw->dev.fwnode = desc->fwnode;
- 	sw->dev.class = role_class;
+-			if (!diff) {
+-				*_ndirents = 0;
+-				goto out;
+-			} else if (diff > 0) {
+-				head = mid + 1;
+-				startprfx = matched;
+-
+-				if (!IS_ERR(candidate))
+-					erofs_put_metabuf(target);
+-				*target = buf;
+-				candidate = de;
+-				*_ndirents = ndirents;
+-			} else {
++			if (diff < 0) {
+ 				erofs_put_metabuf(&buf);
+-
+ 				back = mid - 1;
+ 				endprfx = matched;
++				continue;
++			}
++
++			if (!IS_ERR(candidate))
++				erofs_put_metabuf(target);
++			*target = buf;
++			if (!diff) {
++				*_ndirents = 0;
++				return de;
+ 			}
++			head = mid + 1;
++			startprfx = matched;
++			candidate = de;
++			*_ndirents = ndirents;
+ 			continue;
+ 		}
+ out:		/* free if the candidate is valid */
 
 
 
