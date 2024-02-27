@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-25142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 580698697F7
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:27:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDCD1869642
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:09:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B00FEB2E38F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:26:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DC701F2D51C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3193F140391;
-	Tue, 27 Feb 2024 14:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D813F13B78E;
+	Tue, 27 Feb 2024 14:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nu5Q7V7T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cCvxANtJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B0A13B7AB;
-	Tue, 27 Feb 2024 14:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9761113A26F;
+	Tue, 27 Feb 2024 14:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043982; cv=none; b=uTKNRQDBt5eVw+zmFVJ7S68eusQgy5w6fIA4DPWE+oF9RPoTryYXsirswX1xW7ujr7WqUg8g1sJFVy+ULHmQ6OLbV6hRcq5skvHUPDsBWQTHtU4tdA+sLvYbfoN8Wh3fQAFZhulfps7mj6uxqBT81jrrTz8TB/kyJI+5CSd3/R0=
+	t=1709042986; cv=none; b=BI0xTQaV/jsUzD1Ma2eATY28ZRSubI5fZEKndTlZK+zinZh9X1Ky8s8hO0RGplH4pufkIL/YVPuIiMRFHWl+5mRdJudKKDAD2hpj8F1DbdGQvpzFZ5/1sjWuVySVuevZumQn0VjjZYdwpsJdfEzay7PBeWJs9G1J+C5B+wOj9BI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043982; c=relaxed/simple;
-	bh=m70hRhSvsDeq6GMj0XrbsXZ2K5F2xURAb1uggjPG5rg=;
+	s=arc-20240116; t=1709042986; c=relaxed/simple;
+	bh=tSbe6CMid/a1yUT7uylKTwt+kqVx4ujcdp6ai2ZBKkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JBYZ6iXVgifSij6XWib4vESLGoPGw7BCrZAz/sO95o6MpZdGMkXNPQQKP4gp7c9FQ4uCMVVRb/qinBOfSvRM1XOMljnyjx2eBfNhgOICnKf4UbJ4pfF+rA3DzpkrXaHxKKNi0uRTYp00wg+dqdzHeCFwmFF55E6OWyiek6Xh8Io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nu5Q7V7T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F55AC433C7;
-	Tue, 27 Feb 2024 14:26:21 +0000 (UTC)
+	 MIME-Version; b=jUalz307FKgNX21R2hOwFTllHOQ7DDznL/CGVRVQil41HxSJvOF1OkIwDBJPSF3mzniuXdJva3xI49/7Ef3ROhfNQj9idI1tVyHwR7WrSR+V8IvaKdUJzKhqBsmLSxSXsdL/Zyn7y1Aoo/oAtJNs8pSESrlAn+rUc71wWfocT0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cCvxANtJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22FBBC433C7;
+	Tue, 27 Feb 2024 14:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043981;
-	bh=m70hRhSvsDeq6GMj0XrbsXZ2K5F2xURAb1uggjPG5rg=;
+	s=korg; t=1709042986;
+	bh=tSbe6CMid/a1yUT7uylKTwt+kqVx4ujcdp6ai2ZBKkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nu5Q7V7Tv6n7LpZFgEGNQWDmWhGh/pRm2ip3dzy4pRyjK461B0p+6/2f0tVNDkUMW
-	 qI7JsxUHyYIWFf0LbXmICfOnMjRR0CD9mGpvqGddyBF1t/ofZw6DbMy+E6kn0m75Na
-	 YVy7UoWai0kGA12aeLVKbG0qMKG4DDRJmoiZub8M=
+	b=cCvxANtJyJiPMNa0kGPlkWlc3UZKNvWukaGdVd5OOiyzVRu75IkXUUpUFzFVBK8sa
+	 gCGun1CU7iIQW/VKS/K0xmBxydsn4dllMbaMyumrQzmYrtFIoW0UipULUAel8nkoNg
+	 J5I6riU2F/AY/jFw6FQN1vLGhsgfdCysGJh/vvqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Conrad Kostecki <conikost@gentoo.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Niklas Cassel <cassel@kernel.org>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 020/122] ahci: asm1166: correct count of reported ports
+Subject: [PATCH 5.15 193/245] ACPI: resource: Skip IRQ override on ASUS ExpertBook B1502CBA
 Date: Tue, 27 Feb 2024 14:26:21 +0100
-Message-ID: <20240227131559.367290351@linuxfoundation.org>
+Message-ID: <20240227131621.462050509@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Conrad Kostecki <conikost@gentoo.org>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
 
-[ Upstream commit 0077a504e1a4468669fd2e011108db49133db56e ]
+[ Upstream commit 05cda427126f30ce3fc8ffd82fd6f5196398d502 ]
 
-The ASM1166 SATA host controller always reports wrongly,
-that it has 32 ports. But in reality, it only has six ports.
+Like the ASUS ExpertBook B2502CBA and various ASUS Vivobook laptops, the
+ASUS ExpertBook B1502CBA has an ACPI DSDT table that describes IRQ 1 as
+ActiveLow while the kernel overrides it to Edge_High.
 
-This seems to be a hardware issue, as all tested ASM1166
-SATA host controllers reports such high count of ports.
+    $ sudo dmesg | grep DMI
+    DMI: ASUSTeK COMPUTER INC. ASUS EXPERTBOOK B1502CBA_B1502CBA/B1502CBA, BIOS B1502CBA.300 01/18/2023
+    $ grep -A 40 PS2K dsdt.dsl | grep IRQ -A 1
+                    IRQ (Level, ActiveLow, Exclusive, )
+                        {1}
 
-Example output: ahci 0000:09:00.0: AHCI 0001.0301
-32 slots 32 ports 6 Gbps 0xffffff3f impl SATA mode.
+This prevents the keyboard from working. To fix this issue, add this laptop
+to the skip_override_table so that the kernel does not override IRQ 1.
 
-By adjusting the port_map, the count is limited to six ports.
-
-New output: ahci 0000:09:00.0: AHCI 0001.0301
-32 slots 32 ports 6 Gbps 0x3f impl SATA mode.
-
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=211873
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218346
-Signed-off-by: Conrad Kostecki <conikost@gentoo.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217323
+Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/acpi/resource.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 4297a8d69dbf7..8bfada4843d83 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -654,6 +654,11 @@ MODULE_PARM_DESC(mobile_lpm_policy, "Default LPM policy for mobile chipsets");
- static void ahci_pci_save_initial_config(struct pci_dev *pdev,
- 					 struct ahci_host_priv *hpriv)
- {
-+	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA && pdev->device == 0x1166) {
-+		dev_info(&pdev->dev, "ASM1166 has only six ports\n");
-+		hpriv->saved_port_map = 0x3f;
-+	}
-+
- 	if (pdev->vendor == PCI_VENDOR_ID_JMICRON && pdev->device == 0x2361) {
- 		dev_info(&pdev->dev, "JMB361 has only one port\n");
- 		hpriv->force_port_map = 1;
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 6c5873f552e5e..a364cb07c5578 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -435,6 +435,13 @@ static const struct dmi_system_id asus_laptop[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "S5602ZA"),
+ 		},
+ 	},
++	{
++		.ident = "Asus ExpertBook B1502CBA",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "B1502CBA"),
++		},
++	},
+ 	{
+ 		.ident = "Asus ExpertBook B2402CBA",
+ 		.matches = {
 -- 
 2.43.0
 
