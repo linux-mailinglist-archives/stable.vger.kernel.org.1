@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-24428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 672AF869472
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:54:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51B1A8695A6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:04:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 946FB1C24E3C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:54:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83D9B1C23DB8
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:03:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00C1F13DB90;
-	Tue, 27 Feb 2024 13:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF4413B798;
+	Tue, 27 Feb 2024 14:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wisey5cm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qVtmN7Ky"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4F2213B791;
-	Tue, 27 Feb 2024 13:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2A013B2BA;
+	Tue, 27 Feb 2024 14:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041972; cv=none; b=BWYXva/4TuGqfkw1XE2er/mTgsHlT9e/gCnK0nugc7yCkmhhPxtdVHIUcPU2wYARIaoNS+OaZsYn8y06rRx/6iRSEJGWuivucRj6z0YP4DRkS1AvT9wiCoC9EVrVvmFn4SZzUKfy/6YZNY3r5TZx0APSbSU6mBD0fEPxhN76cMA=
+	t=1709042638; cv=none; b=T/ddy7IEf3F+x4yaKbmzNJY2ttqfKcA2Cbgkcqhonk55IQB0GUe0Q05V7dfRsqjWbBMnog3mkFY2cQwDPI7E0IR3iXckPtPXeHWhZl3hJHG0cD8xuT5EMR44h7F0HDmdUbpCw4J2J/dRkvFrDot+MaMQSDH6ctxMbuF1OMEHXlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041972; c=relaxed/simple;
-	bh=TeZjHKaf3pmRWDz+DEbvGA3pV5xap/ODMGpby4ShRcQ=;
+	s=arc-20240116; t=1709042638; c=relaxed/simple;
+	bh=zDPJtK7XQ06purNhRUeri9d2GjbjTP9UEo4OVKMNu+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pOpb4VfhZwEFCo2ERkbksPOwsD3ikCZKnSbQu2BXCQkZVc7o7mzmY8yCrO/WMIUD6tTh24Q+deyjsPIHBeJuPKFtQdI8jcKyeRIsNpgMT5++UR/NtGGoRH79fdusB+K83h5npeGghc0lCsXmbhoN5c5/8Qx0r/O0t9MveNkkf4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wisey5cm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A5AC43394;
-	Tue, 27 Feb 2024 13:52:52 +0000 (UTC)
+	 MIME-Version; b=RTIt4cipMQ0Gy7/an57CA+9QAN6QJA773dMfuOPjZu4vpBL3M7I8RQEr4LrMM3HrkAUYn925Hi4P4NfqYSelu+O86xMwTtBoi0cioA4UdGpTQ78EqIKrMYV021HRzyhkvxohF5aL2VAvFMpeQnD5IT1GIgy0vEa9rylIKfLa1Qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qVtmN7Ky; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAA72C433F1;
+	Tue, 27 Feb 2024 14:03:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041972;
-	bh=TeZjHKaf3pmRWDz+DEbvGA3pV5xap/ODMGpby4ShRcQ=;
+	s=korg; t=1709042638;
+	bh=zDPJtK7XQ06purNhRUeri9d2GjbjTP9UEo4OVKMNu+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wisey5cmK1sAIClHO3WtQoeEyNntp1VULce4tLTXIEmN7dEQ8UcQzXo1XTa2e/QAx
-	 Th+4r2/bpd0ervexiqhKHig/ohZ5/NbtEY0BEnIMWTvYpCf9krqU8ukNFqIvyavFYK
-	 YlKDaWa7Unssez2Vx7i/hfcO5Hvq49B/wY1hcQ7c=
+	b=qVtmN7Kyxx0MIt5VcSZ356pIm2BQV+HqeWsIKGhlzKmigemILsW5QKjZHM3iXNmej
+	 7d95hmxbhwhVWhEv9oCfwYU8CkvZRZMDgGva6knTMd9hzasG6SSFOIHyJV0Uqm8iid
+	 VsjfSAUTM+PKXADw+7KXQciOaHaJi+OEQdJjEU+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akira Yokosawa <akiyks@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>
-Subject: [PATCH 6.6 135/299] docs: Instruct LaTeX to cope with deeper nesting
-Date: Tue, 27 Feb 2024 14:24:06 +0100
-Message-ID: <20240227131630.203324121@linuxfoundation.org>
+	Ism Hong <ism.hong@gmail.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 059/245] fs/ntfs3: use non-movable memory for ntfs3 MFT buffer cache
+Date: Tue, 27 Feb 2024 14:24:07 +0100
+Message-ID: <20240227131617.161390971@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Corbet <corbet@lwn.net>
+From: Ism Hong <ism.hong@gmail.com>
 
-commit 0df8669f69a8638f04c6a3d1f3b7056c2c18f62c upstream.
+[ Upstream commit d6d33f03baa43d763fe094ca926eeae7d3421d07 ]
 
-The addition of the XFS online fsck documentation starting with
-commit a8f6c2e54ddc ("xfs: document the motivation for online fsck design")
-added a deeper level of nesting than LaTeX is prepared to deal with.  That
-caused a pdfdocs build failure with the helpful "Too deeply nested" error
-message buried deeply in Documentation/output/filesystems.log.
+Since the buffer cache for ntfs3 metadata is not released until the file
+system is unmounted, allocating from the movable zone may result in cma
+allocation failures. This is due to the page still being used by ntfs3,
+leading to migration failures.
 
-Increase the "maxlistdepth" parameter to instruct LaTeX that it needs to
-deal with the deeper nesting whether it wants to or not.
+To address this, this commit use sb_bread_umovable() instead of
+sb_bread(). This change prevents allocation from the movable zone,
+ensuring compatibility with scenarios where the buffer head is not
+released until unmount. This patch is inspired by commit
+a8ac900b8163("ext4: use non-movable memory for the ext4 superblock").
 
-Suggested-by: Akira Yokosawa <akiyks@gmail.com>
-Tested-by: Akira Yokosawa <akiyks@gmail.com>
-Cc: stable@vger.kernel.org # v6.4+
-Link: https://lore.kernel.org/linux-doc/67f6ac60-7957-4b92-9d72-a08fbad0e028@gmail.com/
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The issue is found when playing video files stored in NTFS on the
+Android TV platform. During this process, the media parser reads the
+video file, causing ntfs3 to allocate buffer cache from the CMA area.
+Subsequently, the hardware decoder attempts to allocate memory from the
+same CMA area. However, the page is still in use by ntfs3, resulting in
+a migrate failure in alloc_contig_range().
+
+The pinned page and allocating stacktrace reported by page owner shows
+below:
+
+page:ffffffff00b68880 refcount:3 mapcount:0 mapping:ffffff80046aa828
+        index:0xc0040 pfn:0x20fa4
+    aops:def_blk_aops ino:0
+    flags: 0x2020(active|private)
+    page dumped because: migration failure
+    page last allocated via order 0, migratetype Movable,
+        gfp_mask 0x108c48
+        (GFP_NOFS|__GFP_NOFAIL|__GFP_HARDWALL|__GFP_MOVABLE),
+    page_owner tracks the page as allocated
+     prep_new_page
+     get_page_from_freelist
+     __alloc_pages_nodemask
+     pagecache_get_page
+     __getblk_gfp
+     __bread_gfp
+     ntfs_read_run_nb
+     ntfs_read_bh
+     mi_read
+     ntfs_iget5
+     dir_search_u
+     ntfs_lookup
+     __lookup_slow
+     lookup_slow
+     walk_component
+     path_lookupat
+
+Signed-off-by: Ism Hong <ism.hong@gmail.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/conf.py |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/ntfs3/ntfs_fs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/Documentation/conf.py
-+++ b/Documentation/conf.py
-@@ -383,6 +383,12 @@ latex_elements = {
-         verbatimhintsturnover=false,
-     ''',
+diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
+index 9812765000439..ffc8dfbb310ff 100644
+--- a/fs/ntfs3/ntfs_fs.h
++++ b/fs/ntfs3/ntfs_fs.h
+@@ -1014,7 +1014,7 @@ static inline u64 bytes_to_block(const struct super_block *sb, u64 size)
+ static inline struct buffer_head *ntfs_bread(struct super_block *sb,
+ 					     sector_t block)
+ {
+-	struct buffer_head *bh = sb_bread(sb, block);
++	struct buffer_head *bh = sb_bread_unmovable(sb, block);
  
-+    #
-+    # Some of our authors are fond of deep nesting; tell latex to
-+    # cope.
-+    #
-+    'maxlistdepth': '10',
-+
-     # For CJK One-half spacing, need to be in front of hyperref
-     'extrapackages': r'\usepackage{setspace}',
- 
+ 	if (bh)
+ 		return bh;
+-- 
+2.43.0
+
 
 
 
