@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-24870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B89C8696A9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:14:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6CFD8694A6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:55:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD5CC1C238E0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:14:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92E401F22985
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:55:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B18AC14535A;
-	Tue, 27 Feb 2024 14:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88631420DE;
+	Tue, 27 Feb 2024 13:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P94dVNWh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQ59Q7O0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED8D1420A6;
-	Tue, 27 Feb 2024 14:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8812113B2AC;
+	Tue, 27 Feb 2024 13:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043221; cv=none; b=Pspvv2LixSHmfZNnFjd7s0bIaJHJEKlGJNfIca7ZUv+1jIHe6dvFF6jsAibm/8lGFmd9xuF9RybRNABRBcPS4I1y6iFvhXPrkfiKIPiPuoNSYjEB6dkTG/j64FSpOqMVmtvoTqiDmysH/e3bj/pLFomVD+xVOjA6ItISeF8g5kE=
+	t=1709042104; cv=none; b=AegY7av3Zr9k/Lz03PKLFk5hlaihNPWbzNfhQyxQLoy6LZdhmvmsXVnkeAOt+7gAl79RO1mEHmQk0VICM3YRqdYZh6upBuKUF+E/LYq4bQEITxBwXDJFISRYR5nwRxns/2vzaaLeU6Z4M+vUAM+Vj4lyDubME1HEi8VgOVc56o8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043221; c=relaxed/simple;
-	bh=yeoCL4dQXTohIDQCb/3NXWoxvOfjmB6ShBjkh3RAwB4=;
+	s=arc-20240116; t=1709042104; c=relaxed/simple;
+	bh=CST0yNY+E4jTEouVy09CndSggp9RQhmZ/Mm1y0pNXzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OvLwdiqtGJAoVq89ASRR8mYi+24aQrxmcvVcfZWfjsHfATSnZzEKdsC01JzhbsdiIuSOJl6JqysTKoa9AgQGyN8GdLkVpUpsJGPukgeH8rmP9XOuyWjpN7M5lh9azYzPux7hxjmV31LtvYyYCWfFqVWiKWRY9JiWlhpUONI6Mxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P94dVNWh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7015C433C7;
-	Tue, 27 Feb 2024 14:13:40 +0000 (UTC)
+	 MIME-Version; b=f9zX6RqZBgSXFNENqVlcKURhZPi+g94lC2hwunvpVgGkf4JIbu7Hp4yiUZIyulgHG2L7ILOEbaJQNsqLtpRhltX2MSmk6GKxAt6WhQI8m/CFJHTpj4VmPlerORhTxQOVbfEh+TAQ77KenmS2OMD7FOFzHXp/XcY24spTOslKudU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gQ59Q7O0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 170F6C433F1;
+	Tue, 27 Feb 2024 13:55:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043221;
-	bh=yeoCL4dQXTohIDQCb/3NXWoxvOfjmB6ShBjkh3RAwB4=;
+	s=korg; t=1709042104;
+	bh=CST0yNY+E4jTEouVy09CndSggp9RQhmZ/Mm1y0pNXzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P94dVNWhgmwiprhzSpmLpI6ij93kBmMsQk6atGAsFkXiDMe5yA60tzJtfPO5hubyb
-	 ftE6b8UNGUqwc9il5AWRC+6g0Kqs37SxL8AOt8omWHbIPGiz1OjteGXIrmVED3P3R1
-	 fS3gsldvyN+ydvu11WlzMTcZVkjJ7iW748xeoXso=
+	b=gQ59Q7O0sm6ylKnu76lg/4lWhcMJIZHG1aO/rBXivay1gAw2coHJZqS6pFr92ZVGW
+	 bpEp5rUgPe4xUwdggINYTGEPCbdUs+2Had8xY3OAhmDg1J72sCEL06pWt19Qw/kAhN
+	 Ii5hp73ry17i5gGU6uCAJtEgglzyPFWbhzC1j7nc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 029/195] Input: goodix - accept ACPI resources with gpio_count == 3 && gpio_int_idx == 0
-Date: Tue, 27 Feb 2024 14:24:50 +0100
-Message-ID: <20240227131611.355931151@linuxfoundation.org>
+	Ondrej Jirman <megi@xff.cz>
+Subject: [PATCH 6.6 180/299] Revert "usb: typec: tcpm: reset counter when enter into unattached state after try role"
+Date: Tue, 27 Feb 2024 14:24:51 +0100
+Message-ID: <20240227131631.638534915@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Ondrej Jirman <megi@xff.cz>
 
-[ Upstream commit 180a8f12c21f41740fee09ca7f7aa98ff5bb99f8 ]
+commit 23b1d2d99b0f55326f05e7d757fa197c4a95dc5c upstream.
 
-Some devices list 3 Gpio resources in the ACPI resource list for
-the touchscreen:
+The reverted commit makes the state machine only ever go from SRC_ATTACH_WAIT
+to SNK_TRY in endless loop when toggling. After revert it goes to SRC_ATTACHED
+after initially trying SNK_TRY earlier, as it should for toggling to ever detect
+the power source mode and the port is again able to provide power to attached
+power sinks.
 
-1. GpioInt resource pointing to the GPIO used for the interrupt
-2. GpioIo resource pointing to the reset GPIO
-3. GpioIo resource pointing to the GPIO used for the interrupt
+This reverts commit 2d6d80127006ae3da26b1f21a65eccf957f2d1e5.
 
-Note how the third extra GpioIo resource really is a duplicate
-of the GpioInt provided info.
-
-Ignore this extra GPIO, treating this setup the same as gpio_count == 2 &&
-gpio_int_idx == 0 fixes the touchscreen not working on the Thunderbook
-Colossus W803 rugged tablet and likely also on the CyberBook_T116K.
-
-Reported-by: Maarten van der Schrieck
-Closes: https://gitlab.com/AdyaAdya/goodix-touchscreen-linux-driver/-/issues/22
-Suggested-by: Maarten van der Schrieck
-Tested-by: Maarten van der Schrieck
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20231223141650.10679-1-hdegoede@redhat.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 2d6d80127006 ("usb: typec: tcpm: reset counter when enter into unattached state after try role")
+Signed-off-by: Ondrej Jirman <megi@xff.cz>
+Link: https://lore.kernel.org/r/20240217162023.1719738-1-megi@xff.cz
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/touchscreen/goodix.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/typec/tcpm/tcpm.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/input/touchscreen/goodix.c b/drivers/input/touchscreen/goodix.c
-index 3f0732db7bf5b..6de64b3f900fb 100644
---- a/drivers/input/touchscreen/goodix.c
-+++ b/drivers/input/touchscreen/goodix.c
-@@ -884,7 +884,8 @@ static int goodix_add_acpi_gpio_mappings(struct goodix_ts_data *ts)
- 		}
- 	}
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -3730,9 +3730,6 @@ static void tcpm_detach(struct tcpm_port
+ 	if (tcpm_port_is_disconnected(port))
+ 		port->hard_reset_count = 0;
  
--	if (ts->gpio_count == 2 && ts->gpio_int_idx == 0) {
-+	/* Some devices with gpio_int_idx 0 list a third unused GPIO */
-+	if ((ts->gpio_count == 2 || ts->gpio_count == 3) && ts->gpio_int_idx == 0) {
- 		ts->irq_pin_access_method = IRQ_PIN_ACCESS_ACPI_GPIO;
- 		gpio_mapping = acpi_goodix_int_first_gpios;
- 	} else if (ts->gpio_count == 2 && ts->gpio_int_idx == 1) {
--- 
-2.43.0
-
+-	port->try_src_count = 0;
+-	port->try_snk_count = 0;
+-
+ 	if (!port->attached)
+ 		return;
+ 
 
 
 
