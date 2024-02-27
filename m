@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-25252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6A7386987C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:36:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 770E18697D5
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:25:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01491B30BBB
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:32:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8A0D1C20B64
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:25:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2261B13EFF4;
-	Tue, 27 Feb 2024 14:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C40145345;
+	Tue, 27 Feb 2024 14:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJaRCSEZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Do1pvnVC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D408E54BFE;
-	Tue, 27 Feb 2024 14:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5AED1420DC;
+	Tue, 27 Feb 2024 14:25:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044283; cv=none; b=gXoS4kFdi6O4ZVaFxCoL1e3LL4yIzjm8oHbmWZhGUqW0L8KW/45K569NdIPYQg1yLo9oCjInYsUfWDZpsHlPGJbYiBYQBeCRtOSvPKhy9Mp6KvdX2di+ruQ0ci3WOt46iuYnzC6jJ4PxFAxf4f8KIVWupC0Kuk5hH1u8ymOZUGI=
+	t=1709043914; cv=none; b=UicTENS8yEBbAUAr5JV7pEOtL2K52FOin3tEMfp11Plnb5/xEkmjExArHVAN4jJtuxqeGYaCuFUaE3cLvsHWKTyw3DP1fz2HWscl4pfQdT2aQMe/2xLOoP26JbSOxSKaR454IErmVPcEh7XdN6MTaWT+niQmmawydoc5xxTtnW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044283; c=relaxed/simple;
-	bh=5w4eW/Yc0zk880VxXzcTcKsI68vfXe1DsJTCoS/9SmY=;
+	s=arc-20240116; t=1709043914; c=relaxed/simple;
+	bh=5JmthRZ3ZhkCNwfyR8rk0/pgZ/Yfexf+r+FJuyhcx9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YhfeDsSVidm3n0fMnOqTjEBDg5q+fnLjCbk/MDQ6ycySpoK3ZaCQtP1t6JkKRN4VQzYlIch0p7G4LhqeOkr3i9Ih7BxIfZITG1Hy2g9NSYKqF1VpVVwANe19Vgci+uyGn9Yv8PA3r8fjGKF8WWoF93lf46HKt70BDKQjsf6uk3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJaRCSEZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 611C4C433C7;
-	Tue, 27 Feb 2024 14:31:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hFf/duzSJxg1+mAkT6ZbfFTEPxWZ6E7VX6A2RUq3EeY2reuI4IR12Ej+4OViGkMtdZXYJ+O0V8qS69YhD9y7SA2D9ePlR9f7gWzRheyqwLP8xTuWSapyUovg1pJ20Vh+wwEUpyZaC5iagK+3V8eOKkkwp3epH/T9dS4oyW13qw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Do1pvnVC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DC36C433F1;
+	Tue, 27 Feb 2024 14:25:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044283;
-	bh=5w4eW/Yc0zk880VxXzcTcKsI68vfXe1DsJTCoS/9SmY=;
+	s=korg; t=1709043914;
+	bh=5JmthRZ3ZhkCNwfyR8rk0/pgZ/Yfexf+r+FJuyhcx9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vJaRCSEZ97TBCDDiY0fnmxMPABduhZiAQXYRByGjGwXUE3NtYRPZoCT4dV0eTH6HD
-	 UUdSPzr29oadumK2zIeezBCmMEL7O9jJF0QoeYLuSxJRS9yR0pG8vRXd2/bZ0LpZRy
-	 wmIPh+5QCt7mF/zRGgUbEoO2JRguXMMfErW5kOX0=
+	b=Do1pvnVCAR9yjAEtkTPQ0B6yzLWNn2pa9FMIa/jcab3y0F5IgAVUhQjb72qKPm1jX
+	 Od1LsiVP+NVC5kQ4leVgY8CbxVag2PNjOppBdoSfIddost+nJPG4YIWRvyoKh+OBJ4
+	 e2ez5LB9x0NaEj150bPs1EbZsOI6HdQgLw0FTY88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniil Dulov <d.dulov@aladdin.ru>,
-	David Howells <dhowells@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 107/122] afs: Increase buffer size in afs_update_volume_status()
+Subject: [PATCH 5.4 81/84] drm/syncobj: make lockdep complain on WAIT_FOR_SUBMIT v3
 Date: Tue, 27 Feb 2024 14:27:48 +0100
-Message-ID: <20240227131602.206419086@linuxfoundation.org>
+Message-ID: <20240227131555.511649445@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +61,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniil Dulov <d.dulov@aladdin.ru>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit 6ea38e2aeb72349cad50e38899b0ba6fbcb2af3d ]
+[ Upstream commit 7621350c6bb20fb6ab7eb988833ab96eac3dcbef ]
 
-The max length of volume->vid value is 20 characters.
-So increase idbuf[] size up to 24 to avoid overflow.
+DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT can't be used when we hold locks
+since we are basically waiting for userspace to do something.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Holding a lock while doing so can trivial deadlock with page faults
+etc...
 
-[DH: Actually, it's 20 + NUL, so increase it to 24 and use snprintf()]
+So make lockdep complain when a driver tries to do this.
 
-Fixes: d2ddc776a458 ("afs: Overhaul volume and server record caching and fileserver rotation")
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/20240211150442.3416-1-d.dulov@aladdin.ru/ # v1
-Link: https://lore.kernel.org/r/20240212083347.10742-1-d.dulov@aladdin.ru/ # v2
-Link: https://lore.kernel.org/r/20240219143906.138346-3-dhowells@redhat.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+v2: Add lockdep_assert_none_held() macro.
+v3: Add might_sleep() and also use lockdep_assert_none_held() in the
+    IOCTL path.
+
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patchwork.freedesktop.org/patch/414944/
+Stable-dep-of: 3c43177ffb54 ("drm/syncobj: call drm_syncobj_fence_add_wait when WAIT_AVAILABLE flag is set")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/volume.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_syncobj.c | 12 ++++++++++++
+ include/linux/lockdep.h       |  5 +++++
+ 2 files changed, 17 insertions(+)
 
-diff --git a/fs/afs/volume.c b/fs/afs/volume.c
-index f84194b791d3e..fb19c69284ab2 100644
---- a/fs/afs/volume.c
-+++ b/fs/afs/volume.c
-@@ -302,7 +302,7 @@ static int afs_update_volume_status(struct afs_volume *volume, struct key *key)
- {
- 	struct afs_server_list *new, *old, *discard;
- 	struct afs_vldb_entry *vldb;
--	char idbuf[16];
-+	char idbuf[24];
- 	int ret, idsz;
+diff --git a/drivers/gpu/drm/drm_syncobj.c b/drivers/gpu/drm/drm_syncobj.c
+index 8b155e3377cfe..a1d2a3dc00768 100644
+--- a/drivers/gpu/drm/drm_syncobj.c
++++ b/drivers/gpu/drm/drm_syncobj.c
+@@ -325,6 +325,15 @@ int drm_syncobj_find_fence(struct drm_file *file_private,
+ 	if (!syncobj)
+ 		return -ENOENT;
  
- 	_enter("");
-@@ -310,7 +310,7 @@ static int afs_update_volume_status(struct afs_volume *volume, struct key *key)
- 	/* We look up an ID by passing it as a decimal string in the
- 	 * operation's name parameter.
- 	 */
--	idsz = sprintf(idbuf, "%llu", volume->vid);
-+	idsz = snprintf(idbuf, sizeof(idbuf), "%llu", volume->vid);
++	/* Waiting for userspace with locks help is illegal cause that can
++	 * trivial deadlock with page faults for example. Make lockdep complain
++	 * about it early on.
++	 */
++	if (flags & DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT) {
++		might_sleep();
++		lockdep_assert_none_held_once();
++	}
++
+ 	*fence = drm_syncobj_fence_get(syncobj);
  
- 	vldb = afs_vl_lookup_vldb(volume->cell, key, idbuf, idsz);
- 	if (IS_ERR(vldb)) {
+ 	if (*fence) {
+@@ -889,6 +898,9 @@ static signed long drm_syncobj_array_wait_timeout(struct drm_syncobj **syncobjs,
+ 	uint64_t *points;
+ 	uint32_t signaled_count, i;
+ 
++	if (flags & DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT)
++		lockdep_assert_none_held_once();
++
+ 	points = kmalloc_array(count, sizeof(*points), GFP_KERNEL);
+ 	if (points == NULL)
+ 		return -ENOMEM;
+diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
+index b8a835fd611b2..15d92abb3f2d8 100644
+--- a/include/linux/lockdep.h
++++ b/include/linux/lockdep.h
+@@ -403,6 +403,10 @@ extern void lock_unpin_lock(struct lockdep_map *lock, struct pin_cookie);
+ 		WARN_ON_ONCE(debug_locks && !lockdep_is_held(l));	\
+ 	} while (0)
+ 
++#define lockdep_assert_none_held_once()	do {				\
++		WARN_ON_ONCE(debug_locks && current->lockdep_depth);	\
++	} while (0)
++
+ #define lockdep_recursing(tsk)	((tsk)->lockdep_recursion)
+ 
+ #define lockdep_pin_lock(l)	lock_pin_lock(&(l)->dep_map)
+@@ -479,6 +483,7 @@ struct lockdep_map { };
+ #define lockdep_assert_held_write(l)	do { (void)(l); } while (0)
+ #define lockdep_assert_held_read(l)		do { (void)(l); } while (0)
+ #define lockdep_assert_held_once(l)		do { (void)(l); } while (0)
++#define lockdep_assert_none_held_once()	do { } while (0)
+ 
+ #define lockdep_recursing(tsk)			(0)
+ 
 -- 
 2.43.0
 
