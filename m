@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C897586951B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:58:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E03D8695A5
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:03:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD353B31679
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 902C71C23C7E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:03:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E9F71419B4;
-	Tue, 27 Feb 2024 13:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD18B13B7A2;
+	Tue, 27 Feb 2024 14:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZrmNrnk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XBIY1KnA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9AE1419AD;
-	Tue, 27 Feb 2024 13:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6DC13B2BA;
+	Tue, 27 Feb 2024 14:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041887; cv=none; b=IEe/t/mbsMtO7IlUnUPYT9K80O6VIqf5Ak/dgbzNXF28Cextw5maaWztOw8ppGRsAbhLYziM7/zEKYmDX2aBrVrTSptjl5TWzp+WUWNeQezJfyuY2oM3ym/QwZS40+aVHkE7xpvaLek1iBo66wfdVFhNi1TiqvSIaTBo8K7I4NA=
+	t=1709042635; cv=none; b=WGAgo6lUPNIVbo0sA29rwtSo16X8AD1PYsjJ+woD3LKRMc6RxGbOYV6aTauxnqaSBd98adctu1hqvaJbh9y/qmiMyOUIHQBROgm+EcNtlI9ynfo+M55CmhrMtJ96MnpG8Kgm6kk0lRxK1Gyy4DlzU4wmbrxl/cZrY54eyxHYivU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041887; c=relaxed/simple;
-	bh=X0nlg/1Ug/VCW/xiebKE+PYyd30QP+0nvBWi14ubFaM=;
+	s=arc-20240116; t=1709042635; c=relaxed/simple;
+	bh=ce9HRv4AyoUo+k+hI5ODnjVjBb/x15ZwPk8RExUlTNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bu0LCe75Dcj/1o5rJ3g+rWnRqd81aD4pV8/FTGEyJZueSNce2bPzROIpBw1EaHVy2wN4d5MzHM+ANC353X9iQGkcZDxbG6AvjT8zs3BlR0PUC9G2hwVbg9NUVVkW+1CYTt8TipBUNyiR1+pMbVzvGtirr6lnAohQqWdb5+/e2BI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZrmNrnk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A4BC433F1;
-	Tue, 27 Feb 2024 13:51:26 +0000 (UTC)
+	 MIME-Version; b=kFXHxAoOaGY/2I5q3HE9v34MoOYIpjD3CkqgzoOP59TSkp9+PTLadZrkzw5PB+x/7280MzPa5rIaLLVIIeuNFXahJIicrPJVfw+cxeAGLHQFDvhkrPx0Km9i3eTacxKJM4npueZV2drGgdS7f6Pwl5pgbZPKYXrsW/9W7QkgEHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XBIY1KnA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A25FC433F1;
+	Tue, 27 Feb 2024 14:03:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041886;
-	bh=X0nlg/1Ug/VCW/xiebKE+PYyd30QP+0nvBWi14ubFaM=;
+	s=korg; t=1709042635;
+	bh=ce9HRv4AyoUo+k+hI5ODnjVjBb/x15ZwPk8RExUlTNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NZrmNrnkNayd/ATfsJ8/dY9oKfyAVWb6a6VK+IqNBcp3gC6t2kUQMhddlijBRRjHF
-	 DaTyGqgKSZyBqVxrCBBlHCEs8zgj20OpqflxmHowEkusfoVTDT9rNwhKtRN+QujmqA
-	 slcxVlLlC3ybEehGywOJOAmO4PVmfzc2D1sPBE48=
+	b=XBIY1KnAljrIeECeS3a6INzq577DxWYmjv9ZyrCEcujbWxQFAmnF0lwRIgVUsiZQD
+	 1/eGG1l6bjQ/u/MHGu/rHpFLgXnSHFl5bz+qqG8en3XygFp4h7TbPJMH+9JkNQ56nc
+	 79oBPG3HCbKMOkQgF4tkQzi5kWd+xSjmJnl4v3+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Lennert Buytenhek <kernel@wantstofly.org>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 104/299] LoongArch: Change acpi_core_pic[NR_CPUS] to acpi_core_pic[MAX_CORE_PIC]
+Subject: [PATCH 5.15 027/245] ahci: add 43-bit DMA address quirk for ASMedia ASM1061 controllers
 Date: Tue, 27 Feb 2024 14:23:35 +0100
-Message-ID: <20240227131629.232778688@linuxfoundation.org>
+Message-ID: <20240227131615.999317463@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +62,161 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Lennert Buytenhek <kernel@wantstofly.org>
 
-[ Upstream commit 4551b30525cf3d2f026b92401ffe241eb04dfebe ]
+[ Upstream commit 20730e9b277873deeb6637339edcba64468f3da3 ]
 
-With default config, the value of NR_CPUS is 64. When HW platform has
-more then 64 cpus, system will crash on these platforms. MAX_CORE_PIC
-is the maximum cpu number in MADT table (max physical number) which can
-exceed the supported maximum cpu number (NR_CPUS, max logical number),
-but kernel should not crash. Kernel should boot cpus with NR_CPUS, let
-the remainder cpus stay in BIOS.
+With one of the on-board ASM1061 AHCI controllers (1b21:0612) on an
+ASUSTeK Pro WS WRX80E-SAGE SE WIFI mainboard, a controller hang was
+observed that was immediately preceded by the following kernel
+messages:
 
-The potential crash reason is that the array acpi_core_pic[NR_CPUS] can
-be overflowed when parsing MADT table, and it is obvious that CORE_PIC
-should be corresponding to physical core rather than logical core, so it
-is better to define the array as acpi_core_pic[MAX_CORE_PIC].
+ahci 0000:28:00.0: Using 64-bit DMA addresses
+ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00000 flags=0x0000]
+ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00300 flags=0x0000]
+ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00380 flags=0x0000]
+ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00400 flags=0x0000]
+ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00680 flags=0x0000]
+ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00700 flags=0x0000]
 
-With the patch, system can boot up 64 vcpus with qemu parameter -smp 128,
-otherwise system will crash with the following message.
+The first message is produced by code in drivers/iommu/dma-iommu.c
+which is accompanied by the following comment that seems to apply:
 
-[    0.000000] CPU 0 Unable to handle kernel paging request at virtual address 0000420000004259, era == 90000000037a5f0c, ra == 90000000037a46ec
-[    0.000000] Oops[#1]:
-[    0.000000] CPU: 0 PID: 0 Comm: swapper Not tainted 6.8.0-rc2+ #192
-[    0.000000] Hardware name: QEMU QEMU Virtual Machine, BIOS unknown 2/2/2022
-[    0.000000] pc 90000000037a5f0c ra 90000000037a46ec tp 9000000003c90000 sp 9000000003c93d60
-[    0.000000] a0 0000000000000019 a1 9000000003d93bc0 a2 0000000000000000 a3 9000000003c93bd8
-[    0.000000] a4 9000000003c93a74 a5 9000000083c93a67 a6 9000000003c938f0 a7 0000000000000005
-[    0.000000] t0 0000420000004201 t1 0000000000000000 t2 0000000000000001 t3 0000000000000001
-[    0.000000] t4 0000000000000003 t5 0000000000000000 t6 0000000000000030 t7 0000000000000063
-[    0.000000] t8 0000000000000014 u0 ffffffffffffffff s9 0000000000000000 s0 9000000003caee98
-[    0.000000] s1 90000000041b0480 s2 9000000003c93da0 s3 9000000003c93d98 s4 9000000003c93d90
-[    0.000000] s5 9000000003caa000 s6 000000000a7fd000 s7 000000000f556b60 s8 000000000e0a4330
-[    0.000000]    ra: 90000000037a46ec platform_init+0x214/0x250
-[    0.000000]   ERA: 90000000037a5f0c efi_runtime_init+0x30/0x94
-[    0.000000]  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
-[    0.000000]  PRMD: 00000000 (PPLV0 -PIE -PWE)
-[    0.000000]  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
-[    0.000000]  ECFG: 00070800 (LIE=11 VS=7)
-[    0.000000] ESTAT: 00010000 [PIL] (IS= ECode=1 EsubCode=0)
-[    0.000000]  BADV: 0000420000004259
-[    0.000000]  PRID: 0014c010 (Loongson-64bit, Loongson-3A5000)
-[    0.000000] Modules linked in:
-[    0.000000] Process swapper (pid: 0, threadinfo=(____ptrval____), task=(____ptrval____))
-[    0.000000] Stack : 9000000003c93a14 9000000003800898 90000000041844f8 90000000037a46ec
-[    0.000000]         000000000a7fd000 0000000008290000 0000000000000000 0000000000000000
-[    0.000000]         0000000000000000 0000000000000000 00000000019d8000 000000000f556b60
-[    0.000000]         000000000a7fd000 000000000f556b08 9000000003ca7700 9000000003800000
-[    0.000000]         9000000003c93e50 9000000003800898 9000000003800108 90000000037a484c
-[    0.000000]         000000000e0a4330 000000000f556b60 000000000a7fd000 000000000f556b08
-[    0.000000]         9000000003ca7700 9000000004184000 0000000000200000 000000000e02b018
-[    0.000000]         000000000a7fd000 90000000037a0790 9000000003800108 0000000000000000
-[    0.000000]         0000000000000000 000000000e0a4330 000000000f556b60 000000000a7fd000
-[    0.000000]         000000000f556b08 000000000eaae298 000000000eaa5040 0000000000200000
-[    0.000000]         ...
-[    0.000000] Call Trace:
-[    0.000000] [<90000000037a5f0c>] efi_runtime_init+0x30/0x94
-[    0.000000] [<90000000037a46ec>] platform_init+0x214/0x250
-[    0.000000] [<90000000037a484c>] setup_arch+0x124/0x45c
-[    0.000000] [<90000000037a0790>] start_kernel+0x90/0x670
-[    0.000000] [<900000000378b0d8>] kernel_entry+0xd8/0xdc
+        /*
+         * Try to use all the 32-bit PCI addresses first. The original SAC vs.
+         * DAC reasoning loses relevance with PCIe, but enough hardware and
+         * firmware bugs are still lurking out there that it's safest not to
+         * venture into the 64-bit space until necessary.
+         *
+         * If your device goes wrong after seeing the notice then likely either
+         * its driver is not setting DMA masks accurately, the hardware has
+         * some inherent bug in handling >32-bit addresses, or not all the
+         * expected address bits are wired up between the device and the IOMMU.
+         */
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Asking the ASM1061 on a discrete PCIe card to DMA from I/O virtual
+address 0xffffffff00000000 produces the following I/O page faults:
+
+vfio-pci 0000:07:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0021 address=0x7ff00000000 flags=0x0010]
+vfio-pci 0000:07:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0021 address=0x7ff00000500 flags=0x0010]
+
+Note that the upper 21 bits of the logged DMA address are zero.  (When
+asking a different PCIe device in the same PCIe slot to DMA to the
+same I/O virtual address, we do see all the upper 32 bits of the DMA
+address as 1, so this is not an issue with the chipset or IOMMU
+configuration on the test system.)
+
+Also, hacking libahci to always set the upper 21 bits of all DMA
+addresses to 1 produces no discernible effect on the behavior of the
+ASM1061, and mkfs/mount/scrub/etc work as without this hack.
+
+This all strongly suggests that the ASM1061 has a 43 bit DMA address
+limit, and this commit therefore adds a quirk to deal with this limit.
+
+This issue probably applies to (some of) the other supported ASMedia
+parts as well, but we limit it to the PCI IDs known to refer to
+ASM1061 parts, as that's the only part we know for sure to be affected
+by this issue at this point.
+
+Link: https://lore.kernel.org/linux-ide/ZaZ2PIpEId-rl6jv@wantstofly.org/
+Signed-off-by: Lennert Buytenhek <kernel@wantstofly.org>
+[cassel: drop date from error messages in commit log]
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/acpi.h | 4 +++-
- arch/loongarch/kernel/acpi.c      | 4 +---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/ata/ahci.c | 29 +++++++++++++++++++++++------
+ drivers/ata/ahci.h |  1 +
+ 2 files changed, 24 insertions(+), 6 deletions(-)
 
-diff --git a/arch/loongarch/include/asm/acpi.h b/arch/loongarch/include/asm/acpi.h
-index 8de6c4b83a61a..49e29b29996f0 100644
---- a/arch/loongarch/include/asm/acpi.h
-+++ b/arch/loongarch/include/asm/acpi.h
-@@ -32,8 +32,10 @@ static inline bool acpi_has_cpu_in_madt(void)
- 	return true;
- }
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 56fcb1dec6af8..b0a8aac008bae 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -49,6 +49,7 @@ enum {
+ enum board_ids {
+ 	/* board IDs by feature in alphabetical order */
+ 	board_ahci,
++	board_ahci_43bit_dma,
+ 	board_ahci_ign_iferr,
+ 	board_ahci_low_power,
+ 	board_ahci_no_debounce_delay,
+@@ -129,6 +130,13 @@ static const struct ata_port_info ahci_port_info[] = {
+ 		.udma_mask	= ATA_UDMA6,
+ 		.port_ops	= &ahci_ops,
+ 	},
++	[board_ahci_43bit_dma] = {
++		AHCI_HFLAGS	(AHCI_HFLAG_43BIT_ONLY),
++		.flags		= AHCI_FLAG_COMMON,
++		.pio_mask	= ATA_PIO4,
++		.udma_mask	= ATA_UDMA6,
++		.port_ops	= &ahci_ops,
++	},
+ 	[board_ahci_ign_iferr] = {
+ 		AHCI_HFLAGS	(AHCI_HFLAG_IGN_IRQ_IF_ERR),
+ 		.flags		= AHCI_FLAG_COMMON,
+@@ -598,11 +606,11 @@ static const struct pci_device_id ahci_pci_tbl[] = {
+ 	{ PCI_VDEVICE(PROMISE, 0x3f20), board_ahci },	/* PDC42819 */
+ 	{ PCI_VDEVICE(PROMISE, 0x3781), board_ahci },   /* FastTrak TX8660 ahci-mode */
  
-+#define MAX_CORE_PIC 256
-+
- extern struct list_head acpi_wakeup_device_list;
--extern struct acpi_madt_core_pic acpi_core_pic[NR_CPUS];
-+extern struct acpi_madt_core_pic acpi_core_pic[MAX_CORE_PIC];
+-	/* Asmedia */
++	/* ASMedia */
+ 	{ PCI_VDEVICE(ASMEDIA, 0x0601), board_ahci },	/* ASM1060 */
+ 	{ PCI_VDEVICE(ASMEDIA, 0x0602), board_ahci },	/* ASM1060 */
+-	{ PCI_VDEVICE(ASMEDIA, 0x0611), board_ahci },	/* ASM1061 */
+-	{ PCI_VDEVICE(ASMEDIA, 0x0612), board_ahci },	/* ASM1062 */
++	{ PCI_VDEVICE(ASMEDIA, 0x0611), board_ahci_43bit_dma },	/* ASM1061 */
++	{ PCI_VDEVICE(ASMEDIA, 0x0612), board_ahci_43bit_dma },	/* ASM1061/1062 */
+ 	{ PCI_VDEVICE(ASMEDIA, 0x0621), board_ahci },   /* ASM1061R */
+ 	{ PCI_VDEVICE(ASMEDIA, 0x0622), board_ahci },   /* ASM1062R */
  
- extern int __init parse_acpi_topology(void);
+@@ -955,11 +963,20 @@ static int ahci_pci_device_resume(struct device *dev)
  
-diff --git a/arch/loongarch/kernel/acpi.c b/arch/loongarch/kernel/acpi.c
-index 8e00a754e5489..55d6a48c76a82 100644
---- a/arch/loongarch/kernel/acpi.c
-+++ b/arch/loongarch/kernel/acpi.c
-@@ -29,11 +29,9 @@ int disabled_cpus;
+ #endif /* CONFIG_PM */
  
- u64 acpi_saved_sp;
- 
--#define MAX_CORE_PIC 256
--
- #define PREFIX			"ACPI: "
- 
--struct acpi_madt_core_pic acpi_core_pic[NR_CPUS];
-+struct acpi_madt_core_pic acpi_core_pic[MAX_CORE_PIC];
- 
- void __init __iomem * __acpi_map_table(unsigned long phys, unsigned long size)
+-static int ahci_configure_dma_masks(struct pci_dev *pdev, int using_dac)
++static int ahci_configure_dma_masks(struct pci_dev *pdev,
++				    struct ahci_host_priv *hpriv)
  {
+-	const int dma_bits = using_dac ? 64 : 32;
++	int dma_bits;
+ 	int rc;
+ 
++	if (hpriv->cap & HOST_CAP_64) {
++		dma_bits = 64;
++		if (hpriv->flags & AHCI_HFLAG_43BIT_ONLY)
++			dma_bits = 43;
++	} else {
++		dma_bits = 32;
++	}
++
+ 	/*
+ 	 * If the device fixup already set the dma_mask to some non-standard
+ 	 * value, don't extend it here. This happens on STA2X11, for example.
+@@ -1937,7 +1954,7 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	ahci_gtf_filter_workaround(host);
+ 
+ 	/* initialize adapter */
+-	rc = ahci_configure_dma_masks(pdev, hpriv->cap & HOST_CAP_64);
++	rc = ahci_configure_dma_masks(pdev, hpriv);
+ 	if (rc)
+ 		return rc;
+ 
+diff --git a/drivers/ata/ahci.h b/drivers/ata/ahci.h
+index dcc2d92cf6b62..69557e602e2ea 100644
+--- a/drivers/ata/ahci.h
++++ b/drivers/ata/ahci.h
+@@ -244,6 +244,7 @@ enum {
+ 	AHCI_HFLAG_IGN_NOTSUPP_POWER_ON	= BIT(27), /* ignore -EOPNOTSUPP
+ 						      from phy_power_on() */
+ 	AHCI_HFLAG_NO_SXS		= BIT(28), /* SXS not supported */
++	AHCI_HFLAG_43BIT_ONLY		= BIT(29), /* 43bit DMA addr limit */
+ 
+ 	/* ap->flags bits */
+ 
 -- 
 2.43.0
 
