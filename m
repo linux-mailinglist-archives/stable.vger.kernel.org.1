@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFDB1869737
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:19:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A35C7869832
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:29:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A19A283B28
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:19:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E7AC294C3D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:29:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C54B1420DD;
-	Tue, 27 Feb 2024 14:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2AE7145324;
+	Tue, 27 Feb 2024 14:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O9o4pcZE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVc7h0j+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE75B13B797;
-	Tue, 27 Feb 2024 14:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9274F13DBBC;
+	Tue, 27 Feb 2024 14:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043545; cv=none; b=r2ISVrJwaoxZVe5Vo5cRMaXHSaqa5gmqB4b8U9nKOuLcJEuqPckb00iVfJ50osWp9cmAqN+q73CT6G42I8U7ux+oSty7Qm4z8JU609Mesy1dO6DUo94WstR5xM2mNEG+rfvRWF5/cToHPj56crDyyr9Of007afZlNwJzTAQDXxs=
+	t=1709044136; cv=none; b=DhlFO5PmFKGwb5FmCK1FmREKEd+kp7c2JEFAP4J7eOHO94wGfTosvoITX84WeHBCZIcuCn7+ZNfLLeue51aEgLJv6ViI4z40/JMb6gv/b6xOxx1cXFOK6xzmF1EDofsJ5ibeGQmOrC2omOa1w9skg5J2Gj4LjEu8Jxy0Nx8U+SE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043545; c=relaxed/simple;
-	bh=Oyvudb2gY4EXDN4EX/nOnfBevw6j1BrjZFKIM4AadaE=;
+	s=arc-20240116; t=1709044136; c=relaxed/simple;
+	bh=YL/b6ELszIvZE6cUDR1UuBhgiwfyRxrsKt5PWut5YVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HlQfzT43DF27F1LosTcPl3rANS14ngMy8krWd9PahFv6IT/cu5O4hLslTa5JeWWo5rSIqHyA6Wi+b+v1O1jh/7LErJudDogTT0rSCyA3Ekd+Urdabk5LVpkP9O32uITSlOFtXiz6oIm7qdU0qvegAsaqpE47ZlyIBr2lNGLS91w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O9o4pcZE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC8CC43390;
-	Tue, 27 Feb 2024 14:19:04 +0000 (UTC)
+	 MIME-Version; b=Z9T6PxCe8w26lJv+zjkssgRB8XEQ1KP7PwngmMpB4SmDyx4BpqHBCESuGKzjcDxSpsJkmD3PtBND5KG2M2fsMSQ86syJNSiWjqU8nUqXOob2O4GHDh3NtPxCiERIrxe6sS4Du2daN9zJ7BBAHKGUwekMD9+TD0DUYCJlP8I3ZbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVc7h0j+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1451BC433C7;
+	Tue, 27 Feb 2024 14:28:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043544;
-	bh=Oyvudb2gY4EXDN4EX/nOnfBevw6j1BrjZFKIM4AadaE=;
+	s=korg; t=1709044136;
+	bh=YL/b6ELszIvZE6cUDR1UuBhgiwfyRxrsKt5PWut5YVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O9o4pcZEkWX3+7a3xiHpub2jyijJtu+f7dCqCRivqx4kOEj56WXw3HN2V1PCNSILJ
-	 eFhEIHZocW6tJy8C4YZqWzirnvXk7Ju5FEQuSDVBqhGxX0Jzvm2rtVg4V1MiPMhZHT
-	 uWggy1nCGmk9OFCkuJkq5Mzc73lESVEpGUrJ3X7U=
+	b=aVc7h0j+z5gsmqk82dydcaQD7gH1dovD6bQ7JsyheB1GWrjd4dpJydlNLpww646v2
+	 pZNqG12Nqyk/AIhsCm5td0Lp5OaTFfaTpSXolLFmznIfj84xDUYg0wJTcIwXt5f87n
+	 HvN74VlmBMsDE7tWh+IwmrJw3Xn85DnXSXUOdOek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tobias Waldekranz <tobias@waldekranz.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Dan Carpenter <error27@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 147/195] net: bridge: switchdev: Ensure deferred event delivery on unoffload
+Subject: [PATCH 5.10 047/122] media: av7110: prevent underflow in write_ts_to_decoder()
 Date: Tue, 27 Feb 2024 14:26:48 +0100
-Message-ID: <20240227131615.275107720@linuxfoundation.org>
+Message-ID: <20240227131600.250568080@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tobias Waldekranz <tobias@waldekranz.com>
+From: Dan Carpenter <error27@gmail.com>
 
-[ Upstream commit f7a70d650b0b6b0134ccba763d672c8439d9f09b ]
+[ Upstream commit eed9496a0501357aa326ddd6b71408189ed872eb ]
 
-When unoffloading a device, it is important to ensure that all
-relevant deferred events are delivered to it before it disassociates
-itself from the bridge.
+The buf[4] value comes from the user via ts_play().  It is a value in
+the u8 range.  The final length we pass to av7110_ipack_instant_repack()
+is "len - (buf[4] + 1) - 4" so add a check to ensure that the length is
+not negative.  It's not clear that passing a negative len value does
+anything bad necessarily, but it's not best practice.
 
-Before this change, this was true for the normal case when a device
-maps 1:1 to a net_bridge_port, i.e.
+With the new bounds checking the "if (!len)" condition is no longer
+possible or required so remove that.
 
-   br0
-   /
-swp0
-
-When swp0 leaves br0, the call to switchdev_deferred_process() in
-del_nbp() makes sure to process any outstanding events while the
-device is still associated with the bridge.
-
-In the case when the association is indirect though, i.e. when the
-device is attached to the bridge via an intermediate device, like a
-LAG...
-
-    br0
-    /
-  lag0
-  /
-swp0
-
-...then detaching swp0 from lag0 does not cause any net_bridge_port to
-be deleted, so there was no guarantee that all events had been
-processed before the device disassociated itself from the bridge.
-
-Fix this by always synchronously processing all deferred events before
-signaling completion of unoffloading back to the driver.
-
-Fixes: 4e51bf44a03a ("net: bridge: move the switchdev object replay helpers to "push" mode")
-Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: fd46d16d602a ("V4L/DVB (11759): dvb-ttpci: Add TS replay capability")
+Signed-off-by: Dan Carpenter <error27@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_switchdev.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/media/pci/ttpci/av7110_av.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/bridge/br_switchdev.c b/net/bridge/br_switchdev.c
-index 65567d1c8b853..b61ef2dff7a4b 100644
---- a/net/bridge/br_switchdev.c
-+++ b/net/bridge/br_switchdev.c
-@@ -798,6 +798,16 @@ static void nbp_switchdev_unsync_objs(struct net_bridge_port *p,
- 	br_switchdev_mdb_replay(br_dev, dev, ctx, false, blocking_nb, NULL);
+diff --git a/drivers/media/pci/ttpci/av7110_av.c b/drivers/media/pci/ttpci/av7110_av.c
+index ea9f7d0058a21..e201d5a56bc65 100644
+--- a/drivers/media/pci/ttpci/av7110_av.c
++++ b/drivers/media/pci/ttpci/av7110_av.c
+@@ -822,10 +822,10 @@ static int write_ts_to_decoder(struct av7110 *av7110, int type, const u8 *buf, s
+ 		av7110_ipack_flush(ipack);
  
- 	br_switchdev_vlan_replay(br_dev, ctx, false, blocking_nb, NULL);
-+
-+	/* Make sure that the device leaving this bridge has seen all
-+	 * relevant events before it is disassociated. In the normal
-+	 * case, when the device is directly attached to the bridge,
-+	 * this is covered by del_nbp(). If the association was indirect
-+	 * however, e.g. via a team or bond, and the device is leaving
-+	 * that intermediate device, then the bridge port remains in
-+	 * place.
-+	 */
-+	switchdev_deferred_process();
- }
+ 	if (buf[3] & ADAPT_FIELD) {
++		if (buf[4] > len - 1 - 4)
++			return 0;
+ 		len -= buf[4] + 1;
+ 		buf += buf[4] + 1;
+-		if (!len)
+-			return 0;
+ 	}
  
- /* Let the bridge know that this port is offloaded, so that it can assign a
+ 	av7110_ipack_instant_repack(buf + 4, len - 4, ipack);
 -- 
 2.43.0
 
