@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-23975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37A73869238
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:33:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5401869214
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:32:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C458B24119
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:32:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 224FD1C25E00
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:32:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE7B91420A6;
-	Tue, 27 Feb 2024 13:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76FC21420A8;
+	Tue, 27 Feb 2024 13:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d1ORVnT9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PXttHzl2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2081419AE;
-	Tue, 27 Feb 2024 13:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3639F13B293;
+	Tue, 27 Feb 2024 13:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709040680; cv=none; b=hRvEhuCEWOSUh0g7BltrJjta/5sE9UMeaQmB+612jqS7z95i5FfioqmO1PMAJa4UrjD03g4fP2Qa7INne0cjU/BJ8gJdYWEwc7OqKWeeX8PvsfGkfj5Xqd9K8GCmg78tar18u1epzE84N6WgMbdojaGKPkI3k1k8vxQhDJQi+Dk=
+	t=1709040686; cv=none; b=P45JoBpcXkeaxBksQ0kR9ZqiDwIuMtV6/aMVgHBfGQujlZAaNxmeOYOV2K68FWb+e1GZ/pYVLloKCK6+jBDDnPxX+u5SAQMT4RFSu1TzCtnwxWxWMYoeKVVjXloDlLDGBv4wyzoWbB6zeoyc7UPdndbvivmsXck+Pv9ItUwVFE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709040680; c=relaxed/simple;
-	bh=6potrDcIGso/aUjKqj5yxFh0av21AYaJvlLCckl2JrQ=;
+	s=arc-20240116; t=1709040686; c=relaxed/simple;
+	bh=l9EFyffW9ECfyHx2bAZKiDAO5bLMKtlms7H/Ll9A0fY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WScEJr6AXHrTVhLS1OFnVcWxxbgzCaZoKBfvrW260QnLRzwZDxUFf3RF4iQAsxMhQ2eRCR93fjYt8HuQXxofRdFKBfNNA9Kbafk+vLqSSAlEhvCtaLvaBwXNgKtPwTOTIyoe6nyL8NG1S2WyKzAoSiKQta7Dzq0Nv0ULT+4Rzmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d1ORVnT9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EBA2C433C7;
-	Tue, 27 Feb 2024 13:31:20 +0000 (UTC)
+	 MIME-Version; b=ghiYdkmL8xDfwB4rqlvLL4lE5i8DDsw0GhLvL312C1aeGXn8ot9XnEwr/lzs+eTdR4ky7BPyHp+g4XReoOXw8UHCR0Jy25kBbp6/2k/+CI0KojTS7hoVXzs9eKix8Fwfd6JrfpUwuON/mmT/IwyglJ1P+yHeOfydBlpYS5DkgmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PXttHzl2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B73FBC433C7;
+	Tue, 27 Feb 2024 13:31:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709040680;
-	bh=6potrDcIGso/aUjKqj5yxFh0av21AYaJvlLCckl2JrQ=;
+	s=korg; t=1709040686;
+	bh=l9EFyffW9ECfyHx2bAZKiDAO5bLMKtlms7H/Ll9A0fY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d1ORVnT9snijEno8Yqur5FkeVliro19lZl2dCaVajFmYt4cOSk1l0bc6CNZcEN4Bk
-	 qBrnr88rWazcVDy/M8glGzB1RPWdSHi202gAl86H4ijSrbX0L9aDug9GZS1z9l+Lik
-	 mTEt9qyJZWKoYg3PD8W+9HHP3MHzWVlRaIJlRfGE=
+	b=PXttHzl2Ey3ZDN0PWCP5lPOoUH4pBQA/fcaHWrHsUscFpR7WiIhdf49eDmbW1fij7
+	 +Aj9zx9H/gHl2uMnQd5HpROf9KQ10U+85dsLjuO4G6P3T4i6SeDnUfjwy2C5HzgHlO
+	 Ur0QcrZtJqIQP/kv3HJ1PUdRkdlGwTt5Xnt0+tY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
+	Paulo Alcantara <pc@manguebit.com>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 072/334] cifs: do not search for channel if server is terminating
-Date: Tue, 27 Feb 2024 14:18:50 +0100
-Message-ID: <20240227131632.871577992@linuxfoundation.org>
+Subject: [PATCH 6.7 073/334] smb: client: increase number of PDUs allowed in a compound request
+Date: Tue, 27 Feb 2024 14:18:51 +0100
+Message-ID: <20240227131632.901100435@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
 References: <20240227131630.636392135@linuxfoundation.org>
@@ -66,67 +66,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit 88675b22d34e6e815ad4bde09c590ccb2d50c59d ]
+[ Upstream commit 11d4d1dba3315f73d2d1d386f5bf4811a8241d45 ]
 
-In order to scale down the channels, the following sequence
-of operations happen:
-1. server struct is marked for terminate
-2. the channel is deallocated in the ses->chans array
-3. at a later point the cifsd thread actually terminates the server
+With the introduction of SMB2_OP_QUERY_WSL_EA, the client may now send
+5 commands in a single compound request in order to query xattrs from
+potential WSL reparse points, which should be fine as we currently
+allow up to 5 PDUs in a single compound request.  However, if
+encryption is enabled (e.g. 'seal' mount option) or enforced by the
+server, current MAX_COMPOUND(5) won't be enough as we require an extra
+PDU for the transform header.
 
-Between 2 and 3, there can be calls to find the channel for
-a server struct. When that happens, there can be an ugly warning
-that's logged. But this is expected.
+Fix this by increasing MAX_COMPOUND to 7 and, while we're at it, add
+an WARN_ON_ONCE() and return -EIO instead of -ENOMEM in case we
+attempt to send a compound request that couldn't include the extra
+transform header.
 
-So this change does two things:
-1. in cifs_ses_get_chan_index, if server->terminate is set, return
-2. always make sure server->terminate is set with chan_lock held
-
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Paulo Alcantara <pc@manguebit.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/sess.c    | 4 ++++
- fs/smb/client/smb2pdu.c | 2 +-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ fs/smb/client/cifsglob.h  | 2 +-
+ fs/smb/client/transport.c | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
-index a1b9734564711..3b07f54a8567a 100644
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -75,6 +75,10 @@ cifs_ses_get_chan_index(struct cifs_ses *ses,
- {
- 	unsigned int i;
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index dcc41fe33b705..462554917e5a1 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -82,7 +82,7 @@
+ #define SMB_INTERFACE_POLL_INTERVAL	600
  
-+	/* if the channel is waiting for termination */
-+	if (server->terminate)
-+		return CIFS_INVAL_CHAN_INDEX;
-+
- 	for (i = 0; i < ses->chan_count; i++) {
- 		if (ses->chans[i].server == server)
- 			return i;
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index ce2d28537bc8a..97fc2f85b429d 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -178,6 +178,7 @@ cifs_chan_skip_or_disable(struct cifs_ses *ses,
- 		}
+ /* maximum number of PDUs in one compound */
+-#define MAX_COMPOUND 5
++#define MAX_COMPOUND 7
  
- 		ses->chans[chan_index].server = NULL;
-+		server->terminate = true;
- 		spin_unlock(&ses->chan_lock);
+ /*
+  * Default number of credits to keep available for SMB3.
+diff --git a/fs/smb/client/transport.c b/fs/smb/client/transport.c
+index e00278fcfa4fa..994d701934329 100644
+--- a/fs/smb/client/transport.c
++++ b/fs/smb/client/transport.c
+@@ -435,8 +435,8 @@ smb_send_rqst(struct TCP_Server_Info *server, int num_rqst,
+ 	if (!(flags & CIFS_TRANSFORM_REQ))
+ 		return __smb_send_rqst(server, num_rqst, rqst);
  
- 		/*
-@@ -188,7 +189,6 @@ cifs_chan_skip_or_disable(struct cifs_ses *ses,
- 		 */
- 		cifs_put_tcp_session(server, from_reconnect);
+-	if (num_rqst > MAX_COMPOUND - 1)
+-		return -ENOMEM;
++	if (WARN_ON_ONCE(num_rqst > MAX_COMPOUND - 1))
++		return -EIO;
  
--		server->terminate = true;
- 		cifs_signal_cifsd_for_reconnect(server, false);
- 
- 		/* mark primary server as needing reconnect */
+ 	if (!server->ops->init_transform_rq) {
+ 		cifs_server_dbg(VFS, "Encryption requested but transform callback is missing\n");
 -- 
 2.43.0
 
