@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-25151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14C2A8697F4
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:27:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A09038695C0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:05:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E4891F2C2A6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:27:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFAF4B24D7A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:01:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D578314532D;
-	Tue, 27 Feb 2024 14:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D5113B2B4;
+	Tue, 27 Feb 2024 14:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fZGD+t0Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fpwn01bY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864F813B29C;
-	Tue, 27 Feb 2024 14:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF48141995;
+	Tue, 27 Feb 2024 14:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044006; cv=none; b=GplTOw34SzYQylEKFl0BIf/bn8S6v1GlqTgpnhd7LOb08DW4Kj8G8sWzcPmR1jadkZiu8bo/kG2FUp1ODY7CZuoIn3CBvgY7xa2TmkKjfuuMjYqNHWkMYAxjILugPVnplz9ewExCkPyrFxsUYwj3zEmEL/bj6+AtnZ5VCZxKbUI=
+	t=1709042457; cv=none; b=mhT70L87TU1rK3FolCArTeEexGHwxrNZv+S4JoCiNNSwfrTk9hVoWpHmfe7HQiCJWo6+yxvtZzVhsIuYxXcWfQjWYzLSZKK309gxhzmoG4+OG/F7OLuUyBScC/douVjChpiGozgMlwcUKTM/8kvnTcX9cerAp0TRriJpbTdLb5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044006; c=relaxed/simple;
-	bh=Gbk+rw2JcJBKOiS6LFXXCbGyXVZPgrKHFfoXA9ganbE=;
+	s=arc-20240116; t=1709042457; c=relaxed/simple;
+	bh=EWoehuKT35+4Gtlv7o0yvZEDv2zEi/JwNc5pzXeUAAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NHKA9tRdy5WlHCbmI+OtWxZvpnKpNsrymNchKLvrG2zQ2BMLwOH6l4huX7HmTqOL8cu7ozpzc5UrQOsdpzQJeUeKaqx41YSFhBUnTJye3GMSw0UnW9SSaaHftGlpikGilIiWNAGs+d99vOVho/xoyxwPLAlUfWntS/nRHUPbVnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fZGD+t0Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09554C433C7;
-	Tue, 27 Feb 2024 14:26:45 +0000 (UTC)
+	 MIME-Version; b=KhOTyC57sa1Gu9k8Lc0v73eRk440dPiWi0igwlpvexQVuw1AqXyP9Imld2r3vRGd2Nb0gmPaCTSmCno9LB/gCNSsWGyvjqj8sEFsO9pyvI10ppTKWD1jqk0cKEqx+JZx1dW9QkiqpU1zg245uB8QrG3jASfFZYii1XpX+bNSUKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fpwn01bY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE1ACC433F1;
+	Tue, 27 Feb 2024 14:00:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044006;
-	bh=Gbk+rw2JcJBKOiS6LFXXCbGyXVZPgrKHFfoXA9ganbE=;
+	s=korg; t=1709042457;
+	bh=EWoehuKT35+4Gtlv7o0yvZEDv2zEi/JwNc5pzXeUAAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fZGD+t0Y2zFg1uYf9I9/sBijkBl7Y08ClH5RKCTFj12IbOT1TE1nzPT5G50KZNczn
-	 neUzK5eGU9cpsqj0FbP2gLyPU+Luu5FPGegr8544sOtxKIwWqcGC9K/oTDjLaygSoS
-	 VQ/8+IIB5m945u6e9orRZGUOCs9EQd+eUR3il4L8=
+	b=fpwn01bY0u+oeBHbo7NaLpEedcUJST0/7ne8u/P4C0M2ibnRJHG6wjABddKgG6iVQ
+	 2IIVZYusfe3mBfxc0XoVJ+5Ta/IEtLibjQr6drqpItejq3VmmEpeYtvljZmNsJmVuv
+	 tu/bDUGQQy6deAOhWmeYj+7hfLX9kUhUyVQhiBNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Mark Brown <broonie@kernel.org>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 028/122] spi: sh-msiof: avoid integer overflow in constants
+Subject: [PATCH 6.6 278/299] tools: ynl: dont leak mcast_groups on init error
 Date: Tue, 27 Feb 2024 14:26:29 +0100
-Message-ID: <20240227131559.627671897@linuxfoundation.org>
+Message-ID: <20240227131634.627970542@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 6500ad28fd5d67d5ca0fee9da73c463090842440 ]
+[ Upstream commit 5d78b73e851455d525a064f3b042b29fdc0c1a4a ]
 
-cppcheck rightfully warned:
+Make sure to free the already-parsed mcast_groups if
+we don't get an ack from the kernel when reading family info.
+This is part of the ynl_sock_create() error path, so we won't
+get a call to ynl_sock_destroy() to free them later.
 
- drivers/spi/spi-sh-msiof.c:792:28: warning: Signed integer overflow for expression '7<<29'. [integerOverflow]
- sh_msiof_write(p, SIFCTR, SIFCTR_TFWM_1 | SIFCTR_RFWM_1);
-
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://msgid.link/r/20240130094053.10672-1-wsa+renesas@sang-engineering.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 86878f14d71a ("tools: ynl: user space helpers")
+Acked-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Link: https://lore.kernel.org/r/20240220161112.2735195-3-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-sh-msiof.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ tools/net/ynl/lib/ynl.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 35d30378256f6..12fd02f92e37b 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -137,14 +137,14 @@ struct sh_msiof_spi_priv {
+diff --git a/tools/net/ynl/lib/ynl.c b/tools/net/ynl/lib/ynl.c
+index 0a7fe6a13f7b9..11a7a889d279c 100644
+--- a/tools/net/ynl/lib/ynl.c
++++ b/tools/net/ynl/lib/ynl.c
+@@ -572,7 +572,13 @@ static int ynl_sock_read_family(struct ynl_sock *ys, const char *family_name)
+ 		return err;
+ 	}
  
- /* SIFCTR */
- #define SIFCTR_TFWM_MASK	GENMASK(31, 29)	/* Transmit FIFO Watermark */
--#define SIFCTR_TFWM_64		(0 << 29)	/*  Transfer Request when 64 empty stages */
--#define SIFCTR_TFWM_32		(1 << 29)	/*  Transfer Request when 32 empty stages */
--#define SIFCTR_TFWM_24		(2 << 29)	/*  Transfer Request when 24 empty stages */
--#define SIFCTR_TFWM_16		(3 << 29)	/*  Transfer Request when 16 empty stages */
--#define SIFCTR_TFWM_12		(4 << 29)	/*  Transfer Request when 12 empty stages */
--#define SIFCTR_TFWM_8		(5 << 29)	/*  Transfer Request when 8 empty stages */
--#define SIFCTR_TFWM_4		(6 << 29)	/*  Transfer Request when 4 empty stages */
--#define SIFCTR_TFWM_1		(7 << 29)	/*  Transfer Request when 1 empty stage */
-+#define SIFCTR_TFWM_64		(0UL << 29)	/*  Transfer Request when 64 empty stages */
-+#define SIFCTR_TFWM_32		(1UL << 29)	/*  Transfer Request when 32 empty stages */
-+#define SIFCTR_TFWM_24		(2UL << 29)	/*  Transfer Request when 24 empty stages */
-+#define SIFCTR_TFWM_16		(3UL << 29)	/*  Transfer Request when 16 empty stages */
-+#define SIFCTR_TFWM_12		(4UL << 29)	/*  Transfer Request when 12 empty stages */
-+#define SIFCTR_TFWM_8		(5UL << 29)	/*  Transfer Request when 8 empty stages */
-+#define SIFCTR_TFWM_4		(6UL << 29)	/*  Transfer Request when 4 empty stages */
-+#define SIFCTR_TFWM_1		(7UL << 29)	/*  Transfer Request when 1 empty stage */
- #define SIFCTR_TFUA_MASK	GENMASK(26, 20) /* Transmit FIFO Usable Area */
- #define SIFCTR_TFUA_SHIFT	20
- #define SIFCTR_TFUA(i)		((i) << SIFCTR_TFUA_SHIFT)
+-	return ynl_recv_ack(ys, err);
++	err = ynl_recv_ack(ys, err);
++	if (err < 0) {
++		free(ys->mcast_groups);
++		return err;
++	}
++
++	return 0;
+ }
+ 
+ struct ynl_sock *
 -- 
 2.43.0
 
