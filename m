@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-24862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D0588696A7
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:14:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21D0A86949D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:55:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96789B28FFC
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:14:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50EE31C24C99
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:55:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92EAD145328;
-	Tue, 27 Feb 2024 14:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 465381419B5;
+	Tue, 27 Feb 2024 13:54:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqtVvOAo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FqfAPHej"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF951448D7;
-	Tue, 27 Feb 2024 14:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02BAE1419AA;
+	Tue, 27 Feb 2024 13:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043194; cv=none; b=BwtZ4jzenKh0/AR0FwZq3PtUtx/9yhfVOoKVBYFa8H7eLOCE1OQiAvjcj95cAi9K+t0/JI3VHoCZbDMcPRQ+egO6c0IlTXrb6P9LJJB6a9PQtSI0mHArYC9XvSP0jqbFIMRiOfUY6WGEpcJHSEIrZAZ5Lw0EJbMJ3cWOH/JhO30=
+	t=1709042083; cv=none; b=En/l0tYMHQIdO36D4BS34mvrr/muV9EXXVNydsU0BdlE1IZuK/BnSWtlSQ1SZ1R75+Jh1cEQF/DSVzk6wf7is94yPQR7YFRNCAChmwLmS3tBQiTJQqjF52/1QOP3Ri0BisS/vs2vZV68Cj5SmULf3jht4d7y8MVolOfZiYTyC9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043194; c=relaxed/simple;
-	bh=S1AQO6PtNN58ohKfLgZcCN9xMzQAildHzfDiacNK59c=;
+	s=arc-20240116; t=1709042083; c=relaxed/simple;
+	bh=sxE8eBL6e85fipFV6VEbVkYJk+Xl9n0VNrbyrQaQcvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b0Fvc6tmB0KLSl9NxZEh/yJo4v5ZpGqrdeFo3e5fdJUqzfa+d4K8tU6ArERAwzWsXRRACUA3mibFOpgedTht4sITvsNaEdJiQGmwF4qkngvvAuaJKSO43jKkGXssVHr11oqQ3yyck5pEjlWxiysyyCKhdxP8uaxZRNW/RC2dpvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VqtVvOAo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9012C433C7;
-	Tue, 27 Feb 2024 14:13:13 +0000 (UTC)
+	 MIME-Version; b=u7GKHbIdA8Kpgc2Wvq9PgHDGJvTQjgQrB+Psw0qUbkckSLK2UWWxqmNPoHm3a2t4eNcvsAN8Um/iViBxLGG0sCvk8tW0UQOdRh5qXz7z8UHNxQTPw3mv9trgGv3HZIbxuytOOj3xgOcgxNt3mmOfoOK2w/p2MSO9wNRi1o+3qaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FqfAPHej; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25EA8C433F1;
+	Tue, 27 Feb 2024 13:54:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043194;
-	bh=S1AQO6PtNN58ohKfLgZcCN9xMzQAildHzfDiacNK59c=;
+	s=korg; t=1709042082;
+	bh=sxE8eBL6e85fipFV6VEbVkYJk+Xl9n0VNrbyrQaQcvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VqtVvOAoKBUcBT9bR6MMCCqF8TdDcAWmQIPX5qS0dFhNzhaLQZ5Wi35JQRBubRy9c
-	 dwzbb8wGqG2C2Cp4iCsHZEVQ6r5CrppMf4WbOFdSXJxoKQoCo2t9glWxbzjf31B8kx
-	 f+smNlTNfQSiYJiD9tyeEYq1moeh3nQQXxSNegYc=
+	b=FqfAPHejxMHMJgbISpab77e4sqYV3TgNCb/JtxDzbBMZNVKIml5tE6QLZjmofPv/0
+	 rBQZ/Gw4Ls5cT+8vTgwwTi+41RthJhv/z6yfDkPqxietSSlOmFM6IkQJOMM2ZAQj0t
+	 uHT81dDTQ8BCeIZTiuGtVhihp7C7KeJ2dEu80ClU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maksim Kiselev <bigunclemax@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 022/195] aoe: avoid potential deadlock at set_capacity
+	Chen Jun <chenjun102@huawei.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.6 172/299] irqchip/mbigen: Dont use bus_get_dev_root() to find the parent
 Date: Tue, 27 Feb 2024 14:24:43 +0100
-Message-ID: <20240227131611.125890659@linuxfoundation.org>
+Message-ID: <20240227131631.378115914@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +61,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maksim Kiselev <bigunclemax@gmail.com>
+From: Chen Jun <chenjun102@huawei.com>
 
-[ Upstream commit e169bd4fb2b36c4b2bee63c35c740c85daeb2e86 ]
+commit fb33a46cd75e18773dd5a414744507d84ae90870 upstream.
 
-Move set_capacity() outside of the section procected by (&d->lock).
-To avoid possible interrupt unsafe locking scenario:
+bus_get_dev_root() returns sp->dev_root which is set in subsys_register(),
+but subsys_register() is not called by platform_bus_init().
 
-        CPU0                    CPU1
-        ----                    ----
-[1] lock(&bdev->bd_size_lock);
-                                local_irq_disable();
-                            [2] lock(&d->lock);
-                            [3] lock(&bdev->bd_size_lock);
-   <Interrupt>
-[4]  lock(&d->lock);
+Therefor for the platform_bus_type, bus_get_dev_root() always returns NULL.
+This makes mbigen_of_create_domain() always return -ENODEV.
 
-  *** DEADLOCK ***
+Don't try to retrieve the parent via bus_get_dev_root() and
+unconditionally hand a NULL pointer to of_platform_device_create() to
+fix this.
 
-Where [1](&bdev->bd_size_lock) hold by zram_add()->set_capacity().
-[2]lock(&d->lock) hold by aoeblk_gdalloc(). And aoeblk_gdalloc()
-is trying to acquire [3](&bdev->bd_size_lock) at set_capacity() call.
-In this situation an attempt to acquire [4]lock(&d->lock) from
-aoecmd_cfg_rsp() will lead to deadlock.
-
-So the simplest solution is breaking lock dependency
-[2](&d->lock) -> [3](&bdev->bd_size_lock) by moving set_capacity()
-outside.
-
-Signed-off-by: Maksim Kiselev <bigunclemax@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20240124072436.3745720-2-bigunclemax@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fea087fc291b ("irqchip/mbigen: move to use bus_get_dev_root()")
+Signed-off-by: Chen Jun <chenjun102@huawei.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240220111429.110666-1-chenjun102@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/aoe/aoeblk.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/irqchip/irq-mbigen.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/block/aoe/aoeblk.c b/drivers/block/aoe/aoeblk.c
-index 128722cf6c3ca..827802e418dd3 100644
---- a/drivers/block/aoe/aoeblk.c
-+++ b/drivers/block/aoe/aoeblk.c
-@@ -333,6 +333,7 @@ aoeblk_gdalloc(void *vp)
- 	struct gendisk *gd;
- 	mempool_t *mp;
- 	struct blk_mq_tag_set *set;
-+	sector_t ssize;
- 	ulong flags;
- 	int late = 0;
- 	int err;
-@@ -395,7 +396,7 @@ aoeblk_gdalloc(void *vp)
- 	gd->minors = AOE_PARTITIONS;
- 	gd->fops = &aoe_bdops;
- 	gd->private_data = d;
--	set_capacity(gd, d->ssize);
-+	ssize = d->ssize;
- 	snprintf(gd->disk_name, sizeof gd->disk_name, "etherd/e%ld.%d",
- 		d->aoemajor, d->aoeminor);
+diff --git a/drivers/irqchip/irq-mbigen.c b/drivers/irqchip/irq-mbigen.c
+index 5101a3fb11df..58881d313979 100644
+--- a/drivers/irqchip/irq-mbigen.c
++++ b/drivers/irqchip/irq-mbigen.c
+@@ -235,22 +235,17 @@ static const struct irq_domain_ops mbigen_domain_ops = {
+ static int mbigen_of_create_domain(struct platform_device *pdev,
+ 				   struct mbigen_device *mgn_chip)
+ {
+-	struct device *parent;
+ 	struct platform_device *child;
+ 	struct irq_domain *domain;
+ 	struct device_node *np;
+ 	u32 num_pins;
+ 	int ret = 0;
  
-@@ -404,6 +405,8 @@ aoeblk_gdalloc(void *vp)
+-	parent = bus_get_dev_root(&platform_bus_type);
+-	if (!parent)
+-		return -ENODEV;
+-
+ 	for_each_child_of_node(pdev->dev.of_node, np) {
+ 		if (!of_property_read_bool(np, "interrupt-controller"))
+ 			continue;
  
- 	spin_unlock_irqrestore(&d->lock, flags);
+-		child = of_platform_device_create(np, NULL, parent);
++		child = of_platform_device_create(np, NULL, NULL);
+ 		if (!child) {
+ 			ret = -ENOMEM;
+ 			break;
+@@ -273,7 +268,6 @@ static int mbigen_of_create_domain(struct platform_device *pdev,
+ 		}
+ 	}
  
-+	set_capacity(gd, ssize);
-+
- 	err = device_add_disk(NULL, gd, aoe_attr_groups);
- 	if (err)
- 		goto out_disk_cleanup;
+-	put_device(parent);
+ 	if (ret)
+ 		of_node_put(np);
+ 
 -- 
-2.43.0
+2.44.0
 
 
 
