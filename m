@@ -1,60 +1,54 @@
-Return-Path: <stable+bounces-25030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A25C869769
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:21:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C065869844
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:31:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04EC7284850
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:21:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94DED1C2225B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E1513B798;
-	Tue, 27 Feb 2024 14:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F991474AA;
+	Tue, 27 Feb 2024 14:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JBGXBGKA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZi5W3za"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D750F13B2B4;
-	Tue, 27 Feb 2024 14:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022D4146E8A;
+	Tue, 27 Feb 2024 14:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043660; cv=none; b=t6EdIU/oj/Qu1X36bLYfG6J9KT4Sef2FFl+wMwqukbwknNfBhmHMbF4qhv2PawOu2ZSB/ArWP/Gy7WCtB2IXQe7S8HvJ6B/1j8CM+mf4Nm+gncCmg9EBWdLP7K39kblOX3NM1MlWkFEqh44BWsRo0Zmcul7SQQ4dRTl6WxSa2lE=
+	t=1709044170; cv=none; b=jBgDGOAYaXDC87uF1C63TbLctQs4FMiGAdSRyu2T5uVjqyMAvEWwPkPuvNv7fpu/UgfK/dWQbVLRsSu0OPJXLmFYzpMyJ1XUJ6W7e1j+6YElFYFl5e5jxr5fAvF/jlpYkI7ogpOVzEsYR6ATewLvsTLscezyDJqq1Jw/KNRGfFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043660; c=relaxed/simple;
-	bh=K/LRQd2In2ISymX8pyARv9VB7RV1fGFI29kBNxYqSiU=;
+	s=arc-20240116; t=1709044170; c=relaxed/simple;
+	bh=7fgr7qrCdtDhMdpwvl11pc5cdhIW4RKzcywWv4z7yYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EBJ2GFQZy3OxpV6qgnY17R97rhyTKKVQLNdEE6nmwu/yY+eJkcFJl/kh8+2VZNZc28b4pHKTZYEZziis+7lkbtS7xzZhwklgLsozV8Eg17q8oomV0Md1IK3MuzEIwkmMJn+yku7t+5iHsFL1pyssDjwpGJ/MaA/l0cwBrpPmOxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JBGXBGKA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E0DC433F1;
-	Tue, 27 Feb 2024 14:21:00 +0000 (UTC)
+	 MIME-Version; b=T0bAaLWrFr2HYenaMvSW4aE/dyTF/uSXXJ4gDfw7sdrngaf8uq0o7CQO1rKiQHv09xiQBAi1PAifyFd9JVOcDgyfSRwbQn/zeLL8Jm4KWxunOWz2DT3K8Udc7iJtzyQYvZoZOphJwe04JE5r9Qn9luiOKPIV8qwaUS/wU4567iU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZi5W3za; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85508C433C7;
+	Tue, 27 Feb 2024 14:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043660;
-	bh=K/LRQd2In2ISymX8pyARv9VB7RV1fGFI29kBNxYqSiU=;
+	s=korg; t=1709044169;
+	bh=7fgr7qrCdtDhMdpwvl11pc5cdhIW4RKzcywWv4z7yYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JBGXBGKA+HAR10B7e7cmHqY8I1Q/J7O8B7pPtyjzAAMq5cLGTfSoN2aJHZxJkiJOW
-	 2oh4ruVF+fZmwtULzld9BtfHxCOMsXTL+zeC1kI+hEJgv9Z9/ofqPBi3xZ3shn0s40
-	 IYxwVAmpzmjrUHjOiEZ5Aw38LEA1ue0Ac79mqpqU=
+	b=pZi5W3zaM55HKAMr5HqPhPoAj2EXD5IJtoQuCloXML/F4ARFbWcBSsyBoVgTcIdkj
+	 Jq5miRPtRjhIp2Dv12LxYZyZXNYDq40ybk84DxxJNidrLUSYw0gSJh9wunmGN9VajG
+	 d7Qr1fcFOniXN1ibUjaSMmnO0zd2rYREzQOxRPII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
-	Christoph Hellwig <hch@lst.de>,
-	Avi Kivity <avi@scylladb.com>,
-	Sandeep Dhavale <dhavale@google.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.1 188/195] fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via libaio
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 5.10 088/122] Revert "x86/alternative: Make custom return thunk unconditional"
 Date: Tue, 27 Feb 2024 14:27:29 +0100
-Message-ID: <20240227131616.612391729@linuxfoundation.org>
+Message-ID: <20240227131601.585873985@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,89 +60,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-commit b820de741ae48ccf50dd95e297889c286ff4f760 upstream.
+This reverts commit 08f7cfd44f77b2796582bc26164fdef44dd33b6c.
 
-If kiocb_set_cancel_fn() is called for I/O submitted via io_uring, the
-following kernel warning appears:
+Revert the backport of upstream commit:
 
-WARNING: CPU: 3 PID: 368 at fs/aio.c:598 kiocb_set_cancel_fn+0x9c/0xa8
-Call trace:
- kiocb_set_cancel_fn+0x9c/0xa8
- ffs_epfile_read_iter+0x144/0x1d0
- io_read+0x19c/0x498
- io_issue_sqe+0x118/0x27c
- io_submit_sqes+0x25c/0x5fc
- __arm64_sys_io_uring_enter+0x104/0xab0
- invoke_syscall+0x58/0x11c
- el0_svc_common+0xb4/0xf4
- do_el0_svc+0x2c/0xb0
- el0_svc+0x2c/0xa4
- el0t_64_sync_handler+0x68/0xb4
- el0t_64_sync+0x1a4/0x1a8
+  095b8303f383 ("x86/alternative: Make custom return thunk unconditional")
 
-Fix this by setting the IOCB_AIO_RW flag for read and write I/O that is
-submitted by libaio.
+in order to backport the full version now that
 
-Suggested-by: Jens Axboe <axboe@kernel.dk>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Avi Kivity <avi@scylladb.com>
-Cc: Sandeep Dhavale <dhavale@google.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: stable@vger.kernel.org
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20240215204739.2677806-2-bvanassche@acm.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+  770ae1b70952 ("x86/returnthunk: Allow different return thunks")
+
+has been backported.
+
+Revert it here so that the build breakage is kept at minimum.
+
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/aio.c           |    9 ++++++++-
- include/linux/fs.h |    2 ++
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/nospec-branch.h |    4 ----
+ arch/x86/kernel/cpu/bugs.c           |    4 ----
+ 2 files changed, 8 deletions(-)
 
---- a/fs/aio.c
-+++ b/fs/aio.c
-@@ -595,6 +595,13 @@ void kiocb_set_cancel_fn(struct kiocb *i
- 	struct kioctx *ctx = req->ki_ctx;
- 	unsigned long flags;
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -190,11 +190,7 @@
+ 	_ASM_PTR " 999b\n\t"					\
+ 	".popsection\n\t"
  
-+	/*
-+	 * kiocb didn't come from aio or is neither a read nor a write, hence
-+	 * ignore it.
-+	 */
-+	if (!(iocb->ki_flags & IOCB_AIO_RW))
-+		return;
-+
- 	if (WARN_ON_ONCE(!list_empty(&req->ki_list)))
- 		return;
+-#ifdef CONFIG_RETHUNK
+ extern void __x86_return_thunk(void);
+-#else
+-static inline void __x86_return_thunk(void) {}
+-#endif
  
-@@ -1476,7 +1483,7 @@ static int aio_prep_rw(struct kiocb *req
- 	req->ki_complete = aio_complete_rw;
- 	req->private = NULL;
- 	req->ki_pos = iocb->aio_offset;
--	req->ki_flags = req->ki_filp->f_iocb_flags;
-+	req->ki_flags = req->ki_filp->f_iocb_flags | IOCB_AIO_RW;
- 	if (iocb->aio_flags & IOCB_FLAG_RESFD)
- 		req->ki_flags |= IOCB_EVENTFD;
- 	if (iocb->aio_flags & IOCB_FLAG_IOPRIO) {
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -337,6 +337,8 @@ enum rw_hint {
- #define IOCB_NOIO		(1 << 20)
- /* can use bio alloc cache */
- #define IOCB_ALLOC_CACHE	(1 << 21)
-+/* kiocb is a read or write operation submitted by fs/aio.c. */
-+#define IOCB_AIO_RW		(1 << 23)
+ extern void retbleed_return_thunk(void);
+ extern void srso_return_thunk(void);
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -61,10 +61,6 @@ EXPORT_SYMBOL_GPL(x86_pred_cmd);
  
- struct kiocb {
- 	struct file		*ki_filp;
+ static DEFINE_MUTEX(spec_ctrl_mutex);
+ 
+-#ifdef CONFIG_CALL_THUNKS
+-void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
+-#endif
+-
+ /* Update SPEC_CTRL MSR and its cached copy unconditionally */
+ static void update_spec_ctrl(u64 val)
+ {
 
 
 
