@@ -1,139 +1,130 @@
-Return-Path: <stable+bounces-23783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ECEC8684AA
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 00:43:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF8BD8685FE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 02:36:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05D2E1F22A42
-	for <lists+stable@lfdr.de>; Mon, 26 Feb 2024 23:43:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E11021C206A0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 01:36:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E720135A54;
-	Mon, 26 Feb 2024 23:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF9A5C96;
+	Tue, 27 Feb 2024 01:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KUyuvAji"
+	dkim=pass (1024-bit key) header.d=bewilderbeest.net header.i=@bewilderbeest.net header.b="FJ6YLI7s"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from thorn.bewilderbeest.net (thorn.bewilderbeest.net [71.19.156.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF4A135419
-	for <stable@vger.kernel.org>; Mon, 26 Feb 2024 23:42:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756D7525D;
+	Tue, 27 Feb 2024 01:35:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=71.19.156.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708990975; cv=none; b=PMGQOiXJK7NqNV/u7ywBJKfrhEg+EkODqLsOR4SQhoILqnvpCJYjf494UcT9Mmt9dEAL9GEjYGwIJYWgcV/fiQ6YFJFwIW235I6Kybq/lCDsxE6stA9hMj+23Hsico2jq8ISYPXkQ8xR/q4vtn6JE5So+uEFBseHEsFdjJ3pCiA=
+	t=1708997757; cv=none; b=V3dMERc7m1J2bAjxSDuHgpZG5Zf7EPy6vuZhT4r8q2/y7Qhd8o2j25jHy3UEgLFAbNZV3L0QuOvrybMiIQwr+DzgNouAOwKn8LfS91zn9y+Sq7w2VzwTAHW4Ky/pDqALGjQonxS5pt7UoOs+iENw3eqg/S8CzgbUbQAcmgo3aRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708990975; c=relaxed/simple;
-	bh=5kYeIFVo2xR1oxYSbdUq98xOTZBkvlA2zXrP0sPUMtw=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ExTIEJEDA3oyQ1G8Ttt/x+RP0bGV00Gv3NJj35QiQtq7kGQ/YOd3HPHvSFgrqd8Ois9bEIIZXa1j8Jul536toYVWgaZZAxnX3DJ2qiLOw/ig2Jv+EcWVgrt5sQD/S4HeISuVks4kFe2KU4OY1tkRfzoXLNmD7GVDhu+d5WqU3K4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--rdbabiera.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KUyuvAji; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--rdbabiera.bounces.google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-1dc157e4778so32909075ad.0
-        for <stable@vger.kernel.org>; Mon, 26 Feb 2024 15:42:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1708990973; x=1709595773; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=vfgvyT3McQFjbyFi2yOlB8GW53W4hlIR4nzJRu+A9Fw=;
-        b=KUyuvAjijrOCmHDeb4BOagQjogokx03FIOMwmWzVhjNvlH2/rkEJ9vKB5rzP7AqhJk
-         I3KAadGJOatUmpRtzzPBNISKf6PXMRbNSvwbMFDMt8OLC1CQDWMpiz2I8xSijKdt90g7
-         m8lWRz+aaFJ+yqnP47EkLcRKufPQHx9hL7ZeTCT53Hl52iLUhZqlTeHmz6Z+kC5MLpWZ
-         PiYigi1bxsSZI8SguJzjcE+d/RwZXP1/sS3FDxhjouPEBBLvYLhTB349gTCp2zIGMT8H
-         SQjufGq43YV3QogkohhBQx+J3DxdzTDgiIqqZoJDm6qRfdwNBIXN5UEKqLD8x94fce+f
-         +/dQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708990973; x=1709595773;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vfgvyT3McQFjbyFi2yOlB8GW53W4hlIR4nzJRu+A9Fw=;
-        b=uxJbT01WIvKLbxQaxTgZbqI5Dzkikw3GCTqEenrbajcTLptL69wJsLZRsEezhzJwpb
-         x0MGAhcex72bnNOTkNyHVSSbDsE4WB0+UIGeu0VAWQjrcWPGEp04lRZgUarDbRXab9aF
-         4yM2GWdqfqLGmdVks3TYoRS/ndG9ssY8xj4whUxAhiF8HUJ+QNC7cCd5h0hhWTNSnG+T
-         QjW2puihyMocJXUFxP+xESNUM9Qgaxo4L0BIzLY8PTVYVBKVn55ni0nQ5QB/2oohRUYE
-         WMIOOUHfi8FvCoyyr6yakKFroZ33kb22ikwQ4C5hv1XSPsFFIxJHBjRZMrgXc2U5bdDJ
-         fjLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV4bkPWMfkRF1DYo88y62ULeCAk2Pz6QvwZ1xFe1md2RcVSvsIUyjjnqtZshh6yE3sZ/y0wGJqlrswEnJFR/0W2oRaCqdAV
-X-Gm-Message-State: AOJu0YyE9MVvrJxhZew+Xj4cyFSMaLHDUxOZJ0SuOhL+IY9IzlsNHopg
-	lQifpoTD5THUqGexkrD7IH5DOXl/Rnt7PAZDI+xOmKoKqDmE2JzTdCuOQMvItG4hQs/+V1Hkh7q
-	VAbDnb1gsedDcLw==
-X-Google-Smtp-Source: AGHT+IEyZTVFkgm70LFK0GBHxb5VVbTY8nIkrEL6/h6HTvZiPIlhwJSjyLHv4XJhkcQG2yJrgxGsBbLwsi6VXm0=
-X-Received: from rdbabiera.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:18a8])
- (user=rdbabiera job=sendgmr) by 2002:a17:903:410b:b0:1db:f7e5:afd2 with SMTP
- id r11-20020a170903410b00b001dbf7e5afd2mr324688pld.12.1708990973145; Mon, 26
- Feb 2024 15:42:53 -0800 (PST)
-Date: Mon, 26 Feb 2024 23:42:29 +0000
+	s=arc-20240116; t=1708997757; c=relaxed/simple;
+	bh=5prQOo/5DUmjL9n6Mn2+etl4F9JkZ9RfZ2EqTaQr7jY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f7swM/Vaxlg8YZn100pzzsLZ96OTQocgbs6a0Wz8qNG47jDbu37L6+vGRblHejBoSU8qQeWpEyUoyE7h3wSLLZbAOkxPYg2JeFcxROk6H/mD5CiMWilcQBss8j7S8c1WDDRl0ePHtPpcbLh0i90M6OwYXhMKuPC/e5wppb33II0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bewilderbeest.net; spf=pass smtp.mailfrom=bewilderbeest.net; dkim=pass (1024-bit key) header.d=bewilderbeest.net header.i=@bewilderbeest.net header.b=FJ6YLI7s; arc=none smtp.client-ip=71.19.156.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bewilderbeest.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bewilderbeest.net
+Received: from hatter.bewilderbeest.net (unknown [IPv6:2602:61:712b:6300::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: zev)
+	by thorn.bewilderbeest.net (Postfix) with ESMTPSA id 0D6F48A;
+	Mon, 26 Feb 2024 17:35:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bewilderbeest.net;
+	s=thorn; t=1708997754;
+	bh=2LGMoG5lzw93A3enN/2kw2d60L6ZTNDD2AvAsIcBPUA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=FJ6YLI7sYbcpLH87YNKyDBadQUCtbuQwg4rTyYqz82ieGu866VqzLPH9zFr/wftHg
+	 /ZlGqrj5BMlSWjMcPcAhBIqAlS2fWO4rWhGjUgjSiz2mBSatUs9hQR4xht8Fud0WPh
+	 QJSVNGF2oJ0NU7A7ElTtq0x2ZjoxEH3TSSWL9hdU=
+From: Zev Weiss <zev@bewilderbeest.net>
+To: Russell King <linux@armlinux.org.uk>,
+	linux-parisc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Helge Deller <deller@gmx.de>,
+	Florent Revest <revest@chromium.org>
+Cc: Zev Weiss <zev@bewilderbeest.net>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Yin Fengwei <fengwei.yin@intel.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kees Cook <keescook@chromium.org>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	Stefan Roesch <shr@devkernel.io>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	openbmc@lists.ozlabs.org,
+	Sam James <sam@gentoo.org>,
+	stable@vger.kernel.org
+Subject: [PATCH RESEND 0/2] ARM: prctl: Reject PR_SET_MDWE where not supported
+Date: Mon, 26 Feb 2024 17:35:40 -0800
+Message-ID: <20240227013546.15769-4-zev@bewilderbeest.net>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Developer-Key: i=rdbabiera@google.com; a=openpgp; fpr=639A331F1A21D691815CE090416E17CA2BBBD5C8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1719; i=rdbabiera@google.com;
- h=from:subject; bh=5kYeIFVo2xR1oxYSbdUq98xOTZBkvlA2zXrP0sPUMtw=;
- b=owGbwMvMwCFW0bfok0KS4TbG02pJDKl3FZ/ULxGdr8xuuKPE/pdU9tnNxT7/l5/PsViUxfhyY
- rqZYENsRykLgxgHg6yYIouuf57BjSupW+Zw1hjDzGFlAhnCwMUpABNZe5Dhf+6culvXpuycd/aG
- 1/evWYVK35ef+sCvNJ2Nz4s1U9aQUZThf8x2v1OtilMZfm29z7HsgaXQjlcWzAf5gu7zVMU++6T JywQA
-X-Mailer: git-send-email 2.44.0.rc1.240.g4c46232300-goog
-Message-ID: <20240226234228.1768725-2-rdbabiera@google.com>
-Subject: [PATCH v2] usb: typec: altmodes/displayport: create sysfs nodes after
- assigning driver data
-From: RD Babiera <rdbabiera@google.com>
-To: rdbabiera@google.com, heikki.krogerus@linux.intel.com, 
-	gregkh@linuxfoundation.org
-Cc: badhri@google.com, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-The DisplayPort driver's sysfs nodes may be present to the userspace before
-typec_altmode_set_drvdata() completes in dp_altmode_probe. This means that
-a sysfs read can trigger a NULL pointer error by deferencing dp->hpd in
-hpd_show or dp->lock in pin_assignment_show, as dev_get_drvdata() returns
-NULL in those cases.
+[Resending as per Russell's request...]
 
-Create sysfs nodes after typec_altmode_set_drvdata call.
+Hello,
 
-Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: RD Babiera <rdbabiera@google.com>
----
-Changes from v1:
-* Moved sysfs node creation instead of NULL checking dev_get_drvdata().
----
- drivers/usb/typec/altmodes/displayport.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+I noticed after a recent kernel update that my ARM926 system started
+segfaulting on any execve() after calling prctl(PR_SET_MDWE).  After
+some investigation it appears that ARMv5 is incapable of providing the
+appropriate protections for MDWE, since any readable memory is also
+implicitly executable.
 
-diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
-index 5a80776c7255..5bbdd2c04237 100644
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -731,10 +731,6 @@ int dp_altmode_probe(struct typec_altmode *alt)
- 	      DP_CAP_PIN_ASSIGN_DFP_D(alt->vdo)))
- 		return -ENODEV;
- 
--	ret = sysfs_create_group(&alt->dev.kobj, &dp_altmode_group);
--	if (ret)
--		return ret;
--
- 	dp = devm_kzalloc(&alt->dev, sizeof(*dp), GFP_KERNEL);
- 	if (!dp)
- 		return -ENOMEM;
-@@ -766,6 +762,10 @@ int dp_altmode_probe(struct typec_altmode *alt)
- 	if (plug)
- 		typec_altmode_set_drvdata(plug, dp);
- 
-+	ret = sysfs_create_group(&alt->dev.kobj, &dp_altmode_group);
-+	if (ret)
-+		return ret;
-+
- 	dp->state = plug ? DP_STATE_ENTER_PRIME : DP_STATE_ENTER;
- 	schedule_work(&dp->work);
- 
+(Note that I'm not an expert in either ARM arch details or the mm
+subsystem, so please bear with me if I've botched something in the
+above analysis.)
 
-base-commit: a560a5672826fc1e057068bda93b3d4c98d037a2
+The prctl_set_mdwe() function already had some special-case logic
+added disabling it on PARISC (commit 793838138c15, "prctl: Disable
+prctl(PR_SET_MDWE) on parisc"); this patch series (1) generalizes that
+check to use an arch_*() function, and (2) adds a corresponding
+override for ARM to disable MDWE on pre-ARMv6 CPUs.
+
+With the series applied, prctl(PR_SET_MDWE) is rejected on ARMv5 and
+subsequent execve() calls (as well as mmap(PROT_READ|PROT_WRITE)) can
+succeed instead of unconditionally failing; on ARMv6 the prctl works
+as it did previously.
+
+
+Thanks,
+Zev
+
+[0] https://lore.kernel.org/all/2023112456-linked-nape-bf19@gregkh/
+
+Zev Weiss (2):
+  prctl: Generalize PR_SET_MDWE support check to be per-arch
+  ARM: prctl: Reject PR_SET_MDWE on pre-ARMv6
+
+ arch/arm/include/asm/mman.h    | 14 ++++++++++++++
+ arch/parisc/include/asm/mman.h | 14 ++++++++++++++
+ include/linux/mman.h           |  8 ++++++++
+ kernel/sys.c                   |  7 +++++--
+ 4 files changed, 41 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm/include/asm/mman.h
+ create mode 100644 arch/parisc/include/asm/mman.h
+
 -- 
-2.44.0.rc1.240.g4c46232300-goog
+2.43.2
 
 
