@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-24980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00A05869726
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:18:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD0B48697B4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:24:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 324F51C2351E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:18:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E55BEB2CFE4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:23:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 433151419A1;
-	Tue, 27 Feb 2024 14:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E1D31420DD;
+	Tue, 27 Feb 2024 14:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FgMv6f0J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VkWMc6YJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016E7140391;
-	Tue, 27 Feb 2024 14:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C71D1420C9;
+	Tue, 27 Feb 2024 14:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043523; cv=none; b=V3u/z06k7LLZvxoV//ki2qmhP7L4YKiFeWOJ6ykpacTuJ+4lQ82PdB2jcFOIPHN+bqhfiI8qc2+mZ5MKnSOFAwVEiuHfPNXjkKXLpb2xDumyMplJPhDC5RuXBBjy1cfOeF3PheNbNs1FnA4CmIOnYtdUidjs1qzALxV9i2mZiJ0=
+	t=1709043802; cv=none; b=o6uq8ITNutAuoe46DsLKEwUnblyjM7JY4KzT9BDBw3HUzy8KzEBp8WyFN9JwD8f6/ks02DlrceRU3Y/gZxN3LoJdRhD5svi7PkPfAi97YVueYZMHc4GvWxut1kYyU/4ER33ZZK4aXPP9i9YYMd10dOZeoA5brEwf1/AO8BqSFMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043523; c=relaxed/simple;
-	bh=KEEkcKuHJCXTgOmRU7D0WtYytpPrtDR8HfUUcRfHqgw=;
+	s=arc-20240116; t=1709043802; c=relaxed/simple;
+	bh=ChoP11yZ0988Aeh4abrKrsBYMW5DFf9t5VA0h5hOTHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RYJVBh200yTqclVXM6WKh+33/sPrwYOe8aj/QlIfNbUf3Ed30YrI9nkQMvcTKYwifpN7/osiSEhfrzD2IeHBXdXw8AA1lx4iAf57Sr6ySjUeAwmPzh3bp/fzzonyHtw/UWOYLg9HzH/9ZLsDtJQqOxrefuDnlrrOaZcBgIaEQ+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FgMv6f0J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A992C433C7;
-	Tue, 27 Feb 2024 14:18:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZSIroMQ1f7gWCJkfF75KvkZhBwVBqc1L5YJMph6o4c2B48cRSL+niMBuF+se1C4Sv+9wKkzHbClelDjJnCrO51YwJvaXXqJfqfLo1PvErNmyMAXZ1ltZFFyBYH84EFNHjrWqWUfgGcyDIHAuviKfujNVwCTTM7ZYOllZuzbrdbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VkWMc6YJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F8C7C433F1;
+	Tue, 27 Feb 2024 14:23:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043522;
-	bh=KEEkcKuHJCXTgOmRU7D0WtYytpPrtDR8HfUUcRfHqgw=;
+	s=korg; t=1709043802;
+	bh=ChoP11yZ0988Aeh4abrKrsBYMW5DFf9t5VA0h5hOTHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FgMv6f0JWLBX9DL+3jHSP9As6q6nQmj69t1nU6IZKE1FxZXowZJzAsu7e3VKhIUP+
-	 u42e8GdIiL6X7QLYkTXG3DF6pCuZZteRIref0pnZWWxdr5n+AfPdHn2qB0dOP1jDTI
-	 BSsVsJge0DGU+Gq9I/8ei6XKanMnNshghAPXxhiE=
+	b=VkWMc6YJ+3QsGXjRQKg4n4OFftTxa4OyelKCRvCG4CqOmkMp3v65GhYf4f99MusRf
+	 XHO8td3pYezTACAtnvd4vo9CqoU59VUGze6nNRokWYI4M/Cim1FBP4xTg42Vg9Vhkk
+	 RhOgSjyv7JgQsdRjdfdIzBEJRuHQz4N57smFJ17c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joao Martins <joao.m.martins@oracle.com>,
-	Avihai Horon <avihaih@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 139/195] iommufd/iova_bitmap: Consider page offset for the pages to be pinned
+Subject: [PATCH 5.4 13/84] dmaengine: shdma: increase size of dev_id
 Date: Tue, 27 Feb 2024 14:26:40 +0100
-Message-ID: <20240227131615.022071542@linuxfoundation.org>
+Message-ID: <20240227131553.303955520@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +59,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joao Martins <joao.m.martins@oracle.com>
+From: Vinod Koul <vkoul@kernel.org>
 
-[ Upstream commit 4bbcbc6ea2fa379632a24c14cfb47aa603816ac6 ]
+[ Upstream commit 404290240827c3bb5c4e195174a8854eef2f89ac ]
 
-For small bitmaps that aren't PAGE_SIZE aligned *and* that are less than
-512 pages in bitmap length, use an extra page to be able to cover the
-entire range e.g. [1M..3G] which would be iterated more efficiently in a
-single iteration, rather than two.
+We seem to have hit warnings of 'output may be truncated' which is fixed
+by increasing the size of 'dev_id'
 
-Fixes: b058ea3ab5af ("vfio/iova_bitmap: refactor iova_bitmap_set() to better handle page boundaries")
-Link: https://lore.kernel.org/r/20240202133415.23819-10-joao.m.martins@oracle.com
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-Tested-by: Avihai Horon <avihaih@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+drivers/dma/sh/shdmac.c: In function ‘sh_dmae_probe’:
+drivers/dma/sh/shdmac.c:541:34: error: ‘%d’ directive output may be truncated writing between 1 and 10 bytes into a region of size 9 [-Werror=format-truncation=]
+  541 |                          "sh-dmae%d.%d", pdev->id, id);
+      |                                  ^~
+In function ‘sh_dmae_chan_probe’,
+    inlined from ‘sh_dmae_probe’ at drivers/dma/sh/shdmac.c:845:9:
+drivers/dma/sh/shdmac.c:541:26: note: directive argument in the range [0, 2147483647]
+  541 |                          "sh-dmae%d.%d", pdev->id, id);
+      |                          ^~~~~~~~~~~~~~
+drivers/dma/sh/shdmac.c:541:26: note: directive argument in the range [0, 19]
+drivers/dma/sh/shdmac.c:540:17: note: ‘snprintf’ output between 11 and 21 bytes into a destination of size 16
+  540 |                 snprintf(sh_chan->dev_id, sizeof(sh_chan->dev_id),
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  541 |                          "sh-dmae%d.%d", pdev->id, id);
+      |                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/iova_bitmap.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/dma/sh/shdma.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/vfio/iova_bitmap.c b/drivers/vfio/iova_bitmap.c
-index c748a1e3ba53a..dfab5b742191a 100644
---- a/drivers/vfio/iova_bitmap.c
-+++ b/drivers/vfio/iova_bitmap.c
-@@ -174,18 +174,19 @@ static int iova_bitmap_get(struct iova_bitmap *bitmap)
- 			       bitmap->mapped_base_index) *
- 			       sizeof(*bitmap->bitmap), PAGE_SIZE);
- 
--	/*
--	 * We always cap at max number of 'struct page' a base page can fit.
--	 * This is, for example, on x86 means 2M of bitmap data max.
--	 */
--	npages = min(npages,  PAGE_SIZE / sizeof(struct page *));
--
- 	/*
- 	 * Bitmap address to be pinned is calculated via pointer arithmetic
- 	 * with bitmap u64 word index.
- 	 */
- 	addr = bitmap->bitmap + bitmap->mapped_base_index;
- 
-+	/*
-+	 * We always cap at max number of 'struct page' a base page can fit.
-+	 * This is, for example, on x86 means 2M of bitmap data max.
-+	 */
-+	npages = min(npages + !!offset_in_page(addr),
-+		     PAGE_SIZE / sizeof(struct page *));
-+
- 	ret = pin_user_pages_fast((unsigned long)addr, npages,
- 				  FOLL_WRITE, mapped->pages);
- 	if (ret <= 0)
+diff --git a/drivers/dma/sh/shdma.h b/drivers/dma/sh/shdma.h
+index 9c121a4b33ad8..f97d80343aea4 100644
+--- a/drivers/dma/sh/shdma.h
++++ b/drivers/dma/sh/shdma.h
+@@ -25,7 +25,7 @@ struct sh_dmae_chan {
+ 	const struct sh_dmae_slave_config *config; /* Slave DMA configuration */
+ 	int xmit_shift;			/* log_2(bytes_per_xfer) */
+ 	void __iomem *base;
+-	char dev_id[16];		/* unique name per DMAC of channel */
++	char dev_id[32];		/* unique name per DMAC of channel */
+ 	int pm_error;
+ 	dma_addr_t slave_addr;
+ };
 -- 
 2.43.0
 
