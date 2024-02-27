@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-24489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28F848694BD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:55:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF91686961C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:08:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D67D0287E52
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:55:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DC7F1F2CE16
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:08:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0C6141995;
-	Tue, 27 Feb 2024 13:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7D113B2B3;
+	Tue, 27 Feb 2024 14:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h00LjDGr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZLXFsJi8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8E713B2B4;
-	Tue, 27 Feb 2024 13:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF5C13A26F;
+	Tue, 27 Feb 2024 14:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042146; cv=none; b=VkJVn2i4F7w+h3TXWg3RsHgtfWt6dsxUSUIoVWofdPVRRjg5IwhtioWIdPJ9ZPymb1oUSow1B/mfAmbWOOscnjK8lcWLu2VPJUPXYUPY1vRiCTX120f2y/TzK/tVII8tyj3NezKCJsS5OJB4danlYbWFSu8hKgZKnnuax2R7OC4=
+	t=1709042890; cv=none; b=p6Ps8fCXmR7fyj0reSGZtwnP4MuhMSWHyFKYY2sDg7u2IJwcq0OiQeGOFMuMQVefQv8L/FYJ5qKUTl3VccShGAxueaBkKHtrWzZa8LlKYifWGV94a+Ez2mvkYLN1iYY3a9yt2lhWgoGIAGOcG0hNemdLNxyp8WeyzusFUnObhcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042146; c=relaxed/simple;
-	bh=Slm3s59hg1PRsNJqwASP4rfHGRqDy/bz3oJZLuuvgzY=;
+	s=arc-20240116; t=1709042890; c=relaxed/simple;
+	bh=u10gPLaAvaECjyLIXL0mbOicjNc0j8uc/JdK2LF+/Ec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SoeYQMq4TT3ITRaeCDnaAQ4x9VK5E2G0ZZ2n9C4AiJ9V7eiGajBb4or9315fIMGyEQEAlrZI6TLNt5IySJg8LJaQCsUzgjsc00N1X1bmMxDdDJ11lJzTGbxFKh4u5YpFIfnQC471LVV83NVNIsr2RhIzkCysKRp2LGbBLpOZc3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h00LjDGr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06158C433F1;
-	Tue, 27 Feb 2024 13:55:45 +0000 (UTC)
+	 MIME-Version; b=qtTdFIBUD2uMwyvWXgkc+CP3OZdY4Y92Xw+AP9H7soMHPhJavgmYeVCfqV8BKxn/j7pBZlc4UNka+9AKWUM50RuZV0HyP5egEr/wJ/iYRFNir2d5hr3ZARqbFORYR7FoEaIpwUQJeeYFYQAN4Qot3AsBIsJZGRfx6D7OVqP3yzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZLXFsJi8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ECFDC433C7;
+	Tue, 27 Feb 2024 14:08:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042146;
-	bh=Slm3s59hg1PRsNJqwASP4rfHGRqDy/bz3oJZLuuvgzY=;
+	s=korg; t=1709042889;
+	bh=u10gPLaAvaECjyLIXL0mbOicjNc0j8uc/JdK2LF+/Ec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h00LjDGru09ksSw1uYuSn2SfN3m0rnHj2rrgBY/8y9mf+8vDVz+oP7bSIvj1+Dtgd
-	 UtBr1pzQFxA6aEX1RkpKMn2a3Mwqm7BeDAWzfCNa604gl6BZCZ+3G/AyVLqeUGMGEl
-	 0dCq4KdIRhc92pi+JtebW9l5T/+SY7bCf2cPwjac=
+	b=ZLXFsJi8Z07e/m8dUoJup64Wg7Ev+MiIyl2aPFc0bIRtuYy17f6ZInT1qmEr0DlEv
+	 CjSyn6Al95p9RzaN3j/viJkvNZK2V7+6E+xgH4IkkJfZtLRYrMItTUDXRHGTHpmt/m
+	 RInzKaiXfg3v8Ocpi3ujfAnn7aaD3CHn9GdsmJaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 196/299] mptcp: fix duplicate subflow creation
-Date: Tue, 27 Feb 2024 14:25:07 +0100
-Message-ID: <20240227131632.122571171@linuxfoundation.org>
+	Stephen Boyd <sboyd@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 120/245] clk: qcom: gpucc-sc7180: fix clk_dis_wait being programmed for CX GDSC
+Date: Tue, 27 Feb 2024 14:25:08 +0100
+Message-ID: <20240227131619.126539770@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit 045e9d812868a2d80b7a57b224ce8009444b7bbc upstream.
+[ Upstream commit 658c82caffa042b351f5a1b6325819297a951a04 ]
 
-Fullmesh endpoints could end-up unexpectedly generating duplicate
-subflows - same local and remote addresses - when multiple incoming
-ADD_ADDR are processed before the PM creates the subflow for the local
-endpoints.
+The gdsc_init() function will rewrite the CLK_DIS_WAIT field while
+registering the GDSC (writing the value 0x2 by default). This will
+override the setting done in the driver's probe function.
 
-Address the issue explicitly checking for duplicates at subflow
-creation time.
+Set cx_gdsc.clk_dis_wait_val to 8 to follow the intention of the probe
+function.
 
-To avoid a quadratic computational complexity, track the unavailable
-remote address ids in a temporary bitmap and initialize such bitmap
-with the remote ids of all the existing subflows matching the local
-address currently processed.
-
-The above allows additionally replacing the existing code checking
-for duplicate entry in the current set with a simple bit test
-operation.
-
-Fixes: 2843ff6f36db ("mptcp: remote addresses fullmesh")
-Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/435
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 745ff069a49c ("clk: qcom: Add graphics clock controller driver for SC7180")
+Reviewed-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230201172305.993146-1-dmitry.baryshkov@linaro.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c |   33 ++++++++++++++++++---------------
- 1 file changed, 18 insertions(+), 15 deletions(-)
+ drivers/clk/qcom/gpucc-sc7180.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -396,19 +396,6 @@ void mptcp_pm_free_anno_list(struct mptc
- 	}
+diff --git a/drivers/clk/qcom/gpucc-sc7180.c b/drivers/clk/qcom/gpucc-sc7180.c
+index d738251cba17d..6839b4b71a2f4 100644
+--- a/drivers/clk/qcom/gpucc-sc7180.c
++++ b/drivers/clk/qcom/gpucc-sc7180.c
+@@ -21,8 +21,6 @@
+ #define CX_GMU_CBCR_SLEEP_SHIFT		4
+ #define CX_GMU_CBCR_WAKE_MASK		0xF
+ #define CX_GMU_CBCR_WAKE_SHIFT		8
+-#define CLK_DIS_WAIT_SHIFT		12
+-#define CLK_DIS_WAIT_MASK		(0xf << CLK_DIS_WAIT_SHIFT)
+ 
+ enum {
+ 	P_BI_TCXO,
+@@ -160,6 +158,7 @@ static struct clk_branch gpu_cc_cxo_clk = {
+ static struct gdsc cx_gdsc = {
+ 	.gdscr = 0x106c,
+ 	.gds_hw_ctrl = 0x1540,
++	.clk_dis_wait_val = 8,
+ 	.pd = {
+ 		.name = "cx_gdsc",
+ 	},
+@@ -242,10 +241,6 @@ static int gpu_cc_sc7180_probe(struct platform_device *pdev)
+ 	value = 0xF << CX_GMU_CBCR_WAKE_SHIFT | 0xF << CX_GMU_CBCR_SLEEP_SHIFT;
+ 	regmap_update_bits(regmap, 0x1098, mask, value);
+ 
+-	/* Configure clk_dis_wait for gpu_cx_gdsc */
+-	regmap_update_bits(regmap, 0x106c, CLK_DIS_WAIT_MASK,
+-						8 << CLK_DIS_WAIT_SHIFT);
+-
+ 	return qcom_cc_really_probe(pdev, &gpu_cc_sc7180_desc, regmap);
  }
  
--static bool lookup_address_in_vec(const struct mptcp_addr_info *addrs, unsigned int nr,
--				  const struct mptcp_addr_info *addr)
--{
--	int i;
--
--	for (i = 0; i < nr; i++) {
--		if (addrs[i].id == addr->id)
--			return true;
--	}
--
--	return false;
--}
--
- /* Fill all the remote addresses into the array addrs[],
-  * and return the array size.
-  */
-@@ -440,6 +427,16 @@ static unsigned int fill_remote_addresse
- 		msk->pm.subflows++;
- 		addrs[i++] = remote;
- 	} else {
-+		DECLARE_BITMAP(unavail_id, MPTCP_PM_MAX_ADDR_ID + 1);
-+
-+		/* Forbid creation of new subflows matching existing
-+		 * ones, possibly already created by incoming ADD_ADDR
-+		 */
-+		bitmap_zero(unavail_id, MPTCP_PM_MAX_ADDR_ID + 1);
-+		mptcp_for_each_subflow(msk, subflow)
-+			if (READ_ONCE(subflow->local_id) == local->id)
-+				__set_bit(subflow->remote_id, unavail_id);
-+
- 		mptcp_for_each_subflow(msk, subflow) {
- 			ssk = mptcp_subflow_tcp_sock(subflow);
- 			remote_address((struct sock_common *)ssk, &addrs[i]);
-@@ -447,11 +444,17 @@ static unsigned int fill_remote_addresse
- 			if (deny_id0 && !addrs[i].id)
- 				continue;
- 
-+			if (test_bit(addrs[i].id, unavail_id))
-+				continue;
-+
- 			if (!mptcp_pm_addr_families_match(sk, local, &addrs[i]))
- 				continue;
- 
--			if (!lookup_address_in_vec(addrs, i, &addrs[i]) &&
--			    msk->pm.subflows < subflows_max) {
-+			if (msk->pm.subflows < subflows_max) {
-+				/* forbid creating multiple address towards
-+				 * this id
-+				 */
-+				__set_bit(addrs[i].id, unavail_id);
- 				msk->pm.subflows++;
- 				i++;
- 			}
+-- 
+2.43.0
+
 
 
 
