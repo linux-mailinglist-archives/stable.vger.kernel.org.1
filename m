@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-24794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBCD186964C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:10:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FEE9869701
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:17:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 099B21C22576
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:10:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 819531C229CA
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:17:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D90A013DB83;
-	Tue, 27 Feb 2024 14:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1DC613B798;
+	Tue, 27 Feb 2024 14:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TdbURsSO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AMAaYvLJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5F113B2B4;
-	Tue, 27 Feb 2024 14:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A018D78B61;
+	Tue, 27 Feb 2024 14:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043008; cv=none; b=Nu6tn8UTWW2oOk2Ndi6Jro+671klRaCpoZnYrsvFlRo9sadpieUiMcssHsx48TsA8t2QzDODDPAJObtiFDNOFnrOW+ya2lvD5uasdq6Hvrqs1FP5NfE/ojau+nnxi7Z1lwFYhqxhCGX5CCkNufntBnlA3DlKzCIZZGT/uJbAJ6A=
+	t=1709043442; cv=none; b=eXOR8FTThgFW93o2dcxrUlOeo3z99YLLYxM1nMTCCisLwzyeHZnn5qGz7dTWf5IssU0S+2a4sZlKmWJ3/4KLYg2HvHJ+ZXkmEDJg/y45KW6raioStOGmqA1odjU8BApBQTX1tkPABjmM0YjlaWfxhOp2CBptsXqojNDqUfISndA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043008; c=relaxed/simple;
-	bh=JOmvtWeFtiob4IvJtJmGGA3DvCLF4cgQdLEd+4Yy8Zw=;
+	s=arc-20240116; t=1709043442; c=relaxed/simple;
+	bh=Mfom+2Jx6JXpwQk71qrE95CVDBkTSinzAVRXLt7qCFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T/ttAvxMiOIRhdaFhi9cvJ0n2w2ON+Nz+2mViQCA7xsn0y+BP6TcIOw5GYGJh8dkDC2FvhYQnLLRWqXEthkYnSW1e0IJEFMubTsreEQog8pmgwGz7dqvZYSAKmF0oxYRuyDsVMaiGoV3lzS0uVfxPWgZ2ktwAd6c9xkarG+yXTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TdbURsSO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14AC8C433F1;
-	Tue, 27 Feb 2024 14:10:07 +0000 (UTC)
+	 MIME-Version; b=WN3w4om5HGs91Yk63p4TzptU5kLFzhowGxHmIIB9fp+UAKpKu/zu7QrP6O+MVvSjz/5r3C4eMxNbSsV8Y+15diVqJQQ7SWCGNYCEzevtHUUXDxeXJ0+HUfMSqBn79kHJRVhe9os1RwsaqDfALAeCafPIdqgop4P9sBpsQ0t6aRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AMAaYvLJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B8EEC433F1;
+	Tue, 27 Feb 2024 14:17:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043008;
-	bh=JOmvtWeFtiob4IvJtJmGGA3DvCLF4cgQdLEd+4Yy8Zw=;
+	s=korg; t=1709043442;
+	bh=Mfom+2Jx6JXpwQk71qrE95CVDBkTSinzAVRXLt7qCFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TdbURsSOvjRlZYcRRKP3jehuJBcM05THECX9mjowtEbwGsVvMtmxcv0RrBfkMc4D0
-	 wgKuPtaFFFcFlOoZOx+fYZ6ufsl0YxlciznZliialfTWty/axiwZ/W5Oaa/iUmVYGK
-	 m4HgWl5hbMcmjSgH1GHq1ZomU6vyXEPYCVh8Iip0=
+	b=AMAaYvLJTWVRfiYjYGM4R+zWnDmGTNiWjZcopHh9Ubdvn02AE68a4bLwOf/R07Nc/
+	 1y+Jkv/4djYrjidTSoV9ru3CgH/a3jif/O7o8FlyxJMkUy9LAgIHeNAXf6bsJA3VL2
+	 PWvdQIri0i3FXawbipeW9BssDJWRXP2ex8JzIXpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuezhang Mo <Yuezhang.Mo@sony.com>,
-	Andy Wu <Andy.Wu@sony.com>,
-	Aoyama Wataru <wataru.aoyama@sony.com>,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 183/245] exfat: support dynamic allocate bh for exfat_entry_set_cache
+	David Howells <dhowells@redhat.com>,
+	Tom Parkin <tparkin@katalix.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 110/195] l2tp: pass correct message length to ip6_append_data
 Date: Tue, 27 Feb 2024 14:26:11 +0100
-Message-ID: <20240227131621.154581307@linuxfoundation.org>
+Message-ID: <20240227131614.095491115@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,95 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuezhang Mo <Yuezhang.Mo@sony.com>
+From: Tom Parkin <tparkin@katalix.com>
 
-[ Upstream commit a3ff29a95fde16906304455aa8c0bd84eb770258 ]
+commit 359e54a93ab43d32ee1bff3c2f9f10cb9f6b6e79 upstream.
 
-In special cases, a file or a directory may occupied more than 19
-directory entries, pre-allocating 3 bh is not enough. Such as
-  - Support vendor secondary directory entry in the future.
-  - Since file directory entry is damaged, the SecondaryCount
-    field is bigger than 18.
+l2tp_ip6_sendmsg needs to avoid accounting for the transport header
+twice when splicing more data into an already partially-occupied skbuff.
 
-So this commit supports dynamic allocation of bh.
+To manage this, we check whether the skbuff contains data using
+skb_queue_empty when deciding how much data to append using
+ip6_append_data.
 
-Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
-Reviewed-by: Andy Wu <Andy.Wu@sony.com>
-Reviewed-by: Aoyama Wataru <wataru.aoyama@sony.com>
-Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, the code which performed the calculation was incorrect:
+
+     ulen = len + skb_queue_empty(&sk->sk_write_queue) ? transhdrlen : 0;
+
+...due to C operator precedence, this ends up setting ulen to
+transhdrlen for messages with a non-zero length, which results in
+corrupted packets on the wire.
+
+Add parentheses to correct the calculation in line with the original
+intent.
+
+Fixes: 9d4c75800f61 ("ipv4, ipv6: Fix handling of transhdrlen in __ip{,6}_append_data()")
+Cc: David Howells <dhowells@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Tom Parkin <tparkin@katalix.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240220122156.43131-1-tparkin@katalix.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/exfat/dir.c      | 15 +++++++++++++++
- fs/exfat/exfat_fs.h |  5 ++++-
- 2 files changed, 19 insertions(+), 1 deletion(-)
+ net/l2tp/l2tp_ip6.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/exfat/dir.c b/fs/exfat/dir.c
-index f6dd4fc8eaf45..be7570d01ae1a 100644
---- a/fs/exfat/dir.c
-+++ b/fs/exfat/dir.c
-@@ -618,6 +618,10 @@ int exfat_free_dentry_set(struct exfat_entry_set_cache *es, int sync)
- 			bforget(es->bh[i]);
- 		else
- 			brelse(es->bh[i]);
-+
-+	if (IS_DYNAMIC_ES(es))
-+		kfree(es->bh);
-+
- 	kfree(es);
- 	return err;
- }
-@@ -853,6 +857,7 @@ struct exfat_entry_set_cache *exfat_get_dentry_set(struct super_block *sb,
- 	/* byte offset in sector */
- 	off = EXFAT_BLK_OFFSET(byte_offset, sb);
- 	es->start_off = off;
-+	es->bh = es->__bh;
+--- a/net/l2tp/l2tp_ip6.c
++++ b/net/l2tp/l2tp_ip6.c
+@@ -630,7 +630,7 @@ static int l2tp_ip6_sendmsg(struct sock
  
- 	/* sector offset in cluster */
- 	sec = EXFAT_B_TO_BLK(byte_offset, sb);
-@@ -872,6 +877,16 @@ struct exfat_entry_set_cache *exfat_get_dentry_set(struct super_block *sb,
- 	es->num_entries = num_entries;
- 
- 	num_bh = EXFAT_B_TO_BLK_ROUND_UP(off + num_entries * DENTRY_SIZE, sb);
-+	if (num_bh > ARRAY_SIZE(es->__bh)) {
-+		es->bh = kmalloc_array(num_bh, sizeof(*es->bh), GFP_KERNEL);
-+		if (!es->bh) {
-+			brelse(bh);
-+			kfree(es);
-+			return NULL;
-+		}
-+		es->bh[0] = bh;
-+	}
-+
- 	for (i = 1; i < num_bh; i++) {
- 		/* get the next sector */
- 		if (exfat_is_last_sector_in_cluster(sbi, sec)) {
-diff --git a/fs/exfat/exfat_fs.h b/fs/exfat/exfat_fs.h
-index db538709dafa0..58816ee3162c4 100644
---- a/fs/exfat/exfat_fs.h
-+++ b/fs/exfat/exfat_fs.h
-@@ -170,10 +170,13 @@ struct exfat_entry_set_cache {
- 	bool modified;
- 	unsigned int start_off;
- 	int num_bh;
--	struct buffer_head *bh[DIR_CACHE_SIZE];
-+	struct buffer_head *__bh[DIR_CACHE_SIZE];
-+	struct buffer_head **bh;
- 	unsigned int num_entries;
- };
- 
-+#define IS_DYNAMIC_ES(es)	((es)->__bh != (es)->bh)
-+
- struct exfat_dir_entry {
- 	struct exfat_chain dir;
- 	int entry;
--- 
-2.43.0
-
+ back_from_confirm:
+ 	lock_sock(sk);
+-	ulen = len + skb_queue_empty(&sk->sk_write_queue) ? transhdrlen : 0;
++	ulen = len + (skb_queue_empty(&sk->sk_write_queue) ? transhdrlen : 0);
+ 	err = ip6_append_data(sk, ip_generic_getfrag, msg,
+ 			      ulen, transhdrlen, &ipc6,
+ 			      &fl6, (struct rt6_info *)dst,
 
 
 
