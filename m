@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76589869586
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:02:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D75F086944F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BEB82851C3
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:02:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BE281F21C77
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E649141995;
-	Tue, 27 Feb 2024 14:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C9A143C6E;
+	Tue, 27 Feb 2024 13:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sUKtdroV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n2TsZdED"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E23E813B2B9;
-	Tue, 27 Feb 2024 14:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A8013B2BA;
+	Tue, 27 Feb 2024 13:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042554; cv=none; b=ljeZae3nRIUq1V+gklTX+nKuwbu3IbB7LXzjNBSmQnvEuh+1cWyNH89g2o8BIqtg6e62OJHDRwmErQ71CN7iwwtJtHIGhqAeVbwRw2eU14g/YrxaJOd0W9EZwyCenLaSEEGCis/jbixoTV1HgfXrU/hEiAtzUAhNwM+Fydo13tI=
+	t=1709041920; cv=none; b=imQ6uViQVyhQl0kWplJ8CRAWqTSOlcADjOFE5OOKdJTPylIW4wnOEdVGCvs5WuPQNQEiX09AIJhdLSjtPZ8+GDQdzoRpS0oRUcDD7rXPuvT/lJ0c2W5eFHQNizSsng1TNOZ+0q/W5u7+TosFM4TSgRuQfNw+2129LSYnHCByaT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042554; c=relaxed/simple;
-	bh=U7K5o2fe293Nl21Och8UfLeGpZuxWqJL6SeolWLAL+A=;
+	s=arc-20240116; t=1709041920; c=relaxed/simple;
+	bh=QreihzIB57f/2PpATDnXBn6skCWjCc3wdLOm0idjtMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I0wto2Q7F5Cbcv3alzaQi4BTLFi9AVf8bG1eZyY7WaPLo/jk9n9iiHeEMoiiFbGiM5LN+nidxS+ioJFHFXdONCDrM5V+rZ6rbu2mAeTM3UCtwDSXqpN5zPQ42MjNPadMsijiRFOgwUCIQfrJSnUpW2EkYzPMnozCBnMJQ9RqGCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUKtdroV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F0F5C43394;
-	Tue, 27 Feb 2024 14:02:33 +0000 (UTC)
+	 MIME-Version; b=IlaOkwtYQnPuKfCTcr4oGAX2LO+KPzRQXPSdrB59/Z2qxiscAmjnuQYK1fx34PAcjPrty/HuxrFi5vHD1g5+CP/vqPqO5sfOrbLMUzXyGSqPxopsTFot1biHdG8KF8ozDJULJ68zvMlVB+RIOjRDiw8bHjXudTCVg9v/gO9dgP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n2TsZdED; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 611D7C433F1;
+	Tue, 27 Feb 2024 13:52:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042553;
-	bh=U7K5o2fe293Nl21Och8UfLeGpZuxWqJL6SeolWLAL+A=;
+	s=korg; t=1709041920;
+	bh=QreihzIB57f/2PpATDnXBn6skCWjCc3wdLOm0idjtMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sUKtdroVGQmxD0tzzttG8tiRqoS7qjFXHqGMm2hcMu/+NrutpfJlUcjbk5TQRWJE8
-	 1QjJgPSvzQDevDZ+/oTGSlD6ffpX+DyxPHycFHAIqRi99JqAdaTyYp9mKU1rEQKxxT
-	 tH9EqCah2ZwMnvkCX1K/MxTRXIgbgAJotwdo+RAU=
+	b=n2TsZdEDrXhlNtKgHFJfK5d342kOrdWpu4tydYnof1Y9qVlww5nmwGNJF3V/l+wx0
+	 M2nQgU2dybGppXs7uzh04XZLC4P+bn1Cqm/9ttOS7rttm3j78uwW7KHlJC2A2F1cG2
+	 lA7FJ5vlcmrcF8zxwKuz9+9uu/AgDkzAUrfSHeas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Mark Brown <broonie@kernel.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 038/245] spi: sh-msiof: avoid integer overflow in constants
+Subject: [PATCH 6.6 115/299] smb: client: set correct d_type for reparse points under DFS mounts
 Date: Tue, 27 Feb 2024 14:23:46 +0100
-Message-ID: <20240227131616.358041052@linuxfoundation.org>
+Message-ID: <20240227131629.568923730@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit 6500ad28fd5d67d5ca0fee9da73c463090842440 ]
+[ Upstream commit 55c7788c37242702868bfac7861cdf0c358d6c3d ]
 
-cppcheck rightfully warned:
+Send query dir requests with an info level of
+SMB_FIND_FILE_FULL_DIRECTORY_INFO rather than
+SMB_FIND_FILE_DIRECTORY_INFO when the client is generating its own
+inode numbers (e.g. noserverino) so that reparse tags still
+can be parsed directly from the responses, but server won't
+send UniqueId (server inode number)
 
- drivers/spi/spi-sh-msiof.c:792:28: warning: Signed integer overflow for expression '7<<29'. [integerOverflow]
- sh_msiof_write(p, SIFCTR, SIFCTR_TFWM_1 | SIFCTR_RFWM_1);
-
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://msgid.link/r/20240130094053.10672-1-wsa+renesas@sang-engineering.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Paulo Alcantara <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-sh-msiof.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ fs/smb/client/readdir.c | 15 ++++++++-------
+ fs/smb/client/smb2pdu.c |  6 ++++++
+ 2 files changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index eb2c64e0a5f7c..b7b3ec76e2cbd 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -137,14 +137,14 @@ struct sh_msiof_spi_priv {
+diff --git a/fs/smb/client/readdir.c b/fs/smb/client/readdir.c
+index d30ea2005eb36..e23cd216bffbe 100644
+--- a/fs/smb/client/readdir.c
++++ b/fs/smb/client/readdir.c
+@@ -299,14 +299,16 @@ cifs_dir_info_to_fattr(struct cifs_fattr *fattr, FILE_DIRECTORY_INFO *info,
+ }
  
- /* SIFCTR */
- #define SIFCTR_TFWM_MASK	GENMASK(31, 29)	/* Transmit FIFO Watermark */
--#define SIFCTR_TFWM_64		(0 << 29)	/*  Transfer Request when 64 empty stages */
--#define SIFCTR_TFWM_32		(1 << 29)	/*  Transfer Request when 32 empty stages */
--#define SIFCTR_TFWM_24		(2 << 29)	/*  Transfer Request when 24 empty stages */
--#define SIFCTR_TFWM_16		(3 << 29)	/*  Transfer Request when 16 empty stages */
--#define SIFCTR_TFWM_12		(4 << 29)	/*  Transfer Request when 12 empty stages */
--#define SIFCTR_TFWM_8		(5 << 29)	/*  Transfer Request when 8 empty stages */
--#define SIFCTR_TFWM_4		(6 << 29)	/*  Transfer Request when 4 empty stages */
--#define SIFCTR_TFWM_1		(7 << 29)	/*  Transfer Request when 1 empty stage */
-+#define SIFCTR_TFWM_64		(0UL << 29)	/*  Transfer Request when 64 empty stages */
-+#define SIFCTR_TFWM_32		(1UL << 29)	/*  Transfer Request when 32 empty stages */
-+#define SIFCTR_TFWM_24		(2UL << 29)	/*  Transfer Request when 24 empty stages */
-+#define SIFCTR_TFWM_16		(3UL << 29)	/*  Transfer Request when 16 empty stages */
-+#define SIFCTR_TFWM_12		(4UL << 29)	/*  Transfer Request when 12 empty stages */
-+#define SIFCTR_TFWM_8		(5UL << 29)	/*  Transfer Request when 8 empty stages */
-+#define SIFCTR_TFWM_4		(6UL << 29)	/*  Transfer Request when 4 empty stages */
-+#define SIFCTR_TFWM_1		(7UL << 29)	/*  Transfer Request when 1 empty stage */
- #define SIFCTR_TFUA_MASK	GENMASK(26, 20) /* Transmit FIFO Usable Area */
- #define SIFCTR_TFUA_SHIFT	20
- #define SIFCTR_TFUA(i)		((i) << SIFCTR_TFUA_SHIFT)
+ static void cifs_fulldir_info_to_fattr(struct cifs_fattr *fattr,
+-				       SEARCH_ID_FULL_DIR_INFO *info,
++				       const void *info,
+ 				       struct cifs_sb_info *cifs_sb)
+ {
++	const FILE_FULL_DIRECTORY_INFO *di = info;
++
+ 	__dir_info_to_fattr(fattr, info);
+ 
+-	/* See MS-FSCC 2.4.19 FileIdFullDirectoryInformation */
++	/* See MS-FSCC 2.4.14, 2.4.19 */
+ 	if (fattr->cf_cifsattrs & ATTR_REPARSE)
+-		fattr->cf_cifstag = le32_to_cpu(info->EaSize);
++		fattr->cf_cifstag = le32_to_cpu(di->EaSize);
+ 	cifs_fill_common_info(fattr, cifs_sb);
+ }
+ 
+@@ -420,7 +422,7 @@ _initiate_cifs_search(const unsigned int xid, struct file *file,
+ 	} else if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_SERVER_INUM) {
+ 		cifsFile->srch_inf.info_level = SMB_FIND_FILE_ID_FULL_DIR_INFO;
+ 	} else /* not srvinos - BB fixme add check for backlevel? */ {
+-		cifsFile->srch_inf.info_level = SMB_FIND_FILE_DIRECTORY_INFO;
++		cifsFile->srch_inf.info_level = SMB_FIND_FILE_FULL_DIRECTORY_INFO;
+ 	}
+ 
+ 	search_flags = CIFS_SEARCH_CLOSE_AT_END | CIFS_SEARCH_RETURN_RESUME;
+@@ -1014,10 +1016,9 @@ static int cifs_filldir(char *find_entry, struct file *file,
+ 				       (FIND_FILE_STANDARD_INFO *)find_entry,
+ 				       cifs_sb);
+ 		break;
++	case SMB_FIND_FILE_FULL_DIRECTORY_INFO:
+ 	case SMB_FIND_FILE_ID_FULL_DIR_INFO:
+-		cifs_fulldir_info_to_fattr(&fattr,
+-					   (SEARCH_ID_FULL_DIR_INFO *)find_entry,
+-					   cifs_sb);
++		cifs_fulldir_info_to_fattr(&fattr, find_entry, cifs_sb);
+ 		break;
+ 	default:
+ 		cifs_dir_info_to_fattr(&fattr,
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index 97fc2f85b429d..9d34a55fdb5e4 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -5092,6 +5092,9 @@ int SMB2_query_directory_init(const unsigned int xid,
+ 	case SMB_FIND_FILE_POSIX_INFO:
+ 		req->FileInformationClass = SMB_FIND_FILE_POSIX_INFO;
+ 		break;
++	case SMB_FIND_FILE_FULL_DIRECTORY_INFO:
++		req->FileInformationClass = FILE_FULL_DIRECTORY_INFORMATION;
++		break;
+ 	default:
+ 		cifs_tcon_dbg(VFS, "info level %u isn't supported\n",
+ 			info_level);
+@@ -5161,6 +5164,9 @@ smb2_parse_query_directory(struct cifs_tcon *tcon,
+ 		/* note that posix payload are variable size */
+ 		info_buf_size = sizeof(struct smb2_posix_info);
+ 		break;
++	case SMB_FIND_FILE_FULL_DIRECTORY_INFO:
++		info_buf_size = sizeof(FILE_FULL_DIRECTORY_INFO);
++		break;
+ 	default:
+ 		cifs_tcon_dbg(VFS, "info level %u isn't supported\n",
+ 			 srch_inf->info_level);
 -- 
 2.43.0
 
