@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-25184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BBC8869826
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:29:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91EA886974C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:20:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAF2A294598
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:29:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC653283314
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:20:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DDDA13B2B4;
-	Tue, 27 Feb 2024 14:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 543141419A1;
+	Tue, 27 Feb 2024 14:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vFuv0do7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vheWNNBn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE1414532C;
-	Tue, 27 Feb 2024 14:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1249213EFEC;
+	Tue, 27 Feb 2024 14:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044098; cv=none; b=Cynbuu7iHur//Pv9Bl7VCIdJHahfO/z9HHJtKhMv/IPGf2s6eUw3+6EecjE1ZG856stnrxgMb07XehMrig7vm6zFbF1jJeDtQ2YPaY2pqZvci2Sw3HKoH2WQciEaz5hWyFbXPLr9FRw2Cd5ORX/8F4Oa7to/9DXW047Fbfx5br0=
+	t=1709043605; cv=none; b=QerEGzj6h0Awd2dlunc4mkHcKc8GqDYFi35G9w27q8NXhNGVLTM7aVMQUufC9ty00J2NWOf3SMwq/tDo9iUcQ+ScpF7SZYduoftOzWW5eCX52kHuC+ddX+9MlRdyaAJhYdix/DItGZCuIu1AFLBoZl2yL5ah4byFLrmF800xkik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044098; c=relaxed/simple;
-	bh=W5/THyhqEM9+zjDSiZMIMofKyd0EHT+q0aEUynuah4w=;
+	s=arc-20240116; t=1709043605; c=relaxed/simple;
+	bh=Jn+jwQOl+6cG5JM5yK0n1XpNLt9/Kc/ci/UjasMmqE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cEmB3VrH3J9777p48MM8hHlz7a8zGqrTZKVlr/Lne5mjcxiRAk601AI82Rrv1ZCzdmxDL58e6Wwg9MSAVpta76arq7LWV4xh4BOL6/XhLS1MUqdHLG2zUkw3/f3vGhQQjIiJereR3LosnPnZbAyX42ApbFO+rEbZXFkLh5NBikk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vFuv0do7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E8D3C433C7;
-	Tue, 27 Feb 2024 14:28:17 +0000 (UTC)
+	 MIME-Version; b=DkmWkD68m+WyUA4EPi7VL5WRKlzKjq8hSpVukcN2xOFpbKfcwYcqyLw5ACWPE4VdT0q9nHnODvkh2XqIsoxeGlP3Su1FyaFhYDCW6aaeZbctrT9Z3nqKqMtbaNykkNXwHaMLVH7su4xJHBhcMFK9ZpYuk0RqlR3qBfsBFkOKItE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vheWNNBn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9299AC433F1;
+	Tue, 27 Feb 2024 14:20:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044097;
-	bh=W5/THyhqEM9+zjDSiZMIMofKyd0EHT+q0aEUynuah4w=;
+	s=korg; t=1709043604;
+	bh=Jn+jwQOl+6cG5JM5yK0n1XpNLt9/Kc/ci/UjasMmqE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vFuv0do7decH1+nV7q5Uen1RRKi+6iucl6Xju/awWUCX8tSsEvMS/W2RBBzMyF3i3
-	 zZV9ADoW7NUgWbboCh3ZD13wQeJWE73EfNyU9PqhiFHn9wfMau2Ln9BQvEzEIn+NEK
-	 C3ISP6zNvRRN/H1qISwFAtOYEgsgI6Qo0bvMcBXU=
+	b=vheWNNBni3wN/SRWKGJhV1g6x1oIH0bqvkYRdj8DmtUSB2IzI8FnaeyNRMxrpBBKr
+	 kSWsRR5KyJYN5uTZcy1a4W6vhdTt3rFm+mqQsxa2SnCCsz1hByi9nugtJSFsIoBJeM
+	 2rpDSDHSsItfqh5q+T0RQ3FCm2N8yntflCS9Ii6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>,
+	Jackson Cooper-Driver <Jackson.Cooper-Driver@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 061/122] btrfs: tree-checker: check for overlapping extent items
+Subject: [PATCH 6.1 161/195] arm64/sme: Restore SME registers on exit from suspend
 Date: Tue, 27 Feb 2024 14:27:02 +0100
-Message-ID: <20240227131600.701388915@linuxfoundation.org>
+Message-ID: <20240227131615.728895625@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 899b7f69f244e539ea5df1b4d756046337de44a5 ]
+[ Upstream commit 9533864816fb4a6207c63b7a98396351ce1a9fae ]
 
-We're seeing a weird problem in production where we have overlapping
-extent items in the extent tree.  It's unclear where these are coming
-from, and in debugging we realized there's no check in the tree checker
-for this sort of problem.  Add a check to the tree-checker to make sure
-that the extents do not overlap each other.
+The fields in SMCR_EL1 and SMPRI_EL1 reset to an architecturally UNKNOWN
+value. Since we do not otherwise manage the traps configured in this
+register at runtime we need to reconfigure them after a suspend in case
+nothing else was kind enough to preserve them for us.
 
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+The vector length will be restored as part of restoring the SME state for
+the next SME using task.
+
+Fixes: a1f4ccd25cc2 ("arm64/sme: Provide Kconfig for SME")
+Reported-by: Jackson Cooper-Driver <Jackson.Cooper-Driver@arm.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20240213-arm64-sme-resume-v3-1-17e05e493471@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-checker.c | 25 +++++++++++++++++++++++--
- 1 file changed, 23 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/fpsimd.h |  2 ++
+ arch/arm64/kernel/fpsimd.c      | 14 ++++++++++++++
+ arch/arm64/kernel/suspend.c     |  3 +++
+ 3 files changed, 19 insertions(+)
 
-diff --git a/fs/btrfs/tree-checker.c b/fs/btrfs/tree-checker.c
-index c0eda3816f685..5b952f69bc1f6 100644
---- a/fs/btrfs/tree-checker.c
-+++ b/fs/btrfs/tree-checker.c
-@@ -1189,7 +1189,8 @@ static void extent_err(const struct extent_buffer *eb, int slot,
- }
+diff --git a/arch/arm64/include/asm/fpsimd.h b/arch/arm64/include/asm/fpsimd.h
+index d720b6f7e5f9c..da18413712c04 100644
+--- a/arch/arm64/include/asm/fpsimd.h
++++ b/arch/arm64/include/asm/fpsimd.h
+@@ -343,6 +343,7 @@ extern void sme_alloc(struct task_struct *task, bool flush);
+ extern unsigned int sme_get_vl(void);
+ extern int sme_set_current_vl(unsigned long arg);
+ extern int sme_get_current_vl(void);
++extern void sme_suspend_exit(void);
  
- static int check_extent_item(struct extent_buffer *leaf,
--			     struct btrfs_key *key, int slot)
-+			     struct btrfs_key *key, int slot,
-+			     struct btrfs_key *prev_key)
+ /*
+  * Return how many bytes of memory are required to store the full SME
+@@ -372,6 +373,7 @@ static inline int sme_max_vl(void) { return 0; }
+ static inline int sme_max_virtualisable_vl(void) { return 0; }
+ static inline int sme_set_current_vl(unsigned long arg) { return -EINVAL; }
+ static inline int sme_get_current_vl(void) { return -EINVAL; }
++static inline void sme_suspend_exit(void) { }
+ 
+ static inline size_t za_state_size(struct task_struct const *task)
  {
- 	struct btrfs_fs_info *fs_info = leaf->fs_info;
- 	struct btrfs_extent_item *ei;
-@@ -1400,6 +1401,26 @@ static int check_extent_item(struct extent_buffer *leaf,
- 			   total_refs, inline_refs);
- 		return -EUCLEAN;
- 	}
-+
-+	if ((prev_key->type == BTRFS_EXTENT_ITEM_KEY) ||
-+	    (prev_key->type == BTRFS_METADATA_ITEM_KEY)) {
-+		u64 prev_end = prev_key->objectid;
-+
-+		if (prev_key->type == BTRFS_METADATA_ITEM_KEY)
-+			prev_end += fs_info->nodesize;
-+		else
-+			prev_end += prev_key->offset;
-+
-+		if (unlikely(prev_end > key->objectid)) {
-+			extent_err(leaf, slot,
-+	"previous extent [%llu %u %llu] overlaps current extent [%llu %u %llu]",
-+				   prev_key->objectid, prev_key->type,
-+				   prev_key->offset, key->objectid, key->type,
-+				   key->offset);
-+			return -EUCLEAN;
-+		}
-+	}
-+
- 	return 0;
+diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
+index 8c226d79abdfc..59b5a16bab5d6 100644
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -1347,6 +1347,20 @@ void __init sme_setup(void)
+ 		get_sme_default_vl());
  }
  
-@@ -1568,7 +1589,7 @@ static int check_leaf_item(struct extent_buffer *leaf,
- 		break;
- 	case BTRFS_EXTENT_ITEM_KEY:
- 	case BTRFS_METADATA_ITEM_KEY:
--		ret = check_extent_item(leaf, key, slot);
-+		ret = check_extent_item(leaf, key, slot, prev_key);
- 		break;
- 	case BTRFS_TREE_BLOCK_REF_KEY:
- 	case BTRFS_SHARED_DATA_REF_KEY:
++void sme_suspend_exit(void)
++{
++	u64 smcr = 0;
++
++	if (!system_supports_sme())
++		return;
++
++	if (system_supports_fa64())
++		smcr |= SMCR_ELx_FA64;
++
++	write_sysreg_s(smcr, SYS_SMCR_EL1);
++	write_sysreg_s(0, SYS_SMPRI_EL1);
++}
++
+ #endif /* CONFIG_ARM64_SME */
+ 
+ static void sve_init_regs(void)
+diff --git a/arch/arm64/kernel/suspend.c b/arch/arm64/kernel/suspend.c
+index 8b02d310838f9..064d996cc55b2 100644
+--- a/arch/arm64/kernel/suspend.c
++++ b/arch/arm64/kernel/suspend.c
+@@ -11,6 +11,7 @@
+ #include <asm/daifflags.h>
+ #include <asm/debug-monitors.h>
+ #include <asm/exec.h>
++#include <asm/fpsimd.h>
+ #include <asm/mte.h>
+ #include <asm/memory.h>
+ #include <asm/mmu_context.h>
+@@ -77,6 +78,8 @@ void notrace __cpu_suspend_exit(void)
+ 	 */
+ 	spectre_v4_enable_mitigation(NULL);
+ 
++	sme_suspend_exit();
++
+ 	/* Restore additional feature-specific configuration */
+ 	ptrauth_suspend_exit();
+ }
 -- 
 2.43.0
 
