@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63FCC869498
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:55:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54A33869400
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3FAEDB2EC62
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:42:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 863C51C23D0A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4070113B2B4;
-	Tue, 27 Feb 2024 13:42:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 399A9146914;
+	Tue, 27 Feb 2024 13:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VkQQuXUu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/CdKoyU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD3013B2B8;
-	Tue, 27 Feb 2024 13:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC058145B0B;
+	Tue, 27 Feb 2024 13:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041323; cv=none; b=hV01DQtnMVRJa+Cr/Dw2n8BrnPywh0/KZTBqkOvf7afX1dI5v1s0QyXKtUwBecw4fYJkzDxlJlMEVZqki6XdehQNuy75C+pAl3QL4Y1qk200Cpb6UXDg8Uq16lDfXFZmZyajNyl9S6s4sNCd3Nh3XwPpUmqb3mwlJt8JZql43Xg=
+	t=1709041715; cv=none; b=JksJrDubuwmOE0/CblM0bFwe+X0HU5aJUWAwWbhyy77iK79TRj68NuVNlgBjHCFuHe/D/fF7Kgb8ucYn+5VC4fbHubBS+BVh3Jttvy3CNNTQ0D08KHeIDvPWCude8+KPnPvYhjbKjHrb2MxU2bEBq0gBNKEeqenj47fqgak1f1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041323; c=relaxed/simple;
-	bh=qhR0sSKRK9+hR5t6Wqibl+EmdSjJI1+NKymNMvAlj+k=;
+	s=arc-20240116; t=1709041715; c=relaxed/simple;
+	bh=p+7Enuo6COZYqYhlrXTIL1N0jHECdd/2z3MucEKRuMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=peqQFo8zENHH70qYpFSdCYtdwau6ky1MOiy3xUerZcJ194EWRUzjlpochpFqjswhUqEelaFV0HmPRgpWo7X7mcGswp0YEIIVnFUN5zCFWJH9JoXkKvnQ0lyE2+6qhz+1OvSLWRcU7lrS/LAivNGaI+u6ihybrAQe3VN4L7ccaK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VkQQuXUu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38B90C433C7;
-	Tue, 27 Feb 2024 13:42:02 +0000 (UTC)
+	 MIME-Version; b=uhD+iguoBpJIoIwruBWYqlXtEf3OcRdIBBU4L0q1rSMVQWHxtaRunvOOGTnUtOEa/oRTGvNHggaMgbEnjqck7dB1mo9T6zNIeteNPVxpwh31Pr11pSmQj45mg+N9sl2uXzfadgywM+WnkQF44X6C0oVSAW5I8RId7/quy0ObtPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/CdKoyU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69520C433C7;
+	Tue, 27 Feb 2024 13:48:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041322;
-	bh=qhR0sSKRK9+hR5t6Wqibl+EmdSjJI1+NKymNMvAlj+k=;
+	s=korg; t=1709041714;
+	bh=p+7Enuo6COZYqYhlrXTIL1N0jHECdd/2z3MucEKRuMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VkQQuXUuwaIpToGOt3eSCE5fKnxyRSAsD/v5LyP1jEpu36C4urlPE7XgbZkE2kPsK
-	 JtgF8fDdMoijb/xA0OTplgqKcDMb1dz9ETzXlhCcll3G6yCU1s1hlxA++L0vtCJhv4
-	 An5MrztQI8cb8HvLPpl4FjCJ/rx8k7SlRJF9qL+A=
+	b=k/CdKoyUrZtjJEYgHDbHVKBWhs1Ma3fx1R1PSWTbQVhRGicbLy2j5QK3jcbxqqhzs
+	 IW72d1yibs+BhVkF8qm0h7m96QsQgGCtzeoidRjNoVr32NnwX+hnv2hUPLu7XkV572
+	 ellVmYVD6r5alCiG9FCFyN6fbLoBovmfnaapAXrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Tian <kevin.tian@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 298/334] iommufd: Reject non-zero data_type if no data_len is provided
+Subject: [PATCH 6.6 045/299] usb: ucsi_acpi: Quirk to ack a connector change ack cmd
 Date: Tue, 27 Feb 2024 14:22:36 +0100
-Message-ID: <20240227131640.657548875@linuxfoundation.org>
+Message-ID: <20240227131627.433152519@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-[ Upstream commit 7adc0c1cfa7732b81bf7bf2ed16ffb99719ceebf ]
+[ Upstream commit f3be347ea42dbb0358cd8b2d8dc543a23b70a976 ]
 
-Since the current design doesn't forward the data_type to the driver to
-check unless there is a data_len/uptr for a driver specific struct we
-should check and ensure that data_type is 0 if data_len is 0. Otherwise
-any value is permitted.
+The PPM on some Dell laptops seems to expect that the ACK_CC_CI
+command to clear the connector change notification is in turn
+followed by another ACK_CC_CI to acknowledge the ACK_CC_CI command
+itself. This is in violation of the UCSI spec that states:
 
-Fixes: bd529dbb661d ("iommufd: Add a nested HW pagetable object")
-Link: https://lore.kernel.org/r/0-v1-9b1ea6869554+110c60-iommufd_ck_data_type_jgg@nvidia.com
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+    "The only notification that is not acknowledged by the OPM is
+     the command completion notification for the ACK_CC_CI or the
+     PPM_RESET command."
+
+Add a quirk to send this ack anyway.
+Apply the quirk to all Dell systems.
+
+On the first command that acks a connector change send a dummy
+command to determine if it runs into a timeout. Only activate
+the quirk if it does. This ensure that we do not break Dell
+systems that do not need the quirk.
+
+Signed-off-by: "Christian A. Ehrhardt" <lk@c--e.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240121204123.275441-4-lk@c--e.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommufd/hw_pagetable.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/ucsi_acpi.c | 71 ++++++++++++++++++++++++++++--
+ 1 file changed, 68 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iommu/iommufd/hw_pagetable.c b/drivers/iommu/iommufd/hw_pagetable.c
-index cbb5df0a6c32f..6f680959b23ed 100644
---- a/drivers/iommu/iommufd/hw_pagetable.c
-+++ b/drivers/iommu/iommufd/hw_pagetable.c
-@@ -261,7 +261,8 @@ int iommufd_hwpt_alloc(struct iommufd_ucmd *ucmd)
+diff --git a/drivers/usb/typec/ucsi/ucsi_acpi.c b/drivers/usb/typec/ucsi/ucsi_acpi.c
+index fa222080887d5..928eacbeb21ac 100644
+--- a/drivers/usb/typec/ucsi/ucsi_acpi.c
++++ b/drivers/usb/typec/ucsi/ucsi_acpi.c
+@@ -25,6 +25,8 @@ struct ucsi_acpi {
+ 	unsigned long flags;
+ 	guid_t guid;
+ 	u64 cmd;
++	bool dell_quirk_probed;
++	bool dell_quirk_active;
+ };
  
- 	if (cmd->__reserved)
- 		return -EOPNOTSUPP;
--	if (cmd->data_type == IOMMU_HWPT_DATA_NONE && cmd->data_len)
-+	if ((cmd->data_type == IOMMU_HWPT_DATA_NONE && cmd->data_len) ||
-+	    (cmd->data_type != IOMMU_HWPT_DATA_NONE && !cmd->data_len))
- 		return -EINVAL;
+ static int ucsi_acpi_dsm(struct ucsi_acpi *ua, int func)
+@@ -126,12 +128,73 @@ static const struct ucsi_operations ucsi_zenbook_ops = {
+ 	.async_write = ucsi_acpi_async_write
+ };
  
- 	idev = iommufd_get_device(ucmd, cmd->dev_id);
+-static const struct dmi_system_id zenbook_dmi_id[] = {
++/*
++ * Some Dell laptops expect that an ACK command with the
++ * UCSI_ACK_CONNECTOR_CHANGE bit set is followed by a (separate)
++ * ACK command that only has the UCSI_ACK_COMMAND_COMPLETE bit set.
++ * If this is not done events are not delivered to OSPM and
++ * subsequent commands will timeout.
++ */
++static int
++ucsi_dell_sync_write(struct ucsi *ucsi, unsigned int offset,
++		     const void *val, size_t val_len)
++{
++	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
++	u64 cmd = *(u64 *)val, ack = 0;
++	int ret;
++
++	if (UCSI_COMMAND(cmd) == UCSI_ACK_CC_CI &&
++	    cmd & UCSI_ACK_CONNECTOR_CHANGE)
++		ack = UCSI_ACK_CC_CI | UCSI_ACK_COMMAND_COMPLETE;
++
++	ret = ucsi_acpi_sync_write(ucsi, offset, val, val_len);
++	if (ret != 0)
++		return ret;
++	if (ack == 0)
++		return ret;
++
++	if (!ua->dell_quirk_probed) {
++		ua->dell_quirk_probed = true;
++
++		cmd = UCSI_GET_CAPABILITY;
++		ret = ucsi_acpi_sync_write(ucsi, UCSI_CONTROL, &cmd,
++					   sizeof(cmd));
++		if (ret == 0)
++			return ucsi_acpi_sync_write(ucsi, UCSI_CONTROL,
++						    &ack, sizeof(ack));
++		if (ret != -ETIMEDOUT)
++			return ret;
++
++		ua->dell_quirk_active = true;
++		dev_err(ua->dev, "Firmware bug: Additional ACK required after ACKing a connector change.\n");
++		dev_err(ua->dev, "Firmware bug: Enabling workaround\n");
++	}
++
++	if (!ua->dell_quirk_active)
++		return ret;
++
++	return ucsi_acpi_sync_write(ucsi, UCSI_CONTROL, &ack, sizeof(ack));
++}
++
++static const struct ucsi_operations ucsi_dell_ops = {
++	.read = ucsi_acpi_read,
++	.sync_write = ucsi_dell_sync_write,
++	.async_write = ucsi_acpi_async_write
++};
++
++static const struct dmi_system_id ucsi_acpi_quirks[] = {
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "ZenBook UX325UA_UM325UA"),
+ 		},
++		.driver_data = (void *)&ucsi_zenbook_ops,
++	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++		},
++		.driver_data = (void *)&ucsi_dell_ops,
+ 	},
+ 	{ }
+ };
+@@ -160,6 +223,7 @@ static int ucsi_acpi_probe(struct platform_device *pdev)
+ {
+ 	struct acpi_device *adev = ACPI_COMPANION(&pdev->dev);
+ 	const struct ucsi_operations *ops = &ucsi_acpi_ops;
++	const struct dmi_system_id *id;
+ 	struct ucsi_acpi *ua;
+ 	struct resource *res;
+ 	acpi_status status;
+@@ -189,8 +253,9 @@ static int ucsi_acpi_probe(struct platform_device *pdev)
+ 	init_completion(&ua->complete);
+ 	ua->dev = &pdev->dev;
+ 
+-	if (dmi_check_system(zenbook_dmi_id))
+-		ops = &ucsi_zenbook_ops;
++	id = dmi_first_match(ucsi_acpi_quirks);
++	if (id)
++		ops = id->driver_data;
+ 
+ 	ua->ucsi = ucsi_create(&pdev->dev, ops);
+ 	if (IS_ERR(ua->ucsi))
 -- 
 2.43.0
 
