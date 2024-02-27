@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DDD48696ED
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:16:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEDA3869625
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:08:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24AD81F248A0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:16:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F27AD1C21B12
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:08:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3D1513A26F;
-	Tue, 27 Feb 2024 14:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2907F13B2B4;
+	Tue, 27 Feb 2024 14:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v6kWjfyR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fg2Rrqfc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577501386CB;
-	Tue, 27 Feb 2024 14:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCBEC13A26F;
+	Tue, 27 Feb 2024 14:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043401; cv=none; b=EzMCon40dSIJYM9Z0gTB5ouqi0ekch18zWLyTU2vl8VEwC+BjxMAjgw9oxgUYyNFAF9O4zH7VHjQ614LYh+bVDzhO+7eG7+yVI/KPZO7/6Q6mv4HZQCUuAs3N7gW0E/gQPKROiD8HGUv99W/i71b5cGmTlmzwMRidsW8b7jbqmE=
+	t=1709042914; cv=none; b=Xh60C7VzZB6Dv+HgtDxI86xrz7ibaAXrlyfuhPsWtp9McSNvS4Gq76PjKEY0gChUsz1l9qN0ryN52FVREsjfmAoqolA6vMlqB3vfDlledwh/ztoCCZXf2N23qN4GWaaj+0qinuXTi5R4Jv/1AH3zHHwR2dtqi+i/roZAapokG3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043401; c=relaxed/simple;
-	bh=CAb4yWSPlP3MFnS3ypSsQELrPENJZMjFu1hKiKb2rxs=;
+	s=arc-20240116; t=1709042914; c=relaxed/simple;
+	bh=S1uWKbeISUfnf+4SbW7d8LpNXukt6pyRU9I4ep4m178=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GeC97CICsy6kbiL8BlKaurqiWODvImp5iQi5U5aWNt/7rtL5kJQNoindvT4nROFXPEZgKtf5STl5hNc5MnpB9nV68/MOH6Qy6A9oaU8/RRZ3GtMJoZkdlwM/tyv7NDiRiE7w2oTvR2+PPTECcVAWhTCPYzxBZLse5gMCEpHTgLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v6kWjfyR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB0CC433F1;
-	Tue, 27 Feb 2024 14:16:40 +0000 (UTC)
+	 MIME-Version; b=ID/vXPsO0v3QXn6rskFCa/u4CxsmTYrdgB1N0hrUMMbm6RZ505mVbK+/UWu/+p/MsxfZba6I8IAWsY/lhZy2H+7f2nMf3mT+XZDpIi1hWSuMBvHtVJl9lKAJa6/uTq5KhhXp49GUdSlf4UeSkcFuJ78PYsYQrqtbClzBm1NP+7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fg2Rrqfc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A92BC433F1;
+	Tue, 27 Feb 2024 14:08:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043401;
-	bh=CAb4yWSPlP3MFnS3ypSsQELrPENJZMjFu1hKiKb2rxs=;
+	s=korg; t=1709042914;
+	bh=S1uWKbeISUfnf+4SbW7d8LpNXukt6pyRU9I4ep4m178=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v6kWjfyRGxuollts+v2SHY9EKDePhtfhU18c614ZhHvEU+ApBLaLl+J6tyOsLk7Ro
-	 xmd8z+I2tKFye4Gsqw4eefUwZSZADDdg1WCdUTRj6ao/lKdD97gnsyIOAZLqSxKcMK
-	 7emW3RCJMyUz4kSh+/R8wFmRRts6LkkCtzIyRPIc=
+	b=Fg2RrqfcARt5DXax/1GnAT76xDlmvACLNAcFZRqr+Qf/H1/qLrM/Vu21CwtSSq5z7
+	 W19GzriwQ0ICHkCTzXXzaHgmjXEGaJPvgeogu+CRxZyHPoAcmkBBpsUxW2OypmrvXv
+	 1nBi9B+eVaSukZWkVLpwU/3+bc4srzK4x5obiJrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 094/195] scsi: target: pscsi: Fix bio_put() for error case
+	Peter Neuwirth <reddunur@online.de>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 167/245] md: fix data corruption for raid456 when reshape restart while grow up
 Date: Tue, 27 Feb 2024 14:25:55 +0100
-Message-ID: <20240227131613.581282754@linuxfoundation.org>
+Message-ID: <20240227131620.638926407@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-commit de959094eb2197636f7c803af0943cb9d3b35804 upstream.
+[ Upstream commit 873f50ece41aad5c4f788a340960c53774b5526e ]
 
-As of commit 066ff571011d ("block: turn bio_kmalloc into a simple kmalloc
-wrapper"), a bio allocated by bio_kmalloc() must be freed by bio_uninit()
-and kfree(). That is not done properly for the error case, hitting WARN and
-NULL pointer dereference in bio_free().
+Currently, if reshape is interrupted, echo "reshape" to sync_action will
+restart reshape from scratch, for example:
 
-Fixes: 066ff571011d ("block: turn bio_kmalloc into a simple kmalloc wrapper")
-CC: stable@vger.kernel.org # 6.1+
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Link: https://lore.kernel.org/r/20240214144356.101814-1-naohiro.aota@wdc.com
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+echo frozen > sync_action
+echo reshape > sync_action
+
+This will corrupt data before reshape_position if the array is growing,
+fix the problem by continue reshape from reshape_position.
+
+Reported-by: Peter Neuwirth <reddunur@online.de>
+Link: https://lore.kernel.org/linux-raid/e2f96772-bfbc-f43b-6da1-f520e5164536@online.de/
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20230512015610.821290-3-yukuai1@huaweicloud.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/target_core_pscsi.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/md/md.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/drivers/target/target_core_pscsi.c
-+++ b/drivers/target/target_core_pscsi.c
-@@ -910,12 +910,15 @@ new_bio:
- 
- 	return 0;
- fail:
--	if (bio)
--		bio_put(bio);
-+	if (bio) {
-+		bio_uninit(bio);
-+		kfree(bio);
-+	}
- 	while (req->bio) {
- 		bio = req->bio;
- 		req->bio = bio->bi_next;
--		bio_put(bio);
-+		bio_uninit(bio);
-+		kfree(bio);
- 	}
- 	req->biotail = NULL;
- 	return TCM_LOGICAL_UNIT_COMMUNICATION_FAILURE;
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index ff65e5eddfa18..a17f2f725822a 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -4919,11 +4919,21 @@ action_store(struct mddev *mddev, const char *page, size_t len)
+ 			return -EINVAL;
+ 		err = mddev_lock(mddev);
+ 		if (!err) {
+-			if (test_bit(MD_RECOVERY_RUNNING, &mddev->recovery))
++			if (test_bit(MD_RECOVERY_RUNNING, &mddev->recovery)) {
+ 				err =  -EBUSY;
+-			else {
++			} else if (mddev->reshape_position == MaxSector ||
++				   mddev->pers->check_reshape == NULL ||
++				   mddev->pers->check_reshape(mddev)) {
+ 				clear_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
+ 				err = mddev->pers->start_reshape(mddev);
++			} else {
++				/*
++				 * If reshape is still in progress, and
++				 * md_check_recovery() can continue to reshape,
++				 * don't restart reshape because data can be
++				 * corrupted for raid456.
++				 */
++				clear_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
+ 			}
+ 			mddev_unlock(mddev);
+ 		}
+-- 
+2.43.0
+
 
 
 
