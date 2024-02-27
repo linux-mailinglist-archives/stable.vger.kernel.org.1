@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBCE18695D8
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:06:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 392F98696A8
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:14:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08F7B1C203AD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:06:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6B9C29588B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:14:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1824A13B2B9;
-	Tue, 27 Feb 2024 14:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A0C145343;
+	Tue, 27 Feb 2024 14:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cX25sZI6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qvSlPwLw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB80813B79F;
-	Tue, 27 Feb 2024 14:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7DEE1420D0;
+	Tue, 27 Feb 2024 14:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042729; cv=none; b=KBMGVqE0AC3gT93vpY6AwQ06fln2PEfh1eZCqQ/14o91gcO1/9IKYRallxo5jB6xiNJcvVgT7W8CRhWf1kjqruAmP8JVqPxNUmT6ayrkYalE2resKwzo2v7xnDFe0IJNbC64P4ouBz2fjMK1rWH+BrekUh3R9Ez33MfidStzY5k=
+	t=1709043215; cv=none; b=jZjPc0JcP6YtYJ8LsXXG0BXrjDmdjn8TmIiYCoKnslfghMyPGH+Ow2es/ZakYIGEmKgN3fl7LbbPriCAwu/fRaxTzoqFzMlEiC8MWi4uhtCFzQuoK8ga4vtZwfEPeBhmRdOeCEJ5lT1mEG8zbUiYFumbuqjoWAnayl0YLwJChCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042729; c=relaxed/simple;
-	bh=qOw+Om0cX38bHH06OW0jUGPCLt9X6zQR7NUWb9Y875k=;
+	s=arc-20240116; t=1709043215; c=relaxed/simple;
+	bh=eUVenfA9rKR5M2Xe/LVD3Oq2HFs7+tzm2XCrie6payo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X/X/IclZiQdhW4n7EyGDuNBfrC6WFM/96zX+M3p4BL0RzTOTnKbbghBIIEwJ+ibhLo8FjAOFk49rA9Eq2XZ1aja/cNuoUp85UhOxcLiHfHQrLHz7LsSYY7uxnfpic9LmGE4ESUyZ6BgK/8p9V6ZDD8Jlb5fBsPzCL1o9497QWic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cX25sZI6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13888C433F1;
-	Tue, 27 Feb 2024 14:05:28 +0000 (UTC)
+	 MIME-Version; b=Qgvo67OMvcgDzPwMtgjnHYiCeWAhEEVkZlS2mFnl/FKz+0VC/gVB3A40k6dI3sq4Dq+VpTn7Vw9mkSUlfaSdzFQbXDXVoT6exXpHhqRoFlfe6CpHj1Bumtl5om3z9eB/Gu5ZCSdm3RObqkBSHSqcaF8BdmneB2eHw+pMQUdpz2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qvSlPwLw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F7F0C43394;
+	Tue, 27 Feb 2024 14:13:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042729;
-	bh=qOw+Om0cX38bHH06OW0jUGPCLt9X6zQR7NUWb9Y875k=;
+	s=korg; t=1709043215;
+	bh=eUVenfA9rKR5M2Xe/LVD3Oq2HFs7+tzm2XCrie6payo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cX25sZI6qUAcyrUXX/LrjqfDlON1tkTFFQMPNc6K+kP8pfgYO9dbLwX+yyWpdo6FQ
-	 oH6JU93SgtjPlmsusBiOHhsUUqsuX5W+ET0rG2WH/dDTto0FvKFxzonFlPbDV63jR9
-	 fvKA8XVwM/ZaOXUqEmXDnVzSP1FN2M9o1gBBsqYA=
+	b=qvSlPwLwqS1hjaKTpdpQBFL1ls7dpnaNllmsalbPpIKNgJzzgPs+hFEcMVIiRTjv4
+	 bu00BkXfoQCplpgmhXIE5ABB+XJ5sHFAzl+jY/W/CqQq81TIonOWG3JqWpWUqoSFQx
+	 gPxBvUo36rreHiAaoHdumout/tfYyadvXfzPIQ0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 5.15 100/245] usb: cdns3: fix memory double free when handle zero packet
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 027/195] ext4: avoid allocating blocks from corrupted group in ext4_mb_try_best_found()
 Date: Tue, 27 Feb 2024 14:24:48 +0100
-Message-ID: <20240227131618.466846168@linuxfoundation.org>
+Message-ID: <20240227131611.291229561@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 5fd9e45f1ebcd57181358af28506e8a661a260b3 upstream.
+[ Upstream commit 4530b3660d396a646aad91a787b6ab37cf604b53 ]
 
-829  if (request->complete) {
-830          spin_unlock(&priv_dev->lock);
-831          usb_gadget_giveback_request(&priv_ep->endpoint,
-832                                    request);
-833          spin_lock(&priv_dev->lock);
-834  }
-835
-836  if (request->buf == priv_dev->zlp_buf)
-837      cdns3_gadget_ep_free_request(&priv_ep->endpoint, request);
+Determine if the group block bitmap is corrupted before using ac_b_ex in
+ext4_mb_try_best_found() to avoid allocating blocks from a group with a
+corrupted block bitmap in the following concurrency and making the
+situation worse.
 
-Driver append an additional zero packet request when queue a packet, which
-length mod max packet size is 0. When transfer complete, run to line 831,
-usb_gadget_giveback_request() will free this requestion. 836 condition is
-true, so cdns3_gadget_ep_free_request() free this request again.
+ext4_mb_regular_allocator
+  ext4_lock_group(sb, group)
+  ext4_mb_good_group
+   // check if the group bbitmap is corrupted
+  ext4_mb_complex_scan_group
+   // Scan group gets ac_b_ex but doesn't use it
+  ext4_unlock_group(sb, group)
+                           ext4_mark_group_bitmap_corrupted(group)
+                           // The block bitmap was corrupted during
+                           // the group unlock gap.
+  ext4_mb_try_best_found
+    ext4_lock_group(ac->ac_sb, group)
+    ext4_mb_use_best_found
+      mb_mark_used
+      // Allocating blocks in block bitmap corrupted group
 
-Log:
-
-[ 1920.140696][  T150] BUG: KFENCE: use-after-free read in cdns3_gadget_giveback+0x134/0x2c0 [cdns3]
-[ 1920.140696][  T150]
-[ 1920.151837][  T150] Use-after-free read at 0x000000003d1cd10b (in kfence-#36):
-[ 1920.159082][  T150]  cdns3_gadget_giveback+0x134/0x2c0 [cdns3]
-[ 1920.164988][  T150]  cdns3_transfer_completed+0x438/0x5f8 [cdns3]
-
-Add check at line 829, skip call usb_gadget_giveback_request() if it is
-additional zero length packet request. Needn't call
-usb_gadget_giveback_request() because it is allocated in this driver.
-
-Cc: stable@vger.kernel.org
-Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20240202154217.661867-2-Frank.Li@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240104142040.2835097-7-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/cdns3-gadget.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/ext4/mballoc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/usb/cdns3/cdns3-gadget.c
-+++ b/drivers/usb/cdns3/cdns3-gadget.c
-@@ -826,7 +826,11 @@ void cdns3_gadget_giveback(struct cdns3_
- 			return;
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 296185cbd1547..744472c0b6fa5 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -2176,6 +2176,9 @@ int ext4_mb_try_best_found(struct ext4_allocation_context *ac,
+ 		return err;
+ 
+ 	ext4_lock_group(ac->ac_sb, group);
++	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)))
++		goto out;
++
+ 	max = mb_find_extent(e4b, ex.fe_start, ex.fe_len, &ex);
+ 
+ 	if (max > 0) {
+@@ -2183,6 +2186,7 @@ int ext4_mb_try_best_found(struct ext4_allocation_context *ac,
+ 		ext4_mb_use_best_found(ac, e4b);
  	}
  
--	if (request->complete) {
-+	/*
-+	 * zlp request is appended by driver, needn't call usb_gadget_giveback_request() to notify
-+	 * gadget composite driver.
-+	 */
-+	if (request->complete && request->buf != priv_dev->zlp_buf) {
- 		spin_unlock(&priv_dev->lock);
- 		usb_gadget_giveback_request(&priv_ep->endpoint,
- 					    request);
++out:
+ 	ext4_unlock_group(ac->ac_sb, group);
+ 	ext4_mb_unload_buddy(e4b);
+ 
+-- 
+2.43.0
+
 
 
 
