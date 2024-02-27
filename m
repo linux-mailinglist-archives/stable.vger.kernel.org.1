@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-25117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DEBC8697D1
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:25:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6A7386987C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:36:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F58C1F2B543
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:25:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01491B30BBB
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE8E145B07;
-	Tue, 27 Feb 2024 14:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2261B13EFF4;
+	Tue, 27 Feb 2024 14:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1aZRgJou"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJaRCSEZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D82145B01;
-	Tue, 27 Feb 2024 14:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D408E54BFE;
+	Tue, 27 Feb 2024 14:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043911; cv=none; b=rDds/R/ISZ4h9svmGawrcZo2L5wXeq4A5LUFlRO6kfa0SeUl/k2+/rlCzI9J5Qi+MWqBJMDG14HgYvc/2XOmOhGe9JWeCpbEeWKZpOlg/P8KdwyADtd13GgJu5bHcmydw2OEPKhb2PnCjv5uEW/OYJ+QXcmqiFT4zvX2FRFQyqk=
+	t=1709044283; cv=none; b=gXoS4kFdi6O4ZVaFxCoL1e3LL4yIzjm8oHbmWZhGUqW0L8KW/45K569NdIPYQg1yLo9oCjInYsUfWDZpsHlPGJbYiBYQBeCRtOSvPKhy9Mp6KvdX2di+ruQ0ci3WOt46iuYnzC6jJ4PxFAxf4f8KIVWupC0Kuk5hH1u8ymOZUGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043911; c=relaxed/simple;
-	bh=k51IVfxT+GSuS7rhQYB1USjmaNfxeb36Vn6f6g/7pMM=;
+	s=arc-20240116; t=1709044283; c=relaxed/simple;
+	bh=5w4eW/Yc0zk880VxXzcTcKsI68vfXe1DsJTCoS/9SmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rHdp/YN29724c14w6+d3v+SSJRx7tXYXBMBlIVQvY+3fZipIYfWfz4py0AV83QdeYprws9e0PeyEisqw0HGNZO6EyK2TLkJAAQ/ArIYwsciVA3yYjZVNDngFSAsgtwm7L5P+6ptiqDzmIEcpGRMospvclgWC/OrMctfevibn1QE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1aZRgJou; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C0FFC43394;
-	Tue, 27 Feb 2024 14:25:11 +0000 (UTC)
+	 MIME-Version; b=YhfeDsSVidm3n0fMnOqTjEBDg5q+fnLjCbk/MDQ6ycySpoK3ZaCQtP1t6JkKRN4VQzYlIch0p7G4LhqeOkr3i9Ih7BxIfZITG1Hy2g9NSYKqF1VpVVwANe19Vgci+uyGn9Yv8PA3r8fjGKF8WWoF93lf46HKt70BDKQjsf6uk3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJaRCSEZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 611C4C433C7;
+	Tue, 27 Feb 2024 14:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043911;
-	bh=k51IVfxT+GSuS7rhQYB1USjmaNfxeb36Vn6f6g/7pMM=;
+	s=korg; t=1709044283;
+	bh=5w4eW/Yc0zk880VxXzcTcKsI68vfXe1DsJTCoS/9SmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1aZRgJouaFvSR8XQ4cUy1hAnWVNBjj8yUc10zoN5Q45pO2bXNXADcjlEVM9gIu2Jj
-	 yv/A4eM9ie2quJSuXeyp/ZNo/aNViZyqgo2XkbkBzNl8EE87DDFDTt0GxqEFjUm4dd
-	 0HxbWLNlWj71+ogz5gadS6GCC4QnVWdsqqFgNoqc=
+	b=vJaRCSEZ97TBCDDiY0fnmxMPABduhZiAQXYRByGjGwXUE3NtYRPZoCT4dV0eTH6HD
+	 UUdSPzr29oadumK2zIeezBCmMEL7O9jJF0QoeYLuSxJRS9yR0pG8vRXd2/bZ0LpZRy
+	 wmIPh+5QCt7mF/zRGgUbEoO2JRguXMMfErW5kOX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+de4025c006ec68ac56fc@syzkaller.appspotmail.com
-Subject: [PATCH 5.4 80/84] netfilter: nf_tables: set dormant flag on hook register failure
-Date: Tue, 27 Feb 2024 14:27:47 +0100
-Message-ID: <20240227131555.477222132@linuxfoundation.org>
+	Daniil Dulov <d.dulov@aladdin.ru>,
+	David Howells <dhowells@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 107/122] afs: Increase buffer size in afs_update_volume_status()
+Date: Tue, 27 Feb 2024 14:27:48 +0100
+Message-ID: <20240227131602.206419086@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Daniil Dulov <d.dulov@aladdin.ru>
 
-[ Upstream commit bccebf64701735533c8db37773eeacc6566cc8ec ]
+[ Upstream commit 6ea38e2aeb72349cad50e38899b0ba6fbcb2af3d ]
 
-We need to set the dormant flag again if we fail to register
-the hooks.
+The max length of volume->vid value is 20 characters.
+So increase idbuf[] size up to 24 to avoid overflow.
 
-During memory pressure hook registration can fail and we end up
-with a table marked as active but no registered hooks.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-On table/base chain deletion, nf_tables will attempt to unregister
-the hook again which yields a warn splat from the nftables core.
+[DH: Actually, it's 20 + NUL, so increase it to 24 and use snprintf()]
 
-Reported-and-tested-by: syzbot+de4025c006ec68ac56fc@syzkaller.appspotmail.com
-Fixes: 179d9ba5559a ("netfilter: nf_tables: fix table flag updates")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: d2ddc776a458 ("afs: Overhaul volume and server record caching and fileserver rotation")
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20240211150442.3416-1-d.dulov@aladdin.ru/ # v1
+Link: https://lore.kernel.org/r/20240212083347.10742-1-d.dulov@aladdin.ru/ # v2
+Link: https://lore.kernel.org/r/20240219143906.138346-3-dhowells@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/afs/volume.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 6c83d3e169c9c..c5dbb950822fd 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -951,6 +951,7 @@ static int nf_tables_updtable(struct nft_ctx *ctx)
- 	return 0;
+diff --git a/fs/afs/volume.c b/fs/afs/volume.c
+index f84194b791d3e..fb19c69284ab2 100644
+--- a/fs/afs/volume.c
++++ b/fs/afs/volume.c
+@@ -302,7 +302,7 @@ static int afs_update_volume_status(struct afs_volume *volume, struct key *key)
+ {
+ 	struct afs_server_list *new, *old, *discard;
+ 	struct afs_vldb_entry *vldb;
+-	char idbuf[16];
++	char idbuf[24];
+ 	int ret, idsz;
  
- err_register_hooks:
-+	ctx->table->flags |= NFT_TABLE_F_DORMANT;
- 	nft_trans_destroy(trans);
- 	return ret;
- }
+ 	_enter("");
+@@ -310,7 +310,7 @@ static int afs_update_volume_status(struct afs_volume *volume, struct key *key)
+ 	/* We look up an ID by passing it as a decimal string in the
+ 	 * operation's name parameter.
+ 	 */
+-	idsz = sprintf(idbuf, "%llu", volume->vid);
++	idsz = snprintf(idbuf, sizeof(idbuf), "%llu", volume->vid);
+ 
+ 	vldb = afs_vl_lookup_vldb(volume->cell, key, idbuf, idsz);
+ 	if (IS_ERR(vldb)) {
 -- 
 2.43.0
 
