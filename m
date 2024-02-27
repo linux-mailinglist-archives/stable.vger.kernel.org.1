@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-24569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7025E869532
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:59:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B081869724
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:18:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29E5E289854
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:59:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2253283462
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:18:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D292413DB9B;
-	Tue, 27 Feb 2024 13:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71CC278B61;
+	Tue, 27 Feb 2024 14:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="od7E+jun"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izT9BPxd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2F213B2B4;
-	Tue, 27 Feb 2024 13:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3100113B78E;
+	Tue, 27 Feb 2024 14:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042382; cv=none; b=J9q9hBUiqG2jmD2iOsUydL1sIwdEXmM3SAzO5pKc7KsRs4R5xNydytXReyZGyhYpejiJTFu6VoYgiLhsQWa5CASEAznJXOVhM8Yyq/qAtcsNljebmm/Lh4+9khvq1BaoWGVj8GuwwgVoF5xQrr484k8ZENMs2h8lF1xjL/cIeVQ=
+	t=1709043517; cv=none; b=TweUOWMQY+IsasQ9VVM/YF5IX3rzPWer+uqJmYIewaqoCZu4BYqxTUNKQnSC9JM2gSwKJ7MFFYKIa1t1/Nny8Vzw/PpjffmW8V4qnfTeZFk1nWq0zQ2xXpP5o1af+OaOK4CWPJD6j7hOP9RiBusNAW9MrjK4SDG8Z4Lf7SNUnCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042382; c=relaxed/simple;
-	bh=42Qh1dH1ct0lZbvviezkLig1Fquw2JuXAWd1+7WWF5A=;
+	s=arc-20240116; t=1709043517; c=relaxed/simple;
+	bh=RLTNgoAEoftHcUlThFPaWN+bpQqsHDP6May/Xm6o8wU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GuFjBTM67BfhIbyMBX9JKceNzjK+IZWYoPtV5wnfEU2zBJI0G6wdTMTLcEKxCBCB4HQS4DL3IelnnWYUkPEmOPf4yXu0HAMRJyl2p/AwVpberxx2wl/zlAnkb8BjtELFIL964CC8VKdCwIMUf70iJ6kaTJH1SkamvWDxCfPgtGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=od7E+jun; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DFD1C433C7;
-	Tue, 27 Feb 2024 13:59:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=da3MytaBev1xAGc6YtT3Wf2q1eHRDNZ/be2yEfh6sRtr16MLPVKgHuvweeOQJDlNf+cSLrQDFjD7/wvjDCz5Yz7ze19RJpqeCk6jSVddT+eyaPetRSSh07JpgeSB73N1bJqa01PhjlhWEqATK38ddsTkiLspFOL7lZ/rhDXlU9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izT9BPxd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2375C433F1;
+	Tue, 27 Feb 2024 14:18:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042382;
-	bh=42Qh1dH1ct0lZbvviezkLig1Fquw2JuXAWd1+7WWF5A=;
+	s=korg; t=1709043517;
+	bh=RLTNgoAEoftHcUlThFPaWN+bpQqsHDP6May/Xm6o8wU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=od7E+junAJJLbA6xwS4aRV9L9VYvECfqypV7Um/NtBQ7uta/HwSS4opao9JZ7904A
-	 IZaq7CjHUG0GwQQ8cftVydU0Z/UXI1fioWYV7CwxvSIgE3rTl9D0RybqvcISq0Q9y8
-	 6aURUIKUoOBD350/q0c/fSJgI7MeEWcFfOp+ktOw=
+	b=izT9BPxdym1z76wuQLfogA7sLbgiGz2Y50YVF+ikmQe4hMYCDFhK+OcEyWjHvRKF0
+	 uWx2xiGPHUDOsCKP0MR1AoCnIbWWJKYflqR0H5sVS8O8OtPTe4SQy+K8d/cgwIL2Rh
+	 /f8KGV3Pj3u6Wz69LNYjdnk2FMWIsLWuRQ7Owrxw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Chen <justin.chen@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 248/299] net: bcmasp: Sanity check is off by one
+	Colin Ian King <colin.i.king@gmail.com>,
+	=?UTF-8?q?Jonas=20Sch=C3=A4fer?= <jonas@wielicki.name>,
+	Narcis Garcia <debianlists@actiu.net>,
+	Yosry Ahmed <yosryahmed@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Shakeel Butt <shakeelb@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 098/195] mm: memcontrol: clarify swapaccount=0 deprecation warning
 Date: Tue, 27 Feb 2024 14:25:59 +0100
-Message-ID: <20240227131633.710135255@linuxfoundation.org>
+Message-ID: <20240227131613.709997610@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +66,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Chen <justin.chen@broadcom.com>
+From: Johannes Weiner <hannes@cmpxchg.org>
 
-[ Upstream commit f120e62e37f0af4c4cbe08e5a88ea60a6a17c858 ]
+commit 118642d7f606fc9b9c92ee611275420320290ffb upstream.
 
-A sanity check for OOB write is off by one leading to a false positive
-when the array is full.
+The swapaccount deprecation warning is throwing false positives.  Since we
+deprecated the knob and defaulted to enabling, the only reports we've been
+getting are from folks that set swapaccount=1.  While this is a nice
+affirmation that always-enabling was the right choice, we certainly don't
+want to warn when users request the supported mode.
 
-Fixes: 9b90aca97f6d ("net: ethernet: bcmasp: fix possible OOB write in bcmasp_netfilt_get_all_active()")
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Only warn when disabling is requested, and clarify the warning.
+
+[colin.i.king@gmail.com: spelling: "commdandline" -> "commandline"]
+  Link: https://lkml.kernel.org/r/20240215090544.1649201-1-colin.i.king@gmail.com
+Link: https://lkml.kernel.org/r/20240213081634.3652326-1-hannes@cmpxchg.org
+Fixes: b25806dcd3d5 ("mm: memcontrol: deprecate swapaccounting=0 mode")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Reported-by: "Jonas Schäfer" <jonas@wielicki.name>
+Reported-by: Narcis Garcia <debianlists@actiu.net>
+Suggested-by: Yosry Ahmed <yosryahmed@google.com>
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+Reviewed-by: Yosry Ahmed <yosryahmed@google.com>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Acked-by: Shakeel Butt <shakeelb@google.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/asp2/bcmasp.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ mm/memcontrol.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp.c b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
-index 41a6098eb0c2f..4b6bf2764bef7 100644
---- a/drivers/net/ethernet/broadcom/asp2/bcmasp.c
-+++ b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
-@@ -535,9 +535,6 @@ int bcmasp_netfilt_get_all_active(struct bcmasp_intf *intf, u32 *rule_locs,
- 	int j = 0, i;
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -7517,9 +7517,13 @@ bool mem_cgroup_swap_full(struct folio *
  
- 	for (i = 0; i < NUM_NET_FILTERS; i++) {
--		if (j == *rule_cnt)
--			return -EMSGSIZE;
--
- 		if (!priv->net_filters[i].claimed ||
- 		    priv->net_filters[i].port != intf->port)
- 			continue;
-@@ -547,6 +544,9 @@ int bcmasp_netfilt_get_all_active(struct bcmasp_intf *intf, u32 *rule_locs,
- 		    priv->net_filters[i - 1].wake_filter)
- 			continue;
- 
-+		if (j == *rule_cnt)
-+			return -EMSGSIZE;
+ static int __init setup_swap_account(char *s)
+ {
+-	pr_warn_once("The swapaccount= commandline option is deprecated. "
+-		     "Please report your usecase to linux-mm@kvack.org if you "
+-		     "depend on this functionality.\n");
++	bool res;
 +
- 		rule_locs[j++] = priv->net_filters[i].fs.location;
- 	}
- 
--- 
-2.43.0
-
++	if (!kstrtobool(s, &res) && !res)
++		pr_warn_once("The swapaccount=0 commandline option is deprecated "
++			     "in favor of configuring swap control via cgroupfs. "
++			     "Please report your usecase to linux-mm@kvack.org if you "
++			     "depend on this functionality.\n");
+ 	return 1;
+ }
+ __setup("swapaccount=", setup_swap_account);
 
 
 
