@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-25022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C3E1869779
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:21:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E227D869839
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:30:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08571B2C196
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:20:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98E33294F82
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:30:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7553713B79F;
-	Tue, 27 Feb 2024 14:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B2F145FF0;
+	Tue, 27 Feb 2024 14:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrEUqUe+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QsF6f2ai"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 328B113B2B4;
-	Tue, 27 Feb 2024 14:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E029145FED;
+	Tue, 27 Feb 2024 14:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043640; cv=none; b=MR740hBeZmw0DslvNn89HAbUXWwPmwKL+/gFpPT5cCWZMp0Fv4HP7wcUQzNo3DbMV54V857X8Mv3+EkuSi9Zd4xcByYhLXrrGhrWxXRd15PnuVvIWvf2/MgO7OYf0gFxzxg+vWrJnQkYHj8/5BO75SMdnOH0FobzwzSKAoolj6s=
+	t=1709044150; cv=none; b=C+CAZxWzBKtEsD6wWCG1VixSI1iDFM0rSHMMUkIdnvSxlHZ5VBtW/3y1a2aDgbgxcs7Z8PTvsehqPsXprUe90mPBRUAhUMMLXA7NlhcqGtgHkvRnZvPNvcPxCxP3IpBda7xOZlugiAti8qnZ4ffYXxIT67ggQxXi+xFEJAoy8Xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043640; c=relaxed/simple;
-	bh=hZvLR11v3N90bIqQ1tV4h1kVhTGIcoUJaaDdGybD6b4=;
+	s=arc-20240116; t=1709044150; c=relaxed/simple;
+	bh=OLkdj1dJ2fXzBgZbBtlKNT1yyF8jV4NdkuJakWYeohc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GpTt+MwCCE+3KqsYjz4ivVBoFuTWXqQVbawwkn7EhGQKTlKdpsHAtNcHS75SWJgK8QdwQvFyKRgjswRC77OXCN/18Q/erNJ8VimIy8fWS4kw4Rg/tdRNHJMqVv5hUEtTX5aW12i1M7fWdLHS5WxFPn6s0cfAGjkJLrdjX2iqblM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrEUqUe+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B706C433F1;
-	Tue, 27 Feb 2024 14:20:38 +0000 (UTC)
+	 MIME-Version; b=DVclwFmsz4UWQnWLgaV/nmB5/8iWklxo9npYazWcgFNGrFno7DO+rsPE3QKpoInZbweu2EiPcZVpsh1fqa/VdYSaNpM1/lwZs+fhTIopvB80959eAPiE1Rn9iCbdEDJbr2OdCcKhV7kR3dEuah1fkbK2x1uZ6w68m+9dH9b031c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QsF6f2ai; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E3DC433C7;
+	Tue, 27 Feb 2024 14:29:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043638;
-	bh=hZvLR11v3N90bIqQ1tV4h1kVhTGIcoUJaaDdGybD6b4=;
+	s=korg; t=1709044150;
+	bh=OLkdj1dJ2fXzBgZbBtlKNT1yyF8jV4NdkuJakWYeohc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lrEUqUe+uQ6pvrG5a7y32nvt5G5jHi8TLR25Vm/zKr05CTb6cHIPfRH4R63lClhm1
-	 Yh75U9bgPYUUPvvDDYES7SiC2SUDY04LTERED2yGModKx9Ij67xnKWUzhozx5t8WSO
-	 qmxe5Mtsxi1PpZaHezNCE0tS4PlDIec++ZJiNjV4=
+	b=QsF6f2aidT+vhlpf4MHlPGZZLCzguhU4LOY1ICcia6SW4hKS2OfsnoYWoJazNbkJV
+	 HSCtduIDGGWXPPLwEZq19EkxHRoZZE3TCdntCKyALiYczqbuPqhjxvdi25Uy9MdzfL
+	 CWt8icM8/m7QzmowoM+jTQoBLza+SJvOJ7ED/et0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Justin Iurman <justin.iurman@uliege.be>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 180/195] Fix write to cloned skb in ipv6_hop_ioam()
-Date: Tue, 27 Feb 2024 14:27:21 +0100
-Message-ID: <20240227131616.346583875@linuxfoundation.org>
+	David Howells <dhowells@redhat.com>,
+	Tom Parkin <tparkin@katalix.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.10 081/122] l2tp: pass correct message length to ip6_append_data
+Date: Tue, 27 Feb 2024 14:27:22 +0100
+Message-ID: <20240227131601.356528459@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@uliege.be>
+From: Tom Parkin <tparkin@katalix.com>
 
-[ Upstream commit f198d933c2e4f8f89e0620fbaf1ea7eac384a0eb ]
+commit 359e54a93ab43d32ee1bff3c2f9f10cb9f6b6e79 upstream.
 
-ioam6_fill_trace_data() writes inside the skb payload without ensuring
-it's writeable (e.g., not cloned). This function is called both from the
-input and output path. The output path (ioam6_iptunnel) already does the
-check. This commit provides a fix for the input path, inside
-ipv6_hop_ioam(). It also updates ip6_parse_tlv() to refresh the network
-header pointer ("nh") when returning from ipv6_hop_ioam().
+l2tp_ip6_sendmsg needs to avoid accounting for the transport header
+twice when splicing more data into an already partially-occupied skbuff.
 
-Fixes: 9ee11f0fff20 ("ipv6: ioam: Data plane support for Pre-allocated Trace")
-Reported-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
+To manage this, we check whether the skbuff contains data using
+skb_queue_empty when deciding how much data to append using
+ip6_append_data.
+
+However, the code which performed the calculation was incorrect:
+
+     ulen = len + skb_queue_empty(&sk->sk_write_queue) ? transhdrlen : 0;
+
+...due to C operator precedence, this ends up setting ulen to
+transhdrlen for messages with a non-zero length, which results in
+corrupted packets on the wire.
+
+Add parentheses to correct the calculation in line with the original
+intent.
+
+Fixes: 9d4c75800f61 ("ipv4, ipv6: Fix handling of transhdrlen in __ip{,6}_append_data()")
+Cc: David Howells <dhowells@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Tom Parkin <tparkin@katalix.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240220122156.43131-1-tparkin@katalix.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/exthdrs.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/l2tp/l2tp_ip6.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
-index 5fa0e37305d9d..1cfdd9d950123 100644
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -180,6 +180,8 @@ static bool ip6_parse_tlv(bool hopbyhop,
- 				case IPV6_TLV_IOAM:
- 					if (!ipv6_hop_ioam(skb, off))
- 						return false;
-+
-+					nh = skb_network_header(skb);
- 					break;
- 				case IPV6_TLV_JUMBO:
- 					if (!ipv6_hop_jumbo(skb, off))
-@@ -974,6 +976,14 @@ static bool ipv6_hop_ioam(struct sk_buff *skb, int optoff)
- 		if (!skb_valid_dst(skb))
- 			ip6_route_input(skb);
+--- a/net/l2tp/l2tp_ip6.c
++++ b/net/l2tp/l2tp_ip6.c
+@@ -628,7 +628,7 @@ static int l2tp_ip6_sendmsg(struct sock
  
-+		/* About to mangle packet header */
-+		if (skb_ensure_writable(skb, optoff + 2 + hdr->opt_len))
-+			goto drop;
-+
-+		/* Trace pointer may have changed */
-+		trace = (struct ioam6_trace_hdr *)(skb_network_header(skb)
-+						   + optoff + sizeof(*hdr));
-+
- 		ioam6_fill_trace_data(skb, ns, trace, true);
- 		break;
- 	default:
--- 
-2.43.0
-
+ back_from_confirm:
+ 	lock_sock(sk);
+-	ulen = len + skb_queue_empty(&sk->sk_write_queue) ? transhdrlen : 0;
++	ulen = len + (skb_queue_empty(&sk->sk_write_queue) ? transhdrlen : 0);
+ 	err = ip6_append_data(sk, ip_generic_getfrag, msg,
+ 			      ulen, transhdrlen, &ipc6,
+ 			      &fl6, (struct rt6_info *)dst,
 
 
 
