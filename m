@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9968C869401
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C04A869326
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:42:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54E9E28555F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4700428983B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:42:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D72E7145B09;
-	Tue, 27 Feb 2024 13:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6FA813F007;
+	Tue, 27 Feb 2024 13:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZXqLtf0r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VS5Mb+PS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968F4145346;
-	Tue, 27 Feb 2024 13:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753C613B797;
+	Tue, 27 Feb 2024 13:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041717; cv=none; b=tJ6WshUHu9i8pv5gYLXu7v9oFueOhxzj+Zen+OvtMbSLzd5VmVQz9G1hagAYCYKilFO0VBRyzVJ751znTt6fwPffRsuN80K73J2jt/ikkpH19bMvH/N/wBW/Ohs91e7DVdcaD4/lAsASWyMu5yzEXeAFpxdMiYGF6gEKOGhLRlw=
+	t=1709041325; cv=none; b=s814mVYkSC+Lv1bKLAsU2sBcRKULb28aXfCm5TE117Pm9SN7/A6rvi1oP1p7G6EJ1l40o2v/vNeclmYyjFPzt+KeJNNdWHbnZYLkv48u0C3jiuanIDx7KiYBlaqSmrWCvgDncxkb+hr7HLjYhaVmGKXzX/xcqdfIWesWIi/9kpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041717; c=relaxed/simple;
-	bh=rWvtO3wuQP1Diy2XrOL5+B1U4HwED07pS7O2hp6f6MQ=;
+	s=arc-20240116; t=1709041325; c=relaxed/simple;
+	bh=tbW4gMmzZN8JfzeLuJJHNhxv/k2UWX6DM6QLe5n3V5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IdxYsqWaEOtAMDN2rm67gHFS1a/cxYJHKPL1uoGqcZWRag6UW1SupUkwOlm8VuvpEoSIx4den5FdXtNMFKwZ7Q1To/sxkqRQSKPE0ch/ihGQpI/EaTB+JpJEFnHRYKKS+Gl3AZLutaRttLQQUQPPWFZ2xtw8z1qcAMWXSEYSCOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZXqLtf0r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E00C433F1;
-	Tue, 27 Feb 2024 13:48:36 +0000 (UTC)
+	 MIME-Version; b=BrBhHDhLWWC4w980VfaXfhdh5nEp2ToO5BTmK4jD0bmqE/JVsQHv3fbjgub39wkG6qt6M7QU+KZj604WTnUgBa6N97BSzEpac27oVnDWJJlefFmQ7XROwc1vmXUa9G8WD8i9LFxytQoorqid36LrRjjc9P4KKQmNw89qPBNvQug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VS5Mb+PS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008DCC433C7;
+	Tue, 27 Feb 2024 13:42:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041717;
-	bh=rWvtO3wuQP1Diy2XrOL5+B1U4HwED07pS7O2hp6f6MQ=;
+	s=korg; t=1709041325;
+	bh=tbW4gMmzZN8JfzeLuJJHNhxv/k2UWX6DM6QLe5n3V5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZXqLtf0rdIZq9/u7wrWAXgaQrZSZkOqkK5FkueUYdYWS0mSZgB0VmGBnKl6RcDTsV
-	 uht6Z/03bYZYUbiCJNoHXYoG/nepuwB9kcylMqBAYfUawcYpKtwyjay4io3KRZ+A8N
-	 s0dcbeOyhSS8osTPPtrwGcv8VvRPAsi2yxI/SmlY=
+	b=VS5Mb+PSnlPDko7bEucRVW1hgWhIPofBa7i99QO+HqoQot03SYdlEbjJiMuWShjtY
+	 0RJGsQOmahBAHjaPJy7v8RKT7sMKOYSBtYyaUMTZ0dMrAchvc0clhUCZ6IQQ/Q29k3
+	 hE4ky/1PIntGTxXCBN/QPaANhYXaOWo3hh9RnAn4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Tsoy <alexander@tsoy.me>,
-	Takashi Iwai <tiwai@suse.de>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 046/299] ALSA: usb-audio: Check presence of valid altsetting control
+Subject: [PATCH 6.7 299/334] s390: use the correct count for __iowrite64_copy()
 Date: Tue, 27 Feb 2024 14:22:37 +0100
-Message-ID: <20240227131627.463849124@linuxfoundation.org>
+Message-ID: <20240227131640.689639906@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Tsoy <alexander@tsoy.me>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 346f59d1e8ed0eed41c80e1acb657e484c308e6a ]
+[ Upstream commit 723a2cc8d69d4342b47dfddbfe6c19f1b135f09b ]
 
-Many devices with a single alternate setting do not have a Valid
-Alternate Setting Control and validation performed by
-validate_sample_rate_table_v2v3() doesn't work on them and is not
-really needed. So check the presense of control before sending
-altsetting validation requests.
+The signature for __iowrite64_copy() requires the number of 64 bit
+quantities, not bytes. Multiple by 8 to get to a byte length before
+invoking zpci_memcpy_toio()
 
-MOTU Microbook IIc is suffering the most without this check. It
-takes up to 40 seconds to bootup due to how slow it switches
-sampling rates:
-
-[ 2659.164824] usb 3-2: New USB device found, idVendor=07fd, idProduct=0004, bcdDevice= 0.60
-[ 2659.164827] usb 3-2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
-[ 2659.164829] usb 3-2: Product: MicroBook IIc
-[ 2659.164830] usb 3-2: Manufacturer: MOTU
-[ 2659.166204] usb 3-2: Found last interface = 3
-[ 2679.322298] usb 3-2: No valid sample rate available for 1:1, assuming a firmware bug
-[ 2679.322306] usb 3-2: 1:1: add audio endpoint 0x3
-[ 2679.322321] usb 3-2: Creating new data endpoint #3
-[ 2679.322552] usb 3-2: 1:1 Set sample rate 96000, clock 1
-[ 2684.362250] usb 3-2: 2:1: cannot get freq (v2/v3): err -110
-[ 2694.444700] usb 3-2: No valid sample rate available for 2:1, assuming a firmware bug
-[ 2694.444707] usb 3-2: 2:1: add audio endpoint 0x84
-[ 2694.444721] usb 3-2: Creating new data endpoint #84
-[ 2699.482103] usb 3-2: 2:1 Set sample rate 96000, clock 1
-
-Signed-off-by: Alexander Tsoy <alexander@tsoy.me>
-Link: https://lore.kernel.org/r/20240129121254.3454481-1-alexander@tsoy.me
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 87bc359b9822 ("s390/pci: speed up __iowrite64_copy by using pci store block insn")
+Acked-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/0-v1-9223d11a7662+1d7785-s390_iowrite64_jgg@nvidia.com
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/format.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ arch/s390/pci/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/usb/format.c b/sound/usb/format.c
-index ab5fed9f55b60..3b45d0ee76938 100644
---- a/sound/usb/format.c
-+++ b/sound/usb/format.c
-@@ -470,9 +470,11 @@ static int validate_sample_rate_table_v2v3(struct snd_usb_audio *chip,
- 					   int clock)
+diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
+index 676ac74026a82..52a44e353796c 100644
+--- a/arch/s390/pci/pci.c
++++ b/arch/s390/pci/pci.c
+@@ -252,7 +252,7 @@ resource_size_t pcibios_align_resource(void *data, const struct resource *res,
+ /* combine single writes by using store-block insn */
+ void __iowrite64_copy(void __iomem *to, const void *from, size_t count)
  {
- 	struct usb_device *dev = chip->dev;
-+	struct usb_host_interface *alts;
- 	unsigned int *table;
- 	unsigned int nr_rates;
- 	int i, err;
-+	u32 bmControls;
+-       zpci_memcpy_toio(to, from, count);
++	zpci_memcpy_toio(to, from, count * 8);
+ }
  
- 	/* performing the rate verification may lead to unexpected USB bus
- 	 * behavior afterwards by some unknown reason.  Do this only for the
-@@ -481,6 +483,24 @@ static int validate_sample_rate_table_v2v3(struct snd_usb_audio *chip,
- 	if (!(chip->quirk_flags & QUIRK_FLAG_VALIDATE_RATES))
- 		return 0; /* don't perform the validation as default */
- 
-+	alts = snd_usb_get_host_interface(chip, fp->iface, fp->altsetting);
-+	if (!alts)
-+		return 0;
-+
-+	if (fp->protocol == UAC_VERSION_3) {
-+		struct uac3_as_header_descriptor *as = snd_usb_find_csint_desc(
-+				alts->extra, alts->extralen, NULL, UAC_AS_GENERAL);
-+		bmControls = le32_to_cpu(as->bmControls);
-+	} else {
-+		struct uac2_as_header_descriptor *as = snd_usb_find_csint_desc(
-+				alts->extra, alts->extralen, NULL, UAC_AS_GENERAL);
-+		bmControls = as->bmControls;
-+	}
-+
-+	if (!uac_v2v3_control_is_readable(bmControls,
-+				UAC2_AS_VAL_ALT_SETTINGS))
-+		return 0;
-+
- 	table = kcalloc(fp->nr_rates, sizeof(*table), GFP_KERNEL);
- 	if (!table)
- 		return -ENOMEM;
+ void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
 -- 
 2.43.0
 
