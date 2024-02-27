@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-24457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F6EE869492
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:55:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A35B8696B9
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E2552883DB
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:55:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4497C2958CF
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AAD6145B32;
-	Tue, 27 Feb 2024 13:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C767F1420DD;
+	Tue, 27 Feb 2024 14:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cRASlCKE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LHjFCk7R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC362145B2E;
-	Tue, 27 Feb 2024 13:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FA413B78F;
+	Tue, 27 Feb 2024 14:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042057; cv=none; b=nZUtcRildue2tXGGDCogsGaHW8WuCW1E7ViV1cOittRXrNI1fxv9qbHO5ZCZHJdmcn1GIqxR31YfcgPPGbmP6LTKmp12R9y7g+RASTRMrMdKgbUwMFWBh76y1uMp4y8QWIAIeEnliY9SRK3rlhHsJ7QAno6kpEfyQ1LJpA/o+Dk=
+	t=1709043257; cv=none; b=QZi1We5zA8RaPFifzi+yhQu2aKTSwsSyJjFm5zGXMcpqim+YtCKfCwfRvQbTFz/uoKsfXcHaq2tKWbCn6J8wUCMZLmGd7wnRtpFxmkltzpSX9KteUY5mtYNBgpGS21Lva1ZV9NALxUlLaxkwnxGE0ZLSTJwNObt0C6EcAMiu0kE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042057; c=relaxed/simple;
-	bh=3l0vgGEoiunBFkICSFk81JWC7E3SxvbaRWA3wY2XSK4=;
+	s=arc-20240116; t=1709043257; c=relaxed/simple;
+	bh=UzmF6wjDkYo+Hj0PLpTup4I2te/Y4sQcGovuWS6CR2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d/sAf1+V6vuDQp7gEs78NeuSSi5jaVALkAWLacL2UQt5CbVkzDck/3qrEOzj0Zh1G1BhMCUF7WGzkf7FtoPgZUz+ij4w5n2Gf45RjkFpnm3zHm7lTfP9pvil9TXqqiSIGQXGAAxmgGZMcUg7+czGRQ7l8gf8r1Hg+bkjI3C21ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cRASlCKE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EB99C433C7;
-	Tue, 27 Feb 2024 13:54:17 +0000 (UTC)
+	 MIME-Version; b=iYAjCG/b49OTcU2px5cT0ZM/ZoFtRI+s5SAVf7gRYotx3G+Mia3MnEpbelse7sYX4BT98vhKOmMfErM/L35PBTkNQRe+TlQ0WYp5Y2ukCQMPOpz02u88sYA+fycxJM2zgUU1e2wkMBpcTNHGkrpYgWPyrvdgN3UpNCjfukbpKas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LHjFCk7R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 166C7C433C7;
+	Tue, 27 Feb 2024 14:14:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042057;
-	bh=3l0vgGEoiunBFkICSFk81JWC7E3SxvbaRWA3wY2XSK4=;
+	s=korg; t=1709043257;
+	bh=UzmF6wjDkYo+Hj0PLpTup4I2te/Y4sQcGovuWS6CR2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cRASlCKEAzIdW79RO/wzupk1QPB48hSDNLhQGhkP2wkgwKvsb0UlJd7rclD6pke7w
-	 yQsRmxEmmbjKxuH+pHolcz8ZFpk/mSxS8slXtyX+Mnfy914qnsd/RyeHF30ZY4tgHZ
-	 NYHFZMzvpqVu5rhEsG/nmA3dJ8j4C7HGlmc8oDHE=
+	b=LHjFCk7RUEN7XU1sTD5ADpBSeiyekV/3wSsLLhgTvV7HKE+NfP4Hwx4IkCa1V1lF9
+	 bMS8BPSKzyh5DRvwT7rNs8ucMUXf1dHq9DyBnv785/vrcg9PMyf6VsG613lTXGjbv7
+	 PLdl9FVHcIz/ti2ylVHz8KkAGS64/UATUx8O13cY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	David Howells <dhowells@redhat.com>,
-	Jingbo Xu <jefflexu@linux.alibaba.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.6 164/299] cachefiles: fix memory leak in cachefiles_add_cache()
+	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 014/195] wifi: mac80211: fix race condition on enabling fast-xmit
 Date: Tue, 27 Feb 2024 14:24:35 +0100
-Message-ID: <20240227131631.129821066@linuxfoundation.org>
+Message-ID: <20240227131610.870867307@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit e21a2f17566cbd64926fb8f16323972f7a064444 upstream.
+[ Upstream commit bcbc84af1183c8cf3d1ca9b78540c2185cd85e7f ]
 
-The following memory leak was reported after unbinding /dev/cachefiles:
+fast-xmit must only be enabled after the sta has been uploaded to the driver,
+otherwise it could end up passing the not-yet-uploaded sta via drv_tx calls
+to the driver, leading to potential crashes because of uninitialized drv_priv
+data.
+Add a missing sta->uploaded check and re-check fast xmit after inserting a sta.
 
-==================================================================
-unreferenced object 0xffff9b674176e3c0 (size 192):
-  comm "cachefilesd2", pid 680, jiffies 4294881224
-  hex dump (first 32 bytes):
-    01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace (crc ea38a44b):
-    [<ffffffff8eb8a1a5>] kmem_cache_alloc+0x2d5/0x370
-    [<ffffffff8e917f86>] prepare_creds+0x26/0x2e0
-    [<ffffffffc002eeef>] cachefiles_determine_cache_security+0x1f/0x120
-    [<ffffffffc00243ec>] cachefiles_add_cache+0x13c/0x3a0
-    [<ffffffffc0025216>] cachefiles_daemon_write+0x146/0x1c0
-    [<ffffffff8ebc4a3b>] vfs_write+0xcb/0x520
-    [<ffffffff8ebc5069>] ksys_write+0x69/0xf0
-    [<ffffffff8f6d4662>] do_syscall_64+0x72/0x140
-    [<ffffffff8f8000aa>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
-==================================================================
-
-Put the reference count of cache_cred in cachefiles_daemon_unbind() to
-fix the problem. And also put cache_cred in cachefiles_add_cache() error
-branch to avoid memory leaks.
-
-Fixes: 9ae326a69004 ("CacheFiles: A cache that backs onto a mounted filesystem")
-CC: stable@vger.kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240217081431.796809-1-libaokun1@huawei.com
-Acked-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://msgid.link/20240104181059.84032-1-nbd@nbd.name
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cachefiles/cache.c  |    2 ++
- fs/cachefiles/daemon.c |    1 +
- 2 files changed, 3 insertions(+)
+ net/mac80211/sta_info.c | 2 ++
+ net/mac80211/tx.c       | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/cachefiles/cache.c
-+++ b/fs/cachefiles/cache.c
-@@ -168,6 +168,8 @@ error_unsupported:
- 	dput(root);
- error_open_root:
- 	cachefiles_end_secure(cache, saved_cred);
-+	put_cred(cache->cache_cred);
-+	cache->cache_cred = NULL;
- error_getsec:
- 	fscache_relinquish_cache(cache_cookie);
- 	cache->cache = NULL;
---- a/fs/cachefiles/daemon.c
-+++ b/fs/cachefiles/daemon.c
-@@ -805,6 +805,7 @@ static void cachefiles_daemon_unbind(str
- 	cachefiles_put_directory(cache->graveyard);
- 	cachefiles_put_directory(cache->store);
- 	mntput(cache->mnt);
-+	put_cred(cache->cache_cred);
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index f3d6c3e4c970e..bd56015b29258 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -891,6 +891,8 @@ static int sta_info_insert_finish(struct sta_info *sta) __acquires(RCU)
+ 	if (ieee80211_vif_is_mesh(&sdata->vif))
+ 		mesh_accept_plinks_update(sdata);
  
- 	kfree(cache->rootdirname);
- 	kfree(cache->secctx);
++	ieee80211_check_fast_xmit(sta);
++
+ 	return 0;
+  out_remove:
+ 	if (sta->sta.valid_links)
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 322a035f75929..3d62e8b718740 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -3044,7 +3044,7 @@ void ieee80211_check_fast_xmit(struct sta_info *sta)
+ 	    sdata->vif.type == NL80211_IFTYPE_STATION)
+ 		goto out;
+ 
+-	if (!test_sta_flag(sta, WLAN_STA_AUTHORIZED))
++	if (!test_sta_flag(sta, WLAN_STA_AUTHORIZED) || !sta->uploaded)
+ 		goto out;
+ 
+ 	if (test_sta_flag(sta, WLAN_STA_PS_STA) ||
+-- 
+2.43.0
+
 
 
 
