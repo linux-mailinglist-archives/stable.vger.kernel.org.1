@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-25173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C56C9869814
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:28:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63A9886973C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:19:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 805E0293966
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:28:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F3CE28D142
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFE2214600A;
-	Tue, 27 Feb 2024 14:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD39E140391;
+	Tue, 27 Feb 2024 14:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jNs4BEJH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CPjb9uZd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB90145327;
-	Tue, 27 Feb 2024 14:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD0F13B2B8;
+	Tue, 27 Feb 2024 14:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044067; cv=none; b=fkwXpYOQBOagvE0BQn+8GRvPafQ89uDgnnanOdDYqE3gTg51h6pgqp6aFlqs6fejGuo47UwjrTXeWL/5FXLTJUd4auebT9BX30cKs0QqNIUDk+1XjwCTrkq3w35QfZC4YwaRUF/8r+HZyTmx6VFey9cdYMRBsZpCmljc472tKlk=
+	t=1709043558; cv=none; b=KVMtoAWLR+alp8KHeot9WTGtizAy0q+bQqWyM1hbz/cAktPbEg0V4Q+igLA4NxDblOc6MEqzPLgKiL5Ww59tQNlZxh3ZiJJYdii+cfgqClgI+DqsVTDk6H93Wn7rBBINnnl4I2O9KGcUCqJ56ySLg7AcEzrNiy/u8ubzTWoeMPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044067; c=relaxed/simple;
-	bh=r/PJJiTRgEZCDhbT8rakXImpdcoBRW/XG1fttwGRQ+Y=;
+	s=arc-20240116; t=1709043558; c=relaxed/simple;
+	bh=UvNo9Iu+8/sF+/sfHt9RjyvXUdJVf/Vm+z2fWlC5Ol4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PIkrN1wO9aLp2fEEc89wghyecoT6yPn3LlyY3k+IrqwL+fvmmftbgVmSphnoTpx9JQ9TONLGFVWEpv7q5ELTCr9MkpVn6m5VJ8WXtcJSlPfC3bOKQMqfeWsLmkmBDb9HMcpUQObaUUM2MJdG7qfIJdb7qLqGyPsbQwlk/vVE4wE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jNs4BEJH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E665C43390;
-	Tue, 27 Feb 2024 14:27:46 +0000 (UTC)
+	 MIME-Version; b=gfjlMdHP7VESNNWBI3ebfOebhLCwqKCMV27ssPGkk0TK+R23l457RNvX+yXhPG9QGf/OU+6VBAyxpLYSwyF0suxEIxpSgNQqzD2xV+4Us12ksNFnCiK+7f8TKl+aBx0sE60tEck0HiewMFQAkIhKq30ZZAurZb4Z38neJz1g8o8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPjb9uZd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D111CC43390;
+	Tue, 27 Feb 2024 14:19:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044067;
-	bh=r/PJJiTRgEZCDhbT8rakXImpdcoBRW/XG1fttwGRQ+Y=;
+	s=korg; t=1709043558;
+	bh=UvNo9Iu+8/sF+/sfHt9RjyvXUdJVf/Vm+z2fWlC5Ol4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jNs4BEJH+cqOqiA+lDBhDHw2XA7RwCzZAm9IAymw+zfWEM3qs6C1G+Ng8Q7hE8CgW
-	 Zm1Gbx2n9PETP2avWxd7Dd137j7ZhXeGYwsdGXlshIDGZ8y7bVH19/bNFOB4JOfVCE
-	 1ImDAQTrTkrxe2K1/4CfHcBqURghICjDQZSbHc7c=
+	b=CPjb9uZdq/Pi7QSYBArUXHHxacaNeuWts9wDhD6mVim3ba3VdOl+oS5S5y+/UvtTC
+	 dLQRVKX9fz7PC5Z0rIKNFKaLq4w3S/4A8lvE+0m2fM6K4fERabeRRYsL8MXb4iz+AB
+	 irdPc2oSkqW3gn56ZFpk8g3bStNmzaWT2Vpg51iQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Lutomirski <luto@amacapital.net>,
-	Will Drewry <wad@chromium.org>,
-	Kees Cook <keescook@chromium.org>,
+	Alison Schofield <alison.schofield@intel.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 051/122] seccomp: Invalidate seccomp mode to catch death failures
+Subject: [PATCH 6.1 151/195] x86/numa: Fix the address overlap check in numa_fill_memblks()
 Date: Tue, 27 Feb 2024 14:26:52 +0100
-Message-ID: <20240227131600.379321634@linuxfoundation.org>
+Message-ID: <20240227131615.403884675@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +64,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Alison Schofield <alison.schofield@intel.com>
 
-[ Upstream commit 495ac3069a6235bfdf516812a2a9b256671bbdf9 ]
+[ Upstream commit 9b99c17f7510bed2adbe17751fb8abddba5620bc ]
 
-If seccomp tries to kill a process, it should never see that process
-again. To enforce this proactively, switch the mode to something
-impossible. If encountered: WARN, reject all syscalls, and attempt to
-kill the process again even harder.
+numa_fill_memblks() fills in the gaps in numa_meminfo memblks over a
+physical address range. To do so, it first creates a list of existing
+memblks that overlap that address range. The issue is that it is off
+by one when comparing to the end of the address range, so memblks
+that do not overlap are selected.
 
-Cc: Andy Lutomirski <luto@amacapital.net>
-Cc: Will Drewry <wad@chromium.org>
-Fixes: 8112c4f140fa ("seccomp: remove 2-phase API")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
+The impact of selecting a memblk that does not actually overlap is
+that an existing memblk may be filled when the expected action is to
+do nothing and return NUMA_NO_MEMBLK to the caller. The caller can
+then add a new NUMA node and memblk.
+
+Replace the broken open-coded search for address overlap with the
+memblock helper memblock_addrs_overlap(). Update the kernel doc
+and in code comments.
+
+Suggested by: "Huang, Ying" <ying.huang@intel.com>
+
+Fixes: 8f012db27c95 ("x86/numa: Introduce numa_fill_memblks()")
+Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Link: https://lore.kernel.org/r/10a3e6109c34c21a8dd4c513cf63df63481a2b07.1705085543.git.alison.schofield@intel.com
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/seccomp.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/x86/mm/numa.c       | 19 +++++++------------
+ include/linux/memblock.h |  2 ++
+ mm/memblock.c            |  5 +++--
+ 3 files changed, 12 insertions(+), 14 deletions(-)
 
-diff --git a/kernel/seccomp.c b/kernel/seccomp.c
-index 305f0eca163ed..0b0331346e4be 100644
---- a/kernel/seccomp.c
-+++ b/kernel/seccomp.c
-@@ -29,6 +29,9 @@
- #include <linux/syscalls.h>
- #include <linux/sysctl.h>
+diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+index aa39d678fe81d..e60c61b8bbc61 100644
+--- a/arch/x86/mm/numa.c
++++ b/arch/x86/mm/numa.c
+@@ -971,14 +971,12 @@ static struct numa_memblk *numa_memblk_list[NR_NODE_MEMBLKS] __initdata;
+  * @start: address to begin fill
+  * @end: address to end fill
+  *
+- * Find and extend numa_meminfo memblks to cover the @start-@end
+- * physical address range, such that the first memblk includes
+- * @start, the last memblk includes @end, and any gaps in between
+- * are filled.
++ * Find and extend numa_meminfo memblks to cover the physical
++ * address range @start-@end
+  *
+  * RETURNS:
+  * 0		  : Success
+- * NUMA_NO_MEMBLK : No memblk exists in @start-@end range
++ * NUMA_NO_MEMBLK : No memblks exist in address range @start-@end
+  */
  
-+/* Not exposed in headers: strictly internal use only. */
-+#define SECCOMP_MODE_DEAD	(SECCOMP_MODE_FILTER + 1)
-+
- #ifdef CONFIG_HAVE_ARCH_SECCOMP_FILTER
- #include <asm/syscall.h>
+ int __init numa_fill_memblks(u64 start, u64 end)
+@@ -990,17 +988,14 @@ int __init numa_fill_memblks(u64 start, u64 end)
+ 
+ 	/*
+ 	 * Create a list of pointers to numa_meminfo memblks that
+-	 * overlap start, end. Exclude (start == bi->end) since
+-	 * end addresses in both a CFMWS range and a memblk range
+-	 * are exclusive.
+-	 *
+-	 * This list of pointers is used to make in-place changes
+-	 * that fill out the numa_meminfo memblks.
++	 * overlap start, end. The list is used to make in-place
++	 * changes that fill out the numa_meminfo memblks.
+ 	 */
+ 	for (int i = 0; i < mi->nr_blks; i++) {
+ 		struct numa_memblk *bi = &mi->blk[i];
+ 
+-		if (start < bi->end && end >= bi->start) {
++		if (memblock_addrs_overlap(start, end - start, bi->start,
++					   bi->end - bi->start)) {
+ 			blk[count] = &mi->blk[i];
+ 			count++;
+ 		}
+diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+index 50ad19662a322..6790f08066b72 100644
+--- a/include/linux/memblock.h
++++ b/include/linux/memblock.h
+@@ -118,6 +118,8 @@ int memblock_reserve(phys_addr_t base, phys_addr_t size);
+ int memblock_physmem_add(phys_addr_t base, phys_addr_t size);
  #endif
-@@ -795,6 +798,7 @@ static void __secure_computing_strict(int this_syscall)
- #ifdef SECCOMP_DEBUG
- 	dump_stack();
- #endif
-+	current->seccomp.mode = SECCOMP_MODE_DEAD;
- 	seccomp_log(this_syscall, SIGKILL, SECCOMP_RET_KILL_THREAD, true);
- 	do_exit(SIGKILL);
+ void memblock_trim_memory(phys_addr_t align);
++unsigned long memblock_addrs_overlap(phys_addr_t base1, phys_addr_t size1,
++				     phys_addr_t base2, phys_addr_t size2);
+ bool memblock_overlaps_region(struct memblock_type *type,
+ 			      phys_addr_t base, phys_addr_t size);
+ int memblock_mark_hotplug(phys_addr_t base, phys_addr_t size);
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 511d4783dcf1d..516efec80851a 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -175,8 +175,9 @@ static inline phys_addr_t memblock_cap_size(phys_addr_t base, phys_addr_t *size)
+ /*
+  * Address comparison utilities
+  */
+-static unsigned long __init_memblock memblock_addrs_overlap(phys_addr_t base1, phys_addr_t size1,
+-				       phys_addr_t base2, phys_addr_t size2)
++unsigned long __init_memblock
++memblock_addrs_overlap(phys_addr_t base1, phys_addr_t size1, phys_addr_t base2,
++		       phys_addr_t size2)
+ {
+ 	return ((base1 < (base2 + size2)) && (base2 < (base1 + size1)));
  }
-@@ -1023,6 +1027,7 @@ static int __seccomp_filter(int this_syscall, const struct seccomp_data *sd,
- 	case SECCOMP_RET_KILL_THREAD:
- 	case SECCOMP_RET_KILL_PROCESS:
- 	default:
-+		current->seccomp.mode = SECCOMP_MODE_DEAD;
- 		seccomp_log(this_syscall, SIGSYS, action, true);
- 		/* Dump core only if this is the last remaining thread. */
- 		if (action != SECCOMP_RET_KILL_THREAD ||
-@@ -1075,6 +1080,11 @@ int __secure_computing(const struct seccomp_data *sd)
- 		return 0;
- 	case SECCOMP_MODE_FILTER:
- 		return __seccomp_filter(this_syscall, sd, false);
-+	/* Surviving SECCOMP_RET_KILL_* must be proactively impossible. */
-+	case SECCOMP_MODE_DEAD:
-+		WARN_ON_ONCE(1);
-+		do_exit(SIGKILL);
-+		return -1;
- 	default:
- 		BUG();
- 	}
 -- 
 2.43.0
 
