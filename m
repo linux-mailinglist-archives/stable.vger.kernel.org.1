@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-24627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0447F86957F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:02:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 437D686942F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B290C28D989
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:02:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E828228E68D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C9A13B2B9;
-	Tue, 27 Feb 2024 14:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A486113B797;
+	Tue, 27 Feb 2024 13:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qQGjdeKb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3HTxvDg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13BD816423;
-	Tue, 27 Feb 2024 14:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6242478B61;
+	Tue, 27 Feb 2024 13:50:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042542; cv=none; b=DGX5BKglH5JgsgD20fPelnsfzclhWbPSKZiW8+X2yw7h7nkurCz+fLAw7ShhLc/WFRSDSLYtZlKYy2y7y+fpFH5VhRuHqzD7vod9Ui9FnObmHoO79Jf/dRcVMYdsnPriDFGMVyzR/vbjrbeCAGEz/Ak08hrdK39CeHoLCYYJRSo=
+	t=1709041840; cv=none; b=lBE8NSy8yDw+dJfE/O/D2rN/b0Vie9jaWCEi1EWkG0se+xnODxmO7fXxAL1QZ1yTO5yOFZXwPd66lgy2sUlDivbpPy72IFPMuoE1VRKmsczMDuWo6DT8piymJl0sY4wje9n+dmYAO2GBnfWr5z/L/mmSgwJCmQnE11mzstSIkQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042542; c=relaxed/simple;
-	bh=SvuLVW29o/YcF7m/pDAW+PWeaH3+NU8lbGC/AUrM9DY=;
+	s=arc-20240116; t=1709041840; c=relaxed/simple;
+	bh=uL/9pxS3EgMouF+CUscOeEfC35J3jq44KB622uekMuI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mreg7+L506SHnWxwjH7hi2J5b9AAIbRgSwJPsMSrkkJHqBj5y9XVrVqf6v6ycvW9J60YdG5b/LJizkF5OuogL6Im3kYWF9UtwLmPEYomcf04FJk+L6sbPh++U8dO9rgjJIaB4dvfLU35Jn8wj2BIvPPT88+HXFC6ErFbLn8E4Cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qQGjdeKb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95B52C433F1;
-	Tue, 27 Feb 2024 14:02:21 +0000 (UTC)
+	 MIME-Version; b=szleSSqP2cvgzUmGRW2pRB2kV/sQFsUQRLgfTjSZ4KqTUL7fx7b0Lu1icTQzQ+LKMLjBZCkiriqloujx6Qjhx80Uy6XK2P0L+G7INheW8+WSgeJ5Aazomqo++iKdXuqPBQxu8HF8lpqZakResRWJur/x5pfGV6l0w689wvtM09I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3HTxvDg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96AECC433C7;
+	Tue, 27 Feb 2024 13:50:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042542;
-	bh=SvuLVW29o/YcF7m/pDAW+PWeaH3+NU8lbGC/AUrM9DY=;
+	s=korg; t=1709041840;
+	bh=uL/9pxS3EgMouF+CUscOeEfC35J3jq44KB622uekMuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qQGjdeKbQbrTi5gZG8T18UpcGdvU8EjANm6Wz+1OC9f/5r1nYsrYVVwTvB7xq5KAj
-	 EdkXegn4LQgqdqcbicWKHjj1OYmZ1cTRsCJGlFg3O2+eMgPW/z4lwvi7dW3ZLeOW38
-	 7ET5MPJQxiS3tAtKx+CJggoWRmaNdDTjhf5bppXQ=
+	b=O3HTxvDg3cVDUgddyp2RrByhnfeHyG3zGMt92wYjGgEYdI3Ov69Br6wMQ36uBKHBD
+	 ecU4x5UKriXzu5Ur1WSiecOycz8vLAAsz9Rypfo3tbrAPI22hdjVgxFVqpbB5QxZLa
+	 Q0cMbRJfH/JD1m62RjlN8keaHNtAlibv7FGzR3Us=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Marchevsky <davemarchevsky@fb.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 5.15 009/245] bpf: Merge printk and seq_printf VARARG max macros
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 086/299] fs/ntfs3: Prevent generic message "attempt to access beyond end of device"
 Date: Tue, 27 Feb 2024 14:23:17 +0100
-Message-ID: <20240227131615.411970481@linuxfoundation.org>
+Message-ID: <20240227131628.683212678@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +61,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Marchevsky <davemarchevsky@fb.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit 335ff4990cf3bfa42d8846f9b3d8c09456f51801 upstream.
+[ Upstream commit 5ca87d01eba7bdfe9536a157ca33c1455bb8d16c ]
 
-MAX_SNPRINTF_VARARGS and MAX_SEQ_PRINTF_VARARGS are used by bpf helpers
-bpf_snprintf and bpf_seq_printf to limit their varargs. Both call into
-bpf_bprintf_prepare for print formatting logic and have convenience
-macros in libbpf (BPF_SNPRINTF, BPF_SEQ_PRINTF) which use the same
-helper macros to convert varargs to a byte array.
+It used in test environment.
 
-Changing shared functionality to support more varargs for either bpf
-helper would affect the other as well, so let's combine the _VARARGS
-macros to make this more obvious.
-
-Signed-off-by: Dave Marchevsky <davemarchevsky@fb.com>
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20210917182911.2426606-2-davemarchevsky@fb.com
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf.h      |    2 ++
- kernel/bpf/helpers.c     |    4 +---
- kernel/trace/bpf_trace.c |    4 +---
- 3 files changed, 4 insertions(+), 6 deletions(-)
+ fs/ntfs3/fsntfs.c  | 24 ++++++++++++++++++++++++
+ fs/ntfs3/ntfs_fs.h | 14 +-------------
+ 2 files changed, 25 insertions(+), 13 deletions(-)
 
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -2290,6 +2290,8 @@ void bpf_arch_poke_desc_update(struct bp
- struct btf_id_set;
- bool btf_id_set_contains(const struct btf_id_set *set, u32 id);
+diff --git a/fs/ntfs3/fsntfs.c b/fs/ntfs3/fsntfs.c
+index 350461d8cece5..c66b0eab6a160 100644
+--- a/fs/ntfs3/fsntfs.c
++++ b/fs/ntfs3/fsntfs.c
+@@ -1007,6 +1007,30 @@ static inline __le32 security_hash(const void *sd, size_t bytes)
+ 	return cpu_to_le32(hash);
+ }
  
-+#define MAX_BPRINTF_VARARGS		12
++/*
++ * simple wrapper for sb_bread_unmovable.
++ */
++struct buffer_head *ntfs_bread(struct super_block *sb, sector_t block)
++{
++	struct ntfs_sb_info *sbi = sb->s_fs_info;
++	struct buffer_head *bh;
 +
- int bpf_bprintf_prepare(char *fmt, u32 fmt_size, const u64 *raw_args,
- 			u32 **bin_buf, u32 num_args);
- void bpf_bprintf_cleanup(void);
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -979,15 +979,13 @@ out:
- 	return err;
++	if (unlikely(block >= sbi->volume.blocks)) {
++		/* prevent generic message "attempt to access beyond end of device" */
++		ntfs_err(sb, "try to read out of volume at offset 0x%llx",
++			 (u64)block << sb->s_blocksize_bits);
++		return NULL;
++	}
++
++	bh = sb_bread_unmovable(sb, block);
++	if (bh)
++		return bh;
++
++	ntfs_err(sb, "failed to read volume at offset 0x%llx",
++		 (u64)block << sb->s_blocksize_bits);
++	return NULL;
++}
++
+ int ntfs_sb_read(struct super_block *sb, u64 lbo, size_t bytes, void *buffer)
+ {
+ 	struct block_device *bdev = sb->s_bdev;
+diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
+index 98906e4675171..1ca40c1d966b8 100644
+--- a/fs/ntfs3/ntfs_fs.h
++++ b/fs/ntfs3/ntfs_fs.h
+@@ -586,6 +586,7 @@ bool check_index_header(const struct INDEX_HDR *hdr, size_t bytes);
+ int log_replay(struct ntfs_inode *ni, bool *initialized);
+ 
+ /* Globals from fsntfs.c */
++struct buffer_head *ntfs_bread(struct super_block *sb, sector_t block);
+ bool ntfs_fix_pre_write(struct NTFS_RECORD_HEADER *rhdr, size_t bytes);
+ int ntfs_fix_post_read(struct NTFS_RECORD_HEADER *rhdr, size_t bytes,
+ 		       bool simple);
+@@ -1032,19 +1033,6 @@ static inline u64 bytes_to_block(const struct super_block *sb, u64 size)
+ 	return (size + sb->s_blocksize - 1) >> sb->s_blocksize_bits;
  }
  
--#define MAX_SNPRINTF_VARARGS		12
+-static inline struct buffer_head *ntfs_bread(struct super_block *sb,
+-					     sector_t block)
+-{
+-	struct buffer_head *bh = sb_bread_unmovable(sb, block);
 -
- BPF_CALL_5(bpf_snprintf, char *, str, u32, str_size, char *, fmt,
- 	   const void *, data, u32, data_len)
- {
- 	int err, num_args;
- 	u32 *bin_args;
- 
--	if (data_len % 8 || data_len > MAX_SNPRINTF_VARARGS * 8 ||
-+	if (data_len % 8 || data_len > MAX_BPRINTF_VARARGS * 8 ||
- 	    (data_len && !data))
- 		return -EINVAL;
- 	num_args = data_len / 8;
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -414,15 +414,13 @@ const struct bpf_func_proto *bpf_get_tra
- 	return &bpf_trace_printk_proto;
- }
- 
--#define MAX_SEQ_PRINTF_VARARGS		12
+-	if (bh)
+-		return bh;
 -
- BPF_CALL_5(bpf_seq_printf, struct seq_file *, m, char *, fmt, u32, fmt_size,
- 	   const void *, data, u32, data_len)
+-	ntfs_err(sb, "failed to read volume at offset 0x%llx",
+-		 (u64)block << sb->s_blocksize_bits);
+-	return NULL;
+-}
+-
+ static inline struct ntfs_inode *ntfs_i(struct inode *inode)
  {
- 	int err, num_args;
- 	u32 *bin_args;
- 
--	if (data_len & 7 || data_len > MAX_SEQ_PRINTF_VARARGS * 8 ||
-+	if (data_len & 7 || data_len > MAX_BPRINTF_VARARGS * 8 ||
- 	    (data_len && !data))
- 		return -EINVAL;
- 	num_args = data_len / 8;
+ 	return container_of(inode, struct ntfs_inode, vfs_inode);
+-- 
+2.43.0
+
 
 
 
