@@ -1,68 +1,67 @@
-Return-Path: <stable+bounces-23835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D298868A53
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 09:00:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8464868A52
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 09:00:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A166AB22A9D
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92F842831EC
 	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 08:00:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 506CF55E67;
-	Tue, 27 Feb 2024 08:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9527555E7B;
+	Tue, 27 Feb 2024 08:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LtAaC3DN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M+4UJFiq"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94F954F8A
-	for <stable@vger.kernel.org>; Tue, 27 Feb 2024 08:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD71955E63
+	for <stable@vger.kernel.org>; Tue, 27 Feb 2024 08:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709020842; cv=none; b=BpQKAtIFOFcoLBksfn+vLML9tdcDiLQ2jjHEJ0c1cBRHROQOAgsB7DwoyEcSZ7XXA9YxcKJcfj07YZFWBDXmnQ/OVTCtbpKYG/FKbfYWb5M8ozh0p+thtwpyPsOuIGyg+pwnCytSTMaLGEaFixugSFyX2Knhqa9286Ga+YH5+ok=
+	t=1709020843; cv=none; b=XWYtpbgoN7sg4xTZcaqGr3OxG5MukaMVr7qKKR49AcyEAuOHyFrM38E6ba6s1ut7KLrtOckt4CSd5cIf3Ft2zG58nltTdhc3PKdP7LhOvat803gJuXtD5qF/1m3jJomOQK0Zs1ZD1fCiTZIqrSp/HspN0XyuLDwL+xlXP9KBq6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709020842; c=relaxed/simple;
-	bh=h/vpxiEPCdpsNkM7GuKZcEi9eea1Ls7bsbPzzIZ33Y8=;
+	s=arc-20240116; t=1709020843; c=relaxed/simple;
+	bh=ZuKTNapKNsrmL3jRDImOUf6bZBRqA8wJSBoTObzTOhs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b9T/yQF1oBuplQTjHJ0CPV3zXOSINxZ3+JLPtaB+QSE6WvbflYqE/tHzPFm324TNU6umP593KdKOxy5sQ0TIe6QwaIFCGdyktnuENvmoPYjGMGD1xng2kdrW8R2iDEgUv827NwpdM42n6e5w+DqzjeNbnilb5c8oODBX8xhqmj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LtAaC3DN; arc=none smtp.client-ip=192.198.163.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=LYCMx0GgqgLSIem1wOxL88TfU8xAGrOLrp739d03nKiRwPdF9f6l9DRvj92c2s3DJlfleO3ea3NlzI5lssaQh/enAXFvAYdgcMarzuEBCF/WFA7LMZiN5l3wxN6cZsZkL5n8lIuBFW7n1Gi2PNQf36AkJb+DTEhpiNVOklbvHVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M+4UJFiq; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709020841; x=1740556841;
+  t=1709020842; x=1740556842;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=h/vpxiEPCdpsNkM7GuKZcEi9eea1Ls7bsbPzzIZ33Y8=;
-  b=LtAaC3DND2fozr/mPVcGSpAEYBQ8pDGZ9KeCjYO6UrFpwh7zC887ZM5/
-   M8saB2kJHxJRyYzbpv2D7pEA+MMKISU1Pd1Rq5JyyHasfS1LWkyBcnIQy
-   pSLwc7yXPvips6TnqkJvdGkEJ078QmaQU8qPKT/skSHLhgfkDtKjAxJT8
-   UWNr5YIEfyry2lS/E1TTRZvH67yIxt7F5cRVErrmCxWD4VV6um24elwct
-   lttuHR7QMsayMKKvbSfDocImLcYiNBZnjEJvvigoFBXvU9feunEEUsZsS
-   1llTc1LsSuZTI0hR8VVjpR8siHRWy+NTXyI4pnUIiAaCQJlkzaMMtnbsB
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3509471"
+  bh=ZuKTNapKNsrmL3jRDImOUf6bZBRqA8wJSBoTObzTOhs=;
+  b=M+4UJFiqx03ToQpr3pk3YHnZ+QSgiEjcaJOWzx/3ZLzTRNuFVCyE1tsJ
+   rQZ7QCK2hbm2HnEiGTtYc8dw7a6lkeL4QjPK7igpbRikN+mavOaQknovI
+   dXTd4IVxxqf8p8CmR6Aa5NTT0MaLsB8S3wem7NHiGPCJ0TuIJbptu2SN5
+   O4GjvHj1jRPglV0Z6JOvx8IFPwbdqAzPUNzGMbYfl7oyONvkabcIzQK90
+   OcFISIXfwcMaEThdAV3jIqAMuhkS6Glx/fvnKfkm//EYlDwBPc6BtMS1I
+   5xYeJbg8fBNDikdDyRPpA0STvUwfQhZo87oXSYc4e2OBhGAus2jtEGmiQ
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3509477"
 X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; 
-   d="scan'208";a="3509471"
+   d="scan'208";a="3509477"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
   by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2024 00:00:39 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; 
-   d="scan'208";a="7371272"
+   d="scan'208";a="7371319"
 Received: from jhaqq-mobl1.amr.corp.intel.com (HELO desk) ([10.209.17.170])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2024 00:00:31 -0800
-Date: Tue, 27 Feb 2024 00:00:30 -0800
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2024 00:00:36 -0800
+Date: Tue, 27 Feb 2024 00:00:35 -0800
 From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 To: stable@vger.kernel.org
 Cc: Dave Hansen <dave.hansen@linux.intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Nikolay Borisov <nik.borisov@suse.com>
-Subject: [PATCH 6.1.y 5/6] KVM/VMX: Use BT+JNC, i.e. EFLAGS.CF to select
- VMRESUME vs. VMLAUNCH
-Message-ID: <20240226-delay-verw-backport-6-1-y-v1-5-b3a2c5b9b0cb@linux.intel.com>
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.1.y 6/6] KVM/VMX: Move VERW closer to VMentry for MDS
+ mitigation
+Message-ID: <20240226-delay-verw-backport-6-1-y-v1-6-b3a2c5b9b0cb@linux.intel.com>
 X-Mailer: b4 0.12.3
 References: <20240226-delay-verw-backport-6-1-y-v1-0-b3a2c5b9b0cb@linux.intel.com>
 Precedence: bulk
@@ -75,68 +74,79 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20240226-delay-verw-backport-6-1-y-v1-0-b3a2c5b9b0cb@linux.intel.com>
 
-From: Sean Christopherson <seanjc@google.com>
+commit 43fb862de8f628c5db5e96831c915b9aebf62d33 upstream.
 
-commit 706a189dcf74d3b3f955e9384785e726ed6c7c80 upstream.
+During VMentry VERW is executed to mitigate MDS. After VERW, any memory
+access like register push onto stack may put host data in MDS affected
+CPU buffers. A guest can then use MDS to sample host data.
 
-Use EFLAGS.CF instead of EFLAGS.ZF to track whether to use VMRESUME versus
-VMLAUNCH.  Freeing up EFLAGS.ZF will allow doing VERW, which clobbers ZF,
-for MDS mitigations as late as possible without needing to duplicate VERW
-for both paths.
+Although likelihood of secrets surviving in registers at current VERW
+callsite is less, but it can't be ruled out. Harden the MDS mitigation
+by moving the VERW mitigation late in VMentry path.
 
-  [ pawan: resolved merge conflict in __vmx_vcpu_run in backport. ]
+Note that VERW for MMIO Stale Data mitigation is unchanged because of
+the complexity of per-guest conditional VERW which is not easy to handle
+that late in asm with no GPRs available. If the CPU is also affected by
+MDS, VERW is unconditionally executed late in asm regardless of guest
+having MMIO access.
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+  [ pawan: conflict resolved in backport ]
+
 Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Link: https://lore.kernel.org/all/20240213-delay-verw-v8-5-a6216d83edb7%40linux.intel.com
+Acked-by: Sean Christopherson <seanjc@google.com>
+Link: https://lore.kernel.org/all/20240213-delay-verw-v8-6-a6216d83edb7%40linux.intel.com
 ---
- arch/x86/kvm/vmx/run_flags.h | 7 +++++--
- arch/x86/kvm/vmx/vmenter.S   | 6 +++---
- 2 files changed, 8 insertions(+), 5 deletions(-)
+ arch/x86/kvm/vmx/vmenter.S |  3 +++
+ arch/x86/kvm/vmx/vmx.c     | 12 ++++++++----
+ 2 files changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/run_flags.h b/arch/x86/kvm/vmx/run_flags.h
-index edc3f16cc189..6a9bfdfbb6e5 100644
---- a/arch/x86/kvm/vmx/run_flags.h
-+++ b/arch/x86/kvm/vmx/run_flags.h
-@@ -2,7 +2,10 @@
- #ifndef __KVM_X86_VMX_RUN_FLAGS_H
- #define __KVM_X86_VMX_RUN_FLAGS_H
- 
--#define VMX_RUN_VMRESUME	(1 << 0)
--#define VMX_RUN_SAVE_SPEC_CTRL	(1 << 1)
-+#define VMX_RUN_VMRESUME_SHIFT		0
-+#define VMX_RUN_SAVE_SPEC_CTRL_SHIFT	1
-+
-+#define VMX_RUN_VMRESUME		BIT(VMX_RUN_VMRESUME_SHIFT)
-+#define VMX_RUN_SAVE_SPEC_CTRL		BIT(VMX_RUN_SAVE_SPEC_CTRL_SHIFT)
- 
- #endif /* __KVM_X86_VMX_RUN_FLAGS_H */
 diff --git a/arch/x86/kvm/vmx/vmenter.S b/arch/x86/kvm/vmx/vmenter.S
-index 0b5db4de4d09..42c0b2c3aee1 100644
+index 42c0b2c3aee1..0b2cad66dee1 100644
 --- a/arch/x86/kvm/vmx/vmenter.S
 +++ b/arch/x86/kvm/vmx/vmenter.S
-@@ -106,7 +106,7 @@ SYM_FUNC_START(__vmx_vcpu_run)
- 	mov (%_ASM_SP), %_ASM_AX
- 
- 	/* Check if vmlaunch or vmresume is needed */
--	testb $VMX_RUN_VMRESUME, %bl
-+	bt   $VMX_RUN_VMRESUME_SHIFT, %bx
- 
- 	/* Load guest registers.  Don't clobber flags. */
- 	mov VCPU_RCX(%_ASM_AX), %_ASM_CX
-@@ -128,8 +128,8 @@ SYM_FUNC_START(__vmx_vcpu_run)
+@@ -128,6 +128,9 @@ SYM_FUNC_START(__vmx_vcpu_run)
  	/* Load guest RAX.  This kills the @regs pointer! */
  	mov VCPU_RAX(%_ASM_AX), %_ASM_AX
  
--	/* Check EFLAGS.ZF from 'testb' above */
--	jz .Lvmlaunch
-+	/* Check EFLAGS.CF from the VMX_RUN_VMRESUME bit test above. */
-+	jnc .Lvmlaunch
++	/* Clobbers EFLAGS.ZF */
++	CLEAR_CPU_BUFFERS
++
+ 	/* Check EFLAGS.CF from the VMX_RUN_VMRESUME bit test above. */
+ 	jnc .Lvmlaunch
+ 
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 3b76f1bf001e..5c1590855ffc 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -407,7 +407,8 @@ static __always_inline void vmx_enable_fb_clear(struct vcpu_vmx *vmx)
+ 
+ static void vmx_update_fb_clear_dis(struct kvm_vcpu *vcpu, struct vcpu_vmx *vmx)
+ {
+-	vmx->disable_fb_clear = vmx_fb_clear_ctrl_available;
++	vmx->disable_fb_clear = !cpu_feature_enabled(X86_FEATURE_CLEAR_CPU_BUF) &&
++		vmx_fb_clear_ctrl_available;
  
  	/*
- 	 * After a successful VMRESUME/VMLAUNCH, control flow "magically"
+ 	 * If guest will not execute VERW, there is no need to set FB_CLEAR_DIS
+@@ -7120,11 +7121,14 @@ static noinstr void vmx_vcpu_enter_exit(struct kvm_vcpu *vcpu,
+ {
+ 	guest_state_enter_irqoff();
+ 
+-	/* L1D Flush includes CPU buffer clear to mitigate MDS */
++	/*
++	 * L1D Flush includes CPU buffer clear to mitigate MDS, but VERW
++	 * mitigation for MDS is done late in VMentry and is still
++	 * executed in spite of L1D Flush. This is because an extra VERW
++	 * should not matter much after the big hammer L1D Flush.
++	 */
+ 	if (static_branch_unlikely(&vmx_l1d_should_flush))
+ 		vmx_l1d_flush(vcpu);
+-	else if (cpu_feature_enabled(X86_FEATURE_CLEAR_CPU_BUF))
+-		mds_clear_cpu_buffers();
+ 	else if (static_branch_unlikely(&mmio_stale_data_clear) &&
+ 		 kvm_arch_has_assigned_device(vcpu->kvm))
+ 		mds_clear_cpu_buffers();
 
 -- 
 2.34.1
