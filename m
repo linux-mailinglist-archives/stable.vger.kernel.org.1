@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-25019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD6B2869759
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:20:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36F6286989A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:42:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 878CF28316A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:20:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD47AB301B4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:31:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C994E13B798;
-	Tue, 27 Feb 2024 14:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D5BD145FF4;
+	Tue, 27 Feb 2024 14:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jmv8lGZQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XF0Mk06i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882C478B61;
-	Tue, 27 Feb 2024 14:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C65313A882;
+	Tue, 27 Feb 2024 14:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043630; cv=none; b=AlHY99AgRiVuIDTN6FcqZ4j6zniDpnG3858i2ODy1s3x3xMG7OZsXJGuGZNZHCr70V8AZRaLBAr/M+qwJXtIbARmDt/oxjethL97N1mjlZSZxajpsOy7m97lYPR4cdKi/HFCOtg7vN0AZFp6yffFSLY6+fRU3x3/l+OJCStfB/w=
+	t=1709044220; cv=none; b=TJQ+chZKKLZlJ4HBk/w/O8IufcdFLyuv7smevFY2stqz0r8AispPR6niThr4NnswAumNH61P0X+/nWxnNxJf7kP9X0+GZZGPqejnfyyg8N9VDFaDwQ0Lqoy95fVU1Kvo+7eosHLltc+Co8SHUR0sUP/hH3yqrfrz43/axeZIgLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043630; c=relaxed/simple;
-	bh=rAZtjv20HtosyLTgU+WGzI40Nnf05mvIXqS3l/qXE84=;
+	s=arc-20240116; t=1709044220; c=relaxed/simple;
+	bh=JmGZfGDd3X6LvYZk5NKmAX50kazkCSpL2qK1bNlJXI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tPQOI2eaxncaJ5/oIZ6ulHphpULgwN5+Ym7FJLmh2c7ELs17UXL5tW6/SAJBZNRgh23kEmPy7PxslAnrjyXHAQG4FHLYyBreCV5KGGQMylKRlbb9pEeddVJK5YxIzmou2u20n2SjYAFsh5aoCdl3TMganq0wvxVI13yYxg3qhGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jmv8lGZQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1245BC433C7;
-	Tue, 27 Feb 2024 14:20:29 +0000 (UTC)
+	 MIME-Version; b=rAJkRr8yJhZ9kO6/7q9+4vUJk/tb9rF3VyKt2soM5b05Pr2PmFxEKdTibx2WNFoiCusM9+bOe4B4mfQHORDU87pIjqgk9jP+/u2NIfdZSAf9/yzPzNfMVpp8jiy2oaDFrfPQD1oiM2WN0YFYwpGnhH1Oze+FYVXNPNgYmRJclsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XF0Mk06i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D92DC433F1;
+	Tue, 27 Feb 2024 14:30:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043630;
-	bh=rAZtjv20HtosyLTgU+WGzI40Nnf05mvIXqS3l/qXE84=;
+	s=korg; t=1709044219;
+	bh=JmGZfGDd3X6LvYZk5NKmAX50kazkCSpL2qK1bNlJXI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jmv8lGZQb5j5QqyS6gMq7FaOz+jKK8TIASmvrU/6eK8YQj5HWhHB40EVUsGHg1qxW
-	 irnGlt1q9+sYhiptGBFNpRzc11t2/tUrhbUHzTX1quljgltiGs7exkpDO9zEEmQwZf
-	 5Hk9KotqyXcCrnMsad1EtoL2AkkhOvmkw/icWIx4=
+	b=XF0Mk06idZcAnZujIr+icW9Ot7F/DGSrs3XjKmjUQNip1jQw9Y+1h5MF+VOqwfCMq
+	 lr4Vh/qSroduR0RhK9v4GnCujsDxifpEUDRy+uuS44t+l4RQws/W4Lvj216r59REo5
+	 QDU4SQHYbxg9dYeFD8AlKJOUa74F2AQO4wqgTsWI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luosili <rootlab@huawei.com>,
-	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <courmisch@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 178/195] phonet: take correct lock to peek at the RX queue
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 5.10 078/122] KVM: arm64: vgic-its: Test for valid IRQ in its_sync_lpi_pending_table()
 Date: Tue, 27 Feb 2024 14:27:19 +0100
-Message-ID: <20240227131616.280793263@linuxfoundation.org>
+Message-ID: <20240227131601.257628033@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +59,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rémi Denis-Courmont <courmisch@gmail.com>
+From: Oliver Upton <oliver.upton@linux.dev>
 
-[ Upstream commit 3b2d9bc4d4acdf15a876eae2c0d83149250e85ba ]
+commit 8d3a7dfb801d157ac423261d7cd62c33e95375f8 upstream.
 
-The receive queue is protected by its embedded spin-lock, not the
-socket lock, so we need the former lock here (and only that one).
+vgic_get_irq() may not return a valid descriptor if there is no ITS that
+holds a valid translation for the specified INTID. If that is the case,
+it is safe to silently ignore it and continue processing the LPI pending
+table.
 
-Fixes: 107d0d9b8d9a ("Phonet: Phonet datagram transport protocol")
-Reported-by: Luosili <rootlab@huawei.com>
-Signed-off-by: Rémi Denis-Courmont <courmisch@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240218081214.4806-1-remi@remlab.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 33d3bc9556a7 ("KVM: arm64: vgic-its: Read initial LPI pending table")
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20240221092732.4126848-2-oliver.upton@linux.dev
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/phonet/datagram.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/kvm/vgic/vgic-its.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/phonet/datagram.c
-+++ b/net/phonet/datagram.c
-@@ -35,10 +35,10 @@ static int pn_ioctl(struct sock *sk, int
+--- a/arch/arm64/kvm/vgic/vgic-its.c
++++ b/arch/arm64/kvm/vgic/vgic-its.c
+@@ -462,6 +462,9 @@ static int its_sync_lpi_pending_table(st
+ 		}
  
- 	switch (cmd) {
- 	case SIOCINQ:
--		lock_sock(sk);
-+		spin_lock_bh(&sk->sk_receive_queue.lock);
- 		skb = skb_peek(&sk->sk_receive_queue);
- 		answ = skb ? skb->len : 0;
--		release_sock(sk);
-+		spin_unlock_bh(&sk->sk_receive_queue.lock);
- 		return put_user(answ, (int __user *)arg);
- 
- 	case SIOCPNADDRESOURCE:
+ 		irq = vgic_get_irq(vcpu->kvm, NULL, intids[i]);
++		if (!irq)
++			continue;
++
+ 		raw_spin_lock_irqsave(&irq->irq_lock, flags);
+ 		irq->pending_latch = pendmask & (1U << bit_nr);
+ 		vgic_queue_irq_unlock(vcpu->kvm, irq, flags);
 
 
 
