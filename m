@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0AC486952A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:59:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 580698697F7
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:27:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 001281C246EA
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:59:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B00FEB2E38F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:26:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3444613B7A0;
-	Tue, 27 Feb 2024 13:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3193F140391;
+	Tue, 27 Feb 2024 14:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sHpH3AIg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nu5Q7V7T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75FD13AA50;
-	Tue, 27 Feb 2024 13:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B0A13B7AB;
+	Tue, 27 Feb 2024 14:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042369; cv=none; b=kH4cupjWwFyLrO8ZSpF8mN4ia+AyNXGVF7uU+MiKZ7v6DGTE3+vk00pwdOm7KkPAnvZ1Dfrzq2A63cuJz0K3O+rG04kFIwqmTz1l8s2lpseNZgkpIz+hMyr0Jqs8cp806/C9bkCKRuqi15fdm6oG3kPoPc4yc0NCs/M7Bjr5FHQ=
+	t=1709043982; cv=none; b=uTKNRQDBt5eVw+zmFVJ7S68eusQgy5w6fIA4DPWE+oF9RPoTryYXsirswX1xW7ujr7WqUg8g1sJFVy+ULHmQ6OLbV6hRcq5skvHUPDsBWQTHtU4tdA+sLvYbfoN8Wh3fQAFZhulfps7mj6uxqBT81jrrTz8TB/kyJI+5CSd3/R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042369; c=relaxed/simple;
-	bh=CPW019nt9ho2LkIKO8U+mFT7rUfuZDsv0z3Cesby+Kw=;
+	s=arc-20240116; t=1709043982; c=relaxed/simple;
+	bh=m70hRhSvsDeq6GMj0XrbsXZ2K5F2xURAb1uggjPG5rg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FSUH+CYWZNPwcjfOSn2e1FoxEKKHg7QxeBQoMdKJoEy+oa7FJzgzKTT2y9Z+cbcPlq753M3kx39gyhrid/sVQjMOS5VYdITAXeJz3ikHc+IyqMLL2LQi4WycSePk16Um6PBpCowQsi/J5uUzlhhz7a2w/C21aoUUA1JSnKBE2Q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sHpH3AIg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76002C433C7;
-	Tue, 27 Feb 2024 13:59:28 +0000 (UTC)
+	 MIME-Version; b=JBYZ6iXVgifSij6XWib4vESLGoPGw7BCrZAz/sO95o6MpZdGMkXNPQQKP4gp7c9FQ4uCMVVRb/qinBOfSvRM1XOMljnyjx2eBfNhgOICnKf4UbJ4pfF+rA3DzpkrXaHxKKNi0uRTYp00wg+dqdzHeCFwmFF55E6OWyiek6Xh8Io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nu5Q7V7T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F55AC433C7;
+	Tue, 27 Feb 2024 14:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042368;
-	bh=CPW019nt9ho2LkIKO8U+mFT7rUfuZDsv0z3Cesby+Kw=;
+	s=korg; t=1709043981;
+	bh=m70hRhSvsDeq6GMj0XrbsXZ2K5F2xURAb1uggjPG5rg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sHpH3AIgOsPxEcqT503P8qezGZnTaCwzDAz7WE1NZWox2+LY8pRuM6KTu64Mq73sG
-	 tPQuw8P96z+0s3I9avXKMS+1UJ7Y6yKWQ2RiVkvYQrtDd9Ee+Y6dWQ0qwyBkxu6dSm
-	 cV/Fl43ip3NF9kMkblzdBstjXua3d4l7pJIQfT78=
+	b=nu5Q7V7Tv6n7LpZFgEGNQWDmWhGh/pRm2ip3dzy4pRyjK461B0p+6/2f0tVNDkUMW
+	 qI7JsxUHyYIWFf0LbXmICfOnMjRR0CD9mGpvqGddyBF1t/ofZw6DbMy+E6kn0m75Na
+	 YVy7UoWai0kGA12aeLVKbG0qMKG4DDRJmoiZub8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Conrad Kostecki <conikost@gentoo.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 270/299] tls: dont skip over different type records from the rx_list
+Subject: [PATCH 5.10 020/122] ahci: asm1166: correct count of reported ports
 Date: Tue, 27 Feb 2024 14:26:21 +0100
-Message-ID: <20240227131634.370440987@linuxfoundation.org>
+Message-ID: <20240227131559.367290351@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,125 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Conrad Kostecki <conikost@gentoo.org>
 
-[ Upstream commit ec823bf3a479d42c589dc0f28ef4951c49cd2d2a ]
+[ Upstream commit 0077a504e1a4468669fd2e011108db49133db56e ]
 
-If we queue 3 records:
- - record 1, type DATA
- - record 2, some other type
- - record 3, type DATA
-and do a recv(PEEK), the rx_list will contain the first two records.
+The ASM1166 SATA host controller always reports wrongly,
+that it has 32 ports. But in reality, it only has six ports.
 
-The next large recv will walk through the rx_list and copy data from
-record 1, then stop because record 2 is a different type. Since we
-haven't filled up our buffer, we will process the next available
-record. It's also DATA, so we can merge it with the current read.
+This seems to be a hardware issue, as all tested ASM1166
+SATA host controllers reports such high count of ports.
 
-We shouldn't do that, since there was a record in between that we
-ignored.
+Example output: ahci 0000:09:00.0: AHCI 0001.0301
+32 slots 32 ports 6 Gbps 0xffffff3f impl SATA mode.
 
-Add a flag to let process_rx_list inform tls_sw_recvmsg that it had
-more data available.
+By adjusting the port_map, the count is limited to six ports.
 
-Fixes: 692d7b5d1f91 ("tls: Fix recvmsg() to be able to peek across multiple records")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/r/f00c0c0afa080c60f016df1471158c1caf983c34.1708007371.git.sd@queasysnail.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+New output: ahci 0000:09:00.0: AHCI 0001.0301
+32 slots 32 ports 6 Gbps 0x3f impl SATA mode.
+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=211873
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218346
+Signed-off-by: Conrad Kostecki <conikost@gentoo.org>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ drivers/ata/ahci.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index a83b6119f3826..5238886e61860 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -1772,7 +1772,8 @@ static int process_rx_list(struct tls_sw_context_rx *ctx,
- 			   u8 *control,
- 			   size_t skip,
- 			   size_t len,
--			   bool is_peek)
-+			   bool is_peek,
-+			   bool *more)
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 4297a8d69dbf7..8bfada4843d83 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -654,6 +654,11 @@ MODULE_PARM_DESC(mobile_lpm_policy, "Default LPM policy for mobile chipsets");
+ static void ahci_pci_save_initial_config(struct pci_dev *pdev,
+ 					 struct ahci_host_priv *hpriv)
  {
- 	struct sk_buff *skb = skb_peek(&ctx->rx_list);
- 	struct tls_msg *tlm;
-@@ -1785,7 +1786,7 @@ static int process_rx_list(struct tls_sw_context_rx *ctx,
- 
- 		err = tls_record_content_type(msg, tlm, control);
- 		if (err <= 0)
--			goto out;
-+			goto more;
- 
- 		if (skip < rxm->full_len)
- 			break;
-@@ -1803,12 +1804,12 @@ static int process_rx_list(struct tls_sw_context_rx *ctx,
- 
- 		err = tls_record_content_type(msg, tlm, control);
- 		if (err <= 0)
--			goto out;
-+			goto more;
- 
- 		err = skb_copy_datagram_msg(skb, rxm->offset + skip,
- 					    msg, chunk);
- 		if (err < 0)
--			goto out;
-+			goto more;
- 
- 		len = len - chunk;
- 		copied = copied + chunk;
-@@ -1844,6 +1845,10 @@ static int process_rx_list(struct tls_sw_context_rx *ctx,
- 
- out:
- 	return copied ? : err;
-+more:
-+	if (more)
-+		*more = true;
-+	goto out;
- }
- 
- static bool
-@@ -1947,6 +1952,7 @@ int tls_sw_recvmsg(struct sock *sk,
- 	int target, err;
- 	bool is_kvec = iov_iter_is_kvec(&msg->msg_iter);
- 	bool is_peek = flags & MSG_PEEK;
-+	bool rx_more = false;
- 	bool released = true;
- 	bool bpf_strp_enabled;
- 	bool zc_capable;
-@@ -1966,12 +1972,12 @@ int tls_sw_recvmsg(struct sock *sk,
- 		goto end;
- 
- 	/* Process pending decrypted records. It must be non-zero-copy */
--	err = process_rx_list(ctx, msg, &control, 0, len, is_peek);
-+	err = process_rx_list(ctx, msg, &control, 0, len, is_peek, &rx_more);
- 	if (err < 0)
- 		goto end;
- 
- 	copied = err;
--	if (len <= copied || (copied && control != TLS_RECORD_TYPE_DATA))
-+	if (len <= copied || (copied && control != TLS_RECORD_TYPE_DATA) || rx_more)
- 		goto end;
- 
- 	target = sock_rcvlowat(sk, flags & MSG_WAITALL, len);
-@@ -2130,10 +2136,10 @@ int tls_sw_recvmsg(struct sock *sk,
- 		/* Drain records from the rx_list & copy if required */
- 		if (is_peek || is_kvec)
- 			err = process_rx_list(ctx, msg, &control, copied,
--					      decrypted, is_peek);
-+					      decrypted, is_peek, NULL);
- 		else
- 			err = process_rx_list(ctx, msg, &control, 0,
--					      async_copy_bytes, is_peek);
-+					      async_copy_bytes, is_peek, NULL);
- 	}
- 
- 	copied += decrypted;
++	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA && pdev->device == 0x1166) {
++		dev_info(&pdev->dev, "ASM1166 has only six ports\n");
++		hpriv->saved_port_map = 0x3f;
++	}
++
+ 	if (pdev->vendor == PCI_VENDOR_ID_JMICRON && pdev->device == 0x2361) {
+ 		dev_info(&pdev->dev, "JMB361 has only one port\n");
+ 		hpriv->force_port_map = 1;
 -- 
 2.43.0
 
