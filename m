@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-24780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05FAE86963C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:09:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96C5E8696E0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:16:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5A4629325D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:09:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FA7C1F2E6FD
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5084113DB83;
-	Tue, 27 Feb 2024 14:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B6213EFE9;
+	Tue, 27 Feb 2024 14:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+VuVHhJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3euDZ3R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8A613A26F;
-	Tue, 27 Feb 2024 14:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF1478B61;
+	Tue, 27 Feb 2024 14:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042970; cv=none; b=DPK3/qdH97vD/otbxh8JHX6aKGFp2u60qkS+DjVivRE9sLomxRF1o4J54YpOg5/uqVLeZVr1g2l0wfR1gUIBcCDubMQsHdIhiLO+9CP9yuPf0u5J4dcP3XeW8eVa112WbzKg9N4L8MC0K2e89tc9yBdwcwnavv81hIeaJU2u7MY=
+	t=1709043374; cv=none; b=iWcZ4iKcrsIEmc6SJhAV9mPJ95q45XS3zxooTgpW6u3T+IerweOxDr/vvGsgIgkjK9sIeydQo6pP8KnCuLNMLT9e9NBLPaFJVOq3KzbpJRCB5c6vAvET7p2QzURZ3c8bozIfbr32wIPR86L7GRkLGGHIy7Mi55BaGe9ExSUD8eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042970; c=relaxed/simple;
-	bh=thprR5L4e98Z4wTBgl5+p9rf63ccWm8MYxctGbxd6HA=;
+	s=arc-20240116; t=1709043374; c=relaxed/simple;
+	bh=xVfocRMoWHUihPS3SogmE1oeUFt79/SX7r4pM2iBdLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hv+EyLCdVUR10QFpc//0hdXBFaYSc/o+CW/IZlLMbsBIQi4afNv1G49Nho3fISOMUjJXrVLV7q6X3R+cyTAS2TXM3gNcQMuOr7SNFKBBmxngvskGK4ny8fJWS/n4Nj029ey+mCs193Vh93I5JqNv4PlS1vqpYfLjBrKHinl6fB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+VuVHhJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B84C433C7;
-	Tue, 27 Feb 2024 14:09:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MpY5n7WCcjs5gvqx4jkrz3+dYk3SXq3RnhHn3WuBdG6c85hpvhySnnUUYxb/piUmP/Ma/eRxNkhbsiqKaZpQlbJQG6DV1HFwyiML7mVwRJL44zoF+631n0FdcpEH2Tk4bDjhfUeVM9PUZeP+te1mHka7GujaeOBscrH+UH5KcOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3euDZ3R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51190C433F1;
+	Tue, 27 Feb 2024 14:16:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042969;
-	bh=thprR5L4e98Z4wTBgl5+p9rf63ccWm8MYxctGbxd6HA=;
+	s=korg; t=1709043373;
+	bh=xVfocRMoWHUihPS3SogmE1oeUFt79/SX7r4pM2iBdLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r+VuVHhJJ5h/u0qeMOCxpZek8hSzZo00j/t9JAGn+qB9MH1RJoqEKWaKdP1/pEoEC
-	 bcrv9L1Ou/PBop0Hlnr/dzvxO2RpzEUsyJcFspOyjyOYV/3Nytddp6RyeoSQ4HQTBG
-	 LlcYpBoAFBrjAJN5AVnd7txpSLXI0OY1Hb64nv40=
+	b=M3euDZ3Rni/iTyERVdNOzVpFNbNArH97RsYPPn71MRJf58GO3g6goutAGAzXMzKR4
+	 8sqaye5cdGf7ITK4cMPPX7gK27jQZrUr8czkKDNncOyi3bdWr/Jw4ErYQF394Zt0xv
+	 zCGB+0sMaJgcMxBtxkwSQpd9nkY35+SorN8S0yzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Cercueil <paul@crapouillou.net>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 158/245] mmc: mxc: Use the new PM macros
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Huang Rui <ray.huang@amd.com>,
+	dri-devel@lists.freedesktop.org,
+	Matthew Auld <matthew.auld@intel.com>
+Subject: [PATCH 6.1 085/195] drm/ttm: Fix an invalid freeing on already freed page in error path
 Date: Tue, 27 Feb 2024 14:25:46 +0100
-Message-ID: <20240227131620.349480231@linuxfoundation.org>
+Message-ID: <20240227131613.291946379@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +63,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Cercueil <paul@crapouillou.net>
+From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-[ Upstream commit 2cdbd92c2d1dff07ad56c39f5857ee644bbd2c8a ]
+commit 40510a941d27d405a82dc3320823d875f94625df upstream.
 
-Use DEFINE_SIMPLE_DEV_PM_OPS() instead of the SIMPLE_DEV_PM_OPS()
-macro, along with using pm_sleep_ptr() as this driver doesn't handle
-runtime PM.
+If caching mode change fails due to, for example, OOM we
+free the allocated pages in a two-step process. First the pages
+for which the caching change has already succeeded. Secondly
+the pages for which a caching change did not succeed.
 
-This makes it possible to remove the #ifdef CONFIG_PM guard around
-the suspend/resume functions.
+However the second step was incorrectly freeing the pages already
+freed in the first step.
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Acked-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 18ab69c8ca56 ("Input: iqs269a - do not poll during suspend or resume")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix.
+
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Fixes: 379989e7cbdc ("drm/ttm/pool: Fix ttm_pool_alloc error path")
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Huang Rui <ray.huang@amd.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.4+
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240221073324.3303-1-thomas.hellstrom@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/mxcmmc.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/ttm/ttm_pool.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/mxcmmc.c b/drivers/mmc/host/mxcmmc.c
-index 97227ad717150..b5f65f39ced1c 100644
---- a/drivers/mmc/host/mxcmmc.c
-+++ b/drivers/mmc/host/mxcmmc.c
-@@ -1185,7 +1185,6 @@ static int mxcmci_remove(struct platform_device *pdev)
- 	return 0;
- }
- 
--#ifdef CONFIG_PM_SLEEP
- static int mxcmci_suspend(struct device *dev)
+--- a/drivers/gpu/drm/ttm/ttm_pool.c
++++ b/drivers/gpu/drm/ttm/ttm_pool.c
+@@ -383,7 +383,7 @@ static void ttm_pool_free_range(struct t
+ 				enum ttm_caching caching,
+ 				pgoff_t start_page, pgoff_t end_page)
  {
- 	struct mmc_host *mmc = dev_get_drvdata(dev);
-@@ -1212,9 +1211,8 @@ static int mxcmci_resume(struct device *dev)
+-	struct page **pages = tt->pages;
++	struct page **pages = &tt->pages[start_page];
+ 	unsigned int order;
+ 	pgoff_t i, nr;
  
- 	return ret;
- }
--#endif
- 
--static SIMPLE_DEV_PM_OPS(mxcmci_pm_ops, mxcmci_suspend, mxcmci_resume);
-+DEFINE_SIMPLE_DEV_PM_OPS(mxcmci_pm_ops, mxcmci_suspend, mxcmci_resume);
- 
- static struct platform_driver mxcmci_driver = {
- 	.probe		= mxcmci_probe,
-@@ -1222,7 +1220,7 @@ static struct platform_driver mxcmci_driver = {
- 	.driver		= {
- 		.name		= DRIVER_NAME,
- 		.probe_type	= PROBE_PREFER_ASYNCHRONOUS,
--		.pm	= &mxcmci_pm_ops,
-+		.pm	= pm_sleep_ptr(&mxcmci_pm_ops),
- 		.of_match_table	= mxcmci_of_match,
- 	}
- };
--- 
-2.43.0
-
 
 
 
