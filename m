@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-24948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A38168696FC
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:17:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2447F869362
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:44:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A2851F2403C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:17:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2F6728EB4E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:44:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B03F413B798;
-	Tue, 27 Feb 2024 14:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1054A13A25D;
+	Tue, 27 Feb 2024 13:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KkukOLLM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xSRzqv3v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D22178B61;
-	Tue, 27 Feb 2024 14:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C107413B2B3;
+	Tue, 27 Feb 2024 13:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043434; cv=none; b=hB/bQGuC85pifzT26MHZiS+Ruvg69gZF1iZ2xU0RFi0vDZitzPQxuep93qwvg3QKFQwnHzfs1UcuoA2Pd0XQZ6qs8t2ylgvBWS6af5rfYr5suzOk47W1EeUNPDY9exi5x5QWdMBr4bXUAXatuQSNKGwwQ2cKkHz+seDco6IfwiY=
+	t=1709041460; cv=none; b=KuAStLyinx8nnEIQ6Zp6OXZ3OVoDtU1Bgw+iDwho/gild3VrL+H2mHxww05BInHzpB+kfjbFN9jCC4gwlXr26tri5sRDp/kL6tKG08bPR4vauQcy9clbjgco+50oMs6ZqOL9/0zvjYbR3cwMb4AWaSr21hANf44P3Mhq8R2LIh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043434; c=relaxed/simple;
-	bh=GFA+adsAkFEBpHy06e4QtkXU29KFuRpAYHGiy7vj1Kk=;
+	s=arc-20240116; t=1709041460; c=relaxed/simple;
+	bh=XGkr42bSIUn+NCBKpyAr/FmvItt1FJfYYNzR+1NF9j0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ESelx21sKLjCK3w8FUC82sC74fSmGV0dBlJf42/GLBKS+1FEvcVRGQCB98bi+tA8fagdB/64iU+E1L5DtkfJmrHcMEbCiQXpoceW3ZcirdKboXFxBLrCsWED7ctguHgp7jybPAVlW0Uofha2gCm3Zm3JOYOd/zROukmYrsWoInA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KkukOLLM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F16D2C433F1;
-	Tue, 27 Feb 2024 14:17:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=H2dsRbYBzYXv0erxSYD/XSI/+i32i7xk+bMJP5IrLMP+r3o1IdlxckbMSq3VPTKOo/nqSUrCzIx9CtTnFnK18FvqM2nkhz8hsp8zMOAU8XWbvGnfZfPJrCmTiSDohzyvU+Zs/BQpX/cJsbpCeVVxqUtzxTWtvD0IsBHYsnZYHhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xSRzqv3v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42BDBC433F1;
+	Tue, 27 Feb 2024 13:44:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043434;
-	bh=GFA+adsAkFEBpHy06e4QtkXU29KFuRpAYHGiy7vj1Kk=;
+	s=korg; t=1709041460;
+	bh=XGkr42bSIUn+NCBKpyAr/FmvItt1FJfYYNzR+1NF9j0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KkukOLLMdMLS/QDAnlZihbAGZIH4Iw9WMcjzXH0VgeVZ1HdFpUQcSrfsUkWWeAe2q
-	 UH7Kwv5E4ZHzMqFWWrpIR78Ijrwd6LAWbPuiEO4HaBLKxkXTtmustRW0EB8dsvuhKe
-	 XLMfiMgsYAssY83kPmG9St8KwRWMRFlQOoi7HcfY=
+	b=xSRzqv3vcOOyTbytJL86d8TRBMG8ZvdMZHk7h5E/kOC/5m84E37kbWcY0/m+ZErY2
+	 o8ekIxNWxyOnRd+9TvoQk7B5Dg1AdmTHFMMEPFBkpK3fAYQd/MMBK4t7WcBRCM0vCj
+	 ZPmT+TELMy6MI9DVKk98HEF+/bPVImEwWuR6ymEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Kobel <a-kobel@a-kobel.de>,
-	regressions@lists.linux.dev,
-	Arnold Gozum <arngozum@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.1 099/195] platform/x86: intel-vbtn: Stop calling "VBDL" from notify_handler
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 13/52] dmaengine: shdma: increase size of dev_id
 Date: Tue, 27 Feb 2024 14:26:00 +0100
-Message-ID: <20240227131613.742771568@linuxfoundation.org>
+Message-ID: <20240227131548.969886225@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
+References: <20240227131548.514622258@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +59,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Vinod Koul <vkoul@kernel.org>
 
-commit 84c16d01ff219bc0a5dca5219db6b8b86a6854fb upstream.
+[ Upstream commit 404290240827c3bb5c4e195174a8854eef2f89ac ]
 
-Commit 14c200b7ca46 ("platform/x86: intel-vbtn: Fix missing
-tablet-mode-switch events") causes 2 issues on the ThinkPad X1 Tablet Gen2:
+We seem to have hit warnings of 'output may be truncated' which is fixed
+by increasing the size of 'dev_id'
 
-1. The ThinkPad will wake up immediately from suspend
-2. When put in tablet mode SW_TABLET_MODE reverts to 0 after about 1 second
+drivers/dma/sh/shdmac.c: In function ‘sh_dmae_probe’:
+drivers/dma/sh/shdmac.c:541:34: error: ‘%d’ directive output may be truncated writing between 1 and 10 bytes into a region of size 9 [-Werror=format-truncation=]
+  541 |                          "sh-dmae%d.%d", pdev->id, id);
+      |                                  ^~
+In function ‘sh_dmae_chan_probe’,
+    inlined from ‘sh_dmae_probe’ at drivers/dma/sh/shdmac.c:845:9:
+drivers/dma/sh/shdmac.c:541:26: note: directive argument in the range [0, 2147483647]
+  541 |                          "sh-dmae%d.%d", pdev->id, id);
+      |                          ^~~~~~~~~~~~~~
+drivers/dma/sh/shdmac.c:541:26: note: directive argument in the range [0, 19]
+drivers/dma/sh/shdmac.c:540:17: note: ‘snprintf’ output between 11 and 21 bytes into a destination of size 16
+  540 |                 snprintf(sh_chan->dev_id, sizeof(sh_chan->dev_id),
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  541 |                          "sh-dmae%d.%d", pdev->id, id);
+      |                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Both these issues are caused by the "VBDL" ACPI method call added
-at the end of the notify_handler.
-
-And it never became entirely clear if this call is even necessary to fix
-the issue of missing tablet-mode-switch events on the Dell Inspiron 7352.
-
-Drop the "VBDL" ACPI method call again to fix the 2 issues this is
-causing on the ThinkPad X1 Tablet Gen2.
-
-Fixes: 14c200b7ca46 ("platform/x86: intel-vbtn: Fix missing tablet-mode-switch events")
-Reported-by: Alexander Kobel <a-kobel@a-kobel.de>
-Closes: https://lore.kernel.org/platform-driver-x86/295984ce-bd4b-49bd-adc5-ffe7c898d7f0@a-kobel.de/
-Cc: regressions@lists.linux.dev
-Cc: Arnold Gozum <arngozum@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Tested-by: Alexander Kobel <a-kobel@a-kobel.de>
-Link: https://lore.kernel.org/r/20240216203300.245826-1-hdegoede@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/vbtn.c |    3 ---
- 1 file changed, 3 deletions(-)
+ drivers/dma/sh/shdma.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/platform/x86/intel/vbtn.c
-+++ b/drivers/platform/x86/intel/vbtn.c
-@@ -200,9 +200,6 @@ static void notify_handler(acpi_handle h
- 	autorelease = val && (!ke_rel || ke_rel->type == KE_IGNORE);
- 
- 	sparse_keymap_report_event(input_dev, event, val, autorelease);
--
--	/* Some devices need this to report further events */
--	acpi_evaluate_object(handle, "VBDL", NULL, NULL);
- }
- 
- /*
+diff --git a/drivers/dma/sh/shdma.h b/drivers/dma/sh/shdma.h
+index 2c0a969adc9fb..35987a35a8480 100644
+--- a/drivers/dma/sh/shdma.h
++++ b/drivers/dma/sh/shdma.h
+@@ -29,7 +29,7 @@ struct sh_dmae_chan {
+ 	const struct sh_dmae_slave_config *config; /* Slave DMA configuration */
+ 	int xmit_shift;			/* log_2(bytes_per_xfer) */
+ 	void __iomem *base;
+-	char dev_id[16];		/* unique name per DMAC of channel */
++	char dev_id[32];		/* unique name per DMAC of channel */
+ 	int pm_error;
+ 	dma_addr_t slave_addr;
+ };
+-- 
+2.43.0
+
 
 
 
