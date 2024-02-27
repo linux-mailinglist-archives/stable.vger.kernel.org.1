@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E8FF869530
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:59:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AF29869439
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F82FB2B153
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:43:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 134E628EBAC
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D452313AA4C;
-	Tue, 27 Feb 2024 13:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D4DB13B2B3;
+	Tue, 27 Feb 2024 13:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yi73HiES"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bJrshGFQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A0B2F2D;
-	Tue, 27 Feb 2024 13:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE82913DBBF;
+	Tue, 27 Feb 2024 13:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041383; cv=none; b=NexVxiZxv02RK4ubfbwTZxEqPwLVWE2FoowrmQbt+O8io1i+jXKP2KrG3DbZyYW+c+D9tgR1Yxe/jHi9FOGje41GxK77McWq/XIdWbUdV3kaDiO1FxSnU7e2bO2wvxRmmOLUKa5npPnYrUXpTBBGFELWVxgTQMKZFtnMgU8WJBg=
+	t=1709041868; cv=none; b=q/0OToxd5leDF8Mb1AfnXLBJDlfuYt+MbuFInvV1hhnoGim8CFLx4LrkHpTMzJD2NUqhdyvvKGH0AYWPeswz8SOI4R/9NgQ6c459DwBnZOELCZcI8hkE3WvvftQt7foDsq6Ow6uTHmSn0AQMWvX5GDvZBPjEc/ize/5lpX5ktfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041383; c=relaxed/simple;
-	bh=hl93JAwkJ05rxNVfbMp9VBXlaCMikmfD2od1FN4Pu+c=;
+	s=arc-20240116; t=1709041868; c=relaxed/simple;
+	bh=jwSq5Vv1v8vtNkFfAPDSx048zelVEh45HKLNk96FEjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iUqAbl0HCVsJ3GsmCoZE/HUhzhdb01aqf8xm/WzIhOyFhNphugEXN98KGuVILEYSJAmIsNG/prbSgD54tNdJvT3mEsG+vHq5ont8bj4TFSycW4MrPrO37F3zDESY3QL2hvtjKgW557f9wpgL6aJAaey5J4bcF/Z7IDiLXQm1V0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yi73HiES; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1094C433C7;
-	Tue, 27 Feb 2024 13:43:02 +0000 (UTC)
+	 MIME-Version; b=QYGwr49Fm8IuwpXFhhXLmOYxp3JMKXRxdy49wAUUDROxaRLnE9LZWIGc/9wnWxRkpdwxjtGOQC13xx0G9oA96H99/bFzVHYDEWstj779el0OLhwnkFSkw/0j2GGiWx1ZFfJpQoQbBmvqH5fp0CzMzPp2xbNVUghBn0DhADUJTI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bJrshGFQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AD7FC433C7;
+	Tue, 27 Feb 2024 13:51:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041383;
-	bh=hl93JAwkJ05rxNVfbMp9VBXlaCMikmfD2od1FN4Pu+c=;
+	s=korg; t=1709041867;
+	bh=jwSq5Vv1v8vtNkFfAPDSx048zelVEh45HKLNk96FEjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yi73HiESFevAmjOshETZqmvNYYRRzPxqX7bl+CXD6mPxBB1jHLUexnLSNg6LOF3xP
-	 E5SbIbx6LjFATbGeuN4J8ud5oZvYIcApIxVr0Tb3m4x7OLVj4uZ5Zfq6o797uFEVg+
-	 nY15/7qYCiADbbzbc/eub1/gHBjppDzi0lhUUyiQ=
+	b=bJrshGFQmBhPHvKl2XgQsrZD8i+t2wBgHS7Mw1vEUiK8CUlQC2pJpEhQFl3+gwLKD
+	 CwXy1MM+wjtHsfALDXEF/PzqKqvOrjz9E2zib61mm123mvwu7ZnCwRoSJsNygOKCZ2
+	 lFOgHmtvo1hdkW/B91lcrrG22w0+0dxyd8D2BoTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erik Kurzinger <ekurzinger@nvidia.com>,
-	Simon Ser <contact@emersion.fr>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	Szilard Fabian <szfabian@bluemarch.art>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 321/334] drm/syncobj: call drm_syncobj_fence_add_wait when WAIT_AVAILABLE flag is set
-Date: Tue, 27 Feb 2024 14:22:59 +0100
-Message-ID: <20240227131641.454251286@linuxfoundation.org>
+Subject: [PATCH 6.6 069/299] Input: i8042 - add Fujitsu Lifebook U728 to i8042 quirk table
+Date: Tue, 27 Feb 2024 14:23:00 +0100
+Message-ID: <20240227131628.168370460@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erik Kurzinger <ekurzinger@nvidia.com>
+From: Szilard Fabian <szfabian@bluemarch.art>
 
-[ Upstream commit 3c43177ffb54ea5be97505eb8e2690e99ac96bc9 ]
+[ Upstream commit 4255447ad34c5c3785fcdcf76cfa0271d6e5ed39 ]
 
-When waiting for a syncobj timeline point whose fence has not yet been
-submitted with the WAIT_FOR_SUBMIT flag, a callback is registered using
-drm_syncobj_fence_add_wait and the thread is put to sleep until the
-timeout expires. If the fence is submitted before then,
-drm_syncobj_add_point will wake up the sleeping thread immediately which
-will proceed to wait for the fence to be signaled.
+Another Fujitsu-related patch.
 
-However, if the WAIT_AVAILABLE flag is used instead,
-drm_syncobj_fence_add_wait won't get called, meaning the waiting thread
-will always sleep for the full timeout duration, even if the fence gets
-submitted earlier. If it turns out that the fence *has* been submitted
-by the time it eventually wakes up, it will still indicate to userspace
-that the wait completed successfully (it won't return -ETIME), but it
-will have taken much longer than it should have.
+In the initial boot stage the integrated keyboard of Fujitsu Lifebook U728
+refuses to work and it's not possible to type for example a dm-crypt
+passphrase without the help of an external keyboard.
 
-To fix this, we must call drm_syncobj_fence_add_wait if *either* the
-WAIT_FOR_SUBMIT flag or the WAIT_AVAILABLE flag is set. The only
-difference being that with WAIT_FOR_SUBMIT we will also wait for the
-fence to be signaled after it has been submitted while with
-WAIT_AVAILABLE we will return immediately.
+i8042.nomux kernel parameter resolves this issue but using that a PS/2
+mouse is detected. This input device is unused even when the i2c-hid-acpi
+kernel module is blacklisted making the integrated ELAN touchpad
+(04F3:3092) not working at all.
 
-IGT test patch: https://lists.freedesktop.org/archives/igt-dev/2024-January/067537.html
+So this notebook uses a hid-over-i2c touchpad which is managed by the
+i2c_designware input driver. Since you can't find a PS/2 mouse port on this
+computer and you can't connect a PS/2 mouse to it even with an official
+port replicator I think it's safe to not use the PS/2 mouse port at all.
 
-v1 -> v2: adjust lockdep_assert_none_held_once condition
-
-(cherry picked from commit 8c44ea81634a4a337df70a32621a5f3791be23df)
-
-Fixes: 01d6c3578379 ("drm/syncobj: add support for timeline point wait v8")
-Signed-off-by: Erik Kurzinger <ekurzinger@nvidia.com>
-Signed-off-by: Simon Ser <contact@emersion.fr>
-Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Reviewed-by: Simon Ser <contact@emersion.fr>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240119163208.3723457-1-ekurzinger@nvidia.com
+Signed-off-by: Szilard Fabian <szfabian@bluemarch.art>
+Link: https://lore.kernel.org/r/20240103014717.127307-2-szfabian@bluemarch.art
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_syncobj.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/input/serio/i8042-acpipnpio.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_syncobj.c b/drivers/gpu/drm/drm_syncobj.c
-index 01da6789d0440..b3433265be6ab 100644
---- a/drivers/gpu/drm/drm_syncobj.c
-+++ b/drivers/gpu/drm/drm_syncobj.c
-@@ -1034,7 +1034,8 @@ static signed long drm_syncobj_array_wait_timeout(struct drm_syncobj **syncobjs,
- 	uint64_t *points;
- 	uint32_t signaled_count, i;
- 
--	if (flags & DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT)
-+	if (flags & (DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT |
-+		     DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE))
- 		lockdep_assert_none_held_once();
- 
- 	points = kmalloc_array(count, sizeof(*points), GFP_KERNEL);
-@@ -1103,7 +1104,8 @@ static signed long drm_syncobj_array_wait_timeout(struct drm_syncobj **syncobjs,
- 	 * fallthough and try a 0 timeout wait!
- 	 */
- 
--	if (flags & DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT) {
-+	if (flags & (DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT |
-+		     DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE)) {
- 		for (i = 0; i < count; ++i)
- 			drm_syncobj_fence_add_wait(syncobjs[i], &entries[i]);
- 	}
+diff --git a/drivers/input/serio/i8042-acpipnpio.h b/drivers/input/serio/i8042-acpipnpio.h
+index cd45a65e17f2c..dfc6c581873b7 100644
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -634,6 +634,14 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
+ 		},
+ 		.driver_data = (void *)(SERIO_QUIRK_NOAUX)
+ 	},
++	{
++		/* Fujitsu Lifebook U728 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "LIFEBOOK U728"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_NOAUX)
++	},
+ 	{
+ 		/* Gigabyte M912 */
+ 		.matches = {
 -- 
 2.43.0
 
