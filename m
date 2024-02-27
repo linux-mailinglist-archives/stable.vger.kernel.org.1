@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-24852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C10C786968B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:12:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C0C98695B6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:04:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F26E61C22E64
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:12:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DF3D1C229D1
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:04:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36B7E140391;
-	Tue, 27 Feb 2024 14:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFEF513B798;
+	Tue, 27 Feb 2024 14:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mpus6TsF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="is6QQbv2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E518E13DBB3;
-	Tue, 27 Feb 2024 14:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9AE16423;
+	Tue, 27 Feb 2024 14:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043166; cv=none; b=qKecVx0BGG0Oc0s3XUNxsxMERG4clippFS8sR/sT5Mc1CLZJOD0R4nRAYLMY05mmdK0JTF2EXRr5oe58HjgnzFxenniU1nbnstykLZq82TkkbEy5XXGeGcdw27BVxQ4t1pqICKBNf2q0+J10oK2RYET7NQMHfX/0dU9iKCdmTkM=
+	t=1709042671; cv=none; b=E9MEEAervQp2HPcuwXLxJNiQUUuTj8KaJ9tQY9iWlj2mqlsY9GfVjziN+VGIPAErcsu/d3cZ8tAZkRUfqtQUXN5zU+rMYQbIYW2QuG9xrbME4fYfAxEOv3qppWRpR+tGODSR9NW3asuZPLSVVLpvb/GwuAgJuvEb7D7P1Ccw9K0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043166; c=relaxed/simple;
-	bh=skDAIycBV1gQzIOuNAd2fziV9pXMNJrhCCrkB/DKwvY=;
+	s=arc-20240116; t=1709042671; c=relaxed/simple;
+	bh=vjdClqs5D1fW2Tl3xotsMuKGCjf0ckS64rJuqMpLICM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YIxKmisnmmRXr+mWSENiI/hY/+Rrowz2uwKDieujS6LNmfbV++0NIzX8nCNGruZXrkqliRXnY2cIbu7dbDiupG/eIrJRP5dibTLZ1W8tZ8/xVc8MnReYBNUtc5jGfcn324Oci19xTNe3EEUdlPbPe90dYMWytItJhY3X0y7H2tY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mpus6TsF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71060C433C7;
-	Tue, 27 Feb 2024 14:12:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LplTJZ5m2Soyv/frQIZxN0wGUu3aqq4mElbN2nYW8G8QgFRsrDblcjMGBTu29aoTAn74A5sR1R0h1MmDKS9nPO5pD9zXtuVKEAIw9Pr+Vf5XmmSL76XP4ruiq80E+stCUoefvtnc2/FF6S897XMx7G+gdr5iHn6j1y8ZbRJdwSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=is6QQbv2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEB84C433F1;
+	Tue, 27 Feb 2024 14:04:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043165;
-	bh=skDAIycBV1gQzIOuNAd2fziV9pXMNJrhCCrkB/DKwvY=;
+	s=korg; t=1709042671;
+	bh=vjdClqs5D1fW2Tl3xotsMuKGCjf0ckS64rJuqMpLICM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mpus6TsF3y4/DwLncVJxXhhy2XsiZwaJQ4jpbJn2WIBGZJC9Vz55NwTPgeceeQsXo
-	 FDYJGZD8IkWUkkUxHCBMGDYcEoUVI1HPWpMv+ONFjKk8J23Rv+P8SqsAzDuqaWkDZ3
-	 lh/tI5Se1eKEeZ8G/aFnQg7ZBrfUs7cqUHZInHNs=
+	b=is6QQbv2bWwgxc83XVQbgYn2PM6mYOuoZouJpOEqZPVwMlsW09m+UnQXciK+ls8RQ
+	 jMejGEGrOUHejDuP03uYXc2vvgeO7pvsZmexRekLzxQHjXmtJ/HYHbrQ/PAmiHit/W
+	 Mykx/EB++zV7bldB0zhJxWgeupkq+p+DRBFEVQ/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cyril Hrubis <chrubis@suse.cz>,
-	Ingo Molnar <mingo@kernel.org>,
-	Mahmoud Adam <mngyadam@amazon.com>
-Subject: [PATCH 6.1 004/195] sched/rt: Disallow writing invalid values to sched_rt_period_us
-Date: Tue, 27 Feb 2024 14:24:25 +0100
-Message-ID: <20240227131610.542549606@linuxfoundation.org>
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Huang Rui <ray.huang@amd.com>,
+	dri-devel@lists.freedesktop.org,
+	Matthew Auld <matthew.auld@intel.com>
+Subject: [PATCH 5.15 078/245] drm/ttm: Fix an invalid freeing on already freed page in error path
+Date: Tue, 27 Feb 2024 14:24:26 +0100
+Message-ID: <20240227131617.776837919@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,96 +63,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cyril Hrubis <chrubis@suse.cz>
+From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-commit 079be8fc630943d9fc70a97807feb73d169ee3fc upstream.
+commit 40510a941d27d405a82dc3320823d875f94625df upstream.
 
-The validation of the value written to sched_rt_period_us was broken
-because:
+If caching mode change fails due to, for example, OOM we
+free the allocated pages in a two-step process. First the pages
+for which the caching change has already succeeded. Secondly
+the pages for which a caching change did not succeed.
 
-  - the sysclt_sched_rt_period is declared as unsigned int
-  - parsed by proc_do_intvec()
-  - the range is asserted after the value parsed by proc_do_intvec()
+However the second step was incorrectly freeing the pages already
+freed in the first step.
 
-Because of this negative values written to the file were written into a
-unsigned integer that were later on interpreted as large positive
-integers which did passed the check:
+Fix.
 
-  if (sysclt_sched_rt_period <= 0)
-	return EINVAL;
-
-This commit fixes the parsing by setting explicit range for both
-perid_us and runtime_us into the sched_rt_sysctls table and processes
-the values with proc_dointvec_minmax() instead.
-
-Alternatively if we wanted to use full range of unsigned int for the
-period value we would have to split the proc_handler and use
-proc_douintvec() for it however even the
-Documentation/scheduller/sched-rt-group.rst describes the range as 1 to
-INT_MAX.
-
-As far as I can tell the only problem this causes is that the sysctl
-file allows writing negative values which when read back may confuse
-userspace.
-
-There is also a LTP test being submitted for these sysctl files at:
-
-  http://patchwork.ozlabs.org/project/ltp/patch/20230901144433.2526-1-chrubis@suse.cz/
-
-Signed-off-by: Cyril Hrubis <chrubis@suse.cz>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20231002115553.3007-2-chrubis@suse.cz
-Cc: Mahmoud Adam <mngyadam@amazon.com>
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Fixes: 379989e7cbdc ("drm/ttm/pool: Fix ttm_pool_alloc error path")
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Huang Rui <ray.huang@amd.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.4+
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240221073324.3303-1-thomas.hellstrom@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/rt.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/ttm/ttm_pool.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -37,6 +37,8 @@ static struct ctl_table sched_rt_sysctls
- 		.maxlen         = sizeof(unsigned int),
- 		.mode           = 0644,
- 		.proc_handler   = sched_rt_handler,
-+		.extra1         = SYSCTL_ONE,
-+		.extra2         = SYSCTL_INT_MAX,
- 	},
- 	{
- 		.procname       = "sched_rt_runtime_us",
-@@ -44,6 +46,8 @@ static struct ctl_table sched_rt_sysctls
- 		.maxlen         = sizeof(int),
- 		.mode           = 0644,
- 		.proc_handler   = sched_rt_handler,
-+		.extra1         = SYSCTL_NEG_ONE,
-+		.extra2         = SYSCTL_INT_MAX,
- 	},
- 	{
- 		.procname       = "sched_rr_timeslice_ms",
-@@ -2970,9 +2974,6 @@ static int sched_rt_global_constraints(v
- #ifdef CONFIG_SYSCTL
- static int sched_rt_global_validate(void)
+--- a/drivers/gpu/drm/ttm/ttm_pool.c
++++ b/drivers/gpu/drm/ttm/ttm_pool.c
+@@ -384,7 +384,7 @@ static void ttm_pool_free_range(struct t
+ 				enum ttm_caching caching,
+ 				pgoff_t start_page, pgoff_t end_page)
  {
--	if (sysctl_sched_rt_period <= 0)
--		return -EINVAL;
--
- 	if ((sysctl_sched_rt_runtime != RUNTIME_INF) &&
- 		((sysctl_sched_rt_runtime > sysctl_sched_rt_period) ||
- 		 ((u64)sysctl_sched_rt_runtime *
-@@ -3003,7 +3004,7 @@ static int sched_rt_handler(struct ctl_t
- 	old_period = sysctl_sched_rt_period;
- 	old_runtime = sysctl_sched_rt_runtime;
+-	struct page **pages = tt->pages;
++	struct page **pages = &tt->pages[start_page];
+ 	unsigned int order;
+ 	pgoff_t i, nr;
  
--	ret = proc_dointvec(table, write, buffer, lenp, ppos);
-+	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
- 
- 	if (!ret && write) {
- 		ret = sched_rt_global_validate();
 
 
 
