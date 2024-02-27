@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-24379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64C1A86942E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96ECA86957E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:02:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1028A1F220F5
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41D891F2A984
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:02:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CC0114533E;
-	Tue, 27 Feb 2024 13:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A178F13B78F;
+	Tue, 27 Feb 2024 14:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lLeiwZGb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hMY8aqA1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5F0145328;
-	Tue, 27 Feb 2024 13:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6101B16423;
+	Tue, 27 Feb 2024 14:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041837; cv=none; b=EiWOM7tk+XprbWP+ITtux4vBIDAROX9nlENWaP5FzG6EsxyJxSc7Y+1dxE+PuYGBO6FhmquOSCGdWCpUxi1M2IpaTv4xBA+P7kf0trZ70zUGJasvuHwbjeyBYcQEy3/dRbY25QLqEvXDXt2lhhu2aH2pudRh5dFz1wF6Xrre76E=
+	t=1709042539; cv=none; b=nCbVSx65SY4bvkd6mTnnCZ4/+wCnV2IOqK++M7g+J2BsT+Siba1Y+pL7cK3Egr8g1VNzeR4ZTIyFxEjLGIrUekM5u/squ+PeAwST+QiTt/IqJG0/B3NkOFq9PoNaYFQcQoqkakluR/r7jY2HWk7hEXPcsglwdpMPUI43caaeMZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041837; c=relaxed/simple;
-	bh=YBHBDbkyJFs5ftCgQwfVLxnFVPXBQwGB3nJjSBMsX7g=;
+	s=arc-20240116; t=1709042539; c=relaxed/simple;
+	bh=+p2dWreX4u/wMS9QMeEJlXWRrPafAAtmuR/BA/nHwME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bv2HayWomiS3JF6K0NjX5oVnYkGPLNK7LaybjCBP+JT+i0FYphz9EbjX30IZJXAavAmbJibVfO3CGcNUXXVH4WLpfdEwewA2Nrn7LigJVcEj68dtImkY+00cfWf4vZdl6SUgqcYkk/ReTG/7JG1UJTUENjfx7ZDFU9IZiVa2be8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lLeiwZGb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6472C433F1;
-	Tue, 27 Feb 2024 13:50:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OkMMx5v1AgjxrR7jkL3S69lb+xuUSaKrZ19mC5vpI2PSkXJphCzxuNjwIcnP8jNiO00ty39gg6Q/S/+Bv2zKnyniVArYojzVaPX8Wtd9087Uo5qAagv/e7FrLM2AdjejEhIss9xotG1jfnmwiKnQZw7lLoztsTtWag0xVoH9RTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hMY8aqA1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53B1C433F1;
+	Tue, 27 Feb 2024 14:02:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041837;
-	bh=YBHBDbkyJFs5ftCgQwfVLxnFVPXBQwGB3nJjSBMsX7g=;
+	s=korg; t=1709042539;
+	bh=+p2dWreX4u/wMS9QMeEJlXWRrPafAAtmuR/BA/nHwME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lLeiwZGbBGcp1B2Mu/SKaRNWo1GgnDLszw/p+63AjCBlhNl5zh0a002Tk3fmJ8X7y
-	 Lnhx8l+nY/ilNh6gN20FiIOleLG2HcslVJb4XFO9UpRFGcYEokJ6QEhtqlVOSkwQjG
-	 2LsRIrJ9n8SCMd0TlBXVE/1TsUDdzaXdQXD5DR5s=
+	b=hMY8aqA14QAIHYg6VkEALkvMY8hl33fBGfAVMFLgakTxGQsIhQJy3Cu6MIw/q5cg3
+	 YS78i/VffDTdbOHRyyDryLQVRxbJkTW0+hdpOM/vIoEbqfG7WK2JehoiDuoHjs41nT
+	 4YWbCwO9yoYfrBivK8bHaY2LpAj0+YS5ETWW3pOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ism Hong <ism.hong@gmail.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 085/299] fs/ntfs3: use non-movable memory for ntfs3 MFT buffer cache
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 5.15 008/245] PCI: dwc: Fix a 64bit bug in dw_pcie_ep_raise_msix_irq()
 Date: Tue, 27 Feb 2024 14:23:16 +0100
-Message-ID: <20240227131628.653077170@linuxfoundation.org>
+Message-ID: <20240227131615.379734819@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +62,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ism Hong <ism.hong@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit d6d33f03baa43d763fe094ca926eeae7d3421d07 ]
+commit b5d1b4b46f856da1473c7ba9a5cdfcb55c9b2478 upstream.
 
-Since the buffer cache for ntfs3 metadata is not released until the file
-system is unmounted, allocating from the movable zone may result in cma
-allocation failures. This is due to the page still being used by ntfs3,
-leading to migration failures.
+The "msg_addr" variable is u64.  However, the "aligned_offset" is an
+unsigned int.  This means that when the code does:
 
-To address this, this commit use sb_bread_umovable() instead of
-sb_bread(). This change prevents allocation from the movable zone,
-ensuring compatibility with scenarios where the buffer head is not
-released until unmount. This patch is inspired by commit
-a8ac900b8163("ext4: use non-movable memory for the ext4 superblock").
+  msg_addr &= ~aligned_offset;
 
-The issue is found when playing video files stored in NTFS on the
-Android TV platform. During this process, the media parser reads the
-video file, causing ntfs3 to allocate buffer cache from the CMA area.
-Subsequently, the hardware decoder attempts to allocate memory from the
-same CMA area. However, the page is still in use by ntfs3, resulting in
-a migrate failure in alloc_contig_range().
+it will unintentionally zero out the high 32 bits.  Use ALIGN_DOWN() to do
+the alignment instead.
 
-The pinned page and allocating stacktrace reported by page owner shows
-below:
-
-page:ffffffff00b68880 refcount:3 mapcount:0 mapping:ffffff80046aa828
-        index:0xc0040 pfn:0x20fa4
-    aops:def_blk_aops ino:0
-    flags: 0x2020(active|private)
-    page dumped because: migration failure
-    page last allocated via order 0, migratetype Movable,
-        gfp_mask 0x108c48
-        (GFP_NOFS|__GFP_NOFAIL|__GFP_HARDWALL|__GFP_MOVABLE),
-    page_owner tracks the page as allocated
-     prep_new_page
-     get_page_from_freelist
-     __alloc_pages_nodemask
-     pagecache_get_page
-     __getblk_gfp
-     __bread_gfp
-     ntfs_read_run_nb
-     ntfs_read_bh
-     mi_read
-     ntfs_iget5
-     dir_search_u
-     ntfs_lookup
-     __lookup_slow
-     lookup_slow
-     walk_component
-     path_lookupat
-
-Signed-off-by: Ism Hong <ism.hong@gmail.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2217fffcd63f ("PCI: dwc: endpoint: Fix dw_pcie_ep_raise_msix_irq() alignment support")
+Link: https://lore.kernel.org/r/af59c7ad-ab93-40f7-ad4a-7ac0b14d37f5@moroto.mountain
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/ntfs_fs.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-designware-ep.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
-index c71a1eca427a3..98906e4675171 100644
---- a/fs/ntfs3/ntfs_fs.h
-+++ b/fs/ntfs3/ntfs_fs.h
-@@ -1035,7 +1035,7 @@ static inline u64 bytes_to_block(const struct super_block *sb, u64 size)
- static inline struct buffer_head *ntfs_bread(struct super_block *sb,
- 					     sector_t block)
- {
--	struct buffer_head *bh = sb_bread(sb, block);
-+	struct buffer_head *bh = sb_bread_unmovable(sb, block);
+--- a/drivers/pci/controller/dwc/pcie-designware-ep.c
++++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+@@ -6,6 +6,7 @@
+  * Author: Kishon Vijay Abraham I <kishon@ti.com>
+  */
  
- 	if (bh)
- 		return bh;
--- 
-2.43.0
-
++#include <linux/align.h>
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
+ 
+@@ -589,7 +590,7 @@ int dw_pcie_ep_raise_msix_irq(struct dw_
+ 	}
+ 
+ 	aligned_offset = msg_addr & (epc->mem->window.page_size - 1);
+-	msg_addr &= ~aligned_offset;
++	msg_addr = ALIGN_DOWN(msg_addr, epc->mem->window.page_size);
+ 	ret = dw_pcie_ep_map_addr(epc, func_no, 0, ep->msi_mem_phys, msg_addr,
+ 				  epc->mem->window.page_size);
+ 	if (ret)
 
 
 
