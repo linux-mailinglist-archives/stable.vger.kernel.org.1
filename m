@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-24772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFBEC869633
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:09:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40CD78697E7
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:26:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20EE3B22EE6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:09:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FFB51C22D33
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:26:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 717F213B2B4;
-	Tue, 27 Feb 2024 14:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9148314534E;
+	Tue, 27 Feb 2024 14:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SKt08T2U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ybax06sL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F77813A26F;
-	Tue, 27 Feb 2024 14:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EBF7145343;
+	Tue, 27 Feb 2024 14:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042948; cv=none; b=D9nkYPAdh9XGU5zhxeoKBe4DqEsl0AhbeBPB3zmBtGsEThKxi9NAmNWXwpRXNdUQkxdxG/PV9IvVOqDJ5ZYW2poCLiS4/vfK4SkP58UTaLaJtPTSxV1qOQBc6ZJyMRO0aDPk6WVd7UCx0opXYFnIP1hug8ry2VrQa1LVDbSIMpo=
+	t=1709043962; cv=none; b=RVHamcc+Fo8xI/30IQh8vgs9dU8vnvKjAS7C5ibevWbuorOxuzRNBBAtKSNZAsIJHnF8Cqs40CaaknLAxwKFz8BaDvXt0MSRUe7ZFfIdwvJxnvShsqjB1JGxx4tZsyP0kX3Q7pvzY1hgPAc9oI3gvFvElkV1Gj1BjDVbvn3VCSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042948; c=relaxed/simple;
-	bh=UPS40LtNeJiQcW7y61i2qm0nQyelygsWhAuoOnbvVl4=;
+	s=arc-20240116; t=1709043962; c=relaxed/simple;
+	bh=Opj9u6KWHPEPJpoIjzNRgtLJyGLv71j5rKI/NL/N0o4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J599x4eh3AAkuEnpvzrUHWa6hB+llUUr0PWTi9dJV4InRiutwuYe9/YvSNOiMtiId2vUJ1ColDdkrhPIMdV+kqHEexapxVwmH0RsacOSGSoHvUx6EJDDgTt4Eliqamx9qIzhOcxbTK0dMFNCyHAbte/DlDnngjJw8l5hdlw1ey0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SKt08T2U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFAFCC433C7;
-	Tue, 27 Feb 2024 14:09:07 +0000 (UTC)
+	 MIME-Version; b=CKabDyqK3tbJNz6cAjrJj6Kv6LfI7tRHnnpnl7ET6OvwQ2H0Ji8O1yniAtkc6xZ82YZYqV763EJvO2BejckYEnQswxOnu5k4jDHCA1D+oyTvtR7IsQetnLvEwBxlh8zEs416svjwYzt97YVJ9uH+MGCkJ7eZEdWIkcaVPSBGYAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ybax06sL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC3F1C433C7;
+	Tue, 27 Feb 2024 14:26:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042948;
-	bh=UPS40LtNeJiQcW7y61i2qm0nQyelygsWhAuoOnbvVl4=;
+	s=korg; t=1709043962;
+	bh=Opj9u6KWHPEPJpoIjzNRgtLJyGLv71j5rKI/NL/N0o4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SKt08T2UbZSvqQE9BndIJgU33HxCID76wxFg9MVSFbfUY1EVr7P1IPYW90EDzYRty
-	 aAW91Vo8NQU9Ss/GcjEWQqzz+oAEZLwja7p2ef5C7wMZsfRovWAJVX4bl907TUIMQ3
-	 n2t5K16dgLymGDqbTV8pyh691j6CdSnQIQf3AMro=
+	b=Ybax06sLYkqcd7VfcLB+ifljRlo9L7d0KU19W8m8fQgC/7ADxxXnurVRd8fmQNIB0
+	 hSQJUHndD+98drdWdF5k5GAHZdnZcz/hgsLnOs/HAIIVjcS0u9ZAvWa95mb6mP3ieK
+	 6/2pvXPR6IX2zUD6kRjM6BptW2LveQql7JkIfB9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ebe648a84e8784763f82@syzkaller.appspotmail.com,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Yonghong Song <yhs@fb.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 178/245] bpf: Address KCSAN report on bpf_lru_list
+	Robert Morris <rtm@csail.mit.edu>,
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Guruswamy Basavaiah <guruswamy.basavaiah@broadcom.com>
+Subject: [PATCH 5.10 005/122] smb: client: fix potential OOBs in smb2_parse_contexts()
 Date: Tue, 27 Feb 2024 14:26:06 +0100
-Message-ID: <20240227131620.992679247@linuxfoundation.org>
+Message-ID: <20240227131558.879202806@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,182 +63,250 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin KaFai Lau <martin.lau@kernel.org>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit ee9fd0ac3017c4313be91a220a9ac4c99dde7ad4 ]
+[ Upstream commit af1689a9b7701d9907dfc84d2a4b57c4bc907144 ]
 
-KCSAN reported a data-race when accessing node->ref.
-Although node->ref does not have to be accurate,
-take this chance to use a more common READ_ONCE() and WRITE_ONCE()
-pattern instead of data_race().
+Validate offsets and lengths before dereferencing create contexts in
+smb2_parse_contexts().
 
-There is an existing bpf_lru_node_is_ref() and bpf_lru_node_set_ref().
-This patch also adds bpf_lru_node_clear_ref() to do the
-WRITE_ONCE(node->ref, 0) also.
+This fixes following oops when accessing invalid create contexts from
+server:
 
-==================================================================
-BUG: KCSAN: data-race in __bpf_lru_list_rotate / __htab_lru_percpu_map_update_elem
+  BUG: unable to handle page fault for address: ffff8881178d8cc3
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 4a01067 P4D 4a01067 PUD 0
+  Oops: 0000 [#1] PREEMPT SMP NOPTI
+  CPU: 3 PID: 1736 Comm: mount.cifs Not tainted 6.7.0-rc4 #1
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
+  rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
+  RIP: 0010:smb2_parse_contexts+0xa0/0x3a0 [cifs]
+  Code: f8 10 75 13 48 b8 93 ad 25 50 9c b4 11 e7 49 39 06 0f 84 d2 00
+  00 00 8b 45 00 85 c0 74 61 41 29 c5 48 01 c5 41 83 fd 0f 76 55 <0f> b7
+  7d 04 0f b7 45 06 4c 8d 74 3d 00 66 83 f8 04 75 bc ba 04 00
+  RSP: 0018:ffffc900007939e0 EFLAGS: 00010216
+  RAX: ffffc90000793c78 RBX: ffff8880180cc000 RCX: ffffc90000793c90
+  RDX: ffffc90000793cc0 RSI: ffff8880178d8cc0 RDI: ffff8880180cc000
+  RBP: ffff8881178d8cbf R08: ffffc90000793c22 R09: 0000000000000000
+  R10: ffff8880180cc000 R11: 0000000000000024 R12: 0000000000000000
+  R13: 0000000000000020 R14: 0000000000000000 R15: ffffc90000793c22
+  FS: 00007f873753cbc0(0000) GS:ffff88806bc00000(0000)
+  knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: ffff8881178d8cc3 CR3: 00000000181ca000 CR4: 0000000000750ef0
+  PKRU: 55555554
+  Call Trace:
+   <TASK>
+   ? __die+0x23/0x70
+   ? page_fault_oops+0x181/0x480
+   ? search_module_extables+0x19/0x60
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? exc_page_fault+0x1b6/0x1c0
+   ? asm_exc_page_fault+0x26/0x30
+   ? smb2_parse_contexts+0xa0/0x3a0 [cifs]
+   SMB2_open+0x38d/0x5f0 [cifs]
+   ? smb2_is_path_accessible+0x138/0x260 [cifs]
+   smb2_is_path_accessible+0x138/0x260 [cifs]
+   cifs_is_path_remote+0x8d/0x230 [cifs]
+   cifs_mount+0x7e/0x350 [cifs]
+   cifs_smb3_do_mount+0x128/0x780 [cifs]
+   smb3_get_tree+0xd9/0x290 [cifs]
+   vfs_get_tree+0x2c/0x100
+   ? capable+0x37/0x70
+   path_mount+0x2d7/0xb80
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? _raw_spin_unlock_irqrestore+0x44/0x60
+   __x64_sys_mount+0x11a/0x150
+   do_syscall_64+0x47/0xf0
+   entry_SYSCALL_64_after_hwframe+0x6f/0x77
+  RIP: 0033:0x7f8737657b1e
 
-write to 0xffff888137038deb of 1 bytes by task 11240 on cpu 1:
-__bpf_lru_node_move kernel/bpf/bpf_lru_list.c:113 [inline]
-__bpf_lru_list_rotate_active kernel/bpf/bpf_lru_list.c:149 [inline]
-__bpf_lru_list_rotate+0x1bf/0x750 kernel/bpf/bpf_lru_list.c:240
-bpf_lru_list_pop_free_to_local kernel/bpf/bpf_lru_list.c:329 [inline]
-bpf_common_lru_pop_free kernel/bpf/bpf_lru_list.c:447 [inline]
-bpf_lru_pop_free+0x638/0xe20 kernel/bpf/bpf_lru_list.c:499
-prealloc_lru_pop kernel/bpf/hashtab.c:290 [inline]
-__htab_lru_percpu_map_update_elem+0xe7/0x820 kernel/bpf/hashtab.c:1316
-bpf_percpu_hash_update+0x5e/0x90 kernel/bpf/hashtab.c:2313
-bpf_map_update_value+0x2a9/0x370 kernel/bpf/syscall.c:200
-generic_map_update_batch+0x3ae/0x4f0 kernel/bpf/syscall.c:1687
-bpf_map_do_batch+0x2d9/0x3d0 kernel/bpf/syscall.c:4534
-__sys_bpf+0x338/0x810
-__do_sys_bpf kernel/bpf/syscall.c:5096 [inline]
-__se_sys_bpf kernel/bpf/syscall.c:5094 [inline]
-__x64_sys_bpf+0x43/0x50 kernel/bpf/syscall.c:5094
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-read to 0xffff888137038deb of 1 bytes by task 11241 on cpu 0:
-bpf_lru_node_set_ref kernel/bpf/bpf_lru_list.h:70 [inline]
-__htab_lru_percpu_map_update_elem+0x2f1/0x820 kernel/bpf/hashtab.c:1332
-bpf_percpu_hash_update+0x5e/0x90 kernel/bpf/hashtab.c:2313
-bpf_map_update_value+0x2a9/0x370 kernel/bpf/syscall.c:200
-generic_map_update_batch+0x3ae/0x4f0 kernel/bpf/syscall.c:1687
-bpf_map_do_batch+0x2d9/0x3d0 kernel/bpf/syscall.c:4534
-__sys_bpf+0x338/0x810
-__do_sys_bpf kernel/bpf/syscall.c:5096 [inline]
-__se_sys_bpf kernel/bpf/syscall.c:5094 [inline]
-__x64_sys_bpf+0x43/0x50 kernel/bpf/syscall.c:5094
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-value changed: 0x01 -> 0x00
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 PID: 11241 Comm: syz-executor.3 Not tainted 6.3.0-rc7-syzkaller-00136-g6a66fdd29ea1 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 03/30/2023
-==================================================================
-
-Reported-by: syzbot+ebe648a84e8784763f82@syzkaller.appspotmail.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Acked-by: Yonghong Song <yhs@fb.com>
-Link: https://lore.kernel.org/r/20230511043748.1384166-1-martin.lau@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Robert Morris <rtm@csail.mit.edu>
+Cc: stable@vger.kernel.org
+Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[Guru: Removed changes to cached_dir.c and checking return value
+of smb2_parse_contexts in smb2ops.c]
+Signed-off-by: Guruswamy Basavaiah <guruswamy.basavaiah@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/bpf_lru_list.c | 21 +++++++++++++--------
- kernel/bpf/bpf_lru_list.h |  7 ++-----
- 2 files changed, 15 insertions(+), 13 deletions(-)
+ fs/cifs/smb2ops.c   |    4 +-
+ fs/cifs/smb2pdu.c   |   91 +++++++++++++++++++++++++++++++---------------------
+ fs/cifs/smb2proto.h |   12 ++++--
+ 3 files changed, 65 insertions(+), 42 deletions(-)
 
-diff --git a/kernel/bpf/bpf_lru_list.c b/kernel/bpf/bpf_lru_list.c
-index d99e89f113c43..3dabdd137d102 100644
---- a/kernel/bpf/bpf_lru_list.c
-+++ b/kernel/bpf/bpf_lru_list.c
-@@ -41,7 +41,12 @@ static struct list_head *local_pending_list(struct bpf_lru_locallist *loc_l)
- /* bpf_lru_node helpers */
- static bool bpf_lru_node_is_ref(const struct bpf_lru_node *node)
+--- a/fs/cifs/smb2ops.c
++++ b/fs/cifs/smb2ops.c
+@@ -818,10 +818,12 @@ int open_shroot(unsigned int xid, struct
+ 	if (o_rsp->OplockLevel == SMB2_OPLOCK_LEVEL_LEASE) {
+ 		kref_get(&tcon->crfid.refcount);
+ 		tcon->crfid.has_lease = true;
+-		smb2_parse_contexts(server, o_rsp,
++		rc = smb2_parse_contexts(server, rsp_iov,
+ 				&oparms.fid->epoch,
+ 				    oparms.fid->lease_key, &oplock,
+ 				    NULL, NULL);
++		if (rc)
++			goto oshr_exit;
+ 	} else
+ 		goto oshr_exit;
+ 
+--- a/fs/cifs/smb2pdu.c
++++ b/fs/cifs/smb2pdu.c
+@@ -1991,17 +1991,18 @@ parse_posix_ctxt(struct create_context *
+ 		 posix->nlink, posix->mode, posix->reparse_tag);
+ }
+ 
+-void
+-smb2_parse_contexts(struct TCP_Server_Info *server,
+-		    struct smb2_create_rsp *rsp,
+-		    unsigned int *epoch, char *lease_key, __u8 *oplock,
+-		    struct smb2_file_all_info *buf,
+-		    struct create_posix_rsp *posix)
++int smb2_parse_contexts(struct TCP_Server_Info *server,
++			struct kvec *rsp_iov,
++			unsigned int *epoch,
++			char *lease_key, __u8 *oplock,
++			struct smb2_file_all_info *buf,
++			struct create_posix_rsp *posix)
  {
--	return node->ref;
-+	return READ_ONCE(node->ref);
-+}
+-	char *data_offset;
++	struct smb2_create_rsp *rsp = rsp_iov->iov_base;
+ 	struct create_context *cc;
+-	unsigned int next;
+-	unsigned int remaining;
++	size_t rem, off, len;
++	size_t doff, dlen;
++	size_t noff, nlen;
+ 	char *name;
+ 	static const char smb3_create_tag_posix[] = {
+ 		0x93, 0xAD, 0x25, 0x50, 0x9C,
+@@ -2010,45 +2011,63 @@ smb2_parse_contexts(struct TCP_Server_In
+ 	};
+ 
+ 	*oplock = 0;
+-	data_offset = (char *)rsp + le32_to_cpu(rsp->CreateContextsOffset);
+-	remaining = le32_to_cpu(rsp->CreateContextsLength);
+-	cc = (struct create_context *)data_offset;
 +
-+static void bpf_lru_node_clear_ref(struct bpf_lru_node *node)
-+{
-+	WRITE_ONCE(node->ref, 0);
- }
++	off = le32_to_cpu(rsp->CreateContextsOffset);
++	rem = le32_to_cpu(rsp->CreateContextsLength);
++	if (check_add_overflow(off, rem, &len) || len > rsp_iov->iov_len)
++		return -EINVAL;
++	cc = (struct create_context *)((u8 *)rsp + off);
  
- static void bpf_lru_list_count_inc(struct bpf_lru_list *l,
-@@ -89,7 +94,7 @@ static void __bpf_lru_node_move_in(struct bpf_lru_list *l,
+ 	/* Initialize inode number to 0 in case no valid data in qfid context */
+ 	if (buf)
+ 		buf->IndexNumber = 0;
  
- 	bpf_lru_list_count_inc(l, tgt_type);
- 	node->type = tgt_type;
--	node->ref = 0;
-+	bpf_lru_node_clear_ref(node);
- 	list_move(&node->list, &l->lists[tgt_type]);
- }
- 
-@@ -110,7 +115,7 @@ static void __bpf_lru_node_move(struct bpf_lru_list *l,
- 		bpf_lru_list_count_inc(l, tgt_type);
- 		node->type = tgt_type;
- 	}
--	node->ref = 0;
-+	bpf_lru_node_clear_ref(node);
- 
- 	/* If the moving node is the next_inactive_rotation candidate,
- 	 * move the next_inactive_rotation pointer also.
-@@ -353,7 +358,7 @@ static void __local_list_add_pending(struct bpf_lru *lru,
- 	*(u32 *)((void *)node + lru->hash_offset) = hash;
- 	node->cpu = cpu;
- 	node->type = BPF_LRU_LOCAL_LIST_T_PENDING;
--	node->ref = 0;
-+	bpf_lru_node_clear_ref(node);
- 	list_add(&node->list, local_pending_list(loc_l));
- }
- 
-@@ -419,7 +424,7 @@ static struct bpf_lru_node *bpf_percpu_lru_pop_free(struct bpf_lru *lru,
- 	if (!list_empty(free_list)) {
- 		node = list_first_entry(free_list, struct bpf_lru_node, list);
- 		*(u32 *)((void *)node + lru->hash_offset) = hash;
--		node->ref = 0;
-+		bpf_lru_node_clear_ref(node);
- 		__bpf_lru_node_move(l, node, BPF_LRU_LIST_T_INACTIVE);
- 	}
- 
-@@ -522,7 +527,7 @@ static void bpf_common_lru_push_free(struct bpf_lru *lru,
+-	while (remaining >= sizeof(struct create_context)) {
+-		name = le16_to_cpu(cc->NameOffset) + (char *)cc;
+-		if (le16_to_cpu(cc->NameLength) == 4 &&
+-		    strncmp(name, SMB2_CREATE_REQUEST_LEASE, 4) == 0)
+-			*oplock = server->ops->parse_lease_buf(cc, epoch,
+-							   lease_key);
+-		else if (buf && (le16_to_cpu(cc->NameLength) == 4) &&
+-		    strncmp(name, SMB2_CREATE_QUERY_ON_DISK_ID, 4) == 0)
+-			parse_query_id_ctxt(cc, buf);
+-		else if ((le16_to_cpu(cc->NameLength) == 16)) {
+-			if (posix &&
+-			    memcmp(name, smb3_create_tag_posix, 16) == 0)
++	while (rem >= sizeof(*cc)) {
++		doff = le16_to_cpu(cc->DataOffset);
++		dlen = le32_to_cpu(cc->DataLength);
++		if (check_add_overflow(doff, dlen, &len) || len > rem)
++			return -EINVAL;
++
++		noff = le16_to_cpu(cc->NameOffset);
++		nlen = le16_to_cpu(cc->NameLength);
++		if (noff + nlen >= doff)
++			return -EINVAL;
++
++		name = (char *)cc + noff;
++		switch (nlen) {
++		case 4:
++			if (!strncmp(name, SMB2_CREATE_REQUEST_LEASE, 4)) {
++				*oplock = server->ops->parse_lease_buf(cc, epoch,
++								       lease_key);
++			} else if (buf &&
++				   !strncmp(name, SMB2_CREATE_QUERY_ON_DISK_ID, 4)) {
++				parse_query_id_ctxt(cc, buf);
++			}
++			break;
++		case 16:
++			if (posix && !memcmp(name, smb3_create_tag_posix, 16))
+ 				parse_posix_ctxt(cc, buf, posix);
++			break;
++		default:
++			cifs_dbg(FYI, "%s: unhandled context (nlen=%zu dlen=%zu)\n",
++				 __func__, nlen, dlen);
++			if (IS_ENABLED(CONFIG_CIFS_DEBUG2))
++				cifs_dump_mem("context data: ", cc, dlen);
++			break;
  		}
+-		/* else {
+-			cifs_dbg(FYI, "Context not matched with len %d\n",
+-				le16_to_cpu(cc->NameLength));
+-			cifs_dump_mem("Cctxt name: ", name, 4);
+-		} */
  
- 		node->type = BPF_LRU_LOCAL_LIST_T_FREE;
--		node->ref = 0;
-+		bpf_lru_node_clear_ref(node);
- 		list_move(&node->list, local_free_list(loc_l));
- 
- 		raw_spin_unlock_irqrestore(&loc_l->lock, flags);
-@@ -568,7 +573,7 @@ static void bpf_common_lru_populate(struct bpf_lru *lru, void *buf,
- 
- 		node = (struct bpf_lru_node *)(buf + node_offset);
- 		node->type = BPF_LRU_LIST_T_FREE;
--		node->ref = 0;
-+		bpf_lru_node_clear_ref(node);
- 		list_add(&node->list, &l->lists[BPF_LRU_LIST_T_FREE]);
- 		buf += elem_size;
+-		next = le32_to_cpu(cc->Next);
+-		if (!next)
++		off = le32_to_cpu(cc->Next);
++		if (!off)
+ 			break;
+-		remaining -= next;
+-		cc = (struct create_context *)((char *)cc + next);
++		if (check_sub_overflow(rem, off, &rem))
++			return -EINVAL;
++		cc = (struct create_context *)((u8 *)cc + off);
  	}
-@@ -594,7 +599,7 @@ static void bpf_percpu_lru_populate(struct bpf_lru *lru, void *buf,
- 		node = (struct bpf_lru_node *)(buf + node_offset);
- 		node->cpu = cpu;
- 		node->type = BPF_LRU_LIST_T_FREE;
--		node->ref = 0;
-+		bpf_lru_node_clear_ref(node);
- 		list_add(&node->list, &l->lists[BPF_LRU_LIST_T_FREE]);
- 		i++;
- 		buf += elem_size;
-diff --git a/kernel/bpf/bpf_lru_list.h b/kernel/bpf/bpf_lru_list.h
-index 6b12f06ee18c3..9c12ee453c616 100644
---- a/kernel/bpf/bpf_lru_list.h
-+++ b/kernel/bpf/bpf_lru_list.h
-@@ -63,11 +63,8 @@ struct bpf_lru {
  
- static inline void bpf_lru_node_set_ref(struct bpf_lru_node *node)
- {
--	/* ref is an approximation on access frequency.  It does not
--	 * have to be very accurate.  Hence, no protection is used.
--	 */
--	if (!node->ref)
--		node->ref = 1;
-+	if (!READ_ONCE(node->ref))
-+		WRITE_ONCE(node->ref, 1);
+ 	if (rsp->OplockLevel != SMB2_OPLOCK_LEVEL_LEASE)
+ 		*oplock = rsp->OplockLevel;
+ 
+-	return;
++	return 0;
  }
  
- int bpf_lru_init(struct bpf_lru *lru, bool percpu, u32 hash_offset,
--- 
-2.43.0
-
+ static int
+@@ -2915,8 +2934,8 @@ SMB2_open(const unsigned int xid, struct
+ 	}
+ 
+ 
+-	smb2_parse_contexts(server, rsp, &oparms->fid->epoch,
+-			    oparms->fid->lease_key, oplock, buf, posix);
++	rc = smb2_parse_contexts(server, &rsp_iov, &oparms->fid->epoch,
++				 oparms->fid->lease_key, oplock, buf, posix);
+ creat_exit:
+ 	SMB2_open_free(&rqst);
+ 	free_rsp_buf(resp_buftype, rsp);
+--- a/fs/cifs/smb2proto.h
++++ b/fs/cifs/smb2proto.h
+@@ -270,11 +270,13 @@ extern int smb3_validate_negotiate(const
+ 
+ extern enum securityEnum smb2_select_sectype(struct TCP_Server_Info *,
+ 					enum securityEnum);
+-extern void smb2_parse_contexts(struct TCP_Server_Info *server,
+-				struct smb2_create_rsp *rsp,
+-				unsigned int *epoch, char *lease_key,
+-				__u8 *oplock, struct smb2_file_all_info *buf,
+-				struct create_posix_rsp *posix);
++int smb2_parse_contexts(struct TCP_Server_Info *server,
++			struct kvec *rsp_iov,
++			unsigned int *epoch,
++			char *lease_key, __u8 *oplock,
++			struct smb2_file_all_info *buf,
++			struct create_posix_rsp *posix);
++
+ extern int smb3_encryption_required(const struct cifs_tcon *tcon);
+ extern int smb2_validate_iov(unsigned int offset, unsigned int buffer_length,
+ 			     struct kvec *iov, unsigned int min_buf_size);
 
 
 
