@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6D70869443
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DEEF86958E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:03:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 988042844E6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1D821F2B470
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:03:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D37371420B0;
-	Tue, 27 Feb 2024 13:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68A513B798;
+	Tue, 27 Feb 2024 14:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sUCqv4mC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bn/ESizC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912C113F01E;
-	Tue, 27 Feb 2024 13:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865BB78B61;
+	Tue, 27 Feb 2024 14:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041892; cv=none; b=Vmm47oHbEcgcc9f6UfbhblonGxaMUKDnpwPEpIhSNdFypjjCskC/KUW3gkUryDhSvNnlNJE/jJxnctxkmA6b0viD3p6L2f9nVIaerM8LySrsT0sPey3uMOrpk9rUHsiTnospVqjaXrq1NhWI9gluowVB5jgibBACP6dmTfiFMRc=
+	t=1709042583; cv=none; b=e5Wxu4Kgf3g1djPa+y/+kftKuWk0gEIOs+RR8ONxLXcv1ZU0fa8qz1q0dP9gxyahtJNgL585QQeQB+s8jyw+zNheKhNU5h6nDKNKKwVnMSt19d2BWQb9OMYq3L90fiGI8kpXrs1azbpVM4h9FGIJcrVFHD9TNwhPQR/1LpxH8ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041892; c=relaxed/simple;
-	bh=2naZ+M2OP8CZ0ospGxPF3Vt0M8+jKthEGu0XzoJtfNM=;
+	s=arc-20240116; t=1709042583; c=relaxed/simple;
+	bh=VnChwWB+Q/rmeaJed0RzX6jQp8yRJneogzWINQRDrME=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P/2T5o3aClxT+T3oGSWT6vSU24pn2vfrtA1NwajSSsD3Lyy2xYNK1SuIJ79RQ8kT5fR3AQNmY9Mr10UVJklYX526tpfBpYG6InE7jDCg+CbcB0pdGsBk6JikO6z5Lx/tOId9EzVkfr8d3tqGEjVUfld5M6ngX2SNiSAU18EPcwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUCqv4mC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFC1C433F1;
-	Tue, 27 Feb 2024 13:51:31 +0000 (UTC)
+	 MIME-Version; b=dgQpnE0okjDmyVb4Vjz1QfFt4XOnnc1yBApdWWZV4Y379FHPlWxQiKcyaW2+JPUm9qAfUZit4eIyXZz6wwN4a+FJDpwwXEVrr2la3k0m8fl38pI4pmqwIiirFxZ16cDpKQqRNKbw71pzFOdLEikuYmws04gquveCezpOMdSQRfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bn/ESizC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 156ACC43390;
+	Tue, 27 Feb 2024 14:03:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041892;
-	bh=2naZ+M2OP8CZ0ospGxPF3Vt0M8+jKthEGu0XzoJtfNM=;
+	s=korg; t=1709042583;
+	bh=VnChwWB+Q/rmeaJed0RzX6jQp8yRJneogzWINQRDrME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sUCqv4mCPVFOasOeoM/0AiP6CK7BXAyx4BAZFq4vwLECxiM1A3KSs2+3LqSApEasz
-	 RiehuOFqmaUY9+DeQD6cbsKOj4RO3/zTgK6mgwza55GEYA1lPHj0Lbln/lG6iOaOSX
-	 KNiFyFzXw08Lk9/6MxguhbXFnng4PjZQbYzp29+0=
+	b=bn/ESizCY0YkzCc69RUtUMYRZ/FZ+HalLNxR5pyWgWOhJv2dDxFj1fU+FpvYCd9oN
+	 9KAHjMXvaS7iAwocoHCHN7w1O5ejyuHTPlPpcIkItfBBVI1C+xWBXT0FMB5CAK2jaD
+	 1cGk6qReipH6SXrZXsdUr3qE0t8325CiYE6O04fk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Wachowski, Karol" <karol.wachowski@intel.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>, Wachowski@web.codeaurora.org
-Subject: [PATCH 6.6 106/299] accel/ivpu: Force snooping for MMU writes
+	Phoenix Chen <asbeltogf@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 029/245] platform/x86: touchscreen_dmi: Add info for the TECLAST X16 Plus tablet
 Date: Tue, 27 Feb 2024 14:23:37 +0100
-Message-ID: <20240227131629.294746230@linuxfoundation.org>
+Message-ID: <20240227131616.064754858@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wachowski, Karol <karol.wachowski@intel.com>
+From: Phoenix Chen <asbeltogf@gmail.com>
 
-[ Upstream commit c9da9a1f17bf4fa96b115950fd389c917b583c1c ]
+[ Upstream commit 1abdf288b0ef5606f76b6e191fa6df05330e3d7e ]
 
-Set AW_SNOOP_OVERRIDE bit in VPU_37/40XX_HOST_IF_TCU_PTW_OVERRIDES
-to force snooping for MMU write accesses (setting event queue events).
+Add touch screen info for TECLAST X16 Plus tablet.
 
-MMU event queue buffer is the only buffer written by MMU and
-mapped as write-back which break cache coherency. Force write
-transactions to be snooped solving the problem.
-
-Signed-off-by: Wachowski, Karol <karol.wachowski@intel.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240126122804.2169129-2-jacek.lawrynowicz@linux.intel.com
+Signed-off-by: Phoenix Chen <asbeltogf@gmail.com>
+Link: https://lore.kernel.org/r/20240126095308.5042-1-asbeltogf@gmail.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ivpu/ivpu_hw_37xx.c | 2 +-
- drivers/accel/ivpu/ivpu_hw_40xx.c | 2 +-
- drivers/accel/ivpu/ivpu_mmu.c     | 3 ---
- 3 files changed, 2 insertions(+), 5 deletions(-)
+ drivers/platform/x86/touchscreen_dmi.c | 35 ++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/drivers/accel/ivpu/ivpu_hw_37xx.c b/drivers/accel/ivpu/ivpu_hw_37xx.c
-index ddf03498fd4c1..c0de7c0c991f5 100644
---- a/drivers/accel/ivpu/ivpu_hw_37xx.c
-+++ b/drivers/accel/ivpu/ivpu_hw_37xx.c
-@@ -562,7 +562,7 @@ static void ivpu_boot_no_snoop_enable(struct ivpu_device *vdev)
- 	u32 val = REGV_RD32(VPU_37XX_HOST_IF_TCU_PTW_OVERRIDES);
+diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
+index f129e29b295d9..397283893f39f 100644
+--- a/drivers/platform/x86/touchscreen_dmi.c
++++ b/drivers/platform/x86/touchscreen_dmi.c
+@@ -916,6 +916,32 @@ static const struct ts_dmi_data teclast_tbook11_data = {
+ 	.properties	= teclast_tbook11_props,
+ };
  
- 	val = REG_SET_FLD(VPU_37XX_HOST_IF_TCU_PTW_OVERRIDES, NOSNOOP_OVERRIDE_EN, val);
--	val = REG_SET_FLD(VPU_37XX_HOST_IF_TCU_PTW_OVERRIDES, AW_NOSNOOP_OVERRIDE, val);
-+	val = REG_CLR_FLD(VPU_37XX_HOST_IF_TCU_PTW_OVERRIDES, AW_NOSNOOP_OVERRIDE, val);
- 	val = REG_SET_FLD(VPU_37XX_HOST_IF_TCU_PTW_OVERRIDES, AR_NOSNOOP_OVERRIDE, val);
- 
- 	REGV_WR32(VPU_37XX_HOST_IF_TCU_PTW_OVERRIDES, val);
-diff --git a/drivers/accel/ivpu/ivpu_hw_40xx.c b/drivers/accel/ivpu/ivpu_hw_40xx.c
-index 03600a7a5aca8..65c6a82bb13f6 100644
---- a/drivers/accel/ivpu/ivpu_hw_40xx.c
-+++ b/drivers/accel/ivpu/ivpu_hw_40xx.c
-@@ -523,7 +523,7 @@ static void ivpu_boot_no_snoop_enable(struct ivpu_device *vdev)
- 	u32 val = REGV_RD32(VPU_40XX_HOST_IF_TCU_PTW_OVERRIDES);
- 
- 	val = REG_SET_FLD(VPU_40XX_HOST_IF_TCU_PTW_OVERRIDES, SNOOP_OVERRIDE_EN, val);
--	val = REG_CLR_FLD(VPU_40XX_HOST_IF_TCU_PTW_OVERRIDES, AW_SNOOP_OVERRIDE, val);
-+	val = REG_SET_FLD(VPU_40XX_HOST_IF_TCU_PTW_OVERRIDES, AW_SNOOP_OVERRIDE, val);
- 	val = REG_CLR_FLD(VPU_40XX_HOST_IF_TCU_PTW_OVERRIDES, AR_SNOOP_OVERRIDE, val);
- 
- 	REGV_WR32(VPU_40XX_HOST_IF_TCU_PTW_OVERRIDES, val);
-diff --git a/drivers/accel/ivpu/ivpu_mmu.c b/drivers/accel/ivpu/ivpu_mmu.c
-index baefaf7bb3cbb..d04a28e052485 100644
---- a/drivers/accel/ivpu/ivpu_mmu.c
-+++ b/drivers/accel/ivpu/ivpu_mmu.c
-@@ -491,7 +491,6 @@ static int ivpu_mmu_reset(struct ivpu_device *vdev)
- 	mmu->cmdq.cons = 0;
- 
- 	memset(mmu->evtq.base, 0, IVPU_MMU_EVTQ_SIZE);
--	clflush_cache_range(mmu->evtq.base, IVPU_MMU_EVTQ_SIZE);
- 	mmu->evtq.prod = 0;
- 	mmu->evtq.cons = 0;
- 
-@@ -805,8 +804,6 @@ static u32 *ivpu_mmu_get_event(struct ivpu_device *vdev)
- 	if (!CIRC_CNT(IVPU_MMU_Q_IDX(evtq->prod), IVPU_MMU_Q_IDX(evtq->cons), IVPU_MMU_Q_COUNT))
- 		return NULL;
- 
--	clflush_cache_range(evt, IVPU_MMU_EVTQ_CMD_SIZE);
--
- 	evtq->cons = (evtq->cons + 1) & IVPU_MMU_Q_WRAP_MASK;
- 	REGV_WR32(VPU_37XX_HOST_MMU_EVTQ_CONS_SEC, evtq->cons);
- 
++static const struct property_entry teclast_x16_plus_props[] = {
++	PROPERTY_ENTRY_U32("touchscreen-min-x", 8),
++	PROPERTY_ENTRY_U32("touchscreen-min-y", 14),
++	PROPERTY_ENTRY_U32("touchscreen-size-x", 1916),
++	PROPERTY_ENTRY_U32("touchscreen-size-y", 1264),
++	PROPERTY_ENTRY_BOOL("touchscreen-inverted-y"),
++	PROPERTY_ENTRY_STRING("firmware-name", "gsl3692-teclast-x16-plus.fw"),
++	PROPERTY_ENTRY_U32("silead,max-fingers", 10),
++	PROPERTY_ENTRY_BOOL("silead,home-button"),
++	{ }
++};
++
++static const struct ts_dmi_data teclast_x16_plus_data = {
++	.embedded_fw = {
++		.name	= "silead/gsl3692-teclast-x16-plus.fw",
++		.prefix = { 0xf0, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00 },
++		.length	= 43560,
++		.sha256	= { 0x9d, 0xb0, 0x3d, 0xf1, 0x00, 0x3c, 0xb5, 0x25,
++			    0x62, 0x8a, 0xa0, 0x93, 0x4b, 0xe0, 0x4e, 0x75,
++			    0xd1, 0x27, 0xb1, 0x65, 0x3c, 0xba, 0xa5, 0x0f,
++			    0xcd, 0xb4, 0xbe, 0x00, 0xbb, 0xf6, 0x43, 0x29 },
++	},
++	.acpi_name	= "MSSL1680:00",
++	.properties	= teclast_x16_plus_props,
++};
++
+ static const struct property_entry teclast_x3_plus_props[] = {
+ 	PROPERTY_ENTRY_U32("touchscreen-size-x", 1980),
+ 	PROPERTY_ENTRY_U32("touchscreen-size-y", 1500),
+@@ -1552,6 +1578,15 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_SKU, "E5A6_A1"),
+ 		},
+ 	},
++	{
++		/* Teclast X16 Plus */
++		.driver_data = (void *)&teclast_x16_plus_data,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "TECLAST"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Default string"),
++			DMI_MATCH(DMI_PRODUCT_SKU, "D3A5_A1"),
++		},
++	},
+ 	{
+ 		/* Teclast X3 Plus */
+ 		.driver_data = (void *)&teclast_x3_plus_data,
 -- 
 2.43.0
 
