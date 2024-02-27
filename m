@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FEE9869701
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:17:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14A4B869371
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:45:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 819531C229CA
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:17:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8E2C1F216FA
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:45:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1DC613B798;
-	Tue, 27 Feb 2024 14:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A4313DB83;
+	Tue, 27 Feb 2024 13:44:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AMAaYvLJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2OyQOjN8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A018D78B61;
-	Tue, 27 Feb 2024 14:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D0B2F2D;
+	Tue, 27 Feb 2024 13:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043442; cv=none; b=eXOR8FTThgFW93o2dcxrUlOeo3z99YLLYxM1nMTCCisLwzyeHZnn5qGz7dTWf5IssU0S+2a4sZlKmWJ3/4KLYg2HvHJ+ZXkmEDJg/y45KW6raioStOGmqA1odjU8BApBQTX1tkPABjmM0YjlaWfxhOp2CBptsXqojNDqUfISndA=
+	t=1709041493; cv=none; b=n8z1ZX6nKFhoCsYGDIj2V3yDuz3RGOxrCrP845Wju0HgDZmKlpWGtFWybszZlIrZ1hEfn0eqruqHP2ljNj3vs0liw0x9OriXayMJ+zIO1y/je170f5fuyXm/je6sPnixsdMQsbwZfL4ilOYJ1Qpzh6w43E8AV4UPGFkq4q8LJXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043442; c=relaxed/simple;
-	bh=Mfom+2Jx6JXpwQk71qrE95CVDBkTSinzAVRXLt7qCFc=;
+	s=arc-20240116; t=1709041493; c=relaxed/simple;
+	bh=hSuOO9JaNp0TPQ9YVMdixAV7Rz3o6N06NtfBbCzLCjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WN3w4om5HGs91Yk63p4TzptU5kLFzhowGxHmIIB9fp+UAKpKu/zu7QrP6O+MVvSjz/5r3C4eMxNbSsV8Y+15diVqJQQ7SWCGNYCEzevtHUUXDxeXJ0+HUfMSqBn79kHJRVhe9os1RwsaqDfALAeCafPIdqgop4P9sBpsQ0t6aRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AMAaYvLJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B8EEC433F1;
-	Tue, 27 Feb 2024 14:17:22 +0000 (UTC)
+	 MIME-Version; b=KAL1ap2EZ7dN/iL0aLU0ZNpLg4sha1TyBBQ29Ny01fId2Y22DvKW0da3QgK9sNxBExJu9Q1XTT2VjP+NyloovZoAc7bdOkhAy+qrDwqLCu+siy32Yvo1jD3fiku5hCur8kMCdNeMzQQNBpmBMnj92y1ZEYB3yj1q02sLQNtCq74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2OyQOjN8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C2D7C433F1;
+	Tue, 27 Feb 2024 13:44:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043442;
-	bh=Mfom+2Jx6JXpwQk71qrE95CVDBkTSinzAVRXLt7qCFc=;
+	s=korg; t=1709041493;
+	bh=hSuOO9JaNp0TPQ9YVMdixAV7Rz3o6N06NtfBbCzLCjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AMAaYvLJTWVRfiYjYGM4R+zWnDmGTNiWjZcopHh9Ubdvn02AE68a4bLwOf/R07Nc/
-	 1y+Jkv/4djYrjidTSoV9ru3CgH/a3jif/O7o8FlyxJMkUy9LAgIHeNAXf6bsJA3VL2
-	 PWvdQIri0i3FXawbipeW9BssDJWRXP2ex8JzIXpo=
+	b=2OyQOjN8L917pTMizMjMn8WD/OzCpRBT4GU9HpTNTjNHTdbZ36ssf5QSLCL42nSn8
+	 hSEvJJc8Jk13OrOvQy/fDTi/fJPPHKmxZvKC6eg8ARnriUo130MU5x5uFYEtDCwn1q
+	 FqDY3yB/yt4JRUAaQAZ+fi8ukuh2bs22/ohLFpEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Tom Parkin <tparkin@katalix.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 110/195] l2tp: pass correct message length to ip6_append_data
+	Yi Sun <yi.sun@unisoc.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 24/52] virtio-blk: Ensure no requests in virtqueues before deleting vqs.
 Date: Tue, 27 Feb 2024 14:26:11 +0100
-Message-ID: <20240227131614.095491115@linuxfoundation.org>
+Message-ID: <20240227131549.326223609@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
+References: <20240227131548.514622258@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Parkin <tparkin@katalix.com>
+From: Yi Sun <yi.sun@unisoc.com>
 
-commit 359e54a93ab43d32ee1bff3c2f9f10cb9f6b6e79 upstream.
+[ Upstream commit 4ce6e2db00de8103a0687fb0f65fd17124a51aaa ]
 
-l2tp_ip6_sendmsg needs to avoid accounting for the transport header
-twice when splicing more data into an already partially-occupied skbuff.
+Ensure no remaining requests in virtqueues before resetting vdev and
+deleting virtqueues. Otherwise these requests will never be completed.
+It may cause the system to become unresponsive.
 
-To manage this, we check whether the skbuff contains data using
-skb_queue_empty when deciding how much data to append using
-ip6_append_data.
+Function blk_mq_quiesce_queue() can ensure that requests have become
+in_flight status, but it cannot guarantee that requests have been
+processed by the device. Virtqueues should never be deleted before
+all requests become complete status.
 
-However, the code which performed the calculation was incorrect:
+Function blk_mq_freeze_queue() ensure that all requests in virtqueues
+become complete status. And no requests can enter in virtqueues.
 
-     ulen = len + skb_queue_empty(&sk->sk_write_queue) ? transhdrlen : 0;
-
-...due to C operator precedence, this ends up setting ulen to
-transhdrlen for messages with a non-zero length, which results in
-corrupted packets on the wire.
-
-Add parentheses to correct the calculation in line with the original
-intent.
-
-Fixes: 9d4c75800f61 ("ipv4, ipv6: Fix handling of transhdrlen in __ip{,6}_append_data()")
-Cc: David Howells <dhowells@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Tom Parkin <tparkin@katalix.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240220122156.43131-1-tparkin@katalix.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yi Sun <yi.sun@unisoc.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Link: https://lore.kernel.org/r/20240129085250.1550594-1-yi.sun@unisoc.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/l2tp/l2tp_ip6.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/block/virtio_blk.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/net/l2tp/l2tp_ip6.c
-+++ b/net/l2tp/l2tp_ip6.c
-@@ -630,7 +630,7 @@ static int l2tp_ip6_sendmsg(struct sock
+diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
+index 8b3bf11329ba0..8e4c431efc6cc 100644
+--- a/drivers/block/virtio_blk.c
++++ b/drivers/block/virtio_blk.c
+@@ -943,14 +943,15 @@ static int virtblk_freeze(struct virtio_device *vdev)
+ {
+ 	struct virtio_blk *vblk = vdev->priv;
  
- back_from_confirm:
- 	lock_sock(sk);
--	ulen = len + skb_queue_empty(&sk->sk_write_queue) ? transhdrlen : 0;
-+	ulen = len + (skb_queue_empty(&sk->sk_write_queue) ? transhdrlen : 0);
- 	err = ip6_append_data(sk, ip_generic_getfrag, msg,
- 			      ulen, transhdrlen, &ipc6,
- 			      &fl6, (struct rt6_info *)dst,
++	/* Ensure no requests in virtqueues before deleting vqs. */
++	blk_mq_freeze_queue(vblk->disk->queue);
++
+ 	/* Ensure we don't receive any more interrupts */
+ 	vdev->config->reset(vdev);
+ 
+ 	/* Make sure no work handler is accessing the device. */
+ 	flush_work(&vblk->config_work);
+ 
+-	blk_mq_quiesce_queue(vblk->disk->queue);
+-
+ 	vdev->config->del_vqs(vdev);
+ 	kfree(vblk->vqs);
+ 
+@@ -968,7 +969,7 @@ static int virtblk_restore(struct virtio_device *vdev)
+ 
+ 	virtio_device_ready(vdev);
+ 
+-	blk_mq_unquiesce_queue(vblk->disk->queue);
++	blk_mq_unfreeze_queue(vblk->disk->queue);
+ 	return 0;
+ }
+ #endif
+-- 
+2.43.0
+
 
 
 
