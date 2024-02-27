@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-24256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6218C869367
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:44:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B972D86962E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:09:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17F661F21548
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:44:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA1891C21978
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:09:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C7A513B2BA;
-	Tue, 27 Feb 2024 13:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49D8413B7AB;
+	Tue, 27 Feb 2024 14:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ok0yknW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T6lZKs++"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3F313AA2F;
-	Tue, 27 Feb 2024 13:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0612813AA43;
+	Tue, 27 Feb 2024 14:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041469; cv=none; b=fpmWjXIqzRL5bsXuGw9TJ640pqTl/jyCNm4iDHD0/9fy9WLBJKZFLjKMhhJc6tUOK5ae6fjcxbRIDgSp5ysaTbAB/TP0IKlDRSeA236vf9Zi8f+rX6YtUtEW6Cp+osEbpNCaU0jRzpYmEKL1c+YJqVTcUHl9lfyTeDJvWmNfTt4=
+	t=1709042940; cv=none; b=cGO4NLNajpAEShu1klByPzd9zvCDm7Hu6wJjcMOG7of3bdbTOLc7zPXd6IZrmEsr1nprGCtbl/gmMfQo+DECWIhQ+jZipZ5OXBkoeFVkP/KWEGUDJeSn9cgOIYsRyVQyaGtn+rjtp1RpfX0niBhHEam5YHxZVTduPG1kp1UZMaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041469; c=relaxed/simple;
-	bh=UJmzfUG/H9x+6IDaSLroUTIiwtQPscAd/iLyNw/uXXg=;
+	s=arc-20240116; t=1709042940; c=relaxed/simple;
+	bh=wEaCxng6fvpAl1sgNsiirdPEMz9fCqUwjJbRCc94Mj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ivMqg8k6FGZvxuXD3/gjSp3pvE63VJbffK5HJTUb6YiSmx/neUAltDY9iJ+0tgQ9n6mA9xALcXay4FTbij1pQxqmpsnu/w/2PxawgtWWOtszJZPWbxS9sO1egCbh77qJG2ss2r0/vrA/3ihBsb3E9L+4mgEKezxdHLae22MXolA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ok0yknW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEF38C433F1;
-	Tue, 27 Feb 2024 13:44:28 +0000 (UTC)
+	 MIME-Version; b=bFXWNTHguv8huTnF9raM8qTu+uRgdnfg/T9hMF0f9l9S1eO+v7iVoK1XAsmtV1dPTwwGuKMF5QQw6FHfptAOE70wj/3Ia6F05/EqUIjtflrgUVnGIN2si4j6fwFKSlxS2faf5dwhGz9t1BsiebwFsCgqMO2nzAeRJhpZyDcyHug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T6lZKs++; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8771AC433C7;
+	Tue, 27 Feb 2024 14:08:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041469;
-	bh=UJmzfUG/H9x+6IDaSLroUTIiwtQPscAd/iLyNw/uXXg=;
+	s=korg; t=1709042939;
+	bh=wEaCxng6fvpAl1sgNsiirdPEMz9fCqUwjJbRCc94Mj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0ok0yknWC/nE/h00NvuVhmZSDOFnnYIh0xk80i2V7Rxw2US+BkDEoP+pHGxfQb5Y1
-	 +mAdS5oZxnOk7We1OmxIqHYYXm3UidbCFgrD4LmTwdYshTMcFnHxqzgN3stupndkh8
-	 xNsRz6JaTuG/5VziiipSn1+Lda9GSf6aAHlYStms=
+	b=T6lZKs++u6Q9fp+H8HLkwaWC2PZ933jug8dAfEmmmw/mAg3rq+15/Zj3QPWL8+euv
+	 4A1rh9gQVlwye0lhkk7NwzIRIkck7xCRtl+WK/F0cCUHDA5t8QHLFOdk8JBanDNsTT
+	 mxIAzZ1pW8g8bsihz47zJwiaCHm6e/PFI5t6rWms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fullway Wang <fullwaywang@outlook.com>,
-	Helge Deller <deller@gmx.de>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Steve Capper <steve.capper@arm.com>,
+	Will Deacon <will@kernel.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 16/52] fbdev: savage: Error out if pixclock equals zero
+Subject: [PATCH 5.15 175/245] arm64: mm: fix VA-range sanity check
 Date: Tue, 27 Feb 2024 14:26:03 +0100
-Message-ID: <20240227131549.067573829@linuxfoundation.org>
+Message-ID: <20240227131620.896994595@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
-References: <20240227131548.514622258@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +66,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fullway Wang <fullwaywang@outlook.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 04e5eac8f3ab2ff52fa191c187a46d4fdbc1e288 ]
+[ Upstream commit ab9b4008092c86dc12497af155a0901cc1156999 ]
 
-The userspace program could pass any values to the driver through
-ioctl() interface. If the driver doesn't check the value of pixclock,
-it may cause divide-by-zero error.
+Both create_mapping_noalloc() and update_mapping_prot() sanity-check
+their 'virt' parameter, but the check itself doesn't make much sense.
+The condition used today appears to be a historical accident.
 
-Although pixclock is checked in savagefb_decode_var(), but it is not
-checked properly in savagefb_probe(). Fix this by checking whether
-pixclock is zero in the function savagefb_check_var() before
-info->var.pixclock is used as the divisor.
+The sanity-check condition:
 
-This is similar to CVE-2022-3061 in i740fb which was fixed by
-commit 15cf0b8.
+	if ((virt >= PAGE_END) && (virt < VMALLOC_START)) {
+		[ ... warning here ... ]
+		return;
+	}
 
-Signed-off-by: Fullway Wang <fullwaywang@outlook.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+... can only be true for the KASAN shadow region or the module region,
+and there's no reason to exclude these specifically for creating and
+updateing mappings.
+
+When arm64 support was first upstreamed in commit:
+
+  c1cc1552616d0f35 ("arm64: MMU initialisation")
+
+... the condition was:
+
+	if (virt < VMALLOC_START) {
+		[ ... warning here ... ]
+		return;
+	}
+
+At the time, VMALLOC_START was the lowest kernel address, and this was
+checking whether 'virt' would be translated via TTBR1.
+
+Subsequently in commit:
+
+  14c127c957c1c607 ("arm64: mm: Flip kernel VA space")
+
+... the condition was changed to:
+
+	if ((virt >= VA_START) && (virt < VMALLOC_START)) {
+		[ ... warning here ... ]
+		return;
+	}
+
+This appear to have been a thinko. The commit moved the linear map to
+the bottom of the kernel address space, with VMALLOC_START being at the
+halfway point. The old condition would warn for changes to the linear
+map below this, and at the time VA_START was the end of the linear map.
+
+Subsequently we cleaned up the naming of VA_START in commit:
+
+  77ad4ce69321abbe ("arm64: memory: rename VA_START to PAGE_END")
+
+... keeping the erroneous condition as:
+
+	if ((virt >= PAGE_END) && (virt < VMALLOC_START)) {
+		[ ... warning here ... ]
+		return;
+	}
+
+Correct the condition to check against the start of the TTBR1 address
+space, which is currently PAGE_OFFSET. This simplifies the logic, and
+more clearly matches the "outside kernel range" message in the warning.
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Steve Capper <steve.capper@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://lore.kernel.org/r/20230615102628.1052103-1-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/savage/savagefb_driver.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/mm/mmu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/savage/savagefb_driver.c b/drivers/video/fbdev/savage/savagefb_driver.c
-index c09d7426cd925..d9eafdb89ceaf 100644
---- a/drivers/video/fbdev/savage/savagefb_driver.c
-+++ b/drivers/video/fbdev/savage/savagefb_driver.c
-@@ -869,6 +869,9 @@ static int savagefb_check_var(struct fb_var_screeninfo   *var,
- 
- 	DBG("savagefb_check_var");
- 
-+	if (!var->pixclock)
-+		return -EINVAL;
-+
- 	var->transp.offset = 0;
- 	var->transp.length = 0;
- 	switch (var->bits_per_pixel) {
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index 6680689242df3..fc86e7465df42 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -435,7 +435,7 @@ static phys_addr_t pgd_pgtable_alloc(int shift)
+ static void __init create_mapping_noalloc(phys_addr_t phys, unsigned long virt,
+ 				  phys_addr_t size, pgprot_t prot)
+ {
+-	if ((virt >= PAGE_END) && (virt < VMALLOC_START)) {
++	if (virt < PAGE_OFFSET) {
+ 		pr_warn("BUG: not creating mapping for %pa at 0x%016lx - outside kernel range\n",
+ 			&phys, virt);
+ 		return;
+@@ -462,7 +462,7 @@ void __init create_pgd_mapping(struct mm_struct *mm, phys_addr_t phys,
+ static void update_mapping_prot(phys_addr_t phys, unsigned long virt,
+ 				phys_addr_t size, pgprot_t prot)
+ {
+-	if ((virt >= PAGE_END) && (virt < VMALLOC_START)) {
++	if (virt < PAGE_OFFSET) {
+ 		pr_warn("BUG: not updating mapping for %pa at 0x%016lx - outside kernel range\n",
+ 			&phys, virt);
+ 		return;
 -- 
 2.43.0
 
