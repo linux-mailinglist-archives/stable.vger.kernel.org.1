@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-24415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA79486945A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:53:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A155F86956A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:01:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75E121F21CC6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:53:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D09111C24616
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:01:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ACD814533E;
-	Tue, 27 Feb 2024 13:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 440631420DC;
+	Tue, 27 Feb 2024 14:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJecveGf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdBvD11J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A108145334;
-	Tue, 27 Feb 2024 13:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A6313F016;
+	Tue, 27 Feb 2024 14:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041937; cv=none; b=M7sHhrIicHMumt0qZWm0jEJRKVoltfPZ7nNUTpgh4X1rZPPKlelPRzgZ4uGRp0XquiNoJDneptrIqILLWBoQTs2WKT7t2NgpBn1OTqbsQjK4viYaW3ZD1SUZmEi/uqUbnrBlH7Io/u9H60+dY5+FIaY2Wo6OfisUNC9S+u+lOnE=
+	t=1709042496; cv=none; b=thSNBcmh4U6AsHGYcTt3Zxi6isDn6SaebGi0Um1NeSsYGQm+J7UM4mkulEcJplbWxMQnLrQ2a+d2AmfkPL6S4pO+Ne0y5k0TbvdU5uR9hlRNz1m/d/9XW/Ft7MKxa3HvUno83L7V/CKvQAcf4BX/E47U5L69GBzwPU5ber4vvk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041937; c=relaxed/simple;
-	bh=VDG+ZyRXLXw3myYggA+9A0H71Uey06pKn1RAXV4+ZVs=;
+	s=arc-20240116; t=1709042496; c=relaxed/simple;
+	bh=sCPe3jem4zAF1vX3hfaSq/k5KIFQAVFAhR3rwW2xFD8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CjLxgYeO82EZJo+Xb7dBwVkp/VotTFsoPZHlNx3APMdv9kLm3R5bCMIx8KWQkGWzg7535QVORTj9nKgp+Lf+Ldv0xQ8U9X6FbvM+xZiDvdIes+4CXAM1dzv+dsyVOIV232VfZd8ypLb73JDZnZHlECr5e+zHoZkCDHAWUERIQp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJecveGf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BBF6C433B1;
-	Tue, 27 Feb 2024 13:52:16 +0000 (UTC)
+	 MIME-Version; b=YmBNPFjrzKAROZ+aXVgVXP5Dhi9OpCDXStU7oYrfAKJQt7GeLJPlZI8SkRAYkh1OPsdBdaHzMdPgztslTPKq+UY8VWcQ0VQi0gczkxi02y5scl2R3OKBmRnsv6uok9hzZ2BkVbgfX8bXxNeRT1aXVcQyRbfKBYdTcxzEtpz5/88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdBvD11J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8530AC433C7;
+	Tue, 27 Feb 2024 14:01:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041937;
-	bh=VDG+ZyRXLXw3myYggA+9A0H71Uey06pKn1RAXV4+ZVs=;
+	s=korg; t=1709042495;
+	bh=sCPe3jem4zAF1vX3hfaSq/k5KIFQAVFAhR3rwW2xFD8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oJecveGfumYdTg0FMWz3KaB+/vgy2B9lvEb/mXbMmG7yILQQaVKYNZvA7jg6uSGYs
-	 WeexSrVu/UIYYzK1hz3/HKsGFbr2/lpE9IWSyOKcpWu280NDq0oYfpSqe25h0q3kLO
-	 YxBuYhKcpIX26zQGtSacMImKxyCNY7urqScGq7WI=
+	b=fdBvD11JE1Td9oTaqPfOg8XlBvenBWrnGc9pOgJ1+4vFW6xl8W+/pgkWQ/LvssVBG
+	 TmSce1/bh7HP8eCvU7Dq9nmDxGXTSy/YWWyQCEBg8emaBsk+dWfELTzeCVbLUEa/ux
+	 B4rJGbX6bmrusDFkhoG92k7tCBgkZ6syQ4u9qNZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 094/299] wifi: mac80211: accept broadcast probe responses on 6 GHz
+	Cyril Hrubis <chrubis@suse.cz>,
+	Ingo Molnar <mingo@kernel.org>,
+	Petr Vorel <pvorel@suse.cz>
+Subject: [PATCH 5.15 017/245] sched/rt: Disallow writing invalid values to sched_rt_period_us
 Date: Tue, 27 Feb 2024 14:23:25 +0100
-Message-ID: <20240227131628.928954046@linuxfoundation.org>
+Message-ID: <20240227131615.676827553@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,102 +62,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Cyril Hrubis <chrubis@suse.cz>
 
-[ Upstream commit 62a6183c13319e4d2227473a04abd104c4f56dcf ]
+commit 079be8fc630943d9fc70a97807feb73d169ee3fc upstream.
 
-On the 6 GHz band, probe responses are sent as broadcast to
-optimise medium usage. However, without OCE configuration
-we weren't accepting them, which is wrong, even if wpa_s is
-by default enabling OCE. Accept them without the OCE config
-as well.
+The validation of the value written to sched_rt_period_us was broken
+because:
 
-Link: https://msgid.link/20240129200907.5a89c2821897.I92e9dfa0f9b350bc7f37dd4bb38031d156d78d8a@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  - the sysclt_sched_rt_period is declared as unsigned int
+  - parsed by proc_do_intvec()
+  - the range is asserted after the value parsed by proc_do_intvec()
+
+Because of this negative values written to the file were written into a
+unsigned integer that were later on interpreted as large positive
+integers which did passed the check:
+
+  if (sysclt_sched_rt_period <= 0)
+	return EINVAL;
+
+This commit fixes the parsing by setting explicit range for both
+perid_us and runtime_us into the sched_rt_sysctls table and processes
+the values with proc_dointvec_minmax() instead.
+
+Alternatively if we wanted to use full range of unsigned int for the
+period value we would have to split the proc_handler and use
+proc_douintvec() for it however even the
+Documentation/scheduller/sched-rt-group.rst describes the range as 1 to
+INT_MAX.
+
+As far as I can tell the only problem this causes is that the sysctl
+file allows writing negative values which when read back may confuse
+userspace.
+
+There is also a LTP test being submitted for these sysctl files at:
+
+  http://patchwork.ozlabs.org/project/ltp/patch/20230901144433.2526-1-chrubis@suse.cz/
+
+Signed-off-by: Cyril Hrubis <chrubis@suse.cz>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20231002115553.3007-2-chrubis@suse.cz
+[ pvorel: rebased for 5.15, 5.10 ]
+Reviewed-by: Petr Vorel <pvorel@suse.cz>
+Signed-off-by: Petr Vorel <pvorel@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/scan.c | 30 ++++++++++++++++++------------
- 1 file changed, 18 insertions(+), 12 deletions(-)
+ kernel/sched/rt.c |    5 +----
+ kernel/sysctl.c   |    4 ++++
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
-index 68ec2124c3db5..a52813f2b08cb 100644
---- a/net/mac80211/scan.c
-+++ b/net/mac80211/scan.c
-@@ -9,7 +9,7 @@
-  * Copyright 2007, Michael Wu <flamingice@sourmilk.net>
-  * Copyright 2013-2015  Intel Mobile Communications GmbH
-  * Copyright 2016-2017  Intel Deutschland GmbH
-- * Copyright (C) 2018-2023 Intel Corporation
-+ * Copyright (C) 2018-2024 Intel Corporation
-  */
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -2806,9 +2806,6 @@ static int sched_rt_global_constraints(v
  
- #include <linux/if_arp.h>
-@@ -222,14 +222,18 @@ ieee80211_bss_info_update(struct ieee80211_local *local,
- }
- 
- static bool ieee80211_scan_accept_presp(struct ieee80211_sub_if_data *sdata,
-+					struct ieee80211_channel *channel,
- 					u32 scan_flags, const u8 *da)
+ static int sched_rt_global_validate(void)
  {
- 	if (!sdata)
- 		return false;
--	/* accept broadcast for OCE */
--	if (scan_flags & NL80211_SCAN_FLAG_ACCEPT_BCAST_PROBE_RESP &&
--	    is_broadcast_ether_addr(da))
-+
-+	/* accept broadcast on 6 GHz and for OCE */
-+	if (is_broadcast_ether_addr(da) &&
-+	    (channel->band == NL80211_BAND_6GHZ ||
-+	     scan_flags & NL80211_SCAN_FLAG_ACCEPT_BCAST_PROBE_RESP))
- 		return true;
-+
- 	if (scan_flags & NL80211_SCAN_FLAG_RANDOM_ADDR)
- 		return true;
- 	return ether_addr_equal(da, sdata->vif.addr);
-@@ -278,6 +282,12 @@ void ieee80211_scan_rx(struct ieee80211_local *local, struct sk_buff *skb)
- 		wiphy_delayed_work_queue(local->hw.wiphy, &local->scan_work, 0);
- 	}
- 
-+	channel = ieee80211_get_channel_khz(local->hw.wiphy,
-+					    ieee80211_rx_status_to_khz(rx_status));
-+
-+	if (!channel || channel->flags & IEEE80211_CHAN_DISABLED)
-+		return;
-+
- 	if (ieee80211_is_probe_resp(mgmt->frame_control)) {
- 		struct cfg80211_scan_request *scan_req;
- 		struct cfg80211_sched_scan_request *sched_scan_req;
-@@ -295,19 +305,15 @@ void ieee80211_scan_rx(struct ieee80211_local *local, struct sk_buff *skb)
- 		/* ignore ProbeResp to foreign address or non-bcast (OCE)
- 		 * unless scanning with randomised address
- 		 */
--		if (!ieee80211_scan_accept_presp(sdata1, scan_req_flags,
-+		if (!ieee80211_scan_accept_presp(sdata1, channel,
-+						 scan_req_flags,
- 						 mgmt->da) &&
--		    !ieee80211_scan_accept_presp(sdata2, sched_scan_req_flags,
-+		    !ieee80211_scan_accept_presp(sdata2, channel,
-+						 sched_scan_req_flags,
- 						 mgmt->da))
- 			return;
- 	}
- 
--	channel = ieee80211_get_channel_khz(local->hw.wiphy,
--					ieee80211_rx_status_to_khz(rx_status));
+-	if (sysctl_sched_rt_period <= 0)
+-		return -EINVAL;
 -
--	if (!channel || channel->flags & IEEE80211_CHAN_DISABLED)
--		return;
--
- 	bss = ieee80211_bss_info_update(local, rx_status,
- 					mgmt, skb->len,
- 					channel);
--- 
-2.43.0
-
+ 	if ((sysctl_sched_rt_runtime != RUNTIME_INF) &&
+ 		((sysctl_sched_rt_runtime > sysctl_sched_rt_period) ||
+ 		 ((u64)sysctl_sched_rt_runtime *
+@@ -2839,7 +2836,7 @@ int sched_rt_handler(struct ctl_table *t
+ 	old_period = sysctl_sched_rt_period;
+ 	old_runtime = sysctl_sched_rt_runtime;
+ 
+-	ret = proc_dointvec(table, write, buffer, lenp, ppos);
++	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
+ 
+ 	if (!ret && write) {
+ 		ret = sched_rt_global_validate();
+--- a/kernel/sysctl.c
++++ b/kernel/sysctl.c
+@@ -1821,6 +1821,8 @@ static struct ctl_table kern_table[] = {
+ 		.maxlen		= sizeof(unsigned int),
+ 		.mode		= 0644,
+ 		.proc_handler	= sched_rt_handler,
++		.extra1		= SYSCTL_ONE,
++		.extra2		= SYSCTL_INT_MAX,
+ 	},
+ 	{
+ 		.procname	= "sched_rt_runtime_us",
+@@ -1828,6 +1830,8 @@ static struct ctl_table kern_table[] = {
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+ 		.proc_handler	= sched_rt_handler,
++		.extra1		= SYSCTL_NEG_ONE,
++		.extra2		= SYSCTL_INT_MAX,
+ 	},
+ 	{
+ 		.procname	= "sched_deadline_period_max_us",
 
 
 
