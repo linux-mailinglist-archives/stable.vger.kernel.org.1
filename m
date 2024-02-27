@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7DA586970F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:17:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 605C486965D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:10:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E5DD1F27204
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:17:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F4301C215A0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:10:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FFFE1420A0;
-	Tue, 27 Feb 2024 14:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1D0613B798;
+	Tue, 27 Feb 2024 14:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCCYo2XF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vqzd8SxE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9EA13DBB3;
-	Tue, 27 Feb 2024 14:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81BFE13A259;
+	Tue, 27 Feb 2024 14:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043459; cv=none; b=b+Vrhfgxh/EaJatiJbbvULb3C5P0mVO6rfyv0R7SmHHlicjxqXkNrGKa19zlyIplx9qjnDea/32lNbw3V/L7KxTSJrz3idD+548b8REoNGwe9672TNck1exNlfH6B6WBHQouAQkyeXfrOzIJzqAvUxs7dQ4vFHLk6sLT2OniiJM=
+	t=1709043055; cv=none; b=TCOOHKedKVp10JGqdOkBDOvtlMsi1T0tB2YUfArmjlAWNVWM+bt619I7T8RYVVe5b9jgfpESJoc/Z4ZquTjYmkrmBN6/XmpsBW5Bt86V665BwIbKaeNV0+SuC5SM13Q3wcREQidClURjVmY+MUyoUCnqxtblE8ELiY3q8v4oLic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043459; c=relaxed/simple;
-	bh=7K22ub2pm2pRUubhPecB/yOnnQLoU+nmdkZB0r44FoE=;
+	s=arc-20240116; t=1709043055; c=relaxed/simple;
+	bh=XtVjOlDNPyxhYVZlLUSxglBIxWrqqj4hYIJ39nLc9Fo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y8GtD6U0F8LebkQANDyvkpEcdWBCZRR16jOtjIm5px/lntyWAV+zNg6wzvELks3cjhTrgVh8E728CBJIpEynQzeE0v4NOPf5FCFisjUsY0GqoPA7QZS51g/8CnUKfwHpy10eY5wBSoOjGSLFyFAHOzouhibjeFM6zjTiJ9aB1ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCCYo2XF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7CAC43390;
-	Tue, 27 Feb 2024 14:17:38 +0000 (UTC)
+	 MIME-Version; b=qMXxeOG7FnPVwIxFXjuMLuepv8k3QDDqt40MYC+5Z6DgpKE1Q0EYFhUjOU2k8w9AwlruZRZ7Jy5V2l73lF2zghLtYX8z6yb496Roulhwejoy4d/IHA07EwVnF254ypdHVKOiP1GF5sWOR1cnfoCSyeGIdVwCtQe+7IlCXTy3ZCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vqzd8SxE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11BC5C433F1;
+	Tue, 27 Feb 2024 14:10:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043459;
-	bh=7K22ub2pm2pRUubhPecB/yOnnQLoU+nmdkZB0r44FoE=;
+	s=korg; t=1709043055;
+	bh=XtVjOlDNPyxhYVZlLUSxglBIxWrqqj4hYIJ39nLc9Fo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PCCYo2XFcZJA44X/YBV7OS3Xm6hKVx6yKluWSPm2lT5Z6xfq9gxVaQpEPb76dU5JN
-	 QL0xORrnXp5o/yNZH7X/yjSuGn8Ya7mGKHJeSqzMypr4aK4ElQ9/kc5jVAgirFGebN
-	 cGFNLuuaf06AwNqS8QmVeC2z6pk7narfO8cJy07s=
+	b=Vqzd8SxEQ500RSQe8hvj96PJ3rLPEOchG44yDunQBXmU4nuPvLvPgwJx/F/W0/QQJ
+	 UC64qKaSqQMJR7UsHJ8w9oRs5F3Fg8IMUdS5yDLb/9vBJ3ovE3zWePyWHgd+p/Rutv
+	 l7tQUw0abxOYbWT6zddLr1RVmHjucty46AoWs8Jk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sandeep Dhavale <dhavale@google.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Jingbo Xu <jefflexu@linux.alibaba.com>,
-	Chao Yu <chao@kernel.org>
-Subject: [PATCH 6.1 116/195] erofs: fix refcount on the metabuf used for inode lookup
+	Kellen Renshaw <kellen.renshaw@canonical.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 189/245] ACPI: resource: Add ASUS model S5402ZA to quirks
 Date: Tue, 27 Feb 2024 14:26:17 +0100
-Message-ID: <20240227131614.290141081@linuxfoundation.org>
+Message-ID: <20240227131621.338020774@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sandeep Dhavale <dhavale@google.com>
+From: Kellen Renshaw <kellen.renshaw@canonical.com>
 
-commit 56ee7db31187dc36d501622cb5f1415e88e01c2a upstream.
+[ Upstream commit 6e5cbe7c4b41824e500acbb42411da692d1435f1 ]
 
-In erofs_find_target_block() when erofs_dirnamecmp() returns 0,
-we do not assign the target metabuf. This causes the caller
-erofs_namei()'s erofs_put_metabuf() at the end to be not effective
-leaving the refcount on the page.
-As the page from metabuf (buf->page) is never put, such page cannot be
-migrated or reclaimed. Fix it now by putting the metabuf from
-previous loop and assigning the current metabuf to target before
-returning so caller erofs_namei() can do the final put as it was
-intended.
+The Asus Vivobook S5402ZA has the same keyboard issue as Asus Vivobook
+K3402ZA/K3502ZA. The kernel overrides IRQ 1 to Edge_High when it
+should be Active_Low.
 
-Fixes: 500edd095648 ("erofs: use meta buffers for inode lookup")
-Cc: <stable@vger.kernel.org> # 5.18+
-Signed-off-by: Sandeep Dhavale <dhavale@google.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Link: https://lore.kernel.org/r/20240221210348.3667795-1-dhavale@google.com
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch adds the S5402ZA model to the quirk list.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216158
+Tested-by: Kellen Renshaw <kellen.renshaw@canonical.com>
+Signed-off-by: Kellen Renshaw <kellen.renshaw@canonical.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/namei.c |   28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ drivers/acpi/resource.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/erofs/namei.c
-+++ b/fs/erofs/namei.c
-@@ -137,24 +137,24 @@ static void *find_target_block_classic(s
- 			/* string comparison without already matched prefix */
- 			diff = erofs_dirnamecmp(name, &dname, &matched);
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 91628fb41ef85..4d1db2def7ae4 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -421,6 +421,13 @@ static const struct dmi_system_id asus_laptop[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "K3502ZA"),
+ 		},
+ 	},
++	{
++		.ident = "Asus Vivobook S5402ZA",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "S5402ZA"),
++		},
++	},
+ 	{ }
+ };
  
--			if (!diff) {
--				*_ndirents = 0;
--				goto out;
--			} else if (diff > 0) {
--				head = mid + 1;
--				startprfx = matched;
--
--				if (!IS_ERR(candidate))
--					erofs_put_metabuf(target);
--				*target = buf;
--				candidate = de;
--				*_ndirents = ndirents;
--			} else {
-+			if (diff < 0) {
- 				erofs_put_metabuf(&buf);
--
- 				back = mid - 1;
- 				endprfx = matched;
-+				continue;
-+			}
-+
-+			if (!IS_ERR(candidate))
-+				erofs_put_metabuf(target);
-+			*target = buf;
-+			if (!diff) {
-+				*_ndirents = 0;
-+				return de;
- 			}
-+			head = mid + 1;
-+			startprfx = matched;
-+			candidate = de;
-+			*_ndirents = ndirents;
- 			continue;
- 		}
- out:		/* free if the candidate is valid */
+-- 
+2.43.0
+
 
 
 
