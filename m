@@ -1,77 +1,99 @@
-Return-Path: <stable+bounces-25259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 094C786991A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:53:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04D5C8699BC
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 16:03:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 220B81C22A9B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:53:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD1062933AA
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:03:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E63C678B61;
-	Tue, 27 Feb 2024 14:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441D0146009;
+	Tue, 27 Feb 2024 15:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Nuv6LdrQ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z4VqQTxo"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2043.outbound.protection.outlook.com [40.107.96.43])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5F83D68;
-	Tue, 27 Feb 2024 14:53:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709045584; cv=fail; b=mfXw4yJm3sSOYrJ8NCgs6rck+0XXF5xjg2j4jJt2TTsyp3PdLpvTZtP1nL/xhfHgnoKhBBiyWKWAMwyHSZLzfTKr2T1Gs5W20jFEhs5XNJgnMS1Lz02KovYXUqEhXrbOGdW5LDocBQU5vEOQHpvUHp8Mc4J16fRrjiKQVY54JEE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709045584; c=relaxed/simple;
-	bh=kGvZCVyHfCe4BUW9jVvbDjmxEYwN+QANNyDqDbpQYjs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=j2u+0rzgRvr5YBDITGH/oWO/nHfi7oqHaP706ln7kw0zh5OePT7kIqE2D4C+9Gk6XokY3MOivh5eGopmOHZwi4oaEdZjfmHfABWax6TS6QwNfBITmgf7Ia0KEjDas9t4slZ3nH2in/DnGrMolvQ2gCa7qZK4YpX5E9YGHmPEqJA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Nuv6LdrQ; arc=fail smtp.client-ip=40.107.96.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=accVWL3nerZHqeeKEdVUZCxHK8JmSwIsmrcLnm/5ow2uR5MZrPAwIIMRAKGK8BfeGXXyhcpTpGovJiuMNyu8vxpFMASHgbbeFULmJf6zSKXe//IK809TCX1l99DC1HHMN3uqCbHG+PwZNnS3dDFQxi1c7GTpx7ZlFNWhqhSeW30XLUsYAmJHKQ8vIIo6v1XiDg5AE8gRoz9XuZGOTB8JLCak+DBTlSCuFjRN5XKWNKMM83KEMA5bHvGGs6CQq2bb8uH/OrhQdrAtPkfmPNy16MMGs7tTgX/1wNvBgHV3fbogFmQwFnNbVoT9/kwH4bhGG7Wl1XwCGc01b6Van0BIhQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dHO2NmammESb+DWc1dsvwYSs0UPgmlez9ro7QMBIEiY=;
- b=as6hXFEm2bFnxTwPFXe+0wyN1+6ywy8rgtF0wiPG8fhDsstu7zH7e0BC4WX6TmVLmE4pu7kAI40NCiAVhq4yNbyvwkQ0klXMtBMEEgXDbx1YfxOhe6xDgtvZ9CBsavR8JhqpGTXXxVTc3UPZuHt0gWri+S2v61RCGK4MKN3lGY7HpGzrFHYRkjwZLo+q97qXVfRHTvTI5mdXsvQ6GfyIgvtM4ttemZeU6lAMhU7FM3euJn0Pb3U1fAD0qBHLWldxgMEuS/5xXMrh6YEw95ROkrn/oz0GAWokI+2ul2SspX6MsK47OemlazrfkF1neQTjWbsIbkfigKmJdJy7A/GhLw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dHO2NmammESb+DWc1dsvwYSs0UPgmlez9ro7QMBIEiY=;
- b=Nuv6LdrQ/ALvKrbciEDYjPKd+9bzVHGXT3BnBuwaKngAP+i6/vQfltcqZrEQk5WII5PqW6Qs7c0adjVvV+Wu0GHmBtMEJVUXAWjxmKQGh7kc3wIpPIxoHWTjQ9z+JFfMhoMrzpPROGv5US5brOSQS+CwUQ51erSRuRR3bRWdMWEFoE86nqxdmYpGUW2FdMz/6RI2vifHgqFTYLEYnZRMw8z2CpJRJTcIPakoNyyFZJ88Lj6B4yzg0CSFH5pAkij/rIOJfwjQlVUBl8YiwsgYMKxZPcIPUAWMHlCYGaB4KmxLPyjOfL6R5MlBXaOpmpnsEL/bPE6CF0uU5nk0yEIqZw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS7PR12MB5744.namprd12.prod.outlook.com (2603:10b6:8:73::18) by
- PH7PR12MB5782.namprd12.prod.outlook.com (2603:10b6:510:1d1::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.31; Tue, 27 Feb
- 2024 14:52:58 +0000
-Received: from DS7PR12MB5744.namprd12.prod.outlook.com
- ([fe80::dc5c:2cf1:d5f5:9753]) by DS7PR12MB5744.namprd12.prod.outlook.com
- ([fe80::dc5c:2cf1:d5f5:9753%6]) with mapi id 15.20.7316.037; Tue, 27 Feb 2024
- 14:52:58 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: David Hildenbrand <david@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6083314533E
+	for <stable@vger.kernel.org>; Tue, 27 Feb 2024 15:01:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709046070; cv=none; b=sphCkiOEH9tt6Y6I1MMmj5BpP/6RXo2ydOZwkhGszRzO/8n+MSCMmkpwIoSHkXDz0AocS9zWDUksiOgtw7WhAzyRIXGRQMgRaP+ux2iObmWjfd7rO7sqC5nIBuYvSwvRHNA8e+mGZEnsjVx9ikHYGjyOHVwoPHy4WALLZ4R1h5s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709046070; c=relaxed/simple;
+	bh=+EuFjpu1vIf2NQ2DrIIWSkzsULMloP3gz7XhGdpS4IU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lbALqgMzXd3/BUsWFAdHG3O3T1lywrW2Zrj/L7c3hBl0NO4dLs1fFDhReZyvTM5PAAod4AMzXCTxMrU+KLUJ/nZe7EaOVsCgFmRuF2h8DvFXwr/apYJmO/nYZRXYAWFANb+WtE+qiF16eaznnmrga6k4yMpCr1zxau+kEucs3ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z4VqQTxo; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1709046067;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=5Pbw1rLa/3NEYjmsKz/L4GYGbrEc8/6OThTNR654NLk=;
+	b=Z4VqQTxoEQdCFCiHgPiHdfO9uSA7R4Kpc/fQj7Qvd7ANvfAjJD343Rnn5/n9nrF2zehbnr
+	nKT0yhanhtjSal5pO7KHjFVNnhsDdS/1x+s2fq8e3uqabdhKHHU+gXNDNEZ3eigJbyKYg3
+	eaDIf0q+nNP87Kykzy4Kz1tF3aDIXpw=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-126-C0rI8Y6mObi7IsnxZOLwsA-1; Tue, 27 Feb 2024 10:01:04 -0500
+X-MC-Unique: C0rI8Y6mObi7IsnxZOLwsA-1
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-33d39bc6bf4so2340502f8f.0
+        for <stable@vger.kernel.org>; Tue, 27 Feb 2024 07:01:04 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709046063; x=1709650863;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :references:cc:to:content-language:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5Pbw1rLa/3NEYjmsKz/L4GYGbrEc8/6OThTNR654NLk=;
+        b=FXYxFXpLkKoYTGSmHVg13wRMEiM3BGGIwJcOEQOEP1e8wXswvJQTB6KWJ4utSZ0V7s
+         zAGvI1I8neGwX5jnALenm+ezPyjR6o3DtgGLzIl3J6dSoh/EeiofDjuwH6uGk5w2CXKy
+         bPC21sRbn0WheFC5J46oEmeHuwxHnpiAgbncWG83xs8N34M5N2l9b8rrEN2lRwjvMpY+
+         EOySrEDpZWWQa2C150SPmdEeRaoEO4ESll0afSe0YR++y30qvW/SzeIgO6ZkxvVtXVIS
+         A8pqLqW1bOvW81ridxLtJQ2cVJJTGzuUCbr6egAToKdxerFyPhpHFKODPjNLu/Uo2ZsZ
+         HH8A==
+X-Forwarded-Encrypted: i=1; AJvYcCVKH2H+QOH8b2TLJfnry4YNxYlkpeM9h0Z5bcq3HvrboLdc8LcM9h/MPMRAiVv2BSpUxEJlojAvb+hZIQIcUzhv7teQHoVd
+X-Gm-Message-State: AOJu0YwbCWuZeng1b0cVN8cdQEXuPyPBmB/8RalGX6brVDMsGpfT57yb
+	wSFBGV29RGv5C0KiDfsYUe0xXcq7GIELy8815/FqWH+w5UHLgcC7Ej+NLxENu/Nk6SUO2d5RzI0
+	7kr7rCWYSM1Cpb1kJPM0xyqn/h7+tkzKdowOXNHXJJE41u36S9HXoPw==
+X-Received: by 2002:a05:6000:120a:b0:33d:c5c7:45ed with SMTP id e10-20020a056000120a00b0033dc5c745edmr6829935wrx.3.1709046063172;
+        Tue, 27 Feb 2024 07:01:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHjmHQCa/PqHrul04UYZcdA8prGv3O641g8TWZNxL3MoR1VLYGkibNcfMut/yLENdEC0XRTkg==
+X-Received: by 2002:a05:6000:120a:b0:33d:c5c7:45ed with SMTP id e10-20020a056000120a00b0033dc5c745edmr6829902wrx.3.1709046062743;
+        Tue, 27 Feb 2024 07:01:02 -0800 (PST)
+Received: from ?IPV6:2003:cb:c707:7600:5c18:5a7d:c5b7:e7a9? (p200300cbc70776005c185a7dc5b7e7a9.dip0.t-ipconnect.de. [2003:cb:c707:7600:5c18:5a7d:c5b7:e7a9])
+        by smtp.gmail.com with ESMTPSA id ck12-20020a5d5e8c000000b0033d9f0dcb35sm11920501wrb.87.2024.02.27.07.01.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Feb 2024 07:01:02 -0800 (PST)
+Message-ID: <42be658c-cb13-4001-aae4-8d8275a84038@redhat.com>
+Date: Tue, 27 Feb 2024 16:01:01 +0100
+Precedence: bulk
+X-Mailing-List: stable@vger.kernel.org
+List-Id: <stable.vger.kernel.org>
+List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/huge_memory: fix swap entry values of tail pages of
+ THP
+Content-Language: en-US
+To: Zi Yan <ziy@nvidia.com>
 Cc: Matthew Wilcox <willy@infradead.org>,
  Charan Teja Kalla <quic_charante@quicinc.com>, gregkh@linuxfoundation.org,
  akpm@linux-foundation.org, vbabka@suse.cz, dhowells@redhat.com,
  surenb@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- "\"# see patch description\"" <stable@vger.kernel.org>,
+ # see patch description <stable@vger.kernel.org>,
  Huang Ying <ying.huang@intel.com>,
  Naoya Horiguchi <naoya.horiguchi@linux.dev>
-Subject: Re: [PATCH] mm/huge_memory: fix swap entry values of tail pages of
- THP
-Date: Tue, 27 Feb 2024 09:52:55 -0500
-X-Mailer: MailMate (1.14r6018)
-Message-ID: <1ABD022A-35FC-4A6E-ADAD-36F3D745FB91@nvidia.com>
-In-Reply-To: <30ea073d-0ccf-46e1-954d-e22f5cbf69f7@redhat.com>
 References: <1707814102-22682-1-git-send-email-quic_charante@quicinc.com>
  <a683e199-ce8a-4534-a21e-65f2528415a6@redhat.com>
  <8620c1a0-e091-46e9-418a-db66e621b9c4@quicinc.com>
@@ -80,271 +102,202 @@ References: <1707814102-22682-1-git-send-email-quic_charante@quicinc.com>
  <ZczLoOqdpMJpkO5N@casper.infradead.org>
  <f2ad5918-7e36-4a7c-a619-c6807cfca5ec@redhat.com>
  <30ea073d-0ccf-46e1-954d-e22f5cbf69f7@redhat.com>
-Content-Type: multipart/signed;
- boundary="=_MailMate_59081F6E-59FD-4E97-8B86-B6FEA972B6EA_=";
- micalg=pgp-sha512; protocol="application/pgp-signature"
-X-ClientProxiedBy: BN0PR02CA0031.namprd02.prod.outlook.com
- (2603:10b6:408:e5::6) To DS7PR12MB5744.namprd12.prod.outlook.com
- (2603:10b6:8:73::18)
-Precedence: bulk
-X-Mailing-List: stable@vger.kernel.org
-List-Id: <stable.vger.kernel.org>
-List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB5744:EE_|PH7PR12MB5782:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6439bd4b-f3b0-4489-8ede-08dc37a3c9cc
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	8OMDsh4GyUV3r3HeMkFBgydTXogFOoKilzA5p7Ftmyxb0dljOG9jUBbHXmG86SgCf10yyyySha54tcoRcfkiKF1iKG2Q4gmffkY0qcXO1OCLJmRMSO63bDVUNvEvOFxH3m+Whxl9kIsyU8RZksDWrZD8dq1lmRpjM3qeEljDh7L9O20bsCqxoyW1B0lAO83VPAUJ8/BbDicmOJFlZ7IZzP0uZj5XIZ7wWAh5JDS04w3v7WphCGaRtJszc2vpuJV9XwqkN+MzrtQrgzXD6vzdDzRA1BlH0kLBuZUx/B/7LOfJfTE61bAjP/ZBXccmC8CVrt0277uSHLpnvNrp//fqyJNBMMLJUILm2RQ+XdMB2uTqhJQMG7btvbGrzy2Sleg0xBIBwHDc2JrQrVX1E2msPYqewU97ZpbYC7zEzE030WR0yUWKLqSzLAjUUJYQE9IfnwL1p7OLplLHdpFhi8ugWCel85lw1wE/pr7u0o1Ct5hQRgF0A+GeXKHTv0dUDIEk/AfXcMaPj0mRbx3h0hHDx616oWMfi4sUavjZ+9bYqvsZDRDfV34Rry+TiIZEGmfP1V7EQn6vEpNpjNel7J254N6OnXfVi3RE97xFk6Dx9tOSY0FScnOXlTBGANZI0jfgoAY2XcaDucOBgd+Z8Y00zA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB5744.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Wlpuelo5bGlJT1NsbnMrWmwxUXE2ajkwdk4wVGYxRlFrNExVRHlSQzVIR21m?=
- =?utf-8?B?MDhjNG5HUFNRT29jNkNMSlBzMHZFSEVKd3hWRVZaRzNFOTdMaTJQd2Y4cUZC?=
- =?utf-8?B?OEFYS2F6K1BDZG9XMW5uMHVhb1gyMlJCWFF1N2NIbmZoUnpHd1N0ejdVa1M1?=
- =?utf-8?B?WFpTYXIvTXVqZDM2TmVGSnBremlIWm9JdjkzaVhLVVR6RE1jb2lwcCtTQWln?=
- =?utf-8?B?VW1OZ2JNUm52V2RldmhRWTlBZHVQb2hiNUlqcjI0aXZaYWpNbm9UZmRPK2t1?=
- =?utf-8?B?S1NsbFhreXMrcVNWOTRHR2JhclpLWkdIVkRpaG5tMkFoSkhnSEkrS0hNbnVr?=
- =?utf-8?B?dkliKzJtVzNySDlrVjVlOTJEaWJtSXRvMVlzRWR2VlFIRnRIc3BFdWM1MWpI?=
- =?utf-8?B?U0I4dzI2RDFML082cGFURUxvUTlrV1NFdGVKVDA2UkJFTE5SMjM2Q2Frd1My?=
- =?utf-8?B?bnlRaHZLVUlaZkY5V3Y0bWtvcWxMR3A3ejNaWHEwZ1FQSkx3aHVyWFd3VDk1?=
- =?utf-8?B?elRhcXlKQkZHNEpYS21rNlVIeWJMZHhvUWFZUndITUVyL3pZdnhtSzJBTmtP?=
- =?utf-8?B?aE9LK25lcDRxNzRxM0taUUlEZG56SEtyRmdWOWdWTU1nZWpNRDdZWWRwck80?=
- =?utf-8?B?SkM3WERmUlUwOGphTWE4ZlNlZlk4U0Z4L1VZeTZDeU1YNitsbk9iQmp3NWRK?=
- =?utf-8?B?VllwWnlOdmJxbmw4Qm5BZU04Z01IaktKMjM2UHJHdU5vMHFCUFcrMUZNc2x0?=
- =?utf-8?B?ZmxNbFBYcUVrL3FnMlEyeVRtRzNKcm43MkoyMEtrUnA2T1lxd2RVVFNucHcy?=
- =?utf-8?B?cHRQTkNPT3FzYVQ3RjdkdFdERHJCTVRPRWNsZStzZ1RUNTFWYVhUdzNHYmZl?=
- =?utf-8?B?U08xVGI3ODhpOWpWOWpQbDh6VVpVZ3VRdHVDUVpaTUtGZkRFZkZYLzdsS0NS?=
- =?utf-8?B?YXN5ajIwMjA2Uk0zQzhJSmpOQXBNbXpBZU02OVNmSDZNRnBlbzJhQWtSSkJp?=
- =?utf-8?B?dzZZcm1aWW1zVEc1V3dkVFpoS1E5V3c5TGhwQjhUOTJPRm5IczZxd2pWWitt?=
- =?utf-8?B?endKUG9RcDFVNkNUc1VnaHlaRklMQnZHdTlzSyt0amlvN3RHUkNHdC9KbXFK?=
- =?utf-8?B?dXVuOXlSR0xwTjJJTXBBYjlOOElHRVd4bjlKUzhpNUxsdmFqTHk4bmNIN0sw?=
- =?utf-8?B?Ujg5bllBZzZzbDVwOWlNOEdxSExNa1k4a1ZycFcyWHBJMXc2UWlUZEUrdG5t?=
- =?utf-8?B?clRza00vbm5IWkFUeW52eXQvOGNVQnpkby9DYncxK25Fa3BKakpCY0VraTZ2?=
- =?utf-8?B?dDJHYXJtU3R1SUVnRzJXSmhLbWtlT3hJanJSVFNMMkhpZGFOQkRJUXg1MEdk?=
- =?utf-8?B?TXJuZWdoMXpUbisrd21KS3ZRRFA0SW5WVU5FSSs4NHlwWUJHZWdoZ2RZU3Vs?=
- =?utf-8?B?UGs1dmZpSjlmQ0hVTHpXWE5CSW9Ha085RU9vT0pIUE9QaDB3OGJrSnlFMHh6?=
- =?utf-8?B?NnUzNy83ZGlFSTFxRDl6UkdjWnRwcXduNy9MTEZ3WEJ3VXhpMWNhMVdvQlUy?=
- =?utf-8?B?OFJ5ZFVpWHFXRDBFWTE4RldWOFhsVHQ0UENWbHBMek16cGhvRzloaXcxdTdo?=
- =?utf-8?B?czQ1ZFdxRzV5N2xRSHhlSWdOaGgvalJJaUFjbndmU0s5S2wxbTd6TWppRFh6?=
- =?utf-8?B?RnFMaDI2cDJLM0V5YU5UZEM3dEwxREZkcTdZZjd3NEN2c2ZqcnlYc0xzWDBB?=
- =?utf-8?B?ampRLzlHTnhwd2gzak04eldXNTdFTnYwZ0dHUkkxV0JldDVQRTg2VnlqMzhG?=
- =?utf-8?B?dzVHMkh1MS9UU2NVMDJJL09YNTMzSXZ0MXhVb1pVZlNJZzVIMUVPbWR6cDNI?=
- =?utf-8?B?VWVtVXRyMmFYVGJwNlR3YjdUQS9KWkFFdklFcm9RbHJMRkMrN2M2a1JNU1ZH?=
- =?utf-8?B?Y2xoOStoemY2dys2Y0wyaFNZc2RDK0NTbzUyOHgwU2VZdTYyK2dkczVlNDV0?=
- =?utf-8?B?MXY5NmJCakN5K3o0eldjNkg5c1l4dDQraTZyY1FDZTVFZTJmWENRa3lneGZ2?=
- =?utf-8?B?N3VaM1BEb056WGZmTzl5Mjd0bklpcDhySFFGVlhxU1hnUU9rZjFtQUM4Q2NF?=
- =?utf-8?Q?q5bY=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6439bd4b-f3b0-4489-8ede-08dc37a3c9cc
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB5744.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2024 14:52:58.5716
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XHjhRzRXui/9d6N3joy7GzFPFlTP/JE8UUsGoSO+vK1hsIoI5sixCvft6aRSPciH
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5782
+ <1ABD022A-35FC-4A6E-ADAD-36F3D745FB91@nvidia.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <1ABD022A-35FC-4A6E-ADAD-36F3D745FB91@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
---=_MailMate_59081F6E-59FD-4E97-8B86-B6FEA972B6EA_=
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-
-On 27 Feb 2024, at 9:11, David Hildenbrand wrote:
-
-> On 14.02.24 15:34, David Hildenbrand wrote:
->> On 14.02.24 15:18, Matthew Wilcox wrote:
->>> On Wed, Feb 14, 2024 at 12:04:10PM +0530, Charan Teja Kalla wrote:
->>>>> 1) Is it broken in 5.15? Did you actually try to reproduce or is th=
-is
->>>>>   =C2=A0=C2=A0 just a guess?
+On 27.02.24 15:52, Zi Yan wrote:
+> On 27 Feb 2024, at 9:11, David Hildenbrand wrote:
+> 
+>> On 14.02.24 15:34, David Hildenbrand wrote:
+>>> On 14.02.24 15:18, Matthew Wilcox wrote:
+>>>> On Wed, Feb 14, 2024 at 12:04:10PM +0530, Charan Teja Kalla wrote:
+>>>>>> 1) Is it broken in 5.15? Did you actually try to reproduce or is this
+>>>>>>       just a guess?
+>>>>>>
 >>>>>
+>>>>> We didn't run the tests with THP enabled on 5.15, __so we didn't
+>>>>> encounter this issue__ on older to 6.1 kernels.
+>>>>>
+>>>>> I mentioned that issue exists is based on my understanding after code
+>>>>> walk through. To be specific, I just looked to the
+>>>>> migrate_pages()->..->migrate_page_move_mapping() &
+>>>>> __split_huge_page_tail() where the ->private field of thp sub-pages is
+>>>>> not filled with swap entry. If it could have set, I think these are the
+>>>>> only places where it would have done, per my understanding. CMIW.
 >>>>
->>>> We didn't run the tests with THP enabled on 5.15, __so we didn't
->>>> encounter this issue__ on older to 6.1 kernels.
->>>>
->>>> I mentioned that issue exists is based on my understanding after cod=
-e
->>>> walk through. To be specific, I just looked to the
->>>> migrate_pages()->..->migrate_page_move_mapping() &
->>>> __split_huge_page_tail() where the ->private field of thp sub-pages =
-is
->>>> not filled with swap entry. If it could have set, I think these are =
-the
->>>> only places where it would have done, per my understanding. CMIW.
+>>>> I think you have a misunderstanding.  David's patch cfeed8ffe55b (part
+>>>> of 6.6) _stopped_ us using the tail ->private entries.  So in 6.1, these
+>>>> tail pages should already have page->private set, and I don't understand
+>>>> what you're fixing.
 >>>
->>> I think you have a misunderstanding.  David's patch cfeed8ffe55b (par=
-t
->>> of 6.6) _stopped_ us using the tail ->private entries.  So in 6.1, th=
-ese
->>> tail pages should already have page->private set, and I don't underst=
-and
->>> what you're fixing.
+>>> I think the issue is, that migrate_page_move_mapping() /
+>>> folio_migrate_mapping() would update ->private for a folio in the
+>>> swapcache (head page)
+>>>
+>>> 	newfolio->private = folio_get_private(folio);
+>>>
+>>> but not the ->private of the tail pages.
+>>>
+>>> So once you migrate a THP that is in the swapcache, ->private of the
+>>> tail pages would not be migrated and, therefore, be stale/wrong.
+>>>
+>>> Even before your patch that was the case.
+>>>
+>>> Looking at migrate_page_move_mapping(), we had:
+>>>
+>>> 	if (PageSwapBacked(page)) {
+>>> 		__SetPageSwapBacked(newpage);
+>>> 		if (PageSwapCache(page)) {
+>>> 			SetPageSwapCache(newpage);
+>>> 			set_page_private(newpage, page_private(page));
+>>> 		}
+>>> 	} else {
+>>> 		VM_BUG_ON_PAGE(PageSwapCache(page), page);
+>>> 	}
+>>>
+>>>
+>>> I don't immediately see where the tail pages would similarly get updated
+>>> (via set_page_private).
+>>>
+>>> With my patch the problem is gone, because the tail page entries don't
+>>> have to be migrated, because they are unused.
+>>>
+>>>
+>>> Maybe this was an oversight from THP_SWAP -- 38d8b4e6bdc8 ("mm, THP,
+>>> swap: delay splitting THP during swap out").
+>>>
+>>> It did update __add_to_swap_cache():
+>>>
+>>> for (i = 0; i < nr; i++) {
+>>>            set_page_private(page + i, entry.val + i);
+>>>            error = radix_tree_insert(&address_space->page_tree,
+>>>                                      idx + i, page + i);
+>>>            if (unlikely(error))
+>>>                    break;
+>>> }
+>>>
+>>> and similarly __delete_from_swap_cache().
+>>>
+>>> But I don't see any updates to migration code.
+>>>
+>>> Now, it could be that THP migration was added later (post 2017), in that
+>>> case the introducing commit would not have been 38d8b4e6bdc8.
+>>>
 >>
->> I think the issue is, that migrate_page_move_mapping() /
->> folio_migrate_mapping() would update ->private for a folio in the
->> swapcache (head page)
+>> Let's continue:
 >>
->> 	newfolio->private =3D folio_get_private(folio);
+>> The introducing commit is likely either
 >>
->> but not the ->private of the tail pages.
+>> (1) 38d8b4e6bdc87 ("mm, THP, swap: delay splitting THP during swap out")
 >>
->> So once you migrate a THP that is in the swapcache, ->private of the
->> tail pages would not be migrated and, therefore, be stale/wrong.
+>> That one added THP_SWAP, but THP migration wasn't supported yet AFAIKS.
 >>
->> Even before your patch that was the case.
+>> -> v4.13
 >>
->> Looking at migrate_page_move_mapping(), we had:
+>> (2) 616b8371539a6 ("mm: thp: enable thp migration in generic path")
+> 
+> I think this is the one, since it makes THP entering migrate_page_move_mapping()
+> possible.
+> 
 >>
->> 	if (PageSwapBacked(page)) {
->> 		__SetPageSwapBacked(newpage);
->> 		if (PageSwapCache(page)) {
->> 			SetPageSwapCache(newpage);
->> 			set_page_private(newpage, page_private(page));
->> 		}
->> 	} else {
->> 		VM_BUG_ON_PAGE(PageSwapCache(page), page);
->> 	}
+>> Or likely any of the following that actually allocate THP for migration:
+>>
+>> 8135d8926c08e mm: memory_hotplug: memory hotremove supports thp migration
+>> e8db67eb0ded3 mm: migrate: move_pages() supports thp migration
+>> c8633798497ce mm: mempolicy: mbind and migrate_pages support thp migration
+>>
+>> That actually enable THP migration.
+>>
+>> -> v4.14
 >>
 >>
->> I don't immediately see where the tail pages would similarly get updat=
-ed
->> (via set_page_private).
+>> So likely we'd have to fix the stable kernels:
 >>
->> With my patch the problem is gone, because the tail page entries don't=
+>> 4.19
+>> 5.4
+>> 5.10
+>> 5.15
+>> 6.1
+>>
+>> That's a lot of pre-folio code. A backport of my series likely won't really make any sense.
+>>
+>> Staring at 4.19.307 code base, we likely have to perform a stable-only fix that properly handles the swapcache of compoud pages in migrate_page_move_mapping().
+> 
+> Something like (applies to v4.19.307):
+> 
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index 171573613c39..59878459c28c 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -514,8 +514,13 @@ int migrate_page_move_mapping(struct address_space *mapping,
+>          if (PageSwapBacked(page)) {
+>                  __SetPageSwapBacked(newpage);
+>                  if (PageSwapCache(page)) {
+> +                       int i;
+> +
+>                          SetPageSwapCache(newpage);
+> -                       set_page_private(newpage, page_private(page));
+> +                       for (i = 0; i < (1 << compound_order(page)); i++) {
+> +                               set_page_private(newpage + i,
+> +                                                page_private(page + i));
+> +                       }
+>                  }
+>          } else {
+>                  VM_BUG_ON_PAGE(PageSwapCache(page), page);
 
->> have to be migrated, because they are unused.
->>
->>
->> Maybe this was an oversight from THP_SWAP -- 38d8b4e6bdc8 ("mm, THP,
->> swap: delay splitting THP during swap out").
->>
->> It did update __add_to_swap_cache():
->>
->> for (i =3D 0; i < nr; i++) {
->>           set_page_private(page + i, entry.val + i);
->>           error =3D radix_tree_insert(&address_space->page_tree,
->>                                     idx + i, page + i);
->>           if (unlikely(error))
->>                   break;
->> }
->>
->> and similarly __delete_from_swap_cache().
->>
->> But I don't see any updates to migration code.
->>
->> Now, it could be that THP migration was added later (post 2017), in th=
-at
->> case the introducing commit would not have been 38d8b4e6bdc8.
->>
->
-> Let's continue:
->
-> The introducing commit is likely either
->
-> (1) 38d8b4e6bdc87 ("mm, THP, swap: delay splitting THP during swap out"=
-)
->
-> That one added THP_SWAP, but THP migration wasn't supported yet AFAIKS.=
+I'm wondering if there is a swapcache update missing as well.
 
->
-> -> v4.13
->
-> (2) 616b8371539a6 ("mm: thp: enable thp migration in generic path")
+-- 
+Cheers,
 
-I think this is the one, since it makes THP entering migrate_page_move_ma=
-pping()
-possible.
+David / dhildenb
 
->
-> Or likely any of the following that actually allocate THP for migration=
-:
->
-> 8135d8926c08e mm: memory_hotplug: memory hotremove supports thp migrati=
-on
-> e8db67eb0ded3 mm: migrate: move_pages() supports thp migration
-> c8633798497ce mm: mempolicy: mbind and migrate_pages support thp migrat=
-ion
->
-> That actually enable THP migration.
->
-> -> v4.14
->
->
-> So likely we'd have to fix the stable kernels:
->
-> 4.19
-> 5.4
-> 5.10
-> 5.15
-> 6.1
->
-> That's a lot of pre-folio code. A backport of my series likely won't re=
-ally make any sense.
->
-> Staring at 4.19.307 code base, we likely have to perform a stable-only =
-fix that properly handles the swapcache of compoud pages in migrate_page_=
-move_mapping().
-
-Something like (applies to v4.19.307):
-
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 171573613c39..59878459c28c 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -514,8 +514,13 @@ int migrate_page_move_mapping(struct address_space *=
-mapping,
-        if (PageSwapBacked(page)) {
-                __SetPageSwapBacked(newpage);
-                if (PageSwapCache(page)) {
-+                       int i;
-+
-                        SetPageSwapCache(newpage);
--                       set_page_private(newpage, page_private(page));
-+                       for (i =3D 0; i < (1 << compound_order(page)); i+=
-+) {
-+                               set_page_private(newpage + i,
-+                                                page_private(page + i));=
-
-+                       }
-                }
-        } else {
-                VM_BUG_ON_PAGE(PageSwapCache(page), page);
-
-for all stable kernels above?
-
---
-Best Regards,
-Yan, Zi
-
---=_MailMate_59081F6E-59FD-4E97-8B86-B6FEA972B6EA_=
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename=signature.asc
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iQJDBAEBCgAtFiEE6rR4j8RuQ2XmaZol4n+egRQHKFQFAmXd90cPHHppeUBudmlk
-aWEuY29tAAoJEOJ/noEUByhULu8P/ijdY/enw2CrZJ6MqE/LhIQBgI8ErCl5wbSd
-5SvjBdX+AZ+BtgEP4kFEYUKPoG7IjYPFZLIN/SelgKoH4Bx1+Vl1d/hu9Y62/DH9
-TfMjU+DhD3ARbAQ+gIyqjKp7FK7I1SN00uQZiFLYTM7DuMkkpAhKIaA8bz8PmtHe
-JjtUMSRSw0H/Fggb+AlTH4JdlPvQZWEUmKrPtT6k1tyIPWwD1Br0qhDdOTiGsLwi
-jGQ/MouMHzDpLKUZj0JcIAqQomIFHNX+Z746mB0sgarhWzfTWmZk0LXtu56WXtPG
-BiEjMhclZIlRo5tivYB5v4+V8CgLzY71nmElcrHHXhAJmIeLs9aaKid4TGOXRN2p
-OKfFt2ilhqqMaZpMS2W6gjgBf963jZ3nvXXtFSPg9vE1FEaaez+ZL8BKYedktkWi
-9Wi8deW9I7SaGh4sIizTmTYEkNr6cZ4RE4Ijx6SleQ0+RJpL/FA2JT9wYcwc/jnz
-7biBHX3nfWE5S5dbYpCJY1JHf5UHABL6Wl1zG3oYCSrOL6ulYcroDzRqSQweoQLt
-A497na1LpeoGikJF+vOpIivQaLo59gOzXbUtCcxK42Fjm2prmCFDxHnig3vSE4BP
-OxWjHNJ+fZi2WHXmyiSLYXe5Najzh+waYehnTfK+Z9bWUjStDAn3XCLhR4ATV4Mz
-5utz7KqV
-=eYtj
------END PGP SIGNATURE-----
-
---=_MailMate_59081F6E-59FD-4E97-8B86-B6FEA972B6EA_=--
 
