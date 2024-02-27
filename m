@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-25098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E555D8697B6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:24:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20851869767
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:21:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 224711C22790
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:24:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4F1A1F21284
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F192A13B798;
-	Tue, 27 Feb 2024 14:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 748DE13EFE9;
+	Tue, 27 Feb 2024 14:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N4AgwWYg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BZ6o42LU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16F013B2B4;
-	Tue, 27 Feb 2024 14:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9D113B2B4;
+	Tue, 27 Feb 2024 14:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043859; cv=none; b=Ul0C/SJmyxGrJhvsjb5NtVCf/TJIEVBtOfXNLAs4aLRX4H5iGc6Az1Tmt7AnATnmUyhN+NrjuVN+LVh5iro8l9k5Cj1nxDsiviycGP/6WYZRceQHennluAsBPz1tpcJTbqDZOfkAKCVN1GPMnYWwtydypeX+bjQ0U/HBJjuCTfU=
+	t=1709043658; cv=none; b=IWC1ntQJ/ufchAaNNt00uOuJ3l3Pp0OPsedA91uUI9/RYh5UyDHZPZzAo/yifYgEZd/oSvBxCaI2qEOmHCnNYRV7E66N04tcMsM/8vr2jMMM6MGyy+C34RQCeaScHiedIy20xeKpQI69P9yxsyHm+s9K2vP3wKj23ie1yiZJzdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043859; c=relaxed/simple;
-	bh=eX65CoUFvLRz2Q0AJjRgocjCT8AtcQeu69zVaSfbIGM=;
+	s=arc-20240116; t=1709043658; c=relaxed/simple;
+	bh=ZmMJJIFA6UX1zwNUNX9CTZ/joB47QhafLSgbPOR08Q8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GuQQkAjvTSmMaJN4h20q+4nDvBgcbGFPnwWSLwwvDlwBReEf2wI3i8BD9J0o9VT3CWEl+kPTtEmVAVA84SlkjvAD9aQH+71KkX1skWlFDXMWGKb+29JdusQA264AN+Hyh40LpS0Ox6iBTxubC0reEzXo56sOCIgW4gpIIaVDi/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N4AgwWYg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354EBC433C7;
-	Tue, 27 Feb 2024 14:24:19 +0000 (UTC)
+	 MIME-Version; b=l1a7BK8iivkmGlFjSJn0/mFvwVa3bifEY4dWuGoQ8oIUXtdMHBMF6XpXwfYrtYZUgRtXTW4fB2DhaXTSfTHRwEBGErpJvqOg0ESq06ifQs3ATbTWRkU1bNoZTjp+L6cQJL2U1BUIpS61hoVU0b3AQR6vr3FcoQ7tYIX0FWI5Emo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BZ6o42LU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC8FAC433F1;
+	Tue, 27 Feb 2024 14:20:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043859;
-	bh=eX65CoUFvLRz2Q0AJjRgocjCT8AtcQeu69zVaSfbIGM=;
+	s=korg; t=1709043658;
+	bh=ZmMJJIFA6UX1zwNUNX9CTZ/joB47QhafLSgbPOR08Q8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N4AgwWYgdMU1alcCXXsg9W/7tsdbav9INvVkTzA4mMG7oTbjLAojsFc5t67VBkTSd
-	 eVP4Q5Vh07Nzen0zXtA4RKc3fyc9E2TK5+pLjvrsSW1iDP5Fkfmjm8MUM6d0+V4Xd7
-	 icy9ctpa8OzVfJF04Lbvk/e/yZRAPhUuqpThDdSM=
+	b=BZ6o42LUVJm0H+9MnrfZdLDCXWR++8GLGMUqEzD/B+2SSvDNFX12dlpn3nKNlgiw2
+	 E1244jSV0kjakXYtx36VpMFjyMt+pKhVp78vq5ze0B23uULgLCI+5dZqOmEPy7HB6S
+	 sAgqnanB/fzhI4dDeDtranEu1Bgs0BimTIeetc64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 5.4 60/84] usb: cdns3: fix memory double free when handle zero packet
-Date: Tue, 27 Feb 2024 14:27:27 +0100
-Message-ID: <20240227131554.824957558@linuxfoundation.org>
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 187/195] mm/damon/reclaim: fix quota stauts loss due to online tunings
+Date: Tue, 27 Feb 2024 14:27:28 +0100
+Message-ID: <20240227131616.573533752@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: SeongJae Park <sj@kernel.org>
 
-commit 5fd9e45f1ebcd57181358af28506e8a661a260b3 upstream.
+commit 1b0ca4e4ff10a2c8402e2cf70132c683e1c772e4 upstream.
 
-829  if (request->complete) {
-830          spin_unlock(&priv_dev->lock);
-831          usb_gadget_giveback_request(&priv_ep->endpoint,
-832                                    request);
-833          spin_lock(&priv_dev->lock);
-834  }
-835
-836  if (request->buf == priv_dev->zlp_buf)
-837      cdns3_gadget_ep_free_request(&priv_ep->endpoint, request);
+Patch series "mm/damon: fix quota status loss due to online tunings".
 
-Driver append an additional zero packet request when queue a packet, which
-length mod max packet size is 0. When transfer complete, run to line 831,
-usb_gadget_giveback_request() will free this requestion. 836 condition is
-true, so cdns3_gadget_ep_free_request() free this request again.
+DAMON_RECLAIM and DAMON_LRU_SORT is not preserving internal quota status
+when applying new user parameters, and hence could cause temporal quota
+accuracy degradation.  Fix it by preserving the status.
 
-Log:
 
-[ 1920.140696][  T150] BUG: KFENCE: use-after-free read in cdns3_gadget_giveback+0x134/0x2c0 [cdns3]
-[ 1920.140696][  T150]
-[ 1920.151837][  T150] Use-after-free read at 0x000000003d1cd10b (in kfence-#36):
-[ 1920.159082][  T150]  cdns3_gadget_giveback+0x134/0x2c0 [cdns3]
-[ 1920.164988][  T150]  cdns3_transfer_completed+0x438/0x5f8 [cdns3]
+This patch (of 2):
 
-Add check at line 829, skip call usb_gadget_giveback_request() if it is
-additional zero length packet request. Needn't call
-usb_gadget_giveback_request() because it is allocated in this driver.
+For online parameters change, DAMON_RECLAIM creates new scheme based on
+latest values of the parameters and replaces the old scheme with the new
+one.  When creating it, the internal status of the quota of the old
+scheme is not preserved.  As a result, charging of the quota starts from
+zero after the online tuning.  The data that collected to estimate the
+throughput of the scheme's action is also reset, and therefore the
+estimation should start from the scratch again.  Because the throughput
+estimation is being used to convert the time quota to the effective size
+quota, this could result in temporal time quota inaccuracy.  It would be
+recovered over time, though.  In short, the quota accuracy could be
+temporarily degraded after online parameters update.
 
-Cc: stable@vger.kernel.org
-Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20240202154217.661867-2-Frank.Li@nxp.com
+Fix the problem by checking the case and copying the internal fields for
+the status.
+
+Link: https://lkml.kernel.org/r/20240216194025.9207-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20240216194025.9207-2-sj@kernel.org
+Fixes: e035c280f6df ("mm/damon/reclaim: support online inputs update")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[5.19+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/cdns3/gadget.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ mm/damon/reclaim.c |   18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/cdns3/gadget.c
-+++ b/drivers/usb/cdns3/gadget.c
-@@ -661,7 +661,11 @@ void cdns3_gadget_giveback(struct cdns3_
- 			return;
- 	}
+--- a/mm/damon/reclaim.c
++++ b/mm/damon/reclaim.c
+@@ -141,9 +141,20 @@ static struct damos *damon_reclaim_new_s
+ 			&damon_reclaim_wmarks);
+ }
  
--	if (request->complete) {
-+	/*
-+	 * zlp request is appended by driver, needn't call usb_gadget_giveback_request() to notify
-+	 * gadget composite driver.
-+	 */
-+	if (request->complete && request->buf != priv_dev->zlp_buf) {
- 		spin_unlock(&priv_dev->lock);
- 		usb_gadget_giveback_request(&priv_ep->endpoint,
- 					    request);
++static void damon_reclaim_copy_quota_status(struct damos_quota *dst,
++		struct damos_quota *src)
++{
++	dst->total_charged_sz = src->total_charged_sz;
++	dst->total_charged_ns = src->total_charged_ns;
++	dst->charged_sz = src->charged_sz;
++	dst->charged_from = src->charged_from;
++	dst->charge_target_from = src->charge_target_from;
++	dst->charge_addr_from = src->charge_addr_from;
++}
++
+ static int damon_reclaim_apply_parameters(void)
+ {
+-	struct damos *scheme;
++	struct damos *scheme, *old_scheme;
+ 	int err = 0;
+ 
+ 	err = damon_set_attrs(ctx, &damon_reclaim_mon_attrs);
+@@ -154,6 +165,11 @@ static int damon_reclaim_apply_parameter
+ 	scheme = damon_reclaim_new_scheme();
+ 	if (!scheme)
+ 		return -ENOMEM;
++	if (!list_empty(&ctx->schemes)) {
++		damon_for_each_scheme(old_scheme, ctx)
++			damon_reclaim_copy_quota_status(&scheme->quota,
++					&old_scheme->quota);
++	}
+ 	damon_set_schemes(ctx, &scheme, 1);
+ 
+ 	return damon_set_region_biggest_system_ram_default(target,
 
 
 
