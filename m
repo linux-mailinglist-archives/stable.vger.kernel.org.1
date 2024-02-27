@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 989C4869436
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 899A886933A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:42:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2716C1F21377
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA6991C21945
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E86F13DBB3;
-	Tue, 27 Feb 2024 13:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C6AB13AA55;
+	Tue, 27 Feb 2024 13:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IvX0rPJT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17VbT/Wr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DDE713B2B3;
-	Tue, 27 Feb 2024 13:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE072F2D;
+	Tue, 27 Feb 2024 13:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041859; cv=none; b=K9BhahEr4Aq3TaNYI3m+EVbqmhLybKdltaK0LGnALs4a7UNlh7c1cJA6ZoFFCM8qfs/eQAei4glrkX2JeQFFsUI5hv8PV/ciuwpv3RXKhl0hLHPoG5ZbYnSwB8jRTV/nkUPIxspDf2TBT/M0hnYvXa4HRW7w2NX+nxGpil5Lt+o=
+	t=1709041377; cv=none; b=H73Z1Wm78jgkicEmRr19hdPhVLG8LZzhY3evZ0jN+EJaTJ6WJQ3OJUCGV6JNmqKRvbHnZpDra/ONfJV2HiURW+DSy1ZGlM39G66a3h+VJIUYwNwa4To7HFs+FN7CFoKV86hI5X5oKbIC4PER/0huUCherOXfMT4LevSMfNkeyX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041859; c=relaxed/simple;
-	bh=0RYbqvGwM7tPCsedhilQJUamBLwitS77yrIoxYuG0WU=;
+	s=arc-20240116; t=1709041377; c=relaxed/simple;
+	bh=5smB2m2nytr5Rvak5yPCm6Rj0SWeTJ5wFMpmyTdUwww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sem1r8wEiQ1DvAiP/K+1swESo9ZzLTJhQMfV48t4KVk+3jJrcRyymPaAvIkU/zHrKsBQFYZFfXtYBoExyJEIo9v79XcJNPIib01exyv1lM1kAXD26elD5Vv4MkzEus423ZG1u38FDAoAhvwlUpVfTYBB0AfDyF4G7ZTNYmorngk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IvX0rPJT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE5B5C433C7;
-	Tue, 27 Feb 2024 13:50:58 +0000 (UTC)
+	 MIME-Version; b=LRPXsnuWpbYRMK0BL7JDBREqxM4KtaOGAyrtcHxMSZv8OuVLCB5xC3Nilw0QSaJbUxWsCfnx7HUlpG5jUz/9d9KFjBT1ST6HbkUDaRiSvVf3NhYVGOTDyfrMsuF2vuIPxeoaQWF59jDApvBNtsqZpXbwc/R+44sGnoTqA8sTUJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17VbT/Wr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 416A5C433C7;
+	Tue, 27 Feb 2024 13:42:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041859;
-	bh=0RYbqvGwM7tPCsedhilQJUamBLwitS77yrIoxYuG0WU=;
+	s=korg; t=1709041377;
+	bh=5smB2m2nytr5Rvak5yPCm6Rj0SWeTJ5wFMpmyTdUwww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IvX0rPJTrWerez7tT0ygMjSr4dM/rR21i4UQxzLbArSx7wBAXHjyTSD/jpO1CHajC
-	 VCBedNVEk5t1TrqHXXNhg3r0VvndxfZipPbkteVzY7ZDlQ2ZO07689D/REQrvmUBkv
-	 N9BKAypLz/E5aSQIzfjYkCFs2ze8CaSYpsn80xEE=
+	b=17VbT/WrkUojxGJrj1iSrNjByLvm2TB38lo9uPiLeRtiV+GjR9IZKhViMvpEiSkTX
+	 BjsSVVhe6aKQ4wYHJQbr5dvcN2TL1mKQdYDSRQfUZggJ4Fk0siY8Thv473MGFGXCjD
+	 yJ9kqr9+Zlkv6qemY1OI6HXgkiidIPgpmeEa3NY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Justin Iurman <justin.iurman@uliege.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 066/299] cifs: do not search for channel if server is terminating
+Subject: [PATCH 6.7 319/334] Fix write to cloned skb in ipv6_hop_ioam()
 Date: Tue, 27 Feb 2024 14:22:57 +0100
-Message-ID: <20240227131628.072891505@linuxfoundation.org>
+Message-ID: <20240227131641.390800714@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Justin Iurman <justin.iurman@uliege.be>
 
-[ Upstream commit 88675b22d34e6e815ad4bde09c590ccb2d50c59d ]
+[ Upstream commit f198d933c2e4f8f89e0620fbaf1ea7eac384a0eb ]
 
-In order to scale down the channels, the following sequence
-of operations happen:
-1. server struct is marked for terminate
-2. the channel is deallocated in the ses->chans array
-3. at a later point the cifsd thread actually terminates the server
+ioam6_fill_trace_data() writes inside the skb payload without ensuring
+it's writeable (e.g., not cloned). This function is called both from the
+input and output path. The output path (ioam6_iptunnel) already does the
+check. This commit provides a fix for the input path, inside
+ipv6_hop_ioam(). It also updates ip6_parse_tlv() to refresh the network
+header pointer ("nh") when returning from ipv6_hop_ioam().
 
-Between 2 and 3, there can be calls to find the channel for
-a server struct. When that happens, there can be an ugly warning
-that's logged. But this is expected.
-
-So this change does two things:
-1. in cifs_ses_get_chan_index, if server->terminate is set, return
-2. always make sure server->terminate is set with chan_lock held
-
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 9ee11f0fff20 ("ipv6: ioam: Data plane support for Pre-allocated Trace")
+Reported-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/sess.c    | 4 ++++
- fs/smb/client/smb2pdu.c | 2 +-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ net/ipv6/exthdrs.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
-index a20a5d0836dc9..52f7a411e2bbf 100644
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -75,6 +75,10 @@ cifs_ses_get_chan_index(struct cifs_ses *ses,
- {
- 	unsigned int i;
- 
-+	/* if the channel is waiting for termination */
-+	if (server->terminate)
-+		return CIFS_INVAL_CHAN_INDEX;
+diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
+index 4952ae7924505..02e9ffb63af19 100644
+--- a/net/ipv6/exthdrs.c
++++ b/net/ipv6/exthdrs.c
+@@ -177,6 +177,8 @@ static bool ip6_parse_tlv(bool hopbyhop,
+ 				case IPV6_TLV_IOAM:
+ 					if (!ipv6_hop_ioam(skb, off))
+ 						return false;
 +
- 	for (i = 0; i < ses->chan_count; i++) {
- 		if (ses->chans[i].server == server)
- 			return i;
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index ce2d28537bc8a..97fc2f85b429d 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -178,6 +178,7 @@ cifs_chan_skip_or_disable(struct cifs_ses *ses,
- 		}
++					nh = skb_network_header(skb);
+ 					break;
+ 				case IPV6_TLV_JUMBO:
+ 					if (!ipv6_hop_jumbo(skb, off))
+@@ -943,6 +945,14 @@ static bool ipv6_hop_ioam(struct sk_buff *skb, int optoff)
+ 		if (!skb_valid_dst(skb))
+ 			ip6_route_input(skb);
  
- 		ses->chans[chan_index].server = NULL;
-+		server->terminate = true;
- 		spin_unlock(&ses->chan_lock);
- 
- 		/*
-@@ -188,7 +189,6 @@ cifs_chan_skip_or_disable(struct cifs_ses *ses,
- 		 */
- 		cifs_put_tcp_session(server, from_reconnect);
- 
--		server->terminate = true;
- 		cifs_signal_cifsd_for_reconnect(server, false);
- 
- 		/* mark primary server as needing reconnect */
++		/* About to mangle packet header */
++		if (skb_ensure_writable(skb, optoff + 2 + hdr->opt_len))
++			goto drop;
++
++		/* Trace pointer may have changed */
++		trace = (struct ioam6_trace_hdr *)(skb_network_header(skb)
++						   + optoff + sizeof(*hdr));
++
+ 		ioam6_fill_trace_data(skb, ns, trace, true);
+ 		break;
+ 	default:
 -- 
 2.43.0
 
