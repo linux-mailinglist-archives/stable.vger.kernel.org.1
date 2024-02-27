@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-24916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 820028696E9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:16:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44E688695E6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:06:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD42DB2A76D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73EFC1C21589
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:06:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5892F13DBBC;
-	Tue, 27 Feb 2024 14:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4334B145B09;
+	Tue, 27 Feb 2024 14:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lPPJugLh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hzbLcuh9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B5013B2B4;
-	Tue, 27 Feb 2024 14:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0206313A26F;
+	Tue, 27 Feb 2024 14:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043346; cv=none; b=nhZ1FA9ugcHj3AwiVctzN/H6/hGrwoJu8sWVkIzlJv6/xr+RW5YP3bnXbO63XZYIniCFjWE6eRiMO8DyxTgemMKTKusJKALbCnGqawjA9uhaW3Tb12TXWYnnYvq5LZf75vnPpDTbfGdrYWuZK6jQg11t83/TWwIHcWWN8aQgRcs=
+	t=1709042757; cv=none; b=FsqqgU/knn3gJGJE5+Mf9VXV5rNJ4FRUJOw+mpu+r73ykGjuiuWaFoUJV/HlhSIpwEfJ3CIxU+IH3+9CHgB7M5o+GQb10DHt1AbFNYN/d8/tGcNgttDIevOXG9vByHHLDY3Q89DZD+fUW8jvi7Z8O4MV6VPUpU63rLh4JERAafk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043346; c=relaxed/simple;
-	bh=G/rxBysktIPP9tXZiOIlf2oYoro+3VKR7DgzKdtB0A4=;
+	s=arc-20240116; t=1709042757; c=relaxed/simple;
+	bh=9Zn55SfMajOpEzQwKuwgP3syqh8ttLGWPk2IfbeyOuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZzRQRADzzmcCP26P9vNdn2FYJbGvj/BlUEbmlCGYqibR31mUFOLYDQydCA/5NsM+Fqt5gou9gPV49ywHxGa0WH4NeTgJdS5+SxHpQENvd0eAnmEs5Sdd+lhh12LGO/EtleYrFBoZBrRUv+SJWEro9upc7+y6AfarKlic8YSU6Bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lPPJugLh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93455C433F1;
-	Tue, 27 Feb 2024 14:15:45 +0000 (UTC)
+	 MIME-Version; b=MPZcfTwp2E+D+mOf5o0BIBZ2wxfaTUjvAUzbZtUXTVsf9qlUjTWPwSHJNPzN9sWPtU6Vx+0iJHH+HCclpDQW4zM96OHNRakJdwwKqDisGwFnKVVAYJ9ZdnR3eIDnWjdAg+hAKx2ULYFswIGRg/UcyN4g4Sl6bhi6Q7Ad5PutxBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hzbLcuh9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EC0BC433C7;
+	Tue, 27 Feb 2024 14:05:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043345;
-	bh=G/rxBysktIPP9tXZiOIlf2oYoro+3VKR7DgzKdtB0A4=;
+	s=korg; t=1709042756;
+	bh=9Zn55SfMajOpEzQwKuwgP3syqh8ttLGWPk2IfbeyOuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lPPJugLhXczFeu7MACqZdoUmIgvtg7o3NgG3OMM/vnzTu/KzQrw57oGBkgerkmXbM
-	 SvyJ4KULSr7A6KNjCkMj1SxXjooM5M7rKy+DnZ3gRvHXO9RDF2e5prAieH4B9ahGmf
-	 s0xAN+Vm+yhVRYcreVF+o8XUHGKIoGIDQRoVEU88=
+	b=hzbLcuh9P/2PqagShLq0ZLYOg9AcLHCmgPhiOvO9RtblxsYX0ruVXKxGI81nxqdfF
+	 u/uwoHjIxfLCUNkxYWAqWbRyAey11D2Uye7IQvyCpBcahKcr3v+bSUOvxPz/IeAO6c
+	 9waON+4xlSVN1g7Njv9AiGgxWPWgpzpZQMPmUFKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Mark Brown <broonie@kernel.org>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Heiko Stuebner <heiko.stuebner@vrull.eu>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 036/195] spi: sh-msiof: avoid integer overflow in constants
+Subject: [PATCH 5.15 109/245] RISC-V: fix funct4 definition for c.jalr in parse_asm.h
 Date: Tue, 27 Feb 2024 14:24:57 +0100
-Message-ID: <20240227131611.583538232@linuxfoundation.org>
+Message-ID: <20240227131618.759302029@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Heiko Stuebner <heiko.stuebner@vrull.eu>
 
-[ Upstream commit 6500ad28fd5d67d5ca0fee9da73c463090842440 ]
+[ Upstream commit a3775634f6da23f5511d0282d7e792cf606e5f3b ]
 
-cppcheck rightfully warned:
+The opcode definition for c.jalr is
+    c.jalr c_rs1_n0  1..0=2 15..13=4 12=1 6..2=0
 
- drivers/spi/spi-sh-msiof.c:792:28: warning: Signed integer overflow for expression '7<<29'. [integerOverflow]
- sh_msiof_write(p, SIFCTR, SIFCTR_TFWM_1 | SIFCTR_RFWM_1);
+This means funct4 consisting of bit [15:12] is 1001b, so the value is 0x9.
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://msgid.link/r/20240130094053.10672-1-wsa+renesas@sang-engineering.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: edde5584c7ab ("riscv: Add SW single-step support for KDB")
+Reported-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Signed-off-by: Heiko Stuebner <heiko.stuebner@vrull.eu>
+Link: https://lore.kernel.org/r/20221223221332.4127602-2-heiko@sntech.de
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-sh-msiof.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ arch/riscv/include/asm/parse_asm.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 51ceaa4857249..ec3a4939ee984 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -137,14 +137,14 @@ struct sh_msiof_spi_priv {
+diff --git a/arch/riscv/include/asm/parse_asm.h b/arch/riscv/include/asm/parse_asm.h
+index 3cd00332d70f5..ad254da85e615 100644
+--- a/arch/riscv/include/asm/parse_asm.h
++++ b/arch/riscv/include/asm/parse_asm.h
+@@ -128,7 +128,7 @@
+ #define FUNCT3_C_J		0xa000
+ #define FUNCT3_C_JAL		0x2000
+ #define FUNCT4_C_JR		0x8000
+-#define FUNCT4_C_JALR		0xf000
++#define FUNCT4_C_JALR		0x9000
  
- /* SIFCTR */
- #define SIFCTR_TFWM_MASK	GENMASK(31, 29)	/* Transmit FIFO Watermark */
--#define SIFCTR_TFWM_64		(0 << 29)	/*  Transfer Request when 64 empty stages */
--#define SIFCTR_TFWM_32		(1 << 29)	/*  Transfer Request when 32 empty stages */
--#define SIFCTR_TFWM_24		(2 << 29)	/*  Transfer Request when 24 empty stages */
--#define SIFCTR_TFWM_16		(3 << 29)	/*  Transfer Request when 16 empty stages */
--#define SIFCTR_TFWM_12		(4 << 29)	/*  Transfer Request when 12 empty stages */
--#define SIFCTR_TFWM_8		(5 << 29)	/*  Transfer Request when 8 empty stages */
--#define SIFCTR_TFWM_4		(6 << 29)	/*  Transfer Request when 4 empty stages */
--#define SIFCTR_TFWM_1		(7 << 29)	/*  Transfer Request when 1 empty stage */
-+#define SIFCTR_TFWM_64		(0UL << 29)	/*  Transfer Request when 64 empty stages */
-+#define SIFCTR_TFWM_32		(1UL << 29)	/*  Transfer Request when 32 empty stages */
-+#define SIFCTR_TFWM_24		(2UL << 29)	/*  Transfer Request when 24 empty stages */
-+#define SIFCTR_TFWM_16		(3UL << 29)	/*  Transfer Request when 16 empty stages */
-+#define SIFCTR_TFWM_12		(4UL << 29)	/*  Transfer Request when 12 empty stages */
-+#define SIFCTR_TFWM_8		(5UL << 29)	/*  Transfer Request when 8 empty stages */
-+#define SIFCTR_TFWM_4		(6UL << 29)	/*  Transfer Request when 4 empty stages */
-+#define SIFCTR_TFWM_1		(7UL << 29)	/*  Transfer Request when 1 empty stage */
- #define SIFCTR_TFUA_MASK	GENMASK(26, 20) /* Transmit FIFO Usable Area */
- #define SIFCTR_TFUA_SHIFT	20
- #define SIFCTR_TFUA(i)		((i) << SIFCTR_TFUA_SHIFT)
+ #define FUNCT12_SRET		0x10200000
+ 
 -- 
 2.43.0
 
