@@ -1,180 +1,68 @@
-Return-Path: <stable+bounces-23895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 410A38690BB
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:39:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C4B986911B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:58:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9FA128440A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 12:39:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD9BD1C21CF5
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 12:58:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE3A1332A7;
-	Tue, 27 Feb 2024 12:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A0013A896;
+	Tue, 27 Feb 2024 12:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b="ASGK4cmc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a+lUmmWc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-52003.amazon.com (smtp-fw-52003.amazon.com [52.119.213.152])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B601A5FBB8
-	for <stable@vger.kernel.org>; Tue, 27 Feb 2024 12:39:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C139E13A275
+	for <stable@vger.kernel.org>; Tue, 27 Feb 2024 12:58:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709037543; cv=none; b=KrVUb15RgTAZnluC0bcSxYeXJ/g38S0AsVAlD5fNij+dpgjzSXJ7+sueHPUn9v7TTrE3H3KZgmcn25BMmpGcG0R/EXk8qdoliuqIxbGyl0eCufW4uN5U60LSPfHGtcgK6r4oHfkfjdOwDsSTdeRY6t2oxJA9tlyquYOYbLCHoao=
+	t=1709038684; cv=none; b=WO96n7GwDQzQftfMWG40ipvkWcNK/FvnAc4L+VLgHuZz+dLGkxCQDs/piuYExxBp9v4m2pvn+Y5JucZsLn2UntKAQQorPvpX3ZdvRfSIFQwdJ+0WkvIPDMNv9fkHyugtbpaIiTVwXqWfN1201NvS6kSRifxb4tFHv+pslkfqxPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709037543; c=relaxed/simple;
-	bh=4WY4tcm/x+Gs9y4gN4qI6xLe+o7lJ5OHZmj7zj/4hYI=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:CC:Content-Type; b=fTDoy44Kbyuy3eJhjQH4St3YJrvfmnzR1ZC5m+lMtbmv473Jbk7UQhG6W35QOBDfbIqHWw2F4OtnsC8MfBd+mRrwph1PCgcn5NqDr+C1KEps7tNIPjTfqWevVSAE9s11FBPXq5d7mOYxqOeXl9wXGTFlDKamJ0pxW3GYlEqJDGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b=ASGK4cmc; arc=none smtp.client-ip=52.119.213.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
-  t=1709037542; x=1740573542;
-  h=message-id:date:mime-version:from:subject:to:cc:
-   content-transfer-encoding;
-  bh=4WY4tcm/x+Gs9y4gN4qI6xLe+o7lJ5OHZmj7zj/4hYI=;
-  b=ASGK4cmcb1BDI2BnPCTso4N734EUvXRs2vBM/cQ6M9JrAhTutSzML0pS
-   SlwSMmWpa9imPWz9PHGBqpmAXWvKoaB5ZspVaazrSEgG14MKgziPEEpvr
-   MWqcPjF96KjkV6AD+IcpH4ZPQQ1NFz8YhbZUJaajuoGeCtS4eJVkhOJEW
-   4=;
-X-IronPort-AV: E=Sophos;i="6.06,187,1705363200"; 
-   d="scan'208";a="640754070"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-52003.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2024 12:38:59 +0000
-Received: from EX19MTAEUC001.ant.amazon.com [10.0.10.100:63320]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.45.210:2525] with esmtp (Farcaster)
- id ca1fc9e9-e299-4dcf-8a53-0508112c5791; Tue, 27 Feb 2024 12:38:57 +0000 (UTC)
-X-Farcaster-Flow-ID: ca1fc9e9-e299-4dcf-8a53-0508112c5791
-Received: from EX19D003EUA004.ant.amazon.com (10.252.50.128) by
- EX19MTAEUC001.ant.amazon.com (10.252.51.193) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Tue, 27 Feb 2024 12:38:55 +0000
-Received: from [192.168.23.179] (10.1.213.21) by EX19D003EUA004.ant.amazon.com
- (10.252.50.128) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.28; Tue, 27 Feb
- 2024 12:38:53 +0000
-Message-ID: <799facc9-af53-4bdc-9264-0cebf0b9baae@amazon.de>
-Date: Tue, 27 Feb 2024 13:38:53 +0100
+	s=arc-20240116; t=1709038684; c=relaxed/simple;
+	bh=wO5xgP+ys/I48EjOZKgdmjLoaMN1QtQ4Y7xIMwvMzUM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aTYO+5wWxKT0n3B6iyp6SaAj4H0sGJJ3UrMcCpZnJKRPVq8BJkd6k/4M8PuyakTUw6boUusXu7tK2cOuOKO6eyc3WaUUOy1xRJ/FgJ9iehEMnVgznL0nByxNFMuqL9j6deeqsseL1Pgj3xoTNz1hIeTxdGqYlvq/M9Vg5rf2BL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a+lUmmWc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE3C0C433C7;
+	Tue, 27 Feb 2024 12:58:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1709038684;
+	bh=wO5xgP+ys/I48EjOZKgdmjLoaMN1QtQ4Y7xIMwvMzUM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=a+lUmmWcVjKDPPmw/iLERkg6g+0m5E5DBWjkpQiev4bb3D+Og2OAMQ+uSVZLtYyV7
+	 wUKdVtNcQWzs5tUiItLT7nwysT/yxxAdFUX4GhiMl/nYYO7QDEccpmgUO1hxJcl/Lc
+	 I69UJSSXCGoXW3dHoI2TeT3K1lZA0QCNVanmPRSE=
+Date: Tue, 27 Feb 2024 13:58:01 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "Doebel, Bjoern" <doebel@amazon.de>
+Cc: stable@vger.kernel.org, almaz.alexandrovich@paragon-software.com,
+	edward.lo@ambergroup.io
+Subject: Re: Backport commit 4f082a753122 "fs/ntfs3: Enhance the attribute
+ size check"
+Message-ID: <2024022752-scenic-praying-4e60@gregkh>
+References: <799facc9-af53-4bdc-9264-0cebf0b9baae@amazon.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "Doebel, Bjoern" <doebel@amazon.de>
-Subject: Backport commit 4f082a753122 "fs/ntfs3: Enhance the attribute size
- check"
-To: <stable@vger.kernel.org>
-Content-Language: en-US
-CC: <almaz.alexandrovich@paragon-software.com>, <edward.lo@ambergroup.io>
-X-ClientProxiedBy: EX19D037UWB003.ant.amazon.com (10.13.138.115) To
- EX19D003EUA004.ant.amazon.com (10.252.50.128)
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <799facc9-af53-4bdc-9264-0cebf0b9baae@amazon.de>
 
-SGksCgpwbGVhc2UgYmFja3BvcnQgY29tbWl0IDRmMDgyYTc1MzEyMiAiZnMvbnRmczM6IEVuaGFu
-Y2UgdGhlIGF0dHJpYnV0ZSBzaXplIGNoZWNrIiB0byB0aGUgNi4xIHN0YWJsZSBicmFuY2guCgpD
-b21taXQgbWVzc2FnZToKCiIiIgpUaGlzIGNvbWJpbmVzIHRoZSBvdmVyZmxvdyBhbmQgYm91bmRh
-cnkgY2hlY2sgc28gdGhhdCBhbGwgYXR0cmlidXRlIHNpemUKd2lsbCBiZSBwcm9wZXJseSBleGFt
-aW5lZCB3aGlsZSBlbnVtZXJhdGluZyB0aGVtLgoiIiIKCldlIGhhdmUgc2VlbiBTeXprYWxsZXIg
-cmVwb3J0cyBmb3IgdGhlIDYuMSBzdGFibGUgYnVpbGQgYW5kIHRoaXMgcGF0Y2ggZml4ZXMgdGhl
-IGlzc3VlLiBUaGUgaXNzdWUgZG9lcyBub3QgcmVwcm9kdWNlIG9uIGFueSBvZiB0aGUgb3RoZXIg
-c3RhYmxlIGJyYW5jaGVzLgoKQmVzdCByZWdhcmRzLApCam9lcm4KCgpSZXBvcnQ6Cj09PT09PT09
-PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PQpsb29wNDogZGV0ZWN0ZWQgY2FwYWNpdHkgY2hhbmdlIGZyb20gMCB0byA2NTUzNgpCVUc6IEtB
-U0FOOiB1c2UtYWZ0ZXItZnJlZSBpbiBudGZzX3JlYWRfbWZ0KzB4MzE4Ny8weDMyMTAgZnMvbnRm
-czMvaW5vZGUuYzoxNjMKUmVhZCBvZiBzaXplIDggYXQgYWRkciBmZmZmODg4MDIzYzI4MDM2IGJ5
-IHRhc2sgc3l6LWV4ZWN1dG9yLjUvMjkzNzkKCkNQVTogMSBQSUQ6IDI5Mzc5IENvbW06IHN5ei1l
-eGVjdXRvci41IE5vdCB0YWludGVkIDYuMS43OCAjMzMKSGFyZHdhcmUgbmFtZTogUUVNVSBTdGFu
-ZGFyZCBQQyAoaTQ0MEZYICsgUElJWCwgMTk5NiksIEJJT1MgMS4xNi4wLWRlYmlhbi0xLjE2LjAt
-NSAwNC8wMS8yMDE0CkNhbGwgVHJhY2U6CiDCoDxUQVNLPgogwqBfX2R1bXBfc3RhY2sgbGliL2R1
-bXBfc3RhY2suYzo4OCBbaW5saW5lXQogwqBkdW1wX3N0YWNrX2x2bCsweDcwLzB4OTMgbGliL2R1
-bXBfc3RhY2suYzoxMDYKIMKgcHJpbnRfYWRkcmVzc19kZXNjcmlwdGlvbi5jb25zdHByb3AuMCsw
-eDgxLzB4MmIwIG1tL2thc2FuL3JlcG9ydC5jOjI4NAogwqBwcmludF9yZXBvcnQrMHgxMTYvMHgx
-ZjYgbW0va2FzYW4vcmVwb3J0LmM6Mzk1CiDCoGthc2FuX3JlcG9ydCsweGFkLzB4MTMwIG1tL2th
-c2FuL3JlcG9ydC5jOjQ5NQogwqBudGZzX3JlYWRfbWZ0KzB4MzE4Ny8weDMyMTAgZnMvbnRmczMv
-aW5vZGUuYzoxNjMKIMKgbnRmc19pZ2V0NSsweDFhNy8weDI0MCBmcy9udGZzMy9pbm9kZS5jOjUy
-NAogwqBudGZzX2xvYWRsb2dfYW5kX3JlcGxheSsweDEyOC8weDVlMCBmcy9udGZzMy9mc250ZnMu
-YzoyNzIKIMKgbnRmc19maWxsX3N1cGVyKzB4YjI4LzB4MjJjMCBmcy9udGZzMy9zdXBlci5jOjEw
-MTgKIMKgZ2V0X3RyZWVfYmRldisweDQwYS8weDcwMCBmcy9zdXBlci5jOjEzNTUKIMKgdmZzX2dl
-dF90cmVlKzB4ODYvMHgyZTAgZnMvc3VwZXIuYzoxNTYyCiDCoGRvX25ld19tb3VudCsweDM0NC8w
-eDZiMCBmcy9uYW1lc3BhY2UuYzozMDUxCiDCoHBhdGhfbW91bnQrMHg0YzQvMHgxN2UwIGZzL25h
-bWVzcGFjZS5jOjMzODEKIMKgZG9fbW91bnQgZnMvbmFtZXNwYWNlLmM6MzM5NCBbaW5saW5lXQog
-wqBfX2RvX3N5c19tb3VudCBmcy9uYW1lc3BhY2UuYzozNjAyIFtpbmxpbmVdCiDCoF9fc2Vfc3lz
-X21vdW50IGZzL25hbWVzcGFjZS5jOjM1NzkgW2lubGluZV0KIMKgX194NjRfc3lzX21vdW50KzB4
-Mjg3LzB4MzEwIGZzL25hbWVzcGFjZS5jOjM1NzkKIMKgZG9fc3lzY2FsbF94NjQgYXJjaC94ODYv
-ZW50cnkvY29tbW9uLmM6NTEgW2lubGluZV0KIMKgZG9fc3lzY2FsbF82NCsweDM3LzB4OTAgYXJj
-aC94ODYvZW50cnkvY29tbW9uLmM6ODEKIMKgZW50cnlfU1lTQ0FMTF82NF9hZnRlcl9od2ZyYW1l
-KzB4NjQvMHhjZQpSSVA6IDAwMzM6MHg3ZmQ0MzQ4NjM3N2UKQ29kZTogMGYgMWYgNDAgMDAgNDgg
-YzcgYzIgYjggZmYgZmYgZmYgZjcgZDggNjQgODkgMDIgYjggZmYgZmYgZmYgZmYgYzMgNjYgMGYg
-MWYgNDQgMDAgMDAgZjMgMGYgMWUgZmEgNDkgODkgY2EgYjggYTUgMDAgMDAgMDAgMGYgMDUgPDQ4
-PiAzZCAwMSBmMCBmZiBmZiA3MyAwMSBjMyA0OCBjNyBjMSBiOCBmZiBmZiBmZiBmNyBkOCA2NCA4
-OSAwMSA0OApSU1A6IDAwMmI6MDAwMDdmZDQzNTVkNmVjOCBFRkxBR1M6IDAwMDAwMjAyIE9SSUdf
-UkFYOiAwMDAwMDAwMDAwMDAwMGE1ClJBWDogZmZmZmZmZmZmZmZmZmZkYSBSQlg6IDAwMDA3ZmQ0
-MzU1ZDZmNjAgUkNYOiAwMDAwN2ZkNDM0ODYzNzdlClJEWDogMDAwMDAwMDAyMDAxZjgwMCBSU0k6
-IDAwMDAwMDAwMjAwMDAwNDAgUkRJOiAwMDAwN2ZkNDM1NWQ2ZjIwClJCUDogMDAwMDAwMDAyMDAx
-ZjgwMCBSMDg6IDAwMDA3ZmQ0MzU1ZDZmNjAgUjA5OiAwMDAwMDAwMDAwMDAwMDAzClIxMDogMDAw
-MDAwMDAwMDAwMDAwMyBSMTE6IDAwMDAwMDAwMDAwMDAyMDIgUjEyOiAwMDAwMDAwMDIwMDAwMDQw
-ClIxMzogMDAwMDdmZDQzNTVkNmYyMCBSMTQ6IDAwMDAwMDAwMDAwMWY3ZjkgUjE1OiAwMDAwMDAw
-MDIwMDAwMDAwCiDCoDwvVEFTSz4KCkFsbG9jYXRlZCBieSB0YXNrIDY0MzU6CiDCoGthc2FuX3Nh
-dmVfc3RhY2srMHgxYy8weDQwIG1tL2thc2FuL2NvbW1vbi5jOjQ1CiDCoGthc2FuX3NldF90cmFj
-aysweDIxLzB4MzAgbW0va2FzYW4vY29tbW9uLmM6NTIKIMKgX19rYXNhbl9zbGFiX2FsbG9jKzB4
-NmQvMHg3MCBtbS9rYXNhbi9jb21tb24uYzozMjgKIMKga2FzYW5fc2xhYl9hbGxvYyBpbmNsdWRl
-L2xpbnV4L2thc2FuLmg6MjAxIFtpbmxpbmVdCiDCoHNsYWJfcG9zdF9hbGxvY19ob29rIG1tL3Ns
-YWIuaDo3MzcgW2lubGluZV0KIMKgc2xhYl9hbGxvY19ub2RlIG1tL3NsdWIuYzozMzk4IFtpbmxp
-bmVdCiDCoHNsYWJfYWxsb2MgbW0vc2x1Yi5jOjM0MDYgW2lubGluZV0KIMKgX19rbWVtX2NhY2hl
-X2FsbG9jX2xydSBtbS9zbHViLmM6MzQxMyBbaW5saW5lXQogwqBrbWVtX2NhY2hlX2FsbG9jKzB4
-MTQ0LzB4MzIwIG1tL3NsdWIuYzozNDIyCiDCoGdldG5hbWVfZmxhZ3MucGFydC4wKzB4NTUvMHg0
-ZjAgZnMvbmFtZWkuYzoxMzkKIMKgZ2V0bmFtZV9mbGFncysweDlkLzB4ZjAgaW5jbHVkZS9saW51
-eC9hdWRpdC5oOjMyMAogwqB2ZnNfZnN0YXRhdCsweDc4LzB4YjAgZnMvc3RhdC5jOjI2NgogwqB2
-ZnNfc3RhdCBpbmNsdWRlL2xpbnV4L2ZzLmg6MzM1MiBbaW5saW5lXQogwqBfX2RvX3N5c19uZXdz
-dGF0KzB4ODkvMHgxMTAgZnMvc3RhdC5jOjQxMAogwqBkb19zeXNjYWxsX3g2NCBhcmNoL3g4Ni9l
-bnRyeS9jb21tb24uYzo1MSBbaW5saW5lXQogwqBkb19zeXNjYWxsXzY0KzB4MzcvMHg5MCBhcmNo
-L3g4Ni9lbnRyeS9jb21tb24uYzo4MQogwqBlbnRyeV9TWVNDQUxMXzY0X2FmdGVyX2h3ZnJhbWUr
-MHg2NC8weGNlCgpGcmVlZCBieSB0YXNrIDY0MzU6CiDCoGthc2FuX3NhdmVfc3RhY2srMHgxYy8w
-eDQwIG1tL2thc2FuL2NvbW1vbi5jOjQ1CiDCoGthc2FuX3NldF90cmFjaysweDIxLzB4MzAgbW0v
-a2FzYW4vY29tbW9uLmM6NTIKIMKga2FzYW5fc2F2ZV9mcmVlX2luZm8rMHgyYS8weDUwIG1tL2th
-c2FuL2dlbmVyaWMuYzo1MTYKIMKgX19fX2thc2FuX3NsYWJfZnJlZSBtbS9rYXNhbi9jb21tb24u
-YzoyMzYgW2lubGluZV0KIMKgX19fX2thc2FuX3NsYWJfZnJlZSsweDE1Yi8weDFjMCBtbS9rYXNh
-bi9jb21tb24uYzoyMDAKIMKga2FzYW5fc2xhYl9mcmVlIGluY2x1ZGUvbGludXgva2FzYW4uaDox
-NzcgW2lubGluZV0KIMKgc2xhYl9mcmVlX2hvb2sgbW0vc2x1Yi5jOjE3MjQgW2lubGluZV0KIMKg
-c2xhYl9mcmVlX2ZyZWVsaXN0X2hvb2sgbW0vc2x1Yi5jOjE3NTAgW2lubGluZV0KIMKgc2xhYl9m
-cmVlIG1tL3NsdWIuYzozNjYxIFtpbmxpbmVdCiDCoGttZW1fY2FjaGVfZnJlZSsweDEyMy8weDRj
-MCBtbS9zbHViLmM6MzY4MwogwqBwdXRuYW1lKzB4MTJmLzB4MTcwIGZzL25hbWVpLmM6MjczCiDC
-oHZmc19mc3RhdGF0KzB4OWIvMHhiMCBmcy9zdGF0LmM6MjY4CiDCoHZmc19zdGF0IGluY2x1ZGUv
-bGludXgvZnMuaDozMzUyIFtpbmxpbmVdCiDCoF9fZG9fc3lzX25ld3N0YXQrMHg4OS8weDExMCBm
-cy9zdGF0LmM6NDEwCiDCoGRvX3N5c2NhbGxfeDY0IGFyY2gveDg2L2VudHJ5L2NvbW1vbi5jOjUx
-IFtpbmxpbmVdCiDCoGRvX3N5c2NhbGxfNjQrMHgzNy8weDkwIGFyY2gveDg2L2VudHJ5L2NvbW1v
-bi5jOjgxCiDCoGVudHJ5X1NZU0NBTExfNjRfYWZ0ZXJfaHdmcmFtZSsweDY0LzB4Y2UKClRoZSBi
-dWdneSBhZGRyZXNzIGJlbG9uZ3MgdG8gdGhlIG9iamVjdCBhdCBmZmZmODg4MDIzYzI4MDAwCiDC
-oHdoaWNoIGJlbG9uZ3MgdG8gdGhlIGNhY2hlIG5hbWVzX2NhY2hlIG9mIHNpemUgNDA5NgpUaGUg
-YnVnZ3kgYWRkcmVzcyBpcyBsb2NhdGVkIDU0IGJ5dGVzIGluc2lkZSBvZgogwqA0MDk2LWJ5dGUg
-cmVnaW9uIFtmZmZmODg4MDIzYzI4MDAwLCBmZmZmODg4MDIzYzI5MDAwKQoKVGhlIGJ1Z2d5IGFk
-ZHJlc3MgYmVsb25ncyB0byB0aGUgcGh5c2ljYWwgcGFnZToKcGFnZTowMDAwMDAwMDM0YjEyMTUz
-IHJlZmNvdW50OjEgbWFwY291bnQ6MCBtYXBwaW5nOjAwMDAwMDAwMDAwMDAwMDAgaW5kZXg6MHgw
-IHBmbjoweDIzYzI4CmhlYWQ6MDAwMDAwMDAzNGIxMjE1MyBvcmRlcjozIGNvbXBvdW5kX21hcGNv
-dW50OjAgY29tcG91bmRfcGluY291bnQ6MApmbGFnczogMHhmZmZmZmMwMDEwMjAwKHNsYWJ8aGVh
-ZHxub2RlPTB8em9uZT0xfGxhc3RjcHVwaWQ9MHgxZmZmZmYpCnJhdzogMDAwZmZmZmZjMDAxMDIw
-MCAwMDAwMDAwMDAwMDAwMDAwIGRlYWQwMDAwMDAwMDAwMDEgZmZmZjg4ODAwY2Y1N2EwMApyYXc6
-IDAwMDAwMDAwMDAwMDAwMDAgMDAwMDAwMDAwMDA3MDAwNyAwMDAwMDAwMWZmZmZmZmZmIDAwMDAw
-MDAwMDAwMDAwMDAKcGFnZSBkdW1wZWQgYmVjYXVzZToga2FzYW46IGJhZCBhY2Nlc3MgZGV0ZWN0
-ZWQKCk1lbW9yeSBzdGF0ZSBhcm91bmQgdGhlIGJ1Z2d5IGFkZHJlc3M6CiDCoGZmZmY4ODgwMjNj
-MjdmMDA6IGZjIGZjIGZjIGZjIGZjIGZjIGZjIGZjIGZjIGZjIGZjIGZjIGZjIGZjIGZjIGZjCiDC
-oGZmZmY4ODgwMjNjMjdmODA6IGZjIGZjIGZjIGZjIGZjIGZjIGZjIGZjIGZjIGZjIGZjIGZjIGZj
-IGZjIGZjIGZjCj4gZmZmZjg4ODAyM2MyODAwMDogZmEgZmIgZmIgZmIgZmIgZmIgZmIgZmIgZmIg
-ZmIgZmIgZmIgZmIgZmIgZmIgZmIKIMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBeCiDCoGZmZmY4ODgwMjNjMjgw
-ODA6IGZiIGZiIGZiIGZiIGZiIGZiIGZiIGZiIGZiIGZiIGZiIGZiIGZiIGZiIGZiIGZiCiDCoGZm
-ZmY4ODgwMjNjMjgxMDA6IGZiIGZiIGZiIGZiIGZiIGZiIGZiIGZiIGZiIGZiIGZiIGZiIGZiIGZi
-IGZiIGZiCj09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09
-PT09PT09PT09PT09PT09PQoKCgoKQW1hem9uIERldmVsb3BtZW50IENlbnRlciBHZXJtYW55IEdt
-YkgKS3JhdXNlbnN0ci4gMzgKMTAxMTcgQmVybGluCkdlc2NoYWVmdHNmdWVocnVuZzogQ2hyaXN0
-aWFuIFNjaGxhZWdlciwgSm9uYXRoYW4gV2Vpc3MKRWluZ2V0cmFnZW4gYW0gQW10c2dlcmljaHQg
-Q2hhcmxvdHRlbmJ1cmcgdW50ZXIgSFJCIDE0OTE3MyBCClNpdHo6IEJlcmxpbgpVc3QtSUQ6IERF
-IDI4OSAyMzcgODc5CgoK
+On Tue, Feb 27, 2024 at 01:38:53PM +0100, Doebel, Bjoern wrote:
+> Hi,
+> 
+> please backport commit 4f082a753122 "fs/ntfs3: Enhance the attribute size check" to the 6.1 stable branch.
 
+Now queued up, thanks!
+
+greg k-h
 
