@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0998A869557
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:01:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12B988693C6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:48:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B62BE28979D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:01:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C237B2924EB
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67ED71420DC;
-	Tue, 27 Feb 2024 14:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1208D145B21;
+	Tue, 27 Feb 2024 13:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q5Cqk07M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5cIE6g1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1B61420A5;
-	Tue, 27 Feb 2024 14:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB5F1420D4;
+	Tue, 27 Feb 2024 13:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042471; cv=none; b=Mwv7WX4QLcWXT5WzRKu8/pn9R/NcH2THfnhVJu3tYPF/ocU3tLLU2ccyLBbyBDTQhSwEJufZMrmpmcdPp/D0h7uxIStsq7SH9KjZIc6s30j7YmVzmusqUPJhs0aEHZvZ4+17eTGxB/ahse/2s9mKpImDSY66n8nlA0wbhPIGFVY=
+	t=1709041602; cv=none; b=g/OCydKIc+moi8l1dOgodrIin1ALLXa99xw9MrXG4mEwogzy0ISYd2vuHIXJBUcinww+PJt1asR9tluSsVmTqYfbmBMHmkGdK/V7+Dkp4K9feRRjeY7iMqvx0vQBiaIJtJZXrgE/tG+aa0nFzpsBQJ6aHK2gNEd4gwkq+rS+4qM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042471; c=relaxed/simple;
-	bh=tymbMX35c4EvM6lftbxTZE5GhUtg8nt2rcanNJ+5RBw=;
+	s=arc-20240116; t=1709041602; c=relaxed/simple;
+	bh=63vIR9aGlW9xG6ntizSyu+ftQYVyrkkvzX0jpS476qU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mmLHMCd9mskgogxHrxL25XhXQ6W9feJeXHXi0FkUXEXDFo3zGZoLgZJgQjoYfKq0mPNTeIGklJBDMomBFvxYx8JsNJBgV1d3VKMqbc0qpKiGUKs3FhNpK27lsC1KswirNjBubrRrVWWZXk0esl6tGUawNf8NwltH3rstPcyl4WY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q5Cqk07M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3386C433C7;
-	Tue, 27 Feb 2024 14:01:10 +0000 (UTC)
+	 MIME-Version; b=AlglNs1FwYE6kqz2aBQhfyhzpWB7HmMTY6g9atExJ22xswOlIKruZdhWBL6IoLSNtYAim+sq1KSqKn03IZz4KUPN8049KB2qU5lVD+bNXmKJgmR3gyQWpWgOSETzWpHbBWtlH/JgScAlZcyVJoeELzT+gDIlplfB3FI9wE1VtF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5cIE6g1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1106DC433C7;
+	Tue, 27 Feb 2024 13:46:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042471;
-	bh=tymbMX35c4EvM6lftbxTZE5GhUtg8nt2rcanNJ+5RBw=;
+	s=korg; t=1709041602;
+	bh=63vIR9aGlW9xG6ntizSyu+ftQYVyrkkvzX0jpS476qU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q5Cqk07Mt7i52rlkCjp77WrsD9DW9/jJNheJ1lgLrQ6/Wn7RRRX07O1eeqIV01iX+
-	 FEnpGN5gZ/JKqWIW1dRnFGTUPQjokyM+VwcmT0bOxvcg6IiCY+7gyNced1WAzxykIl
-	 ee/WNbZXt2xxMYN2pn9AYJme47LK7QrwfsqSYqMY=
+	b=b5cIE6g18mZoojyVCxZkzJO8p+Z6sV20ecg+QN1weNzs6D+jr6E/KiAuD+yJw1EIE
+	 +BY9biUJc5xs6T4/CdMluUzJRWtHA16NQC+ei9scKEFrZLAkwXCEZcG4gMihg/ipr4
+	 xFrOPntkNdqcU/3hlxD3dW0qul1qiBBn7xs9G2rU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	LiHonggang <honggangli@163.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 273/299] netfilter: nft_flow_offload: release dst in case direct xmit path is used
+Subject: [PATCH 4.19 37/52] RDMA/srpt: Support specifying the srpt_service_guid parameter
 Date: Tue, 27 Feb 2024 14:26:24 +0100
-Message-ID: <20240227131634.465588695@linuxfoundation.org>
+Message-ID: <20240227131549.749436244@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
+References: <20240227131548.514622258@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 8762785f459be1cfe6fcf7285c123aad6a3703f0 ]
+[ Upstream commit fdfa083549de5d50ebf7f6811f33757781e838c0 ]
 
-Direct xmit does not use it since it calls dev_queue_xmit() to send
-packets, hence it calls dst_release().
+Make loading ib_srpt with this parameter set work. The current behavior is
+that setting that parameter while loading the ib_srpt kernel module
+triggers the following kernel crash:
 
-kmemleak reports:
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+Call Trace:
+ <TASK>
+ parse_one+0x18c/0x1d0
+ parse_args+0xe1/0x230
+ load_module+0x8de/0xa60
+ init_module_from_file+0x8b/0xd0
+ idempotent_init_module+0x181/0x240
+ __x64_sys_finit_module+0x5a/0xb0
+ do_syscall_64+0x5f/0xe0
+ entry_SYSCALL_64_after_hwframe+0x6e/0x76
 
-unreferenced object 0xffff88814f440900 (size 184):
-  comm "softirq", pid 0, jiffies 4294951896
-  hex dump (first 32 bytes):
-    00 60 5b 04 81 88 ff ff 00 e6 e8 82 ff ff ff ff  .`[.............
-    21 0b 50 82 ff ff ff ff 00 00 00 00 00 00 00 00  !.P.............
-  backtrace (crc cb2bf5d6):
-    [<000000003ee17107>] kmem_cache_alloc+0x286/0x340
-    [<0000000021a5de2c>] dst_alloc+0x43/0xb0
-    [<00000000f0671159>] rt_dst_alloc+0x2e/0x190
-    [<00000000fe5092c9>] __mkroute_output+0x244/0x980
-    [<000000005fb96fb0>] ip_route_output_flow+0xc0/0x160
-    [<0000000045367433>] nf_ip_route+0xf/0x30
-    [<0000000085da1d8e>] nf_route+0x2d/0x60
-    [<00000000d1ecd1cb>] nft_flow_route+0x171/0x6a0 [nft_flow_offload]
-    [<00000000d9b2fb60>] nft_flow_offload_eval+0x4e8/0x700 [nft_flow_offload]
-    [<000000009f447dbb>] expr_call_ops_eval+0x53/0x330 [nf_tables]
-    [<00000000072e1be6>] nft_do_chain+0x17c/0x840 [nf_tables]
-    [<00000000d0551029>] nft_do_chain_inet+0xa1/0x210 [nf_tables]
-    [<0000000097c9d5c6>] nf_hook_slow+0x5b/0x160
-    [<0000000005eccab1>] ip_forward+0x8b6/0x9b0
-    [<00000000553a269b>] ip_rcv+0x221/0x230
-    [<00000000412872e5>] __netif_receive_skb_one_core+0xfe/0x110
-
-Fixes: fa502c865666 ("netfilter: flowtable: simplify route logic")
-Reported-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: LiHonggang <honggangli@163.com>
+Reported-by: LiHonggang <honggangli@163.com>
+Fixes: a42d985bd5b2 ("ib_srpt: Initial SRP Target merge for v3.3-rc1")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240205004207.17031-1-bvanassche@acm.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_flow_table_core.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/ulp/srpt/ib_srpt.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_flow_table_core.c b/net/netfilter/nf_flow_table_core.c
-index 7502d6d73a600..a0571339239c4 100644
---- a/net/netfilter/nf_flow_table_core.c
-+++ b/net/netfilter/nf_flow_table_core.c
-@@ -132,6 +132,7 @@ static int flow_offload_fill_route(struct flow_offload *flow,
- 		       ETH_ALEN);
- 		flow_tuple->out.ifidx = route->tuple[dir].out.ifindex;
- 		flow_tuple->out.hw_ifidx = route->tuple[dir].out.hw_ifindex;
-+		dst_release(dst);
- 		break;
- 	case FLOW_OFFLOAD_XMIT_XFRM:
- 	case FLOW_OFFLOAD_XMIT_NEIGH:
+diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
+index 6090f1ce0c56f..f3d83a05aa4fa 100644
+--- a/drivers/infiniband/ulp/srpt/ib_srpt.c
++++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
+@@ -82,12 +82,16 @@ module_param(srpt_srq_size, int, 0444);
+ MODULE_PARM_DESC(srpt_srq_size,
+ 		 "Shared receive queue (SRQ) size.");
+ 
++static int srpt_set_u64_x(const char *buffer, const struct kernel_param *kp)
++{
++	return kstrtou64(buffer, 16, (u64 *)kp->arg);
++}
+ static int srpt_get_u64_x(char *buffer, const struct kernel_param *kp)
+ {
+ 	return sprintf(buffer, "0x%016llx", *(u64 *)kp->arg);
+ }
+-module_param_call(srpt_service_guid, NULL, srpt_get_u64_x, &srpt_service_guid,
+-		  0444);
++module_param_call(srpt_service_guid, srpt_set_u64_x, srpt_get_u64_x,
++		  &srpt_service_guid, 0444);
+ MODULE_PARM_DESC(srpt_service_guid,
+ 		 "Using this value for ioc_guid, id_ext, and cm_listen_id"
+ 		 " instead of using the node_guid of the first HCA.");
 -- 
 2.43.0
 
