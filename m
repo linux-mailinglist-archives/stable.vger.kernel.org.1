@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-24940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D31C6869702
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:17:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E87E0869531
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:59:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0646B2A3B0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:16:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A535228FA4D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFDC513B2B4;
-	Tue, 27 Feb 2024 14:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24DA854BD4;
+	Tue, 27 Feb 2024 13:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogBzNq6n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ns8c5p+Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7AD78B61;
-	Tue, 27 Feb 2024 14:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F2F13B7A0;
+	Tue, 27 Feb 2024 13:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043412; cv=none; b=VeEvmvwScK5v/79hfXHilnZWOhw3SQwa6q2YWu4YHIuQ0XgspWdUq2NMbjCDueCf1QX9DwY2ZQk35UudLZUxotLBugrSFOwidIo+Um568VIlDlI6W4hsrV+tky+b+xWDBu2jy3ETorOVQi8JD4knDgNc2GGGejCnenBLRZXlxzQ=
+	t=1709042379; cv=none; b=CXJSO1rwr0EUoKwkcOxCd7eGU6qcYmrZBgevyMYaqW+DB7IVDZQ+S3Pj3vSP6Jfuy0QorxKSynagzIpQpwdd7p8H84Aj7xDRQq9bMTaxywiPpzw3wQcrN5o5DkbzZNGvs6u+vVmpGWbNOaGF1TzhIh8eq9bEJdD3tGWa0TAID+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043412; c=relaxed/simple;
-	bh=LrOthxNILau0lMEHEK5+dZD0+SVoohuBkvHgY1pnyQo=;
+	s=arc-20240116; t=1709042379; c=relaxed/simple;
+	bh=SKCxCjMXx+uhVAKq+FSQB9EvqT+YUdL044bh9kA+49k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gefuAjPqF3NvbX3cki2RixZNczCLRv8VJg+C7Ni+lFUtMlY6bz6i2o+h8VSa9A5cOjIrS9zf11aLw97zvl8gUNlF1eWmzzY/m/4BhJff2D5efCIfv16Lu8NzIBSIeBbVlea1jEc6EttUF0HOtF5N+Gl3X3YjzcPZjWu1rJbYSjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogBzNq6n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA852C433F1;
-	Tue, 27 Feb 2024 14:16:51 +0000 (UTC)
+	 MIME-Version; b=iNOEt/6oxB0n+lQT+rkjq0481pEuSK4JqpBFO5VNfgOV9JhFdhnFJ8zlzt/gLDRIQDXtqwV9w1xA4e+bDluhn7FhKW2Lv0Y84v+QbZtbRXLPeOYASOVOlfp3O9blFLSDnSyRqjv8IfDA+zuXWbIENkidqLxHVqA1K2BG/omh6+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ns8c5p+Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63AD3C433F1;
+	Tue, 27 Feb 2024 13:59:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043412;
-	bh=LrOthxNILau0lMEHEK5+dZD0+SVoohuBkvHgY1pnyQo=;
+	s=korg; t=1709042379;
+	bh=SKCxCjMXx+uhVAKq+FSQB9EvqT+YUdL044bh9kA+49k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ogBzNq6nJW8yxUKD5ByqQY4zn8j1ExiwGvjSpVKDlqiuxspBvQqS9ElbVDEhGQBvU
-	 +ZOu2ad+QjE7eli7kKGL5bDUT16MeZPReKwBdbuwuHMEH4tKHrS1ac7dH7YWzooiRH
-	 YuaDNBcphi0qVedorfXj+3zGMPA7R9d3Hoq3U7bs=
+	b=Ns8c5p+Y7CKqiL8aLZi9DybuMy9K3cAChlSal3aSjxR/+bwfmUkZRpiPgYF3BKewf
+	 NQC8EekM9UsQ360d7Xms9+8kVL5kdNQickiB5fSJB25OgFLEhR/Ox9tc1jnJhJAmIl
+	 fvz5gnwRYZW+VRVqHYN/hteswDK0TPFPqmGL7t0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 097/195] mm/damon/lru_sort: fix quota status loss due to online tunings
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Justin Chen <justin.chen@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 247/299] net: bcmasp: Indicate MAC is in charge of PHY PM
 Date: Tue, 27 Feb 2024 14:25:58 +0100
-Message-ID: <20240227131613.676788177@linuxfoundation.org>
+Message-ID: <20240227131633.680254534@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,106 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
 
-commit 13d0599ab3b2ff17f798353f24bcbef1659d3cfc upstream.
+[ Upstream commit 5b76d928f8b779a1b19c5842e7cabee4cbb610c3 ]
 
-For online parameters change, DAMON_LRU_SORT creates new schemes based on
-latest values of the parameters and replaces the old schemes with the new
-one.  When creating it, the internal status of the quotas of the old
-schemes is not preserved.  As a result, charging of the quota starts from
-zero after the online tuning.  The data that collected to estimate the
-throughput of the scheme's action is also reset, and therefore the
-estimation should start from the scratch again.  Because the throughput
-estimation is being used to convert the time quota to the effective size
-quota, this could result in temporal time quota inaccuracy.  It would be
-recovered over time, though.  In short, the quota accuracy could be
-temporarily degraded after online parameters update.
+Avoid the PHY library call unnecessarily into the suspend/resume
+functions by setting phydev->mac_managed_pm to true. The ASP driver
+essentially does exactly what mdio_bus_phy_resume() does.
 
-Fix the problem by checking the case and copying the internal fields for
-the status.
-
-Link: https://lkml.kernel.org/r/20240216194025.9207-3-sj@kernel.org
-Fixes: 40e983cca927 ("mm/damon: introduce DAMON-based LRU-lists Sorting")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.0+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet controller")
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/damon/lru_sort.c |   43 ++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 36 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/mm/damon/lru_sort.c
-+++ b/mm/damon/lru_sort.c
-@@ -185,9 +185,21 @@ static struct damos *damon_lru_sort_new_
- 	return damon_lru_sort_new_scheme(&pattern, DAMOS_LRU_DEPRIO);
- }
- 
-+static void damon_lru_sort_copy_quota_status(struct damos_quota *dst,
-+		struct damos_quota *src)
-+{
-+	dst->total_charged_sz = src->total_charged_sz;
-+	dst->total_charged_ns = src->total_charged_ns;
-+	dst->charged_sz = src->charged_sz;
-+	dst->charged_from = src->charged_from;
-+	dst->charge_target_from = src->charge_target_from;
-+	dst->charge_addr_from = src->charge_addr_from;
-+}
+diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+index 53e5428812552..9cae5a3090000 100644
+--- a/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
++++ b/drivers/net/ethernet/broadcom/asp2/bcmasp_intf.c
+@@ -1048,6 +1048,9 @@ static int bcmasp_netif_init(struct net_device *dev, bool phy_connect)
+ 			netdev_err(dev, "could not attach to PHY\n");
+ 			goto err_phy_disable;
+ 		}
 +
- static int damon_lru_sort_apply_parameters(void)
- {
--	struct damos *scheme;
-+	struct damos *scheme, *hot_scheme, *cold_scheme;
-+	struct damos *old_hot_scheme = NULL, *old_cold_scheme = NULL;
- 	unsigned int hot_thres, cold_thres;
- 	int err = 0;
- 
-@@ -195,18 +207,35 @@ static int damon_lru_sort_apply_paramete
- 	if (err)
- 		return err;
- 
-+	damon_for_each_scheme(scheme, ctx) {
-+		if (!old_hot_scheme) {
-+			old_hot_scheme = scheme;
-+			continue;
-+		}
-+		old_cold_scheme = scheme;
-+	}
-+
- 	hot_thres = damon_max_nr_accesses(&damon_lru_sort_mon_attrs) *
- 		hot_thres_access_freq / 1000;
--	scheme = damon_lru_sort_new_hot_scheme(hot_thres);
--	if (!scheme)
-+	hot_scheme = damon_lru_sort_new_hot_scheme(hot_thres);
-+	if (!hot_scheme)
- 		return -ENOMEM;
--	damon_set_schemes(ctx, &scheme, 1);
-+	if (old_hot_scheme)
-+		damon_lru_sort_copy_quota_status(&hot_scheme->quota,
-+				&old_hot_scheme->quota);
- 
- 	cold_thres = cold_min_age / damon_lru_sort_mon_attrs.aggr_interval;
--	scheme = damon_lru_sort_new_cold_scheme(cold_thres);
--	if (!scheme)
-+	cold_scheme = damon_lru_sort_new_cold_scheme(cold_thres);
-+	if (!cold_scheme) {
-+		damon_destroy_scheme(hot_scheme);
- 		return -ENOMEM;
--	damon_add_scheme(ctx, scheme);
-+	}
-+	if (old_cold_scheme)
-+		damon_lru_sort_copy_quota_status(&cold_scheme->quota,
-+				&old_cold_scheme->quota);
-+
-+	damon_set_schemes(ctx, &hot_scheme, 1);
-+	damon_add_scheme(ctx, cold_scheme);
- 
- 	return damon_set_region_biggest_system_ram_default(target,
- 					&monitor_region_start,
++		/* Indicate that the MAC is responsible for PHY PM */
++		phydev->mac_managed_pm = true;
+ 	} else if (!intf->wolopts) {
+ 		ret = phy_resume(dev->phydev);
+ 		if (ret)
+-- 
+2.43.0
+
 
 
 
