@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17A4A8695CB
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:05:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F6B086943E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1C8BB23628
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:02:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B06AE1C232CB
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D2C13B78E;
-	Tue, 27 Feb 2024 14:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCDE813B79F;
+	Tue, 27 Feb 2024 13:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/gQNXLu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kguplizU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D5478B61;
-	Tue, 27 Feb 2024 14:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88AAB13AA2F;
+	Tue, 27 Feb 2024 13:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042520; cv=none; b=OAqF53Epklpn+Fv4FiYPEL5gDXsDmrBVcyIw35Y5bx8va43EcAJRLo3PjxRCBVgbm3QbnOqF9YnzeX8LeP6l1Ao/wPI56oVJSexrks1nKPlotMFaJQqkv11p64WsZC6JbmoeBK6wzGFW6krXvlj/BALN2XdtLw1XUzzlkZa7KAw=
+	t=1709041881; cv=none; b=MIYxKso0fam+CogSzx4UCsnTSa7pmDnL5F3gnU0eUPb6VXCNyf8NOiwWMlj/aefunjoc5QdW6skJ0ahmKgrN0gnXlGfIc3xtaLCtaeTZiNEFe6RD5rL4oslwxre0GzV96FfXqHQC+09cYwZeGHBmbXilPO8wAVXEposfCU2LLFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042520; c=relaxed/simple;
-	bh=xveWrUHk4MfJuxxROPHL6SSoKsGrq0zPiWe2DQdjxzw=;
+	s=arc-20240116; t=1709041881; c=relaxed/simple;
+	bh=dZ4vlyrlEZW2fH2BGw1pg5E5KA8JaFLgPFpxVpvEgbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EiUhTM/jSyUQhwi6DWaU44jM7ruz4J4eYFIa+mBDb5tmHLKTG4K8G2MokzKveAqStNNHAUbVYu/okUIlugCf0I5CPtEkOObXaEaij1IwZ/GYXmjikfW7xdacZvOBntIR8jMqr7I0Te+ffhNM0wqRLsVqyMpIDM4+HnQRg0kIP+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/gQNXLu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1821C433C7;
-	Tue, 27 Feb 2024 14:01:59 +0000 (UTC)
+	 MIME-Version; b=mVvLMuAYwfxf/9nBLOghCJ07pFZBvXN6Kqk8Uf9/262yxa3vtJSuxw48xiaBN0ntAqZf9tIAxv+fsDnFmxcfoWvwrataDD1h1tg/nqnzF5f5KtZ7chR/O9JC1Ql3+vJs3faugvUgR8ItUZk5AY1Ul4nVlOejtdBJMcDd3dfMkvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kguplizU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179BDC433C7;
+	Tue, 27 Feb 2024 13:51:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042520;
-	bh=xveWrUHk4MfJuxxROPHL6SSoKsGrq0zPiWe2DQdjxzw=;
+	s=korg; t=1709041881;
+	bh=dZ4vlyrlEZW2fH2BGw1pg5E5KA8JaFLgPFpxVpvEgbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O/gQNXLuywOiLb1hglTAFm78BFrprQKno476mPmSHIGdSqQX/mmaFZTu8z+NL+Kdo
-	 XgXMH5PFsiIjkQ4oR1hEl3cuw5PMEcaGr/GwHSuBj1bd+BybUSXf4opT/db6TuBxZX
-	 HhgZLTM1NppDysKlChAd7TdqAWmrCO6EoCZhNS50=
+	b=kguplizUmgm+PwZ+cjg1Leu3cnzOjJXZgbDvkX+c/OZVs/60yaNLfqGsJMb2H62L6
+	 7AyBv1n4GJeAlOjrYdhDbpIqeBNG4XF+dQKZ4rna07SHr+hBRDEG4yxtFrw/M3/qo1
+	 uwxLKZcSYBf+pb1XDQMFzgrqUY8tP15WnTU2hrkU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Devyn Liu <liudingyuan@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 025/245] spi: hisi-sfc-v3xx: Return IRQ_NONE if no interrupts were detected
+Subject: [PATCH 6.6 102/299] LoongArch: Select ARCH_ENABLE_THP_MIGRATION instead of redefining it
 Date: Tue, 27 Feb 2024 14:23:33 +0100
-Message-ID: <20240227131615.935079129@linuxfoundation.org>
+Message-ID: <20240227131629.171607468@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Devyn Liu <liudingyuan@huawei.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit de8b6e1c231a95abf95ad097b993d34b31458ec9 ]
+[ Upstream commit b3ff2d9c3a9c64cd0a011cdd407ffc38a6ea8788 ]
 
-Return IRQ_NONE from the interrupt handler when no interrupt was
-detected. Because an empty interrupt will cause a null pointer error:
+ARCH_ENABLE_THP_MIGRATION is supposed to be selected by arch Kconfig.
 
-    Unable to handle kernel NULL pointer dereference at virtual
-  address 0000000000000008
-    Call trace:
-        complete+0x54/0x100
-        hisi_sfc_v3xx_isr+0x2c/0x40 [spi_hisi_sfc_v3xx]
-        __handle_irq_event_percpu+0x64/0x1e0
-        handle_irq_event+0x7c/0x1cc
-
-Signed-off-by: Devyn Liu <liudingyuan@huawei.com>
-Link: https://msgid.link/r/20240123071149.917678-1-liudingyuan@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-hisi-sfc-v3xx.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/loongarch/Kconfig | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/spi/spi-hisi-sfc-v3xx.c b/drivers/spi/spi-hisi-sfc-v3xx.c
-index d3a23b1c2a4c5..61bf00dfe9c33 100644
---- a/drivers/spi/spi-hisi-sfc-v3xx.c
-+++ b/drivers/spi/spi-hisi-sfc-v3xx.c
-@@ -377,6 +377,11 @@ static const struct spi_controller_mem_ops hisi_sfc_v3xx_mem_ops = {
- static irqreturn_t hisi_sfc_v3xx_isr(int irq, void *data)
- {
- 	struct hisi_sfc_v3xx_host *host = data;
-+	u32 reg;
-+
-+	reg = readl(host->regbase + HISI_SFC_V3XX_INT_STAT);
-+	if (!reg)
-+		return IRQ_NONE;
+diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+index e14396a2ddcbf..f29a0f2a4f187 100644
+--- a/arch/loongarch/Kconfig
++++ b/arch/loongarch/Kconfig
+@@ -11,6 +11,7 @@ config LOONGARCH
+ 	select ARCH_DISABLE_KASAN_INLINE
+ 	select ARCH_ENABLE_MEMORY_HOTPLUG
+ 	select ARCH_ENABLE_MEMORY_HOTREMOVE
++	select ARCH_ENABLE_THP_MIGRATION if TRANSPARENT_HUGEPAGE
+ 	select ARCH_HAS_ACPI_TABLE_UPGRADE	if ACPI
+ 	select ARCH_HAS_CPU_FINALIZE_INIT
+ 	select ARCH_HAS_FORTIFY_SOURCE
+@@ -638,10 +639,6 @@ config ARCH_SPARSEMEM_ENABLE
+ 	  or have huge holes in the physical address space for other reasons.
+ 	  See <file:Documentation/mm/numa.rst> for more.
  
- 	hisi_sfc_v3xx_disable_int(host);
- 
+-config ARCH_ENABLE_THP_MIGRATION
+-	def_bool y
+-	depends on TRANSPARENT_HUGEPAGE
+-
+ config ARCH_MEMORY_PROBE
+ 	def_bool y
+ 	depends on MEMORY_HOTPLUG
 -- 
 2.43.0
 
