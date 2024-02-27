@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-24640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DEEF86958E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:03:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EB1986959E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:03:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1D821F2B470
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:03:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D34A51F2B741
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:03:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68A513B798;
-	Tue, 27 Feb 2024 14:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0824913B7A2;
+	Tue, 27 Feb 2024 14:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bn/ESizC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KqLlcWPm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865BB78B61;
-	Tue, 27 Feb 2024 14:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BACA716423;
+	Tue, 27 Feb 2024 14:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042583; cv=none; b=e5Wxu4Kgf3g1djPa+y/+kftKuWk0gEIOs+RR8ONxLXcv1ZU0fa8qz1q0dP9gxyahtJNgL585QQeQB+s8jyw+zNheKhNU5h6nDKNKKwVnMSt19d2BWQb9OMYq3L90fiGI8kpXrs1azbpVM4h9FGIJcrVFHD9TNwhPQR/1LpxH8ro=
+	t=1709042613; cv=none; b=lYHJ23QzIi43fE8uBjpMBcPIayB8PKPAKHRsUmezT6v03+agX/p1yDTef5JCYAkfVxa8lnxpktEjRo6bxV86S0HWrzvtFPchIFwXj7f8OAx1nwNrBplAMFmMTXj8Yb6MieFuPGnC0VS2YLd6qG/mBq1UAeDlT9C7ZXcrARUER+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042583; c=relaxed/simple;
-	bh=VnChwWB+Q/rmeaJed0RzX6jQp8yRJneogzWINQRDrME=;
+	s=arc-20240116; t=1709042613; c=relaxed/simple;
+	bh=91R0wLJJIcDhgK7LCSjGeV9KsSh+bYdmL30ijzTdl3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dgQpnE0okjDmyVb4Vjz1QfFt4XOnnc1yBApdWWZV4Y379FHPlWxQiKcyaW2+JPUm9qAfUZit4eIyXZz6wwN4a+FJDpwwXEVrr2la3k0m8fl38pI4pmqwIiirFxZ16cDpKQqRNKbw71pzFOdLEikuYmws04gquveCezpOMdSQRfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bn/ESizC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 156ACC43390;
-	Tue, 27 Feb 2024 14:03:02 +0000 (UTC)
+	 MIME-Version; b=VG48C8HPU1je5wumpp0MzZQTk7tfmAeUrLcCsfPMND7DCkgiW1oBQDjn/DJXpeJsfGA+Y+vMfdlzLkSgNzI2tv6t8/nlfmOR1ICMpjz9vOo8qslaTZ3wjxRO1OfZqqQIlxtX2gR2SWXGOV17fGeF4IlHegyGmUncihN7NngxOKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KqLlcWPm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 483C8C433C7;
+	Tue, 27 Feb 2024 14:03:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042583;
-	bh=VnChwWB+Q/rmeaJed0RzX6jQp8yRJneogzWINQRDrME=;
+	s=korg; t=1709042613;
+	bh=91R0wLJJIcDhgK7LCSjGeV9KsSh+bYdmL30ijzTdl3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bn/ESizCY0YkzCc69RUtUMYRZ/FZ+HalLNxR5pyWgWOhJv2dDxFj1fU+FpvYCd9oN
-	 9KAHjMXvaS7iAwocoHCHN7w1O5ejyuHTPlPpcIkItfBBVI1C+xWBXT0FMB5CAK2jaD
-	 1cGk6qReipH6SXrZXsdUr3qE0t8325CiYE6O04fk=
+	b=KqLlcWPm1BcgjnSgVD1GDeBl735g6dTguGYHndpIskw1/7xQa9YAUgZ+8DneNlQvQ
+	 DGzK3449TaHjlTVfgh07oDUXD4QiR77AlUMEKqsdn4kH5+U6snB0/uATohpFW+3Am9
+	 KNSkd/ttNBTVmMufY2Oz919eH5WQVuK0PBQo9GM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phoenix Chen <asbeltogf@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 029/245] platform/x86: touchscreen_dmi: Add info for the TECLAST X16 Plus tablet
-Date: Tue, 27 Feb 2024 14:23:37 +0100
-Message-ID: <20240227131616.064754858@linuxfoundation.org>
+Subject: [PATCH 5.15 030/245] ext4: avoid dividing by 0 in mb_update_avg_fragment_size() when block bitmap corrupt
+Date: Tue, 27 Feb 2024 14:23:38 +0100
+Message-ID: <20240227131616.096498593@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
 References: <20240227131615.098467438@linuxfoundation.org>
@@ -66,74 +67,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Phoenix Chen <asbeltogf@gmail.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 1abdf288b0ef5606f76b6e191fa6df05330e3d7e ]
+[ Upstream commit 993bf0f4c393b3667830918f9247438a8f6fdb5b ]
 
-Add touch screen info for TECLAST X16 Plus tablet.
+Determine if bb_fragments is 0 instead of determining bb_free to eliminate
+the risk of dividing by zero when the block bitmap is corrupted.
 
-Signed-off-by: Phoenix Chen <asbeltogf@gmail.com>
-Link: https://lore.kernel.org/r/20240126095308.5042-1-asbeltogf@gmail.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240104142040.2835097-6-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/touchscreen_dmi.c | 35 ++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ fs/ext4/mballoc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
-index f129e29b295d9..397283893f39f 100644
---- a/drivers/platform/x86/touchscreen_dmi.c
-+++ b/drivers/platform/x86/touchscreen_dmi.c
-@@ -916,6 +916,32 @@ static const struct ts_dmi_data teclast_tbook11_data = {
- 	.properties	= teclast_tbook11_props,
- };
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 762c2f8b5b2a8..48930df9ae565 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -853,7 +853,7 @@ mb_update_avg_fragment_size(struct super_block *sb, struct ext4_group_info *grp)
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
  
-+static const struct property_entry teclast_x16_plus_props[] = {
-+	PROPERTY_ENTRY_U32("touchscreen-min-x", 8),
-+	PROPERTY_ENTRY_U32("touchscreen-min-y", 14),
-+	PROPERTY_ENTRY_U32("touchscreen-size-x", 1916),
-+	PROPERTY_ENTRY_U32("touchscreen-size-y", 1264),
-+	PROPERTY_ENTRY_BOOL("touchscreen-inverted-y"),
-+	PROPERTY_ENTRY_STRING("firmware-name", "gsl3692-teclast-x16-plus.fw"),
-+	PROPERTY_ENTRY_U32("silead,max-fingers", 10),
-+	PROPERTY_ENTRY_BOOL("silead,home-button"),
-+	{ }
-+};
-+
-+static const struct ts_dmi_data teclast_x16_plus_data = {
-+	.embedded_fw = {
-+		.name	= "silead/gsl3692-teclast-x16-plus.fw",
-+		.prefix = { 0xf0, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00 },
-+		.length	= 43560,
-+		.sha256	= { 0x9d, 0xb0, 0x3d, 0xf1, 0x00, 0x3c, 0xb5, 0x25,
-+			    0x62, 0x8a, 0xa0, 0x93, 0x4b, 0xe0, 0x4e, 0x75,
-+			    0xd1, 0x27, 0xb1, 0x65, 0x3c, 0xba, 0xa5, 0x0f,
-+			    0xcd, 0xb4, 0xbe, 0x00, 0xbb, 0xf6, 0x43, 0x29 },
-+	},
-+	.acpi_name	= "MSSL1680:00",
-+	.properties	= teclast_x16_plus_props,
-+};
-+
- static const struct property_entry teclast_x3_plus_props[] = {
- 	PROPERTY_ENTRY_U32("touchscreen-size-x", 1980),
- 	PROPERTY_ENTRY_U32("touchscreen-size-y", 1500),
-@@ -1552,6 +1578,15 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_SKU, "E5A6_A1"),
- 		},
- 	},
-+	{
-+		/* Teclast X16 Plus */
-+		.driver_data = (void *)&teclast_x16_plus_data,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "TECLAST"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Default string"),
-+			DMI_MATCH(DMI_PRODUCT_SKU, "D3A5_A1"),
-+		},
-+	},
- 	{
- 		/* Teclast X3 Plus */
- 		.driver_data = (void *)&teclast_x3_plus_data,
+-	if (!test_opt2(sb, MB_OPTIMIZE_SCAN) || grp->bb_free == 0)
++	if (!test_opt2(sb, MB_OPTIMIZE_SCAN) || grp->bb_fragments == 0)
+ 		return;
+ 
+ 	write_lock(&sbi->s_mb_rb_lock);
 -- 
 2.43.0
 
