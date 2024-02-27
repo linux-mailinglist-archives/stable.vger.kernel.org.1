@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-24587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97A54869548
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:00:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F4AC86972A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:18:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D3B61F25287
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:00:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43A3F1F24922
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D33BF1420B3;
-	Tue, 27 Feb 2024 14:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA10C13DBBC;
+	Tue, 27 Feb 2024 14:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MHjtnnyZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07uOFTuZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902A413AA50;
-	Tue, 27 Feb 2024 14:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2A578B61;
+	Tue, 27 Feb 2024 14:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042432; cv=none; b=ItNibaKXB8DE+uMQaUkHMu6LHjgohTQTIrJ/zlm+sAXgndUEcA6boFjqM6M5jVgrJrVURuXHDsghVYvz+ZzsAesLf6RCisCigzS2rYcsdmN3vnNDx58ioQ/DZGvDnK6/rciyD9citOUtPsxu3wF9MTd6aP2LWdunCR1LVdlDHNU=
+	t=1709043533; cv=none; b=Y79kPdirogpNV+DJjeoPRQPG8NnWI1sSTv6e6/NygJ6xXCam1dUWhe9VyVHrm5LgXWmXSXv+Jjx7niLMiGPnFgPxBufXFRb1d1+DXXsqw8+eFDSZH033+AOJTXlO1kD3XkHGUWHNJVc9YGlJ8koEO5vFwFuLNKvDpAlKfPU8xSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042432; c=relaxed/simple;
-	bh=pgAVC2dHh9B6PxywGItIfpUm/JA3wM3Ly/6Unt+Juiw=;
+	s=arc-20240116; t=1709043533; c=relaxed/simple;
+	bh=abSmuRp/gPjt/PakOOPXFqKQBtPWBqw5oEEZj2UZvTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e5SwGHfQ5eP0LimSvAd1MqdDFXG0j9QsQwT/oexh/GoZ625EXywrAH6lFnPeiGuDxpwmkCl2S8Ws4ngtNxYnfnBPZrLqryu3jg3T9E5tPMDePqy4iaatO5fI/kd/YTlIuaoxK1nIXPRI+aQ7csiJM5CbvMCAWrculj0xbRNcpoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MHjtnnyZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D7FCC433F1;
-	Tue, 27 Feb 2024 14:00:31 +0000 (UTC)
+	 MIME-Version; b=jV27PteqvAm4kWV6WiQTHJhgkQJmBz8W5DmbhPLWtrFabZCUtRP1SSaF4FXtIcPOElSa9yxcqBIqPDh/PztgAfoX3zuGpg0T7WTCHs4trAFAmKRz8U4yVjmHNr9kLal9IENNewZqXt2mVSt5m5CuKNFB5X6Kbu+ZUXvOjJAS7W0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07uOFTuZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19710C433F1;
+	Tue, 27 Feb 2024 14:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042432;
-	bh=pgAVC2dHh9B6PxywGItIfpUm/JA3wM3Ly/6Unt+Juiw=;
+	s=korg; t=1709043533;
+	bh=abSmuRp/gPjt/PakOOPXFqKQBtPWBqw5oEEZj2UZvTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MHjtnnyZ/b6zqmBWFZMPuIFnFfbQ7xoiR7g9e1ah6wNNDRe4YiWQAGdZu96Mhik6u
-	 E3XYHdNMBMAXxHL+7xeS8Xi/c73wdNAwI+ktyiQ5bEB7pItZDZ73NL8XrVw9gB/VId
-	 Wy7I4+tIDEQCEX9MnYmusYcjQxQGn8ZpinkKN21M=
+	b=07uOFTuZD5KcyXNC+i5JVrOk6PJ1l5bXLvkvZpiouxFl1CetDDa2kpF/wJF8cAIje
+	 Zf9xr15BV4YOAxHMOXu35+rzckQ1iFz050fmmG1Yqqi/xnhYy5Up8ukdgKhu7KpyTE
+	 WQpFBjuVHeMHcZ17q4OD+IRv8sFNslTcBO+zWzHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosryahmed@google.com>,
-	Chengming Zhou <zhouchengming@bytedance.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Domenico Cerasuolo <cerasuolodomenico@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 293/299] mm: zswap: fix missing folio cleanup in writeback race path
+	Gianmarco Lusvardi <glusvardi@posteo.net>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Quentin Monnet <quentin@isovalent.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 143/195] bpf, scripts: Correct GPL license name
 Date: Tue, 27 Feb 2024 14:26:44 +0100
-Message-ID: <20240227131635.099623139@linuxfoundation.org>
+Message-ID: <20240227131615.149857706@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosryahmed@google.com>
+From: Gianmarco Lusvardi <glusvardi@posteo.net>
 
-commit e3b63e966cac0bf78aaa1efede1827a252815a1d upstream.
+[ Upstream commit e37243b65d528a8a9f8b9a57a43885f8e8dfc15c ]
 
-In zswap_writeback_entry(), after we get a folio from
-__read_swap_cache_async(), we grab the tree lock again to check that the
-swap entry was not invalidated and recycled.  If it was, we delete the
-folio we just added to the swap cache and exit.
+The bpf_doc script refers to the GPL as the "GNU Privacy License".
+I strongly suspect that the author wanted to refer to the GNU General
+Public License, under which the Linux kernel is released, as, to the
+best of my knowledge, there is no license named "GNU Privacy License".
+This patch corrects the license name in the script accordingly.
 
-However, __read_swap_cache_async() returns the folio locked when it is
-newly allocated, which is always true for this path, and the folio is
-ref'd.  Make sure to unlock and put the folio before returning.
-
-This was discovered by code inspection, probably because this path handles
-a race condition that should not happen often, and the bug would not crash
-the system, it will only strand the folio indefinitely.
-
-Link: https://lkml.kernel.org/r/20240125085127.1327013-1-yosryahmed@google.com
-Fixes: 04fc7816089c ("mm: fix zswap writeback race condition")
-Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
-Reviewed-by: Chengming Zhou <zhouchengming@bytedance.com>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-Cc: Domenico Cerasuolo <cerasuolodomenico@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 56a092c89505 ("bpf: add script and prepare bpf.h for new helpers documentation")
+Signed-off-by: Gianmarco Lusvardi <glusvardi@posteo.net>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Quentin Monnet <quentin@isovalent.com>
+Link: https://lore.kernel.org/bpf/20240213230544.930018-3-glusvardi@posteo.net
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/zswap.c |    2 ++
- 1 file changed, 2 insertions(+)
+ scripts/bpf_doc.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -1100,6 +1100,8 @@ static int zswap_writeback_entry(struct
- 	if (zswap_rb_search(&tree->rbroot, swp_offset(entry->swpentry)) != entry) {
- 		spin_unlock(&tree->lock);
- 		delete_from_swap_cache(page_folio(page));
-+		unlock_page(page);
-+		put_page(page);
- 		ret = -ENOMEM;
- 		goto fail;
- 	}
+diff --git a/scripts/bpf_doc.py b/scripts/bpf_doc.py
+index d5c389df6045e..4de98b7bbea95 100755
+--- a/scripts/bpf_doc.py
++++ b/scripts/bpf_doc.py
+@@ -495,7 +495,7 @@ eBPF programs can have an associated license, passed along with the bytecode
+ instructions to the kernel when the programs are loaded. The format for that
+ string is identical to the one in use for kernel modules (Dual licenses, such
+ as "Dual BSD/GPL", may be used). Some helper functions are only accessible to
+-programs that are compatible with the GNU Privacy License (GPL).
++programs that are compatible with the GNU General Public License (GNU GPL).
+ 
+ In order to use such helpers, the eBPF program must be loaded with the correct
+ license string passed (via **attr**) to the **bpf**\ () system call, and this
+-- 
+2.43.0
+
 
 
 
