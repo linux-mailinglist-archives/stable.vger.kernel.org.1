@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-24327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11BF98693F0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EB628692F3
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:40:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A20251F21648
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA0C51F2D6CF
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:40:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC40B1420DB;
-	Tue, 27 Feb 2024 13:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1289813B2B3;
+	Tue, 27 Feb 2024 13:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jmG1IDz5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hqnS2WsO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A936513AA2F;
-	Tue, 27 Feb 2024 13:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C415113B2B9;
+	Tue, 27 Feb 2024 13:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041684; cv=none; b=N1H4wYxwydTjb+hozBqs1uOsErRoXSmESmizEthW44KU6T10NS9aFBLX7FEHT1zrpL0ue4zM2x+EPs7eIUfavqMr8EzrD9FDoGQ927E/fwQNgEpLZds7G/DVCAEc1z9FqRpM1zxrBs9yickcCh4WKsc/QKrlo9piVD9I3Rq8H3w=
+	t=1709041206; cv=none; b=h9w1lnzgNi9K9ud3phYbzRqxXryOFwkFHP98TencMl0QNCcN9BDpO5N7EAp+02Dpg0VAkHVHm+ZJ2UuLnb//0ouTwBXvnfL6hTX2JayqQHqBW640MHFX1MQxa0LK5O7sZ3rLl9Lm4s+LTXjABiZnAj4cR6zkAW1LJtQfSAxYCe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041684; c=relaxed/simple;
-	bh=Xeg0smZMWgQ8kJXiATQsXp3F0Sshu8+75I2YncFqZyg=;
+	s=arc-20240116; t=1709041206; c=relaxed/simple;
+	bh=VVpxNiifzSyI+oT/mpJnBEOoxXyJyNor9xTWL+iU5b8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z0Lw5FCtYweKuBVHxO9+nHqe2EqcgFgUu7zZJjS4iQ44Ze4EklnAGOTOseKuPgptUBgxnJWOyRiCpcKKQeJP3Zm8sAyfNnvYRqzafzuECCs5tD1llJt+rEVlaljK/zub7HingbBFGZc6cjsrxqFMCY1qJXZYd4l1tAyZkPqC0mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jmG1IDz5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3825CC433C7;
-	Tue, 27 Feb 2024 13:48:04 +0000 (UTC)
+	 MIME-Version; b=mTeBh8oI9VbwEwIzWin15CYTnbIiyG8957CdmH3iJDrkIRKwDTdD4uc/LsTlzngdhB2qWPs7FKDs64VnU9ClhmYOe7j+OLT+Z5zI+PH571cgxSxVUdd4PUdYEtfR9UYG9JP1d4t56INuv6n9/sATMEvNfF6BfhuGO9o/jnKsaK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hqnS2WsO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5388BC433C7;
+	Tue, 27 Feb 2024 13:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041684;
-	bh=Xeg0smZMWgQ8kJXiATQsXp3F0Sshu8+75I2YncFqZyg=;
+	s=korg; t=1709041206;
+	bh=VVpxNiifzSyI+oT/mpJnBEOoxXyJyNor9xTWL+iU5b8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jmG1IDz5dmCKzLnPjfva/bzv1fDBZulohMs2sw4d3r9sfCkXPNurO7lg/yo7W66Xx
-	 qHIsb4zo23jAeG5II644S1F8jwd2tAyn3uCzHpDF8UjWk6/G7ewPw+2G7cPO0kokh8
-	 YByjbS/Tv2N6iwkeHVsth76Np9NuLoM82lP2zIy8=
+	b=hqnS2WsOExIJVbAGRStk3KAVVV4n7d460WT4FTkyRf0z/omeDvbA4z3A47rseQ50p
+	 ReB0c3FC4cnNImrNaau2zytTwPP9FFXW2TjX3Si3t/rS40etgUBPmVxnwxK24PDQxW
+	 vyz1+Wz7D5B5ArOuSE8R1mPStnP21m1WFtjzlp/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Scott Teel <scott.teel@microchip.com>,
-	Scott Benesh <scott.benesh@microchip.com>,
-	Mike McGowen <mike.mcgowen@microchip.com>,
-	Kevin Barnett <kevin.barnett@microchip.com>,
-	Murthy Bhat <Murthy.Bhat@microchip.com>,
-	Mahesh Rajashekhara <mahesh.rajashekhara@microchip.com>,
-	Don Brace <don.brace@microchip.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	syzkaller <syzkaller@googlegroups.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 006/299] scsi: smartpqi: Fix logical volume rescan race condition
+Subject: [PATCH 6.7 259/334] dccp/tcp: Unhash sk from ehash for tb2 alloc failure after check_estalblished().
 Date: Tue, 27 Feb 2024 14:21:57 +0100
-Message-ID: <20240227131626.050469427@linuxfoundation.org>
+Message-ID: <20240227131639.290468826@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,158 +64,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mahesh Rajashekhara <mahesh.rajashekhara@microchip.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit fb4cece17b4583f55b34a8538e27a4adc833c9d4 ]
+[ Upstream commit 66b60b0c8c4a163b022a9f0ad6769b0fd3dc662f ]
 
-Correct rescan flag race condition.
+syzkaller reported a warning [0] in inet_csk_destroy_sock() with no
+repro.
 
-Multiple conditions are being evaluated before notifying OS to do a rescan.
+  WARN_ON(inet_sk(sk)->inet_num && !inet_csk(sk)->icsk_bind_hash);
 
-Driver will skip rescanning the device if any one of the following
-conditions are met:
+However, the syzkaller's log hinted that connect() failed just before
+the warning due to FAULT_INJECTION.  [1]
 
- - Devices that have not yet been added to the OS or devices that have been
-   removed.
+When connect() is called for an unbound socket, we search for an
+available ephemeral port.  If a bhash bucket exists for the port, we
+call __inet_check_established() or __inet6_check_established() to check
+if the bucket is reusable.
 
- - Devices which are already marked for removal or in the phase of removal.
+If reusable, we add the socket into ehash and set inet_sk(sk)->inet_num.
 
-Under very rare conditions, after logical volume size expansion, the OS
-still sees the size of the logical volume which was before expansion.
+Later, we look up the corresponding bhash2 bucket and try to allocate
+it if it does not exist.
 
-The rescan flag in the driver is used to signal the need for a logical
-volume rescan. A race condition can occur in the driver, and it leads to
-one thread overwriting the flag inadvertently. As a result, driver is not
-notifying the OS SML to rescan the logical volume.
+Although it rarely occurs in real use, if the allocation fails, we must
+revert the changes by check_established().  Otherwise, an unconnected
+socket could illegally occupy an ehash entry.
 
-Move device->rescan update into new function pqi_mark_volumes_for_rescan()
-and protect with a spin lock.
+Note that we do not put tw back into ehash because sk might have
+already responded to a packet for tw and it would be better to free
+tw earlier under such memory presure.
 
-Move check for device->rescan into new function pqi_volume_rescan_needed()
-and protect function call with a spin_lock.
+[0]:
+WARNING: CPU: 0 PID: 350830 at net/ipv4/inet_connection_sock.c:1193 inet_csk_destroy_sock (net/ipv4/inet_connection_sock.c:1193)
+Modules linked in:
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+RIP: 0010:inet_csk_destroy_sock (net/ipv4/inet_connection_sock.c:1193)
+Code: 41 5c 41 5d 41 5e e9 2d 4a 3d fd e8 28 4a 3d fd 48 89 ef e8 f0 cd 7d ff 5b 5d 41 5c 41 5d 41 5e e9 13 4a 3d fd e8 0e 4a 3d fd <0f> 0b e9 61 fe ff ff e8 02 4a 3d fd 4c 89 e7 be 03 00 00 00 e8 05
+RSP: 0018:ffffc9000b21fd38 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: 0000000000009e78 RCX: ffffffff840bae40
+RDX: ffff88806e46c600 RSI: ffffffff840bb012 RDI: ffff88811755cca8
+RBP: ffff88811755c880 R08: 0000000000000003 R09: 0000000000000000
+R10: 0000000000009e78 R11: 0000000000000000 R12: ffff88811755c8e0
+R13: ffff88811755c892 R14: ffff88811755c918 R15: 0000000000000000
+FS:  00007f03e5243800(0000) GS:ffff88811ae00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b32f21000 CR3: 0000000112ffe001 CR4: 0000000000770ef0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ ? inet_csk_destroy_sock (net/ipv4/inet_connection_sock.c:1193)
+ dccp_close (net/dccp/proto.c:1078)
+ inet_release (net/ipv4/af_inet.c:434)
+ __sock_release (net/socket.c:660)
+ sock_close (net/socket.c:1423)
+ __fput (fs/file_table.c:377)
+ __fput_sync (fs/file_table.c:462)
+ __x64_sys_close (fs/open.c:1557 fs/open.c:1539 fs/open.c:1539)
+ do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
+ entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:129)
+RIP: 0033:0x7f03e53852bb
+Code: 03 00 00 00 0f 05 48 3d 00 f0 ff ff 77 41 c3 48 83 ec 18 89 7c 24 0c e8 43 c9 f5 ff 8b 7c 24 0c 41 89 c0 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 35 44 89 c7 89 44 24 0c e8 a1 c9 f5 ff 8b 44
+RSP: 002b:00000000005dfba0 EFLAGS: 00000293 ORIG_RAX: 0000000000000003
+RAX: ffffffffffffffda RBX: 0000000000000004 RCX: 00007f03e53852bb
+RDX: 0000000000000002 RSI: 0000000000000002 RDI: 0000000000000003
+RBP: 0000000000000000 R08: 0000000000000000 R09: 000000000000167c
+R10: 0000000008a79680 R11: 0000000000000293 R12: 00007f03e4e43000
+R13: 00007f03e4e43170 R14: 00007f03e4e43178 R15: 00007f03e4e43170
+ </TASK>
 
-Reviewed-by: Scott Teel <scott.teel@microchip.com>
-Reviewed-by: Scott Benesh <scott.benesh@microchip.com>
-Reviewed-by: Mike McGowen <mike.mcgowen@microchip.com>
-Reviewed-by: Kevin Barnett <kevin.barnett@microchip.com>
-Co-developed-by: Murthy Bhat <Murthy.Bhat@microchip.com>
-Signed-off-by: Murthy Bhat <Murthy.Bhat@microchip.com>
-Signed-off-by: Mahesh Rajashekhara <mahesh.rajashekhara@microchip.com>
-Signed-off-by: Don Brace <don.brace@microchip.com>
-Link: https://lore.kernel.org/r/20231219193653.277553-3-don.brace@microchip.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+[1]:
+FAULT_INJECTION: forcing a failure.
+name failslab, interval 1, probability 0, space 0, times 0
+CPU: 0 PID: 350833 Comm: syz-executor.1 Not tainted 6.7.0-12272-g2121c43f88f5 #9
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl (lib/dump_stack.c:107 (discriminator 1))
+ should_fail_ex (lib/fault-inject.c:52 lib/fault-inject.c:153)
+ should_failslab (mm/slub.c:3748)
+ kmem_cache_alloc (mm/slub.c:3763 mm/slub.c:3842 mm/slub.c:3867)
+ inet_bind2_bucket_create (net/ipv4/inet_hashtables.c:135)
+ __inet_hash_connect (net/ipv4/inet_hashtables.c:1100)
+ dccp_v4_connect (net/dccp/ipv4.c:116)
+ __inet_stream_connect (net/ipv4/af_inet.c:676)
+ inet_stream_connect (net/ipv4/af_inet.c:747)
+ __sys_connect_file (net/socket.c:2048 (discriminator 2))
+ __sys_connect (net/socket.c:2065)
+ __x64_sys_connect (net/socket.c:2072)
+ do_syscall_64 (arch/x86/entry/common.c:52 arch/x86/entry/common.c:83)
+ entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:129)
+RIP: 0033:0x7f03e5284e5d
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 73 9f 1b 00 f7 d8 64 89 01 48
+RSP: 002b:00007f03e4641cc8 EFLAGS: 00000246 ORIG_RAX: 000000000000002a
+RAX: ffffffffffffffda RBX: 00000000004bbf80 RCX: 00007f03e5284e5d
+RDX: 0000000000000010 RSI: 0000000020000000 RDI: 0000000000000003
+RBP: 00000000004bbf80 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
+R13: 000000000000000b R14: 00007f03e52e5530 R15: 0000000000000000
+ </TASK>
+
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Fixes: 28044fc1d495 ("net: Add a bhash2 table hashed by port and address")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/smartpqi/smartpqi.h      |  1 -
- drivers/scsi/smartpqi/smartpqi_init.c | 43 ++++++++++++++++++++++-----
- 2 files changed, 36 insertions(+), 8 deletions(-)
+ net/ipv4/inet_hashtables.c | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/smartpqi/smartpqi.h b/drivers/scsi/smartpqi/smartpqi.h
-index 0419401835169..cdedc271857aa 100644
---- a/drivers/scsi/smartpqi/smartpqi.h
-+++ b/drivers/scsi/smartpqi/smartpqi.h
-@@ -1347,7 +1347,6 @@ struct pqi_ctrl_info {
- 	bool		controller_online;
- 	bool		block_requests;
- 	bool		scan_blocked;
--	u8		logical_volume_rescan_needed : 1;
- 	u8		inbound_spanning_supported : 1;
- 	u8		outbound_spanning_supported : 1;
- 	u8		pqi_mode_enabled : 1;
-diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
-index d562011200877..081bb2c098063 100644
---- a/drivers/scsi/smartpqi/smartpqi_init.c
-+++ b/drivers/scsi/smartpqi/smartpqi_init.c
-@@ -2093,8 +2093,6 @@ static void pqi_scsi_update_device(struct pqi_ctrl_info *ctrl_info,
- 		if (existing_device->devtype == TYPE_DISK) {
- 			existing_device->raid_level = new_device->raid_level;
- 			existing_device->volume_status = new_device->volume_status;
--			if (ctrl_info->logical_volume_rescan_needed)
--				existing_device->rescan = true;
- 			memset(existing_device->next_bypass_group, 0, sizeof(existing_device->next_bypass_group));
- 			if (!pqi_raid_maps_equal(existing_device->raid_map, new_device->raid_map)) {
- 				kfree(existing_device->raid_map);
-@@ -2164,6 +2162,20 @@ static inline void pqi_init_device_tmf_work(struct pqi_scsi_dev *device)
- 		INIT_WORK(&tmf_work->work_struct, pqi_tmf_worker);
- }
+diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
+index a532f749e4778..9456bf9e2705b 100644
+--- a/net/ipv4/inet_hashtables.c
++++ b/net/ipv4/inet_hashtables.c
+@@ -1131,10 +1131,33 @@ int __inet_hash_connect(struct inet_timewait_death_row *death_row,
+ 	return 0;
  
-+static inline bool pqi_volume_rescan_needed(struct pqi_scsi_dev *device)
-+{
-+	if (pqi_device_in_remove(device))
-+		return false;
+ error:
++	if (sk_hashed(sk)) {
++		spinlock_t *lock = inet_ehash_lockp(hinfo, sk->sk_hash);
 +
-+	if (device->sdev == NULL)
-+		return false;
++		sock_prot_inuse_add(net, sk->sk_prot, -1);
 +
-+	if (!scsi_device_online(device->sdev))
-+		return false;
++		spin_lock(lock);
++		sk_nulls_del_node_init_rcu(sk);
++		spin_unlock(lock);
 +
-+	return device->rescan;
-+}
++		sk->sk_hash = 0;
++		inet_sk(sk)->inet_sport = 0;
++		inet_sk(sk)->inet_num = 0;
 +
- static void pqi_update_device_list(struct pqi_ctrl_info *ctrl_info,
- 	struct pqi_scsi_dev *new_device_list[], unsigned int num_new_devices)
- {
-@@ -2284,9 +2296,13 @@ static void pqi_update_device_list(struct pqi_ctrl_info *ctrl_info,
- 		if (device->sdev && device->queue_depth != device->advertised_queue_depth) {
- 			device->advertised_queue_depth = device->queue_depth;
- 			scsi_change_queue_depth(device->sdev, device->advertised_queue_depth);
--			if (device->rescan) {
--				scsi_rescan_device(device->sdev);
-+			spin_lock_irqsave(&ctrl_info->scsi_device_list_lock, flags);
-+			if (pqi_volume_rescan_needed(device)) {
- 				device->rescan = false;
-+				spin_unlock_irqrestore(&ctrl_info->scsi_device_list_lock, flags);
-+				scsi_rescan_device(device->sdev);
-+			} else {
-+				spin_unlock_irqrestore(&ctrl_info->scsi_device_list_lock, flags);
- 			}
- 		}
- 	}
-@@ -2308,8 +2324,6 @@ static void pqi_update_device_list(struct pqi_ctrl_info *ctrl_info,
- 		}
- 	}
- 
--	ctrl_info->logical_volume_rescan_needed = false;
--
- }
- 
- static inline bool pqi_is_supported_device(struct pqi_scsi_dev *device)
-@@ -3702,6 +3716,21 @@ static bool pqi_ofa_process_event(struct pqi_ctrl_info *ctrl_info,
- 	return ack_event;
- }
- 
-+static void pqi_mark_volumes_for_rescan(struct pqi_ctrl_info *ctrl_info)
-+{
-+	unsigned long flags;
-+	struct pqi_scsi_dev *device;
-+
-+	spin_lock_irqsave(&ctrl_info->scsi_device_list_lock, flags);
-+
-+	list_for_each_entry(device, &ctrl_info->scsi_device_list, scsi_device_list_entry) {
-+		if (pqi_is_logical_device(device) && device->devtype == TYPE_DISK)
-+			device->rescan = true;
++		if (tw)
++			inet_twsk_bind_unhash(tw, hinfo);
 +	}
 +
-+	spin_unlock_irqrestore(&ctrl_info->scsi_device_list_lock, flags);
-+}
+ 	spin_unlock(&head2->lock);
+ 	if (tb_created)
+ 		inet_bind_bucket_destroy(hinfo->bind_bucket_cachep, tb);
+-	spin_unlock_bh(&head->lock);
++	spin_unlock(&head->lock);
 +
- static void pqi_disable_raid_bypass(struct pqi_ctrl_info *ctrl_info)
- {
- 	unsigned long flags;
-@@ -3742,7 +3771,7 @@ static void pqi_event_worker(struct work_struct *work)
- 				ack_event = true;
- 				rescan_needed = true;
- 				if (event->event_type == PQI_EVENT_TYPE_LOGICAL_DEVICE)
--					ctrl_info->logical_volume_rescan_needed = true;
-+					pqi_mark_volumes_for_rescan(ctrl_info);
- 				else if (event->event_type == PQI_EVENT_TYPE_AIO_STATE_CHANGE)
- 					pqi_disable_raid_bypass(ctrl_info);
- 			}
++	if (tw)
++		inet_twsk_deschedule_put(tw);
++
++	local_bh_enable();
++
+ 	return -ENOMEM;
+ }
+ 
 -- 
 2.43.0
 
