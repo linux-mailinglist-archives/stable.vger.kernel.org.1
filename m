@@ -1,64 +1,55 @@
-Return-Path: <stable+bounces-24531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A52B78694FA
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:57:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D75918696E3
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:16:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14B031F22BDD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:57:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14ECE1C21177
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:16:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6041A1419A1;
-	Tue, 27 Feb 2024 13:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5903213B798;
+	Tue, 27 Feb 2024 14:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKdYlJlC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rT9nxzYK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196C254BD4;
-	Tue, 27 Feb 2024 13:57:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B2E13B2B4;
+	Tue, 27 Feb 2024 14:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042268; cv=none; b=MiMwR8rInXeZ4z0z1jP0M9ur8evZkp+A+pMvBwDC0FXln3PZMingQdYluzEGbpVKmIsGAc+TTAgTuCI9tKZ68w1CdaT9UutXs2aPLNt20yifA9dXJy6wovwcOs4+1ukKPvqRFT5WpMgbmDTIarTm7Ht4JrKr0nrsxliap5ATM+M=
+	t=1709043382; cv=none; b=d22k0G4kKyUB9Qso11mk9MUa0IgG/SOrNBSA7PIRFqt19oM5TriGcN85T/XbzXR5rJOxq7UXLHB4b+2W0D+SGFV3jBWN6L1Fuv0aEP9uqVsTwy1ec2LvLIDTnQ5bEUaOZUGkCyboHC3VjWGQDTiyij51SIzainRZk+2rfq6VFQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042268; c=relaxed/simple;
-	bh=m5VMswMRx1KnOYRrRLJ67qDSXmeiL8UHPCJ7WEg/0kg=;
+	s=arc-20240116; t=1709043382; c=relaxed/simple;
+	bh=gTp+3R39XdD1G2SC+nYyJtme4k3HswfXpMk9XWJL57I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O5xOrqhZe+LnuUY4magSfgFBgwKc5MWIB8Vl/gqnNmlb2l9FVR4FqtH1FuauRRRqcBwkLNqs+fvCQUzuT4N6Ak5Ob58zyxLhGZsOVS6o9Tn0yTUv5pkjhnipfYrLNPg+ObP0MKGKUUczRQKvnkPjaRDp68gVOhR9uvZJWqgRcmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKdYlJlC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E50AC433C7;
-	Tue, 27 Feb 2024 13:57:47 +0000 (UTC)
+	 MIME-Version; b=lnF5FCJclRb4gM7yNWN/JVXkwFeMtwxfgvLzZ52QVpCJkyV2jb9UglHeXBLxl7JShpUCsidkF3XoUaRU/WfVEpK+I4JUiViWDEQhpEY9lfNJkVne43QtMPCybZ5fcfMgTSLaYlrfNwksqvRMznT5L3ci6YWRX7OJBaMuHkv3whs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rT9nxzYK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A450C433F1;
+	Tue, 27 Feb 2024 14:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042268;
-	bh=m5VMswMRx1KnOYRrRLJ67qDSXmeiL8UHPCJ7WEg/0kg=;
+	s=korg; t=1709043382;
+	bh=gTp+3R39XdD1G2SC+nYyJtme4k3HswfXpMk9XWJL57I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MKdYlJlCfj8qVFrpuwF1oQT+D9ws0D3DvkMO5BRA7khzrkl27RKGYKIV8IOfx3PBA
-	 oxHYbGxz0TY53s3dTfBj+Wn2jnQSOi8TN/vwVXqyVqOjVpF6dGTHMQriUxY4JFy41O
-	 V0/5DZ1z6rm2cGCpP3FD2n/HT3TF2eZN8y52+VBE=
+	b=rT9nxzYK+LJZLy0QehkxhSa1VB/lmSaO7QnpoGOV9O3WFbL8ag613AGVtEThG9KEL
+	 dI2wDL+/rZOlupZ1pGOu7gfBus9tLNuR/56JUe1HA5oCcsi+6rLFC0IgGxK2dqjnTx
+	 WpFvg/y9tecd9x+vfKbBieBnDgGLYylzpw9E47ko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	kernel test robot <lkp@intel.com>,
-	Lennart Franzen <lennart@lfdomain.com>,
-	Alexandru Tachici <alexandru.tachici@analog.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	Nuno Sa <nuno.sa@analog.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 237/299] net: ethernet: adi: requires PHYLIB support
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.1 087/195] ata: libata-core: Do not try to set sleeping devices to standby
 Date: Tue, 27 Feb 2024 14:25:48 +0100
-Message-ID: <20240227131633.365267022@linuxfoundation.org>
+Message-ID: <20240227131613.356006274@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,75 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit a9f80df4f51440303d063b55bb98720857693821 ]
+commit 4b085736e44dbbe69b5eea1a8a294f404678a1f4 upstream.
 
-This driver uses functions that are supplied by the Kconfig symbol
-PHYLIB, so select it to ensure that they are built as needed.
+In ata ata_dev_power_set_standby(), check that the target device is not
+sleeping. If it is, there is no need to do anything.
 
-When CONFIG_ADIN1110=y and CONFIG_PHYLIB=m, there are multiple build
-(linker) errors that are resolved by this Kconfig change:
-
-   ld: drivers/net/ethernet/adi/adin1110.o: in function `adin1110_net_open':
-   drivers/net/ethernet/adi/adin1110.c:933: undefined reference to `phy_start'
-   ld: drivers/net/ethernet/adi/adin1110.o: in function `adin1110_probe_netdevs':
-   drivers/net/ethernet/adi/adin1110.c:1603: undefined reference to `get_phy_device'
-   ld: drivers/net/ethernet/adi/adin1110.c:1609: undefined reference to `phy_connect'
-   ld: drivers/net/ethernet/adi/adin1110.o: in function `adin1110_disconnect_phy':
-   drivers/net/ethernet/adi/adin1110.c:1226: undefined reference to `phy_disconnect'
-   ld: drivers/net/ethernet/adi/adin1110.o: in function `devm_mdiobus_alloc':
-   include/linux/phy.h:455: undefined reference to `devm_mdiobus_alloc_size'
-   ld: drivers/net/ethernet/adi/adin1110.o: in function `adin1110_register_mdiobus':
-   drivers/net/ethernet/adi/adin1110.c:529: undefined reference to `__devm_mdiobus_register'
-   ld: drivers/net/ethernet/adi/adin1110.o: in function `adin1110_net_stop':
-   drivers/net/ethernet/adi/adin1110.c:958: undefined reference to `phy_stop'
-   ld: drivers/net/ethernet/adi/adin1110.o: in function `adin1110_disconnect_phy':
-   drivers/net/ethernet/adi/adin1110.c:1226: undefined reference to `phy_disconnect'
-   ld: drivers/net/ethernet/adi/adin1110.o: in function `adin1110_adjust_link':
-   drivers/net/ethernet/adi/adin1110.c:1077: undefined reference to `phy_print_status'
-   ld: drivers/net/ethernet/adi/adin1110.o: in function `adin1110_ioctl':
-   drivers/net/ethernet/adi/adin1110.c:790: undefined reference to `phy_do_ioctl'
-   ld: drivers/net/ethernet/adi/adin1110.o:(.rodata+0xf60): undefined reference to `phy_ethtool_get_link_ksettings'
-   ld: drivers/net/ethernet/adi/adin1110.o:(.rodata+0xf68): undefined reference to `phy_ethtool_set_link_ksettings'
-
-Fixes: bc93e19d088b ("net: ethernet: adi: Add ADIN1110 support")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202402070626.eZsfVHG5-lkp@intel.com/
-Cc: Lennart Franzen <lennart@lfdomain.com>
-Cc: Alexandru Tachici <alexandru.tachici@analog.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: aa3998dbeb3a ("ata: libata-scsi: Disable scsi device manage_system_start_stop")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/adi/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/ata/libata-core.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/adi/Kconfig b/drivers/net/ethernet/adi/Kconfig
-index da3bdd3025022..c91b4dcef4ec2 100644
---- a/drivers/net/ethernet/adi/Kconfig
-+++ b/drivers/net/ethernet/adi/Kconfig
-@@ -7,6 +7,7 @@ config NET_VENDOR_ADI
- 	bool "Analog Devices devices"
- 	default y
- 	depends on SPI
-+	select PHYLIB
- 	help
- 	  If you have a network (Ethernet) card belonging to this class, say Y.
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -2005,6 +2005,10 @@ void ata_dev_power_set_active(struct ata
+ 	struct ata_taskfile tf;
+ 	unsigned int err_mask;
  
--- 
-2.43.0
-
++	/* If the device is already sleeping, do nothing. */
++	if (dev->flags & ATA_DFLAG_SLEEPING)
++		return;
++
+ 	/*
+ 	 * Issue READ VERIFY SECTORS command for 1 sector at lba=0 only
+ 	 * if supported by the device.
 
 
 
