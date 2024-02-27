@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-25099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D66288697B8
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:24:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A25C869769
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:21:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1408B1C21964
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:24:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04EC7284850
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C8BD13EFEC;
-	Tue, 27 Feb 2024 14:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E1513B798;
+	Tue, 27 Feb 2024 14:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g7JkJqmg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JBGXBGKA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B99D13B2B4;
-	Tue, 27 Feb 2024 14:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D750F13B2B4;
+	Tue, 27 Feb 2024 14:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043862; cv=none; b=VvGhdXfmIehwiX25AkIUEHTA/vF9WxZ/WM6hFsWxS6jBNofo8+6hnSQlkkgIfzIJwBprEut4J0YUqArGV/MzaBINVJfSmq6VSnSuT8wzBDjhXM3UorORjLFJOXR/65tEFHPVo+v4CoWXD7oqWP2ObPv2ev5tcQ/Lcn0HivPZZBQ=
+	t=1709043660; cv=none; b=t6EdIU/oj/Qu1X36bLYfG6J9KT4Sef2FFl+wMwqukbwknNfBhmHMbF4qhv2PawOu2ZSB/ArWP/Gy7WCtB2IXQe7S8HvJ6B/1j8CM+mf4Nm+gncCmg9EBWdLP7K39kblOX3NM1MlWkFEqh44BWsRo0Zmcul7SQQ4dRTl6WxSa2lE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043862; c=relaxed/simple;
-	bh=NX7tsmjuVon7tAf9yAqoe8uT8jE/N9k9oZjgXkOTj+k=;
+	s=arc-20240116; t=1709043660; c=relaxed/simple;
+	bh=K/LRQd2In2ISymX8pyARv9VB7RV1fGFI29kBNxYqSiU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uWx46XLDN5oz63Jr6FstCoEWpojFp/3RonJXLfJVEKdiu6bpxY2HtK7OLC/vXT0QS11vuBV0f4eRu/fMcfEeQiG6kLuhHSqPvBgtjVX16dFP/eWvhMsQDNV2MpNCpcouPpwPLz0BVLc8HZcY3XUnaWJdXizrO5m5b9bu3LFR71Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g7JkJqmg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF45BC433C7;
-	Tue, 27 Feb 2024 14:24:21 +0000 (UTC)
+	 MIME-Version; b=EBJ2GFQZy3OxpV6qgnY17R97rhyTKKVQLNdEE6nmwu/yY+eJkcFJl/kh8+2VZNZc28b4pHKTZYEZziis+7lkbtS7xzZhwklgLsozV8Eg17q8oomV0Md1IK3MuzEIwkmMJn+yku7t+5iHsFL1pyssDjwpGJ/MaA/l0cwBrpPmOxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JBGXBGKA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E0DC433F1;
+	Tue, 27 Feb 2024 14:21:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043862;
-	bh=NX7tsmjuVon7tAf9yAqoe8uT8jE/N9k9oZjgXkOTj+k=;
+	s=korg; t=1709043660;
+	bh=K/LRQd2In2ISymX8pyARv9VB7RV1fGFI29kBNxYqSiU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g7JkJqmgSjsVPxB81NhW4sDXIBqqjSIAQRaE/ILmaN1TH+vU4bXyZR+DR4ltxjo6S
-	 XkTMitsXA7g9x+N9wBGzCc0nnc0MRTZOHOI5SViAI/cbcGcQ1lidnMMaXLxZAcbFxG
-	 Stp8ZA8IgGp5qEm1Loe0MCRVPP0JrDmMELBmEsk4=
+	b=JBGXBGKA+HAR10B7e7cmHqY8I1Q/J7O8B7pPtyjzAAMq5cLGTfSoN2aJHZxJkiJOW
+	 2oh4ruVF+fZmwtULzld9BtfHxCOMsXTL+zeC1kI+hEJgv9Z9/ofqPBi3xZ3shn0s40
+	 IYxwVAmpzmjrUHjOiEZ5Aw38LEA1ue0Ac79mqpqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kurapati <quic_kriskura@quicinc.com>,
-	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>
-Subject: [PATCH 5.4 61/84] usb: gadget: ncm: Avoid dropping datagrams of properly parsed NTBs
-Date: Tue, 27 Feb 2024 14:27:28 +0100
-Message-ID: <20240227131554.857718574@linuxfoundation.org>
+	Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@lst.de>,
+	Avi Kivity <avi@scylladb.com>,
+	Sandeep Dhavale <dhavale@google.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.1 188/195] fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via libaio
+Date: Tue, 27 Feb 2024 14:27:29 +0100
+Message-ID: <20240227131616.612391729@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,93 +64,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit 76c51146820c5dac629f21deafab0a7039bc3ccd upstream.
+commit b820de741ae48ccf50dd95e297889c286ff4f760 upstream.
 
-It is observed sometimes when tethering is used over NCM with Windows 11
-as host, at some instances, the gadget_giveback has one byte appended at
-the end of a proper NTB. When the NTB is parsed, unwrap call looks for
-any leftover bytes in SKB provided by u_ether and if there are any pending
-bytes, it treats them as a separate NTB and parses it. But in case the
-second NTB (as per unwrap call) is faulty/corrupt, all the datagrams that
-were parsed properly in the first NTB and saved in rx_list are dropped.
+If kiocb_set_cancel_fn() is called for I/O submitted via io_uring, the
+following kernel warning appears:
 
-Adding a few custom traces showed the following:
-[002] d..1  7828.532866: dwc3_gadget_giveback: ep1out:
-req 000000003868811a length 1025/16384 zsI ==> 0
-[002] d..1  7828.532867: ncm_unwrap_ntb: K: ncm_unwrap_ntb toprocess: 1025
-[002] d..1  7828.532867: ncm_unwrap_ntb: K: ncm_unwrap_ntb nth: 1751999342
-[002] d..1  7828.532868: ncm_unwrap_ntb: K: ncm_unwrap_ntb seq: 0xce67
-[002] d..1  7828.532868: ncm_unwrap_ntb: K: ncm_unwrap_ntb blk_len: 0x400
-[002] d..1  7828.532868: ncm_unwrap_ntb: K: ncm_unwrap_ntb ndp_len: 0x10
-[002] d..1  7828.532869: ncm_unwrap_ntb: K: Parsed NTB with 1 frames
+WARNING: CPU: 3 PID: 368 at fs/aio.c:598 kiocb_set_cancel_fn+0x9c/0xa8
+Call trace:
+ kiocb_set_cancel_fn+0x9c/0xa8
+ ffs_epfile_read_iter+0x144/0x1d0
+ io_read+0x19c/0x498
+ io_issue_sqe+0x118/0x27c
+ io_submit_sqes+0x25c/0x5fc
+ __arm64_sys_io_uring_enter+0x104/0xab0
+ invoke_syscall+0x58/0x11c
+ el0_svc_common+0xb4/0xf4
+ do_el0_svc+0x2c/0xb0
+ el0_svc+0x2c/0xa4
+ el0t_64_sync_handler+0x68/0xb4
+ el0t_64_sync+0x1a4/0x1a8
 
-In this case, the giveback is of 1025 bytes and block length is 1024.
-The rest 1 byte (which is 0x00) won't be parsed resulting in drop of
-all datagrams in rx_list.
+Fix this by setting the IOCB_AIO_RW flag for read and write I/O that is
+submitted by libaio.
 
-Same is case with packets of size 2048:
-[002] d..1  7828.557948: dwc3_gadget_giveback: ep1out:
-req 0000000011dfd96e length 2049/16384 zsI ==> 0
-[002] d..1  7828.557949: ncm_unwrap_ntb: K: ncm_unwrap_ntb nth: 1751999342
-[002] d..1  7828.557950: ncm_unwrap_ntb: K: ncm_unwrap_ntb blk_len: 0x800
-
-Lecroy shows one byte coming in extra confirming that the byte is coming
-in from PC:
-
- Transfer 2959 - Bytes Transferred(1025)  Timestamp((18.524 843 590)
- - Transaction 8391 - Data(1025 bytes) Timestamp(18.524 843 590)
- --- Packet 4063861
-       Data(1024 bytes)
-       Duration(2.117us) Idle(14.700ns) Timestamp(18.524 843 590)
- --- Packet 4063863
-       Data(1 byte)
-       Duration(66.160ns) Time(282.000ns) Timestamp(18.524 845 722)
-
-According to Windows driver, no ZLP is needed if wBlockLength is non-zero,
-because the non-zero wBlockLength has already told the function side the
-size of transfer to be expected. However, there are in-market NCM devices
-that rely on ZLP as long as the wBlockLength is multiple of wMaxPacketSize.
-To deal with such devices, it pads an extra 0 at end so the transfer is no
-longer multiple of wMaxPacketSize.
-
-Cc: <stable@vger.kernel.org>
-Fixes: 9f6ce4240a2b ("usb: gadget: f_ncm.c added")
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Reviewed-by: Maciej Żenczykowski <maze@google.com>
-Link: https://lore.kernel.org/r/20240205074650.200304-1-quic_kriskura@quicinc.com
+Suggested-by: Jens Axboe <axboe@kernel.dk>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Avi Kivity <avi@scylladb.com>
+Cc: Sandeep Dhavale <dhavale@google.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: stable@vger.kernel.org
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240215204739.2677806-2-bvanassche@acm.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_ncm.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ fs/aio.c           |    9 ++++++++-
+ include/linux/fs.h |    2 ++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -1349,7 +1349,15 @@ parse_ntb:
- 	     "Parsed NTB with %d frames\n", dgram_counter);
+--- a/fs/aio.c
++++ b/fs/aio.c
+@@ -595,6 +595,13 @@ void kiocb_set_cancel_fn(struct kiocb *i
+ 	struct kioctx *ctx = req->ki_ctx;
+ 	unsigned long flags;
  
- 	to_process -= block_len;
--	if (to_process != 0) {
-+
 +	/*
-+	 * Windows NCM driver avoids USB ZLPs by adding a 1-byte
-+	 * zero pad as needed.
++	 * kiocb didn't come from aio or is neither a read nor a write, hence
++	 * ignore it.
 +	 */
-+	if (to_process == 1 &&
-+	    (*(unsigned char *)(ntb_ptr + block_len) == 0x00)) {
-+		to_process--;
-+	} else if (to_process > 0) {
- 		ntb_ptr = (unsigned char *)(ntb_ptr + block_len);
- 		goto parse_ntb;
- 	}
++	if (!(iocb->ki_flags & IOCB_AIO_RW))
++		return;
++
+ 	if (WARN_ON_ONCE(!list_empty(&req->ki_list)))
+ 		return;
+ 
+@@ -1476,7 +1483,7 @@ static int aio_prep_rw(struct kiocb *req
+ 	req->ki_complete = aio_complete_rw;
+ 	req->private = NULL;
+ 	req->ki_pos = iocb->aio_offset;
+-	req->ki_flags = req->ki_filp->f_iocb_flags;
++	req->ki_flags = req->ki_filp->f_iocb_flags | IOCB_AIO_RW;
+ 	if (iocb->aio_flags & IOCB_FLAG_RESFD)
+ 		req->ki_flags |= IOCB_EVENTFD;
+ 	if (iocb->aio_flags & IOCB_FLAG_IOPRIO) {
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -337,6 +337,8 @@ enum rw_hint {
+ #define IOCB_NOIO		(1 << 20)
+ /* can use bio alloc cache */
+ #define IOCB_ALLOC_CACHE	(1 << 21)
++/* kiocb is a read or write operation submitted by fs/aio.c. */
++#define IOCB_AIO_RW		(1 << 23)
+ 
+ struct kiocb {
+ 	struct file		*ki_filp;
 
 
 
