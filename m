@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-25197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A43BA869830
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:29:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B58586954E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:00:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 430C71F2CE5E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:29:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CB571C238BB
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:00:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09437145323;
-	Tue, 27 Feb 2024 14:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16F191420D4;
+	Tue, 27 Feb 2024 14:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dwj/icJM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YlOtHnAj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B7E13AA4C;
-	Tue, 27 Feb 2024 14:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00E41419B3;
+	Tue, 27 Feb 2024 14:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044133; cv=none; b=jq76UilG7DdwC0c5XpR8u/ZOy+OsUhy4wlAh/FxVKj9XwlIs6BcJM30UnHEC5vOVgf3tDakUMKvMo3xZc3hdwoOZ8KgBdeuQlOrvIlxYn3+3G4dM7EDBZ2piLRfyR8uIuvjTUsMcYbDYst+j2hh66lIUHlb8ywYP4379ybkYqcI=
+	t=1709042440; cv=none; b=tK/Be4QQzETKBpfq41lG21MFUil7UoJBc6ok/7LmCi5jPsUXVGgDC2MSC0+pwtV2E6WCe3WD6rp+kibEJDFSQZDeGmGuqFYtAn+hyuVd3WKicRHCcCKRJgRMOldonkIDBv8kPlpsYWhkdDpmDNuiKxxdd7iDPYvOptFAZpLrVi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044133; c=relaxed/simple;
-	bh=nUuQZ2gRDrTt9SjRzI+gG2AVYDcZowhMy0Or3iQ/DG0=;
+	s=arc-20240116; t=1709042440; c=relaxed/simple;
+	bh=7oSMBIEGyjHjJD40I8RvT9DCtcdgCIbd7gIs6Oe0Zcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aBGcOGguzb4fRLTS8tyx4FFouwuyrbfexILwj8JK9z0XOxBkbDyBD3KClPT/RsDHPu65d0+te39pTjXfTtDRAITzRKqeQu70vlpFZ7mvn3tHkZCLncQLZbWKeJmLh7PXZE/IUf9t0xZvgz4NtjtVW+9vyQwDxhQbLbo2mY8lsXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dwj/icJM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4313BC433F1;
-	Tue, 27 Feb 2024 14:28:53 +0000 (UTC)
+	 MIME-Version; b=RaRdD+HHxwLUt3UYicXJ4z6cMZghvCcnZMsWO92EDEhFywV0PakRaqDJIdxt/MTBZhcB8cv2dCLcQE2vlKKXckeX0XsxMIATWNc3J7vVEqhf7/Igaqw8vjgfU4KIjSj9pri6i9KUNqcNXZvllZjYHp6GIaM04XdPKVOVSaNuQvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YlOtHnAj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C0D7C433F1;
+	Tue, 27 Feb 2024 14:00:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044133;
-	bh=nUuQZ2gRDrTt9SjRzI+gG2AVYDcZowhMy0Or3iQ/DG0=;
+	s=korg; t=1709042440;
+	bh=7oSMBIEGyjHjJD40I8RvT9DCtcdgCIbd7gIs6Oe0Zcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dwj/icJMU6dSXeSQTpdxnFC8uu+qtL84RrImD571kZWBRgsQHv6JqF8sNmRxj0Yfk
-	 pwIOrT4+8YvQlfoX+w6+6q7SjcVt439vAZxDvKHmGZQu2FotRRqgbiF+GeKmdUMBHF
-	 VmRhToKCmKeStwcG+m76kTE4xLU82SgfY7LBTSHI=
+	b=YlOtHnAjN3IV1xTCSmqiObgCXeyC2Cx9d6wNsH9N8gmNxBCZVKoT3zVAhXS5OhQ5r
+	 huhMKkOwZGoXpIjqC8SwBEkk00dFvwe8iF0rG6URE8T5W+WVphecDjWkq61Gfe7Ajh
+	 NQcT3NJQnBlUol5gWXbue+mqBEhSIcBjYNNhrxRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 046/122] ASoC: fsl_micfil: register platform component before registering cpu dai
+	Matthieu Baerts <matttbe@kernel.org>,
+	Geliang Tang <geliang.tang@suse.com>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 296/299] mptcp: userspace pm send RM_ADDR for ID 0
 Date: Tue, 27 Feb 2024 14:26:47 +0100
-Message-ID: <20240227131600.217680764@linuxfoundation.org>
+Message-ID: <20240227131635.188731114@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Geliang Tang <geliang.tang@suse.com>
 
-[ Upstream commit 0adf292069dcca8bab76a603251fcaabf77468ca ]
+commit 84c531f54ad9a124a924c9505d74e33d16965146 upstream.
 
-There is no defer probe when adding platform component to
-snd_soc_pcm_runtime(rtd), the code is in snd_soc_add_pcm_runtime()
+This patch adds the ability to send RM_ADDR for local ID 0. Check
+whether id 0 address is removed, if not, put id 0 into a removing
+list, pass it to mptcp_pm_remove_addr() to remove id 0 address.
 
-snd_soc_register_card()
-  -> snd_soc_bind_card()
-    -> snd_soc_add_pcm_runtime()
-      -> adding cpu dai
-      -> adding codec dai
-      -> adding platform component.
+There is no reason not to allow the userspace to remove the initial
+address (ID 0). This special case was not taken into account not
+letting the userspace to delete all addresses as announced.
 
-So if the platform component is not ready at that time, then the
-sound card still registered successfully, but platform component
-is empty, the sound card can't be used.
-
-As there is defer probe checking for cpu dai component, then register
-platform component before cpu dai to avoid such issue.
-
-Fixes: 47a70e6fc9a8 ("ASoC: Add MICFIL SoC Digital Audio Interface driver.")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://lore.kernel.org/r/1630665006-31437-4-git-send-email-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/379
+Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
+Signed-off-by: Geliang Tang <geliang.tang@suse.com>
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+Link: https://lore.kernel.org/r/20231025-send-net-next-20231025-v1-3-db8f25f798eb@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d9a4594edabf ("mptcp: netlink: Add MPTCP_PM_CMD_REMOVE")
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/fsl/fsl_micfil.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ net/mptcp/pm_userspace.c |   39 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
-index 97f83c63e7652..826829e3ff7a2 100644
---- a/sound/soc/fsl/fsl_micfil.c
-+++ b/sound/soc/fsl/fsl_micfil.c
-@@ -756,18 +756,23 @@ static int fsl_micfil_probe(struct platform_device *pdev)
- 
- 	pm_runtime_enable(&pdev->dev);
- 
-+	/*
-+	 * Register platform component before registering cpu dai for there
-+	 * is not defer probe for platform component in snd_soc_add_pcm_runtime().
-+	 */
-+	ret = devm_snd_dmaengine_pcm_register(&pdev->dev, NULL, 0);
-+	if (ret) {
-+		dev_err(&pdev->dev, "failed to pcm register\n");
-+		return ret;
-+	}
-+
- 	ret = devm_snd_soc_register_component(&pdev->dev, &fsl_micfil_component,
- 					      &fsl_micfil_dai, 1);
- 	if (ret) {
- 		dev_err(&pdev->dev, "failed to register component %s\n",
- 			fsl_micfil_component.name);
--		return ret;
- 	}
- 
--	ret = devm_snd_dmaengine_pcm_register(&pdev->dev, NULL, 0);
--	if (ret)
--		dev_err(&pdev->dev, "failed to pcm register\n");
--
- 	return ret;
+--- a/net/mptcp/pm_userspace.c
++++ b/net/mptcp/pm_userspace.c
+@@ -220,6 +220,40 @@ int mptcp_nl_cmd_announce(struct sk_buff
+ 	return err;
  }
  
--- 
-2.43.0
-
++static int mptcp_userspace_pm_remove_id_zero_address(struct mptcp_sock *msk,
++						     struct genl_info *info)
++{
++	struct mptcp_rm_list list = { .nr = 0 };
++	struct mptcp_subflow_context *subflow;
++	struct sock *sk = (struct sock *)msk;
++	bool has_id_0 = false;
++	int err = -EINVAL;
++
++	lock_sock(sk);
++	mptcp_for_each_subflow(msk, subflow) {
++		if (subflow->local_id == 0) {
++			has_id_0 = true;
++			break;
++		}
++	}
++	if (!has_id_0) {
++		GENL_SET_ERR_MSG(info, "address with id 0 not found");
++		goto remove_err;
++	}
++
++	list.ids[list.nr++] = 0;
++
++	spin_lock_bh(&msk->pm.lock);
++	mptcp_pm_remove_addr(msk, &list);
++	spin_unlock_bh(&msk->pm.lock);
++
++	err = 0;
++
++remove_err:
++	release_sock(sk);
++	return err;
++}
++
+ int mptcp_nl_cmd_remove(struct sk_buff *skb, struct genl_info *info)
+ {
+ 	struct nlattr *token = info->attrs[MPTCP_PM_ATTR_TOKEN];
+@@ -251,6 +285,11 @@ int mptcp_nl_cmd_remove(struct sk_buff *
+ 		goto remove_err;
+ 	}
+ 
++	if (id_val == 0) {
++		err = mptcp_userspace_pm_remove_id_zero_address(msk, info);
++		goto remove_err;
++	}
++
+ 	lock_sock((struct sock *)msk);
+ 
+ 	list_for_each_entry(entry, &msk->pm.userspace_pm_local_addr_list, list) {
 
 
 
