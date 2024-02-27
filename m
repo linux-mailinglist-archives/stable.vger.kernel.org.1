@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-24357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A383C869460
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:53:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 669E3869426
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:51:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F055B31D22
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91DB2B2D872
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:41:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4435513F016;
-	Tue, 27 Feb 2024 13:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85B513DB90;
+	Tue, 27 Feb 2024 13:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EPQN9WJd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVrn/QzT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0123B54BD4;
-	Tue, 27 Feb 2024 13:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A849E13B7AE;
+	Tue, 27 Feb 2024 13:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041772; cv=none; b=Ag8Wy9Vp5FNAbuwJaxFrXmPcjyV5y4WTvmmXx807xl+SVTdoWzWEUsfnyh70f+5au6wka9xSkfk/3FnjgrRwws7OrlixS4PfJIixTPJn/7KxVz4M2IbV5PFBufNULPODqPriE3VX0mI7HEuNdG+3bJH/Ughgnku1cir7LoQlJq4=
+	t=1709041294; cv=none; b=EZvyoloxy6wcX+R9u+5YWiEV0mDa6xjvCmq6TN7v77v9McwYq8qyhS49T7bL1scJ0Svi9oumQAHc0Y0YxlkZIELRQbuoinLucquMcDQ1ih2zrSywltDloAxc0m2b3CfI+1keUJ/u7ncTD96hdjoDPgz3E+iflGm/2/aaL9Knq3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041772; c=relaxed/simple;
-	bh=wd+IrRLgHUtXvoilkidR3+MbUrA74ggK+qbU9jxqKcM=;
+	s=arc-20240116; t=1709041294; c=relaxed/simple;
+	bh=YJzbrLdvjtTQPk2N3sMC5+bICNMSlMraZVXdafdMsyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gBHUIPaMAgbjCSd9MbDkipsuudsaaOFzA8q+5yYNyLhd+QJazJPl0voHXBxUxQNN5nmPB+pYtpw9PVMbl5XrosGNTg9lFeJQcFd3IlEUy0f9+3uQ1Yk+jkCypNo/uyIal8/HHub0z+WoavIvoxhkqgAccy+3JE5jFqQq4ZgQW/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPQN9WJd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8623EC433C7;
-	Tue, 27 Feb 2024 13:49:31 +0000 (UTC)
+	 MIME-Version; b=SNmeyiGfNVGoKN5X7RyVZy0PiINxeqr6+EbnB6f5Lj8y7T+k0nPGFAEMaZ4BfPsrE4rsXvdJA8vzDI6Ce9ntqZs+L94tG0504tVGHO9CwJyLck+b8piXRy/pbwRgPaFIPSOUh4olvXKjfRsCdFjXvgj5vCpFEMhnoJHQ+uS0l9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hVrn/QzT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 005B8C433C7;
+	Tue, 27 Feb 2024 13:41:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041771;
-	bh=wd+IrRLgHUtXvoilkidR3+MbUrA74ggK+qbU9jxqKcM=;
+	s=korg; t=1709041294;
+	bh=YJzbrLdvjtTQPk2N3sMC5+bICNMSlMraZVXdafdMsyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EPQN9WJd1OAfxYDHVN8vGrQQtZgxFP9Z6qoWQS9bUQiG/SndtuJGOIx59426H9fYh
-	 a6z2/ckfWzHy9nY3DEjzw6IhehbZl42Z/oYM2fYQYA5S2WxiRD2JKh44s3IIPpA8/j
-	 r5jP6+ETqOZgb/cvg4DvAIJL6yrURh1JRf2UVtKY=
+	b=hVrn/QzTtEHuHK2qG1fR9QqVuS29TbiTE9BA8JFpFbeJtmcNb80zsjFzJ7vm9WwxW
+	 /cTMCuNbkB52M0rPXens8CjmFEgTcTMqwKXVLQL4wbjbh8KpqSrbBXaz3GdbREoj/P
+	 IxurrJyA4aoDcvsvVEmK7XdQ6RF9oK/qgz6ZIBV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Yi Liu <yi.l.liu@intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 035/299] ext4: avoid allocating blocks from corrupted group in ext4_mb_find_by_goal()
-Date: Tue, 27 Feb 2024 14:22:26 +0100
-Message-ID: <20240227131626.949940488@linuxfoundation.org>
+Subject: [PATCH 6.7 289/334] iommu/vt-d: Update iotlb in nested domain attach
+Date: Tue, 27 Feb 2024 14:22:27 +0100
+Message-ID: <20240227131640.337441771@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +64,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Yi Liu <yi.l.liu@intel.com>
 
-[ Upstream commit 832698373a25950942c04a512daa652c18a9b513 ]
+[ Upstream commit 29e10487d6df050afeee886b7c1da208f389cb5b ]
 
-Places the logic for checking if the group's block bitmap is corrupt under
-the protection of the group lock to avoid allocating blocks from the group
-with a corrupted block bitmap.
+Should call domain_update_iotlb() to update the has_iotlb_device flag
+of the domain after attaching device to nested domain. Without it, this
+flag is not set properly and would result in missing device TLB flush.
 
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240104142040.2835097-8-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 9838f2bb6b6b ("iommu/vt-d: Set the nested domain to a device")
+Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20240208082307.15759-5-yi.l.liu@intel.com
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/iommu/intel/iommu.c  | 4 +---
+ drivers/iommu/intel/iommu.h  | 1 +
+ drivers/iommu/intel/nested.c | 2 ++
+ 3 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index bc9630f4c09cb..ea5ac2636632b 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -2341,12 +2341,10 @@ int ext4_mb_find_by_goal(struct ext4_allocation_context *ac,
- 	if (err)
- 		return err;
+diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+index 897159dba47de..0cc6e08e12c13 100644
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -540,8 +540,6 @@ static int domain_update_device_node(struct dmar_domain *domain)
+ 	return nid;
+ }
  
--	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info))) {
--		ext4_mb_unload_buddy(e4b);
--		return 0;
--	}
+-static void domain_update_iotlb(struct dmar_domain *domain);
 -
- 	ext4_lock_group(ac->ac_sb, group);
-+	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)))
-+		goto out;
+ /* Return the super pagesize bitmap if supported. */
+ static unsigned long domain_super_pgsize_bitmap(struct dmar_domain *domain)
+ {
+@@ -1362,7 +1360,7 @@ domain_lookup_dev_info(struct dmar_domain *domain,
+ 	return NULL;
+ }
+ 
+-static void domain_update_iotlb(struct dmar_domain *domain)
++void domain_update_iotlb(struct dmar_domain *domain)
+ {
+ 	struct dev_pasid_info *dev_pasid;
+ 	struct device_domain_info *info;
+diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
+index ce030c5b5772a..70ac2b989127a 100644
+--- a/drivers/iommu/intel/iommu.h
++++ b/drivers/iommu/intel/iommu.h
+@@ -888,6 +888,7 @@ int qi_submit_sync(struct intel_iommu *iommu, struct qi_desc *desc,
+  */
+ #define QI_OPT_WAIT_DRAIN		BIT(0)
+ 
++void domain_update_iotlb(struct dmar_domain *domain);
+ int domain_attach_iommu(struct dmar_domain *domain, struct intel_iommu *iommu);
+ void domain_detach_iommu(struct dmar_domain *domain, struct intel_iommu *iommu);
+ void device_block_translation(struct device *dev);
+diff --git a/drivers/iommu/intel/nested.c b/drivers/iommu/intel/nested.c
+index b5a5563ab32c6..694c1c4223f66 100644
+--- a/drivers/iommu/intel/nested.c
++++ b/drivers/iommu/intel/nested.c
+@@ -65,6 +65,8 @@ static int intel_nested_attach_dev(struct iommu_domain *domain,
+ 	list_add(&info->link, &dmar_domain->devices);
+ 	spin_unlock_irqrestore(&dmar_domain->lock, flags);
+ 
++	domain_update_iotlb(dmar_domain);
 +
- 	max = mb_find_extent(e4b, ac->ac_g_ex.fe_start,
- 			     ac->ac_g_ex.fe_len, &ex);
- 	ex.fe_logical = 0xDEADFA11; /* debug value */
-@@ -2379,6 +2377,7 @@ int ext4_mb_find_by_goal(struct ext4_allocation_context *ac,
- 		ac->ac_b_ex = ex;
- 		ext4_mb_use_best_found(ac, e4b);
- 	}
-+out:
- 	ext4_unlock_group(ac->ac_sb, group);
- 	ext4_mb_unload_buddy(e4b);
+ 	return 0;
+ }
  
 -- 
 2.43.0
