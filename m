@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-25138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF1898697FA
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:27:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7F02869526
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:59:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10302B2E2F3
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:26:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9323828F77A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E26D3145B0B;
-	Tue, 27 Feb 2024 14:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44502140391;
+	Tue, 27 Feb 2024 13:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RtcCVqud"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vU9WsI7C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1309145338;
-	Tue, 27 Feb 2024 14:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0101654BD4;
+	Tue, 27 Feb 2024 13:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043970; cv=none; b=QUSVC6XEs9G0CC1Lwe8mDJ+ivNYuwgvOw5Ey0UlIWx4t/LzJhuuH/+kN/LpVNLBNHhPiJjAfZRanK5GvQRBGEMR6ZlV9w8AolxirJWV8+WhqFlAvQcj9is1W3htBs0qIs2FEfvByb4t5zUogDeJFBLR/hD2AreEvZ4iRm7mmyaQ=
+	t=1709042358; cv=none; b=qgvD2wzHf9B7XdcnFY0/dD/3xpynblirobxCiCZV1XyG0WyI9oxMqhYemd2lfRAG42ln9JOPVp/lVoUbA1mwORZy9mczfn6h0K1Dm5ypts/nxYZwbWTM8G6N01irNH/7F+DcB/kPfxmntWukybkjK9K+LgR8HeWd/y1QcVIuzzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043970; c=relaxed/simple;
-	bh=KQNzqD5CnK+Adv5Moxw0j3LWtqtul8AbtW94y6vaaJg=;
+	s=arc-20240116; t=1709042358; c=relaxed/simple;
+	bh=5zMcfl9nDLhBJH7QZwy8W+344q9pfnk7cIzgSdvOAig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s3KdH1dXPreFQ1wDlo5HnIBSWUwVjZbbXgT/jVHmS53KU1r6pfcr1elosm3sS/gnJzUEppOCQfzj1ITnywZyYCUqveFfJT+Qb732AXvCVreBef+IYZUSW2q97Q6i9kiZAaBAEgfQTJg6OeFMqSSb97tZqgYMKIxE+jloPEYBtGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RtcCVqud; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 273ECC43394;
-	Tue, 27 Feb 2024 14:26:09 +0000 (UTC)
+	 MIME-Version; b=cEuNzMHWXNyeUmAacNgzLxtMWK178V1xD2lXsnOm2BEI3swFiR1m70uWefrH4dOBY0Lf1t2+4cm6HdV1xxLldjRAb3TPB800xkq7z2/AmgC2iwdEHZYQGoAZx6hAp47dU7ZjbFNUWezFJVHqWvfnec/UgQq15XVFJS3XuQR30QE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vU9WsI7C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 807CBC433F1;
+	Tue, 27 Feb 2024 13:59:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043970;
-	bh=KQNzqD5CnK+Adv5Moxw0j3LWtqtul8AbtW94y6vaaJg=;
+	s=korg; t=1709042357;
+	bh=5zMcfl9nDLhBJH7QZwy8W+344q9pfnk7cIzgSdvOAig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RtcCVqudj58JQeZ+O2mgsDOeHHgmdgkVFn++/JNQnOFuzTZhnndtlwHmwSnieeiOm
-	 2ih2WnQ8RsFG98UFosVeEc5HIFaLyY9vJCZXICoVIsRwRPMIBGK3S8DI5Itmd46fs9
-	 AjlFUvI234XsJSajr0ndhiXH2gB+PSIVWIVNHhsc=
+	b=vU9WsI7CXUy00T+8wVeq8TZuaNpLlYrwVr4YB+2G0SBu7ep4fkkIa6I7AfFFi7HNj
+	 plQn7thjm00Rp/LL/ENVP28ntBjRbNj6vST0T3AoYdVdCHpvVsGjwLqmwFEHhZjLdc
+	 63KPAaKuQ3sU8Zd0mtI1Cr0h22RyTSPGHtvcGPak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Pavel Machek <pavel@denx.de>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 016/122] wifi: mac80211: fix race condition on enabling fast-xmit
+Subject: [PATCH 6.6 266/299] cache: ax45mp_cache: Align end size to cache boundary in ax45mp_dma_cache_wback()
 Date: Tue, 27 Feb 2024 14:26:17 +0100
-Message-ID: <20240227131559.237892271@linuxfoundation.org>
+Message-ID: <20240227131634.250191003@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit bcbc84af1183c8cf3d1ca9b78540c2185cd85e7f ]
+[ Upstream commit 9bd405c48b0ac4de087c0c4440fd79597201b8a7 ]
 
-fast-xmit must only be enabled after the sta has been uploaded to the driver,
-otherwise it could end up passing the not-yet-uploaded sta via drv_tx calls
-to the driver, leading to potential crashes because of uninitialized drv_priv
-data.
-Add a missing sta->uploaded check and re-check fast xmit after inserting a sta.
+Align the end size to cache boundary size in ax45mp_dma_cache_wback()
+callback likewise done in ax45mp_dma_cache_inv() callback.
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://msgid.link/20240104181059.84032-1-nbd@nbd.name
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Additionally return early in case of start == end.
+
+Fixes: d34599bcd2e4 ("cache: Add L2 cache management for Andes AX45MP RISC-V core")
+Reported-by: Pavel Machek <pavel@denx.de>
+Link: https://lore.kernel.org/cip-dev/ZYsdKDiw7G+kxQ3m@duo.ucw.cz/
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/sta_info.c | 2 ++
- net/mac80211/tx.c       | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ drivers/cache/ax45mp_cache.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index 2e84360990f0c..44bd03c6b8473 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -700,6 +700,8 @@ static int sta_info_insert_finish(struct sta_info *sta) __acquires(RCU)
- 	if (ieee80211_vif_is_mesh(&sdata->vif))
- 		mesh_accept_plinks_update(sdata);
+diff --git a/drivers/cache/ax45mp_cache.c b/drivers/cache/ax45mp_cache.c
+index 57186c58dc849..1d7dd3d2c101c 100644
+--- a/drivers/cache/ax45mp_cache.c
++++ b/drivers/cache/ax45mp_cache.c
+@@ -129,8 +129,12 @@ static void ax45mp_dma_cache_wback(phys_addr_t paddr, size_t size)
+ 	unsigned long line_size;
+ 	unsigned long flags;
  
-+	ieee80211_check_fast_xmit(sta);
++	if (unlikely(start == end))
++		return;
 +
- 	return 0;
-  out_remove:
- 	sta_info_hash_del(local, sta);
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 55abc06214c4d..0d6d12fc3c07e 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -2959,7 +2959,7 @@ void ieee80211_check_fast_xmit(struct sta_info *sta)
- 	    sdata->vif.type == NL80211_IFTYPE_STATION)
- 		goto out;
- 
--	if (!test_sta_flag(sta, WLAN_STA_AUTHORIZED))
-+	if (!test_sta_flag(sta, WLAN_STA_AUTHORIZED) || !sta->uploaded)
- 		goto out;
- 
- 	if (test_sta_flag(sta, WLAN_STA_PS_STA) ||
+ 	line_size = ax45mp_priv.ax45mp_cache_line_size;
+ 	start = start & (~(line_size - 1));
++	end = ((end + line_size - 1) & (~(line_size - 1)));
+ 	local_irq_save(flags);
+ 	ax45mp_cpu_dcache_wb_range(start, end);
+ 	local_irq_restore(flags);
 -- 
 2.43.0
 
