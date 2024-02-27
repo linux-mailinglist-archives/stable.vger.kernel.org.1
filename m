@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F2338696F1
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:16:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8405886960B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70BB81C21357
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:16:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 250751F2CB57
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE0313B797;
-	Tue, 27 Feb 2024 14:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE62E143C4B;
+	Tue, 27 Feb 2024 14:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y3qJ2jRK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pz7+yj4G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0FE78B61;
-	Tue, 27 Feb 2024 14:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABECD13F016;
+	Tue, 27 Feb 2024 14:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043415; cv=none; b=UKKJE2LuKaXNa6PZDWQLJqgWK6UwD4eCnv1VPJmg5EPZ57aNQWqlqQT3eHpILMH2xBbxUKNPud9vqVXdwI9qPNlyqg5x9g/vuifgargJG0FYBSfsaEHvWaPGTy6fCJYoHJSd3sZ2JhNeLGTEjCOCMuTG1wFdDX/NfrhVkLXPaY0=
+	t=1709042853; cv=none; b=GydZ4ADORH1jAqY2MLu1GSrmBACT9OYka1Urwx/54WNmKbzDLNPoUK6vGWrLjP3CgEEPOrQd31PIQ+iC/xbdF5vrTCFNNJZ+lr6DrCgrFHVWAZ76VuUfx6Fbt60vOR27a87ofYbWn8P5mtIsVRfrVFFQ3+NXyJPYuFN7kguM2r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043415; c=relaxed/simple;
-	bh=DCYi6dCZ/GhyebRxA+omiLr574Ad6okLCwq476HZ+3w=;
+	s=arc-20240116; t=1709042853; c=relaxed/simple;
+	bh=ucKthrS9X2vlxxQfCsYLQZScdzOtoquD30f3iwbCO10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BHhsOjs6mJc+cTBzXfyXwKPZzMIQFOTo6nZzFai8Msdb3CxmUD1w/qg4AXeSIfzhmpik0h7fzmOCSCSMfJ56rU+Wvnh1W8VE1coYN6MhSZXpvd2IjXTrWu9dh+sUSCwyNdxZDcjGbP5WKA7y/Kqv93Nyjre+RZJeEPPVcKH+2So=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y3qJ2jRK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6BAAC433C7;
-	Tue, 27 Feb 2024 14:16:54 +0000 (UTC)
+	 MIME-Version; b=UxylB5+27YHcpYnBnqxODhKOrB6J/7lrwWEeE9+QgKHRiyG/SA8smcl/ZIld5jlCnslXzRnNdzIGYcpx0vQZGVpRsntUUAbqNkzgTGkNubx2FAM+zBz2Av2GkDXrgtWlWJhofBTaIWZquga4D0NOhzG7bZQOL93OimBJ9g+xzIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pz7+yj4G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AAF6C433F1;
+	Tue, 27 Feb 2024 14:07:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043415;
-	bh=DCYi6dCZ/GhyebRxA+omiLr574Ad6okLCwq476HZ+3w=;
+	s=korg; t=1709042853;
+	bh=ucKthrS9X2vlxxQfCsYLQZScdzOtoquD30f3iwbCO10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y3qJ2jRKUIiI6ZK5Dgye+5vFnboaSRZJf04AuVg/NpEeSmB71xtxmHI+BM3CAHLay
-	 FI/KnH90aEreA7mYWdF/FS+lIXA6cFAwf3pWTBff7RZkWrs2YGqx2F5226p3OzdxRx
-	 2nJND7Vc4mN3z8lNscyTRCLWbzOHJzekRLavu+bo=
+	b=Pz7+yj4Ge7xrdIL+09c+WUqAqCD/qzua0ZNW4vck7uNlkJrgm6oe37n+0xmI/w26Y
+	 r8MEkDkn4M16EnzwCoRg5MRsb5bhGoGjtutlNRV0SMuyPQzQy1CZXc9m5IKqwXxnEs
+	 8WegF8hIqF0oZpRTRLKWMaF3b83551xXAatCg3A8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Daniel Wagner <dwagner@suse.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Hui Su <suhui_kernel@163.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Daniel Bristot de Oliveira <bristot@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 071/195] scsi: lpfc: Use unsigned type for num_sge
+Subject: [PATCH 5.15 144/245] kernel/sched: Remove dl_boosted flag comment
 Date: Tue, 27 Feb 2024 14:25:32 +0100
-Message-ID: <20240227131612.843328702@linuxfoundation.org>
+Message-ID: <20240227131619.901896504@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@suse.de>
+From: Hui Su <suhui_kernel@163.com>
 
-[ Upstream commit d6c1b19153f92e95e5e1801d540e98771053afae ]
+[ Upstream commit 0e3872499de1a1230cef5221607d71aa09264bd5 ]
 
-LUNs going into "failed ready running" state observed on >1T and on even
-numbers of size (2T, 4T, 6T, 8T and 10T). The issue occurs when DIF is
-enabled at the host.
+since commit 2279f540ea7d ("sched/deadline: Fix priority
+inheritance with multiple scheduling classes"), we should not
+keep it here.
 
-The kernel logs:
-
-  Cannot setup S/G List for HBAIO segs 1/1 SGL 512 SCSI 256: 3 0
-
-The host lpfc driver is failing to setup scatter/gather list (protection
-data) for the I/Os.
-
-The return type lpfc_bg_setup_sgl()/lpfc_bg_setup_sgl_prot() causes the
-compiler to remove the most significant bit. Use an unsigned type instead.
-
-Signed-off-by: Hannes Reinecke <hare@suse.de>
-[dwagner: added commit message]
-Signed-off-by: Daniel Wagner <dwagner@suse.de>
-Link: https://lore.kernel.org/r/20231220162658.12392-1-dwagner@suse.de
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Hui Su <suhui_kernel@163.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Daniel Bristot de Oliveira <bristot@redhat.com>
+Link: https://lore.kernel.org/r/20220107095254.GA49258@localhost.localdomain
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_scsi.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ include/linux/sched.h | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
-index 7aac9fc719675..0bb7e164b525f 100644
---- a/drivers/scsi/lpfc/lpfc_scsi.c
-+++ b/drivers/scsi/lpfc/lpfc_scsi.c
-@@ -1919,7 +1919,7 @@ lpfc_bg_setup_bpl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
-  *
-  * Returns the number of SGEs added to the SGL.
-  **/
--static int
-+static uint32_t
- lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
- 		struct sli4_sge *sgl, int datasegcnt,
- 		struct lpfc_io_buf *lpfc_cmd)
-@@ -1927,8 +1927,8 @@ lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
- 	struct scatterlist *sgde = NULL; /* s/g data entry */
- 	struct sli4_sge_diseed *diseed = NULL;
- 	dma_addr_t physaddr;
--	int i = 0, num_sge = 0, status;
--	uint32_t reftag;
-+	int i = 0, status;
-+	uint32_t reftag, num_sge = 0;
- 	uint8_t txop, rxop;
- #ifdef CONFIG_SCSI_LPFC_DEBUG_FS
- 	uint32_t rc;
-@@ -2100,7 +2100,7 @@ lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
-  *
-  * Returns the number of SGEs added to the SGL.
-  **/
--static int
-+static uint32_t
- lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
- 		struct sli4_sge *sgl, int datacnt, int protcnt,
- 		struct lpfc_io_buf *lpfc_cmd)
-@@ -2124,8 +2124,8 @@ lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
- 	uint32_t rc;
- #endif
- 	uint32_t checking = 1;
--	uint32_t dma_offset = 0;
--	int num_sge = 0, j = 2;
-+	uint32_t dma_offset = 0, num_sge = 0;
-+	int j = 2;
- 	struct sli4_hybrid_sgl *sgl_xtra = NULL;
- 
- 	sgpe = scsi_prot_sglist(sc);
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 7bfc2b45cd99b..9b3cfe685cb45 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -608,10 +608,6 @@ struct sched_dl_entity {
+ 	 * task has to wait for a replenishment to be performed at the
+ 	 * next firing of dl_timer.
+ 	 *
+-	 * @dl_boosted tells if we are boosted due to DI. If so we are
+-	 * outside bandwidth enforcement mechanism (but only until we
+-	 * exit the critical section);
+-	 *
+ 	 * @dl_yielded tells if task gave up the CPU before consuming
+ 	 * all its available runtime during the last job.
+ 	 *
 -- 
 2.43.0
 
