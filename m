@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-24091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B29186929A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:37:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45AA78692A3
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:37:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA5B028EDE7
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:37:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E32E028C17A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6877314037E;
-	Tue, 27 Feb 2024 13:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B34E13B7A0;
+	Tue, 27 Feb 2024 13:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lPgXnS6Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WoBOHkFQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2820513B78F;
-	Tue, 27 Feb 2024 13:36:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F019A78B61;
+	Tue, 27 Feb 2024 13:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041008; cv=none; b=DMLrlZzk7H4cwmwib3TYXzNiyLWeO+Be+kFQOgTaA92HTwmmkXCJaFCye20r+watCoAlO2Owz8K7pGWhWAEfNMy1tUgTZZ0nOWLK19ged+H51v6ZPumMMWfoSoo81Kiyj7Indx9+nC2OPQaDvS1fgf3gmKqYzi58adY157EfYNs=
+	t=1709041039; cv=none; b=IbOOmvwbzuo9e4npO9BuWse1vbIvUPpZliFtjRd4i9zL+fdm6Wzz33GeVOVkoncHNTeemVXw+ypGoKWq2g4PDgsr7nYHRQBiJGhFtdtbw+Y/R0S1xRT0l/2JH4KeW46oAwholOYdEdPkWWtRFPiRlZe1M0+KDJglTeeEhBwk9To=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041008; c=relaxed/simple;
-	bh=RxcInxed/5NTzzpVkrYXgQAo47oZXBqOOH8K8AhXp+U=;
+	s=arc-20240116; t=1709041039; c=relaxed/simple;
+	bh=5hmIbd8Qv9Th+fom9ECoTYWh5JYZ5Ykp+iXCmHBRMzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HB9iOBlit2iTm5yJVgLFfGIfaBno5yBC6tbXHbaUfujYMKz53TZqBzc2Fh1wSDvP2w3Wo0nm6Er81VxfpVLRJ5emna1AiacgaqGYeHApTEMS8lRYDFG68vmKYG/3nJnA9UtpAk97zgHtjIOahYVI79hpPSxftcRc+rcyzvoiwO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lPgXnS6Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A02A3C433C7;
-	Tue, 27 Feb 2024 13:36:47 +0000 (UTC)
+	 MIME-Version; b=T3rzZrrzJHsmVD6rvkiUu8wdoNZRZjqmDKeXcU/rKEBfO5KZn25a2RgH2ogXzhda2+5/jw4iBYBZOPhWYxy9+5nLHyCmD1KU38cKlftD30JM0HKoczNru9jDFueKjOYxF8NJgUTZw0SxXKZjJKSM6MRp/Q/Fi3wBN3E/V8TgOHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WoBOHkFQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24407C43399;
+	Tue, 27 Feb 2024 13:37:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041008;
-	bh=RxcInxed/5NTzzpVkrYXgQAo47oZXBqOOH8K8AhXp+U=;
+	s=korg; t=1709041038;
+	bh=5hmIbd8Qv9Th+fom9ECoTYWh5JYZ5Ykp+iXCmHBRMzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lPgXnS6QwEOmCPmBal05FdEi38/aeMcH7iU7BZcstiO88NFBXnA+UBGhKHuMLIN1q
-	 Ic/vNyh4S1fDdNWgsV/wWFs0OyTxmuhNpgUbkW4xC8HqWYruQYcVYcJR+FazQX0iFf
-	 vml8ML/aSshGdHmauwQhIdW7xn5UEp3d0NIHq8HI=
+	b=WoBOHkFQp+Q9y0MTeeEXGu9MzO1it0MH5AyZ9lkSL/zBMPq1KQOmPl9WzAWYQfFSq
+	 sQOVdWoQr+cCdVAYlpLGqT31nahCm5Oi4Jy0CBMZGsK/BgkwkM3zWJXAxEbKJOeZwz
+	 cUiA7z0GvewGrXbinykzlJY9mXc60lz4WqT75uAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.7 179/334] platform/x86: touchscreen_dmi: Allow partial (prefix) matches for ACPI names
-Date: Tue, 27 Feb 2024 14:20:37 +0100
-Message-ID: <20240227131636.365738434@linuxfoundation.org>
+	Baokun Li <libaokun1@huawei.com>,
+	David Howells <dhowells@redhat.com>,
+	Jingbo Xu <jefflexu@linux.alibaba.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.7 180/334] cachefiles: fix memory leak in cachefiles_add_cache()
+Date: Tue, 27 Feb 2024 14:20:38 +0100
+Message-ID: <20240227131636.412659947@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
 References: <20240227131630.636392135@linuxfoundation.org>
@@ -65,59 +68,69 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit dbcbfd662a725641d118fb3ae5ffb7be4e3d0fb0 upstream.
+commit e21a2f17566cbd64926fb8f16323972f7a064444 upstream.
 
-On some devices the ACPI name of the touchscreen is e.g. either
-MSSL1680:00 or MSSL1680:01 depending on the BIOS version.
+The following memory leak was reported after unbinding /dev/cachefiles:
 
-This happens for example on the "Chuwi Hi8 Air" tablet where the initial
-commit's ts_data uses "MSSL1680:00" but the tablets from the github issue
-and linux-hardware.org probe linked below both use "MSSL1680:01".
+==================================================================
+unreferenced object 0xffff9b674176e3c0 (size 192):
+  comm "cachefilesd2", pid 680, jiffies 4294881224
+  hex dump (first 32 bytes):
+    01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace (crc ea38a44b):
+    [<ffffffff8eb8a1a5>] kmem_cache_alloc+0x2d5/0x370
+    [<ffffffff8e917f86>] prepare_creds+0x26/0x2e0
+    [<ffffffffc002eeef>] cachefiles_determine_cache_security+0x1f/0x120
+    [<ffffffffc00243ec>] cachefiles_add_cache+0x13c/0x3a0
+    [<ffffffffc0025216>] cachefiles_daemon_write+0x146/0x1c0
+    [<ffffffff8ebc4a3b>] vfs_write+0xcb/0x520
+    [<ffffffff8ebc5069>] ksys_write+0x69/0xf0
+    [<ffffffff8f6d4662>] do_syscall_64+0x72/0x140
+    [<ffffffff8f8000aa>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
+==================================================================
 
-Replace the strcmp() match on ts_data->acpi_name with a strstarts()
-check to allow using a partial match on just the ACPI HID of "MSSL1680"
-and change the ts_data->acpi_name for the "Chuwi Hi8 Air" accordingly
-to fix the touchscreen not working on models where it is "MSSL1680:01".
+Put the reference count of cache_cred in cachefiles_daemon_unbind() to
+fix the problem. And also put cache_cred in cachefiles_add_cache() error
+branch to avoid memory leaks.
 
-Note this drops the length check for I2C_NAME_SIZE. This never was
-necessary since the ACPI names used are never more then 11 chars and
-I2C_NAME_SIZE is 20 so the replaced strncmp() would always stop long
-before reaching I2C_NAME_SIZE.
-
-Link: https://linux-hardware.org/?computer=AC4301C0542A
-Fixes: bbb97d728f77 ("platform/x86: touchscreen_dmi: Add info for the Chuwi Hi8 Air tablet")
-Closes: https://github.com/onitake/gsl-firmware/issues/91
-Cc: stable@vger.kernel.org
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240212120608.30469-1-hdegoede@redhat.com
+Fixes: 9ae326a69004 ("CacheFiles: A cache that backs onto a mounted filesystem")
+CC: stable@vger.kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240217081431.796809-1-libaokun1@huawei.com
+Acked-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/touchscreen_dmi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/cachefiles/cache.c  |    2 ++
+ fs/cachefiles/daemon.c |    1 +
+ 2 files changed, 3 insertions(+)
 
---- a/drivers/platform/x86/touchscreen_dmi.c
-+++ b/drivers/platform/x86/touchscreen_dmi.c
-@@ -81,7 +81,7 @@ static const struct property_entry chuwi
- };
+--- a/fs/cachefiles/cache.c
++++ b/fs/cachefiles/cache.c
+@@ -168,6 +168,8 @@ error_unsupported:
+ 	dput(root);
+ error_open_root:
+ 	cachefiles_end_secure(cache, saved_cred);
++	put_cred(cache->cache_cred);
++	cache->cache_cred = NULL;
+ error_getsec:
+ 	fscache_relinquish_cache(cache_cookie);
+ 	cache->cache = NULL;
+--- a/fs/cachefiles/daemon.c
++++ b/fs/cachefiles/daemon.c
+@@ -805,6 +805,7 @@ static void cachefiles_daemon_unbind(str
+ 	cachefiles_put_directory(cache->graveyard);
+ 	cachefiles_put_directory(cache->store);
+ 	mntput(cache->mnt);
++	put_cred(cache->cache_cred);
  
- static const struct ts_dmi_data chuwi_hi8_air_data = {
--	.acpi_name	= "MSSL1680:00",
-+	.acpi_name	= "MSSL1680",
- 	.properties	= chuwi_hi8_air_props,
- };
- 
-@@ -1821,7 +1821,7 @@ static void ts_dmi_add_props(struct i2c_
- 	int error;
- 
- 	if (has_acpi_companion(dev) &&
--	    !strncmp(ts_data->acpi_name, client->name, I2C_NAME_SIZE)) {
-+	    strstarts(client->name, ts_data->acpi_name)) {
- 		error = device_create_managed_software_node(dev, ts_data->properties, NULL);
- 		if (error)
- 			dev_err(dev, "failed to add properties: %d\n", error);
+ 	kfree(cache->rootdirname);
+ 	kfree(cache->secctx);
 
 
 
