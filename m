@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-24407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9242986944D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDAD386944E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C36F31C234B9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78C932839CA
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A925913F006;
-	Tue, 27 Feb 2024 13:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71614143C7B;
+	Tue, 27 Feb 2024 13:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uq1hjyOx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ebd2pUOq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F2C13B2BA;
-	Tue, 27 Feb 2024 13:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E8F6143C75;
+	Tue, 27 Feb 2024 13:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041915; cv=none; b=lw8LiZYiGdOlcf+/eTcZadzxGaGo4k3mvWNpX2VqHpKHjZ8j4Sk85bNCIoXf47MHYHSLdssNyeyIQQQ2zkh0Yliw+VrUQS4eI3fAGJCM/3EwLkAlNnVnptGDZsHWzphElFmN6fBPwZD3xZAbcVVneQLxF32GrR1m+gE+S6HIuAc=
+	t=1709041918; cv=none; b=UIHynDWccFF+yTfvmyuq6phqjxMxB7xLtwR+UMwG9ti9mFzOG/E73L2sSlqxmWMlk7hDT4MrvTlqu9zKvWL50TErusNhKGiYwIgJ48XYDNLAe1f2uW6npafa3fiHFwcvKsePsLWHFihxsjouRenDzrxXJt3fbG9yIfHeG0ZAqZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041915; c=relaxed/simple;
-	bh=gw/oWp744+lfec61lM5eEexY/jr9qeV9H8FIlcGRYyc=;
+	s=arc-20240116; t=1709041918; c=relaxed/simple;
+	bh=KxsuNYdkDIOh8vasdPy7cQUO+9S2Ff7jieYYjLFOBqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gJIwr8L2bwoIUVzavL5BHaEbyoxtmyk+QHAeuv14gJSRuFvq/UMRBnmjSaeggiF5tswrWxojdzni9z7kMCZ+0tV7ty65ks3aoU4Sx1TRB6mGS7vRuNlWPiK8pHDEJgxRHvLCcs+TJZCryImXhb9o80wIK3E4c9hUk/lkj37eN1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uq1hjyOx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8DDCC433F1;
-	Tue, 27 Feb 2024 13:51:54 +0000 (UTC)
+	 MIME-Version; b=L19ZTUNNjwhta4QbffurFzzhUEyoFvxvnWXvHgZH/cFLi8FgkwSmK1B681v4TqB9z8bXFgmDKypnfBJNdjxxYpGUU+GLpkypuJnYFDKLV66y/HiocC9qJNMbCDt0d5LkV1ZT+xJO6ZK0dw1fWwcrOHoS9uWqVBGtqKXyxLyChm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ebd2pUOq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A96B1C433F1;
+	Tue, 27 Feb 2024 13:51:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041915;
-	bh=gw/oWp744+lfec61lM5eEexY/jr9qeV9H8FIlcGRYyc=;
+	s=korg; t=1709041918;
+	bh=KxsuNYdkDIOh8vasdPy7cQUO+9S2Ff7jieYYjLFOBqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uq1hjyOx8klujiNoI5ZpAe1RUyWsW71okDO/19QoPs6YMTlyOYLSS9RsGOvDb6Sy+
-	 VFIx7NxRLr9uS8N4g9/iYGvpwMU9H1HjyyS4w6mQfg5B8Vbkb38c9r/srEObzs3Ily
-	 pOeQDmkUFNhi7Va66n3FHf8tULnk2FGbW3RFBNGA=
+	b=Ebd2pUOqEE6WHdQyXZdFKYFgo64H6qcz8XvxGigiR6G1hpyfLDXmMzqB6jzP/PFld
+	 kuNIoJR4/mjF608XAMetOiMXhj2oe9lcHVnYOGJ1mIKm68+wbssjIS3+yaGA3NuDen
+	 vYBiEiRO3N3d8M3A2HnTq87F47aSODNWnnqJ3dis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Stanley.Yang" <Stanley.Yang@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
 	Hawking Zhang <Hawking.Zhang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 113/299] drm/amdgpu: Fix shared buff copy to user
-Date: Tue, 27 Feb 2024 14:23:44 +0100
-Message-ID: <20240227131629.508362716@linuxfoundation.org>
+Subject: [PATCH 6.6 114/299] drm/amdgpu: Fix HDP flush for VFs on nbio v7.9
+Date: Tue, 27 Feb 2024 14:23:45 +0100
+Message-ID: <20240227131629.538897172@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
 References: <20240227131625.847743063@linuxfoundation.org>
@@ -67,40 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stanley.Yang <Stanley.Yang@amd.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit 2dcf82a8e8dc930655787797ef8a3692b527c7a9 ]
+[ Upstream commit 534c8a5b9d5d41d30cdcac93cfa1bca5e17be009 ]
 
-ta if invoke node buffer
-|-------- ta type ----------|
-|--------  ta id  ----------|
-|-------- cmd  id ----------|
-|------ shared buf len -----|
-|------ shared buffer ------|
+HDP flush remapping is not done for VFs. Keep the original offsets in VF
+environment.
 
-ta if invoke node buffer is as above, copy shared buffer data to correct location
-
-Signed-off-by: Stanley.Yang <Stanley.Yang@amd.com>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
 Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c
-index 468a67b302d4c..ca5c86e5f7cd6 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c
-@@ -362,7 +362,7 @@ static ssize_t ta_if_invoke_debugfs_write(struct file *fp, const char *buf, size
- 		}
- 	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c b/drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c
+index ae45656eb8779..0a601336cf697 100644
+--- a/drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c
++++ b/drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c
+@@ -426,6 +426,12 @@ static void nbio_v7_9_init_registers(struct amdgpu_device *adev)
+ 	u32 inst_mask;
+ 	int i;
  
--	if (copy_to_user((char *)buf, context->mem_context.shared_buf, shared_buf_len))
-+	if (copy_to_user((char *)&buf[copy_pos], context->mem_context.shared_buf, shared_buf_len))
- 		ret = -EFAULT;
++	if (amdgpu_sriov_vf(adev))
++		adev->rmmio_remap.reg_offset =
++			SOC15_REG_OFFSET(
++				NBIO, 0,
++				regBIF_BX_DEV0_EPF0_VF0_HDP_MEM_COHERENCY_FLUSH_CNTL)
++			<< 2;
+ 	WREG32_SOC15(NBIO, 0, regXCC_DOORBELL_FENCE,
+ 		0xff & ~(adev->gfx.xcc_mask));
  
- err_free_shared_buf:
 -- 
 2.43.0
 
