@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-25175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A57386981D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:29:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 469CF869796
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:22:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D49AD1F2CE6C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:29:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C39351F25F0F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:22:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B6E146E7F;
-	Tue, 27 Feb 2024 14:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5524713B798;
+	Tue, 27 Feb 2024 14:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rgcAQeqo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gg9mEwCZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E712145327;
-	Tue, 27 Feb 2024 14:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C2E13B2B4;
+	Tue, 27 Feb 2024 14:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044073; cv=none; b=DEMNDvQxlajibNfWXaa0dYZzppggWHVWIibXju74JwHCqc2i3uhAARBVe7El+Me136AQpCxMSIn3katf0sayJvA4bPzfst7W9fS40U9c/EnXj2TmhANNPLho4WTsnJtbW2KTsbFZTwm2fhEEIOXSLSWtgWyjBBNPWItTJKU0k/w=
+	t=1709043766; cv=none; b=LCK9EMQOLYkmoOcIwKxwTWlDt0ZFEEU3+oiLT0RgTN2jg9MqOz7YWqmpuP/oMJ/YnktAsOtSHvXBCaS9x1m6adhZN7jf/HiH44tFt/U28jo0Y02L0sGRn2k8qp0zLGbrzvPOgrPlTHvmXeCJIcdow1IlFQw/4L7TntW4087aQPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044073; c=relaxed/simple;
-	bh=fAgBA948DBCUAna3LK2ZqZASLQn6WE1WJs4Z7W5WwZI=;
+	s=arc-20240116; t=1709043766; c=relaxed/simple;
+	bh=VUDDTu7MkYL9Juwj1rZ8fbqqjzcMkTtK/Eif/R/Ztmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ud6xKnO1Ldgj5ITDeNF46xQL47fr4O+EVZ7TInn8ZDdR+r5CksqZlO8tMFH3iuDy8JHzmZ/l/fYh0cjGtSxRqK8En0lCTWCQZBZNWiL7kZasF3uy8sIQVxpQmFJdE8Y378p7H0cRFGfzzDPEfzC1tKehQKYcclMYUur85YZnSyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rgcAQeqo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9149FC433F1;
-	Tue, 27 Feb 2024 14:27:52 +0000 (UTC)
+	 MIME-Version; b=A2zTu32LRu6USnswut8KWirImegNYfOrBseZKYFVFmucGdf+qk5gahm5q4ZhO2RES1v4P3kiJSmJdLJFMbDloR4IbR1R+89143byESJFIOo5/jo+uxGN6q7r8WhV3lR4cqGdmFZcV0tmw08bglechkCsqS6NdPn141rAamuuVyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gg9mEwCZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95055C433C7;
+	Tue, 27 Feb 2024 14:22:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044072;
-	bh=fAgBA948DBCUAna3LK2ZqZASLQn6WE1WJs4Z7W5WwZI=;
+	s=korg; t=1709043766;
+	bh=VUDDTu7MkYL9Juwj1rZ8fbqqjzcMkTtK/Eif/R/Ztmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rgcAQeqoVXpi/IsHYxKhQWLId1+h+akWd1dX/e2Fe7wtAUcocMUQ3hFnMBN5NamoM
-	 0HCtc8iuEOigZ6HW5sY8aM07EAXlWHJd0+wyZCB26u8fFOXSoah7QL1HNCSGLUF+ye
-	 Ekn7+ENkjHynXI2fwf7ky3WfVjWJs8fHrv1CxeKI=
+	b=Gg9mEwCZfiq8VOGy+YkJ4WrPfI1PfNWq1xcJmTzxwpdkNQqMgxb9rpDyKzOrTUcCv
+	 xf69QTlw+orlvlDWzQCfF+F19EfsBAUI1t2EuG+1vzWTZAoTsuofEzVNqfmsNbXtfB
+	 PY4NwqHz9tVhoZQwpw/191RLstp42OlnJgqH64uQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ravi Bangoria <ravi.bangoria@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 053/122] powerpc/watchpoint: Workaround P10 DD1 issue with VSX-32 byte instructions
-Date: Tue, 27 Feb 2024 14:26:54 +0100
-Message-ID: <20240227131600.443373400@linuxfoundation.org>
+Subject: [PATCH 5.4 28/84] hwmon: (coretemp) Enlarge per package core count limit
+Date: Tue, 27 Feb 2024 14:26:55 +0100
+Message-ID: <20240227131553.780778715@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,129 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
+From: Zhang Rui <rui.zhang@intel.com>
 
-[ Upstream commit 3d2ffcdd2a982e8bbe65fa0f94fb21bf304c281e ]
+[ Upstream commit 34cf8c657cf0365791cdc658ddbca9cc907726ce ]
 
-POWER10 DD1 has an issue where it generates watchpoint exceptions when
-it shouldn't. The conditions where this occur are:
+Currently, coretemp driver supports only 128 cores per package.
+This loses some core temperature information on systems that have more
+than 128 cores per package.
+ [   58.685033] coretemp coretemp.0: Adding Core 128 failed
+ [   58.692009] coretemp coretemp.0: Adding Core 129 failed
+ ...
 
- - octword op
- - ending address of DAWR range is less than starting address of op
- - those addresses need to be in the same or in two consecutive 512B
-   blocks
- - 'op address + 64B' generates an address that has a carry into bit
-   52 (crosses 2K boundary)
+Enlarge the limitation to 512 because there are platforms with more than
+256 cores per package.
 
-Handle such spurious exception by considering them as extraneous and
-emulating/single-steeping instruction without generating an event.
-
-[ravi: Fixed build warning reported by lkp@intel.com]
-Signed-off-by: Ravi Bangoria <ravi.bangoria@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20201106045650.278987-1-ravi.bangoria@linux.ibm.com
-Stable-dep-of: 27646b2e02b0 ("powerpc/watchpoints: Annotate atomic context in more places")
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Link: https://lore.kernel.org/r/20240202092144.71180-4-rui.zhang@intel.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/hw_breakpoint.c | 67 ++++++++++++++++++++++++++++-
- 1 file changed, 65 insertions(+), 2 deletions(-)
+ drivers/hwmon/coretemp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
-index 6e5bed50c3578..49273f67c7498 100644
---- a/arch/powerpc/kernel/hw_breakpoint.c
-+++ b/arch/powerpc/kernel/hw_breakpoint.c
-@@ -504,6 +504,11 @@ static bool is_larx_stcx_instr(int type)
- 	return type == LARX || type == STCX;
- }
+diff --git a/drivers/hwmon/coretemp.c b/drivers/hwmon/coretemp.c
+index ecee12d0346b2..04acb8274fdf8 100644
+--- a/drivers/hwmon/coretemp.c
++++ b/drivers/hwmon/coretemp.c
+@@ -40,7 +40,7 @@ MODULE_PARM_DESC(tjmax, "TjMax value in degrees Celsius");
  
-+static bool is_octword_vsx_instr(int type, int size)
-+{
-+	return ((type == LOAD_VSX || type == STORE_VSX) && size == 32);
-+}
-+
- /*
-  * We've failed in reliably handling the hw-breakpoint. Unregister
-  * it and throw a warning message to let the user know about it.
-@@ -554,6 +559,58 @@ static bool stepping_handler(struct pt_regs *regs, struct perf_event **bp,
- 	return true;
- }
- 
-+static void handle_p10dd1_spurious_exception(struct arch_hw_breakpoint **info,
-+					     int *hit, unsigned long ea)
-+{
-+	int i;
-+	unsigned long hw_end_addr;
-+
-+	/*
-+	 * Handle spurious exception only when any bp_per_reg is set.
-+	 * Otherwise this might be created by xmon and not actually a
-+	 * spurious exception.
-+	 */
-+	for (i = 0; i < nr_wp_slots(); i++) {
-+		if (!info[i])
-+			continue;
-+
-+		hw_end_addr = ALIGN(info[i]->address + info[i]->len, HW_BREAKPOINT_SIZE);
-+
-+		/*
-+		 * Ending address of DAWR range is less than starting
-+		 * address of op.
-+		 */
-+		if ((hw_end_addr - 1) >= ea)
-+			continue;
-+
-+		/*
-+		 * Those addresses need to be in the same or in two
-+		 * consecutive 512B blocks;
-+		 */
-+		if (((hw_end_addr - 1) >> 10) != (ea >> 10))
-+			continue;
-+
-+		/*
-+		 * 'op address + 64B' generates an address that has a
-+		 * carry into bit 52 (crosses 2K boundary).
-+		 */
-+		if ((ea & 0x800) == ((ea + 64) & 0x800))
-+			continue;
-+
-+		break;
-+	}
-+
-+	if (i == nr_wp_slots())
-+		return;
-+
-+	for (i = 0; i < nr_wp_slots(); i++) {
-+		if (info[i]) {
-+			hit[i] = 1;
-+			info[i]->type |= HW_BRK_TYPE_EXTRANEOUS_IRQ;
-+		}
-+	}
-+}
-+
- int hw_breakpoint_handler(struct die_args *args)
- {
- 	bool err = false;
-@@ -612,8 +669,14 @@ int hw_breakpoint_handler(struct die_args *args)
- 		goto reset;
- 
- 	if (!nr_hit) {
--		rc = NOTIFY_DONE;
--		goto out;
-+		/* Workaround for Power10 DD1 */
-+		if (!IS_ENABLED(CONFIG_PPC_8xx) && mfspr(SPRN_PVR) == 0x800100 &&
-+		    is_octword_vsx_instr(type, size)) {
-+			handle_p10dd1_spurious_exception(info, hit, ea);
-+		} else {
-+			rc = NOTIFY_DONE;
-+			goto out;
-+		}
- 	}
- 
- 	/*
+ #define PKG_SYSFS_ATTR_NO	1	/* Sysfs attribute for package temp */
+ #define BASE_SYSFS_ATTR_NO	2	/* Sysfs Base attr no for coretemp */
+-#define NUM_REAL_CORES		128	/* Number of Real cores per cpu */
++#define NUM_REAL_CORES		512	/* Number of Real cores per cpu */
+ #define CORETEMP_NAME_LENGTH	28	/* String Length of attrs */
+ #define MAX_CORE_ATTRS		4	/* Maximum no of basic attrs */
+ #define TOTAL_ATTRS		(MAX_CORE_ATTRS + 1)
 -- 
 2.43.0
 
