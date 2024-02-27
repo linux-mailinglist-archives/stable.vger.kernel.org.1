@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-24193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 669E3869426
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:51:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77336869412
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91DB2B2D872
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:41:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28B5D2871D9
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85B513DB90;
-	Tue, 27 Feb 2024 13:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 058851419A6;
+	Tue, 27 Feb 2024 13:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVrn/QzT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZsEe/3kx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A849E13B7AE;
-	Tue, 27 Feb 2024 13:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B738F13DBBF;
+	Tue, 27 Feb 2024 13:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041294; cv=none; b=EZvyoloxy6wcX+R9u+5YWiEV0mDa6xjvCmq6TN7v77v9McwYq8qyhS49T7bL1scJ0Svi9oumQAHc0Y0YxlkZIELRQbuoinLucquMcDQ1ih2zrSywltDloAxc0m2b3CfI+1keUJ/u7ncTD96hdjoDPgz3E+iflGm/2/aaL9Knq3E=
+	t=1709041774; cv=none; b=Tc6YGthF0DIRDH0EL0Natqpzpyn8K1ThcnHW+vWXAljfilEusKl3UMilUU75TfC96R9HC+DCcfyQmqX5b48fPjKAZpnoRoBQp28Tyr7RDMaO4kjA2xku5WeigFNPI4Tk/+ZwV1Hp83M7xhH01rhV5AFcOLvAMzyCeMA639da5ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041294; c=relaxed/simple;
-	bh=YJzbrLdvjtTQPk2N3sMC5+bICNMSlMraZVXdafdMsyw=;
+	s=arc-20240116; t=1709041774; c=relaxed/simple;
+	bh=vVug46O5EeymUovq+1pspReTs0eWgrwZjtomCVXeM+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SNmeyiGfNVGoKN5X7RyVZy0PiINxeqr6+EbnB6f5Lj8y7T+k0nPGFAEMaZ4BfPsrE4rsXvdJA8vzDI6Ce9ntqZs+L94tG0504tVGHO9CwJyLck+b8piXRy/pbwRgPaFIPSOUh4olvXKjfRsCdFjXvgj5vCpFEMhnoJHQ+uS0l9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hVrn/QzT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 005B8C433C7;
-	Tue, 27 Feb 2024 13:41:33 +0000 (UTC)
+	 MIME-Version; b=uHSa5CmCZiIF6xWYHFQ7Ev0Bsu9kVD9r7/uALSD8Bq9YSd/+nWbpXf+QDboqyHOiTYhF2PnkFawBNf5S2/RdV4WHptSGPSeO5oMn4O927xbee4gXILAEfqdZ+mHNFxg0beJZ4LOmUpg1pWJ5bFTf49JRBGlLURWSmQAA+F3N3Xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZsEe/3kx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4460EC433F1;
+	Tue, 27 Feb 2024 13:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041294;
-	bh=YJzbrLdvjtTQPk2N3sMC5+bICNMSlMraZVXdafdMsyw=;
+	s=korg; t=1709041774;
+	bh=vVug46O5EeymUovq+1pspReTs0eWgrwZjtomCVXeM+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hVrn/QzTtEHuHK2qG1fR9QqVuS29TbiTE9BA8JFpFbeJtmcNb80zsjFzJ7vm9WwxW
-	 /cTMCuNbkB52M0rPXens8CjmFEgTcTMqwKXVLQL4wbjbh8KpqSrbBXaz3GdbREoj/P
-	 IxurrJyA4aoDcvsvVEmK7XdQ6RF9oK/qgz6ZIBV8=
+	b=ZsEe/3kxMX+CGN5atz5NEeCX+kxGgFLRvIwy3Rl2pidYSYIdFDt86NU259v542bpY
+	 DsT71INAk1QZ4Jf8G5e2keD2L0ppl5uLxJ9ketxoi2Hova3JgOW2MgYSf8IT4T+eL4
+	 9P1tI+2cii/JD1xJN6/2xwtB7gmEmItlAOZJRPG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Liu <yi.l.liu@intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 289/334] iommu/vt-d: Update iotlb in nested domain attach
+Subject: [PATCH 6.6 036/299] Input: goodix - accept ACPI resources with gpio_count == 3 && gpio_int_idx == 0
 Date: Tue, 27 Feb 2024 14:22:27 +0100
-Message-ID: <20240227131640.337441771@linuxfoundation.org>
+Message-ID: <20240227131626.980452843@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Liu <yi.l.liu@intel.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 29e10487d6df050afeee886b7c1da208f389cb5b ]
+[ Upstream commit 180a8f12c21f41740fee09ca7f7aa98ff5bb99f8 ]
 
-Should call domain_update_iotlb() to update the has_iotlb_device flag
-of the domain after attaching device to nested domain. Without it, this
-flag is not set properly and would result in missing device TLB flush.
+Some devices list 3 Gpio resources in the ACPI resource list for
+the touchscreen:
 
-Fixes: 9838f2bb6b6b ("iommu/vt-d: Set the nested domain to a device")
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20240208082307.15759-5-yi.l.liu@intel.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+1. GpioInt resource pointing to the GPIO used for the interrupt
+2. GpioIo resource pointing to the reset GPIO
+3. GpioIo resource pointing to the GPIO used for the interrupt
+
+Note how the third extra GpioIo resource really is a duplicate
+of the GpioInt provided info.
+
+Ignore this extra GPIO, treating this setup the same as gpio_count == 2 &&
+gpio_int_idx == 0 fixes the touchscreen not working on the Thunderbook
+Colossus W803 rugged tablet and likely also on the CyberBook_T116K.
+
+Reported-by: Maarten van der Schrieck
+Closes: https://gitlab.com/AdyaAdya/goodix-touchscreen-linux-driver/-/issues/22
+Suggested-by: Maarten van der Schrieck
+Tested-by: Maarten van der Schrieck
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20231223141650.10679-1-hdegoede@redhat.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/iommu.c  | 4 +---
- drivers/iommu/intel/iommu.h  | 1 +
- drivers/iommu/intel/nested.c | 2 ++
- 3 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/input/touchscreen/goodix.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index 897159dba47de..0cc6e08e12c13 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -540,8 +540,6 @@ static int domain_update_device_node(struct dmar_domain *domain)
- 	return nid;
- }
+diff --git a/drivers/input/touchscreen/goodix.c b/drivers/input/touchscreen/goodix.c
+index af32fbe57b630..b068ff8afbc9a 100644
+--- a/drivers/input/touchscreen/goodix.c
++++ b/drivers/input/touchscreen/goodix.c
+@@ -884,7 +884,8 @@ static int goodix_add_acpi_gpio_mappings(struct goodix_ts_data *ts)
+ 		}
+ 	}
  
--static void domain_update_iotlb(struct dmar_domain *domain);
--
- /* Return the super pagesize bitmap if supported. */
- static unsigned long domain_super_pgsize_bitmap(struct dmar_domain *domain)
- {
-@@ -1362,7 +1360,7 @@ domain_lookup_dev_info(struct dmar_domain *domain,
- 	return NULL;
- }
- 
--static void domain_update_iotlb(struct dmar_domain *domain)
-+void domain_update_iotlb(struct dmar_domain *domain)
- {
- 	struct dev_pasid_info *dev_pasid;
- 	struct device_domain_info *info;
-diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
-index ce030c5b5772a..70ac2b989127a 100644
---- a/drivers/iommu/intel/iommu.h
-+++ b/drivers/iommu/intel/iommu.h
-@@ -888,6 +888,7 @@ int qi_submit_sync(struct intel_iommu *iommu, struct qi_desc *desc,
-  */
- #define QI_OPT_WAIT_DRAIN		BIT(0)
- 
-+void domain_update_iotlb(struct dmar_domain *domain);
- int domain_attach_iommu(struct dmar_domain *domain, struct intel_iommu *iommu);
- void domain_detach_iommu(struct dmar_domain *domain, struct intel_iommu *iommu);
- void device_block_translation(struct device *dev);
-diff --git a/drivers/iommu/intel/nested.c b/drivers/iommu/intel/nested.c
-index b5a5563ab32c6..694c1c4223f66 100644
---- a/drivers/iommu/intel/nested.c
-+++ b/drivers/iommu/intel/nested.c
-@@ -65,6 +65,8 @@ static int intel_nested_attach_dev(struct iommu_domain *domain,
- 	list_add(&info->link, &dmar_domain->devices);
- 	spin_unlock_irqrestore(&dmar_domain->lock, flags);
- 
-+	domain_update_iotlb(dmar_domain);
-+
- 	return 0;
- }
- 
+-	if (ts->gpio_count == 2 && ts->gpio_int_idx == 0) {
++	/* Some devices with gpio_int_idx 0 list a third unused GPIO */
++	if ((ts->gpio_count == 2 || ts->gpio_count == 3) && ts->gpio_int_idx == 0) {
+ 		ts->irq_pin_access_method = IRQ_PIN_ACCESS_ACPI_GPIO;
+ 		gpio_mapping = acpi_goodix_int_first_gpios;
+ 	} else if (ts->gpio_count == 2 && ts->gpio_int_idx == 1) {
 -- 
 2.43.0
 
