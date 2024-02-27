@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF15E86953E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:00:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B601C86980D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:28:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F134282D11
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:00:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70BED292FA0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:28:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E56D513DB98;
-	Tue, 27 Feb 2024 14:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE94A1420D2;
+	Tue, 27 Feb 2024 14:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJmolzBP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rzkoI1MC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2DCD13AA50;
-	Tue, 27 Feb 2024 14:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7FB145FE2;
+	Tue, 27 Feb 2024 14:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042418; cv=none; b=bqS09JzQnDa6l4xKtNQpoAtinmQj/xAt1eYSQ9O4Gn8ZMojPN1d9tsmr/NgQeQ7jYUQqSydT25iWuxYG8Hl1WgB2xQ41rQSlO3xAHEP3tAIrh/h0C5aDfu2RCZ0jKM1nZTEW74QaUCKotKXMtjBmeybkGSLcadFmXG9ceM0Gugc=
+	t=1709044056; cv=none; b=LCXpiju6S4+3soa3Yg6w5dkZePGgfCpKGnLlRM1CpJw0kue6n+Drf11+N3EkfEE4MZFtT0mufu2k3jev6rp30o5mCZdmz1jj3yvCQ85RO+jwy2Z64kSq/449HPww5QO5oNEEkRUM4rKe1Lsyu4Nb+8Smzc42fbRX9ebi5RHIz6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042418; c=relaxed/simple;
-	bh=SD15WUtworu67RdKTJfSTOitXNUYsVhF4YSypO0IAtk=;
+	s=arc-20240116; t=1709044056; c=relaxed/simple;
+	bh=KijjZTtmrt7LZjEzotS0Mm6ZwNOJ4IWCJ7W58qOZUoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hPgfDW25GyApriR2omlC9Qx94OQbu1LKxaMIIzAtEfiwQKSdr1MZa/Uebt+J6+14wnbuWVKFd/yOmvU0B8Gozxs11ktImhDCvums0O93NgTEQhCuJKqMGRZRqHxIEJat39q948e6llb5JkMwaxW4gNLwIFeuCBLeiVzDdloETq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJmolzBP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E4EFC433C7;
-	Tue, 27 Feb 2024 14:00:18 +0000 (UTC)
+	 MIME-Version; b=X8ijO5/7D3QGw5M+yUs8Phjd9EnV+NzIcxBj5ALvlT+apsk+PgNVrgkYqNEJLF1fDMr9DUbHiZnD+1vxdRS6HC2Ob0KTcIgq60+F9FvgOuwKA3B4gKPqd1dwNbw2oPezWRlqfG1EPgTF3byB4He3xkgZOdD2PJ28ZWkLjDrZEeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rzkoI1MC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC010C433F1;
+	Tue, 27 Feb 2024 14:27:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042418;
-	bh=SD15WUtworu67RdKTJfSTOitXNUYsVhF4YSypO0IAtk=;
+	s=korg; t=1709044056;
+	bh=KijjZTtmrt7LZjEzotS0Mm6ZwNOJ4IWCJ7W58qOZUoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pJmolzBPoyis7jS8RHizxOMrju2GnNKGU2aVCtXajNHYcdaUUNhOntnMcSoppWI30
-	 8iyQWKQwy89lxxXrjot/NlV+7/uu4TRLAuf73oZx7ZG0O/eSad9sdks0SUBE3gtseJ
-	 DFliIxHk9iQPKFFZfdATCF407nC7/kMVpv0AIemg=
+	b=rzkoI1MC4BD4/4+TrpvyFaFZoCS4DFjYnlSoHIvLMf3Mc+7JV3oQL4atIj8tdD71D
+	 qvDXXhxY962OljhXntVPVGLTddeitF4eeVnNmO1OEgfCvJaXAEvkS9c4eH6keC7ltK
+	 WvnKRDPVXcqB3Epi6KIdgHbAsmzdKxAcYrd3GfI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Daniel Wagner <dwagner@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 289/299] drm/amd/display: Fix memory leak in dm_sw_fini()
+Subject: [PATCH 5.10 039/122] scsi: lpfc: Use unsigned type for num_sge
 Date: Tue, 27 Feb 2024 14:26:40 +0100
-Message-ID: <20240227131634.973839157@linuxfoundation.org>
+Message-ID: <20240227131559.986085986@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Hannes Reinecke <hare@suse.de>
 
-[ Upstream commit bae67893578d608e35691dcdfa90c4957debf1d3 ]
+[ Upstream commit d6c1b19153f92e95e5e1801d540e98771053afae ]
 
-After destroying dmub_srv, the memory associated with it is
-not freed, causing a memory leak:
+LUNs going into "failed ready running" state observed on >1T and on even
+numbers of size (2T, 4T, 6T, 8T and 10T). The issue occurs when DIF is
+enabled at the host.
 
-unreferenced object 0xffff896302b45800 (size 1024):
-  comm "(udev-worker)", pid 222, jiffies 4294894636
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace (crc 6265fd77):
-    [<ffffffff993495ed>] kmalloc_trace+0x29d/0x340
-    [<ffffffffc0ea4a94>] dm_dmub_sw_init+0xb4/0x450 [amdgpu]
-    [<ffffffffc0ea4e55>] dm_sw_init+0x15/0x2b0 [amdgpu]
-    [<ffffffffc0ba8557>] amdgpu_device_init+0x1417/0x24e0 [amdgpu]
-    [<ffffffffc0bab285>] amdgpu_driver_load_kms+0x15/0x190 [amdgpu]
-    [<ffffffffc0ba09c7>] amdgpu_pci_probe+0x187/0x4e0 [amdgpu]
-    [<ffffffff9968fd1e>] local_pci_probe+0x3e/0x90
-    [<ffffffff996918a3>] pci_device_probe+0xc3/0x230
-    [<ffffffff99805872>] really_probe+0xe2/0x480
-    [<ffffffff99805c98>] __driver_probe_device+0x78/0x160
-    [<ffffffff99805daf>] driver_probe_device+0x1f/0x90
-    [<ffffffff9980601e>] __driver_attach+0xce/0x1c0
-    [<ffffffff99803170>] bus_for_each_dev+0x70/0xc0
-    [<ffffffff99804822>] bus_add_driver+0x112/0x210
-    [<ffffffff99807245>] driver_register+0x55/0x100
-    [<ffffffff990012d1>] do_one_initcall+0x41/0x300
+The kernel logs:
 
-Fix this by freeing dmub_srv after destroying it.
+  Cannot setup S/G List for HBAIO segs 1/1 SGL 512 SCSI 256: 3 0
 
-Fixes: 743b9786b14a ("drm/amd/display: Hook up the DMUB service in DM")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The host lpfc driver is failing to setup scatter/gather list (protection
+data) for the I/Os.
+
+The return type lpfc_bg_setup_sgl()/lpfc_bg_setup_sgl_prot() causes the
+compiler to remove the most significant bit. Use an unsigned type instead.
+
+Signed-off-by: Hannes Reinecke <hare@suse.de>
+[dwagner: added commit message]
+Signed-off-by: Daniel Wagner <dwagner@suse.de>
+Link: https://lore.kernel.org/r/20231220162658.12392-1-dwagner@suse.de
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/scsi/lpfc/lpfc_scsi.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 3194c10f345fc..50444ab7b3cc0 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2247,6 +2247,7 @@ static int dm_sw_fini(void *handle)
+diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
+index 983eeb0e3d07e..b4b87e5d8b291 100644
+--- a/drivers/scsi/lpfc/lpfc_scsi.c
++++ b/drivers/scsi/lpfc/lpfc_scsi.c
+@@ -1944,7 +1944,7 @@ lpfc_bg_setup_bpl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
+  *
+  * Returns the number of SGEs added to the SGL.
+  **/
+-static int
++static uint32_t
+ lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
+ 		struct sli4_sge *sgl, int datasegcnt,
+ 		struct lpfc_io_buf *lpfc_cmd)
+@@ -1952,8 +1952,8 @@ lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
+ 	struct scatterlist *sgde = NULL; /* s/g data entry */
+ 	struct sli4_sge_diseed *diseed = NULL;
+ 	dma_addr_t physaddr;
+-	int i = 0, num_sge = 0, status;
+-	uint32_t reftag;
++	int i = 0, status;
++	uint32_t reftag, num_sge = 0;
+ 	uint8_t txop, rxop;
+ #ifdef CONFIG_SCSI_LPFC_DEBUG_FS
+ 	uint32_t rc;
+@@ -2124,7 +2124,7 @@ lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
+  *
+  * Returns the number of SGEs added to the SGL.
+  **/
+-static int
++static uint32_t
+ lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
+ 		struct sli4_sge *sgl, int datacnt, int protcnt,
+ 		struct lpfc_io_buf *lpfc_cmd)
+@@ -2148,8 +2148,8 @@ lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
+ 	uint32_t rc;
+ #endif
+ 	uint32_t checking = 1;
+-	uint32_t dma_offset = 0;
+-	int num_sge = 0, j = 2;
++	uint32_t dma_offset = 0, num_sge = 0;
++	int j = 2;
+ 	struct sli4_hybrid_sgl *sgl_xtra = NULL;
  
- 	if (adev->dm.dmub_srv) {
- 		dmub_srv_destroy(adev->dm.dmub_srv);
-+		kfree(adev->dm.dmub_srv);
- 		adev->dm.dmub_srv = NULL;
- 	}
- 
+ 	sgpe = scsi_prot_sglist(sc);
 -- 
 2.43.0
 
