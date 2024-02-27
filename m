@@ -1,56 +1,66 @@
-Return-Path: <stable+bounces-24577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ED6286953A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:00:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E90EB869788
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:22:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A16EF1C246CC
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:00:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21CB51C242C6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10DCD13DB98;
-	Tue, 27 Feb 2024 14:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331631420DC;
+	Tue, 27 Feb 2024 14:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6cswFbh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AqHF/vqr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C289C54BD4;
-	Tue, 27 Feb 2024 14:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E60FB1420C9;
+	Tue, 27 Feb 2024 14:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042404; cv=none; b=bp9M9T69IedqYNlv5pdyhJz+riU+qJnUlw/L0l6MiV+4lBtfCiBv/JEpnK0iiZjPuxpPD+vcHdVf79gUzCj2/Cpj1aAdoOaQQMG58Ou65noN4g6i2mVVrGXe0+urRQzvI4aDDEF5HwUJKHNVNaaSsSUquG/vPOh3eGqezvol+/U=
+	t=1709043733; cv=none; b=S9zLnoHEOAwQHKvRy2LllY/5gkcF56b/lnC5wFZmDNzVBl/aR5Jo9E2JrqqdEqi4zC3EnLzRBPasMO17PR61gppVHDCymh2+qGs4x9Y8rmSWMSPdo3X9bA/P1+Vm0GtmMAPKGOrzY7ehl5xHsTh7LZO5fX30FEChrKJFeKndFHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042404; c=relaxed/simple;
-	bh=kEtX4YFbh+05tN+vouklYy1AoKvgQ8Gc+AKgQJXlb4M=;
+	s=arc-20240116; t=1709043733; c=relaxed/simple;
+	bh=bLKLefOrwXLoiuYQAO48K7CLs/cwGYhYZHX0aZuy3Yk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G57xkdnS522N2ONX444NjnRfQucH1jZfV7y5wpZa6PpOAXoqRlnoYhky1q2RluBznsIOLWo9qUCxThYkvwZE7hqRVtBoxDGO+e8mpOHx/qoEaZcBKeKgwGH6KoZqnO7rBbg49w0VSjB5NUSonY0myWBtqmVmjRPaKlxnrsjILk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6cswFbh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 531C6C433C7;
-	Tue, 27 Feb 2024 14:00:04 +0000 (UTC)
+	 MIME-Version; b=IBnC9Vf3fyJd6TE8LPHWKdtFFSLM33BkkIxtrv0I4nLZLYZeJpqUKVznSvNju8YRsPu1jdnCZqgTw6Z7NnenRk5Jn3Etr4MSvnxXhjtKGkKKsygtbTxy3HsTMGUWBYmp4Yz7aIlXNrtimpF2gltzWtceMYhXgb8i2rLbrHVy6uY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AqHF/vqr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5A77C433C7;
+	Tue, 27 Feb 2024 14:22:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042404;
-	bh=kEtX4YFbh+05tN+vouklYy1AoKvgQ8Gc+AKgQJXlb4M=;
+	s=korg; t=1709043732;
+	bh=bLKLefOrwXLoiuYQAO48K7CLs/cwGYhYZHX0aZuy3Yk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y6cswFbhylY5JndIvj8DVf4XOl9Q8ptCGcpFumMo+a6scvFBfDt55p5Y0z/c71LGm
-	 W+A/TklHbiU2QauZWBbN+CVzmdiw5w5vqJJwmpTydoX1kubHvhl4Z/zwg8PWEYZ99I
-	 aVN/ROXf04q1E1JNWMv5wlBtNyL6Wrve7LBaSCpg=
+	b=AqHF/vqretN/d7gdtNY/hRoHEEefGgAbVYeZpQx71xIgLolK3f+61olLLLTCFCjuT
+	 AVwhMfRdqlQ6ddy+RpEwvXwB/uhlYb3mYwRPXBJjjaAxUmX+EDBVM3nMnUqiZG2vde
+	 Wjazx+lrm0d7EkqtcEQYe4J0qemBl92yvfsP0WPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Justin Iurman <justin.iurman@uliege.be>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 284/299] Fix write to cloned skb in ipv6_hop_ioam()
-Date: Tue, 27 Feb 2024 14:26:35 +0100
-Message-ID: <20240227131634.817527902@linuxfoundation.org>
+	Lokesh Gidra <lokeshgidra@google.com>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Brian Geffon <bgeffon@google.com>,
+	David Hildenbrand <david@redhat.com>,
+	Jann Horn <jannh@google.com>,
+	Kalesh Singh <kaleshsingh@google.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Nicolas Geoffray <ngeoffray@google.com>,
+	Peter Xu <peterx@redhat.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 09/84] userfaultfd: fix mmap_changing checking in mfill_atomic_hugetlb
+Date: Tue, 27 Feb 2024 14:26:36 +0100
+Message-ID: <20240227131553.174485142@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +72,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Iurman <justin.iurman@uliege.be>
+From: Lokesh Gidra <lokeshgidra@google.com>
 
-[ Upstream commit f198d933c2e4f8f89e0620fbaf1ea7eac384a0eb ]
+commit 67695f18d55924b2013534ef3bdc363bc9e14605 upstream.
 
-ioam6_fill_trace_data() writes inside the skb payload without ensuring
-it's writeable (e.g., not cloned). This function is called both from the
-input and output path. The output path (ioam6_iptunnel) already does the
-check. This commit provides a fix for the input path, inside
-ipv6_hop_ioam(). It also updates ip6_parse_tlv() to refresh the network
-header pointer ("nh") when returning from ipv6_hop_ioam().
+In mfill_atomic_hugetlb(), mmap_changing isn't being checked
+again if we drop mmap_lock and reacquire it. When the lock is not held,
+mmap_changing could have been incremented. This is also inconsistent
+with the behavior in mfill_atomic().
 
-Fixes: 9ee11f0fff20 ("ipv6: ioam: Data plane support for Pre-allocated Trace")
-Reported-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240117223729.1444522-1-lokeshgidra@google.com
+Fixes: df2cc96e77011 ("userfaultfd: prevent non-cooperative events vs mcopy_atomic races")
+Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Brian Geffon <bgeffon@google.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Kalesh Singh <kaleshsingh@google.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Nicolas Geoffray <ngeoffray@google.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/exthdrs.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ mm/userfaultfd.c |   14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
-index 4952ae7924505..02e9ffb63af19 100644
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -177,6 +177,8 @@ static bool ip6_parse_tlv(bool hopbyhop,
- 				case IPV6_TLV_IOAM:
- 					if (!ipv6_hop_ioam(skb, off))
- 						return false;
-+
-+					nh = skb_network_header(skb);
- 					break;
- 				case IPV6_TLV_JUMBO:
- 					if (!ipv6_hop_jumbo(skb, off))
-@@ -943,6 +945,14 @@ static bool ipv6_hop_ioam(struct sk_buff *skb, int optoff)
- 		if (!skb_valid_dst(skb))
- 			ip6_route_input(skb);
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -177,6 +177,7 @@ static __always_inline ssize_t __mcopy_a
+ 					      unsigned long dst_start,
+ 					      unsigned long src_start,
+ 					      unsigned long len,
++					      bool *mmap_changing,
+ 					      bool zeropage)
+ {
+ 	int vm_alloc_shared = dst_vma->vm_flags & VM_SHARED;
+@@ -308,6 +309,15 @@ retry:
+ 				goto out;
+ 			}
+ 			down_read(&dst_mm->mmap_sem);
++			/*
++			 * If memory mappings are changing because of non-cooperative
++			 * operation (e.g. mremap) running in parallel, bail out and
++			 * request the user to retry later
++			 */
++			if (mmap_changing && READ_ONCE(*mmap_changing)) {
++				err = -EAGAIN;
++				break;
++			}
  
-+		/* About to mangle packet header */
-+		if (skb_ensure_writable(skb, optoff + 2 + hdr->opt_len))
-+			goto drop;
-+
-+		/* Trace pointer may have changed */
-+		trace = (struct ioam6_trace_hdr *)(skb_network_header(skb)
-+						   + optoff + sizeof(*hdr));
-+
- 		ioam6_fill_trace_data(skb, ns, trace, true);
- 		break;
- 	default:
--- 
-2.43.0
-
+ 			dst_vma = NULL;
+ 			goto retry;
+@@ -389,6 +399,7 @@ extern ssize_t __mcopy_atomic_hugetlb(st
+ 				      unsigned long dst_start,
+ 				      unsigned long src_start,
+ 				      unsigned long len,
++				      bool *mmap_changing,
+ 				      bool zeropage);
+ #endif /* CONFIG_HUGETLB_PAGE */
+ 
+@@ -506,7 +517,8 @@ retry:
+ 	 */
+ 	if (is_vm_hugetlb_page(dst_vma))
+ 		return  __mcopy_atomic_hugetlb(dst_mm, dst_vma, dst_start,
+-						src_start, len, zeropage);
++					       src_start, len, mmap_changing,
++					       zeropage);
+ 
+ 	if (!vma_is_anonymous(dst_vma) && !vma_is_shmem(dst_vma))
+ 		goto out_unlock;
 
 
 
