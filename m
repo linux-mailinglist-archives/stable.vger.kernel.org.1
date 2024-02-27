@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-24877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FDD18696B3
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39C288695E4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:06:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDBBC2958C5
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E874928C873
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:06:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E0A3145B05;
-	Tue, 27 Feb 2024 14:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE37145B01;
+	Tue, 27 Feb 2024 14:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XlUSwznH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkc1A+FP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC191419A0;
-	Tue, 27 Feb 2024 14:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27F413DB92;
+	Tue, 27 Feb 2024 14:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043241; cv=none; b=Psb+NxqnUmsYbl2V7VPAswcnFJ06bf1kTR4F3Y2RYzzleFF/6RxEWw5UKPM/XAZeWRoub/wMcn75kapWEZ6UFsB8P8ZbeX6UaV8jQ5PZ6UqchQibVfWKvlgPTLDNrsFDEkWxiWVO/HE+4w3nwNH98loRuKJABLc8NLSOiWXedio=
+	t=1709042751; cv=none; b=pQNBJNPSduBAZDVr69lwGptGfYWlb/q50gTGH8eIhtWVibjJuZJx1Kcviwvyx/kdrBks/gIuymFmDZMSFGDs2yoTpeVeLA7Ixcc8WkzrXaV0e6+/yEI9BSPy6adUq2uRsNtqkQs8YNSJwzE2ageYoSfwaACbgHDbnibrXISlIrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043241; c=relaxed/simple;
-	bh=LBuDpYgiD1S+BPhgN7yH9dBNlFpXak5js+TtLj397OY=;
+	s=arc-20240116; t=1709042751; c=relaxed/simple;
+	bh=TblqQRu4uBA8YtzkIxxcx8H8ZrKKghcs0vczS/+uvpw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mRBYS2OHfHElknDXv94ErJOnJAJp7BLX844hCGo31A1mzvOH8dgU9slysBZ1WZ4rDcuxhKtKMEy+a/jSP6KFDBp0P6F/nK3/DnO6TfIoIhkarftByrZN6Jbk3LTC+GEuUiYhmEtGSozHm4+JMmVRn8TjYQtXSvJTKvu7VF1Byj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XlUSwznH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0032C433F1;
-	Tue, 27 Feb 2024 14:14:00 +0000 (UTC)
+	 MIME-Version; b=tPXgDoIysfhaXVxQKYkGMHguqHHozZQOEQy2wLdrZoUgETn/5FQQOmf5oCqcpqrWgjJNbkYOeOV8nyQ7TBlc08LjtfOUjKz+l+5nL8GP+NK5erI2nDTvQwlIEEkHGMxbFv5p6eo6JTcV26kFdpLVBg6+PafLdLWRt130KFPcQKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkc1A+FP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0921BC433C7;
+	Tue, 27 Feb 2024 14:05:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043241;
-	bh=LBuDpYgiD1S+BPhgN7yH9dBNlFpXak5js+TtLj397OY=;
+	s=korg; t=1709042751;
+	bh=TblqQRu4uBA8YtzkIxxcx8H8ZrKKghcs0vczS/+uvpw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XlUSwznH8RZHC5eqfrOHGFyuiJVDESlmlrnFbw842jhhz3tLyLLn8YWOImLAS7iRb
-	 qWBLc92KYMp6jqUyA5Es6DgrcbkM61cJak9vDRzbSncEN/NmUmzjV+AAlGH/t8M7BD
-	 cssoMvk6KwKcN4nlSAjkSZmSrcQWtf3yTfZ3cx6c=
+	b=qkc1A+FPU7IjuKwfVVB6pJyrHDCCh1cWAyok6CkXIwESOpOqHPKtc8yVifISI/VNc
+	 MA5572cFcu7ZvcP9agC5VqT/WMzA0CD+7XfuvViBG1e4zMakbbTQnuWUgzVctMK4oh
+	 fSJPlLkxnjdB3JdIeyOc+DwRfVqoADO9Quz4178o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wens@csie.org>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Samuel Holland <samuel@sholland.org>,
+	Dhruva Gole <d-gole@ti.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 035/195] ASoC: sunxi: sun4i-spdif: Add support for Allwinner H616
+Subject: [PATCH 5.15 108/245] mtd: rawnand: sunxi: Fix the size of the last OOB region
 Date: Tue, 27 Feb 2024 14:24:56 +0100
-Message-ID: <20240227131611.550589187@linuxfoundation.org>
+Message-ID: <20240227131618.728355277@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wens@csie.org>
+From: Samuel Holland <samuel@sholland.org>
 
-[ Upstream commit 0adf963b8463faa44653e22e56ce55f747e68868 ]
+[ Upstream commit 34569d869532b54d6e360d224a0254dcdd6a1785 ]
 
-The SPDIF hardware block found in the H616 SoC has the same layout as
-the one found in the H6 SoC, except that it is missing the receiver
-side.
+The previous code assigned to the wrong structure member.
 
-Since the driver currently only supports the transmit function, support
-for the H616 is identical to what is currently done for the H6.
-
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
-Reviewed-by: Andre Przywara <andre.przywara@arm.com>
-Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Link: https://msgid.link/r/20240127163247.384439-4-wens@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: c66811e6d350 ("mtd: nand: sunxi: switch to mtd_ooblayout_ops")
+Signed-off-by: Samuel Holland <samuel@sholland.org>
+Acked-By: Dhruva Gole <d-gole@ti.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20221229181526.53766-6-samuel@sholland.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sunxi/sun4i-spdif.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/mtd/nand/raw/sunxi_nand.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/sunxi/sun4i-spdif.c b/sound/soc/sunxi/sun4i-spdif.c
-index bcceebca915ac..484b0e7c2defa 100644
---- a/sound/soc/sunxi/sun4i-spdif.c
-+++ b/sound/soc/sunxi/sun4i-spdif.c
-@@ -578,6 +578,11 @@ static const struct of_device_id sun4i_spdif_of_match[] = {
- 		.compatible = "allwinner,sun50i-h6-spdif",
- 		.data = &sun50i_h6_spdif_quirks,
- 	},
-+	{
-+		.compatible = "allwinner,sun50i-h616-spdif",
-+		/* Essentially the same as the H6, but without RX */
-+		.data = &sun50i_h6_spdif_quirks,
-+	},
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, sun4i_spdif_of_match);
+diff --git a/drivers/mtd/nand/raw/sunxi_nand.c b/drivers/mtd/nand/raw/sunxi_nand.c
+index ea953e31933eb..e03dcdd8bd589 100644
+--- a/drivers/mtd/nand/raw/sunxi_nand.c
++++ b/drivers/mtd/nand/raw/sunxi_nand.c
+@@ -1609,7 +1609,7 @@ static int sunxi_nand_ooblayout_free(struct mtd_info *mtd, int section,
+ 	if (section < ecc->steps)
+ 		oobregion->length = 4;
+ 	else
+-		oobregion->offset = mtd->oobsize - oobregion->offset;
++		oobregion->length = mtd->oobsize - oobregion->offset;
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
