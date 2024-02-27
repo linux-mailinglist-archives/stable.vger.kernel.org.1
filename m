@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3F248694D3
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:56:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D12AD8696DB
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:16:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00B021C2828B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:56:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA5BBB28DD4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A48213B2B4;
-	Tue, 27 Feb 2024 13:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64B66145341;
+	Tue, 27 Feb 2024 14:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FBVsUky7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZAQwYUCK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA9013B295;
-	Tue, 27 Feb 2024 13:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FA013B29C;
+	Tue, 27 Feb 2024 14:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042196; cv=none; b=F0cqnDgMd90QAYNIuQqfxhYHC1RHyAHzHs88mwag9QNUyryB84T0wOjDus+L1nP08/mTZc4D69NEBso96xBewNQ2ctNamUsydBAx39oGHEZIDIijzKXRb2cuTM9LU0jReRIw6Z/JOr6Ov7bXLpNaYEm1v4id9QGsLl3Z6KXXRYI=
+	t=1709043310; cv=none; b=tcLaoGySY5bmPZ2BLPCkd6dQ6h1+sN9leegdQCZ+fLhtXSdxyLLWNFra+1rRQlV33ak/NJAeajj0bLRvln5qsIuw7wYdtQvr0XyDdZtMhZt9/1hzmNjugx6mjxWNgKGQkv7HLBwWju8jSwd7c7buXTpdxfLmTc7CrjA886OHAw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042196; c=relaxed/simple;
-	bh=wI55N/lAmlVSXvteM3wVCkLa3vzeRUZP2sSL7J8PfHM=;
+	s=arc-20240116; t=1709043310; c=relaxed/simple;
+	bh=9OAYHDSwcYovxB3ImhCkqMJ5OOskmy+UU1J/Q4iUrU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=te+V+ujUbx3cezSaNtGSpfueCxzE3UXutczDdLRYGP5NbtOEMvEdcKaxvK31TWEvU9EnUb/JJ623ndP968FTgZmZXfFWwXW/xNYi19gZMi8mQJN8dYUTgGTkaySdA1Ma7wQPHRKJd+l8DlqU/SImcHJYa9BjFoP2tSas0tFZySk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FBVsUky7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06492C433F1;
-	Tue, 27 Feb 2024 13:56:34 +0000 (UTC)
+	 MIME-Version; b=I470/Sr/VUEBmYdTGIcHFYlkafgPbwxSnuBqQeoF+oFgOP6n4YZbGJL6/x0rueliEXtaHX7JBYnUZbpUYwOkhNfy5cqXbzPF4wdkO6BMobLw+wjewtyFoIKuVYYKak/+cYpo8HgItorsdWqkRBBydcyfl2qnXaaK84QlhPcaE2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZAQwYUCK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0AFCC433F1;
+	Tue, 27 Feb 2024 14:15:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042195;
-	bh=wI55N/lAmlVSXvteM3wVCkLa3vzeRUZP2sSL7J8PfHM=;
+	s=korg; t=1709043310;
+	bh=9OAYHDSwcYovxB3ImhCkqMJ5OOskmy+UU1J/Q4iUrU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FBVsUky7Eavrx/mAyfc4vILo0E3qnf+JJ1fNtjssZyuNx6zcZRF2HmtsYifhOdugA
-	 LBzanl/RzMnloaPf+its6Tgw7i+zo3yMVooZX5oC3pxyPzZt6Eih05N7vZWOTovARd
-	 y2iO+0ByFPrFBNqQhxUCjsMxY2JtUA2qt5/8wVZM=
+	b=ZAQwYUCKmHEpNmi6LJXgVZ/ETzPSrYBN4WERhoMF6m7LcqNcDAGzd1OMf2QmMJerK
+	 slAhKakHt+tOKiqRonvPoREsQnivL5wQQqC9IZKmDJ0l++ZMI72CXSTRibqbvpEPOH
+	 m/AqnTcxqoR9ydva/07sCb2MbSh6A/HrpRX0fIcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Ism Hong <ism.hong@gmail.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 211/299] IB/hfi1: Fix a memleak in init_credit_return
+Subject: [PATCH 6.1 061/195] fs/ntfs3: use non-movable memory for ntfs3 MFT buffer cache
 Date: Tue, 27 Feb 2024 14:25:22 +0100
-Message-ID: <20240227131632.580333139@linuxfoundation.org>
+Message-ID: <20240227131612.520162768@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Ism Hong <ism.hong@gmail.com>
 
-[ Upstream commit 809aa64ebff51eb170ee31a95f83b2d21efa32e2 ]
+[ Upstream commit d6d33f03baa43d763fe094ca926eeae7d3421d07 ]
 
-When dma_alloc_coherent fails to allocate dd->cr_base[i].va,
-init_credit_return should deallocate dd->cr_base and
-dd->cr_base[i] that allocated before. Or those resources
-would be never freed and a memleak is triggered.
+Since the buffer cache for ntfs3 metadata is not released until the file
+system is unmounted, allocating from the movable zone may result in cma
+allocation failures. This is due to the page still being used by ntfs3,
+leading to migration failures.
 
-Fixes: 7724105686e7 ("IB/hfi1: add driver files")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Link: https://lore.kernel.org/r/20240112085523.3731720-1-alexious@zju.edu.cn
-Acked-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+To address this, this commit use sb_bread_umovable() instead of
+sb_bread(). This change prevents allocation from the movable zone,
+ensuring compatibility with scenarios where the buffer head is not
+released until unmount. This patch is inspired by commit
+a8ac900b8163("ext4: use non-movable memory for the ext4 superblock").
+
+The issue is found when playing video files stored in NTFS on the
+Android TV platform. During this process, the media parser reads the
+video file, causing ntfs3 to allocate buffer cache from the CMA area.
+Subsequently, the hardware decoder attempts to allocate memory from the
+same CMA area. However, the page is still in use by ntfs3, resulting in
+a migrate failure in alloc_contig_range().
+
+The pinned page and allocating stacktrace reported by page owner shows
+below:
+
+page:ffffffff00b68880 refcount:3 mapcount:0 mapping:ffffff80046aa828
+        index:0xc0040 pfn:0x20fa4
+    aops:def_blk_aops ino:0
+    flags: 0x2020(active|private)
+    page dumped because: migration failure
+    page last allocated via order 0, migratetype Movable,
+        gfp_mask 0x108c48
+        (GFP_NOFS|__GFP_NOFAIL|__GFP_HARDWALL|__GFP_MOVABLE),
+    page_owner tracks the page as allocated
+     prep_new_page
+     get_page_from_freelist
+     __alloc_pages_nodemask
+     pagecache_get_page
+     __getblk_gfp
+     __bread_gfp
+     ntfs_read_run_nb
+     ntfs_read_bh
+     mi_read
+     ntfs_iget5
+     dir_search_u
+     ntfs_lookup
+     __lookup_slow
+     lookup_slow
+     walk_component
+     path_lookupat
+
+Signed-off-by: Ism Hong <ism.hong@gmail.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hfi1/pio.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/ntfs3/ntfs_fs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hfi1/pio.c b/drivers/infiniband/hw/hfi1/pio.c
-index dfea53e0fdeb8..5eb309ead7076 100644
---- a/drivers/infiniband/hw/hfi1/pio.c
-+++ b/drivers/infiniband/hw/hfi1/pio.c
-@@ -2086,7 +2086,7 @@ int init_credit_return(struct hfi1_devdata *dd)
- 				   "Unable to allocate credit return DMA range for NUMA %d\n",
- 				   i);
- 			ret = -ENOMEM;
--			goto done;
-+			goto free_cr_base;
- 		}
- 	}
- 	set_dev_node(&dd->pcidev->dev, dd->node);
-@@ -2094,6 +2094,10 @@ int init_credit_return(struct hfi1_devdata *dd)
- 	ret = 0;
- done:
- 	return ret;
-+
-+free_cr_base:
-+	free_credit_return(dd);
-+	goto done;
- }
+diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
+index 74482ef569ab7..c9ba0d27601dc 100644
+--- a/fs/ntfs3/ntfs_fs.h
++++ b/fs/ntfs3/ntfs_fs.h
+@@ -1015,7 +1015,7 @@ static inline u64 bytes_to_block(const struct super_block *sb, u64 size)
+ static inline struct buffer_head *ntfs_bread(struct super_block *sb,
+ 					     sector_t block)
+ {
+-	struct buffer_head *bh = sb_bread(sb, block);
++	struct buffer_head *bh = sb_bread_unmovable(sb, block);
  
- void free_credit_return(struct hfi1_devdata *dd)
+ 	if (bh)
+ 		return bh;
 -- 
 2.43.0
 
