@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-25214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D4FF86988B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:38:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E170786976E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:21:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1FB95B2FC3C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:31:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D225286BB2
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DAD8145350;
-	Tue, 27 Feb 2024 14:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AAE213B7AB;
+	Tue, 27 Feb 2024 14:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v89NM7oS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mge++uic"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9E314532C;
-	Tue, 27 Feb 2024 14:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3F313B2B4;
+	Tue, 27 Feb 2024 14:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044178; cv=none; b=fYMbjaoecnCx78B/5VaYDAkSzu3+ph0jYiqglTNLFJaTTtEpsApp0K/EMRxPAIYi+7oD6sJ1j1uo8889w96LY9J2+X9jThxyZyFBpaJzfayHC56qTaVSRHqhQmynE+Cr7f3FtSQJmxt9PmFAO9eeY/JGsqyhQF3FHUtUTTzcb70=
+	t=1709043670; cv=none; b=kkXHUEUXRxWs89+f1qnMRJs145qUi92p3eomX9rHJa8b4fOYh4fsU4KufmES7+sIMDYjqWfUgtMe2ZZnLWI1FnUBA0WaLV5uhVy0GlaGYgV+6udLlMml6KmdVsfyM/aYOHlTJSncg+inxhESFENvpOk2Lp4b4bZr32Bkb8HtqWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044178; c=relaxed/simple;
-	bh=Dt7H2YQ4w+tTl1q7wfOkyBhw8iDL7+TEkZw+Raf2AF8=;
+	s=arc-20240116; t=1709043670; c=relaxed/simple;
+	bh=u20KcAaZBLUmFFI0RwSVTkEeOPXdcZeep9yWYIfcPjI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M6OoZtrBBVwCJh3NrHra6tWbV8oLl60qBqqGJegSgwHGSYDJ+bTG5NcUtQ5GPsCQXUc74NrWppFpQ9nfoUu0oR7KBLjP1+bvR2IAZo4rgJzFVoRBSZwgcAsyTxB5qeWjWmNp0pESYdf46XeArFBTRtgTo6xOmrjmw35YDt2Kcp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v89NM7oS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2002C433C7;
-	Tue, 27 Feb 2024 14:29:37 +0000 (UTC)
+	 MIME-Version; b=hUDP7ncLQajnJoYNto1pI5Pr5nZF2yYahw24QDjDqjnDP/26PR3dvwDM7aU0oLakafmY1LKNQy+1r5hwVqC17koA9J2ydpAguKxxlJyIaW/lQN9Ai5tHQFUZ8AosbolUNO2eSQHAZRwI1QGodGIpm/XNs2UTEsc4bXiMQFGfhZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mge++uic; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A27CBC433F1;
+	Tue, 27 Feb 2024 14:21:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044178;
-	bh=Dt7H2YQ4w+tTl1q7wfOkyBhw8iDL7+TEkZw+Raf2AF8=;
+	s=korg; t=1709043669;
+	bh=u20KcAaZBLUmFFI0RwSVTkEeOPXdcZeep9yWYIfcPjI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v89NM7oSgBKJdhZzc4pdp0/n5eMNTp81MZtIB2dzARfJSGI4AtNmdxTcpN+wzb+GT
-	 oaLhr66+PBHZGGYT9Titpqegcr7rgbV9o1qWokvX9+rFepoPtftGw8924b1n2+/nl/
-	 7Up/RXIJYbRJ95QyrFPpfhMdhQvZO/sPoeTpSMQE=
+	b=Mge++uicS+R+JXdB2ZiLCkNZ4K+RL/eGFsdW6YJP5tf0Q8AHsPdXGJDsgcTwYwkzt
+	 tLZqhTUDdc4IqCmmD7sD6+DEq0gC8xlzwBeyrcvUwpMyalS8JaFPN3Ps97M93vx4/h
+	 2Q/v3QHefLow5WQsLXE1gpFt6FB2YjcZzw3L2z0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 5.10 090/122] usb: cdns3: fixed memory use after free at cdns3_gadget_ep_disable()
+	Matthieu Baerts <matttbe@kernel.org>,
+	Geliang Tang <geliang.tang@suse.com>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 190/195] mptcp: userspace pm send RM_ADDR for ID 0
 Date: Tue, 27 Feb 2024 14:27:31 +0100
-Message-ID: <20240227131601.651492487@linuxfoundation.org>
+Message-ID: <20240227131616.677597266@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Geliang Tang <geliang.tang@suse.com>
 
-commit cd45f99034b0c8c9cb346dd0d6407a95ca3d36f6 upstream.
+commit 84c531f54ad9a124a924c9505d74e33d16965146 upstream.
 
-  ...
-  cdns3_gadget_ep_free_request(&priv_ep->endpoint, &priv_req->request);
-  list_del_init(&priv_req->list);
-  ...
+This patch adds the ability to send RM_ADDR for local ID 0. Check
+whether id 0 address is removed, if not, put id 0 into a removing
+list, pass it to mptcp_pm_remove_addr() to remove id 0 address.
 
-'priv_req' actually free at cdns3_gadget_ep_free_request(). But
-list_del_init() use priv_req->list after it.
+There is no reason not to allow the userspace to remove the initial
+address (ID 0). This special case was not taken into account not
+letting the userspace to delete all addresses as announced.
 
-[ 1542.642868][  T534] BUG: KFENCE: use-after-free read in __list_del_entry_valid+0x10/0xd4
-[ 1542.642868][  T534]
-[ 1542.653162][  T534] Use-after-free read at 0x000000009ed0ba99 (in kfence-#3):
-[ 1542.660311][  T534]  __list_del_entry_valid+0x10/0xd4
-[ 1542.665375][  T534]  cdns3_gadget_ep_disable+0x1f8/0x388 [cdns3]
-[ 1542.671571][  T534]  usb_ep_disable+0x44/0xe4
-[ 1542.675948][  T534]  ffs_func_eps_disable+0x64/0xc8
-[ 1542.680839][  T534]  ffs_func_set_alt+0x74/0x368
-[ 1542.685478][  T534]  ffs_func_disable+0x18/0x28
-
-Move list_del_init() before cdns3_gadget_ep_free_request() to resolve this
-problem.
-
-Cc: stable@vger.kernel.org
-Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20240202154217.661867-1-Frank.Li@nxp.com
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/379
+Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
+Signed-off-by: Geliang Tang <geliang.tang@suse.com>
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+Link: https://lore.kernel.org/r/20231025-send-net-next-20231025-v1-3-db8f25f798eb@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d9a4594edabf ("mptcp: netlink: Add MPTCP_PM_CMD_REMOVE")
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/cdns3/gadget.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/pm_userspace.c |   39 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
---- a/drivers/usb/cdns3/gadget.c
-+++ b/drivers/usb/cdns3/gadget.c
-@@ -2538,11 +2538,11 @@ static int cdns3_gadget_ep_disable(struc
+--- a/net/mptcp/pm_userspace.c
++++ b/net/mptcp/pm_userspace.c
+@@ -222,6 +222,40 @@ int mptcp_nl_cmd_announce(struct sk_buff
+ 	return err;
+ }
  
- 	while (!list_empty(&priv_ep->wa2_descmiss_req_list)) {
- 		priv_req = cdns3_next_priv_request(&priv_ep->wa2_descmiss_req_list);
-+		list_del_init(&priv_req->list);
- 
- 		kfree(priv_req->request.buf);
- 		cdns3_gadget_ep_free_request(&priv_ep->endpoint,
- 					     &priv_req->request);
--		list_del_init(&priv_req->list);
- 		--priv_ep->wa2_counter;
++static int mptcp_userspace_pm_remove_id_zero_address(struct mptcp_sock *msk,
++						     struct genl_info *info)
++{
++	struct mptcp_rm_list list = { .nr = 0 };
++	struct mptcp_subflow_context *subflow;
++	struct sock *sk = (struct sock *)msk;
++	bool has_id_0 = false;
++	int err = -EINVAL;
++
++	lock_sock(sk);
++	mptcp_for_each_subflow(msk, subflow) {
++		if (subflow->local_id == 0) {
++			has_id_0 = true;
++			break;
++		}
++	}
++	if (!has_id_0) {
++		GENL_SET_ERR_MSG(info, "address with id 0 not found");
++		goto remove_err;
++	}
++
++	list.ids[list.nr++] = 0;
++
++	spin_lock_bh(&msk->pm.lock);
++	mptcp_pm_remove_addr(msk, &list);
++	spin_unlock_bh(&msk->pm.lock);
++
++	err = 0;
++
++remove_err:
++	release_sock(sk);
++	return err;
++}
++
+ int mptcp_nl_cmd_remove(struct sk_buff *skb, struct genl_info *info)
+ {
+ 	struct nlattr *token = info->attrs[MPTCP_PM_ATTR_TOKEN];
+@@ -253,6 +287,11 @@ int mptcp_nl_cmd_remove(struct sk_buff *
+ 		goto remove_err;
  	}
  
++	if (id_val == 0) {
++		err = mptcp_userspace_pm_remove_id_zero_address(msk, info);
++		goto remove_err;
++	}
++
+ 	lock_sock((struct sock *)msk);
+ 
+ 	list_for_each_entry(entry, &msk->pm.userspace_pm_local_addr_list, list) {
 
 
 
