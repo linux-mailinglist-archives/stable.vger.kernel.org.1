@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68C7286954B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:00:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97B49869789
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:22:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2351E288846
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:00:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C30851C24668
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F7431420DD;
-	Tue, 27 Feb 2024 14:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E13B9143C46;
+	Tue, 27 Feb 2024 14:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oH/zLD4O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ztqZltJ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A45D1419B3;
-	Tue, 27 Feb 2024 14:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE0C13B2B8;
+	Tue, 27 Feb 2024 14:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042435; cv=none; b=TqwRVqMW8GcQHIeRbwCtudrpNmSBHi9nJ0dSXDje3XdLo9J4BiTKGb3CViRPxpJpnfKw9/bEhOy3LW2kDuzK7jHRuy3eEENGC0CmcTiPYQpWvMZFu/ybCgQUM20/KEdgwQvZLhNQXYk3j0AUghfv+C+j+R7vsWVQhbJSlAtK/wE=
+	t=1709043735; cv=none; b=lY7Q10AxdA3oE3krbgf09kJNOagWpzT5ZnLx1lvjaxiSuv9vqLXuDFjzIAJSTrmVLbc6Gn8LLcvYm0Jp1FkWS0e/j4xNuSLR3tQ6fdyCZCJj3Sn9RDVVEvQ2HAVHRmyjcThJGmC9Cipp9Iic4gfA+hMfqlHy8J3P80x6+hE5Ywo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042435; c=relaxed/simple;
-	bh=x5+6jh+vVf53uo3fzm/2lISI4qCWlIHHh5nFP7ne0Rc=;
+	s=arc-20240116; t=1709043735; c=relaxed/simple;
+	bh=R8JKXIlHkwuDze/yhoLPH8p0qmX3ZrVf9wJLBN9q3Ro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q657SvYtBWcV7OLLmlBxjUDWw5Vc5D10rLpvwt7wOLJHVA3syB9OHTI2bsxD8Eqjg3yaXBJetWxEOYVjfzVPj6aXsXiYrMGqS6Xhm/e5tQG/8PW+RkKJEGn4aWZahH+NhxzEC8j7E4yNBA/v4fxwaUF5Z7rjx2PgCQaBAWmNtj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oH/zLD4O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7A90C433C7;
-	Tue, 27 Feb 2024 14:00:34 +0000 (UTC)
+	 MIME-Version; b=ZusFbl1xi9PlOpxuAKpvcIlLDrmRSbP/BxMaum6zSq+/+PfDxW8bpbkVGiZU2kOjh7X4dUUuKTj0KyRL0HxZE9tEw3MnUVUtiEptBAyeCeX7uIgW//v5sAnPO2wJwUp9HTi0GVtFt8OXqMvk139MrI1eNKml0Hqq0aRvf32YHyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ztqZltJ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDE63C433C7;
+	Tue, 27 Feb 2024 14:22:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042435;
-	bh=x5+6jh+vVf53uo3fzm/2lISI4qCWlIHHh5nFP7ne0Rc=;
+	s=korg; t=1709043735;
+	bh=R8JKXIlHkwuDze/yhoLPH8p0qmX3ZrVf9wJLBN9q3Ro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oH/zLD4O9eekOTYN/gqTELrCgVbHjL3GfGQOtJdsCFIpy3jYNbzumbJrq5i8Z+0jm
-	 YrLnPCOnR7mncAlviqBQG4qdAP/ghgNfZh7XIH67aFBHbc1B60iqAh0LgvqoSjIcxy
-	 ZlpO4gYY4A6Umk0FlGQyeV9FvyZja7BB3aUJh8ds=
+	b=ztqZltJ6Omd17Q1bWQF5i/+O2X8ySZDOkHf+eio1ODnPGRI/o0tTQX6gEkSdzVTZE
+	 xVLZy1/aqoD/rgESPTcBgE2vdV+owMYtWpbEU/py20l9gMROoY2i0oeXlypF/nNSw3
+	 Uu/gta5s6jfACSXrwST5L27GSOFM4VSvPwhMjVB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Geliang Tang <geliang@kernel.org>
-Subject: [PATCH 6.6 294/299] selftests: mptcp: join: stop transfer when check is done (part 2)
+	Fullway Wang <fullwaywang@outlook.com>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 18/84] fbdev: sis: Error out if pixclock equals zero
 Date: Tue, 27 Feb 2024 14:26:45 +0100
-Message-ID: <20240227131635.129703038@linuxfoundation.org>
+Message-ID: <20240227131553.463289149@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Fullway Wang <fullwaywang@outlook.com>
 
-commit 04b57c9e096a9479fe0ad31e3956e336fa589cb2 upstream.
+[ Upstream commit e421946be7d9bf545147bea8419ef8239cb7ca52 ]
 
-Since the "Fixes" commits mentioned below, the newly added "userspace
-pm" subtests of mptcp_join selftests are launching the whole transfer in
-the background, do the required checks, then wait for the end of
-transfer.
+The userspace program could pass any values to the driver through
+ioctl() interface. If the driver doesn't check the value of pixclock,
+it may cause divide-by-zero error.
 
-There is no need to wait longer, especially because the checks at the
-end of the transfer are ignored (which is fine). This saves quite a few
-seconds on slow environments.
+In sisfb_check_var(), var->pixclock is used as a divisor to caculate
+drate before it is checked against zero. Fix this by checking it
+at the beginning.
 
-While at it, use 'mptcp_lib_kill_wait()' helper everywhere, instead of
-on a specific one with 'kill_tests_wait()'.
+This is similar to CVE-2022-3061 in i740fb which was fixed by
+commit 15cf0b8.
 
-Fixes: b2e2248f365a ("selftests: mptcp: userspace pm create id 0 subflow")
-Fixes: e3b47e460b4b ("selftests: mptcp: userspace pm remove initial subflow")
-Fixes: b9fb176081fb ("selftests: mptcp: userspace pm send RM_ADDR for ID 0")
-Cc: stable@vger.kernel.org
-Reviewed-and-tested-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240131-upstream-net-20240131-mptcp-ci-issues-v1-9-4c1c11e571ff@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Fullway Wang <fullwaywang@outlook.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ drivers/video/fbdev/sis/sis_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -688,13 +688,6 @@ kill_events_pids()
- 	mptcp_lib_kill_wait $evts_ns2_pid
- }
+diff --git a/drivers/video/fbdev/sis/sis_main.c b/drivers/video/fbdev/sis/sis_main.c
+index b443a8ed46003..2fdd02e51f5fc 100644
+--- a/drivers/video/fbdev/sis/sis_main.c
++++ b/drivers/video/fbdev/sis/sis_main.c
+@@ -1474,6 +1474,8 @@ sisfb_check_var(struct fb_var_screeninfo *var, struct fb_info *info)
  
--kill_tests_wait()
--{
--	#shellcheck disable=SC2046
--	kill -SIGUSR1 $(ip netns pids $ns2) $(ip netns pids $ns1)
--	wait
--}
--
- pm_nl_set_limits()
- {
- 	local ns=$1
-@@ -3463,7 +3456,8 @@ endpoint_tests()
- 		pm_nl_set_limits $ns2 2 2
- 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
- 		speed=slow \
--			run_tests $ns1 $ns2 10.0.1.1 2>/dev/null &
-+			run_tests $ns1 $ns2 10.0.1.1 &
-+		local tests_pid=$!
+ 	vtotal = var->upper_margin + var->lower_margin + var->vsync_len;
  
- 		wait_mpj $ns1
- 		pm_nl_check_endpoint "creation" \
-@@ -3478,7 +3472,7 @@ endpoint_tests()
- 		pm_nl_add_endpoint $ns2 10.0.2.2 flags signal
- 		pm_nl_check_endpoint "modif is allowed" \
- 			$ns2 10.0.2.2 id 1 flags signal
--		kill_tests_wait
-+		mptcp_lib_kill_wait $tests_pid
- 	fi
++	if (!var->pixclock)
++		return -EINVAL;
+ 	pixclock = var->pixclock;
  
- 	if reset "delete and re-add" &&
-@@ -3487,7 +3481,8 @@ endpoint_tests()
- 		pm_nl_set_limits $ns2 1 1
- 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
- 		test_linkfail=4 speed=20 \
--			run_tests $ns1 $ns2 10.0.1.1 2>/dev/null &
-+			run_tests $ns1 $ns2 10.0.1.1 &
-+		local tests_pid=$!
- 
- 		wait_mpj $ns2
- 		chk_subflow_nr "before delete" 2
-@@ -3502,7 +3497,7 @@ endpoint_tests()
- 		wait_mpj $ns2
- 		chk_subflow_nr "after re-add" 2
- 		chk_mptcp_info subflows 1 subflows 1
--		kill_tests_wait
-+		mptcp_lib_kill_wait $tests_pid
- 	fi
- }
- 
+ 	if((var->vmode & FB_VMODE_MASK) == FB_VMODE_NONINTERLACED) {
+-- 
+2.43.0
+
 
 
 
