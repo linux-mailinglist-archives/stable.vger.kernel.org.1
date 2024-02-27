@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-24675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF1F8695B8
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:04:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9444B8696B1
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96628286D45
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:04:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C52A71C23816
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1142E13B7A2;
-	Tue, 27 Feb 2024 14:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAD59145B0E;
+	Tue, 27 Feb 2024 14:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nEQUL+0l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nfmq4gGI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4BCC16423;
-	Tue, 27 Feb 2024 14:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 792471420D3;
+	Tue, 27 Feb 2024 14:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042679; cv=none; b=Ry17LX7oZaJLhnyVQ+x/woFyGcrn5MCBupcmBNIr3icNBWuLJQtLbQEhLRl19IOxIw9b/lweTADcQ3I1zuvyfivAV2WugwnvpletSLTMyDU3BBTRFZJA2E8OWCtYVhwicTG5JBpS9hT0aUiJX/bAGwtW87p8259FJGwRF5E/DPk=
+	t=1709043238; cv=none; b=CByjV8Hl4Qbwpj/AJm6Kw98JKQSntksjc5qXvwWKMrmpMdtc7+rw4D167rfEc/fmI/GMJ46jI4cbtpWkG4ILUTx7FPUiteOc3vZR4bA0pP9855KNFez3XfK5HxsY6oh6LqvOlC/rLHpk3TJPrA1Qng9lY7BiPHeJlPyCzjaR7n8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042679; c=relaxed/simple;
-	bh=Q76BX/l0BzaT3CslBq9O3wDl5FZHSu0oIJhFv2K6y1o=;
+	s=arc-20240116; t=1709043238; c=relaxed/simple;
+	bh=hF9M86fSbEQTP+5QZmnHe/BXZIPazxfenQL0iJjjuVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DfPACf2AEDbQQFCUUu5KkkU75CGolJqzuecNLXx/D3Z+hIYufXZ2QMRyqDKbZIWulWpM7FAFci3tSfQBd9roTxBDKpiXvxMBAN6kb32sFIn2qeiUxL7zZkA9gOR+fnoiKpH5ERGkbS7l4B1iR8y2xVdzGqC0Y4kCF1hORFtD+zU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nEQUL+0l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F44BC433F1;
-	Tue, 27 Feb 2024 14:04:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WSzueTbJZM5wDWGcbXFJMjzvcro54QqjrDrqLLZiieqKkgMo0lZT6klzHBTRZ1itJe/bDRjE+5mDy/ChmRqtNQOku2foYFKA+z0TcUfok6QdY1lR35wHaqEobAkTHZIwiCPBV8fTMZoDXKO+mriy6H4hqvj3FqNOb2g27Fej0yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nfmq4gGI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09449C433F1;
+	Tue, 27 Feb 2024 14:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042679;
-	bh=Q76BX/l0BzaT3CslBq9O3wDl5FZHSu0oIJhFv2K6y1o=;
+	s=korg; t=1709043238;
+	bh=hF9M86fSbEQTP+5QZmnHe/BXZIPazxfenQL0iJjjuVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nEQUL+0l/4uyHl5TC75h5djxqQF5FwkseISxlXSlRqyY5Ji3CIOXBrNT1gqyNwQYg
-	 27+GuBhcdn7wnJUU6X3y3Cc14wdbyb2YumttKFCqVHlVJt7RlkDsQkueV/xt1ii9hI
-	 tLuLqeFH6aGNPzRmvD0weZr6qQDQr7flrITQfuUQ=
+	b=Nfmq4gGIWYOusSHbMs/wNSws8YlvPko21pp5TqrZyxt8pqk3DmH+gx6BpBjfdbSBJ
+	 xxaMRFid3326Ob35KwUaf+Ogp6zGY5zP/M9SCRER1d/caB2dio9Oq1ApdjZ/+OQfQs
+	 5OhuFxFZRgALmjT7OjuCAr9SYFR3I3dOY0iIKdNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 5.15 081/245] platform/x86: touchscreen_dmi: Allow partial (prefix) matches for ACPI names
+	Hector Martin <marcan@marcan.st>,
+	=?UTF-8?q?Martin=20Povi=C5=A1er?= <povik+lin@cutebit.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 008/195] dmaengine: apple-admac: Keep upper bits of REG_BUS_WIDTH
 Date: Tue, 27 Feb 2024 14:24:29 +0100
-Message-ID: <20240227131617.871296840@linuxfoundation.org>
+Message-ID: <20240227131610.678676801@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,65 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Hector Martin <marcan@marcan.st>
 
-commit dbcbfd662a725641d118fb3ae5ffb7be4e3d0fb0 upstream.
+[ Upstream commit 306f5df81fcc89b462fbeb9dbe26d9a8ad7c7582 ]
 
-On some devices the ACPI name of the touchscreen is e.g. either
-MSSL1680:00 or MSSL1680:01 depending on the BIOS version.
+For RX channels, REG_BUS_WIDTH seems to default to a value of 0xf00, and
+macOS preserves the upper bits when setting the configuration in the
+lower ones. If we reset the upper bits to 0, this causes framing errors
+on suspend/resume (the data stream "tears" and channels get swapped
+around). Keeping the upper bits untouched, like the macOS driver does,
+fixes this issue.
 
-This happens for example on the "Chuwi Hi8 Air" tablet where the initial
-commit's ts_data uses "MSSL1680:00" but the tablets from the github issue
-and linux-hardware.org probe linked below both use "MSSL1680:01".
-
-Replace the strcmp() match on ts_data->acpi_name with a strstarts()
-check to allow using a partial match on just the ACPI HID of "MSSL1680"
-and change the ts_data->acpi_name for the "Chuwi Hi8 Air" accordingly
-to fix the touchscreen not working on models where it is "MSSL1680:01".
-
-Note this drops the length check for I2C_NAME_SIZE. This never was
-necessary since the ACPI names used are never more then 11 chars and
-I2C_NAME_SIZE is 20 so the replaced strncmp() would always stop long
-before reaching I2C_NAME_SIZE.
-
-Link: https://linux-hardware.org/?computer=AC4301C0542A
-Fixes: bbb97d728f77 ("platform/x86: touchscreen_dmi: Add info for the Chuwi Hi8 Air tablet")
-Closes: https://github.com/onitake/gsl-firmware/issues/91
-Cc: stable@vger.kernel.org
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240212120608.30469-1-hdegoede@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Reviewed-by: Martin Povišer <povik+lin@cutebit.org>
+Signed-off-by: Martin Povišer <povik+lin@cutebit.org>
+Link: https://lore.kernel.org/r/20231029170704.82238-1-povik+lin@cutebit.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/touchscreen_dmi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/dma/apple-admac.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/platform/x86/touchscreen_dmi.c
-+++ b/drivers/platform/x86/touchscreen_dmi.c
-@@ -50,7 +50,7 @@ static const struct property_entry chuwi
- };
+diff --git a/drivers/dma/apple-admac.c b/drivers/dma/apple-admac.c
+index 4cf8da77bdd91..cac4532fe23a9 100644
+--- a/drivers/dma/apple-admac.c
++++ b/drivers/dma/apple-admac.c
+@@ -56,6 +56,8 @@
  
- static const struct ts_dmi_data chuwi_hi8_air_data = {
--	.acpi_name	= "MSSL1680:00",
-+	.acpi_name	= "MSSL1680",
- 	.properties	= chuwi_hi8_air_props,
- };
+ #define REG_BUS_WIDTH(ch)	(0x8040 + (ch) * 0x200)
  
-@@ -1745,7 +1745,7 @@ static void ts_dmi_add_props(struct i2c_
- 	int error;
++#define BUS_WIDTH_WORD_SIZE	GENMASK(3, 0)
++#define BUS_WIDTH_FRAME_SIZE	GENMASK(7, 4)
+ #define BUS_WIDTH_8BIT		0x00
+ #define BUS_WIDTH_16BIT		0x01
+ #define BUS_WIDTH_32BIT		0x02
+@@ -739,7 +741,8 @@ static int admac_device_config(struct dma_chan *chan,
+ 	struct admac_data *ad = adchan->host;
+ 	bool is_tx = admac_chan_direction(adchan->no) == DMA_MEM_TO_DEV;
+ 	int wordsize = 0;
+-	u32 bus_width = 0;
++	u32 bus_width = readl_relaxed(ad->base + REG_BUS_WIDTH(adchan->no)) &
++		~(BUS_WIDTH_WORD_SIZE | BUS_WIDTH_FRAME_SIZE);
  
- 	if (has_acpi_companion(dev) &&
--	    !strncmp(ts_data->acpi_name, client->name, I2C_NAME_SIZE)) {
-+	    strstarts(client->name, ts_data->acpi_name)) {
- 		error = device_create_managed_software_node(dev, ts_data->properties, NULL);
- 		if (error)
- 			dev_err(dev, "failed to add properties: %d\n", error);
+ 	switch (is_tx ? config->dst_addr_width : config->src_addr_width) {
+ 	case DMA_SLAVE_BUSWIDTH_1_BYTE:
+-- 
+2.43.0
+
 
 
 
