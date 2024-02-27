@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36FB586932F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:42:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 773F3869407
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC0E51F2A7BD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:42:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32C9928627B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2563313B2BA;
-	Tue, 27 Feb 2024 13:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B109145B0F;
+	Tue, 27 Feb 2024 13:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wnBdfaAk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/RMOXJf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7D1F13AA55;
-	Tue, 27 Feb 2024 13:42:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA87B54BD4;
+	Tue, 27 Feb 2024 13:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041344; cv=none; b=iGVO594XwTa18oFXnOm8DB6vSQIes44bTm0JE0soxr5HXXT2obVK8apR+UBXXAu3zx34912BsCDLxynQNdnFvzZZdxMnFYbu96q0kEWnsGFKuTd1XYONckO3F9H28lUViW8h3l09u6U3qQBxgahbM6e+Bq6jPNzYd7YJ7HvaxZ4=
+	t=1709041741; cv=none; b=Q6eUF4eiAs/SdvYXt3hXTGNhF3+A6S63ZD7DREgTchEV51Smr9iK5by/LKV/+NCPh5YX/QoWuMocnTMpkbJSJdgcTYX3Ol1b0c/xMq2xvdJdPZG13oD7PyK/sKuKcxlFosT0LtBgT08ZdX0snTl0tp61zaaGbGKtbJ4DDthiXIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041344; c=relaxed/simple;
-	bh=z0JAjp+aS0buA1HpV1k7mhavH4xoOpryOIAiH2mbUio=;
+	s=arc-20240116; t=1709041741; c=relaxed/simple;
+	bh=Tuujnbyk+BqesRBp/TnPf5BRspcBZEm93DT56W1jGy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y8klI3nylxuKFYYBfBzbs+FRQyLZ3pCB7Rxvh9hpLxZPuMQUpkRzJb6Z69+fefNtOsniv9sNcgp9sy9sgubsCPgqWw+OmL+4QyFuu5ErCwC6TqMKhnb8wZyn2UwXSmPFxRbOz353xSZd76DkVGNU9g8+Lw8/kwwErAW46cjA0G0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wnBdfaAk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67DA4C433C7;
-	Tue, 27 Feb 2024 13:42:24 +0000 (UTC)
+	 MIME-Version; b=SbQUuLsFO2VUmyf5VrOzE5g4OLy0w20cffrjDX2GVpK149eaDrU1RRTaChklSb5UAdYwTqxWW3ThUXVvvXoSQ7sQWRSFweGBk9VOFdWAKQENtqxFGojNscA0YBKvo+ZFbMddwwtLHdsgXzaKC6Ip8Je8T2TOOwQg2w7j/e2+kNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/RMOXJf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 589F1C433C7;
+	Tue, 27 Feb 2024 13:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041344;
-	bh=z0JAjp+aS0buA1HpV1k7mhavH4xoOpryOIAiH2mbUio=;
+	s=korg; t=1709041741;
+	bh=Tuujnbyk+BqesRBp/TnPf5BRspcBZEm93DT56W1jGy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wnBdfaAkaYWPO1RVQKjRt3gaPk3OnMSFMmi7SYNwMVHV8cKPqX6LM6ZnEBgDtzmfC
-	 /nLmgNkphPKZt4F5Biu2K7B8HKjG9cm5SpinpCefBhPoSTksUE3WjivB8Ioy73d3UM
-	 /7rSrj8xa7+LLV8KrahsAiJLGqjHdqeVGeMC7GUU=
+	b=a/RMOXJfISWTmG550xf3ngvFFwXjT53MtdBBhy+Nj47091Xp4IOxzO/+K8Qe6ZI88
+	 ms7nUZi4+M26FIo/GrwNsZNYrUccipsGSaPRqmd2v98PqODN1h7tGyoQJtF09waH97
+	 E9jNtNrAHveHQaJwKvss5fURa+LWMtkGyE+t9PQE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Xin Long <lucien.xin@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 305/334] tls: dont skip over different type records from the rx_list
+Subject: [PATCH 6.6 052/299] netfilter: conntrack: check SCTP_CID_SHUTDOWN_ACK for vtag setting in sctp_new
 Date: Tue, 27 Feb 2024 14:22:43 +0100
-Message-ID: <20240227131640.895863773@linuxfoundation.org>
+Message-ID: <20240227131627.645587335@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,125 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit ec823bf3a479d42c589dc0f28ef4951c49cd2d2a ]
+[ Upstream commit 6e348067ee4bc5905e35faa3a8fafa91c9124bc7 ]
 
-If we queue 3 records:
- - record 1, type DATA
- - record 2, some other type
- - record 3, type DATA
-and do a recv(PEEK), the rx_list will contain the first two records.
+The annotation says in sctp_new(): "If it is a shutdown ack OOTB packet, we
+expect a return shutdown complete, otherwise an ABORT Sec 8.4 (5) and (8)".
+However, it does not check SCTP_CID_SHUTDOWN_ACK before setting vtag[REPLY]
+in the conntrack entry(ct).
 
-The next large recv will walk through the rx_list and copy data from
-record 1, then stop because record 2 is a different type. Since we
-haven't filled up our buffer, we will process the next available
-record. It's also DATA, so we can merge it with the current read.
+Because of that, if the ct in Router disappears for some reason in [1]
+with the packet sequence like below:
 
-We shouldn't do that, since there was a record in between that we
-ignored.
+   Client > Server: sctp (1) [INIT] [init tag: 3201533963]
+   Server > Client: sctp (1) [INIT ACK] [init tag: 972498433]
+   Client > Server: sctp (1) [COOKIE ECHO]
+   Server > Client: sctp (1) [COOKIE ACK]
+   Client > Server: sctp (1) [DATA] (B)(E) [TSN: 3075057809]
+   Server > Client: sctp (1) [SACK] [cum ack 3075057809]
+   Server > Client: sctp (1) [HB REQ]
+   (the ct in Router disappears somehow)  <-------- [1]
+   Client > Server: sctp (1) [HB ACK]
+   Client > Server: sctp (1) [DATA] (B)(E) [TSN: 3075057810]
+   Client > Server: sctp (1) [DATA] (B)(E) [TSN: 3075057810]
+   Client > Server: sctp (1) [HB REQ]
+   Client > Server: sctp (1) [DATA] (B)(E) [TSN: 3075057810]
+   Client > Server: sctp (1) [HB REQ]
+   Client > Server: sctp (1) [ABORT]
 
-Add a flag to let process_rx_list inform tls_sw_recvmsg that it had
-more data available.
+when processing HB ACK packet in Router it calls sctp_new() to initialize
+the new ct with vtag[REPLY] set to HB_ACK packet's vtag.
 
-Fixes: 692d7b5d1f91 ("tls: Fix recvmsg() to be able to peek across multiple records")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/r/f00c0c0afa080c60f016df1471158c1caf983c34.1708007371.git.sd@queasysnail.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Later when sending DATA from Client, all the SACKs from Server will get
+dropped in Router, as the SACK packet's vtag does not match vtag[REPLY]
+in the ct. The worst thing is the vtag in this ct will never get fixed
+by the upcoming packets from Server.
+
+This patch fixes it by checking SCTP_CID_SHUTDOWN_ACK before setting
+vtag[REPLY] in the ct in sctp_new() as the annotation says. With this
+fix, it will leave vtag[REPLY] in ct to 0 in the case above, and the
+next HB REQ/ACK from Server is able to fix the vtag as its value is 0
+in nf_conntrack_sctp_packet().
+
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ net/netfilter/nf_conntrack_proto_sctp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 43dd0d82b6ed7..de96959336c48 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -1772,7 +1772,8 @@ static int process_rx_list(struct tls_sw_context_rx *ctx,
- 			   u8 *control,
- 			   size_t skip,
- 			   size_t len,
--			   bool is_peek)
-+			   bool is_peek,
-+			   bool *more)
- {
- 	struct sk_buff *skb = skb_peek(&ctx->rx_list);
- 	struct tls_msg *tlm;
-@@ -1785,7 +1786,7 @@ static int process_rx_list(struct tls_sw_context_rx *ctx,
- 
- 		err = tls_record_content_type(msg, tlm, control);
- 		if (err <= 0)
--			goto out;
-+			goto more;
- 
- 		if (skip < rxm->full_len)
- 			break;
-@@ -1803,12 +1804,12 @@ static int process_rx_list(struct tls_sw_context_rx *ctx,
- 
- 		err = tls_record_content_type(msg, tlm, control);
- 		if (err <= 0)
--			goto out;
-+			goto more;
- 
- 		err = skb_copy_datagram_msg(skb, rxm->offset + skip,
- 					    msg, chunk);
- 		if (err < 0)
--			goto out;
-+			goto more;
- 
- 		len = len - chunk;
- 		copied = copied + chunk;
-@@ -1844,6 +1845,10 @@ static int process_rx_list(struct tls_sw_context_rx *ctx,
- 
- out:
- 	return copied ? : err;
-+more:
-+	if (more)
-+		*more = true;
-+	goto out;
- }
- 
- static bool
-@@ -1947,6 +1952,7 @@ int tls_sw_recvmsg(struct sock *sk,
- 	int target, err;
- 	bool is_kvec = iov_iter_is_kvec(&msg->msg_iter);
- 	bool is_peek = flags & MSG_PEEK;
-+	bool rx_more = false;
- 	bool released = true;
- 	bool bpf_strp_enabled;
- 	bool zc_capable;
-@@ -1966,12 +1972,12 @@ int tls_sw_recvmsg(struct sock *sk,
- 		goto end;
- 
- 	/* Process pending decrypted records. It must be non-zero-copy */
--	err = process_rx_list(ctx, msg, &control, 0, len, is_peek);
-+	err = process_rx_list(ctx, msg, &control, 0, len, is_peek, &rx_more);
- 	if (err < 0)
- 		goto end;
- 
- 	copied = err;
--	if (len <= copied || (copied && control != TLS_RECORD_TYPE_DATA))
-+	if (len <= copied || (copied && control != TLS_RECORD_TYPE_DATA) || rx_more)
- 		goto end;
- 
- 	target = sock_rcvlowat(sk, flags & MSG_WAITALL, len);
-@@ -2130,10 +2136,10 @@ int tls_sw_recvmsg(struct sock *sk,
- 		/* Drain records from the rx_list & copy if required */
- 		if (is_peek || is_kvec)
- 			err = process_rx_list(ctx, msg, &control, copied,
--					      decrypted, is_peek);
-+					      decrypted, is_peek, NULL);
- 		else
- 			err = process_rx_list(ctx, msg, &control, 0,
--					      async_copy_bytes, is_peek);
-+					      async_copy_bytes, is_peek, NULL);
- 	}
- 
- 	copied += decrypted;
+diff --git a/net/netfilter/nf_conntrack_proto_sctp.c b/net/netfilter/nf_conntrack_proto_sctp.c
+index c6bd533983c1f..4cc97f971264e 100644
+--- a/net/netfilter/nf_conntrack_proto_sctp.c
++++ b/net/netfilter/nf_conntrack_proto_sctp.c
+@@ -283,7 +283,7 @@ sctp_new(struct nf_conn *ct, const struct sk_buff *skb,
+ 			pr_debug("Setting vtag %x for secondary conntrack\n",
+ 				 sh->vtag);
+ 			ct->proto.sctp.vtag[IP_CT_DIR_ORIGINAL] = sh->vtag;
+-		} else {
++		} else if (sch->type == SCTP_CID_SHUTDOWN_ACK) {
+ 		/* If it is a shutdown ack OOTB packet, we expect a return
+ 		   shutdown complete, otherwise an ABORT Sec 8.4 (5) and (8) */
+ 			pr_debug("Setting vtag %x for new conn OOTB\n",
 -- 
 2.43.0
 
