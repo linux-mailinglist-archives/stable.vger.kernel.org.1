@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-24647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CECA5869595
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:03:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39211869489
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:54:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C79E1C22681
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:03:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CCBE1C247C3
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:54:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633E113DB92;
-	Tue, 27 Feb 2024 14:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A35FE1420A2;
+	Tue, 27 Feb 2024 13:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OZgUj/Qu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wc7PuWPE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2198213B2BA;
-	Tue, 27 Feb 2024 14:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6010213F006;
+	Tue, 27 Feb 2024 13:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042603; cv=none; b=F4YwdAy7QPa6qh5WuCSXXRwk9qR/itoh7w1oLXTViSciqK8PjerXarZI/4q/Igvo+ffKGsPT4nWWJgh+yaYgOLr6nnYfig6tTaw88gyxzFayreo0g3teP1K6jPvnM80OsE77S7pOqrVTHfKWIWA51rIsyk07en9wvXe/RssyIag=
+	t=1709042041; cv=none; b=mYhb4hv2ayhmwsYMjKwZvlKw89hkwo0yL9EiHVyLg9RwRjid2eOcKa4dcoCdBsaoIdHzEl9lzrRWjtoQngfLef8CCpFH41CTypXlzRB2qn2T9wnWOgII7K+Htm9vUIrmW2vTF3uKPqD/WQlv/y5Fjtw7UvU5f8xmp7QGnqSCrpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042603; c=relaxed/simple;
-	bh=AQHiYjiz2dleTPEzxoPa0v/Obqw/eu0oNoNQIS05kNk=;
+	s=arc-20240116; t=1709042041; c=relaxed/simple;
+	bh=LALDyFAg38E7b92c3bXWRdX7d6pOk9s8gyFC4jPZVmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ViURR1TMrR4ZFfiau9o8RLlx4cHTH36Ue37duWvUz9dTw29kRtoOAGFz7FemUy/i4ulvjFgQCnRNOpJyDbosoPwi7pEB+5BQiN5paybQ2WNpgw1rj/llhUkpWAfp4WUxW9VyJuBjDJM7I59QVADDt7uFWAmyCX8ZpLjPIS3xxSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OZgUj/Qu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51AEDC433F1;
-	Tue, 27 Feb 2024 14:03:22 +0000 (UTC)
+	 MIME-Version; b=ExDzr7KFheuVeJsnO5Z8NFgOI9hHywZnyz39SofKdDOvevbUeE4vP3UepKe4RcMhtKtiDNfvLZMZSrW7ZIAvskhi58l9/DKINpqe6NHrv5y/xymdGiXWJ5hQ6HLYfY+KuLCEuupef8RT9JXPAOjvEwc7ziL8zFoFPS/JnezZflA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wc7PuWPE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB021C433F1;
+	Tue, 27 Feb 2024 13:54:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042602;
-	bh=AQHiYjiz2dleTPEzxoPa0v/Obqw/eu0oNoNQIS05kNk=;
+	s=korg; t=1709042041;
+	bh=LALDyFAg38E7b92c3bXWRdX7d6pOk9s8gyFC4jPZVmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OZgUj/Qut1S6yc4gev33j4bwnZ/Q5YmIXrzCkILTnTlmYQkjKLYF5FUraHhuj2AGK
-	 nDKnyLlueE+3ecYuIUAXVnzkYmv2ErfFK4Q32v0aBei7+t98HXhf1LILYzZ+Sm07Z1
-	 k/vviPYAL8vCCb3QNo4uoAkLAwRGAeUbAYWr0acI=
+	b=Wc7PuWPEZ+jpJKBQkv+xH2lh9DlDgOjQ6WEf0fLOBJ+N01ALBkM1xPXYbQU/b2BAA
+	 HShnE8QT/leKNyIqJ7dO6yRA+rcNkDjDnS0w3Y8H9HgB3LDm7BJrUCDcbqs2Tekdxk
+	 JkTrPN4c7B4Z4YpFLGIUUfeOyPz8ckjsTw8j69qM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Juergen Gross <jgross@suse.com>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 053/245] fs/ntfs3: Improve ntfs_dir_count
+Subject: [PATCH 6.6 130/299] xen/events: drop xen_allocate_irqs_dynamic()
 Date: Tue, 27 Feb 2024 14:24:01 +0100
-Message-ID: <20240227131616.848980379@linuxfoundation.org>
+Message-ID: <20240227131630.041663857@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +62,190 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit 6a799c928b78b14999b7705c4cca0f88e297fe96 ]
+[ Upstream commit 5dd9ad32d7758b1a76742f394acf0eb3ac8a636a ]
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Instead of having a common function for allocating a single IRQ or a
+consecutive number of IRQs, split up the functionality into the callers
+of xen_allocate_irqs_dynamic().
+
+This allows to handle any allocation error in xen_irq_init() gracefully
+instead of panicing the system. Let xen_irq_init() return the irq_info
+pointer or NULL in case of an allocation error.
+
+Additionally set the IRQ into irq_info already at allocation time, as
+otherwise the IRQ would be '0' (which is a valid IRQ number) until
+being set.
+
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Stable-dep-of: fa765c4b4aed ("xen/events: close evtchn after mapping cleanup")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/dir.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ drivers/xen/events/events_base.c | 74 +++++++++++++++++++-------------
+ 1 file changed, 44 insertions(+), 30 deletions(-)
 
-diff --git a/fs/ntfs3/dir.c b/fs/ntfs3/dir.c
-index c2fb76bb28f47..72cdfa8727d3c 100644
---- a/fs/ntfs3/dir.c
-+++ b/fs/ntfs3/dir.c
-@@ -515,11 +515,9 @@ static int ntfs_dir_count(struct inode *dir, bool *is_empty, size_t *dirs,
- 	struct INDEX_HDR *hdr;
- 	const struct ATTR_FILE_NAME *fname;
- 	u32 e_size, off, end;
--	u64 vbo = 0;
- 	size_t drs = 0, fles = 0, bit = 0;
--	loff_t i_size = ni->vfs_inode.i_size;
- 	struct indx_node *node = NULL;
--	u8 index_bits = ni->dir.index_bits;
-+	size_t max_indx = ni->vfs_inode.i_size >> ni->dir.index_bits;
+diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
+index d3d7501628381..4dfd68382465b 100644
+--- a/drivers/xen/events/events_base.c
++++ b/drivers/xen/events/events_base.c
+@@ -304,6 +304,13 @@ static void channels_on_cpu_inc(struct irq_info *info)
+ 	info->is_accounted = 1;
+ }
  
- 	if (is_empty)
- 		*is_empty = true;
-@@ -563,7 +561,7 @@ static int ntfs_dir_count(struct inode *dir, bool *is_empty, size_t *dirs,
- 				fles += 1;
- 		}
++static void xen_irq_free_desc(unsigned int irq)
++{
++	/* Legacy IRQ descriptors are managed by the arch. */
++	if (irq >= nr_legacy_irqs())
++		irq_free_desc(irq);
++}
++
+ static void delayed_free_irq(struct work_struct *work)
+ {
+ 	struct irq_info *info = container_of(to_rcu_work(work), struct irq_info,
+@@ -315,9 +322,7 @@ static void delayed_free_irq(struct work_struct *work)
  
--		if (vbo >= i_size)
-+		if (bit >= max_indx)
- 			goto out;
+ 	kfree(info);
  
- 		err = indx_used_bit(&ni->dir, ni, &bit);
-@@ -573,8 +571,7 @@ static int ntfs_dir_count(struct inode *dir, bool *is_empty, size_t *dirs,
- 		if (bit == MINUS_ONE_T)
- 			goto out;
+-	/* Legacy IRQ descriptors are managed by the arch. */
+-	if (irq >= nr_legacy_irqs())
+-		irq_free_desc(irq);
++	xen_irq_free_desc(irq);
+ }
  
--		vbo = (u64)bit << index_bits;
--		if (vbo >= i_size)
-+		if (bit >= max_indx)
- 			goto out;
+ /* Constructors for packed IRQ information. */
+@@ -332,7 +337,6 @@ static int xen_irq_info_common_setup(struct irq_info *info,
+ 	BUG_ON(info->type != IRQT_UNBOUND && info->type != type);
  
- 		err = indx_read(&ni->dir, ni, bit << ni->dir.idx2vbn_bits,
-@@ -584,7 +581,6 @@ static int ntfs_dir_count(struct inode *dir, bool *is_empty, size_t *dirs,
+ 	info->type = type;
+-	info->irq = irq;
+ 	info->evtchn = evtchn;
+ 	info->cpu = cpu;
+ 	info->mask_reason = EVT_MASK_REASON_EXPLICIT;
+@@ -733,47 +737,45 @@ void xen_irq_lateeoi(unsigned int irq, unsigned int eoi_flags)
+ }
+ EXPORT_SYMBOL_GPL(xen_irq_lateeoi);
  
- 		hdr = &node->index->ihdr;
- 		bit += 1;
--		vbo = (u64)bit << ni->dir.idx2vbn_bits;
+-static void xen_irq_init(unsigned irq)
++static struct irq_info *xen_irq_init(unsigned int irq)
+ {
+ 	struct irq_info *info;
+ 
+ 	info = kzalloc(sizeof(*info), GFP_KERNEL);
+-	if (info == NULL)
+-		panic("Unable to allocate metadata for IRQ%d\n", irq);
++	if (info) {
++		info->irq = irq;
++		info->type = IRQT_UNBOUND;
++		info->refcnt = -1;
++		INIT_RCU_WORK(&info->rwork, delayed_free_irq);
+ 
+-	info->type = IRQT_UNBOUND;
+-	info->refcnt = -1;
+-	INIT_RCU_WORK(&info->rwork, delayed_free_irq);
++		set_info_for_irq(irq, info);
++		/*
++		 * Interrupt affinity setting can be immediate. No point
++		 * in delaying it until an interrupt is handled.
++		 */
++		irq_set_status_flags(irq, IRQ_MOVE_PCNTXT);
+ 
+-	set_info_for_irq(irq, info);
+-	/*
+-	 * Interrupt affinity setting can be immediate. No point
+-	 * in delaying it until an interrupt is handled.
+-	 */
+-	irq_set_status_flags(irq, IRQ_MOVE_PCNTXT);
++		INIT_LIST_HEAD(&info->eoi_list);
++		list_add_tail(&info->list, &xen_irq_list_head);
++	}
+ 
+-	INIT_LIST_HEAD(&info->eoi_list);
+-	list_add_tail(&info->list, &xen_irq_list_head);
++	return info;
+ }
+ 
+-static int __must_check xen_allocate_irqs_dynamic(int nvec)
++static inline int __must_check xen_allocate_irq_dynamic(void)
+ {
+-	int i, irq = irq_alloc_descs(-1, 0, nvec, -1);
++	int irq = irq_alloc_desc_from(0, -1);
+ 
+ 	if (irq >= 0) {
+-		for (i = 0; i < nvec; i++)
+-			xen_irq_init(irq + i);
++		if (!xen_irq_init(irq)) {
++			xen_irq_free_desc(irq);
++			irq = -1;
++		}
  	}
  
- out:
+ 	return irq;
+ }
+ 
+-static inline int __must_check xen_allocate_irq_dynamic(void)
+-{
+-
+-	return xen_allocate_irqs_dynamic(1);
+-}
+-
+ static int __must_check xen_allocate_irq_gsi(unsigned gsi)
+ {
+ 	int irq;
+@@ -793,7 +795,10 @@ static int __must_check xen_allocate_irq_gsi(unsigned gsi)
+ 	else
+ 		irq = irq_alloc_desc_at(gsi, -1);
+ 
+-	xen_irq_init(irq);
++	if (!xen_irq_init(irq)) {
++		xen_irq_free_desc(irq);
++		irq = -1;
++	}
+ 
+ 	return irq;
+ }
+@@ -963,6 +968,11 @@ static void __unbind_from_irq(unsigned int irq)
+ 	evtchn_port_t evtchn = evtchn_from_irq(irq);
+ 	struct irq_info *info = info_for_irq(irq);
+ 
++	if (!info) {
++		xen_irq_free_desc(irq);
++		return;
++	}
++
+ 	if (info->refcnt > 0) {
+ 		info->refcnt--;
+ 		if (info->refcnt != 0)
+@@ -1101,11 +1111,14 @@ int xen_bind_pirq_msi_to_irq(struct pci_dev *dev, struct msi_desc *msidesc,
+ 
+ 	mutex_lock(&irq_mapping_update_lock);
+ 
+-	irq = xen_allocate_irqs_dynamic(nvec);
++	irq = irq_alloc_descs(-1, 0, nvec, -1);
+ 	if (irq < 0)
+ 		goto out;
+ 
+ 	for (i = 0; i < nvec; i++) {
++		if (!xen_irq_init(irq + i))
++			goto error_irq;
++
+ 		irq_set_chip_and_handler_name(irq + i, &xen_pirq_chip, handle_edge_irq, name);
+ 
+ 		ret = xen_irq_info_pirq_setup(irq + i, 0, pirq + i, 0, domid,
+@@ -1753,6 +1766,7 @@ void rebind_evtchn_irq(evtchn_port_t evtchn, int irq)
+ 	   so there should be a proper type */
+ 	BUG_ON(info->type == IRQT_UNBOUND);
+ 
++	info->irq = irq;
+ 	(void)xen_irq_info_evtchn_setup(irq, evtchn, NULL);
+ 
+ 	mutex_unlock(&irq_mapping_update_lock);
 -- 
 2.43.0
 
