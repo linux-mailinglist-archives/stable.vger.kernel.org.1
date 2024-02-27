@@ -1,217 +1,110 @@
-Return-Path: <stable+bounces-23893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C64086903C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:21:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEF568690A9
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:34:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4377B289621
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 12:21:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0D391C2291B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 12:34:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A89B0145350;
-	Tue, 27 Feb 2024 12:18:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 349F2135A66;
+	Tue, 27 Feb 2024 12:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B5srQBJ1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SBZelrBl"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827FD13DB87
-	for <stable@vger.kernel.org>; Tue, 27 Feb 2024 12:18:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944B01CFA9;
+	Tue, 27 Feb 2024 12:34:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709036291; cv=none; b=EgYmuY3sfn22+PgGAksG8fZQyw6C5WF2+NyzfaI/S598KjEPfGD10eSHo5I533gbz08byRczydyj0ZRq28Ko4uejaOr82tAQXZwH/S7gsvO9F4crtkq0Q8ZADocRakDBC6avA9CxzDyLt65NVv4EXxGDmsfWVien6YxmTVzWAw0=
+	t=1709037269; cv=none; b=hdfQAyK9NqqbFNqbNrcq0JOG7vdmX9PjEQH75qLSrOyatCpOez2wFt741gy9NiVgH22FR3akC1bXihxDUO3DquXw5U4N85yxTORFgduNjCKG2QQAXkDb4JtA986ll+93e/o+CPN3e9yGSET//qXueUfqCta2yrnQjuvV2q9MEvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709036291; c=relaxed/simple;
-	bh=LoqowTC6OOBrENRHvQ/wGIG1Ds/jK8vADdaatdI6yws=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=FfXHMicQaj/ULXPdC2HUf3Glg0qQkLvuERl2WNFl6V9r5t+m6nSUnSWM0jb2/LeDJbS6vYbCXcrvr5emD9ZF/Ma8a8Rv9qqIjdFLYw4jwWSicdE4u9QDvyOxkQV1MFl6gO6oTkKWYpq2S96NH4u7AQams2zCg2GVHTfb+eI+4Vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B5srQBJ1; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709036289; x=1740572289;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=LoqowTC6OOBrENRHvQ/wGIG1Ds/jK8vADdaatdI6yws=;
-  b=B5srQBJ1/DdhClytJJDzRTdr8gJK83Kv4oWDH6X2qjQ+peIXyT1HQIDG
-   Rabqci6OOzwB+ib6GBO/oJjeeG7DQ22z3cqu1DqwHnJ8UEEIVe5EMMWBI
-   1ujj97NBJkxMX93OepcBRkHi6ThBL5eMe7YfMP04ShicXkV87BsMUCK37
-   4E4SVcDLUNoPFKtmPja9J/yhUOlZXi4GZPTYUrhyj+pOQErZ01OrSnM22
-   riNQp25jsxpA0Vaw15OY5XSJo90s62rZGCvoPhQiYMTMVaLGNgHVhE6I2
-   dJM9vjCP4yEhqx9xjLwf/s8j3I5Dw9Q8kAa1rllVo6PkGI2j8SRy4mERX
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3532433"
-X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; 
-   d="scan'208";a="3532433"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2024 04:18:08 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; 
-   d="scan'208";a="11793592"
-Received: from bdallmer-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.49.187])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2024 04:18:04 -0800
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: Andi Shyti <andi.shyti@linux.intel.com>, intel-gfx
- <intel-gfx@lists.freedesktop.org>, dri-devel
- <dri-devel@lists.freedesktop.org>
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>, Joonas Lahtinen
- <joonas.lahtinen@linux.intel.com>, Matt Roper <matthew.d.roper@intel.com>,
- John Harrison <John.C.Harrison@Intel.com>, Tvrtko Ursulin
- <tvrtko.ursulin@linux.intel.com>, stable@vger.kernel.org, Andi Shyti
- <andi.shyti@linux.intel.com>, Andi Shyti <andi.shyti@kernel.org>
-Subject: Re: [PATCH 2/2] drm/i915/gt: Set default CCS mode '1'
-In-Reply-To: <20240220142034.257370-3-andi.shyti@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20240220142034.257370-1-andi.shyti@linux.intel.com>
- <20240220142034.257370-3-andi.shyti@linux.intel.com>
-Date: Tue, 27 Feb 2024 14:18:01 +0200
-Message-ID: <87bk82je2u.fsf@intel.com>
+	s=arc-20240116; t=1709037269; c=relaxed/simple;
+	bh=N9j9qlONozduTz+bniTZX4spLz7Dtuw1zBMBtIuIeC0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MAvtQ/rpmKIwFMeDnzZ0QkosGlyx7O+Vd2rOjDzTdOst3WxmIS+Jt1qiABT76JG/YSAaELO2oJXVfYUlX++PhTj6onoO3gcAJNgdgyP60XqZ33PaWo/otdvHUXtc9AeZo4f4NPXmKxiaeNiaNQ1c6q8S9P5su4GKeeMWzavUAvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SBZelrBl; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2997a92e23bso2887446a91.3;
+        Tue, 27 Feb 2024 04:34:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709037267; x=1709642067; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=N9j9qlONozduTz+bniTZX4spLz7Dtuw1zBMBtIuIeC0=;
+        b=SBZelrBlMCrAok/Ji5IEEIJ0HuE10ktW936bNSRp7GdMIR5e+y4QvpsYvEucM5xjeu
+         mKdxLMsjdQIalqDWPrC4t2jI6azU5RQJjnWHjz9N4uTEswRgLHcDs7uHx6A2vWPRLu2x
+         vYLZQb3dpdY4C8cdspbbw79YWR0oPeMC5x8PD7iQaOGd+f6WdxH16hGFJUwYUI/M/nVp
+         FaagOgWF8MIchQBZlC92uGDpHeowb555aiKuff+BubVIEfdqOExTTdV83W5qsZAiVSeg
+         TTttIMqUmApTIYcKSQhqSpziL6By7gLclakfPzID3zOEjzxf6FkGgYXFe3TSaC679HBe
+         IIqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709037267; x=1709642067;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=N9j9qlONozduTz+bniTZX4spLz7Dtuw1zBMBtIuIeC0=;
+        b=uO+F8ZftviYg1B1Av0GTIAzZmaTq4QfL0Qa+xteX7YJq3dWo6IvUlWEOO0uc9Wde0P
+         kQ2YEvixO+XoiMcinQlOcSC8iALGaH4rh+U9g3Iq1TYyXgyVc+xIOOug0Zlt/a+Q9c8C
+         FZVdG6sEfdcl3JRFkIT44aOp6R1Ut9oJFH20hGfawK8BjKqxXMu4LsnwhzNINkROJ/Mi
+         VGALXQmJPJB3pHpUI0PmXNMsSlIXrt54+zd1rLu762am5RaxSkfjHU+6llatOoEY2bqf
+         EbuS4zaGvvqAU2hAFywr88BMURBhKRLdsTrIDecNf8rDuTonm1sG3gwXk7CdQ2rpIU9Y
+         z91Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV13V7aDEi27eSWyemQ7TcL7ZpvgZK0/hzmplO14Q+UMAMg5IDpgndtRMFus1AUPFoIUxCEyFnr/OFQR41jq3XonhvNloib1UIxxFT9eUrgPzKswE2GVEmueZ27MBCVtzK8oJckBDtvAgTz1CcVkNy4NFmCwabpK7+dGGXVcs/RuxKKkgWOL4OP+Fx40I8FeQ+ErQEJGLhjnfaIM4459EM=
+X-Gm-Message-State: AOJu0Yy+8ZO4uMbZebHD84QGA9riTQmoSxOKrWYoTPNcdnGsogBq2HyI
+	sgRRFnt/trEac0P/cWDNK0wlSONYiyRChVEJu5whlsYpLmChf2gKsoIyF3lik3yXkE07K0aJvxo
+	0rw8qnJ6smy3Z0B9mdD70W5R3ccY=
+X-Google-Smtp-Source: AGHT+IEuXAPX9FOqOhNJb3Owku+lxeLjmPjbeDLcLvCF79H6OR73WYykC8gycjj0GEybh553JRImPRMosUkl+JhzaAA=
+X-Received: by 2002:a17:90a:5804:b0:299:389e:b611 with SMTP id
+ h4-20020a17090a580400b00299389eb611mr5540528pji.47.1709037266902; Tue, 27 Feb
+ 2024 04:34:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20240223-leverage-walmart-5424542cd8bd@spud> <20240223-perjury-preshow-fc2cf73d552e@spud>
+ <CANiq72=mCnm0mKOw5K44PmZ+jF=67jxEEkcXP-E0O8CaUrps=w@mail.gmail.com> <20240227-uncertain-amaze-6197e627ad95@wendy>
+In-Reply-To: <20240227-uncertain-amaze-6197e627ad95@wendy>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 27 Feb 2024 13:34:14 +0100
+Message-ID: <CANiq72=geBobqM0Dc2yv=NjAc3MWXhOrDHfuJ84TgQ+XVxBo0w@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] rust: make mutually exclusive with CFI_CLANG
+To: Conor Dooley <conor.dooley@microchip.com>, Nathan Chancellor <nathan@kernel.org>
+Cc: Conor Dooley <conor@kernel.org>, Matthew Maurer <mmaurer@google.com>, 
+	linux-riscv@lists.infradead.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Nick Desaulniers <ndesaulniers@google.com>, Tom Rix <trix@redhat.com>, 
+	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, stable@vger.kernel.org, 
+	Sami Tolvanen <samitolvanen@google.com>, Ramon de C Valle <rcvalle@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 20 Feb 2024, Andi Shyti <andi.shyti@linux.intel.com> wrote:
-> Since CCS automatic load balancing is disabled, we will impose a
-> fixed balancing policy that involves setting all the CCS engines
-> to work together on the same load.
+On Tue, Feb 27, 2024 at 11:54=E2=80=AFAM Conor Dooley
+<conor.dooley@microchip.com> wrote:
 >
-> Simultaneously, the user will see only 1 CCS rather than the
-> actual number. As of now, this change affects only DG2.
->
-> Fixes: d2eae8e98d59 ("drm/i915/dg2: Drop force_probe requirement")
-> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-> Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
-> Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-> Cc: Matt Roper <matthew.d.roper@intel.com>
-> Cc: <stable@vger.kernel.org> # v6.2+
-> ---
->  drivers/gpu/drm/i915/gt/intel_gt.c      | 11 +++++++++++
->  drivers/gpu/drm/i915/gt/intel_gt_regs.h |  2 ++
->  drivers/gpu/drm/i915/i915_drv.h         | 17 +++++++++++++++++
->  drivers/gpu/drm/i915/i915_query.c       |  5 +++--
->  4 files changed, 33 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/gpu/drm/i915/gt/intel_gt.c b/drivers/gpu/drm/i915/gt/intel_gt.c
-> index a425db5ed3a2..e19df4ef47f6 100644
-> --- a/drivers/gpu/drm/i915/gt/intel_gt.c
-> +++ b/drivers/gpu/drm/i915/gt/intel_gt.c
-> @@ -168,6 +168,14 @@ static void init_unused_rings(struct intel_gt *gt)
->  	}
->  }
->  
-> +static void intel_gt_apply_ccs_mode(struct intel_gt *gt)
-> +{
-> +	if (!IS_DG2(gt->i915))
-> +		return;
-> +
-> +	intel_uncore_write(gt->uncore, XEHP_CCS_MODE, 0);
-> +}
-> +
->  int intel_gt_init_hw(struct intel_gt *gt)
->  {
->  	struct drm_i915_private *i915 = gt->i915;
-> @@ -195,6 +203,9 @@ int intel_gt_init_hw(struct intel_gt *gt)
->  
->  	intel_gt_init_swizzling(gt);
->  
-> +	/* Configure CCS mode */
-> +	intel_gt_apply_ccs_mode(gt);
-> +
->  	/*
->  	 * At least 830 can leave some of the unused rings
->  	 * "active" (ie. head != tail) after resume which
-> diff --git a/drivers/gpu/drm/i915/gt/intel_gt_regs.h b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-> index cf709f6c05ae..c148113770ea 100644
-> --- a/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-> +++ b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-> @@ -1605,6 +1605,8 @@
->  #define   GEN12_VOLTAGE_MASK			REG_GENMASK(10, 0)
->  #define   GEN12_CAGF_MASK			REG_GENMASK(19, 11)
->  
-> +#define XEHP_CCS_MODE                          _MMIO(0x14804)
-> +
->  #define GEN11_GT_INTR_DW(x)			_MMIO(0x190018 + ((x) * 4))
->  #define   GEN11_CSME				(31)
->  #define   GEN12_HECI_2				(30)
-> diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
-> index e81b3b2858ac..0853ffd3cb8d 100644
-> --- a/drivers/gpu/drm/i915/i915_drv.h
-> +++ b/drivers/gpu/drm/i915/i915_drv.h
-> @@ -396,6 +396,23 @@ static inline struct intel_gt *to_gt(const struct drm_i915_private *i915)
->  	     (engine__); \
->  	     (engine__) = rb_to_uabi_engine(rb_next(&(engine__)->uabi_node)))
->  
-> +/*
-> + * Exclude unavailable engines.
-> + *
-> + * Only the first CCS engine is utilized due to the disabling of CCS auto load
-> + * balancing. As a result, all CCS engines operate collectively, functioning
-> + * essentially as a single CCS engine, hence the count of active CCS engines is
-> + * considered '1'.
-> + * Currently, this applies to platforms with more than one CCS engine,
-> + * specifically DG2.
-> + */
-> +#define for_each_available_uabi_engine(engine__, i915__) \
+> I did try to test it but I ran into too many toolchain issues - my
+> older copies of LLVM (pre 17) are not multiarch as I built them by hand
+> with PGO for x86 and RISC-V. My LLVM 17 is from kernel.org and has no
+> libclang. And then the copy of LLVM 18 on kernel.org apparently does not
+> support kcfi at all. I gave up there, but I don't see how this would not
 
-Hrmh, I've been trying to pester folks to move the existing engine
-iterator macros away from i915_drv.h, so not happy to see more.
+I asked Nathan to add libclang a few days ago, and he very quickly did
+it for LLVM 18 -- though I don't know the plan for the others. I just
+pinged in that thread.
 
-But since this is Cc: stable, better do that in a follow-up. Please?
-
-> +	for_each_uabi_engine(engine__, i915__) \
-> +		if ((IS_DG2(i915__)) && \
-> +		    ((engine__)->uabi_class == I915_ENGINE_CLASS_COMPUTE) && \
-> +		    ((engine__)->uabi_instance)) { } \
-> +		else
-
-We have for_each_if for this.
-
-> +
->  #define INTEL_INFO(i915)	((i915)->__info)
->  #define RUNTIME_INFO(i915)	(&(i915)->__runtime)
->  #define DRIVER_CAPS(i915)	(&(i915)->caps)
-> diff --git a/drivers/gpu/drm/i915/i915_query.c b/drivers/gpu/drm/i915/i915_query.c
-> index fa3e937ed3f5..2d41bda626a6 100644
-> --- a/drivers/gpu/drm/i915/i915_query.c
-> +++ b/drivers/gpu/drm/i915/i915_query.c
-> @@ -124,6 +124,7 @@ static int query_geometry_subslices(struct drm_i915_private *i915,
->  	return fill_topology_info(sseu, query_item, sseu->geometry_subslice_mask);
->  }
->  
-> +
-
-Superfluous newline change.
-
->  static int
->  query_engine_info(struct drm_i915_private *i915,
->  		  struct drm_i915_query_item *query_item)
-> @@ -140,7 +141,7 @@ query_engine_info(struct drm_i915_private *i915,
->  	if (query_item->flags)
->  		return -EINVAL;
->  
-> -	for_each_uabi_engine(engine, i915)
-> +	for_each_available_uabi_engine(engine, i915)
->  		num_uabi_engines++;
->  
->  	len = struct_size(query_ptr, engines, num_uabi_engines);
-> @@ -155,7 +156,7 @@ query_engine_info(struct drm_i915_private *i915,
->  
->  	info_ptr = &query_ptr->engines[0];
->  
-> -	for_each_uabi_engine(engine, i915) {
-> +	for_each_available_uabi_engine(engine, i915) {
->  		info.engine.engine_class = engine->uabi_class;
->  		info.engine.engine_instance = engine->uabi_instance;
->  		info.flags = I915_ENGINE_INFO_HAS_LOGICAL_INSTANCE;
-
--- 
-Jani Nikula, Intel
+Cheers,
+Miguel
 
