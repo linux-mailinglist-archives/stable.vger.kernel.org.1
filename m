@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B218B86948D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:54:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 286A78695BF
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:05:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 53C9A1F21C77
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:54:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D23DD1F2C09C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:05:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1630143C75;
-	Tue, 27 Feb 2024 13:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D9513DBA4;
+	Tue, 27 Feb 2024 14:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bGV9majF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bzV5fZnn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C38A1448F1;
-	Tue, 27 Feb 2024 13:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235F613B79F;
+	Tue, 27 Feb 2024 14:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042052; cv=none; b=SowF7umgf9sb7wl7vgfg7As6h7lYLKxFfZwRcGTvE5jkrXYg9256jAhqV/IoXnGa4aE2lW6Hv6p7UN2KL4KF+JOvaQn4UZnuWRCzJQxXGu8NRyKHEp9dMiLwMtb5cnxBURInfAzlNfxHBYc5blPAFfz/llaHKa2TnMPaPMAC5tk=
+	t=1709042691; cv=none; b=QDS9MhJdN32APi2T/s6Nq9CXAs4rfY82kcOjnpNJrjYBfZ0ubE4U4tjT0RYfq7xj9aSdX6+ADIUy1hSz6qmkOJdL9xmzYzRgCAtlOlZEWOXbviGM+m4srQygLBYiFUMDollTbBowcR+ov6UwZkg4YvohtHO4KRzlWBzHqJYzW4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042052; c=relaxed/simple;
-	bh=V/u1uscCmUy/I/qWyz1fBrs7KqkVhnOhKIjqAU2G6tQ=;
+	s=arc-20240116; t=1709042691; c=relaxed/simple;
+	bh=Wl/p2Zpv5qc3DrJMHnErL5HBDhe2mtH6OQo1IDPPyRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BSYd2gfYoMaFnTCzqrFNwxlVnl5g280CLk0GPeUSG/KJMIs7wfxeHk2WIseLQEXJ1PZcQ88wSRwxzVFJkhfZa/2b5ma2oQj1RmLLsrCiJ7OuJcDCsX+UdMNILvi5EXUcAJqGTykP1PTrSLe894kXGB47eJxeWkZwzdvIA71tRoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bGV9majF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDD5AC433F1;
-	Tue, 27 Feb 2024 13:54:11 +0000 (UTC)
+	 MIME-Version; b=oYiMX4unit/BM9JLDL39oCqnO2aYsdBj74Efiu5i/iSEuD2x3d/c2uOyw+UB8zjQj3CghfaOCo+GdYu049b675AniF7ivrgITzpxKI/wLIac601gvmLg53t0vzOvp5mupNfT8mLxpMPTSEG+dW4hHdTLdepmzidFqtJFC0ca0aM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bzV5fZnn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D96FC43390;
+	Tue, 27 Feb 2024 14:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042052;
-	bh=V/u1uscCmUy/I/qWyz1fBrs7KqkVhnOhKIjqAU2G6tQ=;
+	s=korg; t=1709042690;
+	bh=Wl/p2Zpv5qc3DrJMHnErL5HBDhe2mtH6OQo1IDPPyRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bGV9majFVInVg4SfgBPM4ar2fCLQvYk/MkIR44lVIeS1FcNO2P3njv30DmZT6e/qt
-	 rAAfOx3UkYsFtC0uoDcLWgaUIfEXz0EBreHd75et9l3gCIBciZoZyvnjblHK4MKHxo
-	 qX4L9oK049B/fGbeci5BCOpKTQv1L2raWXQifl2w=
+	b=bzV5fZnnkz3qtSdDFonKxoUg6fgv0f7B7DRUNBoc4zrA21bNmojvOY9na6pA2ZIAj
+	 VxC/DYoAXCkwiz2W+0zDQht1zuFWqWA7YPTWEn48HwbcDlhkAjGizAkJr+KFhTGOMq
+	 JQPL0bIMF7NMlaP1551KZBR1JXG9OaEgG9l7uFL8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Kobel <a-kobel@a-kobel.de>,
-	regressions@lists.linux.dev,
-	Arnold Gozum <arngozum@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.6 162/299] platform/x86: intel-vbtn: Stop calling "VBDL" from notify_handler
+	Vidya Sagar <vidyas@nvidia.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Shanker Donthineni <sdonthineni@nvidia.com>
+Subject: [PATCH 5.15 085/245] PCI/MSI: Prevent MSI hardware interrupt number truncation
 Date: Tue, 27 Feb 2024 14:24:33 +0100
-Message-ID: <20240227131631.070692170@linuxfoundation.org>
+Message-ID: <20240227131617.993540668@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Vidya Sagar <vidyas@nvidia.com>
 
-commit 84c16d01ff219bc0a5dca5219db6b8b86a6854fb upstream.
+commit db744ddd59be798c2627efbfc71f707f5a935a40 upstream.
 
-Commit 14c200b7ca46 ("platform/x86: intel-vbtn: Fix missing
-tablet-mode-switch events") causes 2 issues on the ThinkPad X1 Tablet Gen2:
+While calculating the hardware interrupt number for a MSI interrupt, the
+higher bits (i.e. from bit-5 onwards a.k.a domain_nr >= 32) of the PCI
+domain number gets truncated because of the shifted value casting to return
+type of pci_domain_nr() which is 'int'. This for example is resulting in
+same hardware interrupt number for devices 0019:00:00.0 and 0039:00:00.0.
 
-1. The ThinkPad will wake up immediately from suspend
-2. When put in tablet mode SW_TABLET_MODE reverts to 0 after about 1 second
+To address this cast the PCI domain number to 'irq_hw_number_t' before left
+shifting it to calculate the hardware interrupt number.
 
-Both these issues are caused by the "VBDL" ACPI method call added
-at the end of the notify_handler.
+Please note that this fixes the issue only on 64-bit systems and doesn't
+change the behavior for 32-bit systems i.e. the 32-bit systems continue to
+have the issue. Since the issue surfaces only if there are too many PCIe
+controllers in the system which usually is the case in modern server
+systems and they don't tend to run 32-bit kernels.
 
-And it never became entirely clear if this call is even necessary to fix
-the issue of missing tablet-mode-switch events on the Dell Inspiron 7352.
-
-Drop the "VBDL" ACPI method call again to fix the 2 issues this is
-causing on the ThinkPad X1 Tablet Gen2.
-
-Fixes: 14c200b7ca46 ("platform/x86: intel-vbtn: Fix missing tablet-mode-switch events")
-Reported-by: Alexander Kobel <a-kobel@a-kobel.de>
-Closes: https://lore.kernel.org/platform-driver-x86/295984ce-bd4b-49bd-adc5-ffe7c898d7f0@a-kobel.de/
-Cc: regressions@lists.linux.dev
-Cc: Arnold Gozum <arngozum@gmail.com>
+Fixes: 3878eaefb89a ("PCI/MSI: Enhance core to support hierarchy irqdomain")
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Shanker Donthineni <sdonthineni@nvidia.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Tested-by: Alexander Kobel <a-kobel@a-kobel.de>
-Link: https://lore.kernel.org/r/20240216203300.245826-1-hdegoede@redhat.com
+Link: https://lore.kernel.org/r/20240115135649.708536-1-vidyas@nvidia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/vbtn.c |    3 ---
- 1 file changed, 3 deletions(-)
+ drivers/pci/msi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/platform/x86/intel/vbtn.c
-+++ b/drivers/platform/x86/intel/vbtn.c
-@@ -200,9 +200,6 @@ static void notify_handler(acpi_handle h
- 	autorelease = val && (!ke_rel || ke_rel->type == KE_IGNORE);
+--- a/drivers/pci/msi.c
++++ b/drivers/pci/msi.c
+@@ -1311,7 +1311,7 @@ static irq_hw_number_t pci_msi_domain_ca
  
- 	sparse_keymap_report_event(input_dev, event, val, autorelease);
--
--	/* Some devices need this to report further events */
--	acpi_evaluate_object(handle, "VBDL", NULL, NULL);
+ 	return (irq_hw_number_t)desc->msi_attrib.entry_nr |
+ 		pci_dev_id(dev) << 11 |
+-		(pci_domain_nr(dev->bus) & 0xFFFFFFFF) << 27;
++		((irq_hw_number_t)(pci_domain_nr(dev->bus) & 0xFFFFFFFF)) << 27;
  }
  
- /*
+ static inline bool pci_msi_desc_is_multi_msi(struct msi_desc *desc)
 
 
 
