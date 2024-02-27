@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF065869624
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:08:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B13B286939B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:47:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDAED1C214B4
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:08:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58A101F244AE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:47:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E68913B2B9;
-	Tue, 27 Feb 2024 14:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9C8F1419A1;
+	Tue, 27 Feb 2024 13:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xg1gBqnX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U4Yf7Vi7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E10A13AA43;
-	Tue, 27 Feb 2024 14:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EE3146015;
+	Tue, 27 Feb 2024 13:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042912; cv=none; b=AhI9zHapv4geHx5wyrSE2iGNK2Yq8Le7zAw+6EKs0aiL3pptELCK/xqlmAKUMtcDSaK2qt92s1rwFBTgPlpLvxNZu0QwpYXkOOjGFHZuIfBttvs2MnRnPZbHlpUe7RwPL3ispUlvaIox/d5aFIbq0ORLelYciIQQG2cFJtvYja4=
+	t=1709041523; cv=none; b=G6vBPfjGAzT8zidGT+Lyne0Zn0inL+DwCf3SivR6lYECPF6H5S2OQkXvHoYWaib9PvZwPDO3XFB9pdNXoHhA/xcMcG5v/GhcHBX7Kuiwe6uzHZpc+HnS4PddxdkfT/d+X2nXX7CN2h6GxNO81J14ilhpajwWsb5g+yJJuOTJqZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042912; c=relaxed/simple;
-	bh=IgKGvP6sEwsFraTkiUTVLM0B4muXHshIprtDsD8+vfA=;
+	s=arc-20240116; t=1709041523; c=relaxed/simple;
+	bh=Z5tzvBrZ5YQ37mtb2A30sUwr1h06N0/iUzzOtVqRrH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dKGjWSUeEiEcu4BKrzBLed7x7Gfa+MlrF2Fg/I8LwW+YwTyr6uQZ6jfzdjj3WKRH78bAkNASYXKfnlPWIXR+yF2hg2JHGT95W6rhzBcr7YGM5LfeAyT5ptDLETYMeGN3tOBa4kOFUI5/4B1DIy6aEJpkK7Nr6B3FMOG1TcWC1BQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xg1gBqnX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4557C433F1;
-	Tue, 27 Feb 2024 14:08:31 +0000 (UTC)
+	 MIME-Version; b=c9ZFSFnxqwaESajeVa81e6o2NJmq/v3+KwopH7a6mHYMPPyd26W///DBK3navG1TSXjF59ybFeGBkc+/+WvG5O27pbHCW1RTRR1utxL86J2Wa7wOcNbigpq+3Nwyq6ztQdBuGiEVe2XWuRpTA0FQzvdMz1LjSZx8aEedWtYcYuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U4Yf7Vi7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE26FC433C7;
+	Tue, 27 Feb 2024 13:45:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042912;
-	bh=IgKGvP6sEwsFraTkiUTVLM0B4muXHshIprtDsD8+vfA=;
+	s=korg; t=1709041523;
+	bh=Z5tzvBrZ5YQ37mtb2A30sUwr1h06N0/iUzzOtVqRrH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xg1gBqnXqH55DG09Ah7pNbiUVKOw0sCtjB/sTfHmEgMAScGx8K0tIYqUruqI5y4Pb
-	 psSSZLWc+CnT66AqfTvOFKmLFvwY8pLmSlvfqMJemMfzgzSYkQb5dqIzaAQfgKAeVC
-	 4U0TiCOdmABsFEfn7OKqbDvc6Hqyb6IRmfLyRDZQ=
+	b=U4Yf7Vi7aEgCvCQFjOB4mvGiJU3hshsbSxpsY+GEXQ7TZRvYVJShQrw8PPdvolfk+
+	 Ug3eoH3nY//UaJRHibNxOh6DZR/LiXDUwpUkGnj8ZyuTjed2Q2DqJL9r5gsijiZ/nS
+	 zpQKtC9KaMuUIl9s3k+UyKU9V8ZXA2yqoIKiQq1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhong Jinghua <zhongjinghua@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 166/245] nbd: Add the maximum limit of allocated index in nbd_dev_add
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+5d5d25f90f195a3cfcb4@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 07/52] nilfs2: replace WARN_ONs for invalid DAT metadata block requests
 Date: Tue, 27 Feb 2024 14:25:54 +0100
-Message-ID: <20240227131620.603340303@linuxfoundation.org>
+Message-ID: <20240227131548.770650929@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
+References: <20240227131548.514622258@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhong Jinghua <zhongjinghua@huawei.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit f12bc113ce904777fd6ca003b473b427782b3dde ]
+commit 5124a0a549857c4b87173280e192eea24dea72ad upstream.
 
-If the index allocated by idr_alloc greater than MINORMASK >> part_shift,
-the device number will overflow, resulting in failure to create a block
-device.
+If DAT metadata file block access fails due to corruption of the DAT file
+or abnormal virtual block numbers held by b-trees or inodes, a kernel
+warning is generated.
 
-Fix it by imiting the size of the max allocation.
+This replaces the WARN_ONs by error output, so that a kernel, booted with
+panic_on_warn, does not panic.  This patch also replaces the detected
+return code -ENOENT with another internal code -EINVAL to notify the bmap
+layer of metadata corruption.  When the bmap layer sees -EINVAL, it
+handles the abnormal situation with nilfs_bmap_convert_error() and finally
+returns code -EIO as it should.
 
-Signed-off-by: Zhong Jinghua <zhongjinghua@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230605122159.2134384-1-zhongjinghua@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/0000000000005cc3d205ea23ddcf@google.com
+Link: https://lkml.kernel.org/r/20230126164114.6911-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: <syzbot+5d5d25f90f195a3cfcb4@syzkaller.appspotmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/nbd.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/nilfs2/dat.c |   27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index e563aa407e888..d379a047d4273 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -1715,7 +1715,8 @@ static struct nbd_device *nbd_dev_add(int index, unsigned int refs)
- 		if (err == -ENOSPC)
- 			err = -EEXIST;
- 	} else {
--		err = idr_alloc(&nbd_index_idr, nbd, 0, 0, GFP_KERNEL);
-+		err = idr_alloc(&nbd_index_idr, nbd, 0,
-+				(MINORMASK >> part_shift) + 1, GFP_KERNEL);
- 		if (err >= 0)
- 			index = err;
- 	}
--- 
-2.43.0
-
+--- a/fs/nilfs2/dat.c
++++ b/fs/nilfs2/dat.c
+@@ -40,8 +40,21 @@ static inline struct nilfs_dat_info *NIL
+ static int nilfs_dat_prepare_entry(struct inode *dat,
+ 				   struct nilfs_palloc_req *req, int create)
+ {
+-	return nilfs_palloc_get_entry_block(dat, req->pr_entry_nr,
+-					    create, &req->pr_entry_bh);
++	int ret;
++
++	ret = nilfs_palloc_get_entry_block(dat, req->pr_entry_nr,
++					   create, &req->pr_entry_bh);
++	if (unlikely(ret == -ENOENT)) {
++		nilfs_msg(dat->i_sb, KERN_ERR,
++			  "DAT doesn't have a block to manage vblocknr = %llu",
++			  (unsigned long long)req->pr_entry_nr);
++		/*
++		 * Return internal code -EINVAL to notify bmap layer of
++		 * metadata corruption.
++		 */
++		ret = -EINVAL;
++	}
++	return ret;
+ }
+ 
+ static void nilfs_dat_commit_entry(struct inode *dat,
+@@ -123,11 +136,7 @@ static void nilfs_dat_commit_free(struct
+ 
+ int nilfs_dat_prepare_start(struct inode *dat, struct nilfs_palloc_req *req)
+ {
+-	int ret;
+-
+-	ret = nilfs_dat_prepare_entry(dat, req, 0);
+-	WARN_ON(ret == -ENOENT);
+-	return ret;
++	return nilfs_dat_prepare_entry(dat, req, 0);
+ }
+ 
+ void nilfs_dat_commit_start(struct inode *dat, struct nilfs_palloc_req *req,
+@@ -154,10 +163,8 @@ int nilfs_dat_prepare_end(struct inode *
+ 	int ret;
+ 
+ 	ret = nilfs_dat_prepare_entry(dat, req, 0);
+-	if (ret < 0) {
+-		WARN_ON(ret == -ENOENT);
++	if (ret < 0)
+ 		return ret;
+-	}
+ 
+ 	kaddr = kmap_atomic(req->pr_entry_bh->b_page);
+ 	entry = nilfs_palloc_block_get_entry(dat, req->pr_entry_nr,
 
 
 
