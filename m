@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-25001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B4F2869741
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:19:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96B4D8693B1
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:48:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 071F228DA63
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:19:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BE181F248F8
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:48:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D183C13DBBC;
-	Tue, 27 Feb 2024 14:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA2413B2B9;
+	Tue, 27 Feb 2024 13:46:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mkJqDrLU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3sXteTw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9213F78B61;
-	Tue, 27 Feb 2024 14:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE8F1448F1;
+	Tue, 27 Feb 2024 13:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043580; cv=none; b=byawBRoHfnO4OP6i7ezUfH+9u3uEPVdCCPU1Nen3gq/fjmo9rhQkcVYruHExRjkHR0S0Hi7d+HVFlx3LyYu685/ig+3HTqbPOKOyo7ab1ga6h7iAZE5Jn1Vugl5cYU4AiICN5jU2aKJ56ljhEJp6A9N89oLxCrIdoBnn9ghba3c=
+	t=1709041561; cv=none; b=GLRyMC+LgAjve/rgPgNe7NsRvedgvQM3bJXne+DOWdOBeayoLCcSm/CHlglL9J8mvQQJxBzc5wHi4dkN7hyxSCJK8GxcBRI4YbFElD7A8dyFfjDn2oTQWo3uBpNCwSfmVIMvBLPCUMo02GfndMEa81kHDHhlRSbmh25C4m+4fkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043580; c=relaxed/simple;
-	bh=3BgKkfNEhxVXyAV8S1lYEhdGkSWiOEnIe836Oai2spk=;
+	s=arc-20240116; t=1709041561; c=relaxed/simple;
+	bh=gWtiIocPhib70R5cOC+GM5+X626KWd8yuhmSZIS4nbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kR99uzLdbiC1R+Z0ZcBzga2EvcLQZWlnqBSxkppgMoa16X6mE1fjfk71lWzHKp/HuzLlqTyCtIzupp6ZGFh7YEmF3Sp5ujB8oUtHhwzsQlcCmTTVz2xBFk3IjdFSMRFArfs0hYn/YSM9RVjMhuOffhLnFNecnweKCSgmwjbZw/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mkJqDrLU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C741FC433C7;
-	Tue, 27 Feb 2024 14:19:39 +0000 (UTC)
+	 MIME-Version; b=JgB+CBr9lXT2BvZpX42E2iDQSRClKrcjWL9R1yKA1S5AB/DZciIQ13pT4NLgfPifyGgDMODxvjEvkxidtMGCTlT1uKrX7MMnxw319EZAEypvHnuaH8lvwRYysyHnfAF97s/7m6MUlEOEE9igWTJ5yUxPyhAMYU3mtM/kBZe8gJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3sXteTw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50442C433F1;
+	Tue, 27 Feb 2024 13:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043580;
-	bh=3BgKkfNEhxVXyAV8S1lYEhdGkSWiOEnIe836Oai2spk=;
+	s=korg; t=1709041561;
+	bh=gWtiIocPhib70R5cOC+GM5+X626KWd8yuhmSZIS4nbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mkJqDrLUQEXUVh8Hwuc4cMN6S7u3lGnfPxZm7HuQIfxWl108ovA7fmmKMRb0UgGpI
-	 Mc3MwpUv3g56gKzf4yU0QMiwkg5yMdMopcLHkxD0D78XMoOI2SvLwCN1/EIQESOJH3
-	 pAtsXp+SH4eK5LHrZ2hUsO5VHv8tCjU4XSWwwQLs=
+	b=d3sXteTwHRvCb1v6BHshNho9auVZfFa94uQ+4LzGAdxfrG5ycWnSwMDt4f4/UDoqd
+	 fnYA9I3mP2muAXlkB8yQFffUzNad7Afr/G79vS5k7WzV1lgOHJHpD+DXAikRydSCNj
+	 64CfDb2MslEVnVd25cY9fFiC3C52A1rKJ2gCKhzs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Marciniszyn <mike.marciniszyn@intel.com>,
-	Shiraz Saleem <shiraz.saleem@intel.com>,
-	Sindhu Devale <sindhu.devale@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 132/195] RDMA/irdma: Fix KASAN issue with tasklet
+Subject: [PATCH 4.19 46/52] packet: move from strlcpy with unused retval to strscpy
 Date: Tue, 27 Feb 2024 14:26:33 +0100
-Message-ID: <20240227131614.798935584@linuxfoundation.org>
+Message-ID: <20240227131550.048122231@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
+References: <20240227131548.514622258@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Marciniszyn <mike.marciniszyn@intel.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit bd97cea7b18a0a553773af806dfbfac27a7c4acb ]
+[ Upstream commit 8fc9d51ea2d32a05f7d7cf86a25cc86ecc57eb45 ]
 
-KASAN testing revealed the following issue assocated with freeing an IRQ.
+Follow the advice of the below link and prefer 'strscpy' in this
+subsystem. Conversion is 1:1 because the return value is not used.
+Generated by a coccinelle script.
 
-[50006.466686] Call Trace:
-[50006.466691]  <IRQ>
-[50006.489538]  dump_stack+0x5c/0x80
-[50006.493475]  print_address_description.constprop.6+0x1a/0x150
-[50006.499872]  ? irdma_sc_process_ceq+0x483/0x790 [irdma]
-[50006.505742]  ? irdma_sc_process_ceq+0x483/0x790 [irdma]
-[50006.511644]  kasan_report.cold.11+0x7f/0x118
-[50006.516572]  ? irdma_sc_process_ceq+0x483/0x790 [irdma]
-[50006.522473]  irdma_sc_process_ceq+0x483/0x790 [irdma]
-[50006.528232]  irdma_process_ceq+0xb2/0x400 [irdma]
-[50006.533601]  ? irdma_hw_flush_wqes_callback+0x370/0x370 [irdma]
-[50006.540298]  irdma_ceq_dpc+0x44/0x100 [irdma]
-[50006.545306]  tasklet_action_common.isra.14+0x148/0x2c0
-[50006.551096]  __do_softirq+0x1d0/0xaf8
-[50006.555396]  irq_exit_rcu+0x219/0x260
-[50006.559670]  irq_exit+0xa/0x20
-[50006.563320]  smp_apic_timer_interrupt+0x1bf/0x690
-[50006.568645]  apic_timer_interrupt+0xf/0x20
-[50006.573341]  </IRQ>
-
-The issue is that a tasklet could be pending on another core racing
-the delete of the irq.
-
-Fix by insuring any scheduled tasklet is killed after deleting the
-irq.
-
-Fixes: 44d9e52977a1 ("RDMA/irdma: Implement device initialization definitions")
-Signed-off-by: Mike Marciniszyn <mike.marciniszyn@intel.com>
-Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
-Signed-off-by: Sindhu Devale <sindhu.devale@intel.com>
-Link: https://lore.kernel.org/r/20240131233849.400285-2-sindhu.devale@intel.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Link: https://lore.kernel.org/r/CAHk-=wgfRnXz0W3D37d01q3JFkr_i_uTL=V6A6G1oUZcprmknw@mail.gmail.com/
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Link: https://lore.kernel.org/r/20220818210227.8611-1-wsa+renesas@sang-engineering.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: a7d6027790ac ("arp: Prevent overflow in arp_req_get().")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/hw.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/packet/af_packet.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/hw.c b/drivers/infiniband/hw/irdma/hw.c
-index 311a1138e838d..12bd38b1e2c15 100644
---- a/drivers/infiniband/hw/irdma/hw.c
-+++ b/drivers/infiniband/hw/irdma/hw.c
-@@ -562,6 +562,13 @@ static void irdma_destroy_irq(struct irdma_pci_f *rf,
- 	dev->irq_ops->irdma_dis_irq(dev, msix_vec->idx);
- 	irq_update_affinity_hint(msix_vec->irq, NULL);
- 	free_irq(msix_vec->irq, dev_id);
-+	if (rf == dev_id) {
-+		tasklet_kill(&rf->dpc_tasklet);
-+	} else {
-+		struct irdma_ceq *iwceq = (struct irdma_ceq *)dev_id;
-+
-+		tasklet_kill(&iwceq->dpc_tasklet);
-+	}
- }
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 377832981178d..e8b05769d1c9a 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -1850,7 +1850,7 @@ static int packet_rcv_spkt(struct sk_buff *skb, struct net_device *dev,
+ 	 */
  
- /**
+ 	spkt->spkt_family = dev->type;
+-	strlcpy(spkt->spkt_device, dev->name, sizeof(spkt->spkt_device));
++	strscpy(spkt->spkt_device, dev->name, sizeof(spkt->spkt_device));
+ 	spkt->spkt_protocol = skb->protocol;
+ 
+ 	/*
+@@ -3501,7 +3501,7 @@ static int packet_getname_spkt(struct socket *sock, struct sockaddr *uaddr,
+ 	rcu_read_lock();
+ 	dev = dev_get_by_index_rcu(sock_net(sk), READ_ONCE(pkt_sk(sk)->ifindex));
+ 	if (dev)
+-		strlcpy(uaddr->sa_data, dev->name, sizeof(uaddr->sa_data));
++		strscpy(uaddr->sa_data, dev->name, sizeof(uaddr->sa_data));
+ 	rcu_read_unlock();
+ 
+ 	return sizeof(*uaddr);
 -- 
 2.43.0
 
