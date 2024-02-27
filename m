@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-25212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B400869845
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:31:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C33C869685
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:12:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B8671C210D6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:31:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC1431C22263
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:12:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7011F145B05;
-	Tue, 27 Feb 2024 14:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DC471419A0;
+	Tue, 27 Feb 2024 14:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cwB3QTUA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BEOgHDFq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE6D145350;
-	Tue, 27 Feb 2024 14:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0F513F016;
+	Tue, 27 Feb 2024 14:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044173; cv=none; b=Kc89reKoWF4wPmYOrTGh7jmiq8OPkIOdVQhZwVwjj2VX1yT+G1AcXiJUvkHE4Uv0GsaSDTPJWjB1Gc5S6/sEnsApyf3Lsrf53sIjAepUk6BWm0ikl2utQwMVo2sIkmSsfcer/zD2i6k7mKPFsly0aHc0cbVKfQg+wTLP4OJJjxA=
+	t=1709043149; cv=none; b=OcYElJM0HJkYRgNmng1tZw9pF7VP24Pqtx7wUsmKLH97qeMuJAlc02H3YK9rykN49zNTuRCDvZV/AHmgIWtAq6CFLu7D/2DPvoS+/zx1jBO0CplLQEg/QsV0x03jbnv6QJFhNdnGkCLhz/AykB/t6cmcexy4CGa5hltRSpfXVuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044173; c=relaxed/simple;
-	bh=t/xcHxh1cMEqlsz4WXKo0hQc+0Ejousuplsq6CYgBb8=;
+	s=arc-20240116; t=1709043149; c=relaxed/simple;
+	bh=UQ+IOezTX5A+LrHpcbx38PzTdstEgoMi/1EzMCfpScI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lywtjcrakqUEZXAMZC6HAtoDzUQptPO0V0IkadiK6UQhXKVZsqITc+LeGctjdN3oA07Sze63l7vx9v3aEXWGfKgRQC52D8Q8wiXv926Bp4v9GyPvJrBdSzVgzpxSoAQchuW/A4mQSTTB3bN4zz1fdJC+rISIFn+6h46WArxuf90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cwB3QTUA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E27EC433C7;
-	Tue, 27 Feb 2024 14:29:32 +0000 (UTC)
+	 MIME-Version; b=AZpHRMwKVhH8wsJArmKATPOM61S8Bf6JJAoLryPLFcywFpFrU1f+UbmOMvVnKqxTyaVya5MfnLdjeBRXuSVCsHWnBKKqR5eQYG8yIwKYDl1dfVTwbIM9fe0lXsF5PCU3+ZewIjZ+dkO/GqJAWLNseSu957VZJlFf2MMlt4zncCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BEOgHDFq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59049C433C7;
+	Tue, 27 Feb 2024 14:12:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044172;
-	bh=t/xcHxh1cMEqlsz4WXKo0hQc+0Ejousuplsq6CYgBb8=;
+	s=korg; t=1709043148;
+	bh=UQ+IOezTX5A+LrHpcbx38PzTdstEgoMi/1EzMCfpScI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cwB3QTUABMAh1GuZyFK0olr343f6TcNv6xJml5PBZiSi2fdvjy4UAq0A1A+o4GOqu
-	 8y89M0pud0vxIHGYdxpUqPULzCcjF3F4ptZUjh3QWD53oNbOYD4hS6x3/BnOV2qWF6
-	 oIX6+vGliureJvbjob6CovEMb4/9Zj1jRU/F/02A=
+	b=BEOgHDFqy1gA9ez4d3U+CrQO1jCr8jBVin4psr4nMnCPZoe44VxkmU+aZMl+RxnT1
+	 9LoJmTxr08nr01rMVGqi1LDDPpjuASoXbjRYXHrv3CKVxqS6aTe0mVvA22gsPeM/f3
+	 WrHoN8ddWUtDLQcX7xr/GszHIz4vylraE6Sr6DcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
 	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 071/122] jbd2: Fix wrongly judgement for buffer head removing while doing checkpoint
+	Baokun Li <libaokun1@huawei.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.15 244/245] ext4: avoid bb_free and bb_fragments inconsistency in mb_free_blocks()
 Date: Tue, 27 Feb 2024 14:27:12 +0100
-Message-ID: <20240227131601.026120095@linuxfoundation.org>
+Message-ID: <20240227131623.084679812@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,110 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit e34c8dd238d0c9368b746480f313055f5bab5040 ]
+commit 2331fd4a49864e1571b4f50aa3aa1536ed6220d0 upstream.
 
-Following process,
+After updating bb_free in mb_free_blocks, it is possible to return without
+updating bb_fragments because the block being freed is found to have
+already been freed, which leads to inconsistency between bb_free and
+bb_fragments.
 
-jbd2_journal_commit_transaction
-// there are several dirty buffer heads in transaction->t_checkpoint_list
-          P1                   wb_workfn
-jbd2_log_do_checkpoint
- if (buffer_locked(bh)) // false
-                            __block_write_full_page
-                             trylock_buffer(bh)
-                             test_clear_buffer_dirty(bh)
- if (!buffer_dirty(bh))
-  __jbd2_journal_remove_checkpoint(jh)
-   if (buffer_write_io_error(bh)) // false
-                             >> bh IO error occurs <<
- jbd2_cleanup_journal_tail
-  __jbd2_update_log_tail
-   jbd2_write_superblock
-   // The bh won't be replayed in next mount.
-, which could corrupt the ext4 image, fetch a reproducer in [Link].
+Since the group may be unlocked in ext4_grp_locked_error(), this can lead
+to problems such as dividing by zero when calculating the average fragment
+length. Hence move the update of bb_free to after the block double-free
+check guarantees that the corresponding statistics are updated only after
+the core block bitmap is modified.
 
-Since writeback process clears buffer dirty after locking buffer head,
-we can fix it by try locking buffer and check dirtiness while buffer is
-locked, the buffer head can be removed if it is neither dirty nor locked.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217490
-Fixes: 470decc613ab ("[PATCH] jbd2: initial copy of files from jbd")
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Fixes: eabe0444df90 ("ext4: speed-up releasing blocks on commit")
+CC:  <stable@vger.kernel.org> # 3.10
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
 Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230606135928.434610-5-yi.zhang@huaweicloud.com
+Link: https://lore.kernel.org/r/20240104142040.2835097-5-libaokun1@huawei.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/checkpoint.c | 32 +++++++++++++++++---------------
- 1 file changed, 17 insertions(+), 15 deletions(-)
+ fs/ext4/mballoc.c |   39 +++++++++++++++++++++------------------
+ 1 file changed, 21 insertions(+), 18 deletions(-)
 
-diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
-index aac17c59b7ece..7898983c9fba0 100644
---- a/fs/jbd2/checkpoint.c
-+++ b/fs/jbd2/checkpoint.c
-@@ -228,20 +228,6 @@ int jbd2_log_do_checkpoint(journal_t *journal)
- 		jh = transaction->t_checkpoint_list;
- 		bh = jh2bh(jh);
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -1835,11 +1835,6 @@ static void mb_free_blocks(struct inode
+ 	mb_check_buddy(e4b);
+ 	mb_free_blocks_double(inode, e4b, first, count);
  
--		/*
--		 * The buffer may be writing back, or flushing out in the
--		 * last couple of cycles, or re-adding into a new transaction,
--		 * need to check it again until it's unlocked.
--		 */
--		if (buffer_locked(bh)) {
--			get_bh(bh);
--			spin_unlock(&journal->j_list_lock);
--			wait_on_buffer(bh);
--			/* the journal_head may have gone by now */
--			BUFFER_TRACE(bh, "brelse");
--			__brelse(bh);
--			goto retry;
+-	this_cpu_inc(discard_pa_seq);
+-	e4b->bd_info->bb_free += count;
+-	if (first < e4b->bd_info->bb_first_free)
+-		e4b->bd_info->bb_first_free = first;
+-
+ 	/* access memory sequentially: check left neighbour,
+ 	 * clear range and then check right neighbour
+ 	 */
+@@ -1853,23 +1848,31 @@ static void mb_free_blocks(struct inode
+ 		struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 		ext4_fsblk_t blocknr;
+ 
++		/*
++		 * Fastcommit replay can free already freed blocks which
++		 * corrupts allocation info. Regenerate it.
++		 */
++		if (sbi->s_mount_state & EXT4_FC_REPLAY) {
++			mb_regenerate_buddy(e4b);
++			goto check;
++		}
++
+ 		blocknr = ext4_group_first_block_no(sb, e4b->bd_group);
+ 		blocknr += EXT4_C2B(sbi, block);
+-		if (!(sbi->s_mount_state & EXT4_FC_REPLAY)) {
+-			ext4_grp_locked_error(sb, e4b->bd_group,
+-					      inode ? inode->i_ino : 0,
+-					      blocknr,
+-					      "freeing already freed block (bit %u); block bitmap corrupt.",
+-					      block);
+-			ext4_mark_group_bitmap_corrupted(
+-				sb, e4b->bd_group,
++		ext4_grp_locked_error(sb, e4b->bd_group,
++				      inode ? inode->i_ino : 0, blocknr,
++				      "freeing already freed block (bit %u); block bitmap corrupt.",
++				      block);
++		ext4_mark_group_bitmap_corrupted(sb, e4b->bd_group,
+ 				EXT4_GROUP_INFO_BBITMAP_CORRUPT);
+-		} else {
+-			mb_regenerate_buddy(e4b);
 -		}
- 		if (jh->b_transaction != NULL) {
- 			transaction_t *t = jh->b_transaction;
- 			tid_t tid = t->t_tid;
-@@ -276,7 +262,22 @@ int jbd2_log_do_checkpoint(journal_t *journal)
- 			spin_lock(&journal->j_list_lock);
- 			goto restart;
- 		}
--		if (!buffer_dirty(bh)) {
-+		if (!trylock_buffer(bh)) {
-+			/*
-+			 * The buffer is locked, it may be writing back, or
-+			 * flushing out in the last couple of cycles, or
-+			 * re-adding into a new transaction, need to check
-+			 * it again until it's unlocked.
-+			 */
-+			get_bh(bh);
-+			spin_unlock(&journal->j_list_lock);
-+			wait_on_buffer(bh);
-+			/* the journal_head may have gone by now */
-+			BUFFER_TRACE(bh, "brelse");
-+			__brelse(bh);
-+			goto retry;
-+		} else if (!buffer_dirty(bh)) {
-+			unlock_buffer(bh);
- 			BUFFER_TRACE(bh, "remove from checkpoint");
- 			/*
- 			 * If the transaction was released or the checkpoint
-@@ -286,6 +287,7 @@ int jbd2_log_do_checkpoint(journal_t *journal)
- 			    !transaction->t_checkpoint_list)
- 				goto out;
- 		} else {
-+			unlock_buffer(bh);
- 			/*
- 			 * We are about to write the buffer, it could be
- 			 * raced by some other transaction shrink or buffer
--- 
-2.43.0
-
+-		goto done;
++		return;
+ 	}
+ 
++	this_cpu_inc(discard_pa_seq);
++	e4b->bd_info->bb_free += count;
++	if (first < e4b->bd_info->bb_first_free)
++		e4b->bd_info->bb_first_free = first;
++
+ 	/* let's maintain fragments counter */
+ 	if (left_is_free && right_is_free)
+ 		e4b->bd_info->bb_fragments--;
+@@ -1894,9 +1897,9 @@ static void mb_free_blocks(struct inode
+ 	if (first <= last)
+ 		mb_buddy_mark_free(e4b, first >> 1, last >> 1);
+ 
+-done:
+ 	mb_set_largest_free_order(sb, e4b->bd_info);
+ 	mb_update_avg_fragment_size(sb, e4b->bd_info);
++check:
+ 	mb_check_buddy(e4b);
+ }
+ 
 
 
 
