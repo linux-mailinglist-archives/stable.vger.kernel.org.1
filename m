@@ -1,52 +1,57 @@
-Return-Path: <stable+bounces-24089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72751869298
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:37:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62478869274
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:35:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D4B428EDAA
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:37:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B6951C21AE0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:35:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C6E313B2B8;
-	Tue, 27 Feb 2024 13:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F11313AA4F;
+	Tue, 27 Feb 2024 13:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E4Y2leNR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fEgQJE5V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11FA13B295;
-	Tue, 27 Feb 2024 13:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E22C1E534;
+	Tue, 27 Feb 2024 13:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041003; cv=none; b=k75b/LVdpECv8Zr6dQfXuIYXjkbGETQD8KbC9L4nvwFEg6ELoQLIH2ekx3764Ox/Il0rNMpQbrp1uzex34G0Xzhm4AL+u9U5ZKckLc2tp5zIyirQVzVzMfiUPyAzK2t0FZVcWSZuJG1GcVy4ALAMvnfJKWXLOTOUyQCrH3icpiI=
+	t=1709040926; cv=none; b=sKSZYYddg2jy3s2ps+FoEif2TnR5Hlw7D+YeYJ6tTKYx3oVc9og5zn+PK7pNxU1EEc/xDp8BFUxxPEUdbBCLB+y3WETKnqqvaeAYpDDpufOP4H8VcSyxlmOs/1dP0tfkiAZjwoTj1AUzDPMeiW1+9DFnkwJPlgJkREEGEkZAvug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041003; c=relaxed/simple;
-	bh=25sFedtMhfuwShsPp6/ncZAlRSMZ/osQ6Xlu2fo9NkI=;
+	s=arc-20240116; t=1709040926; c=relaxed/simple;
+	bh=kLh+fMX9QoDmPw4mhadDDgymz4sBljcu0x6iUouVRa0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oXBvNsj5u40mBPY4VQd/6No1UusV6OWQ1mzt/JcNJlP/M+xMAsXO7xqGecZnQGQhVRuPDLF9FQj48CgT9f5oUl+cX6ilI12M+Y8Y/XpF6E7o9tam+LnuVAtI7kmzVWpCpQHZfNAKM7629BJc0CSUjzXgA0JcWMIaK8+d1pqmVEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E4Y2leNR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31479C43390;
-	Tue, 27 Feb 2024 13:36:42 +0000 (UTC)
+	 MIME-Version; b=gzEAvJLaSaxTPhfmoKmi+ez4H5Zsbk3Uf1krmJYnxthkkH8H28lsMtu5amAvxi1/JCWjzeCOqxUzxaMHJ+krYiJxiatGY2fW+uB4VSIoFQv21Tih+mlgbyRHxJVolmmxTjOCvrpavhTlDCRY9MH2nPy8apVfaTclWMJcOfD97X0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fEgQJE5V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BEF0C433F1;
+	Tue, 27 Feb 2024 13:35:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041002;
-	bh=25sFedtMhfuwShsPp6/ncZAlRSMZ/osQ6Xlu2fo9NkI=;
+	s=korg; t=1709040925;
+	bh=kLh+fMX9QoDmPw4mhadDDgymz4sBljcu0x6iUouVRa0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E4Y2leNRLk+ahg6StTVVpHfNXxCvYiQrdwDfrl4b8fU+V4l03gJogfhlVRanLy1Mm
-	 HMoBWdNF+qBDl0KwDWWUVpYtoFzy4rLIjqbll96mjglO1AITyq42OQHeGUpHc+TQm1
-	 8ClXzOlt6FHkEp9gyXHSjTssTsi2XEuUp2IRzVl0=
+	b=fEgQJE5V8tqgY+FdYVdEuBC3JYpIdMTxP6nYE/m3VU9P8vkfUx2JHhJSfqjXHAcDs
+	 4/mcqcfa7DRAMlg8YrvtHtqCJ6I3MSnsE1FIHmq/Kyy0aqPK4XtV7GVQeamyVFpcCb
+	 oQJPDxIb3wjEAwTIeIUdaBSJOWz4Q12fBge0EdLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.7 156/334] ata: libata-core: Do not call ata_dev_power_set_standby() twice
-Date: Tue, 27 Feb 2024 14:20:14 +0100
-Message-ID: <20240227131635.500998589@linuxfoundation.org>
+	Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@lst.de>,
+	Avi Kivity <avi@scylladb.com>,
+	Sandeep Dhavale <dhavale@google.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.7 157/334] fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via libaio
+Date: Tue, 27 Feb 2024 14:20:15 +0100
+Message-ID: <20240227131635.535878649@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
 References: <20240227131630.636392135@linuxfoundation.org>
@@ -65,109 +70,84 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit 9cec467d0502b24660f413a0e8fc782903b46d5b upstream.
+commit b820de741ae48ccf50dd95e297889c286ff4f760 upstream.
 
-For regular system shutdown, ata_dev_power_set_standby() will be
-executed twice: once the scsi device is removed and another when
-ata_pci_shutdown_one() executes and EH completes unloading the devices.
+If kiocb_set_cancel_fn() is called for I/O submitted via io_uring, the
+following kernel warning appears:
 
-Make the second call to ata_dev_power_set_standby() do nothing by using
-ata_dev_power_is_active() and return if the device is already in
-standby.
+WARNING: CPU: 3 PID: 368 at fs/aio.c:598 kiocb_set_cancel_fn+0x9c/0xa8
+Call trace:
+ kiocb_set_cancel_fn+0x9c/0xa8
+ ffs_epfile_read_iter+0x144/0x1d0
+ io_read+0x19c/0x498
+ io_issue_sqe+0x118/0x27c
+ io_submit_sqes+0x25c/0x5fc
+ __arm64_sys_io_uring_enter+0x104/0xab0
+ invoke_syscall+0x58/0x11c
+ el0_svc_common+0xb4/0xf4
+ do_el0_svc+0x2c/0xb0
+ el0_svc+0x2c/0xa4
+ el0t_64_sync_handler+0x68/0xb4
+ el0t_64_sync+0x1a4/0x1a8
 
-Fixes: 2da4c5e24e86 ("ata: libata-core: Improve ata_dev_power_set_active()")
+Fix this by setting the IOCB_AIO_RW flag for read and write I/O that is
+submitted by libaio.
+
+Suggested-by: Jens Axboe <axboe@kernel.dk>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Avi Kivity <avi@scylladb.com>
+Cc: Sandeep Dhavale <dhavale@google.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
 Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240215204739.2677806-2-bvanassche@acm.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-core.c |   59 +++++++++++++++++++++++-----------------------
- 1 file changed, 30 insertions(+), 29 deletions(-)
+ fs/aio.c           |    9 ++++++++-
+ include/linux/fs.h |    2 ++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -2001,6 +2001,33 @@ bool ata_dev_power_init_tf(struct ata_de
- 	return true;
- }
+--- a/fs/aio.c
++++ b/fs/aio.c
+@@ -594,6 +594,13 @@ void kiocb_set_cancel_fn(struct kiocb *i
+ 	struct kioctx *ctx = req->ki_ctx;
+ 	unsigned long flags;
  
-+static bool ata_dev_power_is_active(struct ata_device *dev)
-+{
-+	struct ata_taskfile tf;
-+	unsigned int err_mask;
++	/*
++	 * kiocb didn't come from aio or is neither a read nor a write, hence
++	 * ignore it.
++	 */
++	if (!(iocb->ki_flags & IOCB_AIO_RW))
++		return;
 +
-+	ata_tf_init(dev, &tf);
-+	tf.flags |= ATA_TFLAG_DEVICE | ATA_TFLAG_ISADDR;
-+	tf.protocol = ATA_PROT_NODATA;
-+	tf.command = ATA_CMD_CHK_POWER;
-+
-+	err_mask = ata_exec_internal(dev, &tf, NULL, DMA_NONE, NULL, 0, 0);
-+	if (err_mask) {
-+		ata_dev_err(dev, "Check power mode failed (err_mask=0x%x)\n",
-+			    err_mask);
-+		/*
-+		 * Assume we are in standby mode so that we always force a
-+		 * spinup in ata_dev_power_set_active().
-+		 */
-+		return false;
-+	}
-+
-+	ata_dev_dbg(dev, "Power mode: 0x%02x\n", tf.nsect);
-+
-+	/* Active or idle */
-+	return tf.nsect == 0xff;
-+}
-+
- /**
-  *	ata_dev_power_set_standby - Set a device power mode to standby
-  *	@dev: target device
-@@ -2017,8 +2044,9 @@ void ata_dev_power_set_standby(struct at
- 	struct ata_taskfile tf;
- 	unsigned int err_mask;
- 
--	/* If the device is already sleeping, do nothing. */
--	if (dev->flags & ATA_DFLAG_SLEEPING)
-+	/* If the device is already sleeping or in standby, do nothing. */
-+	if ((dev->flags & ATA_DFLAG_SLEEPING) ||
-+	    !ata_dev_power_is_active(dev))
+ 	if (WARN_ON_ONCE(!list_empty(&req->ki_list)))
  		return;
  
- 	/*
-@@ -2046,33 +2074,6 @@ void ata_dev_power_set_standby(struct at
- 			    err_mask);
- }
+@@ -1463,7 +1470,7 @@ static int aio_prep_rw(struct kiocb *req
+ 	req->ki_complete = aio_complete_rw;
+ 	req->private = NULL;
+ 	req->ki_pos = iocb->aio_offset;
+-	req->ki_flags = req->ki_filp->f_iocb_flags;
++	req->ki_flags = req->ki_filp->f_iocb_flags | IOCB_AIO_RW;
+ 	if (iocb->aio_flags & IOCB_FLAG_RESFD)
+ 		req->ki_flags |= IOCB_EVENTFD;
+ 	if (iocb->aio_flags & IOCB_FLAG_IOPRIO) {
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -352,6 +352,8 @@ enum rw_hint {
+  * unrelated IO (like cache flushing, new IO generation, etc).
+  */
+ #define IOCB_DIO_CALLER_COMP	(1 << 22)
++/* kiocb is a read or write operation submitted by fs/aio.c. */
++#define IOCB_AIO_RW		(1 << 23)
  
--static bool ata_dev_power_is_active(struct ata_device *dev)
--{
--	struct ata_taskfile tf;
--	unsigned int err_mask;
--
--	ata_tf_init(dev, &tf);
--	tf.flags |= ATA_TFLAG_DEVICE | ATA_TFLAG_ISADDR;
--	tf.protocol = ATA_PROT_NODATA;
--	tf.command = ATA_CMD_CHK_POWER;
--
--	err_mask = ata_exec_internal(dev, &tf, NULL, DMA_NONE, NULL, 0, 0);
--	if (err_mask) {
--		ata_dev_err(dev, "Check power mode failed (err_mask=0x%x)\n",
--			    err_mask);
--		/*
--		 * Assume we are in standby mode so that we always force a
--		 * spinup in ata_dev_power_set_active().
--		 */
--		return false;
--	}
--
--	ata_dev_dbg(dev, "Power mode: 0x%02x\n", tf.nsect);
--
--	/* Active or idle */
--	return tf.nsect == 0xff;
--}
--
- /**
-  *	ata_dev_power_set_active -  Set a device power mode to active
-  *	@dev: target device
+ /* for use in trace events */
+ #define TRACE_IOCB_STRINGS \
 
 
 
