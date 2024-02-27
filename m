@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-24333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C0D8693F9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 381D5869321
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:42:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85BA71F211D5
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0B601F27B64
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7063A14534B;
-	Tue, 27 Feb 2024 13:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA101420C8;
+	Tue, 27 Feb 2024 13:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QuHSU1uV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+sBjCuZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299D1145345;
-	Tue, 27 Feb 2024 13:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0CF13B7AE;
+	Tue, 27 Feb 2024 13:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041701; cv=none; b=LUG4KkBTeMRtLNZHMP4eooenTzW5BFEQKKzoTDxRQPrBxCnB+q32QmORccjlxE57ZSQRdu+OMg/hXShObgQw//OfYmOwXI5WM33IG4eV1RHyIwP5j/Df3xagfjv9umI7QlrORv/uBwaA6fZDlGW0o8zZo6rvzlwpkwZKs6iKz5g=
+	t=1709041309; cv=none; b=h0IzCJc3+S2bftftoxQ9lRSmsxUdDeWNK9olwUw71JI3ZJOSW2UCcjhVnPO1pDDj/ilpxBuxNqXvT1gGQbm4cFM2rSGb3TYRpAcxqZqr03joDCLT6o2Hj1+3g078+yMOuc9UfZIlUwkUQPN6tEspItrNEY40vm1nqV1XixeEVbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041701; c=relaxed/simple;
-	bh=dICsfInweW4kLAcI8ADbNjur7dVPUjliZ0d/eQjZIGs=;
+	s=arc-20240116; t=1709041309; c=relaxed/simple;
+	bh=iEUnRVid7J/H97FXF+H18GhI/QRYJBi5Js4ZZxw+urY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VqXxN8BKRerQ0C3WIjW2iGw9Ud4iOyd8hP9S+g9dNjiSrKPes3szkvOVbGWCX9A/TPs1jdqMs9zRzFkLjPR960qu6DFpvRdnMVPHawdW6qxD4PGqNCcHZtFnVK63lipvcDbus2Utf0LD2WR3hsQ2w723YgfywczeZO9RE3xT+QI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QuHSU1uV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB5F3C433F1;
-	Tue, 27 Feb 2024 13:48:20 +0000 (UTC)
+	 MIME-Version; b=Q680/FDP3JAUpW3NtYynl7xmhbgf2mlQ5K+5JWRqk7aJCThet9jdasgt7d9Ss/smSwUc4Cw+Pt3yICbRtvCUcLk1rVDgwePnjkXr+FtRgmtCt/q8vqIJZNfSd3OSUbaiUIb1u+wrRB5Rn1G3av/i9xJYigJcFYV7B2AQjfiCDNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+sBjCuZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D2D9C433F1;
+	Tue, 27 Feb 2024 13:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041701;
-	bh=dICsfInweW4kLAcI8ADbNjur7dVPUjliZ0d/eQjZIGs=;
+	s=korg; t=1709041308;
+	bh=iEUnRVid7J/H97FXF+H18GhI/QRYJBi5Js4ZZxw+urY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QuHSU1uVkpZO2+Vy7LzEaHVn3Q/pCtFkQxUeKmtOMEFOpSE5M4YwH51K99uOont+J
-	 SxdR3C+fVbSdCJSyS4uSjklBSozOixMKlGVrBRbTiq3OpH4ljelCDcTPJZZ8CF1fpr
-	 JDQba1u3iI97QmPjBSOCWG/pu4Nyo4jHfhOXS3pA=
+	b=g+sBjCuZHu1kRtNuaHl9ZeajoxuOIo1cg8DZ+HzNUlhLqpeAYoCTOxzGuBEYnKTiD
+	 EQhA8jwuNBf02hDNIGPnFvniGJv6NVvz0dHo4OfgeFC6rIprjflD5oSmlPhrOW7jUk
+	 YmxuCISMzoPWCRdTHp86GrgTCe7Vlf6tgEVtfyf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marcus=20R=C3=BCckert?= <darix@opensu.se>,
-	Jiri Kosina <jkosina@suse.com>,
+	Yi Sun <yi.y.sun@linux.intel.com>,
+	Yi Liu <yi.l.liu@intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 040/299] HID: logitech-hidpp: add support for Logitech G Pro X Superlight 2
+Subject: [PATCH 6.7 293/334] iommu/vt-d: Add missing dirty tracking set for parent domain
 Date: Tue, 27 Feb 2024 14:22:31 +0100
-Message-ID: <20240227131627.277270901@linuxfoundation.org>
+Message-ID: <20240227131640.487238790@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +63,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Kosina <jkosina@suse.com>
+From: Yi Liu <yi.l.liu@intel.com>
 
-[ Upstream commit afa6ac2690bb9904ff883c6e942281e1032a484d ]
+[ Upstream commit f1e1610950eac0af5e40f6ee02315952f78192f7 ]
 
-Let logitech-hidpp driver claim Logitech G Pro X Superlight 2.
+Setting dirty tracking for a s2 domain requires to loop all the related
+devices and set the dirty tracking enable bit in the PASID table entry.
+This includes the devices that are attached to the nested domains of a
+s2 domain if this s2 domain is used as parent. However, the existing dirty
+tracking set only loops s2 domain's own devices. It will miss dirty page
+logs in the parent domain.
 
-Reported-by: Marcus Rückert <darix@opensu.se>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Now, the parent domain tracks the nested domains, so it can loop the
+nested domains and the devices attached to the nested domains to ensure
+dirty tracking on the parent is set completely.
+
+Fixes: b41e38e22539 ("iommu/vt-d: Add nested domain allocation")
+Signed-off-by: Yi Sun <yi.y.sun@linux.intel.com>
+Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20240208082307.15759-9-yi.l.liu@intel.com
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-logitech-hidpp.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iommu/intel/iommu.c | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
-index 7bf12ca0eb4a9..4519ee377aa76 100644
---- a/drivers/hid/hid-logitech-hidpp.c
-+++ b/drivers/hid/hid-logitech-hidpp.c
-@@ -4650,6 +4650,8 @@ static const struct hid_device_id hidpp_devices[] = {
- 	  HID_USB_DEVICE(USB_VENDOR_ID_LOGITECH, 0xC088) },
- 	{ /* Logitech G Pro X Superlight Gaming Mouse over USB */
- 	  HID_USB_DEVICE(USB_VENDOR_ID_LOGITECH, 0xC094) },
-+	{ /* Logitech G Pro X Superlight 2 Gaming Mouse over USB */
-+	  HID_USB_DEVICE(USB_VENDOR_ID_LOGITECH, 0xC09b) },
+diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+index e3b3ab506b185..a8366b1f4f48b 100644
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -4884,6 +4884,35 @@ static int device_set_dirty_tracking(struct list_head *devices, bool enable)
+ 	return ret;
+ }
  
- 	{ /* G935 Gaming Headset */
- 	  HID_USB_DEVICE(USB_VENDOR_ID_LOGITECH, 0x0a87),
++static int parent_domain_set_dirty_tracking(struct dmar_domain *domain,
++					    bool enable)
++{
++	struct dmar_domain *s1_domain;
++	unsigned long flags;
++	int ret;
++
++	spin_lock(&domain->s1_lock);
++	list_for_each_entry(s1_domain, &domain->s1_domains, s2_link) {
++		spin_lock_irqsave(&s1_domain->lock, flags);
++		ret = device_set_dirty_tracking(&s1_domain->devices, enable);
++		spin_unlock_irqrestore(&s1_domain->lock, flags);
++		if (ret)
++			goto err_unwind;
++	}
++	spin_unlock(&domain->s1_lock);
++	return 0;
++
++err_unwind:
++	list_for_each_entry(s1_domain, &domain->s1_domains, s2_link) {
++		spin_lock_irqsave(&s1_domain->lock, flags);
++		device_set_dirty_tracking(&s1_domain->devices,
++					  domain->dirty_tracking);
++		spin_unlock_irqrestore(&s1_domain->lock, flags);
++	}
++	spin_unlock(&domain->s1_lock);
++	return ret;
++}
++
+ static int intel_iommu_set_dirty_tracking(struct iommu_domain *domain,
+ 					  bool enable)
+ {
+@@ -4898,6 +4927,12 @@ static int intel_iommu_set_dirty_tracking(struct iommu_domain *domain,
+ 	if (ret)
+ 		goto err_unwind;
+ 
++	if (dmar_domain->nested_parent) {
++		ret = parent_domain_set_dirty_tracking(dmar_domain, enable);
++		if (ret)
++			goto err_unwind;
++	}
++
+ 	dmar_domain->dirty_tracking = enable;
+ out_unlock:
+ 	spin_unlock(&dmar_domain->lock);
 -- 
 2.43.0
 
