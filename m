@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-25253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 170E786986E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:32:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D4C9869856
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:32:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49A8E1C21538
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:32:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D5751C20869
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:32:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F11251448FE;
-	Tue, 27 Feb 2024 14:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F60F1482F0;
+	Tue, 27 Feb 2024 14:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ba5VR9ZQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJ1aNSbC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0B354BFE;
-	Tue, 27 Feb 2024 14:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E647145FF7;
+	Tue, 27 Feb 2024 14:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044286; cv=none; b=a6vf0KK/PgoU+8+nOTNGQFG5d706MqMrmFTg7Wn9ELEOGZ7GByTHqK7PyBozIPSomO/IHeEsuQNl1EWNYQeLNwMNhOqLMly2OJbZEZC1OqtdaHGlK5E8DNsWc3hDnoF09o8UCcAizc51bDRBfqU4o6dlvIRJbFR7KrjunGo3ukk=
+	t=1709044228; cv=none; b=j0ls9uuBwr3VmYA9IMFwGGfMADX/q1WimAfE/2KnCzs7/ajF6bTBYDIuBlDy8uyHs6aGG4Ogfrrx/vyhpHz4akAZ1wrw3s4NsB9THTD5GME/f9wrpbNBSLLMKWS/4ycCl+bm7bq6fZv5t843Tbi35f3cQ5zu/kgjArnq9jKfMvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044286; c=relaxed/simple;
-	bh=LOxQGbvXxGIcskrN9CClW1ua/veg2QgtpTgvwYQDYos=;
+	s=arc-20240116; t=1709044228; c=relaxed/simple;
+	bh=06cWg8BQ6QuH5w45Smx8Lu1uGJFBZoachE1HYWycMtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=anXJaQU7cazd2Q+nFB60+V9cMpr2bbVOvcQu0mJJx1IC0IxG28r0239RWDwcWJ+KPdYhi361hLK4j6/v1h3q0epMBGigWapDHl5Ctezg87gU97JpHoIs05OISdXwqxehrHz6b4WAbMLtgjWzivDPV23Pyiq0hPxJu53E8ltxFoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ba5VR9ZQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 393CBC433C7;
-	Tue, 27 Feb 2024 14:31:26 +0000 (UTC)
+	 MIME-Version; b=jUyySMTcf/xOqSDqn2gmXJOU6QUflIAGpNl9Yln5eXEXkWmvCVxpOZV1W+Du31OcLSNkhrah42OarwVZBOD6qTG24HqcXXaHKYjHHOOtKX3fIoUaWg2xee9rZEmZRhPedn41F4j3SOOXV/DBsf+AfQ/idDhfIgofuqp/uqRrP5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xJ1aNSbC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0791C433C7;
+	Tue, 27 Feb 2024 14:30:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044286;
-	bh=LOxQGbvXxGIcskrN9CClW1ua/veg2QgtpTgvwYQDYos=;
+	s=korg; t=1709044228;
+	bh=06cWg8BQ6QuH5w45Smx8Lu1uGJFBZoachE1HYWycMtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ba5VR9ZQD+ltCgr8Lw4tzMZBbAg5mQ2vI1+jNIk+kxkhi8x9t0BNxcj3F7GCJraDd
-	 viz1eMr+k6wvBnQumCyxSGtUSCu8Vt6sNTsoTuV0p1teLbv1B0ZJnEPorE5OIk/iXM
-	 1O3sGiN1R8go6XQEs4f1V8vxQnwVVTCSV6KrgfQ0=
+	b=xJ1aNSbCsyBdPaR6qSkGihtuDpoVT1MjzfgPJjHQE5zDnSRLp10DYMRGQVUPJAp38
+	 rq6lNFZMiQpt5xRoXDrydTx5UoqWk1sOhOHq+4Z0VEZa47rbByZP1H5FQ3C+IzICUp
+	 1r1HuebA4Mc9kulG4/ckA7JPxKx7oyJxt7Ep0fSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 108/122] ipv6: sr: fix possible use-after-free and null-ptr-deref
-Date: Tue, 27 Feb 2024 14:27:49 +0100
-Message-ID: <20240227131602.239658029@linuxfoundation.org>
+Subject: [PATCH 5.10 109/122] packet: move from strlcpy with unused retval to strscpy
+Date: Tue, 27 Feb 2024 14:27:50 +0100
+Message-ID: <20240227131602.270790620@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
 References: <20240227131558.694096204@linuxfoundation.org>
@@ -66,72 +66,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 5559cea2d5aa3018a5f00dd2aca3427ba09b386b ]
+[ Upstream commit 8fc9d51ea2d32a05f7d7cf86a25cc86ecc57eb45 ]
 
-The pernet operations structure for the subsystem must be registered
-before registering the generic netlink family.
+Follow the advice of the below link and prefer 'strscpy' in this
+subsystem. Conversion is 1:1 because the return value is not used.
+Generated by a coccinelle script.
 
-Fixes: 915d7e5e5930 ("ipv6: sr: add code base for control plane support of SR-IPv6")
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Link: https://lore.kernel.org/r/20240215202717.29815-1-kovalev@altlinux.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/CAHk-=wgfRnXz0W3D37d01q3JFkr_i_uTL=V6A6G1oUZcprmknw@mail.gmail.com/
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Link: https://lore.kernel.org/r/20220818210227.8611-1-wsa+renesas@sang-engineering.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: a7d6027790ac ("arp: Prevent overflow in arp_req_get().")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/seg6.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ net/packet/af_packet.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
-index 2278c0234c497..a8439fded12dc 100644
---- a/net/ipv6/seg6.c
-+++ b/net/ipv6/seg6.c
-@@ -451,22 +451,24 @@ int __init seg6_init(void)
- {
- 	int err;
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index b292d58fdcc4c..1052cbcdd3c8d 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -1871,7 +1871,7 @@ static int packet_rcv_spkt(struct sk_buff *skb, struct net_device *dev,
+ 	 */
  
--	err = genl_register_family(&seg6_genl_family);
-+	err = register_pernet_subsys(&ip6_segments_ops);
- 	if (err)
- 		goto out;
+ 	spkt->spkt_family = dev->type;
+-	strlcpy(spkt->spkt_device, dev->name, sizeof(spkt->spkt_device));
++	strscpy(spkt->spkt_device, dev->name, sizeof(spkt->spkt_device));
+ 	spkt->spkt_protocol = skb->protocol;
  
--	err = register_pernet_subsys(&ip6_segments_ops);
-+	err = genl_register_family(&seg6_genl_family);
- 	if (err)
--		goto out_unregister_genl;
-+		goto out_unregister_pernet;
+ 	/*
+@@ -3540,7 +3540,7 @@ static int packet_getname_spkt(struct socket *sock, struct sockaddr *uaddr,
+ 	rcu_read_lock();
+ 	dev = dev_get_by_index_rcu(sock_net(sk), READ_ONCE(pkt_sk(sk)->ifindex));
+ 	if (dev)
+-		strlcpy(uaddr->sa_data, dev->name, sizeof(uaddr->sa_data));
++		strscpy(uaddr->sa_data, dev->name, sizeof(uaddr->sa_data));
+ 	rcu_read_unlock();
  
- #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
- 	err = seg6_iptunnel_init();
- 	if (err)
--		goto out_unregister_pernet;
-+		goto out_unregister_genl;
- 
- 	err = seg6_local_init();
--	if (err)
--		goto out_unregister_pernet;
-+	if (err) {
-+		seg6_iptunnel_exit();
-+		goto out_unregister_genl;
-+	}
- #endif
- 
- #ifdef CONFIG_IPV6_SEG6_HMAC
-@@ -487,11 +489,11 @@ int __init seg6_init(void)
- #endif
- #endif
- #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
--out_unregister_pernet:
--	unregister_pernet_subsys(&ip6_segments_ops);
--#endif
- out_unregister_genl:
- 	genl_unregister_family(&seg6_genl_family);
-+#endif
-+out_unregister_pernet:
-+	unregister_pernet_subsys(&ip6_segments_ops);
- 	goto out;
- }
- 
+ 	return sizeof(*uaddr);
 -- 
 2.43.0
 
