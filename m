@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9335386939D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:47:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A741869522
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:59:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C45161C21974
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:47:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D32F01F234F0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 942DE1420A8;
-	Tue, 27 Feb 2024 13:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED6613F016;
+	Tue, 27 Feb 2024 13:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="meuEMvVB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pKN+vBSb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543FF1419BF;
-	Tue, 27 Feb 2024 13:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2BE13B2B4;
+	Tue, 27 Feb 2024 13:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041529; cv=none; b=NykcCV4/4prpmBW1iExwYlZOYnlluAcgcdKd9UWzD5ISUILKypLdaDJR34F40Wsd3OOkTyQ9qaNnxI23FtNW0ivx5ZiXYp+1ImL1GkEpo8w7+F4S1qmcilfSsCb+ndfdLbS5ssVr6kMFYF3lBd8HZfSTFV2UZYar1C7p+JnSHTM=
+	t=1709042347; cv=none; b=T8XGhs52AgBN3zufobBFj6E6DZnetgA2Cx43l0o6jKvMwwP8gsMSPjAreUqkSPikG0DnUg2S3jJ3Y+iFz94a7sRQx9DFUJOhR0YYMbWClU+5B3bOAvNF1QB9Rzk9qD+h/JykH7YiQBS+pg/OARZKPJ3To/JEP/owYv2/+DrizlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041529; c=relaxed/simple;
-	bh=fZNKfbDnlLi9b11tBSSydSYr+RDZIUOMVkJhITj0J38=;
+	s=arc-20240116; t=1709042347; c=relaxed/simple;
+	bh=mgWjtQTEP9ixLr5fRMR5yobSK2z3LbZstiVT4urRDWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=namI4O1ghkSU0p5sDp0sU0o9l/xFABVqXolMxMe8CGJ52OZAHQb/486tOp6QknN6/c6p5V2FwtFTy2Dd7J6X0X/JM2o4iNi5vsAMUweJl79lzVRhjcuKUwciQ3mpfVb6Sr6uhfeFm4tKcwnkF5I5szpnuRusIdSkzWOC4Y2hyMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=meuEMvVB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83353C43390;
-	Tue, 27 Feb 2024 13:45:28 +0000 (UTC)
+	 MIME-Version; b=XhtYRPADUHXiUiIdbhT7y/NJIhryslxk6mGCc8WLr2AZodxS2dc0UqItfuNpmAAY+XCyO8h8tPlLv35UBzRdaYcF/wiYpmolFix7UpVXk608sDzixVUrZaA0diwHr/RuOGWQw1R0jpCQxvAegwNyzfkCTQGt6ktKg4ocV1Pb/d8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pKN+vBSb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A418C433C7;
+	Tue, 27 Feb 2024 13:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041528;
-	bh=fZNKfbDnlLi9b11tBSSydSYr+RDZIUOMVkJhITj0J38=;
+	s=korg; t=1709042346;
+	bh=mgWjtQTEP9ixLr5fRMR5yobSK2z3LbZstiVT4urRDWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=meuEMvVBj8GKqWrn3jMGN5e+7WrkOp+gC4FxyOxkObbpckFlfkKmgpslwR2rx0FFf
-	 YK5+o1k1sZBQoNOIfMXLdNWK9LeKgM5alUmaocHpM4q/7Ho4St8Sl8uVrVQIXwAGo/
-	 7DFT+LmS4FUXJV+V3gKq+sLMghkaW02qRy5YSTgg=
+	b=pKN+vBSba9/HWNdXP7BJyL3KE+AaZ0P0D/MfdsCuRER/d0a/lI3oSKpB3/7lrurTK
+	 Ok9z1ZBqrnhdV26dn6iXeiWzV1E5uR+IxXo4jMgjvQC8e6jBJBKmstHgLg/JYPuUy+
+	 4RX5hF3w7rL9bsigUOhlWJR5lojfhzhFalFQ37jA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cyril Hrubis <chrubis@suse.cz>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Petr Vorel <pvorel@suse.cz>,
-	Mel Gorman <mgorman@suse.de>
-Subject: [PATCH 4.19 09/52] sched/rt: Fix sysctl_sched_rr_timeslice intial value
+	Eric Dumazet <edumazet@google.com>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 245/299] ipv4: properly combine dev_base_seq and ipv4.dev_addr_genid
 Date: Tue, 27 Feb 2024 14:25:56 +0100
-Message-ID: <20240227131548.839660733@linuxfoundation.org>
+Message-ID: <20240227131633.609885709@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
-References: <20240227131548.514622258@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cyril Hrubis <chrubis@suse.cz>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit c7fcb99877f9f542c918509b2801065adcaf46fa ]
+[ Upstream commit 081a0e3b0d4c061419d3f4679dec9f68725b17e4 ]
 
-There is a 10% rounding error in the intial value of the
-sysctl_sched_rr_timeslice with CONFIG_HZ_300=y.
+net->dev_base_seq and ipv4.dev_addr_genid are monotonically increasing.
 
-This was found with LTP test sched_rr_get_interval01:
+If we XOR their values, we could miss to detect if both values
+were changed with the same amount.
 
-sched_rr_get_interval01.c:57: TPASS: sched_rr_get_interval() passed
-sched_rr_get_interval01.c:64: TPASS: Time quantum 0s 99999990ns
-sched_rr_get_interval01.c:72: TFAIL: /proc/sys/kernel/sched_rr_timeslice_ms != 100 got 90
-sched_rr_get_interval01.c:57: TPASS: sched_rr_get_interval() passed
-sched_rr_get_interval01.c:64: TPASS: Time quantum 0s 99999990ns
-sched_rr_get_interval01.c:72: TFAIL: /proc/sys/kernel/sched_rr_timeslice_ms != 100 got 90
-
-What this test does is to compare the return value from the
-sched_rr_get_interval() and the sched_rr_timeslice_ms sysctl file and
-fails if they do not match.
-
-The problem it found is the intial sysctl file value which was computed as:
-
-static int sysctl_sched_rr_timeslice = (MSEC_PER_SEC / HZ) * RR_TIMESLICE;
-
-which works fine as long as MSEC_PER_SEC is multiple of HZ, however it
-introduces 10% rounding error for CONFIG_HZ_300:
-
-(MSEC_PER_SEC / HZ) * (100 * HZ / 1000)
-
-(1000 / 300) * (100 * 300 / 1000)
-
-3 * 30 = 90
-
-This can be easily fixed by reversing the order of the multiplication
-and division. After this fix we get:
-
-(MSEC_PER_SEC * (100 * HZ / 1000)) / HZ
-
-(1000 * (100 * 300 / 1000)) / 300
-
-(1000 * 30) / 300 = 100
-
-Fixes: 975e155ed873 ("sched/rt: Show the 'sched_rr_timeslice' SCHED_RR timeslice tuning knob in milliseconds")
-Signed-off-by: Cyril Hrubis <chrubis@suse.cz>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Petr Vorel <pvorel@suse.cz>
-Acked-by: Mel Gorman <mgorman@suse.de>
-Tested-by: Petr Vorel <pvorel@suse.cz>
-Link: https://lore.kernel.org/r/20230802151906.25258-2-chrubis@suse.cz
-[ pvorel: rebased for 4.19 ]
-Signed-off-by: Petr Vorel <pvorel@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0465277f6b3f ("ipv4: provide addr and netconf dump consistency info")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Acked-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/rt.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/devinet.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -8,7 +8,7 @@
- #include "pelt.h"
+diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
+index ca0ff15dc8fa3..bc74f131fe4df 100644
+--- a/net/ipv4/devinet.c
++++ b/net/ipv4/devinet.c
+@@ -1825,6 +1825,21 @@ static int in_dev_dump_addr(struct in_device *in_dev, struct sk_buff *skb,
+ 	return err;
+ }
  
- int sched_rr_timeslice = RR_TIMESLICE;
--int sysctl_sched_rr_timeslice = (MSEC_PER_SEC / HZ) * RR_TIMESLICE;
-+int sysctl_sched_rr_timeslice = (MSEC_PER_SEC * RR_TIMESLICE) / HZ;
- 
- static int do_sched_rt_period_timer(struct rt_bandwidth *rt_b, int overrun);
- 
++/* Combine dev_addr_genid and dev_base_seq to detect changes.
++ */
++static u32 inet_base_seq(const struct net *net)
++{
++	u32 res = atomic_read(&net->ipv4.dev_addr_genid) +
++		  net->dev_base_seq;
++
++	/* Must not return 0 (see nl_dump_check_consistent()).
++	 * Chose a value far away from 0.
++	 */
++	if (!res)
++		res = 0x80000000;
++	return res;
++}
++
+ static int inet_dump_ifaddr(struct sk_buff *skb, struct netlink_callback *cb)
+ {
+ 	const struct nlmsghdr *nlh = cb->nlh;
+@@ -1876,8 +1891,7 @@ static int inet_dump_ifaddr(struct sk_buff *skb, struct netlink_callback *cb)
+ 		idx = 0;
+ 		head = &tgt_net->dev_index_head[h];
+ 		rcu_read_lock();
+-		cb->seq = atomic_read(&tgt_net->ipv4.dev_addr_genid) ^
+-			  tgt_net->dev_base_seq;
++		cb->seq = inet_base_seq(tgt_net);
+ 		hlist_for_each_entry_rcu(dev, head, index_hlist) {
+ 			if (idx < s_idx)
+ 				goto cont;
+@@ -2278,8 +2292,7 @@ static int inet_netconf_dump_devconf(struct sk_buff *skb,
+ 		idx = 0;
+ 		head = &net->dev_index_head[h];
+ 		rcu_read_lock();
+-		cb->seq = atomic_read(&net->ipv4.dev_addr_genid) ^
+-			  net->dev_base_seq;
++		cb->seq = inet_base_seq(net);
+ 		hlist_for_each_entry_rcu(dev, head, index_hlist) {
+ 			if (idx < s_idx)
+ 				goto cont;
+-- 
+2.43.0
+
 
 
 
