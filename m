@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-24188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0E9686930D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:41:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B6E08693F7
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 803051F2D7CE
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:41:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AFA91C23033
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB4813B2B4;
-	Tue, 27 Feb 2024 13:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A88C714533E;
+	Tue, 27 Feb 2024 13:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FJayG2Dd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9UAL6ut"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD642F2D;
-	Tue, 27 Feb 2024 13:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65F55145327;
+	Tue, 27 Feb 2024 13:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041280; cv=none; b=MrPJ/w5HEnm/5sI9L71CIQhSYnn9GEUd8RDLbVIOZNp1HraJ8p+CG1kH/Z5UV0HDtiiUkl2+xG2/1KGjx0cVKhmOvjNtja2/QGlfYz9NQ4sp0MbIFbaFQ0zluhokIHVRTP8WHWeRlENNttIlxZh/lnyykKaN6BAqtttfgpTAyHs=
+	t=1709041698; cv=none; b=mcnFdA7GncAxf5q5uQvzWIRxp7zv6AX3Ncexag4uGCOcjDshamacezzC0LmupvUVfoy2GL/gP00IjqW2T4CzRNXElEb8L4di5POzl9wexG3YYcw+zuVV4i/FEd5/FTTZjPXebdXjNvEzIfVkEhPcIHgDRtu1wo97Eg3rVa6q9X8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041280; c=relaxed/simple;
-	bh=aUP86XcTpfJ6eDEuJ2nzHTWkkJwyQdxw34v0wYb8LsY=;
+	s=arc-20240116; t=1709041698; c=relaxed/simple;
+	bh=jBlmmCuzu6c10jAVdMAntK5URkJtrJZsfFqxanKl9KQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t19yiLjPrlPrwCuBTiw0+p71DB3/lMOEzR+86Mb0WYK45idm+4nNGKDH0gVKbVGxQ3OdwNGHisrgrhjBHct3II1GscQHyTzIvp0Ye8pwNBlAocktTcb5rwVcBtZYN7ss6+TRSW39wFVEp9KoSFtFV9iJeLwJ2uAUAjmzTlGaHj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FJayG2Dd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BE7DC433F1;
-	Tue, 27 Feb 2024 13:41:19 +0000 (UTC)
+	 MIME-Version; b=LFtISu/2Eg8gvBVF8D5WGE5Q8GVL0Szx633+BC5Nsh/PcO1hUvyHLM+ENRoR2V31vVi4nqp34p3Jk0LQfkM5QEFgAwDB3AxYvKkScjSqg/4Glc0r+epsFyI6NR2nFxMT8q9sQXeA3rBhbHqhOlCFeFZq7UFrY+rOD6f/ZntOqgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9UAL6ut; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAF12C433F1;
+	Tue, 27 Feb 2024 13:48:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041280;
-	bh=aUP86XcTpfJ6eDEuJ2nzHTWkkJwyQdxw34v0wYb8LsY=;
+	s=korg; t=1709041698;
+	bh=jBlmmCuzu6c10jAVdMAntK5URkJtrJZsfFqxanKl9KQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FJayG2DdOiDe0jgDfdG8jMbm4ZRwettwVTG+wt4qVKaI5Jy9BPl2ASTOt/xHIpw5J
-	 pQt8Ro6jiJyp3l/I4mTjzhpyMZIa8OBwwNUAmJKBMWm8h82PYJta/pk/LMBqk6IEeQ
-	 4vOyClMUuwejgaDvWAPpfWPr8OtrC8dcUY4/U1vc=
+	b=o9UAL6utPay19Z+bAPJBkB5N8g6sJ66Ws0DpjsHTiNjwyCNlgJ2L7rTDV4qLAJq9P
+	 QIsKJZ5PQHHYSVtOR3Re7mMJEXK8XfQmmtHT1Sv0ig+oBjXBQ8N8lT8AY8alclqxXX
+	 Gr2QSeZnZk4o1m7w95Fj3MILEyNCDQmB6//26Ly8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jisheng Zhang <jszhang@kernel.org>,
-	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Huang Pei <huangpei@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 284/334] gpiolib: Handle no pin_ranges in gpiochip_generic_config()
+Subject: [PATCH 6.6 031/299] MIPS: reserve exception vector space ONLY ONCE
 Date: Tue, 27 Feb 2024 14:22:22 +0100
-Message-ID: <20240227131640.158883113@linuxfoundation.org>
+Message-ID: <20240227131626.828243745@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emil Renner Berthing <emil.renner.berthing@canonical.com>
+From: Huang Pei <huangpei@loongson.cn>
 
-[ Upstream commit ae366ba8576da0135d7d3db2dfa6304f3338d0c2 ]
+[ Upstream commit abcabb9e30a1f9a69c76776f8abffc31c377b542 ]
 
-Similar to gpiochip_generic_request() and gpiochip_generic_free() the
-gpiochip_generic_config() function needs to handle the case where there
-are no pinctrl pins mapped to the GPIOs, usually through the gpio-ranges
-device tree property.
+"cpu_probe" is called both by BP and APs, but reserving exception vector
+(like 0x0-0x1000) called by "cpu_probe" need once and calling on APs is
+too late since memblock is unavailable at that time.
 
-Commit f34fd6ee1be8 ("gpio: dwapb: Use generic request, free and
-set_config") set the .set_config callback to gpiochip_generic_config()
-in the dwapb GPIO driver so the GPIO API can set pinctrl configuration
-for the corresponding pins. Most boards using the dwapb driver do not
-set the gpio-ranges device tree property though, and in this case
-gpiochip_generic_config() would return -EPROPE_DEFER rather than the
-previous -ENOTSUPP return value. This in turn makes
-gpio_set_config_with_argument_optional() fail and propagate the error to
-any driver requesting GPIOs.
+So, reserve exception vector ONLY by BP.
 
-Fixes: 2956b5d94a76 ("pinctrl / gpio: Introduce .set_config() callback for GPIO chips")
-Reported-by: Jisheng Zhang <jszhang@kernel.org>
-Closes: https://lore.kernel.org/linux-gpio/ZdC_g3U4l0CJIWzh@xhacker/
-Tested-by: Jisheng Zhang <jszhang@kernel.org>
-Signed-off-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Suggested-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Huang Pei <huangpei@loongson.cn>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/mips/kernel/traps.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 95d2a7b2ea3e2..15de124d5b402 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -2043,6 +2043,11 @@ EXPORT_SYMBOL_GPL(gpiochip_generic_free);
- int gpiochip_generic_config(struct gpio_chip *gc, unsigned int offset,
- 			    unsigned long config)
+diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
+index 246c6a6b02614..5b778995d4483 100644
+--- a/arch/mips/kernel/traps.c
++++ b/arch/mips/kernel/traps.c
+@@ -2007,7 +2007,13 @@ unsigned long vi_handlers[64];
+ 
+ void reserve_exception_space(phys_addr_t addr, unsigned long size)
  {
-+#ifdef CONFIG_PINCTRL
-+	if (list_empty(&gc->gpiodev->pin_ranges))
-+		return -ENOTSUPP;
-+#endif
-+
- 	return pinctrl_gpio_set_config(gc, offset, config);
+-	memblock_reserve(addr, size);
++	/*
++	 * reserve exception space on CPUs other than CPU0
++	 * is too late, since memblock is unavailable when APs
++	 * up
++	 */
++	if (smp_processor_id() == 0)
++		memblock_reserve(addr, size);
  }
- EXPORT_SYMBOL_GPL(gpiochip_generic_config);
+ 
+ void __init *set_except_vector(int n, void *addr)
 -- 
 2.43.0
 
