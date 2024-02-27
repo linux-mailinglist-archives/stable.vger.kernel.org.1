@@ -1,129 +1,162 @@
-Return-Path: <stable+bounces-23788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FE6786862D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 02:42:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3424086863D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 02:45:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF7D328BCAA
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 01:42:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB798284EF5
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 01:45:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE70610D;
-	Tue, 27 Feb 2024 01:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6719E6AA1;
+	Tue, 27 Feb 2024 01:45:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T5VWn8dP"
 X-Original-To: stable@vger.kernel.org
-Received: from ne31.mxout.mta3.net (ne31.mxout.mta3.net [51.222.89.31])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03EF01D6A7
-	for <stable@vger.kernel.org>; Tue, 27 Feb 2024 01:42:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.222.89.31
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E1A2916;
+	Tue, 27 Feb 2024 01:45:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708998130; cv=none; b=hPOOl7i2rYIaMNNLCbk2rhx8oIOt4zxIG+ZdTs1Q4i1/npCOqVvzD8xIIzSjkYzl3KbSnaL9HnKzviWPbYjfK5NBdGcOgZnMPc9JMogD0TSaQN0OECRmh9Re7hyXbt6Yk1GwDYYJwkrti2pIFzo9blCsSPuiZln4Oa6yBFoLYGI=
+	t=1708998349; cv=none; b=o/yMwPzMqufWkUzk/rjBp6W2M44mlXauMqRiTdTKy3bUtZVnHCk9CJJ+3Y8Ia0dYe1MWQpTa8DK/CQx3Xk7K83++FX6uy0LP99NG6K1C/Cpkx+S3fJQacJMkdRi9hgC9OZW8nVUcay+rOetq1JnPK7I78M7VepbbVBwzWFTogOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708998130; c=relaxed/simple;
-	bh=+A00JDj63LjMUleu2Yf/PmaUVk79RIE6gHRrYT0+4UE=;
-	h=From:Date:Subject:Message-Id:To:Cc:MIME-Version:Content-Type; b=LYZZmqMx+xcb6k6hB/5EF1OuPhqOAG1vtkGAWZmP83m4QLzc62OYnRI+co5NxXAYjkQEDdGGNJUKUmnZY13r0YF2+thjEuWw7i4GvXHW52905bUuSDV85xNSS9tBvpwhSgxAWYxUMWd8HCiQvhsta4kcptee1eaKa2DtZQEIIg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=bounces.elasticemail.net; arc=none smtp.client-ip=51.222.89.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bounces.elasticemail.net
-From: Larry Finger <Larry.Finger@gmail.com>
-Date: Tue, 27 Feb 2024 01:41:00 +0000
-Subject: [PATCH] wifi:rtw88: Add missing VID/PIDs
-Message-Id: <4ume77rb9r8f.UXKBbmUeyfqSsY8Y0GJ1PQ2@1EHFQ.trk.elasticemail.com>
-Reply-To: Larry Finger <Larry.Finger@gmail.com>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org,
- Nick Morrow <morrownr@gmail.com>, Larry Finger <Larry.Finger@lwfinger.net>,
- stable@vger.kernel.org
-List-Unsubscribe-Post: List-Unsubscribe=One-Click
-X-Msg-EID: UXKBbmUeyfqSsY8Y0GJ1PQ2
+	s=arc-20240116; t=1708998349; c=relaxed/simple;
+	bh=SCXTahozD0TxiPX08IBsjicUaCXkNVF/+0u0TFeGY0I=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=gFVcC15jdQlKc9qpygUl5zHFTgUy2K3GwCz2IoYj1PxGT4yiC2dExQxOVidKn8eSsBBSU1sAR0ZZ1r/SiI0xx8PRE0xRp4KRLKzxXgPqOjUdjuJMN5+RpzpATo0K1HSd8s7wo0gxovmvbSipjgrdBnAIyIQwHtLhhYGa4TDZYwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T5VWn8dP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 91AB6C433F1;
+	Tue, 27 Feb 2024 01:45:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708998348;
+	bh=SCXTahozD0TxiPX08IBsjicUaCXkNVF/+0u0TFeGY0I=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=T5VWn8dPeHK/BBBoReSynEEv2vsnw2mgT+50PP5WMZn5QWRppdg3qhNAtJWbVG8mw
+	 K2qZXAuICBrlc4chwCrYja/aWcxhztOBun55O6kdCGDPnt7nMywIX2xe0/Ev8KzFyA
+	 TzxH9xeeNsFGfC6+U0jBvGZzWPiSubayJsafM68G3BYVg9a5uq6ePqLOVmhb2YKDMz
+	 ZoXpx7xEF4SQghz8q/x5yxByMhwaWi+7/vlRfTlnrXZFQeoIPiDM3a+8OPn9bLivfU
+	 qyN123mGd6GlLAcE7qiKGbUNiE2GptW8L82QXeisl4DEuraUijFLwkK7la6UE/2Nwy
+	 dCq5Wgr7oNZuw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 75FB0C48BF6;
+	Tue, 27 Feb 2024 01:45:48 +0000 (UTC)
+From:
+ Bjorn Andersson via B4 Relay <devnull+quic_bjorande.quicinc.com@kernel.org>
+Date: Mon, 26 Feb 2024 17:49:57 -0800
+Subject: [PATCH] pmdomain: qcom: rpmhpd: Fix enabled_corner aggregation
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240226-rpmhpd-enable-corner-fix-v1-1-68c004cec48c@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIAMQ/3WUC/x2MwQqDMBAFf0X27EIMbWz9FfEQ40tdaGPYgBTEf
+ zd4nIGZgwpUUGhoDlLsUmRLFbq2obD69AHLUpmssQ9jrWPNvzUvjOTnLzhsmqAc5c/hCdNH9PP
+ 75ajmWVH1vR6n87wAZf/r0WoAAAA=
+To: Bjorn Andersson <andersson@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, 
+ Ulf Hansson <ulf.hansson@linaro.org>, Stephen Boyd <swboyd@chromium.org>, 
+ Johan Hovold <johan+linaro@kernel.org>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Johan Hovold <johan@kernel.org>, 
+ stable@vger.kernel.org, Bjorn Andersson <quic_bjorande@quicinc.com>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3004;
+ i=quic_bjorande@quicinc.com; h=from:subject:message-id;
+ bh=8TOgtVhYO01rdpfAVMwK9WI6pflXIuB4DQQcEbm8Zmw=;
+ b=owEBgwJ8/ZANAwAIAQsfOT8Nma3FAcsmYgBl3T/r3KXQprzkHna4SseXUKD0ooMTxVhZKDW9m
+ mWQ0+8CJmiJAkkEAAEIADMWIQQF3gPMXzXqTwlm1SULHzk/DZmtxQUCZd0/6xUcYW5kZXJzc29u
+ QGtlcm5lbC5vcmcACgkQCx85Pw2ZrcUW4w//YlZS5dc2FBsqrTddOHzidbibnEQwzDs1tWPmyqH
+ jKcngixr+2OP4XYmR/HEBprSaEe/UXls884Ema6ucg5EQtpOIrMqfxWHEptQljfkVwuhHxiav5y
+ hR9pSDgBfIkmZYnlp+AI8VM+pQyqQB3nTZ0mgu1YTxtEIomgOZ8ifzTXMPvSrtWtU0pEXDpzE8y
+ amaeZShoEQMs238EpgfWhbFTKWqPlUKCdVmjyjIZ/TAnE4haRDpKnCInDvpGaTXJSeK+X1cdzAu
+ Iduu4QSFutGx/mTaLJF3I4UqWzUrFmEy/apAtGhOGnpNTkrAjR/euygJQY9OREp0OEvM+FEfjzj
+ yn0Xi/zNqMBnEzn5vd7340NM6wSq6oHBJp9dmzLyIAimCcN9A5z769c8SZ+hacWXEZlNqdizJ34
+ Wv8iaWi/Rkzc7XUG/Tlx+jtdEqS1313uA1f3HPDfr3VtQ+mN4t7Ex3z4qLFKaslXbunA4AEBLK9
+ INzGCitwuDBUSh2NtR0fu5ZOAiQCb7g+gIMON1aDQcD39lbnwfX8rMxYv9zNYZvtnr7z4NbUkAF
+ 0G/5IeNCRrIoQ42hHlRhVCkG5WnjZRGZbgLEIxHyxLHVUnNPXs+bCCftycKzr4BIUDfIK9W4TGz
+ /ltQREquxuqJMmPH8tYwmHjE2s2CdDyeBQHzWutRavxA=
+X-Developer-Key: i=quic_bjorande@quicinc.com; a=openpgp;
+ fpr=05DE03CC5F35EA4F0966D5250B1F393F0D99ADC5
+X-Endpoint-Received:
+ by B4 Relay for quic_bjorande@quicinc.com/default with auth_id=118
+X-Original-From: Bjorn Andersson <quic_bjorande@quicinc.com>
+Reply-To: <quic_bjorande@quicinc.com>
 
-From: Nick Morrow <morrownr@gmail.com>
+From: Bjorn Andersson <quic_bjorande@quicinc.com>
 
-Purpose: Add VID/PIDs that are known to be missing for this driver.
-- removed  /* 8811CU */ and /* 8821CU */ as they are redundant
-since the file is specific to those chips.
-- removed /* TOTOLINK A650UA v3 */ as the manufacturer. It has a REALTEK
-VID so it may not be specific to this adapter.
+Commit 'e3e56c050ab6 ("soc: qcom: rpmhpd: Make power_on actually enable
+the domain")' aimed to make sure that a power-domain that is being
+enabled without any particular performance-state requested will at least
+turn the rail on, to avoid filling DeviceTree with otherwise unnecessary
+required-opps properties.
 
-Source is https://1EHFQ.trk.elasticemail.com/tracking/click?d=I82H0YR_W_h175Lb3Nkb0D8i6IqvuhESe0WLnY6P7IVwR1UKvB0SPxd1Olp3PNJE8DIaA8BS5gsHKnkG5Gw03GTTDx1dI0gFY9TrX622pDxw4QXPwnsQg8xTa0pCkyrZUSQrtAcn3FHhd6gXmtWtse0KXsnv8x4PXKyOUTrPelBu0
-Verified and tested.
+But in the event that aggregation happens on a disabled power-domain, with
+an enabled peer without performance-state, both the local and peer
+corner are 0. The peer's enabled_corner is not considered, with the
+result that the underlying (shared) resource is disabled.
 
-Signed-off-by: Nick Morrow <morrownr@gmail.com>
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
-Cc: stable@vger.kernel.org
+One case where this can be observed is when the display stack keeps mmcx
+enabled (but without a particular performance-state vote) in order to
+access registers and sync_state happens in the rpmhpd driver. As mmcx_ao
+is flushed the state of the peer (mmcx) is not considered and mmcx_ao
+ends up turning off "mmcx.lvl" underneath mmcx. This has been observed
+several times, but has been painted over in DeviceTree by adding an
+explicit vote for the lowest non-disabled performance-state.
+
+Fixes: e3e56c050ab6 ("soc: qcom: rpmhpd: Make power_on actually enable the domain")
+Reported-by: Johan Hovold <johan@kernel.org>
+Closes: https://lore.kernel.org/linux-arm-msm/ZdMwZa98L23mu3u6@hovoldconsulting.com/
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
 ---
- .../net/wireless/realtek/rtw88/rtw8821cu.c    | 40 ++++++++++++-------
- 1 file changed, 26 insertions(+), 14 deletions(-)
+This issue is the root cause of a display regression on SC8280XP boards,
+resulting in the system often resetting during boot. It was exposed by
+the refactoring of the DisplayPort driver in v6.8-rc1.
+---
+ drivers/pmdomain/qcom/rpmhpd.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821cu.c b/drivers/net/wireless/realtek/rtw88/rtw8821cu.c
-index 7a5cbdc31ef7..e2c7d9f87683 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8821cu.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821cu.c
-@@ -9,24 +9,36 @@
- #include "usb.h"
+diff --git a/drivers/pmdomain/qcom/rpmhpd.c b/drivers/pmdomain/qcom/rpmhpd.c
+index 3078896b1300..47df910645f6 100644
+--- a/drivers/pmdomain/qcom/rpmhpd.c
++++ b/drivers/pmdomain/qcom/rpmhpd.c
+@@ -692,6 +692,7 @@ static int rpmhpd_aggregate_corner(struct rpmhpd *pd, unsigned int corner)
+ 	unsigned int active_corner, sleep_corner;
+ 	unsigned int this_active_corner = 0, this_sleep_corner = 0;
+ 	unsigned int peer_active_corner = 0, peer_sleep_corner = 0;
++	unsigned int peer_enabled_corner;
  
- static const struct usb_device_id rtw_8821cu_id_table[] = {
--	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xb82b, 0xff, 0xff, 0xff),
--	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* 8821CU */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0x2006, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0x8731, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0x8811, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xb820, 0xff, 0xff, 0xff),
--	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* 8821CU */
--	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xc821, 0xff, 0xff, 0xff),
--	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* 8821CU */
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xb82b, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xc80c, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xc811, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xc820, 0xff, 0xff, 0xff),
--	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* 8821CU */
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xc821, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xc82a, 0xff, 0xff, 0xff),
--	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* 8821CU */
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xc82b, 0xff, 0xff, 0xff),
--	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* 8821CU */
--	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xc811, 0xff, 0xff, 0xff),
--	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* 8811CU */
--	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0x8811, 0xff, 0xff, 0xff),
--	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* 8811CU */
--	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0x2006, 0xff, 0xff, 0xff),
--	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* TOTOLINK A650UA v3 */
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0xc82c, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x331d, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* D-Link */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x7392, 0xc811, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* Edimax */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x7392, 0xd811, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8821c_hw_spec) }, /* Edimax */
- 	{},
- };
- MODULE_DEVICE_TABLE(usb, rtw_8821cu_id_table);
+ 	if (pd->state_synced) {
+ 		to_active_sleep(pd, corner, &this_active_corner, &this_sleep_corner);
+@@ -701,9 +702,11 @@ static int rpmhpd_aggregate_corner(struct rpmhpd *pd, unsigned int corner)
+ 		this_sleep_corner = pd->level_count - 1;
+ 	}
+ 
+-	if (peer && peer->enabled)
+-		to_active_sleep(peer, peer->corner, &peer_active_corner,
++	if (peer && peer->enabled) {
++		peer_enabled_corner = max(peer->corner, peer->enable_corner);
++		to_active_sleep(peer, peer_enabled_corner, &peer_active_corner,
+ 				&peer_sleep_corner);
++	}
+ 
+ 	active_corner = max(this_active_corner, peer_active_corner);
+ 
+
+---
+base-commit: b401b621758e46812da61fa58a67c3fd8d91de0d
+change-id: 20240226-rpmhpd-enable-corner-fix-c5e07fe7b986
+
+Best regards,
 -- 
-2.43.2
+Bjorn Andersson <quic_bjorande@quicinc.com>
 
-
-https://1EHFQ.trk.elasticemail.com/tracking/unsubscribe?d=GtKKPX7rhUiB3wTyGR-d2NfgEXlvzXNwshru3p9L-alr6F_wwZfDuFzWFi6kbVphDBRpvMdg2FUhnIeIgENjh64jS6O87avkfKV4lEZekN1u0
 
