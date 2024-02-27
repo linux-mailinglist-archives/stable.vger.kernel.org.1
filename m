@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-24934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 605E28696EB
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:16:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71BAD86950C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:58:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82FBF1C22CAE
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:16:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A44181C23EF6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:58:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8506713B798;
-	Tue, 27 Feb 2024 14:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B051419A9;
+	Tue, 27 Feb 2024 13:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vijwO35G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J+YbXh/j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED6913B29C;
-	Tue, 27 Feb 2024 14:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAFC613AA50;
+	Tue, 27 Feb 2024 13:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043396; cv=none; b=uizV248vEgzh4WUYHTzf/zx1qzTgqjKcUzgktxt7kbyxVQinW0GuMvQO34Gosl8hC8+rmUGEe6W4U57w3Zj2Hg1epUQEIWhEraekuRb78CenCxYRD+pJkftbVAOkuarLYxLwk43IHgdiRj1kcPkMVGv0KDs9FbvkNIDVwGAYiJc=
+	t=1709042282; cv=none; b=X3mO/booB8qeWrWJfHt2ckYXhX1/E4Xt8w9TE4jzLhJUmMgkm/JjZrLvlQZhV8o7RDXfUx6kGEv90WLx8Lp3LGcI0t2/05B/Ix+c/21MQlwPMTiBujJ5n4yt+/iOzN0CSwgJCn0CSQ5EFzbsBAoUCLRjtEza2RGmkp5D+ge80y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043396; c=relaxed/simple;
-	bh=InxdeiCWvlXIrjgI7zGeFmbE5u06p+7trh2G1dt9SK0=;
+	s=arc-20240116; t=1709042282; c=relaxed/simple;
+	bh=xBuKfa3G57gyAmaIR3ttE0V/Nq2DMdoKfxRmNSD4NFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X74HlEgRsW6lFKp7mOsIuc7jIvmGaNkX6Y/p4eupTVcwZt0xJ6Utdq08n3hJ6u15E8Hu/H5/fI60a+5pOrne8ybBlppBgZVcDh2F0P0YLJigmAKUrzwIqf+ZvbN28Ek5m+RjcGQ/+HkQ5QKS0fTwa212+mpGjjsYV/TMm3yiu2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vijwO35G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B85C433A6;
-	Tue, 27 Feb 2024 14:16:35 +0000 (UTC)
+	 MIME-Version; b=FDyUDsOj7HZHr+1OMwNyk8mcoFDYhJ3iePGQniF4K3Dn/1W9l8ARdJpSHUQFaOfViaKHI+8MOl9sw7ttzvVv1tijkHqUlzXB37epW23Pe9HV0ZOYX6sI4CSRJXyxXTc9lIQglCj4XIRSUQgEZbodnZDibbxEjl/eVKFHzAzleqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J+YbXh/j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B946C433F1;
+	Tue, 27 Feb 2024 13:58:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043395;
-	bh=InxdeiCWvlXIrjgI7zGeFmbE5u06p+7trh2G1dt9SK0=;
+	s=korg; t=1709042281;
+	bh=xBuKfa3G57gyAmaIR3ttE0V/Nq2DMdoKfxRmNSD4NFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vijwO35GjV4uQpjH0Qz6NKHJutrj7cTJepLoUQqJLQr0C5k0UdEAgFQXJdJqr2wV1
-	 JSf5zMY0OqZzQBQmSrub32jnJ0+E7PdCi3PvjfZD67XMHdnYOEhfyzAMOGjMXkq1IF
-	 UzRypis0L9egFgR94zuOAea0fpaqQ8Ucxe2HT+LU=
+	b=J+YbXh/jdfNbeXrAceDGcaaUzOx/5sO2728kD+0bL9d17DFQCZDZzqW/h6pOASSzu
+	 awUW8M2kv1cP5fXWHQUe0pxTLT/QlwamTfcN6YtZvhkFTS99Cyx/yqVJo7IzK1V7kS
+	 mKhT+5SzB1LaVHRs9sCs8fY32zWV3klzN/+APTok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>
-Subject: [PATCH 6.1 092/195] dm-verity: recheck the hash after a failure
+	Alison Schofield <alison.schofield@intel.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 242/299] x86/numa: Fix the address overlap check in numa_fill_memblks()
 Date: Tue, 27 Feb 2024 14:25:53 +0100
-Message-ID: <20240227131613.517406327@linuxfoundation.org>
+Message-ID: <20240227131633.518515112@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,194 +64,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Alison Schofield <alison.schofield@intel.com>
 
-commit 9177f3c0dea6143d05cac1bbd28668fd0e216d11 upstream.
+[ Upstream commit 9b99c17f7510bed2adbe17751fb8abddba5620bc ]
 
-If a userspace process reads (with O_DIRECT) multiple blocks into the same
-buffer, dm-verity reports an error [1].
+numa_fill_memblks() fills in the gaps in numa_meminfo memblks over a
+physical address range. To do so, it first creates a list of existing
+memblks that overlap that address range. The issue is that it is off
+by one when comparing to the end of the address range, so memblks
+that do not overlap are selected.
 
-This commit fixes dm-verity, so that if hash verification fails, the data
-is read again into a kernel buffer (where userspace can't modify it) and
-the hash is rechecked. If the recheck succeeds, the content of the kernel
-buffer is copied into the user buffer; if the recheck fails, an error is
-reported.
+The impact of selecting a memblk that does not actually overlap is
+that an existing memblk may be filled when the expected action is to
+do nothing and return NUMA_NO_MEMBLK to the caller. The caller can
+then add a new NUMA node and memblk.
 
-[1] https://people.redhat.com/~mpatocka/testcases/blk-auth-modify/read2.c
+Replace the broken open-coded search for address overlap with the
+memblock helper memblock_addrs_overlap(). Update the kernel doc
+and in code comments.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested by: "Huang, Ying" <ying.huang@intel.com>
+
+Fixes: 8f012db27c95 ("x86/numa: Introduce numa_fill_memblks()")
+Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Link: https://lore.kernel.org/r/10a3e6109c34c21a8dd4c513cf63df63481a2b07.1705085543.git.alison.schofield@intel.com
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-verity-target.c |   86 +++++++++++++++++++++++++++++++++++++++---
- drivers/md/dm-verity.h        |    6 ++
- 2 files changed, 86 insertions(+), 6 deletions(-)
+ arch/x86/mm/numa.c       | 19 +++++++------------
+ include/linux/memblock.h |  2 ++
+ mm/memblock.c            |  5 +++--
+ 3 files changed, 12 insertions(+), 14 deletions(-)
 
---- a/drivers/md/dm-verity-target.c
-+++ b/drivers/md/dm-verity-target.c
-@@ -474,6 +474,63 @@ int verity_for_bv_block(struct dm_verity
- 	return 0;
- }
+diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+index aa39d678fe81d..e60c61b8bbc61 100644
+--- a/arch/x86/mm/numa.c
++++ b/arch/x86/mm/numa.c
+@@ -971,14 +971,12 @@ static struct numa_memblk *numa_memblk_list[NR_NODE_MEMBLKS] __initdata;
+  * @start: address to begin fill
+  * @end: address to end fill
+  *
+- * Find and extend numa_meminfo memblks to cover the @start-@end
+- * physical address range, such that the first memblk includes
+- * @start, the last memblk includes @end, and any gaps in between
+- * are filled.
++ * Find and extend numa_meminfo memblks to cover the physical
++ * address range @start-@end
+  *
+  * RETURNS:
+  * 0		  : Success
+- * NUMA_NO_MEMBLK : No memblk exists in @start-@end range
++ * NUMA_NO_MEMBLK : No memblks exist in address range @start-@end
+  */
  
-+static int verity_recheck_copy(struct dm_verity *v, struct dm_verity_io *io,
-+			       u8 *data, size_t len)
-+{
-+	memcpy(data, io->recheck_buffer, len);
-+	io->recheck_buffer += len;
-+
-+	return 0;
-+}
-+
-+static int verity_recheck(struct dm_verity *v, struct dm_verity_io *io,
-+			  struct bvec_iter start, sector_t cur_block)
-+{
-+	struct page *page;
-+	void *buffer;
-+	int r;
-+	struct dm_io_request io_req;
-+	struct dm_io_region io_loc;
-+
-+	page = mempool_alloc(&v->recheck_pool, GFP_NOIO);
-+	buffer = page_to_virt(page);
-+
-+	io_req.bi_opf = REQ_OP_READ;
-+	io_req.mem.type = DM_IO_KMEM;
-+	io_req.mem.ptr.addr = buffer;
-+	io_req.notify.fn = NULL;
-+	io_req.client = v->io;
-+	io_loc.bdev = v->data_dev->bdev;
-+	io_loc.sector = cur_block << (v->data_dev_block_bits - SECTOR_SHIFT);
-+	io_loc.count = 1 << (v->data_dev_block_bits - SECTOR_SHIFT);
-+	r = dm_io(&io_req, 1, &io_loc, NULL);
-+	if (unlikely(r))
-+		goto free_ret;
-+
-+	r = verity_hash(v, verity_io_hash_req(v, io), buffer,
-+			1 << v->data_dev_block_bits,
-+			verity_io_real_digest(v, io), true);
-+	if (unlikely(r))
-+		goto free_ret;
-+
-+	if (memcmp(verity_io_real_digest(v, io),
-+		   verity_io_want_digest(v, io), v->digest_size)) {
-+		r = -EIO;
-+		goto free_ret;
-+	}
-+
-+	io->recheck_buffer = buffer;
-+	r = verity_for_bv_block(v, io, &start, verity_recheck_copy);
-+	if (unlikely(r))
-+		goto free_ret;
-+
-+	r = 0;
-+free_ret:
-+	mempool_free(page, &v->recheck_pool);
-+
-+	return r;
-+}
-+
- static int verity_bv_zero(struct dm_verity *v, struct dm_verity_io *io,
- 			  u8 *data, size_t len)
- {
-@@ -500,9 +557,7 @@ static int verity_verify_io(struct dm_ve
- {
- 	bool is_zero;
- 	struct dm_verity *v = io->v;
--#if defined(CONFIG_DM_VERITY_FEC)
- 	struct bvec_iter start;
--#endif
- 	struct bvec_iter iter_copy;
- 	struct bvec_iter *iter;
- 	struct crypto_wait wait;
-@@ -553,10 +608,7 @@ static int verity_verify_io(struct dm_ve
- 		if (unlikely(r < 0))
- 			return r;
+ int __init numa_fill_memblks(u64 start, u64 end)
+@@ -990,17 +988,14 @@ int __init numa_fill_memblks(u64 start, u64 end)
  
--#if defined(CONFIG_DM_VERITY_FEC)
--		if (verity_fec_is_enabled(v))
--			start = *iter;
--#endif
-+		start = *iter;
- 		r = verity_for_io_block(v, io, iter, &wait);
- 		if (unlikely(r < 0))
- 			return r;
-@@ -578,6 +630,10 @@ static int verity_verify_io(struct dm_ve
- 			 * tasklet since it may sleep, so fallback to work-queue.
- 			 */
- 			return -EAGAIN;
-+		} else if (verity_recheck(v, io, start, cur_block) == 0) {
-+			if (v->validated_blocks)
-+				set_bit(cur_block, v->validated_blocks);
-+			continue;
- #if defined(CONFIG_DM_VERITY_FEC)
- 		} else if (verity_fec_decode(v, io, DM_VERITY_BLOCK_TYPE_DATA,
- 					     cur_block, NULL, &start) == 0) {
-@@ -928,6 +984,10 @@ static void verity_dtr(struct dm_target
- 	if (v->verify_wq)
- 		destroy_workqueue(v->verify_wq);
- 
-+	mempool_exit(&v->recheck_pool);
-+	if (v->io)
-+		dm_io_client_destroy(v->io);
-+
- 	if (v->bufio)
- 		dm_bufio_client_destroy(v->bufio);
- 
-@@ -1364,6 +1424,20 @@ static int verity_ctr(struct dm_target *
- 	}
- 	v->hash_blocks = hash_position;
- 
-+	r = mempool_init_page_pool(&v->recheck_pool, 1, 0);
-+	if (unlikely(r)) {
-+		ti->error = "Cannot allocate mempool";
-+		goto bad;
-+	}
-+
-+	v->io = dm_io_client_create();
-+	if (IS_ERR(v->io)) {
-+		r = PTR_ERR(v->io);
-+		v->io = NULL;
-+		ti->error = "Cannot allocate dm io";
-+		goto bad;
-+	}
-+
- 	v->bufio = dm_bufio_client_create(v->hash_dev->bdev,
- 		1 << v->hash_dev_block_bits, 1, sizeof(struct buffer_aux),
- 		dm_bufio_alloc_callback, NULL,
---- a/drivers/md/dm-verity.h
-+++ b/drivers/md/dm-verity.h
-@@ -11,6 +11,7 @@
- #ifndef DM_VERITY_H
- #define DM_VERITY_H
- 
-+#include <linux/dm-io.h>
- #include <linux/dm-bufio.h>
- #include <linux/device-mapper.h>
- #include <linux/interrupt.h>
-@@ -68,6 +69,9 @@ struct dm_verity {
- 	unsigned long *validated_blocks; /* bitset blocks validated */
- 
- 	char *signature_key_desc; /* signature keyring reference */
-+
-+	struct dm_io_client *io;
-+	mempool_t recheck_pool;
- };
- 
- struct dm_verity_io {
-@@ -84,6 +88,8 @@ struct dm_verity_io {
- 
- 	struct work_struct work;
- 
-+	char *recheck_buffer;
-+
  	/*
- 	 * Three variably-size fields follow this struct:
- 	 *
+ 	 * Create a list of pointers to numa_meminfo memblks that
+-	 * overlap start, end. Exclude (start == bi->end) since
+-	 * end addresses in both a CFMWS range and a memblk range
+-	 * are exclusive.
+-	 *
+-	 * This list of pointers is used to make in-place changes
+-	 * that fill out the numa_meminfo memblks.
++	 * overlap start, end. The list is used to make in-place
++	 * changes that fill out the numa_meminfo memblks.
+ 	 */
+ 	for (int i = 0; i < mi->nr_blks; i++) {
+ 		struct numa_memblk *bi = &mi->blk[i];
+ 
+-		if (start < bi->end && end >= bi->start) {
++		if (memblock_addrs_overlap(start, end - start, bi->start,
++					   bi->end - bi->start)) {
+ 			blk[count] = &mi->blk[i];
+ 			count++;
+ 		}
+diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+index 1c1072e3ca063..ed57c23f80ac2 100644
+--- a/include/linux/memblock.h
++++ b/include/linux/memblock.h
+@@ -118,6 +118,8 @@ int memblock_reserve(phys_addr_t base, phys_addr_t size);
+ int memblock_physmem_add(phys_addr_t base, phys_addr_t size);
+ #endif
+ void memblock_trim_memory(phys_addr_t align);
++unsigned long memblock_addrs_overlap(phys_addr_t base1, phys_addr_t size1,
++				     phys_addr_t base2, phys_addr_t size2);
+ bool memblock_overlaps_region(struct memblock_type *type,
+ 			      phys_addr_t base, phys_addr_t size);
+ int memblock_mark_hotplug(phys_addr_t base, phys_addr_t size);
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 6d18485571b4a..d630f5c2bdb90 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -180,8 +180,9 @@ static inline phys_addr_t memblock_cap_size(phys_addr_t base, phys_addr_t *size)
+ /*
+  * Address comparison utilities
+  */
+-static unsigned long __init_memblock memblock_addrs_overlap(phys_addr_t base1, phys_addr_t size1,
+-				       phys_addr_t base2, phys_addr_t size2)
++unsigned long __init_memblock
++memblock_addrs_overlap(phys_addr_t base1, phys_addr_t size1, phys_addr_t base2,
++		       phys_addr_t size2)
+ {
+ 	return ((base1 < (base2 + size2)) && (base2 < (base1 + size1)));
+ }
+-- 
+2.43.0
+
 
 
 
