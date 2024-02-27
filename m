@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-25143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0948E8697EF
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:26:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA46786952B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:59:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3AAC290EB1
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:26:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B4F41F23375
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:59:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC60513EFE9;
-	Tue, 27 Feb 2024 14:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01F0313DB9B;
+	Tue, 27 Feb 2024 13:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7NHXY7V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MURjiYNN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C6013A26F;
-	Tue, 27 Feb 2024 14:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACD0F13B7A0;
+	Tue, 27 Feb 2024 13:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043984; cv=none; b=nl0ZvruPNokaGZvgzWaYRXaAsPZKtayYkwe4MOG5Nb7cpvpA70M4ZWDy2ebozvYzTre5iX7VNFS1N4/ftuzvF2CbSZ7ZxXtYu2aNsItpuW+ALB9wdoNyzhxcVssVFSNXSgk2z4r1rmN9Mw2UVNFxzqBVGvY52HNbpLciA1Ny4cg=
+	t=1709042371; cv=none; b=KCIpY3X/ZKkMhqXzQhhAORHLiHhS5pCj+cyuXG2bTZ5g7cKxW8Vozy8caC3yTKpYHGbeJPhJ6sMm7zwMs04FP+p4EqEuzGealv88Zgw4LXiEr/ss4rjE/ixL1cMhZnwJQtx2i97CcwZ1JkhZJ2nnBO6clkZtiHFqhaqurfbaYsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043984; c=relaxed/simple;
-	bh=qu7Wl8BvrQ3EjczjMddovl5C0MBLfik3HIKyUafM63Q=;
+	s=arc-20240116; t=1709042371; c=relaxed/simple;
+	bh=YpoeBysjYq7iW6Gv4b0A4LmQVQmMNBznlXz4CfP6gxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SkUqyDPv0u3WGmkJb6JCGHolm/2w2jcXsmAMy8hK3G2g1qPMmPnCoLzwZK09ruTmkpixGopHCsYjjKR3/1mZZiHAMWHwj1F02yskA9kPHPBoGS3h65jFEfGzLA5dqRZN28URX3Ufbq4MeZUX1sAvD2Z2Nnt4SWAo30FHYRXz6sU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7NHXY7V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D375C433F1;
-	Tue, 27 Feb 2024 14:26:24 +0000 (UTC)
+	 MIME-Version; b=prB3ytDEjVN4VpJP+ffgb/movyioZmGz9c9K09XWrjcBdqtGfFCbONDNT/TKbgMXOJBvH7OQUTfC4tY2hTtAs7H+6p8YpZlCgwJiwyo/4Nwf8EwTQOiOHC/T7f1SZpm3d6XHoZvc8/Fx90Qk8W5+uupPPToI4rc/LSVg7mYm+YA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MURjiYNN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AF43C433C7;
+	Tue, 27 Feb 2024 13:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043984;
-	bh=qu7Wl8BvrQ3EjczjMddovl5C0MBLfik3HIKyUafM63Q=;
+	s=korg; t=1709042371;
+	bh=YpoeBysjYq7iW6Gv4b0A4LmQVQmMNBznlXz4CfP6gxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y7NHXY7VjfKcF8v+1spl7Lp0w293852sjzFKldZZcLLiDy1QT8XyPL+ERua2vR8VL
-	 gAKys8iMmhUDQBXPhqd3huL1rNWouGPgIHAUq6hA3ofpk3LZL3siL0we8LeV3iqh0S
-	 UfgYSkgPZZIuIqkr0igibxy8C7VsYH5c+H3EjTMo=
+	b=MURjiYNNWqv4osuEXfjEqXNIQcPWs0wMJQ00fikKE+cVSANPDY0NEA/7GNHuEL8Tq
+	 tuFsvuMlzUonH5VdaJ/KdqCxsjYzYo03wH0odFq9iPpmuXBHUviPEOX4TCkm0K3KSH
+	 kYigiS+FEjPhLycRhj7gCXIXRAFVgNewupw0jZ5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lennert Buytenhek <kernel@wantstofly.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 021/122] ahci: add 43-bit DMA address quirk for ASMedia ASM1061 controllers
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+de4025c006ec68ac56fc@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 271/299] netfilter: nf_tables: set dormant flag on hook register failure
 Date: Tue, 27 Feb 2024 14:26:22 +0100
-Message-ID: <20240227131559.400424695@linuxfoundation.org>
+Message-ID: <20240227131634.405853804@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,161 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lennert Buytenhek <kernel@wantstofly.org>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 20730e9b277873deeb6637339edcba64468f3da3 ]
+[ Upstream commit bccebf64701735533c8db37773eeacc6566cc8ec ]
 
-With one of the on-board ASM1061 AHCI controllers (1b21:0612) on an
-ASUSTeK Pro WS WRX80E-SAGE SE WIFI mainboard, a controller hang was
-observed that was immediately preceded by the following kernel
-messages:
+We need to set the dormant flag again if we fail to register
+the hooks.
 
-ahci 0000:28:00.0: Using 64-bit DMA addresses
-ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00000 flags=0x0000]
-ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00300 flags=0x0000]
-ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00380 flags=0x0000]
-ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00400 flags=0x0000]
-ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00680 flags=0x0000]
-ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00700 flags=0x0000]
+During memory pressure hook registration can fail and we end up
+with a table marked as active but no registered hooks.
 
-The first message is produced by code in drivers/iommu/dma-iommu.c
-which is accompanied by the following comment that seems to apply:
+On table/base chain deletion, nf_tables will attempt to unregister
+the hook again which yields a warn splat from the nftables core.
 
-        /*
-         * Try to use all the 32-bit PCI addresses first. The original SAC vs.
-         * DAC reasoning loses relevance with PCIe, but enough hardware and
-         * firmware bugs are still lurking out there that it's safest not to
-         * venture into the 64-bit space until necessary.
-         *
-         * If your device goes wrong after seeing the notice then likely either
-         * its driver is not setting DMA masks accurately, the hardware has
-         * some inherent bug in handling >32-bit addresses, or not all the
-         * expected address bits are wired up between the device and the IOMMU.
-         */
-
-Asking the ASM1061 on a discrete PCIe card to DMA from I/O virtual
-address 0xffffffff00000000 produces the following I/O page faults:
-
-vfio-pci 0000:07:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0021 address=0x7ff00000000 flags=0x0010]
-vfio-pci 0000:07:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0021 address=0x7ff00000500 flags=0x0010]
-
-Note that the upper 21 bits of the logged DMA address are zero.  (When
-asking a different PCIe device in the same PCIe slot to DMA to the
-same I/O virtual address, we do see all the upper 32 bits of the DMA
-address as 1, so this is not an issue with the chipset or IOMMU
-configuration on the test system.)
-
-Also, hacking libahci to always set the upper 21 bits of all DMA
-addresses to 1 produces no discernible effect on the behavior of the
-ASM1061, and mkfs/mount/scrub/etc work as without this hack.
-
-This all strongly suggests that the ASM1061 has a 43 bit DMA address
-limit, and this commit therefore adds a quirk to deal with this limit.
-
-This issue probably applies to (some of) the other supported ASMedia
-parts as well, but we limit it to the PCI IDs known to refer to
-ASM1061 parts, as that's the only part we know for sure to be affected
-by this issue at this point.
-
-Link: https://lore.kernel.org/linux-ide/ZaZ2PIpEId-rl6jv@wantstofly.org/
-Signed-off-by: Lennert Buytenhek <kernel@wantstofly.org>
-[cassel: drop date from error messages in commit log]
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Reported-and-tested-by: syzbot+de4025c006ec68ac56fc@syzkaller.appspotmail.com
+Fixes: 179d9ba5559a ("netfilter: nf_tables: fix table flag updates")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci.c | 29 +++++++++++++++++++++++------
- drivers/ata/ahci.h |  1 +
- 2 files changed, 24 insertions(+), 6 deletions(-)
+ net/netfilter/nf_tables_api.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 8bfada4843d83..6f7f8e41404dc 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -49,6 +49,7 @@ enum {
- enum board_ids {
- 	/* board IDs by feature in alphabetical order */
- 	board_ahci,
-+	board_ahci_43bit_dma,
- 	board_ahci_ign_iferr,
- 	board_ahci_low_power,
- 	board_ahci_no_debounce_delay,
-@@ -129,6 +130,13 @@ static const struct ata_port_info ahci_port_info[] = {
- 		.udma_mask	= ATA_UDMA6,
- 		.port_ops	= &ahci_ops,
- 	},
-+	[board_ahci_43bit_dma] = {
-+		AHCI_HFLAGS	(AHCI_HFLAG_43BIT_ONLY),
-+		.flags		= AHCI_FLAG_COMMON,
-+		.pio_mask	= ATA_PIO4,
-+		.udma_mask	= ATA_UDMA6,
-+		.port_ops	= &ahci_ops,
-+	},
- 	[board_ahci_ign_iferr] = {
- 		AHCI_HFLAGS	(AHCI_HFLAG_IGN_IRQ_IF_ERR),
- 		.flags		= AHCI_FLAG_COMMON,
-@@ -594,11 +602,11 @@ static const struct pci_device_id ahci_pci_tbl[] = {
- 	{ PCI_VDEVICE(PROMISE, 0x3f20), board_ahci },	/* PDC42819 */
- 	{ PCI_VDEVICE(PROMISE, 0x3781), board_ahci },   /* FastTrak TX8660 ahci-mode */
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index cb7d42a3faab3..40e8aa8343cc7 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -1253,6 +1253,7 @@ static int nf_tables_updtable(struct nft_ctx *ctx)
+ 	return 0;
  
--	/* Asmedia */
-+	/* ASMedia */
- 	{ PCI_VDEVICE(ASMEDIA, 0x0601), board_ahci },	/* ASM1060 */
- 	{ PCI_VDEVICE(ASMEDIA, 0x0602), board_ahci },	/* ASM1060 */
--	{ PCI_VDEVICE(ASMEDIA, 0x0611), board_ahci },	/* ASM1061 */
--	{ PCI_VDEVICE(ASMEDIA, 0x0612), board_ahci },	/* ASM1062 */
-+	{ PCI_VDEVICE(ASMEDIA, 0x0611), board_ahci_43bit_dma },	/* ASM1061 */
-+	{ PCI_VDEVICE(ASMEDIA, 0x0612), board_ahci_43bit_dma },	/* ASM1061/1062 */
- 	{ PCI_VDEVICE(ASMEDIA, 0x0621), board_ahci },   /* ASM1061R */
- 	{ PCI_VDEVICE(ASMEDIA, 0x0622), board_ahci },   /* ASM1062R */
- 
-@@ -951,11 +959,20 @@ static int ahci_pci_device_resume(struct device *dev)
- 
- #endif /* CONFIG_PM */
- 
--static int ahci_configure_dma_masks(struct pci_dev *pdev, int using_dac)
-+static int ahci_configure_dma_masks(struct pci_dev *pdev,
-+				    struct ahci_host_priv *hpriv)
- {
--	const int dma_bits = using_dac ? 64 : 32;
-+	int dma_bits;
- 	int rc;
- 
-+	if (hpriv->cap & HOST_CAP_64) {
-+		dma_bits = 64;
-+		if (hpriv->flags & AHCI_HFLAG_43BIT_ONLY)
-+			dma_bits = 43;
-+	} else {
-+		dma_bits = 32;
-+	}
-+
- 	/*
- 	 * If the device fixup already set the dma_mask to some non-standard
- 	 * value, don't extend it here. This happens on STA2X11, for example.
-@@ -1933,7 +1950,7 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	ahci_gtf_filter_workaround(host);
- 
- 	/* initialize adapter */
--	rc = ahci_configure_dma_masks(pdev, hpriv->cap & HOST_CAP_64);
-+	rc = ahci_configure_dma_masks(pdev, hpriv);
- 	if (rc)
- 		return rc;
- 
-diff --git a/drivers/ata/ahci.h b/drivers/ata/ahci.h
-index 7cc6feb17e972..b8db2b0d74146 100644
---- a/drivers/ata/ahci.h
-+++ b/drivers/ata/ahci.h
-@@ -244,6 +244,7 @@ enum {
- 	AHCI_HFLAG_IGN_NOTSUPP_POWER_ON	= BIT(27), /* ignore -EOPNOTSUPP
- 						      from phy_power_on() */
- 	AHCI_HFLAG_NO_SXS		= BIT(28), /* SXS not supported */
-+	AHCI_HFLAG_43BIT_ONLY		= BIT(29), /* 43bit DMA addr limit */
- 
- 	/* ap->flags bits */
- 
+ err_register_hooks:
++	ctx->table->flags |= NFT_TABLE_F_DORMANT;
+ 	nft_trans_destroy(trans);
+ 	return ret;
+ }
 -- 
 2.43.0
 
