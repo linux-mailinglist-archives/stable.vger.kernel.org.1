@@ -1,70 +1,56 @@
-Return-Path: <stable+bounces-25115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC9398697CC
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:25:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1202E86982A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:29:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 819841F2B210
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:25:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBD471F2CED0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:29:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCA141420DD;
-	Tue, 27 Feb 2024 14:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F738145B23;
+	Tue, 27 Feb 2024 14:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TgziO8wi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNUJU0RV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB0613B2B8;
-	Tue, 27 Feb 2024 14:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C1B1420B3;
+	Tue, 27 Feb 2024 14:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043906; cv=none; b=Roq8ucT7CWae5Q/xJrd9f9ifhqCbO8sqOk1M+jPGOy+/9iSNdBImZYbwPkuGct1Px8F44an6nPmJlslvnlZL+W/lBnuQMPpG8HrmkoxCKRMtT7CtNkxjk7+T71Gr8NC8fy5G/u9ddOIyemSObOYxOI4LT4FnSvMaxAO+VgRa6Os=
+	t=1709044109; cv=none; b=KYyDXmKK+bop2zRIPvJc46W19jw6jQfoNwFhR7MsF8LLgR2j+NPSAQ0ChtCT1j+YjRwHLZ6Ea5/9dvuN/Sk2786S9EK4PX91J+7tBg6YhguFAtwLSfpAoFaRK8tRki9dmfP6MmVnIRFnQUvZDCeCSNeG7hNCmfMLBJZ2v2WGh9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043906; c=relaxed/simple;
-	bh=CKUCtjYyRgbPt2ohqgqJoET8BcdlH3+L17nxccHyu3U=;
+	s=arc-20240116; t=1709044109; c=relaxed/simple;
+	bh=q7MRvqhoINgS5o2/IQY3c2ZPEzu70ViMQoyIYMkqDKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hS2wU7yq1hOQ2cQRjNS9Z9RIm4yyx/xZhBV+F1q0n/qZtZd4GbiBJ99l3nlSZGQH4nxGAHI9ibnfGve8oAWjYzh/cMB4pCMO2Ag/Xz85v5gyE1EQUBaZ0WDCGv7nhAViSmUeEW1ifoyw8VUnq0Kts1LyK7g7YPMFg0xophyJkko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TgziO8wi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A60BDC433F1;
-	Tue, 27 Feb 2024 14:25:05 +0000 (UTC)
+	 MIME-Version; b=i532tC9KKaGPoYHE3Pg1/N91Qjx1iHCqJ+caWyN2izLsRONl2n4eFH5cf8vCxSMkFOjd1N98xXd/R22hwVutGhOmYCqOE9AnJGgHgTNI59mclB8zNpW37nJyT/ujoIMQWbmua8yMbP8KdRzLulIHF6N7wg9YBtvV/Dnfkw8miwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNUJU0RV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 652DCC433F1;
+	Tue, 27 Feb 2024 14:28:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043906;
-	bh=CKUCtjYyRgbPt2ohqgqJoET8BcdlH3+L17nxccHyu3U=;
+	s=korg; t=1709044108;
+	bh=q7MRvqhoINgS5o2/IQY3c2ZPEzu70ViMQoyIYMkqDKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TgziO8wimjYCM3DMUxWwv2loX0SuoX8K1tSSubX/MIPQNPvuSoiq+EpLvt4+jC6bt
-	 u7eyAaISrF3/3KhNAtxA6oNeG/CLP8OqmBXbcAAJNLmrWVrbU4btvmotIAjdqoYnFS
-	 Ai+2PmFIiFua/vhmOV3OWX4uqn0HKPJ7sOQKSmbc=
+	b=TNUJU0RVj7l+y5yu05TDfrPMhOXoNxt2hu1N3yA1+nhLGCYMmCRmaTtvwvK7z23wk
+	 FSwH/uBl3luKA6cE1s4aiNZ9dv8sBMiDQCjsyQkG5ykgMQOEwlBE6c/lfQoftQSXj0
+	 CADAuxSePZOb/DDNwjPBEBTpJF4Q8xgotof2WYMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-pm@vger.kernel.org,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Thierry Reding <treding@nvidia.com>,
-	Mark Brown <broonie@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Bjorn Andersson <bjorn.andersson@linaro.org>,
-	Saravana Kannan <saravanak@google.com>,
-	Todd Kjos <tkjos@google.com>,
-	Len Brown <len.brown@intel.com>,
-	Pavel Machek <pavel@ucw.cz>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Kevin Hilman <khilman@kernel.org>,
-	"Rafael J. Wysocki" <rjw@rjwysocki.net>,
-	Rob Herring <robh@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	John Stultz <john.stultz@linaro.org>,
+	Sergej Bauer <sbauer@blackbox.su>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 39/84] driver core: Set deferred_probe_timeout to a longer default if CONFIG_MODULES is set
+Subject: [PATCH 5.10 065/122] lan743x: fix for potential NULL pointer dereference with bare card
 Date: Tue, 27 Feb 2024 14:27:06 +0100
-Message-ID: <20240227131554.144760148@linuxfoundation.org>
+Message-ID: <20240227131600.830937903@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,70 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Stultz <john.stultz@linaro.org>
+From: Sergej Bauer <sbauer@blackbox.su>
 
-[ Upstream commit e2cec7d6853712295cef5377762165a489b2957f ]
+[ Upstream commit e9e13b6adc338be1eb88db87bcb392696144bd02 ]
 
-When using modules, its common for the modules not to be loaded
-until quite late by userland. With the current code,
-driver_deferred_probe_check_state() will stop returning
-EPROBE_DEFER after late_initcall, which can cause module
-dependency resolution to fail after that.
+This is the 3rd revision of the patch fix for potential null pointer dereference
+with lan743x card.
 
-So allow a longer window of 30 seconds (picked somewhat
-arbitrarily, but influenced by the similar regulator core
-timeout value) in the case where modules are enabled.
+The simpliest way to reproduce: boot with bare lan743x and issue "ethtool ethN"
+commant where ethN is the interface with lan743x card. Example:
 
-Cc: linux-pm@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>
-Cc: Thierry Reding <treding@nvidia.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Liam Girdwood <lgirdwood@gmail.com>
-Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
-Cc: Saravana Kannan <saravanak@google.com>
-Cc: Todd Kjos <tkjos@google.com>
-Cc: Len Brown <len.brown@intel.com>
-Cc: Pavel Machek <pavel@ucw.cz>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: Kevin Hilman <khilman@kernel.org>
-Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-Cc: Rob Herring <robh@kernel.org>
-Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: John Stultz <john.stultz@linaro.org>
-Link: https://lore.kernel.org/r/20200225050828.56458-3-john.stultz@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+$ sudo ethtool eth7
+dmesg:
+[  103.510336] BUG: kernel NULL pointer dereference, address: 0000000000000340
+...
+[  103.510836] RIP: 0010:phy_ethtool_get_wol+0x5/0x30 [libphy]
+...
+[  103.511629] Call Trace:
+[  103.511666]  lan743x_ethtool_get_wol+0x21/0x40 [lan743x]
+[  103.511724]  dev_ethtool+0x1507/0x29d0
+[  103.511769]  ? avc_has_extended_perms+0x17f/0x440
+[  103.511820]  ? tomoyo_init_request_info+0x84/0x90
+[  103.511870]  ? tomoyo_path_number_perm+0x68/0x1e0
+[  103.511919]  ? tty_insert_flip_string_fixed_flag+0x82/0xe0
+[  103.511973]  ? inet_ioctl+0x187/0x1d0
+[  103.512016]  dev_ioctl+0xb5/0x560
+[  103.512055]  sock_do_ioctl+0xa0/0x140
+[  103.512098]  sock_ioctl+0x2cb/0x3c0
+[  103.512139]  __x64_sys_ioctl+0x84/0xc0
+[  103.512183]  do_syscall_64+0x33/0x80
+[  103.512224]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
+[  103.512274] RIP: 0033:0x7f54a9cba427
+...
+
+Previous versions can be found at:
+v1:
+initial version
+    https://lkml.org/lkml/2020/10/28/921
+
+v2:
+do not return from lan743x_ethtool_set_wol if netdev->phydev == NULL, just skip
+the call of phy_ethtool_set_wol() instead.
+    https://lkml.org/lkml/2020/10/31/380
+
+v3:
+in function lan743x_ethtool_set_wol:
+use ternary operator instead of if-else sentence (review by Markus Elfring)
+return -ENETDOWN insted of -EIO (review by Andrew Lunn)
+
+Signed-off-by: Sergej Bauer <sbauer@blackbox.su>
+
+Link: https://lore.kernel.org/r/20201101223556.16116-1-sbauer@blackbox.su
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/dd.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/ethernet/microchip/lan743x_ethtool.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/base/dd.c b/drivers/base/dd.c
-index 7941a8fd22841..0b97a0c96baa3 100644
---- a/drivers/base/dd.c
-+++ b/drivers/base/dd.c
-@@ -224,7 +224,16 @@ static int deferred_devs_show(struct seq_file *s, void *data)
- }
- DEFINE_SHOW_ATTRIBUTE(deferred_devs);
+diff --git a/drivers/net/ethernet/microchip/lan743x_ethtool.c b/drivers/net/ethernet/microchip/lan743x_ethtool.c
+index dcde496da7fb4..c5de8f46cdd35 100644
+--- a/drivers/net/ethernet/microchip/lan743x_ethtool.c
++++ b/drivers/net/ethernet/microchip/lan743x_ethtool.c
+@@ -780,7 +780,9 @@ static void lan743x_ethtool_get_wol(struct net_device *netdev,
  
-+#ifdef CONFIG_MODULES
-+/*
-+ * In the case of modules, set the default probe timeout to
-+ * 30 seconds to give userland some time to load needed modules
-+ */
-+static int deferred_probe_timeout = 30;
-+#else
-+/* In the case of !modules, no probe timeout needed */
- static int deferred_probe_timeout = -1;
-+#endif
- static int __init deferred_probe_timeout_setup(char *str)
- {
- 	int timeout;
+ 	wol->supported = 0;
+ 	wol->wolopts = 0;
+-	phy_ethtool_get_wol(netdev->phydev, wol);
++
++	if (netdev->phydev)
++		phy_ethtool_get_wol(netdev->phydev, wol);
+ 
+ 	wol->supported |= WAKE_BCAST | WAKE_UCAST | WAKE_MCAST |
+ 		WAKE_MAGIC | WAKE_PHY | WAKE_ARP;
+@@ -809,9 +811,8 @@ static int lan743x_ethtool_set_wol(struct net_device *netdev,
+ 
+ 	device_set_wakeup_enable(&adapter->pdev->dev, (bool)wol->wolopts);
+ 
+-	phy_ethtool_set_wol(netdev->phydev, wol);
+-
+-	return 0;
++	return netdev->phydev ? phy_ethtool_set_wol(netdev->phydev, wol)
++			: -ENETDOWN;
+ }
+ #endif /* CONFIG_PM */
+ 
 -- 
 2.43.0
 
