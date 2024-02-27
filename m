@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-25183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99C4986988C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:38:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A53C8697B0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:24:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02EE2B2E502
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:29:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DFA8B2CAF1
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:23:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68002145B0D;
-	Tue, 27 Feb 2024 14:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 438E613EFE9;
+	Tue, 27 Feb 2024 14:23:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+heiPdi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kn0XcPzJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28175145B0B;
-	Tue, 27 Feb 2024 14:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0207913B2B8;
+	Tue, 27 Feb 2024 14:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044095; cv=none; b=lZU81HkSIcoj7wZ2Q/7lHWidwgGHXLAvbP4+Q6mPLCSu3nz2iqmUOJ4HTioDZickYWy5Df7nEUgzZzwhDu9O/b9eakZoCYiTCLKYL5INJGwXH74w1z6hTRWCwHXMj53VadH6qywo4OR0HDnO2pSXGqeAz30WDVN9t8d8R70NlJ8=
+	t=1709043783; cv=none; b=siqFIHmzeAjpC6l7LS5tm4BcTLW49qW6yNjxnZ3Sy56lKEU4PmZgGLCh+9FgwSzuwFUeOu7ukbDRj+fM7WZRqSadm82oSUDh5zTRhTYjFB1kh1ID7yUrtu+yt3OhWUbGKsbhkHLBgM18rR5xFG2NXBZOpCHsENh2cX59A7f98uY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044095; c=relaxed/simple;
-	bh=8HwEkuRgXD2ksPH81p0RCLNaD1aYKfALWpFq8ccu+KE=;
+	s=arc-20240116; t=1709043783; c=relaxed/simple;
+	bh=5YHpTaYCL6TVN92Rwu+FFIdPPDzrVMXKBZtIWACKoYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WDjLDHHQWh93ZGEjakZ3soxwYPsbO7QwAywBJdUucCAiV36iVKgMpIC24rCscMX0GaKp1mEnLJjtTqSs6eSPKbXMnzn01tJBMHZZoXUNLEA9zs8egebytGzox5/0tg8hMt9Eu/qy4feSFbWd0fsd3liIt7XZ6O5YdGfQLAbuduI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+heiPdi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6180C433C7;
-	Tue, 27 Feb 2024 14:28:14 +0000 (UTC)
+	 MIME-Version; b=kjMycZ5suvC8a4v6Hd2x3kmMTFyrjJJz/fHsKzD6dT+W5xJyu4bqi7wXjcZljGwokUVnUyu5ultk5A0Kxv7tZSzvDkIIF7Hf+gWdHZIL18mIjxPNvwje34uKA4zjBq+0j0dcfgFwuf/+iSixJ99AnROswftYf1wscx5Qb4RE/OA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kn0XcPzJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 285F8C433C7;
+	Tue, 27 Feb 2024 14:23:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044095;
-	bh=8HwEkuRgXD2ksPH81p0RCLNaD1aYKfALWpFq8ccu+KE=;
+	s=korg; t=1709043782;
+	bh=5YHpTaYCL6TVN92Rwu+FFIdPPDzrVMXKBZtIWACKoYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r+heiPdiFs87hTeZIqZDm2VfdCoQ7QQLn4RZRztEWBOvYxsJHV/JEwjNDme4ddWK+
-	 4fBe4YK9o7hBe9ulR51YFtTB2VLI12aJdml68N/TF+WGdV4UOJ5tEwBd/vCFc2oqQH
-	 VRz6uiw+iOHpRNvZL00JU2ykvwu7KANsabdBdG1M=
+	b=kn0XcPzJ8T+sEo/bYGLoV0+UVQ6nH+uAz6l9B4yCuqPU1q6fdkkQDejlFDmwylTD9
+	 ULgRBHSgCte6J72asMSPo1K2RxzjByohgxw9MBtQXTed7P8jZlnR8sxXf1ud3FAgZ3
+	 YYSwC5e8wMchRUtSr9eq0obLWdXbZ+3LdcrGhijQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Borislav Petkov <bp@suse.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 060/122] task_stack, x86/cea: Force-inline stack helpers
+Subject: [PATCH 5.4 34/84] tcp: factor out __tcp_close() helper
 Date: Tue, 27 Feb 2024 14:27:01 +0100
-Message-ID: <20240227131600.670336905@linuxfoundation.org>
+Message-ID: <20240227131553.979688065@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov <bp@suse.de>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit e87f4152e542610d0b4c6c8548964a68a59d2040 ]
+[ Upstream commit 77c3c95637526f1e4330cc9a4b2065f668c2c4fe ]
 
-Force-inline two stack helpers to fix the following objtool warnings:
+unlocked version of protocol level close, will be used by
+MPTCP to allow decouple orphaning and subflow level close.
 
-  vmlinux.o: warning: objtool: in_task_stack()+0xc: call to task_stack_page() leaves .noinstr.text section
-  vmlinux.o: warning: objtool: in_entry_stack()+0x10: call to cpu_entry_stack() leaves .noinstr.text section
-
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20220324183607.31717-2-bp@alien8.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/cpu_entry_area.h | 2 +-
- include/linux/sched/task_stack.h      | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ include/net/tcp.h | 1 +
+ net/ipv4/tcp.c    | 9 +++++++--
+ 2 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/cpu_entry_area.h b/arch/x86/include/asm/cpu_entry_area.h
-index dd5ea1bdf04c5..75efc4c6f0766 100644
---- a/arch/x86/include/asm/cpu_entry_area.h
-+++ b/arch/x86/include/asm/cpu_entry_area.h
-@@ -143,7 +143,7 @@ extern void cea_set_pte(void *cea_vaddr, phys_addr_t pa, pgprot_t flags);
- 
- extern struct cpu_entry_area *get_cpu_entry_area(int cpu);
- 
--static inline struct entry_stack *cpu_entry_stack(int cpu)
-+static __always_inline struct entry_stack *cpu_entry_stack(int cpu)
- {
- 	return &get_cpu_entry_area(cpu)->entry_stack_page.stack;
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index af67e19eba392..164ba7b77bd9f 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -391,6 +391,7 @@ void tcp_update_metrics(struct sock *sk);
+ void tcp_init_metrics(struct sock *sk);
+ void tcp_metrics_init(void);
+ bool tcp_peer_is_proven(struct request_sock *req, struct dst_entry *dst);
++void __tcp_close(struct sock *sk, long timeout);
+ void tcp_close(struct sock *sk, long timeout);
+ void tcp_init_sock(struct sock *sk);
+ void tcp_init_transfer(struct sock *sk, int bpf_op);
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 53a8522adf681..6a52fdcf9e4ef 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -2351,13 +2351,12 @@ bool tcp_check_oom(struct sock *sk, int shift)
+ 	return too_many_orphans || out_of_socket_memory;
  }
-diff --git a/include/linux/sched/task_stack.h b/include/linux/sched/task_stack.h
-index f24575942dabe..879a5c8f930b6 100644
---- a/include/linux/sched/task_stack.h
-+++ b/include/linux/sched/task_stack.h
-@@ -16,7 +16,7 @@
-  * try_get_task_stack() instead.  task_stack_page will return a pointer
-  * that could get freed out from under you.
-  */
--static inline void *task_stack_page(const struct task_struct *task)
-+static __always_inline void *task_stack_page(const struct task_struct *task)
+ 
+-void tcp_close(struct sock *sk, long timeout)
++void __tcp_close(struct sock *sk, long timeout)
  {
- 	return task->stack;
+ 	struct sk_buff *skb;
+ 	int data_was_unread = 0;
+ 	int state;
+ 
+-	lock_sock(sk);
+ 	sk->sk_shutdown = SHUTDOWN_MASK;
+ 
+ 	if (sk->sk_state == TCP_LISTEN) {
+@@ -2521,6 +2520,12 @@ void tcp_close(struct sock *sk, long timeout)
+ out:
+ 	bh_unlock_sock(sk);
+ 	local_bh_enable();
++}
++
++void tcp_close(struct sock *sk, long timeout)
++{
++	lock_sock(sk);
++	__tcp_close(sk, timeout);
+ 	release_sock(sk);
+ 	sock_put(sk);
  }
 -- 
 2.43.0
