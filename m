@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-24561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A51A4869527
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:59:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD68D869710
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:18:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AA0828A143
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:59:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B0171C231FA
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:18:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B89013B2B4;
-	Tue, 27 Feb 2024 13:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32CAD13EFF4;
+	Tue, 27 Feb 2024 14:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iFgSIsSZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKhHnNdh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5CA13B7A0;
-	Tue, 27 Feb 2024 13:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E368713B798;
+	Tue, 27 Feb 2024 14:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042360; cv=none; b=Vvgu1/7s5n2yHjUGr5CMLbZAhtT0s1suKvJUWL7OFMG0u7jqGvx8OVcEnpbsCVjb5ttha/94SKR5JxjHv0UoXSj+zeDviapxeeLxbmV7Ez1VovtyVTSnP8dNhHua289XpXz6JDp67ekGFJoX+5pO+uoqFRmJGJiFKf/oMxlzuio=
+	t=1709043462; cv=none; b=S4Tu0EsmvgTqlSQVw5pJV3+nAzvk+B3k/WuSe8GAKtphrQK/tMVR9yItZOA/GSWlqJpo4nLJ/CKJcL8j3uvkihD1WAhk7Dl3+zx3EU67R+TITsndVeCQplikwvy27LLMU+OfyvuEs03Ct4I960Vbiz6xqCKanRUQGhiZkTmgk5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042360; c=relaxed/simple;
-	bh=SqSKL7wUN0y1clpB+dPiPOgIQtlUs/BDQbJDxN97YCM=;
+	s=arc-20240116; t=1709043462; c=relaxed/simple;
+	bh=nMRE3jXaske+y3uz8bWTo1O3Wv4MIh7rogM1cwgdnkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UGeVpnhswHaxytqBTBvkgjTYs8rvh4/lT6XMB7iF4RZlM1mCrSRwaHfsevVz6QDfbxMxeWnlXdP946/uk/ZIZjjO0N5YNUYK9mEhcSWzq2A6urNLT4+On0Pt2k5IDyq4J6R8EWWFWieILN4RlR90EK+9nfFlPBT6iZsQTeF3LH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iFgSIsSZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4EDC433F1;
-	Tue, 27 Feb 2024 13:59:20 +0000 (UTC)
+	 MIME-Version; b=SEdSuoErRcCF2inN9L7oBmaktDjcvihk10dme6mHqDVI3Ldznu7sbTvUChOjZYllO6rS/mkYSsalAZ51etbZPTkenXj9mXAkGVaB7WdWdWl8cA3ERZ2q0uhGeq4Wz5Rll/BdtHuZy3IEP7magP9t4OtIdFURjkrfQIWlYWwIdpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKhHnNdh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B2DEC433F1;
+	Tue, 27 Feb 2024 14:17:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042360;
-	bh=SqSKL7wUN0y1clpB+dPiPOgIQtlUs/BDQbJDxN97YCM=;
+	s=korg; t=1709043461;
+	bh=nMRE3jXaske+y3uz8bWTo1O3Wv4MIh7rogM1cwgdnkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iFgSIsSZX67tLV6kQ31k1Bu8U7HJHVRYHlLXjQRtR6V409WwUJ/LhWS6bGlPsKjvS
-	 sULvUr25cvEP47UWu0lGwfzpi+Q9CUlRq0QnkOZQBQZ6c7Q0FVHzLpR6TgM5T2mNan
-	 CoYeRUPvR0U5UoRq4WnD/U5copOn3DAMYG/mKcBQ=
+	b=fKhHnNdhG7RtF1fd9IWTp2M0gd/h8Dp9dUjuHrxFRuYap1a403PGQTVCby+k0Z0jc
+	 ZsEC9R9SkDBhYyd5FwmUwknpo1sNK2j/I3nqZL5ursZVFLaZ+MBTXSD7Waf3snt5Im
+	 W5GiOl+ctbw6/Y/C4ZFB2mWjC6/PMLllfK9EMaf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erhard Furtner <erhard_f@mailbox.org>,
-	Ahmad Khalifa <ahmad@khalifa.ws>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 267/299] hwmon: (nct6775) Fix access to temperature configuration registers
+	Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Subject: [PATCH 6.1 117/195] serial: amba-pl011: Fix DMA transmission in RS485 mode
 Date: Tue, 27 Feb 2024 14:26:18 +0100
-Message-ID: <20240227131634.280229182@linuxfoundation.org>
+Message-ID: <20240227131614.322002624@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,122 +60,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 
-[ Upstream commit d56e460e19ea8382f813eb489730248ec8d7eb73 ]
+commit 3b69e32e151bc4a4e3c785cbdb1f918d5ee337ed upstream.
 
-The number of temperature configuration registers does
-not always match the total number of temperature registers.
-This can result in access errors reported if KASAN is enabled.
+When DMA is used in RS485 mode make sure that the UARTs tx section is
+enabled before the DMA buffers are queued for transmission.
 
-BUG: KASAN: global-out-of-bounds in nct6775_probe+0x5654/0x6fe9 nct6775_core
-
-Reported-by: Erhard Furtner <erhard_f@mailbox.org>
-Closes: https://lore.kernel.org/linux-hwmon/d51181d1-d26b-42b2-b002-3f5a4037721f@roeck-us.net/
-Fixes: b7f1f7b2523a ("hwmon: (nct6775) Additional TEMP registers for nct6799")
-Cc: Ahmad Khalifa <ahmad@khalifa.ws>
-Tested-by: Ahmad Khalifa <ahmad@khalifa.ws>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 8d479237727c ("serial: amba-pl011: add RS485 support")
+Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Link: https://lore.kernel.org/r/20240216224709.9928-2-l.sanfilippo@kunbus.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/nct6775-core.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/tty/serial/amba-pl011.c |   60 ++++++++++++++++++++--------------------
+ 1 file changed, 30 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/hwmon/nct6775-core.c b/drivers/hwmon/nct6775-core.c
-index 92a49fafe2c02..f3bf2e4701c38 100644
---- a/drivers/hwmon/nct6775-core.c
-+++ b/drivers/hwmon/nct6775-core.c
-@@ -3512,6 +3512,7 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
- 	const u16 *reg_temp_mon, *reg_temp_alternate, *reg_temp_crit;
- 	const u16 *reg_temp_crit_l = NULL, *reg_temp_crit_h = NULL;
- 	int num_reg_temp, num_reg_temp_mon, num_reg_tsi_temp;
-+	int num_reg_temp_config;
- 	struct device *hwmon_dev;
- 	struct sensor_template_group tsi_temp_tg;
+--- a/drivers/tty/serial/amba-pl011.c
++++ b/drivers/tty/serial/amba-pl011.c
+@@ -1345,11 +1345,41 @@ static void pl011_start_tx_pio(struct ua
+ 	}
+ }
  
-@@ -3594,6 +3595,7 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
- 		reg_temp_over = NCT6106_REG_TEMP_OVER;
- 		reg_temp_hyst = NCT6106_REG_TEMP_HYST;
- 		reg_temp_config = NCT6106_REG_TEMP_CONFIG;
-+		num_reg_temp_config = ARRAY_SIZE(NCT6106_REG_TEMP_CONFIG);
- 		reg_temp_alternate = NCT6106_REG_TEMP_ALTERNATE;
- 		reg_temp_crit = NCT6106_REG_TEMP_CRIT;
- 		reg_temp_crit_l = NCT6106_REG_TEMP_CRIT_L;
-@@ -3669,6 +3671,7 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
- 		reg_temp_over = NCT6106_REG_TEMP_OVER;
- 		reg_temp_hyst = NCT6106_REG_TEMP_HYST;
- 		reg_temp_config = NCT6106_REG_TEMP_CONFIG;
-+		num_reg_temp_config = ARRAY_SIZE(NCT6106_REG_TEMP_CONFIG);
- 		reg_temp_alternate = NCT6106_REG_TEMP_ALTERNATE;
- 		reg_temp_crit = NCT6106_REG_TEMP_CRIT;
- 		reg_temp_crit_l = NCT6106_REG_TEMP_CRIT_L;
-@@ -3746,6 +3749,7 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
- 		reg_temp_over = NCT6775_REG_TEMP_OVER;
- 		reg_temp_hyst = NCT6775_REG_TEMP_HYST;
- 		reg_temp_config = NCT6775_REG_TEMP_CONFIG;
-+		num_reg_temp_config = ARRAY_SIZE(NCT6775_REG_TEMP_CONFIG);
- 		reg_temp_alternate = NCT6775_REG_TEMP_ALTERNATE;
- 		reg_temp_crit = NCT6775_REG_TEMP_CRIT;
++static void pl011_rs485_tx_start(struct uart_amba_port *uap)
++{
++	struct uart_port *port = &uap->port;
++	u32 cr;
++
++	/* Enable transmitter */
++	cr = pl011_read(uap, REG_CR);
++	cr |= UART011_CR_TXE;
++
++	/* Disable receiver if half-duplex */
++	if (!(port->rs485.flags & SER_RS485_RX_DURING_TX))
++		cr &= ~UART011_CR_RXE;
++
++	if (port->rs485.flags & SER_RS485_RTS_ON_SEND)
++		cr &= ~UART011_CR_RTS;
++	else
++		cr |= UART011_CR_RTS;
++
++	pl011_write(cr, uap, REG_CR);
++
++	if (port->rs485.delay_rts_before_send)
++		mdelay(port->rs485.delay_rts_before_send);
++
++	uap->rs485_tx_started = true;
++}
++
+ static void pl011_start_tx(struct uart_port *port)
+ {
+ 	struct uart_amba_port *uap =
+ 	    container_of(port, struct uart_amba_port, port);
  
-@@ -3821,6 +3825,7 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
- 		reg_temp_over = NCT6775_REG_TEMP_OVER;
- 		reg_temp_hyst = NCT6775_REG_TEMP_HYST;
- 		reg_temp_config = NCT6776_REG_TEMP_CONFIG;
-+		num_reg_temp_config = ARRAY_SIZE(NCT6776_REG_TEMP_CONFIG);
- 		reg_temp_alternate = NCT6776_REG_TEMP_ALTERNATE;
- 		reg_temp_crit = NCT6776_REG_TEMP_CRIT;
++	if ((uap->port.rs485.flags & SER_RS485_ENABLED) &&
++	    !uap->rs485_tx_started)
++		pl011_rs485_tx_start(uap);
++
+ 	if (!pl011_dma_tx_start(uap))
+ 		pl011_start_tx_pio(uap);
+ }
+@@ -1431,42 +1461,12 @@ static bool pl011_tx_char(struct uart_am
+ 	return true;
+ }
  
-@@ -3900,6 +3905,7 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
- 		reg_temp_over = NCT6779_REG_TEMP_OVER;
- 		reg_temp_hyst = NCT6779_REG_TEMP_HYST;
- 		reg_temp_config = NCT6779_REG_TEMP_CONFIG;
-+		num_reg_temp_config = ARRAY_SIZE(NCT6779_REG_TEMP_CONFIG);
- 		reg_temp_alternate = NCT6779_REG_TEMP_ALTERNATE;
- 		reg_temp_crit = NCT6779_REG_TEMP_CRIT;
+-static void pl011_rs485_tx_start(struct uart_amba_port *uap)
+-{
+-	struct uart_port *port = &uap->port;
+-	u32 cr;
+-
+-	/* Enable transmitter */
+-	cr = pl011_read(uap, REG_CR);
+-	cr |= UART011_CR_TXE;
+-
+-	/* Disable receiver if half-duplex */
+-	if (!(port->rs485.flags & SER_RS485_RX_DURING_TX))
+-		cr &= ~UART011_CR_RXE;
+-
+-	if (port->rs485.flags & SER_RS485_RTS_ON_SEND)
+-		cr &= ~UART011_CR_RTS;
+-	else
+-		cr |= UART011_CR_RTS;
+-
+-	pl011_write(cr, uap, REG_CR);
+-
+-	if (port->rs485.delay_rts_before_send)
+-		mdelay(port->rs485.delay_rts_before_send);
+-
+-	uap->rs485_tx_started = true;
+-}
+-
+ /* Returns true if tx interrupts have to be (kept) enabled  */
+ static bool pl011_tx_chars(struct uart_amba_port *uap, bool from_irq)
+ {
+ 	struct circ_buf *xmit = &uap->port.state->xmit;
+ 	int count = uap->fifosize >> 1;
  
-@@ -4034,6 +4040,7 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
- 		reg_temp_over = NCT6779_REG_TEMP_OVER;
- 		reg_temp_hyst = NCT6779_REG_TEMP_HYST;
- 		reg_temp_config = NCT6779_REG_TEMP_CONFIG;
-+		num_reg_temp_config = ARRAY_SIZE(NCT6779_REG_TEMP_CONFIG);
- 		reg_temp_alternate = NCT6779_REG_TEMP_ALTERNATE;
- 		reg_temp_crit = NCT6779_REG_TEMP_CRIT;
- 
-@@ -4123,6 +4130,7 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
- 		reg_temp_over = NCT6798_REG_TEMP_OVER;
- 		reg_temp_hyst = NCT6798_REG_TEMP_HYST;
- 		reg_temp_config = NCT6779_REG_TEMP_CONFIG;
-+		num_reg_temp_config = ARRAY_SIZE(NCT6779_REG_TEMP_CONFIG);
- 		reg_temp_alternate = NCT6798_REG_TEMP_ALTERNATE;
- 		reg_temp_crit = NCT6798_REG_TEMP_CRIT;
- 
-@@ -4204,7 +4212,8 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
- 				  = reg_temp_crit[src - 1];
- 			if (reg_temp_crit_l && reg_temp_crit_l[i])
- 				data->reg_temp[4][src - 1] = reg_temp_crit_l[i];
--			data->reg_temp_config[src - 1] = reg_temp_config[i];
-+			if (i < num_reg_temp_config)
-+				data->reg_temp_config[src - 1] = reg_temp_config[i];
- 			data->temp_src[src - 1] = src;
- 			continue;
- 		}
-@@ -4217,7 +4226,8 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
- 		data->reg_temp[0][s] = reg_temp[i];
- 		data->reg_temp[1][s] = reg_temp_over[i];
- 		data->reg_temp[2][s] = reg_temp_hyst[i];
--		data->reg_temp_config[s] = reg_temp_config[i];
-+		if (i < num_reg_temp_config)
-+			data->reg_temp_config[s] = reg_temp_config[i];
- 		if (reg_temp_crit_h && reg_temp_crit_h[i])
- 			data->reg_temp[3][s] = reg_temp_crit_h[i];
- 		else if (reg_temp_crit[src - 1])
--- 
-2.43.0
-
+-	if ((uap->port.rs485.flags & SER_RS485_ENABLED) &&
+-	    !uap->rs485_tx_started)
+-		pl011_rs485_tx_start(uap);
+-
+ 	if (uap->port.x_char) {
+ 		if (!pl011_tx_char(uap, uap->port.x_char, from_irq))
+ 			return true;
 
 
 
