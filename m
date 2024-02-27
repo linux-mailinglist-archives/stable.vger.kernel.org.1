@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-24871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A1018696AB
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:14:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1707A8695DC
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:06:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B3541C237A7
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:14:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48CE11C21981
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:06:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99459145341;
-	Tue, 27 Feb 2024 14:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F052B145323;
+	Tue, 27 Feb 2024 14:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dm75kG3N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wAReddFt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD7213B2B3;
-	Tue, 27 Feb 2024 14:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD09F13EFF4;
+	Tue, 27 Feb 2024 14:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043224; cv=none; b=jVkjOwrKna7vJoyN52taGfNH+M4qNhkHJsSaBuHqMQeqnOTXQnggkkL86fyOTURJp9rYCEORk0ba+IyPTQ4LDuZCRfZmpLLgQkDS2ps0efiEJo8vGyMHqHUDJkjfAyCGqJDPkJUdLb9R2UfOzzWmOd7PN8+WiuOBINRh5+8l05I=
+	t=1709042737; cv=none; b=T2oKsE/DSohq8l1YGlTAEK0B5HhJ/KEh6VNsmhKSFkA8im/SSq4f3ftp9axnR/VjC9j67cc+DQnpsfT5KI52DQR89pFgM8ZqImGKB7OhKuLkQPLXliVlrL2ogeHPo61JBSUw16VV6DG5maYCYS+SBnFiV3x2vu1fxoMOpcPVxbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043224; c=relaxed/simple;
-	bh=6WcJ6hmMvvrY5tFHi6N8ISUhD5ut3vCL4dr0/IZFtzQ=;
+	s=arc-20240116; t=1709042737; c=relaxed/simple;
+	bh=3d6PoKnh8bDWHqOIuHDSjo9GZIzsvQKoKdFai2LZAAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R7nIhPqLHJvdL/XvyBhW65u2nYjIIyLLQkGiVCaYQwWUdS1GG3Kix9r/tQrcOPvRlAwOUenBXOf4zTOQagrZdGWmouz6BxQlWLCB/EJULERXJA2NNcXIRED8mfTCQgC2Iq6IKyHpiLzljMRfjnfqn7NisjjofQZjz/exNAbUTpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dm75kG3N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9876C43390;
-	Tue, 27 Feb 2024 14:13:43 +0000 (UTC)
+	 MIME-Version; b=Grfbq80HR0rCEwT6ekdIF4kejkjOK4sUoVv3l6YimCSUZF21+6zZPPgcsFVaJeaZUnJSM4R11B6F3RJt1ayEIeWN6qf0AUaXwsMj0kDYqkqeUR1sMPo6h1+LSk1t0BpWg38tpfevg/p3FAu3OXjKLtyifg4u2acGGavBtcGI68Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wAReddFt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C850C433C7;
+	Tue, 27 Feb 2024 14:05:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043224;
-	bh=6WcJ6hmMvvrY5tFHi6N8ISUhD5ut3vCL4dr0/IZFtzQ=;
+	s=korg; t=1709042737;
+	bh=3d6PoKnh8bDWHqOIuHDSjo9GZIzsvQKoKdFai2LZAAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dm75kG3Nfu3oiW4Ab7iLvtx3GXFmVOudEcHw6KePoaS4zYpCPsuCVm4F42MYTdK5d
-	 egYDH2E8lHu880wa/2N+e0EAQuJHLgPciEcg517cr1t90o06wqYI9QNrMbW9VZEzan
-	 tSLFuNArszL7CDOSvSsROYEZy1si/2DW2J6YpmAY=
+	b=wAReddFtGWbRa9uhpN5LbCkv7HIrYWf12VHZ6SYH1rEgDewmHpNbqz21iLk4kYlDX
+	 F9zMMcePDz7DER8zqqoiroR8IqEIZwS9htjmhupfISGq27UL4Om2HbFcXTJRz6oZxm
+	 +MWmaCsHYmVTGCsq0JD6mMyK8r70etz6ShVq3sL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 030/195] dmaengine: ti: edma: Add some null pointer checks to the edma_probe
+	Xu Yang <xu.yang_2@nxp.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.15 103/245] usb: roles: dont get/set_role() when usb_role_switch is unregistered
 Date: Tue, 27 Feb 2024 14:24:51 +0100
-Message-ID: <20240227131611.388138193@linuxfoundation.org>
+Message-ID: <20240227131618.560048259@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit 6e2276203ac9ff10fc76917ec9813c660f627369 ]
+commit b787a3e781759026a6212736ef8e52cf83d1821a upstream.
 
-devm_kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure. Ensure the allocation was successful
-by checking the pointer validity.
+There is a possibility that usb_role_switch device is unregistered before
+the user put usb_role_switch. In this case, the user may still want to
+get/set_role() since the user can't sense the changes of usb_role_switch.
 
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Link: https://lore.kernel.org/r/20240118031929.192192-1-chentao@kylinos.cn
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This will add a flag to show if usb_role_switch is already registered and
+avoid unwanted behaviors.
+
+Fixes: fde0aa6c175a ("usb: common: Small class for USB role switches")
+cc: stable@vger.kernel.org
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240129093739.2371530-2-xu.yang_2@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/ti/edma.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/usb/roles/class.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma/ti/edma.c b/drivers/dma/ti/edma.c
-index 7ec6e5d728b03..9212ac9f978f2 100644
---- a/drivers/dma/ti/edma.c
-+++ b/drivers/dma/ti/edma.c
-@@ -2413,6 +2413,11 @@ static int edma_probe(struct platform_device *pdev)
- 	if (irq > 0) {
- 		irq_name = devm_kasprintf(dev, GFP_KERNEL, "%s_ccint",
- 					  dev_name(dev));
-+		if (!irq_name) {
-+			ret = -ENOMEM;
-+			goto err_disable_pm;
-+		}
+--- a/drivers/usb/roles/class.c
++++ b/drivers/usb/roles/class.c
+@@ -21,6 +21,7 @@ struct usb_role_switch {
+ 	struct mutex lock; /* device lock*/
+ 	struct module *module; /* the module this device depends on */
+ 	enum usb_role role;
++	bool registered;
+ 
+ 	/* From descriptor */
+ 	struct device *usb2_port;
+@@ -47,6 +48,9 @@ int usb_role_switch_set_role(struct usb_
+ 	if (IS_ERR_OR_NULL(sw))
+ 		return 0;
+ 
++	if (!sw->registered)
++		return -EOPNOTSUPP;
 +
- 		ret = devm_request_irq(dev, irq, dma_irq_handler, 0, irq_name,
- 				       ecc);
- 		if (ret) {
-@@ -2429,6 +2434,11 @@ static int edma_probe(struct platform_device *pdev)
- 	if (irq > 0) {
- 		irq_name = devm_kasprintf(dev, GFP_KERNEL, "%s_ccerrint",
- 					  dev_name(dev));
-+		if (!irq_name) {
-+			ret = -ENOMEM;
-+			goto err_disable_pm;
-+		}
+ 	mutex_lock(&sw->lock);
+ 
+ 	ret = sw->set(sw, role);
+@@ -72,7 +76,7 @@ enum usb_role usb_role_switch_get_role(s
+ {
+ 	enum usb_role role;
+ 
+-	if (IS_ERR_OR_NULL(sw))
++	if (IS_ERR_OR_NULL(sw) || !sw->registered)
+ 		return USB_ROLE_NONE;
+ 
+ 	mutex_lock(&sw->lock);
+@@ -356,6 +360,8 @@ usb_role_switch_register(struct device *
+ 		return ERR_PTR(ret);
+ 	}
+ 
++	sw->registered = true;
 +
- 		ret = devm_request_irq(dev, irq, dma_ccerr_handler, 0, irq_name,
- 				       ecc);
- 		if (ret) {
--- 
-2.43.0
-
+ 	/* TODO: Symlinks for the host port and the device controller. */
+ 
+ 	return sw;
+@@ -370,8 +376,10 @@ EXPORT_SYMBOL_GPL(usb_role_switch_regist
+  */
+ void usb_role_switch_unregister(struct usb_role_switch *sw)
+ {
+-	if (!IS_ERR_OR_NULL(sw))
++	if (!IS_ERR_OR_NULL(sw)) {
++		sw->registered = false;
+ 		device_unregister(&sw->dev);
++	}
+ }
+ EXPORT_SYMBOL_GPL(usb_role_switch_unregister);
+ 
 
 
 
