@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB77B869763
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:20:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0495E869811
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:28:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67028B2C23B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:19:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27BCD1C237EA
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:28:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE430142623;
-	Tue, 27 Feb 2024 14:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D926145FF9;
+	Tue, 27 Feb 2024 14:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8qgjOd8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SnDK1v4k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4E278B61;
-	Tue, 27 Feb 2024 14:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AFE8145333;
+	Tue, 27 Feb 2024 14:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043555; cv=none; b=a8cniVgEUZSy/QFFW9MyJcm61c5NSs6QtI5vTGHK4ZxTmyhp4bXnx0TmMqwb3hR1qgKAANJ+9buwmhhKJgFdWuISUoq/oPKxmxlqTt+YIWCzx1pKtFOYTtGWuD1ohWqU8khqmR4TxSVtpX9qDBG3unF4AJphhJkwqSuzF4zLtVE=
+	t=1709044065; cv=none; b=L3UTaBQGljOUn41IUjAzW547mh65+4nid9JYUloiy1GVBeL2I4sNNOMbCFEm90YMM6R4nys8tJHYlJRMr00oYxugEepvWMNY7NtgQTJZK1jcL6ayX2dPj6t6jSiQQccGxC40L7s+PkqF46VChlTfjFqwEGU7PVTkQCklaL4mXVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043555; c=relaxed/simple;
-	bh=W/uLes4f23gTGx7/opiPSLfm5I79VtsQ1K114xCnZdU=;
+	s=arc-20240116; t=1709044065; c=relaxed/simple;
+	bh=FkLO5hRu+b4maKDFlENdafRc+wbVtS7LHFc7GipFYVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Weu1IoxgDpRmxcXsoIxKTbvyzQ2N4LJ5B3p+5GtAXByGeD0tJKiNfT95mijnb7NTw05vmQ/mgo/BIGGen6oXPERkxX/Y3c5/pilf7Joe19KtKp+EYFqXBcDpChxV/b/2pBZhoa0LtjiA1OeJL524uF2qUl+Lp9rxVSkRiOD0dPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8qgjOd8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DAE4C433F1;
-	Tue, 27 Feb 2024 14:19:14 +0000 (UTC)
+	 MIME-Version; b=N2Q1WZ/IpJTtyqDagQbcWSmaG0/iPi9FWA8qaJNFM9X8wn5/dX6X0Vb//Ofok1FVli0a23H7VUwCA0et5OojvLChx3mfgbg6fzG5UABKqkJ82eX3h1FX2KB9LutyHLfr36dvbaxKHL2B3qYCI0h88xK3wKguAa5ppjAfIs8YKQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SnDK1v4k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5511AC43390;
+	Tue, 27 Feb 2024 14:27:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043555;
-	bh=W/uLes4f23gTGx7/opiPSLfm5I79VtsQ1K114xCnZdU=;
+	s=korg; t=1709044064;
+	bh=FkLO5hRu+b4maKDFlENdafRc+wbVtS7LHFc7GipFYVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m8qgjOd8sypJao7AEtgbyrIN/Tm4AVeN16kFLffHfUPk1AdsGx8Xl9gxjTf3kYGd6
-	 O793utGD9xE6mdUoVQiqAlGn3eK1Hdk44girHwqlJejh13DmdRhYv3kAuhbVaXIHF6
-	 ywiR0UGc0aO9zOQnf4OEHazJcMtNnbT8/S0aoxHc=
+	b=SnDK1v4k1LvFtvvlfuazZoFiiAbz8qqsuWz3jAP7BOpXYSpBMksaHaOmDkpe6RQTG
+	 6Y+hFn+sTWrxTzPzuxhipJrIkt8UGPP6/Fmw0y63RnB6PkKH0GNBSJWiu3P0yaVlRb
+	 slNJBpmN7uFrTmdhiV+/BQn2XJAKLg1B2eHwrqFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Danilo Krummrich <dakr@redhat.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 150/195] nouveau: fix function cast warnings
+Subject: [PATCH 5.10 050/122] x86/uaccess: Implement macros for CMPXCHG on user addresses
 Date: Tue, 27 Feb 2024 14:26:51 +0100
-Message-ID: <20240227131615.372429648@linuxfoundation.org>
+Message-ID: <20240227131600.346173951@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,198 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 0affdba22aca5573f9d989bcb1d71d32a6a03efe ]
+[ Upstream commit 989b5db215a2f22f89d730b607b071d964780f10 ]
 
-clang-16 warns about casting between incompatible function types:
+Add support for CMPXCHG loops on userspace addresses.  Provide both an
+"unsafe" version for tight loops that do their own uaccess begin/end, as
+well as a "safe" version for use cases where the CMPXCHG is not buried in
+a loop, e.g. KVM will resume the guest instead of looping when emulation
+of a guest atomic accesses fails the CMPXCHG.
 
-drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c:161:10: error: cast from 'void (*)(const struct firmware *)' to 'void (*)(void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
-  161 |         .fini = (void(*)(void *))release_firmware,
+Provide 8-byte versions for 32-bit kernels so that KVM can do CMPXCHG on
+guest PAE PTEs, which are accessed via userspace addresses.
 
-This one was done to use the generic shadow_fw_release() function as a
-callback for struct nvbios_source. Change it to use the same prototype
-as the other five instances, with a trivial helper function that actually
-calls release_firmware.
+Guard the asm_volatile_goto() variation with CC_HAS_ASM_GOTO_TIED_OUTPUT,
+the "+m" constraint fails on some compilers that otherwise support
+CC_HAS_ASM_GOTO_OUTPUT.
 
-Fixes: 70c0f263cc2e ("drm/nouveau/bios: pull in basic vbios subdev, more to come later")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240213095753.455062-1-arnd@kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-Id: <20220202004945.2540433-3-seanjc@google.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/uaccess.h | 142 +++++++++++++++++++++++++++++++++
+ 1 file changed, 142 insertions(+)
 
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c
-index 19188683c8fca..8c2bf1c16f2a9 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c
-@@ -154,11 +154,17 @@ shadow_fw_init(struct nvkm_bios *bios, const char *name)
- 	return (void *)fw;
- }
+diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
+index bf2561a5eb581..68b910f30b222 100644
+--- a/arch/x86/include/asm/uaccess.h
++++ b/arch/x86/include/asm/uaccess.h
+@@ -414,6 +414,103 @@ do {									\
  
-+static void
-+shadow_fw_release(void *fw)
-+{
-+	release_firmware(fw);
-+}
+ #endif // CONFIG_CC_ASM_GOTO_OUTPUT
+ 
++#ifdef CONFIG_CC_HAS_ASM_GOTO_TIED_OUTPUT
++#define __try_cmpxchg_user_asm(itype, ltype, _ptr, _pold, _new, label)	({ \
++	bool success;							\
++	__typeof__(_ptr) _old = (__typeof__(_ptr))(_pold);		\
++	__typeof__(*(_ptr)) __old = *_old;				\
++	__typeof__(*(_ptr)) __new = (_new);				\
++	asm_volatile_goto("\n"						\
++		     "1: " LOCK_PREFIX "cmpxchg"itype" %[new], %[ptr]\n"\
++		     _ASM_EXTABLE_UA(1b, %l[label])			\
++		     : CC_OUT(z) (success),				\
++		       [ptr] "+m" (*_ptr),				\
++		       [old] "+a" (__old)				\
++		     : [new] ltype (__new)				\
++		     : "memory"						\
++		     : label);						\
++	if (unlikely(!success))						\
++		*_old = __old;						\
++	likely(success);					})
 +
- static const struct nvbios_source
- shadow_fw = {
- 	.name = "firmware",
- 	.init = shadow_fw_init,
--	.fini = (void(*)(void *))release_firmware,
-+	.fini = shadow_fw_release,
- 	.read = shadow_fw_read,
- 	.rw = false,
- };
++#ifdef CONFIG_X86_32
++#define __try_cmpxchg64_user_asm(_ptr, _pold, _new, label)	({	\
++	bool success;							\
++	__typeof__(_ptr) _old = (__typeof__(_ptr))(_pold);		\
++	__typeof__(*(_ptr)) __old = *_old;				\
++	__typeof__(*(_ptr)) __new = (_new);				\
++	asm_volatile_goto("\n"						\
++		     "1: " LOCK_PREFIX "cmpxchg8b %[ptr]\n"		\
++		     _ASM_EXTABLE_UA(1b, %l[label])			\
++		     : CC_OUT(z) (success),				\
++		       "+A" (__old),					\
++		       [ptr] "+m" (*_ptr)				\
++		     : "b" ((u32)__new),				\
++		       "c" ((u32)((u64)__new >> 32))			\
++		     : "memory"						\
++		     : label);						\
++	if (unlikely(!success))						\
++		*_old = __old;						\
++	likely(success);					})
++#endif // CONFIG_X86_32
++#else  // !CONFIG_CC_HAS_ASM_GOTO_TIED_OUTPUT
++#define __try_cmpxchg_user_asm(itype, ltype, _ptr, _pold, _new, label)	({ \
++	int __err = 0;							\
++	bool success;							\
++	__typeof__(_ptr) _old = (__typeof__(_ptr))(_pold);		\
++	__typeof__(*(_ptr)) __old = *_old;				\
++	__typeof__(*(_ptr)) __new = (_new);				\
++	asm volatile("\n"						\
++		     "1: " LOCK_PREFIX "cmpxchg"itype" %[new], %[ptr]\n"\
++		     CC_SET(z)						\
++		     "2:\n"						\
++		     _ASM_EXTABLE_TYPE_REG(1b, 2b, EX_TYPE_EFAULT_REG,	\
++					   %[errout])			\
++		     : CC_OUT(z) (success),				\
++		       [errout] "+r" (__err),				\
++		       [ptr] "+m" (*_ptr),				\
++		       [old] "+a" (__old)				\
++		     : [new] ltype (__new)				\
++		     : "memory", "cc");					\
++	if (unlikely(__err))						\
++		goto label;						\
++	if (unlikely(!success))						\
++		*_old = __old;						\
++	likely(success);					})
++
++#ifdef CONFIG_X86_32
++/*
++ * Unlike the normal CMPXCHG, hardcode ECX for both success/fail and error.
++ * There are only six GPRs available and four (EAX, EBX, ECX, and EDX) are
++ * hardcoded by CMPXCHG8B, leaving only ESI and EDI.  If the compiler uses
++ * both ESI and EDI for the memory operand, compilation will fail if the error
++ * is an input+output as there will be no register available for input.
++ */
++#define __try_cmpxchg64_user_asm(_ptr, _pold, _new, label)	({	\
++	int __result;							\
++	__typeof__(_ptr) _old = (__typeof__(_ptr))(_pold);		\
++	__typeof__(*(_ptr)) __old = *_old;				\
++	__typeof__(*(_ptr)) __new = (_new);				\
++	asm volatile("\n"						\
++		     "1: " LOCK_PREFIX "cmpxchg8b %[ptr]\n"		\
++		     "mov $0, %%ecx\n\t"				\
++		     "setz %%cl\n"					\
++		     "2:\n"						\
++		     _ASM_EXTABLE_TYPE_REG(1b, 2b, EX_TYPE_EFAULT_REG, %%ecx) \
++		     : [result]"=c" (__result),				\
++		       "+A" (__old),					\
++		       [ptr] "+m" (*_ptr)				\
++		     : "b" ((u32)__new),				\
++		       "c" ((u32)((u64)__new >> 32))			\
++		     : "memory", "cc");					\
++	if (unlikely(__result < 0))					\
++		goto label;						\
++	if (unlikely(!__result))					\
++		*_old = __old;						\
++	likely(__result);					})
++#endif // CONFIG_X86_32
++#endif // CONFIG_CC_HAS_ASM_GOTO_TIED_OUTPUT
++
+ /* FIXME: this hack is definitely wrong -AK */
+ struct __large_struct { unsigned long buf[100]; };
+ #define __m(x) (*(struct __large_struct __user *)(x))
+@@ -506,6 +603,51 @@ do {										\
+ } while (0)
+ #endif // CONFIG_CC_HAS_ASM_GOTO_OUTPUT
+ 
++extern void __try_cmpxchg_user_wrong_size(void);
++
++#ifndef CONFIG_X86_32
++#define __try_cmpxchg64_user_asm(_ptr, _oldp, _nval, _label)		\
++	__try_cmpxchg_user_asm("q", "r", (_ptr), (_oldp), (_nval), _label)
++#endif
++
++/*
++ * Force the pointer to u<size> to match the size expected by the asm helper.
++ * clang/LLVM compiles all cases and only discards the unused paths after
++ * processing errors, which breaks i386 if the pointer is an 8-byte value.
++ */
++#define unsafe_try_cmpxchg_user(_ptr, _oldp, _nval, _label) ({			\
++	bool __ret;								\
++	__chk_user_ptr(_ptr);							\
++	switch (sizeof(*(_ptr))) {						\
++	case 1:	__ret = __try_cmpxchg_user_asm("b", "q",			\
++					       (__force u8 *)(_ptr), (_oldp),	\
++					       (_nval), _label);		\
++		break;								\
++	case 2:	__ret = __try_cmpxchg_user_asm("w", "r",			\
++					       (__force u16 *)(_ptr), (_oldp),	\
++					       (_nval), _label);		\
++		break;								\
++	case 4:	__ret = __try_cmpxchg_user_asm("l", "r",			\
++					       (__force u32 *)(_ptr), (_oldp),	\
++					       (_nval), _label);		\
++		break;								\
++	case 8:	__ret = __try_cmpxchg64_user_asm((__force u64 *)(_ptr), (_oldp),\
++						 (_nval), _label);		\
++		break;								\
++	default: __try_cmpxchg_user_wrong_size();				\
++	}									\
++	__ret;						})
++
++/* "Returns" 0 on success, 1 on failure, -EFAULT if the access faults. */
++#define __try_cmpxchg_user(_ptr, _oldp, _nval, _label)	({		\
++	int __ret = -EFAULT;						\
++	__uaccess_begin_nospec();					\
++	__ret = !unsafe_try_cmpxchg_user(_ptr, _oldp, _nval, _label);	\
++_label:									\
++	__uaccess_end();						\
++	__ret;								\
++							})
++
+ /*
+  * We want the unsafe accessors to always be inlined and use
+  * the error labels - thus the macro games.
 -- 
 2.43.0
 
