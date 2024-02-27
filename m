@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99D768695D7
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:06:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F8DC8694A1
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:55:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB85F1C212FE
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:06:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE202282E25
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:55:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65CA21420A6;
-	Tue, 27 Feb 2024 14:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51FC61419AA;
+	Tue, 27 Feb 2024 13:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NzJBCGMd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nk7vTPv9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D9813B79F;
-	Tue, 27 Feb 2024 14:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBBF13F006;
+	Tue, 27 Feb 2024 13:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042727; cv=none; b=XWl5PdoOAzgn3/4cxFZwWR7aNyHT7CSxw3AGuzbuUF9O+4zw4v0NqvX0My3HtH0yBchqnDORfNA43kMj/ytzfUSrujXplZGS3DzZBu7EI8qm/8l3LplTyj/lpf1BvTrYDhztWJN9kfUqYx+4LISj93JmPRShYLuDMaiMQzCX/h4=
+	t=1709042094; cv=none; b=aYlXneLFxxINFsMpj4QiyQJKjX4K7R38dHWpPH+sprnAbUMdCD/9X52Yuz11VEXLR/KPw5eAF6KpJDZHWsRcUIc9TGJ7NPsSWI7LliXjGvwXKYHdDenGpRGWVy02DSC0ewnau6ifzfztw0be5wjkMz4nmH7OPcs/jZTZzNk+KYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042727; c=relaxed/simple;
-	bh=UPgLodhMqrelpXzVZhbNFedhMbuUNf/J1UL2td6/qcg=;
+	s=arc-20240116; t=1709042094; c=relaxed/simple;
+	bh=YXMuWM+dYJgKH/x2iSx5mdmWMx3jqrXVHnqpw8alejk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q0pEar2U5VJ1t4rGZxNFQUhseeaunHckojS8QenWf638Sxqh8z29Cq+EthSiBdUjGeU7JabS9aaeRuIM5NtbzFEv/WABDFKvKtC4my3mQepxi/N2D/Rmc5rv0UZMps3Xfntme4JrcdALMMO7IvX1QwImywN12tKK2XUYtsYtL48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NzJBCGMd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56118C433C7;
-	Tue, 27 Feb 2024 14:05:26 +0000 (UTC)
+	 MIME-Version; b=ldjgRVr+MUHvYNPgW+IzihVXZQmRvZY/zORWKhN3PsiA5NzmWBRifZzOKkAz/NAjEUJJIBrAcWEEhpKhjwh1baonN4mktQPICFVf7GXRsLqURGvtfsrxi4UFJEk/Je4d2n2PvafOhi1+AwtG3kWErdQeeeJ6hkjtc9rIZSuX2Is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nk7vTPv9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B5FEC433F1;
+	Tue, 27 Feb 2024 13:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042726;
-	bh=UPgLodhMqrelpXzVZhbNFedhMbuUNf/J1UL2td6/qcg=;
+	s=korg; t=1709042093;
+	bh=YXMuWM+dYJgKH/x2iSx5mdmWMx3jqrXVHnqpw8alejk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NzJBCGMdk0cEFTpleWHGVOH1Uyz9W4ngKQxR92TEQ4zRvBcuW00YNFdtc5cJCLv3m
-	 tERAfR6dBFEXQgMht5zwUgeb3nyYEAmc5hljDYiT/3yxlcIplpmovKiZYlOmwDnf/1
-	 oOEqYP+BNiC0cYbj5JygHP5dO3yUcpPEOqm3zaRc=
+	b=nk7vTPv9eqT4vTs3Xdr0rTFczGE2KvKbnFkL/emxReBsoq9FeJtwXo4zrMcAh1RSC
+	 gVvfEnTskJvxxobleVPMC0ktyumQbwrRSz9LDuaVHCutUKYvJFxeh+vWBRBF/pB9It
+	 y3JdK/hoGa9GaoLNeVximZZVQgmknhIcaZ2W9pvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 5.15 099/245] usb: cdns3: fixed memory use after free at cdns3_gadget_ep_disable()
+	David Howells <dhowells@redhat.com>,
+	Tom Parkin <tparkin@katalix.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 176/299] l2tp: pass correct message length to ip6_append_data
 Date: Tue, 27 Feb 2024 14:24:47 +0100
-Message-ID: <20240227131618.436155855@linuxfoundation.org>
+Message-ID: <20240227131631.508246819@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Tom Parkin <tparkin@katalix.com>
 
-commit cd45f99034b0c8c9cb346dd0d6407a95ca3d36f6 upstream.
+commit 359e54a93ab43d32ee1bff3c2f9f10cb9f6b6e79 upstream.
 
-  ...
-  cdns3_gadget_ep_free_request(&priv_ep->endpoint, &priv_req->request);
-  list_del_init(&priv_req->list);
-  ...
+l2tp_ip6_sendmsg needs to avoid accounting for the transport header
+twice when splicing more data into an already partially-occupied skbuff.
 
-'priv_req' actually free at cdns3_gadget_ep_free_request(). But
-list_del_init() use priv_req->list after it.
+To manage this, we check whether the skbuff contains data using
+skb_queue_empty when deciding how much data to append using
+ip6_append_data.
 
-[ 1542.642868][  T534] BUG: KFENCE: use-after-free read in __list_del_entry_valid+0x10/0xd4
-[ 1542.642868][  T534]
-[ 1542.653162][  T534] Use-after-free read at 0x000000009ed0ba99 (in kfence-#3):
-[ 1542.660311][  T534]  __list_del_entry_valid+0x10/0xd4
-[ 1542.665375][  T534]  cdns3_gadget_ep_disable+0x1f8/0x388 [cdns3]
-[ 1542.671571][  T534]  usb_ep_disable+0x44/0xe4
-[ 1542.675948][  T534]  ffs_func_eps_disable+0x64/0xc8
-[ 1542.680839][  T534]  ffs_func_set_alt+0x74/0x368
-[ 1542.685478][  T534]  ffs_func_disable+0x18/0x28
+However, the code which performed the calculation was incorrect:
 
-Move list_del_init() before cdns3_gadget_ep_free_request() to resolve this
-problem.
+     ulen = len + skb_queue_empty(&sk->sk_write_queue) ? transhdrlen : 0;
 
+...due to C operator precedence, this ends up setting ulen to
+transhdrlen for messages with a non-zero length, which results in
+corrupted packets on the wire.
+
+Add parentheses to correct the calculation in line with the original
+intent.
+
+Fixes: 9d4c75800f61 ("ipv4, ipv6: Fix handling of transhdrlen in __ip{,6}_append_data()")
+Cc: David Howells <dhowells@redhat.com>
 Cc: stable@vger.kernel.org
-Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20240202154217.661867-1-Frank.Li@nxp.com
+Signed-off-by: Tom Parkin <tparkin@katalix.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240220122156.43131-1-tparkin@katalix.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/cdns3/cdns3-gadget.c |    2 +-
+ net/l2tp/l2tp_ip6.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/cdns3/cdns3-gadget.c
-+++ b/drivers/usb/cdns3/cdns3-gadget.c
-@@ -2537,11 +2537,11 @@ static int cdns3_gadget_ep_disable(struc
+--- a/net/l2tp/l2tp_ip6.c
++++ b/net/l2tp/l2tp_ip6.c
+@@ -627,7 +627,7 @@ static int l2tp_ip6_sendmsg(struct sock
  
- 	while (!list_empty(&priv_ep->wa2_descmiss_req_list)) {
- 		priv_req = cdns3_next_priv_request(&priv_ep->wa2_descmiss_req_list);
-+		list_del_init(&priv_req->list);
- 
- 		kfree(priv_req->request.buf);
- 		cdns3_gadget_ep_free_request(&priv_ep->endpoint,
- 					     &priv_req->request);
--		list_del_init(&priv_req->list);
- 		--priv_ep->wa2_counter;
- 	}
- 
+ back_from_confirm:
+ 	lock_sock(sk);
+-	ulen = len + skb_queue_empty(&sk->sk_write_queue) ? transhdrlen : 0;
++	ulen = len + (skb_queue_empty(&sk->sk_write_queue) ? transhdrlen : 0);
+ 	err = ip6_append_data(sk, ip_generic_getfrag, msg,
+ 			      ulen, transhdrlen, &ipc6,
+ 			      &fl6, (struct rt6_info *)dst,
 
 
 
