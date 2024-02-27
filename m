@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-24722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 018308695FB
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B07E68696BF
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96C1C1F2C804
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8E6F1C239C6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BADC6145354;
-	Tue, 27 Feb 2024 14:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E691419AE;
+	Tue, 27 Feb 2024 14:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RAggJR/L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kQicGh2e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1DC13B2B4;
-	Tue, 27 Feb 2024 14:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B8F13A26F;
+	Tue, 27 Feb 2024 14:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042809; cv=none; b=mhL7iE0XHT1Y2CuK7gjpNyjwDHmLoSAcxYkpGSpy8/Z75sBfeNHqo6wbOs7E3BD7JIXP+zDHxei9Ll/TgtbR5mf1pbn9nG4caZZNGCktvHVMzGbz7Qx6OSegBIiijM7FB77Uo4XuYuCsvCgpTWeAEOBRMXiE7GooXg5rt13tmNQ=
+	t=1709043271; cv=none; b=Wwlu92k+Gl1rnzPjh5Y43wo+YwZW4cLNOAScgrVVKRZui9fSjg+976GmAcX4Q+2d9RXVXRJpFQEG0JtSMfaIl+AwbZl95yupymEhY1p/8MwlIV9usjfdm0L/pONCBGMYf1peWf65WxrysUCaT4M7AnKL+xigR1iEkxmQRx/vD64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042809; c=relaxed/simple;
-	bh=H0UDLC83fdJH8Szk1uJlT6tg/2Ivhgrh3YL1kHOgMSU=;
+	s=arc-20240116; t=1709043271; c=relaxed/simple;
+	bh=SEXH1RtHZbUOoIgyjakkqLepgZ40jVEtVc4ox8qDmYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tcyLmedf3KQwCXuz7wh5OHvpk2o3iQ//CEE+2O+ihCxPiu+J8hNEOWHZSNKJzYiZWvjDnNrwNOfdzuZJywebwcWOpkUoR88lcQNaD9h6kBL8N7vlWvF9ipVTlX39V41sEN86d+KOjW2UeFg9nwa9KgXSvW+idGxcJ5+uUiaFRkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RAggJR/L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB17C433C7;
-	Tue, 27 Feb 2024 14:06:48 +0000 (UTC)
+	 MIME-Version; b=UFWsD4Ma76IKgJHU+LtAIdqMwEeysbcPkBPFEzCjtTjaTbWfvGBJaAfb9lQYF2BI9QqsQ6QPzHLAMurJs1/wFpA+68URiYAxlxgDG5Q/ctAdQV6clLJ0/YHihatN2JJrC4NX8kPpl7zrDFhhhm9lqqxrTohPPQmXM6BcrD7O9UY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kQicGh2e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C64E9C433C7;
+	Tue, 27 Feb 2024 14:14:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042809;
-	bh=H0UDLC83fdJH8Szk1uJlT6tg/2Ivhgrh3YL1kHOgMSU=;
+	s=korg; t=1709043271;
+	bh=SEXH1RtHZbUOoIgyjakkqLepgZ40jVEtVc4ox8qDmYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RAggJR/LRHPdXbcADGr7NueOscDIHNKZd04ovUhSQxN5F0a2ZP9o2PtbjPr2WLxRs
-	 3xwngf+IQA3ylcqHmEgmZWMv3QlQY7JczesdmUoZNs2rD3kbMKfceaqy4my5aSXalp
-	 8IHkQ71OcPoLI/yhqePRMAkSQXLHXCjIpJ9coYMI=
+	b=kQicGh2eF6H/sKGc9QZT7B4+JXZcwqUFMQIGbF1VVXPKrk3ZFSG0YHlgxtpB8ppqD
+	 GasHyH6wYUDc/WvzhwOhqZ2ZkPLhJt70DVWu7QIR89EVu4kF0HL9LYJZh5A+CpUi/G
+	 zNd+93Qjyj4zH4e5QiqwLBOCYVKKcpPuyegaljb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Boyd <sboyd@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Daniel Wagner <dwagner@suse.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 121/245] clk: qcom: gpucc-sdm845: fix clk_dis_wait being programmed for CX GDSC
+Subject: [PATCH 6.1 048/195] nvmet-fc: abort command when there is no binding
 Date: Tue, 27 Feb 2024 14:25:09 +0100
-Message-ID: <20240227131619.157417812@linuxfoundation.org>
+Message-ID: <20240227131611.974205734@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Daniel Wagner <dwagner@suse.de>
 
-[ Upstream commit cb81719e3c1165ef1bc33137dc628f750eed8ea4 ]
+[ Upstream commit 3146345c2e9c2f661527054e402b0cfad80105a4 ]
 
-The gdsc_init() function will rewrite the CLK_DIS_WAIT field while
-registering the GDSC (writing the value 0x2 by default). This will
-override the setting done in the driver's probe function.
+When the target port has not active port binding, there is no point in
+trying to process the command as it has to fail anyway. Instead adding
+checks to all commands abort the command early.
 
-Set cx_gdsc.clk_dis_wait_val to 8 to follow the intention of the probe
-function.
-
-Fixes: 453361cdd757 ("clk: qcom: Add graphics clock controller driver for SDM845")
-Reviewed-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230201172305.993146-2-dmitry.baryshkov@linaro.org
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Daniel Wagner <dwagner@suse.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gpucc-sdm845.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/nvme/target/fc.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/gpucc-sdm845.c b/drivers/clk/qcom/gpucc-sdm845.c
-index 110b54401bc6d..970d7414bdf0e 100644
---- a/drivers/clk/qcom/gpucc-sdm845.c
-+++ b/drivers/clk/qcom/gpucc-sdm845.c
-@@ -22,8 +22,6 @@
- #define CX_GMU_CBCR_SLEEP_SHIFT		4
- #define CX_GMU_CBCR_WAKE_MASK		0xf
- #define CX_GMU_CBCR_WAKE_SHIFT		8
--#define CLK_DIS_WAIT_SHIFT		12
--#define CLK_DIS_WAIT_MASK		(0xf << CLK_DIS_WAIT_SHIFT)
+diff --git a/drivers/nvme/target/fc.c b/drivers/nvme/target/fc.c
+index 64c26b703860c..b4b2631eb530e 100644
+--- a/drivers/nvme/target/fc.c
++++ b/drivers/nvme/target/fc.c
+@@ -1101,6 +1101,9 @@ nvmet_fc_alloc_target_assoc(struct nvmet_fc_tgtport *tgtport, void *hosthandle)
+ 	int idx;
+ 	bool needrandom = true;
  
- enum {
- 	P_BI_TCXO,
-@@ -121,6 +119,7 @@ static struct clk_branch gpu_cc_cxo_clk = {
- static struct gdsc gpu_cx_gdsc = {
- 	.gdscr = 0x106c,
- 	.gds_hw_ctrl = 0x1540,
-+	.clk_dis_wait_val = 0x8,
- 	.pd = {
- 		.name = "gpu_cx_gdsc",
- 	},
-@@ -193,10 +192,6 @@ static int gpu_cc_sdm845_probe(struct platform_device *pdev)
- 	value = 0xf << CX_GMU_CBCR_WAKE_SHIFT | 0xf << CX_GMU_CBCR_SLEEP_SHIFT;
- 	regmap_update_bits(regmap, 0x1098, mask, value);
++	if (!tgtport->pe)
++		return NULL;
++
+ 	assoc = kzalloc(sizeof(*assoc), GFP_KERNEL);
+ 	if (!assoc)
+ 		return NULL;
+@@ -2523,8 +2526,9 @@ nvmet_fc_handle_fcp_rqst(struct nvmet_fc_tgtport *tgtport,
  
--	/* Configure clk_dis_wait for gpu_cx_gdsc */
--	regmap_update_bits(regmap, 0x106c, CLK_DIS_WAIT_MASK,
--						8 << CLK_DIS_WAIT_SHIFT);
--
- 	return qcom_cc_really_probe(pdev, &gpu_cc_sdm845_desc, regmap);
- }
+ 	fod->req.cmd = &fod->cmdiubuf.sqe;
+ 	fod->req.cqe = &fod->rspiubuf.cqe;
+-	if (tgtport->pe)
+-		fod->req.port = tgtport->pe->port;
++	if (!tgtport->pe)
++		goto transport_error;
++	fod->req.port = tgtport->pe->port;
  
+ 	/* clear any response payload */
+ 	memset(&fod->rspiubuf, 0, sizeof(fod->rspiubuf));
 -- 
 2.43.0
 
