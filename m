@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-24185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 075398693F2
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FC628692E9
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:39:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32F9FB2795B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:41:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BB1E28412B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:39:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8487513B2B9;
-	Tue, 27 Feb 2024 13:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B1E13B78F;
+	Tue, 27 Feb 2024 13:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yU+Pu8cz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NZ81kxVq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446B713AA4C;
-	Tue, 27 Feb 2024 13:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9787278B61;
+	Tue, 27 Feb 2024 13:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041272; cv=none; b=BsUv8EtlTd7DxCaqsNCJKDI6aZkY9TPYyXfWloNdwnBWl4ympmhE4HIvV1XEFeDybZeNw3NYaPa+oUaBWSt94bzyb+Wc7J+KAghvkhnhsEGAPYTy5KV2Ll5PtYoF+xaD22Nexv2OWjK4IfC2RuMJM1I7PGaXfXaDlgW96s9ue8s=
+	t=1709041184; cv=none; b=vGXcEZ2syDz+BBCUJqxvXyPy6/GxOfqFCINSY7HgTZmgYdSVFvc/TT1FzYZaIJg3L9HfxYDv+3uC+CziUN4URP5wf54RWgdfxyTUZwbe6Bhc9R6meqUpHZCUZTqtVW2A91b5mSc5HmagkDSXEK91uj3r46XdpcBn2m5LQG7CvcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041272; c=relaxed/simple;
-	bh=TmbaytMUNPnMReqU0GknpyqKvaC6UQGfCRohTYNKsiM=;
+	s=arc-20240116; t=1709041184; c=relaxed/simple;
+	bh=W1eQje+MsB/8IQVc1ytDmWsf+4F8FZsfCu5WzHGvsdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YXvp9QjtnD2cE0b4tfMDBDaJYIrEWSRAlH9p0YCpJjSELHvxAgOv3jowyfnvPKCEAN4kgWKkS8FAqzIeu9BFMnkqrC8J742iam/b8eiFtKejeUmb5aaYUtNrVqcFQ+2eIMm6yHucL5zwp0VgfR8bUFTfqVOIJ/KS2eyqdqbdBKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yU+Pu8cz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C78B1C43390;
-	Tue, 27 Feb 2024 13:41:11 +0000 (UTC)
+	 MIME-Version; b=cQiTfFtxj9J3ne2GGjiVx6yA0PVjdkmeDEN+TYPeXGoWj5PR1ZAxXv5YE01a7pMUf5sDf0r7Nlrv0oCbdAmtfRVNR7S7uPAMGXEMsWqh81QUDBeomX/DCIDhHmaMujyLUPob01gh2K0SY164zVMAGmJLUoPG085gJF5n3EB5Po4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NZ81kxVq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22987C433C7;
+	Tue, 27 Feb 2024 13:39:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041272;
-	bh=TmbaytMUNPnMReqU0GknpyqKvaC6UQGfCRohTYNKsiM=;
+	s=korg; t=1709041184;
+	bh=W1eQje+MsB/8IQVc1ytDmWsf+4F8FZsfCu5WzHGvsdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yU+Pu8cz0GqzChJj8dqa0N65/IzRRHzK/oqY6NHfpKyaGAHi3VrYSjMvoOzLE3rIF
-	 Foz2qXeQSk7lqKFWpUEQoW2XwiSGPOrZJPHyvpGw9oEdL+ZxtrFNLNyEj5/X1v/KZr
-	 U+PJSy8hoPdohio5IH6nstW0fU3MbkzAkZ2ymL6s=
+	b=NZ81kxVq5iy9DP1hhrKuV9gl4pXDhvZtqwiWGzofwQbdN+a7RuqgbHZOeEzkIEfiI
+	 4KhcL6Dq3Z766q4FcflpDg4wAczFHtqCImn+AhM+OqQNrbWl9yC50MBlAp2dhvpZok
+	 J1Q7eFazUU/JZWFGxo81F4ynvR2lkUj8XjLEAxIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 242/334] arm64: dts: tqma8mpql: fix audio codec iov-supply
-Date: Tue, 27 Feb 2024 14:21:40 +0100
-Message-ID: <20240227131638.682843800@linuxfoundation.org>
+Subject: [PATCH 6.7 243/334] bus: imx-weim: fix valid range check
+Date: Tue, 27 Feb 2024 14:21:41 +0100
+Message-ID: <20240227131638.712810419@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
 References: <20240227131630.636392135@linuxfoundation.org>
@@ -66,47 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Lucas Stach <l.stach@pengutronix.de>
 
-[ Upstream commit a620a7f2ae8b08c5beea6369f61e87064ee222dc ]
+[ Upstream commit 7bca405c986075c99b9f729d3587b5c45db39d01 ]
 
-IOVDD is supplied by 1.8V, fix the referenced regulator.
+When the range parsing was open-coded the number of u32 entries to
+parse had to be a multiple of 4 and the driver checks this. With
+the range parsing converted to the range parser the counting changes
+from individual u32 entries to a complete range, so the check must
+not reject counts not divisible by 4.
 
-Fixes: d8f9d8126582d ("arm64: dts: imx8mp: Add analog audio output on i.MX8MP TQMa8MPxL/MBa8MPxL")
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Fixes: 2a88e4792c6d ("bus: imx-weim: Remove open coded "ranges" parsing")
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts     | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/bus/imx-weim.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-index 4240e20d38ac3..258e90cc16ff3 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-@@ -168,6 +168,13 @@
- 		enable-active-high;
- 	};
+diff --git a/drivers/bus/imx-weim.c b/drivers/bus/imx-weim.c
+index 42c9386a7b423..f9fd1582f150d 100644
+--- a/drivers/bus/imx-weim.c
++++ b/drivers/bus/imx-weim.c
+@@ -117,7 +117,7 @@ static int imx_weim_gpr_setup(struct platform_device *pdev)
+ 		i++;
+ 	}
  
-+	reg_vcc_1v8: regulator-1v8 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "VCC_1V8";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+	};
-+
- 	reg_vcc_3v3: regulator-3v3 {
- 		compatible = "regulator-fixed";
- 		regulator-name = "VCC_3V3";
-@@ -464,7 +471,7 @@
- 		clock-names = "mclk";
- 		clocks = <&audio_blk_ctrl IMX8MP_CLK_AUDIOMIX_SAI3_MCLK1>;
- 		reset-gpios = <&gpio4 29 GPIO_ACTIVE_LOW>;
--		iov-supply = <&reg_vcc_3v3>;
-+		iov-supply = <&reg_vcc_1v8>;
- 		ldoin-supply = <&reg_vcc_3v3>;
- 	};
+-	if (i == 0 || i % 4)
++	if (i == 0)
+ 		goto err;
  
+ 	for (i = 0; i < ARRAY_SIZE(gprvals); i++) {
 -- 
 2.43.0
 
