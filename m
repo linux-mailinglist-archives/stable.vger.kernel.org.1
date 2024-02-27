@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79DA386950B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:58:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89790869622
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:08:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6B601C28693
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:58:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42C0928324D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:08:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD821419A1;
-	Tue, 27 Feb 2024 13:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F1D13B7AB;
+	Tue, 27 Feb 2024 14:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jBlTiB2E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L11BXfQg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4C013AA50;
-	Tue, 27 Feb 2024 13:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90AEA13B2B4;
+	Tue, 27 Feb 2024 14:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042279; cv=none; b=cHftyNoSA6hnO4tkrkxC456HPNMD/tRUx4czNjrXi+KTUordaUU4s4NV7tctifuVn8P0RdqRMfM/nkQL0U0rtJ8lWcXZIYCZfRNoVFFl0tRIBFcvXkcvSVJAc+W39E8UPtO7dPAlcDOO24K03qo6hEZVt0P7nqVel/0ypfOlOZg=
+	t=1709042906; cv=none; b=MSsFv5mJZ3adsFY1jRavdqJAl60dZ3ZjNDyZ3gnPu0l/NI+GyFU0Xqk2xpw1vN/0q+ALzFwkVL0tLwdGC+LnoxRLBIEIQfr598+99DYTK0aaFTH47UMElJlCD9oU9IeWAC1+RkDIivWxv+DLJPaRjsbRGYEtScbJABTxkbma9R8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042279; c=relaxed/simple;
-	bh=gxjDHtLYhFnQIRZQLhK/3li7RWkTZnzbp9q5qi2db8A=;
+	s=arc-20240116; t=1709042906; c=relaxed/simple;
+	bh=L5QqCxSD5UH6gi0FW8Npju3pXUrXosHCBl4vkqalEi4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EBA9hH2ek7mLf2OUee2hSAH5VwFtypW37dLA1DVUz/atKldKWPwGOJMrxObnLtln0Wr/8wbCfHXITcQ2ikwe13Q5IG9uCASPoKAMAID4pP6IYsI369DbzeVydjqRH3i7DbqrbNSf8bqjGs9FZNQSzsQFboDMcj+XnTJTlHf2EBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jBlTiB2E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0470C43390;
-	Tue, 27 Feb 2024 13:57:58 +0000 (UTC)
+	 MIME-Version; b=iZP0CIEPz/vG5q6gsHuHzXdaKEO3WteBsEbv1vESMiYPz1lPN0QB0uA+kW35lBwvtgrC5oP7CMY9CADKEHTojcPHWqqv5i+3R4pNgTaFIpE0cevFXIiBnMUDToSra4bhHOA9aHLacIExIjQ7xevRvfj0JRR8A7hSQlwLeFIANzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L11BXfQg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2028CC433C7;
+	Tue, 27 Feb 2024 14:08:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042279;
-	bh=gxjDHtLYhFnQIRZQLhK/3li7RWkTZnzbp9q5qi2db8A=;
+	s=korg; t=1709042906;
+	bh=L5QqCxSD5UH6gi0FW8Npju3pXUrXosHCBl4vkqalEi4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jBlTiB2ER0Z0/O8UvK4CKuP6xDiNJXD++EXWxtCNK0D53kg1raUQt9MIVr3yVPuOX
-	 jNEOyh+DKJCTqBcSLHO52rXxyrY65I8pZsIzkGVa6o52iXsPgqzgQDnxj7xA2QwS1R
-	 2dYItV3dk21mpV5khTVu/RzA/k/U0HpjaXfhGXU8=
+	b=L11BXfQgu5pQwflmzguu87b52qKE1H8WWcWAz1QBO/lASwoQFnDL8OL6HxWt/0Ykr
+	 RZH/JWqIkzEsPCjIy2pm2o8o+FJuDHhcfD3MpiSmkwsM7YDEng2R1SXUN1OpQlJL9H
+	 Rt6wAaIKcg2Y1bMPy+zxuI11N71rjGLVzuP4gn1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Danilo Krummrich <dakr@redhat.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 241/299] nouveau: fix function cast warnings
+Subject: [PATCH 5.15 164/245] netfilter: nf_tables: add rescheduling points during loop detection walks
 Date: Tue, 27 Feb 2024 14:25:52 +0100
-Message-ID: <20240227131633.488941819@linuxfoundation.org>
+Message-ID: <20240227131620.542424002@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 0affdba22aca5573f9d989bcb1d71d32a6a03efe ]
+[ Upstream commit 81ea010667417ef3f218dfd99b69769fe66c2b67 ]
 
-clang-16 warns about casting between incompatible function types:
+Add explicit rescheduling points during ruleset walk.
 
-drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c:161:10: error: cast from 'void (*)(const struct firmware *)' to 'void (*)(void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
-  161 |         .fini = (void(*)(void *))release_firmware,
+Switching to a faster algorithm is possible but this is a much
+smaller change, suitable for nf tree.
 
-This one was done to use the generic shadow_fw_release() function as a
-callback for struct nvbios_source. Change it to use the same prototype
-as the other five instances, with a trivial helper function that actually
-calls release_firmware.
-
-Fixes: 70c0f263cc2e ("drm/nouveau/bios: pull in basic vbios subdev, more to come later")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240213095753.455062-1-arnd@kernel.org
+Link: https://bugzilla.netfilter.org/show_bug.cgi?id=1460
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Acked-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c
-index 19188683c8fca..8c2bf1c16f2a9 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c
-@@ -154,11 +154,17 @@ shadow_fw_init(struct nvkm_bios *bios, const char *name)
- 	return (void *)fw;
- }
- 
-+static void
-+shadow_fw_release(void *fw)
-+{
-+	release_firmware(fw);
-+}
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 3ad2b22886ff0..361fbbd430ad8 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -3442,6 +3442,8 @@ int nft_chain_validate(const struct nft_ctx *ctx, const struct nft_chain *chain)
+ 			if (err < 0)
+ 				return err;
+ 		}
 +
- static const struct nvbios_source
- shadow_fw = {
- 	.name = "firmware",
- 	.init = shadow_fw_init,
--	.fini = (void(*)(void *))release_firmware,
-+	.fini = shadow_fw_release,
- 	.read = shadow_fw_read,
- 	.rw = false,
- };
++		cond_resched();
+ 	}
+ 
+ 	return 0;
+@@ -10041,9 +10043,13 @@ static int nf_tables_check_loops(const struct nft_ctx *ctx,
+ 				break;
+ 			}
+ 		}
++
++		cond_resched();
+ 	}
+ 
+ 	list_for_each_entry(set, &ctx->table->sets, list) {
++		cond_resched();
++
+ 		if (!nft_is_active_next(ctx->net, set))
+ 			continue;
+ 		if (!(set->flags & NFT_SET_MAP) ||
 -- 
 2.43.0
 
