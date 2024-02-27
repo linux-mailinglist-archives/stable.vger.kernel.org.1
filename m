@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 773F3869407
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E8D186935B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:44:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32C9928627B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD5401F23AEC
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:44:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B109145B0F;
-	Tue, 27 Feb 2024 13:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1F9F13B7A0;
+	Tue, 27 Feb 2024 13:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/RMOXJf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nyMwDttV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA87B54BD4;
-	Tue, 27 Feb 2024 13:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6972F2D;
+	Tue, 27 Feb 2024 13:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041741; cv=none; b=Q6eUF4eiAs/SdvYXt3hXTGNhF3+A6S63ZD7DREgTchEV51Smr9iK5by/LKV/+NCPh5YX/QoWuMocnTMpkbJSJdgcTYX3Ol1b0c/xMq2xvdJdPZG13oD7PyK/sKuKcxlFosT0LtBgT08ZdX0snTl0tp61zaaGbGKtbJ4DDthiXIU=
+	t=1709041443; cv=none; b=Y9QYPz8h0P/Tf6z47k6ivGx3168Fc+zVyS17OMpu9Ky4hi2avF5n/Lj7Ur4bN+v5GVscBOnxHw8xELhK2uJm6LtblwTRyeL+JKudtmg8oiGEX9/KLLDUV3PIaJhZqKHVZNdASg4LRvNkVat7f+DcR8bK+ZNTA9Azx3esB9qEg6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041741; c=relaxed/simple;
-	bh=Tuujnbyk+BqesRBp/TnPf5BRspcBZEm93DT56W1jGy0=;
+	s=arc-20240116; t=1709041443; c=relaxed/simple;
+	bh=Ch8Gak8IB6jpnxfPZTVziTRLtsmsDYYepi5m8P/pKDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SbQUuLsFO2VUmyf5VrOzE5g4OLy0w20cffrjDX2GVpK149eaDrU1RRTaChklSb5UAdYwTqxWW3ThUXVvvXoSQ7sQWRSFweGBk9VOFdWAKQENtqxFGojNscA0YBKvo+ZFbMddwwtLHdsgXzaKC6Ip8Je8T2TOOwQg2w7j/e2+kNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/RMOXJf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 589F1C433C7;
-	Tue, 27 Feb 2024 13:49:01 +0000 (UTC)
+	 MIME-Version; b=Xx7BIg6dN3GKXNwT0cp2kvbzP3pJfEr4YOnOPx/b4J4VhTroVjVq0ytHGW8Cq+Av8E1R/Wh+xGaWSrFTBrQeXJcs+8sVSGrKmtMZCXXwnQ7MgTz3RSp8rNEK+aaJbXMdb9Ckt/8Ly+vf+KLGjMBB1WtidCAEPM1chDSTs2+aNuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nyMwDttV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D022C433F1;
+	Tue, 27 Feb 2024 13:44:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041741;
-	bh=Tuujnbyk+BqesRBp/TnPf5BRspcBZEm93DT56W1jGy0=;
+	s=korg; t=1709041443;
+	bh=Ch8Gak8IB6jpnxfPZTVziTRLtsmsDYYepi5m8P/pKDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a/RMOXJfISWTmG550xf3ngvFFwXjT53MtdBBhy+Nj47091Xp4IOxzO/+K8Qe6ZI88
-	 ms7nUZi4+M26FIo/GrwNsZNYrUccipsGSaPRqmd2v98PqODN1h7tGyoQJtF09waH97
-	 E9jNtNrAHveHQaJwKvss5fURa+LWMtkGyE+t9PQE=
+	b=nyMwDttVFWER9pTQlIpo5H2PKs+zX1mlyiIU982i2AwLSgyOCbsyjwKMfp7nFWe90
+	 7ZGds5npmJD/hiR777kJRxEsPEDlsgeItKC59qBWGkyYEmFG0MozPJAljyej//yxS6
+	 AKjAkzV9mEtEgcWkl7x//5jvOH3fX6IyiBTnllwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Long <lucien.xin@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
 	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 052/299] netfilter: conntrack: check SCTP_CID_SHUTDOWN_ACK for vtag setting in sctp_new
-Date: Tue, 27 Feb 2024 14:22:43 +0100
-Message-ID: <20240227131627.645587335@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+de4025c006ec68ac56fc@syzkaller.appspotmail.com
+Subject: [PATCH 6.7 306/334] netfilter: nf_tables: set dormant flag on hook register failure
+Date: Tue, 27 Feb 2024 14:22:44 +0100
+Message-ID: <20240227131640.933121095@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 6e348067ee4bc5905e35faa3a8fafa91c9124bc7 ]
+[ Upstream commit bccebf64701735533c8db37773eeacc6566cc8ec ]
 
-The annotation says in sctp_new(): "If it is a shutdown ack OOTB packet, we
-expect a return shutdown complete, otherwise an ABORT Sec 8.4 (5) and (8)".
-However, it does not check SCTP_CID_SHUTDOWN_ACK before setting vtag[REPLY]
-in the conntrack entry(ct).
+We need to set the dormant flag again if we fail to register
+the hooks.
 
-Because of that, if the ct in Router disappears for some reason in [1]
-with the packet sequence like below:
+During memory pressure hook registration can fail and we end up
+with a table marked as active but no registered hooks.
 
-   Client > Server: sctp (1) [INIT] [init tag: 3201533963]
-   Server > Client: sctp (1) [INIT ACK] [init tag: 972498433]
-   Client > Server: sctp (1) [COOKIE ECHO]
-   Server > Client: sctp (1) [COOKIE ACK]
-   Client > Server: sctp (1) [DATA] (B)(E) [TSN: 3075057809]
-   Server > Client: sctp (1) [SACK] [cum ack 3075057809]
-   Server > Client: sctp (1) [HB REQ]
-   (the ct in Router disappears somehow)  <-------- [1]
-   Client > Server: sctp (1) [HB ACK]
-   Client > Server: sctp (1) [DATA] (B)(E) [TSN: 3075057810]
-   Client > Server: sctp (1) [DATA] (B)(E) [TSN: 3075057810]
-   Client > Server: sctp (1) [HB REQ]
-   Client > Server: sctp (1) [DATA] (B)(E) [TSN: 3075057810]
-   Client > Server: sctp (1) [HB REQ]
-   Client > Server: sctp (1) [ABORT]
+On table/base chain deletion, nf_tables will attempt to unregister
+the hook again which yields a warn splat from the nftables core.
 
-when processing HB ACK packet in Router it calls sctp_new() to initialize
-the new ct with vtag[REPLY] set to HB_ACK packet's vtag.
-
-Later when sending DATA from Client, all the SACKs from Server will get
-dropped in Router, as the SACK packet's vtag does not match vtag[REPLY]
-in the ct. The worst thing is the vtag in this ct will never get fixed
-by the upcoming packets from Server.
-
-This patch fixes it by checking SCTP_CID_SHUTDOWN_ACK before setting
-vtag[REPLY] in the ct in sctp_new() as the annotation says. With this
-fix, it will leave vtag[REPLY] in ct to 0 in the case above, and the
-next HB REQ/ACK from Server is able to fix the vtag as its value is 0
-in nf_conntrack_sctp_packet().
-
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Reported-and-tested-by: syzbot+de4025c006ec68ac56fc@syzkaller.appspotmail.com
+Fixes: 179d9ba5559a ("netfilter: nf_tables: fix table flag updates")
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_proto_sctp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/netfilter/nf_conntrack_proto_sctp.c b/net/netfilter/nf_conntrack_proto_sctp.c
-index c6bd533983c1f..4cc97f971264e 100644
---- a/net/netfilter/nf_conntrack_proto_sctp.c
-+++ b/net/netfilter/nf_conntrack_proto_sctp.c
-@@ -283,7 +283,7 @@ sctp_new(struct nf_conn *ct, const struct sk_buff *skb,
- 			pr_debug("Setting vtag %x for secondary conntrack\n",
- 				 sh->vtag);
- 			ct->proto.sctp.vtag[IP_CT_DIR_ORIGINAL] = sh->vtag;
--		} else {
-+		} else if (sch->type == SCTP_CID_SHUTDOWN_ACK) {
- 		/* If it is a shutdown ack OOTB packet, we expect a return
- 		   shutdown complete, otherwise an ABORT Sec 8.4 (5) and (8) */
- 			pr_debug("Setting vtag %x for new conn OOTB\n",
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 04c5aa4debc74..dc26986fd4b93 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -1251,6 +1251,7 @@ static int nf_tables_updtable(struct nft_ctx *ctx)
+ 	return 0;
+ 
+ err_register_hooks:
++	ctx->table->flags |= NFT_TABLE_F_DORMANT;
+ 	nft_trans_destroy(trans);
+ 	return ret;
+ }
 -- 
 2.43.0
 
