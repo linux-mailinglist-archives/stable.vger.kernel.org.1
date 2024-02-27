@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-24925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 492BF8696DF
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:16:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEAF98694F6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:57:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04BC3287E52
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:16:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E87B1F22F6A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:57:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4690813B797;
-	Tue, 27 Feb 2024 14:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EADE813DB92;
+	Tue, 27 Feb 2024 13:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ER1KbcyZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NkbmfOdW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C2478B61;
-	Tue, 27 Feb 2024 14:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6FD31419A6;
+	Tue, 27 Feb 2024 13:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043371; cv=none; b=NSAaRosdi+g5b44AthoAqlZJDrIQ1pOkwMoPV0BBvANCHGQoFqKR0Y4YHAleO+yyOe3PE/fhtFo+R2ufzQSpeE2MC95nl0mKrXtr6uJZZby2sS5E9Gew2A5kqJn0cpzPKjQGVSIk1ocA8Dv1LcXteZS3Z7vqobfnWmkEHeXlB+w=
+	t=1709042259; cv=none; b=B2qiWNxX1D1IVwqDDJ0aXF7Gv85jiWOHwCHLXfLTXmfe/JaqLsPeUsDE9XfSyi78Y+4XfHdIRG7U7W6AHjBAFuX91v6EjpYGgZSLi4dQjBWHXJuD4rZJuRbr/4zTfU/F/oF/diHFmxdgQIDYls/HAXTTPmpjP8PulOcL4756APE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043371; c=relaxed/simple;
-	bh=XRAQeTlV7K+cK66KU+wQAGcvKt+LgBjF+JoC1OU0Qks=;
+	s=arc-20240116; t=1709042259; c=relaxed/simple;
+	bh=nnadm1wb7Iys83viVqWZwv1yy21syC0uvxTYRp36Tq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b1KrqR6+IzqcFlKWDBuvczCG7O80U6T0GKrxCUFv6XtMzL6WnRztNPSwvTu+yOib4e51r0Tje+WT3YQaF2jbEUN+cmZmiRxWkLrTE3e6yj6oVuwfZxQGDavk56pdZbPRVrdc/MCAVB4Grt0my30U1NUNKziXH94nqBVxKOGa9j4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ER1KbcyZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B14C433F1;
-	Tue, 27 Feb 2024 14:16:10 +0000 (UTC)
+	 MIME-Version; b=pUPPkOIF/b2xmTulwzqJ7eYPfUE2gLZZYaDLO9BquuKcrKFLIaykLIo2IQr3AtOSDX1/PwIKpnH+vQGlAGT70H1ZvcdVTUq7cp5dSQfc7pULxfFbNac0iRRHncoW+Qzbf1uBdCNV7nn5CdvQiDmlntcR2Zdt78XWpvc8Vk/fF5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NkbmfOdW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 348E6C433F1;
+	Tue, 27 Feb 2024 13:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043370;
-	bh=XRAQeTlV7K+cK66KU+wQAGcvKt+LgBjF+JoC1OU0Qks=;
+	s=korg; t=1709042259;
+	bh=nnadm1wb7Iys83viVqWZwv1yy21syC0uvxTYRp36Tq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ER1KbcyZfgY5zaUFacTyE7nmttIVR81Ocuk0Q/geSupi5foCEefdpmfVugH6uaF0u
-	 uE9TDF8LYTLBQFvXbBZfb13dmgZQhIPmITbpBDqU193GPIJj7AKlk6IBfZUWRfBsDH
-	 Oqt89pbQlqTVIaHPzj+29rgDYMts3g9w+z8WGnXk=
+	b=NkbmfOdWSyevEbLMQBg9usuaHLzIEZeMydXG/qcUxiLp7ll1I4iZHo94r3BEbWAWg
+	 Oi5mJCVcz5iqFWi7YDWNtuTc0AIf+kWzoNp76GrsvDVz1DWRgTLtCWbQWU0aC+fcsc
+	 dYbUaRjmaf8YsUfR6DjZhZ3Zwes5Gj4nF5qOKzMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1 084/195] LoongArch: Disable IRQ before init_fn() for nonboot CPUs
+	Tobias Waldekranz <tobias@waldekranz.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 234/299] net: bridge: switchdev: Skip MDB replays of deferred events on offload
 Date: Tue, 27 Feb 2024 14:25:45 +0100
-Message-ID: <20240227131613.260203274@linuxfoundation.org>
+Message-ID: <20240227131633.273827934@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,79 +63,333 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Tobias Waldekranz <tobias@waldekranz.com>
 
-commit 1001db6c42e4012b55e5ee19405490f23e033b5a upstream.
+[ Upstream commit dc489f86257cab5056e747344f17a164f63bff4b ]
 
-Disable IRQ before init_fn() for nonboot CPUs when hotplug, in order to
-silence such warnings (and also avoid potential errors due to unexpected
-interrupts):
+Before this change, generation of the list of MDB events to replay
+would race against the creation of new group memberships, either from
+the IGMP/MLD snooping logic or from user configuration.
 
-WARNING: CPU: 1 PID: 0 at kernel/rcu/tree.c:4503 rcu_cpu_starting+0x214/0x280
-CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.6.17+ #1198
-pc 90000000048e3334 ra 90000000047bd56c tp 900000010039c000 sp 900000010039fdd0
-a0 0000000000000001 a1 0000000000000006 a2 900000000802c040 a3 0000000000000000
-a4 0000000000000001 a5 0000000000000004 a6 0000000000000000 a7 90000000048e3f4c
-t0 0000000000000001 t1 9000000005c70968 t2 0000000004000000 t3 000000000005e56e
-t4 00000000000002e4 t5 0000000000001000 t6 ffffffff80000000 t7 0000000000040000
-t8 9000000007931638 u0 0000000000000006 s9 0000000000000004 s0 0000000000000001
-s1 9000000006356ac0 s2 9000000007244000 s3 0000000000000001 s4 0000000000000001
-s5 900000000636f000 s6 7fffffffffffffff s7 9000000002123940 s8 9000000001ca55f8
-   ra: 90000000047bd56c tlb_init+0x24c/0x528
-  ERA: 90000000048e3334 rcu_cpu_starting+0x214/0x280
- CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
- PRMD: 00000000 (PPLV0 -PIE -PWE)
- EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
- ECFG: 00071000 (LIE=12 VS=7)
-ESTAT: 000c0000 [BRK] (IS= ECode=12 EsubCode=0)
- PRID: 0014c010 (Loongson-64bit, Loongson-3A5000)
-CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.6.17+ #1198
-Stack : 0000000000000000 9000000006375000 9000000005b61878 900000010039c000
-        900000010039fa30 0000000000000000 900000010039fa38 900000000619a140
-        9000000006456888 9000000006456880 900000010039f950 0000000000000001
-        0000000000000001 cb0cb028ec7e52e1 0000000002b90000 9000000100348700
-        0000000000000000 0000000000000001 ffffffff916d12f1 0000000000000003
-        0000000000040000 9000000007930370 0000000002b90000 0000000000000004
-        9000000006366000 900000000619a140 0000000000000000 0000000000000004
-        0000000000000000 0000000000000009 ffffffffffc681f2 9000000002123940
-        9000000001ca55f8 9000000006366000 90000000047a4828 00007ffff057ded8
-        00000000000000b0 0000000000000000 0000000000000000 0000000000071000
-        ...
-Call Trace:
-[<90000000047a4828>] show_stack+0x48/0x1a0
-[<9000000005b61874>] dump_stack_lvl+0x84/0xcc
-[<90000000047f60ac>] __warn+0x8c/0x1e0
-[<9000000005b0ab34>] report_bug+0x1b4/0x280
-[<9000000005b63110>] do_bp+0x2d0/0x480
-[<90000000047a2e20>] handle_bp+0x120/0x1c0
-[<90000000048e3334>] rcu_cpu_starting+0x214/0x280
-[<90000000047bd568>] tlb_init+0x248/0x528
-[<90000000047a4c44>] per_cpu_trap_init+0x124/0x160
-[<90000000047a19f4>] cpu_probe+0x494/0xa00
-[<90000000047b551c>] start_secondary+0x3c/0xc0
-[<9000000005b66134>] smpboot_entry+0x50/0x58
+While new memberships are immediately visible to walkers of
+br->mdb_list, the notification of their existence to switchdev event
+subscribers is deferred until a later point in time. So if a replay
+list was generated during a time that overlapped with such a window,
+it would also contain a replay of the not-yet-delivered event.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The driver would thus receive two copies of what the bridge internally
+considered to be one single event. On destruction of the bridge, only
+a single membership deletion event was therefore sent. As a
+consequence of this, drivers which reference count memberships (at
+least DSA), would be left with orphan groups in their hardware
+database when the bridge was destroyed.
+
+This is only an issue when replaying additions. While deletion events
+may still be pending on the deferred queue, they will already have
+been removed from br->mdb_list, so no duplicates can be generated in
+that scenario.
+
+To a user this meant that old group memberships, from a bridge in
+which a port was previously attached, could be reanimated (in
+hardware) when the port joined a new bridge, without the new bridge's
+knowledge.
+
+For example, on an mv88e6xxx system, create a snooping bridge and
+immediately add a port to it:
+
+    root@infix-06-0b-00:~$ ip link add dev br0 up type bridge mcast_snooping 1 && \
+    > ip link set dev x3 up master br0
+
+And then destroy the bridge:
+
+    root@infix-06-0b-00:~$ ip link del dev br0
+    root@infix-06-0b-00:~$ mvls atu
+    ADDRESS             FID  STATE      Q  F  0  1  2  3  4  5  6  7  8  9  a
+    DEV:0 Marvell 88E6393X
+    33:33:00:00:00:6a     1  static     -  -  0  .  .  .  .  .  .  .  .  .  .
+    33:33:ff:87:e4:3f     1  static     -  -  0  .  .  .  .  .  .  .  .  .  .
+    ff:ff:ff:ff:ff:ff     1  static     -  -  0  1  2  3  4  5  6  7  8  9  a
+    root@infix-06-0b-00:~$
+
+The two IPv6 groups remain in the hardware database because the
+port (x3) is notified of the host's membership twice: once via the
+original event and once via a replay. Since only a single delete
+notification is sent, the count remains at 1 when the bridge is
+destroyed.
+
+Then add the same port (or another port belonging to the same hardware
+domain) to a new bridge, this time with snooping disabled:
+
+    root@infix-06-0b-00:~$ ip link add dev br1 up type bridge mcast_snooping 0 && \
+    > ip link set dev x3 up master br1
+
+All multicast, including the two IPv6 groups from br0, should now be
+flooded, according to the policy of br1. But instead the old
+memberships are still active in the hardware database, causing the
+switch to only forward traffic to those groups towards the CPU (port
+0).
+
+Eliminate the race in two steps:
+
+1. Grab the write-side lock of the MDB while generating the replay
+   list.
+
+This prevents new memberships from showing up while we are generating
+the replay list. But it leaves the scenario in which a deferred event
+was already generated, but not delivered, before we grabbed the
+lock. Therefore:
+
+2. Make sure that no deferred version of a replay event is already
+   enqueued to the switchdev deferred queue, before adding it to the
+   replay list, when replaying additions.
+
+Fixes: 4f2673b3a2b6 ("net: bridge: add helper to replay port and host-joined mdb entries")
+Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/smp.c |    1 +
- 1 file changed, 1 insertion(+)
+ include/net/switchdev.h   |  3 ++
+ net/bridge/br_switchdev.c | 74 ++++++++++++++++++++++++---------------
+ net/switchdev/switchdev.c | 73 ++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 122 insertions(+), 28 deletions(-)
 
---- a/arch/loongarch/kernel/smp.c
-+++ b/arch/loongarch/kernel/smp.c
-@@ -297,6 +297,7 @@ void play_dead(void)
- 		addr = iocsr_read64(LOONGARCH_IOCSR_MBUF0);
- 	} while (addr == 0);
+diff --git a/include/net/switchdev.h b/include/net/switchdev.h
+index a43062d4c734b..8346b0d29542c 100644
+--- a/include/net/switchdev.h
++++ b/include/net/switchdev.h
+@@ -308,6 +308,9 @@ void switchdev_deferred_process(void);
+ int switchdev_port_attr_set(struct net_device *dev,
+ 			    const struct switchdev_attr *attr,
+ 			    struct netlink_ext_ack *extack);
++bool switchdev_port_obj_act_is_deferred(struct net_device *dev,
++					enum switchdev_notifier_type nt,
++					const struct switchdev_obj *obj);
+ int switchdev_port_obj_add(struct net_device *dev,
+ 			   const struct switchdev_obj *obj,
+ 			   struct netlink_ext_ack *extack);
+diff --git a/net/bridge/br_switchdev.c b/net/bridge/br_switchdev.c
+index ee84e783e1dff..6a7cb01f121c7 100644
+--- a/net/bridge/br_switchdev.c
++++ b/net/bridge/br_switchdev.c
+@@ -595,21 +595,40 @@ br_switchdev_mdb_replay_one(struct notifier_block *nb, struct net_device *dev,
+ }
  
-+	local_irq_disable();
- 	init_fn = (void *)TO_CACHE(addr);
- 	iocsr_write32(0xffffffff, LOONGARCH_IOCSR_IPI_CLEAR);
+ static int br_switchdev_mdb_queue_one(struct list_head *mdb_list,
++				      struct net_device *dev,
++				      unsigned long action,
+ 				      enum switchdev_obj_id id,
+ 				      const struct net_bridge_mdb_entry *mp,
+ 				      struct net_device *orig_dev)
+ {
+-	struct switchdev_obj_port_mdb *mdb;
++	struct switchdev_obj_port_mdb mdb = {
++		.obj = {
++			.id = id,
++			.orig_dev = orig_dev,
++		},
++	};
++	struct switchdev_obj_port_mdb *pmdb;
  
+-	mdb = kzalloc(sizeof(*mdb), GFP_ATOMIC);
+-	if (!mdb)
+-		return -ENOMEM;
++	br_switchdev_mdb_populate(&mdb, mp);
+ 
+-	mdb->obj.id = id;
+-	mdb->obj.orig_dev = orig_dev;
+-	br_switchdev_mdb_populate(mdb, mp);
+-	list_add_tail(&mdb->obj.list, mdb_list);
++	if (action == SWITCHDEV_PORT_OBJ_ADD &&
++	    switchdev_port_obj_act_is_deferred(dev, action, &mdb.obj)) {
++		/* This event is already in the deferred queue of
++		 * events, so this replay must be elided, lest the
++		 * driver receives duplicate events for it. This can
++		 * only happen when replaying additions, since
++		 * modifications are always immediately visible in
++		 * br->mdb_list, whereas actual event delivery may be
++		 * delayed.
++		 */
++		return 0;
++	}
++
++	pmdb = kmemdup(&mdb, sizeof(mdb), GFP_ATOMIC);
++	if (!pmdb)
++		return -ENOMEM;
+ 
++	list_add_tail(&pmdb->obj.list, mdb_list);
+ 	return 0;
+ }
+ 
+@@ -677,51 +696,50 @@ br_switchdev_mdb_replay(struct net_device *br_dev, struct net_device *dev,
+ 	if (!br_opt_get(br, BROPT_MULTICAST_ENABLED))
+ 		return 0;
+ 
+-	/* We cannot walk over br->mdb_list protected just by the rtnl_mutex,
+-	 * because the write-side protection is br->multicast_lock. But we
+-	 * need to emulate the [ blocking ] calling context of a regular
+-	 * switchdev event, so since both br->multicast_lock and RCU read side
+-	 * critical sections are atomic, we have no choice but to pick the RCU
+-	 * read side lock, queue up all our events, leave the critical section
+-	 * and notify switchdev from blocking context.
++	if (adding)
++		action = SWITCHDEV_PORT_OBJ_ADD;
++	else
++		action = SWITCHDEV_PORT_OBJ_DEL;
++
++	/* br_switchdev_mdb_queue_one() will take care to not queue a
++	 * replay of an event that is already pending in the switchdev
++	 * deferred queue. In order to safely determine that, there
++	 * must be no new deferred MDB notifications enqueued for the
++	 * duration of the MDB scan. Therefore, grab the write-side
++	 * lock to avoid racing with any concurrent IGMP/MLD snooping.
+ 	 */
+-	rcu_read_lock();
++	spin_lock_bh(&br->multicast_lock);
+ 
+-	hlist_for_each_entry_rcu(mp, &br->mdb_list, mdb_node) {
++	hlist_for_each_entry(mp, &br->mdb_list, mdb_node) {
+ 		struct net_bridge_port_group __rcu * const *pp;
+ 		const struct net_bridge_port_group *p;
+ 
+ 		if (mp->host_joined) {
+-			err = br_switchdev_mdb_queue_one(&mdb_list,
++			err = br_switchdev_mdb_queue_one(&mdb_list, dev, action,
+ 							 SWITCHDEV_OBJ_ID_HOST_MDB,
+ 							 mp, br_dev);
+ 			if (err) {
+-				rcu_read_unlock();
++				spin_unlock_bh(&br->multicast_lock);
+ 				goto out_free_mdb;
+ 			}
+ 		}
+ 
+-		for (pp = &mp->ports; (p = rcu_dereference(*pp)) != NULL;
++		for (pp = &mp->ports; (p = mlock_dereference(*pp, br)) != NULL;
+ 		     pp = &p->next) {
+ 			if (p->key.port->dev != dev)
+ 				continue;
+ 
+-			err = br_switchdev_mdb_queue_one(&mdb_list,
++			err = br_switchdev_mdb_queue_one(&mdb_list, dev, action,
+ 							 SWITCHDEV_OBJ_ID_PORT_MDB,
+ 							 mp, dev);
+ 			if (err) {
+-				rcu_read_unlock();
++				spin_unlock_bh(&br->multicast_lock);
+ 				goto out_free_mdb;
+ 			}
+ 		}
+ 	}
+ 
+-	rcu_read_unlock();
+-
+-	if (adding)
+-		action = SWITCHDEV_PORT_OBJ_ADD;
+-	else
+-		action = SWITCHDEV_PORT_OBJ_DEL;
++	spin_unlock_bh(&br->multicast_lock);
+ 
+ 	list_for_each_entry(obj, &mdb_list, list) {
+ 		err = br_switchdev_mdb_replay_one(nb, dev,
+diff --git a/net/switchdev/switchdev.c b/net/switchdev/switchdev.c
+index 5b045284849e0..c9189a970eec3 100644
+--- a/net/switchdev/switchdev.c
++++ b/net/switchdev/switchdev.c
+@@ -19,6 +19,35 @@
+ #include <linux/rtnetlink.h>
+ #include <net/switchdev.h>
+ 
++static bool switchdev_obj_eq(const struct switchdev_obj *a,
++			     const struct switchdev_obj *b)
++{
++	const struct switchdev_obj_port_vlan *va, *vb;
++	const struct switchdev_obj_port_mdb *ma, *mb;
++
++	if (a->id != b->id || a->orig_dev != b->orig_dev)
++		return false;
++
++	switch (a->id) {
++	case SWITCHDEV_OBJ_ID_PORT_VLAN:
++		va = SWITCHDEV_OBJ_PORT_VLAN(a);
++		vb = SWITCHDEV_OBJ_PORT_VLAN(b);
++		return va->flags == vb->flags &&
++			va->vid == vb->vid &&
++			va->changed == vb->changed;
++	case SWITCHDEV_OBJ_ID_PORT_MDB:
++	case SWITCHDEV_OBJ_ID_HOST_MDB:
++		ma = SWITCHDEV_OBJ_PORT_MDB(a);
++		mb = SWITCHDEV_OBJ_PORT_MDB(b);
++		return ma->vid == mb->vid &&
++			ether_addr_equal(ma->addr, mb->addr);
++	default:
++		break;
++	}
++
++	BUG();
++}
++
+ static LIST_HEAD(deferred);
+ static DEFINE_SPINLOCK(deferred_lock);
+ 
+@@ -307,6 +336,50 @@ int switchdev_port_obj_del(struct net_device *dev,
+ }
+ EXPORT_SYMBOL_GPL(switchdev_port_obj_del);
+ 
++/**
++ *	switchdev_port_obj_act_is_deferred - Is object action pending?
++ *
++ *	@dev: port device
++ *	@nt: type of action; add or delete
++ *	@obj: object to test
++ *
++ *	Returns true if a deferred item is pending, which is
++ *	equivalent to the action @nt on an object @obj.
++ *
++ *	rtnl_lock must be held.
++ */
++bool switchdev_port_obj_act_is_deferred(struct net_device *dev,
++					enum switchdev_notifier_type nt,
++					const struct switchdev_obj *obj)
++{
++	struct switchdev_deferred_item *dfitem;
++	bool found = false;
++
++	ASSERT_RTNL();
++
++	spin_lock_bh(&deferred_lock);
++
++	list_for_each_entry(dfitem, &deferred, list) {
++		if (dfitem->dev != dev)
++			continue;
++
++		if ((dfitem->func == switchdev_port_obj_add_deferred &&
++		     nt == SWITCHDEV_PORT_OBJ_ADD) ||
++		    (dfitem->func == switchdev_port_obj_del_deferred &&
++		     nt == SWITCHDEV_PORT_OBJ_DEL)) {
++			if (switchdev_obj_eq((const void *)dfitem->data, obj)) {
++				found = true;
++				break;
++			}
++		}
++	}
++
++	spin_unlock_bh(&deferred_lock);
++
++	return found;
++}
++EXPORT_SYMBOL_GPL(switchdev_port_obj_act_is_deferred);
++
+ static ATOMIC_NOTIFIER_HEAD(switchdev_notif_chain);
+ static BLOCKING_NOTIFIER_HEAD(switchdev_blocking_notif_chain);
+ 
+-- 
+2.43.0
+
 
 
 
