@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61F5586973A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:19:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE862869555
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:01:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0205E1F2405B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:19:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A106A28945C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:01:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65BF81419B4;
-	Tue, 27 Feb 2024 14:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C8D91420DE;
+	Tue, 27 Feb 2024 14:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJMdkjZq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yO2g+bvX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2644B78B61;
-	Tue, 27 Feb 2024 14:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9022C13F01E;
+	Tue, 27 Feb 2024 14:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043550; cv=none; b=VytvVhtvw8iQYXE5trczcdoRAKWp2Wj4UJIZoR1XAnlkhyEFsbO5d5Ra8QiTK7DAM7sTWDm7LmSxAS4VCvzCCa82vszEnfUtA0Ax2QM1xzVHAcXgLx2LgF7PNegVhUUz7qBy3uxfE+xWG/241yWhiVlETxPa7AKXikioFelD87g=
+	t=1709042465; cv=none; b=mKYLFLCUT1ZOdAHaZZAzfZrE7DxIwFTYxsxZ6j3FMjXzUKn47+osWVUIuqwtpl14ebrwa7q4yTbVA2O89wMQFCKh73GTdTPtTYbwRCBtQVI9B1yzFzLbkWYwUnZr0QAo3noNQl/mWqNgCIR55+I3M8gzWt5bDRLttsWw+ejrGGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043550; c=relaxed/simple;
-	bh=GJFMKHmBU68Cy7mALJAe234vMhGUFEIS+WBhdKX/WWE=;
+	s=arc-20240116; t=1709042465; c=relaxed/simple;
+	bh=5IV7ah1r9e3L6yIeJMrWA9wuf0U1eGkJ61q3LcyXczM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EMdyPbyn/Ws31tiwLrlnqRI1WluHgu8qMq8i6CdBx4mDrXuE8mH6D+G7iovLiLCsD5H9cqgYSmaRaRJcuOis/xIhs/ysfpi+41nj08WP5+R1/+CvBlnACPUCTh2mkMn9BiNqyya+ZCTeXlfeEZppOh/ESW0LEpSb6dUYH3XHSws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJMdkjZq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A827BC433C7;
-	Tue, 27 Feb 2024 14:19:09 +0000 (UTC)
+	 MIME-Version; b=M2Mj7y0juZtpPtpfNOpccCs3sL/AuZvAEWQXXzRzt2oiI3mH8U+0cpQA4msBHDsRk3Z03Y8o4p+rKeTE7M0LyTVAX0bLgX1KYiNIoIhz/7voAlKQ/fqdfATgwahfzNYIjslBu+eYrcAXaU5+d46BrI02drgLK3l61vrpWt64MWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yO2g+bvX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EEBEC43390;
+	Tue, 27 Feb 2024 14:01:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043550;
-	bh=GJFMKHmBU68Cy7mALJAe234vMhGUFEIS+WBhdKX/WWE=;
+	s=korg; t=1709042465;
+	bh=5IV7ah1r9e3L6yIeJMrWA9wuf0U1eGkJ61q3LcyXczM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wJMdkjZqpm7vyDkbuNNl7VMd6LfhPWLAe52BuJe7dOSdgaVqOLXlo4w7bcVetXJEQ
-	 D4dDdz+hy4QE8+scSVXK/wvSlG+DwjLipt0w93SBHUjeUL9JY4drG3axCGzKPoeP/o
-	 en9WPOcT7HDK7ogAQ2uos1LpJpPlCX2d2EBYzNlw=
+	b=yO2g+bvXbPHo+AqDWhMuuxlSGs5qJMzWEVZw/hv/SePPepFtv/CXM2dzWw1E2Rgrd
+	 0woJqMqjEHLQGgTJM8jW5XHFny2r2PuGaeGOswz4iT1J1kuAbG00Uw0XiFYHOBFLlB
+	 B7OL7TjqFG6xKgCT78ePNwtIKVsJYSmwP7bXGb9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 131/195] RDMA/bnxt_re: Return error for SRQ resize
+Subject: [PATCH 6.6 281/299] net: sparx5: Add spinlock for frame transmission from CPU
 Date: Tue, 27 Feb 2024 14:26:32 +0100
-Message-ID: <20240227131614.766619003@linuxfoundation.org>
+Message-ID: <20240227131634.728511436@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit 3687b450c5f32e80f179ce4b09e0454da1449eac ]
+[ Upstream commit 603ead96582d85903baec2d55f021b8dac5c25d2 ]
 
-SRQ resize is not supported in the driver. But driver is not
-returning error from bnxt_re_modify_srq() for SRQ resize.
+Both registers used when doing manual injection or fdma injection are
+shared between all the net devices of the switch. It was noticed that
+when having two process which each of them trying to inject frames on
+different ethernet ports, that the HW started to behave strange, by
+sending out more frames then expected. When doing fdma injection it is
+required to set the frame in the DCB and then make sure that the next
+pointer of the last DCB is invalid. But because there is no locks for
+this, then easily this pointer between the DCB can be broken and then it
+would create a loop of DCBs. And that means that the HW will
+continuously transmit these frames in a loop. Until the SW will break
+this loop.
+Therefore to fix this issue, add a spin lock for when accessing the
+registers for manual or fdma injection.
 
-Fixes: 37cb11acf1f7 ("RDMA/bnxt_re: Add SRQ support for Broadcom adapters")
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://lore.kernel.org/r/1705985677-15551-5-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
+Fixes: f3cad2611a77 ("net: sparx5: add hostmode with phylink support")
+Link: https://lore.kernel.org/r/20240219080043.1561014-1-horatiu.vultur@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/microchip/sparx5/sparx5_main.c   | 1 +
+ drivers/net/ethernet/microchip/sparx5/sparx5_main.h   | 1 +
+ drivers/net/ethernet/microchip/sparx5/sparx5_packet.c | 2 ++
+ 3 files changed, 4 insertions(+)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index 4ed8814efde6f..6ed0568747eaa 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -1710,7 +1710,7 @@ int bnxt_re_modify_srq(struct ib_srq *ib_srq, struct ib_srq_attr *srq_attr,
- 	switch (srq_attr_mask) {
- 	case IB_SRQ_MAX_WR:
- 		/* SRQ resize is not supported */
--		break;
-+		return -EINVAL;
- 	case IB_SRQ_LIMIT:
- 		/* Change the SRQ threshold */
- 		if (srq_attr->srq_limit > srq->qplib_srq.max_wqe)
-@@ -1725,13 +1725,12 @@ int bnxt_re_modify_srq(struct ib_srq *ib_srq, struct ib_srq_attr *srq_attr,
- 		/* On success, update the shadow */
- 		srq->srq_limit = srq_attr->srq_limit;
- 		/* No need to Build and send response back to udata */
--		break;
-+		return 0;
- 	default:
- 		ibdev_err(&rdev->ibdev,
- 			  "Unsupported srq_attr_mask 0x%x", srq_attr_mask);
- 		return -EINVAL;
- 	}
--	return 0;
- }
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
+index dc9af480bfea1..8f116982c08a2 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
+@@ -757,6 +757,7 @@ static int mchp_sparx5_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, sparx5);
+ 	sparx5->pdev = pdev;
+ 	sparx5->dev = &pdev->dev;
++	spin_lock_init(&sparx5->tx_lock);
  
- int bnxt_re_query_srq(struct ib_srq *ib_srq, struct ib_srq_attr *srq_attr)
+ 	/* Do switch core reset if available */
+ 	reset = devm_reset_control_get_optional_shared(&pdev->dev, "switch");
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
+index 6f565c0c0c3dc..316fed5f27355 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
+@@ -280,6 +280,7 @@ struct sparx5 {
+ 	int xtr_irq;
+ 	/* Frame DMA */
+ 	int fdma_irq;
++	spinlock_t tx_lock; /* lock for frame transmission */
+ 	struct sparx5_rx rx;
+ 	struct sparx5_tx tx;
+ 	/* PTP */
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c b/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c
+index 6db6ac6a3bbc2..ac7e1cffbcecf 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c
+@@ -244,10 +244,12 @@ netdev_tx_t sparx5_port_xmit_impl(struct sk_buff *skb, struct net_device *dev)
+ 	}
+ 
+ 	skb_tx_timestamp(skb);
++	spin_lock(&sparx5->tx_lock);
+ 	if (sparx5->fdma_irq > 0)
+ 		ret = sparx5_fdma_xmit(sparx5, ifh, skb);
+ 	else
+ 		ret = sparx5_inject(sparx5, ifh, skb, dev);
++	spin_unlock(&sparx5->tx_lock);
+ 
+ 	if (ret == -EBUSY)
+ 		goto busy;
 -- 
 2.43.0
 
