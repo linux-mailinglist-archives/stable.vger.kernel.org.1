@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-25157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6031086981C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:29:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ED6286953A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:00:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E441B2485D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:27:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A16EF1C246CC
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F6701420A0;
-	Tue, 27 Feb 2024 14:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10DCD13DB98;
+	Tue, 27 Feb 2024 14:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/O6v4P0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6cswFbh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2FD13B7AB;
-	Tue, 27 Feb 2024 14:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C289C54BD4;
+	Tue, 27 Feb 2024 14:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044023; cv=none; b=oPOCDRBk49Bp1tN0ewG+TI3yIjvfls1H7UF9GMNupCqrrqnzO6w1b592Yz6jb0M/ixJpn2NcehCRM3D37vs4wk2d9aTfhzFn/6GGPKgheHjbvjMUlj4vCvvQthjhMCrsPbvBU3nhxrzgVJjB8oVwywsbZYd34y/HG7rg1JzS9nQ=
+	t=1709042404; cv=none; b=bp9M9T69IedqYNlv5pdyhJz+riU+qJnUlw/L0l6MiV+4lBtfCiBv/JEpnK0iiZjPuxpPD+vcHdVf79gUzCj2/Cpj1aAdoOaQQMG58Ou65noN4g6i2mVVrGXe0+urRQzvI4aDDEF5HwUJKHNVNaaSsSUquG/vPOh3eGqezvol+/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044023; c=relaxed/simple;
-	bh=FlZQAvM3ifnpKFg2zEx9Pe2m6jECw/m/qYzVakEfuk0=;
+	s=arc-20240116; t=1709042404; c=relaxed/simple;
+	bh=kEtX4YFbh+05tN+vouklYy1AoKvgQ8Gc+AKgQJXlb4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hruj3sYjp8gmpx7Vc/2Utje3qgPV074GZMmtlD1i1p4OSGfb6wn2A78n4uHGzMYmpopJRm/yG2E+G73VM0dIsB6Yg/zmEcUyp2KbTsSMhcZgOEvIbw5FcilaWrE76yOgNdIrrr1oG3MN1wrR+OGaazOdYFGX6ZDYQDbagHGPt3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/O6v4P0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 873F4C43390;
-	Tue, 27 Feb 2024 14:27:02 +0000 (UTC)
+	 MIME-Version; b=G57xkdnS522N2ONX444NjnRfQucH1jZfV7y5wpZa6PpOAXoqRlnoYhky1q2RluBznsIOLWo9qUCxThYkvwZE7hqRVtBoxDGO+e8mpOHx/qoEaZcBKeKgwGH6KoZqnO7rBbg49w0VSjB5NUSonY0myWBtqmVmjRPaKlxnrsjILk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6cswFbh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 531C6C433C7;
+	Tue, 27 Feb 2024 14:00:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044022;
-	bh=FlZQAvM3ifnpKFg2zEx9Pe2m6jECw/m/qYzVakEfuk0=;
+	s=korg; t=1709042404;
+	bh=kEtX4YFbh+05tN+vouklYy1AoKvgQ8Gc+AKgQJXlb4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l/O6v4P0V9Axg2avN7lFx6n3mtlT1T/TpziXHwj8EXdyQocou7DDZj925kHiLyx4s
-	 1BjnBneW/HvT/1jTMpMrm1uCDpWnzs+xg4G+rfOwWkWtJ0MuvatrPJs7uY7L06qrfP
-	 0E/xXIwRVzWkZGHR5zSSjfmUBD4DtVXBLJEMHm6k=
+	b=y6cswFbhylY5JndIvj8DVf4XOl9Q8ptCGcpFumMo+a6scvFBfDt55p5Y0z/c71LGm
+	 W+A/TklHbiU2QauZWBbN+CVzmdiw5w5vqJJwmpTydoX1kubHvhl4Z/zwg8PWEYZ99I
+	 aVN/ROXf04q1E1JNWMv5wlBtNyL6Wrve7LBaSCpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Justin Iurman <justin.iurman@uliege.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 034/122] ext4: correct the hole length returned by ext4_map_blocks()
+Subject: [PATCH 6.6 284/299] Fix write to cloned skb in ipv6_hop_ioam()
 Date: Tue, 27 Feb 2024 14:26:35 +0100
-Message-ID: <20240227131559.822357783@linuxfoundation.org>
+Message-ID: <20240227131634.817527902@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,191 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Justin Iurman <justin.iurman@uliege.be>
 
-[ Upstream commit 6430dea07e85958fa87d0276c0c4388dd51e630b ]
+[ Upstream commit f198d933c2e4f8f89e0620fbaf1ea7eac384a0eb ]
 
-In ext4_map_blocks(), if we can't find a range of mapping in the
-extents cache, we are calling ext4_ext_map_blocks() to search the real
-path and ext4_ext_determine_hole() to determine the hole range. But if
-the querying range was partially or completely overlaped by a delalloc
-extent, we can't find it in the real extent path, so the returned hole
-length could be incorrect.
+ioam6_fill_trace_data() writes inside the skb payload without ensuring
+it's writeable (e.g., not cloned). This function is called both from the
+input and output path. The output path (ioam6_iptunnel) already does the
+check. This commit provides a fix for the input path, inside
+ipv6_hop_ioam(). It also updates ip6_parse_tlv() to refresh the network
+header pointer ("nh") when returning from ipv6_hop_ioam().
 
-Fortunately, ext4_ext_put_gap_in_cache() have already handle delalloc
-extent, but it searches start from the expanded hole_start, doesn't
-start from the querying range, so the delalloc extent found could not be
-the one that overlaped the querying range, plus, it also didn't adjust
-the hole length. Let's just remove ext4_ext_put_gap_in_cache(), handle
-delalloc and insert adjusted hole extent in ext4_ext_determine_hole().
-
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Suggested-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240127015825.1608160-4-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 9ee11f0fff20 ("ipv6: ioam: Data plane support for Pre-allocated Trace")
+Reported-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Justin Iurman <justin.iurman@uliege.be>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c | 111 +++++++++++++++++++++++++++++-----------------
- 1 file changed, 70 insertions(+), 41 deletions(-)
+ net/ipv6/exthdrs.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index 193b13630ac1e..68aa8760cb465 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -2222,7 +2222,7 @@ static int ext4_fill_es_cache_info(struct inode *inode,
- 
- 
- /*
-- * ext4_ext_determine_hole - determine hole around given block
-+ * ext4_ext_find_hole - find hole around given block according to the given path
-  * @inode:	inode we lookup in
-  * @path:	path in extent tree to @lblk
-  * @lblk:	pointer to logical block around which we want to determine hole
-@@ -2234,9 +2234,9 @@ static int ext4_fill_es_cache_info(struct inode *inode,
-  * The function returns the length of a hole starting at @lblk. We update @lblk
-  * to the beginning of the hole if we managed to find it.
-  */
--static ext4_lblk_t ext4_ext_determine_hole(struct inode *inode,
--					   struct ext4_ext_path *path,
--					   ext4_lblk_t *lblk)
-+static ext4_lblk_t ext4_ext_find_hole(struct inode *inode,
-+				      struct ext4_ext_path *path,
-+				      ext4_lblk_t *lblk)
- {
- 	int depth = ext_depth(inode);
- 	struct ext4_extent *ex;
-@@ -2263,30 +2263,6 @@ static ext4_lblk_t ext4_ext_determine_hole(struct inode *inode,
- 	return len;
- }
- 
--/*
-- * ext4_ext_put_gap_in_cache:
-- * calculate boundaries of the gap that the requested block fits into
-- * and cache this gap
-- */
--static void
--ext4_ext_put_gap_in_cache(struct inode *inode, ext4_lblk_t hole_start,
--			  ext4_lblk_t hole_len)
--{
--	struct extent_status es;
--
--	ext4_es_find_extent_range(inode, &ext4_es_is_delayed, hole_start,
--				  hole_start + hole_len - 1, &es);
--	if (es.es_len) {
--		/* There's delayed extent containing lblock? */
--		if (es.es_lblk <= hole_start)
--			return;
--		hole_len = min(es.es_lblk - hole_start, hole_len);
--	}
--	ext_debug(inode, " -> %u:%u\n", hole_start, hole_len);
--	ext4_es_insert_extent(inode, hole_start, hole_len, ~0,
--			      EXTENT_STATUS_HOLE);
--}
--
- /*
-  * ext4_ext_rm_idx:
-  * removes index from the index block.
-@@ -4058,6 +4034,69 @@ static int get_implied_cluster_alloc(struct super_block *sb,
- 	return 0;
- }
- 
-+/*
-+ * Determine hole length around the given logical block, first try to
-+ * locate and expand the hole from the given @path, and then adjust it
-+ * if it's partially or completely converted to delayed extents, insert
-+ * it into the extent cache tree if it's indeed a hole, finally return
-+ * the length of the determined extent.
-+ */
-+static ext4_lblk_t ext4_ext_determine_insert_hole(struct inode *inode,
-+						  struct ext4_ext_path *path,
-+						  ext4_lblk_t lblk)
-+{
-+	ext4_lblk_t hole_start, len;
-+	struct extent_status es;
+diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
+index 4952ae7924505..02e9ffb63af19 100644
+--- a/net/ipv6/exthdrs.c
++++ b/net/ipv6/exthdrs.c
+@@ -177,6 +177,8 @@ static bool ip6_parse_tlv(bool hopbyhop,
+ 				case IPV6_TLV_IOAM:
+ 					if (!ipv6_hop_ioam(skb, off))
+ 						return false;
 +
-+	hole_start = lblk;
-+	len = ext4_ext_find_hole(inode, path, &hole_start);
-+again:
-+	ext4_es_find_extent_range(inode, &ext4_es_is_delayed, hole_start,
-+				  hole_start + len - 1, &es);
-+	if (!es.es_len)
-+		goto insert_hole;
-+
-+	/*
-+	 * There's a delalloc extent in the hole, handle it if the delalloc
-+	 * extent is in front of, behind and straddle the queried range.
-+	 */
-+	if (lblk >= es.es_lblk + es.es_len) {
-+		/*
-+		 * The delalloc extent is in front of the queried range,
-+		 * find again from the queried start block.
-+		 */
-+		len -= lblk - hole_start;
-+		hole_start = lblk;
-+		goto again;
-+	} else if (in_range(lblk, es.es_lblk, es.es_len)) {
-+		/*
-+		 * The delalloc extent containing lblk, it must have been
-+		 * added after ext4_map_blocks() checked the extent status
-+		 * tree, adjust the length to the delalloc extent's after
-+		 * lblk.
-+		 */
-+		len = es.es_lblk + es.es_len - lblk;
-+		return len;
-+	} else {
-+		/*
-+		 * The delalloc extent is partially or completely behind
-+		 * the queried range, update hole length until the
-+		 * beginning of the delalloc extent.
-+		 */
-+		len = min(es.es_lblk - hole_start, len);
-+	}
-+
-+insert_hole:
-+	/* Put just found gap into cache to speed up subsequent requests */
-+	ext_debug(inode, " -> %u:%u\n", hole_start, len);
-+	ext4_es_insert_extent(inode, hole_start, len, ~0, EXTENT_STATUS_HOLE);
-+
-+	/* Update hole_len to reflect hole size after lblk */
-+	if (hole_start != lblk)
-+		len -= lblk - hole_start;
-+
-+	return len;
-+}
++					nh = skb_network_header(skb);
+ 					break;
+ 				case IPV6_TLV_JUMBO:
+ 					if (!ipv6_hop_jumbo(skb, off))
+@@ -943,6 +945,14 @@ static bool ipv6_hop_ioam(struct sk_buff *skb, int optoff)
+ 		if (!skb_valid_dst(skb))
+ 			ip6_route_input(skb);
  
- /*
-  * Block allocation/map/preallocation routine for extents based files
-@@ -4175,22 +4214,12 @@ int ext4_ext_map_blocks(handle_t *handle, struct inode *inode,
- 	 * we couldn't try to create block if create flag is zero
- 	 */
- 	if ((flags & EXT4_GET_BLOCKS_CREATE) == 0) {
--		ext4_lblk_t hole_start, hole_len;
-+		ext4_lblk_t len;
- 
--		hole_start = map->m_lblk;
--		hole_len = ext4_ext_determine_hole(inode, path, &hole_start);
--		/*
--		 * put just found gap into cache to speed up
--		 * subsequent requests
--		 */
--		ext4_ext_put_gap_in_cache(inode, hole_start, hole_len);
-+		len = ext4_ext_determine_insert_hole(inode, path, map->m_lblk);
- 
--		/* Update hole_len to reflect hole size after map->m_lblk */
--		if (hole_start != map->m_lblk)
--			hole_len -= map->m_lblk - hole_start;
- 		map->m_pblk = 0;
--		map->m_len = min_t(unsigned int, map->m_len, hole_len);
--
-+		map->m_len = min_t(unsigned int, map->m_len, len);
- 		goto out;
- 	}
- 
++		/* About to mangle packet header */
++		if (skb_ensure_writable(skb, optoff + 2 + hdr->opt_len))
++			goto drop;
++
++		/* Trace pointer may have changed */
++		trace = (struct ioam6_trace_hdr *)(skb_network_header(skb)
++						   + optoff + sizeof(*hdr));
++
+ 		ioam6_fill_trace_data(skb, ns, trace, true);
+ 		break;
+ 	default:
 -- 
 2.43.0
 
