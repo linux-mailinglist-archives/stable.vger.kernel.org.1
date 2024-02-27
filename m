@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C33F8695EC
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25CC18694BA
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:55:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0F811F2C122
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:06:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BB761C2694C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:55:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AFD313B798;
-	Tue, 27 Feb 2024 14:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60EF513DBB3;
+	Tue, 27 Feb 2024 13:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TF8UMXzU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tsd0wGVA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A4C13B7AB;
-	Tue, 27 Feb 2024 14:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD7B13B78A;
+	Tue, 27 Feb 2024 13:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042776; cv=none; b=fuQ/F9iJB8GaeawNW7pxD2RrtjE0ZJ1EkqY8eC0XmozRyaYwNVwhv5C2Uu9eoIUw/WMBQM33jMTgr90tpVIvR4TZ1D5igJh04kuBawNu4LFCcHXJK+kFM0DMLQ6gxURfQn5UzMH8v7Opd9oc+oQOnzAfz+WEH54M0bMZtf8PL5M=
+	t=1709042138; cv=none; b=ofeWQIS8qQsoIbslQvKjpK0W0ZZMqCeDqCi88pcOdfPO61yFAnge9FDPS45CZ14qJJr+UlXoLFMvlLSn5ChxTfaJnRw9ixG4lFrzmKE40Cx5W6dXB00pNgEm6FJ+Pv5vri2Ul78qwhWtz+uXIbowGgVIG28Hd7phUbAGWzGN46Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042776; c=relaxed/simple;
-	bh=xVnFJZSaC7ph63TLaJSsZCQYeiYQY2xVA1NeZ/BK9vA=;
+	s=arc-20240116; t=1709042138; c=relaxed/simple;
+	bh=Qy43K0awz/mmBXlLpTnV42oC2WbzIw48xEAwAk/a9ns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=coNde7TUZ8Y25vYdQvn4RZ3ws9oCgtjXEkI5eiWDGm/bBlNJSX5UbRDa8vYu6npq6hLrk5PKSfmGs4h4vbzkrp0sVRn9tht+kwVjMPz8CbRYW+Xeq3ijQ234dQWiC3kheHuBbdFlQLYVAMBdNT3usr5UsJ3trCOfV9KzyEQWhCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TF8UMXzU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD593C433F1;
-	Tue, 27 Feb 2024 14:06:15 +0000 (UTC)
+	 MIME-Version; b=He2epGG+ZR8Z2Yuw7yU3du4pjxviaQw094cWOamhBsoCy/Lkues8VoXGipbXdqX12o3agAoxuo5cNMPPe/7OHaI1h6i0KKC2Ix5egvzQxlhZ7nKP9GnbC40HHTzJcyDp9gHY3zCx5Zs9m+K6erm/pmiIQIeIMnTcETdi7xKtig4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tsd0wGVA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA22C433F1;
+	Tue, 27 Feb 2024 13:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042776;
-	bh=xVnFJZSaC7ph63TLaJSsZCQYeiYQY2xVA1NeZ/BK9vA=;
+	s=korg; t=1709042138;
+	bh=Qy43K0awz/mmBXlLpTnV42oC2WbzIw48xEAwAk/a9ns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TF8UMXzU/uBte6eMvibHN9jWGI2CPpP1qDd33U/Aw6hbbEwGproB8aKmQHXJfbOhf
-	 UgbR/S5cP/xpVpfPK3QvcKi3si66HTgyApTBPPw3MAyGiaKVTJEiHnNjHeoQ0wFddR
-	 Z2LrmBHFAFEV8AjHlNweGjFh1its0D/aZj1xw1Ok=
+	b=Tsd0wGVAn0pv3w3daWlJhah4JXqn3k6prubo/W2ERJdJIjgdZSD7HzQ3ZxbqFM3Dn
+	 xpdKKREAv8mMcnDf959a8942VCrTikmFCFx1+tCZ4z+q2WNk2HsJ4+PHKrY8+pEGOO
+	 Fc5BkgICW//zlmStSQsIM2d9OxjAmBZb0GVB7e2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 116/245] clk: imx: avoid memory leak
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 193/299] mptcp: fix lockless access in subflow ULP diag
 Date: Tue, 27 Feb 2024 14:25:04 +0100
-Message-ID: <20240227131619.002730554@linuxfoundation.org>
+Message-ID: <20240227131632.032246466@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit f4419db4086e8c31821da14140e81498516a3c75 ]
+commit b8adb69a7d29c2d33eb327bca66476fb6066516b upstream.
 
-In case imx_register_uart_clocks return early, the imx_uart_clocks
-memory will be no freed. So execute kfree always to avoid memory leak.
+Since the introduction of the subflow ULP diag interface, the
+dump callback accessed all the subflow data with lockless.
 
-Fixes: 379c9a24cc23 ("clk: imx: Fix reparenting of UARTs not associated with stdout")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20230104110032.1220721-2-peng.fan@oss.nxp.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+We need either to annotate all the read and write operation accordingly,
+or acquire the subflow socket lock. Let's do latter, even if slower, to
+avoid a diffstat havoc.
+
+Fixes: 5147dfb50832 ("mptcp: allow dumping subflow context to userspace")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/imx/clk.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/net/tcp.h  |    2 +-
+ net/mptcp/diag.c   |    6 +++++-
+ net/tls/tls_main.c |    2 +-
+ 3 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/imx/clk.c b/drivers/clk/imx/clk.c
-index 7cc669934253a..d4cf0c7045ab2 100644
---- a/drivers/clk/imx/clk.c
-+++ b/drivers/clk/imx/clk.c
-@@ -201,9 +201,10 @@ static int __init imx_clk_disable_uart(void)
- 			clk_disable_unprepare(imx_uart_clocks[i]);
- 			clk_put(imx_uart_clocks[i]);
- 		}
--		kfree(imx_uart_clocks);
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -2343,7 +2343,7 @@ struct tcp_ulp_ops {
+ 	/* cleanup ulp */
+ 	void (*release)(struct sock *sk);
+ 	/* diagnostic */
+-	int (*get_info)(const struct sock *sk, struct sk_buff *skb);
++	int (*get_info)(struct sock *sk, struct sk_buff *skb);
+ 	size_t (*get_info_size)(const struct sock *sk);
+ 	/* clone ulp */
+ 	void (*clone)(const struct request_sock *req, struct sock *newsk,
+--- a/net/mptcp/diag.c
++++ b/net/mptcp/diag.c
+@@ -13,17 +13,19 @@
+ #include <uapi/linux/mptcp.h>
+ #include "protocol.h"
+ 
+-static int subflow_get_info(const struct sock *sk, struct sk_buff *skb)
++static int subflow_get_info(struct sock *sk, struct sk_buff *skb)
+ {
+ 	struct mptcp_subflow_context *sf;
+ 	struct nlattr *start;
+ 	u32 flags = 0;
++	bool slow;
+ 	int err;
+ 
+ 	start = nla_nest_start_noflag(skb, INET_ULP_INFO_MPTCP);
+ 	if (!start)
+ 		return -EMSGSIZE;
+ 
++	slow = lock_sock_fast(sk);
+ 	rcu_read_lock();
+ 	sf = rcu_dereference(inet_csk(sk)->icsk_ulp_data);
+ 	if (!sf) {
+@@ -69,11 +71,13 @@ static int subflow_get_info(const struct
  	}
  
-+	kfree(imx_uart_clocks);
-+
+ 	rcu_read_unlock();
++	unlock_sock_fast(sk, slow);
+ 	nla_nest_end(skb, start);
+ 	return 0;
+ 
+ nla_failure:
+ 	rcu_read_unlock();
++	unlock_sock_fast(sk, slow);
+ 	nla_nest_cancel(skb, start);
+ 	return err;
+ }
+--- a/net/tls/tls_main.c
++++ b/net/tls/tls_main.c
+@@ -1001,7 +1001,7 @@ static u16 tls_user_config(struct tls_co
  	return 0;
  }
- late_initcall_sync(imx_clk_disable_uart);
--- 
-2.43.0
-
+ 
+-static int tls_get_info(const struct sock *sk, struct sk_buff *skb)
++static int tls_get_info(struct sock *sk, struct sk_buff *skb)
+ {
+ 	u16 version, cipher_type;
+ 	struct tls_context *ctx;
 
 
 
