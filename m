@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C2AD869458
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:53:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A8CC8693FC
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FDC4B2A537
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:42:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33D3F284532
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25DF13DBBC;
-	Tue, 27 Feb 2024 13:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C4EF146910;
+	Tue, 27 Feb 2024 13:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ne//Gnwq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MhkuTSts"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614332F2D;
-	Tue, 27 Feb 2024 13:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE62D145B02;
+	Tue, 27 Feb 2024 13:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041314; cv=none; b=h84G0JQcZB+NljFGsWj8BCvs9Tzan4Hc9jjkO0hv688dvoJCnAXEPcCHAmnWBEbh44OQ/aUu56pcDEVSur+jPWhF4nxBzSPn5EuWj57OTx+U/kSmaEqgDEVYvKNPuIM5JNi5X1UpdbBiZU7NWtIZEItqv7ySDfkPj1NWYquA+9o=
+	t=1709041707; cv=none; b=Q+gHj0+3gGLC21VXwiCLUv6sfRqNHwg4veD/G6oOGpAymOczF1cj/T/hFu+ECosxL/kATIst2oum001phY2jcTZpqawz9f5qKZFV8nsHFv/4vDyl6ORn78oz9Jo0KIjX1vCgoHCvu/C1cFM3JASKOLQkzb4KWKeq70O0zBWM/+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041314; c=relaxed/simple;
-	bh=8Q0VOCrZ6nQyJ5byS3BBZfqw5hsOMUl4e2lBG/yBmB8=;
+	s=arc-20240116; t=1709041707; c=relaxed/simple;
+	bh=jEgZpCrDuxzsAF/NxbwFH1mJL2GqAHWaYBlUN2tv1SM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mXdpfyClG7mg1mfQFIoTU/UYrE0gmGeSDHJCnejM0dd0ewUCWc/NW0YdGzUbRyFwlMC93OZ46ejENjmrr4mdyeNnJ8W+67FaYHb/VEexz8nC6hkyepuwK6pO2yZpBcJMpJN4Zlndm0MUf6jUUJiulJm3RqRG9dvWy5KoZuL7KTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ne//Gnwq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4205C433F1;
-	Tue, 27 Feb 2024 13:41:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VctB6S/ruM0sh0gSVRdMK4gLhwwCYDLoETlJoSOxh2hxLhj7Nb01P99m/hkZ7+rDO9NL81sF7UTWTbnFhvMeSEdkqAA+YnfyswrZChSK2o99JeMq+KPE9ddHbWgD3NvOdWwcOBpLYhY4+eHhB2OMNK43IUsh2LvnfImnJpthSNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MhkuTSts; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A54C43390;
+	Tue, 27 Feb 2024 13:48:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041314;
-	bh=8Q0VOCrZ6nQyJ5byS3BBZfqw5hsOMUl4e2lBG/yBmB8=;
+	s=korg; t=1709041706;
+	bh=jEgZpCrDuxzsAF/NxbwFH1mJL2GqAHWaYBlUN2tv1SM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ne//GnwqadDlTGLfToR8w61WmqUZO5eynJsxEgOdrTyMcvIjluRxs9at2ng90z56L
-	 n2ZuDU7vKdh30T6pICyeA+eTz2RKsPaypP0cd5Z3zBp20hVO42XEPyJLsRhC91xp0n
-	 PPNaK5WmsrW1nrldRrZMMbNd/e0wWF7Yj9xY+tCQ=
+	b=MhkuTStsLvRSLkPVK6f6Z6yM1O6JJv7xhwPgiWjrUzAhUoVKWFYvhc9WUD/M1c0hq
+	 MVvLlWhIYlELE/FoRqnOXRUzVxx1Bwcf2lhN3iL0Hr7gxJM9HWoc1pGOB63x5P5Nm4
+	 oLi/Zvd+J704Ggesgrfkez3hbzoVAUZhLFptTrc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Rui Salvaterra <rsalvaterra@gmail.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 295/334] octeontx2-af: Consider the action set by PF
+Subject: [PATCH 6.6 042/299] ALSA: hda: Increase default bdl_pos_adj for Apollo Lake
 Date: Tue, 27 Feb 2024 14:22:33 +0100
-Message-ID: <20240227131640.564029844@linuxfoundation.org>
+Message-ID: <20240227131627.341670644@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Subbaraya Sundeep <sbhatta@marvell.com>
+From: Rui Salvaterra <rsalvaterra@gmail.com>
 
-[ Upstream commit 3b1ae9b71c2a97f848b00fb085a2bd29bddbe8d9 ]
+[ Upstream commit 56beedc88405fd8022edfd1c2e63d1bc6c95efcb ]
 
-AF reserves MCAM entries for each PF, VF present in the
-system and populates the entry with DMAC and action with
-default RSS so that basic packet I/O works. Since PF/VF is
-not aware of the RSS action installed by AF, AF only fixup
-the actions of the rules installed by PF/VF with corresponding
-default RSS action. This worked well for rules installed by
-PF/VF for features like RX VLAN offload and DMAC filters but
-rules involving action like drop/forward to queue are also
-getting modified by AF. Hence fix it by setting the default
-RSS action only if requested by PF/VF.
+Apollo Lake seems to also suffer from IRQ timing issues. After being up for ~4
+minutes, a Pentium N4200 system ends up falling back to workqueue-based IRQ
+handling:
 
-Fixes: 967db3529eca ("octeontx2-af: add support for multicast/promisc packet replication feature")
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+[  208.019906] snd_hda_intel 0000:00:0e.0: IRQ timing workaround is activated
+for card #0. Suggest a bigger bdl_pos_adj.
+
+Unfortunately, the Baytrail and Braswell workaround value of 32 samples isn't
+enough to fix the issue here. Default to 64 samples.
+
+Signed-off-by: Rui Salvaterra <rsalvaterra@gmail.com>
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Link: https://lore.kernel.org/r/20240122114512.55808-3-rsalvaterra@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/pci/hda/hda_intel.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-index 3784347b6fd88..55639c133dd02 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-@@ -437,6 +437,10 @@ static void npc_fixup_vf_rule(struct rvu *rvu, struct npc_mcam *mcam,
- 			return;
+diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
+index 1596157556862..a6a9d353fe635 100644
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -1738,6 +1738,8 @@ static int default_bdl_pos_adj(struct azx *chip)
+ 		case PCI_DEVICE_ID_INTEL_HDA_BYT:
+ 		case PCI_DEVICE_ID_INTEL_HDA_BSW:
+ 			return 32;
++		case PCI_DEVICE_ID_INTEL_HDA_APL:
++			return 64;
+ 		}
  	}
  
-+	/* AF modifies given action iff PF/VF has requested for it */
-+	if ((entry->action & 0xFULL) != NIX_RX_ACTION_DEFAULT)
-+		return;
-+
- 	/* copy VF default entry action to the VF mcam entry */
- 	rx_action = npc_get_default_entry_action(rvu, mcam, blkaddr,
- 						 target_func);
 -- 
 2.43.0
 
