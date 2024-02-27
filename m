@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-24970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDD9E86971B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:18:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1BEF869535
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:59:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0ABFB1C21D49
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:18:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C680A1C236AE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:59:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A0A813DB92;
-	Tue, 27 Feb 2024 14:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34D5813DB92;
+	Tue, 27 Feb 2024 13:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qewofy37"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ENo6djFO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C66878B61;
-	Tue, 27 Feb 2024 14:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E9354BD4;
+	Tue, 27 Feb 2024 13:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043495; cv=none; b=rQbN1k0+Ne6T7o2/+LYWkHqRpDHregoD4YnJO+3U7kN0qW3wYg2qPTd+iKMem9Uh9N3/eJAx4loZs6v9YdhvV8f3hF8b5ZNHR/lSXP+zrIQ7L09MmKwCzRmv7RENpUeVV6Jl43eh2rExVvrc+XUG0Yj9xldBfsXdql7b/IasMiQ=
+	t=1709042391; cv=none; b=c3oTGYL+ZCnUTUD9ySzH3xvDCMA98ifO7sn3VB7Z2IaUGHMZfQOgJ8tqeqyUTYhHA7HttoZoKL5xInGAvRQiWxG2hE7IWyKFNs31OUSFPhSyxMpVTPsJ6E6WfWSWR6ghAsWvGDyHmA39YjOPOt3tI2L7NbWkPafozhpc0ueNTLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043495; c=relaxed/simple;
-	bh=ZPIrUjQfaRp5Kf7S9ttsPY9vJrCa8wqieksMJiRDzVw=;
+	s=arc-20240116; t=1709042391; c=relaxed/simple;
+	bh=OOH8kjT2t3HLLGTzChpx7+wgcAbWtVFCZosJrok0l7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=beHdhk6vw6WEvuQ24kKmsEs0AfDXCV9tILsy02zuOL1d6fBl+4pApP9yPS0mgvWdDoW7elbVGCWhClYmkMw8zeAMr6lvXklYMIJRL7ilaiJxi0l583edlDxnh/C5b4AZVqQfaaLCOv/E2HBE7OebqxS8nX2giCawPDMU0D+8jl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qewofy37; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E201C433F1;
-	Tue, 27 Feb 2024 14:18:14 +0000 (UTC)
+	 MIME-Version; b=MpKbWYvajenAzE7K7ibtUQmZ2fcWxE/m0eFNOh0LBjyLJ7gcxub0qZrs4LkKfeN11bkGBa+ZcI6RcFRo9h7+8/EEJe9dZxZsdsELqjtejTVPeln0ONp2AtJNQotmcQmj3tFQ2PyhLhry1cDpN/lXPebw3JlJjVFStW5bnyhwER8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ENo6djFO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 716C8C433F1;
+	Tue, 27 Feb 2024 13:59:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043495;
-	bh=ZPIrUjQfaRp5Kf7S9ttsPY9vJrCa8wqieksMJiRDzVw=;
+	s=korg; t=1709042390;
+	bh=OOH8kjT2t3HLLGTzChpx7+wgcAbWtVFCZosJrok0l7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qewofy37oUbWTWnYpsRRdve5Pwq14aHQFLXC6JJ2DWECUniGJP7nD82qIW+zbYJ9J
-	 JXHgvVE1hF6jncHWc1pRkZai4NOuQAtuM2yRd6ockH+ff9bjhNNpHKCo3Enth7Hi3o
-	 sHwlTNG14f7XScleHv/AdusamHmQyEFlyiJrapAM=
+	b=ENo6djFOB373ZkgJ2nidZ0yqA6kPXGl2XTxL2o6Z/Dyq1VVslkC39loze0kKWt+L/
+	 YaZu41AdHRkbiC/Gufa2rGjf1uGCJyIPUgB9YCz3At4s16NzwUfqF2Is1bf6W719Vu
+	 5Q22qCJgRrrIjiuvugrfRHjJRHofhqtf6ViwM18s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	David Howells <dhowells@redhat.com>,
-	Jingbo Xu <jefflexu@linux.alibaba.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.1 101/195] cachefiles: fix memory leak in cachefiles_add_cache()
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 251/299] ata: ahci_ceva: fix error handling for Xilinx GT PHY support
 Date: Tue, 27 Feb 2024 14:26:02 +0100
-Message-ID: <20240227131613.808225072@linuxfoundation.org>
+Message-ID: <20240227131633.800675478@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +63,250 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
 
-commit e21a2f17566cbd64926fb8f16323972f7a064444 upstream.
+[ Upstream commit 26c8404e162b43dddcb037ba2d0cb58c0ed60aab ]
 
-The following memory leak was reported after unbinding /dev/cachefiles:
+Platform clock and phy error resources are not cleaned up in Xilinx GT PHY
+error path.
 
-==================================================================
-unreferenced object 0xffff9b674176e3c0 (size 192):
-  comm "cachefilesd2", pid 680, jiffies 4294881224
-  hex dump (first 32 bytes):
-    01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace (crc ea38a44b):
-    [<ffffffff8eb8a1a5>] kmem_cache_alloc+0x2d5/0x370
-    [<ffffffff8e917f86>] prepare_creds+0x26/0x2e0
-    [<ffffffffc002eeef>] cachefiles_determine_cache_security+0x1f/0x120
-    [<ffffffffc00243ec>] cachefiles_add_cache+0x13c/0x3a0
-    [<ffffffffc0025216>] cachefiles_daemon_write+0x146/0x1c0
-    [<ffffffff8ebc4a3b>] vfs_write+0xcb/0x520
-    [<ffffffff8ebc5069>] ksys_write+0x69/0xf0
-    [<ffffffff8f6d4662>] do_syscall_64+0x72/0x140
-    [<ffffffff8f8000aa>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
-==================================================================
+To fix introduce the function ceva_ahci_platform_enable_resources() which
+is a customized version of ahci_platform_enable_resources() and inline with
+SATA IP programming sequence it does:
 
-Put the reference count of cache_cred in cachefiles_daemon_unbind() to
-fix the problem. And also put cache_cred in cachefiles_add_cache() error
-branch to avoid memory leaks.
+- Assert SATA reset
+- Program PS GTR phy
+- Bring SATA by de-asserting the reset
+- Wait for GT lane PLL to be locked
 
-Fixes: 9ae326a69004 ("CacheFiles: A cache that backs onto a mounted filesystem")
-CC: stable@vger.kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240217081431.796809-1-libaokun1@huawei.com
-Acked-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ceva_ahci_platform_enable_resources() is also used in the resume path
+as the same SATA programming sequence (as in probe) should be followed.
+Also cleanup the mixed usage of ahci_platform_enable_resources() and custom
+implementation in the probe function as both are not required.
+
+Fixes: 9a9d3abe24bb ("ata: ahci: ceva: Update the driver to support xilinx GT phy")
+Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cachefiles/cache.c  |    2 ++
- fs/cachefiles/daemon.c |    1 +
- 2 files changed, 3 insertions(+)
+ drivers/ata/ahci_ceva.c | 125 +++++++++++++++++++++++++---------------
+ 1 file changed, 79 insertions(+), 46 deletions(-)
 
---- a/fs/cachefiles/cache.c
-+++ b/fs/cachefiles/cache.c
-@@ -168,6 +168,8 @@ error_unsupported:
- 	dput(root);
- error_open_root:
- 	cachefiles_end_secure(cache, saved_cred);
-+	put_cred(cache->cache_cred);
-+	cache->cache_cred = NULL;
- error_getsec:
- 	fscache_relinquish_cache(cache_cookie);
- 	cache->cache = NULL;
---- a/fs/cachefiles/daemon.c
-+++ b/fs/cachefiles/daemon.c
-@@ -805,6 +805,7 @@ static void cachefiles_daemon_unbind(str
- 	cachefiles_put_directory(cache->graveyard);
- 	cachefiles_put_directory(cache->store);
- 	mntput(cache->mnt);
-+	put_cred(cache->cache_cred);
+diff --git a/drivers/ata/ahci_ceva.c b/drivers/ata/ahci_ceva.c
+index 64f7f7d6ba84e..11a2c199a7c24 100644
+--- a/drivers/ata/ahci_ceva.c
++++ b/drivers/ata/ahci_ceva.c
+@@ -88,7 +88,6 @@ struct ceva_ahci_priv {
+ 	u32 axicc;
+ 	bool is_cci_enabled;
+ 	int flags;
+-	struct reset_control *rst;
+ };
  
- 	kfree(cache->rootdirname);
- 	kfree(cache->secctx);
+ static unsigned int ceva_ahci_read_id(struct ata_device *dev,
+@@ -189,6 +188,60 @@ static const struct scsi_host_template ahci_platform_sht = {
+ 	AHCI_SHT(DRV_NAME),
+ };
+ 
++static int ceva_ahci_platform_enable_resources(struct ahci_host_priv *hpriv)
++{
++	int rc, i;
++
++	rc = ahci_platform_enable_regulators(hpriv);
++	if (rc)
++		return rc;
++
++	rc = ahci_platform_enable_clks(hpriv);
++	if (rc)
++		goto disable_regulator;
++
++	/* Assert the controller reset */
++	rc = ahci_platform_assert_rsts(hpriv);
++	if (rc)
++		goto disable_clks;
++
++	for (i = 0; i < hpriv->nports; i++) {
++		rc = phy_init(hpriv->phys[i]);
++		if (rc)
++			goto disable_rsts;
++	}
++
++	/* De-assert the controller reset */
++	ahci_platform_deassert_rsts(hpriv);
++
++	for (i = 0; i < hpriv->nports; i++) {
++		rc = phy_power_on(hpriv->phys[i]);
++		if (rc) {
++			phy_exit(hpriv->phys[i]);
++			goto disable_phys;
++		}
++	}
++
++	return 0;
++
++disable_rsts:
++	ahci_platform_deassert_rsts(hpriv);
++
++disable_phys:
++	while (--i >= 0) {
++		phy_power_off(hpriv->phys[i]);
++		phy_exit(hpriv->phys[i]);
++	}
++
++disable_clks:
++	ahci_platform_disable_clks(hpriv);
++
++disable_regulator:
++	ahci_platform_disable_regulators(hpriv);
++
++	return rc;
++}
++
+ static int ceva_ahci_probe(struct platform_device *pdev)
+ {
+ 	struct device_node *np = pdev->dev.of_node;
+@@ -203,47 +256,19 @@ static int ceva_ahci_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	cevapriv->ahci_pdev = pdev;
+-
+-	cevapriv->rst = devm_reset_control_get_optional_exclusive(&pdev->dev,
+-								  NULL);
+-	if (IS_ERR(cevapriv->rst))
+-		dev_err_probe(&pdev->dev, PTR_ERR(cevapriv->rst),
+-			      "failed to get reset\n");
+-
+ 	hpriv = ahci_platform_get_resources(pdev, 0);
+ 	if (IS_ERR(hpriv))
+ 		return PTR_ERR(hpriv);
+ 
+-	if (!cevapriv->rst) {
+-		rc = ahci_platform_enable_resources(hpriv);
+-		if (rc)
+-			return rc;
+-	} else {
+-		int i;
++	hpriv->rsts = devm_reset_control_get_optional_exclusive(&pdev->dev,
++								NULL);
++	if (IS_ERR(hpriv->rsts))
++		return dev_err_probe(&pdev->dev, PTR_ERR(hpriv->rsts),
++				     "failed to get reset\n");
+ 
+-		rc = ahci_platform_enable_clks(hpriv);
+-		if (rc)
+-			return rc;
+-		/* Assert the controller reset */
+-		reset_control_assert(cevapriv->rst);
+-
+-		for (i = 0; i < hpriv->nports; i++) {
+-			rc = phy_init(hpriv->phys[i]);
+-			if (rc)
+-				return rc;
+-		}
+-
+-		/* De-assert the controller reset */
+-		reset_control_deassert(cevapriv->rst);
+-
+-		for (i = 0; i < hpriv->nports; i++) {
+-			rc = phy_power_on(hpriv->phys[i]);
+-			if (rc) {
+-				phy_exit(hpriv->phys[i]);
+-				return rc;
+-			}
+-		}
+-	}
++	rc = ceva_ahci_platform_enable_resources(hpriv);
++	if (rc)
++		return rc;
+ 
+ 	if (of_property_read_bool(np, "ceva,broken-gen2"))
+ 		cevapriv->flags = CEVA_FLAG_BROKEN_GEN2;
+@@ -252,52 +277,60 @@ static int ceva_ahci_probe(struct platform_device *pdev)
+ 	if (of_property_read_u8_array(np, "ceva,p0-cominit-params",
+ 					(u8 *)&cevapriv->pp2c[0], 4) < 0) {
+ 		dev_warn(dev, "ceva,p0-cominit-params property not defined\n");
+-		return -EINVAL;
++		rc = -EINVAL;
++		goto disable_resources;
+ 	}
+ 
+ 	if (of_property_read_u8_array(np, "ceva,p1-cominit-params",
+ 					(u8 *)&cevapriv->pp2c[1], 4) < 0) {
+ 		dev_warn(dev, "ceva,p1-cominit-params property not defined\n");
+-		return -EINVAL;
++		rc = -EINVAL;
++		goto disable_resources;
+ 	}
+ 
+ 	/* Read OOB timing value for COMWAKE from device-tree*/
+ 	if (of_property_read_u8_array(np, "ceva,p0-comwake-params",
+ 					(u8 *)&cevapriv->pp3c[0], 4) < 0) {
+ 		dev_warn(dev, "ceva,p0-comwake-params property not defined\n");
+-		return -EINVAL;
++		rc = -EINVAL;
++		goto disable_resources;
+ 	}
+ 
+ 	if (of_property_read_u8_array(np, "ceva,p1-comwake-params",
+ 					(u8 *)&cevapriv->pp3c[1], 4) < 0) {
+ 		dev_warn(dev, "ceva,p1-comwake-params property not defined\n");
+-		return -EINVAL;
++		rc = -EINVAL;
++		goto disable_resources;
+ 	}
+ 
+ 	/* Read phy BURST timing value from device-tree */
+ 	if (of_property_read_u8_array(np, "ceva,p0-burst-params",
+ 					(u8 *)&cevapriv->pp4c[0], 4) < 0) {
+ 		dev_warn(dev, "ceva,p0-burst-params property not defined\n");
+-		return -EINVAL;
++		rc = -EINVAL;
++		goto disable_resources;
+ 	}
+ 
+ 	if (of_property_read_u8_array(np, "ceva,p1-burst-params",
+ 					(u8 *)&cevapriv->pp4c[1], 4) < 0) {
+ 		dev_warn(dev, "ceva,p1-burst-params property not defined\n");
+-		return -EINVAL;
++		rc = -EINVAL;
++		goto disable_resources;
+ 	}
+ 
+ 	/* Read phy RETRY interval timing value from device-tree */
+ 	if (of_property_read_u16_array(np, "ceva,p0-retry-params",
+ 					(u16 *)&cevapriv->pp5c[0], 2) < 0) {
+ 		dev_warn(dev, "ceva,p0-retry-params property not defined\n");
+-		return -EINVAL;
++		rc = -EINVAL;
++		goto disable_resources;
+ 	}
+ 
+ 	if (of_property_read_u16_array(np, "ceva,p1-retry-params",
+ 					(u16 *)&cevapriv->pp5c[1], 2) < 0) {
+ 		dev_warn(dev, "ceva,p1-retry-params property not defined\n");
+-		return -EINVAL;
++		rc = -EINVAL;
++		goto disable_resources;
+ 	}
+ 
+ 	/*
+@@ -335,7 +368,7 @@ static int __maybe_unused ceva_ahci_resume(struct device *dev)
+ 	struct ahci_host_priv *hpriv = host->private_data;
+ 	int rc;
+ 
+-	rc = ahci_platform_enable_resources(hpriv);
++	rc = ceva_ahci_platform_enable_resources(hpriv);
+ 	if (rc)
+ 		return rc;
+ 
+-- 
+2.43.0
+
 
 
 
