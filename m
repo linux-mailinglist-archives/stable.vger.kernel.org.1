@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97EB98694E7
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:57:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB44C86963E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:09:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA4361C25F19
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:57:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECCE41C220F7
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:09:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234A813DBAA;
-	Tue, 27 Feb 2024 13:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46C9513B2B4;
+	Tue, 27 Feb 2024 14:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jm1KpPYI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y35oJUfl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D742413B2AC;
-	Tue, 27 Feb 2024 13:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0173A13A26F;
+	Tue, 27 Feb 2024 14:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042236; cv=none; b=mGykJTqYeBLp/eaVFnmIB4AG9701drWXS2g3/7tiMfKo5AlKLCQ9MFqm/ksZlsp99AWnH5AJpoDKKJdw69SdJPnINUO0Zu0kJsfGJMts3HZrXDYxc46hdEz0OiaJbPWtgPKfbByoCDRNNRj0P4JAbJoz3WYfBA3mTi+XfpgRoeU=
+	t=1709042976; cv=none; b=LZDVEGSTTVpVevttecwUNu4q4WjuiJ9diq8EmmgUKjC1l4ZnCYvVoKs/dFz0LJjdUICuOwpX8s3PN2aYdIkzrTKunu2e4qxhE51sfEWdb9RnRPcetEy2/oSNJTBvfvUttsXW6cN8AtMRz/IynmZdyd0nmfpdeXNN5Hmni2QhOMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042236; c=relaxed/simple;
-	bh=nkA8GWhdWbFVpOKyLQ10KiemRj3WUmAgmJB9PP/p5Pw=;
+	s=arc-20240116; t=1709042976; c=relaxed/simple;
+	bh=dlV5pKSDSdwvtR58+YVtmhiBijOzPYaJfn4dwd3m9RE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hudrH6na4hx05Y1pmTcmOWQWdiR4SzCEWI4liuU+6cVxOHOUUShHXmAjut0vzIVCImztvaw3WEZxK5Tyz//0MMnaWTdTvE8sVQY+JDAPkQM4fVtne5Da6wRQjxzh+hTZFSn8lwuChEv6CqRXkkwFL7TalzCf2fyi+8HC0EFX/5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jm1KpPYI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E50C433F1;
-	Tue, 27 Feb 2024 13:57:16 +0000 (UTC)
+	 MIME-Version; b=jkTSPsMsSjTofJ/gQIVUHKRjEf4dcmSGAsBaRT5/zm+tejwKcdkv2qIc+o1dg/CUd6PH+nxxR+p5hSiQtSs5pIdoBy89CoW19P5oxS5LYCzhl34gcBVEqnK8YUFmnL69XVYzt/94WuqMb03SQ2o8qXLFiVsqm0PwSSJXAO+ylXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y35oJUfl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8E7C433F1;
+	Tue, 27 Feb 2024 14:09:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042236;
-	bh=nkA8GWhdWbFVpOKyLQ10KiemRj3WUmAgmJB9PP/p5Pw=;
+	s=korg; t=1709042975;
+	bh=dlV5pKSDSdwvtR58+YVtmhiBijOzPYaJfn4dwd3m9RE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jm1KpPYIZL4UiTH2SFDGHPUxyLS8lIs/u7aGopWb0XAoxTpBlJGOYjtmDDHc+98o5
-	 zP/B7BFfuE9vWbsqJ1wwwQa5/t+1NGwg04ZTSVCnuNgRB54lSOVUjQuY7lrruiKj+C
-	 A5CbiGlACC5MrmyBh4G5XFnhd8K9nvRgrDcl7Dzo=
+	b=y35oJUflZVZDP+3/22zv8T5QWEMOdIw2FY2A9P8sjAGTLezWIUAgDYHGr5UShUb3N
+	 6vocEtFj39hFMe162pmj1sVZY6mNZ7q+jaCAlAdbxEPuLWSEOFuXBBhbHamInN6zD7
+	 Ee6tq/C/4J1ebbfUTe1jFmAuBSAC82GChqeVw26s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Stuebner <heiko.stuebner@cherry.de>,
-	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Wang Qing <wangqing@vivo.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 227/299] arm64: dts: rockchip: set num-cs property for spi on px30
+Subject: [PATCH 5.15 150/245] net: ethernet: ti: add missing of_node_put before return
 Date: Tue, 27 Feb 2024 14:25:38 +0100
-Message-ID: <20240227131633.060619416@linuxfoundation.org>
+Message-ID: <20240227131620.090094364@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko.stuebner@cherry.de>
+From: Wang Qing <wangqing@vivo.com>
 
-[ Upstream commit 334bf0710c98d391f4067b72f535d6c4c84dfb6f ]
+[ Upstream commit be565ec71d1d59438bed0c7ed0a252a327e0b0ef ]
 
-The px30 has two spi controllers with two chip-selects each.
-The num-cs property is specified as the total number of chip
-selects a controllers has and is used since 2020 to find uses
-of chipselects outside that range in the Rockchip spi driver.
+Fix following coccicheck warning:
+WARNING: Function "for_each_child_of_node"
+should have of_node_put() before return.
 
-Without the property set, the default is 1, so spi devices
-using the second chipselect will not be created.
+Early exits from for_each_child_of_node should decrement the
+node reference counter.
 
-Fixes: eb1262e3cc8b ("spi: spi-rockchip: use num-cs property and ctlr->enable_gpiods")
-Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
-Reviewed-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Link: https://lore.kernel.org/r/20240119101656.965744-1-heiko@sntech.de
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Wang Qing <wangqing@vivo.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/px30.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 29 ++++++++++++++++--------
+ 1 file changed, 20 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/px30.dtsi b/arch/arm64/boot/dts/rockchip/px30.dtsi
-index 42ce78beb4134..20955556b624d 100644
---- a/arch/arm64/boot/dts/rockchip/px30.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/px30.dtsi
-@@ -632,6 +632,7 @@
- 		clock-names = "spiclk", "apb_pclk";
- 		dmas = <&dmac 12>, <&dmac 13>;
- 		dma-names = "tx", "rx";
-+		num-cs = <2>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&spi0_clk &spi0_csn &spi0_miso &spi0_mosi>;
- 		#address-cells = <1>;
-@@ -647,6 +648,7 @@
- 		clock-names = "spiclk", "apb_pclk";
- 		dmas = <&dmac 14>, <&dmac 15>;
- 		dma-names = "tx", "rx";
-+		num-cs = <2>;
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&spi1_clk &spi1_csn0 &spi1_csn1 &spi1_miso &spi1_mosi>;
- 		#address-cells = <1>;
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index 1fa6f0dacd2de..f94d6d322df42 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -1856,13 +1856,14 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
+ 		if (ret < 0) {
+ 			dev_err(dev, "%pOF error reading port_id %d\n",
+ 				port_np, ret);
+-			return ret;
++			goto of_node_put;
+ 		}
+ 
+ 		if (!port_id || port_id > common->port_num) {
+ 			dev_err(dev, "%pOF has invalid port_id %u %s\n",
+ 				port_np, port_id, port_np->name);
+-			return -EINVAL;
++			ret = -EINVAL;
++			goto of_node_put;
+ 		}
+ 
+ 		port = am65_common_get_port(common, port_id);
+@@ -1878,8 +1879,10 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
+ 				(AM65_CPSW_NU_FRAM_PORT_OFFSET * (port_id - 1));
+ 
+ 		port->slave.mac_sl = cpsw_sl_get("am65", dev, port->port_base);
+-		if (IS_ERR(port->slave.mac_sl))
+-			return PTR_ERR(port->slave.mac_sl);
++		if (IS_ERR(port->slave.mac_sl)) {
++			ret = PTR_ERR(port->slave.mac_sl);
++			goto of_node_put;
++		}
+ 
+ 		port->disabled = !of_device_is_available(port_np);
+ 		if (port->disabled) {
+@@ -1892,7 +1895,7 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
+ 			ret = PTR_ERR(port->slave.ifphy);
+ 			dev_err(dev, "%pOF error retrieving port phy: %d\n",
+ 				port_np, ret);
+-			return ret;
++			goto of_node_put;
+ 		}
+ 
+ 		port->slave.mac_only =
+@@ -1901,10 +1904,12 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
+ 		/* get phy/link info */
+ 		if (of_phy_is_fixed_link(port_np)) {
+ 			ret = of_phy_register_fixed_link(port_np);
+-			if (ret)
+-				return dev_err_probe(dev, ret,
++			if (ret) {
++				ret = dev_err_probe(dev, ret,
+ 						     "failed to register fixed-link phy %pOF\n",
+ 						     port_np);
++				goto of_node_put;
++			}
+ 			port->slave.phy_node = of_node_get(port_np);
+ 		} else {
+ 			port->slave.phy_node =
+@@ -1914,14 +1919,15 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
+ 		if (!port->slave.phy_node) {
+ 			dev_err(dev,
+ 				"slave[%d] no phy found\n", port_id);
+-			return -ENODEV;
++			ret = -ENODEV;
++			goto of_node_put;
+ 		}
+ 
+ 		ret = of_get_phy_mode(port_np, &port->slave.phy_if);
+ 		if (ret) {
+ 			dev_err(dev, "%pOF read phy-mode err %d\n",
+ 				port_np, ret);
+-			return ret;
++			goto of_node_put;
+ 		}
+ 
+ 		ret = of_get_mac_address(port_np, port->slave.mac_addr);
+@@ -1944,6 +1950,11 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
+ 	}
+ 
+ 	return 0;
++
++of_node_put:
++	of_node_put(port_np);
++	of_node_put(node);
++	return ret;
+ }
+ 
+ static void am65_cpsw_pcpu_stats_free(void *data)
 -- 
 2.43.0
 
