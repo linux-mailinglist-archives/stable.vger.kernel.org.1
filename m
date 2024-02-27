@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20C77869552
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:00:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE9FE8693A8
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:47:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52E0B1C23701
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:00:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E01221C21932
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:47:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847C31420DD;
-	Tue, 27 Feb 2024 14:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC8791420DD;
+	Tue, 27 Feb 2024 13:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ObPJuaN4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S4IOy2qx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2061420D4;
-	Tue, 27 Feb 2024 14:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6B41420D8;
+	Tue, 27 Feb 2024 13:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042452; cv=none; b=Owmttk4ylmKNYzN4AxawD31p+r6mI73TTiqSxJj5uBuTC6LZ/4GtfH+skj8mHrwFM5s5HaFPsOfc3fn6/47gbAQFhcxcTNpTtOZ2BnUnXSDMoRP/oaX75s4VYHGZOptoSDB/IPVQ7krZb4Bud98rGRrJrnfKYw8x0OasnthPfko=
+	t=1709041540; cv=none; b=Ejq3+rASWyTo2/BTVkqrL4k+nf0vR1P6YTdXhl/y6vBDQByfAiWVk9r2VVCUbRBoC+3X0Qqr0rAefdMF+CyhdbL0LlgaLCs2kLgT9pdeTB4LCXWtqjxun8wVuVyscM5qi7khCJ77xqX6M2uN0sFne80M6uVe+iWpKOPjfXYHHTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042452; c=relaxed/simple;
-	bh=9d+KeoL4zYIf6VgK/gI2GuUvLQnJthw8d0jYeDQIH6Q=;
+	s=arc-20240116; t=1709041540; c=relaxed/simple;
+	bh=w+xvFraHg9Rs5QEYDzP+/17ZZQfZyKfbdl2v4KqTTSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lEUgi6cMnZXHk3LDA8ggcn/x13r8EuY/CVY/vS1Istg4WZ7b2llokguQQONk5ORmU8ZiPbfb2erV68tQnenltOewnywSNUOFpOfPTCAsLRepqy4zDAHrQS3AGsVu2fjkCPAghi0Jxu39KG0FIAcTmbouc9kGvkviGvhYU/9ayB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ObPJuaN4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C16DC433C7;
-	Tue, 27 Feb 2024 14:00:51 +0000 (UTC)
+	 MIME-Version; b=QYQDaLGYuZsjg15zGvB6aQM8O2iFdwjotSLTKElrLCklAc343B/xvhP/lbsOWAcyCj7gNazV5jrOU/WR3XBpgxY/ENtioK9y1fN6LI5F7ld6reLyC4ekamGV5R6hod605ulJsE/qhpthUXDlKeee4dMQ5J0fuqn3t1oaNJK3DWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4IOy2qx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F0E8C43330;
+	Tue, 27 Feb 2024 13:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042451;
-	bh=9d+KeoL4zYIf6VgK/gI2GuUvLQnJthw8d0jYeDQIH6Q=;
+	s=korg; t=1709041540;
+	bh=w+xvFraHg9Rs5QEYDzP+/17ZZQfZyKfbdl2v4KqTTSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ObPJuaN4i4YAoabJoc3IAFZxzOkBpWZLFlqzzjtM7e6DCbNC8b3hFLoggJssMrgVQ
-	 38BLVN/M9Ojo5Kp27k7thHOsAvJAB5MEhbKCdZy1VXgiJbNmAwhE76/VJcKYn/vGco
-	 1e/SVpnvleXD06tGpljQKNvqRGjUbYLsqF1EXrp8=
+	b=S4IOy2qxl/l7vpWmgGs+nIV4fKxnvEZpXF/3vBk73QzGr4gJv3v1CJ1Npwf+qhnme
+	 izdj3xL1vf3E1tGzttj2brAzKPFS1Lwl/x2GyMmeWqkJ9M+050EYLNaEMWN+XPHzb4
+	 tSJ0JUAqYbdlcGYHbA7AXteYY1te2spbN0wk/Gqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 276/299] net: mctp: put sock on tag allocation failure
+Subject: [PATCH 4.19 40/52] RDMA/srpt: fix function pointer cast warnings
 Date: Tue, 27 Feb 2024 14:26:27 +0100
-Message-ID: <20240227131634.559363383@linuxfoundation.org>
+Message-ID: <20240227131549.847362225@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
+References: <20240227131548.514622258@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Kerr <jk@codeconstruct.com.au>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 9990889be14288d4f1743e4768222d5032a79c27 ]
+[ Upstream commit eb5c7465c3240151cd42a55c7ace9da0026308a1 ]
 
-We may hold an extra reference on a socket if a tag allocation fails: we
-optimistically allocate the sk_key, and take a ref there, but do not
-drop if we end up not using the allocated key.
+clang-16 notices that srpt_qp_event() gets called through an incompatible
+pointer here:
 
-Ensure we're dropping the sock on this failure by doing a proper unref
-rather than directly kfree()ing.
+drivers/infiniband/ulp/srpt/ib_srpt.c:1815:5: error: cast from 'void (*)(struct ib_event *, struct srpt_rdma_ch *)' to 'void (*)(struct ib_event *, void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+ 1815 |                 = (void(*)(struct ib_event *, void*))srpt_qp_event;
 
-Fixes: de8a6b15d965 ("net: mctp: add an explicit reference from a mctp_sk_key to sock")
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/ce9b61e44d1cdae7797be0c5e3141baf582d23a0.1707983487.git.jk@codeconstruct.com.au
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Change srpt_qp_event() to use the correct prototype and adjust the
+argument inside of it.
+
+Fixes: a42d985bd5b2 ("ib_srpt: Initial SRP Target merge for v3.3-rc1")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240213100728.458348-1-arnd@kernel.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mctp/route.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/ulp/srpt/ib_srpt.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/net/mctp/route.c b/net/mctp/route.c
-index 7a47a58aa54b4..6218dcd07e184 100644
---- a/net/mctp/route.c
-+++ b/net/mctp/route.c
-@@ -663,7 +663,7 @@ struct mctp_sk_key *mctp_alloc_local_tag(struct mctp_sock *msk,
- 	spin_unlock_irqrestore(&mns->keys_lock, flags);
- 
- 	if (!tagbits) {
--		kfree(key);
-+		mctp_key_unref(key);
- 		return ERR_PTR(-EBUSY);
+diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
+index 4a696bf280ef9..5cbccf5a54d68 100644
+--- a/drivers/infiniband/ulp/srpt/ib_srpt.c
++++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
+@@ -221,10 +221,12 @@ static const char *get_ch_state_name(enum rdma_ch_state s)
+ /**
+  * srpt_qp_event - QP event callback function
+  * @event: Description of the event that occurred.
+- * @ch: SRPT RDMA channel.
++ * @ptr: SRPT RDMA channel.
+  */
+-static void srpt_qp_event(struct ib_event *event, struct srpt_rdma_ch *ch)
++static void srpt_qp_event(struct ib_event *event, void *ptr)
+ {
++	struct srpt_rdma_ch *ch = ptr;
++
+ 	pr_debug("QP event %d on ch=%p sess_name=%s-%d state=%s\n",
+ 		 event->event, ch, ch->sess_name, ch->qp->qp_num,
+ 		 get_ch_state_name(ch->state));
+@@ -1766,8 +1768,7 @@ static int srpt_create_ch_ib(struct srpt_rdma_ch *ch)
  	}
  
+ 	qp_init->qp_context = (void *)ch;
+-	qp_init->event_handler
+-		= (void(*)(struct ib_event *, void*))srpt_qp_event;
++	qp_init->event_handler = srpt_qp_event;
+ 	qp_init->send_cq = ch->cq;
+ 	qp_init->recv_cq = ch->cq;
+ 	qp_init->sq_sig_type = IB_SIGNAL_REQ_WR;
 -- 
 2.43.0
 
