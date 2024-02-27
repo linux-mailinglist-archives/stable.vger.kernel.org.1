@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C702869541
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:00:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43CCD86966D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:11:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CAB61C236E6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:00:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F28A42942D3
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:11:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E0EA13F01E;
-	Tue, 27 Feb 2024 14:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0590B13B78E;
+	Tue, 27 Feb 2024 14:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UJ99QfXK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U3u7efND"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC2913DB90;
-	Tue, 27 Feb 2024 14:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B793B16423;
+	Tue, 27 Feb 2024 14:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042424; cv=none; b=bggc+qr6yWNibiY5r8Mg62eRJaBV+/vHyB3GvLUpjGZ5dHhMhtyGUtQ7nRkAa/gokvGmr7r+SVoCGVeRMgjYC3wrXAgzcXVujAmd3HIYyXW0YP8jsRdBsS77POzcpEWN3c3ZAjfTeL+W8qBTJ4ijayh/McbNTt5sDDUN6P/t2ko=
+	t=1709043093; cv=none; b=qbsStBbbKUmgCQKUC/bzKTAPFTDyW6deEDLubZ2UYhM97SwR7HiYTP0Zpwsea9AdJU/n1FbTjm+a2Kabengnu/Vh9Fm935z0u7csGj1hdgp8gtHtdZ8RwfNFku+GdtM1VCbZQA95rnSViqL4AZij3mD4kq//TPHyhQxTrtvilvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042424; c=relaxed/simple;
-	bh=MhWjsJArCRMgJiDK0LphGXleqL8jfAMLrw7L/cw96VY=;
+	s=arc-20240116; t=1709043093; c=relaxed/simple;
+	bh=jAeHqBaQWgxOVQmqQ7fb+mbST9odAfQkm04QC2IGShs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UJDQ6RbcUoXi1YI1n2LKOQGUqvtzSGHFb448G25CZqodYbvjW6a93oDJnXAqPliXO6UxidVr5ws9uBqLYCTNdxVDIKCUA80DdSTJ+72JHCa/P/gTN/7+BF4dBL1wyXFwnZ8GX/jGodVROv7TrVY2jAfjt2jICbdB/g7q36Ya+Pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UJ99QfXK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C18E7C433F1;
-	Tue, 27 Feb 2024 14:00:23 +0000 (UTC)
+	 MIME-Version; b=N93RneEN67HFYnlfL7zfzNDKhi6JqqoSqsyhR4cor92f80WXleMJHK7PheOHR1Ill5FQ8L1ysXgMec0f3pNRKcZXlnHtnSTvSF096+6hWs4TT/4MazPCBhAqOEv2uRI6iF1KXuNEUZoET4b3bBhSlqVSLeUk+VpiCFIrdXsZ6F0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U3u7efND; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421CDC433C7;
+	Tue, 27 Feb 2024 14:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042424;
-	bh=MhWjsJArCRMgJiDK0LphGXleqL8jfAMLrw7L/cw96VY=;
+	s=korg; t=1709043093;
+	bh=jAeHqBaQWgxOVQmqQ7fb+mbST9odAfQkm04QC2IGShs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UJ99QfXK+rBvVMhVljiy/jsrZKEfi56LMr6nNqbiRV3MyWKb8fXoqOl671i5gQW14
-	 iR8fzuzogNJ+WA9IRoONuXPQyjdYtJzOJE9NgvvJCmgbMrEHg41I0uv/Nn6n1a2AZS
-	 izO7+r7x39RitztyJYggaS/+dNHxM5yYCGUdYgtg=
+	b=U3u7efNDDF2yxrrRcAKfS0Tf5aEwYjyoysGPuqAZBAjTXv4xmWZKcr6oCUlKdf9r7
+	 MK1taG5F08tgkvsDQklOU+Fj82kLdzmy8MilCS4rQpKrAFjmfLuWc4zLNJcYoz4gGx
+	 Dd/0aGtl3Frsy4vldDqlI8HKPSe5JtFKj/CRODeA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Geliang Tang <geliang@kernel.org>
-Subject: [PATCH 6.6 291/299] selftests: mptcp: join: stop transfer when check is done (part 1)
+	Pavel Sakharov <p.sakharov@ispras.ru>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 214/245] net: stmmac: Fix incorrect dereference in interrupt handlers
 Date: Tue, 27 Feb 2024 14:26:42 +0100
-Message-ID: <20240227131635.033785067@linuxfoundation.org>
+Message-ID: <20240227131622.164294290@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Pavel Sakharov <p.sakharov@ispras.ru>
 
-commit 31ee4ad86afd6ed6f4bb1b38c43011216080c42a upstream.
+[ Upstream commit 97dde84026339e4b4af9a6301f825d1828d7874b ]
 
-Since the "Fixes" commit mentioned below, "userspace pm" subtests of
-mptcp_join selftests introduced in v6.5 are launching the whole transfer
-in the background, do the required checks, then wait for the end of
-transfer.
+If 'dev' or 'data' is NULL, the 'priv' variable has an incorrect address
+when dereferencing calling netdev_err().
 
-There is no need to wait longer, especially because the checks at the
-end of the transfer are ignored (which is fine). This saves quite a few
-seconds in slow environments.
+Since we get as 'dev_id' or 'data' what was passed as the 'dev' argument
+to request_irq() during interrupt initialization (that is, the net_device
+and rx/tx queue pointers initialized at the time of the call) and since
+there are usually no checks for the 'dev_id' argument in such handlers
+in other drivers, remove these checks from the handlers in stmmac driver.
 
-Note that old versions will need commit bdbef0a6ff10 ("selftests: mptcp:
-add mptcp_lib_kill_wait") as well to get 'mptcp_lib_kill_wait()' helper.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 4369c198e599 ("selftests: mptcp: test userspace pm out of transfer")
-Cc: stable@vger.kernel.org # 6.5.x: bdbef0a6ff10: selftests: mptcp: add mptcp_lib_kill_wait
-Cc: stable@vger.kernel.org # 6.5.x
-Reviewed-and-tested-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240131-upstream-net-20240131-mptcp-ci-issues-v1-8-4c1c11e571ff@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8532f613bc78 ("net: stmmac: introduce MSI Interrupt routines for mac, safety, RX & TX")
+Signed-off-by: Pavel Sakharov <p.sakharov@ispras.ru>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 20 -------------------
+ 1 file changed, 20 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3430,7 +3430,7 @@ userspace_tests()
- 		chk_rm_nr 1 1 invert
- 		chk_mptcp_info subflows 0 subflows 0
- 		kill_events_pids
--		wait $tests_pid
-+		mptcp_lib_kill_wait $tests_pid
- 	fi
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index ab3ded6e0e6a3..a1c1e353ca072 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -5737,11 +5737,6 @@ static irqreturn_t stmmac_mac_interrupt(int irq, void *dev_id)
+ 	struct net_device *dev = (struct net_device *)dev_id;
+ 	struct stmmac_priv *priv = netdev_priv(dev);
  
- 	# userspace pm create destroy subflow
-@@ -3449,7 +3449,7 @@ userspace_tests()
- 		chk_rm_nr 1 1
- 		chk_mptcp_info subflows 0 subflows 0
- 		kill_events_pids
--		wait $tests_pid
-+		mptcp_lib_kill_wait $tests_pid
- 	fi
- }
+-	if (unlikely(!dev)) {
+-		netdev_err(priv->dev, "%s: invalid dev pointer\n", __func__);
+-		return IRQ_NONE;
+-	}
+-
+ 	/* Check if adapter is up */
+ 	if (test_bit(STMMAC_DOWN, &priv->state))
+ 		return IRQ_HANDLED;
+@@ -5757,11 +5752,6 @@ static irqreturn_t stmmac_safety_interrupt(int irq, void *dev_id)
+ 	struct net_device *dev = (struct net_device *)dev_id;
+ 	struct stmmac_priv *priv = netdev_priv(dev);
  
+-	if (unlikely(!dev)) {
+-		netdev_err(priv->dev, "%s: invalid dev pointer\n", __func__);
+-		return IRQ_NONE;
+-	}
+-
+ 	/* Check if adapter is up */
+ 	if (test_bit(STMMAC_DOWN, &priv->state))
+ 		return IRQ_HANDLED;
+@@ -5781,11 +5771,6 @@ static irqreturn_t stmmac_msi_intr_tx(int irq, void *data)
+ 
+ 	priv = container_of(tx_q, struct stmmac_priv, tx_queue[chan]);
+ 
+-	if (unlikely(!data)) {
+-		netdev_err(priv->dev, "%s: invalid dev pointer\n", __func__);
+-		return IRQ_NONE;
+-	}
+-
+ 	/* Check if adapter is up */
+ 	if (test_bit(STMMAC_DOWN, &priv->state))
+ 		return IRQ_HANDLED;
+@@ -5824,11 +5809,6 @@ static irqreturn_t stmmac_msi_intr_rx(int irq, void *data)
+ 
+ 	priv = container_of(rx_q, struct stmmac_priv, rx_queue[chan]);
+ 
+-	if (unlikely(!data)) {
+-		netdev_err(priv->dev, "%s: invalid dev pointer\n", __func__);
+-		return IRQ_NONE;
+-	}
+-
+ 	/* Check if adapter is up */
+ 	if (test_bit(STMMAC_DOWN, &priv->state))
+ 		return IRQ_HANDLED;
+-- 
+2.43.0
+
 
 
 
