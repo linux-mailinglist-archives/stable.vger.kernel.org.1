@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DA9E869591
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:03:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A9E1869485
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:54:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9ECC71F2B50C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:03:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABE4B1C246A2
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:54:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C6C13B798;
-	Tue, 27 Feb 2024 14:03:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B0C14534E;
+	Tue, 27 Feb 2024 13:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1aDTKuBn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kGi6XGmm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899AA16423;
-	Tue, 27 Feb 2024 14:03:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA4B14534B;
+	Tue, 27 Feb 2024 13:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042594; cv=none; b=NHa+wk9h42w0IhCJRZuxQ2qP7Zmkpue1xLqAFDC/d8EG8Q9ioa4fxSzVDBdfm0bYfC1PPnpt/KkTnAqKZ8Uiq2o+d4RbZRBC1e1Jv1wL41cUAzOpl0cqFDTfJeqtEJS6iZBN5lidi3YUCLiOD/GXaHGfZC+8nB4OfrV8oN02oFM=
+	t=1709042033; cv=none; b=MfnS4pJaBjSTMDZzXK8cxsYCBVNSpEK+ES4tiX9MPlbSxUMauwVFzZ4jBBmGD2QR8CYo9ZqnxvpGYw+xmM0CeJZN42T+DsDY5yEleuhoDeuyfIzlYC97LlXCFmf61APGz6bs3Dkr0YM2mHsQsOWXhU5v4MSTB3iJqfnDBEUHgLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042594; c=relaxed/simple;
-	bh=luZeW+5PCD/TF8HdcP/dJitaOrEzl8R+xpK9ZgJhrdw=;
+	s=arc-20240116; t=1709042033; c=relaxed/simple;
+	bh=bFAYN8I42tJpSwG4wfW+DDYfRlDIQOdKEAILLrr8XNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u3U7lT/pGqFUtoFcArY+nXWZFfNrP1YNejBlXdxnTt7OwY6ZTj9sAcqQ6/W/87A2v4lDWVeZNx4SrxYouCiOl39HSlHwwGH0eWLxnp4z4dXj7/YNfG2ptEJ4QTPgOIHO6tAhEPRcXMQ6OsU0FuITws80LWVx0b1UY6nyQ33cQ2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1aDTKuBn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A12BC433F1;
-	Tue, 27 Feb 2024 14:03:13 +0000 (UTC)
+	 MIME-Version; b=KkM2Pbvh7y20wfV6kZ0ldjDZC13ALdaYhjyi/3285oviECYfypi0s4a5OCYhQezOEbChMOagMhb/rJQihwuP686+5MkYz/nrK1ozwpHFmPPmqgZjwKCk6l4KFKHPuQb8xeB+vlirLOqTwd3Da3OyLHrMuc5SDYjHwrS/zwAKE8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kGi6XGmm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7E9C433C7;
+	Tue, 27 Feb 2024 13:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042594;
-	bh=luZeW+5PCD/TF8HdcP/dJitaOrEzl8R+xpK9ZgJhrdw=;
+	s=korg; t=1709042033;
+	bh=bFAYN8I42tJpSwG4wfW+DDYfRlDIQOdKEAILLrr8XNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1aDTKuBnMRD1zsXYCVPZuOMap433RukvduVTwkxmCZWoZlvw5U8sHHhrhKZNPnp7o
-	 uCkutV0H6I7RiuATZjnzeOIImXIYqLR5B+aIH6ONckMHdabd80fRmmqdsBRx6R/mk5
-	 szQtk6+64wzzxC9GWUiEcn789CkFKYz4A/zntlCI=
+	b=kGi6XGmml+CTkTTCuf4X4gKYyUZ/hCAVPQKKU3XJoo8QhVPsTj7tfxXoZ+QS98f/E
+	 DIs2gXFJ4jigRC16M8yt72J43W6g9aujWWJ9qopkmA2qpeDTwDMEz79qy3NBtOZRtV
+	 JVB29TwlPWLpS2lNQKXtEI6jXPIZV/x/70U2cnO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 050/245] ext4: correct the hole length returned by ext4_map_blocks()
+Subject: [PATCH 6.6 127/299] xen: evtchn: Allow shared registration of IRQ handers
 Date: Tue, 27 Feb 2024 14:23:58 +0100
-Message-ID: <20240227131616.751441142@linuxfoundation.org>
+Message-ID: <20240227131629.949900644@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,191 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Viresh Kumar <viresh.kumar@linaro.org>
 
-[ Upstream commit 6430dea07e85958fa87d0276c0c4388dd51e630b ]
+[ Upstream commit 9e90e58c11b74c2bddac4b2702cf79d36b981278 ]
 
-In ext4_map_blocks(), if we can't find a range of mapping in the
-extents cache, we are calling ext4_ext_map_blocks() to search the real
-path and ext4_ext_determine_hole() to determine the hole range. But if
-the querying range was partially or completely overlaped by a delalloc
-extent, we can't find it in the real extent path, so the returned hole
-length could be incorrect.
+Currently the handling of events is supported either in the kernel or
+userspace, but not both.
 
-Fortunately, ext4_ext_put_gap_in_cache() have already handle delalloc
-extent, but it searches start from the expanded hole_start, doesn't
-start from the querying range, so the delalloc extent found could not be
-the one that overlaped the querying range, plus, it also didn't adjust
-the hole length. Let's just remove ext4_ext_put_gap_in_cache(), handle
-delalloc and insert adjusted hole extent in ext4_ext_determine_hole().
+In order to support fast delivery of interrupts from the guest to the
+backend, we need to handle the Queue notify part of Virtio protocol in
+kernel and the rest in userspace.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Suggested-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240127015825.1608160-4-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Update the interrupt handler registration flag to IRQF_SHARED for event
+channels, which would allow multiple entities to bind their interrupt
+handler for the same event channel port.
+
+Also increment the reference count of irq_info when multiple entities
+try to bind event channel to irqchip, so the unbinding happens only
+after all the users are gone.
+
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://lore.kernel.org/r/99b1edfd3147c6b5d22a5139dab5861e767dc34a.1697439990.git.viresh.kumar@linaro.org
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Stable-dep-of: fa765c4b4aed ("xen/events: close evtchn after mapping cleanup")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c | 111 +++++++++++++++++++++++++++++-----------------
- 1 file changed, 70 insertions(+), 41 deletions(-)
+ drivers/xen/events/events_base.c | 3 ++-
+ drivers/xen/evtchn.c             | 2 +-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index 592be39e3d51f..cece004b32d5c 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -2227,7 +2227,7 @@ static int ext4_fill_es_cache_info(struct inode *inode,
- 
- 
- /*
-- * ext4_ext_determine_hole - determine hole around given block
-+ * ext4_ext_find_hole - find hole around given block according to the given path
-  * @inode:	inode we lookup in
-  * @path:	path in extent tree to @lblk
-  * @lblk:	pointer to logical block around which we want to determine hole
-@@ -2239,9 +2239,9 @@ static int ext4_fill_es_cache_info(struct inode *inode,
-  * The function returns the length of a hole starting at @lblk. We update @lblk
-  * to the beginning of the hole if we managed to find it.
-  */
--static ext4_lblk_t ext4_ext_determine_hole(struct inode *inode,
--					   struct ext4_ext_path *path,
--					   ext4_lblk_t *lblk)
-+static ext4_lblk_t ext4_ext_find_hole(struct inode *inode,
-+				      struct ext4_ext_path *path,
-+				      ext4_lblk_t *lblk)
- {
- 	int depth = ext_depth(inode);
- 	struct ext4_extent *ex;
-@@ -2268,30 +2268,6 @@ static ext4_lblk_t ext4_ext_determine_hole(struct inode *inode,
- 	return len;
- }
- 
--/*
-- * ext4_ext_put_gap_in_cache:
-- * calculate boundaries of the gap that the requested block fits into
-- * and cache this gap
-- */
--static void
--ext4_ext_put_gap_in_cache(struct inode *inode, ext4_lblk_t hole_start,
--			  ext4_lblk_t hole_len)
--{
--	struct extent_status es;
--
--	ext4_es_find_extent_range(inode, &ext4_es_is_delayed, hole_start,
--				  hole_start + hole_len - 1, &es);
--	if (es.es_len) {
--		/* There's delayed extent containing lblock? */
--		if (es.es_lblk <= hole_start)
--			return;
--		hole_len = min(es.es_lblk - hole_start, hole_len);
--	}
--	ext_debug(inode, " -> %u:%u\n", hole_start, hole_len);
--	ext4_es_insert_extent(inode, hole_start, hole_len, ~0,
--			      EXTENT_STATUS_HOLE);
--}
--
- /*
-  * ext4_ext_rm_idx:
-  * removes index from the index block.
-@@ -4064,6 +4040,69 @@ static int get_implied_cluster_alloc(struct super_block *sb,
- 	return 0;
- }
- 
-+/*
-+ * Determine hole length around the given logical block, first try to
-+ * locate and expand the hole from the given @path, and then adjust it
-+ * if it's partially or completely converted to delayed extents, insert
-+ * it into the extent cache tree if it's indeed a hole, finally return
-+ * the length of the determined extent.
-+ */
-+static ext4_lblk_t ext4_ext_determine_insert_hole(struct inode *inode,
-+						  struct ext4_ext_path *path,
-+						  ext4_lblk_t lblk)
-+{
-+	ext4_lblk_t hole_start, len;
-+	struct extent_status es;
-+
-+	hole_start = lblk;
-+	len = ext4_ext_find_hole(inode, path, &hole_start);
-+again:
-+	ext4_es_find_extent_range(inode, &ext4_es_is_delayed, hole_start,
-+				  hole_start + len - 1, &es);
-+	if (!es.es_len)
-+		goto insert_hole;
-+
-+	/*
-+	 * There's a delalloc extent in the hole, handle it if the delalloc
-+	 * extent is in front of, behind and straddle the queried range.
-+	 */
-+	if (lblk >= es.es_lblk + es.es_len) {
-+		/*
-+		 * The delalloc extent is in front of the queried range,
-+		 * find again from the queried start block.
-+		 */
-+		len -= lblk - hole_start;
-+		hole_start = lblk;
-+		goto again;
-+	} else if (in_range(lblk, es.es_lblk, es.es_len)) {
-+		/*
-+		 * The delalloc extent containing lblk, it must have been
-+		 * added after ext4_map_blocks() checked the extent status
-+		 * tree, adjust the length to the delalloc extent's after
-+		 * lblk.
-+		 */
-+		len = es.es_lblk + es.es_len - lblk;
-+		return len;
-+	} else {
-+		/*
-+		 * The delalloc extent is partially or completely behind
-+		 * the queried range, update hole length until the
-+		 * beginning of the delalloc extent.
-+		 */
-+		len = min(es.es_lblk - hole_start, len);
-+	}
-+
-+insert_hole:
-+	/* Put just found gap into cache to speed up subsequent requests */
-+	ext_debug(inode, " -> %u:%u\n", hole_start, len);
-+	ext4_es_insert_extent(inode, hole_start, len, ~0, EXTENT_STATUS_HOLE);
-+
-+	/* Update hole_len to reflect hole size after lblk */
-+	if (hole_start != lblk)
-+		len -= lblk - hole_start;
-+
-+	return len;
-+}
- 
- /*
-  * Block allocation/map/preallocation routine for extents based files
-@@ -4181,22 +4220,12 @@ int ext4_ext_map_blocks(handle_t *handle, struct inode *inode,
- 	 * we couldn't try to create block if create flag is zero
- 	 */
- 	if ((flags & EXT4_GET_BLOCKS_CREATE) == 0) {
--		ext4_lblk_t hole_start, hole_len;
-+		ext4_lblk_t len;
- 
--		hole_start = map->m_lblk;
--		hole_len = ext4_ext_determine_hole(inode, path, &hole_start);
--		/*
--		 * put just found gap into cache to speed up
--		 * subsequent requests
--		 */
--		ext4_ext_put_gap_in_cache(inode, hole_start, hole_len);
-+		len = ext4_ext_determine_insert_hole(inode, path, map->m_lblk);
- 
--		/* Update hole_len to reflect hole size after map->m_lblk */
--		if (hole_start != map->m_lblk)
--			hole_len -= map->m_lblk - hole_start;
- 		map->m_pblk = 0;
--		map->m_len = min_t(unsigned int, map->m_len, hole_len);
--
-+		map->m_len = min_t(unsigned int, map->m_len, len);
- 		goto out;
+diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
+index c50419638ac0a..cd33a418344a8 100644
+--- a/drivers/xen/events/events_base.c
++++ b/drivers/xen/events/events_base.c
+@@ -1235,7 +1235,8 @@ static int bind_evtchn_to_irq_chip(evtchn_port_t evtchn, struct irq_chip *chip,
+ 		bind_evtchn_to_cpu(evtchn, 0, false);
+ 	} else {
+ 		struct irq_info *info = info_for_irq(irq);
+-		WARN_ON(info == NULL || info->type != IRQT_EVTCHN);
++		if (!WARN_ON(!info || info->type != IRQT_EVTCHN))
++			info->refcnt++;
  	}
  
+ out:
+diff --git a/drivers/xen/evtchn.c b/drivers/xen/evtchn.c
+index 9139a7364df53..59717628ca42b 100644
+--- a/drivers/xen/evtchn.c
++++ b/drivers/xen/evtchn.c
+@@ -397,7 +397,7 @@ static int evtchn_bind_to_user(struct per_user_data *u, evtchn_port_t port,
+ 	if (rc < 0)
+ 		goto err;
+ 
+-	rc = bind_evtchn_to_irqhandler_lateeoi(port, evtchn_interrupt, 0,
++	rc = bind_evtchn_to_irqhandler_lateeoi(port, evtchn_interrupt, IRQF_SHARED,
+ 					       u->name, evtchn);
+ 	if (rc < 0)
+ 		goto err;
 -- 
 2.43.0
 
