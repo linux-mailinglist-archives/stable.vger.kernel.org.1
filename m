@@ -1,57 +1,67 @@
-Return-Path: <stable+bounces-25172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0495E869811
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:28:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37384869665
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:11:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27BCD1C237EA
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:28:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 689F51C215C5
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:11:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D926145FF9;
-	Tue, 27 Feb 2024 14:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498C0143C4B;
+	Tue, 27 Feb 2024 14:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SnDK1v4k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cKUsOlpt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AFE8145333;
-	Tue, 27 Feb 2024 14:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078E113A26F;
+	Tue, 27 Feb 2024 14:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044065; cv=none; b=L3UTaBQGljOUn41IUjAzW547mh65+4nid9JYUloiy1GVBeL2I4sNNOMbCFEm90YMM6R4nys8tJHYlJRMr00oYxugEepvWMNY7NtgQTJZK1jcL6ayX2dPj6t6jSiQQccGxC40L7s+PkqF46VChlTfjFqwEGU7PVTkQCklaL4mXVs=
+	t=1709043072; cv=none; b=bZAPkiEx9Qth1Ei+15Ci+qIK7b3rsvYI90rgr0n61HUASgtOaAEB75WL3HSLIphsmW7fLpcAI107N9N0aRcl9zTfGk2kQHsjPh7SmUd00XtbwjHDE53NQwm5e1NNLB8AZfAsZdPL+Bmo0YG1k9eBjcpin4fW4lxl91iZxzVww4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044065; c=relaxed/simple;
-	bh=FkLO5hRu+b4maKDFlENdafRc+wbVtS7LHFc7GipFYVw=;
+	s=arc-20240116; t=1709043072; c=relaxed/simple;
+	bh=R+NIgzSWuagCNmFpQFca8KQJYsUdzy3kx6FtpeJYxr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N2Q1WZ/IpJTtyqDagQbcWSmaG0/iPi9FWA8qaJNFM9X8wn5/dX6X0Vb//Ofok1FVli0a23H7VUwCA0et5OojvLChx3mfgbg6fzG5UABKqkJ82eX3h1FX2KB9LutyHLfr36dvbaxKHL2B3qYCI0h88xK3wKguAa5ppjAfIs8YKQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SnDK1v4k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5511AC43390;
-	Tue, 27 Feb 2024 14:27:44 +0000 (UTC)
+	 MIME-Version; b=FWjpiRt7Fq1py0wQaBzIs3BFPnBqYiTtANYGKFZe0UFsxV01B1oFoLKhpLhXCvp8yqoednxu5HG//RlD9h5NziiLxht1QcJo90lD25rcKNZ7l6Abi8s9lHBR11WEsOcK0Opm7Egz99dNRA64bMRyXAvKFo1kv4BDpABDSWUlgvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cKUsOlpt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58351C433C7;
+	Tue, 27 Feb 2024 14:11:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044064;
-	bh=FkLO5hRu+b4maKDFlENdafRc+wbVtS7LHFc7GipFYVw=;
+	s=korg; t=1709043071;
+	bh=R+NIgzSWuagCNmFpQFca8KQJYsUdzy3kx6FtpeJYxr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SnDK1v4k1LvFtvvlfuazZoFiiAbz8qqsuWz3jAP7BOpXYSpBMksaHaOmDkpe6RQTG
-	 6Y+hFn+sTWrxTzPzuxhipJrIkt8UGPP6/Fmw0y63RnB6PkKH0GNBSJWiu3P0yaVlRb
-	 slNJBpmN7uFrTmdhiV+/BQn2XJAKLg1B2eHwrqFM=
+	b=cKUsOlptZSQ15ASZFuYqmA+6ULIVssW/1u9XmGaPGeGb+1NWcwijQPGYfycdsr+0v
+	 B0H60V9Wx1m910/A0/MUOLzx2t5Q28IOOc6vl8a2lo8fwpzYZCxVGQPIg9MxO76gqM
+	 v0fS/BafkheYUQgXMYNBYq9jCClW/ksg7IDCT/G0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Pavel Begunkov <asml.silence@gmail.com>,
+	David Ahern <dsahern@kernel.org>,
+	Dylan Yudaken <dylany@fb.com>,
+	Yajun Deng <yajun.deng@linux.dev>,
+	Petr Machata <petrm@nvidia.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	syzbot <syzkaller@googlegroups.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Kees Cook <keescook@chromium.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 050/122] x86/uaccess: Implement macros for CMPXCHG on user addresses
-Date: Tue, 27 Feb 2024 14:26:51 +0100
-Message-ID: <20240227131600.346173951@linuxfoundation.org>
+Subject: [PATCH 5.15 224/245] net: dev: Convert sa_data to flexible array in struct sockaddr
+Date: Tue, 27 Feb 2024 14:26:52 +0100
+Message-ID: <20240227131622.468603288@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,198 +73,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 989b5db215a2f22f89d730b607b071d964780f10 ]
+[ Upstream commit b5f0de6df6dce8d641ef58ef7012f3304dffb9a1 ]
 
-Add support for CMPXCHG loops on userspace addresses.  Provide both an
-"unsafe" version for tight loops that do their own uaccess begin/end, as
-well as a "safe" version for use cases where the CMPXCHG is not buried in
-a loop, e.g. KVM will resume the guest instead of looping when emulation
-of a guest atomic accesses fails the CMPXCHG.
+One of the worst offenders of "fake flexible arrays" is struct sockaddr,
+as it is the classic example of why GCC and Clang have been traditionally
+forced to treat all trailing arrays as fake flexible arrays: in the
+distant misty past, sa_data became too small, and code started just
+treating it as a flexible array, even though it was fixed-size. The
+special case by the compiler is specifically that sizeof(sa->sa_data)
+and FORTIFY_SOURCE (which uses __builtin_object_size(sa->sa_data, 1))
+do not agree (14 and -1 respectively), which makes FORTIFY_SOURCE treat
+it as a flexible array.
 
-Provide 8-byte versions for 32-bit kernels so that KVM can do CMPXCHG on
-guest PAE PTEs, which are accessed via userspace addresses.
+However, the coming -fstrict-flex-arrays compiler flag will remove
+these special cases so that FORTIFY_SOURCE can gain coverage over all
+the trailing arrays in the kernel that are _not_ supposed to be treated
+as a flexible array. To deal with this change, convert sa_data to a true
+flexible array. To keep the structure size the same, move sa_data into
+a union with a newly introduced sa_data_min with the original size. The
+result is that FORTIFY_SOURCE can continue to have no idea how large
+sa_data may actually be, but anything using sizeof(sa->sa_data) must
+switch to sizeof(sa->sa_data_min).
 
-Guard the asm_volatile_goto() variation with CC_HAS_ASM_GOTO_TIED_OUTPUT,
-the "+m" constraint fails on some compilers that otherwise support
-CC_HAS_ASM_GOTO_OUTPUT.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Co-developed-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-Id: <20220202004945.2540433-3-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Pavel Begunkov <asml.silence@gmail.com>
+Cc: David Ahern <dsahern@kernel.org>
+Cc: Dylan Yudaken <dylany@fb.com>
+Cc: Yajun Deng <yajun.deng@linux.dev>
+Cc: Petr Machata <petrm@nvidia.com>
+Cc: Hangbin Liu <liuhangbin@gmail.com>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: syzbot <syzkaller@googlegroups.com>
+Cc: Willem de Bruijn <willemb@google.com>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/20221018095503.never.671-kees@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: a7d6027790ac ("arp: Prevent overflow in arp_req_get().")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/uaccess.h | 142 +++++++++++++++++++++++++++++++++
- 1 file changed, 142 insertions(+)
+ include/linux/socket.h |  5 ++++-
+ net/core/dev.c         |  2 +-
+ net/core/dev_ioctl.c   |  2 +-
+ net/packet/af_packet.c | 10 +++++-----
+ 4 files changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/include/asm/uaccess.h b/arch/x86/include/asm/uaccess.h
-index bf2561a5eb581..68b910f30b222 100644
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -414,6 +414,103 @@ do {									\
+diff --git a/include/linux/socket.h b/include/linux/socket.h
+index 041d6032a3489..4c5ce8124f8e7 100644
+--- a/include/linux/socket.h
++++ b/include/linux/socket.h
+@@ -31,7 +31,10 @@ typedef __kernel_sa_family_t	sa_family_t;
  
- #endif // CONFIG_CC_ASM_GOTO_OUTPUT
+ struct sockaddr {
+ 	sa_family_t	sa_family;	/* address family, AF_xxx	*/
+-	char		sa_data[14];	/* 14 bytes of protocol address	*/
++	union {
++		char sa_data_min[14];		/* Minimum 14 bytes of protocol address	*/
++		DECLARE_FLEX_ARRAY(char, sa_data);
++	};
+ };
  
-+#ifdef CONFIG_CC_HAS_ASM_GOTO_TIED_OUTPUT
-+#define __try_cmpxchg_user_asm(itype, ltype, _ptr, _pold, _new, label)	({ \
-+	bool success;							\
-+	__typeof__(_ptr) _old = (__typeof__(_ptr))(_pold);		\
-+	__typeof__(*(_ptr)) __old = *_old;				\
-+	__typeof__(*(_ptr)) __new = (_new);				\
-+	asm_volatile_goto("\n"						\
-+		     "1: " LOCK_PREFIX "cmpxchg"itype" %[new], %[ptr]\n"\
-+		     _ASM_EXTABLE_UA(1b, %l[label])			\
-+		     : CC_OUT(z) (success),				\
-+		       [ptr] "+m" (*_ptr),				\
-+		       [old] "+a" (__old)				\
-+		     : [new] ltype (__new)				\
-+		     : "memory"						\
-+		     : label);						\
-+	if (unlikely(!success))						\
-+		*_old = __old;						\
-+	likely(success);					})
-+
-+#ifdef CONFIG_X86_32
-+#define __try_cmpxchg64_user_asm(_ptr, _pold, _new, label)	({	\
-+	bool success;							\
-+	__typeof__(_ptr) _old = (__typeof__(_ptr))(_pold);		\
-+	__typeof__(*(_ptr)) __old = *_old;				\
-+	__typeof__(*(_ptr)) __new = (_new);				\
-+	asm_volatile_goto("\n"						\
-+		     "1: " LOCK_PREFIX "cmpxchg8b %[ptr]\n"		\
-+		     _ASM_EXTABLE_UA(1b, %l[label])			\
-+		     : CC_OUT(z) (success),				\
-+		       "+A" (__old),					\
-+		       [ptr] "+m" (*_ptr)				\
-+		     : "b" ((u32)__new),				\
-+		       "c" ((u32)((u64)__new >> 32))			\
-+		     : "memory"						\
-+		     : label);						\
-+	if (unlikely(!success))						\
-+		*_old = __old;						\
-+	likely(success);					})
-+#endif // CONFIG_X86_32
-+#else  // !CONFIG_CC_HAS_ASM_GOTO_TIED_OUTPUT
-+#define __try_cmpxchg_user_asm(itype, ltype, _ptr, _pold, _new, label)	({ \
-+	int __err = 0;							\
-+	bool success;							\
-+	__typeof__(_ptr) _old = (__typeof__(_ptr))(_pold);		\
-+	__typeof__(*(_ptr)) __old = *_old;				\
-+	__typeof__(*(_ptr)) __new = (_new);				\
-+	asm volatile("\n"						\
-+		     "1: " LOCK_PREFIX "cmpxchg"itype" %[new], %[ptr]\n"\
-+		     CC_SET(z)						\
-+		     "2:\n"						\
-+		     _ASM_EXTABLE_TYPE_REG(1b, 2b, EX_TYPE_EFAULT_REG,	\
-+					   %[errout])			\
-+		     : CC_OUT(z) (success),				\
-+		       [errout] "+r" (__err),				\
-+		       [ptr] "+m" (*_ptr),				\
-+		       [old] "+a" (__old)				\
-+		     : [new] ltype (__new)				\
-+		     : "memory", "cc");					\
-+	if (unlikely(__err))						\
-+		goto label;						\
-+	if (unlikely(!success))						\
-+		*_old = __old;						\
-+	likely(success);					})
-+
-+#ifdef CONFIG_X86_32
-+/*
-+ * Unlike the normal CMPXCHG, hardcode ECX for both success/fail and error.
-+ * There are only six GPRs available and four (EAX, EBX, ECX, and EDX) are
-+ * hardcoded by CMPXCHG8B, leaving only ESI and EDI.  If the compiler uses
-+ * both ESI and EDI for the memory operand, compilation will fail if the error
-+ * is an input+output as there will be no register available for input.
-+ */
-+#define __try_cmpxchg64_user_asm(_ptr, _pold, _new, label)	({	\
-+	int __result;							\
-+	__typeof__(_ptr) _old = (__typeof__(_ptr))(_pold);		\
-+	__typeof__(*(_ptr)) __old = *_old;				\
-+	__typeof__(*(_ptr)) __new = (_new);				\
-+	asm volatile("\n"						\
-+		     "1: " LOCK_PREFIX "cmpxchg8b %[ptr]\n"		\
-+		     "mov $0, %%ecx\n\t"				\
-+		     "setz %%cl\n"					\
-+		     "2:\n"						\
-+		     _ASM_EXTABLE_TYPE_REG(1b, 2b, EX_TYPE_EFAULT_REG, %%ecx) \
-+		     : [result]"=c" (__result),				\
-+		       "+A" (__old),					\
-+		       [ptr] "+m" (*_ptr)				\
-+		     : "b" ((u32)__new),				\
-+		       "c" ((u32)((u64)__new >> 32))			\
-+		     : "memory", "cc");					\
-+	if (unlikely(__result < 0))					\
-+		goto label;						\
-+	if (unlikely(!__result))					\
-+		*_old = __old;						\
-+	likely(__result);					})
-+#endif // CONFIG_X86_32
-+#endif // CONFIG_CC_HAS_ASM_GOTO_TIED_OUTPUT
-+
- /* FIXME: this hack is definitely wrong -AK */
- struct __large_struct { unsigned long buf[100]; };
- #define __m(x) (*(struct __large_struct __user *)(x))
-@@ -506,6 +603,51 @@ do {										\
- } while (0)
- #endif // CONFIG_CC_HAS_ASM_GOTO_OUTPUT
+ struct linger {
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 8501645ff67dd..af77dc77eb9c8 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -9090,7 +9090,7 @@ EXPORT_SYMBOL(dev_set_mac_address_user);
  
-+extern void __try_cmpxchg_user_wrong_size(void);
-+
-+#ifndef CONFIG_X86_32
-+#define __try_cmpxchg64_user_asm(_ptr, _oldp, _nval, _label)		\
-+	__try_cmpxchg_user_asm("q", "r", (_ptr), (_oldp), (_nval), _label)
-+#endif
-+
-+/*
-+ * Force the pointer to u<size> to match the size expected by the asm helper.
-+ * clang/LLVM compiles all cases and only discards the unused paths after
-+ * processing errors, which breaks i386 if the pointer is an 8-byte value.
-+ */
-+#define unsafe_try_cmpxchg_user(_ptr, _oldp, _nval, _label) ({			\
-+	bool __ret;								\
-+	__chk_user_ptr(_ptr);							\
-+	switch (sizeof(*(_ptr))) {						\
-+	case 1:	__ret = __try_cmpxchg_user_asm("b", "q",			\
-+					       (__force u8 *)(_ptr), (_oldp),	\
-+					       (_nval), _label);		\
-+		break;								\
-+	case 2:	__ret = __try_cmpxchg_user_asm("w", "r",			\
-+					       (__force u16 *)(_ptr), (_oldp),	\
-+					       (_nval), _label);		\
-+		break;								\
-+	case 4:	__ret = __try_cmpxchg_user_asm("l", "r",			\
-+					       (__force u32 *)(_ptr), (_oldp),	\
-+					       (_nval), _label);		\
-+		break;								\
-+	case 8:	__ret = __try_cmpxchg64_user_asm((__force u64 *)(_ptr), (_oldp),\
-+						 (_nval), _label);		\
-+		break;								\
-+	default: __try_cmpxchg_user_wrong_size();				\
-+	}									\
-+	__ret;						})
-+
-+/* "Returns" 0 on success, 1 on failure, -EFAULT if the access faults. */
-+#define __try_cmpxchg_user(_ptr, _oldp, _nval, _label)	({		\
-+	int __ret = -EFAULT;						\
-+	__uaccess_begin_nospec();					\
-+	__ret = !unsafe_try_cmpxchg_user(_ptr, _oldp, _nval, _label);	\
-+_label:									\
-+	__uaccess_end();						\
-+	__ret;								\
-+							})
-+
- /*
-  * We want the unsafe accessors to always be inlined and use
-  * the error labels - thus the macro games.
+ int dev_get_mac_address(struct sockaddr *sa, struct net *net, char *dev_name)
+ {
+-	size_t size = sizeof(sa->sa_data);
++	size_t size = sizeof(sa->sa_data_min);
+ 	struct net_device *dev;
+ 	int ret = 0;
+ 
+diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
+index 0e87237fd8712..6ddfd7bfc5127 100644
+--- a/net/core/dev_ioctl.c
++++ b/net/core/dev_ioctl.c
+@@ -339,7 +339,7 @@ static int dev_ifsioc(struct net *net, struct ifreq *ifr, void __user *data,
+ 		if (ifr->ifr_hwaddr.sa_family != dev->type)
+ 			return -EINVAL;
+ 		memcpy(dev->broadcast, ifr->ifr_hwaddr.sa_data,
+-		       min(sizeof(ifr->ifr_hwaddr.sa_data),
++		       min(sizeof(ifr->ifr_hwaddr.sa_data_min),
+ 			   (size_t)dev->addr_len));
+ 		call_netdevice_notifiers(NETDEV_CHANGEADDR, dev);
+ 		return 0;
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index d62f79cf873dd..75fb80717e489 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -3252,7 +3252,7 @@ static int packet_bind_spkt(struct socket *sock, struct sockaddr *uaddr,
+ 			    int addr_len)
+ {
+ 	struct sock *sk = sock->sk;
+-	char name[sizeof(uaddr->sa_data) + 1];
++	char name[sizeof(uaddr->sa_data_min) + 1];
+ 
+ 	/*
+ 	 *	Check legality
+@@ -3263,8 +3263,8 @@ static int packet_bind_spkt(struct socket *sock, struct sockaddr *uaddr,
+ 	/* uaddr->sa_data comes from the userspace, it's not guaranteed to be
+ 	 * zero-terminated.
+ 	 */
+-	memcpy(name, uaddr->sa_data, sizeof(uaddr->sa_data));
+-	name[sizeof(uaddr->sa_data)] = 0;
++	memcpy(name, uaddr->sa_data, sizeof(uaddr->sa_data_min));
++	name[sizeof(uaddr->sa_data_min)] = 0;
+ 
+ 	return packet_do_bind(sk, name, 0, 0);
+ }
+@@ -3536,11 +3536,11 @@ static int packet_getname_spkt(struct socket *sock, struct sockaddr *uaddr,
+ 		return -EOPNOTSUPP;
+ 
+ 	uaddr->sa_family = AF_PACKET;
+-	memset(uaddr->sa_data, 0, sizeof(uaddr->sa_data));
++	memset(uaddr->sa_data, 0, sizeof(uaddr->sa_data_min));
+ 	rcu_read_lock();
+ 	dev = dev_get_by_index_rcu(sock_net(sk), READ_ONCE(pkt_sk(sk)->ifindex));
+ 	if (dev)
+-		strscpy(uaddr->sa_data, dev->name, sizeof(uaddr->sa_data));
++		strscpy(uaddr->sa_data, dev->name, sizeof(uaddr->sa_data_min));
+ 	rcu_read_unlock();
+ 
+ 	return sizeof(*uaddr);
 -- 
 2.43.0
 
