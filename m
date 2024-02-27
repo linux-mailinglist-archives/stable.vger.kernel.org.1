@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-24931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A65638696E5
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:16:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DF7B869509
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:58:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5927B1F2E6EE
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:16:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7838C1F23508
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7FAC13B78F;
-	Tue, 27 Feb 2024 14:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E7513EFFB;
+	Tue, 27 Feb 2024 13:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jm1ywvbk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGiAtn8g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7683813B29C;
-	Tue, 27 Feb 2024 14:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15481448C3;
+	Tue, 27 Feb 2024 13:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043387; cv=none; b=RdP3iZA+yRVOHedxVRxxN8VLs4NVadsBaOuoUVnyzxOrcpC3n8wTUFroSCm4Z0xgcccm8PG83DWAfrRoLxSgqKQa7YNGShYbfbNNJjxPWv/C/2Z6fPBpnMO+/hSKUhI0Iovfg4aE6UoxIBurAvT2ttTSdMANJlYoe+RHBBVNswI=
+	t=1709042273; cv=none; b=Ohh2bqiwQ16uv5NV6mtUl3DHETnKS8FUBa7vyuhIyYVSOL9T0aYp7E3KMl8mK57AbZLtXfsSRY70KjLUHDhuoqRlwHmItyRw1CGR8ITdEvl8x4CvOvxY/3Qu0NXw0vfBbKyT8AYR+Hw8ZtD3b6d3Qv2hxIymcKhg3YWfqbnpLWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043387; c=relaxed/simple;
-	bh=f21W9wG3m25fOVf+KZwfBQihKmnWxIVzjMVrcXiyNkY=;
+	s=arc-20240116; t=1709042273; c=relaxed/simple;
+	bh=s1hEwIby6vTFiwKjtr+rUmpnrRcwVIvktI1kNqHedc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XaWIjfv9E2F/yKGwzZSyURKQXUFAlLRka/sqZ84THlnrNSN+0FLgGShhMAqGNJnUN2m/kwg2Racruh7KLsUyxfY3ekmRYO5roDRAyu4D7AjgC2/lgadnfANsoi0WMlP9oEzIl42djrSFgvtgp4Zb0RIWkOoz6oSooWHRo6kl4WM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jm1ywvbk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0531AC433F1;
-	Tue, 27 Feb 2024 14:16:26 +0000 (UTC)
+	 MIME-Version; b=fsxzLdb8DVnHbhD9CzLCPnuhGvGQgpJ45Lracx6KRIeBoIiKqbIYEL5AhPEf1mXMxQqEHQkP20C4rE1WppMqw10Bly3t3SBou4z3RAHrDUpb+tTVW11sg+5qWj44boOQDoY3wX2kfaWs7ilbRId8kdVRknJ67E1T0mnOY6URiDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HGiAtn8g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C648C433A6;
+	Tue, 27 Feb 2024 13:57:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043387;
-	bh=f21W9wG3m25fOVf+KZwfBQihKmnWxIVzjMVrcXiyNkY=;
+	s=korg; t=1709042273;
+	bh=s1hEwIby6vTFiwKjtr+rUmpnrRcwVIvktI1kNqHedc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jm1ywvbkwxo+/cI3Yvvjib9IxytIES/2W2FEYQS8JjPO0v1paCVgKDjXOtUfgGq7q
-	 chwPyd6kB9j8tWciH9KMSHgdbrffy9cMFshWYrGZvI8xk+ZScjzKmUbU5/XEJP7LKk
-	 5QG1EcqHgPGaoZ9ZJ7fxJutBZjIcQxNexBViAsEA=
+	b=HGiAtn8goU9Ya8yM7t7oBsaJo3GVr6dP91bku3arysX/ah6QLAl6BWJs8d01j3MI5
+	 yOV9qjRHU92TOM/v/Amp+LLhCc8/Tje+TJubFycE9Ba92t2GxkAAndhfy5219/GkYr
+	 iI76c9zaUFbqtPq84h25Zi1CyzeRlYT1PRCBYZOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.1 089/195] Revert "parisc: Only list existing CPUs in cpu_possible_mask"
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Davide Caratti <dcaratti@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 239/299] net/sched: act_mirred: use the backlog for mirred ingress
 Date: Tue, 27 Feb 2024 14:25:50 +0100
-Message-ID: <20240227131613.419977830@linuxfoundation.org>
+Message-ID: <20240227131633.427351794@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +65,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 82b143aeb169b8b55798d7d2063032e1a6ceeeb0 upstream.
+[ Upstream commit 52f671db18823089a02f07efc04efdb2272ddc17 ]
 
-This reverts commit 0921244f6f4f0d05698b953fe632a99b38907226.
+The test Davide added in commit ca22da2fbd69 ("act_mirred: use the backlog
+for nested calls to mirred ingress") hangs our testing VMs every 10 or so
+runs, with the familiar tcp_v4_rcv -> tcp_v4_rcv deadlock reported by
+lockdep.
 
-It broke CPU hotplugging because it modifies the __cpu_possible_mask
-after bootup, so that it will be different than nr_cpu_ids, which
-then effictively breaks the workqueue setup code and triggers crashes
-when shutting down CPUs at runtime.
+The problem as previously described by Davide (see Link) is that
+if we reverse flow of traffic with the redirect (egress -> ingress)
+we may reach the same socket which generated the packet. And we may
+still be holding its socket lock. The common solution to such deadlocks
+is to put the packet in the Rx backlog, rather than run the Rx path
+inline. Do that for all egress -> ingress reversals, not just once
+we started to nest mirred calls.
 
-Guenter was the first who noticed the wrong values in __cpu_possible_mask,
-since the cpumask Kunit tests were failig.
+In the past there was a concern that the backlog indirection will
+lead to loss of error reporting / less accurate stats. But the current
+workaround does not seem to address the issue.
 
-Reverting this commit fixes both issues, but sadly brings back this
-uncritical runtime warning:
-register_cpu_capacity_sysctl: too early to get CPU4 device!
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lkml.org/lkml/2024/2/4/146
-Link: https://lore.kernel.org/lkml/Zb0mbHlIud_bqftx@slm.duckdns.org/t/
-Cc: stable@vger.kernel.org # 6.0+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 53592b364001 ("net/sched: act_mirred: Implement ingress actions")
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Suggested-by: Davide Caratti <dcaratti@redhat.com>
+Link: https://lore.kernel.org/netdev/33dc43f587ec1388ba456b4915c75f02a8aae226.1663945716.git.dcaratti@redhat.com/
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/processor.c |    8 --------
- 1 file changed, 8 deletions(-)
+ net/sched/act_mirred.c                             | 14 +++++---------
+ .../testing/selftests/net/forwarding/tc_actions.sh |  3 ---
+ 2 files changed, 5 insertions(+), 12 deletions(-)
 
---- a/arch/parisc/kernel/processor.c
-+++ b/arch/parisc/kernel/processor.c
-@@ -171,7 +171,6 @@ static int __init processor_probe(struct
- 	p->cpu_num = cpu_info.cpu_num;
- 	p->cpu_loc = cpu_info.cpu_loc;
- 
--	set_cpu_possible(cpuid, true);
- 	store_cpu_topology(cpuid);
- 
- #ifdef CONFIG_SMP
-@@ -466,13 +465,6 @@ static struct parisc_driver cpu_driver _
-  */
- void __init processor_init(void)
- {
--	unsigned int cpu;
--
- 	reset_cpu_topology();
--
--	/* reset possible mask. We will mark those which are possible. */
--	for_each_possible_cpu(cpu)
--		set_cpu_possible(cpu, false);
--
- 	register_parisc_driver(&cpu_driver);
+diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
+index 6f2544c1e3961..bab090bb5e80a 100644
+--- a/net/sched/act_mirred.c
++++ b/net/sched/act_mirred.c
+@@ -206,18 +206,14 @@ static int tcf_mirred_init(struct net *net, struct nlattr *nla,
+ 	return err;
  }
+ 
+-static bool is_mirred_nested(void)
+-{
+-	return unlikely(__this_cpu_read(mirred_nest_level) > 1);
+-}
+-
+-static int tcf_mirred_forward(bool want_ingress, struct sk_buff *skb)
++static int
++tcf_mirred_forward(bool at_ingress, bool want_ingress, struct sk_buff *skb)
+ {
+ 	int err;
+ 
+ 	if (!want_ingress)
+ 		err = tcf_dev_queue_xmit(skb, dev_queue_xmit);
+-	else if (is_mirred_nested())
++	else if (!at_ingress)
+ 		err = netif_rx(skb);
+ 	else
+ 		err = netif_receive_skb(skb);
+@@ -293,9 +289,9 @@ static int tcf_mirred_to_dev(struct sk_buff *skb, struct tcf_mirred *m,
+ 
+ 		skb_set_redirected(skb_to_send, skb_to_send->tc_at_ingress);
+ 
+-		err = tcf_mirred_forward(want_ingress, skb_to_send);
++		err = tcf_mirred_forward(at_ingress, want_ingress, skb_to_send);
+ 	} else {
+-		err = tcf_mirred_forward(want_ingress, skb_to_send);
++		err = tcf_mirred_forward(at_ingress, want_ingress, skb_to_send);
+ 	}
+ 
+ 	if (err) {
+diff --git a/tools/testing/selftests/net/forwarding/tc_actions.sh b/tools/testing/selftests/net/forwarding/tc_actions.sh
+index b0f5e55d2d0b2..5896296365022 100755
+--- a/tools/testing/selftests/net/forwarding/tc_actions.sh
++++ b/tools/testing/selftests/net/forwarding/tc_actions.sh
+@@ -235,9 +235,6 @@ mirred_egress_to_ingress_tcp_test()
+ 	check_err $? "didn't mirred redirect ICMP"
+ 	tc_check_packets "dev $h1 ingress" 102 10
+ 	check_err $? "didn't drop mirred ICMP"
+-	local overlimits=$(tc_rule_stats_get ${h1} 101 egress .overlimits)
+-	test ${overlimits} = 10
+-	check_err $? "wrong overlimits, expected 10 got ${overlimits}"
+ 
+ 	tc filter del dev $h1 egress protocol ip pref 100 handle 100 flower
+ 	tc filter del dev $h1 egress protocol ip pref 101 handle 101 flower
+-- 
+2.43.0
+
 
 
 
