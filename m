@@ -1,174 +1,419 @@
-Return-Path: <stable+bounces-23827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98CFB868A04
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 08:40:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5167C868A07
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 08:41:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C96428416C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 07:40:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCBFB1F2255B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 07:41:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93FF654BF1;
-	Tue, 27 Feb 2024 07:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8140D54BC8;
+	Tue, 27 Feb 2024 07:41:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lXl0bpqd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D7F54BD4
-	for <stable@vger.kernel.org>; Tue, 27 Feb 2024 07:40:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879A054F83
+	for <stable@vger.kernel.org>; Tue, 27 Feb 2024 07:41:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709019632; cv=none; b=YggDVJzQVgasBRJ1Q28hQ8vudtE8+2W/8qgAZyuISZhluUb5lslVGh7u10/n8M+VU27UfSkWy74r9UrE5IBaypwF92kAhkCFu+abkNZyoW1yu1R25Yp9bx4tg1/+89qVVFPL4HEzjsfzD0UoKbzJwrg6u2IgwuqJkbyb74d1/HI=
+	t=1709019667; cv=none; b=InJoOiSO4RY7OOivL3QBPTeO8ol6WD76XwfBsGmTah+wwQ0K82IA/Gc+UdpAVjZBGRuEz/omUaEtpima+JwJUvgMPh5TqqojFs3PVvj/ufF14wT40QDH0CPTY0Lug2YI1mPwIe32IYNMy+IeFx4SVh9JKOOjgQUnoD9dvz3UhCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709019632; c=relaxed/simple;
-	bh=IbZRrApKvVBTqa6t9bu3YUlECuTVkrYMA+TzfrKR0Sc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nkbeYqKA+tHcjsvIg76FIe6XfdtznFoXmyVNtZtmS2nHp6WrCicQ5M97TBahVZpT81Uoc0F1lWhP5LhaOG+Lr0bisXzt1u6ac0ko6EhA71gBpbetNUClc2ccMHnUoudEC8m3cI5BeCbwggbpAw5lFRAjqNGdgCtY/xkQCcoPM8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+	s=arc-20240116; t=1709019667; c=relaxed/simple;
+	bh=LjFchqJ7fv2J9plCbbCUU0+zyPgd1lGSFkzPwOj7oL0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LSGLa07XiQiP2P2IT+/Mg+4Dpg3dZnUGqWRcwKeMixmQusmoeOO+XDfV5Q07HBN9zXcNKYpCQtVE3Y6L0jhRxZdlnG9DpTx0gTiD3QHJYPTRzOcnJyCok3ktLIOR+NCVAUiIAOMlXr2a1esKL6yYh8tJkPlQeGF9WR1RdgobPYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lXl0bpqd; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2d26227d508so44649241fa.2
-        for <stable@vger.kernel.org>; Mon, 26 Feb 2024 23:40:30 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709019629; x=1709624429;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1dbd32cff0bso29105545ad.0
+        for <stable@vger.kernel.org>; Mon, 26 Feb 2024 23:41:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709019665; x=1709624465; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hmnmq95VpVjDDghP0aqnJnXM8+laf042268HXPoa1JU=;
-        b=UkwWXgNt+opA1OlSJ9gGAr8px+64J0F/a5uiyBt58rWZFrC1yvA5L1sB/vFthdKKcL
-         ag6wpx51sUmA7vLiByCV/ts6anhIBhMlEKjwE4bSqcKOxBAKho7lVj6w4pT0nHucAhAN
-         15QEACLzLpsvf3MgMXxzf8oOnXrez/ool550UC030VFAaQrcF4LSOb7dbN+Ak/8Zplv9
-         W9xL/0qbG6c1IleFsJT0RDxGOdpF/zzQozP+QmlOShAWzqxVSMynpc9ruaEhO7Fc8WWg
-         jUdHWHL3lsq4cPnodfXtTCs+TmFCrApPo+RVRIdKlx+HdBFNGpyJgAy3jAtiGQR9iXf4
-         gF3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUVFLsXF9WK2nNj7pLRQ1cdZ9Uzqo+ng5o4yBWYqt3yzZLFrQHubU18q1Ym+4RhQLo0492cKLICafsZH9C4LqKTxb1YGQSt
-X-Gm-Message-State: AOJu0YwKkiSAh8zdrJV0iyjiXDTJO6oSTNmVM+q+JSeqpdPbQPo1TP1W
-	hRIVqG1ogVgLiH9jk96r+czvZjLSKMP31rqfhaprdOqvUZwWJZsOVpadHffr
-X-Google-Smtp-Source: AGHT+IFPvxp9IAU65gsmu3PZNLdbZnRQenZH+Sb17gPmbyB7kCFCRBPYOhAMC/4ZO5Y+LBP/rq28oQ==
-X-Received: by 2002:a05:651c:226:b0:2d2:2cb4:f80d with SMTP id z6-20020a05651c022600b002d22cb4f80dmr5079079ljn.10.1709019628374;
-        Mon, 26 Feb 2024 23:40:28 -0800 (PST)
-Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:59? ([2a0b:e7c0:0:107::aaaa:59])
-        by smtp.gmail.com with ESMTPSA id p11-20020a05600c358b00b00412a813e4cfsm3780986wmq.34.2024.02.26.23.40.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Feb 2024 23:40:27 -0800 (PST)
-Message-ID: <c9ede8e2-5066-435b-bd1d-1971a8072952@kernel.org>
-Date: Tue, 27 Feb 2024 08:40:26 +0100
+        bh=92+2TageH+FXGPhCUqujdzhw6qx31aFaK8t168mlTs0=;
+        b=lXl0bpqdrtdwSIMXCfWN5ns5lR9LDWUaZKVKITZ66AYJYBN7WSl12wHGlmPeH33/WX
+         c4D66OnAmVaY0XdVoerqZg7ekt801kcbYRDdjJz0uEYzY8ORSP35E8XoccDwB3tNO0vg
+         LFfFppYrxzXixyGzeJvMIbcEcBaPf+xkH/WLbmRXkZqV4pa71XEQuAOV2cQR46N+b35Z
+         dtqlQTJYTm5t5Oalh7Vbnp2LxOm4tUvvnYyYoAPG64Y1y8QeQKUh/qIguaGOXkUE1RT2
+         EyTeoFGOwTfOXpGkW+uVh/VQRe+3n1fEE9Pt2X45sGHhymNE/HICdhoD+iyKAMMsnwzq
+         USyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709019665; x=1709624465;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=92+2TageH+FXGPhCUqujdzhw6qx31aFaK8t168mlTs0=;
+        b=IeG9e0awJQOgW4GJzu4m5LJLVXtJ67ClYjQ2O3+98Q4ofuULdgShYaLzmk64UxOWoD
+         wQVUlTTF8EeHN1s2spqsNIDhQ9ZJRMzmEfLy+y4XyrvaY+zFktzoxbzXMObNXywuBmwM
+         GeXAsAWDs8qFTj6Dc659lNTbLXM2GGINzYjpyC+O+ChnFFTcqSDN55B6dpRMBRIYm4ky
+         G4a48DON76T3oa//K0r/2D+6LRxaN7v2EVo3XCjnXq8R4rXqfBYoqnkZqUiDGJ2CS5l0
+         jORLDQ9ofVveZuI7zgpLSQJsn+Oao8ZLWxyNTTefYZDNg2uWuGThQZmXF9RtbTHkskzN
+         mxsQ==
+X-Gm-Message-State: AOJu0Yz6AGyEIjKjMJCPpH6nZkJpZ+XbKJkQLZtqfcxqkRyeHnaabwzB
+	z4HAOs32WG2Wj5xilmJh1OlcsGGJ0Tw5MMcwpXxB0/+QuG0rxWSyLp8R7Wo1nlm8xQ==
+X-Google-Smtp-Source: AGHT+IGf9sMePHBxGTwQUOjRzd4Is4ynyjVANJdI0djeLhvJxopu5kQmD6jpIJ0tB7YYiUVeOn4UbQ==
+X-Received: by 2002:a17:903:2281:b0:1d9:ce46:6ebd with SMTP id b1-20020a170903228100b001d9ce466ebdmr10851750plh.16.1709019664319;
+        Mon, 26 Feb 2024 23:41:04 -0800 (PST)
+Received: from localhost ([156.236.96.164])
+        by smtp.gmail.com with ESMTPSA id l11-20020a17090270cb00b001dcc0d35018sm181197plt.112.2024.02.26.23.41.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Feb 2024 23:41:04 -0800 (PST)
+Date: Tue, 27 Feb 2024 15:40:57 +0800
+From: Yue Hu <zbestahu@gmail.com>
+To: Gao Xiang <hsiangkao@linux.alibaba.com>
+Cc: stable@vger.kernel.org, gregkh@linuxfoundation.org,
+ linux-erofs@lists.ozlabs.org, zhangwen@coolpad.com, Yue Hu
+ <huyue2@coolpad.com>
+Subject: Re: [PATCH 6.1.y 1/2] erofs: simplify compression configuration
+ parser
+Message-ID: <20240227153951.00000e5e.zbestahu@gmail.com>
+In-Reply-To: <80740042-8b16-40f6-b0a2-4e53670d6513@linux.alibaba.com>
+References: <5216b503054dbbb9fccf8faa280647c728e82726.1709000322.git.huyue2@coolpad.com>
+	<80740042-8b16-40f6-b0a2-4e53670d6513@linux.alibaba.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.34; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.7.y 1/6] x86/bugs: Add asm helpers for executing VERW
-To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, stable@vger.kernel.org
-Cc: Alyssa Milburn <alyssa.milburn@intel.com>,
- Andrew Cooper <andrew.cooper3@citrix.com>,
- Peter Zijlstra <peterz@infradead.org>
-References: <20240226-delay-verw-backport-6-7-y-v1-0-ab25f643173b@linux.intel.com>
- <20240226-delay-verw-backport-6-7-y-v1-1-ab25f643173b@linux.intel.com>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <20240226-delay-verw-backport-6-7-y-v1-1-ab25f643173b@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 27. 02. 24, 6:00, Pawan Gupta wrote:
-> commit baf8361e54550a48a7087b603313ad013cc13386 upstream.
-> 
-> MDS mitigation requires clearing the CPU buffers before returning to
-> user. This needs to be done late in the exit-to-user path. Current
-> location of VERW leaves a possibility of kernel data ending up in CPU
-> buffers for memory accesses done after VERW such as:
-> 
->    1. Kernel data accessed by an NMI between VERW and return-to-user can
->       remain in CPU buffers since NMI returning to kernel does not
->       execute VERW to clear CPU buffers.
->    2. Alyssa reported that after VERW is executed,
->       CONFIG_GCC_PLUGIN_STACKLEAK=y scrubs the stack used by a system
->       call. Memory accesses during stack scrubbing can move kernel stack
->       contents into CPU buffers.
->    3. When caller saved registers are restored after a return from
->       function executing VERW, the kernel stack accesses can remain in
->       CPU buffers(since they occur after VERW).
-> 
-> To fix this VERW needs to be moved very late in exit-to-user path.
-> 
-> In preparation for moving VERW to entry/exit asm code, create macros
-> that can be used in asm. Also make VERW patching depend on a new feature
-> flag X86_FEATURE_CLEAR_CPU_BUF.
-...
-> --- a/arch/x86/include/asm/nospec-branch.h
-> +++ b/arch/x86/include/asm/nospec-branch.h
-> @@ -315,6 +315,17 @@
->   #endif
->   .endm
->   
-> +/*
-> + * Macro to execute VERW instruction that mitigate transient data sampling
-> + * attacks such as MDS. On affected systems a microcode update overloaded VERW
-> + * instruction to also clear the CPU buffers. VERW clobbers CFLAGS.ZF.
-> + *
-> + * Note: Only the memory operand variant of VERW clears the CPU buffers.
-> + */
-> +.macro CLEAR_CPU_BUFFERS
-> +	ALTERNATIVE "", __stringify(verw mds_verw_sel), X86_FEATURE_CLEAR_CPU_BUF
+On Tue, 27 Feb 2024 11:00:01 +0800
+Gao Xiang <hsiangkao@linux.alibaba.com> wrote:
 
-Why is not rip-relative preserved here? Will this work at all (it looks 
-like verw would now touch random memory)?
+> Hi Yue,
+> 
+> On 2024/2/27 10:22, Yue Hu wrote:
+> > From: Gao Xiang <hsiangkao@linux.alibaba.com>
+> > 
+> > [ Upstream commit efb4fb02cef3ab410b603c8f0e1c67f61d55f542 ]
+> > 
+> > Move erofs_load_compr_cfgs() into decompressor.c as well as introduce
+> > a callback instead of a hard-coded switch for each algorithm for
+> > simplicity.
+> > 
+> > Reviewed-by: Chao Yu <chao@kernel.org>
+> > Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+> > Link: https://lore.kernel.org/r/20231022130957.11398-1-xiang@kernel.org
+> > Stable-dep-of: 118a8cf504d7 ("erofs: fix inconsistent per-file compression format")
+> > Signed-off-by: Yue Hu <huyue2@coolpad.com>  
+> 
+> where is the real fix [patch 2/2]? It's needed to be posted
+> here too.
 
-In any way, should you do any changes during the backport, you shall 
-document that.
+Already sent.
 
-
--- 
-js
-suse labs
+> 
+> Thanks,
+> Gao Xiang
+> 
+> > ---
+> >   fs/erofs/compress.h          |  4 ++
+> >   fs/erofs/decompressor.c      | 60 ++++++++++++++++++++++++++++--
+> >   fs/erofs/decompressor_lzma.c |  4 +-
+> >   fs/erofs/internal.h          | 28 ++------------
+> >   fs/erofs/super.c             | 72 +++++-------------------------------
+> >   5 files changed, 76 insertions(+), 92 deletions(-)
+> > 
+> > diff --git a/fs/erofs/compress.h b/fs/erofs/compress.h
+> > index 26fa170090b8..c4a3187bdb8f 100644
+> > --- a/fs/erofs/compress.h
+> > +++ b/fs/erofs/compress.h
+> > @@ -21,6 +21,8 @@ struct z_erofs_decompress_req {
+> >   };
+> >   
+> >   struct z_erofs_decompressor {
+> > +	int (*config)(struct super_block *sb, struct erofs_super_block *dsb,
+> > +		      void *data, int size);
+> >   	int (*decompress)(struct z_erofs_decompress_req *rq,
+> >   			  struct page **pagepool);
+> >   	char *name;
+> > @@ -93,6 +95,8 @@ int z_erofs_decompress(struct z_erofs_decompress_req *rq,
+> >   		       struct page **pagepool);
+> >   
+> >   /* prototypes for specific algorithms */
+> > +int z_erofs_load_lzma_config(struct super_block *sb,
+> > +			struct erofs_super_block *dsb, void *data, int size);
+> >   int z_erofs_lzma_decompress(struct z_erofs_decompress_req *rq,
+> >   			    struct page **pagepool);
+> >   #endif
+> > diff --git a/fs/erofs/decompressor.c b/fs/erofs/decompressor.c
+> > index 0cfad74374ca..ae3cfd018d99 100644
+> > --- a/fs/erofs/decompressor.c
+> > +++ b/fs/erofs/decompressor.c
+> > @@ -24,11 +24,11 @@ struct z_erofs_lz4_decompress_ctx {
+> >   	unsigned int oend;
+> >   };
+> >   
+> > -int z_erofs_load_lz4_config(struct super_block *sb,
+> > -			    struct erofs_super_block *dsb,
+> > -			    struct z_erofs_lz4_cfgs *lz4, int size)
+> > +static int z_erofs_load_lz4_config(struct super_block *sb,
+> > +			    struct erofs_super_block *dsb, void *data, int size)
+> >   {
+> >   	struct erofs_sb_info *sbi = EROFS_SB(sb);
+> > +	struct z_erofs_lz4_cfgs *lz4 = data;
+> >   	u16 distance;
+> >   
+> >   	if (lz4) {
+> > @@ -374,17 +374,71 @@ static struct z_erofs_decompressor decompressors[] = {
+> >   		.name = "interlaced"
+> >   	},
+> >   	[Z_EROFS_COMPRESSION_LZ4] = {
+> > +		.config = z_erofs_load_lz4_config,
+> >   		.decompress = z_erofs_lz4_decompress,
+> >   		.name = "lz4"
+> >   	},
+> >   #ifdef CONFIG_EROFS_FS_ZIP_LZMA
+> >   	[Z_EROFS_COMPRESSION_LZMA] = {
+> > +		.config = z_erofs_load_lzma_config,
+> >   		.decompress = z_erofs_lzma_decompress,
+> >   		.name = "lzma"
+> >   	},
+> >   #endif
+> >   };
+> >   
+> > +int z_erofs_parse_cfgs(struct super_block *sb, struct erofs_super_block *dsb)
+> > +{
+> > +	struct erofs_sb_info *sbi = EROFS_SB(sb);
+> > +	struct erofs_buf buf = __EROFS_BUF_INITIALIZER;
+> > +	unsigned int algs, alg;
+> > +	erofs_off_t offset;
+> > +	int size, ret = 0;
+> > +
+> > +	if (!erofs_sb_has_compr_cfgs(sbi)) {
+> > +		sbi->available_compr_algs = Z_EROFS_COMPRESSION_LZ4;
+> > +		return z_erofs_load_lz4_config(sb, dsb, NULL, 0);
+> > +	}
+> > +
+> > +	sbi->available_compr_algs = le16_to_cpu(dsb->u1.available_compr_algs);
+> > +	if (sbi->available_compr_algs & ~Z_EROFS_ALL_COMPR_ALGS) {
+> > +		erofs_err(sb, "unidentified algorithms %x, please upgrade kernel",
+> > +			  sbi->available_compr_algs & ~Z_EROFS_ALL_COMPR_ALGS);
+> > +		return -EOPNOTSUPP;
+> > +	}
+> > +
+> > +	offset = EROFS_SUPER_OFFSET + sbi->sb_size;
+> > +	alg = 0;
+> > +	for (algs = sbi->available_compr_algs; algs; algs >>= 1, ++alg) {
+> > +		void *data;
+> > +
+> > +		if (!(algs & 1))
+> > +			continue;
+> > +
+> > +		data = erofs_read_metadata(sb, &buf, &offset, &size);
+> > +		if (IS_ERR(data)) {
+> > +			ret = PTR_ERR(data);
+> > +			break;
+> > +		}
+> > +
+> > +		if (alg >= ARRAY_SIZE(decompressors) ||
+> > +		    !decompressors[alg].config) {
+> > +			erofs_err(sb, "algorithm %d isn't enabled on this kernel",
+> > +				  alg);
+> > +			ret = -EOPNOTSUPP;
+> > +		} else {
+> > +			ret = decompressors[alg].config(sb,
+> > +					dsb, data, size);
+> > +		}
+> > +
+> > +		kfree(data);
+> > +		if (ret)
+> > +			break;
+> > +	}
+> > +	erofs_put_metabuf(&buf);
+> > +	return ret;
+> > +}
+> > +
+> >   int z_erofs_decompress(struct z_erofs_decompress_req *rq,
+> >   		       struct page **pagepool)
+> >   {
+> > diff --git a/fs/erofs/decompressor_lzma.c b/fs/erofs/decompressor_lzma.c
+> > index 49addc345aeb..970464c4b676 100644
+> > --- a/fs/erofs/decompressor_lzma.c
+> > +++ b/fs/erofs/decompressor_lzma.c
+> > @@ -72,10 +72,10 @@ int z_erofs_lzma_init(void)
+> >   }
+> >   
+> >   int z_erofs_load_lzma_config(struct super_block *sb,
+> > -			     struct erofs_super_block *dsb,
+> > -			     struct z_erofs_lzma_cfgs *lzma, int size)
+> > +			struct erofs_super_block *dsb, void *data, int size)
+> >   {
+> >   	static DEFINE_MUTEX(lzma_resize_mutex);
+> > +	struct z_erofs_lzma_cfgs *lzma = data;
+> >   	unsigned int dict_size, i;
+> >   	struct z_erofs_lzma *strm, *head = NULL;
+> >   	int err;
+> > diff --git a/fs/erofs/internal.h b/fs/erofs/internal.h
+> > index d8d09fc3ed65..79a7a5815ea6 100644
+> > --- a/fs/erofs/internal.h
+> > +++ b/fs/erofs/internal.h
+> > @@ -471,6 +471,8 @@ struct erofs_map_dev {
+> >   
+> >   /* data.c */
+> >   extern const struct file_operations erofs_file_fops;
+> > +void *erofs_read_metadata(struct super_block *sb, struct erofs_buf *buf,
+> > +			  erofs_off_t *offset, int *lengthp);
+> >   void erofs_unmap_metabuf(struct erofs_buf *buf);
+> >   void erofs_put_metabuf(struct erofs_buf *buf);
+> >   void *erofs_bread(struct erofs_buf *buf, struct inode *inode,
+> > @@ -565,9 +567,7 @@ void z_erofs_exit_zip_subsystem(void);
+> >   int erofs_try_to_free_all_cached_pages(struct erofs_sb_info *sbi,
+> >   				       struct erofs_workgroup *egrp);
+> >   int erofs_try_to_free_cached_page(struct page *page);
+> > -int z_erofs_load_lz4_config(struct super_block *sb,
+> > -			    struct erofs_super_block *dsb,
+> > -			    struct z_erofs_lz4_cfgs *lz4, int len);
+> > +int z_erofs_parse_cfgs(struct super_block *sb, struct erofs_super_block *dsb);
+> >   #else
+> >   static inline void erofs_shrinker_register(struct super_block *sb) {}
+> >   static inline void erofs_shrinker_unregister(struct super_block *sb) {}
+> > @@ -575,36 +575,14 @@ static inline int erofs_init_shrinker(void) { return 0; }
+> >   static inline void erofs_exit_shrinker(void) {}
+> >   static inline int z_erofs_init_zip_subsystem(void) { return 0; }
+> >   static inline void z_erofs_exit_zip_subsystem(void) {}
+> > -static inline int z_erofs_load_lz4_config(struct super_block *sb,
+> > -				  struct erofs_super_block *dsb,
+> > -				  struct z_erofs_lz4_cfgs *lz4, int len)
+> > -{
+> > -	if (lz4 || dsb->u1.lz4_max_distance) {
+> > -		erofs_err(sb, "lz4 algorithm isn't enabled");
+> > -		return -EINVAL;
+> > -	}
+> > -	return 0;
+> > -}
+> >   #endif	/* !CONFIG_EROFS_FS_ZIP */
+> >   
+> >   #ifdef CONFIG_EROFS_FS_ZIP_LZMA
+> >   int z_erofs_lzma_init(void);
+> >   void z_erofs_lzma_exit(void);
+> > -int z_erofs_load_lzma_config(struct super_block *sb,
+> > -			     struct erofs_super_block *dsb,
+> > -			     struct z_erofs_lzma_cfgs *lzma, int size);
+> >   #else
+> >   static inline int z_erofs_lzma_init(void) { return 0; }
+> >   static inline int z_erofs_lzma_exit(void) { return 0; }
+> > -static inline int z_erofs_load_lzma_config(struct super_block *sb,
+> > -			     struct erofs_super_block *dsb,
+> > -			     struct z_erofs_lzma_cfgs *lzma, int size) {
+> > -	if (lzma) {
+> > -		erofs_err(sb, "lzma algorithm isn't enabled");
+> > -		return -EINVAL;
+> > -	}
+> > -	return 0;
+> > -}
+> >   #endif	/* !CONFIG_EROFS_FS_ZIP */
+> >   
+> >   /* flags for erofs_fscache_register_cookie() */
+> > diff --git a/fs/erofs/super.c b/fs/erofs/super.c
+> > index bd8bf8fc2f5d..f2647126cb2f 100644
+> > --- a/fs/erofs/super.c
+> > +++ b/fs/erofs/super.c
+> > @@ -126,8 +126,8 @@ static bool check_layout_compatibility(struct super_block *sb,
+> >   
+> >   #ifdef CONFIG_EROFS_FS_ZIP
+> >   /* read variable-sized metadata, offset will be aligned by 4-byte */
+> > -static void *erofs_read_metadata(struct super_block *sb, struct erofs_buf *buf,
+> > -				 erofs_off_t *offset, int *lengthp)
+> > +void *erofs_read_metadata(struct super_block *sb, struct erofs_buf *buf,
+> > +			  erofs_off_t *offset, int *lengthp)
+> >   {
+> >   	u8 *buffer, *ptr;
+> >   	int len, i, cnt;
+> > @@ -159,64 +159,15 @@ static void *erofs_read_metadata(struct super_block *sb, struct erofs_buf *buf,
+> >   	}
+> >   	return buffer;
+> >   }
+> > -
+> > -static int erofs_load_compr_cfgs(struct super_block *sb,
+> > -				 struct erofs_super_block *dsb)
+> > -{
+> > -	struct erofs_sb_info *sbi = EROFS_SB(sb);
+> > -	struct erofs_buf buf = __EROFS_BUF_INITIALIZER;
+> > -	unsigned int algs, alg;
+> > -	erofs_off_t offset;
+> > -	int size, ret = 0;
+> > -
+> > -	sbi->available_compr_algs = le16_to_cpu(dsb->u1.available_compr_algs);
+> > -	if (sbi->available_compr_algs & ~Z_EROFS_ALL_COMPR_ALGS) {
+> > -		erofs_err(sb, "try to load compressed fs with unsupported algorithms %x",
+> > -			  sbi->available_compr_algs & ~Z_EROFS_ALL_COMPR_ALGS);
+> > -		return -EINVAL;
+> > -	}
+> > -
+> > -	offset = EROFS_SUPER_OFFSET + sbi->sb_size;
+> > -	alg = 0;
+> > -	for (algs = sbi->available_compr_algs; algs; algs >>= 1, ++alg) {
+> > -		void *data;
+> > -
+> > -		if (!(algs & 1))
+> > -			continue;
+> > -
+> > -		data = erofs_read_metadata(sb, &buf, &offset, &size);
+> > -		if (IS_ERR(data)) {
+> > -			ret = PTR_ERR(data);
+> > -			break;
+> > -		}
+> > -
+> > -		switch (alg) {
+> > -		case Z_EROFS_COMPRESSION_LZ4:
+> > -			ret = z_erofs_load_lz4_config(sb, dsb, data, size);
+> > -			break;
+> > -		case Z_EROFS_COMPRESSION_LZMA:
+> > -			ret = z_erofs_load_lzma_config(sb, dsb, data, size);
+> > -			break;
+> > -		default:
+> > -			DBG_BUGON(1);
+> > -			ret = -EFAULT;
+> > -		}
+> > -		kfree(data);
+> > -		if (ret)
+> > -			break;
+> > -	}
+> > -	erofs_put_metabuf(&buf);
+> > -	return ret;
+> > -}
+> >   #else
+> > -static int erofs_load_compr_cfgs(struct super_block *sb,
+> > -				 struct erofs_super_block *dsb)
+> > +static int z_erofs_parse_cfgs(struct super_block *sb,
+> > +			      struct erofs_super_block *dsb)
+> >   {
+> > -	if (dsb->u1.available_compr_algs) {
+> > -		erofs_err(sb, "try to load compressed fs when compression is disabled");
+> > -		return -EINVAL;
+> > -	}
+> > -	return 0;
+> > +	if (!dsb->u1.available_compr_algs)
+> > +		return 0;
+> > +
+> > +	erofs_err(sb, "compression disabled, unable to mount compressed EROFS");
+> > +	return -EOPNOTSUPP;
+> >   }
+> >   #endif
+> >   
+> > @@ -398,10 +349,7 @@ static int erofs_read_superblock(struct super_block *sb)
+> >   	}
+> >   
+> >   	/* parse on-disk compression configurations */
+> > -	if (erofs_sb_has_compr_cfgs(sbi))
+> > -		ret = erofs_load_compr_cfgs(sb, dsb);
+> > -	else
+> > -		ret = z_erofs_load_lz4_config(sb, dsb, NULL, 0);
+> > +	ret = z_erofs_parse_cfgs(sb, dsb);
+> >   	if (ret < 0)
+> >   		goto out;
+> >     
 
 
