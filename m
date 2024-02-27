@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-24512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEC618694DD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:56:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3A7E869707
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:17:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CC761C244FE
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:56:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67E84B2A660
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 922CC13B2B4;
-	Tue, 27 Feb 2024 13:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C70FF1448C7;
+	Tue, 27 Feb 2024 14:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UwLSJEgu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dFoBRj3o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5004754BD4;
-	Tue, 27 Feb 2024 13:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8508D78B61;
+	Tue, 27 Feb 2024 14:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042215; cv=none; b=F9uZ1TJRSnb0jLA3jL4z7LbEsg6oDi8ImPJSDxi0kHHSGkZmkBn2JOzuRl+/iunkkrqk8RjTdMkfMVmQQpIB2KqmjsMPI6kvkrv0HNIfk++cpXPnfiUR6T7EvK61WB6vkn5WwME1JKBLVR5phWVBPTZ2Ai118Svlk5aIPiIUFxs=
+	t=1709043329; cv=none; b=gm7d7tx4Qm9LAS1DTaF7O8ntTB+FcRorXCP7wvrd83KFK/zZWhU6KISGPeXA4MlXFnEPGwwafbAdcZUE8qI+yEhw3UvkgTvnZ2cR4kCWl+rv2cI3Lqa04mymTX+mPXk7UGL9FCJWhixyaq9mwZpU0KQNPIQfs4BS3ZqsvUrXNZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042215; c=relaxed/simple;
-	bh=Uz/Y9tQQKSSGvYcPypidDtnM6VCkWlac0ibECJHrROk=;
+	s=arc-20240116; t=1709043329; c=relaxed/simple;
+	bh=81VC0zTFDkeqapCThWzDkYAqj76acHiF1ZVs8XFHjNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R85lbrNpbeyLh+PnE6UTwqu6u8Pjm7D6C4nYiyTnagRzblD4Tgtr+CURIKub0QNrnP/7yIv+T22e33KQqWUNDdfzPYntmIUT2H4QUB5AViem6HBE8YQFO/pwss1CypnlR4VqbsLGIEwoZVSyT3k+bY7r8IdtAvRas6i+wxvsNec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UwLSJEgu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538F8C433C7;
-	Tue, 27 Feb 2024 13:56:54 +0000 (UTC)
+	 MIME-Version; b=mi90IJHfFYHq2HO3SS8KbcO/3zNvHHY914NVHJR0oMKTFOvOSXGMwzUxalexTxjO/ZiDRWzHBaZiBHXGPCrE+4/3cjVNRb+yMNZB9CAXXh+KLsPdhG4BJqnEyWqvasAyov/cUNpxLoryBzSne+ERlMQgW/mBvMU0aUnqigjxdS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dFoBRj3o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC92C433F1;
+	Tue, 27 Feb 2024 14:15:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042214;
-	bh=Uz/Y9tQQKSSGvYcPypidDtnM6VCkWlac0ibECJHrROk=;
+	s=korg; t=1709043329;
+	bh=81VC0zTFDkeqapCThWzDkYAqj76acHiF1ZVs8XFHjNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UwLSJEguFuZsgQybh8l0lx+nNGtPpBfF0b3Z2MS2z5TKVTChHRUYDuPB+altKTHFC
-	 3/ulwUPt0so5rpWLHCHggSsOce1MBNRl9rLvqjMas5wOZ6EaWsyC52ijCXH/ZyHqhu
-	 /4Fr7NNCY3A6an907MK65K+QvUsQjMWeO/tZdKTg=
+	b=dFoBRj3oBleMgHwtf6tC1moo71smzMZU579uGzC+eNm4HkwcNjLAzg5B7tCESnzwg
+	 ExeK868VozaJElsGNzBud5Om17RKj/YUhwaiFzMES4kqFjJw51TjmlpxoJFI8zeioA
+	 iifXTKr8DFTiTvudb24ymAB/jHIXv0lRCWk7gef8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.6 190/299] usb: roles: fix NULL pointer issue when put modules reference
+	Chaitanya Dhere <chaitanya.dhere@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Sohaib Nadeem <sohaib.nadeem@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 040/195] drm/amd/display: increased min_dcfclk_mhz and min_fclk_mhz
 Date: Tue, 27 Feb 2024 14:25:01 +0100
-Message-ID: <20240227131631.941817891@linuxfoundation.org>
+Message-ID: <20240227131611.714270412@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,101 +66,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Sohaib Nadeem <sohaib.nadeem@amd.com>
 
-commit 1c9be13846c0b2abc2480602f8ef421360e1ad9e upstream.
+[ Upstream commit 2ff33c759a4247c84ec0b7815f1f223e155ba82a ]
 
-In current design, usb role class driver will get usb_role_switch parent's
-module reference after the user get usb_role_switch device and put the
-reference after the user put the usb_role_switch device. However, the
-parent device of usb_role_switch may be removed before the user put the
-usb_role_switch. If so, then, NULL pointer issue will be met when the user
-put the parent module's reference.
+[why]
+Originally, PMFW said min FCLK is 300Mhz, but min DCFCLK can be increased
+to 400Mhz because min FCLK is now 600Mhz so FCLK >= 1.5 * DCFCLK hardware
+requirement will still be satisfied. Increasing min DCFCLK addresses
+underflow issues (underflow occurs when phantom pipe is turned on for some
+Sub-Viewport configs).
 
-This will save the module pointer in structure of usb_role_switch. Then,
-we don't need to find module by iterating long relations.
+[how]
+Increasing DCFCLK by raising the min_dcfclk_mhz
 
-Fixes: 5c54fcac9a9d ("usb: roles: Take care of driver module reference counting")
-cc: stable@vger.kernel.org
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240129093739.2371530-1-xu.yang_2@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Chaitanya Dhere <chaitanya.dhere@amd.com>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Sohaib Nadeem <sohaib.nadeem@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/roles/class.c |   17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/roles/class.c
-+++ b/drivers/usb/roles/class.c
-@@ -21,6 +21,7 @@ static const struct class role_class = {
- struct usb_role_switch {
- 	struct device dev;
- 	struct mutex lock; /* device lock*/
-+	struct module *module; /* the module this device depends on */
- 	enum usb_role role;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+index 85e0d1c2a9085..baecc0ffe7580 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+@@ -2123,7 +2123,7 @@ static int build_synthetic_soc_states(struct clk_bw_params *bw_params,
+ 	unsigned int max_dcfclk_mhz = 0, max_dispclk_mhz = 0, max_dppclk_mhz = 0,
+ 			max_phyclk_mhz = 0, max_dtbclk_mhz = 0, max_fclk_mhz = 0, max_uclk_mhz = 0;
  
- 	/* From descriptor */
-@@ -135,7 +136,7 @@ struct usb_role_switch *usb_role_switch_
- 						  usb_role_switch_match);
+-	unsigned int min_dcfclk_mhz = 199, min_fclk_mhz = 299;
++	unsigned int min_dcfclk_mhz = 399, min_fclk_mhz = 599;
  
- 	if (!IS_ERR_OR_NULL(sw))
--		WARN_ON(!try_module_get(sw->dev.parent->driver->owner));
-+		WARN_ON(!try_module_get(sw->module));
- 
- 	return sw;
- }
-@@ -157,7 +158,7 @@ struct usb_role_switch *fwnode_usb_role_
- 		sw = fwnode_connection_find_match(fwnode, "usb-role-switch",
- 						  NULL, usb_role_switch_match);
- 	if (!IS_ERR_OR_NULL(sw))
--		WARN_ON(!try_module_get(sw->dev.parent->driver->owner));
-+		WARN_ON(!try_module_get(sw->module));
- 
- 	return sw;
- }
-@@ -172,7 +173,7 @@ EXPORT_SYMBOL_GPL(fwnode_usb_role_switch
- void usb_role_switch_put(struct usb_role_switch *sw)
- {
- 	if (!IS_ERR_OR_NULL(sw)) {
--		module_put(sw->dev.parent->driver->owner);
-+		module_put(sw->module);
- 		put_device(&sw->dev);
- 	}
- }
-@@ -189,15 +190,18 @@ struct usb_role_switch *
- usb_role_switch_find_by_fwnode(const struct fwnode_handle *fwnode)
- {
- 	struct device *dev;
-+	struct usb_role_switch *sw = NULL;
- 
- 	if (!fwnode)
- 		return NULL;
- 
- 	dev = class_find_device_by_fwnode(&role_class, fwnode);
--	if (dev)
--		WARN_ON(!try_module_get(dev->parent->driver->owner));
-+	if (dev) {
-+		sw = to_role_switch(dev);
-+		WARN_ON(!try_module_get(sw->module));
-+	}
- 
--	return dev ? to_role_switch(dev) : NULL;
-+	return sw;
- }
- EXPORT_SYMBOL_GPL(usb_role_switch_find_by_fwnode);
- 
-@@ -338,6 +342,7 @@ usb_role_switch_register(struct device *
- 	sw->set = desc->set;
- 	sw->get = desc->get;
- 
-+	sw->module = parent->driver->owner;
- 	sw->dev.parent = parent;
- 	sw->dev.fwnode = desc->fwnode;
- 	sw->dev.class = &role_class;
+ 	static const unsigned int num_dcfclk_stas = 5;
+ 	unsigned int dcfclk_sta_targets[DC__VOLTAGE_STATES] = {199, 615, 906, 1324, 1564};
+-- 
+2.43.0
+
 
 
 
