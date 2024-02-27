@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0E658696C0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6402B869613
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20A521C20840
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CB0428F745
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B31B145328;
-	Tue, 27 Feb 2024 14:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF88F13A26F;
+	Tue, 27 Feb 2024 14:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jmZefPxQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZLbXwVij"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B33813A26F;
-	Tue, 27 Feb 2024 14:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF2C13B2A2;
+	Tue, 27 Feb 2024 14:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043274; cv=none; b=YI7rcfvZgeeH4/ZD67O0q/QW3EF7igC22j5BXbf8TmuAO5sivowdcdT8pXy7BakvdZVTHKfKiZDeOkuTk+6qOZlQKuxbRc0djEilJTp6+rSMLuqWYkQI8vKoyXTa88oVQDu5PnWYGiH0QAEecSe+e7obgaluRnqWYxcdrXqgmYc=
+	t=1709042870; cv=none; b=rl2vP2CEmZ4v6X3qx7xeDv843AziHz/0EL8mfsO257JewnmmEa7YXjrO5IzSq9WFXNaafYb37nulr+urUC7+mi/uVpyncXlTDobAXGpxjG+8kRdE3Th56UpT/0rGphqpall1EXbPiMdhoSpDGDIl9d/l/qBWJJ+nL2W3aA0b7do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043274; c=relaxed/simple;
-	bh=5UVx4NIAj7ol8QEz8Wlh9LHrsTG/8oVU+O+VLISTJao=;
+	s=arc-20240116; t=1709042870; c=relaxed/simple;
+	bh=BGLiPZWXgvJFl9uBQRYbQ3tz2ueEFDwK1PlqYbiQDiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=onoLwPvhkUcEjneLHMm22/cHUyh6Ge4hbgAj731shNPorTUgCvDMpnWLIok/B69E6mVbIaLhHgclEQLyCoosuazOiHtMrOKNuARa03RNaCP54UdAbfbB1g0lKska8azx+GrsmArdxpsx1Y81E5P2C1uj3L1rHe+T/a5r9R75p/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jmZefPxQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85BDBC433F1;
-	Tue, 27 Feb 2024 14:14:33 +0000 (UTC)
+	 MIME-Version; b=HqERHYlpmtD0vUCjJs0JDkofawIjXZQL2Cz/CKacdKejvB4lN0gU/8PyhWChzJyDnCHtz0ecY45ORqF6OIMgQlEa6td+VnhHGmi/p0NSv39AfS+Weez2sXTF8WgdKYCmHPsY+luS+bIzKX3P3YxG2XZZD9DNU5BjPdcGfOEOJIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZLbXwVij; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 330A5C433C7;
+	Tue, 27 Feb 2024 14:07:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043273;
-	bh=5UVx4NIAj7ol8QEz8Wlh9LHrsTG/8oVU+O+VLISTJao=;
+	s=korg; t=1709042870;
+	bh=BGLiPZWXgvJFl9uBQRYbQ3tz2ueEFDwK1PlqYbiQDiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jmZefPxQojKAKFge0PzBXG7d0NAhGclLs8IcptJNINQODeC8ag1aIyh9tMHg51V0N
-	 ppwiQWWGPS4Y9yLKN5z8wVYlo9VIS5NJZcL4WiUUxBjnpPuqoM7IbkcVTP6hoRaZ1Z
-	 5z/vAXkr28844SDdUOBhbYSmN+/XfLSmiNJ5VrMk=
+	b=ZLbXwVijPrukNwRZNGugvWEVK3hR6rOvNI0um0bNJx9DQDA7QOIZYHuLjJJch8bMu
+	 2ip3ZmmbiVZTilzh801PTRS9joC9HVKzxnRsOyCzsZJ6GQ1EQPo7YVkbhuW+mpFRYt
+	 P+KHqo/VWLh5S4Tl6bXaHi9q81SnrN2XMyvYZDJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Daniel Wagner <dwagner@suse.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Nathan Lynch <nathanl@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 049/195] nvmet-fc: avoid deadlock on delete association path
-Date: Tue, 27 Feb 2024 14:25:10 +0100
-Message-ID: <20240227131612.126168113@linuxfoundation.org>
+Subject: [PATCH 5.15 123/245] powerpc/pseries/lparcfg: add missing RTAS retry status handling
+Date: Tue, 27 Feb 2024 14:25:11 +0100
+Message-ID: <20240227131619.228040405@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <dwagner@suse.de>
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-[ Upstream commit 710c69dbaccdac312e32931abcb8499c1525d397 ]
+[ Upstream commit 5d08633e5f6564b60f1cbe09af3af40a74d66431 ]
 
-When deleting an association the shutdown path is deadlocking because we
-try to flush the nvmet_wq nested. Avoid this by deadlock by deferring
-the put work into its own work item.
+The ibm,get-system-parameter RTAS function may return -2 or 990x,
+which indicate that the caller should try again.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Daniel Wagner <dwagner@suse.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+lparcfg's parse_system_parameter_string() ignores this, making it
+possible to intermittently report incorrect SPLPAR characteristics.
+
+Move the RTAS call into a coventional rtas_busy_delay()-based loop.
+
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20230125-b4-powerpc-rtas-queue-v3-4-26929c8cce78@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/fc.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ arch/powerpc/platforms/pseries/lparcfg.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/nvme/target/fc.c b/drivers/nvme/target/fc.c
-index b4b2631eb530e..36cae038eb045 100644
---- a/drivers/nvme/target/fc.c
-+++ b/drivers/nvme/target/fc.c
-@@ -111,6 +111,8 @@ struct nvmet_fc_tgtport {
- 	struct nvmet_fc_port_entry	*pe;
- 	struct kref			ref;
- 	u32				max_sg_cnt;
-+
-+	struct work_struct		put_work;
- };
+diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
+index 19503a8797823..a291b5a94d4da 100644
+--- a/arch/powerpc/platforms/pseries/lparcfg.c
++++ b/arch/powerpc/platforms/pseries/lparcfg.c
+@@ -322,6 +322,7 @@ static void parse_mpp_x_data(struct seq_file *m)
+  */
+ static void parse_system_parameter_string(struct seq_file *m)
+ {
++	const s32 token = rtas_token("ibm,get-system-parameter");
+ 	int call_status;
  
- struct nvmet_fc_port_entry {
-@@ -248,6 +250,13 @@ static int nvmet_fc_tgt_a_get(struct nvmet_fc_tgt_assoc *assoc);
- static void nvmet_fc_tgt_q_put(struct nvmet_fc_tgt_queue *queue);
- static int nvmet_fc_tgt_q_get(struct nvmet_fc_tgt_queue *queue);
- static void nvmet_fc_tgtport_put(struct nvmet_fc_tgtport *tgtport);
-+static void nvmet_fc_put_tgtport_work(struct work_struct *work)
-+{
-+	struct nvmet_fc_tgtport *tgtport =
-+		container_of(work, struct nvmet_fc_tgtport, put_work);
-+
-+	nvmet_fc_tgtport_put(tgtport);
-+}
- static int nvmet_fc_tgtport_get(struct nvmet_fc_tgtport *tgtport);
- static void nvmet_fc_handle_fcp_rqst(struct nvmet_fc_tgtport *tgtport,
- 					struct nvmet_fc_fcp_iod *fod);
-@@ -359,7 +368,7 @@ __nvmet_fc_finish_ls_req(struct nvmet_fc_ls_req_op *lsop)
- 
- 	if (!lsop->req_queued) {
- 		spin_unlock_irqrestore(&tgtport->lock, flags);
--		goto out_puttgtport;
-+		goto out_putwork;
+ 	unsigned char *local_buffer = kmalloc(SPLPAR_MAXLENGTH, GFP_KERNEL);
+@@ -331,16 +332,15 @@ static void parse_system_parameter_string(struct seq_file *m)
+ 		return;
  	}
  
- 	list_del(&lsop->lsreq_list);
-@@ -372,8 +381,8 @@ __nvmet_fc_finish_ls_req(struct nvmet_fc_ls_req_op *lsop)
- 				  (lsreq->rqstlen + lsreq->rsplen),
- 				  DMA_BIDIRECTIONAL);
+-	spin_lock(&rtas_data_buf_lock);
+-	memset(rtas_data_buf, 0, SPLPAR_MAXLENGTH);
+-	call_status = rtas_call(rtas_token("ibm,get-system-parameter"), 3, 1,
+-				NULL,
+-				SPLPAR_CHARACTERISTICS_TOKEN,
+-				__pa(rtas_data_buf),
+-				RTAS_DATA_BUF_SIZE);
+-	memcpy(local_buffer, rtas_data_buf, SPLPAR_MAXLENGTH);
+-	local_buffer[SPLPAR_MAXLENGTH - 1] = '\0';
+-	spin_unlock(&rtas_data_buf_lock);
++	do {
++		spin_lock(&rtas_data_buf_lock);
++		memset(rtas_data_buf, 0, SPLPAR_MAXLENGTH);
++		call_status = rtas_call(token, 3, 1, NULL, SPLPAR_CHARACTERISTICS_TOKEN,
++					__pa(rtas_data_buf), RTAS_DATA_BUF_SIZE);
++		memcpy(local_buffer, rtas_data_buf, SPLPAR_MAXLENGTH);
++		local_buffer[SPLPAR_MAXLENGTH - 1] = '\0';
++		spin_unlock(&rtas_data_buf_lock);
++	} while (rtas_busy_delay(call_status));
  
--out_puttgtport:
--	nvmet_fc_tgtport_put(tgtport);
-+out_putwork:
-+	queue_work(nvmet_wq, &tgtport->put_work);
- }
- 
- static int
-@@ -1404,6 +1413,7 @@ nvmet_fc_register_targetport(struct nvmet_fc_port_info *pinfo,
- 	kref_init(&newrec->ref);
- 	ida_init(&newrec->assoc_cnt);
- 	newrec->max_sg_cnt = template->max_sgl_segments;
-+	INIT_WORK(&newrec->put_work, nvmet_fc_put_tgtport_work);
- 
- 	ret = nvmet_fc_alloc_ls_iodlist(newrec);
- 	if (ret) {
+ 	if (call_status != 0) {
+ 		printk(KERN_INFO
 -- 
 2.43.0
 
