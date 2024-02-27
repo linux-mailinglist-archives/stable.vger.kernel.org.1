@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB108869693
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:13:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 315DD8695E5
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:06:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BAC51F2E50A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:13:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 616E01C2266D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:06:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17165145351;
-	Tue, 27 Feb 2024 14:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745CA145B05;
+	Tue, 27 Feb 2024 14:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="04RtqUE6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HCRWmKZB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FB6145350;
-	Tue, 27 Feb 2024 14:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322BC13B2BA;
+	Tue, 27 Feb 2024 14:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043179; cv=none; b=AIgdYxTAQChLJqnD2wfn3pC6xs8Ir54XnUrtkfd5h/1qdhZhLmyryUDgHOGrmQ7BNrELDZ9iaeghQOaanGwbIZRdXPG9yUcIfGRDlVVMnfzoJ4fL+5Iq9SYUI5B0QBn3EQCEpA871Vut7Km2IOseiR4Y2FQlbXnX/zFJzGFmSgA=
+	t=1709042754; cv=none; b=pNmgcRs9Gb4tlxVD0qQy2CH3aszyo/TnVtbWSBzgnvhYbcuM+d0E8168h1UHvlxAghB7PIIs2b3tJt0kzphgexpadqZIN+O6LjFzbAJ/aPpzHrfjGFPqUfTss+dvL4X98APZAE/XmCBmsznhQNNMP5w5LzEPwYTSHoqKBJ3julo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043179; c=relaxed/simple;
-	bh=bGRrmA5MWwqaeR465HDLTADZ4jnZ4+3uw1SH0rhfFRw=;
+	s=arc-20240116; t=1709042754; c=relaxed/simple;
+	bh=y+U2muLKmQITe4dLSnwDdcZViXq/ZE26fVBsc5gKsNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AI50Ca2bWey4OKnPiVN1PgSXUvlSnEjaVokNXVCjmpResSGL6AA9B6BdbebUGwqsWZcqbCiRRnGZDLLFPIMb5kW5MOd1n9rLipyxn5r31ozHxDuD+PBtqDtd229qIYqguoavXCMToUGilgWk4y4op4CXmV777oMY7BSsKDCRM08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=04RtqUE6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 543D9C433C7;
-	Tue, 27 Feb 2024 14:12:59 +0000 (UTC)
+	 MIME-Version; b=DHOwpAXfQvclQWRpRo6jXVETJKB3E9PuZspKI8vQQ6iFPY6BtOblUjrjtynuzTUuHOpXTniXIB+Sr7LlA0jSyX1s2aycJ72dpe42nwuYz1VnfKw0QOZ7mqqFjZ38iB9N1va01mJYpkJcu4HJ0JI14jWSGw1RL/uygGLSU2bAjpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HCRWmKZB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4059C433F1;
+	Tue, 27 Feb 2024 14:05:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043179;
-	bh=bGRrmA5MWwqaeR465HDLTADZ4jnZ4+3uw1SH0rhfFRw=;
+	s=korg; t=1709042754;
+	bh=y+U2muLKmQITe4dLSnwDdcZViXq/ZE26fVBsc5gKsNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=04RtqUE6KNa/kVnlJQPUR9IKQvPA+M0UkdFkKeztncLfdXxjQsiN79Cc0uYGCuxSE
-	 cf+sNVEla4jxU1gUWeFzeUMdmaH5xQLv4s8oQ0FS5KpIRfHkrc8DIIlKnkOtt8LhNi
-	 XtnNU6HLulOVAfPAzQlWCE9x4nszfiP9SBPvZKdk=
+	b=HCRWmKZBuYUFYEx5SqyfSNlSfx/jH0cfIWC+XRl7aYZcwd8k9N6C3msNK2PQB1Pyp
+	 piRu64u+/XAiJn03fMFXGZZ98aD5ghlVorsjL499M8AxRwGbjcKNKsy01vqyUoyQ5D
+	 qAGnGLseeyM9/NEXA1nS9aPppagspb7J0h1pskGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Devyn Liu <liudingyuan@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 017/195] spi: hisi-sfc-v3xx: Return IRQ_NONE if no interrupts were detected
-Date: Tue, 27 Feb 2024 14:24:38 +0100
-Message-ID: <20240227131610.966359720@linuxfoundation.org>
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Borislav Petkov <bp@suse.de>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 5.15 091/245] x86/ftrace: Use alternative RET encoding
+Date: Tue, 27 Feb 2024 14:24:39 +0100
+Message-ID: <20240227131618.183360714@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Devyn Liu <liudingyuan@huawei.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit de8b6e1c231a95abf95ad097b993d34b31458ec9 ]
+Upstream commit: 1f001e9da6bbf482311e45e48f53c2bd2179e59c
 
-Return IRQ_NONE from the interrupt handler when no interrupt was
-detected. Because an empty interrupt will cause a null pointer error:
+Use the return thunk in ftrace trampolines, if needed.
 
-    Unable to handle kernel NULL pointer dereference at virtual
-  address 0000000000000008
-    Call trace:
-        complete+0x54/0x100
-        hisi_sfc_v3xx_isr+0x2c/0x40 [spi_hisi_sfc_v3xx]
-        __handle_irq_event_percpu+0x64/0x1e0
-        handle_irq_event+0x7c/0x1cc
-
-Signed-off-by: Devyn Liu <liudingyuan@huawei.com>
-Link: https://msgid.link/r/20240123071149.917678-1-liudingyuan@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-hisi-sfc-v3xx.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/x86/kernel/ftrace.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-hisi-sfc-v3xx.c b/drivers/spi/spi-hisi-sfc-v3xx.c
-index d3a23b1c2a4c5..61bf00dfe9c33 100644
---- a/drivers/spi/spi-hisi-sfc-v3xx.c
-+++ b/drivers/spi/spi-hisi-sfc-v3xx.c
-@@ -377,6 +377,11 @@ static const struct spi_controller_mem_ops hisi_sfc_v3xx_mem_ops = {
- static irqreturn_t hisi_sfc_v3xx_isr(int irq, void *data)
- {
- 	struct hisi_sfc_v3xx_host *host = data;
-+	u32 reg;
-+
-+	reg = readl(host->regbase + HISI_SFC_V3XX_INT_STAT);
-+	if (!reg)
-+		return IRQ_NONE;
+--- a/arch/x86/kernel/ftrace.c
++++ b/arch/x86/kernel/ftrace.c
+@@ -311,7 +311,7 @@ union ftrace_op_code_union {
+ 	} __attribute__((packed));
+ };
  
- 	hisi_sfc_v3xx_disable_int(host);
+-#define RET_SIZE		1 + IS_ENABLED(CONFIG_SLS)
++#define RET_SIZE		(IS_ENABLED(CONFIG_RETPOLINE) ? 5 : 1 + IS_ENABLED(CONFIG_SLS))
  
--- 
-2.43.0
-
+ static unsigned long
+ create_trampoline(struct ftrace_ops *ops, unsigned int *tramp_size)
+@@ -367,7 +367,10 @@ create_trampoline(struct ftrace_ops *ops
+ 		goto fail;
+ 
+ 	ip = trampoline + size;
+-	memcpy(ip, retq, RET_SIZE);
++	if (cpu_feature_enabled(X86_FEATURE_RETHUNK))
++		__text_gen_insn(ip, JMP32_INSN_OPCODE, ip, &__x86_return_thunk, JMP32_INSN_SIZE);
++	else
++		memcpy(ip, retq, sizeof(retq));
+ 
+ 	/* No need to test direct calls on created trampolines */
+ 	if (ops->flags & FTRACE_OPS_FL_SAVE_REGS) {
 
 
 
