@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-25162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C6C38697FF
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:27:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBD0B869375
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:45:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32AD81F2C6C4
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:27:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A61EA28F0FF
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 562E6143C4B;
-	Tue, 27 Feb 2024 14:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8F9F1420A5;
+	Tue, 27 Feb 2024 13:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dyNu81E1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yh0W0KFs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F0B14264A;
-	Tue, 27 Feb 2024 14:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D511419B4;
+	Tue, 27 Feb 2024 13:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044037; cv=none; b=bLbhxGj/RXP6g8F73iTV00ga+39kvRlrTbfQz6TD8f3Y2H/qe5O7q4y8fAAU9HRkSrGPE5KKGD2SCglm1aT5cTrnfHnvmkvrlRvB4yiGHy497wMmZtWHASOSyB+2ldt4XteJAA2CuV1o9SuPWyVysjE/jWMM1wWejQGUwT+eGF4=
+	t=1709041496; cv=none; b=lSOF1+8ItkrNzRHlUnha1aR4kxrvLMpGfew+Mzn959BA3d8I5LAlv4v/BTiyo7lzFwYDtf2oIqSXpOPBqAdfcrYNPCJiTIwMX0PlGhPgmJ/cY5ywtU5kHASJaNcBIUEoJaUDVv189j1zwlA6GZwSzyXxCV5UN+ScE4LEI4xHcCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044037; c=relaxed/simple;
-	bh=oVDEWH0UvPuqFaly31k7rR6lJTEmD6vqA3Cmihj4rKM=;
+	s=arc-20240116; t=1709041496; c=relaxed/simple;
+	bh=iNm2DNs9hRjTYiYbyz4+IPAbYhShYGOwdKWpS/o0Buo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jNRy3yzOEmRhMDO7LBGdCtsWpfMqVIkhK9WnSphOjrAprYF82DgnRN/vA2kVX97Ea5BxlvYMkP6cVin89xhZSD/JayJOQ7WgPSbvM17iwbffE13rurT8QbaGas7vk2M/3MJulQ0TUEzCr5QwQUOhg769qQhJaK5oJlcZPrCeVQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dyNu81E1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E901C433C7;
-	Tue, 27 Feb 2024 14:27:16 +0000 (UTC)
+	 MIME-Version; b=bafSQXR8+NXlsLMUzQuRmpmXOULVBkLnyciFTrtiLcK866D7E4c/hRr4E6Wx33uEP5I48oKwAMBdjrgV3TvTZvvF3feUFQ1cicUltlb90ltuqD7za3bEHi6QjTDFh3hAB0qsD5/w1OsgPL7giX6jji8LwVZpgbzl2+koLpFYiLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yh0W0KFs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02566C43390;
+	Tue, 27 Feb 2024 13:44:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044036;
-	bh=oVDEWH0UvPuqFaly31k7rR6lJTEmD6vqA3Cmihj4rKM=;
+	s=korg; t=1709041496;
+	bh=iNm2DNs9hRjTYiYbyz4+IPAbYhShYGOwdKWpS/o0Buo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dyNu81E1J5bxYBOphGdeDNr8XHnvyBClp+ksP8W9bwlQBUyDt0YAciztHNOTiEykr
-	 ektVWHmLA22RQVc8MgBjWoSXZDYme1M+s8QLzWvGKV3CpS/r8z7sCNfb/F9ibbzr9/
-	 nBdy9sIBWO6bMgGdV/vzvxathmy5ut9PXJA/U7ik=
+	b=yh0W0KFsXwSAmGOnSjXqk+vxfuvYUIyhIBozOu3yR7fMdjXHcVFfE7/NtJl2a5u97
+	 JygOE1cYAUdiHPKnKGrYqBetRQPnIMExlQ4jVuLNtMzd/XsJJXsxrcsfvhb1v0DkQl
+	 O+PwY9Ge0CpTptMTeFuY9LQH7pQZiM5PGZUov3Uk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cyril Hrubis <chrubis@suse.cz>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Petr Vorel <pvorel@suse.cz>,
-	Mel Gorman <mgorman@suse.de>
-Subject: [PATCH 5.10 010/122] sched/rt: Fix sysctl_sched_rr_timeslice intial value
-Date: Tue, 27 Feb 2024 14:26:11 +0100
-Message-ID: <20240227131559.044397307@linuxfoundation.org>
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 25/52] s390/qeth: Fix potential loss of L3-IP@ in case of network issues
+Date: Tue, 27 Feb 2024 14:26:12 +0100
+Message-ID: <20240227131549.358561388@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
+References: <20240227131548.514622258@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cyril Hrubis <chrubis@suse.cz>
+From: Alexandra Winter <wintera@linux.ibm.com>
 
-commit c7fcb99877f9f542c918509b2801065adcaf46fa upstream.
+[ Upstream commit 2fe8a236436fe40d8d26a1af8d150fc80f04ee1a ]
 
-There is a 10% rounding error in the intial value of the
-sysctl_sched_rr_timeslice with CONFIG_HZ_300=y.
+Symptom:
+In case of a bad cable connection (e.g. dirty optics) a fast sequence of
+network DOWN-UP-DOWN-UP could happen. UP triggers recovery of the qeth
+interface. In case of a second DOWN while recovery is still ongoing, it
+can happen that the IP@ of a Layer3 qeth interface is lost and will not
+be recovered by the second UP.
 
-This was found with LTP test sched_rr_get_interval01:
+Problem:
+When registration of IP addresses with Layer 3 qeth devices fails, (e.g.
+because of bad address format) the respective IP address is deleted from
+its hash-table in the driver. If registration fails because of a ENETDOWN
+condition, the address should stay in the hashtable, so a subsequent
+recovery can restore it.
 
-sched_rr_get_interval01.c:57: TPASS: sched_rr_get_interval() passed
-sched_rr_get_interval01.c:64: TPASS: Time quantum 0s 99999990ns
-sched_rr_get_interval01.c:72: TFAIL: /proc/sys/kernel/sched_rr_timeslice_ms != 100 got 90
-sched_rr_get_interval01.c:57: TPASS: sched_rr_get_interval() passed
-sched_rr_get_interval01.c:64: TPASS: Time quantum 0s 99999990ns
-sched_rr_get_interval01.c:72: TFAIL: /proc/sys/kernel/sched_rr_timeslice_ms != 100 got 90
+3caa4af834df ("qeth: keep ip-address after LAN_OFFLINE failure")
+fixes this for registration failures during normal operation, but not
+during recovery.
 
-What this test does is to compare the return value from the
-sched_rr_get_interval() and the sched_rr_timeslice_ms sysctl file and
-fails if they do not match.
+Solution:
+Keep L3-IP address in case of ENETDOWN in qeth_l3_recover_ip(). For
+consistency with qeth_l3_add_ip() we also keep it in case of EADDRINUSE,
+i.e. for some reason the card already/still has this address registered.
 
-The problem it found is the intial sysctl file value which was computed as:
-
-static int sysctl_sched_rr_timeslice = (MSEC_PER_SEC / HZ) * RR_TIMESLICE;
-
-which works fine as long as MSEC_PER_SEC is multiple of HZ, however it
-introduces 10% rounding error for CONFIG_HZ_300:
-
-(MSEC_PER_SEC / HZ) * (100 * HZ / 1000)
-
-(1000 / 300) * (100 * 300 / 1000)
-
-3 * 30 = 90
-
-This can be easily fixed by reversing the order of the multiplication
-and division. After this fix we get:
-
-(MSEC_PER_SEC * (100 * HZ / 1000)) / HZ
-
-(1000 * (100 * 300 / 1000)) / 300
-
-(1000 * 30) / 300 = 100
-
-Fixes: 975e155ed873 ("sched/rt: Show the 'sched_rr_timeslice' SCHED_RR timeslice tuning knob in milliseconds")
-Signed-off-by: Cyril Hrubis <chrubis@suse.cz>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Petr Vorel <pvorel@suse.cz>
-Acked-by: Mel Gorman <mgorman@suse.de>
-Tested-by: Petr Vorel <pvorel@suse.cz>
-Link: https://lore.kernel.org/r/20230802151906.25258-2-chrubis@suse.cz
-[ pvorel: rebased for 5.15, 5.10 ]
-Signed-off-by: Petr Vorel <pvorel@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4a71df50047f ("qeth: new qeth device driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240206085849.2902775-1-wintera@linux.ibm.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/rt.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/s390/net/qeth_l3_main.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -8,7 +8,7 @@
- #include "pelt.h"
+diff --git a/drivers/s390/net/qeth_l3_main.c b/drivers/s390/net/qeth_l3_main.c
+index 52e0ae4dc7241..e9102359e3134 100644
+--- a/drivers/s390/net/qeth_l3_main.c
++++ b/drivers/s390/net/qeth_l3_main.c
+@@ -285,9 +285,10 @@ static void qeth_l3_clear_ip_htable(struct qeth_card *card, int recover)
+ 		if (!recover) {
+ 			hash_del(&addr->hnode);
+ 			kfree(addr);
+-			continue;
++		} else {
++			/* prepare for recovery */
++			addr->disp_flag = QETH_DISP_ADDR_ADD;
+ 		}
+-		addr->disp_flag = QETH_DISP_ADDR_ADD;
+ 	}
  
- int sched_rr_timeslice = RR_TIMESLICE;
--int sysctl_sched_rr_timeslice = (MSEC_PER_SEC / HZ) * RR_TIMESLICE;
-+int sysctl_sched_rr_timeslice = (MSEC_PER_SEC * RR_TIMESLICE) / HZ;
- /* More than 4 hours if BW_SHIFT equals 20. */
- static const u64 max_rt_runtime = MAX_BW;
+ 	spin_unlock_bh(&card->ip_lock);
+@@ -325,11 +326,13 @@ static void qeth_l3_recover_ip(struct qeth_card *card)
+ 			} else
+ 				rc = qeth_l3_register_addr_entry(card, addr);
  
+-			if (!rc) {
++			if (!rc || rc == -EADDRINUSE || rc == -ENETDOWN) {
++				/* keep it in the records */
+ 				addr->disp_flag = QETH_DISP_ADDR_DO_NOTHING;
+ 				if (addr->ref_counter < 1)
+ 					qeth_l3_delete_ip(card, addr);
+ 			} else {
++				/* bad address */
+ 				hash_del(&addr->hnode);
+ 				kfree(addr);
+ 			}
+-- 
+2.43.0
+
 
 
 
