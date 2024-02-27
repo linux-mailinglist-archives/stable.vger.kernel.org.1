@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-24592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0D9C869550
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:00:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07C9886978D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:22:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8082F1F25EC4
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:00:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B029A2885DD
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:22:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 972021420B3;
-	Tue, 27 Feb 2024 14:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94906143C4B;
+	Tue, 27 Feb 2024 14:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="riw6asm0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZrrqTG0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5599113B2B4;
-	Tue, 27 Feb 2024 14:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FE61420DD;
+	Tue, 27 Feb 2024 14:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042446; cv=none; b=LAIJY22hEScEE9pNEcsxOHPh0JY3+h7raMx14G9Hdrr/4GdgWi1Gln8ov/Tz0s91EHtnjZlNwaspMOPMSS2Nlw9V1lpzMhfl2k5fRotIeaRx0Y4RlEKi171cthgEm1qEilIDOWXE/irfjIR+ah+Q4YJcFL92jozAH3De1B7KRmo=
+	t=1709043746; cv=none; b=Cb5R78orUybn0Y+ssqreAyVAjeperviYdNA2No9w63ZhrdlT9N6F1FttfH69bsNhjIfT5JSpGHfTu4N3k5YUK73Atp4AW+O47fFCxmOe8vISj/VVCTBwvUy77JFlD2UWDtNaaOdUIFFvmqIHCNBdXkvOYyUOPbURuoiL0hlwJ0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042446; c=relaxed/simple;
-	bh=9otMNLf3iwAWZzOb9Oylt8lhzEAifjkBjN5mAzNGi+0=;
+	s=arc-20240116; t=1709043746; c=relaxed/simple;
+	bh=/7zTOv46Gl+ngMKCx6LWHVDgcfJK9yxqYVuaQ5ieZaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X2IJpJIdlW4MW7N0uFQR6KyHaQQDq/ANK/0/RiQK4QjXDsOplveuoCzWhdQTxykHIezjJp+BskNHmsyYEX31xc+v8J/K+7TVGj1+O9IHUZlBSqKzT2cAvS8akZpAOZhokjb5e5/rGGNGqZOgIycu/UgK8yD3IX7mz3TkFeJNTPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=riw6asm0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDA6CC43390;
-	Tue, 27 Feb 2024 14:00:45 +0000 (UTC)
+	 MIME-Version; b=Y7T0uMKjhj0x6jon67HJcuHaavOFGuFni49violbqj8AiXP3mtmeZkbf3msZJ/ZLQVzltaxfHi22dC44fasAt0Rbjg2U9IeD2q2LXxXK8nepLTo+uuUa7tx9eWB9WajZ48yWP+rjMk/o/DVyLsPV3VsX1dnw/y99tXhvQWyuJm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZrrqTG0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4FF9C433F1;
+	Tue, 27 Feb 2024 14:22:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042446;
-	bh=9otMNLf3iwAWZzOb9Oylt8lhzEAifjkBjN5mAzNGi+0=;
+	s=korg; t=1709043746;
+	bh=/7zTOv46Gl+ngMKCx6LWHVDgcfJK9yxqYVuaQ5ieZaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=riw6asm08Avo1LsBDZA6GBbzfE8umkO9G/4W8ulAYiHx3oaDWx/q9BPBzueXQEe6O
-	 E2w6zdlk9HojfWkZncqhCnwOp4dos29O+v6HBEDXlKy5kFV6FEKUHPQdAC9VH9/25M
-	 iSRVpdFpoQ/Wh9rUca/05rKtFuSNWgd+RxmafD3w=
+	b=VZrrqTG0Uniy/vyX+yUDjbkEid6XnIjkDNQ67WE5IajPVMtQMCHu7wftf2QGkAbug
+	 nuUSPRVrBm9PgS8aXrgzgjfLvOYY+WwmvbADIETAzlUkxkOBXm1aqnhXMyiyqC5yjP
+	 XFzzNJHToAK9x8k/exldOEAgQdtaXMnutF6N0YWI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Szuying Chen <Chloe_Chen@asmedia.com.tw>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 6.6 298/299] ata: ahci: add identifiers for ASM2116 series adapters
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 22/84] ext4: avoid allocating blocks from corrupted group in ext4_mb_find_by_goal()
 Date: Tue, 27 Feb 2024 14:26:49 +0100
-Message-ID: <20240227131635.254318868@linuxfoundation.org>
+Message-ID: <20240227131553.588673260@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Szuying Chen <chensiying21@gmail.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 3bf6141060948e27b62b13beb216887f2e54591e upstream.
+[ Upstream commit 832698373a25950942c04a512daa652c18a9b513 ]
 
-Add support for PCIe SATA adapter cards based on Asmedia 2116 controllers.
-These cards can provide up to 10 SATA ports on PCIe card.
+Places the logic for checking if the group's block bitmap is corrupt under
+the protection of the group lock to avoid allocating blocks from the group
+with a corrupted block bitmap.
 
-Signed-off-by: Szuying Chen <Chloe_Chen@asmedia.com.tw>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240104142040.2835097-8-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/ext4/mballoc.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -612,6 +612,11 @@ static const struct pci_device_id ahci_p
- 	{ PCI_VDEVICE(ASMEDIA, 0x0621), board_ahci },   /* ASM1061R */
- 	{ PCI_VDEVICE(ASMEDIA, 0x0622), board_ahci },   /* ASM1062R */
- 	{ PCI_VDEVICE(ASMEDIA, 0x0624), board_ahci },   /* ASM1062+JMB575 */
-+	{ PCI_VDEVICE(ASMEDIA, 0x1062), board_ahci },	/* ASM1062A */
-+	{ PCI_VDEVICE(ASMEDIA, 0x1064), board_ahci },	/* ASM1064 */
-+	{ PCI_VDEVICE(ASMEDIA, 0x1164), board_ahci },   /* ASM1164 */
-+	{ PCI_VDEVICE(ASMEDIA, 0x1165), board_ahci },   /* ASM1165 */
-+	{ PCI_VDEVICE(ASMEDIA, 0x1166), board_ahci },   /* ASM1166 */
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 1af9daaff8ba2..e823731110e3e 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -1839,12 +1839,10 @@ int ext4_mb_find_by_goal(struct ext4_allocation_context *ac,
+ 	if (err)
+ 		return err;
  
- 	/*
- 	 * Samsung SSDs found on some macbooks.  NCQ times out if MSI is
+-	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info))) {
+-		ext4_mb_unload_buddy(e4b);
+-		return 0;
+-	}
+-
+ 	ext4_lock_group(ac->ac_sb, group);
++	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)))
++		goto out;
++
+ 	max = mb_find_extent(e4b, ac->ac_g_ex.fe_start,
+ 			     ac->ac_g_ex.fe_len, &ex);
+ 	ex.fe_logical = 0xDEADFA11; /* debug value */
+@@ -1877,6 +1875,7 @@ int ext4_mb_find_by_goal(struct ext4_allocation_context *ac,
+ 		ac->ac_b_ex = ex;
+ 		ext4_mb_use_best_found(ac, e4b);
+ 	}
++out:
+ 	ext4_unlock_group(ac->ac_sb, group);
+ 	ext4_mb_unload_buddy(e4b);
+ 
+-- 
+2.43.0
+
 
 
 
