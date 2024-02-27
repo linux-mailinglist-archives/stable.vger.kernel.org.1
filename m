@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-24904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2EFE8696CB
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09660869602
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99A9A1F2E6CC
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B5F51C2135F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE771420D3;
-	Tue, 27 Feb 2024 14:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2056713DBA4;
+	Tue, 27 Feb 2024 14:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VoxCHm5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aj9qOeYL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF0B13B2B4;
-	Tue, 27 Feb 2024 14:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C7C13A26F;
+	Tue, 27 Feb 2024 14:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043313; cv=none; b=h0nMHyHgtCiBioAou6WVnvxGycAR0rtK/LaKbZK1w+2NL27N24fjT60CLyF+T1IRKncI7C5B22Ey8yx6Q7e0f6fkOlsPUpUtX/JKBfUX79NmWsx8fDwWvrrfVWNsFMDKZrtnnl4L2wUN/F7xrnOcPscTwMTMRhKXDG0hSu40Ky4=
+	t=1709042825; cv=none; b=RuHLsdgFOmc/LuIAi0etEht2ObUdfzmihTwkoafh2Hx27htzh3pQ7Bx21XiF/+J5SLB9giw4MrtXG/pEG1af73rsyIWrGN1qAXsHOvdTOwwO76pNJWlkL+edJ6W8wRztN5Pnrkdu+pW7xSSx+NQOxmkqpBQEtHL2sZfVktstdvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043313; c=relaxed/simple;
-	bh=fIyLnEElggOUND1aplwx7ikm/idPRwbngOaeBX1LZDY=;
+	s=arc-20240116; t=1709042825; c=relaxed/simple;
+	bh=i3gnM6hDC24XQkyb0C/jSdLUK+g5kxYea98dwIROdnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EIgIzZ1sbNAXQWhX4N9GtJ9RtZFJLzm3jJmsnhjwsUQo3oMce+UwAIcES6L6Zxr0kekURNKyzlEbhSBxu/wFoSIX9pBoAGhWahruOJdxrDKegPT2Sxem2sFioChT/i7IDwi/Jba8OLwyrvvQ14XuaQ9e/iZdEXiy4FITC8d4Ssc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VoxCHm5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8CAC433F1;
-	Tue, 27 Feb 2024 14:15:12 +0000 (UTC)
+	 MIME-Version; b=ULhZMedTYClXVltpViD5YBdvWkl1WIrOZN1jfgZ6A5/OeqWaSqdSl/KqtJKwRjeBncJH2xcwHxKp394aElK0S79sMNHXW43lrsO4hhgvpkLsKg2Q+8NcYol6Yp4zsMPfyWue7voMJul0BOgZsUsg9pZWcOr5dLil8kmhHa+o16Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aj9qOeYL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 620C8C433C7;
+	Tue, 27 Feb 2024 14:07:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043312;
-	bh=fIyLnEElggOUND1aplwx7ikm/idPRwbngOaeBX1LZDY=;
+	s=korg; t=1709042825;
+	bh=i3gnM6hDC24XQkyb0C/jSdLUK+g5kxYea98dwIROdnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1VoxCHm5OS4EWgAQN/0pdVOnVWyrIdpm2c/sCDe0haTxJzaGvMLmkXyzPpzMgwblp
-	 Ax0BZkd+04AfqqXmyPhLp0QDuHvsJlXzjYpbdrI8eUW8tNGwKKaX/eeG7Q1WZM/tk3
-	 J4xaKp7LLh8OzZalLEWtkahrF5YMgU3YiFiNsHVI=
+	b=Aj9qOeYLPwtlHZFgO9nTcL79x/g4M6/W73em6u/ByfQckSuHX7falrkA5lS3Imp7v
+	 KZhQZrzCv/iKfOrL43F0vLAF8Vcm5h9zNYIUiSJw2WAHli5xKd7KBGmAwkMFrHq1Fo
+	 mCUC3xnJVwYEnTxmER+UZR9sxzYZF6rSGyjO5ygs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 062/195] fs/ntfs3: Prevent generic message "attempt to access beyond end of device"
+Subject: [PATCH 5.15 135/245] acpi: property: Let args be NULL in __acpi_node_get_property_reference
 Date: Tue, 27 Feb 2024 14:25:23 +0100
-Message-ID: <20240227131612.552249691@linuxfoundation.org>
+Message-ID: <20240227131619.599114576@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 5ca87d01eba7bdfe9536a157ca33c1455bb8d16c ]
+[ Upstream commit bef52aa0f3de1b7d8c258c13b16e577361dabf3a ]
 
-It used in test environment.
+fwnode_get_property_reference_args() may not be called with args argument
+NULL on ACPI, OF already supports this. Add the missing NULL checks and
+document this.
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+The purpose is to be able to count the references.
+
+Fixes: 977d5ad39f3e ("ACPI: Convert ACPI reference args to generic fwnode reference args")
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20231109101010.1329587-2-sakari.ailus@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/fsntfs.c  | 24 ++++++++++++++++++++++++
- fs/ntfs3/ntfs_fs.h | 14 +-------------
- 2 files changed, 25 insertions(+), 13 deletions(-)
+ drivers/acpi/property.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/ntfs3/fsntfs.c b/fs/ntfs3/fsntfs.c
-index 4b72bc7f12ca3..1eac80d55b554 100644
---- a/fs/ntfs3/fsntfs.c
-+++ b/fs/ntfs3/fsntfs.c
-@@ -976,6 +976,30 @@ static inline __le32 security_hash(const void *sd, size_t bytes)
- 	return cpu_to_le32(hash);
- }
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index 488915328646e..9ab7f7184343a 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -639,6 +639,7 @@ acpi_fwnode_get_named_child_node(const struct fwnode_handle *fwnode,
+  * @index: Index of the reference to return
+  * @num_args: Maximum number of arguments after each reference
+  * @args: Location to store the returned reference with optional arguments
++ *	  (may be NULL)
+  *
+  * Find property with @name, verifify that it is a package containing at least
+  * one object reference and if so, store the ACPI device object pointer to the
+@@ -697,6 +698,9 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
+ 		if (ret)
+ 			return ret == -ENODEV ? -EINVAL : ret;
  
-+/*
-+ * simple wrapper for sb_bread_unmovable.
-+ */
-+struct buffer_head *ntfs_bread(struct super_block *sb, sector_t block)
-+{
-+	struct ntfs_sb_info *sbi = sb->s_fs_info;
-+	struct buffer_head *bh;
++		if (!args)
++			return 0;
 +
-+	if (unlikely(block >= sbi->volume.blocks)) {
-+		/* prevent generic message "attempt to access beyond end of device" */
-+		ntfs_err(sb, "try to read out of volume at offset 0x%llx",
-+			 (u64)block << sb->s_blocksize_bits);
-+		return NULL;
-+	}
-+
-+	bh = sb_bread_unmovable(sb, block);
-+	if (bh)
-+		return bh;
-+
-+	ntfs_err(sb, "failed to read volume at offset 0x%llx",
-+		 (u64)block << sb->s_blocksize_bits);
-+	return NULL;
-+}
-+
- int ntfs_sb_read(struct super_block *sb, u64 lbo, size_t bytes, void *buffer)
- {
- 	struct block_device *bdev = sb->s_bdev;
-diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
-index c9ba0d27601dc..0f9bec29f2b70 100644
---- a/fs/ntfs3/ntfs_fs.h
-+++ b/fs/ntfs3/ntfs_fs.h
-@@ -580,6 +580,7 @@ bool check_index_header(const struct INDEX_HDR *hdr, size_t bytes);
- int log_replay(struct ntfs_inode *ni, bool *initialized);
- 
- /* Globals from fsntfs.c */
-+struct buffer_head *ntfs_bread(struct super_block *sb, sector_t block);
- bool ntfs_fix_pre_write(struct NTFS_RECORD_HEADER *rhdr, size_t bytes);
- int ntfs_fix_post_read(struct NTFS_RECORD_HEADER *rhdr, size_t bytes,
- 		       bool simple);
-@@ -1012,19 +1013,6 @@ static inline u64 bytes_to_block(const struct super_block *sb, u64 size)
- 	return (size + sb->s_blocksize - 1) >> sb->s_blocksize_bits;
- }
- 
--static inline struct buffer_head *ntfs_bread(struct super_block *sb,
--					     sector_t block)
--{
--	struct buffer_head *bh = sb_bread_unmovable(sb, block);
--
--	if (bh)
--		return bh;
--
--	ntfs_err(sb, "failed to read volume at offset 0x%llx",
--		 (u64)block << sb->s_blocksize_bits);
--	return NULL;
--}
--
- static inline struct ntfs_inode *ntfs_i(struct inode *inode)
- {
- 	return container_of(inode, struct ntfs_inode, vfs_inode);
+ 		args->fwnode = acpi_fwnode_handle(device);
+ 		args->nargs = 0;
+ 		return 0;
 -- 
 2.43.0
 
