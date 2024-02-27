@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-24170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F8D88692FF
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:40:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 961398693D2
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:49:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 104011F2D7AD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:40:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7F411C212BE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454CA13B7AB;
-	Tue, 27 Feb 2024 13:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C21145B3E;
+	Tue, 27 Feb 2024 13:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Rg48AFW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g3DXsqaI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0153A13B79B;
-	Tue, 27 Feb 2024 13:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D021413DB92;
+	Tue, 27 Feb 2024 13:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041226; cv=none; b=aaES/VYeCJC//Mhl00q/GptpY7fepCreOR7kq1ID0lJHimc4SEMY7ZE+eYIUm6UsO2JmsebMqWvFS1etzAC9UWyt1/Nm5dotZHFFhxO3GUbcqW++HitoGoNAr9FvKMkMjYZln38y70ou6qLV2DkIRdrpjKIoJeqjX2E0+rTpUZ0=
+	t=1709041618; cv=none; b=EcW/EYBXGIotNYUbzMccROkndq9+dtRwiptyixGw80GN5/PJIxtl0sd04oJ75ByfHRYeMIo9Ca6HQLOX5u30VTXaBCGX0WZTJ/BpUCE3uRRjaX61ovtj3rdciRK6G8zXWcXLlpU/97f/YjL2ENerZNkWEihVCHtnivT0uYzTvSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041226; c=relaxed/simple;
-	bh=fR7fi8YhyyVWUZbPL5r24a9Nzn14Gef5sda+lqoKV5Y=;
+	s=arc-20240116; t=1709041618; c=relaxed/simple;
+	bh=Nx1sSlX0N6v1As0y1KW5REaIqr5rmOk9973/wXfWm5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IVI1f5z4sA0cZPnfSs4kZ6FcXqJcavvAJ1BzW5aLLDdxPY/bfJ/9AeWrWXtalyQARTqSC7BZ1XcWT99BY8AXpk0A5ju1GMO+cABjRBq4WgCEl838wQXfbJzj+ZoWZK/qvEwcJN0reVGH4tAb2AMMdqhB95lW9luRC9TIMYtX9U4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Rg48AFW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8369CC433C7;
-	Tue, 27 Feb 2024 13:40:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OeDcRYTp65qGJTZGfRZtDECw+DUu2mmkp5Z4clIP7SDSoUxdbaYUUQFlsaesRKIqsbNP3TKXJ7rWBLRMB5RZn7ZgbBbKj2mTajzbcyS/seVFjgEX6d6C+KTDT/t7B2tBDF+HePTPkPY8WNCUVwHJE5f3fggsdKyJG+F5BNHgXeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g3DXsqaI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61069C433F1;
+	Tue, 27 Feb 2024 13:46:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041225;
-	bh=fR7fi8YhyyVWUZbPL5r24a9Nzn14Gef5sda+lqoKV5Y=;
+	s=korg; t=1709041618;
+	bh=Nx1sSlX0N6v1As0y1KW5REaIqr5rmOk9973/wXfWm5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Rg48AFW5jIINa//c7HIJOA8RFemnGz8LjxKFmpXNYAv5zmg1CVgKheX00nBiU2bK
-	 dDszFSkuHhTYSYoQEGu7RYxfKKgBvr9Q3I7QsNg4jLheaWf10+zs7/9FT6tpYo6E+p
-	 w0VUWvUGrJHLlFqRlMfdC3ibQ2wSvLHovRD53VyI=
+	b=g3DXsqaIapHloRshuoEero1EnskltcwfL6g/GeOgnTCSXC7H9v1ubw22pv1nrYvos
+	 1mfjeFp8zPaRjUJzn+4++Yy4sKI4oUvN8nKz8+3htb/0FG9jxuOImIcouZSHz5j0bc
+	 a19cnPa26YP/JLbcAipJcaydSInOoSeTEkFG3U90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Danilo Krummrich <dakr@redhat.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 265/334] drm/nouveau/mmu/r535: uninitialized variable in r535_bar_new_()
+Subject: [PATCH 6.6 012/299] dmaengine: fsl-qdma: increase size of irq_name
 Date: Tue, 27 Feb 2024 14:22:03 +0100
-Message-ID: <20240227131639.516431105@linuxfoundation.org>
+Message-ID: <20240227131626.232799033@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +59,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Vinod Koul <vkoul@kernel.org>
 
-[ Upstream commit 65323796debe49a1922ba507020f7530a4b3f9af ]
+[ Upstream commit 6386f6c995b3ab91c72cfb76e4465553c555a8da ]
 
-If gf100_bar_new_() fails then "bar" is not initialized.
+We seem to have hit warnings of 'output may be truncated' which is fixed
+by increasing the size of 'irq_name'
 
-Fixes: 5bf0257136a2 ("drm/nouveau/mmu/r535: initial support")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/dab21df7-4d90-4479-97d8-97e5d228c714@moroto.mountain
+drivers/dma/fsl-qdma.c: In function ‘fsl_qdma_irq_init’:
+drivers/dma/fsl-qdma.c:824:46: error: ‘%d’ directive writing between 1 and 11 bytes into a region of size 10 [-Werror=format-overflow=]
+  824 |                 sprintf(irq_name, "qdma-queue%d", i);
+      |                                              ^~
+drivers/dma/fsl-qdma.c:824:35: note: directive argument in the range [-2147483641, 2147483646]
+  824 |                 sprintf(irq_name, "qdma-queue%d", i);
+      |                                   ^~~~~~~~~~~~~~
+drivers/dma/fsl-qdma.c:824:17: note: ‘sprintf’ output between 12 and 22 bytes into a destination of size 20
+  824 |                 sprintf(irq_name, "qdma-queue%d", i);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/subdev/bar/r535.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/dma/fsl-qdma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/bar/r535.c b/drivers/gpu/drm/nouveau/nvkm/subdev/bar/r535.c
-index 4135690326f44..3a30bea30e366 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/bar/r535.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/bar/r535.c
-@@ -168,12 +168,11 @@ r535_bar_new_(const struct nvkm_bar_func *hw, struct nvkm_device *device,
- 	rm->flush = r535_bar_flush;
+diff --git a/drivers/dma/fsl-qdma.c b/drivers/dma/fsl-qdma.c
+index e4c293b76e050..781a3180baf2a 100644
+--- a/drivers/dma/fsl-qdma.c
++++ b/drivers/dma/fsl-qdma.c
+@@ -805,7 +805,7 @@ fsl_qdma_irq_init(struct platform_device *pdev,
+ 	int i;
+ 	int cpu;
+ 	int ret;
+-	char irq_name[20];
++	char irq_name[32];
  
- 	ret = gf100_bar_new_(rm, device, type, inst, &bar);
--	*pbar = bar;
- 	if (ret) {
--		if (!bar)
--			kfree(rm);
-+		kfree(rm);
- 		return ret;
- 	}
-+	*pbar = bar;
- 
- 	bar->flushBAR2PhysMode = ioremap(device->func->resource_addr(device, 3), PAGE_SIZE);
- 	if (!bar->flushBAR2PhysMode)
+ 	fsl_qdma->error_irq =
+ 		platform_get_irq_byname(pdev, "qdma-error");
 -- 
 2.43.0
 
