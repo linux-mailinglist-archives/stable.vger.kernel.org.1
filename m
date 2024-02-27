@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-24898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 959ED8696C7
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E42B78694CC
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:56:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4580D284FCF
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B9D52856A6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:56:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A487E1420C9;
-	Tue, 27 Feb 2024 14:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8522113DB92;
+	Tue, 27 Feb 2024 13:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pIsbrJah"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVvFrVWz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625051420B0;
-	Tue, 27 Feb 2024 14:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4399C13B2B9;
+	Tue, 27 Feb 2024 13:56:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043296; cv=none; b=MsJV92jWoYYT9UfSErZYui74Nk+iAnaKPvjXcvMTvw02pd/P9NPe8QwlI7Bj0TiAwzT799+suEQ9U0AQmWLRc3URWbBM6gKL1gpoC4JBC8+yOQ817TRPescOSetvftG+zRvbpEck3x2ZK2cGEewe9GyRcGeAfSGW2Z58YkDDWz0=
+	t=1709042177; cv=none; b=NODOoqXckktttQxQGFVp61wZKUMgLdNgktAe4yjXnk+H6UHeBwkrVj4YJMKgLFiRE/2IQOjyBvy84IhZF9P2NQDfxkujtfg+WkCL2VzTNuLXIqTJ5pW+ryV09G8AxcWE2iF0bBlfbLBpxEvPBtO9ugLyN1lFZD+7qjn5oK4qOGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043296; c=relaxed/simple;
-	bh=oWm53C/5ZteBUCxG1Ny6sy+a1cZlUdj0hc7pGYMr6xo=;
+	s=arc-20240116; t=1709042177; c=relaxed/simple;
+	bh=gJS78PW3o4d4+MUuu/cL+NNLoogLybE5qEBweK76M78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=su3VuBoqWv11LzrT+jqVztK8d3C6BZvwFyvoTY+ra9eLpteEzRaJuPqka5OtmvFxzHNDAfKWwn8H19KKFjWCc0C/yzoMbEK+hmF1ajUDtgm87hk6iWjJ8pbw/PZ3xwATwLAxrAUP3vEHPYxdkHtheQU9sZc0+CZpXnFW+6ndnv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pIsbrJah; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC63DC433C7;
-	Tue, 27 Feb 2024 14:14:55 +0000 (UTC)
+	 MIME-Version; b=bzwnbz06iJs+GPmIFQZG6kYsLE5ZzLweULr6so47qDzHo2pMRLQeugJPgRGvNEqAhhyp4WdOUBUu5ofOwqwUxZEPbHl5MDXXDWydrJaXrfJT3KR91bGNsubmm8rUuqzWxwxSx6jlG0WognNDSqnZzME1bdZj4tb0QnJpcdqyz4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVvFrVWz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F58FC433C7;
+	Tue, 27 Feb 2024 13:56:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043296;
-	bh=oWm53C/5ZteBUCxG1Ny6sy+a1cZlUdj0hc7pGYMr6xo=;
+	s=korg; t=1709042176;
+	bh=gJS78PW3o4d4+MUuu/cL+NNLoogLybE5qEBweK76M78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pIsbrJahFtznrwXnjzen7F7ktLixHMzXmKW2Uats2ptfNPiCfCT5klVawikttloDL
-	 Siv7SkP7xahYc5ndtsIkxRBEVh/hMxMcZu7W3yYEDJ0KIwsZLuSqUxJTKopQo03Vtx
-	 Ulce7yKZNSQSY/lmZBOoujy9dqFKja6fzWVEyZ7Q=
+	b=vVvFrVWzt+SNkLk66koZ/R9X+pk3Li/LLSwL/E5eJEb3qWfhkWD9Que+7XOGw9peD
+	 QVmldWycoQCc7aI3rAanPuVhWimn8P77ZZP7t87oHAxSkP8B+VAbeLRmgF+CeooVbY
+	 S776mCOB1l08zKhvEHFv3jGFwQaCuhvH8YM1heo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 056/195] fs/ntfs3: Correct hard links updating when dealing with DOS names
+	Nathan Chancellor <nathan@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 206/299] drm/amd/display: Avoid enum conversion warning
 Date: Tue, 27 Feb 2024 14:25:17 +0100
-Message-ID: <20240227131612.358995053@linuxfoundation.org>
+Message-ID: <20240227131632.429653087@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 1918c10e137eae266b8eb0ab1cc14421dcb0e3e2 ]
+commit d7643fe6fb76edb1f2f1497bf5e8b8f4774b5129 upstream.
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Clang warns (or errors with CONFIG_WERROR=y) when performing arithmetic
+with different enumerated types, which is usually a bug:
+
+    drivers/gpu/drm/amd/amdgpu/../display/dc/link/protocols/link_dp_dpia_bw.c:548:24: error: arithmetic between different enumeration types ('const enum dc_link_rate' and 'const enum dc_lane_count') [-Werror,-Wenum-enum-conversion]
+      548 |                         link_cap->link_rate * link_cap->lane_count * LINK_RATE_REF_FREQ_IN_KHZ * 8;
+          |                         ~~~~~~~~~~~~~~~~~~~ ^ ~~~~~~~~~~~~~~~~~~~~
+    1 error generated.
+
+In this case, there is not a problem because the enumerated types are
+basically treated as '#define' values. Add an explicit cast to an
+integral type to silence the warning.
+
+Closes: https://github.com/ClangBuiltLinux/linux/issues/1976
+Fixes: 5f3bce13266e ("drm/amd/display: Request usb4 bw for mst streams")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/record.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ntfs3/record.c b/fs/ntfs3/record.c
-index ba336c7280b85..ab03c373cec66 100644
---- a/fs/ntfs3/record.c
-+++ b/fs/ntfs3/record.c
-@@ -491,8 +491,20 @@ bool mi_remove_attr(struct ntfs_inode *ni, struct mft_inode *mi,
- 		return false;
- 
- 	if (ni && is_attr_indexed(attr)) {
--		le16_add_cpu(&ni->mi.mrec->hard_links, -1);
--		ni->mi.dirty = true;
-+		u16 links = le16_to_cpu(ni->mi.mrec->hard_links);
-+		struct ATTR_FILE_NAME *fname =
-+			attr->type != ATTR_NAME ?
-+				NULL :
-+				resident_data_ex(attr,
-+						 SIZEOF_ATTRIBUTE_FILENAME);
-+		if (fname && fname->type == FILE_NAME_DOS) {
-+			/* Do not decrease links count deleting DOS name. */
-+		} else if (!links) {
-+			/* minor error. Not critical. */
-+		} else {
-+			ni->mi.mrec->hard_links = cpu_to_le16(links - 1);
-+			ni->mi.dirty = true;
-+		}
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c
+@@ -544,8 +544,9 @@ int link_dp_dpia_get_dp_overhead_in_dp_t
+ 		 */
+ 		const struct dc_link_settings *link_cap =
+ 			dc_link_get_link_cap(link);
+-		uint32_t link_bw_in_kbps =
+-			link_cap->link_rate * link_cap->lane_count * LINK_RATE_REF_FREQ_IN_KHZ * 8;
++		uint32_t link_bw_in_kbps = (uint32_t)link_cap->link_rate *
++					   (uint32_t)link_cap->lane_count *
++					   LINK_RATE_REF_FREQ_IN_KHZ * 8;
+ 		link_mst_overhead = (link_bw_in_kbps / 64) + ((link_bw_in_kbps % 64) ? 1 : 0);
  	}
  
- 	used -= asize;
--- 
-2.43.0
-
 
 
 
