@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-24962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A704869714
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:18:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA8678694C1
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:56:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AF191C23540
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:18:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1BB5BB31781
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48CF813B797;
-	Tue, 27 Feb 2024 14:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CE01145B19;
+	Tue, 27 Feb 2024 13:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Srb9h5WV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ugPh0+VZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059C678B61;
-	Tue, 27 Feb 2024 14:17:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498E8145B16;
+	Tue, 27 Feb 2024 13:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043473; cv=none; b=b7VQeZcKeU+75w3Y/qChE2DMqs3qeep+SaQQkr3h57CYAHgFSZHvsfBub6aJYxnYfIy2EGx4TKe0JaGzCKOyYcm5sF0LYoV98ri/DCYYtmdJ3sa2gcONU19u+dREU9oovd2AtxfL81atQFL8t2oRjw9bO8tznmaPfUDxUCfnE7U=
+	t=1709041594; cv=none; b=I/vZMV++KEneB+tblxKfvCHdePhbCgKZoAOsuO61JMCEHYXpOXx8YHadJDjE9e3O43T7xHh76FF6L/llVTyrT7lCsfr1R4IvBXAbugFzSVYfrpSGJoVmGkIRt5FlJy+FvRIlmDhZ1T5b9S+yzNUv5bidmAp7nf5HaPVWZXz2RTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043473; c=relaxed/simple;
-	bh=KiP6SoiTjIDm2NAZhBaG+wuOy3iDlbt39ooh/pZtKMI=;
+	s=arc-20240116; t=1709041594; c=relaxed/simple;
+	bh=HMLYxvFstwsiaHCnlPCIJcYpKJW46H54BNaYSOlpDtg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QNjh/gyww6M9WcdFDaTtwVs/0KmlSzPDPcz9Uz10wJj5y6zFiEJ1zSIztaQE3PltgH2K7U3QbcZjPRI4pJ4yWCztB/d4mwc39sEtNUT0sMAxU8gU4m1G232WdH1koGO3Ytxrw+HpSvdDmoSwp/z5J5RDcxT5Qlxx2o/9e9K/cDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Srb9h5WV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F59C433C7;
-	Tue, 27 Feb 2024 14:17:52 +0000 (UTC)
+	 MIME-Version; b=JGc1giPJifCerpgQqxremXIEbOX7dJFsEzQqV6gYgPRBK/ykDyfxJJTgJyRFVWIRTgEMrP6tYcWCpsa86X7KvGQLYllhBvTdBPMcymyWtdwzbvR/Ebqcrdb7b7opJwLRjlMVnupPND42DX2roR0j5AIntWYDT+NjU5Jq75NaRsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ugPh0+VZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F54C43394;
+	Tue, 27 Feb 2024 13:46:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043472;
-	bh=KiP6SoiTjIDm2NAZhBaG+wuOy3iDlbt39ooh/pZtKMI=;
+	s=korg; t=1709041594;
+	bh=HMLYxvFstwsiaHCnlPCIJcYpKJW46H54BNaYSOlpDtg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Srb9h5WVn21d/yS2SNuKGt4V6NkOyrKMR5fkxvjw12ZMwdGCczwnT88NkIW+6lacy
-	 VL0kX5dmIf76c+PMBcm3M/TRCIWK+GzC1zQDwtKPrKPcXXVpYIxqkE/bR6uaYZeF8V
-	 Z8upbSfBZmJvXpIXjcWDN25caP2aBooRhJnvZiPo=
+	b=ugPh0+VZ23An11mcz7Ha1Q7iZPJ1hDwmyFoZ6PKdT+ExlyplBZYXcInyZ0xGpanXQ
+	 y/JRFOXBUD+sMoN3OkOSnc695pidLaUxG+22cOOP9RhVfGSFQgTNLDuecW4Gx4On1I
+	 HEOuI4eJmxq1wLG99W5hNH/5CyjQ4SpFvEpSSXlw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawel Laszczak <pawell@cadence.com>
-Subject: [PATCH 6.1 120/195] usb: cdnsp: fixed issue with incorrect detecting CDNSP family controllers
+	Xu Yang <xu.yang_2@nxp.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 4.19 34/52] usb: roles: dont get/set_role() when usb_role_switch is unregistered
 Date: Tue, 27 Feb 2024 14:26:21 +0100
-Message-ID: <20240227131614.418366060@linuxfoundation.org>
+Message-ID: <20240227131549.652999750@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
+References: <20240227131548.514622258@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,99 +61,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Laszczak <pawell@cadence.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit 47625b018c6bc788bc10dd654c82696eb0a5ef11 upstream.
+commit b787a3e781759026a6212736ef8e52cf83d1821a upstream.
 
-Cadence have several controllers from 0x000403xx family but current
-driver suuport detecting only one with DID equal 0x0004034E.
-It causes that if someone uses different CDNSP controller then driver
-will use incorrect version and register space.
-Patch fix this issue.
+There is a possibility that usb_role_switch device is unregistered before
+the user put usb_role_switch. In this case, the user may still want to
+get/set_role() since the user can't sense the changes of usb_role_switch.
 
+This will add a flag to show if usb_role_switch is already registered and
+avoid unwanted behaviors.
+
+Fixes: fde0aa6c175a ("usb: common: Small class for USB role switches")
 cc: stable@vger.kernel.org
-Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
-Signed-off-by: Pawel Laszczak <pawell@cadence.com>
-Link: https://lore.kernel.org/r/20240215121609.259772-1-pawell@cadence.com
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240129093739.2371530-2-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/cdns3/core.c |    1 -
- drivers/usb/cdns3/drd.c  |   13 +++++++++----
- drivers/usb/cdns3/drd.h  |    6 +++++-
- 3 files changed, 14 insertions(+), 6 deletions(-)
+ drivers/usb/roles/class.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/cdns3/core.c
-+++ b/drivers/usb/cdns3/core.c
-@@ -394,7 +394,6 @@ pm_put:
- 	return ret;
- }
+--- a/drivers/usb/roles/class.c
++++ b/drivers/usb/roles/class.c
+@@ -19,6 +19,7 @@ struct usb_role_switch {
+ 	struct device dev;
+ 	struct mutex lock; /* device lock*/
+ 	enum usb_role role;
++	bool registered;
  
--
- /**
-  * cdns_wakeup_irq - interrupt handler for wakeup events
-  * @irq: irq number for cdns3/cdnsp core device
---- a/drivers/usb/cdns3/drd.c
-+++ b/drivers/usb/cdns3/drd.c
-@@ -156,7 +156,8 @@ bool cdns_is_device(struct cdns *cdns)
+ 	/* From descriptor */
+ 	struct device *usb2_port;
+@@ -45,6 +46,9 @@ int usb_role_switch_set_role(struct usb_
+ 	if (IS_ERR_OR_NULL(sw))
+ 		return 0;
+ 
++	if (!sw->registered)
++		return -EOPNOTSUPP;
++
+ 	mutex_lock(&sw->lock);
+ 
+ 	ret = sw->set(sw->dev.parent, role);
+@@ -68,7 +72,7 @@ enum usb_role usb_role_switch_get_role(s
+ {
+ 	enum usb_role role;
+ 
+-	if (IS_ERR_OR_NULL(sw))
++	if (IS_ERR_OR_NULL(sw) || !sw->registered)
+ 		return USB_ROLE_NONE;
+ 
+ 	mutex_lock(&sw->lock);
+@@ -276,6 +280,8 @@ usb_role_switch_register(struct device *
+ 		return ERR_PTR(ret);
+ 	}
+ 
++	sw->registered = true;
++
+ 	/* TODO: Symlinks for the host port and the device controller. */
+ 
+ 	return sw;
+@@ -290,8 +296,10 @@ EXPORT_SYMBOL_GPL(usb_role_switch_regist
   */
- static void cdns_otg_disable_irq(struct cdns *cdns)
+ void usb_role_switch_unregister(struct usb_role_switch *sw)
  {
--	writel(0, &cdns->otg_irq_regs->ien);
-+	if (cdns->version)
-+		writel(0, &cdns->otg_irq_regs->ien);
+-	if (!IS_ERR_OR_NULL(sw))
++	if (!IS_ERR_OR_NULL(sw)) {
++		sw->registered = false;
+ 		device_unregister(&sw->dev);
++	}
  }
+ EXPORT_SYMBOL_GPL(usb_role_switch_unregister);
  
- /**
-@@ -418,15 +419,20 @@ int cdns_drd_init(struct cdns *cdns)
- 
- 		cdns->otg_regs = (void __iomem *)&cdns->otg_v1_regs->cmd;
- 
--		if (readl(&cdns->otg_cdnsp_regs->did) == OTG_CDNSP_DID) {
-+		state = readl(&cdns->otg_cdnsp_regs->did);
-+
-+		if (OTG_CDNSP_CHECK_DID(state)) {
- 			cdns->otg_irq_regs = (struct cdns_otg_irq_regs __iomem *)
- 					      &cdns->otg_cdnsp_regs->ien;
- 			cdns->version  = CDNSP_CONTROLLER_V2;
--		} else {
-+		} else if (OTG_CDNS3_CHECK_DID(state)) {
- 			cdns->otg_irq_regs = (struct cdns_otg_irq_regs __iomem *)
- 					      &cdns->otg_v1_regs->ien;
- 			writel(1, &cdns->otg_v1_regs->simulate);
- 			cdns->version  = CDNS3_CONTROLLER_V1;
-+		} else {
-+			dev_err(cdns->dev, "not supporte DID=0x%08x\n", state);
-+			return -EINVAL;
- 		}
- 
- 		dev_dbg(cdns->dev, "DRD version v1 (ID: %08x, rev: %08x)\n",
-@@ -479,7 +485,6 @@ int cdns_drd_exit(struct cdns *cdns)
- 	return 0;
- }
- 
--
- /* Indicate the cdns3 core was power lost before */
- bool cdns_power_is_lost(struct cdns *cdns)
- {
---- a/drivers/usb/cdns3/drd.h
-+++ b/drivers/usb/cdns3/drd.h
-@@ -79,7 +79,11 @@ struct cdnsp_otg_regs {
- 	__le32 susp_timing_ctrl;
- };
- 
--#define OTG_CDNSP_DID	0x0004034E
-+/* CDNSP driver supports 0x000403xx Cadence USB controller family. */
-+#define OTG_CDNSP_CHECK_DID(did) (((did) & GENMASK(31, 8)) == 0x00040300)
-+
-+/* CDNS3 driver supports 0x000402xx Cadence USB controller family. */
-+#define OTG_CDNS3_CHECK_DID(did) (((did) & GENMASK(31, 8)) == 0x00040200)
- 
- /*
-  * Common registers interface for both CDNS3 and CDNSP version of DRD.
 
 
 
