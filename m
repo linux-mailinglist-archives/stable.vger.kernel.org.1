@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-25036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93C0186977E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:21:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8635D869879
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:35:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69DEEB2B026
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:21:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 625A7B2EF45
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:29:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F7B13B7AB;
-	Tue, 27 Feb 2024 14:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED108145B27;
+	Tue, 27 Feb 2024 14:28:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q/FCooUS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rciT1GOr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6514313B2B4;
-	Tue, 27 Feb 2024 14:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9EB41420B3;
+	Tue, 27 Feb 2024 14:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043677; cv=none; b=kXDc1ZOxADJYNpAyAbumci/nxzfivQyzQrJ5hN5JzgkNtpO6xZSzYm7A0qUr0Qa+VRCsMMjInhSFp7YdSYGCJvln5TCPailf1xyfTDCJ6gJF5phNaLv2hVMWl6VxDSriFBjYsfBV2qIA3cIYOXr+U7jCt9D68qxYlADnlYLZ2BI=
+	t=1709044112; cv=none; b=p0olIf+GqaIJcZQWoV6+zDjuoqfEt6kRm9RsVx5HhUrNj4VubRVdN1i24KttJem+vPhYN8XCmJOZA1tT+bMiYqjBJRzHxxXxG8MfnGkUbdvQYC382OPx2HJMaIZW9hQlin1jqfZX+bhYMqk764MfqWyc1XjnDjRBWx75QtkUbPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043677; c=relaxed/simple;
-	bh=JKiG8+C1Ja4pMwg3vPAO3Dvp9Y88xyfB+H2XYvVI8uM=;
+	s=arc-20240116; t=1709044112; c=relaxed/simple;
+	bh=RkEHuy/e9Srrmd/hreLKmD3hHavnMbvffmVqqKSmFaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rZFGNlPBM9h6M8xL8wAPLnrR6ZssSgE2XY3z1VJcNzKRqIxTAuTEh3ZP9RXfjLFA0bMe7UBEVcN8a5AV2/vaqzPAqm3AsCCsHZ5a1bH0N0NsM1nxe64p1fER5Fi1mGhHtnQgv4J+2XcelxovxPsBlHq7PFRTZZs3wvpI5walElI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q/FCooUS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E62F1C433C7;
-	Tue, 27 Feb 2024 14:21:16 +0000 (UTC)
+	 MIME-Version; b=bHVTMtrWrlC4zY66TkeHylBKnxtcP/6IkN7iPxD1qLu6OijVLp/twdMysri5QCQKWkYTY+jyGD4LJeFSo+2dmPGNhaAmZeSU9COrhNfrW07OLkoiE1KR1xCUBO5cDwVJru27TtG/ROS3J6tUPzZykVaE2mRI5K7xpkrMPwgh0yM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rciT1GOr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CEACC433C7;
+	Tue, 27 Feb 2024 14:28:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043677;
-	bh=JKiG8+C1Ja4pMwg3vPAO3Dvp9Y88xyfB+H2XYvVI8uM=;
+	s=korg; t=1709044111;
+	bh=RkEHuy/e9Srrmd/hreLKmD3hHavnMbvffmVqqKSmFaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q/FCooUSevWL6Ycjl+V52pThDVOeZEhOfng/2hEu6N1KhUJ8V2kIS6LEWkC2nVjv/
-	 TlkMwThN32hPJVEpES+czdIaJXbxai1Gmx/X5Q6XuZzXZajHZEmcoLxRWd/ySTn7Og
-	 uQUImKNPUIcXq/FC22taU5R+dVSzMX3cFLfiP3QE=
+	b=rciT1GOr7egzQcWk2zyAJeT0rI/qxOPLeA1VrPpqhyGT3vTI++YS1t9OLa79h2t0G
+	 hhCYFpRU4gvkQbVM7Kf7gzyeSSsOK0TPeX9KRbIXL1NBVbra/qwRMD9ApttCmtrjjP
+	 SKN3V8mYa+mLMEqP3YzibgqChCJg4pTIgRcuUenQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Max Verevkin <me@maxverevkin.tk>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 166/195] tls: break out of main loop when PEEK gets a non-data record
+Subject: [PATCH 5.10 066/122] platform/x86: intel-vbtn: Support for tablet mode on HP Pavilion 13 x360 PC
 Date: Tue, 27 Feb 2024 14:27:07 +0100
-Message-ID: <20240227131615.891632388@linuxfoundation.org>
+Message-ID: <20240227131600.862693048@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Max Verevkin <me@maxverevkin.tk>
 
-[ Upstream commit 10f41d0710fc81b7af93fa6106678d57b1ff24a7 ]
+[ Upstream commit 07b211992d6c0d80b321403244d43bbd2d6cf48c ]
 
-PEEK needs to leave decrypted records on the rx_list so that we can
-receive them later on, so it jumps back into the async code that
-queues the skb. Unfortunately that makes us skip the
-TLS_RECORD_TYPE_DATA check at the bottom of the main loop, so if two
-records of the same (non-DATA) type are queued, we end up merging
-them.
+The Pavilion 13 x360 PC has a chassis-type which does not indicate it is
+a convertible, while it is actually a convertible. Add it to the
+dmi_switches_allow_list.
 
-Add the same record type check, and make it unlikely to not penalize
-the async fastpath. Async decrypt only applies to data record, so this
-check is only needed for PEEK.
-
-process_rx_list also has similar issues.
-
-Fixes: 692d7b5d1f91 ("tls: Fix recvmsg() to be able to peek across multiple records")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/r/3df2eef4fdae720c55e69472b5bea668772b45a2.1708007371.git.sd@queasysnail.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Max Verevkin <me@maxverevkin.tk>
+Link: https://lore.kernel.org/r/20201124131652.11165-1-me@maxverevkin.tk
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/platform/x86/intel-vbtn.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index c8cbdd02a784e..cd86c271c1348 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -2137,6 +2137,8 @@ int tls_sw_recvmsg(struct sock *sk,
- 				decrypted += chunk;
- 				len -= chunk;
- 				__skb_queue_tail(&ctx->rx_list, skb);
-+				if (unlikely(control != TLS_RECORD_TYPE_DATA))
-+					break;
- 				continue;
- 			}
+diff --git a/drivers/platform/x86/intel-vbtn.c b/drivers/platform/x86/intel-vbtn.c
+index a90c32d072da3..9c8a6722f115e 100644
+--- a/drivers/platform/x86/intel-vbtn.c
++++ b/drivers/platform/x86/intel-vbtn.c
+@@ -230,6 +230,12 @@ static const struct dmi_system_id dmi_switches_allow_list[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Inspiron 7352"),
+ 		},
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Hewlett-Packard"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "HP Pavilion 13 x360 PC"),
++		},
++	},
+ 	{} /* Array terminator */
+ };
  
 -- 
 2.43.0
