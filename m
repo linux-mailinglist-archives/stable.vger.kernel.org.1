@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-25203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA45A869838
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:30:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CB208697AE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:23:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 906011F2CEFB
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:30:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DF181C21E78
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:23:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28FC7145FE5;
-	Tue, 27 Feb 2024 14:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FAF913EFEC;
+	Tue, 27 Feb 2024 14:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DM3KhV1B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ph7ClWSr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC94D145FE1;
-	Tue, 27 Feb 2024 14:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FDB713B2B8;
+	Tue, 27 Feb 2024 14:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044147; cv=none; b=JyWGdtfV/GJ/+NlY/d9VkJ4KNr5OJGqKewCWZLobpJl6ICBNs/SGDx9ak71g0FkQcWHA5tiBCE8BZnvLpCEAV4s2TBxnCV80cw62xP0ilz554juwvQXSWYqu/Wq9+nmeqDOU0KlT6yb1nCw2NoGswpxH2dJRhq5JZfFElwgBlEU=
+	t=1709043835; cv=none; b=e7r4Y5ce2jXIjiAa5uXseJ6+3cdDXGNBMn9zST5M67dzVidpOkFxkmAk0p64oeBsPvQjSDWczsQD4SOo9PnTk2geMWd2uOL9mb0coJPh/CgY6/LwLzW6ZwzF74JwFoWam173VX904T6auJPKlo0zeoujncS5f9KdhXeajOE+6XY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044147; c=relaxed/simple;
-	bh=j5HozBdg02bXXqWxhxMqHxWddmJ/XnKyqzbbUZCgHdE=;
+	s=arc-20240116; t=1709043835; c=relaxed/simple;
+	bh=35YDHMdZ0Kpo3Cymdx2tZrMvRMQ070wZ5AySUZ0jpZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t2tTKa21m3dlaiMoz+6a48Td1JhxfP5qByTLxKXi1vTswP5+Auq5qdc9EpEW2brWg0nXttgiRmHotVvzhEBGAw44+CszbWPY487+dYI36Wozj8jiATtTz6YEHKYVQlrbfcg4jmKY+/U66phWDSUU8mgabm9yLQsdCrepNkKqsO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DM3KhV1B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 688BBC433F1;
-	Tue, 27 Feb 2024 14:29:07 +0000 (UTC)
+	 MIME-Version; b=h9IUe0a0iHDcPe+Fg9f/dn6XPmEthY1o/00alH7jOMKJFcslOGw+z3Lpw56BAo0JZOXBo79QzUilSnCYVYtmNSP6DZ8GZU81dCqrXGwaaJI9spcU5gdD+LIq4hj52EAyz8+h3zrVW/Ooefnvr3kVw5KadW0FlDF0HnvFT/EQPh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ph7ClWSr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2EA2C433F1;
+	Tue, 27 Feb 2024 14:23:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044147;
-	bh=j5HozBdg02bXXqWxhxMqHxWddmJ/XnKyqzbbUZCgHdE=;
+	s=korg; t=1709043835;
+	bh=35YDHMdZ0Kpo3Cymdx2tZrMvRMQ070wZ5AySUZ0jpZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DM3KhV1B4G25jQztVQxy8nd+sd9wrQqtvxaTQr5paDt0JBFpKPi3vlnWDl7G06W8V
-	 /R7A0jIY4GH180RT0X+ltrNHvU3FBgVrDw7FetLI77LWcnvUYAu6J2ClCmYVeCbtio
-	 2k+3qR+8WyqVbL7KXuEa6kI42r22mdCKhGJv42/0=
+	b=Ph7ClWSraivUNooIY7+Swq4mPIgXiOijHd1sjXbm25nDbQV0mp6xehRS43SHzAKuB
+	 Bp7RK1EvKhE3bHdglPpb8fiCGP2+7DxcONrMH/obfIypkw5wzanriJETpbf8nZ9HR3
+	 yM1oaXYRTld/4or/vffGOMRjLSjSE51q6eg1CuxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vidya Sagar <vidyas@nvidia.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Shanker Donthineni <sdonthineni@nvidia.com>
-Subject: [PATCH 5.10 080/122] PCI/MSI: Prevent MSI hardware interrupt number truncation
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 5.4 54/84] dm-crypt: dont modify the data when using authenticated encryption
 Date: Tue, 27 Feb 2024 14:27:21 +0100
-Message-ID: <20240227131601.323716653@linuxfoundation.org>
+Message-ID: <20240227131554.629560899@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vidya Sagar <vidyas@nvidia.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit db744ddd59be798c2627efbfc71f707f5a935a40 upstream.
+commit 50c70240097ce41fe6bce6478b80478281e4d0f7 upstream.
 
-While calculating the hardware interrupt number for a MSI interrupt, the
-higher bits (i.e. from bit-5 onwards a.k.a domain_nr >= 32) of the PCI
-domain number gets truncated because of the shifted value casting to return
-type of pci_domain_nr() which is 'int'. This for example is resulting in
-same hardware interrupt number for devices 0019:00:00.0 and 0039:00:00.0.
+It was said that authenticated encryption could produce invalid tag when
+the data that is being encrypted is modified [1]. So, fix this problem by
+copying the data into the clone bio first and then encrypt them inside the
+clone bio.
 
-To address this cast the PCI domain number to 'irq_hw_number_t' before left
-shifting it to calculate the hardware interrupt number.
+This may reduce performance, but it is needed to prevent the user from
+corrupting the device by writing data with O_DIRECT and modifying them at
+the same time.
 
-Please note that this fixes the issue only on 64-bit systems and doesn't
-change the behavior for 32-bit systems i.e. the 32-bit systems continue to
-have the issue. Since the issue surfaces only if there are too many PCIe
-controllers in the system which usually is the case in modern server
-systems and they don't tend to run 32-bit kernels.
+[1] https://lore.kernel.org/all/20240207004723.GA35324@sol.localdomain/T/
 
-Fixes: 3878eaefb89a ("PCI/MSI: Enhance core to support hierarchy irqdomain")
-Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Shanker Donthineni <sdonthineni@nvidia.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240115135649.708536-1-vidyas@nvidia.com
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/msi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-crypt.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/pci/msi.c
-+++ b/drivers/pci/msi.c
-@@ -1409,7 +1409,7 @@ static irq_hw_number_t pci_msi_domain_ca
+--- a/drivers/md/dm-crypt.c
++++ b/drivers/md/dm-crypt.c
+@@ -1627,6 +1627,12 @@ static void kcryptd_crypt_write_convert(
+ 	io->ctx.bio_out = clone;
+ 	io->ctx.iter_out = clone->bi_iter;
  
- 	return (irq_hw_number_t)desc->msi_attrib.entry_nr |
- 		pci_dev_id(dev) << 11 |
--		(pci_domain_nr(dev->bus) & 0xFFFFFFFF) << 27;
-+		((irq_hw_number_t)(pci_domain_nr(dev->bus) & 0xFFFFFFFF)) << 27;
- }
++	if (crypt_integrity_aead(cc)) {
++		bio_copy_data(clone, io->base_bio);
++		io->ctx.bio_in = clone;
++		io->ctx.iter_in = clone->bi_iter;
++	}
++
+ 	sector += bio_sectors(clone);
  
- static inline bool pci_msi_desc_is_multi_msi(struct msi_desc *desc)
+ 	crypt_inc_pending(io);
 
 
 
