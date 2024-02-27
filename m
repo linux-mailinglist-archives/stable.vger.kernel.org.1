@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9E9D8694E9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:57:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AC968696D6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AFA228BD75
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:57:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC0AC1C23B67
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C0213F01E;
-	Tue, 27 Feb 2024 13:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765B413B29C;
+	Tue, 27 Feb 2024 14:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ANFIeD5J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5XfFNSY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 534BB13B7A0;
-	Tue, 27 Feb 2024 13:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3613F78B61;
+	Tue, 27 Feb 2024 14:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042242; cv=none; b=XNlrjdrjtOupt1dGDcwKvoEoN1zXLLj6HemsUyf/cvIreorW+QEPDXWXb80ZoPcJijVgWQZ3Fa7FzI8oP5CCdnwXehe/4zNOooRWiubrQYpXP5QXh617X+PnxLIEgPLktfz59x2YtCtgdmvhCA2Rmv/kNZvDMqPMpNgbm6LTe08=
+	t=1709043357; cv=none; b=l9/AZkUzLvrQFwrxJZ0fahBQTtJIQ8ih8FDv2P+iSADmEOfxiUhsCfobHy8hiEb7zVOADgdPtaZ/mKqaIaiC/Go42XJJavb6auXNNkEQ5XbtvO6FLpKLffJ3NnaYTzxTF7z6tHC8Wujcur9cOjRycAEen9u6gBBeflw6/RlntfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042242; c=relaxed/simple;
-	bh=H6MQprhtlorr5uh1ZmHPLQ07fbodIEKqZxYQX45Y5T8=;
+	s=arc-20240116; t=1709043357; c=relaxed/simple;
+	bh=W2LGrMhF5HhMSyE72BwFOr1eFUDwJe2qvCjlu2tH+QQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vh/uTno1qEH3hf6Xm3N1+dBsgmh4P4GmpF8RQqh/VeBHFKuVrURVZwqGT2cas6m7EJnaTj+ni7EjG9EUSZDDW61Oo9VI7a6tZGP8Huze0CFEv4HN7BM3ry7xRHwMMEYW5cu1Xtgai2nxhiOT0SqK/igCpcMuXcRnqMjQVMa/0Bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ANFIeD5J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D820DC433C7;
-	Tue, 27 Feb 2024 13:57:21 +0000 (UTC)
+	 MIME-Version; b=dyH7qqwD1eKZyCnVOHimMw4cubolBAncZBrIsNqkANMIBHrBC8wpJfpYJp6x4n2afL3tkjeB8l5vxKylPSYQy2mpO9vBiMsT+MkuOBYrtaEvqItkSpWlJmTbnG+CZyOCoMw0/lbRt/l9nr8TdPEjzd4iu7VEPSzOoTdhexjnoFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5XfFNSY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F43C433C7;
+	Tue, 27 Feb 2024 14:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042242;
-	bh=H6MQprhtlorr5uh1ZmHPLQ07fbodIEKqZxYQX45Y5T8=;
+	s=korg; t=1709043357;
+	bh=W2LGrMhF5HhMSyE72BwFOr1eFUDwJe2qvCjlu2tH+QQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ANFIeD5Ja3NY/qx71IZfoh2xanzludb6h/LzMHjisW2Yk/08n7PSplWRi9ZjFy1JY
-	 vdRkUt/2CxcYd0PzfB8prdt39m2MxsoF3bNKvksjmITWYJLBluBsS8YGqtzGPe9n0f
-	 3WX2AFIjGP5gZ9kSFN4Oqq92yqmdDddsK2eM2w4A=
+	b=P5XfFNSYVUpzIpHVmo2hNwr/iEQAm8pza+T6mYZ6h3rq5C68pq6j2dk0rhj//LKGk
+	 wIh40H/CQW6Qavp+W35I/TRVgKPBT6kHA6dTXWBthu23YSY+EDadvsiLt4EcRD0c9r
+	 TkV0f4Mg4S5Jhp9Z0T6BRJrskHLTFdimBIe/rIjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Yi Sun <yi.sun@unisoc.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 229/299] xsk: Add truesize to skb_add_rx_frag().
+Subject: [PATCH 6.1 079/195] virtio-blk: Ensure no requests in virtqueues before deleting vqs.
 Date: Tue, 27 Feb 2024 14:25:40 +0100
-Message-ID: <20240227131633.121815265@linuxfoundation.org>
+Message-ID: <20240227131613.100569506@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Yi Sun <yi.sun@unisoc.com>
 
-[ Upstream commit 2127c604383666675789fd4a5fc2aead46c73aad ]
+[ Upstream commit 4ce6e2db00de8103a0687fb0f65fd17124a51aaa ]
 
-xsk_build_skb() allocates a page and adds it to the skb via
-skb_add_rx_frag() and specifies 0 for truesize. This leads to a warning
-in skb_add_rx_frag() with CONFIG_DEBUG_NET enabled because size is
-larger than truesize.
+Ensure no remaining requests in virtqueues before resetting vdev and
+deleting virtqueues. Otherwise these requests will never be completed.
+It may cause the system to become unresponsive.
 
-Increasing truesize requires to add the same amount to socket's
-sk_wmem_alloc counter in order not to underflow the counter during
-release in the destructor (sock_wfree()).
+Function blk_mq_quiesce_queue() can ensure that requests have become
+in_flight status, but it cannot guarantee that requests have been
+processed by the device. Virtqueues should never be deleted before
+all requests become complete status.
 
-Pass the size of the allocated page as truesize to skb_add_rx_frag().
-Add this mount to socket's sk_wmem_alloc counter.
+Function blk_mq_freeze_queue() ensure that all requests in virtqueues
+become complete status. And no requests can enter in virtqueues.
 
-Fixes: cf24f5a5feea ("xsk: add support for AF_XDP multi-buffer on Tx path")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://lore.kernel.org/bpf/20240202163221.2488589-1-bigeasy@linutronix.de
+Signed-off-by: Yi Sun <yi.sun@unisoc.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Link: https://lore.kernel.org/r/20240129085250.1550594-1-yi.sun@unisoc.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xdp/xsk.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/block/virtio_blk.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index d849dc04a3343..2c3ba42bfcdcb 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -683,7 +683,8 @@ static struct sk_buff *xsk_build_skb(struct xdp_sock *xs,
- 			memcpy(vaddr, buffer, len);
- 			kunmap_local(vaddr);
+diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
+index 3124837aa406f..505026f0025c7 100644
+--- a/drivers/block/virtio_blk.c
++++ b/drivers/block/virtio_blk.c
+@@ -1206,14 +1206,15 @@ static int virtblk_freeze(struct virtio_device *vdev)
+ {
+ 	struct virtio_blk *vblk = vdev->priv;
  
--			skb_add_rx_frag(skb, nr_frags, page, 0, len, 0);
-+			skb_add_rx_frag(skb, nr_frags, page, 0, len, PAGE_SIZE);
-+			refcount_add(PAGE_SIZE, &xs->sk.sk_wmem_alloc);
- 		}
- 	}
++	/* Ensure no requests in virtqueues before deleting vqs. */
++	blk_mq_freeze_queue(vblk->disk->queue);
++
+ 	/* Ensure we don't receive any more interrupts */
+ 	virtio_reset_device(vdev);
  
+ 	/* Make sure no work handler is accessing the device. */
+ 	flush_work(&vblk->config_work);
+ 
+-	blk_mq_quiesce_queue(vblk->disk->queue);
+-
+ 	vdev->config->del_vqs(vdev);
+ 	kfree(vblk->vqs);
+ 
+@@ -1231,7 +1232,7 @@ static int virtblk_restore(struct virtio_device *vdev)
+ 
+ 	virtio_device_ready(vdev);
+ 
+-	blk_mq_unquiesce_queue(vblk->disk->queue);
++	blk_mq_unfreeze_queue(vblk->disk->queue);
+ 	return 0;
+ }
+ #endif
 -- 
 2.43.0
 
