@@ -1,147 +1,120 @@
-Return-Path: <stable+bounces-25294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CE9386A054
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 20:38:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82D8186A068
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 20:43:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EF601C23376
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 19:38:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3433128C896
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 19:43:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91AEB2D60B;
-	Tue, 27 Feb 2024 19:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D2013AA27;
+	Tue, 27 Feb 2024 19:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rB8m1HS0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nq9eRoSw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6842511F
-	for <stable@vger.kernel.org>; Tue, 27 Feb 2024 19:38:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C43E1D6A8;
+	Tue, 27 Feb 2024 19:43:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709062696; cv=none; b=YFrgvK/L67W+OIvBViDaVIC/v7jvDW2LUJ/OYGuatpmLlSLkn/lZFAWNi8PPSI1vHajhMV0d+s51uV4FylPNri9GLKj0eJCZmyjrd0/lDTlaFO32jw8Q6PtGmiuB5DUnQFbZTgEnkyEHhM9h1cF79Lt+OkcvSzscHwXG8xVnKlI=
+	t=1709063002; cv=none; b=ZD/baPT4XDe2Mt7OyEUN186P/CN6dYrRfdG+oWtxKJPh/RXLU5iLe/GGLrRzfCqOcvUrT53a1WOINOP6ITaCXlfmBJUdyLOnXL0zfbETj41vETrvPwORwBULxA0CRP+w9Jo3my/vjVWM7Ycix0M8sGlU5DAlCYerWAEmvQ43myo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709062696; c=relaxed/simple;
-	bh=uXGgIR6AlyuVRK/MpaWhS5RpNMdPXETDnhac0JBD9Iw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ecXUq+6qXE3id3dEJz50f1GpAlPwgyavX6RN1jVs8N0VX865VoCvmMQWIa1+lGp1if30jwv3WXpDndWE62fZmqH1oO9ylETAAnm5mcQ7sgcEY13qBs3pDL7sM0CMj3amUfKXqORT1LYLDE+q8zugyrvTyTf4LeYtdFVyK72Nvbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rB8m1HS0; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4129a748420so11835e9.0
-        for <stable@vger.kernel.org>; Tue, 27 Feb 2024 11:38:14 -0800 (PST)
+	s=arc-20240116; t=1709063002; c=relaxed/simple;
+	bh=dqDyN+KRSfnOwkx8dVPjoi/6aut4zltvBRatniQunAo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GJr/RLshAGboF8JuCsaAZ4h8bs6r2sSsiQS6diqjBzSv0NCKIVETcjvLU4ZIE/7m57rgpHYHhG2rsVSUFIrUTs+5e2BSwIc4v9V0qv5CyO2Om7QaRlAv1smWckIZrgLXmioNx4XIYYdDO48tkOmIm1ROrdX8YBFJI+3DE0qHM4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nq9eRoSw; arc=none smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7872614af89so10650585a.0;
+        Tue, 27 Feb 2024 11:43:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1709062693; x=1709667493; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oshdnUJfJnWYqjpxJrbBngXlFKiFKoDWj+mV4FoHF3Y=;
-        b=rB8m1HS0Uu0OLl4vqgIAu1pZrYLJtWm4SgPT+c+KeckLPLWCJBEO3+Yd36zGe5/arj
-         qMOqrr4yK6v9c6oEuwkhgXJ6f8Pr5HiKRQu9Od5yZuUjcloS/HRaG/iOiu53Qs/ECXLD
-         8vg5e1XYWMOBTuRUezl8OmVEekfVtZVZQJWRdQvRF6MtRdQM0zyFQKzvx3fuz6vAsCiG
-         +ZyBZB1JMfijrRsm45841cqJ3L2jeoYmqCrtRCQsbT7nkJvFncFQZKDw2dBtcSIXGn6E
-         Hubn0InxTjiOLSSQuYi8e2Ij9vmmDHbN0jzo+OXXkFD91M+S0PQxiljaZGcY4e2sfQ0D
-         WEpg==
+        d=gmail.com; s=20230601; t=1709063000; x=1709667800; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MHRF9fotsc2Wn1fuFRo4Qf8oTaALfFUASU6mbW+XRdU=;
+        b=Nq9eRoSwfFK4NJepVFepwc2x7ucwrnBcC1c+k37A19nFHfhEfNPp/QDY7gXY/09brX
+         lK16/LhpJKuSnHgxkPAGqSR7YKJGTSws2qsQ2EG89jfPZ6KIlLkGzsXFiUf4pPo3ufrY
+         BpGvCbME7qZO0y+bX8Pdyn15P0bd+qI5kG4jhsZQfSvwaJCMVWBRL04BTnutfymvUkHt
+         RmHe+3gDxEnji12xdo6HnBm7c0XQe3zD23piDczbYixxkhPlMfZ9i2ugMIaSVbGicvbD
+         oSsGuAGChCFS1kUhq7U/VWA7qLKlJ9GkHlMfKMxKUXIo+OdZyvIMbWePf1nDO6MT5Obn
+         boIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709062693; x=1709667493;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oshdnUJfJnWYqjpxJrbBngXlFKiFKoDWj+mV4FoHF3Y=;
-        b=UFCsHM68lD9Fv+jMZ9QUtRCpVxc2DkFqH8u3IV/ZQfvD1ELejLWKAMpt6tnXiYikII
-         sBHOLbhCAKNWZPP1kgclF4SqoOzyR1xEO+jqHLhvTp4RWJ51T36m6PegWC5sX78p3cYU
-         DjXnRSWzdJeGG2FN4dBX4gDpGpI7ntB8Y+P9V1l2kp0vt2l8LL/8BMIYKLJeWHfdCdiQ
-         Bd2YqkesUM3V0eNMZk25WLzNrlxJxd6OEmr29vBDv/Hht4egyRhLPrZxW5ihCLe+fiXa
-         BXUBqbUUehBGxY0laMvQ/h02bo/cn6ussBI6Fr56dQVgSLcRT7XrkmgSlA+iGSKJeUrc
-         44sA==
-X-Gm-Message-State: AOJu0Ywv/M0z1cA9ODBVnnUdkBodmbErzpplZ3+K1d7d4k+Y5vDlYRMV
-	Ez/fzqo8KvevKMDLnIZtEPKIWcn9hejag4dFv0umGBVmW/QG5+6noENtMq+pxyz3zKp5dqi63wp
-	Ee8/DhqT2GHYpQjWgABDXgKp/QI+pJytlfVw=
-X-Google-Smtp-Source: AGHT+IGgE7pybhMGkAZbJpOdx6GdA8Gm2qtbM4A7vr/iWITTqkgKV0bwFGCof3F2RyX1iI9NK48sH3pjL4VfXaAkawU=
-X-Received: by 2002:a05:600c:a3a3:b0:412:9829:2dd5 with SMTP id
- hn35-20020a05600ca3a300b0041298292dd5mr231716wmb.7.1709062692681; Tue, 27 Feb
- 2024 11:38:12 -0800 (PST)
+        d=1e100.net; s=20230601; t=1709063000; x=1709667800;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=MHRF9fotsc2Wn1fuFRo4Qf8oTaALfFUASU6mbW+XRdU=;
+        b=fmKCllyFhOUtd08OKzUf+N5lLFupQDXO1N6QjRQWlUxiKbw6gW1EpF1EMllhBEdSfW
+         7Jh44HblRnhvpyh1bPNUtBSemZDF9usxt3Mu1ve0mq+SQAEYYUGjPlhHIKGDjxoAb65m
+         y3t58TCWebcZngs+M7RX4g09KzEOyzAyoeggujzqgMzv8wWD8i7XX+XMrimByvqrVPoR
+         c7ybhMWCub0DMNpJjvvppJLekUSNjBBwabyH+0SVz9FrvptRzyCmIfEqKBBfP0I1YLBJ
+         x71AqFuz7d5/juOW/JulHuO0q7+MvF4GqDQubIq4fZ8jqmnf1Fc/9ybCMaaMmNoKrFxw
+         y9nQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWmZAg33cfLEkILbGEvZ8cwW7KFgSEc/Odc5UNusFOtd2POT4zSwfvtvg6MYS7zWTBcdQJB4CfQ4M7NCT/J5xv7UQUcG9cADLFRchp10zP2844Rhm97m6uCUWWdV6Oy1hJaSUjz
+X-Gm-Message-State: AOJu0Yz10Ajl6c1Zg4vYRdpEQOb5w4OY6lnqOY2Y0Bl9p8ZE0P0r3IWT
+	vuQq2WMlo+3Mt4IdcmjavmLwhdBcY56okvY+z6OF4QbdmpJUGx5J
+X-Google-Smtp-Source: AGHT+IE1Djm+XG9j2e22YAFWUsoNpcBWHxoMtJD1HFPL6vmVz2lBTbWoS8ibTv345dqt14KIXoooEA==
+X-Received: by 2002:a0c:a701:0:b0:68f:b941:3463 with SMTP id u1-20020a0ca701000000b0068fb9413463mr455963qva.3.1709063000334;
+        Tue, 27 Feb 2024 11:43:20 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id ng7-20020a0562143bc700b0068ff79d8d97sm3787473qvb.41.2024.02.27.11.43.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Feb 2024 11:43:19 -0800 (PST)
+Message-ID: <3919f8ea-15c0-41ec-816c-dcb8f97b4682@gmail.com>
+Date: Tue, 27 Feb 2024 11:43:17 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240227131552.864701583@linuxfoundation.org> <20240227131554.144760148@linuxfoundation.org>
-In-Reply-To: <20240227131554.144760148@linuxfoundation.org>
-From: John Stultz <jstultz@google.com>
-Date: Tue, 27 Feb 2024 11:38:01 -0800
-Message-ID: <CANDhNCoGL7voc11QFt5rBXXibMSvDM2YxZ8ocV1fkGYh=Mm0nA@mail.gmail.com>
-Subject: Re: [PATCH 5.4 39/84] driver core: Set deferred_probe_timeout to a
- longer default if CONFIG_MODULES is set
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, linux-pm@vger.kernel.org, 
-	Linus Walleij <linus.walleij@linaro.org>, Thierry Reding <treding@nvidia.com>, 
-	Mark Brown <broonie@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
-	Bjorn Andersson <bjorn.andersson@linaro.org>, Saravana Kannan <saravanak@google.com>, 
-	Todd Kjos <tkjos@google.com>, Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>, 
-	Ulf Hansson <ulf.hansson@linaro.org>, Kevin Hilman <khilman@kernel.org>, 
-	"Rafael J. Wysocki" <rjw@rjwysocki.net>, Rob Herring <robh@kernel.org>, 
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>, John Stultz <john.stultz@linaro.org>, 
-	Sasha Levin <sashal@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 000/299] 6.6.19-rc1 review
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com
+References: <20240227131625.847743063@linuxfoundation.org>
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Feb 27, 2024 at 5:27=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> 5.4-stable review patch.  If anyone has any objections, please let me kno=
-w.
->
-> ------------------
->
-> From: John Stultz <john.stultz@linaro.org>
->
-> [ Upstream commit e2cec7d6853712295cef5377762165a489b2957f ]
->
-> When using modules, its common for the modules not to be loaded
-> until quite late by userland. With the current code,
-> driver_deferred_probe_check_state() will stop returning
-> EPROBE_DEFER after late_initcall, which can cause module
-> dependency resolution to fail after that.
->
-> So allow a longer window of 30 seconds (picked somewhat
-> arbitrarily, but influenced by the similar regulator core
-> timeout value) in the case where modules are enabled.
->
-> Cc: linux-pm@vger.kernel.org
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Linus Walleij <linus.walleij@linaro.org>
-> Cc: Thierry Reding <treding@nvidia.com>
-> Cc: Mark Brown <broonie@kernel.org>
-> Cc: Liam Girdwood <lgirdwood@gmail.com>
-> Cc: Bjorn Andersson <bjorn.andersson@linaro.org>
-> Cc: Saravana Kannan <saravanak@google.com>
-> Cc: Todd Kjos <tkjos@google.com>
-> Cc: Len Brown <len.brown@intel.com>
-> Cc: Pavel Machek <pavel@ucw.cz>
-> Cc: Ulf Hansson <ulf.hansson@linaro.org>
-> Cc: Kevin Hilman <khilman@kernel.org>
-> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
-> Cc: Rob Herring <robh@kernel.org>
-> Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-> Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-> Signed-off-by: John Stultz <john.stultz@linaro.org>
-> Link: https://lore.kernel.org/r/20200225050828.56458-3-john.stultz@linaro=
-.org
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  drivers/base/dd.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
+On 2/27/24 05:21, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.19 release.
+> There are 299 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 29 Feb 2024 13:15:36 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.19-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-This change ended up being reverted upstream in ce68929f07de
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Is there some specific reason it got selected to be pulled into -stable?
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
-thanks
--john
 
