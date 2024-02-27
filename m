@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-24789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA8EA86964A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:10:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E51F8869717
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:18:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61839B20E49
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:10:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E859288044
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:18:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7E713B2B9;
-	Tue, 27 Feb 2024 14:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A7C413EFF4;
+	Tue, 27 Feb 2024 14:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0VpvoPJU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qjUWSxwj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C590313A26F;
-	Tue, 27 Feb 2024 14:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4988713DBB3;
+	Tue, 27 Feb 2024 14:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042994; cv=none; b=AqXkDuZ2jB8JpJPlDjrkMkpgkopBEniKd/BmdmeWXrKVA8P0esMi84KK0nfDZS4LusN9Y7b338H5TDVvJzr8qjDfRFlHpFP2aDCJk8mg4UEFMFQpmSyhywPiTRCrO0lHvE1kQFjtQXi311eu0BwbMKSwQNTAF1J048+2dMYbqRE=
+	t=1709043481; cv=none; b=pN+/Bfm/R8p5IGa4jM+qjBkCBkD65+6czvpGRA1v7O906symVxL4glvdXF2kL1IUu60fqfgqy5aTrha5LNZJCVDzmRLSvu7wVAgDl0SzFw24c3/XOig8eWg7PRqF2QywtWVNwS8LXXMQFa4sBerPxpozB5bA99a5qVn0Src63Wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042994; c=relaxed/simple;
-	bh=ZWEZcl31DaK8dPDz/LkiCWmM7DNQpa+P3HOOOXIl4og=;
+	s=arc-20240116; t=1709043481; c=relaxed/simple;
+	bh=NhaBKJNXohzyFESJK4BvKh+T6rn9stm4lM+NX85Rol8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sIqX0Rk+lyHAL7OTCf6roMKWxkmWc3R5CqT+IqYXX3tBNkLK6ktBzus2Jc8PLHhs8SGBa2vyYwwEsSfsJ4r65iD60MGN3pZFRfa6twTnpQO4DGOoN5S+eY/hPv9T4SCaV0/Ed1OYzhQ6/4yxm05DAGciQC3h2jrrRY4jdK/HM0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0VpvoPJU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA3CC433F1;
-	Tue, 27 Feb 2024 14:09:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=m0CeunL0sA6YcEljOzp3DQ8BgqlHPKm8h/zniQnxHz2HYmU1Ew1Coa3fLakLZdkVF4k3jz57gsXyJHgCsO5f28qUJwuOSW16sffX7FLgvy1Sl4XobjyGvcn5nW3yBQAXS0KMOHBdSoLsS5OLPMyWg0sVObEIafZRdnFGp2VrZEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qjUWSxwj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA43AC433C7;
+	Tue, 27 Feb 2024 14:18:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042994;
-	bh=ZWEZcl31DaK8dPDz/LkiCWmM7DNQpa+P3HOOOXIl4og=;
+	s=korg; t=1709043481;
+	bh=NhaBKJNXohzyFESJK4BvKh+T6rn9stm4lM+NX85Rol8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0VpvoPJU5+8XAp/XG2oEPRCrSuNtSh8615t9rGF0UmfcZ8zrZRDL6hCm5Db4OObtH
-	 lequNKO2TqknFvux5x654z3stnd2+jH3ZbXYsjkOEWYmjaXJ8DyH5BPTadAlz1G7UG
-	 fZok9orTL/TnQ0g8+qQbNuU0ohgW8N4YPrV2zuSM=
+	b=qjUWSxwj+GRffQnwc3nzO7Ac1TTJNIXhDcWAosnglcjfM8GlVK7P6Ttk0w4mdutyG
+	 +fMir9YV2/5a3Q+EMoyCjfpeSd/YLSFDAaf57PV6ahsaov4E4TVG6GIL9Uwrywe2m0
+	 EEO9Z46Aa/xrxMLJbzM5dEKq29Gq91bPjfj5UOnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 196/245] xhci: rename resume_done to resume_timestamp
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>
+Subject: [PATCH 6.1 123/195] usb: gadget: ncm: Avoid dropping datagrams of properly parsed NTBs
 Date: Tue, 27 Feb 2024 14:26:24 +0100
-Message-ID: <20240227131621.567255614@linuxfoundation.org>
+Message-ID: <20240227131614.513218658@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,141 +59,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-[ Upstream commit a909d629ae77b97b6288bc3cfe68560454bf79c6 ]
+commit 76c51146820c5dac629f21deafab0a7039bc3ccd upstream.
 
-resume_done is just a timestamp, avoid confusing it with completions
-related to port state transitions that are named *_done
+It is observed sometimes when tethering is used over NCM with Windows 11
+as host, at some instances, the gadget_giveback has one byte appended at
+the end of a proper NTB. When the NTB is parsed, unwrap call looks for
+any leftover bytes in SKB provided by u_ether and if there are any pending
+bytes, it treats them as a separate NTB and parses it. But in case the
+second NTB (as per unwrap call) is faulty/corrupt, all the datagrams that
+were parsed properly in the first NTB and saved in rx_list are dropped.
 
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20230202150505.618915-10-mathias.nyman@linux.intel.com
+Adding a few custom traces showed the following:
+[002] d..1  7828.532866: dwc3_gadget_giveback: ep1out:
+req 000000003868811a length 1025/16384 zsI ==> 0
+[002] d..1  7828.532867: ncm_unwrap_ntb: K: ncm_unwrap_ntb toprocess: 1025
+[002] d..1  7828.532867: ncm_unwrap_ntb: K: ncm_unwrap_ntb nth: 1751999342
+[002] d..1  7828.532868: ncm_unwrap_ntb: K: ncm_unwrap_ntb seq: 0xce67
+[002] d..1  7828.532868: ncm_unwrap_ntb: K: ncm_unwrap_ntb blk_len: 0x400
+[002] d..1  7828.532868: ncm_unwrap_ntb: K: ncm_unwrap_ntb ndp_len: 0x10
+[002] d..1  7828.532869: ncm_unwrap_ntb: K: Parsed NTB with 1 frames
+
+In this case, the giveback is of 1025 bytes and block length is 1024.
+The rest 1 byte (which is 0x00) won't be parsed resulting in drop of
+all datagrams in rx_list.
+
+Same is case with packets of size 2048:
+[002] d..1  7828.557948: dwc3_gadget_giveback: ep1out:
+req 0000000011dfd96e length 2049/16384 zsI ==> 0
+[002] d..1  7828.557949: ncm_unwrap_ntb: K: ncm_unwrap_ntb nth: 1751999342
+[002] d..1  7828.557950: ncm_unwrap_ntb: K: ncm_unwrap_ntb blk_len: 0x800
+
+Lecroy shows one byte coming in extra confirming that the byte is coming
+in from PC:
+
+ Transfer 2959 - Bytes Transferred(1025)  Timestamp((18.524 843 590)
+ - Transaction 8391 - Data(1025 bytes) Timestamp(18.524 843 590)
+ --- Packet 4063861
+       Data(1024 bytes)
+       Duration(2.117us) Idle(14.700ns) Timestamp(18.524 843 590)
+ --- Packet 4063863
+       Data(1 byte)
+       Duration(66.160ns) Time(282.000ns) Timestamp(18.524 845 722)
+
+According to Windows driver, no ZLP is needed if wBlockLength is non-zero,
+because the non-zero wBlockLength has already told the function side the
+size of transfer to be expected. However, there are in-market NCM devices
+that rely on ZLP as long as the wBlockLength is multiple of wMaxPacketSize.
+To deal with such devices, it pads an extra 0 at end so the transfer is no
+longer multiple of wMaxPacketSize.
+
+Cc: <stable@vger.kernel.org>
+Fixes: 9f6ce4240a2b ("usb: gadget: f_ncm.c added")
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Reviewed-by: Maciej Żenczykowski <maze@google.com>
+Link: https://lore.kernel.org/r/20240205074650.200304-1-quic_kriskura@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: d7cdfc319b2b ("xhci: track port suspend state correctly in unsuccessful resume cases")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-hub.c  | 20 ++++++++++----------
- drivers/usb/host/xhci-ring.c |  4 ++--
- drivers/usb/host/xhci.h      |  2 +-
- 3 files changed, 13 insertions(+), 13 deletions(-)
+ drivers/usb/gadget/function/f_ncm.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-hub.c b/drivers/usb/host/xhci-hub.c
-index 7f0c9176b4951..d3d3dadaca10b 100644
---- a/drivers/usb/host/xhci-hub.c
-+++ b/drivers/usb/host/xhci-hub.c
-@@ -924,7 +924,7 @@ static int xhci_handle_usb2_port_link_resume(struct xhci_port *port,
- 		return -EINVAL;
+--- a/drivers/usb/gadget/function/f_ncm.c
++++ b/drivers/usb/gadget/function/f_ncm.c
+@@ -1340,7 +1340,15 @@ parse_ntb:
+ 	     "Parsed NTB with %d frames\n", dgram_counter);
+ 
+ 	to_process -= block_len;
+-	if (to_process != 0) {
++
++	/*
++	 * Windows NCM driver avoids USB ZLPs by adding a 1-byte
++	 * zero pad as needed.
++	 */
++	if (to_process == 1 &&
++	    (*(unsigned char *)(ntb_ptr + block_len) == 0x00)) {
++		to_process--;
++	} else if (to_process > 0) {
+ 		ntb_ptr = (unsigned char *)(ntb_ptr + block_len);
+ 		goto parse_ntb;
  	}
- 	/* did port event handler already start resume timing? */
--	if (!port->resume_done) {
-+	if (!port->resume_timestamp) {
- 		/* If not, maybe we are in a host initated resume? */
- 		if (test_bit(wIndex, &bus_state->resuming_ports)) {
- 			/* Host initated resume doesn't time the resume
-@@ -941,18 +941,18 @@ static int xhci_handle_usb2_port_link_resume(struct xhci_port *port,
- 				msecs_to_jiffies(USB_RESUME_TIMEOUT);
- 
- 			set_bit(wIndex, &bus_state->resuming_ports);
--			port->resume_done = timeout;
-+			port->resume_timestamp = timeout;
- 			mod_timer(&hcd->rh_timer, timeout);
- 			usb_hcd_start_port_resume(&hcd->self, wIndex);
- 		}
- 	/* Has resume been signalled for USB_RESUME_TIME yet? */
--	} else if (time_after_eq(jiffies, port->resume_done)) {
-+	} else if (time_after_eq(jiffies, port->resume_timestamp)) {
- 		int time_left;
- 
- 		xhci_dbg(xhci, "resume USB2 port %d-%d\n",
- 			 hcd->self.busnum, wIndex + 1);
- 
--		port->resume_done = 0;
-+		port->resume_timestamp = 0;
- 		clear_bit(wIndex, &bus_state->resuming_ports);
- 		port->rexit_active = true;
- 
-@@ -1087,10 +1087,10 @@ static void xhci_get_usb2_port_status(struct xhci_port *port, u32 *status,
- 		if (link_state == XDEV_U2)
- 			*status |= USB_PORT_STAT_L1;
- 		if (link_state == XDEV_U0) {
--			if (port->resume_done)
-+			if (port->resume_timestamp)
- 				usb_hcd_end_port_resume(&port->rhub->hcd->self,
- 							portnum);
--			port->resume_done = 0;
-+			port->resume_timestamp = 0;
- 			clear_bit(portnum, &bus_state->resuming_ports);
- 			if (bus_state->suspended_ports & (1 << portnum)) {
- 				bus_state->suspended_ports &= ~(1 << portnum);
-@@ -1162,11 +1162,11 @@ static u32 xhci_get_port_status(struct usb_hcd *hcd,
- 	 * Clear stale usb2 resume signalling variables in case port changed
- 	 * state during resume signalling. For example on error
- 	 */
--	if ((port->resume_done ||
-+	if ((port->resume_timestamp ||
- 	     test_bit(wIndex, &bus_state->resuming_ports)) &&
- 	    (raw_port_status & PORT_PLS_MASK) != XDEV_U3 &&
- 	    (raw_port_status & PORT_PLS_MASK) != XDEV_RESUME) {
--		port->resume_done = 0;
-+		port->resume_timestamp = 0;
- 		clear_bit(wIndex, &bus_state->resuming_ports);
- 		usb_hcd_end_port_resume(&hcd->self, wIndex);
- 	}
-@@ -1674,8 +1674,8 @@ int xhci_hub_status_data(struct usb_hcd *hcd, char *buf)
- 
- 		if ((temp & mask) != 0 ||
- 			(bus_state->port_c_suspend & 1 << i) ||
--			(ports[i]->resume_done && time_after_eq(
--			    jiffies, ports[i]->resume_done))) {
-+			(ports[i]->resume_timestamp && time_after_eq(
-+			    jiffies, ports[i]->resume_timestamp))) {
- 			buf[(i + 1) / 8] |= 1 << (i + 1) % 8;
- 			status = 1;
- 		}
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 8038dced215c7..aa12da0796d2d 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1987,7 +1987,7 @@ static void handle_port_status(struct xhci_hcd *xhci,
- 			goto cleanup;
- 		} else if (!test_bit(hcd_portnum, &bus_state->resuming_ports)) {
- 			xhci_dbg(xhci, "resume HS port %d\n", port_id);
--			port->resume_done = jiffies +
-+			port->resume_timestamp = jiffies +
- 				msecs_to_jiffies(USB_RESUME_TIMEOUT);
- 			set_bit(hcd_portnum, &bus_state->resuming_ports);
- 			/* Do the rest in GetPortStatus after resume time delay.
-@@ -1996,7 +1996,7 @@ static void handle_port_status(struct xhci_hcd *xhci,
- 			 */
- 			set_bit(HCD_FLAG_POLL_RH, &hcd->flags);
- 			mod_timer(&hcd->rh_timer,
--				  port->resume_done);
-+				  port->resume_timestamp);
- 			usb_hcd_start_port_resume(&hcd->self, hcd_portnum);
- 			bogus_port_status = true;
- 		}
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index 22ffbeaa51eb6..8ae33db1e4bcc 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1733,7 +1733,7 @@ struct xhci_port {
- 	struct xhci_hub		*rhub;
- 	struct xhci_port_cap	*port_cap;
- 	unsigned int		lpm_incapable:1;
--	unsigned long		resume_done;
-+	unsigned long		resume_timestamp;
- 	bool			rexit_active;
- 	struct completion	rexit_done;
- 	struct completion	u3exit_done;
--- 
-2.43.0
-
 
 
 
