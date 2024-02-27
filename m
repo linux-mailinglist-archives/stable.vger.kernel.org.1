@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 172728695A0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:03:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAC43869446
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 490471C23A3D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:03:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A439D284824
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A07313B798;
-	Tue, 27 Feb 2024 14:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5AD0145B0C;
+	Tue, 27 Feb 2024 13:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfv9VX2U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S5GYCK9P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2F216423;
-	Tue, 27 Feb 2024 14:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84CF1145B0B;
+	Tue, 27 Feb 2024 13:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042619; cv=none; b=RzmeJ/XhwGCd6wquDv6wXwfrO3E4io6NlPPruBUmepbxFsfnEfKpjEkdbr9vFO1EFc/0m46+MbZgezFgzxttjNHd5IhLTLmlPhcc/wKOMjN7rHeqINVBQFbxV8ysoubs7/vdh6/nflNKmioPWJfCvYnmdfXq7hUCfN/7NnXlbA0=
+	t=1709041898; cv=none; b=csSFK/jfqayLUMvJ26jKlsyucKub3EX+aAxgblSsqh8s0Wmp2ezB7RRQH9U8irSPmoPv0dn2tynHkt12N2K98l6XLAu+Uo/KjEjOlRGZz91B1GN1pvaaN2O79WL0YziIAUrZ5LfRuqPNQsqtkn72rFFEhmf6MzHr0LpWWNJgs2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042619; c=relaxed/simple;
-	bh=pgCZyaLGZBO0+9/twm95/pUU8sfiQLudJiD13Tgihho=;
+	s=arc-20240116; t=1709041898; c=relaxed/simple;
+	bh=rFsJGuIg2aKvVq/yvEpaZYaU5u1LxhuSKFzPrM7fGrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DJ90G9pUXnjlHyu6cyL/AlNumATm/Ri3ekFzVarF1b2g2PYK4JMOb+NAzgz5FmH/wK+GHjm6CGmUpaNmNTGJ4JVw4ACQcaSkVobw5a3jsSwlQkZvJqpufwHPqeEOybpMo0uMfDvRlmy4Tao+NXAqybBRmgT0zO+KPk/fMMU6i8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfv9VX2U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC521C433C7;
-	Tue, 27 Feb 2024 14:03:38 +0000 (UTC)
+	 MIME-Version; b=sdFe87XsxhO2yDT7/it1Ngq0UJlcTiyM+wZB3V60N4Lf6BciL6tlO6QgrvAYh8xuT0V6qJtdX9JNPN00vW/TMsOlqrpPKEIr866O8Ql6ALwHtkPcmwlYX0KUyXK2wjKsjJ4C8xppi/NOS70zApoAPMT7GV5IdvlnL6fQ8ylf8dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S5GYCK9P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D219C433F1;
+	Tue, 27 Feb 2024 13:51:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042619;
-	bh=pgCZyaLGZBO0+9/twm95/pUU8sfiQLudJiD13Tgihho=;
+	s=korg; t=1709041898;
+	bh=rFsJGuIg2aKvVq/yvEpaZYaU5u1LxhuSKFzPrM7fGrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vfv9VX2UcROfP11vdYaFGVDMkrtuZerxy4WIzuYGuJG/bL7ZWch69cPv4GBOyWf9w
-	 Ih26x/SDAf9PjvJkSorZ56fasBYG1yfuC0yxMOtFnwS8ntvi+Lz4F9IAo0XISqIBm6
-	 pHV1DAr43ryzYFbb9ZXQYj2reaO23Z+UwxnKVrN0=
+	b=S5GYCK9Pou388Q1QBTcm1s3+QR054Hw5RcSKE0epQ+Cm0gNrzfMovW5lbUVKuChhw
+	 4X9EUiPvvhzAHQrGgsyG/ItzEnVxWwtwwGetRDTBjBjHsx76UtumY+2D168QNuFINB
+	 fmxEZwBZAbuN3q1nvPAAMHDtuWeXfH+m9RpN5NUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Krystian Pradzynski <krystian.pradzynski@intel.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 031/245] ext4: avoid allocating blocks from corrupted group in ext4_mb_try_best_found()
+Subject: [PATCH 6.6 108/299] accel/ivpu/40xx: Stop passing SKU boot parameters to FW
 Date: Tue, 27 Feb 2024 14:23:39 +0100
-Message-ID: <20240227131616.128616804@linuxfoundation.org>
+Message-ID: <20240227131629.356175668@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Krystian Pradzynski <krystian.pradzynski@intel.com>
 
-[ Upstream commit 4530b3660d396a646aad91a787b6ab37cf604b53 ]
+[ Upstream commit 553099da45397914a995dce6307d6c26523c2567 ]
 
-Determine if the group block bitmap is corrupted before using ac_b_ex in
-ext4_mb_try_best_found() to avoid allocating blocks from a group with a
-corrupted block bitmap in the following concurrency and making the
-situation worse.
+This parameter was never used by the 40xx FW.
 
-ext4_mb_regular_allocator
-  ext4_lock_group(sb, group)
-  ext4_mb_good_group
-   // check if the group bbitmap is corrupted
-  ext4_mb_complex_scan_group
-   // Scan group gets ac_b_ex but doesn't use it
-  ext4_unlock_group(sb, group)
-                           ext4_mark_group_bitmap_corrupted(group)
-                           // The block bitmap was corrupted during
-                           // the group unlock gap.
-  ext4_mb_try_best_found
-    ext4_lock_group(ac->ac_sb, group)
-    ext4_mb_use_best_found
-      mb_mark_used
-      // Allocating blocks in block bitmap corrupted group
-
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240104142040.2835097-7-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Krystian Pradzynski <krystian.pradzynski@intel.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240126122804.2169129-7-jacek.lawrynowicz@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/accel/ivpu/ivpu_hw_40xx.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 48930df9ae565..3e4be376a479a 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -2197,6 +2197,9 @@ int ext4_mb_try_best_found(struct ext4_allocation_context *ac,
- 		return err;
+diff --git a/drivers/accel/ivpu/ivpu_hw_40xx.c b/drivers/accel/ivpu/ivpu_hw_40xx.c
+index 65c6a82bb13f6..ae6be0d5aaccf 100644
+--- a/drivers/accel/ivpu/ivpu_hw_40xx.c
++++ b/drivers/accel/ivpu/ivpu_hw_40xx.c
+@@ -697,7 +697,6 @@ static int ivpu_hw_40xx_info_init(struct ivpu_device *vdev)
+ {
+ 	struct ivpu_hw_info *hw = vdev->hw;
+ 	u32 tile_disable;
+-	u32 tile_enable;
+ 	u32 fuse;
  
- 	ext4_lock_group(ac->ac_sb, group);
-+	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)))
-+		goto out;
-+
- 	max = mb_find_extent(e4b, ex.fe_start, ex.fe_len, &ex);
+ 	fuse = REGB_RD32(VPU_40XX_BUTTRESS_TILE_FUSE);
+@@ -718,10 +717,6 @@ static int ivpu_hw_40xx_info_init(struct ivpu_device *vdev)
+ 	else
+ 		ivpu_dbg(vdev, MISC, "Fuse: All %d tiles enabled\n", TILE_MAX_NUM);
  
- 	if (max > 0) {
-@@ -2204,6 +2207,7 @@ int ext4_mb_try_best_found(struct ext4_allocation_context *ac,
- 		ext4_mb_use_best_found(ac, e4b);
- 	}
- 
-+out:
- 	ext4_unlock_group(ac->ac_sb, group);
- 	ext4_mb_unload_buddy(e4b);
+-	tile_enable = (~tile_disable) & TILE_MAX_MASK;
+-
+-	hw->sku = REG_SET_FLD_NUM(SKU, HW_ID, LNL_HW_ID, hw->sku);
+-	hw->sku = REG_SET_FLD_NUM(SKU, TILE, tile_enable, hw->sku);
+ 	hw->tile_fuse = tile_disable;
+ 	hw->pll.profiling_freq = PLL_PROFILING_FREQ_DEFAULT;
  
 -- 
 2.43.0
