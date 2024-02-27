@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E45FF869676
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:11:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D650D8697A7
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:23:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A07C229445D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:11:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1390C1C2192F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:23:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1933713EFE9;
-	Tue, 27 Feb 2024 14:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB071140391;
+	Tue, 27 Feb 2024 14:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k+2QszRQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9hgVJif"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE1616423;
-	Tue, 27 Feb 2024 14:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980A213B2B8;
+	Tue, 27 Feb 2024 14:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043115; cv=none; b=jtv6daQIIKx8w7UlaWdWYSByq9Kb25KY3oilEa/dfglCvRJZp2k/um+C9C51m5CMCmfghR7KDt3EVvcV0SM70mwb2g017dODPI7zQCjiBGYtfR0TYvPe6CJZJqjPZ+6miVQe4UWF2YIhIVf74QpacVxEudd93z2djVSjrvBXdUQ=
+	t=1709043818; cv=none; b=kpGzmnM4HOjnZTUBNX7NQDy62Lpey7PBIH72+4mFb4nyEGloq/ZwIsRNfE1cq34IQAWsiUQGxR6mYPQ0u9K8LL0Z8QIVgEraXvm3j1p5yfUdmhgsUXbZBLtBqjICOor7ypneLjV3bbgJqD43soJDRHCByf10ifZTqfEI3X3WB28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043115; c=relaxed/simple;
-	bh=GLv/lFnpGlYlLGD9MthVPv3wy0g54A1xRhCLLT5XjiU=;
+	s=arc-20240116; t=1709043818; c=relaxed/simple;
+	bh=d9v14ZSnIRnJ6tAtQoN6AjQ7QpU0yJOtCdigfn88OTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=geMi2k8VmvQ2nHnB6ycJnyyemzrhR2qAm5krXnvD6Tflxq1TCpQX9OfA9N+MAcdy9d4pvwMAsR23e4TloN7z2XihAjNF9U30mT9jyIFBHSrBfzHk9Or6a+uah74+MFo6/lC2vVUvfcdNKt7c5ajHjbVrw9XThZ1gblNT+L39VgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k+2QszRQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56164C433F1;
-	Tue, 27 Feb 2024 14:11:55 +0000 (UTC)
+	 MIME-Version; b=tKemQ6quacuiCvZJdpgm7g9HXcPD6/V4T0WWsYHb0i7Ux31ZnjVm5nnYb1opStU9gXkhv/VOq/myEsMbYcw4vciIFp27VJf4dwdVxhFAy0hvfH7GsIjnhdAckI5neKVxfdPnuAmBbMlurnxZ0TfUCKiAHIt4tj2eQDqM+dM0H5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9hgVJif; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22DBAC433C7;
+	Tue, 27 Feb 2024 14:23:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043115;
-	bh=GLv/lFnpGlYlLGD9MthVPv3wy0g54A1xRhCLLT5XjiU=;
+	s=korg; t=1709043818;
+	bh=d9v14ZSnIRnJ6tAtQoN6AjQ7QpU0yJOtCdigfn88OTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k+2QszRQ069kFcM/5pWYnO+kwEso2PVamYyq2tylXO3aTQHVfHKZpthN7pyJpDojY
-	 XcDg/FuchWTm2CIBoldfkb+T1rPj3aZwrgmdVFamLEBG3A9JJoIKvxwP8vxVl8OCev
-	 pBw9JJwCCVghDvWNQt1BTnv/nIt89p1YT/EzsHv8=
+	b=p9hgVJifgCKQ9WHZupxKeqdvNnFheopuKWDhQGqgr9Ck0bYp6DjH3bha4+YsqAaRT
+	 8aJu7iDS5O6BP20Z8StnYrf9RNt9BwGJ9IYhOZTj0wPYPdmLkAAeMgTvip4dvc641b
+	 ZWkU2/gy2yI/AdsXi0a6kf/jP8HxPrAS0Cy5EkrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 5.15 239/245] cifs: fix mid leak during reconnection after timeout threshold
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 40/84] spi: mt7621: Fix an error message in mt7621_spi_probe()
 Date: Tue, 27 Feb 2024 14:27:07 +0100
-Message-ID: <20240227131622.931990338@linuxfoundation.org>
+Message-ID: <20240227131554.178091720@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <nspmangalore@gmail.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 69cba9d3c1284e0838ae408830a02c4a063104bc upstream.
+[ Upstream commit 2b2bf6b7faa9010fae10dc7de76627a3fdb525b3 ]
 
-When the number of responses with status of STATUS_IO_TIMEOUT
-exceeds a specified threshold (NUM_STATUS_IO_TIMEOUT), we reconnect
-the connection. But we do not return the mid, or the credits
-returned for the mid, or reduce the number of in-flight requests.
+'status' is known to be 0 at this point. The expected error code is
+PTR_ERR(clk).
 
-This bug could result in the server->in_flight count to go bad,
-and also cause a leak in the mids.
+Switch to dev_err_probe() in order to display the expected error code (in a
+human readable way).
+This also filters -EPROBE_DEFER cases, should it happen.
 
-This change moves the check to a few lines below where the
-response is decrypted, even of the response is read from the
-transform header. This way, the code for returning the mids
-can be reused.
-
-Also, the cifs_reconnect was reconnecting just the transport
-connection before. In case of multi-channel, this may not be
-what we want to do after several timeouts. Changed that to
-reconnect the session and the tree too.
-
-Also renamed NUM_STATUS_IO_TIMEOUT to a more appropriate name
-MAX_STATUS_IO_TIMEOUT.
-
-Fixes: 8e670f77c4a5 ("Handle STATUS_IO_TIMEOUT gracefully")
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[Harshit: Backport to 5.15.y]
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1ab7f2a43558 ("staging: mt7621-spi: add mt7621 support")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
+Link: https://lore.kernel.org/r/928f3fb507d53ba0774df27cea0bbba4b055993b.1661599671.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/connect.c |   19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ drivers/spi/spi-mt7621.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
---- a/fs/cifs/connect.c
-+++ b/fs/cifs/connect.c
-@@ -59,7 +59,7 @@ extern bool disable_legacy_dialects;
- #define TLINK_IDLE_EXPIRE	(600 * HZ)
+diff --git a/drivers/spi/spi-mt7621.c b/drivers/spi/spi-mt7621.c
+index b4b9b7309b5e9..351b0ef52bbc8 100644
+--- a/drivers/spi/spi-mt7621.c
++++ b/drivers/spi/spi-mt7621.c
+@@ -340,11 +340,9 @@ static int mt7621_spi_probe(struct platform_device *pdev)
+ 		return PTR_ERR(base);
  
- /* Drop the connection to not overload the server */
--#define NUM_STATUS_IO_TIMEOUT   5
-+#define MAX_STATUS_IO_TIMEOUT   5
+ 	clk = devm_clk_get(&pdev->dev, NULL);
+-	if (IS_ERR(clk)) {
+-		dev_err(&pdev->dev, "unable to get SYS clock, err=%d\n",
+-			status);
+-		return PTR_ERR(clk);
+-	}
++	if (IS_ERR(clk))
++		return dev_err_probe(&pdev->dev, PTR_ERR(clk),
++				     "unable to get SYS clock\n");
  
- struct mount_ctx {
- 	struct cifs_sb_info *cifs_sb;
-@@ -965,6 +965,7 @@ cifs_demultiplex_thread(void *p)
- 	struct mid_q_entry *mids[MAX_COMPOUND];
- 	char *bufs[MAX_COMPOUND];
- 	unsigned int noreclaim_flag, num_io_timeout = 0;
-+	bool pending_reconnect = false;
- 
- 	noreclaim_flag = memalloc_noreclaim_save();
- 	cifs_dbg(FYI, "Demultiplex PID: %d\n", task_pid_nr(current));
-@@ -1004,6 +1005,8 @@ cifs_demultiplex_thread(void *p)
- 		cifs_dbg(FYI, "RFC1002 header 0x%x\n", pdu_length);
- 		if (!is_smb_response(server, buf[0]))
- 			continue;
-+
-+		pending_reconnect = false;
- next_pdu:
- 		server->pdu_size = pdu_length;
- 
-@@ -1063,10 +1066,13 @@ next_pdu:
- 		if (server->ops->is_status_io_timeout &&
- 		    server->ops->is_status_io_timeout(buf)) {
- 			num_io_timeout++;
--			if (num_io_timeout > NUM_STATUS_IO_TIMEOUT) {
--				cifs_reconnect(server);
-+			if (num_io_timeout > MAX_STATUS_IO_TIMEOUT) {
-+				cifs_server_dbg(VFS,
-+						"Number of request timeouts exceeded %d. Reconnecting",
-+						MAX_STATUS_IO_TIMEOUT);
-+
-+				pending_reconnect = true;
- 				num_io_timeout = 0;
--				continue;
- 			}
- 		}
- 
-@@ -1113,6 +1119,11 @@ next_pdu:
- 			buf = server->smallbuf;
- 			goto next_pdu;
- 		}
-+
-+		/* do this reconnect at the very end after processing all MIDs */
-+		if (pending_reconnect)
-+			cifs_reconnect(server);
-+
- 	} /* end while !EXITING */
- 
- 	/* buffer usually freed in free_mid - need to free it here on exit */
+ 	status = clk_prepare_enable(clk);
+ 	if (status)
+-- 
+2.43.0
+
 
 
 
