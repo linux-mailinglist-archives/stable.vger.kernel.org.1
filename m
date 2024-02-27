@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-25147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1717E8697F2
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:27:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62B61869720
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:18:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4877E1C2311D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:27:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 286C0B2AE8B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:18:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4D44143C46;
-	Tue, 27 Feb 2024 14:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16C3013B797;
+	Tue, 27 Feb 2024 14:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBjjqZTy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M63/sfpY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829A513DBBC;
-	Tue, 27 Feb 2024 14:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C987E13B78F;
+	Tue, 27 Feb 2024 14:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043995; cv=none; b=kFUKTFsbj1rew7S4ao72DoGXpO+rfXlZEPY9LzIi3aMfmD4CcQ9Gp/sbuhNyOh64PGjcEOuk4TI9/XvOj7NwftIIRT0kHj7y9JPj0OWqP8Agggl/ZOqwvxhYrs/XxbwGBHZKWZSgUG/ptix1oJocNKu8nmpInXLrJdaen/ukupU=
+	t=1709043486; cv=none; b=By2NHjjXD5uOBzd4Y35zqT4NylVuwOjD9TlzLV1V1PmJbMFa47RCxgD1FbObqVQLRtM5PKJm+8JdW7rPxMCAzrGSyGvEWJbXX5DwoYYUyKDYFYJvcOC7ASVi/QCiL2i30SyVZkAZ3HvifxqdSA6bn12NRBl/TjluzKkqTQTRdl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043995; c=relaxed/simple;
-	bh=a40EGyk2ADHVf+AFhfDnFxmaL60j7CMtn9DIc7b3DKc=;
+	s=arc-20240116; t=1709043486; c=relaxed/simple;
+	bh=J7tl2VeAfXnwp6EunvFB4aJKpGoL7o0otVYvPNTf244=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TPXyRyqNEWKmX+5FW5VFGvZwgMV2/EkSnP+aq9JEu6eF103LZ1v8Xwl2gj4PGz1PVCh9je1msKLkvGQf5y90PpkK+Gs+T0gD+41DU3AX1ZfAy/YyAC3Z1bLk1meTHYDmlyiY/TZPnObZx89WuifYE6f+j1098PdczGZfgGbprTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBjjqZTy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B52C433F1;
-	Tue, 27 Feb 2024 14:26:34 +0000 (UTC)
+	 MIME-Version; b=caxJcpjCQ50kVCqpbLdr2ZBIY/WztCKN7GnPcpV9JJP1aC8eC8R2SjCehTXSqs41DHNSjYgKQW1OlGNy1M3kHeZj3ECDrcdyjpCeMFesd3LpS9XEs21TkasUXdLajoXVOOlMey2UE1aP9wk0Mm3Z+KsX0WFWzo3XMy20uqo3LMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M63/sfpY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57662C433F1;
+	Tue, 27 Feb 2024 14:18:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043995;
-	bh=a40EGyk2ADHVf+AFhfDnFxmaL60j7CMtn9DIc7b3DKc=;
+	s=korg; t=1709043486;
+	bh=J7tl2VeAfXnwp6EunvFB4aJKpGoL7o0otVYvPNTf244=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GBjjqZTyhxb6CLwliGE1xUDyAEx6PK3dFl1a+3Bbvoco3b7OfCWzIBimiXG/Lhvm/
-	 E7MfqHnGOmG6qEK1lfpgvYhKi8goFv3k1eQEsXuiUGYzGau94GFghMFbtuBpsCzsUi
-	 xsetaNb014Hzgo9EzhcXqIYfy/L5+WT4wrfxFFIs=
+	b=M63/sfpY+Hu1qnkNV1NQUdbyPQRz50lP06mmujVk0oMOs/rD4iqDGH/0RLDZmvIAk
+	 SQcHsr6LW4kkhHFGfnYqr3cjk4ZAXC66HqsDs0CD5luAksyOpb3FzJCsGUrv9jAE5H
+	 EFIrfHy6VhV1U7xetD/r+KeNNKcFSQNVG8/lqtzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 025/122] regulator: pwm-regulator: Add validity checks in continuous .get_voltage
+	Xu Yang <xu.yang_2@nxp.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.1 125/195] usb: roles: dont get/set_role() when usb_role_switch is unregistered
 Date: Tue, 27 Feb 2024 14:26:26 +0100
-Message-ID: <20240227131559.531142324@linuxfoundation.org>
+Message-ID: <20240227131614.575186771@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +59,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit c92688cac239794e4a1d976afa5203a4d3a2ac0e ]
+commit b787a3e781759026a6212736ef8e52cf83d1821a upstream.
 
-Continuous regulators can be configured to operate only in a certain
-duty cycle range (for example from 0..91%). Add a check to error out if
-the duty cycle translates to an unsupported (or out of range) voltage.
+There is a possibility that usb_role_switch device is unregistered before
+the user put usb_role_switch. In this case, the user may still want to
+get/set_role() since the user can't sense the changes of usb_role_switch.
 
-Suggested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://msgid.link/r/20240113224628.377993-2-martin.blumenstingl@googlemail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This will add a flag to show if usb_role_switch is already registered and
+avoid unwanted behaviors.
+
+Fixes: fde0aa6c175a ("usb: common: Small class for USB role switches")
+cc: stable@vger.kernel.org
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240129093739.2371530-2-xu.yang_2@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/pwm-regulator.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/roles/class.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/regulator/pwm-regulator.c b/drivers/regulator/pwm-regulator.c
-index 7629476d94aeb..f4d9d9455dea6 100644
---- a/drivers/regulator/pwm-regulator.c
-+++ b/drivers/regulator/pwm-regulator.c
-@@ -158,6 +158,9 @@ static int pwm_regulator_get_voltage(struct regulator_dev *rdev)
- 	pwm_get_state(drvdata->pwm, &pstate);
+--- a/drivers/usb/roles/class.c
++++ b/drivers/usb/roles/class.c
+@@ -21,6 +21,7 @@ struct usb_role_switch {
+ 	struct mutex lock; /* device lock*/
+ 	struct module *module; /* the module this device depends on */
+ 	enum usb_role role;
++	bool registered;
  
- 	voltage = pwm_get_relative_duty_cycle(&pstate, duty_unit);
-+	if (voltage < min(max_uV_duty, min_uV_duty) ||
-+	    voltage > max(max_uV_duty, min_uV_duty))
-+		return -ENOTRECOVERABLE;
+ 	/* From descriptor */
+ 	struct device *usb2_port;
+@@ -47,6 +48,9 @@ int usb_role_switch_set_role(struct usb_
+ 	if (IS_ERR_OR_NULL(sw))
+ 		return 0;
  
- 	/*
- 	 * The dutycycle for min_uV might be greater than the one for max_uV.
--- 
-2.43.0
-
++	if (!sw->registered)
++		return -EOPNOTSUPP;
++
+ 	mutex_lock(&sw->lock);
+ 
+ 	ret = sw->set(sw, role);
+@@ -72,7 +76,7 @@ enum usb_role usb_role_switch_get_role(s
+ {
+ 	enum usb_role role;
+ 
+-	if (IS_ERR_OR_NULL(sw))
++	if (IS_ERR_OR_NULL(sw) || !sw->registered)
+ 		return USB_ROLE_NONE;
+ 
+ 	mutex_lock(&sw->lock);
+@@ -356,6 +360,8 @@ usb_role_switch_register(struct device *
+ 		return ERR_PTR(ret);
+ 	}
+ 
++	sw->registered = true;
++
+ 	/* TODO: Symlinks for the host port and the device controller. */
+ 
+ 	return sw;
+@@ -370,8 +376,10 @@ EXPORT_SYMBOL_GPL(usb_role_switch_regist
+  */
+ void usb_role_switch_unregister(struct usb_role_switch *sw)
+ {
+-	if (!IS_ERR_OR_NULL(sw))
++	if (!IS_ERR_OR_NULL(sw)) {
++		sw->registered = false;
+ 		device_unregister(&sw->dev);
++	}
+ }
+ EXPORT_SYMBOL_GPL(usb_role_switch_unregister);
+ 
 
 
 
