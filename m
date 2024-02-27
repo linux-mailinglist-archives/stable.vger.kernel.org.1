@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D75F086944F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A8BE869587
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:02:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BE281F21C77
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D39FA1F2A8A4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C9A143C6E;
-	Tue, 27 Feb 2024 13:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDDE613B7AB;
+	Tue, 27 Feb 2024 14:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n2TsZdED"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ewDLS0TR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A8013B2BA;
-	Tue, 27 Feb 2024 13:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA2778B61;
+	Tue, 27 Feb 2024 14:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041920; cv=none; b=imQ6uViQVyhQl0kWplJ8CRAWqTSOlcADjOFE5OOKdJTPylIW4wnOEdVGCvs5WuPQNQEiX09AIJhdLSjtPZ8+GDQdzoRpS0oRUcDD7rXPuvT/lJ0c2W5eFHQNizSsng1TNOZ+0q/W5u7+TosFM4TSgRuQfNw+2129LSYnHCByaT4=
+	t=1709042556; cv=none; b=uNzzh9uGUz/8S9U0odco3yHrPa1IfZkkug2282cNHQ3AGsItHpTy7ZCYmEVFs2kHMrFM3MT/Z4uTNekhnv5yeodGuXoGl7U6LE/pd5YAOH3WMxtj5ZuoPO0w4/o2zD1hQpANkj6G73xGMZqBzMzO0j62mIGKxyg3V4kMhfNwTKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041920; c=relaxed/simple;
-	bh=QreihzIB57f/2PpATDnXBn6skCWjCc3wdLOm0idjtMs=;
+	s=arc-20240116; t=1709042556; c=relaxed/simple;
+	bh=xibtZyiCRPu3aaIgIYbqRKWG7Ui1gtSFbowFcgimuMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IlaOkwtYQnPuKfCTcr4oGAX2LO+KPzRQXPSdrB59/Z2qxiscAmjnuQYK1fx34PAcjPrty/HuxrFi5vHD1g5+CP/vqPqO5sfOrbLMUzXyGSqPxopsTFot1biHdG8KF8ozDJULJ68zvMlVB+RIOjRDiw8bHjXudTCVg9v/gO9dgP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n2TsZdED; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 611D7C433F1;
-	Tue, 27 Feb 2024 13:52:00 +0000 (UTC)
+	 MIME-Version; b=qxp3wqB1IHZKhRgk0U1N44E2L7rfkOcx5yOC4hdCcnkaiS68kheK4k2WG6RCbcDjv7ArdwWgBP2AXUpIcu4qboBuyKJRQl9pokbVijrBZlN47ejflHkLldqDAt8UcQWd3UvN09cczhriCudw5JZn+eFFno0KtIxD+EfFdHNOOU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ewDLS0TR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D43C433F1;
+	Tue, 27 Feb 2024 14:02:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041920;
-	bh=QreihzIB57f/2PpATDnXBn6skCWjCc3wdLOm0idjtMs=;
+	s=korg; t=1709042556;
+	bh=xibtZyiCRPu3aaIgIYbqRKWG7Ui1gtSFbowFcgimuMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n2TsZdEDrXhlNtKgHFJfK5d342kOrdWpu4tydYnof1Y9qVlww5nmwGNJF3V/l+wx0
-	 M2nQgU2dybGppXs7uzh04XZLC4P+bn1Cqm/9ttOS7rttm3j78uwW7KHlJC2A2F1cG2
-	 lA7FJ5vlcmrcF8zxwKuz9+9uu/AgDkzAUrfSHeas=
+	b=ewDLS0TRdAnSCzlIJzA1c3maFxDb2wd4B14HHOOlu9X81CuCYA2evU1eDCrIgHobb
+	 yBI70Y8SoyhTMqWm1a4PLRDCGyv8xldIkE3EJloEnQ8bCvqbn2shGi3mAx+gdg7Zg/
+	 v2/TDOmxDe1TFVEeCgzDDeA3uQn962+t5hmqBXBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paulo Alcantara <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
+	Brenton Simpson <appsforartists@google.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 115/299] smb: client: set correct d_type for reparse points under DFS mounts
-Date: Tue, 27 Feb 2024 14:23:46 +0100
-Message-ID: <20240227131629.568923730@linuxfoundation.org>
+Subject: [PATCH 5.15 039/245] Input: xpad - add Lenovo Legion Go controllers
+Date: Tue, 27 Feb 2024 14:23:47 +0100
+Message-ID: <20240227131616.391059957@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,99 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Brenton Simpson <appsforartists@google.com>
 
-[ Upstream commit 55c7788c37242702868bfac7861cdf0c358d6c3d ]
+[ Upstream commit 80441f76ee67002437db61f3b317ed80cce085d2 ]
 
-Send query dir requests with an info level of
-SMB_FIND_FILE_FULL_DIRECTORY_INFO rather than
-SMB_FIND_FILE_DIRECTORY_INFO when the client is generating its own
-inode numbers (e.g. noserverino) so that reparse tags still
-can be parsed directly from the responses, but server won't
-send UniqueId (server inode number)
+The Lenovo Legion Go is a handheld gaming system, similar to a Steam Deck.
+It has a gamepad (including rear paddles), 3 gyroscopes, a trackpad,
+volume buttons, a power button, and 2 LED ring lights.
 
-Signed-off-by: Paulo Alcantara <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+The Legion Go firmware presents these controls as a USB hub with various
+devices attached.  In its default state, the gamepad is presented as an
+Xbox controller connected to this hub.  (By holding a combination of
+buttons, it can be changed to use the older DirectInput API.)
+
+This patch teaches the existing Xbox controller module `xpad` to bind to
+the controller in the Legion Go, which enables support for the:
+
+- directional pad,
+- analog sticks (including clicks),
+- X, Y, A, B,
+- start and select (or menu and capture),
+- shoulder buttons, and
+- rumble.
+
+The trackpad, touchscreen, volume controls, and power button are already
+supported via existing kernel modules.  Two of the face buttons, the
+gyroscopes, rear paddles, and LEDs are not.
+
+After this patch lands, the Legion Go will be mostly functional in Linux,
+out-of-the-box.  The various components of the USB hub can be synthesized
+into a single logical controller (including the additional buttons) in
+userspace with [Handheld Daemon](https://github.com/hhd-dev/hhd), which
+makes the Go fully functional.
+
+Signed-off-by: Brenton Simpson <appsforartists@google.com>
+Link: https://lore.kernel.org/r/20240118183546.418064-1-appsforartists@google.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/readdir.c | 15 ++++++++-------
- fs/smb/client/smb2pdu.c |  6 ++++++
- 2 files changed, 14 insertions(+), 7 deletions(-)
+ drivers/input/joystick/xpad.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/smb/client/readdir.c b/fs/smb/client/readdir.c
-index d30ea2005eb36..e23cd216bffbe 100644
---- a/fs/smb/client/readdir.c
-+++ b/fs/smb/client/readdir.c
-@@ -299,14 +299,16 @@ cifs_dir_info_to_fattr(struct cifs_fattr *fattr, FILE_DIRECTORY_INFO *info,
- }
- 
- static void cifs_fulldir_info_to_fattr(struct cifs_fattr *fattr,
--				       SEARCH_ID_FULL_DIR_INFO *info,
-+				       const void *info,
- 				       struct cifs_sb_info *cifs_sb)
- {
-+	const FILE_FULL_DIRECTORY_INFO *di = info;
-+
- 	__dir_info_to_fattr(fattr, info);
- 
--	/* See MS-FSCC 2.4.19 FileIdFullDirectoryInformation */
-+	/* See MS-FSCC 2.4.14, 2.4.19 */
- 	if (fattr->cf_cifsattrs & ATTR_REPARSE)
--		fattr->cf_cifstag = le32_to_cpu(info->EaSize);
-+		fattr->cf_cifstag = le32_to_cpu(di->EaSize);
- 	cifs_fill_common_info(fattr, cifs_sb);
- }
- 
-@@ -420,7 +422,7 @@ _initiate_cifs_search(const unsigned int xid, struct file *file,
- 	} else if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_SERVER_INUM) {
- 		cifsFile->srch_inf.info_level = SMB_FIND_FILE_ID_FULL_DIR_INFO;
- 	} else /* not srvinos - BB fixme add check for backlevel? */ {
--		cifsFile->srch_inf.info_level = SMB_FIND_FILE_DIRECTORY_INFO;
-+		cifsFile->srch_inf.info_level = SMB_FIND_FILE_FULL_DIRECTORY_INFO;
- 	}
- 
- 	search_flags = CIFS_SEARCH_CLOSE_AT_END | CIFS_SEARCH_RETURN_RESUME;
-@@ -1014,10 +1016,9 @@ static int cifs_filldir(char *find_entry, struct file *file,
- 				       (FIND_FILE_STANDARD_INFO *)find_entry,
- 				       cifs_sb);
- 		break;
-+	case SMB_FIND_FILE_FULL_DIRECTORY_INFO:
- 	case SMB_FIND_FILE_ID_FULL_DIR_INFO:
--		cifs_fulldir_info_to_fattr(&fattr,
--					   (SEARCH_ID_FULL_DIR_INFO *)find_entry,
--					   cifs_sb);
-+		cifs_fulldir_info_to_fattr(&fattr, find_entry, cifs_sb);
- 		break;
- 	default:
- 		cifs_dir_info_to_fattr(&fattr,
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index 97fc2f85b429d..9d34a55fdb5e4 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -5092,6 +5092,9 @@ int SMB2_query_directory_init(const unsigned int xid,
- 	case SMB_FIND_FILE_POSIX_INFO:
- 		req->FileInformationClass = SMB_FIND_FILE_POSIX_INFO;
- 		break;
-+	case SMB_FIND_FILE_FULL_DIRECTORY_INFO:
-+		req->FileInformationClass = FILE_FULL_DIRECTORY_INFORMATION;
-+		break;
- 	default:
- 		cifs_tcon_dbg(VFS, "info level %u isn't supported\n",
- 			info_level);
-@@ -5161,6 +5164,9 @@ smb2_parse_query_directory(struct cifs_tcon *tcon,
- 		/* note that posix payload are variable size */
- 		info_buf_size = sizeof(struct smb2_posix_info);
- 		break;
-+	case SMB_FIND_FILE_FULL_DIRECTORY_INFO:
-+		info_buf_size = sizeof(FILE_FULL_DIRECTORY_INFO);
-+		break;
- 	default:
- 		cifs_tcon_dbg(VFS, "info level %u isn't supported\n",
- 			 srch_inf->info_level);
+diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
+index 1ff0d4e24fe68..f0b1dac938222 100644
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -276,6 +276,7 @@ static const struct xpad_device {
+ 	{ 0x1689, 0xfd00, "Razer Onza Tournament Edition", 0, XTYPE_XBOX360 },
+ 	{ 0x1689, 0xfd01, "Razer Onza Classic Edition", 0, XTYPE_XBOX360 },
+ 	{ 0x1689, 0xfe00, "Razer Sabertooth", 0, XTYPE_XBOX360 },
++	{ 0x17ef, 0x6182, "Lenovo Legion Controller for Windows", 0, XTYPE_XBOX360 },
+ 	{ 0x1949, 0x041a, "Amazon Game Controller", 0, XTYPE_XBOX360 },
+ 	{ 0x1bad, 0x0002, "Harmonix Rock Band Guitar", 0, XTYPE_XBOX360 },
+ 	{ 0x1bad, 0x0003, "Harmonix Rock Band Drumkit", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360 },
+@@ -464,6 +465,7 @@ static const struct usb_device_id xpad_table[] = {
+ 	XPAD_XBOX360_VENDOR(0x15e4),		/* Numark X-Box 360 controllers */
+ 	XPAD_XBOX360_VENDOR(0x162e),		/* Joytech X-Box 360 controllers */
+ 	XPAD_XBOX360_VENDOR(0x1689),		/* Razer Onza */
++	XPAD_XBOX360_VENDOR(0x17ef),		/* Lenovo */
+ 	XPAD_XBOX360_VENDOR(0x1949),		/* Amazon controllers */
+ 	XPAD_XBOX360_VENDOR(0x1bad),		/* Harminix Rock Band Guitar and Drums */
+ 	XPAD_XBOX360_VENDOR(0x20d6),		/* PowerA Controllers */
 -- 
 2.43.0
 
