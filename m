@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-25062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5618B869790
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:22:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 277CC86966A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:11:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F22C288433
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:22:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B42C5B26C91
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EE17141995;
-	Tue, 27 Feb 2024 14:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEA2F1420A8;
+	Tue, 27 Feb 2024 14:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YDPRfpbt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uz1r5cu1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02F413B7AB;
-	Tue, 27 Feb 2024 14:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E63B16423;
+	Tue, 27 Feb 2024 14:11:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043755; cv=none; b=WTT93ZOcMwT8vPx/UErB+ggtm4NiLpHA+AJ8fTl1+G8HmxsFyZed6Y99q79umZydd+/SF4trn/gyRz329FBIdkCqoKk+x6E/9wb78wRuVxXfO2Rki5AG2CuKrNJZd3qn86A1nFZuBqmrCy3CIEQmLrONV5R64Oni/LcUtV4l6Rg=
+	t=1709043074; cv=none; b=X8mKVlNDUvJoFQmLr0Xyb/gEWwM1Yp3nTPWgyvxzRm3X4OwerHEuzwKAOhCkEL3y29a75cAXW0lPpRVF3sw9NAgmkDE20nzHaYDvUC7+yQtJHWvrIuhEd9rqRQZG5Nrz1c7tV51ByBMtBA7kPKfEEC1THFjwOQft65PDX2OSwMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043755; c=relaxed/simple;
-	bh=oUmk/ODu45r1x91LtBGZ845o+yDy1qsnTFNe1wOnZNA=;
+	s=arc-20240116; t=1709043074; c=relaxed/simple;
+	bh=adOJkY5pC74bvbAPKqgcInHugdmGJEPXXjB5i/5+0/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VnWUU9SnYOV8ftAJdPMHyxB+jMOJfxspUTr2+vthLzm0mih2PTaXP32NQLaDoyFaR2DO7UGvGbtj9ks7WNx8Sy6T0j3DX+RRoSKmHQKzY1XeN4ImmX3BGieoVg5Vh2OH/yVCSsUvqXYYJQd0PsXQ8aw85cJXj2CjAiIdIrdJl9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YDPRfpbt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60FC0C433C7;
-	Tue, 27 Feb 2024 14:22:34 +0000 (UTC)
+	 MIME-Version; b=MSBmc2ppBmk9EIA0Vn8Cpqv2tjHK5vnuBkhyZLXrvyNdXKPfCqNQSCtDE5mBReLYJKeyhrS2cOOGZFqHQL6NiyOfAeaF9fpNx8EaCOlRPeghoYuhxrIAJcb0DvR49dnkXUv+9Rj36p306N6I8p3uzpDPtTfV2JmfBCPxEFQK3SQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uz1r5cu1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E927C433F1;
+	Tue, 27 Feb 2024 14:11:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043754;
-	bh=oUmk/ODu45r1x91LtBGZ845o+yDy1qsnTFNe1wOnZNA=;
+	s=korg; t=1709043074;
+	bh=adOJkY5pC74bvbAPKqgcInHugdmGJEPXXjB5i/5+0/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YDPRfpbtgSN7yjok7FVxos5LY6Zxv+CwgmigrjlPIDQVuB4mhZzI9vwdG5eVVy8G/
-	 48504YDN1tFcvzTN6aNGwQ+wNAiEJzQWlqhCghZJVVgU1o7QernSNTZK6X/x1Ygg5V
-	 Pw3J4A4ojoeHWnbGnTfcveeqHdJ/+SXj8vCPbw1M=
+	b=Uz1r5cu1K4vjEW0Ddtk6Y/5W3zfA1y1/GCPcBec8MNHtVGus+17D/W0Zgv2clffMY
+	 pr2W55qcnLN5hHFkPIi4AB+J76F3lru+K6WyPanJQlUXRNu0jTgYtXLe01SJIf0EY7
+	 goB0jcoXofmGm8/vvwW0y76/sBFwZ9AVdrCG85qQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wens@csie.org>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Guo Zhengkui <guozhengkui@vivo.com>,
+	Lyude Paul <lyude@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 25/84] ASoC: sunxi: sun4i-spdif: Add support for Allwinner H616
-Date: Tue, 27 Feb 2024 14:26:52 +0100
-Message-ID: <20240227131553.684144663@linuxfoundation.org>
+Subject: [PATCH 5.15 225/245] drm/nouveau/instmem: fix uninitialized_var.cocci warning
+Date: Tue, 27 Feb 2024 14:26:53 +0100
+Message-ID: <20240227131622.502285448@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wens@csie.org>
+From: Guo Zhengkui <guozhengkui@vivo.com>
 
-[ Upstream commit 0adf963b8463faa44653e22e56ce55f747e68868 ]
+[ Upstream commit 2046e733e125fa58ed997f3d26d43543faf82c95 ]
 
-The SPDIF hardware block found in the H616 SoC has the same layout as
-the one found in the H6 SoC, except that it is missing the receiver
-side.
+Fix following coccicheck warning:
+drivers/gpu/drm/nouveau/nvkm/subdev/instmem/nv50.c:316:11-12:
+WARNING this kind of initialization is deprecated.
 
-Since the driver currently only supports the transmit function, support
-for the H616 is identical to what is currently done for the H6.
+`void *map = map` has the same form of
+uninitialized_var() macro. I remove the redundant assignement. It has
+been tested with gcc (Debian 8.3.0-6) 8.3.0.
 
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
-Reviewed-by: Andre Przywara <andre.przywara@arm.com>
-Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Link: https://msgid.link/r/20240127163247.384439-4-wens@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The patch which removed uninitialized_var() is:
+https://lore.kernel.org/all/20121028102007.GA7547@gmail.com/
+And there is very few "/* GCC */" comments in the Linux kernel code now.
+
+Signed-off-by: Guo Zhengkui <guozhengkui@vivo.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20220228142352.18006-1-guozhengkui@vivo.com
+Stable-dep-of: 3b1ae9b71c2a ("octeontx2-af: Consider the action set by PF")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sunxi/sun4i-spdif.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/nouveau/nvkm/subdev/instmem/nv50.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/sunxi/sun4i-spdif.c b/sound/soc/sunxi/sun4i-spdif.c
-index cbe598b0fb107..680d64e0d69f4 100644
---- a/sound/soc/sunxi/sun4i-spdif.c
-+++ b/sound/soc/sunxi/sun4i-spdif.c
-@@ -464,6 +464,11 @@ static const struct of_device_id sun4i_spdif_of_match[] = {
- 		.compatible = "allwinner,sun50i-h6-spdif",
- 		.data = &sun50i_h6_spdif_quirks,
- 	},
-+	{
-+		.compatible = "allwinner,sun50i-h616-spdif",
-+		/* Essentially the same as the H6, but without RX */
-+		.data = &sun50i_h6_spdif_quirks,
-+	},
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, sun4i_spdif_of_match);
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/instmem/nv50.c b/drivers/gpu/drm/nouveau/nvkm/subdev/instmem/nv50.c
+index 96aca0edfa3c0..c51bac76174c1 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/instmem/nv50.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/instmem/nv50.c
+@@ -313,7 +313,7 @@ nv50_instobj_dtor(struct nvkm_memory *memory)
+ 	struct nv50_instobj *iobj = nv50_instobj(memory);
+ 	struct nvkm_instmem *imem = &iobj->imem->base;
+ 	struct nvkm_vma *bar;
+-	void *map = map;
++	void *map;
+ 
+ 	mutex_lock(&imem->mutex);
+ 	if (likely(iobj->lru.next))
 -- 
 2.43.0
 
