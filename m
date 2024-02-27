@@ -1,66 +1,56 @@
-Return-Path: <stable+bounces-24606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BC7386955D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:01:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 150AA869433
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD20E1C2351F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:01:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45BEF1C231A3
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD9521419B4;
-	Tue, 27 Feb 2024 14:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B78313DBBC;
+	Tue, 27 Feb 2024 13:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HJcndzHQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YlGuCkwe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFA913DB92;
-	Tue, 27 Feb 2024 14:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B94613B7A2;
+	Tue, 27 Feb 2024 13:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042485; cv=none; b=Sz6m6rqtwo3hltTSr5/uvSHDb7pTUMckPGQC6Qe9b7MRaFOHMF9Bv+2zb2RGHIpl4GUIODKoRVkba5Q53Jj6WvVg7tSzzv/r7/lOQqzi1wKebGwZo7mNfBm0Zh0Agv9iSwgbwUCOaUdGDYy5MOfvkA5ihDpfRbJ5xDWbUyfSeS8=
+	t=1709041851; cv=none; b=FAxppQXyotECC8I2YzLMMfRFre9IajSo/j6f/qjnV4juGZGfdc40UpZHW8QlX+PFObhbGvA3z7eIXh4E/TIRbXPKVDUjH7mZEzxni4S2zWP79OkffTHZE7eZL0rWN+/3Hia8T8TWfQOrvRmRAhbm2fwuV9DugAyu9YpoaXxVxkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042485; c=relaxed/simple;
-	bh=V3Fi8dsIAk1/l6s9pj3PVjc7+1z2IS1kaeAy5794i5c=;
+	s=arc-20240116; t=1709041851; c=relaxed/simple;
+	bh=mxLmv5Dlhh/Fj729EgqkU02Bl4PgatAWCMclSKyU4zI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=trcHOZoYdrP2xJpe1Sbz20q057jfKpj3zZVFWX/gPbOWLTXiP4GGoOiAC7h44YYNnSBgVQFXtKjiW7NdtDYVs9A8jZD6FZi8d7yNUJntgMMlfMqBQoHhCetoCqtqdsDomNqAkNlQOhb7/byJtqm8WtkwFT+gzH6ww1VMizdw4Ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HJcndzHQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D3AFC433F1;
-	Tue, 27 Feb 2024 14:01:24 +0000 (UTC)
+	 MIME-Version; b=MFVW8lcj26iy1RqYgTIjV89n2goyJLl8/krwl4BUbBVldS+jAKuDN71BafKRHBkkSRbqaRwL2hMf5rCU9s7a4sZc2HJ8ry92Xr7G4+L6XoiRenA+R2J5HwG5YHvD+STgdpeVBFOXkSClyOhGXC4cgzkBhJPfmFpKsTlNdLJVDv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YlGuCkwe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 675C7C433C7;
+	Tue, 27 Feb 2024 13:50:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042485;
-	bh=V3Fi8dsIAk1/l6s9pj3PVjc7+1z2IS1kaeAy5794i5c=;
+	s=korg; t=1709041850;
+	bh=mxLmv5Dlhh/Fj729EgqkU02Bl4PgatAWCMclSKyU4zI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HJcndzHQs3Q61iFfMrXD2UbVuhWAeDkxp0YVPsXCNp1Yu7nq0LIzYEOOuhq43RNne
-	 VrrzWK+ArObm0XELFfaGAsa0kGGcj9gns2pekEti76eC9aE0RSwaXhwMB1l3ZnL1md
-	 1gv6lYXUXveEqfrgub7mahluSLGuNtU7nErte7Ec=
+	b=YlGuCkwe0dSwYc8itr/xe8j4dVKCA1ajS8Gd0GNHYsJDaHNdu8Qjh/NX6No7NiZUo
+	 XWbXFWMUSCSkQu1ICFlj9P62PW2Q0jNlrPuZclY/0nOhWqeSqTdwpE5rqngzTb+lWD
+	 gvtfpVqtcUVLEsOZakl2wMGHwD9dE8Jui4AqmwuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lokesh Gidra <lokeshgidra@google.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Brian Geffon <bgeffon@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Jann Horn <jannh@google.com>,
-	Kalesh Singh <kaleshsingh@google.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Nicolas Geoffray <ngeoffray@google.com>,
-	Peter Xu <peterx@redhat.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 013/245] userfaultfd: fix mmap_changing checking in mfill_atomic_hugetlb
+	Giovanni Santini <giovannisantini93@yahoo.it>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 090/299] fs/ntfs3: Update inode->i_size after success write into compressed file
 Date: Tue, 27 Feb 2024 14:23:21 +0100
-Message-ID: <20240227131615.545586957@linuxfoundation.org>
+Message-ID: <20240227131628.805955113@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,85 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lokesh Gidra <lokeshgidra@google.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit 67695f18d55924b2013534ef3bdc363bc9e14605 upstream.
+[ Upstream commit d68968440b1a75dee05cfac7f368f1aa139e1911 ]
 
-In mfill_atomic_hugetlb(), mmap_changing isn't being checked
-again if we drop mmap_lock and reacquire it. When the lock is not held,
-mmap_changing could have been incremented. This is also inconsistent
-with the behavior in mfill_atomic().
-
-Link: https://lkml.kernel.org/r/20240117223729.1444522-1-lokeshgidra@google.com
-Fixes: df2cc96e77011 ("userfaultfd: prevent non-cooperative events vs mcopy_atomic races")
-Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Brian Geffon <bgeffon@google.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Kalesh Singh <kaleshsingh@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Nicolas Geoffray <ngeoffray@google.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Giovanni Santini <giovannisantini93@yahoo.it>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/userfaultfd.c |   14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ fs/ntfs3/file.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -289,6 +289,7 @@ static __always_inline ssize_t __mcopy_a
- 					      unsigned long dst_start,
- 					      unsigned long src_start,
- 					      unsigned long len,
-+					      atomic_t *mmap_changing,
- 					      enum mcopy_atomic_mode mode)
- {
- 	int vm_shared = dst_vma->vm_flags & VM_SHARED;
-@@ -405,6 +406,15 @@ retry:
- 				goto out;
- 			}
- 			mmap_read_lock(dst_mm);
-+			/*
-+			 * If memory mappings are changing because of non-cooperative
-+			 * operation (e.g. mremap) running in parallel, bail out and
-+			 * request the user to retry later
-+			 */
-+			if (mmap_changing && atomic_read(mmap_changing)) {
-+				err = -EAGAIN;
-+				break;
-+			}
+diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
+index 0f6a78aef90fe..dfd5402a42e44 100644
+--- a/fs/ntfs3/file.c
++++ b/fs/ntfs3/file.c
+@@ -1054,6 +1054,8 @@ static ssize_t ntfs_compress_write(struct kiocb *iocb, struct iov_iter *from)
+ 	iocb->ki_pos += written;
+ 	if (iocb->ki_pos > ni->i_valid)
+ 		ni->i_valid = iocb->ki_pos;
++	if (iocb->ki_pos > i_size)
++		i_size_write(inode, iocb->ki_pos);
  
- 			dst_vma = NULL;
- 			goto retry;
-@@ -440,6 +450,7 @@ extern ssize_t __mcopy_atomic_hugetlb(st
- 				      unsigned long dst_start,
- 				      unsigned long src_start,
- 				      unsigned long len,
-+				      atomic_t *mmap_changing,
- 				      enum mcopy_atomic_mode mode);
- #endif /* CONFIG_HUGETLB_PAGE */
- 
-@@ -561,7 +572,8 @@ retry:
- 	 */
- 	if (is_vm_hugetlb_page(dst_vma))
- 		return  __mcopy_atomic_hugetlb(dst_mm, dst_vma, dst_start,
--						src_start, len, mcopy_mode);
-+					       src_start, len, mmap_changing,
-+					       mcopy_mode);
- 
- 	if (!vma_is_anonymous(dst_vma) && !vma_is_shmem(dst_vma))
- 		goto out_unlock;
+ 	return written;
+ }
+-- 
+2.43.0
+
 
 
 
