@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-24959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E683869711
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:18:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE07586962C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:08:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E44961F2624B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:18:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 782471F2D0F3
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:08:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46F81420B3;
-	Tue, 27 Feb 2024 14:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C7A913B78E;
+	Tue, 27 Feb 2024 14:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vl7hDAmP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jad901kV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39321420B0;
-	Tue, 27 Feb 2024 14:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C1913AA43;
+	Tue, 27 Feb 2024 14:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043464; cv=none; b=AF5CZ8Ng7IkyIEaKlNIqckQOyM6wOV7FcJ4+dTpfEt42rcJfyouc65SZa4FU02GKayWJFzRVOO8K5/9gGU3i/OFckOJzFysYxNc0e4JwjGUc/wYz0xKOiC09FPuxlKhgD2brBYe8WrjsidCfNqxkXhVqDHpyysVojwFNkyzZp6Q=
+	t=1709042934; cv=none; b=H7NPy4bnZV6OB5GXXeRRmRUyTKb2915euTBRJpMyvQj8VnraWCQmtCNzO/Df7XTBC9q14MMxEs9dcurqz9+WupPi7aUl2OKL2iZFhKBLe3v4skhd/WsO4Zh9Y/w2VSPnZuzQH1I590+wsuSsVl6SAaYSV783e3uOcQxMdaE2VL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043464; c=relaxed/simple;
-	bh=UqcP5/HNtTUYf/QdHYsZQxazei7gvy9ZL5Vejx1ZyQk=;
+	s=arc-20240116; t=1709042934; c=relaxed/simple;
+	bh=5fF8TzDugn2BDbLOI50RwUpYGh+gPzxITF3/CREyfLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dm6WMTuYY3iUm5OSLWXQnjOUvR6tterHgCNdb3x4rz2hclRfQWvoszzAYU0VAjwUb7eBjNa/wHmBWIDLNh7T85hyo9YULR3LFTkPYILeupoG1i3efTQVxbNEObOJ8BwrApn/OtrMmppCqyFj7Y6tmp4aMA8rHIqhQEwDiBrNiJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vl7hDAmP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30770C433C7;
-	Tue, 27 Feb 2024 14:17:44 +0000 (UTC)
+	 MIME-Version; b=ceccHUMduIBCZrH491GZ+P00j+k9R4mIY05TwhzibOc+WaJjYd0RZynzBdlp3U3VtNvp0nnZNUHGWLBKURJPLmKFzVT2Ap4q6AqfC5sEcE92VkEeTrvzoMKvDV8iCLXQHxZt/M3ni07PkId5tDyV3kSTwW/k0sKIpkL+7cUi52Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jad901kV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2F07C433F1;
+	Tue, 27 Feb 2024 14:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043464;
-	bh=UqcP5/HNtTUYf/QdHYsZQxazei7gvy9ZL5Vejx1ZyQk=;
+	s=korg; t=1709042934;
+	bh=5fF8TzDugn2BDbLOI50RwUpYGh+gPzxITF3/CREyfLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vl7hDAmP0HnF4Cv9iqpSp0OYZRmXYbiGtoQJhLMXHCrRwGK7I8DpmMpxJF5z7VjGp
-	 0lV0izJ6M4qn6NpQUmn24FyNNxV4DwIb7JDTvPkMX/uWBTLdbFNJXrnE9ERJhk0xPu
-	 8erbvA57U9FLfZU10NGpWtSeEAIC/3ifvyXBw7B0=
+	b=Jad901kVdlbc19ZaRGI9/chFAAFbb5zVEd53SW59BOWqWEOFVcgcBFh+gcECwnW7A
+	 /BKQGros30LFjAHKR0yZP+STWSxbtVeJwtmpq4M4VWNyErDkP9nOUhiExIsY6sGQ1Z
+	 ZcqgaqszCr+mB7Ujb2IujbrMCF/8tRVd+SUCy7C8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.1 100/195] platform/x86: touchscreen_dmi: Allow partial (prefix) matches for ACPI names
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 173/245] ACPI: video: Add backlight=native DMI quirk for Lenovo ThinkPad X131e (3371 AMD version)
 Date: Tue, 27 Feb 2024 14:26:01 +0100
-Message-ID: <20240227131613.775826942@linuxfoundation.org>
+Message-ID: <20240227131620.835435140@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Hans de Goede <hdegoede@redhat.com>
 
-commit dbcbfd662a725641d118fb3ae5ffb7be4e3d0fb0 upstream.
+[ Upstream commit bd5d93df86a7ddf98a2a37e9c3751e3cb334a66c ]
 
-On some devices the ACPI name of the touchscreen is e.g. either
-MSSL1680:00 or MSSL1680:01 depending on the BIOS version.
+Linux defaults to picking the non-working ACPI video backlight interface
+on the Lenovo ThinkPad X131e (3371 AMD version).
 
-This happens for example on the "Chuwi Hi8 Air" tablet where the initial
-commit's ts_data uses "MSSL1680:00" but the tablets from the github issue
-and linux-hardware.org probe linked below both use "MSSL1680:01".
+Add a DMI quirk to pick the working native radeon_bl0 interface instead.
 
-Replace the strcmp() match on ts_data->acpi_name with a strstarts()
-check to allow using a partial match on just the ACPI HID of "MSSL1680"
-and change the ts_data->acpi_name for the "Chuwi Hi8 Air" accordingly
-to fix the touchscreen not working on models where it is "MSSL1680:01".
-
-Note this drops the length check for I2C_NAME_SIZE. This never was
-necessary since the ACPI names used are never more then 11 chars and
-I2C_NAME_SIZE is 20 so the replaced strncmp() would always stop long
-before reaching I2C_NAME_SIZE.
-
-Link: https://linux-hardware.org/?computer=AC4301C0542A
-Fixes: bbb97d728f77 ("platform/x86: touchscreen_dmi: Add info for the Chuwi Hi8 Air tablet")
-Closes: https://github.com/onitake/gsl-firmware/issues/91
-Cc: stable@vger.kernel.org
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240212120608.30469-1-hdegoede@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/touchscreen_dmi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/video_detect.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/platform/x86/touchscreen_dmi.c
-+++ b/drivers/platform/x86/touchscreen_dmi.c
-@@ -50,7 +50,7 @@ static const struct property_entry chuwi
- };
- 
- static const struct ts_dmi_data chuwi_hi8_air_data = {
--	.acpi_name	= "MSSL1680:00",
-+	.acpi_name	= "MSSL1680",
- 	.properties	= chuwi_hi8_air_props,
- };
- 
-@@ -1776,7 +1776,7 @@ static void ts_dmi_add_props(struct i2c_
- 	int error;
- 
- 	if (has_acpi_companion(dev) &&
--	    !strncmp(ts_data->acpi_name, client->name, I2C_NAME_SIZE)) {
-+	    strstarts(client->name, ts_data->acpi_name)) {
- 		error = device_create_managed_software_node(dev, ts_data->properties, NULL);
- 		if (error)
- 			dev_err(dev, "failed to add properties: %d\n", error);
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index be923911e87c1..28e816be4753e 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -341,6 +341,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "82BK"),
+ 		},
+ 	},
++	{
++	 .callback = video_detect_force_native,
++	 /* Lenovo ThinkPad X131e (3371 AMD version) */
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "3371"),
++		},
++	},
+ 	{
+ 	 .callback = video_detect_force_native,
+ 	 /* Apple iMac11,3 */
+-- 
+2.43.0
+
 
 
 
