@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-24532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D8188694FC
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:57:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91D838696E4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:16:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0F2F1C2858D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:57:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17B6B1F2E6E8
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:16:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2752713B791;
-	Tue, 27 Feb 2024 13:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B28313B7AB;
+	Tue, 27 Feb 2024 14:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dnMg0GiA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zcvanbWB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA46113B2B4;
-	Tue, 27 Feb 2024 13:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD04213A26F;
+	Tue, 27 Feb 2024 14:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042270; cv=none; b=rcvau38WlaSPTU+9DfNQ1hEdxkCfppjW1ypjbxsbXRXR3NKa7lhCNmo0n3joYDxgr4HKuaqNPffnUOltxYotLHKKcVnukiJBmH6zERV6r92/e9bvJZziTkOtd6bzX2s8phOP/OTO0KFAmNvnj7gfQYBvE3jgRL6FqYa6grDssgY=
+	t=1709043384; cv=none; b=a4wPOqKKE55IjFVwiQbUNQgsk5wy8F4YUVonrX8/+JxJMjS2fBHAaeBa/5uN1eAaEvBKWoT9tTtVjHI2bFvzl+FDGaIBrWZ3/PvtWwB+tzgAkf0N1gyrX8R8ZnRhly/KGGZNEl8PpA7MGHV9ISq56/+kGhPwb6wqE5pOYDS109g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042270; c=relaxed/simple;
-	bh=1w2F1V4oZfgDyXBDAO1GwGKZsYIHyoSyOTkKKBxjTh8=;
+	s=arc-20240116; t=1709043384; c=relaxed/simple;
+	bh=6QYKREPnP4AuBcPnYZJ6KuoEVWnZC3sfj0ibKNufKmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nz0WHlxKKkmedr7oIaPtnQAneONc/O1Ho1AJG6Ow8GWum1bDpXv2UB0qHJJHf9TVwtGkhjFLhsl8+Hro0UerYxZ1pfu8gKB6+zalxLSfFWSKWlDVQyHLmbvc5Vr/232ejZqwEEJvwreTFXjM6mi+c4WIjDy2zW9jl6bvZMWfVFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dnMg0GiA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66AD1C433C7;
-	Tue, 27 Feb 2024 13:57:50 +0000 (UTC)
+	 MIME-Version; b=lXwg9XDW+GM3Sl/q3UqihwEoJHyAYZKalnobcJamEu70WlM6Z19gI/s8ZU6gORLVMndB8q43+K5gMICqhNJlS4hFsUxPPziHrpO/CoewNbWy1dLmWOCFxVumwPKY+I52SK1RP4kjVl++ePKjGrtaYGFTnipWpJoDerheHypN/8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zcvanbWB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE60C433F1;
+	Tue, 27 Feb 2024 14:16:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042270;
-	bh=1w2F1V4oZfgDyXBDAO1GwGKZsYIHyoSyOTkKKBxjTh8=;
+	s=korg; t=1709043384;
+	bh=6QYKREPnP4AuBcPnYZJ6KuoEVWnZC3sfj0ibKNufKmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dnMg0GiA48zlXmSxUpgtTin+7rsnbj6PX8GW2oX+Qyvwx4YRfJxV+fKN8HnVquxfi
-	 unamxaYc888XT3jeGuL7olrT1asrTnqniYop+fzqwP2x3eTuz6wRN6n5nNzsgy6hs7
-	 /14yJcUwbkRMNfuNqyEyOp1Bntm/1iE0YN8/I1pE=
+	b=zcvanbWBfwEIZcAttqg7nxaK7LZd1Orv91VmlI7LZ2/R9L2wGq0yf+TZNNIt1UENT
+	 wbnnjxVOlAaRcfC3me6WgjvBaE9A+FiZvWuQqAHOFoXjniA7x1vu6m83AbyUzKTatI
+	 RIt6gfl6/YAdCC/eO7y3slBWaOl2FECeXnt9L+y0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Pedro Tammela <pctammela@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 238/299] net/sched: act_mirred: Create function tcf_mirred_to_dev and improve readability
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 6.1 088/195] dm-crypt: recheck the integrity tag after a failure
 Date: Tue, 27 Feb 2024 14:25:49 +0100
-Message-ID: <20240227131633.395946795@linuxfoundation.org>
+Message-ID: <20240227131613.388198076@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,223 +61,217 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 16085e48cb48aeb50a1178dc276747749910b0f2 ]
+commit 42e15d12070b4ff9af2b980f1b65774c2dab0507 upstream.
 
-As a preparation for adding block ID to mirred, separate the part of
-mirred that redirect/mirrors to a dev into a specific function so that it
-can be called by blockcast for each dev.
+If a userspace process reads (with O_DIRECT) multiple blocks into the same
+buffer, dm-crypt reports an authentication error [1]. The error is
+reported in a log and it may cause RAID leg being kicked out of the
+array.
 
-Also improve readability. Eg. rename use_reinsert to dont_clone and skb2
-to skb_to_send.
+This commit fixes dm-crypt, so that if integrity verification fails, the
+data is read again into a kernel buffer (where userspace can't modify it)
+and the integrity tag is rechecked. If the recheck succeeds, the content
+of the kernel buffer is copied into the user buffer; if the recheck fails,
+an integrity error is reported.
 
-Co-developed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Co-developed-by: Pedro Tammela <pctammela@mojatatu.com>
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 52f671db1882 ("net/sched: act_mirred: use the backlog for mirred ingress")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1] https://people.redhat.com/~mpatocka/testcases/blk-auth-modify/read2.c
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/act_mirred.c | 129 +++++++++++++++++++++++------------------
- 1 file changed, 72 insertions(+), 57 deletions(-)
+ drivers/md/dm-crypt.c |   89 +++++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 73 insertions(+), 16 deletions(-)
 
-diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
-index 0a711c184c29b..6f2544c1e3961 100644
---- a/net/sched/act_mirred.c
-+++ b/net/sched/act_mirred.c
-@@ -225,48 +225,26 @@ static int tcf_mirred_forward(bool want_ingress, struct sk_buff *skb)
- 	return err;
- }
+--- a/drivers/md/dm-crypt.c
++++ b/drivers/md/dm-crypt.c
+@@ -61,6 +61,8 @@ struct convert_context {
+ 		struct skcipher_request *req;
+ 		struct aead_request *req_aead;
+ 	} r;
++	bool aead_recheck;
++	bool aead_failed;
  
--TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
--				     const struct tc_action *a,
--				     struct tcf_result *res)
-+static int tcf_mirred_to_dev(struct sk_buff *skb, struct tcf_mirred *m,
-+			     struct net_device *dev,
-+			     const bool m_mac_header_xmit, int m_eaction,
-+			     int retval)
- {
--	struct tcf_mirred *m = to_mirred(a);
--	struct sk_buff *skb2 = skb;
--	bool m_mac_header_xmit;
--	struct net_device *dev;
--	unsigned int nest_level;
--	int retval, err = 0;
--	bool use_reinsert;
-+	struct sk_buff *skb_to_send = skb;
- 	bool want_ingress;
- 	bool is_redirect;
- 	bool expects_nh;
- 	bool at_ingress;
--	int m_eaction;
-+	bool dont_clone;
- 	int mac_len;
- 	bool at_nh;
-+	int err;
+ };
  
--	nest_level = __this_cpu_inc_return(mirred_nest_level);
--	if (unlikely(nest_level > MIRRED_NEST_LIMIT)) {
--		net_warn_ratelimited("Packet exceeded mirred recursion limit on dev %s\n",
--				     netdev_name(skb->dev));
--		__this_cpu_dec(mirred_nest_level);
--		return TC_ACT_SHOT;
--	}
--
--	tcf_lastuse_update(&m->tcf_tm);
--	tcf_action_update_bstats(&m->common, skb);
--
--	m_mac_header_xmit = READ_ONCE(m->tcfm_mac_header_xmit);
--	m_eaction = READ_ONCE(m->tcfm_eaction);
--	retval = READ_ONCE(m->tcf_action);
--	dev = rcu_dereference_bh(m->tcfm_dev);
--	if (unlikely(!dev)) {
--		pr_notice_once("tc mirred: target device is gone\n");
--		goto out;
--	}
--
-+	is_redirect = tcf_mirred_is_act_redirect(m_eaction);
- 	if (unlikely(!(dev->flags & IFF_UP)) || !netif_carrier_ok(dev)) {
- 		net_notice_ratelimited("tc mirred to Houston: device %s is down\n",
- 				       dev->name);
-+		err = -ENODEV;
- 		goto out;
- 	}
+@@ -81,6 +83,8 @@ struct dm_crypt_io {
+ 	blk_status_t error;
+ 	sector_t sector;
  
-@@ -274,61 +252,98 @@ TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
- 	 * since we can't easily detect the clsact caller, skip clone only for
- 	 * ingress - that covers the TC S/W datapath.
- 	 */
--	is_redirect = tcf_mirred_is_act_redirect(m_eaction);
- 	at_ingress = skb_at_tc_ingress(skb);
--	use_reinsert = at_ingress && is_redirect &&
--		       tcf_mirred_can_reinsert(retval);
--	if (!use_reinsert) {
--		skb2 = skb_clone(skb, GFP_ATOMIC);
--		if (!skb2)
-+	dont_clone = skb_at_tc_ingress(skb) && is_redirect &&
-+		tcf_mirred_can_reinsert(retval);
-+	if (!dont_clone) {
-+		skb_to_send = skb_clone(skb, GFP_ATOMIC);
-+		if (!skb_to_send) {
-+			err =  -ENOMEM;
- 			goto out;
++	struct bvec_iter saved_bi_iter;
++
+ 	struct rb_node rb_node;
+ } CRYPTO_MINALIGN_ATTR;
+ 
+@@ -1365,10 +1369,13 @@ static int crypt_convert_block_aead(stru
+ 	if (r == -EBADMSG) {
+ 		sector_t s = le64_to_cpu(*sector);
+ 
+-		DMERR_LIMIT("%pg: INTEGRITY AEAD ERROR, sector %llu",
+-			    ctx->bio_in->bi_bdev, s);
+-		dm_audit_log_bio(DM_MSG_PREFIX, "integrity-aead",
+-				 ctx->bio_in, s, 0);
++		ctx->aead_failed = true;
++		if (ctx->aead_recheck) {
++			DMERR_LIMIT("%pg: INTEGRITY AEAD ERROR, sector %llu",
++				    ctx->bio_in->bi_bdev, s);
++			dm_audit_log_bio(DM_MSG_PREFIX, "integrity-aead",
++					 ctx->bio_in, s, 0);
 +		}
  	}
  
- 	want_ingress = tcf_mirred_act_wants_ingress(m_eaction);
+ 	if (!r && cc->iv_gen_ops && cc->iv_gen_ops->post)
+@@ -1724,6 +1731,8 @@ static void crypt_io_init(struct dm_cryp
+ 	io->base_bio = bio;
+ 	io->sector = sector;
+ 	io->error = 0;
++	io->ctx.aead_recheck = false;
++	io->ctx.aead_failed = false;
+ 	io->ctx.r.req = NULL;
+ 	io->integrity_metadata = NULL;
+ 	io->integrity_metadata_from_pool = false;
+@@ -1735,6 +1744,8 @@ static void crypt_inc_pending(struct dm_
+ 	atomic_inc(&io->io_pending);
+ }
  
- 	/* All mirred/redirected skbs should clear previous ct info */
--	nf_reset_ct(skb2);
-+	nf_reset_ct(skb_to_send);
- 	if (want_ingress && !at_ingress) /* drop dst for egress -> ingress */
--		skb_dst_drop(skb2);
-+		skb_dst_drop(skb_to_send);
- 
- 	expects_nh = want_ingress || !m_mac_header_xmit;
- 	at_nh = skb->data == skb_network_header(skb);
- 	if (at_nh != expects_nh) {
--		mac_len = skb_at_tc_ingress(skb) ? skb->mac_len :
-+		mac_len = at_ingress ? skb->mac_len :
- 			  skb_network_offset(skb);
- 		if (expects_nh) {
- 			/* target device/action expect data at nh */
--			skb_pull_rcsum(skb2, mac_len);
-+			skb_pull_rcsum(skb_to_send, mac_len);
- 		} else {
- 			/* target device/action expect data at mac */
--			skb_push_rcsum(skb2, mac_len);
-+			skb_push_rcsum(skb_to_send, mac_len);
- 		}
- 	}
- 
--	skb2->skb_iif = skb->dev->ifindex;
--	skb2->dev = dev;
-+	skb_to_send->skb_iif = skb->dev->ifindex;
-+	skb_to_send->dev = dev;
- 
--	/* mirror is always swallowed */
- 	if (is_redirect) {
--		skb_set_redirected(skb2, skb2->tc_at_ingress);
--
--		/* let's the caller reinsert the packet, if possible */
--		if (use_reinsert) {
--			err = tcf_mirred_forward(want_ingress, skb);
--			if (err)
--				tcf_action_inc_overlimit_qstats(&m->common);
--			__this_cpu_dec(mirred_nest_level);
--			return TC_ACT_CONSUMED;
--		}
-+		if (skb == skb_to_send)
-+			retval = TC_ACT_CONSUMED;
++static void kcryptd_queue_read(struct dm_crypt_io *io);
 +
-+		skb_set_redirected(skb_to_send, skb_to_send->tc_at_ingress);
+ /*
+  * One of the bios was finished. Check for completion of
+  * the whole request and correctly clean up the buffer.
+@@ -1748,6 +1759,15 @@ static void crypt_dec_pending(struct dm_
+ 	if (!atomic_dec_and_test(&io->io_pending))
+ 		return;
+ 
++	if (likely(!io->ctx.aead_recheck) && unlikely(io->ctx.aead_failed) &&
++	    cc->on_disk_tag_size && bio_data_dir(base_bio) == READ) {
++		io->ctx.aead_recheck = true;
++		io->ctx.aead_failed = false;
++		io->error = 0;
++		kcryptd_queue_read(io);
++		return;
++	}
 +
-+		err = tcf_mirred_forward(want_ingress, skb_to_send);
+ 	if (io->ctx.r.req)
+ 		crypt_free_req(cc, io->ctx.r.req, base_bio);
+ 
+@@ -1783,15 +1803,19 @@ static void crypt_endio(struct bio *clon
+ 	struct dm_crypt_io *io = clone->bi_private;
+ 	struct crypt_config *cc = io->cc;
+ 	unsigned int rw = bio_data_dir(clone);
+-	blk_status_t error;
++	blk_status_t error = clone->bi_status;
++
++	if (io->ctx.aead_recheck && !error) {
++		kcryptd_queue_crypt(io);
++		return;
++	}
+ 
+ 	/*
+ 	 * free the processed pages
+ 	 */
+-	if (rw == WRITE)
++	if (rw == WRITE || io->ctx.aead_recheck)
+ 		crypt_free_buffer_pages(cc, clone);
+ 
+-	error = clone->bi_status;
+ 	bio_put(clone);
+ 
+ 	if (rw == READ && !error) {
+@@ -1812,6 +1836,22 @@ static int kcryptd_io_read(struct dm_cry
+ 	struct crypt_config *cc = io->cc;
+ 	struct bio *clone;
+ 
++	if (io->ctx.aead_recheck) {
++		if (!(gfp & __GFP_DIRECT_RECLAIM))
++			return 1;
++		crypt_inc_pending(io);
++		clone = crypt_alloc_buffer(io, io->base_bio->bi_iter.bi_size);
++		if (unlikely(!clone)) {
++			crypt_dec_pending(io);
++			return 1;
++		}
++		clone->bi_iter.bi_sector = cc->start + io->sector;
++		crypt_convert_init(cc, &io->ctx, clone, clone, io->sector);
++		io->saved_bi_iter = clone->bi_iter;
++		dm_submit_bio_remap(io->base_bio, clone);
++		return 0;
++	}
++
+ 	/*
+ 	 * We need the original biovec array in order to decrypt the whole bio
+ 	 * data *afterwards* -- thanks to immutable biovecs we don't need to
+@@ -2074,6 +2114,14 @@ dec:
+ 
+ static void kcryptd_crypt_read_done(struct dm_crypt_io *io)
+ {
++	if (io->ctx.aead_recheck) {
++		if (!io->error) {
++			io->ctx.bio_in->bi_iter = io->saved_bi_iter;
++			bio_copy_data(io->base_bio, io->ctx.bio_in);
++		}
++		crypt_free_buffer_pages(io->cc, io->ctx.bio_in);
++		bio_put(io->ctx.bio_in);
++	}
+ 	crypt_dec_pending(io);
+ }
+ 
+@@ -2103,11 +2151,17 @@ static void kcryptd_crypt_read_convert(s
+ 
+ 	crypt_inc_pending(io);
+ 
+-	crypt_convert_init(cc, &io->ctx, io->base_bio, io->base_bio,
+-			   io->sector);
++	if (io->ctx.aead_recheck) {
++		io->ctx.cc_sector = io->sector + cc->iv_offset;
++		r = crypt_convert(cc, &io->ctx,
++				  test_bit(DM_CRYPT_NO_READ_WORKQUEUE, &cc->flags), true);
 +	} else {
-+		err = tcf_mirred_forward(want_ingress, skb_to_send);
- 	}
++		crypt_convert_init(cc, &io->ctx, io->base_bio, io->base_bio,
++				   io->sector);
  
--	err = tcf_mirred_forward(want_ingress, skb2);
- 	if (err) {
- out:
- 		tcf_action_inc_overlimit_qstats(&m->common);
--		if (tcf_mirred_is_act_redirect(m_eaction))
-+		if (is_redirect)
- 			retval = TC_ACT_SHOT;
- 	}
-+
-+	return retval;
-+}
-+
-+TC_INDIRECT_SCOPE int tcf_mirred_act(struct sk_buff *skb,
-+				     const struct tc_action *a,
-+				     struct tcf_result *res)
-+{
-+	struct tcf_mirred *m = to_mirred(a);
-+	int retval = READ_ONCE(m->tcf_action);
-+	unsigned int nest_level;
-+	bool m_mac_header_xmit;
-+	struct net_device *dev;
-+	int m_eaction;
-+
-+	nest_level = __this_cpu_inc_return(mirred_nest_level);
-+	if (unlikely(nest_level > MIRRED_NEST_LIMIT)) {
-+		net_warn_ratelimited("Packet exceeded mirred recursion limit on dev %s\n",
-+				     netdev_name(skb->dev));
-+		retval = TC_ACT_SHOT;
-+		goto dec_nest_level;
+-	r = crypt_convert(cc, &io->ctx,
+-			  test_bit(DM_CRYPT_NO_READ_WORKQUEUE, &cc->flags), true);
++		r = crypt_convert(cc, &io->ctx,
++				  test_bit(DM_CRYPT_NO_READ_WORKQUEUE, &cc->flags), true);
 +	}
-+
-+	tcf_lastuse_update(&m->tcf_tm);
-+	tcf_action_update_bstats(&m->common, skb);
-+
-+	dev = rcu_dereference_bh(m->tcfm_dev);
-+	if (unlikely(!dev)) {
-+		pr_notice_once("tc mirred: target device is gone\n");
-+		tcf_action_inc_overlimit_qstats(&m->common);
-+		goto dec_nest_level;
-+	}
-+
-+	m_mac_header_xmit = READ_ONCE(m->tcfm_mac_header_xmit);
-+	m_eaction = READ_ONCE(m->tcfm_eaction);
-+
-+	retval = tcf_mirred_to_dev(skb, m, dev, m_mac_header_xmit, m_eaction,
-+				   retval);
-+
-+dec_nest_level:
- 	__this_cpu_dec(mirred_nest_level);
+ 	/*
+ 	 * Crypto API backlogged the request, because its queue was full
+ 	 * and we're in softirq context, so continue from a workqueue
+@@ -2150,10 +2204,13 @@ static void kcryptd_async_done(struct cr
+ 	if (error == -EBADMSG) {
+ 		sector_t s = le64_to_cpu(*org_sector_of_dmreq(cc, dmreq));
  
- 	return retval;
--- 
-2.43.0
-
+-		DMERR_LIMIT("%pg: INTEGRITY AEAD ERROR, sector %llu",
+-			    ctx->bio_in->bi_bdev, s);
+-		dm_audit_log_bio(DM_MSG_PREFIX, "integrity-aead",
+-				 ctx->bio_in, s, 0);
++		ctx->aead_failed = true;
++		if (ctx->aead_recheck) {
++			DMERR_LIMIT("%pg: INTEGRITY AEAD ERROR, sector %llu",
++				    ctx->bio_in->bi_bdev, s);
++			dm_audit_log_bio(DM_MSG_PREFIX, "integrity-aead",
++					 ctx->bio_in, s, 0);
++		}
+ 		io->error = BLK_STS_PROTECTION;
+ 	} else if (error < 0)
+ 		io->error = BLK_STS_IOERR;
+@@ -3079,7 +3136,7 @@ static int crypt_ctr_optional(struct dm_
+ 			sval = strchr(opt_string + strlen("integrity:"), ':') + 1;
+ 			if (!strcasecmp(sval, "aead")) {
+ 				set_bit(CRYPT_MODE_INTEGRITY_AEAD, &cc->cipher_flags);
+-			} else  if (strcasecmp(sval, "none")) {
++			} else if (strcasecmp(sval, "none")) {
+ 				ti->error = "Unknown integrity profile";
+ 				return -EINVAL;
+ 			}
 
 
 
