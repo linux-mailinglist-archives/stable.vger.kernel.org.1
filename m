@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-25038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEB13869771
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:21:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C0DC869679
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:12:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99DB62828E5
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:21:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D72F1C22DF5
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:12:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 371D513DBBC;
-	Tue, 27 Feb 2024 14:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B411420D3;
+	Tue, 27 Feb 2024 14:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WykhyDsA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hciXvqfc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E7313B2B4;
-	Tue, 27 Feb 2024 14:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E1EB13B7AB;
+	Tue, 27 Feb 2024 14:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043683; cv=none; b=fjyGxVpS++PRliLyh77f3M0001gjvuT9rNKe4FW4/BJvEF705E4yuK+ZIsWaSK8VTspc8CX56fxlzJD9dCM0cDot14hTg+3SvwVTZLA4/AlQjUYRoJMKzhAB0CnRtKQMXEkKHvWNRHGYlswguYF81GiO3KgcSS9MQcE656/wi+I=
+	t=1709043121; cv=none; b=g8F42cgty7S0IhH7TlTc9ZtDuFCbfBt3kWifhwD1/bQLJzZIpo1IqRoClCukQbNU9J14Z+whMHS+UH77xJ5AL3yo+FHtrlpnAQLj7S2/BiZnRbIWoWcD+FFnzMlB5CR4buTXt7FwOlwF4xjh5rmY6HyDYqgaQ4464IN1LEQdr8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043683; c=relaxed/simple;
-	bh=d3Gffi38sYjoe5nikW5XxpYm+pECgG0wvP3AesnwZEc=;
+	s=arc-20240116; t=1709043121; c=relaxed/simple;
+	bh=pg8E+pNKN8aDt118J++IyqxzFQ9JhLckPycmtrF4LPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EL4FRT7T+/VV7UNSFS/ORfmYdjwAHWSt6InbrP3/50/Wav+lxgT0Z2PezaDKVjf6mGS3yKSAEqZHvf910fyeOiSdqfwPYE20qdlKpeRzh23hqOtFFUEH9vYNqYBaDITf9rRiwV8lpIEQBR09B0iMNlTXxDEKuVBsNVm494IIEb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WykhyDsA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751D9C433C7;
-	Tue, 27 Feb 2024 14:21:22 +0000 (UTC)
+	 MIME-Version; b=l+YBdBETXYHA0KcCY9VyPpOJsQ1480Mb6HFgTuiFM74rOSZQ/J25HrY2oZ/aIdNBDRIxbtBk5D3S7xo51tx30gHCV25F7uaABR3gvKcYcVPV13yysyNId0WA47bSE+hYhbZb//hHBwMENtNWb9xpGBCVhdVLKZ64gb3BR+Hm0hQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hciXvqfc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9CE5C43390;
+	Tue, 27 Feb 2024 14:12:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043682;
-	bh=d3Gffi38sYjoe5nikW5XxpYm+pECgG0wvP3AesnwZEc=;
+	s=korg; t=1709043121;
+	bh=pg8E+pNKN8aDt118J++IyqxzFQ9JhLckPycmtrF4LPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WykhyDsA9Qhd9LV3l1fu1i8d/FKo+NbEcybAQGYR9tuyO+nrzhEQ2jfVMiYfVzNKK
-	 ILZOQXnGxORHP8zytR9AKCeZk/mYBS54MELuKypTAnrLJmTRr88xZqMrbOxzU+MY2s
-	 tTcfjLi9FH0eN7acpuY3arCK/Gvw0tdz1An95OVc=
+	b=hciXvqfcMpuD5DPdZLosdAZeY9lxmjUmBaQh3197P1rFERrsel81yMgkWVoDQrY8M
+	 M/Dv0d3MCrHNNI8u6z+LPaWDMwYc48gayvCDVLNQiYOpO+m5O2Y488zQIpyHKHlD8p
+	 UALFNCOxVzFvsRS0iFH8WUXXjOgRO1b75fm/uUtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 168/195] tls: dont skip over different type records from the rx_list
+	syzkaller <syzkaller@googlegroups.com>,
+	Bjoern Doebel <doebel@amazon.de>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 241/245] arp: Prevent overflow in arp_req_get().
 Date: Tue, 27 Feb 2024 14:27:09 +0100
-Message-ID: <20240227131615.956938413@linuxfoundation.org>
+Message-ID: <20240227131622.993226566@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,128 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit ec823bf3a479d42c589dc0f28ef4951c49cd2d2a ]
+commit a7d6027790acea24446ddd6632d394096c0f4667 upstream.
 
-If we queue 3 records:
- - record 1, type DATA
- - record 2, some other type
- - record 3, type DATA
-and do a recv(PEEK), the rx_list will contain the first two records.
+syzkaller reported an overflown write in arp_req_get(). [0]
 
-The next large recv will walk through the rx_list and copy data from
-record 1, then stop because record 2 is a different type. Since we
-haven't filled up our buffer, we will process the next available
-record. It's also DATA, so we can merge it with the current read.
+When ioctl(SIOCGARP) is issued, arp_req_get() looks up an neighbour
+entry and copies neigh->ha to struct arpreq.arp_ha.sa_data.
 
-We shouldn't do that, since there was a record in between that we
-ignored.
+The arp_ha here is struct sockaddr, not struct sockaddr_storage, so
+the sa_data buffer is just 14 bytes.
 
-Add a flag to let process_rx_list inform tls_sw_recvmsg that it had
-more data available.
+In the splat below, 2 bytes are overflown to the next int field,
+arp_flags.  We initialise the field just after the memcpy(), so it's
+not a problem.
 
-Fixes: 692d7b5d1f91 ("tls: Fix recvmsg() to be able to peek across multiple records")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/r/f00c0c0afa080c60f016df1471158c1caf983c34.1708007371.git.sd@queasysnail.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, when dev->addr_len is greater than 22 (e.g. MAX_ADDR_LEN),
+arp_netmask is overwritten, which could be set as htonl(0xFFFFFFFFUL)
+in arp_ioctl() before calling arp_req_get().
+
+To avoid the overflow, let's limit the max length of memcpy().
+
+Note that commit b5f0de6df6dc ("net: dev: Convert sa_data to flexible
+array in struct sockaddr") just silenced syzkaller.
+
+[0]:
+memcpy: detected field-spanning write (size 16) of single field "r->arp_ha.sa_data" at net/ipv4/arp.c:1128 (size 14)
+WARNING: CPU: 0 PID: 144638 at net/ipv4/arp.c:1128 arp_req_get+0x411/0x4a0 net/ipv4/arp.c:1128
+Modules linked in:
+CPU: 0 PID: 144638 Comm: syz-executor.4 Not tainted 6.1.74 #31
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.0-debian-1.16.0-5 04/01/2014
+RIP: 0010:arp_req_get+0x411/0x4a0 net/ipv4/arp.c:1128
+Code: fd ff ff e8 41 42 de fb b9 0e 00 00 00 4c 89 fe 48 c7 c2 20 6d ab 87 48 c7 c7 80 6d ab 87 c6 05 25 af 72 04 01 e8 5f 8d ad fb <0f> 0b e9 6c fd ff ff e8 13 42 de fb be 03 00 00 00 4c 89 e7 e8 a6
+RSP: 0018:ffffc900050b7998 EFLAGS: 00010286
+RAX: 0000000000000000 RBX: ffff88803a815000 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: ffffffff8641a44a RDI: 0000000000000001
+RBP: ffffc900050b7a98 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000000 R11: 203a7970636d656d R12: ffff888039c54000
+R13: 1ffff92000a16f37 R14: ffff88803a815084 R15: 0000000000000010
+FS:  00007f172bf306c0(0000) GS:ffff88805aa00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f172b3569f0 CR3: 0000000057f12005 CR4: 0000000000770ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ arp_ioctl+0x33f/0x4b0 net/ipv4/arp.c:1261
+ inet_ioctl+0x314/0x3a0 net/ipv4/af_inet.c:981
+ sock_do_ioctl+0xdf/0x260 net/socket.c:1204
+ sock_ioctl+0x3ef/0x650 net/socket.c:1321
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:870 [inline]
+ __se_sys_ioctl fs/ioctl.c:856 [inline]
+ __x64_sys_ioctl+0x18e/0x220 fs/ioctl.c:856
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x37/0x90 arch/x86/entry/common.c:81
+ entry_SYSCALL_64_after_hwframe+0x64/0xce
+RIP: 0033:0x7f172b262b8d
+Code: 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f172bf300b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007f172b3abf80 RCX: 00007f172b262b8d
+RDX: 0000000020000000 RSI: 0000000000008954 RDI: 0000000000000003
+RBP: 00007f172b2d3493 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 000000000000000b R14: 00007f172b3abf80 R15: 00007f172bf10000
+ </TASK>
+
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Reported-by: Bjoern Doebel <doebel@amazon.de>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240215230516.31330-1-kuniyu@amazon.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tls/tls_sw.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ net/ipv4/arp.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 20d2877bf22ad..93e1bfa72d791 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -1845,7 +1845,8 @@ static int process_rx_list(struct tls_sw_context_rx *ctx,
- 			   u8 *control,
- 			   size_t skip,
- 			   size_t len,
--			   bool is_peek)
-+			   bool is_peek,
-+			   bool *more)
- {
- 	struct sk_buff *skb = skb_peek(&ctx->rx_list);
- 	struct tls_msg *tlm;
-@@ -1858,7 +1859,7 @@ static int process_rx_list(struct tls_sw_context_rx *ctx,
- 
- 		err = tls_record_content_type(msg, tlm, control);
- 		if (err <= 0)
--			goto out;
-+			goto more;
- 
- 		if (skip < rxm->full_len)
- 			break;
-@@ -1876,12 +1877,12 @@ static int process_rx_list(struct tls_sw_context_rx *ctx,
- 
- 		err = tls_record_content_type(msg, tlm, control);
- 		if (err <= 0)
--			goto out;
-+			goto more;
- 
- 		err = skb_copy_datagram_msg(skb, rxm->offset + skip,
- 					    msg, chunk);
- 		if (err < 0)
--			goto out;
-+			goto more;
- 
- 		len = len - chunk;
- 		copied = copied + chunk;
-@@ -1917,6 +1918,10 @@ static int process_rx_list(struct tls_sw_context_rx *ctx,
- 
- out:
- 	return copied ? : err;
-+more:
-+	if (more)
-+		*more = true;
-+	goto out;
- }
- 
- static bool
-@@ -2020,6 +2025,7 @@ int tls_sw_recvmsg(struct sock *sk,
- 	int target, err;
- 	bool is_kvec = iov_iter_is_kvec(&msg->msg_iter);
- 	bool is_peek = flags & MSG_PEEK;
-+	bool rx_more = false;
- 	bool released = true;
- 	bool bpf_strp_enabled;
- 	bool zc_capable;
-@@ -2039,12 +2045,12 @@ int tls_sw_recvmsg(struct sock *sk,
- 		goto end;
- 
- 	/* Process pending decrypted records. It must be non-zero-copy */
--	err = process_rx_list(ctx, msg, &control, 0, len, is_peek);
-+	err = process_rx_list(ctx, msg, &control, 0, len, is_peek, &rx_more);
- 	if (err < 0)
- 		goto end;
- 
- 	copied = err;
--	if (len <= copied || (copied && control != TLS_RECORD_TYPE_DATA))
-+	if (len <= copied || (copied && control != TLS_RECORD_TYPE_DATA) || rx_more)
- 		goto end;
- 
- 	target = sock_rcvlowat(sk, flags & MSG_WAITALL, len);
-@@ -2203,10 +2209,10 @@ int tls_sw_recvmsg(struct sock *sk,
- 		/* Drain records from the rx_list & copy if required */
- 		if (is_peek || is_kvec)
- 			err = process_rx_list(ctx, msg, &control, copied,
--					      decrypted, is_peek);
-+					      decrypted, is_peek, NULL);
- 		else
- 			err = process_rx_list(ctx, msg, &control, 0,
--					      async_copy_bytes, is_peek);
-+					      async_copy_bytes, is_peek, NULL);
- 	}
- 
- 	copied += decrypted;
--- 
-2.43.0
-
+--- a/net/ipv4/arp.c
++++ b/net/ipv4/arp.c
+@@ -1104,7 +1104,8 @@ static int arp_req_get(struct arpreq *r,
+ 	if (neigh) {
+ 		if (!(neigh->nud_state & NUD_NOARP)) {
+ 			read_lock_bh(&neigh->lock);
+-			memcpy(r->arp_ha.sa_data, neigh->ha, dev->addr_len);
++			memcpy(r->arp_ha.sa_data, neigh->ha,
++			       min(dev->addr_len, (unsigned char)sizeof(r->arp_ha.sa_data_min)));
+ 			r->arp_flags = arp_state_to_flags(neigh);
+ 			read_unlock_bh(&neigh->lock);
+ 			r->arp_ha.sa_family = dev->type;
 
 
 
