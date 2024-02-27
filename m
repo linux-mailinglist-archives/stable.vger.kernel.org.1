@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-24113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C07B8692B4
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:38:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 336148692B6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:38:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD6761F2D700
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:38:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E133E28F5CA
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:38:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F0AD141999;
-	Tue, 27 Feb 2024 13:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FD3D13B2A2;
+	Tue, 27 Feb 2024 13:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylEDJJI5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SPBEEu+l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0EE713DB90;
-	Tue, 27 Feb 2024 13:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E26E13B2BE;
+	Tue, 27 Feb 2024 13:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041069; cv=none; b=DsZxkubT8TlqLDQ8fjz0AY+qlhvZp3gWzJCOodfSRCvIHJQb5DO1976L3nNgpsqwdwX8saSX+nidgoY/ohHWPNZxBUREWWmkhBAmb/AQ+Uq7zbXOFU9RRDRFzwgmPuoSF8tGYgWoQvWodnC0WNGASHiSEwWWOhBwOr3h/Ny0LJ8=
+	t=1709041077; cv=none; b=o831mEJFPgu3b0Z+214wBpI6Xzx0i+Y0o02z/QjvEP6/G/G37zY4yNfypgkwLDYW3d1/Km2sZmc9PqTe40SkNUr+5sOjuw/JhGE7RQLaagO4L59TCvsVZpoN0t3W+D41EFyCj3GtaLUxUDtP5t+zHDeJdIShd+p1SaKTueyU7Gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041069; c=relaxed/simple;
-	bh=vyoVPoOYzx+g1P1pVquy9m9QYLQrTGgh2xwvqPtEwwY=;
+	s=arc-20240116; t=1709041077; c=relaxed/simple;
+	bh=Md70SJTfexR/nrH7e4ICaW4dx1gOAYyz3u591CcO+TI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y61mpeQB0l2CrFI1SDSq7Mgkm0oIeAtg1H3vbgtiBJUhGh+ZxeUaXW3axB3ztEBov69b4XIFSMU8377pMSrOtkPI1ucY82mQbpz8X7SAZZfzJwbEtIm6cigdX3fT1Pn2BMhgjNZVt4RgXMj9irMZSWE6QGj7v/n5XGcWwRIrDpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylEDJJI5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 701FDC433F1;
-	Tue, 27 Feb 2024 13:37:48 +0000 (UTC)
+	 MIME-Version; b=GCC4O0OaU6QsNnOgfcvqnXIsuf4NlrTeCriA8Aa6U27Jd9U6hlIP1urjLwh2Z6iBZy2S4P653mYo/oU7++NGWwzTvsXc8rvpzhkEeoGJqAUxeG79ve7HQaRbkF6CANdZPe2+oJp5Eh6O65Ogz7h4S0bTu66nJ0rNcRphC8qnM0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SPBEEu+l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0CA4C43394;
+	Tue, 27 Feb 2024 13:37:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041068;
-	bh=vyoVPoOYzx+g1P1pVquy9m9QYLQrTGgh2xwvqPtEwwY=;
+	s=korg; t=1709041077;
+	bh=Md70SJTfexR/nrH7e4ICaW4dx1gOAYyz3u591CcO+TI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ylEDJJI5eYuwmcgF86tWO2m7blHj/HWswus6xELaHxZbpUQ+inpPVoRWgbWY3eT8j
-	 z//X6BVdMldTMh+NZ5QUrtPAjIGesDuQVVQGYjAUaumdssVe0SVL2ZqW1PW6NOaQz2
-	 b29KUmrNZhAZSRsecXiznjIVIOXFG3OM9K6QVRqo=
+	b=SPBEEu+lSJfyigi98a3rN9ZxZu0jxxNGhAXTUdy8iAZzvMtMFNBIaDnlEUSoz1IsU
+	 QAwHjNMZa4lyr9Y3gt5BYsg1vwCJFf3F1a/3FxpfX8JBj0PILZstWYsiHoHCDtMYAc
+	 Sk6Hl9Ar2gEFAgGnfovG0OcVmWl1XDNjvx2OXVUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 6.7 181/334] sparc: Fix undefined reference to fb_is_primary_device
-Date: Tue, 27 Feb 2024 14:20:39 +0100
-Message-ID: <20240227131636.447518418@linuxfoundation.org>
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>
+Subject: [PATCH 6.7 182/334] md: Dont ignore suspended array in md_check_recovery()
+Date: Tue, 27 Feb 2024 14:20:40 +0100
+Message-ID: <20240227131636.493979195@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
 References: <20240227131630.636392135@linuxfoundation.org>
@@ -67,54 +66,72 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Javier Martinez Canillas <javierm@redhat.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-commit ed683b9bb91fc274383e222ba5873a9ee9033462 upstream.
+commit 1baae052cccd08daf9a9d64c3f959d8cdb689757 upstream.
 
-Commit 55bffc8170bb ("fbdev: Split frame buffer support in FB and FB_CORE
-symbols") added a new FB_CORE Kconfig symbol, that can be enabled to only
-have fbcon/VT and DRM fbdev emulation, but without support for any legacy
-fbdev driver.
+mddev_suspend() never stop sync_thread, hence it doesn't make sense to
+ignore suspended array in md_check_recovery(), which might cause
+sync_thread can't be unregistered.
 
-Unfortunately, it missed to change the CONFIG_FB in arch/sparc makefiles,
-which leads to the following linking error in some sparc64 configurations:
+After commit f52f5c71f3d4 ("md: fix stopping sync thread"), following
+hang can be triggered by test shell/integrity-caching.sh:
 
-   sparc64-linux-ld: drivers/video/fbdev/core/fbcon.o: in function `fbcon_fb_registered':
->> fbcon.c:(.text+0x4f60): undefined reference to `fb_is_primary_device'
+1) suspend the array:
+raid_postsuspend
+ mddev_suspend
 
-Fixes: 55bffc8170bb ("fbdev: Split frame buffer support in FB and FB_CORE symbols")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/r/202401290306.IV8rhJ02-lkp@intel.com/
-Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Cc: <stable@vger.kernel.org> # v6.6+
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240220095428.3341195-1-javierm@redhat.com
+2) stop the array:
+raid_dtr
+ md_stop
+  __md_stop_writes
+   stop_sync_thread
+    set_bit(MD_RECOVERY_INTR, &mddev->recovery);
+    md_wakeup_thread_directly(mddev->sync_thread);
+    wait_event(..., !test_bit(MD_RECOVERY_RUNNING, &mddev->recovery))
+
+3) sync thread done:
+md_do_sync
+ set_bit(MD_RECOVERY_DONE, &mddev->recovery);
+ md_wakeup_thread(mddev->thread);
+
+4) daemon thread can't unregister sync thread:
+md_check_recovery
+ if (mddev->suspended)
+   return; -> return directly
+ md_read_sync_thread
+ clear_bit(MD_RECOVERY_RUNNING, &mddev->recovery);
+ -> MD_RECOVERY_RUNNING can't be cleared, hence step 2 hang;
+
+This problem is not just related to dm-raid, fix it by ignoring
+suspended array in md_check_recovery(). And follow up patches will
+improve dm-raid better to frozen sync thread during suspend.
+
+Reported-by: Mikulas Patocka <mpatocka@redhat.com>
+Closes: https://lore.kernel.org/all/8fb335e-6d2c-dbb5-d7-ded8db5145a@redhat.com/
+Fixes: 68866e425be2 ("MD: no sync IO while suspended")
+Fixes: f52f5c71f3d4 ("md: fix stopping sync thread")
+Cc: stable@vger.kernel.org # v6.7+
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240201092559.910982-2-yukuai1@huaweicloud.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/sparc/Makefile       |    2 +-
- arch/sparc/video/Makefile |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/md/md.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/arch/sparc/Makefile
-+++ b/arch/sparc/Makefile
-@@ -60,7 +60,7 @@ libs-y                 += arch/sparc/pro
- libs-y                 += arch/sparc/lib/
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -9519,9 +9519,6 @@ not_running:
+  */
+ void md_check_recovery(struct mddev *mddev)
+ {
+-	if (READ_ONCE(mddev->suspended))
+-		return;
+-
+ 	if (mddev->bitmap)
+ 		md_bitmap_daemon_work(mddev);
  
- drivers-$(CONFIG_PM) += arch/sparc/power/
--drivers-$(CONFIG_FB) += arch/sparc/video/
-+drivers-$(CONFIG_FB_CORE) += arch/sparc/video/
- 
- boot := arch/sparc/boot
- 
---- a/arch/sparc/video/Makefile
-+++ b/arch/sparc/video/Makefile
-@@ -1,3 +1,3 @@
- # SPDX-License-Identifier: GPL-2.0-only
- 
--obj-$(CONFIG_FB) += fbdev.o
-+obj-$(CONFIG_FB_CORE) += fbdev.o
 
 
 
