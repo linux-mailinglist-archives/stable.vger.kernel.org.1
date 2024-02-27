@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CEB48694A4
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:55:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B89C8696A9
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:14:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A025A1F22880
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:55:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD5CC1C238E0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 725011420DA;
-	Tue, 27 Feb 2024 13:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B18AC14535A;
+	Tue, 27 Feb 2024 14:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2K0aN6G5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P94dVNWh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305F413AA4C;
-	Tue, 27 Feb 2024 13:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED8D1420A6;
+	Tue, 27 Feb 2024 14:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042102; cv=none; b=hW4yXcJbjHGN5xX2HCmCWTfEQ1AJw1uYEEtyhEp56yeNYXR4uc5V1sz8lT9P0/xFdqrldXOFwobzl88n3VH7oEKbfWY1cgeh9xzYmUXEo4TxgnKluEQ8gL3uRyLd5H60WIzbUEXTJHxp3AGpSWXV4Rrxb/DbVLvoGVhdrVn0ZXc=
+	t=1709043221; cv=none; b=Pspvv2LixSHmfZNnFjd7s0bIaJHJEKlGJNfIca7ZUv+1jIHe6dvFF6jsAibm/8lGFmd9xuF9RybRNABRBcPS4I1y6iFvhXPrkfiKIPiPuoNSYjEB6dkTG/j64FSpOqMVmtvoTqiDmysH/e3bj/pLFomVD+xVOjA6ItISeF8g5kE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042102; c=relaxed/simple;
-	bh=DfZgH3Rbj/ZDj1I0ib7167oE8aKmwzz3x8ecXr9YmAs=;
+	s=arc-20240116; t=1709043221; c=relaxed/simple;
+	bh=yeoCL4dQXTohIDQCb/3NXWoxvOfjmB6ShBjkh3RAwB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=patjx7I0gDSdy3Vdseo6ms7UBGApLAFLqWQi1MgOkNh3+oZFSfpk4pA2VDomQqFx+eXJizaEGgCqBR/y5t6z6y7ojQ+x+tLpaRzsmp+S01qt4CuiZyoY6b/Tyj9FGuqk5QtzXzW5IzyrTB7kJHt3X+vml2k5xBQBofwX/5qV78E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2K0aN6G5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E171C433C7;
-	Tue, 27 Feb 2024 13:55:01 +0000 (UTC)
+	 MIME-Version; b=OvLwdiqtGJAoVq89ASRR8mYi+24aQrxmcvVcfZWfjsHfATSnZzEKdsC01JzhbsdiIuSOJl6JqysTKoa9AgQGyN8GdLkVpUpsJGPukgeH8rmP9XOuyWjpN7M5lh9azYzPux7hxjmV31LtvYyYCWfFqVWiKWRY9JiWlhpUONI6Mxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P94dVNWh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7015C433C7;
+	Tue, 27 Feb 2024 14:13:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042101;
-	bh=DfZgH3Rbj/ZDj1I0ib7167oE8aKmwzz3x8ecXr9YmAs=;
+	s=korg; t=1709043221;
+	bh=yeoCL4dQXTohIDQCb/3NXWoxvOfjmB6ShBjkh3RAwB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2K0aN6G5PX6ftYF9exMf1vzsQCnMY8ntuWjKTyaQnU5NLw8LzbfN/xU+Irb6Ev0Ka
-	 WltSSqiCKBgROma2AJmIcYkfu4rWy+eqpSBR4n4WIeMOYJ/U37HuBA/HfHuwS4Q5ef
-	 Xjapu//NhnE29QXl5t264Nq3ePgRg5VZQtC87WcU=
+	b=P94dVNWhgmwiprhzSpmLpI6ij93kBmMsQk6atGAsFkXiDMe5yA60tzJtfPO5hubyb
+	 ftE6b8UNGUqwc9il5AWRC+6g0Kqs37SxL8AOt8omWHbIPGiz1OjteGXIrmVED3P3R1
+	 fS3gsldvyN+ydvu11WlzMTcZVkjJ7iW748xeoXso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sandeep Dhavale <dhavale@google.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Jingbo Xu <jefflexu@linux.alibaba.com>,
-	Chao Yu <chao@kernel.org>
-Subject: [PATCH 6.6 179/299] erofs: fix refcount on the metabuf used for inode lookup
+	Hans de Goede <hdegoede@redhat.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 029/195] Input: goodix - accept ACPI resources with gpio_count == 3 && gpio_int_idx == 0
 Date: Tue, 27 Feb 2024 14:24:50 +0100
-Message-ID: <20240227131631.598850593@linuxfoundation.org>
+Message-ID: <20240227131611.355931151@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sandeep Dhavale <dhavale@google.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 56ee7db31187dc36d501622cb5f1415e88e01c2a upstream.
+[ Upstream commit 180a8f12c21f41740fee09ca7f7aa98ff5bb99f8 ]
 
-In erofs_find_target_block() when erofs_dirnamecmp() returns 0,
-we do not assign the target metabuf. This causes the caller
-erofs_namei()'s erofs_put_metabuf() at the end to be not effective
-leaving the refcount on the page.
-As the page from metabuf (buf->page) is never put, such page cannot be
-migrated or reclaimed. Fix it now by putting the metabuf from
-previous loop and assigning the current metabuf to target before
-returning so caller erofs_namei() can do the final put as it was
-intended.
+Some devices list 3 Gpio resources in the ACPI resource list for
+the touchscreen:
 
-Fixes: 500edd095648 ("erofs: use meta buffers for inode lookup")
-Cc: <stable@vger.kernel.org> # 5.18+
-Signed-off-by: Sandeep Dhavale <dhavale@google.com>
-Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Link: https://lore.kernel.org/r/20240221210348.3667795-1-dhavale@google.com
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+1. GpioInt resource pointing to the GPIO used for the interrupt
+2. GpioIo resource pointing to the reset GPIO
+3. GpioIo resource pointing to the GPIO used for the interrupt
+
+Note how the third extra GpioIo resource really is a duplicate
+of the GpioInt provided info.
+
+Ignore this extra GPIO, treating this setup the same as gpio_count == 2 &&
+gpio_int_idx == 0 fixes the touchscreen not working on the Thunderbook
+Colossus W803 rugged tablet and likely also on the CyberBook_T116K.
+
+Reported-by: Maarten van der Schrieck
+Closes: https://gitlab.com/AdyaAdya/goodix-touchscreen-linux-driver/-/issues/22
+Suggested-by: Maarten van der Schrieck
+Tested-by: Maarten van der Schrieck
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20231223141650.10679-1-hdegoede@redhat.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/namei.c |   28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ drivers/input/touchscreen/goodix.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/erofs/namei.c
-+++ b/fs/erofs/namei.c
-@@ -130,24 +130,24 @@ static void *erofs_find_target_block(str
- 			/* string comparison without already matched prefix */
- 			diff = erofs_dirnamecmp(name, &dname, &matched);
- 
--			if (!diff) {
--				*_ndirents = 0;
--				goto out;
--			} else if (diff > 0) {
--				head = mid + 1;
--				startprfx = matched;
--
--				if (!IS_ERR(candidate))
--					erofs_put_metabuf(target);
--				*target = buf;
--				candidate = de;
--				*_ndirents = ndirents;
--			} else {
-+			if (diff < 0) {
- 				erofs_put_metabuf(&buf);
--
- 				back = mid - 1;
- 				endprfx = matched;
-+				continue;
-+			}
-+
-+			if (!IS_ERR(candidate))
-+				erofs_put_metabuf(target);
-+			*target = buf;
-+			if (!diff) {
-+				*_ndirents = 0;
-+				return de;
- 			}
-+			head = mid + 1;
-+			startprfx = matched;
-+			candidate = de;
-+			*_ndirents = ndirents;
- 			continue;
+diff --git a/drivers/input/touchscreen/goodix.c b/drivers/input/touchscreen/goodix.c
+index 3f0732db7bf5b..6de64b3f900fb 100644
+--- a/drivers/input/touchscreen/goodix.c
++++ b/drivers/input/touchscreen/goodix.c
+@@ -884,7 +884,8 @@ static int goodix_add_acpi_gpio_mappings(struct goodix_ts_data *ts)
  		}
- out:		/* free if the candidate is valid */
+ 	}
+ 
+-	if (ts->gpio_count == 2 && ts->gpio_int_idx == 0) {
++	/* Some devices with gpio_int_idx 0 list a third unused GPIO */
++	if ((ts->gpio_count == 2 || ts->gpio_count == 3) && ts->gpio_int_idx == 0) {
+ 		ts->irq_pin_access_method = IRQ_PIN_ACCESS_ACPI_GPIO;
+ 		gpio_mapping = acpi_goodix_int_first_gpios;
+ 	} else if (ts->gpio_count == 2 && ts->gpio_int_idx == 1) {
+-- 
+2.43.0
+
 
 
 
