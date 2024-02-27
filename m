@@ -1,114 +1,126 @@
-Return-Path: <stable+bounces-23885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21881868D7B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 11:25:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87726868DA0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 11:31:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFFA328E7BD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 10:25:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38CE32873EC
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 10:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B022137C5D;
-	Tue, 27 Feb 2024 10:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC3D136666;
+	Tue, 27 Feb 2024 10:31:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="X3o4ZMum"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="ATNcotiI"
 X-Original-To: stable@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from a.mx.secunet.com (a.mx.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902FF137C42;
-	Tue, 27 Feb 2024 10:24:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A570153376;
+	Tue, 27 Feb 2024 10:31:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709029499; cv=none; b=jNE7IP8vw6XoYG9pOJFU1YUBIo87YAp6emEiIMtzj6tydS2OVG7zjzoRPUl5tHL9w3WvFAv7NSYU+YaEMTja+8hwH1m9HXSmEeMlWaMSPhOGJ0Nm5yukiJ6JQA7K1Qu0hHUzFYhNKCdRbPTscd88Lq9E0/p5vno5aKWpdn7vRz8=
+	t=1709029877; cv=none; b=GJarLS7it+/UQKNnzlIgABI7DK3f6yRt8851CXNZKy1VjRxIIToTzo/BEN3XAjLhFKKct75biYtQShRfq8s9D8E+uURAKzdDc7BadNY7K9EFxgX9y5/qjgfd89Nj3HPZRMWwWTv8Gk35SUjuXn5REZ3pU+x4fqcHh7bIUR/jDN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709029499; c=relaxed/simple;
-	bh=Nnpde2MjTfV728iSxOzMQcbJzt7c4u2O0FM7Rw5PJgw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NRSWtc9PXT+GYYiEzKldkpmdDjllIzR1EvzsAZQ20HpxRQXkkT97SHCSzOrSc0kuaKBBmunUExsGT8weKVXYZfLio9r9tLsKQZNCYWgNaNrKDLUpBhc36GcKAwb0LzgwdOy3HoLHIx+jc44JKnxDrLvJgImJwNhNGLGMsRIu69M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=X3o4ZMum; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=JCdHzu2wkDIMV3N9KhEnaZn7nt+SUq/lt3fcc9JJLCM=; b=X3o4ZMumh+WSsbya++ZFhtGQtB
-	3jMjGFRyAKDrQ6bMJQKbd5y2qsY7D3/VmDpfzHkMH6PakulAFqF4HNgsDc+owbvCfZ25CP4XYfCH8
-	UI1Bniqs7Jl4UNl7QATUXCDQ4jt5ilvkda3mO8VTmuqAWYPbOZo1ZNyepxPTNnIe0Hn8zYSQ1TKht
-	bIHEJ2YbLwz0NAk4PA2pJ8O6+fUsmTVV+IlhQK6S+xBqMUsrvHTTA032uvVTQJ9WktNmcvAj3bs18
-	X05XBlfCFGcbmJCi8KFVH92pbunbs7dz9v//Po5GYryvsw2rE6JPZ2AUOoV+6jgR8tKVzoKMDTHe2
-	k+PD2pug==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:36722)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1reudi-0007kH-1R;
-	Tue, 27 Feb 2024 10:24:46 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1reudc-0007J2-Nc; Tue, 27 Feb 2024 10:24:40 +0000
-Date: Tue, 27 Feb 2024 10:24:40 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Zev Weiss <zev@bewilderbeest.net>
-Cc: linux-parisc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Helge Deller <deller@gmx.de>, Florent Revest <revest@chromium.org>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Yin Fengwei <fengwei.yin@intel.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kees Cook <keescook@chromium.org>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
-	Stefan Roesch <shr@devkernel.io>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>, linux-kernel@vger.kernel.org,
-	openbmc@lists.ozlabs.org, Sam James <sam@gentoo.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH RESEND 1/2] prctl: Generalize PR_SET_MDWE support check
- to be per-arch
-Message-ID: <Zd24aCps4xD28c74@shell.armlinux.org.uk>
-References: <20240227013546.15769-4-zev@bewilderbeest.net>
- <20240227013546.15769-5-zev@bewilderbeest.net>
+	s=arc-20240116; t=1709029877; c=relaxed/simple;
+	bh=UZPA+oW2ED27diOEsEHoW3DjwrWTidPv6l7VZbUw6+4=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TctXAVZPZFuxy8wS090iAewYOSDLgKCjuCee5tb1on6KLzIujIy3usI6+yND0H+SZi334RtVVabVIMKm3OxK6TBY1aQwLV2DFQWrNj4YGozauzY9tfFHvJLEinZIyfSH6ZA98L4+xhAcqiykOt7Kx3Bor6azndW8mYxapRewam0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=ATNcotiI; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+Received: from localhost (localhost [127.0.0.1])
+	by a.mx.secunet.com (Postfix) with ESMTP id 015872087B;
+	Tue, 27 Feb 2024 11:31:06 +0100 (CET)
+X-Virus-Scanned: by secunet
+Received: from a.mx.secunet.com ([127.0.0.1])
+	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id Lgn6WFSWJChe; Tue, 27 Feb 2024 11:31:05 +0100 (CET)
+Received: from mailout1.secunet.com (mailout1.secunet.com [62.96.220.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by a.mx.secunet.com (Postfix) with ESMTPS id 6CC9B207E4;
+	Tue, 27 Feb 2024 11:31:01 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com 6CC9B207E4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1709029861;
+	bh=36X9HieMWPjDOQ3pURbAUKsOVyclcZ1ePVR/QDpPb64=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=ATNcotiIoTEVWQzHRSgqNfIlxyXxbx/Nh/Zeqv9ROdcZ2fR5fKHS0cQHitc7dzP1O
+	 /sXU6NP/SlMqGWteyY7NvxveZK09TUKUCCp2lpu1KlrBw70tqj/hjXeo9Tr6ddmUFq
+	 T2tbj/prS5r2qujOj1s/Y39G0rQX4dEJTxhW8iwps6ICybjWVB7Te6F5Z9v+WUzsPj
+	 TXby2SX0AIk4xuetrcUtD9mte+rXWPUrDjP0wEHlAPMorghetrjnDXD0Z/GBEajYfV
+	 CqfvtUO8RGlGMALHvGCQJBGduT44RyFDYCGBs5LV3ggR/OZTCSyS3XJNHdsnWnoiyD
+	 LPyYaiESYkeUw==
+Received: from cas-essen-02.secunet.de (unknown [10.53.40.202])
+	by mailout1.secunet.com (Postfix) with ESMTP id 5DD6A80004E;
+	Tue, 27 Feb 2024 11:31:01 +0100 (CET)
+Received: from mbx-essen-02.secunet.de (10.53.40.198) by
+ cas-essen-02.secunet.de (10.53.40.202) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 27 Feb 2024 11:31:01 +0100
+Received: from gauss2.secunet.de (10.182.7.193) by mbx-essen-02.secunet.de
+ (10.53.40.198) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 27 Feb
+ 2024 11:31:00 +0100
+Received: by gauss2.secunet.de (Postfix, from userid 1000)
+	id 5DDDB3182503; Tue, 27 Feb 2024 11:31:00 +0100 (CET)
+Date: Tue, 27 Feb 2024 11:31:00 +0100
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Nathan Chancellor <nathan@kernel.org>
+CC: <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<morbo@google.com>, <justinstitt@google.com>, <keescook@chromium.org>,
+	<netdev@vger.kernel.org>, <llvm@lists.linux.dev>, <patches@lists.linux.dev>,
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH net] xfrm: Avoid clang fortify warning in
+ copy_to_user_tmpl()
+Message-ID: <Zd255JYau84UHfpo@gauss3.secunet.de>
+References: <20240221-xfrm-avoid-clang-fortify-warning-copy_to_user_tmpl-v1-1-254a788ab8ba@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20240227013546.15769-5-zev@bewilderbeest.net>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <20240221-xfrm-avoid-clang-fortify-warning-copy_to_user_tmpl-v1-1-254a788ab8ba@kernel.org>
+X-ClientProxiedBy: cas-essen-02.secunet.de (10.53.40.202) To
+ mbx-essen-02.secunet.de (10.53.40.198)
+X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
 
-On Mon, Feb 26, 2024 at 05:35:41PM -0800, Zev Weiss wrote:
-> There exist systems other than PARISC where MDWE may not be feasible
-> to support; rather than cluttering up the generic code with additional
-> arch-specific logic let's add a generic function for checking MDWE
-> support and allow each arch to override it as needed.
+On Wed, Feb 21, 2024 at 02:46:21PM -0700, Nathan Chancellor wrote:
+> After a couple recent changes in LLVM, there is a warning (or error with
+> CONFIG_WERROR=y or W=e) from the compile time fortify source routines,
+> specifically the memset() in copy_to_user_tmpl().
 > 
-> Signed-off-by: Zev Weiss <zev@bewilderbeest.net>
-> Cc: <stable@vger.kernel.org> # v6.3+
+>   In file included from net/xfrm/xfrm_user.c:14:
+>   ...
+>   include/linux/fortify-string.h:438:4: error: call to '__write_overflow_field' declared with 'warning' attribute: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
+>     438 |                         __write_overflow_field(p_size_field, size);
+>         |                         ^
+>   1 error generated.
+> 
+> While ->xfrm_nr has been validated against XFRM_MAX_DEPTH when its value
+> is first assigned in copy_templates() by calling validate_tmpl() first
+> (so there should not be any issue in practice), LLVM/clang cannot really
+> deduce that across the boundaries of these functions. Without that
+> knowledge, it cannot assume that the loop stops before i is greater than
+> XFRM_MAX_DEPTH, which would indeed result a stack buffer overflow in the
+> memset().
+> 
+> To make the bounds of ->xfrm_nr clear to the compiler and add additional
+> defense in case copy_to_user_tmpl() is ever used in a path where
+> ->xfrm_nr has not been properly validated against XFRM_MAX_DEPTH first,
+> add an explicit bound check and early return, which clears up the
+> warning.
+> 
+> Cc: stable@vger.kernel.org
+> Link: https://github.com/ClangBuiltLinux/linux/issues/1985
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 
-PA-RISC folk need to ack/review-by this patch. Alternatively, it needs
-to be restructured to add the arch_memory_deny_write_exec_supported()
-override without touching the PA-RISC code, which then makes the Arm
-patch independent of the status of the PA-RISC patch. That will allow
-the Arm issue to be solved even if an ack is not forthcoming for the
-PA-RISC parts.
-
-Alternatively, I wonder whether akpm would be willing to pick up this
-patch set as-is.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Applied to the ipsec tree, thanks a lot!
 
