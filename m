@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-23846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2C98868B4F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 09:54:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C1D8868B52
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 09:54:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F9FC1F26680
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 08:54:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CFB61C22D4B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 08:54:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A37B4131748;
-	Tue, 27 Feb 2024 08:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA8113340B;
+	Tue, 27 Feb 2024 08:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/pYRzbS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orqevyAo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62299130E36
-	for <stable@vger.kernel.org>; Tue, 27 Feb 2024 08:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6273A55E78
+	for <stable@vger.kernel.org>; Tue, 27 Feb 2024 08:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709024043; cv=none; b=cY0E6QPatjXIeyU4cZn8iDfVznyMFgZ40Ko0evlVo8fSzL5AXfHOFppEuB0bXLXRtKQ7DnYs9kKmMs+67r273EnSd3A7Sh9ksQ95gcxcXE/ZbRyEpBYN/K9qc3+aGpRb4dW2iWmVL8aray/hHA6xyGOz0JXzv/XV062ZxjM171M=
+	t=1709024084; cv=none; b=iOWziqiC9+fhnyQikS6nSo+zGSY5ED1+unNBy+Vco77u/t/9R0N9DTbweo52Knk5ZeWSh8J6ymz3koV4T669cs1eBH1Iy2G6utGwqAA3SeMDBUFnt2Vp3vf3HSJ+FYzx4uaQweEPbyLYpiNdFep5GizBhkbQZ9vy0zPNaxZxJE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709024043; c=relaxed/simple;
-	bh=TJzjCuznkFCUAn6bJt8P/l9QhPoFM6t8PZIEXOBxT64=;
+	s=arc-20240116; t=1709024084; c=relaxed/simple;
+	bh=T9SNTmEJJFyXiiwXdIhtEq1rOuxG3yNIBA4XTTkEvcA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZK35MLfXmWzw1q2ErrXVpimhkDsuLj8CwNfEpm1gfl3H9XWptFdw8uIL9DuAuonpv8m+GvKOJ6J4eebHIxwHVuovamiPrXmPeVn95V8/3YO71iNKAibYapVT6FI8JvEoBjHw4IRJK1y5EskMgrmWYZK0AIoCKbGnBxDu7aXj8yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/pYRzbS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D79DC433C7;
-	Tue, 27 Feb 2024 08:54:02 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=JKkayp6cfYghfNRd1fPE5mMD+chJoZsYsOR+XLQT808EGprM/2qG6ii1wl5+ypxA0fvma2SUu8l3sbe4kZ0UVO/Y8fA4zZswHh4y2MB4YmOJ78mMr5S/+vp2opg5TdqswTVDbP1V7FtdK9uexy+YTe2jJpH5rMrRFRk534ViK60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orqevyAo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84EFDC433C7;
+	Tue, 27 Feb 2024 08:54:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709024043;
-	bh=TJzjCuznkFCUAn6bJt8P/l9QhPoFM6t8PZIEXOBxT64=;
+	s=korg; t=1709024083;
+	bh=T9SNTmEJJFyXiiwXdIhtEq1rOuxG3yNIBA4XTTkEvcA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V/pYRzbSH9Pdg/QmEM+Gtrs3g2yj1pcVAikNAby9zhrrrvIKgCOSQUmzUEo6PTMaA
-	 bIBlkVi3bLrJ9QF4Mu2vnbFKFoRm+m7PdxNSxeqZYfJBLDDiLrDAmiR4xd3jAGyX9a
-	 ED9PkgsPSfoZasvqSJQB0gNBhyyLHgyekLvXvxw0=
-Date: Tue, 27 Feb 2024 09:54:00 +0100
+	b=orqevyAoX0wMsDM0Fg1SR3Ds97A8qJSUXoP7ZcgHZg4g5glU9ARg0CtSYjrrZOB/D
+	 pJmU7YRKqxVohenZJ4tiSMf9nGiIkRn0ILna4TdMMvjECqIibk3AuxpYl6bP1FrMYM
+	 y/wvtkBkLQg8agbndFK/33NvwNHc9Xw2nwnI/1lY=
+Date: Tue, 27 Feb 2024 09:54:41 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Cc: stable@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
-	Alyssa Milburn <alyssa.milburn@intel.com>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Nikolay Borisov <nik.borisov@suse.com>
-Subject: Re: [PATCH 6.6.y 0/6] Delay VERW - 6.6.y backport
-Message-ID: <2024022740-smugness-cone-e80c@gregkh>
-References: <20240226-delay-verw-backport-6-6-y-v1-0-aa17b2922725@linux.intel.com>
+To: chengming.zhou@linux.dev
+Cc: stable@vger.kernel.org, Chengming Zhou <zhouchengming@bytedance.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Nhat Pham <nphamcs@gmail.com>,
+	Yosry Ahmed <yosryahmed@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH] mm/zswap: invalidate duplicate entry when !zswap_enabled
+Message-ID: <2024022728-phoenix-varsity-45e9@gregkh>
+References: <2024022622-resent-ripeness-43f1@gregkh>
+ <20240227022540.3441860-1-chengming.zhou@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,25 +57,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240226-delay-verw-backport-6-6-y-v1-0-aa17b2922725@linux.intel.com>
+In-Reply-To: <20240227022540.3441860-1-chengming.zhou@linux.dev>
 
-On Mon, Feb 26, 2024 at 09:34:14PM -0800, Pawan Gupta wrote:
-> This is the backport of recently upstreamed series that moves VERW
-> execution to a later point in exit-to-user path. This is needed because
-> in some cases it may be possible for data accessed after VERW executions
-> may end into MDS affected CPU buffers. Moving VERW closer to ring
-> transition reduces the attack surface.
+On Tue, Feb 27, 2024 at 02:25:40AM +0000, chengming.zhou@linux.dev wrote:
+> From: Chengming Zhou <zhouchengming@bytedance.com>
 > 
-> Patch 1/6 includes a minor fix that is queued for upstream:
-> https://lore.kernel.org/lkml/170899674562.398.6398007479766564897.tip-bot2@tip-bot2/
+> We have to invalidate any duplicate entry even when !zswap_enabled since
+> zswap can be disabled anytime.  If the folio store success before, then
+> got dirtied again but zswap disabled, we won't invalidate the old
+> duplicate entry in the zswap_store().  So later lru writeback may
+> overwrite the new data in swapfile.
+> 
+> Link: https://lkml.kernel.org/r/20240208023254.3873823-1-chengming.zhou@linux.dev
+> Fixes: 42c06a0e8ebe ("mm: kill frontswap")
+> Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
+> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+> Cc: Nhat Pham <nphamcs@gmail.com>
+> Cc: Yosry Ahmed <yosryahmed@google.com>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> (cherry picked from commit 678e54d4bb9a4822f8ae99690ac131c5d490cdb1)
 
-Obviously I can't take this, you know that :(
-
-Please include the actual commit in the series, when it hits Linus's
-tree.
-
-I'm dropping all of these backports from my review queue, please resend
-the fixed up series when they are ready.
+What tree is this for?
 
 thanks,
 
