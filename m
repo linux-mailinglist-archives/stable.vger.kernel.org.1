@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4D4686944A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC6F8693D5
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:49:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AEA62B235F0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:40:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFE3C1F23360
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:49:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0C822F2D;
-	Tue, 27 Feb 2024 13:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F60913DBB3;
+	Tue, 27 Feb 2024 13:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1gO0aiQn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFXUtYyu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED1213AA50;
-	Tue, 27 Feb 2024 13:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3B42F2D;
+	Tue, 27 Feb 2024 13:47:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041231; cv=none; b=mWX/ToYMY294CXzOls0GpKViSD/ZbG5WhXhrdBNV/mAymEPwLbt7+lf0OZpJ0EuCvpkR6DI2yneihYziY5IHTEjHzWZfGTRag9Q9i+Q7a4ETlEs5wWf7QQG7lbXNDRbyNBWyXGXFn5gPLExlzPMuRoyCiNkAZ+bTsk/LrVjfdzo=
+	t=1709041624; cv=none; b=klnvKblL/7oybY/O+qhaqMGkR7kAn0gPqcVSseOoqvkC4BD4qVDHaUWnj8unbarySEn/tJFTyBKKzf56zLqh8rS4Azemnxyqg17+kffH9in340/K5ZIAmC01aAQib/AiSHhNfiqncAhlelVbCic2hQyGk9Qrgh+jpSZvJckMdGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041231; c=relaxed/simple;
-	bh=DVvdC+0OYrpjWMCbLU3L3Pyvw602ykE7H+1Hi5slMDA=;
+	s=arc-20240116; t=1709041624; c=relaxed/simple;
+	bh=gRBoBrU4hJvk3oSPPXkkL464Ktpy/CSnYvEeb0HTtZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R7/VXo5y6jbhYjSYdiRakHoza/8lPrZBQzlDW+MiDQ6owQYxMradOrWmkWvoUDkXuHviC0Tc2b6N4FzQbwn9Nn4kUrnfXCANLaOHf7ivikvoYqLlyBzqX9WnyJznohDSbH37yhpK9CmEU+sIGm1m1OrctQeQ/wtSicOCvyejXcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1gO0aiQn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A8DDC433C7;
-	Tue, 27 Feb 2024 13:40:31 +0000 (UTC)
+	 MIME-Version; b=mpKJtvh5PCZEj/Fi0GGH7KjGDB42E99xrhUUTTgHQ8tidp1p//HlPJi41z/p4g0m9DSTPTF+SZUKhxUC7yFwGbNzVG7mmtoqlz0QBd2SQB4Ghhotgx+hR/GMux9BFs5AEX7+m5XlZ0OrcGAMjehZZW975ldhozSuJ5UnJ23JRWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFXUtYyu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC681C433C7;
+	Tue, 27 Feb 2024 13:47:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041231;
-	bh=DVvdC+0OYrpjWMCbLU3L3Pyvw602ykE7H+1Hi5slMDA=;
+	s=korg; t=1709041624;
+	bh=gRBoBrU4hJvk3oSPPXkkL464Ktpy/CSnYvEeb0HTtZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1gO0aiQnkKhG+gGIbRE06g9uCIr+l/sRaI8oENFKnhuBr6iFBNJttfIrTC257Yj0J
-	 63+tR0CNCDAVHwhDDMG0HQcMETYD8W1idM4Y5Q3eMB4ztSmkX/bc3/3DQ+dCqYyLIQ
-	 m9r/cpQnGgeHXIxfhnO7OwCjQePJiYLhvV8QDhDk=
+	b=lFXUtYyuTSsKQMi4Kgk7qNtFJJViafwO4VEq9rVuuX76G0Ppv8rcLEiXUdLyfCfGW
+	 Q1GWayVaarPkYzvwmHJbEm3e8nVip9kiiJ5f5tTt3mkzQQOm9O35mNXbs7skaMRbZ1
+	 /DVPq2pYscAAVoZUjeFmD3XuWiJUmbbplCdus2GA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alison Schofield <alison.schofield@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
+	Michal Kazior <michal@plume.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 267/334] x86/numa: Fix the sort compare func used in numa_fill_memblks()
+Subject: [PATCH 6.6 014/299] wifi: cfg80211: fix missing interfaces when dumping
 Date: Tue, 27 Feb 2024 14:22:05 +0100
-Message-ID: <20240227131639.585023974@linuxfoundation.org>
+Message-ID: <20240227131626.293036800@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alison Schofield <alison.schofield@intel.com>
+From: Michal Kazior <michal@plume.com>
 
-[ Upstream commit b626070ffc14acca5b87a2aa5f581db98617584c ]
+[ Upstream commit a6e4f85d3820d00694ed10f581f4c650445dbcda ]
 
-The compare function used to sort memblks into starting address
-order fails when the result of its u64 address subtraction gets
-truncated to an int upon return.
+The nl80211_dump_interface() supports resumption
+in case nl80211_send_iface() doesn't have the
+resources to complete its work.
 
-The impact of the bad sort is that memblks will be filled out
-incorrectly. Depending on the set of memblks, a user may see no
-errors at all but still have a bad fill, or see messages reporting
-a node overlap that leads to numa init failure:
+The logic would store the progress as iteration
+offsets for rdev and wdev loops.
 
-[] node 0 [mem: ] overlaps with node 1 [mem: ]
-[] No NUMA configuration found
+However the logic did not properly handle
+resumption for non-last rdev. Assuming a system
+with 2 rdevs, with 2 wdevs each, this could
+happen:
 
-Replace with a comparison that can only result in: 1, 0, -1.
+ dump(cb=[0, 0]):
+  if_start=cb[1] (=0)
+  send rdev0.wdev0 -> ok
+  send rdev0.wdev1 -> yield
+  cb[1] = 1
 
-Fixes: 8f012db27c95 ("x86/numa: Introduce numa_fill_memblks()")
-Signed-off-by: Alison Schofield <alison.schofield@intel.com>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Link: https://lore.kernel.org/r/99dcb3ae87e04995e9f293f6158dc8fa0749a487.1705085543.git.alison.schofield@intel.com
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+ dump(cb=[0, 1]):
+  if_start=cb[1] (=1)
+  send rdev0.wdev1 -> ok
+  // since if_start=1 the rdev0.wdev0 got skipped
+  // through if_idx < if_start
+  send rdev1.wdev1 -> ok
+
+The if_start needs to be reset back to 0 upon wdev
+loop end.
+
+The problem is actually hard to hit on a desktop,
+and even on most routers. The prerequisites for
+this manifesting was:
+ - more than 1 wiphy
+ - a few handful of interfaces
+ - dump without rdev or wdev filter
+
+I was seeing this with 4 wiphys 9 interfaces each.
+It'd miss 6 interfaces from the last wiphy
+reported to userspace.
+
+Signed-off-by: Michal Kazior <michal@plume.com>
+Link: https://msgid.link/20240116142340.89678-1-kazikcz@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/numa.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/wireless/nl80211.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
-index efc5f1be8d3af..9d63cfff1fd41 100644
---- a/arch/x86/mm/numa.c
-+++ b/arch/x86/mm/numa.c
-@@ -964,7 +964,7 @@ static int __init cmp_memblk(const void *a, const void *b)
- 	const struct numa_memblk *ma = *(const struct numa_memblk **)a;
- 	const struct numa_memblk *mb = *(const struct numa_memblk **)b;
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 0b0dfecedc50a..c8bfacd5c8f3d 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -4012,6 +4012,7 @@ static int nl80211_dump_interface(struct sk_buff *skb, struct netlink_callback *
+ 			if_idx++;
+ 		}
  
--	return ma->start - mb->start;
-+	return (ma->start > mb->start) - (ma->start < mb->start);
- }
- 
- static struct numa_memblk *numa_memblk_list[NR_NODE_MEMBLKS] __initdata;
++		if_start = 0;
+ 		wp_idx++;
+ 	}
+  out:
 -- 
 2.43.0
 
