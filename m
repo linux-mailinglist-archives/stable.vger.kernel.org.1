@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-25176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73C9B86981F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:29:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36D69869667
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:11:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 296741F2C799
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:29:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6613293FF9
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B830146E8D;
-	Tue, 27 Feb 2024 14:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B7DC14037E;
+	Tue, 27 Feb 2024 14:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dn/HGacr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TQXdsALh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6D7145356;
-	Tue, 27 Feb 2024 14:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C9616423;
+	Tue, 27 Feb 2024 14:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044076; cv=none; b=hzAyR8wwrhuthZuWIqWg5Hys2PxJ/4Cs4I4xen6f3+ObdXcTr3C9K3caoRq4IaST6ZAa4ME4pkcmov4Z9yBhXAAY1+1+4ElrnVgSm917dBQmmM/l2lrd36ncmrCnIOMXeo6cK1k7bVKkHfw/F/GsJ0yqEPe2sfMnxZ4vsFHEwf8=
+	t=1709043080; cv=none; b=uN0atJF5lrKfY9TNkrcxI9KF57EHkvCW6vM3882VSBao3F/JZSRKt3pjtglkz2NBFptizZKVr+lCegPmUI/ph0+6LYJhHWPC+VPU4lMtoJaul8/B0KuI8arBuW+YRZscJ7oBkrGDknoRVBXyJkGErjt/EeKDvTPTdwB2CC5f2c8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044076; c=relaxed/simple;
-	bh=YVwBqWLauGOwlq1gWGNcYUuP7a1XHJOE+wftncEfZBY=;
+	s=arc-20240116; t=1709043080; c=relaxed/simple;
+	bh=ggk2P4eQjzbFxDdiaq271//XlFq/sqpCHkmNaCSpwTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MUnzHm88aOEZ2Ut6SccAE2Cipx7NhFVzowTtz6U68M9l8sbHxxsuL9VinilCQMmcz9k1K2A3lvMF3w+QFUWlcafC2VHlgRmj/rgTAnwszQe0lBcLK3zfpHMANm3GjarQLQRfEzvhsHQ1eDMsrK+F5zFyEY3WR8dLND3ZtHwtnQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dn/HGacr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 549EFC43390;
-	Tue, 27 Feb 2024 14:27:55 +0000 (UTC)
+	 MIME-Version; b=FQl5m6GGPTu2jXQnnG2MSNZtoFt/vawUp3QHMzgeKbgV6fqlp2Jc41T+DAkIcWtNV5phvx+Qd5EgyFVWYCiKSg9ttnu8pFc+QzZdVElud1kNvLDypFBJ1ujHyAFT7FuJOjgcwN5uOrltsIkSX8UisbnKUZxsJoP47r2crhDL6ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TQXdsALh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AEF7C433F1;
+	Tue, 27 Feb 2024 14:11:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044075;
-	bh=YVwBqWLauGOwlq1gWGNcYUuP7a1XHJOE+wftncEfZBY=;
+	s=korg; t=1709043080;
+	bh=ggk2P4eQjzbFxDdiaq271//XlFq/sqpCHkmNaCSpwTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dn/HGacri2wtky7+srPbqqFLaqqDAi/OXCDTWV0XMzWlAgkBnXrntv/EuGy0Rvrjj
-	 iOJazPjRQt/QGxKXz2xhTxRr3ZbURM5MBEiMAViYrzpA6ysE9Q0xbeVPkuShY4VNfF
-	 NWrU6Sm7WALqATl/oDBLDq1I0JKoQm7POQ3LD2Jw=
+	b=TQXdsALh2EJnTTSTO1tIxl5miv+kMpComf90oDv8wPaXrxboU6wLR6avL315f+e19
+	 IBcg5Lo3QtPORekLKsLT8hYV6mf7mLBhLdydLbRyyv8AvQZTxr20QCnts6J+8S6TfU
+	 oWT+DGnPUlWEwXpnbeJHNQpBkjCWrmoUbq01up5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Gray <bgray@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 054/122] powerpc/watchpoints: Annotate atomic context in more places
+Subject: [PATCH 5.15 227/245] s390: use the correct count for __iowrite64_copy()
 Date: Tue, 27 Feb 2024 14:26:55 +0100
-Message-ID: <20240227131600.476671712@linuxfoundation.org>
+Message-ID: <20240227131622.563852824@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Gray <bgray@linux.ibm.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 27646b2e02b096a6936b3e3b6ba334ae20763eab ]
+[ Upstream commit 723a2cc8d69d4342b47dfddbfe6c19f1b135f09b ]
 
-It can be easy to miss that the notifier mechanism invokes the callbacks
-in an atomic context, so add some comments to that effect on the two
-handlers we register here.
+The signature for __iowrite64_copy() requires the number of 64 bit
+quantities, not bytes. Multiple by 8 to get to a byte length before
+invoking zpci_memcpy_toio()
 
-Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230829063457.54157-4-bgray@linux.ibm.com
+Fixes: 87bc359b9822 ("s390/pci: speed up __iowrite64_copy by using pci store block insn")
+Acked-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/0-v1-9223d11a7662+1d7785-s390_iowrite64_jgg@nvidia.com
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/hw_breakpoint.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/s390/pci/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/hw_breakpoint.c b/arch/powerpc/kernel/hw_breakpoint.c
-index 49273f67c7498..ca3374c6f3749 100644
---- a/arch/powerpc/kernel/hw_breakpoint.c
-+++ b/arch/powerpc/kernel/hw_breakpoint.c
-@@ -611,6 +611,11 @@ static void handle_p10dd1_spurious_exception(struct arch_hw_breakpoint **info,
- 	}
+diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
+index 56c4cecdbbf9e..8764f0ae6d345 100644
+--- a/arch/s390/pci/pci.c
++++ b/arch/s390/pci/pci.c
+@@ -228,7 +228,7 @@ resource_size_t pcibios_align_resource(void *data, const struct resource *res,
+ /* combine single writes by using store-block insn */
+ void __iowrite64_copy(void __iomem *to, const void *from, size_t count)
+ {
+-       zpci_memcpy_toio(to, from, count);
++	zpci_memcpy_toio(to, from, count * 8);
  }
  
-+/*
-+ * Handle a DABR or DAWR exception.
-+ *
-+ * Called in atomic context.
-+ */
- int hw_breakpoint_handler(struct die_args *args)
- {
- 	bool err = false;
-@@ -737,6 +742,8 @@ NOKPROBE_SYMBOL(hw_breakpoint_handler);
- 
- /*
-  * Handle single-step exceptions following a DABR hit.
-+ *
-+ * Called in atomic context.
-  */
- static int single_step_dabr_instruction(struct die_args *args)
- {
-@@ -794,6 +801,8 @@ NOKPROBE_SYMBOL(single_step_dabr_instruction);
- 
- /*
-  * Handle debug exception notifications.
-+ *
-+ * Called in atomic context.
-  */
- int hw_breakpoint_exceptions_notify(
- 		struct notifier_block *unused, unsigned long val, void *data)
+ static void __iomem *__ioremap(phys_addr_t addr, size_t size, pgprot_t prot)
 -- 
 2.43.0
 
