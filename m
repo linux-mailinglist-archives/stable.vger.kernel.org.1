@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-24740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8CFF86960E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAD268694E4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:57:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63C6028A55B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0AC61F210C2
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:57:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3DE213EFEC;
-	Tue, 27 Feb 2024 14:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F4214199C;
+	Tue, 27 Feb 2024 13:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a2eSGfo3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eSuBcnQp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A347C13B78E;
-	Tue, 27 Feb 2024 14:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F3413F007;
+	Tue, 27 Feb 2024 13:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042859; cv=none; b=bHk+UETgsWJfor2QHGmQGULXREdPMiouqkQu4W+BjcOucEMcoGvMmq3Lg1kcLAL5Eh5BQW1LrvKFJ9vQTewaBwj4jajFN7oZ7/AKp0Q11H8Q33quWNpmcc+yYvbOHq/UIdqCQFwjYlFVPPD9ZfyatxHE2vmW+et+KNeNTJO8GQg=
+	t=1709042228; cv=none; b=dkEU8m0VkGl+CjfxWsln/Lz66ztsns6pFoFFCipz3iBnh1BKKFnNylMZQn2keenIERLmECjhOVRfh79Zzh6V9uB3JjEhUDv0DIvO8qBGB0V9zTOnd1JBSRSXxbxHcYa4WVHXKBcbgEQmn+QkHD3rmAxbzd8CndlJ4EbcK+ngtDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042859; c=relaxed/simple;
-	bh=4jfhCN1eM/K9XkHc+3PICcsKJaRfXKOn1z69hDictu4=;
+	s=arc-20240116; t=1709042228; c=relaxed/simple;
+	bh=PHBpo3aQz7r+ccAEmJgNMkwTiIDX5Jm3lJeC78tlQv4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E0wFLKjfyOBnlIJCcul1kOPb3QjUJb3s8QG44G29WOtBo7ZJ8UvSLfyZ7+Dgo325AIjrjTeAjI7g8uoTclWl8xBM/d7JiJQ0OCr7pBr6Ah06eEDgJCRLRzLYYKRCZJqpPORoUVaqs9IZ/L9EsmVTWhBomDFZSQU0y6nf7LCqcl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a2eSGfo3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F2FDC433F1;
-	Tue, 27 Feb 2024 14:07:39 +0000 (UTC)
+	 MIME-Version; b=BmiXSxWGI3Ju89w4G3C/09nYyEIo7rYBThJWHWMZL4iplMBo+6v5XjFTPIlmFRTp7kMCTrHdb+ndV68/q9f5OMit29gm24cvJ8h2wfzjTTb7IByLDR/FYfrCtl1LQuDRkADIduTFvovN2BoG9js184nYLcpnQD0Kk5lsnDifygg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eSuBcnQp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A987C433C7;
+	Tue, 27 Feb 2024 13:57:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042859;
-	bh=4jfhCN1eM/K9XkHc+3PICcsKJaRfXKOn1z69hDictu4=;
+	s=korg; t=1709042228;
+	bh=PHBpo3aQz7r+ccAEmJgNMkwTiIDX5Jm3lJeC78tlQv4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a2eSGfo39N8XEFxOfli641mR5bfIaBKCs1Py1RV96T6zRrNBLPJWVuprvYaiGB0Qk
-	 sXfCkQ4M0Rxym55g7uf5u+5LZ9wovKD8d7feDWkGjHsHTwYv2CsbHi/1HARmCxvOsG
-	 ZJB4x2KvPHgd1PFzjlJH/tqnSBvERQzJisnZ9+ic=
+	b=eSuBcnQp10cQodksWQmRzTI/Y8x66AN4qF+XZ+Scazv1L33LC4cIK1AVJoqaVZhdw
+	 KWA46KAzo/KdfgOdoLty6aAP/W4sPOeDZzYzy7axo7KTv6FWPnp3Ai4BJPxBcX18jg
+	 EKfgfeYLC0HQalXyu1KKpYMdvauVBsvU/kPBvPAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Avihai Horon <avihaih@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 146/245] serial: 8250: Remove serial_rs485 sanitization from em485
-Date: Tue, 27 Feb 2024 14:25:34 +0100
-Message-ID: <20240227131619.963214212@linuxfoundation.org>
+Subject: [PATCH 6.6 224/299] iommufd/iova_bitmap: Switch iova_bitmap::bitmap to an u8 array
+Date: Tue, 27 Feb 2024 14:25:35 +0100
+Message-ID: <20240227131632.969425697@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,75 +61,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Joao Martins <joao.m.martins@oracle.com>
 
-[ Upstream commit 84f2faa7852e1f55d89bb0c99b3a672b87b11f87 ]
+[ Upstream commit d18411ec305728c6371806c4fb09be07016aad0b ]
 
-Serial core handles serial_rs485 sanitization.
+iova_bitmap_mapped_length() don't deal correctly with the small bitmaps
+(< 2M bitmaps) when the starting address isn't u64 aligned, leading to
+skipping a tiny part of the IOVA range. This is materialized as not
+marking data dirty that should otherwise have been.
 
-When em485 init fails, there are two possible paths of entry:
+Fix that by using a u8 * in the internal state of IOVA bitmap. Most of the
+data structures use the type of the bitmap to adjust its indexes, thus
+changing the type of the bitmap decreases the granularity of the bitmap
+indexes.
 
-  1) uart_rs485_config (init path) that fully clears port->rs485 on
-     error.
-
-  2) ioctl path with a pre-existing, valid port->rs485 unto which the
-     kernel falls back on error and port->rs485 should therefore be
-     kept untouched. The temporary rs485 struct is not returned to
-     userspace in case of error so its flag don't matter.
-
-...Thus SER_RS485_ENABLED clearing on error can/should be dropped.
-
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20220606100433.13793-37-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b058ea3ab5af ("vfio/iova_bitmap: refactor iova_bitmap_set() to better handle page boundaries")
+Link: https://lore.kernel.org/r/20240202133415.23819-3-joao.m.martins@oracle.com
+Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+Tested-by: Avihai Horon <avihaih@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_port.c | 18 ++----------------
- 1 file changed, 2 insertions(+), 16 deletions(-)
+ drivers/vfio/iova_bitmap.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
-index 45a8f76f562e7..4fce318bc83ca 100644
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -670,13 +670,6 @@ int serial8250_em485_config(struct uart_port *port, struct serial_rs485 *rs485)
- 		rs485->flags &= ~SER_RS485_RTS_AFTER_SEND;
- 	}
+diff --git a/drivers/vfio/iova_bitmap.c b/drivers/vfio/iova_bitmap.c
+index 997134a24c025..26ad0912cfea4 100644
+--- a/drivers/vfio/iova_bitmap.c
++++ b/drivers/vfio/iova_bitmap.c
+@@ -100,7 +100,7 @@ struct iova_bitmap {
+ 	struct iova_bitmap_map mapped;
  
--	/* clamp the delays to [0, 100ms] */
--	rs485->delay_rts_before_send = min(rs485->delay_rts_before_send, 100U);
--	rs485->delay_rts_after_send  = min(rs485->delay_rts_after_send, 100U);
--
--	memset(rs485->padding, 0, sizeof(rs485->padding));
--	port->rs485 = *rs485;
--
- 	gpiod_set_value(port->rs485_term_gpio,
- 			rs485->flags & SER_RS485_TERMINATE_BUS);
+ 	/* userspace address of the bitmap */
+-	u64 __user *bitmap;
++	u8 __user *bitmap;
  
-@@ -684,15 +677,8 @@ int serial8250_em485_config(struct uart_port *port, struct serial_rs485 *rs485)
- 	 * Both serial8250_em485_init() and serial8250_em485_destroy()
- 	 * are idempotent.
- 	 */
--	if (rs485->flags & SER_RS485_ENABLED) {
--		int ret = serial8250_em485_init(up);
--
--		if (ret) {
--			rs485->flags &= ~SER_RS485_ENABLED;
--			port->rs485.flags &= ~SER_RS485_ENABLED;
--		}
--		return ret;
--	}
-+	if (rs485->flags & SER_RS485_ENABLED)
-+		return serial8250_em485_init(up);
+ 	/* u64 index that @mapped points to */
+ 	unsigned long mapped_base_index;
+@@ -162,7 +162,7 @@ static int iova_bitmap_get(struct iova_bitmap *bitmap)
+ {
+ 	struct iova_bitmap_map *mapped = &bitmap->mapped;
+ 	unsigned long npages;
+-	u64 __user *addr;
++	u8 __user *addr;
+ 	long ret;
  
- 	serial8250_em485_destroy(up);
- 	return 0;
+ 	/*
+@@ -247,7 +247,7 @@ struct iova_bitmap *iova_bitmap_alloc(unsigned long iova, size_t length,
+ 
+ 	mapped = &bitmap->mapped;
+ 	mapped->pgshift = __ffs(page_size);
+-	bitmap->bitmap = data;
++	bitmap->bitmap = (u8 __user *)data;
+ 	bitmap->mapped_total_index =
+ 		iova_bitmap_offset_to_index(bitmap, length - 1) + 1;
+ 	bitmap->iova = iova;
+@@ -302,7 +302,7 @@ static unsigned long iova_bitmap_mapped_remaining(struct iova_bitmap *bitmap)
+ 
+ 	remaining = bitmap->mapped_total_index - bitmap->mapped_base_index;
+ 	remaining = min_t(unsigned long, remaining,
+-			  bytes / sizeof(*bitmap->bitmap));
++			  DIV_ROUND_UP(bytes, sizeof(*bitmap->bitmap)));
+ 
+ 	return remaining;
+ }
 -- 
 2.43.0
 
