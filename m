@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-24731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC103869605
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C7238696CF
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 726371F2C9EF
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5316E1F2E6EA
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A2F1419A0;
-	Tue, 27 Feb 2024 14:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD65513DBBC;
+	Tue, 27 Feb 2024 14:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ckn1HX2U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d//jhh6Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509581420B0;
-	Tue, 27 Feb 2024 14:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B72278B61;
+	Tue, 27 Feb 2024 14:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042834; cv=none; b=d1HuraEeOWItQ5ynongo09eW4iGDEGe1xGnW2/1GfcDp+IzYr0/mfDvz2zLfdhVGvCW+sFNPXzGfNI0X3mK+pIRFB5AesNvZSQExxut2fP/ueRzsviccedoc7aSxAAiSqqhBGjXGU7zdLW33wqCAMbClBvZex7GiUd0behr9uTg=
+	t=1709043321; cv=none; b=BPVFZKhw3YoN9lhAyXkAb0KDpcn52iGbuwUBxlQJ3NtEKV9NYAIoPsEF2aoaFYvrs1hNILjkKjSxwbrdRQ4lYnfdapK+lr39FGS63XqTcigqGi8aNQn2eMBA8D/3qwG9KcQOEMxVWp/KIzk+2oEjR1OuiOOi3iP8h2UHmVoHI30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042834; c=relaxed/simple;
-	bh=83ssbvYwV3C3oN7ecZwzqNW73BFZn4eZbBpbl6s3EBY=;
+	s=arc-20240116; t=1709043321; c=relaxed/simple;
+	bh=s80ukngunMa83007O6KS9Av1Ra92CvWDItZ3memas0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=scRFQ+wValZJIhQL4K8BGYV0OuestFddj1ZSkUB/X3Sug34x4kMUfB3dP3QDV6T5gTMZa/xQH0nqopVZ5k8rwaeh04l88/6Gv62qFp3IIKd6fcfn80W5sAp5mIJ0LQvxyqX98ymYs5r2/HxnnfhIu1wv/A9GoZcCmN5XdPbc7/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ckn1HX2U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDB87C433F1;
-	Tue, 27 Feb 2024 14:07:13 +0000 (UTC)
+	 MIME-Version; b=t+sKLlFYCebr+qTR/JN7ov3eDsi2a5z87bfz1ngYV/7WAmgztMk477cuM3y9p5tc1wE2qajpxJyMvLJBThk6GTyukFktys1nWfueFYQLc8fPy7zXR06cm3aGW5Cvc8JFWNjgQ5Bcuy5fPxCq1EY8IeoXKBf/PPfen/mHMBvJ4kM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d//jhh6Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B02ECC433F1;
+	Tue, 27 Feb 2024 14:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042834;
-	bh=83ssbvYwV3C3oN7ecZwzqNW73BFZn4eZbBpbl6s3EBY=;
+	s=korg; t=1709043321;
+	bh=s80ukngunMa83007O6KS9Av1Ra92CvWDItZ3memas0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ckn1HX2UiRRpz4egY8sLq+JvYQ7ov5kiYbSx0Rs+cSvnCp47Qq+Fsg7I/aKZaj2GG
-	 0wgywQsp/Wy6bdeWzM58E3eWriJu6BN8eXJCq21Rd/y8DqxU+pxILYeLoTvEx7qD+2
-	 kqhmREXuZOdl2knTXmxwW4MlgVbH31yCd9P8eDI4=
+	b=d//jhh6YeP+ZNjiHc7wz6L5SDsf+6NeMlA+V0/mB23VVq7ErhlICCZtTuFypcdRzJ
+	 SChjZfvE+tvROdIGgyM0Qxq5yc1Nvu9x95F6WcLk6kRLVQFR1vKRIn3Y/8FTZWq89h
+	 nkZEb/LtEqXIXYP4YzsXLpeo7gdkXp+fZJmet2C0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David S. Miller" <davem@davemloft.net>,
-	Florian Westphal <fw@strlen.de>,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 138/245] perf beauty: Update copy of linux/socket.h with the kernel sources
+	Edward Adam Davis <eadavis@qq.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+65e940cfb8f99a97aca7@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 065/195] fs/ntfs3: Fix oob in ntfs_listxattr
 Date: Tue, 27 Feb 2024 14:25:26 +0100
-Message-ID: <20240227131619.697416306@linuxfoundation.org>
+Message-ID: <20240227131612.649593309@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 6da2a45e15af4f706fed211f8eb57a40cc7abfc7 ]
+[ Upstream commit 731ab1f9828800df871c5a7ab9ffe965317d3f15 ]
 
-To pick the changes in:
+The length of name cannot exceed the space occupied by ea.
 
-  99ce45d5e7dbde39 ("mctp: Implement extended addressing")
-  55c42fa7fa331f98 ("mptcp: add MPTCP_INFO getsockopt")
-
-That don't result in any changes in the tables generated from that
-header.
-
-A table generator for setsockopt is needed, probably will be done in the
-5.16 cycle.
-
-This silences this perf build warning:
-
-  Warning: Kernel ABI header at 'tools/perf/trace/beauty/include/linux/socket.h' differs from latest version at 'include/linux/socket.h'
-  diff -u tools/perf/trace/beauty/include/linux/socket.h include/linux/socket.h
-
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Florian Westphal <fw@strlen.de>
-Cc: Jeremy Kerr <jk@codeconstruct.com.au>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Reported-and-tested-by: syzbot+65e940cfb8f99a97aca7@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/trace/beauty/include/linux/socket.h | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/ntfs3/xattr.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/perf/trace/beauty/include/linux/socket.h b/tools/perf/trace/beauty/include/linux/socket.h
-index 041d6032a3489..8ef26d89ef495 100644
---- a/tools/perf/trace/beauty/include/linux/socket.h
-+++ b/tools/perf/trace/beauty/include/linux/socket.h
-@@ -364,6 +364,8 @@ struct ucred {
- #define SOL_KCM		281
- #define SOL_TLS		282
- #define SOL_XDP		283
-+#define SOL_MPTCP	284
-+#define SOL_MCTP	285
+diff --git a/fs/ntfs3/xattr.c b/fs/ntfs3/xattr.c
+index df15e00c2a3a0..d98cf7b382bcc 100644
+--- a/fs/ntfs3/xattr.c
++++ b/fs/ntfs3/xattr.c
+@@ -217,6 +217,9 @@ static ssize_t ntfs_list_ea(struct ntfs_inode *ni, char *buffer,
+ 		if (!ea->name_len)
+ 			break;
  
- /* IPX options */
- #define IPX_TYPE	1
++		if (ea->name_len > ea_size)
++			break;
++
+ 		if (buffer) {
+ 			/* Check if we can use field ea->name */
+ 			if (off + ea_size > size)
 -- 
 2.43.0
 
