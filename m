@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-25097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8E6B8697D0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:25:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF475869766
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:20:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D928EB2CE96
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:24:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48B771F20C28
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:20:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 293E313EFE9;
-	Tue, 27 Feb 2024 14:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A154413B798;
+	Tue, 27 Feb 2024 14:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THkuP3bL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fIz/hrnp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA9813B2B4;
-	Tue, 27 Feb 2024 14:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDFB13B2B4;
+	Tue, 27 Feb 2024 14:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043852; cv=none; b=V31lI8a5Ox0nbZTDrFq1+iGRfh3ipeF0y3xww/AdgdyYPb1nKfj9HvVNcC0Kc/uJCXpXDsy8ncjVAGmnT0tYU6sNRRWz8Edq0TLhdFMgzKke+9SgiaVi0AEvB18NJH475fA9RaZWwBk1LTM2b4xv3pntyfEg/FFANULcmBNzSqA=
+	t=1709043655; cv=none; b=KduTd6OOWFE5IETEu8ljQ9bGMGY4FqmLvjarS97LZakHshFCHpj7CNX30w2ggch/Rx8cxUJs5a0B3AsqBW+rBj82WwhLl61wlkDKxITGkZVNYhEjC6BT1hnRlMjO19OyetsNQP0aXT4TeQThsbzvYo+8JrfXUZiAFH/QfOpcbQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043852; c=relaxed/simple;
-	bh=PKjYFojhrMNMd5sxK0GgJSvN1pB6lCctC0BnVOwvCpU=;
+	s=arc-20240116; t=1709043655; c=relaxed/simple;
+	bh=Kx7iqq5AmS4419V3U4+gnLZm7wOoAk+pw/cBc6sRs0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SV6AaBYUCTS1XApTB7v4DePMTgiTHCZoa80OwRZZMo0P6Bu6Ot/7RWnhW7/6Re6kuJjZPTav5K6XCrZFruCpgj+8Jc5QLABmnqD53IUbUPHXqkBqGrU8sv0UzSwS9P6IdJyZZigcs6WBeVUxgHm4EmjSrlMjje9X/MY63NFyILo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=THkuP3bL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D0DBC43390;
-	Tue, 27 Feb 2024 14:24:11 +0000 (UTC)
+	 MIME-Version; b=fq4SygoPMvNOvSvhgZmRoBYdU3PF1FgGfxixfGkwM840icd1sl5ic+D2D0oYbHWOQ0kF1lxkDWwI3pkbEqCs0IHKSqIw3EgQwUZRBax5r3mAUJ9+7f2LuESofe4wtwFa2jWhULpjDJqu69rurW/a4PqwNCiTd5mQnfNaQeT5JlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fIz/hrnp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D88C43390;
+	Tue, 27 Feb 2024 14:20:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043851;
-	bh=PKjYFojhrMNMd5sxK0GgJSvN1pB6lCctC0BnVOwvCpU=;
+	s=korg; t=1709043655;
+	bh=Kx7iqq5AmS4419V3U4+gnLZm7wOoAk+pw/cBc6sRs0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=THkuP3bL8B10BvUAyxTtXsRMzPkZiYNoxWm6ZgJYP4uaYrO3qmCXb0IftjjJboDHI
-	 d5WvHT8A1y9pF5TjVuwAYwglnk1CI8laIkV5hc4rKkzPW2cC+0TapLrvhjkdnWgCgB
-	 WEvP95jnFDJSuG3rVYbCk2BpKgwN/7J/Vj5+dNHI=
+	b=fIz/hrnpmYE0CY08bacEzS7tkASj+ApR4UuyjeE7VwOeXAjL/nVPr+9OAJBpngINy
+	 GkGV7qbtTkfMODPbg07JV0F8Fsj1ZGP3Q73/ehqU9pmolOLk2fINj3M3uqmDgGAvh1
+	 P+YQkwniLnadT1p79h667a0CFDc7jLrD3BH56jkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 5.4 59/84] usb: cdns3: fixed memory use after free at cdns3_gadget_ep_disable()
-Date: Tue, 27 Feb 2024 14:27:26 +0100
-Message-ID: <20240227131554.792748345@linuxfoundation.org>
+	bugreport@ubisectech.com,
+	Yue Hu <huyue2@coolpad.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>
+Subject: [PATCH 6.1 186/195] erofs: fix inconsistent per-file compression format
+Date: Tue, 27 Feb 2024 14:27:27 +0100
+Message-ID: <20240227131616.540945753@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-commit cd45f99034b0c8c9cb346dd0d6407a95ca3d36f6 upstream.
+commit 118a8cf504d7dfa519562d000f423ee3ca75d2c4 upstream.
 
-  ...
-  cdns3_gadget_ep_free_request(&priv_ep->endpoint, &priv_req->request);
-  list_del_init(&priv_req->list);
-  ...
+EROFS can select compression algorithms on a per-file basis, and each
+per-file compression algorithm needs to be marked in the on-disk
+superblock for initialization.
 
-'priv_req' actually free at cdns3_gadget_ep_free_request(). But
-list_del_init() use priv_req->list after it.
+However, syzkaller can generate inconsistent crafted images that use
+an unsupported algorithmtype for specific inodes, e.g. use MicroLZMA
+algorithmtype even it's not set in `sbi->available_compr_algs`.  This
+can lead to an unexpected "BUG: kernel NULL pointer dereference" if
+the corresponding decompressor isn't built-in.
 
-[ 1542.642868][  T534] BUG: KFENCE: use-after-free read in __list_del_entry_valid+0x10/0xd4
-[ 1542.642868][  T534]
-[ 1542.653162][  T534] Use-after-free read at 0x000000009ed0ba99 (in kfence-#3):
-[ 1542.660311][  T534]  __list_del_entry_valid+0x10/0xd4
-[ 1542.665375][  T534]  cdns3_gadget_ep_disable+0x1f8/0x388 [cdns3]
-[ 1542.671571][  T534]  usb_ep_disable+0x44/0xe4
-[ 1542.675948][  T534]  ffs_func_eps_disable+0x64/0xc8
-[ 1542.680839][  T534]  ffs_func_set_alt+0x74/0x368
-[ 1542.685478][  T534]  ffs_func_disable+0x18/0x28
+Fix this by checking against `sbi->available_compr_algs` for each
+m_algorithmformat request.  Incorrect !erofs_sb_has_compr_cfgs preset
+bitmap is now fixed together since it was harmless previously.
 
-Move list_del_init() before cdns3_gadget_ep_free_request() to resolve this
-problem.
-
-Cc: stable@vger.kernel.org
-Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20240202154217.661867-1-Frank.Li@nxp.com
+Reported-by: <bugreport@ubisectech.com>
+Fixes: 8f89926290c4 ("erofs: get compression algorithms directly on mapping")
+Fixes: 622ceaddb764 ("erofs: lzma compression support")
+Reviewed-by: Yue Hu <huyue2@coolpad.com>
+Link: https://lore.kernel.org/r/20240113150602.1471050-1-hsiangkao@linux.alibaba.com
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Yue Hu <huyue2@coolpad.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/cdns3/gadget.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/erofs/decompressor.c |    2 +-
+ fs/erofs/zmap.c         |   23 +++++++++++++----------
+ 2 files changed, 14 insertions(+), 11 deletions(-)
 
---- a/drivers/usb/cdns3/gadget.c
-+++ b/drivers/usb/cdns3/gadget.c
-@@ -1951,11 +1951,11 @@ static int cdns3_gadget_ep_disable(struc
+--- a/fs/erofs/decompressor.c
++++ b/fs/erofs/decompressor.c
+@@ -396,7 +396,7 @@ int z_erofs_parse_cfgs(struct super_bloc
+ 	int size, ret = 0;
  
- 	while (!list_empty(&priv_ep->wa2_descmiss_req_list)) {
- 		priv_req = cdns3_next_priv_request(&priv_ep->wa2_descmiss_req_list);
-+		list_del_init(&priv_req->list);
- 
- 		kfree(priv_req->request.buf);
- 		cdns3_gadget_ep_free_request(&priv_ep->endpoint,
- 					     &priv_req->request);
--		list_del_init(&priv_req->list);
- 		--priv_ep->wa2_counter;
+ 	if (!erofs_sb_has_compr_cfgs(sbi)) {
+-		sbi->available_compr_algs = Z_EROFS_COMPRESSION_LZ4;
++		sbi->available_compr_algs = 1 << Z_EROFS_COMPRESSION_LZ4;
+ 		return z_erofs_load_lz4_config(sb, dsb, NULL, 0);
  	}
  
+--- a/fs/erofs/zmap.c
++++ b/fs/erofs/zmap.c
+@@ -610,7 +610,7 @@ static int z_erofs_do_map_blocks(struct
+ 		.map = map,
+ 	};
+ 	int err = 0;
+-	unsigned int lclusterbits, endoff;
++	unsigned int lclusterbits, endoff, afmt;
+ 	unsigned long initial_lcn;
+ 	unsigned long long ofs, end;
+ 
+@@ -700,17 +700,20 @@ static int z_erofs_do_map_blocks(struct
+ 			err = -EFSCORRUPTED;
+ 			goto unmap_out;
+ 		}
+-		if (vi->z_advise & Z_EROFS_ADVISE_INTERLACED_PCLUSTER)
+-			map->m_algorithmformat =
+-				Z_EROFS_COMPRESSION_INTERLACED;
+-		else
+-			map->m_algorithmformat =
+-				Z_EROFS_COMPRESSION_SHIFTED;
+-	} else if (m.headtype == Z_EROFS_VLE_CLUSTER_TYPE_HEAD2) {
+-		map->m_algorithmformat = vi->z_algorithmtype[1];
++		afmt = vi->z_advise & Z_EROFS_ADVISE_INTERLACED_PCLUSTER ?
++			Z_EROFS_COMPRESSION_INTERLACED :
++			Z_EROFS_COMPRESSION_SHIFTED;
+ 	} else {
+-		map->m_algorithmformat = vi->z_algorithmtype[0];
++		afmt = m.headtype == Z_EROFS_VLE_CLUSTER_TYPE_HEAD2 ?
++			vi->z_algorithmtype[1] : vi->z_algorithmtype[0];
++		if (!(EROFS_I_SB(inode)->available_compr_algs & (1 << afmt))) {
++			erofs_err(inode->i_sb, "inconsistent algorithmtype %u for nid %llu",
++				  afmt, vi->nid);
++			err = -EFSCORRUPTED;
++			goto unmap_out;
++		}
+ 	}
++	map->m_algorithmformat = afmt;
+ 
+ 	if ((flags & EROFS_GET_BLOCKS_FIEMAP) ||
+ 	    ((flags & EROFS_GET_BLOCKS_READMORE) &&
 
 
 
