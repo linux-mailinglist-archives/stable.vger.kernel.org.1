@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BDBC869547
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:00:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0CF1869719
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:18:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2505C287679
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:00:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EA8E1C20E8E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:18:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 479E91419AA;
-	Tue, 27 Feb 2024 14:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B5F13EFE9;
+	Tue, 27 Feb 2024 14:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J41daLub"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mfLmgJj/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C8B13AA50;
-	Tue, 27 Feb 2024 14:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8456613B78F;
+	Tue, 27 Feb 2024 14:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042432; cv=none; b=ZMpkHc5UUcTpGH6c0U3zAhgCWj3kugvWN/Yz7RKIZaYo1EFo5udw4LKkRsoh9sOdnKi87ExayG+c6yKfV5XawMAOJ8ARnhjtfO2dfxSuvH4y0O46AMwtRgIB1ZqvAaIUgqzzUi0+nMaOp0f7ZJuJDlpOkXjjHgPA4+EfuhEcb/E=
+	t=1709043489; cv=none; b=KEg8YuC9O2iVYZGvovwyEGrFSYaC9qCFskm2GxqWKb8LDXRONJ5f5p9z1/cFiuFPAZW2835Yv6cpTAqoJyZxNl56Fd0AtRkq6LbYmphiju8Jz3ijtFJNhOyjZTBQoRgDE+JVuvjjbTYOIcLH6bluFCQuydqAFcbULqiqCNdibmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042432; c=relaxed/simple;
-	bh=aC6fjPYa4sJUwFyXThyDt4gr6SYH0XXPcgLreB2+VBg=;
+	s=arc-20240116; t=1709043489; c=relaxed/simple;
+	bh=HMzUSWLnYM2gmTwzSjZYCYRKUaWCUeIjfkcl9HL4ADE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R17wEqKznRTASrwaCBNW7/r+pCnEIbtEjNMsidCSiHsw2WKaWYloYX8uf0caQNoyuhTBXd1NbXivilkd1bRNDuF31HrmCM76y3PyOK8BSVO3X/rRRgy30fkGZgy+LhqJ6rkRf8+rXtofHNW6i6HawLgoqmn76vFRLJ9iHQ5DLzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J41daLub; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 481F4C433C7;
-	Tue, 27 Feb 2024 14:00:29 +0000 (UTC)
+	 MIME-Version; b=ZJDK8Vjb9jhLR2rdKgpW9mesxZS+VYEU/vJ7UD7Al8jzgXKExUDoHU6yJEKVJdcwOjH0L6Kq1IKTU35g2t5gZhLeoioz6kPhwFEM2aEqU8ln9nwYUM6yRhMe2NZxE+zUpj/lvkjkteN42ZPXKcs9ys80/wtyByEYqzX7fa5ykMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mfLmgJj/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 158FCC433F1;
+	Tue, 27 Feb 2024 14:18:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042429;
-	bh=aC6fjPYa4sJUwFyXThyDt4gr6SYH0XXPcgLreB2+VBg=;
+	s=korg; t=1709043489;
+	bh=HMzUSWLnYM2gmTwzSjZYCYRKUaWCUeIjfkcl9HL4ADE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J41daLubMyYXwV5EB2KLOFBGV3QXscfhJ1gqSyOgjX4cWzq4g7nmi52WHEPduHiAG
-	 uFXHH7uzg7ImoNYDtdnNsjXQB91fjxTDU5UcclcWSRKgge20JSxu/1m1LOy7/B9xZ0
-	 besxDrTNGxiLMiHDAf0Gy9UmFYbJkRFWnOVUC2Nk=
+	b=mfLmgJj/cQT1zccEUXFH1m3BJIQWAQl548bhTWzX0RRi4Peccudvz0RnyDk7MQu2C
+	 grjmNy3iJbacd4bi/1LBCxVY/+E6xDcshfeV2WvEOvjhoHKqkMaqDVEBPf7Fwp77QQ
+	 mXHGCx5/wPUI2F+Ml4PqOVQT26w08Sjwcsz5VFz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 275/299] netfilter: nf_tables: use kzalloc for hook allocation
-Date: Tue, 27 Feb 2024 14:26:26 +0100
-Message-ID: <20240227131634.527809975@linuxfoundation.org>
+	Geliang Tang <geliang.tang@suse.com>,
+	Matthieu Baerts <matthieu.baerts@tessares.net>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 126/195] mptcp: make userspace_pm_append_new_local_addr static
+Date: Tue, 27 Feb 2024 14:26:27 +0100
+Message-ID: <20240227131614.606100332@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Geliang Tang <geliang.tang@suse.com>
 
-[ Upstream commit 195e5f88c2e48330ba5483e0bad2de3b3fad484f ]
+commit aa5887dca2d236fc50000e27023d4d78dce3af30 upstream.
 
-KMSAN reports unitialized variable when registering the hook,
-   reg->hook_ops_type == NF_HOOK_OP_BPF)
-        ~~~~~~~~~~~ undefined
+mptcp_userspace_pm_append_new_local_addr() has always exclusively been
+used in pm_userspace.c since its introduction in
+commit 4638de5aefe5 ("mptcp: handle local addrs announced by userspace PMs").
 
-This is a small structure, just use kzalloc to make sure this
-won't happen again when new fields get added to nf_hook_ops.
+So make it static.
 
-Fixes: 7b4b2fa37587 ("netfilter: annotate nf_tables base hook ops")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Geliang Tang <geliang.tang@suse.com>
+Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/pm_userspace.c |    4 ++--
+ net/mptcp/protocol.h     |    2 --
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 36fdce00bdab4..8808d78d65235 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -2084,7 +2084,7 @@ static struct nft_hook *nft_netdev_hook_alloc(struct net *net,
- 	struct nft_hook *hook;
- 	int err;
+--- a/net/mptcp/pm_userspace.c
++++ b/net/mptcp/pm_userspace.c
+@@ -25,8 +25,8 @@ void mptcp_free_local_addr_list(struct m
+ 	}
+ }
  
--	hook = kmalloc(sizeof(struct nft_hook), GFP_KERNEL_ACCOUNT);
-+	hook = kzalloc(sizeof(struct nft_hook), GFP_KERNEL_ACCOUNT);
- 	if (!hook) {
- 		err = -ENOMEM;
- 		goto err_hook_alloc;
--- 
-2.43.0
-
+-int mptcp_userspace_pm_append_new_local_addr(struct mptcp_sock *msk,
+-					     struct mptcp_pm_addr_entry *entry)
++static int mptcp_userspace_pm_append_new_local_addr(struct mptcp_sock *msk,
++						    struct mptcp_pm_addr_entry *entry)
+ {
+ 	DECLARE_BITMAP(id_bitmap, MPTCP_PM_MAX_ADDR_ID + 1);
+ 	struct mptcp_pm_addr_entry *match = NULL;
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -834,8 +834,6 @@ void mptcp_pm_remove_addrs(struct mptcp_
+ void mptcp_pm_remove_addrs_and_subflows(struct mptcp_sock *msk,
+ 					struct list_head *rm_list);
+ 
+-int mptcp_userspace_pm_append_new_local_addr(struct mptcp_sock *msk,
+-					     struct mptcp_pm_addr_entry *entry);
+ void mptcp_free_local_addr_list(struct mptcp_sock *msk);
+ int mptcp_nl_cmd_announce(struct sk_buff *skb, struct genl_info *info);
+ int mptcp_nl_cmd_remove(struct sk_buff *skb, struct genl_info *info);
 
 
 
