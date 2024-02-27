@@ -1,66 +1,57 @@
-Return-Path: <stable+bounces-24275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FB8986955E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:01:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FAE0869514
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:58:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D711BB2DC3E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:47:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AF1828F5AE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:58:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8354B13B295;
-	Tue, 27 Feb 2024 13:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCAD013B7A0;
+	Tue, 27 Feb 2024 13:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gfvrwuXp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kXJKH9N+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4287A13EFE4;
-	Tue, 27 Feb 2024 13:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C09654BD4;
+	Tue, 27 Feb 2024 13:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041526; cv=none; b=fKIPxo6c1DMl48DSrLXUu+YERA2lQN06d7OHEVUCBqaKmRNHqyyie7O45COisp1dXSia6fc8OdaLbq55WPvq0QUl5eXaM2YRZEX1qY3tGv9ApU+bp4rUgnUSAaR5uYIPsAJvrUJ93CintMl3PSq71BFXE4gR2aJkPD52fWdri4A=
+	t=1709042311; cv=none; b=UKd0aO21ZuKC8/dAnw6M57MlpPwYqpsYRhCCQ7PqP64yM/wwcRVGFaBbgSU2HLXyBypyHlNoTvSOZo0ljPCNK1U/YE/bY71NSchkWyvbZPU/FjP7TevIVWTwbU9K/xlWhfE10KZhrnFT7cGUS+WZcrpcQL8AZlY6C22t+KjYia0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041526; c=relaxed/simple;
-	bh=ryuRZcHNWj0XjxsvCAWgoYFgnyOimq+2e+u4fPa2hko=;
+	s=arc-20240116; t=1709042311; c=relaxed/simple;
+	bh=N0yLrMNiu//0OAgJexN6lR6vSEYf/Hd1KzGppZH9DNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YTupAe+uAMZWfUGa6Fto79IYjOwzorKekKZz2ndSVtsm71WHllmebd1MtQx8WNsxQYCOdybFxLt6HMVPQsdhB+HG8KCUajuLh6hXMLZv0xilaMrDL2xEjZWmz8ZqHcDbtM9TW2rRk2TNCk39pgs89CAYVP12C7vSdnw7p5ymsHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gfvrwuXp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9689DC433C7;
-	Tue, 27 Feb 2024 13:45:25 +0000 (UTC)
+	 MIME-Version; b=jMbtz+zLtZpjrHHsgPruNZNT01OotFkNWCleLYbbG8kisxbeR7OmhZzXOnoO7R9nyDZXoj1FLJMthAV24lBOAeWsq/tfYdcGRn/QhFKjup4aYMaaHDD7fmhjJrRlr+1tJkU/VziSoZiwnEnCpp8DGTFzAhYONLPjbBUHhiGvbgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kXJKH9N+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA4AC433C7;
+	Tue, 27 Feb 2024 13:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041526;
-	bh=ryuRZcHNWj0XjxsvCAWgoYFgnyOimq+2e+u4fPa2hko=;
+	s=korg; t=1709042311;
+	bh=N0yLrMNiu//0OAgJexN6lR6vSEYf/Hd1KzGppZH9DNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gfvrwuXpAu6YzKUZRPoN3K1iWTKaIxUYU5Iq/8KTYSFRfxuVbjI8esJQPBfgdvGSu
-	 j9cBg6u1vZLWaMhuWDkFgM7QyYbbNvoqKeK1V9WgthxyE51sQ1JpZC0N49iIBxcjMq
-	 Z74SQtYxbtUt1Ov5H5Kt/EiffUAVLlrnAoBxTEMo=
+	b=kXJKH9N+dP7C8t6EWX98R76C1Tb3l8WTieOBWe7bXbAwHL9Vn0uYC29s2xD4cYUj9
+	 y8QTtYoSYS+v5ftj2zNuw6IsGYdhgjCuZ2piy24bKgN85b7oTWbK+IftEvUdwmM7eK
+	 vWVACxdPa3Ed9fsttovwMcfjvtOmTzGrooHSOPhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lokesh Gidra <lokeshgidra@google.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Brian Geffon <bgeffon@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Jann Horn <jannh@google.com>,
-	Kalesh Singh <kaleshsingh@google.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Nicolas Geoffray <ngeoffray@google.com>,
-	Peter Xu <peterx@redhat.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 08/52] userfaultfd: fix mmap_changing checking in mfill_atomic_hugetlb
+	Pavel Sakharov <p.sakharov@ispras.ru>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 244/299] net: stmmac: Fix incorrect dereference in interrupt handlers
 Date: Tue, 27 Feb 2024 14:25:55 +0100
-Message-ID: <20240227131548.806329212@linuxfoundation.org>
+Message-ID: <20240227131633.579878110@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
-References: <20240227131548.514622258@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,85 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lokesh Gidra <lokeshgidra@google.com>
+From: Pavel Sakharov <p.sakharov@ispras.ru>
 
-commit 67695f18d55924b2013534ef3bdc363bc9e14605 upstream.
+[ Upstream commit 97dde84026339e4b4af9a6301f825d1828d7874b ]
 
-In mfill_atomic_hugetlb(), mmap_changing isn't being checked
-again if we drop mmap_lock and reacquire it. When the lock is not held,
-mmap_changing could have been incremented. This is also inconsistent
-with the behavior in mfill_atomic().
+If 'dev' or 'data' is NULL, the 'priv' variable has an incorrect address
+when dereferencing calling netdev_err().
 
-Link: https://lkml.kernel.org/r/20240117223729.1444522-1-lokeshgidra@google.com
-Fixes: df2cc96e77011 ("userfaultfd: prevent non-cooperative events vs mcopy_atomic races")
-Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Brian Geffon <bgeffon@google.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Kalesh Singh <kaleshsingh@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Nicolas Geoffray <ngeoffray@google.com>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Since we get as 'dev_id' or 'data' what was passed as the 'dev' argument
+to request_irq() during interrupt initialization (that is, the net_device
+and rx/tx queue pointers initialized at the time of the call) and since
+there are usually no checks for the 'dev_id' argument in such handlers
+in other drivers, remove these checks from the handlers in stmmac driver.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 8532f613bc78 ("net: stmmac: introduce MSI Interrupt routines for mac, safety, RX & TX")
+Signed-off-by: Pavel Sakharov <p.sakharov@ispras.ru>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/userfaultfd.c |   14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 20 -------------------
+ 1 file changed, 20 deletions(-)
 
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -179,6 +179,7 @@ static __always_inline ssize_t __mcopy_a
- 					      unsigned long dst_start,
- 					      unsigned long src_start,
- 					      unsigned long len,
-+					      bool *mmap_changing,
- 					      bool zeropage)
- {
- 	int vm_alloc_shared = dst_vma->vm_flags & VM_SHARED;
-@@ -310,6 +311,15 @@ retry:
- 				goto out;
- 			}
- 			down_read(&dst_mm->mmap_sem);
-+			/*
-+			 * If memory mappings are changing because of non-cooperative
-+			 * operation (e.g. mremap) running in parallel, bail out and
-+			 * request the user to retry later
-+			 */
-+			if (mmap_changing && READ_ONCE(*mmap_changing)) {
-+				err = -EAGAIN;
-+				break;
-+			}
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index f1614ad2daaa7..5b3423d1af3f3 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -5951,11 +5951,6 @@ static irqreturn_t stmmac_mac_interrupt(int irq, void *dev_id)
+ 	struct net_device *dev = (struct net_device *)dev_id;
+ 	struct stmmac_priv *priv = netdev_priv(dev);
  
- 			dst_vma = NULL;
- 			goto retry;
-@@ -391,6 +401,7 @@ extern ssize_t __mcopy_atomic_hugetlb(st
- 				      unsigned long dst_start,
- 				      unsigned long src_start,
- 				      unsigned long len,
-+				      bool *mmap_changing,
- 				      bool zeropage);
- #endif /* CONFIG_HUGETLB_PAGE */
+-	if (unlikely(!dev)) {
+-		netdev_err(priv->dev, "%s: invalid dev pointer\n", __func__);
+-		return IRQ_NONE;
+-	}
+-
+ 	/* Check if adapter is up */
+ 	if (test_bit(STMMAC_DOWN, &priv->state))
+ 		return IRQ_HANDLED;
+@@ -5971,11 +5966,6 @@ static irqreturn_t stmmac_safety_interrupt(int irq, void *dev_id)
+ 	struct net_device *dev = (struct net_device *)dev_id;
+ 	struct stmmac_priv *priv = netdev_priv(dev);
  
-@@ -508,7 +519,8 @@ retry:
- 	 */
- 	if (is_vm_hugetlb_page(dst_vma))
- 		return  __mcopy_atomic_hugetlb(dst_mm, dst_vma, dst_start,
--						src_start, len, zeropage);
-+					       src_start, len, mmap_changing,
-+					       zeropage);
+-	if (unlikely(!dev)) {
+-		netdev_err(priv->dev, "%s: invalid dev pointer\n", __func__);
+-		return IRQ_NONE;
+-	}
+-
+ 	/* Check if adapter is up */
+ 	if (test_bit(STMMAC_DOWN, &priv->state))
+ 		return IRQ_HANDLED;
+@@ -5997,11 +5987,6 @@ static irqreturn_t stmmac_msi_intr_tx(int irq, void *data)
+ 	dma_conf = container_of(tx_q, struct stmmac_dma_conf, tx_queue[chan]);
+ 	priv = container_of(dma_conf, struct stmmac_priv, dma_conf);
  
- 	if (!vma_is_anonymous(dst_vma) && !vma_is_shmem(dst_vma))
- 		goto out_unlock;
+-	if (unlikely(!data)) {
+-		netdev_err(priv->dev, "%s: invalid dev pointer\n", __func__);
+-		return IRQ_NONE;
+-	}
+-
+ 	/* Check if adapter is up */
+ 	if (test_bit(STMMAC_DOWN, &priv->state))
+ 		return IRQ_HANDLED;
+@@ -6028,11 +6013,6 @@ static irqreturn_t stmmac_msi_intr_rx(int irq, void *data)
+ 	dma_conf = container_of(rx_q, struct stmmac_dma_conf, rx_queue[chan]);
+ 	priv = container_of(dma_conf, struct stmmac_priv, dma_conf);
+ 
+-	if (unlikely(!data)) {
+-		netdev_err(priv->dev, "%s: invalid dev pointer\n", __func__);
+-		return IRQ_NONE;
+-	}
+-
+ 	/* Check if adapter is up */
+ 	if (test_bit(STMMAC_DOWN, &priv->state))
+ 		return IRQ_HANDLED;
+-- 
+2.43.0
+
 
 
 
