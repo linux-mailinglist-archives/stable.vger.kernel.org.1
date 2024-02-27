@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-25037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7869786977D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:21:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6444C86982C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:29:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B2CEB2B8E3
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:21:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1908429496F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:29:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D8B13B798;
-	Tue, 27 Feb 2024 14:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F21145B2C;
+	Tue, 27 Feb 2024 14:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1gQfnaj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ePz5Wi1y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 200FD13B2B4;
-	Tue, 27 Feb 2024 14:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C126B145B25;
+	Tue, 27 Feb 2024 14:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043680; cv=none; b=ap3E1GSQgcrmN/tfMHSFCb132rC7htiW0pDuqjJ7c/99S8z4jer26MM7Y3/0cA0Zdih5vxVIrqsbYdaAhN891UOCkrOBiFCc7BcLded7LC3ZWAmI6Amw8nn5BjGnk9i2kv+bmww2HGhNUuxLny1farRFAT14h+5N/srPtP6wB8Q=
+	t=1709044114; cv=none; b=fodpCDfUREQ2sb/YX4xrHDu0JiHt7NYD2xYjKilkI+r6VU56i+WmB4eAt6amAJoEXRrxip6TP/hkKmmsFZ2BEbadCQnrjP6AD8QuGZQE8t9mn2VEvsfqY+7tgcijHKmrU/grMdSxkdLg/bRkKTPBOfsDN8kCPqGKyV9ka8pagzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043680; c=relaxed/simple;
-	bh=xVAOF8cuXwG3iUc6jZ32KHzQHhbfT+RmFXoAZIVkmDc=;
+	s=arc-20240116; t=1709044114; c=relaxed/simple;
+	bh=rNmrItn4QQavFu6ARBxT5/r8lSw+Jv4mGe++ef1XrEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=txHMe1QNCl3KlK24G2DZT4evwTRnhVkZEF38QKMnKlpny37Zw1jGgR+ngJKmySscz8ebYKlHbhNNZmpMk8HUWOjnl2fZf5Nx6/+2bK1LpHaQ8YzM5Ziybk/G3a1VzXoZYjLqbcW7xlFvjIhn0Xy628miKbZWC+onwXFs++pyqus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A1gQfnaj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F2E9C433F1;
-	Tue, 27 Feb 2024 14:21:19 +0000 (UTC)
+	 MIME-Version; b=Bo2AAtY5++KuN/CfY/nHqQUQ+nZZfQK1j1ofZMlaz2d6tHLGzA1FNXPZqmdiUPX9gSQU73Ig/9lvZGGMwkkXtlhKou1TkdvxqiqZYhxPW15K7VA+MSc7r9jcCfeXU2yCFM0IzHOk/Fo94F6E73SHdwW79K3e+/zslPsRwVnBsCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ePz5Wi1y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1590C433C7;
+	Tue, 27 Feb 2024 14:28:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043680;
-	bh=xVAOF8cuXwG3iUc6jZ32KHzQHhbfT+RmFXoAZIVkmDc=;
+	s=korg; t=1709044114;
+	bh=rNmrItn4QQavFu6ARBxT5/r8lSw+Jv4mGe++ef1XrEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A1gQfnajkUuDS/tT5vZ3YkVNS6Q7DIAJBZXcRHWe+AXX9cT3/2jfXd6b+DLaQcZ6t
-	 bMc1cN2NJYG8LPmpzLR0TsnmUlDvZS32SKkwQcZao3oJUB06WKR3yFk1zPJlViJDXs
-	 DTRs/miDB8GPlhPgMc1Vx1BoBajUNFhjhjpeDkSc=
+	b=ePz5Wi1y0FWZUvl7wf5cPo14UEjVbR3craNv/cvDEeETBjvpTLoLcDKMaNRs951OD
+	 xmHYiwj/i3cY7rh7KdtztyT7UUNnDppVrcp77bdVksDn+H2V0F4JUFIO8jNiDX+6pI
+	 iGM6enRx+I3c5VUN+iA22DfRHTadNJrknmyb8cy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Luca Coelho <luciano.coelho@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 167/195] tls: stop recv() if initial process_rx_list gave us non-DATA
+Subject: [PATCH 5.10 067/122] iwlwifi: mvm: do more useful queue sync accounting
 Date: Tue, 27 Feb 2024 14:27:08 +0100
-Message-ID: <20240227131615.924910161@linuxfoundation.org>
+Message-ID: <20240227131600.894920980@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit fdfbaec5923d9359698cbb286bc0deadbb717504 ]
+[ Upstream commit 2f7a04c7b03b7fd63b7618e29295fc25732faac1 ]
 
-If we have a non-DATA record on the rx_list and another record of the
-same type still on the queue, we will end up merging them:
- - process_rx_list copies the non-DATA record
- - we start the loop and process the first available record since it's
-   of the same type
- - we break out of the loop since the record was not DATA
+We're currently doing accounting on the queue sync with an
+atomic variable that counts down the number of remaining
+notifications that we still need.
 
-Just check the record type and jump to the end in case process_rx_list
-did some work.
+As we've been hitting issues in this area, modify this to
+track a bitmap of queues, not just the number of queues,
+and print out the remaining bitmap in the warning.
 
-Fixes: 692d7b5d1f91 ("tls: Fix recvmsg() to be able to peek across multiple records")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/r/bd31449e43bd4b6ff546f5c51cf958c31c511deb.1708007371.git.sd@queasysnail.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Link: https://lore.kernel.org/r/iwlwifi.20201209231352.0a3fa177cd6b.I7c69ff999419368266279ec27dd618eb450908b3@changeid
+Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+Stable-dep-of: 5f8a3561ea8b ("iwlwifi: mvm: write queue_sync_state only for sync")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 11 ++++++-----
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h      |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c      |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c     | 10 +++++++---
+ 4 files changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index cd86c271c1348..20d2877bf22ad 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -2044,7 +2044,7 @@ int tls_sw_recvmsg(struct sock *sk,
- 		goto end;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index d2c6fdb702732..f2096729ac5ac 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -5155,8 +5155,7 @@ void iwl_mvm_sync_rx_queues_internal(struct iwl_mvm *mvm,
  
- 	copied = err;
--	if (len <= copied)
-+	if (len <= copied || (copied && control != TLS_RECORD_TYPE_DATA))
- 		goto end;
+ 	if (notif->sync) {
+ 		notif->cookie = mvm->queue_sync_cookie;
+-		atomic_set(&mvm->queue_sync_counter,
+-			   mvm->trans->num_rx_queues);
++		mvm->queue_sync_state = (1 << mvm->trans->num_rx_queues) - 1;
+ 	}
  
- 	target = sock_rcvlowat(sk, flags & MSG_WAITALL, len);
+ 	ret = iwl_mvm_notify_rx_queue(mvm, qmask, (u8 *)notif,
+@@ -5169,14 +5168,16 @@ void iwl_mvm_sync_rx_queues_internal(struct iwl_mvm *mvm,
+ 	if (notif->sync) {
+ 		lockdep_assert_held(&mvm->mutex);
+ 		ret = wait_event_timeout(mvm->rx_sync_waitq,
+-					 atomic_read(&mvm->queue_sync_counter) == 0 ||
++					 READ_ONCE(mvm->queue_sync_state) == 0 ||
+ 					 iwl_mvm_is_radio_killed(mvm),
+ 					 HZ);
+-		WARN_ON_ONCE(!ret && !iwl_mvm_is_radio_killed(mvm));
++		WARN_ONCE(!ret && !iwl_mvm_is_radio_killed(mvm),
++			  "queue sync: failed to sync, state is 0x%lx\n",
++			  mvm->queue_sync_state);
+ 	}
+ 
+ out:
+-	atomic_set(&mvm->queue_sync_counter, 0);
++	mvm->queue_sync_state = 0;
+ 	if (notif->sync)
+ 		mvm->queue_sync_cookie++;
+ }
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+index 64f5a4cb3d3ac..8b779c3a92d43 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
+@@ -842,7 +842,7 @@ struct iwl_mvm {
+ 	unsigned long status;
+ 
+ 	u32 queue_sync_cookie;
+-	atomic_t queue_sync_counter;
++	unsigned long queue_sync_state;
+ 	/*
+ 	 * for beacon filtering -
+ 	 * currently only one interface can be supported
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index 5b173f21e87bf..3548eb57f1f30 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -725,7 +725,7 @@ iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
+ 
+ 	init_waitqueue_head(&mvm->rx_sync_waitq);
+ 
+-	atomic_set(&mvm->queue_sync_counter, 0);
++	mvm->queue_sync_state = 0;
+ 
+ 	SET_IEEE80211_DEV(mvm->hw, mvm->trans->dev);
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+index 86b3fb321dfdd..e2a39e8b98d07 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -853,9 +853,13 @@ void iwl_mvm_rx_queue_notif(struct iwl_mvm *mvm, struct napi_struct *napi,
+ 		WARN_ONCE(1, "Invalid identifier %d", internal_notif->type);
+ 	}
+ 
+-	if (internal_notif->sync &&
+-	    !atomic_dec_return(&mvm->queue_sync_counter))
+-		wake_up(&mvm->rx_sync_waitq);
++	if (internal_notif->sync) {
++		WARN_ONCE(!test_and_clear_bit(queue, &mvm->queue_sync_state),
++			  "queue sync: queue %d responded a second time!\n",
++			  queue);
++		if (READ_ONCE(mvm->queue_sync_state) == 0)
++			wake_up(&mvm->rx_sync_waitq);
++	}
+ }
+ 
+ static void iwl_mvm_oldsn_workaround(struct iwl_mvm *mvm,
 -- 
 2.43.0
 
