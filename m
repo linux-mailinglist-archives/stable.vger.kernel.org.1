@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-24802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE648869654
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:10:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD40F8693BF
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:48:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4FC128389A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:10:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 633231F24C70
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25F0713B2B3;
-	Tue, 27 Feb 2024 14:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2993145B06;
+	Tue, 27 Feb 2024 13:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PbDe+yJA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aD4aolks"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C1D13A259;
-	Tue, 27 Feb 2024 14:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9521814532C;
+	Tue, 27 Feb 2024 13:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043031; cv=none; b=Y1h3lC8xsmNGp0ZB98tOUmpnzWdgG8DC1fQqPAskr+86isrIwmkxEi8LsR1nEGos7IJ3ZSJt1wGtGzQQuqVCALmlgl8ZRwyQCy3Th7GcwcPUql/TlNRCFyfpJmMVjMjyXCoTQcw8CgjYiJCAmEJAiIISkd6bxNYBEizuFpMBGHY=
+	t=1709041577; cv=none; b=H+hU0kHgefmAWYjO+KJp1W+NL4D2R6vv+henF5HyWG3LFhbRoIKgLLUGXTFMl4DPUJL8RjgRJzKSUbGJTuInV1n7/cQWx1vauCuaa4nozFLnGcqYbyu9awjuytDPHeRbaKS/HEYxfqy0p6WUwXj4jbB3aVYpIE3XCmaGM/DJIJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043031; c=relaxed/simple;
-	bh=Yk6FVGoUjVRcuS0HiGTjIlRcQ1GS4iM4+70tMPW8Syw=;
+	s=arc-20240116; t=1709041577; c=relaxed/simple;
+	bh=c0RMkEci6p8Ohc0SclYTOCnLXcdNNNWj2Fvi1sSEjfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XmhvrAYpw9gV/TVAaKaGZBP+FEdT6M4GaJfFY2xGsEy0Lq0Bb/svx76tCXQBceue2p2dk680lyU/wUzEpQc5ZoNKf7n1Z//QFN0rQqa9MmCfBUngxY0C2agJT/2Gv5OP5Tcr0H0CmSA/BIJTe7ZMHFxs1ihiyRmbCYrliJF55eI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PbDe+yJA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A77C433F1;
-	Tue, 27 Feb 2024 14:10:29 +0000 (UTC)
+	 MIME-Version; b=PaBk8F48/P2wjwDxbGCEeMwKoFHYtpu0PeIDAoh/0ITigrYdzYdX2b8UAm5z+xnx+gBgc49TMeUM2zTo6CzCCKMnY5l0ViAXHDR4cAjohu59EozrsG31AyldV+wYP8dMyCc9PMiO4vbbNdC8lXefqxLEhNmCtBmrC9mohkAZmCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aD4aolks; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23795C433C7;
+	Tue, 27 Feb 2024 13:46:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043030;
-	bh=Yk6FVGoUjVRcuS0HiGTjIlRcQ1GS4iM4+70tMPW8Syw=;
+	s=korg; t=1709041577;
+	bh=c0RMkEci6p8Ohc0SclYTOCnLXcdNNNWj2Fvi1sSEjfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PbDe+yJAlBIoUuiT1YZ2ToF4QryBxFfNAuAeWIcU2DSDL7nWLcuTl8tthaMlsl21z
-	 Nc0twSIPWeqxvDzn5FWPWauJ0DsC1/yeU+g/d1gAJ8v3OHy2UWrBPYxH4KH4bMSm2g
-	 0Ml8z93vREjF2lOrtcbkNKgRsLUk06W9DLFNmCfc=
+	b=aD4aolks0ggmLQzorV/cvfJAMz0Aye+zM2fWOf31ngcNypKk12Iz6rxYDffSzynKT
+	 hHdsPEdcCtqvufei7QY46H7zorZtEfzvqJ9lEG6b7PyKUAEeBPxtLViGhBuix+nBGT
+	 xY75Gg0evJd+hTspFV9+SEbNyMZc60IC/Z0bG6ZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kamal Heib <kheib@redhat.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 208/245] RDMA/qedr: Fix qedr_create_user_qp error flow
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 4.19 49/52] KVM: arm64: vgic-its: Test for valid IRQ in its_sync_lpi_pending_table()
 Date: Tue, 27 Feb 2024 14:26:36 +0100
-Message-ID: <20240227131621.951456110@linuxfoundation.org>
+Message-ID: <20240227131550.145939523@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
+References: <20240227131548.514622258@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kamal Heib <kheib@redhat.com>
+From: Oliver Upton <oliver.upton@linux.dev>
 
-[ Upstream commit 5ba4e6d5863c53e937f49932dee0ecb004c65928 ]
+commit 8d3a7dfb801d157ac423261d7cd62c33e95375f8 upstream.
 
-Avoid the following warning by making sure to free the allocated
-resources in case that qedr_init_user_queue() fail.
+vgic_get_irq() may not return a valid descriptor if there is no ITS that
+holds a valid translation for the specified INTID. If that is the case,
+it is safe to silently ignore it and continue processing the LPI pending
+table.
 
------------[ cut here ]-----------
-WARNING: CPU: 0 PID: 143192 at drivers/infiniband/core/rdma_core.c:874 uverbs_destroy_ufile_hw+0xcf/0xf0 [ib_uverbs]
-Modules linked in: tls target_core_user uio target_core_pscsi target_core_file target_core_iblock ib_srpt ib_srp scsi_transport_srp nfsd nfs_acl rpcsec_gss_krb5 auth_rpcgss nfsv4 dns_resolver nfs lockd grace fscache netfs 8021q garp mrp stp llc ext4 mbcache jbd2 opa_vnic ib_umad ib_ipoib sunrpc rdma_ucm ib_isert iscsi_target_mod target_core_mod ib_iser libiscsi scsi_transport_iscsi rdma_cm iw_cm ib_cm hfi1 intel_rapl_msr intel_rapl_common mgag200 qedr sb_edac drm_shmem_helper rdmavt x86_pkg_temp_thermal drm_kms_helper intel_powerclamp ib_uverbs coretemp i2c_algo_bit kvm_intel dell_wmi_descriptor ipmi_ssif sparse_keymap kvm ib_core rfkill syscopyarea sysfillrect video sysimgblt irqbypass ipmi_si ipmi_devintf fb_sys_fops rapl iTCO_wdt mxm_wmi iTCO_vendor_support intel_cstate pcspkr dcdbas intel_uncore ipmi_msghandler lpc_ich acpi_power_meter mei_me mei fuse drm xfs libcrc32c qede sd_mod ahci libahci t10_pi sg crct10dif_pclmul crc32_pclmul crc32c_intel qed libata tg3
-ghash_clmulni_intel megaraid_sas crc8 wmi [last unloaded: ib_srpt]
-CPU: 0 PID: 143192 Comm: fi_rdm_tagged_p Kdump: loaded Not tainted 5.14.0-408.el9.x86_64 #1
-Hardware name: Dell Inc. PowerEdge R430/03XKDV, BIOS 2.14.0 01/25/2022
-RIP: 0010:uverbs_destroy_ufile_hw+0xcf/0xf0 [ib_uverbs]
-Code: 5d 41 5c 41 5d 41 5e e9 0f 26 1b dd 48 89 df e8 67 6a ff ff 49 8b 86 10 01 00 00 48 85 c0 74 9c 4c 89 e7 e8 83 c0 cb dd eb 92 <0f> 0b eb be 0f 0b be 04 00 00 00 48 89 df e8 8e f5 ff ff e9 6d ff
-RSP: 0018:ffffb7c6cadfbc60 EFLAGS: 00010286
-RAX: ffff8f0889ee3f60 RBX: ffff8f088c1a5200 RCX: 00000000802a0016
-RDX: 00000000802a0017 RSI: 0000000000000001 RDI: ffff8f0880042600
-RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000000
-R10: ffff8f11fffd5000 R11: 0000000000039000 R12: ffff8f0d5b36cd80
-R13: ffff8f088c1a5250 R14: ffff8f1206d91000 R15: 0000000000000000
-FS: 0000000000000000(0000) GS:ffff8f11d7c00000(0000) knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000147069200e20 CR3: 00000001c7210002 CR4: 00000000001706f0
-Call Trace:
-<TASK>
-? show_trace_log_lvl+0x1c4/0x2df
-? show_trace_log_lvl+0x1c4/0x2df
-? ib_uverbs_close+0x1f/0xb0 [ib_uverbs]
-? uverbs_destroy_ufile_hw+0xcf/0xf0 [ib_uverbs]
-? __warn+0x81/0x110
-? uverbs_destroy_ufile_hw+0xcf/0xf0 [ib_uverbs]
-? report_bug+0x10a/0x140
-? handle_bug+0x3c/0x70
-? exc_invalid_op+0x14/0x70
-? asm_exc_invalid_op+0x16/0x20
-? uverbs_destroy_ufile_hw+0xcf/0xf0 [ib_uverbs]
-ib_uverbs_close+0x1f/0xb0 [ib_uverbs]
-__fput+0x94/0x250
-task_work_run+0x5c/0x90
-do_exit+0x270/0x4a0
-do_group_exit+0x2d/0x90
-get_signal+0x87c/0x8c0
-arch_do_signal_or_restart+0x25/0x100
-? ib_uverbs_ioctl+0xc2/0x110 [ib_uverbs]
-exit_to_user_mode_loop+0x9c/0x130
-exit_to_user_mode_prepare+0xb6/0x100
-syscall_exit_to_user_mode+0x12/0x40
-do_syscall_64+0x69/0x90
-? syscall_exit_work+0x103/0x130
-? syscall_exit_to_user_mode+0x22/0x40
-? do_syscall_64+0x69/0x90
-? syscall_exit_work+0x103/0x130
-? syscall_exit_to_user_mode+0x22/0x40
-? do_syscall_64+0x69/0x90
-? do_syscall_64+0x69/0x90
-? common_interrupt+0x43/0xa0
-entry_SYSCALL_64_after_hwframe+0x72/0xdc
-RIP: 0033:0x1470abe3ec6b
-Code: Unable to access opcode bytes at RIP 0x1470abe3ec41.
-RSP: 002b:00007fff13ce9108 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: fffffffffffffffc RBX: 00007fff13ce9218 RCX: 00001470abe3ec6b
-RDX: 00007fff13ce9200 RSI: 00000000c0181b01 RDI: 0000000000000004
-RBP: 00007fff13ce91e0 R08: 0000558d9655da10 R09: 0000558d9655dd00
-R10: 00007fff13ce95c0 R11: 0000000000000246 R12: 00007fff13ce9358
-R13: 0000000000000013 R14: 0000558d9655db50 R15: 00007fff13ce9470
-</TASK>
---[ end trace 888a9b92e04c5c97 ]--
-
-Fixes: df15856132bc ("RDMA/qedr: restructure functions that create/destroy QPs")
-Signed-off-by: Kamal Heib <kheib@redhat.com>
-Link: https://lore.kernel.org/r/20240208223628.2040841-1-kheib@redhat.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 33d3bc9556a7 ("KVM: arm64: vgic-its: Read initial LPI pending table")
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20240221092732.4126848-2-oliver.upton@linux.dev
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/qedr/verbs.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ virt/kvm/arm/vgic/vgic-its.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/infiniband/hw/qedr/verbs.c b/drivers/infiniband/hw/qedr/verbs.c
-index bb0c2b93a34d8..c0993e3bad12d 100644
---- a/drivers/infiniband/hw/qedr/verbs.c
-+++ b/drivers/infiniband/hw/qedr/verbs.c
-@@ -1888,8 +1888,17 @@ static int qedr_create_user_qp(struct qedr_dev *dev,
- 		/* RQ - read access only (0) */
- 		rc = qedr_init_user_queue(udata, dev, &qp->urq, ureq.rq_addr,
- 					  ureq.rq_len, true, 0, alloc_and_init);
--		if (rc)
-+		if (rc) {
-+			ib_umem_release(qp->usq.umem);
-+			qp->usq.umem = NULL;
-+			if (rdma_protocol_roce(&dev->ibdev, 1)) {
-+				qedr_free_pbl(dev, &qp->usq.pbl_info,
-+					      qp->usq.pbl_tbl);
-+			} else {
-+				kfree(qp->usq.pbl_tbl);
-+			}
- 			return rc;
-+		}
- 	}
+--- a/virt/kvm/arm/vgic/vgic-its.c
++++ b/virt/kvm/arm/vgic/vgic-its.c
+@@ -469,6 +469,9 @@ static int its_sync_lpi_pending_table(st
+ 		}
  
- 	memset(&in_params, 0, sizeof(in_params));
--- 
-2.43.0
-
+ 		irq = vgic_get_irq(vcpu->kvm, NULL, intids[i]);
++		if (!irq)
++			continue;
++
+ 		spin_lock_irqsave(&irq->irq_lock, flags);
+ 		irq->pending_latch = pendmask & (1U << bit_nr);
+ 		vgic_queue_irq_unlock(vcpu->kvm, irq, flags);
 
 
 
