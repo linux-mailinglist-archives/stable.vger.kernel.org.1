@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F659869406
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8579B86932E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:42:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C07128345B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A36D41C20F6A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:42:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DB82145323;
-	Tue, 27 Feb 2024 13:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6498A13AA4C;
+	Tue, 27 Feb 2024 13:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/rLhgqt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0AK5KJ5b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD5D54BD4;
-	Tue, 27 Feb 2024 13:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235D513B2B3;
+	Tue, 27 Feb 2024 13:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041739; cv=none; b=NO8ty9OP6JIFDhxC/+srYjbGNI/+bvvyDFsRC/REwN7lNp/A4UER27ZaUnS29mzIwjNeV4Kx/gKt9AEZc6cGxOTwCANb3LoKJGMWjzPKXkCe9/D/FL4cIpQLVFKZPSXrklSbVkxyVtg/8KvKM1nAgM44eCwpofuK7YMCX9wBkGk=
+	t=1709041342; cv=none; b=g/tI0TPzJiiEkR2zZL6+XV3OeYP7UIQAeeZzcSiUkjzaLwDhK0uUaqh39xw7rj/0MQl3c/NTj13ou0/ijQSE/6Ll9xn7jf2Y1k9PFpLMK4sOXuBobL/ZnUyWPj9EDTOMEZD/Bsl6Lraq3297s0AdcaHWOEFq3faqTPyVaje1jUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041739; c=relaxed/simple;
-	bh=RaXVfrdkSBEomajpkYawTUxeJutx8jdjQSBUDu+vvn8=;
+	s=arc-20240116; t=1709041342; c=relaxed/simple;
+	bh=P8nJUmojs0abh3eBkhGFa3TbR+Sw4Hi0RwilH3ea8aY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o3XTc4dyybxzTcFsDrH2m+0u3B4W3jIr/m0hKP7T45CIiE151HJXUWGgLRVIAJDXaTlzJHZda7jqjSXFujt6uISLoJZbK8SnTsrURCguzTCISKUqEc5t2u7POjrF91p3fCOC9WniCSUzuDJusGaCk4ofvE20FWpFfNTN2J9oqnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/rLhgqt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B99C433F1;
-	Tue, 27 Feb 2024 13:48:58 +0000 (UTC)
+	 MIME-Version; b=DX6njI3DyIaIfSDukn1aglBGcdTXJsVUd5q+nwYYy3bXvh6mPs1EEQYixWJI8g9gEiTGjVBo2ICHzNDkwAJdkKH1DFYQ3TY+VdrBJZRd0WNTlelAUaJPiZoU4M1kC3+RzWLonkTriZDF/SgCSaLs5JUFSt1Lhb2Vktk3Pp6/eBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0AK5KJ5b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4C37C433F1;
+	Tue, 27 Feb 2024 13:42:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041739;
-	bh=RaXVfrdkSBEomajpkYawTUxeJutx8jdjQSBUDu+vvn8=;
+	s=korg; t=1709041342;
+	bh=P8nJUmojs0abh3eBkhGFa3TbR+Sw4Hi0RwilH3ea8aY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C/rLhgqt6lwV0gTCWV6oneoJyAMH8BFyH7R8zGZnjNKICrzmfSP92sEpgsBgKHWVE
-	 KFIwLRL/HaNfxQo3CaPpjvfhYXfgmL0npkooPvO7DjYoz6uIEFtD99B11TDVnF5ohF
-	 Hv0caUEdO/AmEszFjJ6VnCx6de+OagIN9sehPX5Q=
+	b=0AK5KJ5bV1YcDpUYDQrLgdDSKkjQb6OZAa02Ykx17FRcSmSVfP3AJpwlgnAori1nK
+	 LByPNwsPqcuTlXAIc5MzK6YGKokwUldpC/5I/QNrRxj9lpj7x1H2wMEk8NPMyMVPLv
+	 rMV/UJjzx+Wul3kJx5NJt7mOJIVqVa/avyQ4aGs4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	David Brazdil <dbrazdil@google.com>,
-	Will Deacon <will@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/299] misc: open-dice: Fix spurious lockdep warning
+Subject: [PATCH 6.7 304/334] tls: stop recv() if initial process_rx_list gave us non-DATA
 Date: Tue, 27 Feb 2024 14:22:42 +0100
-Message-ID: <20240227131627.615226269@linuxfoundation.org>
+Message-ID: <20240227131640.864842832@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit ac9762a74c7ca7cbfcb4c65f5871373653a046ac ]
+[ Upstream commit fdfbaec5923d9359698cbb286bc0deadbb717504 ]
 
-When probing the open-dice driver with PROVE_LOCKING=y, lockdep
-complains that the mutex in 'drvdata->lock' has a non-static key:
+If we have a non-DATA record on the rx_list and another record of the
+same type still on the queue, we will end up merging them:
+ - process_rx_list copies the non-DATA record
+ - we start the loop and process the first available record since it's
+   of the same type
+ - we break out of the loop since the record was not DATA
 
- | INFO: trying to register non-static key.
- | The code is fine but needs lockdep annotation, or maybe
- | you didn't initialize this object before use?
- | turning off the locking correctness validator.
+Just check the record type and jump to the end in case process_rx_list
+did some work.
 
-Fix the problem by initialising the mutex memory with mutex_init()
-instead of __MUTEX_INITIALIZER().
-
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: David Brazdil <dbrazdil@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20240126152410.10148-1-will@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 692d7b5d1f91 ("tls: Fix recvmsg() to be able to peek across multiple records")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/bd31449e43bd4b6ff546f5c51cf958c31c511deb.1708007371.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/open-dice.c | 2 +-
+ net/tls/tls_sw.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/misc/open-dice.c b/drivers/misc/open-dice.c
-index 8aea2d070a40c..d279a4f195e2a 100644
---- a/drivers/misc/open-dice.c
-+++ b/drivers/misc/open-dice.c
-@@ -140,7 +140,6 @@ static int __init open_dice_probe(struct platform_device *pdev)
- 		return -ENOMEM;
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 78aedfc682ba8..43dd0d82b6ed7 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -1971,7 +1971,7 @@ int tls_sw_recvmsg(struct sock *sk,
+ 		goto end;
  
- 	*drvdata = (struct open_dice_drvdata){
--		.lock = __MUTEX_INITIALIZER(drvdata->lock),
- 		.rmem = rmem,
- 		.misc = (struct miscdevice){
- 			.parent	= dev,
-@@ -150,6 +149,7 @@ static int __init open_dice_probe(struct platform_device *pdev)
- 			.mode	= 0600,
- 		},
- 	};
-+	mutex_init(&drvdata->lock);
+ 	copied = err;
+-	if (len <= copied)
++	if (len <= copied || (copied && control != TLS_RECORD_TYPE_DATA))
+ 		goto end;
  
- 	/* Index overflow check not needed, misc_register() will fail. */
- 	snprintf(drvdata->name, sizeof(drvdata->name), DRIVER_NAME"%u", dev_idx++);
+ 	target = sock_rcvlowat(sk, flags & MSG_WAITALL, len);
 -- 
 2.43.0
 
