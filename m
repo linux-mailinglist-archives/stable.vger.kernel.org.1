@@ -1,60 +1,67 @@
-Return-Path: <stable+bounces-25120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F7708697D7
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:25:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF5D7869858
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:32:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34D8C1F2B611
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:25:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 941DF2952F3
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:32:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0FA01420B3;
-	Tue, 27 Feb 2024 14:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BFFC14533F;
+	Tue, 27 Feb 2024 14:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="slcYW9Wq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MyVv0faN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F59213EFE9;
-	Tue, 27 Feb 2024 14:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDFF14532D;
+	Tue, 27 Feb 2024 14:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043920; cv=none; b=qS+Rd5lfPD7Wvx8a+4W2l3R2SifnJ6VjJxei7E2/9GHcRzbvQ+gwhuJ6qlfc2F4cwNCcNk5MoZuflmxIfFYcpG7+h1Nzvs65ua94B3SmvgHdQdWHlAaWB0rZSC+EHurZR5zCNqZSXtLokeosdPMCmJAW2hZ3j/qFUzfX4N9Vg4E=
+	t=1709044233; cv=none; b=Cq2JwDzjMrNGi/mcF/+2gW4Jpil1P9iCJHBztJgYuAarUTEklM9lA0gV46BYVzo7+9WNAFR3FZjHEWsTPoMEa32oL+nyK7Tozd0XEA6UT+yR+yAUAGNpWLzf5BAaPK/7UCYqRhc1hVj2yWXqFE/rmeSPezDCqdPiWiVT7RWAdM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043920; c=relaxed/simple;
-	bh=cySr/GMR3/1PrlZE658pwPrkJTfCpzBqHcphQNwIAB0=;
+	s=arc-20240116; t=1709044233; c=relaxed/simple;
+	bh=BWM6nwJ/uItZH/KwbL2njpbYSQoEreluMH+XoeJk7VE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rbvdHdfvkSavh4jz9+3siaS56/9Qf1RVUEpKTLc9psnu5vu7Yjy28qTDoDmzBmWi6wGfFFhUpUbqh6OtodnhcfC8HdXkNOAtrnceIBODY4jcGWAjvGsGRA68Gr4xWEh3Nj5PpRxPd54QURdMiSnhko5iWGksnCtenKgggyy0Fhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=slcYW9Wq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A394C433F1;
-	Tue, 27 Feb 2024 14:25:19 +0000 (UTC)
+	 MIME-Version; b=pO3Uu8QrzM3Q31+rDZce2fcuwDCibiIMRBURBm4ctderf5cDDPavaL6SE+iEebdcychpfOHOMjsVMGC2isC5zZkI9DF97RSqVJwlBI8de7RBekTQ4Irfon4Zv7bZpgM6IXi4fyObZ54SCirmpXJgEYhoRbY9arlsWEx7WGffPuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MyVv0faN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CD55C433A6;
+	Tue, 27 Feb 2024 14:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043920;
-	bh=cySr/GMR3/1PrlZE658pwPrkJTfCpzBqHcphQNwIAB0=;
+	s=korg; t=1709044230;
+	bh=BWM6nwJ/uItZH/KwbL2njpbYSQoEreluMH+XoeJk7VE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=slcYW9Wq5RvvP4wEJvrWvSJnrhBdt49DarE90TaL8eDSovcZiK/fbyoiQDvfOgPuk
-	 xgFWveDDOJqtlEMmWI/BduaWGrnneBcSPQKsrU0RSysrm9AwvJnS2zcgVsXkop3nkb
-	 8zf7jZ7SDms290fjhua9h7H6ZkjmWcz+DJt/uNKc=
+	b=MyVv0faNO9YmH7bJdNOGqIfL+gL0kQ6DbHGQXiGiaVrZ83pEDgge6NyiBbDCUbnkR
+	 a1wD6S+uKOlrhTP2VvVUeqMwlrP9wEITeehycyxqOJ7zuBfYNEsMQhRD+MobMCZLVk
+	 c0Z7Z6vhG2v7XktDbEE++/IB5mW9TcIREJBAVVUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Jens Axboe <axboe@kernel.dk>,
-	Christoph Hellwig <hch@lst.de>,
-	Avi Kivity <avi@scylladb.com>,
-	Sandeep Dhavale <dhavale@google.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.4 83/84] fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via libaio
-Date: Tue, 27 Feb 2024 14:27:50 +0100
-Message-ID: <20240227131555.580101633@linuxfoundation.org>
+	Pavel Begunkov <asml.silence@gmail.com>,
+	David Ahern <dsahern@kernel.org>,
+	Dylan Yudaken <dylany@fb.com>,
+	Yajun Deng <yajun.deng@linux.dev>,
+	Petr Machata <petrm@nvidia.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	syzbot <syzkaller@googlegroups.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Kees Cook <keescook@chromium.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 110/122] net: dev: Convert sa_data to flexible array in struct sockaddr
+Date: Tue, 27 Feb 2024 14:27:51 +0100
+Message-ID: <20240227131602.303386357@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,89 +73,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Kees Cook <keescook@chromium.org>
 
-commit b820de741ae48ccf50dd95e297889c286ff4f760 upstream.
+[ Upstream commit b5f0de6df6dce8d641ef58ef7012f3304dffb9a1 ]
 
-If kiocb_set_cancel_fn() is called for I/O submitted via io_uring, the
-following kernel warning appears:
+One of the worst offenders of "fake flexible arrays" is struct sockaddr,
+as it is the classic example of why GCC and Clang have been traditionally
+forced to treat all trailing arrays as fake flexible arrays: in the
+distant misty past, sa_data became too small, and code started just
+treating it as a flexible array, even though it was fixed-size. The
+special case by the compiler is specifically that sizeof(sa->sa_data)
+and FORTIFY_SOURCE (which uses __builtin_object_size(sa->sa_data, 1))
+do not agree (14 and -1 respectively), which makes FORTIFY_SOURCE treat
+it as a flexible array.
 
-WARNING: CPU: 3 PID: 368 at fs/aio.c:598 kiocb_set_cancel_fn+0x9c/0xa8
-Call trace:
- kiocb_set_cancel_fn+0x9c/0xa8
- ffs_epfile_read_iter+0x144/0x1d0
- io_read+0x19c/0x498
- io_issue_sqe+0x118/0x27c
- io_submit_sqes+0x25c/0x5fc
- __arm64_sys_io_uring_enter+0x104/0xab0
- invoke_syscall+0x58/0x11c
- el0_svc_common+0xb4/0xf4
- do_el0_svc+0x2c/0xb0
- el0_svc+0x2c/0xa4
- el0t_64_sync_handler+0x68/0xb4
- el0t_64_sync+0x1a4/0x1a8
+However, the coming -fstrict-flex-arrays compiler flag will remove
+these special cases so that FORTIFY_SOURCE can gain coverage over all
+the trailing arrays in the kernel that are _not_ supposed to be treated
+as a flexible array. To deal with this change, convert sa_data to a true
+flexible array. To keep the structure size the same, move sa_data into
+a union with a newly introduced sa_data_min with the original size. The
+result is that FORTIFY_SOURCE can continue to have no idea how large
+sa_data may actually be, but anything using sizeof(sa->sa_data) must
+switch to sizeof(sa->sa_data_min).
 
-Fix this by setting the IOCB_AIO_RW flag for read and write I/O that is
-submitted by libaio.
-
-Suggested-by: Jens Axboe <axboe@kernel.dk>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Avi Kivity <avi@scylladb.com>
-Cc: Sandeep Dhavale <dhavale@google.com>
 Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: stable@vger.kernel.org
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20240215204739.2677806-2-bvanassche@acm.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Pavel Begunkov <asml.silence@gmail.com>
+Cc: David Ahern <dsahern@kernel.org>
+Cc: Dylan Yudaken <dylany@fb.com>
+Cc: Yajun Deng <yajun.deng@linux.dev>
+Cc: Petr Machata <petrm@nvidia.com>
+Cc: Hangbin Liu <liuhangbin@gmail.com>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: syzbot <syzkaller@googlegroups.com>
+Cc: Willem de Bruijn <willemb@google.com>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/20221018095503.never.671-kees@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: a7d6027790ac ("arp: Prevent overflow in arp_req_get().")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/aio.c           |    9 ++++++++-
- include/linux/fs.h |    2 ++
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ include/linux/socket.h |  5 ++++-
+ net/core/dev.c         |  2 +-
+ net/core/dev_ioctl.c   |  2 +-
+ net/packet/af_packet.c | 10 +++++-----
+ 4 files changed, 11 insertions(+), 8 deletions(-)
 
---- a/fs/aio.c
-+++ b/fs/aio.c
-@@ -570,6 +570,13 @@ void kiocb_set_cancel_fn(struct kiocb *i
- 	struct kioctx *ctx = req->ki_ctx;
- 	unsigned long flags;
+diff --git a/include/linux/socket.h b/include/linux/socket.h
+index c3b35d18bcd30..daf51fef5a8d1 100644
+--- a/include/linux/socket.h
++++ b/include/linux/socket.h
+@@ -31,7 +31,10 @@ typedef __kernel_sa_family_t	sa_family_t;
  
-+	/*
-+	 * kiocb didn't come from aio or is neither a read nor a write, hence
-+	 * ignore it.
-+	 */
-+	if (!(iocb->ki_flags & IOCB_AIO_RW))
-+		return;
-+
- 	if (WARN_ON_ONCE(!list_empty(&req->ki_list)))
- 		return;
+ struct sockaddr {
+ 	sa_family_t	sa_family;	/* address family, AF_xxx	*/
+-	char		sa_data[14];	/* 14 bytes of protocol address	*/
++	union {
++		char sa_data_min[14];		/* Minimum 14 bytes of protocol address	*/
++		DECLARE_FLEX_ARRAY(char, sa_data);
++	};
+ };
  
-@@ -1455,7 +1462,7 @@ static int aio_prep_rw(struct kiocb *req
- 	req->ki_complete = aio_complete_rw;
- 	req->private = NULL;
- 	req->ki_pos = iocb->aio_offset;
--	req->ki_flags = iocb_flags(req->ki_filp);
-+	req->ki_flags = iocb_flags(req->ki_filp) | IOCB_AIO_RW;
- 	if (iocb->aio_flags & IOCB_FLAG_RESFD)
- 		req->ki_flags |= IOCB_EVENTFD;
- 	req->ki_hint = ki_hint_validate(file_write_hint(req->ki_filp));
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -314,6 +314,8 @@ enum rw_hint {
- #define IOCB_SYNC		(1 << 5)
- #define IOCB_WRITE		(1 << 6)
- #define IOCB_NOWAIT		(1 << 7)
-+/* kiocb is a read or write operation submitted by fs/aio.c. */
-+#define IOCB_AIO_RW		(1 << 23)
+ struct linger {
+diff --git a/net/core/dev.c b/net/core/dev.c
+index fc881d60a9dcc..0619d2253aa24 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -8787,7 +8787,7 @@ EXPORT_SYMBOL(dev_set_mac_address_user);
  
- struct kiocb {
- 	struct file		*ki_filp;
+ int dev_get_mac_address(struct sockaddr *sa, struct net *net, char *dev_name)
+ {
+-	size_t size = sizeof(sa->sa_data);
++	size_t size = sizeof(sa->sa_data_min);
+ 	struct net_device *dev;
+ 	int ret = 0;
+ 
+diff --git a/net/core/dev_ioctl.c b/net/core/dev_ioctl.c
+index 993420da29307..60e815a71909a 100644
+--- a/net/core/dev_ioctl.c
++++ b/net/core/dev_ioctl.c
+@@ -245,7 +245,7 @@ static int dev_ifsioc(struct net *net, struct ifreq *ifr, unsigned int cmd)
+ 		if (ifr->ifr_hwaddr.sa_family != dev->type)
+ 			return -EINVAL;
+ 		memcpy(dev->broadcast, ifr->ifr_hwaddr.sa_data,
+-		       min(sizeof(ifr->ifr_hwaddr.sa_data),
++		       min(sizeof(ifr->ifr_hwaddr.sa_data_min),
+ 			   (size_t)dev->addr_len));
+ 		call_netdevice_notifiers(NETDEV_CHANGEADDR, dev);
+ 		return 0;
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index 1052cbcdd3c8d..6cc054dd53b6e 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -3252,7 +3252,7 @@ static int packet_bind_spkt(struct socket *sock, struct sockaddr *uaddr,
+ 			    int addr_len)
+ {
+ 	struct sock *sk = sock->sk;
+-	char name[sizeof(uaddr->sa_data) + 1];
++	char name[sizeof(uaddr->sa_data_min) + 1];
+ 
+ 	/*
+ 	 *	Check legality
+@@ -3263,8 +3263,8 @@ static int packet_bind_spkt(struct socket *sock, struct sockaddr *uaddr,
+ 	/* uaddr->sa_data comes from the userspace, it's not guaranteed to be
+ 	 * zero-terminated.
+ 	 */
+-	memcpy(name, uaddr->sa_data, sizeof(uaddr->sa_data));
+-	name[sizeof(uaddr->sa_data)] = 0;
++	memcpy(name, uaddr->sa_data, sizeof(uaddr->sa_data_min));
++	name[sizeof(uaddr->sa_data_min)] = 0;
+ 
+ 	return packet_do_bind(sk, name, 0, 0);
+ }
+@@ -3536,11 +3536,11 @@ static int packet_getname_spkt(struct socket *sock, struct sockaddr *uaddr,
+ 		return -EOPNOTSUPP;
+ 
+ 	uaddr->sa_family = AF_PACKET;
+-	memset(uaddr->sa_data, 0, sizeof(uaddr->sa_data));
++	memset(uaddr->sa_data, 0, sizeof(uaddr->sa_data_min));
+ 	rcu_read_lock();
+ 	dev = dev_get_by_index_rcu(sock_net(sk), READ_ONCE(pkt_sk(sk)->ifindex));
+ 	if (dev)
+-		strscpy(uaddr->sa_data, dev->name, sizeof(uaddr->sa_data));
++		strscpy(uaddr->sa_data, dev->name, sizeof(uaddr->sa_data_min));
+ 	rcu_read_unlock();
+ 
+ 	return sizeof(*uaddr);
+-- 
+2.43.0
+
 
 
 
