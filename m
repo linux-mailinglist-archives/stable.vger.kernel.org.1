@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FD6986966E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:11:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BCC9869825
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:29:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 468001F2E3A8
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:11:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD24F1C237F0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:29:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B048313B798;
-	Tue, 27 Feb 2024 14:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 983A913B7AB;
+	Tue, 27 Feb 2024 14:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rCTMxeuB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D+nk6GzF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B05816423;
-	Tue, 27 Feb 2024 14:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F7E14037E;
+	Tue, 27 Feb 2024 14:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043096; cv=none; b=LvKauDXEaWqbpgCGAsWRYqFwskjY4R2WuMBhyKf9kFQYtDvl1ls5dYeRmf96R8JL9fgDEV0JLvW7Y8Jz1FUrdtjsiVJ5dsggODxYBo6eE6JMrPt+tHImlRkcaRWYDb2UTn3SO0AZ3uWKuqM3lgX3FWvg+6mCl30S4+KhOwA/SFw=
+	t=1709044092; cv=none; b=aEk8O/SZ2sQjlyONhc64OOXFKBw/+n5Be9hjm/LVjs6+8M4SeJRFs4OQTS9NzrB1dMtyLVVqryQ83e3SPtqiKJbO84IB3B+8ecmc+htBDftlC5+92/TSRyPu3YAnfiXgyBuaty8jpRTgmuQFIvyJ8CCsj5V4ptry8fm9uGmfOjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043096; c=relaxed/simple;
-	bh=iNNEBRq+hAS96Am5yEDW/J/4Hag9SQnvQiso5a+wV70=;
+	s=arc-20240116; t=1709044092; c=relaxed/simple;
+	bh=oHfnojN0JdqDJc8T1HfWiaLv1veTeq0B6Y2eug0hlQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PoD7dU9oWP8LzNv47UBIVKPfPq/lg1eDUbw+rwhqWMNBXFkbPMTm6aBUY0e2J36rIgVOzBlmlb46uRY0Z/knUGSkTlSVCf3pu8N8So9qzHZi08ABjx3DAjtV7FgJh0gcRPaIwhIRnMusFu2pWfzXrdeZuTM5z0p/zq/uXSYD044=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rCTMxeuB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED735C433F1;
-	Tue, 27 Feb 2024 14:11:35 +0000 (UTC)
+	 MIME-Version; b=Rl3ssbE1qbn9KxmO3zdFkRNj3a/5EoBrbgzaO4TZdpI/w8ccge1csE8EZUxUtgFU+V/m4bqWBXo4ZoZLuCMUp7wG2k0y8yH8sSWTewB8zXJTClg0CTt4VGhk6BF0YXs9PXu+152TRgVFTuv/Bn802jBJi+AgIXTvNUkcEogPLUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D+nk6GzF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D594EC433C7;
+	Tue, 27 Feb 2024 14:28:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043096;
-	bh=iNNEBRq+hAS96Am5yEDW/J/4Hag9SQnvQiso5a+wV70=;
+	s=korg; t=1709044092;
+	bh=oHfnojN0JdqDJc8T1HfWiaLv1veTeq0B6Y2eug0hlQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rCTMxeuBrJmDzgcnX06OXprYsc818quq7XFqJ50SGvN0en5yPDb0JwffNwwoFNaCf
-	 Z/+GxFcuzMt59LVk56c/TBpPmSZZSg0pq+bEAxuYdPRW7M7QaJgs+S3wesfIVeMOSb
-	 GYe6FKgVmdn6d1BdDCx5I8pVYCpokzeF9titNk4A=
+	b=D+nk6GzFTuulll1P9eVICXV4S1t2QD+P/MqVblkWNNHw/iLDWhpT1lzkE3vZTQGdi
+	 eKgQBZWuSmS+XcJYxO32DpOOaYt827DOuvHOf6hOVphTaHHAjnlk7R8iQoCkzw64D3
+	 YkNWPvo7XX+O1u3WZihv6rc/bA/2nJphh4D3uBPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 232/245] netfilter: flowtable: simplify route logic
+Subject: [PATCH 5.10 059/122] ASoC: Intel: bytcr_rt5651: Drop reference count of ACPI device after use
 Date: Tue, 27 Feb 2024 14:27:00 +0100
-Message-ID: <20240227131622.719111928@linuxfoundation.org>
+Message-ID: <20240227131600.637492789@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,130 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit fa502c86566680ac62bc28ec883a069bf7a2aa5e ]
+[ Upstream commit 721858823d7cdc8f2a897579b040e935989f6f02 ]
 
-Grab reference to dst from skbuff earlier to simplify route caching.
+Theoretically the device might gone if its reference count drops to 0.
+This might be the case when we try to find the first physical node of
+the ACPI device. We need to keep reference to it until we get a result
+of the above mentioned call. Refactor the code to drop the reference
+count at the correct place.
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Stable-dep-of: 9e0f0430389b ("netfilter: nft_flow_offload: reset dst in route object after setting up flow")
+While at it, move to acpi_dev_put() as symmetrical call to the
+acpi_dev_get_first_match_dev().
+
+Fixes: 02c0a3b3047f ("ASoC: Intel: bytcr_rt5651: add MCLK, quirks and cleanups")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20230112112852.67714-3-andriy.shevchenko@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_flow_table.h |  4 ++--
- net/netfilter/nf_flow_table_core.c    | 24 +++---------------------
- net/netfilter/nft_flow_offload.c      | 12 ++++++++----
- 3 files changed, 13 insertions(+), 27 deletions(-)
+ sound/soc/intel/boards/bytcr_rt5651.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/netfilter/nf_flow_table.h b/include/net/netfilter/nf_flow_table.h
-index aaa518e777e9e..7677aacf72002 100644
---- a/include/net/netfilter/nf_flow_table.h
-+++ b/include/net/netfilter/nf_flow_table.h
-@@ -257,8 +257,8 @@ nf_flow_table_offload_del_cb(struct nf_flowtable *flow_table,
- 	up_write(&flow_table->flow_block_lock);
- }
- 
--int flow_offload_route_init(struct flow_offload *flow,
--			    const struct nf_flow_route *route);
-+void flow_offload_route_init(struct flow_offload *flow,
-+			     const struct nf_flow_route *route);
- 
- int flow_offload_add(struct nf_flowtable *flow_table, struct flow_offload *flow);
- void flow_offload_refresh(struct nf_flowtable *flow_table,
-diff --git a/net/netfilter/nf_flow_table_core.c b/net/netfilter/nf_flow_table_core.c
-index 4f61eb1282834..4e0a2d47f6a6b 100644
---- a/net/netfilter/nf_flow_table_core.c
-+++ b/net/netfilter/nf_flow_table_core.c
-@@ -124,9 +124,6 @@ static int flow_offload_fill_route(struct flow_offload *flow,
- 		break;
- 	case FLOW_OFFLOAD_XMIT_XFRM:
- 	case FLOW_OFFLOAD_XMIT_NEIGH:
--		if (!dst_hold_safe(route->tuple[dir].dst))
--			return -1;
--
- 		flow_tuple->dst_cache = dst;
- 		flow_tuple->dst_cookie = flow_offload_dst_cookie(flow_tuple);
- 		break;
-@@ -147,27 +144,12 @@ static void nft_flow_dst_release(struct flow_offload *flow,
- 		dst_release(flow->tuplehash[dir].tuple.dst_cache);
- }
- 
--int flow_offload_route_init(struct flow_offload *flow,
-+void flow_offload_route_init(struct flow_offload *flow,
- 			    const struct nf_flow_route *route)
- {
--	int err;
--
--	err = flow_offload_fill_route(flow, route, FLOW_OFFLOAD_DIR_ORIGINAL);
--	if (err < 0)
--		return err;
--
--	err = flow_offload_fill_route(flow, route, FLOW_OFFLOAD_DIR_REPLY);
--	if (err < 0)
--		goto err_route_reply;
--
-+	flow_offload_fill_route(flow, route, FLOW_OFFLOAD_DIR_ORIGINAL);
-+	flow_offload_fill_route(flow, route, FLOW_OFFLOAD_DIR_REPLY);
- 	flow->type = NF_FLOW_OFFLOAD_ROUTE;
--
--	return 0;
--
--err_route_reply:
--	nft_flow_dst_release(flow, FLOW_OFFLOAD_DIR_ORIGINAL);
--
--	return err;
- }
- EXPORT_SYMBOL_GPL(flow_offload_route_init);
- 
-diff --git a/net/netfilter/nft_flow_offload.c b/net/netfilter/nft_flow_offload.c
-index f8346497c9b49..fbb9f3a6c8444 100644
---- a/net/netfilter/nft_flow_offload.c
-+++ b/net/netfilter/nft_flow_offload.c
-@@ -240,9 +240,14 @@ static int nft_flow_route(const struct nft_pktinfo *pkt,
- 		break;
+diff --git a/sound/soc/intel/boards/bytcr_rt5651.c b/sound/soc/intel/boards/bytcr_rt5651.c
+index 472f6e3327960..a8289f74463e9 100644
+--- a/sound/soc/intel/boards/bytcr_rt5651.c
++++ b/sound/soc/intel/boards/bytcr_rt5651.c
+@@ -919,7 +919,6 @@ static int snd_byt_rt5651_mc_probe(struct platform_device *pdev)
+ 	if (adev) {
+ 		snprintf(byt_rt5651_codec_name, sizeof(byt_rt5651_codec_name),
+ 			 "i2c-%s", acpi_dev_name(adev));
+-		put_device(&adev->dev);
+ 		byt_rt5651_dais[dai_index].codecs->name = byt_rt5651_codec_name;
+ 	} else {
+ 		dev_err(&pdev->dev, "Error cannot find '%s' dev\n", mach->id);
+@@ -927,6 +926,7 @@ static int snd_byt_rt5651_mc_probe(struct platform_device *pdev)
  	}
  
-+	if (!dst_hold_safe(this_dst))
-+		return -ENOENT;
-+
- 	nf_route(nft_net(pkt), &other_dst, &fl, false, nft_pf(pkt));
--	if (!other_dst)
-+	if (!other_dst) {
-+		dst_release(this_dst);
- 		return -ENOENT;
-+	}
- 
- 	nft_default_forward_path(route, this_dst, dir);
- 	nft_default_forward_path(route, other_dst, !dir);
-@@ -326,8 +331,7 @@ static void nft_flow_offload_eval(const struct nft_expr *expr,
- 	if (!flow)
- 		goto err_flow_alloc;
- 
--	if (flow_offload_route_init(flow, &route) < 0)
--		goto err_flow_add;
-+	flow_offload_route_init(flow, &route);
- 
- 	if (tcph) {
- 		ct->proto.tcp.seen[0].flags |= IP_CT_TCP_FLAG_BE_LIBERAL;
-@@ -338,12 +342,12 @@ static void nft_flow_offload_eval(const struct nft_expr *expr,
- 	if (ret < 0)
- 		goto err_flow_add;
- 
--	dst_release(route.tuple[!dir].dst);
- 	return;
- 
- err_flow_add:
- 	flow_offload_free(flow);
- err_flow_alloc:
-+	dst_release(route.tuple[dir].dst);
- 	dst_release(route.tuple[!dir].dst);
- err_flow_route:
- 	clear_bit(IPS_OFFLOAD_BIT, &ct->status);
+ 	codec_dev = acpi_get_first_physical_node(adev);
++	acpi_dev_put(adev);
+ 	if (!codec_dev)
+ 		return -EPROBE_DEFER;
+ 	priv->codec_dev = get_device(codec_dev);
 -- 
 2.43.0
 
