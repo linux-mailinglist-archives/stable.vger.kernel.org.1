@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB44C86963E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:09:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D08DB8696D4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECCE41C220F7
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:09:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DD731C23AA8
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46C9513B2B4;
-	Tue, 27 Feb 2024 14:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE7313B78F;
+	Tue, 27 Feb 2024 14:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y35oJUfl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="04bmZen3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0173A13A26F;
-	Tue, 27 Feb 2024 14:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C02A1386CB;
+	Tue, 27 Feb 2024 14:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042976; cv=none; b=LZDVEGSTTVpVevttecwUNu4q4WjuiJ9diq8EmmgUKjC1l4ZnCYvVoKs/dFz0LJjdUICuOwpX8s3PN2aYdIkzrTKunu2e4qxhE51sfEWdb9RnRPcetEy2/oSNJTBvfvUttsXW6cN8AtMRz/IynmZdyd0nmfpdeXNN5Hmni2QhOMw=
+	t=1709043351; cv=none; b=ai4NG6TFxwW1ADuit7AA1W8x8IOWLbF9bCfFA1BKSXZluuLRv5JTxdVwX3mi7dCLVkLyRup9nncvMq6cbEJnYhV23Yd6XEItu5r9308TBj3snb1BXtQO9tK554eXtCq+fWSfxS7hSQJQxIVn9NGrGdcj/GoWUA06+Qmz4PZZm6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042976; c=relaxed/simple;
-	bh=dlV5pKSDSdwvtR58+YVtmhiBijOzPYaJfn4dwd3m9RE=;
+	s=arc-20240116; t=1709043351; c=relaxed/simple;
+	bh=ouiQvd3hpx29Dwat0NJXjmFpBFng7c1y+M+y68oRZyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jkTSPsMsSjTofJ/gQIVUHKRjEf4dcmSGAsBaRT5/zm+tejwKcdkv2qIc+o1dg/CUd6PH+nxxR+p5hSiQtSs5pIdoBy89CoW19P5oxS5LYCzhl34gcBVEqnK8YUFmnL69XVYzt/94WuqMb03SQ2o8qXLFiVsqm0PwSSJXAO+ylXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y35oJUfl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C8E7C433F1;
-	Tue, 27 Feb 2024 14:09:34 +0000 (UTC)
+	 MIME-Version; b=O6EqnBvly2j0VQofJuS6M9AfL4n5jI0obtufLa5ryszEfKcIJ/9g9lxxkQENSACVdnyKXMbwlrKiUBK6/geFWA/JgwA2UfO/HZaiTQCTmEEzIXNf0TMs32uyyx66bzzmCsq9i3QH1rjM4PoIbzbGpHYGKlBmRkOE+gKK0pTjAvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=04bmZen3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27BDFC433C7;
+	Tue, 27 Feb 2024 14:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042975;
-	bh=dlV5pKSDSdwvtR58+YVtmhiBijOzPYaJfn4dwd3m9RE=;
+	s=korg; t=1709043351;
+	bh=ouiQvd3hpx29Dwat0NJXjmFpBFng7c1y+M+y68oRZyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y35oJUflZVZDP+3/22zv8T5QWEMOdIw2FY2A9P8sjAGTLezWIUAgDYHGr5UShUb3N
-	 6vocEtFj39hFMe162pmj1sVZY6mNZ7q+jaCAlAdbxEPuLWSEOFuXBBhbHamInN6zD7
-	 Ee6tq/C/4J1ebbfUTe1jFmAuBSAC82GChqeVw26s=
+	b=04bmZen3lJjs7wkpl2oW++f4pVgafOiYTR0mqeIbzHX+gNssbenRFMj7I9yiKKPLB
+	 TfxiyYbRlGgEa6xT/nYBtfnP8H98pPwLi6AstJ6EsZ1nu50Lv7DlNQECCdDU56z40q
+	 6HxA4jszDPkL9lT7MY2Q6h84xJxJzakpsrSh7z34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Qing <wangqing@vivo.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Prike Liang <Prike.Liang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 150/245] net: ethernet: ti: add missing of_node_put before return
+Subject: [PATCH 6.1 077/195] drm/amdgpu: reset gpu for s3 suspend abort case
 Date: Tue, 27 Feb 2024 14:25:38 +0100
-Message-ID: <20240227131620.090094364@linuxfoundation.org>
+Message-ID: <20240227131613.037227564@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Qing <wangqing@vivo.com>
+From: Prike Liang <Prike.Liang@amd.com>
 
-[ Upstream commit be565ec71d1d59438bed0c7ed0a252a327e0b0ef ]
+[ Upstream commit 6ef82ac664bb9568ca3956e0d9c9c478e25077ff ]
 
-Fix following coccicheck warning:
-WARNING: Function "for_each_child_of_node"
-should have of_node_put() before return.
+In the s3 suspend abort case some type of gfx9 power
+rail not turn off from FCH side and this will put the
+GPU in an unknown power status, so let's reset the gpu
+to a known good power state before reinitialize gpu
+device.
 
-Early exits from for_each_child_of_node should decrement the
-node reference counter.
-
-Signed-off-by: Wang Qing <wangqing@vivo.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Prike Liang <Prike.Liang@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 29 ++++++++++++++++--------
- 1 file changed, 20 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/soc15.c | 22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index 1fa6f0dacd2de..f94d6d322df42 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -1856,13 +1856,14 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
- 		if (ret < 0) {
- 			dev_err(dev, "%pOF error reading port_id %d\n",
- 				port_np, ret);
--			return ret;
-+			goto of_node_put;
- 		}
- 
- 		if (!port_id || port_id > common->port_num) {
- 			dev_err(dev, "%pOF has invalid port_id %u %s\n",
- 				port_np, port_id, port_np->name);
--			return -EINVAL;
-+			ret = -EINVAL;
-+			goto of_node_put;
- 		}
- 
- 		port = am65_common_get_port(common, port_id);
-@@ -1878,8 +1879,10 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
- 				(AM65_CPSW_NU_FRAM_PORT_OFFSET * (port_id - 1));
- 
- 		port->slave.mac_sl = cpsw_sl_get("am65", dev, port->port_base);
--		if (IS_ERR(port->slave.mac_sl))
--			return PTR_ERR(port->slave.mac_sl);
-+		if (IS_ERR(port->slave.mac_sl)) {
-+			ret = PTR_ERR(port->slave.mac_sl);
-+			goto of_node_put;
-+		}
- 
- 		port->disabled = !of_device_is_available(port_np);
- 		if (port->disabled) {
-@@ -1892,7 +1895,7 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
- 			ret = PTR_ERR(port->slave.ifphy);
- 			dev_err(dev, "%pOF error retrieving port phy: %d\n",
- 				port_np, ret);
--			return ret;
-+			goto of_node_put;
- 		}
- 
- 		port->slave.mac_only =
-@@ -1901,10 +1904,12 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
- 		/* get phy/link info */
- 		if (of_phy_is_fixed_link(port_np)) {
- 			ret = of_phy_register_fixed_link(port_np);
--			if (ret)
--				return dev_err_probe(dev, ret,
-+			if (ret) {
-+				ret = dev_err_probe(dev, ret,
- 						     "failed to register fixed-link phy %pOF\n",
- 						     port_np);
-+				goto of_node_put;
-+			}
- 			port->slave.phy_node = of_node_get(port_np);
- 		} else {
- 			port->slave.phy_node =
-@@ -1914,14 +1919,15 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
- 		if (!port->slave.phy_node) {
- 			dev_err(dev,
- 				"slave[%d] no phy found\n", port_id);
--			return -ENODEV;
-+			ret = -ENODEV;
-+			goto of_node_put;
- 		}
- 
- 		ret = of_get_phy_mode(port_np, &port->slave.phy_if);
- 		if (ret) {
- 			dev_err(dev, "%pOF read phy-mode err %d\n",
- 				port_np, ret);
--			return ret;
-+			goto of_node_put;
- 		}
- 
- 		ret = of_get_mac_address(port_np, port->slave.mac_addr);
-@@ -1944,6 +1950,11 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
- 	}
- 
- 	return 0;
-+
-+of_node_put:
-+	of_node_put(port_np);
-+	of_node_put(node);
-+	return ret;
+diff --git a/drivers/gpu/drm/amd/amdgpu/soc15.c b/drivers/gpu/drm/amd/amdgpu/soc15.c
+index 811dd3ea63620..489c89465c78b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/soc15.c
++++ b/drivers/gpu/drm/amd/amdgpu/soc15.c
+@@ -1285,10 +1285,32 @@ static int soc15_common_suspend(void *handle)
+ 	return soc15_common_hw_fini(adev);
  }
  
- static void am65_cpsw_pcpu_stats_free(void *data)
++static bool soc15_need_reset_on_resume(struct amdgpu_device *adev)
++{
++	u32 sol_reg;
++
++	sol_reg = RREG32_SOC15(MP0, 0, mmMP0_SMN_C2PMSG_81);
++
++	/* Will reset for the following suspend abort cases.
++	 * 1) Only reset limit on APU side, dGPU hasn't checked yet.
++	 * 2) S3 suspend abort and TOS already launched.
++	 */
++	if (adev->flags & AMD_IS_APU && adev->in_s3 &&
++			!adev->suspend_complete &&
++			sol_reg)
++		return true;
++
++	return false;
++}
++
+ static int soc15_common_resume(void *handle)
+ {
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+ 
++	if (soc15_need_reset_on_resume(adev)) {
++		dev_info(adev->dev, "S3 suspend abort case, let's reset ASIC.\n");
++		soc15_asic_reset(adev);
++	}
+ 	return soc15_common_hw_init(adev);
+ }
+ 
 -- 
 2.43.0
 
