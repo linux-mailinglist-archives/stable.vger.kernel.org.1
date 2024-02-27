@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-25158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CC0F869831
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:29:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9611386953B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:00:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C272B242C1
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:27:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7A371C2469F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CA2013B7AB;
-	Tue, 27 Feb 2024 14:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FFF313DB90;
+	Tue, 27 Feb 2024 14:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uZweFvwZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VN8zsTl+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29FA613F016;
-	Tue, 27 Feb 2024 14:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D216054BD4;
+	Tue, 27 Feb 2024 14:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044026; cv=none; b=DP54HlDda/TDarZ9n34Vzv8nxCS0GKrBiuzkQgFre18fxhZpYJloUOVgEcuFSkju3zp+rt+klhYvqqtJlfuRfNxsC8S08jLvxQPbmd9JPMvrCTVr5F2IXfyiDhqzCkWYaIFUrBfIXCS+XAS0T8vLcCa1TrKtsNCeCQgputU0wTo=
+	t=1709042407; cv=none; b=a/6WqH1Zsh+wbfxVqF7kHzoYCnbiIkcgZ+9Gx181Q6MBK5yMU19pxzMoQXFxExBsPvWv9cjHY96LordcsPSWrzC/GHSrYDflJBY9my7L19815Tza9hm8GGlAoAE1LraOv9f/FiamLyjpCtel1zmBb09jQWlgHaHlgxDKVVFBjeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044026; c=relaxed/simple;
-	bh=j94JRyoteiAqNDvzNnQ4A+v1K/0Ha77zn7FFDLzNOjw=;
+	s=arc-20240116; t=1709042407; c=relaxed/simple;
+	bh=swynRbcsuaNIxghJ7puOVRUM0y7MVUj7pgWi2gOn3LI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jSw4jp2OWgHroVpCqDNIStgF/c9O7ELWxSEVyWyj3vvshU28eA4gF0nmYv8SQTDXJQPIYa9I54zRuOoT6K43qrPpgCMk2Eq5uYEDGgHZ2bdLY5Me4P3XH7VTST/vpKCyFCiTKOP335fKh8NHFtqp5Thr5s23PIHyNfuGgMuR4xI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uZweFvwZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52954C433F1;
-	Tue, 27 Feb 2024 14:27:05 +0000 (UTC)
+	 MIME-Version; b=gFC//hOcz4DuhyURaQcHFpUR6wpIajLfl0CgAOQJVvGg3QDmnqwv30QR3Ejj/mn4x15A1WHY0jl90QlRRTFN6r75wdKUKep37Uw8z6/MNL1Y83Awwdqp2fEdHFe1HmkxE5arRrPTWMG2X4gbtpFPqDL/FO7MESRE/SnBrUVsdHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VN8zsTl+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1379CC433F1;
+	Tue, 27 Feb 2024 14:00:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044025;
-	bh=j94JRyoteiAqNDvzNnQ4A+v1K/0Ha77zn7FFDLzNOjw=;
+	s=korg; t=1709042407;
+	bh=swynRbcsuaNIxghJ7puOVRUM0y7MVUj7pgWi2gOn3LI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uZweFvwZK2Dw267pmWH3muklJcJJmXX90uKClojVj/A0rmvf4PcMbGw71vdoLq7q3
-	 G5VSzU72/vRma4UJRshP3erpi0Tzk8jJroz0BjnJAkbRKpjXbdAhiEu6RXLLGeMo5i
-	 poGs8E0mWdQwf21/oshRXGkMb9WZKg1zPyIJWD+U=
+	b=VN8zsTl+QGPPioSXJkfUTC50nfI3liLeJF+c1Zewpq8xYRY2HTWsB/r6eg0exoDu9
+	 uwQh/b+00IA1QYtBKY9mZ2rvP+My7UP5oPLyaUK7EUykdmXyXnPiFYwQ2he2DU4gyL
+	 oW9flIzYPOutrRy3O2XoyagwHdyVT5wkTH/IcEZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Szilard Fabian <szfabian@bluemarch.art>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 035/122] Input: i8042 - add Fujitsu Lifebook U728 to i8042 quirk table
+Subject: [PATCH 6.6 285/299] net: phy: realtek: Fix rtl8211f_config_init() for RTL8211F(D)(I)-VD-CG PHY
 Date: Tue, 27 Feb 2024 14:26:36 +0100
-Message-ID: <20240227131559.855657225@linuxfoundation.org>
+Message-ID: <20240227131634.849880262@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Szilard Fabian <szfabian@bluemarch.art>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[ Upstream commit 4255447ad34c5c3785fcdcf76cfa0271d6e5ed39 ]
+[ Upstream commit 3489182b11d35f1944c1245fc9c4867cf622c50f ]
 
-Another Fujitsu-related patch.
+Commit bb726b753f75 ("net: phy: realtek: add support for
+RTL8211F(D)(I)-VD-CG") extended support of the driver from the existing
+support for RTL8211F(D)(I)-CG PHY to the newer RTL8211F(D)(I)-VD-CG PHY.
 
-In the initial boot stage the integrated keyboard of Fujitsu Lifebook U728
-refuses to work and it's not possible to type for example a dm-crypt
-passphrase without the help of an external keyboard.
+While that commit indicated that the RTL8211F_PHYCR2 register is not
+supported by the "VD-CG" PHY model and therefore updated the corresponding
+section in rtl8211f_config_init() to be invoked conditionally, the call to
+"genphy_soft_reset()" was left as-is, when it should have also been invoked
+conditionally. This is because the call to "genphy_soft_reset()" was first
+introduced by the commit 0a4355c2b7f8 ("net: phy: realtek: add dt property
+to disable CLKOUT clock") since the RTL8211F guide indicates that a PHY
+reset should be issued after setting bits in the PHYCR2 register.
 
-i8042.nomux kernel parameter resolves this issue but using that a PS/2
-mouse is detected. This input device is unused even when the i2c-hid-acpi
-kernel module is blacklisted making the integrated ELAN touchpad
-(04F3:3092) not working at all.
+As the PHYCR2 register is not applicable to the "VD-CG" PHY model, fix the
+rtl8211f_config_init() function by invoking "genphy_soft_reset()"
+conditionally based on the presence of the "PHYCR2" register.
 
-So this notebook uses a hid-over-i2c touchpad which is managed by the
-i2c_designware input driver. Since you can't find a PS/2 mouse port on this
-computer and you can't connect a PS/2 mouse to it even with an official
-port replicator I think it's safe to not use the PS/2 mouse port at all.
-
-Signed-off-by: Szilard Fabian <szfabian@bluemarch.art>
-Link: https://lore.kernel.org/r/20240103014717.127307-2-szfabian@bluemarch.art
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: bb726b753f75 ("net: phy: realtek: add support for RTL8211F(D)(I)-VD-CG")
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240220070007.968762-1-s-vadapalli@ti.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/phy/realtek.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/input/serio/i8042-acpipnpio.h b/drivers/input/serio/i8042-acpipnpio.h
-index cd21c92a6b2cd..6804970d8f51a 100644
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -625,6 +625,14 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
- 		},
- 		.driver_data = (void *)(SERIO_QUIRK_NOAUX)
- 	},
-+	{
-+		/* Fujitsu Lifebook U728 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "LIFEBOOK U728"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOAUX)
-+	},
- 	{
- 		/* Gigabyte M912 */
- 		.matches = {
+diff --git a/drivers/net/phy/realtek.c b/drivers/net/phy/realtek.c
+index 894172a3e15fe..337899c69738e 100644
+--- a/drivers/net/phy/realtek.c
++++ b/drivers/net/phy/realtek.c
+@@ -421,9 +421,11 @@ static int rtl8211f_config_init(struct phy_device *phydev)
+ 				ERR_PTR(ret));
+ 			return ret;
+ 		}
++
++		return genphy_soft_reset(phydev);
+ 	}
+ 
+-	return genphy_soft_reset(phydev);
++	return 0;
+ }
+ 
+ static int rtl821x_suspend(struct phy_device *phydev)
 -- 
 2.43.0
 
