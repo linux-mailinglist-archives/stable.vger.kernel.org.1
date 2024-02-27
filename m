@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-25026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6AFF869764
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:20:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A89E8697B2
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:24:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BE6928558A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:20:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13A392897FC
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:24:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27DB413B798;
-	Tue, 27 Feb 2024 14:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42DA13EFE9;
+	Tue, 27 Feb 2024 14:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q+xYn6w2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nwm6vdw7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3F113B2B4;
-	Tue, 27 Feb 2024 14:20:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6309413B2B4;
+	Tue, 27 Feb 2024 14:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043649; cv=none; b=PyAyKQzT3WayB5h9CCuTrqdXZ9SMVoD+QINCeKMLAEENQqKJ35PxXXryAqBu5aHoA7qXvyLtfhdCF2hh6yxIFIc65GZuV7dCtL0yrFgYXEr5/ro1l9ZJzzmYDMrc1VWXDICOTEYj+cAKy0DGxQduDMIahNXYcX9buUQ+vK9h6AQ=
+	t=1709043846; cv=none; b=jz0ZzmHbqAl6xyT2aNXrPubqd/Z6C7e6PzXTKxfbVO/OMhUfIBtjlwCTEj7FpODdi9qaREXijKn9fcqCvcUJOY0r8J9j1znMOItk22x1VyZ3EksqGoKP6PxR1/BGg7QwdxbRVkX149frlxhgIL6gJbV3+G4jVYA6jmHX4jeLvqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043649; c=relaxed/simple;
-	bh=atHfYaAjae53mhFZTDAyFdfEwYQwWnsoNRcIFqpHHoM=;
+	s=arc-20240116; t=1709043846; c=relaxed/simple;
+	bh=Gbxa2yJmpQc241Wck8c/OdIGNq6rl5WUasbbwE4Xb8s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bbagQsXDGwILWB9M+8wHgq3Jv8NnyoePA9O76dZLH7V/C5wtHP3C8tvERuK9RB7rPPhftQfHJElvNUhnG4JD4qPqHI0243DugyWl52wMKDQn8cZl2T4uE8eOHCnOBW70VnmKD7yhw5BGhZOlg9enXWhs30FS5Voluvda/o4gIjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q+xYn6w2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6532BC433C7;
-	Tue, 27 Feb 2024 14:20:49 +0000 (UTC)
+	 MIME-Version; b=pe46SNgJNko8opZoI+su5K32RpbB+r/z11QdMdu6L712gqHH+Rrt8Q6ODp4pqAaCAdiNjAZ0jyjLIXrhlY1RGMVdQz33UZRMKpNjR6MPgOKewdhPNCPo06AwViGaKYMMb9eDkg74dpMk9OCRQvQwNUnQxzNT1PSZf6/NxVIx/3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nwm6vdw7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F0FC433F1;
+	Tue, 27 Feb 2024 14:24:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043649;
-	bh=atHfYaAjae53mhFZTDAyFdfEwYQwWnsoNRcIFqpHHoM=;
+	s=korg; t=1709043846;
+	bh=Gbxa2yJmpQc241Wck8c/OdIGNq6rl5WUasbbwE4Xb8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q+xYn6w2fYhRjKu/33gJ9cyDEBF3+U1inVdvxjf8AXZUa++CNoO2pIyaBTByzU9xE
-	 GR80mXM2ZAKUNhPxnH9PfqVsxEh8FkeQ5VZzDgFVEAouIMVGS9VpDANrVTB7qPisTe
-	 h3FtoqkzJHZ64OyOhiKnsx47XgbiSYJKshy/Y89U=
+	b=nwm6vdw7X+unWAJVI6N+svjDCs1476sWCCIORw0lsYVXC3lNqCks9hq2AYyr/yzjm
+	 lc8629h1lyU1THnasjaI1iXmLiR1wb2rwfHxnjfbfqYfI6foX0R2G6f0PxMHiuk7Vb
+	 QCwELruukEl8l2AQhMOUpBM883VBgWAxYaCaGPtQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Corey Minyard <minyard@acm.org>,
-	Andrew Manley <andrew.manley@sealingtech.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 184/195] i2c: imx: when being a target, mark the last read as processed
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Nikita Shubin <nikita.shubin@maquefel.me>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 5.4 58/84] ARM: ep93xx: Add terminator to gpiod_lookup_table
 Date: Tue, 27 Feb 2024 14:27:25 +0100
-Message-ID: <20240227131616.477786680@linuxfoundation.org>
+Message-ID: <20240227131554.759821590@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corey Minyard <minyard@acm.org>
+From: Nikita Shubin <nikita.shubin@maquefel.me>
 
-[ Upstream commit 87aec499368d488c20292952d6d4be7cb9e49c5e ]
+commit fdf87a0dc26d0550c60edc911cda42f9afec3557 upstream.
 
-When being a target, NAK from the controller means that all bytes have
-been transferred. So, the last byte needs also to be marked as
-'processed'. Otherwise index registers of backends may not increase.
+Without the terminator, if a con_id is passed to gpio_find() that
+does not exist in the lookup table the function will not stop looping
+correctly, and eventually cause an oops.
 
-Fixes: f7414cd6923f ("i2c: imx: support slave mode for imx I2C driver")
-Signed-off-by: Corey Minyard <minyard@acm.org>
-Tested-by: Andrew Manley <andrew.manley@sealingtech.com>
-Reviewed-by: Andrew Manley <andrew.manley@sealingtech.com>
-Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-[wsa: fixed comment and commit message to properly describe the case]
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: b2e63555592f ("i2c: gpio: Convert to use descriptors")
+Reported-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Nikita Shubin <nikita.shubin@maquefel.me>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Acked-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Link: https://lore.kernel.org/r/20240205102337.439002-1-alexander.sverdlin@gmail.com
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-imx.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm/mach-ep93xx/core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-index fc70920c4ddab..0c203c614197c 100644
---- a/drivers/i2c/busses/i2c-imx.c
-+++ b/drivers/i2c/busses/i2c-imx.c
-@@ -804,6 +804,11 @@ static irqreturn_t i2c_imx_slave_handle(struct imx_i2c_struct *i2c_imx,
- 		ctl &= ~I2CR_MTX;
- 		imx_i2c_write_reg(ctl, i2c_imx, IMX_I2C_I2CR);
- 		imx_i2c_read_reg(i2c_imx, IMX_I2C_I2DR);
-+
-+		/* flag the last byte as processed */
-+		i2c_imx_slave_event(i2c_imx,
-+				    I2C_SLAVE_READ_PROCESSED, &value);
-+
- 		i2c_imx_slave_finish_op(i2c_imx);
- 		return IRQ_HANDLED;
- 	}
--- 
-2.43.0
-
+--- a/arch/arm/mach-ep93xx/core.c
++++ b/arch/arm/mach-ep93xx/core.c
+@@ -337,6 +337,7 @@ static struct gpiod_lookup_table ep93xx_
+ 				GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN),
+ 		GPIO_LOOKUP_IDX("G", 0, NULL, 1,
+ 				GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN),
++		{ }
+ 	},
+ };
+ 
 
 
 
