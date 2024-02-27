@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-24443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 408DF869480
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:54:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A6CC8695AD
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:04:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AACE11F22918
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:54:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB6BB1C21F1E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:04:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915D8142623;
-	Tue, 27 Feb 2024 13:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2603813B7A2;
+	Tue, 27 Feb 2024 14:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T31nVCOx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2XHrXyCl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DAF513B79F;
-	Tue, 27 Feb 2024 13:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D5A78B61;
+	Tue, 27 Feb 2024 14:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042019; cv=none; b=V85QfelpX0Ak34jno2+xjeFT+6KUj4FwoMWt+BVdXZdHt/R7V0L79IhfxFk/82SS/Ye7+LcbtBfwnBgxo5qMJIs/b0V/Vhn7l+KiWT/JfWi/2zblLoNKnvG7ij/T0oU38DVJ1x1ft4SPZbLioc6E85C+EW5elMdPO33ibtO8WsA=
+	t=1709042654; cv=none; b=oYE/sbpUmGvXQJAaJvCwBZpvxEJYK9qGsbv/ataZUIueqih0pG7RYHH+bpzC+cij2dg+ZIZavIikYUuhkz2EwmmriiY7nOPxr6TkZHf2EGlQvOwN4mjRy6L9ahOQJ3vCVfUyXJLp/uwT5UB6A+IH7oJrqaLdD9jnDm11PcBLAeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042019; c=relaxed/simple;
-	bh=wpiCukDLUpYS49V7Ha1t0vsKgFNtVqP6gYQ/NAquqGA=;
+	s=arc-20240116; t=1709042654; c=relaxed/simple;
+	bh=Kg1kNRFnFwMsSgah1Y8D3Qhnqz9M4rQn2sTIYFQxa7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GvjQXny257H+DRPGUv67xKQ5xdcaqHA0L08CZmo5bTilbzy1h8n8TcIpb9CYyiR+N7R9zszkeK0pqEFJZ/Lq1KtVgyimU50CI1iU5DullgYr0pJDixglX8GN74dFN1SwCQgVKSIi20ZwDub0r/R27YWKPIxenyzV3i7aH6JOPU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T31nVCOx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0155C433C7;
-	Tue, 27 Feb 2024 13:53:38 +0000 (UTC)
+	 MIME-Version; b=mH6ZpXCp7LLVdNPAnxM1UmrH6EM8VwFhorA6PvbhX/gUNhLqW4MEydTCL/rRoicbZZAS3ZRPWDUNjRKFf/tuarr4NUXnHAoL3fAFDC8FSvdVmRBl6MrK7bItB/QzSe1NYV95Og53NzAtyUHcSFZLkWptprB//I6AkRN0uINHBuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2XHrXyCl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66CBAC433F1;
+	Tue, 27 Feb 2024 14:04:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042019;
-	bh=wpiCukDLUpYS49V7Ha1t0vsKgFNtVqP6gYQ/NAquqGA=;
+	s=korg; t=1709042654;
+	bh=Kg1kNRFnFwMsSgah1Y8D3Qhnqz9M4rQn2sTIYFQxa7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T31nVCOxFkhpTIueLpMYSf/0aQ54E5SZ7BPDaUFf19t2ABHl9jw0Z2y1IxtW4+Rsz
-	 32h7BshVaSec1cVvjsF7v6yKxuvv04ulpLbnKllGEDTTAFbo/PoxqzdRZBlkumdzEZ
-	 OYZBh9KX/ucRub5Tx1Kz13HSsDtqkSjEGrV6Qq1s=
+	b=2XHrXyClyH5WrWhl6EmvghhURYjEvMAPeKU7luGDnw8FmfOaf7ngODYOefq+liwSQ
+	 hAp5GK595EuZMSo3FeqlC6G/49UASNXs3MW1qjDKK7igQ810ctIytU29L0PGFknX2c
+	 B7fEKSxZb66I4BwmOyx1wM+r1NeeFz6HlR+nXMCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>
-Subject: [PATCH 6.6 149/299] dm-integrity: recheck the integrity tag after a failure
-Date: Tue, 27 Feb 2024 14:24:20 +0100
-Message-ID: <20240227131630.667582525@linuxfoundation.org>
+	Eugen Hristev <eugen.hristev@collabora.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 073/245] pmdomain: mediatek: fix race conditions with genpd
+Date: Tue, 27 Feb 2024 14:24:21 +0100
+Message-ID: <20240227131617.614130055@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,164 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Eugen Hristev <eugen.hristev@collabora.com>
 
-commit c88f5e553fe38b2ffc4c33d08654e5281b297677 upstream.
+[ Upstream commit c41336f4d69057cbf88fed47951379b384540df5 ]
 
-If a userspace process reads (with O_DIRECT) multiple blocks into the same
-buffer, dm-integrity reports an error [1]. The error is reported in a log
-and it may cause RAID leg being kicked out of the array.
+If the power domains are registered first with genpd and *after that*
+the driver attempts to power them on in the probe sequence, then it is
+possible that a race condition occurs if genpd tries to power them on
+in the same time.
+The same is valid for powering them off before unregistering them
+from genpd.
+Attempt to fix race conditions by first removing the domains from genpd
+and *after that* powering down domains.
+Also first power up the domains and *after that* register them
+to genpd.
 
-This commit fixes dm-integrity, so that if integrity verification fails,
-the data is read again into a kernel buffer (where userspace can't modify
-it) and the integrity tag is rechecked. If the recheck succeeds, the
-content of the kernel buffer is copied into the user buffer; if the
-recheck fails, an integrity error is reported.
-
-[1] https://people.redhat.com/~mpatocka/testcases/blk-auth-modify/read2.c
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 59b644b01cf4 ("soc: mediatek: Add MediaTek SCPSYS power domains")
+Signed-off-by: Eugen Hristev <eugen.hristev@collabora.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20231225133615.78993-1-eugen.hristev@collabora.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-integrity.c |   93 +++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 84 insertions(+), 9 deletions(-)
+ drivers/soc/mediatek/mtk-pm-domains.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/drivers/md/dm-integrity.c
-+++ b/drivers/md/dm-integrity.c
-@@ -278,6 +278,8 @@ struct dm_integrity_c {
+diff --git a/drivers/soc/mediatek/mtk-pm-domains.c b/drivers/soc/mediatek/mtk-pm-domains.c
+index 52ecde8e446cf..9e649b7077c6a 100644
+--- a/drivers/soc/mediatek/mtk-pm-domains.c
++++ b/drivers/soc/mediatek/mtk-pm-domains.c
+@@ -493,6 +493,11 @@ static int scpsys_add_subdomain(struct scpsys *scpsys, struct device_node *paren
+ 			goto err_put_node;
+ 		}
  
- 	atomic64_t number_of_mismatches;
- 
-+	mempool_t recheck_pool;
++		/* recursive call to add all subdomains */
++		ret = scpsys_add_subdomain(scpsys, child);
++		if (ret)
++			goto err_put_node;
 +
- 	struct notifier_block reboot_notifier;
- };
- 
-@@ -1699,6 +1701,79 @@ failed:
- 	get_random_bytes(result, ic->tag_size);
- }
- 
-+static void integrity_recheck(struct dm_integrity_io *dio)
-+{
-+	struct bio *bio = dm_bio_from_per_bio_data(dio, sizeof(struct dm_integrity_io));
-+	struct dm_integrity_c *ic = dio->ic;
-+	struct bvec_iter iter;
-+	struct bio_vec bv;
-+	sector_t sector, logical_sector, area, offset;
-+	char checksum_onstack[max_t(size_t, HASH_MAX_DIGESTSIZE, MAX_TAG_SIZE)];
-+	struct page *page;
-+	void *buffer;
-+
-+	get_area_and_offset(ic, dio->range.logical_sector, &area, &offset);
-+	dio->metadata_block = get_metadata_sector_and_offset(ic, area, offset,
-+							     &dio->metadata_offset);
-+	sector = get_data_sector(ic, area, offset);
-+	logical_sector = dio->range.logical_sector;
-+
-+	page = mempool_alloc(&ic->recheck_pool, GFP_NOIO);
-+	buffer = page_to_virt(page);
-+
-+	__bio_for_each_segment(bv, bio, iter, dio->bio_details.bi_iter) {
-+		unsigned pos = 0;
-+
-+		do {
-+			char *mem;
-+			int r;
-+			struct dm_io_request io_req;
-+			struct dm_io_region io_loc;
-+			io_req.bi_opf = REQ_OP_READ;
-+			io_req.mem.type = DM_IO_KMEM;
-+			io_req.mem.ptr.addr = buffer;
-+			io_req.notify.fn = NULL;
-+			io_req.client = ic->io;
-+			io_loc.bdev = ic->dev->bdev;
-+			io_loc.sector = sector;
-+			io_loc.count = ic->sectors_per_block;
-+
-+			r = dm_io(&io_req, 1, &io_loc, NULL);
-+			if (unlikely(r)) {
-+				dio->bi_status = errno_to_blk_status(r);
-+				goto free_ret;
-+			}
-+
-+			integrity_sector_checksum(ic, logical_sector, buffer,
-+						  checksum_onstack);
-+			r = dm_integrity_rw_tag(ic, checksum_onstack, &dio->metadata_block,
-+						&dio->metadata_offset, ic->tag_size, TAG_CMP);
-+			if (r) {
-+				if (r > 0) {
-+					DMERR_LIMIT("%pg: Checksum failed at sector 0x%llx",
-+						    bio->bi_bdev, logical_sector);
-+					atomic64_inc(&ic->number_of_mismatches);
-+					dm_audit_log_bio(DM_MSG_PREFIX, "integrity-checksum",
-+							 bio, logical_sector, 0);
-+					r = -EILSEQ;
-+				}
-+				dio->bi_status = errno_to_blk_status(r);
-+				goto free_ret;
-+			}
-+
-+			mem = bvec_kmap_local(&bv);
-+			memcpy(mem + pos, buffer, ic->sectors_per_block << SECTOR_SHIFT);
-+			kunmap_local(mem);
-+
-+			pos += ic->sectors_per_block << SECTOR_SHIFT;
-+			sector += ic->sectors_per_block;
-+			logical_sector += ic->sectors_per_block;
-+		} while (pos < bv.bv_len);
-+	}
-+free_ret:
-+	mempool_free(page, &ic->recheck_pool);
-+}
-+
- static void integrity_metadata(struct work_struct *w)
- {
- 	struct dm_integrity_io *dio = container_of(w, struct dm_integrity_io, work);
-@@ -1786,15 +1861,8 @@ again:
- 						checksums_ptr - checksums, dio->op == REQ_OP_READ ? TAG_CMP : TAG_WRITE);
- 			if (unlikely(r)) {
- 				if (r > 0) {
--					sector_t s;
+ 		ret = pm_genpd_add_subdomain(parent_pd, child_pd);
+ 		if (ret) {
+ 			dev_err(scpsys->dev, "failed to add %s subdomain to parent %s\n",
+@@ -502,11 +507,6 @@ static int scpsys_add_subdomain(struct scpsys *scpsys, struct device_node *paren
+ 			dev_dbg(scpsys->dev, "%s add subdomain: %s\n", parent_pd->name,
+ 				child_pd->name);
+ 		}
 -
--					s = sector - ((r + ic->tag_size - 1) / ic->tag_size);
--					DMERR_LIMIT("%pg: Checksum failed at sector 0x%llx",
--						    bio->bi_bdev, s);
--					r = -EILSEQ;
--					atomic64_inc(&ic->number_of_mismatches);
--					dm_audit_log_bio(DM_MSG_PREFIX, "integrity-checksum",
--							 bio, s, 0);
-+					integrity_recheck(dio);
-+					goto skip_io;
- 				}
- 				if (likely(checksums != checksums_onstack))
- 					kfree(checksums);
-@@ -4271,6 +4339,12 @@ static int dm_integrity_ctr(struct dm_ta
- 		goto bad;
+-		/* recursive call to add all subdomains */
+-		ret = scpsys_add_subdomain(scpsys, child);
+-		if (ret)
+-			goto err_put_node;
  	}
  
-+	r = mempool_init_page_pool(&ic->recheck_pool, 1, 0);
-+	if (r) {
-+		ti->error = "Cannot allocate mempool";
-+		goto bad;
-+	}
-+
- 	ic->metadata_wq = alloc_workqueue("dm-integrity-metadata",
- 					  WQ_MEM_RECLAIM, METADATA_WORKQUEUE_MAX_ACTIVE);
- 	if (!ic->metadata_wq) {
-@@ -4619,6 +4693,7 @@ static void dm_integrity_dtr(struct dm_t
- 	kvfree(ic->bbs);
- 	if (ic->bufio)
- 		dm_bufio_client_destroy(ic->bufio);
-+	mempool_exit(&ic->recheck_pool);
- 	mempool_exit(&ic->journal_io_mempool);
- 	if (ic->io)
- 		dm_io_client_destroy(ic->io);
+ 	return 0;
+@@ -520,9 +520,6 @@ static void scpsys_remove_one_domain(struct scpsys_domain *pd)
+ {
+ 	int ret;
+ 
+-	if (scpsys_domain_is_on(pd))
+-		scpsys_power_off(&pd->genpd);
+-
+ 	/*
+ 	 * We're in the error cleanup already, so we only complain,
+ 	 * but won't emit another error on top of the original one.
+@@ -532,6 +529,8 @@ static void scpsys_remove_one_domain(struct scpsys_domain *pd)
+ 		dev_err(pd->scpsys->dev,
+ 			"failed to remove domain '%s' : %d - state may be inconsistent\n",
+ 			pd->genpd.name, ret);
++	if (scpsys_domain_is_on(pd))
++		scpsys_power_off(&pd->genpd);
+ 
+ 	clk_bulk_put(pd->num_clks, pd->clks);
+ 	clk_bulk_put(pd->num_subsys_clks, pd->subsys_clks);
+-- 
+2.43.0
+
 
 
 
