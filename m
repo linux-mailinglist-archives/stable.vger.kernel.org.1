@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-24499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B56BD8694CB
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:56:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA5678696C6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E41BA1C280F7
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:56:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 129191C23D7D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70DBF13DB90;
-	Tue, 27 Feb 2024 13:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6812145B1F;
+	Tue, 27 Feb 2024 14:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Se+cpdaM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jB/YzRg0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF7E13B295;
-	Tue, 27 Feb 2024 13:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7540C13B29C;
+	Tue, 27 Feb 2024 14:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042174; cv=none; b=Mkp/WSn3/0BQmkuIaAxeFwDYlQOrEk+6HDb8Yhz2lj+bbH4T2bcWbsjIUrp3lH0xFWs4jD3PTSAAQZV10R7c7sXC1zWeFEjhqs6dWG74eJCXaNULLa8kpMgLq1xhXS4oycbRl06NTy62OQKh3gj11ZPoe6SXPQwPj8UBXwG1CaE=
+	t=1709043290; cv=none; b=Ji1ipCsEanY8gDi9Kx/u6O6YsSZCHvtAP9gP9woHoZv9UxSP8DSxzwV7dcyfnE6aEj0TxEBOOUPl1Acfm83u8VBsjjbvKH64LGnHpLtZvE0paVCsme1rvTaPiTbXbJ8A5X6ETp9qvNeNH5xjH6VX5z5lFlsLxCJHqRMPXYOCC6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042174; c=relaxed/simple;
-	bh=nvf1nPv0uMi7Eq3liR9NMyuQFq7soEhQc8YrpQ6F+lY=;
+	s=arc-20240116; t=1709043290; c=relaxed/simple;
+	bh=H3GUdlUAF8tDjfI5hAwYZGyLrPBWM63CXwHWu7IoXeo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D60DP+PvFmC0ys7P+Q7t4wjjh2WYAMKVVWwCu8n1liJLMALyjuISTDmUkf1vX8NIft020DiCMVUnMfk2NdvWaqljr0xgNArSAEuiI7ku6POdOIBRMRkbmolRCQAPsPcxlWD1edL9gYQWL+5g4uHdXQU1T4brv1mjVa0qJALOeA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Se+cpdaM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B329BC433F1;
-	Tue, 27 Feb 2024 13:56:13 +0000 (UTC)
+	 MIME-Version; b=bYD5zwqmdAIMEClSn6wCE0Yxd3e4Qo5MYCDAHH9uPaHLvBpwfB8fqkkqPychHYGhRpYKDcJ/UufG9z3MXNVUY5Iv4oFRUpoJjZiAgePp8AzygG9MOafFi1gKoCYXwOKePaGfMmOp8oYfKwm2KyYdtYxKIXkAVoeXUHXth6zFxZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jB/YzRg0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF435C433F1;
+	Tue, 27 Feb 2024 14:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042174;
-	bh=nvf1nPv0uMi7Eq3liR9NMyuQFq7soEhQc8YrpQ6F+lY=;
+	s=korg; t=1709043290;
+	bh=H3GUdlUAF8tDjfI5hAwYZGyLrPBWM63CXwHWu7IoXeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Se+cpdaMhYcVY20dC30Vr9EFyUOalGdcGBcMXlpERQAiU1g/nSPTUmlO7SKJU0iS8
-	 5wkaErr+7O8dt5pU7Xc/HrmSm1G5h1CiBdof39JSogLnn+PvC3xLNHIdLTbUf6/dn0
-	 4glJxN3RW2zLY4jGK6svruUK2JNGqdfrsr5j46Ec=
+	b=jB/YzRg0fFJkGU5V8BIadIWjn6uY91clIkeqxLg/neWe2nHxRIv53nOsrBxvHdsYg
+	 c/kAUSn5Psaps6GQNKKSE7Bi9k/EkSPFd7taEeILOffuKpfO6RXCA6o07eIKj8V4cC
+	 Q+3QIrZvpk+ErZSrMxZ+VmrixtzImSMx81rmxq7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 205/299] smb3: add missing null server pointer check
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 055/195] fs/ntfs3: Improve ntfs_dir_count
 Date: Tue, 27 Feb 2024 14:25:16 +0100
-Message-ID: <20240227131632.400186504@linuxfoundation.org>
+Message-ID: <20240227131612.327112349@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit 45be0882c5f91e1b92e645001dd1a53b3bd58c97 upstream.
+[ Upstream commit 6a799c928b78b14999b7705c4cca0f88e297fe96 ]
 
-Address static checker warning in cifs_ses_get_chan_index():
-    warn: variable dereferenced before check 'server'
-To be consistent, and reduce risk, we should add another check
-for null server pointer.
-
-Fixes: 88675b22d34e ("cifs: do not search for channel if server is terminating")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/sess.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ntfs3/dir.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -76,7 +76,7 @@ cifs_ses_get_chan_index(struct cifs_ses
- 	unsigned int i;
+diff --git a/fs/ntfs3/dir.c b/fs/ntfs3/dir.c
+index c2fb76bb28f47..72cdfa8727d3c 100644
+--- a/fs/ntfs3/dir.c
++++ b/fs/ntfs3/dir.c
+@@ -515,11 +515,9 @@ static int ntfs_dir_count(struct inode *dir, bool *is_empty, size_t *dirs,
+ 	struct INDEX_HDR *hdr;
+ 	const struct ATTR_FILE_NAME *fname;
+ 	u32 e_size, off, end;
+-	u64 vbo = 0;
+ 	size_t drs = 0, fles = 0, bit = 0;
+-	loff_t i_size = ni->vfs_inode.i_size;
+ 	struct indx_node *node = NULL;
+-	u8 index_bits = ni->dir.index_bits;
++	size_t max_indx = ni->vfs_inode.i_size >> ni->dir.index_bits;
  
- 	/* if the channel is waiting for termination */
--	if (server->terminate)
-+	if (server && server->terminate)
- 		return CIFS_INVAL_CHAN_INDEX;
+ 	if (is_empty)
+ 		*is_empty = true;
+@@ -563,7 +561,7 @@ static int ntfs_dir_count(struct inode *dir, bool *is_empty, size_t *dirs,
+ 				fles += 1;
+ 		}
  
- 	for (i = 0; i < ses->chan_count; i++) {
+-		if (vbo >= i_size)
++		if (bit >= max_indx)
+ 			goto out;
+ 
+ 		err = indx_used_bit(&ni->dir, ni, &bit);
+@@ -573,8 +571,7 @@ static int ntfs_dir_count(struct inode *dir, bool *is_empty, size_t *dirs,
+ 		if (bit == MINUS_ONE_T)
+ 			goto out;
+ 
+-		vbo = (u64)bit << index_bits;
+-		if (vbo >= i_size)
++		if (bit >= max_indx)
+ 			goto out;
+ 
+ 		err = indx_read(&ni->dir, ni, bit << ni->dir.idx2vbn_bits,
+@@ -584,7 +581,6 @@ static int ntfs_dir_count(struct inode *dir, bool *is_empty, size_t *dirs,
+ 
+ 		hdr = &node->index->ihdr;
+ 		bit += 1;
+-		vbo = (u64)bit << ni->dir.idx2vbn_bits;
+ 	}
+ 
+ out:
+-- 
+2.43.0
+
 
 
 
