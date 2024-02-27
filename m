@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-24886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB4868696BC
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB15D8695F0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38B711F2E6E5
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 469421F2C1BB
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F004A145327;
-	Tue, 27 Feb 2024 14:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA1E141995;
+	Tue, 27 Feb 2024 14:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cKoKzeMG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YW11leTG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE91713B78F;
-	Tue, 27 Feb 2024 14:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB7B13B2AC;
+	Tue, 27 Feb 2024 14:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043265; cv=none; b=IBJq5NdRpreDWVEblvoSvEgkdMVFAq77NzNx84NI63fmXckBjhFESbeBEtANj6AFuC+lTTmNxHMB3u/QBb3DWPlVbjYFpXCJdwNmfC3cnPaX5sSd5GAisV2peiTaq45u6bUndCKMTJ9sgoZ9GVlnCrX6Y44BcEQqk5JDSc9/DnQ=
+	t=1709042787; cv=none; b=bwcPDTtMwPnFtsOhzyzszcOBgKJnBkMy/gZvzGqNoDDHS0ZwBerOsxW5Yl3+qrHet9LDEarLiAbtwzSIihgEqPtwtR+Q+F6oq7evZFK2TnUyHGH8WCTw5vc1qFC8E49DFU1pPA+IpLn+NW/7GcuD2h0YgySvqmv6nnADaEdm4Lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043265; c=relaxed/simple;
-	bh=qn7zDapK+Ho9tEpeY1E8+6eKdRJUL7jLKmsve90FWkQ=;
+	s=arc-20240116; t=1709042787; c=relaxed/simple;
+	bh=jt3a02WhBWEK8pgcO6ByiVbl4cHwTsHRGUHARJBOXwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MFgJ+2zQJDFT095R3Rku/VQQOgrWWaaUQ2gb79p8ZC2WGfmBL/lYWBkkWz70niwopiLXvjsBgpCI8jpIasHV/oxlKM9YCSQy5GdBkwHbtbqXW3+catnaqEh3oDHvRpxDn6CtSeYrUfRIp8w7ROPTWniBfxNIdPh7CSzbtqWL9nI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cKoKzeMG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DDACC433C7;
-	Tue, 27 Feb 2024 14:14:25 +0000 (UTC)
+	 MIME-Version; b=HeUBfY7mep2SYgEjUS65rudK5vExv+BxlU61UWl93lQd1xfRPjxGUntE/ya1I/Gvds3jAAUC4W3+PTlcnFaiLFa+QFFzn2v5Qd2mBdWelQrnmwQwesoNpl6WfquigaO03rVd/fHXzl8kqjVSzR5IzF/8GUDNVYO+CDYE1zIS1NI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YW11leTG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB5C5C433F1;
+	Tue, 27 Feb 2024 14:06:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043265;
-	bh=qn7zDapK+Ho9tEpeY1E8+6eKdRJUL7jLKmsve90FWkQ=;
+	s=korg; t=1709042787;
+	bh=jt3a02WhBWEK8pgcO6ByiVbl4cHwTsHRGUHARJBOXwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cKoKzeMGgvniT2urTtTU0pwmd7cj3lD2eYb9dvwBYznsZ+36gEtBbDLDWlaWrMV0s
-	 qaGcbI/znesyA7AOItb/qhlY4swwzumLdkkN0DM2DMq/yCUTvC6vl2MWT7KfOd/u0a
-	 4zs/e/i7nk0Vo4rXVLGa6X/+HadlzerYoz68e1uo=
+	b=YW11leTGWpek6yUH5c0QBQ0POyfqIIZfnwBZ+loq0n+vCn3RUGWMwUjSL009NaXfx
+	 rnPqWGyq862S5sybrFAv0XBBTiC2ePLIB4RINAQqT9cowB/ae+V+DVF/5g/O/y4Gii
+	 Z4J0F36rC0mF1tWh7JNhwBI1qP9mKruiKpRIohiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	Daniel Wagner <dwagner@suse.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Andrew Jeffery <andrew@aj.id.au>,
+	Frederic Barrat <fbarrat@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 046/195] nvmet-fc: defer cleanup using RCU properly
+Subject: [PATCH 5.15 119/245] powerpc/powernv/ioda: Skip unallocated resources when mapping to PE
 Date: Tue, 27 Feb 2024 14:25:07 +0100
-Message-ID: <20240227131611.909377065@linuxfoundation.org>
+Message-ID: <20240227131619.096196215@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,278 +63,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <dwagner@suse.de>
+From: Frederic Barrat <fbarrat@linux.ibm.com>
 
-[ Upstream commit 4049dc96b8de7aeb3addcea039446e464726a525 ]
+[ Upstream commit e64e71056f323a1e178dccf04d4c0f032d84436c ]
 
-When the target executes a disconnect and the host triggers a reconnect
-immediately, the reconnect command still finds an existing association.
+pnv_ioda_setup_pe_res() calls opal to map a resource with a PE. However,
+the code assumes the resource is allocated and it uses the resource
+address to find out the segment(s) which need to be mapped to the
+PE. In the unlikely case where the resource hasn't been allocated, the
+computation for the segment number is garbage, which can lead to
+invalid memory access and potentially a kernel crash, such as:
 
-The reconnect crashes later on because nvmet_fc_delete_target_assoc
-blindly removes resources while the reconnect code wants to use it.
+[ ] pci_bus 0002:02: Configuring PE for bus
+[ ] pci 0002:02     : [PE# fc] Secondary bus 0x0000000000000002..0x0000000000000002 associated with PE#fc
+[ ] BUG: Kernel NULL pointer dereference on write at 0x00000000
+[ ] Faulting instruction address: 0xc00000000005eac4
+[ ] Oops: Kernel access of bad area, sig: 7 [#1]
+[ ] LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA PowerNV
+[ ] Modules linked in:
+[ ] CPU: 12 PID: 1 Comm: swapper/20 Not tainted 5.10.50-openpower1 #2
+[ ] NIP:  c00000000005eac4 LR: c00000000005ea44 CTR: 0000000030061b9c
+[ ] REGS: c000200007383650 TRAP: 0300   Not tainted  (5.10.50-openpower1)
+[ ] MSR:  9000000000009033 <SF,HV,EE,ME,IR,DR,RI,LE>  CR: 44000224  XER: 20040000
+[ ] CFAR: c00000000005eaa0 DAR: 0000000000000000 DSISR: 02080000 IRQMASK: 0
+[ ] GPR00: c00000000005dd98 c0002000073838e0 c00000000185de00 c000200fff018960
+[ ] GPR04: 00000000000000fc 0000000000000003 0000000000000000 0000000000000000
+[ ] GPR08: 0000000000000000 0000000000000000 0000000000000000 9000000000001033
+[ ] GPR12: 0000000031cb0000 c000000ffffe6a80 c000000000010a58 0000000000000000
+[ ] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+[ ] GPR20: 0000000000000000 0000000000000000 0000000000000000 c00000000711e200
+[ ] GPR24: 0000000000000100 c000200009501120 c00020000cee2800 00000000000003ff
+[ ] GPR28: c000200fff018960 0000000000000000 c000200ffcb7fd00 0000000000000000
+[ ] NIP [c00000000005eac4] pnv_ioda_setup_pe_res+0x94/0x1a0
+[ ] LR [c00000000005ea44] pnv_ioda_setup_pe_res+0x14/0x1a0
+[ ] Call Trace:
+[ ] [c0002000073838e0] [c00000000005eb98] pnv_ioda_setup_pe_res+0x168/0x1a0 (unreliable)
+[ ] [c000200007383970] [c00000000005dd98] pnv_pci_ioda_dma_dev_setup+0x43c/0x970
+[ ] [c000200007383a60] [c000000000032cdc] pcibios_bus_add_device+0x78/0x18c
+[ ] [c000200007383aa0] [c00000000028f2bc] pci_bus_add_device+0x28/0xbc
+[ ] [c000200007383b10] [c00000000028f3a0] pci_bus_add_devices+0x50/0x7c
+[ ] [c000200007383b50] [c00000000028f3c4] pci_bus_add_devices+0x74/0x7c
+[ ] [c000200007383b90] [c00000000028f3c4] pci_bus_add_devices+0x74/0x7c
+[ ] [c000200007383bd0] [c00000000069ad0c] pcibios_init+0xf0/0x104
+[ ] [c000200007383c50] [c0000000000106d8] do_one_initcall+0x84/0x1c4
+[ ] [c000200007383d20] [c0000000006910b8] kernel_init_freeable+0x264/0x268
+[ ] [c000200007383dc0] [c000000000010a68] kernel_init+0x18/0x138
+[ ] [c000200007383e20] [c00000000000cbfc] ret_from_kernel_thread+0x5c/0x80
+[ ] Instruction dump:
+[ ] 7f89e840 409d000c 7fbbf840 409c000c 38210090 4848f448 809c002c e95e0120
+[ ] 7ba91764 38a00003 57a7043e 38c00000 <7c8a492e> 5484043e e87e0018 4bff23bd
 
-To address this, nvmet_fc_find_target_assoc should not be able to
-lookup an association which is being removed. The association list
-is already under RCU lifetime management, so let's properly use it
-and remove the association from the list and wait for a grace period
-before cleaning up all. This means we also can drop the RCU management
-on the queues, because this is now handled via the association itself.
+Hitting the problem is not that easy. It was seen with a (semi-bogus)
+PCI device with a class code of 0. The generic PCI framework doesn't
+allocate resources in such a case.
 
-A second step split the execution context so that the initial disconnect
-command can complete without running the reconnect code in the same
-context. As usual, this is done by deferring the ->done to a workqueue.
+The patch is simply skipping resources which are still flagged with
+IORESOURCE_UNSET.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Daniel Wagner <dwagner@suse.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+We don't have the problem with 64-bit mem resources, as the address of
+the resource is checked to be within the range of the 64-bit mmio
+window. See pnv_ioda_reserve_dev_m64_pe() and pnv_pci_is_m64().
+
+Reported-by: Andrew Jeffery <andrew@aj.id.au>
+Fixes: 23e79425fe7c ("powerpc/powernv: Simplify pnv_ioda_setup_pe_seg()")
+Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20230120093215.19496-1-fbarrat@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/fc.c | 83 ++++++++++++++++++----------------------
- 1 file changed, 37 insertions(+), 46 deletions(-)
+ arch/powerpc/platforms/powernv/pci-ioda.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/target/fc.c b/drivers/nvme/target/fc.c
-index 0075d9636b065..c9ef642313c8f 100644
---- a/drivers/nvme/target/fc.c
-+++ b/drivers/nvme/target/fc.c
-@@ -165,7 +165,7 @@ struct nvmet_fc_tgt_assoc {
- 	struct nvmet_fc_hostport	*hostport;
- 	struct nvmet_fc_ls_iod		*rcv_disconn;
- 	struct list_head		a_list;
--	struct nvmet_fc_tgt_queue __rcu	*queues[NVMET_NR_QUEUES + 1];
-+	struct nvmet_fc_tgt_queue 	*queues[NVMET_NR_QUEUES + 1];
- 	struct kref			ref;
- 	struct work_struct		del_work;
- 	struct rcu_head			rcu;
-@@ -802,14 +802,11 @@ nvmet_fc_alloc_target_queue(struct nvmet_fc_tgt_assoc *assoc,
- 	if (!queue)
- 		return NULL;
+diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
+index 624822a810193..8cf9e9f29763c 100644
+--- a/arch/powerpc/platforms/powernv/pci-ioda.c
++++ b/arch/powerpc/platforms/powernv/pci-ioda.c
+@@ -2334,7 +2334,8 @@ static void pnv_ioda_setup_pe_res(struct pnv_ioda_pe *pe,
+ 	int index;
+ 	int64_t rc;
  
--	if (!nvmet_fc_tgt_a_get(assoc))
--		goto out_free_queue;
--
- 	queue->work_q = alloc_workqueue("ntfc%d.%d.%d", 0, 0,
- 				assoc->tgtport->fc_target_port.port_num,
- 				assoc->a_id, qid);
- 	if (!queue->work_q)
--		goto out_a_put;
-+		goto out_free_queue;
- 
- 	queue->qid = qid;
- 	queue->sqsize = sqsize;
-@@ -831,15 +828,13 @@ nvmet_fc_alloc_target_queue(struct nvmet_fc_tgt_assoc *assoc,
- 		goto out_fail_iodlist;
- 
- 	WARN_ON(assoc->queues[qid]);
--	rcu_assign_pointer(assoc->queues[qid], queue);
-+	assoc->queues[qid] = queue;
- 
- 	return queue;
- 
- out_fail_iodlist:
- 	nvmet_fc_destroy_fcp_iodlist(assoc->tgtport, queue);
- 	destroy_workqueue(queue->work_q);
--out_a_put:
--	nvmet_fc_tgt_a_put(assoc);
- out_free_queue:
- 	kfree(queue);
- 	return NULL;
-@@ -852,12 +847,8 @@ nvmet_fc_tgt_queue_free(struct kref *ref)
- 	struct nvmet_fc_tgt_queue *queue =
- 		container_of(ref, struct nvmet_fc_tgt_queue, ref);
- 
--	rcu_assign_pointer(queue->assoc->queues[queue->qid], NULL);
--
- 	nvmet_fc_destroy_fcp_iodlist(queue->assoc->tgtport, queue);
- 
--	nvmet_fc_tgt_a_put(queue->assoc);
--
- 	destroy_workqueue(queue->work_q);
- 
- 	kfree_rcu(queue, rcu);
-@@ -969,7 +960,7 @@ nvmet_fc_find_target_queue(struct nvmet_fc_tgtport *tgtport,
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(assoc, &tgtport->assoc_list, a_list) {
- 		if (association_id == assoc->association_id) {
--			queue = rcu_dereference(assoc->queues[qid]);
-+			queue = assoc->queues[qid];
- 			if (queue &&
- 			    (!atomic_read(&queue->connected) ||
- 			     !nvmet_fc_tgt_q_get(queue)))
-@@ -1172,13 +1163,18 @@ nvmet_fc_target_assoc_free(struct kref *ref)
- 	struct nvmet_fc_tgtport *tgtport = assoc->tgtport;
- 	struct nvmet_fc_ls_iod	*oldls;
- 	unsigned long flags;
-+	int i;
-+
-+	for (i = NVMET_NR_QUEUES; i >= 0; i--) {
-+		if (assoc->queues[i])
-+			nvmet_fc_delete_target_queue(assoc->queues[i]);
-+	}
- 
- 	/* Send Disconnect now that all i/o has completed */
- 	nvmet_fc_xmt_disconnect_assoc(assoc);
- 
- 	nvmet_fc_free_hostport(assoc->hostport);
- 	spin_lock_irqsave(&tgtport->lock, flags);
--	list_del_rcu(&assoc->a_list);
- 	oldls = assoc->rcv_disconn;
- 	spin_unlock_irqrestore(&tgtport->lock, flags);
- 	/* if pending Rcv Disconnect Association LS, send rsp now */
-@@ -1208,7 +1204,7 @@ static void
- nvmet_fc_delete_target_assoc(struct nvmet_fc_tgt_assoc *assoc)
- {
- 	struct nvmet_fc_tgtport *tgtport = assoc->tgtport;
--	struct nvmet_fc_tgt_queue *queue;
-+	unsigned long flags;
- 	int i, terminating;
- 
- 	terminating = atomic_xchg(&assoc->terminating, 1);
-@@ -1217,29 +1213,21 @@ nvmet_fc_delete_target_assoc(struct nvmet_fc_tgt_assoc *assoc)
- 	if (terminating)
+-	if (!res || !res->flags || res->start > res->end)
++	if (!res || !res->flags || res->start > res->end ||
++	    res->flags & IORESOURCE_UNSET)
  		return;
  
-+	spin_lock_irqsave(&tgtport->lock, flags);
-+	list_del_rcu(&assoc->a_list);
-+	spin_unlock_irqrestore(&tgtport->lock, flags);
- 
--	for (i = NVMET_NR_QUEUES; i >= 0; i--) {
--		rcu_read_lock();
--		queue = rcu_dereference(assoc->queues[i]);
--		if (!queue) {
--			rcu_read_unlock();
--			continue;
--		}
-+	synchronize_rcu();
- 
--		if (!nvmet_fc_tgt_q_get(queue)) {
--			rcu_read_unlock();
--			continue;
--		}
--		rcu_read_unlock();
--		nvmet_fc_delete_target_queue(queue);
--		nvmet_fc_tgt_q_put(queue);
-+	/* ensure all in-flight I/Os have been processed */
-+	for (i = NVMET_NR_QUEUES; i >= 0; i--) {
-+		if (assoc->queues[i])
-+			flush_workqueue(assoc->queues[i]->work_q);
- 	}
- 
- 	dev_info(tgtport->dev,
- 		"{%d:%d} Association deleted\n",
- 		tgtport->fc_target_port.port_num, assoc->a_id);
--
--	nvmet_fc_tgt_a_put(assoc);
- }
- 
- static struct nvmet_fc_tgt_assoc *
-@@ -1492,9 +1480,8 @@ __nvmet_fc_free_assocs(struct nvmet_fc_tgtport *tgtport)
- 	list_for_each_entry_rcu(assoc, &tgtport->assoc_list, a_list) {
- 		if (!nvmet_fc_tgt_a_get(assoc))
- 			continue;
--		if (!queue_work(nvmet_wq, &assoc->del_work))
--			/* already deleting - release local reference */
--			nvmet_fc_tgt_a_put(assoc);
-+		queue_work(nvmet_wq, &assoc->del_work);
-+		nvmet_fc_tgt_a_put(assoc);
- 	}
- 	rcu_read_unlock();
- }
-@@ -1547,9 +1534,8 @@ nvmet_fc_invalidate_host(struct nvmet_fc_target_port *target_port,
- 			continue;
- 		assoc->hostport->invalid = 1;
- 		noassoc = false;
--		if (!queue_work(nvmet_wq, &assoc->del_work))
--			/* already deleting - release local reference */
--			nvmet_fc_tgt_a_put(assoc);
-+		queue_work(nvmet_wq, &assoc->del_work);
-+		nvmet_fc_tgt_a_put(assoc);
- 	}
- 	spin_unlock_irqrestore(&tgtport->lock, flags);
- 
-@@ -1581,7 +1567,7 @@ nvmet_fc_delete_ctrl(struct nvmet_ctrl *ctrl)
- 
- 		rcu_read_lock();
- 		list_for_each_entry_rcu(assoc, &tgtport->assoc_list, a_list) {
--			queue = rcu_dereference(assoc->queues[0]);
-+			queue = assoc->queues[0];
- 			if (queue && queue->nvme_sq.ctrl == ctrl) {
- 				if (nvmet_fc_tgt_a_get(assoc))
- 					found_ctrl = true;
-@@ -1593,9 +1579,8 @@ nvmet_fc_delete_ctrl(struct nvmet_ctrl *ctrl)
- 		nvmet_fc_tgtport_put(tgtport);
- 
- 		if (found_ctrl) {
--			if (!queue_work(nvmet_wq, &assoc->del_work))
--				/* already deleting - release local reference */
--				nvmet_fc_tgt_a_put(assoc);
-+			queue_work(nvmet_wq, &assoc->del_work);
-+			nvmet_fc_tgt_a_put(assoc);
- 			return;
- 		}
- 
-@@ -1625,6 +1610,8 @@ nvmet_fc_unregister_targetport(struct nvmet_fc_target_port *target_port)
- 	/* terminate any outstanding associations */
- 	__nvmet_fc_free_assocs(tgtport);
- 
-+	flush_workqueue(nvmet_wq);
-+
- 	/*
- 	 * should terminate LS's as well. However, LS's will be generated
- 	 * at the tail end of association termination, so they likely don't
-@@ -1870,9 +1857,6 @@ nvmet_fc_ls_disconnect(struct nvmet_fc_tgtport *tgtport,
- 				sizeof(struct fcnvme_ls_disconnect_assoc_acc)),
- 			FCNVME_LS_DISCONNECT_ASSOC);
- 
--	/* release get taken in nvmet_fc_find_target_assoc */
--	nvmet_fc_tgt_a_put(assoc);
--
- 	/*
- 	 * The rules for LS response says the response cannot
- 	 * go back until ABTS's have been sent for all outstanding
-@@ -1887,8 +1871,6 @@ nvmet_fc_ls_disconnect(struct nvmet_fc_tgtport *tgtport,
- 	assoc->rcv_disconn = iod;
- 	spin_unlock_irqrestore(&tgtport->lock, flags);
- 
--	nvmet_fc_delete_target_assoc(assoc);
--
- 	if (oldls) {
- 		dev_info(tgtport->dev,
- 			"{%d:%d} Multiple Disconnect Association LS's "
-@@ -1904,6 +1886,9 @@ nvmet_fc_ls_disconnect(struct nvmet_fc_tgtport *tgtport,
- 		nvmet_fc_xmt_ls_rsp(tgtport, oldls);
- 	}
- 
-+	queue_work(nvmet_wq, &assoc->del_work);
-+	nvmet_fc_tgt_a_put(assoc);
-+
- 	return false;
- }
- 
-@@ -2902,6 +2887,9 @@ nvmet_fc_remove_port(struct nvmet_port *port)
- 
- 	nvmet_fc_portentry_unbind(pe);
- 
-+	/* terminate any outstanding associations */
-+	__nvmet_fc_free_assocs(pe->tgtport);
-+
- 	kfree(pe);
- }
- 
-@@ -2933,6 +2921,9 @@ static int __init nvmet_fc_init_module(void)
- 
- static void __exit nvmet_fc_exit_module(void)
- {
-+	/* ensure any shutdown operation, e.g. delete ctrls have finished */
-+	flush_workqueue(nvmet_wq);
-+
- 	/* sanity check - all lports should be removed */
- 	if (!list_empty(&nvmet_fc_target_list))
- 		pr_warn("%s: targetport list not empty\n", __func__);
+ 	if (res->flags & IORESOURCE_IO) {
 -- 
 2.43.0
 
