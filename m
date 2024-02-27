@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A741869522
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:59:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD5498696EE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:16:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D32F01F234F0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:59:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D9651F2496C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:16:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED6613F016;
-	Tue, 27 Feb 2024 13:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5DE13B797;
+	Tue, 27 Feb 2024 14:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pKN+vBSb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gfhPm1gc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2BE13B2B4;
-	Tue, 27 Feb 2024 13:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197A578B61;
+	Tue, 27 Feb 2024 14:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042347; cv=none; b=T8XGhs52AgBN3zufobBFj6E6DZnetgA2Cx43l0o6jKvMwwP8gsMSPjAreUqkSPikG0DnUg2S3jJ3Y+iFz94a7sRQx9DFUJOhR0YYMbWClU+5B3bOAvNF1QB9Rzk9qD+h/JykH7YiQBS+pg/OARZKPJ3To/JEP/owYv2/+DrizlE=
+	t=1709043404; cv=none; b=piKC82wdJ2sCVC9mdlNnixqhkvX0pkqMQPwY+cAmofzox3tbKTJ+qhin/NwAp0x2EGpoflHWOzBXugJFgRgZIfRJrs3sv3DMQZPn8RfZsFnvnXjUs5vgMaiBgoBlJso4WZtSDP7WxQbg0u0Iyi95KiYUCE5jFrCMafR7TJ8niks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042347; c=relaxed/simple;
-	bh=mgWjtQTEP9ixLr5fRMR5yobSK2z3LbZstiVT4urRDWI=;
+	s=arc-20240116; t=1709043404; c=relaxed/simple;
+	bh=pdFDwYt6Kvw1xFsOB1caUSIE5JST1RAofptsUc7FN4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XhtYRPADUHXiUiIdbhT7y/NJIhryslxk6mGCc8WLr2AZodxS2dc0UqItfuNpmAAY+XCyO8h8tPlLv35UBzRdaYcF/wiYpmolFix7UpVXk608sDzixVUrZaA0diwHr/RuOGWQw1R0jpCQxvAegwNyzfkCTQGt6ktKg4ocV1Pb/d8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pKN+vBSb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A418C433C7;
-	Tue, 27 Feb 2024 13:59:06 +0000 (UTC)
+	 MIME-Version; b=dliRffHff0d1hCLrbFysZBI+++UQ72IgklDSoxCaZdE3QpqpHuESrB6Yt5kwsiyQf32Kb6vvZ3lqERF04d0wv0sPoK0y0ia4EcNzAzR97mxfl0MUuocH3BZJK3iSJrDhXsBowenmkjw6xqGOrPfyD3wfd8SmTyD+waumGCx/4Co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gfhPm1gc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97256C433C7;
+	Tue, 27 Feb 2024 14:16:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042346;
-	bh=mgWjtQTEP9ixLr5fRMR5yobSK2z3LbZstiVT4urRDWI=;
+	s=korg; t=1709043404;
+	bh=pdFDwYt6Kvw1xFsOB1caUSIE5JST1RAofptsUc7FN4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pKN+vBSba9/HWNdXP7BJyL3KE+AaZ0P0D/MfdsCuRER/d0a/lI3oSKpB3/7lrurTK
-	 Ok9z1ZBqrnhdV26dn6iXeiWzV1E5uR+IxXo4jMgjvQC8e6jBJBKmstHgLg/JYPuUy+
-	 4RX5hF3w7rL9bsigUOhlWJR5lojfhzhFalFQ37jA=
+	b=gfhPm1gctQrD5ucKPe75cJsyeDiWSQDPNN0Bux9jSp6mjOBkQGCWnw4niJeEopl1G
+	 aJym3F1FcYMZ/q/qtUR7Fcl5A8fmjkBiT4+B/rO18h5lWlSrrka5sMSolT3gmAfL+f
+	 RC+bKWyMxoAMzBYn9+WpMrEy5a0zS2NtpUYuJ8qk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 245/299] ipv4: properly combine dev_base_seq and ipv4.dev_addr_genid
+	Bart Van Assche <bvanassche@acm.org>,
+	Julian Sikorski <belegdol@gmail.com>,
+	Lee Duncan <lee.duncan@suse.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 095/195] scsi: core: Consult supported VPD page list prior to fetching page
 Date: Tue, 27 Feb 2024 14:25:56 +0100
-Message-ID: <20240227131633.609885709@linuxfoundation.org>
+Message-ID: <20240227131613.612916760@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +63,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Martin K. Petersen <martin.petersen@oracle.com>
 
-[ Upstream commit 081a0e3b0d4c061419d3f4679dec9f68725b17e4 ]
+commit b5fc07a5fb56216a49e6c1d0b172d5464d99a89b upstream.
 
-net->dev_base_seq and ipv4.dev_addr_genid are monotonically increasing.
+Commit c92a6b5d6335 ("scsi: core: Query VPD size before getting full
+page") removed the logic which checks whether a VPD page is present on
+the supported pages list before asking for the page itself. That was
+done because SPC helpfully states "The Supported VPD Pages VPD page
+list may or may not include all the VPD pages that are able to be
+returned by the device server". Testing had revealed a few devices
+that supported some of the 0xBn pages but didn't actually list them in
+page 0.
 
-If we XOR their values, we could miss to detect if both values
-were changed with the same amount.
+Julian Sikorski bisected a problem with his drive resetting during
+discovery to the commit above. As it turns out, this particular drive
+firmware will crash if we attempt to fetch page 0xB9.
 
-Fixes: 0465277f6b3f ("ipv4: provide addr and netconf dump consistency info")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Acked-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Various approaches were attempted to work around this. In the end,
+reinstating the logic that consults VPD page 0 before fetching any
+other page was the path of least resistance. A firmware update for the
+devices which originally compelled us to remove the check has since
+been released.
+
+Link: https://lore.kernel.org/r/20240214221411.2888112-1-martin.petersen@oracle.com
+Fixes: c92a6b5d6335 ("scsi: core: Query VPD size before getting full page")
+Cc: stable@vger.kernel.org
+Cc: Bart Van Assche <bvanassche@acm.org>
+Reported-by: Julian Sikorski <belegdol@gmail.com>
+Tested-by: Julian Sikorski <belegdol@gmail.com>
+Reviewed-by: Lee Duncan <lee.duncan@suse.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/devinet.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ drivers/scsi/scsi.c        |   22 ++++++++++++++++++++--
+ include/scsi/scsi_device.h |    4 ----
+ 2 files changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
-index ca0ff15dc8fa3..bc74f131fe4df 100644
---- a/net/ipv4/devinet.c
-+++ b/net/ipv4/devinet.c
-@@ -1825,6 +1825,21 @@ static int in_dev_dump_addr(struct in_device *in_dev, struct sk_buff *skb,
- 	return err;
+--- a/drivers/scsi/scsi.c
++++ b/drivers/scsi/scsi.c
+@@ -328,21 +328,39 @@ static int scsi_vpd_inquiry(struct scsi_
+ 	return result + 4;
  }
  
-+/* Combine dev_addr_genid and dev_base_seq to detect changes.
-+ */
-+static u32 inet_base_seq(const struct net *net)
-+{
-+	u32 res = atomic_read(&net->ipv4.dev_addr_genid) +
-+		  net->dev_base_seq;
++enum scsi_vpd_parameters {
++	SCSI_VPD_HEADER_SIZE = 4,
++	SCSI_VPD_LIST_SIZE = 36,
++};
 +
-+	/* Must not return 0 (see nl_dump_check_consistent()).
-+	 * Chose a value far away from 0.
-+	 */
-+	if (!res)
-+		res = 0x80000000;
-+	return res;
-+}
-+
- static int inet_dump_ifaddr(struct sk_buff *skb, struct netlink_callback *cb)
+ static int scsi_get_vpd_size(struct scsi_device *sdev, u8 page)
  {
- 	const struct nlmsghdr *nlh = cb->nlh;
-@@ -1876,8 +1891,7 @@ static int inet_dump_ifaddr(struct sk_buff *skb, struct netlink_callback *cb)
- 		idx = 0;
- 		head = &tgt_net->dev_index_head[h];
- 		rcu_read_lock();
--		cb->seq = atomic_read(&tgt_net->ipv4.dev_addr_genid) ^
--			  tgt_net->dev_base_seq;
-+		cb->seq = inet_base_seq(tgt_net);
- 		hlist_for_each_entry_rcu(dev, head, index_hlist) {
- 			if (idx < s_idx)
- 				goto cont;
-@@ -2278,8 +2292,7 @@ static int inet_netconf_dump_devconf(struct sk_buff *skb,
- 		idx = 0;
- 		head = &net->dev_index_head[h];
- 		rcu_read_lock();
--		cb->seq = atomic_read(&net->ipv4.dev_addr_genid) ^
--			  net->dev_base_seq;
-+		cb->seq = inet_base_seq(net);
- 		hlist_for_each_entry_rcu(dev, head, index_hlist) {
- 			if (idx < s_idx)
- 				goto cont;
--- 
-2.43.0
-
+-	unsigned char vpd_header[SCSI_VPD_HEADER_SIZE] __aligned(4);
++	unsigned char vpd[SCSI_VPD_LIST_SIZE] __aligned(4);
+ 	int result;
+ 
+ 	if (sdev->no_vpd_size)
+ 		return SCSI_DEFAULT_VPD_LEN;
+ 
+ 	/*
++	 * Fetch the supported pages VPD and validate that the requested page
++	 * number is present.
++	 */
++	if (page != 0) {
++		result = scsi_vpd_inquiry(sdev, vpd, 0, sizeof(vpd));
++		if (result < SCSI_VPD_HEADER_SIZE)
++			return 0;
++
++		result -= SCSI_VPD_HEADER_SIZE;
++		if (!memchr(&vpd[SCSI_VPD_HEADER_SIZE], page, result))
++			return 0;
++	}
++	/*
+ 	 * Fetch the VPD page header to find out how big the page
+ 	 * is. This is done to prevent problems on legacy devices
+ 	 * which can not handle allocation lengths as large as
+ 	 * potentially requested by the caller.
+ 	 */
+-	result = scsi_vpd_inquiry(sdev, vpd_header, page, sizeof(vpd_header));
++	result = scsi_vpd_inquiry(sdev, vpd, page, SCSI_VPD_HEADER_SIZE);
+ 	if (result < 0)
+ 		return 0;
+ 
+--- a/include/scsi/scsi_device.h
++++ b/include/scsi/scsi_device.h
+@@ -100,10 +100,6 @@ struct scsi_vpd {
+ 	unsigned char	data[];
+ };
+ 
+-enum scsi_vpd_parameters {
+-	SCSI_VPD_HEADER_SIZE = 4,
+-};
+-
+ struct scsi_device {
+ 	struct Scsi_Host *host;
+ 	struct request_queue *request_queue;
 
 
 
