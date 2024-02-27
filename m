@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-24976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BBFB869722
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:18:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 029E586980A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:28:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD1AD1C23397
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:18:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B03E929286E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:27:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E77CD1448C7;
-	Tue, 27 Feb 2024 14:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 461A414533E;
+	Tue, 27 Feb 2024 14:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v5Zb0TW6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sFvJTXtm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5DEF78B61;
-	Tue, 27 Feb 2024 14:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0420F145351;
+	Tue, 27 Feb 2024 14:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043511; cv=none; b=YrRAf+3PsGOCEPg592f8Blnd4c4L3Qke/288J7FyPq+kgE+ZNMl/krBagy/NxBcP7qT7yNABZ7cHrM85aqOT7R/RgytLvBHftfJbTCMkx+K+HHOY2m4IzpE2LhVadLFgO/xejoSUN+F+Gjups8BehAqotx3PuJBC+9l8aFfNCUs=
+	t=1709044054; cv=none; b=rsoYxlac9o3VLRDaveKv9mYfpd7GEr0QwdA560mU2c4ij/azRwtMiL7hvDtL69SkvY2ABjdVijqa181QKNvsRfqxA+276yIIOX3irwxUqWapPoCYg1FBe9qo3Mj3sakuBZP2meX9DTlX/b99rl43G628/ywaCVl5/h1UxpNpbWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043511; c=relaxed/simple;
-	bh=NOHSWGr4Ic29x3+ulHbJ2FfxvyVAE6CJzhvPLVcBIhk=;
+	s=arc-20240116; t=1709044054; c=relaxed/simple;
+	bh=assZ9TZioukfYaYFrlaf95Vb+HUKhNFX7nfvZBJabXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lnSsYiuUiQIhffatrhiMCtaR17dF7wFeReOv7oeItPJd1Ag4AFvnWQVLJaAL/vOcTSaD3cXy6eNcTUxZul/0f/Ufx4tWhvG6kY+FgBPxXqtctrgCt4SkglC8BlMf6MS/d+O5A8Cp7djg/z2iQAggUOzOuIE0RKQ9iVzs3lYGNe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v5Zb0TW6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C8B4C43390;
-	Tue, 27 Feb 2024 14:18:30 +0000 (UTC)
+	 MIME-Version; b=NpfahcZhxbyuPZ0uGGEGzg3Q6c1FYYxLKUB/wDaJbYn7WDIhIqP9PPFqoNIS2CVUxlZd+zGVmMpr3KYvfu/U0nTKcjDvovgHu+TLZY/dNfP9gGb2Cb8HsXQ5lcNVjoYOU/7itHCtFlL7zEt/AS4hV17ckBltTEBQSEO5cGEJ+/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sFvJTXtm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03230C43601;
+	Tue, 27 Feb 2024 14:27:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043511;
-	bh=NOHSWGr4Ic29x3+ulHbJ2FfxvyVAE6CJzhvPLVcBIhk=;
+	s=korg; t=1709044053;
+	bh=assZ9TZioukfYaYFrlaf95Vb+HUKhNFX7nfvZBJabXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v5Zb0TW6oBWKnYfdYBx3TzhWjLcRveVaTOmi9FwHDKdy/l7TtZFBKr9l3d8xXHqH5
-	 nTRB+qARLeQOG/QU5brWnl0Qpb7ACev0bM8Dpv1jXDQhkj+FWdMS1CK+jnuohhQc3T
-	 WL8gbrti2tFq0j74dwp68rWw4a5WD+OIAfDz1434=
+	b=sFvJTXtmFdj15HuMlPh/kudEMCv30DC6FryWYMXzG+QxqaU42VjK4lFkyiK5NvQwx
+	 RYJthOk54pY1SKXUbzTta0vzvuuxhByKq8sgZbFlfyPwkGZp/fBD3T3EBUXKS5Lhtp
+	 GAOAy7DLMQW7llpAbfYmumC+/ToJ1JznJo4qOJpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zhenwei pi <pizhenwei@bytedance.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 6.1 106/195] crypto: virtio/akcipher - Fix stack overflow on memcpy
+	Paulo Alcantara <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Guruswamy Basavaiah <guruswamy.basavaiah@broadcom.com>
+Subject: [PATCH 5.10 006/122] smb: client: fix parsing of SMB3.1.1 POSIX create context
 Date: Tue, 27 Feb 2024 14:26:07 +0100
-Message-ID: <20240227131613.965849715@linuxfoundation.org>
+Message-ID: <20240227131558.911439966@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zhenwei pi <pizhenwei@bytedance.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-commit c0ec2a712daf133d9996a8a1b7ee2d4996080363 upstream.
+[ Upstream commit 76025cc2285d9ede3d717fe4305d66f8be2d9346 ]
 
-sizeof(struct virtio_crypto_akcipher_session_para) is less than
-sizeof(struct virtio_crypto_op_ctrl_req::u), copying more bytes from
-stack variable leads stack overflow. Clang reports this issue by
-commands:
-make -j CC=clang-14 mrproper >/dev/null 2>&1
-make -j O=/tmp/crypto-build CC=clang-14 allmodconfig >/dev/null 2>&1
-make -j O=/tmp/crypto-build W=1 CC=clang-14 drivers/crypto/virtio/
-  virtio_crypto_akcipher_algs.o
+The data offset for the SMB3.1.1 POSIX create context will always be
+8-byte aligned so having the check 'noff + nlen >= doff' in
+smb2_parse_contexts() is wrong as it will lead to -EINVAL because noff
++ nlen == doff.
 
-Fixes: 59ca6c93387d ("virtio-crypto: implement RSA algorithm")
-Link: https://lore.kernel.org/all/0a194a79-e3a3-45e7-be98-83abd3e1cb7e@roeck-us.net/
-Cc: <stable@vger.kernel.org>
-Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
-Tested-by: Nathan Chancellor <nathan@kernel.org> # build
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fix the sanity check to correctly handle aligned create context data.
+
+Fixes: af1689a9b770 ("smb: client: fix potential OOBs in smb2_parse_contexts()")
+Signed-off-by: Paulo Alcantara <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[Guru:smb2_parse_contexts()  is present in file smb2ops.c,
+smb2ops.c file location is changed, modified patch accordingly.]
+Signed-off-by: Guruswamy Basavaiah <guruswamy.basavaiah@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/virtio/virtio_crypto_akcipher_algs.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/cifs/smb2pdu.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/crypto/virtio/virtio_crypto_akcipher_algs.c
-+++ b/drivers/crypto/virtio/virtio_crypto_akcipher_algs.c
-@@ -104,7 +104,8 @@ static void virtio_crypto_dataq_akcipher
- }
+--- a/fs/cifs/smb2pdu.c
++++ b/fs/cifs/smb2pdu.c
+@@ -2030,7 +2030,7 @@ int smb2_parse_contexts(struct TCP_Serve
  
- static int virtio_crypto_alg_akcipher_init_session(struct virtio_crypto_akcipher_ctx *ctx,
--		struct virtio_crypto_ctrl_header *header, void *para,
-+		struct virtio_crypto_ctrl_header *header,
-+		struct virtio_crypto_akcipher_session_para *para,
- 		const uint8_t *key, unsigned int keylen)
- {
- 	struct scatterlist outhdr_sg, key_sg, inhdr_sg, *sgs[3];
-@@ -128,7 +129,7 @@ static int virtio_crypto_alg_akcipher_in
+ 		noff = le16_to_cpu(cc->NameOffset);
+ 		nlen = le16_to_cpu(cc->NameLength);
+-		if (noff + nlen >= doff)
++		if (noff + nlen > doff)
+ 			return -EINVAL;
  
- 	ctrl = &vc_ctrl_req->ctrl;
- 	memcpy(&ctrl->header, header, sizeof(ctrl->header));
--	memcpy(&ctrl->u, para, sizeof(ctrl->u));
-+	memcpy(&ctrl->u.akcipher_create_session.para, para, sizeof(*para));
- 	input = &vc_ctrl_req->input;
- 	input->status = cpu_to_le32(VIRTIO_CRYPTO_ERR);
- 
+ 		name = (char *)cc + noff;
 
 
 
