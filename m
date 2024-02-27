@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDCD1869642
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:09:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0948E8697EF
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:26:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DC701F2D51C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:09:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3AAC290EB1
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:26:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D813F13B78E;
-	Tue, 27 Feb 2024 14:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC60513EFE9;
+	Tue, 27 Feb 2024 14:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cCvxANtJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7NHXY7V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9761113A26F;
-	Tue, 27 Feb 2024 14:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C6013A26F;
+	Tue, 27 Feb 2024 14:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042986; cv=none; b=BI0xTQaV/jsUzD1Ma2eATY28ZRSubI5fZEKndTlZK+zinZh9X1Ky8s8hO0RGplH4pufkIL/YVPuIiMRFHWl+5mRdJudKKDAD2hpj8F1DbdGQvpzFZ5/1sjWuVySVuevZumQn0VjjZYdwpsJdfEzay7PBeWJs9G1J+C5B+wOj9BI=
+	t=1709043984; cv=none; b=nl0ZvruPNokaGZvgzWaYRXaAsPZKtayYkwe4MOG5Nb7cpvpA70M4ZWDy2ebozvYzTre5iX7VNFS1N4/ftuzvF2CbSZ7ZxXtYu2aNsItpuW+ALB9wdoNyzhxcVssVFSNXSgk2z4r1rmN9Mw2UVNFxzqBVGvY52HNbpLciA1Ny4cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042986; c=relaxed/simple;
-	bh=tSbe6CMid/a1yUT7uylKTwt+kqVx4ujcdp6ai2ZBKkM=;
+	s=arc-20240116; t=1709043984; c=relaxed/simple;
+	bh=qu7Wl8BvrQ3EjczjMddovl5C0MBLfik3HIKyUafM63Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jUalz307FKgNX21R2hOwFTllHOQ7DDznL/CGVRVQil41HxSJvOF1OkIwDBJPSF3mzniuXdJva3xI49/7Ef3ROhfNQj9idI1tVyHwR7WrSR+V8IvaKdUJzKhqBsmLSxSXsdL/Zyn7y1Aoo/oAtJNs8pSESrlAn+rUc71wWfocT0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cCvxANtJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22FBBC433C7;
-	Tue, 27 Feb 2024 14:09:45 +0000 (UTC)
+	 MIME-Version; b=SkUqyDPv0u3WGmkJb6JCGHolm/2w2jcXsmAMy8hK3G2g1qPMmPnCoLzwZK09ruTmkpixGopHCsYjjKR3/1mZZiHAMWHwj1F02yskA9kPHPBoGS3h65jFEfGzLA5dqRZN28URX3Ufbq4MeZUX1sAvD2Z2Nnt4SWAo30FHYRXz6sU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7NHXY7V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D375C433F1;
+	Tue, 27 Feb 2024 14:26:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042986;
-	bh=tSbe6CMid/a1yUT7uylKTwt+kqVx4ujcdp6ai2ZBKkM=;
+	s=korg; t=1709043984;
+	bh=qu7Wl8BvrQ3EjczjMddovl5C0MBLfik3HIKyUafM63Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cCvxANtJyJiPMNa0kGPlkWlc3UZKNvWukaGdVd5OOiyzVRu75IkXUUpUFzFVBK8sa
-	 gCGun1CU7iIQW/VKS/K0xmBxydsn4dllMbaMyumrQzmYrtFIoW0UipULUAel8nkoNg
-	 J5I6riU2F/AY/jFw6FQN1vLGhsgfdCysGJh/vvqs=
+	b=Y7NHXY7VjfKcF8v+1spl7Lp0w293852sjzFKldZZcLLiDy1QT8XyPL+ERua2vR8VL
+	 gAKys8iMmhUDQBXPhqd3huL1rNWouGPgIHAUq6hA3ofpk3LZL3siL0we8LeV3iqh0S
+	 UfgYSkgPZZIuIqkr0igibxy8C7VsYH5c+H3EjTMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Lennert Buytenhek <kernel@wantstofly.org>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 193/245] ACPI: resource: Skip IRQ override on ASUS ExpertBook B1502CBA
-Date: Tue, 27 Feb 2024 14:26:21 +0100
-Message-ID: <20240227131621.462050509@linuxfoundation.org>
+Subject: [PATCH 5.10 021/122] ahci: add 43-bit DMA address quirk for ASMedia ASM1061 controllers
+Date: Tue, 27 Feb 2024 14:26:22 +0100
+Message-ID: <20240227131559.400424695@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,161 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Menzel <pmenzel@molgen.mpg.de>
+From: Lennert Buytenhek <kernel@wantstofly.org>
 
-[ Upstream commit 05cda427126f30ce3fc8ffd82fd6f5196398d502 ]
+[ Upstream commit 20730e9b277873deeb6637339edcba64468f3da3 ]
 
-Like the ASUS ExpertBook B2502CBA and various ASUS Vivobook laptops, the
-ASUS ExpertBook B1502CBA has an ACPI DSDT table that describes IRQ 1 as
-ActiveLow while the kernel overrides it to Edge_High.
+With one of the on-board ASM1061 AHCI controllers (1b21:0612) on an
+ASUSTeK Pro WS WRX80E-SAGE SE WIFI mainboard, a controller hang was
+observed that was immediately preceded by the following kernel
+messages:
 
-    $ sudo dmesg | grep DMI
-    DMI: ASUSTeK COMPUTER INC. ASUS EXPERTBOOK B1502CBA_B1502CBA/B1502CBA, BIOS B1502CBA.300 01/18/2023
-    $ grep -A 40 PS2K dsdt.dsl | grep IRQ -A 1
-                    IRQ (Level, ActiveLow, Exclusive, )
-                        {1}
+ahci 0000:28:00.0: Using 64-bit DMA addresses
+ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00000 flags=0x0000]
+ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00300 flags=0x0000]
+ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00380 flags=0x0000]
+ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00400 flags=0x0000]
+ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00680 flags=0x0000]
+ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00700 flags=0x0000]
 
-This prevents the keyboard from working. To fix this issue, add this laptop
-to the skip_override_table so that the kernel does not override IRQ 1.
+The first message is produced by code in drivers/iommu/dma-iommu.c
+which is accompanied by the following comment that seems to apply:
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217323
-Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+        /*
+         * Try to use all the 32-bit PCI addresses first. The original SAC vs.
+         * DAC reasoning loses relevance with PCIe, but enough hardware and
+         * firmware bugs are still lurking out there that it's safest not to
+         * venture into the 64-bit space until necessary.
+         *
+         * If your device goes wrong after seeing the notice then likely either
+         * its driver is not setting DMA masks accurately, the hardware has
+         * some inherent bug in handling >32-bit addresses, or not all the
+         * expected address bits are wired up between the device and the IOMMU.
+         */
+
+Asking the ASM1061 on a discrete PCIe card to DMA from I/O virtual
+address 0xffffffff00000000 produces the following I/O page faults:
+
+vfio-pci 0000:07:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0021 address=0x7ff00000000 flags=0x0010]
+vfio-pci 0000:07:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0021 address=0x7ff00000500 flags=0x0010]
+
+Note that the upper 21 bits of the logged DMA address are zero.  (When
+asking a different PCIe device in the same PCIe slot to DMA to the
+same I/O virtual address, we do see all the upper 32 bits of the DMA
+address as 1, so this is not an issue with the chipset or IOMMU
+configuration on the test system.)
+
+Also, hacking libahci to always set the upper 21 bits of all DMA
+addresses to 1 produces no discernible effect on the behavior of the
+ASM1061, and mkfs/mount/scrub/etc work as without this hack.
+
+This all strongly suggests that the ASM1061 has a 43 bit DMA address
+limit, and this commit therefore adds a quirk to deal with this limit.
+
+This issue probably applies to (some of) the other supported ASMedia
+parts as well, but we limit it to the PCI IDs known to refer to
+ASM1061 parts, as that's the only part we know for sure to be affected
+by this issue at this point.
+
+Link: https://lore.kernel.org/linux-ide/ZaZ2PIpEId-rl6jv@wantstofly.org/
+Signed-off-by: Lennert Buytenhek <kernel@wantstofly.org>
+[cassel: drop date from error messages in commit log]
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/ata/ahci.c | 29 +++++++++++++++++++++++------
+ drivers/ata/ahci.h |  1 +
+ 2 files changed, 24 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 6c5873f552e5e..a364cb07c5578 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -435,6 +435,13 @@ static const struct dmi_system_id asus_laptop[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "S5602ZA"),
- 		},
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 8bfada4843d83..6f7f8e41404dc 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -49,6 +49,7 @@ enum {
+ enum board_ids {
+ 	/* board IDs by feature in alphabetical order */
+ 	board_ahci,
++	board_ahci_43bit_dma,
+ 	board_ahci_ign_iferr,
+ 	board_ahci_low_power,
+ 	board_ahci_no_debounce_delay,
+@@ -129,6 +130,13 @@ static const struct ata_port_info ahci_port_info[] = {
+ 		.udma_mask	= ATA_UDMA6,
+ 		.port_ops	= &ahci_ops,
  	},
-+	{
-+		.ident = "Asus ExpertBook B1502CBA",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "B1502CBA"),
-+		},
++	[board_ahci_43bit_dma] = {
++		AHCI_HFLAGS	(AHCI_HFLAG_43BIT_ONLY),
++		.flags		= AHCI_FLAG_COMMON,
++		.pio_mask	= ATA_PIO4,
++		.udma_mask	= ATA_UDMA6,
++		.port_ops	= &ahci_ops,
 +	},
- 	{
- 		.ident = "Asus ExpertBook B2402CBA",
- 		.matches = {
+ 	[board_ahci_ign_iferr] = {
+ 		AHCI_HFLAGS	(AHCI_HFLAG_IGN_IRQ_IF_ERR),
+ 		.flags		= AHCI_FLAG_COMMON,
+@@ -594,11 +602,11 @@ static const struct pci_device_id ahci_pci_tbl[] = {
+ 	{ PCI_VDEVICE(PROMISE, 0x3f20), board_ahci },	/* PDC42819 */
+ 	{ PCI_VDEVICE(PROMISE, 0x3781), board_ahci },   /* FastTrak TX8660 ahci-mode */
+ 
+-	/* Asmedia */
++	/* ASMedia */
+ 	{ PCI_VDEVICE(ASMEDIA, 0x0601), board_ahci },	/* ASM1060 */
+ 	{ PCI_VDEVICE(ASMEDIA, 0x0602), board_ahci },	/* ASM1060 */
+-	{ PCI_VDEVICE(ASMEDIA, 0x0611), board_ahci },	/* ASM1061 */
+-	{ PCI_VDEVICE(ASMEDIA, 0x0612), board_ahci },	/* ASM1062 */
++	{ PCI_VDEVICE(ASMEDIA, 0x0611), board_ahci_43bit_dma },	/* ASM1061 */
++	{ PCI_VDEVICE(ASMEDIA, 0x0612), board_ahci_43bit_dma },	/* ASM1061/1062 */
+ 	{ PCI_VDEVICE(ASMEDIA, 0x0621), board_ahci },   /* ASM1061R */
+ 	{ PCI_VDEVICE(ASMEDIA, 0x0622), board_ahci },   /* ASM1062R */
+ 
+@@ -951,11 +959,20 @@ static int ahci_pci_device_resume(struct device *dev)
+ 
+ #endif /* CONFIG_PM */
+ 
+-static int ahci_configure_dma_masks(struct pci_dev *pdev, int using_dac)
++static int ahci_configure_dma_masks(struct pci_dev *pdev,
++				    struct ahci_host_priv *hpriv)
+ {
+-	const int dma_bits = using_dac ? 64 : 32;
++	int dma_bits;
+ 	int rc;
+ 
++	if (hpriv->cap & HOST_CAP_64) {
++		dma_bits = 64;
++		if (hpriv->flags & AHCI_HFLAG_43BIT_ONLY)
++			dma_bits = 43;
++	} else {
++		dma_bits = 32;
++	}
++
+ 	/*
+ 	 * If the device fixup already set the dma_mask to some non-standard
+ 	 * value, don't extend it here. This happens on STA2X11, for example.
+@@ -1933,7 +1950,7 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	ahci_gtf_filter_workaround(host);
+ 
+ 	/* initialize adapter */
+-	rc = ahci_configure_dma_masks(pdev, hpriv->cap & HOST_CAP_64);
++	rc = ahci_configure_dma_masks(pdev, hpriv);
+ 	if (rc)
+ 		return rc;
+ 
+diff --git a/drivers/ata/ahci.h b/drivers/ata/ahci.h
+index 7cc6feb17e972..b8db2b0d74146 100644
+--- a/drivers/ata/ahci.h
++++ b/drivers/ata/ahci.h
+@@ -244,6 +244,7 @@ enum {
+ 	AHCI_HFLAG_IGN_NOTSUPP_POWER_ON	= BIT(27), /* ignore -EOPNOTSUPP
+ 						      from phy_power_on() */
+ 	AHCI_HFLAG_NO_SXS		= BIT(28), /* SXS not supported */
++	AHCI_HFLAG_43BIT_ONLY		= BIT(29), /* 43bit DMA addr limit */
+ 
+ 	/* ap->flags bits */
+ 
 -- 
 2.43.0
 
