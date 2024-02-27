@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EA8B8694D9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:56:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54AB38695E7
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:06:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28FD62859FC
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:56:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 861A01C216F4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:06:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7BF13DB9B;
-	Tue, 27 Feb 2024 13:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D83D145B00;
+	Tue, 27 Feb 2024 14:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lmfYG7S1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lOxK8yD7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D3713DB98;
-	Tue, 27 Feb 2024 13:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D4D513A26F;
+	Tue, 27 Feb 2024 14:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042206; cv=none; b=Ls91vM/OGo+I3xwgAEBjKkrpdJrc6Imyg9ylDtEp6yCO6Sh5EeeuxqKe2KU1cYJO+K7H+shBJ5hdwbwAQnbKS4UElKbEPxjyHKHldxdnPnCM0WRl3JJabxCxXp4DB457QHJt5lNWTprxGlDlVmKJti6footUQRWAeDUMHOT9Tbc=
+	t=1709042760; cv=none; b=blufx/MAZ2m/p8oyJ59tUpMsYppy0MY5ykfRc7cS3w5Szm0aspJuwZ9gPOGSU+vb7wBhIYvPCkl2KzvoIoJNvr8yAcSX6HKRE773FUcKT3pnUXpzXnUYxypVdLUeQRSaXAhZsqzB7esvqcdC04dApbr76jiWRZHlBQyh++xdelQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042206; c=relaxed/simple;
-	bh=2fhX7ucvqwRiImLEId31RB5S9FHCRdkavXYm+GCScrk=;
+	s=arc-20240116; t=1709042760; c=relaxed/simple;
+	bh=e8QA2LP1Rz80ZtVzJz5JvTlxfCuIYnm2Ppk5UVeLeV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bXa7dtcY3QwUb+YJ9L2ent39okaNRdwqxRHM89eY9OKmmvUz+rJxQOa7uRFGsRlMbTWa5odEmf39dz5d4LnkYLGJ28TwFrMDf5K9rbbScs9fFkB7pmgsBlhGoidKngkVim2dakrzmFkyt09QLs0cjPbZg3Xhhsmali43i/KXruE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lmfYG7S1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 059E0C433F1;
-	Tue, 27 Feb 2024 13:56:45 +0000 (UTC)
+	 MIME-Version; b=bgX4+odo5Ip0k2fPSLGiCjXUrNyCSKe1/JSSU7HI9eiAw9eXACdBznm3zxibtqVO//eDCUYpZF6cv6xdPp54D+2KmvQD/Xhjwkm5amcuofglNHDWrfmHXc6CP1CjkHN+vRP3iuHjtXgGvVbD+LY/PcRBiiMU/f5EGtsUowQX86o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lOxK8yD7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45956C433C7;
+	Tue, 27 Feb 2024 14:05:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042206;
-	bh=2fhX7ucvqwRiImLEId31RB5S9FHCRdkavXYm+GCScrk=;
+	s=korg; t=1709042759;
+	bh=e8QA2LP1Rz80ZtVzJz5JvTlxfCuIYnm2Ppk5UVeLeV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lmfYG7S1wMAGM+G6QIz0a+pSYA/dG7LopBiGYwduU6kRvn2PzhdwerqQpYh30ZEtE
-	 Sh2aSPovKASLZ4qjPYyTesrSuJxfTavtMIgQJR1UctZriDlucNayOfzthclbMr9yKW
-	 r8MDyJTYvRgob4S5hUzL5NI0Jm79cDNm8hxueCZg=
+	b=lOxK8yD7dgkVrduzYm+GfZuzFMDm1hcHNzVBa+tOnyTQqbnEvREhUHza0bM4Xp3Wl
+	 xhBuqXbVd6l5LBVMavShAKO5I+Ie0nwoIwXwxvXjhhFDeMWb+hrWprRYqOY5yHjL8Q
+	 W/C7aYrqf+qadmgqnxtsMg1KacctzyqaDcnjJiWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 6.6 187/299] usb: cdns3: fix memory double free when handle zero packet
+	Jeff LaBundy <jeff@labundy.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 110/245] Input: iqs269a - drop unused device node references
 Date: Tue, 27 Feb 2024 14:24:58 +0100
-Message-ID: <20240227131631.851018580@linuxfoundation.org>
+Message-ID: <20240227131618.798323197@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Jeff LaBundy <jeff@labundy.com>
 
-commit 5fd9e45f1ebcd57181358af28506e8a661a260b3 upstream.
+[ Upstream commit 59bc9cb3b80abaa42643abede0d5db8477901d9c ]
 
-829  if (request->complete) {
-830          spin_unlock(&priv_dev->lock);
-831          usb_gadget_giveback_request(&priv_ep->endpoint,
-832                                    request);
-833          spin_lock(&priv_dev->lock);
-834  }
-835
-836  if (request->buf == priv_dev->zlp_buf)
-837      cdns3_gadget_ep_free_request(&priv_ep->endpoint, request);
+Each call to device/fwnode_get_named_child_node() must be matched
+with a call to fwnode_handle_put() once the corresponding node is
+no longer in use. This ensures a reference count remains balanced
+in the case of dynamic device tree support.
 
-Driver append an additional zero packet request when queue a packet, which
-length mod max packet size is 0. When transfer complete, run to line 831,
-usb_gadget_giveback_request() will free this requestion. 836 condition is
-true, so cdns3_gadget_ep_free_request() free this request again.
+Currently, the driver does not call fwnode_handle_put() on nested
+event nodes. This patch solves this problem by adding the missing
+instances of fwnode_handle_put().
 
-Log:
+As part of this change, the logic which parses each channel's key
+code is gently refactored in order to reduce the number of places
+from which fwnode_handle_put() is called.
 
-[ 1920.140696][  T150] BUG: KFENCE: use-after-free read in cdns3_gadget_giveback+0x134/0x2c0 [cdns3]
-[ 1920.140696][  T150]
-[ 1920.151837][  T150] Use-after-free read at 0x000000003d1cd10b (in kfence-#36):
-[ 1920.159082][  T150]  cdns3_gadget_giveback+0x134/0x2c0 [cdns3]
-[ 1920.164988][  T150]  cdns3_transfer_completed+0x438/0x5f8 [cdns3]
-
-Add check at line 829, skip call usb_gadget_giveback_request() if it is
-additional zero length packet request. Needn't call
-usb_gadget_giveback_request() because it is allocated in this driver.
-
-Cc: stable@vger.kernel.org
-Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20240202154217.661867-2-Frank.Li@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 04e49867fad1 ("Input: add support for Azoteq IQS269A")
+Signed-off-by: Jeff LaBundy <jeff@labundy.com>
+Link: https://lore.kernel.org/r/Y7Rsx68k/gvDVXAt@nixie71
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/cdns3-gadget.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/input/misc/iqs269a.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/cdns3/cdns3-gadget.c
-+++ b/drivers/usb/cdns3/cdns3-gadget.c
-@@ -828,7 +828,11 @@ void cdns3_gadget_giveback(struct cdns3_
- 			return;
- 	}
+diff --git a/drivers/input/misc/iqs269a.c b/drivers/input/misc/iqs269a.c
+index a348247d3d38f..ea3c97c5f764f 100644
+--- a/drivers/input/misc/iqs269a.c
++++ b/drivers/input/misc/iqs269a.c
+@@ -694,6 +694,7 @@ static int iqs269_parse_chan(struct iqs269_private *iqs269,
+ 				dev_err(&client->dev,
+ 					"Invalid channel %u threshold: %u\n",
+ 					reg, val);
++				fwnode_handle_put(ev_node);
+ 				return -EINVAL;
+ 			}
  
--	if (request->complete) {
-+	/*
-+	 * zlp request is appended by driver, needn't call usb_gadget_giveback_request() to notify
-+	 * gadget composite driver.
-+	 */
-+	if (request->complete && request->buf != priv_dev->zlp_buf) {
- 		spin_unlock(&priv_dev->lock);
- 		usb_gadget_giveback_request(&priv_ep->endpoint,
- 					    request);
+@@ -707,6 +708,7 @@ static int iqs269_parse_chan(struct iqs269_private *iqs269,
+ 				dev_err(&client->dev,
+ 					"Invalid channel %u hysteresis: %u\n",
+ 					reg, val);
++				fwnode_handle_put(ev_node);
+ 				return -EINVAL;
+ 			}
+ 
+@@ -721,8 +723,16 @@ static int iqs269_parse_chan(struct iqs269_private *iqs269,
+ 			}
+ 		}
+ 
+-		if (fwnode_property_read_u32(ev_node, "linux,code", &val))
++		error = fwnode_property_read_u32(ev_node, "linux,code", &val);
++		fwnode_handle_put(ev_node);
++		if (error == -EINVAL) {
+ 			continue;
++		} else if (error) {
++			dev_err(&client->dev,
++				"Failed to read channel %u code: %d\n", reg,
++				error);
++			return error;
++		}
+ 
+ 		switch (reg) {
+ 		case IQS269_CHx_HALL_ACTIVE:
+-- 
+2.43.0
+
 
 
 
