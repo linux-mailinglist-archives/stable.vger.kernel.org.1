@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C33C869685
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:12:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1674869752
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:20:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC1431C22263
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:12:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90FB51F2138C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:20:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DC471419A0;
-	Tue, 27 Feb 2024 14:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D22513EFF4;
+	Tue, 27 Feb 2024 14:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BEOgHDFq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LVgmmXnx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D0F513F016;
-	Tue, 27 Feb 2024 14:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ADE613B2B8;
+	Tue, 27 Feb 2024 14:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043149; cv=none; b=OcYElJM0HJkYRgNmng1tZw9pF7VP24Pqtx7wUsmKLH97qeMuJAlc02H3YK9rykN49zNTuRCDvZV/AHmgIWtAq6CFLu7D/2DPvoS+/zx1jBO0CplLQEg/QsV0x03jbnv6QJFhNdnGkCLhz/AykB/t6cmcexy4CGa5hltRSpfXVuI=
+	t=1709043613; cv=none; b=IHCsS5J5wgXjpmrCW5NEMWKdjKdeUb/uZkXpeXGrWmvvgii3v5QzJPpxss88kp80GXLMgYFHcOhDAlC9pV71gVIV2napKWT1/0vLHP0HDAlvjbn0J7kOPq145CCyKr2TMZg53G7MX8dKnybwdsfKzQ+jekrtLgXxwcVzuw+HUmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043149; c=relaxed/simple;
-	bh=UQ+IOezTX5A+LrHpcbx38PzTdstEgoMi/1EzMCfpScI=;
+	s=arc-20240116; t=1709043613; c=relaxed/simple;
+	bh=0I+Ngm3tPv2gPAC8bwNTwabUkEaSIUbl/16q7/PeTvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AZpHRMwKVhH8wsJArmKATPOM61S8Bf6JJAoLryPLFcywFpFrU1f+UbmOMvVnKqxTyaVya5MfnLdjeBRXuSVCsHWnBKKqR5eQYG8yIwKYDl1dfVTwbIM9fe0lXsF5PCU3+ZewIjZ+dkO/GqJAWLNseSu957VZJlFf2MMlt4zncCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BEOgHDFq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59049C433C7;
-	Tue, 27 Feb 2024 14:12:28 +0000 (UTC)
+	 MIME-Version; b=LGXL5sqRGZeB56/gZFUVX12rSxvgnDKozvbLHobf2W9SrAv6GJ4McJ4zvBW0sYwlHZu1BSyMH458P+x2b+r0PsenAgrwTsAjXbMjfpaQejxzQtJhRArCPTyEWVoajlzHadcQs3cGrPPjPWaFLj27t/5UB6JupjZ8F2LlouHbSwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LVgmmXnx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2A79C433F1;
+	Tue, 27 Feb 2024 14:20:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043148;
-	bh=UQ+IOezTX5A+LrHpcbx38PzTdstEgoMi/1EzMCfpScI=;
+	s=korg; t=1709043613;
+	bh=0I+Ngm3tPv2gPAC8bwNTwabUkEaSIUbl/16q7/PeTvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BEOgHDFqy1gA9ez4d3U+CrQO1jCr8jBVin4psr4nMnCPZoe44VxkmU+aZMl+RxnT1
-	 9LoJmTxr08nr01rMVGqi1LDDPpjuASoXbjRYXHrv3CKVxqS6aTe0mVvA22gsPeM/f3
-	 WrHoN8ddWUtDLQcX7xr/GszHIz4vylraE6Sr6DcM=
+	b=LVgmmXnxX8AtBs/KVJQFvSeEZFBggl3illSjp221KyMN2M4LFt/ozrGMuAetNEZeS
+	 bwQeBjUHECCIXjjoAs/Zwk5o3QmChGF76rdHkdXkQ2aVmyVea5cTJgeYho6oIN23mF
+	 acbYL6g7INtiHgh+VD/QMpyQ/olwakBBlPw5EqJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.15 244/245] ext4: avoid bb_free and bb_fragments inconsistency in mb_free_blocks()
-Date: Tue, 27 Feb 2024 14:27:12 +0100
-Message-ID: <20240227131623.084679812@linuxfoundation.org>
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 172/195] netfilter: nft_flow_offload: release dst in case direct xmit path is used
+Date: Tue, 27 Feb 2024 14:27:13 +0100
+Message-ID: <20240227131616.086509134@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 2331fd4a49864e1571b4f50aa3aa1536ed6220d0 upstream.
+[ Upstream commit 8762785f459be1cfe6fcf7285c123aad6a3703f0 ]
 
-After updating bb_free in mb_free_blocks, it is possible to return without
-updating bb_fragments because the block being freed is found to have
-already been freed, which leads to inconsistency between bb_free and
-bb_fragments.
+Direct xmit does not use it since it calls dev_queue_xmit() to send
+packets, hence it calls dst_release().
 
-Since the group may be unlocked in ext4_grp_locked_error(), this can lead
-to problems such as dividing by zero when calculating the average fragment
-length. Hence move the update of bb_free to after the block double-free
-check guarantees that the corresponding statistics are updated only after
-the core block bitmap is modified.
+kmemleak reports:
 
-Fixes: eabe0444df90 ("ext4: speed-up releasing blocks on commit")
-CC:  <stable@vger.kernel.org> # 3.10
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240104142040.2835097-5-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+unreferenced object 0xffff88814f440900 (size 184):
+  comm "softirq", pid 0, jiffies 4294951896
+  hex dump (first 32 bytes):
+    00 60 5b 04 81 88 ff ff 00 e6 e8 82 ff ff ff ff  .`[.............
+    21 0b 50 82 ff ff ff ff 00 00 00 00 00 00 00 00  !.P.............
+  backtrace (crc cb2bf5d6):
+    [<000000003ee17107>] kmem_cache_alloc+0x286/0x340
+    [<0000000021a5de2c>] dst_alloc+0x43/0xb0
+    [<00000000f0671159>] rt_dst_alloc+0x2e/0x190
+    [<00000000fe5092c9>] __mkroute_output+0x244/0x980
+    [<000000005fb96fb0>] ip_route_output_flow+0xc0/0x160
+    [<0000000045367433>] nf_ip_route+0xf/0x30
+    [<0000000085da1d8e>] nf_route+0x2d/0x60
+    [<00000000d1ecd1cb>] nft_flow_route+0x171/0x6a0 [nft_flow_offload]
+    [<00000000d9b2fb60>] nft_flow_offload_eval+0x4e8/0x700 [nft_flow_offload]
+    [<000000009f447dbb>] expr_call_ops_eval+0x53/0x330 [nf_tables]
+    [<00000000072e1be6>] nft_do_chain+0x17c/0x840 [nf_tables]
+    [<00000000d0551029>] nft_do_chain_inet+0xa1/0x210 [nf_tables]
+    [<0000000097c9d5c6>] nf_hook_slow+0x5b/0x160
+    [<0000000005eccab1>] ip_forward+0x8b6/0x9b0
+    [<00000000553a269b>] ip_rcv+0x221/0x230
+    [<00000000412872e5>] __netif_receive_skb_one_core+0xfe/0x110
+
+Fixes: fa502c865666 ("netfilter: flowtable: simplify route logic")
+Reported-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c |   39 +++++++++++++++++++++------------------
- 1 file changed, 21 insertions(+), 18 deletions(-)
+ net/netfilter/nf_flow_table_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1835,11 +1835,6 @@ static void mb_free_blocks(struct inode
- 	mb_check_buddy(e4b);
- 	mb_free_blocks_double(inode, e4b, first, count);
- 
--	this_cpu_inc(discard_pa_seq);
--	e4b->bd_info->bb_free += count;
--	if (first < e4b->bd_info->bb_first_free)
--		e4b->bd_info->bb_first_free = first;
--
- 	/* access memory sequentially: check left neighbour,
- 	 * clear range and then check right neighbour
- 	 */
-@@ -1853,23 +1848,31 @@ static void mb_free_blocks(struct inode
- 		struct ext4_sb_info *sbi = EXT4_SB(sb);
- 		ext4_fsblk_t blocknr;
- 
-+		/*
-+		 * Fastcommit replay can free already freed blocks which
-+		 * corrupts allocation info. Regenerate it.
-+		 */
-+		if (sbi->s_mount_state & EXT4_FC_REPLAY) {
-+			mb_regenerate_buddy(e4b);
-+			goto check;
-+		}
-+
- 		blocknr = ext4_group_first_block_no(sb, e4b->bd_group);
- 		blocknr += EXT4_C2B(sbi, block);
--		if (!(sbi->s_mount_state & EXT4_FC_REPLAY)) {
--			ext4_grp_locked_error(sb, e4b->bd_group,
--					      inode ? inode->i_ino : 0,
--					      blocknr,
--					      "freeing already freed block (bit %u); block bitmap corrupt.",
--					      block);
--			ext4_mark_group_bitmap_corrupted(
--				sb, e4b->bd_group,
-+		ext4_grp_locked_error(sb, e4b->bd_group,
-+				      inode ? inode->i_ino : 0, blocknr,
-+				      "freeing already freed block (bit %u); block bitmap corrupt.",
-+				      block);
-+		ext4_mark_group_bitmap_corrupted(sb, e4b->bd_group,
- 				EXT4_GROUP_INFO_BBITMAP_CORRUPT);
--		} else {
--			mb_regenerate_buddy(e4b);
--		}
--		goto done;
-+		return;
- 	}
- 
-+	this_cpu_inc(discard_pa_seq);
-+	e4b->bd_info->bb_free += count;
-+	if (first < e4b->bd_info->bb_first_free)
-+		e4b->bd_info->bb_first_free = first;
-+
- 	/* let's maintain fragments counter */
- 	if (left_is_free && right_is_free)
- 		e4b->bd_info->bb_fragments--;
-@@ -1894,9 +1897,9 @@ static void mb_free_blocks(struct inode
- 	if (first <= last)
- 		mb_buddy_mark_free(e4b, first >> 1, last >> 1);
- 
--done:
- 	mb_set_largest_free_order(sb, e4b->bd_info);
- 	mb_update_avg_fragment_size(sb, e4b->bd_info);
-+check:
- 	mb_check_buddy(e4b);
- }
- 
+diff --git a/net/netfilter/nf_flow_table_core.c b/net/netfilter/nf_flow_table_core.c
+index 2036c7a27075b..99195cf6b2657 100644
+--- a/net/netfilter/nf_flow_table_core.c
++++ b/net/netfilter/nf_flow_table_core.c
+@@ -132,6 +132,7 @@ static int flow_offload_fill_route(struct flow_offload *flow,
+ 		       ETH_ALEN);
+ 		flow_tuple->out.ifidx = route->tuple[dir].out.ifindex;
+ 		flow_tuple->out.hw_ifidx = route->tuple[dir].out.hw_ifindex;
++		dst_release(dst);
+ 		break;
+ 	case FLOW_OFFLOAD_XMIT_XFRM:
+ 	case FLOW_OFFLOAD_XMIT_NEIGH:
+-- 
+2.43.0
+
 
 
 
