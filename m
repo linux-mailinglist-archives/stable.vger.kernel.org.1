@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-24406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D618086944C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 265B98695A3
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:03:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 915B82859BD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8947283B28
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:03:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD39145B19;
-	Tue, 27 Feb 2024 13:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6448D13B79F;
+	Tue, 27 Feb 2024 14:03:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FYRo7kKk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0IqjuQnz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB7A143C6E;
-	Tue, 27 Feb 2024 13:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F0C16423;
+	Tue, 27 Feb 2024 14:03:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041912; cv=none; b=tiHoR2lwWokwcpw4YXovl9WAvL+QPxgbSyBftyYiVpRz4HKBXzQo0ySoOkdkmb4QAiXunXEX5GCaL22XJg2Lcjfgusqove1LkMplNLpHBFXopig1t29koQTf0WloVCS7XQ8dv4Np4Qndmx5Jsw5AZjU/aW2jpqeUl5ez+wd0I5k=
+	t=1709042630; cv=none; b=lpTsRQikliLBujYzweHTwpj/IgZhwHqKkkRkKtRNfyqztSkiJT+QI01uBhBPVFVrVDH73fle0p9lC7u1mr3F/KpBMYx9yGnh8LGPYHZqJjJta3BtBumpYVr1F/qJLBLvEyoUZagxxr7ZuEbqLnou+JpmrDvJ/b/l9EPQHYISZ0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041912; c=relaxed/simple;
-	bh=Dq8zOdJC9uAzVJlJ8O0rLNnMjMk9EGYmGNzzZwu4PC8=;
+	s=arc-20240116; t=1709042630; c=relaxed/simple;
+	bh=Y7gfWtVbA8fWAo8mMZg8q0vBxZ14qEL0dN8VxiWgv7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UwkUiLrFgoecsF3lh7Rzq9NnkLJepTnCBHKFvojlOHGmGb6EMQ8yRfr1mcfurxXBlHH4cxRgba9HuqyyWG2hUVkxg0QwFuVy941hdRQq8fDaS5o60NP4fuYpn3Ip+m/DXsaxO6HCAJXdSofc+6+oHX8L34wRcMjcmoMhem1knPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FYRo7kKk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C836C433C7;
-	Tue, 27 Feb 2024 13:51:52 +0000 (UTC)
+	 MIME-Version; b=UI3tOa6DdSSP1GLIKYwW6n/MstU9g2hCzWhkWniV8g+vjotbtAeLf697bUEEuKqB0NxDxQZkZV5JDN35E/0qlzqOgGCr0meykXLUIzUe9Vm49aYtqoVFt/9VO6BVMNuDrtHKV9OvBGJ5PV63ZggOEgwgEuAxwh4rg4jQpp3omwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0IqjuQnz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3513C433C7;
+	Tue, 27 Feb 2024 14:03:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041912;
-	bh=Dq8zOdJC9uAzVJlJ8O0rLNnMjMk9EGYmGNzzZwu4PC8=;
+	s=korg; t=1709042630;
+	bh=Y7gfWtVbA8fWAo8mMZg8q0vBxZ14qEL0dN8VxiWgv7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FYRo7kKkBRh1MMAQiraZcKGGJhBTP6A4SHNK9rqbhJLy8+GtTlWI+12pT5Sx5GN3J
-	 ZL0VOcIL4F1WhflX6MSjKqUY7QKF84W1E19OVvgAtkARbJJIypc/WfsmQshgfuqIdm
-	 9KzKZ7DxhRyehFVT4JqOJqlPtjUHt77on2C+DSaA=
+	b=0IqjuQnzMDgpvZBl8EDg0ghz5ziEuWgOVcttiq7pLAcb1Ycc8cWlotKeQQ5VstoGw
+	 vBpyxsKnjCfYP9poIp0cKgqgZCXj9iP6+L6HwAHTFXPqoKJXm7MYKStjc/T9YOUKvk
+	 5RxznrT1JaUJYsVJMGZSj9eUAUSFF1T7nKPtPrGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prike Liang <Prike.Liang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Guixin Liu <kanie@linux.alibaba.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 112/299] drm/amdgpu: reset gpu for s3 suspend abort case
+Subject: [PATCH 5.15 035/245] nvmet-tcp: fix nvme tcp ida memory leak
 Date: Tue, 27 Feb 2024 14:23:43 +0100
-Message-ID: <20240227131629.477686993@linuxfoundation.org>
+Message-ID: <20240227131616.260942272@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +64,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prike Liang <Prike.Liang@amd.com>
+From: Guixin Liu <kanie@linux.alibaba.com>
 
-[ Upstream commit 6ef82ac664bb9568ca3956e0d9c9c478e25077ff ]
+[ Upstream commit 47c5dd66c1840524572dcdd956f4af2bdb6fbdff ]
 
-In the s3 suspend abort case some type of gfx9 power
-rail not turn off from FCH side and this will put the
-GPU in an unknown power status, so let's reset the gpu
-to a known good power state before reinitialize gpu
-device.
+The nvmet_tcp_queue_ida should be destroy when the nvmet-tcp module
+exit.
 
-Signed-off-by: Prike Liang <Prike.Liang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Guixin Liu <kanie@linux.alibaba.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/soc15.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/nvme/target/tcp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/soc15.c b/drivers/gpu/drm/amd/amdgpu/soc15.c
-index 3667f9a548414..2a7c606d1d191 100644
---- a/drivers/gpu/drm/amd/amdgpu/soc15.c
-+++ b/drivers/gpu/drm/amd/amdgpu/soc15.c
-@@ -1296,10 +1296,32 @@ static int soc15_common_suspend(void *handle)
- 	return soc15_common_hw_fini(adev);
+diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
+index 4f2164a3f466b..8468a41322f25 100644
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -1884,6 +1884,7 @@ static void __exit nvmet_tcp_exit(void)
+ 	flush_workqueue(nvmet_wq);
+ 
+ 	destroy_workqueue(nvmet_tcp_wq);
++	ida_destroy(&nvmet_tcp_queue_ida);
  }
  
-+static bool soc15_need_reset_on_resume(struct amdgpu_device *adev)
-+{
-+	u32 sol_reg;
-+
-+	sol_reg = RREG32_SOC15(MP0, 0, mmMP0_SMN_C2PMSG_81);
-+
-+	/* Will reset for the following suspend abort cases.
-+	 * 1) Only reset limit on APU side, dGPU hasn't checked yet.
-+	 * 2) S3 suspend abort and TOS already launched.
-+	 */
-+	if (adev->flags & AMD_IS_APU && adev->in_s3 &&
-+			!adev->suspend_complete &&
-+			sol_reg)
-+		return true;
-+
-+	return false;
-+}
-+
- static int soc15_common_resume(void *handle)
- {
- 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
- 
-+	if (soc15_need_reset_on_resume(adev)) {
-+		dev_info(adev->dev, "S3 suspend abort case, let's reset ASIC.\n");
-+		soc15_asic_reset(adev);
-+	}
- 	return soc15_common_hw_init(adev);
- }
- 
+ module_init(nvmet_tcp_init);
 -- 
 2.43.0
 
