@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 400FB8694E0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:57:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EADA28696CD
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 718261C2458F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:57:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28D601C24067
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB46A2F2D;
-	Tue, 27 Feb 2024 13:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F21C313DB92;
+	Tue, 27 Feb 2024 14:15:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TL9c//oG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tbmxs/ng"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A69354BD4;
-	Tue, 27 Feb 2024 13:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B043278B61;
+	Tue, 27 Feb 2024 14:15:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042223; cv=none; b=pJiKQYnRWZV6snaV6PGahPK5S5sM+SBauVjmUw39wcS2yCpk9dw6UZrtJNScXl9BNWQU9t60ECu6ShsiOLnt39+1+dGBS4AE1E0gmeV8412u/W/E0dGzWiJkf+NdF0m932uUKEgGX9A+nBkY6XHCssFrsGX7jc6nR6nWL614fgk=
+	t=1709043318; cv=none; b=K0YX/coQLp6GVJyrPA1O1sh8bvX/LKc0vuIDLax54ogdg0Qml8XXOGavU740hJv8eQVIz91z7Kdb8iRBpYPxVFDbXD04iAbkHjqf539+uaDLf0JNAuzOfB3J2PHlDwisUruTMKDQRuhX4S56z7OcZpyEs0MpAGrC2Cf8huE82tU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042223; c=relaxed/simple;
-	bh=KOAjKEEH9u003kvICTRN0RcQnmW/mIctr+MIpihvHqc=;
+	s=arc-20240116; t=1709043318; c=relaxed/simple;
+	bh=6XTMu0JsUZq11pwSeEClFbrm6AuznHW6lzVbhxFqwRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aRWp9l3jwkoPLYw80g/20FTyinqixyUDBXCD6u7nOFGP1KhcAIw1HEqXzpKGyF7txHjL96V4MuFSWv1CYGXDzhxl5E+77ADrCrwiFE7TzSIMuO5mgQGbSKQ4x1fs4Lld5ml0QfPHnAmUE+hLbL7JVgsdieXitZY/ko9K+ZlpB00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TL9c//oG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA360C433F1;
-	Tue, 27 Feb 2024 13:57:02 +0000 (UTC)
+	 MIME-Version; b=iopDAl+TDYLin4BtyOp5oSSUSE7hZ1lOELeMS0SHAfKsUDknmsBO8dLBxvkZRAV0zhQr+iDXycuRzVCO/sGWskcw2R0x/ApZzdCHD6ejG08J9+Za/7IdIGRag2fHQkxejsXIFFCGInmD68YaPn2eR63Pvaxv2g+P7lxAUPqEHMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tbmxs/ng; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF088C433C7;
+	Tue, 27 Feb 2024 14:15:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042223;
-	bh=KOAjKEEH9u003kvICTRN0RcQnmW/mIctr+MIpihvHqc=;
+	s=korg; t=1709043318;
+	bh=6XTMu0JsUZq11pwSeEClFbrm6AuznHW6lzVbhxFqwRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TL9c//oGXR/pb7oVXlpGcAhUzQLuBdw34uSSQq1z79dG4O7Z+ffLfnpPCYW0qiFL7
-	 JRU7+6b70gLlXmsdIk10nwDKCxnM2ziu3nz0j5UoqfVwVEffajf/i0Hz/+xW7EFxBC
-	 pLiASdK4bmMw/8/Oi+lC/M5nwrP7a7W8LJ37sm9U=
+	b=tbmxs/ngWQ8MHSRZIyFscelvHzOzyZfQoHZc6r/9EqhKCtmwzV8lw98FDXo75gcef
+	 nfQjlyOFf3RgP+0Ea9BRRI/TyZAAHbr1WQrElsc4YMLTdtqHq3z9n9SoPud/GdKbTl
+	 GHo6mW5EVYx6OIsskpGa+qLDpP2tjYkHbHPQAdeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Srouji <edwards@nvidia.com>,
-	Mark Zhang <markzhang@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Giovanni Santini <giovannisantini93@yahoo.it>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 214/299] IB/mlx5: Dont expose debugfs entries for RRoCE general parameters if not supported
+Subject: [PATCH 6.1 064/195] fs/ntfs3: Update inode->i_size after success write into compressed file
 Date: Tue, 27 Feb 2024 14:25:25 +0100
-Message-ID: <20240227131632.670181978@linuxfoundation.org>
+Message-ID: <20240227131612.617477837@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,34 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Zhang <markzhang@nvidia.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 43fdbd140238d44e7e847232719fef7d20f9d326 ]
+[ Upstream commit d68968440b1a75dee05cfac7f368f1aa139e1911 ]
 
-debugfs entries for RRoCE general CC parameters must be exposed only when
-they are supported, otherwise when accessing them there may be a syndrome
-error in kernel log, for example:
-
-$ cat /sys/kernel/debug/mlx5/0000:08:00.1/cc_params/rtt_resp_dscp
-cat: '/sys/kernel/debug/mlx5/0000:08:00.1/cc_params/rtt_resp_dscp': Invalid argument
-$ dmesg
- mlx5_core 0000:08:00.1: mlx5_cmd_out_err:805:(pid 1253): QUERY_CONG_PARAMS(0x824) op_mod(0x0) failed, status bad parameter(0x3), syndrome (0x325a82), err(-22)
-
-Fixes: 66fb1d5df6ac ("IB/mlx5: Extend debug control for CC parameters")
-Reviewed-by: Edward Srouji <edwards@nvidia.com>
-Signed-off-by: Mark Zhang <markzhang@nvidia.com>
-Link: https://lore.kernel.org/r/e7ade70bad52b7468bdb1de4d41d5fad70c8b71c.1706433934.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Reported-by: Giovanni Santini <giovannisantini93@yahoo.it>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/cong.c | 6 ++++++
- include/linux/mlx5/mlx5_ifc.h     | 2 +-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ fs/ntfs3/file.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/infiniband/hw/mlx5/cong.c b/drivers/infiniband/hw/mlx5/cong.c
-index f87531318feb8..a78a067e3ce7f 100644
---- a/drivers/infiniband/hw/mlx5/cong.c
-+++ b/drivers/infiniband/hw/mlx5/cong.c
-@@ -458,6 +458,12 @@ void mlx5_ib_init_cong_debugfs(struct mlx5_ib_dev *dev, u32 port_num)
- 	dbg_cc_params->root = debugfs_create_dir("cc_params", mlx5_debugfs_get_dev_root(mdev));
+diff --git a/fs/ntfs3/file.c b/fs/ntfs3/file.c
+index f31c0389a2e7d..14efe46df91ef 100644
+--- a/fs/ntfs3/file.c
++++ b/fs/ntfs3/file.c
+@@ -1110,6 +1110,8 @@ static ssize_t ntfs_compress_write(struct kiocb *iocb, struct iov_iter *from)
+ 	iocb->ki_pos += written;
+ 	if (iocb->ki_pos > ni->i_valid)
+ 		ni->i_valid = iocb->ki_pos;
++	if (iocb->ki_pos > i_size)
++		i_size_write(inode, iocb->ki_pos);
  
- 	for (i = 0; i < MLX5_IB_DBG_CC_MAX; i++) {
-+		if ((i == MLX5_IB_DBG_CC_GENERAL_RTT_RESP_DSCP_VALID ||
-+		     i == MLX5_IB_DBG_CC_GENERAL_RTT_RESP_DSCP))
-+			if (!MLX5_CAP_GEN(mdev, roce) ||
-+			    !MLX5_CAP_ROCE(mdev, roce_cc_general))
-+				continue;
-+
- 		dbg_cc_params->params[i].offset = i;
- 		dbg_cc_params->params[i].dev = dev;
- 		dbg_cc_params->params[i].port_num = port_num;
-diff --git a/include/linux/mlx5/mlx5_ifc.h b/include/linux/mlx5/mlx5_ifc.h
-index 51eb83f779388..643e9ba4e64bd 100644
---- a/include/linux/mlx5/mlx5_ifc.h
-+++ b/include/linux/mlx5/mlx5_ifc.h
-@@ -1102,7 +1102,7 @@ struct mlx5_ifc_roce_cap_bits {
- 	u8         sw_r_roce_src_udp_port[0x1];
- 	u8         fl_rc_qp_when_roce_disabled[0x1];
- 	u8         fl_rc_qp_when_roce_enabled[0x1];
--	u8         reserved_at_7[0x1];
-+	u8         roce_cc_general[0x1];
- 	u8	   qp_ooo_transmit_default[0x1];
- 	u8         reserved_at_9[0x15];
- 	u8	   qp_ts_format[0x2];
+ 	return written;
+ }
 -- 
 2.43.0
 
