@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-24790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81071869647
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:10:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B8988697F1
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:27:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C300293879
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:10:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B961F290FF7
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C057213B7AB;
-	Tue, 27 Feb 2024 14:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 221801420DD;
+	Tue, 27 Feb 2024 14:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p4KO3t62"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jPOri/t+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F09213A26F;
-	Tue, 27 Feb 2024 14:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B2413B797;
+	Tue, 27 Feb 2024 14:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042997; cv=none; b=Wl9nvrvCHoACH/tyZIGKk3VF9GrJBW1Vjf5/7XS3ZHU8yhOGKgN8dNAOfVfh3+1iLaVFjHnbdZQZL7BpCIgkk++tklqwFUUtol1teS+IeeX12OY6C4iKa/cZAelqohNmpzI9T0y/RDIUbpeXv/ZRS3RfTiplz42jD17c05xO0ao=
+	t=1709043992; cv=none; b=Rm1WNV1ZZA+Cuj5KZxKiJqT4szV7Qrvyp+1kg0y1UtFdB4wfJXD7xexHO0Q1iHKxHUxbuvJOEQYKNKdFusgwmq9PITa1nxzG5q0ySnAoSNQa+lhtBpzvKgEajIdRmzSpmxYy4BGGjGYT7/aXghgDAVlFDr88JzdZ/i/+YLKqBW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042997; c=relaxed/simple;
-	bh=VQPodJwakFg2gCAqJKZvYxAAvrnOtrPiVbqbbOKVlm0=;
+	s=arc-20240116; t=1709043992; c=relaxed/simple;
+	bh=w3rwI4AVhHNjS0vAJVP6diSo4z0g2W2jY+7cvpcy6Ys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dYpLFJLtynHBzq0vqY5PNqRLxB3PrJ6LGzta0uGUeZZQwAR0FsIwLp9ELmEKN7BApS+UL6R1yRO7L0sqI4MxN3pItqMMXAk+/+4Z8HzDSEcbUpoTeeZKdI9l4TM1A3aub+buXVzkXqWQoils8kvKsjazpxmQwPoL6nilcJlVzZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p4KO3t62; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07BB8C433C7;
-	Tue, 27 Feb 2024 14:09:56 +0000 (UTC)
+	 MIME-Version; b=CTXuKrwT4dIZJd1QxDAGkEWIhilrh7jdNjgiojkN2LiuiDteiW2aeqnNhy+8kYK/YSvgSNFIruMtVc/Dp0N/He1IQC4lhRApdJhoNSKfr3fZy7SXrCDV1059YPAirElA/bEynReKNKH2MYDSxQ2JdGKD3tiMEpnu0phnLIgY68I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jPOri/t+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 589B7C433F1;
+	Tue, 27 Feb 2024 14:26:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042997;
-	bh=VQPodJwakFg2gCAqJKZvYxAAvrnOtrPiVbqbbOKVlm0=;
+	s=korg; t=1709043992;
+	bh=w3rwI4AVhHNjS0vAJVP6diSo4z0g2W2jY+7cvpcy6Ys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p4KO3t62W7M6UliC5lrqg7sNexaV/4C2c/qOpwHPHL71tEiUUFCZjMP48TqeckWQm
-	 detNbQPzreN/pS/rocBQiaKu7ecjdn19jXjOklTGEocNdfD6rhkbU3PfejwgjCKb3M
-	 cDc5CQLWcP3CFI2fF3nX3oTlajjwt+4unxXRw5qg=
+	b=jPOri/t++n6HV0WuXZ5vAtroKddJwA7JcfkOAPOQwTXW1w/OCsom0gRG5uHo4CRyJ
+	 LK3qAB/dEWxYzDflV4JiT06+UhAac6bUTUAiP5B0YbUmkaBfIcbngyTWRlsqI6ue+l
+	 ERAW6q98yF1wuJ1u1ML4LcX+No0HwqSO4jj2EP8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Kunwu Chan <chentao@kylinos.cn>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 197/245] xhci: clear usb2 resume related variables in one place.
+Subject: [PATCH 5.10 024/122] dmaengine: ti: edma: Add some null pointer checks to the edma_probe
 Date: Tue, 27 Feb 2024 14:26:25 +0100
-Message-ID: <20240227131621.596898876@linuxfoundation.org>
+Message-ID: <20240227131559.498339798@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,101 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit 0e6275452ce26d7ff274a5c1b15ed581a26f7986 ]
+[ Upstream commit 6e2276203ac9ff10fc76917ec9813c660f627369 ]
 
-Initially resume related USB2 variables were cleared once port
-successfully resumed to U0. Later code was added to clean up
-stale resume variables in case of port failed to resume to U0.
+devm_kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure. Ensure the allocation was successful
+by checking the pointer validity.
 
-Clear the variables in one place after port is no longer resuming
-or in suspended U3 state.
-
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20230202150505.618915-11-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: d7cdfc319b2b ("xhci: track port suspend state correctly in unsuccessful resume cases")
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Link: https://lore.kernel.org/r/20240118031929.192192-1-chentao@kylinos.cn
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-hub.c | 38 ++++++++++++++++---------------------
- 1 file changed, 16 insertions(+), 22 deletions(-)
+ drivers/dma/ti/edma.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/usb/host/xhci-hub.c b/drivers/usb/host/xhci-hub.c
-index d3d3dadaca10b..660a7d0f79a42 100644
---- a/drivers/usb/host/xhci-hub.c
-+++ b/drivers/usb/host/xhci-hub.c
-@@ -1071,7 +1071,6 @@ static void xhci_get_usb2_port_status(struct xhci_port *port, u32 *status,
- 	struct xhci_bus_state *bus_state;
- 	u32 link_state;
- 	u32 portnum;
--	int ret;
- 
- 	bus_state = &port->rhub->bus_state;
- 	link_state = portsc & PORT_PLS_MASK;
-@@ -1087,23 +1086,30 @@ static void xhci_get_usb2_port_status(struct xhci_port *port, u32 *status,
- 		if (link_state == XDEV_U2)
- 			*status |= USB_PORT_STAT_L1;
- 		if (link_state == XDEV_U0) {
--			if (port->resume_timestamp)
--				usb_hcd_end_port_resume(&port->rhub->hcd->self,
--							portnum);
--			port->resume_timestamp = 0;
--			clear_bit(portnum, &bus_state->resuming_ports);
- 			if (bus_state->suspended_ports & (1 << portnum)) {
- 				bus_state->suspended_ports &= ~(1 << portnum);
- 				bus_state->port_c_suspend |= 1 << portnum;
- 			}
- 		}
- 		if (link_state == XDEV_RESUME) {
--			ret = xhci_handle_usb2_port_link_resume(port, status,
--								portsc, flags);
--			if (ret)
--				return;
-+			xhci_handle_usb2_port_link_resume(port, status, portsc,
-+							  flags);
- 		}
- 	}
+diff --git a/drivers/dma/ti/edma.c b/drivers/dma/ti/edma.c
+index a1adc8d91fd8d..69292d4a0c441 100644
+--- a/drivers/dma/ti/edma.c
++++ b/drivers/dma/ti/edma.c
+@@ -2462,6 +2462,11 @@ static int edma_probe(struct platform_device *pdev)
+ 	if (irq > 0) {
+ 		irq_name = devm_kasprintf(dev, GFP_KERNEL, "%s_ccint",
+ 					  dev_name(dev));
++		if (!irq_name) {
++			ret = -ENOMEM;
++			goto err_disable_pm;
++		}
 +
-+	/*
-+	 * Clear usb2 resume signalling variables if port is no longer suspended
-+	 * or resuming. Port either resumed to U0/U1/U2, disconnected, or in a
-+	 * error state. Resume related variables should be cleared in all those cases.
-+	 */
-+	if ((link_state != XDEV_U3 &&
-+	     link_state != XDEV_RESUME) &&
-+	    (port->resume_timestamp ||
-+	     test_bit(portnum, &bus_state->resuming_ports))) {
-+		port->resume_timestamp = 0;
-+		clear_bit(portnum, &bus_state->resuming_ports);
-+		usb_hcd_end_port_resume(&port->rhub->hcd->self, portnum);
-+	}
- }
- 
- /*
-@@ -1158,18 +1164,6 @@ static u32 xhci_get_port_status(struct usb_hcd *hcd,
- 	else
- 		xhci_get_usb2_port_status(port, &status, raw_port_status,
- 					  flags);
--	/*
--	 * Clear stale usb2 resume signalling variables in case port changed
--	 * state during resume signalling. For example on error
--	 */
--	if ((port->resume_timestamp ||
--	     test_bit(wIndex, &bus_state->resuming_ports)) &&
--	    (raw_port_status & PORT_PLS_MASK) != XDEV_U3 &&
--	    (raw_port_status & PORT_PLS_MASK) != XDEV_RESUME) {
--		port->resume_timestamp = 0;
--		clear_bit(wIndex, &bus_state->resuming_ports);
--		usb_hcd_end_port_resume(&hcd->self, wIndex);
--	}
- 
- 	if (bus_state->port_c_suspend & (1 << wIndex))
- 		status |= USB_PORT_STAT_C_SUSPEND << 16;
+ 		ret = devm_request_irq(dev, irq, dma_irq_handler, 0, irq_name,
+ 				       ecc);
+ 		if (ret) {
+@@ -2478,6 +2483,11 @@ static int edma_probe(struct platform_device *pdev)
+ 	if (irq > 0) {
+ 		irq_name = devm_kasprintf(dev, GFP_KERNEL, "%s_ccerrint",
+ 					  dev_name(dev));
++		if (!irq_name) {
++			ret = -ENOMEM;
++			goto err_disable_pm;
++		}
++
+ 		ret = devm_request_irq(dev, irq, dma_ccerr_handler, 0, irq_name,
+ 				       ecc);
+ 		if (ret) {
 -- 
 2.43.0
 
