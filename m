@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-25047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D12B3869798
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:22:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11FC386964D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:10:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97460B2C672
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:21:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9CF9285DFD
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:10:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AD0A13B797;
-	Tue, 27 Feb 2024 14:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 997E113DBB3;
+	Tue, 27 Feb 2024 14:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j7lfhnlZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cXtknlNZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD68E13EFE9;
-	Tue, 27 Feb 2024 14:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A29213B78F;
+	Tue, 27 Feb 2024 14:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043712; cv=none; b=cbyvmcM8soUxZyzE7B1tWfQZ9bn76t0ycoxuMWyv9JJ/w+7c4ZXurRtToR/FQpr4h56l6wV53ZhWTnxXNmHzUQrha0a1XWVYahLtzDQcA5DqPvJLybkMvfd/J4VENbNWbYhHNc7yvGyOO4nsmISyyUJxFqwxO/ySXUCKD2cqdtE=
+	t=1709043011; cv=none; b=ec/rRMS+OCI9r6wgRu9yCvuhJnWAR3rCgPFMSuWeDUKANqc0cn0XbIvegNUynd9uhkuuftyP+b3TRmDmF6B2YirNKizhFu1s0NZHBcsUX7zYlNF12N1RIPfkQmuqnGeOzjK9bsJOa568C7xk3rLa+my7MNRSOroAMhiBNnCE5Q0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043712; c=relaxed/simple;
-	bh=Ey8P+Bi/0KibeulrDBVHR26f0kpailZOzHieq71zBos=;
+	s=arc-20240116; t=1709043011; c=relaxed/simple;
+	bh=2Y3QioGc46u34od13nLkDa5s1x6DrI4eBIB4Jm884Ic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XS0J6wKLIS1j53x3WhVV07xRKV4c1TJWDJP0MU+qO+CQd8DDI1wB+6Dm2cDnSoWfT1Ej/YWWzRss/aTm2gi7Pd8wn1UKuZDSy09Xz87x0zVs1j+C+qzn9rCww8pDOkgnJyS/zmBxsfdnBxCV7uNqChwD/DhH8re+qi8s4GR0hxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j7lfhnlZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6D2C433F1;
-	Tue, 27 Feb 2024 14:21:52 +0000 (UTC)
+	 MIME-Version; b=kjpK12uy5eyME6l2oxGF5Vzc03GD0JEwm6T31QYpJuGKPB3scMV2haHtJyy8KVSH9DsHdQhswwnH9sje3TVgAomg9MnzAIFbrumM7Rxhsa1q1DL3ZHUGTqPNc67UPXErqAEbkQIfvP+BQPqktKEH9ZRTvwCZhiDZqIPmbOxwaS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cXtknlNZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3F6C433C7;
+	Tue, 27 Feb 2024 14:10:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043712;
-	bh=Ey8P+Bi/0KibeulrDBVHR26f0kpailZOzHieq71zBos=;
+	s=korg; t=1709043011;
+	bh=2Y3QioGc46u34od13nLkDa5s1x6DrI4eBIB4Jm884Ic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j7lfhnlZWGS1V8YMB0i7eQwgqQFkT2QoHYXToQ7WgVhWv3ZKhhJVjcCOvWH7r3s3u
-	 BSu1SwH2zIFLgH0I2JTAPQwajWLvcAmBz5zT9sEiUaPZ2EcudAzN8wvF9pMPsjdmwt
-	 3q3u0UnJNrwp7BX0fMxOugIndsP5EFqi4iH393aw=
+	b=cXtknlNZbzZgsQEjC/hlgiYdjE7DPo6qCCxLH6HDAgJFXKVJVRRlJMysCraOuJygF
+	 Qa2pPfpYBR/5gvJ6ysbs/k/TSIBMnOvzKkFxTfpbbA0rbTNA5h+oPzScmppsFxfmXc
+	 3USYsu8Ve3HMBt0NUoRKGFZcOGXi+4J6ZSpoO7jg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 5.4 02/84] KVM: arm64: vgic-its: Test for valid IRQ in MOVALL handler
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 201/245] IB/hfi1: Fix a memleak in init_credit_return
 Date: Tue, 27 Feb 2024 14:26:29 +0100
-Message-ID: <20240227131552.946973582@linuxfoundation.org>
+Message-ID: <20240227131621.720164357@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Upton <oliver.upton@linux.dev>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-commit 85a71ee9a0700f6c18862ef3b0011ed9dad99aca upstream.
+[ Upstream commit 809aa64ebff51eb170ee31a95f83b2d21efa32e2 ]
 
-It is possible that an LPI mapped in a different ITS gets unmapped while
-handling the MOVALL command. If that is the case, there is no state that
-can be migrated to the destination. Silently ignore it and continue
-migrating other LPIs.
+When dma_alloc_coherent fails to allocate dd->cr_base[i].va,
+init_credit_return should deallocate dd->cr_base and
+dd->cr_base[i] that allocated before. Or those resources
+would be never freed and a memleak is triggered.
 
-Cc: stable@vger.kernel.org
-Fixes: ff9c114394aa ("KVM: arm/arm64: GICv4: Handle MOVALL applied to a vPE")
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20240221092732.4126848-3-oliver.upton@linux.dev
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7724105686e7 ("IB/hfi1: add driver files")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Link: https://lore.kernel.org/r/20240112085523.3731720-1-alexious@zju.edu.cn
+Acked-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- virt/kvm/arm/vgic/vgic-its.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/infiniband/hw/hfi1/pio.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/virt/kvm/arm/vgic/vgic-its.c
-+++ b/virt/kvm/arm/vgic/vgic-its.c
-@@ -1376,6 +1376,8 @@ static int vgic_its_cmd_handle_movall(st
+diff --git a/drivers/infiniband/hw/hfi1/pio.c b/drivers/infiniband/hw/hfi1/pio.c
+index 51ae58c02b15c..802b0e5801a7d 100644
+--- a/drivers/infiniband/hw/hfi1/pio.c
++++ b/drivers/infiniband/hw/hfi1/pio.c
+@@ -2089,7 +2089,7 @@ int init_credit_return(struct hfi1_devdata *dd)
+ 				   "Unable to allocate credit return DMA range for NUMA %d\n",
+ 				   i);
+ 			ret = -ENOMEM;
+-			goto done;
++			goto free_cr_base;
+ 		}
+ 	}
+ 	set_dev_node(&dd->pcidev->dev, dd->node);
+@@ -2097,6 +2097,10 @@ int init_credit_return(struct hfi1_devdata *dd)
+ 	ret = 0;
+ done:
+ 	return ret;
++
++free_cr_base:
++	free_credit_return(dd);
++	goto done;
+ }
  
- 	for (i = 0; i < irq_count; i++) {
- 		irq = vgic_get_irq(kvm, NULL, intids[i]);
-+		if (!irq)
-+			continue;
- 
- 		update_affinity(irq, vcpu2);
- 
+ void free_credit_return(struct hfi1_devdata *dd)
+-- 
+2.43.0
+
 
 
 
