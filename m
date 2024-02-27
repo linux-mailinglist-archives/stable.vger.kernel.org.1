@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E8D186935B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:44:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8278A869408
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD5401F23AEC
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:44:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 387021F2143F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1F9F13B7A0;
-	Tue, 27 Feb 2024 13:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA61145B16;
+	Tue, 27 Feb 2024 13:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nyMwDttV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Raz6LS4u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6972F2D;
-	Tue, 27 Feb 2024 13:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFE954BD4;
+	Tue, 27 Feb 2024 13:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041443; cv=none; b=Y9QYPz8h0P/Tf6z47k6ivGx3168Fc+zVyS17OMpu9Ky4hi2avF5n/Lj7Ur4bN+v5GVscBOnxHw8xELhK2uJm6LtblwTRyeL+JKudtmg8oiGEX9/KLLDUV3PIaJhZqKHVZNdASg4LRvNkVat7f+DcR8bK+ZNTA9Azx3esB9qEg6E=
+	t=1709041744; cv=none; b=drOSGSg/M4DmQs9w/gQfSh7c8Z4DVJiEMiu90NxX5rVmqda3uwQQkjdoh220b0yzx9hJ2n1opDMbDnC0x1xqY2BvIEmjNT30aahTfl99pbT9JUgI3SBgM8ayYdODAdhCCoz21SIkv9tNi7T7JWPN9Pvs24jfTqcOoysuw7BHP4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041443; c=relaxed/simple;
-	bh=Ch8Gak8IB6jpnxfPZTVziTRLtsmsDYYepi5m8P/pKDw=;
+	s=arc-20240116; t=1709041744; c=relaxed/simple;
+	bh=MmKoRrTNBKMb3yk4p7959emtvd2Ek/IS4gEnUcZtQas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xx7BIg6dN3GKXNwT0cp2kvbzP3pJfEr4YOnOPx/b4J4VhTroVjVq0ytHGW8Cq+Av8E1R/Wh+xGaWSrFTBrQeXJcs+8sVSGrKmtMZCXXwnQ7MgTz3RSp8rNEK+aaJbXMdb9Ckt/8Ly+vf+KLGjMBB1WtidCAEPM1chDSTs2+aNuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nyMwDttV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D022C433F1;
-	Tue, 27 Feb 2024 13:44:03 +0000 (UTC)
+	 MIME-Version; b=Z/ajk93hZOCEK8E9gCokmHdqI5LrY4tRtssO/pSWGQOj8AvPU3H9IPZ4UPXt8nPf/KcV3EHC1aDQrRQhsg/Gm9itf6uN0Eu43cPj4D3XQYgqI5a2QxgnBDxBV2uEEGz1rY6uC4CHQd93mQvrP8q/jeUyky5q376a0qnKDdJBeZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Raz6LS4u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EFE7C433C7;
+	Tue, 27 Feb 2024 13:49:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041443;
-	bh=Ch8Gak8IB6jpnxfPZTVziTRLtsmsDYYepi5m8P/pKDw=;
+	s=korg; t=1709041744;
+	bh=MmKoRrTNBKMb3yk4p7959emtvd2Ek/IS4gEnUcZtQas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nyMwDttVFWER9pTQlIpo5H2PKs+zX1mlyiIU982i2AwLSgyOCbsyjwKMfp7nFWe90
-	 7ZGds5npmJD/hiR777kJRxEsPEDlsgeItKC59qBWGkyYEmFG0MozPJAljyej//yxS6
-	 AKjAkzV9mEtEgcWkl7x//5jvOH3fX6IyiBTnllwg=
+	b=Raz6LS4ulumXJ/9u3poCPMGWAH+sNGYsdfy91GuX5iOCdJdEA7pUR967b9zjFuSwz
+	 HDjdjI72HrYYi5yXwp4vE2Gl+SSo953pvVCf6mKq9xPGP6VdSbeVH+f2Df8jhDRUte
+	 0TbQxxwctPhZ5tLc4xk/9wkk30cdTlHHSyCXUY60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+de4025c006ec68ac56fc@syzkaller.appspotmail.com
-Subject: [PATCH 6.7 306/334] netfilter: nf_tables: set dormant flag on hook register failure
+	Mukul Joshi <mukul.joshi@amd.com>,
+	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 053/299] drm/amdkfd: Use correct drm device for cgroup permission check
 Date: Tue, 27 Feb 2024 14:22:44 +0100
-Message-ID: <20240227131640.933121095@linuxfoundation.org>
+Message-ID: <20240227131627.675752503@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Mukul Joshi <mukul.joshi@amd.com>
 
-[ Upstream commit bccebf64701735533c8db37773eeacc6566cc8ec ]
+[ Upstream commit 4119734e06a7f30e7e8eb666692a58b85dca0269 ]
 
-We need to set the dormant flag again if we fail to register
-the hooks.
+On GFX 9.4.3, for a given KFD node, fetch the correct drm device from
+XCP manager when checking for cgroup permissions.
 
-During memory pressure hook registration can fail and we end up
-with a table marked as active but no registered hooks.
-
-On table/base chain deletion, nf_tables will attempt to unregister
-the hook again which yields a warn splat from the nftables core.
-
-Reported-and-tested-by: syzbot+de4025c006ec68ac56fc@syzkaller.appspotmail.com
-Fixes: 179d9ba5559a ("netfilter: nf_tables: fix table flag updates")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Mukul Joshi <mukul.joshi@amd.com>
+Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_priv.h | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 04c5aa4debc74..dc26986fd4b93 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -1251,6 +1251,7 @@ static int nf_tables_updtable(struct nft_ctx *ctx)
- 	return 0;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
+index 3287a39613959..12ee273e87e1e 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
+@@ -1482,10 +1482,15 @@ void kfd_dec_compute_active(struct kfd_node *dev);
  
- err_register_hooks:
-+	ctx->table->flags |= NFT_TABLE_F_DORMANT;
- 	nft_trans_destroy(trans);
- 	return ret;
- }
+ /* Cgroup Support */
+ /* Check with device cgroup if @kfd device is accessible */
+-static inline int kfd_devcgroup_check_permission(struct kfd_node *kfd)
++static inline int kfd_devcgroup_check_permission(struct kfd_node *node)
+ {
+ #if defined(CONFIG_CGROUP_DEVICE) || defined(CONFIG_CGROUP_BPF)
+-	struct drm_device *ddev = adev_to_drm(kfd->adev);
++	struct drm_device *ddev;
++
++	if (node->xcp)
++		ddev = node->xcp->ddev;
++	else
++		ddev = adev_to_drm(node->adev);
+ 
+ 	return devcgroup_check_permission(DEVCG_DEV_CHAR, DRM_MAJOR,
+ 					  ddev->render->index,
 -- 
 2.43.0
 
