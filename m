@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-24391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 872C986943A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87C66869358
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:44:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A69128CB65
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC37BB2E259
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:43:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A52D13DBBF;
-	Tue, 27 Feb 2024 13:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21EE713B2B4;
+	Tue, 27 Feb 2024 13:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qAXSxNHn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZeF1HmTz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB3F13B295;
-	Tue, 27 Feb 2024 13:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E742F2D;
+	Tue, 27 Feb 2024 13:43:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041870; cv=none; b=b/Cu81wTQbh0hQjM2MiBwDwwHLcQpixuWpkM5Rk1w1UIxmew2cbq55bAkthyRzGXp3fvUfVHomrsji7uCypF7KWR1w8rs8vCLyv470JIgwQGzOK6nDGenxNCl9Mqec37Z8xcOLq85MAjhWBIXkIQHTImwNSxfutKkR12DtF8Q7g=
+	t=1709041391; cv=none; b=ZR+wSV6GNT3Q0M/8zqx98tbyNwkqHIJFaiV5wNBv4aJSNNkdGXS0nXft6PtfTrWj0AUgbsmb2kcYecXzmsEvg4t3NF1kmdezWE+qajNbU3d75/Wmrehzh+Z2AXA7LGbcd1ruEjP3CjpuruSekGiKV2KibW2/COpIJpgl7RswJG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041870; c=relaxed/simple;
-	bh=iMCqF8ae1FLrj8fZ0bngTvKe+cIL4ZGshXA+eVPPw1g=;
+	s=arc-20240116; t=1709041391; c=relaxed/simple;
+	bh=TsnonfW5RhqFDBLCUr3HhIaS+eDLsVf7wtV5wn4GOoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rG/qZlaGj6Akug5UhuDODgtteJkQ1IB/dBs9huzYM6MGRBD0M8pgH+c2ukkCUaCYVHxL5XxcEAFy0iJCwcZoIm13mX6qbStHlvEbUr2BFAOKml+xucik76txTjiZZmL2qqmWMnnRceK+gICjfeKFLKaIH7G9dSGvO8KTL5iDfSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qAXSxNHn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DABECC433F1;
-	Tue, 27 Feb 2024 13:51:09 +0000 (UTC)
+	 MIME-Version; b=R5red+2r0OX0jUw0DQASksg94ChETI2v8XzNCLmL/SzjlyxYf2lKDFDjrkrSkGFaFnziW+4wt1J0PuQn7cFgy37UxHB3FOwTDJ2TiVGAX54b2QnrTThLl6Io0u10s0qXehvWcrPzJkZ0RuS/PBdOP1UxyuL286FCF1+cNYr2X8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZeF1HmTz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 192C1C433C7;
+	Tue, 27 Feb 2024 13:43:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041870;
-	bh=iMCqF8ae1FLrj8fZ0bngTvKe+cIL4ZGshXA+eVPPw1g=;
+	s=korg; t=1709041391;
+	bh=TsnonfW5RhqFDBLCUr3HhIaS+eDLsVf7wtV5wn4GOoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qAXSxNHnVPmMqOVEeLnqThiPL4sYHk1Di4nUypaLKpYWO45N57aqyYNMjd/W/uJLU
-	 jERSHTUSxQEsxEpbpJz7Dm3s3GwKXeWNkOFT5rCvS88YvEQAgvTOdcgGFEfte7rs79
-	 fiaucfYct1oS9a66X9ibsMTmmkTjI4zybXViczMY=
+	b=ZeF1HmTzJuZFSe4cQMA+fNIbROoQUR6lFZDUjMUQIsmryRepfp4icZ7DcfK8rKFhG
+	 kjP58BCntoJRj+hNdSd80eCBL3ksUg6jCvPMU+pbXDHk+ZKDW82km/eHBGkFwQKPIT
+	 OPrVpi7RR2knVDqL0KMiro+34qNGJ6YW/QHr0AIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Erik Kurzinger <ekurzinger@nvidia.com>,
+	Simon Ser <contact@emersion.fr>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/299] fs/ntfs3: Improve alternative boot processing
-Date: Tue, 27 Feb 2024 14:23:01 +0100
-Message-ID: <20240227131628.198990793@linuxfoundation.org>
+Subject: [PATCH 6.7 324/334] drm/syncobj: handle NULL fence in syncobj_eventfd_entry_func
+Date: Tue, 27 Feb 2024 14:23:02 +0100
+Message-ID: <20240227131641.568941687@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Erik Kurzinger <ekurzinger@nvidia.com>
 
-[ Upstream commit c39de951282df9a60ef70664e4378d88006b2670 ]
+[ Upstream commit 2aa6f5b0fd052e363bb9d4b547189f0bf6b3d6d3 ]
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+During syncobj_eventfd_entry_func, dma_fence_chain_find_seqno may set
+the fence to NULL if the given seqno is signaled and a later seqno has
+already been submitted. In that case, the eventfd should be signaled
+immediately which currently does not happen.
+
+This is a similar issue to the one addressed by commit b19926d4f3a6
+("drm/syncobj: Deal with signalled fences in drm_syncobj_find_fence.").
+
+As a fix, if the return value of dma_fence_chain_find_seqno indicates
+success but it sets the fence to NULL, we will assign a stub fence to
+ensure the following code still signals the eventfd.
+
+v1 -> v2: assign a stub fence instead of signaling the eventfd
+
+Signed-off-by: Erik Kurzinger <ekurzinger@nvidia.com>
+Fixes: c7a472297169 ("drm/syncobj: add IOCTL to register an eventfd")
+Signed-off-by: Simon Ser <contact@emersion.fr>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240221184527.37667-1-ekurzinger@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/super.c | 35 +++++++++++++++++------------------
- 1 file changed, 17 insertions(+), 18 deletions(-)
+ drivers/gpu/drm/drm_syncobj.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/super.c b/fs/ntfs3/super.c
-index f763e3256ccc1..aa3b2c262ab6e 100644
---- a/fs/ntfs3/super.c
-+++ b/fs/ntfs3/super.c
-@@ -865,6 +865,7 @@ static int ntfs_init_from_boot(struct super_block *sb, u32 sector_size,
- 	u16 fn, ao;
- 	u8 cluster_bits;
- 	u32 boot_off = 0;
-+	sector_t boot_block = 0;
- 	const char *hint = "Primary boot";
+diff --git a/drivers/gpu/drm/drm_syncobj.c b/drivers/gpu/drm/drm_syncobj.c
+index b3433265be6ab..5860428da8de8 100644
+--- a/drivers/gpu/drm/drm_syncobj.c
++++ b/drivers/gpu/drm/drm_syncobj.c
+@@ -1380,10 +1380,21 @@ syncobj_eventfd_entry_func(struct drm_syncobj *syncobj,
  
- 	/* Save original dev_size. Used with alternative boot. */
-@@ -872,11 +873,11 @@ static int ntfs_init_from_boot(struct super_block *sb, u32 sector_size,
- 
- 	sbi->volume.blocks = dev_size >> PAGE_SHIFT;
- 
--	bh = ntfs_bread(sb, 0);
-+read_boot:
-+	bh = ntfs_bread(sb, boot_block);
- 	if (!bh)
--		return -EIO;
-+		return boot_block ? -EINVAL : -EIO;
- 
--check_boot:
- 	err = -EINVAL;
- 
- 	/* Corrupted image; do not read OOB */
-@@ -1107,26 +1108,24 @@ static int ntfs_init_from_boot(struct super_block *sb, u32 sector_size,
- 	}
- 
- out:
--	if (err == -EINVAL && !bh->b_blocknr && dev_size0 > PAGE_SHIFT) {
-+	brelse(bh);
+ 	/* This happens inside the syncobj lock */
+ 	fence = dma_fence_get(rcu_dereference_protected(syncobj->fence, 1));
++	if (!fence)
++		return;
 +
-+	if (err == -EINVAL && !boot_block && dev_size0 > PAGE_SHIFT) {
- 		u32 block_size = min_t(u32, sector_size, PAGE_SIZE);
- 		u64 lbo = dev_size0 - sizeof(*boot);
- 
--		/*
--	 	 * Try alternative boot (last sector)
--		 */
--		brelse(bh);
--
--		sb_set_blocksize(sb, block_size);
--		bh = ntfs_bread(sb, lbo >> blksize_bits(block_size));
--		if (!bh)
--			return -EINVAL;
--
-+		boot_block = lbo >> blksize_bits(block_size);
- 		boot_off = lbo & (block_size - 1);
--		hint = "Alternative boot";
--		dev_size = dev_size0; /* restore original size. */
--		goto check_boot;
-+		if (boot_block && block_size >= boot_off + sizeof(*boot)) {
-+			/*
-+			 * Try alternative boot (last sector)
-+			 */
-+			sb_set_blocksize(sb, block_size);
-+			hint = "Alternative boot";
-+			dev_size = dev_size0; /* restore original size. */
-+			goto read_boot;
-+		}
+ 	ret = dma_fence_chain_find_seqno(&fence, entry->point);
+-	if (ret != 0 || !fence) {
++	if (ret != 0) {
++		/* The given seqno has not been submitted yet. */
+ 		dma_fence_put(fence);
+ 		return;
++	} else if (!fence) {
++		/* If dma_fence_chain_find_seqno returns 0 but sets the fence
++		 * to NULL, it implies that the given seqno is signaled and a
++		 * later seqno has already been submitted. Assign a stub fence
++		 * so that the eventfd still gets signaled below.
++		 */
++		fence = dma_fence_get_stub();
  	}
--	brelse(bh);
  
- 	return err;
- }
+ 	list_del_init(&entry->node);
 -- 
 2.43.0
 
