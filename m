@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-25029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20851869767
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:21:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12D5E869842
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:30:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4F1A1F21284
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:21:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD661294FFD
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:30:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 748DE13EFE9;
-	Tue, 27 Feb 2024 14:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D923145359;
+	Tue, 27 Feb 2024 14:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BZ6o42LU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KrSAUtxw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9D113B2B4;
-	Tue, 27 Feb 2024 14:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A98146E78;
+	Tue, 27 Feb 2024 14:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043658; cv=none; b=IWC1ntQJ/ufchAaNNt00uOuJ3l3Pp0OPsedA91uUI9/RYh5UyDHZPZzAo/yifYgEZd/oSvBxCaI2qEOmHCnNYRV7E66N04tcMsM/8vr2jMMM6MGyy+C34RQCeaScHiedIy20xeKpQI69P9yxsyHm+s9K2vP3wKj23ie1yiZJzdk=
+	t=1709044167; cv=none; b=c3/cYcz0YlLCuLvP/92ELhcLF9R3VSdsQYiBmuMoOuKH+uMcbM0vlosCiLuxwaRTLWocrWiVvdONvlmZXnMEVhzqKifFnrxv46GPiU4Ua2KiFwEo5j/SWmyY+/aS3F8rWdfAe8jwwNNW3GaedyYUBJ2hcSz64xw40pZp0gRd9W4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043658; c=relaxed/simple;
-	bh=ZmMJJIFA6UX1zwNUNX9CTZ/joB47QhafLSgbPOR08Q8=;
+	s=arc-20240116; t=1709044167; c=relaxed/simple;
+	bh=Pfe4Ds++qbZKADJdyGM9etO94qJiuKcNs/KRvJFGy58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l1a7BK8iivkmGlFjSJn0/mFvwVa3bifEY4dWuGoQ8oIUXtdMHBMF6XpXwfYrtYZUgRtXTW4fB2DhaXTSfTHRwEBGErpJvqOg0ESq06ifQs3ATbTWRkU1bNoZTjp+L6cQJL2U1BUIpS61hoVU0b3AQR6vr3FcoQ7tYIX0FWI5Emo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BZ6o42LU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC8FAC433F1;
-	Tue, 27 Feb 2024 14:20:57 +0000 (UTC)
+	 MIME-Version; b=Oj9kVM5NrCJmKmIf9IYBn6lT7mPw/0CWDy2jGIRQfcJR6YqALlVTBbQUF1KjaCEMW73Gowm5pyxhkSzePddnMD0vGWvU2oznpdTh+5/pPJnwXgPSjLQnrAUdKT2S9uRJHjaXDzPSEcvPupC8tetoM872FS+/4HfWJ9hqeGJBz2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KrSAUtxw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F59AC433C7;
+	Tue, 27 Feb 2024 14:29:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043658;
-	bh=ZmMJJIFA6UX1zwNUNX9CTZ/joB47QhafLSgbPOR08Q8=;
+	s=korg; t=1709044167;
+	bh=Pfe4Ds++qbZKADJdyGM9etO94qJiuKcNs/KRvJFGy58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BZ6o42LUVJm0H+9MnrfZdLDCXWR++8GLGMUqEzD/B+2SSvDNFX12dlpn3nKNlgiw2
-	 E1244jSV0kjakXYtx36VpMFjyMt+pKhVp78vq5ze0B23uULgLCI+5dZqOmEPy7HB6S
-	 sAgqnanB/fzhI4dDeDtranEu1Bgs0BimTIeetc64=
+	b=KrSAUtxwIBBx0cAWGvCptim+xR1e2xEtKzK3lOrILvtfyBH9sCWHwrlHf9LygHb4r
+	 3iXNaPav9O9iNhRDmqubNOHOOxfaljKQDhFMn6KQQxH1ti82cHkeMQj0dL5s2BNgJP
+	 29xyQejqeGDzKQYNIVAAvMHBHHIY6kqLtxjQliLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 187/195] mm/damon/reclaim: fix quota stauts loss due to online tunings
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 5.10 087/122] x86/returnthunk: Allow different return thunks
 Date: Tue, 27 Feb 2024 14:27:28 +0100
-Message-ID: <20240227131616.573533752@linuxfoundation.org>
+Message-ID: <20240227131601.553195027@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +62,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit 1b0ca4e4ff10a2c8402e2cf70132c683e1c772e4 upstream.
+Upstream commit: 770ae1b709528a6a173b5c7b183818ee9b45e376
 
-Patch series "mm/damon: fix quota status loss due to online tunings".
+In preparation for call depth tracking on Intel SKL CPUs, make it possible
+to patch in a SKL specific return thunk.
 
-DAMON_RECLAIM and DAMON_LRU_SORT is not preserving internal quota status
-when applying new user parameters, and hence could cause temporal quota
-accuracy degradation.  Fix it by preserving the status.
-
-
-This patch (of 2):
-
-For online parameters change, DAMON_RECLAIM creates new scheme based on
-latest values of the parameters and replaces the old scheme with the new
-one.  When creating it, the internal status of the quota of the old
-scheme is not preserved.  As a result, charging of the quota starts from
-zero after the online tuning.  The data that collected to estimate the
-throughput of the scheme's action is also reset, and therefore the
-estimation should start from the scratch again.  Because the throughput
-estimation is being used to convert the time quota to the effective size
-quota, this could result in temporal time quota inaccuracy.  It would be
-recovered over time, though.  In short, the quota accuracy could be
-temporarily degraded after online parameters update.
-
-Fix the problem by checking the case and copying the internal fields for
-the status.
-
-Link: https://lkml.kernel.org/r/20240216194025.9207-1-sj@kernel.org
-Link: https://lkml.kernel.org/r/20240216194025.9207-2-sj@kernel.org
-Fixes: e035c280f6df ("mm/damon/reclaim: support online inputs update")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[5.19+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20220915111147.680469665@infradead.org
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/reclaim.c |   18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/nospec-branch.h |    6 ++++++
+ arch/x86/kernel/alternative.c        |   19 ++++++++++++++-----
+ arch/x86/kernel/cpu/bugs.c           |    2 ++
+ arch/x86/kernel/ftrace.c             |    2 +-
+ arch/x86/kernel/static_call.c        |    2 +-
+ arch/x86/net/bpf_jit_comp.c          |    2 +-
+ 6 files changed, 25 insertions(+), 8 deletions(-)
 
---- a/mm/damon/reclaim.c
-+++ b/mm/damon/reclaim.c
-@@ -141,9 +141,20 @@ static struct damos *damon_reclaim_new_s
- 			&damon_reclaim_wmarks);
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -207,6 +207,12 @@ extern void srso_alias_untrain_ret(void)
+ extern void entry_untrain_ret(void);
+ extern void entry_ibpb(void);
+ 
++#ifdef CONFIG_CALL_THUNKS
++extern void (*x86_return_thunk)(void);
++#else
++#define x86_return_thunk	(&__x86_return_thunk)
++#endif
++
+ #ifdef CONFIG_RETPOLINE
+ 
+ typedef u8 retpoline_thunk_t[RETPOLINE_THUNK_SIZE];
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -676,6 +676,11 @@ void __init_or_module noinline apply_ret
  }
  
-+static void damon_reclaim_copy_quota_status(struct damos_quota *dst,
-+		struct damos_quota *src)
-+{
-+	dst->total_charged_sz = src->total_charged_sz;
-+	dst->total_charged_ns = src->total_charged_ns;
-+	dst->charged_sz = src->charged_sz;
-+	dst->charged_from = src->charged_from;
-+	dst->charge_target_from = src->charge_target_from;
-+	dst->charge_addr_from = src->charge_addr_from;
-+}
+ #ifdef CONFIG_RETHUNK
 +
- static int damon_reclaim_apply_parameters(void)
++#ifdef CONFIG_CALL_THUNKS
++void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
++#endif
++
+ /*
+  * Rewrite the compiler generated return thunk tail-calls.
+  *
+@@ -691,14 +696,18 @@ static int patch_return(void *addr, stru
  {
--	struct damos *scheme;
-+	struct damos *scheme, *old_scheme;
- 	int err = 0;
+ 	int i = 0;
  
- 	err = damon_set_attrs(ctx, &damon_reclaim_mon_attrs);
-@@ -154,6 +165,11 @@ static int damon_reclaim_apply_parameter
- 	scheme = damon_reclaim_new_scheme();
- 	if (!scheme)
- 		return -ENOMEM;
-+	if (!list_empty(&ctx->schemes)) {
-+		damon_for_each_scheme(old_scheme, ctx)
-+			damon_reclaim_copy_quota_status(&scheme->quota,
-+					&old_scheme->quota);
+-	if (cpu_feature_enabled(X86_FEATURE_RETHUNK))
+-		return -1;
+-
+-	bytes[i++] = RET_INSN_OPCODE;
++	if (cpu_feature_enabled(X86_FEATURE_RETHUNK)) {
++		if (x86_return_thunk == __x86_return_thunk)
++			return -1;
++
++		i = JMP32_INSN_SIZE;
++		__text_gen_insn(bytes, JMP32_INSN_OPCODE, addr, x86_return_thunk, i);
++	} else {
++		bytes[i++] = RET_INSN_OPCODE;
 +	}
- 	damon_set_schemes(ctx, &scheme, 1);
  
- 	return damon_set_region_biggest_system_ram_default(target,
+ 	for (; i < insn->length;)
+ 		bytes[i++] = INT3_INSN_OPCODE;
+-
+ 	return i;
+ }
+ 
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -61,7 +61,9 @@ EXPORT_SYMBOL_GPL(x86_pred_cmd);
+ 
+ static DEFINE_MUTEX(spec_ctrl_mutex);
+ 
++#ifdef CONFIG_CALL_THUNKS
+ void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
++#endif
+ 
+ /* Update SPEC_CTRL MSR and its cached copy unconditionally */
+ static void update_spec_ctrl(u64 val)
+--- a/arch/x86/kernel/ftrace.c
++++ b/arch/x86/kernel/ftrace.c
+@@ -368,7 +368,7 @@ create_trampoline(struct ftrace_ops *ops
+ 
+ 	ip = trampoline + size;
+ 	if (cpu_feature_enabled(X86_FEATURE_RETHUNK))
+-		__text_gen_insn(ip, JMP32_INSN_OPCODE, ip, &__x86_return_thunk, JMP32_INSN_SIZE);
++		__text_gen_insn(ip, JMP32_INSN_OPCODE, ip, x86_return_thunk, JMP32_INSN_SIZE);
+ 	else
+ 		memcpy(ip, retq, sizeof(retq));
+ 
+--- a/arch/x86/kernel/static_call.c
++++ b/arch/x86/kernel/static_call.c
+@@ -41,7 +41,7 @@ static void __ref __static_call_transfor
+ 
+ 	case RET:
+ 		if (cpu_feature_enabled(X86_FEATURE_RETHUNK))
+-			code = text_gen_insn(JMP32_INSN_OPCODE, insn, &__x86_return_thunk);
++			code = text_gen_insn(JMP32_INSN_OPCODE, insn, x86_return_thunk);
+ 		else
+ 			code = &retinsn;
+ 		break;
+--- a/arch/x86/net/bpf_jit_comp.c
++++ b/arch/x86/net/bpf_jit_comp.c
+@@ -405,7 +405,7 @@ static void emit_return(u8 **pprog, u8 *
+ 	int cnt = 0;
+ 
+ 	if (cpu_feature_enabled(X86_FEATURE_RETHUNK)) {
+-		emit_jump(&prog, &__x86_return_thunk, ip);
++		emit_jump(&prog, x86_return_thunk, ip);
+ 	} else {
+ 		EMIT1(0xC3);		/* ret */
+ 		if (IS_ENABLED(CONFIG_SLS))
 
 
 
