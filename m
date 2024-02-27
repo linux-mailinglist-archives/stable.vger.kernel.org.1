@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-25154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D90228697F9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:27:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AADD8693AE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:48:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 940E4291EF4
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:27:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13D77291A69
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:48:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2156A1419B3;
-	Tue, 27 Feb 2024 14:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 479AC145327;
+	Tue, 27 Feb 2024 13:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yhCxnN11"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L8h10WEt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C50141995;
-	Tue, 27 Feb 2024 14:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FD71448F1;
+	Tue, 27 Feb 2024 13:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044014; cv=none; b=azFoj19zOnQBjZnGVVltqnd/Z/8pLM/E0X5m+0NI6fiE9IzFlyVVr9yKsFR0UaKbigSL0rAnBkEkx4P/TimgOLTUSkxe0FkKYUk8LUPt0UBSxeDkfxnJ5fgN/gcwOv/KqKKlT/S1NN/g3WdrL4aEfGxQvbDunYl4FWyAB9OqDgY=
+	t=1709041554; cv=none; b=NyKJOYpKo45aenCIU/HKJxFv9kE/JdZCQJcXPQ1MGvwUCbvJE5eRLi6u0OP7kGvuunisSsmcgvaYjSIJhH9BvN+c/bQsAm9DSPkiVg/OBQ50+kzkMS6rUFaBqgyN2c0qAm1nDynclyAk24hLEa1l1CMMqE34G8Lbbf9GhIAQ6kI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044014; c=relaxed/simple;
-	bh=EJN30xKTNn3Ij4G/AUl4m04vgqCGn3TFNitIoaq3HGU=;
+	s=arc-20240116; t=1709041554; c=relaxed/simple;
+	bh=pabyUPGumAtK5LkNQfxRny6vvotcj6hyWS+DXAC7Lvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FP9fCd/e7aUE6psQr5srGT4Qk2XXzskuKCtymOiYkTbUiE/TjpvTzLpnJkad8BqxQP9TCwo3wmMfqBA3m5Zc/UPAKDp55deY22vaknUVUk2nhIv9RpYqT8UeshNBGjwoc0QbgaxBG+UWlTX62dbPSG29Cnws4MXBL52+OI7zEA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yhCxnN11; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E12EC43390;
-	Tue, 27 Feb 2024 14:26:54 +0000 (UTC)
+	 MIME-Version; b=aQsbRy5b7aN8niuGIQppozfqwejhqC+BdZcrZcy5yTN7SsGTCMl1VRTnnTLOav/XJjuoi3pN3qLY08GnXX7vFk1dMNrdjSrKal1kZOD56pKQXP+CvEXHJl+qnolwfRG8zIknMcXp9Aum8VPxJGtdkmLzVoFz1ZT/mvb6IGy+QzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L8h10WEt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87BB1C433C7;
+	Tue, 27 Feb 2024 13:45:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044014;
-	bh=EJN30xKTNn3Ij4G/AUl4m04vgqCGn3TFNitIoaq3HGU=;
+	s=korg; t=1709041553;
+	bh=pabyUPGumAtK5LkNQfxRny6vvotcj6hyWS+DXAC7Lvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yhCxnN11qKBotkXLrjfNn5OJonP5/kU0g3iUnguZEJFY6t7EUOragTuP1eLXgYHCJ
-	 RjTFSbTJdC5BRja4YVSyxfjjYSaLPTYKqLGYyNqAVeVc3PyCALljEIL3b9e0z9tVal
-	 YECCzyHywlqEOj0SMmX5Y34XtRt7z+Iv/amvuR7w=
+	b=L8h10WEtX7YfI5qUvLT7OCsedCRajAX74u786zYxbatviGsWSqoj6II2BeGgwoucM
+	 d0K2wkUlvW90JbdPn/IdnpdiUpEbga2rOVzUGS850vQn55G7GaPS5Afhgrf5Xh4oj8
+	 0F+wtOpu8g4io/a4fEBcx1IaQrmeH7xt7kpkaZKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	Daniel Wagner <dwagner@suse.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 031/122] nvmet-fcloop: swap the list_add_tail arguments
+Subject: [PATCH 4.19 45/52] ipv6: sr: fix possible use-after-free and null-ptr-deref
 Date: Tue, 27 Feb 2024 14:26:32 +0100
-Message-ID: <20240227131559.726206415@linuxfoundation.org>
+Message-ID: <20240227131550.015311375@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
+References: <20240227131548.514622258@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <dwagner@suse.de>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-[ Upstream commit dcfad4ab4d6733f2861cd241d8532a0004fc835a ]
+[ Upstream commit 5559cea2d5aa3018a5f00dd2aca3427ba09b386b ]
 
-The first argument of list_add_tail function is the new element which
-should be added to the list which is the second argument. Swap the
-arguments to allow processing more than one element at a time.
+The pernet operations structure for the subsystem must be registered
+before registering the generic netlink family.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Daniel Wagner <dwagner@suse.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 915d7e5e5930 ("ipv6: sr: add code base for control plane support of SR-IPv6")
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Link: https://lore.kernel.org/r/20240215202717.29815-1-kovalev@altlinux.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/fcloop.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/ipv6/seg6.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/nvme/target/fcloop.c b/drivers/nvme/target/fcloop.c
-index 80a208fb34f52..f2c5136bf2b82 100644
---- a/drivers/nvme/target/fcloop.c
-+++ b/drivers/nvme/target/fcloop.c
-@@ -358,7 +358,7 @@ fcloop_h2t_ls_req(struct nvme_fc_local_port *localport,
- 	if (!rport->targetport) {
- 		tls_req->status = -ECONNREFUSED;
- 		spin_lock(&rport->lock);
--		list_add_tail(&rport->ls_list, &tls_req->ls_list);
-+		list_add_tail(&tls_req->ls_list, &rport->ls_list);
- 		spin_unlock(&rport->lock);
- 		schedule_work(&rport->ls_work);
- 		return ret;
-@@ -391,7 +391,7 @@ fcloop_h2t_xmt_ls_rsp(struct nvmet_fc_target_port *targetport,
- 	if (remoteport) {
- 		rport = remoteport->private;
- 		spin_lock(&rport->lock);
--		list_add_tail(&rport->ls_list, &tls_req->ls_list);
-+		list_add_tail(&tls_req->ls_list, &rport->ls_list);
- 		spin_unlock(&rport->lock);
- 		schedule_work(&rport->ls_work);
- 	}
-@@ -446,7 +446,7 @@ fcloop_t2h_ls_req(struct nvmet_fc_target_port *targetport, void *hosthandle,
- 	if (!tport->remoteport) {
- 		tls_req->status = -ECONNREFUSED;
- 		spin_lock(&tport->lock);
--		list_add_tail(&tport->ls_list, &tls_req->ls_list);
-+		list_add_tail(&tls_req->ls_list, &tport->ls_list);
- 		spin_unlock(&tport->lock);
- 		schedule_work(&tport->ls_work);
- 		return ret;
+diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
+index 89d55770ac74b..4bd601c964343 100644
+--- a/net/ipv6/seg6.c
++++ b/net/ipv6/seg6.c
+@@ -445,22 +445,24 @@ int __init seg6_init(void)
+ {
+ 	int err = -ENOMEM;
+ 
+-	err = genl_register_family(&seg6_genl_family);
++	err = register_pernet_subsys(&ip6_segments_ops);
+ 	if (err)
+ 		goto out;
+ 
+-	err = register_pernet_subsys(&ip6_segments_ops);
++	err = genl_register_family(&seg6_genl_family);
+ 	if (err)
+-		goto out_unregister_genl;
++		goto out_unregister_pernet;
+ 
+ #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
+ 	err = seg6_iptunnel_init();
+ 	if (err)
+-		goto out_unregister_pernet;
++		goto out_unregister_genl;
+ 
+ 	err = seg6_local_init();
+-	if (err)
+-		goto out_unregister_pernet;
++	if (err) {
++		seg6_iptunnel_exit();
++		goto out_unregister_genl;
++	}
+ #endif
+ 
+ #ifdef CONFIG_IPV6_SEG6_HMAC
+@@ -481,11 +483,11 @@ int __init seg6_init(void)
+ #endif
+ #endif
+ #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
+-out_unregister_pernet:
+-	unregister_pernet_subsys(&ip6_segments_ops);
+-#endif
+ out_unregister_genl:
+ 	genl_unregister_family(&seg6_genl_family);
++#endif
++out_unregister_pernet:
++	unregister_pernet_subsys(&ip6_segments_ops);
+ 	goto out;
+ }
+ 
 -- 
 2.43.0
 
