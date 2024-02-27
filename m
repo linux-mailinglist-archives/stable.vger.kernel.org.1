@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-25223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C1FA86984D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:31:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 20C01869686
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:12:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DC011F21A2D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:31:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C92991F2E508
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:12:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF8B314533A;
-	Tue, 27 Feb 2024 14:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17FDD13B78F;
+	Tue, 27 Feb 2024 14:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HyIL9fhg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hMT+q7Yx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E301145323;
-	Tue, 27 Feb 2024 14:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF4813AA4C;
+	Tue, 27 Feb 2024 14:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044203; cv=none; b=R8CBlz5YQzo1dpXf/craLO0I4QQzcNldFSaF+CKUWAwdGCAm/k/IH7LLMXxbQVGPYaaIipMpyN8n+odNjgoJS8UurpIhDyymoLM2c84Koh1EuD3zgilWnioN73cWXaoxcS8A4jiKieg5gd7X2y0NfjpyFDRSuvRci7jMfXZjEec=
+	t=1709043151; cv=none; b=X9Ps11h1rDCzjf+XTb+0v14w5MRPL2HnYE5V3Kh1fYqzpYgfZeEclgD3nv5iLlycweEW2hNUY13YK5VcQii+LHXXTPScxjq7i8uwwtHtB1mo2WWKgRJKyByqcSiaIMdbUXOjVrY/QDx6Szy/930Pbn5vKFYbnMOUm9tt8kAnZzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044203; c=relaxed/simple;
-	bh=s05xvGpT0Iqas6raAqx99dgiGEbf5QU8HFp9e/VCAno=;
+	s=arc-20240116; t=1709043151; c=relaxed/simple;
+	bh=5HSQGs+808w0nUj7DnnTWxL5kVuueXngzgS+z5eZNBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kAVP3Uy0zjgJm/PG4GwAotXpDtBjGviCCKn4MsR2m6EiMsDCMXDgc0DnHKbrfGTmnxJIr72os1HxhaT4Hxn9cSsy1kbCbiGWOfHBUcbCaYmJh8tbcaNF+z2N4IsV9jjD0f6IMk48ZGwWiLv2p9U8j0k7CbAQK2PeAdd17EDVOV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HyIL9fhg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7FA4C433C7;
-	Tue, 27 Feb 2024 14:30:02 +0000 (UTC)
+	 MIME-Version; b=e0P8LFIjFShLKedNHqX6ObD1cQBnUm2Yucinxw/nsXnmDDxmH8/MQCNpmJDGaTPgtdx6V2XC4vE7ak1j8GD4rAQtWZzzZJRBfdBiUVQ3+O/AsHeMf6JuN84IA7INal79Fl7VvF4S0g6IXXXcr0bjhSoDc/pl+YSeV+Yd+/wGKro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hMT+q7Yx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57EADC43390;
+	Tue, 27 Feb 2024 14:12:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044203;
-	bh=s05xvGpT0Iqas6raAqx99dgiGEbf5QU8HFp9e/VCAno=;
+	s=korg; t=1709043151;
+	bh=5HSQGs+808w0nUj7DnnTWxL5kVuueXngzgS+z5eZNBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HyIL9fhgWzPv8C3wMlXTcQxVCyCpjhg0gMX9Cl1QwPkajsH0NQXyKP5kCpgMPNF/b
-	 Y1T8i7+mv/QUhLq4eqBaVgacdF82Y0StH3rqPZVgdXBU/Hq0KcatdC2kzf7MqbaaBy
-	 56nQTfwsEODXvYVSAAFU2d7Dy9umfwvkeJtortqA=
+	b=hMT+q7YxhekluiQEHx7Ek4Gk+LUUNBD5YkcyvGFFolScchmKBYsfIgPv4dPmwfWcJ
+	 9ikYJIps+b8ByqQhWl1Iw+vUjlTyhPYlulFeDzPCbtPydKbmaWkHsN8IyGZh3g1DyL
+	 CMUVdOFnU5C3RkPOwPGtDl/oeo9cLiGpJk4YwoII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Beulich <jbeulich@suse.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 5.10 072/122] x86: drop bogus "cc" clobber from __try_cmpxchg_user_asm()
+	Florian Westphal <fw@strlen.de>
+Subject: [PATCH 5.15 245/245] netfilter: nf_tables: cant schedule in nft_chain_validate
 Date: Tue, 27 Feb 2024 14:27:13 +0100
-Message-ID: <20240227131601.060295350@linuxfoundation.org>
+Message-ID: <20240227131623.115577535@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +60,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Beulich <jbeulich@suse.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit 1df931d95f4dc1c11db1123e85d4e08156e46ef9 upstream.
+commit 314c82841602a111c04a7210c21dc77e0d560242 upstream.
 
-As noted (and fixed) a couple of times in the past, "=@cc<cond>" outputs
-and clobbering of "cc" don't work well together. The compiler appears to
-mean to reject such, but doesn't - in its upstream form - quite manage
-to yet for "cc". Furthermore two similar macros don't clobber "cc", and
-clobbering "cc" is pointless in asm()-s for x86 anyway - the compiler
-always assumes status flags to be clobbered there.
+Can be called via nft set element list iteration, which may acquire
+rcu and/or bh read lock (depends on set type).
 
-Fixes: 989b5db215a2 ("x86/uaccess: Implement macros for CMPXCHG on user addresses")
-Signed-off-by: Jan Beulich <jbeulich@suse.com>
-Message-Id: <485c0c0b-a3a7-0b7c-5264-7d00c01de032@suse.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+BUG: sleeping function called from invalid context at net/netfilter/nf_tables_api.c:3353
+in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 1232, name: nft
+preempt_count: 0, expected: 0
+RCU nest depth: 1, expected: 0
+2 locks held by nft/1232:
+ #0: ffff8881180e3ea8 (&nft_net->commit_mutex){+.+.}-{3:3}, at: nf_tables_valid_genid
+ #1: ffffffff83f5f540 (rcu_read_lock){....}-{1:2}, at: rcu_lock_acquire
+Call Trace:
+ nft_chain_validate
+ nft_lookup_validate_setelem
+ nft_pipapo_walk
+ nft_lookup_validate
+ nft_chain_validate
+ nft_immediate_validate
+ nft_chain_validate
+ nf_tables_validate
+ nf_tables_abort
+
+No choice but to move it to nf_tables_validate().
+
+Fixes: 81ea01066741 ("netfilter: nf_tables: add rescheduling points during loop detection walks")
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/uaccess.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/include/asm/uaccess.h
-+++ b/arch/x86/include/asm/uaccess.h
-@@ -471,7 +471,7 @@ do {									\
- 		       [ptr] "+m" (*_ptr),				\
- 		       [old] "+a" (__old)				\
- 		     : [new] ltype (__new)				\
--		     : "memory", "cc");					\
-+		     : "memory");					\
- 	if (unlikely(__err))						\
- 		goto label;						\
- 	if (unlikely(!success))						\
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -3443,8 +3443,6 @@ int nft_chain_validate(const struct nft_
+ 			if (err < 0)
+ 				return err;
+ 		}
+-
+-		cond_resched();
+ 	}
+ 
+ 	return 0;
+@@ -3468,6 +3466,8 @@ static int nft_table_validate(struct net
+ 		err = nft_chain_validate(&ctx, chain);
+ 		if (err < 0)
+ 			return err;
++
++		cond_resched();
+ 	}
+ 
+ 	return 0;
 
 
 
