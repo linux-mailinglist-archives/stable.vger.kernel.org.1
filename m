@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-25090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E878697AB
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:23:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03038869778
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:21:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D5821F2868E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:23:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42E90B2B917
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:20:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6BD213B2B4;
-	Tue, 27 Feb 2024 14:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C103140391;
+	Tue, 27 Feb 2024 14:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1mnlEeqs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yaOja+B5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94CCB13B2B8;
-	Tue, 27 Feb 2024 14:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A30F13B2B8;
+	Tue, 27 Feb 2024 14:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043832; cv=none; b=aAbfLN/ZDlhvSSEsia8iS5x93A5alnjOkSalGDiKWETOvnzqUEyLLAlFrPOg7nkvfpwdIxbK7uHXZp7xF77yc+MAK+ZQDw7p/j3V0ivicq7wHC44bjDBwre3mmxDP9pIRujAQzrC5BT6KllPk558Sw8vbiKqadS+5YhczkKl5cQ=
+	t=1709043633; cv=none; b=pmeb+AEqfl4FHOnPs5hINMF/JwFoFUb7OuIWUqWxZLa+uEAKVbn3S/huBIczkRfMQjzqXbpmQB3Efh6vhNsboKtJumbRKqWrjRWBfuELgHg4V9XX8pRDNeDv1dVCUCHMdu3HJyLLep7lDomaZN9SZ5UwnB6jVcvDrt+p3AN7EFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043832; c=relaxed/simple;
-	bh=ulsqBydEp96SgZrZTqtqlxIDIjYnaTJM4Kdz0JzfZLo=;
+	s=arc-20240116; t=1709043633; c=relaxed/simple;
+	bh=O9D09h1W5eKkDtdH8+iIRMAW7IGMLGsnJTXbj3Ck690=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ju7FvpOxwPklDXd1NDTLRCEobNkbllzT8laNRGEKpakmHOBWwORkZMmC6iZjwNi+1WV8QnYv2whODji3/4Nbz9HDRXjX1AlrrjWOsuGZvg1kYMfANOJZ9DqQ7F9UAoP/FPSiNSpPbAtguUtb1GSoy6XsWwYXqGq50rLRvSUez74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1mnlEeqs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 214E3C433F1;
-	Tue, 27 Feb 2024 14:23:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QWXCZxfMmGkU6mPiiFHjNBqfI7NHlPWKUlSVQYewOnQHatTMmtSWxj0g0PO0naSrReyqt1toshzZ2eiAokSrwynlzzn3M24aOlfXYRWrqxY09HyNOOnEzEb5+6E5hjQ1Uhpd58M0ZucvTbylOi9McxKeTxUzB6hFPkCFkQ45h7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yaOja+B5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7962C433B1;
+	Tue, 27 Feb 2024 14:20:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043832;
-	bh=ulsqBydEp96SgZrZTqtqlxIDIjYnaTJM4Kdz0JzfZLo=;
+	s=korg; t=1709043633;
+	bh=O9D09h1W5eKkDtdH8+iIRMAW7IGMLGsnJTXbj3Ck690=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1mnlEeqsxx9M+exCfi61RLQmc97zuUaDXABMmYNH7JMZmsUptSM16jvaP5TvuEHE+
-	 VnKnqEy09yDNDJ/tibT4BTNNO6Z80g5D94gQu3vBNP1kJs1w8Mk7hWvsdUc9deO5UE
-	 2z7/Y/HEL9U+9Q06TiaV0DzVbWpXhE63ZCGBibIw=
+	b=yaOja+B5D5TY4z7kjwQe2rPBCUMkrGs45qDyUe/wdyQ9khXpdqR2BzOAPLEWHqwRC
+	 Y5HKh71Pg6j7Ge78ebWQa6QBecgoysDPsQCZevkIXLYukJW69SyCi0sxKXuDSVunmQ
+	 npN6H6y6800ELIC1BeJ/iZrjV2PFj4W/BX39oy2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mats Kronberg <kronberg@nsc.liu.se>,
-	Daniel Vacek <neelx@redhat.com>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 5.4 53/84] IB/hfi1: Fix sdma.h tx->num_descs off-by-one error
+	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <courmisch@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 179/195] phonet/pep: fix racy skb_queue_empty() use
 Date: Tue, 27 Feb 2024 14:27:20 +0100
-Message-ID: <20240227131554.597142440@linuxfoundation.org>
+Message-ID: <20240227131616.314202994@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,107 +60,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Vacek <neelx@redhat.com>
+From: Rémi Denis-Courmont <courmisch@gmail.com>
 
-commit e6f57c6881916df39db7d95981a8ad2b9c3458d6 upstream.
+[ Upstream commit 7d2a894d7f487dcb894df023e9d3014cf5b93fe5 ]
 
-Unfortunately the commit `fd8958efe877` introduced another error
-causing the `descs` array to overflow. This reults in further crashes
-easily reproducible by `sendmsg` system call.
+The receive queues are protected by their respective spin-lock, not
+the socket lock. This could lead to skb_peek() unexpectedly
+returning NULL or a pointer to an already dequeued socket buffer.
 
-[ 1080.836473] general protection fault, probably for non-canonical address 0x400300015528b00a: 0000 [#1] PREEMPT SMP PTI
-[ 1080.869326] RIP: 0010:hfi1_ipoib_build_ib_tx_headers.constprop.0+0xe1/0x2b0 [hfi1]
---
-[ 1080.974535] Call Trace:
-[ 1080.976990]  <TASK>
-[ 1081.021929]  hfi1_ipoib_send_dma_common+0x7a/0x2e0 [hfi1]
-[ 1081.027364]  hfi1_ipoib_send_dma_list+0x62/0x270 [hfi1]
-[ 1081.032633]  hfi1_ipoib_send+0x112/0x300 [hfi1]
-[ 1081.042001]  ipoib_start_xmit+0x2a9/0x2d0 [ib_ipoib]
-[ 1081.046978]  dev_hard_start_xmit+0xc4/0x210
---
-[ 1081.148347]  __sys_sendmsg+0x59/0xa0
-
-crash> ipoib_txreq 0xffff9cfeba229f00
-struct ipoib_txreq {
-  txreq = {
-    list = {
-      next = 0xffff9cfeba229f00,
-      prev = 0xffff9cfeba229f00
-    },
-    descp = 0xffff9cfeba229f40,
-    coalesce_buf = 0x0,
-    wait = 0xffff9cfea4e69a48,
-    complete = 0xffffffffc0fe0760 <hfi1_ipoib_sdma_complete>,
-    packet_len = 0x46d,
-    tlen = 0x0,
-    num_desc = 0x0,
-    desc_limit = 0x6,
-    next_descq_idx = 0x45c,
-    coalesce_idx = 0x0,
-    flags = 0x0,
-    descs = {{
-        qw = {0x8024000120dffb00, 0x4}  # SDMA_DESC0_FIRST_DESC_FLAG (bit 63)
-      }, {
-        qw = {  0x3800014231b108, 0x4}
-      }, {
-        qw = { 0x310000e4ee0fcf0, 0x8}
-      }, {
-        qw = {  0x3000012e9f8000, 0x8}
-      }, {
-        qw = {  0x59000dfb9d0000, 0x8}
-      }, {
-        qw = {  0x78000e02e40000, 0x8}
-      }}
-  },
-  sdma_hdr =  0x400300015528b000,  <<< invalid pointer in the tx request structure
-  sdma_status = 0x0,                   SDMA_DESC0_LAST_DESC_FLAG (bit 62)
-  complete = 0x0,
-  priv = 0x0,
-  txq = 0xffff9cfea4e69880,
-  skb = 0xffff9d099809f400
-}
-
-If an SDMA send consists of exactly 6 descriptors and requires dword
-padding (in the 7th descriptor), the sdma_txreq descriptor array is not
-properly expanded and the packet will overflow into the container
-structure. This results in a panic when the send completion runs. The
-exact panic varies depending on what elements of the container structure
-get corrupted. The fix is to use the correct expression in
-_pad_sdma_tx_descs() to test the need to expand the descriptor array.
-
-With this patch the crashes are no longer reproducible and the machine is
-stable.
-
-Fixes: fd8958efe877 ("IB/hfi1: Fix sdma.h tx->num_descs off-by-one errors")
-Cc: stable@vger.kernel.org
-Reported-by: Mats Kronberg <kronberg@nsc.liu.se>
-Tested-by: Mats Kronberg <kronberg@nsc.liu.se>
-Signed-off-by: Daniel Vacek <neelx@redhat.com>
-Link: https://lore.kernel.org/r/20240201081009.1109442-1-neelx@redhat.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9641458d3ec4 ("Phonet: Pipe End Point for Phonet Pipes protocol")
+Signed-off-by: Rémi Denis-Courmont <courmisch@gmail.com>
+Link: https://lore.kernel.org/r/20240218081214.4806-2-remi@remlab.net
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hfi1/sdma.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/phonet/pep.c |   41 ++++++++++++++++++++++++++++++++---------
+ 1 file changed, 32 insertions(+), 9 deletions(-)
 
---- a/drivers/infiniband/hw/hfi1/sdma.c
-+++ b/drivers/infiniband/hw/hfi1/sdma.c
-@@ -3203,7 +3203,7 @@ int _pad_sdma_tx_descs(struct hfi1_devda
- {
- 	int rval = 0;
+--- a/net/phonet/pep.c
++++ b/net/phonet/pep.c
+@@ -917,6 +917,37 @@ static int pep_sock_enable(struct sock *
+ 	return 0;
+ }
  
--	if ((unlikely(tx->num_desc + 1 == tx->desc_limit))) {
-+	if ((unlikely(tx->num_desc == tx->desc_limit))) {
- 		rval = _extend_sdma_tx_descs(dd, tx);
- 		if (rval) {
- 			__sdma_txclean(dd, tx);
++static unsigned int pep_first_packet_length(struct sock *sk)
++{
++	struct pep_sock *pn = pep_sk(sk);
++	struct sk_buff_head *q;
++	struct sk_buff *skb;
++	unsigned int len = 0;
++	bool found = false;
++
++	if (sock_flag(sk, SOCK_URGINLINE)) {
++		q = &pn->ctrlreq_queue;
++		spin_lock_bh(&q->lock);
++		skb = skb_peek(q);
++		if (skb) {
++			len = skb->len;
++			found = true;
++		}
++		spin_unlock_bh(&q->lock);
++	}
++
++	if (likely(!found)) {
++		q = &sk->sk_receive_queue;
++		spin_lock_bh(&q->lock);
++		skb = skb_peek(q);
++		if (skb)
++			len = skb->len;
++		spin_unlock_bh(&q->lock);
++	}
++
++	return len;
++}
++
+ static int pep_ioctl(struct sock *sk, int cmd, unsigned long arg)
+ {
+ 	struct pep_sock *pn = pep_sk(sk);
+@@ -930,15 +961,7 @@ static int pep_ioctl(struct sock *sk, in
+ 			break;
+ 		}
+ 
+-		lock_sock(sk);
+-		if (sock_flag(sk, SOCK_URGINLINE) &&
+-		    !skb_queue_empty(&pn->ctrlreq_queue))
+-			answ = skb_peek(&pn->ctrlreq_queue)->len;
+-		else if (!skb_queue_empty(&sk->sk_receive_queue))
+-			answ = skb_peek(&sk->sk_receive_queue)->len;
+-		else
+-			answ = 0;
+-		release_sock(sk);
++		answ = pep_first_packet_length(sk);
+ 		ret = put_user(answ, (int __user *)arg);
+ 		break;
+ 
 
 
 
