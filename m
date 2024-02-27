@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 227F7869310
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:41:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F9D5869411
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B640E1F2D7A9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:41:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 740441C244D0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CED413B2BA;
-	Tue, 27 Feb 2024 13:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9016A13EFFB;
+	Tue, 27 Feb 2024 13:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EbLZQpeA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKDAPqaS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B332F2D;
-	Tue, 27 Feb 2024 13:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA1654BD4;
+	Tue, 27 Feb 2024 13:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041289; cv=none; b=k3jQOPiuaMKUnW8iro5jijx0qZbIoewN801JDIpPfm7HlvklrxFSF1OCIHmHnnXWIVu4lWG5IUJlz1v5iaHYbdOvkt14ZdsqxsGBArN9rZCUAKFEOGNpTfi728yDiVvmCr15nmMQDiMIiLayDbIu4+QxVWd+mkSb3CUfk2W9FzI=
+	t=1709041769; cv=none; b=ndIYipwz5z3sg1VhwgqJAg9qTzz1QOBaYgJF45zUXiY48ckwwU2PQt9Nvdomf5lAHdzaq2nAWtkiLwo0ZKlExWjR2im/7O3EvIsX+VKSDATRRsKuROWvNKT+UQqknfx/q58NwKHk4iaQeTBohz2qMLNtvVjHL6hi0YVnQT8ANlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041289; c=relaxed/simple;
-	bh=+OnFaFCWCSy94JQqElc/lQlU5oBoNEpN9FkI45XrWI8=;
+	s=arc-20240116; t=1709041769; c=relaxed/simple;
+	bh=tkQWR8C6C+ftoO+B/JnWrvwOop/eOeU+CayNUDriJHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mbh+k7FZYYmVeAXx88sYJH1aqmYcUO3tbnmYDEbrtH4TiEfzv0Ht7m06u0lppBVj1m2Pg+LQcOq9psa9PbBR38lUhvVMERN1AB+GBQaGQ6n4TQKXTnXcuK/gCe6wSm1qVTa9EedkrIS0Q/nZpLH60wKb68adJGeS8I4QZtc9Mn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EbLZQpeA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F6EC43390;
-	Tue, 27 Feb 2024 13:41:28 +0000 (UTC)
+	 MIME-Version; b=mTl0REXMYEPc57bt8xpGUYka7H1ZVFgAqbAHCJyZ5xkpwJG5N4iwK7JInvXG0iM8mbQJJtbc2kKCOaKUd5Ba7rS/uG/XOI2RlYunfUJ1vepNxul4RPNaPpMBW9rHPGhjitkKxrkiMMRiPIVssZkFUWm1cZkMTRLswqPj4JM+GSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WKDAPqaS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D029AC433C7;
+	Tue, 27 Feb 2024 13:49:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041288;
-	bh=+OnFaFCWCSy94JQqElc/lQlU5oBoNEpN9FkI45XrWI8=;
+	s=korg; t=1709041769;
+	bh=tkQWR8C6C+ftoO+B/JnWrvwOop/eOeU+CayNUDriJHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EbLZQpeA/PKPCh33xvK27CVjTKXL+b/gYfsacwJ9lngcnsGLF4w57nx7+ZQRLBoqF
-	 3StEp/WTdQHDhNTrRXjudzl1895HbHFP3ZAgA8MxS6wZYukOpVu6xb8tNlpBgUfYPf
-	 lQR6gXH7xNEh4gUGXw4w71FMyEB8kn4Svc4LlMDA=
+	b=WKDAPqaStUAi5m8Ofes33/g5Dy65lFH3CjbK2tV4pDMSlisu4aNyHWn/Pamljisxz
+	 AJ+tH9lWsLj/iEsPoHPZR6daXzuGbW745KTD0cuZ42HMIq0qt6UuAlIKikh34bf+kN
+	 AZZuhsI07UscqUvNxMZ87OVxWH8lEETBG+76Xe7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 287/334] platform/x86: thinkpad_acpi: Only update profile if successfully converted
+Subject: [PATCH 6.6 034/299] ext4: avoid allocating blocks from corrupted group in ext4_mb_try_best_found()
 Date: Tue, 27 Feb 2024 14:22:25 +0100
-Message-ID: <20240227131640.263096437@linuxfoundation.org>
+Message-ID: <20240227131626.919643431@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 427c70dec738318b7f71e1b9d829ff0e9771d493 ]
+[ Upstream commit 4530b3660d396a646aad91a787b6ab37cf604b53 ]
 
-Randomly a Lenovo Z13 will trigger a kernel warning traceback from this
-condition:
+Determine if the group block bitmap is corrupted before using ac_b_ex in
+ext4_mb_try_best_found() to avoid allocating blocks from a group with a
+corrupted block bitmap in the following concurrency and making the
+situation worse.
 
-```
-if (WARN_ON((profile < 0) || (profile >= ARRAY_SIZE(profile_names))))
-```
+ext4_mb_regular_allocator
+  ext4_lock_group(sb, group)
+  ext4_mb_good_group
+   // check if the group bbitmap is corrupted
+  ext4_mb_complex_scan_group
+   // Scan group gets ac_b_ex but doesn't use it
+  ext4_unlock_group(sb, group)
+                           ext4_mark_group_bitmap_corrupted(group)
+                           // The block bitmap was corrupted during
+                           // the group unlock gap.
+  ext4_mb_try_best_found
+    ext4_lock_group(ac->ac_sb, group)
+    ext4_mb_use_best_found
+      mb_mark_used
+      // Allocating blocks in block bitmap corrupted group
 
-This happens because thinkpad-acpi always assumes that
-convert_dytc_to_profile() successfully updated the profile. On the
-contrary a condition can occur that when dytc_profile_refresh() is called
-the profile doesn't get updated as there is a -EOPNOTSUPP branch.
-
-Catch this situation and avoid updating the profile. Also log this into
-dynamic debugging in case any other modes should be added in the future.
-
-Fixes: c3bfcd4c6762 ("platform/x86: thinkpad_acpi: Add platform profile support")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20240217022311.113879-1-mario.limonciello@amd.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240104142040.2835097-7-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/thinkpad_acpi.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/ext4/mballoc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-index c4895e9bc7148..5ecd9d33250d7 100644
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -10308,6 +10308,7 @@ static int convert_dytc_to_profile(int funcmode, int dytcmode,
- 		return 0;
- 	default:
- 		/* Unknown function */
-+		pr_debug("unknown function 0x%x\n", funcmode);
- 		return -EOPNOTSUPP;
- 	}
- 	return 0;
-@@ -10493,8 +10494,8 @@ static void dytc_profile_refresh(void)
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 9eac63e5a251c..bc9630f4c09cb 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -2304,6 +2304,9 @@ void ext4_mb_try_best_found(struct ext4_allocation_context *ac,
  		return;
  
- 	perfmode = (output >> DYTC_GET_MODE_BIT) & 0xF;
--	convert_dytc_to_profile(funcmode, perfmode, &profile);
--	if (profile != dytc_current_profile) {
-+	err = convert_dytc_to_profile(funcmode, perfmode, &profile);
-+	if (!err && profile != dytc_current_profile) {
- 		dytc_current_profile = profile;
- 		platform_profile_notify();
+ 	ext4_lock_group(ac->ac_sb, group);
++	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)))
++		goto out;
++
+ 	max = mb_find_extent(e4b, ex.fe_start, ex.fe_len, &ex);
+ 
+ 	if (max > 0) {
+@@ -2311,6 +2314,7 @@ void ext4_mb_try_best_found(struct ext4_allocation_context *ac,
+ 		ext4_mb_use_best_found(ac, e4b);
  	}
+ 
++out:
+ 	ext4_unlock_group(ac->ac_sb, group);
+ 	ext4_mb_unload_buddy(e4b);
+ }
 -- 
 2.43.0
 
