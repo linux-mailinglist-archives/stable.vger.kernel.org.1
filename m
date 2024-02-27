@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-24490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D41738694C0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:56:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F1708696BE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74D6F1F22E66
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:56:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 997C91C22775
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FC66143C6E;
-	Tue, 27 Feb 2024 13:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7E4B145322;
+	Tue, 27 Feb 2024 14:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYULJg19"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2elS8OpU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE9C1420DF;
-	Tue, 27 Feb 2024 13:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B2F13A26F;
+	Tue, 27 Feb 2024 14:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042149; cv=none; b=ZRSDUYPaVoI03ZyYoOdcdi2oRXs42+X5IcrI5vgvZyo9HBARgMmYNHkG9GDLUhehEUA6x3+a5VVSoHJL0xNDmLvxdDHNurTzQC5gLjhC/epOBlXObsiHpILQdzkIu2VgpDn+radSjj72281zGjHcac8hIVDhucdQgBpJGHIXcQg=
+	t=1709043268; cv=none; b=euzTB8q64bapXh6BRfnsDDSgXRtp3wvHXCC/vDSyik5PXsxwnno90y0dn3Yn+u+12zudlJag1WUpDRYsa+EmfCbds3Gk4xK1yMJu4BczFzT5EmHPVnKrcjIYeRUYx6mBtGgTQ+LUoTTY9GTFhO9rkT40cMevxEWnh8wDHrb6JdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042149; c=relaxed/simple;
-	bh=OscK/aJR/Mg0SPNPAKauknVzoB+J00Zue/EwU+730jY=;
+	s=arc-20240116; t=1709043268; c=relaxed/simple;
+	bh=DNwXWSlUqBcCyZ5lvN1KstTS1RZiwZxRqifoayIGYiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nLaKo9sZedjrZml+1qdBuVlqzLqZZe/9x3VmYYMx4jwZ9OVOuV3D6yzgnLnBd2gmsMr0CWd2YmBXRzD8kFa2hX2NNkIWb8otAjq2JPWXqNYKkg32t+m1r8sUL8s6O1p5Oyo/mulhWVeW0DgIRUK7DpkOHfDxTm8j7kbyvsC7O7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYULJg19; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEECBC433F1;
-	Tue, 27 Feb 2024 13:55:48 +0000 (UTC)
+	 MIME-Version; b=Hg7rKBLzyHmBBmEIX8PGuNR65tSk1g/u7qtdRKrNLSjuUmqIq6n4Q/2Xt74iWIwWs5FfB9OEKh9TOT28zsBH7He5azYyJ6eCRfRpp/cQVEiZoj/WKqu/qu9e035axbfhO2bNUQIYrR0gxNypqa4T0oJoubJ3EDiMLxy7Eow77G8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2elS8OpU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0466DC433C7;
+	Tue, 27 Feb 2024 14:14:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042149;
-	bh=OscK/aJR/Mg0SPNPAKauknVzoB+J00Zue/EwU+730jY=;
+	s=korg; t=1709043268;
+	bh=DNwXWSlUqBcCyZ5lvN1KstTS1RZiwZxRqifoayIGYiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uYULJg19Qw8H/rgaDrtXrpaHoCEAKnHM6ir/aYOuLIhdYl0qU1kT4GT3r4FvU/YW4
-	 03LO788+6Nzsz/JvzVLg9NtCTzme7mPifYT2jB07MmBLYEmhnX7ufhbW3mxQolXer0
-	 oprrdN8WWXVFd9AzC6vw+uCOWRfuTIzlRSesY2Is=
+	b=2elS8OpUKE8nWJ6w4WrQWpJTF1HS9wQ5Y5gZLUa0/8wMDvQTSUjqx/6friUJvptmb
+	 Y6DM9thY9AWqytyJTvpGcKyXXE3WdfIpJ2lG4YPNl0/HJPDcMQ7mCRCrUmlkNJ0PZ2
+	 FNsNoeg00ee0agzhRbO53jLt9GiUlMSAI186/HVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 197/299] selftests: mptcp: userspace_pm: unique subtest names
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Daniel Wagner <dwagner@suse.de>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 047/195] nvmet-fc: hold reference on hostport match
 Date: Tue, 27 Feb 2024 14:25:08 +0100
-Message-ID: <20240227131632.152833129@linuxfoundation.org>
+Message-ID: <20240227131611.941196368@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Daniel Wagner <dwagner@suse.de>
 
-commit 2ef0d804c090658960c008446523863fd7e3541e upstream.
+[ Upstream commit ca121a0f7515591dba0eb5532bfa7ace4dc153ce ]
 
-It is important to have a unique (sub)test name in TAP, because some CI
-environments drop tests with duplicated names.
+The hostport data structure is shared between the association, this why
+we keep track of the users via a refcount. So we should not decrement
+the refcount on a match and free the hostport several times.
 
-Some subtests from the userspace_pm selftest had the same names. That's
-because different subflows are created (and deleted) between the same
-pair of IP addresses.
+Reported by KASAN.
 
-Simply adding the destination port in the name is then enough to have
-different names, because the destination port is always different.
-
-Note that adding such info takes a bit more space, so we need to
-increase a bit the width to print the name, simply to keep all the
-'[ OK ]' aligned as before.
-
-Fixes: f589234e1af0 ("selftests: mptcp: userspace_pm: format subtests results in TAP")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Daniel Wagner <dwagner@suse.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/userspace_pm.sh |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/nvme/target/fc.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/userspace_pm.sh
-+++ b/tools/testing/selftests/net/mptcp/userspace_pm.sh
-@@ -75,7 +75,7 @@ print_test()
- {
- 	test_name="${1}"
- 
--	_printf "%-63s" "${test_name}"
-+	_printf "%-68s" "${test_name}"
- }
- 
- print_results()
-@@ -555,7 +555,7 @@ verify_subflow_events()
- 	local remid
- 	local info
- 
--	info="${e_saddr} (${e_from}) => ${e_daddr} (${e_to})"
-+	info="${e_saddr} (${e_from}) => ${e_daddr}:${e_dport} (${e_to})"
- 
- 	if [ "$e_type" = "$SUB_ESTABLISHED" ]
- 	then
+diff --git a/drivers/nvme/target/fc.c b/drivers/nvme/target/fc.c
+index c9ef642313c8f..64c26b703860c 100644
+--- a/drivers/nvme/target/fc.c
++++ b/drivers/nvme/target/fc.c
+@@ -1069,8 +1069,6 @@ nvmet_fc_alloc_hostport(struct nvmet_fc_tgtport *tgtport, void *hosthandle)
+ 		/* new allocation not needed */
+ 		kfree(newhost);
+ 		newhost = match;
+-		/* no new allocation - release reference */
+-		nvmet_fc_tgtport_put(tgtport);
+ 	} else {
+ 		newhost->tgtport = tgtport;
+ 		newhost->hosthandle = hosthandle;
+-- 
+2.43.0
+
 
 
 
