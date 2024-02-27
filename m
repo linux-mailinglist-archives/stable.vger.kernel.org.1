@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-24246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5058A869357
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:44:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D972869417
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:51:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E52FC1F23EC8
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:44:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 548611F216D5
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5C713B798;
-	Tue, 27 Feb 2024 13:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEDF013DBBF;
+	Tue, 27 Feb 2024 13:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3YuqX/q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="haS/EuJG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3839B13AA55;
-	Tue, 27 Feb 2024 13:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AAAC1420A6;
+	Tue, 27 Feb 2024 13:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041438; cv=none; b=ECOZM/WusRDc8M/HbREqL8RAgfNS/ZbgLII3ZXwtWbIHXZzjUPjMCCz1oHYGQ0uElRNz1+8coKnFFH+iyg8xN0lPhw2/cgQSZ/8Zo23Lhevrr0qoKhmYrCauFtVWA4sBqd5zJmiOGylnu2Wq1jzh7+nXS8e3kVjlEqVDqED9A18=
+	t=1709041788; cv=none; b=aJfBbnrbHr4lMzzCShBK1bz+sZFpoL72gvolab7Wdl/4ZPsIz/oAIkRnzt+4bdNbAmNbwsLq2DkUoePfUXIDrYrXZl2ws9u4MGLL/lxCjx/fU/NFYeDpREkxplzgg5j6KEe6vS4JrTUWd64Co8hRfXBhW2EKvEXQSBBgAaMUDgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041438; c=relaxed/simple;
-	bh=rtNgeNMKHjchGOlLNddAiFOUaiYUI5mqidWYcXRAax4=;
+	s=arc-20240116; t=1709041788; c=relaxed/simple;
+	bh=Q3+Pg1TU13/JopCQs6hLqikvOAqUrmfP9unEetKWTVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nbi/tgCLrIPeRDeP5jOCyTgOqd5d2X/rHLAYuL+oIRvvzYuPzRszKvxB9lM7dlxqbuEfRs8RhyahR24nL2TrOAP0qs90o0zgU4pOfRCNkskG/gTKDoQ7zmtzlYnFcF6jLdFXsUWcmS43AQcRrQpPPck7eFvLlB8IkF1bPM5Nwyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3YuqX/q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDEF9C433C7;
-	Tue, 27 Feb 2024 13:43:57 +0000 (UTC)
+	 MIME-Version; b=UdEvlZN2pmoXZQPdGqvWJLnjI1An1RQ9lB+bXZfzaV8eBN/B/n3C80uxWy52mvn8Enmw8JTHvmycBI7//ZhOnPA65XVey1WDHEL3hW41glvqdTR9UpKsy8r2b27BQ+Jewdh3y83/JT/ymzmIrADwdUcs88NBOuNTGRagVCJQyZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=haS/EuJG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC869C433F1;
+	Tue, 27 Feb 2024 13:49:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041438;
-	bh=rtNgeNMKHjchGOlLNddAiFOUaiYUI5mqidWYcXRAax4=;
+	s=korg; t=1709041788;
+	bh=Q3+Pg1TU13/JopCQs6hLqikvOAqUrmfP9unEetKWTVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M3YuqX/qgSuSTux/7cUhIfk7NPFfXZwnffYzocLoBkSIywysXeMYPpgpaUgsMKrt9
-	 yrz1uPUG9W6EfT4k5++uzx3yBPYNcNsfGZ+S2/CS3Gd8QzMjhevJgTfftMvDOHB9c9
-	 /4jkh9l1hiQrDPA7Tk6NXq0ExxderQxla6fRKg6Q=
+	b=haS/EuJGE0Ni+3tazNHpki9R1gqpqwC3myDGvk8BSOsSGH24x+y+oO5ZdowVWNrJl
+	 Ru/3bktLg/IrvmYaQRVLiX5k/CZxbrStVS4DDj/25qpdut++yGSA7LA1PmFLZnaVdL
+	 9GDzxRqaysswU/drfWfKrFcPhoWp4m1+q+R9imm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Pirko <jiri@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Daniel Wagner <dwagner@suse.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 314/334] devlink: fix port dump cmd type
-Date: Tue, 27 Feb 2024 14:22:52 +0100
-Message-ID: <20240227131641.217816671@linuxfoundation.org>
+Subject: [PATCH 6.6 062/299] nvmet-fc: hold reference on hostport match
+Date: Tue, 27 Feb 2024 14:22:53 +0100
+Message-ID: <20240227131627.949960822@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Pirko <jiri@nvidia.com>
+From: Daniel Wagner <dwagner@suse.de>
 
-[ Upstream commit 61c43780e9444123410cd48c2483e01d2b8f75e8 ]
+[ Upstream commit ca121a0f7515591dba0eb5532bfa7ace4dc153ce ]
 
-Unlike other commands, due to a c&p error, port dump fills-up cmd with
-wrong value, different from port-get request cmd, port-get doit reply
-and port notification.
+The hostport data structure is shared between the association, this why
+we keep track of the users via a refcount. So we should not decrement
+the refcount on a match and free the hostport several times.
 
-Fix it by filling cmd with value DEVLINK_CMD_PORT_NEW.
+Reported by KASAN.
 
-Skimmed through devlink userspace implementations, none of them cares
-about this cmd value. Only ynl, for which, this is actually a fix, as it
-expects doit and dumpit ops rsp_value to be the same.
-
-Omit the fixes tag, even thought this is fix, better to target this for
-next release.
-
-Fixes: bfcd3a466172 ("Introduce devlink infrastructure")
-Signed-off-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://lore.kernel.org/r/20240220075245.75416-1-jiri@resnulli.us
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Daniel Wagner <dwagner@suse.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/devlink/port.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/target/fc.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/net/devlink/port.c b/net/devlink/port.c
-index 841a3eafa328e..d39ee6053cc7b 100644
---- a/net/devlink/port.c
-+++ b/net/devlink/port.c
-@@ -581,7 +581,7 @@ devlink_nl_port_get_dump_one(struct sk_buff *msg, struct devlink *devlink,
- 
- 	xa_for_each_start(&devlink->ports, port_index, devlink_port, state->idx) {
- 		err = devlink_nl_port_fill(msg, devlink_port,
--					   DEVLINK_CMD_NEW,
-+					   DEVLINK_CMD_PORT_NEW,
- 					   NETLINK_CB(cb->skb).portid,
- 					   cb->nlh->nlmsg_seq, flags,
- 					   cb->extack);
+diff --git a/drivers/nvme/target/fc.c b/drivers/nvme/target/fc.c
+index c9ef642313c8f..64c26b703860c 100644
+--- a/drivers/nvme/target/fc.c
++++ b/drivers/nvme/target/fc.c
+@@ -1069,8 +1069,6 @@ nvmet_fc_alloc_hostport(struct nvmet_fc_tgtport *tgtport, void *hosthandle)
+ 		/* new allocation not needed */
+ 		kfree(newhost);
+ 		newhost = match;
+-		/* no new allocation - release reference */
+-		nvmet_fc_tgtport_put(tgtport);
+ 	} else {
+ 		newhost->tgtport = tgtport;
+ 		newhost->hosthandle = hosthandle;
 -- 
 2.43.0
 
