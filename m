@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-25077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 167758697AD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:23:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 366CF86976D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:21:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDB8AB2B647
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:23:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64E631C247F4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CACF613B7AB;
-	Tue, 27 Feb 2024 14:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2797B13EFEC;
+	Tue, 27 Feb 2024 14:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NbLeHL31"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aAtgt5Ui"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A40E13B2B4;
-	Tue, 27 Feb 2024 14:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70DC13B2B4;
+	Tue, 27 Feb 2024 14:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043796; cv=none; b=IA3wstrzRzo6bqH9i2iUqDzPnYbDkOlNx2OVTtByz3UYATTLG+Pi7/QQtG0qtgGQ/Hn5IF9mA4FA4C87/AoBBUmOQJswzE6h3OVM3Wr0dH0U547GbqkDacwSFU4uoeL+V+EffU0pWjWuM0TFqUvKSFYLmKZM7oOc9CTkOYEIeLs=
+	t=1709043671; cv=none; b=urdKOKI5a2zDfGBu8lcyAkz09osdK5z3tLUyfjrcGSl3xA8XT5tbVlEg7CqyK2ME767PLcAkAscjLF47w/d5xVY1vhs1qgb4Pvm8tEfAc7WWu3BXC/IhfJPwYzEI7GEEV93u87GB12yyFsVIBcDIXepJdZ02ySJqONvOceVt3zA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043796; c=relaxed/simple;
-	bh=0pFJ21Iz9XeGQTgFJd77rbQWY4E/LP/+3m2LI/zaxAs=;
+	s=arc-20240116; t=1709043671; c=relaxed/simple;
+	bh=wZysLImAkurh8lL4d3PC4akT6Am4PQOB55RhogujXuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qbO6DDysx9h/zcbpNJ+qCUc9krz9EQ1bR8XcrYUEY1f+Y0qJiVm77YxIeIPPEnjl2MBIje/pC6Dre66xCkEJQY6kM2jL+O/2pkw4yL9QoLe3+0AsWxHu5+veX/lP9tDHfgXrpXuDmmU1KicvlouHsVMs+p1DhZH0z/PYgHX8ve8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NbLeHL31; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B43DC433F1;
-	Tue, 27 Feb 2024 14:23:15 +0000 (UTC)
+	 MIME-Version; b=WpUyoft834UVIwq8a2sZyGoF0f0rVYX9E3ZQpMnztkRlfEzf5Ccs/oNVExWcKnw95tnt667Ut6emm24liLGRzbRKu3pW7chlsifxnlksWijE/eMn4VBLI/fgryh60xy9+OCjgzSLagxjR4Wmmbmnap/pQOQ3tSt1vgRvayEHC8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aAtgt5Ui; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 643E8C433F1;
+	Tue, 27 Feb 2024 14:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043796;
-	bh=0pFJ21Iz9XeGQTgFJd77rbQWY4E/LP/+3m2LI/zaxAs=;
+	s=korg; t=1709043671;
+	bh=wZysLImAkurh8lL4d3PC4akT6Am4PQOB55RhogujXuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NbLeHL31RnImD2Sxu0QOb/2il+jPElpUzur7QmkyXdxAp7ruJ9WedCsc518Tal8SL
-	 mh5epLbkCbnYi6adF6axnt1e3Jlg2ihu62mWmqke+UrtZccv0+6QJjW4F3xgXCvuc2
-	 4Lmq2WA7iCLbVXF2qMkbXepBbTv+KBT7lK999X3o=
+	b=aAtgt5UiQuyVa2zZp8LpChJTdcYoBcuUdfdBYjXt9Cnh55WzwFRO3bZaxa3vA4xTQ
+	 KD9HSOv1lyP+W+Q1HtbzBfKHN34sqDT9XCwZA5ea+Wj1fhXIG/mBKTIlslkzlDGt+C
+	 QYDtDUQfRTfj3NM23fDCyMAwN1cD24pLcrCdxkjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 38/84] pinctrl: rockchip: Fix refcount leak in rockchip_pinctrl_parse_groups
+Subject: [PATCH 6.1 164/195] s390: use the correct count for __iowrite64_copy()
 Date: Tue, 27 Feb 2024 14:27:05 +0100
-Message-ID: <20240227131554.112437447@linuxfoundation.org>
+Message-ID: <20240227131615.826081545@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit c818ae563bf99457f02e8170aabd6b174f629f65 ]
+[ Upstream commit 723a2cc8d69d4342b47dfddbfe6c19f1b135f09b ]
 
-of_find_node_by_phandle() returns a node pointer with refcount incremented,
-We should use of_node_put() on it when not needed anymore.
-Add missing of_node_put() to avoid refcount leak.
+The signature for __iowrite64_copy() requires the number of 64 bit
+quantities, not bytes. Multiple by 8 to get to a byte length before
+invoking zpci_memcpy_toio()
 
-Fixes: d3e5116119bd ("pinctrl: add pinctrl driver for Rockchip SoCs")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Link: https://lore.kernel.org/r/20230102112845.3982407-1-linmq006@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 87bc359b9822 ("s390/pci: speed up __iowrite64_copy by using pci store block insn")
+Acked-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/0-v1-9223d11a7662+1d7785-s390_iowrite64_jgg@nvidia.com
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-rockchip.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/s390/pci/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
-index a44c2680c4230..9388d6fac7d40 100644
---- a/drivers/pinctrl/pinctrl-rockchip.c
-+++ b/drivers/pinctrl/pinctrl-rockchip.c
-@@ -2536,6 +2536,7 @@ static int rockchip_pinctrl_parse_groups(struct device_node *np,
- 		np_config = of_find_node_by_phandle(be32_to_cpup(phandle));
- 		ret = pinconf_generic_parse_dt_config(np_config, NULL,
- 				&grp->data[j].configs, &grp->data[j].nconfigs);
-+		of_node_put(np_config);
- 		if (ret)
- 			return ret;
- 	}
+diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
+index 2c99f9552b2f5..394c69fda399e 100644
+--- a/arch/s390/pci/pci.c
++++ b/arch/s390/pci/pci.c
+@@ -241,7 +241,7 @@ resource_size_t pcibios_align_resource(void *data, const struct resource *res,
+ /* combine single writes by using store-block insn */
+ void __iowrite64_copy(void __iomem *to, const void *from, size_t count)
+ {
+-       zpci_memcpy_toio(to, from, count);
++	zpci_memcpy_toio(to, from, count * 8);
+ }
+ 
+ static void __iomem *__ioremap(phys_addr_t addr, size_t size, pgprot_t prot)
 -- 
 2.43.0
 
