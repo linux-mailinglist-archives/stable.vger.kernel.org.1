@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14A4B869371
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:45:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C6C38697FF
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:27:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8E2C1F216FA
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:45:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32AD81F2C6C4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A4313DB83;
-	Tue, 27 Feb 2024 13:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 562E6143C4B;
+	Tue, 27 Feb 2024 14:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2OyQOjN8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dyNu81E1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D0B2F2D;
-	Tue, 27 Feb 2024 13:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F0B14264A;
+	Tue, 27 Feb 2024 14:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041493; cv=none; b=n8z1ZX6nKFhoCsYGDIj2V3yDuz3RGOxrCrP845Wju0HgDZmKlpWGtFWybszZlIrZ1hEfn0eqruqHP2ljNj3vs0liw0x9OriXayMJ+zIO1y/je170f5fuyXm/je6sPnixsdMQsbwZfL4ilOYJ1Qpzh6w43E8AV4UPGFkq4q8LJXk=
+	t=1709044037; cv=none; b=bLbhxGj/RXP6g8F73iTV00ga+39kvRlrTbfQz6TD8f3Y2H/qe5O7q4y8fAAU9HRkSrGPE5KKGD2SCglm1aT5cTrnfHnvmkvrlRvB4yiGHy497wMmZtWHASOSyB+2ldt4XteJAA2CuV1o9SuPWyVysjE/jWMM1wWejQGUwT+eGF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041493; c=relaxed/simple;
-	bh=hSuOO9JaNp0TPQ9YVMdixAV7Rz3o6N06NtfBbCzLCjQ=;
+	s=arc-20240116; t=1709044037; c=relaxed/simple;
+	bh=oVDEWH0UvPuqFaly31k7rR6lJTEmD6vqA3Cmihj4rKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KAL1ap2EZ7dN/iL0aLU0ZNpLg4sha1TyBBQ29Ny01fId2Y22DvKW0da3QgK9sNxBExJu9Q1XTT2VjP+NyloovZoAc7bdOkhAy+qrDwqLCu+siy32Yvo1jD3fiku5hCur8kMCdNeMzQQNBpmBMnj92y1ZEYB3yj1q02sLQNtCq74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2OyQOjN8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C2D7C433F1;
-	Tue, 27 Feb 2024 13:44:53 +0000 (UTC)
+	 MIME-Version; b=jNRy3yzOEmRhMDO7LBGdCtsWpfMqVIkhK9WnSphOjrAprYF82DgnRN/vA2kVX97Ea5BxlvYMkP6cVin89xhZSD/JayJOQ7WgPSbvM17iwbffE13rurT8QbaGas7vk2M/3MJulQ0TUEzCr5QwQUOhg769qQhJaK5oJlcZPrCeVQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dyNu81E1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E901C433C7;
+	Tue, 27 Feb 2024 14:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041493;
-	bh=hSuOO9JaNp0TPQ9YVMdixAV7Rz3o6N06NtfBbCzLCjQ=;
+	s=korg; t=1709044036;
+	bh=oVDEWH0UvPuqFaly31k7rR6lJTEmD6vqA3Cmihj4rKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2OyQOjN8L917pTMizMjMn8WD/OzCpRBT4GU9HpTNTjNHTdbZ36ssf5QSLCL42nSn8
-	 hSEvJJc8Jk13OrOvQy/fDTi/fJPPHKmxZvKC6eg8ARnriUo130MU5x5uFYEtDCwn1q
-	 FqDY3yB/yt4JRUAaQAZ+fi8ukuh2bs22/ohLFpEw=
+	b=dyNu81E1J5bxYBOphGdeDNr8XHnvyBClp+ksP8W9bwlQBUyDt0YAciztHNOTiEykr
+	 ektVWHmLA22RQVc8MgBjWoSXZDYme1M+s8QLzWvGKV3CpS/r8z7sCNfb/F9ibbzr9/
+	 nBdy9sIBWO6bMgGdV/vzvxathmy5ut9PXJA/U7ik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Sun <yi.sun@unisoc.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 24/52] virtio-blk: Ensure no requests in virtqueues before deleting vqs.
+	Cyril Hrubis <chrubis@suse.cz>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Petr Vorel <pvorel@suse.cz>,
+	Mel Gorman <mgorman@suse.de>
+Subject: [PATCH 5.10 010/122] sched/rt: Fix sysctl_sched_rr_timeslice intial value
 Date: Tue, 27 Feb 2024 14:26:11 +0100
-Message-ID: <20240227131549.326223609@linuxfoundation.org>
+Message-ID: <20240227131559.044397307@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
-References: <20240227131548.514622258@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Sun <yi.sun@unisoc.com>
+From: Cyril Hrubis <chrubis@suse.cz>
 
-[ Upstream commit 4ce6e2db00de8103a0687fb0f65fd17124a51aaa ]
+commit c7fcb99877f9f542c918509b2801065adcaf46fa upstream.
 
-Ensure no remaining requests in virtqueues before resetting vdev and
-deleting virtqueues. Otherwise these requests will never be completed.
-It may cause the system to become unresponsive.
+There is a 10% rounding error in the intial value of the
+sysctl_sched_rr_timeslice with CONFIG_HZ_300=y.
 
-Function blk_mq_quiesce_queue() can ensure that requests have become
-in_flight status, but it cannot guarantee that requests have been
-processed by the device. Virtqueues should never be deleted before
-all requests become complete status.
+This was found with LTP test sched_rr_get_interval01:
 
-Function blk_mq_freeze_queue() ensure that all requests in virtqueues
-become complete status. And no requests can enter in virtqueues.
+sched_rr_get_interval01.c:57: TPASS: sched_rr_get_interval() passed
+sched_rr_get_interval01.c:64: TPASS: Time quantum 0s 99999990ns
+sched_rr_get_interval01.c:72: TFAIL: /proc/sys/kernel/sched_rr_timeslice_ms != 100 got 90
+sched_rr_get_interval01.c:57: TPASS: sched_rr_get_interval() passed
+sched_rr_get_interval01.c:64: TPASS: Time quantum 0s 99999990ns
+sched_rr_get_interval01.c:72: TFAIL: /proc/sys/kernel/sched_rr_timeslice_ms != 100 got 90
 
-Signed-off-by: Yi Sun <yi.sun@unisoc.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Link: https://lore.kernel.org/r/20240129085250.1550594-1-yi.sun@unisoc.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+What this test does is to compare the return value from the
+sched_rr_get_interval() and the sched_rr_timeslice_ms sysctl file and
+fails if they do not match.
+
+The problem it found is the intial sysctl file value which was computed as:
+
+static int sysctl_sched_rr_timeslice = (MSEC_PER_SEC / HZ) * RR_TIMESLICE;
+
+which works fine as long as MSEC_PER_SEC is multiple of HZ, however it
+introduces 10% rounding error for CONFIG_HZ_300:
+
+(MSEC_PER_SEC / HZ) * (100 * HZ / 1000)
+
+(1000 / 300) * (100 * 300 / 1000)
+
+3 * 30 = 90
+
+This can be easily fixed by reversing the order of the multiplication
+and division. After this fix we get:
+
+(MSEC_PER_SEC * (100 * HZ / 1000)) / HZ
+
+(1000 * (100 * 300 / 1000)) / 300
+
+(1000 * 30) / 300 = 100
+
+Fixes: 975e155ed873 ("sched/rt: Show the 'sched_rr_timeslice' SCHED_RR timeslice tuning knob in milliseconds")
+Signed-off-by: Cyril Hrubis <chrubis@suse.cz>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Petr Vorel <pvorel@suse.cz>
+Acked-by: Mel Gorman <mgorman@suse.de>
+Tested-by: Petr Vorel <pvorel@suse.cz>
+Link: https://lore.kernel.org/r/20230802151906.25258-2-chrubis@suse.cz
+[ pvorel: rebased for 5.15, 5.10 ]
+Signed-off-by: Petr Vorel <pvorel@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/virtio_blk.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ kernel/sched/rt.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
-index 8b3bf11329ba0..8e4c431efc6cc 100644
---- a/drivers/block/virtio_blk.c
-+++ b/drivers/block/virtio_blk.c
-@@ -943,14 +943,15 @@ static int virtblk_freeze(struct virtio_device *vdev)
- {
- 	struct virtio_blk *vblk = vdev->priv;
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -8,7 +8,7 @@
+ #include "pelt.h"
  
-+	/* Ensure no requests in virtqueues before deleting vqs. */
-+	blk_mq_freeze_queue(vblk->disk->queue);
-+
- 	/* Ensure we don't receive any more interrupts */
- 	vdev->config->reset(vdev);
+ int sched_rr_timeslice = RR_TIMESLICE;
+-int sysctl_sched_rr_timeslice = (MSEC_PER_SEC / HZ) * RR_TIMESLICE;
++int sysctl_sched_rr_timeslice = (MSEC_PER_SEC * RR_TIMESLICE) / HZ;
+ /* More than 4 hours if BW_SHIFT equals 20. */
+ static const u64 max_rt_runtime = MAX_BW;
  
- 	/* Make sure no work handler is accessing the device. */
- 	flush_work(&vblk->config_work);
- 
--	blk_mq_quiesce_queue(vblk->disk->queue);
--
- 	vdev->config->del_vqs(vdev);
- 	kfree(vblk->vqs);
- 
-@@ -968,7 +969,7 @@ static int virtblk_restore(struct virtio_device *vdev)
- 
- 	virtio_device_ready(vdev);
- 
--	blk_mq_unquiesce_queue(vblk->disk->queue);
-+	blk_mq_unfreeze_queue(vblk->disk->queue);
- 	return 0;
- }
- #endif
--- 
-2.43.0
-
 
 
 
