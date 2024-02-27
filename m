@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-25134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF3A1869808
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:27:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 062DA869516
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:58:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DEFBB2E03D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:26:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5AA128F66F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:58:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D469B1419A0;
-	Tue, 27 Feb 2024 14:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69FEC13B7A0;
+	Tue, 27 Feb 2024 13:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BeemoYVj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l45CHpMq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8562713B797;
-	Tue, 27 Feb 2024 14:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DED54BD4;
+	Tue, 27 Feb 2024 13:58:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043959; cv=none; b=Y1UDFQ8d0YEkTfjKbi/Z0UocZ6bGfvfDTNVOcvKWtfMRPKzuyeBDhy7dTm27c3u+lhcbGONkfkNOIXoND/OG99EsT8dqs0tKykC+RnpOfoMHQ7oBVj5qCboRkb3AkKOdGrsQaUll05JjQi89QqzxoMMNtiasYfMHzegzztJ3xzA=
+	t=1709042317; cv=none; b=MmCgoqXpFJPQO2dVu/j0kz8pVVlAso0euMetZijk1B7IBV1iRDHuLgzfVCdqO1lHwn5kvq1tExGvNjR89VkAr8cEIPBoKSvULIVoMlY0z6JtyHfkYS/HqjIeGvEhdsXOdj2fHemDmaWttLcrbatb09HcU6/QYp83dVU2mz4KGJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043959; c=relaxed/simple;
-	bh=4GCbryDBro+o1OD7FixdjyEoSYOiFk/WCCNdY2uBjHI=;
+	s=arc-20240116; t=1709042317; c=relaxed/simple;
+	bh=p5BY23UAA2K9iSlGg7j7vfB91uQ1bWSy42eiLS1Vg78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IvGFmp7V2/qmxH4ebjwcEvzEh+aEzEKU6WvxoxqhA8wOaVT6EMUsoPlj990TRKAzRtzeoOtKSFpGeBfkp/vNFLRY9bSSmktn+TGEbxq11wHQZcIVBJ6FwhQLToFfIylNr526ihVT24GcRb7hxapFtnrfe15biWr5nV2s09nDc8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BeemoYVj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B894C433F1;
-	Tue, 27 Feb 2024 14:25:58 +0000 (UTC)
+	 MIME-Version; b=WGs2uQjwJ78byG11DEGaxe6n3WUi89D6nnot3P/J5warL210bz995My2bXKvNsX6o+bOWqXmWAw7yxcTPHMcUvyGuk6bhV8KB8fvH4tTsU5Q1uxdFyQ83OWWxRJMVRvKuZM+xw7ycjkIYPiajDKWxBQCM9XcaV3GgUbn9nSxrVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l45CHpMq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC677C433F1;
+	Tue, 27 Feb 2024 13:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043959;
-	bh=4GCbryDBro+o1OD7FixdjyEoSYOiFk/WCCNdY2uBjHI=;
+	s=korg; t=1709042317;
+	bh=p5BY23UAA2K9iSlGg7j7vfB91uQ1bWSy42eiLS1Vg78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BeemoYVjtzuto/iQbDRCupdAPdPQyvxuQiiEtpW4+qXda90unXYfgnRJuowBW1+bc
-	 CUAFCSi2SjdM/jgHNPjJmHi8r87qhZdyF7fqP3LfO+D/t2cJXHYfanGVqJ1+TpBSye
-	 yBdDUpBlA87Wnv6W4DAVlLnB5I9novCHbvzajCFQ=
+	b=l45CHpMqtrJoZOl1IGMg2PGiTWWSCDMLdNwUCblmzHZQ+6ZmNvp5NjOw7L0lhLjvJ
+	 rXye7WvDM2mk2VXZbPyT3NFi27jF1l4qhmeB86DBtsFciotyGF5FulhYNYhU5OeLAj
+	 NjtibF2LKpCcLpCC4pBuqcLKoqs6Qe0n3OGCMsrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@csail.mit.edu>,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
-	Guruswamy Basavaiah <guruswamy.basavaiah@broadcom.com>
-Subject: [PATCH 5.10 004/122] smb: client: fix OOB in receive_encrypted_standard()
+	Daniil Dulov <d.dulov@aladdin.ru>,
+	David Howells <dhowells@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 254/299] afs: Increase buffer size in afs_update_volume_status()
 Date: Tue, 27 Feb 2024 14:26:05 +0100
-Message-ID: <20240227131558.845826743@linuxfoundation.org>
+Message-ID: <20240227131633.891423371@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Daniil Dulov <d.dulov@aladdin.ru>
 
-[ Upstream commit eec04ea119691e65227a97ce53c0da6b9b74b0b7 ]
+[ Upstream commit 6ea38e2aeb72349cad50e38899b0ba6fbcb2af3d ]
 
-Fix potential OOB in receive_encrypted_standard() if server returned a
-large shdr->NextCommand that would end up writing off the end of
-@next_buffer.
+The max length of volume->vid value is 20 characters.
+So increase idbuf[] size up to 24 to avoid overflow.
 
-Fixes: b24df3e30cbf ("cifs: update receive_encrypted_standard to handle compounded responses")
-Cc: stable@vger.kernel.org
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[Guru: receive_encrypted_standard() is present in file smb2ops.c,
-smb2ops.c file location is changed, modified patch accordingly.]
-Signed-off-by: Guruswamy Basavaiah <guruswamy.basavaiah@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+[DH: Actually, it's 20 + NUL, so increase it to 24 and use snprintf()]
+
+Fixes: d2ddc776a458 ("afs: Overhaul volume and server record caching and fileserver rotation")
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20240211150442.3416-1-d.dulov@aladdin.ru/ # v1
+Link: https://lore.kernel.org/r/20240212083347.10742-1-d.dulov@aladdin.ru/ # v2
+Link: https://lore.kernel.org/r/20240219143906.138346-3-dhowells@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/smb2ops.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ fs/afs/volume.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/cifs/smb2ops.c
-+++ b/fs/cifs/smb2ops.c
-@@ -4892,6 +4892,7 @@ receive_encrypted_standard(struct TCP_Se
- 	struct smb2_sync_hdr *shdr;
- 	unsigned int pdu_length = server->pdu_size;
- 	unsigned int buf_size;
-+	unsigned int next_cmd;
- 	struct mid_q_entry *mid_entry;
- 	int next_is_large;
- 	char *next_buffer = NULL;
-@@ -4920,14 +4921,15 @@ receive_encrypted_standard(struct TCP_Se
- 	next_is_large = server->large_buf;
- one_more:
- 	shdr = (struct smb2_sync_hdr *)buf;
--	if (shdr->NextCommand) {
-+	next_cmd = le32_to_cpu(shdr->NextCommand);
-+	if (next_cmd) {
-+		if (WARN_ON_ONCE(next_cmd > pdu_length))
-+			return -1;
- 		if (next_is_large)
- 			next_buffer = (char *)cifs_buf_get();
- 		else
- 			next_buffer = (char *)cifs_small_buf_get();
--		memcpy(next_buffer,
--		       buf + le32_to_cpu(shdr->NextCommand),
--		       pdu_length - le32_to_cpu(shdr->NextCommand));
-+		memcpy(next_buffer, buf + next_cmd, pdu_length - next_cmd);
- 	}
+diff --git a/fs/afs/volume.c b/fs/afs/volume.c
+index 115c081a8e2ce..c028598a903c9 100644
+--- a/fs/afs/volume.c
++++ b/fs/afs/volume.c
+@@ -337,7 +337,7 @@ static int afs_update_volume_status(struct afs_volume *volume, struct key *key)
+ {
+ 	struct afs_server_list *new, *old, *discard;
+ 	struct afs_vldb_entry *vldb;
+-	char idbuf[16];
++	char idbuf[24];
+ 	int ret, idsz;
  
- 	mid_entry = smb2_find_mid(server, buf);
-@@ -4951,8 +4953,8 @@ one_more:
- 	else
- 		ret = cifs_handle_standard(server, mid_entry);
+ 	_enter("");
+@@ -345,7 +345,7 @@ static int afs_update_volume_status(struct afs_volume *volume, struct key *key)
+ 	/* We look up an ID by passing it as a decimal string in the
+ 	 * operation's name parameter.
+ 	 */
+-	idsz = sprintf(idbuf, "%llu", volume->vid);
++	idsz = snprintf(idbuf, sizeof(idbuf), "%llu", volume->vid);
  
--	if (ret == 0 && shdr->NextCommand) {
--		pdu_length -= le32_to_cpu(shdr->NextCommand);
-+	if (ret == 0 && next_cmd) {
-+		pdu_length -= next_cmd;
- 		server->large_buf = next_is_large;
- 		if (next_is_large)
- 			server->bigbuf = buf = next_buffer;
+ 	vldb = afs_vl_lookup_vldb(volume->cell, key, idbuf, idsz);
+ 	if (IS_ERR(vldb)) {
+-- 
+2.43.0
+
 
 
 
