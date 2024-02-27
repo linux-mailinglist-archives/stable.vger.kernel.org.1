@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-25222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5A2E86984C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:31:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA3B28697DA
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:25:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0D5E295304
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:31:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85A9228FE09
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6688143C6E;
-	Tue, 27 Feb 2024 14:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79507140391;
+	Tue, 27 Feb 2024 14:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QePZ8uUQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fBuJyWOr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7608D140391;
-	Tue, 27 Feb 2024 14:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3759D13B2B4;
+	Tue, 27 Feb 2024 14:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044200; cv=none; b=BlOw47ibHcjN5TOzdlxEgxy+3rjSWKCP7MscIM54sL8BB7QJx414OXjoJjAPTrjCpmBB0coCMR8bfRaBImIRriwTp80ZgyOozEEviL608GfdpbohkbgAwE/lf5kZJ2xl2nYP7zNakNbnr9AOW6x1B05nC/1Xn6Ba5ieByYJZFF8=
+	t=1709043927; cv=none; b=PwFs4HwjyuNp9IEB+XVyh4KtxXsHpefx4wND+CDCgHWfA1dz7rSnnLx4Zecm2CNUKwI1vYguK/Nm1anY1PenjmYo5WqD1qZApe1L14PI+Z5OTj4GlROsjRUIxl1MafvxlNVF/hQE0jnIamCwy+3IlBYh92bQUoJKu2joeCq2GLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044200; c=relaxed/simple;
-	bh=OEXb8fFdY/QJqL4bdEDEi6a3QJYUfD5tJg1QF9NkXMY=;
+	s=arc-20240116; t=1709043927; c=relaxed/simple;
+	bh=C5w2seccK0YTu103fpgTwsfq4WQYNHbfwmQvqYQKu10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PlGoKD17XwZAK2jZH1ss3f1+ZyHuzwxBuuB9FpnW2ShOtKx9jZlhFPYFDWzp0ntdGf4DHbaOSQsEwGZj/IokrwvbcgWop3XXjhP74eDH+wMKiA2OJSd+U3K4LJ6kDgexINylv91JvvnzTcsjxH/tur/hH2XvUjAMLSjkcnIC6cU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QePZ8uUQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0289DC433F1;
-	Tue, 27 Feb 2024 14:29:59 +0000 (UTC)
+	 MIME-Version; b=eTnsd7vb2O+ZIRjUgxDaPxbOyQFiVpmnG10Pxvp21E5zzJwIAK67ZG7s/LL+vEvLXnudRFmVAfQxdD4AAhHNkdyufMQdxy+DGaY4P5QxFePrePndSUJppiGZyMIumn2bwdpCmnI95IC8GR+K+eOP6PRCbrJHpxAkjfTnA5C8LmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fBuJyWOr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A720BC433F1;
+	Tue, 27 Feb 2024 14:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044200;
-	bh=OEXb8fFdY/QJqL4bdEDEi6a3QJYUfD5tJg1QF9NkXMY=;
+	s=korg; t=1709043926;
+	bh=C5w2seccK0YTu103fpgTwsfq4WQYNHbfwmQvqYQKu10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QePZ8uUQiyAYjUmuLMV+kLIo5xTtNrwqA4mOICXnVVuxGe+W4Bnh9NR2RlMULyXir
-	 GJnFoHh8Sq4GSUyry0262zVttMNefCcfrrL6KD68SBE10kdtUikle3uyctU8El9yzw
-	 PkCfCKlITAyuKyENqM8Tz5bCFNkAaXf9OAybQpTI=
+	b=fBuJyWOrTXif48iDqO2uwKquyRpM4H/0U7EzgzkSjq/QiSAR4ivWf0DBDFnnFOLli
+	 qk0BlP2jbANqAMw7RuW90DKgyw7xZcVeK4JyPmKFZlrLgQf/0cRu1c1B8LVQgduWkb
+	 0YqiAtOfHmeO+8MJ1gT+fOMgEcWgjWGbd67pGitw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	LiHonggang <honggangli@163.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Leon Romanovsky <leon@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 098/122] RDMA/srpt: Support specifying the srpt_service_guid parameter
+Subject: [PATCH 5.4 72/84] ipv6: properly combine dev_base_seq and ipv6.dev_addr_genid
 Date: Tue, 27 Feb 2024 14:27:39 +0100
-Message-ID: <20240227131601.909590303@linuxfoundation.org>
+Message-ID: <20240227131555.212737588@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit fdfa083549de5d50ebf7f6811f33757781e838c0 ]
+[ Upstream commit e898e4cd1aab271ca414f9ac6e08e4c761f6913c ]
 
-Make loading ib_srpt with this parameter set work. The current behavior is
-that setting that parameter while loading the ib_srpt kernel module
-triggers the following kernel crash:
+net->dev_base_seq and ipv6.dev_addr_genid are monotonically increasing.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-Call Trace:
- <TASK>
- parse_one+0x18c/0x1d0
- parse_args+0xe1/0x230
- load_module+0x8de/0xa60
- init_module_from_file+0x8b/0xd0
- idempotent_init_module+0x181/0x240
- __x64_sys_finit_module+0x5a/0xb0
- do_syscall_64+0x5f/0xe0
- entry_SYSCALL_64_after_hwframe+0x6e/0x76
+If we XOR their values, we could miss to detect if both values
+were changed with the same amount.
 
-Cc: LiHonggang <honggangli@163.com>
-Reported-by: LiHonggang <honggangli@163.com>
-Fixes: a42d985bd5b2 ("ib_srpt: Initial SRP Target merge for v3.3-rc1")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20240205004207.17031-1-bvanassche@acm.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 63998ac24f83 ("ipv6: provide addr and netconf dump consistency info")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/srpt/ib_srpt.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/ipv6/addrconf.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
-index 983f59c87b79f..80e99e9e97172 100644
---- a/drivers/infiniband/ulp/srpt/ib_srpt.c
-+++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
-@@ -79,12 +79,16 @@ module_param(srpt_srq_size, int, 0444);
- MODULE_PARM_DESC(srpt_srq_size,
- 		 "Shared receive queue (SRQ) size.");
- 
-+static int srpt_set_u64_x(const char *buffer, const struct kernel_param *kp)
-+{
-+	return kstrtou64(buffer, 16, (u64 *)kp->arg);
-+}
- static int srpt_get_u64_x(char *buffer, const struct kernel_param *kp)
- {
- 	return sprintf(buffer, "0x%016llx\n", *(u64 *)kp->arg);
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index 4bec4c0617412..6fcbe8912b431 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -696,6 +696,22 @@ static int inet6_netconf_get_devconf(struct sk_buff *in_skb,
+ 	return err;
  }
--module_param_call(srpt_service_guid, NULL, srpt_get_u64_x, &srpt_service_guid,
--		  0444);
-+module_param_call(srpt_service_guid, srpt_set_u64_x, srpt_get_u64_x,
-+		  &srpt_service_guid, 0444);
- MODULE_PARM_DESC(srpt_service_guid,
- 		 "Using this value for ioc_guid, id_ext, and cm_listen_id instead of using the node_guid of the first HCA.");
  
++/* Combine dev_addr_genid and dev_base_seq to detect changes.
++ */
++static u32 inet6_base_seq(const struct net *net)
++{
++	u32 res = atomic_read(&net->ipv6.dev_addr_genid) +
++		  net->dev_base_seq;
++
++	/* Must not return 0 (see nl_dump_check_consistent()).
++	 * Chose a value far away from 0.
++	 */
++	if (!res)
++		res = 0x80000000;
++	return res;
++}
++
++
+ static int inet6_netconf_dump_devconf(struct sk_buff *skb,
+ 				      struct netlink_callback *cb)
+ {
+@@ -729,8 +745,7 @@ static int inet6_netconf_dump_devconf(struct sk_buff *skb,
+ 		idx = 0;
+ 		head = &net->dev_index_head[h];
+ 		rcu_read_lock();
+-		cb->seq = atomic_read(&net->ipv6.dev_addr_genid) ^
+-			  net->dev_base_seq;
++		cb->seq = inet6_base_seq(net);
+ 		hlist_for_each_entry_rcu(dev, head, index_hlist) {
+ 			if (idx < s_idx)
+ 				goto cont;
+@@ -5232,7 +5247,7 @@ static int inet6_dump_addr(struct sk_buff *skb, struct netlink_callback *cb,
+ 	}
+ 
+ 	rcu_read_lock();
+-	cb->seq = atomic_read(&tgt_net->ipv6.dev_addr_genid) ^ tgt_net->dev_base_seq;
++	cb->seq = inet6_base_seq(tgt_net);
+ 	for (h = s_h; h < NETDEV_HASHENTRIES; h++, s_idx = 0) {
+ 		idx = 0;
+ 		head = &tgt_net->dev_index_head[h];
 -- 
 2.43.0
 
