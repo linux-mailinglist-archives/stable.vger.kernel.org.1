@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-24736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9964E86960D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33DEA869584
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:02:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3920CB25C77
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7A37B22C25
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:58:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35CE61420A2;
-	Tue, 27 Feb 2024 14:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 327711419B1;
+	Tue, 27 Feb 2024 13:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iwkj2udy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcFrHLQQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A0F13B2B4;
-	Tue, 27 Feb 2024 14:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E597D140391;
+	Tue, 27 Feb 2024 13:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042848; cv=none; b=aaabOtx6N/xhWRAbQoKWNLM/kprYdo9/NR4Eos+ikz84kJj3ZABMACESk7W9SQzzzswNll/o8mPE2ZQnuumn8/3wruzPoJOSejlJC5scSLSWlvjBRevBJOWrmzuAEGaJSeVwupdmPJw0FI6TIpNeSVinDrbLe80vXondR3z/RgE=
+	t=1709042298; cv=none; b=XNbK2lvjEJp7NoiHZZsAlq2Rsa/AQ0tX/tAxRyC5s+iVq2CaALMI84VvzGfIND9/ms+nXt4WEQSyWLQil3oYjHEr2zlo0Yn8q2vrK+VUGU4YK1hncesgt/oPFtf/Y+0TdZHbW8R8geioiEUgvF7tBMl7k9EAHe1rbYZEwoeKZJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042848; c=relaxed/simple;
-	bh=abQCwja0iB4c2gGxgn8swbcrtpEUbuB+Jm71TgpMe+U=;
+	s=arc-20240116; t=1709042298; c=relaxed/simple;
+	bh=dekAj5cPaIfzmlZAmsfD8KEAqXOUwqkhRXO30EPSZ2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iKQiu6SN9X/BSZK8BdFD+8mrz/l/8Q2JzrsCrrC4/wgS0aRLUdIXWrVjVxWGzVzOAfSTclCZU6h3cFPhCzDIss2F2wkNpphWXN983tMlzwdL+OPaim1oivHit1fjviPdBX7nCYUeqGZACNfsl+FjiPqmvzcXDw4KTmCGaanQUj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iwkj2udy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C3FC43390;
-	Tue, 27 Feb 2024 14:07:27 +0000 (UTC)
+	 MIME-Version; b=F+4FynpsKZiVJ8gYtlLPu0bDynP7m8rZCI+39vlCtTjAdna64GZhSDcTlJpjleIaWh2an7lix8EWlD9NoNfiHsiw334OGDTee/NsnOMGSzrbUljwTXguh/AdMvrq5QXjdb9WFctoluhlE0Z0OdnhSxKoXMK9OkSijXBasQl5tYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcFrHLQQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7222BC433C7;
+	Tue, 27 Feb 2024 13:58:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042847;
-	bh=abQCwja0iB4c2gGxgn8swbcrtpEUbuB+Jm71TgpMe+U=;
+	s=korg; t=1709042297;
+	bh=dekAj5cPaIfzmlZAmsfD8KEAqXOUwqkhRXO30EPSZ2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iwkj2udyRCCiltSrtqFG07ov/T2U3U1r7aq1fyVYZhHtILyKX/aElGtiQAl0myuPP
-	 AIjlHIf5DSXdL7zDywyF3Q8P4eH3nr6QI2TIRiZN7HNznPim4VruEli+V2T1yaCz7p
-	 u8W7hu4nUNuuwCjx8rg4ifZt/RdcrDi8/79xFOis=
+	b=gcFrHLQQSJOTFgPFjgkJeCicN4SHbt8X1GiX5NsbtzUEEr0Y69wUV+yQGXgRdJ74j
+	 iumt5VYKIC+5CuCc1JOcPwyWlDZn2Brcc3I3MXrUycb1IcGiBEZdPFUYNidPkf6g1j
+	 w0sFnTk3luU1z25eNy5UABdt6CF/SKaIhs5uGZ6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Byungki Lee <dominicus79@gmail.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Mustafa Ismail <mustafa.ismail@intel.com>,
+	Shiraz Saleem <shiraz.saleem@intel.com>,
+	Sindhu Devale <sindhu.devale@gmail.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 142/245] f2fs: write checkpoint during FG_GC
+Subject: [PATCH 6.6 219/299] RDMA/irdma: Add AE for too many RNRS
 Date: Tue, 27 Feb 2024 14:25:30 +0100
-Message-ID: <20240227131619.829058930@linuxfoundation.org>
+Message-ID: <20240227131632.820251424@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Byungki Lee <dominicus79@gmail.com>
+From: Mustafa Ismail <mustafa.ismail@intel.com>
 
-[ Upstream commit a9163b947ae8f7af7cb8d63606cd87b9facbfe74 ]
+[ Upstream commit 630bdb6f28ca9e5ff79e244030170ac788478332 ]
 
-If there's not enough free sections each of which consistis of large segments,
-we can hit no free section for upcoming section allocation. Let's reclaim some
-prefree segments by writing checkpoints.
+Add IRDMA_AE_LLP_TOO_MANY_RNRS to the list of AE's processed as an
+abnormal asyncronous event.
 
-Signed-off-by: Byungki Lee <dominicus79@gmail.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
+Signed-off-by: Mustafa Ismail <mustafa.ismail@intel.com>
+Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
+Signed-off-by: Sindhu Devale <sindhu.devale@gmail.com>
+Link: https://lore.kernel.org/r/20240131233849.400285-5-sindhu.devale@intel.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/gc.c | 38 +++++++++++++++++++++++---------------
- 1 file changed, 23 insertions(+), 15 deletions(-)
+ drivers/infiniband/hw/irdma/defs.h | 1 +
+ drivers/infiniband/hw/irdma/hw.c   | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index d016504fad4b9..2c13f308c74e3 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -1782,23 +1782,31 @@ int f2fs_gc(struct f2fs_sb_info *sbi, bool sync,
- 	if (sync)
- 		goto stop;
- 
--	if (has_not_enough_free_secs(sbi, sec_freed, 0)) {
--		if (skipped_round <= MAX_SKIP_GC_COUNT ||
--					skipped_round * 2 < round) {
--			segno = NULL_SEGNO;
--			goto gc_more;
--		}
-+	if (!has_not_enough_free_secs(sbi, sec_freed, 0))
-+		goto stop;
- 
--		if (first_skipped < last_skipped &&
--				(last_skipped - first_skipped) >
--						sbi->skipped_gc_rwsem) {
--			f2fs_drop_inmem_pages_all(sbi, true);
--			segno = NULL_SEGNO;
--			goto gc_more;
--		}
--		if (gc_type == FG_GC && !is_sbi_flag_set(sbi, SBI_CP_DISABLED))
-+	if (skipped_round <= MAX_SKIP_GC_COUNT || skipped_round * 2 < round) {
-+
-+		/* Write checkpoint to reclaim prefree segments */
-+		if (free_sections(sbi) < NR_CURSEG_PERSIST_TYPE &&
-+				prefree_segments(sbi) &&
-+				!is_sbi_flag_set(sbi, SBI_CP_DISABLED)) {
- 			ret = f2fs_write_checkpoint(sbi, &cpc);
--	}
-+			if (ret)
-+				goto stop;
-+		}
-+		segno = NULL_SEGNO;
-+		goto gc_more;
-+	}
-+	if (first_skipped < last_skipped &&
-+			(last_skipped - first_skipped) >
-+					sbi->skipped_gc_rwsem) {
-+		f2fs_drop_inmem_pages_all(sbi, true);
-+		segno = NULL_SEGNO;
-+		goto gc_more;
-+	}
-+	if (gc_type == FG_GC && !is_sbi_flag_set(sbi, SBI_CP_DISABLED))
-+		ret = f2fs_write_checkpoint(sbi, &cpc);
- stop:
- 	SIT_I(sbi)->last_victim[ALLOC_NEXT] = 0;
- 	SIT_I(sbi)->last_victim[FLUSH_DEVICE] = init_segno;
+diff --git a/drivers/infiniband/hw/irdma/defs.h b/drivers/infiniband/hw/irdma/defs.h
+index d06e45d2c23fd..9052e8932dc18 100644
+--- a/drivers/infiniband/hw/irdma/defs.h
++++ b/drivers/infiniband/hw/irdma/defs.h
+@@ -346,6 +346,7 @@ enum irdma_cqp_op_type {
+ #define IRDMA_AE_LLP_TOO_MANY_KEEPALIVE_RETRIES				0x050b
+ #define IRDMA_AE_LLP_DOUBT_REACHABILITY					0x050c
+ #define IRDMA_AE_LLP_CONNECTION_ESTABLISHED				0x050e
++#define IRDMA_AE_LLP_TOO_MANY_RNRS					0x050f
+ #define IRDMA_AE_RESOURCE_EXHAUSTION					0x0520
+ #define IRDMA_AE_RESET_SENT						0x0601
+ #define IRDMA_AE_TERMINATE_SENT						0x0602
+diff --git a/drivers/infiniband/hw/irdma/hw.c b/drivers/infiniband/hw/irdma/hw.c
+index aff68aa8dfad4..1745f40b075fd 100644
+--- a/drivers/infiniband/hw/irdma/hw.c
++++ b/drivers/infiniband/hw/irdma/hw.c
+@@ -387,6 +387,7 @@ static void irdma_process_aeq(struct irdma_pci_f *rf)
+ 		case IRDMA_AE_LLP_TOO_MANY_RETRIES:
+ 		case IRDMA_AE_LCE_QP_CATASTROPHIC:
+ 		case IRDMA_AE_LCE_FUNCTION_CATASTROPHIC:
++		case IRDMA_AE_LLP_TOO_MANY_RNRS:
+ 		case IRDMA_AE_LCE_CQ_CATASTROPHIC:
+ 		case IRDMA_AE_UDA_XMIT_DGRAM_TOO_LONG:
+ 		default:
 -- 
 2.43.0
 
