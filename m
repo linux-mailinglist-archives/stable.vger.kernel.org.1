@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-24369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D72FF86941D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:51:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8013D869542
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:00:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C86A1F213CE
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:51:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 611E6B2A7DB
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CB67140391;
-	Tue, 27 Feb 2024 13:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A75A13AA4C;
+	Tue, 27 Feb 2024 13:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sx9nNWxm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QSEwaVSH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFAE6141988;
-	Tue, 27 Feb 2024 13:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A98C2F2D;
+	Tue, 27 Feb 2024 13:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041804; cv=none; b=f+6t7Xvynz6JvKzR8lB7Oi5tOKgm7HYM0aE7UKxRlEmm+i8tF06E6+To+cy3pr+xFTcMXxuRNAiNjfuMBEEyWGFe4hl4fhpZEgqrIb6Ylt4U2bo3qq8ZJ9tE4DaXr+IT9ForGfplQlt9xZGc+yTzLNVRVEIjN5R15oYKu5nsP4I=
+	t=1709041408; cv=none; b=JZBXJUSV//P1Z/TKBr2IPst1z2SVXhXaWKH05RtliRDlu0ATni4CLFKsF49BepMcex1GxBs2oJJgbMNY0ZMHJtD/ClJ63BCLpnp2M4OaLrlgJU740mwlfSkCeQO69h6JNizcatthwub8cnkZO43yXvr2Lwk4l5tpiyDuSP/dp+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041804; c=relaxed/simple;
-	bh=FIjyFLPtglGtUEizBJxRTOxcnfSzpYLS4EPyK9p39bg=;
+	s=arc-20240116; t=1709041408; c=relaxed/simple;
+	bh=qegOjeBjui6vzlETIIEcLmmbE5gw8/5slQKVT+VCgLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iu4zzAMCyiygzopbR45zpcDDC6MLFl6rvhqHCuWO1p7mvUVSkEky2cAyQup3LDkipGpN6eg0vlCmse45b94FNyl+PQc+bdg1iKmOR0CKadxWzLN/ghHxBEfrWrTxPQWY+gUImWH7LQV5Jx0/hv5pWZYSG/j4PuOF1qgDyzDBzp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sx9nNWxm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DC34C433F1;
-	Tue, 27 Feb 2024 13:50:04 +0000 (UTC)
+	 MIME-Version; b=bqi9c4M6Ttd8wLhZF8SYVmnFZTq2v7GELlbeuA+7zcbZMZHYKHQL7w+VaibP+mivHurOjrmjujok3cnE1+H6eEN5YFGCy3XlQAkBC2Dmpgt7FPqmQQKWHQ8NxfkN6+RqZFi/XxHl8nzuQIeD5n7qSAGpJfGXfYbHGTKaUGg1MBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QSEwaVSH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A91BC433C7;
+	Tue, 27 Feb 2024 13:43:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041804;
-	bh=FIjyFLPtglGtUEizBJxRTOxcnfSzpYLS4EPyK9p39bg=;
+	s=korg; t=1709041408;
+	bh=qegOjeBjui6vzlETIIEcLmmbE5gw8/5slQKVT+VCgLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sx9nNWxm08dyrrmhUKx4FQpHpPf6PheCd42PbXEfkM4cEuqUmZPtXlDRGgFj1pUGU
-	 qh+GA4O9bRW2Ym02OR5VJCLffUriekiy7wp5txB3jxQnUC1PrNDT8D0rv5tPyItbh3
-	 S56QPX1XaTv6SmoLO5NFOBpLLwUDxja2gNTJzvMU=
+	b=QSEwaVSHS6TovFZtgXBES+kjhlvZJ19u04KyKpaqxNpoVhIJ4KuvALxemKjNqLWsb
+	 FZmiWThjP3zyanz24DTL/ID/r34l5BktPxpK/eXK5hQ2YZTGlanb9J1YbDDLsZe06u
+	 qMqYXxxoXRarruhzwaPq9UkaFszJcYcQv1S9OO/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Corey Minyard <minyard@acm.org>,
+	Andrew Manley <andrew.manley@sealingtech.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 076/299] fs/ntfs3: Fix multithreaded stress test
+Subject: [PATCH 6.7 329/334] i2c: imx: when being a target, mark the last read as processed
 Date: Tue, 27 Feb 2024 14:23:07 +0100
-Message-ID: <20240227131628.381334081@linuxfoundation.org>
+Message-ID: <20240227131641.751099066@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Corey Minyard <minyard@acm.org>
 
-[ Upstream commit a8b0c9fc3a2dba07f697ef7825e04363ff12f071 ]
+[ Upstream commit 87aec499368d488c20292952d6d4be7cb9e49c5e ]
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+When being a target, NAK from the controller means that all bytes have
+been transferred. So, the last byte needs also to be marked as
+'processed'. Otherwise index registers of backends may not increase.
+
+Fixes: f7414cd6923f ("i2c: imx: support slave mode for imx I2C driver")
+Signed-off-by: Corey Minyard <minyard@acm.org>
+Tested-by: Andrew Manley <andrew.manley@sealingtech.com>
+Reviewed-by: Andrew Manley <andrew.manley@sealingtech.com>
+Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+[wsa: fixed comment and commit message to properly describe the case]
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/attrib.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ drivers/i2c/busses/i2c-imx.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
-index 63f70259edc0d..4b78b669a3bdb 100644
---- a/fs/ntfs3/attrib.c
-+++ b/fs/ntfs3/attrib.c
-@@ -886,7 +886,7 @@ int attr_data_get_block(struct ntfs_inode *ni, CLST vcn, CLST clen, CLST *lcn,
- 	struct runs_tree *run = &ni->file.run;
- 	struct ntfs_sb_info *sbi;
- 	u8 cluster_bits;
--	struct ATTRIB *attr = NULL, *attr_b;
-+	struct ATTRIB *attr, *attr_b;
- 	struct ATTR_LIST_ENTRY *le, *le_b;
- 	struct mft_inode *mi, *mi_b;
- 	CLST hint, svcn, to_alloc, evcn1, next_svcn, asize, end, vcn0, alen;
-@@ -904,12 +904,8 @@ int attr_data_get_block(struct ntfs_inode *ni, CLST vcn, CLST clen, CLST *lcn,
- 		*len = 0;
- 	up_read(&ni->file.run_lock);
- 
--	if (*len) {
--		if (*lcn != SPARSE_LCN || !new)
--			return 0; /* Fast normal way without allocation. */
--		else if (clen > *len)
--			clen = *len;
--	}
-+	if (*len && (*lcn != SPARSE_LCN || !new))
-+		return 0; /* Fast normal way without allocation. */
- 
- 	/* No cluster in cache or we need to allocate cluster in hole. */
- 	sbi = ni->mi.sbi;
-@@ -918,6 +914,17 @@ int attr_data_get_block(struct ntfs_inode *ni, CLST vcn, CLST clen, CLST *lcn,
- 	ni_lock(ni);
- 	down_write(&ni->file.run_lock);
- 
-+	/* Repeat the code above (under write lock). */
-+	if (!run_lookup_entry(run, vcn, lcn, len, NULL))
-+		*len = 0;
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index 1775a79aeba2a..0951bfdc89cfa 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -803,6 +803,11 @@ static irqreturn_t i2c_imx_slave_handle(struct imx_i2c_struct *i2c_imx,
+ 		ctl &= ~I2CR_MTX;
+ 		imx_i2c_write_reg(ctl, i2c_imx, IMX_I2C_I2CR);
+ 		imx_i2c_read_reg(i2c_imx, IMX_I2C_I2DR);
 +
-+	if (*len) {
-+		if (*lcn != SPARSE_LCN || !new)
-+			goto out; /* normal way without allocation. */
-+		if (clen > *len)
-+			clen = *len;
-+	}
++		/* flag the last byte as processed */
++		i2c_imx_slave_event(i2c_imx,
++				    I2C_SLAVE_READ_PROCESSED, &value);
 +
- 	le_b = NULL;
- 	attr_b = ni_find_attr(ni, NULL, &le_b, ATTR_DATA, NULL, 0, NULL, &mi_b);
- 	if (!attr_b) {
+ 		i2c_imx_slave_finish_op(i2c_imx);
+ 		return IRQ_HANDLED;
+ 	}
 -- 
 2.43.0
 
