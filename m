@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EB1986959E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:03:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D98B1869444
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D34A51F2B741
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:03:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 127341C224C0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0824913B7A2;
-	Tue, 27 Feb 2024 14:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F522145B07;
+	Tue, 27 Feb 2024 13:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KqLlcWPm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ih5dzqPy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BACA716423;
-	Tue, 27 Feb 2024 14:03:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD441419AA;
+	Tue, 27 Feb 2024 13:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042613; cv=none; b=lYHJ23QzIi43fE8uBjpMBcPIayB8PKPAKHRsUmezT6v03+agX/p1yDTef5JCYAkfVxa8lnxpktEjRo6bxV86S0HWrzvtFPchIFwXj7f8OAx1nwNrBplAMFmMTXj8Yb6MieFuPGnC0VS2YLd6qG/mBq1UAeDlT9C7ZXcrARUER+k=
+	t=1709041895; cv=none; b=eGh93r/YoKScDI5UryvkUzE9I1AjBIkRvmo77z6Dbc0JiCBgh3DcfxW0APfW2mTctyouJdzHwBs2MAqiSHlf73LRBlkG4IYpXMcKYUfZzMi2b8iHjldqEb3ci1fkjGftBK9kVke3EJ7kkFni1QZllfoaHGHCUx/9DgV9MnwnCrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042613; c=relaxed/simple;
-	bh=91R0wLJJIcDhgK7LCSjGeV9KsSh+bYdmL30ijzTdl3o=;
+	s=arc-20240116; t=1709041895; c=relaxed/simple;
+	bh=GmIx7y3ImGAsNPC3mSJaEWmcQaBPXSPY7NWodqX0S6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VG48C8HPU1je5wumpp0MzZQTk7tfmAeUrLcCsfPMND7DCkgiW1oBQDjn/DJXpeJsfGA+Y+vMfdlzLkSgNzI2tv6t8/nlfmOR1ICMpjz9vOo8qslaTZ3wjxRO1OfZqqQIlxtX2gR2SWXGOV17fGeF4IlHegyGmUncihN7NngxOKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KqLlcWPm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 483C8C433C7;
-	Tue, 27 Feb 2024 14:03:33 +0000 (UTC)
+	 MIME-Version; b=ftInRNSEI5MfYJNHeO0ZZrw9YWcSqSLm6CqdxGF7gsWE6n6/KUnR4ZzckRGfr+JpC0W10jy+Kr67JrLNA/MMUsjovClLna5rqPcNpgQJ3+nxI3pUmSBuelI37PT9XHoF7ZMS7FCDj2wEvn8kBVx+2feO2l5s9P+SbfLDBr8QHds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ih5dzqPy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBD9EC433F1;
+	Tue, 27 Feb 2024 13:51:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042613;
-	bh=91R0wLJJIcDhgK7LCSjGeV9KsSh+bYdmL30ijzTdl3o=;
+	s=korg; t=1709041895;
+	bh=GmIx7y3ImGAsNPC3mSJaEWmcQaBPXSPY7NWodqX0S6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KqLlcWPm1BcgjnSgVD1GDeBl735g6dTguGYHndpIskw1/7xQa9YAUgZ+8DneNlQvQ
-	 DGzK3449TaHjlTVfgh07oDUXD4QiR77AlUMEKqsdn4kH5+U6snB0/uATohpFW+3Am9
-	 KNSkd/ttNBTVmMufY2Oz919eH5WQVuK0PBQo9GM4=
+	b=ih5dzqPyE5s3C31v7mL0IbFpBTM2qSaoaepdYc+4a2OrJuEZrggPN14vW4eFS5kQ4
+	 dbMXVkTHmk4cXNrooLJer6pQ3IcGBlahFohW/cSufA/agkMkIaqbHHRWNfv6FMfRxA
+	 miJe29Yn47d8XSZKTSope/L+7d2afRTCkupE8yNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 030/245] ext4: avoid dividing by 0 in mb_update_avg_fragment_size() when block bitmap corrupt
+Subject: [PATCH 6.6 107/299] accel/ivpu: Disable d3hot_delay on all NPU generations
 Date: Tue, 27 Feb 2024 14:23:38 +0100
-Message-ID: <20240227131616.096498593@linuxfoundation.org>
+Message-ID: <20240227131629.325436665@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
 
-[ Upstream commit 993bf0f4c393b3667830918f9247438a8f6fdb5b ]
+[ Upstream commit a7f31091ddf457352e3dd7ac183fdbd26b4dcd04 ]
 
-Determine if bb_fragments is 0 instead of determining bb_free to eliminate
-the risk of dividing by zero when the block bitmap is corrupted.
+NPU does not require this delay regardless of the generation.
+All generations are integrated into the SOC.
 
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240104142040.2835097-6-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240126122804.2169129-4-jacek.lawrynowicz@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/accel/ivpu/ivpu_drv.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 762c2f8b5b2a8..48930df9ae565 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -853,7 +853,7 @@ mb_update_avg_fragment_size(struct super_block *sb, struct ext4_group_info *grp)
- {
- 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+diff --git a/drivers/accel/ivpu/ivpu_drv.c b/drivers/accel/ivpu/ivpu_drv.c
+index 7e9359611d69c..8fb70e3c7b9ca 100644
+--- a/drivers/accel/ivpu/ivpu_drv.c
++++ b/drivers/accel/ivpu/ivpu_drv.c
+@@ -467,9 +467,8 @@ static int ivpu_pci_init(struct ivpu_device *vdev)
+ 	/* Clear any pending errors */
+ 	pcie_capability_clear_word(pdev, PCI_EXP_DEVSTA, 0x3f);
  
--	if (!test_opt2(sb, MB_OPTIMIZE_SCAN) || grp->bb_free == 0)
-+	if (!test_opt2(sb, MB_OPTIMIZE_SCAN) || grp->bb_fragments == 0)
- 		return;
+-	/* VPU 37XX does not require 10m D3hot delay */
+-	if (ivpu_hw_gen(vdev) == IVPU_HW_37XX)
+-		pdev->d3hot_delay = 0;
++	/* NPU does not require 10m D3hot delay */
++	pdev->d3hot_delay = 0;
  
- 	write_lock(&sbi->s_mb_rb_lock);
+ 	ret = pcim_enable_device(pdev);
+ 	if (ret) {
 -- 
 2.43.0
 
