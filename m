@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-23923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2924A8691DD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:30:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBCCA869208
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:32:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6310292D63
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:30:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 237211C21D46
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:32:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83FE513F016;
-	Tue, 27 Feb 2024 13:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84ABF13EFFB;
+	Tue, 27 Feb 2024 13:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YSk6eVt1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNB77hTw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41EF713AA2F;
-	Tue, 27 Feb 2024 13:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B42913B2B3;
+	Tue, 27 Feb 2024 13:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709040542; cv=none; b=TH6s2SVRETU2U17/I1p3XvoNbGNE6Z75tVmj/gqWBM6R4Dixo/BH03ufA9x/yuDlDq10222qdWywTGPRF96oZaHRLD7cZjgdwRM2OUJSE6za0xXqfcKFdH3ACSc5sS/fs1ryp6KTUc3kb/uJxaTKw8AMt3xfEYL9rajgDt83pDc=
+	t=1709040650; cv=none; b=cofDijjT9PekB9Nb1sPLhfqELQkKvCwdSNStAr6W991C56a1UE2jWiZzaVFGsdy4q3rNzoM/IAKzWxT6VIfT/+uHj3VjY5Biyo5r/nZbjDSxSJAGFFOzIHOojWCUJuI/P6BkkwZRfmisii+6SoPXoFowBgq+XOT+Y2jBSSFeqXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709040542; c=relaxed/simple;
-	bh=z5cEtP9bavplDx8lO8P8h080KB9FkXA7k22ycnaD028=;
+	s=arc-20240116; t=1709040650; c=relaxed/simple;
+	bh=MFKtR2fS4L0WjPDdjEGVFgoJTEjHDdqSj3YnJjAp2+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DmC4MV4sfJ0FvKJBSyXwRsK4UaJZqW+jUc8qQLu1UJeauKZa50TzVCNJXgo+cT2eoPIr4LrPp/k+f5B7/Sk4rq+g2OvU8TbXSnXumtL1Ax9S8j5RIGQGAHtd1tZAu+5e6TZfzYrrTHCNfo+8Mf1Vt97THVYacUiklMLA0or6dts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YSk6eVt1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E44C433F1;
-	Tue, 27 Feb 2024 13:29:01 +0000 (UTC)
+	 MIME-Version; b=F1YOq0BGmOGY22Jolbxt9cn6tx1DulcVhWdu2OkSTlj3HWQd+E1/Od6tBWbYVQshwjZsRoPds8G1g10zQZhmUsew5C0ZFEe8a/IlsERfgHhEn2/NmO25/4Dm7QxTNrodRuYfup011HOb+3ym91C2J+LMWibAZZecXWVuDhT+eWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bNB77hTw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 947ACC433F1;
+	Tue, 27 Feb 2024 13:30:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709040542;
-	bh=z5cEtP9bavplDx8lO8P8h080KB9FkXA7k22ycnaD028=;
+	s=korg; t=1709040650;
+	bh=MFKtR2fS4L0WjPDdjEGVFgoJTEjHDdqSj3YnJjAp2+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YSk6eVt1A4J1dNY2h3FCy+wTpAJ52ne8E96D/tNW9jDXiWcpD7yS36iKPf/VsuJty
-	 VKx+ewXr44R5Fwalhq2p4QtuwHC9GEYTPoSB4nUL+P+hdbiifYVGFx/BE75LCTKlmc
-	 fnqa66npngJyoTA5msDSU/nkCPWQF13nSHagdYaE=
+	b=bNB77hTwgcxSnvc4Le4q048uzOlXWmxGskWMDYJfRH2C0qwFA9FdU4aqkgMT5Hggg
+	 Ktx8XyLJsufPdfdn5+dkmrsB1ryyp7AXgdymvjPdgey/jQL3eP1aATLCr3BSjEl41i
+	 dQiVVoLCCouD7Nw8ePhyxRpBc5A4DkfSaq+Mnvd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a532b03fdfee2c137666@syzkaller.appspotmail.com,
-	syzbot+63dec323ac56c28e644f@syzkaller.appspotmail.com,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	llvm@lists.linux.dev,
+	Kees Cook <keescook@chromium.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 021/334] block: Fix WARNING in _copy_from_iter
-Date: Tue, 27 Feb 2024 14:17:59 +0100
-Message-ID: <20240227131631.293437913@linuxfoundation.org>
+Subject: [PATCH 6.7 022/334] smb: Work around Clang __bdos() type confusion
+Date: Tue, 27 Feb 2024 14:18:00 +0100
+Message-ID: <20240227131631.324135878@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
 References: <20240227131630.636392135@linuxfoundation.org>
@@ -69,62 +74,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 13f3956eb5681a4045a8dfdef48df5dc4d9f58a6 ]
+[ Upstream commit 8deb05c84b63b4fdb8549e08942867a68924a5b8 ]
 
-Syzkaller reports a warning in _copy_from_iter because an
-iov_iter is supposedly used in the wrong direction. The reason
-is that syzcaller managed to generate a request with
-a transfer direction of SG_DXFER_TO_FROM_DEV. This instructs
-the kernel to copy user buffers into the kernel, read into
-the copied buffers and then copy the data back to user space.
+Recent versions of Clang gets confused about the possible size of the
+"user" allocation, and CONFIG_FORTIFY_SOURCE ends up emitting a
+warning[1]:
 
-Thus the iovec is used in both directions.
+repro.c:126:4: warning: call to '__write_overflow_field' declared with 'warning' attribute: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Wattribute-warning]
+  126 |                         __write_overflow_field(p_size_field, size);
+      |                         ^
 
-Detect this situation in the block layer and construct a new
-iterator with the correct direction for the copy-in.
+for this memset():
 
-Reported-by: syzbot+a532b03fdfee2c137666@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/lkml/0000000000009b92c10604d7a5e9@google.com/t/
-Reported-by: syzbot+63dec323ac56c28e644f@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/lkml/0000000000003faaa105f6e7c658@google.com/T/
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20240121202634.275068-1-lk@c--e.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+        int len;
+        __le16 *user;
+	...
+        len = ses->user_name ? strlen(ses->user_name) : 0;
+        user = kmalloc(2 + (len * 2), GFP_KERNEL);
+	...
+	if (len) {
+		...
+	} else {
+		memset(user, '\0', 2);
+	}
+
+While Clang works on this bug[2], switch to using a direct assignment,
+which avoids memset() entirely which both simplifies the code and silences
+the false positive warning. (Making "len" size_t also silences the
+warning, but the direct assignment seems better.)
+
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/1966 [1]
+Link: https://github.com/llvm/llvm-project/issues/77813 [2]
+Cc: Steve French <sfrench@samba.org>
+Cc: Paulo Alcantara <pc@manguebit.com>
+Cc: Ronnie Sahlberg <ronniesahlberg@gmail.com>
+Cc: Shyam Prasad N <sprasad@microsoft.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: llvm@lists.linux.dev
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-map.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ fs/smb/client/cifsencrypt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/blk-map.c b/block/blk-map.c
-index 8584babf3ea0c..71210cdb34426 100644
---- a/block/blk-map.c
-+++ b/block/blk-map.c
-@@ -205,12 +205,19 @@ static int bio_copy_user_iov(struct request *rq, struct rq_map_data *map_data,
- 	/*
- 	 * success
- 	 */
--	if ((iov_iter_rw(iter) == WRITE &&
--	     (!map_data || !map_data->null_mapped)) ||
--	    (map_data && map_data->from_user)) {
-+	if (iov_iter_rw(iter) == WRITE &&
-+	     (!map_data || !map_data->null_mapped)) {
- 		ret = bio_copy_from_iter(bio, iter);
- 		if (ret)
- 			goto cleanup;
-+	} else if (map_data && map_data->from_user) {
-+		struct iov_iter iter2 = *iter;
-+
-+		/* This is the copy-in part of SG_DXFER_TO_FROM_DEV. */
-+		iter2.data_source = ITER_SOURCE;
-+		ret = bio_copy_from_iter(bio, &iter2);
-+		if (ret)
-+			goto cleanup;
+diff --git a/fs/smb/client/cifsencrypt.c b/fs/smb/client/cifsencrypt.c
+index ef4c2e3c9fa61..6322f0f68a176 100644
+--- a/fs/smb/client/cifsencrypt.c
++++ b/fs/smb/client/cifsencrypt.c
+@@ -572,7 +572,7 @@ static int calc_ntlmv2_hash(struct cifs_ses *ses, char *ntlmv2_hash,
+ 		len = cifs_strtoUTF16(user, ses->user_name, len, nls_cp);
+ 		UniStrupr(user);
  	} else {
- 		if (bmd->is_our_pages)
- 			zero_fill_bio(bio);
+-		memset(user, '\0', 2);
++		*(u16 *)user = 0;
+ 	}
+ 
+ 	rc = crypto_shash_update(ses->server->secmech.hmacmd5,
 -- 
 2.43.0
 
