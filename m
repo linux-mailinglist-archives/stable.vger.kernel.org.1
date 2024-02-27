@@ -1,189 +1,217 @@
-Return-Path: <stable+bounces-23892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6407F868F88
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 12:57:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C64086903C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:21:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 189C2286F9D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 11:57:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4377B289621
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 12:21:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30FFB13A263;
-	Tue, 27 Feb 2024 11:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A89B0145350;
+	Tue, 27 Feb 2024 12:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ppNj+oJd"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B5srQBJ1"
 X-Original-To: stable@vger.kernel.org
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B4A55E63;
-	Tue, 27 Feb 2024 11:56:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827FD13DB87
+	for <stable@vger.kernel.org>; Tue, 27 Feb 2024 12:18:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709035018; cv=none; b=rnWh8BSd+mMpaNLJd2N12+3fueSJDs8S/a7d5g5FDYaE9gHI4rGrrVAzgXSEcxpTKQZZxaQka4+dTVHEg723jU0jAOyvq8A2ZVT9jPBOF8xgTk10Fpcb06GNihStvdW0Qgj62CdAtWmTsIYAmyPVgjw6yUYnQkJDRncx1VQa4zY=
+	t=1709036291; cv=none; b=EgYmuY3sfn22+PgGAksG8fZQyw6C5WF2+NyzfaI/S598KjEPfGD10eSHo5I533gbz08byRczydyj0ZRq28Ko4uejaOr82tAQXZwH/S7gsvO9F4crtkq0Q8ZADocRakDBC6avA9CxzDyLt65NVv4EXxGDmsfWVien6YxmTVzWAw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709035018; c=relaxed/simple;
-	bh=Gmnta30ILVtiFDxeT39uWPLuWuvJbqtdeAls+b75NBc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mpg2O9fKknwKfc0fZuEmLgjS73opqYxuigf/9C4VxpYG+UJFRECgwWdRtU2TXqXacGoltyP3GUibYJUF3Wz5gO3uMKznGMlQkwvVJnFHgdegkS7CYdOWxRuwCsQCzhqfaF2226BC72XirLFEPlM4tGq4iJqJuwp2jhBGkmRTGKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ppNj+oJd; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=lGb45LuA7afezl44L3IS9URNTr3PkZqRCQq01gA1MbI=; b=ppNj+oJdEAcyBB++EuVxytWYEu
-	e9RCeCgfXHKsgVI4VWUr3XwnCIMbo6vRr/x6Wm88/SQ1EWV534GnHjGXYuQC1frogTplAc1rYqQNJ
-	Qju59jENZNQ/TGfP32uaPQI0Uk2X5IrqGrsDp16t41gLcQvPq8ddDr+x2K4P1s2N49y4sllAzXReV
-	23rLN6UNqdxGHGKsKvgWGsVBB+i0z9bV3hf+iElhchMBdONDNEZru54SX/+/B1nrGnmXehEc4pDQD
-	Kouw6LCB8uAVaMZB5+ldB1KRNM/xEb2lKnuwFav3GpJ+RBcbqZvjrI9t/h/qsUAA7K0c+tpb7sm6l
-	WBaFWQRQ==;
-Received: from [2001:8b0:10b:1::ebe] (helo=i7.infradead.org)
-	by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rew4p-00000001j62-3rkH;
-	Tue, 27 Feb 2024 11:56:52 +0000
-Received: from dwoodhou by i7.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rew4n-000000000wR-3Tlj;
-	Tue, 27 Feb 2024 11:56:49 +0000
-From: David Woodhouse <dwmw2@infradead.org>
-To: kvm@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
-	Paul Durrant <paul@xen.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Michal Luczaj <mhal@rbox.co>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/8] KVM: x86/xen: inject vCPU upcall vector when local APIC is enabled
-Date: Tue, 27 Feb 2024 11:49:16 +0000
-Message-ID: <20240227115648.3104-3-dwmw2@infradead.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240227115648.3104-1-dwmw2@infradead.org>
-References: <20240227115648.3104-1-dwmw2@infradead.org>
+	s=arc-20240116; t=1709036291; c=relaxed/simple;
+	bh=LoqowTC6OOBrENRHvQ/wGIG1Ds/jK8vADdaatdI6yws=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=FfXHMicQaj/ULXPdC2HUf3Glg0qQkLvuERl2WNFl6V9r5t+m6nSUnSWM0jb2/LeDJbS6vYbCXcrvr5emD9ZF/Ma8a8Rv9qqIjdFLYw4jwWSicdE4u9QDvyOxkQV1MFl6gO6oTkKWYpq2S96NH4u7AQams2zCg2GVHTfb+eI+4Vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B5srQBJ1; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709036289; x=1740572289;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=LoqowTC6OOBrENRHvQ/wGIG1Ds/jK8vADdaatdI6yws=;
+  b=B5srQBJ1/DdhClytJJDzRTdr8gJK83Kv4oWDH6X2qjQ+peIXyT1HQIDG
+   Rabqci6OOzwB+ib6GBO/oJjeeG7DQ22z3cqu1DqwHnJ8UEEIVe5EMMWBI
+   1ujj97NBJkxMX93OepcBRkHi6ThBL5eMe7YfMP04ShicXkV87BsMUCK37
+   4E4SVcDLUNoPFKtmPja9J/yhUOlZXi4GZPTYUrhyj+pOQErZ01OrSnM22
+   riNQp25jsxpA0Vaw15OY5XSJo90s62rZGCvoPhQiYMTMVaLGNgHVhE6I2
+   dJM9vjCP4yEhqx9xjLwf/s8j3I5Dw9Q8kAa1rllVo6PkGI2j8SRy4mERX
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3532433"
+X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; 
+   d="scan'208";a="3532433"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2024 04:18:08 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; 
+   d="scan'208";a="11793592"
+Received: from bdallmer-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.49.187])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2024 04:18:04 -0800
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Andi Shyti <andi.shyti@linux.intel.com>, intel-gfx
+ <intel-gfx@lists.freedesktop.org>, dri-devel
+ <dri-devel@lists.freedesktop.org>
+Cc: Chris Wilson <chris.p.wilson@linux.intel.com>, Joonas Lahtinen
+ <joonas.lahtinen@linux.intel.com>, Matt Roper <matthew.d.roper@intel.com>,
+ John Harrison <John.C.Harrison@Intel.com>, Tvrtko Ursulin
+ <tvrtko.ursulin@linux.intel.com>, stable@vger.kernel.org, Andi Shyti
+ <andi.shyti@linux.intel.com>, Andi Shyti <andi.shyti@kernel.org>
+Subject: Re: [PATCH 2/2] drm/i915/gt: Set default CCS mode '1'
+In-Reply-To: <20240220142034.257370-3-andi.shyti@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20240220142034.257370-1-andi.shyti@linux.intel.com>
+ <20240220142034.257370-3-andi.shyti@linux.intel.com>
+Date: Tue, 27 Feb 2024 14:18:01 +0200
+Message-ID: <87bk82je2u.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: David Woodhouse <dwmw2@infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+On Tue, 20 Feb 2024, Andi Shyti <andi.shyti@linux.intel.com> wrote:
+> Since CCS automatic load balancing is disabled, we will impose a
+> fixed balancing policy that involves setting all the CCS engines
+> to work together on the same load.
+>
+> Simultaneously, the user will see only 1 CCS rather than the
+> actual number. As of now, this change affects only DG2.
+>
+> Fixes: d2eae8e98d59 ("drm/i915/dg2: Drop force_probe requirement")
+> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+> Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
+> Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+> Cc: Matt Roper <matthew.d.roper@intel.com>
+> Cc: <stable@vger.kernel.org> # v6.2+
+> ---
+>  drivers/gpu/drm/i915/gt/intel_gt.c      | 11 +++++++++++
+>  drivers/gpu/drm/i915/gt/intel_gt_regs.h |  2 ++
+>  drivers/gpu/drm/i915/i915_drv.h         | 17 +++++++++++++++++
+>  drivers/gpu/drm/i915/i915_query.c       |  5 +++--
+>  4 files changed, 33 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/i915/gt/intel_gt.c b/drivers/gpu/drm/i915/gt/intel_gt.c
+> index a425db5ed3a2..e19df4ef47f6 100644
+> --- a/drivers/gpu/drm/i915/gt/intel_gt.c
+> +++ b/drivers/gpu/drm/i915/gt/intel_gt.c
+> @@ -168,6 +168,14 @@ static void init_unused_rings(struct intel_gt *gt)
+>  	}
+>  }
+>  
+> +static void intel_gt_apply_ccs_mode(struct intel_gt *gt)
+> +{
+> +	if (!IS_DG2(gt->i915))
+> +		return;
+> +
+> +	intel_uncore_write(gt->uncore, XEHP_CCS_MODE, 0);
+> +}
+> +
+>  int intel_gt_init_hw(struct intel_gt *gt)
+>  {
+>  	struct drm_i915_private *i915 = gt->i915;
+> @@ -195,6 +203,9 @@ int intel_gt_init_hw(struct intel_gt *gt)
+>  
+>  	intel_gt_init_swizzling(gt);
+>  
+> +	/* Configure CCS mode */
+> +	intel_gt_apply_ccs_mode(gt);
+> +
+>  	/*
+>  	 * At least 830 can leave some of the unused rings
+>  	 * "active" (ie. head != tail) after resume which
+> diff --git a/drivers/gpu/drm/i915/gt/intel_gt_regs.h b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
+> index cf709f6c05ae..c148113770ea 100644
+> --- a/drivers/gpu/drm/i915/gt/intel_gt_regs.h
+> +++ b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
+> @@ -1605,6 +1605,8 @@
+>  #define   GEN12_VOLTAGE_MASK			REG_GENMASK(10, 0)
+>  #define   GEN12_CAGF_MASK			REG_GENMASK(19, 11)
+>  
+> +#define XEHP_CCS_MODE                          _MMIO(0x14804)
+> +
+>  #define GEN11_GT_INTR_DW(x)			_MMIO(0x190018 + ((x) * 4))
+>  #define   GEN11_CSME				(31)
+>  #define   GEN12_HECI_2				(30)
+> diff --git a/drivers/gpu/drm/i915/i915_drv.h b/drivers/gpu/drm/i915/i915_drv.h
+> index e81b3b2858ac..0853ffd3cb8d 100644
+> --- a/drivers/gpu/drm/i915/i915_drv.h
+> +++ b/drivers/gpu/drm/i915/i915_drv.h
+> @@ -396,6 +396,23 @@ static inline struct intel_gt *to_gt(const struct drm_i915_private *i915)
+>  	     (engine__); \
+>  	     (engine__) = rb_to_uabi_engine(rb_next(&(engine__)->uabi_node)))
+>  
+> +/*
+> + * Exclude unavailable engines.
+> + *
+> + * Only the first CCS engine is utilized due to the disabling of CCS auto load
+> + * balancing. As a result, all CCS engines operate collectively, functioning
+> + * essentially as a single CCS engine, hence the count of active CCS engines is
+> + * considered '1'.
+> + * Currently, this applies to platforms with more than one CCS engine,
+> + * specifically DG2.
+> + */
+> +#define for_each_available_uabi_engine(engine__, i915__) \
 
-Linux guests since commit b1c3497e604d ("x86/xen: Add support for
-HVMOP_set_evtchn_upcall_vector") in v6.0 onwards will use the per-vCPU
-upcall vector when it's advertised in the Xen CPUID leaves.
+Hrmh, I've been trying to pester folks to move the existing engine
+iterator macros away from i915_drv.h, so not happy to see more.
 
-This upcall is injected through the guest's local APIC as an MSI, unlike
-the older system vector which was merely injected by the hypervisor any
-time the CPU was able to receive an interrupt and the upcall_pending
-flags is set in its vcpu_info.
+But since this is Cc: stable, better do that in a follow-up. Please?
 
-Effectively, that makes the per-CPU upcall edge triggered instead of
-level triggered, which results in the upcall being lost if the MSI is
-delivered when the local APIC is *disabled*.
+> +	for_each_uabi_engine(engine__, i915__) \
+> +		if ((IS_DG2(i915__)) && \
+> +		    ((engine__)->uabi_class == I915_ENGINE_CLASS_COMPUTE) && \
+> +		    ((engine__)->uabi_instance)) { } \
+> +		else
 
-Xen checks the vcpu_info->evtchn_upcall_pending flag when the local APIC
-for a vCPU is software enabled (in fact, on any write to the SPIV
-register which doesn't disable the APIC). Do the same in KVM since KVM
-doesn't provide a way for userspace to intervene and trap accesses to
-the SPIV register of a local APIC emulated by KVM.
+We have for_each_if for this.
 
-Fixes: fde0451be8fb3 ("KVM: x86/xen: Support per-vCPU event channel upcall via local APIC")
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Paul Durrant <paul@xen.org>
-Cc: stable@vger.kernel.org
----
- arch/x86/kvm/lapic.c |  5 ++++-
- arch/x86/kvm/xen.c   |  2 +-
- arch/x86/kvm/xen.h   | 18 ++++++++++++++++++
- 3 files changed, 23 insertions(+), 2 deletions(-)
+> +
+>  #define INTEL_INFO(i915)	((i915)->__info)
+>  #define RUNTIME_INFO(i915)	(&(i915)->__runtime)
+>  #define DRIVER_CAPS(i915)	(&(i915)->caps)
+> diff --git a/drivers/gpu/drm/i915/i915_query.c b/drivers/gpu/drm/i915/i915_query.c
+> index fa3e937ed3f5..2d41bda626a6 100644
+> --- a/drivers/gpu/drm/i915/i915_query.c
+> +++ b/drivers/gpu/drm/i915/i915_query.c
+> @@ -124,6 +124,7 @@ static int query_geometry_subslices(struct drm_i915_private *i915,
+>  	return fill_topology_info(sseu, query_item, sseu->geometry_subslice_mask);
+>  }
+>  
+> +
 
-diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index 3242f3da2457..75bc7d3f0022 100644
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -41,6 +41,7 @@
- #include "ioapic.h"
- #include "trace.h"
- #include "x86.h"
-+#include "xen.h"
- #include "cpuid.h"
- #include "hyperv.h"
- #include "smm.h"
-@@ -499,8 +500,10 @@ static inline void apic_set_spiv(struct kvm_lapic *apic, u32 val)
- 	}
- 
- 	/* Check if there are APF page ready requests pending */
--	if (enabled)
-+	if (enabled) {
- 		kvm_make_request(KVM_REQ_APF_READY, apic->vcpu);
-+		kvm_xen_sw_enable_lapic(apic->vcpu);
-+	}
- }
- 
- static inline void kvm_apic_set_xapic_id(struct kvm_lapic *apic, u8 id)
-diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index ccd2dc753fd6..06904696759c 100644
---- a/arch/x86/kvm/xen.c
-+++ b/arch/x86/kvm/xen.c
-@@ -568,7 +568,7 @@ void kvm_xen_update_runstate(struct kvm_vcpu *v, int state)
- 		kvm_xen_update_runstate_guest(v, state == RUNSTATE_runnable);
- }
- 
--static void kvm_xen_inject_vcpu_vector(struct kvm_vcpu *v)
-+void kvm_xen_inject_vcpu_vector(struct kvm_vcpu *v)
- {
- 	struct kvm_lapic_irq irq = { };
- 	int r;
-diff --git a/arch/x86/kvm/xen.h b/arch/x86/kvm/xen.h
-index f8f1fe22d090..f5841d9000ae 100644
---- a/arch/x86/kvm/xen.h
-+++ b/arch/x86/kvm/xen.h
-@@ -18,6 +18,7 @@ extern struct static_key_false_deferred kvm_xen_enabled;
- 
- int __kvm_xen_has_interrupt(struct kvm_vcpu *vcpu);
- void kvm_xen_inject_pending_events(struct kvm_vcpu *vcpu);
-+void kvm_xen_inject_vcpu_vector(struct kvm_vcpu *vcpu);
- int kvm_xen_vcpu_set_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data);
- int kvm_xen_vcpu_get_attr(struct kvm_vcpu *vcpu, struct kvm_xen_vcpu_attr *data);
- int kvm_xen_hvm_set_attr(struct kvm *kvm, struct kvm_xen_hvm_attr *data);
-@@ -36,6 +37,19 @@ int kvm_xen_setup_evtchn(struct kvm *kvm,
- 			 const struct kvm_irq_routing_entry *ue);
- void kvm_xen_update_tsc_info(struct kvm_vcpu *vcpu);
- 
-+static inline void kvm_xen_sw_enable_lapic(struct kvm_vcpu *vcpu)
-+{
-+	/*
-+	 * The local APIC is being enabled. If the per-vCPU upcall vector is
-+	 * set and the vCPU's evtchn_upcall_pending flag is set, inject the
-+	 * interrupt.
-+	 */
-+	if (static_branch_unlikely(&kvm_xen_enabled.key) &&
-+	    vcpu->arch.xen.vcpu_info_cache.active &&
-+	    vcpu->arch.xen.upcall_vector && __kvm_xen_has_interrupt(vcpu))
-+		kvm_xen_inject_vcpu_vector(vcpu);
-+}
-+
- static inline bool kvm_xen_msr_enabled(struct kvm *kvm)
- {
- 	return static_branch_unlikely(&kvm_xen_enabled.key) &&
-@@ -101,6 +115,10 @@ static inline void kvm_xen_destroy_vcpu(struct kvm_vcpu *vcpu)
- {
- }
- 
-+static inline void kvm_xen_sw_enable_lapic(struct kvm_vcpu *vcpu)
-+{
-+}
-+
- static inline bool kvm_xen_msr_enabled(struct kvm *kvm)
- {
- 	return false;
+Superfluous newline change.
+
+>  static int
+>  query_engine_info(struct drm_i915_private *i915,
+>  		  struct drm_i915_query_item *query_item)
+> @@ -140,7 +141,7 @@ query_engine_info(struct drm_i915_private *i915,
+>  	if (query_item->flags)
+>  		return -EINVAL;
+>  
+> -	for_each_uabi_engine(engine, i915)
+> +	for_each_available_uabi_engine(engine, i915)
+>  		num_uabi_engines++;
+>  
+>  	len = struct_size(query_ptr, engines, num_uabi_engines);
+> @@ -155,7 +156,7 @@ query_engine_info(struct drm_i915_private *i915,
+>  
+>  	info_ptr = &query_ptr->engines[0];
+>  
+> -	for_each_uabi_engine(engine, i915) {
+> +	for_each_available_uabi_engine(engine, i915) {
+>  		info.engine.engine_class = engine->uabi_class;
+>  		info.engine.engine_instance = engine->uabi_instance;
+>  		info.flags = I915_ENGINE_INFO_HAS_LOGICAL_INSTANCE;
+
 -- 
-2.43.0
-
+Jani Nikula, Intel
 
