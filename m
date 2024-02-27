@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A711869603
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A5DB8696CC
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 321901F2C947
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEAF7286063
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2757D13EFE4;
-	Tue, 27 Feb 2024 14:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E949C1419A1;
+	Tue, 27 Feb 2024 14:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DoszFYWR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L1/KpxKB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD1413B2B3;
-	Tue, 27 Feb 2024 14:07:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF5413B29C;
+	Tue, 27 Feb 2024 14:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042828; cv=none; b=tnnie5rQ9q1x3QTku+mrnSuzwWgDb3MBziYxOMkhL2rPcxk9Cm6hRwYp4l9EkZUBxi2xfiT5RpbqjcQBWlI6iFzPP2RrjnKiJPnlpYdkDykglS2YsRy7xtSBMSMM3I1I6ANTZi6F7BhvRp6oJJ7nhXqVNdtZr4TD34gGAZv4iEg=
+	t=1709043315; cv=none; b=nKgmh6pHw5ywizySFoVHr922lBc8bTgTbTABPxw2+ODhGNElJkidQ3S1HKHHVfWGFRVHNMLLMFwX+vv1FvpwMkWh8IV0o7gq+ZUN9OW60pXoR3YUEIxGL3WgIpFcUEiGOUhGqSA6IVTrReROPs5ZVksMEgKjzN5QaSkH514E2KU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042828; c=relaxed/simple;
-	bh=NvBke//oTVEsye27O0J4EbYRJdSk0lRI8tJZ2XR99dM=;
+	s=arc-20240116; t=1709043315; c=relaxed/simple;
+	bh=N6xCC1VBjtntBxjov/SweZ/TvPUzRv4OHx79s0fnrwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NM+G0+CvgIDYn50d6Xyl7KJcpCem7K4zFGgLfZzCpxsmFdm1i8m5NrenK1t75sLAqKGc1SwN5sYp7Y/tdfr1Qaa4/OICYdg1qbrvpW8DduEIz2mAUHUwmkLwEWgkSm3Z/aIsxT9kfSkmf7ZAJIajkjjT+icD3Av+hEYJguSAUIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DoszFYWR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C5DBC433C7;
-	Tue, 27 Feb 2024 14:07:07 +0000 (UTC)
+	 MIME-Version; b=F/y5cdwgCa1K9StJLm9zrDJ54xfGGGPwAZKKOHT1tuBrr5JHomnLq+RCsPmcRsgJtl74Z7z/bSLWx9MCjk+bF/m0X9Eu9qTtw6ZXqNNCxbdK+r4xcybb3OgXk1f8bSLqchoSeiyx+jgdUveeFGhwDwJeGB3/KH8dPrZTTLv/O64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L1/KpxKB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24532C433F1;
+	Tue, 27 Feb 2024 14:15:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042828;
-	bh=NvBke//oTVEsye27O0J4EbYRJdSk0lRI8tJZ2XR99dM=;
+	s=korg; t=1709043315;
+	bh=N6xCC1VBjtntBxjov/SweZ/TvPUzRv4OHx79s0fnrwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DoszFYWR5ycXPLgXpGKYqBolHqyDaCALk6/kPeGbrRxxdCkhOtqtJEsYNMKdW5Djp
-	 xPstnukifCxK58ZUFO8zZ9ZPOuQ89HYbbHsZJXnNLUExISE1uZTvIUXJXb7RBD3OwS
-	 Hm4nEL12Ihc1Rnr3m57VvVyq4SpXGGb/eAR3Nwus=
+	b=L1/KpxKBmJSPu3GeHc058p7NsDOtu7PYd4uwSBDKQ+9mDRZ5/wt8+es/oryeO/95X
+	 kQuxSpbJp54xM7V314CqeRjDFPKZMIl9qrJnpA7PAWke5ao0h7AFiCPdKeS8Ap2eE5
+	 flUM11ma3CHXr98lNUPF3EqcviVLZxI7CLyIDC24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Robert Morris <rtm@csail.mit.edu>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 136/245] ARM: dts: BCM53573: Drop nonexistent "default-off" LED trigger
+Subject: [PATCH 6.1 063/195] fs/ntfs3: Correct function is_rst_area_valid
 Date: Tue, 27 Feb 2024 14:25:24 +0100
-Message-ID: <20240227131619.634812489@linuxfoundation.org>
+Message-ID: <20240227131612.585111706@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit be7e1e5b0f67c58ec4be0a54db23b6a4fa6e2116 ]
+[ Upstream commit 1b7dd28e14c4728ae1a815605ca33ffb4ce1b309 ]
 
-There is no such trigger documented or implemented in Linux. It was a
-copy & paste mistake.
-
-This fixes:
-arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dtb: leds: led-wlan:linux,default-trigger: 'oneOf' conditional failed, one must be fixed:
-        'default-off' is not one of ['backlight', 'default-on', 'heartbeat', 'disk-activity', 'disk-read', 'disk-write', 'timer', 'pattern', 'audio-micmute', 'audio-mute', 'bluetooth-power', 'flash', 'kbd-capslock', 'mtd', 'nand-disk', 'none', 'torch', 'usb-gadget', 'usb-host', 'usbport']
-        'default-off' does not match '^cpu[0-9]*$'
-        'default-off' does not match '^hci[0-9]+-power$'
-        'default-off' does not match '^mmc[0-9]+$'
-        'default-off' does not match '^phy[0-9]+tx$'
-        From schema: Documentation/devicetree/bindings/leds/leds-gpio.yaml
-
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Link: https://lore.kernel.org/r/20230707114004.2740-1-zajec5@gmail.com
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reported-by: Robert Morris <rtm@csail.mit.edu>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/bcm47189-luxul-xap-1440.dts | 1 -
- arch/arm/boot/dts/bcm47189-luxul-xap-810.dts  | 2 --
- 2 files changed, 3 deletions(-)
+ fs/ntfs3/fslog.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/boot/dts/bcm47189-luxul-xap-1440.dts b/arch/arm/boot/dts/bcm47189-luxul-xap-1440.dts
-index 00e688b45d981..5901160919dcd 100644
---- a/arch/arm/boot/dts/bcm47189-luxul-xap-1440.dts
-+++ b/arch/arm/boot/dts/bcm47189-luxul-xap-1440.dts
-@@ -26,7 +26,6 @@ leds {
- 		wlan {
- 			label = "bcm53xx:blue:wlan";
- 			gpios = <&chipcommon 10 GPIO_ACTIVE_LOW>;
--			linux,default-trigger = "default-off";
- 		};
+diff --git a/fs/ntfs3/fslog.c b/fs/ntfs3/fslog.c
+index 710cb5aa5a65b..d53ef128fa733 100644
+--- a/fs/ntfs3/fslog.c
++++ b/fs/ntfs3/fslog.c
+@@ -465,7 +465,7 @@ static inline bool is_rst_area_valid(const struct RESTART_HDR *rhdr)
+ {
+ 	const struct RESTART_AREA *ra;
+ 	u16 cl, fl, ul;
+-	u32 off, l_size, file_dat_bits, file_size_round;
++	u32 off, l_size, seq_bits;
+ 	u16 ro = le16_to_cpu(rhdr->ra_off);
+ 	u32 sys_page = le32_to_cpu(rhdr->sys_page_size);
  
- 		system {
-diff --git a/arch/arm/boot/dts/bcm47189-luxul-xap-810.dts b/arch/arm/boot/dts/bcm47189-luxul-xap-810.dts
-index 78c80a5d3f4fa..8e7483272d47d 100644
---- a/arch/arm/boot/dts/bcm47189-luxul-xap-810.dts
-+++ b/arch/arm/boot/dts/bcm47189-luxul-xap-810.dts
-@@ -26,7 +26,6 @@ leds {
- 		5ghz {
- 			label = "bcm53xx:blue:5ghz";
- 			gpios = <&chipcommon 11 GPIO_ACTIVE_HIGH>;
--			linux,default-trigger = "default-off";
- 		};
+@@ -511,13 +511,15 @@ static inline bool is_rst_area_valid(const struct RESTART_HDR *rhdr)
+ 	/* Make sure the sequence number bits match the log file size. */
+ 	l_size = le64_to_cpu(ra->l_size);
  
- 		system {
-@@ -42,7 +41,6 @@ pcie0_leds {
- 		2ghz {
- 			label = "bcm53xx:blue:2ghz";
- 			gpios = <&pcie0_chipcommon 3 GPIO_ACTIVE_HIGH>;
--			linux,default-trigger = "default-off";
- 		};
- 	};
+-	file_dat_bits = sizeof(u64) * 8 - le32_to_cpu(ra->seq_num_bits);
+-	file_size_round = 1u << (file_dat_bits + 3);
+-	if (file_size_round != l_size &&
+-	    (file_size_round < l_size || (file_size_round / 2) > l_size)) {
+-		return false;
++	seq_bits = sizeof(u64) * 8 + 3;
++	while (l_size) {
++		l_size >>= 1;
++		seq_bits -= 1;
+ 	}
  
++	if (seq_bits != ra->seq_num_bits)
++		return false;
++
+ 	/* The log page data offset and record header length must be quad-aligned. */
+ 	if (!IS_ALIGNED(le16_to_cpu(ra->data_off), 8) ||
+ 	    !IS_ALIGNED(le16_to_cpu(ra->rec_hdr_len), 8))
 -- 
 2.43.0
 
