@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-24286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96B4D8693B1
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:48:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AAD2869784
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:22:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BE181F248F8
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:48:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 287EF1F24380
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:22:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA2413B2B9;
-	Tue, 27 Feb 2024 13:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5841419A1;
+	Tue, 27 Feb 2024 14:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3sXteTw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FwKYmD4H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE8F1448F1;
-	Tue, 27 Feb 2024 13:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2FE13B2B8;
+	Tue, 27 Feb 2024 14:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041561; cv=none; b=GLRyMC+LgAjve/rgPgNe7NsRvedgvQM3bJXne+DOWdOBeayoLCcSm/CHlglL9J8mvQQJxBzc5wHi4dkN7hyxSCJK8GxcBRI4YbFElD7A8dyFfjDn2oTQWo3uBpNCwSfmVIMvBLPCUMo02GfndMEa81kHDHhlRSbmh25C4m+4fkI=
+	t=1709043724; cv=none; b=FVv+FHe+4Vq3ySljUS/UjjvMabGKS2KitUWBNFFN42gu9EycsdCGrdpOGG2daxyR17rZDbOtrfaAMxk4xch21pidgA+C10jeE6eb4wwEVX2379Cy0Pmio/TBNSl9S0nvQdk3N3fOPqCA0KcleRR8H9QQ1mTdxRn3Db/j1bO9IXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041561; c=relaxed/simple;
-	bh=gWtiIocPhib70R5cOC+GM5+X626KWd8yuhmSZIS4nbQ=;
+	s=arc-20240116; t=1709043724; c=relaxed/simple;
+	bh=VuYIonjsIh0f2RdhLmKGJukLO3+NbaI0DBrloTMQHaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JgB+CBr9lXT2BvZpX42E2iDQSRClKrcjWL9R1yKA1S5AB/DZciIQ13pT4NLgfPifyGgDMODxvjEvkxidtMGCTlT1uKrX7MMnxw319EZAEypvHnuaH8lvwRYysyHnfAF97s/7m6MUlEOEE9igWTJ5yUxPyhAMYU3mtM/kBZe8gJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3sXteTw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50442C433F1;
-	Tue, 27 Feb 2024 13:46:01 +0000 (UTC)
+	 MIME-Version; b=GvIq4Gy7lvHvpfswTLnPuHZk24b6lg07G0+XJ3eAcMWw+LiXY1OAofzltlUc8Qy/nqAx4em5MjTdukZWCbekC//SWE3fujrNvgSOwZ9SUZfjhfajjCi3+aN5jYWNNDMpN6Orc3Js9ChbYK075w0Op8N6l9Yr7W5tqsI4JT6gUXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FwKYmD4H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB5E3C433C7;
+	Tue, 27 Feb 2024 14:22:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041561;
-	bh=gWtiIocPhib70R5cOC+GM5+X626KWd8yuhmSZIS4nbQ=;
+	s=korg; t=1709043724;
+	bh=VuYIonjsIh0f2RdhLmKGJukLO3+NbaI0DBrloTMQHaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d3sXteTwHRvCb1v6BHshNho9auVZfFa94uQ+4LzGAdxfrG5ycWnSwMDt4f4/UDoqd
-	 fnYA9I3mP2muAXlkB8yQFffUzNad7Afr/G79vS5k7WzV1lgOHJHpD+DXAikRydSCNj
-	 64CfDb2MslEVnVd25cY9fFiC3C52A1rKJ2gCKhzs=
+	b=FwKYmD4H8EJ7nHtLE6ycEWmcnLs38Cj2WdyyMY9ty29/FRMd4UXoGjgweJOGi35TH
+	 sWTZqsccDzVdoBtargDATUZDsJmHz5y5vFVZOf2K3AF8T1cAUDN2bhqTZhHIdMNoT1
+	 5ywMy3EguM58KY68/qNi81cP+5yUr79b9yquzXDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 46/52] packet: move from strlcpy with unused retval to strscpy
+	Cyril Hrubis <chrubis@suse.cz>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Petr Vorel <pvorel@suse.cz>,
+	Mel Gorman <mgorman@suse.de>,
+	Mahmoud Adam <mngyadam@amazon.com>
+Subject: [PATCH 5.4 06/84] sched/rt: sysctl_sched_rr_timeslice show default timeslice after reset
 Date: Tue, 27 Feb 2024 14:26:33 +0100
-Message-ID: <20240227131550.048122231@linuxfoundation.org>
+Message-ID: <20240227131553.077386592@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
-References: <20240227131548.514622258@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Cyril Hrubis <chrubis@suse.cz>
 
-[ Upstream commit 8fc9d51ea2d32a05f7d7cf86a25cc86ecc57eb45 ]
+commit c1fc6484e1fb7cc2481d169bfef129a1b0676abe upstream.
 
-Follow the advice of the below link and prefer 'strscpy' in this
-subsystem. Conversion is 1:1 because the return value is not used.
-Generated by a coccinelle script.
+The sched_rr_timeslice can be reset to default by writing value that is
+<= 0. However after reading from this file we always got the last value
+written, which is not useful at all.
 
-Link: https://lore.kernel.org/r/CAHk-=wgfRnXz0W3D37d01q3JFkr_i_uTL=V6A6G1oUZcprmknw@mail.gmail.com/
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Link: https://lore.kernel.org/r/20220818210227.8611-1-wsa+renesas@sang-engineering.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: a7d6027790ac ("arp: Prevent overflow in arp_req_get().")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+$ echo -1 > /proc/sys/kernel/sched_rr_timeslice_ms
+$ cat /proc/sys/kernel/sched_rr_timeslice_ms
+-1
+
+Fix this by setting the variable that holds the sysctl file value to the
+jiffies_to_msecs(RR_TIMESLICE) in case that <= 0 value was written.
+
+Signed-off-by: Cyril Hrubis <chrubis@suse.cz>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Petr Vorel <pvorel@suse.cz>
+Acked-by: Mel Gorman <mgorman@suse.de>
+Tested-by: Petr Vorel <pvorel@suse.cz>
+Cc: Mahmoud Adam <mngyadam@amazon.com>
+Link: https://lore.kernel.org/r/20230802151906.25258-3-chrubis@suse.cz
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/packet/af_packet.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/sched/rt.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 377832981178d..e8b05769d1c9a 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -1850,7 +1850,7 @@ static int packet_rcv_spkt(struct sk_buff *skb, struct net_device *dev,
- 	 */
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -2738,6 +2738,9 @@ int sched_rr_handler(struct ctl_table *t
+ 		sched_rr_timeslice =
+ 			sysctl_sched_rr_timeslice <= 0 ? RR_TIMESLICE :
+ 			msecs_to_jiffies(sysctl_sched_rr_timeslice);
++
++		if (sysctl_sched_rr_timeslice <= 0)
++			sysctl_sched_rr_timeslice = jiffies_to_msecs(RR_TIMESLICE);
+ 	}
+ 	mutex_unlock(&mutex);
  
- 	spkt->spkt_family = dev->type;
--	strlcpy(spkt->spkt_device, dev->name, sizeof(spkt->spkt_device));
-+	strscpy(spkt->spkt_device, dev->name, sizeof(spkt->spkt_device));
- 	spkt->spkt_protocol = skb->protocol;
- 
- 	/*
-@@ -3501,7 +3501,7 @@ static int packet_getname_spkt(struct socket *sock, struct sockaddr *uaddr,
- 	rcu_read_lock();
- 	dev = dev_get_by_index_rcu(sock_net(sk), READ_ONCE(pkt_sk(sk)->ifindex));
- 	if (dev)
--		strlcpy(uaddr->sa_data, dev->name, sizeof(uaddr->sa_data));
-+		strscpy(uaddr->sa_data, dev->name, sizeof(uaddr->sa_data));
- 	rcu_read_unlock();
- 
- 	return sizeof(*uaddr);
--- 
-2.43.0
-
 
 
 
