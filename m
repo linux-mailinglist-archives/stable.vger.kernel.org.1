@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD5498696EE
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:16:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FC77869626
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:08:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D9651F2496C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:16:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8051F1C21774
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5DE13B797;
-	Tue, 27 Feb 2024 14:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E51C713B78F;
+	Tue, 27 Feb 2024 14:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gfhPm1gc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yh2O6BKU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197A578B61;
-	Tue, 27 Feb 2024 14:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C8313AA43;
+	Tue, 27 Feb 2024 14:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043404; cv=none; b=piKC82wdJ2sCVC9mdlNnixqhkvX0pkqMQPwY+cAmofzox3tbKTJ+qhin/NwAp0x2EGpoflHWOzBXugJFgRgZIfRJrs3sv3DMQZPn8RfZsFnvnXjUs5vgMaiBgoBlJso4WZtSDP7WxQbg0u0Iyi95KiYUCE5jFrCMafR7TJ8niks=
+	t=1709042917; cv=none; b=ADorN5b+WRtyIL1qdFdSPujNZ/Ywp3dFy/EsCz/iW1s4jW315NO3Q8eGDGxfsVKcF4nJPAjdPNXbpbPric5CVoOWDvX3EBo+0r59hIvQf4F1G15Bqq99FOZmMqx9yeGzDdnFFlQZzH1NcbXUmCOGPdbn0bwOuQhdW6WN9fVNENU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043404; c=relaxed/simple;
-	bh=pdFDwYt6Kvw1xFsOB1caUSIE5JST1RAofptsUc7FN4s=;
+	s=arc-20240116; t=1709042917; c=relaxed/simple;
+	bh=GjpxITBdhQrg5j4GCczYo35lpx4qHDUmxaO+xueHbcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dliRffHff0d1hCLrbFysZBI+++UQ72IgklDSoxCaZdE3QpqpHuESrB6Yt5kwsiyQf32Kb6vvZ3lqERF04d0wv0sPoK0y0ia4EcNzAzR97mxfl0MUuocH3BZJK3iSJrDhXsBowenmkjw6xqGOrPfyD3wfd8SmTyD+waumGCx/4Co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gfhPm1gc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97256C433C7;
-	Tue, 27 Feb 2024 14:16:43 +0000 (UTC)
+	 MIME-Version; b=MEoNwt74kOd2wXACS7h9+T3kK0sHm1uLnV9+a72xYRedKcqBIhXJQu5cZDyjEnwnUqoKQbXIvFwLK51VPn9Omrhi/cQgJxh4f2E2o2yddXlruv9Ow+9bo4Rspq2P6vagm+s16uEt8zMhVwqA4qLXbmMP2GMRiYTC6QIUoEfzLC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yh2O6BKU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E255C433F1;
+	Tue, 27 Feb 2024 14:08:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043404;
-	bh=pdFDwYt6Kvw1xFsOB1caUSIE5JST1RAofptsUc7FN4s=;
+	s=korg; t=1709042917;
+	bh=GjpxITBdhQrg5j4GCczYo35lpx4qHDUmxaO+xueHbcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gfhPm1gctQrD5ucKPe75cJsyeDiWSQDPNN0Bux9jSp6mjOBkQGCWnw4niJeEopl1G
-	 aJym3F1FcYMZ/q/qtUR7Fcl5A8fmjkBiT4+B/rO18h5lWlSrrka5sMSolT3gmAfL+f
-	 RC+bKWyMxoAMzBYn9+WpMrEy5a0zS2NtpUYuJ8qk=
+	b=yh2O6BKUd5BDL+HL1CdEePYNlj/TH0nhIZK2svvD0TH/NnyqxrIgCnLkOFbF5RhO4
+	 rFLq5275s3sM7VXrtfMK5knMarOsFE68i9byYoayCv1tpdxSzMwdG6V2RV2s7rinKk
+	 RoZJGz7xAfdTkSH1ryIGGFBmL/zfjETsVqKOfIF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	Julian Sikorski <belegdol@gmail.com>,
-	Lee Duncan <lee.duncan@suse.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 095/195] scsi: core: Consult supported VPD page list prior to fetching page
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 168/245] md/raid10: prevent soft lockup while flush writes
 Date: Tue, 27 Feb 2024 14:25:56 +0100
-Message-ID: <20240227131613.612916760@linuxfoundation.org>
+Message-ID: <20240227131620.669853308@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin K. Petersen <martin.petersen@oracle.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-commit b5fc07a5fb56216a49e6c1d0b172d5464d99a89b upstream.
+[ Upstream commit 010444623e7f4da6b4a4dd603a7da7469981e293 ]
 
-Commit c92a6b5d6335 ("scsi: core: Query VPD size before getting full
-page") removed the logic which checks whether a VPD page is present on
-the supported pages list before asking for the page itself. That was
-done because SPC helpfully states "The Supported VPD Pages VPD page
-list may or may not include all the VPD pages that are able to be
-returned by the device server". Testing had revealed a few devices
-that supported some of the 0xBn pages but didn't actually list them in
-page 0.
+Currently, there is no limit for raid1/raid10 plugged bio. While flushing
+writes, raid1 has cond_resched() while raid10 doesn't, and too many
+writes can cause soft lockup.
 
-Julian Sikorski bisected a problem with his drive resetting during
-discovery to the commit above. As it turns out, this particular drive
-firmware will crash if we attempt to fetch page 0xB9.
+Follow up soft lockup can be triggered easily with writeback test for
+raid10 with ramdisks:
 
-Various approaches were attempted to work around this. In the end,
-reinstating the logic that consults VPD page 0 before fetching any
-other page was the path of least resistance. A firmware update for the
-devices which originally compelled us to remove the check has since
-been released.
+watchdog: BUG: soft lockup - CPU#10 stuck for 27s! [md0_raid10:1293]
+Call Trace:
+ <TASK>
+ call_rcu+0x16/0x20
+ put_object+0x41/0x80
+ __delete_object+0x50/0x90
+ delete_object_full+0x2b/0x40
+ kmemleak_free+0x46/0xa0
+ slab_free_freelist_hook.constprop.0+0xed/0x1a0
+ kmem_cache_free+0xfd/0x300
+ mempool_free_slab+0x1f/0x30
+ mempool_free+0x3a/0x100
+ bio_free+0x59/0x80
+ bio_put+0xcf/0x2c0
+ free_r10bio+0xbf/0xf0
+ raid_end_bio_io+0x78/0xb0
+ one_write_done+0x8a/0xa0
+ raid10_end_write_request+0x1b4/0x430
+ bio_endio+0x175/0x320
+ brd_submit_bio+0x3b9/0x9b7 [brd]
+ __submit_bio+0x69/0xe0
+ submit_bio_noacct_nocheck+0x1e6/0x5a0
+ submit_bio_noacct+0x38c/0x7e0
+ flush_pending_writes+0xf0/0x240
+ raid10d+0xac/0x1ed0
 
-Link: https://lore.kernel.org/r/20240214221411.2888112-1-martin.petersen@oracle.com
-Fixes: c92a6b5d6335 ("scsi: core: Query VPD size before getting full page")
-Cc: stable@vger.kernel.org
-Cc: Bart Van Assche <bvanassche@acm.org>
-Reported-by: Julian Sikorski <belegdol@gmail.com>
-Tested-by: Julian Sikorski <belegdol@gmail.com>
-Reviewed-by: Lee Duncan <lee.duncan@suse.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix the problem by adding cond_resched() to raid10 like what raid1 did.
+
+Note that unlimited plugged bio still need to be optimized, for example,
+in the case of lots of dirty pages writeback, this will take lots of
+memory and io will spend a long time in plug, hence io latency is bad.
+
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20230529131106.2123367-2-yukuai1@huaweicloud.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi.c        |   22 ++++++++++++++++++++--
- include/scsi/scsi_device.h |    4 ----
- 2 files changed, 20 insertions(+), 6 deletions(-)
+ drivers/md/raid10.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/scsi/scsi.c
-+++ b/drivers/scsi/scsi.c
-@@ -328,21 +328,39 @@ static int scsi_vpd_inquiry(struct scsi_
- 	return result + 4;
+diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+index 910e7db7d5736..ae84aaa1645c2 100644
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -903,6 +903,7 @@ static void flush_pending_writes(struct r10conf *conf)
+ 			else
+ 				submit_bio_noacct(bio);
+ 			bio = next;
++			cond_resched();
+ 		}
+ 		blk_finish_plug(&plug);
+ 	} else
+@@ -1116,6 +1117,7 @@ static void raid10_unplug(struct blk_plug_cb *cb, bool from_schedule)
+ 		else
+ 			submit_bio_noacct(bio);
+ 		bio = next;
++		cond_resched();
+ 	}
+ 	kfree(plug);
  }
- 
-+enum scsi_vpd_parameters {
-+	SCSI_VPD_HEADER_SIZE = 4,
-+	SCSI_VPD_LIST_SIZE = 36,
-+};
-+
- static int scsi_get_vpd_size(struct scsi_device *sdev, u8 page)
- {
--	unsigned char vpd_header[SCSI_VPD_HEADER_SIZE] __aligned(4);
-+	unsigned char vpd[SCSI_VPD_LIST_SIZE] __aligned(4);
- 	int result;
- 
- 	if (sdev->no_vpd_size)
- 		return SCSI_DEFAULT_VPD_LEN;
- 
- 	/*
-+	 * Fetch the supported pages VPD and validate that the requested page
-+	 * number is present.
-+	 */
-+	if (page != 0) {
-+		result = scsi_vpd_inquiry(sdev, vpd, 0, sizeof(vpd));
-+		if (result < SCSI_VPD_HEADER_SIZE)
-+			return 0;
-+
-+		result -= SCSI_VPD_HEADER_SIZE;
-+		if (!memchr(&vpd[SCSI_VPD_HEADER_SIZE], page, result))
-+			return 0;
-+	}
-+	/*
- 	 * Fetch the VPD page header to find out how big the page
- 	 * is. This is done to prevent problems on legacy devices
- 	 * which can not handle allocation lengths as large as
- 	 * potentially requested by the caller.
- 	 */
--	result = scsi_vpd_inquiry(sdev, vpd_header, page, sizeof(vpd_header));
-+	result = scsi_vpd_inquiry(sdev, vpd, page, SCSI_VPD_HEADER_SIZE);
- 	if (result < 0)
- 		return 0;
- 
---- a/include/scsi/scsi_device.h
-+++ b/include/scsi/scsi_device.h
-@@ -100,10 +100,6 @@ struct scsi_vpd {
- 	unsigned char	data[];
- };
- 
--enum scsi_vpd_parameters {
--	SCSI_VPD_HEADER_SIZE = 4,
--};
--
- struct scsi_device {
- 	struct Scsi_Host *host;
- 	struct request_queue *request_queue;
+-- 
+2.43.0
+
 
 
 
