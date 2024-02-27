@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44C88696D0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C583F8695EA
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:06:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 868801F2E716
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F02D28CF9B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 954921420A8;
-	Tue, 27 Feb 2024 14:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E83B3143C48;
+	Tue, 27 Feb 2024 14:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRwAH+HF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2RNFDF0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E4D1420A0;
-	Tue, 27 Feb 2024 14:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7BB91420A2;
+	Tue, 27 Feb 2024 14:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043332; cv=none; b=um7PGqK8TbnNyQ1h+77tZ2Dr2pATvPXu0xNOtQzh/SQxVIKtVyZB2JELkL03a+7S0NC3wHXJ/GTFfYpM9xCLV1liBNfQIomVPtmDpmTxORcBJd33qV9En1zrD9Q2+kZoI9tCGoibPD17oVj9c5lnRyPgilG92fiu/++jn6c5kEo=
+	t=1709042770; cv=none; b=kGhf1mb30j+UhKMwe0o6Q0Rewqgn3GoAwEYuvwSsrHMRrCQuobULBTI4v7J9eV4WQ5VAn0LYZwzoiJWNd9dDwbbsoQjJmY7K5nO1JsrBwLX3z9/yX5N3cHdnD3VpRHucV/miR7OKTGOFi/CwqbaXAObrMhCpOA0ek5l+F0UQ2rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043332; c=relaxed/simple;
-	bh=2KGaPHaFLIQsRJt0jlpW7v2UA+FghOTuyfkmIjRrpLw=;
+	s=arc-20240116; t=1709042770; c=relaxed/simple;
+	bh=BKgA6fne44q9lqXFm4PwbVks4XTM+cJca8xwMKyOYW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dx2aZhhDowEUh4Br8i9HoqoIcfWeIzI6WZcfCvQoZOtb1DK8vGN0QjDysrJXI9YUpqVyMIp8FLrUT7UINGXEP5/9KrVU4KkMCAIPcRbs8TVC8nkGb8HFNWNKTAC7ltM3rt9aCfbjDF52zbMLceJ/eaa/Lwe5UmZ+rfwhvpWVSVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRwAH+HF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2120C433F1;
-	Tue, 27 Feb 2024 14:15:31 +0000 (UTC)
+	 MIME-Version; b=NRXf4VVXMYPIZyBpittL+ExpfN1VHmtkubbGM9V6oLCe+NkBtwRH7YY6se4gCn/ndtqxwuSfSWFl65QAZ0VewiGQM8JDBqPF6lZwfjDfLKNbpR9QaWCQVwJE/ktes+4WFC7q/O4tPbHJvGIj26mCZE2MKg6EMz//PJva2DiHpOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h2RNFDF0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 340DFC433F1;
+	Tue, 27 Feb 2024 14:06:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043332;
-	bh=2KGaPHaFLIQsRJt0jlpW7v2UA+FghOTuyfkmIjRrpLw=;
+	s=korg; t=1709042770;
+	bh=BKgA6fne44q9lqXFm4PwbVks4XTM+cJca8xwMKyOYW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YRwAH+HFbbEPZzKrMbQOKxXqkRRnpsPXXkI8pKTH8oTms/s+nLl+XQTMIwtLyy1vD
-	 V+N61Uz1OiVPRWKHR9Gu9pPMsyxyB/N6JjSzb/HLzGXx/J8phY1DGFfkOrbHNk9RcM
-	 G7x8AYcj4KXyz80k7OT9TyVIQHVkeCU4nphjd5PQ=
+	b=h2RNFDF04ySIss9FcpH1O1CyMXvc5tubbe905UZ3F7stCFTtCZbFpq9Cfb+y2Q0sP
+	 pIBPzC37CwCIoQTA0H6Ja6JDzMq4D7S+DNd6BZaCxTMaKhxZiBtL1BD6ufM3ifcPQ5
+	 AlbNTL+F8MaJAq02d40Rr1OlRYJ1ONQWxLdR6vnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Luca Ellero <l.ellero@asem.it>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 041/195] ASoC: wm_adsp: Dont overwrite fwf_name with the default
+Subject: [PATCH 5.15 114/245] Input: ads7846 - dont report pressure for ads7845
 Date: Tue, 27 Feb 2024 14:25:02 +0100
-Message-ID: <20240227131611.746001397@linuxfoundation.org>
+Message-ID: <20240227131618.941903703@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Luca Ellero <l.ellero@asem.it>
 
-[ Upstream commit daf3f0f99cde93a066240462b7a87cdfeedc04c0 ]
+[ Upstream commit d50584d783313c8b05b84d0b07a2142f1bde46dd ]
 
-There's no need to overwrite fwf_name with a kstrdup() of the cs_dsp part
-name. It is trivial to select either fwf_name or cs_dsp.part as the string
-to use when building the filename in wm_adsp_request_firmware_file().
+ADS7845 doesn't support pressure.
+Avoid the following error reported by libinput-list-devices:
+"ADS7845 Touchscreen: kernel bug: device has min == max on ABS_PRESSURE".
 
-This leaves fwf_name entirely owned by the codec driver.
-
-It also avoids problems with freeing the pointer. With the original code
-fwf_name was either a pointer owned by the codec driver, or a kstrdup()
-created by wm_adsp. This meant wm_adsp must free it if it set it, but not
-if the codec driver set it. The code was handling this by using
-devm_kstrdup().
-But there is no absolute requirement that wm_adsp_common_init() must be
-called from probe(), so this was a pseudo-memory leak - each new call to
-wm_adsp_common_init() would allocate another block of memory but these
-would only be freed if the owning codec driver was removed.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://msgid.link/r/20240129162737.497-3-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: ffa458c1bd9b ("spi: ads7846 driver")
+Signed-off-by: Luca Ellero <l.ellero@asem.it>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20230126105227.47648-2-l.ellero@asem.it
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wm_adsp.c | 29 ++++++++++++-----------------
- 1 file changed, 12 insertions(+), 17 deletions(-)
+ drivers/input/touchscreen/ads7846.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/wm_adsp.c b/sound/soc/codecs/wm_adsp.c
-index 2cfca78f0401f..47a4c363227cc 100644
---- a/sound/soc/codecs/wm_adsp.c
-+++ b/sound/soc/codecs/wm_adsp.c
-@@ -740,19 +740,25 @@ static int wm_adsp_request_firmware_file(struct wm_adsp *dsp,
- 					 const char *filetype)
- {
- 	struct cs_dsp *cs_dsp = &dsp->cs_dsp;
-+	const char *fwf;
- 	char *s, c;
- 	int ret = 0;
+diff --git a/drivers/input/touchscreen/ads7846.c b/drivers/input/touchscreen/ads7846.c
+index f113a27aeb1ef..ef04988edf0c2 100644
+--- a/drivers/input/touchscreen/ads7846.c
++++ b/drivers/input/touchscreen/ads7846.c
+@@ -1323,8 +1323,9 @@ static int ads7846_probe(struct spi_device *spi)
+ 			pdata->y_min ? : 0,
+ 			pdata->y_max ? : MAX_12BIT,
+ 			0, 0);
+-	input_set_abs_params(input_dev, ABS_PRESSURE,
+-			pdata->pressure_min, pdata->pressure_max, 0, 0);
++	if (ts->model != 7845)
++		input_set_abs_params(input_dev, ABS_PRESSURE,
++				pdata->pressure_min, pdata->pressure_max, 0, 0);
  
-+	if (dsp->fwf_name)
-+		fwf = dsp->fwf_name;
-+	else
-+		fwf = dsp->cs_dsp.name;
-+
- 	if (system_name && asoc_component_prefix)
- 		*filename = kasprintf(GFP_KERNEL, "%s%s-%s-%s-%s-%s.%s", dir, dsp->part,
--				      dsp->fwf_name, wm_adsp_fw[dsp->fw].file, system_name,
-+				      fwf, wm_adsp_fw[dsp->fw].file, system_name,
- 				      asoc_component_prefix, filetype);
- 	else if (system_name)
- 		*filename = kasprintf(GFP_KERNEL, "%s%s-%s-%s-%s.%s", dir, dsp->part,
--				      dsp->fwf_name, wm_adsp_fw[dsp->fw].file, system_name,
-+				      fwf, wm_adsp_fw[dsp->fw].file, system_name,
- 				      filetype);
- 	else
--		*filename = kasprintf(GFP_KERNEL, "%s%s-%s-%s.%s", dir, dsp->part, dsp->fwf_name,
-+		*filename = kasprintf(GFP_KERNEL, "%s%s-%s-%s.%s", dir, dsp->part, fwf,
- 				      wm_adsp_fw[dsp->fw].file, filetype);
- 
- 	if (*filename == NULL)
-@@ -842,29 +848,18 @@ static int wm_adsp_request_firmware_files(struct wm_adsp *dsp,
- 	}
- 
- 	adsp_err(dsp, "Failed to request firmware <%s>%s-%s-%s<-%s<%s>>.wmfw\n",
--		 cirrus_dir, dsp->part, dsp->fwf_name, wm_adsp_fw[dsp->fw].file,
--		 system_name, asoc_component_prefix);
-+		 cirrus_dir, dsp->part,
-+		 dsp->fwf_name ? dsp->fwf_name : dsp->cs_dsp.name,
-+		 wm_adsp_fw[dsp->fw].file, system_name, asoc_component_prefix);
- 
- 	return -ENOENT;
- }
- 
- static int wm_adsp_common_init(struct wm_adsp *dsp)
- {
--	char *p;
--
- 	INIT_LIST_HEAD(&dsp->compr_list);
- 	INIT_LIST_HEAD(&dsp->buffer_list);
- 
--	if (!dsp->fwf_name) {
--		p = devm_kstrdup(dsp->cs_dsp.dev, dsp->cs_dsp.name, GFP_KERNEL);
--		if (!p)
--			return -ENOMEM;
--
--		dsp->fwf_name = p;
--		for (; *p != 0; ++p)
--			*p = tolower(*p);
--	}
--
- 	return 0;
- }
- 
+ 	/*
+ 	 * Parse common framework properties. Must be done here to ensure the
 -- 
 2.43.0
 
