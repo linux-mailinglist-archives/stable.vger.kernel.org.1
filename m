@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-24676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 527EA8695B9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:04:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBBBD8696B5
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84DBB1C20EF8
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:04:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F0781F2E68A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B510C13DBA4;
-	Tue, 27 Feb 2024 14:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D867A145B18;
+	Tue, 27 Feb 2024 14:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nYnsyh3s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h24G/j4Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7361913B2B9;
-	Tue, 27 Feb 2024 14:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94ED3145B12;
+	Tue, 27 Feb 2024 14:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042682; cv=none; b=qXCsFe6tT/IHfoBMVJhIA7Za5jB4+WMvzJN/XFw8C6urGevYFYlpEpSYF7R+klJ+kCRHupi0KGEveMKL7oJCav+XAodBHJDpLvu29M6f8nmVLSjIXv4NaiZzVzlRIYkS3PdRhqbbJN142/TlEZAhRfSXqE+NW0yzty+Es40DMfU=
+	t=1709043246; cv=none; b=V39igBLAY1ynnE8Rf+83YORbd3aXwe7iT7TYMtrqf56916OG3Z8pATnElxfc2u6HNzPODJecoOdZHWTXJkCEXHp+J3t1AWy+z5Fic4Ed9QD4JvFqbNGpPfNz1fI5TdtUZkWBC/stw5pdvd4qGO4is0dVno8YGii7aVuqDIu+9w0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042682; c=relaxed/simple;
-	bh=8AE2hxXG+FVNNnoEuJ0gpYWeC0hCbF+t2Ibx2Rxq2DE=;
+	s=arc-20240116; t=1709043246; c=relaxed/simple;
+	bh=IetuZnkCMQH7VeI7bdgGji5i9jrwEab0J9P60QL6VHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pSo51Fu7WE0DBctrWUYK5B3j2W4kHa8fGiucbWvT5uWAiiyPP19ElBt6DJ1kBBemvY5IocBy82eE/Qhzqy0bCLWU7IeFzAV7PY2FwzEUbLWTl8W26kvd/dVjVQkQH6UrjIZtRZ16GzcplJ3SIg7EwlcnFKmCihI/XTuPb9ALMuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nYnsyh3s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F31F7C433F1;
-	Tue, 27 Feb 2024 14:04:41 +0000 (UTC)
+	 MIME-Version; b=JMWNKzIWGxPWPW69jS1g6wwKjVjJQyJjiDdmrLh53r25e1Q7SG4do1Jx4f2Mj0t9hlqOlXTGo+ZiyJdwKtyJXm6XsEZjOuS4xchironE9iU3cVC5BQFDwdLUhcHaThrXW3X0WpzjnLRyEKmsw8iHBP5eLFFzl+8u7RY9N2tAxic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h24G/j4Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2391EC433C7;
+	Tue, 27 Feb 2024 14:14:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042682;
-	bh=8AE2hxXG+FVNNnoEuJ0gpYWeC0hCbF+t2Ibx2Rxq2DE=;
+	s=korg; t=1709043246;
+	bh=IetuZnkCMQH7VeI7bdgGji5i9jrwEab0J9P60QL6VHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nYnsyh3s4OV6HfD7VW6/kywyUP2W3rnklLbJjRXenZTTNuHNkbNjsbUWTCfUjPX6C
-	 K/yd6O+hyhuKTvd/E3bkcfUIsebvJ9tBDFsxo2EdYV5vgw23hkCGV8X/+cUbxvIA9i
-	 4JkS7UjELc/3+LN5jmj0gYPgvl28ahyqYjYHUL0k=
+	b=h24G/j4QRIommy3q2bW98wDXikQIv21ueEe6Hr6xA7O3Urku43c1f0Bx1URQGhfCT
+	 hkAItVrMThuRuHrNszbxAh9E8OGGU938i7F95cFtpKpfy3O3mDNKYlux5R8s4d0O3+
+	 96z017rqb3IwZhpqMNDIi53lXCS/+Win70hqz4Wc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 5.15 082/245] KVM: arm64: vgic-its: Test for valid IRQ in MOVALL handler
-Date: Tue, 27 Feb 2024 14:24:30 +0100
-Message-ID: <20240227131617.901798585@linuxfoundation.org>
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 010/195] cifs: open_cached_dir should not rely on primary channel
+Date: Tue, 27 Feb 2024 14:24:31 +0100
+Message-ID: <20240227131610.742166482@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Upton <oliver.upton@linux.dev>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-commit 85a71ee9a0700f6c18862ef3b0011ed9dad99aca upstream.
+[ Upstream commit 936eba9cfb5cfbf6a2c762cd163605f2b784e03e ]
 
-It is possible that an LPI mapped in a different ITS gets unmapped while
-handling the MOVALL command. If that is the case, there is no state that
-can be migrated to the destination. Silently ignore it and continue
-migrating other LPIs.
+open_cached_dir today selects ses->server a.k.a primary channel
+to send requests. When multichannel is used, the primary
+channel maybe down. So it does not make sense to rely only
+on that channel.
 
-Cc: stable@vger.kernel.org
-Fixes: ff9c114394aa ("KVM: arm/arm64: GICv4: Handle MOVALL applied to a vPE")
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20240221092732.4126848-3-oliver.upton@linux.dev
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This fix makes this function pick a channel with the standard
+helper function cifs_pick_channel.
+
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kvm/vgic/vgic-its.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/smb/client/cached_dir.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/kvm/vgic/vgic-its.c
-+++ b/arch/arm64/kvm/vgic/vgic-its.c
-@@ -1374,6 +1374,8 @@ static int vgic_its_cmd_handle_movall(st
+diff --git a/fs/smb/client/cached_dir.c b/fs/smb/client/cached_dir.c
+index 6f4d7aa70e5a2..fd082151c5f9b 100644
+--- a/fs/smb/client/cached_dir.c
++++ b/fs/smb/client/cached_dir.c
+@@ -149,7 +149,7 @@ int open_cached_dir(unsigned int xid, struct cifs_tcon *tcon,
+ 		return -EOPNOTSUPP;
  
- 	for (i = 0; i < irq_count; i++) {
- 		irq = vgic_get_irq(kvm, NULL, intids[i]);
-+		if (!irq)
-+			continue;
+ 	ses = tcon->ses;
+-	server = ses->server;
++	server = cifs_pick_channel(ses);
+ 	cfids = tcon->cfids;
  
- 		update_affinity(irq, vcpu2);
- 
+ 	if (!server->ops->new_lease_key)
+-- 
+2.43.0
+
 
 
 
