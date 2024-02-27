@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-24304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC7158693D1
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:49:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2550B8692FE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:40:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86E72292AA2
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:49:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D454E283831
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C627513DB87;
-	Tue, 27 Feb 2024 13:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C151113B798;
+	Tue, 27 Feb 2024 13:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fm4D7Ry0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iVcofxEd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CACA13DB92;
-	Tue, 27 Feb 2024 13:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E12D78B61;
+	Tue, 27 Feb 2024 13:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041616; cv=none; b=aNts3seDrtOPVqYsv3y1mMiG2ZoivMBdzE001Ykmmq8BM23yQO/ggGz9IHX3ePZhUOnZrJmc6WglZoA2sfZD99lmK7W8oQt68NQvGU9oJYP3DAtl2SpRzbPbifdooaFia2Gww4/zk3aqqBzG34N8/j3FdCL0Zlnc9LKPFwuwb2o=
+	t=1709041224; cv=none; b=jzYWod45IGmlQ0XMhX+qrUHEVKoyij3ez28woXQEy9hFVaWzPRDzZInLUvfwE9ZtIGsh+UcBvFqwwwMdbjnanwMtPr1s5MeJSpfUceJFTn5MCheZwUk1DmtNGMWw+U7S26xoKmzZIYUAvoywgDRKdVWLS3KBWcZse6NwFHmjBE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041616; c=relaxed/simple;
-	bh=dZ6pxFZJXUah6P0Bumo9geKZklNkU2fB3fh769B5hUg=;
+	s=arc-20240116; t=1709041224; c=relaxed/simple;
+	bh=zOdP6bGX8AeB5y0WdSl6EyvLwOpPeHw8Z5tjpFgBV/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Lf5zX6On0Hc5cI3nFuMbyjKF3rYGFuh6qY0ujj4RCCgmlDNvv3eIWqtl6RecHSACvEFhNkQqGrBK+vB1tYg3y2jgAhjLTso9KA4kJw62BFv14GgqUbJS/EKIZopA4Y36w3gpTUu1qVsdBlCo+q4OPfT50MYXjLcNYeEF6MjNMVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fm4D7Ry0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEC60C433C7;
-	Tue, 27 Feb 2024 13:46:55 +0000 (UTC)
+	 MIME-Version; b=BNcMX5qFoRx2ANC+6+r9i7f2YCq76bi0wGSmaDYEMNwtII/4hFXuO0NVJ+W1j7ysABPcrPLgBoUveuClOsqyP8XWREEwtliJ0EqsV9jXBaSDy2hQ3wjapoQ8bNUnC52iZY7quszv5/TRLVLKoR7jEuMEwscvJFjQS3k7t45VJKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iVcofxEd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4ECAC433C7;
+	Tue, 27 Feb 2024 13:40:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041616;
-	bh=dZ6pxFZJXUah6P0Bumo9geKZklNkU2fB3fh769B5hUg=;
+	s=korg; t=1709041223;
+	bh=zOdP6bGX8AeB5y0WdSl6EyvLwOpPeHw8Z5tjpFgBV/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fm4D7Ry0wW52mu7DZpRxc6/ZehNBKmEsy4lLK86ieJRZWYOmcExwQEI4tsEqzbnqv
-	 /u0+Qc7EPfmF2za4aKlfbAJI2vMNXzC9TwyNLGSrgIvBhbH///HAZxQgzgWZDgtBGZ
-	 1qZgoXFrBbmOBk9lDNvKaSS+IeE+68gHzpv6XXkI=
+	b=iVcofxEdwEl+hEUu/9jw9qhRAKtiLfgtoys2uNTJ2OasGprV3wjo9nU9DgygInJjp
+	 LHIlCzzjTpxpK4dRU4lRwO+xhF1wTRUfGZQl8AhKho66rXwMAQFXehEv4lbgx51cQK
+	 cuoGziNdpB2Wdhb1zm76T3umjwOCIdtrF8Ocu6as=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vinod Koul <vkoul@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Danilo Krummrich <dakr@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 011/299] dmaengine: shdma: increase size of dev_id
+Subject: [PATCH 6.7 264/334] nouveau: fix function cast warnings
 Date: Tue, 27 Feb 2024 14:22:02 +0100
-Message-ID: <20240227131626.202326168@linuxfoundation.org>
+Message-ID: <20240227131639.478531248@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,54 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinod Koul <vkoul@kernel.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 404290240827c3bb5c4e195174a8854eef2f89ac ]
+[ Upstream commit 0affdba22aca5573f9d989bcb1d71d32a6a03efe ]
 
-We seem to have hit warnings of 'output may be truncated' which is fixed
-by increasing the size of 'dev_id'
+clang-16 warns about casting between incompatible function types:
 
-drivers/dma/sh/shdmac.c: In function ‘sh_dmae_probe’:
-drivers/dma/sh/shdmac.c:541:34: error: ‘%d’ directive output may be truncated writing between 1 and 10 bytes into a region of size 9 [-Werror=format-truncation=]
-  541 |                          "sh-dmae%d.%d", pdev->id, id);
-      |                                  ^~
-In function ‘sh_dmae_chan_probe’,
-    inlined from ‘sh_dmae_probe’ at drivers/dma/sh/shdmac.c:845:9:
-drivers/dma/sh/shdmac.c:541:26: note: directive argument in the range [0, 2147483647]
-  541 |                          "sh-dmae%d.%d", pdev->id, id);
-      |                          ^~~~~~~~~~~~~~
-drivers/dma/sh/shdmac.c:541:26: note: directive argument in the range [0, 19]
-drivers/dma/sh/shdmac.c:540:17: note: ‘snprintf’ output between 11 and 21 bytes into a destination of size 16
-  540 |                 snprintf(sh_chan->dev_id, sizeof(sh_chan->dev_id),
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  541 |                          "sh-dmae%d.%d", pdev->id, id);
-      |                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c:161:10: error: cast from 'void (*)(const struct firmware *)' to 'void (*)(void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+  161 |         .fini = (void(*)(void *))release_firmware,
 
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+This one was done to use the generic shadow_fw_release() function as a
+callback for struct nvbios_source. Change it to use the same prototype
+as the other five instances, with a trivial helper function that actually
+calls release_firmware.
+
+Fixes: 70c0f263cc2e ("drm/nouveau/bios: pull in basic vbios subdev, more to come later")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240213095753.455062-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/sh/shdma.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/sh/shdma.h b/drivers/dma/sh/shdma.h
-index 9c121a4b33ad8..f97d80343aea4 100644
---- a/drivers/dma/sh/shdma.h
-+++ b/drivers/dma/sh/shdma.h
-@@ -25,7 +25,7 @@ struct sh_dmae_chan {
- 	const struct sh_dmae_slave_config *config; /* Slave DMA configuration */
- 	int xmit_shift;			/* log_2(bytes_per_xfer) */
- 	void __iomem *base;
--	char dev_id[16];		/* unique name per DMAC of channel */
-+	char dev_id[32];		/* unique name per DMAC of channel */
- 	int pm_error;
- 	dma_addr_t slave_addr;
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c
+index 19188683c8fca..8c2bf1c16f2a9 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c
+@@ -154,11 +154,17 @@ shadow_fw_init(struct nvkm_bios *bios, const char *name)
+ 	return (void *)fw;
+ }
+ 
++static void
++shadow_fw_release(void *fw)
++{
++	release_firmware(fw);
++}
++
+ static const struct nvbios_source
+ shadow_fw = {
+ 	.name = "firmware",
+ 	.init = shadow_fw_init,
+-	.fini = (void(*)(void *))release_firmware,
++	.fini = shadow_fw_release,
+ 	.read = shadow_fw_read,
+ 	.rw = false,
  };
 -- 
 2.43.0
