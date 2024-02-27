@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-24540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33DEA869584
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:02:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B629C8696E2
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:16:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7A37B22C25
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:58:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7DEB1C21B19
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 327711419B1;
-	Tue, 27 Feb 2024 13:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA65A13B29C;
+	Tue, 27 Feb 2024 14:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcFrHLQQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QBk+g9ll"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E597D140391;
-	Tue, 27 Feb 2024 13:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A766D1419B4;
+	Tue, 27 Feb 2024 14:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042298; cv=none; b=XNbK2lvjEJp7NoiHZZsAlq2Rsa/AQ0tX/tAxRyC5s+iVq2CaALMI84VvzGfIND9/ms+nXt4WEQSyWLQil3oYjHEr2zlo0Yn8q2vrK+VUGU4YK1hncesgt/oPFtf/Y+0TdZHbW8R8geioiEUgvF7tBMl7k9EAHe1rbYZEwoeKZJo=
+	t=1709043379; cv=none; b=YAMqixqzAEnEMXJo1etO++35Q/HPt9d/Q7w1imuOyffUc3Du/sHjLwTWvAUWcVjLckpgYi0FNLzuGfAYvXLkHwRwj6XzzmJj0DZ62YPOzp68odWAKfH6SGJxZ1dtk37MJ+tMKeZyn8UbIpHPiGxK2KtA3Yz4BHE2A5yqQcou1dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042298; c=relaxed/simple;
-	bh=dekAj5cPaIfzmlZAmsfD8KEAqXOUwqkhRXO30EPSZ2I=;
+	s=arc-20240116; t=1709043379; c=relaxed/simple;
+	bh=oZDPcaZv8bh3TaEh3lxnBsmjMTzKLTyBwMXZWTUK13g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F+4FynpsKZiVJ8gYtlLPu0bDynP7m8rZCI+39vlCtTjAdna64GZhSDcTlJpjleIaWh2an7lix8EWlD9NoNfiHsiw334OGDTee/NsnOMGSzrbUljwTXguh/AdMvrq5QXjdb9WFctoluhlE0Z0OdnhSxKoXMK9OkSijXBasQl5tYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcFrHLQQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7222BC433C7;
-	Tue, 27 Feb 2024 13:58:17 +0000 (UTC)
+	 MIME-Version; b=E+YgR55+u0wI9t3ta2vqi5cHV+0oGJYegXNLHHBwWC+j6VC+/R2XIic/vxW5kxiU7rvJlbuv7RPECe7+mfnRCSOTfp2sco0ko5fSDnGVzJ1tLkkyYujs8uctBjHQI8EOPYES+EMt2ap8NhkMShUGpA0da2o+G10D9m0vbKVXQes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QBk+g9ll; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2A8DC433C7;
+	Tue, 27 Feb 2024 14:16:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042297;
-	bh=dekAj5cPaIfzmlZAmsfD8KEAqXOUwqkhRXO30EPSZ2I=;
+	s=korg; t=1709043379;
+	bh=oZDPcaZv8bh3TaEh3lxnBsmjMTzKLTyBwMXZWTUK13g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gcFrHLQQSJOTFgPFjgkJeCicN4SHbt8X1GiX5NsbtzUEEr0Y69wUV+yQGXgRdJ74j
-	 iumt5VYKIC+5CuCc1JOcPwyWlDZn2Brcc3I3MXrUycb1IcGiBEZdPFUYNidPkf6g1j
-	 w0sFnTk3luU1z25eNy5UABdt6CF/SKaIhs5uGZ6k=
+	b=QBk+g9llgnjmXbImfIB5z9UVESHYtDZZTFAT5ifFguWpfYOdjVCRx9vh6GHZrGekz
+	 l8L0XhVlL+NtrmMCYGDbpbbv6CcTo8pHHKj2Rt3gw8FwAeRK6jhmqzBvF9xwIFZfyt
+	 L2vVdPCLdH3C+emSi86kJnBBXNRzqf27lsJ+ehNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mustafa Ismail <mustafa.ismail@intel.com>,
-	Shiraz Saleem <shiraz.saleem@intel.com>,
-	Sindhu Devale <sindhu.devale@gmail.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Andrew Bresticker <abrestic@rivosinc.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 219/299] RDMA/irdma: Add AE for too many RNRS
+Subject: [PATCH 6.1 069/195] efi: Dont add memblocks for soft-reserved memory
 Date: Tue, 27 Feb 2024 14:25:30 +0100
-Message-ID: <20240227131632.820251424@linuxfoundation.org>
+Message-ID: <20240227131612.778078126@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mustafa Ismail <mustafa.ismail@intel.com>
+From: Andrew Bresticker <abrestic@rivosinc.com>
 
-[ Upstream commit 630bdb6f28ca9e5ff79e244030170ac788478332 ]
+[ Upstream commit 0bcff59ef7a652fcdc6d535554b63278c2406c8f ]
 
-Add IRDMA_AE_LLP_TOO_MANY_RNRS to the list of AE's processed as an
-abnormal asyncronous event.
+Adding memblocks for soft-reserved regions prevents them from later being
+hotplugged in by dax_kmem.
 
-Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
-Signed-off-by: Mustafa Ismail <mustafa.ismail@intel.com>
-Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
-Signed-off-by: Sindhu Devale <sindhu.devale@gmail.com>
-Link: https://lore.kernel.org/r/20240131233849.400285-5-sindhu.devale@intel.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Andrew Bresticker <abrestic@rivosinc.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/defs.h | 1 +
- drivers/infiniband/hw/irdma/hw.c   | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/firmware/efi/efi-init.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/defs.h b/drivers/infiniband/hw/irdma/defs.h
-index d06e45d2c23fd..9052e8932dc18 100644
---- a/drivers/infiniband/hw/irdma/defs.h
-+++ b/drivers/infiniband/hw/irdma/defs.h
-@@ -346,6 +346,7 @@ enum irdma_cqp_op_type {
- #define IRDMA_AE_LLP_TOO_MANY_KEEPALIVE_RETRIES				0x050b
- #define IRDMA_AE_LLP_DOUBT_REACHABILITY					0x050c
- #define IRDMA_AE_LLP_CONNECTION_ESTABLISHED				0x050e
-+#define IRDMA_AE_LLP_TOO_MANY_RNRS					0x050f
- #define IRDMA_AE_RESOURCE_EXHAUSTION					0x0520
- #define IRDMA_AE_RESET_SENT						0x0601
- #define IRDMA_AE_TERMINATE_SENT						0x0602
-diff --git a/drivers/infiniband/hw/irdma/hw.c b/drivers/infiniband/hw/irdma/hw.c
-index aff68aa8dfad4..1745f40b075fd 100644
---- a/drivers/infiniband/hw/irdma/hw.c
-+++ b/drivers/infiniband/hw/irdma/hw.c
-@@ -387,6 +387,7 @@ static void irdma_process_aeq(struct irdma_pci_f *rf)
- 		case IRDMA_AE_LLP_TOO_MANY_RETRIES:
- 		case IRDMA_AE_LCE_QP_CATASTROPHIC:
- 		case IRDMA_AE_LCE_FUNCTION_CATASTROPHIC:
-+		case IRDMA_AE_LLP_TOO_MANY_RNRS:
- 		case IRDMA_AE_LCE_CQ_CATASTROPHIC:
- 		case IRDMA_AE_UDA_XMIT_DGRAM_TOO_LONG:
- 		default:
+diff --git a/drivers/firmware/efi/efi-init.c b/drivers/firmware/efi/efi-init.c
+index 2fd770b499a35..ff9791ce2e156 100644
+--- a/drivers/firmware/efi/efi-init.c
++++ b/drivers/firmware/efi/efi-init.c
+@@ -116,15 +116,6 @@ static __init int is_usable_memory(efi_memory_desc_t *md)
+ 	case EFI_BOOT_SERVICES_DATA:
+ 	case EFI_CONVENTIONAL_MEMORY:
+ 	case EFI_PERSISTENT_MEMORY:
+-		/*
+-		 * Special purpose memory is 'soft reserved', which means it
+-		 * is set aside initially, but can be hotplugged back in or
+-		 * be assigned to the dax driver after boot.
+-		 */
+-		if (efi_soft_reserve_enabled() &&
+-		    (md->attribute & EFI_MEMORY_SP))
+-			return false;
+-
+ 		/*
+ 		 * According to the spec, these regions are no longer reserved
+ 		 * after calling ExitBootServices(). However, we can only use
+@@ -169,6 +160,16 @@ static __init void reserve_regions(void)
+ 		size = npages << PAGE_SHIFT;
+ 
+ 		if (is_memory(md)) {
++			/*
++			 * Special purpose memory is 'soft reserved', which
++			 * means it is set aside initially. Don't add a memblock
++			 * for it now so that it can be hotplugged back in or
++			 * be assigned to the dax driver after boot.
++			 */
++			if (efi_soft_reserve_enabled() &&
++			    (md->attribute & EFI_MEMORY_SP))
++				continue;
++
+ 			early_init_dt_add_memory_arch(paddr, size);
+ 
+ 			if (!is_usable_memory(md))
 -- 
 2.43.0
 
