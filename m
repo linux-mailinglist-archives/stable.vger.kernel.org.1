@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-24219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD687869335
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:42:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFA498693DF
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:49:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAA441C21926
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:42:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D9AB1C2253C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:49:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D03713B2BA;
-	Tue, 27 Feb 2024 13:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D7B3146015;
+	Tue, 27 Feb 2024 13:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Crc3g1A1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OYdd++i7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4A713B2B3;
-	Tue, 27 Feb 2024 13:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED5214600C;
+	Tue, 27 Feb 2024 13:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041364; cv=none; b=b6fP94+sxibCiaFaAhA/mJJ3FJSSkKiUty0fsgjBhUSb0t+3y/wkf/3BiQbbM+fF/bIMPvVP/EnbNFg5sz8lyullN2zDmy2DxqNc0GqGM9P/Nq8L3BzIIj1F1cP80qzeGhhDk33dX1QHlS3ynKmN355WsV+AjmaBtVgCKFtbzNA=
+	t=1709041646; cv=none; b=a5s5LtEcxSNs9vR6lgsusABlakvyLgHUqVhO9/EUrEx117nbIgGUa71cD7F8I1tFlh91V6e4DjdGE2jYL6c2gafSgAm6/o/+rJTwWbBQ24uZUV9wYqnXKfxqcNSARcmEm9KD6i+V339sxMpyNT6VXpjWtnrpyqoIdXhm5BYyLFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041364; c=relaxed/simple;
-	bh=p1gcEJERWOX3XumjZmYQdbY7m1p8PG7Cxa5E1a3O2cQ=;
+	s=arc-20240116; t=1709041646; c=relaxed/simple;
+	bh=fuBkK90EHenkr0QJ4tlM8Z8e11ctPzRD/G80zMQYM2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mSY57hmXfWmAtdTQfwk7dNfcJnkpLwrLWXTnn844iw7kY/r9sx3UnM9HI+Ijin432Zz6RPxENMcrkmdtL367Gl7N64SCV1uB11psuRlMH1dOZTsrHoONlA8mYjXoUTD/W+pkpfNcEG75Ji+8s/Ufxw87AfeyVjotE1HH8wBDR0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Crc3g1A1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BC3BC433F1;
-	Tue, 27 Feb 2024 13:42:43 +0000 (UTC)
+	 MIME-Version; b=IPkkIaNclU6skJMbsggoEVJwPm/YdZug9CE/yMfCFxKpQ4tugb0gXb/KhKIf60Fob0w4NwkiAdzSgfMsbGG7WBVzCVp0iobXvdiJ+iyh1LUKEbkApqlxszEdnr19ZTdGvUB4x48t0GgsKA9GAIs3yIYQwoVftjn11DE4CNKo8M4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OYdd++i7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6DA4C43390;
+	Tue, 27 Feb 2024 13:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041363;
-	bh=p1gcEJERWOX3XumjZmYQdbY7m1p8PG7Cxa5E1a3O2cQ=;
+	s=korg; t=1709041646;
+	bh=fuBkK90EHenkr0QJ4tlM8Z8e11ctPzRD/G80zMQYM2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Crc3g1A1xkdBkJtTUYrb69yxv/Is/ujcNzG43xKeiSbCBc07AldPRFdvWoUx+OTMX
-	 2XF/2aXj86DyBcjXpGv5c/4WrVpjEYXbRPCgWtqskKO5UksJ6U8Wl3CgxHu7VqVQBy
-	 E0LGyiyhoTnuJKvKOfap872vkzKrjvnRESvHtSk8=
+	b=OYdd++i7/pLniSyeets4pAI7NkMiyn6FCApnJ6SRyQZzpsee0E18ETmWA8+pa2UtZ
+	 joQo1Idaq/iSiV47ZsXBBG8k1xCydUJy/5naSgxUwxG1WTcgJbdJX0X3Rp1Rd9+VxH
+	 4zZHgqd1GhsZOZCo3vqKMVGb0Kpo2BN/gBf0y/nk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gaurav Batra <gbatra@linux.ibm.com>,
-	Brian King <brking@linux.vnet.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	syzbot+a532b03fdfee2c137666@syzkaller.appspotmail.com,
+	syzbot+63dec323ac56c28e644f@syzkaller.appspotmail.com,
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 273/334] powerpc/pseries/iommu: DLPAR add doesnt completely initialize pci_controller
-Date: Tue, 27 Feb 2024 14:22:11 +0100
-Message-ID: <20240227131639.796868475@linuxfoundation.org>
+Subject: [PATCH 6.6 021/299] block: Fix WARNING in _copy_from_iter
+Date: Tue, 27 Feb 2024 14:22:12 +0100
+Message-ID: <20240227131626.514190045@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,173 +65,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gaurav Batra <gbatra@linux.ibm.com>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-[ Upstream commit a5c57fd2e9bd1c8ea8613a8f94fd0be5eccbf321 ]
+[ Upstream commit 13f3956eb5681a4045a8dfdef48df5dc4d9f58a6 ]
 
-When a PCI device is dynamically added, the kernel oopses with a NULL
-pointer dereference:
+Syzkaller reports a warning in _copy_from_iter because an
+iov_iter is supposedly used in the wrong direction. The reason
+is that syzcaller managed to generate a request with
+a transfer direction of SG_DXFER_TO_FROM_DEV. This instructs
+the kernel to copy user buffers into the kernel, read into
+the copied buffers and then copy the data back to user space.
 
-  BUG: Kernel NULL pointer dereference on read at 0x00000030
-  Faulting instruction address: 0xc0000000006bbe5c
-  Oops: Kernel access of bad area, sig: 11 [#1]
-  LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
-  Modules linked in: rpadlpar_io rpaphp rpcsec_gss_krb5 auth_rpcgss nfsv4 dns_resolver nfs lockd grace fscache netfs xsk_diag bonding nft_compat nf_tables nfnetlink rfkill binfmt_misc dm_multipath rpcrdma sunrpc rdma_ucm ib_srpt ib_isert iscsi_target_mod target_core_mod ib_umad ib_iser libiscsi scsi_transport_iscsi ib_ipoib rdma_cm iw_cm ib_cm mlx5_ib ib_uverbs ib_core pseries_rng drm drm_panel_orientation_quirks xfs libcrc32c mlx5_core mlxfw sd_mod t10_pi sg tls ibmvscsi ibmveth scsi_transport_srp vmx_crypto pseries_wdt psample dm_mirror dm_region_hash dm_log dm_mod fuse
-  CPU: 17 PID: 2685 Comm: drmgr Not tainted 6.7.0-203405+ #66
-  Hardware name: IBM,9080-HEX POWER10 (raw) 0x800200 0xf000006 of:IBM,FW1060.00 (NH1060_008) hv:phyp pSeries
-  NIP:  c0000000006bbe5c LR: c000000000a13e68 CTR: c0000000000579f8
-  REGS: c00000009924f240 TRAP: 0300   Not tainted  (6.7.0-203405+)
-  MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 24002220  XER: 20040006
-  CFAR: c000000000a13e64 DAR: 0000000000000030 DSISR: 40000000 IRQMASK: 0
-  ...
-  NIP sysfs_add_link_to_group+0x34/0x94
-  LR  iommu_device_link+0x5c/0x118
-  Call Trace:
-   iommu_init_device+0x26c/0x318 (unreliable)
-   iommu_device_link+0x5c/0x118
-   iommu_init_device+0xa8/0x318
-   iommu_probe_device+0xc0/0x134
-   iommu_bus_notifier+0x44/0x104
-   notifier_call_chain+0xb8/0x19c
-   blocking_notifier_call_chain+0x64/0x98
-   bus_notify+0x50/0x7c
-   device_add+0x640/0x918
-   pci_device_add+0x23c/0x298
-   of_create_pci_dev+0x400/0x884
-   of_scan_pci_dev+0x124/0x1b0
-   __of_scan_bus+0x78/0x18c
-   pcibios_scan_phb+0x2a4/0x3b0
-   init_phb_dynamic+0xb8/0x110
-   dlpar_add_slot+0x170/0x3b8 [rpadlpar_io]
-   add_slot_store.part.0+0xb4/0x130 [rpadlpar_io]
-   kobj_attr_store+0x2c/0x48
-   sysfs_kf_write+0x64/0x78
-   kernfs_fop_write_iter+0x1b0/0x290
-   vfs_write+0x350/0x4a0
-   ksys_write+0x84/0x140
-   system_call_exception+0x124/0x330
-   system_call_vectored_common+0x15c/0x2ec
+Thus the iovec is used in both directions.
 
-Commit a940904443e4 ("powerpc/iommu: Add iommu_ops to report capabilities
-and allow blocking domains") broke DLPAR add of PCI devices.
+Detect this situation in the block layer and construct a new
+iterator with the correct direction for the copy-in.
 
-The above added iommu_device structure to pci_controller. During
-system boot, PCI devices are discovered and this newly added iommu_device
-structure is initialized by a call to iommu_device_register().
-
-During DLPAR add of a PCI device, a new pci_controller structure is
-allocated but there are no calls made to iommu_device_register()
-interface.
-
-Fix is to register the iommu device during DLPAR add as well.
-
-Fixes: a940904443e4 ("powerpc/iommu: Add iommu_ops to report capabilities and allow blocking domains")
-Signed-off-by: Gaurav Batra <gbatra@linux.ibm.com>
-Reviewed-by: Brian King <brking@linux.vnet.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240215221833.4817-1-gbatra@linux.ibm.com
+Reported-by: syzbot+a532b03fdfee2c137666@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/lkml/0000000000009b92c10604d7a5e9@google.com/t/
+Reported-by: syzbot+63dec323ac56c28e644f@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/lkml/0000000000003faaa105f6e7c658@google.com/T/
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20240121202634.275068-1-lk@c--e.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/ppc-pci.h         | 10 ++++++++++
- arch/powerpc/kernel/iommu.c                | 23 ++++++++++++++++------
- arch/powerpc/platforms/pseries/pci_dlpar.c |  4 ++++
- 3 files changed, 31 insertions(+), 6 deletions(-)
+ block/blk-map.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/ppc-pci.h b/arch/powerpc/include/asm/ppc-pci.h
-index d9fcff5750271..2689e7139b9ea 100644
---- a/arch/powerpc/include/asm/ppc-pci.h
-+++ b/arch/powerpc/include/asm/ppc-pci.h
-@@ -30,6 +30,16 @@ void *pci_traverse_device_nodes(struct device_node *start,
- 				void *data);
- extern void pci_devs_phb_init_dynamic(struct pci_controller *phb);
- 
-+#if defined(CONFIG_IOMMU_API) && (defined(CONFIG_PPC_PSERIES) || \
-+				  defined(CONFIG_PPC_POWERNV))
-+extern void ppc_iommu_register_device(struct pci_controller *phb);
-+extern void ppc_iommu_unregister_device(struct pci_controller *phb);
-+#else
-+static inline void ppc_iommu_register_device(struct pci_controller *phb) { }
-+static inline void ppc_iommu_unregister_device(struct pci_controller *phb) { }
-+#endif
+diff --git a/block/blk-map.c b/block/blk-map.c
+index 8584babf3ea0c..71210cdb34426 100644
+--- a/block/blk-map.c
++++ b/block/blk-map.c
+@@ -205,12 +205,19 @@ static int bio_copy_user_iov(struct request *rq, struct rq_map_data *map_data,
+ 	/*
+ 	 * success
+ 	 */
+-	if ((iov_iter_rw(iter) == WRITE &&
+-	     (!map_data || !map_data->null_mapped)) ||
+-	    (map_data && map_data->from_user)) {
++	if (iov_iter_rw(iter) == WRITE &&
++	     (!map_data || !map_data->null_mapped)) {
+ 		ret = bio_copy_from_iter(bio, iter);
+ 		if (ret)
+ 			goto cleanup;
++	} else if (map_data && map_data->from_user) {
++		struct iov_iter iter2 = *iter;
 +
-+
- /* From rtas_pci.h */
- extern void init_pci_config_tokens (void);
- extern unsigned long get_phb_buid (struct device_node *);
-diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
-index df17b33b89d13..2c0173e7094da 100644
---- a/arch/powerpc/kernel/iommu.c
-+++ b/arch/powerpc/kernel/iommu.c
-@@ -1341,7 +1341,7 @@ static struct iommu_device *spapr_tce_iommu_probe_device(struct device *dev)
- 	struct pci_controller *hose;
- 
- 	if (!dev_is_pci(dev))
--		return ERR_PTR(-EPERM);
-+		return ERR_PTR(-ENODEV);
- 
- 	pdev = to_pci_dev(dev);
- 	hose = pdev->bus->sysdata;
-@@ -1390,6 +1390,21 @@ static const struct attribute_group *spapr_tce_iommu_groups[] = {
- 	NULL,
- };
- 
-+void ppc_iommu_register_device(struct pci_controller *phb)
-+{
-+	iommu_device_sysfs_add(&phb->iommu, phb->parent,
-+				spapr_tce_iommu_groups, "iommu-phb%04x",
-+				phb->global_number);
-+	iommu_device_register(&phb->iommu, &spapr_tce_iommu_ops,
-+				phb->parent);
-+}
-+
-+void ppc_iommu_unregister_device(struct pci_controller *phb)
-+{
-+	iommu_device_unregister(&phb->iommu);
-+	iommu_device_sysfs_remove(&phb->iommu);
-+}
-+
- /*
-  * This registers IOMMU devices of PHBs. This needs to happen
-  * after core_initcall(iommu_init) + postcore_initcall(pci_driver_init) and
-@@ -1400,11 +1415,7 @@ static int __init spapr_tce_setup_phb_iommus_initcall(void)
- 	struct pci_controller *hose;
- 
- 	list_for_each_entry(hose, &hose_list, list_node) {
--		iommu_device_sysfs_add(&hose->iommu, hose->parent,
--				       spapr_tce_iommu_groups, "iommu-phb%04x",
--				       hose->global_number);
--		iommu_device_register(&hose->iommu, &spapr_tce_iommu_ops,
--				      hose->parent);
-+		ppc_iommu_register_device(hose);
- 	}
- 	return 0;
- }
-diff --git a/arch/powerpc/platforms/pseries/pci_dlpar.c b/arch/powerpc/platforms/pseries/pci_dlpar.c
-index 4ba8245681192..4448386268d99 100644
---- a/arch/powerpc/platforms/pseries/pci_dlpar.c
-+++ b/arch/powerpc/platforms/pseries/pci_dlpar.c
-@@ -35,6 +35,8 @@ struct pci_controller *init_phb_dynamic(struct device_node *dn)
- 
- 	pseries_msi_allocate_domains(phb);
- 
-+	ppc_iommu_register_device(phb);
-+
- 	/* Create EEH devices for the PHB */
- 	eeh_phb_pe_create(phb);
- 
-@@ -76,6 +78,8 @@ int remove_phb_dynamic(struct pci_controller *phb)
- 		}
- 	}
- 
-+	ppc_iommu_unregister_device(phb);
-+
- 	pseries_msi_free_domains(phb);
- 
- 	/* Keep a reference so phb isn't freed yet */
++		/* This is the copy-in part of SG_DXFER_TO_FROM_DEV. */
++		iter2.data_source = ITER_SOURCE;
++		ret = bio_copy_from_iter(bio, &iter2);
++		if (ret)
++			goto cleanup;
+ 	} else {
+ 		if (bmd->is_our_pages)
+ 			zero_fill_bio(bio);
 -- 
 2.43.0
 
