@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-25256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33D3A8698FD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:49:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B1B78698FE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:49:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D082A285A07
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:49:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F85F1F22001
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:49:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80832145FF5;
-	Tue, 27 Feb 2024 14:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F451420DD;
+	Tue, 27 Feb 2024 14:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q1cXChna"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dmu4VTFi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410AA145B37
-	for <stable@vger.kernel.org>; Tue, 27 Feb 2024 14:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCDDF13B2B4
+	for <stable@vger.kernel.org>; Tue, 27 Feb 2024 14:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709045183; cv=none; b=IsCOll0KYwIPTfEW0dFUOnTaTdkmhyESMLat2A8fhW16Qf/jG1a4mLn/q78uXOrmuWL9biE+pXhskciR89xSPhYDxaSyaXEMqbQnjyJySYeKFF2IT+TEW0mn+7yFTv+hdxy4r7cAwAr6YSMwNw/mbsIhozij80hBZdsQpdPIeUU=
+	t=1709045205; cv=none; b=VPmyN/qc59nHfmVBYObjEbH5ivmVIVDP7EepoxleGEINmaFA4DoOCvBhDxxy4ydSxaNsBi/evUg8EEOJX7ReeRHaFwlyp8Tc/fdtGSGFiSkgvY4hjR7ciWrRXs+PjYrj6GjvZPJ9fMQyI3uLDgdSupzQm/ZYZtivlrYXCoWBEWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709045183; c=relaxed/simple;
-	bh=1RsebKfLVkpFpMMhK6Y3PtjWaevoDt+J08a4+crd3UE=;
+	s=arc-20240116; t=1709045205; c=relaxed/simple;
+	bh=lNezRgHSlesi4fQq88qbCdVkYhfqAIalw7tyqw54Xz8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Mp8gpBzUS3u/iT23W6vl47fQWULKqqnk9D3ldjw9kFftgLWvzBjOPqMY3TtygO3eL7798ushNxUCWmJwbgMUmy9zpabg5JcO6egJopKfFx2SGJc5105bVfZNU4NFm2/obTSy/n4mZUe6+oEftl9nGLILWsHPF1vQrTqKpP6vjwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q1cXChna; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A951FC43390;
-	Tue, 27 Feb 2024 14:46:21 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=dECT1HN6PDtlM1vnkBYdSC93PhDvE6XiFy/GUhs6uSOjuk607/ejqNYuhFRC6kPpYtc4L1ry1HY7QLt11RpyDDzmI6jX1NMn/zwwDAVpuS6trpzODYaZS9qKLb1JFacw1x/joF5KvfcGFQ5z2jNC6vKASTqU6FgFHs6f0qsS5KM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dmu4VTFi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D94BC433C7;
+	Tue, 27 Feb 2024 14:46:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709045182;
-	bh=1RsebKfLVkpFpMMhK6Y3PtjWaevoDt+J08a4+crd3UE=;
+	s=k20201202; t=1709045205;
+	bh=lNezRgHSlesi4fQq88qbCdVkYhfqAIalw7tyqw54Xz8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=q1cXChnaULxet4AmFZ+EKpl+1feXxqbEIBuE1S6oGnVV6luYmeBB3oVRLmOhH8Hl0
-	 9xHS4nr7yQaNqgH/eR1wj+B7+NNu4UJ4IpnWj94z/2W21je14UfbO50oiFzaK0PDFm
-	 IM6N4qjGuVagvuopSdyeo2tOjSF3x6UvCK+bPg4NEREMPTdCuCXQFATHT+QOX10ve4
-	 y+vFaRnf3iYHdIhYJQQ3e66V8m67BMP7EVCV0jrQiVeU8vWcryNe2l5Shs/09k9Ssm
-	 CVGqbMkdSnHTa6q6uwKr1msBvxNJEwZgh5+S5hRjIwO7/T/ofET/yLEPxQTZb2jRcx
-	 AHY3y5iKkZcGw==
-Message-ID: <70d3f969-7e1d-45a6-87e0-a408891d7bfa@kernel.org>
-Date: Tue, 27 Feb 2024 15:46:19 +0100
+	b=dmu4VTFiWDCY8HNSXJiwaILQujD+juELjyFszO5NWI9VjV1MLzRcxmz+VV7XRHH8c
+	 Z4mBd1GGwQnwsD69XlXh2uk4v+eDNnR+QDUFaVHzS8y0mQXdfQkH5/Uz+ytDsrRIvB
+	 go7cZO6pZ/8lxtTJEjuxMktylFUNqgW4Pm2mZ4I1nBK6njZkho9f6mpC3OfQnVD6KB
+	 qrotc96INhOm0YLbj8f+UMT29qFYiDOJ1lGA3WzofqupHBT5lKJvVwbA6aTTE3yCCq
+	 xUh3rs3eHwtvFBmlYp9pRjrhEkzEfgg/5gkXU+bXTwZUy3+w4yUYHE/zGDeCHZIhso
+	 SOwHxiL7jvmdA==
+Message-ID: <02b2bef3-f6c9-4561-88e1-4dbcd6d5830f@kernel.org>
+Date: Tue, 27 Feb 2024 15:46:44 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,13 +50,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: patch "[PATCH] mptcp: fix rcv space initialization"
- failed to apply to 6.1-stable tree
+Subject: Re: FAILED: patch "[PATCH] mptcp: corner case locking for rx path
+ fields initialization" failed to apply to 6.1-stable tree
 Content-Language: en-GB, fr-BE
 To: gregkh@linuxfoundation.org, pabeni@redhat.com, davem@davemloft.net,
  martineau@kernel.org
 Cc: stable@vger.kernel.org
-References: <2024021902-cleft-esquire-a9ae@gregkh>
+References: <2024021904-carol-mullets-5f01@gregkh>
 From: Matthieu Baerts <matttbe@kernel.org>
 Autocrypt: addr=matttbe@kernel.org; keydata=
  xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
@@ -102,40 +102,41 @@ Autocrypt: addr=matttbe@kernel.org; keydata=
  JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
  lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
 Organization: NGI0 Core
-In-Reply-To: <2024021902-cleft-esquire-a9ae@gregkh>
+In-Reply-To: <2024021904-carol-mullets-5f01@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 Hi Greg,
 
-On 19/02/2024 17:04, gregkh@linuxfoundation.org wrote:
+On 19/02/2024 17:05, gregkh@linuxfoundation.org wrote:
 > 
 > The patch below does not apply to the 6.1-stable tree.
 
 (...)
 
-> From 013e3179dbd2bc756ce1dd90354abac62f65b739 Mon Sep 17 00:00:00 2001
+> From e4a0fa47e816e186f6b4c0055d07eeec42d11871 Mon Sep 17 00:00:00 2001
 > From: Paolo Abeni <pabeni@redhat.com>
-> Date: Thu, 8 Feb 2024 19:03:50 +0100
-> Subject: [PATCH] mptcp: fix rcv space initialization
+> Date: Thu, 8 Feb 2024 19:03:52 +0100
+> Subject: [PATCH] mptcp: corner case locking for rx path fields initialization
 > 
-> mptcp_rcv_space_init() is supposed to happen under the msk socket
-> lock, but active msk socket does that without such protection.
+> Most MPTCP-level related fields are under the mptcp data lock
+> protection, but are written one-off without such lock at MPC
+> complete time, both for the client and the server
 > 
-> Leverage the existing mptcp_propagate_state() helper to that extent.
-> We need to ensure mptcp_rcv_space_init will happen before
-> mptcp_rcv_space_adjust(), and the release_cb does not assure that:
-> explicitly check for such condition.
+> Leverage the mptcp_propagate_state() infrastructure to move such
+> initialization under the proper lock client-wise.
 > 
-> While at it, move the wnd_end initialization out of mptcp_rcv_space_init(),
-> it never belonged there.
+> The server side critical init steps are done by
+> mptcp_subflow_fully_established(): ensure the caller properly held the
+> relevant lock, and avoid acquiring the same lock in the nested scopes.
 > 
-> Note that the race does not produce ill effect in practice, but
-> change allows cleaning-up and defying better the locking model.
+> There are no real potential races, as write access to such fields
+> is implicitly serialized by the MPTCP state machine; the primary
+> goal is consistency.
 
-FYI, because of the various conflicts, and because the race explained
-here "does not produce ill effects in practice", with Paolo, we think it
-is best not to backport this patch to v6.1 and older.
+FYI, because of the various conflicts, and because "there are no real
+potential races", with Paolo, we think it is best not to backport this
+patch to v6.1 and older.
 
 Cheers,
 Matt
