@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-24162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 796038693D0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:49:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 353638693EF
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED340B21683
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:40:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 679471C21D26
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 661DC13DBA4;
-	Tue, 27 Feb 2024 13:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F5061419A0;
+	Tue, 27 Feb 2024 13:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZQ+1N6p3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JTfaZ468"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B1813B2BF;
-	Tue, 27 Feb 2024 13:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A5313AA2F;
+	Tue, 27 Feb 2024 13:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041204; cv=none; b=czT6rdAh5/WD2Wh5U/9Y09va4vF80ccBQKPIzE+SdxKI2/6Cuoqm7j2gD/h/fq4MERdteozoIRPb6L32G5tZeu296Jo8/aPPEb8rsK4m1G003gTcluncRB324ZXvIzhdHVr8SPnwH6JWimPEN5M6FdOdsysqW2RlAScSPGLiMXk=
+	t=1709041677; cv=none; b=h+QRFxRqT+oZnoRUoP7Pet36rNanFZ3+/SrLwM2k6qnv/F5/rmF5XTTvOAhAwy3grrvckzSSt66nhrxvd3ok4jajAV1l7Av+SXlgt6eNSiswHLcj49mDt2iMuDpTUzAyQ9bS679QsADRUe4CGrT9+YKQP2PWmo9uEOMN8Iw1Vzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041204; c=relaxed/simple;
-	bh=26TQcuCXAiSvYbuqNzjUycKPK3wXqvXoZK/CGHjsizc=;
+	s=arc-20240116; t=1709041677; c=relaxed/simple;
+	bh=IpTWH0BG3FrZqeU5DXHBTXO0ZRnHDOq/vOiFJU6t5Tw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NDPLpw6CGDqMUwezwmEuorXGr+FiZKWMafUIxUqt9QHc8OPdo+PbvpYODI5BE6iutIl7QTpzCHt2QDLaR6XeE2fiBGcoU5yAgYWumCBqYyhnoELfDSisXc/RU3kEvh5Fh3wZ4FbCc9ZXmPYw0ImVvnVCj6SKHNY3qYI7Cjdw4pA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZQ+1N6p3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D4D8C433C7;
-	Tue, 27 Feb 2024 13:40:03 +0000 (UTC)
+	 MIME-Version; b=ExnBSUCI05o42xbjZEJOGjzx5i/dy/IdudCtYxG4Nq7dEkxZ3x0HaPjeUogSNlsNfW3WwUvZvgy1d6wXV/bNOwfhEwr+CanXih4p/yZ45DwhEzC+WXXplb3876o/O0trGgY+GqLjWhha8Isix2BUp22/1IvwecJSL3Gq3hfAud4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JTfaZ468; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47177C433C7;
+	Tue, 27 Feb 2024 13:47:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041204;
-	bh=26TQcuCXAiSvYbuqNzjUycKPK3wXqvXoZK/CGHjsizc=;
+	s=korg; t=1709041676;
+	bh=IpTWH0BG3FrZqeU5DXHBTXO0ZRnHDOq/vOiFJU6t5Tw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZQ+1N6p3NL++tjRbz7PXZB5e3CXKvTTo4ofiLH8wPWWI9l6mfdy4oLx4ue2X7Fr1I
-	 /G8CE3To+L9/hrQycs01Ss/BAuFRVLKAYQ27EuRr/qLgdYySXqWFGMpHzKAJ6W1omC
-	 6W5Xue/NepIqJGQCCY6kMHHe0IsRRpuiPWRGc540=
+	b=JTfaZ468N4wRvEhDd4f4+HvpNBTxUNVpdCiP4O7rs0FNgbEYLtNm2lSzWum5LylI9
+	 AhERx5Op/h0L5rFYTtyseMITdL95PkBI/dQNDcVk6HEyWeKRDNacOZ2flsXPq0PCCe
+	 45RCHy4B5GBcDnljgf2JeTmvDNtjIET/kRl6kPRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tobias Waldekranz <tobias@waldekranz.com>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Murthy Bhat <Murthy.Bhat@microchip.com>,
+	Mahesh Rajashekhara <mahesh.rajashekhara@microchip.com>,
+	Scott Teel <scott.teel@microchip.com>,
+	Scott Benesh <scott.benesh@microchip.com>,
+	Mike McGowen <mike.mcgowen@microchip.com>,
+	Kevin Barnett <kevin.barnett@microchip.com>,
+	David Strahan <david.strahan@microchip.com>,
+	Don Brace <don.brace@microchip.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 258/334] net: bridge: switchdev: Ensure deferred event delivery on unoffload
+Subject: [PATCH 6.6 005/299] scsi: smartpqi: Add new controller PCI IDs
 Date: Tue, 27 Feb 2024 14:21:56 +0100
-Message-ID: <20240227131639.252202323@linuxfoundation.org>
+Message-ID: <20240227131626.019505645@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +69,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tobias Waldekranz <tobias@waldekranz.com>
+From: David Strahan <david.strahan@microchip.com>
 
-[ Upstream commit f7a70d650b0b6b0134ccba763d672c8439d9f09b ]
+[ Upstream commit c6d5aa44eaf6d119f9ceb3bfc7d22405ac04232a ]
 
-When unoffloading a device, it is important to ensure that all
-relevant deferred events are delivered to it before it disassociates
-itself from the bridge.
+All PCI ID entries in Hex.
 
-Before this change, this was true for the normal case when a device
-maps 1:1 to a net_bridge_port, i.e.
+Add PCI IDs for Cisco controllers:
+                                                VID  / DID  / SVID / SDID
+                                                ----   ----   ----   ----
+        Cisco 24G TriMode M1 RAID 4GB FBWC 32D  9005 / 028f / 1137 / 02f8
+        Cisco 24G TriMode M1 RAID 4GB FBWC 16D  9005 / 028f / 1137 / 02f9
+        Cisco 24G TriMode M1 HBA 16D            9005 / 028f / 1137 / 02fa
 
-   br0
-   /
-swp0
+Add PCI IDs for CloudNine controllers:
+                                                VID  / DID  / SVID / SDID
+                                                ----   ----   ----   ----
+        SmartRAID P7604N-16i                    9005 / 028f / 1f51 / 100e
+        SmartRAID P7604N-8i                     9005 / 028f / 1f51 / 100f
+        SmartRAID P7504N-16i                    9005 / 028f / 1f51 / 1010
+        SmartRAID P7504N-8i                     9005 / 028f / 1f51 / 1011
+        SmartRAID P7504N-8i                     9005 / 028f / 1f51 / 1043
+        SmartHBA  P6500-8i                      9005 / 028f / 1f51 / 1044
+        SmartRAID P7504-8i                      9005 / 028f / 1f51 / 1045
 
-When swp0 leaves br0, the call to switchdev_deferred_process() in
-del_nbp() makes sure to process any outstanding events while the
-device is still associated with the bridge.
-
-In the case when the association is indirect though, i.e. when the
-device is attached to the bridge via an intermediate device, like a
-LAG...
-
-    br0
-    /
-  lag0
-  /
-swp0
-
-...then detaching swp0 from lag0 does not cause any net_bridge_port to
-be deleted, so there was no guarantee that all events had been
-processed before the device disassociated itself from the bridge.
-
-Fix this by always synchronously processing all deferred events before
-signaling completion of unoffloading back to the driver.
-
-Fixes: 4e51bf44a03a ("net: bridge: move the switchdev object replay helpers to "push" mode")
-Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reviewed-by: Murthy Bhat <Murthy.Bhat@microchip.com>
+Reviewed-by: Mahesh Rajashekhara <mahesh.rajashekhara@microchip.com>
+Reviewed-by: Scott Teel <scott.teel@microchip.com>
+Reviewed-by: Scott Benesh <scott.benesh@microchip.com>
+Reviewed-by: Mike McGowen <mike.mcgowen@microchip.com>
+Reviewed-by: Kevin Barnett <kevin.barnett@microchip.com>
+Signed-off-by: David Strahan <david.strahan@microchip.com>
+Signed-off-by: Don Brace <don.brace@microchip.com>
+Link: https://lore.kernel.org/r/20231219193653.277553-2-don.brace@microchip.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_switchdev.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/scsi/smartpqi/smartpqi_init.c | 40 +++++++++++++++++++++++++++
+ 1 file changed, 40 insertions(+)
 
-diff --git a/net/bridge/br_switchdev.c b/net/bridge/br_switchdev.c
-index 6a7cb01f121c7..7b41ee8740cbb 100644
---- a/net/bridge/br_switchdev.c
-+++ b/net/bridge/br_switchdev.c
-@@ -804,6 +804,16 @@ static void nbp_switchdev_unsync_objs(struct net_bridge_port *p,
- 	br_switchdev_mdb_replay(br_dev, dev, ctx, false, blocking_nb, NULL);
- 
- 	br_switchdev_vlan_replay(br_dev, ctx, false, blocking_nb, NULL);
-+
-+	/* Make sure that the device leaving this bridge has seen all
-+	 * relevant events before it is disassociated. In the normal
-+	 * case, when the device is directly attached to the bridge,
-+	 * this is covered by del_nbp(). If the association was indirect
-+	 * however, e.g. via a team or bond, and the device is leaving
-+	 * that intermediate device, then the bridge port remains in
-+	 * place.
-+	 */
-+	switchdev_deferred_process();
- }
- 
- /* Let the bridge know that this port is offloaded, so that it can assign a
+diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
+index 9a58df9312fa7..d562011200877 100644
+--- a/drivers/scsi/smartpqi/smartpqi_init.c
++++ b/drivers/scsi/smartpqi/smartpqi_init.c
+@@ -10142,6 +10142,18 @@ static const struct pci_device_id pqi_pci_id_table[] = {
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 				0x1014, 0x0718)
+ 	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1137, 0x02f8)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1137, 0x02f9)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1137, 0x02fa)
++	},
+ 	{
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 				0x1e93, 0x1000)
+@@ -10198,6 +10210,34 @@ static const struct pci_device_id pqi_pci_id_table[] = {
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 				0x1f51, 0x100a)
+ 	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1f51, 0x100e)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1f51, 0x100f)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1f51, 0x1010)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1f51, 0x1011)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1f51, 0x1043)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1f51, 0x1044)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1f51, 0x1045)
++	},
+ 	{
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 			       PCI_ANY_ID, PCI_ANY_ID)
 -- 
 2.43.0
 
