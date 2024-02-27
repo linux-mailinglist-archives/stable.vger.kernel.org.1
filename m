@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-24041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF8AC86925A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:34:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36B1386926A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:34:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DA4E1C211BF
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:34:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6232293EA4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6AA713B7A3;
-	Tue, 27 Feb 2024 13:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D3613B2B4;
+	Tue, 27 Feb 2024 13:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="znmKFHkW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VRD8LZ5i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D6A2F2D;
-	Tue, 27 Feb 2024 13:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E2F13A87C;
+	Tue, 27 Feb 2024 13:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709040865; cv=none; b=cmD/sJt+k1DIgC2ONeiD1kdKf8vMeNXrC+SvxL2rKGcB8qZM4dT+RlE0LYegKxC5s1KHb8D8/UyXEO8Oxj8EZUG5nejS2iygTN4aYHw5Bj3VGN9dOOPBHqGx2OJknXofpTtuPmc+FF6S7kO6gG9xRjccIwD7GU1VFpfjhFMET9Y=
+	t=1709040896; cv=none; b=MZ9kKNQHTaSA5bGkGlLXn0fPYSUKGL3Ic8FljwwciKfEgF/OQkBlkLDYCg0NUImj0VPAEqFagIJtFWFKrExgAFd51VmXG/g8oliG6RPpGrf9pS3RAOKLTHJ+EN+f0IUxBWAjXrZRcSs8PSeAPEAUFW2WRoWabT9R7L2WUB83o/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709040865; c=relaxed/simple;
-	bh=afDtefiCTx/ZGK4L389FhIre8wI5SNLNcGGRhynmu+k=;
+	s=arc-20240116; t=1709040896; c=relaxed/simple;
+	bh=3VQHGZ2ZhCU9iNQSDqo9El6HIRW7ktAqfub278UK1Ho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VPWHdjvY9kfreWG7iyhcdoEXbyEwMpXcqmwFOGVFGSyGF9kv+661Ct+iI0ba9xTUGap+kkN8Gdbt2tG0MNrrXPFa4ghMUOIELJJyXnzNF7bAfSGFGvZRdRq6QFga5cH5Bbpaax671Wi45f56WavZ41/Pb+3eMO0nGbThdV6fJzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=znmKFHkW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12625C433C7;
-	Tue, 27 Feb 2024 13:34:24 +0000 (UTC)
+	 MIME-Version; b=Jl7uPCFHte1500H4jZftwvE6X1xvMyBCYJvcToEvF8OsJSs5nKyPeTnuv8PmXKrQP0yhHXam6W9uq+rTAvn+HZLl9lzkwrFuTHxlt+sR4jmPvWyqXwIXAHcE3n3fTUVcTEbv/VBaTjqwuNm5DywyojMLWMldOQz0bYC5JrAkHcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VRD8LZ5i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AC83C433C7;
+	Tue, 27 Feb 2024 13:34:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709040865;
-	bh=afDtefiCTx/ZGK4L389FhIre8wI5SNLNcGGRhynmu+k=;
+	s=korg; t=1709040895;
+	bh=3VQHGZ2ZhCU9iNQSDqo9El6HIRW7ktAqfub278UK1Ho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=znmKFHkWesYd4JhpzkX93Dt6+OY+HohsMeKlWXHUM+yrxQZI9tdDqPkTEBP68Z/Aw
-	 LCLJj4JyZ5PZkxSZgmGo0sbXkRnHeG0t/izyZkzzt/fpKzFL5BPGHdN2PPtslvtpot
-	 C6//JUjvYsyignDeKdhc4MnHcqUIlMMm2sRduLGI=
+	b=VRD8LZ5ivG+QG97f0qihxDOrFM+pJmHOkH9yqX4OAGeBMluOgthCaMiqvL0AKlL+U
+	 BtIQX9oir86F8evw2x0dAoSqzCfDkD2ms6XVsla0eqTiMrj9wrfH5zfEhb9GSAdtAD
+	 3DVGpqgreILTRkWnGPbpvnFpbCbGcteXPbCpR4mQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Krystian Pradzynski <krystian.pradzynski@intel.com>,
 	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
 	Jeffrey Hugo <quic_jhugo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 119/334] accel/ivpu: Disable d3hot_delay on all NPU generations
-Date: Tue, 27 Feb 2024 14:19:37 +0100
-Message-ID: <20240227131634.313803033@linuxfoundation.org>
+Subject: [PATCH 6.7 120/334] accel/ivpu/40xx: Stop passing SKU boot parameters to FW
+Date: Tue, 27 Feb 2024 14:19:38 +0100
+Message-ID: <20240227131634.348741792@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
 References: <20240227131630.636392135@linuxfoundation.org>
@@ -66,37 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+From: Krystian Pradzynski <krystian.pradzynski@intel.com>
 
-[ Upstream commit a7f31091ddf457352e3dd7ac183fdbd26b4dcd04 ]
+[ Upstream commit 553099da45397914a995dce6307d6c26523c2567 ]
 
-NPU does not require this delay regardless of the generation.
-All generations are integrated into the SOC.
+This parameter was never used by the 40xx FW.
 
+Signed-off-by: Krystian Pradzynski <krystian.pradzynski@intel.com>
 Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
 Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240126122804.2169129-4-jacek.lawrynowicz@linux.intel.com
+Link: https://patchwork.freedesktop.org/patch/msgid/20240126122804.2169129-7-jacek.lawrynowicz@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ivpu/ivpu_drv.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/accel/ivpu/ivpu_hw_40xx.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/accel/ivpu/ivpu_drv.c b/drivers/accel/ivpu/ivpu_drv.c
-index 7906030176538..c856c417a1451 100644
---- a/drivers/accel/ivpu/ivpu_drv.c
-+++ b/drivers/accel/ivpu/ivpu_drv.c
-@@ -479,9 +479,8 @@ static int ivpu_pci_init(struct ivpu_device *vdev)
- 	/* Clear any pending errors */
- 	pcie_capability_clear_word(pdev, PCI_EXP_DEVSTA, 0x3f);
+diff --git a/drivers/accel/ivpu/ivpu_hw_40xx.c b/drivers/accel/ivpu/ivpu_hw_40xx.c
+index 8a7440bcd6df6..a7c976256ed32 100644
+--- a/drivers/accel/ivpu/ivpu_hw_40xx.c
++++ b/drivers/accel/ivpu/ivpu_hw_40xx.c
+@@ -700,7 +700,6 @@ static int ivpu_hw_40xx_info_init(struct ivpu_device *vdev)
+ {
+ 	struct ivpu_hw_info *hw = vdev->hw;
+ 	u32 tile_disable;
+-	u32 tile_enable;
+ 	u32 fuse;
  
--	/* VPU 37XX does not require 10m D3hot delay */
--	if (ivpu_hw_gen(vdev) == IVPU_HW_37XX)
--		pdev->d3hot_delay = 0;
-+	/* NPU does not require 10m D3hot delay */
-+	pdev->d3hot_delay = 0;
+ 	fuse = REGB_RD32(VPU_40XX_BUTTRESS_TILE_FUSE);
+@@ -721,10 +720,6 @@ static int ivpu_hw_40xx_info_init(struct ivpu_device *vdev)
+ 	else
+ 		ivpu_dbg(vdev, MISC, "Fuse: All %d tiles enabled\n", TILE_MAX_NUM);
  
- 	ret = pcim_enable_device(pdev);
- 	if (ret) {
+-	tile_enable = (~tile_disable) & TILE_MAX_MASK;
+-
+-	hw->sku = REG_SET_FLD_NUM(SKU, HW_ID, LNL_HW_ID, hw->sku);
+-	hw->sku = REG_SET_FLD_NUM(SKU, TILE, tile_enable, hw->sku);
+ 	hw->tile_fuse = tile_disable;
+ 	hw->pll.profiling_freq = PLL_PROFILING_FREQ_DEFAULT;
+ 
 -- 
 2.43.0
 
