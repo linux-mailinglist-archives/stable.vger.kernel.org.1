@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 633A48696A4
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:14:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D768695D7
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:06:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22F451F2E4F4
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:14:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB85F1C212FE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B27146011;
-	Tue, 27 Feb 2024 14:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65CA21420A6;
+	Tue, 27 Feb 2024 14:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ejz81Ws9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NzJBCGMd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60291146009;
-	Tue, 27 Feb 2024 14:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D9813B79F;
+	Tue, 27 Feb 2024 14:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043210; cv=none; b=L9kyrpA5lwVb9DDARQwui0/6LeCXhP9Q2dlgDfTinrjla1NYmrIO6+MOF+b4j/6ReJFh18fzgK21JXIaZjZSj0RWfSl6enIniIkKd/3uZFs6nF3ChL5vrQGbp7VQDOf/SeIPELQiGv5ZDe3HnJ1kkm7iWXwJSV6KgGEMQpZsGbc=
+	t=1709042727; cv=none; b=XWl5PdoOAzgn3/4cxFZwWR7aNyHT7CSxw3AGuzbuUF9O+4zw4v0NqvX0My3HtH0yBchqnDORfNA43kMj/ytzfUSrujXplZGS3DzZBu7EI8qm/8l3LplTyj/lpf1BvTrYDhztWJN9kfUqYx+4LISj93JmPRShYLuDMaiMQzCX/h4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043210; c=relaxed/simple;
-	bh=Vw72gz3kUrhRlwcv/EYUvg6VpdtQfvhCOIZF588z4oU=;
+	s=arc-20240116; t=1709042727; c=relaxed/simple;
+	bh=UPgLodhMqrelpXzVZhbNFedhMbuUNf/J1UL2td6/qcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q20VHVu5lzAxk+IcL740OdUk5vAEj0qM1JLMWbTUo+Ty8745wnG/eY225GauawRDLvqTXGSMMWeI8osJHgftMbFzMNMAUSecK1UvCPCTueF+yIaWwG0seygtQyqAhui4KXXNDeQ9WDszaLSe780Vprk3+Qn6/H+3ZwWn9JHeTTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ejz81Ws9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5EBFC433F1;
-	Tue, 27 Feb 2024 14:13:29 +0000 (UTC)
+	 MIME-Version; b=Q0pEar2U5VJ1t4rGZxNFQUhseeaunHckojS8QenWf638Sxqh8z29Cq+EthSiBdUjGeU7JabS9aaeRuIM5NtbzFEv/WABDFKvKtC4my3mQepxi/N2D/Rmc5rv0UZMps3Xfntme4JrcdALMMO7IvX1QwImywN12tKK2XUYtsYtL48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NzJBCGMd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56118C433C7;
+	Tue, 27 Feb 2024 14:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043210;
-	bh=Vw72gz3kUrhRlwcv/EYUvg6VpdtQfvhCOIZF588z4oU=;
+	s=korg; t=1709042726;
+	bh=UPgLodhMqrelpXzVZhbNFedhMbuUNf/J1UL2td6/qcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ejz81Ws9V76ND+i9F50pQFVS4XTRCk2YzEeHIJ6FlHm0JGBPrbYykTdP78OFvBeXe
-	 6ILcyZ55f2WA7TCKUFq9RXVUCbi3hCjMYvjFcJk5uzFPRcDmM7nSriJ34ujoiFCxvC
-	 9gokYNRDGFxMIKZYRowSMf7kyaTj6xN83uYAfnms=
+	b=NzJBCGMdk0cEFTpleWHGVOH1Uyz9W4ngKQxR92TEQ4zRvBcuW00YNFdtc5cJCLv3m
+	 tERAfR6dBFEXQgMht5zwUgeb3nyYEAmc5hljDYiT/3yxlcIplpmovKiZYlOmwDnf/1
+	 oOEqYP+BNiC0cYbj5JygHP5dO3yUcpPEOqm3zaRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phoenix Chen <asbeltogf@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 025/195] platform/x86: touchscreen_dmi: Add info for the TECLAST X16 Plus tablet
-Date: Tue, 27 Feb 2024 14:24:46 +0100
-Message-ID: <20240227131611.227407074@linuxfoundation.org>
+	Frank Li <Frank.Li@nxp.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 5.15 099/245] usb: cdns3: fixed memory use after free at cdns3_gadget_ep_disable()
+Date: Tue, 27 Feb 2024 14:24:47 +0100
+Message-ID: <20240227131618.436155855@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phoenix Chen <asbeltogf@gmail.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit 1abdf288b0ef5606f76b6e191fa6df05330e3d7e ]
+commit cd45f99034b0c8c9cb346dd0d6407a95ca3d36f6 upstream.
 
-Add touch screen info for TECLAST X16 Plus tablet.
+  ...
+  cdns3_gadget_ep_free_request(&priv_ep->endpoint, &priv_req->request);
+  list_del_init(&priv_req->list);
+  ...
 
-Signed-off-by: Phoenix Chen <asbeltogf@gmail.com>
-Link: https://lore.kernel.org/r/20240126095308.5042-1-asbeltogf@gmail.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+'priv_req' actually free at cdns3_gadget_ep_free_request(). But
+list_del_init() use priv_req->list after it.
+
+[ 1542.642868][  T534] BUG: KFENCE: use-after-free read in __list_del_entry_valid+0x10/0xd4
+[ 1542.642868][  T534]
+[ 1542.653162][  T534] Use-after-free read at 0x000000009ed0ba99 (in kfence-#3):
+[ 1542.660311][  T534]  __list_del_entry_valid+0x10/0xd4
+[ 1542.665375][  T534]  cdns3_gadget_ep_disable+0x1f8/0x388 [cdns3]
+[ 1542.671571][  T534]  usb_ep_disable+0x44/0xe4
+[ 1542.675948][  T534]  ffs_func_eps_disable+0x64/0xc8
+[ 1542.680839][  T534]  ffs_func_set_alt+0x74/0x368
+[ 1542.685478][  T534]  ffs_func_disable+0x18/0x28
+
+Move list_del_init() before cdns3_gadget_ep_free_request() to resolve this
+problem.
+
+Cc: stable@vger.kernel.org
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20240202154217.661867-1-Frank.Li@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/touchscreen_dmi.c | 35 ++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ drivers/usb/cdns3/cdns3-gadget.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
-index 9a92d515abb9b..50ec19188a20d 100644
---- a/drivers/platform/x86/touchscreen_dmi.c
-+++ b/drivers/platform/x86/touchscreen_dmi.c
-@@ -913,6 +913,32 @@ static const struct ts_dmi_data teclast_tbook11_data = {
- 	.properties	= teclast_tbook11_props,
- };
+--- a/drivers/usb/cdns3/cdns3-gadget.c
++++ b/drivers/usb/cdns3/cdns3-gadget.c
+@@ -2537,11 +2537,11 @@ static int cdns3_gadget_ep_disable(struc
  
-+static const struct property_entry teclast_x16_plus_props[] = {
-+	PROPERTY_ENTRY_U32("touchscreen-min-x", 8),
-+	PROPERTY_ENTRY_U32("touchscreen-min-y", 14),
-+	PROPERTY_ENTRY_U32("touchscreen-size-x", 1916),
-+	PROPERTY_ENTRY_U32("touchscreen-size-y", 1264),
-+	PROPERTY_ENTRY_BOOL("touchscreen-inverted-y"),
-+	PROPERTY_ENTRY_STRING("firmware-name", "gsl3692-teclast-x16-plus.fw"),
-+	PROPERTY_ENTRY_U32("silead,max-fingers", 10),
-+	PROPERTY_ENTRY_BOOL("silead,home-button"),
-+	{ }
-+};
-+
-+static const struct ts_dmi_data teclast_x16_plus_data = {
-+	.embedded_fw = {
-+		.name	= "silead/gsl3692-teclast-x16-plus.fw",
-+		.prefix = { 0xf0, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00 },
-+		.length	= 43560,
-+		.sha256	= { 0x9d, 0xb0, 0x3d, 0xf1, 0x00, 0x3c, 0xb5, 0x25,
-+			    0x62, 0x8a, 0xa0, 0x93, 0x4b, 0xe0, 0x4e, 0x75,
-+			    0xd1, 0x27, 0xb1, 0x65, 0x3c, 0xba, 0xa5, 0x0f,
-+			    0xcd, 0xb4, 0xbe, 0x00, 0xbb, 0xf6, 0x43, 0x29 },
-+	},
-+	.acpi_name	= "MSSL1680:00",
-+	.properties	= teclast_x16_plus_props,
-+};
-+
- static const struct property_entry teclast_x3_plus_props[] = {
- 	PROPERTY_ENTRY_U32("touchscreen-size-x", 1980),
- 	PROPERTY_ENTRY_U32("touchscreen-size-y", 1500),
-@@ -1567,6 +1593,15 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_SKU, "E5A6_A1"),
- 		},
- 	},
-+	{
-+		/* Teclast X16 Plus */
-+		.driver_data = (void *)&teclast_x16_plus_data,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "TECLAST"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Default string"),
-+			DMI_MATCH(DMI_PRODUCT_SKU, "D3A5_A1"),
-+		},
-+	},
- 	{
- 		/* Teclast X3 Plus */
- 		.driver_data = (void *)&teclast_x3_plus_data,
--- 
-2.43.0
-
+ 	while (!list_empty(&priv_ep->wa2_descmiss_req_list)) {
+ 		priv_req = cdns3_next_priv_request(&priv_ep->wa2_descmiss_req_list);
++		list_del_init(&priv_req->list);
+ 
+ 		kfree(priv_req->request.buf);
+ 		cdns3_gadget_ep_free_request(&priv_ep->endpoint,
+ 					     &priv_req->request);
+-		list_del_init(&priv_req->list);
+ 		--priv_ep->wa2_counter;
+ 	}
+ 
 
 
 
