@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-25121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 796E38697D8
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:25:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 376A8869859
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:32:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3454728FDC4
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:25:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64BAE1C2177F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB4D014037E;
-	Tue, 27 Feb 2024 14:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E9741468E7;
+	Tue, 27 Feb 2024 14:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oTNZTdQI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tj8yprrE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5D113B7AB;
-	Tue, 27 Feb 2024 14:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C105B1468E5;
+	Tue, 27 Feb 2024 14:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043923; cv=none; b=ObcjRvn7hcCKSBOLe2xXsg5WxS77c/ySjSO5xUJUKtpiki4BQLqBM4HwJWNBXi4xQ1iWoysrbbWmywKT1Ku25xDrSvmS4R+nVTVD1V+/RIZvU2qDEif3B7/sBHeTSNC82sbm2nB+9PZ9v7TXJy5oWECGLVMZMG7I/kMwTfOfAPE=
+	t=1709044233; cv=none; b=asNDs2GYyN0viPoYWVbIhTPJrRJ4YyuKP0jZDjVDxLvJrR2Js5/M1c1nSnCKcY9rHdna4dyZNT4Hawf3LamkNhPFF+ki6cnX224O5jOwCFluG5S7QOg426H4mCEegWAY2Zz5dKG1CdiNsciz21YLCbBirHcfoCrYK9PsLxQdUK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043923; c=relaxed/simple;
-	bh=G4r0macorRXP+Ju/F02ws0p9P7Ed0PhmeX8jdszdUaI=;
+	s=arc-20240116; t=1709044233; c=relaxed/simple;
+	bh=ZT/LgjEwOjPG0bDH3ytMJd6W2wQdDxajwqJOARZ5/Z8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kn82MjPOAMiBRKHJXKmTG6L/tUq+CMshCarO61h8NUDOUcPJzcFP4OF541xIo87T2Yj7ZeAjaQhdCHeBdnHwDYTADXdRIsQGRD/bHFnInsoIbIMxip6m1m+cv8aNNO2M36Twe0GRZWlXW/arNsl3wwhiG3vF+58zbOMm8JWlp0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oTNZTdQI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB04AC433F1;
-	Tue, 27 Feb 2024 14:25:22 +0000 (UTC)
+	 MIME-Version; b=iJVdmR8l3a+hpgycWG2o0XEyEmlbPa6Zuv8dJfQAJ7D3C2oU/dN9pZ+SFBWx9QYY2rLUtd7x4jySpXHFDDuLQ1emMTJDQNs6mtMcMFJrEicF3B2jSSpY9JNV3H2FfPVWJvFleuaSwYsv5byY1PKqntU5pF1P/Aws6Shf8Qu0XT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tj8yprrE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50851C433C7;
+	Tue, 27 Feb 2024 14:30:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043923;
-	bh=G4r0macorRXP+Ju/F02ws0p9P7Ed0PhmeX8jdszdUaI=;
+	s=korg; t=1709044233;
+	bh=ZT/LgjEwOjPG0bDH3ytMJd6W2wQdDxajwqJOARZ5/Z8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oTNZTdQIcayf6p2OZBo6gFpuucQyvieybuCk/lMXY3PIKHtOe6RVhF0K7qAT5h9H3
-	 39DtHFVhQbM+AvdBL6+RG1/PDMIHKX7QhyF8lXCHT3bpRdCAPFSd75LKdqTefZsKEB
-	 FJbhx8qUYZitlOmALAD4xyVIN51u900G8ggYEaNs=
+	b=tj8yprrEI2DI/0z/avfs75qkVJ+anGDWZ5V7bHA8YFXvK0h367zOPcDbES3dFTMhe
+	 gp0ud0TTrDznEInUdN+B/VXrHody6/kQB+MS2W89xRFjhd4JvI7XJ8ufFpF5OJSiCe
+	 gbWBH7Su5Q8zQlVOw18MojUSjz/ZEJ6Xp/WWwoT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andriin@fb.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 5.4 84/84] scripts/bpf: Fix xdp_md forward declaration typo
-Date: Tue, 27 Feb 2024 14:27:51 +0100
-Message-ID: <20240227131555.612933290@linuxfoundation.org>
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 111/122] s390: use the correct count for __iowrite64_copy()
+Date: Tue, 27 Feb 2024 14:27:52 +0100
+Message-ID: <20240227131602.336458681@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andriin@fb.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-commit e0b68fb186b251374adbd870f99b1ecea236e770 upstream.
+[ Upstream commit 723a2cc8d69d4342b47dfddbfe6c19f1b135f09b ]
 
-Fix typo in struct xpd_md, generated from bpf_helpers_doc.py, which is
-causing compilation warnings for programs using bpf_helpers.h
+The signature for __iowrite64_copy() requires the number of 64 bit
+quantities, not bytes. Multiple by 8 to get to a byte length before
+invoking zpci_memcpy_toio()
 
-Fixes: 7a387bed47f7 ("scripts/bpf: teach bpf_helpers_doc.py to dump BPF helper definitions")
-Signed-off-by: Andrii Nakryiko <andriin@fb.com>
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Link: https://lore.kernel.org/bpf/20191010042534.290562-1-andriin@fb.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 87bc359b9822 ("s390/pci: speed up __iowrite64_copy by using pci store block insn")
+Acked-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/0-v1-9223d11a7662+1d7785-s390_iowrite64_jgg@nvidia.com
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/bpf_helpers_doc.py |    2 +-
+ arch/s390/pci/pci.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/scripts/bpf_helpers_doc.py
-+++ b/scripts/bpf_helpers_doc.py
-@@ -418,7 +418,7 @@ class PrinterHelpers(Printer):
+diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
+index 74799439b2598..beecc36c30276 100644
+--- a/arch/s390/pci/pci.c
++++ b/arch/s390/pci/pci.c
+@@ -225,7 +225,7 @@ resource_size_t pcibios_align_resource(void *data, const struct resource *res,
+ /* combine single writes by using store-block insn */
+ void __iowrite64_copy(void __iomem *to, const void *from, size_t count)
+ {
+-       zpci_memcpy_toio(to, from, count);
++	zpci_memcpy_toio(to, from, count * 8);
+ }
  
-             'struct __sk_buff',
-             'struct sk_msg_md',
--            'struct xpd_md',
-+            'struct xdp_md',
-     ]
-     known_types = {
-             '...',
+ static void __iomem *__ioremap(phys_addr_t addr, size_t size, pgprot_t prot)
+-- 
+2.43.0
+
 
 
 
