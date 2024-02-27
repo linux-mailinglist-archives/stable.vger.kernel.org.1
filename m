@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-24436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F25D869478
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:54:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41BF08695CD
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:05:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7099C1C239E8
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:54:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC4151F2C090
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:05:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A602013F007;
-	Tue, 27 Feb 2024 13:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633971420DA;
+	Tue, 27 Feb 2024 14:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SlRcPxz3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SFDyCl2E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657C854BD4;
-	Tue, 27 Feb 2024 13:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F4221419A1;
+	Tue, 27 Feb 2024 14:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042000; cv=none; b=c5my4NKqhHW0sv8+8pJPcsXheH2lEioXCnsjxtXZ0+MLzHZvogLwLo5XU0V7uyDmoYIQ6PRDZP5BDM4/Sy6sFlbRKHMGaqInPVEdfGiH9EMVeofltCyY8uT4v9R61MIJShbYPl0h9G4rhw1KqT2lqH/vKWdJL6btxQvnjQY8mDk=
+	t=1709042713; cv=none; b=hCZWHhK2E6ADCOECtZWdwvxYUqyxUcl5/edzASaKDpCvxLZZcWwQFyUw/a25Id/gQVoBm8v6kqtoKSp9GxEolOIqnihs87aTOFEKeQkZtAB4Tg/EbWYGB75DlbunTZ4hpbNOPfaRirPhbrOOgplRlQjAQdJNW0XmzfxZgQniyS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042000; c=relaxed/simple;
-	bh=BU3ARFB6twQWfNu+5z7Z+E4GeHOvHxD/qv+Qtg/uTh8=;
+	s=arc-20240116; t=1709042713; c=relaxed/simple;
+	bh=MTS46WMYofkUn32+4IqLCYXBXircB8TkmPE0xRm6UKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RVir82B65OwyKPlQQBvxOEt8Aa7+cpHzyTM038O0QHjOBYlfBqdsqLG2C4VC8azGsjbG3Q1T5n+QvrkH2IDhf7aMo8NgBiOJLRbe8fe+Kf6fyyYn/+yP33xzxMgCMs74sVkSfv9xvTcIUxENRqm6WD60z5fl80h/astqPMgzbZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SlRcPxz3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A61C433C7;
-	Tue, 27 Feb 2024 13:53:19 +0000 (UTC)
+	 MIME-Version; b=WABBUrQbWH/DGXXM/qd9tr0SWA8peHVYnvGEOvgF2GnTc2gznWd026B7ll7eGnZF33PMF1lU5fZnXf2VZuQBJpRg+oHyLJBa01L7dhUuFRPKFwVRoljxcab755SluSg+mP08rYJAtIENf+3jCpDx1kPr2ozW1IAeLwUWsL4vDDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SFDyCl2E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54AC7C433F1;
+	Tue, 27 Feb 2024 14:05:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041999;
-	bh=BU3ARFB6twQWfNu+5z7Z+E4GeHOvHxD/qv+Qtg/uTh8=;
+	s=korg; t=1709042712;
+	bh=MTS46WMYofkUn32+4IqLCYXBXircB8TkmPE0xRm6UKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SlRcPxz3VmaDN98OQnrYsYlKB5gxDE414k0yZh4eHmw5rp1o0gGW4QqasF9ezbpgw
-	 EbX3tSaoFncTSEN39+MCSkxHusmM1QJuTY3lJ6WC0Db3aJdFs8T+/Yg7Vbnhy5xVrh
-	 oR3TacSUrn6qSo5hbo4sPOsdd+X/+xT+YcTgLWrc=
+	b=SFDyCl2ED80K3MI3gaFnvFiMUYSZxZIISHC7yI/wRaP72MkNvKnZvVF/BqZ1fGgkN
+	 sP/LEeSfPUlgwpShBrAU4NcL4bel1kanzFtKNmGXc1pxv3Ay0LGMPk8QlNmWqRZWbb
+	 6WgqSJOlS7jkFVC2Sxsq+OeIfpk/oKds7ByshuM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 142/299] drm/amd/display: adjust few initialization order in dm
+	Andrew Bresticker <abrestic@rivosinc.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 065/245] efi: runtime: Fix potential overflow of soft-reserved region size
 Date: Tue, 27 Feb 2024 14:24:13 +0100
-Message-ID: <20240227131630.424816053@linuxfoundation.org>
+Message-ID: <20240227131617.356154947@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,112 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Lin <wayne.lin@amd.com>
+From: Andrew Bresticker <abrestic@rivosinc.com>
 
-commit 22e1dc4b2fec17af70f297a4295c5f19a0f3fbeb upstream.
+[ Upstream commit de1034b38a346ef6be25fe8792f5d1e0684d5ff4 ]
 
-[Why]
-Observe error message "Can't retrieve aconnector in hpd_rx_irq_offload_work"
-when boot up with a mst tbt4 dock connected. After analyzing, there are few
-parts needed to be adjusted:
+md_size will have been narrowed if we have >= 4GB worth of pages in a
+soft-reserved region.
 
-1. hpd_rx_offload_wq[].aconnector is not initialzed before the dmub outbox
-hpd_irq handler get registered which causes the error message.
-
-2. registeration of hpd and hpd_rx_irq event for usb4 dp tunneling is not
-aligned with legacy interface sequence
-
-[How]
-Put DMUB_NOTIFICATION_HPD and DMUB_NOTIFICATION_HPD_IRQ handler
-registration into register_hpd_handlers() to align other interfaces and
-get hpd_rx_offload_wq[].aconnector initialized earlier than that.
-
-Leave DMUB_NOTIFICATION_AUX_REPLY registered as it was since we need that
-while calling dc_link_detect(). USB4 connection status will be proactively
-detected by dc_link_detect_connection_type() in amdgpu_dm_initialize_drm_device()
-
-Cc: Stable <stable@vger.kernel.org>
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andrew Bresticker <abrestic@rivosinc.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   37 ++++++++++------------
- 1 file changed, 18 insertions(+), 19 deletions(-)
+ drivers/firmware/efi/arm-runtime.c   | 2 +-
+ drivers/firmware/efi/riscv-runtime.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -1816,21 +1816,12 @@ static int amdgpu_dm_init(struct amdgpu_
- 			DRM_ERROR("amdgpu: fail to register dmub aux callback");
- 			goto error;
- 		}
--		if (!register_dmub_notify_callback(adev, DMUB_NOTIFICATION_HPD, dmub_hpd_callback, true)) {
--			DRM_ERROR("amdgpu: fail to register dmub hpd callback");
--			goto error;
--		}
--		if (!register_dmub_notify_callback(adev, DMUB_NOTIFICATION_HPD_IRQ, dmub_hpd_callback, true)) {
--			DRM_ERROR("amdgpu: fail to register dmub hpd callback");
--			goto error;
--		}
--	}
--
--	/* Enable outbox notification only after IRQ handlers are registered and DMUB is alive.
--	 * It is expected that DMUB will resend any pending notifications at this point, for
--	 * example HPD from DPIA.
--	 */
--	if (dc_is_dmub_outbox_supported(adev->dm.dc)) {
-+		/* Enable outbox notification only after IRQ handlers are registered and DMUB is alive.
-+		 * It is expected that DMUB will resend any pending notifications at this point. Note
-+		 * that hpd and hpd_irq handler registration are deferred to register_hpd_handlers() to
-+		 * align legacy interface initialization sequence. Connection status will be proactivly
-+		 * detected once in the amdgpu_dm_initialize_drm_device.
-+		 */
- 		dc_enable_dmub_outbox(adev->dm.dc);
+diff --git a/drivers/firmware/efi/arm-runtime.c b/drivers/firmware/efi/arm-runtime.c
+index 3359ae2adf24b..9054c2852580d 100644
+--- a/drivers/firmware/efi/arm-runtime.c
++++ b/drivers/firmware/efi/arm-runtime.c
+@@ -107,7 +107,7 @@ static int __init arm_enable_runtime_services(void)
+ 		efi_memory_desc_t *md;
  
- 		/* DPIA trace goes to dmesg logs only if outbox is enabled */
-@@ -3484,6 +3475,14 @@ static void register_hpd_handlers(struct
- 	int_params.requested_polarity = INTERRUPT_POLARITY_DEFAULT;
- 	int_params.current_polarity = INTERRUPT_POLARITY_DEFAULT;
+ 		for_each_efi_memory_desc(md) {
+-			int md_size = md->num_pages << EFI_PAGE_SHIFT;
++			u64 md_size = md->num_pages << EFI_PAGE_SHIFT;
+ 			struct resource *res;
  
-+	if (dc_is_dmub_outbox_supported(adev->dm.dc)) {
-+		if (!register_dmub_notify_callback(adev, DMUB_NOTIFICATION_HPD, dmub_hpd_callback, true))
-+			DRM_ERROR("amdgpu: fail to register dmub hpd callback");
-+
-+		if (!register_dmub_notify_callback(adev, DMUB_NOTIFICATION_HPD_IRQ, dmub_hpd_callback, true))
-+			DRM_ERROR("amdgpu: fail to register dmub hpd callback");
-+	}
-+
- 	list_for_each_entry(connector,
- 			&dev->mode_config.connector_list, head)	{
+ 			if (!(md->attribute & EFI_MEMORY_SP))
+diff --git a/drivers/firmware/efi/riscv-runtime.c b/drivers/firmware/efi/riscv-runtime.c
+index d28e715d2bcc8..6711e64eb0b16 100644
+--- a/drivers/firmware/efi/riscv-runtime.c
++++ b/drivers/firmware/efi/riscv-runtime.c
+@@ -85,7 +85,7 @@ static int __init riscv_enable_runtime_services(void)
+ 		efi_memory_desc_t *md;
  
-@@ -3509,10 +3508,6 @@ static void register_hpd_handlers(struct
- 					handle_hpd_rx_irq,
- 					(void *) aconnector);
- 		}
--
--		if (adev->dm.hpd_rx_offload_wq)
--			adev->dm.hpd_rx_offload_wq[connector->index].aconnector =
--				aconnector;
- 	}
- }
+ 		for_each_efi_memory_desc(md) {
+-			int md_size = md->num_pages << EFI_PAGE_SHIFT;
++			u64 md_size = md->num_pages << EFI_PAGE_SHIFT;
+ 			struct resource *res;
  
-@@ -4481,6 +4476,10 @@ static int amdgpu_dm_initialize_drm_devi
- 
- 		link = dc_get_link_at_index(dm->dc, i);
- 
-+		if (dm->hpd_rx_offload_wq)
-+			dm->hpd_rx_offload_wq[aconnector->base.index].aconnector =
-+				aconnector;
-+
- 		if (!dc_link_detect_connection_type(link, &new_connection_type))
- 			DRM_ERROR("KMS: Failed to detect connector\n");
- 
+ 			if (!(md->attribute & EFI_MEMORY_SP))
+-- 
+2.43.0
+
 
 
 
