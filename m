@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-25042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FA7786977A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:21:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75A798697E3
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:26:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D81F1C24C6D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:21:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20E01B2AB4B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:24:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AF3913EFE9;
-	Tue, 27 Feb 2024 14:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC6711420A0;
+	Tue, 27 Feb 2024 14:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ip8iF47i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yuYQ5RR5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092B613B2B4;
-	Tue, 27 Feb 2024 14:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD44B13B2B4;
+	Tue, 27 Feb 2024 14:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043694; cv=none; b=orfct+7OSF8TpBw+yj6mujydpqNZHuKY29Iwr2BDSBktLJonOqMP449fjqsL9rNNsJemLvjOLHz7NvAiBeDtgiCG2XNpreWGnzP9Rj79Ph7knpPqNZFxsWmuaxsSR6K1dvA6J3WcuIztSgHPJUFJGtl2V9cfz2TqiITv36EqJs8=
+	t=1709043881; cv=none; b=rIYQc0iMKjLJA81cX/4GMKnUKNRkoCsJbuuSFZybJT41DtKHHcD9lO2apslkYA/2bdq0aiStFLa1EAP2qJtnHkTJE73l6AD2ap+Gq1eV6dvGvlZUQ8AXXLtpTztumGlwiUj0uKgAqZdXbYBnO1FUGjlqjgQxclo2oDII1QpMyoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043694; c=relaxed/simple;
-	bh=gaozS9Qp59bN/46AYW4y6+cvHzj3lt4eJv3iU1p4x9s=;
+	s=arc-20240116; t=1709043881; c=relaxed/simple;
+	bh=MYXw24w7gOCZ6kgzgx9ApxlGkiJhgjgJdhWBZJrf95Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dXinKTEFdMrEZunfwgdiGIBHevRAjakykAKyiFCdIetZloUpA4ngz0RmTM4xXbm5d3r95dOxfgFDGrDoJ3BszKRHXijaVKG0xuXtXzXJ+4vk7Ehr4LOnm1rpcE1cdskUarLOgVXjYG5qR9ng3B8ysfwrf4DosBVliUGlVtpXBuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ip8iF47i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84F07C433F1;
-	Tue, 27 Feb 2024 14:21:33 +0000 (UTC)
+	 MIME-Version; b=q6GphjHfGgrEa3eWogsWBX1hymtyadLf7YSeNqgcDiNHxKFxv7SPwspBY9cBB8eItjrihoKfF7+/fNrZuja1kmXzF2+mnRNRdzbc/oi+Q3ymzuy78Clcf80hGnKqkjz8eluBHpbSixbnZtRrHxAgv3BYwMZ6P1fPFtY9TaPgoNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yuYQ5RR5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 368EDC433C7;
+	Tue, 27 Feb 2024 14:24:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043693;
-	bh=gaozS9Qp59bN/46AYW4y6+cvHzj3lt4eJv3iU1p4x9s=;
+	s=korg; t=1709043881;
+	bh=MYXw24w7gOCZ6kgzgx9ApxlGkiJhgjgJdhWBZJrf95Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ip8iF47i0TqCpbt+KFZa+99T/BbCySCOD0gcdlJ0Cykw+7V2uEazOQelCFKX9tX5U
-	 PSiWKp/BTUL+ql8/ba0IoZfz+Uj9uVBfwiS6cRufmw9ARUKq6XiCrRm2KfT4d1ll9g
-	 BgcC0POkMGSmdPUUleN48bcq789c9/WDtE8qoIMQ=
+	b=yuYQ5RR5ew67Dr6A/YD1EGXpJO5lPeFyZ6/wOydQzswx3JAjrLRTZNtjoLo93HIxR
+	 IPISkfNN5DxWqQhz5b/n95NVhv0Pdl4W+jI6vfAkt1sx6EcivKZsrWrHMsnkz9Mapb
+	 LT78ma5IrbyFxj1vQrt9mTxH1er041UUaR+KbWRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lennert Buytenhek <kernel@wantstofly.org>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.1 193/195] ahci: Extend ASM1061 43-bit DMA address quirk to other ASM106x parts
-Date: Tue, 27 Feb 2024 14:27:34 +0100
-Message-ID: <20240227131616.775632548@linuxfoundation.org>
+	Gianmarco Lusvardi <glusvardi@posteo.net>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Quentin Monnet <quentin@isovalent.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 68/84] bpf, scripts: Correct GPL license name
+Date: Tue, 27 Feb 2024 14:27:35 +0100
+Message-ID: <20240227131555.083743306@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lennert Buytenhek <kernel@wantstofly.org>
+From: Gianmarco Lusvardi <glusvardi@posteo.net>
 
-commit 51af8f255bdaca6d501afc0d085b808f67b44d91 upstream.
+[ Upstream commit e37243b65d528a8a9f8b9a57a43885f8e8dfc15c ]
 
-ASMedia have confirmed that all ASM106x parts currently listed in
-ahci_pci_tbl[] suffer from the 43-bit DMA address limitation that we ran
-into on the ASM1061, and therefore, we need to apply the quirk added by
-commit 20730e9b2778 ("ahci: add 43-bit DMA address quirk for ASMedia
-ASM1061 controllers") to the other supported ASM106x parts as well.
+The bpf_doc script refers to the GPL as the "GNU Privacy License".
+I strongly suspect that the author wanted to refer to the GNU General
+Public License, under which the Linux kernel is released, as, to the
+best of my knowledge, there is no license named "GNU Privacy License".
+This patch corrects the license name in the script accordingly.
 
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/linux-ide/ZbopwKZJAKQRA4Xv@x1-carbon/
-Signed-off-by: Lennert Buytenhek <kernel@wantstofly.org>
-[cassel: add link to ASMedia confirmation email]
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 56a092c89505 ("bpf: add script and prepare bpf.h for new helpers documentation")
+Signed-off-by: Gianmarco Lusvardi <glusvardi@posteo.net>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Quentin Monnet <quentin@isovalent.com>
+Link: https://lore.kernel.org/bpf/20240213230544.930018-3-glusvardi@posteo.net
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ scripts/bpf_helpers_doc.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -606,13 +606,13 @@ static const struct pci_device_id ahci_p
- 	{ PCI_VDEVICE(PROMISE, 0x3781), board_ahci },   /* FastTrak TX8660 ahci-mode */
+diff --git a/scripts/bpf_helpers_doc.py b/scripts/bpf_helpers_doc.py
+index 15d3d83d6297c..78b7194a05521 100755
+--- a/scripts/bpf_helpers_doc.py
++++ b/scripts/bpf_helpers_doc.py
+@@ -286,7 +286,7 @@ eBPF programs can have an associated license, passed along with the bytecode
+ instructions to the kernel when the programs are loaded. The format for that
+ string is identical to the one in use for kernel modules (Dual licenses, such
+ as "Dual BSD/GPL", may be used). Some helper functions are only accessible to
+-programs that are compatible with the GNU Privacy License (GPL).
++programs that are compatible with the GNU General Public License (GNU GPL).
  
- 	/* ASMedia */
--	{ PCI_VDEVICE(ASMEDIA, 0x0601), board_ahci },	/* ASM1060 */
--	{ PCI_VDEVICE(ASMEDIA, 0x0602), board_ahci },	/* ASM1060 */
-+	{ PCI_VDEVICE(ASMEDIA, 0x0601), board_ahci_43bit_dma },	/* ASM1060 */
-+	{ PCI_VDEVICE(ASMEDIA, 0x0602), board_ahci_43bit_dma },	/* ASM1060 */
- 	{ PCI_VDEVICE(ASMEDIA, 0x0611), board_ahci_43bit_dma },	/* ASM1061 */
- 	{ PCI_VDEVICE(ASMEDIA, 0x0612), board_ahci_43bit_dma },	/* ASM1061/1062 */
--	{ PCI_VDEVICE(ASMEDIA, 0x0621), board_ahci },   /* ASM1061R */
--	{ PCI_VDEVICE(ASMEDIA, 0x0622), board_ahci },   /* ASM1062R */
--	{ PCI_VDEVICE(ASMEDIA, 0x0624), board_ahci },   /* ASM1062+JMB575 */
-+	{ PCI_VDEVICE(ASMEDIA, 0x0621), board_ahci_43bit_dma },	/* ASM1061R */
-+	{ PCI_VDEVICE(ASMEDIA, 0x0622), board_ahci_43bit_dma },	/* ASM1062R */
-+	{ PCI_VDEVICE(ASMEDIA, 0x0624), board_ahci_43bit_dma },	/* ASM1062+JMB575 */
- 	{ PCI_VDEVICE(ASMEDIA, 0x1062), board_ahci },	/* ASM1062A */
- 	{ PCI_VDEVICE(ASMEDIA, 0x1064), board_ahci },	/* ASM1064 */
- 	{ PCI_VDEVICE(ASMEDIA, 0x1164), board_ahci },   /* ASM1164 */
+ In order to use such helpers, the eBPF program must be loaded with the correct
+ license string passed (via **attr**) to the **bpf**\ () system call, and this
+-- 
+2.43.0
+
 
 
 
