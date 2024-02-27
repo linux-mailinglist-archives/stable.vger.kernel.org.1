@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-24864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9401D86969F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:14:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F8528695F9
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5B671C23417
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:14:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46FF728F122
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 127F6145322;
-	Tue, 27 Feb 2024 14:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D361145343;
+	Tue, 27 Feb 2024 14:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMmnyHR/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aapVMYhR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E7C78B61;
-	Tue, 27 Feb 2024 14:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F40145B23;
+	Tue, 27 Feb 2024 14:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043199; cv=none; b=AggBA4Gc4p8ThGm+SwQeQj8txTMogcMPf3OEGzUUd/7hw0RllsePJD2hyBo+m2CT8SeLqoBNXPQTp5c3qb1X0ayKVql9D8/Sx+J3DvzYIYd5fN9k2tmpPvH2UK8a1HnttjbgIwNoyV1k/7w1QFyoJ5sUVxqFtMnITVlI7OTMwE0=
+	t=1709042803; cv=none; b=Nu/Iyz5k5N+aXJCGLLsb+Uc5e8kRwjccqcm/OyqatvKQpHPL/YilqhBgrcFBw4BJyRcK0TFL48O7hpEzb5ez9/LAlC0746qiRT45lUn9ebvhB1b6CPiPRhEU+vbrPELz1ZUXvkHlABx+L9mPL0Ts9golR/YzL/UjHv8BlA2QvlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043199; c=relaxed/simple;
-	bh=pseK6M990om+kS/rrVy5sG2hIWicWvX3yMHbzAxldUE=;
+	s=arc-20240116; t=1709042803; c=relaxed/simple;
+	bh=dWaAoJROR2DvqZABTersWUKELtGHI1dmPbHFwUDYH+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i7P5L8n0vxY0+LcxyFPxpI7xaKJTXLCwiCwHsZrrG62kgqy8wluDJlJLtPGsHw4d3Myxe6318xMI4rfyYYNLk24oznZW6vUMRpDvmHfhZ+CrdK06YZq7pNJlBqru8koDWJsqRHbrMHBOb1CZmDqI+k5anvkuv9TihgtnZk7SMrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMmnyHR/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F457C433C7;
-	Tue, 27 Feb 2024 14:13:19 +0000 (UTC)
+	 MIME-Version; b=XFR+oOIZYr4mrBITCEgww593bshQq+QiMOy3LRVG8NDnOKsvpOT3jrdXwHUCwOgk4uHgH3cM3e5s/Kb1tykFFortBtaXTgoUK1KBe1DgRrrfUwHW50pG9Ozx77CdH5DU2w3Wr8TVziYjAIqxV5c1owlddYFIE3I9V6niu+FJGTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aapVMYhR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61268C433C7;
+	Tue, 27 Feb 2024 14:06:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043199;
-	bh=pseK6M990om+kS/rrVy5sG2hIWicWvX3yMHbzAxldUE=;
+	s=korg; t=1709042803;
+	bh=dWaAoJROR2DvqZABTersWUKELtGHI1dmPbHFwUDYH+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XMmnyHR/VAmLR/EmJ6p8/5xNYyzdCr6QB+1bZ1XsITvhp7whimpDInDJ9F1iU3gkd
-	 E7hx7fKAZgk7GVJ+9Hu7SsnYLdfOevop2LW2+Y4N9wXXf8nt60zedtV06x2nr7K0el
-	 giosyEsL4M3SqC8k4+SbeRJzwNjF0/6qVhI8Xpyk=
+	b=aapVMYhRxheLwx8L1vJpO1UJbeS1vruGRbFShsFc1RHjuy8Y4ep2RS8EEj2xSqIjV
+	 4EqhEA6QuW6MLIwJN0DFTRmF2avXdFjABjvRet0jqZEE4y4Og3rm9mZ8wd6eefhC1q
+	 GzAZqAatABbW2MxkKuwwgp6immI9ajhe0C2zJBto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Huang Pei <huangpei@loongson.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 024/195] MIPS: reserve exception vector space ONLY ONCE
-Date: Tue, 27 Feb 2024 14:24:45 +0100
-Message-ID: <20240227131611.194973905@linuxfoundation.org>
+	Pawel Laszczak <pawell@cadence.com>
+Subject: [PATCH 5.15 098/245] usb: cdnsp: fixed issue with incorrect detecting CDNSP family controllers
+Date: Tue, 27 Feb 2024 14:24:46 +0100
+Message-ID: <20240227131618.406231484@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +60,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huang Pei <huangpei@loongson.cn>
+From: Pawel Laszczak <pawell@cadence.com>
 
-[ Upstream commit abcabb9e30a1f9a69c76776f8abffc31c377b542 ]
+commit 47625b018c6bc788bc10dd654c82696eb0a5ef11 upstream.
 
-"cpu_probe" is called both by BP and APs, but reserving exception vector
-(like 0x0-0x1000) called by "cpu_probe" need once and calling on APs is
-too late since memblock is unavailable at that time.
+Cadence have several controllers from 0x000403xx family but current
+driver suuport detecting only one with DID equal 0x0004034E.
+It causes that if someone uses different CDNSP controller then driver
+will use incorrect version and register space.
+Patch fix this issue.
 
-So, reserve exception vector ONLY by BP.
-
-Suggested-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Huang Pei <huangpei@loongson.cn>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+cc: stable@vger.kernel.org
+Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+Link: https://lore.kernel.org/r/20240215121609.259772-1-pawell@cadence.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/kernel/traps.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/usb/cdns3/core.c |    1 -
+ drivers/usb/cdns3/drd.c  |   13 +++++++++----
+ drivers/usb/cdns3/drd.h  |    6 +++++-
+ 3 files changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/arch/mips/kernel/traps.c b/arch/mips/kernel/traps.c
-index 246c6a6b02614..5b778995d4483 100644
---- a/arch/mips/kernel/traps.c
-+++ b/arch/mips/kernel/traps.c
-@@ -2007,7 +2007,13 @@ unsigned long vi_handlers[64];
- 
- void reserve_exception_space(phys_addr_t addr, unsigned long size)
- {
--	memblock_reserve(addr, size);
-+	/*
-+	 * reserve exception space on CPUs other than CPU0
-+	 * is too late, since memblock is unavailable when APs
-+	 * up
-+	 */
-+	if (smp_processor_id() == 0)
-+		memblock_reserve(addr, size);
+--- a/drivers/usb/cdns3/core.c
++++ b/drivers/usb/cdns3/core.c
+@@ -394,7 +394,6 @@ pm_put:
+ 	return ret;
  }
  
- void __init *set_except_vector(int n, void *addr)
--- 
-2.43.0
-
+-
+ /**
+  * cdns_wakeup_irq - interrupt handler for wakeup events
+  * @irq: irq number for cdns3/cdnsp core device
+--- a/drivers/usb/cdns3/drd.c
++++ b/drivers/usb/cdns3/drd.c
+@@ -156,7 +156,8 @@ bool cdns_is_device(struct cdns *cdns)
+  */
+ static void cdns_otg_disable_irq(struct cdns *cdns)
+ {
+-	writel(0, &cdns->otg_irq_regs->ien);
++	if (cdns->version)
++		writel(0, &cdns->otg_irq_regs->ien);
+ }
+ 
+ /**
+@@ -418,15 +419,20 @@ int cdns_drd_init(struct cdns *cdns)
+ 
+ 		cdns->otg_regs = (void __iomem *)&cdns->otg_v1_regs->cmd;
+ 
+-		if (readl(&cdns->otg_cdnsp_regs->did) == OTG_CDNSP_DID) {
++		state = readl(&cdns->otg_cdnsp_regs->did);
++
++		if (OTG_CDNSP_CHECK_DID(state)) {
+ 			cdns->otg_irq_regs = (struct cdns_otg_irq_regs __iomem *)
+ 					      &cdns->otg_cdnsp_regs->ien;
+ 			cdns->version  = CDNSP_CONTROLLER_V2;
+-		} else {
++		} else if (OTG_CDNS3_CHECK_DID(state)) {
+ 			cdns->otg_irq_regs = (struct cdns_otg_irq_regs __iomem *)
+ 					      &cdns->otg_v1_regs->ien;
+ 			writel(1, &cdns->otg_v1_regs->simulate);
+ 			cdns->version  = CDNS3_CONTROLLER_V1;
++		} else {
++			dev_err(cdns->dev, "not supporte DID=0x%08x\n", state);
++			return -EINVAL;
+ 		}
+ 
+ 		dev_dbg(cdns->dev, "DRD version v1 (ID: %08x, rev: %08x)\n",
+@@ -479,7 +485,6 @@ int cdns_drd_exit(struct cdns *cdns)
+ 	return 0;
+ }
+ 
+-
+ /* Indicate the cdns3 core was power lost before */
+ bool cdns_power_is_lost(struct cdns *cdns)
+ {
+--- a/drivers/usb/cdns3/drd.h
++++ b/drivers/usb/cdns3/drd.h
+@@ -79,7 +79,11 @@ struct cdnsp_otg_regs {
+ 	__le32 susp_timing_ctrl;
+ };
+ 
+-#define OTG_CDNSP_DID	0x0004034E
++/* CDNSP driver supports 0x000403xx Cadence USB controller family. */
++#define OTG_CDNSP_CHECK_DID(did) (((did) & GENMASK(31, 8)) == 0x00040300)
++
++/* CDNS3 driver supports 0x000402xx Cadence USB controller family. */
++#define OTG_CDNS3_CHECK_DID(did) (((did) & GENMASK(31, 8)) == 0x00040200)
+ 
+ /*
+  * Common registers interface for both CDNS3 and CDNSP version of DRD.
 
 
 
