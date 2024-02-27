@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-25045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F82E86977F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:21:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 722F2869847
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:31:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D09781F24029
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:21:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E3B52952C3
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BFF31420DD;
-	Tue, 27 Feb 2024 14:21:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C9E913AA38;
+	Tue, 27 Feb 2024 14:29:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJ8PYRTm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7NBHm+A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD2413F016;
-	Tue, 27 Feb 2024 14:21:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296ED145B0D;
+	Tue, 27 Feb 2024 14:29:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043702; cv=none; b=QiduEE9MXqLxK+xiSKLAOfJjowWiY0ilqH/rwIpH+OoeX36Cpp5eoq7yjkOY8/Kqd427ZbQB31kHQo+G8BozSa8GtfuIa2OeB/c6BtqVPtN2x1Op4ASJBmc75nbyb5RDPFs1MYFQSXelD7PtFCD1r4Wh8Zte5WdOksdndj6m214=
+	t=1709044181; cv=none; b=bEVAqDDGSQN/HxZR2orQRNOUCkrP8+y09Q4z2kNCQFU9rZH5G6QjtH75qxYqfocK20aQarIeIPtmyHRkqZqysT6bo6L+J8b1ZYc/by34XlCF5QxfH6w2Oz2DawP6Ps0jYhO9AEyJQBDLJpgW9qr70vmKsXhrO5bp0uUM7x37Rl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043702; c=relaxed/simple;
-	bh=k7ckbAXJ9PE3jw9SjqoUTO95O8sZHk5tZu53OXOJHGc=;
+	s=arc-20240116; t=1709044181; c=relaxed/simple;
+	bh=ORllwEQjaIP+4jE/kM586n9rSt0PmLBZ16+X41Shh7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C3BhhWBFMpbKt18swy7G/nniStij0CT5tInti4q4D56xeUvc+SHg62xQWND+w6UN25ENiq4Gp4bBBZGMTnMn1qmNAlXI78PbL1+kreeqnkIu4a7MZWVS+71F4kZjkRU2isZKrrJ18dgm2h7tM8t1JmrcPPxKfQCSjWlvQHRtB6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJ8PYRTm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC1FBC433F1;
-	Tue, 27 Feb 2024 14:21:41 +0000 (UTC)
+	 MIME-Version; b=eCppFLAaWHtqQ22ZmzBnNLFiguK0juPfTt5mQJzhNdCYdHQeqyxgYEFOb6cD7CDJXE25RhDg0Q91ts1RF13LhvJHrERyc9owNPhnrC4Ufjl577KrZvudK34semAxAe/+hoaP1BHdd0YRofJqyGoorGhdREFLPKUj1J9073EItJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7NBHm+A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FBCBC433F1;
+	Tue, 27 Feb 2024 14:29:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043702;
-	bh=k7ckbAXJ9PE3jw9SjqoUTO95O8sZHk5tZu53OXOJHGc=;
+	s=korg; t=1709044181;
+	bh=ORllwEQjaIP+4jE/kM586n9rSt0PmLBZ16+X41Shh7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hJ8PYRTmlLoE2SxLZzuDfNZLoxi3/eAwhu5bhIVnyUKWutObT0zsOUUEG/tm6oFBr
-	 LBDWK3mMhfhQK5wZhkMWWJlxHACsGJSlo5KFSs/fFRPHAVBUX+HnR77GyqjtKhJpoU
-	 dY6RAFljkfXUWvoF7US59wIusu+gxRHdiiyzhAIY=
+	b=m7NBHm+A0t600XAdsmRLYF6hWjyhrkwRB5BmvbkaJNNwZWROwuGFbYBVOADUA11zn
+	 1Q879YOkitKbYhBCzVWiReLabYmQB6HWaI5I9gHGweekrbWX+zx9Lm4ndTJJOiuyLS
+	 IYOkJ8J2nsihKnvvRaykgZrOhRcM/wb0CV0IiE9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 191/195] mptcp: add needs_id for netlink appending addr
+	Frank Li <Frank.Li@nxp.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 5.10 091/122] usb: cdns3: fix memory double free when handle zero packet
 Date: Tue, 27 Feb 2024 14:27:32 +0100
-Message-ID: <20240227131616.709399360@linuxfoundation.org>
+Message-ID: <20240227131601.684233104@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit 584f3894262634596532cf43a5e782e34a0ce374 upstream.
+commit 5fd9e45f1ebcd57181358af28506e8a661a260b3 upstream.
 
-Just the same as userspace PM, a new parameter needs_id is added for
-in-kernel PM mptcp_pm_nl_append_new_local_addr() too.
+829  if (request->complete) {
+830          spin_unlock(&priv_dev->lock);
+831          usb_gadget_giveback_request(&priv_ep->endpoint,
+832                                    request);
+833          spin_lock(&priv_dev->lock);
+834  }
+835
+836  if (request->buf == priv_dev->zlp_buf)
+837      cdns3_gadget_ep_free_request(&priv_ep->endpoint, request);
 
-Add a new helper mptcp_pm_has_addr_attr_id() to check whether an address
-ID is set from PM or not.
+Driver append an additional zero packet request when queue a packet, which
+length mod max packet size is 0. When transfer complete, run to line 831,
+usb_gadget_giveback_request() will free this requestion. 836 condition is
+true, so cdns3_gadget_ep_free_request() free this request again.
 
-In mptcp_pm_nl_get_local_id(), needs_id is always true, but in
-mptcp_pm_nl_add_addr_doit(), pass mptcp_pm_has_addr_attr_id() to
-needs_it.
+Log:
 
-Fixes: efd5a4c04e18 ("mptcp: add the address ID assignment bitmap")
+[ 1920.140696][  T150] BUG: KFENCE: use-after-free read in cdns3_gadget_giveback+0x134/0x2c0 [cdns3]
+[ 1920.140696][  T150]
+[ 1920.151837][  T150] Use-after-free read at 0x000000003d1cd10b (in kfence-#36):
+[ 1920.159082][  T150]  cdns3_gadget_giveback+0x134/0x2c0 [cdns3]
+[ 1920.164988][  T150]  cdns3_transfer_completed+0x438/0x5f8 [cdns3]
+
+Add check at line 829, skip call usb_gadget_giveback_request() if it is
+additional zero length packet request. Needn't call
+usb_gadget_giveback_request() because it is allocated in this driver.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20240202154217.661867-2-Frank.Li@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |   24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ drivers/usb/cdns3/gadget.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -900,7 +900,8 @@ static void __mptcp_pm_release_addr_entr
- }
- 
- static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
--					     struct mptcp_pm_addr_entry *entry)
-+					     struct mptcp_pm_addr_entry *entry,
-+					     bool needs_id)
- {
- 	struct mptcp_pm_addr_entry *cur, *del_entry = NULL;
- 	unsigned int addr_max;
-@@ -942,7 +943,7 @@ static int mptcp_pm_nl_append_new_local_
- 		}
+--- a/drivers/usb/cdns3/gadget.c
++++ b/drivers/usb/cdns3/gadget.c
+@@ -837,7 +837,11 @@ void cdns3_gadget_giveback(struct cdns3_
+ 			return;
  	}
  
--	if (!entry->addr.id) {
-+	if (!entry->addr.id && needs_id) {
- find_next:
- 		entry->addr.id = find_next_zero_bit(pernet->id_bitmap,
- 						    MPTCP_PM_MAX_ADDR_ID + 1,
-@@ -953,7 +954,7 @@ find_next:
- 		}
- 	}
- 
--	if (!entry->addr.id)
-+	if (!entry->addr.id && needs_id)
- 		goto out;
- 
- 	__set_bit(entry->addr.id, pernet->id_bitmap);
-@@ -1095,7 +1096,7 @@ int mptcp_pm_nl_get_local_id(struct mptc
- 	entry->ifindex = 0;
- 	entry->flags = MPTCP_PM_ADDR_FLAG_IMPLICIT;
- 	entry->lsk = NULL;
--	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry);
-+	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry, true);
- 	if (ret < 0)
- 		kfree(entry);
- 
-@@ -1311,6 +1312,18 @@ next:
- 	return 0;
- }
- 
-+static bool mptcp_pm_has_addr_attr_id(const struct nlattr *attr,
-+				      struct genl_info *info)
-+{
-+	struct nlattr *tb[MPTCP_PM_ADDR_ATTR_MAX + 1];
-+
-+	if (!nla_parse_nested_deprecated(tb, MPTCP_PM_ADDR_ATTR_MAX, attr,
-+					 mptcp_pm_addr_policy, info->extack) &&
-+	    tb[MPTCP_PM_ADDR_ATTR_ID])
-+		return true;
-+	return false;
-+}
-+
- static int mptcp_nl_cmd_add_addr(struct sk_buff *skb, struct genl_info *info)
- {
- 	struct nlattr *attr = info->attrs[MPTCP_PM_ATTR_ADDR];
-@@ -1352,7 +1365,8 @@ static int mptcp_nl_cmd_add_addr(struct
- 			goto out_free;
- 		}
- 	}
--	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry);
-+	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry,
-+						!mptcp_pm_has_addr_attr_id(attr, info));
- 	if (ret < 0) {
- 		GENL_SET_ERR_MSG(info, "too many addresses or duplicate one");
- 		goto out_free;
+-	if (request->complete) {
++	/*
++	 * zlp request is appended by driver, needn't call usb_gadget_giveback_request() to notify
++	 * gadget composite driver.
++	 */
++	if (request->complete && request->buf != priv_dev->zlp_buf) {
+ 		spin_unlock(&priv_dev->lock);
+ 		usb_gadget_giveback_request(&priv_ep->endpoint,
+ 					    request);
 
 
 
