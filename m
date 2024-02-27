@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-24506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B9BB8694D4
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:56:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2D8C8694D6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:56:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5507284636
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:56:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7920A1F21C9B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42CB913B7AB;
-	Tue, 27 Feb 2024 13:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F11D213AA55;
+	Tue, 27 Feb 2024 13:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1YMhpAAB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zkbc0RfR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C3A13B7A0;
-	Tue, 27 Feb 2024 13:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FB013B295;
+	Tue, 27 Feb 2024 13:56:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042199; cv=none; b=rewh257WOuCfRGAzIJjRp4EFgs8KSzvZx5aT2MiMxeUAEojKXbwcWnLFt3zyTUmfYUWZlgWf8y0bxnx6Rd38Yq4eP3zhR8PsKq7PRNXOBBFb/8QxfOiSyaoynO86whJ7sobayMOP6ZTN2PwoTf2e6PGQT0bM4FSyGKhVqQzQAKQ=
+	t=1709042203; cv=none; b=S/Ul2MhpQjX3zcbkxmE7zcj5ranlZCdzYoliYAZgXgrvcSw5F7pLBNQP1+L0qJ18IH6Au8qL/C1GEcBeoTY1+WQWNMmakrpx7IswjUN3IXyVfVXM0SEJZkG/96tJearf+aAVEFJtqcoZ+B5DIAVwvsNS3TYiM0UebENU0r1HIrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042199; c=relaxed/simple;
-	bh=+XcYTZw71YZI0GLdwdmvF5yqpZ/flLEuGNfXW9ohBeU=;
+	s=arc-20240116; t=1709042203; c=relaxed/simple;
+	bh=y1FPBb0XwSr+KEQHaR0zjyUaD6lTfndyafD6zomCFJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K1c6SnxXXhqhV8wboc6FN3xsJ/TIGKGRzsbs7pKJtVQec0SRnmcFM/aBl/0nU4VqbxS714I4OXoCKoQe+3y1KVflDNZO3lJlLEsiChyyM9YQlnhQxXn8bIBYU3KRq1i5RYrW/87pCGxQX4NFuodDPsCGYaHnb1Kl4DJbw7HO8fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1YMhpAAB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB67EC433F1;
-	Tue, 27 Feb 2024 13:56:37 +0000 (UTC)
+	 MIME-Version; b=sR0RBRr2opTj7USBCAlsej0+Yc63+iwLtMTC4z10OAdCuHI/xBQUyiGN+4ZsoOaZUefEPF3eejvsrDQn3iyq4dmLGacaZbjxPyEIUPDC7f+JjyN9Egy23/cPO2XKkehcu57at0PT2Litcut1Z3Gy0d20ODwz2uJku3X2YiiQZa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zkbc0RfR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41E7DC433F1;
+	Tue, 27 Feb 2024 13:56:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042198;
-	bh=+XcYTZw71YZI0GLdwdmvF5yqpZ/flLEuGNfXW9ohBeU=;
+	s=korg; t=1709042203;
+	bh=y1FPBb0XwSr+KEQHaR0zjyUaD6lTfndyafD6zomCFJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1YMhpAABJ9+I3Ozo3/d+CFe3TtTNIaniab1RIFvaFRowvxS4AF5sgJ0tW+IUNO147
-	 2KpxSayJRea9ysVpjPwKiv4T/vGzJw/VXLhQAMKYpqaypJVu8E9AR4d+xeWFEef8Dd
-	 rOnQydm4eAjULxeJDWcgg5XR49OMt9nM729Eu1Mg=
+	b=Zkbc0RfREREhaRyUzPS9B+KztMBZpLnsDPwnmrIcYQVggDiK63AcWBKQ+I+6fWVzV
+	 qfuulKRlKaruk7bbbL+Dwdgy53o7z8Zeur8RtGEAQXIIYXNq8zzDRrGdZFtoF9yX+N
+	 q21E5FjqHa/F9e8NAAffMZ1oOkpvgCcDEiO8lPbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawel Laszczak <pawell@cadence.com>
-Subject: [PATCH 6.6 185/299] usb: cdnsp: fixed issue with incorrect detecting CDNSP family controllers
-Date: Tue, 27 Feb 2024 14:24:56 +0100
-Message-ID: <20240227131631.790600024@linuxfoundation.org>
+	Frank Li <Frank.Li@nxp.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.6 186/299] usb: cdns3: fixed memory use after free at cdns3_gadget_ep_disable()
+Date: Tue, 27 Feb 2024 14:24:57 +0100
+Message-ID: <20240227131631.820997901@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
 References: <20240227131625.847743063@linuxfoundation.org>
@@ -64,95 +66,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pawel Laszczak <pawell@cadence.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit 47625b018c6bc788bc10dd654c82696eb0a5ef11 upstream.
+commit cd45f99034b0c8c9cb346dd0d6407a95ca3d36f6 upstream.
 
-Cadence have several controllers from 0x000403xx family but current
-driver suuport detecting only one with DID equal 0x0004034E.
-It causes that if someone uses different CDNSP controller then driver
-will use incorrect version and register space.
-Patch fix this issue.
+  ...
+  cdns3_gadget_ep_free_request(&priv_ep->endpoint, &priv_req->request);
+  list_del_init(&priv_req->list);
+  ...
 
-cc: stable@vger.kernel.org
-Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
-Signed-off-by: Pawel Laszczak <pawell@cadence.com>
-Link: https://lore.kernel.org/r/20240215121609.259772-1-pawell@cadence.com
+'priv_req' actually free at cdns3_gadget_ep_free_request(). But
+list_del_init() use priv_req->list after it.
+
+[ 1542.642868][  T534] BUG: KFENCE: use-after-free read in __list_del_entry_valid+0x10/0xd4
+[ 1542.642868][  T534]
+[ 1542.653162][  T534] Use-after-free read at 0x000000009ed0ba99 (in kfence-#3):
+[ 1542.660311][  T534]  __list_del_entry_valid+0x10/0xd4
+[ 1542.665375][  T534]  cdns3_gadget_ep_disable+0x1f8/0x388 [cdns3]
+[ 1542.671571][  T534]  usb_ep_disable+0x44/0xe4
+[ 1542.675948][  T534]  ffs_func_eps_disable+0x64/0xc8
+[ 1542.680839][  T534]  ffs_func_set_alt+0x74/0x368
+[ 1542.685478][  T534]  ffs_func_disable+0x18/0x28
+
+Move list_del_init() before cdns3_gadget_ep_free_request() to resolve this
+problem.
+
+Cc: stable@vger.kernel.org
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20240202154217.661867-1-Frank.Li@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/cdns3/core.c |    1 -
- drivers/usb/cdns3/drd.c  |   13 +++++++++----
- drivers/usb/cdns3/drd.h  |    6 +++++-
- 3 files changed, 14 insertions(+), 6 deletions(-)
+ drivers/usb/cdns3/cdns3-gadget.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/cdns3/core.c
-+++ b/drivers/usb/cdns3/core.c
-@@ -395,7 +395,6 @@ pm_put:
- 	return ret;
- }
+--- a/drivers/usb/cdns3/cdns3-gadget.c
++++ b/drivers/usb/cdns3/cdns3-gadget.c
+@@ -2539,11 +2539,11 @@ static int cdns3_gadget_ep_disable(struc
  
--
- /**
-  * cdns_wakeup_irq - interrupt handler for wakeup events
-  * @irq: irq number for cdns3/cdnsp core device
---- a/drivers/usb/cdns3/drd.c
-+++ b/drivers/usb/cdns3/drd.c
-@@ -156,7 +156,8 @@ bool cdns_is_device(struct cdns *cdns)
-  */
- static void cdns_otg_disable_irq(struct cdns *cdns)
- {
--	writel(0, &cdns->otg_irq_regs->ien);
-+	if (cdns->version)
-+		writel(0, &cdns->otg_irq_regs->ien);
- }
+ 	while (!list_empty(&priv_ep->wa2_descmiss_req_list)) {
+ 		priv_req = cdns3_next_priv_request(&priv_ep->wa2_descmiss_req_list);
++		list_del_init(&priv_req->list);
  
- /**
-@@ -422,15 +423,20 @@ int cdns_drd_init(struct cdns *cdns)
+ 		kfree(priv_req->request.buf);
+ 		cdns3_gadget_ep_free_request(&priv_ep->endpoint,
+ 					     &priv_req->request);
+-		list_del_init(&priv_req->list);
+ 		--priv_ep->wa2_counter;
+ 	}
  
- 		cdns->otg_regs = (void __iomem *)&cdns->otg_v1_regs->cmd;
- 
--		if (readl(&cdns->otg_cdnsp_regs->did) == OTG_CDNSP_DID) {
-+		state = readl(&cdns->otg_cdnsp_regs->did);
-+
-+		if (OTG_CDNSP_CHECK_DID(state)) {
- 			cdns->otg_irq_regs = (struct cdns_otg_irq_regs __iomem *)
- 					      &cdns->otg_cdnsp_regs->ien;
- 			cdns->version  = CDNSP_CONTROLLER_V2;
--		} else {
-+		} else if (OTG_CDNS3_CHECK_DID(state)) {
- 			cdns->otg_irq_regs = (struct cdns_otg_irq_regs __iomem *)
- 					      &cdns->otg_v1_regs->ien;
- 			writel(1, &cdns->otg_v1_regs->simulate);
- 			cdns->version  = CDNS3_CONTROLLER_V1;
-+		} else {
-+			dev_err(cdns->dev, "not supporte DID=0x%08x\n", state);
-+			return -EINVAL;
- 		}
- 
- 		dev_dbg(cdns->dev, "DRD version v1 (ID: %08x, rev: %08x)\n",
-@@ -483,7 +489,6 @@ int cdns_drd_exit(struct cdns *cdns)
- 	return 0;
- }
- 
--
- /* Indicate the cdns3 core was power lost before */
- bool cdns_power_is_lost(struct cdns *cdns)
- {
---- a/drivers/usb/cdns3/drd.h
-+++ b/drivers/usb/cdns3/drd.h
-@@ -79,7 +79,11 @@ struct cdnsp_otg_regs {
- 	__le32 susp_timing_ctrl;
- };
- 
--#define OTG_CDNSP_DID	0x0004034E
-+/* CDNSP driver supports 0x000403xx Cadence USB controller family. */
-+#define OTG_CDNSP_CHECK_DID(did) (((did) & GENMASK(31, 8)) == 0x00040300)
-+
-+/* CDNS3 driver supports 0x000402xx Cadence USB controller family. */
-+#define OTG_CDNS3_CHECK_DID(did) (((did) & GENMASK(31, 8)) == 0x00040200)
- 
- /*
-  * Common registers interface for both CDNS3 and CDNSP version of DRD.
 
 
 
