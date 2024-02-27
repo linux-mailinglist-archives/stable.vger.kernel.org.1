@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-25167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7951B869803
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:27:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E82D869525
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:59:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3458029240E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:27:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B10411C23CB8
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:59:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B011448D7;
-	Tue, 27 Feb 2024 14:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EFCD1419A9;
+	Tue, 27 Feb 2024 13:59:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CWNzpoUP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PRe1Htm0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929D71420B0;
-	Tue, 27 Feb 2024 14:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E7713B2B4;
+	Tue, 27 Feb 2024 13:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044050; cv=none; b=iPL63+A8tCW0v0hZv129qtAuJfyDIxp4whMV6iG6fxsZo5edHHQe2O21qa14ay77mTiTd+hByo7G226VMmP+IW85CmPoGpHdKRstuC3Gj2E8vfKDF3Gt9QzsK11wGUvAh7Fq+G+x2Jyw2ibcmsF2kpVSiA3d3FzlCWSglLhLXEY=
+	t=1709042355; cv=none; b=SUBtfE4cuRYtsVBzUaOKBEgPLP5OnO9N/RUA1TM3TcTV+HmeumjsNlbCTgGp6joWEaM+Yjurjg6vdUe7if5FQPrbOci8n64vhdwwQSQjfvQ/4pN0p88d4KRTAxcGBfZtcjGW/9f1CJA5JGWwry/k7GjHvtIQRpCE+wET/TjIDpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044050; c=relaxed/simple;
-	bh=pML8lvTB6Jlna/wYbDLyfuNPBP4LwiCqKKbAOkTmZ/Y=;
+	s=arc-20240116; t=1709042355; c=relaxed/simple;
+	bh=e9dqhGhYobPSAym9wSnKro7E76lERKHV5xhuzRDLRLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dQwEJC1/BFXdUg6mRhnijQ2xBn2X4A/tkC4KKe4TgnkqqETZ5pgsPriYmwS4zr9yYqopR72NVpWmel79B3DjQXDen6TAL3gGNFG9eK395r0g20cLiCLpdtjLpGAfI9nLu0v0BT5NpWAoM/a5tqrBOVsOb4S+g8S0dKKTro1ZMm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CWNzpoUP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 193D4C433F1;
-	Tue, 27 Feb 2024 14:27:29 +0000 (UTC)
+	 MIME-Version; b=OtMvG4RHjXiYjbQrKXaw3HTP6kcEm0r1P3v/VdwTWg4ziNuk2UgDEs/e0WExttJ33JKXkzsK3ZAQdizIKYTzAFjDBRokwwQ+mcgCNYdeP7sLFyx+D1iX7oG1TB5bPE/QpSaeWwJpmgTvnAomw4vUvKcqmqORoFNZh7f6L66XXpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PRe1Htm0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B769FC433F1;
+	Tue, 27 Feb 2024 13:59:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044050;
-	bh=pML8lvTB6Jlna/wYbDLyfuNPBP4LwiCqKKbAOkTmZ/Y=;
+	s=korg; t=1709042355;
+	bh=e9dqhGhYobPSAym9wSnKro7E76lERKHV5xhuzRDLRLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CWNzpoUP7nr6Vyr05KorjFS3DQPPECGwaUNIXgQVnawhjT32QRQUnGKQf5huhTfW2
-	 0gx1aY5xZVHhLOOFfic132B6FXyJwMYDXq9bFyeSerrYFYEYcMQfyaii2d+ezv0lnK
-	 IFlTnZMGUPoQJPnS01MH+pN056Hi7KGi84rFs3DE=
+	b=PRe1Htm0CnhHWP16+XTzToNrB5PkH8XdywXnHZImsjKDpca8iP6Uu2NpPz+uZtV/m
+	 rdn6o5oARtzhpnh/uaezJN9+jbnEFu0H2g57npfpUk8FVVpAGSPSmWq4pQ7bUSFdWp
+	 mIoijqsYiT0jRE/lajxf81Q4+lW9n1/gGQ+yn3qg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Kazior <michal@plume.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	syzbot+fd7b34375c1c8ce29c93@syzkaller.appspotmail.com,
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 015/122] wifi: cfg80211: fix missing interfaces when dumping
+Subject: [PATCH 6.6 265/299] bpf, sockmap: Fix NULL pointer dereference in sk_psock_verdict_data_ready()
 Date: Tue, 27 Feb 2024 14:26:16 +0100
-Message-ID: <20240227131559.205478392@linuxfoundation.org>
+Message-ID: <20240227131634.220340952@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Kazior <michal@plume.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-[ Upstream commit a6e4f85d3820d00694ed10f581f4c650445dbcda ]
+[ Upstream commit 4cd12c6065dfcdeba10f49949bffcf383b3952d8 ]
 
-The nl80211_dump_interface() supports resumption
-in case nl80211_send_iface() doesn't have the
-resources to complete its work.
+syzbot reported the following NULL pointer dereference issue [1]:
 
-The logic would store the progress as iteration
-offsets for rdev and wdev loops.
+  BUG: kernel NULL pointer dereference, address: 0000000000000000
+  [...]
+  RIP: 0010:0x0
+  [...]
+  Call Trace:
+   <TASK>
+   sk_psock_verdict_data_ready+0x232/0x340 net/core/skmsg.c:1230
+   unix_stream_sendmsg+0x9b4/0x1230 net/unix/af_unix.c:2293
+   sock_sendmsg_nosec net/socket.c:730 [inline]
+   __sock_sendmsg+0x221/0x270 net/socket.c:745
+   ____sys_sendmsg+0x525/0x7d0 net/socket.c:2584
+   ___sys_sendmsg net/socket.c:2638 [inline]
+   __sys_sendmsg+0x2b0/0x3a0 net/socket.c:2667
+   do_syscall_64+0xf9/0x240
+   entry_SYSCALL_64_after_hwframe+0x6f/0x77
 
-However the logic did not properly handle
-resumption for non-last rdev. Assuming a system
-with 2 rdevs, with 2 wdevs each, this could
-happen:
+If sk_psock_verdict_data_ready() and sk_psock_stop_verdict() are called
+concurrently, psock->saved_data_ready can be NULL, causing the above issue.
 
- dump(cb=[0, 0]):
-  if_start=cb[1] (=0)
-  send rdev0.wdev0 -> ok
-  send rdev0.wdev1 -> yield
-  cb[1] = 1
+This patch fixes this issue by calling the appropriate data ready function
+using the sk_psock_data_ready() helper and protecting it from concurrency
+with sk->sk_callback_lock.
 
- dump(cb=[0, 1]):
-  if_start=cb[1] (=1)
-  send rdev0.wdev1 -> ok
-  // since if_start=1 the rdev0.wdev0 got skipped
-  // through if_idx < if_start
-  send rdev1.wdev1 -> ok
-
-The if_start needs to be reset back to 0 upon wdev
-loop end.
-
-The problem is actually hard to hit on a desktop,
-and even on most routers. The prerequisites for
-this manifesting was:
- - more than 1 wiphy
- - a few handful of interfaces
- - dump without rdev or wdev filter
-
-I was seeing this with 4 wiphys 9 interfaces each.
-It'd miss 6 interfaces from the last wiphy
-reported to userspace.
-
-Signed-off-by: Michal Kazior <michal@plume.com>
-Link: https://msgid.link/20240116142340.89678-1-kazikcz@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 6df7f764cd3c ("bpf, sockmap: Wake up polling after data copy")
+Reported-by: syzbot+fd7b34375c1c8ce29c93@syzkaller.appspotmail.com
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Tested-by: syzbot+fd7b34375c1c8ce29c93@syzkaller.appspotmail.com
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=fd7b34375c1c8ce29c93 [1]
+Link: https://lore.kernel.org/bpf/20240218150933.6004-1-syoshida@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/core/skmsg.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 0ac829c8f1888..279f4977e2eed 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -3595,6 +3595,7 @@ static int nl80211_dump_interface(struct sk_buff *skb, struct netlink_callback *
- 			if_idx++;
- 		}
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index 93ecfceac1bc4..4d75ef9d24bfa 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -1226,8 +1226,11 @@ static void sk_psock_verdict_data_ready(struct sock *sk)
  
-+		if_start = 0;
- 		wp_idx++;
+ 		rcu_read_lock();
+ 		psock = sk_psock(sk);
+-		if (psock)
+-			psock->saved_data_ready(sk);
++		if (psock) {
++			read_lock_bh(&sk->sk_callback_lock);
++			sk_psock_data_ready(sk, psock);
++			read_unlock_bh(&sk->sk_callback_lock);
++		}
+ 		rcu_read_unlock();
  	}
-  out:
+ }
 -- 
 2.43.0
 
