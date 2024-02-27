@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-24317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F057F8693E6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:49:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F90886932B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:42:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9117B1F22500
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:49:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B49931F257CB
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:42:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFEBC1482EB;
-	Tue, 27 Feb 2024 13:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B44113AA2F;
+	Tue, 27 Feb 2024 13:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="acCYL3eH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i29fhQHp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E9821468F1;
-	Tue, 27 Feb 2024 13:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A06F13B2BA;
+	Tue, 27 Feb 2024 13:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041652; cv=none; b=e85ZqcZevqHLYOqobOO5KPabk72IEaH6UPqlLBHh7zA9WCiuXBih/Cz4AcuKe9NEIDKUB/UQxhTLNqohgnxLTQkK1sPzF9RvtCZrCZB3VOB5DQV36/1NofXDxAM/onQoU+hFtKXaQTGPOiO66uX04op9xCpvPp/ft+I8Clh6EBs=
+	t=1709041336; cv=none; b=gdygDy5QQcxype/FOtfixTM0lUtoSUVNuvzMS+J810cN4kJ3RII1OzBte+GpmWt0sisWGapSk+2wCRbkf7fcl68GASor30JtKxhNZow3juSkdmthkKwQI2syU18oQlWBJNAHL+767nMWNG2n4htCd0ScPQxX8EY8i6DyxlV6hYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041652; c=relaxed/simple;
-	bh=5VVdVAND8t/S/j9xyo0N0OgPpiHevQU7ozLrPaxfHmg=;
+	s=arc-20240116; t=1709041336; c=relaxed/simple;
+	bh=/Xoq692CG7KYWXnX84T36bzfYjqbA+gHGT/qziGtPdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qDhDIxc+8v7XhN+nYw488YBeThf4NEi5VZea2Sfz/fE8BeSL1s4iHi0WofUsrY1q69Dj/QIMbCB9dAutrayHCtZeS0xtiyOYbzZET71DAWYxifHFfOQNVm74cGlkCssGQqaHUJDDcyrJMtsnwTS4MZ6I4qkKMmya/Oktu2HukDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=acCYL3eH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24E5C433C7;
-	Tue, 27 Feb 2024 13:47:31 +0000 (UTC)
+	 MIME-Version; b=Orjtfm9o7OJTmbprpqqa9hgBTtzag0dwQYw0Y4Qz2OdjuelgVTydbWO5KQE3ZJ91iHBcvxUj2sygA5mTIBQcK8Afg0I/HozetdfEsDujoK6h/e9Lp3nrMqB6Z5SejE1rmtoO450XOmU9DnbGTbceh50EmlrOV7eIKAwX7K8HIuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i29fhQHp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7CF6C433C7;
+	Tue, 27 Feb 2024 13:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041652;
-	bh=5VVdVAND8t/S/j9xyo0N0OgPpiHevQU7ozLrPaxfHmg=;
+	s=korg; t=1709041336;
+	bh=/Xoq692CG7KYWXnX84T36bzfYjqbA+gHGT/qziGtPdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=acCYL3eHesDwSVQxkMW1GW/2ZfqGNGNmJrHDyJx9r/29hvt3Djjw0/xwb+0B+3xYk
-	 GsfUDpYERd/iO4friglyFejzEUo9nQ687aK71NFgJxu+WgvTXW6kMwy0eF+ZtopL6z
-	 fW/91x5bJWx2RXaVk27cSqxj92sQXN9QbrShxR3M=
+	b=i29fhQHpVRZQus4sSsyaSInBaAUEUBCossP27/4MaPhibRVefA2+ZwXRksKcYBAm+
+	 shD65iYXj4kaB6nWI3pW/PE2WFDhGXGRmUH00Jd5JnF2CskGmzbRgNv9E7Sa8miqBe
+	 EeWD1hTZFa8UClnNVZNfgolm98SWwyImIJ1C5OpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Hou Tao <houtao1@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/299] cifs: cifs_pick_channel should try selecting active channels
+Subject: [PATCH 6.7 276/334] bpf: Fix racing between bpf_timer_cancel_and_free and bpf_timer_cancel
 Date: Tue, 27 Feb 2024 14:22:14 +0100
-Message-ID: <20240227131626.575899569@linuxfoundation.org>
+Message-ID: <20240227131639.901359058@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Martin KaFai Lau <martin.lau@kernel.org>
 
-[ Upstream commit fc43a8ac396d302ced1e991e4913827cf72c8eb9 ]
+[ Upstream commit 0281b919e175bb9c3128bd3872ac2903e9436e3f ]
 
-cifs_pick_channel today just selects a channel based
-on the policy of least loaded channel. However, it
-does not take into account if the channel needs
-reconnect. As a result, we can have failures in send
-that can be completely avoided.
+The following race is possible between bpf_timer_cancel_and_free
+and bpf_timer_cancel. It will lead a UAF on the timer->timer.
 
-This change doesn't make a channel a candidate for
-this selection if it needs reconnect.
+bpf_timer_cancel();
+	spin_lock();
+	t = timer->time;
+	spin_unlock();
 
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+					bpf_timer_cancel_and_free();
+						spin_lock();
+						t = timer->timer;
+						timer->timer = NULL;
+						spin_unlock();
+						hrtimer_cancel(&t->timer);
+						kfree(t);
+
+	/* UAF on t */
+	hrtimer_cancel(&t->timer);
+
+In bpf_timer_cancel_and_free, this patch frees the timer->timer
+after a rcu grace period. This requires a rcu_head addition
+to the "struct bpf_hrtimer". Another kfree(t) happens in bpf_timer_init,
+this does not need a kfree_rcu because it is still under the
+spin_lock and timer->timer has not been visible by others yet.
+
+In bpf_timer_cancel, rcu_read_lock() is added because this helper
+can be used in a non rcu critical section context (e.g. from
+a sleepable bpf prog). Other timer->timer usages in helpers.c
+have been audited, bpf_timer_cancel() is the only place where
+timer->timer is used outside of the spin_lock.
+
+Another solution considered is to mark a t->flag in bpf_timer_cancel
+and clear it after hrtimer_cancel() is done.  In bpf_timer_cancel_and_free,
+it busy waits for the flag to be cleared before kfree(t). This patch
+goes with a straight forward solution and frees timer->timer after
+a rcu grace period.
+
+Fixes: b00628b1c7d5 ("bpf: Introduce bpf timers.")
+Suggested-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/bpf/20240215211218.990808-1-martin.lau@linux.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/transport.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/bpf/helpers.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/transport.c b/fs/smb/client/transport.c
-index 4f717ad7c21b4..8695c9961f5aa 100644
---- a/fs/smb/client/transport.c
-+++ b/fs/smb/client/transport.c
-@@ -1026,6 +1026,9 @@ struct TCP_Server_Info *cifs_pick_channel(struct cifs_ses *ses)
- 		if (!server || server->terminate)
- 			continue;
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index b3053af6427d2..ce4729ef1ad2d 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -1101,6 +1101,7 @@ struct bpf_hrtimer {
+ 	struct bpf_prog *prog;
+ 	void __rcu *callback_fn;
+ 	void *value;
++	struct rcu_head rcu;
+ };
  
-+		if (CIFS_CHAN_NEEDS_RECONNECT(ses, i))
-+			continue;
-+
- 		/*
- 		 * strictly speaking, we should pick up req_lock to read
- 		 * server->in_flight. But it shouldn't matter much here if we
+ /* the actual struct hidden inside uapi struct bpf_timer */
+@@ -1332,6 +1333,7 @@ BPF_CALL_1(bpf_timer_cancel, struct bpf_timer_kern *, timer)
+ 
+ 	if (in_nmi())
+ 		return -EOPNOTSUPP;
++	rcu_read_lock();
+ 	__bpf_spin_lock_irqsave(&timer->lock);
+ 	t = timer->timer;
+ 	if (!t) {
+@@ -1353,6 +1355,7 @@ BPF_CALL_1(bpf_timer_cancel, struct bpf_timer_kern *, timer)
+ 	 * if it was running.
+ 	 */
+ 	ret = ret ?: hrtimer_cancel(&t->timer);
++	rcu_read_unlock();
+ 	return ret;
+ }
+ 
+@@ -1407,7 +1410,7 @@ void bpf_timer_cancel_and_free(void *val)
+ 	 */
+ 	if (this_cpu_read(hrtimer_running) != t)
+ 		hrtimer_cancel(&t->timer);
+-	kfree(t);
++	kfree_rcu(t, rcu);
+ }
+ 
+ BPF_CALL_2(bpf_kptr_xchg, void *, map_value, void *, ptr)
 -- 
 2.43.0
 
