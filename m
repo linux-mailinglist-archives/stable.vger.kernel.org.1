@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-25092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF4F8697C4
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:25:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D788986975F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:20:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA103B2C012
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:24:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 104251C242A1
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:20:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5205A14037E;
-	Tue, 27 Feb 2024 14:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E356513EFEC;
+	Tue, 27 Feb 2024 14:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYvYul6Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qoI8I7GS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106F713B2B8;
-	Tue, 27 Feb 2024 14:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9C413B2B8;
+	Tue, 27 Feb 2024 14:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043838; cv=none; b=LHjeESU4HSeXBxrRT9iDk5WOdltwVvJXxeR6HHk+SHIJKhBU5+3OAN2RdPcohMhYK4x8enVVW4UzBD4pUNfyHJ8gzGc+WxJP7rqw3IdRrgxYFznjcO2xIuRezEdgdkZ16IK6qgai8kasPhH/S0/Kkb0O/wSIZcMcDBVvvjZNC5U=
+	t=1709043641; cv=none; b=Xyj53GWNuZlrfmi2PFgRFktp5akUVTeZj7RiDthB3LiNX5pOPo6fq/W7PB2ivv0zRULxi1KiUQWldoMQEsfzMSds9ZDMrNeXBSsyFuF82v1jgyfd8q+VOsThK9Pli86WdT1gWfiBLL5ZlCWMJzKfAQqztXmtqxXAeZkvcJlMuLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043838; c=relaxed/simple;
-	bh=2cyMhVaofgoCIZnJwWdi1tq6YOVZdlKFd03ALcugQQg=;
+	s=arc-20240116; t=1709043641; c=relaxed/simple;
+	bh=JIWBJXcoDmbVa3DFNT2AQ8LSEqq4cSZDI1urFN92BR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SH5YRsbqd0nkoQ5Uui5vQTk2i0FWhJ+oIB4i0j//ZfvebrDPAt771+3l28frmZFuqxRR/Z1DWwhjHk8OhDCAd4j7kyVhDpJTbsg8ejKxTtFuTt8CcJ6Jp2ozqNuS0ITSV4plrGatTvOJu+1MdJuPzmWWLgqQeZHvCigndOlsCAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYvYul6Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B37C433F1;
-	Tue, 27 Feb 2024 14:23:57 +0000 (UTC)
+	 MIME-Version; b=cpEd+VmuyPHVQKrKVyxZYlnx4KNcSJjUYyOcb7L+JPVSHrxyUaNC+G5no/2c8VzSNyvYOiVv7RQeqnX4dAkTBhwPNEKs26QvW5PnC0sP/7/cxxjYZ5N/qo95EnXL/cTZHpxLv1W481aY4FsSoIBul3zd4G1gC1juZ3XTWBTCj+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qoI8I7GS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F76C433C7;
+	Tue, 27 Feb 2024 14:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043837;
-	bh=2cyMhVaofgoCIZnJwWdi1tq6YOVZdlKFd03ALcugQQg=;
+	s=korg; t=1709043641;
+	bh=JIWBJXcoDmbVa3DFNT2AQ8LSEqq4cSZDI1urFN92BR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VYvYul6QVHxJBMkEYLBxWzzBBYu79qWI3BjD7cVSkMEv/d4ImNs2S2lI0h+O4VQxn
-	 jxQoxpzQ6uEKQTEpav1NlAlpdbKOu8WfZmmsQmzeUaItPa0QbptcdzElZ91eZqYfEN
-	 mLGy6vp7uui3mccSzZWkVIDVVlkOoGJ4sozHh96g=
+	b=qoI8I7GSUIS7q3Qo6TibspqX+Ibty3JYeeaN1rr7QIkO1vTAAHskwj1DGBEV2Zisj
+	 a0kpbjU3Y7Xwq0fO6ZCYtExY+n43fggMIVpvXB7fhAcej+E69bUxkRwZIcfRjNh0Wf
+	 tlFqdiJlLhyl1VKpMsxvJ/wzkvR9fXuA8uJnXVg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 55/84] gtp: fix use-after-free and null-ptr-deref in gtp_genl_dump_pdp()
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 181/195] net: phy: realtek: Fix rtl8211f_config_init() for RTL8211F(D)(I)-VD-CG PHY
 Date: Tue, 27 Feb 2024 14:27:22 +0100
-Message-ID: <20240227131554.661534472@linuxfoundation.org>
+Message-ID: <20240227131616.378923934@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,102 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-commit 136cfaca22567a03bbb3bf53a43d8cb5748b80ec upstream.
+[ Upstream commit 3489182b11d35f1944c1245fc9c4867cf622c50f ]
 
-The gtp_net_ops pernet operations structure for the subsystem must be
-registered before registering the generic netlink family.
+Commit bb726b753f75 ("net: phy: realtek: add support for
+RTL8211F(D)(I)-VD-CG") extended support of the driver from the existing
+support for RTL8211F(D)(I)-CG PHY to the newer RTL8211F(D)(I)-VD-CG PHY.
 
-Syzkaller hit 'general protection fault in gtp_genl_dump_pdp' bug:
+While that commit indicated that the RTL8211F_PHYCR2 register is not
+supported by the "VD-CG" PHY model and therefore updated the corresponding
+section in rtl8211f_config_init() to be invoked conditionally, the call to
+"genphy_soft_reset()" was left as-is, when it should have also been invoked
+conditionally. This is because the call to "genphy_soft_reset()" was first
+introduced by the commit 0a4355c2b7f8 ("net: phy: realtek: add dt property
+to disable CLKOUT clock") since the RTL8211F guide indicates that a PHY
+reset should be issued after setting bits in the PHYCR2 register.
 
-general protection fault, probably for non-canonical address
-0xdffffc0000000002: 0000 [#1] PREEMPT SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
-CPU: 1 PID: 5826 Comm: gtp Not tainted 6.8.0-rc3-std-def-alt1 #1
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.0-alt1 04/01/2014
-RIP: 0010:gtp_genl_dump_pdp+0x1be/0x800 [gtp]
-Code: c6 89 c6 e8 64 e9 86 df 58 45 85 f6 0f 85 4e 04 00 00 e8 c5 ee 86
-      df 48 8b 54 24 18 48 b8 00 00 00 00 00 fc ff df 48 c1 ea 03 <80>
-      3c 02 00 0f 85 de 05 00 00 48 8b 44 24 18 4c 8b 30 4c 39 f0 74
-RSP: 0018:ffff888014107220 EFLAGS: 00010202
-RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: 0000000000000002 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-R13: ffff88800fcda588 R14: 0000000000000001 R15: 0000000000000000
-FS:  00007f1be4eb05c0(0000) GS:ffff88806ce80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f1be4e766cf CR3: 000000000c33e000 CR4: 0000000000750ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? show_regs+0x90/0xa0
- ? die_addr+0x50/0xd0
- ? exc_general_protection+0x148/0x220
- ? asm_exc_general_protection+0x22/0x30
- ? gtp_genl_dump_pdp+0x1be/0x800 [gtp]
- ? __alloc_skb+0x1dd/0x350
- ? __pfx___alloc_skb+0x10/0x10
- genl_dumpit+0x11d/0x230
- netlink_dump+0x5b9/0xce0
- ? lockdep_hardirqs_on_prepare+0x253/0x430
- ? __pfx_netlink_dump+0x10/0x10
- ? kasan_save_track+0x10/0x40
- ? __kasan_kmalloc+0x9b/0xa0
- ? genl_start+0x675/0x970
- __netlink_dump_start+0x6fc/0x9f0
- genl_family_rcv_msg_dumpit+0x1bb/0x2d0
- ? __pfx_genl_family_rcv_msg_dumpit+0x10/0x10
- ? genl_op_from_small+0x2a/0x440
- ? cap_capable+0x1d0/0x240
- ? __pfx_genl_start+0x10/0x10
- ? __pfx_genl_dumpit+0x10/0x10
- ? __pfx_genl_done+0x10/0x10
- ? security_capable+0x9d/0xe0
+As the PHYCR2 register is not applicable to the "VD-CG" PHY model, fix the
+rtl8211f_config_init() function by invoking "genphy_soft_reset()"
+conditionally based on the presence of the "PHYCR2" register.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Fixes: 459aa660eb1d ("gtp: add initial driver for datapath of GPRS Tunneling Protocol (GTP-U)")
-Link: https://lore.kernel.org/r/20240214162733.34214-1-kovalev@altlinux.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bb726b753f75 ("net: phy: realtek: add support for RTL8211F(D)(I)-VD-CG")
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240220070007.968762-1-s-vadapalli@ti.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/gtp.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/phy/realtek.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/net/gtp.c
-+++ b/drivers/net/gtp.c
-@@ -1381,20 +1381,20 @@ static int __init gtp_init(void)
- 	if (err < 0)
- 		goto error_out;
+diff --git a/drivers/net/phy/realtek.c b/drivers/net/phy/realtek.c
+index 3d99fd6664d7a..70e52d27064ec 100644
+--- a/drivers/net/phy/realtek.c
++++ b/drivers/net/phy/realtek.c
+@@ -414,9 +414,11 @@ static int rtl8211f_config_init(struct phy_device *phydev)
+ 				ERR_PTR(ret));
+ 			return ret;
+ 		}
++
++		return genphy_soft_reset(phydev);
+ 	}
  
--	err = genl_register_family(&gtp_genl_family);
-+	err = register_pernet_subsys(&gtp_net_ops);
- 	if (err < 0)
- 		goto unreg_rtnl_link;
+-	return genphy_soft_reset(phydev);
++	return 0;
+ }
  
--	err = register_pernet_subsys(&gtp_net_ops);
-+	err = genl_register_family(&gtp_genl_family);
- 	if (err < 0)
--		goto unreg_genl_family;
-+		goto unreg_pernet_subsys;
- 
- 	pr_info("GTP module loaded (pdp ctx size %zd bytes)\n",
- 		sizeof(struct pdp_ctx));
- 	return 0;
- 
--unreg_genl_family:
--	genl_unregister_family(&gtp_genl_family);
-+unreg_pernet_subsys:
-+	unregister_pernet_subsys(&gtp_net_ops);
- unreg_rtnl_link:
- 	rtnl_link_unregister(&gtp_link_ops);
- error_out:
+ static int rtl821x_resume(struct phy_device *phydev)
+-- 
+2.43.0
+
 
 
 
