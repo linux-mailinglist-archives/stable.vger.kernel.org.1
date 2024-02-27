@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-24868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 392F98696A8
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:14:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D99B8694A2
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:55:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6B9C29588B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:14:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D20BB1F22B5C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:55:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A0C145343;
-	Tue, 27 Feb 2024 14:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D24D1420D4;
+	Tue, 27 Feb 2024 13:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qvSlPwLw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aezCW9F+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7DEE1420D0;
-	Tue, 27 Feb 2024 14:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A55213B2B9;
+	Tue, 27 Feb 2024 13:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043215; cv=none; b=jZjPc0JcP6YtYJ8LsXXG0BXrjDmdjn8TmIiYCoKnslfghMyPGH+Ow2es/ZakYIGEmKgN3fl7LbbPriCAwu/fRaxTzoqFzMlEiC8MWi4uhtCFzQuoK8ga4vtZwfEPeBhmRdOeCEJ5lT1mEG8zbUiYFumbuqjoWAnayl0YLwJChCs=
+	t=1709042096; cv=none; b=llI9vrM3uiYe2YH5XZ/TiETZii7sYfeK0XPRE93RcGvpstyFKkw0mXXPpUBaaTcsxXKDFljohWJj8yKA+PaxMt+5WtgQlD2EgeuaM+KpPDNHUdRrELAoCqfjZui7l3LmFrtTpfuOApyIW2NBPJY5Q5hgSQubEa8T35NmA5IFngA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043215; c=relaxed/simple;
-	bh=eUVenfA9rKR5M2Xe/LVD3Oq2HFs7+tzm2XCrie6payo=;
+	s=arc-20240116; t=1709042096; c=relaxed/simple;
+	bh=Wc5wOTgDNCXCiYFQD5c4yUavR+bvrF3OG6SJXAhoymo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qgvo67OMvcgDzPwMtgjnHYiCeWAhEEVkZlS2mFnl/FKz+0VC/gVB3A40k6dI3sq4Dq+VpTn7Vw9mkSUlfaSdzFQbXDXVoT6exXpHhqRoFlfe6CpHj1Bumtl5om3z9eB/Gu5ZCSdm3RObqkBSHSqcaF8BdmneB2eHw+pMQUdpz2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qvSlPwLw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F7F0C43394;
-	Tue, 27 Feb 2024 14:13:35 +0000 (UTC)
+	 MIME-Version; b=AyYPdNgta53tNMo9kxNGdP2PnGX554cLi6/SR8+LU278NTzbWooOMTboOMt2smdXIu+vX9VtTHCjOsmliui3nfVSflzq3XNiKVuBdgwJfSSYeHe88u4Jul7w+8iEs6Hn/V+TibD8priT1k1atUX6NpYdZQ77XUN7uwMhk5Pc8Kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aezCW9F+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD8F8C433C7;
+	Tue, 27 Feb 2024 13:54:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043215;
-	bh=eUVenfA9rKR5M2Xe/LVD3Oq2HFs7+tzm2XCrie6payo=;
+	s=korg; t=1709042096;
+	bh=Wc5wOTgDNCXCiYFQD5c4yUavR+bvrF3OG6SJXAhoymo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qvSlPwLwqS1hjaKTpdpQBFL1ls7dpnaNllmsalbPpIKNgJzzgPs+hFEcMVIiRTjv4
-	 bu00BkXfoQCplpgmhXIE5ABB+XJ5sHFAzl+jY/W/CqQq81TIonOWG3JqWpWUqoSFQx
-	 gPxBvUo36rreHiAaoHdumout/tfYyadvXfzPIQ0s=
+	b=aezCW9F+WqVe5YN/Uz9WPoTsCcX4oHI4gE0IGufSDWQ2m+L84T4jvfsB+gXr0CU+S
+	 4CpCfJaQy+cq8v+DvftYybH+2LBqLk44ldhegq6hNNb9aqZXLVI/JDaaJnQ4/y1IyM
+	 8WvPmwaAsbqbRdfq5PbaYGE+63BVztCmcf7v0vTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 027/195] ext4: avoid allocating blocks from corrupted group in ext4_mb_try_best_found()
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Nikita Shubin <nikita.shubin@maquefel.me>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 6.6 177/299] ARM: ep93xx: Add terminator to gpiod_lookup_table
 Date: Tue, 27 Feb 2024 14:24:48 +0100
-Message-ID: <20240227131611.291229561@linuxfoundation.org>
+Message-ID: <20240227131631.538178990@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Nikita Shubin <nikita.shubin@maquefel.me>
 
-[ Upstream commit 4530b3660d396a646aad91a787b6ab37cf604b53 ]
+commit fdf87a0dc26d0550c60edc911cda42f9afec3557 upstream.
 
-Determine if the group block bitmap is corrupted before using ac_b_ex in
-ext4_mb_try_best_found() to avoid allocating blocks from a group with a
-corrupted block bitmap in the following concurrency and making the
-situation worse.
+Without the terminator, if a con_id is passed to gpio_find() that
+does not exist in the lookup table the function will not stop looping
+correctly, and eventually cause an oops.
 
-ext4_mb_regular_allocator
-  ext4_lock_group(sb, group)
-  ext4_mb_good_group
-   // check if the group bbitmap is corrupted
-  ext4_mb_complex_scan_group
-   // Scan group gets ac_b_ex but doesn't use it
-  ext4_unlock_group(sb, group)
-                           ext4_mark_group_bitmap_corrupted(group)
-                           // The block bitmap was corrupted during
-                           // the group unlock gap.
-  ext4_mb_try_best_found
-    ext4_lock_group(ac->ac_sb, group)
-    ext4_mb_use_best_found
-      mb_mark_used
-      // Allocating blocks in block bitmap corrupted group
-
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240104142040.2835097-7-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: b2e63555592f ("i2c: gpio: Convert to use descriptors")
+Reported-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Nikita Shubin <nikita.shubin@maquefel.me>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Acked-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Link: https://lore.kernel.org/r/20240205102337.439002-1-alexander.sverdlin@gmail.com
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm/mach-ep93xx/core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 296185cbd1547..744472c0b6fa5 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -2176,6 +2176,9 @@ int ext4_mb_try_best_found(struct ext4_allocation_context *ac,
- 		return err;
+--- a/arch/arm/mach-ep93xx/core.c
++++ b/arch/arm/mach-ep93xx/core.c
+@@ -339,6 +339,7 @@ static struct gpiod_lookup_table ep93xx_
+ 				GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN),
+ 		GPIO_LOOKUP_IDX("G", 0, NULL, 1,
+ 				GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN),
++		{ }
+ 	},
+ };
  
- 	ext4_lock_group(ac->ac_sb, group);
-+	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)))
-+		goto out;
-+
- 	max = mb_find_extent(e4b, ex.fe_start, ex.fe_len, &ex);
- 
- 	if (max > 0) {
-@@ -2183,6 +2186,7 @@ int ext4_mb_try_best_found(struct ext4_allocation_context *ac,
- 		ext4_mb_use_best_found(ac, e4b);
- 	}
- 
-+out:
- 	ext4_unlock_group(ac->ac_sb, group);
- 	ext4_mb_unload_buddy(e4b);
- 
--- 
-2.43.0
-
 
 
 
