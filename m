@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-24954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02BB186970C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:17:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B881869523
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:59:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8881728758A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:17:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCF4C1C22EA5
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:59:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 096C714533E;
-	Tue, 27 Feb 2024 14:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2735513B791;
+	Tue, 27 Feb 2024 13:59:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rpsuYOFm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0s8sq+5d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB38C145337;
-	Tue, 27 Feb 2024 14:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18D3140391;
+	Tue, 27 Feb 2024 13:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043450; cv=none; b=fTl7qL68isNa41OYI7WI81r8G3VUYbP/e/q80L/PBu7uZiWAY9g+0pqxtly6XElIwo38F3xjlMifgMSR5y32U77z+HJGa2siwhHVnirrD1ivs825nX/xxtYCa2hq+jyC5hIuGi3LM5TFTmXa6G1awEqrePnytp1Vj9k9I8Tkv/I=
+	t=1709042349; cv=none; b=eDdql4thc+IAmHy71+Yv6KfvB+YvaBS7OYrxSQICnCCNLsbVYGky0v6yJ88juCdBgWc5/m7hiR4VYc3OigBOnJT0AJwxVvLScVdeNNe+zpBz6bJtTPlVTIVVf6tOAq0D+ZDQHFL9u6D5MLoJSpfqe90o0BDpea33j6kONpLcSy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043450; c=relaxed/simple;
-	bh=Dtuu8Qz3YVAPkIk1XgfvxaicklzIVCldwOX79diXO0w=;
+	s=arc-20240116; t=1709042349; c=relaxed/simple;
+	bh=UoJAD0sEb3xlUCye/bxqDEVNmMIFy4pNrwGRlwaX3r8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rdojFA+tiXEzjCEoCmdlImrj9bi/+gGcQLWkIePQFL6qFkJU1LD44fdpfqrNkuNpAO6eslkwmb/WPAvomKcjbSevhGZYLKHy+39x9563w2HeYNk5UHLGeiOc3JWJ1jQD1p+bGgePLrWJSG4ef3mdsv2Ic28T+flaeIHagTMbGyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpsuYOFm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C0ACC433F1;
-	Tue, 27 Feb 2024 14:17:30 +0000 (UTC)
+	 MIME-Version; b=plZG31egpXxFtYHFfp0hQTMJLklp9mgLyPfYf6ZlI/mnOacYA7BU5BxcoSKWVGeVOUbY3WpXxj4e1VFQW+Av3jABepuWuFVoMdpuAZRrDEhCVlWbEolqCiEPWjVlUZZmPiEbxtd8xpiTAMT05n4gl8KJtgMbpaqCPgAtA45bPlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0s8sq+5d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52292C433C7;
+	Tue, 27 Feb 2024 13:59:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043450;
-	bh=Dtuu8Qz3YVAPkIk1XgfvxaicklzIVCldwOX79diXO0w=;
+	s=korg; t=1709042349;
+	bh=UoJAD0sEb3xlUCye/bxqDEVNmMIFy4pNrwGRlwaX3r8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rpsuYOFmgJ/cqAlXhESxCyEXA9KxFqJp9RPLUNy8Gimi5hncoUpM8tg9iD3dAtYk5
-	 UL8LFEB9/x8E8b8nW8gzmrSrHERV2s8bI+rDofbsu2tAe6nio5brb+mFxH6thrl3TH
-	 5xuJUtWIaB8oaGtIVEm14zvCgsI7zJjkMWP0Iom4=
+	b=0s8sq+5d418qa0NkMCKyL0J/YOM5qP2HEUuNwLOnzOMcEmn7XhhPzr+1yEqTQBbRA
+	 Ze2iSHA1b0q8Dtl1qWYps57n7yepfmaX38Kn6dx6WYqYP/SnD9hzUaePtxaVa2RGI/
+	 qllbs+NVn3uLz+W2u3FtihRM/uhcULn5oaTNCe9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.1 113/195] Revert "x86/alternative: Make custom return thunk unconditional"
+	Alex Elder <elder@linaro.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 263/299] net: ipa: dont overrun IPA suspend interrupt registers
 Date: Tue, 27 Feb 2024 14:26:14 +0100
-Message-ID: <20240227131614.193956473@linuxfoundation.org>
+Message-ID: <20240227131634.159895367@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
+From: Alex Elder <elder@linaro.org>
 
-This reverts commit 53ebbe1c8c02aa7b7f072dd2f96bca4faa1daa59.
+[ Upstream commit d80f8e96d47d7374794a30fbed69be43f3388afc ]
 
-Revert the backport of upstream commit:
+In newer hardware, IPA supports more than 32 endpoints.  Some
+registers--such as IPA interrupt registers--represent endpoints
+as bits in a 4-byte register, and such registers are repeated as
+needed to represent endpoints beyond the first 32.
 
-  095b8303f383 ("x86/alternative: Make custom return thunk unconditional")
+In ipa_interrupt_suspend_clear_all(), we clear all pending IPA
+suspend interrupts by reading all status register(s) and writing
+corresponding registers to clear interrupt conditions.
 
-in order to backport the full version now that
+Unfortunately the number of registers to read/write is calculated
+incorrectly, and as a result we access *many* more registers than
+intended.  This bug occurs only when the IPA hardware signals a
+SUSPEND interrupt, which happens when a packet is received for an
+endpoint (or its underlying GSI channel) that is suspended.  This
+situation is difficult to reproduce, but possible.
 
-  770ae1b70952 ("x86/returnthunk: Allow different return thunks")
+Fix this by correctly computing the number of interrupt registers to
+read and write.  This is the only place in the code where registers
+that map endpoints or channels this way perform this calculation.
 
-has been backported.
-
-Revert it here so that the build breakage is kept at minimum.
-
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f298ba785e2d ("net: ipa: add a parameter to suspend registers")
+Signed-off-by: Alex Elder <elder@linaro.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/nospec-branch.h |    4 ----
- arch/x86/kernel/cpu/bugs.c           |    2 --
- 2 files changed, 6 deletions(-)
+ drivers/net/ipa/ipa_interrupt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -205,11 +205,7 @@
- typedef u8 retpoline_thunk_t[RETPOLINE_THUNK_SIZE];
- extern retpoline_thunk_t __x86_indirect_thunk_array[];
+diff --git a/drivers/net/ipa/ipa_interrupt.c b/drivers/net/ipa/ipa_interrupt.c
+index 4bc05948f772d..a78c692f2d3c5 100644
+--- a/drivers/net/ipa/ipa_interrupt.c
++++ b/drivers/net/ipa/ipa_interrupt.c
+@@ -212,7 +212,7 @@ void ipa_interrupt_suspend_clear_all(struct ipa_interrupt *interrupt)
+ 	u32 unit_count;
+ 	u32 unit;
  
--#ifdef CONFIG_RETHUNK
- extern void __x86_return_thunk(void);
--#else
--static inline void __x86_return_thunk(void) {}
--#endif
- 
- extern void retbleed_return_thunk(void);
- extern void srso_return_thunk(void);
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -62,8 +62,6 @@ EXPORT_SYMBOL_GPL(x86_pred_cmd);
- 
- static DEFINE_MUTEX(spec_ctrl_mutex);
- 
--void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
--
- /* Update SPEC_CTRL MSR and its cached copy unconditionally */
- static void update_spec_ctrl(u64 val)
- {
+-	unit_count = roundup(ipa->endpoint_count, 32);
++	unit_count = DIV_ROUND_UP(ipa->endpoint_count, 32);
+ 	for (unit = 0; unit < unit_count; unit++) {
+ 		const struct reg *reg;
+ 		u32 val;
+-- 
+2.43.0
+
 
 
 
