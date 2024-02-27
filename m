@@ -1,64 +1,54 @@
-Return-Path: <stable+bounces-23868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28EC6868BEF
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 10:15:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30040868C23
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 10:25:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D633F2816FD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 09:15:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44F5928254F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 09:19:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD5C135A76;
-	Tue, 27 Feb 2024 09:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C7AB136646;
+	Tue, 27 Feb 2024 09:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MKVeki77"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZ9fUI1F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C178130E48;
-	Tue, 27 Feb 2024 09:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E4A15D0;
+	Tue, 27 Feb 2024 09:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709025308; cv=none; b=ppUbLS5rpfdql+IfsCKJ5ZyEJGnwQCxRdMQfy7LbURo5wYBSBWVcFTyNWz1lFBUIO9qo/ZUZ/uSKItyFQGzr+3Rdf4HzPMe6EvJ55V9JjYYIBvyzpXIPLq2xG1gk3JOqpvb1vvz+DF5CAjQQIIL06IAJVi2EYNOwVovugoIFu1k=
+	t=1709025585; cv=none; b=K1/LZxav9TyWweSU0X3VON56Y5R7cLXxbl3kHLRVQ2KL58ap9qENaPpe6usODzIb80g/LG5g9pY51x9no94TXFbIHGQg5B2Fl3LtrjEk0lV41sSAfCnkPkN5fja4mdL5D6Mg90JMahBIxYcezGyr1yngjHifysJKz6IZey/vuTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709025308; c=relaxed/simple;
-	bh=OjwlO1YDIYRy2SrU90fAQgq6NHCYBwyxJt2f+KcNtUk=;
+	s=arc-20240116; t=1709025585; c=relaxed/simple;
+	bh=mWuQqMS4uz9qq4fM6oWFzkCwnWqLgdXy4FqN58EEn4c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HsZ0oruiiCMUiK3ilVJzswVF2zXGYOL6paw7t0MqStvSXmvKdKBvfIy7eRYZNcFibtmHlqgljoWyRRFuhUe363ySNThiUoh1eg070WJ70xyBVckXKnvm6MhKikPYvr1aHu+bmyYArFKrQnhxg+Qpotd/o68dpEqUDkRIYVqf3ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MKVeki77; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94890C43390;
-	Tue, 27 Feb 2024 09:15:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709025307;
-	bh=OjwlO1YDIYRy2SrU90fAQgq6NHCYBwyxJt2f+KcNtUk=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=N29ntVRvZCgXblh6WKAAZznnbhsSA+cpTJXAysAkxdCe1+eZ2naCFd80cMu1NqEmQ6PbAkJ5WXdkX8Q04IasOOASVD+v/tcA1Yy8r4kLVouednvGM8GSE7JTCNlLlaNCacph5fBHOlPd9nx1z87GfVpvVLO0YMYVrIV8762ASmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZ9fUI1F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B2D7C433F1;
+	Tue, 27 Feb 2024 09:19:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1709025584;
+	bh=mWuQqMS4uz9qq4fM6oWFzkCwnWqLgdXy4FqN58EEn4c=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MKVeki77rVnHBhTizyjJFkV+SqRRaZV1Ft/Z+fFec6r7poZ2WxeUrCRv67YodSdAJ
-	 pnhBgltU5E7qXPC7vEGJQhshGWvkyYPVPNbVRhFonwy0R7i080d4Q3dksc5shCYqvH
-	 x9p48CUo3ubQGj/60Y13ibsALWAdB1BOrikLQf4OoEamco5Gu/1FZyw9kuG7jEhAuN
-	 HSvA7+HEOJoHD2jSqch6p/BaOz8xI6YvCqlxCzGs137q56sxVtKT87mrpsF2Xprozo
-	 hGCZzuC6f61qsG7Es55nX4/kITIHriS1GMcMIooQPxiOqS5dFkXgS0opf1XPmLIJRg
-	 n9axIMimTE07Q==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1retYM-000000002Uu-0Zij;
-	Tue, 27 Feb 2024 10:15:10 +0100
-Date: Tue, 27 Feb 2024 10:15:10 +0100
-From: Johan Hovold <johan@kernel.org>
-To: quic_bjorande@quicinc.com
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Stephen Boyd <swboyd@chromium.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] pmdomain: qcom: rpmhpd: Fix enabled_corner aggregation
-Message-ID: <Zd2oHl0cVQr3mhmd@hovoldconsulting.com>
-References: <20240226-rpmhpd-enable-corner-fix-v1-1-68c004cec48c@quicinc.com>
+	b=FZ9fUI1FOL0OHcqIyA1oNWr2JN4APMm470UwK4REcPHycyrp7PaHwnZsss+fZcKTm
+	 lrQGaD6NgMzQ9yDMzvqFPwsarXiQshHptPGTnPOvse+em35/zAQrgi1D2t96j00G/S
+	 NYQUFFjozZswRZAfsvZC8/hZibXJH7PqT0ewI2H0=
+Date: Tue, 27 Feb 2024 10:19:41 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: stable@vger.kernel.org, damon@lists.linux.dev, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 6.1.y] mm/damon/reclaim: fix quota stauts loss due to
+ online tunings
+Message-ID: <2024022731-varying-underpaid-c855@gregkh>
+References: <2024022643-scorn-filtrate-8677@gregkh>
+ <20240227051335.168121-1-sj@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,44 +57,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240226-rpmhpd-enable-corner-fix-v1-1-68c004cec48c@quicinc.com>
+In-Reply-To: <20240227051335.168121-1-sj@kernel.org>
 
-On Mon, Feb 26, 2024 at 05:49:57PM -0800, Bjorn Andersson via B4 Relay wrote:
-> From: Bjorn Andersson <quic_bjorande@quicinc.com>
+On Mon, Feb 26, 2024 at 09:13:35PM -0800, SeongJae Park wrote:
+> Patch series "mm/damon: fix quota status loss due to online tunings".
 > 
-> Commit 'e3e56c050ab6 ("soc: qcom: rpmhpd: Make power_on actually enable
-> the domain")' aimed to make sure that a power-domain that is being
-> enabled without any particular performance-state requested will at least
-> turn the rail on, to avoid filling DeviceTree with otherwise unnecessary
-> required-opps properties.
+> DAMON_RECLAIM and DAMON_LRU_SORT is not preserving internal quota status
+> when applying new user parameters, and hence could cause temporal quota
+> accuracy degradation.  Fix it by preserving the status.
 > 
-> But in the event that aggregation happens on a disabled power-domain, with
-> an enabled peer without performance-state, both the local and peer
-> corner are 0. The peer's enabled_corner is not considered, with the
-> result that the underlying (shared) resource is disabled.
+> This patch (of 2):
 > 
-> One case where this can be observed is when the display stack keeps mmcx
-> enabled (but without a particular performance-state vote) in order to
-> access registers and sync_state happens in the rpmhpd driver. As mmcx_ao
-> is flushed the state of the peer (mmcx) is not considered and mmcx_ao
-> ends up turning off "mmcx.lvl" underneath mmcx. This has been observed
-> several times, but has been painted over in DeviceTree by adding an
-> explicit vote for the lowest non-disabled performance-state.
+> For online parameters change, DAMON_RECLAIM creates new scheme based on
+> latest values of the parameters and replaces the old scheme with the new
+> one.  When creating it, the internal status of the quota of the old
+> scheme is not preserved.  As a result, charging of the quota starts from
+> zero after the online tuning.  The data that collected to estimate the
+> throughput of the scheme's action is also reset, and therefore the
+> estimation should start from the scratch again.  Because the throughput
+> estimation is being used to convert the time quota to the effective size
+> quota, this could result in temporal time quota inaccuracy.  It would be
+> recovered over time, though.  In short, the quota accuracy could be
+> temporarily degraded after online parameters update.
 > 
-> Fixes: e3e56c050ab6 ("soc: qcom: rpmhpd: Make power_on actually enable the domain")
-> Reported-by: Johan Hovold <johan@kernel.org>
-> Closes: https://lore.kernel.org/linux-arm-msm/ZdMwZa98L23mu3u6@hovoldconsulting.com/
-> Cc:  <stable@vger.kernel.org>
-> Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+> Fix the problem by checking the case and copying the internal fields for
+> the status.
+> 
+> Link: https://lkml.kernel.org/r/20240216194025.9207-1-sj@kernel.org
+> Link: https://lkml.kernel.org/r/20240216194025.9207-2-sj@kernel.org
+> Fixes: e035c280f6df ("mm/damon/reclaim: support online inputs update")
+> Signed-off-by: SeongJae Park <sj@kernel.org>
+> Cc: <stable@vger.kernel.org>	[5.19+]
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> (cherry picked from commit 1b0ca4e4ff10a2c8402e2cf70132c683e1c772e4)
 > ---
-> This issue is the root cause of a display regression on SC8280XP boards,
-> resulting in the system often resetting during boot. It was exposed by
-> the refactoring of the DisplayPort driver in v6.8-rc1.
+>  mm/damon/reclaim.c | 18 +++++++++++++++++-
+>  1 file changed, 17 insertions(+), 1 deletion(-)
+> 
 
-This fixes the hard resets I've been seeing since rc1 when initialising
-the display subsystem of the Lenovo ThinkPad X13s at boot. With some
-instrumentation added I can see the resets coinciding with the call to
-rpmhpd_aggregate_corner() for 'mx_ao':
+Now queued up, thanks.
 
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
+greg k-h
 
