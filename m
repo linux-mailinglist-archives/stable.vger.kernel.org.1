@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-24715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E7E48695F4
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38D4A86969D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:14:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B30C1C209B9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD7D71F2E6BC
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:14:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3FD145328;
-	Tue, 27 Feb 2024 14:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4FA91448C3;
+	Tue, 27 Feb 2024 14:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EHYzofpj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z32NAQsX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BEA61448C7;
-	Tue, 27 Feb 2024 14:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947C613EFE4;
+	Tue, 27 Feb 2024 14:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042790; cv=none; b=f3AUJDnDrK45PNL5hcd/N5mgobH8hSUOqkfyK/UJ4o4EQrvTJlysKwMQG9bAnmljdhiMO63T4/yEKcdlRrqNDsxcRSLMw5h5gMZBHLgoQGz6KYgEh2k2ixSLhxnK/WiEi9Vb7JfaJOPeGRwuTORCT8fUMBVDwIZMZPDsW8AFV1U=
+	t=1709043188; cv=none; b=PUFP7OGKYHpo214OEeoLNv+/bFhlXl4JnMRffq8xfqFu2zxu8UacNkjPt4DEyKA5mp/z9eorRHgOuIOxS5VX5yyHkFpu9E+RKxXgl4CeEdnF9lcBu63wRLH4pfxk94YlrY+2M/r4RF3Ft4+mvNh2elGGK5WLpz+Q4Z1ZDsDcFFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042790; c=relaxed/simple;
-	bh=weEBUpfJThfksJmer1a2znb8Mx+cGTqHujd/yfGWRnw=;
+	s=arc-20240116; t=1709043188; c=relaxed/simple;
+	bh=K6DiBGAFCugeDaDYfNemGdaWHHXNE9GLb+EzpI78wpk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k74jLloaLHwffclqNN8K43Ki7jy2BNze65nXeKA5wGaTfp9FY60ORYPRji3B0MKeLWQK7W7Z97HJyzqbhsAmJPdZhmI/GkhX6YLKSLTYkF+Via6WcHIwtZ4oAk8pE1Ua3o+BtA8steWqd2MJrFTN4EM9SJTqoSv/hhM63y2Y+T0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EHYzofpj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B9EC43390;
-	Tue, 27 Feb 2024 14:06:29 +0000 (UTC)
+	 MIME-Version; b=FELdtDmXZnZhBj7UcoY6f1WE3F0Gkc5q9CfLDc4U/0IZfwFn0SvMWcd8zZX0uJ+sNmMMOzHUmbI96hkxTZ8rampInJvRM29E9sbtQAzJuol9d4oqETYKHYtIiutMISAsc5fttEs4Ue6kwPNCPQYfun5P54w4x0kJRtU7QVoFcrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z32NAQsX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 260E4C433F1;
+	Tue, 27 Feb 2024 14:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042789;
-	bh=weEBUpfJThfksJmer1a2znb8Mx+cGTqHujd/yfGWRnw=;
+	s=korg; t=1709043188;
+	bh=K6DiBGAFCugeDaDYfNemGdaWHHXNE9GLb+EzpI78wpk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EHYzofpj0cpj6kp+A61huv3+B5B1HCCcn8b3z9I3kjiIgkymBams6C+MiwLQ2PbGT
-	 jcjICilM38oCPb/1I9DUO1SyFATgBcMegqDnjGgV2lHGXqyiquGft/ZorrfJ+/7JdH
-	 iHIY6y/ip+VWS8ulW0ZsCg+AZY24v4CnCrnRg51g=
+	b=z32NAQsX/R3591T9TBAfTCY7tDAPJYnEMJd+5TTyraP3+0EqI0iHVBOeVBHhPe9G2
+	 MRSUX1ui2zDGKo4rkW5ZNZQo858PMLsh1qr8N8+DHSDXnqSONr2jUX2Pl8HC2D5lGt
+	 4gw1JTiuqVr7iasEdO79Cs6+iash9HOCQPZFPFcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 5.15 093/245] Revert "x86/alternative: Make custom return thunk unconditional"
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 020/195] cifs: translate network errors on send to -ECONNABORTED
 Date: Tue, 27 Feb 2024 14:24:41 +0100
-Message-ID: <20240227131618.245611454@linuxfoundation.org>
+Message-ID: <20240227131611.062138971@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-This reverts commit 08f7cfd44f77b2796582bc26164fdef44dd33b6c.
+[ Upstream commit a68106a6928e0a6680f12bcc7338c0dddcfe4d11 ]
 
-Revert the backport of upstream commit:
+When the network stack returns various errors, we today bubble
+up the error to the user (in case of soft mounts).
 
-  095b8303f383 ("x86/alternative: Make custom return thunk unconditional")
+This change translates all network errors except -EINTR and
+-EAGAIN to -ECONNABORTED. A similar approach is taken when
+we receive network errors when reading from the socket.
 
-in order to backport the full version now that
+The change also forces the cifsd thread to reconnect during
+it's next activity.
 
-  770ae1b70952 ("x86/returnthunk: Allow different return thunks")
-
-has been backported.
-
-Revert it here so that the build breakage is kept at minimum.
-
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/nospec-branch.h |    4 ----
- arch/x86/kernel/cpu/bugs.c           |    4 ----
- 2 files changed, 8 deletions(-)
+ fs/smb/client/transport.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -190,11 +190,7 @@
- 	_ASM_PTR " 999b\n\t"					\
- 	".popsection\n\t"
- 
--#ifdef CONFIG_RETHUNK
- extern void __x86_return_thunk(void);
--#else
--static inline void __x86_return_thunk(void) {}
--#endif
- 
- extern void retbleed_return_thunk(void);
- extern void srso_return_thunk(void);
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -62,10 +62,6 @@ EXPORT_SYMBOL_GPL(x86_pred_cmd);
- 
- static DEFINE_MUTEX(spec_ctrl_mutex);
- 
--#ifdef CONFIG_CALL_THUNKS
--void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
--#endif
--
- /* Update SPEC_CTRL MSR and its cached copy unconditionally */
- static void update_spec_ctrl(u64 val)
- {
+diff --git a/fs/smb/client/transport.c b/fs/smb/client/transport.c
+index 8a1dd8407a3a7..97bf46de8e429 100644
+--- a/fs/smb/client/transport.c
++++ b/fs/smb/client/transport.c
+@@ -427,10 +427,17 @@ __smb_send_rqst(struct TCP_Server_Info *server, int num_rqst,
+ 						  server->conn_id, server->hostname);
+ 	}
+ smbd_done:
+-	if (rc < 0 && rc != -EINTR)
++	/*
++	 * there's hardly any use for the layers above to know the
++	 * actual error code here. All they should do at this point is
++	 * to retry the connection and hope it goes away.
++	 */
++	if (rc < 0 && rc != -EINTR && rc != -EAGAIN) {
+ 		cifs_server_dbg(VFS, "Error %d sending data on socket to server\n",
+ 			 rc);
+-	else if (rc > 0)
++		rc = -ECONNABORTED;
++		cifs_signal_cifsd_for_reconnect(server, false);
++	} else if (rc > 0)
+ 		rc = 0;
+ out:
+ 	cifs_in_send_dec(server);
+-- 
+2.43.0
+
 
 
 
