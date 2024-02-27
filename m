@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-24883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A35B8696B9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E05468695C3
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:05:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4497C2958CF
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F25691C20F4E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:05:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C767F1420DD;
-	Tue, 27 Feb 2024 14:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BFB61420D4;
+	Tue, 27 Feb 2024 14:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LHjFCk7R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dkn7BRFr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FA413B78F;
-	Tue, 27 Feb 2024 14:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40BA51419AD;
+	Tue, 27 Feb 2024 14:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043257; cv=none; b=QZi1We5zA8RaPFifzi+yhQu2aKTSwsSyJjFm5zGXMcpqim+YtCKfCwfRvQbTFz/uoKsfXcHaq2tKWbCn6J8wUCMZLmGd7wnRtpFxmkltzpSX9KteUY5mtYNBgpGS21Lva1ZV9NALxUlLaxkwnxGE0ZLSTJwNObt0C6EcAMiu0kE=
+	t=1709042696; cv=none; b=K5ReaOH1v+EqcGbwSRDOrY4J3OVlrzHdHn5z2RhMPIKdvruWCrLugizurnziuXcoKCQ6KmmK4eJWX8GuNnNPNokXPICmkRj/qAyW5VrasHRFv4Km2//Gq9Z5EvyRvLjHWe6m0NNJS/s2kLukSlEdoaFfN2zct8iI8Y1zZ35Hggo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043257; c=relaxed/simple;
-	bh=UzmF6wjDkYo+Hj0PLpTup4I2te/Y4sQcGovuWS6CR2Y=;
+	s=arc-20240116; t=1709042696; c=relaxed/simple;
+	bh=nyWg11nl1d7d8yLjs9Me55wirWD1kctyrQejdN2U8e8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iYAjCG/b49OTcU2px5cT0ZM/ZoFtRI+s5SAVf7gRYotx3G+Mia3MnEpbelse7sYX4BT98vhKOmMfErM/L35PBTkNQRe+TlQ0WYp5Y2ukCQMPOpz02u88sYA+fycxJM2zgUU1e2wkMBpcTNHGkrpYgWPyrvdgN3UpNCjfukbpKas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LHjFCk7R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 166C7C433C7;
-	Tue, 27 Feb 2024 14:14:16 +0000 (UTC)
+	 MIME-Version; b=ABEdVWoGBrT0KDD17K+ILrEYDtsVK/HMIupLe6zDg98u5Kz7zmIQ5+oxJdHTNHYzdhyLUlKU+5+T8mYHCARGpkoiOsYR71iMdJjJ0G/I4SdzJdnmBorWjYpwmG6SrGhXEsFxN3F+a5nGkEcXPJZWulwvAGYWc+bkfdcwqi1hdtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dkn7BRFr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0233C43399;
+	Tue, 27 Feb 2024 14:04:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043257;
-	bh=UzmF6wjDkYo+Hj0PLpTup4I2te/Y4sQcGovuWS6CR2Y=;
+	s=korg; t=1709042696;
+	bh=nyWg11nl1d7d8yLjs9Me55wirWD1kctyrQejdN2U8e8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LHjFCk7RUEN7XU1sTD5ADpBSeiyekV/3wSsLLhgTvV7HKE+NfP4Hwx4IkCa1V1lF9
-	 bMS8BPSKzyh5DRvwT7rNs8ucMUXf1dHq9DyBnv785/vrcg9PMyf6VsG613lTXGjbv7
-	 PLdl9FVHcIz/ti2ylVHz8KkAGS64/UATUx8O13cY=
+	b=Dkn7BRFrfS57Fx8PqM6iYdUnDKWZDxqrbjitRFAQu/rtWfdD97norxAjBP8sNGHdA
+	 dlLgYhZKGw8rN1LOZM2xnuSoxTzJsjlJMa9h8LM/G7mkBNUT1dL2tHQCZNycf6eYgy
+	 PPhJh2eTXKGwigxz3ZlGQfyc7h/lmnXeE70eU63s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 014/195] wifi: mac80211: fix race condition on enabling fast-xmit
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Nikita Shubin <nikita.shubin@maquefel.me>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 5.15 087/245] ARM: ep93xx: Add terminator to gpiod_lookup_table
 Date: Tue, 27 Feb 2024 14:24:35 +0100
-Message-ID: <20240227131610.870867307@linuxfoundation.org>
+Message-ID: <20240227131618.053495467@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Nikita Shubin <nikita.shubin@maquefel.me>
 
-[ Upstream commit bcbc84af1183c8cf3d1ca9b78540c2185cd85e7f ]
+commit fdf87a0dc26d0550c60edc911cda42f9afec3557 upstream.
 
-fast-xmit must only be enabled after the sta has been uploaded to the driver,
-otherwise it could end up passing the not-yet-uploaded sta via drv_tx calls
-to the driver, leading to potential crashes because of uninitialized drv_priv
-data.
-Add a missing sta->uploaded check and re-check fast xmit after inserting a sta.
+Without the terminator, if a con_id is passed to gpio_find() that
+does not exist in the lookup table the function will not stop looping
+correctly, and eventually cause an oops.
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://msgid.link/20240104181059.84032-1-nbd@nbd.name
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: b2e63555592f ("i2c: gpio: Convert to use descriptors")
+Reported-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Nikita Shubin <nikita.shubin@maquefel.me>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Acked-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Link: https://lore.kernel.org/r/20240205102337.439002-1-alexander.sverdlin@gmail.com
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/sta_info.c | 2 ++
- net/mac80211/tx.c       | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ arch/arm/mach-ep93xx/core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index f3d6c3e4c970e..bd56015b29258 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -891,6 +891,8 @@ static int sta_info_insert_finish(struct sta_info *sta) __acquires(RCU)
- 	if (ieee80211_vif_is_mesh(&sdata->vif))
- 		mesh_accept_plinks_update(sdata);
+--- a/arch/arm/mach-ep93xx/core.c
++++ b/arch/arm/mach-ep93xx/core.c
+@@ -337,6 +337,7 @@ static struct gpiod_lookup_table ep93xx_
+ 				GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN),
+ 		GPIO_LOOKUP_IDX("G", 0, NULL, 1,
+ 				GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN),
++		{ }
+ 	},
+ };
  
-+	ieee80211_check_fast_xmit(sta);
-+
- 	return 0;
-  out_remove:
- 	if (sta->sta.valid_links)
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 322a035f75929..3d62e8b718740 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -3044,7 +3044,7 @@ void ieee80211_check_fast_xmit(struct sta_info *sta)
- 	    sdata->vif.type == NL80211_IFTYPE_STATION)
- 		goto out;
- 
--	if (!test_sta_flag(sta, WLAN_STA_AUTHORIZED))
-+	if (!test_sta_flag(sta, WLAN_STA_AUTHORIZED) || !sta->uploaded)
- 		goto out;
- 
- 	if (test_sta_flag(sta, WLAN_STA_PS_STA) ||
--- 
-2.43.0
-
 
 
 
