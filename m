@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-25215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 722F2869847
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:31:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73AD18697D9
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:25:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E3B52952C3
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:31:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17DB3B2D3D8
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:24:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C9E913AA38;
-	Tue, 27 Feb 2024 14:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A540614264A;
+	Tue, 27 Feb 2024 14:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7NBHm+A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SszE3Z5X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296ED145B0D;
-	Tue, 27 Feb 2024 14:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642931420D3;
+	Tue, 27 Feb 2024 14:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044181; cv=none; b=bEVAqDDGSQN/HxZR2orQRNOUCkrP8+y09Q4z2kNCQFU9rZH5G6QjtH75qxYqfocK20aQarIeIPtmyHRkqZqysT6bo6L+J8b1ZYc/by34XlCF5QxfH6w2Oz2DawP6Ps0jYhO9AEyJQBDLJpgW9qr70vmKsXhrO5bp0uUM7x37Rl4=
+	t=1709043876; cv=none; b=PeiyumpfMyN30uJ0OwbWODaR9q20Ut83/FiD+MGl5YKGHSo+hsKbER+/WP6Rgn9VNEhyajlq5uNeKRXOcMwC9hOs45Jt9arnYLv/VsfsRGoHA0WVP/sAPxJ5uYQHZ0P3+B85FxJCqV1AQsqhdhjiikJZ2JPd+7L5zzumCV99Elc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044181; c=relaxed/simple;
-	bh=ORllwEQjaIP+4jE/kM586n9rSt0PmLBZ16+X41Shh7E=;
+	s=arc-20240116; t=1709043876; c=relaxed/simple;
+	bh=0dBe1vZNIxoNuBNMkcszCJuSByz/0eav64bTklpCIJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eCppFLAaWHtqQ22ZmzBnNLFiguK0juPfTt5mQJzhNdCYdHQeqyxgYEFOb6cD7CDJXE25RhDg0Q91ts1RF13LhvJHrERyc9owNPhnrC4Ufjl577KrZvudK34semAxAe/+hoaP1BHdd0YRofJqyGoorGhdREFLPKUj1J9073EItJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7NBHm+A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FBCBC433F1;
-	Tue, 27 Feb 2024 14:29:40 +0000 (UTC)
+	 MIME-Version; b=K6J8vMjCICQxxc+0lxibnvFy9uc9qibBaAOZSAAk+vxth1nX7LFLWCFfEPKiUtFU/Koxa6cxkCQ1lvfK0lntI+JjxAgNDCYJ9wgrCX80v3wWSjLGh7qykcpMhif1KSu6dngCoVF4WMyMF3ONui3BgBkfQA8rfNS6psoXWi2nmpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SszE3Z5X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7073DC43390;
+	Tue, 27 Feb 2024 14:24:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044181;
-	bh=ORllwEQjaIP+4jE/kM586n9rSt0PmLBZ16+X41Shh7E=;
+	s=korg; t=1709043876;
+	bh=0dBe1vZNIxoNuBNMkcszCJuSByz/0eav64bTklpCIJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m7NBHm+A0t600XAdsmRLYF6hWjyhrkwRB5BmvbkaJNNwZWROwuGFbYBVOADUA11zn
-	 1Q879YOkitKbYhBCzVWiReLabYmQB6HWaI5I9gHGweekrbWX+zx9Lm4ndTJJOiuyLS
-	 IYOkJ8J2nsihKnvvRaykgZrOhRcM/wb0CV0IiE9g=
+	b=SszE3Z5XtnJ5RUcFDOzf9pY1kWmVo/26d8HnPmvNhVXlYjRjYPbSl2NJTqMMF85M2
+	 py6uazBJaov6/kza09E2RQrBaNJ6EzRm5HxO+fM7R4+qeS+KbGk9vguDwe3/ym4Ep4
+	 jrPIx39lUfD5dPlwoYGGMQ7kYS3apOIRmeayCYKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Roger Quadros <rogerq@kernel.org>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 5.10 091/122] usb: cdns3: fix memory double free when handle zero packet
-Date: Tue, 27 Feb 2024 14:27:32 +0100
-Message-ID: <20240227131601.684233104@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 66/84] RDMA/srpt: fix function pointer cast warnings
+Date: Tue, 27 Feb 2024 14:27:33 +0100
+Message-ID: <20240227131555.019912178@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 5fd9e45f1ebcd57181358af28506e8a661a260b3 upstream.
+[ Upstream commit eb5c7465c3240151cd42a55c7ace9da0026308a1 ]
 
-829  if (request->complete) {
-830          spin_unlock(&priv_dev->lock);
-831          usb_gadget_giveback_request(&priv_ep->endpoint,
-832                                    request);
-833          spin_lock(&priv_dev->lock);
-834  }
-835
-836  if (request->buf == priv_dev->zlp_buf)
-837      cdns3_gadget_ep_free_request(&priv_ep->endpoint, request);
+clang-16 notices that srpt_qp_event() gets called through an incompatible
+pointer here:
 
-Driver append an additional zero packet request when queue a packet, which
-length mod max packet size is 0. When transfer complete, run to line 831,
-usb_gadget_giveback_request() will free this requestion. 836 condition is
-true, so cdns3_gadget_ep_free_request() free this request again.
+drivers/infiniband/ulp/srpt/ib_srpt.c:1815:5: error: cast from 'void (*)(struct ib_event *, struct srpt_rdma_ch *)' to 'void (*)(struct ib_event *, void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
+ 1815 |                 = (void(*)(struct ib_event *, void*))srpt_qp_event;
 
-Log:
+Change srpt_qp_event() to use the correct prototype and adjust the
+argument inside of it.
 
-[ 1920.140696][  T150] BUG: KFENCE: use-after-free read in cdns3_gadget_giveback+0x134/0x2c0 [cdns3]
-[ 1920.140696][  T150]
-[ 1920.151837][  T150] Use-after-free read at 0x000000003d1cd10b (in kfence-#36):
-[ 1920.159082][  T150]  cdns3_gadget_giveback+0x134/0x2c0 [cdns3]
-[ 1920.164988][  T150]  cdns3_transfer_completed+0x438/0x5f8 [cdns3]
-
-Add check at line 829, skip call usb_gadget_giveback_request() if it is
-additional zero length packet request. Needn't call
-usb_gadget_giveback_request() because it is allocated in this driver.
-
-Cc: stable@vger.kernel.org
-Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20240202154217.661867-2-Frank.Li@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a42d985bd5b2 ("ib_srpt: Initial SRP Target merge for v3.3-rc1")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240213100728.458348-1-arnd@kernel.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/gadget.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/infiniband/ulp/srpt/ib_srpt.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/cdns3/gadget.c
-+++ b/drivers/usb/cdns3/gadget.c
-@@ -837,7 +837,11 @@ void cdns3_gadget_giveback(struct cdns3_
- 			return;
+diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
+index ccd9811c6c1e2..d03a4f2e006fb 100644
+--- a/drivers/infiniband/ulp/srpt/ib_srpt.c
++++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
+@@ -213,10 +213,12 @@ static const char *get_ch_state_name(enum rdma_ch_state s)
+ /**
+  * srpt_qp_event - QP event callback function
+  * @event: Description of the event that occurred.
+- * @ch: SRPT RDMA channel.
++ * @ptr: SRPT RDMA channel.
+  */
+-static void srpt_qp_event(struct ib_event *event, struct srpt_rdma_ch *ch)
++static void srpt_qp_event(struct ib_event *event, void *ptr)
+ {
++	struct srpt_rdma_ch *ch = ptr;
++
+ 	pr_debug("QP event %d on ch=%p sess_name=%s-%d state=%s\n",
+ 		 event->event, ch, ch->sess_name, ch->qp->qp_num,
+ 		 get_ch_state_name(ch->state));
+@@ -1802,8 +1804,7 @@ static int srpt_create_ch_ib(struct srpt_rdma_ch *ch)
  	}
  
--	if (request->complete) {
-+	/*
-+	 * zlp request is appended by driver, needn't call usb_gadget_giveback_request() to notify
-+	 * gadget composite driver.
-+	 */
-+	if (request->complete && request->buf != priv_dev->zlp_buf) {
- 		spin_unlock(&priv_dev->lock);
- 		usb_gadget_giveback_request(&priv_ep->endpoint,
- 					    request);
+ 	qp_init->qp_context = (void *)ch;
+-	qp_init->event_handler
+-		= (void(*)(struct ib_event *, void*))srpt_qp_event;
++	qp_init->event_handler = srpt_qp_event;
+ 	qp_init->send_cq = ch->cq;
+ 	qp_init->recv_cq = ch->cq;
+ 	qp_init->sq_sig_type = IB_SIGNAL_REQ_WR;
+-- 
+2.43.0
+
 
 
 
