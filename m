@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB36E869405
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9013A869350
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:43:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 953CC285BB5
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40E6FB2FA23
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:42:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB30145B0E;
-	Tue, 27 Feb 2024 13:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 690BD13DB83;
+	Tue, 27 Feb 2024 13:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bRWoM15O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aqutN5ie"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C11D13AA55;
-	Tue, 27 Feb 2024 13:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2048613F01E;
+	Tue, 27 Feb 2024 13:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041736; cv=none; b=eUm/eNdep5Hxgox82hptciw+gpFe99diE9t3JZVWG6HsH/5OZ2jTSIPkXh5zb1meHc5UWUPB2gdCTRcx5RKjX8LiaW2BHC7YtkIwUFSFvdE6BFK0KrpallUPQKd8JQMu3J4vYxSBoJoPI204JQSP2lUnu1kJmGUGAtaz8bin+EM=
+	t=1709041339; cv=none; b=BrwNnU1m10jzFuQQ6fSmzXpCntfHjw7PGeLF15IK2kWdORo/WJgljN/BCh6cAlkGJ5acAPKiqNJG99J9Shn1huQRj81TEFgBKdYm11yVGcGipm27dYS5djcr/+FtptbDReru/zVIov2dzxhzWXp8fQ/I7b/UIjz2BJVhFYy98Fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041736; c=relaxed/simple;
-	bh=niul0sj8YXJ8AWBdyAk3JlTI8Gcb6dj/W5B8IVO08UE=;
+	s=arc-20240116; t=1709041339; c=relaxed/simple;
+	bh=iDzxBO/xLAIAf5qRc1L77EArM07WLc1TczBzrwFCe54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EiPLQuZo3hK0/8nlZF7Wb9rYcNeWdvKmomMZnllg9gGUQpNlUiaTz7qgOMTNCBVlbe/nNr6jJmzcFVbAY2Wt1asnOplmVdncOOi4VIq6TybMPzFgJh7WXkH6ahJEazFwVMrLj4JUi3+4x2hv0eONPH95NLH+b3YgTLg2TcZSXDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bRWoM15O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCB24C433C7;
-	Tue, 27 Feb 2024 13:48:55 +0000 (UTC)
+	 MIME-Version; b=bXMPA0bpVvH5Tcf8Hpy3DUy9yOlZ78MwscaaWj2TKvQokAIx4/o+5Ieqo3VA6/42NfrVWFykcDNXAIubYRFfwylFLcQs3YPW8NXshoyt2MQvKG8OEtgeXkQWNX9DtOYY5l8B/tpS7urzA07bcbREVWKEpXksdxLYP3IMW7+4N50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aqutN5ie; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0823C433C7;
+	Tue, 27 Feb 2024 13:42:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041736;
-	bh=niul0sj8YXJ8AWBdyAk3JlTI8Gcb6dj/W5B8IVO08UE=;
+	s=korg; t=1709041339;
+	bh=iDzxBO/xLAIAf5qRc1L77EArM07WLc1TczBzrwFCe54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bRWoM15OjYz8mnOu4pxem76Ix8+AZ6T+/xy0+CRLs3fbOAQhKWOOCvDYbFC4EM/zM
-	 d7pZ4KaOfTHSQdeNg4zytTapqle5ghAOc26s4TYFhNGxpOPecsyrm0ZLN3bG1Pyvdg
-	 QWjp7MO3tpg58Btd4hnAXtuVZucQLvJd+whudWlc=
+	b=aqutN5iejABSXnCebH3OdB39va6pXUj5AnQiPqtoCiNFtirfxNtF3L70adjTP01SJ
+	 Y7xE4GqY4aW+G36i6IIE4Auwo5wJJPA90jvZOxomvtt4bXuUe+6qhVgznf8F18ZCet
+	 CFDWudywNpD4uCgbyhMWyMmfggBM2c1C3aEcHvWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brenton Simpson <appsforartists@google.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 050/299] Input: xpad - add Lenovo Legion Go controllers
+Subject: [PATCH 6.7 303/334] tls: break out of main loop when PEEK gets a non-data record
 Date: Tue, 27 Feb 2024 14:22:41 +0100
-Message-ID: <20240227131627.585074880@linuxfoundation.org>
+Message-ID: <20240227131640.827947777@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brenton Simpson <appsforartists@google.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 80441f76ee67002437db61f3b317ed80cce085d2 ]
+[ Upstream commit 10f41d0710fc81b7af93fa6106678d57b1ff24a7 ]
 
-The Lenovo Legion Go is a handheld gaming system, similar to a Steam Deck.
-It has a gamepad (including rear paddles), 3 gyroscopes, a trackpad,
-volume buttons, a power button, and 2 LED ring lights.
+PEEK needs to leave decrypted records on the rx_list so that we can
+receive them later on, so it jumps back into the async code that
+queues the skb. Unfortunately that makes us skip the
+TLS_RECORD_TYPE_DATA check at the bottom of the main loop, so if two
+records of the same (non-DATA) type are queued, we end up merging
+them.
 
-The Legion Go firmware presents these controls as a USB hub with various
-devices attached.  In its default state, the gamepad is presented as an
-Xbox controller connected to this hub.  (By holding a combination of
-buttons, it can be changed to use the older DirectInput API.)
+Add the same record type check, and make it unlikely to not penalize
+the async fastpath. Async decrypt only applies to data record, so this
+check is only needed for PEEK.
 
-This patch teaches the existing Xbox controller module `xpad` to bind to
-the controller in the Legion Go, which enables support for the:
+process_rx_list also has similar issues.
 
-- directional pad,
-- analog sticks (including clicks),
-- X, Y, A, B,
-- start and select (or menu and capture),
-- shoulder buttons, and
-- rumble.
-
-The trackpad, touchscreen, volume controls, and power button are already
-supported via existing kernel modules.  Two of the face buttons, the
-gyroscopes, rear paddles, and LEDs are not.
-
-After this patch lands, the Legion Go will be mostly functional in Linux,
-out-of-the-box.  The various components of the USB hub can be synthesized
-into a single logical controller (including the additional buttons) in
-userspace with [Handheld Daemon](https://github.com/hhd-dev/hhd), which
-makes the Go fully functional.
-
-Signed-off-by: Brenton Simpson <appsforartists@google.com>
-Link: https://lore.kernel.org/r/20240118183546.418064-1-appsforartists@google.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: 692d7b5d1f91 ("tls: Fix recvmsg() to be able to peek across multiple records")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/3df2eef4fdae720c55e69472b5bea668772b45a2.1708007371.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c | 2 ++
+ net/tls/tls_sw.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
-index e2c1848182de9..d0bb3edfd0a09 100644
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -294,6 +294,7 @@ static const struct xpad_device {
- 	{ 0x1689, 0xfd00, "Razer Onza Tournament Edition", 0, XTYPE_XBOX360 },
- 	{ 0x1689, 0xfd01, "Razer Onza Classic Edition", 0, XTYPE_XBOX360 },
- 	{ 0x1689, 0xfe00, "Razer Sabertooth", 0, XTYPE_XBOX360 },
-+	{ 0x17ef, 0x6182, "Lenovo Legion Controller for Windows", 0, XTYPE_XBOX360 },
- 	{ 0x1949, 0x041a, "Amazon Game Controller", 0, XTYPE_XBOX360 },
- 	{ 0x1bad, 0x0002, "Harmonix Rock Band Guitar", 0, XTYPE_XBOX360 },
- 	{ 0x1bad, 0x0003, "Harmonix Rock Band Drumkit", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360 },
-@@ -491,6 +492,7 @@ static const struct usb_device_id xpad_table[] = {
- 	XPAD_XBOX360_VENDOR(0x15e4),		/* Numark Xbox 360 controllers */
- 	XPAD_XBOX360_VENDOR(0x162e),		/* Joytech Xbox 360 controllers */
- 	XPAD_XBOX360_VENDOR(0x1689),		/* Razer Onza */
-+	XPAD_XBOX360_VENDOR(0x17ef),		/* Lenovo */
- 	XPAD_XBOX360_VENDOR(0x1949),		/* Amazon controllers */
- 	XPAD_XBOX360_VENDOR(0x1bad),		/* Harmonix Rock Band guitar and drums */
- 	XPAD_XBOX360_VENDOR(0x20d6),		/* PowerA controllers */
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 9fbc70200cd0f..78aedfc682ba8 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -2064,6 +2064,8 @@ int tls_sw_recvmsg(struct sock *sk,
+ 				decrypted += chunk;
+ 				len -= chunk;
+ 				__skb_queue_tail(&ctx->rx_list, skb);
++				if (unlikely(control != TLS_RECORD_TYPE_DATA))
++					break;
+ 				continue;
+ 			}
+ 
 -- 
 2.43.0
 
