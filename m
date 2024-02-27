@@ -1,52 +1,58 @@
-Return-Path: <stable+bounces-24133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C6D78692E7
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:39:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B25098692CB
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:39:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 923E6B2F57F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:38:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3B3B1C21C83
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:39:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C1F213B2BE;
-	Tue, 27 Feb 2024 13:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10A9313B2B3;
+	Tue, 27 Feb 2024 13:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hB6M7rDC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cb/68iND"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C7713B2B3;
-	Tue, 27 Feb 2024 13:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C000A13B78A;
+	Tue, 27 Feb 2024 13:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041124; cv=none; b=Du3fFFfXz4ZKDe0ZEq6k1LrJhC562MEDpOXw1PufqaehG7aGegVSZyEOaYtm9DfaLW+EEUDJVBYP5a5Zhp2gdmxV2NYcHQQpvgvrzUj0yx9u8BeuVe1iEey7wDesL2XV5V0CYJzp4nJ9SYwhcIsaHwcXztxmM0pNnUSuq1oGVyY=
+	t=1709041129; cv=none; b=oihxDx3sOLdq0lBGYgqfqEjUtuGf0dYR3nYXdTrDL6xLGcunAURi9QiWXIpw+Ju3MUMfBJkI6/KiTRuG5rGIo/0FHFZA1qqheJvj9r38Up3OAf12un9Dh8H2w98gtSAgJTlZX8jkfCfcMqQqgqaReCVcJXQkMhb5Fsnuby1EbTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041124; c=relaxed/simple;
-	bh=9770UkrV3bupLekcnOiypFP2yMhzfd3+oL5c9lqfnyI=;
+	s=arc-20240116; t=1709041129; c=relaxed/simple;
+	bh=E8RnJSKONpJ9gD9MKHJHWgpdp6Lp090Tp2pZreHaFc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W5OvKZ/CWfQLlTsYEHGJfWqAOervCQA2jh6WVqStqB5du6aldMNEiil8vjMr3QY4uXsSsnXOrkCh0z4rtt4uzOQ0vnkdIfy4/DDTE+jZlshtFtOLtTTbjT8icMBoCXLuc/m4a5BcyLKsBzpLiVmj17X6EQlaic0AtB/EYc1yBXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hB6M7rDC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6173C43394;
-	Tue, 27 Feb 2024 13:38:43 +0000 (UTC)
+	 MIME-Version; b=PhsVPXF/GrbkE0IlvZbkoN364lgI8hHBO7UO7KiRR7BDxeSNis3pAy5c8MZHHQvFR/Yke9OOxJIsGgvWo1qSc49wIx9IKuIOn/gkwXNK/5kwEQpzAebpnTFNczlO+DR1tDlMDb2nsYUWi4X99umzFdyAMQWLscN9LE7Yk1wB3w8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cb/68iND; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47578C433C7;
+	Tue, 27 Feb 2024 13:38:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041124;
-	bh=9770UkrV3bupLekcnOiypFP2yMhzfd3+oL5c9lqfnyI=;
+	s=korg; t=1709041129;
+	bh=E8RnJSKONpJ9gD9MKHJHWgpdp6Lp090Tp2pZreHaFc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hB6M7rDC/fnmZMiFp6zOmF6BAkCQhwTF0lwHh5tgi6MgKU1TuWdAglbp0WB2y50sz
-	 3h+0CfdIUrgqu3aEDJ/ckNYR9JJToItLZXLUuLwNhM4g8sY9ILgBTYaBFEGlRcEXv7
-	 uzVY+ESj6hNC5JmcrjsudVZyIlovLHIrhNOIKYrY=
+	b=Cb/68iNDjhvzHAIaV6g6B7hll/wSk/SFUtH3lwqCXpcjAfM6p16khEcbUYAz25C54
+	 5cwpIe1xRFzDw01HXhz3a/rBP9kcephrNKBCSDyfKgIGKgDYYiYuO1I4VY3/4OGOZ5
+	 ASHmCuWgRHw60Q4++exugHo7irS40eLrUF2CoYMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
+	PeiChen Huang <peichen.huang@amd.com>,
+	Aric Cyr <aric.cyr@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.7 229/334] drm/amd/display: Avoid enum conversion warning
-Date: Tue, 27 Feb 2024 14:21:27 +0100
-Message-ID: <20240227131638.194841104@linuxfoundation.org>
+Subject: [PATCH 6.7 230/334] drm/amd/display: Fix buffer overflow in get_host_router_total_dp_tunnel_bw()
+Date: Tue, 27 Feb 2024 14:21:28 +0100
+Message-ID: <20240227131638.225042961@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
 References: <20240227131630.636392135@linuxfoundation.org>
@@ -65,45 +71,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-commit d7643fe6fb76edb1f2f1497bf5e8b8f4774b5129 upstream.
+commit 97cba232549b9fe7e491fb60a69cf93075015f29 upstream.
 
-Clang warns (or errors with CONFIG_WERROR=y) when performing arithmetic
-with different enumerated types, which is usually a bug:
+The error message buffer overflow 'dc->links' 12 <= 12 suggests that the
+code is trying to access an element of the dc->links array that is
+beyond its bounds. In C, arrays are zero-indexed, so an array with 12
+elements has valid indices from 0 to 11. Trying to access dc->links[12]
+would be an attempt to access the 13th element of a 12-element array,
+which is a buffer overflow.
 
-    drivers/gpu/drm/amd/amdgpu/../display/dc/link/protocols/link_dp_dpia_bw.c:548:24: error: arithmetic between different enumeration types ('const enum dc_link_rate' and 'const enum dc_lane_count') [-Werror,-Wenum-enum-conversion]
-      548 |                         link_cap->link_rate * link_cap->lane_count * LINK_RATE_REF_FREQ_IN_KHZ * 8;
-          |                         ~~~~~~~~~~~~~~~~~~~ ^ ~~~~~~~~~~~~~~~~~~~~
-    1 error generated.
+To fix this, ensure that the loop does not go beyond the last valid
+index when accessing dc->links[i + 1] by subtracting 1 from the loop
+condition.
 
-In this case, there is not a problem because the enumerated types are
-basically treated as '#define' values. Add an explicit cast to an
-integral type to silence the warning.
+This would ensure that i + 1 is always a valid index in the array.
 
-Closes: https://github.com/ClangBuiltLinux/linux/issues/1976
-Fixes: 5f3bce13266e ("drm/amd/display: Request usb4 bw for mst streams")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Fixes the below:
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/protocols/link_dp_dpia_bw.c:208 get_host_router_total_dp_tunnel_bw() error: buffer overflow 'dc->links' 12 <= 12
+
+Fixes: 59f1622a5f05 ("drm/amd/display: Add dpia display mode validation logic")
+Cc: PeiChen Huang <peichen.huang@amd.com>
+Cc: Aric Cyr <aric.cyr@amd.com>
+Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 --- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c
 +++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c
-@@ -544,8 +544,9 @@ int link_dp_dpia_get_dp_overhead_in_dp_t
- 		 */
- 		const struct dc_link_settings *link_cap =
- 			dc_link_get_link_cap(link);
--		uint32_t link_bw_in_kbps =
--			link_cap->link_rate * link_cap->lane_count * LINK_RATE_REF_FREQ_IN_KHZ * 8;
-+		uint32_t link_bw_in_kbps = (uint32_t)link_cap->link_rate *
-+					   (uint32_t)link_cap->lane_count *
-+					   LINK_RATE_REF_FREQ_IN_KHZ * 8;
- 		link_mst_overhead = (link_bw_in_kbps / 64) + ((link_bw_in_kbps % 64) ? 1 : 0);
- 	}
+@@ -196,7 +196,7 @@ static int get_host_router_total_dp_tunn
+ 	struct dc_link *link_dpia_primary, *link_dpia_secondary;
+ 	int total_bw = 0;
  
+-	for (uint8_t i = 0; i < MAX_PIPES * 2; ++i) {
++	for (uint8_t i = 0; i < (MAX_PIPES * 2) - 1; ++i) {
+ 
+ 		if (!dc->links[i] || dc->links[i]->ep_type != DISPLAY_ENDPOINT_USB4_DPIA)
+ 			continue;
 
 
 
