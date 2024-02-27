@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43CCD86966D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:11:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C45EB86982D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:29:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F28A42942D3
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:11:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FE052949C6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:29:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0590B13B78E;
-	Tue, 27 Feb 2024 14:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A56A13F016;
+	Tue, 27 Feb 2024 14:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U3u7efND"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6ScsPSg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B793B16423;
-	Tue, 27 Feb 2024 14:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354A91420DC;
+	Tue, 27 Feb 2024 14:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043093; cv=none; b=qbsStBbbKUmgCQKUC/bzKTAPFTDyW6deEDLubZ2UYhM97SwR7HiYTP0Zpwsea9AdJU/n1FbTjm+a2Kabengnu/Vh9Fm935z0u7csGj1hdgp8gtHtdZ8RwfNFku+GdtM1VCbZQA95rnSViqL4AZij3mD4kq//TPHyhQxTrtvilvc=
+	t=1709044117; cv=none; b=cu9lrKklXsEWFyXN8c01HJVXW7v6EvLAOHKGwGRjr7Sjbixt5S3dC4Vi72RFGctpVzrdWqDAH2qaNFumlaHiGz11DUsnZ+kho7InShaJzj19/moYY6GpgKQS1hx+qGKei/cHFxQEoilq2OLPnjl+ToaYJc50E3JBwXbw0G8tOG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043093; c=relaxed/simple;
-	bh=jAeHqBaQWgxOVQmqQ7fb+mbST9odAfQkm04QC2IGShs=;
+	s=arc-20240116; t=1709044117; c=relaxed/simple;
+	bh=UO4DAPSjHv4VK6ZcAOcTurMS0S/pp6MbHQUGtm3MmWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N93RneEN67HFYnlfL7zfzNDKhi6JqqoSqsyhR4cor92f80WXleMJHK7PheOHR1Ill5FQ8L1ysXgMec0f3pNRKcZXlnHtnSTvSF096+6hWs4TT/4MazPCBhAqOEv2uRI6iF1KXuNEUZoET4b3bBhSlqVSLeUk+VpiCFIrdXsZ6F0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U3u7efND; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421CDC433C7;
-	Tue, 27 Feb 2024 14:11:33 +0000 (UTC)
+	 MIME-Version; b=tdx2AswUDFX6+F+Rg26CL1TK/sieORGS/i0Dvx7RKchlieJ4+Pn72B/VZzL3hpwZKN0c9c11TzUgvETe/jGyKc0qo1r5nF1r3uo188YHnDOqy/jjMOGLiwEp9LNKIZ8dcnX10g3vFj9lrPOPq6QPsTD0Z+rxzUGQmt5bDdaKKx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l6ScsPSg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3250C433C7;
+	Tue, 27 Feb 2024 14:28:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043093;
-	bh=jAeHqBaQWgxOVQmqQ7fb+mbST9odAfQkm04QC2IGShs=;
+	s=korg; t=1709044117;
+	bh=UO4DAPSjHv4VK6ZcAOcTurMS0S/pp6MbHQUGtm3MmWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U3u7efNDDF2yxrrRcAKfS0Tf5aEwYjyoysGPuqAZBAjTXv4xmWZKcr6oCUlKdf9r7
-	 MK1taG5F08tgkvsDQklOU+Fj82kLdzmy8MilCS4rQpKrAFjmfLuWc4zLNJcYoz4gGx
-	 Dd/0aGtl3Frsy4vldDqlI8HKPSe5JtFKj/CRODeA=
+	b=l6ScsPSgZXg1G0Uwcn6/pIgqe+Ejsspe/2W+MLGK8gNZOEmrMhB/+uNN/cpebVZju
+	 0ZvOpktI1wgaGekTJqvNcrkW2llGsEy4vQNgyYFMGN8eTnadWAswAdJ5wcjuiyKTEk
+	 q3LpdjIXzBuD1WgK0p0iwD57qpSacTu2wbbvZbVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Sakharov <p.sakharov@ispras.ru>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Yi Sun <yi.sun@unisoc.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 214/245] net: stmmac: Fix incorrect dereference in interrupt handlers
+Subject: [PATCH 5.10 041/122] virtio-blk: Ensure no requests in virtqueues before deleting vqs.
 Date: Tue, 27 Feb 2024 14:26:42 +0100
-Message-ID: <20240227131622.164294290@linuxfoundation.org>
+Message-ID: <20240227131600.051968766@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Sakharov <p.sakharov@ispras.ru>
+From: Yi Sun <yi.sun@unisoc.com>
 
-[ Upstream commit 97dde84026339e4b4af9a6301f825d1828d7874b ]
+[ Upstream commit 4ce6e2db00de8103a0687fb0f65fd17124a51aaa ]
 
-If 'dev' or 'data' is NULL, the 'priv' variable has an incorrect address
-when dereferencing calling netdev_err().
+Ensure no remaining requests in virtqueues before resetting vdev and
+deleting virtqueues. Otherwise these requests will never be completed.
+It may cause the system to become unresponsive.
 
-Since we get as 'dev_id' or 'data' what was passed as the 'dev' argument
-to request_irq() during interrupt initialization (that is, the net_device
-and rx/tx queue pointers initialized at the time of the call) and since
-there are usually no checks for the 'dev_id' argument in such handlers
-in other drivers, remove these checks from the handlers in stmmac driver.
+Function blk_mq_quiesce_queue() can ensure that requests have become
+in_flight status, but it cannot guarantee that requests have been
+processed by the device. Virtqueues should never be deleted before
+all requests become complete status.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Function blk_mq_freeze_queue() ensure that all requests in virtqueues
+become complete status. And no requests can enter in virtqueues.
 
-Fixes: 8532f613bc78 ("net: stmmac: introduce MSI Interrupt routines for mac, safety, RX & TX")
-Signed-off-by: Pavel Sakharov <p.sakharov@ispras.ru>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Yi Sun <yi.sun@unisoc.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Link: https://lore.kernel.org/r/20240129085250.1550594-1-yi.sun@unisoc.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 20 -------------------
- 1 file changed, 20 deletions(-)
+ drivers/block/virtio_blk.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index ab3ded6e0e6a3..a1c1e353ca072 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -5737,11 +5737,6 @@ static irqreturn_t stmmac_mac_interrupt(int irq, void *dev_id)
- 	struct net_device *dev = (struct net_device *)dev_id;
- 	struct stmmac_priv *priv = netdev_priv(dev);
+diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
+index 9b54eec9b17eb..7eae3f3732336 100644
+--- a/drivers/block/virtio_blk.c
++++ b/drivers/block/virtio_blk.c
+@@ -952,14 +952,15 @@ static int virtblk_freeze(struct virtio_device *vdev)
+ {
+ 	struct virtio_blk *vblk = vdev->priv;
  
--	if (unlikely(!dev)) {
--		netdev_err(priv->dev, "%s: invalid dev pointer\n", __func__);
--		return IRQ_NONE;
--	}
++	/* Ensure no requests in virtqueues before deleting vqs. */
++	blk_mq_freeze_queue(vblk->disk->queue);
++
+ 	/* Ensure we don't receive any more interrupts */
+ 	vdev->config->reset(vdev);
+ 
+ 	/* Make sure no work handler is accessing the device. */
+ 	flush_work(&vblk->config_work);
+ 
+-	blk_mq_quiesce_queue(vblk->disk->queue);
 -
- 	/* Check if adapter is up */
- 	if (test_bit(STMMAC_DOWN, &priv->state))
- 		return IRQ_HANDLED;
-@@ -5757,11 +5752,6 @@ static irqreturn_t stmmac_safety_interrupt(int irq, void *dev_id)
- 	struct net_device *dev = (struct net_device *)dev_id;
- 	struct stmmac_priv *priv = netdev_priv(dev);
+ 	vdev->config->del_vqs(vdev);
+ 	kfree(vblk->vqs);
  
--	if (unlikely(!dev)) {
--		netdev_err(priv->dev, "%s: invalid dev pointer\n", __func__);
--		return IRQ_NONE;
--	}
--
- 	/* Check if adapter is up */
- 	if (test_bit(STMMAC_DOWN, &priv->state))
- 		return IRQ_HANDLED;
-@@ -5781,11 +5771,6 @@ static irqreturn_t stmmac_msi_intr_tx(int irq, void *data)
+@@ -977,7 +978,7 @@ static int virtblk_restore(struct virtio_device *vdev)
  
- 	priv = container_of(tx_q, struct stmmac_priv, tx_queue[chan]);
+ 	virtio_device_ready(vdev);
  
--	if (unlikely(!data)) {
--		netdev_err(priv->dev, "%s: invalid dev pointer\n", __func__);
--		return IRQ_NONE;
--	}
--
- 	/* Check if adapter is up */
- 	if (test_bit(STMMAC_DOWN, &priv->state))
- 		return IRQ_HANDLED;
-@@ -5824,11 +5809,6 @@ static irqreturn_t stmmac_msi_intr_rx(int irq, void *data)
- 
- 	priv = container_of(rx_q, struct stmmac_priv, rx_queue[chan]);
- 
--	if (unlikely(!data)) {
--		netdev_err(priv->dev, "%s: invalid dev pointer\n", __func__);
--		return IRQ_NONE;
--	}
--
- 	/* Check if adapter is up */
- 	if (test_bit(STMMAC_DOWN, &priv->state))
- 		return IRQ_HANDLED;
+-	blk_mq_unquiesce_queue(vblk->disk->queue);
++	blk_mq_unfreeze_queue(vblk->disk->queue);
+ 	return 0;
+ }
+ #endif
 -- 
 2.43.0
 
