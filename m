@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44728693D6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:49:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02DB9869324
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:42:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 742881F229DE
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:49:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55A18B242D0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:40:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7D213F016;
-	Tue, 27 Feb 2024 13:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C6F13B29B;
+	Tue, 27 Feb 2024 13:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dsPltciA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TiT+HHrS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09FB213B2B8;
-	Tue, 27 Feb 2024 13:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B0A2F2D;
+	Tue, 27 Feb 2024 13:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041627; cv=none; b=CQnUi2shtk4B2NXFN7WQUlerSOgXRYyH0jzOWC5OElID6O28B0huYE7EETwThzZWReh1JyeyQKYbi8nL89Z2kQKrclyCDjLxO+oCEe5/JwpNq4swY+M3xJnawsNExs6Z2Sm3D2MO1STuavHy0bBAlqsX/K++mpV/VC7V7S+zOIY=
+	t=1709041239; cv=none; b=T32S42UC8ngmLnEDpGI+khJ6XZgZcc4396XZKYSKzdZBXQJpQ4iIvJ8C61AVjC+zz6bt37m3uf3ce+X+6dk2FV0MxBAtRcb0aBeOL4H0wGZT72Py25KgHLaniTiKqBIOvA5pb0CSlXhmrN9E1BcMlQu6xNHLvzC8nfCD+KBl4Zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041627; c=relaxed/simple;
-	bh=3jk+uiVXzvOpYkPZ22mW7mJGjgZPtsIAixZ01mPFjC4=;
+	s=arc-20240116; t=1709041239; c=relaxed/simple;
+	bh=TJmXWha/iA3GxeV1i4dtftwesYv/PNmuFs3LxTJNxDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NUjjnEfUTd+J3mSgqmgGxsfD/1UUBWxELlnJIAeJUoSCnxuDgCY/D3qIRdWV77rk1ejNP6LSxr7L5dOCUQDHzv10vtw/QtrU5DGUvDG5kJvF/KOiZeQnKpW8GyZSqSBTX0EI+yNKpc+rFLwzz4fiPZbjlg+BYVXmaLnPHKdIitA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dsPltciA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82C18C433F1;
-	Tue, 27 Feb 2024 13:47:06 +0000 (UTC)
+	 MIME-Version; b=BFdAWxB2x1LBCX9axQ8O5M/Xy9tzJewju7r+SlGe9MOeUdpla2WYJ7wHcuh2f+JPIRGvAGkMIswxHniFKV+/D11bmGPngRaxCBIHeHiCwMFJRSno5JPaCHPMYRGqfN/vMBR1C2BetRqFS/+RjRB0AQLnZWNV01nA3LHLgRDt4eA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TiT+HHrS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04493C433C7;
+	Tue, 27 Feb 2024 13:40:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041626;
-	bh=3jk+uiVXzvOpYkPZ22mW7mJGjgZPtsIAixZ01mPFjC4=;
+	s=korg; t=1709041239;
+	bh=TJmXWha/iA3GxeV1i4dtftwesYv/PNmuFs3LxTJNxDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dsPltciABO6Y+HgelWPIyIY7ww7c+tsLUOXam76WyYez7Pm95srfiP/DuPBV4NfQq
-	 HC0n0ZCMh+iDF/64EXlYyKaa/yvOsG5URYhucTDpSSa8dOGR5zh36ujcEOsCNFDpKz
-	 m2OBbXdYusBIrTAhx6+fOKZc7xTj1gkZdKHZlgaI=
+	b=TiT+HHrSu8JyEu2Sw2Y0l8B+lKSli8qguvY07M8+adAsovDG2zMpiFrb0Ai7Bxbxm
+	 OQHJAD/6MjurbicCSlt4JqpB8avkLaITq7F+H+fRaAhg2yGJFfNFfrnt73KkQMRi0y
+	 X/DzemVEL3vCztgb/BGLZYsZKUTqi2WDaOJ/mC+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Pavel Sakharov <p.sakharov@ispras.ru>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 015/299] wifi: mac80211: fix race condition on enabling fast-xmit
+Subject: [PATCH 6.7 268/334] net: stmmac: Fix incorrect dereference in interrupt handlers
 Date: Tue, 27 Feb 2024 14:22:06 +0100
-Message-ID: <20240227131626.323126188@linuxfoundation.org>
+Message-ID: <20240227131639.621645750@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Pavel Sakharov <p.sakharov@ispras.ru>
 
-[ Upstream commit bcbc84af1183c8cf3d1ca9b78540c2185cd85e7f ]
+[ Upstream commit 97dde84026339e4b4af9a6301f825d1828d7874b ]
 
-fast-xmit must only be enabled after the sta has been uploaded to the driver,
-otherwise it could end up passing the not-yet-uploaded sta via drv_tx calls
-to the driver, leading to potential crashes because of uninitialized drv_priv
-data.
-Add a missing sta->uploaded check and re-check fast xmit after inserting a sta.
+If 'dev' or 'data' is NULL, the 'priv' variable has an incorrect address
+when dereferencing calling netdev_err().
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://msgid.link/20240104181059.84032-1-nbd@nbd.name
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Since we get as 'dev_id' or 'data' what was passed as the 'dev' argument
+to request_irq() during interrupt initialization (that is, the net_device
+and rx/tx queue pointers initialized at the time of the call) and since
+there are usually no checks for the 'dev_id' argument in such handlers
+in other drivers, remove these checks from the handlers in stmmac driver.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 8532f613bc78 ("net: stmmac: introduce MSI Interrupt routines for mac, safety, RX & TX")
+Signed-off-by: Pavel Sakharov <p.sakharov@ispras.ru>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/sta_info.c | 2 ++
- net/mac80211/tx.c       | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 20 -------------------
+ 1 file changed, 20 deletions(-)
 
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index e112300caaf75..c61eb867bb4a7 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -914,6 +914,8 @@ static int sta_info_insert_finish(struct sta_info *sta) __acquires(RCU)
- 	if (ieee80211_vif_is_mesh(&sdata->vif))
- 		mesh_accept_plinks_update(sdata);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index ec34768e054da..e9a1b60ebb503 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -5977,11 +5977,6 @@ static irqreturn_t stmmac_mac_interrupt(int irq, void *dev_id)
+ 	struct net_device *dev = (struct net_device *)dev_id;
+ 	struct stmmac_priv *priv = netdev_priv(dev);
  
-+	ieee80211_check_fast_xmit(sta);
-+
- 	return 0;
-  out_remove:
- 	if (sta->sta.valid_links)
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 5ab9594ae119e..5c6c5254d987f 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -3034,7 +3034,7 @@ void ieee80211_check_fast_xmit(struct sta_info *sta)
- 	    sdata->vif.type == NL80211_IFTYPE_STATION)
- 		goto out;
+-	if (unlikely(!dev)) {
+-		netdev_err(priv->dev, "%s: invalid dev pointer\n", __func__);
+-		return IRQ_NONE;
+-	}
+-
+ 	/* Check if adapter is up */
+ 	if (test_bit(STMMAC_DOWN, &priv->state))
+ 		return IRQ_HANDLED;
+@@ -5997,11 +5992,6 @@ static irqreturn_t stmmac_safety_interrupt(int irq, void *dev_id)
+ 	struct net_device *dev = (struct net_device *)dev_id;
+ 	struct stmmac_priv *priv = netdev_priv(dev);
  
--	if (!test_sta_flag(sta, WLAN_STA_AUTHORIZED))
-+	if (!test_sta_flag(sta, WLAN_STA_AUTHORIZED) || !sta->uploaded)
- 		goto out;
+-	if (unlikely(!dev)) {
+-		netdev_err(priv->dev, "%s: invalid dev pointer\n", __func__);
+-		return IRQ_NONE;
+-	}
+-
+ 	/* Check if adapter is up */
+ 	if (test_bit(STMMAC_DOWN, &priv->state))
+ 		return IRQ_HANDLED;
+@@ -6023,11 +6013,6 @@ static irqreturn_t stmmac_msi_intr_tx(int irq, void *data)
+ 	dma_conf = container_of(tx_q, struct stmmac_dma_conf, tx_queue[chan]);
+ 	priv = container_of(dma_conf, struct stmmac_priv, dma_conf);
  
- 	if (test_sta_flag(sta, WLAN_STA_PS_STA) ||
+-	if (unlikely(!data)) {
+-		netdev_err(priv->dev, "%s: invalid dev pointer\n", __func__);
+-		return IRQ_NONE;
+-	}
+-
+ 	/* Check if adapter is up */
+ 	if (test_bit(STMMAC_DOWN, &priv->state))
+ 		return IRQ_HANDLED;
+@@ -6054,11 +6039,6 @@ static irqreturn_t stmmac_msi_intr_rx(int irq, void *data)
+ 	dma_conf = container_of(rx_q, struct stmmac_dma_conf, rx_queue[chan]);
+ 	priv = container_of(dma_conf, struct stmmac_priv, dma_conf);
+ 
+-	if (unlikely(!data)) {
+-		netdev_err(priv->dev, "%s: invalid dev pointer\n", __func__);
+-		return IRQ_NONE;
+-	}
+-
+ 	/* Check if adapter is up */
+ 	if (test_bit(STMMAC_DOWN, &priv->state))
+ 		return IRQ_HANDLED;
 -- 
 2.43.0
 
