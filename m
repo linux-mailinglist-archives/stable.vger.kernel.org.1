@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-25228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 630C1869851
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:31:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A55C8697AA
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:23:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 851E51C214D6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:31:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C01F31F284FC
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D1D2145B37;
-	Tue, 27 Feb 2024 14:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 036DF13EFF4;
+	Tue, 27 Feb 2024 14:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uY4xiAOA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gst6eXwg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2731474C9;
-	Tue, 27 Feb 2024 14:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4F5613B797;
+	Tue, 27 Feb 2024 14:23:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044217; cv=none; b=HsERiVz0sx/coTQXdLa3aqlqmd5bsAV69G1Mf0DaNqGbZZlO5PHmOXlRXoKz+XhSIPXGKMA9rFENBtr6pAybhUcQIjzCbYaVhDAws06vnXpp7E4KGotkfueFFQJmGkxtl+cvRVzPPKdAOsocj+zwKoDYzUQIu5PpnRh9kiZl3cA=
+	t=1709043829; cv=none; b=BH4spBhrq2xov6Lxeck2yfNep5hFRTJaYt0grbOLOaeYjyWs7HQNRJxuBvL4iB3/JVIgRv80d1gnrNXBKQ9lJ62aQCzZyn7Wmo1ldLX0AeB6nZzngOsrgtTFAOVmMkKR6zlYbP3OKswS9R5CKo9mnB3UPC7UUfoSYATJVMIEIOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044217; c=relaxed/simple;
-	bh=feii9K7xDS6buJ29i9Gl1PPsBNioYYONyZRy396AR+I=;
+	s=arc-20240116; t=1709043829; c=relaxed/simple;
+	bh=VGn0Cmmgi/Of0k9os7/a6mxzeHNe42X0Kjz2lm+JMag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p6MQsZwGAKjkg5dKOvLyij5LD0I3sV1EH4zFEqng1vLFse9j+Z5HpiLeXK6BfF/uKLnpfIY6tB0SoRS3ea1LW9+19bRBIrRieW4NdFX+Ft1KZscGiTalFENFga+EmrZTkBNG137EuLnKxwEpQ6dr4CMTIStkXa8yrrqryEErL88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uY4xiAOA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D37DC433C7;
-	Tue, 27 Feb 2024 14:30:16 +0000 (UTC)
+	 MIME-Version; b=LfNh0UF3ZdOoC+X6BK52bvMbUxUZ2K6wBHVUNIRwW0Jn3cL30fobHGkfWqZrqvOv9wgEaoJKrlvPivBxNzdcbVexU9sggJh9R78AkI6EdnrNit2w0bOPPHEevXkTsWv0S5PvV3R+h2eNwlzL9Xx6/E8Rbo/dKmBSIt8ErOZSTUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gst6eXwg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41A15C433F1;
+	Tue, 27 Feb 2024 14:23:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044217;
-	bh=feii9K7xDS6buJ29i9Gl1PPsBNioYYONyZRy396AR+I=;
+	s=korg; t=1709043829;
+	bh=VGn0Cmmgi/Of0k9os7/a6mxzeHNe42X0Kjz2lm+JMag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uY4xiAOApZxBxFn5C9xjVz8y6IEKoOw3GsYTqp7gpsMKQUIotBtS1vcvgvPAGDVBS
-	 zHrTpcPCkweoc0eAOylMdou4j+uQM3M4SwulqeDerN47UzGhbH+ZDLDPMR0wzpnbCJ
-	 duC//WBPx+31rOzJQN4XuD+iD12BDhfQUI3dKb1Q=
+	b=gst6eXwg3ZSK7T9+1YQ0WSNxbYAycHu8zr9eNvPVoLNsxLwfCBPzmYIPcbkDUXe11
+	 HQwEpPiNHOs6OwhIdg3EL/zIvk01nlEkuF5dIY35FiH1Gkh3+B6BbLVvyJyJcbE4PL
+	 kBvp7DA9WT34h/yB4SaGcAFlpf4bcJ5Jw6gXNC04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 5.10 077/122] KVM: arm64: vgic-its: Test for valid IRQ in MOVALL handler
-Date: Tue, 27 Feb 2024 14:27:18 +0100
-Message-ID: <20240227131601.225565731@linuxfoundation.org>
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+	Vidya Sagar <vidyas@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 52/84] PCI: tegra: Fix OF node reference leak
+Date: Tue, 27 Feb 2024 14:27:19 +0100
+Message-ID: <20240227131554.565312915@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Upton <oliver.upton@linux.dev>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 85a71ee9a0700f6c18862ef3b0011ed9dad99aca upstream.
+[ Upstream commit eff21f5da308265678e7e59821795e606f3e560f ]
 
-It is possible that an LPI mapped in a different ITS gets unmapped while
-handling the MOVALL command. If that is the case, there is no state that
-can be migrated to the destination. Silently ignore it and continue
-migrating other LPIs.
+Commit 9e38e690ace3 ("PCI: tegra: Fix OF node reference leak") has fixed
+some node reference leaks in this function but missed some of them.
 
-Cc: stable@vger.kernel.org
-Fixes: ff9c114394aa ("KVM: arm/arm64: GICv4: Handle MOVALL applied to a vPE")
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20240221092732.4126848-3-oliver.upton@linux.dev
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In fact, having 'port' referenced in the 'rp' structure is not enough to
+prevent the leak, until 'rp' is actually added in the 'pcie->ports' list.
+
+Add the missing 'goto err_node_put' accordingly.
+
+Link: https://lore.kernel.org/r/55b11e9a7fa2987fbc0869d68ae59888954d65e2.1620148539.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Reviewed-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kvm/vgic/vgic-its.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pci/controller/pci-tegra.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/arch/arm64/kvm/vgic/vgic-its.c
-+++ b/arch/arm64/kvm/vgic/vgic-its.c
-@@ -1374,6 +1374,8 @@ static int vgic_its_cmd_handle_movall(st
+diff --git a/drivers/pci/controller/pci-tegra.c b/drivers/pci/controller/pci-tegra.c
+index 64921c63874fa..74c0ddd433815 100644
+--- a/drivers/pci/controller/pci-tegra.c
++++ b/drivers/pci/controller/pci-tegra.c
+@@ -2267,13 +2267,15 @@ static int tegra_pcie_parse_dt(struct tegra_pcie *pcie)
+ 		rp->np = port;
  
- 	for (i = 0; i < irq_count; i++) {
- 		irq = vgic_get_irq(kvm, NULL, intids[i]);
-+		if (!irq)
-+			continue;
+ 		rp->base = devm_pci_remap_cfg_resource(dev, &rp->regs);
+-		if (IS_ERR(rp->base))
+-			return PTR_ERR(rp->base);
++		if (IS_ERR(rp->base)) {
++			err = PTR_ERR(rp->base);
++			goto err_node_put;
++		}
  
- 		update_affinity(irq, vcpu2);
+ 		label = devm_kasprintf(dev, GFP_KERNEL, "pex-reset-%u", index);
+ 		if (!label) {
+-			dev_err(dev, "failed to create reset GPIO label\n");
+-			return -ENOMEM;
++			err = -ENOMEM;
++			goto err_node_put;
+ 		}
  
+ 		/*
+@@ -2291,7 +2293,8 @@ static int tegra_pcie_parse_dt(struct tegra_pcie *pcie)
+ 			} else {
+ 				dev_err(dev, "failed to get reset GPIO: %ld\n",
+ 					PTR_ERR(rp->reset_gpio));
+-				return PTR_ERR(rp->reset_gpio);
++				err = PTR_ERR(rp->reset_gpio);
++				goto err_node_put;
+ 			}
+ 		}
+ 
+-- 
+2.43.0
+
 
 
 
