@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D48138695E3
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:06:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 677D48696AF
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 739F21F21FF6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:06:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8947E1C2394E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B60145FE4;
-	Tue, 27 Feb 2024 14:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 089B1143C48;
+	Tue, 27 Feb 2024 14:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1LubbpK2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HMr8pB20"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B847145FE0;
-	Tue, 27 Feb 2024 14:05:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4251419A0;
+	Tue, 27 Feb 2024 14:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042749; cv=none; b=BKM2drBug0HrjaiLyKM3GP7L5Usr+UFmhtpU+89LKlaNG9a4f6lS1jrKqMz9r32YoqNv2OXP0h9xQMN6bYEV9xlDW25xpNVLa1wGtj9uj+a50P62kUIzSYEOlitIQg4XI6A7S/WpL3UhWyZCW+JduIJw/NXpAf6xVlMPAQXgYco=
+	t=1709043235; cv=none; b=Gv0xUq6/jBZes6myxW5vAJWwZL9+nGRybVavL8CFWNe4BbUGe2lFXhkEkucKgm0xSOggNg0G0eP2ccI6VcP3VBlPM6OqXHizr2oRCDr/eG3Wo/l3DSbTsWgmom9YRQFfMITSnoXKRuH/2najYcydvDjmF5A4g49LCRY+81glX0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042749; c=relaxed/simple;
-	bh=RkSJGh/gXr+JiXFg+Pse2eGZebww+XIja44QPT0u2Rk=;
+	s=arc-20240116; t=1709043235; c=relaxed/simple;
+	bh=kVVIwxNL196GyA4Cb5pI844pd8NwSMyhrQ0cCPUHbI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eqego2tX+rCfIlT6pebIyp7mkT1gbX+gBQCJnEiuKCRARlzu7G1kDfpRBDAGe9XTyCOzRz13HJ8b1VoR4A757x+a03tyuBG3Z0YHJ7f3lQVnzHNtk7bWN2mK85zwQYKhFWW/Mlds9wbPH5bJfXcBTukhVOa03bkcWN30gsZny1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1LubbpK2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42309C433C7;
-	Tue, 27 Feb 2024 14:05:48 +0000 (UTC)
+	 MIME-Version; b=XhvkqjF37TQoAhIyZaKF01Ni59rypATfp5L2Id3JIy0qP8o0uugdg2zt+ImOg268UcG/Tq/I27opFvEv5CHIWMM1zXvfDYO7h+Fi8nk6YmXTRWk0C1rpvdgRD3vOJ+AcqgFmwRuC3BDguRcfvM+n+z9x5rSgCrY535Dp1EHYX8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HMr8pB20; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4667FC433F1;
+	Tue, 27 Feb 2024 14:13:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042748;
-	bh=RkSJGh/gXr+JiXFg+Pse2eGZebww+XIja44QPT0u2Rk=;
+	s=korg; t=1709043235;
+	bh=kVVIwxNL196GyA4Cb5pI844pd8NwSMyhrQ0cCPUHbI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1LubbpK29eZtv62LBnHgifs6pQKJLSVy+Tq2GE4WP2UEYv0d58sacsIueH68sAcFV
-	 ZfB8TgVjZGzTLQqtF3eBSH3iRBvHYfhzlmL1U0RczDqkInDMoi1yecCWc3Nw6rS/N4
-	 IYncQJtIOYXDhle9hyhnnCOmD/duazozxdGtmjRo=
+	b=HMr8pB20bsvSUQTQEEAU7LoFx0Cj5Oq9UkanG573QDsKHRW+zEsgsgw5vFxJTO1uW
+	 zgc1vxIpl6M/9zsaDvKhzJsXN3ZPlr8aNx3zF1xRt7ziKPQFWYrKhiUcZdNM7t8hHN
+	 jkN1/HTDwm1JYO06IcLVLDgJ9/1QZzdZLN6dxO0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Alexander Tsoy <alexander@tsoy.me>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 107/245] clk: qcom: gcc-qcs404: fix names of the DSI clocks used as parents
+Subject: [PATCH 6.1 034/195] ALSA: usb-audio: Check presence of valid altsetting control
 Date: Tue, 27 Feb 2024 14:24:55 +0100
-Message-ID: <20240227131618.697512855@linuxfoundation.org>
+Message-ID: <20240227131611.518152068@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Alexander Tsoy <alexander@tsoy.me>
 
-[ Upstream commit 47d94d30cd3dcc743241b4208b1eec7247610c84 ]
+[ Upstream commit 346f59d1e8ed0eed41c80e1acb657e484c308e6a ]
 
-The QCS404 uses 28nm LPM DSI PHY, which registers dsi0pll and
-dsi0pllbyte clocks. Fix all DSI PHY clock names used as parents inside
-the GCC driver.
+Many devices with a single alternate setting do not have a Valid
+Alternate Setting Control and validation performed by
+validate_sample_rate_table_v2v3() doesn't work on them and is not
+really needed. So check the presense of control before sending
+altsetting validation requests.
 
-Fixes: 652f1813c113 ("clk: qcom: gcc: Add global clock controller driver for QCS404")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20221226042154.2666748-7-dmitry.baryshkov@linaro.org
+MOTU Microbook IIc is suffering the most without this check. It
+takes up to 40 seconds to bootup due to how slow it switches
+sampling rates:
+
+[ 2659.164824] usb 3-2: New USB device found, idVendor=07fd, idProduct=0004, bcdDevice= 0.60
+[ 2659.164827] usb 3-2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+[ 2659.164829] usb 3-2: Product: MicroBook IIc
+[ 2659.164830] usb 3-2: Manufacturer: MOTU
+[ 2659.166204] usb 3-2: Found last interface = 3
+[ 2679.322298] usb 3-2: No valid sample rate available for 1:1, assuming a firmware bug
+[ 2679.322306] usb 3-2: 1:1: add audio endpoint 0x3
+[ 2679.322321] usb 3-2: Creating new data endpoint #3
+[ 2679.322552] usb 3-2: 1:1 Set sample rate 96000, clock 1
+[ 2684.362250] usb 3-2: 2:1: cannot get freq (v2/v3): err -110
+[ 2694.444700] usb 3-2: No valid sample rate available for 2:1, assuming a firmware bug
+[ 2694.444707] usb 3-2: 2:1: add audio endpoint 0x84
+[ 2694.444721] usb 3-2: Creating new data endpoint #84
+[ 2699.482103] usb 3-2: 2:1 Set sample rate 96000, clock 1
+
+Signed-off-by: Alexander Tsoy <alexander@tsoy.me>
+Link: https://lore.kernel.org/r/20240129121254.3454481-1-alexander@tsoy.me
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-qcs404.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ sound/usb/format.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/clk/qcom/gcc-qcs404.c b/drivers/clk/qcom/gcc-qcs404.c
-index 4299fe8f19274..a7a9884799cd3 100644
---- a/drivers/clk/qcom/gcc-qcs404.c
-+++ b/drivers/clk/qcom/gcc-qcs404.c
-@@ -112,7 +112,7 @@ static const struct parent_map gcc_parent_map_5[] = {
+diff --git a/sound/usb/format.c b/sound/usb/format.c
+index ab5fed9f55b60..3b45d0ee76938 100644
+--- a/sound/usb/format.c
++++ b/sound/usb/format.c
+@@ -470,9 +470,11 @@ static int validate_sample_rate_table_v2v3(struct snd_usb_audio *chip,
+ 					   int clock)
+ {
+ 	struct usb_device *dev = chip->dev;
++	struct usb_host_interface *alts;
+ 	unsigned int *table;
+ 	unsigned int nr_rates;
+ 	int i, err;
++	u32 bmControls;
  
- static const char * const gcc_parent_names_5[] = {
- 	"cxo",
--	"dsi0pll_byteclk_src",
-+	"dsi0pllbyte",
- 	"core_bi_pll_test_se",
- };
+ 	/* performing the rate verification may lead to unexpected USB bus
+ 	 * behavior afterwards by some unknown reason.  Do this only for the
+@@ -481,6 +483,24 @@ static int validate_sample_rate_table_v2v3(struct snd_usb_audio *chip,
+ 	if (!(chip->quirk_flags & QUIRK_FLAG_VALIDATE_RATES))
+ 		return 0; /* don't perform the validation as default */
  
-@@ -124,7 +124,7 @@ static const struct parent_map gcc_parent_map_6[] = {
- 
- static const char * const gcc_parent_names_6[] = {
- 	"cxo",
--	"dsi0_phy_pll_out_byteclk",
-+	"dsi0pllbyte",
- 	"core_bi_pll_test_se",
- };
- 
-@@ -167,7 +167,7 @@ static const struct parent_map gcc_parent_map_9[] = {
- static const char * const gcc_parent_names_9[] = {
- 	"cxo",
- 	"gpll0_out_main",
--	"dsi0_phy_pll_out_dsiclk",
-+	"dsi0pll",
- 	"gpll6_out_aux",
- 	"core_bi_pll_test_se",
- };
-@@ -204,7 +204,7 @@ static const struct parent_map gcc_parent_map_12[] = {
- 
- static const char * const gcc_parent_names_12[] = {
- 	"cxo",
--	"dsi0pll_pclk_src",
-+	"dsi0pll",
- 	"core_bi_pll_test_se",
- };
- 
++	alts = snd_usb_get_host_interface(chip, fp->iface, fp->altsetting);
++	if (!alts)
++		return 0;
++
++	if (fp->protocol == UAC_VERSION_3) {
++		struct uac3_as_header_descriptor *as = snd_usb_find_csint_desc(
++				alts->extra, alts->extralen, NULL, UAC_AS_GENERAL);
++		bmControls = le32_to_cpu(as->bmControls);
++	} else {
++		struct uac2_as_header_descriptor *as = snd_usb_find_csint_desc(
++				alts->extra, alts->extralen, NULL, UAC_AS_GENERAL);
++		bmControls = as->bmControls;
++	}
++
++	if (!uac_v2v3_control_is_readable(bmControls,
++				UAC2_AS_VAL_ALT_SETTINGS))
++		return 0;
++
+ 	table = kcalloc(fp->nr_rates, sizeof(*table), GFP_KERNEL);
+ 	if (!table)
+ 		return -ENOMEM;
 -- 
 2.43.0
 
