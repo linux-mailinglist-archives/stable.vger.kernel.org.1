@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-24247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD518869359
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:44:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 813F7869337
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:42:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 630751F23225
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:44:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BC0B28D389
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:42:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F15D13B797;
-	Tue, 27 Feb 2024 13:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8251C13A25D;
+	Tue, 27 Feb 2024 13:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="spwAKKyH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dl6xMHI3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB22013AA55;
-	Tue, 27 Feb 2024 13:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4178613AA55;
+	Tue, 27 Feb 2024 13:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041441; cv=none; b=uCOVgkhJTssRznA7sF6EKZvvVHC49bTOHZekPDQ5EpZlGz1yuOV54ItxC8Ey7Jp4PbQlzfgS4VrU/AaMEcEYymvdU1JyYjl2TtIv0v5PmtLVkjieOxPKan9hzAtBRRzfMfFHKtIjnXYMj8vEmsM5I8/aOjc7QukIfdBMCSCtv3A=
+	t=1709041369; cv=none; b=i2RD0CffQlCtPDo2jLLrirHYl+jsuK29BB7ox8mS6IKcPBOkEeuNPKIlefDO5rJDW3OKcXnzOBkrSLPmVNj+ljTDjj6pvUx+HuE8XewLniXQyYrk16xIB8Flaiw6g2Q9460Mc8ymtwIP5zlXZwl4v5WcS8E6cbuUqHm93D0QtU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041441; c=relaxed/simple;
-	bh=+UrnVBEFnIAcbVbggo+YRu8yTwF174bm/Zjg1dipNzo=;
+	s=arc-20240116; t=1709041369; c=relaxed/simple;
+	bh=jk6kR+vBEleZjHcodmvzfw2trtpQRwU2CO1TUN4FYhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ofRkP/BRj1/s4YUWMcMaEH1NMJndiLFUTam6hTJkKGTfyZb9MRDhnMRJtWAnsaIbuudqxe+KOxdzZEjVlfOUnCAjxPLL7fW9zA/GSEmrZ+JMMQjjzhCRr1B6L9lpYnv2ztLQMYbH1C8QLidSsPlP7PjJCLENT3vhoC/r/P3hets=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=spwAKKyH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D080C433C7;
-	Tue, 27 Feb 2024 13:44:00 +0000 (UTC)
+	 MIME-Version; b=PJO+nCaJWXkTz98NSZNvSIPa6GticxCE778GHwbwFmpxKzW3HdmweddCKIW5yfsDmb7nmAzXGVPbopacWkRWhDq3fDFmkv36oXWYC7OUqY5LNCL2ksWkr2Yq/wnWUQOiTJMqPxXrmyV4Xk39OQG7kbsA7zI12Lvoq7l3ux/xDhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dl6xMHI3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C62FAC433C7;
+	Tue, 27 Feb 2024 13:42:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041440;
-	bh=+UrnVBEFnIAcbVbggo+YRu8yTwF174bm/Zjg1dipNzo=;
+	s=korg; t=1709041369;
+	bh=jk6kR+vBEleZjHcodmvzfw2trtpQRwU2CO1TUN4FYhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=spwAKKyHwzLO9SS/7iHiJMuoJWXNVVkh5JBwXrqBdZupPSn9ixuyti6AM0EA48VNS
-	 CL8N31Mx5KK3mp7XEwL+3voFRAVmX1ZEU7/gkwIabOkmXJn+L2wNbWEIsp4be5TNxl
-	 BYD0POjNTWezClte55OX+H3cufeQflNyuC49Zv2U=
+	b=dl6xMHI3HNBuTZxZWY6w3StlJb0F/k9OQquKeJ5nmu/RbMK+r6t+j7cTO0LoeOA5T
+	 JfwSHjsielurc9FwJQcltTO2UywaA/FQpW8jhZ95Iy2DD3YvplyqLoBxbdho/uJaAN
+	 aE1Cf8J/N8oZ9/u2hdogyIB6p2p7dCrZfB2ZM1+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Daniel Machon <daniel.machon@microchip.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 315/334] net/sched: flower: Add lock protection when remove filter handle
-Date: Tue, 27 Feb 2024 14:22:53 +0100
-Message-ID: <20240227131641.256872898@linuxfoundation.org>
+Subject: [PATCH 6.7 316/334] net: sparx5: Add spinlock for frame transmission from CPU
+Date: Tue, 27 Feb 2024 14:22:54 +0100
+Message-ID: <20240227131641.286307432@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
 References: <20240227131630.636392135@linuxfoundation.org>
@@ -70,43 +67,77 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit 1fde0ca3a0de7e9f917668941156959dd5e9108b ]
+[ Upstream commit 603ead96582d85903baec2d55f021b8dac5c25d2 ]
 
-As IDR can't protect itself from the concurrent modification, place
-idr_remove() under the protection of tp->lock.
+Both registers used when doing manual injection or fdma injection are
+shared between all the net devices of the switch. It was noticed that
+when having two process which each of them trying to inject frames on
+different ethernet ports, that the HW started to behave strange, by
+sending out more frames then expected. When doing fdma injection it is
+required to set the frame in the DCB and then make sure that the next
+pointer of the last DCB is invalid. But because there is no locks for
+this, then easily this pointer between the DCB can be broken and then it
+would create a loop of DCBs. And that means that the HW will
+continuously transmit these frames in a loop. Until the SW will break
+this loop.
+Therefore to fix this issue, add a spin lock for when accessing the
+registers for manual or fdma injection.
 
-Fixes: 08a0063df3ae ("net/sched: flower: Move filter handle initialization earlier")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://lore.kernel.org/r/20240220085928.9161-1-jianbol@nvidia.com
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
+Fixes: f3cad2611a77 ("net: sparx5: add hostmode with phylink support")
+Link: https://lore.kernel.org/r/20240219080043.1561014-1-horatiu.vultur@microchip.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/cls_flower.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/microchip/sparx5/sparx5_main.c   | 1 +
+ drivers/net/ethernet/microchip/sparx5/sparx5_main.h   | 1 +
+ drivers/net/ethernet/microchip/sparx5/sparx5_packet.c | 2 ++
+ 3 files changed, 4 insertions(+)
 
-diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
-index efb9d2811b73d..6ee7064c82fcc 100644
---- a/net/sched/cls_flower.c
-+++ b/net/sched/cls_flower.c
-@@ -2460,8 +2460,11 @@ static int fl_change(struct net *net, struct sk_buff *in_skb,
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
+index d1f7fc8b1b71a..3c066b62e6894 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
+@@ -757,6 +757,7 @@ static int mchp_sparx5_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, sparx5);
+ 	sparx5->pdev = pdev;
+ 	sparx5->dev = &pdev->dev;
++	spin_lock_init(&sparx5->tx_lock);
+ 
+ 	/* Do switch core reset if available */
+ 	reset = devm_reset_control_get_optional_shared(&pdev->dev, "switch");
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
+index 6f565c0c0c3dc..316fed5f27355 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
+@@ -280,6 +280,7 @@ struct sparx5 {
+ 	int xtr_irq;
+ 	/* Frame DMA */
+ 	int fdma_irq;
++	spinlock_t tx_lock; /* lock for frame transmission */
+ 	struct sparx5_rx rx;
+ 	struct sparx5_tx tx;
+ 	/* PTP */
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c b/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c
+index 6db6ac6a3bbc2..ac7e1cffbcecf 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_packet.c
+@@ -244,10 +244,12 @@ netdev_tx_t sparx5_port_xmit_impl(struct sk_buff *skb, struct net_device *dev)
  	}
  
- errout_idr:
--	if (!fold)
-+	if (!fold) {
-+		spin_lock(&tp->lock);
- 		idr_remove(&head->handle_idr, fnew->handle);
-+		spin_unlock(&tp->lock);
-+	}
- 	__fl_put(fnew);
- errout_tb:
- 	kfree(tb);
+ 	skb_tx_timestamp(skb);
++	spin_lock(&sparx5->tx_lock);
+ 	if (sparx5->fdma_irq > 0)
+ 		ret = sparx5_fdma_xmit(sparx5, ifh, skb);
+ 	else
+ 		ret = sparx5_inject(sparx5, ifh, skb, dev);
++	spin_unlock(&sparx5->tx_lock);
+ 
+ 	if (ret == -EBUSY)
+ 		goto busy;
 -- 
 2.43.0
 
