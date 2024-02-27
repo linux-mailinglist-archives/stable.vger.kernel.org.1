@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-25107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59C098697E6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:26:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEB13869771
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:21:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 497F0B22C4B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:24:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99DB62828E5
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:21:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3A8B14037E;
-	Tue, 27 Feb 2024 14:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 371D513DBBC;
+	Tue, 27 Feb 2024 14:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DDSnlcsg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WykhyDsA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B329A13B2B4;
-	Tue, 27 Feb 2024 14:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E7313B2B4;
+	Tue, 27 Feb 2024 14:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043884; cv=none; b=RWh64f1gS12SVvXZU4QvZHuBbuvLGy6hMFmVCBAaCp/I6L1uxuAkmwpDEfYnitm0ikxSb1DQpsYvvo82/UARJSa0IfU08g8BplP23pIgrZ6sxcug6/KX1Qw/5TVbyfssaJFAmpGXmuf03pWTiD0mfNuZYqCaLlB7XfcqNtCIgQA=
+	t=1709043683; cv=none; b=fjyGxVpS++PRliLyh77f3M0001gjvuT9rNKe4FW4/BJvEF705E4yuK+ZIsWaSK8VTspc8CX56fxlzJD9dCM0cDot14hTg+3SvwVTZLA4/AlQjUYRoJMKzhAB0CnRtKQMXEkKHvWNRHGYlswguYF81GiO3KgcSS9MQcE656/wi+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043884; c=relaxed/simple;
-	bh=J8UoQyh6MyWS26gmqvfixyLcyjVA8zmnom8OMSmC4HQ=;
+	s=arc-20240116; t=1709043683; c=relaxed/simple;
+	bh=d3Gffi38sYjoe5nikW5XxpYm+pECgG0wvP3AesnwZEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tY7GNfrqTG28LkJsKhFFhjyQ7Jb3KpJEuxAw3T7zs7iwZCm6QNysylCV/aeR80BBibq9G8hqmL2sccx3SoAxCYT4534k4367Th3apY89zswBF2LYGRmEC921KexRrT9U/VOf2OFAPVrAPEoZMaVC5mZL0mXUsBZKFzjDak6gYA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DDSnlcsg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDCC8C43394;
-	Tue, 27 Feb 2024 14:24:43 +0000 (UTC)
+	 MIME-Version; b=EL4FRT7T+/VV7UNSFS/ORfmYdjwAHWSt6InbrP3/50/Wav+lxgT0Z2PezaDKVjf6mGS3yKSAEqZHvf910fyeOiSdqfwPYE20qdlKpeRzh23hqOtFFUEH9vYNqYBaDITf9rRiwV8lpIEQBR09B0iMNlTXxDEKuVBsNVm494IIEb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WykhyDsA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 751D9C433C7;
+	Tue, 27 Feb 2024 14:21:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043884;
-	bh=J8UoQyh6MyWS26gmqvfixyLcyjVA8zmnom8OMSmC4HQ=;
+	s=korg; t=1709043682;
+	bh=d3Gffi38sYjoe5nikW5XxpYm+pECgG0wvP3AesnwZEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DDSnlcsgY2xwsmebWZm8HJm2leUlSROmTOeFZLEGxWse2ro/2UPi2oKTfwmaILDTq
-	 F5xJkjka32RuOkW7NwNMsC82xt6/X4jDAvD0WoNeCHu2XISMU9kZeJdumUtjndzh3M
-	 IApME596HQfpIRZHG/sHcRc3+qtENUhsWQx3qOs0=
+	b=WykhyDsA9Qhd9LV3l1fu1i8d/FKo+NbEcybAQGYR9tuyO+nrzhEQ2jfVMiYfVzNKK
+	 ILZOQXnGxORHP8zytR9AKCeZk/mYBS54MELuKypTAnrLJmTRr88xZqMrbOxzU+MY2s
+	 tTcfjLi9FH0eN7acpuY3arCK/Gvw0tdz1An95OVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn.topel@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Luke Nelson <luke.r.nels@gmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 42/84] selftests/bpf: Avoid running unprivileged tests with alignment requirements
+Subject: [PATCH 6.1 168/195] tls: dont skip over different type records from the rx_list
 Date: Tue, 27 Feb 2024 14:27:09 +0100
-Message-ID: <20240227131554.242956588@linuxfoundation.org>
+Message-ID: <20240227131615.956938413@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +60,127 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Björn Töpel <bjorn.topel@gmail.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit c77b0589ca29ad1859fe7d7c1ecd63c0632379fa ]
+[ Upstream commit ec823bf3a479d42c589dc0f28ef4951c49cd2d2a ]
 
-Some architectures have strict alignment requirements. In that case,
-the BPF verifier detects if a program has unaligned accesses and
-rejects them. A user can pass BPF_F_ANY_ALIGNMENT to a program to
-override this check. That, however, will only work when a privileged
-user loads a program. An unprivileged user loading a program with this
-flag will be rejected prior entering the verifier.
+If we queue 3 records:
+ - record 1, type DATA
+ - record 2, some other type
+ - record 3, type DATA
+and do a recv(PEEK), the rx_list will contain the first two records.
 
-Hence, it does not make sense to load unprivileged programs without
-strict alignment when testing the verifier. This patch avoids exactly
-that.
+The next large recv will walk through the rx_list and copy data from
+record 1, then stop because record 2 is a different type. Since we
+haven't filled up our buffer, we will process the next available
+record. It's also DATA, so we can merge it with the current read.
 
-Signed-off-by: Björn Töpel <bjorn.topel@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Luke Nelson <luke.r.nels@gmail.com>
-Link: https://lore.kernel.org/bpf/20201118071640.83773-3-bjorn.topel@gmail.com
+We shouldn't do that, since there was a record in between that we
+ignored.
+
+Add a flag to let process_rx_list inform tls_sw_recvmsg that it had
+more data available.
+
+Fixes: 692d7b5d1f91 ("tls: Fix recvmsg() to be able to peek across multiple records")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/f00c0c0afa080c60f016df1471158c1caf983c34.1708007371.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/test_verifier.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ net/tls/tls_sw.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/test_verifier.c b/tools/testing/selftests/bpf/test_verifier.c
-index 43224c5ec1e9b..1bd285dc55e94 100644
---- a/tools/testing/selftests/bpf/test_verifier.c
-+++ b/tools/testing/selftests/bpf/test_verifier.c
-@@ -1091,6 +1091,19 @@ static void get_unpriv_disabled()
- 
- static bool test_as_unpriv(struct bpf_test *test)
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 20d2877bf22ad..93e1bfa72d791 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -1845,7 +1845,8 @@ static int process_rx_list(struct tls_sw_context_rx *ctx,
+ 			   u8 *control,
+ 			   size_t skip,
+ 			   size_t len,
+-			   bool is_peek)
++			   bool is_peek,
++			   bool *more)
  {
-+#ifndef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
-+	/* Some architectures have strict alignment requirements. In
-+	 * that case, the BPF verifier detects if a program has
-+	 * unaligned accesses and rejects them. A user can pass
-+	 * BPF_F_ANY_ALIGNMENT to a program to override this
-+	 * check. That, however, will only work when a privileged user
-+	 * loads a program. An unprivileged user loading a program
-+	 * with this flag will be rejected prior entering the
-+	 * verifier.
-+	 */
-+	if (test->flags & F_NEEDS_EFFICIENT_UNALIGNED_ACCESS)
-+		return false;
-+#endif
- 	return !test->prog_type ||
- 	       test->prog_type == BPF_PROG_TYPE_SOCKET_FILTER ||
- 	       test->prog_type == BPF_PROG_TYPE_CGROUP_SKB;
+ 	struct sk_buff *skb = skb_peek(&ctx->rx_list);
+ 	struct tls_msg *tlm;
+@@ -1858,7 +1859,7 @@ static int process_rx_list(struct tls_sw_context_rx *ctx,
+ 
+ 		err = tls_record_content_type(msg, tlm, control);
+ 		if (err <= 0)
+-			goto out;
++			goto more;
+ 
+ 		if (skip < rxm->full_len)
+ 			break;
+@@ -1876,12 +1877,12 @@ static int process_rx_list(struct tls_sw_context_rx *ctx,
+ 
+ 		err = tls_record_content_type(msg, tlm, control);
+ 		if (err <= 0)
+-			goto out;
++			goto more;
+ 
+ 		err = skb_copy_datagram_msg(skb, rxm->offset + skip,
+ 					    msg, chunk);
+ 		if (err < 0)
+-			goto out;
++			goto more;
+ 
+ 		len = len - chunk;
+ 		copied = copied + chunk;
+@@ -1917,6 +1918,10 @@ static int process_rx_list(struct tls_sw_context_rx *ctx,
+ 
+ out:
+ 	return copied ? : err;
++more:
++	if (more)
++		*more = true;
++	goto out;
+ }
+ 
+ static bool
+@@ -2020,6 +2025,7 @@ int tls_sw_recvmsg(struct sock *sk,
+ 	int target, err;
+ 	bool is_kvec = iov_iter_is_kvec(&msg->msg_iter);
+ 	bool is_peek = flags & MSG_PEEK;
++	bool rx_more = false;
+ 	bool released = true;
+ 	bool bpf_strp_enabled;
+ 	bool zc_capable;
+@@ -2039,12 +2045,12 @@ int tls_sw_recvmsg(struct sock *sk,
+ 		goto end;
+ 
+ 	/* Process pending decrypted records. It must be non-zero-copy */
+-	err = process_rx_list(ctx, msg, &control, 0, len, is_peek);
++	err = process_rx_list(ctx, msg, &control, 0, len, is_peek, &rx_more);
+ 	if (err < 0)
+ 		goto end;
+ 
+ 	copied = err;
+-	if (len <= copied || (copied && control != TLS_RECORD_TYPE_DATA))
++	if (len <= copied || (copied && control != TLS_RECORD_TYPE_DATA) || rx_more)
+ 		goto end;
+ 
+ 	target = sock_rcvlowat(sk, flags & MSG_WAITALL, len);
+@@ -2203,10 +2209,10 @@ int tls_sw_recvmsg(struct sock *sk,
+ 		/* Drain records from the rx_list & copy if required */
+ 		if (is_peek || is_kvec)
+ 			err = process_rx_list(ctx, msg, &control, copied,
+-					      decrypted, is_peek);
++					      decrypted, is_peek, NULL);
+ 		else
+ 			err = process_rx_list(ctx, msg, &control, 0,
+-					      async_copy_bytes, is_peek);
++					      async_copy_bytes, is_peek, NULL);
+ 	}
+ 
+ 	copied += decrypted;
 -- 
 2.43.0
 
