@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-25020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03038869778
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:21:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA45A869838
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:30:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42E90B2B917
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:20:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 906011F2CEFB
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C103140391;
-	Tue, 27 Feb 2024 14:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28FC7145FE5;
+	Tue, 27 Feb 2024 14:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yaOja+B5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DM3KhV1B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A30F13B2B8;
-	Tue, 27 Feb 2024 14:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC94D145FE1;
+	Tue, 27 Feb 2024 14:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043633; cv=none; b=pmeb+AEqfl4FHOnPs5hINMF/JwFoFUb7OuIWUqWxZLa+uEAKVbn3S/huBIczkRfMQjzqXbpmQB3Efh6vhNsboKtJumbRKqWrjRWBfuELgHg4V9XX8pRDNeDv1dVCUCHMdu3HJyLLep7lDomaZN9SZ5UwnB6jVcvDrt+p3AN7EFo=
+	t=1709044147; cv=none; b=JyWGdtfV/GJ/+NlY/d9VkJ4KNr5OJGqKewCWZLobpJl6ICBNs/SGDx9ak71g0FkQcWHA5tiBCE8BZnvLpCEAV4s2TBxnCV80cw62xP0ilz554juwvQXSWYqu/Wq9+nmeqDOU0KlT6yb1nCw2NoGswpxH2dJRhq5JZfFElwgBlEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043633; c=relaxed/simple;
-	bh=O9D09h1W5eKkDtdH8+iIRMAW7IGMLGsnJTXbj3Ck690=;
+	s=arc-20240116; t=1709044147; c=relaxed/simple;
+	bh=j5HozBdg02bXXqWxhxMqHxWddmJ/XnKyqzbbUZCgHdE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QWXCZxfMmGkU6mPiiFHjNBqfI7NHlPWKUlSVQYewOnQHatTMmtSWxj0g0PO0naSrReyqt1toshzZ2eiAokSrwynlzzn3M24aOlfXYRWrqxY09HyNOOnEzEb5+6E5hjQ1Uhpd58M0ZucvTbylOi9McxKeTxUzB6hFPkCFkQ45h7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yaOja+B5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7962C433B1;
-	Tue, 27 Feb 2024 14:20:32 +0000 (UTC)
+	 MIME-Version; b=t2tTKa21m3dlaiMoz+6a48Td1JhxfP5qByTLxKXi1vTswP5+Auq5qdc9EpEW2brWg0nXttgiRmHotVvzhEBGAw44+CszbWPY487+dYI36Wozj8jiATtTz6YEHKYVQlrbfcg4jmKY+/U66phWDSUU8mgabm9yLQsdCrepNkKqsO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DM3KhV1B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 688BBC433F1;
+	Tue, 27 Feb 2024 14:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043633;
-	bh=O9D09h1W5eKkDtdH8+iIRMAW7IGMLGsnJTXbj3Ck690=;
+	s=korg; t=1709044147;
+	bh=j5HozBdg02bXXqWxhxMqHxWddmJ/XnKyqzbbUZCgHdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yaOja+B5D5TY4z7kjwQe2rPBCUMkrGs45qDyUe/wdyQ9khXpdqR2BzOAPLEWHqwRC
-	 Y5HKh71Pg6j7Ge78ebWQa6QBecgoysDPsQCZevkIXLYukJW69SyCi0sxKXuDSVunmQ
-	 npN6H6y6800ELIC1BeJ/iZrjV2PFj4W/BX39oy2A=
+	b=DM3KhV1B4G25jQztVQxy8nd+sd9wrQqtvxaTQr5paDt0JBFpKPi3vlnWDl7G06W8V
+	 /R7A0jIY4GH180RT0X+ltrNHvU3FBgVrDw7FetLI77LWcnvUYAu6J2ClCmYVeCbtio
+	 2k+3qR+8WyqVbL7KXuEa6kI42r22mdCKhGJv42/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <courmisch@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 179/195] phonet/pep: fix racy skb_queue_empty() use
-Date: Tue, 27 Feb 2024 14:27:20 +0100
-Message-ID: <20240227131616.314202994@linuxfoundation.org>
+	Vidya Sagar <vidyas@nvidia.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Shanker Donthineni <sdonthineni@nvidia.com>
+Subject: [PATCH 5.10 080/122] PCI/MSI: Prevent MSI hardware interrupt number truncation
+Date: Tue, 27 Feb 2024 14:27:21 +0100
+Message-ID: <20240227131601.323716653@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,87 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rémi Denis-Courmont <courmisch@gmail.com>
+From: Vidya Sagar <vidyas@nvidia.com>
 
-[ Upstream commit 7d2a894d7f487dcb894df023e9d3014cf5b93fe5 ]
+commit db744ddd59be798c2627efbfc71f707f5a935a40 upstream.
 
-The receive queues are protected by their respective spin-lock, not
-the socket lock. This could lead to skb_peek() unexpectedly
-returning NULL or a pointer to an already dequeued socket buffer.
+While calculating the hardware interrupt number for a MSI interrupt, the
+higher bits (i.e. from bit-5 onwards a.k.a domain_nr >= 32) of the PCI
+domain number gets truncated because of the shifted value casting to return
+type of pci_domain_nr() which is 'int'. This for example is resulting in
+same hardware interrupt number for devices 0019:00:00.0 and 0039:00:00.0.
 
-Fixes: 9641458d3ec4 ("Phonet: Pipe End Point for Phonet Pipes protocol")
-Signed-off-by: Rémi Denis-Courmont <courmisch@gmail.com>
-Link: https://lore.kernel.org/r/20240218081214.4806-2-remi@remlab.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To address this cast the PCI domain number to 'irq_hw_number_t' before left
+shifting it to calculate the hardware interrupt number.
+
+Please note that this fixes the issue only on 64-bit systems and doesn't
+change the behavior for 32-bit systems i.e. the 32-bit systems continue to
+have the issue. Since the issue surfaces only if there are too many PCIe
+controllers in the system which usually is the case in modern server
+systems and they don't tend to run 32-bit kernels.
+
+Fixes: 3878eaefb89a ("PCI/MSI: Enhance core to support hierarchy irqdomain")
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Shanker Donthineni <sdonthineni@nvidia.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240115135649.708536-1-vidyas@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/phonet/pep.c |   41 ++++++++++++++++++++++++++++++++---------
- 1 file changed, 32 insertions(+), 9 deletions(-)
+ drivers/pci/msi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/phonet/pep.c
-+++ b/net/phonet/pep.c
-@@ -917,6 +917,37 @@ static int pep_sock_enable(struct sock *
- 	return 0;
+--- a/drivers/pci/msi.c
++++ b/drivers/pci/msi.c
+@@ -1409,7 +1409,7 @@ static irq_hw_number_t pci_msi_domain_ca
+ 
+ 	return (irq_hw_number_t)desc->msi_attrib.entry_nr |
+ 		pci_dev_id(dev) << 11 |
+-		(pci_domain_nr(dev->bus) & 0xFFFFFFFF) << 27;
++		((irq_hw_number_t)(pci_domain_nr(dev->bus) & 0xFFFFFFFF)) << 27;
  }
  
-+static unsigned int pep_first_packet_length(struct sock *sk)
-+{
-+	struct pep_sock *pn = pep_sk(sk);
-+	struct sk_buff_head *q;
-+	struct sk_buff *skb;
-+	unsigned int len = 0;
-+	bool found = false;
-+
-+	if (sock_flag(sk, SOCK_URGINLINE)) {
-+		q = &pn->ctrlreq_queue;
-+		spin_lock_bh(&q->lock);
-+		skb = skb_peek(q);
-+		if (skb) {
-+			len = skb->len;
-+			found = true;
-+		}
-+		spin_unlock_bh(&q->lock);
-+	}
-+
-+	if (likely(!found)) {
-+		q = &sk->sk_receive_queue;
-+		spin_lock_bh(&q->lock);
-+		skb = skb_peek(q);
-+		if (skb)
-+			len = skb->len;
-+		spin_unlock_bh(&q->lock);
-+	}
-+
-+	return len;
-+}
-+
- static int pep_ioctl(struct sock *sk, int cmd, unsigned long arg)
- {
- 	struct pep_sock *pn = pep_sk(sk);
-@@ -930,15 +961,7 @@ static int pep_ioctl(struct sock *sk, in
- 			break;
- 		}
- 
--		lock_sock(sk);
--		if (sock_flag(sk, SOCK_URGINLINE) &&
--		    !skb_queue_empty(&pn->ctrlreq_queue))
--			answ = skb_peek(&pn->ctrlreq_queue)->len;
--		else if (!skb_queue_empty(&sk->sk_receive_queue))
--			answ = skb_peek(&sk->sk_receive_queue)->len;
--		else
--			answ = 0;
--		release_sock(sk);
-+		answ = pep_first_packet_length(sk);
- 		ret = put_user(answ, (int __user *)arg);
- 		break;
- 
+ static inline bool pci_msi_desc_is_multi_msi(struct msi_desc *desc)
 
 
 
