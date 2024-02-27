@@ -1,142 +1,172 @@
-Return-Path: <stable+bounces-23838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A375A868AB0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 09:21:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A770F868AB2
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 09:22:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D5A9B253A2
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 08:21:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 162531F22749
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 08:22:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DAC256458;
-	Tue, 27 Feb 2024 08:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DB6156467;
+	Tue, 27 Feb 2024 08:22:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e8SwlXJA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D505467C
-	for <stable@vger.kernel.org>; Tue, 27 Feb 2024 08:21:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA21955E68;
+	Tue, 27 Feb 2024 08:22:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709022098; cv=none; b=OjXEYWm9Fc2jPCPcFk5SoObidDpo50gw4MI42GcP+bNSpWXW7mq+MqvWtOcZ0XB+TC+lvwXWVJt1y8TocPXCeQEFZRYhUOb78+vsN4O+bDla/p6iXaEkd0wZ5IV58am6i6sCiIPNyEIiZnFWToordQ9LK37D6j22up4CVjcZzzY=
+	t=1709022135; cv=none; b=bF0HEm3eDCYyIS24Wv5xV4w/i4DsJuNkcxb5WmFhznq3Xt3QvZZbnRLCrcB2WDxOMRt9uFVUN5fHs5rXniOewzFUaAtHMZEw7EvkqaPwf8HPIQmQkz9phCg28fqT94HkB/cLxjOQ7KIXRR3XtkhcWhRpsozCXA9bGjwbP9W8GTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709022098; c=relaxed/simple;
-	bh=k1HwHJziXSusAJQ/Zv7BwreIoZP7iGIf6kkd/pG7FEE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ToXNH2oIobPfih9hh1Mhd4mv8zFJ+nawYkjTJYy7m4YeTUeg7hjJuc+rMWKTO68eG/2SIDtvQaATYNvHmEeuaYexZJEz3Hx0KDztQq039wGXIVRONLnfzC8ZOhUq9EJcqsNydL3jzQUAtW8lS59SOBPJSJ77DjQYGUDP8lp6z3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+	s=arc-20240116; t=1709022135; c=relaxed/simple;
+	bh=t8XyXwJueF6HxJmYKGaSm2h/RD9rlpNIcEUyHMTJ/DU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=I7PU11HaXhdTRH/TpEUMNKurMMtxMPdmomB2QQhEpzO/H9lgMLBjBPMgIbEY8JKpFkH8W60TOtv/n+B1BzY/o1B7eXHbrszhwW0m0Ht/MrZwq7VmNLqaN0HwblM/ZgKljofhrvqo0wD1P67zuiLNJ6wY0QrWeKIpKjsDAf+hU1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e8SwlXJA; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2d094bc2244so46636291fa.1
-        for <stable@vger.kernel.org>; Tue, 27 Feb 2024 00:21:36 -0800 (PST)
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1dbd32cff0bso29358145ad.0;
+        Tue, 27 Feb 2024 00:22:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709022133; x=1709626933; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HI5YfceekB134PHWb0mBfyFs0SgDHAdBofq6LRbVyTI=;
+        b=e8SwlXJAjMfyTdrCTbMJ7NcCxNSbz49fni+pb386qsKtw0uV95KLPbIQVuMIAXw4kY
+         GmrgAfhA8N7eRgt8Vtyl+v29F/7+3oPQZPMg8KX+AFJ1IWFnHpex6/Ld6x9SLDygHnjF
+         /nb08lJR9sFbQGvM1T6A5yo2ORtUU6caTpYo1dznwF+ACnFBPdJx5aZ4PAdjRMaNRB4N
+         JTy+58RVDlV6S2MkMDtfprae1KHM3tmeYDsSb6/g9b0NjvlxlM68rGlpTlfTjscYN2nD
+         WbEGUeAdXtCWJI0tkr7GujnWOeuShz0ZXKswIS41nOv5qqoTutUNiADt831i5U6MyW6K
+         mFJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709022095; x=1709626895;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1709022133; x=1709626933;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=m6qR+EdihhoYoVe9V8iATLyTw+BqR5rule+q+cxMQDo=;
-        b=mLs/Y+ka0M3pByUrJ8TfGs8kff7GpGU1qbfDKIcQg/0Ken6HA8kDHVHEdN2aiZtoZ0
-         OpV9EP2DGzdowx2447sW/suTL+BjU+KjQ2zuKvOapQt5gCQt1ioqtGhmTwikjAOYZpRm
-         k1I4q+wYjnvmC2ccgnnHv630ZF6Hc3gZ3ehiyTPaqr4vBSynvcZGT1RAiJoRIlhcnJa7
-         gf3VSLFILbnLBQ/J99iPgF+rx9fhv24c2BM3xmEtFmzknLrAm6QPM03Knc38TKHiktSA
-         gkl85xi+5/WzOaJECoggYtwwPyLGaMPM7nlR2exSldxalpCl/rUZ/kvlNcCDpLd++giq
-         10MQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX6jvc+h4rAxnA57RXDXte4goSdFFi1WrRKqYZ/SnRMNSXSYai1paPReXvAIflTNDRZkY6mNHtxD2ayarpTmbS+uzogBzb/
-X-Gm-Message-State: AOJu0YxOA3cSA1n9o7OvfW+Fy2Ra2It/ltSrGKwc3B3rqTRJFDNVxHCs
-	qafzS3U6YSpecpYZzZA/DRuhitVtee7oJtGv/A+5K2496mzFWLPl
-X-Google-Smtp-Source: AGHT+IEbuTUeCb1AVefVhifNxAukhwN/6H/eNBqgIIsTSRKrne7uR8AW2PE6y7NdUKZYlBpSfEwr2Q==
-X-Received: by 2002:a2e:be07:0:b0:2d2:8fb4:46c5 with SMTP id z7-20020a2ebe07000000b002d28fb446c5mr2973300ljq.7.1709022094722;
-        Tue, 27 Feb 2024 00:21:34 -0800 (PST)
-Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:59? ([2a0b:e7c0:0:107::aaaa:59])
-        by smtp.gmail.com with ESMTPSA id o20-20020a05600c4fd400b004120675e057sm518702wmq.0.2024.02.27.00.21.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Feb 2024 00:21:34 -0800 (PST)
-Message-ID: <7f75bfa1-03a1-4802-bf5d-3d7dfff281c2@kernel.org>
-Date: Tue, 27 Feb 2024 09:21:33 +0100
+        bh=HI5YfceekB134PHWb0mBfyFs0SgDHAdBofq6LRbVyTI=;
+        b=iNe84ZAKu0QRlNEbYo6ZEkOAAcZ80PxyDf2k5r9W6xb0tzh0L3Pt+fs+ST0uxBGDVr
+         a/Ykk1mmwzTDIVYInVZvTYuhxD9TSQ9l4wtjOtI5ANywN4tuUrs3rA+HazB9Z3fEHijg
+         NwqCAZ4Zc2tRjgGIKpQZKH6Rcsf8VYoFqtMh+e2TlFQBENDoCDMMYVziB+AUeb9/gQdU
+         MsUuxH0+mdKMVqCiixhS1w4jhZcmrzCLRaMh8l59BeJANJDy29nj/QemS1STnpjrG8bo
+         zjLft219gD/1brRKHNiIsQB8VjBN0Uri0qxg4NeR0kNuCxuZ/gnRjfEYSbT+1CvS4ZBj
+         aNCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVgTQdkaZrsMH3MjRfq0PC5j6JQqL259S9aQrWFEVO7GYxKkNfRxHUNVzPIo0NNbVvffE8Kwj4xdFWct3FX3PwprJevlBsqcjJVToytf1RQzpKdxHmmwZbbc7W3L8LTjk32w0egpMHL2IsgaA==
+X-Gm-Message-State: AOJu0YyCxoC8LGOKfw0EZEE8OryuX+B/Ycd+xlG4buoYzvxkQMYgjvvU
+	qXJIWedeeSs32wjc4CxAOAVGdUvCnPkhzU9A391tHWeCEwCvoIrH
+X-Google-Smtp-Source: AGHT+IGDA09K8zrsriDSFT8spOeGYcIHZEHFUGp2L17AIuv+iVn/gIpntlin4+FCyzYHZVImkWLF0g==
+X-Received: by 2002:a17:902:8644:b0:1db:5ee2:a772 with SMTP id y4-20020a170902864400b001db5ee2a772mr8267708plt.11.1709022133042;
+        Tue, 27 Feb 2024 00:22:13 -0800 (PST)
+Received: from archie.me ([103.124.138.155])
+        by smtp.gmail.com with ESMTPSA id lo7-20020a170903434700b001db5fc51d71sm952788plb.160.2024.02.27.00.22.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Feb 2024 00:22:12 -0800 (PST)
+Received: by archie.me (Postfix, from userid 1000)
+	id 2732D184CED9D; Tue, 27 Feb 2024 15:22:09 +0700 (WIB)
+Date: Tue, 27 Feb 2024 15:22:09 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux x86 Platform Drivers <platform-driver-x86@vger.kernel.org>,
+	Linux Regressions <regressions@lists.linux.dev>,
+	Linux Stable <stable@vger.kernel.org>
+Cc: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+	Klara Modin <klarasmodin@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>, danilrybakov249@gmail.com
+Subject: Fwd: Continuous ACPI errors resulting in high CPU usage by journald
+Message-ID: <Zd2bsV8VsFJMlbFW@archie.me>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1.y 0/6] Delay VERW - 6.1.y backport
-Content-Language: en-US
-To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, stable@vger.kernel.org
-Cc: Dave Hansen <dave.hansen@linux.intel.com>,
- Alyssa Milburn <alyssa.milburn@intel.com>,
- Andrew Cooper <andrew.cooper3@citrix.com>,
- Peter Zijlstra <peterz@infradead.org>, Dave Hansen <dave.hansen@intel.com>,
- Sean Christopherson <seanjc@google.com>,
- Nikolay Borisov <nik.borisov@suse.com>
-References: <20240226-delay-verw-backport-6-1-y-v1-0-b3a2c5b9b0cb@linux.intel.com>
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- xsFNBE6S54YBEACzzjLwDUbU5elY4GTg/NdotjA0jyyJtYI86wdKraekbNE0bC4zV+ryvH4j
- rrcDwGs6tFVrAHvdHeIdI07s1iIx5R/ndcHwt4fvI8CL5PzPmn5J+h0WERR5rFprRh6axhOk
- rSD5CwQl19fm4AJCS6A9GJtOoiLpWn2/IbogPc71jQVrupZYYx51rAaHZ0D2KYK/uhfc6neJ
- i0WqPlbtIlIrpvWxckucNu6ZwXjFY0f3qIRg3Vqh5QxPkojGsq9tXVFVLEkSVz6FoqCHrUTx
- wr+aw6qqQVgvT/McQtsI0S66uIkQjzPUrgAEtWUv76rM4ekqL9stHyvTGw0Fjsualwb0Gwdx
- ReTZzMgheAyoy/umIOKrSEpWouVoBt5FFSZUyjuDdlPPYyPav+hpI6ggmCTld3u2hyiHji2H
- cDpcLM2LMhlHBipu80s9anNeZhCANDhbC5E+NZmuwgzHBcan8WC7xsPXPaiZSIm7TKaVoOcL
- 9tE5aN3jQmIlrT7ZUX52Ff/hSdx/JKDP3YMNtt4B0cH6ejIjtqTd+Ge8sSttsnNM0CQUkXps
- w98jwz+Lxw/bKMr3NSnnFpUZaxwji3BC9vYyxKMAwNelBCHEgS/OAa3EJoTfuYOK6wT6nadm
- YqYjwYbZE5V/SwzMbpWu7Jwlvuwyfo5mh7w5iMfnZE+vHFwp/wARAQABzSFKaXJpIFNsYWJ5
- IDxqaXJpc2xhYnlAa2VybmVsLm9yZz7CwXcEEwEIACEFAlW3RUwCGwMFCwkIBwIGFQgJCgsC
- BBYCAwECHgECF4AACgkQvSWxBAa0cEnVTg//TQpdIAr8Tn0VAeUjdVIH9XCFw+cPSU+zMSCH
- eCZoA/N6gitEcnvHoFVVM7b3hK2HgoFUNbmYC0RdcSc80pOF5gCnACSP9XWHGWzeKCARRcQR
- 4s5YD8I4VV5hqXcKo2DFAtIOVbHDW+0okOzcecdasCakUTr7s2fXz97uuoc2gIBB7bmHUGAH
- XQXHvdnCLjDjR+eJN+zrtbqZKYSfj89s/ZHn5Slug6w8qOPT1sVNGG+eWPlc5s7XYhT9z66E
- l5C0rG35JE4PhC+tl7BaE5IwjJlBMHf/cMJxNHAYoQ1hWQCKOfMDQ6bsEr++kGUCbHkrEFwD
- UVA72iLnnnlZCMevwE4hc0zVhseWhPc/KMYObU1sDGqaCesRLkE3tiE7X2cikmj/qH0CoMWe
- gjnwnQ2qVJcaPSzJ4QITvchEQ+tbuVAyvn9H+9MkdT7b7b2OaqYsUP8rn/2k1Td5zknUz7iF
- oJ0Z9wPTl6tDfF8phaMIPISYrhceVOIoL+rWfaikhBulZTIT5ihieY9nQOw6vhOfWkYvv0Dl
- o4GRnb2ybPQpfEs7WtetOsUgiUbfljTgILFw3CsPW8JESOGQc0Pv8ieznIighqPPFz9g+zSu
- Ss/rpcsqag5n9rQp/H3WW5zKUpeYcKGaPDp/vSUovMcjp8USIhzBBrmI7UWAtuedG9prjqfO
- wU0ETpLnhgEQAM+cDWLL+Wvc9cLhA2OXZ/gMmu7NbYKjfth1UyOuBd5emIO+d4RfFM02XFTI
- t4MxwhAryhsKQQcA4iQNldkbyeviYrPKWjLTjRXT5cD2lpWzr+Jx7mX7InV5JOz1Qq+P+nJW
- YIBjUKhI03ux89p58CYil24Zpyn2F5cX7U+inY8lJIBwLPBnc9Z0An/DVnUOD+0wIcYVnZAK
- DiIXODkGqTg3fhZwbbi+KAhtHPFM2fGw2VTUf62IHzV+eBSnamzPOBc1XsJYKRo3FHNeLuS8
- f4wUe7bWb9O66PPFK/RkeqNX6akkFBf9VfrZ1rTEKAyJ2uqf1EI1olYnENk4+00IBa+BavGQ
- 8UW9dGW3nbPrfuOV5UUvbnsSQwj67pSdrBQqilr5N/5H9z7VCDQ0dhuJNtvDSlTf2iUFBqgk
- 3smln31PUYiVPrMP0V4ja0i9qtO/TB01rTfTyXTRtqz53qO5dGsYiliJO5aUmh8swVpotgK4
- /57h3zGsaXO9PGgnnAdqeKVITaFTLY1ISg+Ptb4KoliiOjrBMmQUSJVtkUXMrCMCeuPDGHo7
- 39Xc75lcHlGuM3yEB//htKjyprbLeLf1y4xPyTeeF5zg/0ztRZNKZicgEmxyUNBHHnBKHQxz
- 1j+mzH0HjZZtXjGu2KLJ18G07q0fpz2ZPk2D53Ww39VNI/J9ABEBAAHCwV8EGAECAAkFAk6S
- 54YCGwwACgkQvSWxBAa0cEk3tRAAgO+DFpbyIa4RlnfpcW17AfnpZi9VR5+zr496n2jH/1ld
- wRO/S+QNSA8qdABqMb9WI4BNaoANgcg0AS429Mq0taaWKkAjkkGAT7mD1Q5PiLr06Y/+Kzdr
- 90eUVneqM2TUQQbK+Kh7JwmGVrRGNqQrDk+gRNvKnGwFNeTkTKtJ0P8jYd7P1gZb9Fwj9YLx
- jhn/sVIhNmEBLBoI7PL+9fbILqJPHgAwW35rpnq4f/EYTykbk1sa13Tav6btJ+4QOgbcezWI
- wZ5w/JVfEJW9JXp3BFAVzRQ5nVrrLDAJZ8Y5ioWcm99JtSIIxXxt9FJaGc1Bgsi5K/+dyTKL
- wLMJgiBzbVx8G+fCJJ9YtlNOPWhbKPlrQ8+AY52Aagi9WNhe6XfJdh5g6ptiOILm330mkR4g
- W6nEgZVyIyTq3ekOuruftWL99qpP5zi+eNrMmLRQx9iecDNgFr342R9bTDlb1TLuRb+/tJ98
- f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
- DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
- S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
-In-Reply-To: <20240226-delay-verw-backport-6-1-y-v1-0-b3a2c5b9b0cb@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="pgDDeVc61kq9FJT+"
+Content-Disposition: inline
 
-On 27. 02. 24, 9:00, Pawan Gupta wrote:
-> This is the backport of recently upstreamed series that moves VERW
-> execution to a later point in exit-to-user path. This is needed because
-> in some cases it may be possible for data accessed after VERW executions
-> may end into MDS affected CPU buffers. Moving VERW closer to ring
-> transition reduces the attack surface.
-> 
-> Patch 1/6 includes a minor fix that is queued for upstream:
-> https://lore.kernel.org/lkml/170899674562.398.6398007479766564897.tip-bot2@tip-bot2/
 
-Ah, you note it here.
+--pgDDeVc61kq9FJT+
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-But you should include this patch on its own instead of merging it to 
-1/6. You might need to wait until it is in linus' tree, though.
+Hi,
 
-regards,
--- 
-js
-suse labs
+On Bugzilla, danilrybakov249@gmail.com reported stable-specific, ACPI error
+regression that led into high CPU temperature [1]. He wrote:
 
+> Overview:
+>=20
+> After updating from lts v6.6.14-2 to lts v6.6.17-1 noticed high CPU tempe=
+rature and lag. After running htop noticed that journald was using 30-60% o=
+f CPU. Afterwards, tried switching to stable, or lts v6.6.18-1, but encount=
+ered the same issue.
+>=20
+> Running journalctl -f gives these lines over and over again:
+>=20
+> Feb 19 21:09:12 danirybe kernel: ACPI Error: Could not disable RealTimeCl=
+ock events (20230628/evxfevnt-243)
+> Feb 19 21:09:12 danirybe kernel: ACPI Error: No handler or method for GPE=
+ 08, disabling event (20230628/evgpe-839)
+> Feb 19 21:09:12 danirybe kernel: ACPI Error: No handler or method for GPE=
+ 0A, disabling event (20230628/evgpe-839)
+> Feb 19 21:09:12 danirybe kernel: ACPI Error: No handler or method for GPE=
+ 0B, disabling event (20230628/evgpe-839)
+> Feb 19 21:09:12 danirybe kernel: ACPI Error: No installed handler for fix=
+ed event - PM_Timer (0), disabling (20230628/evevent-255)
+> Feb 19 21:09:12 danirybe kernel: ACPI Error: No installed handler for fix=
+ed event - PowerButton (2), disabling (20230628/evevent-255)
+> Feb 19 21:09:12 danirybe kernel: ACPI Error: No installed handler for fix=
+ed event - SleepButton (3), disabling (20230628/evevent-255)
+>=20
+> My system info:
+>=20
+> Laptop model: ASUS VivoBook D540NV-GQ065T
+> OS: Arch Linux x86_64
+> Kernel: 6.6.14-2-lts
+> WM: sway
+> CPU: Intel Pentium N420 (4) @ 2.500GHz
+> GPU1: Intel Apollo Lake [HD Graphics 505]
+> GPU2: NVIDIA GeForce 920MX
+>=20
+> I've pinned down the commit after which the problem occurs:
+>=20
+> 847e1eb30e269a094da046c08273abe3f3361cf2 is the first bad commit
+> commit 847e1eb30e269a094da046c08273abe3f3361cf2
+> Author: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
+> Date:   Mon Jan 8 15:20:58 2024 +0900
+>=20
+>     platform/x86: p2sb: Allow p2sb_bar() calls during PCI device probe
+>    =20
+>     commit 5913320eb0b3ec88158cfcb0fa5e996bf4ef681b upstream.
+>=20
+> <snipped>...
+
+See Bugzilla for the full thread.
+
+Thanks.
+
+[1]: https://bugzilla.kernel.org/show_bug.cgi?id=3D218531
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--pgDDeVc61kq9FJT+
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZd2brQAKCRD2uYlJVVFO
+owXDAQDniDPvwOEXBwUgqdr22mZnIQ+QPQ2O2jmn/xMKKlPADQD+LvJ6iqLHXsP0
+Co46z6CIKqlwUj55oTqUrYdKKCkqlgs=
+=7XYF
+-----END PGP SIGNATURE-----
+
+--pgDDeVc61kq9FJT+--
 
