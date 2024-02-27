@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-25015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12C5F869755
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:20:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 135C386984E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:31:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB61728481A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:20:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C44D929530A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:31:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F1C1419AE;
-	Tue, 27 Feb 2024 14:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00F4214534D;
+	Tue, 27 Feb 2024 14:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4goXNFY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X37wo8LX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63AA578B61;
-	Tue, 27 Feb 2024 14:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38D613B29C;
+	Tue, 27 Feb 2024 14:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043619; cv=none; b=lH+iP9d+3zqDs7Fc2OEWADDjWgarhdc1RDQSrz7xF3wWQ3P1H1IA+EdrWIDnCrqaSBUKvQBg5VIE9qqPzMzIWGa/SAVBAQvD5onIjmVq2lNKmCwIb+t9oFN0dkTC1Mrt9QzJjnucPpYt5FICPWiIyIUwbsaub9G0/s6RSFUvAss=
+	t=1709044208; cv=none; b=TJ1EBHgZPNnuo7Hwld1NuomYLgtOn0Hr0VZMN1/Oco88eKRS0Bh0ugImO1hHuMZb2FUVO+PhypKLtGaYcsC7Z5bBBSFs0vsflH91CDMJ76Ci/SToBfN7xXjmXCYZThq7Lm/Qe4dY0Sm/b3+IhM7tb88S6XMGOGPrtiwIrAo8XGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043619; c=relaxed/simple;
-	bh=/Mk05vCtIBwHV+WDMsULaE3XlxNVfiwcvQqk0rEquHw=;
+	s=arc-20240116; t=1709044208; c=relaxed/simple;
+	bh=LiGSFnMgIzpx7Xa05ACt611SVQNjOTtFpXsDaC4hPYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FjwgHoVgYgFi5rnMbyVoUzeM8qAPCX1HsZ8KX0SWb3st1znSrzsRGHKWAyev/8X5ILtev42Bzna2RRsN+4PcsG9LmJbeTk2IOnI2/9+QCjuZCMGpjVFd9D0BaQLodEkRSzj4mSCgwGXqzd7DDg6Br6tc4vqiQC2FFLiwD9v1dAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4goXNFY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3849C433C7;
-	Tue, 27 Feb 2024 14:20:18 +0000 (UTC)
+	 MIME-Version; b=KNlD/i0JAGGK3/dxY+fLCg7KWmg5SCKx31XoYxWLfDeQU5L2aiU6qkBx/qjshkigo41TY1U98Ca5bQLajDDhTHy/xlbeO1hxbcjsJzzQftQPVDaYmzHq0IcmmZLnbfT1aoZ7mFtlvad8ZzF6HlW+1kcH49A0Bopk6zQdgDjx1aA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X37wo8LX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A721C433F1;
+	Tue, 27 Feb 2024 14:30:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043619;
-	bh=/Mk05vCtIBwHV+WDMsULaE3XlxNVfiwcvQqk0rEquHw=;
+	s=korg; t=1709044208;
+	bh=LiGSFnMgIzpx7Xa05ACt611SVQNjOTtFpXsDaC4hPYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s4goXNFYpc3BcVPBw6DwooViefGXPLnAUWLgpT3IWywSuJ992YV23onZnjpDkGuqc
-	 mL6qi9AWAwMbhyPqlDMfRg0EHUEeGc1Mugk7s3hWaY7x4dC/Q8KsnLfZFDeTycIiCE
-	 k5tYE/BDEojM5KwhyDy4KVEHamqWnn5+GBmUElFo=
+	b=X37wo8LXzVq1K4xjjNSrC4OfhhgWyrPK2scqAsEvbWfFO3FIM4nvuW88PMRxDRPdE
+	 butwDIs7bBGMbfhzKXhiJ0S2Afm20e1KY7/iDVqxVV7ZsnNXpABJF0MRhhWZdHNhrw
+	 dM6DWzs8HCEFkYlhglgjhI1jKWAku9LiEPqJAUI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 174/195] netfilter: nf_tables: register hooks last when adding new chain/flowtable
+	Mats Kronberg <kronberg@nsc.liu.se>,
+	Daniel Vacek <neelx@redhat.com>,
+	Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 5.10 074/122] IB/hfi1: Fix sdma.h tx->num_descs off-by-one error
 Date: Tue, 27 Feb 2024 14:27:15 +0100
-Message-ID: <20240227131616.151468141@linuxfoundation.org>
+Message-ID: <20240227131601.125622734@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,195 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Daniel Vacek <neelx@redhat.com>
 
-[ Upstream commit d472e9853d7b46a6b094224d131d09ccd3a03daf ]
+commit e6f57c6881916df39db7d95981a8ad2b9c3458d6 upstream.
 
-Register hooks last when adding chain/flowtable to ensure that packets do
-not walk over datastructure that is being released in the error path
-without waiting for the rcu grace period.
+Unfortunately the commit `fd8958efe877` introduced another error
+causing the `descs` array to overflow. This reults in further crashes
+easily reproducible by `sendmsg` system call.
 
-Fixes: 91c7b38dc9f0 ("netfilter: nf_tables: use new transaction infrastructure to handle chain")
-Fixes: 3b49e2e94e6e ("netfilter: nf_tables: add flow table netlink frontend")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ 1080.836473] general protection fault, probably for non-canonical address 0x400300015528b00a: 0000 [#1] PREEMPT SMP PTI
+[ 1080.869326] RIP: 0010:hfi1_ipoib_build_ib_tx_headers.constprop.0+0xe1/0x2b0 [hfi1]
+--
+[ 1080.974535] Call Trace:
+[ 1080.976990]  <TASK>
+[ 1081.021929]  hfi1_ipoib_send_dma_common+0x7a/0x2e0 [hfi1]
+[ 1081.027364]  hfi1_ipoib_send_dma_list+0x62/0x270 [hfi1]
+[ 1081.032633]  hfi1_ipoib_send+0x112/0x300 [hfi1]
+[ 1081.042001]  ipoib_start_xmit+0x2a9/0x2d0 [ib_ipoib]
+[ 1081.046978]  dev_hard_start_xmit+0xc4/0x210
+--
+[ 1081.148347]  __sys_sendmsg+0x59/0xa0
+
+crash> ipoib_txreq 0xffff9cfeba229f00
+struct ipoib_txreq {
+  txreq = {
+    list = {
+      next = 0xffff9cfeba229f00,
+      prev = 0xffff9cfeba229f00
+    },
+    descp = 0xffff9cfeba229f40,
+    coalesce_buf = 0x0,
+    wait = 0xffff9cfea4e69a48,
+    complete = 0xffffffffc0fe0760 <hfi1_ipoib_sdma_complete>,
+    packet_len = 0x46d,
+    tlen = 0x0,
+    num_desc = 0x0,
+    desc_limit = 0x6,
+    next_descq_idx = 0x45c,
+    coalesce_idx = 0x0,
+    flags = 0x0,
+    descs = {{
+        qw = {0x8024000120dffb00, 0x4}  # SDMA_DESC0_FIRST_DESC_FLAG (bit 63)
+      }, {
+        qw = {  0x3800014231b108, 0x4}
+      }, {
+        qw = { 0x310000e4ee0fcf0, 0x8}
+      }, {
+        qw = {  0x3000012e9f8000, 0x8}
+      }, {
+        qw = {  0x59000dfb9d0000, 0x8}
+      }, {
+        qw = {  0x78000e02e40000, 0x8}
+      }}
+  },
+  sdma_hdr =  0x400300015528b000,  <<< invalid pointer in the tx request structure
+  sdma_status = 0x0,                   SDMA_DESC0_LAST_DESC_FLAG (bit 62)
+  complete = 0x0,
+  priv = 0x0,
+  txq = 0xffff9cfea4e69880,
+  skb = 0xffff9d099809f400
+}
+
+If an SDMA send consists of exactly 6 descriptors and requires dword
+padding (in the 7th descriptor), the sdma_txreq descriptor array is not
+properly expanded and the packet will overflow into the container
+structure. This results in a panic when the send completion runs. The
+exact panic varies depending on what elements of the container structure
+get corrupted. The fix is to use the correct expression in
+_pad_sdma_tx_descs() to test the need to expand the descriptor array.
+
+With this patch the crashes are no longer reproducible and the machine is
+stable.
+
+Fixes: fd8958efe877 ("IB/hfi1: Fix sdma.h tx->num_descs off-by-one errors")
+Cc: stable@vger.kernel.org
+Reported-by: Mats Kronberg <kronberg@nsc.liu.se>
+Tested-by: Mats Kronberg <kronberg@nsc.liu.se>
+Signed-off-by: Daniel Vacek <neelx@redhat.com>
+Link: https://lore.kernel.org/r/20240201081009.1109442-1-neelx@redhat.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 78 ++++++++++++++++++-----------------
- 1 file changed, 40 insertions(+), 38 deletions(-)
+ drivers/infiniband/hw/hfi1/sdma.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index c7b543d1a0516..a29313e0aaa4d 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -686,15 +686,16 @@ static int nft_delobj(struct nft_ctx *ctx, struct nft_object *obj)
- 	return err;
- }
- 
--static int nft_trans_flowtable_add(struct nft_ctx *ctx, int msg_type,
--				   struct nft_flowtable *flowtable)
-+static struct nft_trans *
-+nft_trans_flowtable_add(struct nft_ctx *ctx, int msg_type,
-+		        struct nft_flowtable *flowtable)
+--- a/drivers/infiniband/hw/hfi1/sdma.c
++++ b/drivers/infiniband/hw/hfi1/sdma.c
+@@ -3200,7 +3200,7 @@ int _pad_sdma_tx_descs(struct hfi1_devda
  {
- 	struct nft_trans *trans;
+ 	int rval = 0;
  
- 	trans = nft_trans_alloc(ctx, msg_type,
- 				sizeof(struct nft_trans_flowtable));
- 	if (trans == NULL)
--		return -ENOMEM;
-+		return ERR_PTR(-ENOMEM);
- 
- 	if (msg_type == NFT_MSG_NEWFLOWTABLE)
- 		nft_activate_next(ctx->net, flowtable);
-@@ -703,22 +704,22 @@ static int nft_trans_flowtable_add(struct nft_ctx *ctx, int msg_type,
- 	nft_trans_flowtable(trans) = flowtable;
- 	nft_trans_commit_list_add_tail(ctx->net, trans);
- 
--	return 0;
-+	return trans;
- }
- 
- static int nft_delflowtable(struct nft_ctx *ctx,
- 			    struct nft_flowtable *flowtable)
- {
--	int err;
-+	struct nft_trans *trans;
- 
--	err = nft_trans_flowtable_add(ctx, NFT_MSG_DELFLOWTABLE, flowtable);
--	if (err < 0)
--		return err;
-+	trans = nft_trans_flowtable_add(ctx, NFT_MSG_DELFLOWTABLE, flowtable);
-+	if (IS_ERR(trans))
-+		return PTR_ERR(trans);
- 
- 	nft_deactivate_next(ctx->net, flowtable);
- 	nft_use_dec(&ctx->table->use);
- 
--	return err;
-+	return 0;
- }
- 
- static void __nft_reg_track_clobber(struct nft_regs_track *track, u8 dreg)
-@@ -2459,19 +2460,15 @@ static int nf_tables_addchain(struct nft_ctx *ctx, u8 family, u8 genmask,
- 	RCU_INIT_POINTER(chain->blob_gen_0, blob);
- 	RCU_INIT_POINTER(chain->blob_gen_1, blob);
- 
--	err = nf_tables_register_hook(net, table, chain);
--	if (err < 0)
--		goto err_destroy_chain;
--
- 	if (!nft_use_inc(&table->use)) {
- 		err = -EMFILE;
--		goto err_use;
-+		goto err_destroy_chain;
- 	}
- 
- 	trans = nft_trans_chain_add(ctx, NFT_MSG_NEWCHAIN);
- 	if (IS_ERR(trans)) {
- 		err = PTR_ERR(trans);
--		goto err_unregister_hook;
-+		goto err_trans;
- 	}
- 
- 	nft_trans_chain_policy(trans) = NFT_CHAIN_POLICY_UNSET;
-@@ -2479,17 +2476,22 @@ static int nf_tables_addchain(struct nft_ctx *ctx, u8 family, u8 genmask,
- 		nft_trans_chain_policy(trans) = policy;
- 
- 	err = nft_chain_add(table, chain);
--	if (err < 0) {
--		nft_trans_destroy(trans);
--		goto err_unregister_hook;
--	}
-+	if (err < 0)
-+		goto err_chain_add;
-+
-+	/* This must be LAST to ensure no packets are walking over this chain. */
-+	err = nf_tables_register_hook(net, table, chain);
-+	if (err < 0)
-+		goto err_register_hook;
- 
- 	return 0;
- 
--err_unregister_hook:
-+err_register_hook:
-+	nft_chain_del(chain);
-+err_chain_add:
-+	nft_trans_destroy(trans);
-+err_trans:
- 	nft_use_dec_restore(&table->use);
--err_use:
--	nf_tables_unregister_hook(net, table, chain);
- err_destroy_chain:
- 	nf_tables_chain_destroy(ctx);
- 
-@@ -8031,9 +8033,9 @@ static int nf_tables_newflowtable(struct sk_buff *skb,
- 	u8 family = info->nfmsg->nfgen_family;
- 	const struct nf_flowtable_type *type;
- 	struct nft_flowtable *flowtable;
--	struct nft_hook *hook, *next;
- 	struct net *net = info->net;
- 	struct nft_table *table;
-+	struct nft_trans *trans;
- 	struct nft_ctx ctx;
- 	int err;
- 
-@@ -8113,34 +8115,34 @@ static int nf_tables_newflowtable(struct sk_buff *skb,
- 	err = nft_flowtable_parse_hook(&ctx, nla[NFTA_FLOWTABLE_HOOK],
- 				       &flowtable_hook, flowtable, true);
- 	if (err < 0)
--		goto err4;
-+		goto err_flowtable_parse_hooks;
- 
- 	list_splice(&flowtable_hook.list, &flowtable->hook_list);
- 	flowtable->data.priority = flowtable_hook.priority;
- 	flowtable->hooknum = flowtable_hook.num;
- 
-+	trans = nft_trans_flowtable_add(&ctx, NFT_MSG_NEWFLOWTABLE, flowtable);
-+	if (IS_ERR(trans)) {
-+		err = PTR_ERR(trans);
-+		goto err_flowtable_trans;
-+	}
-+
-+	/* This must be LAST to ensure no packets are walking over this flowtable. */
- 	err = nft_register_flowtable_net_hooks(ctx.net, table,
- 					       &flowtable->hook_list,
- 					       flowtable);
--	if (err < 0) {
--		nft_hooks_destroy(&flowtable->hook_list);
--		goto err4;
--	}
--
--	err = nft_trans_flowtable_add(&ctx, NFT_MSG_NEWFLOWTABLE, flowtable);
- 	if (err < 0)
--		goto err5;
-+		goto err_flowtable_hooks;
- 
- 	list_add_tail_rcu(&flowtable->list, &table->flowtables);
- 
- 	return 0;
--err5:
--	list_for_each_entry_safe(hook, next, &flowtable->hook_list, list) {
--		nft_unregister_flowtable_hook(net, flowtable, hook);
--		list_del_rcu(&hook->list);
--		kfree_rcu(hook, rcu);
--	}
--err4:
-+
-+err_flowtable_hooks:
-+	nft_trans_destroy(trans);
-+err_flowtable_trans:
-+	nft_hooks_destroy(&flowtable->hook_list);
-+err_flowtable_parse_hooks:
- 	flowtable->data.type->free(&flowtable->data);
- err3:
- 	module_put(type->owner);
--- 
-2.43.0
-
+-	if ((unlikely(tx->num_desc + 1 == tx->desc_limit))) {
++	if ((unlikely(tx->num_desc == tx->desc_limit))) {
+ 		rval = _extend_sdma_tx_descs(dd, tx);
+ 		if (rval) {
+ 			__sdma_txclean(dd, tx);
 
 
 
