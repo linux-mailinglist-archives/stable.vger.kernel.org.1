@@ -1,169 +1,150 @@
-Return-Path: <stable+bounces-23890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85DB2868E4A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 12:04:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0B53868E58
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 12:06:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B78511C210DE
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 11:04:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A76F28336B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 11:06:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C331386CB;
-	Tue, 27 Feb 2024 11:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD59139584;
+	Tue, 27 Feb 2024 11:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XNmZQ1nB"
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="oCw/iF23"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-8fa9.mail.infomaniak.ch (smtp-8fa9.mail.infomaniak.ch [83.166.143.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBFE1386C9;
-	Tue, 27 Feb 2024 11:04:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87CD1386CF;
+	Tue, 27 Feb 2024 11:06:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.166.143.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709031869; cv=none; b=QgIMlWmyeUcRdYUSi8NTVo/j0NpGJ5QvXdA/NtyDE1KiKu9jIb58RC1r3Xt3SOsz36yn2rxrlWTzkc/uCpSfhvpF8TueYwQQO3vKVgAz/kCRU/r03R+/Vf2VlHFabjqj+VTi+v7t5nSC5NnZ6AE4YpDOzVndQQtMjIi/dxNGrSo=
+	t=1709031976; cv=none; b=mp0QAo7RMBPQstTb02JEA8qeU3q9272C/3FOPHFLTtxe42LlyVDGyRt9SaEp1SoHOOs4YbfTvQaKywt0GgfaL3EyehOMcRlQzgDGXiKA1YTpNP8MOwsZP/hheafp58EgDNFlNsgVYYJpNnE6GKj+xVTuf4RfzVEx8eseSjKMpH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709031869; c=relaxed/simple;
-	bh=+eT0W04oDcoulzCVOah98J+LgFw7VDmxlgxhssIsrow=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V2jwSwKEt4KhbkJdgbgA1+XubcCFofcbozIkhSa21f/DnE0cCUlG1oAVXxoUYawzd+Apx29bCtE0Y75UNBCcnnLaYy7t+9HijFWFCPMJoofca+zZk4uyr3ByBLtIOJD73BTc7e7ft5x2mp+fJmTjy2It9oC+kcptfs7oBX95/sI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XNmZQ1nB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C32DC433F1;
-	Tue, 27 Feb 2024 11:04:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709031868;
-	bh=+eT0W04oDcoulzCVOah98J+LgFw7VDmxlgxhssIsrow=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=XNmZQ1nBdCRHCCi6A9yyLoqPSexu48SJk4Kv8LswV69sqtuSFFVs93EjjlGhFDRe6
-	 C7jLmP/9bGYRerDOLmHS/AI/MKNuj0wOqdLYmlBeyHzbHfo8co2nOiEMpDfxKK9RRU
-	 ZCYChthYrRDCvSDIdgJIaIE9tOSR2zASawsATVmXRvnFncjHYS/dy7OhSQbXJQXmrf
-	 vBIqMZe+BuaSgveVO1XIM+y+36dZ3yGl4I0FGfsyQoQVrEpj5gi2Mke+NXQp72OcK6
-	 RUc18IU7jYbEMPMKonUjCviGYJQt2L+NdZb9PdzeFi+XdDyjo8/vX8HFzP8Ab9wzob
-	 zLKyGPqZw+jHg==
-Message-ID: <2c80d410-b480-4043-b17f-2aaa357e5d41@kernel.org>
-Date: Tue, 27 Feb 2024 12:04:22 +0100
+	s=arc-20240116; t=1709031976; c=relaxed/simple;
+	bh=jPUoWxQfL0gN4M9XnMPtb4OVmzxvQ8jhCx4n49IoT7U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gWgoNqp/EMPYDlzGfr/dm1v4s3jBOb1/etbsf2ujKFmgnnpOAFKdWQ97Uj0YU+L2tgKbKZ3+bFit66WnaKzmwjE0fXuNExH7nxU5+1Ho7KU2wd7MFYoYrjs4i1VBwSdwezv1yZkFTaUR0bS6L23BSvVI228PepjIchUCXn/V3qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=oCw/iF23; arc=none smtp.client-ip=83.166.143.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
+Received: from smtp-3-0000.mail.infomaniak.ch (smtp-3-0000.mail.infomaniak.ch [10.4.36.107])
+	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4TkZRL3hQgzfF;
+	Tue, 27 Feb 2024 12:06:06 +0100 (CET)
+Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4TkZRL0Ngrz3k;
+	Tue, 27 Feb 2024 12:06:06 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
+	s=20191114; t=1709031966;
+	bh=jPUoWxQfL0gN4M9XnMPtb4OVmzxvQ8jhCx4n49IoT7U=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=oCw/iF23a34Rv0MBwr2Ia6cQ8m8h0jvHC8OAnyauVIncs0HoaFwNz47dPhVBwgEjw
+	 R5yruWwiqbByh+WzDRqxenUS46BMI9ak98EP9PcOxTd4ecJ/LXUlBEDCPa5K9iN5Qt
+	 hb3lJFSu+CT4yjc6FlcRhOYLyM3bfinMCILgyBUg=
+From: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
+To: =?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Paul Moore <paul@paul-moore.com>,
+	"Serge E . Hallyn" <serge@hallyn.com>
+Cc: =?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
+	Shervin Oloumi <enlightened@chromium.org>,
+	linux-hardening@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	stable@vger.kernel.org,
+	Kees Cook <keescook@chromium.org>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>
+Subject: [PATCH v2 2/2] landlock: Warn once if a Landlock action is requested while disabled
+Date: Tue, 27 Feb 2024 12:05:50 +0100
+Message-ID: <20240227110550.3702236-2-mic@digikod.net>
+In-Reply-To: <20240227110550.3702236-1-mic@digikod.net>
+References: <20240227110550.3702236-1-mic@digikod.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6.y] mptcp: add needs_id for netlink appending addr
-Content-Language: en-GB, fr-BE
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, MPTCP Upstream <mptcp@lists.linux.dev>,
- Geliang Tang <tanggeliang@kylinos.cn>, Mat Martineau <martineau@kernel.org>,
- "David S . Miller" <davem@davemloft.net>
-References: <2024022654-senate-unleaded-7ae3@gregkh>
- <20240226215620.757784-2-matttbe@kernel.org>
- <2024022723-outshoot-unkind-734f@gregkh>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <2024022723-outshoot-unkind-734f@gregkh>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Infomaniak-Routing: alpha
 
-Hi Greg,
+Because sandboxing can be used as an opportunistic security measure,
+user space may not log unsupported features.  Let the system
+administrator know if an application tries to use Landlock but failed
+because it isn't enabled at boot time.  This may be caused by bootloader
+configurations with outdated "lsm" kernel's command-line parameter.
 
-On 27/02/2024 11:22, Greg KH wrote:
-> On Mon, Feb 26, 2024 at 10:56:21PM +0100, Matthieu Baerts (NGI0) wrote:
->> From: Geliang Tang <tanggeliang@kylinos.cn>
->>
->> Just the same as userspace PM, a new parameter needs_id is added for
->> in-kernel PM mptcp_pm_nl_append_new_local_addr() too.
->>
->> Add a new helper mptcp_pm_has_addr_attr_id() to check whether an address
->> ID is set from PM or not.
->>
->> In mptcp_pm_nl_get_local_id(), needs_id is always true, but in
->> mptcp_pm_nl_add_addr_doit(), pass mptcp_pm_has_addr_attr_id() to
->> needs_it.
->>
->> Fixes: efd5a4c04e18 ("mptcp: add the address ID assignment bitmap")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
->> Reviewed-by: Mat Martineau <martineau@kernel.org>
->> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
->> Signed-off-by: David S. Miller <davem@davemloft.net>
->> (cherry picked from commit 584f3894262634596532cf43a5e782e34a0ce374)
->> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
->> ---
->> Notes:
->>  - conflicts in pm_netlink.c because the new helper function expected to
->>    be on top of mptcp_pm_nl_add_addr_doit() which has been recently
->>    renamed in commit 1e07938e29c5 ("net: mptcp: rename netlink handlers
->>    to mptcp_pm_nl_<blah>_{doit,dumpit}").
->>  - use mptcp_pm_addr_policy instead of mptcp_pm_address_nl_policy, the
->>    new name after commit 1d0507f46843 ("net: mptcp: convert netlink from
->>    small_ops to ops").
->> ---
->>  net/mptcp/pm_netlink.c | 24 +++++++++++++++++++-----
->>  1 file changed, 19 insertions(+), 5 deletions(-)
-> 
-> Don't we also need a 5.15.y version of this commit?
+Cc: stable@vger.kernel.org
+Fixes: 265885daf3e5 ("landlock: Add syscall implementations")
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Günther Noack <gnoack3000@gmail.com>
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+---
 
-Good point, yes, according to the 'Fixes' tag, we need it as well for
-5.15.y.
+Changes since v1:
+* Add Kees's and Günther's Reviewed-by.
+* Rename is_not_initialized() to not_initialized() and invert the logic,
+  as suggested by Günther.  This is a cosmetic change without global
+  behavioral changed.
+* Update link to point to a new subsection.
+---
+ security/landlock/syscalls.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-It looks like no "FAILED: patch" notification has been sent for this
-patch for the 5.15-stable tree. Is it normal?
-
-I'm asking this because I rely on these notifications to know if I need
-to help to fix conflicts. I don't regularly track if patches we sent
-upstream with 'Cc: stable' & 'Fixes' tags have been backported. It is
-just to know if we need to modify our way of working :)
-
-> All of the backports you sent are now queued up, thanks!
-
-Thank you for all the great work!
-
-Cheers,
-Matt
+diff --git a/security/landlock/syscalls.c b/security/landlock/syscalls.c
+index 898358f57fa0..6788e73b6681 100644
+--- a/security/landlock/syscalls.c
++++ b/security/landlock/syscalls.c
+@@ -33,6 +33,18 @@
+ #include "ruleset.h"
+ #include "setup.h"
+ 
++static bool is_initialized(void)
++{
++	if (likely(landlock_initialized))
++		return true;
++
++	pr_warn_once(
++		"Disabled but requested by user space. "
++		"You should enable Landlock at boot time: "
++		"https://docs.kernel.org/userspace-api/landlock.html#boot-time-configuration\n");
++	return false;
++}
++
+ /**
+  * copy_min_struct_from_user - Safe future-proof argument copying
+  *
+@@ -173,7 +185,7 @@ SYSCALL_DEFINE3(landlock_create_ruleset,
+ 	/* Build-time checks. */
+ 	build_check_abi();
+ 
+-	if (!landlock_initialized)
++	if (!is_initialized())
+ 		return -EOPNOTSUPP;
+ 
+ 	if (flags) {
+@@ -398,7 +410,7 @@ SYSCALL_DEFINE4(landlock_add_rule, const int, ruleset_fd,
+ 	struct landlock_ruleset *ruleset;
+ 	int err;
+ 
+-	if (!landlock_initialized)
++	if (!is_initialized())
+ 		return -EOPNOTSUPP;
+ 
+ 	/* No flag for now. */
+@@ -458,7 +470,7 @@ SYSCALL_DEFINE2(landlock_restrict_self, const int, ruleset_fd, const __u32,
+ 	struct landlock_cred_security *new_llcred;
+ 	int err;
+ 
+-	if (!landlock_initialized)
++	if (!is_initialized())
+ 		return -EOPNOTSUPP;
+ 
+ 	/*
 -- 
-Sponsored by the NGI0 Core fund.
+2.44.0
+
 
