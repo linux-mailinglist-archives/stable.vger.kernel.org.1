@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-25149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02DF486983E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:30:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20C77869552
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:00:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9CDDB2E45D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:27:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52E0B1C23701
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B2E1448C3;
-	Tue, 27 Feb 2024 14:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847C31420DD;
+	Tue, 27 Feb 2024 14:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2nE8JKgM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ObPJuaN4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E854D13A26F;
-	Tue, 27 Feb 2024 14:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2061420D4;
+	Tue, 27 Feb 2024 14:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044001; cv=none; b=pkLLJOt5m5tev4zTaLQDtLFKSaUr/1ph5OT5vQxA1BkvtB6S24/7G9wVt+UumdHToqYpKJYLTKYC4yFmWHtbk2xtr/JvRQGIlIXfc+J05Qe1qgBjzl+8n7dnPUmejLkGAjZTmst2ePpR/50IJcxs2vPSoPocF92D0V7VpyiGAQo=
+	t=1709042452; cv=none; b=Owmttk4ylmKNYzN4AxawD31p+r6mI73TTiqSxJj5uBuTC6LZ/4GtfH+skj8mHrwFM5s5HaFPsOfc3fn6/47gbAQFhcxcTNpTtOZ2BnUnXSDMoRP/oaX75s4VYHGZOptoSDB/IPVQ7krZb4Bud98rGRrJrnfKYw8x0OasnthPfko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044001; c=relaxed/simple;
-	bh=2AfRF4EeyYvAphuBA8TRtJC2T1WhMMSk6+4/diOi9cI=;
+	s=arc-20240116; t=1709042452; c=relaxed/simple;
+	bh=9d+KeoL4zYIf6VgK/gI2GuUvLQnJthw8d0jYeDQIH6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=koBTBjd2H9P1NIqhweQIs3oH2rscjy4dXrFFDBFm0X2Xd4ZmLetk/GAABRZixRtYlFkQMUQ0i0B7izRrjrRB2n2nonIB/hMr1QgsUfskpLVgTlYTmpjadUIgLRKsvbkyhY503xxoq4vfnThGgdPcWRvw3phwtlF+POw+wAijaHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2nE8JKgM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77EBBC433F1;
-	Tue, 27 Feb 2024 14:26:40 +0000 (UTC)
+	 MIME-Version; b=lEUgi6cMnZXHk3LDA8ggcn/x13r8EuY/CVY/vS1Istg4WZ7b2llokguQQONk5ORmU8ZiPbfb2erV68tQnenltOewnywSNUOFpOfPTCAsLRepqy4zDAHrQS3AGsVu2fjkCPAghi0Jxu39KG0FIAcTmbouc9kGvkviGvhYU/9ayB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ObPJuaN4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C16DC433C7;
+	Tue, 27 Feb 2024 14:00:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044000;
-	bh=2AfRF4EeyYvAphuBA8TRtJC2T1WhMMSk6+4/diOi9cI=;
+	s=korg; t=1709042451;
+	bh=9d+KeoL4zYIf6VgK/gI2GuUvLQnJthw8d0jYeDQIH6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2nE8JKgMhlXIQjpkNeP948Q8TJCUT6WIrq5Rp6XmuA+7A27LuE4gZVUAiOui3LjfW
-	 ccviZBtu8UaqeSFkIIKll+o90B4YXTzMbfbDDZBmTcHc9NWduyoKHbiPH3Uy+LzlWw
-	 V4dkO5zUo5Tr4CO1Qsal0u8Nm/vJrocancEIgJSM=
+	b=ObPJuaN4i4YAoabJoc3IAFZxzOkBpWZLFlqzzjtM7e6DCbNC8b3hFLoggJssMrgVQ
+	 38BLVN/M9Ojo5Kp27k7thHOsAvJAB5MEhbKCdZy1VXgiJbNmAwhE76/VJcKYn/vGco
+	 1e/SVpnvleXD06tGpljQKNvqRGjUbYLsqF1EXrp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guixin Liu <kanie@linux.alibaba.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>,
+	Jeremy Kerr <jk@codeconstruct.com.au>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 026/122] nvmet-tcp: fix nvme tcp ida memory leak
+Subject: [PATCH 6.6 276/299] net: mctp: put sock on tag allocation failure
 Date: Tue, 27 Feb 2024 14:26:27 +0100
-Message-ID: <20240227131559.563211976@linuxfoundation.org>
+Message-ID: <20240227131634.559363383@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,38 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guixin Liu <kanie@linux.alibaba.com>
+From: Jeremy Kerr <jk@codeconstruct.com.au>
 
-[ Upstream commit 47c5dd66c1840524572dcdd956f4af2bdb6fbdff ]
+[ Upstream commit 9990889be14288d4f1743e4768222d5032a79c27 ]
 
-The nvmet_tcp_queue_ida should be destroy when the nvmet-tcp module
-exit.
+We may hold an extra reference on a socket if a tag allocation fails: we
+optimistically allocate the sk_key, and take a ref there, but do not
+drop if we end up not using the allocated key.
 
-Signed-off-by: Guixin Liu <kanie@linux.alibaba.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Ensure we're dropping the sock on this failure by doing a proper unref
+rather than directly kfree()ing.
+
+Fixes: de8a6b15d965 ("net: mctp: add an explicit reference from a mctp_sk_key to sock")
+Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/ce9b61e44d1cdae7797be0c5e3141baf582d23a0.1707983487.git.jk@codeconstruct.com.au
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/tcp.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/mctp/route.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index 116ae6fd35e2d..d70a2fa4ba45f 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -1852,6 +1852,7 @@ static void __exit nvmet_tcp_exit(void)
- 	flush_scheduled_work();
+diff --git a/net/mctp/route.c b/net/mctp/route.c
+index 7a47a58aa54b4..6218dcd07e184 100644
+--- a/net/mctp/route.c
++++ b/net/mctp/route.c
+@@ -663,7 +663,7 @@ struct mctp_sk_key *mctp_alloc_local_tag(struct mctp_sock *msk,
+ 	spin_unlock_irqrestore(&mns->keys_lock, flags);
  
- 	destroy_workqueue(nvmet_tcp_wq);
-+	ida_destroy(&nvmet_tcp_queue_ida);
- }
+ 	if (!tagbits) {
+-		kfree(key);
++		mctp_key_unref(key);
+ 		return ERR_PTR(-EBUSY);
+ 	}
  
- module_init(nvmet_tcp_init);
 -- 
 2.43.0
 
