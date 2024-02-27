@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7F02869526
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:59:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7DA586970F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:17:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9323828F77A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:59:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E5DD1F27204
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44502140391;
-	Tue, 27 Feb 2024 13:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FFFE1420A0;
+	Tue, 27 Feb 2024 14:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vU9WsI7C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCCYo2XF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0101654BD4;
-	Tue, 27 Feb 2024 13:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9EA13DBB3;
+	Tue, 27 Feb 2024 14:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042358; cv=none; b=qgvD2wzHf9B7XdcnFY0/dD/3xpynblirobxCiCZV1XyG0WyI9oxMqhYemd2lfRAG42ln9JOPVp/lVoUbA1mwORZy9mczfn6h0K1Dm5ypts/nxYZwbWTM8G6N01irNH/7F+DcB/kPfxmntWukybkjK9K+LgR8HeWd/y1QcVIuzzk=
+	t=1709043459; cv=none; b=b+Vrhfgxh/EaJatiJbbvULb3C5P0mVO6rfyv0R7SmHHlicjxqXkNrGKa19zlyIplx9qjnDea/32lNbw3V/L7KxTSJrz3idD+548b8REoNGwe9672TNck1exNlfH6B6WBHQouAQkyeXfrOzIJzqAvUxs7dQ4vFHLk6sLT2OniiJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042358; c=relaxed/simple;
-	bh=5zMcfl9nDLhBJH7QZwy8W+344q9pfnk7cIzgSdvOAig=;
+	s=arc-20240116; t=1709043459; c=relaxed/simple;
+	bh=7K22ub2pm2pRUubhPecB/yOnnQLoU+nmdkZB0r44FoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cEuNzMHWXNyeUmAacNgzLxtMWK178V1xD2lXsnOm2BEI3swFiR1m70uWefrH4dOBY0Lf1t2+4cm6HdV1xxLldjRAb3TPB800xkq7z2/AmgC2iwdEHZYQGoAZx6hAp47dU7ZjbFNUWezFJVHqWvfnec/UgQq15XVFJS3XuQR30QE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vU9WsI7C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 807CBC433F1;
-	Tue, 27 Feb 2024 13:59:17 +0000 (UTC)
+	 MIME-Version; b=Y8GtD6U0F8LebkQANDyvkpEcdWBCZRR16jOtjIm5px/lntyWAV+zNg6wzvELks3cjhTrgVh8E728CBJIpEynQzeE0v4NOPf5FCFisjUsY0GqoPA7QZS51g/8CnUKfwHpy10eY5wBSoOjGSLFyFAHOzouhibjeFM6zjTiJ9aB1ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCCYo2XF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7CAC43390;
+	Tue, 27 Feb 2024 14:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042357;
-	bh=5zMcfl9nDLhBJH7QZwy8W+344q9pfnk7cIzgSdvOAig=;
+	s=korg; t=1709043459;
+	bh=7K22ub2pm2pRUubhPecB/yOnnQLoU+nmdkZB0r44FoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vU9WsI7CXUy00T+8wVeq8TZuaNpLlYrwVr4YB+2G0SBu7ep4fkkIa6I7AfFFi7HNj
-	 plQn7thjm00Rp/LL/ENVP28ntBjRbNj6vST0T3AoYdVdCHpvVsGjwLqmwFEHhZjLdc
-	 63KPAaKuQ3sU8Zd0mtI1Cr0h22RyTSPGHtvcGPak=
+	b=PCCYo2XFcZJA44X/YBV7OS3Xm6hKVx6yKluWSPm2lT5Z6xfq9gxVaQpEPb76dU5JN
+	 QL0xORrnXp5o/yNZH7X/yjSuGn8Ya7mGKHJeSqzMypr4aK4ElQ9/kc5jVAgirFGebN
+	 cGFNLuuaf06AwNqS8QmVeC2z6pk7narfO8cJy07s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Machek <pavel@denx.de>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 266/299] cache: ax45mp_cache: Align end size to cache boundary in ax45mp_dma_cache_wback()
+	Sandeep Dhavale <dhavale@google.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Jingbo Xu <jefflexu@linux.alibaba.com>,
+	Chao Yu <chao@kernel.org>
+Subject: [PATCH 6.1 116/195] erofs: fix refcount on the metabuf used for inode lookup
 Date: Tue, 27 Feb 2024 14:26:17 +0100
-Message-ID: <20240227131634.250191003@linuxfoundation.org>
+Message-ID: <20240227131614.290141081@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Sandeep Dhavale <dhavale@google.com>
 
-[ Upstream commit 9bd405c48b0ac4de087c0c4440fd79597201b8a7 ]
+commit 56ee7db31187dc36d501622cb5f1415e88e01c2a upstream.
 
-Align the end size to cache boundary size in ax45mp_dma_cache_wback()
-callback likewise done in ax45mp_dma_cache_inv() callback.
+In erofs_find_target_block() when erofs_dirnamecmp() returns 0,
+we do not assign the target metabuf. This causes the caller
+erofs_namei()'s erofs_put_metabuf() at the end to be not effective
+leaving the refcount on the page.
+As the page from metabuf (buf->page) is never put, such page cannot be
+migrated or reclaimed. Fix it now by putting the metabuf from
+previous loop and assigning the current metabuf to target before
+returning so caller erofs_namei() can do the final put as it was
+intended.
 
-Additionally return early in case of start == end.
-
-Fixes: d34599bcd2e4 ("cache: Add L2 cache management for Andes AX45MP RISC-V core")
-Reported-by: Pavel Machek <pavel@denx.de>
-Link: https://lore.kernel.org/cip-dev/ZYsdKDiw7G+kxQ3m@duo.ucw.cz/
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 500edd095648 ("erofs: use meta buffers for inode lookup")
+Cc: <stable@vger.kernel.org> # 5.18+
+Signed-off-by: Sandeep Dhavale <dhavale@google.com>
+Reviewed-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Link: https://lore.kernel.org/r/20240221210348.3667795-1-dhavale@google.com
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cache/ax45mp_cache.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/erofs/namei.c |   28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/cache/ax45mp_cache.c b/drivers/cache/ax45mp_cache.c
-index 57186c58dc849..1d7dd3d2c101c 100644
---- a/drivers/cache/ax45mp_cache.c
-+++ b/drivers/cache/ax45mp_cache.c
-@@ -129,8 +129,12 @@ static void ax45mp_dma_cache_wback(phys_addr_t paddr, size_t size)
- 	unsigned long line_size;
- 	unsigned long flags;
+--- a/fs/erofs/namei.c
++++ b/fs/erofs/namei.c
+@@ -137,24 +137,24 @@ static void *find_target_block_classic(s
+ 			/* string comparison without already matched prefix */
+ 			diff = erofs_dirnamecmp(name, &dname, &matched);
  
-+	if (unlikely(start == end))
-+		return;
+-			if (!diff) {
+-				*_ndirents = 0;
+-				goto out;
+-			} else if (diff > 0) {
+-				head = mid + 1;
+-				startprfx = matched;
+-
+-				if (!IS_ERR(candidate))
+-					erofs_put_metabuf(target);
+-				*target = buf;
+-				candidate = de;
+-				*_ndirents = ndirents;
+-			} else {
++			if (diff < 0) {
+ 				erofs_put_metabuf(&buf);
+-
+ 				back = mid - 1;
+ 				endprfx = matched;
++				continue;
++			}
 +
- 	line_size = ax45mp_priv.ax45mp_cache_line_size;
- 	start = start & (~(line_size - 1));
-+	end = ((end + line_size - 1) & (~(line_size - 1)));
- 	local_irq_save(flags);
- 	ax45mp_cpu_dcache_wb_range(start, end);
- 	local_irq_restore(flags);
--- 
-2.43.0
-
++			if (!IS_ERR(candidate))
++				erofs_put_metabuf(target);
++			*target = buf;
++			if (!diff) {
++				*_ndirents = 0;
++				return de;
+ 			}
++			head = mid + 1;
++			startprfx = matched;
++			candidate = de;
++			*_ndirents = ndirents;
+ 			continue;
+ 		}
+ out:		/* free if the candidate is valid */
 
 
 
