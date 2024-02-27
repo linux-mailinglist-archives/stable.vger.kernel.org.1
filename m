@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-25007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9C91869749
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:19:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 120F28697FE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:27:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A049A1F23E21
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:19:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 444C11C2266A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:27:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F35613B7AB;
-	Tue, 27 Feb 2024 14:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 524701420D3;
+	Tue, 27 Feb 2024 14:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qW3uYKVx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hEFFVgwm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B392213B2B8;
-	Tue, 27 Feb 2024 14:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 129AF13A26F;
+	Tue, 27 Feb 2024 14:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043596; cv=none; b=WiLEu7A0LW2N4/axI2BWN9nypmMF858j9rqiOhcb0Un0lUGMTGfwoI/s3jdGU3TyvO/XLfrhU3KoshPSiKu7L13QXoZKbrPcbLlvEO4SFy4juI4HC0XHKxF5/zlTBUejpVS+WRE3fbIY+HclLs8A5LRHq3ZavHfwMnB0UoywoFc=
+	t=1709044034; cv=none; b=ViWbrZcGoW2yFbk/H5oy8FE8bhNK+auDf1RLHjzBMGGKipE4KYhrr7yV6qkGyE5MFLB3jkfLSijNn8uD/SNx7+0uM1Ee4TOUbkFeWezoqf6WtkmyfSBmgVdIeiImQqBelABBnAEgxQUfyFUea8yv4vJ2gJJYYiGlohUZq1hNL9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043596; c=relaxed/simple;
-	bh=XG2vy/wvC6p9cHozqC3L7G4xnqkaX7gEvx2HvMqhWA4=;
+	s=arc-20240116; t=1709044034; c=relaxed/simple;
+	bh=qt3FGnxffgmIVUPxMES5VnpbOw2Iy5twOHhLqRoBVDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jzF07Tx37eJkq5zEvDPEvOlpZ6Fe4moy4P9aRy5WZyWKYN4CCRUTVjdPNKve9WgiOKgzAiofyqoYVJb1txgG4cZwxYGxi6gLpNEg6rvmxzOWoT3WyXpG996XgFGekm3n5GPDPeVmkA1nY/HKz61g16ryrZTLPC7Yon7MS/e5PhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qW3uYKVx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 432A3C433C7;
-	Tue, 27 Feb 2024 14:19:56 +0000 (UTC)
+	 MIME-Version; b=ogc2+bLZ2ROjeND3D/d5neO0i6XMUklkAPvsk10TGzsh0RSb26Tn/vG5iDrfilEN5XTDG4TfQEmLncrmGoqDOSYsOnOEQzhyE1cEZeIjtjlGxMqghrr+7IBB09PBOj7scYv8rIPc8+S/9VAVABpfcd7sMnbfh3wVa70BUrpxPHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hEFFVgwm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88BB0C433F1;
+	Tue, 27 Feb 2024 14:27:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043596;
-	bh=XG2vy/wvC6p9cHozqC3L7G4xnqkaX7gEvx2HvMqhWA4=;
+	s=korg; t=1709044033;
+	bh=qt3FGnxffgmIVUPxMES5VnpbOw2Iy5twOHhLqRoBVDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qW3uYKVxeoMmu573k0oJaEXbY7usKor1JqM8TW/bICfRjEjqPsXbMogrtoknz8c32
-	 pZmUCf8x3rMq9SRX7X5LvW5YBBRCvrjNPfCUVJXpW5GcaEvEYqGZy3v03XeoZa2MBv
-	 Vry1ULrTUdurM2SmEmBtRPd+19otXrHtHP3lDIf4=
+	b=hEFFVgwmd6Y8vYN25fuFCKricnmlkDp1gLOyaZCHQYUyaHh8ik9KnQ7VuIcEPRGhl
+	 r3Zv+fu+SIFQ+1wmm7haI41p3DUrhtGO1xIGRe8v9LEZgQ1RP7wqirZbuHbLSfztPH
+	 iZNE68x4txEVEAFJhUwBt+fI1+Ofvn9O1LSyLh9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joao Martins <joao.m.martins@oracle.com>,
-	Avihai Horon <avihaih@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Andrew Bresticker <abrestic@rivosinc.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 137/195] iommufd/iova_bitmap: Bounds check mapped::pages access
+Subject: [PATCH 5.10 037/122] efi: Dont add memblocks for soft-reserved memory
 Date: Tue, 27 Feb 2024 14:26:38 +0100
-Message-ID: <20240227131614.960474056@linuxfoundation.org>
+Message-ID: <20240227131559.920685751@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joao Martins <joao.m.martins@oracle.com>
+From: Andrew Bresticker <abrestic@rivosinc.com>
 
-[ Upstream commit a4ab7dedaee0e39b15653c5fd0367e420739f7ef ]
+[ Upstream commit 0bcff59ef7a652fcdc6d535554b63278c2406c8f ]
 
-Dirty IOMMU hugepages reported on a base page page-size granularity can
-lead to an attempt to set dirty pages in the bitmap beyond the limits that
-are pinned.
+Adding memblocks for soft-reserved regions prevents them from later being
+hotplugged in by dax_kmem.
 
-Bounds check the page index of the array we are trying to access is within
-the limits before we kmap() and return otherwise.
-
-While it is also a defensive check, this is also in preparation to defer
-setting bits (outside the mapped range) to the next iteration(s) when the
-pages become available.
-
-Fixes: b058ea3ab5af ("vfio/iova_bitmap: refactor iova_bitmap_set() to better handle page boundaries")
-Link: https://lore.kernel.org/r/20240202133415.23819-2-joao.m.martins@oracle.com
-Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
-Tested-by: Avihai Horon <avihaih@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Andrew Bresticker <abrestic@rivosinc.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/iova_bitmap.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/firmware/efi/efi-init.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/vfio/iova_bitmap.c b/drivers/vfio/iova_bitmap.c
-index 0f19d502f351b..5b540a164c98f 100644
---- a/drivers/vfio/iova_bitmap.c
-+++ b/drivers/vfio/iova_bitmap.c
-@@ -405,6 +405,7 @@ void iova_bitmap_set(struct iova_bitmap *bitmap,
- 			mapped->pgshift) + mapped->pgoff * BITS_PER_BYTE;
- 	unsigned long last_bit = (((iova + length - 1) - mapped->iova) >>
- 			mapped->pgshift) + mapped->pgoff * BITS_PER_BYTE;
-+	unsigned long last_page_idx = mapped->npages - 1;
+diff --git a/drivers/firmware/efi/efi-init.c b/drivers/firmware/efi/efi-init.c
+index f55a92ff12c0f..86da3c7a5036a 100644
+--- a/drivers/firmware/efi/efi-init.c
++++ b/drivers/firmware/efi/efi-init.c
+@@ -141,15 +141,6 @@ static __init int is_usable_memory(efi_memory_desc_t *md)
+ 	case EFI_BOOT_SERVICES_DATA:
+ 	case EFI_CONVENTIONAL_MEMORY:
+ 	case EFI_PERSISTENT_MEMORY:
+-		/*
+-		 * Special purpose memory is 'soft reserved', which means it
+-		 * is set aside initially, but can be hotplugged back in or
+-		 * be assigned to the dax driver after boot.
+-		 */
+-		if (efi_soft_reserve_enabled() &&
+-		    (md->attribute & EFI_MEMORY_SP))
+-			return false;
+-
+ 		/*
+ 		 * According to the spec, these regions are no longer reserved
+ 		 * after calling ExitBootServices(). However, we can only use
+@@ -194,6 +185,16 @@ static __init void reserve_regions(void)
+ 		size = npages << PAGE_SHIFT;
  
- 	do {
- 		unsigned int page_idx = cur_bit / BITS_PER_PAGE;
-@@ -413,6 +414,9 @@ void iova_bitmap_set(struct iova_bitmap *bitmap,
- 					 last_bit - cur_bit + 1);
- 		void *kaddr;
- 
-+		if (unlikely(page_idx > last_page_idx))
-+			break;
+ 		if (is_memory(md)) {
++			/*
++			 * Special purpose memory is 'soft reserved', which
++			 * means it is set aside initially. Don't add a memblock
++			 * for it now so that it can be hotplugged back in or
++			 * be assigned to the dax driver after boot.
++			 */
++			if (efi_soft_reserve_enabled() &&
++			    (md->attribute & EFI_MEMORY_SP))
++				continue;
 +
- 		kaddr = kmap_local_page(mapped->pages[page_idx]);
- 		bitmap_set(kaddr, offset, nbits);
- 		kunmap_local(kaddr);
+ 			early_init_dt_add_memory_arch(paddr, size);
+ 
+ 			if (!is_usable_memory(md))
 -- 
 2.43.0
 
