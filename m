@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EFE486950E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:58:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2011F869609
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 572E828F360
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:58:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 073831C2074B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC3EC1419BF;
-	Tue, 27 Feb 2024 13:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF2B113B7AB;
+	Tue, 27 Feb 2024 14:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qfa5og2v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q+29EW+u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95AC513F01E;
-	Tue, 27 Feb 2024 13:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA4313F016;
+	Tue, 27 Feb 2024 14:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042292; cv=none; b=gafEgd5+Jj6Z9jExr7CDbLRm7NsUNeoOu+QK28iI4WNqpToAvG95QH0dN4FmD3DrUfJNXu6T72DXSaQc4pVM7FGqIKjHCcEw8zQjZUQXbgO0IRcHPHkpqaHQuakHjCrWtzNaqq5WooIkNEZK9YRdZ5KZvneTeR2X5eu2buXx1NY=
+	t=1709042845; cv=none; b=maeDzH2OaiJ3xNnFLOlLwKfutSeqJrd/QNAjdDEXTFFvYSzsqSdhVOSUIjvjTrhefyWFS1kK2orUZcb8yqshgqboqLnK81k6dh8eQNKZWD9baF6PP0CChQ2voEfNjBAiaF58lZhP+NR8Dg8uUPIg7+lIeT7q7H2EZf89Su5xvIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042292; c=relaxed/simple;
-	bh=TR5UBfZ1d9BzfCK13J9WxvEBJk6FsvR7wpT76d766Og=;
+	s=arc-20240116; t=1709042845; c=relaxed/simple;
+	bh=LUKLz1YQGC/+oH/eXus/9fD7fUdlm/2eE3stRmaXPsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f+XjMpieq1vRQiCpCZHCmqA/VLPpK5PJyi4kNGF+GajEA/MU3weeg6YevkdSfqCeLBKZjcMf88woDXujIeBSwbudh+6KnNQYn5mXl69UdZFoEO11D5u3HCOnQSG1lxQdTlcA6UeG4ki7bbnefXfrnDhHGXsEPixT9S9XxbvEg3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qfa5og2v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8FF7C433C7;
-	Tue, 27 Feb 2024 13:58:11 +0000 (UTC)
+	 MIME-Version; b=sGF/xvVfALZnF1VknZeaIRC6qXpqmz5JxdVXkwmAbbLClKyjPkLCm2eysiT53723P9jeokv23OIPEoO8XjLlNRynQoQBNMUnJEUqozV+q2cE0yhEgFYENYdeaz0LxEWM6pjYzIZxHMxdDpJ6a56SQGNtG1NkB7+4EyC+hfjnE4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q+29EW+u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDAF8C433C7;
+	Tue, 27 Feb 2024 14:07:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042292;
-	bh=TR5UBfZ1d9BzfCK13J9WxvEBJk6FsvR7wpT76d766Og=;
+	s=korg; t=1709042845;
+	bh=LUKLz1YQGC/+oH/eXus/9fD7fUdlm/2eE3stRmaXPsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qfa5og2vjszrtN3c7JM95pxz2x1hZBXF6h8W/izs8AR+YH6xEHOLYZXrrzKzdjlhS
-	 ZPqgDcOA1xyS8hlD3dA+UIpkRA3g09gq/Y7GCzK1eTqVTW3HaHoCkekDthNJBB3mpf
-	 P/1Aoba4zV1ESgIFApkJoaTfNL153acmIJHZHTaQ=
+	b=q+29EW+u3WWPDgEb66cJMtCzsNUMTHJsi8BeZd/LSm/DKlYJ0UYr4DiaasYops56B
+	 LiREAHGoX2P1ZtlibZa4r7vythQSI6fTwS4UUCAc4Gvv2g5tbLLe90u1aZC39PD1yO
+	 i97mTDbaomYZe6d1xOwgFmS6FeF4UZwOQor3ir9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiraz Saleem <shiraz.saleem@intel.com>,
-	Sindhu Devale <sindhu.devale@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Chao Yu <chao.yu@oppo.com>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 217/299] RDMA/irdma: Validate max_send_wr and max_recv_wr
-Date: Tue, 27 Feb 2024 14:25:28 +0100
-Message-ID: <20240227131632.759993027@linuxfoundation.org>
+Subject: [PATCH 5.15 141/245] f2fs: dont set GC_FAILURE_PIN for background GC
+Date: Tue, 27 Feb 2024 14:25:29 +0100
+Message-ID: <20240227131619.798727314@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shiraz Saleem <shiraz.saleem@intel.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit ee107186bcfd25d7873258f3f75440e20f5e6416 ]
+[ Upstream commit 642c0969916eaa4878cb74f36752108e590b0389 ]
 
-Validate that max_send_wr and max_recv_wr is within the
-supported range.
+So that it can reduce the possibility that file be unpinned forcely by
+foreground GC due to .i_gc_failures[GC_FAILURE_PIN] exceeds threshold.
 
-Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
-Change-Id: I2fc8b10292b641fddd20b36986a9dae90a93f4be
-Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
-Signed-off-by: Sindhu Devale <sindhu.devale@intel.com>
-Link: https://lore.kernel.org/r/20240131233849.400285-3-sindhu.devale@intel.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Chao Yu <chao.yu@oppo.com>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/verbs.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/f2fs/gc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
-index 2f1bedd3a5201..d9750901c5990 100644
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -839,7 +839,9 @@ static int irdma_validate_qp_attrs(struct ib_qp_init_attr *init_attr,
+diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
+index 7010440cb64c8..d016504fad4b9 100644
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -1199,7 +1199,8 @@ static int move_data_block(struct inode *inode, block_t bidx,
+ 	}
  
- 	if (init_attr->cap.max_inline_data > uk_attrs->max_hw_inline ||
- 	    init_attr->cap.max_send_sge > uk_attrs->max_hw_wq_frags ||
--	    init_attr->cap.max_recv_sge > uk_attrs->max_hw_wq_frags)
-+	    init_attr->cap.max_recv_sge > uk_attrs->max_hw_wq_frags ||
-+	    init_attr->cap.max_send_wr > uk_attrs->max_hw_wq_quanta ||
-+	    init_attr->cap.max_recv_wr > uk_attrs->max_hw_rq_quanta)
- 		return -EINVAL;
- 
- 	if (rdma_protocol_roce(&iwdev->ibdev, 1)) {
+ 	if (f2fs_is_pinned_file(inode)) {
+-		f2fs_pin_file_control(inode, true);
++		if (gc_type == FG_GC)
++			f2fs_pin_file_control(inode, true);
+ 		err = -EAGAIN;
+ 		goto out;
+ 	}
 -- 
 2.43.0
 
