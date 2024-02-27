@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-25069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC3938697B3
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:24:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F92A869740
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:19:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F080B2C507
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:22:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04CB41F23832
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:19:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5B8113B7AB;
-	Tue, 27 Feb 2024 14:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C96E513B2B8;
+	Tue, 27 Feb 2024 14:19:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ca5V/oQz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q4ouZD+o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74FED13B2B4;
-	Tue, 27 Feb 2024 14:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D7013EFE9;
+	Tue, 27 Feb 2024 14:19:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043774; cv=none; b=o+FFd9e4vVx22aIocj+VTXJEUPaSM7UQihAaX0x09gnQwXEvQHwURWOR7Yexl46jX58/DtleMQ4Az2kiiMgzcD4D7ql4s2FSmnIEhw4jGBdXZXVkYe1s26T4Vqyl3ekbec79DRFE7QqpyFyBJmIDqUjM6b6GWMk8SMe91Gs30wU=
+	t=1709043577; cv=none; b=Wdolai+qAd3KUvyLtdBRMYB11QV7le0D/XXy3P40I8QkwxDlO44Evt5OgrCDFH0tYxKKMrR3KksgbDWK776PfG+3fnxtBNM0NadZndmIY+xkd32pz/s5pTU0SofXNVvvssMfLoASvwDtLnNuPNVF8rWIRMpo+IdDNKruc/+PrtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043774; c=relaxed/simple;
-	bh=1KUkGq0/M78MDpNRqal4pWSU5RMCmSc71SUc1TMfbAA=;
+	s=arc-20240116; t=1709043577; c=relaxed/simple;
+	bh=GxBJax4VLy6D9jQ4iQjQCiF2fX/pATUMbiN0m4bCitg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QNKQRFbqNtdb9nL2jQ4z+5mlUjvViEW1/t2v4ExOLVPNcPimgXTiSAO9AROcZl9ZPPDLvNuRikVDb4eaeP1IoGGr4byhjPIbNnliQzwwlxZbk1srgtPK32oTvvxEN7aftgF+02Cv+cG9bWNnXoeemzgyiTybf+unVlSc/AYvpR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ca5V/oQz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2A3C433C7;
-	Tue, 27 Feb 2024 14:22:53 +0000 (UTC)
+	 MIME-Version; b=YRcbkXPMFK5CQlPQx2VNTOA2bafCPjf/rrcDxDkes20lUPpUWMFUlULzWGXQlzlG12b9NARNWc71o5busiEPG3u0aoELXG+d+SvfbpHmOjIqR3ZQdYyoEBRc9SV8eIcISTb8R5VYZqXrqxyhkfr1vN2srRI2raRNT99yFOCaRxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q4ouZD+o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CBA1C433F1;
+	Tue, 27 Feb 2024 14:19:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043774;
-	bh=1KUkGq0/M78MDpNRqal4pWSU5RMCmSc71SUc1TMfbAA=;
+	s=korg; t=1709043577;
+	bh=GxBJax4VLy6D9jQ4iQjQCiF2fX/pATUMbiN0m4bCitg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ca5V/oQz8glXBMI0I43/9TSrFX4JQQ7dyF9RVolr3CsEKLgxHRr0oJ4Bm8U2ayxS5
-	 4b7PEAMkbTTmXo+9bViXHX4iWAEjDvN3TK/nmkdpVYPNHfV5XGLsunSx+ONUk/10kH
-	 g+IycOAOe7uoAS+CcdX3Sfwftj9+YWWJyzQDLrGw=
+	b=Q4ouZD+odfPTr9GtBZt+I7Hl1NlqRHvLedfGjDWz5hWKyex6V2zwC9QdDiDF6KfI9
+	 dNA3Kosl++/npI/HAv4Bc+74KOvJMtfAh9D+72iNUsYCZfsedWv/QvcvAyZFt3hTB1
+	 A9g28Ze/6qkq5hIbJNhEuBRcvKjJzgQUaxrwIXMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Sun <yi.sun@unisoc.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Daniil Dulov <d.dulov@aladdin.ru>,
+	David Howells <dhowells@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 31/84] virtio-blk: Ensure no requests in virtqueues before deleting vqs.
-Date: Tue, 27 Feb 2024 14:26:58 +0100
-Message-ID: <20240227131553.877565096@linuxfoundation.org>
+Subject: [PATCH 6.1 158/195] afs: Increase buffer size in afs_update_volume_status()
+Date: Tue, 27 Feb 2024 14:26:59 +0100
+Message-ID: <20240227131615.633280383@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Sun <yi.sun@unisoc.com>
+From: Daniil Dulov <d.dulov@aladdin.ru>
 
-[ Upstream commit 4ce6e2db00de8103a0687fb0f65fd17124a51aaa ]
+[ Upstream commit 6ea38e2aeb72349cad50e38899b0ba6fbcb2af3d ]
 
-Ensure no remaining requests in virtqueues before resetting vdev and
-deleting virtqueues. Otherwise these requests will never be completed.
-It may cause the system to become unresponsive.
+The max length of volume->vid value is 20 characters.
+So increase idbuf[] size up to 24 to avoid overflow.
 
-Function blk_mq_quiesce_queue() can ensure that requests have become
-in_flight status, but it cannot guarantee that requests have been
-processed by the device. Virtqueues should never be deleted before
-all requests become complete status.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Function blk_mq_freeze_queue() ensure that all requests in virtqueues
-become complete status. And no requests can enter in virtqueues.
+[DH: Actually, it's 20 + NUL, so increase it to 24 and use snprintf()]
 
-Signed-off-by: Yi Sun <yi.sun@unisoc.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Link: https://lore.kernel.org/r/20240129085250.1550594-1-yi.sun@unisoc.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: d2ddc776a458 ("afs: Overhaul volume and server record caching and fileserver rotation")
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20240211150442.3416-1-d.dulov@aladdin.ru/ # v1
+Link: https://lore.kernel.org/r/20240212083347.10742-1-d.dulov@aladdin.ru/ # v2
+Link: https://lore.kernel.org/r/20240219143906.138346-3-dhowells@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/virtio_blk.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/afs/volume.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
-index 9b3ea86c20e5e..3afc07b59477b 100644
---- a/drivers/block/virtio_blk.c
-+++ b/drivers/block/virtio_blk.c
-@@ -1063,14 +1063,15 @@ static int virtblk_freeze(struct virtio_device *vdev)
+diff --git a/fs/afs/volume.c b/fs/afs/volume.c
+index 1c9144e3e83ac..a146d70efa650 100644
+--- a/fs/afs/volume.c
++++ b/fs/afs/volume.c
+@@ -341,7 +341,7 @@ static int afs_update_volume_status(struct afs_volume *volume, struct key *key)
  {
- 	struct virtio_blk *vblk = vdev->priv;
+ 	struct afs_server_list *new, *old, *discard;
+ 	struct afs_vldb_entry *vldb;
+-	char idbuf[16];
++	char idbuf[24];
+ 	int ret, idsz;
  
-+	/* Ensure no requests in virtqueues before deleting vqs. */
-+	blk_mq_freeze_queue(vblk->disk->queue);
-+
- 	/* Ensure we don't receive any more interrupts */
- 	vdev->config->reset(vdev);
+ 	_enter("");
+@@ -349,7 +349,7 @@ static int afs_update_volume_status(struct afs_volume *volume, struct key *key)
+ 	/* We look up an ID by passing it as a decimal string in the
+ 	 * operation's name parameter.
+ 	 */
+-	idsz = sprintf(idbuf, "%llu", volume->vid);
++	idsz = snprintf(idbuf, sizeof(idbuf), "%llu", volume->vid);
  
- 	/* Make sure no work handler is accessing the device. */
- 	flush_work(&vblk->config_work);
- 
--	blk_mq_quiesce_queue(vblk->disk->queue);
--
- 	vdev->config->del_vqs(vdev);
- 	kfree(vblk->vqs);
- 
-@@ -1088,7 +1089,7 @@ static int virtblk_restore(struct virtio_device *vdev)
- 
- 	virtio_device_ready(vdev);
- 
--	blk_mq_unquiesce_queue(vblk->disk->queue);
-+	blk_mq_unfreeze_queue(vblk->disk->queue);
- 	return 0;
- }
- #endif
+ 	vldb = afs_vl_lookup_vldb(volume->cell, key, idbuf, idsz);
+ 	if (IS_ERR(vldb)) {
 -- 
 2.43.0
 
