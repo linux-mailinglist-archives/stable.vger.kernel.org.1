@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-25033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E170786976E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:21:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 123BD8697BE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:24:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D225286BB2
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:21:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 440091C2291D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:24:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AAE213B7AB;
-	Tue, 27 Feb 2024 14:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42FE1420A6;
+	Tue, 27 Feb 2024 14:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mge++uic"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bgmYrlgz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3F313B2B4;
-	Tue, 27 Feb 2024 14:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F46613EFF4;
+	Tue, 27 Feb 2024 14:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043670; cv=none; b=kkXHUEUXRxWs89+f1qnMRJs145qUi92p3eomX9rHJa8b4fOYh4fsU4KufmES7+sIMDYjqWfUgtMe2ZZnLWI1FnUBA0WaLV5uhVy0GlaGYgV+6udLlMml6KmdVsfyM/aYOHlTJSncg+inxhESFENvpOk2Lp4b4bZr32Bkb8HtqWk=
+	t=1709043873; cv=none; b=t3FYbYAcv7w/xELYFjYktkHaWpdYmackr2gUZIf+owJKRPcdJE0p2IFZJUs8QbNo0B33+ZidX6jerYjkaYdQrpei6MhOsCzoeWbAh1BIUqdHY/qki5VDszJSytILZzK3JR2z5CZuDF8VmEqAeBAZYXPD+KfMWfVhnAiWJf0j3N0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043670; c=relaxed/simple;
-	bh=u20KcAaZBLUmFFI0RwSVTkEeOPXdcZeep9yWYIfcPjI=;
+	s=arc-20240116; t=1709043873; c=relaxed/simple;
+	bh=oV9aRpHn8ZgjD2JjVolkA4Hj4lDn+ll6oIVuIG467pc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hUDP7ncLQajnJoYNto1pI5Pr5nZF2yYahw24QDjDqjnDP/26PR3dvwDM7aU0oLakafmY1LKNQy+1r5hwVqC17koA9J2ydpAguKxxlJyIaW/lQN9Ai5tHQFUZ8AosbolUNO2eSQHAZRwI1QGodGIpm/XNs2UTEsc4bXiMQFGfhZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mge++uic; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A27CBC433F1;
-	Tue, 27 Feb 2024 14:21:08 +0000 (UTC)
+	 MIME-Version; b=Pkq+F0p/8spJvf1hksRTx0UpB9IqTiteBZW6EOCqSPWlogDIiPHkpelI7hIz00vFH49LQjEZnKkCv17Wmd+AxE4L4T+26jTlwHPB+OevUdCfvO8LrTnewkiMLtfzX7roGsPY011go3JA2Hd1p6Sio49gejsABs7nDv7UgIt+Blc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bgmYrlgz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D5AC433C7;
+	Tue, 27 Feb 2024 14:24:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043669;
-	bh=u20KcAaZBLUmFFI0RwSVTkEeOPXdcZeep9yWYIfcPjI=;
+	s=korg; t=1709043873;
+	bh=oV9aRpHn8ZgjD2JjVolkA4Hj4lDn+ll6oIVuIG467pc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mge++uicS+R+JXdB2ZiLCkNZ4K+RL/eGFsdW6YJP5tf0Q8AHsPdXGJDsgcTwYwkzt
-	 tLZqhTUDdc4IqCmmD7sD6+DEq0gC8xlzwBeyrcvUwpMyalS8JaFPN3Ps97M93vx4/h
-	 2Q/v3QHefLow5WQsLXE1gpFt6FB2YjcZzw3L2z0A=
+	b=bgmYrlgzkmECtXgs7yHPwVWBkoNoa7KCgoGSp4lBRwylCTPva7ahmfIUgaqay0Aqm
+	 or7id0XZXtBbACQ+gbs5qKrJdLT9M4xd9iGaKengHSsxuoHth3o7kpsKCdEY2HG0oF
+	 fdr7sZOQyvILX6LpZTCnJ6qTtTpOrvd5Y98iCXYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Geliang Tang <geliang.tang@suse.com>,
-	Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 190/195] mptcp: userspace pm send RM_ADDR for ID 0
-Date: Tue, 27 Feb 2024 14:27:31 +0100
-Message-ID: <20240227131616.677597266@linuxfoundation.org>
+	Bart Van Assche <bvanassche@acm.org>,
+	Jason Gunthorpe <jgg@mellanox.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 65/84] RDMA/srpt: Make debug output more detailed
+Date: Tue, 27 Feb 2024 14:27:32 +0100
+Message-ID: <20240227131554.987927116@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <geliang.tang@suse.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit 84c531f54ad9a124a924c9505d74e33d16965146 upstream.
+[ Upstream commit d4ee7f3a4445ec1b0b88af216f4032c4d30abf5a ]
 
-This patch adds the ability to send RM_ADDR for local ID 0. Check
-whether id 0 address is removed, if not, put id 0 into a removing
-list, pass it to mptcp_pm_remove_addr() to remove id 0 address.
+Since the session name by itself is not sufficient to uniquely identify a
+queue pair, include the queue pair number. Show the ASCII channel state
+name instead of the numeric value. This change makes the ib_srpt debug
+output more consistent.
 
-There is no reason not to allow the userspace to remove the initial
-address (ID 0). This special case was not taken into account not
-letting the userspace to delete all addresses as announced.
-
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/379
-Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
-Signed-off-by: Geliang Tang <geliang.tang@suse.com>
-Signed-off-by: Mat Martineau <martineau@kernel.org>
-Link: https://lore.kernel.org/r/20231025-send-net-next-20231025-v1-3-db8f25f798eb@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Fixes: d9a4594edabf ("mptcp: netlink: Add MPTCP_PM_CMD_REMOVE")
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20200525172212.14413-3-bvanassche@acm.org
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Jason Gunthorpe <jgg@mellanox.com>
+Stable-dep-of: eb5c7465c324 ("RDMA/srpt: fix function pointer cast warnings")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_userspace.c |   39 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ drivers/infiniband/ulp/srpt/ib_srpt.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/net/mptcp/pm_userspace.c
-+++ b/net/mptcp/pm_userspace.c
-@@ -222,6 +222,40 @@ int mptcp_nl_cmd_announce(struct sk_buff
- 	return err;
- }
- 
-+static int mptcp_userspace_pm_remove_id_zero_address(struct mptcp_sock *msk,
-+						     struct genl_info *info)
-+{
-+	struct mptcp_rm_list list = { .nr = 0 };
-+	struct mptcp_subflow_context *subflow;
-+	struct sock *sk = (struct sock *)msk;
-+	bool has_id_0 = false;
-+	int err = -EINVAL;
-+
-+	lock_sock(sk);
-+	mptcp_for_each_subflow(msk, subflow) {
-+		if (subflow->local_id == 0) {
-+			has_id_0 = true;
-+			break;
-+		}
-+	}
-+	if (!has_id_0) {
-+		GENL_SET_ERR_MSG(info, "address with id 0 not found");
-+		goto remove_err;
-+	}
-+
-+	list.ids[list.nr++] = 0;
-+
-+	spin_lock_bh(&msk->pm.lock);
-+	mptcp_pm_remove_addr(msk, &list);
-+	spin_unlock_bh(&msk->pm.lock);
-+
-+	err = 0;
-+
-+remove_err:
-+	release_sock(sk);
-+	return err;
-+}
-+
- int mptcp_nl_cmd_remove(struct sk_buff *skb, struct genl_info *info)
+diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
+index 2822ca5e82779..ccd9811c6c1e2 100644
+--- a/drivers/infiniband/ulp/srpt/ib_srpt.c
++++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
+@@ -217,8 +217,9 @@ static const char *get_ch_state_name(enum rdma_ch_state s)
+  */
+ static void srpt_qp_event(struct ib_event *event, struct srpt_rdma_ch *ch)
  {
- 	struct nlattr *token = info->attrs[MPTCP_PM_ATTR_TOKEN];
-@@ -253,6 +287,11 @@ int mptcp_nl_cmd_remove(struct sk_buff *
- 		goto remove_err;
- 	}
+-	pr_debug("QP event %d on ch=%p sess_name=%s state=%d\n",
+-		 event->event, ch, ch->sess_name, ch->state);
++	pr_debug("QP event %d on ch=%p sess_name=%s-%d state=%s\n",
++		 event->event, ch, ch->sess_name, ch->qp->qp_num,
++		 get_ch_state_name(ch->state));
  
-+	if (id_val == 0) {
-+		err = mptcp_userspace_pm_remove_id_zero_address(msk, info);
-+		goto remove_err;
-+	}
-+
- 	lock_sock((struct sock *)msk);
- 
- 	list_for_each_entry(entry, &msk->pm.userspace_pm_local_addr_list, list) {
+ 	switch (event->event) {
+ 	case IB_EVENT_COMM_EST:
+@@ -2005,8 +2006,8 @@ static void __srpt_close_all_ch(struct srpt_port *sport)
+ 	list_for_each_entry(nexus, &sport->nexus_list, entry) {
+ 		list_for_each_entry(ch, &nexus->ch_list, list) {
+ 			if (srpt_disconnect_ch(ch) >= 0)
+-				pr_info("Closing channel %s because target %s_%d has been disabled\n",
+-					ch->sess_name,
++				pr_info("Closing channel %s-%d because target %s_%d has been disabled\n",
++					ch->sess_name, ch->qp->qp_num,
+ 					dev_name(&sport->sdev->device->dev),
+ 					sport->port);
+ 			srpt_close_ch(ch);
+-- 
+2.43.0
+
 
 
 
