@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FAE0869514
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:58:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DDD48696ED
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:16:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AF1828F5AE
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:58:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24AD81F248A0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:16:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCAD013B7A0;
-	Tue, 27 Feb 2024 13:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3D1513A26F;
+	Tue, 27 Feb 2024 14:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kXJKH9N+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v6kWjfyR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C09654BD4;
-	Tue, 27 Feb 2024 13:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577501386CB;
+	Tue, 27 Feb 2024 14:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042311; cv=none; b=UKd0aO21ZuKC8/dAnw6M57MlpPwYqpsYRhCCQ7PqP64yM/wwcRVGFaBbgSU2HLXyBypyHlNoTvSOZo0ljPCNK1U/YE/bY71NSchkWyvbZPU/FjP7TevIVWTwbU9K/xlWhfE10KZhrnFT7cGUS+WZcrpcQL8AZlY6C22t+KjYia0=
+	t=1709043401; cv=none; b=EzMCon40dSIJYM9Z0gTB5ouqi0ekch18zWLyTU2vl8VEwC+BjxMAjgw9oxgUYyNFAF9O4zH7VHjQ614LYh+bVDzhO+7eG7+yVI/KPZO7/6Q6mv4HZQCUuAs3N7gW0E/gQPKROiD8HGUv99W/i71b5cGmTlmzwMRidsW8b7jbqmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042311; c=relaxed/simple;
-	bh=N0yLrMNiu//0OAgJexN6lR6vSEYf/Hd1KzGppZH9DNM=;
+	s=arc-20240116; t=1709043401; c=relaxed/simple;
+	bh=CAb4yWSPlP3MFnS3ypSsQELrPENJZMjFu1hKiKb2rxs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jMbtz+zLtZpjrHHsgPruNZNT01OotFkNWCleLYbbG8kisxbeR7OmhZzXOnoO7R9nyDZXoj1FLJMthAV24lBOAeWsq/tfYdcGRn/QhFKjup4aYMaaHDD7fmhjJrRlr+1tJkU/VziSoZiwnEnCpp8DGTFzAhYONLPjbBUHhiGvbgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kXJKH9N+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA4AC433C7;
-	Tue, 27 Feb 2024 13:58:30 +0000 (UTC)
+	 MIME-Version; b=GeC97CICsy6kbiL8BlKaurqiWODvImp5iQi5U5aWNt/7rtL5kJQNoindvT4nROFXPEZgKtf5STl5hNc5MnpB9nV68/MOH6Qy6A9oaU8/RRZ3GtMJoZkdlwM/tyv7NDiRiE7w2oTvR2+PPTECcVAWhTCPYzxBZLse5gMCEpHTgLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v6kWjfyR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB0CC433F1;
+	Tue, 27 Feb 2024 14:16:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042311;
-	bh=N0yLrMNiu//0OAgJexN6lR6vSEYf/Hd1KzGppZH9DNM=;
+	s=korg; t=1709043401;
+	bh=CAb4yWSPlP3MFnS3ypSsQELrPENJZMjFu1hKiKb2rxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kXJKH9N+dP7C8t6EWX98R76C1Tb3l8WTieOBWe7bXbAwHL9Vn0uYC29s2xD4cYUj9
-	 y8QTtYoSYS+v5ftj2zNuw6IsGYdhgjCuZ2piy24bKgN85b7oTWbK+IftEvUdwmM7eK
-	 vWVACxdPa3Ed9fsttovwMcfjvtOmTzGrooHSOPhg=
+	b=v6kWjfyRGxuollts+v2SHY9EKDePhtfhU18c614ZhHvEU+ApBLaLl+J6tyOsLk7Ro
+	 xmd8z+I2tKFye4Gsqw4eefUwZSZADDdg1WCdUTRj6ao/lKdD97gnsyIOAZLqSxKcMK
+	 7emW3RCJMyUz4kSh+/R8wFmRRts6LkkCtzIyRPIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Sakharov <p.sakharov@ispras.ru>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 244/299] net: stmmac: Fix incorrect dereference in interrupt handlers
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 094/195] scsi: target: pscsi: Fix bio_put() for error case
 Date: Tue, 27 Feb 2024 14:25:55 +0100
-Message-ID: <20240227131633.579878110@linuxfoundation.org>
+Message-ID: <20240227131613.581282754@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Sakharov <p.sakharov@ispras.ru>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-[ Upstream commit 97dde84026339e4b4af9a6301f825d1828d7874b ]
+commit de959094eb2197636f7c803af0943cb9d3b35804 upstream.
 
-If 'dev' or 'data' is NULL, the 'priv' variable has an incorrect address
-when dereferencing calling netdev_err().
+As of commit 066ff571011d ("block: turn bio_kmalloc into a simple kmalloc
+wrapper"), a bio allocated by bio_kmalloc() must be freed by bio_uninit()
+and kfree(). That is not done properly for the error case, hitting WARN and
+NULL pointer dereference in bio_free().
 
-Since we get as 'dev_id' or 'data' what was passed as the 'dev' argument
-to request_irq() during interrupt initialization (that is, the net_device
-and rx/tx queue pointers initialized at the time of the call) and since
-there are usually no checks for the 'dev_id' argument in such handlers
-in other drivers, remove these checks from the handlers in stmmac driver.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 8532f613bc78 ("net: stmmac: introduce MSI Interrupt routines for mac, safety, RX & TX")
-Signed-off-by: Pavel Sakharov <p.sakharov@ispras.ru>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 066ff571011d ("block: turn bio_kmalloc into a simple kmalloc wrapper")
+CC: stable@vger.kernel.org # 6.1+
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Link: https://lore.kernel.org/r/20240214144356.101814-1-naohiro.aota@wdc.com
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 20 -------------------
- 1 file changed, 20 deletions(-)
+ drivers/target/target_core_pscsi.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index f1614ad2daaa7..5b3423d1af3f3 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -5951,11 +5951,6 @@ static irqreturn_t stmmac_mac_interrupt(int irq, void *dev_id)
- 	struct net_device *dev = (struct net_device *)dev_id;
- 	struct stmmac_priv *priv = netdev_priv(dev);
+--- a/drivers/target/target_core_pscsi.c
++++ b/drivers/target/target_core_pscsi.c
+@@ -910,12 +910,15 @@ new_bio:
  
--	if (unlikely(!dev)) {
--		netdev_err(priv->dev, "%s: invalid dev pointer\n", __func__);
--		return IRQ_NONE;
--	}
--
- 	/* Check if adapter is up */
- 	if (test_bit(STMMAC_DOWN, &priv->state))
- 		return IRQ_HANDLED;
-@@ -5971,11 +5966,6 @@ static irqreturn_t stmmac_safety_interrupt(int irq, void *dev_id)
- 	struct net_device *dev = (struct net_device *)dev_id;
- 	struct stmmac_priv *priv = netdev_priv(dev);
- 
--	if (unlikely(!dev)) {
--		netdev_err(priv->dev, "%s: invalid dev pointer\n", __func__);
--		return IRQ_NONE;
--	}
--
- 	/* Check if adapter is up */
- 	if (test_bit(STMMAC_DOWN, &priv->state))
- 		return IRQ_HANDLED;
-@@ -5997,11 +5987,6 @@ static irqreturn_t stmmac_msi_intr_tx(int irq, void *data)
- 	dma_conf = container_of(tx_q, struct stmmac_dma_conf, tx_queue[chan]);
- 	priv = container_of(dma_conf, struct stmmac_priv, dma_conf);
- 
--	if (unlikely(!data)) {
--		netdev_err(priv->dev, "%s: invalid dev pointer\n", __func__);
--		return IRQ_NONE;
--	}
--
- 	/* Check if adapter is up */
- 	if (test_bit(STMMAC_DOWN, &priv->state))
- 		return IRQ_HANDLED;
-@@ -6028,11 +6013,6 @@ static irqreturn_t stmmac_msi_intr_rx(int irq, void *data)
- 	dma_conf = container_of(rx_q, struct stmmac_dma_conf, rx_queue[chan]);
- 	priv = container_of(dma_conf, struct stmmac_priv, dma_conf);
- 
--	if (unlikely(!data)) {
--		netdev_err(priv->dev, "%s: invalid dev pointer\n", __func__);
--		return IRQ_NONE;
--	}
--
- 	/* Check if adapter is up */
- 	if (test_bit(STMMAC_DOWN, &priv->state))
- 		return IRQ_HANDLED;
--- 
-2.43.0
-
+ 	return 0;
+ fail:
+-	if (bio)
+-		bio_put(bio);
++	if (bio) {
++		bio_uninit(bio);
++		kfree(bio);
++	}
+ 	while (req->bio) {
+ 		bio = req->bio;
+ 		req->bio = bio->bi_next;
+-		bio_put(bio);
++		bio_uninit(bio);
++		kfree(bio);
+ 	}
+ 	req->biotail = NULL;
+ 	return TCM_LOGICAL_UNIT_COMMUNICATION_FAILURE;
 
 
 
