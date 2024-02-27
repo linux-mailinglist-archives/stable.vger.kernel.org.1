@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-25070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5CE186979A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:22:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F912869824
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:29:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0373F1C21DC5
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:22:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54ADD2944BC
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:29:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6830F13B797;
-	Tue, 27 Feb 2024 14:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B85D5145356;
+	Tue, 27 Feb 2024 14:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W2eoUUE8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rScmn814"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2894913B2B4;
-	Tue, 27 Feb 2024 14:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7527013B7AB;
+	Tue, 27 Feb 2024 14:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043777; cv=none; b=SCcsZjK67aqXjfcsgfTz4iPu9SWGSmGp9HkMXMME/R01kaY+zxx1ZNPfGcOZOEtr2rAOsXIswP5qlrlEJo9kGtYIkOOkQYHR2xUTUBK9TZKCfNgCUAOlP3FE2nlC7W0aw4DdtFG1O5Zojr697C6ojPng3U9P+1nLhdJ7BNO0zNg=
+	t=1709044089; cv=none; b=ATr8/4lDP0aqPxt4SQq6nh99fXbRhf7VB4YuX9TKRKE9lN+zGGCPdn8t5A0us5cP6kMzicoB2hA9FdACBwKHfRvZUmscvxxTsd8ojBRkK4PwkSlm/MiiNZpu2d/ALpIAE5T12PvqGiyTiPGVR8dB1h5PvwlFVA0y+RsiywoD33Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043777; c=relaxed/simple;
-	bh=fS2rH83bn/glDJPmN1QTSs4fmObRZsHsiGdkQWGKksQ=;
+	s=arc-20240116; t=1709044089; c=relaxed/simple;
+	bh=PGRXWPYbVVmsb4+FGa4kTog/PtB/vf96SeB0nZMQqL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ti9Eu4T9CpZ/yOSgz5LgV2YYBzMsZJqWF2BpaxskrWYrN5JewEwANtlsZ1ouTEgVcs8u1oNJWW+xNYcdciaoqi8iHskD1+vB5sd3c9/QUvZjRlYxAOcHKw/HPkAOl6GfHMDzNZBA4Vqi12K1rTOgyt1HDSI1T9N8AFlMdu/zPtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W2eoUUE8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC648C433F1;
-	Tue, 27 Feb 2024 14:22:56 +0000 (UTC)
+	 MIME-Version; b=A7o5i50d54LtAXGAKrN+H0p/wi3A+vHufXq01X7K5+JUh8Jkq+ckpF7Sjy9fF3hscz/zV28STo4pdlD8CnfcNrzkTFQYkEi+FAUPGxVYZw4tI3+++4FhUwGZvMaeqcomHQBQXCW6r726Nsdd/nGSvTxe2S5gHc7KuLU3AQkeVy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rScmn814; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05896C433F1;
+	Tue, 27 Feb 2024 14:28:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043777;
-	bh=fS2rH83bn/glDJPmN1QTSs4fmObRZsHsiGdkQWGKksQ=;
+	s=korg; t=1709044089;
+	bh=PGRXWPYbVVmsb4+FGa4kTog/PtB/vf96SeB0nZMQqL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W2eoUUE8alSziOkwP156l/XsqU0UdKWV6r3VFTZPDL2Uf6EElKw5QBN6rZn7yZciF
-	 J2+fxTq32nnIaRoDdaT2YNdy+3FpGBTeJMNB3b9lfkPXSGgez5UFpXNyVtSU6X/Azn
-	 BbDml09QVUFCQzTLjiUx646jgg4vXAhVSN1TQi+g=
+	b=rScmn8144oJwwwOrOkVQl/0oAMGu2NC9xo8uS8GmHOjsCy9v9daKX1lEjEni5zd5J
+	 IC9YXsmT/Drq6ImQ6Xey6e/8cI9Ro7gJlfDwQ/Wm6kOYBTljlhaW0hxjjpocZa2Cz9
+	 pRpqkQbIjlOOEo2R4lWiIgyDRkstDwZziix84Aw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 32/84] s390/qeth: Fix potential loss of L3-IP@ in case of network issues
+Subject: [PATCH 5.10 058/122] ASoC: Intel: boards: get codec device with ACPI instead of bus search
 Date: Tue, 27 Feb 2024 14:26:59 +0100
-Message-ID: <20240227131553.909225821@linuxfoundation.org>
+Message-ID: <20240227131600.604705683@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +64,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandra Winter <wintera@linux.ibm.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit 2fe8a236436fe40d8d26a1af8d150fc80f04ee1a ]
+[ Upstream commit d3409eb20d3ed7d9e021cd13243e9e63255a315f ]
 
-Symptom:
-In case of a bad cable connection (e.g. dirty optics) a fast sequence of
-network DOWN-UP-DOWN-UP could happen. UP triggers recovery of the qeth
-interface. In case of a second DOWN while recovery is still ongoing, it
-can happen that the IP@ of a Layer3 qeth interface is lost and will not
-be recovered by the second UP.
+We have an existing 'adev' handle from which we can find the codec
+device, no need for an I2C bus search.
 
-Problem:
-When registration of IP addresses with Layer 3 qeth devices fails, (e.g.
-because of bad address format) the respective IP address is deleted from
-its hash-table in the driver. If registration fails because of a ENETDOWN
-condition, the address should stay in the hashtable, so a subsequent
-recovery can restore it.
-
-3caa4af834df ("qeth: keep ip-address after LAN_OFFLINE failure")
-fixes this for registration failures during normal operation, but not
-during recovery.
-
-Solution:
-Keep L3-IP address in case of ENETDOWN in qeth_l3_recover_ip(). For
-consistency with qeth_l3_add_ip() we also keep it in case of EADDRINUSE,
-i.e. for some reason the card already/still has this address registered.
-
-Fixes: 4a71df50047f ("qeth: new qeth device driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240206085849.2902775-1-wintera@linux.ibm.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20210813151116.23931-4-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 721858823d7c ("ASoC: Intel: bytcr_rt5651: Drop reference count of ACPI device after use")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/net/qeth_l3_main.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ sound/soc/intel/boards/bytcht_es8316.c | 4 ++--
+ sound/soc/intel/boards/bytcr_rt5640.c  | 5 ++---
+ sound/soc/intel/boards/bytcr_rt5651.c  | 6 ++----
+ 3 files changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/s390/net/qeth_l3_main.c b/drivers/s390/net/qeth_l3_main.c
-index 8dee16aca421f..fe2bea2409427 100644
---- a/drivers/s390/net/qeth_l3_main.c
-+++ b/drivers/s390/net/qeth_l3_main.c
-@@ -305,9 +305,10 @@ static void qeth_l3_clear_ip_htable(struct qeth_card *card, int recover)
- 		if (!recover) {
- 			hash_del(&addr->hnode);
- 			kfree(addr);
--			continue;
-+		} else {
-+			/* prepare for recovery */
-+			addr->disp_flag = QETH_DISP_ADDR_ADD;
- 		}
--		addr->disp_flag = QETH_DISP_ADDR_ADD;
+diff --git a/sound/soc/intel/boards/bytcht_es8316.c b/sound/soc/intel/boards/bytcht_es8316.c
+index 91351b8536aa1..03b9cdbd3170f 100644
+--- a/sound/soc/intel/boards/bytcht_es8316.c
++++ b/sound/soc/intel/boards/bytcht_es8316.c
+@@ -550,9 +550,10 @@ static int snd_byt_cht_es8316_mc_probe(struct platform_device *pdev)
  	}
  
- 	mutex_unlock(&card->ip_lock);
-@@ -335,11 +336,13 @@ static void qeth_l3_recover_ip(struct qeth_card *card)
- 			} else
- 				rc = qeth_l3_register_addr_entry(card, addr);
+ 	/* get speaker enable GPIO */
+-	codec_dev = bus_find_device_by_name(&i2c_bus_type, NULL, codec_name);
++	codec_dev = acpi_get_first_physical_node(adev);
+ 	if (!codec_dev)
+ 		return -EPROBE_DEFER;
++	priv->codec_dev = get_device(codec_dev);
  
--			if (!rc) {
-+			if (!rc || rc == -EADDRINUSE || rc == -ENETDOWN) {
-+				/* keep it in the records */
- 				addr->disp_flag = QETH_DISP_ADDR_DO_NOTHING;
- 				if (addr->ref_counter < 1)
- 					qeth_l3_delete_ip(card, addr);
- 			} else {
-+				/* bad address */
- 				hash_del(&addr->hnode);
- 				kfree(addr);
- 			}
+ 	if (quirk & BYT_CHT_ES8316_JD_INVERTED)
+ 		props[cnt++] = PROPERTY_ENTRY_BOOL("everest,jack-detect-inverted");
+@@ -570,7 +571,6 @@ static int snd_byt_cht_es8316_mc_probe(struct platform_device *pdev)
+ 		gpiod_get_index(codec_dev, "speaker-enable", 0,
+ 				/* see comment in byt_cht_es8316_resume */
+ 				GPIOD_OUT_LOW | GPIOD_FLAGS_BIT_NONEXCLUSIVE);
+-	priv->codec_dev = codec_dev;
+ 
+ 	if (IS_ERR(priv->speaker_en_gpio)) {
+ 		ret = PTR_ERR(priv->speaker_en_gpio);
+diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
+index b531c348fb697..f5b1b3b876980 100644
+--- a/sound/soc/intel/boards/bytcr_rt5640.c
++++ b/sound/soc/intel/boards/bytcr_rt5640.c
+@@ -1425,11 +1425,10 @@ static int snd_byt_rt5640_mc_probe(struct platform_device *pdev)
+ 		byt_rt5640_quirk = quirk_override;
+ 	}
+ 
+-	codec_dev = bus_find_device_by_name(&i2c_bus_type, NULL, byt_rt5640_codec_name);
++	codec_dev = acpi_get_first_physical_node(adev);
+ 	if (!codec_dev)
+ 		return -EPROBE_DEFER;
+-
+-	priv->codec_dev = codec_dev;
++	priv->codec_dev = get_device(codec_dev);
+ 
+ 	/* Must be called before register_card, also see declaration comment. */
+ 	ret_val = byt_rt5640_add_codec_device_props(codec_dev, priv);
+diff --git a/sound/soc/intel/boards/bytcr_rt5651.c b/sound/soc/intel/boards/bytcr_rt5651.c
+index acea83e814acb..472f6e3327960 100644
+--- a/sound/soc/intel/boards/bytcr_rt5651.c
++++ b/sound/soc/intel/boards/bytcr_rt5651.c
+@@ -926,10 +926,10 @@ static int snd_byt_rt5651_mc_probe(struct platform_device *pdev)
+ 		return -ENODEV;
+ 	}
+ 
+-	codec_dev = bus_find_device_by_name(&i2c_bus_type, NULL,
+-					    byt_rt5651_codec_name);
++	codec_dev = acpi_get_first_physical_node(adev);
+ 	if (!codec_dev)
+ 		return -EPROBE_DEFER;
++	priv->codec_dev = get_device(codec_dev);
+ 
+ 	/*
+ 	 * swap SSP0 if bytcr is detected
+@@ -996,8 +996,6 @@ static int snd_byt_rt5651_mc_probe(struct platform_device *pdev)
+ 		byt_rt5651_quirk = quirk_override;
+ 	}
+ 
+-	priv->codec_dev = codec_dev;
+-
+ 	/* Must be called before register_card, also see declaration comment. */
+ 	ret_val = byt_rt5651_add_codec_device_props(codec_dev);
+ 	if (ret_val)
 -- 
 2.43.0
 
