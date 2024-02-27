@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-24960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DC99869712
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:18:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 151E18697EE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:26:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 500131C20BB0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:18:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46AD31C2277D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:26:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC8A01420D2;
-	Tue, 27 Feb 2024 14:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E161419A1;
+	Tue, 27 Feb 2024 14:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VtaZ/BbG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kiXyvb0l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B12613B798;
-	Tue, 27 Feb 2024 14:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213FE13B7AB;
+	Tue, 27 Feb 2024 14:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043467; cv=none; b=ZN8IxXGvsQ9Iq1BFzYB8GG4QCFM7/va5tO6H0dPBqfGfAPU2GFZ+q2Tq61BNcAHEc15gIAny8Hcs10V+VDHGj3k6fzo220Blej+Jq3rSEA0P1GWujYgaJaHVXxNU0p3kMQP+Z9lymyuPt04GKUHZYiEu5gxm70u/3GktlcMvO2g=
+	t=1709043979; cv=none; b=k4uW1MRUG2hqE65BnDfUsrFEyi1uELP/iB6BwIYWlnaULTcY9DRvKMzm/R1G1/kF65yLBSi4t9XC9sJMHVjjmBgPwvfMARhieQaBBnfGggA5xFrWm1lQXwnLXZ3lSoMEyo4I5kfiNn+Kllt74Y/up+GGPxFZ4aes2tZT7w9NhVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043467; c=relaxed/simple;
-	bh=FKlG5jiBdRPaaAbXiPMxQRIzcSW1AgNDX6AhDo16kyk=;
+	s=arc-20240116; t=1709043979; c=relaxed/simple;
+	bh=fb6syoblvWzbaUbkPZQfanFW1SvNXK65ofjzplMK3No=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n3hpMjrQHZD99Cy2Ho4PE8Chnf6xiRmlow0hm+TGLD4XrRoLnGGP7u1kH+scrZWQaT5rr3g57Q3nMAL7OdsE5nBSiOLKsQdk3zaW6Aqf4hFB63dtzg4LS4F4k1lOgnNOZ8rVi7jIddkVtkbEb3LPytXixJzJi9A+3TsEEpxICi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VtaZ/BbG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC15DC433C7;
-	Tue, 27 Feb 2024 14:17:46 +0000 (UTC)
+	 MIME-Version; b=u5XKWvUL+KZI4jm7SsmGK360L6+c8VF9+0CgTf7bNu0TwY8ANBQyRrrY/W6gUAfvXgDR1grcNOagVM9PriOQI6HpsVjmmJeYjWz9r++c4WmDrWkQwfOamKFuzZSKaXYyOt2ixawxn6A968K6Hv6HL2D+xGmhrIAlW4MFJuX6clw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kiXyvb0l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A03EDC43390;
+	Tue, 27 Feb 2024 14:26:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043467;
-	bh=FKlG5jiBdRPaaAbXiPMxQRIzcSW1AgNDX6AhDo16kyk=;
+	s=korg; t=1709043979;
+	bh=fb6syoblvWzbaUbkPZQfanFW1SvNXK65ofjzplMK3No=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VtaZ/BbGtI6m7Vzf/XN9ITas7D/Kov3ThfZN8jYVTLObuRbyPCtfc2AgNATIBHdb+
-	 qtQ+us7VSqlBvSFXgYuRHdP7RNVNK8eQLSStYBG5U0zZUCx3Eg50gyD8GCinS0boXv
-	 53QDwLEmoEWfqigddva5sBuOjeM/v0S1/iGjp698=
+	b=kiXyvb0lEYgvktaW6yGA9p5aXzvN1OWjEcUl5SrNsr6zGp7djJSDB4yxsr4fTFNzL
+	 j6CdURkGRtybc8bcocwXRs09yDkNllvI3s38J24+aMTGmphrSVDhzkyAGHwDEh/vbM
+	 tF3/VdpGTcF3ZMbknwSwDonSGpIkHUXMrrI1dTyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.1 118/195] usb: dwc3: gadget: Dont disconnect if not started
-Date: Tue, 27 Feb 2024 14:26:19 +0100
-Message-ID: <20240227131614.354518084@linuxfoundation.org>
+	Devyn Liu <liudingyuan@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 019/122] spi: hisi-sfc-v3xx: Return IRQ_NONE if no interrupts were detected
+Date: Tue, 27 Feb 2024 14:26:20 +0100
+Message-ID: <20240227131559.334779733@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Devyn Liu <liudingyuan@huawei.com>
 
-commit b191a18cb5c47109ca696370a74a5062a70adfd0 upstream.
+[ Upstream commit de8b6e1c231a95abf95ad097b993d34b31458ec9 ]
 
-Don't go through soft-disconnection sequence if the controller hasn't
-started. Otherwise, there will be timeout and warning reports from the
-soft-disconnection flow.
+Return IRQ_NONE from the interrupt handler when no interrupt was
+detected. Because an empty interrupt will cause a null pointer error:
 
-Cc: stable@vger.kernel.org
-Fixes: 61a348857e86 ("usb: dwc3: gadget: Fix NULL pointer dereference in dwc3_gadget_suspend")
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Closes: https://lore.kernel.org/linux-usb/20240215233536.7yejlj3zzkl23vjd@synopsys.com/T/#mb0661cd5f9272602af390c18392b9a36da4f96e6
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/e3be9b929934e0680a6f4b8f6eb11b18ae9c7e07.1708043922.git.Thinh.Nguyen@synopsys.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Unable to handle kernel NULL pointer dereference at virtual
+  address 0000000000000008
+    Call trace:
+        complete+0x54/0x100
+        hisi_sfc_v3xx_isr+0x2c/0x40 [spi_hisi_sfc_v3xx]
+        __handle_irq_event_percpu+0x64/0x1e0
+        handle_irq_event+0x7c/0x1cc
+
+Signed-off-by: Devyn Liu <liudingyuan@huawei.com>
+Link: https://msgid.link/r/20240123071149.917678-1-liudingyuan@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/gadget.c |    5 +++++
+ drivers/spi/spi-hisi-sfc-v3xx.c | 5 +++++
  1 file changed, 5 insertions(+)
 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -2548,6 +2548,11 @@ static int dwc3_gadget_soft_disconnect(s
- 	int ret;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
-+	if (!dwc->pullups_connected) {
-+		spin_unlock_irqrestore(&dwc->lock, flags);
-+		return 0;
-+	}
+diff --git a/drivers/spi/spi-hisi-sfc-v3xx.c b/drivers/spi/spi-hisi-sfc-v3xx.c
+index 4650b483a33d3..e0c3ad73c576d 100644
+--- a/drivers/spi/spi-hisi-sfc-v3xx.c
++++ b/drivers/spi/spi-hisi-sfc-v3xx.c
+@@ -365,6 +365,11 @@ static const struct spi_controller_mem_ops hisi_sfc_v3xx_mem_ops = {
+ static irqreturn_t hisi_sfc_v3xx_isr(int irq, void *data)
+ {
+ 	struct hisi_sfc_v3xx_host *host = data;
++	u32 reg;
 +
- 	dwc->connected = false;
++	reg = readl(host->regbase + HISI_SFC_V3XX_INT_STAT);
++	if (!reg)
++		return IRQ_NONE;
  
- 	/*
+ 	hisi_sfc_v3xx_disable_int(host);
+ 
+-- 
+2.43.0
+
 
 
 
