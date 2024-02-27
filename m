@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-24854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2FC6869691
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:13:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B2E78694A9
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:55:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 939F91F2E441
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:13:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DEC31C2582A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:55:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D666314532C;
-	Tue, 27 Feb 2024 14:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59DBB13DB98;
+	Tue, 27 Feb 2024 13:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bz3zohGe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="et0pvHPQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94503145327;
-	Tue, 27 Feb 2024 14:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157821419B3;
+	Tue, 27 Feb 2024 13:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043171; cv=none; b=rxxtZdI9PALwIPxlWIgzJ+JDqky0cDZz9+zGkcBERVCStul6rxs9uWM6hu0W+nbaLRfEK6ivLY2sPGJ7mp1EayBgYYgoMZ/a9rmpAgTCvPvBkoVy7fKgOTJn/HZ63FaEC6cxEQgKMqirsWkLNsxlPM6QMLr6bPWKNdM8J/wWNms=
+	t=1709042113; cv=none; b=O0z4x+mudX7hBwRTrmSwZW8H3uGmVPTJq+SnD/y0C9MApOTyzAreMfnNPA9YfIhsJ+sNm4Ha5PkpDItJ8pdKXakt02jrIuGd3InkcvPmlCN+u1PCXL6TnxjcwS0q4h4Rka+x6LXOZfTG1cDuzVtPttwXIhhefiimSa0U3kJveaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043171; c=relaxed/simple;
-	bh=yoL5CXJlspvx6FyAbdBL3QXxbBySuHRpKdEnY0BAiSA=;
+	s=arc-20240116; t=1709042113; c=relaxed/simple;
+	bh=gqOjMEGJZ4SJ8mczMcsWpxVYjVEsmMOpLelTuwPFxdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GHAG1jIrg+wA/vsxNaD9jHIOuTpL0kl1ArOSFISthhahkOCGmubxUjgL66iGtx37lblGZEEINUjMC8x1ZO0YNtU+Ag61VV9xImIWJxtoT11529touRhhiZ4F8dVWvadMls+vrnX2P5Z1rN4tfyXetp1r1aVdvE1vJIlw0GApHrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bz3zohGe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 238B4C433C7;
-	Tue, 27 Feb 2024 14:12:50 +0000 (UTC)
+	 MIME-Version; b=MQuY31D3anvyclbUm0UjOcY4MEfOjqNzGmlHB/0CUIdwdKGzGoYpMKJRnHOcbLKyUOAML991RPgDOMg0+0oewSanZfofoTvVyg6aGbX6VEEaxi79zt7poan33l1LzBi3/zpqP0sYz6Mf8hYqkzwLNKRUqQSAXvDDaiio6JWBGZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=et0pvHPQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953F0C433F1;
+	Tue, 27 Feb 2024 13:55:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043171;
-	bh=yoL5CXJlspvx6FyAbdBL3QXxbBySuHRpKdEnY0BAiSA=;
+	s=korg; t=1709042113;
+	bh=gqOjMEGJZ4SJ8mczMcsWpxVYjVEsmMOpLelTuwPFxdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bz3zohGeSGEVAIvBPoZWcrcUUgqZn/yBt+e8AqGGBl1LMqnNTTcNJt8ivYDfdQ///
-	 e2TdlqxCkUHk5Z0MNAKyCbdD1Z8SB9oBtfpzzVC3VoyCPsDpPjCR4NpnXJ/lQIRn9M
-	 XUfrvGJbNBmY2emcS6hs4vgksE9B7T/UtV5GWWq4=
+	b=et0pvHPQVLMgHqTvmCQ4X23Gx3EZWri8hfpcY0E02rED7ZmNFsyFgh/tAN3M8Q7nO
+	 wlxh4B5FtQ+h2+T+GVaVKLzHUhYxQ7WIgOAmKcW0h4B5WIAJ+QtDZgJ4B+BBB7VTZx
+	 Lz8VOvSyBJfMVEUl1mlnJ0w7YafHKRY6t97qAk48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.1 006/195] PCI: dwc: Fix a 64bit bug in dw_pcie_ep_raise_msix_irq()
+	Bart Van Assche <bvanassche@acm.org>,
+	Julian Sikorski <belegdol@gmail.com>,
+	Lee Duncan <lee.duncan@suse.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 156/299] scsi: core: Consult supported VPD page list prior to fetching page
 Date: Tue, 27 Feb 2024 14:24:27 +0100
-Message-ID: <20240227131610.610088823@linuxfoundation.org>
+Message-ID: <20240227131630.880590906@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Martin K. Petersen <martin.petersen@oracle.com>
 
-commit b5d1b4b46f856da1473c7ba9a5cdfcb55c9b2478 upstream.
+commit b5fc07a5fb56216a49e6c1d0b172d5464d99a89b upstream.
 
-The "msg_addr" variable is u64.  However, the "aligned_offset" is an
-unsigned int.  This means that when the code does:
+Commit c92a6b5d6335 ("scsi: core: Query VPD size before getting full
+page") removed the logic which checks whether a VPD page is present on
+the supported pages list before asking for the page itself. That was
+done because SPC helpfully states "The Supported VPD Pages VPD page
+list may or may not include all the VPD pages that are able to be
+returned by the device server". Testing had revealed a few devices
+that supported some of the 0xBn pages but didn't actually list them in
+page 0.
 
-  msg_addr &= ~aligned_offset;
+Julian Sikorski bisected a problem with his drive resetting during
+discovery to the commit above. As it turns out, this particular drive
+firmware will crash if we attempt to fetch page 0xB9.
 
-it will unintentionally zero out the high 32 bits.  Use ALIGN_DOWN() to do
-the alignment instead.
+Various approaches were attempted to work around this. In the end,
+reinstating the logic that consults VPD page 0 before fetching any
+other page was the path of least resistance. A firmware update for the
+devices which originally compelled us to remove the check has since
+been released.
 
-Fixes: 2217fffcd63f ("PCI: dwc: endpoint: Fix dw_pcie_ep_raise_msix_irq() alignment support")
-Link: https://lore.kernel.org/r/af59c7ad-ab93-40f7-ad4a-7ac0b14d37f5@moroto.mountain
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Link: https://lore.kernel.org/r/20240214221411.2888112-1-martin.petersen@oracle.com
+Fixes: c92a6b5d6335 ("scsi: core: Query VPD size before getting full page")
+Cc: stable@vger.kernel.org
+Cc: Bart Van Assche <bvanassche@acm.org>
+Reported-by: Julian Sikorski <belegdol@gmail.com>
+Tested-by: Julian Sikorski <belegdol@gmail.com>
+Reviewed-by: Lee Duncan <lee.duncan@suse.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-ep.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/scsi/scsi.c        |   22 ++++++++++++++++++++--
+ include/scsi/scsi_device.h |    4 ----
+ 2 files changed, 20 insertions(+), 6 deletions(-)
 
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -6,6 +6,7 @@
-  * Author: Kishon Vijay Abraham I <kishon@ti.com>
-  */
+--- a/drivers/scsi/scsi.c
++++ b/drivers/scsi/scsi.c
+@@ -328,21 +328,39 @@ static int scsi_vpd_inquiry(struct scsi_
+ 	return result + 4;
+ }
  
-+#include <linux/align.h>
- #include <linux/of.h>
- #include <linux/platform_device.h>
++enum scsi_vpd_parameters {
++	SCSI_VPD_HEADER_SIZE = 4,
++	SCSI_VPD_LIST_SIZE = 36,
++};
++
+ static int scsi_get_vpd_size(struct scsi_device *sdev, u8 page)
+ {
+-	unsigned char vpd_header[SCSI_VPD_HEADER_SIZE] __aligned(4);
++	unsigned char vpd[SCSI_VPD_LIST_SIZE] __aligned(4);
+ 	int result;
  
-@@ -600,7 +601,7 @@ int dw_pcie_ep_raise_msix_irq(struct dw_
- 	}
+ 	if (sdev->no_vpd_size)
+ 		return SCSI_DEFAULT_VPD_LEN;
  
- 	aligned_offset = msg_addr & (epc->mem->window.page_size - 1);
--	msg_addr &= ~aligned_offset;
-+	msg_addr = ALIGN_DOWN(msg_addr, epc->mem->window.page_size);
- 	ret = dw_pcie_ep_map_addr(epc, func_no, 0, ep->msi_mem_phys, msg_addr,
- 				  epc->mem->window.page_size);
- 	if (ret)
+ 	/*
++	 * Fetch the supported pages VPD and validate that the requested page
++	 * number is present.
++	 */
++	if (page != 0) {
++		result = scsi_vpd_inquiry(sdev, vpd, 0, sizeof(vpd));
++		if (result < SCSI_VPD_HEADER_SIZE)
++			return 0;
++
++		result -= SCSI_VPD_HEADER_SIZE;
++		if (!memchr(&vpd[SCSI_VPD_HEADER_SIZE], page, result))
++			return 0;
++	}
++	/*
+ 	 * Fetch the VPD page header to find out how big the page
+ 	 * is. This is done to prevent problems on legacy devices
+ 	 * which can not handle allocation lengths as large as
+ 	 * potentially requested by the caller.
+ 	 */
+-	result = scsi_vpd_inquiry(sdev, vpd_header, page, sizeof(vpd_header));
++	result = scsi_vpd_inquiry(sdev, vpd, page, SCSI_VPD_HEADER_SIZE);
+ 	if (result < 0)
+ 		return 0;
+ 
+--- a/include/scsi/scsi_device.h
++++ b/include/scsi/scsi_device.h
+@@ -100,10 +100,6 @@ struct scsi_vpd {
+ 	unsigned char	data[];
+ };
+ 
+-enum scsi_vpd_parameters {
+-	SCSI_VPD_HEADER_SIZE = 4,
+-};
+-
+ struct scsi_device {
+ 	struct Scsi_Host *host;
+ 	struct request_queue *request_queue;
 
 
 
