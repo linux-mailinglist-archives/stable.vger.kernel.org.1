@@ -1,53 +1,62 @@
-Return-Path: <stable+bounces-24230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E80F869340
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:43:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A82F869343
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:43:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 553E61F24FA9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:43:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFDAA1F2500D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FC3A13B2B9;
-	Tue, 27 Feb 2024 13:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6C72F2D;
+	Tue, 27 Feb 2024 13:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BCIzbdln"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dZzzP1IM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4037D13A25D;
-	Tue, 27 Feb 2024 13:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A955813B2B4;
+	Tue, 27 Feb 2024 13:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041394; cv=none; b=aayAyvdNWALYjr0U7u99g5BqLpxdrQ3FWkVDcoqcV+iuEkp/jWVRDvPdoMuylnff5E//HuQbgCWnViv2opJu00sL1FiDnU8Pl3kvwSOYAb5cIbVdWlB30Ur78RKXhd56Yb/OH2zoKMRw8MN4ewk7G9inLE6ZzQr9tDz0W93RQj0=
+	t=1709041399; cv=none; b=szJ0rCge0zlciG57WYBmfzQY8N6GFO+6fT3pcD/4MtJKMpHK5EoY4CInZt/DfL2ebdF65onDixNfHBvpzy3EBLfctFRKb2kuQNbT01S37hGt707tSSQZsVPLHFZaEi+E6hmxw2o+vdgpI5rSZLm26td94273wTI5jw3S75ja0rY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041394; c=relaxed/simple;
-	bh=4afOWf19tEbgXVvyZN0FQSfrY6fQQ5bQt1I4RNAN6yo=;
+	s=arc-20240116; t=1709041399; c=relaxed/simple;
+	bh=fr58hyORh0N1DrI8TqY6TA2Wd6wQGXxlUMAlaEzZKjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Dm0I9sB1MFpHnS4XnsaG+fuNuCwwPI1K0wnFKWnVSBLx3PQ7vy9zYwnGPxyQ6ObIlq5vq0EEfoPdvnEqtgHjT9/ZE/JvzmXbKkjT0yyw+maipPa/Q3v1AW/fYI53dJNXRPgt79pvyYIA6Xk1uVCqmRav4m7xr05yzg91eavdXQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BCIzbdln; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C18E7C433F1;
-	Tue, 27 Feb 2024 13:43:13 +0000 (UTC)
+	 MIME-Version; b=nt3SLDYyCzd0gt6TCLjFuKN1th9udjRaB8ubMXvqNS9MtjcNgLJc5gU+BENXMFNf0Dh4UVUhRcoaA/fgsmk3c6holtJQNO69SnB5seohPXgBw4ACjzwFt+YV7hKO2R0yhl1m4a6FbC2mQ9LXDXyh+i0akHT0j46eKhXcPZwoiDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dZzzP1IM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 071A3C433F1;
+	Tue, 27 Feb 2024 13:43:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041394;
-	bh=4afOWf19tEbgXVvyZN0FQSfrY6fQQ5bQt1I4RNAN6yo=;
+	s=korg; t=1709041399;
+	bh=fr58hyORh0N1DrI8TqY6TA2Wd6wQGXxlUMAlaEzZKjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BCIzbdlnhGWo6D8NBZt2XaMGlSKsjWbqIXDCQoob1xZBiF7mLKgisTvsdogfVdSau
-	 Y0uTChbiojN7fb2Rf42mW0URrw5RyA4ugIyRcEzphUdhgFY80o1ZnzxaGR3ONyQ7L+
-	 ocSBoHFCVSrQTdVRSJVVWV/SInWHO64S9noHQN24=
+	b=dZzzP1IMMeEn5pt2y6KVueKy2p/oxpscMCtLRUMdo/lSMdrODpuch6c0wEjiC3VFF
+	 cGXwV4ar8tnG4bbIbmsNVo0tbzF8+r8KX7cHsudC1bnM6UBVXUN4in7flyLv44cTp7
+	 K6Njd32vqte0omAsJsAnKxNFg/mssn7lKS3x58N4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	"JinZe.Xu" <jinze.xu@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Josip Pavic <josip.pavic@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Qingqing Zhuo <Qingqing.Zhuo@amd.com>,
+	Harry Wentland <Harry.Wentland@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 325/334] selftests/iommu: fix the config fragment
-Date: Tue, 27 Feb 2024 14:23:03 +0100
-Message-ID: <20240227131641.606330166@linuxfoundation.org>
+Subject: [PATCH 6.7 326/334] drm/amd/display: Fix potential null pointer dereference in dc_dmub_srv
+Date: Tue, 27 Feb 2024 14:23:04 +0100
+Message-ID: <20240227131641.642322567@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
 References: <20240227131630.636392135@linuxfoundation.org>
@@ -60,51 +69,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 510325e5ac5f45c1180189d3bfc108c54bf64544 ]
+[ Upstream commit d2b48f340d9e4a8fbeb1cdc84cd8da6ad143a907 ]
 
-The config fragment doesn't follow the correct format to enable those
-config options which make the config options getting missed while
-merging with other configs.
+Fixes potential null pointer dereference warnings in the
+dc_dmub_srv_cmd_list_queue_execute() and dc_dmub_srv_is_hw_pwr_up()
+functions.
 
-➜ merge_config.sh -m .config tools/testing/selftests/iommu/config
-Using .config as base
-Merging tools/testing/selftests/iommu/config
-➜ make olddefconfig
-.config:5295:warning: unexpected data: CONFIG_IOMMUFD
-.config:5296:warning: unexpected data: CONFIG_IOMMUFD_TEST
+In both functions, the 'dc_dmub_srv' variable was being dereferenced
+before it was checked for null. This could lead to a null pointer
+dereference if 'dc_dmub_srv' is null. The fix is to check if
+'dc_dmub_srv' is null before dereferencing it.
 
-While at it, add CONFIG_FAULT_INJECTION as well which is needed for
-CONFIG_IOMMUFD_TEST. If CONFIG_FAULT_INJECTION isn't present in base
-config (such as x86 defconfig), CONFIG_IOMMUFD_TEST doesn't get enabled.
+Thus moving the null checks for 'dc_dmub_srv' to the beginning of the
+functions to ensure that 'dc_dmub_srv' is not null when it is
+dereferenced.
 
-Fixes: 57f0988706fe ("iommufd: Add a selftest")
-Link: https://lore.kernel.org/r/20240222074934.71380-1-usama.anjum@collabora.com
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Found by smatch & thus fixing the below:
+drivers/gpu/drm/amd/amdgpu/../display/dc/dc_dmub_srv.c:133 dc_dmub_srv_cmd_list_queue_execute() warn: variable dereferenced before check 'dc_dmub_srv' (see line 128)
+drivers/gpu/drm/amd/amdgpu/../display/dc/dc_dmub_srv.c:1167 dc_dmub_srv_is_hw_pwr_up() warn: variable dereferenced before check 'dc_dmub_srv' (see line 1164)
+
+Fixes: 028bac583449 ("drm/amd/display: decouple dmcub execution to reduce lock granularity")
+Fixes: 65138eb72e1f ("drm/amd/display: Add DCN35 DMUB")
+Cc: JinZe.Xu <jinze.xu@amd.com>
+Cc: Hersen Wu <hersenxs.wu@amd.com>
+Cc: Josip Pavic <josip.pavic@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Qingqing Zhuo <Qingqing.Zhuo@amd.com>
+Cc: Harry Wentland <Harry.Wentland@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/iommu/config | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/iommu/config b/tools/testing/selftests/iommu/config
-index 6c4f901d6fed3..110d73917615d 100644
---- a/tools/testing/selftests/iommu/config
-+++ b/tools/testing/selftests/iommu/config
-@@ -1,2 +1,3 @@
--CONFIG_IOMMUFD
--CONFIG_IOMMUFD_TEST
-+CONFIG_IOMMUFD=y
-+CONFIG_FAULT_INJECTION=y
-+CONFIG_IOMMUFD_TEST=y
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
+index 61d1b4eadbee3..05b3433cbb0b4 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
++++ b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
+@@ -124,7 +124,7 @@ bool dc_dmub_srv_cmd_list_queue_execute(struct dc_dmub_srv *dc_dmub_srv,
+ 		unsigned int count,
+ 		union dmub_rb_cmd *cmd_list)
+ {
+-	struct dc_context *dc_ctx = dc_dmub_srv->ctx;
++	struct dc_context *dc_ctx;
+ 	struct dmub_srv *dmub;
+ 	enum dmub_status status;
+ 	int i;
+@@ -132,6 +132,7 @@ bool dc_dmub_srv_cmd_list_queue_execute(struct dc_dmub_srv *dc_dmub_srv,
+ 	if (!dc_dmub_srv || !dc_dmub_srv->dmub)
+ 		return false;
+ 
++	dc_ctx = dc_dmub_srv->ctx;
+ 	dmub = dc_dmub_srv->dmub;
+ 
+ 	for (i = 0 ; i < count; i++) {
+@@ -1129,7 +1130,7 @@ void dc_dmub_srv_subvp_save_surf_addr(const struct dc_dmub_srv *dc_dmub_srv, con
+ 
+ bool dc_dmub_srv_is_hw_pwr_up(struct dc_dmub_srv *dc_dmub_srv, bool wait)
+ {
+-	struct dc_context *dc_ctx = dc_dmub_srv->ctx;
++	struct dc_context *dc_ctx;
+ 	enum dmub_status status;
+ 
+ 	if (!dc_dmub_srv || !dc_dmub_srv->dmub)
+@@ -1138,6 +1139,8 @@ bool dc_dmub_srv_is_hw_pwr_up(struct dc_dmub_srv *dc_dmub_srv, bool wait)
+ 	if (dc_dmub_srv->ctx->dc->debug.dmcub_emulation)
+ 		return true;
+ 
++	dc_ctx = dc_dmub_srv->ctx;
++
+ 	if (wait) {
+ 		status = dmub_srv_wait_for_hw_pwr_up(dc_dmub_srv->dmub, 500000);
+ 		if (status != DMUB_STATUS_OK) {
 -- 
 2.43.0
 
