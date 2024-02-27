@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-24340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AECB869549
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:00:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69B52869327
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:42:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8F75B30736
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A05B1F2887D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:42:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A10C14532C;
-	Tue, 27 Feb 2024 13:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2268E13B798;
+	Tue, 27 Feb 2024 13:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dwnJ7Xp6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zm17icxE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4989054BD4;
-	Tue, 27 Feb 2024 13:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F7F13AA55;
+	Tue, 27 Feb 2024 13:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041720; cv=none; b=AvFa2TnJhvge7yGsyInDNTmuj5/JjC5/rwSazZfxR/dVpIeCMCJVGwsx1eP0oYOJ0XhVXsc4YEvaX/Vg6WmbuRvYfHt4OtkZIOlQ4LNnrtgPCduOKTPNMgCbcn6smCzldki/t6uX3Kpai9wt+RCrSkS/ByZaY1yVVKnkr9GcTDc=
+	t=1709041330; cv=none; b=YSJdsfGxoSEE6X351BeENrOjvu3qReQ0ZsVIdVxeNrtQ+3M99oACI1PZTNnbOs9mp53I3L4cZrYBGRvbaZ/mqPCeZh8xcfQ4fu3EhQR6Uyi3egLjkYxBr/ejByQtuUGDEzqUt5cIIWNSadyOBMxGOOtQ0niR4lWkIapbJi9ziL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041720; c=relaxed/simple;
-	bh=IDyqorgghNYh+ppySs1kiUtJUx960pVejTXPMbb8/EQ=;
+	s=arc-20240116; t=1709041330; c=relaxed/simple;
+	bh=9UwR1hrATnc+XP4vkwJmEXWu8r+1ay0r8zivhAOYfPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CKzyhpBcZdAAMrdjhrCUkkSBvhW7TmJ6osjF0XKqFQf1B5knxNL2RRPEQ4x06WBNNUyAGKp6lCIey3gme6hyJWZ2YjFiEJ3UxohEf2lK6bG7JKPwbYHA4mrgylOyDqHtX8KfNYjo4JKJiPHrlSvi+EwCzzFDjrAUSLVmJUwn+VU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dwnJ7Xp6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC92EC43390;
-	Tue, 27 Feb 2024 13:48:39 +0000 (UTC)
+	 MIME-Version; b=kysmbA1RdJ76PBt3DqN4rh2G9HgCWWaM8SL5PAYj5nV8PvWKVZcF9SsPir2Lx6cCL2uuM3z5BV6+eyBB9ksn6FrpD1pHSwoVQnJrkXVTvC4Y0XvKAuP84zXFU8sY4av7fN/7AQcwizPSBaH1NMRIPUhn6fXj85EGd4j/bQcq5F4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zm17icxE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FAE3C433F1;
+	Tue, 27 Feb 2024 13:42:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041720;
-	bh=IDyqorgghNYh+ppySs1kiUtJUx960pVejTXPMbb8/EQ=;
+	s=korg; t=1709041330;
+	bh=9UwR1hrATnc+XP4vkwJmEXWu8r+1ay0r8zivhAOYfPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dwnJ7Xp6rvgmoMGsBtIuxalFvFjPc2VvxAwX/6gNdnzjReOJn6aDhbt0KfjQqquGm
-	 omFM/0RTErVWHbwblOcCNXdKRrk2J9h7d/doYAdzOvTwOp0D+n5jF5vBYm57Mh/jzu
-	 z2YLr9sgjtq49VNYiPXjZ1PID1orb0mMU900TzyQ=
+	b=zm17icxEkUfmMQsD0epEOsA42gghAbjND8D6XYXpDWl+teYcYmCTgP16eN4DJO5QF
+	 GD2CtAtNkO4Pi4RYdsAR8kwsPheWAahsqQr5pvRij5u26GEzk7h9eSzbTw3b39Ed0G
+	 DJ5b7LKnkPy8ulZ6im0hmfLve2H9MmYKMCbJz4lI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wens@csie.org>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Pavel Machek <pavel@denx.de>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 047/299] ASoC: sunxi: sun4i-spdif: Add support for Allwinner H616
-Date: Tue, 27 Feb 2024 14:22:38 +0100
-Message-ID: <20240227131627.493744503@linuxfoundation.org>
+Subject: [PATCH 6.7 301/334] cache: ax45mp_cache: Align end size to cache boundary in ax45mp_dma_cache_wback()
+Date: Tue, 27 Feb 2024 14:22:39 +0100
+Message-ID: <20240227131640.751326122@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wens@csie.org>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit 0adf963b8463faa44653e22e56ce55f747e68868 ]
+[ Upstream commit 9bd405c48b0ac4de087c0c4440fd79597201b8a7 ]
 
-The SPDIF hardware block found in the H616 SoC has the same layout as
-the one found in the H6 SoC, except that it is missing the receiver
-side.
+Align the end size to cache boundary size in ax45mp_dma_cache_wback()
+callback likewise done in ax45mp_dma_cache_inv() callback.
 
-Since the driver currently only supports the transmit function, support
-for the H616 is identical to what is currently done for the H6.
+Additionally return early in case of start == end.
 
-Signed-off-by: Chen-Yu Tsai <wens@csie.org>
-Reviewed-by: Andre Przywara <andre.przywara@arm.com>
-Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Link: https://msgid.link/r/20240127163247.384439-4-wens@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: d34599bcd2e4 ("cache: Add L2 cache management for Andes AX45MP RISC-V core")
+Reported-by: Pavel Machek <pavel@denx.de>
+Link: https://lore.kernel.org/cip-dev/ZYsdKDiw7G+kxQ3m@duo.ucw.cz/
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sunxi/sun4i-spdif.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/cache/ax45mp_cache.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/sound/soc/sunxi/sun4i-spdif.c b/sound/soc/sunxi/sun4i-spdif.c
-index b849bb7cf58e2..2347aeb049bcc 100644
---- a/sound/soc/sunxi/sun4i-spdif.c
-+++ b/sound/soc/sunxi/sun4i-spdif.c
-@@ -578,6 +578,11 @@ static const struct of_device_id sun4i_spdif_of_match[] = {
- 		.compatible = "allwinner,sun50i-h6-spdif",
- 		.data = &sun50i_h6_spdif_quirks,
- 	},
-+	{
-+		.compatible = "allwinner,sun50i-h616-spdif",
-+		/* Essentially the same as the H6, but without RX */
-+		.data = &sun50i_h6_spdif_quirks,
-+	},
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, sun4i_spdif_of_match);
+diff --git a/drivers/cache/ax45mp_cache.c b/drivers/cache/ax45mp_cache.c
+index 57186c58dc849..1d7dd3d2c101c 100644
+--- a/drivers/cache/ax45mp_cache.c
++++ b/drivers/cache/ax45mp_cache.c
+@@ -129,8 +129,12 @@ static void ax45mp_dma_cache_wback(phys_addr_t paddr, size_t size)
+ 	unsigned long line_size;
+ 	unsigned long flags;
+ 
++	if (unlikely(start == end))
++		return;
++
+ 	line_size = ax45mp_priv.ax45mp_cache_line_size;
+ 	start = start & (~(line_size - 1));
++	end = ((end + line_size - 1) & (~(line_size - 1)));
+ 	local_irq_save(flags);
+ 	ax45mp_cpu_dcache_wb_range(start, end);
+ 	local_irq_restore(flags);
 -- 
 2.43.0
 
