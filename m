@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16C6486942B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E3AA86957B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:02:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0E561F21C77
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E27B91F2A42B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:02:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2407A145322;
-	Tue, 27 Feb 2024 13:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7496213B798;
+	Tue, 27 Feb 2024 14:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j/Q4FzGM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WT4ZupY4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D620913B797;
-	Tue, 27 Feb 2024 13:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30BB116423;
+	Tue, 27 Feb 2024 14:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041826; cv=none; b=lSOTObHaF+E8UZpBVrxXSlmZWMCmPKVyBXdGJIFJSiq0pbq3laQdNzQQWxLJJnx3+Zq17jZhugkukfsSf+ke1kE/Wyomm7XXtJG9vxj1Gl2cVTVlypIckA7fXPVwoWhYOJm0cs7+dzqT2yRdZ/OPdYXyPUeB1Z7yghX8pinAePw=
+	t=1709042534; cv=none; b=UPxoL4xMXNx7RVxgRnZzp/wMN3Mklin60JwNPTU/LHhoc715RJzUa60pcB0NFd/J6aLMczKMjA7ZP9nBL/mK5LwCT95O9930IGrdT4uQpuY7D7QORG02aj1PMBwtza9iDqd5we0HrRUepkqiscWu74CuCGX7lxkQKikYzWCF1OU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041826; c=relaxed/simple;
-	bh=JkM8C8aSMNohxlq04hc3SD/WReO8sHyUW3QSHbjWl7Y=;
+	s=arc-20240116; t=1709042534; c=relaxed/simple;
+	bh=r2mZJXi6wUp84amlDF5MqoDKH+RLOFydfxK7uXXPC2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ajnP3KPUTC2+BDdwsHuLERopXvFCkMy7a0HsJsNVL8RSCqe6Pdykv6wdd+7NAkHIb57b7AvyXJSg/bV0CBx2iKICwUTT35TPReG/xSBAGXT4QpkhpZuhAJ4T6jl2rhYzJN962UZoVneonooW1Q9noL0LAcWUVQxJ2KPOAkKTmCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j/Q4FzGM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 648E0C433C7;
-	Tue, 27 Feb 2024 13:50:26 +0000 (UTC)
+	 MIME-Version; b=TT9okkZrYqwvXBANCIp29EqFmJTkW9zPdI88/k4FwqiWchIrvBEPu4qAsv7msifqI91YQOH/P4MkShVSwmZ7uXZDCunWdpW50W76PxfXhXvWWm5oK32RtH+CGLcozORrHn6eUYhnWZ54tVWaOqAG5rRLcZbJEb95Z+Cj6A0teEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WT4ZupY4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60B03C433F1;
+	Tue, 27 Feb 2024 14:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041826;
-	bh=JkM8C8aSMNohxlq04hc3SD/WReO8sHyUW3QSHbjWl7Y=;
+	s=korg; t=1709042533;
+	bh=r2mZJXi6wUp84amlDF5MqoDKH+RLOFydfxK7uXXPC2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j/Q4FzGMyNm8Q8iNfrzluhY9WOgj12dWsfvGwNTFOjXra52lGxfLrW1vq9jb3hwU+
-	 jO1NVBaeUn3/7aK8xrBIfiH65gF/ALSWFRm+lt4TgPIwrggGyBi6UirJ/e+5ktETwT
-	 QUBY/apAmlB3Aw7FdhgADxQ5kwwjaqXu6v3IqIos=
+	b=WT4ZupY4P09Fd/36kGwG8+9bL23S1ufhtKbsK1OiCJjbEyszC6JXPZmkdLxBDuR3E
+	 ePpe0071NMEPyWcrFCI6QqFuLEIlF7Uo7yoBYKMb9AoEuRmucIopfoQ00SdWStvtwV
+	 evu79IKTzKMyXyIc6p+FPlAEpHvXTritw9T9FLjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 083/299] fs/ntfs3: Disable ATTR_LIST_ENTRY size check
+	Paulo Alcantara <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Guruswamy Basavaiah <guruswamy.basavaiah@broadcom.com>
+Subject: [PATCH 5.15 006/245] smb: client: fix parsing of SMB3.1.1 POSIX create context
 Date: Tue, 27 Feb 2024 14:23:14 +0100
-Message-ID: <20240227131628.592975782@linuxfoundation.org>
+Message-ID: <20240227131615.314529804@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit 4cdfb6e7bc9c80142d33bf1d4653a73fa678ba56 ]
+[ Upstream commit 76025cc2285d9ede3d717fe4305d66f8be2d9346 ]
 
-The use of sizeof(struct ATTR_LIST_ENTRY) has been replaced with le_size(0)
-due to alignment peculiarities on different platforms.
+The data offset for the SMB3.1.1 POSIX create context will always be
+8-byte aligned so having the check 'noff + nlen >= doff' in
+smb2_parse_contexts() is wrong as it will lead to -EINVAL because noff
++ nlen == doff.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202312071005.g6YrbaIe-lkp@intel.com/
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the sanity check to correctly handle aligned create context data.
+
+Fixes: af1689a9b770 ("smb: client: fix potential OOBs in smb2_parse_contexts()")
+Signed-off-by: Paulo Alcantara <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[Guru:smb2_parse_contexts()  is present in file smb2ops.c,
+smb2ops.c file location is changed, modified patch accordingly.]
+Signed-off-by: Guruswamy Basavaiah <guruswamy.basavaiah@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/attrlist.c | 8 ++++----
- fs/ntfs3/ntfs.h     | 2 --
- 2 files changed, 4 insertions(+), 6 deletions(-)
+ fs/cifs/smb2pdu.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/attrlist.c b/fs/ntfs3/attrlist.c
-index 7c01735d1219d..48e7da47c6b71 100644
---- a/fs/ntfs3/attrlist.c
-+++ b/fs/ntfs3/attrlist.c
-@@ -127,12 +127,13 @@ struct ATTR_LIST_ENTRY *al_enumerate(struct ntfs_inode *ni,
- {
- 	size_t off;
- 	u16 sz;
-+	const unsigned le_min_size = le_size(0);
+--- a/fs/cifs/smb2pdu.c
++++ b/fs/cifs/smb2pdu.c
+@@ -2094,7 +2094,7 @@ int smb2_parse_contexts(struct TCP_Serve
  
- 	if (!le) {
- 		le = ni->attr_list.le;
- 	} else {
- 		sz = le16_to_cpu(le->size);
--		if (sz < sizeof(struct ATTR_LIST_ENTRY)) {
-+		if (sz < le_min_size) {
- 			/* Impossible 'cause we should not return such le. */
- 			return NULL;
- 		}
-@@ -141,7 +142,7 @@ struct ATTR_LIST_ENTRY *al_enumerate(struct ntfs_inode *ni,
+ 		noff = le16_to_cpu(cc->NameOffset);
+ 		nlen = le16_to_cpu(cc->NameLength);
+-		if (noff + nlen >= doff)
++		if (noff + nlen > doff)
+ 			return -EINVAL;
  
- 	/* Check boundary. */
- 	off = PtrOffset(ni->attr_list.le, le);
--	if (off + sizeof(struct ATTR_LIST_ENTRY) > ni->attr_list.size) {
-+	if (off + le_min_size > ni->attr_list.size) {
- 		/* The regular end of list. */
- 		return NULL;
- 	}
-@@ -149,8 +150,7 @@ struct ATTR_LIST_ENTRY *al_enumerate(struct ntfs_inode *ni,
- 	sz = le16_to_cpu(le->size);
- 
- 	/* Check le for errors. */
--	if (sz < sizeof(struct ATTR_LIST_ENTRY) ||
--	    off + sz > ni->attr_list.size ||
-+	if (sz < le_min_size || off + sz > ni->attr_list.size ||
- 	    sz < le->name_off + le->name_len * sizeof(short)) {
- 		return NULL;
- 	}
-diff --git a/fs/ntfs3/ntfs.h b/fs/ntfs3/ntfs.h
-index 13e96fc63dae5..f61f5b3adb03a 100644
---- a/fs/ntfs3/ntfs.h
-+++ b/fs/ntfs3/ntfs.h
-@@ -527,8 +527,6 @@ struct ATTR_LIST_ENTRY {
- 
- }; // sizeof(0x20)
- 
--static_assert(sizeof(struct ATTR_LIST_ENTRY) == 0x20);
--
- static inline u32 le_size(u8 name_len)
- {
- 	return ALIGN(offsetof(struct ATTR_LIST_ENTRY, name) +
--- 
-2.43.0
-
+ 		name = (char *)cc + noff;
 
 
 
