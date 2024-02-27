@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-24609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C442869568
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:01:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF79C869449
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE02D1C245CB
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:01:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E115A1C22A8C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8168D145343;
-	Tue, 27 Feb 2024 14:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99654145B09;
+	Tue, 27 Feb 2024 13:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lvwwL4zT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dfyy+oQi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF761448FE;
-	Tue, 27 Feb 2024 14:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58CA713B29B;
+	Tue, 27 Feb 2024 13:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042493; cv=none; b=P4ULB0aZGWREMLLqm/YAnfd7ewRD++rMEGxrw+iIg7+46g8b75v9TRCBRzlM9GFR9So9fv8Hf+xfHqO8TWPFt/u5fsQOzEFM+MfzwKaJnf3ba9Pd8CaDMCi51Ae7LtjyQLoXLPYbKMhu1Hm3udxdDeNMsMPucg5VjDlY4YDPcnU=
+	t=1709041907; cv=none; b=N7C6X+y8Dfsua9c58uoh8RDg9fHb9Y4WhiElDz6oykmZdbFUERMqIDu+lgW1cxqFkEwIi/rZjaOxOkCvUNyM+zoHFGbRoXL5m2UqTi1Cg65zJDVlAU+v2mY7rfCST9PaMxZyFP1qbpwVmwREc4YscaYOKu/I0Vtz6CEMSIGr5Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042493; c=relaxed/simple;
-	bh=Lysmf1YZee5mK2wLAqHxqE+RM7XnN3C/Ka9oqkMpv6Y=;
+	s=arc-20240116; t=1709041907; c=relaxed/simple;
+	bh=UuzSS+dV3SQUjzt4f1g7j4YMsuaPWssr2ZMt7LMsRVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bm9AUP1Dldz9lPw65ESFKIX/geoMyXfsmcsmpdI76Q3P0p1NhhGagpAGHOqu1mFGiR9pxogsHyr9RX0h77pgSAVanMQ2/ILP7NBfY4JSLmvDlYvsHw8kCBoYS1agrmZbkq+qfAImePQG8sXfEg71VlsgRLwWhLqnoI8CaqV3A+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lvwwL4zT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD425C433F1;
-	Tue, 27 Feb 2024 14:01:32 +0000 (UTC)
+	 MIME-Version; b=NlQq7A1EIU9rAiVq74WkDx6R9iPZ6GMH/dgxTlLbYXFim8ykkcALX0IwmsmUJhHhqyEn4MV+XvTWJ5OfdYfnOQQKmP/LY5AStiXDOpldweQr6W9A7UyPn9a3nlbfbj+Sl2DoXv9+2Z27+w6GSFFd3djdoRfiEe2SjFw9tQ6Khew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dfyy+oQi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5244C433F1;
+	Tue, 27 Feb 2024 13:51:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042493;
-	bh=Lysmf1YZee5mK2wLAqHxqE+RM7XnN3C/Ka9oqkMpv6Y=;
+	s=korg; t=1709041907;
+	bh=UuzSS+dV3SQUjzt4f1g7j4YMsuaPWssr2ZMt7LMsRVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lvwwL4zTgEmHLzhVBxO2j4svRx06glpidItXYumIwevEZkm4UKPTVI53Y/V6xVMqh
-	 zZ6fnXVGT5SaGBAxleOu+SQviNjE4gRo1FWNBCkseHoR0hiohRjHRjc42bTPblS9lY
-	 INB3M4Q3Y61YUpsLypZ5MLPJRhWIbwfSMLJqAljc=
+	b=Dfyy+oQi7hfYFQnlfd9OOSwdGBPIk91pUzCCyFjmdnyH6UbKqkY4U3CGpj3QD8d2a
+	 +LVxeKBiC//Ydo/lL1/knqTnPU0OAaNah0gHqGHY4RU+qGDr+zI+5WII4IZZ3ZEXjd
+	 9rCB9gOch+kgzvfwEvwb5Qd2XlNo3p+iZeK//D2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cyril Hrubis <chrubis@suse.cz>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Petr Vorel <pvorel@suse.cz>,
-	Mel Gorman <mgorman@suse.de>
-Subject: [PATCH 5.15 016/245] sched/rt: Fix sysctl_sched_rr_timeslice intial value
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 093/299] wifi: mac80211: adding missing drv_mgd_complete_tx() call
 Date: Tue, 27 Feb 2024 14:23:24 +0100
-Message-ID: <20240227131615.645150228@linuxfoundation.org>
+Message-ID: <20240227131628.898372651@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cyril Hrubis <chrubis@suse.cz>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit c7fcb99877f9f542c918509b2801065adcaf46fa upstream.
+[ Upstream commit c042600c17d8c490279f0ae2baee29475fe8047d ]
 
-There is a 10% rounding error in the intial value of the
-sysctl_sched_rr_timeslice with CONFIG_HZ_300=y.
+There's a call to drv_mgd_prepare_tx() and so there should
+be one to drv_mgd_complete_tx(), but on this path it's not.
+Add it.
 
-This was found with LTP test sched_rr_get_interval01:
-
-sched_rr_get_interval01.c:57: TPASS: sched_rr_get_interval() passed
-sched_rr_get_interval01.c:64: TPASS: Time quantum 0s 99999990ns
-sched_rr_get_interval01.c:72: TFAIL: /proc/sys/kernel/sched_rr_timeslice_ms != 100 got 90
-sched_rr_get_interval01.c:57: TPASS: sched_rr_get_interval() passed
-sched_rr_get_interval01.c:64: TPASS: Time quantum 0s 99999990ns
-sched_rr_get_interval01.c:72: TFAIL: /proc/sys/kernel/sched_rr_timeslice_ms != 100 got 90
-
-What this test does is to compare the return value from the
-sched_rr_get_interval() and the sched_rr_timeslice_ms sysctl file and
-fails if they do not match.
-
-The problem it found is the intial sysctl file value which was computed as:
-
-static int sysctl_sched_rr_timeslice = (MSEC_PER_SEC / HZ) * RR_TIMESLICE;
-
-which works fine as long as MSEC_PER_SEC is multiple of HZ, however it
-introduces 10% rounding error for CONFIG_HZ_300:
-
-(MSEC_PER_SEC / HZ) * (100 * HZ / 1000)
-
-(1000 / 300) * (100 * 300 / 1000)
-
-3 * 30 = 90
-
-This can be easily fixed by reversing the order of the multiplication
-and division. After this fix we get:
-
-(MSEC_PER_SEC * (100 * HZ / 1000)) / HZ
-
-(1000 * (100 * 300 / 1000)) / 300
-
-(1000 * 30) / 300 = 100
-
-Fixes: 975e155ed873 ("sched/rt: Show the 'sched_rr_timeslice' SCHED_RR timeslice tuning knob in milliseconds")
-Signed-off-by: Cyril Hrubis <chrubis@suse.cz>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Petr Vorel <pvorel@suse.cz>
-Acked-by: Mel Gorman <mgorman@suse.de>
-Tested-by: Petr Vorel <pvorel@suse.cz>
-Link: https://lore.kernel.org/r/20230802151906.25258-2-chrubis@suse.cz
-[ pvorel: rebased for 5.15, 5.10 ]
-Signed-off-by: Petr Vorel <pvorel@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://msgid.link/20240131164824.2f0922a514e1.I5aac89b93bcead88c374187d70cad0599d29d2c8@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/rt.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/mlme.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -8,7 +8,7 @@
- #include "pelt.h"
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index d9e716f38b0e9..c6044ab4e7fc1 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -7800,6 +7800,7 @@ int ieee80211_mgd_deauth(struct ieee80211_sub_if_data *sdata,
+ 		ieee80211_report_disconnect(sdata, frame_buf,
+ 					    sizeof(frame_buf), true,
+ 					    req->reason_code, false);
++		drv_mgd_complete_tx(sdata->local, sdata, &info);
+ 		return 0;
+ 	}
  
- int sched_rr_timeslice = RR_TIMESLICE;
--int sysctl_sched_rr_timeslice = (MSEC_PER_SEC / HZ) * RR_TIMESLICE;
-+int sysctl_sched_rr_timeslice = (MSEC_PER_SEC * RR_TIMESLICE) / HZ;
- /* More than 4 hours if BW_SHIFT equals 20. */
- static const u64 max_rt_runtime = MAX_BW;
- 
+-- 
+2.43.0
+
 
 
 
