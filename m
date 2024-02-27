@@ -1,117 +1,167 @@
-Return-Path: <stable+bounces-23874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1EC0868C24
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 10:25:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1E68868C89
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 10:42:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97B9B1F23572
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 09:25:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3D6C1C2165E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 09:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00B7137C3F;
-	Tue, 27 Feb 2024 09:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D00C51369AA;
+	Tue, 27 Feb 2024 09:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nQvw8YpI"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="G7jS74uR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7509C136991;
-	Tue, 27 Feb 2024 09:24:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397701369A3;
+	Tue, 27 Feb 2024 09:40:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709025880; cv=none; b=HDLHTxyKejLBjoIbDmHD0a5BM803Uzia5xIEa9ZtZ1J+4rWIdAjXhD2dt4hO8gcMliDsWWhvHEV4sBNzUObdkKsCdg/u8cz3IFgke3pcZPSTHq0TblPvqEp24YswzQz8xhHzfQ1i6ecXN5WW6Ix0t5CBJJNM/C0LOQ9YkwrYDmE=
+	t=1709026852; cv=none; b=YHfgAmfqKV8elq+w8o5m6GQH9VxTOt5FdxzZCE44als8/kmKbatnjQ9LTvjloGOSvicOl3SfDy9ruKOaVBSP4nt/1/4TBXxhikfkpjFEgqZYPyoRRIhCVrX+vbHM3cDXjYJSog7TsEAAYP1Wbfi4WutekPy4La4Qkg9HuOYnLMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709025880; c=relaxed/simple;
-	bh=508DhFAqXr8/FZ4dv70h/hSD4v7ugc/f9K6ffAa4qs8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=X+GvWK5y4JiTpgkADDhP+2d6vw7QhTPa/n7UPEz0RWR2ZVO08pCxMshx6Hw9NZbVL756e07kMyOMMex5C+0+rk3/HlND30+e4DuYxN97m17IHigKJkKbqNLNyjQNguLaXNGkK7YWeHTozM1sdGRHyvp9Ev9QQb9Eoft2M9VhBGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nQvw8YpI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 769E2C43390;
-	Tue, 27 Feb 2024 09:24:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709025880;
-	bh=508DhFAqXr8/FZ4dv70h/hSD4v7ugc/f9K6ffAa4qs8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=nQvw8YpIokRwsNAo+X2jG5eRsQ+mlTqm8/IeSJD2f6W/O3NzWVgaVHMXhavUOKDAs
-	 hLy+CHwq97ay9Of6xK5ubZI6Tc7aCg4lwczoyn2gA1P33QiMs2AxqP1mc4uei5ycCs
-	 4cUmAXDEDEn8JpZWCzA5v5bvfGyJuhlqU+xUx1U7zBLhTnHq9PaqxJFp4whtejjyYD
-	 qFTaodDVMkdOL3qQna1QVl1ztp3kaAnNIJrhriaBCXTnmlIugbq/gzhqE1UcMj+GgU
-	 fiVVjc6zrjNKbaiT+AOtG4MRPm7txZwfuz95Sgws0nSAOtgu4TzywayM1wVFdAWbqx
-	 l10v48Uma/hVQ==
-From: Roger Quadros <rogerq@kernel.org>
-Date: Tue, 27 Feb 2024 11:23:49 +0200
-Subject: [PATCH v4 2/4] usb: dwc3-am62: Disable wakeup at remove
+	s=arc-20240116; t=1709026852; c=relaxed/simple;
+	bh=1RTEAdFFHOEmxNBmqAuXPQRIA7GMEv6Hxi5j0Y8gqRI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UmOmy039iAfGkmCA9NiPllzi17Ky1NJxoqeNlVlPlzGE/Bi/OnVk3jRWTrjww2uD6viCe9WvkoR0Y0EoOb3bnwxbYqAEkJdHj1jBSWgoEp9nBFs4KR9vcV9V5Li3Kn6XTgUqHLrnbvAIbdBuKCz/V6yyQboS1FYkprkjtOXEQHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=G7jS74uR; arc=none smtp.client-ip=217.70.183.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id BFAB5C0002;
+	Tue, 27 Feb 2024 09:40:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1709026848;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Mmn0FjbhKH+X6W94t2nXwylEPzw7F/tZLjHorPr0+mk=;
+	b=G7jS74uRsUCaZ5E75Nq45zmqM7nb7gdxLE+r0CITcsJKVEX8RwON39N9Bn/jSuuRlsV+jz
+	1ZKUSEdlhJJVXYwUpUv/vcv1vqQKj7GcWNEczMtfO7Uy2UxLbtcRyvPIJEl1O6CHkwoH/B
+	OPc55phx1zLp4VtCbEf6OUzVc3z2rq9it5Y4ZkWc4SOv4QovWrBCZxe8dlim1WJN+FWgz3
+	As8H6DwpFXG/KWoFsnFudAH2f2xXQ6xFn8USrBpUJa9S1Mteb5ScZKfgWOsg5IQBZx/EKK
+	rDoo8GPQxSvegGQe92oUwtIHM1O6xNsyXMI2sw7XSSWrheyISovuX7EEmWz8Gg==
+Message-ID: <951bc29a-4483-4f4a-9c4e-900db9391112@bootlin.com>
+Date: Tue, 27 Feb 2024 10:40:42 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240227-for-v6-9-am62-usb-errata-3-0-v4-2-0ada8ddb0767@kernel.org>
-References: <20240227-for-v6-9-am62-usb-errata-3-0-v4-0-0ada8ddb0767@kernel.org>
-In-Reply-To: <20240227-for-v6-9-am62-usb-errata-3-0-v4-0-0ada8ddb0767@kernel.org>
-To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: nm@ti.com, r-gunasekaran@ti.com, afd@ti.com, b-liu@ti.com, srk@ti.com, 
- francesco@dolcini.it, linux-usb@vger.kernel.org, 
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
- Roger Quadros <rogerq@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=openpgp-sha256; l=971; i=rogerq@kernel.org;
- h=from:subject:message-id; bh=508DhFAqXr8/FZ4dv70h/hSD4v7ugc/f9K6ffAa4qs8=;
- b=owEBbQKS/ZANAwAIAdJaa9O+djCTAcsmYgBl3apLOCYkR3mS3D/aWVbUo8XqBYLz9ubOfkAr3
- VwCTP3jJD2JAjMEAAEIAB0WIQRBIWXUTJ9SeA+rEFjSWmvTvnYwkwUCZd2qSwAKCRDSWmvTvnYw
- k64QEADCg1dvBEPiw/OX6Y41G0KgglDLO7P8jV8uSE1TODgD86cvL+J71RWxTtxB/u8bmc29mxu
- ZTpHv4h9RagyO3FFdfqn6qkr9F27DPsmW3X+yKwjnfI5AivOH6t2El0V6bxjk8kEUUYlbgsVJmK
- 0R8pdwqcm3KcWcnO77GiwjQ4hByZlhp91X1HIrALw1pVZKVpmY/FWYKt7Kyg+r5beBgTQEuCwDS
- Og+0X98VqkiTohYaBODctgH9tq2SPvEADaMSoSRX2zLNm5AoVGqQiY+5ST7dWjTsJ/DpjemxoUl
- 1SPUzIL3B7GFoo+Wa3qjeXPbt6W11h6IaB3hFgKfMLOZujVHmUPzl80fYZbdtSW8nr336mmu5Ep
- kmqco0ewtitUxueeKEelLH6N04vHTszwHlJz2WNMIDSYCwiHTp7rmeDzmezypY4hg4aP3eHuuQa
- ev65oZSrAMT5Db+7DJKHgf7pNExD1JMpwrO1KDPj69II4VCxJceexzt1z1h3MqtceZp4aNFT2wB
- BTOzoPsZCsFy9a+tgW6bHlJ8bqFSXyzFVG/zkMv5Dz5NnxJGkahPbn4nzuHI1rsLE0c2Csjaesr
- d8y45gYR/2do6AxtwfLga0oVBWSJUyoI/xRvcWEIs12M1wG+c7eJonhNcVDnv0aTp5FMqc5d7bM
- baDIrrdSE4yZoaA==
-X-Developer-Key: i=rogerq@kernel.org; a=openpgp;
- fpr=412165D44C9F52780FAB1058D25A6BD3BE763093
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3] net: stmmac: protect updates of 64-bit statistics
+ counters
+Content-Language: en-US
+To: Eric Dumazet <edumazet@google.com>, Guenter Roeck <linux@roeck-us.net>
+Cc: Jisheng Zhang <jszhang@kernel.org>, Petr Tesarik <petr@tesarici.cz>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Jose Abreu <joabreu@synopsys.com>, "David S. Miller" <davem@davemloft.net>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, Chen-Yu Tsai <wens@csie.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>,
+ "open list:STMMAC ETHERNET DRIVER" <netdev@vger.kernel.org>,
+ "moderated list:ARM/STM32 ARCHITECTURE"
+ <linux-stm32@st-md-mailman.stormreply.com>,
+ "moderated list:ARM/STM32 ARCHITECTURE"
+ <linux-arm-kernel@lists.infradead.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
+ Marc Haber <mh+netdev@zugschlus.de>, Andrew Lunn <andrew@lunn.ch>,
+ Florian Fainelli <f.fainelli@gmail.com>, stable@vger.kernel.org
+References: <20240203190927.19669-1-petr@tesarici.cz>
+ <ea1567d9-ce66-45e6-8168-ac40a47d1821@roeck-us.net>
+ <Zct5qJcZw0YKx54r@xhacker>
+ <CANn89i+4tVWezqr=BYZ5AF=9EgV2EPqhdHun=u=ga32CEJ4BXQ@mail.gmail.com>
+ <20d94512-c4f2-49f7-ac97-846dc24a6730@roeck-us.net>
+ <CANn89iL1piwsbsBx4Z=kySUfmPa9LbZn-SNthgA+W6NEnojgSQ@mail.gmail.com>
+From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+In-Reply-To: <CANn89iL1piwsbsBx4Z=kySUfmPa9LbZn-SNthgA+W6NEnojgSQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: alexis.lothore@bootlin.com
 
-Disable wakeup at remove.
-Fixes the below warnings on module unload and reload.
+Hello, 
+FWIW I'm seeing this splat too on STM32MP157 with 6.8.0-rc5 (from wireless tree). It happens systematically a few seconds after link up
 
-> dwc3-am62 f900000.dwc3-usb: couldn't enable device as a wakeup source: -17
-> dwc3-am62 f910000.dwc3-usb: couldn't enable device as a wakeup source: -17
+[   27.884703] ================================
+[   27.888988] WARNING: inconsistent lock state
+[   27.893271] 6.8.0-rc5-g59460f7f45e6-dirty #16 Not tainted
+[   27.898671] --------------------------------
+[   27.902951] inconsistent {HARDIRQ-ON-W} -> {IN-HARDIRQ-W} usage.
+[   27.908954] swapper/0/0 [HC1[1]:SC0[0]:HE0:SE1] takes:
+[   27.914155] d7b764ac (&syncp->seq#3){?.-.}-{0:0}, at: dwmac4_dma_interrupt+0xc4/0x2a8
+[   27.921974] {HARDIRQ-ON-W} state was registered at:
+[   27.926863]   lock_acquire+0x12c/0x388
+[   27.930563]   __u64_stats_update_begin+0x138/0x214
+[   27.935372]   stmmac_xmit+0x55c/0xd80
+[   27.939064]   dev_hard_start_xmit+0xec/0x2f4
+[   27.943362]   sch_direct_xmit+0x94/0x310
+[   27.947255]   __dev_queue_xmit+0x3f8/0xd04
+[   27.951347]   ip6_finish_output2+0x2fc/0xbc0
+[   27.955642]   mld_sendpack+0x268/0x594
+[   27.959329]   mld_ifc_work+0x268/0x568
+[   27.963115]   process_one_work+0x20c/0x618
+[   27.967216]   worker_thread+0x1e8/0x4ac
+[   27.971009]   kthread+0x110/0x130
+[   27.974296]   ret_from_fork+0x14/0x28
+[   27.977982] irq event stamp: 12456
+[   27.981353] hardirqs last  enabled at (12455): [<c08e3558>] default_idle_call+0x1c/0x2cc
+[   27.989507] hardirqs last disabled at (12456): [<c0100b74>] __irq_svc+0x54/0xd0
+[   27.996844] softirqs last  enabled at (12440): [<c010162c>] __do_softirq+0x318/0x4dc
+[   28.004586] softirqs last disabled at (12429): [<c012b2a8>] __irq_exit_rcu+0x130/0x184
+[   28.012530]
+[   28.012530] other info that might help us debug this:
+[   28.019040]  Possible unsafe locking scenario:
+[   28.019040]
+[   28.025043]        CPU0
+[   28.027400]        ----
+[   28.029857]   lock(&syncp->seq#3);
+[   28.033253]   <Interrupt>
+[   28.035912]     lock(&syncp->seq#3);
+[   28.039410]
+[   28.039410]  *** DEADLOCK ***
+[   28.039410]
+[   28.045416] no locks held by swapper/0/0.
+[   28.049395]
+[   28.049395] stack backtrace:
+[   28.053781] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.8.0-rc5-g59460f7f45e6-dirty #16
+[   28.061819] Hardware name: STM32 (Device Tree Support)
+[   28.066918]  unwind_backtrace from show_stack+0x18/0x1c
+[   28.072140]  show_stack from dump_stack_lvl+0x58/0x70
+[   28.077253]  dump_stack_lvl from mark_lock+0xc40/0x12fc
+[   28.082478]  mark_lock from __lock_acquire+0x968/0x2c20
+[   28.087703]  __lock_acquire from lock_acquire+0x12c/0x388
+[   28.093131]  lock_acquire from __u64_stats_update_begin+0x138/0x214
+[   28.099372]  __u64_stats_update_begin from dwmac4_dma_interrupt+0xc4/0x2a8
+[   28.106219]  dwmac4_dma_interrupt from stmmac_napi_check+0x48/0x1d0
+[   28.112558]  stmmac_napi_check from stmmac_interrupt+0xa4/0x184
+[   28.118490]  stmmac_interrupt from __handle_irq_event_percpu+0xb0/0x308
+[   28.125036]  __handle_irq_event_percpu from handle_irq_event+0x40/0x88
+[   28.131578]  handle_irq_event from handle_fasteoi_irq+0xa4/0x258
+[   28.137610]  handle_fasteoi_irq from generic_handle_domain_irq+0x30/0x40
+[   28.144348]  generic_handle_domain_irq from gic_handle_irq+0x7c/0x90
+[   28.150682]  gic_handle_irq from generic_handle_arch_irq+0x34/0x44
+[   28.156911]  generic_handle_arch_irq from __irq_svc+0x8c/0xd0
+[   28.162631] Exception stack(0xc2201f30 to 0xc2201f78)
+[   28.167732] 1f20:                                     ffffffff ffffffff 00000001 000030a7
+[   28.175974] 1f40: c220c780 c0178dc4 c2208d54 c22c2e10 00000000 00000000 c0b06d28 c220c22c
+[   28.184114] 1f60: 00000000 c2201f80 c08e3558 c08e355c 600f0013 ffffffff
+[   28.190727]  __irq_svc from default_idle_call+0x20/0x2cc
+[   28.196045]  default_idle_call from do_idle+0xd8/0x144
+[   28.201165]  do_idle from cpu_startup_entry+0x30/0x34
+[   28.206181]  cpu_startup_entry from rest_init+0xf4/0x198
+[   28.211502]  rest_init from arch_post_acpi_subsys_init+0x0/0x18
 
-Fixes: 4e3972b589da ("usb: dwc3-am62: Enable as a wakeup source by default")
-Cc:  <stable@vger.kernel.org> # v6.4+
-Signed-off-by: Roger Quadros <rogerq@kernel.org>
----
-Changelog:
-v4 - new patch. split out from v3 patch 2.
----
- drivers/usb/dwc3/dwc3-am62.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/usb/dwc3/dwc3-am62.c b/drivers/usb/dwc3/dwc3-am62.c
-index f85603b7f7c5..ea6e29091c0c 100644
---- a/drivers/usb/dwc3/dwc3-am62.c
-+++ b/drivers/usb/dwc3/dwc3-am62.c
-@@ -274,6 +274,7 @@ static void dwc3_ti_remove(struct platform_device *pdev)
- 	u32 reg;
- 
- 	pm_runtime_get_sync(dev);
-+	device_init_wakeup(dev, false);
- 	of_platform_depopulate(dev);
- 
- 	/* Clear mode valid bit */
 
 -- 
-2.34.1
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
