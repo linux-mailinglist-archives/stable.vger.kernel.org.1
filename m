@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51870869437
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66DA686933B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:43:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 640DC1C23F52
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E58D28DA41
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:43:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6546E13DB98;
-	Tue, 27 Feb 2024 13:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABEB313B2BA;
+	Tue, 27 Feb 2024 13:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u9fFn7IM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FfQi6/fs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2326213B2B3;
-	Tue, 27 Feb 2024 13:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD2B13B2B4;
+	Tue, 27 Feb 2024 13:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041862; cv=none; b=MeBbZ7vrb5jBLIo1W0KTl2by9GvfrmMs+ZJDd+FUNXSo1pjY0NW3dvPQ5v26ouVHyUnBPPkHysxvPY+e5qQbAhDxvGIdJjripcXHTld7QUFhngDtxkZ9sgml+UI/SrEAgivvV5bTQeO6p+LaoYXAZvIsTPnpmg0cq7RptheM2W4=
+	t=1709041380; cv=none; b=p08Pu4oAdfQ+GEaUCEOvERIVwGFXRz3UK0t02MxheAMxU0K5BSh1kI5I53efdUheZh27pd2x0OuDpQEmVI1mvqdCQJbZ7d7bSlsM/wXSaFgWCi9VLghNpj4voULGkgjJ1WCqWaEUsn+8+Ha9SGX/LcE8Kj7DNfcLL+/Gt2eyEAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041862; c=relaxed/simple;
-	bh=DeC5yoOAtV/NbpdjWBzQVGiMuEAek7TXtWdNubWwEi8=;
+	s=arc-20240116; t=1709041380; c=relaxed/simple;
+	bh=bP8NpHM9o3485cld4Om+VHR+B6iE5zEv2ZUe5BXl7Fo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RxQ5Tj7Fq7F4oeXwTSAABTzPicWuVRhr+yRtIWWKCsFCkE4WjtZmISVPGco+Q7KpozTHQzdoBAvfb9X5sJFsClhQsMmJdSNb7K7jMTH+dJxkMLBYSg/h/bNm/gmo88HQ/31XnxaYko0xdJqr5krhZ4c6ByHQJyp4YFM1/nWX/vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u9fFn7IM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A52A4C433C7;
-	Tue, 27 Feb 2024 13:51:01 +0000 (UTC)
+	 MIME-Version; b=lNltmkmiJSZJtrM4DPsc/q6VvoF6PB+ew01Z9ky+PzJBuyFSUWeyryc/pxz7duAIb5R6GpAqbvymrtVBHDItP2gv2aU9KtOJR8iISegAPflGL+VQGl6w8Ah5/RBM+Pi0tFKHA2sntr0/DxvqTvOqUWBhhdJOfkEba+EKq3ktBwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FfQi6/fs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF81C433C7;
+	Tue, 27 Feb 2024 13:42:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041862;
-	bh=DeC5yoOAtV/NbpdjWBzQVGiMuEAek7TXtWdNubWwEi8=;
+	s=korg; t=1709041380;
+	bh=bP8NpHM9o3485cld4Om+VHR+B6iE5zEv2ZUe5BXl7Fo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u9fFn7IMLnMlv1aE5mqWc+2obi9kWBaVjZtpVtRPqhvJeNuafGV6LLyFLe9G9KA0l
-	 +5ka+n0IVye8lzLN8PCp4v7cFQkvpEtvvUI0Js5r1dYZg04FNy8cIDcIgMP6ozdVTW
-	 8Ix4wqOeIy04YEgf56Kkq2D468UfJn2jn3HHIRPk=
+	b=FfQi6/fs3La5bDjkk8Khr5EKYAKw1HTQ7eI0jevsKV84uzPTJRf9+BiHHyutAFZbj
+	 zPQGBIMiDYe33ynmRwoEIwJIscOiI3lJyrY97qUB2buslzJT93bMk6+j4LRNqB/HJN
+	 px4bYVxWuSSZeyxFtDKtRiQK23edqlCAb5k2152I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paulo Alcantara <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 067/299] smb: client: increase number of PDUs allowed in a compound request
+Subject: [PATCH 6.7 320/334] net: phy: realtek: Fix rtl8211f_config_init() for RTL8211F(D)(I)-VD-CG PHY
 Date: Tue, 27 Feb 2024 14:22:58 +0100
-Message-ID: <20240227131628.103110954@linuxfoundation.org>
+Message-ID: <20240227131641.424978510@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[ Upstream commit 11d4d1dba3315f73d2d1d386f5bf4811a8241d45 ]
+[ Upstream commit 3489182b11d35f1944c1245fc9c4867cf622c50f ]
 
-With the introduction of SMB2_OP_QUERY_WSL_EA, the client may now send
-5 commands in a single compound request in order to query xattrs from
-potential WSL reparse points, which should be fine as we currently
-allow up to 5 PDUs in a single compound request.  However, if
-encryption is enabled (e.g. 'seal' mount option) or enforced by the
-server, current MAX_COMPOUND(5) won't be enough as we require an extra
-PDU for the transform header.
+Commit bb726b753f75 ("net: phy: realtek: add support for
+RTL8211F(D)(I)-VD-CG") extended support of the driver from the existing
+support for RTL8211F(D)(I)-CG PHY to the newer RTL8211F(D)(I)-VD-CG PHY.
 
-Fix this by increasing MAX_COMPOUND to 7 and, while we're at it, add
-an WARN_ON_ONCE() and return -EIO instead of -ENOMEM in case we
-attempt to send a compound request that couldn't include the extra
-transform header.
+While that commit indicated that the RTL8211F_PHYCR2 register is not
+supported by the "VD-CG" PHY model and therefore updated the corresponding
+section in rtl8211f_config_init() to be invoked conditionally, the call to
+"genphy_soft_reset()" was left as-is, when it should have also been invoked
+conditionally. This is because the call to "genphy_soft_reset()" was first
+introduced by the commit 0a4355c2b7f8 ("net: phy: realtek: add dt property
+to disable CLKOUT clock") since the RTL8211F guide indicates that a PHY
+reset should be issued after setting bits in the PHYCR2 register.
 
-Signed-off-by: Paulo Alcantara <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+As the PHYCR2 register is not applicable to the "VD-CG" PHY model, fix the
+rtl8211f_config_init() function by invoking "genphy_soft_reset()"
+conditionally based on the presence of the "PHYCR2" register.
+
+Fixes: bb726b753f75 ("net: phy: realtek: add support for RTL8211F(D)(I)-VD-CG")
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240220070007.968762-1-s-vadapalli@ti.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsglob.h  | 2 +-
- fs/smb/client/transport.c | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/phy/realtek.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index dcc41fe33b705..462554917e5a1 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -82,7 +82,7 @@
- #define SMB_INTERFACE_POLL_INTERVAL	600
+diff --git a/drivers/net/phy/realtek.c b/drivers/net/phy/realtek.c
+index 894172a3e15fe..337899c69738e 100644
+--- a/drivers/net/phy/realtek.c
++++ b/drivers/net/phy/realtek.c
+@@ -421,9 +421,11 @@ static int rtl8211f_config_init(struct phy_device *phydev)
+ 				ERR_PTR(ret));
+ 			return ret;
+ 		}
++
++		return genphy_soft_reset(phydev);
+ 	}
  
- /* maximum number of PDUs in one compound */
--#define MAX_COMPOUND 5
-+#define MAX_COMPOUND 7
+-	return genphy_soft_reset(phydev);
++	return 0;
+ }
  
- /*
-  * Default number of credits to keep available for SMB3.
-diff --git a/fs/smb/client/transport.c b/fs/smb/client/transport.c
-index e00278fcfa4fa..994d701934329 100644
---- a/fs/smb/client/transport.c
-+++ b/fs/smb/client/transport.c
-@@ -435,8 +435,8 @@ smb_send_rqst(struct TCP_Server_Info *server, int num_rqst,
- 	if (!(flags & CIFS_TRANSFORM_REQ))
- 		return __smb_send_rqst(server, num_rqst, rqst);
- 
--	if (num_rqst > MAX_COMPOUND - 1)
--		return -ENOMEM;
-+	if (WARN_ON_ONCE(num_rqst > MAX_COMPOUND - 1))
-+		return -EIO;
- 
- 	if (!server->ops->init_transform_rq) {
- 		cifs_server_dbg(VFS, "Encryption requested but transform callback is missing\n");
+ static int rtl821x_suspend(struct phy_device *phydev)
 -- 
 2.43.0
 
