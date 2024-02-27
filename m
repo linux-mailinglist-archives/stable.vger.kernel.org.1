@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90BD7869637
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:09:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 299018694EB
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:57:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 311E71F2D356
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:09:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD76A1F21ACD
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:57:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C134813B78F;
-	Tue, 27 Feb 2024 14:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 589A313DB90;
+	Tue, 27 Feb 2024 13:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZLZ/A1e9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JPaYcaG8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0B713A26F;
-	Tue, 27 Feb 2024 14:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185492F2D;
+	Tue, 27 Feb 2024 13:57:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042959; cv=none; b=jirSNtO2DkxMjG6KfZN7fu69BixhyoHb0xafLrtY09cWzuWHWeJNwlPSWm81CwR7JMp00lHaVX0oiR/8itmEPtilsgKmEFRF+v2IKA9aPWd/NIdXiizX8vnvYBpdoXM8tIyo5mVuM+LPwcZVpD6W/IGz2JDtze7olHIVouIrtw0=
+	t=1709042249; cv=none; b=kKWG6I1DLo5uxVKsSvf9oT59CtVRFQ/cYlAR6Qsv9yyFg1d7xm3PY+ny5KLzItp/cqu+SNh2QQnyKhUpFT/RGg+kmVOtjPy8bTGZYe1QdL1JXu3VESXvtDtMqiunQVOoxidVgFN4teLeXWAJb8KnjqhVM8/bLLrvv/YxgsNnKDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042959; c=relaxed/simple;
-	bh=yqEX0taDLPUCYTMeHwvd/MiFtqFs4Oym672OyR/d1vo=;
+	s=arc-20240116; t=1709042249; c=relaxed/simple;
+	bh=LGh2BsQvNn11838CkLqM14T7zDKtoOUmKaj7k33VGXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b/Kx3BpcW2zCXurjztK5XZ7NJmWzdMGVC0QowZOUi4xlQOjEHKsGWB/doS7rkG47H4jnU86GNZJANd5LwbyHCHXIEgg5xUKnEDd5f12AImqSHVZSd6K3E8K1/OGm620vumZGrAkuqfBC3g8dOPiGB1w+T/REg9MZIhaSmbwpJh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZLZ/A1e9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2EFAC433C7;
-	Tue, 27 Feb 2024 14:09:18 +0000 (UTC)
+	 MIME-Version; b=H/vSRiQNEJQtvtnoGZJ3GkNgNL4Nkgt+78C4C4hjGmVzu+Lylj4NFBvkiHAb2M8v7EY00rXUw1K+HhP3d3Enb+w8q420gUo40DMZ3JWbqt9iCK1QkkD6tmqdVf4tDtQo2R13tSSHSgLJ+MegCGauJw8hUu+p7wEz68oF2AB8rN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JPaYcaG8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BB8CC433C7;
+	Tue, 27 Feb 2024 13:57:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042959;
-	bh=yqEX0taDLPUCYTMeHwvd/MiFtqFs4Oym672OyR/d1vo=;
+	s=korg; t=1709042248;
+	bh=LGh2BsQvNn11838CkLqM14T7zDKtoOUmKaj7k33VGXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZLZ/A1e9EE/2fvPox1BfewUds2D+DzH9ZdaKCZasewSrV94mpKulwybztdJuNZX3A
-	 OHrj53RmvgE9anagTmA3GIvfkk8aNAdiqPKoKg9N7QJ68mzc24JoIRuf1Ez4hgtUo/
-	 0OqZ4OPJUMtqtUwxh1QDl1gP3aBMcVqE0lk5+CX0=
+	b=JPaYcaG8rhqKGHILZe4GW+IQoFFmduSbIfMMJa+JjsjfGyvJhpC+P04wVrndPvqDQ
+	 w4uetbcyRhVHxHHaLawm7n/cWg4oZs703DLPhX4z1yoqmEqYvdNnLrLpLEUCHTy+bH
+	 b43B/LZQSBHJWvyxmVAxWXJiBgqhmcTS0S0X3vKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-	Ganesh Goudar <ganeshgr@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Gianmarco Lusvardi <glusvardi@posteo.net>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Quentin Monnet <quentin@isovalent.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 154/245] powerpc/eeh: Set channel state after notifying the drivers
+Subject: [PATCH 6.6 231/299] bpf, scripts: Correct GPL license name
 Date: Tue, 27 Feb 2024 14:25:42 +0100
-Message-ID: <20240227131620.222271732@linuxfoundation.org>
+Message-ID: <20240227131633.182165231@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ganesh Goudar <ganeshgr@linux.ibm.com>
+From: Gianmarco Lusvardi <glusvardi@posteo.net>
 
-[ Upstream commit 9efcdaac36e1643a1b7f5337e6143ce142d381b1 ]
+[ Upstream commit e37243b65d528a8a9f8b9a57a43885f8e8dfc15c ]
 
-When a PCI error is encountered 6th time in an hour we
-set the channel state to perm_failure and notify the
-driver about the permanent failure.
+The bpf_doc script refers to the GPL as the "GNU Privacy License".
+I strongly suspect that the author wanted to refer to the GNU General
+Public License, under which the Linux kernel is released, as, to the
+best of my knowledge, there is no license named "GNU Privacy License".
+This patch corrects the license name in the script accordingly.
 
-However, after upstream commit 38ddc011478e ("powerpc/eeh:
-Make permanently failed devices non-actionable"), EEH handler
-stops calling any routine once the device is marked as
-permanent failure. This issue can lead to fatal consequences
-like kernel hang with certain PCI devices.
-
-Following log is observed with lpfc driver, with and without
-this change, Without this change kernel hangs, If PCI error
-is encountered 6 times for a device in an hour.
-
-Without the change
-
- EEH: Beginning: 'error_detected(permanent failure)'
- PCI 0132:60:00.0#600000: EEH: not actionable (1,1,1)
- PCI 0132:60:00.1#600000: EEH: not actionable (1,1,1)
- EEH: Finished:'error_detected(permanent failure)'
-
-With the change
-
- EEH: Beginning: 'error_detected(permanent failure)'
- EEH: Invoking lpfc->error_detected(permanent failure)
- EEH: lpfc driver reports: 'disconnect'
- EEH: Invoking lpfc->error_detected(permanent failure)
- EEH: lpfc driver reports: 'disconnect'
- EEH: Finished:'error_detected(permanent failure)'
-
-To fix the issue, set channel state to permanent failure after
-notifying the drivers.
-
-Fixes: 38ddc011478e ("powerpc/eeh: Make permanently failed devices non-actionable")
-Suggested-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Signed-off-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20230209105649.127707-1-ganeshgr@linux.ibm.com
+Fixes: 56a092c89505 ("bpf: add script and prepare bpf.h for new helpers documentation")
+Signed-off-by: Gianmarco Lusvardi <glusvardi@posteo.net>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Quentin Monnet <quentin@isovalent.com>
+Link: https://lore.kernel.org/bpf/20240213230544.930018-3-glusvardi@posteo.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/eeh_driver.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ scripts/bpf_doc.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
-index cb3ac555c9446..665d847ef9b5a 100644
---- a/arch/powerpc/kernel/eeh_driver.c
-+++ b/arch/powerpc/kernel/eeh_driver.c
-@@ -1069,10 +1069,10 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
- 	eeh_slot_error_detail(pe, EEH_LOG_PERM);
+diff --git a/scripts/bpf_doc.py b/scripts/bpf_doc.py
+index 61b7dddedc461..0669bac5e900e 100755
+--- a/scripts/bpf_doc.py
++++ b/scripts/bpf_doc.py
+@@ -513,7 +513,7 @@ eBPF programs can have an associated license, passed along with the bytecode
+ instructions to the kernel when the programs are loaded. The format for that
+ string is identical to the one in use for kernel modules (Dual licenses, such
+ as "Dual BSD/GPL", may be used). Some helper functions are only accessible to
+-programs that are compatible with the GNU Privacy License (GPL).
++programs that are compatible with the GNU General Public License (GNU GPL).
  
- 	/* Notify all devices that they're about to go down. */
--	eeh_set_channel_state(pe, pci_channel_io_perm_failure);
- 	eeh_set_irq_state(pe, false);
- 	eeh_pe_report("error_detected(permanent failure)", pe,
- 		      eeh_report_failure, NULL);
-+	eeh_set_channel_state(pe, pci_channel_io_perm_failure);
- 
- 	/* Mark the PE to be removed permanently */
- 	eeh_pe_state_mark(pe, EEH_PE_REMOVED);
-@@ -1189,10 +1189,10 @@ void eeh_handle_special_event(void)
- 
- 			/* Notify all devices to be down */
- 			eeh_pe_state_clear(pe, EEH_PE_PRI_BUS, true);
--			eeh_set_channel_state(pe, pci_channel_io_perm_failure);
- 			eeh_pe_report(
- 				"error_detected(permanent failure)", pe,
- 				eeh_report_failure, NULL);
-+			eeh_set_channel_state(pe, pci_channel_io_perm_failure);
- 
- 			pci_lock_rescan_remove();
- 			list_for_each_entry(hose, &hose_list, list_node) {
+ In order to use such helpers, the eBPF program must be loaded with the correct
+ license string passed (via **attr**) to the **bpf**\\ () system call, and this
 -- 
 2.43.0
 
