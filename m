@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBB4E86940F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 227F7869310
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:41:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B99D1F216B4
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B640E1F2D7A9
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C0313F01E;
-	Tue, 27 Feb 2024 13:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CED413B2BA;
+	Tue, 27 Feb 2024 13:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XirP35BX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EbLZQpeA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6FF9141995;
-	Tue, 27 Feb 2024 13:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1B332F2D;
+	Tue, 27 Feb 2024 13:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041763; cv=none; b=Oye414MNO+ixLRIRbEGccdh56gONON5yggJyH75g3OxHWIXZl6IbEX4InX1pfIeT+UuSN6YSjABEbErl0QuTfzFnrDtItBoRs4+PMvS5MSzWXMlxrc37f6ffVmpIlgDfc4tfkraPxv3/dn3Nf7efZ54gV9udCN0kY9ZOXEAzX4k=
+	t=1709041289; cv=none; b=k3jQOPiuaMKUnW8iro5jijx0qZbIoewN801JDIpPfm7HlvklrxFSF1OCIHmHnnXWIVu4lWG5IUJlz1v5iaHYbdOvkt14ZdsqxsGBArN9rZCUAKFEOGNpTfi728yDiVvmCr15nmMQDiMIiLayDbIu4+QxVWd+mkSb3CUfk2W9FzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041763; c=relaxed/simple;
-	bh=Ua/s5L4oxwf+G/YUx4GD6nFXwDQLS2r57qq4sh4Qyag=;
+	s=arc-20240116; t=1709041289; c=relaxed/simple;
+	bh=+OnFaFCWCSy94JQqElc/lQlU5oBoNEpN9FkI45XrWI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dpnGQULc8Hc6Xb1NYOigPIJQLmMSB/iWhCvVR7ySA30s8a8F3098fyQ+bxdAlPYip9CCZ/RQZ6kQztJDV2jZXjEMhl7CFoy6ka8be1hrfbTdChAjLYe7W+twyyLurZsv914qrLrdudLeWExWCkcRIiLFAskHxDbmdtyp4TyS1rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XirP35BX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CAA0C433F1;
-	Tue, 27 Feb 2024 13:49:23 +0000 (UTC)
+	 MIME-Version; b=Mbh+k7FZYYmVeAXx88sYJH1aqmYcUO3tbnmYDEbrtH4TiEfzv0Ht7m06u0lppBVj1m2Pg+LQcOq9psa9PbBR38lUhvVMERN1AB+GBQaGQ6n4TQKXTnXcuK/gCe6wSm1qVTa9EedkrIS0Q/nZpLH60wKb68adJGeS8I4QZtc9Mn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EbLZQpeA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F6EC43390;
+	Tue, 27 Feb 2024 13:41:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041763;
-	bh=Ua/s5L4oxwf+G/YUx4GD6nFXwDQLS2r57qq4sh4Qyag=;
+	s=korg; t=1709041288;
+	bh=+OnFaFCWCSy94JQqElc/lQlU5oBoNEpN9FkI45XrWI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XirP35BXtEBVMG1ot4D9T8LaO5urMfWFSQbpzRMpiYM8HiexJxSmTBs8RUddHJrII
-	 gEqeB8839ZzaUr5lBdHqtPiuii11pWGA44tDzzw1rLcX/vkmMJHRV5LocNBjoAIFmr
-	 sVSVGUmnihl4Dc5/3MxoxZWEr7mak3G1PkcRzhtE=
+	b=EbLZQpeA/PKPCh33xvK27CVjTKXL+b/gYfsacwJ9lngcnsGLF4w57nx7+ZQRLBoqF
+	 3StEp/WTdQHDhNTrRXjudzl1895HbHFP3ZAgA8MxS6wZYukOpVu6xb8tNlpBgUfYPf
+	 lQR6gXH7xNEh4gUGXw4w71FMyEB8kn4Svc4LlMDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 033/299] ext4: avoid dividing by 0 in mb_update_avg_fragment_size() when block bitmap corrupt
-Date: Tue, 27 Feb 2024 14:22:24 +0100
-Message-ID: <20240227131626.888900968@linuxfoundation.org>
+Subject: [PATCH 6.7 287/334] platform/x86: thinkpad_acpi: Only update profile if successfully converted
+Date: Tue, 27 Feb 2024 14:22:25 +0100
+Message-ID: <20240227131640.263096437@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 993bf0f4c393b3667830918f9247438a8f6fdb5b ]
+[ Upstream commit 427c70dec738318b7f71e1b9d829ff0e9771d493 ]
 
-Determine if bb_fragments is 0 instead of determining bb_free to eliminate
-the risk of dividing by zero when the block bitmap is corrupted.
+Randomly a Lenovo Z13 will trigger a kernel warning traceback from this
+condition:
 
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240104142040.2835097-6-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+```
+if (WARN_ON((profile < 0) || (profile >= ARRAY_SIZE(profile_names))))
+```
+
+This happens because thinkpad-acpi always assumes that
+convert_dytc_to_profile() successfully updated the profile. On the
+contrary a condition can occur that when dytc_profile_refresh() is called
+the profile doesn't get updated as there is a -EOPNOTSUPP branch.
+
+Catch this situation and avoid updating the profile. Also log this into
+dynamic debugging in case any other modes should be added in the future.
+
+Fixes: c3bfcd4c6762 ("platform/x86: thinkpad_acpi: Add platform profile support")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20240217022311.113879-1-mario.limonciello@amd.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/thinkpad_acpi.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 7a2d42a84807a..9eac63e5a251c 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -841,7 +841,7 @@ mb_update_avg_fragment_size(struct super_block *sb, struct ext4_group_info *grp)
- 	struct ext4_sb_info *sbi = EXT4_SB(sb);
- 	int new_order;
- 
--	if (!test_opt2(sb, MB_OPTIMIZE_SCAN) || grp->bb_free == 0)
-+	if (!test_opt2(sb, MB_OPTIMIZE_SCAN) || grp->bb_fragments == 0)
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index c4895e9bc7148..5ecd9d33250d7 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -10308,6 +10308,7 @@ static int convert_dytc_to_profile(int funcmode, int dytcmode,
+ 		return 0;
+ 	default:
+ 		/* Unknown function */
++		pr_debug("unknown function 0x%x\n", funcmode);
+ 		return -EOPNOTSUPP;
+ 	}
+ 	return 0;
+@@ -10493,8 +10494,8 @@ static void dytc_profile_refresh(void)
  		return;
  
- 	new_order = mb_avg_fragment_size_order(sb,
+ 	perfmode = (output >> DYTC_GET_MODE_BIT) & 0xF;
+-	convert_dytc_to_profile(funcmode, perfmode, &profile);
+-	if (profile != dytc_current_profile) {
++	err = convert_dytc_to_profile(funcmode, perfmode, &profile);
++	if (!err && profile != dytc_current_profile) {
+ 		dytc_current_profile = profile;
+ 		platform_profile_notify();
+ 	}
 -- 
 2.43.0
 
