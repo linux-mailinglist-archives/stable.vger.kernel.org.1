@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-24290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD40F8693BF
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:48:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEF03869747
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:19:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 633231F24C70
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:48:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78F0D283EE3
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:19:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2993145B06;
-	Tue, 27 Feb 2024 13:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDDED13B7AB;
+	Tue, 27 Feb 2024 14:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aD4aolks"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cCWfMDja"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9521814532C;
-	Tue, 27 Feb 2024 13:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A592278B61;
+	Tue, 27 Feb 2024 14:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041577; cv=none; b=H+hU0kHgefmAWYjO+KJp1W+NL4D2R6vv+henF5HyWG3LFhbRoIKgLLUGXTFMl4DPUJL8RjgRJzKSUbGJTuInV1n7/cQWx1vauCuaa4nozFLnGcqYbyu9awjuytDPHeRbaKS/HEYxfqy0p6WUwXj4jbB3aVYpIE3XCmaGM/DJIJw=
+	t=1709043591; cv=none; b=J3TBUtLdfHU+XzU9pvVkO1E53xrocMQg9/Vy5xZgIN5yU2mmotK0r8Rd1ksrxzripoQZ4POuXOoB9DJcghyrlhXtkBN2FwudnhoHAXxQQTCVBqP/az1UQPTRmv9sTYK/HhCzUB/gc4dezR0fuyXscrTnt91r0lmu8LvxdMhP6Uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041577; c=relaxed/simple;
-	bh=c0RMkEci6p8Ohc0SclYTOCnLXcdNNNWj2Fvi1sSEjfg=;
+	s=arc-20240116; t=1709043591; c=relaxed/simple;
+	bh=FcbhMpcrvrX5ZS5+APJN8bRLpDHnNVXsNnKTHSP8Irk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PaBk8F48/P2wjwDxbGCEeMwKoFHYtpu0PeIDAoh/0ITigrYdzYdX2b8UAm5z+xnx+gBgc49TMeUM2zTo6CzCCKMnY5l0ViAXHDR4cAjohu59EozrsG31AyldV+wYP8dMyCc9PMiO4vbbNdC8lXefqxLEhNmCtBmrC9mohkAZmCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aD4aolks; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23795C433C7;
-	Tue, 27 Feb 2024 13:46:16 +0000 (UTC)
+	 MIME-Version; b=Mlb5baUX7f8t92ZqGx7VLPdF/cC9PUEp2nikvIZY0+Oqx+Hv4N1mxXWTgi8jaUqY0XjXRP515L0u62y+7d4dDtzeJDiDG/1iuzpc5njQzEqivRSaBHPrBs1EXnHIngrDZcvN0C/BWAoEEjN7W24qQF901+nG2AIZwGg6bf//5Ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cCWfMDja; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD0B1C433C7;
+	Tue, 27 Feb 2024 14:19:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041577;
-	bh=c0RMkEci6p8Ohc0SclYTOCnLXcdNNNWj2Fvi1sSEjfg=;
+	s=korg; t=1709043591;
+	bh=FcbhMpcrvrX5ZS5+APJN8bRLpDHnNVXsNnKTHSP8Irk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aD4aolks0ggmLQzorV/cvfJAMz0Aye+zM2fWOf31ngcNypKk12Iz6rxYDffSzynKT
-	 hHdsPEdcCtqvufei7QY46H7zorZtEfzvqJ9lEG6b7PyKUAEeBPxtLViGhBuix+nBGT
-	 xY75Gg0evJd+hTspFV9+SEbNyMZc60IC/Z0bG6ZE=
+	b=cCWfMDjaOB3uHVHcS1hm4YdKSLsYW+LbTor9MwOUBA7rDICcXhWL35CBnFYhuYY8Y
+	 54ao0q7THG5Q90lnEIoYa5TAqGAzRdlHXNV+7irwo6Mjnp2BXQGS1FTkB4aphvgGBk
+	 Vkw4EKxOePDfZ4MoYov7+6OBsCBIDsaSEu4kiiiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 4.19 49/52] KVM: arm64: vgic-its: Test for valid IRQ in its_sync_lpi_pending_table()
+	Mustafa Ismail <mustafa.ismail@intel.com>,
+	Shiraz Saleem <shiraz.saleem@intel.com>,
+	Sindhu Devale <sindhu.devale@gmail.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 135/195] RDMA/irdma: Add AE for too many RNRS
 Date: Tue, 27 Feb 2024 14:26:36 +0100
-Message-ID: <20240227131550.145939523@linuxfoundation.org>
+Message-ID: <20240227131614.895962295@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
-References: <20240227131548.514622258@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Upton <oliver.upton@linux.dev>
+From: Mustafa Ismail <mustafa.ismail@intel.com>
 
-commit 8d3a7dfb801d157ac423261d7cd62c33e95375f8 upstream.
+[ Upstream commit 630bdb6f28ca9e5ff79e244030170ac788478332 ]
 
-vgic_get_irq() may not return a valid descriptor if there is no ITS that
-holds a valid translation for the specified INTID. If that is the case,
-it is safe to silently ignore it and continue processing the LPI pending
-table.
+Add IRDMA_AE_LLP_TOO_MANY_RNRS to the list of AE's processed as an
+abnormal asyncronous event.
 
-Cc: stable@vger.kernel.org
-Fixes: 33d3bc9556a7 ("KVM: arm64: vgic-its: Read initial LPI pending table")
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20240221092732.4126848-2-oliver.upton@linux.dev
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
+Signed-off-by: Mustafa Ismail <mustafa.ismail@intel.com>
+Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
+Signed-off-by: Sindhu Devale <sindhu.devale@gmail.com>
+Link: https://lore.kernel.org/r/20240131233849.400285-5-sindhu.devale@intel.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- virt/kvm/arm/vgic/vgic-its.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/infiniband/hw/irdma/defs.h | 1 +
+ drivers/infiniband/hw/irdma/hw.c   | 1 +
+ 2 files changed, 2 insertions(+)
 
---- a/virt/kvm/arm/vgic/vgic-its.c
-+++ b/virt/kvm/arm/vgic/vgic-its.c
-@@ -469,6 +469,9 @@ static int its_sync_lpi_pending_table(st
- 		}
- 
- 		irq = vgic_get_irq(vcpu->kvm, NULL, intids[i]);
-+		if (!irq)
-+			continue;
-+
- 		spin_lock_irqsave(&irq->irq_lock, flags);
- 		irq->pending_latch = pendmask & (1U << bit_nr);
- 		vgic_queue_irq_unlock(vcpu->kvm, irq, flags);
+diff --git a/drivers/infiniband/hw/irdma/defs.h b/drivers/infiniband/hw/irdma/defs.h
+index ad54260cb58c9..ebe98fa2b1cd2 100644
+--- a/drivers/infiniband/hw/irdma/defs.h
++++ b/drivers/infiniband/hw/irdma/defs.h
+@@ -345,6 +345,7 @@ enum irdma_cqp_op_type {
+ #define IRDMA_AE_LLP_TOO_MANY_KEEPALIVE_RETRIES				0x050b
+ #define IRDMA_AE_LLP_DOUBT_REACHABILITY					0x050c
+ #define IRDMA_AE_LLP_CONNECTION_ESTABLISHED				0x050e
++#define IRDMA_AE_LLP_TOO_MANY_RNRS					0x050f
+ #define IRDMA_AE_RESOURCE_EXHAUSTION					0x0520
+ #define IRDMA_AE_RESET_SENT						0x0601
+ #define IRDMA_AE_TERMINATE_SENT						0x0602
+diff --git a/drivers/infiniband/hw/irdma/hw.c b/drivers/infiniband/hw/irdma/hw.c
+index 12bd38b1e2c15..918a2d783141f 100644
+--- a/drivers/infiniband/hw/irdma/hw.c
++++ b/drivers/infiniband/hw/irdma/hw.c
+@@ -379,6 +379,7 @@ static void irdma_process_aeq(struct irdma_pci_f *rf)
+ 		case IRDMA_AE_LLP_TOO_MANY_RETRIES:
+ 		case IRDMA_AE_LCE_QP_CATASTROPHIC:
+ 		case IRDMA_AE_LCE_FUNCTION_CATASTROPHIC:
++		case IRDMA_AE_LLP_TOO_MANY_RNRS:
+ 		case IRDMA_AE_LCE_CQ_CATASTROPHIC:
+ 		case IRDMA_AE_UDA_XMIT_DGRAM_TOO_LONG:
+ 		default:
+-- 
+2.43.0
+
 
 
 
