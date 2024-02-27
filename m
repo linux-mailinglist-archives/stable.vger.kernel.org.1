@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-24952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A543B869703
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:17:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CA43869658
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:10:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 448C91F25945
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:17:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3536B293A57
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:10:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D37914037E;
-	Tue, 27 Feb 2024 14:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE01E13B78F;
+	Tue, 27 Feb 2024 14:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZMR9HQY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RsnrZWmU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A11313DBBC;
-	Tue, 27 Feb 2024 14:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4C213A26F;
+	Tue, 27 Feb 2024 14:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043445; cv=none; b=ZIATdJ4oYbuIYTN9opI0lo9i9xjlTTAwu0E0rjX63CswgeIsFoAVSsu1/xG9A69EbMnfACTaa95NEy5kiliTgBT33v6z00QeUqxjN74fj42FYfxWAYUYpc3JhBqhlx7kkklCsVkYj+QO44fAuKuTGD1tggqP3zpt0q2SssqH4o0=
+	t=1709043044; cv=none; b=eR5XxPXUlgXyBqRvjsE9vM6l1DHHWWm6agFG/cDuG20b9utfxV318WVAGrkyc48QhxrWwk8tHW0XG0aNMQgyRaAKLeRvntd/zlD23OLXqRq/oSaDZOinYddPud/xqTEKIZJ14ehaS+b9ttJUNKYGk/80IfADy7OV2a4M56vU/fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043445; c=relaxed/simple;
-	bh=eEIjLRUpeTn+dDTo8SNPoLntLJp2SLagnof957O1jpY=;
+	s=arc-20240116; t=1709043044; c=relaxed/simple;
+	bh=6adyS3NF2FE6Om2weYEx0/NZinQy4tajziot4hFCEAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I24qq2YN9v60FeLqKaJAZpZKPSFh22qlv8Jq3loLiTStsSB2QVCYDDasgK+kK9OrBF9oLzdUCyqtOYOJeO7e3tdtfQfpvxxLSVG/qDw6nX67s/HwipX2JEEBQNpe0Oj8v1Td1cHA2bSEFN7FUm/jZzTLemw1L/UTM3rszzqmPJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZMR9HQY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA1E7C433C7;
-	Tue, 27 Feb 2024 14:17:24 +0000 (UTC)
+	 MIME-Version; b=cNX1Sj1s/Z3/lNp0OCo0kTaXcl8rPgB+AECaHL6HKzZGxmU2JolPCk+37vu9KD7DvilUeyNvkpZYpbTRUXOebCU2JRiiqapBfvR3IEPalks+n7cObEL+wmm/8AA+fUh/2y7+TRQAOG2fwcx1paYCV3h7YAQGRxGgbFfEmGzME0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RsnrZWmU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E153BC433C7;
+	Tue, 27 Feb 2024 14:10:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043445;
-	bh=eEIjLRUpeTn+dDTo8SNPoLntLJp2SLagnof957O1jpY=;
+	s=korg; t=1709043044;
+	bh=6adyS3NF2FE6Om2weYEx0/NZinQy4tajziot4hFCEAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DZMR9HQY0m4qhhI64n1WHbvxcM0ihallAqC9aLBb8tWymHHMA7naRRIfAq0yqQriZ
-	 erC+mytRLeSVk/g15ogCk1sc3SY/1cJ8HP9dk/n/QH3DSbp8gm6CrduBAyu0PRHgEl
-	 HPV5nqdJbfS/ZfGgw0WLYUm7Ni6aZPT9e6XEnjEI=
+	b=RsnrZWmUkI1AQxPMm5YgYcuvu8SyONnBlcq0pwSNJjLG4fe7tuV618wRzfstta9GE
+	 puOtQmhihZOwcVQfDkxrsbK+8Qh1BqEkGBwlWJMy8ck6vNDTYNZPQ0KO/67MLEieBW
+	 BBE3iTcjfJGeHNQngBbAgZaCGDusHiZexPhpN2SY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Nikita Shubin <nikita.shubin@maquefel.me>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 6.1 111/195] ARM: ep93xx: Add terminator to gpiod_lookup_table
-Date: Tue, 27 Feb 2024 14:26:12 +0100
-Message-ID: <20240227131614.129179043@linuxfoundation.org>
+	Alex Bee <knaerzche@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 185/245] arm64: dts: rockchip: add ES8316 codec for ROCK Pi 4
+Date: Tue, 27 Feb 2024 14:26:13 +0100
+Message-ID: <20240227131621.215839616@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Shubin <nikita.shubin@maquefel.me>
+From: Alex Bee <knaerzche@gmail.com>
 
-commit fdf87a0dc26d0550c60edc911cda42f9afec3557 upstream.
+[ Upstream commit 65bd2b8bdb3bddc37bea695789713916327e1c1f ]
 
-Without the terminator, if a con_id is passed to gpio_find() that
-does not exist in the lookup table the function will not stop looping
-correctly, and eventually cause an oops.
+ROCK Pi 4 boards have the codec connected to i2s0 and it is accessible
+via i2c1 address 0x11.
+Add an audio-graph-card for it.
 
-Cc: stable@vger.kernel.org
-Fixes: b2e63555592f ("i2c: gpio: Convert to use descriptors")
-Reported-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Nikita Shubin <nikita.shubin@maquefel.me>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Acked-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Link: https://lore.kernel.org/r/20240205102337.439002-1-alexander.sverdlin@gmail.com
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alex Bee <knaerzche@gmail.com>
+Link: https://lore.kernel.org/r/20210618181256.27992-5-knaerzche@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-ep93xx/core.c |    1 +
- 1 file changed, 1 insertion(+)
+ .../boot/dts/rockchip/rk3399-rock-pi-4.dtsi   | 28 +++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
---- a/arch/arm/mach-ep93xx/core.c
-+++ b/arch/arm/mach-ep93xx/core.c
-@@ -339,6 +339,7 @@ static struct gpiod_lookup_table ep93xx_
- 				GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN),
- 		GPIO_LOOKUP_IDX("G", 0, NULL, 1,
- 				GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN),
-+		{ }
- 	},
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
+index 203460d46f182..0af694540c1eb 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
+@@ -36,6 +36,12 @@ sdio_pwrseq: sdio-pwrseq {
+ 		reset-gpios = <&gpio0 RK_PB2 GPIO_ACTIVE_LOW>;
+ 	};
+ 
++	sound {
++		compatible = "audio-graph-card";
++		label = "Analog";
++		dais = <&i2s0_p0>;
++	};
++
+ 	vcc12v_dcin: dc-12v {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "vcc12v_dcin";
+@@ -423,6 +429,20 @@ &i2c1 {
+ 	i2c-scl-rising-time-ns = <300>;
+ 	i2c-scl-falling-time-ns = <15>;
+ 	status = "okay";
++
++	es8316: codec@11 {
++		compatible = "everest,es8316";
++		reg = <0x11>;
++		clocks = <&cru SCLK_I2S_8CH_OUT>;
++		clock-names = "mclk";
++		#sound-dai-cells = <0>;
++
++		port {
++			es8316_p0_0: endpoint {
++				remote-endpoint = <&i2s0_p0_0>;
++			};
++		};
++	};
  };
  
+ &i2c3 {
+@@ -442,6 +462,14 @@ &i2s0 {
+ 	rockchip,capture-channels = <2>;
+ 	rockchip,playback-channels = <2>;
+ 	status = "okay";
++
++	i2s0_p0: port {
++		i2s0_p0_0: endpoint {
++			dai-format = "i2s";
++			mclk-fs = <256>;
++			remote-endpoint = <&es8316_p0_0>;
++		};
++	};
+ };
+ 
+ &i2s1 {
+-- 
+2.43.0
+
 
 
 
