@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-24447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC598869484
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:54:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B428869590
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:03:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77D8A285B9D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:54:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD5231C23075
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:03:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B223B14533A;
-	Tue, 27 Feb 2024 13:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C7D913B798;
+	Tue, 27 Feb 2024 14:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SFe1rYMY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UrGSCyDB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703631419BF;
-	Tue, 27 Feb 2024 13:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1BC16423;
+	Tue, 27 Feb 2024 14:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042030; cv=none; b=EvPIYEaDvPEtpn/5kTckLEfqAL5WcqKmnAZ776JJ/wU8Vii+vUZQBZoWxD/Sa/GVY5RpI1zPvXiAbOi08sfZa1ugZmjeyWiOM+zjBJTPvNqqyijgkmwPeA5kh8gf0IoVDevhMwU+TQOWRfp2GKQ2CZUZN/AnWVRN5Zq+aRcT11w=
+	t=1709042591; cv=none; b=fj3xvk54ctF4L2awLcHpHLXpHrfoI9nwDUKx5pH61lr/m6J2tF9dSr9rsbTBpVtGdncLGefyNVzD7TPiXqntfHNBUOKfkXxuxhBe+XbDANxtv7Wi/h33jgNMgWCC+qluZBCmCvi9u7cNgD2zNgCoR0lUCqyyHx4MfFhe1se4q7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042030; c=relaxed/simple;
-	bh=cazVksPItw70z7TXZyj8Sx5P6jdtOBXjupK/dY3Rmxc=;
+	s=arc-20240116; t=1709042591; c=relaxed/simple;
+	bh=3vm310UBcmN/IksbUHa0xy5OxH7YOrvAJJwQLScpLF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GWIYsEVu+IcuCpWEOvtTQJ/CsymNs5jbGcrC8wMx6HTLBzW6eIt8D+0ktgS9VCykg7lkfY8h/3OjMYgGsgPbXYaW0NCCVSMrIm3ZUTzzCmBDa75Q+lVPvKyjBfkonetRVxrRlrig+lOb0fE3UUscRFvhXgbhmkZQjqZE83Np2sI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SFe1rYMY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F18CEC433F1;
-	Tue, 27 Feb 2024 13:53:49 +0000 (UTC)
+	 MIME-Version; b=VLWC2Oy+cc7CPLSkPXjjLFAs0hcbUXFI+DQHijxkIC2hTwd5i0cZG0Lnn4GuIs2I8tg/Yu9jWnsfeVdvPtiGSC/sFx5zUvA6v9lKFNfBW6EujRz3MyBQVfQ3ljIHG5RagAnludSH/nbzoPaLzP92Df0Yg/yRsn1InJvAtlLxx2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UrGSCyDB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C544C433F1;
+	Tue, 27 Feb 2024 14:03:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042030;
-	bh=cazVksPItw70z7TXZyj8Sx5P6jdtOBXjupK/dY3Rmxc=;
+	s=korg; t=1709042591;
+	bh=3vm310UBcmN/IksbUHa0xy5OxH7YOrvAJJwQLScpLF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SFe1rYMYgQBqMCurg9mBWln+Hf0ao6f2A2K+RTVDwofwesBRVnNTWMGZTm1bL/b+S
-	 qE0OIwx6j82ftqsSsPZ0yXo87eIZI2UOFVcbB5pIpm3pGog5uBGx8rwtAIRrAuvcGn
-	 abcUoZYDbrSnARgBF+csROhJUJY6elehwBwDkxng=
+	b=UrGSCyDBYD5Gd0Pnnyi9XnRtDlBs4th1PqckoNgPt/0V2/Qu0Xes62C1JyNR2OJFj
+	 EDQFRtb+rkgeEYFCsC738JhQpsK6N8CQrmga+KzkNAad7XcaoR+p50H7u3zP3VJGKq
+	 8APyH4cytzq+IIml4wgt/Jpx4KjbdxsgtACq9+1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Josip Pavic <josip.pavic@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Sohaib Nadeem <sohaib.nadeem@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Daniel Wagner <dwagner@suse.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 126/299] drm/amd/display: fixed integer types and null check locations
+Subject: [PATCH 5.15 049/245] nvmet-fc: take ref count on tgtport before delete assoc
 Date: Tue, 27 Feb 2024 14:23:57 +0100
-Message-ID: <20240227131629.919338379@linuxfoundation.org>
+Message-ID: <20240227131616.718514068@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,116 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sohaib Nadeem <sohaib.nadeem@amd.com>
+From: Daniel Wagner <dwagner@suse.de>
 
-[ Upstream commit 0484e05d048b66d01d1f3c1d2306010bb57d8738 ]
+[ Upstream commit fe506a74589326183297d5abdda02d0c76ae5a8b ]
 
-[why]:
-issues fixed:
-- comparison with wider integer type in loop condition which can cause
-infinite loops
-- pointer dereference before null check
+We have to ensure that the tgtport is not going away
+before be have remove all the associations.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Josip Pavic <josip.pavic@amd.com>
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Sohaib Nadeem <sohaib.nadeem@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Daniel Wagner <dwagner@suse.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/dc/bios/bios_parser2.c   | 16 ++++++++++------
- .../drm/amd/display/dc/link/link_validation.c    |  2 +-
- 2 files changed, 11 insertions(+), 7 deletions(-)
+ drivers/nvme/target/fc.c | 31 +++++++++++++++++++++++--------
+ 1 file changed, 23 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-index bbf2a465f400b..4c3c4c8de1cfc 100644
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-@@ -1860,19 +1860,21 @@ static enum bp_result get_firmware_info_v3_2(
- 		/* Vega12 */
- 		smu_info_v3_2 = GET_IMAGE(struct atom_smu_info_v3_2,
- 							DATA_TABLES(smu_info));
--		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_2->gpuclk_ss_percentage);
- 		if (!smu_info_v3_2)
- 			return BP_RESULT_BADBIOSTABLE;
+diff --git a/drivers/nvme/target/fc.c b/drivers/nvme/target/fc.c
+index 1ef075b159b9d..d3ca59ae4c7af 100644
+--- a/drivers/nvme/target/fc.c
++++ b/drivers/nvme/target/fc.c
+@@ -1092,13 +1092,28 @@ nvmet_fc_alloc_hostport(struct nvmet_fc_tgtport *tgtport, void *hosthandle)
+ }
  
-+		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_2->gpuclk_ss_percentage);
+ static void
+-nvmet_fc_delete_assoc(struct work_struct *work)
++nvmet_fc_delete_assoc(struct nvmet_fc_tgt_assoc *assoc)
++{
++	nvmet_fc_delete_target_assoc(assoc);
++	nvmet_fc_tgt_a_put(assoc);
++}
 +
- 		info->default_engine_clk = smu_info_v3_2->bootup_dcefclk_10khz * 10;
- 	} else if (revision.minor == 3) {
- 		/* Vega20 */
- 		smu_info_v3_3 = GET_IMAGE(struct atom_smu_info_v3_3,
- 							DATA_TABLES(smu_info));
--		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_3->gpuclk_ss_percentage);
- 		if (!smu_info_v3_3)
- 			return BP_RESULT_BADBIOSTABLE;
++static void
++nvmet_fc_delete_assoc_work(struct work_struct *work)
+ {
+ 	struct nvmet_fc_tgt_assoc *assoc =
+ 		container_of(work, struct nvmet_fc_tgt_assoc, del_work);
++	struct nvmet_fc_tgtport *tgtport = assoc->tgtport;
  
-+		DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", smu_info_v3_3->gpuclk_ss_percentage);
+-	nvmet_fc_delete_target_assoc(assoc);
+-	nvmet_fc_tgt_a_put(assoc);
++	nvmet_fc_delete_assoc(assoc);
++	nvmet_fc_tgtport_put(tgtport);
++}
 +
- 		info->default_engine_clk = smu_info_v3_3->bootup_dcefclk_10khz * 10;
++static void
++nvmet_fc_schedule_delete_assoc(struct nvmet_fc_tgt_assoc *assoc)
++{
++	nvmet_fc_tgtport_get(assoc->tgtport);
++	queue_work(nvmet_wq, &assoc->del_work);
+ }
+ 
+ static struct nvmet_fc_tgt_assoc *
+@@ -1132,7 +1147,7 @@ nvmet_fc_alloc_target_assoc(struct nvmet_fc_tgtport *tgtport, void *hosthandle)
+ 	assoc->a_id = idx;
+ 	INIT_LIST_HEAD(&assoc->a_list);
+ 	kref_init(&assoc->ref);
+-	INIT_WORK(&assoc->del_work, nvmet_fc_delete_assoc);
++	INIT_WORK(&assoc->del_work, nvmet_fc_delete_assoc_work);
+ 	atomic_set(&assoc->terminating, 0);
+ 
+ 	while (needrandom) {
+@@ -1491,7 +1506,7 @@ __nvmet_fc_free_assocs(struct nvmet_fc_tgtport *tgtport)
+ 	list_for_each_entry_rcu(assoc, &tgtport->assoc_list, a_list) {
+ 		if (!nvmet_fc_tgt_a_get(assoc))
+ 			continue;
+-		queue_work(nvmet_wq, &assoc->del_work);
++		nvmet_fc_schedule_delete_assoc(assoc);
+ 		nvmet_fc_tgt_a_put(assoc);
+ 	}
+ 	rcu_read_unlock();
+@@ -1545,7 +1560,7 @@ nvmet_fc_invalidate_host(struct nvmet_fc_target_port *target_port,
+ 			continue;
+ 		assoc->hostport->invalid = 1;
+ 		noassoc = false;
+-		queue_work(nvmet_wq, &assoc->del_work);
++		nvmet_fc_schedule_delete_assoc(assoc);
+ 		nvmet_fc_tgt_a_put(assoc);
+ 	}
+ 	spin_unlock_irqrestore(&tgtport->lock, flags);
+@@ -1590,7 +1605,7 @@ nvmet_fc_delete_ctrl(struct nvmet_ctrl *ctrl)
+ 		nvmet_fc_tgtport_put(tgtport);
+ 
+ 		if (found_ctrl) {
+-			queue_work(nvmet_wq, &assoc->del_work);
++			nvmet_fc_schedule_delete_assoc(assoc);
+ 			nvmet_fc_tgt_a_put(assoc);
+ 			return;
+ 		}
+@@ -1897,7 +1912,7 @@ nvmet_fc_ls_disconnect(struct nvmet_fc_tgtport *tgtport,
+ 		nvmet_fc_xmt_ls_rsp(tgtport, oldls);
  	}
  
-@@ -2435,10 +2437,11 @@ static enum bp_result get_integrated_info_v11(
- 	info_v11 = GET_IMAGE(struct atom_integrated_system_info_v1_11,
- 					DATA_TABLES(integratedsysteminfo));
+-	queue_work(nvmet_wq, &assoc->del_work);
++	nvmet_fc_schedule_delete_assoc(assoc);
+ 	nvmet_fc_tgt_a_put(assoc);
  
--	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v11->gpuclk_ss_percentage);
- 	if (info_v11 == NULL)
- 		return BP_RESULT_BADBIOSTABLE;
- 
-+	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v11->gpuclk_ss_percentage);
-+
- 	info->gpu_cap_info =
- 	le32_to_cpu(info_v11->gpucapinfo);
- 	/*
-@@ -2650,11 +2653,12 @@ static enum bp_result get_integrated_info_v2_1(
- 
- 	info_v2_1 = GET_IMAGE(struct atom_integrated_system_info_v2_1,
- 					DATA_TABLES(integratedsysteminfo));
--	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_1->gpuclk_ss_percentage);
- 
- 	if (info_v2_1 == NULL)
- 		return BP_RESULT_BADBIOSTABLE;
- 
-+	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_1->gpuclk_ss_percentage);
-+
- 	info->gpu_cap_info =
- 	le32_to_cpu(info_v2_1->gpucapinfo);
- 	/*
-@@ -2812,11 +2816,11 @@ static enum bp_result get_integrated_info_v2_2(
- 	info_v2_2 = GET_IMAGE(struct atom_integrated_system_info_v2_2,
- 					DATA_TABLES(integratedsysteminfo));
- 
--	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_2->gpuclk_ss_percentage);
--
- 	if (info_v2_2 == NULL)
- 		return BP_RESULT_BADBIOSTABLE;
- 
-+	DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", info_v2_2->gpuclk_ss_percentage);
-+
- 	info->gpu_cap_info =
- 	le32_to_cpu(info_v2_2->gpucapinfo);
- 	/*
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_validation.c b/drivers/gpu/drm/amd/display/dc/link/link_validation.c
-index 8fe66c3678508..5b0bc7f6a188c 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_validation.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_validation.c
-@@ -361,7 +361,7 @@ bool link_validate_dpia_bandwidth(const struct dc_stream_state *stream, const un
- 	struct dc_link *dpia_link[MAX_DPIA_NUM] = {0};
- 	int num_dpias = 0;
- 
--	for (uint8_t i = 0; i < num_streams; ++i) {
-+	for (unsigned int i = 0; i < num_streams; ++i) {
- 		if (stream[i].signal == SIGNAL_TYPE_DISPLAY_PORT) {
- 			/* new dpia sst stream, check whether it exceeds max dpia */
- 			if (num_dpias >= MAX_DPIA_NUM)
+ 	return false;
 -- 
 2.43.0
 
