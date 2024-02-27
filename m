@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-24935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1C1A8696EC
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:16:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF065869624
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:08:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2ED4F1C2195E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:16:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDAED1C214B4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:08:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1685140391;
-	Tue, 27 Feb 2024 14:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E68913B2B9;
+	Tue, 27 Feb 2024 14:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wz1fRm8k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xg1gBqnX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED3B1386CB;
-	Tue, 27 Feb 2024 14:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E10A13AA43;
+	Tue, 27 Feb 2024 14:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043398; cv=none; b=TbhdJEZKka8tnNzvqROKS1U+DB4v0ROzTL4P92aSCfJS4h82nyh1gE4R+EBlB12sjTC516helKhEqHDWn1aMX8E19pudbW1NiGRjyAxjknhiaSFztIGNvo+cTrw08LfJ4BfGQW14EGUWTgDcUX+JEGJhnp5jcnUnbjBEOrVd/os=
+	t=1709042912; cv=none; b=AhI9zHapv4geHx5wyrSE2iGNK2Yq8Le7zAw+6EKs0aiL3pptELCK/xqlmAKUMtcDSaK2qt92s1rwFBTgPlpLvxNZu0QwpYXkOOjGFHZuIfBttvs2MnRnPZbHlpUe7RwPL3ispUlvaIox/d5aFIbq0ORLelYciIQQG2cFJtvYja4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043398; c=relaxed/simple;
-	bh=zODhnm51vwpl+sRva2tNkr1T1PXJMBciAZWpF6y1gLs=;
+	s=arc-20240116; t=1709042912; c=relaxed/simple;
+	bh=IgKGvP6sEwsFraTkiUTVLM0B4muXHshIprtDsD8+vfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cvTFZDTZzS4hBIq2qb57ChmIbb4fHiyuO3c9EKfYyak3XsGhKleTSceXa9XcB1EpPkFaI0HH/y6TcfIo/oLjhh7AEfj2QZVSWuM3mCx3BEXTqtL8wMbEVmduofbp9Z0wFVdaWBW5IQlJeX6gA7JzlFKGEipI+Z6qo76ngRVVDTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wz1fRm8k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D0BEC433F1;
-	Tue, 27 Feb 2024 14:16:38 +0000 (UTC)
+	 MIME-Version; b=dKGjWSUeEiEcu4BKrzBLed7x7Gfa+MlrF2Fg/I8LwW+YwTyr6uQZ6jfzdjj3WKRH78bAkNASYXKfnlPWIXR+yF2hg2JHGT95W6rhzBcr7YGM5LfeAyT5ptDLETYMeGN3tOBa4kOFUI5/4B1DIy6aEJpkK7Nr6B3FMOG1TcWC1BQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xg1gBqnX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4557C433F1;
+	Tue, 27 Feb 2024 14:08:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043398;
-	bh=zODhnm51vwpl+sRva2tNkr1T1PXJMBciAZWpF6y1gLs=;
+	s=korg; t=1709042912;
+	bh=IgKGvP6sEwsFraTkiUTVLM0B4muXHshIprtDsD8+vfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wz1fRm8kRa1L2i/fglaGIyw3RA2LFD4za/STCCI4F/yXeeoAkI3IdgRRmHf+eDYQl
-	 6mQe2id/9ik/bfsP+zGG3ayXhkuWmo/OyrIn5QH9o13NjegyymUd/V15CyjHD7oXYF
-	 Dv9Yzuv88/Ezv1QT4pJbBpIuS8zwqAXJV033Pjug=
+	b=Xg1gBqnXqH55DG09Ah7pNbiUVKOw0sCtjB/sTfHmEgMAScGx8K0tIYqUruqI5y4Pb
+	 psSSZLWc+CnT66AqfTvOFKmLFvwY8pLmSlvfqMJemMfzgzSYkQb5dqIzaAQfgKAeVC
+	 4U0TiCOdmABsFEfn7OKqbDvc6Hqyb6IRmfLyRDZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Richter <rrichter@amd.com>,
-	Dan Williams <dan.j.williams@intel.com>
-Subject: [PATCH 6.1 093/195] cxl/pci: Fix disabling memory if DVSEC CXL Range does not match a CFMWS window
+	Zhong Jinghua <zhongjinghua@huawei.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 166/245] nbd: Add the maximum limit of allocated index in nbd_dev_add
 Date: Tue, 27 Feb 2024 14:25:54 +0100
-Message-ID: <20240227131613.549706999@linuxfoundation.org>
+Message-ID: <20240227131620.603340303@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Richter <rrichter@amd.com>
+From: Zhong Jinghua <zhongjinghua@huawei.com>
 
-commit 0cab687205986491302cd2e440ef1d253031c221 upstream.
+[ Upstream commit f12bc113ce904777fd6ca003b473b427782b3dde ]
 
-The Linux CXL subsystem is built on the assumption that HPA == SPA.
-That is, the host physical address (HPA) the HDM decoder registers are
-programmed with are system physical addresses (SPA).
+If the index allocated by idr_alloc greater than MINORMASK >> part_shift,
+the device number will overflow, resulting in failure to create a block
+device.
 
-During HDM decoder setup, the DVSEC CXL range registers (cxl-3.1,
-8.1.3.8) are checked if the memory is enabled and the CXL range is in
-a HPA window that is described in a CFMWS structure of the CXL host
-bridge (cxl-3.1, 9.18.1.3).
+Fix it by imiting the size of the max allocation.
 
-Now, if the HPA is not an SPA, the CXL range does not match a CFMWS
-window and the CXL memory range will be disabled then. The HDM decoder
-stops working which causes system memory being disabled and further a
-system hang during HDM decoder initialization, typically when a CXL
-enabled kernel boots.
-
-Prevent a system hang and do not disable the HDM decoder if the
-decoder's CXL range is not found in a CFMWS window.
-
-Note the change only fixes a hardware hang, but does not implement
-HPA/SPA translation. Support for this can be added in a follow on
-patch series.
-
-Signed-off-by: Robert Richter <rrichter@amd.com>
-Fixes: 34e37b4c432c ("cxl/port: Enable HDM Capability after validating DVSEC Ranges")
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240216160113.407141-1-rrichter@amd.com
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Zhong Jinghua <zhongjinghua@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20230605122159.2134384-1-zhongjinghua@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/pci.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/block/nbd.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/cxl/core/pci.c
-+++ b/drivers/cxl/core/pci.c
-@@ -376,9 +376,9 @@ static bool __cxl_hdm_decode_init(struct
- 		allowed++;
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index e563aa407e888..d379a047d4273 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -1715,7 +1715,8 @@ static struct nbd_device *nbd_dev_add(int index, unsigned int refs)
+ 		if (err == -ENOSPC)
+ 			err = -EEXIST;
+ 	} else {
+-		err = idr_alloc(&nbd_index_idr, nbd, 0, 0, GFP_KERNEL);
++		err = idr_alloc(&nbd_index_idr, nbd, 0,
++				(MINORMASK >> part_shift) + 1, GFP_KERNEL);
+ 		if (err >= 0)
+ 			index = err;
  	}
- 
--	if (!allowed) {
--		cxl_set_mem_enable(cxlds, 0);
--		info->mem_enabled = 0;
-+	if (!allowed && info->mem_enabled) {
-+		dev_err(dev, "Range register decodes outside platform defined CXL ranges.\n");
-+		return -ENXIO;
- 	}
- 
- 	/*
+-- 
+2.43.0
+
 
 
 
