@@ -1,113 +1,144 @@
-Return-Path: <stable+bounces-23824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC5BE868914
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 07:38:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A74C386896C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 07:57:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CBEF1F249D3
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 06:38:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37EE1B262BE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 06:57:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0A7441C6A;
-	Tue, 27 Feb 2024 06:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D4EB535C8;
+	Tue, 27 Feb 2024 06:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pvotJIHt"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZxQ2axHO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC7F28366;
-	Tue, 27 Feb 2024 06:38:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8174653E01
+	for <stable@vger.kernel.org>; Tue, 27 Feb 2024 06:57:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709015932; cv=none; b=k3k3fUo/EhCcH9ty9nlscrqRe7/PcD13llV2td59TxWf1+jtirwrqL7xaGIJqCBpQz30UpmXEtMaokm0saOt+7hZHu2KveI5BIWucsLYogqrqaI0zt9i6ZOZNUBb7LZbJLfY8yJ6pA9N7/4YgJF+7rH8RKHqA3RzPI2YXVBLXXc=
+	t=1709017046; cv=none; b=CNFv9sV8URSeGbyCdCskgZmre6yKFodXdpSJ+OzUXcKqQVacMziyLsTRMI5ebdxX0J+77M3w34EGyBLeU790UYWolV0kxuwseIWjOfLwTDS969zhJoAIDaNWYAsu1HVewzmXbaemM9ydU6qS2o+cGBAWvE1cnNe0NnlW0gjTnG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709015932; c=relaxed/simple;
-	bh=75cBmLAtHoi99vV8/5q5IHnRffXQOEx1mYMI/BFFE2Q=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=t/+ML2CLwaQG0Ds7EvBJ2bGxuG4FInfzX/5CMi2mRVjKLEZZnsCOZPJAV62qqnXw6lxLONhsKLpPDaGrIzLBu1yfVZCbY98Uv2hFsLIXISoOJK1fjWUyb7SjFZN9BiUouuxqjk9a5Oh92ZNKrU18utnZ9Ew4X/NF2HW14prWfos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pvotJIHt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7BAC433C7;
-	Tue, 27 Feb 2024 06:38:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709015932;
-	bh=75cBmLAtHoi99vV8/5q5IHnRffXQOEx1mYMI/BFFE2Q=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=pvotJIHtb7PsrU/bAiinmaDj3RClHpIdK+F+629VlHhK/qDIY7o7OCBjz/eWs99CB
-	 NrHPOrJPl+orsh+v52NZf3TXHkeRq5nTbJmwxU9WlXumNa4mQD019iMoAbG+1BtGkj
-	 HOliRtOdVcmFw428yngwFkEPN+S3qBpYvT8y9e6rQ4/Vv11zRY3umHL/nmxz8gOuRv
-	 GD6QBb6ANYOBGBASTvrkcWEP53yvbXGb3ZGZ3QYRI6sPa/BoUiZi0plhv/HwkQz0HB
-	 YEQPJdngL2mvui+d65HpLKYVBMW2DUERzndz42WdC8ATu8a7P2A1XOha2oJAk3rrrx
-	 NAHuLzQ2I6kig==
-From: Kalle Valo <kvalo@kernel.org>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: Larry Finger <Larry.Finger@gmail.com>,  Johannes Berg
- <johannes@sipsolutions.net>,  "linux-wireless@vger.kernel.org"
- <linux-wireless@vger.kernel.org>,  "Nick Morrow" <morrownr@gmail.com>,
-  Larry Finger <Larry.Finger@lwfinger.net>,  "stable@vger.kernel.org"
- <stable@vger.kernel.org>
-Subject: Re: [PATCHi V2] wifi: rtw88: Add missing VID/PIDs doe 8811CU and
- 8821CU
-References: <4ume7mjw63u7.XlMUvUuacW2ErhOCdqlLkw2@1EHFQ.trk.elasticemail.com>
-	<aab5bb779e1f470daeb0a4258e4bb764@realtek.com>
-Date: Tue, 27 Feb 2024 08:38:48 +0200
-In-Reply-To: <aab5bb779e1f470daeb0a4258e4bb764@realtek.com> (Ping-Ke Shih's
-	message of "Tue, 27 Feb 2024 02:56:43 +0000")
-Message-ID: <87h6hu9zt3.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1709017046; c=relaxed/simple;
+	bh=CPG65n+GxI/uy0eM/O2KvuN3DhTq+x5b9cRnvJbLDFY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ohQW9VTLDdnVcJNpc+zkY4fQToJUFuTiq/nq8O4wpbRFAamzmW6HaSJ8C9lzW/3I/0q/1PXOFtNAPWJLdrlFeb5d3UmWB6D7dLEGXdq7tTYfgV5ArkvxSkq8c89OXk9LmNJ+ACxkCg9u4IbKPR4tlciBAUudSo5q/tFfUoei7SQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZxQ2axHO; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-512fcef91d4so2378609e87.3
+        for <stable@vger.kernel.org>; Mon, 26 Feb 2024 22:57:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1709017043; x=1709621843; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OYVZLW/axFzRuDYyrPmP2hajXo30/Cydh9CnWHBpngI=;
+        b=ZxQ2axHO8NG3FnItsxegruRxMRzZy+EUVf+HXidsq/+BjMhGTvbzrIl6IbpZz8WkpB
+         RzNvWKBWdlgT9p0YWwvZTVURNSCUGwpHfHEvj12KF93F2EoRISOGGItY0H+ZikqAc58N
+         badCtj8jWvVAIJ31jlQE9X2miT5UVvr4cPoJsq8qAVbxq1VraUtFB8RemyFZOIZYs1xu
+         XLlDYyfIzbZEyRj0hbS2mN93/DjKYbV8aM1AYYPpqPVm3s/s55pYPHt2qqrYiaUlwUTK
+         ypVVb8w14nVMLWkblcwaQW5YvvwBqbLHmMvpEadaBT5A/TWM1KF5lAH7isW9XjDjqBQ8
+         LUBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709017043; x=1709621843;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OYVZLW/axFzRuDYyrPmP2hajXo30/Cydh9CnWHBpngI=;
+        b=brkJfeUqdzsUXFAYr+15n1YJFsI3tCTGWoaRvwqsAR0BFE+DcQ+zFPddTTxTJ84CSM
+         rVEFDtRakv0CH/v7WxZVashxSpzPVxewlNWX1TOhPnSXsXpBvyth4U0QFtzjw3ImDVnO
+         7VMTJLdBP2LYsMY6TvBFjL3W/XYev2ZLjFrDvrdx0X6ZplWEKqgJpqrpr16X1FNlIF7E
+         wttl4LYjwXcn/vd6qnMyivTinBcoQTOHTBS6rDtc8fh57t4qdLaLjEilhJcGBpb+Tod1
+         URYevI2Vsg2cC2ZW8817EBrfch1TsRTOPQ4RKL9eWmL/5iWziYLOoqDtbEYd+L7InmzI
+         vJng==
+X-Forwarded-Encrypted: i=1; AJvYcCV4jRDALEib036QdWCoxLsqebF0dvuLJo79HNC0tWxlweerUO0xOp0OQX/e2G9BkzPpjTvIhqSLO8yVL5EGcaK8dT4e8d92
+X-Gm-Message-State: AOJu0YyNgrMvAXqxBeo5xksoqfmSvNXnAjQbG3Rf6AOKfEgFDWyrYq4+
+	kBN4/G4XYH00JNqf6lKY0asZlZ22BAc8ZETaz1NKlqwznP+qO4dRaAgseAXgK9aMK5CVd+NZPQD
+	+FbPjueKRDfH19hu17wTSpXWiyLhJ1UIxUCFO
+X-Google-Smtp-Source: AGHT+IF4r+KTMpwjEC8S0vMDfPTig3AUlP4fC1ph9rIWf4P50aRwWGKchYxwX6V4YHAUYeLPfpJ3I+D8/BQPTcdvGRQ=
+X-Received: by 2002:ac2:518f:0:b0:512:d713:1de2 with SMTP id
+ u15-20020ac2518f000000b00512d7131de2mr5515712lfi.40.1709017042492; Mon, 26
+ Feb 2024 22:57:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20240206042408.224138-1-joychakr@google.com> <2024020647-submarine-lucid-ea7b@gregkh>
+ <CAOSNQF3jk+85-P+NB-1w=nQwJr1BBO9OQuLbm6s8PiXrFMQdjg@mail.gmail.com>
+ <2024020637-handpick-pamphlet-bacb@gregkh> <CAOSNQF2_qy51Z01DKO1MB-d+K4EaXGDkof1T4pHNO10U_Hm0WQ@mail.gmail.com>
+ <2024020734-curliness-licking-44c1@gregkh> <CAOSNQF2WKang6DpGoVztybkEbtL=Uhc5J-WLvyfRhT3MGWgiaA@mail.gmail.com>
+In-Reply-To: <CAOSNQF2WKang6DpGoVztybkEbtL=Uhc5J-WLvyfRhT3MGWgiaA@mail.gmail.com>
+From: Joy Chakraborty <joychakr@google.com>
+Date: Tue, 27 Feb 2024 12:27:09 +0530
+Message-ID: <CAOSNQF2d27vYTtWwoDY8ALHWo3+eTeBz7e=koNodphVVmeThMQ@mail.gmail.com>
+Subject: Re: [PATCH v2] nvmem: rmem: Fix return value of rmem_read()
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, Rob Herring <robh@kernel.org>, 
+	Nicolas Saenz Julienne <nsaenz@kernel.org>, linux-kernel@vger.kernel.org, manugautam@google.com, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
-
-> Hi Larry,
+On Wed, Feb 7, 2024 at 8:33=E2=80=AFPM Joy Chakraborty <joychakr@google.com=
+> wrote:
 >
->> -----Original Message-----
->> From: Larry Finger <Larry.Finger@gmail.com>
->> Sent: Tuesday, February 27, 2024 10:35 AM
->> To: Kalle Valo <kvalo@kernel.org>
->> Cc: Johannes Berg <johannes@sipsolutions.net>; linux-wireless@vger.kernel.org; Nick Morrow
->> <morrownr@gmail.com>; Larry Finger <Larry.Finger@lwfinger.net>; Ping-Ke Shih <pkshih@realtek.com>;
->> stable@vger.kernel.org
->> Subject: [PATCHi V2] wifi: rtw88: Add missing VID/PIDs doe 8811CU and 8821CU
+> On Wed, Feb 7, 2024 at 3:04=E2=80=AFPM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Tue, Feb 06, 2024 at 05:22:15PM +0530, Joy Chakraborty wrote:
+> > > > > Userspace will see a false error with nvmem cell reads from
+> > > > > nvmem_cell_attr_read() in current code, which should be fixed on
+> > > > > returning 0 for success.
+> > > >
+> > > > So maybe fix this all up to allow the read to return the actual amo=
+unt
+> > > > read?  That feels more "correct" to me.
+> > > >
+> > >
+> > > If I change the behavior of the nvmem_reg_read_t callback to negative
+> > > for error and number of bytes actually read for success then, other
+> > > than the core driver I would also have to change all the
+> > > nvmem-provider drivers.
+> > > Is it okay to do so ?
+> >
+> > Sure, why not?  That seems like the correct fix to me, right?
 >
-> Not sure if "doe" is typo?
-
-I think it means "for" but Larry's finger was one key off to the left :) I can fix that.
-
->> From: Nick Morrow <morrownr@gmail.com>
->> 
->> Purpose: Add VID/PIDs that are known to be missing for this driver.
->> - removed  /* 8811CU */ and /* 8821CU */ as they are redundant
->> since the file is specific to those chips.
->> - removed /* TOTOLINK A650UA v3 */ as the manufacturer. It has a REALTEK
->> VID so it may not be specific to this adapter.
->> 
->> Source is
->> https://1EHFQ.trk.elasticemail.com/tracking/click?d=I82H0YR_W_h175Lb3Nkb0D8i6IqvuhESe0WLnY6P7IVwR1UKvB
->> 0SPxd1Olp3PNJEJTqsu4kyqBXayE0BVd_k7uLFvlTe65Syx2uqLUB-UQSfsKKLkuyE-frMZXSCL7q824UG3Oer614GGEeEz-DNEWHh
->> 43p_e8oz7OouS6gRBEng0
->> Verified and tested.
->> 
->> Signed-off-by: Nick Morrow <morrownr@gmail.com>
->> Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
->> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
->> 
+> Sure, I can do that.
 >
-> Did you keep a blank line intentionally? 
+> Is it okay to change the if checks on the return code to "if (rc < 0)"
+> instead of "if (rc)" as a fix for the immediate issue with how return
+> value from rmem is handled which can be applied to older kernels.
+> In a separate patch I can change the definition of nvmem_reg_read_t()
+> to return ssize_t instead of int and make corresponding changes to
+> nvmem-provider drivers.
+>
+> Does that sound okay ?
 
-I can fix this as well. I'll also move 'cc: stable' to the beginning of
-tags.
+Hi Greg,
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Sent a patch https://lore.kernel.org/all/20240219113149.2437990-2-joychakr@=
+google.com/
+to change the return type for read/write callbacks.
+Do I mark that with the "Fixes:" tag as well ?
+It affects a lot of files so might not be able to easily pick to an
+older kernel when needed.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Thanks
+Joy
+
+> >
+> > thanks,
+> >
+> > greg k-h
+>
+> Thanks
+> Joy
 
