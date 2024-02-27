@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12B988693C6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:48:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8745C869801
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:27:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C237B2924EB
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:48:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AADA0B2AAFB
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1208D145B21;
-	Tue, 27 Feb 2024 13:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526271420A0;
+	Tue, 27 Feb 2024 14:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5cIE6g1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RS29MQm8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB5F1420D4;
-	Tue, 27 Feb 2024 13:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E0A13A26F;
+	Tue, 27 Feb 2024 14:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041602; cv=none; b=g/OCydKIc+moi8l1dOgodrIin1ALLXa99xw9MrXG4mEwogzy0ISYd2vuHIXJBUcinww+PJt1asR9tluSsVmTqYfbmBMHmkGdK/V7+Dkp4K9feRRjeY7iMqvx0vQBiaIJtJZXrgE/tG+aa0nFzpsBQJ6aHK2gNEd4gwkq+rS+4qM=
+	t=1709043990; cv=none; b=pf6omH8cVq584wMOgsFLgVqRKDLOhiK3nFaIXkG3O2/jwrofE2vANL7yBm39mUZncgAOhVToM4GZJsTbOgQaQj5eSjMFY/Jg0BZnfcr4siQgnpb+sH/ppxKKJh5ZtnKHqGfZxxTU3pjiL8Y8jksKUlD2lbtN55h/gSnPyVHkxY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041602; c=relaxed/simple;
-	bh=63vIR9aGlW9xG6ntizSyu+ftQYVyrkkvzX0jpS476qU=;
+	s=arc-20240116; t=1709043990; c=relaxed/simple;
+	bh=/K8PtxwRJnZos5yUVoJIrDi/K4af27OabRlWscLjW+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AlglNs1FwYE6kqz2aBQhfyhzpWB7HmMTY6g9atExJ22xswOlIKruZdhWBL6IoLSNtYAim+sq1KSqKn03IZz4KUPN8049KB2qU5lVD+bNXmKJgmR3gyQWpWgOSETzWpHbBWtlH/JgScAlZcyVJoeELzT+gDIlplfB3FI9wE1VtF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5cIE6g1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1106DC433C7;
-	Tue, 27 Feb 2024 13:46:41 +0000 (UTC)
+	 MIME-Version; b=lai0a5JSKr7KoVPVcaYy18+Wy7XvhZDAhGMHT8OzZ2iOwb5huRTxFERV9EJPJoi0ut67sNnkZNE96v1EIjTWpJen04DBpgIMq6mC9B3xkrLO6W5crnxuYDlqv0C9rfqlJnCcCSSp8xfibl6uWvD5s4hW3XGHZTRohqrM/0MW3Lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RS29MQm8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9356FC43390;
+	Tue, 27 Feb 2024 14:26:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041602;
-	bh=63vIR9aGlW9xG6ntizSyu+ftQYVyrkkvzX0jpS476qU=;
+	s=korg; t=1709043989;
+	bh=/K8PtxwRJnZos5yUVoJIrDi/K4af27OabRlWscLjW+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b5cIE6g18mZoojyVCxZkzJO8p+Z6sV20ecg+QN1weNzs6D+jr6E/KiAuD+yJw1EIE
-	 +BY9biUJc5xs6T4/CdMluUzJRWtHA16NQC+ei9scKEFrZLAkwXCEZcG4gMihg/ipr4
-	 xFrOPntkNdqcU/3hlxD3dW0qul1qiBBn7xs9G2rU=
+	b=RS29MQm8HqRfxbcVDo++8M7OdUmAfOfyBZuc9dq8FViOUHN6C2GKNNlnib6KtHrpb
+	 b83UvYHt/kJRWmB7Xlqdjtus3CphUIFPWIgtveBazNRhsgptJJMEkjJY7spOB7YZjz
+	 39DY4rLTBWhdYqE61yIf2TxAKgXKX/Fns0MKIjkA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	LiHonggang <honggangli@163.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Leon Romanovsky <leon@kernel.org>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 37/52] RDMA/srpt: Support specifying the srpt_service_guid parameter
+Subject: [PATCH 5.10 023/122] ext4: avoid allocating blocks from corrupted group in ext4_mb_find_by_goal()
 Date: Tue, 27 Feb 2024 14:26:24 +0100
-Message-ID: <20240227131549.749436244@linuxfoundation.org>
+Message-ID: <20240227131559.464791257@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
-References: <20240227131548.514622258@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit fdfa083549de5d50ebf7f6811f33757781e838c0 ]
+[ Upstream commit 832698373a25950942c04a512daa652c18a9b513 ]
 
-Make loading ib_srpt with this parameter set work. The current behavior is
-that setting that parameter while loading the ib_srpt kernel module
-triggers the following kernel crash:
+Places the logic for checking if the group's block bitmap is corrupt under
+the protection of the group lock to avoid allocating blocks from the group
+with a corrupted block bitmap.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-Call Trace:
- <TASK>
- parse_one+0x18c/0x1d0
- parse_args+0xe1/0x230
- load_module+0x8de/0xa60
- init_module_from_file+0x8b/0xd0
- idempotent_init_module+0x181/0x240
- __x64_sys_finit_module+0x5a/0xb0
- do_syscall_64+0x5f/0xe0
- entry_SYSCALL_64_after_hwframe+0x6e/0x76
-
-Cc: LiHonggang <honggangli@163.com>
-Reported-by: LiHonggang <honggangli@163.com>
-Fixes: a42d985bd5b2 ("ib_srpt: Initial SRP Target merge for v3.3-rc1")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20240205004207.17031-1-bvanassche@acm.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240104142040.2835097-8-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/srpt/ib_srpt.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/ext4/mballoc.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
-index 6090f1ce0c56f..f3d83a05aa4fa 100644
---- a/drivers/infiniband/ulp/srpt/ib_srpt.c
-+++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
-@@ -82,12 +82,16 @@ module_param(srpt_srq_size, int, 0444);
- MODULE_PARM_DESC(srpt_srq_size,
- 		 "Shared receive queue (SRQ) size.");
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index ebb79f10330a8..46da6845c3072 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -1893,12 +1893,10 @@ int ext4_mb_find_by_goal(struct ext4_allocation_context *ac,
+ 	if (err)
+ 		return err;
  
-+static int srpt_set_u64_x(const char *buffer, const struct kernel_param *kp)
-+{
-+	return kstrtou64(buffer, 16, (u64 *)kp->arg);
-+}
- static int srpt_get_u64_x(char *buffer, const struct kernel_param *kp)
- {
- 	return sprintf(buffer, "0x%016llx", *(u64 *)kp->arg);
- }
--module_param_call(srpt_service_guid, NULL, srpt_get_u64_x, &srpt_service_guid,
--		  0444);
-+module_param_call(srpt_service_guid, srpt_set_u64_x, srpt_get_u64_x,
-+		  &srpt_service_guid, 0444);
- MODULE_PARM_DESC(srpt_service_guid,
- 		 "Using this value for ioc_guid, id_ext, and cm_listen_id"
- 		 " instead of using the node_guid of the first HCA.");
+-	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info))) {
+-		ext4_mb_unload_buddy(e4b);
+-		return 0;
+-	}
+-
+ 	ext4_lock_group(ac->ac_sb, group);
++	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)))
++		goto out;
++
+ 	max = mb_find_extent(e4b, ac->ac_g_ex.fe_start,
+ 			     ac->ac_g_ex.fe_len, &ex);
+ 	ex.fe_logical = 0xDEADFA11; /* debug value */
+@@ -1931,6 +1929,7 @@ int ext4_mb_find_by_goal(struct ext4_allocation_context *ac,
+ 		ac->ac_b_ex = ex;
+ 		ext4_mb_use_best_found(ac, e4b);
+ 	}
++out:
+ 	ext4_unlock_group(ac->ac_sb, group);
+ 	ext4_mb_unload_buddy(e4b);
+ 
 -- 
 2.43.0
 
