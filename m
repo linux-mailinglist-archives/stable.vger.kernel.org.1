@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-24418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D810B86945D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:53:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E10186956C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:01:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 769D21F22624
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:53:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E5681C25121
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:01:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF4241419AE;
-	Tue, 27 Feb 2024 13:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B10F713B2B9;
+	Tue, 27 Feb 2024 14:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z7AudfAK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kQ00Vh1T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6722D1419A0;
-	Tue, 27 Feb 2024 13:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3F378B61;
+	Tue, 27 Feb 2024 14:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041946; cv=none; b=MeRe680xqTZBKpwfQMxoiDhIj6Ddi4e3uSQ++Ld6B+Jwh8UMxIPSU+hGi17FtS9l3jJnoYS4VB6ZzCLQtXgaGJaD1nCUMW022ay2+Sa5DDF8mZe8Hz//YUki5HBBWUQx6NaE4O1ys+1H3vTRxsnU8TUP9nXI2ocJocrhKJMns6k=
+	t=1709042501; cv=none; b=cNBA1icrkHdZUemWIFT4nKsHUJZm4tkee7MzhIqMbGuE4aw9wP7eJ/yGY+IeN0DG0/wSmY/ZW7nv259yPUZlOxdxhtb5mrIpMc71DwHtj6erkbg2Do73+AomzAiFKKlx80kt4ReoHgcFhBUhLizWINy1e5uKonJnhlhWtuU8xFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041946; c=relaxed/simple;
-	bh=5K+24DINhG0TNamWc/t+56KjwjxKW6WgpdBJswA0OVo=;
+	s=arc-20240116; t=1709042501; c=relaxed/simple;
+	bh=84uSXivd/YHtrUIkbW5DSgHwqqPNcAWPH08fgXqYuz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q91PZC2F8X4EenPsHYNMr7OecSj2wmNMqdsXG4+SrMlsfLHOt2MkzTHLwvNHMsw5+lnR95CTlIKRVyfawCyWpxXE4fV+RwqfOunD3+/b35rDbcuy1h1qGTrRU7RjHcE2b5/11brNJUne+eTfy/BEhyp8bOh5YCmoo7TO/PAi3ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z7AudfAK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B49BC433F1;
-	Tue, 27 Feb 2024 13:52:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=URjWcsE5zWdoMeKzEhRuj637BlTtPYkzDMo/fC/P6k3iYTxfJXRAnLHvsxj/UHEBgWYTaeMPU7JMXAkTIFvbiSRJWB2o9zdsKl9SOKkBzWqZjXSqJdkvsrPg/sDrOVhSL+KIXJl/BEmBeUSPFfq02qYOiDQAiFNcfsCgl3Le+3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kQ00Vh1T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED555C433C7;
+	Tue, 27 Feb 2024 14:01:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041945;
-	bh=5K+24DINhG0TNamWc/t+56KjwjxKW6WgpdBJswA0OVo=;
+	s=korg; t=1709042501;
+	bh=84uSXivd/YHtrUIkbW5DSgHwqqPNcAWPH08fgXqYuz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z7AudfAK1hZgYw0XB4O8OtnF9L07HPtd53VYcBC6ytdGi3Pc+QXX2Ghf0Ng5wDWAq
-	 M6C0rUv3h76/Radbzi48csCRwE6y7t0hdUAdJwjg9c65rmsdoqZCGBxIqupov/LibH
-	 j6Ai47pqcwPqFbgqcVZQQkTeQr5wCiIapI257me8=
+	b=kQ00Vh1TcfcoPieyL938AuWrKjsge6R2DFief1ASYqTYdcX3M3f0YfxmYTpsCjQtt
+	 qvW0riZVuoey3CDGk8/zdBKREzc4ROVFshRbjfS29oKZFTBsug3GzLwmorNPAJ18c/
+	 mXWrSKkm4cRVfS4GrmOUZrrbvsXFkL8PT7se3omU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Bresticker <abrestic@rivosinc.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 096/299] efi: runtime: Fix potential overflow of soft-reserved region size
+Subject: [PATCH 5.15 019/245] dmaengine: shdma: increase size of dev_id
 Date: Tue, 27 Feb 2024 14:23:27 +0100
-Message-ID: <20240227131628.989192263@linuxfoundation.org>
+Message-ID: <20240227131615.739832518@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +59,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Bresticker <abrestic@rivosinc.com>
+From: Vinod Koul <vkoul@kernel.org>
 
-[ Upstream commit de1034b38a346ef6be25fe8792f5d1e0684d5ff4 ]
+[ Upstream commit 404290240827c3bb5c4e195174a8854eef2f89ac ]
 
-md_size will have been narrowed if we have >= 4GB worth of pages in a
-soft-reserved region.
+We seem to have hit warnings of 'output may be truncated' which is fixed
+by increasing the size of 'dev_id'
 
-Signed-off-by: Andrew Bresticker <abrestic@rivosinc.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+drivers/dma/sh/shdmac.c: In function ‘sh_dmae_probe’:
+drivers/dma/sh/shdmac.c:541:34: error: ‘%d’ directive output may be truncated writing between 1 and 10 bytes into a region of size 9 [-Werror=format-truncation=]
+  541 |                          "sh-dmae%d.%d", pdev->id, id);
+      |                                  ^~
+In function ‘sh_dmae_chan_probe’,
+    inlined from ‘sh_dmae_probe’ at drivers/dma/sh/shdmac.c:845:9:
+drivers/dma/sh/shdmac.c:541:26: note: directive argument in the range [0, 2147483647]
+  541 |                          "sh-dmae%d.%d", pdev->id, id);
+      |                          ^~~~~~~~~~~~~~
+drivers/dma/sh/shdmac.c:541:26: note: directive argument in the range [0, 19]
+drivers/dma/sh/shdmac.c:540:17: note: ‘snprintf’ output between 11 and 21 bytes into a destination of size 16
+  540 |                 snprintf(sh_chan->dev_id, sizeof(sh_chan->dev_id),
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  541 |                          "sh-dmae%d.%d", pdev->id, id);
+      |                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/arm-runtime.c   | 2 +-
- drivers/firmware/efi/riscv-runtime.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/dma/sh/shdma.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/arm-runtime.c b/drivers/firmware/efi/arm-runtime.c
-index 83f5bb57fa4c4..83092d93f36a6 100644
---- a/drivers/firmware/efi/arm-runtime.c
-+++ b/drivers/firmware/efi/arm-runtime.c
-@@ -107,7 +107,7 @@ static int __init arm_enable_runtime_services(void)
- 		efi_memory_desc_t *md;
- 
- 		for_each_efi_memory_desc(md) {
--			int md_size = md->num_pages << EFI_PAGE_SHIFT;
-+			u64 md_size = md->num_pages << EFI_PAGE_SHIFT;
- 			struct resource *res;
- 
- 			if (!(md->attribute & EFI_MEMORY_SP))
-diff --git a/drivers/firmware/efi/riscv-runtime.c b/drivers/firmware/efi/riscv-runtime.c
-index 09525fb5c240e..01f0f90ea4183 100644
---- a/drivers/firmware/efi/riscv-runtime.c
-+++ b/drivers/firmware/efi/riscv-runtime.c
-@@ -85,7 +85,7 @@ static int __init riscv_enable_runtime_services(void)
- 		efi_memory_desc_t *md;
- 
- 		for_each_efi_memory_desc(md) {
--			int md_size = md->num_pages << EFI_PAGE_SHIFT;
-+			u64 md_size = md->num_pages << EFI_PAGE_SHIFT;
- 			struct resource *res;
- 
- 			if (!(md->attribute & EFI_MEMORY_SP))
+diff --git a/drivers/dma/sh/shdma.h b/drivers/dma/sh/shdma.h
+index 9c121a4b33ad8..f97d80343aea4 100644
+--- a/drivers/dma/sh/shdma.h
++++ b/drivers/dma/sh/shdma.h
+@@ -25,7 +25,7 @@ struct sh_dmae_chan {
+ 	const struct sh_dmae_slave_config *config; /* Slave DMA configuration */
+ 	int xmit_shift;			/* log_2(bytes_per_xfer) */
+ 	void __iomem *base;
+-	char dev_id[16];		/* unique name per DMAC of channel */
++	char dev_id[32];		/* unique name per DMAC of channel */
+ 	int pm_error;
+ 	dma_addr_t slave_addr;
+ };
 -- 
 2.43.0
 
