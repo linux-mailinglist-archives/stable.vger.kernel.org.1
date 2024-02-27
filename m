@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-25189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8635D869879
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:35:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5714E869678
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:12:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 625A7B2EF45
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:29:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA2871F2E4EE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:12:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED108145B27;
-	Tue, 27 Feb 2024 14:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7DB713B798;
+	Tue, 27 Feb 2024 14:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rciT1GOr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F8eIc1a8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9EB41420B3;
-	Tue, 27 Feb 2024 14:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873441419B4;
+	Tue, 27 Feb 2024 14:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044112; cv=none; b=p0olIf+GqaIJcZQWoV6+zDjuoqfEt6kRm9RsVx5HhUrNj4VubRVdN1i24KttJem+vPhYN8XCmJOZA1tT+bMiYqjBJRzHxxXxG8MfnGkUbdvQYC382OPx2HJMaIZW9hQlin1jqfZX+bhYMqk764MfqWyc1XjnDjRBWx75QtkUbPg=
+	t=1709043118; cv=none; b=blrkVZdif05K9JL8RK6v1u8bALs/FF3tDr8ED+RtP7ivhlHVyn/LR1yXz685iqcr/ktjbGjOXlUQUxO7BDyeRYdUOD7S0sLZZJZHVUiUTB84ck/zsLkq+7CbUziJxd/JAarU1IoYRtYkNNTQiCgRo9126DeU1Ov1UYa3KdLDZnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044112; c=relaxed/simple;
-	bh=RkEHuy/e9Srrmd/hreLKmD3hHavnMbvffmVqqKSmFaU=;
+	s=arc-20240116; t=1709043118; c=relaxed/simple;
+	bh=DalmWTOjMfztrYaQFqPRdBRbHxChcp3CXXV49zmeqgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bHVTMtrWrlC4zY66TkeHylBKnxtcP/6IkN7iPxD1qLu6OijVLp/twdMysri5QCQKWkYTY+jyGD4LJeFSo+2dmPGNhaAmZeSU9COrhNfrW07OLkoiE1KR1xCUBO5cDwVJru27TtG/ROS3J6tUPzZykVaE2mRI5K7xpkrMPwgh0yM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rciT1GOr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CEACC433C7;
-	Tue, 27 Feb 2024 14:28:31 +0000 (UTC)
+	 MIME-Version; b=hcS5pXfPLE8nQqGOMNWVHNP5b2ItWzuPaPg9QlZ3ZGY2QnWxeoMkBCALet5fBKFriMOD+yo4HNS8vn8MrHwObVM+O4kBYVyen/3ibWE0+MwQ9qyLczeY274K15jvBnhTY3oontxJXUaQB6B90clU+nqQTKhZnG2s64htftlpgs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F8eIc1a8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16090C43399;
+	Tue, 27 Feb 2024 14:11:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044111;
-	bh=RkEHuy/e9Srrmd/hreLKmD3hHavnMbvffmVqqKSmFaU=;
+	s=korg; t=1709043118;
+	bh=DalmWTOjMfztrYaQFqPRdBRbHxChcp3CXXV49zmeqgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rciT1GOr7egzQcWk2zyAJeT0rI/qxOPLeA1VrPpqhyGT3vTI++YS1t9OLa79h2t0G
-	 hhCYFpRU4gvkQbVM7Kf7gzyeSSsOK0TPeX9KRbIXL1NBVbra/qwRMD9ApttCmtrjjP
-	 SKN3V8mYa+mLMEqP3YzibgqChCJg4pTIgRcuUenQ=
+	b=F8eIc1a8W07R6v/f8yz3uP1TodgFhlMpQdgfimY4q9Haj5Wvq5vfRPB9eI+YcDiaV
+	 iXzr/nWj4whqxRVbPXJ2Em73K+XMuYrnxrDWsH9uXUYPgAlgvKYuMrjwUkUrwy2aW+
+	 9yZeiV3RfPm/u/o8f3cODwECtJ1GWNw655hHUDSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Verevkin <me@maxverevkin.tk>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 066/122] platform/x86: intel-vbtn: Support for tablet mode on HP Pavilion 13 x360 PC
-Date: Tue, 27 Feb 2024 14:27:07 +0100
-Message-ID: <20240227131600.862693048@linuxfoundation.org>
+	Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@lst.de>,
+	Avi Kivity <avi@scylladb.com>,
+	Sandeep Dhavale <dhavale@google.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.15 240/245] fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via libaio
+Date: Tue, 27 Feb 2024 14:27:08 +0100
+Message-ID: <20240227131622.962672342@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +66,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Verevkin <me@maxverevkin.tk>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 07b211992d6c0d80b321403244d43bbd2d6cf48c ]
+commit b820de741ae48ccf50dd95e297889c286ff4f760 upstream.
 
-The Pavilion 13 x360 PC has a chassis-type which does not indicate it is
-a convertible, while it is actually a convertible. Add it to the
-dmi_switches_allow_list.
+If kiocb_set_cancel_fn() is called for I/O submitted via io_uring, the
+following kernel warning appears:
 
-Signed-off-by: Max Verevkin <me@maxverevkin.tk>
-Link: https://lore.kernel.org/r/20201124131652.11165-1-me@maxverevkin.tk
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+WARNING: CPU: 3 PID: 368 at fs/aio.c:598 kiocb_set_cancel_fn+0x9c/0xa8
+Call trace:
+ kiocb_set_cancel_fn+0x9c/0xa8
+ ffs_epfile_read_iter+0x144/0x1d0
+ io_read+0x19c/0x498
+ io_issue_sqe+0x118/0x27c
+ io_submit_sqes+0x25c/0x5fc
+ __arm64_sys_io_uring_enter+0x104/0xab0
+ invoke_syscall+0x58/0x11c
+ el0_svc_common+0xb4/0xf4
+ do_el0_svc+0x2c/0xb0
+ el0_svc+0x2c/0xa4
+ el0t_64_sync_handler+0x68/0xb4
+ el0t_64_sync+0x1a4/0x1a8
+
+Fix this by setting the IOCB_AIO_RW flag for read and write I/O that is
+submitted by libaio.
+
+Suggested-by: Jens Axboe <axboe@kernel.dk>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Avi Kivity <avi@scylladb.com>
+Cc: Sandeep Dhavale <dhavale@google.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: stable@vger.kernel.org
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240215204739.2677806-2-bvanassche@acm.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel-vbtn.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/aio.c           |    9 ++++++++-
+ include/linux/fs.h |    2 ++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/intel-vbtn.c b/drivers/platform/x86/intel-vbtn.c
-index a90c32d072da3..9c8a6722f115e 100644
---- a/drivers/platform/x86/intel-vbtn.c
-+++ b/drivers/platform/x86/intel-vbtn.c
-@@ -230,6 +230,12 @@ static const struct dmi_system_id dmi_switches_allow_list[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Inspiron 7352"),
- 		},
- 	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Hewlett-Packard"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "HP Pavilion 13 x360 PC"),
-+		},
-+	},
- 	{} /* Array terminator */
- };
+--- a/fs/aio.c
++++ b/fs/aio.c
+@@ -568,6 +568,13 @@ void kiocb_set_cancel_fn(struct kiocb *i
+ 	struct kioctx *ctx = req->ki_ctx;
+ 	unsigned long flags;
  
--- 
-2.43.0
-
++	/*
++	 * kiocb didn't come from aio or is neither a read nor a write, hence
++	 * ignore it.
++	 */
++	if (!(iocb->ki_flags & IOCB_AIO_RW))
++		return;
++
+ 	if (WARN_ON_ONCE(!list_empty(&req->ki_list)))
+ 		return;
+ 
+@@ -1453,7 +1460,7 @@ static int aio_prep_rw(struct kiocb *req
+ 	req->ki_complete = aio_complete_rw;
+ 	req->private = NULL;
+ 	req->ki_pos = iocb->aio_offset;
+-	req->ki_flags = iocb_flags(req->ki_filp);
++	req->ki_flags = iocb_flags(req->ki_filp) | IOCB_AIO_RW;
+ 	if (iocb->aio_flags & IOCB_FLAG_RESFD)
+ 		req->ki_flags |= IOCB_EVENTFD;
+ 	req->ki_hint = ki_hint_validate(file_write_hint(req->ki_filp));
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -322,6 +322,8 @@ enum rw_hint {
+ #define IOCB_NOIO		(1 << 20)
+ /* can use bio alloc cache */
+ #define IOCB_ALLOC_CACHE	(1 << 21)
++/* kiocb is a read or write operation submitted by fs/aio.c. */
++#define IOCB_AIO_RW		(1 << 23)
+ 
+ struct kiocb {
+ 	struct file		*ki_filp;
 
 
 
