@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-24861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD7278696B0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E33E8695F5
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39582B28E84
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:14:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D59DA28919B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB29014264A;
-	Tue, 27 Feb 2024 14:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27C5814533E;
+	Tue, 27 Feb 2024 14:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1sz6G/Vm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NqS+bKDz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8987913EFE4;
-	Tue, 27 Feb 2024 14:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7510145B24;
+	Tue, 27 Feb 2024 14:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043191; cv=none; b=d4Z0XrP7S66dJMqOUzR7Ibq/c+yAJ98JMtxTUaMkojPlEaTmoKCrDpJs4LD4xoLvQlZIQ3C/CIu8acJ7F4rw/ovKgp2zaTDK0CIO43csXSj+XobpxPxaYFhth2Os4xm28QKH66M1jfA9z03wDk4hzGBWEuwN4G8k489BZH1QTA0=
+	t=1709042792; cv=none; b=iRGtwue+VlRQnU/pUw+UX5O4waBTByxm2LRq1JS+PbzKQ7f+mxy1Bt1bJvHFCFGHOxbCOE4Nnl28Y1ZAvUq2x+qHySCM75qiipM8XCEm7+hbWcbZ0fzJRyOviQjblvtcaED+ohK/C08Q4FOKgqFhfTa4z3m48bpZYIfLQWGO2Bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043191; c=relaxed/simple;
-	bh=oEF8GhL3AzgRXef4NRiHJDa8QK0AsWNnsVmaFUtKJaY=;
+	s=arc-20240116; t=1709042792; c=relaxed/simple;
+	bh=j91njg2ale8z6ZVLcfWF8w1fXV6bmwxdmVkriTG2YKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B3cvq+/JKaATfy6miw0Q+30WKFnZkL7JVtewrwfk7Wm8Lr1lmUQNSmIeIHzNCc6rHG2b+BYgQHHZm1rKbIarhppaB5K+nSkOB4MK+RYgcP/Xt8emuoHaiOiS2QH2qbqDyHQW19uN9TNTizmo39r3QZfHini0ijeNi31fkf6qrkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1sz6G/Vm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7814C433F1;
-	Tue, 27 Feb 2024 14:13:10 +0000 (UTC)
+	 MIME-Version; b=JR/9lniWhhZKIBTJRAH2d7dW4qS4PARAZDBNZR1i6EYxkTqrcv+jHJ/OPcOrLj3VSBVaAB09ttJLuS9Mcfy68Ob9XP5NztQ0zs8fUsRtSU88OZpniqqcjQfPitekGzXbvQmJ7A6ZYvwkGxCeip8s9omz40ffvBjVx2euEo760Xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NqS+bKDz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E29C433C7;
+	Tue, 27 Feb 2024 14:06:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043191;
-	bh=oEF8GhL3AzgRXef4NRiHJDa8QK0AsWNnsVmaFUtKJaY=;
+	s=korg; t=1709042792;
+	bh=j91njg2ale8z6ZVLcfWF8w1fXV6bmwxdmVkriTG2YKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1sz6G/VmRH02izfiHReLo7c2IUmlU1ElcCfVF1mO+SxSS3A47oS76LzPnyGNME1bf
-	 +CN9NJm68d8eKzFOW1mDsO818ci9Me9kBWnB7MafseS+ahULBhhG80i1SpM5gf4gyA
-	 298TmVVhWF+j6ZBBTRtyOrtUL1M/cExn0f+H7apE=
+	b=NqS+bKDzUbE7yhU5y6m0wkS77j3z98RI3Fst287NFACPhnlfTVzvpG+wlluDSACUV
+	 Nc0BpvRmHbUZSL1cLzrfLIa3tTRaL6xEsW2RmoRhfouHIfrF/ov20jkffJhxlAR1t/
+	 HJ5ntlA7TC61Qpo0bWspej/QHcvdwueUdv1I/t1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Conrad Kostecki <conikost@gentoo.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 021/195] ahci: asm1166: correct count of reported ports
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 5.15 094/245] x86/alternative: Make custom return thunk unconditional
 Date: Tue, 27 Feb 2024 14:24:42 +0100
-Message-ID: <20240227131611.093577518@linuxfoundation.org>
+Message-ID: <20240227131618.275877842@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Conrad Kostecki <conikost@gentoo.org>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 0077a504e1a4468669fd2e011108db49133db56e ]
+Upstream commit: 095b8303f3835c68ac4a8b6d754ca1c3b6230711
 
-The ASM1166 SATA host controller always reports wrongly,
-that it has 32 ports. But in reality, it only has six ports.
+There is infrastructure to rewrite return thunks to point to any
+random thunk one desires, unwrap that from CALL_THUNKS, which up to
+now was the sole user of that.
 
-This seems to be a hardware issue, as all tested ASM1166
-SATA host controllers reports such high count of ports.
+  [ bp: Make the thunks visible on 32-bit and add ifdeffery for the
+    32-bit builds. ]
 
-Example output: ahci 0000:09:00.0: AHCI 0001.0301
-32 slots 32 ports 6 Gbps 0xffffff3f impl SATA mode.
-
-By adjusting the port_map, the count is limited to six ports.
-
-New output: ahci 0000:09:00.0: AHCI 0001.0301
-32 slots 32 ports 6 Gbps 0x3f impl SATA mode.
-
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=211873
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218346
-Signed-off-by: Conrad Kostecki <conikost@gentoo.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230814121148.775293785@infradead.org
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/ahci.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/x86/include/asm/nospec-branch.h |    8 ++++----
+ arch/x86/kernel/alternative.c        |    4 ----
+ arch/x86/kernel/cpu/bugs.c           |    2 ++
+ 3 files changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 805645efb3ccf..e22124f42183f 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -658,6 +658,11 @@ MODULE_PARM_DESC(mobile_lpm_policy, "Default LPM policy for mobile chipsets");
- static void ahci_pci_save_initial_config(struct pci_dev *pdev,
- 					 struct ahci_host_priv *hpriv)
- {
-+	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA && pdev->device == 0x1166) {
-+		dev_info(&pdev->dev, "ASM1166 has only six ports\n");
-+		hpriv->saved_port_map = 0x3f;
-+	}
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -190,7 +190,11 @@
+ 	_ASM_PTR " 999b\n\t"					\
+ 	".popsection\n\t"
+ 
++#ifdef CONFIG_RETHUNK
+ extern void __x86_return_thunk(void);
++#else
++static inline void __x86_return_thunk(void) {}
++#endif
+ 
+ extern void retbleed_return_thunk(void);
+ extern void srso_return_thunk(void);
+@@ -203,11 +207,7 @@ extern void srso_alias_untrain_ret(void)
+ extern void entry_untrain_ret(void);
+ extern void entry_ibpb(void);
+ 
+-#ifdef CONFIG_CALL_THUNKS
+ extern void (*x86_return_thunk)(void);
+-#else
+-#define x86_return_thunk	(&__x86_return_thunk)
+-#endif
+ 
+ #ifdef CONFIG_RETPOLINE
+ 
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -522,10 +522,6 @@ void __init_or_module noinline apply_ret
+ 
+ #ifdef CONFIG_RETHUNK
+ 
+-#ifdef CONFIG_CALL_THUNKS
+-void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
+-#endif
+-
+ /*
+  * Rewrite the compiler generated return thunk tail-calls.
+  *
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -62,6 +62,8 @@ EXPORT_SYMBOL_GPL(x86_pred_cmd);
+ 
+ static DEFINE_MUTEX(spec_ctrl_mutex);
+ 
++void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
 +
- 	if (pdev->vendor == PCI_VENDOR_ID_JMICRON && pdev->device == 0x2361) {
- 		dev_info(&pdev->dev, "JMB361 has only one port\n");
- 		hpriv->saved_port_map = 1;
--- 
-2.43.0
-
+ /* Update SPEC_CTRL MSR and its cached copy unconditionally */
+ static void update_spec_ctrl(u64 val)
+ {
 
 
 
