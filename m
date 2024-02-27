@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-24784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F2C869640
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:09:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DC99869712
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:18:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BE431C21F2E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:09:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 500131C20BB0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:18:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6216C13B7AB;
-	Tue, 27 Feb 2024 14:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC8A01420D2;
+	Tue, 27 Feb 2024 14:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YgsWnIDs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VtaZ/BbG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE7813A26F;
-	Tue, 27 Feb 2024 14:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B12613B798;
+	Tue, 27 Feb 2024 14:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042981; cv=none; b=psbEB/74n2YzGJPlfxtL1JNxzR+lzVLvx97IQlV4XFJJ75MUpu2yQtk949bxHR5bDGTAkhK9Z8k1t3/Cv0RxfradQ79VWBYCtyAs5UIztcl1wBRF0Ts1V8in2oYzZ2GSE2IVP4yTeGIhu+2ASe8RUMO7R6IqgcO7FCMnMm8TdDc=
+	t=1709043467; cv=none; b=ZN8IxXGvsQ9Iq1BFzYB8GG4QCFM7/va5tO6H0dPBqfGfAPU2GFZ+q2Tq61BNcAHEc15gIAny8Hcs10V+VDHGj3k6fzo220Blej+Jq3rSEA0P1GWujYgaJaHVXxNU0p3kMQP+Z9lymyuPt04GKUHZYiEu5gxm70u/3GktlcMvO2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042981; c=relaxed/simple;
-	bh=ceL+e+2VY1tIlXk6NhMwPp2B2IBQ7aRUVvrCseTMHfM=;
+	s=arc-20240116; t=1709043467; c=relaxed/simple;
+	bh=FKlG5jiBdRPaaAbXiPMxQRIzcSW1AgNDX6AhDo16kyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ma5ZsVEwrWJkLFqjpr6KdokkFhXuoJhjfn2RHLFmgsMAacws4MtvDUsIgNPJlfzpgmjUwnUVn1sdXfQXMz+zfvGzEg6ATDLHDlj6oeQt0nVcRlo2MVJPejzM9s8waNsZt4Ruj1WVcklgZIYqhEGrQIhGSy4f1RqGJsJlyueXX7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YgsWnIDs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C689C433F1;
-	Tue, 27 Feb 2024 14:09:40 +0000 (UTC)
+	 MIME-Version; b=n3hpMjrQHZD99Cy2Ho4PE8Chnf6xiRmlow0hm+TGLD4XrRoLnGGP7u1kH+scrZWQaT5rr3g57Q3nMAL7OdsE5nBSiOLKsQdk3zaW6Aqf4hFB63dtzg4LS4F4k1lOgnNOZ8rVi7jIddkVtkbEb3LPytXixJzJi9A+3TsEEpxICi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VtaZ/BbG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC15DC433C7;
+	Tue, 27 Feb 2024 14:17:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042981;
-	bh=ceL+e+2VY1tIlXk6NhMwPp2B2IBQ7aRUVvrCseTMHfM=;
+	s=korg; t=1709043467;
+	bh=FKlG5jiBdRPaaAbXiPMxQRIzcSW1AgNDX6AhDo16kyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YgsWnIDs9M6nrJc+KdgIxT96ODoNrzxBd3zSCmGcr7tTHSEFPWAXuoJUHVEADMv9T
-	 qb9mAYOcd4Q1cqU35VEjsGljVZ1y3kF+lisFjxSf8tgtWAQwlN/fU5AMbDxEZF404u
-	 2jmz+STqtL3IznsvinRlKn6744RHE2VvnKuW0G3Q=
+	b=VtaZ/BbGtI6m7Vzf/XN9ITas7D/Kov3ThfZN8jYVTLObuRbyPCtfc2AgNATIBHdb+
+	 qtQ+us7VSqlBvSFXgYuRHdP7RNVNK8eQLSStYBG5U0zZUCx3Eg50gyD8GCinS0boXv
+	 53QDwLEmoEWfqigddva5sBuOjeM/v0S1/iGjp698=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 191/245] ACPI: resource: Add Asus ExpertBook B2502 to Asus quirks
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.1 118/195] usb: dwc3: gadget: Dont disconnect if not started
 Date: Tue, 27 Feb 2024 14:26:19 +0100
-Message-ID: <20240227131621.400037196@linuxfoundation.org>
+Message-ID: <20240227131614.354518084@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-[ Upstream commit 7203481fd12b1257938519efb2460ea02b9236ee ]
+commit b191a18cb5c47109ca696370a74a5062a70adfd0 upstream.
 
-The Asus ExpertBook B2502 has the same keyboard issue as Asus Vivobook
-K3402ZA/K3502ZA. The kernel overrides IRQ 1 to Edge_High when it
-should be Active_Low.
+Don't go through soft-disconnection sequence if the controller hasn't
+started. Otherwise, there will be timeout and warning reports from the
+soft-disconnection flow.
 
-This patch adds the ExpertBook B2502 model to the existing
-quirk list of Asus laptops with this issue.
-
-Fixes: b5f9223a105d ("ACPI: resource: Skip IRQ override on Asus Vivobook S5602ZA")
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2142574
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 77c724888238 ("ACPI: resource: Skip IRQ override on Asus Expertbook B2402CBA")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 61a348857e86 ("usb: dwc3: gadget: Fix NULL pointer dereference in dwc3_gadget_suspend")
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Closes: https://lore.kernel.org/linux-usb/20240215233536.7yejlj3zzkl23vjd@synopsys.com/T/#mb0661cd5f9272602af390c18392b9a36da4f96e6
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/e3be9b929934e0680a6f4b8f6eb11b18ae9c7e07.1708043922.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/usb/dwc3/gadget.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 5f56839ed71df..a5d2a81902038 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -435,6 +435,13 @@ static const struct dmi_system_id asus_laptop[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "S5602ZA"),
- 		},
- 	},
-+	{
-+		.ident = "Asus ExpertBook B2502",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "B2502CBA"),
-+		},
-+	},
- 	{ }
- };
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -2548,6 +2548,11 @@ static int dwc3_gadget_soft_disconnect(s
+ 	int ret;
  
--- 
-2.43.0
-
+ 	spin_lock_irqsave(&dwc->lock, flags);
++	if (!dwc->pullups_connected) {
++		spin_unlock_irqrestore(&dwc->lock, flags);
++		return 0;
++	}
++
+ 	dwc->connected = false;
+ 
+ 	/*
 
 
 
