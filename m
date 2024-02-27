@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-25119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AF938697D6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:25:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 170E786986E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:32:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE3791F2B567
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:25:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49A8E1C21538
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D6614534F;
-	Tue, 27 Feb 2024 14:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F11251448FE;
+	Tue, 27 Feb 2024 14:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EpUcB2gT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ba5VR9ZQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D833F14532C;
-	Tue, 27 Feb 2024 14:25:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0B354BFE;
+	Tue, 27 Feb 2024 14:31:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043917; cv=none; b=qFwAaLyiC8mmAKaHzbTM/EUiKcVrtzQLVMnqHRmv1VrPktMUbQLuz4dz2J1DoesGMaB/gQjc5KZMVkmuR4E6ZVZDtoHgV0OPFzKDBn3QjCYjVcvCz76uz3ea826h8ax1JFd2rlHIhE59YE7LRSQWcwY+8L0Mx3fPvjHGcfKX5iE=
+	t=1709044286; cv=none; b=a6vf0KK/PgoU+8+nOTNGQFG5d706MqMrmFTg7Wn9ELEOGZ7GByTHqK7PyBozIPSomO/IHeEsuQNl1EWNYQeLNwMNhOqLMly2OJbZEZC1OqtdaHGlK5E8DNsWc3hDnoF09o8UCcAizc51bDRBfqU4o6dlvIRJbFR7KrjunGo3ukk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043917; c=relaxed/simple;
-	bh=N9pixrSa9mF/1WuDrPCRnpLYX0fpQot0iYBF8jOV2qs=;
+	s=arc-20240116; t=1709044286; c=relaxed/simple;
+	bh=LOxQGbvXxGIcskrN9CClW1ua/veg2QgtpTgvwYQDYos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dxUAxNa4n/8A5ZNEtPuNzJ+zOCsZGEYdSj7edQi37CKhJrQSDR+jpR/OQT3lRMbK62/uIwGoD0op8Lc8Dy+otLnr/j2qnHhEEq/Ji+GKmsu0O3StxJ2hGKhBbgbRMC87X5MAuxvZsNl3cCSBwxBGZ0pevBrgRoi+bhWss7FJgkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EpUcB2gT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07AF7C43394;
-	Tue, 27 Feb 2024 14:25:16 +0000 (UTC)
+	 MIME-Version; b=anXJaQU7cazd2Q+nFB60+V9cMpr2bbVOvcQu0mJJx1IC0IxG28r0239RWDwcWJ+KPdYhi361hLK4j6/v1h3q0epMBGigWapDHl5Ctezg87gU97JpHoIs05OISdXwqxehrHz6b4WAbMLtgjWzivDPV23Pyiq0hPxJu53E8ltxFoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ba5VR9ZQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 393CBC433C7;
+	Tue, 27 Feb 2024 14:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043917;
-	bh=N9pixrSa9mF/1WuDrPCRnpLYX0fpQot0iYBF8jOV2qs=;
+	s=korg; t=1709044286;
+	bh=LOxQGbvXxGIcskrN9CClW1ua/veg2QgtpTgvwYQDYos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EpUcB2gTPZDR6Yg3jh8SFqapNUK0A6d29It7mPuhGVd5oVaG+yd9QF6L4oT2b5vL+
-	 y42YwdzqWiuCHNVN5vyrZBLWPkCOknU4t1W49VL6upIaHBdQSo+/KItFRnu1NzZ42z
-	 F0hDq7+Q7Y4np1Ux/FqjyXL9AWQegB7xn7WcAWUw=
+	b=Ba5VR9ZQD+ltCgr8Lw4tzMZBbAg5mQ2vI1+jNIk+kxkhi8x9t0BNxcj3F7GCJraDd
+	 viz1eMr+k6wvBnQumCyxSGtUSCu8Vt6sNTsoTuV0p1teLbv1B0ZJnEPorE5OIk/iXM
+	 1O3sGiN1R8go6XQEs4f1V8vxQnwVVTCSV6KrgfQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erik Kurzinger <ekurzinger@nvidia.com>,
-	Simon Ser <contact@emersion.fr>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 82/84] drm/syncobj: call drm_syncobj_fence_add_wait when WAIT_AVAILABLE flag is set
+Subject: [PATCH 5.10 108/122] ipv6: sr: fix possible use-after-free and null-ptr-deref
 Date: Tue, 27 Feb 2024 14:27:49 +0100
-Message-ID: <20240227131555.545442293@linuxfoundation.org>
+Message-ID: <20240227131602.239658029@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erik Kurzinger <ekurzinger@nvidia.com>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-[ Upstream commit 3c43177ffb54ea5be97505eb8e2690e99ac96bc9 ]
+[ Upstream commit 5559cea2d5aa3018a5f00dd2aca3427ba09b386b ]
 
-When waiting for a syncobj timeline point whose fence has not yet been
-submitted with the WAIT_FOR_SUBMIT flag, a callback is registered using
-drm_syncobj_fence_add_wait and the thread is put to sleep until the
-timeout expires. If the fence is submitted before then,
-drm_syncobj_add_point will wake up the sleeping thread immediately which
-will proceed to wait for the fence to be signaled.
+The pernet operations structure for the subsystem must be registered
+before registering the generic netlink family.
 
-However, if the WAIT_AVAILABLE flag is used instead,
-drm_syncobj_fence_add_wait won't get called, meaning the waiting thread
-will always sleep for the full timeout duration, even if the fence gets
-submitted earlier. If it turns out that the fence *has* been submitted
-by the time it eventually wakes up, it will still indicate to userspace
-that the wait completed successfully (it won't return -ETIME), but it
-will have taken much longer than it should have.
-
-To fix this, we must call drm_syncobj_fence_add_wait if *either* the
-WAIT_FOR_SUBMIT flag or the WAIT_AVAILABLE flag is set. The only
-difference being that with WAIT_FOR_SUBMIT we will also wait for the
-fence to be signaled after it has been submitted while with
-WAIT_AVAILABLE we will return immediately.
-
-IGT test patch: https://lists.freedesktop.org/archives/igt-dev/2024-January/067537.html
-
-v1 -> v2: adjust lockdep_assert_none_held_once condition
-
-(cherry picked from commit 8c44ea81634a4a337df70a32621a5f3791be23df)
-
-Fixes: 01d6c3578379 ("drm/syncobj: add support for timeline point wait v8")
-Signed-off-by: Erik Kurzinger <ekurzinger@nvidia.com>
-Signed-off-by: Simon Ser <contact@emersion.fr>
-Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Reviewed-by: Simon Ser <contact@emersion.fr>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240119163208.3723457-1-ekurzinger@nvidia.com
+Fixes: 915d7e5e5930 ("ipv6: sr: add code base for control plane support of SR-IPv6")
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Link: https://lore.kernel.org/r/20240215202717.29815-1-kovalev@altlinux.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_syncobj.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/ipv6/seg6.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_syncobj.c b/drivers/gpu/drm/drm_syncobj.c
-index a1d2a3dc00768..9baf95a4fc9ff 100644
---- a/drivers/gpu/drm/drm_syncobj.c
-+++ b/drivers/gpu/drm/drm_syncobj.c
-@@ -898,7 +898,8 @@ static signed long drm_syncobj_array_wait_timeout(struct drm_syncobj **syncobjs,
- 	uint64_t *points;
- 	uint32_t signaled_count, i;
+diff --git a/net/ipv6/seg6.c b/net/ipv6/seg6.c
+index 2278c0234c497..a8439fded12dc 100644
+--- a/net/ipv6/seg6.c
++++ b/net/ipv6/seg6.c
+@@ -451,22 +451,24 @@ int __init seg6_init(void)
+ {
+ 	int err;
  
--	if (flags & DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT)
-+	if (flags & (DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT |
-+		     DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE))
- 		lockdep_assert_none_held_once();
+-	err = genl_register_family(&seg6_genl_family);
++	err = register_pernet_subsys(&ip6_segments_ops);
+ 	if (err)
+ 		goto out;
  
- 	points = kmalloc_array(count, sizeof(*points), GFP_KERNEL);
-@@ -967,7 +968,8 @@ static signed long drm_syncobj_array_wait_timeout(struct drm_syncobj **syncobjs,
- 	 * fallthough and try a 0 timeout wait!
- 	 */
+-	err = register_pernet_subsys(&ip6_segments_ops);
++	err = genl_register_family(&seg6_genl_family);
+ 	if (err)
+-		goto out_unregister_genl;
++		goto out_unregister_pernet;
  
--	if (flags & DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT) {
-+	if (flags & (DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT |
-+		     DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE)) {
- 		for (i = 0; i < count; ++i)
- 			drm_syncobj_fence_add_wait(syncobjs[i], &entries[i]);
- 	}
+ #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
+ 	err = seg6_iptunnel_init();
+ 	if (err)
+-		goto out_unregister_pernet;
++		goto out_unregister_genl;
+ 
+ 	err = seg6_local_init();
+-	if (err)
+-		goto out_unregister_pernet;
++	if (err) {
++		seg6_iptunnel_exit();
++		goto out_unregister_genl;
++	}
+ #endif
+ 
+ #ifdef CONFIG_IPV6_SEG6_HMAC
+@@ -487,11 +489,11 @@ int __init seg6_init(void)
+ #endif
+ #endif
+ #ifdef CONFIG_IPV6_SEG6_LWTUNNEL
+-out_unregister_pernet:
+-	unregister_pernet_subsys(&ip6_segments_ops);
+-#endif
+ out_unregister_genl:
+ 	genl_unregister_family(&seg6_genl_family);
++#endif
++out_unregister_pernet:
++	unregister_pernet_subsys(&ip6_segments_ops);
+ 	goto out;
+ }
+ 
 -- 
 2.43.0
 
