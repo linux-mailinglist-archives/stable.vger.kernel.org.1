@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-24677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83E2C8695C4
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:05:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A95B28694B5
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:55:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FCD9B21862
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:04:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5117A2877E8
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:55:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFA513DB92;
-	Tue, 27 Feb 2024 14:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B847B140391;
+	Tue, 27 Feb 2024 13:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TWMX2XhU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jID8VYAR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A6713B2B9;
-	Tue, 27 Feb 2024 14:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76DEA13AA55;
+	Tue, 27 Feb 2024 13:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042685; cv=none; b=IQbl51ZhkVmZq01zBoT4mM9u1TK0BVbBjGc8pXbH/sFlpQI76DubEFLJBB3yRtx2JUKnrBZddXN7XSyCMtmWu5iYzqfRMHwgtiWkQtVTv0UkWNar+FFHGvQ8AS1WxKcaLsgdamLUPN+qxjAVtvmuI9y+UfyzofiCm7ceLO7LJas=
+	t=1709042124; cv=none; b=Se9TNAZFq9gw0paXv34EDqCsWG2Ur5ceQ6LiHoQiwY35D1JRZGu9IuCTE4SkfsyzcwUmKE24RuNvuikKeGycQqyKRe104ttdnupTF9jBWJn0pnYrVmAgMtDuZY0XFHmn0XEcdFhdMDCUYKTTjLB+rRlxOytqSRfTzhXoHYkViwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042685; c=relaxed/simple;
-	bh=/CnZykrpNMvLy00gf+AoHAXkqii+5jFwul4PUvPWcnI=;
+	s=arc-20240116; t=1709042124; c=relaxed/simple;
+	bh=uVqjvABWR6SrMUtKij+VIVevZwLr/rd559aw9tX8WOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PADNgDHa+ODk++vRqGylD+tiOsPJTYpGxFKXnSS5iwvdussOGF0YpYZ7sFrY9RqPr2ixd6x3xSelqWNoru9+pi7kRnEyV6NpKRaUKjJdlsMJp5YBn9bl6IVDxl3J4PwSljN/jvdCrTmHNCG16iqaZl8xjeYcOAwy6nhCg7TNJ4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TWMX2XhU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC8D4C433C7;
-	Tue, 27 Feb 2024 14:04:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PXg1X0obP6eB7ir0MG1IJscDlbc8qItRIuVHFQsCQ41rpxRtWsd3tigMhpI+ZhOjw+b/E0qZAFh+CGl7o7XaUqPHcFYKSCJR38M11R93G6XgPg8rQdxyca8x0v0HuDo+D7MgHebqGIe5NZSOFWkBxkGRz1RZHgFitrLtmQxfUx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jID8VYAR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0171BC433F1;
+	Tue, 27 Feb 2024 13:55:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042685;
-	bh=/CnZykrpNMvLy00gf+AoHAXkqii+5jFwul4PUvPWcnI=;
+	s=korg; t=1709042124;
+	bh=uVqjvABWR6SrMUtKij+VIVevZwLr/rd559aw9tX8WOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TWMX2XhUC4kiSScn4g9SOWqya7A7qOX75Cvpc1KsXIt1hSTSLnk5bCupMIw4JWlRF
-	 OwyiKJe9qZ8xoMEoOh4PGaZceNS6ULyVMRCQtbvQBhDn8NmrtzTUyBGB0hYKQpcj+x
-	 Bzl7ACHG2Od1EOR3GKh7AzjqXi29YItNRDSRAxsA=
+	b=jID8VYARWyWay+5JIV01oeiNmF9CqDlTpp0KZzKhgLizod6xlaRH74pw50Kbx6wut
+	 +geaSL8wm7stj5SCAXbn/Tw0b1/CiJtaF1oLqMb0pvr/nA5V1t652D6X9aUETS25/n
+	 AOwMvN9HgxsPEtZpWbH/ImKksB4PM98MrnhpQRtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 5.15 083/245] KVM: arm64: vgic-its: Test for valid IRQ in its_sync_lpi_pending_table()
+	Colin Ian King <colin.i.king@gmail.com>,
+	=?UTF-8?q?Jonas=20Sch=C3=A4fer?= <jonas@wielicki.name>,
+	Narcis Garcia <debianlists@actiu.net>,
+	Yosry Ahmed <yosryahmed@google.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Shakeel Butt <shakeelb@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 160/299] mm: memcontrol: clarify swapaccount=0 deprecation warning
 Date: Tue, 27 Feb 2024 14:24:31 +0100
-Message-ID: <20240227131617.932501709@linuxfoundation.org>
+Message-ID: <20240227131631.009790249@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,43 +66,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Upton <oliver.upton@linux.dev>
+From: Johannes Weiner <hannes@cmpxchg.org>
 
-commit 8d3a7dfb801d157ac423261d7cd62c33e95375f8 upstream.
+commit 118642d7f606fc9b9c92ee611275420320290ffb upstream.
 
-vgic_get_irq() may not return a valid descriptor if there is no ITS that
-holds a valid translation for the specified INTID. If that is the case,
-it is safe to silently ignore it and continue processing the LPI pending
-table.
+The swapaccount deprecation warning is throwing false positives.  Since we
+deprecated the knob and defaulted to enabling, the only reports we've been
+getting are from folks that set swapaccount=1.  While this is a nice
+affirmation that always-enabling was the right choice, we certainly don't
+want to warn when users request the supported mode.
 
-Cc: stable@vger.kernel.org
-Fixes: 33d3bc9556a7 ("KVM: arm64: vgic-its: Read initial LPI pending table")
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20240221092732.4126848-2-oliver.upton@linux.dev
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+Only warn when disabling is requested, and clarify the warning.
+
+[colin.i.king@gmail.com: spelling: "commdandline" -> "commandline"]
+  Link: https://lkml.kernel.org/r/20240215090544.1649201-1-colin.i.king@gmail.com
+Link: https://lkml.kernel.org/r/20240213081634.3652326-1-hannes@cmpxchg.org
+Fixes: b25806dcd3d5 ("mm: memcontrol: deprecate swapaccounting=0 mode")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Reported-by: "Jonas Schäfer" <jonas@wielicki.name>
+Reported-by: Narcis Garcia <debianlists@actiu.net>
+Suggested-by: Yosry Ahmed <yosryahmed@google.com>
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+Reviewed-by: Yosry Ahmed <yosryahmed@google.com>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Acked-by: Shakeel Butt <shakeelb@google.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/vgic/vgic-its.c |    3 +++
- 1 file changed, 3 insertions(+)
+ mm/memcontrol.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/kvm/vgic/vgic-its.c
-+++ b/arch/arm64/kvm/vgic/vgic-its.c
-@@ -462,6 +462,9 @@ static int its_sync_lpi_pending_table(st
- 		}
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -7613,9 +7613,13 @@ bool mem_cgroup_swap_full(struct folio *
  
- 		irq = vgic_get_irq(vcpu->kvm, NULL, intids[i]);
-+		if (!irq)
-+			continue;
+ static int __init setup_swap_account(char *s)
+ {
+-	pr_warn_once("The swapaccount= commandline option is deprecated. "
+-		     "Please report your usecase to linux-mm@kvack.org if you "
+-		     "depend on this functionality.\n");
++	bool res;
 +
- 		raw_spin_lock_irqsave(&irq->irq_lock, flags);
- 		irq->pending_latch = pendmask & (1U << bit_nr);
- 		vgic_queue_irq_unlock(vcpu->kvm, irq, flags);
++	if (!kstrtobool(s, &res) && !res)
++		pr_warn_once("The swapaccount=0 commandline option is deprecated "
++			     "in favor of configuring swap control via cgroupfs. "
++			     "Please report your usecase to linux-mm@kvack.org if you "
++			     "depend on this functionality.\n");
+ 	return 1;
+ }
+ __setup("swapaccount=", setup_swap_account);
 
 
 
