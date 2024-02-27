@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E90918693BE
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:48:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40828869528
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:59:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 255AF1C20D3E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:48:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEEC32886BF
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E77D146E7C;
-	Tue, 27 Feb 2024 13:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA1913DB90;
+	Tue, 27 Feb 2024 13:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UVqGI8pQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HpIh8PSg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA5B145357;
-	Tue, 27 Feb 2024 13:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860C354BD4;
+	Tue, 27 Feb 2024 13:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041575; cv=none; b=sO78Eq1XKZ7sVOpKNeOfGVWvCYqMO4D2dxXAuhz/55wk+8iu6qvRI/oZPzlLYIB4yqzsv/5zBEGZBh/NuKlm6h5XPiicH02T25BBCi5YuPNxRRhWb2o6bO02Nr12BIZAtL2DYwJBcXJUZjbqTj8BPqNikgFuUQoaksFQRwHVaBM=
+	t=1709042363; cv=none; b=msTnaRhCgPFlaPlVNbnBVi6tpzPQB+G8GXnIGX28/LkJwzTHJMWw0dX6ERL+5BoZGTKNeP5Z/LQfFGH03wxgcDzJVDoyTuhIEypI4YkmoN8De+Rm0OmOx313MGYDGkrfMOBU780Q/cSw4m7saq0GEML5H8Shh+Q9pgOexz5IHvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041575; c=relaxed/simple;
-	bh=eHDgfJFjpgqMo0o7/up65VHtBlIunYUkiU6AUt8+Lok=;
+	s=arc-20240116; t=1709042363; c=relaxed/simple;
+	bh=a2t6ng3tDJ5aeZ/uQxy4LZLr3111RtBqznST3VLTb5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h89U959esqV4wwYxRCCbrvLIePPZXMn9wHF6iEXtHi9FI6CQV8GEevklxnf89aYQt6A+MP6FIlWLXE+OnTRmw3VY+UB391vwp3peb071qYPGs5W1lYy2wbruqSb1fquiO9hQ4xjjYZhfN15i8ApMjMDgFjwYl7tXVriIWEmiPlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UVqGI8pQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56024C43394;
-	Tue, 27 Feb 2024 13:46:14 +0000 (UTC)
+	 MIME-Version; b=pBx6O6mKENTUE4v7UX/N8FYufI8v2tatfHDQcZzRZaTTfIcwisoODHvBZYvy0ffgag6eQYWquNF0qnQMOY4107tRdJr03NYirm+8kbmDBFPT8kswJcYrlPAQ0NtGYb+AZbyBjHEjywr26hrLpRpIm3VkAjnVcmIjAkzjPEIUDhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HpIh8PSg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F2AC433C7;
+	Tue, 27 Feb 2024 13:59:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041574;
-	bh=eHDgfJFjpgqMo0o7/up65VHtBlIunYUkiU6AUt8+Lok=;
+	s=korg; t=1709042363;
+	bh=a2t6ng3tDJ5aeZ/uQxy4LZLr3111RtBqznST3VLTb5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UVqGI8pQNqwO2RVeXOQ34exise3fVr0ZzewHN9ZysJ/PPI19mJVjTRMxWeP1KiBQ2
-	 lhg/LDC+B7+ERmBlKiKKtxxXvLoYiVPsoA/5BUnW7y+9BBsOhie21YA13I59WViXLA
-	 Kut2hGMtIynn/5jkubfrCr0NVcoLwcCt+GVUm8r4=
+	b=HpIh8PSgt1iv6CIaRJ4SfInS/iQB/NWp+K1bvL9qFqo+QZXinLhJkBEXxYEnsyI7x
+	 +Dhhwou8a4a8VldCTtnXNJKNkW86biSS3BGtEUTD3+Hntcmp1PCsuTcu2350ZfikF+
+	 yZdI2r5mmr7ZG2Cy7AjhMFyAAEfruoYDoKtQj7CQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Tom Parkin <tparkin@katalix.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 4.19 31/52] l2tp: pass correct message length to ip6_append_data
-Date: Tue, 27 Feb 2024 14:26:18 +0100
-Message-ID: <20240227131549.552470778@linuxfoundation.org>
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 268/299] tls: break out of main loop when PEEK gets a non-data record
+Date: Tue, 27 Feb 2024 14:26:19 +0100
+Message-ID: <20240227131634.310736916@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
-References: <20240227131548.514622258@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Parkin <tparkin@katalix.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-commit 359e54a93ab43d32ee1bff3c2f9f10cb9f6b6e79 upstream.
+[ Upstream commit 10f41d0710fc81b7af93fa6106678d57b1ff24a7 ]
 
-l2tp_ip6_sendmsg needs to avoid accounting for the transport header
-twice when splicing more data into an already partially-occupied skbuff.
+PEEK needs to leave decrypted records on the rx_list so that we can
+receive them later on, so it jumps back into the async code that
+queues the skb. Unfortunately that makes us skip the
+TLS_RECORD_TYPE_DATA check at the bottom of the main loop, so if two
+records of the same (non-DATA) type are queued, we end up merging
+them.
 
-To manage this, we check whether the skbuff contains data using
-skb_queue_empty when deciding how much data to append using
-ip6_append_data.
+Add the same record type check, and make it unlikely to not penalize
+the async fastpath. Async decrypt only applies to data record, so this
+check is only needed for PEEK.
 
-However, the code which performed the calculation was incorrect:
+process_rx_list also has similar issues.
 
-     ulen = len + skb_queue_empty(&sk->sk_write_queue) ? transhdrlen : 0;
-
-...due to C operator precedence, this ends up setting ulen to
-transhdrlen for messages with a non-zero length, which results in
-corrupted packets on the wire.
-
-Add parentheses to correct the calculation in line with the original
-intent.
-
-Fixes: 9d4c75800f61 ("ipv4, ipv6: Fix handling of transhdrlen in __ip{,6}_append_data()")
-Cc: David Howells <dhowells@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Tom Parkin <tparkin@katalix.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240220122156.43131-1-tparkin@katalix.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 692d7b5d1f91 ("tls: Fix recvmsg() to be able to peek across multiple records")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/3df2eef4fdae720c55e69472b5bea668772b45a2.1708007371.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/l2tp/l2tp_ip6.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/tls/tls_sw.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/l2tp/l2tp_ip6.c
-+++ b/net/l2tp/l2tp_ip6.c
-@@ -648,7 +648,7 @@ static int l2tp_ip6_sendmsg(struct sock
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index e1f8ff6e9a739..67c8323b7cd11 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -2064,6 +2064,8 @@ int tls_sw_recvmsg(struct sock *sk,
+ 				decrypted += chunk;
+ 				len -= chunk;
+ 				__skb_queue_tail(&ctx->rx_list, skb);
++				if (unlikely(control != TLS_RECORD_TYPE_DATA))
++					break;
+ 				continue;
+ 			}
  
- back_from_confirm:
- 	lock_sock(sk);
--	ulen = len + skb_queue_empty(&sk->sk_write_queue) ? transhdrlen : 0;
-+	ulen = len + (skb_queue_empty(&sk->sk_write_queue) ? transhdrlen : 0);
- 	err = ip6_append_data(sk, ip_generic_getfrag, msg,
- 			      ulen, transhdrlen, &ipc6,
- 			      &fl6, (struct rt6_info *)dst,
+-- 
+2.43.0
+
 
 
 
