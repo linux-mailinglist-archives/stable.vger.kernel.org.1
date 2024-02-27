@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-25224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5103869889
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:38:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18B0A869753
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:20:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A73A3B2FFAC
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:31:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC7111F20FAD
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:20:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AADE13A279;
-	Tue, 27 Feb 2024 14:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DF4213EFEC;
+	Tue, 27 Feb 2024 14:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dyJvOFFd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCqMrhTq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE60D17F0;
-	Tue, 27 Feb 2024 14:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 144DE13B2B8;
+	Tue, 27 Feb 2024 14:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044206; cv=none; b=I8xsQRCujScljrejDdpN7I4r53B6g4cfkxWj0b2zKgcfxKljScylHudTdTVIcYPch/e7zZdFjbVEgx8gacTXxx1rIE4xmt8aWF3y2oM9kcGpjTtIqFyQ97DtzjvOkaH77JLSV3It6B8MMogL+faJOPI2I8HSL3tWqFwIoEIJ+A0=
+	t=1709043616; cv=none; b=paEZ4ButUFyJa2pJSiZ1zQ0TTCgJrnH2v3opQ41DEvX1sHGkeB4kUpDXpGYCa0IZkVRIMj87SKJmzUcoW58pTjxFYIkVRku2iD9gr0sqCQPaVcR8XjbrAFcsxcy8ed3X4y7PHIi6qHY1C5Z/b83526kCku/Sx4PacZGjJmWkzxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044206; c=relaxed/simple;
-	bh=IFO3gLHYC2a3sa9xD2R6iebt55T2dcP4xPYic8y5RbM=;
+	s=arc-20240116; t=1709043616; c=relaxed/simple;
+	bh=DqTYB7Jcbsx4T9syOm0i7m2WNKz0PBYLdu/jlABSCKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n95fvJ9i8SEfxDYDgy9LA3TfhDDF3emyqMKdLQDIKG9z+YrkTP1evukaysospZKj7Cz6oEf1CJb2YnPCmKGsgLhPWGOJo8pnKHkWkyntZUA4ho6XeBQtEIFh/JOBnMsfx0qglerb3u1v72PhyXH/h0uBoNm03W34kFA6j11YUR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dyJvOFFd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C50EC433F1;
-	Tue, 27 Feb 2024 14:30:05 +0000 (UTC)
+	 MIME-Version; b=TgwaEAPi5tTwhenhLLz0fKa6gskUXPB3azmhX4L8XfvsV7ye8U0w8MB0WFWJHwLK2LNshvDpjpuworQby4CZIz47r4ZCpsO7I2bc0gB2xsB5WFR1WUVDvQOZCAHl7ivPpDlrsugpCJjaUx1xdFCALf+EACBEQJx0rdOzGscduYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCqMrhTq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91316C433F1;
+	Tue, 27 Feb 2024 14:20:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044205;
-	bh=IFO3gLHYC2a3sa9xD2R6iebt55T2dcP4xPYic8y5RbM=;
+	s=korg; t=1709043615;
+	bh=DqTYB7Jcbsx4T9syOm0i7m2WNKz0PBYLdu/jlABSCKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dyJvOFFdzrSfGtkMJPjnkoif/mtVlEL4ypPSL4NmEzZoYLGKJGwRI4nkiVQ1Q02jj
-	 8MVTb1D0aIP+HN7fuYP+pRBzYILjDSGVNqWRArPEByuw4LnWqgFjTiZBTSSokD5pHS
-	 tgf+aLPuGhj1WOjtLQNtYT7sEmSzHiGwGiyGUIrM=
+	b=dCqMrhTq5zmCJfRSu9tmtdUVjRuwjc545D+YfkNT7VGFpvCV0+NdB4/T9kE5f7D3w
+	 aeaOobO+Id4CM5lfiOMv0cktZ9Zyy21nXDkNNoBJ9/peww62k91d+zG9TbSXkcVCcw
+	 ZSLWI+7PO2rfmjMYd8Nr57Uf1mcZ02ABkWxyxDTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Zhao <zhaoyifan@sjtu.edu.cn>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Juhyung Park <qkrwngud825@gmail.com>
-Subject: [PATCH 5.10 073/122] erofs: fix lz4 inplace decompression
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 173/195] netfilter: nf_tables: rename function to destroy hook list
 Date: Tue, 27 Feb 2024 14:27:14 +0100
-Message-ID: <20240227131601.092540561@linuxfoundation.org>
+Message-ID: <20240227131616.118462766@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,133 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 3c12466b6b7bf1e56f9b32c366a3d83d87afb4de upstream.
+[ Upstream commit cdc32546632354305afdcf399a5431138a31c9e0 ]
 
-Currently EROFS can map another compressed buffer for inplace
-decompression, that was used to handle the cases that some pages of
-compressed data are actually not in-place I/O.
+Rename nft_flowtable_hooks_destroy() by nft_hooks_destroy() to prepare
+for netdev chain device updates.
 
-However, like most simple LZ77 algorithms, LZ4 expects the compressed
-data is arranged at the end of the decompressed buffer and it
-explicitly uses memmove() to handle overlapping:
-  __________________________________________________________
- |_ direction of decompression --> ____ |_ compressed data _|
-
-Although EROFS arranges compressed data like this, it typically maps two
-individual virtual buffers so the relative order is uncertain.
-Previously, it was hardly observed since LZ4 only uses memmove() for
-short overlapped literals and x86/arm64 memmove implementations seem to
-completely cover it up and they don't have this issue.  Juhyung reported
-that EROFS data corruption can be found on a new Intel x86 processor.
-After some analysis, it seems that recent x86 processors with the new
-FSRM feature expose this issue with "rep movsb".
-
-Let's strictly use the decompressed buffer for lz4 inplace
-decompression for now.  Later, as an useful improvement, we could try
-to tie up these two buffers together in the correct order.
-
-Reported-and-tested-by: Juhyung Park <qkrwngud825@gmail.com>
-Closes: https://lore.kernel.org/r/CAD14+f2AVKf8Fa2OO1aAUdDNTDsVzzR6ctU_oJSmTyd6zSYR2Q@mail.gmail.com
-Fixes: 0ffd71bcc3a0 ("staging: erofs: introduce LZ4 decompression inplace")
-Fixes: 598162d05080 ("erofs: support decompress big pcluster for lz4 backend")
-Cc: stable <stable@vger.kernel.org> # 5.4+
-Tested-by: Yifan Zhao <zhaoyifan@sjtu.edu.cn>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20231206045534.3920847-1-hsiangkao@linux.alibaba.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: d472e9853d7b ("netfilter: nf_tables: register hooks last when adding new chain/flowtable")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/decompressor.c |   24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
+ net/netfilter/nf_tables_api.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/erofs/decompressor.c
-+++ b/fs/erofs/decompressor.c
-@@ -24,7 +24,8 @@ struct z_erofs_decompressor {
- 	 */
- 	int (*prepare_destpages)(struct z_erofs_decompress_req *rq,
- 				 struct list_head *pagepool);
--	int (*decompress)(struct z_erofs_decompress_req *rq, u8 *out);
-+	int (*decompress)(struct z_erofs_decompress_req *rq, u8 *out,
-+			  u8 *obase);
- 	char *name;
- };
- 
-@@ -114,10 +115,13 @@ static void *generic_copy_inplace_data(s
- 	return tmp;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index f1a74b0949999..c7b543d1a0516 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -7938,7 +7938,7 @@ static int nft_register_flowtable_net_hooks(struct net *net,
+ 	return err;
  }
  
--static int z_erofs_lz4_decompress(struct z_erofs_decompress_req *rq, u8 *out)
-+static int z_erofs_lz4_decompress(struct z_erofs_decompress_req *rq, u8 *out,
-+				  u8 *obase)
+-static void nft_flowtable_hooks_destroy(struct list_head *hook_list)
++static void nft_hooks_destroy(struct list_head *hook_list)
  {
-+	const uint nrpages_out = PAGE_ALIGN(rq->pageofs_out +
-+					    rq->outputsize) >> PAGE_SHIFT;
- 	unsigned int inputmargin, inlen;
--	u8 *src;
-+	u8 *src, *src2;
- 	bool copied, support_0padding;
- 	int ret;
+ 	struct nft_hook *hook, *next;
  
-@@ -125,6 +129,7 @@ static int z_erofs_lz4_decompress(struct
- 		return -EOPNOTSUPP;
- 
- 	src = kmap_atomic(*rq->in);
-+	src2 = src;
- 	inputmargin = 0;
- 	support_0padding = false;
- 
-@@ -148,16 +153,15 @@ static int z_erofs_lz4_decompress(struct
- 	if (rq->inplace_io) {
- 		const uint oend = (rq->pageofs_out +
- 				   rq->outputsize) & ~PAGE_MASK;
--		const uint nr = PAGE_ALIGN(rq->pageofs_out +
--					   rq->outputsize) >> PAGE_SHIFT;
--
- 		if (rq->partial_decoding || !support_0padding ||
--		    rq->out[nr - 1] != rq->in[0] ||
-+		    rq->out[nrpages_out - 1] != rq->in[0] ||
- 		    rq->inputsize - oend <
- 		      LZ4_DECOMPRESS_INPLACE_MARGIN(inlen)) {
- 			src = generic_copy_inplace_data(rq, src, inputmargin);
- 			inputmargin = 0;
- 			copied = true;
-+		} else {
-+			src = obase + ((nrpages_out - 1) << PAGE_SHIFT);
- 		}
+@@ -8123,7 +8123,7 @@ static int nf_tables_newflowtable(struct sk_buff *skb,
+ 					       &flowtable->hook_list,
+ 					       flowtable);
+ 	if (err < 0) {
+-		nft_flowtable_hooks_destroy(&flowtable->hook_list);
++		nft_hooks_destroy(&flowtable->hook_list);
+ 		goto err4;
  	}
  
-@@ -187,7 +191,7 @@ static int z_erofs_lz4_decompress(struct
- 	if (copied)
- 		erofs_put_pcpubuf(src);
- 	else
--		kunmap_atomic(src);
-+		kunmap_atomic(src2);
- 	return ret;
- }
- 
-@@ -257,7 +261,7 @@ static int z_erofs_decompress_generic(st
- 			return PTR_ERR(dst);
- 
- 		rq->inplace_io = false;
--		ret = alg->decompress(rq, dst);
-+		ret = alg->decompress(rq, dst, NULL);
- 		if (!ret)
- 			copy_from_pcpubuf(rq->out, dst, rq->pageofs_out,
- 					  rq->outputsize);
-@@ -291,7 +295,7 @@ static int z_erofs_decompress_generic(st
- 	dst_maptype = 2;
- 
- dstmap_out:
--	ret = alg->decompress(rq, dst + rq->pageofs_out);
-+	ret = alg->decompress(rq, dst + rq->pageofs_out, dst);
- 
- 	if (!dst_maptype)
- 		kunmap_atomic(dst);
+@@ -8893,7 +8893,7 @@ static void nft_commit_release(struct nft_trans *trans)
+ 		break;
+ 	case NFT_MSG_DELFLOWTABLE:
+ 		if (nft_trans_flowtable_update(trans))
+-			nft_flowtable_hooks_destroy(&nft_trans_flowtable_hooks(trans));
++			nft_hooks_destroy(&nft_trans_flowtable_hooks(trans));
+ 		else
+ 			nf_tables_flowtable_destroy(nft_trans_flowtable(trans));
+ 		break;
+@@ -9850,7 +9850,7 @@ static void nf_tables_abort_release(struct nft_trans *trans)
+ 		break;
+ 	case NFT_MSG_NEWFLOWTABLE:
+ 		if (nft_trans_flowtable_update(trans))
+-			nft_flowtable_hooks_destroy(&nft_trans_flowtable_hooks(trans));
++			nft_hooks_destroy(&nft_trans_flowtable_hooks(trans));
+ 		else
+ 			nf_tables_flowtable_destroy(nft_trans_flowtable(trans));
+ 		break;
+-- 
+2.43.0
+
 
 
 
