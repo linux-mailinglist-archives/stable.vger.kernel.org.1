@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-25126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C5648697DD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:25:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83A69869867
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:32:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1664B28FEB9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:25:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B38BF1C21538
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B6B1420C9;
-	Tue, 27 Feb 2024 14:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D941146E7E;
+	Tue, 27 Feb 2024 14:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rYnbvnmj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fcSBL/+j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA6113B2B4;
-	Tue, 27 Feb 2024 14:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA6854BFE;
+	Tue, 27 Feb 2024 14:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043937; cv=none; b=gCpBAp1oc8vdfgG8ra1v2Zpa81EDHT3Z6o7p3ijCW5NlXOZFZVL9S6rLsssWgGkZ6RxbyDgTvCqOEqaBuFEcbWNj+Rxi5Q8R2pQYdi4ljV+WfZHRAzYTjztujyF8bCUyHUFcdYEL3N3oEIKGeFh83UC+2Yrc2a/PpQIpRV4Cu7s=
+	t=1709044270; cv=none; b=VdvPhL0W5iANulqzNAA61ylTtL0s855X6qQMG0ZGu5LmJQtBxRR1ScRIzaw7679A1FQL7uUw31LEZXT/HbZYFQnzhkqHdKnMI5j0Uw8P1ARI2ygUbF2I/K96N8OIO+meqGeYAkB64JJ2wmsxeiDTowqqMZtTfdPc/CcdfI+CPds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043937; c=relaxed/simple;
-	bh=DRcAUSSA4NX0yzEjMjGbP7b/2CgOVkU5tte/swngIao=;
+	s=arc-20240116; t=1709044270; c=relaxed/simple;
+	bh=Vnsn0GphUfjWDrXwakChs1FZ3ArdD5MbWqbDc2Of1y8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V9wnI7wq4eL25MqeGS4sze/5gNlDpHO5Vh+FMZO/r6lQe0kn3QbXBS/2m4qw2A+gjzQkcyYIw+kzWfUoXsdyyX6oouNWZDpDXaRQjKrZW2UlgvTuEw4526OF/6NM/BZqy1y8fRWgh5nMb0QTACH//2GxPuJyW/BtQwrYVV8JH1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rYnbvnmj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC05C433F1;
-	Tue, 27 Feb 2024 14:25:36 +0000 (UTC)
+	 MIME-Version; b=n6bAqhIGzIHcFeEH6ZK+j6o9cy/TgejIWaWlCD2ooDBJJum7dsMob0fbcbQo5vhChA1iLcjsZwL24Ux2+5avVTztlBOmB2qXMhB9ZIXRVIel7dyUKVZapYEyr24eE9xPqMH5H0iUZw9SMPLTwyNFH2lWHZ0sI1TmG4dQlKquGwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fcSBL/+j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F286C433F1;
+	Tue, 27 Feb 2024 14:31:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043937;
-	bh=DRcAUSSA4NX0yzEjMjGbP7b/2CgOVkU5tte/swngIao=;
+	s=korg; t=1709044269;
+	bh=Vnsn0GphUfjWDrXwakChs1FZ3ArdD5MbWqbDc2Of1y8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rYnbvnmjrjtUcRDHsjBdqZpaLTIiysqM/rMRrKBHuup5KfMosZagseCttZ6X9+lhV
-	 KGgRPo3bRxFfCTdLtmxV7szwAS/EbSfKvAkOPOOVeO1oo/Russw8LI9F/55Xe4JW9L
-	 3jCx+EdbBd9bclowjXrj9qOJBZ+LEfViTcnW8NJg=
+	b=fcSBL/+jpCnEUYFXkbxq8zMF+/1XEB3bouyEi/YouVTpd2A4TB84WUBswb/HSGN6X
+	 RGFvyQbtxbYl0gEG1SPmaKSmt8Rpp3tUzN23+4fz7r0Ws4JTF19nL4F5m+Ymv4mmeo
+	 0oBVaGBbvhKCmilV09d/MmojA86e3hn5Ot8jMQpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Gianmarco Lusvardi <glusvardi@posteo.net>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Quentin Monnet <quentin@isovalent.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 76/84] s390: use the correct count for __iowrite64_copy()
+Subject: [PATCH 5.10 102/122] bpf, scripts: Correct GPL license name
 Date: Tue, 27 Feb 2024 14:27:43 +0100
-Message-ID: <20240227131555.343296328@linuxfoundation.org>
+Message-ID: <20240227131602.042833902@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Gianmarco Lusvardi <glusvardi@posteo.net>
 
-[ Upstream commit 723a2cc8d69d4342b47dfddbfe6c19f1b135f09b ]
+[ Upstream commit e37243b65d528a8a9f8b9a57a43885f8e8dfc15c ]
 
-The signature for __iowrite64_copy() requires the number of 64 bit
-quantities, not bytes. Multiple by 8 to get to a byte length before
-invoking zpci_memcpy_toio()
+The bpf_doc script refers to the GPL as the "GNU Privacy License".
+I strongly suspect that the author wanted to refer to the GNU General
+Public License, under which the Linux kernel is released, as, to the
+best of my knowledge, there is no license named "GNU Privacy License".
+This patch corrects the license name in the script accordingly.
 
-Fixes: 87bc359b9822 ("s390/pci: speed up __iowrite64_copy by using pci store block insn")
-Acked-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/0-v1-9223d11a7662+1d7785-s390_iowrite64_jgg@nvidia.com
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Fixes: 56a092c89505 ("bpf: add script and prepare bpf.h for new helpers documentation")
+Signed-off-by: Gianmarco Lusvardi <glusvardi@posteo.net>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Quentin Monnet <quentin@isovalent.com>
+Link: https://lore.kernel.org/bpf/20240213230544.930018-3-glusvardi@posteo.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/pci/pci.c | 2 +-
+ scripts/bpf_helpers_doc.py | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
-index b8ddacf1efe11..8d241f3c3b78b 100644
---- a/arch/s390/pci/pci.c
-+++ b/arch/s390/pci/pci.c
-@@ -223,7 +223,7 @@ resource_size_t pcibios_align_resource(void *data, const struct resource *res,
- /* combine single writes by using store-block insn */
- void __iowrite64_copy(void __iomem *to, const void *from, size_t count)
- {
--       zpci_memcpy_toio(to, from, count);
-+	zpci_memcpy_toio(to, from, count * 8);
- }
+diff --git a/scripts/bpf_helpers_doc.py b/scripts/bpf_helpers_doc.py
+index 31484377b8b11..806240dda6090 100755
+--- a/scripts/bpf_helpers_doc.py
++++ b/scripts/bpf_helpers_doc.py
+@@ -284,7 +284,7 @@ eBPF programs can have an associated license, passed along with the bytecode
+ instructions to the kernel when the programs are loaded. The format for that
+ string is identical to the one in use for kernel modules (Dual licenses, such
+ as "Dual BSD/GPL", may be used). Some helper functions are only accessible to
+-programs that are compatible with the GNU Privacy License (GPL).
++programs that are compatible with the GNU General Public License (GNU GPL).
  
- void __iomem *ioremap(unsigned long ioaddr, unsigned long size)
+ In order to use such helpers, the eBPF program must be loaded with the correct
+ license string passed (via **attr**) to the **bpf**\ () system call, and this
 -- 
 2.43.0
 
