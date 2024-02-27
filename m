@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7392E8695FD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0320B8694D0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:56:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFEB91F2C7A8
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 994751F22B56
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4953C14534F;
-	Tue, 27 Feb 2024 14:06:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FD8513B2AC;
+	Tue, 27 Feb 2024 13:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yHiq0XFQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EyFQiLu3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCFA13B79B;
-	Tue, 27 Feb 2024 14:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608E413AA2F;
+	Tue, 27 Feb 2024 13:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042815; cv=none; b=lXe8wsIJPa9toucLp/uOvftgrSoIK8fmgv2gj0wlzt+Wxro1Wo+y/dmu8DR8e0qVvu392oNnRPGvUWMKJg3iiUStCQA0TzYQDhV3R+vi8okFEF2nwzVABtZ+hxp6uW4ViIWgoHWUIKfFihcm7oYC3gbjDYutHQLQ2PnOSbYDutw=
+	t=1709042185; cv=none; b=OWUU5RYYCED4v0/S06Ato2IF1eIX75sl5AYXGS39wXkjneBCy6qd+QoaJ4rF4cUhv8pSRyIURyLtvhNEDS9eHfbE9OSLowz1y9YwVYrFKOmXinaf4pEDtOIm7RECUM8gGNq7ycEwxbI0cQGP3n9oSRP205t35idoHkaimLMOK0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042815; c=relaxed/simple;
-	bh=ykv4ttsmdjSn2jQECC8ZyeJ7znlGaCFxzziHsUPPCVc=;
+	s=arc-20240116; t=1709042185; c=relaxed/simple;
+	bh=psw4aVoNqpuwbh+MSzISsNh670ppVFBUNwtzhV+uR0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KjZvpGrVntVAfdcqRmB/yQv1bIELKAX74PjnPhT0B623hSbQVF9+xp364J2LXNEVxtjPRysxX2mutg680TaipNSYzgPbrMtkVLpqeVG5A5QztaR5TVb1cOlxZTMPBsuW4QwAWIR3QdL2RTJrc0reuY1GZ/3ej/nBK1zmNxxcWFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yHiq0XFQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE2AC433F1;
-	Tue, 27 Feb 2024 14:06:54 +0000 (UTC)
+	 MIME-Version; b=XG2j6iCQn+Dt+pZ8zPv0ShbwXrhkrqxxRplSCIgT0M+bu9Jl1jXqg03DtyNe9aJM3UaX7+cxVAiY4e1MjpngsaldjidWBz3YX/lGRRkFZxMKF828crh/tnVgu0zLA3KKQ7wtySAXf+1cTHLiNhc9iAZsp9XiNGHeuGv+/CU6c8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EyFQiLu3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FE2FC433F1;
+	Tue, 27 Feb 2024 13:56:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042814;
-	bh=ykv4ttsmdjSn2jQECC8ZyeJ7znlGaCFxzziHsUPPCVc=;
+	s=korg; t=1709042184;
+	bh=psw4aVoNqpuwbh+MSzISsNh670ppVFBUNwtzhV+uR0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yHiq0XFQYXWOcpdLrtzwws6FgiwK6XBFWOycZ2y9eVtsReP1pTZ7PHtGkJRAYOWbs
-	 eiPgkKg50LwbqW8byx2sPxE/OK2pcWUupWSswrzdbFxY+y2BxyIanLHH90eGeLAV4i
-	 bD66tuZq6+METsK0ApSBwH29NsEky/RheNpE68/8=
+	b=EyFQiLu3tY0epWP3M10a7Mt85bPbwMdP2xlq8kmXB8EsJrgA+lyTDdcureGX4+Qkc
+	 XzB1kZndJHTOAbQXucHBmgUhabbI3bhWReVdfqIfvCYNR2R1+jAZIVl0jrpBa8gA99
+	 zSdEBA86NLaibqafdvQaoc5Zumg7IED59yIc74EU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guoqing Jiang <guoqing.jiang@linux.dev>,
-	Bernard Metzler <bmt@zurich.ibm.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 131/245] RDMA/siw: Balance the reference of cep->kref in the error path
-Date: Tue, 27 Feb 2024 14:25:19 +0100
-Message-ID: <20240227131619.470957045@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Juergen Gross <jgross@ssue.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.6 209/299] xen/events: fix error code in xen_bind_pirq_msi_to_irq()
+Date: Tue, 27 Feb 2024 14:25:20 +0100
+Message-ID: <20240227131632.519933164@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guoqing Jiang <guoqing.jiang@linux.dev>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit b056327bee09e6b86683d3f709a438ccd6031d72 ]
+commit 7f3da4b698bcc21a6df0e7f114af71d53a3e26ac upstream.
 
-The siw_connect can go to err in below after cep is allocated successfully:
+Return -ENOMEM if xen_irq_init() fails.  currently the code returns an
+uninitialized variable or zero.
 
-1. If siw_cm_alloc_work returns failure. In this case socket is not
-assoicated with cep so siw_cep_put can't be called by siw_socket_disassoc.
-We need to call siw_cep_put twice since cep->kref is increased once after
-it was initialized.
-
-2. If siw_cm_queue_work can't find a work, which means siw_cep_get is not
-called in siw_cm_queue_work, so cep->kref is increased twice by siw_cep_get
-and when associate socket with cep after it was initialized. So we need to
-call siw_cep_put three times (one in siw_socket_disassoc).
-
-3. siw_send_mpareqrep returns error, this scenario is similar as 2.
-
-So we need to remove one siw_cep_put in the error path.
-
-Fixes: 6c52fdc244b5 ("rdma/siw: connection management")
-Signed-off-by: Guoqing Jiang <guoqing.jiang@linux.dev>
-Link: https://lore.kernel.org/r/20230821133255.31111-2-guoqing.jiang@linux.dev
-Acked-by: Bernard Metzler <bmt@zurich.ibm.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5dd9ad32d775 ("xen/events: drop xen_allocate_irqs_dynamic()")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Juergen Gross <jgross@ssue.com>
+Link: https://lore.kernel.org/r/3b9ab040-a92e-4e35-b687-3a95890a9ace@moroto.mountain
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/sw/siw/siw_cm.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/xen/events/events_base.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/sw/siw/siw_cm.c b/drivers/infiniband/sw/siw/siw_cm.c
-index ecd19a7408679..116f1c38384b6 100644
---- a/drivers/infiniband/sw/siw/siw_cm.c
-+++ b/drivers/infiniband/sw/siw/siw_cm.c
-@@ -1504,7 +1504,6 @@ int siw_connect(struct iw_cm_id *id, struct iw_cm_conn_param *params)
+--- a/drivers/xen/events/events_base.c
++++ b/drivers/xen/events/events_base.c
+@@ -1099,8 +1099,10 @@ int xen_bind_pirq_msi_to_irq(struct pci_
  
- 		cep->cm_id = NULL;
- 		id->rem_ref(id);
--		siw_cep_put(cep);
+ 	for (i = 0; i < nvec; i++) {
+ 		info = xen_irq_init(irq + i);
+-		if (!info)
++		if (!info) {
++			ret = -ENOMEM;
+ 			goto error_irq;
++		}
  
- 		qp->cep = NULL;
- 		siw_cep_put(cep);
--- 
-2.43.0
-
+ 		irq_set_chip_and_handler_name(irq + i, &xen_pirq_chip, handle_edge_irq, name);
+ 
 
 
 
