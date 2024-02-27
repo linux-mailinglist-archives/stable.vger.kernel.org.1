@@ -1,148 +1,163 @@
-Return-Path: <stable+bounces-23952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F1DB8691F7
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:31:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82ACF86921B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:32:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC6021F24E49
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:31:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F77F293CA1
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:32:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A85D5145357;
-	Tue, 27 Feb 2024 13:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 906C51420DF;
+	Tue, 27 Feb 2024 13:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AKUiUF3v"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="iLSOAyvK"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C41E13B7AA;
-	Tue, 27 Feb 2024 13:30:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943E01420D2;
+	Tue, 27 Feb 2024 13:31:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709040617; cv=none; b=VqCwOKU5mKwj+eeJUz3qAe6L8E3MXU7NlWg5Z3de8PpQ8Pz5qHV6LKg3IXhrphVRZWUur3qIgHqoSeJouKsmfbERrWid4Fk72qMEbl61Bvaho8wpil1Lq4nuKgNDA/s/kWx7yf9KQViIN9TERJzmmqiK5Jq8G7HaEwLrs8JRZP4=
+	t=1709040705; cv=none; b=oF5Lfv6eJOgSnBE8EHzRGm+UI0WAw/YWdXvXxXRCKetajiiySq3UA+waSnN2gfRy9PBErnHW8nD3zpegrxuHO4XnDSVhA++I9ZYjvj6rZVlLEbnvcCnOF6TXss/6WP7tVhQkRT4R+1v8mPqxFIkbFH9mcwwTD0IBPObDHnLa4Ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709040617; c=relaxed/simple;
-	bh=JZfFgS/yM3rcBZz8uNFnHv1QVr+urhx1jnrRRLWNqdM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hGl/+p9A98kIt0TZYnLi57CtC5Yv1NEdi0VMdaLm/+Y+7v+CYJP68IFu9jz5FfLtaQ30rH81YCUTwfcxHwmck3a4uPvn5fQlZvuKIKldE1HH0xhuk4CRTdTJCQ8dPid32GdFoDwdD33xKqvr3lnzY1YNp82gqs/pA5ZHO/33bMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AKUiUF3v; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1709040705; c=relaxed/simple;
+	bh=Ki82SoGWmWX3Ugj8uBKuzuI2IE1hzceZHBRrq0QZbE4=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=to98xe72+kuYcLgIGdh+s45m9Ts08Izihjh38wHB0miCCuoUZJ1T2NmBjOTzo144/Rh82+96EkUfTVj2qfRu7X+G2+WomTsAUpRxP8xvm12usCrEXhlw98zbHHQV8cZFp51gHK9mgWxRJNntRIvzQ4qcHRHpxdzcE7NlrItJ61k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=iLSOAyvK; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709040615; x=1740576615;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=JZfFgS/yM3rcBZz8uNFnHv1QVr+urhx1jnrRRLWNqdM=;
-  b=AKUiUF3vX+OcbKvBhe65bjuecrao+AzjM87ydNr8I/Lu8zShYkTKlAxB
-   urnvJ5NdWEbHcfspu2S05wmy0HPuLZzaI1TrFbzcBr2GSnXlfTc7+cP1l
-   UWbY0wnXAM8ouWxx/tJIMzVily0DZEqSEKq4+gdd1DVR+PxA+Zw527LvP
-   +doFPY2fyuHCiQAtSMv8IH5WS0au3E5SgsF+tzUs0ZdYacy2qYzj3ltOO
-   gsIEhj464083QO7Lb48wB20CCZ+L73UIwBAE8DxMRjkG3O3Oxk69hCotx
-   64Doyxn94pXyBFlRwUlNvL4r/IB4VaJeajd50nm2I3a0QMe9FQlwfnqVa
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="3250812"
-X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; 
-   d="scan'208";a="3250812"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2024 05:30:14 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,187,1705392000"; 
-   d="scan'208";a="7391016"
-Received: from yrasheed-mobl.amr.corp.intel.com (HELO [10.209.51.241]) ([10.209.51.241])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2024 05:30:14 -0800
-Message-ID: <97b66d4d-f520-46c9-8164-ce5b2e4d5642@intel.com>
-Date: Tue, 27 Feb 2024 05:30:13 -0800
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1709040703; x=1740576703;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Ki82SoGWmWX3Ugj8uBKuzuI2IE1hzceZHBRrq0QZbE4=;
+  b=iLSOAyvKamz3G/D6WUlmaq1RobHx9/KxZ9NGnp0gN8/8mQB/VjdKzzTG
+   wRes47z+RIfL93Buc+LhxZDqji7OKbzKqiownBYLF7JZcugMTNmt/frpv
+   Zw3fZSdcQ3jWZgqR7RipIP221EXSl9wjScc4QRrjH1KTP9BmY93C9z55m
+   hef0iP2RTdH6Hbu/yyleKHCzWhXQoQSGW/GkbF7r5NK/GsgaASxirUAOk
+   LEIFHtbShKrVAZYaYEibq3gP6HQHLE95f8s6HtTTlM8TTMl2uDF0+AYJQ
+   fMt66rFmMfMotAGlJZjpxcaXGh+I3LqzijWO5DMUL/GjTVcVdVKPMiGEC
+   w==;
+X-CSE-ConnectionGUID: yz8g29ITRhSf6O9VOhbtEQ==
+X-CSE-MsgGUID: OaQoEJFJSXqnfheKzxcBOA==
+X-IronPort-AV: E=Sophos;i="6.06,187,1705388400"; 
+   d="asc'?scan'208";a="18458098"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 27 Feb 2024 06:31:42 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 27 Feb 2024 06:31:16 -0700
+Received: from wendy (10.10.85.11) by chn-vm-ex03.mchp-main.com (10.10.85.151)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35 via Frontend
+ Transport; Tue, 27 Feb 2024 06:31:11 -0700
+Date: Tue, 27 Feb 2024 13:30:28 +0000
+From: Conor Dooley <conor.dooley@microchip.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+CC: Nathan Chancellor <nathan@kernel.org>, Conor Dooley <conor@kernel.org>,
+	Matthew Maurer <mmaurer@google.com>, <linux-riscv@lists.infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson
+ Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary
+ Guo <gary@garyguo.net>, =?iso-8859-1?Q?Bj=F6rn?= Roy Baron
+	<bjorn3_gh@protonmail.com>, Jonathan Corbet <corbet@lwn.net>, Paul Walmsley
+	<paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Nick
+ Desaulniers <ndesaulniers@google.com>, Tom Rix <trix@redhat.com>,
+	<rust-for-linux@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <llvm@lists.linux.dev>,
+	<stable@vger.kernel.org>, Sami Tolvanen <samitolvanen@google.com>, Ramon de C
+ Valle <rcvalle@google.com>
+Subject: Re: [PATCH v2 1/3] rust: make mutually exclusive with CFI_CLANG
+Message-ID: <20240227-nutrient-uncorrupt-202767671f78@wendy>
+References: <20240223-leverage-walmart-5424542cd8bd@spud>
+ <20240223-perjury-preshow-fc2cf73d552e@spud>
+ <CANiq72=mCnm0mKOw5K44PmZ+jF=67jxEEkcXP-E0O8CaUrps=w@mail.gmail.com>
+ <20240227-uncertain-amaze-6197e627ad95@wendy>
+ <CANiq72=geBobqM0Dc2yv=NjAc3MWXhOrDHfuJ84TgQ+XVxBo0w@mail.gmail.com>
+ <20240227-unwind-canteen-3da9b07af10c@wendy>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] x86/cpu: fix invalid MTRR mask values for SEV or
- TME
-Content-Language: en-US
-To: Yin Fengwei <fengwei.yin@intel.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Zixi Chen <zixchen@redhat.com>, Adam Dunlap <acdunlap@google.com>,
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
- Xiaoyao Li <xiaoyao.li@intel.com>, Kai Huang <kai.huang@intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@kernel.org>,
- x86@kernel.org, stable@vger.kernel.org
-References: <20240131230902.1867092-1-pbonzini@redhat.com>
- <2b5e6d68-007e-48bd-be61-9a354be2ccbf@intel.com>
- <CABgObfa_7ZAq1Kb9G=ehkzHfc5if3wnFi-kj3MZLE3oYLrArdQ@mail.gmail.com>
- <CABgObfbetwO=4whrCE+cFfCPJa0nsK=h6sQAaoamJH=UqaJqTg@mail.gmail.com>
- <CABgObfbUcG5NyKhLOnihWKNVM0OZ7zb9R=ADzq7mjbyOCg3tUw@mail.gmail.com>
- <eefbce80-18c5-42e7-8cde-3a352d5811de@intel.com>
- <CABgObfY=3msvJ2M-gHMqawcoaW5CDVDVxCO0jWi+6wrcrsEtAw@mail.gmail.com>
- <9c4ee2ca-007d-42f3-b23d-c8e67a103ad8@intel.com>
- <CABgObfYttER8yZBTReO+Cd5VqQCpEY9UdHH5E8BKuA1+2CsimA@mail.gmail.com>
- <7e118d89-3b7a-4e13-b3de-2acfbf712ad5@intel.com>
- <3807c397-2eef-4f1d-ae85-4259f061f08e@intel.com>
- <eff34df2-fdc1-4ee0-bb8d-90da386b7cb6@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
- oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
- 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
- ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
- VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
- iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
- c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
- pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
- ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
- QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
- c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
- LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
- lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
- MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
- IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
- aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
- I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
- E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
- F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
- CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
- P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
- 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
- GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
- MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
- Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
- lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
- 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
- qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
- BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
- 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
- vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
- FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
- l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
- yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
- +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
- asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
- WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
- sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
- KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
- MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
- hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
- vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <eff34df2-fdc1-4ee0-bb8d-90da386b7cb6@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="r5yJmoa5fGQ0bLaA"
+Content-Disposition: inline
+In-Reply-To: <20240227-unwind-canteen-3da9b07af10c@wendy>
 
-On 2/26/24 22:08, Yin Fengwei wrote:
->>> https://lore.kernel.org/all/20240222183926.517AFCD2@davehans-spike.ostc.intel.com/
->> If it _also_ fixes the problem, it'll be a strong indication that it's
->> the right long-term approach.
-> I tried your patchset on a Sapphire machine which is the only one broken machine
-> I can access today. The base commit is 45ec2f5f6ed3 from the latest linus tree.
-> 
-> Without your patchset, the system boot hang.
-> With your patchset, the system boot successfully.
+--r5yJmoa5fGQ0bLaA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Yay!  Thanks for testing.
+On Tue, Feb 27, 2024 at 01:02:17PM +0000, Conor Dooley wrote:
+
+> I'll give testing another try.
+
+Yah, it is (as expected) broken on arm64 too:
+
+ CFI failure at do_one_initcall+0xec/0x26c (target: __rust_minimal_init+0x0=
+/0x64; expected type: 0x36b1c5a6)
+ Internal error: Oops - CFI: 00000000f2008233 [#1] PREEMPT SMP
+ Modules linked in:
+ CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.8.0-rc3-00002-g724a75ac9542 #10
+ Hardware name: linux,dummy-virt (DT)
+ pstate: a0000005 (NzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=3D--)
+ pc : do_one_initcall+0xec/0x26c
+ lr : do_initcall_level+0x8c/0xb0
+ sp : ffff80008000bab0
+ x29: ffff80008000bda0 x28: 0000000000000000 x27: 0000000000000000
+ x26: 0000000000000000 x25: 0000000000000000 x24: 0000000000000000
+ x23: 0000000000000000 x22: 0000000000000000 x21: ffff18d941cb0000
+ x20: ffffb8f6d6d9f000 x19: ffffb8f6d63e8b18 x18: 0000000000000002
+ x17: 0000000036b1c5a6 x16: 00000000d65f03c0 x15: 0000000000000000
+ x14: ffff18d9420280b1 x13: 0000000065dde380 x12: 0000000000000017
+ x11: 0000000000000000 x10: 0000000000000000 x9 : d4db8c0058e7e300
+ x8 : 0000000000000000 x7 : 0000000001f4c18b x6 : 0000000001f4c18b
+ x5 : ffffb8f6d6d300a0 x4 : ffff80008000ba78 x3 : ffff18d942019860
+ x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffffb8f6d63e8b18
+ Call trace:
+  do_one_initcall+0xec/0x26c
+  do_initcall_level+0x8c/0xb0
+  do_initcalls+0x54/0x94
+  do_basic_setup+0x68/0x78
+  kernel_init_freeable+0x100/0x16c
+  kernel_init+0x20/0x1a0
+  ret_from_fork+0x10/0x20
+ Code: 7298b4d1 72a6d631 6b11021f 54000040 (d4304660)=20
+ ---[ end trace 0000000000000000 ]---
+ note: swapper/0[1] exited with irqs disabled
+ note: swapper/0[1] exited with preempt_count 1
+ Kernel panic - not syncing: Attempted to kill init! exitcode=3D0x0000000b
+ Kernel Offset: 0x38f655800000 from 0xffff800080000000
+ PHYS_OFFSET: 0xffffe72700000000
+ CPU features: 0x0,88000203,3c020000,0100421b
+ Memory Limit: none
+ ---[ end Kernel panic - not syncing: Attempted to kill init! exitcode=3D0x=
+0000000b ]---
+
+Cheers,
+Conor.
+
+--r5yJmoa5fGQ0bLaA
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZd3j9AAKCRB4tDGHoIJi
+0u2PAQC5/4jfWMdylFg+y63pffgtxRDgGSmDgaHdyDygKV9j9QD+PNFWt0vl/a+D
+X2nh2w6BJGQiRtf9I1HY/qbOMamdlQE=
+=4HMF
+-----END PGP SIGNATURE-----
+
+--r5yJmoa5fGQ0bLaA--
 
