@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D78BB869601
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6CE38694D5
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:56:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 146671C210C7
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D886B1C283B0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:56:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65DA213EFEC;
-	Tue, 27 Feb 2024 14:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C16913B2B3;
+	Tue, 27 Feb 2024 13:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSJyHxxG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ymPk77K3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C7613B2A2;
-	Tue, 27 Feb 2024 14:07:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE04A13AA55;
+	Tue, 27 Feb 2024 13:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042823; cv=none; b=VdMZQsvvuTCRSIH0WO+jZKOhgp6T5TQEaF5rmte8l3Z/mz+X24FH/uyryZ+6zAsHvEcsr75Tg3nSM+5wqXNwHkW0Djlq2LLVlWEnnOuK6SYfCzzSszIPxxDloAY8UNG3vsIRdml1q76gYjqrSpZfH1Y23yXGh4ig/KZLJnzK2hg=
+	t=1709042201; cv=none; b=rOISEikMTxYSsYzWJ8QJKktEoSoxkQ4t64lXjI8juUow2Ev3T1KUZsiebiac5MhYyzLcx+Q+YQ156WjgO7Pac2GAQXYmuQ7+76bBDeW04vzEsAz2GTbrvDjQABYoGis1jayFESXJzDJVs2aAZ3dkATDtHnefgAOHmhVuf5c6cSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042823; c=relaxed/simple;
-	bh=cTpbqNR3jaIQgwJDZwTNJriLtT2P6pe9UcfY3X5IquY=;
+	s=arc-20240116; t=1709042201; c=relaxed/simple;
+	bh=qqDdx7MyJQYVoowt3+JZZVvxtP6VfTsNpL02ywaV0j0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rjdEC3mjGv5ka9PC42FaXAJ/sWWay+FMyAHsLyrhpr+QTdd5z9xq/TsjqZXRkkj7hCGdgaME/RiVeF4j0IkNcD/3l6fNH+9aoIGKANj/pTunJuBXJa5gNUZbvkaMEnEmrneD0LFFgtJHRuzj4JQzlbx9FDZJTM5vafYsRqvB9W0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSJyHxxG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A44E5C433C7;
-	Tue, 27 Feb 2024 14:07:02 +0000 (UTC)
+	 MIME-Version; b=cp2GaMCP24/vjNtnPNV5ZIuX5YjWJdHeg/O2pjXA2fouhh9bnC5M/3VX2h/9yXX0QFsACY4rLWCinyCK2ZdvwEc9cItkn1irOFvMdBJwSRq7wQLE6e6v5RXkv5wuuWeTtWNYxeFZASyU3rSU9oeUYRp1gNrPEe7m+5M6zZuScE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ymPk77K3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A0CBC433C7;
+	Tue, 27 Feb 2024 13:56:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042823;
-	bh=cTpbqNR3jaIQgwJDZwTNJriLtT2P6pe9UcfY3X5IquY=;
+	s=korg; t=1709042200;
+	bh=qqDdx7MyJQYVoowt3+JZZVvxtP6VfTsNpL02ywaV0j0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rSJyHxxGpTGDO9HUQH44UFvsG4kpOBecjfIH1LSfMuqGvCm01x6MQV7c/v4bLWHdk
-	 YdKQRUfoOuhBSsl2PpPO95I2kaelcJhKZxp8RVuYg+vsWNvP1qOjbVQ8T+fYk+KR5w
-	 iKpqZ6x6jS1tnxbUtn53zHnr4GWgnzlRHKwU9wcc=
+	b=ymPk77K3/6Ek9kch0zqhhHsep0173OmhYaxy37xopgdkV8fNWMYHdKu3490vYNDEY
+	 dfKEbbOdVwXNH9VX1NoYRXt14St6MSDYOEDZcZUiyvqdITyruleQlTkMzIu56qe9rl
+	 LVi7vl1MG94WEJCABD5uQ1/Z8i98BBpGwRy7TiOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Luke D. Jones" <luke@ljones.dev>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 134/245] platform/x86: asus-wmi: Document the dgpu_disable sysfs attribute
-Date: Tue, 27 Feb 2024 14:25:22 +0100
-Message-ID: <20240227131619.567951665@linuxfoundation.org>
+Subject: [PATCH 6.6 212/299] RDMA/bnxt_re: Return error for SRQ resize
+Date: Tue, 27 Feb 2024 14:25:23 +0100
+Message-ID: <20240227131632.610554156@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luke D. Jones <luke@ljones.dev>
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-[ Upstream commit 7e64c486e807c8edfbd3a0c8e44ad7a1896dbec8 ]
+[ Upstream commit 3687b450c5f32e80f179ce4b09e0454da1449eac ]
 
-The dgpu_disable attribute was not documented, this adds the
-required documentation.
+SRQ resize is not supported in the driver. But driver is not
+returning error from bnxt_re_modify_srq() for SRQ resize.
 
-Fixes: 98829e84dc67 ("asus-wmi: Add dgpu disable method")
-Signed-off-by: Luke D. Jones <luke@ljones.dev>
-Link: https://lore.kernel.org/r/20220812222509.292692-2-luke@ljones.dev
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Fixes: 37cb11acf1f7 ("RDMA/bnxt_re: Add SRQ support for Broadcom adapters")
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Link: https://lore.kernel.org/r/1705985677-15551-5-git-send-email-selvin.xavier@broadcom.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/ABI/testing/sysfs-platform-asus-wmi | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-platform-asus-wmi b/Documentation/ABI/testing/sysfs-platform-asus-wmi
-index 04885738cf156..0f8f0772d6f3b 100644
---- a/Documentation/ABI/testing/sysfs-platform-asus-wmi
-+++ b/Documentation/ABI/testing/sysfs-platform-asus-wmi
-@@ -57,3 +57,12 @@ Description:
- 			* 0 - default,
- 			* 1 - overboost,
- 			* 2 - silent
-+
-+What:		/sys/devices/platform/<platform>/dgpu_disable
-+Date:		Aug 2022
-+KernelVersion:	5.17
-+Contact:	"Luke Jones" <luke@ljones.dev>
-+Description:
-+		Disable discrete GPU:
-+			* 0 - Enable dGPU,
-+			* 1 - Disable dGPU
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index faa88d12ee868..cc466dfd792b0 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -1809,7 +1809,7 @@ int bnxt_re_modify_srq(struct ib_srq *ib_srq, struct ib_srq_attr *srq_attr,
+ 	switch (srq_attr_mask) {
+ 	case IB_SRQ_MAX_WR:
+ 		/* SRQ resize is not supported */
+-		break;
++		return -EINVAL;
+ 	case IB_SRQ_LIMIT:
+ 		/* Change the SRQ threshold */
+ 		if (srq_attr->srq_limit > srq->qplib_srq.max_wqe)
+@@ -1824,13 +1824,12 @@ int bnxt_re_modify_srq(struct ib_srq *ib_srq, struct ib_srq_attr *srq_attr,
+ 		/* On success, update the shadow */
+ 		srq->srq_limit = srq_attr->srq_limit;
+ 		/* No need to Build and send response back to udata */
+-		break;
++		return 0;
+ 	default:
+ 		ibdev_err(&rdev->ibdev,
+ 			  "Unsupported srq_attr_mask 0x%x", srq_attr_mask);
+ 		return -EINVAL;
+ 	}
+-	return 0;
+ }
+ 
+ int bnxt_re_query_srq(struct ib_srq *ib_srq, struct ib_srq_attr *srq_attr)
 -- 
 2.43.0
 
