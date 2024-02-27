@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-25000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F92A869740
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:19:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5CE186979A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:22:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04CB41F23832
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:19:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0373F1C21DC5
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:22:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C96E513B2B8;
-	Tue, 27 Feb 2024 14:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6830F13B797;
+	Tue, 27 Feb 2024 14:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q4ouZD+o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W2eoUUE8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D7013EFE9;
-	Tue, 27 Feb 2024 14:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2894913B2B4;
+	Tue, 27 Feb 2024 14:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043577; cv=none; b=Wdolai+qAd3KUvyLtdBRMYB11QV7le0D/XXy3P40I8QkwxDlO44Evt5OgrCDFH0tYxKKMrR3KksgbDWK776PfG+3fnxtBNM0NadZndmIY+xkd32pz/s5pTU0SofXNVvvssMfLoASvwDtLnNuPNVF8rWIRMpo+IdDNKruc/+PrtE=
+	t=1709043777; cv=none; b=SCcsZjK67aqXjfcsgfTz4iPu9SWGSmGp9HkMXMME/R01kaY+zxx1ZNPfGcOZOEtr2rAOsXIswP5qlrlEJo9kGtYIkOOkQYHR2xUTUBK9TZKCfNgCUAOlP3FE2nlC7W0aw4DdtFG1O5Zojr697C6ojPng3U9P+1nLhdJ7BNO0zNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043577; c=relaxed/simple;
-	bh=GxBJax4VLy6D9jQ4iQjQCiF2fX/pATUMbiN0m4bCitg=;
+	s=arc-20240116; t=1709043777; c=relaxed/simple;
+	bh=fS2rH83bn/glDJPmN1QTSs4fmObRZsHsiGdkQWGKksQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YRcbkXPMFK5CQlPQx2VNTOA2bafCPjf/rrcDxDkes20lUPpUWMFUlULzWGXQlzlG12b9NARNWc71o5busiEPG3u0aoELXG+d+SvfbpHmOjIqR3ZQdYyoEBRc9SV8eIcISTb8R5VYZqXrqxyhkfr1vN2srRI2raRNT99yFOCaRxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q4ouZD+o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CBA1C433F1;
-	Tue, 27 Feb 2024 14:19:36 +0000 (UTC)
+	 MIME-Version; b=ti9Eu4T9CpZ/yOSgz5LgV2YYBzMsZJqWF2BpaxskrWYrN5JewEwANtlsZ1ouTEgVcs8u1oNJWW+xNYcdciaoqi8iHskD1+vB5sd3c9/QUvZjRlYxAOcHKw/HPkAOl6GfHMDzNZBA4Vqi12K1rTOgyt1HDSI1T9N8AFlMdu/zPtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W2eoUUE8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC648C433F1;
+	Tue, 27 Feb 2024 14:22:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043577;
-	bh=GxBJax4VLy6D9jQ4iQjQCiF2fX/pATUMbiN0m4bCitg=;
+	s=korg; t=1709043777;
+	bh=fS2rH83bn/glDJPmN1QTSs4fmObRZsHsiGdkQWGKksQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q4ouZD+odfPTr9GtBZt+I7Hl1NlqRHvLedfGjDWz5hWKyex6V2zwC9QdDiDF6KfI9
-	 dNA3Kosl++/npI/HAv4Bc+74KOvJMtfAh9D+72iNUsYCZfsedWv/QvcvAyZFt3hTB1
-	 A9g28Ze/6qkq5hIbJNhEuBRcvKjJzgQUaxrwIXMY=
+	b=W2eoUUE8alSziOkwP156l/XsqU0UdKWV6r3VFTZPDL2Uf6EElKw5QBN6rZn7yZciF
+	 J2+fxTq32nnIaRoDdaT2YNdy+3FpGBTeJMNB3b9lfkPXSGgez5UFpXNyVtSU6X/Azn
+	 BbDml09QVUFCQzTLjiUx646jgg4vXAhVSN1TQi+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniil Dulov <d.dulov@aladdin.ru>,
-	David Howells <dhowells@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 158/195] afs: Increase buffer size in afs_update_volume_status()
+Subject: [PATCH 5.4 32/84] s390/qeth: Fix potential loss of L3-IP@ in case of network issues
 Date: Tue, 27 Feb 2024 14:26:59 +0100
-Message-ID: <20240227131615.633280383@linuxfoundation.org>
+Message-ID: <20240227131553.909225821@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniil Dulov <d.dulov@aladdin.ru>
+From: Alexandra Winter <wintera@linux.ibm.com>
 
-[ Upstream commit 6ea38e2aeb72349cad50e38899b0ba6fbcb2af3d ]
+[ Upstream commit 2fe8a236436fe40d8d26a1af8d150fc80f04ee1a ]
 
-The max length of volume->vid value is 20 characters.
-So increase idbuf[] size up to 24 to avoid overflow.
+Symptom:
+In case of a bad cable connection (e.g. dirty optics) a fast sequence of
+network DOWN-UP-DOWN-UP could happen. UP triggers recovery of the qeth
+interface. In case of a second DOWN while recovery is still ongoing, it
+can happen that the IP@ of a Layer3 qeth interface is lost and will not
+be recovered by the second UP.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Problem:
+When registration of IP addresses with Layer 3 qeth devices fails, (e.g.
+because of bad address format) the respective IP address is deleted from
+its hash-table in the driver. If registration fails because of a ENETDOWN
+condition, the address should stay in the hashtable, so a subsequent
+recovery can restore it.
 
-[DH: Actually, it's 20 + NUL, so increase it to 24 and use snprintf()]
+3caa4af834df ("qeth: keep ip-address after LAN_OFFLINE failure")
+fixes this for registration failures during normal operation, but not
+during recovery.
 
-Fixes: d2ddc776a458 ("afs: Overhaul volume and server record caching and fileserver rotation")
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/20240211150442.3416-1-d.dulov@aladdin.ru/ # v1
-Link: https://lore.kernel.org/r/20240212083347.10742-1-d.dulov@aladdin.ru/ # v2
-Link: https://lore.kernel.org/r/20240219143906.138346-3-dhowells@redhat.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Solution:
+Keep L3-IP address in case of ENETDOWN in qeth_l3_recover_ip(). For
+consistency with qeth_l3_add_ip() we also keep it in case of EADDRINUSE,
+i.e. for some reason the card already/still has this address registered.
+
+Fixes: 4a71df50047f ("qeth: new qeth device driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240206085849.2902775-1-wintera@linux.ibm.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/volume.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/s390/net/qeth_l3_main.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/fs/afs/volume.c b/fs/afs/volume.c
-index 1c9144e3e83ac..a146d70efa650 100644
---- a/fs/afs/volume.c
-+++ b/fs/afs/volume.c
-@@ -341,7 +341,7 @@ static int afs_update_volume_status(struct afs_volume *volume, struct key *key)
- {
- 	struct afs_server_list *new, *old, *discard;
- 	struct afs_vldb_entry *vldb;
--	char idbuf[16];
-+	char idbuf[24];
- 	int ret, idsz;
+diff --git a/drivers/s390/net/qeth_l3_main.c b/drivers/s390/net/qeth_l3_main.c
+index 8dee16aca421f..fe2bea2409427 100644
+--- a/drivers/s390/net/qeth_l3_main.c
++++ b/drivers/s390/net/qeth_l3_main.c
+@@ -305,9 +305,10 @@ static void qeth_l3_clear_ip_htable(struct qeth_card *card, int recover)
+ 		if (!recover) {
+ 			hash_del(&addr->hnode);
+ 			kfree(addr);
+-			continue;
++		} else {
++			/* prepare for recovery */
++			addr->disp_flag = QETH_DISP_ADDR_ADD;
+ 		}
+-		addr->disp_flag = QETH_DISP_ADDR_ADD;
+ 	}
  
- 	_enter("");
-@@ -349,7 +349,7 @@ static int afs_update_volume_status(struct afs_volume *volume, struct key *key)
- 	/* We look up an ID by passing it as a decimal string in the
- 	 * operation's name parameter.
- 	 */
--	idsz = sprintf(idbuf, "%llu", volume->vid);
-+	idsz = snprintf(idbuf, sizeof(idbuf), "%llu", volume->vid);
+ 	mutex_unlock(&card->ip_lock);
+@@ -335,11 +336,13 @@ static void qeth_l3_recover_ip(struct qeth_card *card)
+ 			} else
+ 				rc = qeth_l3_register_addr_entry(card, addr);
  
- 	vldb = afs_vl_lookup_vldb(volume->cell, key, idbuf, idsz);
- 	if (IS_ERR(vldb)) {
+-			if (!rc) {
++			if (!rc || rc == -EADDRINUSE || rc == -ENETDOWN) {
++				/* keep it in the records */
+ 				addr->disp_flag = QETH_DISP_ADDR_DO_NOTHING;
+ 				if (addr->ref_counter < 1)
+ 					qeth_l3_delete_ip(card, addr);
+ 			} else {
++				/* bad address */
+ 				hash_del(&addr->hnode);
+ 				kfree(addr);
+ 			}
 -- 
 2.43.0
 
