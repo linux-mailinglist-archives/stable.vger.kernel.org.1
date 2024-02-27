@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-25135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40CD78697E7
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:26:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C829869738
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:19:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FFB51C22D33
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:26:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E382EB2B1FA
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9148314534E;
-	Tue, 27 Feb 2024 14:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4459C13DBBC;
+	Tue, 27 Feb 2024 14:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ybax06sL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNSniUdt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EBF7145343;
-	Tue, 27 Feb 2024 14:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04CA11419A1;
+	Tue, 27 Feb 2024 14:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043962; cv=none; b=RVHamcc+Fo8xI/30IQh8vgs9dU8vnvKjAS7C5ibevWbuorOxuzRNBBAtKSNZAsIJHnF8Cqs40CaaknLAxwKFz8BaDvXt0MSRUe7ZFfIdwvJxnvShsqjB1JGxx4tZsyP0kX3Q7pvzY1hgPAc9oI3gvFvElkV1Gj1BjDVbvn3VCSA=
+	t=1709043509; cv=none; b=iIkybYsdxBHO4f8RX51htlzP0NZBXE34Ln1TRboD3SIGc0Xw0II3Xsuh1iOOwMkntOGTRk06iHSbvmNQsfAR7yJ51papyAh+Vi/BA7VS4mLSS58Vi/EyYgnVXoxW4rlBjVd1mu+fhWTf+oMAqiz9JYFVdKWv+iiZDqkXrF7ndvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043962; c=relaxed/simple;
-	bh=Opj9u6KWHPEPJpoIjzNRgtLJyGLv71j5rKI/NL/N0o4=;
+	s=arc-20240116; t=1709043509; c=relaxed/simple;
+	bh=B5N+0XO5IH4b1XJzSf2/P8QaeZdafkZd5PjpEs46JrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CKabDyqK3tbJNz6cAjrJj6Kv6LfI7tRHnnpnl7ET6OvwQ2H0Ji8O1yniAtkc6xZ82YZYqV763EJvO2BejckYEnQswxOnu5k4jDHCA1D+oyTvtR7IsQetnLvEwBxlh8zEs416svjwYzt97YVJ9uH+MGCkJ7eZEdWIkcaVPSBGYAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ybax06sL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC3F1C433C7;
-	Tue, 27 Feb 2024 14:26:01 +0000 (UTC)
+	 MIME-Version; b=NObIvBIit6qd6+IgSxGX78KK+OiOM8wL7Pu425azr1PP0xAM3wxP8XEXOr/RneIHI5Bfx3u2n1YtsrVGagM5u2Jk6r/w5y3ajpxEP0bf94+Vu6T6Qi4eRt7piZRKxCVlcBQ6OWx21dYRVphuXOJsQRs6pU38P3yaj43dSPCyGJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNSniUdt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E64C43390;
+	Tue, 27 Feb 2024 14:18:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043962;
-	bh=Opj9u6KWHPEPJpoIjzNRgtLJyGLv71j5rKI/NL/N0o4=;
+	s=korg; t=1709043508;
+	bh=B5N+0XO5IH4b1XJzSf2/P8QaeZdafkZd5PjpEs46JrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ybax06sLYkqcd7VfcLB+ifljRlo9L7d0KU19W8m8fQgC/7ADxxXnurVRd8fmQNIB0
-	 hSQJUHndD+98drdWdF5k5GAHZdnZcz/hgsLnOs/HAIIVjcS0u9ZAvWa95mb6mP3ieK
-	 6/2pvXPR6IX2zUD6kRjM6BptW2LveQql7JkIfB9s=
+	b=TNSniUdtKNtTfQk1qL8lnyxM6vWrQZgDENN3ikGhex+hKotoDRmuYUwZrvX+0VNHy
+	 qDwzrVv57sRzIeF0Uil07Dpo/6MRrq9EUQXyzVl5rTTykkxI+xBjR22QMXSXbJ79jJ
+	 92ryfl6CYX5iIqg7qd+D836LhGqF7JVo1kk1BHzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@csail.mit.edu>,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
-	Guruswamy Basavaiah <guruswamy.basavaiah@broadcom.com>
-Subject: [PATCH 5.10 005/122] smb: client: fix potential OOBs in smb2_parse_contexts()
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 105/195] gtp: fix use-after-free and null-ptr-deref in gtp_genl_dump_pdp()
 Date: Tue, 27 Feb 2024 14:26:06 +0100
-Message-ID: <20240227131558.879202806@linuxfoundation.org>
+Message-ID: <20240227131613.933962722@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,250 +61,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-[ Upstream commit af1689a9b7701d9907dfc84d2a4b57c4bc907144 ]
+commit 136cfaca22567a03bbb3bf53a43d8cb5748b80ec upstream.
 
-Validate offsets and lengths before dereferencing create contexts in
-smb2_parse_contexts().
+The gtp_net_ops pernet operations structure for the subsystem must be
+registered before registering the generic netlink family.
 
-This fixes following oops when accessing invalid create contexts from
-server:
+Syzkaller hit 'general protection fault in gtp_genl_dump_pdp' bug:
 
-  BUG: unable to handle page fault for address: ffff8881178d8cc3
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 4a01067 P4D 4a01067 PUD 0
-  Oops: 0000 [#1] PREEMPT SMP NOPTI
-  CPU: 3 PID: 1736 Comm: mount.cifs Not tainted 6.7.0-rc4 #1
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
-  rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
-  RIP: 0010:smb2_parse_contexts+0xa0/0x3a0 [cifs]
-  Code: f8 10 75 13 48 b8 93 ad 25 50 9c b4 11 e7 49 39 06 0f 84 d2 00
-  00 00 8b 45 00 85 c0 74 61 41 29 c5 48 01 c5 41 83 fd 0f 76 55 <0f> b7
-  7d 04 0f b7 45 06 4c 8d 74 3d 00 66 83 f8 04 75 bc ba 04 00
-  RSP: 0018:ffffc900007939e0 EFLAGS: 00010216
-  RAX: ffffc90000793c78 RBX: ffff8880180cc000 RCX: ffffc90000793c90
-  RDX: ffffc90000793cc0 RSI: ffff8880178d8cc0 RDI: ffff8880180cc000
-  RBP: ffff8881178d8cbf R08: ffffc90000793c22 R09: 0000000000000000
-  R10: ffff8880180cc000 R11: 0000000000000024 R12: 0000000000000000
-  R13: 0000000000000020 R14: 0000000000000000 R15: ffffc90000793c22
-  FS: 00007f873753cbc0(0000) GS:ffff88806bc00000(0000)
-  knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: ffff8881178d8cc3 CR3: 00000000181ca000 CR4: 0000000000750ef0
-  PKRU: 55555554
-  Call Trace:
-   <TASK>
-   ? __die+0x23/0x70
-   ? page_fault_oops+0x181/0x480
-   ? search_module_extables+0x19/0x60
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? exc_page_fault+0x1b6/0x1c0
-   ? asm_exc_page_fault+0x26/0x30
-   ? smb2_parse_contexts+0xa0/0x3a0 [cifs]
-   SMB2_open+0x38d/0x5f0 [cifs]
-   ? smb2_is_path_accessible+0x138/0x260 [cifs]
-   smb2_is_path_accessible+0x138/0x260 [cifs]
-   cifs_is_path_remote+0x8d/0x230 [cifs]
-   cifs_mount+0x7e/0x350 [cifs]
-   cifs_smb3_do_mount+0x128/0x780 [cifs]
-   smb3_get_tree+0xd9/0x290 [cifs]
-   vfs_get_tree+0x2c/0x100
-   ? capable+0x37/0x70
-   path_mount+0x2d7/0xb80
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? _raw_spin_unlock_irqrestore+0x44/0x60
-   __x64_sys_mount+0x11a/0x150
-   do_syscall_64+0x47/0xf0
-   entry_SYSCALL_64_after_hwframe+0x6f/0x77
-  RIP: 0033:0x7f8737657b1e
+general protection fault, probably for non-canonical address
+0xdffffc0000000002: 0000 [#1] PREEMPT SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
+CPU: 1 PID: 5826 Comm: gtp Not tainted 6.8.0-rc3-std-def-alt1 #1
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.0-alt1 04/01/2014
+RIP: 0010:gtp_genl_dump_pdp+0x1be/0x800 [gtp]
+Code: c6 89 c6 e8 64 e9 86 df 58 45 85 f6 0f 85 4e 04 00 00 e8 c5 ee 86
+      df 48 8b 54 24 18 48 b8 00 00 00 00 00 fc ff df 48 c1 ea 03 <80>
+      3c 02 00 0f 85 de 05 00 00 48 8b 44 24 18 4c 8b 30 4c 39 f0 74
+RSP: 0018:ffff888014107220 EFLAGS: 00010202
+RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000000
+RDX: 0000000000000002 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+R13: ffff88800fcda588 R14: 0000000000000001 R15: 0000000000000000
+FS:  00007f1be4eb05c0(0000) GS:ffff88806ce80000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f1be4e766cf CR3: 000000000c33e000 CR4: 0000000000750ef0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ ? show_regs+0x90/0xa0
+ ? die_addr+0x50/0xd0
+ ? exc_general_protection+0x148/0x220
+ ? asm_exc_general_protection+0x22/0x30
+ ? gtp_genl_dump_pdp+0x1be/0x800 [gtp]
+ ? __alloc_skb+0x1dd/0x350
+ ? __pfx___alloc_skb+0x10/0x10
+ genl_dumpit+0x11d/0x230
+ netlink_dump+0x5b9/0xce0
+ ? lockdep_hardirqs_on_prepare+0x253/0x430
+ ? __pfx_netlink_dump+0x10/0x10
+ ? kasan_save_track+0x10/0x40
+ ? __kasan_kmalloc+0x9b/0xa0
+ ? genl_start+0x675/0x970
+ __netlink_dump_start+0x6fc/0x9f0
+ genl_family_rcv_msg_dumpit+0x1bb/0x2d0
+ ? __pfx_genl_family_rcv_msg_dumpit+0x10/0x10
+ ? genl_op_from_small+0x2a/0x440
+ ? cap_capable+0x1d0/0x240
+ ? __pfx_genl_start+0x10/0x10
+ ? __pfx_genl_dumpit+0x10/0x10
+ ? __pfx_genl_done+0x10/0x10
+ ? security_capable+0x9d/0xe0
 
-Reported-by: Robert Morris <rtm@csail.mit.edu>
 Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[Guru: Removed changes to cached_dir.c and checking return value
-of smb2_parse_contexts in smb2ops.c]
-Signed-off-by: Guruswamy Basavaiah <guruswamy.basavaiah@broadcom.com>
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Fixes: 459aa660eb1d ("gtp: add initial driver for datapath of GPRS Tunneling Protocol (GTP-U)")
+Link: https://lore.kernel.org/r/20240214162733.34214-1-kovalev@altlinux.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/smb2ops.c   |    4 +-
- fs/cifs/smb2pdu.c   |   91 +++++++++++++++++++++++++++++++---------------------
- fs/cifs/smb2proto.h |   12 ++++--
- 3 files changed, 65 insertions(+), 42 deletions(-)
+ drivers/net/gtp.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/fs/cifs/smb2ops.c
-+++ b/fs/cifs/smb2ops.c
-@@ -818,10 +818,12 @@ int open_shroot(unsigned int xid, struct
- 	if (o_rsp->OplockLevel == SMB2_OPLOCK_LEVEL_LEASE) {
- 		kref_get(&tcon->crfid.refcount);
- 		tcon->crfid.has_lease = true;
--		smb2_parse_contexts(server, o_rsp,
-+		rc = smb2_parse_contexts(server, rsp_iov,
- 				&oparms.fid->epoch,
- 				    oparms.fid->lease_key, &oplock,
- 				    NULL, NULL);
-+		if (rc)
-+			goto oshr_exit;
- 	} else
- 		goto oshr_exit;
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -1906,20 +1906,20 @@ static int __init gtp_init(void)
+ 	if (err < 0)
+ 		goto error_out;
  
---- a/fs/cifs/smb2pdu.c
-+++ b/fs/cifs/smb2pdu.c
-@@ -1991,17 +1991,18 @@ parse_posix_ctxt(struct create_context *
- 		 posix->nlink, posix->mode, posix->reparse_tag);
- }
+-	err = genl_register_family(&gtp_genl_family);
++	err = register_pernet_subsys(&gtp_net_ops);
+ 	if (err < 0)
+ 		goto unreg_rtnl_link;
  
--void
--smb2_parse_contexts(struct TCP_Server_Info *server,
--		    struct smb2_create_rsp *rsp,
--		    unsigned int *epoch, char *lease_key, __u8 *oplock,
--		    struct smb2_file_all_info *buf,
--		    struct create_posix_rsp *posix)
-+int smb2_parse_contexts(struct TCP_Server_Info *server,
-+			struct kvec *rsp_iov,
-+			unsigned int *epoch,
-+			char *lease_key, __u8 *oplock,
-+			struct smb2_file_all_info *buf,
-+			struct create_posix_rsp *posix)
- {
--	char *data_offset;
-+	struct smb2_create_rsp *rsp = rsp_iov->iov_base;
- 	struct create_context *cc;
--	unsigned int next;
--	unsigned int remaining;
-+	size_t rem, off, len;
-+	size_t doff, dlen;
-+	size_t noff, nlen;
- 	char *name;
- 	static const char smb3_create_tag_posix[] = {
- 		0x93, 0xAD, 0x25, 0x50, 0x9C,
-@@ -2010,45 +2011,63 @@ smb2_parse_contexts(struct TCP_Server_In
- 	};
+-	err = register_pernet_subsys(&gtp_net_ops);
++	err = genl_register_family(&gtp_genl_family);
+ 	if (err < 0)
+-		goto unreg_genl_family;
++		goto unreg_pernet_subsys;
  
- 	*oplock = 0;
--	data_offset = (char *)rsp + le32_to_cpu(rsp->CreateContextsOffset);
--	remaining = le32_to_cpu(rsp->CreateContextsLength);
--	cc = (struct create_context *)data_offset;
-+
-+	off = le32_to_cpu(rsp->CreateContextsOffset);
-+	rem = le32_to_cpu(rsp->CreateContextsLength);
-+	if (check_add_overflow(off, rem, &len) || len > rsp_iov->iov_len)
-+		return -EINVAL;
-+	cc = (struct create_context *)((u8 *)rsp + off);
+ 	pr_info("GTP module loaded (pdp ctx size %zd bytes)\n",
+ 		sizeof(struct pdp_ctx));
+ 	return 0;
  
- 	/* Initialize inode number to 0 in case no valid data in qfid context */
- 	if (buf)
- 		buf->IndexNumber = 0;
- 
--	while (remaining >= sizeof(struct create_context)) {
--		name = le16_to_cpu(cc->NameOffset) + (char *)cc;
--		if (le16_to_cpu(cc->NameLength) == 4 &&
--		    strncmp(name, SMB2_CREATE_REQUEST_LEASE, 4) == 0)
--			*oplock = server->ops->parse_lease_buf(cc, epoch,
--							   lease_key);
--		else if (buf && (le16_to_cpu(cc->NameLength) == 4) &&
--		    strncmp(name, SMB2_CREATE_QUERY_ON_DISK_ID, 4) == 0)
--			parse_query_id_ctxt(cc, buf);
--		else if ((le16_to_cpu(cc->NameLength) == 16)) {
--			if (posix &&
--			    memcmp(name, smb3_create_tag_posix, 16) == 0)
-+	while (rem >= sizeof(*cc)) {
-+		doff = le16_to_cpu(cc->DataOffset);
-+		dlen = le32_to_cpu(cc->DataLength);
-+		if (check_add_overflow(doff, dlen, &len) || len > rem)
-+			return -EINVAL;
-+
-+		noff = le16_to_cpu(cc->NameOffset);
-+		nlen = le16_to_cpu(cc->NameLength);
-+		if (noff + nlen >= doff)
-+			return -EINVAL;
-+
-+		name = (char *)cc + noff;
-+		switch (nlen) {
-+		case 4:
-+			if (!strncmp(name, SMB2_CREATE_REQUEST_LEASE, 4)) {
-+				*oplock = server->ops->parse_lease_buf(cc, epoch,
-+								       lease_key);
-+			} else if (buf &&
-+				   !strncmp(name, SMB2_CREATE_QUERY_ON_DISK_ID, 4)) {
-+				parse_query_id_ctxt(cc, buf);
-+			}
-+			break;
-+		case 16:
-+			if (posix && !memcmp(name, smb3_create_tag_posix, 16))
- 				parse_posix_ctxt(cc, buf, posix);
-+			break;
-+		default:
-+			cifs_dbg(FYI, "%s: unhandled context (nlen=%zu dlen=%zu)\n",
-+				 __func__, nlen, dlen);
-+			if (IS_ENABLED(CONFIG_CIFS_DEBUG2))
-+				cifs_dump_mem("context data: ", cc, dlen);
-+			break;
- 		}
--		/* else {
--			cifs_dbg(FYI, "Context not matched with len %d\n",
--				le16_to_cpu(cc->NameLength));
--			cifs_dump_mem("Cctxt name: ", name, 4);
--		} */
- 
--		next = le32_to_cpu(cc->Next);
--		if (!next)
-+		off = le32_to_cpu(cc->Next);
-+		if (!off)
- 			break;
--		remaining -= next;
--		cc = (struct create_context *)((char *)cc + next);
-+		if (check_sub_overflow(rem, off, &rem))
-+			return -EINVAL;
-+		cc = (struct create_context *)((u8 *)cc + off);
- 	}
- 
- 	if (rsp->OplockLevel != SMB2_OPLOCK_LEVEL_LEASE)
- 		*oplock = rsp->OplockLevel;
- 
--	return;
-+	return 0;
- }
- 
- static int
-@@ -2915,8 +2934,8 @@ SMB2_open(const unsigned int xid, struct
- 	}
- 
- 
--	smb2_parse_contexts(server, rsp, &oparms->fid->epoch,
--			    oparms->fid->lease_key, oplock, buf, posix);
-+	rc = smb2_parse_contexts(server, &rsp_iov, &oparms->fid->epoch,
-+				 oparms->fid->lease_key, oplock, buf, posix);
- creat_exit:
- 	SMB2_open_free(&rqst);
- 	free_rsp_buf(resp_buftype, rsp);
---- a/fs/cifs/smb2proto.h
-+++ b/fs/cifs/smb2proto.h
-@@ -270,11 +270,13 @@ extern int smb3_validate_negotiate(const
- 
- extern enum securityEnum smb2_select_sectype(struct TCP_Server_Info *,
- 					enum securityEnum);
--extern void smb2_parse_contexts(struct TCP_Server_Info *server,
--				struct smb2_create_rsp *rsp,
--				unsigned int *epoch, char *lease_key,
--				__u8 *oplock, struct smb2_file_all_info *buf,
--				struct create_posix_rsp *posix);
-+int smb2_parse_contexts(struct TCP_Server_Info *server,
-+			struct kvec *rsp_iov,
-+			unsigned int *epoch,
-+			char *lease_key, __u8 *oplock,
-+			struct smb2_file_all_info *buf,
-+			struct create_posix_rsp *posix);
-+
- extern int smb3_encryption_required(const struct cifs_tcon *tcon);
- extern int smb2_validate_iov(unsigned int offset, unsigned int buffer_length,
- 			     struct kvec *iov, unsigned int min_buf_size);
+-unreg_genl_family:
+-	genl_unregister_family(&gtp_genl_family);
++unreg_pernet_subsys:
++	unregister_pernet_subsys(&gtp_net_ops);
+ unreg_rtnl_link:
+ 	rtnl_link_unregister(&gtp_link_ops);
+ error_out:
 
 
 
