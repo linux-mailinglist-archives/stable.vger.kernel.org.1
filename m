@@ -1,65 +1,57 @@
-Return-Path: <stable+bounces-24844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BF6F869683
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:12:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00A05869726
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:18:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C0F41C22E72
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:12:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 324F51C2351E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:18:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25B213B798;
-	Tue, 27 Feb 2024 14:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 433151419A1;
+	Tue, 27 Feb 2024 14:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZRYeIeB6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FgMv6f0J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C0013AA4C;
-	Tue, 27 Feb 2024 14:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016E7140391;
+	Tue, 27 Feb 2024 14:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043145; cv=none; b=PXBn7kkSbpZrmIl6/oJpVlH4L7thSmfYvJyYzImmcmRto/dyK7k+40HCkYAa4jHlfUynqNfLDvo5cVyuz7VioOhYU1Fxm/WgeLDrMmf+otKwxVpUMGqMf7Z/ckG2tLpaqsIWfAp7b/ma02UP89p7a5tU53hQwu43aNoeRw8R3QQ=
+	t=1709043523; cv=none; b=V3u/z06k7LLZvxoV//ki2qmhP7L4YKiFeWOJ6ykpacTuJ+4lQ82PdB2jcFOIPHN+bqhfiI8qc2+mZ5MKnSOFAwVEiuHfPNXjkKXLpb2xDumyMplJPhDC5RuXBBjy1cfOeF3PheNbNs1FnA4CmIOnYtdUidjs1qzALxV9i2mZiJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043145; c=relaxed/simple;
-	bh=GDqF3eZttv8I5nffzcnWAWrShh9NPmYOPKLpF/LYiW0=;
+	s=arc-20240116; t=1709043523; c=relaxed/simple;
+	bh=KEEkcKuHJCXTgOmRU7D0WtYytpPrtDR8HfUUcRfHqgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hMlhQziEVxsYjSHG9gPL4jY4uGyt7gRonrn4axbTIIMXj1tVHjlWu56WOKETfG56MRT1maB619cmZ5DE0fa5+bCVEc51jjm/R4YgtBQgcyN5ZcrJFy0b84uRGWodLQcMsDjTxb11HbK4nO95j+nc6R/yAM4FtgyHlaAvhLFnEUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRYeIeB6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D944C433F1;
-	Tue, 27 Feb 2024 14:12:22 +0000 (UTC)
+	 MIME-Version; b=RYJVBh200yTqclVXM6WKh+33/sPrwYOe8aj/QlIfNbUf3Ed30YrI9nkQMvcTKYwifpN7/osiSEhfrzD2IeHBXdXw8AA1lx4iAf57Sr6ySjUeAwmPzh3bp/fzzonyHtw/UWOYLg9HzH/9ZLsDtJQqOxrefuDnlrrOaZcBgIaEQ+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FgMv6f0J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A992C433C7;
+	Tue, 27 Feb 2024 14:18:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043143;
-	bh=GDqF3eZttv8I5nffzcnWAWrShh9NPmYOPKLpF/LYiW0=;
+	s=korg; t=1709043522;
+	bh=KEEkcKuHJCXTgOmRU7D0WtYytpPrtDR8HfUUcRfHqgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZRYeIeB6jyapIVk7WM59zc7Tz5iL2h0IuNlkjY5aENrcx680Tj4zOAsRmR+FpQpt6
-	 5WHdVXZYTxFaH7ubYxSjdoIjqrndfjkVfpzMSBp07JZppv0xbKvtpIXTNGVNHd1q2e
-	 sjO3axFrc4D9DEBHgC5S0Dme7FHhyIWdYnP0hlCE=
+	b=FgMv6f0JWLBX9DL+3jHSP9As6q6nQmj69t1nU6IZKE1FxZXowZJzAsu7e3VKhIUP+
+	 u42e8GdIiL6X7QLYkTXG3DF6pCuZZteRIref0pnZWWxdr5n+AfPdHn2qB0dOP1jDTI
+	 BSsVsJge0DGU+Gq9I/8ei6XKanMnNshghAPXxhiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	linux-mips@vger.kernel.org,
-	Arnd Bergmann <arnd@arndb.de>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	"James E.J. Bottomley" <jejb@linux.ibm.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	linux-scsi@vger.kernel.org,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	kernel test robot <lkp@intel.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Avihai Horon <avihaih@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 212/245] scsi: jazz_esp: Only build if SCSI core is builtin
+Subject: [PATCH 6.1 139/195] iommufd/iova_bitmap: Consider page offset for the pages to be pinned
 Date: Tue, 27 Feb 2024 14:26:40 +0100
-Message-ID: <20240227131622.093437879@linuxfoundation.org>
+Message-ID: <20240227131615.022071542@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,56 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Joao Martins <joao.m.martins@oracle.com>
 
-[ Upstream commit 9ddf190a7df77b77817f955fdb9c2ae9d1c9c9a3 ]
+[ Upstream commit 4bbcbc6ea2fa379632a24c14cfb47aa603816ac6 ]
 
-JAZZ_ESP is a bool kconfig symbol that selects SCSI_SPI_ATTRS.  When
-CONFIG_SCSI=m, this results in SCSI_SPI_ATTRS=m while JAZZ_ESP=y, which
-causes many undefined symbol linker errors.
+For small bitmaps that aren't PAGE_SIZE aligned *and* that are less than
+512 pages in bitmap length, use an extra page to be able to cover the
+entire range e.g. [1M..3G] which would be iterated more efficiently in a
+single iteration, rather than two.
 
-Fix this by only offering to build this driver when CONFIG_SCSI=y.
-
-[mkp: JAZZ_ESP is unique in that it does not support being compiled as a
-module unlike the remaining SPI SCSI HBA drivers]
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://lore.kernel.org/r/20240214055953.9612-1-rdunlap@infradead.org
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: linux-mips@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: James E.J. Bottomley <jejb@linux.ibm.com>
-Cc: Martin K. Petersen <martin.petersen@oracle.com>
-Cc: linux-scsi@vger.kernel.org
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202402112222.Gl0udKyU-lkp@intel.com/
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: b058ea3ab5af ("vfio/iova_bitmap: refactor iova_bitmap_set() to better handle page boundaries")
+Link: https://lore.kernel.org/r/20240202133415.23819-10-joao.m.martins@oracle.com
+Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+Tested-by: Avihai Horon <avihaih@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/vfio/iova_bitmap.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/scsi/Kconfig b/drivers/scsi/Kconfig
-index eea574e89b872..43e6f86e08c33 100644
---- a/drivers/scsi/Kconfig
-+++ b/drivers/scsi/Kconfig
-@@ -1296,7 +1296,7 @@ source "drivers/scsi/arm/Kconfig"
+diff --git a/drivers/vfio/iova_bitmap.c b/drivers/vfio/iova_bitmap.c
+index c748a1e3ba53a..dfab5b742191a 100644
+--- a/drivers/vfio/iova_bitmap.c
++++ b/drivers/vfio/iova_bitmap.c
+@@ -174,18 +174,19 @@ static int iova_bitmap_get(struct iova_bitmap *bitmap)
+ 			       bitmap->mapped_base_index) *
+ 			       sizeof(*bitmap->bitmap), PAGE_SIZE);
  
- config JAZZ_ESP
- 	bool "MIPS JAZZ FAS216 SCSI support"
--	depends on MACH_JAZZ && SCSI
-+	depends on MACH_JAZZ && SCSI=y
- 	select SCSI_SPI_ATTRS
- 	help
- 	  This is the driver for the onboard SCSI host adapter of MIPS Magnum
+-	/*
+-	 * We always cap at max number of 'struct page' a base page can fit.
+-	 * This is, for example, on x86 means 2M of bitmap data max.
+-	 */
+-	npages = min(npages,  PAGE_SIZE / sizeof(struct page *));
+-
+ 	/*
+ 	 * Bitmap address to be pinned is calculated via pointer arithmetic
+ 	 * with bitmap u64 word index.
+ 	 */
+ 	addr = bitmap->bitmap + bitmap->mapped_base_index;
+ 
++	/*
++	 * We always cap at max number of 'struct page' a base page can fit.
++	 * This is, for example, on x86 means 2M of bitmap data max.
++	 */
++	npages = min(npages + !!offset_in_page(addr),
++		     PAGE_SIZE / sizeof(struct page *));
++
+ 	ret = pin_user_pages_fast((unsigned long)addr, npages,
+ 				  FOLL_WRITE, mapped->pages);
+ 	if (ret <= 0)
 -- 
 2.43.0
 
