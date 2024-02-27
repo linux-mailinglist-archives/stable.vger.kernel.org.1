@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-24316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE5458693E2
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:49:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E12A86931F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:42:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83E0F1F221C6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:49:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B5AB81C20298
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:42:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DAE31474D6;
-	Tue, 27 Feb 2024 13:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D48E13DB83;
+	Tue, 27 Feb 2024 13:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aq/TIvUp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AljRYGvC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B0A1420C8;
-	Tue, 27 Feb 2024 13:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D70E13B7AE;
+	Tue, 27 Feb 2024 13:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041649; cv=none; b=BddCiiAF7g1TmfUsnPRtDX/aNMX9HYwTIXm9axf2Pdp0xJ3UwPojYjnyT7cljvRLjEcX911UphtmxctxQ90ZhUBAUXILnnMcPRDKxOUkDQTPiMz9rpWrpQLeJ0zKfcy/xnEPUndPh5veBKMGMXZ/GW56IrTqfe1E3yvdTZcrg9k=
+	t=1709041306; cv=none; b=T8UlRH7r+Bxg9W9rNIwgyhHIlygSQih1p+Q0/Qv4lUKqlBltd/8rHopJGFy2syxOS1MOEQ9s/7SZ2hPCxu9/yFQR0nhq38b6lbLzUrKn6BbAgw/MuqZw7k1mvPQPgFfoCC1X0looPW3kJ+FjZqLMdanZhdSowLbyejxgfbmzE34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041649; c=relaxed/simple;
-	bh=nw0/20MxZXuTSTm5jYy9oiQ732AcTs2QwpEpjgykd9o=;
+	s=arc-20240116; t=1709041306; c=relaxed/simple;
+	bh=3rOox24WtDbh8o/soyWG/NkgeRHaz5XNE1+wqT1UZCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I2XDa4vVxC7L8yv6cEgwunAB9UHZqeIkvWyGWdIBMFvjGM7AGvK5weEiwGG/lrG8qzx4Axm5J8MWFbxLOCA7LnGkHnQuPwcblbUl2JUZfcB+5axWorJlz1Aqtxqx8ZdakYIOCkXSsIL0dpX3Po5Q7Y5WWU3JjG2aO44Z+OlE12w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aq/TIvUp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EEFFC433C7;
-	Tue, 27 Feb 2024 13:47:28 +0000 (UTC)
+	 MIME-Version; b=JCmnapjfUcX+iNmranrwz0Tg3H0ZmkeoRBzIfZLrRZvibdCeXIyK3il4Z49yvnKVXQFFCXdiwP7Da2AaTuKAAUQlRSHzw65ySY0wC6n31J8bfZXzx7ExnQVJLUOnhCpy5eR5tgcklYETnJXfvQtkUnzJ8ifMqxH21GfBRpkNB74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AljRYGvC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C437BC433F1;
+	Tue, 27 Feb 2024 13:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041649;
-	bh=nw0/20MxZXuTSTm5jYy9oiQ732AcTs2QwpEpjgykd9o=;
+	s=korg; t=1709041306;
+	bh=3rOox24WtDbh8o/soyWG/NkgeRHaz5XNE1+wqT1UZCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Aq/TIvUp6vi/jKYt/AaODbQj5iASsJ/LtUprpRHoeP5s9Fxy2tDE10mKaM4d3gWFN
-	 lwqoYAq2IHu0ts/sxOJ388oF2EW6u0FxWF3wv49WNifM5sm32co5GSY0zs/zHEcRuc
-	 fYbQAgQBXHIyL//uPjejpTEGFTAGV7Cv2Mnr+/FU=
+	b=AljRYGvCr4yzN7/CxrHx+ngEUMzC9+I4UO3JOaGt/Z2ptM+9CCPwV9jJgjaGzNIIM
+	 m7FC944cibR5+XR8frssZAGnPn/4Fq6WpHWArpg3EMMn4i4GveaXpbSTpte43bFra9
+	 K74Be7f1vWc0O3YWIzx3j7zk3M/2088ltt/Wy23g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	llvm@lists.linux.dev,
-	Kees Cook <keescook@chromium.org>,
-	Steve French <stfrench@microsoft.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 022/299] smb: Work around Clang __bdos() type confusion
+Subject: [PATCH 6.7 275/334] ata: ahci_ceva: fix error handling for Xilinx GT PHY support
 Date: Tue, 27 Feb 2024 14:22:13 +0100
-Message-ID: <20240227131626.544984138@linuxfoundation.org>
+Message-ID: <20240227131639.871975533@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,71 +63,247 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
 
-[ Upstream commit 8deb05c84b63b4fdb8549e08942867a68924a5b8 ]
+[ Upstream commit 26c8404e162b43dddcb037ba2d0cb58c0ed60aab ]
 
-Recent versions of Clang gets confused about the possible size of the
-"user" allocation, and CONFIG_FORTIFY_SOURCE ends up emitting a
-warning[1]:
+Platform clock and phy error resources are not cleaned up in Xilinx GT PHY
+error path.
 
-repro.c:126:4: warning: call to '__write_overflow_field' declared with 'warning' attribute: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Wattribute-warning]
-  126 |                         __write_overflow_field(p_size_field, size);
-      |                         ^
+To fix introduce the function ceva_ahci_platform_enable_resources() which
+is a customized version of ahci_platform_enable_resources() and inline with
+SATA IP programming sequence it does:
 
-for this memset():
+- Assert SATA reset
+- Program PS GTR phy
+- Bring SATA by de-asserting the reset
+- Wait for GT lane PLL to be locked
 
-        int len;
-        __le16 *user;
-	...
-        len = ses->user_name ? strlen(ses->user_name) : 0;
-        user = kmalloc(2 + (len * 2), GFP_KERNEL);
-	...
-	if (len) {
-		...
-	} else {
-		memset(user, '\0', 2);
-	}
+ceva_ahci_platform_enable_resources() is also used in the resume path
+as the same SATA programming sequence (as in probe) should be followed.
+Also cleanup the mixed usage of ahci_platform_enable_resources() and custom
+implementation in the probe function as both are not required.
 
-While Clang works on this bug[2], switch to using a direct assignment,
-which avoids memset() entirely which both simplifies the code and silences
-the false positive warning. (Making "len" size_t also silences the
-warning, but the direct assignment seems better.)
-
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Closes: https://github.com/ClangBuiltLinux/linux/issues/1966 [1]
-Link: https://github.com/llvm/llvm-project/issues/77813 [2]
-Cc: Steve French <sfrench@samba.org>
-Cc: Paulo Alcantara <pc@manguebit.com>
-Cc: Ronnie Sahlberg <ronniesahlberg@gmail.com>
-Cc: Shyam Prasad N <sprasad@microsoft.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: llvm@lists.linux.dev
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 9a9d3abe24bb ("ata: ahci: ceva: Update the driver to support xilinx GT phy")
+Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsencrypt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/ahci_ceva.c | 125 +++++++++++++++++++++++++---------------
+ 1 file changed, 79 insertions(+), 46 deletions(-)
 
-diff --git a/fs/smb/client/cifsencrypt.c b/fs/smb/client/cifsencrypt.c
-index ef4c2e3c9fa61..6322f0f68a176 100644
---- a/fs/smb/client/cifsencrypt.c
-+++ b/fs/smb/client/cifsencrypt.c
-@@ -572,7 +572,7 @@ static int calc_ntlmv2_hash(struct cifs_ses *ses, char *ntlmv2_hash,
- 		len = cifs_strtoUTF16(user, ses->user_name, len, nls_cp);
- 		UniStrupr(user);
- 	} else {
--		memset(user, '\0', 2);
-+		*(u16 *)user = 0;
+diff --git a/drivers/ata/ahci_ceva.c b/drivers/ata/ahci_ceva.c
+index 64f7f7d6ba84e..11a2c199a7c24 100644
+--- a/drivers/ata/ahci_ceva.c
++++ b/drivers/ata/ahci_ceva.c
+@@ -88,7 +88,6 @@ struct ceva_ahci_priv {
+ 	u32 axicc;
+ 	bool is_cci_enabled;
+ 	int flags;
+-	struct reset_control *rst;
+ };
+ 
+ static unsigned int ceva_ahci_read_id(struct ata_device *dev,
+@@ -189,6 +188,60 @@ static const struct scsi_host_template ahci_platform_sht = {
+ 	AHCI_SHT(DRV_NAME),
+ };
+ 
++static int ceva_ahci_platform_enable_resources(struct ahci_host_priv *hpriv)
++{
++	int rc, i;
++
++	rc = ahci_platform_enable_regulators(hpriv);
++	if (rc)
++		return rc;
++
++	rc = ahci_platform_enable_clks(hpriv);
++	if (rc)
++		goto disable_regulator;
++
++	/* Assert the controller reset */
++	rc = ahci_platform_assert_rsts(hpriv);
++	if (rc)
++		goto disable_clks;
++
++	for (i = 0; i < hpriv->nports; i++) {
++		rc = phy_init(hpriv->phys[i]);
++		if (rc)
++			goto disable_rsts;
++	}
++
++	/* De-assert the controller reset */
++	ahci_platform_deassert_rsts(hpriv);
++
++	for (i = 0; i < hpriv->nports; i++) {
++		rc = phy_power_on(hpriv->phys[i]);
++		if (rc) {
++			phy_exit(hpriv->phys[i]);
++			goto disable_phys;
++		}
++	}
++
++	return 0;
++
++disable_rsts:
++	ahci_platform_deassert_rsts(hpriv);
++
++disable_phys:
++	while (--i >= 0) {
++		phy_power_off(hpriv->phys[i]);
++		phy_exit(hpriv->phys[i]);
++	}
++
++disable_clks:
++	ahci_platform_disable_clks(hpriv);
++
++disable_regulator:
++	ahci_platform_disable_regulators(hpriv);
++
++	return rc;
++}
++
+ static int ceva_ahci_probe(struct platform_device *pdev)
+ {
+ 	struct device_node *np = pdev->dev.of_node;
+@@ -203,47 +256,19 @@ static int ceva_ahci_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	cevapriv->ahci_pdev = pdev;
+-
+-	cevapriv->rst = devm_reset_control_get_optional_exclusive(&pdev->dev,
+-								  NULL);
+-	if (IS_ERR(cevapriv->rst))
+-		dev_err_probe(&pdev->dev, PTR_ERR(cevapriv->rst),
+-			      "failed to get reset\n");
+-
+ 	hpriv = ahci_platform_get_resources(pdev, 0);
+ 	if (IS_ERR(hpriv))
+ 		return PTR_ERR(hpriv);
+ 
+-	if (!cevapriv->rst) {
+-		rc = ahci_platform_enable_resources(hpriv);
+-		if (rc)
+-			return rc;
+-	} else {
+-		int i;
++	hpriv->rsts = devm_reset_control_get_optional_exclusive(&pdev->dev,
++								NULL);
++	if (IS_ERR(hpriv->rsts))
++		return dev_err_probe(&pdev->dev, PTR_ERR(hpriv->rsts),
++				     "failed to get reset\n");
+ 
+-		rc = ahci_platform_enable_clks(hpriv);
+-		if (rc)
+-			return rc;
+-		/* Assert the controller reset */
+-		reset_control_assert(cevapriv->rst);
+-
+-		for (i = 0; i < hpriv->nports; i++) {
+-			rc = phy_init(hpriv->phys[i]);
+-			if (rc)
+-				return rc;
+-		}
+-
+-		/* De-assert the controller reset */
+-		reset_control_deassert(cevapriv->rst);
+-
+-		for (i = 0; i < hpriv->nports; i++) {
+-			rc = phy_power_on(hpriv->phys[i]);
+-			if (rc) {
+-				phy_exit(hpriv->phys[i]);
+-				return rc;
+-			}
+-		}
+-	}
++	rc = ceva_ahci_platform_enable_resources(hpriv);
++	if (rc)
++		return rc;
+ 
+ 	if (of_property_read_bool(np, "ceva,broken-gen2"))
+ 		cevapriv->flags = CEVA_FLAG_BROKEN_GEN2;
+@@ -252,52 +277,60 @@ static int ceva_ahci_probe(struct platform_device *pdev)
+ 	if (of_property_read_u8_array(np, "ceva,p0-cominit-params",
+ 					(u8 *)&cevapriv->pp2c[0], 4) < 0) {
+ 		dev_warn(dev, "ceva,p0-cominit-params property not defined\n");
+-		return -EINVAL;
++		rc = -EINVAL;
++		goto disable_resources;
  	}
  
- 	rc = crypto_shash_update(ses->server->secmech.hmacmd5,
+ 	if (of_property_read_u8_array(np, "ceva,p1-cominit-params",
+ 					(u8 *)&cevapriv->pp2c[1], 4) < 0) {
+ 		dev_warn(dev, "ceva,p1-cominit-params property not defined\n");
+-		return -EINVAL;
++		rc = -EINVAL;
++		goto disable_resources;
+ 	}
+ 
+ 	/* Read OOB timing value for COMWAKE from device-tree*/
+ 	if (of_property_read_u8_array(np, "ceva,p0-comwake-params",
+ 					(u8 *)&cevapriv->pp3c[0], 4) < 0) {
+ 		dev_warn(dev, "ceva,p0-comwake-params property not defined\n");
+-		return -EINVAL;
++		rc = -EINVAL;
++		goto disable_resources;
+ 	}
+ 
+ 	if (of_property_read_u8_array(np, "ceva,p1-comwake-params",
+ 					(u8 *)&cevapriv->pp3c[1], 4) < 0) {
+ 		dev_warn(dev, "ceva,p1-comwake-params property not defined\n");
+-		return -EINVAL;
++		rc = -EINVAL;
++		goto disable_resources;
+ 	}
+ 
+ 	/* Read phy BURST timing value from device-tree */
+ 	if (of_property_read_u8_array(np, "ceva,p0-burst-params",
+ 					(u8 *)&cevapriv->pp4c[0], 4) < 0) {
+ 		dev_warn(dev, "ceva,p0-burst-params property not defined\n");
+-		return -EINVAL;
++		rc = -EINVAL;
++		goto disable_resources;
+ 	}
+ 
+ 	if (of_property_read_u8_array(np, "ceva,p1-burst-params",
+ 					(u8 *)&cevapriv->pp4c[1], 4) < 0) {
+ 		dev_warn(dev, "ceva,p1-burst-params property not defined\n");
+-		return -EINVAL;
++		rc = -EINVAL;
++		goto disable_resources;
+ 	}
+ 
+ 	/* Read phy RETRY interval timing value from device-tree */
+ 	if (of_property_read_u16_array(np, "ceva,p0-retry-params",
+ 					(u16 *)&cevapriv->pp5c[0], 2) < 0) {
+ 		dev_warn(dev, "ceva,p0-retry-params property not defined\n");
+-		return -EINVAL;
++		rc = -EINVAL;
++		goto disable_resources;
+ 	}
+ 
+ 	if (of_property_read_u16_array(np, "ceva,p1-retry-params",
+ 					(u16 *)&cevapriv->pp5c[1], 2) < 0) {
+ 		dev_warn(dev, "ceva,p1-retry-params property not defined\n");
+-		return -EINVAL;
++		rc = -EINVAL;
++		goto disable_resources;
+ 	}
+ 
+ 	/*
+@@ -335,7 +368,7 @@ static int __maybe_unused ceva_ahci_resume(struct device *dev)
+ 	struct ahci_host_priv *hpriv = host->private_data;
+ 	int rc;
+ 
+-	rc = ahci_platform_enable_resources(hpriv);
++	rc = ceva_ahci_platform_enable_resources(hpriv);
+ 	if (rc)
+ 		return rc;
+ 
 -- 
 2.43.0
 
