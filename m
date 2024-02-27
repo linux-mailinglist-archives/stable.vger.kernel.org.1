@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0E1E869301
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:40:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5D0E8693D7
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:49:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E8F61C23272
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:40:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 702CB292C6B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:49:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7658413B2B9;
-	Tue, 27 Feb 2024 13:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8BD913EFEC;
+	Tue, 27 Feb 2024 13:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EsyKQQYv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pAiGKqxm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3671E2F2D;
-	Tue, 27 Feb 2024 13:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A749E13B29B;
+	Tue, 27 Feb 2024 13:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041242; cv=none; b=b5lWAhfxFnpse07/ICNjK/tgGgXiFw6m03QJ7gRHltRBrfn1GFi1J0n60gkqXAAK55dpkxYoIHupl1Wo+wqXOn8oWIzYzfA268CuX8TWGv/k2bc1IDFefDIssnMYHDuDDQlPe1/3eamk26eBjMFeQPDFEwYmJpvHUvovrQQqyvA=
+	t=1709041629; cv=none; b=NkYd/H6/730mhd335TZZ3Nqtgjq5vsvvIFeQhPuTT+toA2E5MazK/bMfwhaYFgLDf6YB26i8/m5GMZdfxlQVQHyagR1RlB0Je5lWzPiZptncQyKdbKewEI1L8XN5n9U1GUyAUA/frEY28bTVKxjdIXhNfG8f+8hsnnnc7D3Bnvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041242; c=relaxed/simple;
-	bh=VY1+cQe6pW1sMwNlVSc9xDZc+gqWNvvXNlT76umntqY=;
+	s=arc-20240116; t=1709041629; c=relaxed/simple;
+	bh=jMJG2Wyx08WMwLyUfwYyAdm6slkfCugnt1930pWZB4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UcIsjehBnOv2U2ak7cfBKS+JtZYwXDg//GTEBnd/DLsr8hgCE7uA1J9fjHyS69PCvn9mqjRHb4d6xlCyZ7/GkCDzJKgopjnQMSpyr+ysSI2qVYpz0f/fEJZTpTEhyreHXxLtrwSsHlAacolSqVwdhbdrrdJeM9uOLKcivfw4Pm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EsyKQQYv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B723FC433F1;
-	Tue, 27 Feb 2024 13:40:41 +0000 (UTC)
+	 MIME-Version; b=oI0lg8oLpcfcEV/Ay/Jx/KkuRfU8Zn/49CveJbQgmloHK6MMB/hL6qkhE5D4guU0bUoBHw/C2aM4JaVeLBAoJgArQzvETIoNHpe+RwEZwOLTIeqEFJNnRuzERD8UVh3jdihVQQr67Rp155cUF4F00nK93sTM/EEo6RJi4Tfgr2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pAiGKqxm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33091C43390;
+	Tue, 27 Feb 2024 13:47:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041242;
-	bh=VY1+cQe6pW1sMwNlVSc9xDZc+gqWNvvXNlT76umntqY=;
+	s=korg; t=1709041629;
+	bh=jMJG2Wyx08WMwLyUfwYyAdm6slkfCugnt1930pWZB4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EsyKQQYvJOj/wmgSCypqdFtugB05m9jeJP3REUPLpkUQ1YUJArk3KSvZywVpNwbUg
-	 JZeD0PTBbtTMNm/o0AtIVX6aW8XmXHRhje5nDssByjeO2a/uQCPIFuo5jYPHH1nkcK
-	 ZYBJxdNX41CoI0YbRKAq2lSokVTB0c+PDidOfBaU=
+	b=pAiGKqxmL8YIiEEwcybn1HU/d5Lr63H1lVJxBs3Dvn3YSyHKQrYXiwh0YztRdFPAI
+	 sHuz7QQc3/jZi0n0/9uwwI/6UL1b/Gz+ElpdpCXseCRQHVdQch0KlhVozUgoEgEkZS
+	 EPoT/wkmNCnbOqlD1SDaCK8ainMDjipJhUF91RnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Fullway Wang <fullwaywang@outlook.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 269/334] ipv4: properly combine dev_base_seq and ipv4.dev_addr_genid
+Subject: [PATCH 6.6 016/299] fbdev: savage: Error out if pixclock equals zero
 Date: Tue, 27 Feb 2024 14:22:07 +0100
-Message-ID: <20240227131639.667440244@linuxfoundation.org>
+Message-ID: <20240227131626.356677669@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Fullway Wang <fullwaywang@outlook.com>
 
-[ Upstream commit 081a0e3b0d4c061419d3f4679dec9f68725b17e4 ]
+[ Upstream commit 04e5eac8f3ab2ff52fa191c187a46d4fdbc1e288 ]
 
-net->dev_base_seq and ipv4.dev_addr_genid are monotonically increasing.
+The userspace program could pass any values to the driver through
+ioctl() interface. If the driver doesn't check the value of pixclock,
+it may cause divide-by-zero error.
 
-If we XOR their values, we could miss to detect if both values
-were changed with the same amount.
+Although pixclock is checked in savagefb_decode_var(), but it is not
+checked properly in savagefb_probe(). Fix this by checking whether
+pixclock is zero in the function savagefb_check_var() before
+info->var.pixclock is used as the divisor.
 
-Fixes: 0465277f6b3f ("ipv4: provide addr and netconf dump consistency info")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Acked-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+This is similar to CVE-2022-3061 in i740fb which was fixed by
+commit 15cf0b8.
+
+Signed-off-by: Fullway Wang <fullwaywang@outlook.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/devinet.c | 21 +++++++++++++++++----
- 1 file changed, 17 insertions(+), 4 deletions(-)
+ drivers/video/fbdev/savage/savagefb_driver.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
-index ca0ff15dc8fa3..bc74f131fe4df 100644
---- a/net/ipv4/devinet.c
-+++ b/net/ipv4/devinet.c
-@@ -1825,6 +1825,21 @@ static int in_dev_dump_addr(struct in_device *in_dev, struct sk_buff *skb,
- 	return err;
- }
+diff --git a/drivers/video/fbdev/savage/savagefb_driver.c b/drivers/video/fbdev/savage/savagefb_driver.c
+index b5f84bd4804b8..4ba5cd55e5a52 100644
+--- a/drivers/video/fbdev/savage/savagefb_driver.c
++++ b/drivers/video/fbdev/savage/savagefb_driver.c
+@@ -869,6 +869,9 @@ static int savagefb_check_var(struct fb_var_screeninfo   *var,
  
-+/* Combine dev_addr_genid and dev_base_seq to detect changes.
-+ */
-+static u32 inet_base_seq(const struct net *net)
-+{
-+	u32 res = atomic_read(&net->ipv4.dev_addr_genid) +
-+		  net->dev_base_seq;
+ 	DBG("savagefb_check_var");
+ 
++	if (!var->pixclock)
++		return -EINVAL;
 +
-+	/* Must not return 0 (see nl_dump_check_consistent()).
-+	 * Chose a value far away from 0.
-+	 */
-+	if (!res)
-+		res = 0x80000000;
-+	return res;
-+}
-+
- static int inet_dump_ifaddr(struct sk_buff *skb, struct netlink_callback *cb)
- {
- 	const struct nlmsghdr *nlh = cb->nlh;
-@@ -1876,8 +1891,7 @@ static int inet_dump_ifaddr(struct sk_buff *skb, struct netlink_callback *cb)
- 		idx = 0;
- 		head = &tgt_net->dev_index_head[h];
- 		rcu_read_lock();
--		cb->seq = atomic_read(&tgt_net->ipv4.dev_addr_genid) ^
--			  tgt_net->dev_base_seq;
-+		cb->seq = inet_base_seq(tgt_net);
- 		hlist_for_each_entry_rcu(dev, head, index_hlist) {
- 			if (idx < s_idx)
- 				goto cont;
-@@ -2278,8 +2292,7 @@ static int inet_netconf_dump_devconf(struct sk_buff *skb,
- 		idx = 0;
- 		head = &net->dev_index_head[h];
- 		rcu_read_lock();
--		cb->seq = atomic_read(&net->ipv4.dev_addr_genid) ^
--			  net->dev_base_seq;
-+		cb->seq = inet_base_seq(net);
- 		hlist_for_each_entry_rcu(dev, head, index_hlist) {
- 			if (idx < s_idx)
- 				goto cont;
+ 	var->transp.offset = 0;
+ 	var->transp.length = 0;
+ 	switch (var->bits_per_pixel) {
 -- 
 2.43.0
 
