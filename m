@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1E08869448
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25C038695A2
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:03:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94FC62840CC
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5760E1C23B7A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:03:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019CB145B14;
-	Tue, 27 Feb 2024 13:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A388A13B798;
+	Tue, 27 Feb 2024 14:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZPdgAIEK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVAzuu5F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D07145B09;
-	Tue, 27 Feb 2024 13:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6347016423;
+	Tue, 27 Feb 2024 14:03:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041904; cv=none; b=nREwMohHH/nrbQTXYBinZxa4MyFiIBBE5tI1rbskqHtTPZyKr+tSHz1xNSLHXvXyQNOuVPMWIpYvu3PLmTURxuhZcPUx44+QLNRToey07ZpsveEdPnlfT3oPVbDrcU+lBnBiHIblG4jifvBMNy3SiwaqgrEgG8H5j9xWNMpaMPY=
+	t=1709042627; cv=none; b=YguPQB38EUzELSf3n3puwSs7qKShWtAKo88Pe0+v4eEsGss2QoLyhJTP2V2z7AJh+4bPgl/M0PEMes3C0ngBzrtlD42IwN6r95yQXpQid6wmmOwSxYtGUEQwXNJ18M3Y1oy3S21fezIf3AkRzNksFawFPFMpYGC6JJ18Nn9RIII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041904; c=relaxed/simple;
-	bh=ww8tlzF9oFykSevwdHAHrjf2SU6CqJrNT8O1LhqbeV0=;
+	s=arc-20240116; t=1709042627; c=relaxed/simple;
+	bh=r50VYOBJ6DVYL+VmPPdJuzNQZe2oE+H2JLou+/zY7Nw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MiLAYWaSiD/90m0Ux8B/U8MCeISlL4QiqZDoud0UJ1RNT3fa9hwoJVhRap3bi8JX3jwY9pIOaqWh9WuACnUfps53nVZyIlXLfHR0gmj17rYbkvq6y2kzAVokwMe1FoyAXQeaSMsHxZFZgIEmXxLO+x06KwR7HvUI9eo3ijZLKxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZPdgAIEK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E338DC433F1;
-	Tue, 27 Feb 2024 13:51:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pZWQlSEPn98scBtc4mmMN02ANLUJf/Nz71Z1wdtDIN8n+4F066KhbyA2al5K/FKmqGYG5dh2hNKh51mRrGJEVQlLJswKHgbdgh55YsbdpahLG53HcDbjWJ8Ue+I491CjwiupepCcyM+nMMI5C7zU5vPWGluzNTWj5OGdVdab7g0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVAzuu5F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4487C433F1;
+	Tue, 27 Feb 2024 14:03:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041904;
-	bh=ww8tlzF9oFykSevwdHAHrjf2SU6CqJrNT8O1LhqbeV0=;
+	s=korg; t=1709042627;
+	bh=r50VYOBJ6DVYL+VmPPdJuzNQZe2oE+H2JLou+/zY7Nw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZPdgAIEKlMgTUSZrSMZjpQ8fnJe2DNVVuSCo8oM2uw/1PhezE9UzsA5YZJThtoSs5
-	 ybHGgbqEWL93PVYvDxNUBJgzbEz7nXxvtegSR/KcpImhcqphn4K52wN1GewesoPzbQ
-	 8BMbG02A0u68Af9tF6B1b2VbRtpSMatefQwM2ixU=
+	b=KVAzuu5FztSs8kxPvMCCq76WvxnIpkjvE1f24KY/YBJWYxSl2MVG8JRyGojXdhyUY
+	 xioV5G2RqE7hhiunYzfjxyvcmivVZVP5f+dPQR/pTRAnaMNjV1nJEtFiefjL19P4L4
+	 3oE9EAs/IqCzjZibHIQRSlyZsciw+WCKOB3CUPuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiubo Li <xiubli@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 110/299] libceph: fail sparse-read if the data length doesnt match
-Date: Tue, 27 Feb 2024 14:23:41 +0100
-Message-ID: <20240227131629.416904870@linuxfoundation.org>
+Subject: [PATCH 5.15 034/245] regulator: pwm-regulator: Add validity checks in continuous .get_voltage
+Date: Tue, 27 Feb 2024 14:23:42 +0100
+Message-ID: <20240227131616.227543981@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiubo Li <xiubli@redhat.com>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-[ Upstream commit cd7d469c25704d414d71bf3644f163fb74e7996b ]
+[ Upstream commit c92688cac239794e4a1d976afa5203a4d3a2ac0e ]
 
-Once this happens that means there have bugs.
+Continuous regulators can be configured to operate only in a certain
+duty cycle range (for example from 0..91%). Add a check to error out if
+the duty cycle translates to an unsupported (or out of range) voltage.
 
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Suggested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://msgid.link/r/20240113224628.377993-2-martin.blumenstingl@googlemail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/ceph/osd_client.h |  3 ++-
- net/ceph/osd_client.c           | 18 +++++++++++++++---
- 2 files changed, 17 insertions(+), 4 deletions(-)
+ drivers/regulator/pwm-regulator.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/linux/ceph/osd_client.h b/include/linux/ceph/osd_client.h
-index bf9823956758c..f703fb8030de2 100644
---- a/include/linux/ceph/osd_client.h
-+++ b/include/linux/ceph/osd_client.h
-@@ -45,6 +45,7 @@ enum ceph_sparse_read_state {
- 	CEPH_SPARSE_READ_HDR	= 0,
- 	CEPH_SPARSE_READ_EXTENTS,
- 	CEPH_SPARSE_READ_DATA_LEN,
-+	CEPH_SPARSE_READ_DATA_PRE,
- 	CEPH_SPARSE_READ_DATA,
- };
+diff --git a/drivers/regulator/pwm-regulator.c b/drivers/regulator/pwm-regulator.c
+index 7629476d94aeb..f4d9d9455dea6 100644
+--- a/drivers/regulator/pwm-regulator.c
++++ b/drivers/regulator/pwm-regulator.c
+@@ -158,6 +158,9 @@ static int pwm_regulator_get_voltage(struct regulator_dev *rdev)
+ 	pwm_get_state(drvdata->pwm, &pstate);
  
-@@ -64,7 +65,7 @@ struct ceph_sparse_read {
- 	u64				sr_req_len;  /* orig request length */
- 	u64				sr_pos;      /* current pos in buffer */
- 	int				sr_index;    /* current extent index */
--	__le32				sr_datalen;  /* length of actual data */
-+	u32				sr_datalen;  /* length of actual data */
- 	u32				sr_count;    /* extent count in reply */
- 	int				sr_ext_len;  /* length of extent array */
- 	struct ceph_sparse_extent	*sr_extent;  /* extent array */
-diff --git a/net/ceph/osd_client.c b/net/ceph/osd_client.c
-index 8d9760397b887..3babcd5e65e16 100644
---- a/net/ceph/osd_client.c
-+++ b/net/ceph/osd_client.c
-@@ -5856,8 +5856,8 @@ static int osd_sparse_read(struct ceph_connection *con,
- 	struct ceph_osd *o = con->private;
- 	struct ceph_sparse_read *sr = &o->o_sparse_read;
- 	u32 count = sr->sr_count;
--	u64 eoff, elen;
--	int ret;
-+	u64 eoff, elen, len = 0;
-+	int i, ret;
+ 	voltage = pwm_get_relative_duty_cycle(&pstate, duty_unit);
++	if (voltage < min(max_uV_duty, min_uV_duty) ||
++	    voltage > max(max_uV_duty, min_uV_duty))
++		return -ENOTRECOVERABLE;
  
- 	switch (sr->sr_state) {
- 	case CEPH_SPARSE_READ_HDR:
-@@ -5909,8 +5909,20 @@ static int osd_sparse_read(struct ceph_connection *con,
- 		convert_extent_map(sr);
- 		ret = sizeof(sr->sr_datalen);
- 		*pbuf = (char *)&sr->sr_datalen;
--		sr->sr_state = CEPH_SPARSE_READ_DATA;
-+		sr->sr_state = CEPH_SPARSE_READ_DATA_PRE;
- 		break;
-+	case CEPH_SPARSE_READ_DATA_PRE:
-+		/* Convert sr_datalen to host-endian */
-+		sr->sr_datalen = le32_to_cpu((__force __le32)sr->sr_datalen);
-+		for (i = 0; i < count; i++)
-+			len += sr->sr_extent[i].len;
-+		if (sr->sr_datalen != len) {
-+			pr_warn_ratelimited("data len %u != extent len %llu\n",
-+					    sr->sr_datalen, len);
-+			return -EREMOTEIO;
-+		}
-+		sr->sr_state = CEPH_SPARSE_READ_DATA;
-+		fallthrough;
- 	case CEPH_SPARSE_READ_DATA:
- 		if (sr->sr_index >= count) {
- 			sr->sr_state = CEPH_SPARSE_READ_HDR;
+ 	/*
+ 	 * The dutycycle for min_uV might be greater than the one for max_uV.
 -- 
 2.43.0
 
