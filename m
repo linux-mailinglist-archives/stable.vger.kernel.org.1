@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48D75869511
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:58:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F2338696F1
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:16:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AEC31C25699
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:58:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70BB81C21357
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:16:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E95013DB9B;
-	Tue, 27 Feb 2024 13:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCE0313B797;
+	Tue, 27 Feb 2024 14:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yc1vZFKD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y3qJ2jRK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4BF140391;
-	Tue, 27 Feb 2024 13:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0FE78B61;
+	Tue, 27 Feb 2024 14:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042303; cv=none; b=eDE7Sy/oTMV153pTqYc93/M6nXO32fABjzHhAnZGT5JfeMlOdj25nCKDVVrDn/bpYz1fIs6TT+opOlp7O/j9LOy9PUgb+4J9EMIGmX7v+9qwhKtQ5snD6rTcEwEruj4kQ6NmcEwNE60hUZrtA8qEKGEJxzwLw+oSyu80D++h1TE=
+	t=1709043415; cv=none; b=UKKJE2LuKaXNa6PZDWQLJqgWK6UwD4eCnv1VPJmg5EPZ57aNQWqlqQT3eHpILMH2xBbxUKNPud9vqVXdwI9qPNlyqg5x9g/vuifgargJG0FYBSfsaEHvWaPGTy6fCJYoHJSd3sZ2JhNeLGTEjCOCMuTG1wFdDX/NfrhVkLXPaY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042303; c=relaxed/simple;
-	bh=dTdgKysP7BpBxE46/y75pzYut0LrqINtJ47XEwFau08=;
+	s=arc-20240116; t=1709043415; c=relaxed/simple;
+	bh=DCYi6dCZ/GhyebRxA+omiLr574Ad6okLCwq476HZ+3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XjQ7WbBJyYuqN+lMGN6bZSBCxEpujWYMKZYbgeuGpa9Zj2VU93NRR7ywyiJ5d9MJ/00n3t6FANmmclGyMpwn2Dxao1j9kX72BcTv1HbFxJ4ZFr2sCKLGp5z5xV0GzWDXSTXM5BJiL2Li2FT5cxJ+BdnIaWjwIACoowPNyr9XUv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yc1vZFKD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04C0C433F1;
-	Tue, 27 Feb 2024 13:58:22 +0000 (UTC)
+	 MIME-Version; b=BHhsOjs6mJc+cTBzXfyXwKPZzMIQFOTo6nZzFai8Msdb3CxmUD1w/qg4AXeSIfzhmpik0h7fzmOCSCSMfJ56rU+Wvnh1W8VE1coYN6MhSZXpvd2IjXTrWu9dh+sUSCwyNdxZDcjGbP5WKA7y/Kqv93Nyjre+RZJeEPPVcKH+2So=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y3qJ2jRK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6BAAC433C7;
+	Tue, 27 Feb 2024 14:16:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042303;
-	bh=dTdgKysP7BpBxE46/y75pzYut0LrqINtJ47XEwFau08=;
+	s=korg; t=1709043415;
+	bh=DCYi6dCZ/GhyebRxA+omiLr574Ad6okLCwq476HZ+3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yc1vZFKDThKzK0nHFEoICIsUWWjXHEkvKfABnXvijgS8LsV3MFxh7RGVgIUnymjXs
-	 nEiPWuDIW+SS8LjFBVHyMBzHFVK6hP5xjLu8o5XVuZrH2wp99IFnOoKs2RDB3NX43W
-	 jNUOGyG0FJKvevi8UEeoOTBLTQAdThTvhK5xjn0s=
+	b=y3qJ2jRKUIiI6ZK5Dgye+5vFnboaSRZJf04AuVg/NpEeSmB71xtxmHI+BM3CAHLay
+	 FI/KnH90aEreA7mYWdF/FS+lIXA6cFAwf3pWTBff7RZkWrs2YGqx2F5226p3OzdxRx
+	 2nJND7Vc4mN3z8lNscyTRCLWbzOHJzekRLavu+bo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Daniel Wagner <dwagner@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 221/299] arm64: dts: tqma8mpql: fix audio codec iov-supply
+Subject: [PATCH 6.1 071/195] scsi: lpfc: Use unsigned type for num_sge
 Date: Tue, 27 Feb 2024 14:25:32 +0100
-Message-ID: <20240227131632.880533770@linuxfoundation.org>
+Message-ID: <20240227131612.843328702@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Hannes Reinecke <hare@suse.de>
 
-[ Upstream commit a620a7f2ae8b08c5beea6369f61e87064ee222dc ]
+[ Upstream commit d6c1b19153f92e95e5e1801d540e98771053afae ]
 
-IOVDD is supplied by 1.8V, fix the referenced regulator.
+LUNs going into "failed ready running" state observed on >1T and on even
+numbers of size (2T, 4T, 6T, 8T and 10T). The issue occurs when DIF is
+enabled at the host.
 
-Fixes: d8f9d8126582d ("arm64: dts: imx8mp: Add analog audio output on i.MX8MP TQMa8MPxL/MBa8MPxL")
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+The kernel logs:
+
+  Cannot setup S/G List for HBAIO segs 1/1 SGL 512 SCSI 256: 3 0
+
+The host lpfc driver is failing to setup scatter/gather list (protection
+data) for the I/Os.
+
+The return type lpfc_bg_setup_sgl()/lpfc_bg_setup_sgl_prot() causes the
+compiler to remove the most significant bit. Use an unsigned type instead.
+
+Signed-off-by: Hannes Reinecke <hare@suse.de>
+[dwagner: added commit message]
+Signed-off-by: Daniel Wagner <dwagner@suse.de>
+Link: https://lore.kernel.org/r/20231220162658.12392-1-dwagner@suse.de
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts     | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/scsi/lpfc/lpfc_scsi.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-index 4240e20d38ac3..258e90cc16ff3 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
-@@ -168,6 +168,13 @@
- 		enable-active-high;
- 	};
+diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
+index 7aac9fc719675..0bb7e164b525f 100644
+--- a/drivers/scsi/lpfc/lpfc_scsi.c
++++ b/drivers/scsi/lpfc/lpfc_scsi.c
+@@ -1919,7 +1919,7 @@ lpfc_bg_setup_bpl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
+  *
+  * Returns the number of SGEs added to the SGL.
+  **/
+-static int
++static uint32_t
+ lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
+ 		struct sli4_sge *sgl, int datasegcnt,
+ 		struct lpfc_io_buf *lpfc_cmd)
+@@ -1927,8 +1927,8 @@ lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
+ 	struct scatterlist *sgde = NULL; /* s/g data entry */
+ 	struct sli4_sge_diseed *diseed = NULL;
+ 	dma_addr_t physaddr;
+-	int i = 0, num_sge = 0, status;
+-	uint32_t reftag;
++	int i = 0, status;
++	uint32_t reftag, num_sge = 0;
+ 	uint8_t txop, rxop;
+ #ifdef CONFIG_SCSI_LPFC_DEBUG_FS
+ 	uint32_t rc;
+@@ -2100,7 +2100,7 @@ lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
+  *
+  * Returns the number of SGEs added to the SGL.
+  **/
+-static int
++static uint32_t
+ lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
+ 		struct sli4_sge *sgl, int datacnt, int protcnt,
+ 		struct lpfc_io_buf *lpfc_cmd)
+@@ -2124,8 +2124,8 @@ lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
+ 	uint32_t rc;
+ #endif
+ 	uint32_t checking = 1;
+-	uint32_t dma_offset = 0;
+-	int num_sge = 0, j = 2;
++	uint32_t dma_offset = 0, num_sge = 0;
++	int j = 2;
+ 	struct sli4_hybrid_sgl *sgl_xtra = NULL;
  
-+	reg_vcc_1v8: regulator-1v8 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "VCC_1V8";
-+		regulator-min-microvolt = <1800000>;
-+		regulator-max-microvolt = <1800000>;
-+	};
-+
- 	reg_vcc_3v3: regulator-3v3 {
- 		compatible = "regulator-fixed";
- 		regulator-name = "VCC_3V3";
-@@ -464,7 +471,7 @@
- 		clock-names = "mclk";
- 		clocks = <&audio_blk_ctrl IMX8MP_CLK_AUDIOMIX_SAI3_MCLK1>;
- 		reset-gpios = <&gpio4 29 GPIO_ACTIVE_LOW>;
--		iov-supply = <&reg_vcc_3v3>;
-+		iov-supply = <&reg_vcc_1v8>;
- 		ldoin-supply = <&reg_vcc_3v3>;
- 	};
- 
+ 	sgpe = scsi_prot_sglist(sc);
 -- 
 2.43.0
 
