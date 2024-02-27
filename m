@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-24424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DAC9869468
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:53:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B4A7869477
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:54:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87C721F224F0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:53:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5ED011C24FF8
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:54:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92CC6145351;
-	Tue, 27 Feb 2024 13:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85FCB13DBA4;
+	Tue, 27 Feb 2024 13:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DvI4K7T0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ljJpvPL1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A521419AD;
-	Tue, 27 Feb 2024 13:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A8754BD4;
+	Tue, 27 Feb 2024 13:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041962; cv=none; b=J7dNz84y8xcmQTZ2zBTtaDuDD3CSzDAP66bSnjjzssyIa9E9/umzYVJxRXg5xy64NMmtOcikoCYfzBIy1y5s7l+eswRpT/Mf5RRDDnwI+pkV7isx1lAF+AVrYc1Vd9F/BRphVgxmv73bjtRGbOJrdXzMK7iDtxRW3UPUf61MAr8=
+	t=1709041997; cv=none; b=rzQ1yqAc8OUJIsVfbUl/SoYoygZ9QRlUSEWnw9MNvupyVT8jeO3L7pLUeU9BLB5M8imb9Ej5o6kOPfY2fVKfjURd/7Rz3QnhZJ4cvfKtyl3Ep3TEUb5PxMVKpXi2k3tMgBtBpGIUB9h4vq6ecLQUv8LMRSH7IUiCBuA+B1EsiTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041962; c=relaxed/simple;
-	bh=k0pVXXgDJLEp9ZCDFufYNZLHAhRTcHII0/fq42i2t08=;
+	s=arc-20240116; t=1709041997; c=relaxed/simple;
+	bh=tXU/iY7ClYF86e8Nn4G/5e+N2G5XRKjZelPV8zz8Ei8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bh6K6IDfMUcpaYqyxJaE8T6Hs9KEDEKW6WlrfaaFMqh2u85hu7nHSk8y91R3NkzgcfKJvj8zwIsL2zqjuQDjm+oow1P4O//8NUctkuKwhqH3+hgCEHGz+aCwE2JlG5h60maS3W5fcqnsdMzwThiMJIIpOXEQuKsCwlOy4/mcX0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DvI4K7T0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842E4C43390;
-	Tue, 27 Feb 2024 13:52:41 +0000 (UTC)
+	 MIME-Version; b=bcLCjlgCWBjZ58GOel2Dng80HYQqm3yM88rt1r+FqOiRIHOv5L0FTFbPqV6kBUz6UW8aR9CdQy28fIslj5WebCmlizt1SD1B3MPNKm8Flo5NXbNDuJBnvsoB6cCQvY2eSPVQuDDlv4FNgVftuVs7tzF8YdNC2djr/uOHMojmIAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ljJpvPL1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA17C433F1;
+	Tue, 27 Feb 2024 13:53:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041961;
-	bh=k0pVXXgDJLEp9ZCDFufYNZLHAhRTcHII0/fq42i2t08=;
+	s=korg; t=1709041997;
+	bh=tXU/iY7ClYF86e8Nn4G/5e+N2G5XRKjZelPV8zz8Ei8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DvI4K7T0nosFWpz3dLWJGYxduGPEy0YveJnUIt0P2sK4WnaHOte5XlDCdGEIFDz5m
-	 yjN7Cb1qYDPOuVI8peOtmqSkthNYE6sqV/vNYUYm6FROysHj8/9/G+Hpzua8H5bPQt
-	 Z3pJoh0tvfLLOgO4HVqf8P9vuHGx9TvtyLX1tRpM=
+	b=ljJpvPL1gusYcyCW+DzosQUiFS1hTDwEnDju+vRWHc5ltnbF6Wx+8FfcQdHzewkE5
+	 GhXsGjZreBAw0dbsN48G4OJQp4YToYZdOu4CwBAa3dD1yBc4Gcy6ODc9r0AGogqrYG
+	 2AS29zLBczjHY65V8WeUdSkXLQtxsOfzVG7xF1/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	PeiChen Huang <peichen.huang@amd.com>,
+	Aric Cyr <aric.cyr@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 123/299] mptcp: corner case locking for rx path fields initialization
-Date: Tue, 27 Feb 2024 14:23:54 +0100
-Message-ID: <20240227131629.828054722@linuxfoundation.org>
+Subject: [PATCH 6.6 124/299] drm/amd/display: Add dpia display mode validation logic
+Date: Tue, 27 Feb 2024 14:23:55 +0100
+Message-ID: <20240227131629.859026093@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
 References: <20240227131625.847743063@linuxfoundation.org>
@@ -68,278 +70,311 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>
 
-[ Upstream commit e4a0fa47e816e186f6b4c0055d07eeec42d11871 ]
+[ Upstream commit 59f1622a5f05d948a7c665a458a3dd76ba73015e ]
 
-Most MPTCP-level related fields are under the mptcp data lock
-protection, but are written one-off without such lock at MPC
-complete time, both for the client and the server
+[Why]
+If bandwidth allocation feature is enabled, connection manager wont
+limit the dp tunnel bandwidth. So, need to do display mode validation
+for streams on dpia links to avoid oversubscription of dp tunnel
+bandwidth.
 
-Leverage the mptcp_propagate_state() infrastructure to move such
-initialization under the proper lock client-wise.
+[How]
+- To read non reduced link rate and lane count and update
+  reported link capability.
+- To calculate the bandwidth required for streams of dpia links
+  per host router and validate against the allocated bandwidth for
+  the host router.
 
-The server side critical init steps are done by
-mptcp_subflow_fully_established(): ensure the caller properly held the
-relevant lock, and avoid acquiring the same lock in the nested scopes.
-
-There are no real potential races, as write access to such fields
-is implicitly serialized by the MPTCP state machine; the primary
-goal is consistency.
-
-Fixes: d22f4988ffec ("mptcp: process MP_CAPABLE data option")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Reviewed-by: PeiChen Huang <peichen.huang@amd.com>
+Reviewed-by: Aric Cyr <aric.cyr@amd.com>
+Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 0484e05d048b ("drm/amd/display: fixed integer types and null check locations")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/fastopen.c |  6 ++---
- net/mptcp/options.c  |  9 +++----
- net/mptcp/protocol.c |  9 ++++---
- net/mptcp/protocol.h |  9 +++----
- net/mptcp/subflow.c  | 56 +++++++++++++++++++++++++-------------------
- 5 files changed, 50 insertions(+), 39 deletions(-)
+ .../drm/amd/display/dc/core/dc_link_exports.c |   2 +-
+ drivers/gpu/drm/amd/display/dc/dc.h           |   4 +-
+ drivers/gpu/drm/amd/display/dc/dc_dp_types.h  |   6 +
+ drivers/gpu/drm/amd/display/dc/dc_types.h     |   2 +
+ .../dc/link/protocols/link_dp_dpia_bw.c       | 130 +++++++++++++-----
+ 5 files changed, 104 insertions(+), 40 deletions(-)
 
-diff --git a/net/mptcp/fastopen.c b/net/mptcp/fastopen.c
-index 74698582a2859..ad28da655f8bc 100644
---- a/net/mptcp/fastopen.c
-+++ b/net/mptcp/fastopen.c
-@@ -59,13 +59,12 @@ void mptcp_fastopen_subflow_synack_set_params(struct mptcp_subflow_context *subf
- 	mptcp_data_unlock(sk);
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_link_exports.c b/drivers/gpu/drm/amd/display/dc/core/dc_link_exports.c
+index ed94187c2afa2..f365773d57148 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_link_exports.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_link_exports.c
+@@ -497,7 +497,7 @@ void dc_link_enable_hpd_filter(struct dc_link *link, bool enable)
+ 	link->dc->link_srv->enable_hpd_filter(link, enable);
  }
  
--void mptcp_fastopen_gen_msk_ackseq(struct mptcp_sock *msk, struct mptcp_subflow_context *subflow,
--				   const struct mptcp_options_received *mp_opt)
-+void __mptcp_fastopen_gen_msk_ackseq(struct mptcp_sock *msk, struct mptcp_subflow_context *subflow,
-+				     const struct mptcp_options_received *mp_opt)
+-bool dc_link_validate(struct dc *dc, const struct dc_stream_state *streams, const unsigned int count)
++bool dc_link_dp_dpia_validate(struct dc *dc, const struct dc_stream_state *streams, const unsigned int count)
  {
- 	struct sock *sk = (struct sock *)msk;
- 	struct sk_buff *skb;
- 
--	mptcp_data_lock(sk);
- 	skb = skb_peek_tail(&sk->sk_receive_queue);
- 	if (skb) {
- 		WARN_ON_ONCE(MPTCP_SKB_CB(skb)->end_seq);
-@@ -77,5 +76,4 @@ void mptcp_fastopen_gen_msk_ackseq(struct mptcp_sock *msk, struct mptcp_subflow_
- 	}
- 
- 	pr_debug("msk=%p ack_seq=%llx", msk, msk->ack_seq);
--	mptcp_data_unlock(sk);
+ 	return dc->link_srv->validate_dpia_bandwidth(streams, count);
  }
-diff --git a/net/mptcp/options.c b/net/mptcp/options.c
-index d2527d189a799..e3e96a49f9229 100644
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -962,9 +962,7 @@ static bool check_fully_established(struct mptcp_sock *msk, struct sock *ssk,
- 		/* subflows are fully established as soon as we get any
- 		 * additional ack, including ADD_ADDR.
- 		 */
--		subflow->fully_established = 1;
--		WRITE_ONCE(msk->fully_established, true);
--		goto check_notify;
-+		goto set_fully_established;
- 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/dc.h b/drivers/gpu/drm/amd/display/dc/dc.h
+index 3f33740e2f659..5f2eac868b747 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc.h
++++ b/drivers/gpu/drm/amd/display/dc/dc.h
+@@ -2116,11 +2116,11 @@ int dc_link_dp_dpia_handle_usb4_bandwidth_allocation_for_link(
+  *
+  * @dc: pointer to dc struct
+  * @stream: pointer to all possible streams
+- * @num_streams: number of valid DPIA streams
++ * @count: number of valid DPIA streams
+  *
+  * return: TRUE if bw used by DPIAs doesn't exceed available BW else return FALSE
+  */
+-bool dc_link_validate(struct dc *dc, const struct dc_stream_state *streams,
++bool dc_link_dp_dpia_validate(struct dc *dc, const struct dc_stream_state *streams,
+ 		const unsigned int count);
  
- 	/* If the first established packet does not contain MP_CAPABLE + data
-@@ -986,7 +984,10 @@ static bool check_fully_established(struct mptcp_sock *msk, struct sock *ssk,
- set_fully_established:
- 	if (unlikely(!READ_ONCE(msk->pm.server_side)))
- 		pr_warn_once("bogus mpc option on established client sk");
--	mptcp_subflow_fully_established(subflow, mp_opt);
-+
-+	mptcp_data_lock((struct sock *)msk);
-+	__mptcp_subflow_fully_established(msk, subflow, mp_opt);
-+	mptcp_data_unlock((struct sock *)msk);
+ /* Sink Interfaces - A sink corresponds to a display output device */
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_dp_types.h b/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
+index cfaa39c5dd16b..83719f5bea495 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_dp_types.h
+@@ -1433,6 +1433,12 @@ struct dp_trace {
+ #ifndef DP_TUNNELING_STATUS
+ #define DP_TUNNELING_STATUS				0xE0025 /* 1.4a */
+ #endif
++#ifndef DP_TUNNELING_MAX_LINK_RATE
++#define DP_TUNNELING_MAX_LINK_RATE			0xE0028 /* 1.4a */
++#endif
++#ifndef DP_TUNNELING_MAX_LANE_COUNT
++#define DP_TUNNELING_MAX_LANE_COUNT			0xE0029 /* 1.4a */
++#endif
+ #ifndef DPTX_BW_ALLOCATION_MODE_CONTROL
+ #define DPTX_BW_ALLOCATION_MODE_CONTROL			0xE0030 /* 1.4a */
+ #endif
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_types.h b/drivers/gpu/drm/amd/display/dc/dc_types.h
+index accffba5a6834..19b7314811ae2 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_types.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_types.h
+@@ -1121,6 +1121,8 @@ struct dc_dpia_bw_alloc {
+ 	int bw_granularity;    // BW Granularity
+ 	bool bw_alloc_enabled; // The BW Alloc Mode Support is turned ON for all 3:  DP-Tx & Dpia & CM
+ 	bool response_ready;   // Response ready from the CM side
++	uint8_t nrd_max_lane_count; // Non-reduced max lane count
++	uint8_t nrd_max_link_rate; // Non-reduced max link rate
+ };
  
- check_notify:
- 	/* if the subflow is not already linked into the conn_list, we can't
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 55a90a7b7b517..d369274113108 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -3195,6 +3195,7 @@ struct sock *mptcp_sk_clone_init(const struct sock *sk,
- {
- 	struct mptcp_subflow_request_sock *subflow_req = mptcp_subflow_rsk(req);
- 	struct sock *nsk = sk_clone_lock(sk, GFP_ATOMIC);
-+	struct mptcp_subflow_context *subflow;
- 	struct mptcp_sock *msk;
- 
- 	if (!nsk)
-@@ -3235,7 +3236,8 @@ struct sock *mptcp_sk_clone_init(const struct sock *sk,
- 
- 	/* The msk maintain a ref to each subflow in the connections list */
- 	WRITE_ONCE(msk->first, ssk);
--	list_add(&mptcp_subflow_ctx(ssk)->node, &msk->conn_list);
-+	subflow = mptcp_subflow_ctx(ssk);
-+	list_add(&subflow->node, &msk->conn_list);
- 	sock_hold(ssk);
- 
- 	/* new mpc subflow takes ownership of the newly
-@@ -3250,6 +3252,9 @@ struct sock *mptcp_sk_clone_init(const struct sock *sk,
- 	__mptcp_propagate_sndbuf(nsk, ssk);
- 
- 	mptcp_rcv_space_init(msk, ssk);
-+
-+	if (mp_opt->suboptions & OPTION_MPTCP_MPC_ACK)
-+		__mptcp_subflow_fully_established(msk, subflow, mp_opt);
- 	bh_unlock_sock(nsk);
- 
- 	/* note: the newly allocated socket refcount is 2 now */
-@@ -3525,8 +3530,6 @@ void mptcp_finish_connect(struct sock *ssk)
- 	 * accessing the field below
- 	 */
- 	WRITE_ONCE(msk->local_key, subflow->local_key);
--	WRITE_ONCE(msk->snd_una, subflow->idsn + 1);
--	WRITE_ONCE(msk->wnd_end, subflow->idsn + 1 + tcp_sk(ssk)->snd_wnd);
- 
- 	mptcp_pm_new_connection(msk, ssk, 0);
- }
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index 01778ffa86be1..c9516882cdd4c 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -623,8 +623,9 @@ int mptcp_allow_join_id0(const struct net *net);
- unsigned int mptcp_stale_loss_cnt(const struct net *net);
- int mptcp_get_pm_type(const struct net *net);
- const char *mptcp_get_scheduler(const struct net *net);
--void mptcp_subflow_fully_established(struct mptcp_subflow_context *subflow,
--				     const struct mptcp_options_received *mp_opt);
-+void __mptcp_subflow_fully_established(struct mptcp_sock *msk,
-+				       struct mptcp_subflow_context *subflow,
-+				       const struct mptcp_options_received *mp_opt);
- bool __mptcp_retransmit_pending_data(struct sock *sk);
- void mptcp_check_and_set_pending(struct sock *sk);
- void __mptcp_push_pending(struct sock *sk, unsigned int flags);
-@@ -938,8 +939,8 @@ void mptcp_event_pm_listener(const struct sock *ssk,
- 			     enum mptcp_event_type event);
- bool mptcp_userspace_pm_active(const struct mptcp_sock *msk);
- 
--void mptcp_fastopen_gen_msk_ackseq(struct mptcp_sock *msk, struct mptcp_subflow_context *subflow,
--				   const struct mptcp_options_received *mp_opt);
-+void __mptcp_fastopen_gen_msk_ackseq(struct mptcp_sock *msk, struct mptcp_subflow_context *subflow,
-+				     const struct mptcp_options_received *mp_opt);
- void mptcp_fastopen_subflow_synack_set_params(struct mptcp_subflow_context *subflow,
- 					      struct request_sock *req);
- 
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index ba739e7009221..43d6ee4328141 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -441,20 +441,6 @@ void __mptcp_sync_state(struct sock *sk, int state)
- 	}
+ #define MAX_SINKS_PER_LINK 4
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c
+index d6e1f969bfd52..a7aa8c9da868f 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c
+@@ -59,6 +59,7 @@ static void reset_bw_alloc_struct(struct dc_link *link)
+ 	link->dpia_bw_alloc_config.estimated_bw = 0;
+ 	link->dpia_bw_alloc_config.bw_granularity = 0;
+ 	link->dpia_bw_alloc_config.response_ready = false;
++	link->dpia_bw_alloc_config.sink_allocated_bw = 0;
  }
  
--static void mptcp_propagate_state(struct sock *sk, struct sock *ssk)
--{
--	struct mptcp_sock *msk = mptcp_sk(sk);
--
--	mptcp_data_lock(sk);
--	if (!sock_owned_by_user(sk)) {
--		__mptcp_sync_state(sk, ssk->sk_state);
--	} else {
--		msk->pending_state = ssk->sk_state;
--		__set_bit(MPTCP_SYNC_STATE, &msk->cb_flags);
--	}
--	mptcp_data_unlock(sk);
--}
--
- static void subflow_set_remote_key(struct mptcp_sock *msk,
- 				   struct mptcp_subflow_context *subflow,
- 				   const struct mptcp_options_received *mp_opt)
-@@ -476,6 +462,31 @@ static void subflow_set_remote_key(struct mptcp_sock *msk,
- 	atomic64_set(&msk->rcv_wnd_sent, subflow->iasn);
+ #define BW_GRANULARITY_0 4 // 0.25 Gbps
+@@ -104,6 +105,32 @@ static int get_estimated_bw(struct dc_link *link)
+ 	return bw_estimated_bw * (Kbps_TO_Gbps / link->dpia_bw_alloc_config.bw_granularity);
  }
  
-+static void mptcp_propagate_state(struct sock *sk, struct sock *ssk,
-+				  struct mptcp_subflow_context *subflow,
-+				  const struct mptcp_options_received *mp_opt)
++static int get_non_reduced_max_link_rate(struct dc_link *link)
 +{
-+	struct mptcp_sock *msk = mptcp_sk(sk);
++	uint8_t nrd_max_link_rate = 0;
 +
-+	mptcp_data_lock(sk);
-+	if (mp_opt) {
-+		/* Options are available only in the non fallback cases
-+		 * avoid updating rx path fields otherwise
-+		 */
-+		WRITE_ONCE(msk->snd_una, subflow->idsn + 1);
-+		WRITE_ONCE(msk->wnd_end, subflow->idsn + 1 + tcp_sk(ssk)->snd_wnd);
-+		subflow_set_remote_key(msk, subflow, mp_opt);
-+	}
++	core_link_read_dpcd(
++			link,
++			DP_TUNNELING_MAX_LINK_RATE,
++			&nrd_max_link_rate,
++			sizeof(uint8_t));
 +
-+	if (!sock_owned_by_user(sk)) {
-+		__mptcp_sync_state(sk, ssk->sk_state);
-+	} else {
-+		msk->pending_state = ssk->sk_state;
-+		__set_bit(MPTCP_SYNC_STATE, &msk->cb_flags);
-+	}
-+	mptcp_data_unlock(sk);
++	return nrd_max_link_rate;
 +}
 +
- static void subflow_finish_connect(struct sock *sk, const struct sk_buff *skb)
++static int get_non_reduced_max_lane_count(struct dc_link *link)
++{
++	uint8_t nrd_max_lane_count = 0;
++
++	core_link_read_dpcd(
++			link,
++			DP_TUNNELING_MAX_LANE_COUNT,
++			&nrd_max_lane_count,
++			sizeof(uint8_t));
++
++	return nrd_max_lane_count;
++}
++
+ /*
+  * Read all New BW alloc configuration ex: estimated_bw, allocated_bw,
+  * granuality, Driver_ID, CM_Group, & populate the BW allocation structs
+@@ -111,13 +138,20 @@ static int get_estimated_bw(struct dc_link *link)
+  */
+ static void init_usb4_bw_struct(struct dc_link *link)
  {
- 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(sk);
-@@ -510,10 +521,9 @@ static void subflow_finish_connect(struct sock *sk, const struct sk_buff *skb)
- 		if (mp_opt.deny_join_id0)
- 			WRITE_ONCE(msk->pm.remote_deny_join_id0, true);
- 		subflow->mp_capable = 1;
--		subflow_set_remote_key(msk, subflow, &mp_opt);
- 		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_MPCAPABLEACTIVEACK);
- 		mptcp_finish_connect(sk);
--		mptcp_propagate_state(parent, sk);
-+		mptcp_propagate_state(parent, sk, subflow, &mp_opt);
- 	} else if (subflow->request_join) {
- 		u8 hmac[SHA256_DIGEST_SIZE];
+-	// Init the known values
++	reset_bw_alloc_struct(link);
++
++	/* init the known values */
+ 	link->dpia_bw_alloc_config.bw_granularity = get_bw_granularity(link);
+ 	link->dpia_bw_alloc_config.estimated_bw = get_estimated_bw(link);
++	link->dpia_bw_alloc_config.nrd_max_link_rate = get_non_reduced_max_link_rate(link);
++	link->dpia_bw_alloc_config.nrd_max_lane_count = get_non_reduced_max_lane_count(link);
  
-@@ -556,7 +566,7 @@ static void subflow_finish_connect(struct sock *sk, const struct sk_buff *skb)
- 		}
- 	} else if (mptcp_check_fallback(sk)) {
- fallback:
--		mptcp_propagate_state(parent, sk);
-+		mptcp_propagate_state(parent, sk, subflow, NULL);
- 	}
- 	return;
- 
-@@ -741,17 +751,16 @@ void mptcp_subflow_drop_ctx(struct sock *ssk)
- 	kfree_rcu(ctx, rcu);
+ 	DC_LOG_DEBUG("%s: bw_granularity(%d), estimated_bw(%d)\n",
+ 		__func__, link->dpia_bw_alloc_config.bw_granularity,
+ 		link->dpia_bw_alloc_config.estimated_bw);
++	DC_LOG_DEBUG("%s: nrd_max_link_rate(%d), nrd_max_lane_count(%d)\n",
++		__func__, link->dpia_bw_alloc_config.nrd_max_link_rate,
++		link->dpia_bw_alloc_config.nrd_max_lane_count);
  }
  
--void mptcp_subflow_fully_established(struct mptcp_subflow_context *subflow,
--				     const struct mptcp_options_received *mp_opt)
-+void __mptcp_subflow_fully_established(struct mptcp_sock *msk,
-+				       struct mptcp_subflow_context *subflow,
-+				       const struct mptcp_options_received *mp_opt)
+ static uint8_t get_lowest_dpia_index(struct dc_link *link)
+@@ -142,39 +176,50 @@ static uint8_t get_lowest_dpia_index(struct dc_link *link)
+ }
+ 
+ /*
+- * Get the Max Available BW or Max Estimated BW for each Host Router
++ * Get the maximum dp tunnel banwidth of host router
+  *
+- * @link: pointer to the dc_link struct instance
+- * @type: ESTIMATD BW or MAX AVAILABLE BW
++ * @dc: pointer to the dc struct instance
++ * @hr_index: host router index
+  *
+- * return: response_ready flag from dc_link struct
++ * return: host router maximum dp tunnel bandwidth
+  */
+-static int get_host_router_total_bw(struct dc_link *link, uint8_t type)
++static int get_host_router_total_dp_tunnel_bw(const struct dc *dc, uint8_t hr_index)
  {
--	struct mptcp_sock *msk = mptcp_sk(subflow->conn);
+-	const struct dc *dc_struct = link->dc;
+-	uint8_t lowest_dpia_index = get_lowest_dpia_index(link);
+-	uint8_t idx = (link->link_index - lowest_dpia_index) / 2, idx_temp = 0;
+-	struct dc_link *link_temp;
++	uint8_t lowest_dpia_index = get_lowest_dpia_index(dc->links[0]);
++	uint8_t hr_index_temp = 0;
++	struct dc_link *link_dpia_primary, *link_dpia_secondary;
+ 	int total_bw = 0;
+-	int i;
 -
- 	subflow_set_remote_key(msk, subflow, mp_opt);
- 	subflow->fully_established = 1;
- 	WRITE_ONCE(msk->fully_established, true);
+-	for (i = 0; i < MAX_PIPES * 2; ++i) {
  
- 	if (subflow->is_mptfo)
--		mptcp_fastopen_gen_msk_ackseq(msk, subflow, mp_opt);
-+		__mptcp_fastopen_gen_msk_ackseq(msk, subflow, mp_opt);
- }
+-		if (!dc_struct->links[i] || dc_struct->links[i]->ep_type != DISPLAY_ENDPOINT_USB4_DPIA)
+-			continue;
++	for (uint8_t i = 0; i < MAX_PIPES * 2; ++i) {
  
- static struct sock *subflow_syn_recv_sock(const struct sock *sk,
-@@ -844,7 +853,6 @@ static struct sock *subflow_syn_recv_sock(const struct sock *sk,
- 			 * mpc option
- 			 */
- 			if (mp_opt.suboptions & OPTION_MPTCP_MPC_ACK) {
--				mptcp_subflow_fully_established(ctx, &mp_opt);
- 				mptcp_pm_fully_established(owner, child);
- 				ctx->pm_notified = 1;
- 			}
-@@ -1748,7 +1756,7 @@ static void subflow_state_change(struct sock *sk)
- 		mptcp_do_fallback(sk);
- 		pr_fallback(msk);
- 		subflow->conn_finished = 1;
--		mptcp_propagate_state(parent, sk);
-+		mptcp_propagate_state(parent, sk, subflow, NULL);
+-		link_temp = dc_struct->links[i];
+-		if (!link_temp || !link_temp->hpd_status)
++		if (!dc->links[i] || dc->links[i]->ep_type != DISPLAY_ENDPOINT_USB4_DPIA)
+ 			continue;
+ 
+-		idx_temp = (link_temp->link_index - lowest_dpia_index) / 2;
+-
+-		if (idx_temp == idx) {
+-
+-			if (type == HOST_ROUTER_BW_ESTIMATED)
+-				total_bw += link_temp->dpia_bw_alloc_config.estimated_bw;
+-			else if (type == HOST_ROUTER_BW_ALLOCATED)
+-				total_bw += link_temp->dpia_bw_alloc_config.sink_allocated_bw;
++		hr_index_temp = (dc->links[i]->link_index - lowest_dpia_index) / 2;
++
++		if (hr_index_temp == hr_index) {
++			link_dpia_primary = dc->links[i];
++			link_dpia_secondary = dc->links[i + 1];
++
++			/**
++			 * If BW allocation enabled on both DPIAs, then
++			 * HR BW = Estimated(dpia_primary) + Allocated(dpia_secondary)
++			 * otherwise HR BW = Estimated(bw alloc enabled dpia)
++			 */
++			if ((link_dpia_primary->hpd_status &&
++				link_dpia_primary->dpia_bw_alloc_config.bw_alloc_enabled) &&
++				(link_dpia_secondary->hpd_status &&
++				link_dpia_secondary->dpia_bw_alloc_config.bw_alloc_enabled)) {
++				total_bw += link_dpia_primary->dpia_bw_alloc_config.estimated_bw +
++					link_dpia_secondary->dpia_bw_alloc_config.sink_allocated_bw;
++			} else if (link_dpia_primary->hpd_status &&
++					link_dpia_primary->dpia_bw_alloc_config.bw_alloc_enabled) {
++				total_bw = link_dpia_primary->dpia_bw_alloc_config.estimated_bw;
++			} else if (link_dpia_secondary->hpd_status &&
++				link_dpia_secondary->dpia_bw_alloc_config.bw_alloc_enabled) {
++				total_bw += link_dpia_secondary->dpia_bw_alloc_config.estimated_bw;
++			}
++			break;
+ 		}
  	}
  
- 	/* as recvmsg() does not acquire the subflow socket for ssk selection
+@@ -194,7 +239,6 @@ static void dpia_bw_alloc_unplug(struct dc_link *link)
+ 	if (link) {
+ 		DC_LOG_DEBUG("%s: resetting bw alloc config for link(%d)\n",
+ 			__func__, link->link_index);
+-		link->dpia_bw_alloc_config.sink_allocated_bw = 0;
+ 		reset_bw_alloc_struct(link);
+ 	}
+ }
+@@ -397,7 +441,7 @@ int dpia_handle_usb4_bandwidth_allocation_for_link(struct dc_link *link, int pea
+ 		if (!timeout)
+ 			ret = 0;// ERROR TIMEOUT waiting for response for allocating bw
+ 		else if (link->dpia_bw_alloc_config.sink_allocated_bw > 0)
+-			ret = get_host_router_total_bw(link, HOST_ROUTER_BW_ALLOCATED);
++			ret = link->dpia_bw_alloc_config.sink_allocated_bw;
+ 	}
+ 	//2. Cold Unplug
+ 	else if (!link->hpd_status)
+@@ -439,29 +483,41 @@ bool link_dp_dpia_allocate_usb4_bandwidth_for_stream(struct dc_link *link, int r
+ bool dpia_validate_usb4_bw(struct dc_link **link, int *bw_needed_per_dpia, const unsigned int num_dpias)
+ {
+ 	bool ret = true;
+-	int bw_needed_per_hr[MAX_HR_NUM] = { 0, 0 };
+-	uint8_t lowest_dpia_index = 0, dpia_index = 0;
+-	uint8_t i;
++	int bw_needed_per_hr[MAX_HR_NUM] = { 0, 0 }, host_router_total_dp_bw = 0;
++	uint8_t lowest_dpia_index, i, hr_index;
+ 
+ 	if (!num_dpias || num_dpias > MAX_DPIA_NUM)
+ 		return ret;
+ 
+-	//Get total Host Router BW & Validate against each Host Router max BW
++	lowest_dpia_index = get_lowest_dpia_index(link[0]);
++
++	/* get total Host Router BW with granularity for the given modes */
+ 	for (i = 0; i < num_dpias; ++i) {
++		int granularity_Gbps = 0;
++		int bw_granularity = 0;
+ 
+ 		if (!link[i]->dpia_bw_alloc_config.bw_alloc_enabled)
+ 			continue;
+ 
+-		lowest_dpia_index = get_lowest_dpia_index(link[i]);
+ 		if (link[i]->link_index < lowest_dpia_index)
+ 			continue;
+ 
+-		dpia_index = (link[i]->link_index - lowest_dpia_index) / 2;
+-		bw_needed_per_hr[dpia_index] += bw_needed_per_dpia[i];
+-		if (bw_needed_per_hr[dpia_index] > get_host_router_total_bw(link[i], HOST_ROUTER_BW_ALLOCATED)) {
++		granularity_Gbps = (Kbps_TO_Gbps / link[i]->dpia_bw_alloc_config.bw_granularity);
++		bw_granularity = (bw_needed_per_dpia[i] / granularity_Gbps) * granularity_Gbps +
++				((bw_needed_per_dpia[i] % granularity_Gbps) ? granularity_Gbps : 0);
+ 
+-			ret = false;
+-			break;
++		hr_index = (link[i]->link_index - lowest_dpia_index) / 2;
++		bw_needed_per_hr[hr_index] += bw_granularity;
++	}
++
++	/* validate against each Host Router max BW */
++	for (hr_index = 0; hr_index < MAX_HR_NUM; ++hr_index) {
++		if (bw_needed_per_hr[hr_index]) {
++			host_router_total_dp_bw = get_host_router_total_dp_tunnel_bw(link[0]->dc, hr_index);
++			if (bw_needed_per_hr[hr_index] > host_router_total_dp_bw) {
++				ret = false;
++				break;
++			}
+ 		}
+ 	}
+ 
 -- 
 2.43.0
 
