@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-24291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C2E58693C0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:48:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2B9A869655
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:10:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46EBD292214
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:48:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08F7E1C22FD0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:10:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDCA3146914;
-	Tue, 27 Feb 2024 13:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C77A913B78F;
+	Tue, 27 Feb 2024 14:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PX2I5P2+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yeSHjkr8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE02145B09;
-	Tue, 27 Feb 2024 13:46:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8467E13A259;
+	Tue, 27 Feb 2024 14:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041580; cv=none; b=ceCvdveRR80g1eDD56NFN50fAbZmRKZIFFQokjeYFRNZ40WErHyLeWS2xH/7ZssKH/amowRi3fB45nJTgYMP+Kh7/bMJZQjC9vuslwjPI+vwYNDXlmRsx3Qlk/v5ToJukzyGh1i3KXv4cERDpLyugyv7MhwPTPtqQ07RWWK68Ck=
+	t=1709043033; cv=none; b=Y7DgrbUod3btjZfhFf3ZDYf5HyFS0ZldlNXZOGOJJIGFdXLG1zxkfxf+rSw+93iY/hLNgsqmP3wfE0WAGSzAwIJwEVkvBMnQlTfWB9p4s0TxeAqZ5X5LZIGaSm2ejYEtaFRetEg1hdaxdR5fl6j1A8+92MvNcn7r/7Eped2tqAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041580; c=relaxed/simple;
-	bh=VODQf+nKloXdZ/c7bvd1CQFsIk8GUA/MHFhWVSDsz6Y=;
+	s=arc-20240116; t=1709043033; c=relaxed/simple;
+	bh=ktVG5eetdJ+o7oxozaWYj3Cena4OqKPyHTRTiFXM0VM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qNKFiRSur15gtAugOeLceILr4Aqf1p/hQ0vOOlxBH3Z8NsZrH40hlCqJHA+ox6rzm6PidyrT848vbq7lShPXTepRMFcTd6LSVYuJiojpyuMEHRjdM0fTxWzWIBMneFEbbvGedVHVZO0Yd50CcFBZwkm4K7Pg/O2nWnwaoX0TZFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PX2I5P2+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 044BAC433B1;
-	Tue, 27 Feb 2024 13:46:19 +0000 (UTC)
+	 MIME-Version; b=jc9t7z308VyXS68+T8WucNgP6YfTULnLWgOy/u/fA/7HVWOz+y1r/uU06MfaPqMmCoxdLi+C2PNMlwa5df+RndweN7IMQ7eQ4SjiXIzcjzpMDjEWcf5X/ZdIe35uhc1h5OluDppgLCwqO8DlbX//krCGZfh1Qy/0hgQRwRL9EPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yeSHjkr8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA46C43394;
+	Tue, 27 Feb 2024 14:10:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041580;
-	bh=VODQf+nKloXdZ/c7bvd1CQFsIk8GUA/MHFhWVSDsz6Y=;
+	s=korg; t=1709043033;
+	bh=ktVG5eetdJ+o7oxozaWYj3Cena4OqKPyHTRTiFXM0VM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PX2I5P2++Sut185J3RHJDIKXxDxoufV8vG6qDhC8tcvei9oCKEZ4Z7GuR/d+r+1WK
-	 nPlhUtKniaZxs6s1EXZ0/jdkaGq6QCIKOLPbxQ9lK5ync+9N6pzyysbXi7zzWnJM8W
-	 jAgdZNN6JJJTuq7xfjKSUskd4q6eyevU5njblN3M=
+	b=yeSHjkr87PJ9eV/GcGjC9WZJGVtNB4gNynzYG3zwua2nxtADmZ9Q6O5x1jOap67Dj
+	 99bFs9v1iVmkheKM+QGH1vIL1izqMnxSCm27aAn4ZjDtjvbUPtY4k53alP0ujoaKmC
+	 M75YCxzw0lvbygMO4aWYqJ3AQVccKRof7K6fNSwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 4.19 50/52] KVM: arm64: vgic-its: Test for valid IRQ in MOVALL handler
+	Heiko Stuebner <heiko.stuebner@cherry.de>,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 209/245] arm64: dts: rockchip: set num-cs property for spi on px30
 Date: Tue, 27 Feb 2024 14:26:37 +0100
-Message-ID: <20240227131550.178198134@linuxfoundation.org>
+Message-ID: <20240227131621.981424349@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
-References: <20240227131548.514622258@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Upton <oliver.upton@linux.dev>
+From: Heiko Stuebner <heiko.stuebner@cherry.de>
 
-commit 85a71ee9a0700f6c18862ef3b0011ed9dad99aca upstream.
+[ Upstream commit 334bf0710c98d391f4067b72f535d6c4c84dfb6f ]
 
-It is possible that an LPI mapped in a different ITS gets unmapped while
-handling the MOVALL command. If that is the case, there is no state that
-can be migrated to the destination. Silently ignore it and continue
-migrating other LPIs.
+The px30 has two spi controllers with two chip-selects each.
+The num-cs property is specified as the total number of chip
+selects a controllers has and is used since 2020 to find uses
+of chipselects outside that range in the Rockchip spi driver.
 
-Cc: stable@vger.kernel.org
-Fixes: ff9c114394aa ("KVM: arm/arm64: GICv4: Handle MOVALL applied to a vPE")
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20240221092732.4126848-3-oliver.upton@linux.dev
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Without the property set, the default is 1, so spi devices
+using the second chipselect will not be created.
+
+Fixes: eb1262e3cc8b ("spi: spi-rockchip: use num-cs property and ctlr->enable_gpiods")
+Signed-off-by: Heiko Stuebner <heiko.stuebner@cherry.de>
+Reviewed-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Link: https://lore.kernel.org/r/20240119101656.965744-1-heiko@sntech.de
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- virt/kvm/arm/vgic/vgic-its.c |    2 ++
+ arch/arm64/boot/dts/rockchip/px30.dtsi | 2 ++
  1 file changed, 2 insertions(+)
 
---- a/virt/kvm/arm/vgic/vgic-its.c
-+++ b/virt/kvm/arm/vgic/vgic-its.c
-@@ -1232,6 +1232,8 @@ static int vgic_its_cmd_handle_movall(st
- 
- 	for (i = 0; i < irq_count; i++) {
- 		irq = vgic_get_irq(kvm, NULL, intids[i]);
-+		if (!irq)
-+			continue;
- 
- 		update_affinity(irq, vcpu2);
- 
+diff --git a/arch/arm64/boot/dts/rockchip/px30.dtsi b/arch/arm64/boot/dts/rockchip/px30.dtsi
+index 5200d0bbd9e9c..b2dae28a98502 100644
+--- a/arch/arm64/boot/dts/rockchip/px30.dtsi
++++ b/arch/arm64/boot/dts/rockchip/px30.dtsi
+@@ -585,6 +585,7 @@
+ 		clock-names = "spiclk", "apb_pclk";
+ 		dmas = <&dmac 12>, <&dmac 13>;
+ 		dma-names = "tx", "rx";
++		num-cs = <2>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&spi0_clk &spi0_csn &spi0_miso &spi0_mosi>;
+ 		#address-cells = <1>;
+@@ -600,6 +601,7 @@
+ 		clock-names = "spiclk", "apb_pclk";
+ 		dmas = <&dmac 14>, <&dmac 15>;
+ 		dma-names = "tx", "rx";
++		num-cs = <2>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&spi1_clk &spi1_csn0 &spi1_csn1 &spi1_miso &spi1_mosi>;
+ 		#address-cells = <1>;
+-- 
+2.43.0
+
 
 
 
