@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C07386932A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:42:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8C64869403
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41AFF1F291B5
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:42:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8195E285C68
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC18D13B7AA;
-	Tue, 27 Feb 2024 13:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B8513B7A2;
+	Tue, 27 Feb 2024 13:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fe0rmakY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zg07um0e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9F613AA55;
-	Tue, 27 Feb 2024 13:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B048354BD4;
+	Tue, 27 Feb 2024 13:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041333; cv=none; b=lMt/uwsr231FZbkwubv6qfXsgvaafBaT80Ew1AeHgQci3gBs5x+TapET7SGdYcGVRdqfwgq+45f2fxWgAGjW67YTU8AFCzXKCljlsudpc9Qm2q0PKy2kPqBnLEGyDkyVSvWMuPnPbVi6DQUibs5krgkKPXlpLbqSsm+rm0/01cw=
+	t=1709041725; cv=none; b=O1UXcsy9rhYcRxUtGkOUmWKxpQnfvOQsD6/+4SFS11MkxQBtjA63SmFP6ljAJS4Jpu/H5PhxQzw7dIxXP4o0amtyqvDm4DmTsmPndObfNstrSuqweCXGbBdfxjV8BZKb/NbZKyGDiPVUkfPZMYCSTx1X4VVZHHp6wtbHDaAsOko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041333; c=relaxed/simple;
-	bh=58N6M4pVAHRm6QWnQyixNUZoL908JiRGLkXbKZ5Kxf0=;
+	s=arc-20240116; t=1709041725; c=relaxed/simple;
+	bh=42n2OoVh/hsZN7O/gLlj6Ss4m7k+wEz56T5KI3y4eDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sXx6XhxRKqncH4vwNfWTfFm58glH/EaofOipvmFkAzvaHDfWhbfu/zcIE4AVcSndVPQPnLxzJzg6/HpvXKAw6MyaqQ683I6KV9hfyagqkjyz1yf1506pyNHzN+kM16ESAjQIp/QSN84ywiRsEHGlA+huKk1ZyvGvCb+8j1vPE3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fe0rmakY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13741C433F1;
-	Tue, 27 Feb 2024 13:42:12 +0000 (UTC)
+	 MIME-Version; b=rvHN0k4wf87+YR+WvIdenahJ4absP9yUC8P6kCn0V9A67SHhrNML8L3tixRLpvaE6qyOf+7l3cOOnZ/x2Z4tWms2UQPooFJpyqNKZqYp7+t2UDesib4xRL9UmP9PtB0ZxcOu3rk4OWSO+Ai+v1fRuxU7+VohOaISa8TK2ZnOtPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zg07um0e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FCDBC43394;
+	Tue, 27 Feb 2024 13:48:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041333;
-	bh=58N6M4pVAHRm6QWnQyixNUZoL908JiRGLkXbKZ5Kxf0=;
+	s=korg; t=1709041725;
+	bh=42n2OoVh/hsZN7O/gLlj6Ss4m7k+wEz56T5KI3y4eDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fe0rmakYnqFCrXeHjVsltP1OTnYRZFFOxBAxUJWWbT48E+XHeIL58Jns59DqnoWOZ
-	 AwsKxL/ZPeNS2++fDgR4P8LOFNl+2P2k7+r7F0z9VI+xin+hrQ6ixO1ljHxFFtqjGK
-	 1XXZhA9YEi2EzKeilWUUxi2wNCVzd/eEVoVJhV6g=
+	b=Zg07um0eSgr0odmYUi1UWTNrvyPnJnv11g4UK6iJLYYqqdwIR86BcZZYN4FePdqHH
+	 DETo5E8HkYUNz1oZL5HIk2guLRxgkIuheMgla/3AiLgiX16e8fo0ZXzAndgNmK86oF
+	 1DL+n06f0BwqDaferIyZZafUem0ZM85w9Ppksw8E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erhard Furtner <erhard_f@mailbox.org>,
-	Ahmad Khalifa <ahmad@khalifa.ws>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 302/334] hwmon: (nct6775) Fix access to temperature configuration registers
+Subject: [PATCH 6.6 049/299] spi: sh-msiof: avoid integer overflow in constants
 Date: Tue, 27 Feb 2024 14:22:40 +0100
-Message-ID: <20240227131640.790098521@linuxfoundation.org>
+Message-ID: <20240227131627.554567515@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,119 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit d56e460e19ea8382f813eb489730248ec8d7eb73 ]
+[ Upstream commit 6500ad28fd5d67d5ca0fee9da73c463090842440 ]
 
-The number of temperature configuration registers does
-not always match the total number of temperature registers.
-This can result in access errors reported if KASAN is enabled.
+cppcheck rightfully warned:
 
-BUG: KASAN: global-out-of-bounds in nct6775_probe+0x5654/0x6fe9 nct6775_core
+ drivers/spi/spi-sh-msiof.c:792:28: warning: Signed integer overflow for expression '7<<29'. [integerOverflow]
+ sh_msiof_write(p, SIFCTR, SIFCTR_TFWM_1 | SIFCTR_RFWM_1);
 
-Reported-by: Erhard Furtner <erhard_f@mailbox.org>
-Closes: https://lore.kernel.org/linux-hwmon/d51181d1-d26b-42b2-b002-3f5a4037721f@roeck-us.net/
-Fixes: b7f1f7b2523a ("hwmon: (nct6775) Additional TEMP registers for nct6799")
-Cc: Ahmad Khalifa <ahmad@khalifa.ws>
-Tested-by: Ahmad Khalifa <ahmad@khalifa.ws>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://msgid.link/r/20240130094053.10672-1-wsa+renesas@sang-engineering.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/nct6775-core.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/spi/spi-sh-msiof.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/hwmon/nct6775-core.c b/drivers/hwmon/nct6775-core.c
-index 92a49fafe2c02..f3bf2e4701c38 100644
---- a/drivers/hwmon/nct6775-core.c
-+++ b/drivers/hwmon/nct6775-core.c
-@@ -3512,6 +3512,7 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
- 	const u16 *reg_temp_mon, *reg_temp_alternate, *reg_temp_crit;
- 	const u16 *reg_temp_crit_l = NULL, *reg_temp_crit_h = NULL;
- 	int num_reg_temp, num_reg_temp_mon, num_reg_tsi_temp;
-+	int num_reg_temp_config;
- 	struct device *hwmon_dev;
- 	struct sensor_template_group tsi_temp_tg;
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index cfc3b1ddbd229..6f12e4fb2e2e1 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -136,14 +136,14 @@ struct sh_msiof_spi_priv {
  
-@@ -3594,6 +3595,7 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
- 		reg_temp_over = NCT6106_REG_TEMP_OVER;
- 		reg_temp_hyst = NCT6106_REG_TEMP_HYST;
- 		reg_temp_config = NCT6106_REG_TEMP_CONFIG;
-+		num_reg_temp_config = ARRAY_SIZE(NCT6106_REG_TEMP_CONFIG);
- 		reg_temp_alternate = NCT6106_REG_TEMP_ALTERNATE;
- 		reg_temp_crit = NCT6106_REG_TEMP_CRIT;
- 		reg_temp_crit_l = NCT6106_REG_TEMP_CRIT_L;
-@@ -3669,6 +3671,7 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
- 		reg_temp_over = NCT6106_REG_TEMP_OVER;
- 		reg_temp_hyst = NCT6106_REG_TEMP_HYST;
- 		reg_temp_config = NCT6106_REG_TEMP_CONFIG;
-+		num_reg_temp_config = ARRAY_SIZE(NCT6106_REG_TEMP_CONFIG);
- 		reg_temp_alternate = NCT6106_REG_TEMP_ALTERNATE;
- 		reg_temp_crit = NCT6106_REG_TEMP_CRIT;
- 		reg_temp_crit_l = NCT6106_REG_TEMP_CRIT_L;
-@@ -3746,6 +3749,7 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
- 		reg_temp_over = NCT6775_REG_TEMP_OVER;
- 		reg_temp_hyst = NCT6775_REG_TEMP_HYST;
- 		reg_temp_config = NCT6775_REG_TEMP_CONFIG;
-+		num_reg_temp_config = ARRAY_SIZE(NCT6775_REG_TEMP_CONFIG);
- 		reg_temp_alternate = NCT6775_REG_TEMP_ALTERNATE;
- 		reg_temp_crit = NCT6775_REG_TEMP_CRIT;
- 
-@@ -3821,6 +3825,7 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
- 		reg_temp_over = NCT6775_REG_TEMP_OVER;
- 		reg_temp_hyst = NCT6775_REG_TEMP_HYST;
- 		reg_temp_config = NCT6776_REG_TEMP_CONFIG;
-+		num_reg_temp_config = ARRAY_SIZE(NCT6776_REG_TEMP_CONFIG);
- 		reg_temp_alternate = NCT6776_REG_TEMP_ALTERNATE;
- 		reg_temp_crit = NCT6776_REG_TEMP_CRIT;
- 
-@@ -3900,6 +3905,7 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
- 		reg_temp_over = NCT6779_REG_TEMP_OVER;
- 		reg_temp_hyst = NCT6779_REG_TEMP_HYST;
- 		reg_temp_config = NCT6779_REG_TEMP_CONFIG;
-+		num_reg_temp_config = ARRAY_SIZE(NCT6779_REG_TEMP_CONFIG);
- 		reg_temp_alternate = NCT6779_REG_TEMP_ALTERNATE;
- 		reg_temp_crit = NCT6779_REG_TEMP_CRIT;
- 
-@@ -4034,6 +4040,7 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
- 		reg_temp_over = NCT6779_REG_TEMP_OVER;
- 		reg_temp_hyst = NCT6779_REG_TEMP_HYST;
- 		reg_temp_config = NCT6779_REG_TEMP_CONFIG;
-+		num_reg_temp_config = ARRAY_SIZE(NCT6779_REG_TEMP_CONFIG);
- 		reg_temp_alternate = NCT6779_REG_TEMP_ALTERNATE;
- 		reg_temp_crit = NCT6779_REG_TEMP_CRIT;
- 
-@@ -4123,6 +4130,7 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
- 		reg_temp_over = NCT6798_REG_TEMP_OVER;
- 		reg_temp_hyst = NCT6798_REG_TEMP_HYST;
- 		reg_temp_config = NCT6779_REG_TEMP_CONFIG;
-+		num_reg_temp_config = ARRAY_SIZE(NCT6779_REG_TEMP_CONFIG);
- 		reg_temp_alternate = NCT6798_REG_TEMP_ALTERNATE;
- 		reg_temp_crit = NCT6798_REG_TEMP_CRIT;
- 
-@@ -4204,7 +4212,8 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
- 				  = reg_temp_crit[src - 1];
- 			if (reg_temp_crit_l && reg_temp_crit_l[i])
- 				data->reg_temp[4][src - 1] = reg_temp_crit_l[i];
--			data->reg_temp_config[src - 1] = reg_temp_config[i];
-+			if (i < num_reg_temp_config)
-+				data->reg_temp_config[src - 1] = reg_temp_config[i];
- 			data->temp_src[src - 1] = src;
- 			continue;
- 		}
-@@ -4217,7 +4226,8 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
- 		data->reg_temp[0][s] = reg_temp[i];
- 		data->reg_temp[1][s] = reg_temp_over[i];
- 		data->reg_temp[2][s] = reg_temp_hyst[i];
--		data->reg_temp_config[s] = reg_temp_config[i];
-+		if (i < num_reg_temp_config)
-+			data->reg_temp_config[s] = reg_temp_config[i];
- 		if (reg_temp_crit_h && reg_temp_crit_h[i])
- 			data->reg_temp[3][s] = reg_temp_crit_h[i];
- 		else if (reg_temp_crit[src - 1])
+ /* SIFCTR */
+ #define SIFCTR_TFWM_MASK	GENMASK(31, 29)	/* Transmit FIFO Watermark */
+-#define SIFCTR_TFWM_64		(0 << 29)	/*  Transfer Request when 64 empty stages */
+-#define SIFCTR_TFWM_32		(1 << 29)	/*  Transfer Request when 32 empty stages */
+-#define SIFCTR_TFWM_24		(2 << 29)	/*  Transfer Request when 24 empty stages */
+-#define SIFCTR_TFWM_16		(3 << 29)	/*  Transfer Request when 16 empty stages */
+-#define SIFCTR_TFWM_12		(4 << 29)	/*  Transfer Request when 12 empty stages */
+-#define SIFCTR_TFWM_8		(5 << 29)	/*  Transfer Request when 8 empty stages */
+-#define SIFCTR_TFWM_4		(6 << 29)	/*  Transfer Request when 4 empty stages */
+-#define SIFCTR_TFWM_1		(7 << 29)	/*  Transfer Request when 1 empty stage */
++#define SIFCTR_TFWM_64		(0UL << 29)	/*  Transfer Request when 64 empty stages */
++#define SIFCTR_TFWM_32		(1UL << 29)	/*  Transfer Request when 32 empty stages */
++#define SIFCTR_TFWM_24		(2UL << 29)	/*  Transfer Request when 24 empty stages */
++#define SIFCTR_TFWM_16		(3UL << 29)	/*  Transfer Request when 16 empty stages */
++#define SIFCTR_TFWM_12		(4UL << 29)	/*  Transfer Request when 12 empty stages */
++#define SIFCTR_TFWM_8		(5UL << 29)	/*  Transfer Request when 8 empty stages */
++#define SIFCTR_TFWM_4		(6UL << 29)	/*  Transfer Request when 4 empty stages */
++#define SIFCTR_TFWM_1		(7UL << 29)	/*  Transfer Request when 1 empty stage */
+ #define SIFCTR_TFUA_MASK	GENMASK(26, 20) /* Transmit FIFO Usable Area */
+ #define SIFCTR_TFUA_SHIFT	20
+ #define SIFCTR_TFUA(i)		((i) << SIFCTR_TFUA_SHIFT)
 -- 
 2.43.0
 
