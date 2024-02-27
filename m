@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13FCC8696D1
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C33F8695EC
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B233C1F2E716
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0F811F2C122
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:06:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966401419B4;
-	Tue, 27 Feb 2024 14:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AFD313B798;
+	Tue, 27 Feb 2024 14:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uhYkcFi1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TF8UMXzU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548A878B61;
-	Tue, 27 Feb 2024 14:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A4C13B7AB;
+	Tue, 27 Feb 2024 14:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043335; cv=none; b=hR9ucQd3KG4E0eVf0jnWIlPeXaHVC1lr6EkEdaKTJjaT6pu/PzFYFzu/GBe8594HM54kZMdvkBr95+x3FpLv6+LzuUKOhnY6Y/Gn8gIl+L7RdZiidqetUHmQ9G5Y/t2+Bh9+XWlYFvjUZbLKgi7hgPRJcuEvB51uoPonL3N1Pqk=
+	t=1709042776; cv=none; b=fuQ/F9iJB8GaeawNW7pxD2RrtjE0ZJ1EkqY8eC0XmozRyaYwNVwhv5C2Uu9eoIUw/WMBQM33jMTgr90tpVIvR4TZ1D5igJh04kuBawNu4LFCcHXJK+kFM0DMLQ6gxURfQn5UzMH8v7Opd9oc+oQOnzAfz+WEH54M0bMZtf8PL5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043335; c=relaxed/simple;
-	bh=3RKcjg5ML6bunxSm5ClYtYwIEDlPxARltfTAiZAVF0Q=;
+	s=arc-20240116; t=1709042776; c=relaxed/simple;
+	bh=xVnFJZSaC7ph63TLaJSsZCQYeiYQY2xVA1NeZ/BK9vA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EAgzJzReUlAvrFpNK8kIj5/nZciUyoTpjY+oxHF4Iy39mnH1JXWgVKxpnFfKNK5LLJhsDHu0PoyGKGs6KITHpd0/UlFk1bxtJZDgziYuM6/8XOzgR/7F2BUvJ+tsvTZQ04kTpXPIbA14/qaVsSOonhoh3RszgK/rvXY9ffGYZ7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uhYkcFi1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B1FC433C7;
-	Tue, 27 Feb 2024 14:15:34 +0000 (UTC)
+	 MIME-Version; b=coNde7TUZ8Y25vYdQvn4RZ3ws9oCgtjXEkI5eiWDGm/bBlNJSX5UbRDa8vYu6npq6hLrk5PKSfmGs4h4vbzkrp0sVRn9tht+kwVjMPz8CbRYW+Xeq3ijQ234dQWiC3kheHuBbdFlQLYVAMBdNT3usr5UsJ3trCOfV9KzyEQWhCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TF8UMXzU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD593C433F1;
+	Tue, 27 Feb 2024 14:06:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043334;
-	bh=3RKcjg5ML6bunxSm5ClYtYwIEDlPxARltfTAiZAVF0Q=;
+	s=korg; t=1709042776;
+	bh=xVnFJZSaC7ph63TLaJSsZCQYeiYQY2xVA1NeZ/BK9vA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uhYkcFi1Hi3lOnxfhwgAPfPzDX4Rtcxd4qIBje6zp13H0YAaUUy3VLY77D6MEJJYq
-	 ThbhzKudb1vIuD+xAQ66AFoHHBaUrmteDVipFd3h5UU8QMeL8xTDaoqoB4acPCw/sE
-	 gWilMxrBsyJ1Bs4bF06+kIC0PqpLi/xSZc7JLMHw=
+	b=TF8UMXzU/uBte6eMvibHN9jWGI2CPpP1qDd33U/Aw6hbbEwGproB8aKmQHXJfbOhf
+	 UgbR/S5cP/xpVpfPK3QvcKi3si66HTgyApTBPPw3MAyGiaKVTJEiHnNjHeoQ0wFddR
+	 Z2LrmBHFAFEV8AjHlNweGjFh1its0D/aZj1xw1Ok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Tsoy <alexander@tsoy.me>,
-	Takashi Iwai <tiwai@suse.de>,
+	Peng Fan <peng.fan@nxp.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 042/195] ALSA: usb-audio: Ignore clock selector errors for single connection
-Date: Tue, 27 Feb 2024 14:25:03 +0100
-Message-ID: <20240227131611.778533066@linuxfoundation.org>
+Subject: [PATCH 5.15 116/245] clk: imx: avoid memory leak
+Date: Tue, 27 Feb 2024 14:25:04 +0100
+Message-ID: <20240227131619.002730554@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Tsoy <alexander@tsoy.me>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit eaa1b01fe709d6a236a9cec74813e0400601fd23 ]
+[ Upstream commit f4419db4086e8c31821da14140e81498516a3c75 ]
 
-For devices with multiple clock sources connected to a selector, we need
-to check what a clock selector control request has returned. This is
-needed to ensure that a requested clock source is indeed selected and for
-autoclock feature to work.
+In case imx_register_uart_clocks return early, the imx_uart_clocks
+memory will be no freed. So execute kfree always to avoid memory leak.
 
-For devices with single clock source connected, if we get an error there
-is nothing else we can do about it. We can't skip clock selector setup as
-it is required by some devices. So lets just ignore error in this case.
-
-This should fix various buggy Mackie devices:
-
-[  649.109785] usb 1-1.3: parse_audio_format_rates_v2v3(): unable to find clock source (clock -32)
-[  649.111946] usb 1-1.3: parse_audio_format_rates_v2v3(): unable to find clock source (clock -32)
-[  649.113822] usb 1-1.3: parse_audio_format_rates_v2v3(): unable to find clock source (clock -32)
-
-There is also interesting info from the Windows documentation [1] (this
-is probably why manufacturers dont't even test this feature):
-
-"The USB Audio 2.0 driver doesn't support clock selection. The driver
-uses the Clock Source Entity, which is selected by default and never
-issues a Clock Selector Control SET CUR request."
-
-Link: https://learn.microsoft.com/en-us/windows-hardware/drivers/audio/usb-2-0-audio-drivers [1]
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217314
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218175
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218342
-Signed-off-by: Alexander Tsoy <alexander@tsoy.me>
-Link: https://lore.kernel.org/r/20240201115308.17838-1-alexander@tsoy.me
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 379c9a24cc23 ("clk: imx: Fix reparenting of UARTs not associated with stdout")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20230104110032.1220721-2-peng.fan@oss.nxp.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/clock.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/clk/imx/clk.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/usb/clock.c b/sound/usb/clock.c
-index 33db334e65566..a676ad093d189 100644
---- a/sound/usb/clock.c
-+++ b/sound/usb/clock.c
-@@ -328,8 +328,16 @@ static int __uac_clock_find_source(struct snd_usb_audio *chip,
- 			if (chip->quirk_flags & QUIRK_FLAG_SKIP_CLOCK_SELECTOR)
- 				return ret;
- 			err = uac_clock_selector_set_val(chip, entity_id, cur);
--			if (err < 0)
-+			if (err < 0) {
-+				if (pins == 1) {
-+					usb_audio_dbg(chip,
-+						      "%s(): selector returned an error, "
-+						      "assuming a firmware bug, id %d, ret %d\n",
-+						      __func__, clock_id, err);
-+					return ret;
-+				}
- 				return err;
-+			}
+diff --git a/drivers/clk/imx/clk.c b/drivers/clk/imx/clk.c
+index 7cc669934253a..d4cf0c7045ab2 100644
+--- a/drivers/clk/imx/clk.c
++++ b/drivers/clk/imx/clk.c
+@@ -201,9 +201,10 @@ static int __init imx_clk_disable_uart(void)
+ 			clk_disable_unprepare(imx_uart_clocks[i]);
+ 			clk_put(imx_uart_clocks[i]);
  		}
+-		kfree(imx_uart_clocks);
+ 	}
  
- 		if (!validate || ret > 0 || !chip->autoclock)
++	kfree(imx_uart_clocks);
++
+ 	return 0;
+ }
+ late_initcall_sync(imx_clk_disable_uart);
 -- 
 2.43.0
 
