@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-24507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6CE38694D5
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:56:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2EFE8696CB
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D886B1C283B0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:56:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99A9A1F2E6CC
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C16913B2B3;
-	Tue, 27 Feb 2024 13:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE771420D3;
+	Tue, 27 Feb 2024 14:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ymPk77K3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VoxCHm5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE04A13AA55;
-	Tue, 27 Feb 2024 13:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF0B13B2B4;
+	Tue, 27 Feb 2024 14:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042201; cv=none; b=rOISEikMTxYSsYzWJ8QJKktEoSoxkQ4t64lXjI8juUow2Ev3T1KUZsiebiac5MhYyzLcx+Q+YQ156WjgO7Pac2GAQXYmuQ7+76bBDeW04vzEsAz2GTbrvDjQABYoGis1jayFESXJzDJVs2aAZ3dkATDtHnefgAOHmhVuf5c6cSE=
+	t=1709043313; cv=none; b=h0nMHyHgtCiBioAou6WVnvxGycAR0rtK/LaKbZK1w+2NL27N24fjT60CLyF+T1IRKncI7C5B22Ey8yx6Q7e0f6fkOlsPUpUtX/JKBfUX79NmWsx8fDwWvrrfVWNsFMDKZrtnnl4L2wUN/F7xrnOcPscTwMTMRhKXDG0hSu40Ky4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042201; c=relaxed/simple;
-	bh=qqDdx7MyJQYVoowt3+JZZVvxtP6VfTsNpL02ywaV0j0=;
+	s=arc-20240116; t=1709043313; c=relaxed/simple;
+	bh=fIyLnEElggOUND1aplwx7ikm/idPRwbngOaeBX1LZDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cp2GaMCP24/vjNtnPNV5ZIuX5YjWJdHeg/O2pjXA2fouhh9bnC5M/3VX2h/9yXX0QFsACY4rLWCinyCK2ZdvwEc9cItkn1irOFvMdBJwSRq7wQLE6e6v5RXkv5wuuWeTtWNYxeFZASyU3rSU9oeUYRp1gNrPEe7m+5M6zZuScE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ymPk77K3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A0CBC433C7;
-	Tue, 27 Feb 2024 13:56:40 +0000 (UTC)
+	 MIME-Version; b=EIgIzZ1sbNAXQWhX4N9GtJ9RtZFJLzm3jJmsnhjwsUQo3oMce+UwAIcES6L6Zxr0kekURNKyzlEbhSBxu/wFoSIX9pBoAGhWahruOJdxrDKegPT2Sxem2sFioChT/i7IDwi/Jba8OLwyrvvQ14XuaQ9e/iZdEXiy4FITC8d4Ssc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VoxCHm5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8CAC433F1;
+	Tue, 27 Feb 2024 14:15:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042200;
-	bh=qqDdx7MyJQYVoowt3+JZZVvxtP6VfTsNpL02ywaV0j0=;
+	s=korg; t=1709043312;
+	bh=fIyLnEElggOUND1aplwx7ikm/idPRwbngOaeBX1LZDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ymPk77K3/6Ek9kch0zqhhHsep0173OmhYaxy37xopgdkV8fNWMYHdKu3490vYNDEY
-	 dfKEbbOdVwXNH9VX1NoYRXt14St6MSDYOEDZcZUiyvqdITyruleQlTkMzIu56qe9rl
-	 LVi7vl1MG94WEJCABD5uQ1/Z8i98BBpGwRy7TiOQ=
+	b=1VoxCHm5OS4EWgAQN/0pdVOnVWyrIdpm2c/sCDe0haTxJzaGvMLmkXyzPpzMgwblp
+	 Ax0BZkd+04AfqqXmyPhLp0QDuHvsJlXzjYpbdrI8eUW8tNGwKKaX/eeG7Q1WZM/tk3
+	 J4xaKp7LLh8OzZalLEWtkahrF5YMgU3YiFiNsHVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 212/299] RDMA/bnxt_re: Return error for SRQ resize
+Subject: [PATCH 6.1 062/195] fs/ntfs3: Prevent generic message "attempt to access beyond end of device"
 Date: Tue, 27 Feb 2024 14:25:23 +0100
-Message-ID: <20240227131632.610554156@linuxfoundation.org>
+Message-ID: <20240227131612.552249691@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +61,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 3687b450c5f32e80f179ce4b09e0454da1449eac ]
+[ Upstream commit 5ca87d01eba7bdfe9536a157ca33c1455bb8d16c ]
 
-SRQ resize is not supported in the driver. But driver is not
-returning error from bnxt_re_modify_srq() for SRQ resize.
+It used in test environment.
 
-Fixes: 37cb11acf1f7 ("RDMA/bnxt_re: Add SRQ support for Broadcom adapters")
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Link: https://lore.kernel.org/r/1705985677-15551-5-git-send-email-selvin.xavier@broadcom.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/ntfs3/fsntfs.c  | 24 ++++++++++++++++++++++++
+ fs/ntfs3/ntfs_fs.h | 14 +-------------
+ 2 files changed, 25 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index faa88d12ee868..cc466dfd792b0 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -1809,7 +1809,7 @@ int bnxt_re_modify_srq(struct ib_srq *ib_srq, struct ib_srq_attr *srq_attr,
- 	switch (srq_attr_mask) {
- 	case IB_SRQ_MAX_WR:
- 		/* SRQ resize is not supported */
--		break;
-+		return -EINVAL;
- 	case IB_SRQ_LIMIT:
- 		/* Change the SRQ threshold */
- 		if (srq_attr->srq_limit > srq->qplib_srq.max_wqe)
-@@ -1824,13 +1824,12 @@ int bnxt_re_modify_srq(struct ib_srq *ib_srq, struct ib_srq_attr *srq_attr,
- 		/* On success, update the shadow */
- 		srq->srq_limit = srq_attr->srq_limit;
- 		/* No need to Build and send response back to udata */
--		break;
-+		return 0;
- 	default:
- 		ibdev_err(&rdev->ibdev,
- 			  "Unsupported srq_attr_mask 0x%x", srq_attr_mask);
- 		return -EINVAL;
- 	}
--	return 0;
+diff --git a/fs/ntfs3/fsntfs.c b/fs/ntfs3/fsntfs.c
+index 4b72bc7f12ca3..1eac80d55b554 100644
+--- a/fs/ntfs3/fsntfs.c
++++ b/fs/ntfs3/fsntfs.c
+@@ -976,6 +976,30 @@ static inline __le32 security_hash(const void *sd, size_t bytes)
+ 	return cpu_to_le32(hash);
  }
  
- int bnxt_re_query_srq(struct ib_srq *ib_srq, struct ib_srq_attr *srq_attr)
++/*
++ * simple wrapper for sb_bread_unmovable.
++ */
++struct buffer_head *ntfs_bread(struct super_block *sb, sector_t block)
++{
++	struct ntfs_sb_info *sbi = sb->s_fs_info;
++	struct buffer_head *bh;
++
++	if (unlikely(block >= sbi->volume.blocks)) {
++		/* prevent generic message "attempt to access beyond end of device" */
++		ntfs_err(sb, "try to read out of volume at offset 0x%llx",
++			 (u64)block << sb->s_blocksize_bits);
++		return NULL;
++	}
++
++	bh = sb_bread_unmovable(sb, block);
++	if (bh)
++		return bh;
++
++	ntfs_err(sb, "failed to read volume at offset 0x%llx",
++		 (u64)block << sb->s_blocksize_bits);
++	return NULL;
++}
++
+ int ntfs_sb_read(struct super_block *sb, u64 lbo, size_t bytes, void *buffer)
+ {
+ 	struct block_device *bdev = sb->s_bdev;
+diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
+index c9ba0d27601dc..0f9bec29f2b70 100644
+--- a/fs/ntfs3/ntfs_fs.h
++++ b/fs/ntfs3/ntfs_fs.h
+@@ -580,6 +580,7 @@ bool check_index_header(const struct INDEX_HDR *hdr, size_t bytes);
+ int log_replay(struct ntfs_inode *ni, bool *initialized);
+ 
+ /* Globals from fsntfs.c */
++struct buffer_head *ntfs_bread(struct super_block *sb, sector_t block);
+ bool ntfs_fix_pre_write(struct NTFS_RECORD_HEADER *rhdr, size_t bytes);
+ int ntfs_fix_post_read(struct NTFS_RECORD_HEADER *rhdr, size_t bytes,
+ 		       bool simple);
+@@ -1012,19 +1013,6 @@ static inline u64 bytes_to_block(const struct super_block *sb, u64 size)
+ 	return (size + sb->s_blocksize - 1) >> sb->s_blocksize_bits;
+ }
+ 
+-static inline struct buffer_head *ntfs_bread(struct super_block *sb,
+-					     sector_t block)
+-{
+-	struct buffer_head *bh = sb_bread_unmovable(sb, block);
+-
+-	if (bh)
+-		return bh;
+-
+-	ntfs_err(sb, "failed to read volume at offset 0x%llx",
+-		 (u64)block << sb->s_blocksize_bits);
+-	return NULL;
+-}
+-
+ static inline struct ntfs_inode *ntfs_i(struct inode *inode)
+ {
+ 	return container_of(inode, struct ntfs_inode, vfs_inode);
 -- 
 2.43.0
 
