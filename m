@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-24709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDF898695EB
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:06:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13FCC8696D1
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9833928D768
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:06:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B233C1F2E716
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D5A1420A6;
-	Tue, 27 Feb 2024 14:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966401419B4;
+	Tue, 27 Feb 2024 14:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mVMyYqAl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uhYkcFi1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB21F13B2A2;
-	Tue, 27 Feb 2024 14:06:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548A878B61;
+	Tue, 27 Feb 2024 14:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042773; cv=none; b=fGxKiFsvVCVoCbOPhdC1d73X+aOBHcnbiA9iQgrG7dAoOcLVE+9HwsVe6KspWYS4gGuqrADKAGkLtcU51fo1QkIdfzs7F1s4lJ2arKjriMJ211cY8pUAjJ0kEzwDf+loMgi2O0TNuLbBZbmM8kncIfS46jmi9Tluy/xGo/Bbdj4=
+	t=1709043335; cv=none; b=hR9ucQd3KG4E0eVf0jnWIlPeXaHVC1lr6EkEdaKTJjaT6pu/PzFYFzu/GBe8594HM54kZMdvkBr95+x3FpLv6+LzuUKOhnY6Y/Gn8gIl+L7RdZiidqetUHmQ9G5Y/t2+Bh9+XWlYFvjUZbLKgi7hgPRJcuEvB51uoPonL3N1Pqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042773; c=relaxed/simple;
-	bh=PqKOiQ7hcWhubAmY1ogWMqlniibgTMh3Bf+Zou9ygyA=;
+	s=arc-20240116; t=1709043335; c=relaxed/simple;
+	bh=3RKcjg5ML6bunxSm5ClYtYwIEDlPxARltfTAiZAVF0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FdheBFULOvkiQzoaPtUUZmKgnf1q73d6G3Es8Ne4449NZfnt9fbk0P+zLs8Le/8UweKewqTPFu1NUywJtBcdG1teqBhN6uWpzrfdTTiUx7Mt56HewrZ5sEaR5ISuC+MuWtoTezg7rgW12HZR3JIqar6+rHC3Fgq588viB/lxWvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mVMyYqAl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA4EC43394;
-	Tue, 27 Feb 2024 14:06:12 +0000 (UTC)
+	 MIME-Version; b=EAgzJzReUlAvrFpNK8kIj5/nZciUyoTpjY+oxHF4Iy39mnH1JXWgVKxpnFfKNK5LLJhsDHu0PoyGKGs6KITHpd0/UlFk1bxtJZDgziYuM6/8XOzgR/7F2BUvJ+tsvTZQ04kTpXPIbA14/qaVsSOonhoh3RszgK/rvXY9ffGYZ7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uhYkcFi1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B1FC433C7;
+	Tue, 27 Feb 2024 14:15:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042773;
-	bh=PqKOiQ7hcWhubAmY1ogWMqlniibgTMh3Bf+Zou9ygyA=;
+	s=korg; t=1709043334;
+	bh=3RKcjg5ML6bunxSm5ClYtYwIEDlPxARltfTAiZAVF0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mVMyYqAlgi76hvi1qL9+Gtunh2e9p7t7V+3c4GF57TDXrv9W5r5Jo9bM4P8lK3keC
-	 xzFXqVNN/V/WyHH0ylX1jXLnXMzdwrYqCE0fIHGB3ZwpbDg74ILsE+nFeYvYZB0XFq
-	 Rg7wLH/+ZwhVuY9tNPq/CXUOk2BsXAREaWLUC+SI=
+	b=uhYkcFi1Hi3lOnxfhwgAPfPzDX4Rtcxd4qIBje6zp13H0YAaUUy3VLY77D6MEJJYq
+	 ThbhzKudb1vIuD+xAQ66AFoHHBaUrmteDVipFd3h5UU8QMeL8xTDaoqoB4acPCw/sE
+	 gWilMxrBsyJ1Bs4bF06+kIC0PqpLi/xSZc7JLMHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Alexander Tsoy <alexander@tsoy.me>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 115/245] clk: renesas: cpg-mssr: Remove superfluous check in resume code
+Subject: [PATCH 6.1 042/195] ALSA: usb-audio: Ignore clock selector errors for single connection
 Date: Tue, 27 Feb 2024 14:25:03 +0100
-Message-ID: <20240227131618.973468929@linuxfoundation.org>
+Message-ID: <20240227131611.778533066@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Alexander Tsoy <alexander@tsoy.me>
 
-[ Upstream commit 1c052043c79af5f70e80e2acd4dd70904ae08666 ]
+[ Upstream commit eaa1b01fe709d6a236a9cec74813e0400601fd23 ]
 
-When the code flow arrives at printing the error message in
-cpg_mssr_resume_noirq(), we know for sure that we are not running on an
-RZ/A Soc, as the code checked for that before.
+For devices with multiple clock sources connected to a selector, we need
+to check what a clock selector control request has returned. This is
+needed to ensure that a requested clock source is indeed selected and for
+autoclock feature to work.
 
-Fixes: ace342097768e35f ("clk: renesas: cpg-mssr: Fix STBCR suspend/resume handling")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/144a3e66d748c0c17f3524ac8fa6ece5bf5b6f1e.1673425314.git.geert+renesas@glider.be
+For devices with single clock source connected, if we get an error there
+is nothing else we can do about it. We can't skip clock selector setup as
+it is required by some devices. So lets just ignore error in this case.
+
+This should fix various buggy Mackie devices:
+
+[  649.109785] usb 1-1.3: parse_audio_format_rates_v2v3(): unable to find clock source (clock -32)
+[  649.111946] usb 1-1.3: parse_audio_format_rates_v2v3(): unable to find clock source (clock -32)
+[  649.113822] usb 1-1.3: parse_audio_format_rates_v2v3(): unable to find clock source (clock -32)
+
+There is also interesting info from the Windows documentation [1] (this
+is probably why manufacturers dont't even test this feature):
+
+"The USB Audio 2.0 driver doesn't support clock selection. The driver
+uses the Clock Source Entity, which is selected by default and never
+issues a Clock Selector Control SET CUR request."
+
+Link: https://learn.microsoft.com/en-us/windows-hardware/drivers/audio/usb-2-0-audio-drivers [1]
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217314
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218175
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218342
+Signed-off-by: Alexander Tsoy <alexander@tsoy.me>
+Link: https://lore.kernel.org/r/20240201115308.17838-1-alexander@tsoy.me
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/renesas/renesas-cpg-mssr.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ sound/usb/clock.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/renesas/renesas-cpg-mssr.c b/drivers/clk/renesas/renesas-cpg-mssr.c
-index ed67b90fc1b0c..54c5d35fe2ae3 100644
---- a/drivers/clk/renesas/renesas-cpg-mssr.c
-+++ b/drivers/clk/renesas/renesas-cpg-mssr.c
-@@ -911,9 +911,8 @@ static int cpg_mssr_resume_noirq(struct device *dev)
+diff --git a/sound/usb/clock.c b/sound/usb/clock.c
+index 33db334e65566..a676ad093d189 100644
+--- a/sound/usb/clock.c
++++ b/sound/usb/clock.c
+@@ -328,8 +328,16 @@ static int __uac_clock_find_source(struct snd_usb_audio *chip,
+ 			if (chip->quirk_flags & QUIRK_FLAG_SKIP_CLOCK_SELECTOR)
+ 				return ret;
+ 			err = uac_clock_selector_set_val(chip, entity_id, cur);
+-			if (err < 0)
++			if (err < 0) {
++				if (pins == 1) {
++					usb_audio_dbg(chip,
++						      "%s(): selector returned an error, "
++						      "assuming a firmware bug, id %d, ret %d\n",
++						      __func__, clock_id, err);
++					return ret;
++				}
+ 				return err;
++			}
  		}
  
- 		if (!i)
--			dev_warn(dev, "Failed to enable %s%u[0x%x]\n",
--				 priv->reg_layout == CLK_REG_LAYOUT_RZ_A ?
--				 "STB" : "SMSTP", reg, oldval & mask);
-+			dev_warn(dev, "Failed to enable SMSTP%u[0x%x]\n", reg,
-+				 oldval & mask);
- 	}
- 
- 	return 0;
+ 		if (!validate || ret > 0 || !chip->autoclock)
 -- 
 2.43.0
 
