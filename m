@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-24361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98EA3869415
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:51:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96B3186931E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:42:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F2141F2134F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:51:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FFAA1F25985
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:42:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD841420A8;
-	Tue, 27 Feb 2024 13:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B96271419B3;
+	Tue, 27 Feb 2024 13:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WcctqImZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IeKHKzGH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE16C54BD4;
-	Tue, 27 Feb 2024 13:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791C51420A8;
+	Tue, 27 Feb 2024 13:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041783; cv=none; b=kp7o8eZRUztOslj08mYs+G5yoaHNZDzTEmcpzOxTtmJeBW1PxkfG6RaMIs7bnyRR2A3xWVKvccN+jgDuVD65FIX4E8VmKC32HsavDFrkEjr6Lax9LjTbOCEmbETCBqL+b6kOlfn0YGRBCMmTxDQyoXT48+UIbbdu1Y45CSGrBm0=
+	t=1709041303; cv=none; b=IXgxuwTH6Q5xIF9yKALVpg3ZheqwviFyTkpPxdXAVl7Nk2QCupe+Xv1EqyPof9ZuufJEsnWf/8JOXrmM5n152qjgCQbnPHXzZvhjO7HiHB0T0m4JCuqWvwSRBSgOJZgTZLZ/FdRMVfm+1SQfTGsW9D02EoQLle5sx1y5opDSA0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041783; c=relaxed/simple;
-	bh=FgCyPxh5tomjKln7A+/VpkFdYSJtZiLboN3Z4wU4yL0=;
+	s=arc-20240116; t=1709041303; c=relaxed/simple;
+	bh=xXWOOYCL0LSFKppksqUDYK051GxK+3YEYo3WuPBbGtU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nQnOJRPW8wpzL+dIVnPFTbKSGX7AuuPPFj30B9g5B3SNm4unqOuLow/aFUg04wF56zOmG8f+lh0vjeWOihOdlleSAX9xUoomNI3v9FixdrmqMp7RI8rhgkpFQx370MNqChSVW3HCJ+J0kZvgURcgoTgyL+JVZ/C0WS/HK5mKW6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WcctqImZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63BB5C433C7;
-	Tue, 27 Feb 2024 13:49:42 +0000 (UTC)
+	 MIME-Version; b=YMeajPjqsOLY8Rg4OOjbKsHZ7SLACZ+fmCkWgud9hxLMMtDsJjqZCxyJ2JpsARSBps/7RqFQGoyYa3jFb5RAo1tG6fzKZx17oKS6oDnaAFG3aZgkyB6MyCNMBSOFKX/3AoevpKIQVMSPFv3nI01rok6F1MUD5tWOcpXVYeXGbu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IeKHKzGH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 058AEC43390;
+	Tue, 27 Feb 2024 13:41:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041782;
-	bh=FgCyPxh5tomjKln7A+/VpkFdYSJtZiLboN3Z4wU4yL0=;
+	s=korg; t=1709041303;
+	bh=xXWOOYCL0LSFKppksqUDYK051GxK+3YEYo3WuPBbGtU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WcctqImZW4uOaD5WZ+dk4nVuHH/Rhxil5LD849wrjaNNnHoXh4zkV3lc6jd63VMOO
-	 oPK85m6R6tkmDYZDPYcah80s+Xca+KEro7jwtdSNgugjDTCv2tWzoPi2XGilCQQvE3
-	 eNw3BU+UQFItH05+NA0ClvRN6PA02hDl8Gu5zUHQ=
+	b=IeKHKzGHvNbdkeYV5iotdbPo9JAR7ji+n8nXFiAK4+/jeRd03tQNDc7PL7iGpLjw9
+	 C1CsL/lvnECFbmiluFYFX+iY66wRKVnatdKMsRmdw8DNyEU97NVfvyeR4zsfR1LwCE
+	 FlGkdPEwgrtdmvFAQRw3UUubFXxySgypghchtrso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Yi Liu <yi.l.liu@intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 039/299] regulator: pwm-regulator: Add validity checks in continuous .get_voltage
+Subject: [PATCH 6.7 292/334] iommu/vt-d: Wrap the dirty tracking loop to be a helper
 Date: Tue, 27 Feb 2024 14:22:30 +0100
-Message-ID: <20240227131627.241749045@linuxfoundation.org>
+Message-ID: <20240227131640.442207711@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Yi Liu <yi.l.liu@intel.com>
 
-[ Upstream commit c92688cac239794e4a1d976afa5203a4d3a2ac0e ]
+[ Upstream commit 0c7f2497b39da44253d7bcf2b41f52b0048859ad ]
 
-Continuous regulators can be configured to operate only in a certain
-duty cycle range (for example from 0..91%). Add a check to error out if
-the duty cycle translates to an unsupported (or out of range) voltage.
+Add device_set_dirty_tracking() to loop all the devices and set the dirty
+tracking per the @enable parameter.
 
-Suggested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://msgid.link/r/20240113224628.377993-2-martin.blumenstingl@googlemail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
+Link: https://lore.kernel.org/r/20240208082307.15759-8-yi.l.liu@intel.com
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Stable-dep-of: f1e1610950ea ("iommu/vt-d: Add missing dirty tracking set for parent domain")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/pwm-regulator.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iommu/intel/iommu.c | 35 ++++++++++++++++++++++++-----------
+ 1 file changed, 24 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/regulator/pwm-regulator.c b/drivers/regulator/pwm-regulator.c
-index 2aff6db748e2c..e33d10df7a763 100644
---- a/drivers/regulator/pwm-regulator.c
-+++ b/drivers/regulator/pwm-regulator.c
-@@ -158,6 +158,9 @@ static int pwm_regulator_get_voltage(struct regulator_dev *rdev)
- 	pwm_get_state(drvdata->pwm, &pstate);
+diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+index 88f9b4ffd5774..e3b3ab506b185 100644
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -4865,23 +4865,38 @@ static void *intel_iommu_hw_info(struct device *dev, u32 *length, u32 *type)
+ 	return vtd;
+ }
  
- 	voltage = pwm_get_relative_duty_cycle(&pstate, duty_unit);
-+	if (voltage < min(max_uV_duty, min_uV_duty) ||
-+	    voltage > max(max_uV_duty, min_uV_duty))
-+		return -ENOTRECOVERABLE;
++/*
++ * Set dirty tracking for the device list of a domain. The caller must
++ * hold the domain->lock when calling it.
++ */
++static int device_set_dirty_tracking(struct list_head *devices, bool enable)
++{
++	struct device_domain_info *info;
++	int ret = 0;
++
++	list_for_each_entry(info, devices, link) {
++		ret = intel_pasid_setup_dirty_tracking(info->iommu, info->dev,
++						       IOMMU_NO_PASID, enable);
++		if (ret)
++			break;
++	}
++
++	return ret;
++}
++
+ static int intel_iommu_set_dirty_tracking(struct iommu_domain *domain,
+ 					  bool enable)
+ {
+ 	struct dmar_domain *dmar_domain = to_dmar_domain(domain);
+-	struct device_domain_info *info;
+ 	int ret;
  
- 	/*
- 	 * The dutycycle for min_uV might be greater than the one for max_uV.
+ 	spin_lock(&dmar_domain->lock);
+ 	if (dmar_domain->dirty_tracking == enable)
+ 		goto out_unlock;
+ 
+-	list_for_each_entry(info, &dmar_domain->devices, link) {
+-		ret = intel_pasid_setup_dirty_tracking(info->iommu, info->dev,
+-						       IOMMU_NO_PASID, enable);
+-		if (ret)
+-			goto err_unwind;
+-	}
++	ret = device_set_dirty_tracking(&dmar_domain->devices, enable);
++	if (ret)
++		goto err_unwind;
+ 
+ 	dmar_domain->dirty_tracking = enable;
+ out_unlock:
+@@ -4890,10 +4905,8 @@ static int intel_iommu_set_dirty_tracking(struct iommu_domain *domain,
+ 	return 0;
+ 
+ err_unwind:
+-	list_for_each_entry(info, &dmar_domain->devices, link)
+-		intel_pasid_setup_dirty_tracking(info->iommu, info->dev,
+-						 IOMMU_NO_PASID,
+-						 dmar_domain->dirty_tracking);
++	device_set_dirty_tracking(&dmar_domain->devices,
++				  dmar_domain->dirty_tracking);
+ 	spin_unlock(&dmar_domain->lock);
+ 	return ret;
+ }
 -- 
 2.43.0
 
