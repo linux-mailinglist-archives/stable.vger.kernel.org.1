@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-25039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA6DF869772
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:21:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B81FC869688
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:12:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8602F28283B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:21:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE5E71C22A0F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:12:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED03313EFEC;
-	Tue, 27 Feb 2024 14:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E61413B2B3;
+	Tue, 27 Feb 2024 14:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JSYS/jSn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PYt+PFb9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC22F13B2B4;
-	Tue, 27 Feb 2024 14:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01CE13AA4C;
+	Tue, 27 Feb 2024 14:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043685; cv=none; b=ZMtsozW4HFw9M1SSaCqJWpJCqWQFSInKqc5JoPGF5VxYCQe6iS9UH7BKDDeJO3YguH6JMf2TxViMQk7QCRp3L/Gf/p1ZLbVx9jyGowSXvtL2G7spNRBdNpOnYHnoRC6/xR4kOwPY7HsfUrILLF9IpjOZZCE5es9W4ei+D+pKqdo=
+	t=1709043154; cv=none; b=Itc8Ks3tlDL/VIB8ghw78TeNpG8Ss/mNk9gbXw4loH4dfbSrG7gV2O4YrpVEVK7wQAfxRB7s1f885bg85DSlrLzpaG4mpjcQQK6wEHxleLiK25YNPgDEsO0ogpwKb1VxZTVe2sGwnPxmK8F0rksQIf8USzLf/YoSMovI5yvArM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043685; c=relaxed/simple;
-	bh=enELkqVk6zRg6YHOytDsHgF3jwu1x8ENQr1LxcT9ae8=;
+	s=arc-20240116; t=1709043154; c=relaxed/simple;
+	bh=gKmlo/GrqZPSkFlGOWt8xh3XYD7B+usj5NyCvU+xXBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yitu4Yyi55KiGfAZuQLxydbYEyB8MZccQfKERufaoi9j0+dZCnvKIOlWp7+visShVUKfZJVQqIkHRANNs3SzKSv8ptMwO0iIuoYEYLSdojLbQFdOgm2rkxVMnizOzIdYRTWdVwDfQ3tHMf1cBZ/04c9pgGKb+m/OJNhYMZlswKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JSYS/jSn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37ED6C433C7;
-	Tue, 27 Feb 2024 14:21:25 +0000 (UTC)
+	 MIME-Version; b=JOFa1tghzI5isSx6mnGwA7Ypw/Dx6R3hwDxy2S8saTIuVNjrL5i/hxQegjN0+7hIqe86Otrc+XjO3ke1JnkmShzmKVc5JulywmG6zo7BJ45lNDWbg7+LW50TCXi9rxkqveTuyvRZlzyJagipGHqs15pz8bz6Q6BM3t9eK46Lxkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PYt+PFb9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1179FC433F1;
+	Tue, 27 Feb 2024 14:12:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043685;
-	bh=enELkqVk6zRg6YHOytDsHgF3jwu1x8ENQr1LxcT9ae8=;
+	s=korg; t=1709043154;
+	bh=gKmlo/GrqZPSkFlGOWt8xh3XYD7B+usj5NyCvU+xXBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JSYS/jSnmbjCR8+ZIXC838XUI7Wf35m4pqts26T/JYFeIVNWA+ZXTUTzqoXgew8+6
-	 xuNDq1uo7mOcGgM7RasOwq5uGmaRs/THZb9pMAbVJ4V9VfAujzlQTu3am5LcDFDmQH
-	 oFZxW89RVRgxOzbv+MzroNSdvgbBf5erIyKCrIT0=
+	b=PYt+PFb9LfwHo+y1UcawDLFF374J68XycRcphOi9Y1zklb4/zBX9XazjW0B8+ITmf
+	 jyPv3V7cfpaJewFxV0qFNYLYh6GNgfd6CIhrWa1pNTVUjU2H6ZFZxW1+aYEbaAKBX/
+	 gu6MpgBs7kMSAH9AhvYiwPkIvx7KHcux1/V0k3g4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+de4025c006ec68ac56fc@syzkaller.appspotmail.com
-Subject: [PATCH 6.1 169/195] netfilter: nf_tables: set dormant flag on hook register failure
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.15 242/245] netfilter: nf_tables: fix scheduling-while-atomic splat
 Date: Tue, 27 Feb 2024 14:27:10 +0100
-Message-ID: <20240227131615.987753526@linuxfoundation.org>
+Message-ID: <20240227131623.023559872@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit bccebf64701735533c8db37773eeacc6566cc8ec ]
+commit 2024439bd5ceb145eeeb428b2a59e9b905153ac3 upstream.
 
-We need to set the dormant flag again if we fail to register
-the hooks.
+nf_tables_check_loops() can be called from rhashtable list
+walk so cond_resched() cannot be used here.
 
-During memory pressure hook registration can fail and we end up
-with a table marked as active but no registered hooks.
-
-On table/base chain deletion, nf_tables will attempt to unregister
-the hook again which yields a warn splat from the nftables core.
-
-Reported-and-tested-by: syzbot+de4025c006ec68ac56fc@syzkaller.appspotmail.com
-Fixes: 179d9ba5559a ("netfilter: nf_tables: fix table flag updates")
+Fixes: 81ea01066741 ("netfilter: nf_tables: add rescheduling points during loop detection walks")
 Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nf_tables_api.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 49acb89ba9c56..f1a74b0949999 100644
 --- a/net/netfilter/nf_tables_api.c
 +++ b/net/netfilter/nf_tables_api.c
-@@ -1245,6 +1245,7 @@ static int nf_tables_updtable(struct nft_ctx *ctx)
- 	return 0;
+@@ -10044,13 +10044,9 @@ static int nf_tables_check_loops(const s
+ 				break;
+ 			}
+ 		}
+-
+-		cond_resched();
+ 	}
  
- err_register_hooks:
-+	ctx->table->flags |= NFT_TABLE_F_DORMANT;
- 	nft_trans_destroy(trans);
- 	return ret;
- }
--- 
-2.43.0
-
+ 	list_for_each_entry(set, &ctx->table->sets, list) {
+-		cond_resched();
+-
+ 		if (!nft_is_active_next(ctx->net, set))
+ 			continue;
+ 		if (!(set->flags & NFT_SET_MAP) ||
 
 
 
