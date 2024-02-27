@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-25016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC367869757
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:20:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94D7E8697A8
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:23:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1178A1C23DE5
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:20:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FFC41F28329
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:23:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C42313F016;
-	Tue, 27 Feb 2024 14:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AF57141995;
+	Tue, 27 Feb 2024 14:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kvv/nGIh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jU0w79d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A5813DB92;
-	Tue, 27 Feb 2024 14:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB16113B2B8;
+	Tue, 27 Feb 2024 14:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043622; cv=none; b=X7PZ6DkoXgyHVSDLDK6sfM8ktkIBPiTjIHINjMLl2+J6N8e1OJB8cSSahShjiJaSi1K5pJEGeANVMBh6O1hecqqnpXpsSWoovbevelm4u717fiEPIGCuovv74X/mYfybcSRqW30K3Ur2EkmJMSazi70rPgyqLm/A8twh9Zgc3U0=
+	t=1709043821; cv=none; b=l/D4i2hIfbn0HZ1OGVi+60L7hODFTC3UvVNC7MMU/oSlXMb9foMouHJDPA127U3S8p6bSAM6RqFFkxV5Go/x+c0eTGgxnSWvUzB8Ie6pPN0S2giTjJkJBvDrLnrGxVrzBbGh7ipHCchW/GajgLWEyV9lCDeGl/z4LaqN27tGwbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043622; c=relaxed/simple;
-	bh=Za6N8x9wSQjxd4LvijtCN++GP3nO120aBPUC0ZtY6Q0=;
+	s=arc-20240116; t=1709043821; c=relaxed/simple;
+	bh=iueUy3s++iWTzShwDJz9nPO9YKIkJupKPRUs2mhUO9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JETf/1lkBo5ew7PxxgrLIcOWB9vlvGP8gzVpQhZj8pWP9mEi/VPgcCKw4a1N+74knFpVJF5H023uqIOQFt9GC5/GEpMvpTWVV3OLyhDfoK5f09j3sBFh//z/beM9ho8xnstAE1wU0YaHcpyyKj00A8NNCRhbNPHDFcZbRUTl2es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kvv/nGIh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5F30C433F1;
-	Tue, 27 Feb 2024 14:20:21 +0000 (UTC)
+	 MIME-Version; b=bvYOgWPIubxjt1bwEvbtXTFviZ6ojyT+YVFD9QiaIGnJ6G6tqFf8Uue+vyYG7lGpmQuJvAPWpRkDgQ3cFjREJplnHixWh/PnDfaA6YLHWF5BY3O0tuRd2Hq4eY+AkrzZfn3qed4C0zSGoK4z9P4hcyqbrDJZL8FIvW+m3XN8JGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jU0w79d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC937C433F1;
+	Tue, 27 Feb 2024 14:23:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043622;
-	bh=Za6N8x9wSQjxd4LvijtCN++GP3nO120aBPUC0ZtY6Q0=;
+	s=korg; t=1709043821;
+	bh=iueUy3s++iWTzShwDJz9nPO9YKIkJupKPRUs2mhUO9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kvv/nGIhgMTNkgI9RprAfTG01pTNGUewhql/pEfOEd23e1LEBewi+Hh9CaD8ObYvn
-	 yTFgKh9qNcNFAU0G8pQApWpKEtQ0DCI79ELkDmOxOPzozz9o0otV/jNopY1+D1qjHd
-	 GEcm1SzkE9GucAMlzWfqSx/q9NDjDO/DlvHUXhZY=
+	b=0jU0w79dmhfCXpQY7GwoJdIBuvfR60w14gqu3a5nLMl5l8EMFgZQ0X0kM/VmonNLj
+	 eTlTWAFeL7wvTkVlBjewy7Cs0/3MYMRYJ4QKaoQggtRNeMdUyJWrR4g2qIxv/qYMZK
+	 3oG0F8Y1UdrHiw+Pp5UJxKk1sbxx3a3omTQUNU1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Kees Cook <keescook@chromium.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 175/195] netfilter: nf_tables: use kzalloc for hook allocation
+Subject: [PATCH 5.4 49/84] drm/amdgpu: Fix type of second parameter in trans_msg() callback
 Date: Tue, 27 Feb 2024 14:27:16 +0100
-Message-ID: <20240227131616.183715203@linuxfoundation.org>
+Message-ID: <20240227131554.468186406@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 195e5f88c2e48330ba5483e0bad2de3b3fad484f ]
+[ Upstream commit f0d0f1087333714ee683cc134a95afe331d7ddd9 ]
 
-KMSAN reports unitialized variable when registering the hook,
-   reg->hook_ops_type == NF_HOOK_OP_BPF)
-        ~~~~~~~~~~~ undefined
+With clang's kernel control flow integrity (kCFI, CONFIG_CFI_CLANG),
+indirect call targets are validated against the expected function
+pointer prototype to make sure the call target is valid to help mitigate
+ROP attacks. If they are not identical, there is a failure at run time,
+which manifests as either a kernel panic or thread getting killed. A
+proposed warning in clang aims to catch these at compile time, which
+reveals:
 
-This is a small structure, just use kzalloc to make sure this
-won't happen again when new fields get added to nf_hook_ops.
+  drivers/gpu/drm/amd/amdgpu/mxgpu_ai.c:412:15: error: incompatible function pointer types initializing 'void (*)(struct amdgpu_device *, u32, u32, u32, u32)' (aka 'void (*)(struct amdgpu_device *, unsigned int, unsigned int, unsigned int, unsigned int)') with an expression of type 'void (struct amdgpu_device *, enum idh_request, u32, u32, u32)' (aka 'void (struct amdgpu_device *, enum idh_request, unsigned int, unsigned int, unsigned int)') [-Werror,-Wincompatible-function-pointer-types-strict]
+          .trans_msg = xgpu_ai_mailbox_trans_msg,
+                      ^~~~~~~~~~~~~~~~~~~~~~~~~
+  1 error generated.
 
-Fixes: 7b4b2fa37587 ("netfilter: annotate nf_tables base hook ops")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+  drivers/gpu/drm/amd/amdgpu/mxgpu_nv.c:435:15: error: incompatible function pointer types initializing 'void (*)(struct amdgpu_device *, u32, u32, u32, u32)' (aka 'void (*)(struct amdgpu_device *, unsigned int, unsigned int, unsigned int, unsigned int)') with an expression of type 'void (struct amdgpu_device *, enum idh_request, u32, u32, u32)' (aka 'void (struct amdgpu_device *, enum idh_request, unsigned int, unsigned int, unsigned int)') [-Werror,-Wincompatible-function-pointer-types-strict]
+          .trans_msg = xgpu_nv_mailbox_trans_msg,
+                      ^~~~~~~~~~~~~~~~~~~~~~~~~
+  1 error generated.
+
+The type of the second parameter in the prototype should be 'enum
+idh_request' instead of 'u32'. Update it to clear up the warnings.
+
+Link: https://github.com/ClangBuiltLinux/linux/issues/1750
+Reported-by: Sami Tolvanen <samitolvanen@google.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index a29313e0aaa4d..e21ec3ad80939 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -2059,7 +2059,7 @@ static struct nft_hook *nft_netdev_hook_alloc(struct net *net,
- 	struct nft_hook *hook;
- 	int err;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
+index b0b2bdc750df9..3e59b4e150237 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.h
+@@ -48,6 +48,8 @@ struct amdgpu_vf_error_buffer {
+ 	uint64_t data[AMDGPU_VF_ERROR_ENTRY_SIZE];
+ };
  
--	hook = kmalloc(sizeof(struct nft_hook), GFP_KERNEL_ACCOUNT);
-+	hook = kzalloc(sizeof(struct nft_hook), GFP_KERNEL_ACCOUNT);
- 	if (!hook) {
- 		err = -ENOMEM;
- 		goto err_hook_alloc;
++enum idh_request;
++
+ /**
+  * struct amdgpu_virt_ops - amdgpu device virt operations
+  */
+@@ -56,7 +58,8 @@ struct amdgpu_virt_ops {
+ 	int (*rel_full_gpu)(struct amdgpu_device *adev, bool init);
+ 	int (*reset_gpu)(struct amdgpu_device *adev);
+ 	int (*wait_reset)(struct amdgpu_device *adev);
+-	void (*trans_msg)(struct amdgpu_device *adev, u32 req, u32 data1, u32 data2, u32 data3);
++	void (*trans_msg)(struct amdgpu_device *adev, enum idh_request req,
++			  u32 data1, u32 data2, u32 data3);
+ 	int (*get_pp_clk)(struct amdgpu_device *adev, u32 type, char *buf);
+ 	int (*force_dpm_level)(struct amdgpu_device *adev, u32 level);
+ };
 -- 
 2.43.0
 
