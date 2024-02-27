@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-24355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 516018695B0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:04:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5043C8694D2
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:56:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8750AB31D18
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C889B30144
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:44:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163AA13DB83;
-	Tue, 27 Feb 2024 13:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFC0B140391;
+	Tue, 27 Feb 2024 13:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CK+uK/qf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CrQHv+1s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C824C54BD4;
-	Tue, 27 Feb 2024 13:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D11F13F006;
+	Tue, 27 Feb 2024 13:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041766; cv=none; b=PBQuJifh596CFywI1QYswdOluJS6WHIS8NoUXYuSDKM86COfqYKNNUcboR0oerk4quODfVz/K+Qmngs9CAb2jqd37NEQkGnT9vNXCCE9wlamRhhYAyR+Q49EZy3fnC/72s43go8crE+RvR6p1CJlxdn8YsnQmO8d27JW+m0Nf7o=
+	t=1709041435; cv=none; b=u+aPUlchUaTtww1LSMv7qBAh8l1n28bf8pjoRuOm18bse1ckgeD8ytcOLZMxI3jfCt/PuVKVsC88Gj4pWCcIOmJLR6ufI/adCevDUG18/uDxV6wsPUzRUUVvGcwklM4UVAPaHXYfgUh+0YCKpPTmLuLtGKRUTqEih8FFjijLqBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041766; c=relaxed/simple;
-	bh=q1S+dxfZXzAL7imY4opuciaGp1J8YHe0EaHGXdk60nQ=;
+	s=arc-20240116; t=1709041435; c=relaxed/simple;
+	bh=37hzgksObGXAsE5Ub6K5IP40By2z6xlr1Y5MUCu7ilg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N6+B4zLkh4ocpa9/ItzY4Xh4Lvm0J7o5drbZQ9kJt4PxVDxBs+iPrBpzkAs/W+hrSkhB1/MCUhmhMucHIYldI/VtfEDxQwloqU8DkqS4quXsCTaVrHRToYyGXCHFoz15onNHqhPU3Hvct4PUQZp7hC13ax5Eojw3Y01fdTWj2j8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CK+uK/qf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 175E5C433C7;
-	Tue, 27 Feb 2024 13:49:25 +0000 (UTC)
+	 MIME-Version; b=uT95Tt909B/piGkc+3P6IQb26Pm5gyHxvhUFHrGv1mMnZ3I7mj3N3pMwMoPaB8OGp3HxaVf1czk6PIVakeNcpbacGKlClmRH2Myes8Aw4xJHMb+PlpcQxT2R4vQvhUiTRimFfOP2CxQpE2mnrnTIm9BFLUoZ6YT+4ag9FEZBlTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CrQHv+1s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BD68C433C7;
+	Tue, 27 Feb 2024 13:43:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041766;
-	bh=q1S+dxfZXzAL7imY4opuciaGp1J8YHe0EaHGXdk60nQ=;
+	s=korg; t=1709041435;
+	bh=37hzgksObGXAsE5Ub6K5IP40By2z6xlr1Y5MUCu7ilg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CK+uK/qfCZcqixoPvyyKYgh7eZrkyWwT+N38wDyVv4rmfU07ps+cdd41oXooSh8Ov
-	 33/DNKHltdg5osyHW8/DhY24TTmjqkFRCM5U1VpJeq3HRy+Bi7TP9tKy4oB0m8C8n0
-	 zCHBZW/myprNy+J4Y40povC+bmwMaGC53dDUV1Lo=
+	b=CrQHv+1seeeGHmKMwYQzpnM8CRGxgyLDNPF2rQTTpcYd6CaUglNeh1cPfGCtwN0mW
+	 0xVKvvkXAfzOr7s58IXQFv43PdVGYn0AbpdbPQK5supbOrPqWsS2MhKCa0tBD3S7gt
+	 vKrepcdLDVDMhFjkN19KYejd0R0ddp3hdt/p3/lI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	Daniel Wagner <dwagner@suse.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 060/299] nvmet-fc: release reference on target port
+Subject: [PATCH 6.7 313/334] tools: ynl: dont leak mcast_groups on init error
 Date: Tue, 27 Feb 2024 14:22:51 +0100
-Message-ID: <20240227131627.887784842@linuxfoundation.org>
+Message-ID: <20240227131641.170280273@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <dwagner@suse.de>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit c691e6d7e13dab81ac8c7489c83b5dea972522a5 ]
+[ Upstream commit 5d78b73e851455d525a064f3b042b29fdc0c1a4a ]
 
-In case we return early out of __nvmet_fc_finish_ls_req() we still have
-to release the reference on the target port.
+Make sure to free the already-parsed mcast_groups if
+we don't get an ack from the kernel when reading family info.
+This is part of the ynl_sock_create() error path, so we won't
+get a call to ynl_sock_destroy() to free them later.
 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Daniel Wagner <dwagner@suse.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 86878f14d71a ("tools: ynl: user space helpers")
+Acked-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Link: https://lore.kernel.org/r/20240220161112.2735195-3-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/fc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/net/ynl/lib/ynl.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/target/fc.c b/drivers/nvme/target/fc.c
-index 1ab6601fdd5cf..0075d9636b065 100644
---- a/drivers/nvme/target/fc.c
-+++ b/drivers/nvme/target/fc.c
-@@ -359,7 +359,7 @@ __nvmet_fc_finish_ls_req(struct nvmet_fc_ls_req_op *lsop)
- 
- 	if (!lsop->req_queued) {
- 		spin_unlock_irqrestore(&tgtport->lock, flags);
--		return;
-+		goto out_puttgtport;
+diff --git a/tools/net/ynl/lib/ynl.c b/tools/net/ynl/lib/ynl.c
+index 65975a8306738..591f5f50ddaab 100644
+--- a/tools/net/ynl/lib/ynl.c
++++ b/tools/net/ynl/lib/ynl.c
+@@ -584,7 +584,13 @@ static int ynl_sock_read_family(struct ynl_sock *ys, const char *family_name)
+ 		return err;
  	}
  
- 	list_del(&lsop->lsreq_list);
-@@ -372,6 +372,7 @@ __nvmet_fc_finish_ls_req(struct nvmet_fc_ls_req_op *lsop)
- 				  (lsreq->rqstlen + lsreq->rsplen),
- 				  DMA_BIDIRECTIONAL);
- 
-+out_puttgtport:
- 	nvmet_fc_tgtport_put(tgtport);
+-	return ynl_recv_ack(ys, err);
++	err = ynl_recv_ack(ys, err);
++	if (err < 0) {
++		free(ys->mcast_groups);
++		return err;
++	}
++
++	return 0;
  }
  
+ struct ynl_sock *
 -- 
 2.43.0
 
