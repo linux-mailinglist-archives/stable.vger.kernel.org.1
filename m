@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-24353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB9FE86940E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 516018695B0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:04:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B6C61F213A1
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8750AB31D18
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F9BF13DB87;
-	Tue, 27 Feb 2024 13:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 163AA13DB83;
+	Tue, 27 Feb 2024 13:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="it78x/Vv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CK+uK/qf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CFB613B7AB;
-	Tue, 27 Feb 2024 13:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C824C54BD4;
+	Tue, 27 Feb 2024 13:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041761; cv=none; b=ntvG9KnFlYv1BrZYNBYeW3M6VGv8WJdXcUXbhoZ53oCAeXQQh8bzbnO2PHbbevBp2Vkf9asMV0R7mmkBj4MRpQhgDWvcuYE7rSEcvblHbue6OGPOK3/wEZcTRV43MxCKeOoV/fuBI88ctAhmHnOEBSWhSawSDuJhsWFqzLOlqVc=
+	t=1709041766; cv=none; b=PBQuJifh596CFywI1QYswdOluJS6WHIS8NoUXYuSDKM86COfqYKNNUcboR0oerk4quODfVz/K+Qmngs9CAb2jqd37NEQkGnT9vNXCCE9wlamRhhYAyR+Q49EZy3fnC/72s43go8crE+RvR6p1CJlxdn8YsnQmO8d27JW+m0Nf7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041761; c=relaxed/simple;
-	bh=7ezRUtE0AhN5lyKKCMYE41XRxRZCvTo7qD7nJqRSjG0=;
+	s=arc-20240116; t=1709041766; c=relaxed/simple;
+	bh=q1S+dxfZXzAL7imY4opuciaGp1J8YHe0EaHGXdk60nQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kewe315q/sWOzr31BxVMH6/bT71jK9UHVl10wf1cHqCEuBRvI/o+rt2UK/FiyaL12fbviA05jV8PpJ6aUoVsQtRlA0Pp3yOQzBXfGHI5C5+C5mbu3BxinhMgb5Y3cWO+94MchCyvPHYz1Uxtg+zxv9eyW3Sxyk28bl8ATCRENKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=it78x/Vv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 950E4C433F1;
-	Tue, 27 Feb 2024 13:49:20 +0000 (UTC)
+	 MIME-Version; b=N6+B4zLkh4ocpa9/ItzY4Xh4Lvm0J7o5drbZQ9kJt4PxVDxBs+iPrBpzkAs/W+hrSkhB1/MCUhmhMucHIYldI/VtfEDxQwloqU8DkqS4quXsCTaVrHRToYyGXCHFoz15onNHqhPU3Hvct4PUQZp7hC13ax5Eojw3Y01fdTWj2j8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CK+uK/qf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 175E5C433C7;
+	Tue, 27 Feb 2024 13:49:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041761;
-	bh=7ezRUtE0AhN5lyKKCMYE41XRxRZCvTo7qD7nJqRSjG0=;
+	s=korg; t=1709041766;
+	bh=q1S+dxfZXzAL7imY4opuciaGp1J8YHe0EaHGXdk60nQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=it78x/VvDwbCp3Zja9Z2Q6zymz6nRedsdCUHIwIcbFRMXxSzFKycNjJb0sksRLwQg
-	 egTaiRBEDTQdQBPd5WvVi6PBp9Pxi0/OlOrXJOWGpr3MNVpVJHPd/n4rvk7TA8ZZ+8
-	 fsUvVUSFufzmlVIG8B3k8sNtgbnnxOtgtJV9CoSQ=
+	b=CK+uK/qfCZcqixoPvyyKYgh7eZrkyWwT+N38wDyVv4rmfU07ps+cdd41oXooSh8Ov
+	 33/DNKHltdg5osyHW8/DhY24TTmjqkFRCM5U1VpJeq3HRy+Bi7TP9tKy4oB0m8C8n0
+	 zCHBZW/myprNy+J4Y40povC+bmwMaGC53dDUV1Lo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
 	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
 	Daniel Wagner <dwagner@suse.de>,
 	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 059/299] nvmet-fcloop: swap the list_add_tail arguments
-Date: Tue, 27 Feb 2024 14:22:50 +0100
-Message-ID: <20240227131627.857622723@linuxfoundation.org>
+Subject: [PATCH 6.6 060/299] nvmet-fc: release reference on target port
+Date: Tue, 27 Feb 2024 14:22:51 +0100
+Message-ID: <20240227131627.887784842@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
 References: <20240227131625.847743063@linuxfoundation.org>
@@ -70,52 +70,41 @@ Content-Transfer-Encoding: 8bit
 
 From: Daniel Wagner <dwagner@suse.de>
 
-[ Upstream commit dcfad4ab4d6733f2861cd241d8532a0004fc835a ]
+[ Upstream commit c691e6d7e13dab81ac8c7489c83b5dea972522a5 ]
 
-The first argument of list_add_tail function is the new element which
-should be added to the list which is the second argument. Swap the
-arguments to allow processing more than one element at a time.
+In case we return early out of __nvmet_fc_finish_ls_req() we still have
+to release the reference on the target port.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
 Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Daniel Wagner <dwagner@suse.de>
 Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/fcloop.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/nvme/target/fc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/target/fcloop.c b/drivers/nvme/target/fcloop.c
-index c65a73433c05f..e6d4226827b52 100644
---- a/drivers/nvme/target/fcloop.c
-+++ b/drivers/nvme/target/fcloop.c
-@@ -358,7 +358,7 @@ fcloop_h2t_ls_req(struct nvme_fc_local_port *localport,
- 	if (!rport->targetport) {
- 		tls_req->status = -ECONNREFUSED;
- 		spin_lock(&rport->lock);
--		list_add_tail(&rport->ls_list, &tls_req->ls_list);
-+		list_add_tail(&tls_req->ls_list, &rport->ls_list);
- 		spin_unlock(&rport->lock);
- 		queue_work(nvmet_wq, &rport->ls_work);
- 		return ret;
-@@ -391,7 +391,7 @@ fcloop_h2t_xmt_ls_rsp(struct nvmet_fc_target_port *targetport,
- 	if (remoteport) {
- 		rport = remoteport->private;
- 		spin_lock(&rport->lock);
--		list_add_tail(&rport->ls_list, &tls_req->ls_list);
-+		list_add_tail(&tls_req->ls_list, &rport->ls_list);
- 		spin_unlock(&rport->lock);
- 		queue_work(nvmet_wq, &rport->ls_work);
+diff --git a/drivers/nvme/target/fc.c b/drivers/nvme/target/fc.c
+index 1ab6601fdd5cf..0075d9636b065 100644
+--- a/drivers/nvme/target/fc.c
++++ b/drivers/nvme/target/fc.c
+@@ -359,7 +359,7 @@ __nvmet_fc_finish_ls_req(struct nvmet_fc_ls_req_op *lsop)
+ 
+ 	if (!lsop->req_queued) {
+ 		spin_unlock_irqrestore(&tgtport->lock, flags);
+-		return;
++		goto out_puttgtport;
  	}
-@@ -446,7 +446,7 @@ fcloop_t2h_ls_req(struct nvmet_fc_target_port *targetport, void *hosthandle,
- 	if (!tport->remoteport) {
- 		tls_req->status = -ECONNREFUSED;
- 		spin_lock(&tport->lock);
--		list_add_tail(&tport->ls_list, &tls_req->ls_list);
-+		list_add_tail(&tls_req->ls_list, &tport->ls_list);
- 		spin_unlock(&tport->lock);
- 		queue_work(nvmet_wq, &tport->ls_work);
- 		return ret;
+ 
+ 	list_del(&lsop->lsreq_list);
+@@ -372,6 +372,7 @@ __nvmet_fc_finish_ls_req(struct nvmet_fc_ls_req_op *lsop)
+ 				  (lsreq->rqstlen + lsreq->rsplen),
+ 				  DMA_BIDIRECTIONAL);
+ 
++out_puttgtport:
+ 	nvmet_fc_tgtport_put(tgtport);
+ }
+ 
 -- 
 2.43.0
 
