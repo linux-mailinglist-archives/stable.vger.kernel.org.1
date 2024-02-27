@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-25139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E64138697EC
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:26:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A51A4869527
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:59:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F09C290BAC
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:26:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AA0828A143
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:59:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8EB114533E;
-	Tue, 27 Feb 2024 14:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B89013B2B4;
+	Tue, 27 Feb 2024 13:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ntEbmt3M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iFgSIsSZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6747B14037E;
-	Tue, 27 Feb 2024 14:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5CA13B7A0;
+	Tue, 27 Feb 2024 13:59:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043973; cv=none; b=YyLRPpyrAcPREsLu2h+jB1foI0yf7jTr5NjckbSy/rINBI/2sYce9tBv1XcrOuLoRq3Sk9l7n1W32kqxOS4O/BrkwHzVQ1x1VHuXiyawPtq8qpFai8fOaFfR0SVLlXH2bdKMliOc9btvH/FjKZ8zOqyGNgb1INh5e3K1zbMN98w=
+	t=1709042360; cv=none; b=Vvgu1/7s5n2yHjUGr5CMLbZAhtT0s1suKvJUWL7OFMG0u7jqGvx8OVcEnpbsCVjb5ttha/94SKR5JxjHv0UoXSj+zeDviapxeeLxbmV7Ez1VovtyVTSnP8dNhHua289XpXz6JDp67ekGFJoX+5pO+uoqFRmJGJiFKf/oMxlzuio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043973; c=relaxed/simple;
-	bh=9bNCVwIfMSc21aliK2oXYVdX4JSHqvHOLOCPUdqTahA=;
+	s=arc-20240116; t=1709042360; c=relaxed/simple;
+	bh=SqSKL7wUN0y1clpB+dPiPOgIQtlUs/BDQbJDxN97YCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HSXrt0yGglV8lNe1nxxqqlL8bdrEoKbEgmsMT0J4UzkZSeTNo36FP8NeNMXUrePaH7P2is+l6D4dnrnSFW5DBp3tY/z5J0xPVgxzjgRu5dv/gTU5uu9ZXcq404SaQPHWTeDey9oi+nVWy7UPcIkwLO48eqvrm8ru9cY7XkTuTyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ntEbmt3M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E648EC433F1;
-	Tue, 27 Feb 2024 14:26:12 +0000 (UTC)
+	 MIME-Version; b=UGeVpnhswHaxytqBTBvkgjTYs8rvh4/lT6XMB7iF4RZlM1mCrSRwaHfsevVz6QDfbxMxeWnlXdP946/uk/ZIZjjO0N5YNUYK9mEhcSWzq2A6urNLT4+On0Pt2k5IDyq4J6R8EWWFWieILN4RlR90EK+9nfFlPBT6iZsQTeF3LH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iFgSIsSZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B4EDC433F1;
+	Tue, 27 Feb 2024 13:59:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043973;
-	bh=9bNCVwIfMSc21aliK2oXYVdX4JSHqvHOLOCPUdqTahA=;
+	s=korg; t=1709042360;
+	bh=SqSKL7wUN0y1clpB+dPiPOgIQtlUs/BDQbJDxN97YCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ntEbmt3MG2bBD7YwsWd/zC+kCHtvUTPz0sMrCuPzUddTFFy6p16tl1Ed1u2lULs8x
-	 mXUCoXQgNZbbwl0Pr+zKAbpFDDWDTPCynm22FWuS0bJes6FFN3/myzDdbqAAFYSYFV
-	 jCaG0od7sVI46lmlFxE/D5cxWl05Ywr4o7vJRuwY=
+	b=iFgSIsSZX67tLV6kQ31k1Bu8U7HJHVRYHlLXjQRtR6V409WwUJ/LhWS6bGlPsKjvS
+	 sULvUr25cvEP47UWu0lGwfzpi+Q9CUlRq0QnkOZQBQZ6c7Q0FVHzLpR6TgM5T2mNan
+	 CoYeRUPvR0U5UoRq4WnD/U5copOn3DAMYG/mKcBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fullway Wang <fullwaywang@outlook.com>,
-	Helge Deller <deller@gmx.de>,
+	Erhard Furtner <erhard_f@mailbox.org>,
+	Ahmad Khalifa <ahmad@khalifa.ws>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 017/122] fbdev: savage: Error out if pixclock equals zero
+Subject: [PATCH 6.6 267/299] hwmon: (nct6775) Fix access to temperature configuration registers
 Date: Tue, 27 Feb 2024 14:26:18 +0100
-Message-ID: <20240227131559.269210549@linuxfoundation.org>
+Message-ID: <20240227131634.280229182@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fullway Wang <fullwaywang@outlook.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 04e5eac8f3ab2ff52fa191c187a46d4fdbc1e288 ]
+[ Upstream commit d56e460e19ea8382f813eb489730248ec8d7eb73 ]
 
-The userspace program could pass any values to the driver through
-ioctl() interface. If the driver doesn't check the value of pixclock,
-it may cause divide-by-zero error.
+The number of temperature configuration registers does
+not always match the total number of temperature registers.
+This can result in access errors reported if KASAN is enabled.
 
-Although pixclock is checked in savagefb_decode_var(), but it is not
-checked properly in savagefb_probe(). Fix this by checking whether
-pixclock is zero in the function savagefb_check_var() before
-info->var.pixclock is used as the divisor.
+BUG: KASAN: global-out-of-bounds in nct6775_probe+0x5654/0x6fe9 nct6775_core
 
-This is similar to CVE-2022-3061 in i740fb which was fixed by
-commit 15cf0b8.
-
-Signed-off-by: Fullway Wang <fullwaywang@outlook.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Reported-by: Erhard Furtner <erhard_f@mailbox.org>
+Closes: https://lore.kernel.org/linux-hwmon/d51181d1-d26b-42b2-b002-3f5a4037721f@roeck-us.net/
+Fixes: b7f1f7b2523a ("hwmon: (nct6775) Additional TEMP registers for nct6799")
+Cc: Ahmad Khalifa <ahmad@khalifa.ws>
+Tested-by: Ahmad Khalifa <ahmad@khalifa.ws>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/savage/savagefb_driver.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/hwmon/nct6775-core.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/savage/savagefb_driver.c b/drivers/video/fbdev/savage/savagefb_driver.c
-index 0ac750cc5ea13..94ebd8af50cf7 100644
---- a/drivers/video/fbdev/savage/savagefb_driver.c
-+++ b/drivers/video/fbdev/savage/savagefb_driver.c
-@@ -868,6 +868,9 @@ static int savagefb_check_var(struct fb_var_screeninfo   *var,
+diff --git a/drivers/hwmon/nct6775-core.c b/drivers/hwmon/nct6775-core.c
+index 92a49fafe2c02..f3bf2e4701c38 100644
+--- a/drivers/hwmon/nct6775-core.c
++++ b/drivers/hwmon/nct6775-core.c
+@@ -3512,6 +3512,7 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
+ 	const u16 *reg_temp_mon, *reg_temp_alternate, *reg_temp_crit;
+ 	const u16 *reg_temp_crit_l = NULL, *reg_temp_crit_h = NULL;
+ 	int num_reg_temp, num_reg_temp_mon, num_reg_tsi_temp;
++	int num_reg_temp_config;
+ 	struct device *hwmon_dev;
+ 	struct sensor_template_group tsi_temp_tg;
  
- 	DBG("savagefb_check_var");
+@@ -3594,6 +3595,7 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
+ 		reg_temp_over = NCT6106_REG_TEMP_OVER;
+ 		reg_temp_hyst = NCT6106_REG_TEMP_HYST;
+ 		reg_temp_config = NCT6106_REG_TEMP_CONFIG;
++		num_reg_temp_config = ARRAY_SIZE(NCT6106_REG_TEMP_CONFIG);
+ 		reg_temp_alternate = NCT6106_REG_TEMP_ALTERNATE;
+ 		reg_temp_crit = NCT6106_REG_TEMP_CRIT;
+ 		reg_temp_crit_l = NCT6106_REG_TEMP_CRIT_L;
+@@ -3669,6 +3671,7 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
+ 		reg_temp_over = NCT6106_REG_TEMP_OVER;
+ 		reg_temp_hyst = NCT6106_REG_TEMP_HYST;
+ 		reg_temp_config = NCT6106_REG_TEMP_CONFIG;
++		num_reg_temp_config = ARRAY_SIZE(NCT6106_REG_TEMP_CONFIG);
+ 		reg_temp_alternate = NCT6106_REG_TEMP_ALTERNATE;
+ 		reg_temp_crit = NCT6106_REG_TEMP_CRIT;
+ 		reg_temp_crit_l = NCT6106_REG_TEMP_CRIT_L;
+@@ -3746,6 +3749,7 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
+ 		reg_temp_over = NCT6775_REG_TEMP_OVER;
+ 		reg_temp_hyst = NCT6775_REG_TEMP_HYST;
+ 		reg_temp_config = NCT6775_REG_TEMP_CONFIG;
++		num_reg_temp_config = ARRAY_SIZE(NCT6775_REG_TEMP_CONFIG);
+ 		reg_temp_alternate = NCT6775_REG_TEMP_ALTERNATE;
+ 		reg_temp_crit = NCT6775_REG_TEMP_CRIT;
  
-+	if (!var->pixclock)
-+		return -EINVAL;
-+
- 	var->transp.offset = 0;
- 	var->transp.length = 0;
- 	switch (var->bits_per_pixel) {
+@@ -3821,6 +3825,7 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
+ 		reg_temp_over = NCT6775_REG_TEMP_OVER;
+ 		reg_temp_hyst = NCT6775_REG_TEMP_HYST;
+ 		reg_temp_config = NCT6776_REG_TEMP_CONFIG;
++		num_reg_temp_config = ARRAY_SIZE(NCT6776_REG_TEMP_CONFIG);
+ 		reg_temp_alternate = NCT6776_REG_TEMP_ALTERNATE;
+ 		reg_temp_crit = NCT6776_REG_TEMP_CRIT;
+ 
+@@ -3900,6 +3905,7 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
+ 		reg_temp_over = NCT6779_REG_TEMP_OVER;
+ 		reg_temp_hyst = NCT6779_REG_TEMP_HYST;
+ 		reg_temp_config = NCT6779_REG_TEMP_CONFIG;
++		num_reg_temp_config = ARRAY_SIZE(NCT6779_REG_TEMP_CONFIG);
+ 		reg_temp_alternate = NCT6779_REG_TEMP_ALTERNATE;
+ 		reg_temp_crit = NCT6779_REG_TEMP_CRIT;
+ 
+@@ -4034,6 +4040,7 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
+ 		reg_temp_over = NCT6779_REG_TEMP_OVER;
+ 		reg_temp_hyst = NCT6779_REG_TEMP_HYST;
+ 		reg_temp_config = NCT6779_REG_TEMP_CONFIG;
++		num_reg_temp_config = ARRAY_SIZE(NCT6779_REG_TEMP_CONFIG);
+ 		reg_temp_alternate = NCT6779_REG_TEMP_ALTERNATE;
+ 		reg_temp_crit = NCT6779_REG_TEMP_CRIT;
+ 
+@@ -4123,6 +4130,7 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
+ 		reg_temp_over = NCT6798_REG_TEMP_OVER;
+ 		reg_temp_hyst = NCT6798_REG_TEMP_HYST;
+ 		reg_temp_config = NCT6779_REG_TEMP_CONFIG;
++		num_reg_temp_config = ARRAY_SIZE(NCT6779_REG_TEMP_CONFIG);
+ 		reg_temp_alternate = NCT6798_REG_TEMP_ALTERNATE;
+ 		reg_temp_crit = NCT6798_REG_TEMP_CRIT;
+ 
+@@ -4204,7 +4212,8 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
+ 				  = reg_temp_crit[src - 1];
+ 			if (reg_temp_crit_l && reg_temp_crit_l[i])
+ 				data->reg_temp[4][src - 1] = reg_temp_crit_l[i];
+-			data->reg_temp_config[src - 1] = reg_temp_config[i];
++			if (i < num_reg_temp_config)
++				data->reg_temp_config[src - 1] = reg_temp_config[i];
+ 			data->temp_src[src - 1] = src;
+ 			continue;
+ 		}
+@@ -4217,7 +4226,8 @@ int nct6775_probe(struct device *dev, struct nct6775_data *data,
+ 		data->reg_temp[0][s] = reg_temp[i];
+ 		data->reg_temp[1][s] = reg_temp_over[i];
+ 		data->reg_temp[2][s] = reg_temp_hyst[i];
+-		data->reg_temp_config[s] = reg_temp_config[i];
++		if (i < num_reg_temp_config)
++			data->reg_temp_config[s] = reg_temp_config[i];
+ 		if (reg_temp_crit_h && reg_temp_crit_h[i])
+ 			data->reg_temp[3][s] = reg_temp_crit_h[i];
+ 		else if (reg_temp_crit[src - 1])
 -- 
 2.43.0
 
