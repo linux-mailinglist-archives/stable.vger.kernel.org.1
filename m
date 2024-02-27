@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-24195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFEEE869316
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:41:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98EA3869415
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:51:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEE3B1C20A80
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:41:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F2141F2134F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 717BE13F01E;
-	Tue, 27 Feb 2024 13:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD841420A8;
+	Tue, 27 Feb 2024 13:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FR0/kXsw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WcctqImZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A8613B2B4;
-	Tue, 27 Feb 2024 13:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE16C54BD4;
+	Tue, 27 Feb 2024 13:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041300; cv=none; b=jC/Q4z4Mzhl8qVszf6MOa5im1GZUYUc67BXFw3CskWqoO4qjWhzwrUDPBzTyV6TKGeFIFthqh93hl5g/kxtZm0ZVRMGK3l9MrI9aczy+CHkcBQz5o24I3ojt+hcVWm+RUI6xf/TQ8UaQ3CVGSc7r3LMJHo71fYTPKDERouJRTEk=
+	t=1709041783; cv=none; b=kp7o8eZRUztOslj08mYs+G5yoaHNZDzTEmcpzOxTtmJeBW1PxkfG6RaMIs7bnyRR2A3xWVKvccN+jgDuVD65FIX4E8VmKC32HsavDFrkEjr6Lax9LjTbOCEmbETCBqL+b6kOlfn0YGRBCMmTxDQyoXT48+UIbbdu1Y45CSGrBm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041300; c=relaxed/simple;
-	bh=UQPLE5+fnDC4H1drY5ZQpra3Y3fhdQJr7U9fo+lmf28=;
+	s=arc-20240116; t=1709041783; c=relaxed/simple;
+	bh=FgCyPxh5tomjKln7A+/VpkFdYSJtZiLboN3Z4wU4yL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RPdUaghon5HtqzoeZHEADbLsGOZZS884Rgx/a64iFIlDClz8sH8d/zmaGtJ12X4xsdMu7SsBUdaGq1PUnJ7Ifj7DmHXpo8pACOcw0tH063XuVGQ2Z9WnaKxwISWsAaMsEPLS+OtbOKDvvYXhLFNa+pHjbqBAdFjpnGRihGRf7ZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FR0/kXsw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7E4C433C7;
-	Tue, 27 Feb 2024 13:41:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nQnOJRPW8wpzL+dIVnPFTbKSGX7AuuPPFj30B9g5B3SNm4unqOuLow/aFUg04wF56zOmG8f+lh0vjeWOihOdlleSAX9xUoomNI3v9FixdrmqMp7RI8rhgkpFQx370MNqChSVW3HCJ+J0kZvgURcgoTgyL+JVZ/C0WS/HK5mKW6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WcctqImZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63BB5C433C7;
+	Tue, 27 Feb 2024 13:49:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041300;
-	bh=UQPLE5+fnDC4H1drY5ZQpra3Y3fhdQJr7U9fo+lmf28=;
+	s=korg; t=1709041782;
+	bh=FgCyPxh5tomjKln7A+/VpkFdYSJtZiLboN3Z4wU4yL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FR0/kXswvtxcvmjTz6TUAonS0SjIjqVWnWyFmr1gSguyDwLyExJbZeGmx+rHUauX0
-	 8OrlGUbEardgiOd9auxakmAb2xjPQlVxkIctkiPt7dlpH2cx05oFmiSB/gMpJGje5j
-	 oSBSLCwwOGszW2Z1ptVVHtDYbSHkXxI7oQGe62Vc=
+	b=WcctqImZW4uOaD5WZ+dk4nVuHH/Rhxil5LD849wrjaNNnHoXh4zkV3lc6jd63VMOO
+	 oPK85m6R6tkmDYZDPYcah80s+Xca+KEro7jwtdSNgugjDTCv2tWzoPi2XGilCQQvE3
+	 eNw3BU+UQFItH05+NA0ClvRN6PA02hDl8Gu5zUHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Liu <yi.l.liu@intel.com>,
-	Joao Martins <joao.m.martins@oracle.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 291/334] iommu/vt-d: Remove domain parameter for intel_pasid_setup_dirty_tracking()
-Date: Tue, 27 Feb 2024 14:22:29 +0100
-Message-ID: <20240227131640.412425750@linuxfoundation.org>
+Subject: [PATCH 6.6 039/299] regulator: pwm-regulator: Add validity checks in continuous .get_voltage
+Date: Tue, 27 Feb 2024 14:22:30 +0100
+Message-ID: <20240227131627.241749045@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Liu <yi.l.liu@intel.com>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-[ Upstream commit 56ecaf6c5834ace14941d7f13dceb48bc3327111 ]
+[ Upstream commit c92688cac239794e4a1d976afa5203a4d3a2ac0e ]
 
-The only usage of input @domain is to get the domain id (DID) to flush
-cache after setting dirty tracking. However, DID can be obtained from
-the pasid entry. So no need to pass in domain. This can make this helper
-cleaner when adding the missing dirty tracking for the parent domain,
-which needs to use the DID of nested domain.
+Continuous regulators can be configured to operate only in a certain
+duty cycle range (for example from 0..91%). Add a check to error out if
+the duty cycle translates to an unsupported (or out of range) voltage.
 
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-Reviewed-by: Joao Martins <joao.m.martins@oracle.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20240208082307.15759-7-yi.l.liu@intel.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Stable-dep-of: f1e1610950ea ("iommu/vt-d: Add missing dirty tracking set for parent domain")
+Suggested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://msgid.link/r/20240113224628.377993-2-martin.blumenstingl@googlemail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/iommu.c | 7 +++----
- drivers/iommu/intel/pasid.c | 3 +--
- drivers/iommu/intel/pasid.h | 1 -
- 3 files changed, 4 insertions(+), 7 deletions(-)
+ drivers/regulator/pwm-regulator.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index 9f7954c4c26f8..88f9b4ffd5774 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -4877,8 +4877,7 @@ static int intel_iommu_set_dirty_tracking(struct iommu_domain *domain,
- 		goto out_unlock;
+diff --git a/drivers/regulator/pwm-regulator.c b/drivers/regulator/pwm-regulator.c
+index 2aff6db748e2c..e33d10df7a763 100644
+--- a/drivers/regulator/pwm-regulator.c
++++ b/drivers/regulator/pwm-regulator.c
+@@ -158,6 +158,9 @@ static int pwm_regulator_get_voltage(struct regulator_dev *rdev)
+ 	pwm_get_state(drvdata->pwm, &pstate);
  
- 	list_for_each_entry(info, &dmar_domain->devices, link) {
--		ret = intel_pasid_setup_dirty_tracking(info->iommu,
--						       info->domain, info->dev,
-+		ret = intel_pasid_setup_dirty_tracking(info->iommu, info->dev,
- 						       IOMMU_NO_PASID, enable);
- 		if (ret)
- 			goto err_unwind;
-@@ -4892,8 +4891,8 @@ static int intel_iommu_set_dirty_tracking(struct iommu_domain *domain,
+ 	voltage = pwm_get_relative_duty_cycle(&pstate, duty_unit);
++	if (voltage < min(max_uV_duty, min_uV_duty) ||
++	    voltage > max(max_uV_duty, min_uV_duty))
++		return -ENOTRECOVERABLE;
  
- err_unwind:
- 	list_for_each_entry(info, &dmar_domain->devices, link)
--		intel_pasid_setup_dirty_tracking(info->iommu, dmar_domain,
--						 info->dev, IOMMU_NO_PASID,
-+		intel_pasid_setup_dirty_tracking(info->iommu, info->dev,
-+						 IOMMU_NO_PASID,
- 						 dmar_domain->dirty_tracking);
- 	spin_unlock(&dmar_domain->lock);
- 	return ret;
-diff --git a/drivers/iommu/intel/pasid.c b/drivers/iommu/intel/pasid.c
-index 74e8e4c17e814..9f8f389ff255c 100644
---- a/drivers/iommu/intel/pasid.c
-+++ b/drivers/iommu/intel/pasid.c
-@@ -695,7 +695,6 @@ int intel_pasid_setup_second_level(struct intel_iommu *iommu,
-  * Set up dirty tracking on a second only or nested translation type.
-  */
- int intel_pasid_setup_dirty_tracking(struct intel_iommu *iommu,
--				     struct dmar_domain *domain,
- 				     struct device *dev, u32 pasid,
- 				     bool enabled)
- {
-@@ -712,7 +711,7 @@ int intel_pasid_setup_dirty_tracking(struct intel_iommu *iommu,
- 		return -ENODEV;
- 	}
- 
--	did = domain_id_iommu(domain, iommu);
-+	did = pasid_get_domain_id(pte);
- 	pgtt = pasid_pte_get_pgtt(pte);
- 	if (pgtt != PASID_ENTRY_PGTT_SL_ONLY &&
- 	    pgtt != PASID_ENTRY_PGTT_NESTED) {
-diff --git a/drivers/iommu/intel/pasid.h b/drivers/iommu/intel/pasid.h
-index dd37611175cc1..3568adca1fd82 100644
---- a/drivers/iommu/intel/pasid.h
-+++ b/drivers/iommu/intel/pasid.h
-@@ -107,7 +107,6 @@ int intel_pasid_setup_second_level(struct intel_iommu *iommu,
- 				   struct dmar_domain *domain,
- 				   struct device *dev, u32 pasid);
- int intel_pasid_setup_dirty_tracking(struct intel_iommu *iommu,
--				     struct dmar_domain *domain,
- 				     struct device *dev, u32 pasid,
- 				     bool enabled);
- int intel_pasid_setup_pass_through(struct intel_iommu *iommu,
+ 	/*
+ 	 * The dutycycle for min_uV might be greater than the one for max_uV.
 -- 
 2.43.0
 
