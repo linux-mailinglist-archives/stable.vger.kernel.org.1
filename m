@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43AC1869656
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:10:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9C91869749
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:19:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D99F41F2DBB9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:10:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A049A1F23E21
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:19:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8574713DBBC;
-	Tue, 27 Feb 2024 14:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F35613B7AB;
+	Tue, 27 Feb 2024 14:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Un+DeDqQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qW3uYKVx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4297913B2B4;
-	Tue, 27 Feb 2024 14:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B392213B2B8;
+	Tue, 27 Feb 2024 14:19:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043036; cv=none; b=YBMCKh9WJUBlae5tk13He5Xb6ArEl6PlLsz4nVM7zkcv/rFJDT0BNY8Tlo89sgj5jQC4J64/LRfLhEub+NT3EiTfLBVKflHfaKpHZ0L3DFA/sglofSoedMWkehREBWJhQfuSOBS5uJKUW5t1GydvIi9XFoSkW8D8avcQGaVd12Q=
+	t=1709043596; cv=none; b=WiLEu7A0LW2N4/axI2BWN9nypmMF858j9rqiOhcb0Un0lUGMTGfwoI/s3jdGU3TyvO/XLfrhU3KoshPSiKu7L13QXoZKbrPcbLlvEO4SFy4juI4HC0XHKxF5/zlTBUejpVS+WRE3fbIY+HclLs8A5LRHq3ZavHfwMnB0UoywoFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043036; c=relaxed/simple;
-	bh=BsiPkmdNHD6dekigrfRDSVn5Lm/11QE+6PFuN4AjnfE=;
+	s=arc-20240116; t=1709043596; c=relaxed/simple;
+	bh=XG2vy/wvC6p9cHozqC3L7G4xnqkaX7gEvx2HvMqhWA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YLYjFx1vuWPhBHf+IMRD+zdfqEfsR/1N2GLWecwRal9FIRnqRvzBkVFtsTgwwNRTwtZdf15lEPs4fwyE/H+myfpRYmLdzD342Tddflv0ZoZz/kw5ZFtW5ODwtIIjyOESJ5BcaQW+kwnZTeBVyIcGx6zb8o9+QpJ57IYxD4ob0FU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Un+DeDqQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F34C43390;
-	Tue, 27 Feb 2024 14:10:35 +0000 (UTC)
+	 MIME-Version; b=jzF07Tx37eJkq5zEvDPEvOlpZ6Fe4moy4P9aRy5WZyWKYN4CCRUTVjdPNKve9WgiOKgzAiofyqoYVJb1txgG4cZwxYGxi6gLpNEg6rvmxzOWoT3WyXpG996XgFGekm3n5GPDPeVmkA1nY/HKz61g16ryrZTLPC7Yon7MS/e5PhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qW3uYKVx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 432A3C433C7;
+	Tue, 27 Feb 2024 14:19:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043035;
-	bh=BsiPkmdNHD6dekigrfRDSVn5Lm/11QE+6PFuN4AjnfE=;
+	s=korg; t=1709043596;
+	bh=XG2vy/wvC6p9cHozqC3L7G4xnqkaX7gEvx2HvMqhWA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Un+DeDqQCZeSPa0BGSy1BYZMB48n5ztxONKOFusb+dVJP4/HvooqoiEs1Cub91sPh
-	 /c9/Ofl96y24CKmt1Pr0uW3YNUqhA7OswE7UnEcycjabwTn6M/NuiF6b3ZwPjjRbUK
-	 jXSh11B9DN1x/F+X9kr18nIS3mZaJpDNKMf6ccU8=
+	b=qW3uYKVxeoMmu573k0oJaEXbY7usKor1JqM8TW/bICfRjEjqPsXbMogrtoknz8c32
+	 pZmUCf8x3rMq9SRX7X5LvW5YBBRCvrjNPfCUVJXpW5GcaEvEYqGZy3v03XeoZa2MBv
+	 Vry1ULrTUdurM2SmEmBtRPd+19otXrHtHP3lDIf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Leon Romanovsky <leon@kernel.org>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Avihai Horon <avihaih@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 210/245] RDMA/srpt: fix function pointer cast warnings
+Subject: [PATCH 6.1 137/195] iommufd/iova_bitmap: Bounds check mapped::pages access
 Date: Tue, 27 Feb 2024 14:26:38 +0100
-Message-ID: <20240227131622.032489579@linuxfoundation.org>
+Message-ID: <20240227131614.960474056@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Joao Martins <joao.m.martins@oracle.com>
 
-[ Upstream commit eb5c7465c3240151cd42a55c7ace9da0026308a1 ]
+[ Upstream commit a4ab7dedaee0e39b15653c5fd0367e420739f7ef ]
 
-clang-16 notices that srpt_qp_event() gets called through an incompatible
-pointer here:
+Dirty IOMMU hugepages reported on a base page page-size granularity can
+lead to an attempt to set dirty pages in the bitmap beyond the limits that
+are pinned.
 
-drivers/infiniband/ulp/srpt/ib_srpt.c:1815:5: error: cast from 'void (*)(struct ib_event *, struct srpt_rdma_ch *)' to 'void (*)(struct ib_event *, void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
- 1815 |                 = (void(*)(struct ib_event *, void*))srpt_qp_event;
+Bounds check the page index of the array we are trying to access is within
+the limits before we kmap() and return otherwise.
 
-Change srpt_qp_event() to use the correct prototype and adjust the
-argument inside of it.
+While it is also a defensive check, this is also in preparation to defer
+setting bits (outside the mapped range) to the next iteration(s) when the
+pages become available.
 
-Fixes: a42d985bd5b2 ("ib_srpt: Initial SRP Target merge for v3.3-rc1")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20240213100728.458348-1-arnd@kernel.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: b058ea3ab5af ("vfio/iova_bitmap: refactor iova_bitmap_set() to better handle page boundaries")
+Link: https://lore.kernel.org/r/20240202133415.23819-2-joao.m.martins@oracle.com
+Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+Tested-by: Avihai Horon <avihaih@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/srpt/ib_srpt.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/vfio/iova_bitmap.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
-index deb834a7d75cd..60f9c612eb3c3 100644
---- a/drivers/infiniband/ulp/srpt/ib_srpt.c
-+++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
-@@ -214,10 +214,12 @@ static const char *get_ch_state_name(enum rdma_ch_state s)
- /**
-  * srpt_qp_event - QP event callback function
-  * @event: Description of the event that occurred.
-- * @ch: SRPT RDMA channel.
-+ * @ptr: SRPT RDMA channel.
-  */
--static void srpt_qp_event(struct ib_event *event, struct srpt_rdma_ch *ch)
-+static void srpt_qp_event(struct ib_event *event, void *ptr)
- {
-+	struct srpt_rdma_ch *ch = ptr;
-+
- 	pr_debug("QP event %d on ch=%p sess_name=%s-%d state=%s\n",
- 		 event->event, ch, ch->sess_name, ch->qp->qp_num,
- 		 get_ch_state_name(ch->state));
-@@ -1811,8 +1813,7 @@ static int srpt_create_ch_ib(struct srpt_rdma_ch *ch)
- 	ch->cq_size = ch->rq_size + sq_size;
+diff --git a/drivers/vfio/iova_bitmap.c b/drivers/vfio/iova_bitmap.c
+index 0f19d502f351b..5b540a164c98f 100644
+--- a/drivers/vfio/iova_bitmap.c
++++ b/drivers/vfio/iova_bitmap.c
+@@ -405,6 +405,7 @@ void iova_bitmap_set(struct iova_bitmap *bitmap,
+ 			mapped->pgshift) + mapped->pgoff * BITS_PER_BYTE;
+ 	unsigned long last_bit = (((iova + length - 1) - mapped->iova) >>
+ 			mapped->pgshift) + mapped->pgoff * BITS_PER_BYTE;
++	unsigned long last_page_idx = mapped->npages - 1;
  
- 	qp_init->qp_context = (void *)ch;
--	qp_init->event_handler
--		= (void(*)(struct ib_event *, void*))srpt_qp_event;
-+	qp_init->event_handler = srpt_qp_event;
- 	qp_init->send_cq = ch->cq;
- 	qp_init->recv_cq = ch->cq;
- 	qp_init->sq_sig_type = IB_SIGNAL_REQ_WR;
+ 	do {
+ 		unsigned int page_idx = cur_bit / BITS_PER_PAGE;
+@@ -413,6 +414,9 @@ void iova_bitmap_set(struct iova_bitmap *bitmap,
+ 					 last_bit - cur_bit + 1);
+ 		void *kaddr;
+ 
++		if (unlikely(page_idx > last_page_idx))
++			break;
++
+ 		kaddr = kmap_local_page(mapped->pages[page_idx]);
+ 		bitmap_set(kaddr, offset, nbits);
+ 		kunmap_local(kaddr);
 -- 
 2.43.0
 
