@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-24579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C55C986953C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:00:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C2E58693C0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:48:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65A0D1F240EE
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:00:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46EBD292214
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:48:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD2C713B2B4;
-	Tue, 27 Feb 2024 14:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDCA3146914;
+	Tue, 27 Feb 2024 13:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OgHfQsn6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PX2I5P2+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BED013DB9B;
-	Tue, 27 Feb 2024 14:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE02145B09;
+	Tue, 27 Feb 2024 13:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042410; cv=none; b=WAWnPhJbqUosPABdiKqncxWf5geitDB241z4p64mG3TUyPe7r4pweap24AikWWlSr2KY7ookpGjBGtP/NKbWpptJzrG27XZeV4y3aiDkQYbiRHihu9lS9RMK9MZvPASZqCj+zU6vhBwMCEEhv7+PJSsnyyT1RqoCjuQxLTMLBeE=
+	t=1709041580; cv=none; b=ceCvdveRR80g1eDD56NFN50fAbZmRKZIFFQokjeYFRNZ40WErHyLeWS2xH/7ZssKH/amowRi3fB45nJTgYMP+Kh7/bMJZQjC9vuslwjPI+vwYNDXlmRsx3Qlk/v5ToJukzyGh1i3KXv4cERDpLyugyv7MhwPTPtqQ07RWWK68Ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042410; c=relaxed/simple;
-	bh=NcQPZ0PzE0ocPc6I2tYL3IEWf12zVFuu7kfMglLEr38=;
+	s=arc-20240116; t=1709041580; c=relaxed/simple;
+	bh=VODQf+nKloXdZ/c7bvd1CQFsIk8GUA/MHFhWVSDsz6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i+MA7pO4dbxh52lxJvroMewaTukJUrrhXvx/e5fAe9P9G4L762aXsjE7Kjoe38z8VelyZhuNhc/UkydTKsQuqV7TgXrdNtnnYUJHJQgKgjklIjSt+NqLpJL9E0gt1rIw1AxjJ7Up+Oc39Td895jqLuCQDWBFEyMRmfusTK32CaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OgHfQsn6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE3F3C433F1;
-	Tue, 27 Feb 2024 14:00:09 +0000 (UTC)
+	 MIME-Version; b=qNKFiRSur15gtAugOeLceILr4Aqf1p/hQ0vOOlxBH3Z8NsZrH40hlCqJHA+ox6rzm6PidyrT848vbq7lShPXTepRMFcTd6LSVYuJiojpyuMEHRjdM0fTxWzWIBMneFEbbvGedVHVZO0Yd50CcFBZwkm4K7Pg/O2nWnwaoX0TZFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PX2I5P2+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 044BAC433B1;
+	Tue, 27 Feb 2024 13:46:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042410;
-	bh=NcQPZ0PzE0ocPc6I2tYL3IEWf12zVFuu7kfMglLEr38=;
+	s=korg; t=1709041580;
+	bh=VODQf+nKloXdZ/c7bvd1CQFsIk8GUA/MHFhWVSDsz6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OgHfQsn6w4ND6HXw89uowaL0VMcNW9Sy3j/mM9rxel3x3OVPU8bQSUfBs07HPocG3
-	 S/2CcC6U0pm+nFdZWvgFGe228U/OHernwrCk5GHVF3RSIeOf3INazzPHzdvgGla5ri
-	 a2i2dRAx/DwMsKPrH6pTFtTJk1D64rn2kM3W+9eo=
+	b=PX2I5P2++Sut185J3RHJDIKXxDxoufV8vG6qDhC8tcvei9oCKEZ4Z7GuR/d+r+1WK
+	 nPlhUtKniaZxs6s1EXZ0/jdkaGq6QCIKOLPbxQ9lK5ync+9N6pzyysbXi7zzWnJM8W
+	 jAgdZNN6JJJTuq7xfjKSUskd4q6eyevU5njblN3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erik Kurzinger <ekurzinger@nvidia.com>,
-	Simon Ser <contact@emersion.fr>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 286/299] drm/syncobj: call drm_syncobj_fence_add_wait when WAIT_AVAILABLE flag is set
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 4.19 50/52] KVM: arm64: vgic-its: Test for valid IRQ in MOVALL handler
 Date: Tue, 27 Feb 2024 14:26:37 +0100
-Message-ID: <20240227131634.880281268@linuxfoundation.org>
+Message-ID: <20240227131550.178198134@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
+References: <20240227131548.514622258@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erik Kurzinger <ekurzinger@nvidia.com>
+From: Oliver Upton <oliver.upton@linux.dev>
 
-[ Upstream commit 3c43177ffb54ea5be97505eb8e2690e99ac96bc9 ]
+commit 85a71ee9a0700f6c18862ef3b0011ed9dad99aca upstream.
 
-When waiting for a syncobj timeline point whose fence has not yet been
-submitted with the WAIT_FOR_SUBMIT flag, a callback is registered using
-drm_syncobj_fence_add_wait and the thread is put to sleep until the
-timeout expires. If the fence is submitted before then,
-drm_syncobj_add_point will wake up the sleeping thread immediately which
-will proceed to wait for the fence to be signaled.
+It is possible that an LPI mapped in a different ITS gets unmapped while
+handling the MOVALL command. If that is the case, there is no state that
+can be migrated to the destination. Silently ignore it and continue
+migrating other LPIs.
 
-However, if the WAIT_AVAILABLE flag is used instead,
-drm_syncobj_fence_add_wait won't get called, meaning the waiting thread
-will always sleep for the full timeout duration, even if the fence gets
-submitted earlier. If it turns out that the fence *has* been submitted
-by the time it eventually wakes up, it will still indicate to userspace
-that the wait completed successfully (it won't return -ETIME), but it
-will have taken much longer than it should have.
-
-To fix this, we must call drm_syncobj_fence_add_wait if *either* the
-WAIT_FOR_SUBMIT flag or the WAIT_AVAILABLE flag is set. The only
-difference being that with WAIT_FOR_SUBMIT we will also wait for the
-fence to be signaled after it has been submitted while with
-WAIT_AVAILABLE we will return immediately.
-
-IGT test patch: https://lists.freedesktop.org/archives/igt-dev/2024-January/067537.html
-
-v1 -> v2: adjust lockdep_assert_none_held_once condition
-
-(cherry picked from commit 8c44ea81634a4a337df70a32621a5f3791be23df)
-
-Fixes: 01d6c3578379 ("drm/syncobj: add support for timeline point wait v8")
-Signed-off-by: Erik Kurzinger <ekurzinger@nvidia.com>
-Signed-off-by: Simon Ser <contact@emersion.fr>
-Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Reviewed-by: Simon Ser <contact@emersion.fr>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240119163208.3723457-1-ekurzinger@nvidia.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: ff9c114394aa ("KVM: arm/arm64: GICv4: Handle MOVALL applied to a vPE")
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Link: https://lore.kernel.org/r/20240221092732.4126848-3-oliver.upton@linux.dev
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_syncobj.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ virt/kvm/arm/vgic/vgic-its.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_syncobj.c b/drivers/gpu/drm/drm_syncobj.c
-index 01da6789d0440..b3433265be6ab 100644
---- a/drivers/gpu/drm/drm_syncobj.c
-+++ b/drivers/gpu/drm/drm_syncobj.c
-@@ -1034,7 +1034,8 @@ static signed long drm_syncobj_array_wait_timeout(struct drm_syncobj **syncobjs,
- 	uint64_t *points;
- 	uint32_t signaled_count, i;
+--- a/virt/kvm/arm/vgic/vgic-its.c
++++ b/virt/kvm/arm/vgic/vgic-its.c
+@@ -1232,6 +1232,8 @@ static int vgic_its_cmd_handle_movall(st
  
--	if (flags & DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT)
-+	if (flags & (DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT |
-+		     DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE))
- 		lockdep_assert_none_held_once();
+ 	for (i = 0; i < irq_count; i++) {
+ 		irq = vgic_get_irq(kvm, NULL, intids[i]);
++		if (!irq)
++			continue;
  
- 	points = kmalloc_array(count, sizeof(*points), GFP_KERNEL);
-@@ -1103,7 +1104,8 @@ static signed long drm_syncobj_array_wait_timeout(struct drm_syncobj **syncobjs,
- 	 * fallthough and try a 0 timeout wait!
- 	 */
+ 		update_affinity(irq, vcpu2);
  
--	if (flags & DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT) {
-+	if (flags & (DRM_SYNCOBJ_WAIT_FLAGS_WAIT_FOR_SUBMIT |
-+		     DRM_SYNCOBJ_WAIT_FLAGS_WAIT_AVAILABLE)) {
- 		for (i = 0; i < count; ++i)
- 			drm_syncobj_fence_add_wait(syncobjs[i], &entries[i]);
- 	}
--- 
-2.43.0
-
 
 
 
