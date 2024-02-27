@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-24902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95CA78696CA
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6DC48695FF
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 354991F2E6CA
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA6A41C21016
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C487143C48;
-	Tue, 27 Feb 2024 14:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9209613DBB3;
+	Tue, 27 Feb 2024 14:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2UpO8gUf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="095Kjg2x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A8C13B2B4;
-	Tue, 27 Feb 2024 14:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EEA713B798;
+	Tue, 27 Feb 2024 14:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043307; cv=none; b=ZJRHQacytLQ3RK151WJ0yNsxoKVLtupCaDa1vgiLSoIKdLFBbUlb2IObxvUC8ouEdpiygarzKiOmITd0ghRb2K46tNQAe5iMmw3OIzyvRnuZNojvfia8WEe9+e/QuTUCJmeKBe18x8H0DUwk37wUji6XnsKoWrxtp8OEn1Q+OZU=
+	t=1709042820; cv=none; b=QNMSuQQ8hRHYCibg7LqrzXtIt0r3oNixiOBRlE8Kxom0NEGIUd93axpuKo5k5tmnqyfRffmGCaHbWWh4WoSmcRK4Q4XQWPSF8sS0Juh0i4SxQTUZcxQKtLpO/aNXxNwEG93LtTHDY4WN86q/2RsGtI81YmOehASGOKMU0/16pQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043307; c=relaxed/simple;
-	bh=+w+EX7Gk5HRIKOygh7NbLpMbEykLrLLfADMIXXmP+eM=;
+	s=arc-20240116; t=1709042820; c=relaxed/simple;
+	bh=jZc3hir+/AeNIkiqCrVFBbkPI/ucxYPTt9+DGGhOB28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sigobdi+Jnjsi4x46PmtyrxBXk0JcrJVyhcvQsRCoKLBz8mS8LKwALYHyUetML4OV8Q+2kigqVV8ZaVzBBQILBp8+FSR9pcIW7C0nI8V7Zp2tYU0K8uo8nFtsQpcG9fJD1dFBvWfibL3ogUE5KlX4imzwySXQUhEP09crhE3go4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2UpO8gUf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA2AAC433C7;
-	Tue, 27 Feb 2024 14:15:06 +0000 (UTC)
+	 MIME-Version; b=o0fLR3lsUEWcj2LkI34DZLXoxErrEmYhK6s1zWNg7jOgiCZrtObeSc4hZEgDpQ5j59pp08xU05tN/oPW8Mu81sYCu/tIF03qvcUe2joX3Y5Pqf40QY9s5e7l2D7j8acEeo7kOOUCaAllq4D5P0nxEqrjGXgVsqkBPDfpSLrwi4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=095Kjg2x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D17B3C433C7;
+	Tue, 27 Feb 2024 14:06:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043307;
-	bh=+w+EX7Gk5HRIKOygh7NbLpMbEykLrLLfADMIXXmP+eM=;
+	s=korg; t=1709042820;
+	bh=jZc3hir+/AeNIkiqCrVFBbkPI/ucxYPTt9+DGGhOB28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2UpO8gUfePcXHXSff8VOOv6nOphuWDsXA4izSrV8a1XZI2ZmGQl8JLYwOrJ8ARftG
-	 g64mEtUXIVl1ZSqXoxB90+Lr7A+jUgkd81MgIPPB+HzL5gAvWTArsrmDBAzBUTp0nk
-	 khFos9JtKeVMquNt/gg4pPpqnStKAraSRUONSk2o=
+	b=095Kjg2x5ekp8DSi6eKrkeoM0i36LO0EhTbHKuEjwPwMS3jaz14oA5rhqU2PYGmg2
+	 +Wf5qz03qjuSXdTCid3c5UDqIpucVkpsNOfrlgm9nmP4DIOWImCvMAn4YdXKSWeXqI
+	 G+nTterEnBrDgOy0L472wB7HdoncwPmj73Ab4P3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	linux-clk@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 060/195] fs/ntfs3: Disable ATTR_LIST_ENTRY size check
+Subject: [PATCH 5.15 133/245] clk: linux/clk-provider.h: fix kernel-doc warnings and typos
 Date: Tue, 27 Feb 2024 14:25:21 +0100
-Message-ID: <20240227131612.487447931@linuxfoundation.org>
+Message-ID: <20240227131619.536216191@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +64,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 4cdfb6e7bc9c80142d33bf1d4653a73fa678ba56 ]
+[ Upstream commit 84aefafe6b294041b7fa0757414c4a29c1bdeea2 ]
 
-The use of sizeof(struct ATTR_LIST_ENTRY) has been replaced with le_size(0)
-due to alignment peculiarities on different platforms.
+Fix spelling of "Structure".
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202312071005.g6YrbaIe-lkp@intel.com/
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fix multiple kernel-doc warnings:
+
+clk-provider.h:269: warning: Function parameter or member 'recalc_rate' not described in 'clk_ops'
+clk-provider.h:468: warning: Function parameter or member 'parent_data' not described in 'clk_hw_register_fixed_rate_with_accuracy_parent_data'
+clk-provider.h:468: warning: Excess function parameter 'parent_name' description in 'clk_hw_register_fixed_rate_with_accuracy_parent_data'
+clk-provider.h:482: warning: Function parameter or member 'parent_data' not described in 'clk_hw_register_fixed_rate_parent_accuracy'
+clk-provider.h:482: warning: Excess function parameter 'parent_name' description in 'clk_hw_register_fixed_rate_parent_accuracy'
+clk-provider.h:687: warning: Function parameter or member 'flags' not described in 'clk_divider'
+clk-provider.h:1164: warning: Function parameter or member 'flags' not described in 'clk_fractional_divider'
+clk-provider.h:1164: warning: Function parameter or member 'approximation' not described in 'clk_fractional_divider'
+clk-provider.h:1213: warning: Function parameter or member 'flags' not described in 'clk_multiplier'
+
+Fixes: 9fba738a53dd ("clk: add duty cycle support")
+Fixes: b2476490ef11 ("clk: introduce the common clock framework")
+Fixes: 2d34f09e79c9 ("clk: fixed-rate: Add support for specifying parents via DT/pointers")
+Fixes: f5290d8e4f0c ("clk: asm9260: use parent index to link the reference clock")
+Fixes: 9d9f78ed9af0 ("clk: basic clock hardware types")
+Fixes: e2d0e90fae82 ("clk: new basic clk type for fractional divider")
+Fixes: f2e0a53271a4 ("clk: Add a basic multiplier clock")
+
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Michael Turquette <mturquette@baylibre.com>
+Cc: Stephen Boyd <sboyd@kernel.org>
+Cc: linux-clk@vger.kernel.org
+Link: https://lore.kernel.org/r/20230930221428.18463-1-rdunlap@infradead.org
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/attrlist.c | 8 ++++----
- fs/ntfs3/ntfs.h     | 2 --
- 2 files changed, 4 insertions(+), 6 deletions(-)
+ include/linux/clk-provider.h | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/fs/ntfs3/attrlist.c b/fs/ntfs3/attrlist.c
-index 0c6a68e71e7d4..723e49ec83ce7 100644
---- a/fs/ntfs3/attrlist.c
-+++ b/fs/ntfs3/attrlist.c
-@@ -127,12 +127,13 @@ struct ATTR_LIST_ENTRY *al_enumerate(struct ntfs_inode *ni,
- {
- 	size_t off;
- 	u16 sz;
-+	const unsigned le_min_size = le_size(0);
+diff --git a/include/linux/clk-provider.h b/include/linux/clk-provider.h
+index 6cace09ba63d0..7d5ca15ac66ba 100644
+--- a/include/linux/clk-provider.h
++++ b/include/linux/clk-provider.h
+@@ -61,7 +61,7 @@ struct clk_rate_request {
+ };
  
- 	if (!le) {
- 		le = ni->attr_list.le;
- 	} else {
- 		sz = le16_to_cpu(le->size);
--		if (sz < sizeof(struct ATTR_LIST_ENTRY)) {
-+		if (sz < le_min_size) {
- 			/* Impossible 'cause we should not return such le. */
- 			return NULL;
- 		}
-@@ -141,7 +142,7 @@ struct ATTR_LIST_ENTRY *al_enumerate(struct ntfs_inode *ni,
- 
- 	/* Check boundary. */
- 	off = PtrOffset(ni->attr_list.le, le);
--	if (off + sizeof(struct ATTR_LIST_ENTRY) > ni->attr_list.size) {
-+	if (off + le_min_size > ni->attr_list.size) {
- 		/* The regular end of list. */
- 		return NULL;
- 	}
-@@ -149,8 +150,7 @@ struct ATTR_LIST_ENTRY *al_enumerate(struct ntfs_inode *ni,
- 	sz = le16_to_cpu(le->size);
- 
- 	/* Check le for errors. */
--	if (sz < sizeof(struct ATTR_LIST_ENTRY) ||
--	    off + sz > ni->attr_list.size ||
-+	if (sz < le_min_size || off + sz > ni->attr_list.size ||
- 	    sz < le->name_off + le->name_len * sizeof(short)) {
- 		return NULL;
- 	}
-diff --git a/fs/ntfs3/ntfs.h b/fs/ntfs3/ntfs.h
-index 8b580515b1d6e..ba26a465b3091 100644
---- a/fs/ntfs3/ntfs.h
-+++ b/fs/ntfs3/ntfs.h
-@@ -521,8 +521,6 @@ struct ATTR_LIST_ENTRY {
- 
- }; // sizeof(0x20)
- 
--static_assert(sizeof(struct ATTR_LIST_ENTRY) == 0x20);
--
- static inline u32 le_size(u8 name_len)
- {
- 	return ALIGN(offsetof(struct ATTR_LIST_ENTRY, name) +
+ /**
+- * struct clk_duty - Struture encoding the duty cycle ratio of a clock
++ * struct clk_duty - Structure encoding the duty cycle ratio of a clock
+  *
+  * @num:	Numerator of the duty cycle ratio
+  * @den:	Denominator of the duty cycle ratio
+@@ -116,7 +116,7 @@ struct clk_duty {
+  * @restore_context: Restore the context of the clock after a restoration
+  *		of power.
+  *
+- * @recalc_rate	Recalculate the rate of this clock, by querying hardware. The
++ * @recalc_rate: Recalculate the rate of this clock, by querying hardware. The
+  *		parent rate is an input parameter.  It is up to the caller to
+  *		ensure that the prepare_mutex is held across this call.
+  *		Returns the calculated rate.  Optional, but recommended - if
+@@ -442,7 +442,7 @@ struct clk *clk_register_fixed_rate(struct device *dev, const char *name,
+  * clock with the clock framework
+  * @dev: device that is registering this clock
+  * @name: name of this clock
+- * @parent_name: name of clock's parent
++ * @parent_data: name of clock's parent
+  * @flags: framework-specific flags
+  * @fixed_rate: non-adjustable clock rate
+  * @fixed_accuracy: non-adjustable clock accuracy
+@@ -457,7 +457,7 @@ struct clk *clk_register_fixed_rate(struct device *dev, const char *name,
+  * the clock framework
+  * @dev: device that is registering this clock
+  * @name: name of this clock
+- * @parent_name: name of clock's parent
++ * @parent_data: name of clock's parent
+  * @flags: framework-specific flags
+  * @fixed_rate: non-adjustable clock rate
+  */
+@@ -593,7 +593,7 @@ struct clk_div_table {
+  * Clock with an adjustable divider affecting its output frequency.  Implements
+  * .recalc_rate, .set_rate and .round_rate
+  *
+- * Flags:
++ * @flags:
+  * CLK_DIVIDER_ONE_BASED - by default the divisor is the value read from the
+  *	register plus one.  If CLK_DIVIDER_ONE_BASED is set then the divider is
+  *	the raw value read from the register, with the value of zero considered
+@@ -1023,11 +1023,12 @@ struct clk_hw *devm_clk_hw_register_fixed_factor(struct device *dev,
+  * @mwidth:	width of the numerator bit field
+  * @nshift:	shift to the denominator bit field
+  * @nwidth:	width of the denominator bit field
++ * @approximation: clk driver's callback for calculating the divider clock
+  * @lock:	register lock
+  *
+  * Clock with adjustable fractional divider affecting its output frequency.
+  *
+- * Flags:
++ * @flags:
+  * CLK_FRAC_DIVIDER_ZERO_BASED - by default the numerator and denominator
+  *	is the value read from the register. If CLK_FRAC_DIVIDER_ZERO_BASED
+  *	is set then the numerator and denominator are both the value read
+@@ -1086,7 +1087,7 @@ void clk_hw_unregister_fractional_divider(struct clk_hw *hw);
+  * Clock with an adjustable multiplier affecting its output frequency.
+  * Implements .recalc_rate, .set_rate and .round_rate
+  *
+- * Flags:
++ * @flags:
+  * CLK_MULTIPLIER_ZERO_BYPASS - By default, the multiplier is the value read
+  *	from the register, with 0 being a valid value effectively
+  *	zeroing the output clock rate. If CLK_MULTIPLIER_ZERO_BYPASS is
 -- 
 2.43.0
 
