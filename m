@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-24683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E2728695C5
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:05:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A14E869692
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:13:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C5071C210D6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:05:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B17E1C23075
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:13:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2B913EFE4;
-	Tue, 27 Feb 2024 14:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E2A145345;
+	Tue, 27 Feb 2024 14:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lcmi/vJ1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m4yAdyPL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9F013B2A2;
-	Tue, 27 Feb 2024 14:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7F3145341;
+	Tue, 27 Feb 2024 14:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042701; cv=none; b=P7QL7g44Iig8aD6usVwW08/F7ul+Tf6NaDPwBXCf3EZUFsaWkHNOXyofaD4M2Art884kaYm77tUanR3dO79+HjYzPUzValBq7N6iOG8def2I2ZDNPJvRbmkfmpkIbB7WDEm0l4SPXzacWBOJ/1mqCCHwQSDf0UppvC3IjBHDS6g=
+	t=1709043174; cv=none; b=UUZaJ65ypwfVp86ZCP/E9yjdXM2aQ7bH6y9GG1U1kmks6FXrfY890XpVj0/l6/r8We4h9PjcewOICgvT/GafxhXy0DvKAzWl2EWWmvzco3OnFXaC3ZL/StPiK4b+0XWXMtly1GIIAvW/BM1J0qUdavZz5xoNM5lcxUdBgXboAjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042701; c=relaxed/simple;
-	bh=IVmoN8oaRaBekEtMQjwcTe1k9hLzO957nYAr8w/ZXSo=;
+	s=arc-20240116; t=1709043174; c=relaxed/simple;
+	bh=cE/Jg+T0nLGewGBOt1Su3cajg9aSzVQATyQegCCP7ks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dmkMJXuRUq8jBTLgs9EAc6DIE+aJ8s4HVwiDOx8bnS0x317GI5eoDTtexacKjCY0QRaXdP1u8XrVM70IK1t2uyFOtyIcph24pGo3+Ek2sc58UQtEsHz+dL1jAO2hrDHfuCWmiDvXTkAuSLMu5+xUZnvu09WPqcEXpDd5RzAs4XA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lcmi/vJ1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47866C433C7;
-	Tue, 27 Feb 2024 14:05:01 +0000 (UTC)
+	 MIME-Version; b=uJrJ7n/fcgE+6FyTLNA6vZoWSKpIKVPnuJvd/vxOrNIUtLJb4aWgBpV1lJWxYQRPDMSh+5s2keLKGpSNV79NsfkzL5sImckkcLhnWPrGCTWXhH8wZSL2ew5ws8kfyqKbT+PFKW6BX2vLaL0AAPGnfkU0XFjNtw9evOXRvGtcQnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m4yAdyPL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D236AC43390;
+	Tue, 27 Feb 2024 14:12:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042701;
-	bh=IVmoN8oaRaBekEtMQjwcTe1k9hLzO957nYAr8w/ZXSo=;
+	s=korg; t=1709043174;
+	bh=cE/Jg+T0nLGewGBOt1Su3cajg9aSzVQATyQegCCP7ks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lcmi/vJ183iAycKYP08yWamrOMD4jp5ogBynCiZnkzC2tEekfIV8zTm6MFQvPGc6H
-	 UNw0Qt8RJqaEqinO1xSL2jPtk/3svKMXKQcMICO1NNCLPTD85Hu5XTe+5aKQKxLj5b
-	 UqUbnYANZsLJQNnsp6uCKEDC5TC43nx4aE6utlrw=
+	b=m4yAdyPLGW9lR9+UoiKaoFxLKgnkxwPCLl6zhMq52wJ6a1VDzh3/PvB3Dy8Hrrhjk
+	 2LCFrehOQMKIxUN50MVdKlYOi9vsxGaXb5wisNLzDVmbsKlu6HkslNkPDjuYPq3SOX
+	 wnj0GflsobGs3+n11zDdo2YV0uAWvU1g2bbxlmX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 5.15 088/245] Revert "x86/ftrace: Use alternative RET encoding"
+	Fullway Wang <fullwaywang@outlook.com>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 015/195] fbdev: savage: Error out if pixclock equals zero
 Date: Tue, 27 Feb 2024 14:24:36 +0100
-Message-ID: <20240227131618.084327879@linuxfoundation.org>
+Message-ID: <20240227131610.902852841@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
+From: Fullway Wang <fullwaywang@outlook.com>
 
-This reverts commit 3eb602ad6a94a76941f93173131a71ad36fa1324.
+[ Upstream commit 04e5eac8f3ab2ff52fa191c187a46d4fdbc1e288 ]
 
-Revert the backport of upstream commit
+The userspace program could pass any values to the driver through
+ioctl() interface. If the driver doesn't check the value of pixclock,
+it may cause divide-by-zero error.
 
-  1f001e9da6bb ("x86/ftrace: Use alternative RET encoding")
+Although pixclock is checked in savagefb_decode_var(), but it is not
+checked properly in savagefb_probe(). Fix this by checking whether
+pixclock is zero in the function savagefb_check_var() before
+info->var.pixclock is used as the divisor.
 
-in favor of a proper backport after backporting the commit which adds
-__text_gen_insn().
+This is similar to CVE-2022-3061 in i740fb which was fixed by
+commit 15cf0b8.
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Fullway Wang <fullwaywang@outlook.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/ftrace.c |    9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/video/fbdev/savage/savagefb_driver.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/x86/kernel/ftrace.c
-+++ b/arch/x86/kernel/ftrace.c
-@@ -311,7 +311,7 @@ union ftrace_op_code_union {
- 	} __attribute__((packed));
- };
+diff --git a/drivers/video/fbdev/savage/savagefb_driver.c b/drivers/video/fbdev/savage/savagefb_driver.c
+index b7818b652698f..a7b63c475f954 100644
+--- a/drivers/video/fbdev/savage/savagefb_driver.c
++++ b/drivers/video/fbdev/savage/savagefb_driver.c
+@@ -869,6 +869,9 @@ static int savagefb_check_var(struct fb_var_screeninfo   *var,
  
--#define RET_SIZE		(IS_ENABLED(CONFIG_RETPOLINE) ? 5 : 1 + IS_ENABLED(CONFIG_SLS))
-+#define RET_SIZE		1 + IS_ENABLED(CONFIG_SLS)
+ 	DBG("savagefb_check_var");
  
- static unsigned long
- create_trampoline(struct ftrace_ops *ops, unsigned int *tramp_size)
-@@ -367,12 +367,7 @@ create_trampoline(struct ftrace_ops *ops
- 		goto fail;
- 
- 	ip = trampoline + size;
--
--	/* The trampoline ends with ret(q) */
--	if (cpu_feature_enabled(X86_FEATURE_RETHUNK))
--		memcpy(ip, text_gen_insn(JMP32_INSN_OPCODE, ip, &__x86_return_thunk), JMP32_INSN_SIZE);
--	else
--		memcpy(ip, retq, sizeof(retq));
-+	memcpy(ip, retq, RET_SIZE);
- 
- 	/* No need to test direct calls on created trampolines */
- 	if (ops->flags & FTRACE_OPS_FL_SAVE_REGS) {
++	if (!var->pixclock)
++		return -EINVAL;
++
+ 	var->transp.offset = 0;
+ 	var->transp.length = 0;
+ 	switch (var->bits_per_pixel) {
+-- 
+2.43.0
+
 
 
 
