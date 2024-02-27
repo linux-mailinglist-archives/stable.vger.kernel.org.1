@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D32A186930E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:41:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE8A1869404
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48FE61F2D7DF
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:41:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EE0E1F21710
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B90F813B2BA;
-	Tue, 27 Feb 2024 13:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACC7114535A;
+	Tue, 27 Feb 2024 13:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2O6aC1mg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q5POhzlY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783F52F2D;
-	Tue, 27 Feb 2024 13:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB0613B78F;
+	Tue, 27 Feb 2024 13:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041283; cv=none; b=NHs13tlxHoJYj/6hBkmHf3gDW/Jel1YcwmjwkfEng0mFOPD6usY5H2A4jRmu1cZG50sLw4Frpt0FkwTu/Njh3fzpN4NLdZRQcx8nwikMvyNZPXMJqMx3ni/DSnH423pIhJUc2+mqGR1zdL3FU8quxWqA8moPQo8S2+PuQQFkYyU=
+	t=1709041728; cv=none; b=abyVrQXwcv1gxtOJTANfxmo03XgtB0xc7R12lG3CT+s2E9ml7fWP5JX8vTHg4qZAkFy4G71KqBz5IYpEBU6+SZKJwmJEG04Q3qc5A6I/68TB704vsCmPu5MwUr/B9ck+qVc/lRiYFV79syDhXHMMut4Hy0Hg1GIv3KWxMXDjWiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041283; c=relaxed/simple;
-	bh=XtsKVF6UXEDK+BcX0reOcXFPAh03F473Okmlka/LylQ=;
+	s=arc-20240116; t=1709041728; c=relaxed/simple;
+	bh=2BIXTuogawP5cbS2fHa2qUW64luhYb6srARyN+jdE7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bD5XQBdXLaA/mZfvQpbo7HYgMI+7V9EH4FuYTk8Z/SdpE73h5JglmdyBRYu2gde5HSfgKzWjoUFkC+zuy9O0KO0qgClgyZitVwsn6uP58HX+e3TisHDFB9WpVnSTFj6y45luqqytPqbVIvL4LKaI8QjjsoaPYaWCS2/5Eu+ZVpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2O6aC1mg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B83C433F1;
-	Tue, 27 Feb 2024 13:41:22 +0000 (UTC)
+	 MIME-Version; b=S9xgJj6FHhY8LedLyGv3llfMgf9SQaNJDdGI/+K/+LuYIAMidQRAB6YyWSAmVtUTPhgqr/pZqDz3853jURuCaW3DXDTOC8ZJEHUPE4k+7XZmVonIJBtybkWy25WGMGV7PbVhFWl11rDGFTGsVhXu5AZ6ZWpIOwJHR6M6A+w5ECQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q5POhzlY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE85CC433F1;
+	Tue, 27 Feb 2024 13:48:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041283;
-	bh=XtsKVF6UXEDK+BcX0reOcXFPAh03F473Okmlka/LylQ=;
+	s=korg; t=1709041728;
+	bh=2BIXTuogawP5cbS2fHa2qUW64luhYb6srARyN+jdE7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2O6aC1mgR/s/19XGjAPUc4Y0eGz13HFcmXiFA2vA+xFBXqsYQhuFb7mfqKbN+uYOW
-	 pjInNS360Out2tLuuJeATsKLbpP8Oso+4Trmd5h+bthFgfRDqSjVBZVzxgZjFq3ucm
-	 73jl44hck17nEd+Ad8gxlCPFhkcHssI8ZErek3Ns=
+	b=Q5POhzlYH377Wu/1Ahx74+K8lO886G9M6YfYZZeUCNrbGf7WRvfNDzLeqnV/k9mKE
+	 D61+yuv5G7gYXAd98T+7mgtgNEmGgIV8u1T+GPzrClBUauiB9eqYbkrT5KxbzJn9SR
+	 DIKxFZ9bq2HwF7Dqd4LnSwmOdg2eJn2rm5CrGlZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jackson Cooper-Driver <Jackson.Cooper-Driver@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
+	Phoenix Chen <asbeltogf@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 285/334] arm64/sme: Restore SME registers on exit from suspend
+Subject: [PATCH 6.6 032/299] platform/x86: touchscreen_dmi: Add info for the TECLAST X16 Plus tablet
 Date: Tue, 27 Feb 2024 14:22:23 +0100
-Message-ID: <20240227131640.189313429@linuxfoundation.org>
+Message-ID: <20240227131626.858176434@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Phoenix Chen <asbeltogf@gmail.com>
 
-[ Upstream commit 9533864816fb4a6207c63b7a98396351ce1a9fae ]
+[ Upstream commit 1abdf288b0ef5606f76b6e191fa6df05330e3d7e ]
 
-The fields in SMCR_EL1 and SMPRI_EL1 reset to an architecturally UNKNOWN
-value. Since we do not otherwise manage the traps configured in this
-register at runtime we need to reconfigure them after a suspend in case
-nothing else was kind enough to preserve them for us.
+Add touch screen info for TECLAST X16 Plus tablet.
 
-The vector length will be restored as part of restoring the SME state for
-the next SME using task.
-
-Fixes: a1f4ccd25cc2 ("arm64/sme: Provide Kconfig for SME")
-Reported-by: Jackson Cooper-Driver <Jackson.Cooper-Driver@arm.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20240213-arm64-sme-resume-v3-1-17e05e493471@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Phoenix Chen <asbeltogf@gmail.com>
+Link: https://lore.kernel.org/r/20240126095308.5042-1-asbeltogf@gmail.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/fpsimd.h |  2 ++
- arch/arm64/kernel/fpsimd.c      | 14 ++++++++++++++
- arch/arm64/kernel/suspend.c     |  3 +++
- 3 files changed, 19 insertions(+)
+ drivers/platform/x86/touchscreen_dmi.c | 35 ++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/arch/arm64/include/asm/fpsimd.h b/arch/arm64/include/asm/fpsimd.h
-index 50e5f25d3024c..7780d343ef080 100644
---- a/arch/arm64/include/asm/fpsimd.h
-+++ b/arch/arm64/include/asm/fpsimd.h
-@@ -386,6 +386,7 @@ extern void sme_alloc(struct task_struct *task, bool flush);
- extern unsigned int sme_get_vl(void);
- extern int sme_set_current_vl(unsigned long arg);
- extern int sme_get_current_vl(void);
-+extern void sme_suspend_exit(void);
+diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
+index 0c67337726984..7aee5e9ff2b8d 100644
+--- a/drivers/platform/x86/touchscreen_dmi.c
++++ b/drivers/platform/x86/touchscreen_dmi.c
+@@ -944,6 +944,32 @@ static const struct ts_dmi_data teclast_tbook11_data = {
+ 	.properties	= teclast_tbook11_props,
+ };
  
- /*
-  * Return how many bytes of memory are required to store the full SME
-@@ -421,6 +422,7 @@ static inline int sme_max_vl(void) { return 0; }
- static inline int sme_max_virtualisable_vl(void) { return 0; }
- static inline int sme_set_current_vl(unsigned long arg) { return -EINVAL; }
- static inline int sme_get_current_vl(void) { return -EINVAL; }
-+static inline void sme_suspend_exit(void) { }
- 
- static inline size_t sme_state_size(struct task_struct const *task)
- {
-diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
-index f7d8f5d81cfe9..db1eba8d5f66d 100644
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -1339,6 +1339,20 @@ void __init sme_setup(void)
- 		get_sme_default_vl());
- }
- 
-+void sme_suspend_exit(void)
-+{
-+	u64 smcr = 0;
++static const struct property_entry teclast_x16_plus_props[] = {
++	PROPERTY_ENTRY_U32("touchscreen-min-x", 8),
++	PROPERTY_ENTRY_U32("touchscreen-min-y", 14),
++	PROPERTY_ENTRY_U32("touchscreen-size-x", 1916),
++	PROPERTY_ENTRY_U32("touchscreen-size-y", 1264),
++	PROPERTY_ENTRY_BOOL("touchscreen-inverted-y"),
++	PROPERTY_ENTRY_STRING("firmware-name", "gsl3692-teclast-x16-plus.fw"),
++	PROPERTY_ENTRY_U32("silead,max-fingers", 10),
++	PROPERTY_ENTRY_BOOL("silead,home-button"),
++	{ }
++};
 +
-+	if (!system_supports_sme())
-+		return;
++static const struct ts_dmi_data teclast_x16_plus_data = {
++	.embedded_fw = {
++		.name	= "silead/gsl3692-teclast-x16-plus.fw",
++		.prefix = { 0xf0, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00 },
++		.length	= 43560,
++		.sha256	= { 0x9d, 0xb0, 0x3d, 0xf1, 0x00, 0x3c, 0xb5, 0x25,
++			    0x62, 0x8a, 0xa0, 0x93, 0x4b, 0xe0, 0x4e, 0x75,
++			    0xd1, 0x27, 0xb1, 0x65, 0x3c, 0xba, 0xa5, 0x0f,
++			    0xcd, 0xb4, 0xbe, 0x00, 0xbb, 0xf6, 0x43, 0x29 },
++	},
++	.acpi_name	= "MSSL1680:00",
++	.properties	= teclast_x16_plus_props,
++};
 +
-+	if (system_supports_fa64())
-+		smcr |= SMCR_ELx_FA64;
-+
-+	write_sysreg_s(smcr, SYS_SMCR_EL1);
-+	write_sysreg_s(0, SYS_SMPRI_EL1);
-+}
-+
- #endif /* CONFIG_ARM64_SME */
- 
- static void sve_init_regs(void)
-diff --git a/arch/arm64/kernel/suspend.c b/arch/arm64/kernel/suspend.c
-index eca4d04352118..eaaff94329cdd 100644
---- a/arch/arm64/kernel/suspend.c
-+++ b/arch/arm64/kernel/suspend.c
-@@ -12,6 +12,7 @@
- #include <asm/daifflags.h>
- #include <asm/debug-monitors.h>
- #include <asm/exec.h>
-+#include <asm/fpsimd.h>
- #include <asm/mte.h>
- #include <asm/memory.h>
- #include <asm/mmu_context.h>
-@@ -80,6 +81,8 @@ void notrace __cpu_suspend_exit(void)
- 	 */
- 	spectre_v4_enable_mitigation(NULL);
- 
-+	sme_suspend_exit();
-+
- 	/* Restore additional feature-specific configuration */
- 	ptrauth_suspend_exit();
- }
+ static const struct property_entry teclast_x3_plus_props[] = {
+ 	PROPERTY_ENTRY_U32("touchscreen-size-x", 1980),
+ 	PROPERTY_ENTRY_U32("touchscreen-size-y", 1500),
+@@ -1612,6 +1638,15 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_SKU, "E5A6_A1"),
+ 		},
+ 	},
++	{
++		/* Teclast X16 Plus */
++		.driver_data = (void *)&teclast_x16_plus_data,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "TECLAST"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Default string"),
++			DMI_MATCH(DMI_PRODUCT_SKU, "D3A5_A1"),
++		},
++	},
+ 	{
+ 		/* Teclast X3 Plus */
+ 		.driver_data = (void *)&teclast_x3_plus_data,
 -- 
 2.43.0
 
