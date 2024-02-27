@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0252E86966B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:11:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC3938697B3
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:24:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9280D1F2B600
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:11:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F080B2C507
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:22:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7128E1419A0;
-	Tue, 27 Feb 2024 14:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5B8113B7AB;
+	Tue, 27 Feb 2024 14:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zcMfJUqs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ca5V/oQz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C89713AA4C;
-	Tue, 27 Feb 2024 14:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74FED13B2B4;
+	Tue, 27 Feb 2024 14:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043088; cv=none; b=WGkxMXgPCdpjivfbqUFTnljeIaZahvm9KQKcoeHaThggw/YAQ3qyd30LuzrSmXfAdiGuJaJAblgriD1x7Lx+7IXTg3LBhMt4cBuJK0VHxyaNJDQTn8br18Yht+FsLTNV518FeoTcvcWudOAH5+wlDGGoqWFK/sajhVXBEnYRKJs=
+	t=1709043774; cv=none; b=o+FFd9e4vVx22aIocj+VTXJEUPaSM7UQihAaX0x09gnQwXEvQHwURWOR7Yexl46jX58/DtleMQ4Az2kiiMgzcD4D7ql4s2FSmnIEhw4jGBdXZXVkYe1s26T4Vqyl3ekbec79DRFE7QqpyFyBJmIDqUjM6b6GWMk8SMe91Gs30wU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043088; c=relaxed/simple;
-	bh=mFCKyS6j7oZt92RcgUIEjrtOSUWvL8Uy5zxuN/m8JCw=;
+	s=arc-20240116; t=1709043774; c=relaxed/simple;
+	bh=1KUkGq0/M78MDpNRqal4pWSU5RMCmSc71SUc1TMfbAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sSVs8p52IpGyWwPlqD+WHtXFDcr3+AeEMEZ5mOKmQOGKJCVOsaId6hZxES7Ft4hEjHQAuulq/I4ghFeaRROVmQgd2tLGDGzk8z7BoAkdzkPc3eg7Z/Z3XdvB1WthyxfY00p2QIb4i6fE16Cvb70uh4lXwaJpGmJkn6GjDJSCGac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zcMfJUqs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF8FDC433C7;
-	Tue, 27 Feb 2024 14:11:27 +0000 (UTC)
+	 MIME-Version; b=QNKQRFbqNtdb9nL2jQ4z+5mlUjvViEW1/t2v4ExOLVPNcPimgXTiSAO9AROcZl9ZPPDLvNuRikVDb4eaeP1IoGGr4byhjPIbNnliQzwwlxZbk1srgtPK32oTvvxEN7aftgF+02Cv+cG9bWNnXoeemzgyiTybf+unVlSc/AYvpR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ca5V/oQz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2A3C433C7;
+	Tue, 27 Feb 2024 14:22:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043088;
-	bh=mFCKyS6j7oZt92RcgUIEjrtOSUWvL8Uy5zxuN/m8JCw=;
+	s=korg; t=1709043774;
+	bh=1KUkGq0/M78MDpNRqal4pWSU5RMCmSc71SUc1TMfbAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zcMfJUqsGbEjNtIhYi+Vy7tsX6/VpYCZ/PwnNOtv59PWI7i1SYw2QaIoRnO0WHcbC
-	 ChnlnOXxRmSxt+7aaL0pCcYw19OM0SOA5lBwf+43GPooHqvp2FgfGKjxF4L0NGqx3o
-	 Dwu7r1dwItt6E7DhJyIg2V5dHBcdrgkUP3uk5eC0=
+	b=ca5V/oQz8glXBMI0I43/9TSrFX4JQQ7dyF9RVolr3CsEKLgxHRr0oJ4Bm8U2ayxS5
+	 4b7PEAMkbTTmXo+9bViXHX4iWAEjDvN3TK/nmkdpVYPNHfV5XGLsunSx+ONUk/10kH
+	 g+IycOAOe7uoAS+CcdX3Sfwftj9+YWWJyzQDLrGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yi Sun <yi.sun@unisoc.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 230/245] tls: stop recv() if initial process_rx_list gave us non-DATA
+Subject: [PATCH 5.4 31/84] virtio-blk: Ensure no requests in virtqueues before deleting vqs.
 Date: Tue, 27 Feb 2024 14:26:58 +0100
-Message-ID: <20240227131622.658412194@linuxfoundation.org>
+Message-ID: <20240227131553.877565096@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Yi Sun <yi.sun@unisoc.com>
 
-[ Upstream commit fdfbaec5923d9359698cbb286bc0deadbb717504 ]
+[ Upstream commit 4ce6e2db00de8103a0687fb0f65fd17124a51aaa ]
 
-If we have a non-DATA record on the rx_list and another record of the
-same type still on the queue, we will end up merging them:
- - process_rx_list copies the non-DATA record
- - we start the loop and process the first available record since it's
-   of the same type
- - we break out of the loop since the record was not DATA
+Ensure no remaining requests in virtqueues before resetting vdev and
+deleting virtqueues. Otherwise these requests will never be completed.
+It may cause the system to become unresponsive.
 
-Just check the record type and jump to the end in case process_rx_list
-did some work.
+Function blk_mq_quiesce_queue() can ensure that requests have become
+in_flight status, but it cannot guarantee that requests have been
+processed by the device. Virtqueues should never be deleted before
+all requests become complete status.
 
-Fixes: 692d7b5d1f91 ("tls: Fix recvmsg() to be able to peek across multiple records")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/r/bd31449e43bd4b6ff546f5c51cf958c31c511deb.1708007371.git.sd@queasysnail.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Function blk_mq_freeze_queue() ensure that all requests in virtqueues
+become complete status. And no requests can enter in virtqueues.
+
+Signed-off-by: Yi Sun <yi.sun@unisoc.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Link: https://lore.kernel.org/r/20240129085250.1550594-1-yi.sun@unisoc.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/block/virtio_blk.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index 92eab4a7a80b5..e6f700f67c010 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -1787,7 +1787,7 @@ int tls_sw_recvmsg(struct sock *sk,
- 	}
+diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
+index 9b3ea86c20e5e..3afc07b59477b 100644
+--- a/drivers/block/virtio_blk.c
++++ b/drivers/block/virtio_blk.c
+@@ -1063,14 +1063,15 @@ static int virtblk_freeze(struct virtio_device *vdev)
+ {
+ 	struct virtio_blk *vblk = vdev->priv;
  
- 	copied = err;
--	if (len <= copied)
-+	if (len <= copied || (copied && control != TLS_RECORD_TYPE_DATA))
- 		goto end;
++	/* Ensure no requests in virtqueues before deleting vqs. */
++	blk_mq_freeze_queue(vblk->disk->queue);
++
+ 	/* Ensure we don't receive any more interrupts */
+ 	vdev->config->reset(vdev);
  
- 	target = sock_rcvlowat(sk, flags & MSG_WAITALL, len);
+ 	/* Make sure no work handler is accessing the device. */
+ 	flush_work(&vblk->config_work);
+ 
+-	blk_mq_quiesce_queue(vblk->disk->queue);
+-
+ 	vdev->config->del_vqs(vdev);
+ 	kfree(vblk->vqs);
+ 
+@@ -1088,7 +1089,7 @@ static int virtblk_restore(struct virtio_device *vdev)
+ 
+ 	virtio_device_ready(vdev);
+ 
+-	blk_mq_unquiesce_queue(vblk->disk->queue);
++	blk_mq_unfreeze_queue(vblk->disk->queue);
+ 	return 0;
+ }
+ #endif
 -- 
 2.43.0
 
