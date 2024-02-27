@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE9FE8693A8
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:47:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D55AC86964B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:10:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E01221C21932
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:47:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B33E1F2D9DC
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC8791420DD;
-	Tue, 27 Feb 2024 13:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26EDE1419A1;
+	Tue, 27 Feb 2024 14:10:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S4IOy2qx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AECtMlmb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6B41420D8;
-	Tue, 27 Feb 2024 13:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22A013A26F;
+	Tue, 27 Feb 2024 14:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041540; cv=none; b=Ejq3+rASWyTo2/BTVkqrL4k+nf0vR1P6YTdXhl/y6vBDQByfAiWVk9r2VVCUbRBoC+3X0Qqr0rAefdMF+CyhdbL0LlgaLCs2kLgT9pdeTB4LCXWtqjxun8wVuVyscM5qi7khCJ77xqX6M2uN0sFne80M6uVe+iWpKOPjfXYHHTE=
+	t=1709043005; cv=none; b=DHohfl0QyBd2a5ovnXqciVfcphTZIKsyMV2WenDvdrxry3vloq+MsAxQ+qBPlnAZjSiwAlg/4wg6c9f09ziSqVL20KJPkj38WI+0FErYuBecfrAQIxVXVb1A++p/iXv7JiWERpT6nDN1Gt5rPQfLfdBlV6CMQ1bX4iWHGgXTIpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041540; c=relaxed/simple;
-	bh=w+xvFraHg9Rs5QEYDzP+/17ZZQfZyKfbdl2v4KqTTSs=;
+	s=arc-20240116; t=1709043005; c=relaxed/simple;
+	bh=tXRvbxCfe12QiNGkoWVw1iZpaSB0xo0aW0uoIR+t1Ko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QYQDaLGYuZsjg15zGvB6aQM8O2iFdwjotSLTKElrLCklAc343B/xvhP/lbsOWAcyCj7gNazV5jrOU/WR3XBpgxY/ENtioK9y1fN6LI5F7ld6reLyC4ekamGV5R6hod605ulJsE/qhpthUXDlKeee4dMQ5J0fuqn3t1oaNJK3DWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S4IOy2qx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F0E8C43330;
-	Tue, 27 Feb 2024 13:45:39 +0000 (UTC)
+	 MIME-Version; b=tiVxTgOYgHlHQMRhhkJPVDAKDSxyZSrZuGOgjl3HCNnJMdPK9XEpTosllTHmjzQ81EYG2ygRq+klA9lGx+eIOyd8ebjAPb/FX9ube+4X5yw5VmlDkcv/E7/ift5Y3P9vXQ9EGrG3hGRy8HJan6szCd44cwYDUi/fCujkIMxEJy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AECtMlmb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D807C433C7;
+	Tue, 27 Feb 2024 14:10:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041540;
-	bh=w+xvFraHg9Rs5QEYDzP+/17ZZQfZyKfbdl2v4KqTTSs=;
+	s=korg; t=1709043005;
+	bh=tXRvbxCfe12QiNGkoWVw1iZpaSB0xo0aW0uoIR+t1Ko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S4IOy2qxl/l7vpWmgGs+nIV4fKxnvEZpXF/3vBk73QzGr4gJv3v1CJ1Npwf+qhnme
-	 izdj3xL1vf3E1tGzttj2brAzKPFS1Lwl/x2GyMmeWqkJ9M+050EYLNaEMWN+XPHzb4
-	 tSJ0JUAqYbdlcGYHbA7AXteYY1te2spbN0wk/Gqc=
+	b=AECtMlmbXCAJFLJ6YrWvqgeGBB5M7yu6x9Y8o0vOiaLdjqF4eTeV6rhpSVbtOTXem
+	 hs6OQ/fAgWZMl3w9JAq1HnYjPQsLGIMWDe1ihCzR7FgjqT76tcv+UJONXuUlGbIKSN
+	 knePAONGbf/R8/4C4aGad4hoTggRlMTEph7FBoq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Leon Romanovsky <leon@kernel.org>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Bharath SM <bharathsm@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 40/52] RDMA/srpt: fix function pointer cast warnings
-Date: Tue, 27 Feb 2024 14:26:27 +0100
-Message-ID: <20240227131549.847362225@linuxfoundation.org>
+Subject: [PATCH 5.15 200/245] cifs: add a warning when the in-flight count goes negative
+Date: Tue, 27 Feb 2024 14:26:28 +0100
+Message-ID: <20240227131621.689852390@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
-References: <20240227131548.514622258@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit eb5c7465c3240151cd42a55c7ace9da0026308a1 ]
+[ Upstream commit e4645cc2f1e2d6f268bb8dcfac40997c52432aed ]
 
-clang-16 notices that srpt_qp_event() gets called through an incompatible
-pointer here:
+We've seen the in-flight count go into negative with some
+internal stress testing in Microsoft.
 
-drivers/infiniband/ulp/srpt/ib_srpt.c:1815:5: error: cast from 'void (*)(struct ib_event *, struct srpt_rdma_ch *)' to 'void (*)(struct ib_event *, void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
- 1815 |                 = (void(*)(struct ib_event *, void*))srpt_qp_event;
+Adding a WARN when this happens, in hope of understanding
+why this happens when it happens.
 
-Change srpt_qp_event() to use the correct prototype and adjust the
-argument inside of it.
-
-Fixes: a42d985bd5b2 ("ib_srpt: Initial SRP Target merge for v3.3-rc1")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20240213100728.458348-1-arnd@kernel.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Reviewed-by: Bharath SM <bharathsm@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/srpt/ib_srpt.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ fs/cifs/smb2ops.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
-index 4a696bf280ef9..5cbccf5a54d68 100644
---- a/drivers/infiniband/ulp/srpt/ib_srpt.c
-+++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
-@@ -221,10 +221,12 @@ static const char *get_ch_state_name(enum rdma_ch_state s)
- /**
-  * srpt_qp_event - QP event callback function
-  * @event: Description of the event that occurred.
-- * @ch: SRPT RDMA channel.
-+ * @ptr: SRPT RDMA channel.
-  */
--static void srpt_qp_event(struct ib_event *event, struct srpt_rdma_ch *ch)
-+static void srpt_qp_event(struct ib_event *event, void *ptr)
- {
-+	struct srpt_rdma_ch *ch = ptr;
-+
- 	pr_debug("QP event %d on ch=%p sess_name=%s-%d state=%s\n",
- 		 event->event, ch, ch->sess_name, ch->qp->qp_num,
- 		 get_ch_state_name(ch->state));
-@@ -1766,8 +1768,7 @@ static int srpt_create_ch_ib(struct srpt_rdma_ch *ch)
+diff --git a/fs/cifs/smb2ops.c b/fs/cifs/smb2ops.c
+index a8f33e8261344..b725bd3144fb7 100644
+--- a/fs/cifs/smb2ops.c
++++ b/fs/cifs/smb2ops.c
+@@ -85,6 +85,7 @@ smb2_add_credits(struct TCP_Server_Info *server,
+ 		*val = 65000; /* Don't get near 64K credits, avoid srv bugs */
+ 		pr_warn_once("server overflowed SMB3 credits\n");
  	}
- 
- 	qp_init->qp_context = (void *)ch;
--	qp_init->event_handler
--		= (void(*)(struct ib_event *, void*))srpt_qp_event;
-+	qp_init->event_handler = srpt_qp_event;
- 	qp_init->send_cq = ch->cq;
- 	qp_init->recv_cq = ch->cq;
- 	qp_init->sq_sig_type = IB_SIGNAL_REQ_WR;
++	WARN_ON_ONCE(server->in_flight == 0);
+ 	server->in_flight--;
+ 	if (server->in_flight == 0 &&
+ 	   ((optype & CIFS_OP_MASK) != CIFS_NEG_OP) &&
 -- 
 2.43.0
 
