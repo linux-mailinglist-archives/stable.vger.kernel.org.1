@@ -1,126 +1,139 @@
-Return-Path: <stable+bounces-23888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87726868DA0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 11:31:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CAFA868E28
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 11:55:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38CE32873EC
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 10:31:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DC9E1C20F9A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 10:55:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC3D136666;
-	Tue, 27 Feb 2024 10:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33BB11386D9;
+	Tue, 27 Feb 2024 10:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="ATNcotiI"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="qZl+MIli"
 X-Original-To: stable@vger.kernel.org
-Received: from a.mx.secunet.com (a.mx.secunet.com [62.96.220.36])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A570153376;
-	Tue, 27 Feb 2024 10:31:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC621386C3;
+	Tue, 27 Feb 2024 10:54:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709029877; cv=none; b=GJarLS7it+/UQKNnzlIgABI7DK3f6yRt8851CXNZKy1VjRxIIToTzo/BEN3XAjLhFKKct75biYtQShRfq8s9D8E+uURAKzdDc7BadNY7K9EFxgX9y5/qjgfd89Nj3HPZRMWwWTv8Gk35SUjuXn5REZ3pU+x4fqcHh7bIUR/jDN0=
+	t=1709031292; cv=none; b=NfmaiTOOjaCbOhSLNPTR7K4SSrmti5iiCj7GuJWckBPjPGbgsmIB0Zg6l4xarFZTMArDvvScX3cJG/uFrJKpkqAMa8k5GjaXErNfK9mnbIaF32rivZSI5o3R/h+dicQWAg7icIz6k0D+Z2n7HAB2IM+wogoSwVolbqnHvs0D+Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709029877; c=relaxed/simple;
-	bh=UZPA+oW2ED27diOEsEHoW3DjwrWTidPv6l7VZbUw6+4=;
+	s=arc-20240116; t=1709031292; c=relaxed/simple;
+	bh=2dJXeGkL18BLr3sq0Pf/vdUj3hVf2tCKH8bAhmkTlSk=;
 	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TctXAVZPZFuxy8wS090iAewYOSDLgKCjuCee5tb1on6KLzIujIy3usI6+yND0H+SZi334RtVVabVIMKm3OxK6TBY1aQwLV2DFQWrNj4YGozauzY9tfFHvJLEinZIyfSH6ZA98L4+xhAcqiykOt7Kx3Bor6azndW8mYxapRewam0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=ATNcotiI; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
-Received: from localhost (localhost [127.0.0.1])
-	by a.mx.secunet.com (Postfix) with ESMTP id 015872087B;
-	Tue, 27 Feb 2024 11:31:06 +0100 (CET)
-X-Virus-Scanned: by secunet
-Received: from a.mx.secunet.com ([127.0.0.1])
-	by localhost (a.mx.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id Lgn6WFSWJChe; Tue, 27 Feb 2024 11:31:05 +0100 (CET)
-Received: from mailout1.secunet.com (mailout1.secunet.com [62.96.220.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by a.mx.secunet.com (Postfix) with ESMTPS id 6CC9B207E4;
-	Tue, 27 Feb 2024 11:31:01 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 a.mx.secunet.com 6CC9B207E4
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1709029861;
-	bh=36X9HieMWPjDOQ3pURbAUKsOVyclcZ1ePVR/QDpPb64=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=ATNcotiIoTEVWQzHRSgqNfIlxyXxbx/Nh/Zeqv9ROdcZ2fR5fKHS0cQHitc7dzP1O
-	 /sXU6NP/SlMqGWteyY7NvxveZK09TUKUCCp2lpu1KlrBw70tqj/hjXeo9Tr6ddmUFq
-	 T2tbj/prS5r2qujOj1s/Y39G0rQX4dEJTxhW8iwps6ICybjWVB7Te6F5Z9v+WUzsPj
-	 TXby2SX0AIk4xuetrcUtD9mte+rXWPUrDjP0wEHlAPMorghetrjnDXD0Z/GBEajYfV
-	 CqfvtUO8RGlGMALHvGCQJBGduT44RyFDYCGBs5LV3ggR/OZTCSyS3XJNHdsnWnoiyD
-	 LPyYaiESYkeUw==
-Received: from cas-essen-02.secunet.de (unknown [10.53.40.202])
-	by mailout1.secunet.com (Postfix) with ESMTP id 5DD6A80004E;
-	Tue, 27 Feb 2024 11:31:01 +0100 (CET)
-Received: from mbx-essen-02.secunet.de (10.53.40.198) by
- cas-essen-02.secunet.de (10.53.40.202) with Microsoft SMTP Server
+	 Content-Type:Content-Disposition:In-Reply-To; b=tXRJ8w5SFwXzBAuu+BHYKbR/tmeDJ2N0iG+OHcpPJ8fjFjCSQrZMMEzxu8Mhah7OB7QTqW0XNLHG4NN8cuTACU2G5Xjp26PSeqaPN4qaDf3JB2qypcVT29c62XeAQKy3MQdX4I0iV7i7GvT5hvuPs4xu0i5HRclWes2zZ9xSpo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=qZl+MIli; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1709031290; x=1740567290;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=2dJXeGkL18BLr3sq0Pf/vdUj3hVf2tCKH8bAhmkTlSk=;
+  b=qZl+MIlifaAXUoAN2GsfM8XC4a1AIWPcgtEbJIL973rxggAGBPxbR6Vs
+   gTtvxuuWT6AgsolvJu48+XB/7bjL+XQZhgGTxNv7gQCasPrTZe+WSUsBX
+   JdX/bXGSAcLPD3wqT0+7HIthcBVtS5I4Fg+Gcj988ljY5Vy37R203BP/X
+   DWsbF4UbWC3rEG8GuLWuDKgA3p1Gkc8aG7XU8NRF9aDyZ9dZ4UNXeC1dV
+   vooiKRd/vT6+M3TNnfi8t9W4mDKPT95cksEAy1wuVWFsOQUzCl1vP2eRr
+   b7hdaKjA6yOzKORtKEHW7iQQ0r0N4VU1EmrQjQrv9uOt3u3/kS9D0KZw0
+   g==;
+X-CSE-ConnectionGUID: 5VRzFmqxShG6JMonl7+fzw==
+X-CSE-MsgGUID: 8on+D4dCRzeaeBB4CqE2NA==
+X-IronPort-AV: E=Sophos;i="6.06,187,1705388400"; 
+   d="asc'?scan'208";a="18451573"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 27 Feb 2024 03:54:43 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 27 Feb 2024 11:31:01 +0100
-Received: from gauss2.secunet.de (10.182.7.193) by mbx-essen-02.secunet.de
- (10.53.40.198) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 27 Feb
- 2024 11:31:00 +0100
-Received: by gauss2.secunet.de (Postfix, from userid 1000)
-	id 5DDDB3182503; Tue, 27 Feb 2024 11:31:00 +0100 (CET)
-Date: Tue, 27 Feb 2024 11:31:00 +0100
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Nathan Chancellor <nathan@kernel.org>
-CC: <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
-	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<morbo@google.com>, <justinstitt@google.com>, <keescook@chromium.org>,
-	<netdev@vger.kernel.org>, <llvm@lists.linux.dev>, <patches@lists.linux.dev>,
-	<stable@vger.kernel.org>
-Subject: Re: [PATCH net] xfrm: Avoid clang fortify warning in
- copy_to_user_tmpl()
-Message-ID: <Zd255JYau84UHfpo@gauss3.secunet.de>
-References: <20240221-xfrm-avoid-clang-fortify-warning-copy_to_user_tmpl-v1-1-254a788ab8ba@kernel.org>
+ 15.1.2507.35; Tue, 27 Feb 2024 03:54:22 -0700
+Received: from wendy (10.10.85.11) by chn-vm-ex04.mchp-main.com (10.10.85.152)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35 via Frontend
+ Transport; Tue, 27 Feb 2024 03:54:18 -0700
+Date: Tue, 27 Feb 2024 10:53:35 +0000
+From: Conor Dooley <conor.dooley@microchip.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+CC: Conor Dooley <conor@kernel.org>, Matthew Maurer <mmaurer@google.com>,
+	<linux-riscv@lists.infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex
+ Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>, Jonathan
+ Corbet <corbet@lwn.net>, Paul Walmsley <paul.walmsley@sifive.com>, Palmer
+ Dabbelt <palmer@dabbelt.com>, Nathan Chancellor <nathan@kernel.org>, Nick
+ Desaulniers <ndesaulniers@google.com>, Tom Rix <trix@redhat.com>,
+	<rust-for-linux@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <llvm@lists.linux.dev>,
+	<stable@vger.kernel.org>, Sami Tolvanen <samitolvanen@google.com>, Ramon de C
+ Valle <rcvalle@google.com>
+Subject: Re: [PATCH v2 1/3] rust: make mutually exclusive with CFI_CLANG
+Message-ID: <20240227-uncertain-amaze-6197e627ad95@wendy>
+References: <20240223-leverage-walmart-5424542cd8bd@spud>
+ <20240223-perjury-preshow-fc2cf73d552e@spud>
+ <CANiq72=mCnm0mKOw5K44PmZ+jF=67jxEEkcXP-E0O8CaUrps=w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="qesnKr6zWGeidy+1"
 Content-Disposition: inline
-In-Reply-To: <20240221-xfrm-avoid-clang-fortify-warning-copy_to_user_tmpl-v1-1-254a788ab8ba@kernel.org>
-X-ClientProxiedBy: cas-essen-02.secunet.de (10.53.40.202) To
- mbx-essen-02.secunet.de (10.53.40.198)
-X-EXCLAIMER-MD-CONFIG: 2c86f778-e09b-4440-8b15-867914633a10
+In-Reply-To: <CANiq72=mCnm0mKOw5K44PmZ+jF=67jxEEkcXP-E0O8CaUrps=w@mail.gmail.com>
 
-On Wed, Feb 21, 2024 at 02:46:21PM -0700, Nathan Chancellor wrote:
-> After a couple recent changes in LLVM, there is a warning (or error with
-> CONFIG_WERROR=y or W=e) from the compile time fortify source routines,
-> specifically the memset() in copy_to_user_tmpl().
-> 
->   In file included from net/xfrm/xfrm_user.c:14:
->   ...
->   include/linux/fortify-string.h:438:4: error: call to '__write_overflow_field' declared with 'warning' attribute: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
->     438 |                         __write_overflow_field(p_size_field, size);
->         |                         ^
->   1 error generated.
-> 
-> While ->xfrm_nr has been validated against XFRM_MAX_DEPTH when its value
-> is first assigned in copy_templates() by calling validate_tmpl() first
-> (so there should not be any issue in practice), LLVM/clang cannot really
-> deduce that across the boundaries of these functions. Without that
-> knowledge, it cannot assume that the loop stops before i is greater than
-> XFRM_MAX_DEPTH, which would indeed result a stack buffer overflow in the
-> memset().
-> 
-> To make the bounds of ->xfrm_nr clear to the compiler and add additional
-> defense in case copy_to_user_tmpl() is ever used in a path where
-> ->xfrm_nr has not been properly validated against XFRM_MAX_DEPTH first,
-> add an explicit bound check and early return, which clears up the
-> warning.
-> 
-> Cc: stable@vger.kernel.org
-> Link: https://github.com/ClangBuiltLinux/linux/issues/1985
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+--qesnKr6zWGeidy+1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Applied to the ipsec tree, thanks a lot!
+On Fri, Feb 23, 2024 at 03:45:10PM +0100, Miguel Ojeda wrote:
+> On Fri, Feb 23, 2024 at 2:38=E2=80=AFPM Conor Dooley <conor@kernel.org> w=
+rote:
+> >
+> > configuring a kernel without symmetrical support for kfi.
+>=20
+> Nit: typo.
+>=20
+> > This probably needs to go to stable. The correct fixes tag for that I am
+> > not sure of however, but since CFI_CLANG predates RUST, I blamed the
+> > commit adding rust support.
+>=20
+> Cc'ing Matthew et al. in case this is a problem for them, but I guess
+> we can relax it later as needed.
+
+I suspect that nobody has actually sat down and tried it.
+
+I did try to test it but I ran into too many toolchain issues - my
+older copies of LLVM (pre 17) are not multiarch as I built them by hand
+with PGO for x86 and RISC-V. My LLVM 17 is from kernel.org and has no
+libclang. And then the copy of LLVM 18 on kernel.org apparently does not
+support kcfi at all. I gave up there, but I don't see how this would not
+be a problem on other arches, given rustc never gets told to enable
+kcfi.
+
+Cheers,
+Conor.
+
+--qesnKr6zWGeidy+1
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZd2/LwAKCRB4tDGHoIJi
+0kCFAQDbFb4J84k51y4ZZDP1Z2Nwwsm14EnLI4s7gDvdwmNr2wD/V+413aDcYoix
+UrYilvihx41Q4hI/sSLoniAT8LzW/Qg=
+=eco2
+-----END PGP SIGNATURE-----
+
+--qesnKr6zWGeidy+1--
 
