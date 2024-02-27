@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-24978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B081869724
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:18:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 853B48693A4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:47:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2253283462
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:18:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 904A2B2EB95
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:44:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71CC278B61;
-	Tue, 27 Feb 2024 14:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B5FF13EFFB;
+	Tue, 27 Feb 2024 13:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izT9BPxd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cbOBHGLE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3100113B78E;
-	Tue, 27 Feb 2024 14:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F68B13B78F;
+	Tue, 27 Feb 2024 13:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043517; cv=none; b=TweUOWMQY+IsasQ9VVM/YF5IX3rzPWer+uqJmYIewaqoCZu4BYqxTUNKQnSC9JM2gSwKJ7MFFYKIa1t1/Nny8Vzw/PpjffmW8V4qnfTeZFk1nWq0zQ2xXpP5o1af+OaOK4CWPJD6j7hOP9RiBusNAW9MrjK4SDG8Z4Lf7SNUnCk=
+	t=1709041458; cv=none; b=KaTEXEePgGNIzmmCO/brJPyrws4mIcPIxt3LCp3bSAMk3EJlTkD1UH5iSyDBGB6MomKhZDnEa50yyXCckXhQny6PyFIdd+JeMSGQcEsUv+vUM+A53S+KUqptD0QsNym6vMu7A4xCexsVhEfEvJWaP+SA2vuyPxW6w0KYYDwC5Wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043517; c=relaxed/simple;
-	bh=RLTNgoAEoftHcUlThFPaWN+bpQqsHDP6May/Xm6o8wU=;
+	s=arc-20240116; t=1709041458; c=relaxed/simple;
+	bh=ZcA72At/K+zpHnlhJyzYNNXVaTs+q97VjVH2ibk7III=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=da3MytaBev1xAGc6YtT3Wf2q1eHRDNZ/be2yEfh6sRtr16MLPVKgHuvweeOQJDlNf+cSLrQDFjD7/wvjDCz5Yz7ze19RJpqeCk6jSVddT+eyaPetRSSh07JpgeSB73N1bJqa01PhjlhWEqATK38ddsTkiLspFOL7lZ/rhDXlU9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izT9BPxd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2375C433F1;
-	Tue, 27 Feb 2024 14:18:36 +0000 (UTC)
+	 MIME-Version; b=PPGzEumYC6R4TY53K8b+qo0Ywoabux7rX6L4jlIbm0RdM/PAkaMvWSnxuC1g17oFRlJLOzKqaYW7Pasv2e62pUgPSYVF9t+0sc0FJjy7d1QUgmTl/2thuKzHHgEohZDdkcexUe74zou+Kjv0yesmYsJ2sndNlxp5Tu8ykyOVV40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cbOBHGLE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C432C433C7;
+	Tue, 27 Feb 2024 13:44:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043517;
-	bh=RLTNgoAEoftHcUlThFPaWN+bpQqsHDP6May/Xm6o8wU=;
+	s=korg; t=1709041457;
+	bh=ZcA72At/K+zpHnlhJyzYNNXVaTs+q97VjVH2ibk7III=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=izT9BPxdym1z76wuQLfogA7sLbgiGz2Y50YVF+ikmQe4hMYCDFhK+OcEyWjHvRKF0
-	 uWx2xiGPHUDOsCKP0MR1AoCnIbWWJKYflqR0H5sVS8O8OtPTe4SQy+K8d/cgwIL2Rh
-	 /f8KGV3Pj3u6Wz69LNYjdnk2FMWIsLWuRQ7Owrxw=
+	b=cbOBHGLEUQ8ugkrFeRG6ywaYqxOxaWjfB4om6mT8C5ZbpYBOI8q2JM3357sK3BG+o
+	 NH6XmR5x1g/KeJG747SfEWbqugSaqE/0ReekvJDIgETaScb3xKPIgj9WjRPpIhs9ly
+	 7bBkafyZFLHsA4LkK2pHGZUc1pqvJ9lR/9tHxLMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	=?UTF-8?q?Jonas=20Sch=C3=A4fer?= <jonas@wielicki.name>,
-	Narcis Garcia <debianlists@actiu.net>,
-	Yosry Ahmed <yosryahmed@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Shakeel Butt <shakeelb@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 098/195] mm: memcontrol: clarify swapaccount=0 deprecation warning
+	Dmitry Bogdanov <d.bogdanov@yadro.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 12/52] scsi: target: core: Add TMF to tmr_list handling
 Date: Tue, 27 Feb 2024 14:25:59 +0100
-Message-ID: <20240227131613.709997610@linuxfoundation.org>
+Message-ID: <20240227131548.937959702@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
+References: <20240227131548.514622258@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,64 +61,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Weiner <hannes@cmpxchg.org>
+From: Dmitry Bogdanov <d.bogdanov@yadro.com>
 
-commit 118642d7f606fc9b9c92ee611275420320290ffb upstream.
+[ Upstream commit 83ab68168a3d990d5ff39ab030ad5754cbbccb25 ]
 
-The swapaccount deprecation warning is throwing false positives.  Since we
-deprecated the knob and defaulted to enabling, the only reports we've been
-getting are from folks that set swapaccount=1.  While this is a nice
-affirmation that always-enabling was the right choice, we certainly don't
-want to warn when users request the supported mode.
+An abort that is responded to by iSCSI itself is added to tmr_list but does
+not go to target core. A LUN_RESET that goes through tmr_list takes a
+refcounter on the abort and waits for completion. However, the abort will
+be never complete because it was not started in target core.
 
-Only warn when disabling is requested, and clarify the warning.
+ Unable to locate ITT: 0x05000000 on CID: 0
+ Unable to locate RefTaskTag: 0x05000000 on CID: 0.
+ wait_for_tasks: Stopping tmf LUN_RESET with tag 0x0 ref_task_tag 0x0 i_state 34 t_state ISTATE_PROCESSING refcnt 2 transport_state active,stop,fabric_stop
+ wait for tasks: tmf LUN_RESET with tag 0x0 ref_task_tag 0x0 i_state 34 t_state ISTATE_PROCESSING refcnt 2 transport_state active,stop,fabric_stop
+...
+ INFO: task kworker/0:2:49 blocked for more than 491 seconds.
+ task:kworker/0:2     state:D stack:    0 pid:   49 ppid:     2 flags:0x00000800
+ Workqueue: events target_tmr_work [target_core_mod]
+Call Trace:
+ __switch_to+0x2c4/0x470
+ _schedule+0x314/0x1730
+ schedule+0x64/0x130
+ schedule_timeout+0x168/0x430
+ wait_for_completion+0x140/0x270
+ target_put_cmd_and_wait+0x64/0xb0 [target_core_mod]
+ core_tmr_lun_reset+0x30/0xa0 [target_core_mod]
+ target_tmr_work+0xc8/0x1b0 [target_core_mod]
+ process_one_work+0x2d4/0x5d0
+ worker_thread+0x78/0x6c0
 
-[colin.i.king@gmail.com: spelling: "commdandline" -> "commandline"]
-  Link: https://lkml.kernel.org/r/20240215090544.1649201-1-colin.i.king@gmail.com
-Link: https://lkml.kernel.org/r/20240213081634.3652326-1-hannes@cmpxchg.org
-Fixes: b25806dcd3d5 ("mm: memcontrol: deprecate swapaccounting=0 mode")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Reported-by: "Jonas Schäfer" <jonas@wielicki.name>
-Reported-by: Narcis Garcia <debianlists@actiu.net>
-Suggested-by: Yosry Ahmed <yosryahmed@google.com>
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Yosry Ahmed <yosryahmed@google.com>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Acked-by: Shakeel Butt <shakeelb@google.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To fix this, only add abort to tmr_list if it will be handled by target
+core.
+
+Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
+Link: https://lore.kernel.org/r/20240111125941.8688-1-d.bogdanov@yadro.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memcontrol.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/target/target_core_device.c    | 5 -----
+ drivers/target/target_core_transport.c | 4 ++++
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -7517,9 +7517,13 @@ bool mem_cgroup_swap_full(struct folio *
+diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
+index a23dcbe79e14a..3ed43a5f1fd39 100644
+--- a/drivers/target/target_core_device.c
++++ b/drivers/target/target_core_device.c
+@@ -164,7 +164,6 @@ int transport_lookup_tmr_lun(struct se_cmd *se_cmd, u64 unpacked_lun)
+ 	struct se_session *se_sess = se_cmd->se_sess;
+ 	struct se_node_acl *nacl = se_sess->se_node_acl;
+ 	struct se_tmr_req *se_tmr = se_cmd->se_tmr_req;
+-	unsigned long flags;
  
- static int __init setup_swap_account(char *s)
- {
--	pr_warn_once("The swapaccount= commandline option is deprecated. "
--		     "Please report your usecase to linux-mm@kvack.org if you "
--		     "depend on this functionality.\n");
-+	bool res;
-+
-+	if (!kstrtobool(s, &res) && !res)
-+		pr_warn_once("The swapaccount=0 commandline option is deprecated "
-+			     "in favor of configuring swap control via cgroupfs. "
-+			     "Please report your usecase to linux-mm@kvack.org if you "
-+			     "depend on this functionality.\n");
- 	return 1;
+ 	rcu_read_lock();
+ 	deve = target_nacl_find_deve(nacl, unpacked_lun);
+@@ -195,10 +194,6 @@ int transport_lookup_tmr_lun(struct se_cmd *se_cmd, u64 unpacked_lun)
+ 	se_cmd->se_dev = rcu_dereference_raw(se_lun->lun_se_dev);
+ 	se_tmr->tmr_dev = rcu_dereference_raw(se_lun->lun_se_dev);
+ 
+-	spin_lock_irqsave(&se_tmr->tmr_dev->se_tmr_lock, flags);
+-	list_add_tail(&se_tmr->tmr_list, &se_tmr->tmr_dev->dev_tmr_list);
+-	spin_unlock_irqrestore(&se_tmr->tmr_dev->se_tmr_lock, flags);
+-
+ 	return 0;
  }
- __setup("swapaccount=", setup_swap_account);
+ EXPORT_SYMBOL(transport_lookup_tmr_lun);
+diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
+index 64481a3a34d44..f8ba730fa1cfe 100644
+--- a/drivers/target/target_core_transport.c
++++ b/drivers/target/target_core_transport.c
+@@ -3463,6 +3463,10 @@ int transport_generic_handle_tmr(
+ 	unsigned long flags;
+ 	bool aborted = false;
+ 
++	spin_lock_irqsave(&cmd->se_dev->se_tmr_lock, flags);
++	list_add_tail(&cmd->se_tmr_req->tmr_list, &cmd->se_dev->dev_tmr_list);
++	spin_unlock_irqrestore(&cmd->se_dev->se_tmr_lock, flags);
++
+ 	spin_lock_irqsave(&cmd->t_state_lock, flags);
+ 	if (cmd->transport_state & CMD_T_ABORTED) {
+ 		aborted = true;
+-- 
+2.43.0
+
 
 
 
