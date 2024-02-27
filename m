@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-24476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AF778694A8
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:55:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD5348695B5
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:04:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C9471C24A62
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:55:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1ADF41C21E4B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:04:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81B02143C48;
-	Tue, 27 Feb 2024 13:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8062F13B79F;
+	Tue, 27 Feb 2024 14:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kWQZ6tQi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8fVUSuX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F23F14264A;
-	Tue, 27 Feb 2024 13:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EAC416423;
+	Tue, 27 Feb 2024 14:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042110; cv=none; b=dy71lPGybbtBfnQDqOBM+7b0mlpvXJtdf1Iq4ZwemzKObAcsg2xGQuVPCy2YceuDpbBWUGjN773UM/9xWn6dFQIeIDXirhLFuXDsuhFZbqaNRZ9RX0PLj9Tcc0zfBhC/FZbsw8I5J8SwIbpffkE/AN+K9oLdcfXeyzRtLBAHM78=
+	t=1709042674; cv=none; b=ueOFXsHKWM4Xal9XqkcidVv8ZeVYEpGQJKhZ+3LFGtRMiP6Xs4RKibA/ruun57BzvwxaPYLg5HdZZ8j+fMzeSRUp81f/yuiZnrxjiV+zCutq7Eikt3jauHyF5pbIvr86H1Nv20FkOVwoeTJs+bj/aApD0KB1cZ5Y6A7EkCVm3Dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042110; c=relaxed/simple;
-	bh=VVeiTU9tZD0pvTDYzrXDQlVGrCjYlFIpj/TxcQsB09U=;
+	s=arc-20240116; t=1709042674; c=relaxed/simple;
+	bh=o6KKztbgE0KtpCMsfUVSFSQev3r/x6mbldEgcC5CAXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ANb4NndchwyqtfKII3xp4Kg8q0Wn2Up8pLt5AxC7gGjh71B45rFbrQuarvja9eNc8s+ynjGuMA4dW9ow7JUI7LPNLXXFm5uxn3AibshXw4YekygVHh3OvtAsrM0dRFYCw8gn6PN6N+0T5XzL5j1Eu1knz2W9OlQKVEJW+pNXrxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kWQZ6tQi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF145C433F1;
-	Tue, 27 Feb 2024 13:55:09 +0000 (UTC)
+	 MIME-Version; b=CvrPQfNU+v77+pt5M2L1oebc0IL3ocYyTrFhV0LqNzajUXQMXqJGNIg59iIdOKfjqMWsoNVSwhwLYmaSlmUOAoQDBsWrB6SYRB1RU7Md47H3Al+GPHi3QWiQIym3Q1LKHdK0jxNLlWFS22L02QIDmVYDwbzgu+eipam/CJ5PrCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8fVUSuX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA1ECC433F1;
+	Tue, 27 Feb 2024 14:04:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042110;
-	bh=VVeiTU9tZD0pvTDYzrXDQlVGrCjYlFIpj/TxcQsB09U=;
+	s=korg; t=1709042674;
+	bh=o6KKztbgE0KtpCMsfUVSFSQev3r/x6mbldEgcC5CAXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kWQZ6tQi+dcKfdJidnSORfLnFucsji0HX3QXx7uI88ULg82+fxgmJRP+Hsde/7pS/
-	 jvhAHiS+3TWCiESjV7hDIlz8EoAFIG9EhVrq2XcZSzsapqOr46LrCGvkg2ooEdz3R2
-	 oukXvcfPJ+uk1FT/yMkJdWIC9TrAsQW9uMQb4Sa0=
+	b=c8fVUSuX4XdFaw1zsynZ5OCZ0FMYPtlDSwLSLAr03bqU0tsaqSrOfdgQRGt939H5d
+	 3iVd//0A2ATjj2MmZT7LMtlTFFr1+LGUFFx/2PTJJm1J+7pomK2hvaC5uNBtdJxkYe
+	 OBx9krzSn3XnCBNp4Ym69tZA3GLtfFeSctmdttGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 155/299] scsi: target: pscsi: Fix bio_put() for error case
-Date: Tue, 27 Feb 2024 14:24:26 +0100
-Message-ID: <20240227131630.850066811@linuxfoundation.org>
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 5.15 079/245] dm-crypt: dont modify the data when using authenticated encryption
+Date: Tue, 27 Feb 2024 14:24:27 +0100
+Message-ID: <20240227131617.808681202@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit de959094eb2197636f7c803af0943cb9d3b35804 upstream.
+commit 50c70240097ce41fe6bce6478b80478281e4d0f7 upstream.
 
-As of commit 066ff571011d ("block: turn bio_kmalloc into a simple kmalloc
-wrapper"), a bio allocated by bio_kmalloc() must be freed by bio_uninit()
-and kfree(). That is not done properly for the error case, hitting WARN and
-NULL pointer dereference in bio_free().
+It was said that authenticated encryption could produce invalid tag when
+the data that is being encrypted is modified [1]. So, fix this problem by
+copying the data into the clone bio first and then encrypt them inside the
+clone bio.
 
-Fixes: 066ff571011d ("block: turn bio_kmalloc into a simple kmalloc wrapper")
-CC: stable@vger.kernel.org # 6.1+
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Link: https://lore.kernel.org/r/20240214144356.101814-1-naohiro.aota@wdc.com
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+This may reduce performance, but it is needed to prevent the user from
+corrupting the device by writing data with O_DIRECT and modifying them at
+the same time.
+
+[1] https://lore.kernel.org/all/20240207004723.GA35324@sol.localdomain/T/
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/target/target_core_pscsi.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/md/dm-crypt.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/target/target_core_pscsi.c
-+++ b/drivers/target/target_core_pscsi.c
-@@ -907,12 +907,15 @@ new_bio:
+--- a/drivers/md/dm-crypt.c
++++ b/drivers/md/dm-crypt.c
+@@ -2065,6 +2065,12 @@ static void kcryptd_crypt_write_convert(
+ 	io->ctx.bio_out = clone;
+ 	io->ctx.iter_out = clone->bi_iter;
  
- 	return 0;
- fail:
--	if (bio)
--		bio_put(bio);
-+	if (bio) {
-+		bio_uninit(bio);
-+		kfree(bio);
++	if (crypt_integrity_aead(cc)) {
++		bio_copy_data(clone, io->base_bio);
++		io->ctx.bio_in = clone;
++		io->ctx.iter_in = clone->bi_iter;
 +	}
- 	while (req->bio) {
- 		bio = req->bio;
- 		req->bio = bio->bi_next;
--		bio_put(bio);
-+		bio_uninit(bio);
-+		kfree(bio);
- 	}
- 	req->biotail = NULL;
- 	return TCM_LOGICAL_UNIT_COMMUNICATION_FAILURE;
++
+ 	sector += bio_sectors(clone);
+ 
+ 	crypt_inc_pending(io);
 
 
 
