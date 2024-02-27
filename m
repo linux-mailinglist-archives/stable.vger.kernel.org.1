@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-24313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D3C58693DB
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:49:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9370586933C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:43:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1335D1F23E7B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:49:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4395DB2E5CD
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:40:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF1C145FF3;
-	Tue, 27 Feb 2024 13:47:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A92F13B791;
+	Tue, 27 Feb 2024 13:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/PkjiLX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iHV+5oBN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E271419AE;
-	Tue, 27 Feb 2024 13:47:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27DD313B2B9;
+	Tue, 27 Feb 2024 13:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041640; cv=none; b=PKqae7l8RwoLxcU73XplMvn1iJpgh4QpkiScH0F2RBlwBZn+E2Ap3UmNbOkiuMNgkzBaSGSYECAQhF7QjMyYTHmePX5zajw3uDxl7tPzOvtAp6XAqdo2jPRd9xvuOjXzRwfCZRlRxUz8vnQW0OEXyaf0/RiuCggZCYALxP5+QoM=
+	t=1709041196; cv=none; b=qw/zhJGDMDpe8koNIXUq6/vlJzouDd+l2QlLNaMcRLfoZLmilSb+NFtRraHbMSqiIt32ZfMSkQ3sXbKR8W44+4V773J1CGGWwXfcrpYhX/JcmL67+6Zsv1dd5BzX2jA6GSp6GKMC8H+pOPqsAI8pjyIRf3itvSjFQEyNyjWLGC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041640; c=relaxed/simple;
-	bh=fk0srsabfFKssPzuZlsG06H+s40/Ap5oUBM8TwtSalU=;
+	s=arc-20240116; t=1709041196; c=relaxed/simple;
+	bh=OjNDO7nlvHurVrWEmkicHQBrKkKMe3fi9S79kFchkb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=adOVT6/gOXRWx1vYY+3ZMirgK05Ti4Pv688EtETSKiUYBk5/85DwvtI2ABzbO2FrADD5fqdGB9UIiWJrTwD349KMxVedQpVCw4ZjYqd1KRRgDFJfOlKltsfWVIZdadJONYA4s9xijk8v7rwFOUBFctNeeiizCs89Ca/qdmIU0IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/PkjiLX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B6F5C433C7;
-	Tue, 27 Feb 2024 13:47:19 +0000 (UTC)
+	 MIME-Version; b=Aq4EZQ26LJFP4WOFrWkUXscuoIvMNqqReujA5ZbgiHeEA7h6nG8vUcisXilvisIMdV3Nl2/br3qyABivyFOpIhd/Mi6Pdt0Z2ZJ8SGjKoL998g/dVr2QNVK8e3vRKimnxU0YpBa4NZkkPfxDNVh16jqBKHr6RO0up/lf6UYabAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iHV+5oBN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 379A1C433C7;
+	Tue, 27 Feb 2024 13:39:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041640;
-	bh=fk0srsabfFKssPzuZlsG06H+s40/Ap5oUBM8TwtSalU=;
+	s=korg; t=1709041195;
+	bh=OjNDO7nlvHurVrWEmkicHQBrKkKMe3fi9S79kFchkb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a/PkjiLXc2BeJ3j9vqweR8C84b3qleULOjoKwPAgTq3rcZoMBfaj1tg9iRR5dD7L+
-	 YYIXT/pf1/Z/3ELDDtgHYzMyZj9GbD/te0hD1LQSH3oHL8My99r28ZqgmOKvZ8EsCo
-	 yTuE+Yb820l2cpe0k6aEO19bAi7f/FkpIA6XN41A=
+	b=iHV+5oBN8H4SkcHZzUm4yN8hezIAP/sjig77YK9sk4n/Jez//pGWl2sLRW6goRAyO
+	 DBVNh9MnGAfLqQNemPvdJpb8fukn8A6QxzzplLOa9Y6TzJrHb3I5DPCazMJzF9FbXj
+	 Ffbr4HNep9IOzxF7tlRURipNdXo6l9pDXFnFpJgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.6 002/299] PCI: dwc: Fix a 64bit bug in dw_pcie_ep_raise_msix_irq()
+	Yogesh Chandra Pandey <YogeshChandra.Pandey@microchip.com>,
+	Scott Benesh <scott.benesh@microchip.com>,
+	Scott Teel <scott.teel@microchip.com>,
+	Mahesh Rajashekhara <mahesh.rajashekhara@microchip.com>,
+	Mike McGowen <mike.mcgowen@microchip.com>,
+	Kevin Barnett <kevin.barnett@microchip.com>,
+	Don Brace <don.brace@microchip.com>,
+	Tomas Henzl <thenzl@redhat.com>,
+	"Ewan D. Milne" <emilne@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 255/334] scsi: smartpqi: Fix disable_managed_interrupts
 Date: Tue, 27 Feb 2024 14:21:53 +0100
-Message-ID: <20240227131625.927684742@linuxfoundation.org>
+Message-ID: <20240227131639.145565479@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +68,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Don Brace <don.brace@microchip.com>
 
-commit b5d1b4b46f856da1473c7ba9a5cdfcb55c9b2478 upstream.
+[ Upstream commit 5761eb9761d2d5fe8248a9b719efc4d8baf1f24a ]
 
-The "msg_addr" variable is u64.  However, the "aligned_offset" is an
-unsigned int.  This means that when the code does:
+Correct blk-mq registration issue with module parameter
+disable_managed_interrupts enabled.
 
-  msg_addr &= ~aligned_offset;
+When we turn off the default PCI_IRQ_AFFINITY flag, the driver needs to
+register with blk-mq using blk_mq_map_queues(). The driver is currently
+calling blk_mq_pci_map_queues() which results in a stack trace and possibly
+undefined behavior.
 
-it will unintentionally zero out the high 32 bits.  Use ALIGN_DOWN() to do
-the alignment instead.
+Stack Trace:
+[    7.860089] scsi host2: smartpqi
+[    7.871934] WARNING: CPU: 0 PID: 238 at block/blk-mq-pci.c:52 blk_mq_pci_map_queues+0xca/0xd0
+[    7.889231] Modules linked in: sd_mod t10_pi sg uas smartpqi(+) crc32c_intel scsi_transport_sas usb_storage dm_mirror dm_region_hash dm_log dm_mod ipmi_devintf ipmi_msghandler fuse
+[    7.924755] CPU: 0 PID: 238 Comm: kworker/0:3 Not tainted 4.18.0-372.88.1.el8_6_smartpqi_test.x86_64 #1
+[    7.944336] Hardware name: HPE ProLiant DL380 Gen10/ProLiant DL380 Gen10, BIOS U30 03/08/2022
+[    7.963026] Workqueue: events work_for_cpu_fn
+[    7.978275] RIP: 0010:blk_mq_pci_map_queues+0xca/0xd0
+[    7.978278] Code: 48 89 de 89 c7 e8 f6 0f 4f 00 3b 05 c4 b7 8e 01 72 e1 5b 31 c0 5d 41 5c 41 5d 41 5e 41 5f e9 7d df 73 00 31 c0 e9 76 df 73 00 <0f> 0b eb bc 90 90 0f 1f 44 00 00 41 57 49 89 ff 41 56 41 55 41 54
+[    7.978280] RSP: 0018:ffffa95fc3707d50 EFLAGS: 00010216
+[    7.978283] RAX: 00000000ffffffff RBX: 0000000000000000 RCX: 0000000000000010
+[    7.978284] RDX: 0000000000000004 RSI: 0000000000000000 RDI: ffff9190c32d4310
+[    7.978286] RBP: 0000000000000000 R08: ffffa95fc3707d38 R09: ffff91929b81ac00
+[    7.978287] R10: 0000000000000001 R11: ffffa95fc3707ac0 R12: 0000000000000000
+[    7.978288] R13: ffff9190c32d4000 R14: 00000000ffffffff R15: ffff9190c4c950a8
+[    7.978290] FS:  0000000000000000(0000) GS:ffff9193efc00000(0000) knlGS:0000000000000000
+[    7.978292] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    8.172814] CR2: 000055d11166c000 CR3: 00000002dae10002 CR4: 00000000007706f0
+[    8.172816] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[    8.172817] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[    8.172818] PKRU: 55555554
+[    8.172819] Call Trace:
+[    8.172823]  blk_mq_alloc_tag_set+0x12e/0x310
+[    8.264339]  scsi_add_host_with_dma.cold.9+0x30/0x245
+[    8.279302]  pqi_ctrl_init+0xacf/0xc8e [smartpqi]
+[    8.294085]  ? pqi_pci_probe+0x480/0x4c8 [smartpqi]
+[    8.309015]  pqi_pci_probe+0x480/0x4c8 [smartpqi]
+[    8.323286]  local_pci_probe+0x42/0x80
+[    8.337855]  work_for_cpu_fn+0x16/0x20
+[    8.351193]  process_one_work+0x1a7/0x360
+[    8.364462]  ? create_worker+0x1a0/0x1a0
+[    8.379252]  worker_thread+0x1ce/0x390
+[    8.392623]  ? create_worker+0x1a0/0x1a0
+[    8.406295]  kthread+0x10a/0x120
+[    8.418428]  ? set_kthread_struct+0x50/0x50
+[    8.431532]  ret_from_fork+0x1f/0x40
+[    8.444137] ---[ end trace 1bf0173d39354506 ]---
 
-Fixes: 2217fffcd63f ("PCI: dwc: endpoint: Fix dw_pcie_ep_raise_msix_irq() alignment support")
-Link: https://lore.kernel.org/r/af59c7ad-ab93-40f7-ad4a-7ac0b14d37f5@moroto.mountain
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cf15c3e734e8 ("scsi: smartpqi: Add module param to disable managed ints")
+Tested-by: Yogesh Chandra Pandey <YogeshChandra.Pandey@microchip.com>
+Reviewed-by: Scott Benesh <scott.benesh@microchip.com>
+Reviewed-by: Scott Teel <scott.teel@microchip.com>
+Reviewed-by: Mahesh Rajashekhara <mahesh.rajashekhara@microchip.com>
+Reviewed-by: Mike McGowen <mike.mcgowen@microchip.com>
+Reviewed-by: Kevin Barnett <kevin.barnett@microchip.com>
+Signed-off-by: Don Brace <don.brace@microchip.com>
+Link: https://lore.kernel.org/r/20240213162200.1875970-2-don.brace@microchip.com
+Reviewed-by: Tomas Henzl <thenzl@redhat.com>
+Reviewed-by: Ewan D. Milne <emilne@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-ep.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/scsi/smartpqi/smartpqi_init.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -6,6 +6,7 @@
-  * Author: Kishon Vijay Abraham I <kishon@ti.com>
-  */
+diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
+index 081bb2c098063..868453b18c9ae 100644
+--- a/drivers/scsi/smartpqi/smartpqi_init.c
++++ b/drivers/scsi/smartpqi/smartpqi_init.c
+@@ -6533,8 +6533,11 @@ static void pqi_map_queues(struct Scsi_Host *shost)
+ {
+ 	struct pqi_ctrl_info *ctrl_info = shost_to_hba(shost);
  
-+#include <linux/align.h>
- #include <linux/of.h>
- #include <linux/platform_device.h>
+-	blk_mq_pci_map_queues(&shost->tag_set.map[HCTX_TYPE_DEFAULT],
++	if (!ctrl_info->disable_managed_interrupts)
++		return blk_mq_pci_map_queues(&shost->tag_set.map[HCTX_TYPE_DEFAULT],
+ 			      ctrl_info->pci_dev, 0);
++	else
++		return blk_mq_map_queues(&shost->tag_set.map[HCTX_TYPE_DEFAULT]);
+ }
  
-@@ -598,7 +599,7 @@ int dw_pcie_ep_raise_msix_irq(struct dw_
- 	}
- 
- 	aligned_offset = msg_addr & (epc->mem->window.page_size - 1);
--	msg_addr &= ~aligned_offset;
-+	msg_addr = ALIGN_DOWN(msg_addr, epc->mem->window.page_size);
- 	ret = dw_pcie_ep_map_addr(epc, func_no, 0, ep->msi_mem_phys, msg_addr,
- 				  epc->mem->window.page_size);
- 	if (ret)
+ static inline bool pqi_is_tape_changer_device(struct pqi_scsi_dev *device)
+-- 
+2.43.0
+
 
 
 
