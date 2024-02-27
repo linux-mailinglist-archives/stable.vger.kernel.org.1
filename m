@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-24708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C583F8695EA
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:06:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F41598694DE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:56:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F02D28CF9B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:06:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30F401C24715
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:56:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E83B3143C48;
-	Tue, 27 Feb 2024 14:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 312D413DB92;
+	Tue, 27 Feb 2024 13:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2RNFDF0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sz6PFl3z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7BB91420A2;
-	Tue, 27 Feb 2024 14:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E459354BD4;
+	Tue, 27 Feb 2024 13:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042770; cv=none; b=kGhf1mb30j+UhKMwe0o6Q0Rewqgn3GoAwEYuvwSsrHMRrCQuobULBTI4v7J9eV4WQ5VAn0LYZwzoiJWNd9dDwbbsoQjJmY7K5nO1JsrBwLX3z9/yX5N3cHdnD3VpRHucV/miR7OKTGOFi/CwqbaXAObrMhCpOA0ek5l+F0UQ2rg=
+	t=1709042218; cv=none; b=Zim72uH6X+zEPo27V88nomqSMt85BOBa8dRhnIZVjruKdd8PAlpwDGl5zFEMqrVnOsjR7jZhz04CC36+OKrafTH9aXVhaj6Rqy7i/bSnXf6jZ0IRemrM3IlGDHcY0G/LFtLme99219KDvA0lVQQElalrp8/Ash3HK2lMBy6fl0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042770; c=relaxed/simple;
-	bh=BKgA6fne44q9lqXFm4PwbVks4XTM+cJca8xwMKyOYW0=;
+	s=arc-20240116; t=1709042218; c=relaxed/simple;
+	bh=Ev3UCLkIfPA3WRGQMAJn9zPLxyWVJVWA8RGPYPZL6yw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NRXf4VVXMYPIZyBpittL+ExpfN1VHmtkubbGM9V6oLCe+NkBtwRH7YY6se4gCn/ndtqxwuSfSWFl65QAZ0VewiGQM8JDBqPF6lZwfjDfLKNbpR9QaWCQVwJE/ktes+4WFC7q/O4tPbHJvGIj26mCZE2MKg6EMz//PJva2DiHpOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h2RNFDF0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 340DFC433F1;
-	Tue, 27 Feb 2024 14:06:10 +0000 (UTC)
+	 MIME-Version; b=gmPEc92kYHKthObaEFke2u/nR1dpjcyu3gaMKtSkyopTTcN20vksyybVexb2s/XChFfMv0pKLLjaodL6Z+6bpQYVITrT62JHdELW7NZ+parks/8hM1vWQlgqOpal5U2NfRVAhzP6vFrhw4awnOqX5dIV//tJS97cAAtpBahn2Qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sz6PFl3z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14DB5C433F1;
+	Tue, 27 Feb 2024 13:56:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042770;
-	bh=BKgA6fne44q9lqXFm4PwbVks4XTM+cJca8xwMKyOYW0=;
+	s=korg; t=1709042217;
+	bh=Ev3UCLkIfPA3WRGQMAJn9zPLxyWVJVWA8RGPYPZL6yw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h2RNFDF04ySIss9FcpH1O1CyMXvc5tubbe905UZ3F7stCFTtCZbFpq9Cfb+y2Q0sP
-	 pIBPzC37CwCIoQTA0H6Ja6JDzMq4D7S+DNd6BZaCxTMaKhxZiBtL1BD6ufM3ifcPQ5
-	 AlbNTL+F8MaJAq02d40Rr1OlRYJ1ONQWxLdR6vnE=
+	b=Sz6PFl3zDmRzmVcCB9eZAGJob8eIllS6CpgBvGjoz1rrifiGJQcNpdkeobMOqhVg6
+	 5tWS3xeomarVQZWUuFVNAVIqUTs6V8nyaSmxhM8IC6sP8NPql5VBKNWeQ9H/19SyJp
+	 Lpa0fx21P3UnTqqgT1XeaYkvob+goI57bJ9Qu3yQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Ellero <l.ellero@asem.it>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 114/245] Input: ads7846 - dont report pressure for ads7845
+	Xu Yang <xu.yang_2@nxp.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.6 191/299] usb: roles: dont get/set_role() when usb_role_switch is unregistered
 Date: Tue, 27 Feb 2024 14:25:02 +0100
-Message-ID: <20240227131618.941903703@linuxfoundation.org>
+Message-ID: <20240227131631.971898480@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ellero <l.ellero@asem.it>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit d50584d783313c8b05b84d0b07a2142f1bde46dd ]
+commit b787a3e781759026a6212736ef8e52cf83d1821a upstream.
 
-ADS7845 doesn't support pressure.
-Avoid the following error reported by libinput-list-devices:
-"ADS7845 Touchscreen: kernel bug: device has min == max on ABS_PRESSURE".
+There is a possibility that usb_role_switch device is unregistered before
+the user put usb_role_switch. In this case, the user may still want to
+get/set_role() since the user can't sense the changes of usb_role_switch.
 
-Fixes: ffa458c1bd9b ("spi: ads7846 driver")
-Signed-off-by: Luca Ellero <l.ellero@asem.it>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230126105227.47648-2-l.ellero@asem.it
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This will add a flag to show if usb_role_switch is already registered and
+avoid unwanted behaviors.
+
+Fixes: fde0aa6c175a ("usb: common: Small class for USB role switches")
+cc: stable@vger.kernel.org
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240129093739.2371530-2-xu.yang_2@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/touchscreen/ads7846.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/usb/roles/class.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/input/touchscreen/ads7846.c b/drivers/input/touchscreen/ads7846.c
-index f113a27aeb1ef..ef04988edf0c2 100644
---- a/drivers/input/touchscreen/ads7846.c
-+++ b/drivers/input/touchscreen/ads7846.c
-@@ -1323,8 +1323,9 @@ static int ads7846_probe(struct spi_device *spi)
- 			pdata->y_min ? : 0,
- 			pdata->y_max ? : MAX_12BIT,
- 			0, 0);
--	input_set_abs_params(input_dev, ABS_PRESSURE,
--			pdata->pressure_min, pdata->pressure_max, 0, 0);
-+	if (ts->model != 7845)
-+		input_set_abs_params(input_dev, ABS_PRESSURE,
-+				pdata->pressure_min, pdata->pressure_max, 0, 0);
+--- a/drivers/usb/roles/class.c
++++ b/drivers/usb/roles/class.c
+@@ -23,6 +23,7 @@ struct usb_role_switch {
+ 	struct mutex lock; /* device lock*/
+ 	struct module *module; /* the module this device depends on */
+ 	enum usb_role role;
++	bool registered;
  
- 	/*
- 	 * Parse common framework properties. Must be done here to ensure the
--- 
-2.43.0
-
+ 	/* From descriptor */
+ 	struct device *usb2_port;
+@@ -49,6 +50,9 @@ int usb_role_switch_set_role(struct usb_
+ 	if (IS_ERR_OR_NULL(sw))
+ 		return 0;
+ 
++	if (!sw->registered)
++		return -EOPNOTSUPP;
++
+ 	mutex_lock(&sw->lock);
+ 
+ 	ret = sw->set(sw, role);
+@@ -74,7 +78,7 @@ enum usb_role usb_role_switch_get_role(s
+ {
+ 	enum usb_role role;
+ 
+-	if (IS_ERR_OR_NULL(sw))
++	if (IS_ERR_OR_NULL(sw) || !sw->registered)
+ 		return USB_ROLE_NONE;
+ 
+ 	mutex_lock(&sw->lock);
+@@ -357,6 +361,8 @@ usb_role_switch_register(struct device *
+ 		return ERR_PTR(ret);
+ 	}
+ 
++	sw->registered = true;
++
+ 	/* TODO: Symlinks for the host port and the device controller. */
+ 
+ 	return sw;
+@@ -371,8 +377,10 @@ EXPORT_SYMBOL_GPL(usb_role_switch_regist
+  */
+ void usb_role_switch_unregister(struct usb_role_switch *sw)
+ {
+-	if (!IS_ERR_OR_NULL(sw))
++	if (!IS_ERR_OR_NULL(sw)) {
++		sw->registered = false;
+ 		device_unregister(&sw->dev);
++	}
+ }
+ EXPORT_SYMBOL_GPL(usb_role_switch_unregister);
+ 
 
 
 
