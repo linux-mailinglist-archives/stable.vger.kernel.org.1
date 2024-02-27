@@ -1,119 +1,119 @@
-Return-Path: <stable+bounces-23814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78BB9868887
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 06:14:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E747086888E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 06:20:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D5F11F25104
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 05:14:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 752FF1F25104
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 05:20:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52BC552F77;
-	Tue, 27 Feb 2024 05:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B4BC52F7B;
+	Tue, 27 Feb 2024 05:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="bQHGCSsj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07zmUOlR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700A252F79
-	for <stable@vger.kernel.org>; Tue, 27 Feb 2024 05:14:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1711DA21;
+	Tue, 27 Feb 2024 05:20:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709010860; cv=none; b=Z3eZlzbAmy9EooFpjE5Zx3EfzeRaKZ8D853EsxdSpwMo2agSoB1bE4/G+em8U4CkNioJOqfyF3z48GlzDlcq6r9V69Ws9ARZ8XRDuIo3B+TNf/fJEcEd1kp+XbgDIXOLDDKgZrvwGZSZDI/to6x7TnbwvZLXkBItojX++rUHaTg=
+	t=1709011215; cv=none; b=Qi22WgtCcL6GODb5DVcu4kWW88XCKKOXYdqItQe0xm+8OJoF1+/ypNU6hx1Hf3mL6ZsJRH1w34ZPi4OALjoC8Gko0JbzNgfWR8TTADT5oZ3RNJC6sP0jQ07fhhMMKy5oUJpCWKTZX1dqTzKl50B4Voglz2zkQ27wF0yz9iSjqOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709010860; c=relaxed/simple;
-	bh=Wgvaos4tMDHQHCPQqba3sjMn7hXYBzfhsdVtj292alY=;
-	h=MIME-Version:In-Reply-To:References:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V73yQxbK3k1xvT3uxWNBJlBMCkvWS2y6KlaShwbPnW+HGDGrCkLMEFXhq50lajAEpNfOhmb3w8yzgk0bIq1IcHKNbDzaGBZsrN8GQ0J2jXxvzsVWV6EqmeXVGS0U0FljRkSOdKquvQVJaZ3OPPvgXFeWKIPKDkOdWsDvFZ+NNmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=bQHGCSsj; arc=none smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-512be9194b7so3919956e87.1
-        for <stable@vger.kernel.org>; Mon, 26 Feb 2024 21:14:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1709010856; x=1709615656; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:user-agent:from:references
-         :in-reply-to:mime-version:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=M+BQPLCLZpqrKhiNrmiNzr4nlNlMBixVqIVv6pIcROQ=;
-        b=bQHGCSsjPgD7lH/pjFkjG1PCNQf+lLJKvoFP3RJ8kFk5iRwOqpc/KqMwcAB4OE26UG
-         0005+F1HLUM6blOlqzM8xQWXtXFDZF7v/ROoDQm4AkThgK7RWg6fZ91TeCJBcHQSe93l
-         AV+6PQh/Vw2pPB5yYfXZOa1KzcjFUq5qmjGP0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709010856; x=1709615656;
-        h=cc:to:subject:message-id:date:user-agent:from:references
-         :in-reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=M+BQPLCLZpqrKhiNrmiNzr4nlNlMBixVqIVv6pIcROQ=;
-        b=N77eZlS24888bT/4lbHuZPzmHH7zEesON6WqQPX9kPVtj8J6D4URn+NTJg+YRk4C8s
-         B38iAlp+7X9cxAN4OLBvgTOves72MCsZkMCRB+J1qm4ijnn5ezDKlr7NHFDkDMtgXGry
-         1rRIiASKnPxuylDrwBldght8XaRlDwhY8+1kPJDaRbJX78gTwq7VsO0IcugVaVKrM0Pd
-         3OwpVcPp9sQlzWWNgOnbuQdf11zKKD8iPnMIOKtWV50tgjZlK+v0rsRuuqXrYO5HyNT2
-         cA5PIZSJK7qA8sZ+/cjyIsyB+D+o7b6XNXuexGFTUfJFZuc7OvG6VeObkisV9ASWRZzd
-         s0ZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXHMEU0g97hW2/98Tpt7ChyMLXtjD2WIS10NxcKqXz8nc8wkj1KdhPYc45tQQrMKozA9ycKZW9FnQd9nlUnQwK6bjc6CxaB
-X-Gm-Message-State: AOJu0Yy8XC3JthoEQa9WESA5pFE7lg9RKblwRdRkDLZsguaGiXeaVpmt
-	kz/ai4mNSRdXetUwIVhhs4/1lyHNW8kBmYgjqkUoDrv3hrwfNMRQeZnT70Ev1Z7zsDlOPMJZt2h
-	YDb4wBTCHSQ+lt/CrxFDe4C5TBRG62GcW0buh
-X-Google-Smtp-Source: AGHT+IEyr7KXQAxsoRvnnHsDV6pqu0w4lJ40YXWqL0S1fUTZrVkMUjLcnZFHznlTZjulbsH6+afvAMnzVzmlCSDcWyk=
-X-Received: by 2002:a05:6512:991:b0:512:ee1f:b5af with SMTP id
- w17-20020a056512099100b00512ee1fb5afmr4441994lft.41.1709010856400; Mon, 26
- Feb 2024 21:14:16 -0800 (PST)
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 26 Feb 2024 21:14:15 -0800
+	s=arc-20240116; t=1709011215; c=relaxed/simple;
+	bh=QVewK2zLxexaTPiFK0mIpI4ee/yNirNM/UnKFGxyB6A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aF/2auyiGfn4VwN+oDqDsPWhVY7zFe9wXT7IYADeEN4cHPhbAXJ6MoRSe4NjVd9OJP9w5ll0k2FYyk3xtDzhF9ngBSjOBw1LrSoi5TNg2gNTYlptC5CV4SyXg9fMxrFQN5GZnWbaGvQsN8YfBSNBwF+qovDfZbnyxYCuC/M39gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07zmUOlR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26EEAC433F1;
+	Tue, 27 Feb 2024 05:20:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1709011214;
+	bh=QVewK2zLxexaTPiFK0mIpI4ee/yNirNM/UnKFGxyB6A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=07zmUOlRqlFbNy+Fhm8BmCkvtT4bTIH1j+8pt5hfIUf3qqucLc5wdVzw87sJaN8oM
+	 01d2N+MTuWe43puug39xCXBdR9PD4ZVDQk2M+dL4sQHhaZxBjt2zz9E0EQaiCdtoXn
+	 fUcjo5zfb8GRWcs7QxyT9K7UBqe9hu1YuYGvUfg0=
+Date: Tue, 27 Feb 2024 06:20:06 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: RD Babiera <rdbabiera@google.com>
+Cc: heikki.krogerus@linux.intel.com, badhri@google.com,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] usb: typec: altmodes/displayport: create sysfs nodes
+ after assigning driver data
+Message-ID: <2024022731-dusk-posture-b83f@gregkh>
+References: <20240226234228.1768725-2-rdbabiera@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20240226-rpmhpd-enable-corner-fix-v1-1-68c004cec48c@quicinc.com>
-References: <20240226-rpmhpd-enable-corner-fix-v1-1-68c004cec48c@quicinc.com>
-From: Stephen Boyd <swboyd@chromium.org>
-User-Agent: alot/0.10
-Date: Mon, 26 Feb 2024 21:14:15 -0800
-Message-ID: <CAE-0n525gwp5kJGgw9Pnz+h2K6FbuqSG79KfMj_EnueZ-RYnuA@mail.gmail.com>
-Subject: Re: [PATCH] pmdomain: qcom: rpmhpd: Fix enabled_corner aggregation
-To: Bjorn Andersson <andersson@kernel.org>, 
-	Bjorn Andersson via B4 Relay <devnull+quic_bjorande.quicinc.com@kernel.org>, 
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, Johan Hovold <johan+linaro@kernel.org>, 
-	Konrad Dybcio <konrad.dybcio@linaro.org>, Ulf Hansson <ulf.hansson@linaro.org>, 
-	quic_bjorande@quicinc.com
-Cc: linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Johan Hovold <johan@kernel.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240226234228.1768725-2-rdbabiera@google.com>
 
-Quoting Bjorn Andersson via B4 Relay (2024-02-26 17:49:57)
-> From: Bjorn Andersson <quic_bjorande@quicinc.com>
->
-> Commit 'e3e56c050ab6 ("soc: qcom: rpmhpd: Make power_on actually enable
-> the domain")' aimed to make sure that a power-domain that is being
-> enabled without any particular performance-state requested will at least
-> turn the rail on, to avoid filling DeviceTree with otherwise unnecessary
-> required-opps properties.
->
-> But in the event that aggregation happens on a disabled power-domain, with
-> an enabled peer without performance-state, both the local and peer
-> corner are 0. The peer's enabled_corner is not considered, with the
-> result that the underlying (shared) resource is disabled.
->
-> One case where this can be observed is when the display stack keeps mmcx
-> enabled (but without a particular performance-state vote) in order to
-> access registers and sync_state happens in the rpmhpd driver. As mmcx_ao
-> is flushed the state of the peer (mmcx) is not considered and mmcx_ao
-> ends up turning off "mmcx.lvl" underneath mmcx. This has been observed
-> several times, but has been painted over in DeviceTree by adding an
-> explicit vote for the lowest non-disabled performance-state.
->
-> Fixes: e3e56c050ab6 ("soc: qcom: rpmhpd: Make power_on actually enable the domain")
-> Reported-by: Johan Hovold <johan@kernel.org>
-> Closes: https://lore.kernel.org/linux-arm-msm/ZdMwZa98L23mu3u6@hovoldconsulting.com/
-> Cc:  <stable@vger.kernel.org>
-> Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+On Mon, Feb 26, 2024 at 11:42:29PM +0000, RD Babiera wrote:
+> The DisplayPort driver's sysfs nodes may be present to the userspace before
+> typec_altmode_set_drvdata() completes in dp_altmode_probe. This means that
+> a sysfs read can trigger a NULL pointer error by deferencing dp->hpd in
+> hpd_show or dp->lock in pin_assignment_show, as dev_get_drvdata() returns
+> NULL in those cases.
+> 
+> Create sysfs nodes after typec_altmode_set_drvdata call.
+> 
+> Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: RD Babiera <rdbabiera@google.com>
 > ---
+> Changes from v1:
+> * Moved sysfs node creation instead of NULL checking dev_get_drvdata().
+> ---
+>  drivers/usb/typec/altmodes/displayport.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
+> index 5a80776c7255..5bbdd2c04237 100644
+> --- a/drivers/usb/typec/altmodes/displayport.c
+> +++ b/drivers/usb/typec/altmodes/displayport.c
+> @@ -731,10 +731,6 @@ int dp_altmode_probe(struct typec_altmode *alt)
+>  	      DP_CAP_PIN_ASSIGN_DFP_D(alt->vdo)))
+>  		return -ENODEV;
+>  
+> -	ret = sysfs_create_group(&alt->dev.kobj, &dp_altmode_group);
+> -	if (ret)
+> -		return ret;
+> -
+>  	dp = devm_kzalloc(&alt->dev, sizeof(*dp), GFP_KERNEL);
+>  	if (!dp)
+>  		return -ENOMEM;
+> @@ -766,6 +762,10 @@ int dp_altmode_probe(struct typec_altmode *alt)
+>  	if (plug)
+>  		typec_altmode_set_drvdata(plug, dp);
+>  
+> +	ret = sysfs_create_group(&alt->dev.kobj, &dp_altmode_group);
+> +	if (ret)
+> +		return ret;
+> +
 
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Now I am going to push back again and ask why you are even attempting to
+create sysfs files "by hand" here at all?
+
+Why is this just not set to be a default group?  That way the group is
+managed properly by the driver core and the driver doesn't have to worry
+about ANY of this at all.  Bonus is that you remove the "you raced with
+userspace and lost" problem that this code still has even with the
+change you made here.
+
+Huge hint, if you EVER have to call sysfs_*() from a driver, usually
+something is wrong (there are a few exceptions, this is not one.)
+
+thanks,
+
+greg k-h
 
