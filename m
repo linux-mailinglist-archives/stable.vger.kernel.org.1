@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-25082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA35A8697A4
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:23:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6821B869543
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:00:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBF461C2236B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:23:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 988341C23642
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:00:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ABBC1420A6;
-	Tue, 27 Feb 2024 14:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47DA713DB9B;
+	Tue, 27 Feb 2024 14:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6CctYKA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHslzIXm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB7313B2B8;
-	Tue, 27 Feb 2024 14:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D5113B2B4;
+	Tue, 27 Feb 2024 14:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043810; cv=none; b=jWw/CnKK+bI/6xJcmviI+RdVfTLKWXJtJ0NW+12H8OJ9Z7+XP2sN3iAnAeRFVPzPynPpX06o2jtbKXTSq8wyEpPhAzZVLzDJ2FWU3CFHpqTaWinqMPnsRCMkjpAu+pnh2EgARanEHGU4X3M+WuwnzfH1MYBmg/Colc/cuQudS8o=
+	t=1709042427; cv=none; b=VE7O6u9Tl519emY2G+N9n3CjiiXvKvdSNSD9nZPImei+qdyZmJnbX1IXD/uWgAKwzfbgm4VJ3SqIRgDkd0U4ykCJ/Vcsn8dDJutrWn+LqDCEZ74krIUAIwvuGMFj0Fact6pOeyOuwGWkOlbjwPA3OpruEtuGd5UH/Ax0hi0Ff8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043810; c=relaxed/simple;
-	bh=wlBQUu//PhNsITu0h53iaQFtgGlIk02rogsF4bEltYA=;
+	s=arc-20240116; t=1709042427; c=relaxed/simple;
+	bh=FqgLIR0yvmO69ipR1r3KT0fYutcVVr0iusvn+M/QTMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AcI15/RkGB6JHI7HJeub4/WU4P0PWJ3fzotI8AqHr1IzfUAiMQGy/YJ0r/MaxfLsFNc96sqPObKKCbAmwq7PV8mn4GftIquya4t6S1Pgtj+EWPugMt4U9KJ+W3uUkxdSu1mM1gS0pthTzpxvdd7ePkujGCdQ70l6nLVhv6NmQSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P6CctYKA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD4FBC433F1;
-	Tue, 27 Feb 2024 14:23:29 +0000 (UTC)
+	 MIME-Version; b=lSCgt5URfiHWDx9E+AlSCg4gG8T/Xckh/aZUgsB94YLR/j+aJ7Yoo2yqjolSDYMuYAVZQ8DGZTLaix+WtQppVST5HgOG4rPJzZPSpxmvSMNu/EMmh19xfoXA6KnfnByyPPgK3j+MuxyLy9Ufx8ulWZvtUtpZSMKHvMd+f3Rt4Ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHslzIXm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F2CC433A6;
+	Tue, 27 Feb 2024 14:00:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043810;
-	bh=wlBQUu//PhNsITu0h53iaQFtgGlIk02rogsF4bEltYA=;
+	s=korg; t=1709042426;
+	bh=FqgLIR0yvmO69ipR1r3KT0fYutcVVr0iusvn+M/QTMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P6CctYKAPvBtBYdRiZeVc/AD7ljJcjQ3IFNRuwM66WMeBpM2T9jYcuYSrMg8pe9VK
-	 4laM7j8v+dUqw7m80EOvcEiXxT2385/H+L8NBAYpA0KjBzO54WmtNwv1VrKBk+LiS1
-	 4nvUD8uflcLqfz8l1cPqvui3RQnVkC8kZ6RMR2aI=
+	b=QHslzIXmuFAl6LmwHvb9klq03C6uw5CIlAp2xhCM+wAJp7TulGB8/UWZ2XcRzQwFS
+	 qk2l5TPpP8FNKUS1KoK9OvEqUqUt+Fqvq7jOSl6UpzwKy5UjSbq4pDyUlwB5pONfBP
+	 PRA0nDjLfSbfbeAUkvG+I+uQ9aOLPaXjKd9S7tLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 16/84] wifi: mac80211: fix race condition on enabling fast-xmit
+	Chengming Zhou <zhouchengming@bytedance.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Yosry Ahmed <yosryahmed@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 292/299] mm/zswap: invalidate duplicate entry when !zswap_enabled
 Date: Tue, 27 Feb 2024 14:26:43 +0100
-Message-ID: <20240227131553.401289308@linuxfoundation.org>
+Message-ID: <20240227131635.068054332@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Chengming Zhou <zhouchengming@bytedance.com>
 
-[ Upstream commit bcbc84af1183c8cf3d1ca9b78540c2185cd85e7f ]
+commit 678e54d4bb9a4822f8ae99690ac131c5d490cdb1 upstream.
 
-fast-xmit must only be enabled after the sta has been uploaded to the driver,
-otherwise it could end up passing the not-yet-uploaded sta via drv_tx calls
-to the driver, leading to potential crashes because of uninitialized drv_priv
-data.
-Add a missing sta->uploaded check and re-check fast xmit after inserting a sta.
+We have to invalidate any duplicate entry even when !zswap_enabled since
+zswap can be disabled anytime.  If the folio store success before, then
+got dirtied again but zswap disabled, we won't invalidate the old
+duplicate entry in the zswap_store().  So later lru writeback may
+overwrite the new data in swapfile.
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://msgid.link/20240104181059.84032-1-nbd@nbd.name
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240208023254.3873823-1-chengming.zhou@linux.dev
+Fixes: 42c06a0e8ebe ("mm: kill frontswap")
+Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: Yosry Ahmed <yosryahmed@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/sta_info.c | 2 ++
- net/mac80211/tx.c       | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ mm/zswap.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index 0f97c6fcec174..e330036e02eac 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -683,6 +683,8 @@ static int sta_info_insert_finish(struct sta_info *sta) __acquires(RCU)
- 	if (ieee80211_vif_is_mesh(&sdata->vif))
- 		mesh_accept_plinks_update(sdata);
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1215,7 +1215,7 @@ bool zswap_store(struct folio *folio)
+ 	if (folio_test_large(folio))
+ 		return false;
  
-+	ieee80211_check_fast_xmit(sta);
+-	if (!zswap_enabled || !tree)
++	if (!tree)
+ 		return false;
+ 
+ 	/*
+@@ -1231,6 +1231,9 @@ bool zswap_store(struct folio *folio)
+ 	}
+ 	spin_unlock(&tree->lock);
+ 
++	if (!zswap_enabled)
++		return false;
 +
- 	return 0;
-  out_remove:
- 	sta_info_hash_del(local, sta);
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 8bd01dfa75cb1..5fd9a6f752a1d 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -2919,7 +2919,7 @@ void ieee80211_check_fast_xmit(struct sta_info *sta)
- 	    sdata->vif.type == NL80211_IFTYPE_STATION)
- 		goto out;
- 
--	if (!test_sta_flag(sta, WLAN_STA_AUTHORIZED))
-+	if (!test_sta_flag(sta, WLAN_STA_AUTHORIZED) || !sta->uploaded)
- 		goto out;
- 
- 	if (test_sta_flag(sta, WLAN_STA_PS_STA) ||
--- 
-2.43.0
-
+ 	/*
+ 	 * XXX: zswap reclaim does not work with cgroups yet. Without a
+ 	 * cgroup-aware entry LRU, we will push out entries system-wide based on
 
 
 
