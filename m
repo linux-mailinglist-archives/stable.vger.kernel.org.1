@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69B52869327
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:42:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECA33869402
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A05B1F2887D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:42:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A186E1F21910
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2268E13B798;
-	Tue, 27 Feb 2024 13:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AF3C145346;
+	Tue, 27 Feb 2024 13:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zm17icxE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NbDdRrJ+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F7F13AA55;
-	Tue, 27 Feb 2024 13:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0181F13B791;
+	Tue, 27 Feb 2024 13:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041330; cv=none; b=YSJdsfGxoSEE6X351BeENrOjvu3qReQ0ZsVIdVxeNrtQ+3M99oACI1PZTNnbOs9mp53I3L4cZrYBGRvbaZ/mqPCeZh8xcfQ4fu3EhQR6Uyi3egLjkYxBr/ejByQtuUGDEzqUt5cIIWNSadyOBMxGOOtQ0niR4lWkIapbJi9ziL8=
+	t=1709041723; cv=none; b=CSLB/8Zl9ncsBM0gC2CFon7L7VQ7YmMu2kqyrXi28ltkqsxNT5vPihk9NDuFT/TPnIfMNuxMx4A49Jcr4azDlXxcJ9h7aJ/3OKT/r37Vfr/Ig4EB37oLaMNvfNiqULrj2WL+uDu+kcRDVBozbSm4ArXiEXrJBNEMX6Weo0HEkYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041330; c=relaxed/simple;
-	bh=9UwR1hrATnc+XP4vkwJmEXWu8r+1ay0r8zivhAOYfPA=;
+	s=arc-20240116; t=1709041723; c=relaxed/simple;
+	bh=A7dWaq57ci01UADpvf7yTDXLViF/ofyY/0a0GDLRE08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kysmbA1RdJ76PBt3DqN4rh2G9HgCWWaM8SL5PAYj5nV8PvWKVZcF9SsPir2Lx6cCL2uuM3z5BV6+eyBB9ksn6FrpD1pHSwoVQnJrkXVTvC4Y0XvKAuP84zXFU8sY4av7fN/7AQcwizPSBaH1NMRIPUhn6fXj85EGd4j/bQcq5F4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zm17icxE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FAE3C433F1;
-	Tue, 27 Feb 2024 13:42:10 +0000 (UTC)
+	 MIME-Version; b=FIn58OnW5KzsyEASNtWe/J5l8UNP8iSogpyEIG1YjBFkwnLIT95kenFDrCMY3kl3AaAk3Ls00PtTkgr2BzGQw29vTBXP3xCHvzEnV5Q+DqEPH6UyJ4yNbJNSq2BRMgizwQM5fVytG+sBlNSCd/dfZBb/a7MXRlQbQDdF/Y0i4R4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NbDdRrJ+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8493CC433C7;
+	Tue, 27 Feb 2024 13:48:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041330;
-	bh=9UwR1hrATnc+XP4vkwJmEXWu8r+1ay0r8zivhAOYfPA=;
+	s=korg; t=1709041722;
+	bh=A7dWaq57ci01UADpvf7yTDXLViF/ofyY/0a0GDLRE08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zm17icxEkUfmMQsD0epEOsA42gghAbjND8D6XYXpDWl+teYcYmCTgP16eN4DJO5QF
-	 GD2CtAtNkO4Pi4RYdsAR8kwsPheWAahsqQr5pvRij5u26GEzk7h9eSzbTw3b39Ed0G
-	 DJ5b7LKnkPy8ulZ6im0hmfLve2H9MmYKMCbJz4lI=
+	b=NbDdRrJ+exwuDaulbdAnBPYm3u0HHgH9fVjCsDsr1MAY4UUQt0wc6rHaLaS/gQa9J
+	 GWnVtp5ab0Xf+42j8EEFiQvUrzyFe44hkz14VT5YEMP0EBhM+BOxh9iiKGfWlkfhOg
+	 UX9WP/BfzEEukf7rsMMRYZ9aD52HxnAhkFggUxaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Machek <pavel@denx.de>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
+	Patrick Rudolph <patrick.rudolph@9elements.com>,
+	Naresh Solanki <naresh.solanki@9elements.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 301/334] cache: ax45mp_cache: Align end size to cache boundary in ax45mp_dma_cache_wback()
+Subject: [PATCH 6.6 048/299] regulator (max5970): Fix IRQ handler
 Date: Tue, 27 Feb 2024 14:22:39 +0100
-Message-ID: <20240227131640.751326122@linuxfoundation.org>
+Message-ID: <20240227131627.524028860@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Patrick Rudolph <patrick.rudolph@9elements.com>
 
-[ Upstream commit 9bd405c48b0ac4de087c0c4440fd79597201b8a7 ]
+[ Upstream commit a3fa9838e8140584a6f338e8516f2b05d3bea812 ]
 
-Align the end size to cache boundary size in ax45mp_dma_cache_wback()
-callback likewise done in ax45mp_dma_cache_inv() callback.
+The max5970 datasheet gives the impression that IRQ status bits must
+be cleared by writing a one to set bits, as those are marked with 'R/C',
+however tests showed that a zero must be written.
 
-Additionally return early in case of start == end.
+Fixes an IRQ storm as the interrupt handler actually clears the IRQ
+status bits.
 
-Fixes: d34599bcd2e4 ("cache: Add L2 cache management for Andes AX45MP RISC-V core")
-Reported-by: Pavel Machek <pavel@denx.de>
-Link: https://lore.kernel.org/cip-dev/ZYsdKDiw7G+kxQ3m@duo.ucw.cz/
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Patrick Rudolph <patrick.rudolph@9elements.com>
+Signed-off-by: Naresh Solanki <naresh.solanki@9elements.com>
+Link: https://msgid.link/r/20240130150257.3643657-1-naresh.solanki@9elements.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cache/ax45mp_cache.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/regulator/max5970-regulator.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cache/ax45mp_cache.c b/drivers/cache/ax45mp_cache.c
-index 57186c58dc849..1d7dd3d2c101c 100644
---- a/drivers/cache/ax45mp_cache.c
-+++ b/drivers/cache/ax45mp_cache.c
-@@ -129,8 +129,12 @@ static void ax45mp_dma_cache_wback(phys_addr_t paddr, size_t size)
- 	unsigned long line_size;
- 	unsigned long flags;
+diff --git a/drivers/regulator/max5970-regulator.c b/drivers/regulator/max5970-regulator.c
+index b56a174cde3df..5c2d49ae332fb 100644
+--- a/drivers/regulator/max5970-regulator.c
++++ b/drivers/regulator/max5970-regulator.c
+@@ -265,7 +265,7 @@ static int max597x_regmap_read_clear(struct regmap *map, unsigned int reg,
+ 		return ret;
  
-+	if (unlikely(start == end))
-+		return;
-+
- 	line_size = ax45mp_priv.ax45mp_cache_line_size;
- 	start = start & (~(line_size - 1));
-+	end = ((end + line_size - 1) & (~(line_size - 1)));
- 	local_irq_save(flags);
- 	ax45mp_cpu_dcache_wb_range(start, end);
- 	local_irq_restore(flags);
+ 	if (*val)
+-		return regmap_write(map, reg, *val);
++		return regmap_write(map, reg, 0);
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
