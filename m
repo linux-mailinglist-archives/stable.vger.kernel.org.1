@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 853B48693A4
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:47:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC20B86962A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:08:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 904A2B2EB95
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:44:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E4DA1F2D0AD
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:08:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B5FF13EFFB;
-	Tue, 27 Feb 2024 13:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 198A413B78E;
+	Tue, 27 Feb 2024 14:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cbOBHGLE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N7pzyGi0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F68B13B78F;
-	Tue, 27 Feb 2024 13:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF2813B2B4;
+	Tue, 27 Feb 2024 14:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041458; cv=none; b=KaTEXEePgGNIzmmCO/brJPyrws4mIcPIxt3LCp3bSAMk3EJlTkD1UH5iSyDBGB6MomKhZDnEa50yyXCckXhQny6PyFIdd+JeMSGQcEsUv+vUM+A53S+KUqptD0QsNym6vMu7A4xCexsVhEfEvJWaP+SA2vuyPxW6w0KYYDwC5Wg=
+	t=1709042928; cv=none; b=m18pqrcbZaSx7cVUql64ZSEL5ms6SsV+6x9UfXEEm+ZZbyBMybSv9AYwfFNTKYEJoj8LQ8DmbteIHDS8Tl0/KdyHyQM94nwxO5SIDhoebI13Ptkf+YOyI8HxJsPmJAhOsM3DFmN8YffputAJscptlm0U+MZMi+CVfRww1BmY36c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041458; c=relaxed/simple;
-	bh=ZcA72At/K+zpHnlhJyzYNNXVaTs+q97VjVH2ibk7III=;
+	s=arc-20240116; t=1709042928; c=relaxed/simple;
+	bh=Q2NEeazL2S9N1HXelfLF6qRFTMux5eO8FYhJ5pA1CeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PPGzEumYC6R4TY53K8b+qo0Ywoabux7rX6L4jlIbm0RdM/PAkaMvWSnxuC1g17oFRlJLOzKqaYW7Pasv2e62pUgPSYVF9t+0sc0FJjy7d1QUgmTl/2thuKzHHgEohZDdkcexUe74zou+Kjv0yesmYsJ2sndNlxp5Tu8ykyOVV40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cbOBHGLE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C432C433C7;
-	Tue, 27 Feb 2024 13:44:17 +0000 (UTC)
+	 MIME-Version; b=pjITaiDJc5jWIYh37rLRlpvX0mnkP8OY1ujDi+CaMJu2NnN+JRhKAtzoO8olmkmM413wSf8NYBabV1Inogn5P6e9IRyXAXKPC+r3stuaYDADD/x0kXLoSMUqqYZwvZkaRXxzVFY/frcJNpK0mNVgJYDiEHrr/toxLigIQYG627Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N7pzyGi0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B1B0C433C7;
+	Tue, 27 Feb 2024 14:08:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041457;
-	bh=ZcA72At/K+zpHnlhJyzYNNXVaTs+q97VjVH2ibk7III=;
+	s=korg; t=1709042928;
+	bh=Q2NEeazL2S9N1HXelfLF6qRFTMux5eO8FYhJ5pA1CeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cbOBHGLEUQ8ugkrFeRG6ywaYqxOxaWjfB4om6mT8C5ZbpYBOI8q2JM3357sK3BG+o
-	 NH6XmR5x1g/KeJG747SfEWbqugSaqE/0ReekvJDIgETaScb3xKPIgj9WjRPpIhs9ly
-	 7bBkafyZFLHsA4LkK2pHGZUc1pqvJ9lR/9tHxLMQ=
+	b=N7pzyGi0q0Yout1cbtcka0vYjxPWM2shk9sJ2VxufAezbFzmSxr6ruU+gg8Dagfwp
+	 PQ1NMB9rpWvMt7j5KZebCnsJu92JrmTfSBYIzpipcb/0sOGjDtuKd2X112+FNBai/p
+	 YZDP65mKODZRIwZS5E4iyscLb43/Mx2kCFVILdaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Bogdanov <d.bogdanov@yadro.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 12/52] scsi: target: core: Add TMF to tmr_list handling
+Subject: [PATCH 5.15 171/245] ACPI: button: Add lid disable DMI quirk for Nextbook Ares 8A
 Date: Tue, 27 Feb 2024 14:25:59 +0100
-Message-ID: <20240227131548.937959702@linuxfoundation.org>
+Message-ID: <20240227131620.766578913@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
-References: <20240227131548.514622258@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Bogdanov <d.bogdanov@yadro.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 83ab68168a3d990d5ff39ab030ad5754cbbccb25 ]
+[ Upstream commit 4fd5556608bfa9c2bf276fc115ef04288331aded ]
 
-An abort that is responded to by iSCSI itself is added to tmr_list but does
-not go to target core. A LUN_RESET that goes through tmr_list takes a
-refcounter on the abort and waits for completion. However, the abort will
-be never complete because it was not started in target core.
+The LID0 device on the Nextbook Ares 8A tablet always reports lid
+closed causing userspace to suspend the device as soon as booting
+is complete.
 
- Unable to locate ITT: 0x05000000 on CID: 0
- Unable to locate RefTaskTag: 0x05000000 on CID: 0.
- wait_for_tasks: Stopping tmf LUN_RESET with tag 0x0 ref_task_tag 0x0 i_state 34 t_state ISTATE_PROCESSING refcnt 2 transport_state active,stop,fabric_stop
- wait for tasks: tmf LUN_RESET with tag 0x0 ref_task_tag 0x0 i_state 34 t_state ISTATE_PROCESSING refcnt 2 transport_state active,stop,fabric_stop
-...
- INFO: task kworker/0:2:49 blocked for more than 491 seconds.
- task:kworker/0:2     state:D stack:    0 pid:   49 ppid:     2 flags:0x00000800
- Workqueue: events target_tmr_work [target_core_mod]
-Call Trace:
- __switch_to+0x2c4/0x470
- _schedule+0x314/0x1730
- schedule+0x64/0x130
- schedule_timeout+0x168/0x430
- wait_for_completion+0x140/0x270
- target_put_cmd_and_wait+0x64/0xb0 [target_core_mod]
- core_tmr_lun_reset+0x30/0xa0 [target_core_mod]
- target_tmr_work+0xc8/0x1b0 [target_core_mod]
- process_one_work+0x2d4/0x5d0
- worker_thread+0x78/0x6c0
+Add a DMI quirk to disable the broken lid functionality.
 
-To fix this, only add abort to tmr_list if it will be handled by target
-core.
-
-Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
-Link: https://lore.kernel.org/r/20240111125941.8688-1-d.bogdanov@yadro.com
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/target_core_device.c    | 5 -----
- drivers/target/target_core_transport.c | 4 ++++
- 2 files changed, 4 insertions(+), 5 deletions(-)
+ drivers/acpi/button.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
-index a23dcbe79e14a..3ed43a5f1fd39 100644
---- a/drivers/target/target_core_device.c
-+++ b/drivers/target/target_core_device.c
-@@ -164,7 +164,6 @@ int transport_lookup_tmr_lun(struct se_cmd *se_cmd, u64 unpacked_lun)
- 	struct se_session *se_sess = se_cmd->se_sess;
- 	struct se_node_acl *nacl = se_sess->se_node_acl;
- 	struct se_tmr_req *se_tmr = se_cmd->se_tmr_req;
--	unsigned long flags;
- 
- 	rcu_read_lock();
- 	deve = target_nacl_find_deve(nacl, unpacked_lun);
-@@ -195,10 +194,6 @@ int transport_lookup_tmr_lun(struct se_cmd *se_cmd, u64 unpacked_lun)
- 	se_cmd->se_dev = rcu_dereference_raw(se_lun->lun_se_dev);
- 	se_tmr->tmr_dev = rcu_dereference_raw(se_lun->lun_se_dev);
- 
--	spin_lock_irqsave(&se_tmr->tmr_dev->se_tmr_lock, flags);
--	list_add_tail(&se_tmr->tmr_list, &se_tmr->tmr_dev->dev_tmr_list);
--	spin_unlock_irqrestore(&se_tmr->tmr_dev->se_tmr_lock, flags);
--
- 	return 0;
- }
- EXPORT_SYMBOL(transport_lookup_tmr_lun);
-diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
-index 64481a3a34d44..f8ba730fa1cfe 100644
---- a/drivers/target/target_core_transport.c
-+++ b/drivers/target/target_core_transport.c
-@@ -3463,6 +3463,10 @@ int transport_generic_handle_tmr(
- 	unsigned long flags;
- 	bool aborted = false;
- 
-+	spin_lock_irqsave(&cmd->se_dev->se_tmr_lock, flags);
-+	list_add_tail(&cmd->se_tmr_req->tmr_list, &cmd->se_dev->dev_tmr_list);
-+	spin_unlock_irqrestore(&cmd->se_dev->se_tmr_lock, flags);
-+
- 	spin_lock_irqsave(&cmd->t_state_lock, flags);
- 	if (cmd->transport_state & CMD_T_ABORTED) {
- 		aborted = true;
+diff --git a/drivers/acpi/button.c b/drivers/acpi/button.c
+index 1f9b9a4c38c7d..d8b1481141385 100644
+--- a/drivers/acpi/button.c
++++ b/drivers/acpi/button.c
+@@ -77,6 +77,15 @@ static const struct dmi_system_id dmi_lid_quirks[] = {
+ 		},
+ 		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_DISABLED,
+ 	},
++	{
++		/* Nextbook Ares 8A tablet, _LID device always reports lid closed */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Insyde"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "CherryTrail"),
++			DMI_MATCH(DMI_BIOS_VERSION, "M882"),
++		},
++		.driver_data = (void *)(long)ACPI_BUTTON_LID_INIT_DISABLED,
++	},
+ 	{
+ 		/*
+ 		 * Lenovo Yoga 9 14ITL5, initial notification of the LID device
 -- 
 2.43.0
 
