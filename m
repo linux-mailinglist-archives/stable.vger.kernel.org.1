@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BB498694DC
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:56:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B25028695E8
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:06:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9A75286209
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:56:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B80628C577
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5460213B78A;
-	Tue, 27 Feb 2024 13:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 672F6143C4B;
+	Tue, 27 Feb 2024 14:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zE378QMP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OHx2XyAt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1442754BD4;
-	Tue, 27 Feb 2024 13:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2428313A26F;
+	Tue, 27 Feb 2024 14:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042212; cv=none; b=GNQzel9jzUTL3wm9qf81mZo5jrcj12/WSw8v3LQxd0x3aClpEtllS7qtRWtz+ldtES6vCT8EYA+quH9aPG8gphElnlzJx1Q5Xj/ft73fDJFNt5aZO0hoIZbQTTeyRRe4kgh0wOmxiPKb6T2bJ2VVT9/yXbQc4TW7SkI70RBbSV4=
+	t=1709042765; cv=none; b=fcu86uSlGEMmGQJyT54EesVmrdbvdD1Q0sdB2N9MxfF0iiuZkXAvWpvvMxEWam8VjznJBcHBcRIt8AXf7ejIFKL6Cy/O5zZXcyrhKLan9ROXSv1KftNEsTk6OHeecIUWeqdusoN2ug8pIYKvezCMoyB9RD6SDwrp1lu4BbOr3Qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042212; c=relaxed/simple;
-	bh=dqChMNewwzeB+LpqaOsu2chusLcjqo21aeSGDTyBtzc=;
+	s=arc-20240116; t=1709042765; c=relaxed/simple;
+	bh=mgDt8jCkKkaFZVH2MEjokqy4xq8v63WmBB0T46Yp5Rc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j6zJ1R/3V6d73NVhZ/skr7OLCnYIEa1ksHg/lucyYwRMGA+VIa5hCzRk058pnrekI0+mhqOI3ksP1GLpCsK9YsiZPanXJMZbwdqM9S1/2h0fbpPlSHZ49XuPHiFqQ64xBUpNMMIzlbzTki9wDZyIArR+CMnt1yDukt/7dEbHT2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zE378QMP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BE2C433C7;
-	Tue, 27 Feb 2024 13:56:51 +0000 (UTC)
+	 MIME-Version; b=qm2zdVCg8vnm4oHJdzB5ad2mG9Kjc08Vb0G6T2xJqD5IFZTwrp6SFYByiF38U1IeYlLiwrpXOJDP8ONfVpDyVU6JFv3am+9tzTWGY4xNim1DKh/Y/IakFqErysu87DhKjWw6FmvKgvyzLEdkngAAot3A7+qHHpEHzckhsYlnnr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OHx2XyAt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A75ADC433C7;
+	Tue, 27 Feb 2024 14:06:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042211;
-	bh=dqChMNewwzeB+LpqaOsu2chusLcjqo21aeSGDTyBtzc=;
+	s=korg; t=1709042765;
+	bh=mgDt8jCkKkaFZVH2MEjokqy4xq8v63WmBB0T46Yp5Rc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zE378QMP0YN/kxT/TqA8EA374CcCtgAoyCcMCAd4+I/3wvzj6XRoHio0IZWsQXJOt
-	 vna+DLWDfu2Qv0AkavCSdwqXNZQIs+y+HjnAZBOMJJWCVyZKAwsq0gW3n7s5NEX71R
-	 vCl1LbYTyUcVWuorsOAl8A9bE61ozjbs5DNL20nw=
+	b=OHx2XyAt+8RnDUaFAGAkKCbr3KQlzSPr4RBvc0ICFDFMRVYmhmliCEXEldLqs9WUo
+	 gr3vuphRlhmQu2RyJPqPOFB5BAFTvn8GkxJ6eVcD5t0BMxDpZB9+DWANwipAuVOUdZ
+	 4dxu9TkQX6qzECAt2CB1d8TYZ1w77y1W6lEBZS9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 6.6 189/299] usb: gadget: omap_udc: fix USB gadget regression on Palm TE
+	Jeff LaBundy <jeff@labundy.com>,
+	Mattijs Korpershoek <mkorpershoek@baylibre.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 112/245] Input: iqs269a - increase interrupt handler return delay
 Date: Tue, 27 Feb 2024 14:25:00 +0100
-Message-ID: <20240227131631.911217577@linuxfoundation.org>
+Message-ID: <20240227131618.860252178@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaro Koskinen <aaro.koskinen@iki.fi>
+From: Jeff LaBundy <jeff@labundy.com>
 
-commit 858a74cb512833e276d96a72acb560ce8c138bec upstream.
+[ Upstream commit e023cc4abde3c01b895660b0e5a8488deb36b8c1 ]
 
-When upgrading from 6.1 LTS to 6.6 LTS, I noticed the ethernet gadget
-stopped working on Palm TE.
+The time the device takes to deassert its RDY output following an
+I2C stop condition scales with the core clock frequency.
 
-Commit 8825acd7cc8a ("ARM: omap1: remove dead code") deleted Palm TE from
-machine_without_vbus_sense(), although the board is still used. Fix that.
+To prevent level-triggered interrupts from being reasserted after
+the interrupt handler returns, increase the time before returning
+to account for the worst-case delay (~140 us) plus margin.
 
-Fixes: 8825acd7cc8a ("ARM: omap1: remove dead code")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20240217192042.GA372205@darkstar.musicnaut.iki.fi
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 04e49867fad1 ("Input: add support for Azoteq IQS269A")
+Signed-off-by: Jeff LaBundy <jeff@labundy.com>
+Reviewed-by: Mattijs Korpershoek <mkorpershoek@baylibre.com>
+Link: https://lore.kernel.org/r/Y7Rs484ypy4dab5G@nixie71
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/omap_udc.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/input/misc/iqs269a.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/udc/omap_udc.c
-+++ b/drivers/usb/gadget/udc/omap_udc.c
-@@ -2036,7 +2036,8 @@ static irqreturn_t omap_udc_iso_irq(int
+diff --git a/drivers/input/misc/iqs269a.c b/drivers/input/misc/iqs269a.c
+index 2124d08c55b79..1530efd301c24 100644
+--- a/drivers/input/misc/iqs269a.c
++++ b/drivers/input/misc/iqs269a.c
+@@ -151,7 +151,7 @@
+ #define IQS269_PWR_MODE_POLL_SLEEP_US		IQS269_ATI_POLL_SLEEP_US
+ #define IQS269_PWR_MODE_POLL_TIMEOUT_US		IQS269_ATI_POLL_TIMEOUT_US
  
- static inline int machine_without_vbus_sense(void)
- {
--	return  machine_is_omap_osk() || machine_is_sx1();
-+	return  machine_is_omap_osk() || machine_is_omap_palmte() ||
-+		machine_is_sx1();
- }
+-#define iqs269_irq_wait()			usleep_range(100, 150)
++#define iqs269_irq_wait()			usleep_range(200, 250)
  
- static int omap_udc_start(struct usb_gadget *g,
+ enum iqs269_local_cap_size {
+ 	IQS269_LOCAL_CAP_SIZE_0,
+-- 
+2.43.0
+
 
 
 
