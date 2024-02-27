@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-24444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FAF7869481
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:54:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 827798695AE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:04:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A19711C244BC
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:54:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B8902864A6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:04:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 558721419AA;
-	Tue, 27 Feb 2024 13:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB6713DB83;
+	Tue, 27 Feb 2024 14:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q/qfWw6g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WS00/QDa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 129D413B79F;
-	Tue, 27 Feb 2024 13:53:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D72978B61;
+	Tue, 27 Feb 2024 14:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042022; cv=none; b=Zk5ZlaKQnDHZyDLBv79dOedyic/L9jyZmg/yqE4ujBo/9V37F/Py68CEf0LN7fLv04ifeNri+4NPyBPlREnQuyEWNT+o9fuyszq3r+vryFsXOEFswxfmm/MDdDhkg8EzcaaSc7J/rs1qEeBs4q/QgPh1z48HYOkOu81mjz8nKTQ=
+	t=1709042657; cv=none; b=gkJdf/muYGF7VUHTZClQROHC+0jpLEY6yHcwMqIrJdsBRx0yhl5pWxFAg1G1T7jlY5t8AV0zC/t1/B5elrNILmEAdYv6PoQQT7Ukxx0ed2FhcvjPLasx4VxJhWjCIhe/ZxdcLhAbJzPToJMHPZQ+siyeERBNGUFsmVsT6Hdt2+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042022; c=relaxed/simple;
-	bh=7j4fkQ4ObMh4ZkWQMB2A8pMPxYizMQW5GBAd8YXZPso=;
+	s=arc-20240116; t=1709042657; c=relaxed/simple;
+	bh=mtsQjASXF3GoRNmjiBdECPS6J4vlJcjLMR5YoKxozFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fmca52UmEld2Bzkgs4UoP6VzBgqwHzN0sb+91pScF9jPjJJVS6MsvHy8UgDC8mBCBj2QmVnF/5QujkPtRHJufp35dOkzJONwq1LAu5h8yR6ZObdEIatLhlqh2s8GfRTWS/B3HDb9FIrtqX2uC7TaTUnKDdWUGy88vpp/jCQYqqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q/qfWw6g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92980C433C7;
-	Tue, 27 Feb 2024 13:53:41 +0000 (UTC)
+	 MIME-Version; b=LbMZB5JcjyFIzQDL8WPknYY51ycb0OqiaQGMSCo3zpLz26IOR7+plYAGZGMsA0wNtxn3o1s5ZxZo1MAWTiSG0UwWywrSRlc2EzO8ih2ALwcBArQtf5d0x4XghWAPaoX1dpv2iylzchs31Fqz7E5zLNuhxbJs66DTCdp79rZUA1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WS00/QDa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A6EFC43390;
+	Tue, 27 Feb 2024 14:04:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042021;
-	bh=7j4fkQ4ObMh4ZkWQMB2A8pMPxYizMQW5GBAd8YXZPso=;
+	s=korg; t=1709042657;
+	bh=mtsQjASXF3GoRNmjiBdECPS6J4vlJcjLMR5YoKxozFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q/qfWw6gsiVfGi1HnJTnZLht65N6sHz9LBwmYObR4ObhtM9NJEDIs9h/3jA00++yC
-	 G85MJM4Uqq4NlXJ1y0WcDj1hZHTZnR6iHIj+MuX1HfnKzdChjuYYwAR9skLOwTjDcp
-	 LIiKM2rSfxzlE+gRL+iepYeSChGVlkSADgm7vfqY=
+	b=WS00/QDafy3hCUM3cfbXHpzzHZELRODDek0z5M0SQpJiV/yn/CVqMKJGdWCtnVZto
+	 RO8IK4LtEXMkaxJBOtmpkQLNQhQiOofs9giX3YYcyR1I2NKpaiGzldBifdix/ev7z/
+	 tOi5qA1GV277Y4/BEyQ1bATAk+ZUiIWG6+FStfDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>
-Subject: [PATCH 6.6 150/299] dm-crypt: dont modify the data when using authenticated encryption
-Date: Tue, 27 Feb 2024 14:24:21 +0100
-Message-ID: <20240227131630.696413793@linuxfoundation.org>
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 074/245] ksmbd: free aux buffer if ksmbd_iov_pin_rsp_read fails
+Date: Tue, 27 Feb 2024 14:24:22 +0100
+Message-ID: <20240227131617.646067828@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit 50c70240097ce41fe6bce6478b80478281e4d0f7 upstream.
+[ Upstream commit 108a020c64434fed4b69762879d78cd24088b4c7 ]
 
-It was said that authenticated encryption could produce invalid tag when
-the data that is being encrypted is modified [1]. So, fix this problem by
-copying the data into the clone bio first and then encrypt them inside the
-clone bio.
+ksmbd_iov_pin_rsp_read() doesn't free the provided aux buffer if it
+fails. Seems to be the caller's responsibility to clear the buffer in
+error case.
 
-This may reduce performance, but it is needed to prevent the user from
-corrupting the device by writing data with O_DIRECT and modifying them at
-the same time.
+Found by Linux Verification Center (linuxtesting.org).
 
-[1] https://lore.kernel.org/all/20240207004723.GA35324@sol.localdomain/T/
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
 Cc: stable@vger.kernel.org
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-crypt.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/ksmbd/smb2pdu.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/md/dm-crypt.c
-+++ b/drivers/md/dm-crypt.c
-@@ -2117,6 +2117,12 @@ static void kcryptd_crypt_write_convert(
- 	io->ctx.bio_out = clone;
- 	io->ctx.iter_out = clone->bi_iter;
- 
-+	if (crypt_integrity_aead(cc)) {
-+		bio_copy_data(clone, io->base_bio);
-+		io->ctx.bio_in = clone;
-+		io->ctx.iter_in = clone->bi_iter;
+diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
+index 7e8f1c89124fa..0613b8d14409c 100644
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -6175,8 +6175,10 @@ static noinline int smb2_read_pipe(struct ksmbd_work *work)
+ 		err = ksmbd_iov_pin_rsp_read(work, (void *)rsp,
+ 					     offsetof(struct smb2_read_rsp, Buffer),
+ 					     aux_payload_buf, nbytes);
+-		if (err)
++		if (err) {
++			kvfree(aux_payload_buf);
+ 			goto out;
++		}
+ 		kvfree(rpc_resp);
+ 	} else {
+ 		err = ksmbd_iov_pin_rsp(work, (void *)rsp,
+@@ -6386,8 +6388,10 @@ int smb2_read(struct ksmbd_work *work)
+ 	err = ksmbd_iov_pin_rsp_read(work, (void *)rsp,
+ 				     offsetof(struct smb2_read_rsp, Buffer),
+ 				     aux_payload_buf, nbytes);
+-	if (err)
++	if (err) {
++		kvfree(aux_payload_buf);
+ 		goto out;
 +	}
-+
- 	sector += bio_sectors(clone);
+ 	ksmbd_fd_put(work, fp);
+ 	return 0;
  
- 	crypt_inc_pending(io);
+-- 
+2.43.0
+
 
 
 
