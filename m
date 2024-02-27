@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-24368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB9A86941C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:51:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A06F869346
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:43:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 757661F21739
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:51:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A7F21F23F7D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D4AF145B2E;
-	Tue, 27 Feb 2024 13:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965E613B2BA;
+	Tue, 27 Feb 2024 13:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wfxs0p8L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jMFATGrO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B3B3145B25;
-	Tue, 27 Feb 2024 13:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52DD713A25D;
+	Tue, 27 Feb 2024 13:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041802; cv=none; b=OeDIurjcsGNqSM9FICDZoVKp13m4rrD6g4KBl3iNbF2MRb9kbBat8DsaBv8V06U0l39ikWn1nJWllExua8Rwxr4tXTyQRO9yv/XTQ0w0E8U1gdYAxjttWlfF9/2iGCZ9CBg3iYDgkM/U8qlrg9uBW5MdyaWN2HjWk+r2ch8IHCo=
+	t=1709041405; cv=none; b=PsHbvM/8Hs0c8iN4zU+dH8Jvd2RMGbS0VuNJwP1sWqwIhQrpDrPnetLaxaAxlqbGFZalHIbZlJbEoTnX7pbwu8coLrDysXfLDh4v7qb0ksqZ9jvpmeQ+RyziNLo68pXa6hrm+KNi7yqi5U6lBnLE4MloS1M8aG+XDRLHEcOxDaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041802; c=relaxed/simple;
-	bh=Peo6HmNMTCv6lt+XAgDVlkelfUV9mMdwTZXe8OqvTz0=;
+	s=arc-20240116; t=1709041405; c=relaxed/simple;
+	bh=ngPdgccIEpkz871jVSe7S+6lF+pDGOWIdGTpUTmiBSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lYv8OK4lT3D1qKQlcWcI7LwNQr1kr5OacaO9IP4rpKnvSNmopcxChjznbvgkhxceruyZkdSaoZ4y4RlVEUuL0uyJYym8vQSbJO6qmA2ZLWFZNFrLAHT7h7y7PKS0A8PmfMEvjXFS6U9s4PC9AVeUKKtQc81DdQCJb/MtkdZTcFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wfxs0p8L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C40C433F1;
-	Tue, 27 Feb 2024 13:50:01 +0000 (UTC)
+	 MIME-Version; b=fN36kuokRnkWTFgNRoUvP4gQ3uIqyxNPfUBymgXaTHOA/H7FD9tKggdUB3zdNSRkxiOlFHrQjkZt4Uf9eD7MSFRZ6HRmm0B6hSGRv4Zr0tJhXDUUh7hTJxX/XuvhhHQ7shHuldEKeoQ5tso7OOc+K9a6azvP5Q3HOpqBT0hCCfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jMFATGrO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3898C433F1;
+	Tue, 27 Feb 2024 13:43:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041801;
-	bh=Peo6HmNMTCv6lt+XAgDVlkelfUV9mMdwTZXe8OqvTz0=;
+	s=korg; t=1709041405;
+	bh=ngPdgccIEpkz871jVSe7S+6lF+pDGOWIdGTpUTmiBSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wfxs0p8LAV+r2+bZmcxP+6xO8Oy+j9GxAgKMG/1zpeltuGEZBIX0ffdZ7v2odkWDl
-	 CUImmuRIToVIeEywwJdIiaM6H+dmbR3dfHldBCPDRGTFTn6mVTeIRtY0KRLMEGBlNt
-	 IR79Tae/lDll+2lS3FK3liPmmjRyH/hgIKX5sBe4=
+	b=jMFATGrOuj7wAw5VLDYkU1fGmVCAnsErN+1+DZQtokctfK4CkDulBbKn6VinlY2nj
+	 cuZXx7IGjbxDFqA3RLVJGCXyVH7vXhBYLHZFLnz8IHedDN9rU4MyPNncpbX0khIOKX
+	 ksaWTIS0M+eI+2IMJ/K/rqTNadQZ4xyQh4+KNc9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Melissa Wen <mwen@igalia.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 075/299] fs/ntfs3: Reduce stack usage
+Subject: [PATCH 6.7 328/334] drm/amd/display: fix null-pointer dereference on edid reading
 Date: Tue, 27 Feb 2024 14:23:06 +0100
-Message-ID: <20240227131628.350987283@linuxfoundation.org>
+Message-ID: <20240227131641.721200735@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,463 +60,213 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Melissa Wen <mwen@igalia.com>
 
-[ Upstream commit 865e7a7700d930d34895a70f8af2eb4e778a5b0e ]
+[ Upstream commit 9671761792156f2339627918bafcd713a8a6f777 ]
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Use i2c adapter when there isn't aux_mode in dc_link to fix a
+null-pointer derefence that happens when running
+igt@kms_force_connector_basic in a system with DCN2.1 and HDMI connector
+detected as below:
+
+[  +0.178146] BUG: kernel NULL pointer dereference, address: 00000000000004=
+c0
+[  +0.000010] #PF: supervisor read access in kernel mode
+[  +0.000005] #PF: error_code(0x0000) - not-present page
+[  +0.000004] PGD 0 P4D 0
+[  +0.000006] Oops: 0000 [#1] PREEMPT SMP NOPTI
+[  +0.000006] CPU: 15 PID: 2368 Comm: kms_force_conne Not tainted 6.5.0-asd=
+n+ #152
+[  +0.000005] Hardware name: HP HP ENVY x360 Convertible 13-ay1xxx/8929, BI=
+OS F.01 07/14/2021
+[  +0.000004] RIP: 0010:i2c_transfer+0xd/0x100
+[  +0.000011] Code: ea fc ff ff 66 0f 1f 84 00 00 00 00 00 90 90 90 90 90 9=
+0 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 0f 1f 44 00 00 41 54 55 53 <48>=
+ 8b 47 10 48 89 fb 48 83 38 00 0f 84 b3 00 00 00 83 3d 2f 80 16
+[  +0.000004] RSP: 0018:ffff9c4f89c0fad0 EFLAGS: 00010246
+[  +0.000005] RAX: 0000000000000000 RBX: 0000000000000005 RCX: 000000000000=
+0080
+[  +0.000003] RDX: 0000000000000002 RSI: ffff9c4f89c0fb20 RDI: 000000000000=
+04b0
+[  +0.000003] RBP: ffff9c4f89c0fb80 R08: 0000000000000080 R09: ffff8d8e0b15=
+b980
+[  +0.000003] R10: 00000000000380e0 R11: 0000000000000000 R12: 000000000000=
+0080
+[  +0.000002] R13: 0000000000000002 R14: ffff9c4f89c0fb0e R15: ffff9c4f89c0=
+fb0f
+[  +0.000004] FS:  00007f9ad2176c40(0000) GS:ffff8d90fe9c0000(0000) knlGS:0=
+000000000000000
+[  +0.000003] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  +0.000004] CR2: 00000000000004c0 CR3: 0000000121bc4000 CR4: 000000000075=
+0ee0
+[  +0.000003] PKRU: 55555554
+[  +0.000003] Call Trace:
+[  +0.000006]  <TASK>
+[  +0.000006]  ? __die+0x23/0x70
+[  +0.000011]  ? page_fault_oops+0x17d/0x4c0
+[  +0.000008]  ? preempt_count_add+0x6e/0xa0
+[  +0.000008]  ? srso_alias_return_thunk+0x5/0x7f
+[  +0.000011]  ? exc_page_fault+0x7f/0x180
+[  +0.000009]  ? asm_exc_page_fault+0x26/0x30
+[  +0.000013]  ? i2c_transfer+0xd/0x100
+[  +0.000010]  drm_do_probe_ddc_edid+0xc2/0x140 [drm]
+[  +0.000067]  ? srso_alias_return_thunk+0x5/0x7f
+[  +0.000006]  ? _drm_do_get_edid+0x97/0x3c0 [drm]
+[  +0.000043]  ? __pfx_drm_do_probe_ddc_edid+0x10/0x10 [drm]
+[  +0.000042]  edid_block_read+0x3b/0xd0 [drm]
+[  +0.000043]  _drm_do_get_edid+0xb6/0x3c0 [drm]
+[  +0.000041]  ? __pfx_drm_do_probe_ddc_edid+0x10/0x10 [drm]
+[  +0.000043]  drm_edid_read_custom+0x37/0xd0 [drm]
+[  +0.000044]  amdgpu_dm_connector_mode_valid+0x129/0x1d0 [amdgpu]
+[  +0.000153]  drm_connector_mode_valid+0x3b/0x60 [drm_kms_helper]
+[  +0.000000]  __drm_helper_update_and_validate+0xfe/0x3c0 [drm_kms_helper]
+[  +0.000000]  ? amdgpu_dm_connector_get_modes+0xb6/0x520 [amdgpu]
+[  +0.000000]  ? srso_alias_return_thunk+0x5/0x7f
+[  +0.000000]  drm_helper_probe_single_connector_modes+0x2ab/0x540 [drm_kms=
+_helper]
+[  +0.000000]  status_store+0xb2/0x1f0 [drm]
+[  +0.000000]  kernfs_fop_write_iter+0x136/0x1d0
+[  +0.000000]  vfs_write+0x24d/0x440
+[  +0.000000]  ksys_write+0x6f/0xf0
+[  +0.000000]  do_syscall_64+0x60/0xc0
+[  +0.000000]  ? srso_alias_return_thunk+0x5/0x7f
+[  +0.000000]  ? syscall_exit_to_user_mode+0x2b/0x40
+[  +0.000000]  ? srso_alias_return_thunk+0x5/0x7f
+[  +0.000000]  ? do_syscall_64+0x6c/0xc0
+[  +0.000000]  ? do_syscall_64+0x6c/0xc0
+[  +0.000000]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+[  +0.000000] RIP: 0033:0x7f9ad46b4b00
+[  +0.000000] Code: 40 00 48 8b 15 19 b3 0d 00 f7 d8 64 89 02 48 c7 c0 ff f=
+f ff ff eb b7 0f 1f 00 80 3d e1 3a 0e 00 00 74 17 b8 01 00 00 00 0f 05 <48>=
+ 3d 00 f0 ff ff 77 58 c3 0f 1f 80 00 00 00 00 48 83 ec 28 48 89
+[  +0.000000] RSP: 002b:00007ffcbd3bd6d8 EFLAGS: 00000202 ORIG_RAX: 0000000=
+000000001
+[  +0.000000] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f9ad46b=
+4b00
+[  +0.000000] RDX: 0000000000000002 RSI: 00007f9ad48a7417 RDI: 000000000000=
+0009
+[  +0.000000] RBP: 0000000000000002 R08: 0000000000000064 R09: 000000000000=
+0000
+[  +0.000000] R10: 0000000000000000 R11: 0000000000000202 R12: 00007f9ad48a=
+7417
+[  +0.000000] R13: 0000000000000009 R14: 00007ffcbd3bd760 R15: 000000000000=
+0001
+[  +0.000000]  </TASK>
+[  +0.000000] Modules linked in: ctr ccm rfcomm snd_seq_dummy snd_hrtimer s=
+nd_seq snd_seq_device cmac algif_hash algif_skcipher af_alg bnep btusb btrt=
+l btbcm btintel btmtk bluetooth uvcvideo videobuf2_vmalloc sha3_generic vid=
+eobuf2_memops uvc jitterentropy_rng videobuf2_v4l2 videodev drbg videobuf2_=
+common ansi_cprng mc ecdh_generic ecc qrtr binfmt_misc hid_sensor_accel_3d =
+hid_sensor_magn_3d hid_sensor_gyro_3d hid_sensor_trigger industrialio_trigg=
+ered_buffer kfifo_buf industrialio snd_ctl_led joydev hid_sensor_iio_common=
+ rtw89_8852ae rtw89_8852a rtw89_pci snd_hda_codec_realtek rtw89_core snd_hd=
+a_codec_generic intel_rapl_msr ledtrig_audio intel_rapl_common snd_hda_code=
+c_hdmi mac80211 snd_hda_intel snd_intel_dspcfg kvm_amd snd_hda_codec snd_so=
+c_dmic snd_acp3x_rn snd_acp3x_pdm_dma libarc4 snd_hwdep snd_soc_core kvm sn=
+d_hda_core cfg80211 snd_pci_acp6x snd_pcm nls_ascii snd_timer hp_wmi snd_pc=
+i_acp5x nls_cp437 snd_rn_pci_acp3x ucsi_acpi sparse_keymap ccp snd platform=
+_profile snd_acp_config typec_ucsi irqbypass vfat sp5100_tco
+[  +0.000000]  snd_soc_acpi fat rapl pcspkr wmi_bmof roles rfkill rng_core =
+snd_pci_acp3x soundcore k10temp watchdog typec battery ac amd_pmc acpi_tad =
+button hid_sensor_hub hid_multitouch evdev serio_raw msr parport_pc ppdev l=
+p parport fuse loop efi_pstore configfs ip_tables x_tables autofs4 ext4 crc=
+16 mbcache jbd2 btrfs blake2b_generic dm_crypt dm_mod efivarfs raid10 raid4=
+56 async_raid6_recov async_memcpy async_pq async_xor async_tx libcrc32c crc=
+32c_generic xor raid6_pq raid1 raid0 multipath linear md_mod amdgpu amdxcp =
+i2c_algo_bit drm_ttm_helper ttm crc32_pclmul crc32c_intel drm_exec gpu_sche=
+d drm_suballoc_helper nvme ghash_clmulni_intel drm_buddy drm_display_helper=
+ sha512_ssse3 nvme_core ahci xhci_pci sha512_generic hid_generic xhci_hcd l=
+ibahci rtsx_pci_sdmmc t10_pi i2c_hid_acpi drm_kms_helper i2c_hid mmc_core l=
+ibata aesni_intel crc64_rocksoft_generic crypto_simd amd_sfh crc64_rocksoft=
+ scsi_mod usbcore cryptd crc_t10dif cec drm crct10dif_generic hid rtsx_pci =
+crct10dif_pclmul scsi_common rc_core crc64 i2c_piix4
+[  +0.000000]  usb_common crct10dif_common video wmi
+[  +0.000000] CR2: 00000000000004c0
+[  +0.000000] ---[ end trace 0000000000000000 ]---
+
+Fixes: 0e859faf8670 ("drm/amd/display: Remove unwanted drm edid references")
+Signed-off-by: Melissa Wen <mwen@igalia.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/fslog.c | 218 +++++++++++++++++++++--------------------------
- 1 file changed, 98 insertions(+), 120 deletions(-)
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ntfs3/fslog.c b/fs/ntfs3/fslog.c
-index 98ccb66508583..7dbb000fc6911 100644
---- a/fs/ntfs3/fslog.c
-+++ b/fs/ntfs3/fslog.c
-@@ -974,6 +974,16 @@ static inline void *alloc_rsttbl_from_idx(struct RESTART_TABLE **tbl, u32 vbo)
- 	return e;
- }
- 
-+struct restart_info {
-+	u64 last_lsn;
-+	struct RESTART_HDR *r_page;
-+	u32 vbo;
-+	bool chkdsk_was_run;
-+	bool valid_page;
-+	bool initialized;
-+	bool restart;
-+};
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gp=
+u/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 88ca985603de5..272c27495ede6 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -6445,10 +6445,15 @@ amdgpu_dm_connector_late_register(struct drm_connec=
+tor *connector)
+ static void amdgpu_dm_connector_funcs_force(struct drm_connector *connecto=
+r)
+ {
+ 	struct amdgpu_dm_connector *aconnector =3D to_amdgpu_dm_connector(connect=
+or);
+-	struct amdgpu_connector *amdgpu_connector =3D to_amdgpu_connector(connect=
+or);
+ 	struct dc_link *dc_link =3D aconnector->dc_link;
+ 	struct dc_sink *dc_em_sink =3D aconnector->dc_em_sink;
+ 	struct edid *edid;
++	struct i2c_adapter *ddc;
 +
- #define RESTART_SINGLE_PAGE_IO cpu_to_le16(0x0001)
- 
- #define NTFSLOG_WRAPPED 0x00000001
-@@ -987,6 +997,7 @@ struct ntfs_log {
- 	struct ntfs_inode *ni;
- 
- 	u32 l_size;
-+	u32 orig_file_size;
- 	u32 sys_page_size;
- 	u32 sys_page_mask;
- 	u32 page_size;
-@@ -1040,6 +1051,8 @@ struct ntfs_log {
- 
- 	struct CLIENT_ID client_id;
- 	u32 client_undo_commit;
-+
-+	struct restart_info rst_info, rst_info2;
- };
- 
- static inline u32 lsn_to_vbo(struct ntfs_log *log, const u64 lsn)
-@@ -1105,16 +1118,6 @@ static inline bool verify_client_lsn(struct ntfs_log *log,
- 	       lsn <= le64_to_cpu(log->ra->current_lsn) && lsn;
- }
- 
--struct restart_info {
--	u64 last_lsn;
--	struct RESTART_HDR *r_page;
--	u32 vbo;
--	bool chkdsk_was_run;
--	bool valid_page;
--	bool initialized;
--	bool restart;
--};
--
- static int read_log_page(struct ntfs_log *log, u32 vbo,
- 			 struct RECORD_PAGE_HDR **buffer, bool *usa_error)
- {
-@@ -1176,7 +1179,7 @@ static int read_log_page(struct ntfs_log *log, u32 vbo,
-  * restart page header. It will stop the first time we find a
-  * valid page header.
-  */
--static int log_read_rst(struct ntfs_log *log, u32 l_size, bool first,
-+static int log_read_rst(struct ntfs_log *log, bool first,
- 			struct restart_info *info)
- {
- 	u32 skip, vbo;
-@@ -1192,7 +1195,7 @@ static int log_read_rst(struct ntfs_log *log, u32 l_size, bool first,
- 	}
- 
- 	/* Loop continuously until we succeed. */
--	for (; vbo < l_size; vbo = 2 * vbo + skip, skip = 0) {
-+	for (; vbo < log->l_size; vbo = 2 * vbo + skip, skip = 0) {
- 		bool usa_error;
- 		bool brst, bchk;
- 		struct RESTART_AREA *ra;
-@@ -1285,22 +1288,17 @@ static int log_read_rst(struct ntfs_log *log, u32 l_size, bool first,
- /*
-  * Ilog_init_pg_hdr - Init @log from restart page header.
-  */
--static void log_init_pg_hdr(struct ntfs_log *log, u32 sys_page_size,
--			    u32 page_size, u16 major_ver, u16 minor_ver)
-+static void log_init_pg_hdr(struct ntfs_log *log, u16 major_ver, u16 minor_ver)
- {
--	log->sys_page_size = sys_page_size;
--	log->sys_page_mask = sys_page_size - 1;
--	log->page_size = page_size;
--	log->page_mask = page_size - 1;
--	log->page_bits = blksize_bits(page_size);
-+	log->sys_page_size = log->page_size;
-+	log->sys_page_mask = log->page_mask;
- 
- 	log->clst_per_page = log->page_size >> log->ni->mi.sbi->cluster_bits;
- 	if (!log->clst_per_page)
- 		log->clst_per_page = 1;
- 
--	log->first_page = major_ver >= 2 ?
--				  0x22 * page_size :
--				  ((sys_page_size << 1) + (page_size << 1));
-+	log->first_page = major_ver >= 2 ? 0x22 * log->page_size :
-+					   4 * log->page_size;
- 	log->major_ver = major_ver;
- 	log->minor_ver = minor_ver;
- }
-@@ -1308,12 +1306,11 @@ static void log_init_pg_hdr(struct ntfs_log *log, u32 sys_page_size,
- /*
-  * log_create - Init @log in cases when we don't have a restart area to use.
-  */
--static void log_create(struct ntfs_log *log, u32 l_size, const u64 last_lsn,
-+static void log_create(struct ntfs_log *log, const u64 last_lsn,
- 		       u32 open_log_count, bool wrapped, bool use_multi_page)
- {
--	log->l_size = l_size;
- 	/* All file offsets must be quadword aligned. */
--	log->file_data_bits = blksize_bits(l_size) - 3;
-+	log->file_data_bits = blksize_bits(log->l_size) - 3;
- 	log->seq_num_mask = (8 << log->file_data_bits) - 1;
- 	log->seq_num_bits = sizeof(u64) * 8 - log->file_data_bits;
- 	log->seq_num = (last_lsn >> log->file_data_bits) + 2;
-@@ -3720,10 +3717,8 @@ int log_replay(struct ntfs_inode *ni, bool *initialized)
- 	struct ntfs_sb_info *sbi = ni->mi.sbi;
- 	struct ntfs_log *log;
- 
--	struct restart_info rst_info, rst_info2;
--	u64 rec_lsn, ra_lsn, checkpt_lsn = 0, rlsn = 0;
-+	u64 rec_lsn, checkpt_lsn = 0, rlsn = 0;
- 	struct ATTR_NAME_ENTRY *attr_names = NULL;
--	struct ATTR_NAME_ENTRY *ane;
- 	struct RESTART_TABLE *dptbl = NULL;
- 	struct RESTART_TABLE *trtbl = NULL;
- 	const struct RESTART_TABLE *rt;
-@@ -3741,9 +3736,7 @@ int log_replay(struct ntfs_inode *ni, bool *initialized)
- 	struct TRANSACTION_ENTRY *tr;
- 	struct DIR_PAGE_ENTRY *dp;
- 	u32 i, bytes_per_attr_entry;
--	u32 l_size = ni->vfs_inode.i_size;
--	u32 orig_file_size = l_size;
--	u32 page_size, vbo, tail, off, dlen;
-+	u32 vbo, tail, off, dlen;
- 	u32 saved_len, rec_len, transact_id;
- 	bool use_second_page;
- 	struct RESTART_AREA *ra2, *ra = NULL;
-@@ -3758,52 +3751,50 @@ int log_replay(struct ntfs_inode *ni, bool *initialized)
- 	u16 t16;
- 	u32 t32;
- 
--	/* Get the size of page. NOTE: To replay we can use default page. */
--#if PAGE_SIZE >= DefaultLogPageSize && PAGE_SIZE <= DefaultLogPageSize * 2
--	page_size = norm_file_page(PAGE_SIZE, &l_size, true);
--#else
--	page_size = norm_file_page(PAGE_SIZE, &l_size, false);
--#endif
--	if (!page_size)
--		return -EINVAL;
--
- 	log = kzalloc(sizeof(struct ntfs_log), GFP_NOFS);
- 	if (!log)
- 		return -ENOMEM;
- 
- 	log->ni = ni;
--	log->l_size = l_size;
--	log->one_page_buf = kmalloc(page_size, GFP_NOFS);
-+	log->l_size = log->orig_file_size = ni->vfs_inode.i_size;
-+
-+	/* Get the size of page. NOTE: To replay we can use default page. */
-+#if PAGE_SIZE >= DefaultLogPageSize && PAGE_SIZE <= DefaultLogPageSize * 2
-+	log->page_size = norm_file_page(PAGE_SIZE, &log->l_size, true);
-+#else
-+	log->page_size = norm_file_page(PAGE_SIZE, &log->l_size, false);
-+#endif
-+	if (!log->page_size) {
-+		err = -EINVAL;
-+		goto out;
-+	}
- 
-+	log->one_page_buf = kmalloc(log->page_size, GFP_NOFS);
- 	if (!log->one_page_buf) {
- 		err = -ENOMEM;
- 		goto out;
- 	}
- 
--	log->page_size = page_size;
--	log->page_mask = page_size - 1;
--	log->page_bits = blksize_bits(page_size);
-+	log->page_mask = log->page_size - 1;
-+	log->page_bits = blksize_bits(log->page_size);
- 
- 	/* Look for a restart area on the disk. */
--	memset(&rst_info, 0, sizeof(struct restart_info));
--	err = log_read_rst(log, l_size, true, &rst_info);
-+	err = log_read_rst(log, true, &log->rst_info);
- 	if (err)
- 		goto out;
- 
- 	/* remember 'initialized' */
--	*initialized = rst_info.initialized;
-+	*initialized = log->rst_info.initialized;
- 
--	if (!rst_info.restart) {
--		if (rst_info.initialized) {
-+	if (!log->rst_info.restart) {
-+		if (log->rst_info.initialized) {
- 			/* No restart area but the file is not initialized. */
- 			err = -EINVAL;
- 			goto out;
- 		}
- 
--		log_init_pg_hdr(log, page_size, page_size, 1, 1);
--		log_create(log, l_size, 0, get_random_u32(), false, false);
--
--		log->ra = ra;
-+		log_init_pg_hdr(log, 1, 1);
-+		log_create(log, 0, get_random_u32(), false, false);
- 
- 		ra = log_create_ra(log);
- 		if (!ra) {
-@@ -3820,25 +3811,26 @@ int log_replay(struct ntfs_inode *ni, bool *initialized)
- 	 * If the restart offset above wasn't zero then we won't
- 	 * look for a second restart.
- 	 */
--	if (rst_info.vbo)
-+	if (log->rst_info.vbo)
- 		goto check_restart_area;
- 
--	memset(&rst_info2, 0, sizeof(struct restart_info));
--	err = log_read_rst(log, l_size, false, &rst_info2);
-+	err = log_read_rst(log, false, &log->rst_info2);
- 	if (err)
- 		goto out;
- 
- 	/* Determine which restart area to use. */
--	if (!rst_info2.restart || rst_info2.last_lsn <= rst_info.last_lsn)
-+	if (!log->rst_info2.restart ||
-+	    log->rst_info2.last_lsn <= log->rst_info.last_lsn)
- 		goto use_first_page;
- 
- 	use_second_page = true;
- 
--	if (rst_info.chkdsk_was_run && page_size != rst_info.vbo) {
-+	if (log->rst_info.chkdsk_was_run &&
-+	    log->page_size != log->rst_info.vbo) {
- 		struct RECORD_PAGE_HDR *sp = NULL;
- 		bool usa_error;
- 
--		if (!read_log_page(log, page_size, &sp, &usa_error) &&
-+		if (!read_log_page(log, log->page_size, &sp, &usa_error) &&
- 		    sp->rhdr.sign == NTFS_CHKD_SIGNATURE) {
- 			use_second_page = false;
- 		}
-@@ -3846,52 +3838,43 @@ int log_replay(struct ntfs_inode *ni, bool *initialized)
- 	}
- 
- 	if (use_second_page) {
--		kfree(rst_info.r_page);
--		memcpy(&rst_info, &rst_info2, sizeof(struct restart_info));
--		rst_info2.r_page = NULL;
-+		kfree(log->rst_info.r_page);
-+		memcpy(&log->rst_info, &log->rst_info2,
-+		       sizeof(struct restart_info));
-+		log->rst_info2.r_page = NULL;
- 	}
- 
- use_first_page:
--	kfree(rst_info2.r_page);
-+	kfree(log->rst_info2.r_page);
- 
- check_restart_area:
++	if (dc_link->aux_mode)
++		ddc =3D &aconnector->dm_dp_aux.aux.ddc;
++	else
++		ddc =3D &aconnector->i2c->base;
+=20
  	/*
- 	 * If the restart area is at offset 0, we want
- 	 * to write the second restart area first.
+ 	 * Note: drm_get_edid gets edid in the following order:
+@@ -6456,7 +6461,7 @@ static void amdgpu_dm_connector_funcs_force(struct dr=
+m_connector *connector)
+ 	 * 2) firmware EDID if set via edid_firmware module parameter
+ 	 * 3) regular DDC read.
  	 */
--	log->init_ra = !!rst_info.vbo;
-+	log->init_ra = !!log->rst_info.vbo;
- 
- 	/* If we have a valid page then grab a pointer to the restart area. */
--	ra2 = rst_info.valid_page ?
--		      Add2Ptr(rst_info.r_page,
--			      le16_to_cpu(rst_info.r_page->ra_off)) :
-+	ra2 = log->rst_info.valid_page ?
-+		      Add2Ptr(log->rst_info.r_page,
-+			      le16_to_cpu(log->rst_info.r_page->ra_off)) :
- 		      NULL;
- 
--	if (rst_info.chkdsk_was_run ||
-+	if (log->rst_info.chkdsk_was_run ||
- 	    (ra2 && ra2->client_idx[1] == LFS_NO_CLIENT_LE)) {
- 		bool wrapped = false;
- 		bool use_multi_page = false;
- 		u32 open_log_count;
- 
- 		/* Do some checks based on whether we have a valid log page. */
--		if (!rst_info.valid_page) {
--			open_log_count = get_random_u32();
--			goto init_log_instance;
--		}
--		open_log_count = le32_to_cpu(ra2->open_log_count);
--
--		/*
--		 * If the restart page size isn't changing then we want to
--		 * check how much work we need to do.
--		 */
--		if (page_size != le32_to_cpu(rst_info.r_page->sys_page_size))
--			goto init_log_instance;
-+		open_log_count = log->rst_info.valid_page ?
-+					 le32_to_cpu(ra2->open_log_count) :
-+					 get_random_u32();
- 
--init_log_instance:
--		log_init_pg_hdr(log, page_size, page_size, 1, 1);
-+		log_init_pg_hdr(log, 1, 1);
- 
--		log_create(log, l_size, rst_info.last_lsn, open_log_count,
--			   wrapped, use_multi_page);
-+		log_create(log, log->rst_info.last_lsn, open_log_count, wrapped,
-+			   use_multi_page);
- 
- 		ra = log_create_ra(log);
- 		if (!ra) {
-@@ -3916,28 +3899,27 @@ int log_replay(struct ntfs_inode *ni, bool *initialized)
- 	 * use the log file. We must use the system page size instead of the
- 	 * default size if there is not a clean shutdown.
- 	 */
--	t32 = le32_to_cpu(rst_info.r_page->sys_page_size);
--	if (page_size != t32) {
--		l_size = orig_file_size;
--		page_size =
--			norm_file_page(t32, &l_size, t32 == DefaultLogPageSize);
-+	t32 = le32_to_cpu(log->rst_info.r_page->sys_page_size);
-+	if (log->page_size != t32) {
-+		log->l_size = log->orig_file_size;
-+		log->page_size = norm_file_page(t32, &log->l_size,
-+						t32 == DefaultLogPageSize);
- 	}
- 
--	if (page_size != t32 ||
--	    page_size != le32_to_cpu(rst_info.r_page->page_size)) {
-+	if (log->page_size != t32 ||
-+	    log->page_size != le32_to_cpu(log->rst_info.r_page->page_size)) {
- 		err = -EINVAL;
- 		goto out;
- 	}
- 
- 	/* If the file size has shrunk then we won't mount it. */
--	if (l_size < le64_to_cpu(ra2->l_size)) {
-+	if (log->l_size < le64_to_cpu(ra2->l_size)) {
- 		err = -EINVAL;
- 		goto out;
- 	}
- 
--	log_init_pg_hdr(log, page_size, page_size,
--			le16_to_cpu(rst_info.r_page->major_ver),
--			le16_to_cpu(rst_info.r_page->minor_ver));
-+	log_init_pg_hdr(log, le16_to_cpu(log->rst_info.r_page->major_ver),
-+			le16_to_cpu(log->rst_info.r_page->minor_ver));
- 
- 	log->l_size = le64_to_cpu(ra2->l_size);
- 	log->seq_num_bits = le32_to_cpu(ra2->seq_num_bits);
-@@ -3945,7 +3927,7 @@ int log_replay(struct ntfs_inode *ni, bool *initialized)
- 	log->seq_num_mask = (8 << log->file_data_bits) - 1;
- 	log->last_lsn = le64_to_cpu(ra2->current_lsn);
- 	log->seq_num = log->last_lsn >> log->file_data_bits;
--	log->ra_off = le16_to_cpu(rst_info.r_page->ra_off);
-+	log->ra_off = le16_to_cpu(log->rst_info.r_page->ra_off);
- 	log->restart_size = log->sys_page_size - log->ra_off;
- 	log->record_header_len = le16_to_cpu(ra2->rec_hdr_len);
- 	log->ra_size = le16_to_cpu(ra2->ra_len);
-@@ -4045,7 +4027,7 @@ int log_replay(struct ntfs_inode *ni, bool *initialized)
- 	log->current_avail = current_log_avail(log);
- 
- 	/* Remember which restart area to write first. */
--	log->init_ra = rst_info.vbo;
-+	log->init_ra = log->rst_info.vbo;
- 
- process_log:
- 	/* 1.0, 1.1, 2.0 log->major_ver/minor_ver - short values. */
-@@ -4105,7 +4087,7 @@ int log_replay(struct ntfs_inode *ni, bool *initialized)
- 	log->client_id.seq_num = cr->seq_num;
- 	log->client_id.client_idx = client;
- 
--	err = read_rst_area(log, &rst, &ra_lsn);
-+	err = read_rst_area(log, &rst, &checkpt_lsn);
- 	if (err)
- 		goto out;
- 
-@@ -4114,9 +4096,8 @@ int log_replay(struct ntfs_inode *ni, bool *initialized)
- 
- 	bytes_per_attr_entry = !rst->major_ver ? 0x2C : 0x28;
- 
--	checkpt_lsn = le64_to_cpu(rst->check_point_start);
--	if (!checkpt_lsn)
--		checkpt_lsn = ra_lsn;
-+	if (rst->check_point_start)
-+		checkpt_lsn = le64_to_cpu(rst->check_point_start);
- 
- 	/* Allocate and Read the Transaction Table. */
- 	if (!rst->transact_table_len)
-@@ -4330,23 +4311,20 @@ int log_replay(struct ntfs_inode *ni, bool *initialized)
- 	lcb = NULL;
- 
- check_attribute_names2:
--	if (!rst->attr_names_len)
--		goto trace_attribute_table;
--
--	ane = attr_names;
--	if (!oatbl)
--		goto trace_attribute_table;
--	while (ane->off) {
--		/* TODO: Clear table on exit! */
--		oe = Add2Ptr(oatbl, le16_to_cpu(ane->off));
--		t16 = le16_to_cpu(ane->name_bytes);
--		oe->name_len = t16 / sizeof(short);
--		oe->ptr = ane->name;
--		oe->is_attr_name = 2;
--		ane = Add2Ptr(ane, sizeof(struct ATTR_NAME_ENTRY) + t16);
--	}
--
--trace_attribute_table:
-+	if (rst->attr_names_len && oatbl) {
-+		struct ATTR_NAME_ENTRY *ane = attr_names;
-+		while (ane->off) {
-+			/* TODO: Clear table on exit! */
-+			oe = Add2Ptr(oatbl, le16_to_cpu(ane->off));
-+			t16 = le16_to_cpu(ane->name_bytes);
-+			oe->name_len = t16 / sizeof(short);
-+			oe->ptr = ane->name;
-+			oe->is_attr_name = 2;
-+			ane = Add2Ptr(ane,
-+				      sizeof(struct ATTR_NAME_ENTRY) + t16);
-+		}
-+	}
+-	edid =3D drm_get_edid(connector, &amdgpu_connector->ddc_bus->aux.ddc);
++	edid =3D drm_get_edid(connector, ddc);
+ 	if (!edid) {
+ 		DRM_ERROR("No EDID found on connector: %s.\n", connector->name);
+ 		return;
+@@ -6497,12 +6502,18 @@ static int get_modes(struct drm_connector *connecto=
+r)
+ static void create_eml_sink(struct amdgpu_dm_connector *aconnector)
+ {
+ 	struct drm_connector *connector =3D &aconnector->base;
+-	struct amdgpu_connector *amdgpu_connector =3D to_amdgpu_connector(&aconne=
+ctor->base);
++	struct dc_link *dc_link =3D aconnector->dc_link;
+ 	struct dc_sink_init_data init_params =3D {
+ 			.link =3D aconnector->dc_link,
+ 			.sink_signal =3D SIGNAL_TYPE_VIRTUAL
+ 	};
+ 	struct edid *edid;
++	struct i2c_adapter *ddc;
 +
++	if (dc_link->aux_mode)
++		ddc =3D &aconnector->dm_dp_aux.aux.ddc;
++	else
++		ddc =3D &aconnector->i2c->base;
+=20
  	/*
- 	 * If the checkpt_lsn is zero, then this is a freshly
- 	 * formatted disk and we have no work to do.
-@@ -5189,7 +5167,7 @@ int log_replay(struct ntfs_inode *ni, bool *initialized)
- 	kfree(oatbl);
- 	kfree(dptbl);
- 	kfree(attr_names);
--	kfree(rst_info.r_page);
-+	kfree(log->rst_info.r_page);
- 
- 	kfree(ra);
- 	kfree(log->one_page_buf);
--- 
+ 	 * Note: drm_get_edid gets edid in the following order:
+@@ -6510,7 +6521,7 @@ static void create_eml_sink(struct amdgpu_dm_connecto=
+r *aconnector)
+ 	 * 2) firmware EDID if set via edid_firmware module parameter
+ 	 * 3) regular DDC read.
+ 	 */
+-	edid =3D drm_get_edid(connector, &amdgpu_connector->ddc_bus->aux.ddc);
++	edid =3D drm_get_edid(connector, ddc);
+ 	if (!edid) {
+ 		DRM_ERROR("No EDID found on connector: %s.\n", connector->name);
+ 		return;
+--=20
 2.43.0
 
 
