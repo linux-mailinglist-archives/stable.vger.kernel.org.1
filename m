@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-24768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20D1186962D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:08:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C54BB8694DA
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:56:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D7081C21B51
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:08:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD055B30658
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8115E13B78F;
-	Tue, 27 Feb 2024 14:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C560141999;
+	Tue, 27 Feb 2024 13:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sirmujCn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r02VAkcz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E1A13A26F;
-	Tue, 27 Feb 2024 14:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5907D141995;
+	Tue, 27 Feb 2024 13:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042937; cv=none; b=hTpaAFwwnZSx2yOonUoKhzOsCwTswl6CvtpqTcfg39GBVVYyrVF8RtuP4gNUmbiz/btEfXg1v96ogVHNEy0i19gqFUZ3CrMqITjoXpFhXwYfhPprv2Pwvjxx0OkbxNClXyAqgQviv2b8jLcO1KTSgk65Aspc9ESv3fK36+V+Jc8=
+	t=1709041466; cv=none; b=qo5FVQKy/BeTgHOcL/X0iCy4HD+EZXaA4+7RD07395t5WEZn/W+3FU5Wl3VtFrNI5CeFom5yN3yIfzuGyJA5dgPWkT7H1MlRU7UiJHZ3CRVWqtU3dqFmMMJQAScNLYb+vOEfbVdaYEYBltS0MhdnCg4bi3tci4ujyIqPyktBDNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042937; c=relaxed/simple;
-	bh=1zzioEY0zZGqbW8D9fRMvU9OK4Qs76RGlv24k12hdAU=;
+	s=arc-20240116; t=1709041466; c=relaxed/simple;
+	bh=QVudef+G5DajMp0e464Bk8N8uuDx3i7rDTDUxhBkWgY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SBbxUR3Uh09//wKEq59ER6/SYqmKn9NxzaoBEX7IuCRlJ3WPaxi1EuJ6TxCsd8HgaDmGbksMb7R5jHxo4DgljjelQQFow08zDJ06sSNmTcWzuGt9GYUXvknjZmS4I4eNRwdg+QDjSJOp9Y0Wcfs/8skR43Cc5gnRNVNfbdRIcNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sirmujCn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD56C433F1;
-	Tue, 27 Feb 2024 14:08:56 +0000 (UTC)
+	 MIME-Version; b=owtW0sV05vpBDZqpU/yGjBegEBwtwERT8JludLo4gf7nx6dy20aDxUivtrFpV/jcZQV1v/afnNkfYV+O7L9RKsLDx58Zk9QDXOyy7Y/LIeIwgSQdaF0cvmQI3MKH0r8bxfCJdKL+/01mlav6N4jO7DMBzgM/nJFvGlR9FU69gF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r02VAkcz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7C0CC433F1;
+	Tue, 27 Feb 2024 13:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042937;
-	bh=1zzioEY0zZGqbW8D9fRMvU9OK4Qs76RGlv24k12hdAU=;
+	s=korg; t=1709041466;
+	bh=QVudef+G5DajMp0e464Bk8N8uuDx3i7rDTDUxhBkWgY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sirmujCnmGMWI5YGpbw/kf5AU1mRYB9zsw22CZ0ED1BlXstpYC71FRQP1botAAR7J
-	 eJgFiSgBsTBnAZNeqcJBpBciuIEHeFW86UTQBOuvgYpIAiU+G/adjCxJs3Si8RfyHD
-	 kRp/CTXw2ZDaZZoEhJ2sVRqz2dETDVJD5swMhkcc=
+	b=r02VAkczTyuY3ajrlVQ8thv7BT0qUNzttvVXnTngPjHhD4pS0x4zk+OaYZxnzF669
+	 40fkclN1RbJ0ESov15RhZTaiS8ZqhWORMhZI+/n+pMQZkX8Nt59b46fcGHztQiiFYK
+	 YTLo8E1/vB4eGpCJKguz5oqQbPTfxkXwQ3TU5yaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Youngmin Nam <youngmin.nam@samsung.com>,
-	SEO HOYOUNG <hy50.seo@samsung.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 174/245] arm64: set __exception_irq_entry with __irq_entry as a default
+Subject: [PATCH 4.19 15/52] wifi: mac80211: fix race condition on enabling fast-xmit
 Date: Tue, 27 Feb 2024 14:26:02 +0100
-Message-ID: <20240227131620.866256872@linuxfoundation.org>
+Message-ID: <20240227131549.034364396@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
+References: <20240227131548.514622258@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,168 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Youngmin Nam <youngmin.nam@samsung.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit f6794950f0e5ba37e3bbedda4d6ab0aad7395dd3 ]
+[ Upstream commit bcbc84af1183c8cf3d1ca9b78540c2185cd85e7f ]
 
-filter_irq_stacks() is supposed to cut entries which are related irq entries
-from its call stack.
-And in_irqentry_text() which is called by filter_irq_stacks()
-uses __irqentry_text_start/end symbol to find irq entries in callstack.
+fast-xmit must only be enabled after the sta has been uploaded to the driver,
+otherwise it could end up passing the not-yet-uploaded sta via drv_tx calls
+to the driver, leading to potential crashes because of uninitialized drv_priv
+data.
+Add a missing sta->uploaded check and re-check fast xmit after inserting a sta.
 
-But it doesn't work correctly as without "CONFIG_FUNCTION_GRAPH_TRACER",
-arm64 kernel doesn't include gic_handle_irq which is entry point of arm64 irq
-between __irqentry_text_start and __irqentry_text_end as we discussed in below link.
-https://lore.kernel.org/all/CACT4Y+aReMGLYua2rCLHgFpS9io5cZC04Q8GLs-uNmrn1ezxYQ@mail.gmail.com/#t
-
-This problem can makes unintentional deep call stack entries especially
-in KASAN enabled situation as below.
-
-[ 2479.383395]I[0:launcher-loader: 1719] Stack depot reached limit capacity
-[ 2479.383538]I[0:launcher-loader: 1719] WARNING: CPU: 0 PID: 1719 at lib/stackdepot.c:129 __stack_depot_save+0x464/0x46c
-[ 2479.385693]I[0:launcher-loader: 1719] pstate: 624000c5 (nZCv daIF +PAN -UAO +TCO -DIT -SSBS BTYPE=--)
-[ 2479.385724]I[0:launcher-loader: 1719] pc : __stack_depot_save+0x464/0x46c
-[ 2479.385751]I[0:launcher-loader: 1719] lr : __stack_depot_save+0x460/0x46c
-[ 2479.385774]I[0:launcher-loader: 1719] sp : ffffffc0080073c0
-[ 2479.385793]I[0:launcher-loader: 1719] x29: ffffffc0080073e0 x28: ffffffd00b78a000 x27: 0000000000000000
-[ 2479.385839]I[0:launcher-loader: 1719] x26: 000000000004d1dd x25: ffffff891474f000 x24: 00000000ca64d1dd
-[ 2479.385882]I[0:launcher-loader: 1719] x23: 0000000000000200 x22: 0000000000000220 x21: 0000000000000040
-[ 2479.385925]I[0:launcher-loader: 1719] x20: ffffffc008007440 x19: 0000000000000000 x18: 0000000000000000
-[ 2479.385969]I[0:launcher-loader: 1719] x17: 2065726568207475 x16: 000000000000005e x15: 2d2d2d2d2d2d2d20
-[ 2479.386013]I[0:launcher-loader: 1719] x14: 5d39313731203a72 x13: 00000000002f6b30 x12: 00000000002f6af8
-[ 2479.386057]I[0:launcher-loader: 1719] x11: 00000000ffffffff x10: ffffffb90aacf000 x9 : e8a74a6c16008800
-[ 2479.386101]I[0:launcher-loader: 1719] x8 : e8a74a6c16008800 x7 : 00000000002f6b30 x6 : 00000000002f6af8
-[ 2479.386145]I[0:launcher-loader: 1719] x5 : ffffffc0080070c8 x4 : ffffffd00b192380 x3 : ffffffd0092b313c
-[ 2479.386189]I[0:launcher-loader: 1719] x2 : 0000000000000001 x1 : 0000000000000004 x0 : 0000000000000022
-[ 2479.386231]I[0:launcher-loader: 1719] Call trace:
-[ 2479.386248]I[0:launcher-loader: 1719]  __stack_depot_save+0x464/0x46c
-[ 2479.386273]I[0:launcher-loader: 1719]  kasan_save_stack+0x58/0x70
-[ 2479.386303]I[0:launcher-loader: 1719]  save_stack_info+0x34/0x138
-[ 2479.386331]I[0:launcher-loader: 1719]  kasan_save_free_info+0x18/0x24
-[ 2479.386358]I[0:launcher-loader: 1719]  ____kasan_slab_free+0x16c/0x170
-[ 2479.386385]I[0:launcher-loader: 1719]  __kasan_slab_free+0x10/0x20
-[ 2479.386410]I[0:launcher-loader: 1719]  kmem_cache_free+0x238/0x53c
-[ 2479.386435]I[0:launcher-loader: 1719]  mempool_free_slab+0x1c/0x28
-[ 2479.386460]I[0:launcher-loader: 1719]  mempool_free+0x7c/0x1a0
-[ 2479.386484]I[0:launcher-loader: 1719]  bvec_free+0x34/0x80
-[ 2479.386514]I[0:launcher-loader: 1719]  bio_free+0x60/0x98
-[ 2479.386540]I[0:launcher-loader: 1719]  bio_put+0x50/0x21c
-[ 2479.386567]I[0:launcher-loader: 1719]  f2fs_write_end_io+0x4ac/0x4d0
-[ 2479.386594]I[0:launcher-loader: 1719]  bio_endio+0x2dc/0x300
-[ 2479.386622]I[0:launcher-loader: 1719]  __dm_io_complete+0x324/0x37c
-[ 2479.386650]I[0:launcher-loader: 1719]  dm_io_dec_pending+0x60/0xa4
-[ 2479.386676]I[0:launcher-loader: 1719]  clone_endio+0xf8/0x2f0
-[ 2479.386700]I[0:launcher-loader: 1719]  bio_endio+0x2dc/0x300
-[ 2479.386727]I[0:launcher-loader: 1719]  blk_update_request+0x258/0x63c
-[ 2479.386754]I[0:launcher-loader: 1719]  scsi_end_request+0x50/0x304
-[ 2479.386782]I[0:launcher-loader: 1719]  scsi_io_completion+0x88/0x160
-[ 2479.386808]I[0:launcher-loader: 1719]  scsi_finish_command+0x17c/0x194
-[ 2479.386833]I[0:launcher-loader: 1719]  scsi_complete+0xcc/0x158
-[ 2479.386859]I[0:launcher-loader: 1719]  blk_mq_complete_request+0x4c/0x5c
-[ 2479.386885]I[0:launcher-loader: 1719]  scsi_done_internal+0xf4/0x1e0
-[ 2479.386910]I[0:launcher-loader: 1719]  scsi_done+0x14/0x20
-[ 2479.386935]I[0:launcher-loader: 1719]  ufshcd_compl_one_cqe+0x578/0x71c
-[ 2479.386963]I[0:launcher-loader: 1719]  ufshcd_mcq_poll_cqe_nolock+0xc8/0x150
-[ 2479.386991]I[0:launcher-loader: 1719]  ufshcd_intr+0x868/0xc0c
-[ 2479.387017]I[0:launcher-loader: 1719]  __handle_irq_event_percpu+0xd0/0x348
-[ 2479.387044]I[0:launcher-loader: 1719]  handle_irq_event_percpu+0x24/0x74
-[ 2479.387068]I[0:launcher-loader: 1719]  handle_irq_event+0x74/0xe0
-[ 2479.387091]I[0:launcher-loader: 1719]  handle_fasteoi_irq+0x174/0x240
-[ 2479.387118]I[0:launcher-loader: 1719]  handle_irq_desc+0x7c/0x2c0
-[ 2479.387147]I[0:launcher-loader: 1719]  generic_handle_domain_irq+0x1c/0x28
-[ 2479.387174]I[0:launcher-loader: 1719]  gic_handle_irq+0x64/0x158
-[ 2479.387204]I[0:launcher-loader: 1719]  call_on_irq_stack+0x2c/0x54
-[ 2479.387231]I[0:launcher-loader: 1719]  do_interrupt_handler+0x70/0xa0
-[ 2479.387258]I[0:launcher-loader: 1719]  el1_interrupt+0x34/0x68
-[ 2479.387283]I[0:launcher-loader: 1719]  el1h_64_irq_handler+0x18/0x24
-[ 2479.387308]I[0:launcher-loader: 1719]  el1h_64_irq+0x68/0x6c
-[ 2479.387332]I[0:launcher-loader: 1719]  blk_attempt_bio_merge+0x8/0x170
-[ 2479.387356]I[0:launcher-loader: 1719]  blk_mq_attempt_bio_merge+0x78/0x98
-[ 2479.387383]I[0:launcher-loader: 1719]  blk_mq_submit_bio+0x324/0xa40
-[ 2479.387409]I[0:launcher-loader: 1719]  __submit_bio+0x104/0x138
-[ 2479.387436]I[0:launcher-loader: 1719]  submit_bio_noacct_nocheck+0x1d0/0x4a0
-[ 2479.387462]I[0:launcher-loader: 1719]  submit_bio_noacct+0x618/0x804
-[ 2479.387487]I[0:launcher-loader: 1719]  submit_bio+0x164/0x180
-[ 2479.387511]I[0:launcher-loader: 1719]  f2fs_submit_read_bio+0xe4/0x1c4
-[ 2479.387537]I[0:launcher-loader: 1719]  f2fs_mpage_readpages+0x888/0xa4c
-[ 2479.387563]I[0:launcher-loader: 1719]  f2fs_readahead+0xd4/0x19c
-[ 2479.387587]I[0:launcher-loader: 1719]  read_pages+0xb0/0x4ac
-[ 2479.387614]I[0:launcher-loader: 1719]  page_cache_ra_unbounded+0x238/0x288
-[ 2479.387642]I[0:launcher-loader: 1719]  do_page_cache_ra+0x60/0x6c
-[ 2479.387669]I[0:launcher-loader: 1719]  page_cache_ra_order+0x318/0x364
-[ 2479.387695]I[0:launcher-loader: 1719]  ondemand_readahead+0x30c/0x3d8
-[ 2479.387722]I[0:launcher-loader: 1719]  page_cache_sync_ra+0xb4/0xc8
-[ 2479.387749]I[0:launcher-loader: 1719]  filemap_read+0x268/0xd24
-[ 2479.387777]I[0:launcher-loader: 1719]  f2fs_file_read_iter+0x1a0/0x62c
-[ 2479.387806]I[0:launcher-loader: 1719]  vfs_read+0x258/0x34c
-[ 2479.387831]I[0:launcher-loader: 1719]  ksys_pread64+0x8c/0xd0
-[ 2479.387857]I[0:launcher-loader: 1719]  __arm64_sys_pread64+0x48/0x54
-[ 2479.387881]I[0:launcher-loader: 1719]  invoke_syscall+0x58/0x158
-[ 2479.387909]I[0:launcher-loader: 1719]  el0_svc_common+0xf0/0x134
-[ 2479.387935]I[0:launcher-loader: 1719]  do_el0_svc+0x44/0x114
-[ 2479.387961]I[0:launcher-loader: 1719]  el0_svc+0x2c/0x80
-[ 2479.387985]I[0:launcher-loader: 1719]  el0t_64_sync_handler+0x48/0x114
-[ 2479.388010]I[0:launcher-loader: 1719]  el0t_64_sync+0x190/0x194
-[ 2479.388038]I[0:launcher-loader: 1719] Kernel panic - not syncing: kernel: panic_on_warn set ...
-
-So let's set __exception_irq_entry with __irq_entry as a default.
-Applying this patch, we can see gic_hande_irq is included in Systemp.map as below.
-
-* Before
-ffffffc008010000 T __do_softirq
-ffffffc008010000 T __irqentry_text_end
-ffffffc008010000 T __irqentry_text_start
-ffffffc008010000 T __softirqentry_text_start
-ffffffc008010000 T _stext
-ffffffc00801066c T __softirqentry_text_end
-ffffffc008010670 T __entry_text_start
-
-* After
-ffffffc008010000 T __irqentry_text_start
-ffffffc008010000 T _stext
-ffffffc008010000 t gic_handle_irq
-ffffffc00801013c t gic_handle_irq
-ffffffc008010294 T __irqentry_text_end
-ffffffc008010298 T __do_softirq
-ffffffc008010298 T __softirqentry_text_start
-ffffffc008010904 T __softirqentry_text_end
-ffffffc008010908 T __entry_text_start
-
-Signed-off-by: Youngmin Nam <youngmin.nam@samsung.com>
-Signed-off-by: SEO HOYOUNG <hy50.seo@samsung.com>
-Reviewed-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20230424010436.779733-1-youngmin.nam@samsung.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://msgid.link/20240104181059.84032-1-nbd@nbd.name
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/exception.h | 5 -----
- 1 file changed, 5 deletions(-)
+ net/mac80211/sta_info.c | 2 ++
+ net/mac80211/tx.c       | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/exception.h b/arch/arm64/include/asm/exception.h
-index 515ebe24fd44f..fe4aa233a90ed 100644
---- a/arch/arm64/include/asm/exception.h
-+++ b/arch/arm64/include/asm/exception.h
-@@ -8,16 +8,11 @@
- #define __ASM_EXCEPTION_H
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index 5c209f72de701..714d0b01ea629 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -629,6 +629,8 @@ static int sta_info_insert_finish(struct sta_info *sta) __acquires(RCU)
+ 	if (ieee80211_vif_is_mesh(&sdata->vif))
+ 		mesh_accept_plinks_update(sdata);
  
- #include <asm/esr.h>
--#include <asm/kprobes.h>
- #include <asm/ptrace.h>
++	ieee80211_check_fast_xmit(sta);
++
+ 	return 0;
+  out_remove:
+ 	sta_info_hash_del(local, sta);
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 3a0aadf881fc9..89500b1fe3016 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -2868,7 +2868,7 @@ void ieee80211_check_fast_xmit(struct sta_info *sta)
+ 	    sdata->vif.type == NL80211_IFTYPE_STATION)
+ 		goto out;
  
- #include <linux/interrupt.h>
+-	if (!test_sta_flag(sta, WLAN_STA_AUTHORIZED))
++	if (!test_sta_flag(sta, WLAN_STA_AUTHORIZED) || !sta->uploaded)
+ 		goto out;
  
--#ifdef CONFIG_FUNCTION_GRAPH_TRACER
- #define __exception_irq_entry	__irq_entry
--#else
--#define __exception_irq_entry	__kprobes
--#endif
- 
- static inline unsigned long disr_to_esr(u64 disr)
- {
+ 	if (test_sta_flag(sta, WLAN_STA_PS_STA) ||
 -- 
 2.43.0
 
