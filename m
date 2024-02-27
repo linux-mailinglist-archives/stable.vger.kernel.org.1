@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-25202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46620869836
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:30:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0E878697AB
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:23:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F090A294DBD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:30:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D5821F2868E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:23:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58F10145B3F;
-	Tue, 27 Feb 2024 14:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6BD213B2B4;
+	Tue, 27 Feb 2024 14:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jYv0to5f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1mnlEeqs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17529145B37;
-	Tue, 27 Feb 2024 14:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94CCB13B2B8;
+	Tue, 27 Feb 2024 14:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044145; cv=none; b=oGHGefmlFb0EYVjQRLdBargwO7OI32nujWAVcWwGwhbObduWhYlyCTj60w2v/5a03qrFmSgJ5RR13a2Rbw0pDWLZuhyHRMyNhYF44xXA2qic9KE2eY1mRFkD7MxsTw8LOvLYpizrpukttev7xjR9WJAPHvDzdFmbibEwCSvqQi4=
+	t=1709043832; cv=none; b=aAbfLN/ZDlhvSSEsia8iS5x93A5alnjOkSalGDiKWETOvnzqUEyLLAlFrPOg7nkvfpwdIxbK7uHXZp7xF77yc+MAK+ZQDw7p/j3V0ivicq7wHC44bjDBwre3mmxDP9pIRujAQzrC5BT6KllPk558Sw8vbiKqadS+5YhczkKl5cQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044145; c=relaxed/simple;
-	bh=0RDkk7bdLJRw9Humqx+lEbLmEzaUPeqls0A3ZH3BCQA=;
+	s=arc-20240116; t=1709043832; c=relaxed/simple;
+	bh=ulsqBydEp96SgZrZTqtqlxIDIjYnaTJM4Kdz0JzfZLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TlZV/klLrzlTwImcEN19UiZ/3YIelYeXWjA4bLcytX1UslM/c8QSKAZw2ZITkOTkj7fWEa3R3rY2hjMSvAquYqKHHLjafwn9uJJn76vljoOU3HnFRqiBWbTyE8Gb+usZGvXTnYrgUKl31GHbdri4dOtWqW/GflWhoBSlV4lDNnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jYv0to5f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC35C433C7;
-	Tue, 27 Feb 2024 14:29:04 +0000 (UTC)
+	 MIME-Version; b=Ju7FvpOxwPklDXd1NDTLRCEobNkbllzT8laNRGEKpakmHOBWwORkZMmC6iZjwNi+1WV8QnYv2whODji3/4Nbz9HDRXjX1AlrrjWOsuGZvg1kYMfANOJZ9DqQ7F9UAoP/FPSiNSpPbAtguUtb1GSoy6XsWwYXqGq50rLRvSUez74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1mnlEeqs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 214E3C433F1;
+	Tue, 27 Feb 2024 14:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044145;
-	bh=0RDkk7bdLJRw9Humqx+lEbLmEzaUPeqls0A3ZH3BCQA=;
+	s=korg; t=1709043832;
+	bh=ulsqBydEp96SgZrZTqtqlxIDIjYnaTJM4Kdz0JzfZLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jYv0to5f2fpfgAs6IS/Pq1+DqqqXsArXV1a1JwcG66BLVLJa15x7p8K/LcUoXyF/J
-	 oQKuNGpR9peEB3mp0Txk4F8s9hVv+83skk5hPNvU/zFSh1s3FzjUXh2HSSpkPF/7uU
-	 cAkjcRPaAE6TXT7UyNKtj1iEh/Zid02zUbGFO80o=
+	b=1mnlEeqsxx9M+exCfi61RLQmc97zuUaDXABMmYNH7JMZmsUptSM16jvaP5TvuEHE+
+	 VnKnqEy09yDNDJ/tibT4BTNNO6Z80g5D94gQu3vBNP1kJs1w8Mk7hWvsdUc9deO5UE
+	 2z7/Y/HEL9U+9Q06TiaV0DzVbWpXhE63ZCGBibIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 079/122] gtp: fix use-after-free and null-ptr-deref in gtp_genl_dump_pdp()
+	Mats Kronberg <kronberg@nsc.liu.se>,
+	Daniel Vacek <neelx@redhat.com>,
+	Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 5.4 53/84] IB/hfi1: Fix sdma.h tx->num_descs off-by-one error
 Date: Tue, 27 Feb 2024 14:27:20 +0100
-Message-ID: <20240227131601.290702458@linuxfoundation.org>
+Message-ID: <20240227131554.597142440@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,102 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Daniel Vacek <neelx@redhat.com>
 
-commit 136cfaca22567a03bbb3bf53a43d8cb5748b80ec upstream.
+commit e6f57c6881916df39db7d95981a8ad2b9c3458d6 upstream.
 
-The gtp_net_ops pernet operations structure for the subsystem must be
-registered before registering the generic netlink family.
+Unfortunately the commit `fd8958efe877` introduced another error
+causing the `descs` array to overflow. This reults in further crashes
+easily reproducible by `sendmsg` system call.
 
-Syzkaller hit 'general protection fault in gtp_genl_dump_pdp' bug:
+[ 1080.836473] general protection fault, probably for non-canonical address 0x400300015528b00a: 0000 [#1] PREEMPT SMP PTI
+[ 1080.869326] RIP: 0010:hfi1_ipoib_build_ib_tx_headers.constprop.0+0xe1/0x2b0 [hfi1]
+--
+[ 1080.974535] Call Trace:
+[ 1080.976990]  <TASK>
+[ 1081.021929]  hfi1_ipoib_send_dma_common+0x7a/0x2e0 [hfi1]
+[ 1081.027364]  hfi1_ipoib_send_dma_list+0x62/0x270 [hfi1]
+[ 1081.032633]  hfi1_ipoib_send+0x112/0x300 [hfi1]
+[ 1081.042001]  ipoib_start_xmit+0x2a9/0x2d0 [ib_ipoib]
+[ 1081.046978]  dev_hard_start_xmit+0xc4/0x210
+--
+[ 1081.148347]  __sys_sendmsg+0x59/0xa0
 
-general protection fault, probably for non-canonical address
-0xdffffc0000000002: 0000 [#1] PREEMPT SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
-CPU: 1 PID: 5826 Comm: gtp Not tainted 6.8.0-rc3-std-def-alt1 #1
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.0-alt1 04/01/2014
-RIP: 0010:gtp_genl_dump_pdp+0x1be/0x800 [gtp]
-Code: c6 89 c6 e8 64 e9 86 df 58 45 85 f6 0f 85 4e 04 00 00 e8 c5 ee 86
-      df 48 8b 54 24 18 48 b8 00 00 00 00 00 fc ff df 48 c1 ea 03 <80>
-      3c 02 00 0f 85 de 05 00 00 48 8b 44 24 18 4c 8b 30 4c 39 f0 74
-RSP: 0018:ffff888014107220 EFLAGS: 00010202
-RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: 0000000000000002 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-R13: ffff88800fcda588 R14: 0000000000000001 R15: 0000000000000000
-FS:  00007f1be4eb05c0(0000) GS:ffff88806ce80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f1be4e766cf CR3: 000000000c33e000 CR4: 0000000000750ef0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? show_regs+0x90/0xa0
- ? die_addr+0x50/0xd0
- ? exc_general_protection+0x148/0x220
- ? asm_exc_general_protection+0x22/0x30
- ? gtp_genl_dump_pdp+0x1be/0x800 [gtp]
- ? __alloc_skb+0x1dd/0x350
- ? __pfx___alloc_skb+0x10/0x10
- genl_dumpit+0x11d/0x230
- netlink_dump+0x5b9/0xce0
- ? lockdep_hardirqs_on_prepare+0x253/0x430
- ? __pfx_netlink_dump+0x10/0x10
- ? kasan_save_track+0x10/0x40
- ? __kasan_kmalloc+0x9b/0xa0
- ? genl_start+0x675/0x970
- __netlink_dump_start+0x6fc/0x9f0
- genl_family_rcv_msg_dumpit+0x1bb/0x2d0
- ? __pfx_genl_family_rcv_msg_dumpit+0x10/0x10
- ? genl_op_from_small+0x2a/0x440
- ? cap_capable+0x1d0/0x240
- ? __pfx_genl_start+0x10/0x10
- ? __pfx_genl_dumpit+0x10/0x10
- ? __pfx_genl_done+0x10/0x10
- ? security_capable+0x9d/0xe0
+crash> ipoib_txreq 0xffff9cfeba229f00
+struct ipoib_txreq {
+  txreq = {
+    list = {
+      next = 0xffff9cfeba229f00,
+      prev = 0xffff9cfeba229f00
+    },
+    descp = 0xffff9cfeba229f40,
+    coalesce_buf = 0x0,
+    wait = 0xffff9cfea4e69a48,
+    complete = 0xffffffffc0fe0760 <hfi1_ipoib_sdma_complete>,
+    packet_len = 0x46d,
+    tlen = 0x0,
+    num_desc = 0x0,
+    desc_limit = 0x6,
+    next_descq_idx = 0x45c,
+    coalesce_idx = 0x0,
+    flags = 0x0,
+    descs = {{
+        qw = {0x8024000120dffb00, 0x4}  # SDMA_DESC0_FIRST_DESC_FLAG (bit 63)
+      }, {
+        qw = {  0x3800014231b108, 0x4}
+      }, {
+        qw = { 0x310000e4ee0fcf0, 0x8}
+      }, {
+        qw = {  0x3000012e9f8000, 0x8}
+      }, {
+        qw = {  0x59000dfb9d0000, 0x8}
+      }, {
+        qw = {  0x78000e02e40000, 0x8}
+      }}
+  },
+  sdma_hdr =  0x400300015528b000,  <<< invalid pointer in the tx request structure
+  sdma_status = 0x0,                   SDMA_DESC0_LAST_DESC_FLAG (bit 62)
+  complete = 0x0,
+  priv = 0x0,
+  txq = 0xffff9cfea4e69880,
+  skb = 0xffff9d099809f400
+}
 
+If an SDMA send consists of exactly 6 descriptors and requires dword
+padding (in the 7th descriptor), the sdma_txreq descriptor array is not
+properly expanded and the packet will overflow into the container
+structure. This results in a panic when the send completion runs. The
+exact panic varies depending on what elements of the container structure
+get corrupted. The fix is to use the correct expression in
+_pad_sdma_tx_descs() to test the need to expand the descriptor array.
+
+With this patch the crashes are no longer reproducible and the machine is
+stable.
+
+Fixes: fd8958efe877 ("IB/hfi1: Fix sdma.h tx->num_descs off-by-one errors")
 Cc: stable@vger.kernel.org
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Fixes: 459aa660eb1d ("gtp: add initial driver for datapath of GPRS Tunneling Protocol (GTP-U)")
-Link: https://lore.kernel.org/r/20240214162733.34214-1-kovalev@altlinux.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Mats Kronberg <kronberg@nsc.liu.se>
+Tested-by: Mats Kronberg <kronberg@nsc.liu.se>
+Signed-off-by: Daniel Vacek <neelx@redhat.com>
+Link: https://lore.kernel.org/r/20240201081009.1109442-1-neelx@redhat.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/gtp.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/infiniband/hw/hfi1/sdma.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/gtp.c
-+++ b/drivers/net/gtp.c
-@@ -1410,20 +1410,20 @@ static int __init gtp_init(void)
- 	if (err < 0)
- 		goto error_out;
+--- a/drivers/infiniband/hw/hfi1/sdma.c
++++ b/drivers/infiniband/hw/hfi1/sdma.c
+@@ -3203,7 +3203,7 @@ int _pad_sdma_tx_descs(struct hfi1_devda
+ {
+ 	int rval = 0;
  
--	err = genl_register_family(&gtp_genl_family);
-+	err = register_pernet_subsys(&gtp_net_ops);
- 	if (err < 0)
- 		goto unreg_rtnl_link;
- 
--	err = register_pernet_subsys(&gtp_net_ops);
-+	err = genl_register_family(&gtp_genl_family);
- 	if (err < 0)
--		goto unreg_genl_family;
-+		goto unreg_pernet_subsys;
- 
- 	pr_info("GTP module loaded (pdp ctx size %zd bytes)\n",
- 		sizeof(struct pdp_ctx));
- 	return 0;
- 
--unreg_genl_family:
--	genl_unregister_family(&gtp_genl_family);
-+unreg_pernet_subsys:
-+	unregister_pernet_subsys(&gtp_net_ops);
- unreg_rtnl_link:
- 	rtnl_link_unregister(&gtp_link_ops);
- error_out:
+-	if ((unlikely(tx->num_desc + 1 == tx->desc_limit))) {
++	if ((unlikely(tx->num_desc == tx->desc_limit))) {
+ 		rval = _extend_sdma_tx_descs(dd, tx);
+ 		if (rval) {
+ 			__sdma_txclean(dd, tx);
 
 
 
