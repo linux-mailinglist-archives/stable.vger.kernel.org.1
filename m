@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-24214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 179CB869331
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:42:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 784A58693E8
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4B6828B44F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:42:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 197D41F21948
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F6013B79F;
-	Tue, 27 Feb 2024 13:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5CBA141988;
+	Tue, 27 Feb 2024 13:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bj0aqvop"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oPd6fWUS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51A2A13AA55;
-	Tue, 27 Feb 2024 13:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94CAC13AA2F;
+	Tue, 27 Feb 2024 13:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041350; cv=none; b=BBIZf5dcOYrh0bTSg9DiBIoCwQChE6UzqpXG6uVUyWP4iVpVQHn0/adugA77ygyrmQB9Iemr+zn9KV8MIjHuIskX6ZLsPQdu5crihYE7P/7ZiZW7yL+k265LTYQvtJiZjNLoe+a03NddQuecrWLT/LwaHf+tbvUqrfvaAAPXpGM=
+	t=1709041657; cv=none; b=gaGo7HL0UZU1bTspk5zynKXCk42wtE/i7WpO/oSBOdRM+40JLIMmNGztMVGJeSabdj9I45WbsJs5XDuRZRisFGzSmXOkNb0YOryzBjx97+UHreezPbGhRw3Tcf8/SHT85taYKduRKNBBVIaYfsNykzANgpwYnLXxarJdc6E65Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041350; c=relaxed/simple;
-	bh=xxMvpZ8rOhxo94DDDPaJob/PysbYlM5QyrATDmwIcGI=;
+	s=arc-20240116; t=1709041657; c=relaxed/simple;
+	bh=2okAAKDXytrdMqR+UlYGyazJkTSRG2pmr9Ww47lXm7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=grrUB5rGLyP0/0KpdkQrd/2OOWwC11DdqJzXr0TSiTGJJ+uTWCQ61C/r01n0zRe3RNxL0HBJKRaWJFRIjaXqL5gcr0XDAuoGFoKx8S66zvgJWpnGDQKU3VVqmGQgJtsi7r19kxWqZnh9UWlYG7Zj/Q7w8PhtUPlsLyDkj2MKxQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bj0aqvop; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3A1BC433C7;
-	Tue, 27 Feb 2024 13:42:29 +0000 (UTC)
+	 MIME-Version; b=sZa58kJVZQfDPz5wnKbgWQBpH/XBADvrGzUe5CNbMy1rn7vDJoyu6MfWJuEnAKQlvpe2YmdDLSEYJM9+FDALC/+HkyXLk0OFFQqtRGh/I7CRxSJGgsoM2M1Y32Ca9DH+LfXbw5lybqvJ1DP0zWzthR9u6S9BxK9O/PvnkWgeXiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oPd6fWUS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 221F5C43390;
+	Tue, 27 Feb 2024 13:47:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041350;
-	bh=xxMvpZ8rOhxo94DDDPaJob/PysbYlM5QyrATDmwIcGI=;
+	s=korg; t=1709041657;
+	bh=2okAAKDXytrdMqR+UlYGyazJkTSRG2pmr9Ww47lXm7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bj0aqvopS890ik4cRX5Ho/Ez1+2ZeSCtDXipV9xCOkmz06ns9kcPDdfycdUX/FTfU
-	 0yFdyKeDpCK/1q+K1jgdkoaL9Zu7/XrDBKgKPHPkaDYwkiQFxhL/CvPR7O2nwDZehh
-	 dFQ6Ica35tHDHHvZBrCkXEmH23KzsqDrHX0neGpo=
+	b=oPd6fWUSqt9sYkKex7BJRLNgIhuTdgs7A/M0wEQmo2qFoDhRo8OJzKHtfNhsYCTdC
+	 /VPOoSfKJDH9rxKhB332gmQlZiIryIpXF9L5lknGS3CbU5+t+GdcGikvhoHnXyOsDC
+	 wiZh0C0aj7rcpzkBvDdYlK9KPA0h3t2aCt704ehU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
-	Sven Schnelle <svens@stackframe.org>,
-	John David Anglin <dave.anglin@bell.net>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	David Laight <David.Laight@ACULAB.COM>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 278/334] parisc: Fix stack unwinder
+Subject: [PATCH 6.6 025/299] cifs: helper function to check replayable error codes
 Date: Tue, 27 Feb 2024 14:22:16 +0100
-Message-ID: <20240227131639.965122617@linuxfoundation.org>
+Message-ID: <20240227131626.636225766@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,92 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit 882a2a724ee964c1ebe7268a91d5c8c8ddc796bf ]
+[ Upstream commit 64cc377b7628b81ffdbdb1c6bacfba895dcac3f8 ]
 
-Debugging shows a large number of unaligned access traps in the unwinder
-code. Code analysis reveals a number of issues with this code:
+The code to check for replay is not just -EAGAIN. In some
+cases, the send request or receive response may result in
+network errors, which we're now mapping to -ECONNABORTED.
 
-- handle_interruption is passed twice through
-  dereference_kernel_function_descriptor()
-- ret_from_kernel_thread, syscall_exit, intr_return,
-  _switch_to_ret, and _call_on_stack are passed through
-  dereference_kernel_function_descriptor() even though they are
-  not declared as function pointers.
+This change introduces a helper function which checks
+if the error returned in one of the above two errors.
+And all checks for replays will now use this helper.
 
-To fix the problems, drop one of the calls to
-dereference_kernel_function_descriptor() for handle_interruption,
-and compare the other pointers directly.
-
-Fixes: 6414b30b39f9 ("parisc: unwind: Avoid missing prototype warning for handle_interruption()")
-Fixes: 8e0ba125c2bf ("parisc/unwind: fix unwinder when CONFIG_64BIT is enabled")
-Cc: Helge Deller <deller@gmx.de>
-Cc: Sven Schnelle <svens@stackframe.org>
-Cc: John David Anglin <dave.anglin@bell.net>
-Cc: Charlie Jenkins <charlie@rivosinc.com>
-Cc: David Laight <David.Laight@ACULAB.COM>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/unwind.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ fs/smb/client/cached_dir.c | 1 +
+ fs/smb/client/cifsglob.h   | 7 +++++++
+ 2 files changed, 8 insertions(+)
 
-diff --git a/arch/parisc/kernel/unwind.c b/arch/parisc/kernel/unwind.c
-index 27ae40a443b80..f7e0fee5ee55a 100644
---- a/arch/parisc/kernel/unwind.c
-+++ b/arch/parisc/kernel/unwind.c
-@@ -228,10 +228,8 @@ static int unwind_special(struct unwind_frame_info *info, unsigned long pc, int
- #ifdef CONFIG_IRQSTACKS
- 	extern void * const _call_on_stack;
- #endif /* CONFIG_IRQSTACKS */
--	void *ptr;
- 
--	ptr = dereference_kernel_function_descriptor(&handle_interruption);
--	if (pc_is_kernel_fn(pc, ptr)) {
-+	if (pc_is_kernel_fn(pc, handle_interruption)) {
- 		struct pt_regs *regs = (struct pt_regs *)(info->sp - frame_size - PT_SZ_ALGN);
- 		dbg("Unwinding through handle_interruption()\n");
- 		info->prev_sp = regs->gr[30];
-@@ -239,13 +237,13 @@ static int unwind_special(struct unwind_frame_info *info, unsigned long pc, int
- 		return 1;
+diff --git a/fs/smb/client/cached_dir.c b/fs/smb/client/cached_dir.c
+index 9718926205047..5730c65ffb40d 100644
+--- a/fs/smb/client/cached_dir.c
++++ b/fs/smb/client/cached_dir.c
+@@ -367,6 +367,7 @@ int open_cached_dir(unsigned int xid, struct cifs_tcon *tcon,
+ 		atomic_inc(&tcon->num_remote_opens);
  	}
+ 	kfree(utf16_path);
++
+ 	return rc;
+ }
  
--	if (pc_is_kernel_fn(pc, ret_from_kernel_thread) ||
--	    pc_is_kernel_fn(pc, syscall_exit)) {
-+	if (pc == (unsigned long)&ret_from_kernel_thread ||
-+	    pc == (unsigned long)&syscall_exit) {
- 		info->prev_sp = info->prev_ip = 0;
- 		return 1;
- 	}
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index 942e6ece56b1a..f794b16095e43 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -1820,6 +1820,13 @@ static inline bool is_retryable_error(int error)
+ 	return false;
+ }
  
--	if (pc_is_kernel_fn(pc, intr_return)) {
-+	if (pc == (unsigned long)&intr_return) {
- 		struct pt_regs *regs;
++static inline bool is_replayable_error(int error)
++{
++	if (error == -EAGAIN || error == -ECONNABORTED)
++		return true;
++	return false;
++}
++
  
- 		dbg("Found intr_return()\n");
-@@ -257,14 +255,14 @@ static int unwind_special(struct unwind_frame_info *info, unsigned long pc, int
- 	}
- 
- 	if (pc_is_kernel_fn(pc, _switch_to) ||
--	    pc_is_kernel_fn(pc, _switch_to_ret)) {
-+	    pc == (unsigned long)&_switch_to_ret) {
- 		info->prev_sp = info->sp - CALLEE_SAVE_FRAME_SIZE;
- 		info->prev_ip = *(unsigned long *)(info->prev_sp - RP_OFFSET);
- 		return 1;
- 	}
- 
- #ifdef CONFIG_IRQSTACKS
--	if (pc_is_kernel_fn(pc, _call_on_stack)) {
-+	if (pc == (unsigned long)&_call_on_stack) {
- 		info->prev_sp = *(unsigned long *)(info->sp - FRAME_SIZE - REG_SZ);
- 		info->prev_ip = *(unsigned long *)(info->sp - FRAME_SIZE - RP_OFFSET);
- 		return 1;
+ /* cifs_get_writable_file() flags */
+ #define FIND_WR_ANY         0
 -- 
 2.43.0
 
