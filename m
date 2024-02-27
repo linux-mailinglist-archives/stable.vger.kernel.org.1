@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-24847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20C01869686
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:12:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91A408697E9
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:26:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C92991F2E508
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:12:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41F24B2CB5D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:25:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17FDD13B78F;
-	Tue, 27 Feb 2024 14:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF8C1420A0;
+	Tue, 27 Feb 2024 14:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hMT+q7Yx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0oQ+jCCZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF4813AA4C;
-	Tue, 27 Feb 2024 14:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA4513B2B4;
+	Tue, 27 Feb 2024 14:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043151; cv=none; b=X9Ps11h1rDCzjf+XTb+0v14w5MRPL2HnYE5V3Kh1fYqzpYgfZeEclgD3nv5iLlycweEW2hNUY13YK5VcQii+LHXXTPScxjq7i8uwwtHtB1mo2WWKgRJKyByqcSiaIMdbUXOjVrY/QDx6Szy/930Pbn5vKFYbnMOUm9tt8kAnZzI=
+	t=1709043898; cv=none; b=hzn/C5i4tSEw72YF3EV4z3yfQRGnteCbISDZ0VF8zei/5TkYuYA64IV2W+bIBgn5UJ5pFpIuy1bK44RIMOt0tPo9EHfUst5zjqYZMmTlg1kehrMbn9CoH9Cwgdo2OW8tfPSBjsTcEy85W93TSPMB/dpxXXr2mC49BuzN3R15kGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043151; c=relaxed/simple;
-	bh=5HSQGs+808w0nUj7DnnTWxL5kVuueXngzgS+z5eZNBg=;
+	s=arc-20240116; t=1709043898; c=relaxed/simple;
+	bh=YzJs7HZwww/GDAAEpObUi44Vt0iUuksHfWn7zeUyHZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e0P8LFIjFShLKedNHqX6ObD1cQBnUm2Yucinxw/nsXnmDDxmH8/MQCNpmJDGaTPgtdx6V2XC4vE7ak1j8GD4rAQtWZzzZJRBfdBiUVQ3+O/AsHeMf6JuN84IA7INal79Fl7VvF4S0g6IXXXcr0bjhSoDc/pl+YSeV+Yd+/wGKro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hMT+q7Yx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57EADC43390;
-	Tue, 27 Feb 2024 14:12:31 +0000 (UTC)
+	 MIME-Version; b=GcfGx3zQIkexNsJqUm0K8rI0DtVw1Rl1UBlfNxaAuHrXNEKgg41g4S9chmCCPS8DuICvcGB8Gse4zRljSpZyfvMsFCouNq8N/ARJneEK/vqd10mpvXC97non95oaCIS0Xjk7b5jIFXqq0dp3mjqvQGeDz0apggmRg0wzg5SCkcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0oQ+jCCZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90486C433F1;
+	Tue, 27 Feb 2024 14:24:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043151;
-	bh=5HSQGs+808w0nUj7DnnTWxL5kVuueXngzgS+z5eZNBg=;
+	s=korg; t=1709043897;
+	bh=YzJs7HZwww/GDAAEpObUi44Vt0iUuksHfWn7zeUyHZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hMT+q7YxhekluiQEHx7Ek4Gk+LUUNBD5YkcyvGFFolScchmKBYsfIgPv4dPmwfWcJ
-	 9ikYJIps+b8ByqQhWl1Iw+vUjlTyhPYlulFeDzPCbtPydKbmaWkHsN8IyGZh3g1DyL
-	 CMUVdOFnU5C3RkPOwPGtDl/oeo9cLiGpJk4YwoII=
+	b=0oQ+jCCZ0aAqXgZ5HhZdXilZ32mZHnOZShmcBRQ3El/elO3UBg7MSUPX9ropIsWfo
+	 /h/GSdThySpjJGobOjwqJGZxY855L5WndlWRDurJ9dMOd59sWXJzZ/xWSJwUEWMA6T
+	 AW1Wm3Ip91b+rYEivnvsew83Be0QlntCw4xxecIk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>
-Subject: [PATCH 5.15 245/245] netfilter: nf_tables: cant schedule in nft_chain_validate
+	Fei Yang <fei.yang@intel.com>,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 46/84] x86/alternatives: Disable KASAN in apply_alternatives()
 Date: Tue, 27 Feb 2024 14:27:13 +0100
-Message-ID: <20240227131623.115577535@linuxfoundation.org>
+Message-ID: <20240227131554.369226302@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +65,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-commit 314c82841602a111c04a7210c21dc77e0d560242 upstream.
+[ Upstream commit d35652a5fc9944784f6f50a5c979518ff8dacf61 ]
 
-Can be called via nft set element list iteration, which may acquire
-rcu and/or bh read lock (depends on set type).
+Fei has reported that KASAN triggers during apply_alternatives() on
+a 5-level paging machine:
 
-BUG: sleeping function called from invalid context at net/netfilter/nf_tables_api.c:3353
-in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 1232, name: nft
-preempt_count: 0, expected: 0
-RCU nest depth: 1, expected: 0
-2 locks held by nft/1232:
- #0: ffff8881180e3ea8 (&nft_net->commit_mutex){+.+.}-{3:3}, at: nf_tables_valid_genid
- #1: ffffffff83f5f540 (rcu_read_lock){....}-{1:2}, at: rcu_lock_acquire
-Call Trace:
- nft_chain_validate
- nft_lookup_validate_setelem
- nft_pipapo_walk
- nft_lookup_validate
- nft_chain_validate
- nft_immediate_validate
- nft_chain_validate
- nf_tables_validate
- nf_tables_abort
+	BUG: KASAN: out-of-bounds in rcu_is_watching()
+	Read of size 4 at addr ff110003ee6419a0 by task swapper/0/0
+	...
+	__asan_load4()
+	rcu_is_watching()
+	trace_hardirqs_on()
+	text_poke_early()
+	apply_alternatives()
+	...
 
-No choice but to move it to nf_tables_validate().
+On machines with 5-level paging, cpu_feature_enabled(X86_FEATURE_LA57)
+gets patched. It includes KASAN code, where KASAN_SHADOW_START depends on
+__VIRTUAL_MASK_SHIFT, which is defined with cpu_feature_enabled().
 
-Fixes: 81ea01066741 ("netfilter: nf_tables: add rescheduling points during loop detection walks")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+KASAN gets confused when apply_alternatives() patches the
+KASAN_SHADOW_START users. A test patch that makes KASAN_SHADOW_START
+static, by replacing __VIRTUAL_MASK_SHIFT with 56, works around the issue.
+
+Fix it for real by disabling KASAN while the kernel is patching alternatives.
+
+[ mingo: updated the changelog ]
+
+Fixes: 6657fca06e3f ("x86/mm: Allow to boot without LA57 if CONFIG_X86_5LEVEL=y")
+Reported-by: Fei Yang <fei.yang@intel.com>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231012100424.1456-1-kirill.shutemov@linux.intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kernel/alternative.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -3443,8 +3443,6 @@ int nft_chain_validate(const struct nft_
- 			if (err < 0)
- 				return err;
- 		}
--
--		cond_resched();
- 	}
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index 15bad8d598949..faae8a1856709 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -374,6 +374,17 @@ void __init_or_module noinline apply_alternatives(struct alt_instr *start,
+ 	u8 insn_buff[MAX_PATCH_LEN];
  
- 	return 0;
-@@ -3468,6 +3466,8 @@ static int nft_table_validate(struct net
- 		err = nft_chain_validate(&ctx, chain);
- 		if (err < 0)
- 			return err;
+ 	DPRINTK("alt table %px, -> %px", start, end);
 +
-+		cond_resched();
- 	}
++	/*
++	 * In the case CONFIG_X86_5LEVEL=y, KASAN_SHADOW_START is defined using
++	 * cpu_feature_enabled(X86_FEATURE_LA57) and is therefore patched here.
++	 * During the process, KASAN becomes confused seeing partial LA57
++	 * conversion and triggers a false-positive out-of-bound report.
++	 *
++	 * Disable KASAN until the patching is complete.
++	 */
++	kasan_disable_current();
++
+ 	/*
+ 	 * The scan order should be from start to end. A later scanned
+ 	 * alternative code can overwrite previously scanned alternative code.
+@@ -434,6 +445,8 @@ void __init_or_module noinline apply_alternatives(struct alt_instr *start,
  
- 	return 0;
+ 		text_poke_early(instr, insn_buff, insn_buff_sz);
+ 	}
++
++	kasan_enable_current();
+ }
+ 
+ #ifdef CONFIG_SMP
+-- 
+2.43.0
+
 
 
 
