@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-24268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADD2486938E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:46:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02BB186970C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:17:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 304AC290500
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:46:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8881728758A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:17:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3B7145FE4;
-	Tue, 27 Feb 2024 13:45:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 096C714533E;
+	Tue, 27 Feb 2024 14:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1DqxHV5I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rpsuYOFm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098D713DB87;
-	Tue, 27 Feb 2024 13:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB38C145337;
+	Tue, 27 Feb 2024 14:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041507; cv=none; b=cDiXy6+wNz8s0ceMAoUAyUbp721jbuOLXWdopnjo6vQ7H9jz86+rR0dyYD7HADwk9yXECtRQswJMzzURC0fKqAsZQcn+F9F2QsH+aoEMV6fzFOtsU0e0NxlzL5z8yVGW9OBPFWJ8Hy7fJNsUTwEdUaqs46ZIaBx7X/uAmVtJero=
+	t=1709043450; cv=none; b=fTl7qL68isNa41OYI7WI81r8G3VUYbP/e/q80L/PBu7uZiWAY9g+0pqxtly6XElIwo38F3xjlMifgMSR5y32U77z+HJGa2siwhHVnirrD1ivs825nX/xxtYCa2hq+jyC5hIuGi3LM5TFTmXa6G1awEqrePnytp1Vj9k9I8Tkv/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041507; c=relaxed/simple;
-	bh=q1+rtq2EyH3W4ldEvEP/bwVoFf2syBFuGvvydgWFgFU=;
+	s=arc-20240116; t=1709043450; c=relaxed/simple;
+	bh=Dtuu8Qz3YVAPkIk1XgfvxaicklzIVCldwOX79diXO0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ErH6Nt2GyU9n76GBz0OkR250HIVLq7DYwErHWxLxbgRzN8kdTwYuLkuepS8e26TDycu4edM7Xd9hCd2SWTDogv3/x7LVn+5k+oXoseaFUD/C/vCDTEYnhAtfbedhjoBVDMHYfSd+nhMflZOqhmhAZVUexLT2NEexDe5RPCFZDMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1DqxHV5I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E722C43330;
-	Tue, 27 Feb 2024 13:45:06 +0000 (UTC)
+	 MIME-Version; b=rdojFA+tiXEzjCEoCmdlImrj9bi/+gGcQLWkIePQFL6qFkJU1LD44fdpfqrNkuNpAO6eslkwmb/WPAvomKcjbSevhGZYLKHy+39x9563w2HeYNk5UHLGeiOc3JWJ1jQD1p+bGgePLrWJSG4ef3mdsv2Ic28T+flaeIHagTMbGyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpsuYOFm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C0ACC433F1;
+	Tue, 27 Feb 2024 14:17:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041506;
-	bh=q1+rtq2EyH3W4ldEvEP/bwVoFf2syBFuGvvydgWFgFU=;
+	s=korg; t=1709043450;
+	bh=Dtuu8Qz3YVAPkIk1XgfvxaicklzIVCldwOX79diXO0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1DqxHV5ITsnFSxrfMV/IPgzfFxlC+yLAbEPBEP4h2zZh8tNkS5iNGf5QPvlV9mzq3
-	 eUD8p+ocOUxgwc+s4Nbzt/n/nxD2yEncOLFUXdGh6h/Faz8+HEHPuvr3e7Q6FsGJJJ
-	 J4LiSQSOcCLFp8TYr2J0GF8nWHgqHOWASNY09EPA=
+	b=rpsuYOFmgJ/cqAlXhESxCyEXA9KxFqJp9RPLUNy8Gimi5hncoUpM8tg9iD3dAtYk5
+	 UL8LFEB9/x8E8b8nW8gzmrSrHERV2s8bI+rDofbsu2tAe6nio5brb+mFxH6thrl3TH
+	 5xuJUtWIaB8oaGtIVEm14zvCgsI7zJjkMWP0Iom4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mats Kronberg <kronberg@nsc.liu.se>,
-	Daniel Vacek <neelx@redhat.com>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 4.19 27/52] IB/hfi1: Fix sdma.h tx->num_descs off-by-one error
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.1 113/195] Revert "x86/alternative: Make custom return thunk unconditional"
 Date: Tue, 27 Feb 2024 14:26:14 +0100
-Message-ID: <20240227131549.423170338@linuxfoundation.org>
+Message-ID: <20240227131614.193956473@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
-References: <20240227131548.514622258@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +60,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Vacek <neelx@redhat.com>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-commit e6f57c6881916df39db7d95981a8ad2b9c3458d6 upstream.
+This reverts commit 53ebbe1c8c02aa7b7f072dd2f96bca4faa1daa59.
 
-Unfortunately the commit `fd8958efe877` introduced another error
-causing the `descs` array to overflow. This reults in further crashes
-easily reproducible by `sendmsg` system call.
+Revert the backport of upstream commit:
 
-[ 1080.836473] general protection fault, probably for non-canonical address 0x400300015528b00a: 0000 [#1] PREEMPT SMP PTI
-[ 1080.869326] RIP: 0010:hfi1_ipoib_build_ib_tx_headers.constprop.0+0xe1/0x2b0 [hfi1]
---
-[ 1080.974535] Call Trace:
-[ 1080.976990]  <TASK>
-[ 1081.021929]  hfi1_ipoib_send_dma_common+0x7a/0x2e0 [hfi1]
-[ 1081.027364]  hfi1_ipoib_send_dma_list+0x62/0x270 [hfi1]
-[ 1081.032633]  hfi1_ipoib_send+0x112/0x300 [hfi1]
-[ 1081.042001]  ipoib_start_xmit+0x2a9/0x2d0 [ib_ipoib]
-[ 1081.046978]  dev_hard_start_xmit+0xc4/0x210
---
-[ 1081.148347]  __sys_sendmsg+0x59/0xa0
+  095b8303f383 ("x86/alternative: Make custom return thunk unconditional")
 
-crash> ipoib_txreq 0xffff9cfeba229f00
-struct ipoib_txreq {
-  txreq = {
-    list = {
-      next = 0xffff9cfeba229f00,
-      prev = 0xffff9cfeba229f00
-    },
-    descp = 0xffff9cfeba229f40,
-    coalesce_buf = 0x0,
-    wait = 0xffff9cfea4e69a48,
-    complete = 0xffffffffc0fe0760 <hfi1_ipoib_sdma_complete>,
-    packet_len = 0x46d,
-    tlen = 0x0,
-    num_desc = 0x0,
-    desc_limit = 0x6,
-    next_descq_idx = 0x45c,
-    coalesce_idx = 0x0,
-    flags = 0x0,
-    descs = {{
-        qw = {0x8024000120dffb00, 0x4}  # SDMA_DESC0_FIRST_DESC_FLAG (bit 63)
-      }, {
-        qw = {  0x3800014231b108, 0x4}
-      }, {
-        qw = { 0x310000e4ee0fcf0, 0x8}
-      }, {
-        qw = {  0x3000012e9f8000, 0x8}
-      }, {
-        qw = {  0x59000dfb9d0000, 0x8}
-      }, {
-        qw = {  0x78000e02e40000, 0x8}
-      }}
-  },
-  sdma_hdr =  0x400300015528b000,  <<< invalid pointer in the tx request structure
-  sdma_status = 0x0,                   SDMA_DESC0_LAST_DESC_FLAG (bit 62)
-  complete = 0x0,
-  priv = 0x0,
-  txq = 0xffff9cfea4e69880,
-  skb = 0xffff9d099809f400
-}
+in order to backport the full version now that
 
-If an SDMA send consists of exactly 6 descriptors and requires dword
-padding (in the 7th descriptor), the sdma_txreq descriptor array is not
-properly expanded and the packet will overflow into the container
-structure. This results in a panic when the send completion runs. The
-exact panic varies depending on what elements of the container structure
-get corrupted. The fix is to use the correct expression in
-_pad_sdma_tx_descs() to test the need to expand the descriptor array.
+  770ae1b70952 ("x86/returnthunk: Allow different return thunks")
 
-With this patch the crashes are no longer reproducible and the machine is
-stable.
+has been backported.
 
-Fixes: fd8958efe877 ("IB/hfi1: Fix sdma.h tx->num_descs off-by-one errors")
-Cc: stable@vger.kernel.org
-Reported-by: Mats Kronberg <kronberg@nsc.liu.se>
-Tested-by: Mats Kronberg <kronberg@nsc.liu.se>
-Signed-off-by: Daniel Vacek <neelx@redhat.com>
-Link: https://lore.kernel.org/r/20240201081009.1109442-1-neelx@redhat.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Revert it here so that the build breakage is kept at minimum.
+
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hfi1/sdma.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/nospec-branch.h |    4 ----
+ arch/x86/kernel/cpu/bugs.c           |    2 --
+ 2 files changed, 6 deletions(-)
 
---- a/drivers/infiniband/hw/hfi1/sdma.c
-+++ b/drivers/infiniband/hw/hfi1/sdma.c
-@@ -3202,7 +3202,7 @@ int _pad_sdma_tx_descs(struct hfi1_devda
- {
- 	int rval = 0;
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -205,11 +205,7 @@
+ typedef u8 retpoline_thunk_t[RETPOLINE_THUNK_SIZE];
+ extern retpoline_thunk_t __x86_indirect_thunk_array[];
  
--	if ((unlikely(tx->num_desc + 1 == tx->desc_limit))) {
-+	if ((unlikely(tx->num_desc == tx->desc_limit))) {
- 		rval = _extend_sdma_tx_descs(dd, tx);
- 		if (rval) {
- 			__sdma_txclean(dd, tx);
+-#ifdef CONFIG_RETHUNK
+ extern void __x86_return_thunk(void);
+-#else
+-static inline void __x86_return_thunk(void) {}
+-#endif
+ 
+ extern void retbleed_return_thunk(void);
+ extern void srso_return_thunk(void);
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -62,8 +62,6 @@ EXPORT_SYMBOL_GPL(x86_pred_cmd);
+ 
+ static DEFINE_MUTEX(spec_ctrl_mutex);
+ 
+-void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
+-
+ /* Update SPEC_CTRL MSR and its cached copy unconditionally */
+ static void update_spec_ctrl(u64 val)
+ {
 
 
 
