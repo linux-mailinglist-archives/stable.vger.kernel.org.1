@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-25006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1AF1869760
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:20:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A368869805
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:27:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DC4DB2A22B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:19:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2462BB22F3E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:27:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5357613EFE9;
-	Tue, 27 Feb 2024 14:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9416013F016;
+	Tue, 27 Feb 2024 14:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PUGCRMzj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JtOzEtVF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F3678B61;
-	Tue, 27 Feb 2024 14:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F5413DBBC;
+	Tue, 27 Feb 2024 14:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043594; cv=none; b=Hmf3BfLPWzfcV8PfTYiDkAV38/HIaZot0HkDYp17HcIVrfEaMNPdS17oJTfXCn7K68sEVb0+0Nb4fXrCpemFHKl/zBmjE0hPcUFNbMGlC9x6/a56CbjjLEQq1Uy4jLvoIV2oOOOD0gLeW7nCFs9jNvBy9uoj7zHJtfboeyd4sdg=
+	t=1709044031; cv=none; b=peq7Q0XI2BsmGtPvbDqjT9NTvZk8AK7LKVFuaF0o3mCdgbRoLB9YgD1d/TOlRbz0rQuGwSl4faCu/ySjpK8IINEQfqHObGtE0AuOHOFBhQ0yJUzuJNGIcPTwhPcdCLrU6R/JRTT3oAAXhw0CFkKEp7+MtNk541ukFybc5AJUAXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043594; c=relaxed/simple;
-	bh=YUTJ7xzCoaRiwCmMSjxZpuZB7/2fT85eWRnjT7qX6xI=;
+	s=arc-20240116; t=1709044031; c=relaxed/simple;
+	bh=GlNvMpbV3nSgOYn9cD043RxUB6frjAoya/mXRfIpeAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jaQQwR/LB7B9aQMT9bzioo/xG5Jl4CsW4W9lAqfLQ4epQYf4Aaehn82G/h6NcEi+hrSswYzlD/SA5LLdgrhAcvQPk1MDNfFAMzAZKvtY+/ZB1fm/GJKwXWo5KKUBzrHjKyTPBdCfNycz3Jx/omZyah/xJQRTybp8+7bwU8+CnVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PUGCRMzj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E91C433F1;
-	Tue, 27 Feb 2024 14:19:53 +0000 (UTC)
+	 MIME-Version; b=C0HOMy1iqtHoJDXSRc18BH3ChK9puegm5PkbxptL6c2pTYTYiMDcGZ9Salps1O7+NWzu+lR2S2he4W1rzxPA9klMu0+T5mLahW9SZLw1cvQYcIldy/cS6r+qbr9hvspf6ClojITGlaMoeyAg4k/zjN6AnxfPnLOdX7OTKy4PUP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JtOzEtVF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C578DC433C7;
+	Tue, 27 Feb 2024 14:27:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043594;
-	bh=YUTJ7xzCoaRiwCmMSjxZpuZB7/2fT85eWRnjT7qX6xI=;
+	s=korg; t=1709044031;
+	bh=GlNvMpbV3nSgOYn9cD043RxUB6frjAoya/mXRfIpeAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PUGCRMzjzWgYsmXf0oGQaE3Rfhl5F37CVWkDSu1+k6nE8veE10OZR9eB1Rl3BaaPS
-	 f5vwxfePsIJSdXsOa3wOmyZgn5yXQNBEGdVEzLW9NgPKyg/7K0NkjZnqC1rpZ+EBdS
-	 uM2wTjpQPmvUoXVnw8/k/xfq6fhglCZS9ULTfL1g=
+	b=JtOzEtVFIMIFigWlQYaaXQNCQ/xdG5X/cQUpgFqR0E9HJjS5kVR66hEtkS8HQFk1G
+	 /dzzM/H/g9yvjZDitMsVCRSvPQpwwJ/3Rs/WgXCs16RqCOXjmwUnYG0cqjQ4aY3k/a
+	 1RxDG9oXm/jUV3oL6gE8Er8SLRLK7psYSi5EpiGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	LiHonggang <honggangli@163.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Leon Romanovsky <leon@kernel.org>,
+	Andrew Bresticker <abrestic@rivosinc.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 136/195] RDMA/srpt: Support specifying the srpt_service_guid parameter
+Subject: [PATCH 5.10 036/122] efi: runtime: Fix potential overflow of soft-reserved region size
 Date: Tue, 27 Feb 2024 14:26:37 +0100
-Message-ID: <20240227131614.927652430@linuxfoundation.org>
+Message-ID: <20240227131559.887996435@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Andrew Bresticker <abrestic@rivosinc.com>
 
-[ Upstream commit fdfa083549de5d50ebf7f6811f33757781e838c0 ]
+[ Upstream commit de1034b38a346ef6be25fe8792f5d1e0684d5ff4 ]
 
-Make loading ib_srpt with this parameter set work. The current behavior is
-that setting that parameter while loading the ib_srpt kernel module
-triggers the following kernel crash:
+md_size will have been narrowed if we have >= 4GB worth of pages in a
+soft-reserved region.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-Call Trace:
- <TASK>
- parse_one+0x18c/0x1d0
- parse_args+0xe1/0x230
- load_module+0x8de/0xa60
- init_module_from_file+0x8b/0xd0
- idempotent_init_module+0x181/0x240
- __x64_sys_finit_module+0x5a/0xb0
- do_syscall_64+0x5f/0xe0
- entry_SYSCALL_64_after_hwframe+0x6e/0x76
-
-Cc: LiHonggang <honggangli@163.com>
-Reported-by: LiHonggang <honggangli@163.com>
-Fixes: a42d985bd5b2 ("ib_srpt: Initial SRP Target merge for v3.3-rc1")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20240205004207.17031-1-bvanassche@acm.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Andrew Bresticker <abrestic@rivosinc.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/srpt/ib_srpt.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/firmware/efi/arm-runtime.c   | 2 +-
+ drivers/firmware/efi/riscv-runtime.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/srpt/ib_srpt.c b/drivers/infiniband/ulp/srpt/ib_srpt.c
-index 25e799dba999e..4607d37b9224a 100644
---- a/drivers/infiniband/ulp/srpt/ib_srpt.c
-+++ b/drivers/infiniband/ulp/srpt/ib_srpt.c
-@@ -79,12 +79,16 @@ module_param(srpt_srq_size, int, 0444);
- MODULE_PARM_DESC(srpt_srq_size,
- 		 "Shared receive queue (SRQ) size.");
+diff --git a/drivers/firmware/efi/arm-runtime.c b/drivers/firmware/efi/arm-runtime.c
+index 3359ae2adf24b..9054c2852580d 100644
+--- a/drivers/firmware/efi/arm-runtime.c
++++ b/drivers/firmware/efi/arm-runtime.c
+@@ -107,7 +107,7 @@ static int __init arm_enable_runtime_services(void)
+ 		efi_memory_desc_t *md;
  
-+static int srpt_set_u64_x(const char *buffer, const struct kernel_param *kp)
-+{
-+	return kstrtou64(buffer, 16, (u64 *)kp->arg);
-+}
- static int srpt_get_u64_x(char *buffer, const struct kernel_param *kp)
- {
- 	return sprintf(buffer, "0x%016llx\n", *(u64 *)kp->arg);
- }
--module_param_call(srpt_service_guid, NULL, srpt_get_u64_x, &srpt_service_guid,
--		  0444);
-+module_param_call(srpt_service_guid, srpt_set_u64_x, srpt_get_u64_x,
-+		  &srpt_service_guid, 0444);
- MODULE_PARM_DESC(srpt_service_guid,
- 		 "Using this value for ioc_guid, id_ext, and cm_listen_id instead of using the node_guid of the first HCA.");
+ 		for_each_efi_memory_desc(md) {
+-			int md_size = md->num_pages << EFI_PAGE_SHIFT;
++			u64 md_size = md->num_pages << EFI_PAGE_SHIFT;
+ 			struct resource *res;
  
+ 			if (!(md->attribute & EFI_MEMORY_SP))
+diff --git a/drivers/firmware/efi/riscv-runtime.c b/drivers/firmware/efi/riscv-runtime.c
+index d28e715d2bcc8..6711e64eb0b16 100644
+--- a/drivers/firmware/efi/riscv-runtime.c
++++ b/drivers/firmware/efi/riscv-runtime.c
+@@ -85,7 +85,7 @@ static int __init riscv_enable_runtime_services(void)
+ 		efi_memory_desc_t *md;
+ 
+ 		for_each_efi_memory_desc(md) {
+-			int md_size = md->num_pages << EFI_PAGE_SHIFT;
++			u64 md_size = md->num_pages << EFI_PAGE_SHIFT;
+ 			struct resource *res;
+ 
+ 			if (!(md->attribute & EFI_MEMORY_SP))
 -- 
 2.43.0
 
