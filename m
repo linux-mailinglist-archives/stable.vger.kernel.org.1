@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-24717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 479B68695F6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D0588696A7
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:14:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00398289123
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96789B28FFC
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:14:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D872D145345;
-	Tue, 27 Feb 2024 14:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92EAD145328;
+	Tue, 27 Feb 2024 14:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y60Lt8Xl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqtVvOAo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97838145322;
-	Tue, 27 Feb 2024 14:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF951448D7;
+	Tue, 27 Feb 2024 14:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042795; cv=none; b=f3TGO8MRhmiVtW3W/KNrGQAg4uKxrc8lc6dD/eZ1N5QSclY/ciIVJiD9Gpz3SX1FEga0rv2V17s/kxMYhJ/IqbeGVRkg8Ws1xlVZXKbS+FtQuiq9wWVc74lV40xhFLYO4DsduE0AsaWBDsDra32gu6R/EsWrH4EFx7mF7cJzdBY=
+	t=1709043194; cv=none; b=BwtZ4jzenKh0/AR0FwZq3PtUtx/9yhfVOoKVBYFa8H7eLOCE1OQiAvjcj95cAi9K+t0/JI3VHoCZbDMcPRQ+egO6c0IlTXrb6P9LJJB6a9PQtSI0mHArYC9XvSP0jqbFIMRiOfUY6WGEpcJHSEIrZAZ5Lw0EJbMJ3cWOH/JhO30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042795; c=relaxed/simple;
-	bh=Efb71bH+Q2/tm6Ztb2J/mW7FxzO7/iTcVkszvC3mF8o=;
+	s=arc-20240116; t=1709043194; c=relaxed/simple;
+	bh=S1AQO6PtNN58ohKfLgZcCN9xMzQAildHzfDiacNK59c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PJfu5asL/mScf6veRzkeauC8AZfdBjyM7kSLJ0jKiB0k1GdjRxhX7LXqF+kgZKfAsLKhTJg2ZDlqCfPM9ZsW3Y+Q1RuAdWoe2k/S0j0iHv4GO4QsoGVIHSbHhXe99eF1oB7ln1IDbTnDgQ2HjvTJonvJ2Ej77S9fWPbpApcnfC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y60Lt8Xl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 252DEC433F1;
-	Tue, 27 Feb 2024 14:06:34 +0000 (UTC)
+	 MIME-Version; b=b0Fvc6tmB0KLSl9NxZEh/yJo4v5ZpGqrdeFo3e5fdJUqzfa+d4K8tU6ArERAwzWsXRRACUA3mibFOpgedTht4sITvsNaEdJiQGmwF4qkngvvAuaJKSO43jKkGXssVHr11oqQ3yyck5pEjlWxiysyyCKhdxP8uaxZRNW/RC2dpvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VqtVvOAo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9012C433C7;
+	Tue, 27 Feb 2024 14:13:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042795;
-	bh=Efb71bH+Q2/tm6Ztb2J/mW7FxzO7/iTcVkszvC3mF8o=;
+	s=korg; t=1709043194;
+	bh=S1AQO6PtNN58ohKfLgZcCN9xMzQAildHzfDiacNK59c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y60Lt8XlqC6gv3yIWHQH2fH3lAnCb+gf0h9wwLhirNUZwFK8hjxN/lz4FSuZKfIOU
-	 EHEHw8E0j63/f8G90ClUHWY99t0rTYLkhEkMTe/C0wajR6tf4B2BygJFLiRrWnCG1j
-	 d6/S0N/mJbGubGM7bkWgCqypnKq9r7vyAgeuurY4=
+	b=VqtVvOAoKBUcBT9bR6MMCCqF8TdDcAWmQIPX5qS0dFhNzhaLQZ5Wi35JQRBubRy9c
+	 dwzbb8wGqG2C2Cp4iCsHZEVQ6r5CrppMf4WbOFdSXJxoKQoCo2t9glWxbzjf31B8kx
+	 f+smNlTNfQSiYJiD9tyeEYq1moeh3nQQXxSNegYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Subject: [PATCH 5.15 095/245] serial: amba-pl011: Fix DMA transmission in RS485 mode
+	Maksim Kiselev <bigunclemax@gmail.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 022/195] aoe: avoid potential deadlock at set_capacity
 Date: Tue, 27 Feb 2024 14:24:43 +0100
-Message-ID: <20240227131618.306678974@linuxfoundation.org>
+Message-ID: <20240227131611.125890659@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,113 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Maksim Kiselev <bigunclemax@gmail.com>
 
-commit 3b69e32e151bc4a4e3c785cbdb1f918d5ee337ed upstream.
+[ Upstream commit e169bd4fb2b36c4b2bee63c35c740c85daeb2e86 ]
 
-When DMA is used in RS485 mode make sure that the UARTs tx section is
-enabled before the DMA buffers are queued for transmission.
+Move set_capacity() outside of the section procected by (&d->lock).
+To avoid possible interrupt unsafe locking scenario:
 
-Cc: stable@vger.kernel.org
-Fixes: 8d479237727c ("serial: amba-pl011: add RS485 support")
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Link: https://lore.kernel.org/r/20240216224709.9928-2-l.sanfilippo@kunbus.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+        CPU0                    CPU1
+        ----                    ----
+[1] lock(&bdev->bd_size_lock);
+                                local_irq_disable();
+                            [2] lock(&d->lock);
+                            [3] lock(&bdev->bd_size_lock);
+   <Interrupt>
+[4]  lock(&d->lock);
+
+  *** DEADLOCK ***
+
+Where [1](&bdev->bd_size_lock) hold by zram_add()->set_capacity().
+[2]lock(&d->lock) hold by aoeblk_gdalloc(). And aoeblk_gdalloc()
+is trying to acquire [3](&bdev->bd_size_lock) at set_capacity() call.
+In this situation an attempt to acquire [4]lock(&d->lock) from
+aoecmd_cfg_rsp() will lead to deadlock.
+
+So the simplest solution is breaking lock dependency
+[2](&d->lock) -> [3](&bdev->bd_size_lock) by moving set_capacity()
+outside.
+
+Signed-off-by: Maksim Kiselev <bigunclemax@gmail.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20240124072436.3745720-2-bigunclemax@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/amba-pl011.c |   60 ++++++++++++++++++++--------------------
- 1 file changed, 30 insertions(+), 30 deletions(-)
+ drivers/block/aoe/aoeblk.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/amba-pl011.c
-+++ b/drivers/tty/serial/amba-pl011.c
-@@ -1350,11 +1350,41 @@ static void pl011_start_tx_pio(struct ua
- 	}
- }
+diff --git a/drivers/block/aoe/aoeblk.c b/drivers/block/aoe/aoeblk.c
+index 128722cf6c3ca..827802e418dd3 100644
+--- a/drivers/block/aoe/aoeblk.c
++++ b/drivers/block/aoe/aoeblk.c
+@@ -333,6 +333,7 @@ aoeblk_gdalloc(void *vp)
+ 	struct gendisk *gd;
+ 	mempool_t *mp;
+ 	struct blk_mq_tag_set *set;
++	sector_t ssize;
+ 	ulong flags;
+ 	int late = 0;
+ 	int err;
+@@ -395,7 +396,7 @@ aoeblk_gdalloc(void *vp)
+ 	gd->minors = AOE_PARTITIONS;
+ 	gd->fops = &aoe_bdops;
+ 	gd->private_data = d;
+-	set_capacity(gd, d->ssize);
++	ssize = d->ssize;
+ 	snprintf(gd->disk_name, sizeof gd->disk_name, "etherd/e%ld.%d",
+ 		d->aoemajor, d->aoeminor);
  
-+static void pl011_rs485_tx_start(struct uart_amba_port *uap)
-+{
-+	struct uart_port *port = &uap->port;
-+	u32 cr;
-+
-+	/* Enable transmitter */
-+	cr = pl011_read(uap, REG_CR);
-+	cr |= UART011_CR_TXE;
-+
-+	/* Disable receiver if half-duplex */
-+	if (!(port->rs485.flags & SER_RS485_RX_DURING_TX))
-+		cr &= ~UART011_CR_RXE;
-+
-+	if (port->rs485.flags & SER_RS485_RTS_ON_SEND)
-+		cr &= ~UART011_CR_RTS;
-+	else
-+		cr |= UART011_CR_RTS;
-+
-+	pl011_write(cr, uap, REG_CR);
-+
-+	if (port->rs485.delay_rts_before_send)
-+		mdelay(port->rs485.delay_rts_before_send);
-+
-+	uap->rs485_tx_started = true;
-+}
-+
- static void pl011_start_tx(struct uart_port *port)
- {
- 	struct uart_amba_port *uap =
- 	    container_of(port, struct uart_amba_port, port);
+@@ -404,6 +405,8 @@ aoeblk_gdalloc(void *vp)
  
-+	if ((uap->port.rs485.flags & SER_RS485_ENABLED) &&
-+	    !uap->rs485_tx_started)
-+		pl011_rs485_tx_start(uap);
+ 	spin_unlock_irqrestore(&d->lock, flags);
+ 
++	set_capacity(gd, ssize);
 +
- 	if (!pl011_dma_tx_start(uap))
- 		pl011_start_tx_pio(uap);
- }
-@@ -1436,42 +1466,12 @@ static bool pl011_tx_char(struct uart_am
- 	return true;
- }
- 
--static void pl011_rs485_tx_start(struct uart_amba_port *uap)
--{
--	struct uart_port *port = &uap->port;
--	u32 cr;
--
--	/* Enable transmitter */
--	cr = pl011_read(uap, REG_CR);
--	cr |= UART011_CR_TXE;
--
--	/* Disable receiver if half-duplex */
--	if (!(port->rs485.flags & SER_RS485_RX_DURING_TX))
--		cr &= ~UART011_CR_RXE;
--
--	if (port->rs485.flags & SER_RS485_RTS_ON_SEND)
--		cr &= ~UART011_CR_RTS;
--	else
--		cr |= UART011_CR_RTS;
--
--	pl011_write(cr, uap, REG_CR);
--
--	if (port->rs485.delay_rts_before_send)
--		mdelay(port->rs485.delay_rts_before_send);
--
--	uap->rs485_tx_started = true;
--}
--
- /* Returns true if tx interrupts have to be (kept) enabled  */
- static bool pl011_tx_chars(struct uart_amba_port *uap, bool from_irq)
- {
- 	struct circ_buf *xmit = &uap->port.state->xmit;
- 	int count = uap->fifosize >> 1;
- 
--	if ((uap->port.rs485.flags & SER_RS485_ENABLED) &&
--	    !uap->rs485_tx_started)
--		pl011_rs485_tx_start(uap);
--
- 	if (uap->port.x_char) {
- 		if (!pl011_tx_char(uap, uap->port.x_char, from_irq))
- 			return true;
+ 	err = device_add_disk(NULL, gd, aoe_attr_groups);
+ 	if (err)
+ 		goto out_disk_cleanup;
+-- 
+2.43.0
+
 
 
 
