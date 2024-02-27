@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-25031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFD7286976B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:21:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA05E869846
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:31:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C06D2860C7
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:21:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 943462952D3
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:31:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D6E13B7AB;
-	Tue, 27 Feb 2024 14:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8EBF13B2B4;
+	Tue, 27 Feb 2024 14:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlnvX6Bu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qYssHczK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E289913B2B8;
-	Tue, 27 Feb 2024 14:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D54145350;
+	Tue, 27 Feb 2024 14:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043664; cv=none; b=eYo7Bsv2gLGWWTItsiuKA3PbhhCbHoSzqUPGX8qM2lBTuPn095pwi9h1znQo1XL2IZidUwiIjl6PXw0+lmjBRMjbXp+0XpK8u0Q4ZXCccJYT/zOu4sCOefEtExccFf8AXItu9hxqT8DpARiAMEzRoO7pXLB3eWPxfI8fzZVGHb8=
+	t=1709044175; cv=none; b=MHT+LxQlgP3L/Y96+yerb/GAPjnvlJ1iZQhJlU2/JrHO0dcad7Hj4W8SVAMFD75rMYXe/a/0faa00IZHVtb90Zq9sPJb2W7puqsfURQ5+7JYFrHGEM04OJspUCFLa0O2NcYVTapWtdQ7Q6brj8HPLkw/0wErJxvm+i4AmtXUFe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043664; c=relaxed/simple;
-	bh=Rl8zk2vz8mMeKSZyBPK4W2tOjw9TzWaEGzZ2F05eHUo=;
+	s=arc-20240116; t=1709044175; c=relaxed/simple;
+	bh=Ulqts0juJFOVBLJenLoqMWIHny5lUEKAet9TESZ+y40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cr1t3TlKYSYpFN6KLCLMcj9EKOAB8vkylcqikspLczCgGqiuAhLRSj1o2o1tMKzLaoQ4H9ATSsoqBphsDuBTl2o5dSTBLs/AB/eE2u98KQjIB0FMe3tZGRa60OgVC/9gLydclCA7VeRtoSDV+ImjWB0cA3hjudf6+/F4UEKBDtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlnvX6Bu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2879FC433C7;
-	Tue, 27 Feb 2024 14:21:02 +0000 (UTC)
+	 MIME-Version; b=T8D7Y4VVl5j3xsZiImwQrzOU5I+W1AC/7K/bkxjjQ/u5Px6XbqYKZsjdNTFjvtFDBRcBMmYNAessNND+PJUT4gCwo2m1n2ron3EF1kGtiCfO3rdradQqxw3kv7Z6Qd0YLMwrGobd+rn26LdDE/YQABOkciUYlGs28Rex2TYMzTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qYssHczK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 144B4C433F1;
+	Tue, 27 Feb 2024 14:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043663;
-	bh=Rl8zk2vz8mMeKSZyBPK4W2tOjw9TzWaEGzZ2F05eHUo=;
+	s=korg; t=1709044175;
+	bh=Ulqts0juJFOVBLJenLoqMWIHny5lUEKAet9TESZ+y40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jlnvX6Bu6A7L+lbH/UtbHDMBhQhPXjA9YkAmjHEhNa3qp3z56Rbvs4bsBMA9Q/Wlk
-	 D1vG4j6rbv0OnGf27E6nQrTv00Bs+E9Xft49zkqrjeVUxSoxiHZnFtfZLoR/Gnha84
-	 GmiuVXHv5uKjpptIPXTswC5QEpStqPzYSngBiad0=
+	b=qYssHczKdEuHfW58b1b62j+skP0azvbX2mhSyRcNzquV+Nf+Q0vR43sz25G8ccCJ9
+	 PTnXoUc/9FeLA2pJeOZdeC+PAZ49H5PWlaFFjhH/pAj3wP/6A5yJYlpl/q4VLzrYtD
+	 M6KGYiQORVBGFX+AbSQRhBtL/0BMKFBBGtYNjblE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosryahmed@google.com>,
-	Chengming Zhou <zhouchengming@bytedance.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Domenico Cerasuolo <cerasuolodomenico@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 189/195] mm: zswap: fix missing folio cleanup in writeback race path
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 5.10 089/122] x86/alternative: Make custom return thunk unconditional
 Date: Tue, 27 Feb 2024 14:27:30 +0100
-Message-ID: <20240227131616.645069638@linuxfoundation.org>
+Message-ID: <20240227131601.618509293@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosryahmed@google.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit e3b63e966cac0bf78aaa1efede1827a252815a1d upstream.
+Upstream commit: 095b8303f3835c68ac4a8b6d754ca1c3b6230711
 
-In zswap_writeback_entry(), after we get a folio from
-__read_swap_cache_async(), we grab the tree lock again to check that the
-swap entry was not invalidated and recycled.  If it was, we delete the
-folio we just added to the swap cache and exit.
+There is infrastructure to rewrite return thunks to point to any
+random thunk one desires, unwrap that from CALL_THUNKS, which up to
+now was the sole user of that.
 
-However, __read_swap_cache_async() returns the folio locked when it is
-newly allocated, which is always true for this path, and the folio is
-ref'd.  Make sure to unlock and put the folio before returning.
+  [ bp: Make the thunks visible on 32-bit and add ifdeffery for the
+    32-bit builds. ]
 
-This was discovered by code inspection, probably because this path handles
-a race condition that should not happen often, and the bug would not crash
-the system, it will only strand the folio indefinitely.
-
-Link: https://lkml.kernel.org/r/20240125085127.1327013-1-yosryahmed@google.com
-Fixes: 04fc7816089c ("mm: fix zswap writeback race condition")
-Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
-Reviewed-by: Chengming Zhou <zhouchengming@bytedance.com>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-Cc: Domenico Cerasuolo <cerasuolodomenico@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230814121148.775293785@infradead.org
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/zswap.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/include/asm/nospec-branch.h |    8 ++++----
+ arch/x86/kernel/alternative.c        |    4 ----
+ arch/x86/kernel/cpu/bugs.c           |    2 ++
+ 3 files changed, 6 insertions(+), 8 deletions(-)
 
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -1013,6 +1013,8 @@ static int zswap_writeback_entry(struct
- 		if (zswap_rb_search(&tree->rbroot, entry->offset) != entry) {
- 			spin_unlock(&tree->lock);
- 			delete_from_swap_cache(page_folio(page));
-+			unlock_page(page);
-+			put_page(page);
- 			ret = -ENOMEM;
- 			goto fail;
- 		}
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -190,7 +190,11 @@
+ 	_ASM_PTR " 999b\n\t"					\
+ 	".popsection\n\t"
+ 
++#ifdef CONFIG_RETHUNK
+ extern void __x86_return_thunk(void);
++#else
++static inline void __x86_return_thunk(void) {}
++#endif
+ 
+ extern void retbleed_return_thunk(void);
+ extern void srso_return_thunk(void);
+@@ -203,11 +207,7 @@ extern void srso_alias_untrain_ret(void)
+ extern void entry_untrain_ret(void);
+ extern void entry_ibpb(void);
+ 
+-#ifdef CONFIG_CALL_THUNKS
+ extern void (*x86_return_thunk)(void);
+-#else
+-#define x86_return_thunk	(&__x86_return_thunk)
+-#endif
+ 
+ #ifdef CONFIG_RETPOLINE
+ 
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -677,10 +677,6 @@ void __init_or_module noinline apply_ret
+ 
+ #ifdef CONFIG_RETHUNK
+ 
+-#ifdef CONFIG_CALL_THUNKS
+-void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
+-#endif
+-
+ /*
+  * Rewrite the compiler generated return thunk tail-calls.
+  *
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -61,6 +61,8 @@ EXPORT_SYMBOL_GPL(x86_pred_cmd);
+ 
+ static DEFINE_MUTEX(spec_ctrl_mutex);
+ 
++void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
++
+ /* Update SPEC_CTRL MSR and its cached copy unconditionally */
+ static void update_spec_ctrl(u64 val)
+ {
 
 
 
