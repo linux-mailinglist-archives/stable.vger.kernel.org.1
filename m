@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-24694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 383C18695DA
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:06:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E6A48696CE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2EAB1F2C102
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:06:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D784B275EE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7825D13B7AB;
-	Tue, 27 Feb 2024 14:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2C8A1419B4;
+	Tue, 27 Feb 2024 14:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fIQPGapf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d22Fp733"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A5F13B798;
-	Tue, 27 Feb 2024 14:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1118145341;
+	Tue, 27 Feb 2024 14:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042732; cv=none; b=Qwd+7W2o74ZtfyxEvKlccXkZWT44FZbDGQLQTswrxxu50qiqGG/0li/oYjuGjXL3U3slg1QAyQnTd4VevAHzm2yvc+SK3KGF4aSl9jbXuEJAu8d2WoTCJI5oLSS9RTaEoePgklhGDYxLdFIj/C/q+x9PmwBlvEwJ6AIETcbP5yU=
+	t=1709043218; cv=none; b=as62lcKCL+hT3ASHTP+cYdQQtyST+Jfo6AYgvPSOj49BCnlNaftDf190JWoVOxYyJwtkOsTIRADPOUSshcfvEGSrhxfR/a6CIpbHDwiz6iP/hPa8IzeQWXTQQl/jjINKLsE1Kl2Ke2RsQCQ7C18RrqEhVZM0BB2iT0Wn+kbNe+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042732; c=relaxed/simple;
-	bh=zvJ833gUqTcGTtTuL8s5JQvP/EPpF8iaieRuNkR2CvA=;
+	s=arc-20240116; t=1709043218; c=relaxed/simple;
+	bh=U+aRSMF8r1eJ5QXKppsi4f0P6HK93Lo+6lVCUoOWfcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D9EAvx34zYNq2v+C88jCGIuGAU13XbSVq1bZazBJnQbKNAOB4zaJpFlogBoTQEeOLOkM7HO9gcmiRnB8NckPtWkwPXrIjDKnN2LM2608S3F0mVn2pxDQcmoTbSL4kwJI7sIhwZqLqyIxTt1ehofOTm6io0sWWnNeBH5ya+ItfYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fIQPGapf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7FBFC433F1;
-	Tue, 27 Feb 2024 14:05:31 +0000 (UTC)
+	 MIME-Version; b=k91/JNLEC3qO0pBlwRCO1jZ4QEiUXvyQCwPSIew4cs3qid9tTQdbFNrmZyngBs7NzVwxgCkr+NnoZ+fProX+460CYIT7LWBEP7ECtqx9GpGOhAdD/IKZKImxaNkJTRLGvJxJeIbikQkw7QTIrulUvr3qu0lR88MRWNLg02SxpI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d22Fp733; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D361C433C7;
+	Tue, 27 Feb 2024 14:13:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042732;
-	bh=zvJ833gUqTcGTtTuL8s5JQvP/EPpF8iaieRuNkR2CvA=;
+	s=korg; t=1709043218;
+	bh=U+aRSMF8r1eJ5QXKppsi4f0P6HK93Lo+6lVCUoOWfcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fIQPGapf+gn35trwY1AUBQsfT6Tg+B2f1PvWYEXw1l5gJ0aMlJDQQO/08PWKpxalP
-	 wUu3AvzCne4txOCedt+Y+zlNpzvi/zVrgwmlrHZ/l2VqI1HVthGhBlJ9Bl62rHwhFV
-	 4W9S8CZWDetDwYeL7gCdSl35fsAeUXedTfQwCfws=
+	b=d22Fp733rYzYUgJzHoTxNvYY5+txXPwa/mf3xOxMIgJO7H+IrsmztZY5G3rpfLgtY
+	 +ejoEKKZeQUKQflKXDjxbRmoU3FSj5K1t3Sc5H9jJbo76CRZmMslc2FcufX1/MKetA
+	 OCyd3QNPMtEusBu1d22fRtqTJkubzRcZXYKJKBhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishna Kurapati <quic_kriskura@quicinc.com>,
-	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>
-Subject: [PATCH 5.15 101/245] usb: gadget: ncm: Avoid dropping datagrams of properly parsed NTBs
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 028/195] ext4: avoid allocating blocks from corrupted group in ext4_mb_find_by_goal()
 Date: Tue, 27 Feb 2024 14:24:49 +0100
-Message-ID: <20240227131618.498139276@linuxfoundation.org>
+Message-ID: <20240227131611.323219314@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,93 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 76c51146820c5dac629f21deafab0a7039bc3ccd upstream.
+[ Upstream commit 832698373a25950942c04a512daa652c18a9b513 ]
 
-It is observed sometimes when tethering is used over NCM with Windows 11
-as host, at some instances, the gadget_giveback has one byte appended at
-the end of a proper NTB. When the NTB is parsed, unwrap call looks for
-any leftover bytes in SKB provided by u_ether and if there are any pending
-bytes, it treats them as a separate NTB and parses it. But in case the
-second NTB (as per unwrap call) is faulty/corrupt, all the datagrams that
-were parsed properly in the first NTB and saved in rx_list are dropped.
+Places the logic for checking if the group's block bitmap is corrupt under
+the protection of the group lock to avoid allocating blocks from the group
+with a corrupted block bitmap.
 
-Adding a few custom traces showed the following:
-[002] d..1  7828.532866: dwc3_gadget_giveback: ep1out:
-req 000000003868811a length 1025/16384 zsI ==> 0
-[002] d..1  7828.532867: ncm_unwrap_ntb: K: ncm_unwrap_ntb toprocess: 1025
-[002] d..1  7828.532867: ncm_unwrap_ntb: K: ncm_unwrap_ntb nth: 1751999342
-[002] d..1  7828.532868: ncm_unwrap_ntb: K: ncm_unwrap_ntb seq: 0xce67
-[002] d..1  7828.532868: ncm_unwrap_ntb: K: ncm_unwrap_ntb blk_len: 0x400
-[002] d..1  7828.532868: ncm_unwrap_ntb: K: ncm_unwrap_ntb ndp_len: 0x10
-[002] d..1  7828.532869: ncm_unwrap_ntb: K: Parsed NTB with 1 frames
-
-In this case, the giveback is of 1025 bytes and block length is 1024.
-The rest 1 byte (which is 0x00) won't be parsed resulting in drop of
-all datagrams in rx_list.
-
-Same is case with packets of size 2048:
-[002] d..1  7828.557948: dwc3_gadget_giveback: ep1out:
-req 0000000011dfd96e length 2049/16384 zsI ==> 0
-[002] d..1  7828.557949: ncm_unwrap_ntb: K: ncm_unwrap_ntb nth: 1751999342
-[002] d..1  7828.557950: ncm_unwrap_ntb: K: ncm_unwrap_ntb blk_len: 0x800
-
-Lecroy shows one byte coming in extra confirming that the byte is coming
-in from PC:
-
- Transfer 2959 - Bytes Transferred(1025)  Timestamp((18.524 843 590)
- - Transaction 8391 - Data(1025 bytes) Timestamp(18.524 843 590)
- --- Packet 4063861
-       Data(1024 bytes)
-       Duration(2.117us) Idle(14.700ns) Timestamp(18.524 843 590)
- --- Packet 4063863
-       Data(1 byte)
-       Duration(66.160ns) Time(282.000ns) Timestamp(18.524 845 722)
-
-According to Windows driver, no ZLP is needed if wBlockLength is non-zero,
-because the non-zero wBlockLength has already told the function side the
-size of transfer to be expected. However, there are in-market NCM devices
-that rely on ZLP as long as the wBlockLength is multiple of wMaxPacketSize.
-To deal with such devices, it pads an extra 0 at end so the transfer is no
-longer multiple of wMaxPacketSize.
-
-Cc: <stable@vger.kernel.org>
-Fixes: 9f6ce4240a2b ("usb: gadget: f_ncm.c added")
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Reviewed-by: Maciej Żenczykowski <maze@google.com>
-Link: https://lore.kernel.org/r/20240205074650.200304-1-quic_kriskura@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240104142040.2835097-8-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_ncm.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ fs/ext4/mballoc.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -1344,7 +1344,15 @@ parse_ntb:
- 	     "Parsed NTB with %d frames\n", dgram_counter);
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 744472c0b6fa5..6a3e27771df73 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -2215,12 +2215,10 @@ int ext4_mb_find_by_goal(struct ext4_allocation_context *ac,
+ 	if (err)
+ 		return err;
  
- 	to_process -= block_len;
--	if (to_process != 0) {
+-	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info))) {
+-		ext4_mb_unload_buddy(e4b);
+-		return 0;
+-	}
+-
+ 	ext4_lock_group(ac->ac_sb, group);
++	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)))
++		goto out;
 +
-+	/*
-+	 * Windows NCM driver avoids USB ZLPs by adding a 1-byte
-+	 * zero pad as needed.
-+	 */
-+	if (to_process == 1 &&
-+	    (*(unsigned char *)(ntb_ptr + block_len) == 0x00)) {
-+		to_process--;
-+	} else if (to_process > 0) {
- 		ntb_ptr = (unsigned char *)(ntb_ptr + block_len);
- 		goto parse_ntb;
+ 	max = mb_find_extent(e4b, ac->ac_g_ex.fe_start,
+ 			     ac->ac_g_ex.fe_len, &ex);
+ 	ex.fe_logical = 0xDEADFA11; /* debug value */
+@@ -2253,6 +2251,7 @@ int ext4_mb_find_by_goal(struct ext4_allocation_context *ac,
+ 		ac->ac_b_ex = ex;
+ 		ext4_mb_use_best_found(ac, e4b);
  	}
++out:
+ 	ext4_unlock_group(ac->ac_sb, group);
+ 	ext4_mb_unload_buddy(e4b);
+ 
+-- 
+2.43.0
+
 
 
 
