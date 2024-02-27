@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-25276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0123869E7E
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 19:00:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7CBC869E80
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 19:01:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D48D1F2C0AF
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 18:00:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBBA51C2373B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 18:01:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E31024F1E6;
-	Tue, 27 Feb 2024 18:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C589E4EB46;
+	Tue, 27 Feb 2024 18:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kUimdH9d"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lZb9Efoq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06E6487A5;
-	Tue, 27 Feb 2024 18:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8279D4E1DC;
+	Tue, 27 Feb 2024 18:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709056848; cv=none; b=GiWzOZaxk/U3ilWFfR2NOpqO0aAPy3gSZn6xUVgb1L4B/pYU58zMEyMZD6C+3qFi3uHCsriZE8MUjks/QYUxVDCzNQ7j2azQlZxifB5AD3CqtKu3H+FGF3otJyAkSPLQsi2ax0fmJlR4+20SRnhdoxDDvJYiR4rayoFd1T2t59U=
+	t=1709056911; cv=none; b=sbTzMW60krI0HtbyOD3wmYb8e51Sf1/KYIaQChxrqG3RujoMslQc6eYq6sMmXCOxoRxjXYeN55xtqkKVd6i04t7C3LawjQG4VLa7i6C6yZQovF2Z8rIsAYlzwWs7/2lfyWxbQUAI6ZiadNnIbTUJrrV7H7RtRcQyxldFaVxhlfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709056848; c=relaxed/simple;
-	bh=QL7m/S1rN3FxKliyw2MDsQQ2H3o6k+wOqm75hKDZF2g=;
+	s=arc-20240116; t=1709056911; c=relaxed/simple;
+	bh=1Z3Q69OmYEu30Zls/B+/PXEuGL1+o71jrgcyXnwvUsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OPm367diKZekJqcMt3PtfZq4KmdAnh6kMOn0Hv1eqn0uWJ9bhrAb9hEqAQQTwIwy++aM+W674gOc1mj6vxBnsFqfa67TtF6DIIdhI+BhDVl9DOUSH89ZQ+0SwZIut48nSGEvbSsEy+5g843VTUyDo43O4Hc5VDywEDLc5oI1gD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kUimdH9d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72A26C433F1;
-	Tue, 27 Feb 2024 18:00:46 +0000 (UTC)
+	 MIME-Version; b=n4xesgJ8QC0nejmez1ND+dpt2cXzvnXnF2eOknqawfHIMZsYtwn2Fig2tqLUiYvnaSSbXOvUioAWyHkzTne7f4n09IjdUZf0BVX/dP5UjmIx14nLu8LCbxAL8g5PkTygOvq3e6v5wePJxix/5cHvGYOzv3NZF+tqEs3hu1PtQho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lZb9Efoq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD98C433C7;
+	Tue, 27 Feb 2024 18:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709056848;
-	bh=QL7m/S1rN3FxKliyw2MDsQQ2H3o6k+wOqm75hKDZF2g=;
+	s=k20201202; t=1709056911;
+	bh=1Z3Q69OmYEu30Zls/B+/PXEuGL1+o71jrgcyXnwvUsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kUimdH9d9OcIK75DjqtGjjfozWyVJZSh2Dtv59VTlcSyME6PIZpU+AMZr+VHQLYur
-	 Q1Rczm/IC1AxE6Lx5GZ9ZAqt54+EmQ4s4LuWul0zV+2bPa53g815fN3id3g5DFHVqG
-	 zvkcyKwupQWg0tYe52xHfI53R0N4jWR6D65DGJ+6pcZHVrrqGPO43Ky+sPN3f/hwyt
-	 BWtQShw77RCn4IInZZtNhKdNLS2SX6Q+bBQ0XoZqWM85iC4P12JJyfgC4LmWGmdXlG
-	 UAdeuPa5X6r7BYCgWToC/CU563P0R+07lpzbdEmSKPXOcHYawN9iA2lxlDrHRd/THy
-	 0+8eNNfIVY4+Q==
+	b=lZb9EfoqlEsZktVzYg6qqcGg+ojgiQdfT7QOPtopnh5yoJc0z6lKnzWk7nEzGhQ5y
+	 NGDq311TPy6QYh2b1+4VO6zuSgo/quvRZs05CZWjZ1h5TkVZCuGNnbXnS1/8ox8WXF
+	 HUpCGHen8pFjMMtq6vj00x9mTeNMPvRqRFU6iCi1NK70gq5JIg7NGrk+cQ4fRqQyo9
+	 Tvm2WWGE2n4HDmYuOp0kK733By+Pr5+wFklG8DV20gEGMpCEd/9yGZyX+Yk4OYCsIU
+	 uyrzPcICXMF8rtScN9w0NagDoaooDW/M/nK6/GeScFVt1pM3g5L9wTn+HPq0pYOy2+
+	 TvuFYYHnYn9yw==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
@@ -49,109 +49,133 @@ Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
 	Mat Martineau <martineau@kernel.org>,
 	Matthieu Baerts <matttbe@kernel.org>,
 	"David S . Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1.y] mptcp: fix data races on remote_id
-Date: Tue, 27 Feb 2024 19:00:34 +0100
-Message-ID: <20240227180033.4028616-2-matttbe@kernel.org>
+Subject: [PATCH 6.1.y] mptcp: fix duplicate subflow creation
+Date: Tue, 27 Feb 2024 19:01:43 +0100
+Message-ID: <20240227180142.4029958-2-matttbe@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2024022642-overjoyed-retying-c027@gregkh>
-References: <2024022642-overjoyed-retying-c027@gregkh>
+In-Reply-To: <2024022601-footwork-fastness-bcab@gregkh>
+References: <2024022601-footwork-fastness-bcab@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3735; i=matttbe@kernel.org; h=from:subject; bh=mPhQDX3LAZoVFsPW4pADjWEfZUchI9YG+5S9l3BSZv8=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBl3iNBEApK7GMUpvlYUlvltTVcSCSqxc9skKjNh a4pXjEzWGCJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZd4jQQAKCRD2t4JPQmmg c/hMD/98ZWMyNnt+b5mc3EKiccIdExYevFTNsomHZluubJwXXfEhAQJ05peTwtwbEFy5wrQvxKO +WihdSqVSLy/p/AOMcRubukqRUVIPi3OJXMUJmQ6/ErD2ETZTTwtqrF9Lt6luMBLvWL/m5tbuM8 1txwLjKbOAp9PfB5nV4mA38201tEYp/SCKfzI6G1EhwroidQvUY+3AvweJXzScExJdpzGP1HEM0 Dkjhz+ybjPkFkMEauTze4mS1ObmUGNjpS/hAJy547IP4JseetS2u8x8vnQivOgSgdS8qTOlaXXE sS6HY1nFVGBKqOxE38i6q5NYdNLrp2IlNojX4ZIhWFNSaWHTKg3bezn5uBeaOjcK3tuE5BpUmRT 46ZQRlK7qLLVeIOTQOXL91Of08FRlujQ4YTD86xYR1tzGxXIN2SCViyzbAGtW3r8eM0A32tLvcv 0Y/akxxfUx33gHZGARtRvlPi0mjwIXt2LMUPPZ/D4t91zpTSRBoyufoxwSreLbbv5zkOvDkuDEZ nJOEIFS5GYEEHrwSB2vf4scAt++co9D81amvRdUmoBcsQtBi5tVf4iCbpllirxpuK5t6GtovVj+ j9VtOCcZlnkdY7mgVCuS5scwB7fiF82ZK43iZqWa9r/5YDHLrSZXpndPC8pAL6RIGntWUlRchGO iZ9sQ26n2YGNVxw==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4260; i=matttbe@kernel.org; h=from:subject; bh=ysNUQLXVc2HfAJaSCVuvhMnhQwcLe/2SYGZDWFX4rM4=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBl3iOG5YfFW070nm831uSJJPVuA98bapHMgN+1j TWHLVdn8ISJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZd4jhgAKCRD2t4JPQmmg cwu3EADiNmB1+nEREpXf8lLzj0LiP4CWAaiF19eSBztbJ7FWtdD6ibQE9ufjY/ewQKHbw4Dq2um K9Jh4NL21n38owz1uDXZlpxDgDFes22fy4yhJ75l33zWZQLhZzBsJmC91OhW3bo03BbctTGDspS 2TNNuMX3xIjP2EATMX6JXR6f5CoA14J11/EvBQJ4nA8ryy23CR4F3pbIhuz7z713mpndBHyEzUu t4mr8pP8haiC+q9CagD822KnpxijJSbXf419XbYb94ngvR1HTHukXTgUc6g3sZpI1ouCtb3+HfF s+jiqcw5ItDP55p8f/7W0u/hMPpay1XPxUqjxykPSK22aOU8G2Phjcwvxutp9Y5z2DaAdN2Ui/P 81EtZQg/mtPgJJHYgj+13Z+sKS/HSBlWqa0hc0CyjppQkehtbwUoJ87lo+xNM9Pr+00ZQLEZGJs OyuIR3zASFBU7cYa9CQ8k6dDcyNgwM3uIG9wtSNuIUB8DOEXOoPQFXI9J41j6gRGDi8hCcvYNWR b+NQflYIjnJeR/bIQRRAV3wT4ykCLPnt7+A9LfpsFaWinWQ9c8P5KIk6HWjwiSwagGt6XbH442Y RWdaSMof13RDi2SqAs7zwxsop5/uhKqKHH/L9Obq6QIoJ48x06kj/9/d9TqpnVv//OHceq3Haj/ SBn/7O/xpTfCc+A==
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 
 From: Paolo Abeni <pabeni@redhat.com>
 
-Similar to the previous patch, address the data race on
-remote_id, adding the suitable ONCE annotations.
+Fullmesh endpoints could end-up unexpectedly generating duplicate
+subflows - same local and remote addresses - when multiple incoming
+ADD_ADDR are processed before the PM creates the subflow for the local
+endpoints.
 
-Fixes: bedee0b56113 ("mptcp: address lookup improvements")
+Address the issue explicitly checking for duplicates at subflow
+creation time.
+
+To avoid a quadratic computational complexity, track the unavailable
+remote address ids in a temporary bitmap and initialize such bitmap
+with the remote ids of all the existing subflows matching the local
+address currently processed.
+
+The above allows additionally replacing the existing code checking
+for duplicate entry in the current set with a simple bit test
+operation.
+
+Fixes: 2843ff6f36db ("mptcp: remote addresses fullmesh")
 Cc: stable@vger.kernel.org
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/435
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: David S. Miller <davem@davemloft.net>
-(cherry picked from commit 967d3c27127e71a10ff5c083583a038606431b61)
+(cherry picked from commit 045e9d812868a2d80b7a57b224ce8009444b7bbc)
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
 Notes:
- - no conflicts after having applied 'mptcp: fix data races on local_id'
+ - conflicts in pm_netlink.c because b9d69db87fb7 ("mptcp: let the
+   in-kernel PM use mixed IPv4 and IPv6 addresses") is not in v6.1, and
+   it introduced an extra check (mptcp_pm_addr_families_match()) in the
+   modified context we don't need here.
+ - we need the new 'local' parameter from b9d69db87fb7 ("mptcp: let the
+   in-kernel PM use mixed IPv4 and IPv6 addresses").
 ---
- net/mptcp/pm_netlink.c | 8 ++++----
- net/mptcp/subflow.c    | 6 +++---
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ net/mptcp/pm_netlink.c | 36 +++++++++++++++++++-----------------
+ 1 file changed, 19 insertions(+), 17 deletions(-)
 
 diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 3632f4830420..582d0c641ed1 100644
+index 582d0c641ed1..3328870b0c1f 100644
 --- a/net/mptcp/pm_netlink.c
 +++ b/net/mptcp/pm_netlink.c
-@@ -449,7 +449,7 @@ static unsigned int fill_remote_addresses_vec(struct mptcp_sock *msk, bool fullm
+@@ -407,23 +407,12 @@ void mptcp_pm_free_anno_list(struct mptcp_sock *msk)
+ 	}
+ }
+ 
+-static bool lookup_address_in_vec(const struct mptcp_addr_info *addrs, unsigned int nr,
+-				  const struct mptcp_addr_info *addr)
+-{
+-	int i;
+-
+-	for (i = 0; i < nr; i++) {
+-		if (addrs[i].id == addr->id)
+-			return true;
+-	}
+-
+-	return false;
+-}
+-
+ /* Fill all the remote addresses into the array addrs[],
+  * and return the array size.
+  */
+-static unsigned int fill_remote_addresses_vec(struct mptcp_sock *msk, bool fullmesh,
++static unsigned int fill_remote_addresses_vec(struct mptcp_sock *msk,
++					      struct mptcp_addr_info *local,
++					      bool fullmesh,
+ 					      struct mptcp_addr_info *addrs)
+ {
+ 	bool deny_id0 = READ_ONCE(msk->pm.remote_deny_join_id0);
+@@ -446,6 +435,16 @@ static unsigned int fill_remote_addresses_vec(struct mptcp_sock *msk, bool fullm
+ 		msk->pm.subflows++;
+ 		addrs[i++] = remote;
+ 	} else {
++		DECLARE_BITMAP(unavail_id, MPTCP_PM_MAX_ADDR_ID + 1);
++
++		/* Forbid creation of new subflows matching existing
++		 * ones, possibly already created by incoming ADD_ADDR
++		 */
++		bitmap_zero(unavail_id, MPTCP_PM_MAX_ADDR_ID + 1);
++		mptcp_for_each_subflow(msk, subflow)
++			if (READ_ONCE(subflow->local_id) == local->id)
++				__set_bit(subflow->remote_id, unavail_id);
++
  		mptcp_for_each_subflow(msk, subflow) {
  			ssk = mptcp_subflow_tcp_sock(subflow);
  			remote_address((struct sock_common *)ssk, &addrs[i]);
--			addrs[i].id = subflow->remote_id;
-+			addrs[i].id = READ_ONCE(subflow->remote_id);
+@@ -453,8 +452,11 @@ static unsigned int fill_remote_addresses_vec(struct mptcp_sock *msk, bool fullm
  			if (deny_id0 && !addrs[i].id)
  				continue;
  
-@@ -798,18 +798,18 @@ static void mptcp_pm_nl_rm_addr_or_subflow(struct mptcp_sock *msk,
+-			if (!lookup_address_in_vec(addrs, i, &addrs[i]) &&
+-			    msk->pm.subflows < subflows_max) {
++			if (msk->pm.subflows < subflows_max) {
++				/* forbid creating multiple address towards
++				 * this id
++				 */
++				__set_bit(addrs[i].id, unavail_id);
+ 				msk->pm.subflows++;
+ 				i++;
+ 			}
+@@ -603,7 +605,7 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
+ 		fullmesh = !!(local->flags & MPTCP_PM_ADDR_FLAG_FULLMESH);
  
- 		mptcp_for_each_subflow_safe(msk, subflow, tmp) {
- 			struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
-+			u8 remote_id = READ_ONCE(subflow->remote_id);
- 			int how = RCV_SHUTDOWN | SEND_SHUTDOWN;
- 			u8 id = subflow_get_local_id(subflow);
- 
--			if (rm_type == MPTCP_MIB_RMADDR && subflow->remote_id != rm_id)
-+			if (rm_type == MPTCP_MIB_RMADDR && remote_id != rm_id)
- 				continue;
- 			if (rm_type == MPTCP_MIB_RMSUBFLOW && !mptcp_local_id_match(msk, id, rm_id))
- 				continue;
- 
- 			pr_debug(" -> %s rm_list_ids[%d]=%u local_id=%u remote_id=%u mpc_id=%u",
- 				 rm_type == MPTCP_MIB_RMADDR ? "address" : "subflow",
--				 i, rm_id, id, subflow->remote_id,
--				 msk->mpc_endpoint_id);
-+				 i, rm_id, id, remote_id, msk->mpc_endpoint_id);
- 			spin_unlock_bh(&msk->pm.lock);
- 			mptcp_subflow_shutdown(sk, ssk, how);
- 
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index 83bc438b9825..891c2f4fed08 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -446,7 +446,7 @@ static void subflow_finish_connect(struct sock *sk, const struct sk_buff *skb)
- 		subflow->backup = mp_opt.backup;
- 		subflow->thmac = mp_opt.thmac;
- 		subflow->remote_nonce = mp_opt.nonce;
--		subflow->remote_id = mp_opt.join_id;
-+		WRITE_ONCE(subflow->remote_id, mp_opt.join_id);
- 		pr_debug("subflow=%p, thmac=%llu, remote_nonce=%u backup=%d",
- 			 subflow, subflow->thmac, subflow->remote_nonce,
- 			 subflow->backup);
-@@ -1477,7 +1477,7 @@ int __mptcp_subflow_connect(struct sock *sk, const struct mptcp_addr_info *loc,
- 	pr_debug("msk=%p remote_token=%u local_id=%d remote_id=%d", msk,
- 		 remote_token, local_id, remote_id);
- 	subflow->remote_token = remote_token;
--	subflow->remote_id = remote_id;
-+	WRITE_ONCE(subflow->remote_id, remote_id);
- 	subflow->request_join = 1;
- 	subflow->request_bkup = !!(flags & MPTCP_PM_ADDR_FLAG_BACKUP);
- 	mptcp_info2sockaddr(remote, &addr, ssk->sk_family);
-@@ -1874,7 +1874,7 @@ static void subflow_ulp_clone(const struct request_sock *req,
- 		new_ctx->mp_join = 1;
- 		new_ctx->fully_established = 1;
- 		new_ctx->backup = subflow_req->backup;
--		new_ctx->remote_id = subflow_req->remote_id;
-+		WRITE_ONCE(new_ctx->remote_id, subflow_req->remote_id);
- 		new_ctx->token = subflow_req->token;
- 		new_ctx->thmac = subflow_req->thmac;
- 
+ 		msk->pm.local_addr_used++;
+-		nr = fill_remote_addresses_vec(msk, fullmesh, addrs);
++		nr = fill_remote_addresses_vec(msk, &local->addr, fullmesh, addrs);
+ 		if (nr)
+ 			__clear_bit(local->addr.id, msk->pm.id_avail_bitmap);
+ 		spin_unlock_bh(&msk->pm.lock);
 -- 
 2.43.0
 
