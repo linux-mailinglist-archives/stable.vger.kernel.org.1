@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-24546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DE37869515
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:58:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE68869369
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:45:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F1011C2130C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:58:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF64D28ED53
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:44:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA16C13DB90;
-	Tue, 27 Feb 2024 13:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C8013B7A0;
+	Tue, 27 Feb 2024 13:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qjlosi1e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R2d+vBJe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68EBC54BD4;
-	Tue, 27 Feb 2024 13:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F2C13AA55;
+	Tue, 27 Feb 2024 13:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042314; cv=none; b=O5N9dnIu/FvAJZ0ynYq4mS70T1h3Wgt4IVbpBkTAxOw8TfYGRgvj8+2JKuSkPypqFG0qb2pJhyGF0w4FY/3hoqXJGcVr0A8Zj7BpDwLA54FH0CAiaO8onNHqkd+yQF4YSSpapAOAYQduCzbknj8k6V1/a+CsH4GIeJYABwBySTg=
+	t=1709041474; cv=none; b=reZZay9ByAMWi5LXNEOicgqYbng6ksWbD0ZT1r9ZPsNGxosaP8/Znh3aBrWO5b7JzJcS2by2HOafikjho5IHu71QtKeWjofEGg6vgIOBUKQP0OluaeR4sn5CueoOmdITLP4pFBsbhsJZKuIabkJ1DFB6g7x0o0h9xM90YftbZgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042314; c=relaxed/simple;
-	bh=tkWIgMZJG3xOq9A3wdQJN1BNTk9SIef/tpf0JP+urFE=;
+	s=arc-20240116; t=1709041474; c=relaxed/simple;
+	bh=n0i4uaADD/qZlOD2WWmbEIduLVX3iWuxB6HVjV7uHVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NHdiNDPBLVa3Zrclwe4iLafcogwHtrozs6d5z2QTe/oV6aPUT0eK6rqkVQjjkawFj6AK+7NghUCAYGJQ5oqOzibp7U1o9kTSNfbgHpzSlyRP8nLirZNFL7Dyxl/K+9nIJbtAyLBf6XIknNqPixzGe697ieju66AL5JI6jysKgNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qjlosi1e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA392C433F1;
-	Tue, 27 Feb 2024 13:58:33 +0000 (UTC)
+	 MIME-Version; b=Ncj8IYuCI3Bg31cjjQzCatxFAORBmwhaN+/ilrAz9dT+rzve1qg/vgd79ATUorwZHztcBPDuirwPmqHEJxGIrEv3/ADUVSnALFJ55u0vEAk0Jyt0F4XmUfIoBO2cp5z2R1qB5ntS3wWYCyB3XM0Z1WrQBjOjp710jLKjmxCPfjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R2d+vBJe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 203D7C433F1;
+	Tue, 27 Feb 2024 13:44:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042314;
-	bh=tkWIgMZJG3xOq9A3wdQJN1BNTk9SIef/tpf0JP+urFE=;
+	s=korg; t=1709041474;
+	bh=n0i4uaADD/qZlOD2WWmbEIduLVX3iWuxB6HVjV7uHVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qjlosi1e/+TbSpeL/c8K6YUeHV16T05mz3IrnQlr8c06o5Hpk04Td+8cTk3jRSH/U
-	 I7wXVl71TIVnFgLVZDxcyim2GisXkEYgJGwEBuM3vRz27t6ex8Vr9jKfwQc/mpGLpJ
-	 1lwzAb5dwow8h+/6mwVLKDPxTIw+izte+5AmALNQ=
+	b=R2d+vBJeyeYDFi+GPlHTE7VYoOlG8DYuZGCF6F60FCldI3ylh5gyKc+0azHhI3GAk
+	 xxVe31yDXe3e6utXrQyMQFHfGjQFPiE9nRlNiXBcUX9S0DI5i2em758IxGxT5+vQB1
+	 JcyQzIuklgjEfEaZ9ODdtoFQejdKpGpQtIhzMZdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
-	Sven Schnelle <svens@stackframe.org>,
-	John David Anglin <dave.anglin@bell.net>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	David Laight <David.Laight@ACULAB.COM>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Conrad Kostecki <conikost@gentoo.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 253/299] parisc: Fix stack unwinder
-Date: Tue, 27 Feb 2024 14:26:04 +0100
-Message-ID: <20240227131633.860842006@linuxfoundation.org>
+Subject: [PATCH 4.19 18/52] ahci: asm1166: correct count of reported ports
+Date: Tue, 27 Feb 2024 14:26:05 +0100
+Message-ID: <20240227131549.132327188@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
+References: <20240227131548.514622258@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,92 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Conrad Kostecki <conikost@gentoo.org>
 
-[ Upstream commit 882a2a724ee964c1ebe7268a91d5c8c8ddc796bf ]
+[ Upstream commit 0077a504e1a4468669fd2e011108db49133db56e ]
 
-Debugging shows a large number of unaligned access traps in the unwinder
-code. Code analysis reveals a number of issues with this code:
+The ASM1166 SATA host controller always reports wrongly,
+that it has 32 ports. But in reality, it only has six ports.
 
-- handle_interruption is passed twice through
-  dereference_kernel_function_descriptor()
-- ret_from_kernel_thread, syscall_exit, intr_return,
-  _switch_to_ret, and _call_on_stack are passed through
-  dereference_kernel_function_descriptor() even though they are
-  not declared as function pointers.
+This seems to be a hardware issue, as all tested ASM1166
+SATA host controllers reports such high count of ports.
 
-To fix the problems, drop one of the calls to
-dereference_kernel_function_descriptor() for handle_interruption,
-and compare the other pointers directly.
+Example output: ahci 0000:09:00.0: AHCI 0001.0301
+32 slots 32 ports 6 Gbps 0xffffff3f impl SATA mode.
 
-Fixes: 6414b30b39f9 ("parisc: unwind: Avoid missing prototype warning for handle_interruption()")
-Fixes: 8e0ba125c2bf ("parisc/unwind: fix unwinder when CONFIG_64BIT is enabled")
-Cc: Helge Deller <deller@gmx.de>
-Cc: Sven Schnelle <svens@stackframe.org>
-Cc: John David Anglin <dave.anglin@bell.net>
-Cc: Charlie Jenkins <charlie@rivosinc.com>
-Cc: David Laight <David.Laight@ACULAB.COM>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Helge Deller <deller@gmx.de>
+By adjusting the port_map, the count is limited to six ports.
+
+New output: ahci 0000:09:00.0: AHCI 0001.0301
+32 slots 32 ports 6 Gbps 0x3f impl SATA mode.
+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=211873
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218346
+Signed-off-by: Conrad Kostecki <conikost@gentoo.org>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/unwind.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/ata/ahci.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/parisc/kernel/unwind.c b/arch/parisc/kernel/unwind.c
-index 27ae40a443b80..f7e0fee5ee55a 100644
---- a/arch/parisc/kernel/unwind.c
-+++ b/arch/parisc/kernel/unwind.c
-@@ -228,10 +228,8 @@ static int unwind_special(struct unwind_frame_info *info, unsigned long pc, int
- #ifdef CONFIG_IRQSTACKS
- 	extern void * const _call_on_stack;
- #endif /* CONFIG_IRQSTACKS */
--	void *ptr;
- 
--	ptr = dereference_kernel_function_descriptor(&handle_interruption);
--	if (pc_is_kernel_fn(pc, ptr)) {
-+	if (pc_is_kernel_fn(pc, handle_interruption)) {
- 		struct pt_regs *regs = (struct pt_regs *)(info->sp - frame_size - PT_SZ_ALGN);
- 		dbg("Unwinding through handle_interruption()\n");
- 		info->prev_sp = regs->gr[30];
-@@ -239,13 +237,13 @@ static int unwind_special(struct unwind_frame_info *info, unsigned long pc, int
- 		return 1;
- 	}
- 
--	if (pc_is_kernel_fn(pc, ret_from_kernel_thread) ||
--	    pc_is_kernel_fn(pc, syscall_exit)) {
-+	if (pc == (unsigned long)&ret_from_kernel_thread ||
-+	    pc == (unsigned long)&syscall_exit) {
- 		info->prev_sp = info->prev_ip = 0;
- 		return 1;
- 	}
- 
--	if (pc_is_kernel_fn(pc, intr_return)) {
-+	if (pc == (unsigned long)&intr_return) {
- 		struct pt_regs *regs;
- 
- 		dbg("Found intr_return()\n");
-@@ -257,14 +255,14 @@ static int unwind_special(struct unwind_frame_info *info, unsigned long pc, int
- 	}
- 
- 	if (pc_is_kernel_fn(pc, _switch_to) ||
--	    pc_is_kernel_fn(pc, _switch_to_ret)) {
-+	    pc == (unsigned long)&_switch_to_ret) {
- 		info->prev_sp = info->sp - CALLEE_SAVE_FRAME_SIZE;
- 		info->prev_ip = *(unsigned long *)(info->prev_sp - RP_OFFSET);
- 		return 1;
- 	}
- 
- #ifdef CONFIG_IRQSTACKS
--	if (pc_is_kernel_fn(pc, _call_on_stack)) {
-+	if (pc == (unsigned long)&_call_on_stack) {
- 		info->prev_sp = *(unsigned long *)(info->sp - FRAME_SIZE - REG_SZ);
- 		info->prev_ip = *(unsigned long *)(info->sp - FRAME_SIZE - RP_OFFSET);
- 		return 1;
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index ab3ea47ecce3a..abdfd440987b4 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -634,6 +634,11 @@ MODULE_PARM_DESC(mobile_lpm_policy, "Default LPM policy for mobile chipsets");
+ static void ahci_pci_save_initial_config(struct pci_dev *pdev,
+ 					 struct ahci_host_priv *hpriv)
+ {
++	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA && pdev->device == 0x1166) {
++		dev_info(&pdev->dev, "ASM1166 has only six ports\n");
++		hpriv->saved_port_map = 0x3f;
++	}
++
+ 	if (pdev->vendor == PCI_VENDOR_ID_JMICRON && pdev->device == 0x2361) {
+ 		dev_info(&pdev->dev, "JMB361 has only one port\n");
+ 		hpriv->force_port_map = 1;
 -- 
 2.43.0
 
