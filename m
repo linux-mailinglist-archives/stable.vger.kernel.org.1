@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-24543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAB5A869512
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:58:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69C758696F2
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:17:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5ACE01F21A5C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:58:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 092081F2523A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:17:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76BBD13EFFB;
-	Tue, 27 Feb 2024 13:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B9B113B798;
+	Tue, 27 Feb 2024 14:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KR+PTpJL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8SH0ZqM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36BBB13B7A0;
-	Tue, 27 Feb 2024 13:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6091386CB;
+	Tue, 27 Feb 2024 14:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042306; cv=none; b=LgoybjIJn/dzLP6s7ajef/78qnRVyXFvw6qSZNHIZLFFl4psUR91rOmwE4HRPDOKxKPX8HU01TjmDumdsU+yBC7zZkhtaipctJD6aHKWdvZ9LJoODaH1sUE9kAivY34j3DFok6b+0tdwxpHEra54VL0I6Lh5A/yE9otrEZ0AeyY=
+	t=1709043418; cv=none; b=smWbrsc32zRTVKrYae2Ed32ssox7tFkLdFCLZZp3roHmTRF6TkjzdE/Gem5G9ggBrbmImP+adbYkq9zLBEpqYLWqQCUbWuJ++yParwc9yLm4sirOmIZefIBqw5+lPiA6+IEYA9ZtV/CSHbrVkCFCMghZnowJiuDsbi0bfuCzqq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042306; c=relaxed/simple;
-	bh=/e23Qz8WUJhf+pQjvHvl6t2m5307Mdss3ys0DOO1rms=;
+	s=arc-20240116; t=1709043418; c=relaxed/simple;
+	bh=FUzqCxHI5+7NHxZjjM3hH8Z4YBNB6FfFNTiXEHm9y7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IuUNxqp1geSefe6lAYNL7bzlYyqnMQZn97nt8U4EDUhkCzFDubwiTFLQDU2WhNtgmaezUFng9FhRtSQL9LY90eNc2AsfQmi8iH4k+KAuPrvrEoaYFqzF27rcmtG2UvhI24lSYhYLYzBCBCeH0culc59eRNrxn5l4EACmciN6PhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KR+PTpJL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD87FC433C7;
-	Tue, 27 Feb 2024 13:58:25 +0000 (UTC)
+	 MIME-Version; b=OIe6n6kEZlPMXmMqQ53U9CyTO3W500rCJp6sgop14B8Pe6hKeXMOgE1UAbwbbuftZj5IdsD3R6Qn36HTHz8Oc8IRR303Owk9ig+fj1dvIICEtBqwA5ST12zSENRt/qtD3UewE+nRXUr6ffdr2Tl6cf0xUlBy3I27XPFgd0lA98s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8SH0ZqM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A626C433C7;
+	Tue, 27 Feb 2024 14:16:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042306;
-	bh=/e23Qz8WUJhf+pQjvHvl6t2m5307Mdss3ys0DOO1rms=;
+	s=korg; t=1709043417;
+	bh=FUzqCxHI5+7NHxZjjM3hH8Z4YBNB6FfFNTiXEHm9y7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KR+PTpJLIxhcsfL3vRHAQIYwvo7SqJmSXpzkBAMSOj4bkp4K2viwtzAssZTIryLDc
-	 kWJM/pr4JmD4SEAklGrf0JpYcGbRjtDcFn8W6RQa0wJDnCUiZaP29YXB7paVYTchxb
-	 h03VU2olYdxlifV4OthjZZaWtTCN0sNWZyeSN2do=
+	b=H8SH0ZqMVZifjZKr4hSbfc7Ot5g4fRy0VOBLmupyZ3dDzlvRoIKrufrv1uw3Ey0rQ
+	 MO6049NIzIfaxAL9+JVdouLJ1ubiCl+yO8jDXJdXfJ9pw/wvd2B0a1l+K8w6xOX1cF
+	 xWiUw9zeZ+qB7WCXocsa5UCacVo20XRH2qkLCwfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	SEO HOYOUNG <hy50.seo@samsung.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Can Guo <quic_cang@quicinc.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 222/299] bus: imx-weim: fix valid range check
+Subject: [PATCH 6.1 072/195] scsi: ufs: core: Remove the ufshcd_release() in ufshcd_err_handling_prepare()
 Date: Tue, 27 Feb 2024 14:25:33 +0100
-Message-ID: <20240227131632.910333522@linuxfoundation.org>
+Message-ID: <20240227131612.876345416@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas Stach <l.stach@pengutronix.de>
+From: SEO HOYOUNG <hy50.seo@samsung.com>
 
-[ Upstream commit 7bca405c986075c99b9f729d3587b5c45db39d01 ]
+[ Upstream commit 17e94b2585417e04dabc2f13bc03b4665ae687f3 ]
 
-When the range parsing was open-coded the number of u32 entries to
-parse had to be a multiple of 4 and the driver checks this. With
-the range parsing converted to the range parser the counting changes
-from individual u32 entries to a complete range, so the check must
-not reject counts not divisible by 4.
+If ufshcd_err_handler() is called in a suspend/resume situation,
+ufs_release() can be called twice and active_reqs end up going negative.
+This is because ufshcd_err_handling_prepare() and
+ufshcd_err_handling_unprepare() both call ufshcd_release().
 
-Fixes: 2a88e4792c6d ("bus: imx-weim: Remove open coded "ranges" parsing")
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Remove superfluous call to ufshcd_release().
+
+Signed-off-by: SEO HOYOUNG <hy50.seo@samsung.com>
+Link: https://lore.kernel.org/r/20240122083324.11797-1-hy50.seo@samsung.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Can Guo <quic_cang@quicinc.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/imx-weim.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ufs/core/ufshcd.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/bus/imx-weim.c b/drivers/bus/imx-weim.c
-index 42c9386a7b423..f9fd1582f150d 100644
---- a/drivers/bus/imx-weim.c
-+++ b/drivers/bus/imx-weim.c
-@@ -117,7 +117,7 @@ static int imx_weim_gpr_setup(struct platform_device *pdev)
- 		i++;
- 	}
- 
--	if (i == 0 || i % 4)
-+	if (i == 0)
- 		goto err;
- 
- 	for (i = 0; i < ARRAY_SIZE(gprvals); i++) {
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 9fd4e9ed93b8b..f3c25467e571f 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -6159,7 +6159,6 @@ static void ufshcd_err_handling_prepare(struct ufs_hba *hba)
+ 		ufshcd_hold(hba, false);
+ 		if (!ufshcd_is_clkgating_allowed(hba))
+ 			ufshcd_setup_clocks(hba, true);
+-		ufshcd_release(hba);
+ 		pm_op = hba->is_sys_suspended ? UFS_SYSTEM_PM : UFS_RUNTIME_PM;
+ 		ufshcd_vops_resume(hba, pm_op);
+ 	} else {
 -- 
 2.43.0
 
