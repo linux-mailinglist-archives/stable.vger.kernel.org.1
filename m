@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-24427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75D2A869471
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:54:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 559ED8695D6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:06:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EC3828E8E4
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:54:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86B771C2358E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:06:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4285D1448D7;
-	Tue, 27 Feb 2024 13:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D445E1420C9;
+	Tue, 27 Feb 2024 14:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RSkcre1g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bpB3zohb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028811468E3;
-	Tue, 27 Feb 2024 13:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884AC1420B0;
+	Tue, 27 Feb 2024 14:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041970; cv=none; b=V3lXU3TyYaG/Hd9ptWbVJTup6D4xuywPoSIixXf93B8UIHVruFZq3P6lJIexeplW7IkClBlvdSUSYdd1jbgA9doGefJsEHd/6HM3kqdYAdAgKX57vitsknrOoWXT4nt9GObjCSIHSIg4JocgIWHubCiGZd3pr5jcAi+T+HtYaPc=
+	t=1709042721; cv=none; b=dHTvyu4oxQxftjWlGlQhKfoqvJkXUlAqwZarF0db6hlecxnF8joUfp/VZO88id77kfKniQiEaaRVzhEC8uXnVp94k0s4we5pmnaWOb3zdST4tu7curyeMZf6nq5XDBPJ1RmwYkiQdb7w57yggpJEXIMsQEBvWXqrceAGAGj/DG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041970; c=relaxed/simple;
-	bh=3Vxxly3IARgdg3fojU8dI11ktf1PGhWX2FhrqPEKLmU=;
+	s=arc-20240116; t=1709042721; c=relaxed/simple;
+	bh=QmCyReZdU4Ddr/j2U0i7TRKgJBI583auz1Hz5WkrbOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ekqUie8Bq2F1ZAmYE/ykbQIL3m9l5o5VVpggJjhg2BkvLOFmc27w+4G2HiXhG4aqtZk4uB3U9OpepJueOPpXDQxeFZBII5tPcbVttE9DuSYWdssRY3BfpzTtinI2RpUzV5LPTJggmovhDB2UTCq8BaPZQKEODn8PbcIUrUdNsAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RSkcre1g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8554EC433B1;
-	Tue, 27 Feb 2024 13:52:49 +0000 (UTC)
+	 MIME-Version; b=fdPpkfTax5MJaqKhr0hbCXeRNDOf3I6cqdgpqThDd6Prmq+y6xJbfLq5S3MG+lut2iPzq6NSSm/Zsl9HG0LijlW0419NkgUU2UuLSriFQIEfDF4oW/IqGq7A43eSYBnk0qgdtBVhpCcBfXSLKTcZUu471ugDN5H058tzfM0MYjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bpB3zohb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9582C433C7;
+	Tue, 27 Feb 2024 14:05:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041969;
-	bh=3Vxxly3IARgdg3fojU8dI11ktf1PGhWX2FhrqPEKLmU=;
+	s=korg; t=1709042721;
+	bh=QmCyReZdU4Ddr/j2U0i7TRKgJBI583auz1Hz5WkrbOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RSkcre1g+PrJI/3wkjShhdKaU/KDjsNeNt+VjWxeP+QcuXVRzLlDp8KXGkMaQ/QRl
-	 PNu0bNfRC33J26dwhE9PpB33wYuOuFzhgYY5PMPWHbNMHxSr8OzvU7uYPXS6FVTPBC
-	 QrN5ibQpMEWipjdaWCX00XskI9D6sT8gqGPCWRfo=
+	b=bpB3zohbsoOshFw0RKncswCwIPwD/hcSJwNGgaTUGoha5ECiXIpSs6riom6jba8r7
+	 bQhJ47prwSo6IMXSBxOLqtLB9RT4aALTwe7JmIVvR8zOcWeNmht6hH5bZLbDAJpdej
+	 ZwXkPueorMBjA3ESI0bXj9rBmz2EBzmA/k6o93O0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alyssa Milburn <alyssa.milburn@intel.com>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 6.6 134/299] x86/bugs: Add asm helpers for executing VERW
-Date: Tue, 27 Feb 2024 14:24:05 +0100
-Message-ID: <20240227131630.173187872@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 058/245] fs/ntfs3: Disable ATTR_LIST_ENTRY size check
+Date: Tue, 27 Feb 2024 14:24:06 +0100
+Message-ID: <20240227131617.118844782@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,125 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit baf8361e54550a48a7087b603313ad013cc13386 upstream.
+[ Upstream commit 4cdfb6e7bc9c80142d33bf1d4653a73fa678ba56 ]
 
-MDS mitigation requires clearing the CPU buffers before returning to
-user. This needs to be done late in the exit-to-user path. Current
-location of VERW leaves a possibility of kernel data ending up in CPU
-buffers for memory accesses done after VERW such as:
+The use of sizeof(struct ATTR_LIST_ENTRY) has been replaced with le_size(0)
+due to alignment peculiarities on different platforms.
 
-  1. Kernel data accessed by an NMI between VERW and return-to-user can
-     remain in CPU buffers since NMI returning to kernel does not
-     execute VERW to clear CPU buffers.
-  2. Alyssa reported that after VERW is executed,
-     CONFIG_GCC_PLUGIN_STACKLEAK=y scrubs the stack used by a system
-     call. Memory accesses during stack scrubbing can move kernel stack
-     contents into CPU buffers.
-  3. When caller saved registers are restored after a return from
-     function executing VERW, the kernel stack accesses can remain in
-     CPU buffers(since they occur after VERW).
-
-To fix this VERW needs to be moved very late in exit-to-user path.
-
-In preparation for moving VERW to entry/exit asm code, create macros
-that can be used in asm. Also make VERW patching depend on a new feature
-flag X86_FEATURE_CLEAR_CPU_BUF.
-
-Reported-by: Alyssa Milburn <alyssa.milburn@intel.com>
-Suggested-by: Andrew Cooper <andrew.cooper3@citrix.com>
-Suggested-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20240213-delay-verw-v8-1-a6216d83edb7%40linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202312071005.g6YrbaIe-lkp@intel.com/
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/entry/entry.S               |   23 +++++++++++++++++++++++
- arch/x86/include/asm/cpufeatures.h   |    2 +-
- arch/x86/include/asm/nospec-branch.h |   13 +++++++++++++
- 3 files changed, 37 insertions(+), 1 deletion(-)
+ fs/ntfs3/attrlist.c | 8 ++++----
+ fs/ntfs3/ntfs.h     | 2 --
+ 2 files changed, 4 insertions(+), 6 deletions(-)
 
---- a/arch/x86/entry/entry.S
-+++ b/arch/x86/entry/entry.S
-@@ -6,6 +6,9 @@
- #include <linux/linkage.h>
- #include <asm/export.h>
- #include <asm/msr-index.h>
-+#include <asm/unwind_hints.h>
-+#include <asm/segment.h>
-+#include <asm/cache.h>
+diff --git a/fs/ntfs3/attrlist.c b/fs/ntfs3/attrlist.c
+index 0c6a68e71e7d4..723e49ec83ce7 100644
+--- a/fs/ntfs3/attrlist.c
++++ b/fs/ntfs3/attrlist.c
+@@ -127,12 +127,13 @@ struct ATTR_LIST_ENTRY *al_enumerate(struct ntfs_inode *ni,
+ {
+ 	size_t off;
+ 	u16 sz;
++	const unsigned le_min_size = le_size(0);
  
- .pushsection .noinstr.text, "ax"
+ 	if (!le) {
+ 		le = ni->attr_list.le;
+ 	} else {
+ 		sz = le16_to_cpu(le->size);
+-		if (sz < sizeof(struct ATTR_LIST_ENTRY)) {
++		if (sz < le_min_size) {
+ 			/* Impossible 'cause we should not return such le. */
+ 			return NULL;
+ 		}
+@@ -141,7 +142,7 @@ struct ATTR_LIST_ENTRY *al_enumerate(struct ntfs_inode *ni,
  
-@@ -20,3 +23,23 @@ SYM_FUNC_END(entry_ibpb)
- EXPORT_SYMBOL_GPL(entry_ibpb);
+ 	/* Check boundary. */
+ 	off = PtrOffset(ni->attr_list.le, le);
+-	if (off + sizeof(struct ATTR_LIST_ENTRY) > ni->attr_list.size) {
++	if (off + le_min_size > ni->attr_list.size) {
+ 		/* The regular end of list. */
+ 		return NULL;
+ 	}
+@@ -149,8 +150,7 @@ struct ATTR_LIST_ENTRY *al_enumerate(struct ntfs_inode *ni,
+ 	sz = le16_to_cpu(le->size);
  
- .popsection
-+
-+/*
-+ * Define the VERW operand that is disguised as entry code so that
-+ * it can be referenced with KPTI enabled. This ensure VERW can be
-+ * used late in exit-to-user path after page tables are switched.
-+ */
-+.pushsection .entry.text, "ax"
-+
-+.align L1_CACHE_BYTES, 0xcc
-+SYM_CODE_START_NOALIGN(mds_verw_sel)
-+	UNWIND_HINT_UNDEFINED
-+	ANNOTATE_NOENDBR
-+	.word __KERNEL_DS
-+.align L1_CACHE_BYTES, 0xcc
-+SYM_CODE_END(mds_verw_sel);
-+/* For KVM */
-+EXPORT_SYMBOL_GPL(mds_verw_sel);
-+
-+.popsection
-+
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -97,7 +97,7 @@
- #define X86_FEATURE_SYSENTER32		( 3*32+15) /* "" sysenter in IA32 userspace */
- #define X86_FEATURE_REP_GOOD		( 3*32+16) /* REP microcode works well */
- #define X86_FEATURE_AMD_LBR_V2		( 3*32+17) /* AMD Last Branch Record Extension Version 2 */
--/* FREE, was #define X86_FEATURE_LFENCE_RDTSC		( 3*32+18) "" LFENCE synchronizes RDTSC */
-+#define X86_FEATURE_CLEAR_CPU_BUF	( 3*32+18) /* "" Clear CPU buffers using VERW */
- #define X86_FEATURE_ACC_POWER		( 3*32+19) /* AMD Accumulated Power Mechanism */
- #define X86_FEATURE_NOPL		( 3*32+20) /* The NOPL (0F 1F) instructions */
- #define X86_FEATURE_ALWAYS		( 3*32+21) /* "" Always-present feature */
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -329,6 +329,17 @@
- #endif
- .endm
+ 	/* Check le for errors. */
+-	if (sz < sizeof(struct ATTR_LIST_ENTRY) ||
+-	    off + sz > ni->attr_list.size ||
++	if (sz < le_min_size || off + sz > ni->attr_list.size ||
+ 	    sz < le->name_off + le->name_len * sizeof(short)) {
+ 		return NULL;
+ 	}
+diff --git a/fs/ntfs3/ntfs.h b/fs/ntfs3/ntfs.h
+index 8b580515b1d6e..ba26a465b3091 100644
+--- a/fs/ntfs3/ntfs.h
++++ b/fs/ntfs3/ntfs.h
+@@ -521,8 +521,6 @@ struct ATTR_LIST_ENTRY {
  
-+/*
-+ * Macro to execute VERW instruction that mitigate transient data sampling
-+ * attacks such as MDS. On affected systems a microcode update overloaded VERW
-+ * instruction to also clear the CPU buffers. VERW clobbers CFLAGS.ZF.
-+ *
-+ * Note: Only the memory operand variant of VERW clears the CPU buffers.
-+ */
-+.macro CLEAR_CPU_BUFFERS
-+	ALTERNATIVE "", __stringify(verw _ASM_RIP(mds_verw_sel)), X86_FEATURE_CLEAR_CPU_BUF
-+.endm
-+
- #else /* __ASSEMBLY__ */
+ }; // sizeof(0x20)
  
- #define ANNOTATE_RETPOLINE_SAFE					\
-@@ -545,6 +556,8 @@ DECLARE_STATIC_KEY_FALSE(switch_mm_cond_
- 
- DECLARE_STATIC_KEY_FALSE(mmio_stale_data_clear);
- 
-+extern u16 mds_verw_sel;
-+
- #include <asm/segment.h>
- 
- /**
+-static_assert(sizeof(struct ATTR_LIST_ENTRY) == 0x20);
+-
+ static inline u32 le_size(u8 name_len)
+ {
+ 	return ALIGN(offsetof(struct ATTR_LIST_ENTRY, name) +
+-- 
+2.43.0
+
 
 
 
