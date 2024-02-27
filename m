@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-24497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6B598694C9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:56:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC93A869619
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:08:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D04BB1C28126
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:56:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D797B25F50
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 007A213F006;
-	Tue, 27 Feb 2024 13:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E7CE13B7AB;
+	Tue, 27 Feb 2024 14:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pR6zIKYg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PHZP7FnF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28671419A9;
-	Tue, 27 Feb 2024 13:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1C713A26F;
+	Tue, 27 Feb 2024 14:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042168; cv=none; b=dkHfDf4H1aTFKbrb+taxVkE7se9hcoR/acEk8fLDun+zESzcvRgFVGeZnTZES1IPO1MjB8SXXyzwhPxOq0Au4tV9BgoopAMa39pp5UX1zZbFfTFy3QpjZ0X7WDfI0+fKToB0xqZ1myv+JorsE5jowV7CppesR3bt36iRyuiIYNY=
+	t=1709042879; cv=none; b=nipIGrdfEt6m1DDzjk24I3K0WDSgg/rjVM4nSGqVbA5lmNgLNp8FNfIYy6LOpqTb9kZocSL1vtgFjOED/ojnJrWhUFA6hRDPd09jwh817UbXtkVeWt40nsrL443Ro6HkystXJGImKiMj59Qzr77yzaM/8+wyLGRp/FbU0G2V2Ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042168; c=relaxed/simple;
-	bh=8KMYKH90w8KW/W6/mbhstpeXzu1L8OxVo8Qt0LNKG1A=;
+	s=arc-20240116; t=1709042879; c=relaxed/simple;
+	bh=m5hM/fbX5rGbICYVQv9by6VAMbSX6dmEItuJOBX4iPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ovH1NNek5QNq+HE863oU1buZoQtzzefHQcBs6b3l1kRvR/jNKBpfwDvSNrFy0eLmtgBU4N0sMMZ1AubvSkxKS8WXT8FJpOUFo0HJ6mZvEigdViAOOGKrXlZy/lBbAXLkzw7x+IdnEPUS7vx+1VU/caRX1y4byKdA9mi7Jm3vWJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pR6zIKYg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 409A0C433F1;
-	Tue, 27 Feb 2024 13:56:08 +0000 (UTC)
+	 MIME-Version; b=JImf3/aGTFeLqjPDIMEjT4iH0gm7FZPkOBhLgvr6/bNjY6uzZWsUubF4xgz4l5l+D1HTtK7OQupLiWZVnXTODSsn4Nz4jMi4XK6Bj1vB+kYMQ/iyK+oqJePzirApTU9yaaE9hMiQkSApsMygRi5XursGNj99fib6XcjtJwxjQEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PHZP7FnF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7699DC433C7;
+	Tue, 27 Feb 2024 14:07:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042168;
-	bh=8KMYKH90w8KW/W6/mbhstpeXzu1L8OxVo8Qt0LNKG1A=;
+	s=korg; t=1709042878;
+	bh=m5hM/fbX5rGbICYVQv9by6VAMbSX6dmEItuJOBX4iPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pR6zIKYgulA68vSv4Vhgih1ARwtFWbJRpG370C/Vw7Tym7tSpFpzBpvZ/jmr0GlO6
-	 JIrLd6+Jc+2crVeez2sShPhgJgmMzooCd0oPhNtyMRttbjyL37KBpYZmRv5riybIVk
-	 0dZn8BpupH3AQroqDRcZVWVEi8FAUxlOY23BsqoA=
+	b=PHZP7FnFMQLPguh1i2/zwK/wS72CUkgx4rVGWukvC9TSG+gTsVQAKXz2wAcUet1z1
+	 sqQW8NZC9KS+coP5o0pvctgovznTqmoi22W4H4jopbWSeYcxmZnPdGca5uuWwt53/+
+	 jCmVzzHMlyIT/ZsFTryh1duxiXKILxc+qKJiBvV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 203/299] selftests: mptcp: diag: unique in use subtest names
+	Randy Dunlap <rdunlap@infradead.org>,
+	Dengcheng Zhu <dzhu@wavecomp.com>,
+	Paul Burton <paulburton@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	linux-mips@vger.kernel.org,
+	Sergei Shtylyov <sergei.shtylyov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 126/245] MIPS: SMP-CPS: fix build error when HOTPLUG_CPU not set
 Date: Tue, 27 Feb 2024 14:25:14 +0100
-Message-ID: <20240227131632.338081773@linuxfoundation.org>
+Message-ID: <20240227131619.319400822@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +66,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-commit 645c1dc965ef6b5554e5e69737bb179c7a0f872f upstream.
+[ Upstream commit 6f02e39fa40f16c24e7a5c599a854c0d1682788d ]
 
-It is important to have a unique (sub)test name in TAP, because some CI
-environments drop tests with duplicated name.
+When MIPS_CPS=y, MIPS_CPS_PM is not set, HOTPLUG_CPU is not set, and
+KEXEC=y, cps_shutdown_this_cpu() attempts to call cps_pm_enter_state(),
+which is not built when MIPS_CPS_PM is not set.
+Conditionally execute the else branch based on CONFIG_HOTPLUG_CPU
+to remove the build error.
+This build failure is from a randconfig file.
 
-Some 'in use' subtests from the diag selftest had the same names, e.g.:
+mips-linux-ld: arch/mips/kernel/smp-cps.o: in function `$L162':
+smp-cps.c:(.text.cps_kexec_nonboot_cpu+0x31c): undefined reference to `cps_pm_enter_state'
 
-    chk 0 msk in use after flush
-
-Now the previous value is taken, to have different names, e.g.:
-
-    chk 2->0 msk in use after flush
-
-While at it, avoid repeating the full message, declare it once in the
-helper.
-
-Fixes: ce9902573652 ("selftests: mptcp: diag: format subtests results in TAP")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1447864bee4c ("MIPS: kexec: CPS systems to halt nonboot CPUs")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Dengcheng Zhu <dzhu@wavecomp.com>
+Cc: Paul Burton <paulburton@kernel.org>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: linux-mips@vger.kernel.org
+Cc: Sergei Shtylyov <sergei.shtylyov@gmail.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/diag.sh |   20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ arch/mips/kernel/smp-cps.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/diag.sh
-+++ b/tools/testing/selftests/net/mptcp/diag.sh
-@@ -166,9 +166,13 @@ chk_msk_listen()
- chk_msk_inuse()
- {
- 	local expected=$1
--	local msg="$2"
-+	local msg="....chk ${2:-${expected}} msk in use"
- 	local listen_nr
- 
-+	if [ "${expected}" -eq 0 ]; then
-+		msg+=" after flush"
-+	fi
-+
- 	listen_nr=$(ss -N "${ns}" -Ml | grep -c LISTEN)
- 	expected=$((expected + listen_nr))
- 
-@@ -179,7 +183,7 @@ chk_msk_inuse()
- 		sleep 0.1
- 	done
- 
--	__chk_nr get_msk_inuse $expected "$msg" 0
-+	__chk_nr get_msk_inuse $expected "${msg}" 0
+diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
+index bcd6a944b8397..f2df0cae1b4d9 100644
+--- a/arch/mips/kernel/smp-cps.c
++++ b/arch/mips/kernel/smp-cps.c
+@@ -424,9 +424,11 @@ static void cps_shutdown_this_cpu(enum cpu_death death)
+ 			wmb();
+ 		}
+ 	} else {
+-		pr_debug("Gating power to core %d\n", core);
+-		/* Power down the core */
+-		cps_pm_enter_state(CPS_PM_POWER_GATED);
++		if (IS_ENABLED(CONFIG_HOTPLUG_CPU)) {
++			pr_debug("Gating power to core %d\n", core);
++			/* Power down the core */
++			cps_pm_enter_state(CPS_PM_POWER_GATED);
++		}
+ 	}
  }
  
- # $1: ns, $2: port
-@@ -244,11 +248,11 @@ wait_connected $ns 10000
- chk_msk_nr 2 "after MPC handshake "
- chk_msk_remote_key_nr 2 "....chk remote_key"
- chk_msk_fallback_nr 0 "....chk no fallback"
--chk_msk_inuse 2 "....chk 2 msk in use"
-+chk_msk_inuse 2
- chk_msk_cestab 2
- flush_pids
- 
--chk_msk_inuse 0 "....chk 0 msk in use after flush"
-+chk_msk_inuse 0 "2->0"
- chk_msk_cestab 0
- 
- echo "a" | \
-@@ -264,11 +268,11 @@ echo "b" | \
- 				127.0.0.1 >/dev/null &
- wait_connected $ns 10001
- chk_msk_fallback_nr 1 "check fallback"
--chk_msk_inuse 1 "....chk 1 msk in use"
-+chk_msk_inuse 1
- chk_msk_cestab 1
- flush_pids
- 
--chk_msk_inuse 0 "....chk 0 msk in use after flush"
-+chk_msk_inuse 0 "1->0"
- chk_msk_cestab 0
- 
- NR_CLIENTS=100
-@@ -290,11 +294,11 @@ for I in `seq 1 $NR_CLIENTS`; do
- done
- 
- wait_msk_nr $((NR_CLIENTS*2)) "many msk socket present"
--chk_msk_inuse $((NR_CLIENTS*2)) "....chk many msk in use"
-+chk_msk_inuse $((NR_CLIENTS*2)) "many"
- chk_msk_cestab $((NR_CLIENTS*2))
- flush_pids
- 
--chk_msk_inuse 0 "....chk 0 msk in use after flush"
-+chk_msk_inuse 0 "many->0"
- chk_msk_cestab 0
- 
- mptcp_lib_result_print_all_tap
+-- 
+2.43.0
+
 
 
 
