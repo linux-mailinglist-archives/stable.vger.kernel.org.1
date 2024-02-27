@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-24461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50CC0869496
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:55:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C175869695
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:13:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0ADC8281BFB
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:55:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDC8C1C23166
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:13:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15BF913B7A0;
-	Tue, 27 Feb 2024 13:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57BAC145341;
+	Tue, 27 Feb 2024 14:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B0uFc/+9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wIvGZrzh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C675D13EFE9;
-	Tue, 27 Feb 2024 13:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14DBC1419B4;
+	Tue, 27 Feb 2024 14:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042068; cv=none; b=G6r16tY8fVwDJ9dPTlx+dFTnNsbBCFKzDhRFuqEWBpoqQ9meRSc5Swd48B5PszYGxiYpIFPxYHCq2s36OvSCKXJWhtPYb4OwtEAay7/8TP1UjtsV/uNlQDEfpbIOY0wWD5XOX2rShAQhsBJEimgozKnLLRV4yIvcyRFKgaWb/YU=
+	t=1709043183; cv=none; b=olkhkhC490qFSUVvsqsVd/Hiq6KxVGoxQhVsQ+nrbQ9B/yyU0ieyJ/gdpt6d63kU7WkpD6BdpSYiFtIBQ35SYRqFaWt+VftSK8782QyrPMB9NHnUkS32l2BfqJi/s/0uHRMVl2kg1lAnrejPXqh9u4mzc+r4uw5cOw2cGtOPjC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042068; c=relaxed/simple;
-	bh=IczSpMrQAuXycmiLz/mVygy8boBfPU43NqT2y7p8wVo=;
+	s=arc-20240116; t=1709043183; c=relaxed/simple;
+	bh=IgvvUiiKZAx+pVk3Bxw/MnMFGpDJchQqJ78xA5M80aY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UOJJUF1c3qKhfNLGXCeV1d1O/ROQaXL8jPalJGuEZnsw3I2RwYQVpoUyAVH0lEYRY+RqWeJiiM3Cp3kC8hOFj5EHwjeNkOiZ0e0B7eQACq592EAh5YJ3W1mrXqrXdhS4kvGLoKEbs7Ux0nfQqRoUjo/bdcwUP9COW5iNqRAarnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B0uFc/+9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B11C433C7;
-	Tue, 27 Feb 2024 13:54:28 +0000 (UTC)
+	 MIME-Version; b=uiqKKS4gdrPGZvsEfl7WNzQonDcZnfQESL5g6e7hE5+Nsfl/eZ28oRzNVAHmYQfttDmi1aMNlwigezC2YIehJmKf16rllEBhpuzHVQB6wnVF5ltKsSbCpEf+kvZMFwq1XYGhBfx/ywGh8DG5MPHicwg+tUQneq/KzbMA/1f0J20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wIvGZrzh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93C15C433C7;
+	Tue, 27 Feb 2024 14:13:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042068;
-	bh=IczSpMrQAuXycmiLz/mVygy8boBfPU43NqT2y7p8wVo=;
+	s=korg; t=1709043183;
+	bh=IgvvUiiKZAx+pVk3Bxw/MnMFGpDJchQqJ78xA5M80aY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B0uFc/+9sa2GDpQUPNKeeNVIYtXVv42MIAAfaWCFFN+6pCqGCE0xo0gGWqdpSVY4K
-	 j2mjh4eDTsxKFGA2VMZw3o6O9ZA/+LX8hKRqq0nA8dz/uEAYWU+NK1p7zA1wGwn3pn
-	 oVUfYgwvzgq7AuwbrfMXFTPNLXgl1wtJd+KwSHSA=
+	b=wIvGZrzh3SQnlSNtGUeUuuxosYyu49oWHfyXr4LdT5vh3aFqyv5Zv9jHSwZ2KRVas
+	 GjXIqOjCEjgGnxfIXMI3STHOR/cRmcEs8jzz7w3Vok5bmqyBZvsU4fwqLERUaYZQ7k
+	 2eP6XgATMNRIOi5zyV8gi4HhEkWDxqQ7/kpgqc+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 6.6 168/299] KVM: arm64: vgic-its: Test for valid IRQ in its_sync_lpi_pending_table()
+	syzbot+a532b03fdfee2c137666@syzkaller.appspotmail.com,
+	syzbot+63dec323ac56c28e644f@syzkaller.appspotmail.com,
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 018/195] block: Fix WARNING in _copy_from_iter
 Date: Tue, 27 Feb 2024 14:24:39 +0100
-Message-ID: <20240227131631.250930034@linuxfoundation.org>
+Message-ID: <20240227131610.998055305@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +65,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Upton <oliver.upton@linux.dev>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-commit 8d3a7dfb801d157ac423261d7cd62c33e95375f8 upstream.
+[ Upstream commit 13f3956eb5681a4045a8dfdef48df5dc4d9f58a6 ]
 
-vgic_get_irq() may not return a valid descriptor if there is no ITS that
-holds a valid translation for the specified INTID. If that is the case,
-it is safe to silently ignore it and continue processing the LPI pending
-table.
+Syzkaller reports a warning in _copy_from_iter because an
+iov_iter is supposedly used in the wrong direction. The reason
+is that syzcaller managed to generate a request with
+a transfer direction of SG_DXFER_TO_FROM_DEV. This instructs
+the kernel to copy user buffers into the kernel, read into
+the copied buffers and then copy the data back to user space.
 
-Cc: stable@vger.kernel.org
-Fixes: 33d3bc9556a7 ("KVM: arm64: vgic-its: Read initial LPI pending table")
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Link: https://lore.kernel.org/r/20240221092732.4126848-2-oliver.upton@linux.dev
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Thus the iovec is used in both directions.
+
+Detect this situation in the block layer and construct a new
+iterator with the correct direction for the copy-in.
+
+Reported-by: syzbot+a532b03fdfee2c137666@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/lkml/0000000000009b92c10604d7a5e9@google.com/t/
+Reported-by: syzbot+63dec323ac56c28e644f@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/lkml/0000000000003faaa105f6e7c658@google.com/T/
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20240121202634.275068-1-lk@c--e.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kvm/vgic/vgic-its.c |    3 +++
- 1 file changed, 3 insertions(+)
+ block/blk-map.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/kvm/vgic/vgic-its.c
-+++ b/arch/arm64/kvm/vgic/vgic-its.c
-@@ -462,6 +462,9 @@ static int its_sync_lpi_pending_table(st
- 		}
- 
- 		irq = vgic_get_irq(vcpu->kvm, NULL, intids[i]);
-+		if (!irq)
-+			continue;
+diff --git a/block/blk-map.c b/block/blk-map.c
+index 66da9e2b19abf..b337ae347bfa3 100644
+--- a/block/blk-map.c
++++ b/block/blk-map.c
+@@ -203,12 +203,19 @@ static int bio_copy_user_iov(struct request *rq, struct rq_map_data *map_data,
+ 	/*
+ 	 * success
+ 	 */
+-	if ((iov_iter_rw(iter) == WRITE &&
+-	     (!map_data || !map_data->null_mapped)) ||
+-	    (map_data && map_data->from_user)) {
++	if (iov_iter_rw(iter) == WRITE &&
++	     (!map_data || !map_data->null_mapped)) {
+ 		ret = bio_copy_from_iter(bio, iter);
+ 		if (ret)
+ 			goto cleanup;
++	} else if (map_data && map_data->from_user) {
++		struct iov_iter iter2 = *iter;
 +
- 		raw_spin_lock_irqsave(&irq->irq_lock, flags);
- 		irq->pending_latch = pendmask & (1U << bit_nr);
- 		vgic_queue_irq_unlock(vcpu->kvm, irq, flags);
++		/* This is the copy-in part of SG_DXFER_TO_FROM_DEV. */
++		iter2.data_source = ITER_SOURCE;
++		ret = bio_copy_from_iter(bio, &iter2);
++		if (ret)
++			goto cleanup;
+ 	} else {
+ 		if (bmd->is_our_pages)
+ 			zero_fill_bio(bio);
+-- 
+2.43.0
+
 
 
 
