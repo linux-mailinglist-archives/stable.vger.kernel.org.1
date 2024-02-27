@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38A4686960A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48D75869511
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:58:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E91D428A6A5
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AEC31C25699
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329CF1448C3;
-	Tue, 27 Feb 2024 14:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E95013DB9B;
+	Tue, 27 Feb 2024 13:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J3/VQXk/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yc1vZFKD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4476143C48;
-	Tue, 27 Feb 2024 14:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4BF140391;
+	Tue, 27 Feb 2024 13:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042851; cv=none; b=bp7q7gXRN81dKmVVAGWPpXarE2s+oDQ+/rsR8O5f2Spe95ihnLMBIzFfFCGyd6nXcziBlmnzo68BvH0tsq79UyI46MToIoSBWNHWXK0ySKCo1dEFMec4Pi1tUhtUTBEOpXAFMVmm2nd313MHCDZrrqNuvFUCb/wjg5IVxBUHP5w=
+	t=1709042303; cv=none; b=eDE7Sy/oTMV153pTqYc93/M6nXO32fABjzHhAnZGT5JfeMlOdj25nCKDVVrDn/bpYz1fIs6TT+opOlp7O/j9LOy9PUgb+4J9EMIGmX7v+9qwhKtQ5snD6rTcEwEruj4kQ6NmcEwNE60hUZrtA8qEKGEJxzwLw+oSyu80D++h1TE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042851; c=relaxed/simple;
-	bh=7hLPtZrYID6SR7Se62Lp1PGntql64XcUxAGCDzl4ht0=;
+	s=arc-20240116; t=1709042303; c=relaxed/simple;
+	bh=dTdgKysP7BpBxE46/y75pzYut0LrqINtJ47XEwFau08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e1eoO0O9rRdUMfEFUcwErJPsOSorJ9unPXsNwd79W2LeuBxjh2Paifmwi27XfsMw4HBqNLpY+q88fAamA+QzsrsliHs6NaAvlRxsf7W2PQ0/LW9wkRxyXxkSRZDa+5sZWR8DXVDx2VaIgvxYS5asOZ7r/+hE/QeFUauiJdTkxSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J3/VQXk/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 717B0C433F1;
-	Tue, 27 Feb 2024 14:07:30 +0000 (UTC)
+	 MIME-Version; b=XjQ7WbBJyYuqN+lMGN6bZSBCxEpujWYMKZYbgeuGpa9Zj2VU93NRR7ywyiJ5d9MJ/00n3t6FANmmclGyMpwn2Dxao1j9kX72BcTv1HbFxJ4ZFr2sCKLGp5z5xV0GzWDXSTXM5BJiL2Li2FT5cxJ+BdnIaWjwIACoowPNyr9XUv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yc1vZFKD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04C0C433F1;
+	Tue, 27 Feb 2024 13:58:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042850;
-	bh=7hLPtZrYID6SR7Se62Lp1PGntql64XcUxAGCDzl4ht0=;
+	s=korg; t=1709042303;
+	bh=dTdgKysP7BpBxE46/y75pzYut0LrqINtJ47XEwFau08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J3/VQXk/QnuoqKnpK3CoZwzl5vICxI8eXHy6DaEanDP2Rvq453ou6sQOlAeNsRV7f
-	 9GCNncwsUMCKxBsk5aXQZ6lN01n9MOop5az6QlCAp3GKWbd2stNfxn/fZP6eZSx4dr
-	 3YFotPiY3yW0pe9sY6SIxobcSY4UGSTf46WOvp1Q=
+	b=Yc1vZFKDThKzK0nHFEoICIsUWWjXHEkvKfABnXvijgS8LsV3MFxh7RGVgIUnymjXs
+	 nEiPWuDIW+SS8LjFBVHyMBzHFVK6hP5xjLu8o5XVuZrH2wp99IFnOoKs2RDB3NX43W
+	 jNUOGyG0FJKvevi8UEeoOTBLTQAdThTvhK5xjn0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Chuansheng Liu <chuansheng.liu@intel.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 143/245] drm/i915/dg1: Update DMC_DEBUG3 register
-Date: Tue, 27 Feb 2024 14:25:31 +0100
-Message-ID: <20240227131619.870675226@linuxfoundation.org>
+Subject: [PATCH 6.6 221/299] arm64: dts: tqma8mpql: fix audio codec iov-supply
+Date: Tue, 27 Feb 2024 14:25:32 +0100
+Message-ID: <20240227131632.880533770@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuansheng Liu <chuansheng.liu@intel.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit b60668cb4c57a7cc451de781ae49f5e9cc375eaf ]
+[ Upstream commit a620a7f2ae8b08c5beea6369f61e87064ee222dc ]
 
-Current DMC_DEBUG3(_MMIO(0x101090)) address is for TGL,
-it is wrong for DG1. Just like commit 5bcc95ca382e
-("drm/i915/dg1: Update DMC_DEBUG register"), correct
-this issue for DG1 platform to avoid wrong register
-being read.
+IOVDD is supplied by 1.8V, fix the referenced regulator.
 
-BSpec: 49788
-
-v2: fix "not wrong" typo. (Jani)
-
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Cc: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Chuansheng Liu <chuansheng.liu@intel.com>
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20220211002933.84240-1-chuansheng.liu@intel.com
+Fixes: d8f9d8126582d ("arm64: dts: imx8mp: Add analog audio output on i.MX8MP TQMa8MPxL/MBa8MPxL")
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_display_debugfs.c | 4 ++--
- drivers/gpu/drm/i915/i915_reg.h                      | 3 ++-
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ .../boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts     | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_display_debugfs.c b/drivers/gpu/drm/i915/display/intel_display_debugfs.c
-index b136a0fc0963b..6b3e2e053f457 100644
---- a/drivers/gpu/drm/i915/display/intel_display_debugfs.c
-+++ b/drivers/gpu/drm/i915/display/intel_display_debugfs.c
-@@ -571,8 +571,8 @@ static int i915_dmc_info(struct seq_file *m, void *unused)
- 		 * reg for DC3CO debugging and validation,
- 		 * but TGL DMC f/w is using DMC_DEBUG3 reg for DC3CO counter.
- 		 */
--		seq_printf(m, "DC3CO count: %d\n",
--			   intel_de_read(dev_priv, DMC_DEBUG3));
-+		seq_printf(m, "DC3CO count: %d\n", intel_de_read(dev_priv, IS_DGFX(dev_priv) ?
-+					DG1_DMC_DEBUG3 : TGL_DMC_DEBUG3));
- 	} else {
- 		dc5_reg = IS_BROXTON(dev_priv) ? BXT_DMC_DC3_DC5_COUNT :
- 						 SKL_DMC_DC3_DC5_COUNT;
-diff --git a/drivers/gpu/drm/i915/i915_reg.h b/drivers/gpu/drm/i915/i915_reg.h
-index 3c70aa5229e5a..906982d6370d0 100644
---- a/drivers/gpu/drm/i915/i915_reg.h
-+++ b/drivers/gpu/drm/i915/i915_reg.h
-@@ -7841,7 +7841,8 @@ enum {
- #define TGL_DMC_DEBUG_DC6_COUNT	_MMIO(0x101088)
- #define DG1_DMC_DEBUG_DC5_COUNT	_MMIO(0x134154)
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
+index 4240e20d38ac3..258e90cc16ff3 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
++++ b/arch/arm64/boot/dts/freescale/imx8mp-tqma8mpql-mba8mpxl.dts
+@@ -168,6 +168,13 @@
+ 		enable-active-high;
+ 	};
  
--#define DMC_DEBUG3		_MMIO(0x101090)
-+#define TGL_DMC_DEBUG3		_MMIO(0x101090)
-+#define DG1_DMC_DEBUG3		_MMIO(0x13415c)
++	reg_vcc_1v8: regulator-1v8 {
++		compatible = "regulator-fixed";
++		regulator-name = "VCC_1V8";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++	};
++
+ 	reg_vcc_3v3: regulator-3v3 {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "VCC_3V3";
+@@ -464,7 +471,7 @@
+ 		clock-names = "mclk";
+ 		clocks = <&audio_blk_ctrl IMX8MP_CLK_AUDIOMIX_SAI3_MCLK1>;
+ 		reset-gpios = <&gpio4 29 GPIO_ACTIVE_LOW>;
+-		iov-supply = <&reg_vcc_3v3>;
++		iov-supply = <&reg_vcc_1v8>;
+ 		ldoin-supply = <&reg_vcc_3v3>;
+ 	};
  
- /* Display Internal Timeout Register */
- #define RM_TIMEOUT		_MMIO(0x42060)
 -- 
 2.43.0
 
