@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB15D8695F0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28F848694BD
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:55:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 469421F2C1BB
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D67D0287E52
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:55:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA1E141995;
-	Tue, 27 Feb 2024 14:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0C6141995;
+	Tue, 27 Feb 2024 13:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YW11leTG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h00LjDGr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB7B13B2AC;
-	Tue, 27 Feb 2024 14:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8E713B2B4;
+	Tue, 27 Feb 2024 13:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042787; cv=none; b=bwcPDTtMwPnFtsOhzyzszcOBgKJnBkMy/gZvzGqNoDDHS0ZwBerOsxW5Yl3+qrHet9LDEarLiAbtwzSIihgEqPtwtR+Q+F6oq7evZFK2TnUyHGH8WCTw5vc1qFC8E49DFU1pPA+IpLn+NW/7GcuD2h0YgySvqmv6nnADaEdm4Lo=
+	t=1709042146; cv=none; b=VkJVn2i4F7w+h3TXWg3RsHgtfWt6dsxUSUIoVWofdPVRRjg5IwhtioWIdPJ9ZPymb1oUSow1B/mfAmbWOOscnjK8lcWLu2VPJUPXYUPY1vRiCTX120f2y/TzK/tVII8tyj3NezKCJsS5OJB4danlYbWFSu8hKgZKnnuax2R7OC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042787; c=relaxed/simple;
-	bh=jt3a02WhBWEK8pgcO6ByiVbl4cHwTsHRGUHARJBOXwQ=;
+	s=arc-20240116; t=1709042146; c=relaxed/simple;
+	bh=Slm3s59hg1PRsNJqwASP4rfHGRqDy/bz3oJZLuuvgzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HeUBfY7mep2SYgEjUS65rudK5vExv+BxlU61UWl93lQd1xfRPjxGUntE/ya1I/Gvds3jAAUC4W3+PTlcnFaiLFa+QFFzn2v5Qd2mBdWelQrnmwQwesoNpl6WfquigaO03rVd/fHXzl8kqjVSzR5IzF/8GUDNVYO+CDYE1zIS1NI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YW11leTG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB5C5C433F1;
-	Tue, 27 Feb 2024 14:06:26 +0000 (UTC)
+	 MIME-Version; b=SoeYQMq4TT3ITRaeCDnaAQ4x9VK5E2G0ZZ2n9C4AiJ9V7eiGajBb4or9315fIMGyEQEAlrZI6TLNt5IySJg8LJaQCsUzgjsc00N1X1bmMxDdDJ11lJzTGbxFKh4u5YpFIfnQC471LVV83NVNIsr2RhIzkCysKRp2LGbBLpOZc3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h00LjDGr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06158C433F1;
+	Tue, 27 Feb 2024 13:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042787;
-	bh=jt3a02WhBWEK8pgcO6ByiVbl4cHwTsHRGUHARJBOXwQ=;
+	s=korg; t=1709042146;
+	bh=Slm3s59hg1PRsNJqwASP4rfHGRqDy/bz3oJZLuuvgzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YW11leTGWpek6yUH5c0QBQ0POyfqIIZfnwBZ+loq0n+vCn3RUGWMwUjSL009NaXfx
-	 rnPqWGyq862S5sybrFAv0XBBTiC2ePLIB4RINAQqT9cowB/ae+V+DVF/5g/O/y4Gii
-	 Z4J0F36rC0mF1tWh7JNhwBI1qP9mKruiKpRIohiE=
+	b=h00LjDGru09ksSw1uYuSn2SfN3m0rnHj2rrgBY/8y9mf+8vDVz+oP7bSIvj1+Dtgd
+	 UtBr1pzQFxA6aEX1RkpKMn2a3Mwqm7BeDAWzfCNa604gl6BZCZ+3G/AyVLqeUGMGEl
+	 0dCq4KdIRhc92pi+JtebW9l5T/+SY7bCf2cPwjac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Jeffery <andrew@aj.id.au>,
-	Frederic Barrat <fbarrat@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 119/245] powerpc/powernv/ioda: Skip unallocated resources when mapping to PE
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 196/299] mptcp: fix duplicate subflow creation
 Date: Tue, 27 Feb 2024 14:25:07 +0100
-Message-ID: <20240227131619.096196215@linuxfoundation.org>
+Message-ID: <20240227131632.122571171@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frederic Barrat <fbarrat@linux.ibm.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit e64e71056f323a1e178dccf04d4c0f032d84436c ]
+commit 045e9d812868a2d80b7a57b224ce8009444b7bbc upstream.
 
-pnv_ioda_setup_pe_res() calls opal to map a resource with a PE. However,
-the code assumes the resource is allocated and it uses the resource
-address to find out the segment(s) which need to be mapped to the
-PE. In the unlikely case where the resource hasn't been allocated, the
-computation for the segment number is garbage, which can lead to
-invalid memory access and potentially a kernel crash, such as:
+Fullmesh endpoints could end-up unexpectedly generating duplicate
+subflows - same local and remote addresses - when multiple incoming
+ADD_ADDR are processed before the PM creates the subflow for the local
+endpoints.
 
-[ ] pci_bus 0002:02: Configuring PE for bus
-[ ] pci 0002:02     : [PE# fc] Secondary bus 0x0000000000000002..0x0000000000000002 associated with PE#fc
-[ ] BUG: Kernel NULL pointer dereference on write at 0x00000000
-[ ] Faulting instruction address: 0xc00000000005eac4
-[ ] Oops: Kernel access of bad area, sig: 7 [#1]
-[ ] LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA PowerNV
-[ ] Modules linked in:
-[ ] CPU: 12 PID: 1 Comm: swapper/20 Not tainted 5.10.50-openpower1 #2
-[ ] NIP:  c00000000005eac4 LR: c00000000005ea44 CTR: 0000000030061b9c
-[ ] REGS: c000200007383650 TRAP: 0300   Not tainted  (5.10.50-openpower1)
-[ ] MSR:  9000000000009033 <SF,HV,EE,ME,IR,DR,RI,LE>  CR: 44000224  XER: 20040000
-[ ] CFAR: c00000000005eaa0 DAR: 0000000000000000 DSISR: 02080000 IRQMASK: 0
-[ ] GPR00: c00000000005dd98 c0002000073838e0 c00000000185de00 c000200fff018960
-[ ] GPR04: 00000000000000fc 0000000000000003 0000000000000000 0000000000000000
-[ ] GPR08: 0000000000000000 0000000000000000 0000000000000000 9000000000001033
-[ ] GPR12: 0000000031cb0000 c000000ffffe6a80 c000000000010a58 0000000000000000
-[ ] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
-[ ] GPR20: 0000000000000000 0000000000000000 0000000000000000 c00000000711e200
-[ ] GPR24: 0000000000000100 c000200009501120 c00020000cee2800 00000000000003ff
-[ ] GPR28: c000200fff018960 0000000000000000 c000200ffcb7fd00 0000000000000000
-[ ] NIP [c00000000005eac4] pnv_ioda_setup_pe_res+0x94/0x1a0
-[ ] LR [c00000000005ea44] pnv_ioda_setup_pe_res+0x14/0x1a0
-[ ] Call Trace:
-[ ] [c0002000073838e0] [c00000000005eb98] pnv_ioda_setup_pe_res+0x168/0x1a0 (unreliable)
-[ ] [c000200007383970] [c00000000005dd98] pnv_pci_ioda_dma_dev_setup+0x43c/0x970
-[ ] [c000200007383a60] [c000000000032cdc] pcibios_bus_add_device+0x78/0x18c
-[ ] [c000200007383aa0] [c00000000028f2bc] pci_bus_add_device+0x28/0xbc
-[ ] [c000200007383b10] [c00000000028f3a0] pci_bus_add_devices+0x50/0x7c
-[ ] [c000200007383b50] [c00000000028f3c4] pci_bus_add_devices+0x74/0x7c
-[ ] [c000200007383b90] [c00000000028f3c4] pci_bus_add_devices+0x74/0x7c
-[ ] [c000200007383bd0] [c00000000069ad0c] pcibios_init+0xf0/0x104
-[ ] [c000200007383c50] [c0000000000106d8] do_one_initcall+0x84/0x1c4
-[ ] [c000200007383d20] [c0000000006910b8] kernel_init_freeable+0x264/0x268
-[ ] [c000200007383dc0] [c000000000010a68] kernel_init+0x18/0x138
-[ ] [c000200007383e20] [c00000000000cbfc] ret_from_kernel_thread+0x5c/0x80
-[ ] Instruction dump:
-[ ] 7f89e840 409d000c 7fbbf840 409c000c 38210090 4848f448 809c002c e95e0120
-[ ] 7ba91764 38a00003 57a7043e 38c00000 <7c8a492e> 5484043e e87e0018 4bff23bd
+Address the issue explicitly checking for duplicates at subflow
+creation time.
 
-Hitting the problem is not that easy. It was seen with a (semi-bogus)
-PCI device with a class code of 0. The generic PCI framework doesn't
-allocate resources in such a case.
+To avoid a quadratic computational complexity, track the unavailable
+remote address ids in a temporary bitmap and initialize such bitmap
+with the remote ids of all the existing subflows matching the local
+address currently processed.
 
-The patch is simply skipping resources which are still flagged with
-IORESOURCE_UNSET.
+The above allows additionally replacing the existing code checking
+for duplicate entry in the current set with a simple bit test
+operation.
 
-We don't have the problem with 64-bit mem resources, as the address of
-the resource is checked to be within the range of the 64-bit mmio
-window. See pnv_ioda_reserve_dev_m64_pe() and pnv_pci_is_m64().
-
-Reported-by: Andrew Jeffery <andrew@aj.id.au>
-Fixes: 23e79425fe7c ("powerpc/powernv: Simplify pnv_ioda_setup_pe_seg()")
-Signed-off-by: Frederic Barrat <fbarrat@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20230120093215.19496-1-fbarrat@linux.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2843ff6f36db ("mptcp: remote addresses fullmesh")
+Cc: stable@vger.kernel.org
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/435
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/powernv/pci-ioda.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mptcp/pm_netlink.c |   33 ++++++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index 624822a810193..8cf9e9f29763c 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -2334,7 +2334,8 @@ static void pnv_ioda_setup_pe_res(struct pnv_ioda_pe *pe,
- 	int index;
- 	int64_t rc;
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -396,19 +396,6 @@ void mptcp_pm_free_anno_list(struct mptc
+ 	}
+ }
  
--	if (!res || !res->flags || res->start > res->end)
-+	if (!res || !res->flags || res->start > res->end ||
-+	    res->flags & IORESOURCE_UNSET)
- 		return;
+-static bool lookup_address_in_vec(const struct mptcp_addr_info *addrs, unsigned int nr,
+-				  const struct mptcp_addr_info *addr)
+-{
+-	int i;
+-
+-	for (i = 0; i < nr; i++) {
+-		if (addrs[i].id == addr->id)
+-			return true;
+-	}
+-
+-	return false;
+-}
+-
+ /* Fill all the remote addresses into the array addrs[],
+  * and return the array size.
+  */
+@@ -440,6 +427,16 @@ static unsigned int fill_remote_addresse
+ 		msk->pm.subflows++;
+ 		addrs[i++] = remote;
+ 	} else {
++		DECLARE_BITMAP(unavail_id, MPTCP_PM_MAX_ADDR_ID + 1);
++
++		/* Forbid creation of new subflows matching existing
++		 * ones, possibly already created by incoming ADD_ADDR
++		 */
++		bitmap_zero(unavail_id, MPTCP_PM_MAX_ADDR_ID + 1);
++		mptcp_for_each_subflow(msk, subflow)
++			if (READ_ONCE(subflow->local_id) == local->id)
++				__set_bit(subflow->remote_id, unavail_id);
++
+ 		mptcp_for_each_subflow(msk, subflow) {
+ 			ssk = mptcp_subflow_tcp_sock(subflow);
+ 			remote_address((struct sock_common *)ssk, &addrs[i]);
+@@ -447,11 +444,17 @@ static unsigned int fill_remote_addresse
+ 			if (deny_id0 && !addrs[i].id)
+ 				continue;
  
- 	if (res->flags & IORESOURCE_IO) {
--- 
-2.43.0
-
++			if (test_bit(addrs[i].id, unavail_id))
++				continue;
++
+ 			if (!mptcp_pm_addr_families_match(sk, local, &addrs[i]))
+ 				continue;
+ 
+-			if (!lookup_address_in_vec(addrs, i, &addrs[i]) &&
+-			    msk->pm.subflows < subflows_max) {
++			if (msk->pm.subflows < subflows_max) {
++				/* forbid creating multiple address towards
++				 * this id
++				 */
++				__set_bit(addrs[i].id, unavail_id);
+ 				msk->pm.subflows++;
+ 				i++;
+ 			}
 
 
 
