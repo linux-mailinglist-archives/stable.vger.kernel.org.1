@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-24186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B71086931D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:42:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE5458693E2
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:49:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E395EB279C9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:41:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83E0F1F221C6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:49:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A2113B2B3;
-	Tue, 27 Feb 2024 13:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DAE31474D6;
+	Tue, 27 Feb 2024 13:47:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rLo/bx8y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aq/TIvUp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079802F2D;
-	Tue, 27 Feb 2024 13:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B0A1420C8;
+	Tue, 27 Feb 2024 13:47:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041275; cv=none; b=t3PkIiWckXbA9gz7x0DJcs1apBnpQ3SvMwMxuMgH3E5A+exsRq33m0RxG7sddgSQcX7YDXUV7ku3LX0Nr3NWZp9HoQFVqhw4LYl9P3ClxIlF14nwXmMymJw7zRZSOHjb00GpgBk/9XMDDRTK2GzSG+M6pU3W0rVRgqgnofx0/GI=
+	t=1709041649; cv=none; b=BddCiiAF7g1TmfUsnPRtDX/aNMX9HYwTIXm9axf2Pdp0xJ3UwPojYjnyT7cljvRLjEcX911UphtmxctxQ90ZhUBAUXILnnMcPRDKxOUkDQTPiMz9rpWrpQLeJ0zKfcy/xnEPUndPh5veBKMGMXZ/GW56IrTqfe1E3yvdTZcrg9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041275; c=relaxed/simple;
-	bh=DmPfHAf30jK81LTb5oXh/FlPcAogRxqFynMBoHInHqk=;
+	s=arc-20240116; t=1709041649; c=relaxed/simple;
+	bh=nw0/20MxZXuTSTm5jYy9oiQ732AcTs2QwpEpjgykd9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KJklixyfa1/uXOk4dDMccV2WQ/YCh/vWTEaVlW6+Cgn4xHjgB644jxcjx6FVb5zYE6p4FSsHmtEpHK9t7f6+d6nz744ekP7LojOGHIfEIjPJiNdov+shPZNwp1aHeFOwB23vCcmtsdmSCnq78ZJ6lnmPmuTAp3+YqVp/uPVLaX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rLo/bx8y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A732C433F1;
-	Tue, 27 Feb 2024 13:41:14 +0000 (UTC)
+	 MIME-Version; b=I2XDa4vVxC7L8yv6cEgwunAB9UHZqeIkvWyGWdIBMFvjGM7AGvK5weEiwGG/lrG8qzx4Axm5J8MWFbxLOCA7LnGkHnQuPwcblbUl2JUZfcB+5axWorJlz1Aqtxqx8ZdakYIOCkXSsIL0dpX3Po5Q7Y5WWU3JjG2aO44Z+OlE12w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aq/TIvUp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EEFFC433C7;
+	Tue, 27 Feb 2024 13:47:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041274;
-	bh=DmPfHAf30jK81LTb5oXh/FlPcAogRxqFynMBoHInHqk=;
+	s=korg; t=1709041649;
+	bh=nw0/20MxZXuTSTm5jYy9oiQ732AcTs2QwpEpjgykd9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rLo/bx8yPUWXe1sqJU/hK8W/8j4pwyhnyLMANBjCy9+NZxD3RilqKR8MHgdZzZZxF
-	 Cb5jM35Md5ioCg9ZKx4voZPeaSqtgHxNpZqW0DK/wlQ+k9mqW7prG8jVrJ1TwCCDAr
-	 eQjXTlot6F5SDTMHItpR3G3nocBz+GvMV6+AUeKI=
+	b=Aq/TIvUp6vi/jKYt/AaODbQj5iASsJ/LtUprpRHoeP5s9Fxy2tDE10mKaM4d3gWFN
+	 lwqoYAq2IHu0ts/sxOJ388oF2EW6u0FxWF3wv49WNifM5sm32co5GSY0zs/zHEcRuc
+	 fYbQAgQBXHIyL//uPjejpTEGFTAGV7Cv2Mnr+/FU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Tom Talpey <tom@talpey.com>,
+	linux-cifs@vger.kernel.org,
+	llvm@lists.linux.dev,
+	Kees Cook <keescook@chromium.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 274/334] selftests: bonding: set active slave to primary eth1 specifically
-Date: Tue, 27 Feb 2024 14:22:12 +0100
-Message-ID: <20240227131639.834998330@linuxfoundation.org>
+Subject: [PATCH 6.6 022/299] smb: Work around Clang __bdos() type confusion
+Date: Tue, 27 Feb 2024 14:22:13 +0100
+Message-ID: <20240227131626.544984138@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +70,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit cd65c48d66920457129584553f217005d09b1edb ]
+[ Upstream commit 8deb05c84b63b4fdb8549e08942867a68924a5b8 ]
 
-In bond priority testing, we set the primary interface to eth1 and add
-eth0,1,2 to bond in serial. This is OK in normal times. But when in
-debug kernel, the bridge port that eth0,1,2 connected would start
-slowly (enter blocking, forwarding state), which caused the primary
-interface down for a while after enslaving and active slave changed.
-Here is a test log from Jakub's debug test[1].
+Recent versions of Clang gets confused about the possible size of the
+"user" allocation, and CONFIG_FORTIFY_SOURCE ends up emitting a
+warning[1]:
 
- [  400.399070][   T50] br0: port 1(s0) entered disabled state
- [  400.400168][   T50] br0: port 4(s2) entered disabled state
- [  400.941504][ T2791] bond0: (slave eth0): making interface the new active one
- [  400.942603][ T2791] bond0: (slave eth0): Enslaving as an active interface with an up link
- [  400.943633][ T2766] br0: port 1(s0) entered blocking state
- [  400.944119][ T2766] br0: port 1(s0) entered forwarding state
- [  401.128792][ T2792] bond0: (slave eth1): making interface the new active one
- [  401.130771][ T2792] bond0: (slave eth1): Enslaving as an active interface with an up link
- [  401.131643][   T69] br0: port 2(s1) entered blocking state
- [  401.132067][   T69] br0: port 2(s1) entered forwarding state
- [  401.346201][ T2793] bond0: (slave eth2): Enslaving as a backup interface with an up link
- [  401.348414][   T50] br0: port 4(s2) entered blocking state
- [  401.348857][   T50] br0: port 4(s2) entered forwarding state
- [  401.519669][  T250] bond0: (slave eth0): link status definitely down, disabling slave
- [  401.526522][  T250] bond0: (slave eth1): link status definitely down, disabling slave
- [  401.526986][  T250] bond0: (slave eth2): making interface the new active one
- [  401.629470][  T250] bond0: (slave eth0): link status definitely up
- [  401.630089][  T250] bond0: (slave eth1): link status definitely up
- [...]
- # TEST: prio (active-backup ns_ip6_target primary_reselect 1)         [FAIL]
- # Current active slave is eth2 but not eth1
+repro.c:126:4: warning: call to '__write_overflow_field' declared with 'warning' attribute: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Wattribute-warning]
+  126 |                         __write_overflow_field(p_size_field, size);
+      |                         ^
 
-Fix it by setting active slave to primary slave specifically before
-testing.
+for this memset():
 
-[1] https://netdev-3.bots.linux.dev/vmksft-bonding-dbg/results/464301/1-bond-options-sh/stdout
+        int len;
+        __le16 *user;
+	...
+        len = ses->user_name ? strlen(ses->user_name) : 0;
+        user = kmalloc(2 + (len * 2), GFP_KERNEL);
+	...
+	if (len) {
+		...
+	} else {
+		memset(user, '\0', 2);
+	}
 
-Fixes: 481b56e0391e ("selftests: bonding: re-format bond option tests")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+While Clang works on this bug[2], switch to using a direct assignment,
+which avoids memset() entirely which both simplifies the code and silences
+the false positive warning. (Making "len" size_t also silences the
+warning, but the direct assignment seems better.)
+
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/1966 [1]
+Link: https://github.com/llvm/llvm-project/issues/77813 [2]
+Cc: Steve French <sfrench@samba.org>
+Cc: Paulo Alcantara <pc@manguebit.com>
+Cc: Ronnie Sahlberg <ronniesahlberg@gmail.com>
+Cc: Shyam Prasad N <sprasad@microsoft.com>
+Cc: Tom Talpey <tom@talpey.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: llvm@lists.linux.dev
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/drivers/net/bonding/bond_options.sh | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/smb/client/cifsencrypt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/drivers/net/bonding/bond_options.sh b/tools/testing/selftests/drivers/net/bonding/bond_options.sh
-index d508486cc0bdc..9a3d3c389dadd 100755
---- a/tools/testing/selftests/drivers/net/bonding/bond_options.sh
-+++ b/tools/testing/selftests/drivers/net/bonding/bond_options.sh
-@@ -62,6 +62,8 @@ prio_test()
+diff --git a/fs/smb/client/cifsencrypt.c b/fs/smb/client/cifsencrypt.c
+index ef4c2e3c9fa61..6322f0f68a176 100644
+--- a/fs/smb/client/cifsencrypt.c
++++ b/fs/smb/client/cifsencrypt.c
+@@ -572,7 +572,7 @@ static int calc_ntlmv2_hash(struct cifs_ses *ses, char *ntlmv2_hash,
+ 		len = cifs_strtoUTF16(user, ses->user_name, len, nls_cp);
+ 		UniStrupr(user);
+ 	} else {
+-		memset(user, '\0', 2);
++		*(u16 *)user = 0;
+ 	}
  
- 	# create bond
- 	bond_reset "${param}"
-+	# set active_slave to primary eth1 specifically
-+	ip -n ${s_ns} link set bond0 type bond active_slave eth1
- 
- 	# check bonding member prio value
- 	ip -n ${s_ns} link set eth0 type bond_slave prio 0
+ 	rc = crypto_shash_update(ses->server->secmech.hmacmd5,
 -- 
 2.43.0
 
