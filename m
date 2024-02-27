@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-24123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53DEB8692DE
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:39:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0982F8692CA
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:38:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B57DEB2F380
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:38:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A79C1C21A1C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:38:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C86D713DBBC;
-	Tue, 27 Feb 2024 13:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4599713DB9B;
+	Tue, 27 Feb 2024 13:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vrV9iNsi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BDWBk97P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D3313B293;
-	Tue, 27 Feb 2024 13:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0514513DB83;
+	Tue, 27 Feb 2024 13:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041096; cv=none; b=BmTgWtrJCt83r34rF/8EZ+vfZEXyG+Ip+xbkPrZHglMk43eEH1HSKrTBXlxtDbvxbAAkFjjtsFeMn9Qbf0MtTOKicSxiTdJ+JmG49VVTx74M6icc9RAs8R5KWu38VdLAP5B5T4Dvyzbb6zh3c1z1WdOfVkS0HHy+98rEFtn67O0=
+	t=1709041127; cv=none; b=C76OwHPy2kDMKWmGYj0vGixQwpgL2F/QaUR+DPu2MdCNbcTXLSs+WufBC7FA99G+K1mWZFojxhwWiKEU3YSTDa3H2zJKUgZ2NGBSAJAWYDFw2xVIcvGSJlcTskljtpM8LgfbuTxDD3JhhCGD22Uqji+DNJtQaOknkW8nzLDCSdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041096; c=relaxed/simple;
-	bh=V6Ma8Y+nIObyWiuq4eR984RK1raEjW45gjFrXHusESA=;
+	s=arc-20240116; t=1709041127; c=relaxed/simple;
+	bh=CiDLfkBzP6vn30WzsHVmWxwY6f6OYgofS+UrKadcCK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aHd6KTyvwgRA6H0avePSMUU8vDN3jx1CVbWLh2aZWjL3MUFZVpLu1rSx5o9UceMBCItKmzItSrAaLc7DsOaQBbt6sPpeIOtE8K2hjUZuHvzjx3zXXBUCbr5tRAywoMkla25ykrxN7XLCIRgmzgw6isvY9X0Fw8o+UsMMtETgDEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vrV9iNsi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19887C433F1;
-	Tue, 27 Feb 2024 13:38:15 +0000 (UTC)
+	 MIME-Version; b=dR7OnYqMsFHZMUHM7TlTiO5BvPrCXjQoRTFHPG9eTMVaOPTL40+wUcjdW99Ao7MQz4EyXhURHwOKMLbtgUevZR223HIEqmzgds+fotQAsiW5CWmLPiXweITqFXFAVPlz9mrFs6cnhC3+4PMy9jbUUn6qBdzNeTLilLceVeC88hM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BDWBk97P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 874B4C433F1;
+	Tue, 27 Feb 2024 13:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041096;
-	bh=V6Ma8Y+nIObyWiuq4eR984RK1raEjW45gjFrXHusESA=;
+	s=korg; t=1709041126;
+	bh=CiDLfkBzP6vn30WzsHVmWxwY6f6OYgofS+UrKadcCK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vrV9iNsixCoegoeVkveym1F6XSzyYcsbYSdsCdR6EZ8IueT8Fp+56hHJcOc9aZgJY
-	 7C0et7sGnaMOFo8HkiFd92/LeXlHKoABI2uiREn2dXfYbVNO+ZjpoSB2dZgfyt4/15
-	 D9sbf1EzwZ9nxaUw8KW6lUbqJe7bpZPquO2F4QKc=
+	b=BDWBk97POC0Q1E88ft7/t5VW+uThB4oM3xCnV9srfD7gxqu1VkhcUxtNaFmf632Ln
+	 QthTxdLxKehEns+xGvmvNQBG1qxvWAm4ekWqWZ2UVWl33sGRQPd4I8X69nm5vYeXOU
+	 23p0WLyeVLYOxYipMcHrIiyC+0JKiM58OBCXc54A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Xu Yang <xu.yang_2@nxp.com>,
 	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.7 211/334] usb: roles: fix NULL pointer issue when put modules reference
-Date: Tue, 27 Feb 2024 14:21:09 +0100
-Message-ID: <20240227131637.585783698@linuxfoundation.org>
+Subject: [PATCH 6.7 212/334] usb: roles: dont get/set_role() when usb_role_switch is unregistered
+Date: Tue, 27 Feb 2024 14:21:10 +0100
+Message-ID: <20240227131637.623869213@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
 References: <20240227131630.636392135@linuxfoundation.org>
@@ -67,95 +67,75 @@ Content-Transfer-Encoding: 8bit
 
 From: Xu Yang <xu.yang_2@nxp.com>
 
-commit 1c9be13846c0b2abc2480602f8ef421360e1ad9e upstream.
+commit b787a3e781759026a6212736ef8e52cf83d1821a upstream.
 
-In current design, usb role class driver will get usb_role_switch parent's
-module reference after the user get usb_role_switch device and put the
-reference after the user put the usb_role_switch device. However, the
-parent device of usb_role_switch may be removed before the user put the
-usb_role_switch. If so, then, NULL pointer issue will be met when the user
-put the parent module's reference.
+There is a possibility that usb_role_switch device is unregistered before
+the user put usb_role_switch. In this case, the user may still want to
+get/set_role() since the user can't sense the changes of usb_role_switch.
 
-This will save the module pointer in structure of usb_role_switch. Then,
-we don't need to find module by iterating long relations.
+This will add a flag to show if usb_role_switch is already registered and
+avoid unwanted behaviors.
 
-Fixes: 5c54fcac9a9d ("usb: roles: Take care of driver module reference counting")
+Fixes: fde0aa6c175a ("usb: common: Small class for USB role switches")
 cc: stable@vger.kernel.org
 Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
 Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240129093739.2371530-1-xu.yang_2@nxp.com
+Link: https://lore.kernel.org/r/20240129093739.2371530-2-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/roles/class.c |   17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/usb/roles/class.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
 --- a/drivers/usb/roles/class.c
 +++ b/drivers/usb/roles/class.c
-@@ -21,6 +21,7 @@ static const struct class role_class = {
- struct usb_role_switch {
- 	struct device dev;
+@@ -23,6 +23,7 @@ struct usb_role_switch {
  	struct mutex lock; /* device lock*/
-+	struct module *module; /* the module this device depends on */
+ 	struct module *module; /* the module this device depends on */
  	enum usb_role role;
++	bool registered;
  
  	/* From descriptor */
-@@ -135,7 +136,7 @@ struct usb_role_switch *usb_role_switch_
- 						  usb_role_switch_match);
+ 	struct device *usb2_port;
+@@ -49,6 +50,9 @@ int usb_role_switch_set_role(struct usb_
+ 	if (IS_ERR_OR_NULL(sw))
+ 		return 0;
  
- 	if (!IS_ERR_OR_NULL(sw))
--		WARN_ON(!try_module_get(sw->dev.parent->driver->owner));
-+		WARN_ON(!try_module_get(sw->module));
++	if (!sw->registered)
++		return -EOPNOTSUPP;
++
+ 	mutex_lock(&sw->lock);
  
- 	return sw;
- }
-@@ -157,7 +158,7 @@ struct usb_role_switch *fwnode_usb_role_
- 		sw = fwnode_connection_find_match(fwnode, "usb-role-switch",
- 						  NULL, usb_role_switch_match);
- 	if (!IS_ERR_OR_NULL(sw))
--		WARN_ON(!try_module_get(sw->dev.parent->driver->owner));
-+		WARN_ON(!try_module_get(sw->module));
- 
- 	return sw;
- }
-@@ -172,7 +173,7 @@ EXPORT_SYMBOL_GPL(fwnode_usb_role_switch
- void usb_role_switch_put(struct usb_role_switch *sw)
+ 	ret = sw->set(sw, role);
+@@ -74,7 +78,7 @@ enum usb_role usb_role_switch_get_role(s
  {
- 	if (!IS_ERR_OR_NULL(sw)) {
--		module_put(sw->dev.parent->driver->owner);
-+		module_put(sw->module);
- 		put_device(&sw->dev);
+ 	enum usb_role role;
+ 
+-	if (IS_ERR_OR_NULL(sw))
++	if (IS_ERR_OR_NULL(sw) || !sw->registered)
+ 		return USB_ROLE_NONE;
+ 
+ 	mutex_lock(&sw->lock);
+@@ -357,6 +361,8 @@ usb_role_switch_register(struct device *
+ 		return ERR_PTR(ret);
  	}
- }
-@@ -189,15 +190,18 @@ struct usb_role_switch *
- usb_role_switch_find_by_fwnode(const struct fwnode_handle *fwnode)
+ 
++	sw->registered = true;
++
+ 	/* TODO: Symlinks for the host port and the device controller. */
+ 
+ 	return sw;
+@@ -371,8 +377,10 @@ EXPORT_SYMBOL_GPL(usb_role_switch_regist
+  */
+ void usb_role_switch_unregister(struct usb_role_switch *sw)
  {
- 	struct device *dev;
-+	struct usb_role_switch *sw = NULL;
- 
- 	if (!fwnode)
- 		return NULL;
- 
- 	dev = class_find_device_by_fwnode(&role_class, fwnode);
--	if (dev)
--		WARN_ON(!try_module_get(dev->parent->driver->owner));
-+	if (dev) {
-+		sw = to_role_switch(dev);
-+		WARN_ON(!try_module_get(sw->module));
+-	if (!IS_ERR_OR_NULL(sw))
++	if (!IS_ERR_OR_NULL(sw)) {
++		sw->registered = false;
+ 		device_unregister(&sw->dev);
 +	}
- 
--	return dev ? to_role_switch(dev) : NULL;
-+	return sw;
  }
- EXPORT_SYMBOL_GPL(usb_role_switch_find_by_fwnode);
+ EXPORT_SYMBOL_GPL(usb_role_switch_unregister);
  
-@@ -338,6 +342,7 @@ usb_role_switch_register(struct device *
- 	sw->set = desc->set;
- 	sw->get = desc->get;
- 
-+	sw->module = parent->driver->owner;
- 	sw->dev.parent = parent;
- 	sw->dev.fwnode = desc->fwnode;
- 	sw->dev.class = &role_class;
 
 
 
