@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCA3886973F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:19:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC5F7869820
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:29:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 776CB288124
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:19:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78477294287
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:29:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816171419A1;
-	Tue, 27 Feb 2024 14:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD4FD145B01;
+	Tue, 27 Feb 2024 14:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RaJs3zYR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pGB36+eS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB5F78B61;
-	Tue, 27 Feb 2024 14:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AB98145356;
+	Tue, 27 Feb 2024 14:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043569; cv=none; b=rWWHgT/dzvKct1q/fiLFWWSlNHOYFMZYtv8/qiTodna6Grj5+mC5tmh6E7+7Ut5xNIDk9EDJKcNiGjOa6EqfR39VWZDWcwM233FHa1OuFmI5DknupkFqSFGoMudPQ46ACfwateuMrATVuBwykIqHj6QNaGfav9VJGoo2aTIWT48=
+	t=1709044078; cv=none; b=UM9hJzX9SoCDhYgwqKeT2id1ZXsAw3v/baFMzC1Pm8CocOQ92Y5WQlDpMw7aeuZrWzoc2BR8+Pe09ocoJ/q+GKEXIjtrUHwlPsO3aAMAkFi2fqtJ/CC7d+3NjBYyQQ/LuUytsAcOth1ai/W456gtBeOzdLQGavHxc/af0SohdiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043569; c=relaxed/simple;
-	bh=iSIrMGASVnfSA6HbP8HQM0hy3AO0FmYARCzc+y2lgWQ=;
+	s=arc-20240116; t=1709044078; c=relaxed/simple;
+	bh=s8OaApCdEFGh7MMABZbmwSGTxRZ/m1kubGcoyHJhWm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KBT73ro/KjM7YNN9+jjkrGGmhSvVIhH2JGq33pSVzrAZf3LL77TT6D7C5xuppvEaK1Wmc/fGz8XsQo5HiZpDnd5+5SXHGGYUmyx20P8rMHdDTgq/1BMKCGLysA4RRL+gKtm/wd4s1aHGJTHJySRjXbCCzGtUQJe17z0NEq+HQXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RaJs3zYR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C267BC433C7;
-	Tue, 27 Feb 2024 14:19:28 +0000 (UTC)
+	 MIME-Version; b=f2Zv/xQUUQ4Uwk8rrJadgGgTeZxPA4WJGxI3hJg5wotN0qFocjMn/2FEx+V/SLR3WB6BxjkpUCo5p4GObHAp7gabKVgaxy9spxFew2jPBSMFApH2PBI6xPkGQ1fzyRtIiQ5gGMHP41MOiaDJHgpL1Pjl20W/4WeSVKQB9wHDT+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pGB36+eS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E9D8C433C7;
+	Tue, 27 Feb 2024 14:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043569;
-	bh=iSIrMGASVnfSA6HbP8HQM0hy3AO0FmYARCzc+y2lgWQ=;
+	s=korg; t=1709044078;
+	bh=s8OaApCdEFGh7MMABZbmwSGTxRZ/m1kubGcoyHJhWm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RaJs3zYRuZT3bWH8ogAaRgUHGZN5tQ9G18rv6dqh0D4CDjHbTCDtcAXobISo8I1AF
-	 zWMQxW+LTNMmpiWpYmnNnp16GNoa3ZBDIJgosy3WVJxPYW50NvGXJgU5obZfScKADV
-	 sS/kW14sWbc1Ia6QTZ8zOcbyJ3fZLJnlenAI/KFo=
+	b=pGB36+eS7c8rM70cDLZ4ICpn8jpfjlgm60EsF0ZtfwlJYW/U2mLPor4rgM2kuAp2L
+	 HFhvV+1LsYePzZhgSdDEA2oA5qXJYxWqw/2McxVw3/0JZ9/mafwz7vz5dxb3kjVL9Q
+	 dntWTziQfZ7xMs/ADt8zjH2yaJQNmkxWmPKPfG8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Bharath SM <bharathsm@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 155/195] ipv6: properly combine dev_base_seq and ipv6.dev_addr_genid
+Subject: [PATCH 5.10 055/122] cifs: add a warning when the in-flight count goes negative
 Date: Tue, 27 Feb 2024 14:26:56 +0100
-Message-ID: <20240227131615.536290462@linuxfoundation.org>
+Message-ID: <20240227131600.508814013@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit e898e4cd1aab271ca414f9ac6e08e4c761f6913c ]
+[ Upstream commit e4645cc2f1e2d6f268bb8dcfac40997c52432aed ]
 
-net->dev_base_seq and ipv6.dev_addr_genid are monotonically increasing.
+We've seen the in-flight count go into negative with some
+internal stress testing in Microsoft.
 
-If we XOR their values, we could miss to detect if both values
-were changed with the same amount.
+Adding a WARN when this happens, in hope of understanding
+why this happens when it happens.
 
-Fixes: 63998ac24f83 ("ipv6: provide addr and netconf dump consistency info")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Reviewed-by: Bharath SM <bharathsm@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/addrconf.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ fs/cifs/smb2ops.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index b8dc20fe7a4e2..46527b5cc8f0c 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -706,6 +706,22 @@ static int inet6_netconf_get_devconf(struct sk_buff *in_skb,
- 	return err;
- }
- 
-+/* Combine dev_addr_genid and dev_base_seq to detect changes.
-+ */
-+static u32 inet6_base_seq(const struct net *net)
-+{
-+	u32 res = atomic_read(&net->ipv6.dev_addr_genid) +
-+		  net->dev_base_seq;
-+
-+	/* Must not return 0 (see nl_dump_check_consistent()).
-+	 * Chose a value far away from 0.
-+	 */
-+	if (!res)
-+		res = 0x80000000;
-+	return res;
-+}
-+
-+
- static int inet6_netconf_dump_devconf(struct sk_buff *skb,
- 				      struct netlink_callback *cb)
- {
-@@ -739,8 +755,7 @@ static int inet6_netconf_dump_devconf(struct sk_buff *skb,
- 		idx = 0;
- 		head = &net->dev_index_head[h];
- 		rcu_read_lock();
--		cb->seq = atomic_read(&net->ipv6.dev_addr_genid) ^
--			  net->dev_base_seq;
-+		cb->seq = inet6_base_seq(net);
- 		hlist_for_each_entry_rcu(dev, head, index_hlist) {
- 			if (idx < s_idx)
- 				goto cont;
-@@ -5326,7 +5341,7 @@ static int inet6_dump_addr(struct sk_buff *skb, struct netlink_callback *cb,
+diff --git a/fs/cifs/smb2ops.c b/fs/cifs/smb2ops.c
+index f83901c1c17a5..b2a7238a34221 100644
+--- a/fs/cifs/smb2ops.c
++++ b/fs/cifs/smb2ops.c
+@@ -82,6 +82,7 @@ smb2_add_credits(struct TCP_Server_Info *server,
+ 		*val = 65000; /* Don't get near 64K credits, avoid srv bugs */
+ 		pr_warn_once("server overflowed SMB3 credits\n");
  	}
- 
- 	rcu_read_lock();
--	cb->seq = atomic_read(&tgt_net->ipv6.dev_addr_genid) ^ tgt_net->dev_base_seq;
-+	cb->seq = inet6_base_seq(tgt_net);
- 	for (h = s_h; h < NETDEV_HASHENTRIES; h++, s_idx = 0) {
- 		idx = 0;
- 		head = &tgt_net->dev_index_head[h];
++	WARN_ON_ONCE(server->in_flight == 0);
+ 	server->in_flight--;
+ 	if (server->in_flight == 0 && (optype & CIFS_OP_MASK) != CIFS_NEG_OP)
+ 		rc = change_conf(server);
 -- 
 2.43.0
 
