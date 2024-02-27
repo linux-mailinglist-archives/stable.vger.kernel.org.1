@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE07586962C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:08:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C7C8869364
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:44:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 782471F2D0F3
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:08:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E6CE1C20F6A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:44:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C7A913B78E;
-	Tue, 27 Feb 2024 14:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D741313F006;
+	Tue, 27 Feb 2024 13:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jad901kV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KBnBmnom"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C1913AA43;
-	Tue, 27 Feb 2024 14:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93AC613B2B3;
+	Tue, 27 Feb 2024 13:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042934; cv=none; b=H7NPy4bnZV6OB5GXXeRRmRUyTKb2915euTBRJpMyvQj8VnraWCQmtCNzO/Df7XTBC9q14MMxEs9dcurqz9+WupPi7aUl2OKL2iZFhKBLe3v4skhd/WsO4Zh9Y/w2VSPnZuzQH1I590+wsuSsVl6SAaYSV783e3uOcQxMdaE2VL4=
+	t=1709041463; cv=none; b=N+2n6ITGf76HxUhxiciVz0dObVyr4GtzQPBLkeegPJ6T1Eldlp+WxHHow/Z0V8imOz8cf3T5kkb77BuyqONOYigF3SaF+aGci5Q88+O9+O4J6DRZvLWVct9EEZS8i96shvBEvk/0334w5XABUdweI44Bos/fNDEiTeppv5QobV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042934; c=relaxed/simple;
-	bh=5fF8TzDugn2BDbLOI50RwUpYGh+gPzxITF3/CREyfLU=;
+	s=arc-20240116; t=1709041463; c=relaxed/simple;
+	bh=Yse57UIN1lnGb5HOsGqWW77REOlHGFVkU44kguHZUXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ceccHUMduIBCZrH491GZ+P00j+k9R4mIY05TwhzibOc+WaJjYd0RZynzBdlp3U3VtNvp0nnZNUHGWLBKURJPLmKFzVT2Ap4q6AqfC5sEcE92VkEeTrvzoMKvDV8iCLXQHxZt/M3ni07PkId5tDyV3kSTwW/k0sKIpkL+7cUi52Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jad901kV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2F07C433F1;
-	Tue, 27 Feb 2024 14:08:53 +0000 (UTC)
+	 MIME-Version; b=ah4zBWHBtR4doJcJXM4AWDA/9k5OVfXviLuqekYBtFfpmpPqPzKzP0TzvOUt81qyvztwQlmL95fx8vLCkmnq4aldEdI5g5xsppE15mlXrl8hypvbgGus4QJxrg8bmV2S8K1xgUrg4dHsVL/lCw3jc9N2Mz2z4a70Pbh0A8AZQ3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KBnBmnom; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 142F9C433A6;
+	Tue, 27 Feb 2024 13:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042934;
-	bh=5fF8TzDugn2BDbLOI50RwUpYGh+gPzxITF3/CREyfLU=;
+	s=korg; t=1709041463;
+	bh=Yse57UIN1lnGb5HOsGqWW77REOlHGFVkU44kguHZUXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jad901kVdlbc19ZaRGI9/chFAAFbb5zVEd53SW59BOWqWEOFVcgcBFh+gcECwnW7A
-	 /BKQGros30LFjAHKR0yZP+STWSxbtVeJwtmpq4M4VWNyErDkP9nOUhiExIsY6sGQ1Z
-	 ZcqgaqszCr+mB7Ujb2IujbrMCF/8tRVd+SUCy7C8=
+	b=KBnBmnomcITeEIxHcQxYN9bQgpwn0MXppjr6t3TUbqopQrHmfEYS5/LKZLUWyC3/w
+	 /xHNSeiQOAywlLup8WG9Z9Nsw6fwthqKL+yPzZls7qeVHulBhN45hZMNNvcJ8NIvLa
+	 Tjs58by+cZaAJKu8DehpDoUjcjt+RiCL7LNdBXlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Michal Kazior <michal@plume.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 173/245] ACPI: video: Add backlight=native DMI quirk for Lenovo ThinkPad X131e (3371 AMD version)
+Subject: [PATCH 4.19 14/52] wifi: cfg80211: fix missing interfaces when dumping
 Date: Tue, 27 Feb 2024 14:26:01 +0100
-Message-ID: <20240227131620.835435140@linuxfoundation.org>
+Message-ID: <20240227131549.001355032@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
+References: <20240227131548.514622258@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Michal Kazior <michal@plume.com>
 
-[ Upstream commit bd5d93df86a7ddf98a2a37e9c3751e3cb334a66c ]
+[ Upstream commit a6e4f85d3820d00694ed10f581f4c650445dbcda ]
 
-Linux defaults to picking the non-working ACPI video backlight interface
-on the Lenovo ThinkPad X131e (3371 AMD version).
+The nl80211_dump_interface() supports resumption
+in case nl80211_send_iface() doesn't have the
+resources to complete its work.
 
-Add a DMI quirk to pick the working native radeon_bl0 interface instead.
+The logic would store the progress as iteration
+offsets for rdev and wdev loops.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+However the logic did not properly handle
+resumption for non-last rdev. Assuming a system
+with 2 rdevs, with 2 wdevs each, this could
+happen:
+
+ dump(cb=[0, 0]):
+  if_start=cb[1] (=0)
+  send rdev0.wdev0 -> ok
+  send rdev0.wdev1 -> yield
+  cb[1] = 1
+
+ dump(cb=[0, 1]):
+  if_start=cb[1] (=1)
+  send rdev0.wdev1 -> ok
+  // since if_start=1 the rdev0.wdev0 got skipped
+  // through if_idx < if_start
+  send rdev1.wdev1 -> ok
+
+The if_start needs to be reset back to 0 upon wdev
+loop end.
+
+The problem is actually hard to hit on a desktop,
+and even on most routers. The prerequisites for
+this manifesting was:
+ - more than 1 wiphy
+ - a few handful of interfaces
+ - dump without rdev or wdev filter
+
+I was seeing this with 4 wiphys 9 interfaces each.
+It'd miss 6 interfaces from the last wiphy
+reported to userspace.
+
+Signed-off-by: Michal Kazior <michal@plume.com>
+Link: https://msgid.link/20240116142340.89678-1-kazikcz@gmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/video_detect.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/wireless/nl80211.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index be923911e87c1..28e816be4753e 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -341,6 +341,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "82BK"),
- 		},
- 	},
-+	{
-+	 .callback = video_detect_force_native,
-+	 /* Lenovo ThinkPad X131e (3371 AMD version) */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "3371"),
-+		},
-+	},
- 	{
- 	 .callback = video_detect_force_native,
- 	 /* Apple iMac11,3 */
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index e33c1175b1582..f79700e5d801a 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -2994,6 +2994,7 @@ static int nl80211_dump_interface(struct sk_buff *skb, struct netlink_callback *
+ 			if_idx++;
+ 		}
+ 
++		if_start = 0;
+ 		wp_idx++;
+ 	}
+  out:
 -- 
 2.43.0
 
