@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 957AA869684
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:12:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A8DF8697C8
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:25:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DFF4294998
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:12:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF3D71F2B1AF
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:25:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6287F13B2B4;
-	Tue, 27 Feb 2024 14:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20F891420B3;
+	Tue, 27 Feb 2024 14:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fR+qDAlt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2tN8EMDK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2268413EFE4;
-	Tue, 27 Feb 2024 14:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C7D141995;
+	Tue, 27 Feb 2024 14:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043146; cv=none; b=FuoF8fXXPB0iuq+W8Ep49F2PaQNZdJQm8Tf9nKQ7wK1LbEBbXGF6Tj3FrY/3Fytnf0PI61L7i2rQyIuuX8ZlVX2x6LgM+Vctp2fxjp9ws5Ebvp7HZGX23nSULzNvh8vz+b/gnedVTh5+MVOFQX/9n1HGCTg2yAfzLbiLwkzZ8Q8=
+	t=1709043892; cv=none; b=sjruTVdxPUEe901tUhtN5Fdv8go7OA90Iv8VH3sfHu0zrVNiWS6pUyGd5a7Sn0bWwP0Jvz2MCHLbqmictGeP+VMKABIL8rwS5bkckqaatWVhIPMipB/344lfEZpNeZIvy+oroalCYnpq2rS++29USKLd85usZVthDBpyagl2uG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043146; c=relaxed/simple;
-	bh=WDXfQrS5jfCQwWmjyaN8yOf28Z3EidPI/6R/TDWbt+0=;
+	s=arc-20240116; t=1709043892; c=relaxed/simple;
+	bh=uNeeonUj0LqDImFV/kgqpylNNPbKLjAruc2+7Sqpnjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DA5pSMZiMBVGZJwaXSr6yz6kBb+2ri0AjiQASC8MnU5TCs29QTsOqe9boPJQDqeUREdYrkJJW9xlZtMBpNMXFFM7Z3QAPhQ3GdBRfVWNpzAyNszHxQ1kaft0t1Ukc3hBSyyko4P1JDgtkHDcVAzeKXJy/ZPoEhbYHZ1Q0Oud5bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fR+qDAlt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0871C433C7;
-	Tue, 27 Feb 2024 14:12:25 +0000 (UTC)
+	 MIME-Version; b=LC5NK1KZ7wwAap92PbVDR/D3wJfHl3UB3GQxB/7TMDusHeA9fMr+QVCHWYX1iuSjQuR2LoOFfHOp2ZL1OpkeEieAM326jjBQJCcm3OdkltbXiksnrWrM893Wi2itJZKF+ZcMBVJBrnORPvyimONftlRDnlGCi1vsMALUPqrFY24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2tN8EMDK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08E7BC433F1;
+	Tue, 27 Feb 2024 14:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043146;
-	bh=WDXfQrS5jfCQwWmjyaN8yOf28Z3EidPI/6R/TDWbt+0=;
+	s=korg; t=1709043892;
+	bh=uNeeonUj0LqDImFV/kgqpylNNPbKLjAruc2+7Sqpnjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fR+qDAltpLwa5vYWCFqVTSACqjyOWoBRsooaQPGVu0yWg/5mDJwFRPE7MtMK+yPoP
-	 d+Hmn8pnkwXQL05OOrSMNCacri1Gu7XJ67WDLHZyJev/zJ85gN7PduPxcNi87FxqDk
-	 o+PUv309jWUqOMNw3QyWXBl93xGvJHUFJhjaJiV4=
+	b=2tN8EMDKMCfWkZuko2tR/ve4t4k2kxRQ3n6eExISusfr648s7tYIWGebhleL31Vkv
+	 nSkhQmQBfTTmQCeeZ58pwDWWSZ0L8+gmikcfiXtAGYaQXlebN9OXOf4++8xGdjP3Kk
+	 y84oVMkbyVCBZX2jjk4orFXhO9jQdNlSP4NYSyJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.15 243/245] ext4: regenerate buddy after block freeing failed if under fc replay
+	Icenowy Zheng <icenowy@aosc.io>,
+	Jagan Teki <jagan@amarulasolutions.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 44/84] Revert "drm/sun4i: dsi: Change the start delay calculation"
 Date: Tue, 27 Feb 2024 14:27:11 +0100
-Message-ID: <20240227131623.053867690@linuxfoundation.org>
+Message-ID: <20240227131554.307138711@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Icenowy Zheng <icenowy@aosc.io>
 
-commit c9b528c35795b711331ed36dc3dbee90d5812d4e upstream.
+[ Upstream commit a00d17e0a71ae2e4fdaac46e1c12785d3346c3f2 ]
 
-This mostly reverts commit 6bd97bf273bd ("ext4: remove redundant
-mb_regenerate_buddy()") and reintroduces mb_regenerate_buddy(). Based on
-code in mb_free_blocks(), fast commit replay can end up marking as free
-blocks that are already marked as such. This causes corruption of the
-buddy bitmap so we need to regenerate it in that case.
+This reverts commit da676c6aa6413d59ab0a80c97bbc273025e640b2.
 
-Reported-by: Jan Kara <jack@suse.cz>
-Fixes: 6bd97bf273bd ("ext4: remove redundant mb_regenerate_buddy()")
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240104142040.2835097-4-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The original commit adds a start parameter to the calculation of the
+start delay according to some old BSP versions from Allwinner. However,
+there're two ways to add this delay -- add it in DSI controller or add
+it in the TCON. Add it in both controllers won't work.
+
+The code before this commit is picked from new versions of BSP kernel,
+which has a comment for the 1 that says "put start_delay to tcon". By
+checking the sun4i_tcon0_mode_set_cpu() in sun4i_tcon driver, it has
+already added this delay, so we shouldn't repeat to add the delay in DSI
+controller, otherwise the timing won't match.
+
+Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
+Reviewed-by: Jagan Teki <jagan@amarulasolutions.com>
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20191001080253.6135-2-icenowy@aosc.io
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c |   20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1168,6 +1168,24 @@ void ext4_mb_generate_buddy(struct super
- 	mb_update_avg_fragment_size(sb, grp);
- }
+diff --git a/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c b/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
+index f2b288037b909..a18efd3055199 100644
+--- a/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
++++ b/drivers/gpu/drm/sun4i/sun6i_mipi_dsi.c
+@@ -365,8 +365,7 @@ static void sun6i_dsi_inst_init(struct sun6i_dsi *dsi,
+ static u16 sun6i_dsi_get_video_start_delay(struct sun6i_dsi *dsi,
+ 					   struct drm_display_mode *mode)
+ {
+-	u16 start = clamp(mode->vtotal - mode->vdisplay - 10, 8, 100);
+-	u16 delay = mode->vtotal - (mode->vsync_end - mode->vdisplay) + start;
++	u16 delay = mode->vtotal - (mode->vsync_end - mode->vdisplay) + 1;
  
-+static void mb_regenerate_buddy(struct ext4_buddy *e4b)
-+{
-+	int count;
-+	int order = 1;
-+	void *buddy;
-+
-+	while ((buddy = mb_find_buddy(e4b, order++, &count)))
-+		ext4_set_bits(buddy, 0, count);
-+
-+	e4b->bd_info->bb_fragments = 0;
-+	memset(e4b->bd_info->bb_counters, 0,
-+		sizeof(*e4b->bd_info->bb_counters) *
-+		(e4b->bd_sb->s_blocksize_bits + 2));
-+
-+	ext4_mb_generate_buddy(e4b->bd_sb, e4b->bd_buddy,
-+		e4b->bd_bitmap, e4b->bd_group, e4b->bd_info);
-+}
-+
- /* The buddy information is attached the buddy cache inode
-  * for convenience. The information regarding each group
-  * is loaded via ext4_mb_load_buddy. The information involve
-@@ -1846,6 +1864,8 @@ static void mb_free_blocks(struct inode
- 			ext4_mark_group_bitmap_corrupted(
- 				sb, e4b->bd_group,
- 				EXT4_GROUP_INFO_BBITMAP_CORRUPT);
-+		} else {
-+			mb_regenerate_buddy(e4b);
- 		}
- 		goto done;
- 	}
+ 	if (delay > mode->vtotal)
+ 		delay = delay % mode->vtotal;
+-- 
+2.43.0
+
 
 
 
