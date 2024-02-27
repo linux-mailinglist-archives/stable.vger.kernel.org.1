@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEDA3869625
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:08:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9335386939D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:47:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F27AD1C21B12
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:08:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C45161C21974
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:47:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2907F13B2B4;
-	Tue, 27 Feb 2024 14:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 942DE1420A8;
+	Tue, 27 Feb 2024 13:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fg2Rrqfc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="meuEMvVB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCBEC13A26F;
-	Tue, 27 Feb 2024 14:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543FF1419BF;
+	Tue, 27 Feb 2024 13:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042914; cv=none; b=Xh60C7VzZB6Dv+HgtDxI86xrz7ibaAXrlyfuhPsWtp9McSNvS4Gq76PjKEY0gChUsz1l9qN0ryN52FVREsjfmAoqolA6vMlqB3vfDlledwh/ztoCCZXf2N23qN4GWaaj+0qinuXTi5R4Jv/1AH3zHHwR2dtqi+i/roZAapokG3c=
+	t=1709041529; cv=none; b=NykcCV4/4prpmBW1iExwYlZOYnlluAcgcdKd9UWzD5ISUILKypLdaDJR34F40Wsd3OOkTyQ9qaNnxI23FtNW0ivx5ZiXYp+1ImL1GkEpo8w7+F4S1qmcilfSsCb+ndfdLbS5ssVr6kMFYF3lBd8HZfSTFV2UZYar1C7p+JnSHTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042914; c=relaxed/simple;
-	bh=S1uWKbeISUfnf+4SbW7d8LpNXukt6pyRU9I4ep4m178=;
+	s=arc-20240116; t=1709041529; c=relaxed/simple;
+	bh=fZNKfbDnlLi9b11tBSSydSYr+RDZIUOMVkJhITj0J38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ID/vXPsO0v3QXn6rskFCa/u4CxsmTYrdgB1N0hrUMMbm6RZ505mVbK+/UWu/+p/MsxfZba6I8IAWsY/lhZy2H+7f2nMf3mT+XZDpIi1hWSuMBvHtVJl9lKAJa6/uTq5KhhXp49GUdSlf4UeSkcFuJ78PYsYQrqtbClzBm1NP+7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fg2Rrqfc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A92BC433F1;
-	Tue, 27 Feb 2024 14:08:34 +0000 (UTC)
+	 MIME-Version; b=namI4O1ghkSU0p5sDp0sU0o9l/xFABVqXolMxMe8CGJ52OZAHQb/486tOp6QknN6/c6p5V2FwtFTy2Dd7J6X0X/JM2o4iNi5vsAMUweJl79lzVRhjcuKUwciQ3mpfVb6Sr6uhfeFm4tKcwnkF5I5szpnuRusIdSkzWOC4Y2hyMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=meuEMvVB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83353C43390;
+	Tue, 27 Feb 2024 13:45:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042914;
-	bh=S1uWKbeISUfnf+4SbW7d8LpNXukt6pyRU9I4ep4m178=;
+	s=korg; t=1709041528;
+	bh=fZNKfbDnlLi9b11tBSSydSYr+RDZIUOMVkJhITj0J38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fg2RrqfcARt5DXax/1GnAT76xDlmvACLNAcFZRqr+Qf/H1/qLrM/Vu21CwtSSq5z7
-	 W19GzriwQ0ICHkCTzXXzaHgmjXEGaJPvgeogu+CRxZyHPoAcmkBBpsUxW2OypmrvXv
-	 1nBi9B+eVaSukZWkVLpwU/3+bc4srzK4x5obiJrg=
+	b=meuEMvVBj8GKqWrn3jMGN5e+7WrkOp+gC4FxyOxkObbpckFlfkKmgpslwR2rx0FFf
+	 YK5+o1k1sZBQoNOIfMXLdNWK9LeKgM5alUmaocHpM4q/7Ho4St8Sl8uVrVQIXwAGo/
+	 7DFT+LmS4FUXJV+V3gKq+sLMghkaW02qRy5YSTgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Neuwirth <reddunur@online.de>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 167/245] md: fix data corruption for raid456 when reshape restart while grow up
-Date: Tue, 27 Feb 2024 14:25:55 +0100
-Message-ID: <20240227131620.638926407@linuxfoundation.org>
+	Cyril Hrubis <chrubis@suse.cz>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Petr Vorel <pvorel@suse.cz>,
+	Mel Gorman <mgorman@suse.de>
+Subject: [PATCH 4.19 09/52] sched/rt: Fix sysctl_sched_rr_timeslice intial value
+Date: Tue, 27 Feb 2024 14:25:56 +0100
+Message-ID: <20240227131548.839660733@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
+References: <20240227131548.514622258@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Cyril Hrubis <chrubis@suse.cz>
 
-[ Upstream commit 873f50ece41aad5c4f788a340960c53774b5526e ]
+[ Upstream commit c7fcb99877f9f542c918509b2801065adcaf46fa ]
 
-Currently, if reshape is interrupted, echo "reshape" to sync_action will
-restart reshape from scratch, for example:
+There is a 10% rounding error in the intial value of the
+sysctl_sched_rr_timeslice with CONFIG_HZ_300=y.
 
-echo frozen > sync_action
-echo reshape > sync_action
+This was found with LTP test sched_rr_get_interval01:
 
-This will corrupt data before reshape_position if the array is growing,
-fix the problem by continue reshape from reshape_position.
+sched_rr_get_interval01.c:57: TPASS: sched_rr_get_interval() passed
+sched_rr_get_interval01.c:64: TPASS: Time quantum 0s 99999990ns
+sched_rr_get_interval01.c:72: TFAIL: /proc/sys/kernel/sched_rr_timeslice_ms != 100 got 90
+sched_rr_get_interval01.c:57: TPASS: sched_rr_get_interval() passed
+sched_rr_get_interval01.c:64: TPASS: Time quantum 0s 99999990ns
+sched_rr_get_interval01.c:72: TFAIL: /proc/sys/kernel/sched_rr_timeslice_ms != 100 got 90
 
-Reported-by: Peter Neuwirth <reddunur@online.de>
-Link: https://lore.kernel.org/linux-raid/e2f96772-bfbc-f43b-6da1-f520e5164536@online.de/
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230512015610.821290-3-yukuai1@huaweicloud.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+What this test does is to compare the return value from the
+sched_rr_get_interval() and the sched_rr_timeslice_ms sysctl file and
+fails if they do not match.
+
+The problem it found is the intial sysctl file value which was computed as:
+
+static int sysctl_sched_rr_timeslice = (MSEC_PER_SEC / HZ) * RR_TIMESLICE;
+
+which works fine as long as MSEC_PER_SEC is multiple of HZ, however it
+introduces 10% rounding error for CONFIG_HZ_300:
+
+(MSEC_PER_SEC / HZ) * (100 * HZ / 1000)
+
+(1000 / 300) * (100 * 300 / 1000)
+
+3 * 30 = 90
+
+This can be easily fixed by reversing the order of the multiplication
+and division. After this fix we get:
+
+(MSEC_PER_SEC * (100 * HZ / 1000)) / HZ
+
+(1000 * (100 * 300 / 1000)) / 300
+
+(1000 * 30) / 300 = 100
+
+Fixes: 975e155ed873 ("sched/rt: Show the 'sched_rr_timeslice' SCHED_RR timeslice tuning knob in milliseconds")
+Signed-off-by: Cyril Hrubis <chrubis@suse.cz>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Petr Vorel <pvorel@suse.cz>
+Acked-by: Mel Gorman <mgorman@suse.de>
+Tested-by: Petr Vorel <pvorel@suse.cz>
+Link: https://lore.kernel.org/r/20230802151906.25258-2-chrubis@suse.cz
+[ pvorel: rebased for 4.19 ]
+Signed-off-by: Petr Vorel <pvorel@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/md.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ kernel/sched/rt.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index ff65e5eddfa18..a17f2f725822a 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -4919,11 +4919,21 @@ action_store(struct mddev *mddev, const char *page, size_t len)
- 			return -EINVAL;
- 		err = mddev_lock(mddev);
- 		if (!err) {
--			if (test_bit(MD_RECOVERY_RUNNING, &mddev->recovery))
-+			if (test_bit(MD_RECOVERY_RUNNING, &mddev->recovery)) {
- 				err =  -EBUSY;
--			else {
-+			} else if (mddev->reshape_position == MaxSector ||
-+				   mddev->pers->check_reshape == NULL ||
-+				   mddev->pers->check_reshape(mddev)) {
- 				clear_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
- 				err = mddev->pers->start_reshape(mddev);
-+			} else {
-+				/*
-+				 * If reshape is still in progress, and
-+				 * md_check_recovery() can continue to reshape,
-+				 * don't restart reshape because data can be
-+				 * corrupted for raid456.
-+				 */
-+				clear_bit(MD_RECOVERY_FROZEN, &mddev->recovery);
- 			}
- 			mddev_unlock(mddev);
- 		}
--- 
-2.43.0
-
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -8,7 +8,7 @@
+ #include "pelt.h"
+ 
+ int sched_rr_timeslice = RR_TIMESLICE;
+-int sysctl_sched_rr_timeslice = (MSEC_PER_SEC / HZ) * RR_TIMESLICE;
++int sysctl_sched_rr_timeslice = (MSEC_PER_SEC * RR_TIMESLICE) / HZ;
+ 
+ static int do_sched_rt_period_timer(struct rt_bandwidth *rt_b, int overrun);
+ 
 
 
 
