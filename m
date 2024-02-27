@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-24452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6001F86948A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:54:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AA9E86946C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:53:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84AB91C25908
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:54:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E89C1C23FD8
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:53:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57625145B03;
-	Tue, 27 Feb 2024 13:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5EA6145FEE;
+	Tue, 27 Feb 2024 13:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L29hTgSw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nWgEYFbL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1517514533F;
-	Tue, 27 Feb 2024 13:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41C7145FE1;
+	Tue, 27 Feb 2024 13:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042044; cv=none; b=UsWJEVx0DDEKtmcbm65dQTNaAg5u449pfUsQfSrbV9CpQcUy42LfaBZo/o93ISqOb0nEMhbVvfOu7jqSo8iZze//stFBINuxcexptzj+GSgTOMrq9lRz94+n8NHylKXw8SwPTL2NVpUTfE06EfSkBF9Axlb24LoFfDawvEPdsIs=
+	t=1709041964; cv=none; b=iS1ScZA1O71q39JmLtiY3okbQksXYgjdAgleM2UBXuclVdhr8i29ib7Usa5aRMCrBjBeiY0TdTJefsWGPLs+dHlmBAncGQcgaFf0A+h7ut+t2QZceW9EXhgFHYqC2LyU0/RgeGmw5JGbOkPJq6DMUwJqiOiKhotefMQ20vaPjAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042044; c=relaxed/simple;
-	bh=RRDXnhVUbyrWmVy+t7ygyvDHsajtOcYrFX5dr9opB3A=;
+	s=arc-20240116; t=1709041964; c=relaxed/simple;
+	bh=5wkpnkJv3754w+CEWX8zvgd/bOLm+Xb0mAdTaXW7r2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YaEEUCMohXNs5f+z0sTPR3ANUAgU/LAFOadvNmXOgDJR+dZFWqwr81kEXduuAvs+CvqvkoMPPhHBRmXT7HNT+daoVRVPQqGk50pb7mQchErkYlDW9j7/Nvl02hXdRnK8NQICpNUA+ZQf2l1WXvoA5M5W6vZbnkdP9T1+zOmlvmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L29hTgSw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B5CC433C7;
-	Tue, 27 Feb 2024 13:54:03 +0000 (UTC)
+	 MIME-Version; b=IBaXM0GNpbNxsC3+++a7+C6Fqdc33At4qh9uH98465VVwmAX4qBw/0xjtMxDzki1vigmfkeXRvUe5BxholOzgAXR3AEim3bng+hqmendgwHhIVRucpTM3Lvj4N07JY1lADI2/N/TgrrTBUySGJ/idR90C4Srt9Gbp5s/4vtKIPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nWgEYFbL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33B69C433A6;
+	Tue, 27 Feb 2024 13:52:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042043;
-	bh=RRDXnhVUbyrWmVy+t7ygyvDHsajtOcYrFX5dr9opB3A=;
+	s=korg; t=1709041964;
+	bh=5wkpnkJv3754w+CEWX8zvgd/bOLm+Xb0mAdTaXW7r2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L29hTgSw3gco/zZE66MDSUeZap8G7/ovYv7CIs+wU6PtNIxSazUixCELcG8xg+o90
-	 yq9MDCF4MorKHTN5NMj1/eVEWf53UC5Tw0NEQMCDXOjz2zQ9KZHs7IzbciAl1sGR0g
-	 SriAB58Kqie/KX3N85QKu3MW6mjYUqdP9lbcN9pE=
+	b=nWgEYFbLLgRLdm6OaZTOjwTOrgZBJk23wX73RSMty4FORYPv9bVBF8GSWBLgNNlQ5
+	 lIwxVVOISu5FqUmAQ8DQoEx0aRkgquM9dDotaiMSrMA1pV0G3q/ywpFD4Aet7+lVcX
+	 SQgPU9PTA96u3ITYLC9ARVUPjMNrRSiKwD4LOc+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Maximilian Heyne <mheyne@amazon.de>,
 	Juergen Gross <jgross@suse.com>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 131/299] xen/events: modify internal [un]bind interfaces
-Date: Tue, 27 Feb 2024 14:24:02 +0100
-Message-ID: <20240227131630.072907406@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>,
+	Andrew Panyakin <apanyaki@amazon.com>
+Subject: [PATCH 6.6 132/299] xen/events: close evtchn after mapping cleanup
+Date: Tue, 27 Feb 2024 14:24:03 +0100
+Message-ID: <20240227131630.107456549@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
 References: <20240227131625.847743063@linuxfoundation.org>
@@ -66,693 +67,169 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Maximilian Heyne <mheyne@amazon.de>
 
-[ Upstream commit 3fcdaf3d7634338c3f5cbfa7451eb0b6b0024844 ]
+[ Upstream commit fa765c4b4aed2d64266b694520ecb025c862c5a9 ]
 
-Modify the internal bind- and unbind-interfaces to take a struct
-irq_info parameter. When allocating a new IRQ pass the pointer from
-the allocating function further up.
+shutdown_pirq and startup_pirq are not taking the
+irq_mapping_update_lock because they can't due to lock inversion. Both
+are called with the irq_desc->lock being taking. The lock order,
+however, is first irq_mapping_update_lock and then irq_desc->lock.
 
-This will reduce the number of info_for_irq() calls and make the code
-more efficient.
+This opens multiple races:
+- shutdown_pirq can be interrupted by a function that allocates an event
+  channel:
 
+  CPU0                        CPU1
+  shutdown_pirq {
+    xen_evtchn_close(e)
+                              __startup_pirq {
+                                EVTCHNOP_bind_pirq
+                                  -> returns just freed evtchn e
+                                set_evtchn_to_irq(e, irq)
+                              }
+    xen_irq_info_cleanup() {
+      set_evtchn_to_irq(e, -1)
+    }
+  }
+
+  Assume here event channel e refers here to the same event channel
+  number.
+  After this race the evtchn_to_irq mapping for e is invalid (-1).
+
+- __startup_pirq races with __unbind_from_irq in a similar way. Because
+  __startup_pirq doesn't take irq_mapping_update_lock it can grab the
+  evtchn that __unbind_from_irq is currently freeing and cleaning up. In
+  this case even though the event channel is allocated, its mapping can
+  be unset in evtchn_to_irq.
+
+The fix is to first cleanup the mappings and then close the event
+channel. In this way, when an event channel gets allocated it's
+potential previous evtchn_to_irq mappings are guaranteed to be unset already.
+This is also the reverse order of the allocation where first the event
+channel is allocated and then the mappings are setup.
+
+On a 5.10 kernel prior to commit 3fcdaf3d7634 ("xen/events: modify internal
+[un]bind interfaces"), we hit a BUG like the following during probing of NVMe
+devices. The issue is that during nvme_setup_io_queues, pci_free_irq
+is called for every device which results in a call to shutdown_pirq.
+With many nvme devices it's therefore likely to hit this race during
+boot because there will be multiple calls to shutdown_pirq and
+startup_pirq are running potentially in parallel.
+
+  ------------[ cut here ]------------
+  blkfront: xvda: barrier or flush: disabled; persistent grants: enabled; indirect descriptors: enabled; bounce buffer: enabled
+  kernel BUG at drivers/xen/events/events_base.c:499!
+  invalid opcode: 0000 [#1] SMP PTI
+  CPU: 44 PID: 375 Comm: kworker/u257:23 Not tainted 5.10.201-191.748.amzn2.x86_64 #1
+  Hardware name: Xen HVM domU, BIOS 4.11.amazon 08/24/2006
+  Workqueue: nvme-reset-wq nvme_reset_work
+  RIP: 0010:bind_evtchn_to_cpu+0xdf/0xf0
+  Code: 5d 41 5e c3 cc cc cc cc 44 89 f7 e8 2b 55 ad ff 49 89 c5 48 85 c0 0f 84 64 ff ff ff 4c 8b 68 30 41 83 fe ff 0f 85 60 ff ff ff <0f> 0b 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 0f 1f 44 00 00
+  RSP: 0000:ffffc9000d533b08 EFLAGS: 00010046
+  RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000006
+  RDX: 0000000000000028 RSI: 00000000ffffffff RDI: 00000000ffffffff
+  RBP: ffff888107419680 R08: 0000000000000000 R09: ffffffff82d72b00
+  R10: 0000000000000000 R11: 0000000000000000 R12: 00000000000001ed
+  R13: 0000000000000000 R14: 00000000ffffffff R15: 0000000000000002
+  FS:  0000000000000000(0000) GS:ffff88bc8b500000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 0000000000000000 CR3: 0000000002610001 CR4: 00000000001706e0
+  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+  Call Trace:
+   ? show_trace_log_lvl+0x1c1/0x2d9
+   ? show_trace_log_lvl+0x1c1/0x2d9
+   ? set_affinity_irq+0xdc/0x1c0
+   ? __die_body.cold+0x8/0xd
+   ? die+0x2b/0x50
+   ? do_trap+0x90/0x110
+   ? bind_evtchn_to_cpu+0xdf/0xf0
+   ? do_error_trap+0x65/0x80
+   ? bind_evtchn_to_cpu+0xdf/0xf0
+   ? exc_invalid_op+0x4e/0x70
+   ? bind_evtchn_to_cpu+0xdf/0xf0
+   ? asm_exc_invalid_op+0x12/0x20
+   ? bind_evtchn_to_cpu+0xdf/0xf0
+   ? bind_evtchn_to_cpu+0xc5/0xf0
+   set_affinity_irq+0xdc/0x1c0
+   irq_do_set_affinity+0x1d7/0x1f0
+   irq_setup_affinity+0xd6/0x1a0
+   irq_startup+0x8a/0xf0
+   __setup_irq+0x639/0x6d0
+   ? nvme_suspend+0x150/0x150
+   request_threaded_irq+0x10c/0x180
+   ? nvme_suspend+0x150/0x150
+   pci_request_irq+0xa8/0xf0
+   ? __blk_mq_free_request+0x74/0xa0
+   queue_request_irq+0x6f/0x80
+   nvme_create_queue+0x1af/0x200
+   nvme_create_io_queues+0xbd/0xf0
+   nvme_setup_io_queues+0x246/0x320
+   ? nvme_irq_check+0x30/0x30
+   nvme_reset_work+0x1c8/0x400
+   process_one_work+0x1b0/0x350
+   worker_thread+0x49/0x310
+   ? process_one_work+0x350/0x350
+   kthread+0x11b/0x140
+   ? __kthread_bind_mask+0x60/0x60
+   ret_from_fork+0x22/0x30
+  Modules linked in:
+  ---[ end trace a11715de1eee1873 ]---
+
+Fixes: d46a78b05c0e ("xen: implement pirq type event channels")
+Cc: stable@vger.kernel.org
+Co-debugged-by: Andrew Panyakin <apanyaki@amazon.com>
+Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Link: https://lore.kernel.org/r/20240124163130.31324-1-mheyne@amazon.de
 Signed-off-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Stable-dep-of: fa765c4b4aed ("xen/events: close evtchn after mapping cleanup")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/events/events_base.c | 259 +++++++++++++++----------------
- 1 file changed, 124 insertions(+), 135 deletions(-)
+ drivers/xen/events/events_base.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
-index 4dfd68382465b..6f57ef78f5507 100644
+index 6f57ef78f5507..36ba3ef6ef01e 100644
 --- a/drivers/xen/events/events_base.c
 +++ b/drivers/xen/events/events_base.c
-@@ -327,7 +327,6 @@ static void delayed_free_irq(struct work_struct *work)
- 
- /* Constructors for packed IRQ information. */
- static int xen_irq_info_common_setup(struct irq_info *info,
--				     unsigned irq,
- 				     enum xen_irq_type type,
- 				     evtchn_port_t evtchn,
- 				     unsigned short cpu)
-@@ -342,23 +341,22 @@ static int xen_irq_info_common_setup(struct irq_info *info,
- 	info->mask_reason = EVT_MASK_REASON_EXPLICIT;
- 	raw_spin_lock_init(&info->lock);
- 
--	ret = set_evtchn_to_irq(evtchn, irq);
-+	ret = set_evtchn_to_irq(evtchn, info->irq);
- 	if (ret < 0)
- 		return ret;
- 
--	irq_clear_status_flags(irq, IRQ_NOREQUEST|IRQ_NOAUTOEN);
-+	irq_clear_status_flags(info->irq, IRQ_NOREQUEST | IRQ_NOAUTOEN);
- 
- 	return xen_evtchn_port_setup(evtchn);
- }
- 
--static int xen_irq_info_evtchn_setup(unsigned irq,
-+static int xen_irq_info_evtchn_setup(struct irq_info *info,
- 				     evtchn_port_t evtchn,
- 				     struct xenbus_device *dev)
- {
--	struct irq_info *info = info_for_irq(irq);
- 	int ret;
- 
--	ret = xen_irq_info_common_setup(info, irq, IRQT_EVTCHN, evtchn, 0);
-+	ret = xen_irq_info_common_setup(info, IRQT_EVTCHN, evtchn, 0);
- 	info->u.interdomain = dev;
- 	if (dev)
- 		atomic_inc(&dev->event_channels);
-@@ -366,50 +364,37 @@ static int xen_irq_info_evtchn_setup(unsigned irq,
- 	return ret;
- }
- 
--static int xen_irq_info_ipi_setup(unsigned cpu,
--				  unsigned irq,
--				  evtchn_port_t evtchn,
--				  enum ipi_vector ipi)
-+static int xen_irq_info_ipi_setup(struct irq_info *info, unsigned int cpu,
-+				  evtchn_port_t evtchn, enum ipi_vector ipi)
- {
--	struct irq_info *info = info_for_irq(irq);
--
- 	info->u.ipi = ipi;
- 
--	per_cpu(ipi_to_irq, cpu)[ipi] = irq;
-+	per_cpu(ipi_to_irq, cpu)[ipi] = info->irq;
- 	per_cpu(ipi_to_evtchn, cpu)[ipi] = evtchn;
- 
--	return xen_irq_info_common_setup(info, irq, IRQT_IPI, evtchn, 0);
-+	return xen_irq_info_common_setup(info, IRQT_IPI, evtchn, 0);
- }
- 
--static int xen_irq_info_virq_setup(unsigned cpu,
--				   unsigned irq,
--				   evtchn_port_t evtchn,
--				   unsigned virq)
-+static int xen_irq_info_virq_setup(struct irq_info *info, unsigned int cpu,
-+				   evtchn_port_t evtchn, unsigned int virq)
- {
--	struct irq_info *info = info_for_irq(irq);
--
- 	info->u.virq = virq;
- 
--	per_cpu(virq_to_irq, cpu)[virq] = irq;
-+	per_cpu(virq_to_irq, cpu)[virq] = info->irq;
- 
--	return xen_irq_info_common_setup(info, irq, IRQT_VIRQ, evtchn, 0);
-+	return xen_irq_info_common_setup(info, IRQT_VIRQ, evtchn, 0);
- }
- 
--static int xen_irq_info_pirq_setup(unsigned irq,
--				   evtchn_port_t evtchn,
--				   unsigned pirq,
--				   unsigned gsi,
--				   uint16_t domid,
--				   unsigned char flags)
-+static int xen_irq_info_pirq_setup(struct irq_info *info, evtchn_port_t evtchn,
-+				   unsigned int pirq, unsigned int gsi,
-+				   uint16_t domid, unsigned char flags)
- {
--	struct irq_info *info = info_for_irq(irq);
--
- 	info->u.pirq.pirq = pirq;
- 	info->u.pirq.gsi = gsi;
- 	info->u.pirq.domid = domid;
- 	info->u.pirq.flags = flags;
- 
--	return xen_irq_info_common_setup(info, irq, IRQT_PIRQ, evtchn, 0);
-+	return xen_irq_info_common_setup(info, IRQT_PIRQ, evtchn, 0);
- }
- 
- static void xen_irq_info_cleanup(struct irq_info *info)
-@@ -453,20 +438,16 @@ int irq_evtchn_from_virq(unsigned int cpu, unsigned int virq,
- 	return irq;
- }
- 
--static enum ipi_vector ipi_from_irq(unsigned irq)
-+static enum ipi_vector ipi_from_irq(struct irq_info *info)
- {
--	struct irq_info *info = info_for_irq(irq);
--
- 	BUG_ON(info == NULL);
- 	BUG_ON(info->type != IRQT_IPI);
- 
- 	return info->u.ipi;
- }
- 
--static unsigned virq_from_irq(unsigned irq)
-+static unsigned int virq_from_irq(struct irq_info *info)
- {
--	struct irq_info *info = info_for_irq(irq);
--
- 	BUG_ON(info == NULL);
- 	BUG_ON(info->type != IRQT_VIRQ);
- 
-@@ -533,13 +514,9 @@ static bool pirq_needs_eoi_flag(unsigned irq)
- 	return info->u.pirq.flags & PIRQ_NEEDS_EOI;
- }
- 
--static void bind_evtchn_to_cpu(evtchn_port_t evtchn, unsigned int cpu,
-+static void bind_evtchn_to_cpu(struct irq_info *info, unsigned int cpu,
- 			       bool force_affinity)
- {
--	struct irq_info *info = evtchn_to_info(evtchn);
--
--	BUG_ON(info == NULL);
--
- 	if (IS_ENABLED(CONFIG_SMP) && force_affinity) {
- 		struct irq_data *data = irq_get_irq_data(info->irq);
- 
-@@ -547,7 +524,7 @@ static void bind_evtchn_to_cpu(evtchn_port_t evtchn, unsigned int cpu,
- 		irq_data_update_effective_affinity(data, cpumask_of(cpu));
- 	}
- 
--	xen_evtchn_port_bind_to_cpu(evtchn, cpu, info->cpu);
-+	xen_evtchn_port_bind_to_cpu(info->evtchn, cpu, info->cpu);
- 
- 	channels_on_cpu_dec(info);
- 	info->cpu = cpu;
-@@ -762,23 +739,24 @@ static struct irq_info *xen_irq_init(unsigned int irq)
- 	return info;
- }
- 
--static inline int __must_check xen_allocate_irq_dynamic(void)
-+static struct irq_info *xen_allocate_irq_dynamic(void)
- {
- 	int irq = irq_alloc_desc_from(0, -1);
-+	struct irq_info *info = NULL;
- 
- 	if (irq >= 0) {
--		if (!xen_irq_init(irq)) {
-+		info = xen_irq_init(irq);
-+		if (!info)
- 			xen_irq_free_desc(irq);
--			irq = -1;
--		}
- 	}
- 
--	return irq;
-+	return info;
- }
- 
--static int __must_check xen_allocate_irq_gsi(unsigned gsi)
-+static struct irq_info *xen_allocate_irq_gsi(unsigned int gsi)
- {
- 	int irq;
-+	struct irq_info *info;
- 
- 	/*
- 	 * A PV guest has no concept of a GSI (since it has no ACPI
-@@ -795,18 +773,15 @@ static int __must_check xen_allocate_irq_gsi(unsigned gsi)
- 	else
- 		irq = irq_alloc_desc_at(gsi, -1);
- 
--	if (!xen_irq_init(irq)) {
-+	info = xen_irq_init(irq);
-+	if (!info)
- 		xen_irq_free_desc(irq);
--		irq = -1;
--	}
- 
--	return irq;
-+	return info;
- }
- 
--static void xen_free_irq(unsigned irq)
-+static void xen_free_irq(struct irq_info *info)
- {
--	struct irq_info *info = info_for_irq(irq);
--
- 	if (WARN_ON(!info))
+@@ -908,8 +908,8 @@ static void shutdown_pirq(struct irq_data *data)
  		return;
  
-@@ -897,7 +872,7 @@ static unsigned int __startup_pirq(unsigned int irq)
- 		goto err;
- 
- 	info->evtchn = evtchn;
--	bind_evtchn_to_cpu(evtchn, 0, false);
-+	bind_evtchn_to_cpu(info, 0, false);
- 
- 	rc = xen_evtchn_port_setup(evtchn);
- 	if (rc)
-@@ -963,10 +938,9 @@ int xen_irq_from_gsi(unsigned gsi)
+ 	do_mask(info, EVT_MASK_REASON_EXPLICIT);
+-	xen_evtchn_close(evtchn);
+ 	xen_irq_info_cleanup(info);
++	xen_evtchn_close(evtchn);
  }
- EXPORT_SYMBOL_GPL(xen_irq_from_gsi);
  
--static void __unbind_from_irq(unsigned int irq)
-+static void __unbind_from_irq(struct irq_info *info, unsigned int irq)
+ static void enable_pirq(struct irq_data *data)
+@@ -941,6 +941,7 @@ EXPORT_SYMBOL_GPL(xen_irq_from_gsi);
+ static void __unbind_from_irq(struct irq_info *info, unsigned int irq)
  {
--	evtchn_port_t evtchn = evtchn_from_irq(irq);
--	struct irq_info *info = info_for_irq(irq);
-+	evtchn_port_t evtchn;
+ 	evtchn_port_t evtchn;
++	bool close_evtchn = false;
  
  	if (!info) {
  		xen_irq_free_desc(irq);
-@@ -979,6 +953,8 @@ static void __unbind_from_irq(unsigned int irq)
- 			return;
- 	}
- 
-+	evtchn = info->evtchn;
-+
- 	if (VALID_EVTCHN(evtchn)) {
- 		unsigned int cpu = info->cpu;
+@@ -960,7 +961,7 @@ static void __unbind_from_irq(struct irq_info *info, unsigned int irq)
  		struct xenbus_device *dev;
-@@ -988,11 +964,11 @@ static void __unbind_from_irq(unsigned int irq)
+ 
+ 		if (!info->is_static)
+-			xen_evtchn_close(evtchn);
++			close_evtchn = true;
  
  		switch (info->type) {
  		case IRQT_VIRQ:
--			per_cpu(virq_to_irq, cpu)[virq_from_irq(irq)] = -1;
-+			per_cpu(virq_to_irq, cpu)[virq_from_irq(info)] = -1;
- 			break;
- 		case IRQT_IPI:
--			per_cpu(ipi_to_irq, cpu)[ipi_from_irq(irq)] = -1;
--			per_cpu(ipi_to_evtchn, cpu)[ipi_from_irq(irq)] = 0;
-+			per_cpu(ipi_to_irq, cpu)[ipi_from_irq(info)] = -1;
-+			per_cpu(ipi_to_evtchn, cpu)[ipi_from_irq(info)] = 0;
- 			break;
- 		case IRQT_EVTCHN:
- 			dev = info->u.interdomain;
-@@ -1006,7 +982,7 @@ static void __unbind_from_irq(unsigned int irq)
+@@ -980,6 +981,9 @@ static void __unbind_from_irq(struct irq_info *info, unsigned int irq)
+ 		}
+ 
  		xen_irq_info_cleanup(info);
- 	}
- 
--	xen_free_irq(irq);
-+	xen_free_irq(info);
- }
- 
- /*
-@@ -1022,24 +998,24 @@ static void __unbind_from_irq(unsigned int irq)
- int xen_bind_pirq_gsi_to_irq(unsigned gsi,
- 			     unsigned pirq, int shareable, char *name)
- {
--	int irq;
-+	struct irq_info *info;
- 	struct physdev_irq irq_op;
- 	int ret;
- 
- 	mutex_lock(&irq_mapping_update_lock);
- 
--	irq = xen_irq_from_gsi(gsi);
--	if (irq != -1) {
-+	ret = xen_irq_from_gsi(gsi);
-+	if (ret != -1) {
- 		pr_info("%s: returning irq %d for gsi %u\n",
--			__func__, irq, gsi);
-+			__func__, ret, gsi);
- 		goto out;
- 	}
- 
--	irq = xen_allocate_irq_gsi(gsi);
--	if (irq < 0)
-+	info = xen_allocate_irq_gsi(gsi);
-+	if (!info)
- 		goto out;
- 
--	irq_op.irq = irq;
-+	irq_op.irq = info->irq;
- 	irq_op.vector = 0;
- 
- 	/* Only the privileged domain can do this. For non-priv, the pcifront
-@@ -1047,20 +1023,19 @@ int xen_bind_pirq_gsi_to_irq(unsigned gsi,
- 	 * this in the priv domain. */
- 	if (xen_initial_domain() &&
- 	    HYPERVISOR_physdev_op(PHYSDEVOP_alloc_irq_vector, &irq_op)) {
--		xen_free_irq(irq);
--		irq = -ENOSPC;
-+		xen_free_irq(info);
-+		ret = -ENOSPC;
- 		goto out;
- 	}
- 
--	ret = xen_irq_info_pirq_setup(irq, 0, pirq, gsi, DOMID_SELF,
-+	ret = xen_irq_info_pirq_setup(info, 0, pirq, gsi, DOMID_SELF,
- 			       shareable ? PIRQ_SHAREABLE : 0);
- 	if (ret < 0) {
--		__unbind_from_irq(irq);
--		irq = ret;
-+		__unbind_from_irq(info, info->irq);
- 		goto out;
- 	}
- 
--	pirq_query_unmask(irq);
-+	pirq_query_unmask(info->irq);
- 	/* We try to use the handler with the appropriate semantic for the
- 	 * type of interrupt: if the interrupt is an edge triggered
- 	 * interrupt we use handle_edge_irq.
-@@ -1077,16 +1052,18 @@ int xen_bind_pirq_gsi_to_irq(unsigned gsi,
- 	 * is the right choice either way.
- 	 */
- 	if (shareable)
--		irq_set_chip_and_handler_name(irq, &xen_pirq_chip,
-+		irq_set_chip_and_handler_name(info->irq, &xen_pirq_chip,
- 				handle_fasteoi_irq, name);
- 	else
--		irq_set_chip_and_handler_name(irq, &xen_pirq_chip,
-+		irq_set_chip_and_handler_name(info->irq, &xen_pirq_chip,
- 				handle_edge_irq, name);
- 
-+	ret = info->irq;
 +
- out:
- 	mutex_unlock(&irq_mapping_update_lock);
- 
--	return irq;
-+	return ret;
- }
- 
- #ifdef CONFIG_PCI_MSI
-@@ -1108,6 +1085,7 @@ int xen_bind_pirq_msi_to_irq(struct pci_dev *dev, struct msi_desc *msidesc,
- 			     int pirq, int nvec, const char *name, domid_t domid)
- {
- 	int i, irq, ret;
-+	struct irq_info *info;
- 
- 	mutex_lock(&irq_mapping_update_lock);
- 
-@@ -1116,12 +1094,13 @@ int xen_bind_pirq_msi_to_irq(struct pci_dev *dev, struct msi_desc *msidesc,
- 		goto out;
- 
- 	for (i = 0; i < nvec; i++) {
--		if (!xen_irq_init(irq + i))
-+		info = xen_irq_init(irq + i);
-+		if (!info)
- 			goto error_irq;
- 
- 		irq_set_chip_and_handler_name(irq + i, &xen_pirq_chip, handle_edge_irq, name);
- 
--		ret = xen_irq_info_pirq_setup(irq + i, 0, pirq + i, 0, domid,
-+		ret = xen_irq_info_pirq_setup(info, 0, pirq + i, 0, domid,
- 					      i == 0 ? 0 : PIRQ_MSI_GROUP);
- 		if (ret < 0)
- 			goto error_irq;
-@@ -1133,9 +1112,12 @@ int xen_bind_pirq_msi_to_irq(struct pci_dev *dev, struct msi_desc *msidesc,
- out:
- 	mutex_unlock(&irq_mapping_update_lock);
- 	return irq;
-+
- error_irq:
--	while (nvec--)
--		__unbind_from_irq(irq + nvec);
-+	while (nvec--) {
-+		info = info_for_irq(irq + nvec);
-+		__unbind_from_irq(info, irq + nvec);
-+	}
- 	mutex_unlock(&irq_mapping_update_lock);
- 	return ret;
- }
-@@ -1171,7 +1153,7 @@ int xen_destroy_irq(int irq)
- 		}
++		if (close_evtchn)
++			xen_evtchn_close(evtchn);
  	}
  
--	xen_free_irq(irq);
-+	xen_free_irq(info);
- 
- out:
- 	mutex_unlock(&irq_mapping_update_lock);
-@@ -1210,8 +1192,7 @@ EXPORT_SYMBOL_GPL(xen_pirq_from_irq);
- static int bind_evtchn_to_irq_chip(evtchn_port_t evtchn, struct irq_chip *chip,
- 				   struct xenbus_device *dev)
- {
--	int irq;
--	int ret;
-+	int ret = -ENOMEM;
- 	struct irq_info *info;
- 
- 	if (evtchn >= xen_evtchn_max_channels())
-@@ -1222,17 +1203,16 @@ static int bind_evtchn_to_irq_chip(evtchn_port_t evtchn, struct irq_chip *chip,
- 	info = evtchn_to_info(evtchn);
- 
- 	if (!info) {
--		irq = xen_allocate_irq_dynamic();
--		if (irq < 0)
-+		info = xen_allocate_irq_dynamic();
-+		if (!info)
- 			goto out;
- 
--		irq_set_chip_and_handler_name(irq, chip,
-+		irq_set_chip_and_handler_name(info->irq, chip,
- 					      handle_edge_irq, "event");
- 
--		ret = xen_irq_info_evtchn_setup(irq, evtchn, dev);
-+		ret = xen_irq_info_evtchn_setup(info, evtchn, dev);
- 		if (ret < 0) {
--			__unbind_from_irq(irq);
--			irq = ret;
-+			__unbind_from_irq(info, info->irq);
- 			goto out;
- 		}
- 		/*
-@@ -1242,17 +1222,17 @@ static int bind_evtchn_to_irq_chip(evtchn_port_t evtchn, struct irq_chip *chip,
- 		 * affinity setting is not invoked on them so nothing would
- 		 * bind the channel.
- 		 */
--		bind_evtchn_to_cpu(evtchn, 0, false);
--	} else {
--		if (!WARN_ON(info->type != IRQT_EVTCHN))
--			info->refcnt++;
--		irq = info->irq;
-+		bind_evtchn_to_cpu(info, 0, false);
-+	} else if (!WARN_ON(info->type != IRQT_EVTCHN)) {
-+		info->refcnt++;
- 	}
- 
-+	ret = info->irq;
-+
- out:
- 	mutex_unlock(&irq_mapping_update_lock);
- 
--	return irq;
-+	return ret;
- }
- 
- int bind_evtchn_to_irq(evtchn_port_t evtchn)
-@@ -1271,18 +1251,19 @@ static int bind_ipi_to_irq(unsigned int ipi, unsigned int cpu)
- {
- 	struct evtchn_bind_ipi bind_ipi;
- 	evtchn_port_t evtchn;
--	int ret, irq;
-+	struct irq_info *info;
-+	int ret;
- 
- 	mutex_lock(&irq_mapping_update_lock);
- 
--	irq = per_cpu(ipi_to_irq, cpu)[ipi];
-+	ret = per_cpu(ipi_to_irq, cpu)[ipi];
- 
--	if (irq == -1) {
--		irq = xen_allocate_irq_dynamic();
--		if (irq < 0)
-+	if (ret == -1) {
-+		info = xen_allocate_irq_dynamic();
-+		if (!info)
- 			goto out;
- 
--		irq_set_chip_and_handler_name(irq, &xen_percpu_chip,
-+		irq_set_chip_and_handler_name(info->irq, &xen_percpu_chip,
- 					      handle_percpu_irq, "ipi");
- 
- 		bind_ipi.vcpu = xen_vcpu_nr(cpu);
-@@ -1291,25 +1272,25 @@ static int bind_ipi_to_irq(unsigned int ipi, unsigned int cpu)
- 			BUG();
- 		evtchn = bind_ipi.port;
- 
--		ret = xen_irq_info_ipi_setup(cpu, irq, evtchn, ipi);
-+		ret = xen_irq_info_ipi_setup(info, cpu, evtchn, ipi);
- 		if (ret < 0) {
--			__unbind_from_irq(irq);
--			irq = ret;
-+			__unbind_from_irq(info, info->irq);
- 			goto out;
- 		}
- 		/*
- 		 * Force the affinity mask to the target CPU so proc shows
- 		 * the correct target.
- 		 */
--		bind_evtchn_to_cpu(evtchn, cpu, true);
-+		bind_evtchn_to_cpu(info, cpu, true);
-+		ret = info->irq;
- 	} else {
--		struct irq_info *info = info_for_irq(irq);
-+		info = info_for_irq(ret);
- 		WARN_ON(info == NULL || info->type != IRQT_IPI);
- 	}
- 
-  out:
- 	mutex_unlock(&irq_mapping_update_lock);
--	return irq;
-+	return ret;
- }
- 
- static int bind_interdomain_evtchn_to_irq_chip(struct xenbus_device *dev,
-@@ -1377,22 +1358,23 @@ int bind_virq_to_irq(unsigned int virq, unsigned int cpu, bool percpu)
- {
- 	struct evtchn_bind_virq bind_virq;
- 	evtchn_port_t evtchn = 0;
--	int irq, ret;
-+	struct irq_info *info;
-+	int ret;
- 
- 	mutex_lock(&irq_mapping_update_lock);
- 
--	irq = per_cpu(virq_to_irq, cpu)[virq];
-+	ret = per_cpu(virq_to_irq, cpu)[virq];
- 
--	if (irq == -1) {
--		irq = xen_allocate_irq_dynamic();
--		if (irq < 0)
-+	if (ret == -1) {
-+		info = xen_allocate_irq_dynamic();
-+		if (!info)
- 			goto out;
- 
- 		if (percpu)
--			irq_set_chip_and_handler_name(irq, &xen_percpu_chip,
-+			irq_set_chip_and_handler_name(info->irq, &xen_percpu_chip,
- 						      handle_percpu_irq, "virq");
- 		else
--			irq_set_chip_and_handler_name(irq, &xen_dynamic_chip,
-+			irq_set_chip_and_handler_name(info->irq, &xen_dynamic_chip,
- 						      handle_edge_irq, "virq");
- 
- 		bind_virq.virq = virq;
-@@ -1407,10 +1389,9 @@ int bind_virq_to_irq(unsigned int virq, unsigned int cpu, bool percpu)
- 			BUG_ON(ret < 0);
- 		}
- 
--		ret = xen_irq_info_virq_setup(cpu, irq, evtchn, virq);
-+		ret = xen_irq_info_virq_setup(info, cpu, evtchn, virq);
- 		if (ret < 0) {
--			__unbind_from_irq(irq);
--			irq = ret;
-+			__unbind_from_irq(info, info->irq);
- 			goto out;
- 		}
- 
-@@ -1418,22 +1399,26 @@ int bind_virq_to_irq(unsigned int virq, unsigned int cpu, bool percpu)
- 		 * Force the affinity mask for percpu interrupts so proc
- 		 * shows the correct target.
- 		 */
--		bind_evtchn_to_cpu(evtchn, cpu, percpu);
-+		bind_evtchn_to_cpu(info, cpu, percpu);
-+		ret = info->irq;
- 	} else {
--		struct irq_info *info = info_for_irq(irq);
-+		info = info_for_irq(ret);
- 		WARN_ON(info == NULL || info->type != IRQT_VIRQ);
- 	}
- 
- out:
- 	mutex_unlock(&irq_mapping_update_lock);
- 
--	return irq;
-+	return ret;
- }
- 
- static void unbind_from_irq(unsigned int irq)
- {
-+	struct irq_info *info;
-+
- 	mutex_lock(&irq_mapping_update_lock);
--	__unbind_from_irq(irq);
-+	info = info_for_irq(irq);
-+	__unbind_from_irq(info, irq);
- 	mutex_unlock(&irq_mapping_update_lock);
- }
- 
-@@ -1767,11 +1752,11 @@ void rebind_evtchn_irq(evtchn_port_t evtchn, int irq)
- 	BUG_ON(info->type == IRQT_UNBOUND);
- 
- 	info->irq = irq;
--	(void)xen_irq_info_evtchn_setup(irq, evtchn, NULL);
-+	(void)xen_irq_info_evtchn_setup(info, evtchn, NULL);
- 
- 	mutex_unlock(&irq_mapping_update_lock);
- 
--	bind_evtchn_to_cpu(evtchn, info->cpu, false);
-+	bind_evtchn_to_cpu(info, info->cpu, false);
- 
- 	/* Unmask the event channel. */
- 	enable_irq(irq);
-@@ -1805,7 +1790,7 @@ static int xen_rebind_evtchn_to_cpu(struct irq_info *info, unsigned int tcpu)
- 	 * it, but don't do the xenlinux-level rebind in that case.
- 	 */
- 	if (HYPERVISOR_event_channel_op(EVTCHNOP_bind_vcpu, &bind_vcpu) >= 0)
--		bind_evtchn_to_cpu(evtchn, tcpu, false);
-+		bind_evtchn_to_cpu(info, tcpu, false);
- 
- 	do_unmask(info, EVT_MASK_REASON_TEMPORARY);
- 
-@@ -1956,7 +1941,7 @@ static void restore_pirqs(void)
- 		if (rc) {
- 			pr_warn("xen map irq failed gsi=%d irq=%d pirq=%d rc=%d\n",
- 				gsi, irq, pirq, rc);
--			xen_free_irq(irq);
-+			xen_free_irq(info);
- 			continue;
- 		}
- 
-@@ -1970,13 +1955,15 @@ static void restore_cpu_virqs(unsigned int cpu)
- {
- 	struct evtchn_bind_virq bind_virq;
- 	evtchn_port_t evtchn;
-+	struct irq_info *info;
- 	int virq, irq;
- 
- 	for (virq = 0; virq < NR_VIRQS; virq++) {
- 		if ((irq = per_cpu(virq_to_irq, cpu)[virq]) == -1)
- 			continue;
-+		info = info_for_irq(irq);
- 
--		BUG_ON(virq_from_irq(irq) != virq);
-+		BUG_ON(virq_from_irq(info) != virq);
- 
- 		/* Get a new binding from Xen. */
- 		bind_virq.virq = virq;
-@@ -1987,9 +1974,9 @@ static void restore_cpu_virqs(unsigned int cpu)
- 		evtchn = bind_virq.port;
- 
- 		/* Record the new mapping. */
--		(void)xen_irq_info_virq_setup(cpu, irq, evtchn, virq);
-+		xen_irq_info_virq_setup(info, cpu, evtchn, virq);
- 		/* The affinity mask is still valid */
--		bind_evtchn_to_cpu(evtchn, cpu, false);
-+		bind_evtchn_to_cpu(info, cpu, false);
- 	}
- }
- 
-@@ -1997,13 +1984,15 @@ static void restore_cpu_ipis(unsigned int cpu)
- {
- 	struct evtchn_bind_ipi bind_ipi;
- 	evtchn_port_t evtchn;
-+	struct irq_info *info;
- 	int ipi, irq;
- 
- 	for (ipi = 0; ipi < XEN_NR_IPIS; ipi++) {
- 		if ((irq = per_cpu(ipi_to_irq, cpu)[ipi]) == -1)
- 			continue;
-+		info = info_for_irq(irq);
- 
--		BUG_ON(ipi_from_irq(irq) != ipi);
-+		BUG_ON(ipi_from_irq(info) != ipi);
- 
- 		/* Get a new binding from Xen. */
- 		bind_ipi.vcpu = xen_vcpu_nr(cpu);
-@@ -2013,9 +2002,9 @@ static void restore_cpu_ipis(unsigned int cpu)
- 		evtchn = bind_ipi.port;
- 
- 		/* Record the new mapping. */
--		(void)xen_irq_info_ipi_setup(cpu, irq, evtchn, ipi);
-+		xen_irq_info_ipi_setup(info, cpu, evtchn, ipi);
- 		/* The affinity mask is still valid */
--		bind_evtchn_to_cpu(evtchn, cpu, false);
-+		bind_evtchn_to_cpu(info, cpu, false);
- 	}
- }
- 
+ 	xen_free_irq(info);
 -- 
 2.43.0
 
