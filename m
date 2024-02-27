@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C5BB869709
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:17:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4893D869521
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:59:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE6761F26979
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:17:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F27FA1F219CC
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:59:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4972514264A;
-	Tue, 27 Feb 2024 14:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E2ED13DB90;
+	Tue, 27 Feb 2024 13:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tjaGAeOx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="psN08IIw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E601420D2;
-	Tue, 27 Feb 2024 14:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DBF113AA50;
+	Tue, 27 Feb 2024 13:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043448; cv=none; b=Lx37c9uNLKGv8poNcVbPJO4aggefAo01hhTdzDTLgPbV2/cnRuwPYd767xapLyFSSoi0uAue/Zf0INgjX6cTlSrhLJ2llugIEKNhSXunh0J9D/BcdlAnrylCNGUNL731DvfpUceSXH9EOa/99dioUN19Q08D8X5BMWw3+5sEG8U=
+	t=1709042344; cv=none; b=Y/SewaNu9Q6lVbLNhDrYzasrH0A99EdX3il9VVkLJV0ujLPgEFMo3JoWUkL2dZbMXaogo+34UVyOaLbieCy0CClX90Y0Kv8ThZQpmDqhQjOHGveKq959JEMF0Js+JLiA83QFWmuXp9osPJi4I0PCb3JxrCVq8mFjnUWRJJ8YaqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043448; c=relaxed/simple;
-	bh=zd5b6MsQJXYrHWlTB4iroj8WkXW70SJnn7mJHL3pFWo=;
+	s=arc-20240116; t=1709042344; c=relaxed/simple;
+	bh=L4cB2vYsuLmcds+stWhgKFBVm867HR8LxDhgwB549ww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OksAo/ezcGBmaVE6SuKheqO1myL/yAQLl2YF3k2YLurlozmZ7Ctc8qDZQBq6Lf7CgO51uRZJ/KW2+elq6n8qjvQfKBjCqfXU1xqzjWapCIk4F/NvXF844oAAfQw55JKx+KX+0d0PTrsYkFLRsaNDQ6hwJY4ae+koOBL+lldrLSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tjaGAeOx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C117C433C7;
-	Tue, 27 Feb 2024 14:17:27 +0000 (UTC)
+	 MIME-Version; b=N4hm5EYCiuUJMygnbUndHf8Pr1BXqCwNWM2iPuPHmiBXPgwzwwDv7CTHsuGleHcCwJoo/AW06jOZ0rFXEaQQcnp0ovYFnJUV4xmtyP+TSiJbv+zCExq6zJJWQ3Gzed5cIakVtZSQn2mUJfhd6RSYex6ggN0zMwVp/flCBEv4Irg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=psN08IIw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCEDBC433C7;
+	Tue, 27 Feb 2024 13:59:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043447;
-	bh=zd5b6MsQJXYrHWlTB4iroj8WkXW70SJnn7mJHL3pFWo=;
+	s=korg; t=1709042344;
+	bh=L4cB2vYsuLmcds+stWhgKFBVm867HR8LxDhgwB549ww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tjaGAeOxKjRb7Knal2vCrUH2FoX44IB+0rVq1iFmQnb5X9W2lP6YwrwWAuQ44OGa/
-	 IDYMkW00qRRdeK6k2zZI0w1vQePDz6VgzdA2WtdZ25noaDCeLqRgWEl/jJhqd8xd+B
-	 D0Gj2nMhP3UPJ6tIV8FxzHIa5c7musqY6IgELwxo=
+	b=psN08IIwzlsnO0IU/6q1MDD/5sxXpKjaeKQrRj4Rry9kVlbrC+p1oxBRf2Xr0PMO6
+	 HrvZL4mJBDiMzw9dlMI2NZTheUc8VzCFtdZ4Qr8kOb8k1HVLzcEYVGUzkrXs0XVN7N
+	 8RlNDPp08w33UfFXw/L5lf03fBFcGQj1vXp2FOvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.1 112/195] x86/returnthunk: Allow different return thunks
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 262/299] octeontx2-af: Consider the action set by PF
 Date: Tue, 27 Feb 2024 14:26:13 +0100
-Message-ID: <20240227131614.161670412@linuxfoundation.org>
+Message-ID: <20240227131634.130459863@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,117 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Subbaraya Sundeep <sbhatta@marvell.com>
 
-Upstream commit: 770ae1b709528a6a173b5c7b183818ee9b45e376
+[ Upstream commit 3b1ae9b71c2a97f848b00fb085a2bd29bddbe8d9 ]
 
-In preparation for call depth tracking on Intel SKL CPUs, make it possible
-to patch in a SKL specific return thunk.
+AF reserves MCAM entries for each PF, VF present in the
+system and populates the entry with DMAC and action with
+default RSS so that basic packet I/O works. Since PF/VF is
+not aware of the RSS action installed by AF, AF only fixup
+the actions of the rules installed by PF/VF with corresponding
+default RSS action. This worked well for rules installed by
+PF/VF for features like RX VLAN offload and DMAC filters but
+rules involving action like drop/forward to queue are also
+getting modified by AF. Hence fix it by setting the default
+RSS action only if requested by PF/VF.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20220915111147.680469665@infradead.org
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 967db3529eca ("octeontx2-af: add support for multicast/promisc packet replication feature")
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/nospec-branch.h |    6 ++++++
- arch/x86/kernel/alternative.c        |   19 ++++++++++++++-----
- arch/x86/kernel/ftrace.c             |    2 +-
- arch/x86/kernel/static_call.c        |    2 +-
- arch/x86/net/bpf_jit_comp.c          |    2 +-
- 5 files changed, 23 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -222,6 +222,12 @@ extern void srso_alias_untrain_ret(void)
- extern void entry_untrain_ret(void);
- extern void entry_ibpb(void);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+index 3784347b6fd88..55639c133dd02 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+@@ -437,6 +437,10 @@ static void npc_fixup_vf_rule(struct rvu *rvu, struct npc_mcam *mcam,
+ 			return;
+ 	}
  
-+#ifdef CONFIG_CALL_THUNKS
-+extern void (*x86_return_thunk)(void);
-+#else
-+#define x86_return_thunk	(&__x86_return_thunk)
-+#endif
++	/* AF modifies given action iff PF/VF has requested for it */
++	if ((entry->action & 0xFULL) != NIX_RX_ACTION_DEFAULT)
++		return;
 +
- #ifdef CONFIG_RETPOLINE
- 
- #define GEN(reg) \
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -536,6 +536,11 @@ void __init_or_module noinline apply_ret
- }
- 
- #ifdef CONFIG_RETHUNK
-+
-+#ifdef CONFIG_CALL_THUNKS
-+void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
-+#endif
-+
- /*
-  * Rewrite the compiler generated return thunk tail-calls.
-  *
-@@ -551,14 +556,18 @@ static int patch_return(void *addr, stru
- {
- 	int i = 0;
- 
--	if (cpu_feature_enabled(X86_FEATURE_RETHUNK))
--		return -1;
--
--	bytes[i++] = RET_INSN_OPCODE;
-+	if (cpu_feature_enabled(X86_FEATURE_RETHUNK)) {
-+		if (x86_return_thunk == __x86_return_thunk)
-+			return -1;
-+
-+		i = JMP32_INSN_SIZE;
-+		__text_gen_insn(bytes, JMP32_INSN_OPCODE, addr, x86_return_thunk, i);
-+	} else {
-+		bytes[i++] = RET_INSN_OPCODE;
-+	}
- 
- 	for (; i < insn->length;)
- 		bytes[i++] = INT3_INSN_OPCODE;
--
- 	return i;
- }
- 
---- a/arch/x86/kernel/ftrace.c
-+++ b/arch/x86/kernel/ftrace.c
-@@ -361,7 +361,7 @@ create_trampoline(struct ftrace_ops *ops
- 
- 	ip = trampoline + size;
- 	if (cpu_feature_enabled(X86_FEATURE_RETHUNK))
--		__text_gen_insn(ip, JMP32_INSN_OPCODE, ip, &__x86_return_thunk, JMP32_INSN_SIZE);
-+		__text_gen_insn(ip, JMP32_INSN_OPCODE, ip, x86_return_thunk, JMP32_INSN_SIZE);
- 	else
- 		memcpy(ip, retq, sizeof(retq));
- 
---- a/arch/x86/kernel/static_call.c
-+++ b/arch/x86/kernel/static_call.c
-@@ -80,7 +80,7 @@ static void __ref __static_call_transfor
- 
- 	case RET:
- 		if (cpu_feature_enabled(X86_FEATURE_RETHUNK))
--			code = text_gen_insn(JMP32_INSN_OPCODE, insn, &__x86_return_thunk);
-+			code = text_gen_insn(JMP32_INSN_OPCODE, insn, x86_return_thunk);
- 		else
- 			code = &retinsn;
- 		break;
---- a/arch/x86/net/bpf_jit_comp.c
-+++ b/arch/x86/net/bpf_jit_comp.c
-@@ -432,7 +432,7 @@ static void emit_return(u8 **pprog, u8 *
- 	u8 *prog = *pprog;
- 
- 	if (cpu_feature_enabled(X86_FEATURE_RETHUNK)) {
--		emit_jump(&prog, &__x86_return_thunk, ip);
-+		emit_jump(&prog, x86_return_thunk, ip);
- 	} else {
- 		EMIT1(0xC3);		/* ret */
- 		if (IS_ENABLED(CONFIG_SLS))
+ 	/* copy VF default entry action to the VF mcam entry */
+ 	rx_action = npc_get_default_entry_action(rvu, mcam, blkaddr,
+ 						 target_func);
+-- 
+2.43.0
+
 
 
 
