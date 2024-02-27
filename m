@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-24315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFA498693DF
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:49:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B71086931D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:42:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D9AB1C2253C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:49:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E395EB279C9
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:41:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D7B3146015;
-	Tue, 27 Feb 2024 13:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A2113B2B3;
+	Tue, 27 Feb 2024 13:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OYdd++i7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rLo/bx8y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED5214600C;
-	Tue, 27 Feb 2024 13:47:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079802F2D;
+	Tue, 27 Feb 2024 13:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041646; cv=none; b=a5s5LtEcxSNs9vR6lgsusABlakvyLgHUqVhO9/EUrEx117nbIgGUa71cD7F8I1tFlh91V6e4DjdGE2jYL6c2gafSgAm6/o/+rJTwWbBQ24uZUV9wYqnXKfxqcNSARcmEm9KD6i+V339sxMpyNT6VXpjWtnrpyqoIdXhm5BYyLFI=
+	t=1709041275; cv=none; b=t3PkIiWckXbA9gz7x0DJcs1apBnpQ3SvMwMxuMgH3E5A+exsRq33m0RxG7sddgSQcX7YDXUV7ku3LX0Nr3NWZp9HoQFVqhw4LYl9P3ClxIlF14nwXmMymJw7zRZSOHjb00GpgBk/9XMDDRTK2GzSG+M6pU3W0rVRgqgnofx0/GI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041646; c=relaxed/simple;
-	bh=fuBkK90EHenkr0QJ4tlM8Z8e11ctPzRD/G80zMQYM2E=;
+	s=arc-20240116; t=1709041275; c=relaxed/simple;
+	bh=DmPfHAf30jK81LTb5oXh/FlPcAogRxqFynMBoHInHqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IPkkIaNclU6skJMbsggoEVJwPm/YdZug9CE/yMfCFxKpQ4tugb0gXb/KhKIf60Fob0w4NwkiAdzSgfMsbGG7WBVzCVp0iobXvdiJ+iyh1LUKEbkApqlxszEdnr19ZTdGvUB4x48t0GgsKA9GAIs3yIYQwoVftjn11DE4CNKo8M4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OYdd++i7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6DA4C43390;
-	Tue, 27 Feb 2024 13:47:25 +0000 (UTC)
+	 MIME-Version; b=KJklixyfa1/uXOk4dDMccV2WQ/YCh/vWTEaVlW6+Cgn4xHjgB644jxcjx6FVb5zYE6p4FSsHmtEpHK9t7f6+d6nz744ekP7LojOGHIfEIjPJiNdov+shPZNwp1aHeFOwB23vCcmtsdmSCnq78ZJ6lnmPmuTAp3+YqVp/uPVLaX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rLo/bx8y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A732C433F1;
+	Tue, 27 Feb 2024 13:41:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041646;
-	bh=fuBkK90EHenkr0QJ4tlM8Z8e11ctPzRD/G80zMQYM2E=;
+	s=korg; t=1709041274;
+	bh=DmPfHAf30jK81LTb5oXh/FlPcAogRxqFynMBoHInHqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OYdd++i7/pLniSyeets4pAI7NkMiyn6FCApnJ6SRyQZzpsee0E18ETmWA8+pa2UtZ
-	 joQo1Idaq/iSiV47ZsXBBG8k1xCydUJy/5naSgxUwxG1WTcgJbdJX0X3Rp1Rd9+VxH
-	 4zZHgqd1GhsZOZCo3vqKMVGb0Kpo2BN/gBf0y/nk=
+	b=rLo/bx8yPUWXe1sqJU/hK8W/8j4pwyhnyLMANBjCy9+NZxD3RilqKR8MHgdZzZZxF
+	 Cb5jM35Md5ioCg9ZKx4voZPeaSqtgHxNpZqW0DK/wlQ+k9mqW7prG8jVrJ1TwCCDAr
+	 eQjXTlot6F5SDTMHItpR3G3nocBz+GvMV6+AUeKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a532b03fdfee2c137666@syzkaller.appspotmail.com,
-	syzbot+63dec323ac56c28e644f@syzkaller.appspotmail.com,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 021/299] block: Fix WARNING in _copy_from_iter
+Subject: [PATCH 6.7 274/334] selftests: bonding: set active slave to primary eth1 specifically
 Date: Tue, 27 Feb 2024 14:22:12 +0100
-Message-ID: <20240227131626.514190045@linuxfoundation.org>
+Message-ID: <20240227131639.834998330@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,66 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 13f3956eb5681a4045a8dfdef48df5dc4d9f58a6 ]
+[ Upstream commit cd65c48d66920457129584553f217005d09b1edb ]
 
-Syzkaller reports a warning in _copy_from_iter because an
-iov_iter is supposedly used in the wrong direction. The reason
-is that syzcaller managed to generate a request with
-a transfer direction of SG_DXFER_TO_FROM_DEV. This instructs
-the kernel to copy user buffers into the kernel, read into
-the copied buffers and then copy the data back to user space.
+In bond priority testing, we set the primary interface to eth1 and add
+eth0,1,2 to bond in serial. This is OK in normal times. But when in
+debug kernel, the bridge port that eth0,1,2 connected would start
+slowly (enter blocking, forwarding state), which caused the primary
+interface down for a while after enslaving and active slave changed.
+Here is a test log from Jakub's debug test[1].
 
-Thus the iovec is used in both directions.
+ [  400.399070][   T50] br0: port 1(s0) entered disabled state
+ [  400.400168][   T50] br0: port 4(s2) entered disabled state
+ [  400.941504][ T2791] bond0: (slave eth0): making interface the new active one
+ [  400.942603][ T2791] bond0: (slave eth0): Enslaving as an active interface with an up link
+ [  400.943633][ T2766] br0: port 1(s0) entered blocking state
+ [  400.944119][ T2766] br0: port 1(s0) entered forwarding state
+ [  401.128792][ T2792] bond0: (slave eth1): making interface the new active one
+ [  401.130771][ T2792] bond0: (slave eth1): Enslaving as an active interface with an up link
+ [  401.131643][   T69] br0: port 2(s1) entered blocking state
+ [  401.132067][   T69] br0: port 2(s1) entered forwarding state
+ [  401.346201][ T2793] bond0: (slave eth2): Enslaving as a backup interface with an up link
+ [  401.348414][   T50] br0: port 4(s2) entered blocking state
+ [  401.348857][   T50] br0: port 4(s2) entered forwarding state
+ [  401.519669][  T250] bond0: (slave eth0): link status definitely down, disabling slave
+ [  401.526522][  T250] bond0: (slave eth1): link status definitely down, disabling slave
+ [  401.526986][  T250] bond0: (slave eth2): making interface the new active one
+ [  401.629470][  T250] bond0: (slave eth0): link status definitely up
+ [  401.630089][  T250] bond0: (slave eth1): link status definitely up
+ [...]
+ # TEST: prio (active-backup ns_ip6_target primary_reselect 1)         [FAIL]
+ # Current active slave is eth2 but not eth1
 
-Detect this situation in the block layer and construct a new
-iterator with the correct direction for the copy-in.
+Fix it by setting active slave to primary slave specifically before
+testing.
 
-Reported-by: syzbot+a532b03fdfee2c137666@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/lkml/0000000000009b92c10604d7a5e9@google.com/t/
-Reported-by: syzbot+63dec323ac56c28e644f@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/lkml/0000000000003faaa105f6e7c658@google.com/T/
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20240121202634.275068-1-lk@c--e.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[1] https://netdev-3.bots.linux.dev/vmksft-bonding-dbg/results/464301/1-bond-options-sh/stdout
+
+Fixes: 481b56e0391e ("selftests: bonding: re-format bond option tests")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-map.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ tools/testing/selftests/drivers/net/bonding/bond_options.sh | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/block/blk-map.c b/block/blk-map.c
-index 8584babf3ea0c..71210cdb34426 100644
---- a/block/blk-map.c
-+++ b/block/blk-map.c
-@@ -205,12 +205,19 @@ static int bio_copy_user_iov(struct request *rq, struct rq_map_data *map_data,
- 	/*
- 	 * success
- 	 */
--	if ((iov_iter_rw(iter) == WRITE &&
--	     (!map_data || !map_data->null_mapped)) ||
--	    (map_data && map_data->from_user)) {
-+	if (iov_iter_rw(iter) == WRITE &&
-+	     (!map_data || !map_data->null_mapped)) {
- 		ret = bio_copy_from_iter(bio, iter);
- 		if (ret)
- 			goto cleanup;
-+	} else if (map_data && map_data->from_user) {
-+		struct iov_iter iter2 = *iter;
-+
-+		/* This is the copy-in part of SG_DXFER_TO_FROM_DEV. */
-+		iter2.data_source = ITER_SOURCE;
-+		ret = bio_copy_from_iter(bio, &iter2);
-+		if (ret)
-+			goto cleanup;
- 	} else {
- 		if (bmd->is_our_pages)
- 			zero_fill_bio(bio);
+diff --git a/tools/testing/selftests/drivers/net/bonding/bond_options.sh b/tools/testing/selftests/drivers/net/bonding/bond_options.sh
+index d508486cc0bdc..9a3d3c389dadd 100755
+--- a/tools/testing/selftests/drivers/net/bonding/bond_options.sh
++++ b/tools/testing/selftests/drivers/net/bonding/bond_options.sh
+@@ -62,6 +62,8 @@ prio_test()
+ 
+ 	# create bond
+ 	bond_reset "${param}"
++	# set active_slave to primary eth1 specifically
++	ip -n ${s_ns} link set bond0 type bond active_slave eth1
+ 
+ 	# check bonding member prio value
+ 	ip -n ${s_ns} link set eth0 type bond_slave prio 0
 -- 
 2.43.0
 
