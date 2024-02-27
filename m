@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-25192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 966CC869883
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:37:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA6DF869772
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:21:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A928B2EFB5
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:29:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8602F28283B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:21:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47CFF14264A;
-	Tue, 27 Feb 2024 14:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED03313EFEC;
+	Tue, 27 Feb 2024 14:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MF4qqxDg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JSYS/jSn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0502D1420B3;
-	Tue, 27 Feb 2024 14:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC22F13B2B4;
+	Tue, 27 Feb 2024 14:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044120; cv=none; b=nB56YlONaVgHvE062yX53CyyqRbHy48T1icIj8YrqbqlCAoF/kR9PhoR7k5ppXdK4Tjf6ETxsSU6JPVuEFfwTcG9gp4HKJXyTP/cXvMzc3rgp185AUuwHip9VoU2ONFsT9z85SecBCLZXoALSSG+XfQPrq6pX9JL3EhzNbzTJg4=
+	t=1709043685; cv=none; b=ZMtsozW4HFw9M1SSaCqJWpJCqWQFSInKqc5JoPGF5VxYCQe6iS9UH7BKDDeJO3YguH6JMf2TxViMQk7QCRp3L/Gf/p1ZLbVx9jyGowSXvtL2G7spNRBdNpOnYHnoRC6/xR4kOwPY7HsfUrILLF9IpjOZZCE5es9W4ei+D+pKqdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044120; c=relaxed/simple;
-	bh=r5NhY1zyJJUuwQsXNl44pXkOaL9f3s5cN1q4S4IDLc8=;
+	s=arc-20240116; t=1709043685; c=relaxed/simple;
+	bh=enELkqVk6zRg6YHOytDsHgF3jwu1x8ENQr1LxcT9ae8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RFTvpX7xTWgW1BZni6vFjNuuJEwapVErdgP+sqIJEqbNNq28zcd+bs5WPXW3fu3WAQ2lMTsqyrWG9TW7FCZI6IqX5ihdkG5bFrGUIQfeljuPjnRw7DPRntOa2bx+ZjFK7H/Ld5SwJZjmeEjA/Dpn+mFERGTNS4iho/ItBj0lDAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MF4qqxDg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 878B3C433F1;
-	Tue, 27 Feb 2024 14:28:39 +0000 (UTC)
+	 MIME-Version; b=Yitu4Yyi55KiGfAZuQLxydbYEyB8MZccQfKERufaoi9j0+dZCnvKIOlWp7+visShVUKfZJVQqIkHRANNs3SzKSv8ptMwO0iIuoYEYLSdojLbQFdOgm2rkxVMnizOzIdYRTWdVwDfQ3tHMf1cBZ/04c9pgGKb+m/OJNhYMZlswKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JSYS/jSn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37ED6C433C7;
+	Tue, 27 Feb 2024 14:21:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044119;
-	bh=r5NhY1zyJJUuwQsXNl44pXkOaL9f3s5cN1q4S4IDLc8=;
+	s=korg; t=1709043685;
+	bh=enELkqVk6zRg6YHOytDsHgF3jwu1x8ENQr1LxcT9ae8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MF4qqxDg4o6FNXJsvBxep82129fjmg1sNRh36lOn2s4VgPgBlUgBbga6E8rvDuwKE
-	 JOiONdsy11tPAWkWwSjXKBAnZOZqCoj3hWEJr3vxVqdhM7PwEtRvzDhtq3oQq4NtVm
-	 iCKMSvQAza4CfdpXzzPWBoDGmG7O0+lk5ouEw86w=
+	b=JSYS/jSnmbjCR8+ZIXC838XUI7Wf35m4pqts26T/JYFeIVNWA+ZXTUTzqoXgew8+6
+	 xuNDq1uo7mOcGgM7RasOwq5uGmaRs/THZb9pMAbVJ4V9VfAujzlQTu3am5LcDFDmQH
+	 oFZxW89RVRgxOzbv+MzroNSdvgbBf5erIyKCrIT0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Luca Coelho <luciano.coelho@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 068/122] iwlwifi: mvm: write queue_sync_state only for sync
-Date: Tue, 27 Feb 2024 14:27:09 +0100
-Message-ID: <20240227131600.926898633@linuxfoundation.org>
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+de4025c006ec68ac56fc@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 169/195] netfilter: nf_tables: set dormant flag on hook register failure
+Date: Tue, 27 Feb 2024 14:27:10 +0100
+Message-ID: <20240227131615.987753526@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 5f8a3561ea8bf75ad52cb16dafe69dd550fa542e ]
+[ Upstream commit bccebf64701735533c8db37773eeacc6566cc8ec ]
 
-We use mvm->queue_sync_state to wait for synchronous queue sync
-messages, but if an async one happens inbetween we shouldn't
-clear mvm->queue_sync_state after sending the async one, that
-can run concurrently (at least from the CPU POV) with another
-synchronous queue sync.
+We need to set the dormant flag again if we fail to register
+the hooks.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
-Link: https://lore.kernel.org/r/iwlwifi.20210331121101.d11c9bcdb4aa.I0772171dbaec87433a11513e9586d98b5d920b5f@changeid
-Signed-off-by: Luca Coelho <luciano.coelho@intel.com>
+During memory pressure hook registration can fail and we end up
+with a table marked as active but no registered hooks.
+
+On table/base chain deletion, nf_tables will attempt to unregister
+the hook again which yields a warn splat from the nftables core.
+
+Reported-and-tested-by: syzbot+de4025c006ec68ac56fc@syzkaller.appspotmail.com
+Fixes: 179d9ba5559a ("netfilter: nf_tables: fix table flag updates")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/netfilter/nf_tables_api.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index f2096729ac5ac..08008b0c0637c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -5177,9 +5177,10 @@ void iwl_mvm_sync_rx_queues_internal(struct iwl_mvm *mvm,
- 	}
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 49acb89ba9c56..f1a74b0949999 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -1245,6 +1245,7 @@ static int nf_tables_updtable(struct nft_ctx *ctx)
+ 	return 0;
  
- out:
--	mvm->queue_sync_state = 0;
--	if (notif->sync)
-+	if (notif->sync) {
-+		mvm->queue_sync_state = 0;
- 		mvm->queue_sync_cookie++;
-+	}
+ err_register_hooks:
++	ctx->table->flags |= NFT_TABLE_F_DORMANT;
+ 	nft_trans_destroy(trans);
+ 	return ret;
  }
- 
- static void iwl_mvm_sync_rx_queues(struct ieee80211_hw *hw)
 -- 
 2.43.0
 
