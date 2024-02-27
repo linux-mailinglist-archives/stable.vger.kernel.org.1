@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-25195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9A8086982F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:29:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68C7286954B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:00:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAF2B1C23A13
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:29:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2351E288846
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:00:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DFCE140391;
-	Tue, 27 Feb 2024 14:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F7431420DD;
+	Tue, 27 Feb 2024 14:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lk2+uZCT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oH/zLD4O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC2A13AA4C;
-	Tue, 27 Feb 2024 14:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A45D1419B3;
+	Tue, 27 Feb 2024 14:00:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709044128; cv=none; b=g+b3fCc1aYPWUFsqhGnDEwNq01D/FWZjbOdEsESTim6p1INqr/fRZNtWY37woPS3XHgt5oSKDZLzzWw8BKk4vvmxSf8vCezSbJ8yiROeH0nFIHDLbFOFv6eiI4n+CQDlvfWoPlVmos8EMYT+nZahetUgxal7W2QgKU4pQPdGhEk=
+	t=1709042435; cv=none; b=TqwRVqMW8GcQHIeRbwCtudrpNmSBHi9nJ0dSXDje3XdLo9J4BiTKGb3CViRPxpJpnfKw9/bEhOy3LW2kDuzK7jHRuy3eEENGC0CmcTiPYQpWvMZFu/ybCgQUM20/KEdgwQvZLhNQXYk3j0AUghfv+C+j+R7vsWVQhbJSlAtK/wE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709044128; c=relaxed/simple;
-	bh=8XDS2wVv85M/xIKsSEqkiIGBra4tSNWYz84nYsF2yLg=;
+	s=arc-20240116; t=1709042435; c=relaxed/simple;
+	bh=x5+6jh+vVf53uo3fzm/2lISI4qCWlIHHh5nFP7ne0Rc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S3cZQIBH0WSiW43poXYRZ6hseFp07hu+nY5xnPDBmNbMlw+m64RAwPWXvHZ891q+JgP5h/5vRMdDqyJs4wcELTcUSHgX9Vv93C95VtH47qQoq926NTN9XcJl4XcNnnqcdQtMxUAnsXO3P0DGxN+B8wfMxWeMinaw+6JintQMB9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lk2+uZCT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF509C433F1;
-	Tue, 27 Feb 2024 14:28:47 +0000 (UTC)
+	 MIME-Version; b=q657SvYtBWcV7OLLmlBxjUDWw5Vc5D10rLpvwt7wOLJHVA3syB9OHTI2bsxD8Eqjg3yaXBJetWxEOYVjfzVPj6aXsXiYrMGqS6Xhm/e5tQG/8PW+RkKJEGn4aWZahH+NhxzEC8j7E4yNBA/v4fxwaUF5Z7rjx2PgCQaBAWmNtj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oH/zLD4O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7A90C433C7;
+	Tue, 27 Feb 2024 14:00:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709044128;
-	bh=8XDS2wVv85M/xIKsSEqkiIGBra4tSNWYz84nYsF2yLg=;
+	s=korg; t=1709042435;
+	bh=x5+6jh+vVf53uo3fzm/2lISI4qCWlIHHh5nFP7ne0Rc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lk2+uZCTTPTRP6mDKE+/bQrlwdVp1xTESTEZTQLsggHnILgjta5Y8g2Uh1N2PyuJf
-	 ZuxgDZ9k83UUN4AnFwXGn76LzoNi0IRj1SmXpfa2xw4BUyBKW1gHOD9uwwQKrOc2cL
-	 b4xdLyKtHX96IVDjrA0y1yyPKYgPnujS6GI1Ekwg=
+	b=oH/zLD4O9eekOTYN/gqTELrCgVbHjL3GfGQOtJdsCFIpy3jYNbzumbJrq5i8Z+0jm
+	 YrLnPCOnR7mncAlviqBQG4qdAP/ghgNfZh7XIH67aFBHbc1B60iqAh0LgvqoSjIcxy
+	 ZlpO4gYY4A6Umk0FlGQyeV9FvyZja7BB3aUJh8ds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 044/122] irqchip/mips-gic: Dont touch vl_map if a local interrupt is not routable
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Geliang Tang <geliang@kernel.org>
+Subject: [PATCH 6.6 294/299] selftests: mptcp: join: stop transfer when check is done (part 2)
 Date: Tue, 27 Feb 2024 14:26:45 +0100
-Message-ID: <20240227131600.152135161@linuxfoundation.org>
+Message-ID: <20240227131635.129703038@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 2c6c9c049510163090b979ea5f92a68ae8d93c45 ]
+commit 04b57c9e096a9479fe0ad31e3956e336fa589cb2 upstream.
 
-When a GIC local interrupt is not routable, it's vl_map will be used
-to control some internal states for core (providing IPTI, IPPCI, IPFDC
-input signal for core). Overriding it will interfere core's intetrupt
-controller.
+Since the "Fixes" commits mentioned below, the newly added "userspace
+pm" subtests of mptcp_join selftests are launching the whole transfer in
+the background, do the required checks, then wait for the end of
+transfer.
 
-Do not touch vl_map if a local interrupt is not routable, we are not
-going to remap it.
+There is no need to wait longer, especially because the checks at the
+end of the transfer are ignored (which is fine). This saves quite a few
+seconds on slow environments.
 
-Before dd098a0e0319 (" irqchip/mips-gic: Get rid of the reliance on
-irq_cpu_online()"), if a local interrupt is not routable, then it won't
-be requested from GIC Local domain, and thus gic_all_vpes_irq_cpu_online
-won't be called for that particular interrupt.
+While at it, use 'mptcp_lib_kill_wait()' helper everywhere, instead of
+on a specific one with 'kill_tests_wait()'.
 
-Fixes: dd098a0e0319 (" irqchip/mips-gic: Get rid of the reliance on irq_cpu_online()")
+Fixes: b2e2248f365a ("selftests: mptcp: userspace pm create id 0 subflow")
+Fixes: e3b47e460b4b ("selftests: mptcp: userspace pm remove initial subflow")
+Fixes: b9fb176081fb ("selftests: mptcp: userspace pm send RM_ADDR for ID 0")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Tested-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230424103156.66753-2-jiaxun.yang@flygoat.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-and-tested-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240131-upstream-net-20240131-mptcp-ci-issues-v1-9-4c1c11e571ff@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-mips-gic.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index fc25b900cef71..7888e3c08df40 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -398,6 +398,8 @@ static void gic_all_vpes_irq_cpu_online(void)
- 		unsigned int intr = local_intrs[i];
- 		struct gic_all_vpes_chip_data *cd;
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -688,13 +688,6 @@ kill_events_pids()
+ 	mptcp_lib_kill_wait $evts_ns2_pid
+ }
  
-+		if (!gic_local_irq_is_routable(intr))
-+			continue;
- 		cd = &gic_all_vpes_chip_data[intr];
- 		write_gic_vl_map(mips_gic_vx_map_reg(intr), cd->map);
- 		if (cd->mask)
--- 
-2.43.0
-
+-kill_tests_wait()
+-{
+-	#shellcheck disable=SC2046
+-	kill -SIGUSR1 $(ip netns pids $ns2) $(ip netns pids $ns1)
+-	wait
+-}
+-
+ pm_nl_set_limits()
+ {
+ 	local ns=$1
+@@ -3463,7 +3456,8 @@ endpoint_tests()
+ 		pm_nl_set_limits $ns2 2 2
+ 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
+ 		speed=slow \
+-			run_tests $ns1 $ns2 10.0.1.1 2>/dev/null &
++			run_tests $ns1 $ns2 10.0.1.1 &
++		local tests_pid=$!
+ 
+ 		wait_mpj $ns1
+ 		pm_nl_check_endpoint "creation" \
+@@ -3478,7 +3472,7 @@ endpoint_tests()
+ 		pm_nl_add_endpoint $ns2 10.0.2.2 flags signal
+ 		pm_nl_check_endpoint "modif is allowed" \
+ 			$ns2 10.0.2.2 id 1 flags signal
+-		kill_tests_wait
++		mptcp_lib_kill_wait $tests_pid
+ 	fi
+ 
+ 	if reset "delete and re-add" &&
+@@ -3487,7 +3481,8 @@ endpoint_tests()
+ 		pm_nl_set_limits $ns2 1 1
+ 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
+ 		test_linkfail=4 speed=20 \
+-			run_tests $ns1 $ns2 10.0.1.1 2>/dev/null &
++			run_tests $ns1 $ns2 10.0.1.1 &
++		local tests_pid=$!
+ 
+ 		wait_mpj $ns2
+ 		chk_subflow_nr "before delete" 2
+@@ -3502,7 +3497,7 @@ endpoint_tests()
+ 		wait_mpj $ns2
+ 		chk_subflow_nr "after re-add" 2
+ 		chk_mptcp_info subflows 1 subflows 1
+-		kill_tests_wait
++		mptcp_lib_kill_wait $tests_pid
+ 	fi
+ }
+ 
 
 
 
