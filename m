@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AAFC86967D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:12:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6630C86978B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:22:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C4301F2E53F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:12:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C55F31F25095
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:22:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4266140391;
-	Tue, 27 Feb 2024 14:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0550B13DBBC;
+	Tue, 27 Feb 2024 14:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swiDE9BL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hpe1LDw9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7960E13F016;
-	Tue, 27 Feb 2024 14:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B675C13B2B4;
+	Tue, 27 Feb 2024 14:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043135; cv=none; b=UmtfyJlu7kZ6cjnnbfVXTCsoXYEzfb8SD/D0pxGDME7DS4ZXP6pA+9H3Aj7NixhF+xKX/Oz3bL/puE1NeSbnS0L+TshlARGIDxcWTnU5KRuPxHfCAtS963kdRKn/3CKlZE8n91VZGyQTCnpLJuK8afHhzZBQIigUiF/ApUeU+W0=
+	t=1709043740; cv=none; b=Op/F3pTPkOnCe0dCE19ux22gmU4Ug4iiX8fLD+Y7qce5FTLsrUZJ9V4jEdJOo0ruBezLCI97jH7OTI9Yehz5xkM3kS9ynpMfmH1SM4Y8x+98q96EPrE0qnraXktGdd4HBuz2PixI3aTJOumHsdBC/PugXEGOZn0SqPA/Uaz2hgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043135; c=relaxed/simple;
-	bh=cUEny2sut0BYIuVQhXZ8CJGdaZyyZuGDJkuvjg6nr8s=;
+	s=arc-20240116; t=1709043740; c=relaxed/simple;
+	bh=kbJFRIrQFzc02Zs3beIMQkTgXFNUgUnfilYd6vEb/98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uqlBulgDqFOyaCRua+MQtNZeQn74Kmj7+UoBQrRCtY53CNINEWQ6d1s5HNPpq57WEA8b50o4yoaGbmNxJe4rGcbTVqpH89aIhqn0MoEFO64OKyu9MpgED+VI6Fc4+pii8ILNxUoVKGvYACbJXRVF1mycjhHuauIYbW0E5ddqM3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swiDE9BL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A918C433F1;
-	Tue, 27 Feb 2024 14:12:14 +0000 (UTC)
+	 MIME-Version; b=p/0LwZm/fydvQE+jZU/fba9cJoqqJOM2a23MtDBb5l2H3ppQAupUqeuTVWFEU+R8bnCrAIpi2zwO4LePhhVMu9eteEaFkpDJbNuMa0nmVPEvgEQuR+UGgntMBlFKJH2WA3TCirGZPNM4fqv9NpIKY/0PW8HXSTLZ5U9YGScnUXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hpe1LDw9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C0DC433F1;
+	Tue, 27 Feb 2024 14:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043134;
-	bh=cUEny2sut0BYIuVQhXZ8CJGdaZyyZuGDJkuvjg6nr8s=;
+	s=korg; t=1709043740;
+	bh=kbJFRIrQFzc02Zs3beIMQkTgXFNUgUnfilYd6vEb/98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=swiDE9BL2UEXimFHRiBL5baye8Z4H5rZ06DLIfpn/VEQdlv9ggptAOEkULaTMxsB/
-	 7zm/al+N3+D5WC4QE5LQuIhPCgSAyBpCEQYPtIhSNnaxAmB0s0XpreFHyUAiZwWSXO
-	 XbIiBnCdrXSHnnO53EnooJOogGvtjpW35DSJB0Mo=
+	b=Hpe1LDw94S007pTluH2isBhVJZ1OxKpVPSMvvpRxwHJ0SWXoHeEnmjM91s8HsC+M+
+	 oIkguvmWJVU6bzlt8YSrtTdcBAfpVaKwqzKcp//5BNdSN3Jj60uMCJWHUz9y8Bjv93
+	 4bHifMp1sz4yX4Eyn5K+vZUjBjjlMePBI80px4oY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
+	Lennert Buytenhek <kernel@wantstofly.org>,
 	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 219/245] ata: ahci_ceva: fix error handling for Xilinx GT PHY support
+Subject: [PATCH 5.4 20/84] ahci: add 43-bit DMA address quirk for ASMedia ASM1061 controllers
 Date: Tue, 27 Feb 2024 14:26:47 +0100
-Message-ID: <20240227131622.317872337@linuxfoundation.org>
+Message-ID: <20240227131553.524784224@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,246 +62,160 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+From: Lennert Buytenhek <kernel@wantstofly.org>
 
-[ Upstream commit 26c8404e162b43dddcb037ba2d0cb58c0ed60aab ]
+[ Upstream commit 20730e9b277873deeb6637339edcba64468f3da3 ]
 
-Platform clock and phy error resources are not cleaned up in Xilinx GT PHY
-error path.
+With one of the on-board ASM1061 AHCI controllers (1b21:0612) on an
+ASUSTeK Pro WS WRX80E-SAGE SE WIFI mainboard, a controller hang was
+observed that was immediately preceded by the following kernel
+messages:
 
-To fix introduce the function ceva_ahci_platform_enable_resources() which
-is a customized version of ahci_platform_enable_resources() and inline with
-SATA IP programming sequence it does:
+ahci 0000:28:00.0: Using 64-bit DMA addresses
+ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00000 flags=0x0000]
+ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00300 flags=0x0000]
+ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00380 flags=0x0000]
+ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00400 flags=0x0000]
+ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00680 flags=0x0000]
+ahci 0000:28:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0035 address=0x7fffff00700 flags=0x0000]
 
-- Assert SATA reset
-- Program PS GTR phy
-- Bring SATA by de-asserting the reset
-- Wait for GT lane PLL to be locked
+The first message is produced by code in drivers/iommu/dma-iommu.c
+which is accompanied by the following comment that seems to apply:
 
-ceva_ahci_platform_enable_resources() is also used in the resume path
-as the same SATA programming sequence (as in probe) should be followed.
-Also cleanup the mixed usage of ahci_platform_enable_resources() and custom
-implementation in the probe function as both are not required.
+        /*
+         * Try to use all the 32-bit PCI addresses first. The original SAC vs.
+         * DAC reasoning loses relevance with PCIe, but enough hardware and
+         * firmware bugs are still lurking out there that it's safest not to
+         * venture into the 64-bit space until necessary.
+         *
+         * If your device goes wrong after seeing the notice then likely either
+         * its driver is not setting DMA masks accurately, the hardware has
+         * some inherent bug in handling >32-bit addresses, or not all the
+         * expected address bits are wired up between the device and the IOMMU.
+         */
 
-Fixes: 9a9d3abe24bb ("ata: ahci: ceva: Update the driver to support xilinx GT phy")
-Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Asking the ASM1061 on a discrete PCIe card to DMA from I/O virtual
+address 0xffffffff00000000 produces the following I/O page faults:
+
+vfio-pci 0000:07:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0021 address=0x7ff00000000 flags=0x0010]
+vfio-pci 0000:07:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0021 address=0x7ff00000500 flags=0x0010]
+
+Note that the upper 21 bits of the logged DMA address are zero.  (When
+asking a different PCIe device in the same PCIe slot to DMA to the
+same I/O virtual address, we do see all the upper 32 bits of the DMA
+address as 1, so this is not an issue with the chipset or IOMMU
+configuration on the test system.)
+
+Also, hacking libahci to always set the upper 21 bits of all DMA
+addresses to 1 produces no discernible effect on the behavior of the
+ASM1061, and mkfs/mount/scrub/etc work as without this hack.
+
+This all strongly suggests that the ASM1061 has a 43 bit DMA address
+limit, and this commit therefore adds a quirk to deal with this limit.
+
+This issue probably applies to (some of) the other supported ASMedia
+parts as well, but we limit it to the PCI IDs known to refer to
+ASM1061 parts, as that's the only part we know for sure to be affected
+by this issue at this point.
+
+Link: https://lore.kernel.org/linux-ide/ZaZ2PIpEId-rl6jv@wantstofly.org/
+Signed-off-by: Lennert Buytenhek <kernel@wantstofly.org>
+[cassel: drop date from error messages in commit log]
 Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci_ceva.c | 125 +++++++++++++++++++++++++---------------
- 1 file changed, 79 insertions(+), 46 deletions(-)
+ drivers/ata/ahci.c | 29 +++++++++++++++++++++++------
+ drivers/ata/ahci.h |  1 +
+ 2 files changed, 24 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/ata/ahci_ceva.c b/drivers/ata/ahci_ceva.c
-index 50b56cd0039d2..3a32710820046 100644
---- a/drivers/ata/ahci_ceva.c
-+++ b/drivers/ata/ahci_ceva.c
-@@ -88,7 +88,6 @@ struct ceva_ahci_priv {
- 	u32 axicc;
- 	bool is_cci_enabled;
- 	int flags;
--	struct reset_control *rst;
- };
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 5db3dc45bdc4e..84c7519dddb19 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -48,6 +48,7 @@ enum {
+ enum board_ids {
+ 	/* board IDs by feature in alphabetical order */
+ 	board_ahci,
++	board_ahci_43bit_dma,
+ 	board_ahci_ign_iferr,
+ 	board_ahci_mobile,
+ 	board_ahci_nomsi,
+@@ -126,6 +127,13 @@ static const struct ata_port_info ahci_port_info[] = {
+ 		.udma_mask	= ATA_UDMA6,
+ 		.port_ops	= &ahci_ops,
+ 	},
++	[board_ahci_43bit_dma] = {
++		AHCI_HFLAGS	(AHCI_HFLAG_43BIT_ONLY),
++		.flags		= AHCI_FLAG_COMMON,
++		.pio_mask	= ATA_PIO4,
++		.udma_mask	= ATA_UDMA6,
++		.port_ops	= &ahci_ops,
++	},
+ 	[board_ahci_ign_iferr] = {
+ 		AHCI_HFLAGS	(AHCI_HFLAG_IGN_IRQ_IF_ERR),
+ 		.flags		= AHCI_FLAG_COMMON,
+@@ -561,11 +569,11 @@ static const struct pci_device_id ahci_pci_tbl[] = {
+ 	{ PCI_VDEVICE(PROMISE, 0x3f20), board_ahci },	/* PDC42819 */
+ 	{ PCI_VDEVICE(PROMISE, 0x3781), board_ahci },   /* FastTrak TX8660 ahci-mode */
  
- static unsigned int ceva_ahci_read_id(struct ata_device *dev,
-@@ -189,6 +188,60 @@ static struct scsi_host_template ahci_platform_sht = {
- 	AHCI_SHT(DRV_NAME),
- };
+-	/* Asmedia */
++	/* ASMedia */
+ 	{ PCI_VDEVICE(ASMEDIA, 0x0601), board_ahci },	/* ASM1060 */
+ 	{ PCI_VDEVICE(ASMEDIA, 0x0602), board_ahci },	/* ASM1060 */
+-	{ PCI_VDEVICE(ASMEDIA, 0x0611), board_ahci },	/* ASM1061 */
+-	{ PCI_VDEVICE(ASMEDIA, 0x0612), board_ahci },	/* ASM1062 */
++	{ PCI_VDEVICE(ASMEDIA, 0x0611), board_ahci_43bit_dma },	/* ASM1061 */
++	{ PCI_VDEVICE(ASMEDIA, 0x0612), board_ahci_43bit_dma },	/* ASM1061/1062 */
+ 	{ PCI_VDEVICE(ASMEDIA, 0x0621), board_ahci },   /* ASM1061R */
+ 	{ PCI_VDEVICE(ASMEDIA, 0x0622), board_ahci },   /* ASM1062R */
  
-+static int ceva_ahci_platform_enable_resources(struct ahci_host_priv *hpriv)
-+{
-+	int rc, i;
-+
-+	rc = ahci_platform_enable_regulators(hpriv);
-+	if (rc)
-+		return rc;
-+
-+	rc = ahci_platform_enable_clks(hpriv);
-+	if (rc)
-+		goto disable_regulator;
-+
-+	/* Assert the controller reset */
-+	rc = ahci_platform_assert_rsts(hpriv);
-+	if (rc)
-+		goto disable_clks;
-+
-+	for (i = 0; i < hpriv->nports; i++) {
-+		rc = phy_init(hpriv->phys[i]);
-+		if (rc)
-+			goto disable_rsts;
-+	}
-+
-+	/* De-assert the controller reset */
-+	ahci_platform_deassert_rsts(hpriv);
-+
-+	for (i = 0; i < hpriv->nports; i++) {
-+		rc = phy_power_on(hpriv->phys[i]);
-+		if (rc) {
-+			phy_exit(hpriv->phys[i]);
-+			goto disable_phys;
-+		}
-+	}
-+
-+	return 0;
-+
-+disable_rsts:
-+	ahci_platform_deassert_rsts(hpriv);
-+
-+disable_phys:
-+	while (--i >= 0) {
-+		phy_power_off(hpriv->phys[i]);
-+		phy_exit(hpriv->phys[i]);
-+	}
-+
-+disable_clks:
-+	ahci_platform_disable_clks(hpriv);
-+
-+disable_regulator:
-+	ahci_platform_disable_regulators(hpriv);
-+
-+	return rc;
-+}
-+
- static int ceva_ahci_probe(struct platform_device *pdev)
+@@ -916,11 +924,20 @@ static int ahci_pci_device_resume(struct device *dev)
+ 
+ #endif /* CONFIG_PM */
+ 
+-static int ahci_configure_dma_masks(struct pci_dev *pdev, int using_dac)
++static int ahci_configure_dma_masks(struct pci_dev *pdev,
++				    struct ahci_host_priv *hpriv)
  {
- 	struct device_node *np = pdev->dev.of_node;
-@@ -203,47 +256,19 @@ static int ceva_ahci_probe(struct platform_device *pdev)
- 		return -ENOMEM;
- 
- 	cevapriv->ahci_pdev = pdev;
--
--	cevapriv->rst = devm_reset_control_get_optional_exclusive(&pdev->dev,
--								  NULL);
--	if (IS_ERR(cevapriv->rst))
--		dev_err_probe(&pdev->dev, PTR_ERR(cevapriv->rst),
--			      "failed to get reset\n");
--
- 	hpriv = ahci_platform_get_resources(pdev, 0);
- 	if (IS_ERR(hpriv))
- 		return PTR_ERR(hpriv);
- 
--	if (!cevapriv->rst) {
--		rc = ahci_platform_enable_resources(hpriv);
--		if (rc)
--			return rc;
--	} else {
--		int i;
-+	hpriv->rsts = devm_reset_control_get_optional_exclusive(&pdev->dev,
-+								NULL);
-+	if (IS_ERR(hpriv->rsts))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(hpriv->rsts),
-+				     "failed to get reset\n");
- 
--		rc = ahci_platform_enable_clks(hpriv);
--		if (rc)
--			return rc;
--		/* Assert the controller reset */
--		reset_control_assert(cevapriv->rst);
--
--		for (i = 0; i < hpriv->nports; i++) {
--			rc = phy_init(hpriv->phys[i]);
--			if (rc)
--				return rc;
--		}
--
--		/* De-assert the controller reset */
--		reset_control_deassert(cevapriv->rst);
--
--		for (i = 0; i < hpriv->nports; i++) {
--			rc = phy_power_on(hpriv->phys[i]);
--			if (rc) {
--				phy_exit(hpriv->phys[i]);
--				return rc;
--			}
--		}
--	}
-+	rc = ceva_ahci_platform_enable_resources(hpriv);
-+	if (rc)
-+		return rc;
- 
- 	if (of_property_read_bool(np, "ceva,broken-gen2"))
- 		cevapriv->flags = CEVA_FLAG_BROKEN_GEN2;
-@@ -252,52 +277,60 @@ static int ceva_ahci_probe(struct platform_device *pdev)
- 	if (of_property_read_u8_array(np, "ceva,p0-cominit-params",
- 					(u8 *)&cevapriv->pp2c[0], 4) < 0) {
- 		dev_warn(dev, "ceva,p0-cominit-params property not defined\n");
--		return -EINVAL;
-+		rc = -EINVAL;
-+		goto disable_resources;
- 	}
- 
- 	if (of_property_read_u8_array(np, "ceva,p1-cominit-params",
- 					(u8 *)&cevapriv->pp2c[1], 4) < 0) {
- 		dev_warn(dev, "ceva,p1-cominit-params property not defined\n");
--		return -EINVAL;
-+		rc = -EINVAL;
-+		goto disable_resources;
- 	}
- 
- 	/* Read OOB timing value for COMWAKE from device-tree*/
- 	if (of_property_read_u8_array(np, "ceva,p0-comwake-params",
- 					(u8 *)&cevapriv->pp3c[0], 4) < 0) {
- 		dev_warn(dev, "ceva,p0-comwake-params property not defined\n");
--		return -EINVAL;
-+		rc = -EINVAL;
-+		goto disable_resources;
- 	}
- 
- 	if (of_property_read_u8_array(np, "ceva,p1-comwake-params",
- 					(u8 *)&cevapriv->pp3c[1], 4) < 0) {
- 		dev_warn(dev, "ceva,p1-comwake-params property not defined\n");
--		return -EINVAL;
-+		rc = -EINVAL;
-+		goto disable_resources;
- 	}
- 
- 	/* Read phy BURST timing value from device-tree */
- 	if (of_property_read_u8_array(np, "ceva,p0-burst-params",
- 					(u8 *)&cevapriv->pp4c[0], 4) < 0) {
- 		dev_warn(dev, "ceva,p0-burst-params property not defined\n");
--		return -EINVAL;
-+		rc = -EINVAL;
-+		goto disable_resources;
- 	}
- 
- 	if (of_property_read_u8_array(np, "ceva,p1-burst-params",
- 					(u8 *)&cevapriv->pp4c[1], 4) < 0) {
- 		dev_warn(dev, "ceva,p1-burst-params property not defined\n");
--		return -EINVAL;
-+		rc = -EINVAL;
-+		goto disable_resources;
- 	}
- 
- 	/* Read phy RETRY interval timing value from device-tree */
- 	if (of_property_read_u16_array(np, "ceva,p0-retry-params",
- 					(u16 *)&cevapriv->pp5c[0], 2) < 0) {
- 		dev_warn(dev, "ceva,p0-retry-params property not defined\n");
--		return -EINVAL;
-+		rc = -EINVAL;
-+		goto disable_resources;
- 	}
- 
- 	if (of_property_read_u16_array(np, "ceva,p1-retry-params",
- 					(u16 *)&cevapriv->pp5c[1], 2) < 0) {
- 		dev_warn(dev, "ceva,p1-retry-params property not defined\n");
--		return -EINVAL;
-+		rc = -EINVAL;
-+		goto disable_resources;
- 	}
- 
- 	/*
-@@ -335,7 +368,7 @@ static int __maybe_unused ceva_ahci_resume(struct device *dev)
- 	struct ahci_host_priv *hpriv = host->private_data;
+-	const int dma_bits = using_dac ? 64 : 32;
++	int dma_bits;
  	int rc;
  
--	rc = ahci_platform_enable_resources(hpriv);
-+	rc = ceva_ahci_platform_enable_resources(hpriv);
++	if (hpriv->cap & HOST_CAP_64) {
++		dma_bits = 64;
++		if (hpriv->flags & AHCI_HFLAG_43BIT_ONLY)
++			dma_bits = 43;
++	} else {
++		dma_bits = 32;
++	}
++
+ 	/*
+ 	 * If the device fixup already set the dma_mask to some non-standard
+ 	 * value, don't extend it here. This happens on STA2X11, for example.
+@@ -1880,7 +1897,7 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	ahci_gtf_filter_workaround(host);
+ 
+ 	/* initialize adapter */
+-	rc = ahci_configure_dma_masks(pdev, hpriv->cap & HOST_CAP_64);
++	rc = ahci_configure_dma_masks(pdev, hpriv);
  	if (rc)
  		return rc;
+ 
+diff --git a/drivers/ata/ahci.h b/drivers/ata/ahci.h
+index 36dac58b5c413..bb1e52212f644 100644
+--- a/drivers/ata/ahci.h
++++ b/drivers/ata/ahci.h
+@@ -244,6 +244,7 @@ enum {
+ 	AHCI_HFLAG_IGN_NOTSUPP_POWER_ON	= BIT(27), /* ignore -EOPNOTSUPP
+ 						      from phy_power_on() */
+ 	AHCI_HFLAG_NO_SXS		= BIT(28), /* SXS not supported */
++	AHCI_HFLAG_43BIT_ONLY		= BIT(29), /* 43bit DMA addr limit */
+ 
+ 	/* ap->flags bits */
  
 -- 
 2.43.0
