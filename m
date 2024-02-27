@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-24281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B8318693A9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:47:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D19A86985E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:32:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C26301F25313
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:47:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4067B23CEB
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:27:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F291420DB;
-	Tue, 27 Feb 2024 13:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 032DE143C6E;
+	Tue, 27 Feb 2024 14:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wTUi8fy3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R4l8mJee"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1008514199C;
-	Tue, 27 Feb 2024 13:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B545E13A26F;
+	Tue, 27 Feb 2024 14:26:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041543; cv=none; b=dti1HxE8ziaikl8KbgCG4z2v+2XwC0QsYY4wL3SiYJ6EkktMpIAXzMumXh2mZqHK22Wt9UHVWOW6x3OMyHdA/ELyWQs1wBR/WlGn/NZY9FIMli2Tt0H5O0xRe92tnRkOiMSz0eWBvw+azxe8m0BiEId9CaXut5HGX++s5c6AYGI=
+	t=1709044003; cv=none; b=dUV9AnTXMKEup2zp8D/hwmcBYOpf7xlHCg7BFAR5MY8pLG++Q1+vvt0KM6C9PZ2xn+EJUIUQuZkxz+CUwb8VefAALCC0YD2yNCjM+f81DFrLJKDUU7SQDCxZjqJgHtwJ8WeRgKOYFtFTcftxbX4/7xzYzXjuYLIpRAY276BpFTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041543; c=relaxed/simple;
-	bh=FJzEo7zHULSjtPrdiYHt9WPXg8IsDTtdCArzZZpnycs=;
+	s=arc-20240116; t=1709044003; c=relaxed/simple;
+	bh=uDNxFuq9kUA88YJIBIJCO9Eor9uhSkppOh+RKE/SsdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kygESbkil6e86rXD1FS9n42Zrvr/4wsMKjTVu18BmdSulvTsHiy/g0P0HIsk5M5OjZUNNQ0F6DbDwS59cLYI8b4wLzz24i3DmGorY+CJ575Oq7RuftDWqBUIuaQafAcubZ4qIKayj7jBQkYtXAbpO9JkMPxgWh8Y1L0iE8Yk+mU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wTUi8fy3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FEB2C43390;
-	Tue, 27 Feb 2024 13:45:42 +0000 (UTC)
+	 MIME-Version; b=jrnTvMq7UwxiH6pMAnz3d238UlNab//HRAg5Ip11Yn3xYEUN9iigVP21IMPBBoZd1HaKgTZetvUZdQvDy4Lfkmh7U+s4/jvFkkKzHWmfXYgh2Cn60WHYPGrUSrT+mq3p2ssNHJXAHzhRXSy4P/elHmxDx45IerjFwJZBFvJ/u+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R4l8mJee; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A29C433C7;
+	Tue, 27 Feb 2024 14:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041542;
-	bh=FJzEo7zHULSjtPrdiYHt9WPXg8IsDTtdCArzZZpnycs=;
+	s=korg; t=1709044003;
+	bh=uDNxFuq9kUA88YJIBIJCO9Eor9uhSkppOh+RKE/SsdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wTUi8fy3tVU6SaiaTiTst4Y4Xnq+1jyW5yWzJdr36xPIurcWfnw4aukGFOAD760/N
-	 bfnKO5sn/6RacuW4jmnD5+gpTJ3ruJ0CGsAfmmLolbCQTjekFUI9D5L8Y0tOqutoa+
-	 oGZO0/CtnUZJ6nIvapASEhIdZ4LZUaJoEnpAEES8=
+	b=R4l8mJeeyh/e4fhoVqA44nRdirovwfb+/T6URH7ixBKElTz115B0WPCK8BM0WRPkP
+	 ONEtaIwUUL2bCWUxew2YYpyXa7vI9TewiLRzeQodrRJYtvqTSOMDtV+nS/t8MA/3Ov
+	 +vbXp23mPfnCu/Lg+YdObczc7YBwDUSoHCsuTnqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andriin@fb.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Andre Przywara <andre.przywara@arm.com>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 41/52] scripts/bpf: teach bpf_helpers_doc.py to dump BPF helper definitions
+Subject: [PATCH 5.10 027/122] ASoC: sunxi: sun4i-spdif: Add support for Allwinner H616
 Date: Tue, 27 Feb 2024 14:26:28 +0100
-Message-ID: <20240227131549.879401137@linuxfoundation.org>
+Message-ID: <20240227131559.596306119@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
-References: <20240227131548.514622258@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,203 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andriin@fb.com>
+From: Chen-Yu Tsai <wens@csie.org>
 
-[ Upstream commit 7a387bed47f7e80e257d966cd64a3e92a63e26a1 ]
+[ Upstream commit 0adf963b8463faa44653e22e56ce55f747e68868 ]
 
-Enhance scripts/bpf_helpers_doc.py to emit C header with BPF helper
-definitions (to be included from libbpf's bpf_helpers.h).
+The SPDIF hardware block found in the H616 SoC has the same layout as
+the one found in the H6 SoC, except that it is missing the receiver
+side.
 
-Signed-off-by: Andrii Nakryiko <andriin@fb.com>
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Stable-dep-of: e37243b65d52 ("bpf, scripts: Correct GPL license name")
+Since the driver currently only supports the transmit function, support
+for the H616 is identical to what is currently done for the H6.
+
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
+Reviewed-by: Andre Przywara <andre.przywara@arm.com>
+Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
+Link: https://msgid.link/r/20240127163247.384439-4-wens@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/bpf_helpers_doc.py | 155 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 154 insertions(+), 1 deletion(-)
+ sound/soc/sunxi/sun4i-spdif.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/scripts/bpf_helpers_doc.py b/scripts/bpf_helpers_doc.py
-index 5010a4d5bfbab..dcddacc25dff3 100755
---- a/scripts/bpf_helpers_doc.py
-+++ b/scripts/bpf_helpers_doc.py
-@@ -391,6 +391,154 @@ SEE ALSO
- 
-         print('')
- 
-+class PrinterHelpers(Printer):
-+    """
-+    A printer for dumping collected information about helpers as C header to
-+    be included from BPF program.
-+    @helpers: array of Helper objects to print to standard output
-+    """
-+
-+    type_fwds = [
-+            'struct bpf_fib_lookup',
-+            'struct bpf_perf_event_data',
-+            'struct bpf_perf_event_value',
-+            'struct bpf_sock',
-+            'struct bpf_sock_addr',
-+            'struct bpf_sock_ops',
-+            'struct bpf_sock_tuple',
-+            'struct bpf_spin_lock',
-+            'struct bpf_sysctl',
-+            'struct bpf_tcp_sock',
-+            'struct bpf_tunnel_key',
-+            'struct bpf_xfrm_state',
-+            'struct pt_regs',
-+            'struct sk_reuseport_md',
-+            'struct sockaddr',
-+            'struct tcphdr',
-+
-+            'struct __sk_buff',
-+            'struct sk_msg_md',
-+            'struct xpd_md',
-+    ]
-+    known_types = {
-+            '...',
-+            'void',
-+            'const void',
-+            'char',
-+            'const char',
-+            'int',
-+            'long',
-+            'unsigned long',
-+
-+            '__be16',
-+            '__be32',
-+            '__wsum',
-+
-+            'struct bpf_fib_lookup',
-+            'struct bpf_perf_event_data',
-+            'struct bpf_perf_event_value',
-+            'struct bpf_sock',
-+            'struct bpf_sock_addr',
-+            'struct bpf_sock_ops',
-+            'struct bpf_sock_tuple',
-+            'struct bpf_spin_lock',
-+            'struct bpf_sysctl',
-+            'struct bpf_tcp_sock',
-+            'struct bpf_tunnel_key',
-+            'struct bpf_xfrm_state',
-+            'struct pt_regs',
-+            'struct sk_reuseport_md',
-+            'struct sockaddr',
-+            'struct tcphdr',
-+    }
-+    mapped_types = {
-+            'u8': '__u8',
-+            'u16': '__u16',
-+            'u32': '__u32',
-+            'u64': '__u64',
-+            's8': '__s8',
-+            's16': '__s16',
-+            's32': '__s32',
-+            's64': '__s64',
-+            'size_t': 'unsigned long',
-+            'struct bpf_map': 'void',
-+            'struct sk_buff': 'struct __sk_buff',
-+            'const struct sk_buff': 'const struct __sk_buff',
-+            'struct sk_msg_buff': 'struct sk_msg_md',
-+            'struct xdp_buff': 'struct xdp_md',
-+    }
-+
-+    def print_header(self):
-+        header = '''\
-+/* This is auto-generated file. See bpf_helpers_doc.py for details. */
-+
-+/* Forward declarations of BPF structs */'''
-+
-+        print(header)
-+        for fwd in self.type_fwds:
-+            print('%s;' % fwd)
-+        print('')
-+
-+    def print_footer(self):
-+        footer = ''
-+        print(footer)
-+
-+    def map_type(self, t):
-+        if t in self.known_types:
-+            return t
-+        if t in self.mapped_types:
-+            return self.mapped_types[t]
-+        print("")
-+        print("Unrecognized type '%s', please add it to known types!" % t)
-+        sys.exit(1)
-+
-+    seen_helpers = set()
-+
-+    def print_one(self, helper):
-+        proto = helper.proto_break_down()
-+
-+        if proto['name'] in self.seen_helpers:
-+            return
-+        self.seen_helpers.add(proto['name'])
-+
-+        print('/*')
-+        print(" * %s" % proto['name'])
-+        print(" *")
-+        if (helper.desc):
-+            # Do not strip all newline characters: formatted code at the end of
-+            # a section must be followed by a blank line.
-+            for line in re.sub('\n$', '', helper.desc, count=1).split('\n'):
-+                print(' *{}{}'.format(' \t' if line else '', line))
-+
-+        if (helper.ret):
-+            print(' *')
-+            print(' * Returns')
-+            for line in helper.ret.rstrip().split('\n'):
-+                print(' *{}{}'.format(' \t' if line else '', line))
-+
-+        print(' */')
-+        print('static %s %s(*%s)(' % (self.map_type(proto['ret_type']),
-+                                      proto['ret_star'], proto['name']), end='')
-+        comma = ''
-+        for i, a in enumerate(proto['args']):
-+            t = a['type']
-+            n = a['name']
-+            if proto['name'] == 'bpf_get_socket_cookie' and i == 0:
-+                    t = 'void'
-+                    n = 'ctx'
-+            one_arg = '{}{}'.format(comma, self.map_type(t))
-+            if n:
-+                if a['star']:
-+                    one_arg += ' {}'.format(a['star'])
-+                else:
-+                    one_arg += ' '
-+                one_arg += '{}'.format(n)
-+            comma = ', '
-+            print(one_arg, end='')
-+
-+        print(') = (void *) %d;' % len(self.seen_helpers))
-+        print('')
-+
- ###############################################################################
- 
- # If script is launched from scripts/ from kernel tree and can access
-@@ -405,6 +553,8 @@ Parse eBPF header file and generate documentation for eBPF helper functions.
- The RST-formatted output produced can be turned into a manual page with the
- rst2man utility.
- """)
-+argParser.add_argument('--header', action='store_true',
-+                       help='generate C header file')
- if (os.path.isfile(bpfh)):
-     argParser.add_argument('--filename', help='path to include/uapi/linux/bpf.h',
-                            default=bpfh)
-@@ -417,5 +567,8 @@ headerParser = HeaderParser(args.filename)
- headerParser.run()
- 
- # Print formatted output to standard output.
--printer = PrinterRST(headerParser.helpers)
-+if args.header:
-+    printer = PrinterHelpers(headerParser.helpers)
-+else:
-+    printer = PrinterRST(headerParser.helpers)
- printer.print_all()
+diff --git a/sound/soc/sunxi/sun4i-spdif.c b/sound/soc/sunxi/sun4i-spdif.c
+index 228485fe07342..6dcad1aa25037 100644
+--- a/sound/soc/sunxi/sun4i-spdif.c
++++ b/sound/soc/sunxi/sun4i-spdif.c
+@@ -464,6 +464,11 @@ static const struct of_device_id sun4i_spdif_of_match[] = {
+ 		.compatible = "allwinner,sun50i-h6-spdif",
+ 		.data = &sun50i_h6_spdif_quirks,
+ 	},
++	{
++		.compatible = "allwinner,sun50i-h616-spdif",
++		/* Essentially the same as the H6, but without RX */
++		.data = &sun50i_h6_spdif_quirks,
++	},
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, sun4i_spdif_of_match);
 -- 
 2.43.0
 
