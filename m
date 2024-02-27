@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F41A8696E7
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:16:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BB498694DC
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:56:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68480B29748
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9A75286209
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:56:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB1FF14534D;
-	Tue, 27 Feb 2024 14:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5460213B78A;
+	Tue, 27 Feb 2024 13:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rhyIMQJW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zE378QMP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8CA13B2B4;
-	Tue, 27 Feb 2024 14:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1442754BD4;
+	Tue, 27 Feb 2024 13:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043293; cv=none; b=WbmaibsDXrYNu/IoN5a2idPWbbLJBSX8IwmZsfe8ybCMZthMcxFT3A2HR162ODthXUdQJ3S6ANB6FKj0dZWt9NTshcahHuSt+PQErEyTdEDC2LdMZsUm+7RDw5Vr0bB6f6xtpG1SicPaohevDyjY8StCCnn+uZe/Rqj+ONt4FfQ=
+	t=1709042212; cv=none; b=GNQzel9jzUTL3wm9qf81mZo5jrcj12/WSw8v3LQxd0x3aClpEtllS7qtRWtz+ldtES6vCT8EYA+quH9aPG8gphElnlzJx1Q5Xj/ft73fDJFNt5aZO0hoIZbQTTeyRRe4kgh0wOmxiPKb6T2bJ2VVT9/yXbQc4TW7SkI70RBbSV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043293; c=relaxed/simple;
-	bh=WkPszWlTKcmKJifXW2VqSE72TMVSj2cxkukiTAS+4Oc=;
+	s=arc-20240116; t=1709042212; c=relaxed/simple;
+	bh=dqChMNewwzeB+LpqaOsu2chusLcjqo21aeSGDTyBtzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HSSz20mIQtoW6SJ/hwe9CgE1ewX/xldb0J0z17Jh7tP/dkVH1sDBsJ/sYXzf3PjsqY5M/l9tJEXijEQgd/M9TKayd3B9h+23eAFmWf4zv3n8axs7FSJT9bMKDD/JrT9191dw3x2VeD3caTd89YMp9beoQllNBdXTgdzYOA+BYRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rhyIMQJW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8D32C433C7;
-	Tue, 27 Feb 2024 14:14:52 +0000 (UTC)
+	 MIME-Version; b=j6zJ1R/3V6d73NVhZ/skr7OLCnYIEa1ksHg/lucyYwRMGA+VIa5hCzRk058pnrekI0+mhqOI3ksP1GLpCsK9YsiZPanXJMZbwdqM9S1/2h0fbpPlSHZ49XuPHiFqQ64xBUpNMMIzlbzTki9wDZyIArR+CMnt1yDukt/7dEbHT2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zE378QMP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BE2C433C7;
+	Tue, 27 Feb 2024 13:56:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043293;
-	bh=WkPszWlTKcmKJifXW2VqSE72TMVSj2cxkukiTAS+4Oc=;
+	s=korg; t=1709042211;
+	bh=dqChMNewwzeB+LpqaOsu2chusLcjqo21aeSGDTyBtzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rhyIMQJW0kYFmeeO4hy2qIlaR1TIIgnk3ujEWoSqz0lfJMbY6Pq6cKmM6ywePXr2O
-	 RZzR5lmIpEqirHbkqK99o4k5RjQCmcmoD0e3nRiCIAYVEpPY74k7h/GCA75cIBk8BU
-	 Kx2zoNfztHQ8Xhckc/U7ULvtN8EpoM1TQ7ubEpi0=
+	b=zE378QMP0YN/kxT/TqA8EA374CcCtgAoyCcMCAd4+I/3wvzj6XRoHio0IZWsQXJOt
+	 vna+DLWDfu2Qv0AkavCSdwqXNZQIs+y+HjnAZBOMJJWCVyZKAwsq0gW3n7s5NEX71R
+	 vCl1LbYTyUcVWuorsOAl8A9bE61ozjbs5DNL20nw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	David Brazdil <dbrazdil@google.com>,
-	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 038/195] misc: open-dice: Fix spurious lockdep warning
-Date: Tue, 27 Feb 2024 14:24:59 +0100
-Message-ID: <20240227131611.649722260@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 6.6 189/299] usb: gadget: omap_udc: fix USB gadget regression on Palm TE
+Date: Tue, 27 Feb 2024 14:25:00 +0100
+Message-ID: <20240227131631.911217577@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Aaro Koskinen <aaro.koskinen@iki.fi>
 
-[ Upstream commit ac9762a74c7ca7cbfcb4c65f5871373653a046ac ]
+commit 858a74cb512833e276d96a72acb560ce8c138bec upstream.
 
-When probing the open-dice driver with PROVE_LOCKING=y, lockdep
-complains that the mutex in 'drvdata->lock' has a non-static key:
+When upgrading from 6.1 LTS to 6.6 LTS, I noticed the ethernet gadget
+stopped working on Palm TE.
 
- | INFO: trying to register non-static key.
- | The code is fine but needs lockdep annotation, or maybe
- | you didn't initialize this object before use?
- | turning off the locking correctness validator.
+Commit 8825acd7cc8a ("ARM: omap1: remove dead code") deleted Palm TE from
+machine_without_vbus_sense(), although the board is still used. Fix that.
 
-Fix the problem by initialising the mutex memory with mutex_init()
-instead of __MUTEX_INITIALIZER().
-
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: David Brazdil <dbrazdil@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20240126152410.10148-1-will@kernel.org
+Fixes: 8825acd7cc8a ("ARM: omap1: remove dead code")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20240217192042.GA372205@darkstar.musicnaut.iki.fi
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/open-dice.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/udc/omap_udc.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/misc/open-dice.c b/drivers/misc/open-dice.c
-index c61be3404c6f2..504b836a7abf8 100644
---- a/drivers/misc/open-dice.c
-+++ b/drivers/misc/open-dice.c
-@@ -142,7 +142,6 @@ static int __init open_dice_probe(struct platform_device *pdev)
- 		return -ENOMEM;
+--- a/drivers/usb/gadget/udc/omap_udc.c
++++ b/drivers/usb/gadget/udc/omap_udc.c
+@@ -2036,7 +2036,8 @@ static irqreturn_t omap_udc_iso_irq(int
  
- 	*drvdata = (struct open_dice_drvdata){
--		.lock = __MUTEX_INITIALIZER(drvdata->lock),
- 		.rmem = rmem,
- 		.misc = (struct miscdevice){
- 			.parent	= dev,
-@@ -152,6 +151,7 @@ static int __init open_dice_probe(struct platform_device *pdev)
- 			.mode	= 0600,
- 		},
- 	};
-+	mutex_init(&drvdata->lock);
+ static inline int machine_without_vbus_sense(void)
+ {
+-	return  machine_is_omap_osk() || machine_is_sx1();
++	return  machine_is_omap_osk() || machine_is_omap_palmte() ||
++		machine_is_sx1();
+ }
  
- 	/* Index overflow check not needed, misc_register() will fail. */
- 	snprintf(drvdata->name, sizeof(drvdata->name), DRIVER_NAME"%u", dev_idx++);
--- 
-2.43.0
-
+ static int omap_udc_start(struct usb_gadget *g,
 
 
 
