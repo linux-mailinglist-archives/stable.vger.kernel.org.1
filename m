@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60F7C8695E2
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:06:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3809A8696AE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C31AC1F23777
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:06:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E677A295859
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:14:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B0D3145B2F;
-	Tue, 27 Feb 2024 14:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C71A14534F;
+	Tue, 27 Feb 2024 14:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aCPbs2a/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1K1jhMN3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 061AB14534D;
-	Tue, 27 Feb 2024 14:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8AC1420D3;
+	Tue, 27 Feb 2024 14:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042746; cv=none; b=ugdXtr3kqCxrwTU3LV4Enhkr3WZp3lUB4ek+vJCH0En8d5dOYD86T3T+Q3VLMjwmpI3JAwM1Q6EtPQA/QB0QkQmTzD9HYGPMVDmWvL2t7gw9mFZyquojnpwpMwlQgnre+0dA/EFj3vuRyLE+IcudT2whYZIYOC/hiD8sLp+76rY=
+	t=1709043233; cv=none; b=HGlDPWNjyOr6Vvupcdn07LY9pv2e9u9yaDaVKgyh2UUN0xkdo9GwJHooYnOAWW91z/nK83F/ICQuhq28kgr5y1egAM4+u8XEVM9ij+w1Ub0ttRdlwL6BBfl1LCEGH+ftbNk6Ipu+MauUYsuf1m1yjdYTSGfSA02ZMuOWgakJYmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042746; c=relaxed/simple;
-	bh=YzPsXCzLdxGy76OZH6fZn44oAoeYvtux5gsFbIeLWGk=;
+	s=arc-20240116; t=1709043233; c=relaxed/simple;
+	bh=2Dfeo/7qxEJlyfum1Ih+y1w2XDD7csvFornZNw+/pho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HZWIBPttkZNBVP6m1k7v5wJm635K4D9ZhUql3CmYHc8tzfR8qp20VpZkASYYnhSzDdSeual2driFKLCmbw9MW7xtaI0VWxj1J9Mb86Sx3dfbaEgHK+mOxSI7oFv7A0H23SkSJiTBOtEDZZ6qLc1gblQCoVFSdWGwEYYEfjhfoCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aCPbs2a/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88C8FC433F1;
-	Tue, 27 Feb 2024 14:05:45 +0000 (UTC)
+	 MIME-Version; b=Su3HzPSHLCbJj8kIEejdsNQfNKbJkIfAJLPmuh6GbeyKT1vLl5PdP+oa13HC/a0sUf+4MUpn5DvgFiE1j6yVL7D5kQXcaJMFiY7hjvjpIeVDBfhvgDbcSIS2Q8X7imkMiO9b5bVyD763ErCfwXQvR9SunKz0zRaMQOP9UtfXVYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1K1jhMN3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77873C433F1;
+	Tue, 27 Feb 2024 14:13:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042745;
-	bh=YzPsXCzLdxGy76OZH6fZn44oAoeYvtux5gsFbIeLWGk=;
+	s=korg; t=1709043232;
+	bh=2Dfeo/7qxEJlyfum1Ih+y1w2XDD7csvFornZNw+/pho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aCPbs2a/Ldos0ZGJDiKX4Q1744Hph4WnqgCYslcvgR+YSj5eOPUrqLSamBemkJBE7
-	 eFxMK1hAHTabjKFNjccrOSD1Qrhdm7ZYrF0kZInT2w9glFoAoS3T8RErAexLMpPvx7
-	 YsJ/AKHjexUv8M9qFftChA0VPgG+z2tnUG4hBJo4=
+	b=1K1jhMN38RgaxqWFuKAX5t4FQAahyAIBqlc5o8HFlkk7VM8R/GN6MpEVxbZZHAzKd
+	 K0LM4gqbX9+drCY3MBjZ4xgw9j2zYMYOwtTX54LEop8AVaNCXS4trA1QiqNFylr9/A
+	 NA10F4W4PeWUp4T4WhjQoqYAxajsEmvygMYFqwYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 106/245] clk: qcom: gcc-qcs404: disable gpll[04]_out_aux parents
+Subject: [PATCH 6.1 033/195] usb: ucsi_acpi: Quirk to ack a connector change ack cmd
 Date: Tue, 27 Feb 2024 14:24:54 +0100
-Message-ID: <20240227131618.667118780@linuxfoundation.org>
+Message-ID: <20240227131611.486346913@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,148 +62,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-[ Upstream commit 712c64caf31374de57aa193a9dff57172b2f6f82 ]
+[ Upstream commit f3be347ea42dbb0358cd8b2d8dc543a23b70a976 ]
 
-On the QCS404 platform the driver for the Global Clock Controller
-doens't define gpll0_out_aux and gpll4_out_aux clocks, so it's not
-possible to use them as parents. Remove entries for these clocks.
+The PPM on some Dell laptops seems to expect that the ACK_CC_CI
+command to clear the connector change notification is in turn
+followed by another ACK_CC_CI to acknowledge the ACK_CC_CI command
+itself. This is in violation of the UCSI spec that states:
 
-Note: backporting this patch to earlier kernels would also require a
-previous patch which switches the gcc driver to use ARRAY_SIZE for
-parent data arrays.
+    "The only notification that is not acknowledged by the OPM is
+     the command completion notification for the ACK_CC_CI or the
+     PPM_RESET command."
 
-Fixes: 652f1813c113 ("clk: qcom: gcc: Add global clock controller driver for QCS404")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20221226042154.2666748-6-dmitry.baryshkov@linaro.org
+Add a quirk to send this ack anyway.
+Apply the quirk to all Dell systems.
+
+On the first command that acks a connector change send a dummy
+command to determine if it runs into a timeout. Only activate
+the quirk if it does. This ensure that we do not break Dell
+systems that do not need the quirk.
+
+Signed-off-by: "Christian A. Ehrhardt" <lk@c--e.de>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240121204123.275441-4-lk@c--e.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-qcs404.c | 16 ----------------
- 1 file changed, 16 deletions(-)
+ drivers/usb/typec/ucsi/ucsi_acpi.c | 71 ++++++++++++++++++++++++++++--
+ 1 file changed, 68 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-qcs404.c b/drivers/clk/qcom/gcc-qcs404.c
-index 46d314d692505..4299fe8f19274 100644
---- a/drivers/clk/qcom/gcc-qcs404.c
-+++ b/drivers/clk/qcom/gcc-qcs404.c
-@@ -25,11 +25,9 @@ enum {
- 	P_CORE_BI_PLL_TEST_SE,
- 	P_DSI0_PHY_PLL_OUT_BYTECLK,
- 	P_DSI0_PHY_PLL_OUT_DSICLK,
--	P_GPLL0_OUT_AUX,
- 	P_GPLL0_OUT_MAIN,
- 	P_GPLL1_OUT_MAIN,
- 	P_GPLL3_OUT_MAIN,
--	P_GPLL4_OUT_AUX,
- 	P_GPLL4_OUT_MAIN,
- 	P_GPLL6_OUT_AUX,
- 	P_HDMI_PHY_PLL_CLK,
-@@ -109,28 +107,24 @@ static const char * const gcc_parent_names_4[] = {
- static const struct parent_map gcc_parent_map_5[] = {
- 	{ P_XO, 0 },
- 	{ P_DSI0_PHY_PLL_OUT_BYTECLK, 1 },
--	{ P_GPLL0_OUT_AUX, 2 },
- 	{ P_CORE_BI_PLL_TEST_SE, 7 },
+diff --git a/drivers/usb/typec/ucsi/ucsi_acpi.c b/drivers/usb/typec/ucsi/ucsi_acpi.c
+index 26171c5d3c61c..48130d636a020 100644
+--- a/drivers/usb/typec/ucsi/ucsi_acpi.c
++++ b/drivers/usb/typec/ucsi/ucsi_acpi.c
+@@ -25,6 +25,8 @@ struct ucsi_acpi {
+ 	unsigned long flags;
+ 	guid_t guid;
+ 	u64 cmd;
++	bool dell_quirk_probed;
++	bool dell_quirk_active;
  };
  
- static const char * const gcc_parent_names_5[] = {
- 	"cxo",
- 	"dsi0pll_byteclk_src",
--	"gpll0_out_aux",
- 	"core_bi_pll_test_se",
+ static int ucsi_acpi_dsm(struct ucsi_acpi *ua, int func)
+@@ -126,12 +128,73 @@ static const struct ucsi_operations ucsi_zenbook_ops = {
+ 	.async_write = ucsi_acpi_async_write
  };
  
- static const struct parent_map gcc_parent_map_6[] = {
- 	{ P_XO, 0 },
- 	{ P_DSI0_PHY_PLL_OUT_BYTECLK, 2 },
--	{ P_GPLL0_OUT_AUX, 3 },
- 	{ P_CORE_BI_PLL_TEST_SE, 7 },
+-static const struct dmi_system_id zenbook_dmi_id[] = {
++/*
++ * Some Dell laptops expect that an ACK command with the
++ * UCSI_ACK_CONNECTOR_CHANGE bit set is followed by a (separate)
++ * ACK command that only has the UCSI_ACK_COMMAND_COMPLETE bit set.
++ * If this is not done events are not delivered to OSPM and
++ * subsequent commands will timeout.
++ */
++static int
++ucsi_dell_sync_write(struct ucsi *ucsi, unsigned int offset,
++		     const void *val, size_t val_len)
++{
++	struct ucsi_acpi *ua = ucsi_get_drvdata(ucsi);
++	u64 cmd = *(u64 *)val, ack = 0;
++	int ret;
++
++	if (UCSI_COMMAND(cmd) == UCSI_ACK_CC_CI &&
++	    cmd & UCSI_ACK_CONNECTOR_CHANGE)
++		ack = UCSI_ACK_CC_CI | UCSI_ACK_COMMAND_COMPLETE;
++
++	ret = ucsi_acpi_sync_write(ucsi, offset, val, val_len);
++	if (ret != 0)
++		return ret;
++	if (ack == 0)
++		return ret;
++
++	if (!ua->dell_quirk_probed) {
++		ua->dell_quirk_probed = true;
++
++		cmd = UCSI_GET_CAPABILITY;
++		ret = ucsi_acpi_sync_write(ucsi, UCSI_CONTROL, &cmd,
++					   sizeof(cmd));
++		if (ret == 0)
++			return ucsi_acpi_sync_write(ucsi, UCSI_CONTROL,
++						    &ack, sizeof(ack));
++		if (ret != -ETIMEDOUT)
++			return ret;
++
++		ua->dell_quirk_active = true;
++		dev_err(ua->dev, "Firmware bug: Additional ACK required after ACKing a connector change.\n");
++		dev_err(ua->dev, "Firmware bug: Enabling workaround\n");
++	}
++
++	if (!ua->dell_quirk_active)
++		return ret;
++
++	return ucsi_acpi_sync_write(ucsi, UCSI_CONTROL, &ack, sizeof(ack));
++}
++
++static const struct ucsi_operations ucsi_dell_ops = {
++	.read = ucsi_acpi_read,
++	.sync_write = ucsi_dell_sync_write,
++	.async_write = ucsi_acpi_async_write
++};
++
++static const struct dmi_system_id ucsi_acpi_quirks[] = {
+ 	{
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "ZenBook UX325UA_UM325UA"),
+ 		},
++		.driver_data = (void *)&ucsi_zenbook_ops,
++	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++		},
++		.driver_data = (void *)&ucsi_dell_ops,
+ 	},
+ 	{ }
  };
+@@ -160,6 +223,7 @@ static int ucsi_acpi_probe(struct platform_device *pdev)
+ {
+ 	struct acpi_device *adev = ACPI_COMPANION(&pdev->dev);
+ 	const struct ucsi_operations *ops = &ucsi_acpi_ops;
++	const struct dmi_system_id *id;
+ 	struct ucsi_acpi *ua;
+ 	struct resource *res;
+ 	acpi_status status;
+@@ -189,8 +253,9 @@ static int ucsi_acpi_probe(struct platform_device *pdev)
+ 	init_completion(&ua->complete);
+ 	ua->dev = &pdev->dev;
  
- static const char * const gcc_parent_names_6[] = {
- 	"cxo",
- 	"dsi0_phy_pll_out_byteclk",
--	"gpll0_out_aux",
- 	"core_bi_pll_test_se",
- };
+-	if (dmi_check_system(zenbook_dmi_id))
+-		ops = &ucsi_zenbook_ops;
++	id = dmi_first_match(ucsi_acpi_quirks);
++	if (id)
++		ops = id->driver_data;
  
-@@ -139,7 +133,6 @@ static const struct parent_map gcc_parent_map_7[] = {
- 	{ P_GPLL0_OUT_MAIN, 1 },
- 	{ P_GPLL3_OUT_MAIN, 2 },
- 	{ P_GPLL6_OUT_AUX, 3 },
--	{ P_GPLL4_OUT_AUX, 4 },
- 	{ P_CORE_BI_PLL_TEST_SE, 7 },
- };
- 
-@@ -148,7 +141,6 @@ static const char * const gcc_parent_names_7[] = {
- 	"gpll0_out_main",
- 	"gpll3_out_main",
- 	"gpll6_out_aux",
--	"gpll4_out_aux",
- 	"core_bi_pll_test_se",
- };
- 
-@@ -207,14 +199,12 @@ static const char * const gcc_parent_names_11[] = {
- static const struct parent_map gcc_parent_map_12[] = {
- 	{ P_XO, 0 },
- 	{ P_DSI0_PHY_PLL_OUT_DSICLK, 1 },
--	{ P_GPLL0_OUT_AUX, 2 },
- 	{ P_CORE_BI_PLL_TEST_SE, 7 },
- };
- 
- static const char * const gcc_parent_names_12[] = {
- 	"cxo",
- 	"dsi0pll_pclk_src",
--	"gpll0_out_aux",
- 	"core_bi_pll_test_se",
- };
- 
-@@ -237,40 +227,34 @@ static const char * const gcc_parent_names_13[] = {
- static const struct parent_map gcc_parent_map_14[] = {
- 	{ P_XO, 0 },
- 	{ P_GPLL0_OUT_MAIN, 1 },
--	{ P_GPLL4_OUT_AUX, 2 },
- 	{ P_CORE_BI_PLL_TEST_SE, 7 },
- };
- 
- static const char * const gcc_parent_names_14[] = {
- 	"cxo",
- 	"gpll0_out_main",
--	"gpll4_out_aux",
- 	"core_bi_pll_test_se",
- };
- 
- static const struct parent_map gcc_parent_map_15[] = {
- 	{ P_XO, 0 },
--	{ P_GPLL0_OUT_AUX, 2 },
- 	{ P_CORE_BI_PLL_TEST_SE, 7 },
- };
- 
- static const char * const gcc_parent_names_15[] = {
- 	"cxo",
--	"gpll0_out_aux",
- 	"core_bi_pll_test_se",
- };
- 
- static const struct parent_map gcc_parent_map_16[] = {
- 	{ P_XO, 0 },
- 	{ P_GPLL0_OUT_MAIN, 1 },
--	{ P_GPLL0_OUT_AUX, 2 },
- 	{ P_CORE_BI_PLL_TEST_SE, 7 },
- };
- 
- static const char * const gcc_parent_names_16[] = {
- 	"cxo",
- 	"gpll0_out_main",
--	"gpll0_out_aux",
- 	"core_bi_pll_test_se",
- };
- 
+ 	ua->ucsi = ucsi_create(&pdev->dev, ops);
+ 	if (IS_ERR(ua->ucsi))
 -- 
 2.43.0
 
