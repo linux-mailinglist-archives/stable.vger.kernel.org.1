@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-24781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEFE786963D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:09:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEB078696E1
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:16:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8000A1F2D45D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:09:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65A132864DD
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1B013B78E;
-	Tue, 27 Feb 2024 14:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DC1A1419AE;
+	Tue, 27 Feb 2024 14:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="09C52nPb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J0uTzpEM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D026913A26F;
-	Tue, 27 Feb 2024 14:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05461419A0;
+	Tue, 27 Feb 2024 14:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042972; cv=none; b=Bd+CWNHvmXAYEnQIIWGlZ47ON0a1U3kua6wa8U1fzk85NY3LDJy2EhGgtK30QzcGPuxnjwtX7JWiwaaFUVN+2aWizgK4CxkT72xJ0bQwq/DTxX0Cf6Y1U9sKETkQbgudiS7dvy4LT/aQ56ZpYk6OgGBQ0HznRPITtXV/iJm7RUY=
+	t=1709043377; cv=none; b=K4kIK439oBxL5ZZCD4sZYNWlmiKDmC7Mq1gylFpPq0jEVCP3HurHiQsOWBq8PqQEDR4d1K7vLtCYLiPFFBXG98q5G47oQaw5EanYLxOjQ/snYQ3aa1zKPGi/0Tc9wPvYT/czW0XEu/NX3+dRpru/KjeeDcIQFl64z4tW1/dtbSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042972; c=relaxed/simple;
-	bh=LnZfNZxV45xlGaX5c1+BUEQNzPllLKSHC4nCAZh7Gj0=;
+	s=arc-20240116; t=1709043377; c=relaxed/simple;
+	bh=bBLkHzi/zwLHtsgVxP24CsAaep21UY2wtWe/0mX3ofw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rwq0uw1viNGWZbL5rFmuC/hNLJe8kqfJzUlbyQcPdUH5iJSIQGYzjRYhkPy20IJuDtcsloMr0L6RKC8R2Cr6kYBxwXizpPBtt5+wXsuo7jGjg617UuLIA/JHOQ11PFMYY2tiAr4gA+XfxIaV9Drlz9bNNNe6wxQcoZNEaQNOfhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=09C52nPb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E783C433F1;
-	Tue, 27 Feb 2024 14:09:32 +0000 (UTC)
+	 MIME-Version; b=QutxQTj0bf0SjOVCCCTQDuFARKaBJXfRDtorBp/YJVdG71SUqH/FzXERCq7T5+Dq8OunHo6Wi+4Jthcr/MKPSlSMMxfxmVakrLB55SwViKCWao9TzAv/i7TtdqPdR7chgs5ru5RgFQx/Q6o3KGLWCQjA+uw5cg6FgsO7VHmyyK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J0uTzpEM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2026FC433F1;
+	Tue, 27 Feb 2024 14:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042972;
-	bh=LnZfNZxV45xlGaX5c1+BUEQNzPllLKSHC4nCAZh7Gj0=;
+	s=korg; t=1709043376;
+	bh=bBLkHzi/zwLHtsgVxP24CsAaep21UY2wtWe/0mX3ofw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=09C52nPbeP2D8CkeYIKabv6CufK+si5cmRUYF7wbJJclcD1sa06FKwY0US3wnWUug
-	 A9VRUSYnb8oKD6cmkAhp+A7kp0S+b1TxcRZgPQXYh06D3F4EP2nNhfMrBMI/Cq04Ph
-	 nL4WXXeQdap6UyQBmY3i4I0kNPIbCXSM3SdxKuug=
+	b=J0uTzpEMLhIfLAioE5i3U0P8rya+XbkNhsdYlPbyKVCwVW/BE0RekrUFwN8zUHd5y
+	 jn2k1NE8D3QHNIFerpR3k4860i3964A5sqETy+PggTr2s/ASRL6VF3WfYCdKeOH6uU
+	 D8P76jnf5CkkYxAln/SCH7Ehsql84VPl8wDVaPr4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Cercueil <paul@crapouillou.net>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 159/245] PM: core: Remove static qualifier in DEFINE_SIMPLE_DEV_PM_OPS macro
+	Thorsten Winkler <twinkler@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 6.1 086/195] s390/cio: fix invalid -EBUSY on ccw_device_start
 Date: Tue, 27 Feb 2024 14:25:47 +0100
-Message-ID: <20240227131620.379812168@linuxfoundation.org>
+Message-ID: <20240227131613.323105008@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +62,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Cercueil <paul@crapouillou.net>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-[ Upstream commit 52cc1d7f9786d2be44a3ab9b5b48416a7618e713 ]
+commit 5ef1dc40ffa6a6cb968b0fdc43c3a61727a9e950 upstream.
 
-Keep this macro in line with the other ones. This makes it possible to
-use them in the cases where the underlying dev_pm_ops structure is
-exported.
+The s390 common I/O layer (CIO) returns an unexpected -EBUSY return code
+when drivers try to start I/O while a path-verification (PV) process is
+pending. This can lead to failed device initialization attempts with
+symptoms like broken network connectivity after boot.
 
-Restore the "static" qualifier in the two drivers where the
-DEFINE_SIMPLE_DEV_PM_OPS macro was used.
+Fix this by replacing the -EBUSY return code with a deferred condition
+code 1 reply to make path-verification handling consistent from a
+driver's point of view.
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 18ab69c8ca56 ("Input: iqs269a - do not poll during suspend or resume")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The problem can be reproduced semi-regularly using the following process,
+while repeating steps 2-3 as necessary (example assumes an OSA device
+with bus-IDs 0.0.a000-0.0.a002 on CHPID 0.02):
+
+1. echo 0.0.a000,0.0.a001,0.0.a002 >/sys/bus/ccwgroup/drivers/qeth/group
+2. echo 0 > /sys/bus/ccwgroup/devices/0.0.a000/online
+3. echo 1 > /sys/bus/ccwgroup/devices/0.0.a000/online ; \
+   echo on > /sys/devices/css0/chp0.02/status
+
+Background information:
+
+The common I/O layer starts path-verification I/Os when it receives
+indications about changes in a device path's availability. This occurs
+for example when hardware events indicate a change in channel-path
+status, or when a manual operation such as a CHPID vary or configure
+operation is performed.
+
+If a driver attempts to start I/O while a PV is running, CIO reports a
+successful I/O start (ccw_device_start() return code 0). Then, after
+completion of PV, CIO synthesizes an interrupt response that indicates
+an asynchronous status condition that prevented the start of the I/O
+(deferred condition code 1).
+
+If a PV indication arrives while a device is busy with driver-owned I/O,
+PV is delayed until after I/O completion was reported to the driver's
+interrupt handler. To ensure that PV can be started eventually, CIO
+reports a device busy condition (ccw_device_start() return code -EBUSY)
+if a driver tries to start another I/O while PV is pending.
+
+In some cases this -EBUSY return code causes device drivers to consider
+a device not operational, resulting in failed device initialization.
+
+Note: The code that introduced the problem was added in 2003. Symptoms
+started appearing with the following CIO commit that causes a PV
+indication when a device is removed from the cio_ignore list after the
+associated parent subchannel device was probed, but before online
+processing of the CCW device has started:
+
+2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
+
+During boot, the cio_ignore list is modified by the cio_ignore dracut
+module [1] as well as Linux vendor-specific systemd service scripts[2].
+When combined, this commit and boot scripts cause a frequent occurrence
+of the problem during boot.
+
+[1] https://github.com/dracutdevs/dracut/tree/master/modules.d/81cio_ignore
+[2] https://github.com/SUSE/s390-tools/blob/master/cio_ignore.service
+
+Cc: stable@vger.kernel.org # v5.15+
+Fixes: 2297791c92d0 ("s390/cio: dont unregister subchannel from child-drivers")
+Tested-By: Thorsten Winkler <twinkler@linux.ibm.com>
+Reviewed-by: Thorsten Winkler <twinkler@linux.ibm.com>
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/jz4740_mmc.c | 4 ++--
- drivers/mmc/host/mxcmmc.c     | 2 +-
- include/linux/pm.h            | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/s390/cio/device_ops.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mmc/host/jz4740_mmc.c b/drivers/mmc/host/jz4740_mmc.c
-index ef3fe837b49d2..2254db44fb02c 100644
---- a/drivers/mmc/host/jz4740_mmc.c
-+++ b/drivers/mmc/host/jz4740_mmc.c
-@@ -1143,8 +1143,8 @@ static int jz4740_mmc_resume(struct device *dev)
- 	return pinctrl_select_default_state(dev);
- }
- 
--DEFINE_SIMPLE_DEV_PM_OPS(jz4740_mmc_pm_ops, jz4740_mmc_suspend,
--	jz4740_mmc_resume);
-+static DEFINE_SIMPLE_DEV_PM_OPS(jz4740_mmc_pm_ops, jz4740_mmc_suspend,
-+				jz4740_mmc_resume);
- 
- static struct platform_driver jz4740_mmc_driver = {
- 	.probe = jz4740_mmc_probe,
-diff --git a/drivers/mmc/host/mxcmmc.c b/drivers/mmc/host/mxcmmc.c
-index b5f65f39ced1c..2e39b2cb1cafa 100644
---- a/drivers/mmc/host/mxcmmc.c
-+++ b/drivers/mmc/host/mxcmmc.c
-@@ -1212,7 +1212,7 @@ static int mxcmci_resume(struct device *dev)
- 	return ret;
- }
- 
--DEFINE_SIMPLE_DEV_PM_OPS(mxcmci_pm_ops, mxcmci_suspend, mxcmci_resume);
-+static DEFINE_SIMPLE_DEV_PM_OPS(mxcmci_pm_ops, mxcmci_suspend, mxcmci_resume);
- 
- static struct platform_driver mxcmci_driver = {
- 	.probe		= mxcmci_probe,
-diff --git a/include/linux/pm.h b/include/linux/pm.h
-index fc9691cb01b4f..d1c19f5b1380f 100644
---- a/include/linux/pm.h
-+++ b/include/linux/pm.h
-@@ -362,7 +362,7 @@ struct dev_pm_ops {
-  * to RAM and hibernation.
-  */
- #define DEFINE_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
--static const struct dev_pm_ops name = { \
-+const struct dev_pm_ops name = { \
- 	SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
- }
- 
--- 
-2.43.0
-
+--- a/drivers/s390/cio/device_ops.c
++++ b/drivers/s390/cio/device_ops.c
+@@ -202,7 +202,8 @@ int ccw_device_start_timeout_key(struct
+ 		return -EINVAL;
+ 	if (cdev->private->state == DEV_STATE_NOT_OPER)
+ 		return -ENODEV;
+-	if (cdev->private->state == DEV_STATE_VERIFY) {
++	if (cdev->private->state == DEV_STATE_VERIFY ||
++	    cdev->private->flags.doverify) {
+ 		/* Remember to fake irb when finished. */
+ 		if (!cdev->private->flags.fake_irb) {
+ 			cdev->private->flags.fake_irb = FAKE_CMD_IRB;
+@@ -214,8 +215,7 @@ int ccw_device_start_timeout_key(struct
+ 	}
+ 	if (cdev->private->state != DEV_STATE_ONLINE ||
+ 	    ((sch->schib.scsw.cmd.stctl & SCSW_STCTL_PRIM_STATUS) &&
+-	     !(sch->schib.scsw.cmd.stctl & SCSW_STCTL_SEC_STATUS)) ||
+-	    cdev->private->flags.doverify)
++	     !(sch->schib.scsw.cmd.stctl & SCSW_STCTL_SEC_STATUS)))
+ 		return -EBUSY;
+ 	ret = cio_set_options (sch, flags);
+ 	if (ret)
 
 
 
