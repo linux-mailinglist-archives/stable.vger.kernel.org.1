@@ -1,74 +1,74 @@
-Return-Path: <stable+bounces-25298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F74386A0A0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 21:01:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66C5886A0E9
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 21:35:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 135CD28834C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 20:01:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3482AB24276
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 20:34:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD12D14AD2D;
-	Tue, 27 Feb 2024 20:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4DB214D44A;
+	Tue, 27 Feb 2024 20:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="DSnYKMAH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FLc9UKy2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f54.google.com (mail-io1-f54.google.com [209.85.166.54])
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDBAD14AD0A
-	for <stable@vger.kernel.org>; Tue, 27 Feb 2024 20:01:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49852149E13;
+	Tue, 27 Feb 2024 20:34:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709064099; cv=none; b=J0rPr+yeivppeW73uhYnquACSO0XmizGXNnLLyrZZFMqMmVXuZkGyaDer+8xYF+bb6woY//lNC1e8njNQ322wHqMycLjt9NhfoUqTzRL9dwhTyREBxm57+CQqEMm8f99f159BCsifoixKaDPYg3tQ/OgqyCXx8VTXSnRlrm2Yqo=
+	t=1709066068; cv=none; b=gLN93J1vi1CaQjhfXaeP8BNnzLDQDMjxtl72Y+aK4eLqYUOXhSVbcoHFS6B0skI8aBVnh2GfmIM6HGdS6iLmtErVVY1lMySlV/rEHerXJ+olzEmD/WbWiHyuFhHb//h9HeFb3GWhni51KSEPbv+jWILTq1TqqZNTgcoJn3GMlaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709064099; c=relaxed/simple;
-	bh=gLyw//m6G9pBImmWZWYlwzKQS/S2+z6YvepUOugVK9s=;
+	s=arc-20240116; t=1709066068; c=relaxed/simple;
+	bh=f3z84LXBnZzBPTb1qf6WzHGjUhjJLj8dRujsavxbKpU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iKZ6eQvnj2R0stlCKJbIbLqYzBIKQsuWFx1JJJjXGyp/Y6URE40GgTNSSHFoooYPlummv2UoY1zgRhFu9i+tbSGab0z7Emfh267E3vSU8r6rDd1jaJ8mDQCtWN83Ajl4S0P+o/2ZtOaLukX56G5mQF5jENQYOBWPqCu5el9bbKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=DSnYKMAH; arc=none smtp.client-ip=209.85.166.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
-Received: by mail-io1-f54.google.com with SMTP id ca18e2360f4ac-7c78b520bc3so172684639f.0
-        for <stable@vger.kernel.org>; Tue, 27 Feb 2024 12:01:36 -0800 (PST)
+	 In-Reply-To:Content-Type; b=uC7MBKCf1xM3Pfehjq9N2KUmoluOeawWpQZVu60DmfCxodXMUmZvaEQyitjLrCd3EqILmegn9ZIysZ/YfUxhtwIMYLQkr52pnjW7TM9Oz5LzdooWPqw0SPpkyQkRsE3UWxmtdJkC35et59xWk7r5VoNnDR3wq4dhWGkLPzIMAy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FLc9UKy2; arc=none smtp.client-ip=209.85.167.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-3c1a1e1e539so2820746b6e.1;
+        Tue, 27 Feb 2024 12:34:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google; t=1709064096; x=1709668896; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1709066066; x=1709670866; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=JCoSqCHOuyJdrEXgcSRyyHnAhXtrU9sHKBBcP3u4W04=;
-        b=DSnYKMAHlaMCu9vajPvhP+L1Uwzx2jYVlT5KxViIHh8kwCZeEgZHdhdFFhrZ9HOorQ
-         VbBkqG5t7u4K8IpPYEY2ph9ALnnyBPun3JnyrVtT/t3+wP2bHuh/gIFlR5z7e/QUZnMO
-         WQKMgsGIw2ii9XUIfJcvv/mYrMtbHu7zDpN/07zP0dRDLryup/Q3LGIU2fFJkYnGDYXj
-         5cd2KsGa/IygzuV6gQvoE0osETFputy3pDM4MkQBJiVq7uxZd6WtzgbDakK2KjD4MjLM
-         Aj1Zk51h2GQpnmJHNhP4JTuWzycEQNqUOBTWX2k0fztLMXMuATam+ZSJ4d/mx7FMqwEo
-         D+LA==
+        bh=mK/ZFrnnYw6RSzivQhp5csCqakE9t+9sf6LNYK8Z6+8=;
+        b=FLc9UKy2SE44AqL0KBPljJMOqO97Yp7dsL2iueUlh6Lt1M8hHg2eSASE7X770z3K55
+         Z4P+Aak1Sc2vy0PlHn2RRoXGZwXfpXcKGdOKd1PpzAwKLx6wLxiLNYhRTEF3147xZHYI
+         Xetjt1M7iVw5cXBnpcy2Oj9ZZdBjV8D07xCNVNIEFsY4ZCBVbqu71/wzla6Sv0Hfd0hV
+         VzXf82FQMoaG8rsj3PET95XHYlih9FmFHnl1LHwPJTU+cMnvNa9igMhsVOh80o9WRM/o
+         hRHPfbNGH57zwsMJcMaNC2RxsQLveEIByFQHvmy80dIBT31go3PYh7wAuehIhJhtN96P
+         5nPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709064096; x=1709668896;
+        d=1e100.net; s=20230601; t=1709066066; x=1709670866;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JCoSqCHOuyJdrEXgcSRyyHnAhXtrU9sHKBBcP3u4W04=;
-        b=JJPxb0vyhay0EHaTRm0oJ7ubaFPkT6Dyg5Bk7hx3a0dCQyVE5TZDwZg3N+alffsdZW
-         DL9mqPrI4+B4tBuOHp2LWubGCJXJRobA/Cyu2qlk2nio+Uwk/VB0yS1F8DrI8WKhgBaU
-         /QDHUhZTJqkquLccdvwZu/jAZjUsETrfKnAUjwDOmCbOZpLPlo7MCOmdca2tyuZPvl5g
-         3I2V+EkDi8V+7YRfQl5+mHfHxAWli3BODKw07wayeks0Z8OgtT/XdWzdLDw/Yopgp3lp
-         dEqcxAbdm+uTQlbR1wDYFfi0rFKIivQeB7I6dgIrIP0WLwegJoFm9KJcCnMMZjW3oDAs
-         7xZw==
-X-Forwarded-Encrypted: i=1; AJvYcCXZuOXAU9GJCQTcEoupulLp12FYa5LM3PC91ZQ3oM7FpPcaEpyn08pJJ+nP1Ss8KRkzBMSALSOUJZW3GUyS2BZQxGK4Y+sK
-X-Gm-Message-State: AOJu0Yy6mfNJnOoN/kSwNNcapKF5+oW4tjKSkF0dPHSgh2nuwm8OGGFG
-	jaHa+xzcxPqiCG3Ko9WxWRgaJbq3uS/ARjqBPK0gE/hViejJDbPD5K8zu2HHee0=
-X-Google-Smtp-Source: AGHT+IG5+tdMrZ2ON9H8ZpGLg3GIka4FUXbeapzA9mauWtoPzhwuW9kisXtyN8OVl6ignL92UATEaA==
-X-Received: by 2002:a6b:3f8a:0:b0:7c7:97a0:d2f4 with SMTP id m132-20020a6b3f8a000000b007c797a0d2f4mr11694640ioa.9.1709064095809;
-        Tue, 27 Feb 2024 12:01:35 -0800 (PST)
-Received: from [100.64.0.1] ([170.85.6.200])
-        by smtp.gmail.com with ESMTPSA id y90-20020a029563000000b004740d29b120sm1936267jah.111.2024.02.27.12.01.34
+        bh=mK/ZFrnnYw6RSzivQhp5csCqakE9t+9sf6LNYK8Z6+8=;
+        b=FF6uT36Qjr99UXtDEEpS9pevM2ct2ILaebMlOXgaqrnps7HhCZIGp8H5Oi6TI1jWZK
+         7ylqJigCstbYz320m1zsSUtiFqjz2erVS/dDDxKxq8ZqppqOJ2yYAxJGYD+rQsKEVorY
+         S4Btb3dMwtqFGf8oWzg0JzVmyVOFzIyaNT8ulshXzvPpuyfWLXhDHetoEss51oah8l2r
+         UOg48IA3v+5zs9X78xA9LMC/prNcv5ELBQk9QcHy3oHplZf6X3TVEw84dSiDyaBJYFJ/
+         lvvNna4R8yLbsYB6O/sLHA7MWQRCL3uNz+r1XzNPmEOakImUIUurmIDpYfkyJn19b4vP
+         a+KQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXr/Z1nXSHZAwLMKSfzBmG0yYKO2cyYT9M7k5sj0gECsjNBL19Unqx/JBeVgCsq49IwrUsDvX1LQwvDziteV+puXSXW1RWT41XgQ4/kdWkGV7+cidM7oBQZOXSImqByz+DtgfBo
+X-Gm-Message-State: AOJu0YxNXeiCqVePYqzm1raR28qhjwn12axGx54ButvgFTaYzHKAMSWt
+	hnppv2397mmk+y53bo5EOJdwWDv8k8IOR3t46UmKp2gk6RQg9pPi
+X-Google-Smtp-Source: AGHT+IEcT+EhiyvnVNxO9WJz91kkjHWjzkOXE0F36aECFMQ+TegqvIo8lOT/IQRlb0m7cfwCLt739Q==
+X-Received: by 2002:a05:6358:1222:b0:176:91bb:9600 with SMTP id h34-20020a056358122200b0017691bb9600mr14704650rwi.3.1709066066189;
+        Tue, 27 Feb 2024 12:34:26 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id j3-20020a0cf303000000b0068fdc6f89cbsm4484480qvl.133.2024.02.27.12.34.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Feb 2024 12:01:35 -0800 (PST)
-Message-ID: <33f16905-baab-47e8-a92f-d2543b69d704@sifive.com>
-Date: Tue, 27 Feb 2024 14:01:34 -0600
+        Tue, 27 Feb 2024 12:34:25 -0800 (PST)
+Message-ID: <58ac5eb4-3412-49fb-8682-f8959772aad1@gmail.com>
+Date: Tue, 27 Feb 2024 12:34:21 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,104 +76,45 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH -fixes v3 1/2] riscv: Fix enabling cbo.zero when running
- in M-mode
+Subject: Re: [PATCH 6.7 000/334] 6.7.7-rc1 review
 Content-Language: en-US
-To: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>, linux-kernel@vger.kernel.org,
- Conor Dooley <conor@kernel.org>, linux-riscv@lists.infradead.org,
- Stefan O'Rear <sorear@fastmail.com>, stable@vger.kernel.org,
- Andrew Jones <ajones@ventanamicro.com>
-References: <20240214090206.195754-1-samuel.holland@sifive.com>
- <20240214090206.195754-2-samuel.holland@sifive.com>
- <20240214-661604d82db4ef137540b762@orel>
- <579c9f3f-8c28-4e4e-88ce-9f266597b7bd@ghiti.fr>
-From: Samuel Holland <samuel.holland@sifive.com>
-In-Reply-To: <579c9f3f-8c28-4e4e-88ce-9f266597b7bd@ghiti.fr>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com
+References: <20240227131630.636392135@linuxfoundation.org>
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Alex,
-
-On 2024-02-27 1:48 PM, Alexandre Ghiti wrote:
-> Hi Samuel,
+On 2/27/24 05:17, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.7.7 release.
+> There are 334 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> On 14/02/2024 10:28, Andrew Jones wrote:
->> On Wed, Feb 14, 2024 at 01:01:56AM -0800, Samuel Holland wrote:
->>> When the kernel is running in M-mode, the CBZE bit must be set in the
->>> menvcfg CSR, not in senvcfg.
->>>
->>> Cc: <stable@vger.kernel.org>
->>> Fixes: 43c16d51a19b ("RISC-V: Enable cbo.zero in usermode")
->>> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
->>> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
->>> ---
->>>
->>> (no changes since v1)
->>>
->>>   arch/riscv/include/asm/csr.h   | 2 ++
->>>   arch/riscv/kernel/cpufeature.c | 2 +-
->>>   2 files changed, 3 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/arch/riscv/include/asm/csr.h b/arch/riscv/include/asm/csr.h
->>> index 510014051f5d..2468c55933cd 100644
->>> --- a/arch/riscv/include/asm/csr.h
->>> +++ b/arch/riscv/include/asm/csr.h
->>> @@ -424,6 +424,7 @@
->>>   # define CSR_STATUS    CSR_MSTATUS
->>>   # define CSR_IE        CSR_MIE
->>>   # define CSR_TVEC    CSR_MTVEC
->>> +# define CSR_ENVCFG    CSR_MENVCFG
->>>   # define CSR_SCRATCH    CSR_MSCRATCH
->>>   # define CSR_EPC    CSR_MEPC
->>>   # define CSR_CAUSE    CSR_MCAUSE
->>> @@ -448,6 +449,7 @@
->>>   # define CSR_STATUS    CSR_SSTATUS
->>>   # define CSR_IE        CSR_SIE
->>>   # define CSR_TVEC    CSR_STVEC
->>> +# define CSR_ENVCFG    CSR_SENVCFG
->>>   # define CSR_SCRATCH    CSR_SSCRATCH
->>>   # define CSR_EPC    CSR_SEPC
->>>   # define CSR_CAUSE    CSR_SCAUSE
->>> diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
->>> index 89920f84d0a3..c5b13f7dd482 100644
->>> --- a/arch/riscv/kernel/cpufeature.c
->>> +++ b/arch/riscv/kernel/cpufeature.c
->>> @@ -950,7 +950,7 @@ arch_initcall(check_unaligned_access_all_cpus);
->>>   void riscv_user_isa_enable(void)
->>>   {
->>>       if (riscv_cpu_has_extension_unlikely(smp_processor_id(),
->>> RISCV_ISA_EXT_ZICBOZ))
->>> -        csr_set(CSR_SENVCFG, ENVCFG_CBZE);
->>> +        csr_set(CSR_ENVCFG, ENVCFG_CBZE);
->>>   }
->>>     #ifdef CONFIG_RISCV_ALTERNATIVE
->>> -- 
->>> 2.43.0
->>>
->> After our back and forth on how we determine the existence of the *envcfg
->> CSRs, I wonder if we shouldn't put a comment above this
->> riscv_user_isa_enable() function capturing the [current] decision.
->>
->> Something like
->>
->>   /*
->>    * While the [ms]envcfg CSRs weren't defined until priv spec 1.12,
->>    * they're assumed to be present when an extension is present which
->>    * specifies [ms]envcfg bit(s). Hence, we don't do any additional
->>    * priv spec version checks or CSR probes here.
->>    */
+> Responses should be made by Thu, 29 Feb 2024 13:15:36 +0000.
+> Anything received after that time might be too late.
 > 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.7-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
+> and the diffstat can be found below.
 > 
-> I was about to read the whole discussion in v2 to understand the v3...thank you
-> Drew :) I think it really makes sense to add this comment, do you intend to do
-> so Samuel?
+> thanks,
+> 
+> greg k-h
 
-Yes, I am about to send a v4 with the changes from the previous discussion,
-including a RISCV_ISA_EXT_XLINUXENVCFG bit specifically for the presence of the
-[ms]envcfg CSR and a comment like the above.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Regards,
-Samuel
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
 
