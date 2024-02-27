@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9611386953B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:00:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFF61869793
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:22:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7A371C2469F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:00:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A5BD28885B
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FFF313DB90;
-	Tue, 27 Feb 2024 14:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D11C13EFEC;
+	Tue, 27 Feb 2024 14:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VN8zsTl+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xBTE0Hmt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D216054BD4;
-	Tue, 27 Feb 2024 14:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4D513B2B4;
+	Tue, 27 Feb 2024 14:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042407; cv=none; b=a/6WqH1Zsh+wbfxVqF7kHzoYCnbiIkcgZ+9Gx181Q6MBK5yMU19pxzMoQXFxExBsPvWv9cjHY96LordcsPSWrzC/GHSrYDflJBY9my7L19815Tza9hm8GGlAoAE1LraOv9f/FiamLyjpCtel1zmBb09jQWlgHaHlgxDKVVFBjeY=
+	t=1709043763; cv=none; b=KTHKUrpsvKTK7t9BNKg6heB7fg6c1JePW8fFVgKxo7Se5yyGZ7h0H54CQCcZTX6sF2B7pyfU+oztRr2nCEiEhSFGOaGKFn5BDqInIfH0OtH1WUjZN1HoIDDm0Va3xqQLnQxMIyVbvUMkQD3wjvMAWaYzRwdUxDaPmWkz5WjADs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042407; c=relaxed/simple;
-	bh=swynRbcsuaNIxghJ7puOVRUM0y7MVUj7pgWi2gOn3LI=;
+	s=arc-20240116; t=1709043763; c=relaxed/simple;
+	bh=MlGmBiRlfQqR32Wa3QTmNFbjGHporn39wt3Cf5AKujE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gFC//hOcz4DuhyURaQcHFpUR6wpIajLfl0CgAOQJVvGg3QDmnqwv30QR3Ejj/mn4x15A1WHY0jl90QlRRTFN6r75wdKUKep37Uw8z6/MNL1Y83Awwdqp2fEdHFe1HmkxE5arRrPTWMG2X4gbtpFPqDL/FO7MESRE/SnBrUVsdHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VN8zsTl+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1379CC433F1;
-	Tue, 27 Feb 2024 14:00:06 +0000 (UTC)
+	 MIME-Version; b=N3ym7xeFoFwj1zfBxaBG1cOIUK68DMFBK1M8zkANMrFaB52UxyFJTaLYX/Ol2A7hbGtPAmxfXbWgMYHbWrGuVNa5M/f6ZZHFbCZnHk0Qq13kkzcPHGH/aA9LonrVyuPrs4NfmL4b1q6bn+2ClfnCWGoDIRpjCAEue2ogxHnQ8DE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xBTE0Hmt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDAA2C433C7;
+	Tue, 27 Feb 2024 14:22:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042407;
-	bh=swynRbcsuaNIxghJ7puOVRUM0y7MVUj7pgWi2gOn3LI=;
+	s=korg; t=1709043763;
+	bh=MlGmBiRlfQqR32Wa3QTmNFbjGHporn39wt3Cf5AKujE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VN8zsTl+QGPPioSXJkfUTC50nfI3liLeJF+c1Zewpq8xYRY2HTWsB/r6eg0exoDu9
-	 uwQh/b+00IA1QYtBKY9mZ2rvP+My7UP5oPLyaUK7EUykdmXyXnPiFYwQ2he2DU4gyL
-	 oW9flIzYPOutrRy3O2XoyagwHdyVT5wkTH/IcEZY=
+	b=xBTE0HmtLBkEXmVpfYaroZ5HMzLTcr6ZsZym9Co7F2deDNHWvovY91151J+S1nqgr
+	 0zbge6dlAjvorX3F6jAM99FEm4FcehhFfASss5v9JUwzJ+xtoyHl3I2FR5EdaCjW5S
+	 4vuUCVUBEfo2qfJ1AQlmHMCu524hPdELo6skjwFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 285/299] net: phy: realtek: Fix rtl8211f_config_init() for RTL8211F(D)(I)-VD-CG PHY
-Date: Tue, 27 Feb 2024 14:26:36 +0100
-Message-ID: <20240227131634.849880262@linuxfoundation.org>
+	Cyril Hrubis <chrubis@suse.cz>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Petr Vorel <pvorel@suse.cz>,
+	Mel Gorman <mgorman@suse.de>
+Subject: [PATCH 5.4 10/84] sched/rt: Fix sysctl_sched_rr_timeslice intial value
+Date: Tue, 27 Feb 2024 14:26:37 +0100
+Message-ID: <20240227131553.207177849@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Cyril Hrubis <chrubis@suse.cz>
 
-[ Upstream commit 3489182b11d35f1944c1245fc9c4867cf622c50f ]
+commit c7fcb99877f9f542c918509b2801065adcaf46fa upstream.
 
-Commit bb726b753f75 ("net: phy: realtek: add support for
-RTL8211F(D)(I)-VD-CG") extended support of the driver from the existing
-support for RTL8211F(D)(I)-CG PHY to the newer RTL8211F(D)(I)-VD-CG PHY.
+There is a 10% rounding error in the intial value of the
+sysctl_sched_rr_timeslice with CONFIG_HZ_300=y.
 
-While that commit indicated that the RTL8211F_PHYCR2 register is not
-supported by the "VD-CG" PHY model and therefore updated the corresponding
-section in rtl8211f_config_init() to be invoked conditionally, the call to
-"genphy_soft_reset()" was left as-is, when it should have also been invoked
-conditionally. This is because the call to "genphy_soft_reset()" was first
-introduced by the commit 0a4355c2b7f8 ("net: phy: realtek: add dt property
-to disable CLKOUT clock") since the RTL8211F guide indicates that a PHY
-reset should be issued after setting bits in the PHYCR2 register.
+This was found with LTP test sched_rr_get_interval01:
 
-As the PHYCR2 register is not applicable to the "VD-CG" PHY model, fix the
-rtl8211f_config_init() function by invoking "genphy_soft_reset()"
-conditionally based on the presence of the "PHYCR2" register.
+sched_rr_get_interval01.c:57: TPASS: sched_rr_get_interval() passed
+sched_rr_get_interval01.c:64: TPASS: Time quantum 0s 99999990ns
+sched_rr_get_interval01.c:72: TFAIL: /proc/sys/kernel/sched_rr_timeslice_ms != 100 got 90
+sched_rr_get_interval01.c:57: TPASS: sched_rr_get_interval() passed
+sched_rr_get_interval01.c:64: TPASS: Time quantum 0s 99999990ns
+sched_rr_get_interval01.c:72: TFAIL: /proc/sys/kernel/sched_rr_timeslice_ms != 100 got 90
 
-Fixes: bb726b753f75 ("net: phy: realtek: add support for RTL8211F(D)(I)-VD-CG")
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240220070007.968762-1-s-vadapalli@ti.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+What this test does is to compare the return value from the
+sched_rr_get_interval() and the sched_rr_timeslice_ms sysctl file and
+fails if they do not match.
+
+The problem it found is the intial sysctl file value which was computed as:
+
+static int sysctl_sched_rr_timeslice = (MSEC_PER_SEC / HZ) * RR_TIMESLICE;
+
+which works fine as long as MSEC_PER_SEC is multiple of HZ, however it
+introduces 10% rounding error for CONFIG_HZ_300:
+
+(MSEC_PER_SEC / HZ) * (100 * HZ / 1000)
+
+(1000 / 300) * (100 * 300 / 1000)
+
+3 * 30 = 90
+
+This can be easily fixed by reversing the order of the multiplication
+and division. After this fix we get:
+
+(MSEC_PER_SEC * (100 * HZ / 1000)) / HZ
+
+(1000 * (100 * 300 / 1000)) / 300
+
+(1000 * 30) / 300 = 100
+
+Fixes: 975e155ed873 ("sched/rt: Show the 'sched_rr_timeslice' SCHED_RR timeslice tuning knob in milliseconds")
+Signed-off-by: Cyril Hrubis <chrubis@suse.cz>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Petr Vorel <pvorel@suse.cz>
+Acked-by: Mel Gorman <mgorman@suse.de>
+Tested-by: Petr Vorel <pvorel@suse.cz>
+Link: https://lore.kernel.org/r/20230802151906.25258-2-chrubis@suse.cz
+[ pvorel: rebased for 5.4 ]
+Signed-off-by: Petr Vorel <pvorel@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/realtek.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ kernel/sched/rt.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/realtek.c b/drivers/net/phy/realtek.c
-index 894172a3e15fe..337899c69738e 100644
---- a/drivers/net/phy/realtek.c
-+++ b/drivers/net/phy/realtek.c
-@@ -421,9 +421,11 @@ static int rtl8211f_config_init(struct phy_device *phydev)
- 				ERR_PTR(ret));
- 			return ret;
- 		}
-+
-+		return genphy_soft_reset(phydev);
- 	}
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -8,7 +8,7 @@
+ #include "pelt.h"
  
--	return genphy_soft_reset(phydev);
-+	return 0;
- }
+ int sched_rr_timeslice = RR_TIMESLICE;
+-int sysctl_sched_rr_timeslice = (MSEC_PER_SEC / HZ) * RR_TIMESLICE;
++int sysctl_sched_rr_timeslice = (MSEC_PER_SEC * RR_TIMESLICE) / HZ;
+ /* More than 4 hours if BW_SHIFT equals 20. */
+ static const u64 max_rt_runtime = MAX_BW;
  
- static int rtl821x_suspend(struct phy_device *phydev)
--- 
-2.43.0
-
 
 
 
