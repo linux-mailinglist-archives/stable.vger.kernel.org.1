@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-25130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4104B8697E1
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:26:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4399C8697CD
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:25:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 685301C21F1B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:26:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D994C1F2B2B7
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:25:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A28D1448D7;
-	Tue, 27 Feb 2024 14:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53321143C4B;
+	Tue, 27 Feb 2024 14:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FX5yxVJY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkZBfAoz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2FE143C4B;
-	Tue, 27 Feb 2024 14:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12EB013EFE9;
+	Tue, 27 Feb 2024 14:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043948; cv=none; b=LQCNGe1cd66LMb09WFnR5xwKSroe1NerDfwx2XqWto4Y6VjXNkE4KcbrveVgWshze6bh5IqZ6g9Fur1e928s4gd4cVBJRZrMXMP59AYyhASzdUXkTrSQ1IgJSAFTZ11XvONOov3xM0nAiZKa9kWUJsriSMOWD++5mmgWodBzdLw=
+	t=1709043909; cv=none; b=k1pRShKNhrpOJ+gVxxpxu8W8kRKfcYZIC0uh8C6N+sh/DvjgD0Ekx9CS9T9LPhAkF5zlfsA/6tZA/aGrLLfz+kiMbeI6ZTFufJkLB+iXSzT2yf529hDsCXZpcM+1d6QeiCYqUw1W+UZ1QU+wQlvCHGREtA3RNUYQ7voSmtUml5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043948; c=relaxed/simple;
-	bh=uwHWwHmq+Bw6glb8C8V4D0r0OYRRAf333y164P74jTI=;
+	s=arc-20240116; t=1709043909; c=relaxed/simple;
+	bh=kUzF5kHR8cs2Ol/0IjoR6h/d7aDWwqPSfOY0QYqUqYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qukxg2rNua4OYonfLRQW0iX5LaN817BpxuxfETqA66RNdO355dTL1xWTuyO6NLhI/iP8hgNyentXJVPxuhQXflAIR5nCtb2g9uwuIVWktn9RODJ+penVOjtqzlC4HWBRtLP2CO83wdAMs8fu2t/nE5aJlKxRk5bIgIYv06IFGPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FX5yxVJY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD81C433F1;
-	Tue, 27 Feb 2024 14:25:47 +0000 (UTC)
+	 MIME-Version; b=M++J/Qn8iMeYywlLwiawzSUnb9E3EhdZcZBEYUpOWVXxbP9vhvS41gbbf9G7/cAY/rQvPJNVOKhXa2PvfK9GnzUgRnAJMygMaVARlRY0GpXn8oqcDgOfgnNl9lg4NG/lViiXEDHm0eERzRXLwuzlVdN2UYW1Z48zn2b0v409H8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkZBfAoz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9686BC43390;
+	Tue, 27 Feb 2024 14:25:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043948;
-	bh=uwHWwHmq+Bw6glb8C8V4D0r0OYRRAf333y164P74jTI=;
+	s=korg; t=1709043909;
+	bh=kUzF5kHR8cs2Ol/0IjoR6h/d7aDWwqPSfOY0QYqUqYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FX5yxVJYhfWfuDPnTjkTO8JUIL4YZvP2J0d+Tgxh02VJEM5yH/hdbUs0nCUBJk8SG
-	 YNtGqYG1wd8OiyyCi5l9/yTNIhi+vokcqHAdQmcIUHREuTjzMKWqQJ5AtmJvVwauSl
-	 ucfMSfQX4QJScV7h0zUrmmvgfRj6PEGzOjlUa9P0=
+	b=XkZBfAozTwKCPTL8auA1/L6j9OJCgcCvCc9V9GgQtTYaPnbu+6oI/wkotYXhoSZ5U
+	 Ajdb9bYFcExjdzkzsInxLFTBeoGrqyArrNABED43pQe2mJh3moZM2XRZ9oyGOnpmlY
+	 NjTGmmHIFHPTnrhBvbFk8zXEFB0oNVMVyIypF6Uc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Danilo Krummrich <dakr@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 70/84] nouveau: fix function cast warnings
-Date: Tue, 27 Feb 2024 14:27:37 +0100
-Message-ID: <20240227131555.148627504@linuxfoundation.org>
+Subject: [PATCH 5.4 71/84] ipv4: properly combine dev_base_seq and ipv4.dev_addr_genid
+Date: Tue, 27 Feb 2024 14:27:38 +0100
+Message-ID: <20240227131555.180507987@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
 References: <20240227131552.864701583@linuxfoundation.org>
@@ -66,52 +67,71 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 0affdba22aca5573f9d989bcb1d71d32a6a03efe ]
+[ Upstream commit 081a0e3b0d4c061419d3f4679dec9f68725b17e4 ]
 
-clang-16 warns about casting between incompatible function types:
+net->dev_base_seq and ipv4.dev_addr_genid are monotonically increasing.
 
-drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c:161:10: error: cast from 'void (*)(const struct firmware *)' to 'void (*)(void *)' converts to incompatible function type [-Werror,-Wcast-function-type-strict]
-  161 |         .fini = (void(*)(void *))release_firmware,
+If we XOR their values, we could miss to detect if both values
+were changed with the same amount.
 
-This one was done to use the generic shadow_fw_release() function as a
-callback for struct nvbios_source. Change it to use the same prototype
-as the other five instances, with a trivial helper function that actually
-calls release_firmware.
-
-Fixes: 70c0f263cc2e ("drm/nouveau/bios: pull in basic vbios subdev, more to come later")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240213095753.455062-1-arnd@kernel.org
+Fixes: 0465277f6b3f ("ipv4: provide addr and netconf dump consistency info")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Acked-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/ipv4/devinet.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c
-index 4b571cc6bc70f..6597def18627e 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c
-@@ -154,11 +154,17 @@ shadow_fw_init(struct nvkm_bios *bios, const char *name)
- 	return (void *)fw;
+diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
+index 4c013f8800f0c..ed00b233cee2e 100644
+--- a/net/ipv4/devinet.c
++++ b/net/ipv4/devinet.c
+@@ -1798,6 +1798,21 @@ static int in_dev_dump_addr(struct in_device *in_dev, struct sk_buff *skb,
+ 	return err;
  }
  
-+static void
-+shadow_fw_release(void *fw)
++/* Combine dev_addr_genid and dev_base_seq to detect changes.
++ */
++static u32 inet_base_seq(const struct net *net)
 +{
-+	release_firmware(fw);
++	u32 res = atomic_read(&net->ipv4.dev_addr_genid) +
++		  net->dev_base_seq;
++
++	/* Must not return 0 (see nl_dump_check_consistent()).
++	 * Chose a value far away from 0.
++	 */
++	if (!res)
++		res = 0x80000000;
++	return res;
 +}
 +
- static const struct nvbios_source
- shadow_fw = {
- 	.name = "firmware",
- 	.init = shadow_fw_init,
--	.fini = (void(*)(void *))release_firmware,
-+	.fini = shadow_fw_release,
- 	.read = shadow_fw_read,
- 	.rw = false,
- };
+ static int inet_dump_ifaddr(struct sk_buff *skb, struct netlink_callback *cb)
+ {
+ 	const struct nlmsghdr *nlh = cb->nlh;
+@@ -1849,8 +1864,7 @@ static int inet_dump_ifaddr(struct sk_buff *skb, struct netlink_callback *cb)
+ 		idx = 0;
+ 		head = &tgt_net->dev_index_head[h];
+ 		rcu_read_lock();
+-		cb->seq = atomic_read(&tgt_net->ipv4.dev_addr_genid) ^
+-			  tgt_net->dev_base_seq;
++		cb->seq = inet_base_seq(tgt_net);
+ 		hlist_for_each_entry_rcu(dev, head, index_hlist) {
+ 			if (idx < s_idx)
+ 				goto cont;
+@@ -2249,8 +2263,7 @@ static int inet_netconf_dump_devconf(struct sk_buff *skb,
+ 		idx = 0;
+ 		head = &net->dev_index_head[h];
+ 		rcu_read_lock();
+-		cb->seq = atomic_read(&net->ipv4.dev_addr_genid) ^
+-			  net->dev_base_seq;
++		cb->seq = inet_base_seq(net);
+ 		hlist_for_each_entry_rcu(dev, head, index_hlist) {
+ 			if (idx < s_idx)
+ 				goto cont;
 -- 
 2.43.0
 
