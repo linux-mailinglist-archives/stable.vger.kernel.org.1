@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-25023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D788986975F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:20:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13A6D8697AF
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:24:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 104251C242A1
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:20:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1DA62896C3
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E356513EFEC;
-	Tue, 27 Feb 2024 14:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FAEA13EFE9;
+	Tue, 27 Feb 2024 14:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qoI8I7GS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mnuTEuR3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9C413B2B8;
-	Tue, 27 Feb 2024 14:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C0E13B2B4;
+	Tue, 27 Feb 2024 14:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043641; cv=none; b=Xyj53GWNuZlrfmi2PFgRFktp5akUVTeZj7RiDthB3LiNX5pOPo6fq/W7PB2ivv0zRULxi1KiUQWldoMQEsfzMSds9ZDMrNeXBSsyFuF82v1jgyfd8q+VOsThK9Pli86WdT1gWfiBLL5ZlCWMJzKfAQqztXmtqxXAeZkvcJlMuLU=
+	t=1709043840; cv=none; b=R3OaG9j2GdPSPaEYD8apoIKp5lvjipi8YN+GlJ4AlBpmyB4t1nli8BUz8A8u9TCUxsct+8BEZTccQfFqwuXuhaYhIlkUkSc3QHhWRQSsGS21oOjrEQ5+mzBTR4WVKW39a4LiK2+wrYHIvY35Zob8NXmLcsXHaOe01u83TEdsZFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043641; c=relaxed/simple;
-	bh=JIWBJXcoDmbVa3DFNT2AQ8LSEqq4cSZDI1urFN92BR4=;
+	s=arc-20240116; t=1709043840; c=relaxed/simple;
+	bh=sqW2u8l+9zR9zkQ+STBcSeLmrs9Hnk5J1Dkyx62m3Mc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cpEd+VmuyPHVQKrKVyxZYlnx4KNcSJjUYyOcb7L+JPVSHrxyUaNC+G5no/2c8VzSNyvYOiVv7RQeqnX4dAkTBhwPNEKs26QvW5PnC0sP/7/cxxjYZ5N/qo95EnXL/cTZHpxLv1W481aY4FsSoIBul3zd4G1gC1juZ3XTWBTCj+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qoI8I7GS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F76C433C7;
-	Tue, 27 Feb 2024 14:20:40 +0000 (UTC)
+	 MIME-Version; b=UlC1HTgUmH5OeiesHopKLnsUGr98A5nnBa3z02BaWLMNcq79T4n5L9qYcD5ntFliXxJcywIaNh00PhrJ5gX3+k7CAv4Gn4VRnGfBERXumaVJLYiqHuSa7JJUng/mDv9fd1ymBLzmlywUAYOmfwA2Xem2bYqIHtHeIVCbj6nw0II=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mnuTEuR3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E774C433F1;
+	Tue, 27 Feb 2024 14:24:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043641;
-	bh=JIWBJXcoDmbVa3DFNT2AQ8LSEqq4cSZDI1urFN92BR4=;
+	s=korg; t=1709043840;
+	bh=sqW2u8l+9zR9zkQ+STBcSeLmrs9Hnk5J1Dkyx62m3Mc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qoI8I7GSUIS7q3Qo6TibspqX+Ibty3JYeeaN1rr7QIkO1vTAAHskwj1DGBEV2Zisj
-	 a0kpbjU3Y7Xwq0fO6ZCYtExY+n43fggMIVpvXB7fhAcej+E69bUxkRwZIcfRjNh0Wf
-	 tlFqdiJlLhyl1VKpMsxvJ/wzkvR9fXuA8uJnXVg8=
+	b=mnuTEuR3RqPhCXs4aXT18t7QJbkkxu2RwItvgRCNHNgo9+Kz9fzlyNrlONgNWxNxB
+	 cXf+1qA+YfBj/x1u146XB6us+wI4L6M2zgEX6sCp/HEG6doNfpBnK+f5Pz270voUUB
+	 rRvmiFOK5Z7iTAqA6iUmFO8MjpJVGOZXkjW0PSYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 181/195] net: phy: realtek: Fix rtl8211f_config_init() for RTL8211F(D)(I)-VD-CG PHY
-Date: Tue, 27 Feb 2024 14:27:22 +0100
-Message-ID: <20240227131616.378923934@linuxfoundation.org>
+	Vidya Sagar <vidyas@nvidia.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Shanker Donthineni <sdonthineni@nvidia.com>
+Subject: [PATCH 5.4 56/84] PCI/MSI: Prevent MSI hardware interrupt number truncation
+Date: Tue, 27 Feb 2024 14:27:23 +0100
+Message-ID: <20240227131554.694454547@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Vidya Sagar <vidyas@nvidia.com>
 
-[ Upstream commit 3489182b11d35f1944c1245fc9c4867cf622c50f ]
+commit db744ddd59be798c2627efbfc71f707f5a935a40 upstream.
 
-Commit bb726b753f75 ("net: phy: realtek: add support for
-RTL8211F(D)(I)-VD-CG") extended support of the driver from the existing
-support for RTL8211F(D)(I)-CG PHY to the newer RTL8211F(D)(I)-VD-CG PHY.
+While calculating the hardware interrupt number for a MSI interrupt, the
+higher bits (i.e. from bit-5 onwards a.k.a domain_nr >= 32) of the PCI
+domain number gets truncated because of the shifted value casting to return
+type of pci_domain_nr() which is 'int'. This for example is resulting in
+same hardware interrupt number for devices 0019:00:00.0 and 0039:00:00.0.
 
-While that commit indicated that the RTL8211F_PHYCR2 register is not
-supported by the "VD-CG" PHY model and therefore updated the corresponding
-section in rtl8211f_config_init() to be invoked conditionally, the call to
-"genphy_soft_reset()" was left as-is, when it should have also been invoked
-conditionally. This is because the call to "genphy_soft_reset()" was first
-introduced by the commit 0a4355c2b7f8 ("net: phy: realtek: add dt property
-to disable CLKOUT clock") since the RTL8211F guide indicates that a PHY
-reset should be issued after setting bits in the PHYCR2 register.
+To address this cast the PCI domain number to 'irq_hw_number_t' before left
+shifting it to calculate the hardware interrupt number.
 
-As the PHYCR2 register is not applicable to the "VD-CG" PHY model, fix the
-rtl8211f_config_init() function by invoking "genphy_soft_reset()"
-conditionally based on the presence of the "PHYCR2" register.
+Please note that this fixes the issue only on 64-bit systems and doesn't
+change the behavior for 32-bit systems i.e. the 32-bit systems continue to
+have the issue. Since the issue surfaces only if there are too many PCIe
+controllers in the system which usually is the case in modern server
+systems and they don't tend to run 32-bit kernels.
 
-Fixes: bb726b753f75 ("net: phy: realtek: add support for RTL8211F(D)(I)-VD-CG")
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240220070007.968762-1-s-vadapalli@ti.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3878eaefb89a ("PCI/MSI: Enhance core to support hierarchy irqdomain")
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Shanker Donthineni <sdonthineni@nvidia.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240115135649.708536-1-vidyas@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/realtek.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/pci/msi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/realtek.c b/drivers/net/phy/realtek.c
-index 3d99fd6664d7a..70e52d27064ec 100644
---- a/drivers/net/phy/realtek.c
-+++ b/drivers/net/phy/realtek.c
-@@ -414,9 +414,11 @@ static int rtl8211f_config_init(struct phy_device *phydev)
- 				ERR_PTR(ret));
- 			return ret;
- 		}
-+
-+		return genphy_soft_reset(phydev);
- 	}
- 
--	return genphy_soft_reset(phydev);
-+	return 0;
+--- a/drivers/pci/msi.c
++++ b/drivers/pci/msi.c
+@@ -1428,7 +1428,7 @@ irq_hw_number_t pci_msi_domain_calc_hwir
+ {
+ 	return (irq_hw_number_t)desc->msi_attrib.entry_nr |
+ 		pci_dev_id(dev) << 11 |
+-		(pci_domain_nr(dev->bus) & 0xFFFFFFFF) << 27;
++		((irq_hw_number_t)(pci_domain_nr(dev->bus) & 0xFFFFFFFF)) << 27;
  }
  
- static int rtl821x_resume(struct phy_device *phydev)
--- 
-2.43.0
-
+ static inline bool pci_msi_desc_is_multi_msi(struct msi_desc *desc)
 
 
 
