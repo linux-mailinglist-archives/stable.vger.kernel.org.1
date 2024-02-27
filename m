@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-24674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E8CF8695B7
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:04:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 751D08694AA
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:55:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 609051C21B23
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:04:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A2F7285F23
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:55:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4411613B7A2;
-	Tue, 27 Feb 2024 14:04:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7800913EFEC;
+	Tue, 27 Feb 2024 13:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YT3CgTRw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cPWC/MYk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBAC216423;
-	Tue, 27 Feb 2024 14:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348BD13DBBF;
+	Tue, 27 Feb 2024 13:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042677; cv=none; b=ZMpwzD6Qm+vIRE23E8VzVJYmlBcpf0IRvCFzovWQk73X1aFRq+yzAvjGsOkljlfviuW8ctGWxwBHFk1l1dwxKDXIyHTi8/iogjJOYeV7sZC3R3VX7w174K2LBGyMAz3b9qvcHe5+sA9eaa355UI2eo2R7/QT+NpSwL2V+BILq6Q=
+	t=1709042116; cv=none; b=ZfSekw+PB1ZQYxPkEhuZE6PqgWPF9NgQC3qSBUf/0cIcsB4IICec8jG/Lb5xbw0EIdsYLZg/qZqT2qA76r6C2EI9/9XigCvV38VKZ/EOqOtkKqBmTf/XrStQkIYof2KzWiceU2nAeVabROMUNmaFRL4LE4dN3rIEty3H732gZZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042677; c=relaxed/simple;
-	bh=5uC5ZH4koqk12EyOBPODbdBqWLjB3ywjJSMBu3ObZ3s=;
+	s=arc-20240116; t=1709042116; c=relaxed/simple;
+	bh=xWOcKbn2DPhJU5n+l3zCdvryHdKljrWdtY2+jaoX5ZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tuoannOJsRaTYllFvzDTEdAu4sDXVW2u0SML08rMVOXLnWvugv/KbXtLfhc1PWEwStNMXVrk453sxuyWRSTJNEtq9DmaGzSlcjhQmM7Ox68dSP+pIuG+Veq7OYeBC129ZASa2h/FY41940zmMZfZpz+wSgmCokEl0ZBzxe3U0v0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YT3CgTRw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F46C433C7;
-	Tue, 27 Feb 2024 14:04:36 +0000 (UTC)
+	 MIME-Version; b=ae7C88NrRgMrnwCmwet24YFU43gw20k4+Sr9PxZebPK91UvFIoULk4QR7GBhI3Mad57Bmp54vl7po4krNUtY5+aY97kXAvVhDUSr4xzhcrcuLhKOITPlBTXDtyskOL0txMPleU3hxnYOAMF4woIX4HtggO6HbpNcT7giaPmcA7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cPWC/MYk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61083C433F1;
+	Tue, 27 Feb 2024 13:55:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042676;
-	bh=5uC5ZH4koqk12EyOBPODbdBqWLjB3ywjJSMBu3ObZ3s=;
+	s=korg; t=1709042115;
+	bh=xWOcKbn2DPhJU5n+l3zCdvryHdKljrWdtY2+jaoX5ZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YT3CgTRwI4ftqcXzlDrzfWrZjMbRC0vbiO4ExaSZBGndceplUSA1+yBY6Noi3eOsD
-	 4Rvk+5EPD7OQnISj090Pt2W0prXuRLAAZwrb/JTK3SCRVrRUOxyUSD4gt1ACciMtzW
-	 CWW3XWxXHnBqiWIwsZrebU2p8vE3dIbu8W2xyPmM=
+	b=cPWC/MYkoMhCsQlLF5jR7NihMZhdfWDk1G1ViCVLfd0qA+2ecnw3EaM7MJKBBEbW+
+	 heD/GsVs7zzjFNc6v8T8o9eqXAZbl9X+/ReWuL0fvGRGSrdf+By7c0gGa479QCmPpa
+	 nGEWwcZsZsV/N+w/jtkbEuGhihP/7ztMzsJ1Yecc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Kobel <a-kobel@a-kobel.de>,
-	regressions@lists.linux.dev,
-	Arnold Gozum <arngozum@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 5.15 080/245] platform/x86: intel-vbtn: Stop calling "VBDL" from notify_handler
+	Terry Tritton <terry.tritton@linaro.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Peter Xu <peterx@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 157/299] selftests/mm: uffd-unit-test check if huge page size is 0
 Date: Tue, 27 Feb 2024 14:24:28 +0100
-Message-ID: <20240227131617.839986631@linuxfoundation.org>
+Message-ID: <20240227131630.911204771@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Terry Tritton <terry.tritton@linaro.org>
 
-commit 84c16d01ff219bc0a5dca5219db6b8b86a6854fb upstream.
+commit 7efa6f2c803366f84c3c362f01e822490669d72b upstream.
 
-Commit 14c200b7ca46 ("platform/x86: intel-vbtn: Fix missing
-tablet-mode-switch events") causes 2 issues on the ThinkPad X1 Tablet Gen2:
+If HUGETLBFS is not enabled then the default_huge_page_size function will
+return 0 and cause a divide by 0 error. Add a check to see if the huge page
+size is 0 and skip the hugetlb tests if it is.
 
-1. The ThinkPad will wake up immediately from suspend
-2. When put in tablet mode SW_TABLET_MODE reverts to 0 after about 1 second
-
-Both these issues are caused by the "VBDL" ACPI method call added
-at the end of the notify_handler.
-
-And it never became entirely clear if this call is even necessary to fix
-the issue of missing tablet-mode-switch events on the Dell Inspiron 7352.
-
-Drop the "VBDL" ACPI method call again to fix the 2 issues this is
-causing on the ThinkPad X1 Tablet Gen2.
-
-Fixes: 14c200b7ca46 ("platform/x86: intel-vbtn: Fix missing tablet-mode-switch events")
-Reported-by: Alexander Kobel <a-kobel@a-kobel.de>
-Closes: https://lore.kernel.org/platform-driver-x86/295984ce-bd4b-49bd-adc5-ffe7c898d7f0@a-kobel.de/
-Cc: regressions@lists.linux.dev
-Cc: Arnold Gozum <arngozum@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Tested-by: Alexander Kobel <a-kobel@a-kobel.de>
-Link: https://lore.kernel.org/r/20240216203300.245826-1-hdegoede@redhat.com
+Link: https://lkml.kernel.org/r/20240205145055.3545806-2-terry.tritton@linaro.org
+Fixes: 16a45b57cbf2 ("selftests/mm: add framework for uffd-unit-test")
+Signed-off-by: Terry Tritton <terry.tritton@linaro.org>
+Cc: Peter Griffin <peter.griffin@linaro.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/vbtn.c | 3 ---
- 1 file changed, 3 deletions(-)
+ tools/testing/selftests/mm/uffd-unit-tests.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/platform/x86/intel/vbtn.c b/drivers/platform/x86/intel/vbtn.c
-index 210b0a81b7ec..084c355c86f5 100644
---- a/drivers/platform/x86/intel/vbtn.c
-+++ b/drivers/platform/x86/intel/vbtn.c
-@@ -200,9 +200,6 @@ static void notify_handler(acpi_handle handle, u32 event, void *context)
- 	autorelease = val && (!ke_rel || ke_rel->type == KE_IGNORE);
+--- a/tools/testing/selftests/mm/uffd-unit-tests.c
++++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+@@ -1309,6 +1309,12 @@ int main(int argc, char *argv[])
+ 				continue;
  
- 	sparse_keymap_report_event(input_dev, event, val, autorelease);
--
--	/* Some devices need this to report further events */
--	acpi_evaluate_object(handle, "VBDL", NULL, NULL);
- }
- 
- /*
--- 
-2.44.0
-
+ 			uffd_test_start("%s on %s", test->name, mem_type->name);
++			if ((mem_type->mem_flag == MEM_HUGETLB ||
++			    mem_type->mem_flag == MEM_HUGETLB_PRIVATE) &&
++			    (default_huge_page_size() == 0)) {
++				uffd_test_skip("huge page size is 0, feature missing?");
++				continue;
++			}
+ 			if (!uffd_feature_supported(test)) {
+ 				uffd_test_skip("feature missing");
+ 				continue;
 
 
 
