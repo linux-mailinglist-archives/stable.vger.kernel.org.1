@@ -1,56 +1,74 @@
-Return-Path: <stable+bounces-23865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9D46868BC5
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 10:10:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67996868BF2
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 10:15:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 082F31C232B4
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 09:10:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22AAE283CFC
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 09:15:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34ED613699C;
-	Tue, 27 Feb 2024 09:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 926D5136673;
+	Tue, 27 Feb 2024 09:15:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="DoBgcFgk"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF702130E48;
-	Tue, 27 Feb 2024 09:10:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B536713664E;
+	Tue, 27 Feb 2024 09:15:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709025013; cv=none; b=sfEp/1IEHzyrdOv9OVOQz6b0PRG0F924QMpSmWoTxHM8crz5IlMGU+7ePPetTFZn/GN2smr3nkRBHIVvDUGseoblodkNLTjdbPrS7TbNv6Vm+p64zSR06DNRNT9PouDiHYyYsfKf4ChsgDW8bK++m+YLhcmHTjgLkEgw1OjUirI=
+	t=1709025312; cv=none; b=f6qHAfYnoTz6HJvtDmufbtaAqaHHCvrhMdXsk0wnpWABfNIg5F7jXwun6wtMOUUtfw9Z6ZWK4Dv52yehrbbLQv2nXPjSetgCsq5dWfkwKmge+eZiiXLPTidgHFZtjg9DHzC+BJD+HSaPoM9y+8jKY3EQjIuoxn1u8Rm8jKkhOi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709025013; c=relaxed/simple;
-	bh=Izaw3Az6TVbjYFt+xV9EKhN5IONbtN7RxO79bw8zW0M=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BT2YwnC2c8p+jBxMrMbIV3+PjYkiiUMCLM/QgZZqyA3ZzrvBrhQyd/zTBT1LO6xN8Z4qIMUmtzvkAFXa+u7//dZ1O3c7d+Guf7r0UYQGewg5rXeQH07ftWYhp4CMF2WBncHlwBTA1KkjcXNK+3EXlqkBS8tX1QmIj78JBMIQ0+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4TkWqT4bmzzpStH;
-	Tue, 27 Feb 2024 17:08:21 +0800 (CST)
-Received: from dggpeml500021.china.huawei.com (unknown [7.185.36.21])
-	by mail.maildlp.com (Postfix) with ESMTPS id F146818009E;
-	Tue, 27 Feb 2024 17:10:08 +0800 (CST)
-Received: from huawei.com (10.175.127.227) by dggpeml500021.china.huawei.com
- (7.185.36.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 27 Feb
- 2024 17:10:08 +0800
-From: Baokun Li <libaokun1@huawei.com>
-To: <linux-ext4@vger.kernel.org>
-CC: <tytso@mit.edu>, <adilger.kernel@dilger.ca>, <jack@suse.cz>,
-	<ritesh.list@gmail.com>, <ojaswin@linux.ibm.com>, <adobriyan@gmail.com>,
-	<linux-kernel@vger.kernel.org>, <yi.zhang@huawei.com>,
-	<yangerkun@huawei.com>, <libaokun1@huawei.com>, <stable@vger.kernel.org>
-Subject: [PATCH v2 4/9] ext4: fix slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists()
-Date: Tue, 27 Feb 2024 17:11:43 +0800
-Message-ID: <20240227091148.178435-5-libaokun1@huawei.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20240227091148.178435-1-libaokun1@huawei.com>
-References: <20240227091148.178435-1-libaokun1@huawei.com>
+	s=arc-20240116; t=1709025312; c=relaxed/simple;
+	bh=iH0cmn/PzDVCeYjVzbKKlG/flQNqKVr7ns0XcjV4cMA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JY047KBJ2iE9/rUaR5Zke4azfAETDHXWuZU4XUa9n155p0OGQm6HKIV1gJ/Hwg0HkRyfU2k2K6QtQ1oe25oF/f0Yd3MQAX1z3IrQwFWN8ujv9OE7SDVH6weOM8fIGgFFdo6yXy5DVr9VLTKZshRmbypS583nZ/mRbWjk0AbfC9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=DoBgcFgk; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41R6Ohis031405;
+	Tue, 27 Feb 2024 09:14:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=vm43AHf
+	KrpEAmlriQ1rL1f2nqgUvYYMyaY7EE4JlVIo=; b=DoBgcFgkB/NgO9Y7roAYTZA
+	SZaXAyGc8cIXmAlrwcWstuwxBJ6uCb4ZCS9zUL+cBqGV/5g8+r6+G8Y3iHTYqMQe
+	cPIgbTepYBK1sfKU2UxWTb6kFqmzmo2WdzFZnUPxNgsNflVCyweC2+AMfqjwmIjz
+	RpFAlBqrZ2M6ycYsN6GGXEaTl/PClhXWZhfOS56z0gUoaVg8OCWSvtp29p/v5KpU
+	IDtpvE7hP09LiL4C0qfgcSpYZBxmmMupmHu5IDOR3Pn8wQYuuFNryyNaQlbkpJdt
+	lmvZQr1lQQoLVBCUycUPSEcxZxWX1qs/x0+DB706UrrM3OuWnUz3TqpXLnlOM5Q=
+	=
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wh6ws8rdq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Feb 2024 09:14:58 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41R9EvIS026172
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Feb 2024 09:14:57 GMT
+Received: from hu-kshivnan-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Tue, 27 Feb 2024 01:14:51 -0800
+From: Shivnandan Kumar <quic_kshivnan@quicinc.com>
+To: <rafael@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>,
+        "Vincent
+ Donnefort" <vincent.donnefort@arm.com>
+CC: <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <quic_pkondeti@quicinc.com>, <quic_namajain@quicinc.com>,
+        <quic_rgottimu@quicinc.com>, kernel <kernel@quicinc.com>,
+        Shivnandan Kumar
+	<quic_kshivnan@quicinc.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH v2] cpufreq: Limit resolving a frequency to policy min/max
+Date: Tue, 27 Feb 2024 14:43:51 +0530
+Message-ID: <20240227091351.1144757-1-quic_kshivnan@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,142 +77,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpeml500021.china.huawei.com (7.185.36.21)
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: ePEAwZl82dk9kvHeNAIxGCDV8ak971nS
+X-Proofpoint-GUID: ePEAwZl82dk9kvHeNAIxGCDV8ak971nS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-26_11,2024-02-26_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
+ lowpriorityscore=0 malwarescore=0 spamscore=0 adultscore=0
+ priorityscore=1501 bulkscore=0 clxscore=1011 suspectscore=0
+ mlxlogscore=999 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2402120000 definitions=main-2402270072
 
-We can trigger a slab-out-of-bounds with the following commands:
+Resolving a frequency to an efficient one should not transgress policy->max
+(which can be set for thermal reason) and policy->min. Currently there is
+possibility where scaling_cur_freq can exceed scaling_max_freq when
+scaling_max_freq is inefficient frequency. Add additional check to ensure
+that resolving a frequency will respect policy->min/max.
 
-    mkfs.ext4 -F /dev/$disk 10G
-    mount /dev/$disk /tmp/test
-    echo 2147483647 > /sys/fs/ext4/$disk/mb_group_prealloc
-    echo test > /tmp/test/file && sync
+Cc: <stable@vger.kernel.org>
+Fixes: 1f39fa0dccff ("cpufreq: Introducing CPUFREQ_RELATION_E")
+Signed-off-by: Shivnandan Kumar <quic_kshivnan@quicinc.com>
+--
 
-==================================================================
-BUG: KASAN: slab-out-of-bounds in ext4_mb_find_good_group_avg_frag_lists+0x8a/0x200 [ext4]
-Read of size 8 at addr ffff888121b9d0f0 by task kworker/u2:0/11
-CPU: 0 PID: 11 Comm: kworker/u2:0 Tainted: GL 6.7.0-next-20240118 #521
-Call Trace:
- dump_stack_lvl+0x2c/0x50
- kasan_report+0xb6/0xf0
- ext4_mb_find_good_group_avg_frag_lists+0x8a/0x200 [ext4]
- ext4_mb_regular_allocator+0x19e9/0x2370 [ext4]
- ext4_mb_new_blocks+0x88a/0x1370 [ext4]
- ext4_ext_map_blocks+0x14f7/0x2390 [ext4]
- ext4_map_blocks+0x569/0xea0 [ext4]
- ext4_do_writepages+0x10f6/0x1bc0 [ext4]
-[...]
-==================================================================
+Changes in v2:
+-rename function name from cpufreq_table_index_is_in_limits to cpufreq_is_in_limits
+-remove redundant outer parenthesis in return statement
+-Make comment single line
 
-The flow of issue triggering is as follows:
-
-// Set s_mb_group_prealloc to 2147483647 via sysfs
-ext4_mb_new_blocks
-  ext4_mb_normalize_request
-    ext4_mb_normalize_group_request
-      ac->ac_g_ex.fe_len = EXT4_SB(sb)->s_mb_group_prealloc
-  ext4_mb_regular_allocator
-    ext4_mb_choose_next_group
-      ext4_mb_choose_next_group_best_avail
-        mb_avg_fragment_size_order
-          order = fls(len) - 2 = 29
-        ext4_mb_find_good_group_avg_frag_lists
-          frag_list = &sbi->s_mb_avg_fragment_size[order]
-          if (list_empty(frag_list)) // Trigger SOOB!
-
-At 4k block size, the length of the s_mb_avg_fragment_size list is 14,
-but an oversized s_mb_group_prealloc is set, causing slab-out-of-bounds
-to be triggered by an attempt to access an element at index 29.
-
-Add a new attr_id attr_clusters_in_group with values in the range
-[0, sbi->s_clusters_per_group] and declare mb_group_prealloc as
-that type to fix the issue. In addition avoid returning an order
-from mb_avg_fragment_size_order() greater than MB_NUM_ORDERS(sb)
-and reduce some useless loops.
-
-Fixes: 7e170922f06b ("ext4: Add allocation criteria 1.5 (CR1_5)")
-CC: stable@vger.kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
+--
 ---
- fs/ext4/mballoc.c |  6 ++++++
- fs/ext4/sysfs.c   | 13 ++++++++++++-
- 2 files changed, 18 insertions(+), 1 deletion(-)
+ include/linux/cpufreq.h | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 85a91a61b761..7ad089df2408 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -831,6 +831,8 @@ static int mb_avg_fragment_size_order(struct super_block *sb, ext4_grpblk_t len)
- 		return 0;
- 	if (order == MB_NUM_ORDERS(sb))
- 		order--;
-+	if (WARN_ON_ONCE(order > MB_NUM_ORDERS(sb)))
-+		order = MB_NUM_ORDERS(sb) - 1;
- 	return order;
+diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
+index afda5f24d3dd..7741244dee6e 100644
+--- a/include/linux/cpufreq.h
++++ b/include/linux/cpufreq.h
+@@ -1021,6 +1021,19 @@ static inline int cpufreq_table_find_index_c(struct cpufreq_policy *policy,
+ 						   efficiencies);
  }
  
-@@ -1057,6 +1059,10 @@ static void ext4_mb_choose_next_group_best_avail(struct ext4_allocation_context
- 			ac->ac_flags |= EXT4_MB_CR_BEST_AVAIL_LEN_OPTIMIZED;
- 			return;
- 		}
++static inline bool cpufreq_is_in_limits(struct cpufreq_policy *policy,
++						    int idx)
++{
++	unsigned int freq;
 +
-+		/* Skip some unnecessary loops. */
-+		if (unlikely(i > MB_NUM_ORDERS(ac->ac_sb)))
-+			i = MB_NUM_ORDERS(ac->ac_sb);
++	if (idx < 0)
++		return false;
++
++	freq = policy->freq_table[idx].frequency;
++
++	return freq == clamp_val(freq, policy->min, policy->max);
++}
++
+ static inline int cpufreq_frequency_table_target(struct cpufreq_policy *policy,
+ 						 unsigned int target_freq,
+ 						 unsigned int relation)
+@@ -1054,7 +1067,8 @@ static inline int cpufreq_frequency_table_target(struct cpufreq_policy *policy,
+ 		return 0;
  	}
  
- 	/* Reset goal length to original goal length before falling into CR_GOAL_LEN_SLOW */
-diff --git a/fs/ext4/sysfs.c b/fs/ext4/sysfs.c
-index 7f455b5f22c0..ddd71673176c 100644
---- a/fs/ext4/sysfs.c
-+++ b/fs/ext4/sysfs.c
-@@ -29,6 +29,7 @@ typedef enum {
- 	attr_trigger_test_error,
- 	attr_first_error_time,
- 	attr_last_error_time,
-+	attr_clusters_in_group,
- 	attr_feature,
- 	attr_pointer_ui,
- 	attr_pointer_ul,
-@@ -207,13 +208,14 @@ EXT4_ATTR_FUNC(sra_exceeded_retry_limit, 0444);
- 
- EXT4_ATTR_OFFSET(inode_readahead_blks, 0644, inode_readahead,
- 		 ext4_sb_info, s_inode_readahead_blks);
-+EXT4_ATTR_OFFSET(mb_group_prealloc, 0644, clusters_in_group,
-+		 ext4_sb_info, s_mb_group_prealloc);
- EXT4_RW_ATTR_SBI_UI(inode_goal, s_inode_goal);
- EXT4_RW_ATTR_SBI_UI(mb_stats, s_mb_stats);
- EXT4_RW_ATTR_SBI_UI(mb_max_to_scan, s_mb_max_to_scan);
- EXT4_RW_ATTR_SBI_UI(mb_min_to_scan, s_mb_min_to_scan);
- EXT4_RW_ATTR_SBI_UI(mb_order2_req, s_mb_order2_reqs);
- EXT4_RW_ATTR_SBI_UI(mb_stream_req, s_mb_stream_request);
--EXT4_RW_ATTR_SBI_UI(mb_group_prealloc, s_mb_group_prealloc);
- EXT4_RW_ATTR_SBI_UI(mb_max_linear_groups, s_mb_max_linear_groups);
- EXT4_RW_ATTR_SBI_UI(extent_max_zeroout_kb, s_extent_max_zeroout_kb);
- EXT4_ATTR(trigger_fs_error, 0200, trigger_test_error);
-@@ -376,6 +378,7 @@ static ssize_t ext4_generic_attr_show(struct ext4_attr *a,
- 
- 	switch (a->attr_id) {
- 	case attr_inode_readahead:
-+	case attr_clusters_in_group:
- 	case attr_pointer_ui:
- 		if (a->attr_ptr == ptr_ext4_super_block_offset)
- 			return sysfs_emit(buf, "%u\n", le32_to_cpup(ptr));
-@@ -455,6 +458,14 @@ static ssize_t ext4_generic_attr_store(struct ext4_attr *a,
- 		else
- 			*((unsigned int *) ptr) = t;
- 		return len;
-+	case attr_clusters_in_group:
-+		ret = kstrtouint(skip_spaces(buf), 0, &t);
-+		if (ret)
-+			return ret;
-+		if (t > sbi->s_clusters_per_group)
-+			return -EINVAL;
-+		*((unsigned int *) ptr) = t;
-+		return len;
- 	case attr_pointer_ul:
- 		ret = kstrtoul(skip_spaces(buf), 0, &lt);
- 		if (ret)
+-	if (idx < 0 && efficiencies) {
++	/* Limit frequency index to honor policy->min/max */
++	if (!cpufreq_is_in_limits(policy, idx) && efficiencies) {
+ 		efficiencies = false;
+ 		goto retry;
+ 	}
 -- 
-2.31.1
+2.25.1
 
 
