@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36D69869667
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:11:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D0C4869795
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:22:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6613293FF9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:11:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE2D71C23718
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B7DC14037E;
-	Tue, 27 Feb 2024 14:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E0B13EFE9;
+	Tue, 27 Feb 2024 14:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TQXdsALh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sjOQucGj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C9616423;
-	Tue, 27 Feb 2024 14:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB75E13B2B4;
+	Tue, 27 Feb 2024 14:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043080; cv=none; b=uN0atJF5lrKfY9TNkrcxI9KF57EHkvCW6vM3882VSBao3F/JZSRKt3pjtglkz2NBFptizZKVr+lCegPmUI/ph0+6LYJhHWPC+VPU4lMtoJaul8/B0KuI8arBuW+YRZscJ7oBkrGDknoRVBXyJkGErjt/EeKDvTPTdwB2CC5f2c8=
+	t=1709043768; cv=none; b=h5uL7auxOZuH8dWpkh2cT399YaeDTrFdBsdQEjTUgGLoVhpFKuqaQgUqg4J9DOu8aSZQLqpkYMWm+WuaPw/NdaBxP+f6RMrbfNDNPgnaKnd616utbGHQvleGlOVt7nvBgjkfIyaYlBS92LHXDBWL2W/t0tiPKB3aSZFJQtaIXJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043080; c=relaxed/simple;
-	bh=ggk2P4eQjzbFxDdiaq271//XlFq/sqpCHkmNaCSpwTs=;
+	s=arc-20240116; t=1709043768; c=relaxed/simple;
+	bh=Vy4bz89GiJK5LHjx2nSctwct9Ond9jsHG4/n46BlzL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FQl5m6GGPTu2jXQnnG2MSNZtoFt/vawUp3QHMzgeKbgV6fqlp2Jc41T+DAkIcWtNV5phvx+Qd5EgyFVWYCiKSg9ttnu8pFc+QzZdVElud1kNvLDypFBJ1ujHyAFT7FuJOjgcwN5uOrltsIkSX8UisbnKUZxsJoP47r2crhDL6ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TQXdsALh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AEF7C433F1;
-	Tue, 27 Feb 2024 14:11:19 +0000 (UTC)
+	 MIME-Version; b=rjv/Qka2deTIn36L9I2lzynvpDE5yvdbZ+NW7AyeNvTZQ3RPDxipbX8P0mN+QF9kHzGAKPmBdB2ss7yY+y/DM4makaKylDaVmY6ELcz5k+FvAokW5uh+QETyvvt/wiHmmQnTguQuxMSpsQPL0oHXIX1D4FeQRXSPscotauf0ySI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sjOQucGj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F263C43390;
+	Tue, 27 Feb 2024 14:22:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043080;
-	bh=ggk2P4eQjzbFxDdiaq271//XlFq/sqpCHkmNaCSpwTs=;
+	s=korg; t=1709043768;
+	bh=Vy4bz89GiJK5LHjx2nSctwct9Ond9jsHG4/n46BlzL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TQXdsALh2EJnTTSTO1tIxl5miv+kMpComf90oDv8wPaXrxboU6wLR6avL315f+e19
-	 IBcg5Lo3QtPORekLKsLT8hYV6mf7mLBhLdydLbRyyv8AvQZTxr20QCnts6J+8S6TfU
-	 oWT+DGnPUlWEwXpnbeJHNQpBkjCWrmoUbq01up5M=
+	b=sjOQucGjF++XCyyIKSXh/tbX2r0Q7Lbxq0bGV+dKsjvxd5Q3U/3NBRkZcwsHJR3Ct
+	 LkwVo95XaJgGzFVjb4XTpn7mAkGrP8BZcwcsIVFHCMs+PKQ/HYwDmsrov/jBTd22qu
+	 vHmtglOuFoRlKNalEBgsAz12IZ5RfZP9fOFjF3fQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Daniel Wagner <dwagner@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 227/245] s390: use the correct count for __iowrite64_copy()
-Date: Tue, 27 Feb 2024 14:26:55 +0100
-Message-ID: <20240227131622.563852824@linuxfoundation.org>
+Subject: [PATCH 5.4 29/84] scsi: lpfc: Use unsigned type for num_sge
+Date: Tue, 27 Feb 2024 14:26:56 +0100
+Message-ID: <20240227131553.813731040@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Hannes Reinecke <hare@suse.de>
 
-[ Upstream commit 723a2cc8d69d4342b47dfddbfe6c19f1b135f09b ]
+[ Upstream commit d6c1b19153f92e95e5e1801d540e98771053afae ]
 
-The signature for __iowrite64_copy() requires the number of 64 bit
-quantities, not bytes. Multiple by 8 to get to a byte length before
-invoking zpci_memcpy_toio()
+LUNs going into "failed ready running" state observed on >1T and on even
+numbers of size (2T, 4T, 6T, 8T and 10T). The issue occurs when DIF is
+enabled at the host.
 
-Fixes: 87bc359b9822 ("s390/pci: speed up __iowrite64_copy by using pci store block insn")
-Acked-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/0-v1-9223d11a7662+1d7785-s390_iowrite64_jgg@nvidia.com
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+The kernel logs:
+
+  Cannot setup S/G List for HBAIO segs 1/1 SGL 512 SCSI 256: 3 0
+
+The host lpfc driver is failing to setup scatter/gather list (protection
+data) for the I/Os.
+
+The return type lpfc_bg_setup_sgl()/lpfc_bg_setup_sgl_prot() causes the
+compiler to remove the most significant bit. Use an unsigned type instead.
+
+Signed-off-by: Hannes Reinecke <hare@suse.de>
+[dwagner: added commit message]
+Signed-off-by: Daniel Wagner <dwagner@suse.de>
+Link: https://lore.kernel.org/r/20231220162658.12392-1-dwagner@suse.de
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/pci/pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/lpfc/lpfc_scsi.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
-index 56c4cecdbbf9e..8764f0ae6d345 100644
---- a/arch/s390/pci/pci.c
-+++ b/arch/s390/pci/pci.c
-@@ -228,7 +228,7 @@ resource_size_t pcibios_align_resource(void *data, const struct resource *res,
- /* combine single writes by using store-block insn */
- void __iowrite64_copy(void __iomem *to, const void *from, size_t count)
- {
--       zpci_memcpy_toio(to, from, count);
-+	zpci_memcpy_toio(to, from, count * 8);
- }
+diff --git a/drivers/scsi/lpfc/lpfc_scsi.c b/drivers/scsi/lpfc/lpfc_scsi.c
+index cbab15d299ca2..816235ccd2992 100644
+--- a/drivers/scsi/lpfc/lpfc_scsi.c
++++ b/drivers/scsi/lpfc/lpfc_scsi.c
+@@ -1942,7 +1942,7 @@ lpfc_bg_setup_bpl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
+  *
+  * Returns the number of SGEs added to the SGL.
+  **/
+-static int
++static uint32_t
+ lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
+ 		struct sli4_sge *sgl, int datasegcnt,
+ 		struct lpfc_io_buf *lpfc_cmd)
+@@ -1950,8 +1950,8 @@ lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
+ 	struct scatterlist *sgde = NULL; /* s/g data entry */
+ 	struct sli4_sge_diseed *diseed = NULL;
+ 	dma_addr_t physaddr;
+-	int i = 0, num_sge = 0, status;
+-	uint32_t reftag;
++	int i = 0, status;
++	uint32_t reftag, num_sge = 0;
+ 	uint8_t txop, rxop;
+ #ifdef CONFIG_SCSI_LPFC_DEBUG_FS
+ 	uint32_t rc;
+@@ -2122,7 +2122,7 @@ lpfc_bg_setup_sgl(struct lpfc_hba *phba, struct scsi_cmnd *sc,
+  *
+  * Returns the number of SGEs added to the SGL.
+  **/
+-static int
++static uint32_t
+ lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
+ 		struct sli4_sge *sgl, int datacnt, int protcnt,
+ 		struct lpfc_io_buf *lpfc_cmd)
+@@ -2146,8 +2146,8 @@ lpfc_bg_setup_sgl_prot(struct lpfc_hba *phba, struct scsi_cmnd *sc,
+ 	uint32_t rc;
+ #endif
+ 	uint32_t checking = 1;
+-	uint32_t dma_offset = 0;
+-	int num_sge = 0, j = 2;
++	uint32_t dma_offset = 0, num_sge = 0;
++	int j = 2;
+ 	struct sli4_hybrid_sgl *sgl_xtra = NULL;
  
- static void __iomem *__ioremap(phys_addr_t addr, size_t size, pgprot_t prot)
+ 	sgpe = scsi_prot_sglist(sc);
 -- 
 2.43.0
 
