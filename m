@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-24734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECB48869608
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EFE486950E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:58:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A66AD28A4F2
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 572E828F360
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAFDC1420D3;
-	Tue, 27 Feb 2024 14:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC3EC1419BF;
+	Tue, 27 Feb 2024 13:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pRIuT5Dm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qfa5og2v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712FD13F016;
-	Tue, 27 Feb 2024 14:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95AC513F01E;
+	Tue, 27 Feb 2024 13:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042842; cv=none; b=Xrt3wcUWSQOaQcKc4Ec7WxsXrRHdBQ9SosueM62A3EoaFsd7wwpoX+UkaN+4tdqj/lVq2pzpr3WQRHBzS/MQ9ruF19YW38mD1dM8wcVDV/Md95wYkZ5bfPpuOyuYf+ITtp7t0mr3krX6IIBCkGY1KvnXymZzZdYDex//UVUtCO8=
+	t=1709042292; cv=none; b=gafEgd5+Jj6Z9jExr7CDbLRm7NsUNeoOu+QK28iI4WNqpToAvG95QH0dN4FmD3DrUfJNXu6T72DXSaQc4pVM7FGqIKjHCcEw8zQjZUQXbgO0IRcHPHkpqaHQuakHjCrWtzNaqq5WooIkNEZK9YRdZ5KZvneTeR2X5eu2buXx1NY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042842; c=relaxed/simple;
-	bh=YToi3ooYWjVo/t4aynsi5qX9ZMilkcNgGThLqf0XeCU=;
+	s=arc-20240116; t=1709042292; c=relaxed/simple;
+	bh=TR5UBfZ1d9BzfCK13J9WxvEBJk6FsvR7wpT76d766Og=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gX3vjOe5TXxRQNmSnO+bG/tDUSROyKviX7ExAatIBJJ18rGwf7wchy2fLMNmDfoLwI3ymVvammx/P7IycM3mNEz3YBSdFrL7RJDULIOxAFnudnbjEVTSYAARC0UU3F2YpTAewXXXfdWMPNkjqcgMa2GygmtqFwwb8YfGUuxI5x0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pRIuT5Dm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C56C433F1;
-	Tue, 27 Feb 2024 14:07:21 +0000 (UTC)
+	 MIME-Version; b=f+XjMpieq1vRQiCpCZHCmqA/VLPpK5PJyi4kNGF+GajEA/MU3weeg6YevkdSfqCeLBKZjcMf88woDXujIeBSwbudh+6KnNQYn5mXl69UdZFoEO11D5u3HCOnQSG1lxQdTlcA6UeG4ki7bbnefXfrnDhHGXsEPixT9S9XxbvEg3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qfa5og2v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8FF7C433C7;
+	Tue, 27 Feb 2024 13:58:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042842;
-	bh=YToi3ooYWjVo/t4aynsi5qX9ZMilkcNgGThLqf0XeCU=;
+	s=korg; t=1709042292;
+	bh=TR5UBfZ1d9BzfCK13J9WxvEBJk6FsvR7wpT76d766Og=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pRIuT5Dmem97nODtZsSlDia7vcQwe4hFlRKFF+EwDoUtkWeXs/SXf+BD2qhzrjoLx
-	 D8RcFqhmEbzP4S99sNVioT982Iknzz4qUXVWN+LzAvbZW+xa4elnCtRwSO0Dg+0bJV
-	 I3B5QdkVmhAJjcQJZ3a2kMwYrEpf2orY0Jqe6mR0=
+	b=Qfa5og2vjszrtN3c7JM95pxz2x1hZBXF6h8W/izs8AR+YH6xEHOLYZXrrzKzdjlhS
+	 ZPqgDcOA1xyS8hlD3dA+UIpkRA3g09gq/Y7GCzK1eTqVTW3HaHoCkekDthNJBB3mpf
+	 P/1Aoba4zV1ESgIFApkJoaTfNL153acmIJHZHTaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Zhang <yifan1.zhang@amd.com>,
-	James Zhu <James.Zhu@amd.com>,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Shiraz Saleem <shiraz.saleem@intel.com>,
+	Sindhu Devale <sindhu.devale@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 140/245] drm/amdgpu: init iommu after amdkfd device init
+Subject: [PATCH 6.6 217/299] RDMA/irdma: Validate max_send_wr and max_recv_wr
 Date: Tue, 27 Feb 2024 14:25:28 +0100
-Message-ID: <20240227131619.758142249@linuxfoundation.org>
+Message-ID: <20240227131632.759993027@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yifan Zhang <yifan1.zhang@amd.com>
+From: Shiraz Saleem <shiraz.saleem@intel.com>
 
-[ Upstream commit 286826d7d976e7646b09149d9bc2899d74ff962b ]
+[ Upstream commit ee107186bcfd25d7873258f3f75440e20f5e6416 ]
 
-This patch is to fix clinfo failure in Raven/Picasso:
+Validate that max_send_wr and max_recv_wr is within the
+supported range.
 
-Number of platforms: 1
-  Platform Profile: FULL_PROFILE
-  Platform Version: OpenCL 2.2 AMD-APP (3364.0)
-  Platform Name: AMD Accelerated Parallel Processing
-  Platform Vendor: Advanced Micro Devices, Inc.
-  Platform Extensions: cl_khr_icd cl_amd_event_callback
-
-  Platform Name: AMD Accelerated Parallel Processing Number of devices: 0
-
-Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
-Reviewed-by: James Zhu <James.Zhu@amd.com>
-Tested-by: James Zhu <James.Zhu@amd.com>
-Acked-by: Felix Kuehling <Felix.Kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
+Change-Id: I2fc8b10292b641fddd20b36986a9dae90a93f4be
+Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
+Signed-off-by: Sindhu Devale <sindhu.devale@intel.com>
+Link: https://lore.kernel.org/r/20240131233849.400285-3-sindhu.devale@intel.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/infiniband/hw/irdma/verbs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 5f6c32ec674d3..222a1d9ecf163 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -2487,10 +2487,6 @@ static int amdgpu_device_ip_init(struct amdgpu_device *adev)
- 	if (r)
- 		goto init_failed;
+diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
+index 2f1bedd3a5201..d9750901c5990 100644
+--- a/drivers/infiniband/hw/irdma/verbs.c
++++ b/drivers/infiniband/hw/irdma/verbs.c
+@@ -839,7 +839,9 @@ static int irdma_validate_qp_attrs(struct ib_qp_init_attr *init_attr,
  
--	r = amdgpu_amdkfd_resume_iommu(adev);
--	if (r)
--		goto init_failed;
--
- 	r = amdgpu_device_ip_hw_init_phase1(adev);
- 	if (r)
- 		goto init_failed;
-@@ -2529,6 +2525,10 @@ static int amdgpu_device_ip_init(struct amdgpu_device *adev)
- 	if (!adev->gmc.xgmi.pending_reset)
- 		amdgpu_amdkfd_device_init(adev);
+ 	if (init_attr->cap.max_inline_data > uk_attrs->max_hw_inline ||
+ 	    init_attr->cap.max_send_sge > uk_attrs->max_hw_wq_frags ||
+-	    init_attr->cap.max_recv_sge > uk_attrs->max_hw_wq_frags)
++	    init_attr->cap.max_recv_sge > uk_attrs->max_hw_wq_frags ||
++	    init_attr->cap.max_send_wr > uk_attrs->max_hw_wq_quanta ||
++	    init_attr->cap.max_recv_wr > uk_attrs->max_hw_rq_quanta)
+ 		return -EINVAL;
  
-+	r = amdgpu_amdkfd_resume_iommu(adev);
-+	if (r)
-+		goto init_failed;
-+
- 	amdgpu_fru_get_product_info(adev);
- 
- init_failed:
+ 	if (rdma_protocol_roce(&iwdev->ibdev, 1)) {
 -- 
 2.43.0
 
