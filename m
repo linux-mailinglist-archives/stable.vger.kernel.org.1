@@ -1,187 +1,122 @@
-Return-Path: <stable+bounces-23899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1288D86912A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:00:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4014C86911E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:59:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21F2B1C27B40
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:00:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED6A22827EE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 12:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD65D13AA41;
-	Tue, 27 Feb 2024 13:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HJWrhEMK"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C88F13AA20;
+	Tue, 27 Feb 2024 12:59:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA5C1E867
-	for <stable@vger.kernel.org>; Tue, 27 Feb 2024 13:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7E41EA7A
+	for <stable@vger.kernel.org>; Tue, 27 Feb 2024 12:59:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709038835; cv=none; b=amjc01eVmMgSjVIQKN6/dYdLdgki26SLSNpqmp6J8rOXO1n7IEIVgL0jNslxKbkj13TApY6mq/d0c9AU0X3A4W3Ir4Ia6KxKcqUxlF8tIHCMgo+fUfOVoEzLoZKAl8BFJRD/WoKqKeOVhWgf3M7yYJbsoSTcYAwS7TeBJ27y7QM=
+	t=1709038749; cv=none; b=cbNHiNq/9XeenQ1tW4Z/Eiix2VoYj1HSUaW5JQ3yiIqikWNRtDnriCRD/MJ76vAuU2OqnPoOGITaOAGOVLdQgz9rBuzxqxcZ1Nm/FiRMKffu19ftQp0S7gtYeiT19BPoyooPm1p9Tg76RsU1k2ufjE2ssGAITeg2EAuR30RUMKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709038835; c=relaxed/simple;
-	bh=InPb4GJC8ClQ649FDHoqEslycbmrsyJNAyV//oMEu2Q=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=M4RRpcjNw0aFCMaqVgge+eDMlWQpJx4Cp3MPyeUp0ElbtHM0H1nKlcUMXDI6UmIjXVc8RctQ1g0uoykWQYPDpgP8k3zEtdjqdYrOlr6BNuaiTehMQwQk1QG9yQz43LG9jNaDsv8wNyxMucPsWZlv48YL0y6dnL0XMx8Lfyyskis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HJWrhEMK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FFA7C433F1;
-	Tue, 27 Feb 2024 13:00:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709038834;
-	bh=InPb4GJC8ClQ649FDHoqEslycbmrsyJNAyV//oMEu2Q=;
-	h=Subject:To:Cc:From:Date:From;
-	b=HJWrhEMKvRlZL/m1+MGlis9PKzaxRUA+ESqW99iXKRN0Fp43Q3qqVcaJIYBFcfCHq
-	 g4z1mFiKn1/t1pLb+UAOjDF++Ltw1H4+pnx3xNQ02vAKCHABgQ7HsRq4KPulXmlQH7
-	 JchDzO+XY4ABlxZ4xDozL+ulycbk8B7Tv42NXHlA=
-Subject: FAILED: patch "[PATCH] mptcp: add needs_id for netlink appending addr" failed to apply to 5.15-stable tree
-To: tanggeliang@kylinos.cn,davem@davemloft.net,martineau@kernel.org,matttbe@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 27 Feb 2024 14:00:32 +0100
-Message-ID: <2024022732-wrought-cardiac-a27a@gregkh>
+	s=arc-20240116; t=1709038749; c=relaxed/simple;
+	bh=r/bVphFLDwABC8qoKKKIMN1y3SC7uALCjhdKLB34bWM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GDbP8BiswoMp9PgJvHQsfsN54UcDFe1lPoRJmAqLiyUILmEF9PsFahKmyfDhpUHriW9DufD1Zb98hIcNfS638lEw9dsuhve1/LlbBHDJ7o5tuBY6MU6PQSpBJYxxqiX8debImHpTIvLNK4uENO0OViJqTO7F3hOgD6XwmRey2Uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Tkcv65DWhz2Bdf1;
+	Tue, 27 Feb 2024 20:56:50 +0800 (CST)
+Received: from dggpeml500021.china.huawei.com (unknown [7.185.36.21])
+	by mail.maildlp.com (Postfix) with ESMTPS id ED9531A016B;
+	Tue, 27 Feb 2024 20:59:04 +0800 (CST)
+Received: from huawei.com (10.175.127.227) by dggpeml500021.china.huawei.com
+ (7.185.36.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 27 Feb
+ 2024 20:59:04 +0800
+From: Baokun Li <libaokun1@huawei.com>
+To: <stable@vger.kernel.org>
+CC: <gregkh@linuxfoundation.org>, <sashal@kernel.org>, <tytso@mit.edu>,
+	<jack@suse.cz>, <patches@lists.linux.dev>, <yi.zhang@huawei.com>,
+	<yangerkun@huawei.com>, <libaokun1@huawei.com>
+Subject: [PATCH 5.15 1/2] ext4: regenerate buddy after block freeing failed if under fc replay
+Date: Tue, 27 Feb 2024 21:00:49 +0800
+Message-ID: <20240227130050.805571-1-libaokun1@huawei.com>
+X-Mailer: git-send-email 2.31.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpeml500021.china.huawei.com (7.185.36.21)
 
+commit c9b528c35795b711331ed36dc3dbee90d5812d4e upstream.
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+This mostly reverts commit 6bd97bf273bd ("ext4: remove redundant
+mb_regenerate_buddy()") and reintroduces mb_regenerate_buddy(). Based on
+code in mb_free_blocks(), fast commit replay can end up marking as free
+blocks that are already marked as such. This causes corruption of the
+buddy bitmap so we need to regenerate it in that case.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Reported-by: Jan Kara <jack@suse.cz>
+Fixes: 6bd97bf273bd ("ext4: remove redundant mb_regenerate_buddy()")
+CVE: CVE-2024-26601
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240104142040.2835097-4-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+---
+ fs/ext4/mballoc.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 584f3894262634596532cf43a5e782e34a0ce374
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024022732-wrought-cardiac-a27a@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
-
-Possible dependencies:
-
-584f38942626 ("mptcp: add needs_id for netlink appending addr")
-aab4d8564947 ("net: mptcp: use policy generated by YAML spec")
-1e07938e29c5 ("net: mptcp: rename netlink handlers to mptcp_pm_nl_<blah>_{doit,dumpit}")
-1d0507f46843 ("net: mptcp: convert netlink from small_ops to ops")
-740ebe35bd3f ("mptcp: add struct mptcp_sched_ops")
-6ba7ce89905c ("mptcp: unify pm set_flags interfaces")
-a963853fd465 ("mptcp: use net instead of sock_net")
-dfc8d0603033 ("mptcp: implement delayed seq generation for passive fastopen")
-d15697185404 ("mptcp: allow privileged operations from user namespaces")
-9c5d03d36251 ("genetlink: start to validate reserved header bytes")
-02739545951a ("net: Fix data-races around sysctl_[rw]mem(_offset)?.")
-892f396c8e68 ("mptcp: netlink: issue MP_PRIO signals from userspace PMs")
-a657430260e5 ("mptcp: Acquire the subflow socket lock before modifying MP_PRIO flags")
-c21b50d5912b ("mptcp: Avoid acquiring PM lock for subflow priority changes")
-6f664045c868 ("Merge tag 'mm-nonmm-stable-2022-05-26' of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 584f3894262634596532cf43a5e782e34a0ce374 Mon Sep 17 00:00:00 2001
-From: Geliang Tang <tanggeliang@kylinos.cn>
-Date: Thu, 15 Feb 2024 19:25:29 +0100
-Subject: [PATCH] mptcp: add needs_id for netlink appending addr
-
-Just the same as userspace PM, a new parameter needs_id is added for
-in-kernel PM mptcp_pm_nl_append_new_local_addr() too.
-
-Add a new helper mptcp_pm_has_addr_attr_id() to check whether an address
-ID is set from PM or not.
-
-In mptcp_pm_nl_get_local_id(), needs_id is always true, but in
-mptcp_pm_nl_add_addr_doit(), pass mptcp_pm_has_addr_attr_id() to
-needs_it.
-
-Fixes: efd5a4c04e18 ("mptcp: add the address ID assignment bitmap")
-Cc: stable@vger.kernel.org
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 287a60381eae..a24c9128dee9 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -901,7 +901,8 @@ static void __mptcp_pm_release_addr_entry(struct mptcp_pm_addr_entry *entry)
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 762c2f8b5b2a..63e4c3b9e608 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -1168,6 +1168,24 @@ void ext4_mb_generate_buddy(struct super_block *sb,
+ 	mb_update_avg_fragment_size(sb, grp);
  }
  
- static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
--					     struct mptcp_pm_addr_entry *entry)
-+					     struct mptcp_pm_addr_entry *entry,
-+					     bool needs_id)
- {
- 	struct mptcp_pm_addr_entry *cur, *del_entry = NULL;
- 	unsigned int addr_max;
-@@ -949,7 +950,7 @@ static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
- 		}
- 	}
- 
--	if (!entry->addr.id) {
-+	if (!entry->addr.id && needs_id) {
- find_next:
- 		entry->addr.id = find_next_zero_bit(pernet->id_bitmap,
- 						    MPTCP_PM_MAX_ADDR_ID + 1,
-@@ -960,7 +961,7 @@ static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
- 		}
- 	}
- 
--	if (!entry->addr.id)
-+	if (!entry->addr.id && needs_id)
- 		goto out;
- 
- 	__set_bit(entry->addr.id, pernet->id_bitmap);
-@@ -1092,7 +1093,7 @@ int mptcp_pm_nl_get_local_id(struct mptcp_sock *msk, struct mptcp_addr_info *skc
- 	entry->ifindex = 0;
- 	entry->flags = MPTCP_PM_ADDR_FLAG_IMPLICIT;
- 	entry->lsk = NULL;
--	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry);
-+	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry, true);
- 	if (ret < 0)
- 		kfree(entry);
- 
-@@ -1285,6 +1286,18 @@ static int mptcp_nl_add_subflow_or_signal_addr(struct net *net)
- 	return 0;
- }
- 
-+static bool mptcp_pm_has_addr_attr_id(const struct nlattr *attr,
-+				      struct genl_info *info)
++static void mb_regenerate_buddy(struct ext4_buddy *e4b)
 +{
-+	struct nlattr *tb[MPTCP_PM_ADDR_ATTR_MAX + 1];
++	int count;
++	int order = 1;
++	void *buddy;
 +
-+	if (!nla_parse_nested_deprecated(tb, MPTCP_PM_ADDR_ATTR_MAX, attr,
-+					 mptcp_pm_address_nl_policy, info->extack) &&
-+	    tb[MPTCP_PM_ADDR_ATTR_ID])
-+		return true;
-+	return false;
++	while ((buddy = mb_find_buddy(e4b, order++, &count)))
++		ext4_set_bits(buddy, 0, count);
++
++	e4b->bd_info->bb_fragments = 0;
++	memset(e4b->bd_info->bb_counters, 0,
++		sizeof(*e4b->bd_info->bb_counters) *
++		(e4b->bd_sb->s_blocksize_bits + 2));
++
++	ext4_mb_generate_buddy(e4b->bd_sb, e4b->bd_buddy,
++		e4b->bd_bitmap, e4b->bd_group, e4b->bd_info);
 +}
 +
- int mptcp_pm_nl_add_addr_doit(struct sk_buff *skb, struct genl_info *info)
- {
- 	struct nlattr *attr = info->attrs[MPTCP_PM_ENDPOINT_ADDR];
-@@ -1326,7 +1339,8 @@ int mptcp_pm_nl_add_addr_doit(struct sk_buff *skb, struct genl_info *info)
- 			goto out_free;
+ /* The buddy information is attached the buddy cache inode
+  * for convenience. The information regarding each group
+  * is loaded via ext4_mb_load_buddy. The information involve
+@@ -1846,6 +1864,8 @@ static void mb_free_blocks(struct inode *inode, struct ext4_buddy *e4b,
+ 			ext4_mark_group_bitmap_corrupted(
+ 				sb, e4b->bd_group,
+ 				EXT4_GROUP_INFO_BBITMAP_CORRUPT);
++		} else {
++			mb_regenerate_buddy(e4b);
  		}
+ 		goto done;
  	}
--	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry);
-+	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry,
-+						!mptcp_pm_has_addr_attr_id(attr, info));
- 	if (ret < 0) {
- 		GENL_SET_ERR_MSG_FMT(info, "too many addresses or duplicate one: %d", ret);
- 		goto out_free;
+-- 
+2.31.1
 
 
