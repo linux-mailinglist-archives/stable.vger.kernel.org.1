@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-25013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1674869752
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:20:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C1FA86984D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:31:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90FB51F2138C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:20:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DC011F21A2D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:31:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D22513EFF4;
-	Tue, 27 Feb 2024 14:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF8B314533A;
+	Tue, 27 Feb 2024 14:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LVgmmXnx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HyIL9fhg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ADE613B2B8;
-	Tue, 27 Feb 2024 14:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E301145323;
+	Tue, 27 Feb 2024 14:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043613; cv=none; b=IHCsS5J5wgXjpmrCW5NEMWKdjKdeUb/uZkXpeXGrWmvvgii3v5QzJPpxss88kp80GXLMgYFHcOhDAlC9pV71gVIV2napKWT1/0vLHP0HDAlvjbn0J7kOPq145CCyKr2TMZg53G7MX8dKnybwdsfKzQ+jekrtLgXxwcVzuw+HUmk=
+	t=1709044203; cv=none; b=R8CBlz5YQzo1dpXf/craLO0I4QQzcNldFSaF+CKUWAwdGCAm/k/IH7LLMXxbQVGPYaaIipMpyN8n+odNjgoJS8UurpIhDyymoLM2c84Koh1EuD3zgilWnioN73cWXaoxcS8A4jiKieg5gd7X2y0NfjpyFDRSuvRci7jMfXZjEec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043613; c=relaxed/simple;
-	bh=0I+Ngm3tPv2gPAC8bwNTwabUkEaSIUbl/16q7/PeTvY=;
+	s=arc-20240116; t=1709044203; c=relaxed/simple;
+	bh=s05xvGpT0Iqas6raAqx99dgiGEbf5QU8HFp9e/VCAno=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LGXL5sqRGZeB56/gZFUVX12rSxvgnDKozvbLHobf2W9SrAv6GJ4McJ4zvBW0sYwlHZu1BSyMH458P+x2b+r0PsenAgrwTsAjXbMjfpaQejxzQtJhRArCPTyEWVoajlzHadcQs3cGrPPjPWaFLj27t/5UB6JupjZ8F2LlouHbSwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LVgmmXnx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2A79C433F1;
-	Tue, 27 Feb 2024 14:20:12 +0000 (UTC)
+	 MIME-Version; b=kAVP3Uy0zjgJm/PG4GwAotXpDtBjGviCCKn4MsR2m6EiMsDCMXDgc0DnHKbrfGTmnxJIr72os1HxhaT4Hxn9cSsy1kbCbiGWOfHBUcbCaYmJh8tbcaNF+z2N4IsV9jjD0f6IMk48ZGwWiLv2p9U8j0k7CbAQK2PeAdd17EDVOV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HyIL9fhg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7FA4C433C7;
+	Tue, 27 Feb 2024 14:30:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043613;
-	bh=0I+Ngm3tPv2gPAC8bwNTwabUkEaSIUbl/16q7/PeTvY=;
+	s=korg; t=1709044203;
+	bh=s05xvGpT0Iqas6raAqx99dgiGEbf5QU8HFp9e/VCAno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LVgmmXnxX8AtBs/KVJQFvSeEZFBggl3illSjp221KyMN2M4LFt/ozrGMuAetNEZeS
-	 bwQeBjUHECCIXjjoAs/Zwk5o3QmChGF76rdHkdXkQ2aVmyVea5cTJgeYho6oIN23mF
-	 acbYL6g7INtiHgh+VD/QMpyQ/olwakBBlPw5EqJs=
+	b=HyIL9fhgWzPv8C3wMlXTcQxVCyCpjhg0gMX9Cl1QwPkajsH0NQXyKP5kCpgMPNF/b
+	 Y1T8i7+mv/QUhLq4eqBaVgacdF82Y0StH3rqPZVgdXBU/Hq0KcatdC2kzf7MqbaaBy
+	 56nQTfwsEODXvYVSAAFU2d7Dy9umfwvkeJtortqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 172/195] netfilter: nft_flow_offload: release dst in case direct xmit path is used
+	Jan Beulich <jbeulich@suse.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 5.10 072/122] x86: drop bogus "cc" clobber from __try_cmpxchg_user_asm()
 Date: Tue, 27 Feb 2024 14:27:13 +0100
-Message-ID: <20240227131616.086509134@linuxfoundation.org>
+Message-ID: <20240227131601.060295350@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Jan Beulich <jbeulich@suse.com>
 
-[ Upstream commit 8762785f459be1cfe6fcf7285c123aad6a3703f0 ]
+commit 1df931d95f4dc1c11db1123e85d4e08156e46ef9 upstream.
 
-Direct xmit does not use it since it calls dev_queue_xmit() to send
-packets, hence it calls dst_release().
+As noted (and fixed) a couple of times in the past, "=@cc<cond>" outputs
+and clobbering of "cc" don't work well together. The compiler appears to
+mean to reject such, but doesn't - in its upstream form - quite manage
+to yet for "cc". Furthermore two similar macros don't clobber "cc", and
+clobbering "cc" is pointless in asm()-s for x86 anyway - the compiler
+always assumes status flags to be clobbered there.
 
-kmemleak reports:
-
-unreferenced object 0xffff88814f440900 (size 184):
-  comm "softirq", pid 0, jiffies 4294951896
-  hex dump (first 32 bytes):
-    00 60 5b 04 81 88 ff ff 00 e6 e8 82 ff ff ff ff  .`[.............
-    21 0b 50 82 ff ff ff ff 00 00 00 00 00 00 00 00  !.P.............
-  backtrace (crc cb2bf5d6):
-    [<000000003ee17107>] kmem_cache_alloc+0x286/0x340
-    [<0000000021a5de2c>] dst_alloc+0x43/0xb0
-    [<00000000f0671159>] rt_dst_alloc+0x2e/0x190
-    [<00000000fe5092c9>] __mkroute_output+0x244/0x980
-    [<000000005fb96fb0>] ip_route_output_flow+0xc0/0x160
-    [<0000000045367433>] nf_ip_route+0xf/0x30
-    [<0000000085da1d8e>] nf_route+0x2d/0x60
-    [<00000000d1ecd1cb>] nft_flow_route+0x171/0x6a0 [nft_flow_offload]
-    [<00000000d9b2fb60>] nft_flow_offload_eval+0x4e8/0x700 [nft_flow_offload]
-    [<000000009f447dbb>] expr_call_ops_eval+0x53/0x330 [nf_tables]
-    [<00000000072e1be6>] nft_do_chain+0x17c/0x840 [nf_tables]
-    [<00000000d0551029>] nft_do_chain_inet+0xa1/0x210 [nf_tables]
-    [<0000000097c9d5c6>] nf_hook_slow+0x5b/0x160
-    [<0000000005eccab1>] ip_forward+0x8b6/0x9b0
-    [<00000000553a269b>] ip_rcv+0x221/0x230
-    [<00000000412872e5>] __netif_receive_skb_one_core+0xfe/0x110
-
-Fixes: fa502c865666 ("netfilter: flowtable: simplify route logic")
-Reported-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 989b5db215a2 ("x86/uaccess: Implement macros for CMPXCHG on user addresses")
+Signed-off-by: Jan Beulich <jbeulich@suse.com>
+Message-Id: <485c0c0b-a3a7-0b7c-5264-7d00c01de032@suse.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_flow_table_core.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/include/asm/uaccess.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_flow_table_core.c b/net/netfilter/nf_flow_table_core.c
-index 2036c7a27075b..99195cf6b2657 100644
---- a/net/netfilter/nf_flow_table_core.c
-+++ b/net/netfilter/nf_flow_table_core.c
-@@ -132,6 +132,7 @@ static int flow_offload_fill_route(struct flow_offload *flow,
- 		       ETH_ALEN);
- 		flow_tuple->out.ifidx = route->tuple[dir].out.ifindex;
- 		flow_tuple->out.hw_ifidx = route->tuple[dir].out.hw_ifindex;
-+		dst_release(dst);
- 		break;
- 	case FLOW_OFFLOAD_XMIT_XFRM:
- 	case FLOW_OFFLOAD_XMIT_NEIGH:
--- 
-2.43.0
-
+--- a/arch/x86/include/asm/uaccess.h
++++ b/arch/x86/include/asm/uaccess.h
+@@ -471,7 +471,7 @@ do {									\
+ 		       [ptr] "+m" (*_ptr),				\
+ 		       [old] "+a" (__old)				\
+ 		     : [new] ltype (__new)				\
+-		     : "memory", "cc");					\
++		     : "memory");					\
+ 	if (unlikely(__err))						\
+ 		goto label;						\
+ 	if (unlikely(!success))						\
 
 
 
