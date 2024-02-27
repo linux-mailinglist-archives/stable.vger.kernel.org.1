@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-24537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFFC286950D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:58:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1E15869606
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 767DA1F22FA7
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:58:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CFDB28F464
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7F813B7A0;
-	Tue, 27 Feb 2024 13:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 432341420C9;
+	Tue, 27 Feb 2024 14:07:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OrLngdB0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UCUHq+J0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02432140391;
-	Tue, 27 Feb 2024 13:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023B01420A0;
+	Tue, 27 Feb 2024 14:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042285; cv=none; b=nx4bOOUf0lm0YM7nq+I78GnZPPnpyEBEyR/LhxFz3X4EUzaQcvN41CH2bDdwxBhxoQ/aMvXZ3SU7sJmQddZ0HLO7DJy9V2FrASq8kl8sNBN31AjrbExqkeT1wMUfkT35rSC5U2XyIvFri/Ol+YhphWwo8l5OjV2TzexUtmhpqjg=
+	t=1709042837; cv=none; b=jrODIgXTPtYWoquaIK2pXqWlb70i8ObbKL4ZCZs6CJbfNG3qRewIXx4W3rXtPyhikJ6ZTlagoLjvAu9s6m694WkKtthAe21HxyB4/PzKfMNM9fjeI1iChg/GqOsmU0ezYqjyFBBQEwz41xkXhUcHMvugbJ91KN0+Abtoxmagzpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042285; c=relaxed/simple;
-	bh=HdKixfIMBuQdwwlnxTbmwSRHQLZqqdQp5658KCvEM74=;
+	s=arc-20240116; t=1709042837; c=relaxed/simple;
+	bh=kZuSCc0vVHxex4N9w0ym1VtNZPF5zV73wq9UUEihInI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K1+el1b2+k+6l5ZYgYr6ZXj9avC0BRHwBG6cX6UwHAUnAjWSjKEgNv8ggiNx64Z8D4xecgDlVEdlQ7oxVJwHmF6qsmKM+fVBh8RM+lzoLqVhsFv9sCw71AzP5KWcfAUiPB386m++PKiLXfwFnhuCHmf04dOgDpKlO4v5LZ39qIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OrLngdB0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1998FC433F1;
-	Tue, 27 Feb 2024 13:58:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=L1sdHfckSiQxi4V0mpR+n+NuZwYveV+1B7PKJZcJkId5G9uC9aLeUQ6nDjVnZd/yRlLiXjL3sgHZp7wXCWm7tMuVhHtvwf23f6Z12e+KlXiWubl+4GugB1OeiceZcYe90DNE6xky0K4tY0DkZ+Vp80psWcGJ8/ycVZ1Agf3+Ocw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UCUHq+J0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF53C433C7;
+	Tue, 27 Feb 2024 14:07:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042284;
-	bh=HdKixfIMBuQdwwlnxTbmwSRHQLZqqdQp5658KCvEM74=;
+	s=korg; t=1709042836;
+	bh=kZuSCc0vVHxex4N9w0ym1VtNZPF5zV73wq9UUEihInI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OrLngdB0exaDFHpSyzECa88RLeuz2MldffqCB60ymcum+bdHCx16/ABIaY7Q/l/Vw
-	 w6ohCCC03nc2Kw2ka6GTMiWTj3eS5S897WycrjGdE3nTs2ILU1Gb7kcKvZ5H9ozq3n
-	 WTAlupIiibTkcnfUfdMC8rvHkVISkL5+4gBNopJk=
+	b=UCUHq+J087ZCfh+JWvXxilt5T7JTP1TdAK0eacjzgs/fnokhwuWBS07aH3yE29ZSn
+	 0vLaVhH7iZEDRx3ZheDjqyB2VQCYBkVXFrgERQmKUK5ytyy6sbeQDMK+XAE1+ErAJ2
+	 HdYytw/JGxQQ8Uc2q81/ZeZTEuWFCaY2CF1feuRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Marciniszyn <mike.marciniszyn@intel.com>,
-	Shiraz Saleem <shiraz.saleem@intel.com>,
-	Sindhu Devale <sindhu.devale@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Jason Wang <jasowang@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 216/299] RDMA/irdma: Fix KASAN issue with tasklet
+Subject: [PATCH 5.15 139/245] tools/virtio: fix build
 Date: Tue, 27 Feb 2024 14:25:27 +0100
-Message-ID: <20240227131632.730441145@linuxfoundation.org>
+Message-ID: <20240227131619.727190778@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +63,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Marciniszyn <mike.marciniszyn@intel.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-[ Upstream commit bd97cea7b18a0a553773af806dfbfac27a7c4acb ]
+[ Upstream commit d650f830f38b19039958f3f4504ceeb2b5922da7 ]
 
-KASAN testing revealed the following issue assocated with freeing an IRQ.
+Fix the build caused by the following changes:
+- phys_addr_t is now defined in tools/include/linux/types.h
+- dev_warn_once() is used in drivers/virtio/virtio_ring.c
+- linux/uio.h included by vringh.h use INT_MAX defined in limits.h
 
-[50006.466686] Call Trace:
-[50006.466691]  <IRQ>
-[50006.489538]  dump_stack+0x5c/0x80
-[50006.493475]  print_address_description.constprop.6+0x1a/0x150
-[50006.499872]  ? irdma_sc_process_ceq+0x483/0x790 [irdma]
-[50006.505742]  ? irdma_sc_process_ceq+0x483/0x790 [irdma]
-[50006.511644]  kasan_report.cold.11+0x7f/0x118
-[50006.516572]  ? irdma_sc_process_ceq+0x483/0x790 [irdma]
-[50006.522473]  irdma_sc_process_ceq+0x483/0x790 [irdma]
-[50006.528232]  irdma_process_ceq+0xb2/0x400 [irdma]
-[50006.533601]  ? irdma_hw_flush_wqes_callback+0x370/0x370 [irdma]
-[50006.540298]  irdma_ceq_dpc+0x44/0x100 [irdma]
-[50006.545306]  tasklet_action_common.isra.14+0x148/0x2c0
-[50006.551096]  __do_softirq+0x1d0/0xaf8
-[50006.555396]  irq_exit_rcu+0x219/0x260
-[50006.559670]  irq_exit+0xa/0x20
-[50006.563320]  smp_apic_timer_interrupt+0x1bf/0x690
-[50006.568645]  apic_timer_interrupt+0xf/0x20
-[50006.573341]  </IRQ>
-
-The issue is that a tasklet could be pending on another core racing
-the delete of the irq.
-
-Fix by insuring any scheduled tasklet is killed after deleting the
-irq.
-
-Fixes: 44d9e52977a1 ("RDMA/irdma: Implement device initialization definitions")
-Signed-off-by: Mike Marciniszyn <mike.marciniszyn@intel.com>
-Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
-Signed-off-by: Sindhu Devale <sindhu.devale@intel.com>
-Link: https://lore.kernel.org/r/20240131233849.400285-2-sindhu.devale@intel.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Message-Id: <20220705072249.7867-1-sgarzare@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Eugenio Pérez <eperezma@redhat.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/hw.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/virtio/linux/kernel.h | 2 +-
+ tools/virtio/linux/vringh.h | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/irdma/hw.c b/drivers/infiniband/hw/irdma/hw.c
-index 564c9188e1f84..aff68aa8dfad4 100644
---- a/drivers/infiniband/hw/irdma/hw.c
-+++ b/drivers/infiniband/hw/irdma/hw.c
-@@ -570,6 +570,13 @@ static void irdma_destroy_irq(struct irdma_pci_f *rf,
- 	dev->irq_ops->irdma_dis_irq(dev, msix_vec->idx);
- 	irq_update_affinity_hint(msix_vec->irq, NULL);
- 	free_irq(msix_vec->irq, dev_id);
-+	if (rf == dev_id) {
-+		tasklet_kill(&rf->dpc_tasklet);
-+	} else {
-+		struct irdma_ceq *iwceq = (struct irdma_ceq *)dev_id;
-+
-+		tasklet_kill(&iwceq->dpc_tasklet);
-+	}
- }
+diff --git a/tools/virtio/linux/kernel.h b/tools/virtio/linux/kernel.h
+index a4beb719d2174..8b877167933d1 100644
+--- a/tools/virtio/linux/kernel.h
++++ b/tools/virtio/linux/kernel.h
+@@ -30,7 +30,6 @@
+ #define READ                    0
+ #define WRITE                   1
  
- /**
+-typedef unsigned long long phys_addr_t;
+ typedef unsigned long long dma_addr_t;
+ typedef size_t __kernel_size_t;
+ typedef unsigned int __wsum;
+@@ -137,6 +136,7 @@ static inline void *krealloc_array(void *p, size_t new_n, size_t new_size, gfp_t
+ #endif
+ #define dev_err(dev, format, ...) fprintf (stderr, format, ## __VA_ARGS__)
+ #define dev_warn(dev, format, ...) fprintf (stderr, format, ## __VA_ARGS__)
++#define dev_warn_once(dev, format, ...) fprintf (stderr, format, ## __VA_ARGS__)
+ 
+ #define min(x, y) ({				\
+ 	typeof(x) _min1 = (x);			\
+diff --git a/tools/virtio/linux/vringh.h b/tools/virtio/linux/vringh.h
+index 9348957be56e4..e11c6aece7341 100644
+--- a/tools/virtio/linux/vringh.h
++++ b/tools/virtio/linux/vringh.h
+@@ -1 +1,2 @@
++#include <limits.h>
+ #include "../../../include/linux/vringh.h"
 -- 
 2.43.0
 
