@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-24685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8A288695CA
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:05:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9C438695B1
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:04:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA4451C22449
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:05:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8261FB25634
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:54:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B2314534D;
-	Tue, 27 Feb 2024 14:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E3713B7AB;
+	Tue, 27 Feb 2024 13:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x8RXIr5K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOfwVg4D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5203413B2BA;
-	Tue, 27 Feb 2024 14:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C4B78B61;
+	Tue, 27 Feb 2024 13:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042707; cv=none; b=YEtmbAO78yhyBv584yu/MevUIQ5ra4Y17N3sXMr1WhjB96sEmtEHCcnB8zXsW4pMZuLVddI2q5acDsM4kqJ9GaKamPsXBPMPiepOSrYQaLEK/h87towIJE/EWlBmZATg1eTACyPEJkJ5cF37HhOpVGeeQuY5P8GQyWfvDZdQgOI=
+	t=1709041986; cv=none; b=d3Tp+8wkBmdB94XJoagBrzGACAGdvKMds/WQltH2l13x4p44qs63Pt8oOrwyhsrhN/zzHSn/w5tplmgImorEX1v/Kzu8o+1Nkew5o2yyt8l7WQswpmmrLRBKImhNZUC6ITaE2FSWEnjNtKKESY8I39ifNrzlt34YQdoqYcwq5AE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042707; c=relaxed/simple;
-	bh=Vc7dh6pgWXjQG8K402GfPdIrNM744DGa9MVVQiR9tSc=;
+	s=arc-20240116; t=1709041986; c=relaxed/simple;
+	bh=CP4O3SR7g26tSZZ2ZCohLjOkCqPz/SmR7XK1e5g34kM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hK+bL+NtiSb7bkJTkByuqOySPd/7/arwLvMZLvRrZJaOvayPbzvx/4ZPrhjeq1+eqV6rqzlbWLSRixVxdmTsiqYMp/lrTCf75omsfuoOWzG+39zOmSSdYWC4v5Z9s2U66JrWl7ZMvmhXmmHbHgs3VCeeAqdxSAn9E9yB0z8TxBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x8RXIr5K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C57C433C7;
-	Tue, 27 Feb 2024 14:05:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Q+nqLzW6HEgS3woYOj8eCLqunzj6R7SLaNKjDnJtT8UBh1nWY4/gCBSX4Tn2UDYwb8Czy6Z2AUYNwiNHaohHe6uH7g8tSocStw7g9crQ0cY9n061Ds8933HQ01gDAjARX1G6he6Rc5akhu+YjN1UjxcVghbFUfgW4wsX+C37Ijo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOfwVg4D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2395FC433F1;
+	Tue, 27 Feb 2024 13:53:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042707;
-	bh=Vc7dh6pgWXjQG8K402GfPdIrNM744DGa9MVVQiR9tSc=;
+	s=korg; t=1709041986;
+	bh=CP4O3SR7g26tSZZ2ZCohLjOkCqPz/SmR7XK1e5g34kM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x8RXIr5KEwM9Y2NmxyGmix12yOmdItC5Kg4Gkh1u5CMBBdTXiZCRDW4pbaAxCgFQt
-	 Zz0J7lmphaUxSqZ+OgiZh/adUxivgiDomTw9kHK8P9Hmi6AgfFHaZv1TSh0MMDTVKX
-	 UuvWYZwXH1+NimURfbQgyUV9s2Mrimtrilxj0iks=
+	b=cOfwVg4DtZxj9kr5XnzrsF5LaEdJoHDvFScIJzM2jsLcjn1V0QvTjX8rvq0UpjooR
+	 Ymyy1ciOCKcu99obvfNirYCO0A9HNMoyr7vZ6PzWXJ4HjaghW4KQgNb54ORK01Icsv
+	 7u4x1+Zkhvij8oICJZY3ikGr5Pb9J55WKOB0FlA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+65e940cfb8f99a97aca7@syzkaller.appspotmail.com
-Subject: [PATCH 5.15 063/245] fs/ntfs3: Fix oob in ntfs_listxattr
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Huang Rui <ray.huang@amd.com>,
+	dri-devel@lists.freedesktop.org,
+	Matthew Auld <matthew.auld@intel.com>
+Subject: [PATCH 6.6 140/299] drm/ttm: Fix an invalid freeing on already freed page in error path
 Date: Tue, 27 Feb 2024 14:24:11 +0100
-Message-ID: <20240227131617.291198689@linuxfoundation.org>
+Message-ID: <20240227131630.361371422@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-[ Upstream commit 731ab1f9828800df871c5a7ab9ffe965317d3f15 ]
+commit 40510a941d27d405a82dc3320823d875f94625df upstream.
 
-The length of name cannot exceed the space occupied by ea.
+If caching mode change fails due to, for example, OOM we
+free the allocated pages in a two-step process. First the pages
+for which the caching change has already succeeded. Secondly
+the pages for which a caching change did not succeed.
 
-Reported-and-tested-by: syzbot+65e940cfb8f99a97aca7@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However the second step was incorrectly freeing the pages already
+freed in the first step.
+
+Fix.
+
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Fixes: 379989e7cbdc ("drm/ttm/pool: Fix ttm_pool_alloc error path")
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Dave Airlie <airlied@redhat.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Huang Rui <ray.huang@amd.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.4+
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240221073324.3303-1-thomas.hellstrom@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/xattr.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/ttm/ttm_pool.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/xattr.c b/fs/ntfs3/xattr.c
-index 8e739023e3057..d0b75d7f58a7b 100644
---- a/fs/ntfs3/xattr.c
-+++ b/fs/ntfs3/xattr.c
-@@ -217,6 +217,9 @@ static ssize_t ntfs_list_ea(struct ntfs_inode *ni, char *buffer,
- 		if (!ea->name_len)
- 			break;
+--- a/drivers/gpu/drm/ttm/ttm_pool.c
++++ b/drivers/gpu/drm/ttm/ttm_pool.c
+@@ -384,7 +384,7 @@ static void ttm_pool_free_range(struct t
+ 				enum ttm_caching caching,
+ 				pgoff_t start_page, pgoff_t end_page)
+ {
+-	struct page **pages = tt->pages;
++	struct page **pages = &tt->pages[start_page];
+ 	unsigned int order;
+ 	pgoff_t i, nr;
  
-+		if (ea->name_len > ea_size)
-+			break;
-+
- 		if (buffer) {
- 			/* Check if we can use field ea->name */
- 			if (off + ea_size > size)
--- 
-2.43.0
-
 
 
 
