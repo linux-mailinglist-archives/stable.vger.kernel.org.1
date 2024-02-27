@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-25051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AAD2869784
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:22:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E5AE869742
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:19:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 287EF1F24380
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:22:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFFC81C23B2A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:19:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5841419A1;
-	Tue, 27 Feb 2024 14:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1430713B7AB;
+	Tue, 27 Feb 2024 14:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FwKYmD4H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/Bff0FD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2FE13B2B8;
-	Tue, 27 Feb 2024 14:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C815113B798;
+	Tue, 27 Feb 2024 14:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043724; cv=none; b=FVv+FHe+4Vq3ySljUS/UjjvMabGKS2KitUWBNFFN42gu9EycsdCGrdpOGG2daxyR17rZDbOtrfaAMxk4xch21pidgA+C10jeE6eb4wwEVX2379Cy0Pmio/TBNSl9S0nvQdk3N3fOPqCA0KcleRR8H9QQ1mTdxRn3Db/j1bO9IXs=
+	t=1709043585; cv=none; b=j6hPEU0cioLOwdL/dkBqyipgOxhpufdrzRReasoHtIMBIZgAGMkdJnoVMyjhkNlHowntQ/IP8dh7z64hvhhfaGuUtVCoWY/pU46O4Uzcc7Qe5QIsP1yGvFOQ8s0EnPRaqCi6mj+FuAUuZ64VE7jM5WdKK2SYrk1rs8irr2E9iXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043724; c=relaxed/simple;
-	bh=VuYIonjsIh0f2RdhLmKGJukLO3+NbaI0DBrloTMQHaU=;
+	s=arc-20240116; t=1709043585; c=relaxed/simple;
+	bh=pn6fR5qx7hMW56bGs9vT0EUFKebTMCC+VT7GsSaL92M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GvIq4Gy7lvHvpfswTLnPuHZk24b6lg07G0+XJ3eAcMWw+LiXY1OAofzltlUc8Qy/nqAx4em5MjTdukZWCbekC//SWE3fujrNvgSOwZ9SUZfjhfajjCi3+aN5jYWNNDMpN6Orc3Js9ChbYK075w0Op8N6l9Yr7W5tqsI4JT6gUXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FwKYmD4H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB5E3C433C7;
-	Tue, 27 Feb 2024 14:22:03 +0000 (UTC)
+	 MIME-Version; b=RtB5IClnWmdn5mSOT62XAbYdOJcXQkMyy5TyR765FhruTXtq+9BlV7hbiJkUiToN3QbJ0+TouQQr7K4PKlAgqlgAMsdp/qgs7efwjqVWU97O9+1+0bLfLHTdFmhZkBIn6Sih95Z5d2W839ohJIzBx4VllZTqEvapySlJs6PIiZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/Bff0FD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A70EC433F1;
+	Tue, 27 Feb 2024 14:19:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043724;
-	bh=VuYIonjsIh0f2RdhLmKGJukLO3+NbaI0DBrloTMQHaU=;
+	s=korg; t=1709043585;
+	bh=pn6fR5qx7hMW56bGs9vT0EUFKebTMCC+VT7GsSaL92M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FwKYmD4H8EJ7nHtLE6ycEWmcnLs38Cj2WdyyMY9ty29/FRMd4UXoGjgweJOGi35TH
-	 sWTZqsccDzVdoBtargDATUZDsJmHz5y5vFVZOf2K3AF8T1cAUDN2bhqTZhHIdMNoT1
-	 5ywMy3EguM58KY68/qNi81cP+5yUr79b9yquzXDE=
+	b=i/Bff0FDHnjI9aXLKQdFcYVpURc03YF2koSISBNvtr4YHX8j6sjJLcC9t+iRfH/sQ
+	 DBzqXssK/tjVTUAgswJdlEf+EQJkoIiPdcBZVtVphfq2sSe0VzupmjYhfIktKgIuLu
+	 dEhnsBuRVNOmBw1Gt1PGrJWPpvq5aBSw/myV2xno=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cyril Hrubis <chrubis@suse.cz>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Petr Vorel <pvorel@suse.cz>,
-	Mel Gorman <mgorman@suse.de>,
-	Mahmoud Adam <mngyadam@amazon.com>
-Subject: [PATCH 5.4 06/84] sched/rt: sysctl_sched_rr_timeslice show default timeslice after reset
-Date: Tue, 27 Feb 2024 14:26:33 +0100
-Message-ID: <20240227131553.077386592@linuxfoundation.org>
+	Shiraz Saleem <shiraz.saleem@intel.com>,
+	Sindhu Devale <sindhu.devale@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 133/195] RDMA/irdma: Validate max_send_wr and max_recv_wr
+Date: Tue, 27 Feb 2024 14:26:34 +0100
+Message-ID: <20240227131614.831300554@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cyril Hrubis <chrubis@suse.cz>
+From: Shiraz Saleem <shiraz.saleem@intel.com>
 
-commit c1fc6484e1fb7cc2481d169bfef129a1b0676abe upstream.
+[ Upstream commit ee107186bcfd25d7873258f3f75440e20f5e6416 ]
 
-The sched_rr_timeslice can be reset to default by writing value that is
-<= 0. However after reading from this file we always got the last value
-written, which is not useful at all.
+Validate that max_send_wr and max_recv_wr is within the
+supported range.
 
-$ echo -1 > /proc/sys/kernel/sched_rr_timeslice_ms
-$ cat /proc/sys/kernel/sched_rr_timeslice_ms
--1
-
-Fix this by setting the variable that holds the sysctl file value to the
-jiffies_to_msecs(RR_TIMESLICE) in case that <= 0 value was written.
-
-Signed-off-by: Cyril Hrubis <chrubis@suse.cz>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Petr Vorel <pvorel@suse.cz>
-Acked-by: Mel Gorman <mgorman@suse.de>
-Tested-by: Petr Vorel <pvorel@suse.cz>
-Cc: Mahmoud Adam <mngyadam@amazon.com>
-Link: https://lore.kernel.org/r/20230802151906.25258-3-chrubis@suse.cz
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
+Change-Id: I2fc8b10292b641fddd20b36986a9dae90a93f4be
+Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
+Signed-off-by: Sindhu Devale <sindhu.devale@intel.com>
+Link: https://lore.kernel.org/r/20240131233849.400285-3-sindhu.devale@intel.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/rt.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/infiniband/hw/irdma/verbs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -2738,6 +2738,9 @@ int sched_rr_handler(struct ctl_table *t
- 		sched_rr_timeslice =
- 			sysctl_sched_rr_timeslice <= 0 ? RR_TIMESLICE :
- 			msecs_to_jiffies(sysctl_sched_rr_timeslice);
-+
-+		if (sysctl_sched_rr_timeslice <= 0)
-+			sysctl_sched_rr_timeslice = jiffies_to_msecs(RR_TIMESLICE);
- 	}
- 	mutex_unlock(&mutex);
+diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
+index 01faec6ea5285..0fbc39df1e7d4 100644
+--- a/drivers/infiniband/hw/irdma/verbs.c
++++ b/drivers/infiniband/hw/irdma/verbs.c
+@@ -762,7 +762,9 @@ static int irdma_validate_qp_attrs(struct ib_qp_init_attr *init_attr,
  
+ 	if (init_attr->cap.max_inline_data > uk_attrs->max_hw_inline ||
+ 	    init_attr->cap.max_send_sge > uk_attrs->max_hw_wq_frags ||
+-	    init_attr->cap.max_recv_sge > uk_attrs->max_hw_wq_frags)
++	    init_attr->cap.max_recv_sge > uk_attrs->max_hw_wq_frags ||
++	    init_attr->cap.max_send_wr > uk_attrs->max_hw_wq_quanta ||
++	    init_attr->cap.max_recv_wr > uk_attrs->max_hw_rq_quanta)
+ 		return -EINVAL;
+ 
+ 	if (rdma_protocol_roce(&iwdev->ibdev, 1)) {
+-- 
+2.43.0
+
 
 
 
