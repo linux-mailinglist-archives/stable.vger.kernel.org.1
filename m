@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-24394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3AAC86943D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82C3B869573
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:02:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77B621F2221C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E3B728E16A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:01:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 241FE1419A1;
-	Tue, 27 Feb 2024 13:51:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E12B213B798;
+	Tue, 27 Feb 2024 14:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eM+XOgJv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0VNjbKLr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D899613F01E;
-	Tue, 27 Feb 2024 13:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D53A13B2B4;
+	Tue, 27 Feb 2024 14:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041878; cv=none; b=YmE6aRIW83dOfJyBhbuNNZD0EQq98U0A/mqk+6CHsBAfs5CgWkRd26CP6fCCdpTzXV/yuCjD0YIHqXYb9uWiq3RuxN6gERvwW6eOqXlH8xGSMaXtos6ya+q1ey6aJ4oHcFs6fzlR3zSzUgHTKeEJ532zXuT0xHgKK4R7n7PD+wk=
+	t=1709042517; cv=none; b=s8YFSSU8tt/Gf2TC9C2WgvpkJDdf23fVHuZuLth61efsTRtCbG6X3fG1IMtu4OoeUM2oUBN36PAhsV+TcbiYXRw8Tggsh877EkyPVI5mEoBNs7pazCWBrvz12fGHlhzwbuQp4gpibmTHpzdC51/9UDjUY7wdjC3Ini9ZAAyDNJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041878; c=relaxed/simple;
-	bh=TDhw+FbDE/dgB+QLInflz2ZSsawegEpSpSm73oKGteg=;
+	s=arc-20240116; t=1709042517; c=relaxed/simple;
+	bh=Qq7CXOeqrHdkH1s6UTtbpQVfUMi21GtKZVONWFGdfJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QJWNMLlbWUCDATwL1ddqU6RePitC2vnqSIZyYgVxD+gTqZqs/RRvmn1NoMb9SVjb0gQ0uaUcdMK0h0L084BeISNoVMoNcZ82mITqZIfs90TyCEfZjG3oHoxt4JT+yhib6VXm6Mc0mSfUoCVYTv1J6mLjb0XlbYrWY6VJD5C+kGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eM+XOgJv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64986C433C7;
-	Tue, 27 Feb 2024 13:51:18 +0000 (UTC)
+	 MIME-Version; b=HJtgzTW16i/IwMl3aBaPj/rjTMqpY5SgUu3Nj928Op9q5D/jaRloU27EKUHRXtyy8heGdo3k3JquxaccrTz5IHpn8cSRyiu4Cp7cWW2ajp5V62BdIe2W5Sx/Dtt2xOZHCalvlhzXSBRWFIPJbu1RbuzFtP9iI04SUN3rqnNg4ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0VNjbKLr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B69FC433F1;
+	Tue, 27 Feb 2024 14:01:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041878;
-	bh=TDhw+FbDE/dgB+QLInflz2ZSsawegEpSpSm73oKGteg=;
+	s=korg; t=1709042517;
+	bh=Qq7CXOeqrHdkH1s6UTtbpQVfUMi21GtKZVONWFGdfJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eM+XOgJv0/dNb+IaBWhRS+aoFPSZs3HJAn1j3enVLIiamkcYKLSK6QulgiQjf0L5i
-	 N5+CEzGSHiULqRoC4R310fF/1/MUt0hyCsKDO27abnq3JN3WCYNicFlb9k1PpNE5ww
-	 6q905RfeCS74b9t/LnHyRQ//O9jXJVgrrHaCzSzU=
+	b=0VNjbKLrS7kFpsx/Fl6vE0Y8bF9i7rquwgHkZiKiDjVpRWKAqR1e7ObRRY9Z+brYo
+	 Y3aAgFgx+yG7H6tAylxke77fBxL8gdw2/9OMcN77G01F6uyURPdMUSCUhHd7IaXiwS
+	 xPe3pFiflgT8J+9hKLkwxxb4DFnr7pGhQ2hOhntQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SEO HOYOUNG <hy50.seo@samsung.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Can Guo <quic_cang@quicinc.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Fullway Wang <fullwaywang@outlook.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 101/299] scsi: ufs: core: Remove the ufshcd_release() in ufshcd_err_handling_prepare()
+Subject: [PATCH 5.15 024/245] fbdev: sis: Error out if pixclock equals zero
 Date: Tue, 27 Feb 2024 14:23:32 +0100
-Message-ID: <20240227131629.141277202@linuxfoundation.org>
+Message-ID: <20240227131615.903205105@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SEO HOYOUNG <hy50.seo@samsung.com>
+From: Fullway Wang <fullwaywang@outlook.com>
 
-[ Upstream commit 17e94b2585417e04dabc2f13bc03b4665ae687f3 ]
+[ Upstream commit e421946be7d9bf545147bea8419ef8239cb7ca52 ]
 
-If ufshcd_err_handler() is called in a suspend/resume situation,
-ufs_release() can be called twice and active_reqs end up going negative.
-This is because ufshcd_err_handling_prepare() and
-ufshcd_err_handling_unprepare() both call ufshcd_release().
+The userspace program could pass any values to the driver through
+ioctl() interface. If the driver doesn't check the value of pixclock,
+it may cause divide-by-zero error.
 
-Remove superfluous call to ufshcd_release().
+In sisfb_check_var(), var->pixclock is used as a divisor to caculate
+drate before it is checked against zero. Fix this by checking it
+at the beginning.
 
-Signed-off-by: SEO HOYOUNG <hy50.seo@samsung.com>
-Link: https://lore.kernel.org/r/20240122083324.11797-1-hy50.seo@samsung.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Can Guo <quic_cang@quicinc.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+This is similar to CVE-2022-3061 in i740fb which was fixed by
+commit 15cf0b8.
+
+Signed-off-by: Fullway Wang <fullwaywang@outlook.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/video/fbdev/sis/sis_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index f6c83dcff8a8c..ee9119b708f01 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -6253,7 +6253,6 @@ static void ufshcd_err_handling_prepare(struct ufs_hba *hba)
- 		ufshcd_hold(hba);
- 		if (!ufshcd_is_clkgating_allowed(hba))
- 			ufshcd_setup_clocks(hba, true);
--		ufshcd_release(hba);
- 		pm_op = hba->is_sys_suspended ? UFS_SYSTEM_PM : UFS_RUNTIME_PM;
- 		ufshcd_vops_resume(hba, pm_op);
- 	} else {
+diff --git a/drivers/video/fbdev/sis/sis_main.c b/drivers/video/fbdev/sis/sis_main.c
+index 266a5582f94d3..c6e21ba008953 100644
+--- a/drivers/video/fbdev/sis/sis_main.c
++++ b/drivers/video/fbdev/sis/sis_main.c
+@@ -1474,6 +1474,8 @@ sisfb_check_var(struct fb_var_screeninfo *var, struct fb_info *info)
+ 
+ 	vtotal = var->upper_margin + var->lower_margin + var->vsync_len;
+ 
++	if (!var->pixclock)
++		return -EINVAL;
+ 	pixclock = var->pixclock;
+ 
+ 	if((var->vmode & FB_VMODE_MASK) == FB_VMODE_NONINTERLACED) {
 -- 
 2.43.0
 
