@@ -1,57 +1,65 @@
-Return-Path: <stable+bounces-24840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CC09869681
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:12:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F5A486972E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:19:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A43E5B2724A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:12:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1862328875D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:19:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B173D13DBB3;
-	Tue, 27 Feb 2024 14:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6060813EFEC;
+	Tue, 27 Feb 2024 14:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aj8OYsYp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yYHchJw9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716A078B61;
-	Tue, 27 Feb 2024 14:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 183E278B61;
+	Tue, 27 Feb 2024 14:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043132; cv=none; b=Re+Njk4NqOBpaWwYAEn9fcsTU8Hp+KGgz1Xb698PR0NpuSaJvVyTtnMmI1e2Yf0NGnoM35m7DKZyYjNz98iPu2C3B5umEMGDMVwQIwma1wMp5c21smoEYey93i9AfPuDHxs3cqkDZOpE+7e7Yzcwr9SWTk3bMPYMQ3N5taxfXlY=
+	t=1709043539; cv=none; b=DRfD8ToZk/R72B5qK67b6xXy4OqBvH1z+bDel9/8KCaglRanuuN7ztff8uQN6wbLcXiKkrCZ9BMXP8PgYXESeYEVjmEjF8Oq432klS/1pCw+7dZUy9mtnWsILhNxWi7WYuNoe44N7C85qEznfD4M7Bop9cXB/ti0m1jG7WwhgwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043132; c=relaxed/simple;
-	bh=B6bpFGLrnswU5s/AgxEOq3MrG81x7H+eRft5l8kzN+s=;
+	s=arc-20240116; t=1709043539; c=relaxed/simple;
+	bh=Bb9rX+wC6nTPkPIccESKutFZgdEQWJKrr1maLsaeT2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SrGa0ErEw3UoSiyf9FRTVsF2/XDboxqYhA2c3Bq7kBIuzHomYDhWP106sCtvRTruNvQCztNT1wR1wuKJ0NJZPI6PLUDGSzfwDNydGpbQNHvXQV2CyraZ6c9hxbr2z5Ekfs2b9Wnzrp5h1NICsCtZhOcNiQeTxFygdidlEkob19c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aj8OYsYp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7CE0C433F1;
-	Tue, 27 Feb 2024 14:12:11 +0000 (UTC)
+	 MIME-Version; b=lXDOlr7LpMyoYW7XvqJHth7CpdyFsi9T7QBtJf5CnB8m8GoTIvhw3gqPrFUmpk14f105+/yUQ9xlINLwLgUdwNEZmjhAhv3aQls3gTFyEHNB1jtpRFAIPw0XCUGWC0r8/MxA5vljoKp+B4jEQpEqP4ymKKcgFpWKRSt63YhFHiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYHchJw9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66FC3C433C7;
+	Tue, 27 Feb 2024 14:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043132;
-	bh=B6bpFGLrnswU5s/AgxEOq3MrG81x7H+eRft5l8kzN+s=;
+	s=korg; t=1709043538;
+	bh=Bb9rX+wC6nTPkPIccESKutFZgdEQWJKrr1maLsaeT2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aj8OYsYpZQS0oduxEaG6wyKn/Rz3jUqNk2hWx6TuqdLd5aIEaKPPpE7UhXGhICHcZ
-	 T1GyqiBaDrYKO5G1Gm647H+lzfR6dai69hLn+wrsuXN/dWAkbj66WMX4lt2okW6UdI
-	 WNf6y+cLqAHV3N+r1goaeDio76MihbfkTph36d4M=
+	b=yYHchJw9E1HnPXxBwjiZmT8picOYU/DeGoE7ZZEEFER6F7sLFNcn0rryzVY4cW5mn
+	 L91r0X3Z3qDjr0iZcw7CM8y9+TOfVyTEwkHxiTaDhQ3JuYYYqaT5ANd0G6uThr8Cx0
+	 wnKnx4lnrw+H5jQs7dwUTTSG+Xl5lAJyOee8wiQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Serge Semin <Sergey.Semin@baikalelectronics.ru>,
-	Hannes Reinecke <hare@suse.de>,
-	Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	linux-mips@vger.kernel.org,
+	Arnd Bergmann <arnd@arndb.de>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	"James E.J. Bottomley" <jejb@linux.ibm.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	linux-scsi@vger.kernel.org,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	kernel test robot <lkp@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 218/245] ata: libahci_platform: Introduce reset assertion/deassertion methods
+Subject: [PATCH 6.1 145/195] scsi: jazz_esp: Only build if SCSI core is builtin
 Date: Tue, 27 Feb 2024 14:26:46 +0100
-Message-ID: <20240227131622.286788468@linuxfoundation.org>
+Message-ID: <20240227131615.211799478@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,183 +71,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit f67f12ff57bcfcd7d64280f748787793217faeaf ]
+[ Upstream commit 9ddf190a7df77b77817f955fdb9c2ae9d1c9c9a3 ]
 
-Currently the ACHI-platform library supports only the assert and deassert
-reset signals and ignores the platforms with self-deasserting reset lines.
-That prone to having the platforms with self-deasserting reset method
-misbehaviour when it comes to resuming from sleep state after the clocks
-have been fully disabled. For such cases the controller needs to be fully
-reset all over after the reference clocks are enabled and stable,
-otherwise the controller state machine might be in an undetermined state.
+JAZZ_ESP is a bool kconfig symbol that selects SCSI_SPI_ATTRS.  When
+CONFIG_SCSI=m, this results in SCSI_SPI_ATTRS=m while JAZZ_ESP=y, which
+causes many undefined symbol linker errors.
 
-The best solution would be to auto-detect which reset method is supported
-by the particular platform and use it implicitly in the framework of the
-ahci_platform_enable_resources()/ahci_platform_disable_resources()
-methods. Alas it can't be implemented due to the AHCI-platform library
-already supporting the shared reset control lines. As [1] says in such
-case we have to use only one of the next methods:
-+ reset_control_assert()/reset_control_deassert();
-+ reset_control_reset()/reset_control_rearm().
-If the driver had an exclusive control over the reset lines we could have
-been able to manipulate the lines with no much limitation and just used
-the combination of the methods above to cover all the possible
-reset-control cases. Since the shared reset control has already been
-advertised and couldn't be changed with no risk to breaking the platforms
-relying on it, we have no choice but to make the platform drivers to
-determine which reset methods the platform reset system supports.
+Fix this by only offering to build this driver when CONFIG_SCSI=y.
 
-In order to implement both types of reset control support we suggest to
-introduce the new AHCI-platform flag: AHCI_PLATFORM_RST_TRIGGER, which
-when passed to the ahci_platform_get_resources() method together with the
-AHCI_PLATFORM_GET_RESETS flag will indicate that the reset lines are
-self-deasserting thus the reset_control_reset()/reset_control_rearm() will
-be used to control the reset state. Otherwise the
-reset_control_deassert()/reset_control_assert() methods will be utilized.
+[mkp: JAZZ_ESP is unique in that it does not support being compiled as a
+module unlike the remaining SPI SCSI HBA drivers]
 
-[1] Documentation/driver-api/reset.rst
-
-Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Stable-dep-of: 26c8404e162b ("ata: ahci_ceva: fix error handling for Xilinx GT PHY support")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://lore.kernel.org/r/20240214055953.9612-1-rdunlap@infradead.org
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: linux-mips@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: James E.J. Bottomley <jejb@linux.ibm.com>
+Cc: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: linux-scsi@vger.kernel.org
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202402112222.Gl0udKyU-lkp@intel.com/
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci.h             |  1 +
- drivers/ata/libahci_platform.c | 50 ++++++++++++++++++++++++++++++----
- include/linux/ahci_platform.h  |  5 +++-
- 3 files changed, 50 insertions(+), 6 deletions(-)
+ drivers/scsi/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ata/ahci.h b/drivers/ata/ahci.h
-index 54e79f966444c..b4c59fe2db60a 100644
---- a/drivers/ata/ahci.h
-+++ b/drivers/ata/ahci.h
-@@ -344,6 +344,7 @@ struct ahci_host_priv {
- 	bool			got_runtime_pm; /* Did we do pm_runtime_get? */
- 	unsigned int		n_clks;
- 	struct clk_bulk_data	*clks;		/* Optional */
-+	unsigned int		f_rsts;
- 	struct reset_control	*rsts;		/* Optional */
- 	struct regulator	**target_pwrs;	/* Optional */
- 	struct regulator	*ahci_regulator;/* Optional */
-diff --git a/drivers/ata/libahci_platform.c b/drivers/ata/libahci_platform.c
-index 6ae1d8b870a2d..43380d1a410e2 100644
---- a/drivers/ata/libahci_platform.c
-+++ b/drivers/ata/libahci_platform.c
-@@ -122,6 +122,44 @@ void ahci_platform_disable_clks(struct ahci_host_priv *hpriv)
- }
- EXPORT_SYMBOL_GPL(ahci_platform_disable_clks);
+diff --git a/drivers/scsi/Kconfig b/drivers/scsi/Kconfig
+index 03e71e3d5e5b3..3b990cf2c1954 100644
+--- a/drivers/scsi/Kconfig
++++ b/drivers/scsi/Kconfig
+@@ -1285,7 +1285,7 @@ source "drivers/scsi/arm/Kconfig"
  
-+/**
-+ * ahci_platform_deassert_rsts - Deassert/trigger platform resets
-+ * @hpriv: host private area to store config values
-+ *
-+ * This function deasserts or triggers all the reset lines found for
-+ * the AHCI device.
-+ *
-+ * RETURNS:
-+ * 0 on success otherwise a negative error code
-+ */
-+int ahci_platform_deassert_rsts(struct ahci_host_priv *hpriv)
-+{
-+	if (hpriv->f_rsts & AHCI_PLATFORM_RST_TRIGGER)
-+		return reset_control_reset(hpriv->rsts);
-+
-+	return reset_control_deassert(hpriv->rsts);
-+}
-+EXPORT_SYMBOL_GPL(ahci_platform_deassert_rsts);
-+
-+/**
-+ * ahci_platform_assert_rsts - Assert/rearm platform resets
-+ * @hpriv: host private area to store config values
-+ *
-+ * This function asserts or rearms (for self-deasserting resets) all
-+ * the reset controls found for the AHCI device.
-+ *
-+ * RETURNS:
-+ * 0 on success otherwise a negative error code
-+ */
-+int ahci_platform_assert_rsts(struct ahci_host_priv *hpriv)
-+{
-+	if (hpriv->f_rsts & AHCI_PLATFORM_RST_TRIGGER)
-+		return reset_control_rearm(hpriv->rsts);
-+
-+	return reset_control_assert(hpriv->rsts);
-+}
-+EXPORT_SYMBOL_GPL(ahci_platform_assert_rsts);
-+
- /**
-  * ahci_platform_enable_regulators - Enable regulators
-  * @hpriv: host private area to store config values
-@@ -219,18 +257,18 @@ int ahci_platform_enable_resources(struct ahci_host_priv *hpriv)
- 	if (rc)
- 		goto disable_regulator;
- 
--	rc = reset_control_deassert(hpriv->rsts);
-+	rc = ahci_platform_deassert_rsts(hpriv);
- 	if (rc)
- 		goto disable_clks;
- 
- 	rc = ahci_platform_enable_phys(hpriv);
- 	if (rc)
--		goto disable_resets;
-+		goto disable_rsts;
- 
- 	return 0;
- 
--disable_resets:
--	reset_control_assert(hpriv->rsts);
-+disable_rsts:
-+	ahci_platform_assert_rsts(hpriv);
- 
- disable_clks:
- 	ahci_platform_disable_clks(hpriv);
-@@ -257,7 +295,7 @@ void ahci_platform_disable_resources(struct ahci_host_priv *hpriv)
- {
- 	ahci_platform_disable_phys(hpriv);
- 
--	reset_control_assert(hpriv->rsts);
-+	ahci_platform_assert_rsts(hpriv);
- 
- 	ahci_platform_disable_clks(hpriv);
- 
-@@ -442,6 +480,8 @@ struct ahci_host_priv *ahci_platform_get_resources(struct platform_device *pdev,
- 			rc = PTR_ERR(hpriv->rsts);
- 			goto err_out;
- 		}
-+
-+		hpriv->f_rsts = flags & AHCI_PLATFORM_RST_TRIGGER;
- 	}
- 
- 	/*
-diff --git a/include/linux/ahci_platform.h b/include/linux/ahci_platform.h
-index 49e5383d42222..6d7dd472d3703 100644
---- a/include/linux/ahci_platform.h
-+++ b/include/linux/ahci_platform.h
-@@ -23,6 +23,8 @@ int ahci_platform_enable_phys(struct ahci_host_priv *hpriv);
- void ahci_platform_disable_phys(struct ahci_host_priv *hpriv);
- int ahci_platform_enable_clks(struct ahci_host_priv *hpriv);
- void ahci_platform_disable_clks(struct ahci_host_priv *hpriv);
-+int ahci_platform_deassert_rsts(struct ahci_host_priv *hpriv);
-+int ahci_platform_assert_rsts(struct ahci_host_priv *hpriv);
- int ahci_platform_enable_regulators(struct ahci_host_priv *hpriv);
- void ahci_platform_disable_regulators(struct ahci_host_priv *hpriv);
- int ahci_platform_enable_resources(struct ahci_host_priv *hpriv);
-@@ -41,6 +43,7 @@ int ahci_platform_resume_host(struct device *dev);
- int ahci_platform_suspend(struct device *dev);
- int ahci_platform_resume(struct device *dev);
- 
--#define AHCI_PLATFORM_GET_RESETS	0x01
-+#define AHCI_PLATFORM_GET_RESETS	BIT(0)
-+#define AHCI_PLATFORM_RST_TRIGGER	BIT(1)
- 
- #endif /* _AHCI_PLATFORM_H */
+ config JAZZ_ESP
+ 	bool "MIPS JAZZ FAS216 SCSI support"
+-	depends on MACH_JAZZ && SCSI
++	depends on MACH_JAZZ && SCSI=y
+ 	select SCSI_SPI_ATTRS
+ 	help
+ 	  This is the driver for the onboard SCSI host adapter of MIPS Magnum
 -- 
 2.43.0
 
