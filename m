@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-25012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B7AB869751
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:20:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B400869845
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:31:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D38C1C232C6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:20:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B8671C210D6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DED60140391;
-	Tue, 27 Feb 2024 14:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7011F145B05;
+	Tue, 27 Feb 2024 14:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fYVz6c5C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cwB3QTUA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9463913B79F;
-	Tue, 27 Feb 2024 14:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE6D145350;
+	Tue, 27 Feb 2024 14:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043610; cv=none; b=ada+3FoDsYhnAzRpibR4YRlsH5ySMySQVRU1hpre19hJHbFzG5Foq59q1unORdBQwTVWg1dJi6rm0pNhL2y68GOeFo9974OU/KN2eQAOpPR4P3y4WJN435XZNSvbN0X48Tf3yzSZlRWNUR0GwcTRE0pJuTQqmTotKMzkEqwxwKk=
+	t=1709044173; cv=none; b=Kc89reKoWF4wPmYOrTGh7jmiq8OPkIOdVQhZwVwjj2VX1yT+G1AcXiJUvkHE4Uv0GsaSDTPJWjB1Gc5S6/sEnsApyf3Lsrf53sIjAepUk6BWm0ikl2utQwMVo2sIkmSsfcer/zD2i6k7mKPFsly0aHc0cbVKfQg+wTLP4OJJjxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043610; c=relaxed/simple;
-	bh=fUk9FEerajzSuU5e4XSISI3f2vLIBUxz3U5jQk0UfTI=;
+	s=arc-20240116; t=1709044173; c=relaxed/simple;
+	bh=t/xcHxh1cMEqlsz4WXKo0hQc+0Ejousuplsq6CYgBb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UxuAkrSdDK1YBk9eH7ZoqtRlaD/lPSmpWSeL6VX7VhZ5VygQadALfgQb8O4o8LohB+PXSOrwhnJKF/CUHwrrxPMds2hBI1SOSsflwk8x1OYkzN9r6eBZ4XN6O7lLa8s6Do4cK4mE69z5leCL0aQ8lE7dsVF00NXDojtDlacReU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fYVz6c5C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21DC7C433F1;
-	Tue, 27 Feb 2024 14:20:09 +0000 (UTC)
+	 MIME-Version; b=lywtjcrakqUEZXAMZC6HAtoDzUQptPO0V0IkadiK6UQhXKVZsqITc+LeGctjdN3oA07Sze63l7vx9v3aEXWGfKgRQC52D8Q8wiXv926Bp4v9GyPvJrBdSzVgzpxSoAQchuW/A4mQSTTB3bN4zz1fdJC+rISIFn+6h46WArxuf90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cwB3QTUA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E27EC433C7;
+	Tue, 27 Feb 2024 14:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043610;
-	bh=fUk9FEerajzSuU5e4XSISI3f2vLIBUxz3U5jQk0UfTI=;
+	s=korg; t=1709044172;
+	bh=t/xcHxh1cMEqlsz4WXKo0hQc+0Ejousuplsq6CYgBb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fYVz6c5Cuu3QlUhXe9x9ksdRvuZgrIY0ipclJvHtezpEchjaEmxmvXXzKNx6JX5u+
-	 b7Nc0eBCri1pKcLXIhCFLDeJ10aDLk78k5h36nJUtdDQS+Q3p4aTAJCi1GHgSwQFXN
-	 38EI0uUO4vePmt6uRF7wyH7tjyH6xiFaLlhPXf/8=
+	b=cwB3QTUABMAh1GuZyFK0olr343f6TcNv6xJml5PBZiSi2fdvjy4UAq0A1A+o4GOqu
+	 8y89M0pud0vxIHGYdxpUqPULzCcjF3F4ptZUjh3QWD53oNbOYD4hS6x3/BnOV2qWF6
+	 oIX6+vGliureJvbjob6CovEMb4/9Zj1jRU/F/02A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 171/195] netfilter: nft_flow_offload: reset dst in route object after setting up flow
+Subject: [PATCH 5.10 071/122] jbd2: Fix wrongly judgement for buffer head removing while doing checkpoint
 Date: Tue, 27 Feb 2024 14:27:12 +0100
-Message-ID: <20240227131616.054331791@linuxfoundation.org>
+Message-ID: <20240227131601.026120095@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +64,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit 9e0f0430389be7696396c62f037be4bf72cf93e3 ]
+[ Upstream commit e34c8dd238d0c9368b746480f313055f5bab5040 ]
 
-dst is transferred to the flow object, route object does not own it
-anymore.  Reset dst in route object, otherwise if flow_offload_add()
-fails, error path releases dst twice, leading to a refcount underflow.
+Following process,
 
-Fixes: a3c90f7a2323 ("netfilter: nf_tables: flow offload expression")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+jbd2_journal_commit_transaction
+// there are several dirty buffer heads in transaction->t_checkpoint_list
+          P1                   wb_workfn
+jbd2_log_do_checkpoint
+ if (buffer_locked(bh)) // false
+                            __block_write_full_page
+                             trylock_buffer(bh)
+                             test_clear_buffer_dirty(bh)
+ if (!buffer_dirty(bh))
+  __jbd2_journal_remove_checkpoint(jh)
+   if (buffer_write_io_error(bh)) // false
+                             >> bh IO error occurs <<
+ jbd2_cleanup_journal_tail
+  __jbd2_update_log_tail
+   jbd2_write_superblock
+   // The bh won't be replayed in next mount.
+, which could corrupt the ext4 image, fetch a reproducer in [Link].
+
+Since writeback process clears buffer dirty after locking buffer head,
+we can fix it by try locking buffer and check dirtiness while buffer is
+locked, the buffer head can be removed if it is neither dirty nor locked.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217490
+Fixes: 470decc613ab ("[PATCH] jbd2: initial copy of files from jbd")
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230606135928.434610-5-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_flow_table.h |  2 +-
- net/netfilter/nf_flow_table_core.c    | 16 +++++++++++++---
- 2 files changed, 14 insertions(+), 4 deletions(-)
+ fs/jbd2/checkpoint.c | 32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
-diff --git a/include/net/netfilter/nf_flow_table.h b/include/net/netfilter/nf_flow_table.h
-index 692d5955911c7..4a767b3d20b9d 100644
---- a/include/net/netfilter/nf_flow_table.h
-+++ b/include/net/netfilter/nf_flow_table.h
-@@ -275,7 +275,7 @@ nf_flow_table_offload_del_cb(struct nf_flowtable *flow_table,
- }
+diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
+index aac17c59b7ece..7898983c9fba0 100644
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -228,20 +228,6 @@ int jbd2_log_do_checkpoint(journal_t *journal)
+ 		jh = transaction->t_checkpoint_list;
+ 		bh = jh2bh(jh);
  
- void flow_offload_route_init(struct flow_offload *flow,
--			     const struct nf_flow_route *route);
-+			     struct nf_flow_route *route);
- 
- int flow_offload_add(struct nf_flowtable *flow_table, struct flow_offload *flow);
- void flow_offload_refresh(struct nf_flowtable *flow_table,
-diff --git a/net/netfilter/nf_flow_table_core.c b/net/netfilter/nf_flow_table_core.c
-index 78e4aba52b22a..2036c7a27075b 100644
---- a/net/netfilter/nf_flow_table_core.c
-+++ b/net/netfilter/nf_flow_table_core.c
-@@ -87,12 +87,22 @@ static u32 flow_offload_dst_cookie(struct flow_offload_tuple *flow_tuple)
- 	return 0;
- }
- 
-+static struct dst_entry *nft_route_dst_fetch(struct nf_flow_route *route,
-+					     enum flow_offload_tuple_dir dir)
-+{
-+	struct dst_entry *dst = route->tuple[dir].dst;
-+
-+	route->tuple[dir].dst = NULL;
-+
-+	return dst;
-+}
-+
- static int flow_offload_fill_route(struct flow_offload *flow,
--				   const struct nf_flow_route *route,
-+				   struct nf_flow_route *route,
- 				   enum flow_offload_tuple_dir dir)
- {
- 	struct flow_offload_tuple *flow_tuple = &flow->tuplehash[dir].tuple;
--	struct dst_entry *dst = route->tuple[dir].dst;
-+	struct dst_entry *dst = nft_route_dst_fetch(route, dir);
- 	int i, j = 0;
- 
- 	switch (flow_tuple->l3proto) {
-@@ -146,7 +156,7 @@ static void nft_flow_dst_release(struct flow_offload *flow,
- }
- 
- void flow_offload_route_init(struct flow_offload *flow,
--			    const struct nf_flow_route *route)
-+			     struct nf_flow_route *route)
- {
- 	flow_offload_fill_route(flow, route, FLOW_OFFLOAD_DIR_ORIGINAL);
- 	flow_offload_fill_route(flow, route, FLOW_OFFLOAD_DIR_REPLY);
+-		/*
+-		 * The buffer may be writing back, or flushing out in the
+-		 * last couple of cycles, or re-adding into a new transaction,
+-		 * need to check it again until it's unlocked.
+-		 */
+-		if (buffer_locked(bh)) {
+-			get_bh(bh);
+-			spin_unlock(&journal->j_list_lock);
+-			wait_on_buffer(bh);
+-			/* the journal_head may have gone by now */
+-			BUFFER_TRACE(bh, "brelse");
+-			__brelse(bh);
+-			goto retry;
+-		}
+ 		if (jh->b_transaction != NULL) {
+ 			transaction_t *t = jh->b_transaction;
+ 			tid_t tid = t->t_tid;
+@@ -276,7 +262,22 @@ int jbd2_log_do_checkpoint(journal_t *journal)
+ 			spin_lock(&journal->j_list_lock);
+ 			goto restart;
+ 		}
+-		if (!buffer_dirty(bh)) {
++		if (!trylock_buffer(bh)) {
++			/*
++			 * The buffer is locked, it may be writing back, or
++			 * flushing out in the last couple of cycles, or
++			 * re-adding into a new transaction, need to check
++			 * it again until it's unlocked.
++			 */
++			get_bh(bh);
++			spin_unlock(&journal->j_list_lock);
++			wait_on_buffer(bh);
++			/* the journal_head may have gone by now */
++			BUFFER_TRACE(bh, "brelse");
++			__brelse(bh);
++			goto retry;
++		} else if (!buffer_dirty(bh)) {
++			unlock_buffer(bh);
+ 			BUFFER_TRACE(bh, "remove from checkpoint");
+ 			/*
+ 			 * If the transaction was released or the checkpoint
+@@ -286,6 +287,7 @@ int jbd2_log_do_checkpoint(journal_t *journal)
+ 			    !transaction->t_checkpoint_list)
+ 				goto out;
+ 		} else {
++			unlock_buffer(bh);
+ 			/*
+ 			 * We are about to write the buffer, it could be
+ 			 * raced by some other transaction shrink or buffer
 -- 
 2.43.0
 
