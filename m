@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-24273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36EEA869574
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:02:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DF53869623
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:08:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 041C0B2EA54
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:47:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EFB51C21C7D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:08:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EABF0145FF9;
-	Tue, 27 Feb 2024 13:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9464513B2B8;
+	Tue, 27 Feb 2024 14:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WCLO7t46"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="085aUNzn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A477B1419AA;
-	Tue, 27 Feb 2024 13:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52AEA13AA43;
+	Tue, 27 Feb 2024 14:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041520; cv=none; b=ebpe/QqKtB/2IvlMWNZo0dJrV2XM29KNbhJSM1OkLrsEnynjWP20oi9YdMD6znibDqzd4clcydht1F4Gm2YzMv7NxZjCqJuUN4FOU2pcAxcARjj8psacC8mcttFI8zkNLJAw9matMCSVeEzx8Qen1hhgZ9fv137mmynB0OR6sPs=
+	t=1709042909; cv=none; b=fsmnIE2g1ZGeJPMXyN8DXcYRMiss0uQrDkQkp580PEdNeiRF9J4AZgCixKoukKx4NNb9wRc1MMNiNaZH2ude2pHPfkJDxNK/PU9vD4V1zQFCtkQvG5Jy1WhVKNtZGhTsM/zQUvZ7KpijGAq58M+NDk8NVoBP6rK1n793QdmuNCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041520; c=relaxed/simple;
-	bh=RsUrhUhjlpocM/7KjPpNSfww7UptShZ50wD+dzgX2tA=;
+	s=arc-20240116; t=1709042909; c=relaxed/simple;
+	bh=L3JIfm2UgTlEBDaOGn/vIXk3C2WHTnnc3+Zp1wgoJMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CxUWwPdlcQGYPpafna+c0JROMGHgoS4gpNRHXqpKmJ2Nra6F9P1b6hI6n3x+32ksxOZKJPF80RyrQVKttSMfPj7kaUiOyYmDZSUi28t+jof1WkXOCnmOlsGTcGmXqDvck3o6xtCH9hv9cOn9vVUMj/6vCCka944qbVF4F9wLNuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WCLO7t46; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AE01C433A6;
-	Tue, 27 Feb 2024 13:45:20 +0000 (UTC)
+	 MIME-Version; b=e0c8JCXffFUMBK3idDV3h7aWtV5Sd2rtIbAivKnAre5zNvc39QFxIsUIbaMizrKG/Y1+sg9suDw+ri1TlbpnYBvqx5LkAUNL4rt9zf2bvWeKTkCSmqg9MUFRS8e7j0twqqHQijCsZB+U6e0TqMS+FuIXXjGBLWNG+aDYTgf3xA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=085aUNzn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40F7C433F1;
+	Tue, 27 Feb 2024 14:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041520;
-	bh=RsUrhUhjlpocM/7KjPpNSfww7UptShZ50wD+dzgX2tA=;
+	s=korg; t=1709042909;
+	bh=L3JIfm2UgTlEBDaOGn/vIXk3C2WHTnnc3+Zp1wgoJMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WCLO7t46WTynNrdV4xATMx3fjyOFeoUBdRK6jpbXQbFDKdC4C52mnbm60atX1n9OJ
-	 X+KDeMa/h0nefuA15+iHM61KYc/3tU9cO/g1HzRxnOLusnVShp0Y5uH83H/zBkmN1H
-	 uMzwlhELKtSVP4HWqh3ElgZMVLBV8iCC6wq5ed40=
+	b=085aUNznP2yNu2wdep++K7eNmPON1BumLsONYGrb986julISei6P+sq4GZ1dF2/LJ
+	 +U8FFWdrTqhVh+b9is8A3bsB5VEeCRYg78xkufQ6R8C2bNJ6qWD7oOFoYjffW0Skzq
+	 CN/QusUPtzZgP012C8ZDItQ0wjjbhfjxrJc0cQXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, "GONG, Ruiqi" <gongruiqi1@huawei.com>,
-	Michal Hocko <mhocko@suse.com>, GONG@web.codeaurora.org
-Subject: [PATCH 4.19 06/52] memcg: add refcnt for pcpu stock to avoid UAF problem in drain_all_stock()
+	patches@lists.linux.dev,
+	syzbot <syzbot+7937ba6a50bdd00fffdf@syzkaller.appspotmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 165/245] debugobjects: Recheck debug_objects_enabled before reporting
 Date: Tue, 27 Feb 2024 14:25:53 +0100
-Message-ID: <20240227131548.736821200@linuxfoundation.org>
+Message-ID: <20240227131620.571925925@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
-References: <20240227131548.514622258@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,137 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "GONG, Ruiqi" <gongruiqi1@huawei.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-commit 1a3e1f40962c445b997151a542314f3c6097f8c3 upstream.
+[ Upstream commit 8b64d420fe2450f82848178506d3e3a0bd195539 ]
 
-NOTE: This is a partial backport since we only need the refcnt between
-memcg and stock to fix the problem stated below, and in this way
-multiple versions use the same code and align with each other.
+syzbot is reporting false a positive ODEBUG message immediately after
+ODEBUG was disabled due to OOM.
 
-There was a kernel panic happened on an in-house environment running
-3.10, and the same problem was reproduced on 4.19:
+  [ 1062.309646][T22911] ODEBUG: Out of memory. ODEBUG disabled
+  [ 1062.886755][ T5171] ------------[ cut here ]------------
+  [ 1062.892770][ T5171] ODEBUG: assert_init not available (active state 0) object: ffffc900056afb20 object type: timer_list hint: process_timeout+0x0/0x40
 
-general protection fault: 0000 [#1] SMP PTI
-CPU: 1 PID: 2085 Comm: bash Kdump: loaded Tainted: G             L    4.19.90+ #7
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.15.0-0-g2dd4b9b3f840-prebuilt.qemu.org 04/01/2014
-RIP: 0010 drain_all_stock+0xad/0x140
-Code: 00 00 4d 85 ff 74 2c 45 85 c9 74 27 4d 39 fc 74 42 41 80 bc 24 28 04 00 00 00 74 17 49 8b 04 24 49 8b 17 48 8b 88 90 02 00 00 <48> 39 8a 90 02 00 00 74 02 eb 86 48 63 88 3c 01 00 00 39 8a 3c 01
-RSP: 0018:ffffa7efc5813d70 EFLAGS: 00010202
-RAX: ffff8cb185548800 RBX: ffff8cb89f420160 RCX: ffff8cb1867b6000
-RDX: babababababababa RSI: 0000000000000001 RDI: 0000000000231876
-RBP: 0000000000000000 R08: 0000000000000415 R09: 0000000000000002
-R10: 0000000000000000 R11: 0000000000000001 R12: ffff8cb186f89040
-R13: 0000000000020160 R14: 0000000000000001 R15: ffff8cb186b27040
-FS:  00007f4a308d3740(0000) GS:ffff8cb89f440000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffe4d634a68 CR3: 000000010b022000 CR4: 00000000000006e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- mem_cgroup_force_empty_write+0x31/0xb0
- cgroup_file_write+0x60/0x140
- ? __check_object_size+0x136/0x147
- kernfs_fop_write+0x10e/0x190
- __vfs_write+0x37/0x1b0
- ? selinux_file_permission+0xe8/0x130
- ? security_file_permission+0x2e/0xb0
- vfs_write+0xb6/0x1a0
- ksys_write+0x57/0xd0
- do_syscall_64+0x63/0x250
- ? async_page_fault+0x8/0x30
- entry_SYSCALL_64_after_hwframe+0x5c/0xc1
-Modules linked in: ...
+  CPU 0 [ T5171]                CPU 1 [T22911]
+  --------------                --------------
+  debug_object_assert_init() {
+    if (!debug_objects_enabled)
+      return;
+    db = get_bucket(addr);
+                                lookup_object_or_alloc() {
+                                  debug_objects_enabled = 0;
+                                  return NULL;
+                                }
+                                debug_objects_oom() {
+                                  pr_warn("Out of memory. ODEBUG disabled\n");
+                                  // all buckets get emptied here, and
+                                }
+    lookup_object_or_alloc(addr, db, descr, false, true) {
+      // this bucket is already empty.
+      return ERR_PTR(-ENOENT);
+    }
+    // Emits false positive warning.
+    debug_print_object(&o, "assert_init");
+  }
 
-It is found that in case of stock->nr_pages == 0, the memcg on
-stock->cached could be freed due to its refcnt decreased to 0, which
-made stock->cached become a dangling pointer. It could cause a UAF
-problem in drain_all_stock() in the following concurrent scenario. Note
-that drain_all_stock() doesn't disable irq but only preemption.
+Recheck debug_object_enabled in debug_print_object() to avoid that.
 
-CPU1                             CPU2
-==============================================================================
-stock->cached = memcgA (freed)
-                                 drain_all_stock(memcgB)
-                                  rcu_read_lock()
-                                  memcg = CPU1's stock->cached (memcgA)
-                                  (interrupted)
-refill_stock(memcgC)
- drain_stock(memcgA)
- stock->cached = memcgC
- stock->nr_pages += xxx (> 0)
-                                  stock->nr_pages > 0
-                                  mem_cgroup_is_descendant(memcgA, memcgB) [UAF]
-                                  rcu_read_unlock()
-
-This problem is, unintentionally, fixed at 5.9, where commit
-1a3e1f40962c ("mm: memcontrol: decouple reference counting from page
-accounting") adds memcg refcnt for stock. Therefore affected LTS
-versions include 4.19 and 5.4.
-
-For 4.19, memcg's css offline process doesn't call drain_all_stock(). so
-it's easier for the released memcg to be left on the stock. For 5.4,
-although mem_cgroup_css_offline() does call drain_all_stock(), but the
-flushing could be skipped when stock->nr_pages happens to be 0, and
-besides the async draining could be delayed and take place after the UAF
-problem has happened.
-
-Fix this problem by adding (and decreasing) memcg's refcnt when memcg is
-put onto (and removed from) stock, just like how commit 1a3e1f40962c
-("mm: memcontrol: decouple reference counting from page accounting")
-does. After all, "being on the stock" is a kind of reference with
-regards to memcg. As such, it's guaranteed that a css on stock would not
-be freed.
-
-It's good to mention that refill_stock() is executed in an irq-disabled
-context, so the drain_stock() patched with css_put() would not actually
-free memcgA until the end of refill_stock(), since css_put() is an RCU
-free and it's still in grace period. For CPU2, the access to CPU1's
-stock->cached is protected by rcu_read_lock(), so in this case it gets
-either NULL from stock->cached or a memcgA that is still good.
-
-Cc: stable@vger.kernel.org      # 4.19 5.4
-Fixes: cdec2e4265df ("memcg: coalesce charging via percpu storage")
-Signed-off-by: GONG, Ruiqi <gongruiqi1@huawei.com>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot <syzbot+7937ba6a50bdd00fffdf@syzkaller.appspotmail.com>
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/492fe2ae-5141-d548-ebd5-62f5fe2e57f7@I-love.SAKURA.ne.jp
+Closes: https://syzkaller.appspot.com/bug?extid=7937ba6a50bdd00fffdf
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memcontrol.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ lib/debugobjects.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -2015,6 +2015,9 @@ static void drain_stock(struct memcg_sto
- {
- 	struct mem_cgroup *old = stock->cached;
+diff --git a/lib/debugobjects.c b/lib/debugobjects.c
+index 09fddc0ea6d39..3972e2123e554 100644
+--- a/lib/debugobjects.c
++++ b/lib/debugobjects.c
+@@ -501,6 +501,15 @@ static void debug_print_object(struct debug_obj *obj, char *msg)
+ 	const struct debug_obj_descr *descr = obj->descr;
+ 	static int limit;
  
-+	if (!old)
++	/*
++	 * Don't report if lookup_object_or_alloc() by the current thread
++	 * failed because lookup_object_or_alloc()/debug_objects_oom() by a
++	 * concurrent thread turned off debug_objects_enabled and cleared
++	 * the hash buckets.
++	 */
++	if (!debug_objects_enabled)
 +		return;
 +
- 	if (stock->nr_pages) {
- 		page_counter_uncharge(&old->memory, stock->nr_pages);
- 		if (do_memsw_account())
-@@ -2022,6 +2025,8 @@ static void drain_stock(struct memcg_sto
- 		css_put_many(&old->css, stock->nr_pages);
- 		stock->nr_pages = 0;
- 	}
-+
-+	css_put(&old->css);
- 	stock->cached = NULL;
- }
- 
-@@ -2057,6 +2062,7 @@ static void refill_stock(struct mem_cgro
- 	stock = this_cpu_ptr(&memcg_stock);
- 	if (stock->cached != memcg) { /* reset if necessary */
- 		drain_stock(stock);
-+		css_get(&memcg->css);
- 		stock->cached = memcg;
- 	}
- 	stock->nr_pages += nr_pages;
+ 	if (limit < 5 && descr != descr_test) {
+ 		void *hint = descr->debug_hint ?
+ 			descr->debug_hint(obj->object) : NULL;
+-- 
+2.43.0
+
 
 
 
