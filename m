@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-24923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA458696DC
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:16:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFDBF869639
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:09:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F39AA1F2E716
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:16:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DF2C1C21353
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:09:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05DAD1420D4;
-	Tue, 27 Feb 2024 14:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5FD13B7AB;
+	Tue, 27 Feb 2024 14:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FFZV9Xay"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a0LE63MS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85E41420A8;
-	Tue, 27 Feb 2024 14:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE21313B2B3;
+	Tue, 27 Feb 2024 14:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043365; cv=none; b=aJ5iQNMFhPSSPiqhFtE7cUDGENEai7p1GmMCvsAisf1vdreMouLjNCrVy/4/FMBheM9HSAE+RwrJl9kzfS+GYRo5k1h9qpUJ0p6wdCY3AspvydcGUE3bOeCZD5ZgIUaEnHk4e2V3s2npA8b5rx7sqignF8MLH49OVjM4PnbW8eE=
+	t=1709042962; cv=none; b=W2qQ4SfY5OqnfUerm4yEgU0SPgoleFiZUmlYKz50xpnf/3ipZqnasgR9+/dMj8wP/lrYpyq6Nl86uXGT7TbXTECt8KCX2VoQ5xdRu6QvdMC/GvCM0nBAsXgiqgdbxb9jW14TQc1ExWJoh70uctySYZGH6TGGkSjWTYV3bcFuUAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043365; c=relaxed/simple;
-	bh=Dov6moHgXzcn95PW2nVTeoMBtSCz4QyPs8JsuaYGvMo=;
+	s=arc-20240116; t=1709042962; c=relaxed/simple;
+	bh=CGECvdvkRrRbddeitHMsHeUM6/btlwZRmHl7Q6p47Z4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ddEL1W/4d0TpEXjTUKz2HIYeNwzlb/qKKgjtqaRpOe+gcp3n6rQ3WeXkcJdNiLnT0Agzh+1GBArQ/p4rmflPy14gNBsMJnS09Ikp9le3FyTjsfEP0C2BcLWed15u51WhN470KaipF5kNjOTW6hiS6crK/r5gK9SzghMZHJYI0zY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FFZV9Xay; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFDD6C433C7;
-	Tue, 27 Feb 2024 14:16:04 +0000 (UTC)
+	 MIME-Version; b=mMMWzM0ZOr+/P1v/dRxT9342RjbycYhFgSxoOcjd6XCktvyMcNAAB9RAfQmYmcky8WQgUGcg+6lyb4znqy6GCRK/Tdqk7w0T3U02XMxV/ygKH8xUoDtWvMsjDFmXs1eyEfV88bmgilwwb7JHkmVKh8HOEBD4kM1HWz3/HJHkpQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a0LE63MS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B37C433F1;
+	Tue, 27 Feb 2024 14:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043365;
-	bh=Dov6moHgXzcn95PW2nVTeoMBtSCz4QyPs8JsuaYGvMo=;
+	s=korg; t=1709042961;
+	bh=CGECvdvkRrRbddeitHMsHeUM6/btlwZRmHl7Q6p47Z4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FFZV9Xay+9pg9XR6UVYmk7rbFmTktjn5xfu6tBw988qS79axTugblF5gJLe59yNpy
-	 HbDwyfrsJun66qDMEbI65Ivfub7N5CRAcAlUucpcqa7gkJqf/N1PSttJ+2ctZzcJhE
-	 ZEhGkaoISNQ+7vN1fngSSuZyQQWEUOQmr1lESQrE=
+	b=a0LE63MStltd/nCWhmCdaDqxvJgYTjittMbhhy1QIktztHWmaJBsAyNoHaO0Qltqd
+	 skivvr/uxKtVpI6KvkcDjreTF0apOhPNqJQznTLBVNgJMsCjjU3optCEi3h9Y5cc99
+	 kUG1PqtVvDcAr/S+LGYq1/lRSvwRbH9QAsm6SW2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 082/195] pmdomain: renesas: r8a77980-sysc: CR7 must be always on
+Subject: [PATCH 5.15 155/245] PM: core: Redefine pm_ptr() macro
 Date: Tue, 27 Feb 2024 14:25:43 +0100
-Message-ID: <20240227131613.195742632@linuxfoundation.org>
+Message-ID: <20240227131620.252855947@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +62,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Paul Cercueil <paul@crapouillou.net>
 
-[ Upstream commit f0e4a1356466ec1858ae8e5c70bea2ce5e55008b ]
+[ Upstream commit c06ef740d401d0f4ab188882bf6f8d9cf0f75eaf ]
 
-The power domain containing the Cortex-R7 CPU core on the R-Car V3H SoC
-must always be in power-on state, unlike on other SoCs in the R-Car Gen3
-family.  See Table 9.4 "Power domains" in the R-Car Series, 3rd
-Generation Hardware User’s Manual Rev.1.00 and later.
+The pm_ptr() macro was previously conditionally defined, according to
+the value of the CONFIG_PM option. This meant that the pointed structure
+was either referenced (if CONFIG_PM was set), or never referenced (if
+CONFIG_PM was not set), causing it to be detected as unused by the
+compiler.
 
-Fix this by marking the domain as a CPU domain without control
-registers, so the driver will not touch it.
+This worked fine, but required the __maybe_unused compiler attribute to
+be used to every symbol pointed to by a pointer wrapped with pm_ptr().
 
-Fixes: 41d6d8bd8ae9 ("soc: renesas: rcar-sysc: add R8A77980 support")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/fdad9a86132d53ecddf72b734dac406915c4edc0.1705076735.git.geert+renesas@glider.be
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+We can do better. With this change, the pm_ptr() is now defined the
+same, independently of the value of CONFIG_PM. It now uses the (?:)
+ternary operator to conditionally resolve to its argument. Since the
+condition is known at compile time, the compiler will then choose to
+discard the unused symbols, which won't need to be tagged with
+__maybe_unused anymore.
+
+This pm_ptr() macro is usually used with pointers to dev_pm_ops
+structures created with SIMPLE_DEV_PM_OPS() or similar macros. These do
+use a __maybe_unused flag, which is now useless with this change, so it
+later can be removed. However in the meantime it causes no harm, and all
+the drivers still compile fine with the new pm_ptr() macro.
+
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 18ab69c8ca56 ("Input: iqs269a - do not poll during suspend or resume")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/renesas/r8a77980-sysc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/pm.h | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/soc/renesas/r8a77980-sysc.c b/drivers/soc/renesas/r8a77980-sysc.c
-index 39ca84a67daad..621e411fc9991 100644
---- a/drivers/soc/renesas/r8a77980-sysc.c
-+++ b/drivers/soc/renesas/r8a77980-sysc.c
-@@ -25,7 +25,8 @@ static const struct rcar_sysc_area r8a77980_areas[] __initconst = {
- 	  PD_CPU_NOCR },
- 	{ "ca53-cpu3",	0x200, 3, R8A77980_PD_CA53_CPU3, R8A77980_PD_CA53_SCU,
- 	  PD_CPU_NOCR },
--	{ "cr7",	0x240, 0, R8A77980_PD_CR7,	R8A77980_PD_ALWAYS_ON },
-+	{ "cr7",	0x240, 0, R8A77980_PD_CR7,	R8A77980_PD_ALWAYS_ON,
-+	  PD_CPU_NOCR },
- 	{ "a3ir",	0x180, 0, R8A77980_PD_A3IR,	R8A77980_PD_ALWAYS_ON },
- 	{ "a2ir0",	0x400, 0, R8A77980_PD_A2IR0,	R8A77980_PD_A3IR },
- 	{ "a2ir1",	0x400, 1, R8A77980_PD_A2IR1,	R8A77980_PD_A3IR },
+diff --git a/include/linux/pm.h b/include/linux/pm.h
+index 1d8209c09686c..b88ac7dcf2a20 100644
+--- a/include/linux/pm.h
++++ b/include/linux/pm.h
+@@ -373,11 +373,7 @@ const struct dev_pm_ops __maybe_unused name = { \
+ 	SET_RUNTIME_PM_OPS(suspend_fn, resume_fn, idle_fn) \
+ }
+ 
+-#ifdef CONFIG_PM
+-#define pm_ptr(_ptr) (_ptr)
+-#else
+-#define pm_ptr(_ptr) NULL
+-#endif
++#define pm_ptr(_ptr) PTR_IF(IS_ENABLED(CONFIG_PM), (_ptr))
+ 
+ /*
+  * PM_EVENT_ messages
 -- 
 2.43.0
 
