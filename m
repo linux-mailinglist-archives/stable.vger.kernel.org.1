@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-25056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A990086978A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:22:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7985F869871
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:33:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D94E91C246E3
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:22:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19913B2F01F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:29:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A011F1419AE;
-	Tue, 27 Feb 2024 14:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29EAB1448C3;
+	Tue, 27 Feb 2024 14:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vR6gyPr7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DAaQgbxg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D17E13B2B8;
-	Tue, 27 Feb 2024 14:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCAEC13DBBC;
+	Tue, 27 Feb 2024 14:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043738; cv=none; b=WPho1jrSuVoyXSd7iRT0Q3/vlx1vnEAn/qO97jUbSRK5jES6YG/aLOrLLPnXXeZGW6oSPzDyHIGlIj+r7lPqGEHkywAUGURgdHtBde1VjNbEY9dkRo5E8Uvggu0CVMiAbo80Gse931oo+TnRePoDv30ueDMxuhsKfqnPvAI0mIk=
+	t=1709044130; cv=none; b=W63X4q4wS/aCS5TEbp/YkOPRIGjV6j2pnxmVhpODZEtZPc7BZyM0DzFUIdLiSdgGTCW4Dj+fXXLyqfXnCeNGpbW7teEMMHuxUcTaAMIxBYPqsNd67ryIViP8vrWugOIGS2T8gwmJC5f56xf0bDdyDTuhT+o/WVMB+bQ4HNG+/KM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043738; c=relaxed/simple;
-	bh=BZmh7d8bDUn3k+VS6Lc4qBTYjqNMCgsdfz1FukP1XyE=;
+	s=arc-20240116; t=1709044130; c=relaxed/simple;
+	bh=XxWImPIAIdeTry7Tzis4HlxE6ETkgqiieR7j8aGBodQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fik8jRn1yZ0e3rpJ8evcc3Fy//t9zRiRCmrepy1xxqqO70YCvem3Oza40isziJoZFvdbCDtQbLaMSpf9krsLquGP+R6Rf2a9BfJCL4NWLtAM/382+yjxefs7Ig/+sUaicTbRWWwcsZn+KS0cqfXTdyFYmUjFFxPhOaH1ER4zWGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vR6gyPr7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B4BBC433C7;
-	Tue, 27 Feb 2024 14:22:17 +0000 (UTC)
+	 MIME-Version; b=O/jdMYw2pBu4Ta82P3xO4C1V+anBZ/ZTkAMcRcb2ClvFrJEartTQYL4jxekxyMoU2IV5OhYXYk773RK2hm7eJruj2DGVikj3TNaZKgyHprztRQ+3kyWnH4TEHVGTsF8KnjVZY3HRbpxXLxL1pTg/K9EUVXWQsjOmnPqi3tUb7yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DAaQgbxg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A39DC433C7;
+	Tue, 27 Feb 2024 14:28:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043737;
-	bh=BZmh7d8bDUn3k+VS6Lc4qBTYjqNMCgsdfz1FukP1XyE=;
+	s=korg; t=1709044130;
+	bh=XxWImPIAIdeTry7Tzis4HlxE6ETkgqiieR7j8aGBodQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vR6gyPr7EBXrgSBqGkDdnM9nDaNB7XlZG04doV3WkvlSqgcj+O5vkwFR6YNtCYFQG
-	 RqpvN38FimaoPjXTtvRSR4QjVSRWH88HrKHgnKvUZqiU9ga7boH6w6tFYqvRHi5g5Q
-	 +Dclde913/tZUdBe6s/Gq9BufIyayrCj+0mg94eQ=
+	b=DAaQgbxgcxFwyJQwM9fFyQBSO/TCfEqKwZXV/FA7Be1SiU/C1si1J9IeS88q8+9BA
+	 867+ghxmD1YiAfZCY1IsybkaSh9fBitc/okcjNLQMZE/DjU3AJpVmp6vQnCRL1hu3M
+	 IRQEtuYpjmGH1D+gVSXKWIy9KAhSo722CZWKk2y8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Conrad Kostecki <conikost@gentoo.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Niklas Cassel <cassel@kernel.org>,
+	Xiaolei Wang <xiaolei.wang@windriver.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 19/84] ahci: asm1166: correct count of reported ports
+Subject: [PATCH 5.10 045/122] ARM: dts: imx: Set default tuning step for imx6sx usdhc
 Date: Tue, 27 Feb 2024 14:26:46 +0100
-Message-ID: <20240227131553.493710864@linuxfoundation.org>
+Message-ID: <20240227131600.185411393@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
+References: <20240227131558.694096204@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Conrad Kostecki <conikost@gentoo.org>
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-[ Upstream commit 0077a504e1a4468669fd2e011108db49133db56e ]
+[ Upstream commit 0a2b96e42a0284c4fc03022236f656a085ca714a ]
 
-The ASM1166 SATA host controller always reports wrongly,
-that it has 32 ports. But in reality, it only has six ports.
+If the tuning step is not set, the tuning step is set to 1.
+For some sd cards, the following Tuning timeout will occur.
 
-This seems to be a hardware issue, as all tested ASM1166
-SATA host controllers reports such high count of ports.
+Tuning failed, falling back to fixed sampling clock
 
-Example output: ahci 0000:09:00.0: AHCI 0001.0301
-32 slots 32 ports 6 Gbps 0xffffff3f impl SATA mode.
+So set the default tuning step. This refers to the NXP vendor's
+commit below:
 
-By adjusting the port_map, the count is limited to six ports.
+https://github.com/nxp-imx/linux-imx/blob/lf-6.1.y/
+arch/arm/boot/dts/imx6sx.dtsi#L1108-L1109
 
-New output: ahci 0000:09:00.0: AHCI 0001.0301
-32 slots 32 ports 6 Gbps 0x3f impl SATA mode.
-
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=211873
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218346
-Signed-off-by: Conrad Kostecki <conikost@gentoo.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Fixes: 1e336aa0c025 ("mmc: sdhci-esdhc-imx: correct the tuning start tap and step setting")
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm/boot/dts/imx6sx.dtsi | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index aa35d1941d1fc..5db3dc45bdc4e 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -618,6 +618,11 @@ MODULE_PARM_DESC(mobile_lpm_policy, "Default LPM policy for mobile chipsets");
- static void ahci_pci_save_initial_config(struct pci_dev *pdev,
- 					 struct ahci_host_priv *hpriv)
- {
-+	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA && pdev->device == 0x1166) {
-+		dev_info(&pdev->dev, "ASM1166 has only six ports\n");
-+		hpriv->saved_port_map = 0x3f;
-+	}
-+
- 	if (pdev->vendor == PCI_VENDOR_ID_JMICRON && pdev->device == 0x2361) {
- 		dev_info(&pdev->dev, "JMB361 has only one port\n");
- 		hpriv->force_port_map = 1;
+diff --git a/arch/arm/boot/dts/imx6sx.dtsi b/arch/arm/boot/dts/imx6sx.dtsi
+index 08332f70a8dc2..51491b7418e40 100644
+--- a/arch/arm/boot/dts/imx6sx.dtsi
++++ b/arch/arm/boot/dts/imx6sx.dtsi
+@@ -981,6 +981,8 @@ usdhc1: mmc@2190000 {
+ 					 <&clks IMX6SX_CLK_USDHC1>;
+ 				clock-names = "ipg", "ahb", "per";
+ 				bus-width = <4>;
++				fsl,tuning-start-tap = <20>;
++				fsl,tuning-step= <2>;
+ 				status = "disabled";
+ 			};
+ 
+@@ -993,6 +995,8 @@ usdhc2: mmc@2194000 {
+ 					 <&clks IMX6SX_CLK_USDHC2>;
+ 				clock-names = "ipg", "ahb", "per";
+ 				bus-width = <4>;
++				fsl,tuning-start-tap = <20>;
++				fsl,tuning-step= <2>;
+ 				status = "disabled";
+ 			};
+ 
+@@ -1005,6 +1009,8 @@ usdhc3: mmc@2198000 {
+ 					 <&clks IMX6SX_CLK_USDHC3>;
+ 				clock-names = "ipg", "ahb", "per";
+ 				bus-width = <4>;
++				fsl,tuning-start-tap = <20>;
++				fsl,tuning-step= <2>;
+ 				status = "disabled";
+ 			};
+ 
 -- 
 2.43.0
 
