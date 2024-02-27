@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A8588693E9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34C42869332
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:42:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BADB1C22772
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB82D28B5F4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:42:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E054146903;
-	Tue, 27 Feb 2024 13:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51EF713B7AB;
+	Tue, 27 Feb 2024 13:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GpL5ApFe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KLWh/beK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4BA13AA2F;
-	Tue, 27 Feb 2024 13:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122ED2F2D;
+	Tue, 27 Feb 2024 13:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041660; cv=none; b=uQfPO/LS+3tvzuptOzVtYlW2xtjyzmUYkaFNjd4rTQ7lEHesd1+6vNPv8ce+yGeSk6zAxpyQhk8HV6YzGZrgavUgr0hzjhUmhwS0Gn7S2eZnaSLJzrXvYoHb7r9E1dSWn0gwFUyM/RKPXxzRRd1vgHDZf/1099CyujtLoFwx9Sw=
+	t=1709041353; cv=none; b=ZlZJEmCFhySOZ7x3FEFJSYKW2Eb9q7fsmPvoAhDItZNnshqEvKGnjLkXxwUZXqOmbi+qBf/o1je0AZlfN81iJgvOMwi1iQ0mP8pzkkSF5OJMHbeEun9BYLHqlSgwTdLPP924jTZUTDCRLoGcJnpHVuJ85qpg/X4GOQLbUf/26V0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041660; c=relaxed/simple;
-	bh=SPpYxrQ15L9B/MMPtWjFwaUNuWGlFkEFb5c7OIwWrkM=;
+	s=arc-20240116; t=1709041353; c=relaxed/simple;
+	bh=7wFoA43hpJi0NKdPGRvmfCDChyxo/eqGYFpV88+Cv3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QOq/wGLYtd7zjhShUo5OA4vWql16YRy8PUqfI99vP6t6e56ocw+63IRGkIusVwusIZjsYRx4dSGPEq5m6Ia3qlgoorJQgy2xHVizFnlXz6WkDWHN7QB2TaeL7nZSXYA8XO8e2QiDwJ/KtCJldX0u2ItpBEtUpvbTwRIYUuShbyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GpL5ApFe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC8A5C433F1;
-	Tue, 27 Feb 2024 13:47:39 +0000 (UTC)
+	 MIME-Version; b=Bi11TiUWNA2bzbyUFhfrqvtVz9nxqUaZhQ5GkHCfOeUqKA45/tVlmGP7pcAZCm3yCLtaK9/imCFhPJ70H2cz1BD+85tjMG0vbH2hJDxodAIBNhLNfq2JeKs6KKhLls9LRm5Pk8K8eDEu55mIX0HcopVsFGfIc2q0akE/FfKAps4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KLWh/beK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9515AC43390;
+	Tue, 27 Feb 2024 13:42:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041660;
-	bh=SPpYxrQ15L9B/MMPtWjFwaUNuWGlFkEFb5c7OIwWrkM=;
+	s=korg; t=1709041353;
+	bh=7wFoA43hpJi0NKdPGRvmfCDChyxo/eqGYFpV88+Cv3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GpL5ApFe0HkMGpIskvc3w/+yICqBIqSfZtQfD7lTOLmv+cXxljUezybGYTL7+2V2b
-	 2z3JeACCrUwpMavX6iHsV3UuJ1gNdf3/x8HVO2Q+Hzj0I2iuzirfa34y899NspamMF
-	 vhXajCLyaHUEloA6A1PzCH9Gx3NHT1OGgMFcarD4=
+	b=KLWh/beKnlHYOmLanffeQ+R3kSsDa0Md9cHC7M0ddgPYmxbRywZIgEfehY8fYX4rg
+	 bAQzWIOFeT80DetPhWnA2qPLvXPZ7kPoUYtajwfMAZ/pLhZvSma2+yV7LgkJJMFTeF
+	 NXZp1XrwPKkI+jddTr4ZxQK6J+lRTu9IgN6i1ZvY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Conrad Kostecki <conikost@gentoo.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Niklas Cassel <cassel@kernel.org>,
+	Daniil Dulov <d.dulov@aladdin.ru>,
+	David Howells <dhowells@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 026/299] ahci: asm1166: correct count of reported ports
+Subject: [PATCH 6.7 279/334] afs: Increase buffer size in afs_update_volume_status()
 Date: Tue, 27 Feb 2024 14:22:17 +0100
-Message-ID: <20240227131626.666263794@linuxfoundation.org>
+Message-ID: <20240227131639.994994006@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Conrad Kostecki <conikost@gentoo.org>
+From: Daniil Dulov <d.dulov@aladdin.ru>
 
-[ Upstream commit 0077a504e1a4468669fd2e011108db49133db56e ]
+[ Upstream commit 6ea38e2aeb72349cad50e38899b0ba6fbcb2af3d ]
 
-The ASM1166 SATA host controller always reports wrongly,
-that it has 32 ports. But in reality, it only has six ports.
+The max length of volume->vid value is 20 characters.
+So increase idbuf[] size up to 24 to avoid overflow.
 
-This seems to be a hardware issue, as all tested ASM1166
-SATA host controllers reports such high count of ports.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Example output: ahci 0000:09:00.0: AHCI 0001.0301
-32 slots 32 ports 6 Gbps 0xffffff3f impl SATA mode.
+[DH: Actually, it's 20 + NUL, so increase it to 24 and use snprintf()]
 
-By adjusting the port_map, the count is limited to six ports.
-
-New output: ahci 0000:09:00.0: AHCI 0001.0301
-32 slots 32 ports 6 Gbps 0x3f impl SATA mode.
-
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=211873
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218346
-Signed-off-by: Conrad Kostecki <conikost@gentoo.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Fixes: d2ddc776a458 ("afs: Overhaul volume and server record caching and fileserver rotation")
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20240211150442.3416-1-d.dulov@aladdin.ru/ # v1
+Link: https://lore.kernel.org/r/20240212083347.10742-1-d.dulov@aladdin.ru/ # v2
+Link: https://lore.kernel.org/r/20240219143906.138346-3-dhowells@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/afs/volume.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 08745e7db8201..2b8f0c3c3879a 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -657,6 +657,11 @@ MODULE_PARM_DESC(mobile_lpm_policy, "Default LPM policy for mobile chipsets");
- static void ahci_pci_save_initial_config(struct pci_dev *pdev,
- 					 struct ahci_host_priv *hpriv)
+diff --git a/fs/afs/volume.c b/fs/afs/volume.c
+index 115c081a8e2ce..c028598a903c9 100644
+--- a/fs/afs/volume.c
++++ b/fs/afs/volume.c
+@@ -337,7 +337,7 @@ static int afs_update_volume_status(struct afs_volume *volume, struct key *key)
  {
-+	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA && pdev->device == 0x1166) {
-+		dev_info(&pdev->dev, "ASM1166 has only six ports\n");
-+		hpriv->saved_port_map = 0x3f;
-+	}
-+
- 	if (pdev->vendor == PCI_VENDOR_ID_JMICRON && pdev->device == 0x2361) {
- 		dev_info(&pdev->dev, "JMB361 has only one port\n");
- 		hpriv->saved_port_map = 1;
+ 	struct afs_server_list *new, *old, *discard;
+ 	struct afs_vldb_entry *vldb;
+-	char idbuf[16];
++	char idbuf[24];
+ 	int ret, idsz;
+ 
+ 	_enter("");
+@@ -345,7 +345,7 @@ static int afs_update_volume_status(struct afs_volume *volume, struct key *key)
+ 	/* We look up an ID by passing it as a decimal string in the
+ 	 * operation's name parameter.
+ 	 */
+-	idsz = sprintf(idbuf, "%llu", volume->vid);
++	idsz = snprintf(idbuf, sizeof(idbuf), "%llu", volume->vid);
+ 
+ 	vldb = afs_vl_lookup_vldb(volume->cell, key, idbuf, idsz);
+ 	if (IS_ERR(vldb)) {
 -- 
 2.43.0
 
