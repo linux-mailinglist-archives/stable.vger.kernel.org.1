@@ -1,65 +1,55 @@
-Return-Path: <stable+bounces-24232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A82F869343
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:43:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6820286941A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:51:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFDAA1F2500D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:43:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A4171C24B5E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:51:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6C72F2D;
-	Tue, 27 Feb 2024 13:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0256813B78A;
+	Tue, 27 Feb 2024 13:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dZzzP1IM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQSvDpw6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A955813B2B4;
-	Tue, 27 Feb 2024 13:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F96013A885;
+	Tue, 27 Feb 2024 13:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041399; cv=none; b=szJ0rCge0zlciG57WYBmfzQY8N6GFO+6fT3pcD/4MtJKMpHK5EoY4CInZt/DfL2ebdF65onDixNfHBvpzy3EBLfctFRKb2kuQNbT01S37hGt707tSSQZsVPLHFZaEi+E6hmxw2o+vdgpI5rSZLm26td94273wTI5jw3S75ja0rY=
+	t=1709041796; cv=none; b=g9SLvudbxIDXjviYqmHjI7tS3luaUGHlu4tFy91aDOzPYDCPUbgaq84SdWMOwf4X+ZcvcnTbJGsUHC9dCRT9rAW+7FVu5lRXxc00upjInhjbixoXg6REdqhDJYoobiK2m8Bx82B/Q5HV4lgxtueK4p2IgmYW5qVhxRj7U4VUsT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041399; c=relaxed/simple;
-	bh=fr58hyORh0N1DrI8TqY6TA2Wd6wQGXxlUMAlaEzZKjk=;
+	s=arc-20240116; t=1709041796; c=relaxed/simple;
+	bh=JzHtKzLcMO8JsBS3fvQSlkJAFKPydNlMnBidpxoqrdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nt3SLDYyCzd0gt6TCLjFuKN1th9udjRaB8ubMXvqNS9MtjcNgLJc5gU+BENXMFNf0Dh4UVUhRcoaA/fgsmk3c6holtJQNO69SnB5seohPXgBw4ACjzwFt+YV7hKO2R0yhl1m4a6FbC2mQ9LXDXyh+i0akHT0j46eKhXcPZwoiDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dZzzP1IM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 071A3C433F1;
-	Tue, 27 Feb 2024 13:43:19 +0000 (UTC)
+	 MIME-Version; b=RXSScdWozq12380p6GxoS/30p98YeKzK1RltO1jJbXchwa1x1hpmAr34yEM8a39+fm4ZY3OdNg/qdcoVkbWDnCQ43lw0eYqj9KXHjXn9O9BdOId7fwAMsqQ+KSrvJ4kfOLX7OLCjyY1QeZH6+nBHgtKbqUppFIO50C4BL+PV238=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQSvDpw6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD1CC433C7;
+	Tue, 27 Feb 2024 13:49:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041399;
-	bh=fr58hyORh0N1DrI8TqY6TA2Wd6wQGXxlUMAlaEzZKjk=;
+	s=korg; t=1709041796;
+	bh=JzHtKzLcMO8JsBS3fvQSlkJAFKPydNlMnBidpxoqrdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dZzzP1IMMeEn5pt2y6KVueKy2p/oxpscMCtLRUMdo/lSMdrODpuch6c0wEjiC3VFF
-	 cGXwV4ar8tnG4bbIbmsNVo0tbzF8+r8KX7cHsudC1bnM6UBVXUN4in7flyLv44cTp7
-	 K6Njd32vqte0omAsJsAnKxNFg/mssn7lKS3x58N4=
+	b=yQSvDpw6/H+Tz7WYCkK9AJyaqy9t1YShvSZcXgizZehEQY76/W2Qtx+dmixecktbG
+	 RysREsZJo9f8xgVu9fkJwsJcRIK6f6nmnW4yzlnmLco/KUbZW4obHrWScbRZbV/tXO
+	 zZwjWfjS4MXEuEmpxjWI0e9iYb10dSKQfddm0CiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"JinZe.Xu" <jinze.xu@amd.com>,
-	Hersen Wu <hersenxs.wu@amd.com>,
-	Josip Pavic <josip.pavic@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Qingqing Zhuo <Qingqing.Zhuo@amd.com>,
-	Harry Wentland <Harry.Wentland@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 326/334] drm/amd/display: Fix potential null pointer dereference in dc_dmub_srv
+Subject: [PATCH 6.6 073/299] fs/ntfs3: Correct hard links updating when dealing with DOS names
 Date: Tue, 27 Feb 2024 14:23:04 +0100
-Message-ID: <20240227131641.642322567@linuxfoundation.org>
+Message-ID: <20240227131628.290100693@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,89 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit d2b48f340d9e4a8fbeb1cdc84cd8da6ad143a907 ]
+[ Upstream commit 1918c10e137eae266b8eb0ab1cc14421dcb0e3e2 ]
 
-Fixes potential null pointer dereference warnings in the
-dc_dmub_srv_cmd_list_queue_execute() and dc_dmub_srv_is_hw_pwr_up()
-functions.
-
-In both functions, the 'dc_dmub_srv' variable was being dereferenced
-before it was checked for null. This could lead to a null pointer
-dereference if 'dc_dmub_srv' is null. The fix is to check if
-'dc_dmub_srv' is null before dereferencing it.
-
-Thus moving the null checks for 'dc_dmub_srv' to the beginning of the
-functions to ensure that 'dc_dmub_srv' is not null when it is
-dereferenced.
-
-Found by smatch & thus fixing the below:
-drivers/gpu/drm/amd/amdgpu/../display/dc/dc_dmub_srv.c:133 dc_dmub_srv_cmd_list_queue_execute() warn: variable dereferenced before check 'dc_dmub_srv' (see line 128)
-drivers/gpu/drm/amd/amdgpu/../display/dc/dc_dmub_srv.c:1167 dc_dmub_srv_is_hw_pwr_up() warn: variable dereferenced before check 'dc_dmub_srv' (see line 1164)
-
-Fixes: 028bac583449 ("drm/amd/display: decouple dmcub execution to reduce lock granularity")
-Fixes: 65138eb72e1f ("drm/amd/display: Add DCN35 DMUB")
-Cc: JinZe.Xu <jinze.xu@amd.com>
-Cc: Hersen Wu <hersenxs.wu@amd.com>
-Cc: Josip Pavic <josip.pavic@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Qingqing Zhuo <Qingqing.Zhuo@amd.com>
-Cc: Harry Wentland <Harry.Wentland@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/ntfs3/record.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
-index 61d1b4eadbee3..05b3433cbb0b4 100644
---- a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
-+++ b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
-@@ -124,7 +124,7 @@ bool dc_dmub_srv_cmd_list_queue_execute(struct dc_dmub_srv *dc_dmub_srv,
- 		unsigned int count,
- 		union dmub_rb_cmd *cmd_list)
- {
--	struct dc_context *dc_ctx = dc_dmub_srv->ctx;
-+	struct dc_context *dc_ctx;
- 	struct dmub_srv *dmub;
- 	enum dmub_status status;
- 	int i;
-@@ -132,6 +132,7 @@ bool dc_dmub_srv_cmd_list_queue_execute(struct dc_dmub_srv *dc_dmub_srv,
- 	if (!dc_dmub_srv || !dc_dmub_srv->dmub)
+diff --git a/fs/ntfs3/record.c b/fs/ntfs3/record.c
+index 53629b1f65e99..7b6423584eaee 100644
+--- a/fs/ntfs3/record.c
++++ b/fs/ntfs3/record.c
+@@ -535,8 +535,20 @@ bool mi_remove_attr(struct ntfs_inode *ni, struct mft_inode *mi,
  		return false;
  
-+	dc_ctx = dc_dmub_srv->ctx;
- 	dmub = dc_dmub_srv->dmub;
+ 	if (ni && is_attr_indexed(attr)) {
+-		le16_add_cpu(&ni->mi.mrec->hard_links, -1);
+-		ni->mi.dirty = true;
++		u16 links = le16_to_cpu(ni->mi.mrec->hard_links);
++		struct ATTR_FILE_NAME *fname =
++			attr->type != ATTR_NAME ?
++				NULL :
++				resident_data_ex(attr,
++						 SIZEOF_ATTRIBUTE_FILENAME);
++		if (fname && fname->type == FILE_NAME_DOS) {
++			/* Do not decrease links count deleting DOS name. */
++		} else if (!links) {
++			/* minor error. Not critical. */
++		} else {
++			ni->mi.mrec->hard_links = cpu_to_le16(links - 1);
++			ni->mi.dirty = true;
++		}
+ 	}
  
- 	for (i = 0 ; i < count; i++) {
-@@ -1129,7 +1130,7 @@ void dc_dmub_srv_subvp_save_surf_addr(const struct dc_dmub_srv *dc_dmub_srv, con
- 
- bool dc_dmub_srv_is_hw_pwr_up(struct dc_dmub_srv *dc_dmub_srv, bool wait)
- {
--	struct dc_context *dc_ctx = dc_dmub_srv->ctx;
-+	struct dc_context *dc_ctx;
- 	enum dmub_status status;
- 
- 	if (!dc_dmub_srv || !dc_dmub_srv->dmub)
-@@ -1138,6 +1139,8 @@ bool dc_dmub_srv_is_hw_pwr_up(struct dc_dmub_srv *dc_dmub_srv, bool wait)
- 	if (dc_dmub_srv->ctx->dc->debug.dmcub_emulation)
- 		return true;
- 
-+	dc_ctx = dc_dmub_srv->ctx;
-+
- 	if (wait) {
- 		status = dmub_srv_wait_for_hw_pwr_up(dc_dmub_srv->dmub, 500000);
- 		if (status != DMUB_STATUS_OK) {
+ 	used -= asize;
 -- 
 2.43.0
 
