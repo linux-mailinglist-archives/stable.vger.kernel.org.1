@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-24725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2DEC869600
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 301818696C9
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A60DB25AF3
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D470728293F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E58FB1419A1;
-	Tue, 27 Feb 2024 14:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3AD51420DC;
+	Tue, 27 Feb 2024 14:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7sfOWYU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="saXRkmJs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC2113B2B4;
-	Tue, 27 Feb 2024 14:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A174A13B29C;
+	Tue, 27 Feb 2024 14:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042817; cv=none; b=ACaCq/4fsAxkS/hG7XcIn7BdwR4vKQWn+R5Wiw+DOyy9Wo+LYQMtF4lfo+JuXVY/kzWvIuK1ZqS3/Q1vxym8QiOBvtnsMIRWEfWEuL8ABLp/5Nfs/jEj1JpbdmSm0QZoxvGBCWPzV2dhkG0tgtjxH2Mdwugh5Vaaj+/45ZGZfZQ=
+	t=1709043304; cv=none; b=CMTAElJRsoIL/zbOuPy+fq5r7Vc2F8/3XT7vKA6jCIIWAiSx/yCI7UVcvXvgYCyt+8mfUivdFNLOg22qqGlM2eGapqrOCd7xO5xjWcqwcXzwE2Svq4dq5CD3ykqZSAYo+Ri1DXWYuzb5DDnXseaNZsZtTDrtnpfvPaMyK9Ocn54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042817; c=relaxed/simple;
-	bh=JKa5lZGZ46cUZNt+JlhtoTjpb3Wpy5bI/CxNwfHF95s=;
+	s=arc-20240116; t=1709043304; c=relaxed/simple;
+	bh=BgJ1K2YcIamc3YaaUhLY9wxN376E3CTUPrPYcAlNN2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gO6Gv/pw/Y3f8x+GOrcSBTqwyjtzt2Y6pNNSkqvHTsTvllKA41cqJa5BVZE29rjkAves+FovQ8EprCFQRzNA41XKVDcibEEXlnSt05iYFWy3mab6Vv+4sPebNnFOj4fws4iwvSRABy1vHH4P9qfZq0mghCDxPPcWFaEWTZOYX6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7sfOWYU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28681C433C7;
-	Tue, 27 Feb 2024 14:06:56 +0000 (UTC)
+	 MIME-Version; b=Qzt8GDG9byXj3rrj5oKLu4PcsY7070Rh3j9j+B1OM+xYhK7DDy+X1yfpdRUSF/F2E9gjHlDjVEAI53umEtvFRmgkOmYwUUXFpWT3WTeCaZgkGvsXyOyLz0zOTtV1KJ5v4rKBITZUnMahNIJMDMUrcTLriAwJr9/AstLJQQD8QEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=saXRkmJs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29D25C433C7;
+	Tue, 27 Feb 2024 14:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042817;
-	bh=JKa5lZGZ46cUZNt+JlhtoTjpb3Wpy5bI/CxNwfHF95s=;
+	s=korg; t=1709043304;
+	bh=BgJ1K2YcIamc3YaaUhLY9wxN376E3CTUPrPYcAlNN2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O7sfOWYUncrhil6GY7O6R51G6pEPgrwahKMsGbPdyO7fCCkdxUIhR6NHmeKEAViaT
-	 AH6skHCHRKDEfE5crEn48OOz3x7wLoVbEHACes5mDiFQZB4oeZJ66ajUyZtHUu7w6E
-	 ZTyxjKW8WLWrekx4bzM+HaTU6ldZeUATgvJSTW2k=
+	b=saXRkmJs7vTBxvUNo6BkeD0pbOwLg3RiwFETYCVAaMSbmXeneGJCB5j+BtfcsyUtV
+	 dwz6f74HN1gTviOJZt1skMSUZ78kHtUPF0fdnALrJtvuyloMpQO3ukvAcNcDRsCjof
+	 R4rXN+ejCnlMZwLBAm1MLxULQwav++H5Ptw+b+/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guoqing Jiang <guoqing.jiang@linux.dev>,
-	Bernard Metzler <bmt@zurich.ibm.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 132/245] RDMA/siw: Correct wrong debug message
+Subject: [PATCH 6.1 059/195] fs/ntfs3: Add NULL ptr dereference checking at the end of attr_allocate_frame()
 Date: Tue, 27 Feb 2024 14:25:20 +0100
-Message-ID: <20240227131619.504942413@linuxfoundation.org>
+Message-ID: <20240227131612.455446248@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guoqing Jiang <guoqing.jiang@linux.dev>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit bee024d20451e4ce04ea30099cad09f7f75d288b ]
+[ Upstream commit aaab47f204aaf47838241d57bf8662c8840de60a ]
 
-We need to print num_sle first then pbl->max_buf per the condition.
-Also replace mem->pbl with pbl while at it.
+It is preferable to exit through the out: label because
+internal debugging functions are located there.
 
-Fixes: 303ae1cdfdf7 ("rdma/siw: application interface")
-Signed-off-by: Guoqing Jiang <guoqing.jiang@linux.dev>
-Link: https://lore.kernel.org/r/20230821133255.31111-3-guoqing.jiang@linux.dev
-Acked-by: Bernard Metzler <bmt@zurich.ibm.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/siw/siw_verbs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ntfs3/attrib.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/infiniband/sw/siw/siw_verbs.c b/drivers/infiniband/sw/siw/siw_verbs.c
-index 9c7fbda9e068a..124242e387a59 100644
---- a/drivers/infiniband/sw/siw/siw_verbs.c
-+++ b/drivers/infiniband/sw/siw/siw_verbs.c
-@@ -1492,7 +1492,7 @@ int siw_map_mr_sg(struct ib_mr *base_mr, struct scatterlist *sl, int num_sle,
+diff --git a/fs/ntfs3/attrib.c b/fs/ntfs3/attrib.c
+index 2215179c925b3..2618bf5a37892 100644
+--- a/fs/ntfs3/attrib.c
++++ b/fs/ntfs3/attrib.c
+@@ -1658,8 +1658,10 @@ int attr_allocate_frame(struct ntfs_inode *ni, CLST frame, size_t compr_size,
+ 			le_b = NULL;
+ 			attr_b = ni_find_attr(ni, NULL, &le_b, ATTR_DATA, NULL,
+ 					      0, NULL, &mi_b);
+-			if (!attr_b)
+-				return -ENOENT;
++			if (!attr_b) {
++				err = -ENOENT;
++				goto out;
++			}
  
- 	if (pbl->max_buf < num_sle) {
- 		siw_dbg_mem(mem, "too many SGE's: %d > %d\n",
--			    mem->pbl->max_buf, num_sle);
-+			    num_sle, pbl->max_buf);
- 		return -ENOMEM;
+ 			attr = attr_b;
+ 			le = le_b;
+@@ -1740,13 +1742,15 @@ int attr_allocate_frame(struct ntfs_inode *ni, CLST frame, size_t compr_size,
+ ok:
+ 	run_truncate_around(run, vcn);
+ out:
+-	if (new_valid > data_size)
+-		new_valid = data_size;
++	if (attr_b) {
++		if (new_valid > data_size)
++			new_valid = data_size;
+ 
+-	valid_size = le64_to_cpu(attr_b->nres.valid_size);
+-	if (new_valid != valid_size) {
+-		attr_b->nres.valid_size = cpu_to_le64(valid_size);
+-		mi_b->dirty = true;
++		valid_size = le64_to_cpu(attr_b->nres.valid_size);
++		if (new_valid != valid_size) {
++			attr_b->nres.valid_size = cpu_to_le64(valid_size);
++			mi_b->dirty = true;
++		}
  	}
- 	for_each_sg(sl, slp, num_sle, i) {
+ 
+ 	return err;
 -- 
 2.43.0
 
