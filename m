@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-24720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F8528695F9
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B8208694A0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:55:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46FF728F122
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 049AD1F225E6
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:55:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D361145343;
-	Tue, 27 Feb 2024 14:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B701419A6;
+	Tue, 27 Feb 2024 13:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aapVMYhR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FuRZNI3N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F40145B23;
-	Tue, 27 Feb 2024 14:06:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4DEB13AA4C;
+	Tue, 27 Feb 2024 13:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042803; cv=none; b=Nu/Iyz5k5N+aXJCGLLsb+Uc5e8kRwjccqcm/OyqatvKQpHPL/YilqhBgrcFBw4BJyRcK0TFL48O7hpEzb5ez9/LAlC0746qiRT45lUn9ebvhB1b6CPiPRhEU+vbrPELz1ZUXvkHlABx+L9mPL0Ts9golR/YzL/UjHv8BlA2QvlI=
+	t=1709042090; cv=none; b=uXiCYHMYlyHuTRJ9XjzM1YIoSte0Eniz/S7/IBVU9Ob4kdy1be/MuASmmVSmLRgooLnTuq6epJo3EePQJHygw41rEtNtONSJHrXGRFsu8F4yjJS5WmsHm2OHmMcjahjY5SMRnT/wbjGuj70rHKUXq2lm5e1EN+wZKEPcNz6z5FU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042803; c=relaxed/simple;
-	bh=dWaAoJROR2DvqZABTersWUKELtGHI1dmPbHFwUDYH+I=;
+	s=arc-20240116; t=1709042090; c=relaxed/simple;
+	bh=TefFGeVuRzhjWXrhdt/feClCmcmPI6Nv9jhDeENy0x0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XFR+oOIZYr4mrBITCEgww593bshQq+QiMOy3LRVG8NDnOKsvpOT3jrdXwHUCwOgk4uHgH3cM3e5s/Kb1tykFFortBtaXTgoUK1KBe1DgRrrfUwHW50pG9Ozx77CdH5DU2w3Wr8TVziYjAIqxV5c1owlddYFIE3I9V6niu+FJGTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aapVMYhR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61268C433C7;
-	Tue, 27 Feb 2024 14:06:43 +0000 (UTC)
+	 MIME-Version; b=bTvsFYOulx9W3g18XiRgvGrpxl3G5/5jDDLEIcIckNRs0POnCtCfpXFGngqOpb5s3GZT8j8XlaYoh/7glx+IHle1QGlFhkBl56QQURISxXZNIyyCmBhR6rc51WjZgNl8zK8oPRhIBy3mhqqUz/T4OP4hweqPXlgcxeFbohRAKEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FuRZNI3N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61112C433F1;
+	Tue, 27 Feb 2024 13:54:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042803;
-	bh=dWaAoJROR2DvqZABTersWUKELtGHI1dmPbHFwUDYH+I=;
+	s=korg; t=1709042090;
+	bh=TefFGeVuRzhjWXrhdt/feClCmcmPI6Nv9jhDeENy0x0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aapVMYhRxheLwx8L1vJpO1UJbeS1vruGRbFShsFc1RHjuy8Y4ep2RS8EEj2xSqIjV
-	 4EqhEA6QuW6MLIwJN0DFTRmF2avXdFjABjvRet0jqZEE4y4Og3rm9mZ8wd6eefhC1q
-	 GzAZqAatABbW2MxkKuwwgp6immI9ajhe0C2zJBto=
+	b=FuRZNI3N5o7apcncgd892sV26uQAfO52Ylom3wY4ZpABa0o+9h3xH0VDJyioaCyVl
+	 h9GISwUrRWPoFsO/wmFd3tcyrXRDzzqnsZKhLFiSG/RndMs9rXCalta2enly6SruMS
+	 OwKlkfSvp13vvWHLANTQuE5NtjM/TW3+8cdiafqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawel Laszczak <pawell@cadence.com>
-Subject: [PATCH 5.15 098/245] usb: cdnsp: fixed issue with incorrect detecting CDNSP family controllers
+	Vidya Sagar <vidyas@nvidia.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Shanker Donthineni <sdonthineni@nvidia.com>
+Subject: [PATCH 6.6 175/299] PCI/MSI: Prevent MSI hardware interrupt number truncation
 Date: Tue, 27 Feb 2024 14:24:46 +0100
-Message-ID: <20240227131618.406231484@linuxfoundation.org>
+Message-ID: <20240227131631.468137032@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,99 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Laszczak <pawell@cadence.com>
+From: Vidya Sagar <vidyas@nvidia.com>
 
-commit 47625b018c6bc788bc10dd654c82696eb0a5ef11 upstream.
+commit db744ddd59be798c2627efbfc71f707f5a935a40 upstream.
 
-Cadence have several controllers from 0x000403xx family but current
-driver suuport detecting only one with DID equal 0x0004034E.
-It causes that if someone uses different CDNSP controller then driver
-will use incorrect version and register space.
-Patch fix this issue.
+While calculating the hardware interrupt number for a MSI interrupt, the
+higher bits (i.e. from bit-5 onwards a.k.a domain_nr >= 32) of the PCI
+domain number gets truncated because of the shifted value casting to return
+type of pci_domain_nr() which is 'int'. This for example is resulting in
+same hardware interrupt number for devices 0019:00:00.0 and 0039:00:00.0.
 
-cc: stable@vger.kernel.org
-Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
-Signed-off-by: Pawel Laszczak <pawell@cadence.com>
-Link: https://lore.kernel.org/r/20240215121609.259772-1-pawell@cadence.com
+To address this cast the PCI domain number to 'irq_hw_number_t' before left
+shifting it to calculate the hardware interrupt number.
+
+Please note that this fixes the issue only on 64-bit systems and doesn't
+change the behavior for 32-bit systems i.e. the 32-bit systems continue to
+have the issue. Since the issue surfaces only if there are too many PCIe
+controllers in the system which usually is the case in modern server
+systems and they don't tend to run 32-bit kernels.
+
+Fixes: 3878eaefb89a ("PCI/MSI: Enhance core to support hierarchy irqdomain")
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Shanker Donthineni <sdonthineni@nvidia.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240115135649.708536-1-vidyas@nvidia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/cdns3/core.c |    1 -
- drivers/usb/cdns3/drd.c  |   13 +++++++++----
- drivers/usb/cdns3/drd.h  |    6 +++++-
- 3 files changed, 14 insertions(+), 6 deletions(-)
+ drivers/pci/msi/irqdomain.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/cdns3/core.c
-+++ b/drivers/usb/cdns3/core.c
-@@ -394,7 +394,6 @@ pm_put:
- 	return ret;
+--- a/drivers/pci/msi/irqdomain.c
++++ b/drivers/pci/msi/irqdomain.c
+@@ -61,7 +61,7 @@ static irq_hw_number_t pci_msi_domain_ca
+ 
+ 	return (irq_hw_number_t)desc->msi_index |
+ 		pci_dev_id(dev) << 11 |
+-		(pci_domain_nr(dev->bus) & 0xFFFFFFFF) << 27;
++		((irq_hw_number_t)(pci_domain_nr(dev->bus) & 0xFFFFFFFF)) << 27;
  }
  
--
- /**
-  * cdns_wakeup_irq - interrupt handler for wakeup events
-  * @irq: irq number for cdns3/cdnsp core device
---- a/drivers/usb/cdns3/drd.c
-+++ b/drivers/usb/cdns3/drd.c
-@@ -156,7 +156,8 @@ bool cdns_is_device(struct cdns *cdns)
-  */
- static void cdns_otg_disable_irq(struct cdns *cdns)
- {
--	writel(0, &cdns->otg_irq_regs->ien);
-+	if (cdns->version)
-+		writel(0, &cdns->otg_irq_regs->ien);
- }
- 
- /**
-@@ -418,15 +419,20 @@ int cdns_drd_init(struct cdns *cdns)
- 
- 		cdns->otg_regs = (void __iomem *)&cdns->otg_v1_regs->cmd;
- 
--		if (readl(&cdns->otg_cdnsp_regs->did) == OTG_CDNSP_DID) {
-+		state = readl(&cdns->otg_cdnsp_regs->did);
-+
-+		if (OTG_CDNSP_CHECK_DID(state)) {
- 			cdns->otg_irq_regs = (struct cdns_otg_irq_regs __iomem *)
- 					      &cdns->otg_cdnsp_regs->ien;
- 			cdns->version  = CDNSP_CONTROLLER_V2;
--		} else {
-+		} else if (OTG_CDNS3_CHECK_DID(state)) {
- 			cdns->otg_irq_regs = (struct cdns_otg_irq_regs __iomem *)
- 					      &cdns->otg_v1_regs->ien;
- 			writel(1, &cdns->otg_v1_regs->simulate);
- 			cdns->version  = CDNS3_CONTROLLER_V1;
-+		} else {
-+			dev_err(cdns->dev, "not supporte DID=0x%08x\n", state);
-+			return -EINVAL;
- 		}
- 
- 		dev_dbg(cdns->dev, "DRD version v1 (ID: %08x, rev: %08x)\n",
-@@ -479,7 +485,6 @@ int cdns_drd_exit(struct cdns *cdns)
- 	return 0;
- }
- 
--
- /* Indicate the cdns3 core was power lost before */
- bool cdns_power_is_lost(struct cdns *cdns)
- {
---- a/drivers/usb/cdns3/drd.h
-+++ b/drivers/usb/cdns3/drd.h
-@@ -79,7 +79,11 @@ struct cdnsp_otg_regs {
- 	__le32 susp_timing_ctrl;
- };
- 
--#define OTG_CDNSP_DID	0x0004034E
-+/* CDNSP driver supports 0x000403xx Cadence USB controller family. */
-+#define OTG_CDNSP_CHECK_DID(did) (((did) & GENMASK(31, 8)) == 0x00040300)
-+
-+/* CDNS3 driver supports 0x000402xx Cadence USB controller family. */
-+#define OTG_CDNS3_CHECK_DID(did) (((did) & GENMASK(31, 8)) == 0x00040200)
- 
- /*
-  * Common registers interface for both CDNS3 and CDNSP version of DRD.
+ static void pci_msi_domain_set_desc(msi_alloc_info_t *arg,
 
 
 
