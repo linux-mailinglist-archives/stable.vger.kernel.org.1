@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-24145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5EED869410
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E27C28692E1
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:39:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7734CB2F957
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:39:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E22B28C42D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:39:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85BFD13EFEC;
-	Tue, 27 Feb 2024 13:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B92A913B79F;
+	Tue, 27 Feb 2024 13:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xUGFoohp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/5O+YVU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4574E13EFE0;
-	Tue, 27 Feb 2024 13:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7037513B2BF;
+	Tue, 27 Feb 2024 13:39:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041157; cv=none; b=n5uRvOHkXKsn2zGUfrpSpvFZwVdHZtsO2RVkY0jivF5uaDAseXtQ7UP9GdISh+GEab7D0iKaR0r2nvt2z4aUU6fkXBKM1FV1TFZpW7pnFwhNOgUKNxFJCC/ceIqEzvj31yUhXPRwCPqOvn+PON7PFMCe728Zb8CKxmdniSxC61I=
+	t=1709041165; cv=none; b=HL6cMRfufZKFmlZxR6MrphW6J/rr1LH6fxbdJnLMWfb4TkL7YR8aQMTeruqSqQzvimgrp3xBA/i4tDqW46yBwERXnM6GRmN7AEM+oxjzGpzye/AZRw2F8t6tGZTvGm87jhHSZvHZ5E6ua7k1UNjca15rpGGqLrBJOMLqtNHcehk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041157; c=relaxed/simple;
-	bh=1H/4R/tRSqRZGJKUr4XdblJEAYNWfA48/J7zw4sjcn8=;
+	s=arc-20240116; t=1709041165; c=relaxed/simple;
+	bh=+PI9cLgBN0nLlOAog0GeiQlhqVVzMfc9NROfBpNeEsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D1cFZ7gRag6FnOJTySmOJ8ao8S1WxBnJ3SyQNQkp00fR0wPtlLVv9guewFyymfXP+ggXkXfvcYijWKFl2dY4kE4XnLeXFEcAiA8RAGob9gUU3jpz+9hRP26G0bPsTSJLK6DoW6CA/JkP8IZc1gZesOkt4quBaFYKmv+bTLdoVcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xUGFoohp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A5C2C433A6;
-	Tue, 27 Feb 2024 13:39:16 +0000 (UTC)
+	 MIME-Version; b=BFQKx8asjWN7n6xpxHGCYtWfbHqrJf+yPwxGFrT3wv/PZNefr9ZNDE8oo9GkQ5CpV6SgGIWNaCXWQqxMSINvKK4u7YkVM7ZQXKUj4aJQcNT8CJAVpsmA18pCcIhiGo/UKn6GI1jCkEhOaok1kx9T5TTFtVKIUVPr1TcsE0T9zOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/5O+YVU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC65FC43390;
+	Tue, 27 Feb 2024 13:39:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041157;
-	bh=1H/4R/tRSqRZGJKUr4XdblJEAYNWfA48/J7zw4sjcn8=;
+	s=korg; t=1709041165;
+	bh=+PI9cLgBN0nLlOAog0GeiQlhqVVzMfc9NROfBpNeEsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xUGFoohpcxB44Gu5A0gXfgs1/RlAcZ9TXPvH6zZG945PaUeyWKDjhATSxtaP+dQdB
-	 7TPPzYqWjvo/NkHKyRMmC85CHiPfvojgi83ySyw9NuZK9F8agElEV43o+Tw9fGLk1j
-	 FaQyrih8byEwSvLsNAbMXRz5PiWyLp6Iy6/kU4nI=
+	b=I/5O+YVUShLRtedNwd+LMTMvFEI9A24VgSzP8BZXlmwj8BoBcwLCsh1VD039f6I+F
+	 S2t6vvXayOlhkCD3lnJgnMcZ57n/7ae2XnG2aazgs3yYYHPB6h+WsfHMpqqG5eE7jn
+	 PV0TSFTNZ91eycRjtVNmNnrfd5Pc/jKbrNku+85M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Mat Martineau <martineau@kernel.org>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.7 213/334] mptcp: add needs_id for userspace appending addr
-Date: Tue, 27 Feb 2024 14:21:11 +0100
-Message-ID: <20240227131637.654003160@linuxfoundation.org>
+Subject: [PATCH 6.7 214/334] mptcp: add needs_id for netlink appending addr
+Date: Tue, 27 Feb 2024 14:21:12 +0100
+Message-ID: <20240227131637.684501106@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
 References: <20240227131630.636392135@linuxfoundation.org>
@@ -69,32 +69,19 @@ Content-Transfer-Encoding: 8bit
 
 From: Geliang Tang <tanggeliang@kylinos.cn>
 
-commit 6c347be62ae963b301ead8e7fa7b9973e6e0d6e1 upstream.
+commit 584f3894262634596532cf43a5e782e34a0ce374 upstream.
 
-When userspace PM requires to create an ID 0 subflow in "userspace pm
-create id 0 subflow" test like this:
+Just the same as userspace PM, a new parameter needs_id is added for
+in-kernel PM mptcp_pm_nl_append_new_local_addr() too.
 
-        userspace_pm_add_sf $ns2 10.0.3.2 0
+Add a new helper mptcp_pm_has_addr_attr_id() to check whether an address
+ID is set from PM or not.
 
-An ID 1 subflow, in fact, is created.
+In mptcp_pm_nl_get_local_id(), needs_id is always true, but in
+mptcp_pm_nl_add_addr_doit(), pass mptcp_pm_has_addr_attr_id() to
+needs_it.
 
-Since in mptcp_pm_nl_append_new_local_addr(), 'id 0' will be treated as
-no ID is set by userspace, and will allocate a new ID immediately:
-
-     if (!e->addr.id)
-             e->addr.id = find_next_zero_bit(pernet->id_bitmap,
-                                             MPTCP_PM_MAX_ADDR_ID + 1,
-                                             1);
-
-To solve this issue, a new parameter needs_id is added for
-mptcp_userspace_pm_append_new_local_addr() to distinguish between
-whether userspace PM has set an ID 0 or whether userspace PM has
-not set any address.
-
-needs_id is true in mptcp_userspace_pm_get_local_id(), but false in
-mptcp_pm_nl_announce_doit() and mptcp_pm_nl_subflow_create_doit().
-
-Fixes: e5ed101a6028 ("mptcp: userspace pm allow creating id 0 subflow")
+Fixes: efd5a4c04e18 ("mptcp: add the address ID assignment bitmap")
 Cc: stable@vger.kernel.org
 Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
 Reviewed-by: Mat Martineau <martineau@kernel.org>
@@ -102,66 +89,77 @@ Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_userspace.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ net/mptcp/pm_netlink.c |   24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
 
---- a/net/mptcp/pm_userspace.c
-+++ b/net/mptcp/pm_userspace.c
-@@ -26,7 +26,8 @@ void mptcp_free_local_addr_list(struct m
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -901,7 +901,8 @@ static void __mptcp_pm_release_addr_entr
  }
  
- static int mptcp_userspace_pm_append_new_local_addr(struct mptcp_sock *msk,
--						    struct mptcp_pm_addr_entry *entry)
-+						    struct mptcp_pm_addr_entry *entry,
-+						    bool needs_id)
+ static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
+-					     struct mptcp_pm_addr_entry *entry)
++					     struct mptcp_pm_addr_entry *entry,
++					     bool needs_id)
  {
- 	DECLARE_BITMAP(id_bitmap, MPTCP_PM_MAX_ADDR_ID + 1);
- 	struct mptcp_pm_addr_entry *match = NULL;
-@@ -41,7 +42,7 @@ static int mptcp_userspace_pm_append_new
- 	spin_lock_bh(&msk->pm.lock);
- 	list_for_each_entry(e, &msk->pm.userspace_pm_local_addr_list, list) {
- 		addr_match = mptcp_addresses_equal(&e->addr, &entry->addr, true);
--		if (addr_match && entry->addr.id == 0)
-+		if (addr_match && entry->addr.id == 0 && needs_id)
- 			entry->addr.id = e->addr.id;
- 		id_match = (e->addr.id == entry->addr.id);
- 		if (addr_match && id_match) {
-@@ -64,7 +65,7 @@ static int mptcp_userspace_pm_append_new
+ 	struct mptcp_pm_addr_entry *cur, *del_entry = NULL;
+ 	unsigned int addr_max;
+@@ -949,7 +950,7 @@ static int mptcp_pm_nl_append_new_local_
  		}
+ 	}
  
- 		*e = *entry;
--		if (!e->addr.id)
-+		if (!e->addr.id && needs_id)
- 			e->addr.id = find_next_zero_bit(id_bitmap,
- 							MPTCP_PM_MAX_ADDR_ID + 1,
- 							1);
-@@ -153,7 +154,7 @@ int mptcp_userspace_pm_get_local_id(stru
- 	if (new_entry.addr.port == msk_sport)
- 		new_entry.addr.port = 0;
+-	if (!entry->addr.id) {
++	if (!entry->addr.id && needs_id) {
+ find_next:
+ 		entry->addr.id = find_next_zero_bit(pernet->id_bitmap,
+ 						    MPTCP_PM_MAX_ADDR_ID + 1,
+@@ -960,7 +961,7 @@ find_next:
+ 		}
+ 	}
  
--	return mptcp_userspace_pm_append_new_local_addr(msk, &new_entry);
-+	return mptcp_userspace_pm_append_new_local_addr(msk, &new_entry, true);
+-	if (!entry->addr.id)
++	if (!entry->addr.id && needs_id)
+ 		goto out;
+ 
+ 	__set_bit(entry->addr.id, pernet->id_bitmap);
+@@ -1092,7 +1093,7 @@ int mptcp_pm_nl_get_local_id(struct mptc
+ 	entry->ifindex = 0;
+ 	entry->flags = MPTCP_PM_ADDR_FLAG_IMPLICIT;
+ 	entry->lsk = NULL;
+-	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry);
++	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry, true);
+ 	if (ret < 0)
+ 		kfree(entry);
+ 
+@@ -1285,6 +1286,18 @@ next:
+ 	return 0;
  }
  
- int mptcp_pm_nl_announce_doit(struct sk_buff *skb, struct genl_info *info)
-@@ -198,7 +199,7 @@ int mptcp_pm_nl_announce_doit(struct sk_
- 		goto announce_err;
++static bool mptcp_pm_has_addr_attr_id(const struct nlattr *attr,
++				      struct genl_info *info)
++{
++	struct nlattr *tb[MPTCP_PM_ADDR_ATTR_MAX + 1];
++
++	if (!nla_parse_nested_deprecated(tb, MPTCP_PM_ADDR_ATTR_MAX, attr,
++					 mptcp_pm_address_nl_policy, info->extack) &&
++	    tb[MPTCP_PM_ADDR_ATTR_ID])
++		return true;
++	return false;
++}
++
+ int mptcp_pm_nl_add_addr_doit(struct sk_buff *skb, struct genl_info *info)
+ {
+ 	struct nlattr *attr = info->attrs[MPTCP_PM_ENDPOINT_ADDR];
+@@ -1326,7 +1339,8 @@ int mptcp_pm_nl_add_addr_doit(struct sk_
+ 			goto out_free;
+ 		}
  	}
- 
--	err = mptcp_userspace_pm_append_new_local_addr(msk, &addr_val);
-+	err = mptcp_userspace_pm_append_new_local_addr(msk, &addr_val, false);
- 	if (err < 0) {
- 		GENL_SET_ERR_MSG(info, "did not match address and id");
- 		goto announce_err;
-@@ -378,7 +379,7 @@ int mptcp_pm_nl_subflow_create_doit(stru
- 	}
- 
- 	local.addr = addr_l;
--	err = mptcp_userspace_pm_append_new_local_addr(msk, &local);
-+	err = mptcp_userspace_pm_append_new_local_addr(msk, &local, false);
- 	if (err < 0) {
- 		GENL_SET_ERR_MSG(info, "did not match address and id");
- 		goto create_err;
+-	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry);
++	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry,
++						!mptcp_pm_has_addr_attr_id(attr, info));
+ 	if (ret < 0) {
+ 		GENL_SET_ERR_MSG_FMT(info, "too many addresses or duplicate one: %d", ret);
+ 		goto out_free;
 
 
 
