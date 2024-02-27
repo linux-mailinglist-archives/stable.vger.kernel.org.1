@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CEFC86967B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:12:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAF9386954D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:00:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1871D1F2E4F8
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:12:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF5DC1C23FD3
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:00:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C732513AA4C;
-	Tue, 27 Feb 2024 14:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ACB51420DF;
+	Tue, 27 Feb 2024 14:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cXSw59Ba"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lmZxf9ch"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DBF978B61;
-	Tue, 27 Feb 2024 14:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128541419BF;
+	Tue, 27 Feb 2024 14:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043129; cv=none; b=nMOFvMOpieww9xi6dBhcsFsNr8mICXou8LxRoGx0rrPOEYGLYZEpwWb2Jg2ExMweEr/l8I6b4MAAmvQAtiWrEDhSohXsC1S0QHJ3LdwYW/PW6Wq0UbS3RKrFHC2Ux3FjvKvEFp15pFavNvj8ffCAgJ6cTcgvN0W0mDE3JDvDkoo=
+	t=1709042438; cv=none; b=J0f5Q7QMYMioafVrz2eKP8gBi29SC3tbgo83rbQ7J2x4yWq6zyOWlg7DcuApTNFKOriPdXFPYHoldQWhAg/0Dng8mZUyzcW7rs65QD75seN1ELsVRUh98SIR1F/isOeCnKzonLoHJs7CoWAN/JnyVD1YuzWfdv4jNidY65WGOVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043129; c=relaxed/simple;
-	bh=t9HGQ4OPz+njZTA84HJB9eKw1D8cdWcy0FFQkpTXNYc=;
+	s=arc-20240116; t=1709042438; c=relaxed/simple;
+	bh=gkGMjzbgIOdnI1iFMEvvp/q1ZJups7inWz41LsZDBik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dvN6lEsHd9gIosd1pOVGUS9Lk7zNm9QGBEzg+XyfEZCTeDuFWPymVLWiO0KpFo2vlIVtsZsxbbkfHwsxpxtrhm2XdPIB2/UIg1IwnauXXmPo0XgeinuQEVmiCjdumBLoD3/VyOgQE6d1813434SSlF3m7e2qY8RjewDVyCI8m64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cXSw59Ba; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09AC8C433F1;
-	Tue, 27 Feb 2024 14:12:08 +0000 (UTC)
+	 MIME-Version; b=Lf3XY+oc7pIGJOsGOsnAIwQC7/7PjCog8hneFalfF43e4r4EQAolvn3DRFYWEdo67BVn/uod2/T6HsRKV2lgJweC2zjO8Z4W02N+aYJDl2k9dK//4y+rf5HmNH/tQqdpLmI9K2dJR56hH9uzCzjTidGBTb4AguPv0fWnUT0KA8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lmZxf9ch; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A564C433C7;
+	Tue, 27 Feb 2024 14:00:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043129;
-	bh=t9HGQ4OPz+njZTA84HJB9eKw1D8cdWcy0FFQkpTXNYc=;
+	s=korg; t=1709042437;
+	bh=gkGMjzbgIOdnI1iFMEvvp/q1ZJups7inWz41LsZDBik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cXSw59BapcYNOuFuFEQt3epz/PkRQn8ggBQS89ZX3UOrEUzPB6khcUjfAg9yrU1Q8
-	 5gc2xJ5PcNe83U9EdIJpUDjQOaR19eUK97Aeq0CTw8gFzdKvpleKXabwN1x6xqfpGd
-	 BAYpDyg7vXwbu0keq6hSACt5rnURf9RZCmFMQjkQ=
+	b=lmZxf9cht/Pr7SJ2V3/Gv1rP0VXX92wkFO9t5HwV0UlHTFm0dl3+IjpQyFBWJYAW5
+	 nQVwoDopWs23x+mhBY8C5hPKRBJ26FhyPjLGP1Hy+jIzXlwZvFE7M4/r1vEJOjGuCo
+	 JOERyjyvmKXoJ3zEjJjhk9PFTyCHYse63kakSjZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Serge Semin <Sergey.Semin@baikalelectronics.ru>,
-	Hannes Reinecke <hare@suse.de>,
-	Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 217/245] ata: libahci_platform: Convert to using devm bulk clocks API
-Date: Tue, 27 Feb 2024 14:26:45 +0100
-Message-ID: <20240227131622.255840757@linuxfoundation.org>
+	Matthieu Baerts <matttbe@kernel.org>,
+	Geliang Tang <geliang.tang@suse.com>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 295/299] selftests: mptcp: add mptcp_lib_get_counter
+Date: Tue, 27 Feb 2024 14:26:46 +0100
+Message-ID: <20240227131635.159135331@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,322 +63,493 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+From: Geliang Tang <geliang.tang@suse.com>
 
-[ Upstream commit e28b3abf8020a884bd3b7758ea8915365af8fadf ]
+commit 61c131f5d4d2b79904af2fdcb2839a9db8e7c55c upstream.
 
-In order to simplify the clock-related code there is a way to convert the
-current fixed clocks array into using the common bulk clocks kernel API
-with dynamic set of the clock handlers and device-managed clock-resource
-tracking. It's a bit tricky due to the complication coming from the
-requirement to support the platforms (da850, spear13xx) with the
-non-OF-based clock source, but still doable.
+To avoid duplicated code in different MPTCP selftests, we can add
+and use helpers defined in mptcp_lib.sh.
 
-Before this modification there are two methods have been used to get the
-clocks connected to an AHCI device: clk_get() - to get the very first
-clock in the list and of_clk_get() - to get the rest of them. Basically
-the platforms with non-OF-based clocks definition could specify only a
-single reference clock source. The platforms with OF-hw clocks have been
-luckier and could setup up to AHCI_MAX_CLKS clocks. Such semantic can be
-retained with using devm_clk_bulk_get_all() to retrieve the clocks defined
-via the DT firmware and devm_clk_get_optional() otherwise. In both cases
-using the device-managed version of the methods will cause the automatic
-resources deallocation on the AHCI device removal event. The only
-complicated part in the suggested approach is the explicit allocation and
-initialization of the clk_bulk_data structure instance for the non-OF
-reference clocks. It's required in order to use the Bulk Clocks API for
-the both denoted cases of the clocks definition.
+The helper get_counter() in mptcp_join.sh and get_mib_counter() in
+mptcp_connect.sh have the same functionality, export get_counter() into
+mptcp_lib.sh and rename it as mptcp_lib_get_counter(). Use this new
+helper instead of get_counter() and get_mib_counter().
 
-Note aside with the clock-related code reduction and natural
-simplification, there are several bonuses the suggested modification
-provides. First of all the limitation of having no greater than
-AHCI_MAX_CLKS clocks is now removed, since the devm_clk_bulk_get_all()
-method will allocate as many reference clocks data descriptors as there
-are clocks specified for the device. Secondly the clock names are
-auto-detected. So the LLDD (glue) drivers can make sure that the required
-clocks are specified just by checking the clock IDs in the clk_bulk_data
-array.  Thirdly using the handy Bulk Clocks kernel API improves the
-clocks-handling code readability. And the last but not least this
-modification implements a true optional clocks support to the
-ahci_platform_get_resources() method. Indeed the previous clocks getting
-procedure just stopped getting the clocks on any errors (aside from
-non-critical -EPROBE_DEFER) in a way so the callee wasn't even informed
-about abnormal loop termination. The new implementation lacks of such
-problem. The ahci_platform_get_resources() will return an error code if
-the corresponding clocks getting method ends execution abnormally.
+Use this helper in test_prio() in userspace_pm.sh too instead of
+open-coding.
 
-Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Stable-dep-of: 26c8404e162b ("ata: ahci_ceva: fix error handling for Xilinx GT PHY support")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
+Signed-off-by: Geliang Tang <geliang.tang@suse.com>
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+Link: https://lore.kernel.org/r/20231128-send-net-next-2023107-v4-11-8d6b94150f6b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/ahci.h             |  4 +-
- drivers/ata/ahci_da850.c       | 47 ++++++++-----------
- drivers/ata/ahci_dm816.c       |  4 +-
- drivers/ata/libahci_platform.c | 83 ++++++++++++++++------------------
- 4 files changed, 61 insertions(+), 77 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_connect.sh |   41 +++------
+ tools/testing/selftests/net/mptcp/mptcp_join.sh    |   88 ++++++++-------------
+ tools/testing/selftests/net/mptcp/mptcp_lib.sh     |   16 +++
+ tools/testing/selftests/net/mptcp/userspace_pm.sh  |   14 +--
+ 4 files changed, 73 insertions(+), 86 deletions(-)
 
-diff --git a/drivers/ata/ahci.h b/drivers/ata/ahci.h
-index 69557e602e2ea..54e79f966444c 100644
---- a/drivers/ata/ahci.h
-+++ b/drivers/ata/ahci.h
-@@ -39,7 +39,6 @@
- 
- enum {
- 	AHCI_MAX_PORTS		= 32,
--	AHCI_MAX_CLKS		= 5,
- 	AHCI_MAX_SG		= 168, /* hardware max is 64K */
- 	AHCI_DMA_BOUNDARY	= 0xffffffff,
- 	AHCI_MAX_CMDS		= 32,
-@@ -343,7 +342,8 @@ struct ahci_host_priv {
- 	u32			em_msg_type;	/* EM message type */
- 	u32			remapped_nvme;	/* NVMe remapped device count */
- 	bool			got_runtime_pm; /* Did we do pm_runtime_get? */
--	struct clk		*clks[AHCI_MAX_CLKS]; /* Optional */
-+	unsigned int		n_clks;
-+	struct clk_bulk_data	*clks;		/* Optional */
- 	struct reset_control	*rsts;		/* Optional */
- 	struct regulator	**target_pwrs;	/* Optional */
- 	struct regulator	*ahci_regulator;/* Optional */
-diff --git a/drivers/ata/ahci_da850.c b/drivers/ata/ahci_da850.c
-index 0e82766007128..389268c1ef456 100644
---- a/drivers/ata/ahci_da850.c
-+++ b/drivers/ata/ahci_da850.c
-@@ -163,7 +163,6 @@ static int ahci_da850_probe(struct platform_device *pdev)
- 	struct ahci_host_priv *hpriv;
- 	void __iomem *pwrdn_reg;
- 	struct resource *res;
--	struct clk *clk;
- 	u32 mpy;
- 	int rc;
- 
-@@ -172,36 +171,28 @@ static int ahci_da850_probe(struct platform_device *pdev)
- 		return PTR_ERR(hpriv);
- 
- 	/*
--	 * Internally ahci_platform_get_resources() calls clk_get(dev, NULL)
--	 * when trying to obtain the functional clock. This SATA controller
--	 * uses two clocks for which we specify two connection ids. If we don't
--	 * have the functional clock at this point - call clk_get() again with
--	 * con_id = "fck".
-+	 * Internally ahci_platform_get_resources() calls the bulk clocks
-+	 * get method or falls back to using a single clk_get_optional().
-+	 * This AHCI SATA controller uses two clocks: functional clock
-+	 * with "fck" connection id and external reference clock with
-+	 * "refclk" id. If we haven't got all of them re-try the clocks
-+	 * getting procedure with the explicitly specified ids.
- 	 */
--	if (!hpriv->clks[0]) {
--		clk = clk_get(dev, "fck");
--		if (IS_ERR(clk))
--			return PTR_ERR(clk);
--
--		hpriv->clks[0] = clk;
--	}
--
--	/*
--	 * The second clock used by ahci-da850 is the external REFCLK. If we
--	 * didn't get it from ahci_platform_get_resources(), let's try to
--	 * specify the con_id in clk_get().
--	 */
--	if (!hpriv->clks[1]) {
--		clk = clk_get(dev, "refclk");
--		if (IS_ERR(clk)) {
--			dev_err(dev, "unable to obtain the reference clock");
--			return -ENODEV;
--		}
--
--		hpriv->clks[1] = clk;
-+	if (hpriv->n_clks < 2) {
-+		hpriv->clks = devm_kcalloc(dev, 2, sizeof(*hpriv->clks), GFP_KERNEL);
-+		if (!hpriv->clks)
-+			return -ENOMEM;
-+
-+		hpriv->clks[0].id = "fck";
-+		hpriv->clks[1].id = "refclk";
-+		hpriv->n_clks = 2;
-+
-+		rc = devm_clk_bulk_get(dev, hpriv->n_clks, hpriv->clks);
-+		if (rc)
-+			return rc;
- 	}
- 
--	mpy = ahci_da850_calculate_mpy(clk_get_rate(hpriv->clks[1]));
-+	mpy = ahci_da850_calculate_mpy(clk_get_rate(hpriv->clks[1].clk));
- 	if (mpy == 0) {
- 		dev_err(dev, "invalid REFCLK multiplier value: 0x%x", mpy);
- 		return -EINVAL;
-diff --git a/drivers/ata/ahci_dm816.c b/drivers/ata/ahci_dm816.c
-index 8bec410416714..ec83ba8858060 100644
---- a/drivers/ata/ahci_dm816.c
-+++ b/drivers/ata/ahci_dm816.c
-@@ -69,12 +69,12 @@ static int ahci_dm816_phy_init(struct ahci_host_priv *hpriv, struct device *dev)
- 	 * keep-alive clock and the external reference clock. We need the
- 	 * rate of the latter to calculate the correct value of MPY bits.
- 	 */
--	if (!hpriv->clks[1]) {
-+	if (hpriv->n_clks < 2) {
- 		dev_err(dev, "reference clock not supplied\n");
- 		return -EINVAL;
- 	}
- 
--	refclk_rate = clk_get_rate(hpriv->clks[1]);
-+	refclk_rate = clk_get_rate(hpriv->clks[1].clk);
- 	if ((refclk_rate % 100) != 0) {
- 		dev_err(dev, "reference clock rate must be divisible by 100\n");
- 		return -EINVAL;
-diff --git a/drivers/ata/libahci_platform.c b/drivers/ata/libahci_platform.c
-index 64d6da0a53035..6ae1d8b870a2d 100644
---- a/drivers/ata/libahci_platform.c
-+++ b/drivers/ata/libahci_platform.c
-@@ -97,28 +97,14 @@ EXPORT_SYMBOL_GPL(ahci_platform_disable_phys);
-  * ahci_platform_enable_clks - Enable platform clocks
-  * @hpriv: host private area to store config values
-  *
-- * This function enables all the clks found in hpriv->clks, starting at
-- * index 0. If any clk fails to enable it disables all the clks already
-- * enabled in reverse order, and then returns an error.
-+ * This function enables all the clks found for the AHCI device.
-  *
-  * RETURNS:
-  * 0 on success otherwise a negative error code
-  */
- int ahci_platform_enable_clks(struct ahci_host_priv *hpriv)
- {
--	int c, rc;
--
--	for (c = 0; c < AHCI_MAX_CLKS && hpriv->clks[c]; c++) {
--		rc = clk_prepare_enable(hpriv->clks[c]);
--		if (rc)
--			goto disable_unprepare_clk;
--	}
--	return 0;
--
--disable_unprepare_clk:
--	while (--c >= 0)
--		clk_disable_unprepare(hpriv->clks[c]);
--	return rc;
-+	return clk_bulk_prepare_enable(hpriv->n_clks, hpriv->clks);
+--- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
+@@ -341,21 +341,6 @@ do_ping()
+ 	return 0
  }
- EXPORT_SYMBOL_GPL(ahci_platform_enable_clks);
  
-@@ -126,16 +112,13 @@ EXPORT_SYMBOL_GPL(ahci_platform_enable_clks);
-  * ahci_platform_disable_clks - Disable platform clocks
-  * @hpriv: host private area to store config values
-  *
-- * This function disables all the clks found in hpriv->clks, in reverse
-- * order of ahci_platform_enable_clks (starting at the end of the array).
-+ * This function disables all the clocks enabled before
-+ * (bulk-clocks-disable function is supposed to do that in reverse
-+ * from the enabling procedure order).
-  */
- void ahci_platform_disable_clks(struct ahci_host_priv *hpriv)
- {
--	int c;
+-# $1: ns, $2: MIB counter
+-get_mib_counter()
+-{
+-	local listener_ns="${1}"
+-	local mib="${2}"
 -
--	for (c = AHCI_MAX_CLKS - 1; c >= 0; c--)
--		if (hpriv->clks[c])
--			clk_disable_unprepare(hpriv->clks[c]);
-+	clk_bulk_disable_unprepare(hpriv->n_clks, hpriv->clks);
+-	# strip the header
+-	ip netns exec "${listener_ns}" \
+-		nstat -z -a "${mib}" | \
+-			tail -n+2 | \
+-			while read a count c rest; do
+-				echo $count
+-			done
+-}
+-
+ # $1: ns, $2: port
+ wait_local_port_listen()
+ {
+@@ -441,12 +426,12 @@ do_transfer()
+ 			nstat -n
+ 	fi
+ 
+-	local stat_synrx_last_l=$(get_mib_counter "${listener_ns}" "MPTcpExtMPCapableSYNRX")
+-	local stat_ackrx_last_l=$(get_mib_counter "${listener_ns}" "MPTcpExtMPCapableACKRX")
+-	local stat_cookietx_last=$(get_mib_counter "${listener_ns}" "TcpExtSyncookiesSent")
+-	local stat_cookierx_last=$(get_mib_counter "${listener_ns}" "TcpExtSyncookiesRecv")
+-	local stat_csum_err_s=$(get_mib_counter "${listener_ns}" "MPTcpExtDataCsumErr")
+-	local stat_csum_err_c=$(get_mib_counter "${connector_ns}" "MPTcpExtDataCsumErr")
++	local stat_synrx_last_l=$(mptcp_lib_get_counter "${listener_ns}" "MPTcpExtMPCapableSYNRX")
++	local stat_ackrx_last_l=$(mptcp_lib_get_counter "${listener_ns}" "MPTcpExtMPCapableACKRX")
++	local stat_cookietx_last=$(mptcp_lib_get_counter "${listener_ns}" "TcpExtSyncookiesSent")
++	local stat_cookierx_last=$(mptcp_lib_get_counter "${listener_ns}" "TcpExtSyncookiesRecv")
++	local stat_csum_err_s=$(mptcp_lib_get_counter "${listener_ns}" "MPTcpExtDataCsumErr")
++	local stat_csum_err_c=$(mptcp_lib_get_counter "${connector_ns}" "MPTcpExtDataCsumErr")
+ 
+ 	timeout ${timeout_test} \
+ 		ip netns exec ${listener_ns} \
+@@ -509,11 +494,11 @@ do_transfer()
+ 	check_transfer $cin $sout "file received by server"
+ 	rets=$?
+ 
+-	local stat_synrx_now_l=$(get_mib_counter "${listener_ns}" "MPTcpExtMPCapableSYNRX")
+-	local stat_ackrx_now_l=$(get_mib_counter "${listener_ns}" "MPTcpExtMPCapableACKRX")
+-	local stat_cookietx_now=$(get_mib_counter "${listener_ns}" "TcpExtSyncookiesSent")
+-	local stat_cookierx_now=$(get_mib_counter "${listener_ns}" "TcpExtSyncookiesRecv")
+-	local stat_ooo_now=$(get_mib_counter "${listener_ns}" "TcpExtTCPOFOQueue")
++	local stat_synrx_now_l=$(mptcp_lib_get_counter "${listener_ns}" "MPTcpExtMPCapableSYNRX")
++	local stat_ackrx_now_l=$(mptcp_lib_get_counter "${listener_ns}" "MPTcpExtMPCapableACKRX")
++	local stat_cookietx_now=$(mptcp_lib_get_counter "${listener_ns}" "TcpExtSyncookiesSent")
++	local stat_cookierx_now=$(mptcp_lib_get_counter "${listener_ns}" "TcpExtSyncookiesRecv")
++	local stat_ooo_now=$(mptcp_lib_get_counter "${listener_ns}" "TcpExtTCPOFOQueue")
+ 
+ 	expect_synrx=$((stat_synrx_last_l))
+ 	expect_ackrx=$((stat_ackrx_last_l))
+@@ -542,8 +527,8 @@ do_transfer()
+ 	fi
+ 
+ 	if $checksum; then
+-		local csum_err_s=$(get_mib_counter "${listener_ns}" "MPTcpExtDataCsumErr")
+-		local csum_err_c=$(get_mib_counter "${connector_ns}" "MPTcpExtDataCsumErr")
++		local csum_err_s=$(mptcp_lib_get_counter "${listener_ns}" "MPTcpExtDataCsumErr")
++		local csum_err_c=$(mptcp_lib_get_counter "${connector_ns}" "MPTcpExtDataCsumErr")
+ 
+ 		local csum_err_s_nr=$((csum_err_s - stat_csum_err_s))
+ 		if [ $csum_err_s_nr -gt 0 ]; then
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -611,25 +611,9 @@ wait_local_port_listen()
+ 	done
  }
- EXPORT_SYMBOL_GPL(ahci_platform_disable_clks);
  
-@@ -292,8 +275,6 @@ static void ahci_platform_put_resources(struct device *dev, void *res)
- 		pm_runtime_disable(dev);
- 	}
- 
--	for (c = 0; c < AHCI_MAX_CLKS && hpriv->clks[c]; c++)
--		clk_put(hpriv->clks[c]);
- 	/*
- 	 * The regulators are tied to child node device and not to the
- 	 * SATA device itself. So we can't use devm for automatically
-@@ -374,8 +355,8 @@ static int ahci_platform_get_regulator(struct ahci_host_priv *hpriv, u32 port,
-  * 1) mmio registers (IORESOURCE_MEM 0, mandatory)
-  * 2) regulator for controlling the targets power (optional)
-  *    regulator for controlling the AHCI controller (optional)
-- * 3) 0 - AHCI_MAX_CLKS clocks, as specified in the devs devicetree node,
-- *    or for non devicetree enabled platforms a single clock
-+ * 3) all clocks specified in the devicetree node, or a single
-+ *    clock for non-OF platforms (optional)
-  * 4) resets, if flags has AHCI_PLATFORM_GET_RESETS (optional)
-  * 5) phys (optional)
-  *
-@@ -385,11 +366,10 @@ static int ahci_platform_get_regulator(struct ahci_host_priv *hpriv, u32 port,
- struct ahci_host_priv *ahci_platform_get_resources(struct platform_device *pdev,
- 						   unsigned int flags)
- {
-+	int child_nodes, rc = -ENOMEM, enabled_ports = 0;
- 	struct device *dev = &pdev->dev;
- 	struct ahci_host_priv *hpriv;
--	struct clk *clk;
- 	struct device_node *child;
--	int i, enabled_ports = 0, rc = -ENOMEM, child_nodes;
- 	u32 mask_port_map = 0;
- 
- 	if (!devres_open_group(dev, NULL, GFP_KERNEL))
-@@ -409,25 +389,38 @@ struct ahci_host_priv *ahci_platform_get_resources(struct platform_device *pdev,
- 		goto err_out;
- 	}
- 
--	for (i = 0; i < AHCI_MAX_CLKS; i++) {
-+	/*
-+	 * Bulk clocks getting procedure can fail to find any clock due to
-+	 * running on a non-OF platform or due to the clocks being defined in
-+	 * bypass of the DT firmware (like da850, spear13xx). In that case we
-+	 * fallback to getting a single clock source right from the dev clocks
-+	 * list.
-+	 */
-+	rc = devm_clk_bulk_get_all(dev, &hpriv->clks);
-+	if (rc < 0)
-+		goto err_out;
-+
-+	if (rc > 0) {
-+		/* Got clocks in bulk */
-+		hpriv->n_clks = rc;
-+	} else {
- 		/*
--		 * For now we must use clk_get(dev, NULL) for the first clock,
--		 * because some platforms (da850, spear13xx) are not yet
--		 * converted to use devicetree for clocks.  For new platforms
--		 * this is equivalent to of_clk_get(dev->of_node, 0).
-+		 * No clock bulk found: fallback to manually getting
-+		 * the optional clock.
- 		 */
--		if (i == 0)
--			clk = clk_get(dev, NULL);
--		else
--			clk = of_clk_get(dev->of_node, i);
+-# $1: ns ; $2: counter
+-get_counter()
+-{
+-	local ns="${1}"
+-	local counter="${2}"
+-	local count
 -
--		if (IS_ERR(clk)) {
--			rc = PTR_ERR(clk);
--			if (rc == -EPROBE_DEFER)
--				goto err_out;
--			break;
-+		hpriv->clks = devm_kzalloc(dev, sizeof(*hpriv->clks), GFP_KERNEL);
-+		if (!hpriv->clks) {
-+			rc = -ENOMEM;
-+			goto err_out;
-+		}
-+		hpriv->clks->clk = devm_clk_get_optional(dev, NULL);
-+		if (IS_ERR(hpriv->clks->clk)) {
-+			rc = PTR_ERR(hpriv->clks->clk);
-+			goto err_out;
-+		} else if (hpriv->clks->clk) {
-+			hpriv->clks->id = "ahci";
-+			hpriv->n_clks = 1;
- 		}
--		hpriv->clks[i] = clk;
- 	}
+-	count=$(ip netns exec ${ns} nstat -asz "${counter}" | awk 'NR==1 {next} {print $2}')
+-	if [ -z "${count}" ]; then
+-		mptcp_lib_fail_if_expected_feature "${counter} counter"
+-		return 1
+-	fi
+-
+-	echo "${count}"
+-}
+-
+ rm_addr_count()
+ {
+-	get_counter "${1}" "MPTcpExtRmAddr"
++	mptcp_lib_get_counter "${1}" "MPTcpExtRmAddr"
+ }
  
- 	hpriv->ahci_regulator = devm_regulator_get(dev, "ahci");
--- 
-2.43.0
-
+ # $1: ns, $2: old rm_addr counter in $ns
+@@ -649,7 +633,7 @@ wait_rm_addr()
+ 
+ rm_sf_count()
+ {
+-	get_counter "${1}" "MPTcpExtRmSubflow"
++	mptcp_lib_get_counter "${1}" "MPTcpExtRmSubflow"
+ }
+ 
+ # $1: ns, $2: old rm_sf counter in $ns
+@@ -672,11 +656,11 @@ wait_mpj()
+ 	local ns="${1}"
+ 	local cnt old_cnt
+ 
+-	old_cnt=$(get_counter ${ns} "MPTcpExtMPJoinAckRx")
++	old_cnt=$(mptcp_lib_get_counter ${ns} "MPTcpExtMPJoinAckRx")
+ 
+ 	local i
+ 	for i in $(seq 10); do
+-		cnt=$(get_counter ${ns} "MPTcpExtMPJoinAckRx")
++		cnt=$(mptcp_lib_get_counter ${ns} "MPTcpExtMPJoinAckRx")
+ 		[ "$cnt" = "${old_cnt}" ] || break
+ 		sleep 0.1
+ 	done
+@@ -1271,7 +1255,7 @@ chk_csum_nr()
+ 	fi
+ 
+ 	print_check "sum"
+-	count=$(get_counter ${ns1} "MPTcpExtDataCsumErr")
++	count=$(mptcp_lib_get_counter ${ns1} "MPTcpExtDataCsumErr")
+ 	if [ "$count" != "$csum_ns1" ]; then
+ 		extra_msg="$extra_msg ns1=$count"
+ 	fi
+@@ -1284,7 +1268,7 @@ chk_csum_nr()
+ 		print_ok
+ 	fi
+ 	print_check "csum"
+-	count=$(get_counter ${ns2} "MPTcpExtDataCsumErr")
++	count=$(mptcp_lib_get_counter ${ns2} "MPTcpExtDataCsumErr")
+ 	if [ "$count" != "$csum_ns2" ]; then
+ 		extra_msg="$extra_msg ns2=$count"
+ 	fi
+@@ -1328,7 +1312,7 @@ chk_fail_nr()
+ 	fi
+ 
+ 	print_check "ftx"
+-	count=$(get_counter ${ns_tx} "MPTcpExtMPFailTx")
++	count=$(mptcp_lib_get_counter ${ns_tx} "MPTcpExtMPFailTx")
+ 	if [ "$count" != "$fail_tx" ]; then
+ 		extra_msg="$extra_msg,tx=$count"
+ 	fi
+@@ -1342,7 +1326,7 @@ chk_fail_nr()
+ 	fi
+ 
+ 	print_check "failrx"
+-	count=$(get_counter ${ns_rx} "MPTcpExtMPFailRx")
++	count=$(mptcp_lib_get_counter ${ns_rx} "MPTcpExtMPFailRx")
+ 	if [ "$count" != "$fail_rx" ]; then
+ 		extra_msg="$extra_msg,rx=$count"
+ 	fi
+@@ -1375,7 +1359,7 @@ chk_fclose_nr()
+ 	fi
+ 
+ 	print_check "ctx"
+-	count=$(get_counter ${ns_tx} "MPTcpExtMPFastcloseTx")
++	count=$(mptcp_lib_get_counter ${ns_tx} "MPTcpExtMPFastcloseTx")
+ 	if [ -z "$count" ]; then
+ 		print_skip
+ 	elif [ "$count" != "$fclose_tx" ]; then
+@@ -1386,7 +1370,7 @@ chk_fclose_nr()
+ 	fi
+ 
+ 	print_check "fclzrx"
+-	count=$(get_counter ${ns_rx} "MPTcpExtMPFastcloseRx")
++	count=$(mptcp_lib_get_counter ${ns_rx} "MPTcpExtMPFastcloseRx")
+ 	if [ -z "$count" ]; then
+ 		print_skip
+ 	elif [ "$count" != "$fclose_rx" ]; then
+@@ -1416,7 +1400,7 @@ chk_rst_nr()
+ 	fi
+ 
+ 	print_check "rtx"
+-	count=$(get_counter ${ns_tx} "MPTcpExtMPRstTx")
++	count=$(mptcp_lib_get_counter ${ns_tx} "MPTcpExtMPRstTx")
+ 	if [ -z "$count" ]; then
+ 		print_skip
+ 	# accept more rst than expected except if we don't expect any
+@@ -1428,7 +1412,7 @@ chk_rst_nr()
+ 	fi
+ 
+ 	print_check "rstrx"
+-	count=$(get_counter ${ns_rx} "MPTcpExtMPRstRx")
++	count=$(mptcp_lib_get_counter ${ns_rx} "MPTcpExtMPRstRx")
+ 	if [ -z "$count" ]; then
+ 		print_skip
+ 	# accept more rst than expected except if we don't expect any
+@@ -1449,7 +1433,7 @@ chk_infi_nr()
+ 	local count
+ 
+ 	print_check "itx"
+-	count=$(get_counter ${ns2} "MPTcpExtInfiniteMapTx")
++	count=$(mptcp_lib_get_counter ${ns2} "MPTcpExtInfiniteMapTx")
+ 	if [ -z "$count" ]; then
+ 		print_skip
+ 	elif [ "$count" != "$infi_tx" ]; then
+@@ -1459,7 +1443,7 @@ chk_infi_nr()
+ 	fi
+ 
+ 	print_check "infirx"
+-	count=$(get_counter ${ns1} "MPTcpExtInfiniteMapRx")
++	count=$(mptcp_lib_get_counter ${ns1} "MPTcpExtInfiniteMapRx")
+ 	if [ -z "$count" ]; then
+ 		print_skip
+ 	elif [ "$count" != "$infi_rx" ]; then
+@@ -1488,7 +1472,7 @@ chk_join_nr()
+ 	fi
+ 
+ 	print_check "syn"
+-	count=$(get_counter ${ns1} "MPTcpExtMPJoinSynRx")
++	count=$(mptcp_lib_get_counter ${ns1} "MPTcpExtMPJoinSynRx")
+ 	if [ -z "$count" ]; then
+ 		print_skip
+ 	elif [ "$count" != "$syn_nr" ]; then
+@@ -1499,7 +1483,7 @@ chk_join_nr()
+ 
+ 	print_check "synack"
+ 	with_cookie=$(ip netns exec $ns2 sysctl -n net.ipv4.tcp_syncookies)
+-	count=$(get_counter ${ns2} "MPTcpExtMPJoinSynAckRx")
++	count=$(mptcp_lib_get_counter ${ns2} "MPTcpExtMPJoinSynAckRx")
+ 	if [ -z "$count" ]; then
+ 		print_skip
+ 	elif [ "$count" != "$syn_ack_nr" ]; then
+@@ -1516,7 +1500,7 @@ chk_join_nr()
+ 	fi
+ 
+ 	print_check "ack"
+-	count=$(get_counter ${ns1} "MPTcpExtMPJoinAckRx")
++	count=$(mptcp_lib_get_counter ${ns1} "MPTcpExtMPJoinAckRx")
+ 	if [ -z "$count" ]; then
+ 		print_skip
+ 	elif [ "$count" != "$ack_nr" ]; then
+@@ -1549,8 +1533,8 @@ chk_stale_nr()
+ 
+ 	print_check "stale"
+ 
+-	stale_nr=$(get_counter ${ns} "MPTcpExtSubflowStale")
+-	recover_nr=$(get_counter ${ns} "MPTcpExtSubflowRecover")
++	stale_nr=$(mptcp_lib_get_counter ${ns} "MPTcpExtSubflowStale")
++	recover_nr=$(mptcp_lib_get_counter ${ns} "MPTcpExtSubflowRecover")
+ 	if [ -z "$stale_nr" ] || [ -z "$recover_nr" ]; then
+ 		print_skip
+ 	elif [ $stale_nr -lt $stale_min ] ||
+@@ -1587,7 +1571,7 @@ chk_add_nr()
+ 	timeout=$(ip netns exec $ns1 sysctl -n net.mptcp.add_addr_timeout)
+ 
+ 	print_check "add"
+-	count=$(get_counter ${ns2} "MPTcpExtAddAddr")
++	count=$(mptcp_lib_get_counter ${ns2} "MPTcpExtAddAddr")
+ 	if [ -z "$count" ]; then
+ 		print_skip
+ 	# if the test configured a short timeout tolerate greater then expected
+@@ -1599,7 +1583,7 @@ chk_add_nr()
+ 	fi
+ 
+ 	print_check "echo"
+-	count=$(get_counter ${ns1} "MPTcpExtEchoAdd")
++	count=$(mptcp_lib_get_counter ${ns1} "MPTcpExtEchoAdd")
+ 	if [ -z "$count" ]; then
+ 		print_skip
+ 	elif [ "$count" != "$echo_nr" ]; then
+@@ -1610,7 +1594,7 @@ chk_add_nr()
+ 
+ 	if [ $port_nr -gt 0 ]; then
+ 		print_check "pt"
+-		count=$(get_counter ${ns2} "MPTcpExtPortAdd")
++		count=$(mptcp_lib_get_counter ${ns2} "MPTcpExtPortAdd")
+ 		if [ -z "$count" ]; then
+ 			print_skip
+ 		elif [ "$count" != "$port_nr" ]; then
+@@ -1620,7 +1604,7 @@ chk_add_nr()
+ 		fi
+ 
+ 		print_check "syn"
+-		count=$(get_counter ${ns1} "MPTcpExtMPJoinPortSynRx")
++		count=$(mptcp_lib_get_counter ${ns1} "MPTcpExtMPJoinPortSynRx")
+ 		if [ -z "$count" ]; then
+ 			print_skip
+ 		elif [ "$count" != "$syn_nr" ]; then
+@@ -1631,7 +1615,7 @@ chk_add_nr()
+ 		fi
+ 
+ 		print_check "synack"
+-		count=$(get_counter ${ns2} "MPTcpExtMPJoinPortSynAckRx")
++		count=$(mptcp_lib_get_counter ${ns2} "MPTcpExtMPJoinPortSynAckRx")
+ 		if [ -z "$count" ]; then
+ 			print_skip
+ 		elif [ "$count" != "$syn_ack_nr" ]; then
+@@ -1642,7 +1626,7 @@ chk_add_nr()
+ 		fi
+ 
+ 		print_check "ack"
+-		count=$(get_counter ${ns1} "MPTcpExtMPJoinPortAckRx")
++		count=$(mptcp_lib_get_counter ${ns1} "MPTcpExtMPJoinPortAckRx")
+ 		if [ -z "$count" ]; then
+ 			print_skip
+ 		elif [ "$count" != "$ack_nr" ]; then
+@@ -1653,7 +1637,7 @@ chk_add_nr()
+ 		fi
+ 
+ 		print_check "syn"
+-		count=$(get_counter ${ns1} "MPTcpExtMismatchPortSynRx")
++		count=$(mptcp_lib_get_counter ${ns1} "MPTcpExtMismatchPortSynRx")
+ 		if [ -z "$count" ]; then
+ 			print_skip
+ 		elif [ "$count" != "$mis_syn_nr" ]; then
+@@ -1664,7 +1648,7 @@ chk_add_nr()
+ 		fi
+ 
+ 		print_check "ack"
+-		count=$(get_counter ${ns1} "MPTcpExtMismatchPortAckRx")
++		count=$(mptcp_lib_get_counter ${ns1} "MPTcpExtMismatchPortAckRx")
+ 		if [ -z "$count" ]; then
+ 			print_skip
+ 		elif [ "$count" != "$mis_ack_nr" ]; then
+@@ -1686,7 +1670,7 @@ chk_add_tx_nr()
+ 	timeout=$(ip netns exec $ns1 sysctl -n net.mptcp.add_addr_timeout)
+ 
+ 	print_check "add TX"
+-	count=$(get_counter ${ns1} "MPTcpExtAddAddrTx")
++	count=$(mptcp_lib_get_counter ${ns1} "MPTcpExtAddAddrTx")
+ 	if [ -z "$count" ]; then
+ 		print_skip
+ 	# if the test configured a short timeout tolerate greater then expected
+@@ -1698,7 +1682,7 @@ chk_add_tx_nr()
+ 	fi
+ 
+ 	print_check "echo TX"
+-	count=$(get_counter ${ns2} "MPTcpExtEchoAddTx")
++	count=$(mptcp_lib_get_counter ${ns2} "MPTcpExtEchoAddTx")
+ 	if [ -z "$count" ]; then
+ 		print_skip
+ 	elif [ "$count" != "$echo_tx_nr" ]; then
+@@ -1736,7 +1720,7 @@ chk_rm_nr()
+ 	fi
+ 
+ 	print_check "rm"
+-	count=$(get_counter ${addr_ns} "MPTcpExtRmAddr")
++	count=$(mptcp_lib_get_counter ${addr_ns} "MPTcpExtRmAddr")
+ 	if [ -z "$count" ]; then
+ 		print_skip
+ 	elif [ "$count" != "$rm_addr_nr" ]; then
+@@ -1746,13 +1730,13 @@ chk_rm_nr()
+ 	fi
+ 
+ 	print_check "rmsf"
+-	count=$(get_counter ${subflow_ns} "MPTcpExtRmSubflow")
++	count=$(mptcp_lib_get_counter ${subflow_ns} "MPTcpExtRmSubflow")
+ 	if [ -z "$count" ]; then
+ 		print_skip
+ 	elif [ -n "$simult" ]; then
+ 		local cnt suffix
+ 
+-		cnt=$(get_counter ${addr_ns} "MPTcpExtRmSubflow")
++		cnt=$(mptcp_lib_get_counter ${addr_ns} "MPTcpExtRmSubflow")
+ 
+ 		# in case of simult flush, the subflow removal count on each side is
+ 		# unreliable
+@@ -1778,7 +1762,7 @@ chk_rm_tx_nr()
+ 	local rm_addr_tx_nr=$1
+ 
+ 	print_check "rm TX"
+-	count=$(get_counter ${ns2} "MPTcpExtRmAddrTx")
++	count=$(mptcp_lib_get_counter ${ns2} "MPTcpExtRmAddrTx")
+ 	if [ -z "$count" ]; then
+ 		print_skip
+ 	elif [ "$count" != "$rm_addr_tx_nr" ]; then
+@@ -1795,7 +1779,7 @@ chk_prio_nr()
+ 	local count
+ 
+ 	print_check "ptx"
+-	count=$(get_counter ${ns1} "MPTcpExtMPPrioTx")
++	count=$(mptcp_lib_get_counter ${ns1} "MPTcpExtMPPrioTx")
+ 	if [ -z "$count" ]; then
+ 		print_skip
+ 	elif [ "$count" != "$mp_prio_nr_tx" ]; then
+@@ -1805,7 +1789,7 @@ chk_prio_nr()
+ 	fi
+ 
+ 	print_check "prx"
+-	count=$(get_counter ${ns1} "MPTcpExtMPPrioRx")
++	count=$(mptcp_lib_get_counter ${ns1} "MPTcpExtMPPrioRx")
+ 	if [ -z "$count" ]; then
+ 		print_skip
+ 	elif [ "$count" != "$mp_prio_nr_rx" ]; then
+@@ -1905,7 +1889,7 @@ wait_attempt_fail()
+ 	while [ $time -lt $timeout_ms ]; do
+ 		local cnt
+ 
+-		cnt=$(get_counter ${ns} "TcpAttemptFails")
++		cnt=$(mptcp_lib_get_counter ${ns} "TcpAttemptFails")
+ 
+ 		[ "$cnt" = 1 ] && return 1
+ 		time=$((time + 100))
+--- a/tools/testing/selftests/net/mptcp/mptcp_lib.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
+@@ -216,3 +216,19 @@ mptcp_lib_kill_wait() {
+ 	kill "${1}" > /dev/null 2>&1
+ 	wait "${1}" 2>/dev/null
+ }
++
++# $1: ns, $2: MIB counter
++mptcp_lib_get_counter() {
++	local ns="${1}"
++	local counter="${2}"
++	local count
++
++	count=$(ip netns exec "${ns}" nstat -asz "${counter}" |
++		awk 'NR==1 {next} {print $2}')
++	if [ -z "${count}" ]; then
++		mptcp_lib_fail_if_expected_feature "${counter} counter"
++		return 1
++	fi
++
++	echo "${count}"
++}
+--- a/tools/testing/selftests/net/mptcp/userspace_pm.sh
++++ b/tools/testing/selftests/net/mptcp/userspace_pm.sh
+@@ -887,9 +887,10 @@ test_prio()
+ 
+ 	# Check TX
+ 	print_test "MP_PRIO TX"
+-	count=$(ip netns exec "$ns2" nstat -as | grep MPTcpExtMPPrioTx | awk '{print $2}')
+-	[ -z "$count" ] && count=0
+-	if [ $count != 1 ]; then
++	count=$(mptcp_lib_get_counter "$ns2" "MPTcpExtMPPrioTx")
++	if [ -z "$count" ]; then
++		test_skip
++	elif [ $count != 1 ]; then
+ 		test_fail "Count != 1: ${count}"
+ 	else
+ 		test_pass
+@@ -897,9 +898,10 @@ test_prio()
+ 
+ 	# Check RX
+ 	print_test "MP_PRIO RX"
+-	count=$(ip netns exec "$ns1" nstat -as | grep MPTcpExtMPPrioRx | awk '{print $2}')
+-	[ -z "$count" ] && count=0
+-	if [ $count != 1 ]; then
++	count=$(mptcp_lib_get_counter "$ns1" "MPTcpExtMPPrioRx")
++	if [ -z "$count" ]; then
++		test_skip
++	elif [ $count != 1 ]; then
+ 		test_fail "Count != 1: ${count}"
+ 	else
+ 		test_pass
 
 
 
