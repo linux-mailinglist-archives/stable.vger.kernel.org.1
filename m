@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-24732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1E15869606
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCCEE8696F4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:17:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CFDB28F464
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16A97B2A612
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 432341420C9;
-	Tue, 27 Feb 2024 14:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A39E14264A;
+	Tue, 27 Feb 2024 14:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UCUHq+J0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tRm3ptog"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023B01420A0;
-	Tue, 27 Feb 2024 14:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE50678B61;
+	Tue, 27 Feb 2024 14:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042837; cv=none; b=jrODIgXTPtYWoquaIK2pXqWlb70i8ObbKL4ZCZs6CJbfNG3qRewIXx4W3rXtPyhikJ6ZTlagoLjvAu9s6m694WkKtthAe21HxyB4/PzKfMNM9fjeI1iChg/GqOsmU0ezYqjyFBBQEwz41xkXhUcHMvugbJ91KN0+Abtoxmagzpc=
+	t=1709043326; cv=none; b=VGtRpH8h0xSEmAscsh+8lAPWEf4IXSFMS/9F1W01IK+DMNhkbtZ4jgOC/q2sc6abKBjLJjPhn7HPNmQPCZZASQ11KyvuN7PxRCpSiFRYtAf+0eLhG5uogC4rM0QvmjEOTLqxpxr2eiGjtl3J/9TuAaPNMho/BIbwlhgDjLB06P8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042837; c=relaxed/simple;
-	bh=kZuSCc0vVHxex4N9w0ym1VtNZPF5zV73wq9UUEihInI=;
+	s=arc-20240116; t=1709043326; c=relaxed/simple;
+	bh=BVlo39vXhjaS0NZL2nesD6Q/NHXV0KBES2ZS2uIFNAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L1sdHfckSiQxi4V0mpR+n+NuZwYveV+1B7PKJZcJkId5G9uC9aLeUQ6nDjVnZd/yRlLiXjL3sgHZp7wXCWm7tMuVhHtvwf23f6Z12e+KlXiWubl+4GugB1OeiceZcYe90DNE6xky0K4tY0DkZ+Vp80psWcGJ8/ycVZ1Agf3+Ocw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UCUHq+J0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF53C433C7;
-	Tue, 27 Feb 2024 14:07:16 +0000 (UTC)
+	 MIME-Version; b=mqMg9YzlGFOLLYyY4Qgep5p+NsTPA1Fie/aVMjzloM5FV/loPPYEAyV6vA1UJz5nUkxxIkUHOr+wmB8KmmwjQYyzAtHIHLoQ1FIp2E3hMo95UXrLq0Pd3ldxcueTqX8khNxQeDCRdBKjPPq+VVZRME7dXqRSJe3p6uy2+h+LDE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tRm3ptog; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3639EC433C7;
+	Tue, 27 Feb 2024 14:15:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042836;
-	bh=kZuSCc0vVHxex4N9w0ym1VtNZPF5zV73wq9UUEihInI=;
+	s=korg; t=1709043326;
+	bh=BVlo39vXhjaS0NZL2nesD6Q/NHXV0KBES2ZS2uIFNAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UCUHq+J087ZCfh+JWvXxilt5T7JTP1TdAK0eacjzgs/fnokhwuWBS07aH3yE29ZSn
-	 0vLaVhH7iZEDRx3ZheDjqyB2VQCYBkVXFrgERQmKUK5ytyy6sbeQDMK+XAE1+ErAJ2
-	 HdYytw/JGxQQ8Uc2q81/ZeZTEuWFCaY2CF1feuRU=
+	b=tRm3ptogNbtTE2vxy8+Zd8AVTHJdCArq226W9xBwAEfS7DzYrbFEu1KsFwWty5nNO
+	 8UnHsJTYmBjDKQ0FLYGVV4viMYcI/tCHsKosn6JoPvGSmTEJ9TKgymlmWZyQPTQ9Zn
+	 LdbGsB12hsT6/4QarXdWayhzzs7c0a6hBdfr364g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Jason Wang <jasowang@redhat.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 139/245] tools/virtio: fix build
+Subject: [PATCH 6.1 066/195] wifi: mac80211: set station RX-NSS on reconfig
 Date: Tue, 27 Feb 2024 14:25:27 +0100
-Message-ID: <20240227131619.727190778@linuxfoundation.org>
+Message-ID: <20240227131612.682434074@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +59,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit d650f830f38b19039958f3f4504ceeb2b5922da7 ]
+[ Upstream commit dd6c064cfc3fc18d871107c6f5db8837e88572e4 ]
 
-Fix the build caused by the following changes:
-- phys_addr_t is now defined in tools/include/linux/types.h
-- dev_warn_once() is used in drivers/virtio/virtio_ring.c
-- linux/uio.h included by vringh.h use INT_MAX defined in limits.h
+When a station is added/reconfigured by userspace, e.g. a TDLS
+peer or a SoftAP client STA, rx_nss is currently not always set,
+so that it might be left zero. Set it up properly.
 
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-Message-Id: <20220705072249.7867-1-sgarzare@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Eugenio Pérez <eperezma@redhat.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
+Link: https://msgid.link/20240129155354.98f148a3d654.I193a02155f557ea54dc9d0232da66cf96734119a@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/virtio/linux/kernel.h | 2 +-
- tools/virtio/linux/vringh.h | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ net/mac80211/cfg.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/virtio/linux/kernel.h b/tools/virtio/linux/kernel.h
-index a4beb719d2174..8b877167933d1 100644
---- a/tools/virtio/linux/kernel.h
-+++ b/tools/virtio/linux/kernel.h
-@@ -30,7 +30,6 @@
- #define READ                    0
- #define WRITE                   1
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index a2c4866080bd7..6cf0b77839d1d 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1775,6 +1775,8 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
+ 					      sband->band);
+ 	}
  
--typedef unsigned long long phys_addr_t;
- typedef unsigned long long dma_addr_t;
- typedef size_t __kernel_size_t;
- typedef unsigned int __wsum;
-@@ -137,6 +136,7 @@ static inline void *krealloc_array(void *p, size_t new_n, size_t new_size, gfp_t
- #endif
- #define dev_err(dev, format, ...) fprintf (stderr, format, ## __VA_ARGS__)
- #define dev_warn(dev, format, ...) fprintf (stderr, format, ## __VA_ARGS__)
-+#define dev_warn_once(dev, format, ...) fprintf (stderr, format, ## __VA_ARGS__)
++	ieee80211_sta_set_rx_nss(link_sta);
++
+ 	return ret;
+ }
  
- #define min(x, y) ({				\
- 	typeof(x) _min1 = (x);			\
-diff --git a/tools/virtio/linux/vringh.h b/tools/virtio/linux/vringh.h
-index 9348957be56e4..e11c6aece7341 100644
---- a/tools/virtio/linux/vringh.h
-+++ b/tools/virtio/linux/vringh.h
-@@ -1 +1,2 @@
-+#include <limits.h>
- #include "../../../include/linux/vringh.h"
 -- 
 2.43.0
 
