@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-24995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 803AC86976C
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:21:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BE94869666
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:11:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6CA9B2A1FF
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:19:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6F7D1F2E2CC
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F3A813DBBC;
-	Tue, 27 Feb 2024 14:19:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90BDA1420B3;
+	Tue, 27 Feb 2024 14:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cH8d9L1L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7S/yesO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08A178B61;
-	Tue, 27 Feb 2024 14:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F08016423;
+	Tue, 27 Feb 2024 14:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043563; cv=none; b=qq77PveSXcoZjUNsL31oTBuOGV6tkKhspivgPMdQLHi8uwANVa7c94rIvkkVpndPxalkjibQVROTwBN+hGv6MDKcCIyvhWujaLRVrLNz6PvDkymQT8AQbHvI34zHDZ4h5yglJZmjkkHHghiUS39ORUsWhUEYFWAoLWK3EfdgGOs=
+	t=1709043077; cv=none; b=XXhn/fPvlHTOpyAnGPdWx+MWMyaIS3leKY9P4OJEqIia0q/6E6AQwbO6BXf2i561wF1yV3KgoEs9ouSsj4WRvlNcOTN9aMjjXtmeGMLdj8poPKDlgvMdOSJIWQolQsEnSrCkovssN8ynlKf37ykZclGSdqSthbfSkCHaZ1jgzt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043563; c=relaxed/simple;
-	bh=89zGxKOKlYNcjbjDgGrKvDXOH+pUOWCSVQp82/USDAg=;
+	s=arc-20240116; t=1709043077; c=relaxed/simple;
+	bh=1gzVs4t4zvp9xzxBth+EoiEzPPa3/9gMEaMOG5ORPOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ToUjhyDjy5Aetli7qnR3nZB65W+wjNno1Zl0owY66HXn6V7bmRIdzFF8hyf/S3TOoH9uF3AEMPm0byMHjDuRx9NsaA0+Tvl13UugFC2DxIlhE5SIRHbUZZSa9Ry73Cpa7BcLq0Vcxvkc7DafSIVWWpU1ZZSd01Jm/D7Kmk4QFMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cH8d9L1L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CCDBC43390;
-	Tue, 27 Feb 2024 14:19:23 +0000 (UTC)
+	 MIME-Version; b=VjEl+e37iXPqHlla0+385GByDIjbRm4RTr5/R3LKtTJVOoxNRw/v+fVOK3/9kHoMk4PGA/KQDkktb8FO0fxvtIYJ/N+bSITYeyVnz8Et67VXCCJMTj5WNSVjuJDW7jFt3rUn1FFl50dRZPOmx7xl3DCvuaXcI7SJ+pZL75wfi60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7S/yesO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D47F0C43390;
+	Tue, 27 Feb 2024 14:11:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043563;
-	bh=89zGxKOKlYNcjbjDgGrKvDXOH+pUOWCSVQp82/USDAg=;
+	s=korg; t=1709043077;
+	bh=1gzVs4t4zvp9xzxBth+EoiEzPPa3/9gMEaMOG5ORPOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cH8d9L1LFj44Ff2sjSZweK9oH4LbXCcDxyG1QtcLELHLniNLpRT+P4oi0CGEfGk6L
-	 U9TAGX7tKSN4kDPsOcp4IdQe51RzJKaiPvDLhVKDKJ+sagsl7VzVJTXfF0pwaOxuZo
-	 SYiX1PVR4p/SQNDm3kZV90fKmY1tu7Ydm/iriLX0=
+	b=O7S/yesOtfSRih4qfmUaYvahUX1K3F7E5BxFHF9HzX0YziiBQfb1V3hKKzW6fzHUX
+	 q4WjP+xqEbTbLFDeed44zU1CT4KbtriQFKWidwxQYIf9ccks7+kF5mfc6EIKdNbfr1
+	 n4xVHrK8SVbScfmfDEXSpjb+N41tt6CQpoS1Gvwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Sakharov <p.sakharov@ispras.ru>,
-	Serge Semin <fancer.lancer@gmail.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 153/195] net: stmmac: Fix incorrect dereference in interrupt handlers
+Subject: [PATCH 5.15 226/245] octeontx2-af: Consider the action set by PF
 Date: Tue, 27 Feb 2024 14:26:54 +0100
-Message-ID: <20240227131615.469202951@linuxfoundation.org>
+Message-ID: <20240227131622.533118000@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Sakharov <p.sakharov@ispras.ru>
+From: Subbaraya Sundeep <sbhatta@marvell.com>
 
-[ Upstream commit 97dde84026339e4b4af9a6301f825d1828d7874b ]
+[ Upstream commit 3b1ae9b71c2a97f848b00fb085a2bd29bddbe8d9 ]
 
-If 'dev' or 'data' is NULL, the 'priv' variable has an incorrect address
-when dereferencing calling netdev_err().
+AF reserves MCAM entries for each PF, VF present in the
+system and populates the entry with DMAC and action with
+default RSS so that basic packet I/O works. Since PF/VF is
+not aware of the RSS action installed by AF, AF only fixup
+the actions of the rules installed by PF/VF with corresponding
+default RSS action. This worked well for rules installed by
+PF/VF for features like RX VLAN offload and DMAC filters but
+rules involving action like drop/forward to queue are also
+getting modified by AF. Hence fix it by setting the default
+RSS action only if requested by PF/VF.
 
-Since we get as 'dev_id' or 'data' what was passed as the 'dev' argument
-to request_irq() during interrupt initialization (that is, the net_device
-and rx/tx queue pointers initialized at the time of the call) and since
-there are usually no checks for the 'dev_id' argument in such handlers
-in other drivers, remove these checks from the handlers in stmmac driver.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 8532f613bc78 ("net: stmmac: introduce MSI Interrupt routines for mac, safety, RX & TX")
-Signed-off-by: Pavel Sakharov <p.sakharov@ispras.ru>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Fixes: 967db3529eca ("octeontx2-af: add support for multicast/promisc packet replication feature")
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 20 -------------------
- 1 file changed, 20 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 66178ce6d000e..91b2aa81914ba 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -5823,11 +5823,6 @@ static irqreturn_t stmmac_mac_interrupt(int irq, void *dev_id)
- 	struct net_device *dev = (struct net_device *)dev_id;
- 	struct stmmac_priv *priv = netdev_priv(dev);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+index 70b4f2a3b02fd..604aaa9b960e9 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+@@ -436,6 +436,10 @@ static void npc_fixup_vf_rule(struct rvu *rvu, struct npc_mcam *mcam,
+ 			return;
+ 	}
  
--	if (unlikely(!dev)) {
--		netdev_err(priv->dev, "%s: invalid dev pointer\n", __func__);
--		return IRQ_NONE;
--	}
--
- 	/* Check if adapter is up */
- 	if (test_bit(STMMAC_DOWN, &priv->state))
- 		return IRQ_HANDLED;
-@@ -5843,11 +5838,6 @@ static irqreturn_t stmmac_safety_interrupt(int irq, void *dev_id)
- 	struct net_device *dev = (struct net_device *)dev_id;
- 	struct stmmac_priv *priv = netdev_priv(dev);
- 
--	if (unlikely(!dev)) {
--		netdev_err(priv->dev, "%s: invalid dev pointer\n", __func__);
--		return IRQ_NONE;
--	}
--
- 	/* Check if adapter is up */
- 	if (test_bit(STMMAC_DOWN, &priv->state))
- 		return IRQ_HANDLED;
-@@ -5869,11 +5859,6 @@ static irqreturn_t stmmac_msi_intr_tx(int irq, void *data)
- 	dma_conf = container_of(tx_q, struct stmmac_dma_conf, tx_queue[chan]);
- 	priv = container_of(dma_conf, struct stmmac_priv, dma_conf);
- 
--	if (unlikely(!data)) {
--		netdev_err(priv->dev, "%s: invalid dev pointer\n", __func__);
--		return IRQ_NONE;
--	}
--
- 	/* Check if adapter is up */
- 	if (test_bit(STMMAC_DOWN, &priv->state))
- 		return IRQ_HANDLED;
-@@ -5900,11 +5885,6 @@ static irqreturn_t stmmac_msi_intr_rx(int irq, void *data)
- 	dma_conf = container_of(rx_q, struct stmmac_dma_conf, rx_queue[chan]);
- 	priv = container_of(dma_conf, struct stmmac_priv, dma_conf);
- 
--	if (unlikely(!data)) {
--		netdev_err(priv->dev, "%s: invalid dev pointer\n", __func__);
--		return IRQ_NONE;
--	}
--
- 	/* Check if adapter is up */
- 	if (test_bit(STMMAC_DOWN, &priv->state))
- 		return IRQ_HANDLED;
++	/* AF modifies given action iff PF/VF has requested for it */
++	if ((entry->action & 0xFULL) != NIX_RX_ACTION_DEFAULT)
++		return;
++
+ 	/* copy VF default entry action to the VF mcam entry */
+ 	rx_action = npc_get_default_entry_action(rvu, mcam, blkaddr,
+ 						 target_func);
 -- 
 2.43.0
 
