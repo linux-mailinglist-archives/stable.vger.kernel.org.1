@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 593C78695CE
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:05:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A81FB869475
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:54:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E18AB22D65
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:05:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36B681F218CD
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:54:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5422C1448C3;
-	Tue, 27 Feb 2024 14:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2225C13DB98;
+	Tue, 27 Feb 2024 13:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMsE+pXK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="upt3kSbn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1129C1420A8;
-	Tue, 27 Feb 2024 14:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D208913DBA5;
+	Tue, 27 Feb 2024 13:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042699; cv=none; b=Ot1tx+GQwwfUvv/dJKNNFbCLgA2B9CjZJnI3ZNltm/TjDmyGIGR9VfXDhzDwU7Sz3knNdjd6bdc4SHydwy69oSYzjL84KObVrl6Jdgw66ZZC48FO7nx0eR5ZbWA0uE7HYoCINrRiYyudhuNF9NdMdFpbE7NDhFbeIbUtR1cRNYU=
+	t=1709041983; cv=none; b=SJnlULws41qwEi2XH/l1PXZQT2V+Is9QWm+YsZY9qd54+zlGFVi2MJnHXY/VuHXgt64FfMWehkS6Bgs+y9ttNVAqv3LvBQqFud8YOqNVI+Clt4USYRJQ2MJ5ln++lF3MGvY+4TnHyWaAgEAuWUY2OjaDCkK/LDv9u2dkZd9OHTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042699; c=relaxed/simple;
-	bh=nbnnXqHwj7eDmXGnqVBQazOjKY7+6tK50wck8iSzPfI=;
+	s=arc-20240116; t=1709041983; c=relaxed/simple;
+	bh=qggbTdxWtxrX1iP+Xs2iMwXzyyB2AeoUKJjYMh5ettM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gRGXY9BiKCE+t01iHGh0V2NviQ/2EEFFZmYakEcbfyEGxGhK1MvxxohQe7CDHIV9PZuvq/LceVTGzjsAnuTHEikazsi54/gHaus7/Nz6wDG1rOI+dSiZwcR10jZee2DSm6/JJyIWfQNk0d/Z81daDV6FrfFNEpe8JRIQr6d7hmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMsE+pXK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F724C433F1;
-	Tue, 27 Feb 2024 14:04:58 +0000 (UTC)
+	 MIME-Version; b=R0pywQkGSxH/072nGCkHTVT6ZoljpjMUnlgPyrs9jk+ynOeTBa4qTZ9uCH2RlMM7fh+LpQ8v9cuGiPzLyx7+Kfc8tP/wfC9GhtWDgTIL7tnB9bvgFDjarCJAlPCQV+jFZpmNpJp58M0G/1Mk2fn8SzSRC2YdzJabLpqGFqjBpWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=upt3kSbn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D3DAC433F1;
+	Tue, 27 Feb 2024 13:53:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042698;
-	bh=nbnnXqHwj7eDmXGnqVBQazOjKY7+6tK50wck8iSzPfI=;
+	s=korg; t=1709041983;
+	bh=qggbTdxWtxrX1iP+Xs2iMwXzyyB2AeoUKJjYMh5ettM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qMsE+pXKZWNs9Kz2L6Y6T+JkiFjy8E076+VrB88OyYDhcRRS4ks+TryObSGHYUvYE
-	 28HI8zax7Gv8EcsNVWhShMA9p0E1+WmNA4LMDjje7iKSu7hIRoywd2ojmrcd3Xix2I
-	 dCJR3fLZqEDrrtkhaGjsxuE+2txD1DuuXM/C2Xlk=
+	b=upt3kSbnoga+l/Mq2nmHbFyzWUgTZjEEU/guGIMvh3VDP3hBSDU+l0FKjIhNs8FgI
+	 Ppo0U1j2sMBxMXfuydDarbdl69ahlKBoYY4SCAgbNTxhdTEONhVrtIHNl5gIhuLw17
+	 zgfJputZKkwhvxGpvsD2rD61GL8kNlbdxejZ4duU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@csail.mit.edu>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 061/245] fs/ntfs3: Correct function is_rst_area_valid
-Date: Tue, 27 Feb 2024 14:24:09 +0100
-Message-ID: <20240227131617.225221638@linuxfoundation.org>
+	Filipe Manana <fdmanana@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 139/299] btrfs: defrag: avoid unnecessary defrag caused by incorrect extent size
+Date: Tue, 27 Feb 2024 14:24:10 +0100
+Message-ID: <20240227131630.329797566@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 1b7dd28e14c4728ae1a815605ca33ffb4ce1b309 ]
+commit e42b9d8b9ea2672811285e6a7654887ff64d23f3 upstream.
 
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[BUG]
+With the following file extent layout, defrag would do unnecessary IO
+and result more on-disk space usage.
+
+  # mkfs.btrfs -f $dev
+  # mount $dev $mnt
+  # xfs_io -f -c "pwrite 0 40m" $mnt/foobar
+  # sync
+  # xfs_io -f -c "pwrite 40m 16k" $mnt/foobar
+  # sync
+
+Above command would lead to the following file extent layout:
+
+        item 6 key (257 EXTENT_DATA 0) itemoff 15816 itemsize 53
+                generation 7 type 1 (regular)
+                extent data disk byte 298844160 nr 41943040
+                extent data offset 0 nr 41943040 ram 41943040
+                extent compression 0 (none)
+        item 7 key (257 EXTENT_DATA 41943040) itemoff 15763 itemsize 53
+                generation 8 type 1 (regular)
+                extent data disk byte 13631488 nr 16384
+                extent data offset 0 nr 16384 ram 16384
+                extent compression 0 (none)
+
+Which is mostly fine. We can allow the final 16K to be merged with the
+previous 40M, but it's upon the end users' preference.
+
+But if we defrag the file using the default parameters, it would result
+worse file layout:
+
+ # btrfs filesystem defrag $mnt/foobar
+ # sync
+
+        item 6 key (257 EXTENT_DATA 0) itemoff 15816 itemsize 53
+                generation 7 type 1 (regular)
+                extent data disk byte 298844160 nr 41943040
+                extent data offset 0 nr 8650752 ram 41943040
+                extent compression 0 (none)
+        item 7 key (257 EXTENT_DATA 8650752) itemoff 15763 itemsize 53
+                generation 9 type 1 (regular)
+                extent data disk byte 340787200 nr 33292288
+                extent data offset 0 nr 33292288 ram 33292288
+                extent compression 0 (none)
+        item 8 key (257 EXTENT_DATA 41943040) itemoff 15710 itemsize 53
+                generation 8 type 1 (regular)
+                extent data disk byte 13631488 nr 16384
+                extent data offset 0 nr 16384 ram 16384
+                extent compression 0 (none)
+
+Note the original 40M extent is still there, but a new 32M extent is
+created for no benefit at all.
+
+[CAUSE]
+There is an existing check to make sure we won't defrag a large enough
+extent (the threshold is by default 32M).
+
+But the check is using the length to the end of the extent:
+
+	range_len = em->len - (cur - em->start);
+
+	/* Skip too large extent */
+	if (range_len >= extent_thresh)
+		goto next;
+
+This means, for the first 8MiB of the extent, the range_len is always
+smaller than the default threshold, and would not be defragged.
+But after the first 8MiB, the remaining part would fit the requirement,
+and be defragged.
+
+Such different behavior inside the same extent caused the above problem,
+and we should avoid different defrag decision inside the same extent.
+
+[FIX]
+Instead of using @range_len, just use @em->len, so that we have a
+consistent decision among the same file extent.
+
+Now with this fix, we won't touch the extent, thus not making it any
+worse.
+
+Reported-by: Filipe Manana <fdmanana@suse.com>
+Fixes: 0cb5950f3f3b ("btrfs: fix deadlock when reserving space during defrag")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/fslog.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ fs/btrfs/defrag.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/fslog.c b/fs/ntfs3/fslog.c
-index 8b95c06e5a4c5..6ba1357f3ed4c 100644
---- a/fs/ntfs3/fslog.c
-+++ b/fs/ntfs3/fslog.c
-@@ -465,7 +465,7 @@ static inline bool is_rst_area_valid(const struct RESTART_HDR *rhdr)
- {
- 	const struct RESTART_AREA *ra;
- 	u16 cl, fl, ul;
--	u32 off, l_size, file_dat_bits, file_size_round;
-+	u32 off, l_size, seq_bits;
- 	u16 ro = le16_to_cpu(rhdr->ra_off);
- 	u32 sys_page = le32_to_cpu(rhdr->sys_page_size);
+--- a/fs/btrfs/defrag.c
++++ b/fs/btrfs/defrag.c
+@@ -903,7 +903,7 @@ static int defrag_collect_targets(struct
+ 			goto add;
  
-@@ -511,13 +511,15 @@ static inline bool is_rst_area_valid(const struct RESTART_HDR *rhdr)
- 	/* Make sure the sequence number bits match the log file size. */
- 	l_size = le64_to_cpu(ra->l_size);
+ 		/* Skip too large extent */
+-		if (range_len >= extent_thresh)
++		if (em->len >= extent_thresh)
+ 			goto next;
  
--	file_dat_bits = sizeof(u64) * 8 - le32_to_cpu(ra->seq_num_bits);
--	file_size_round = 1u << (file_dat_bits + 3);
--	if (file_size_round != l_size &&
--	    (file_size_round < l_size || (file_size_round / 2) > l_size)) {
--		return false;
-+	seq_bits = sizeof(u64) * 8 + 3;
-+	while (l_size) {
-+		l_size >>= 1;
-+		seq_bits -= 1;
- 	}
- 
-+	if (seq_bits != ra->seq_num_bits)
-+		return false;
-+
- 	/* The log page data offset and record header length must be quad-aligned. */
- 	if (!IS_ALIGNED(le16_to_cpu(ra->data_off), 8) ||
- 	    !IS_ALIGNED(le16_to_cpu(ra->rec_hdr_len), 8))
--- 
-2.43.0
-
+ 		/*
 
 
 
