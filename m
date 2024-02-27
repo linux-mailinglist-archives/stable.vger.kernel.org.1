@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-23845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-23846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEBF5868B45
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 09:52:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2C98868B4F
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 09:54:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B0AC1C21D49
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 08:52:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F9FC1F26680
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 08:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 498F4130E27;
-	Tue, 27 Feb 2024 08:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A37B4131748;
+	Tue, 27 Feb 2024 08:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pou8i58M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V/pYRzbS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05313130AF8
-	for <stable@vger.kernel.org>; Tue, 27 Feb 2024 08:52:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62299130E36
+	for <stable@vger.kernel.org>; Tue, 27 Feb 2024 08:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709023934; cv=none; b=If1ZPvlTkWxGqi+tEHoc4FHrMbOwloKyeGWd97zfQztryCrUrtzgiaZRXu65ZMIKP/ee9Pgc0u0r/eHYdyRkeZHDvPQB86BVmHxrj6hwZyZcNpI1O8ZN3xUUQEbw47kTNV2wNSxCgOn/SSKWihg1NI5avgd5LL3YisR5hIum4OE=
+	t=1709024043; cv=none; b=cY0E6QPatjXIeyU4cZn8iDfVznyMFgZ40Ko0evlVo8fSzL5AXfHOFppEuB0bXLXRtKQ7DnYs9kKmMs+67r273EnSd3A7Sh9ksQ95gcxcXE/ZbRyEpBYN/K9qc3+aGpRb4dW2iWmVL8aray/hHA6xyGOz0JXzv/XV062ZxjM171M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709023934; c=relaxed/simple;
-	bh=P/zwOOotQ6YR93fm0kSQdKSEqh6cRlBcvrRGWaXcZ5A=;
+	s=arc-20240116; t=1709024043; c=relaxed/simple;
+	bh=TJzjCuznkFCUAn6bJt8P/l9QhPoFM6t8PZIEXOBxT64=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qz4YWEOCgLQCQ8P3JlYlMBpZ0nxQadJSkgDlU0lW1C4QNTeseLC/eQZBnKr0fBMTRARjWzOPRwYdW0/g+6eLugVVOxMni6OodwEDc9sEMJRWrXw82+Qkjm1tx3GQJza2BBj7XTLHHrr0AO/oryXkTFduoX33xahJoRhH7AMmZYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pou8i58M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E09BC433C7;
-	Tue, 27 Feb 2024 08:52:13 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZK35MLfXmWzw1q2ErrXVpimhkDsuLj8CwNfEpm1gfl3H9XWptFdw8uIL9DuAuonpv8m+GvKOJ6J4eebHIxwHVuovamiPrXmPeVn95V8/3YO71iNKAibYapVT6FI8JvEoBjHw4IRJK1y5EskMgrmWYZK0AIoCKbGnBxDu7aXj8yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V/pYRzbS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D79DC433C7;
+	Tue, 27 Feb 2024 08:54:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709023933;
-	bh=P/zwOOotQ6YR93fm0kSQdKSEqh6cRlBcvrRGWaXcZ5A=;
+	s=korg; t=1709024043;
+	bh=TJzjCuznkFCUAn6bJt8P/l9QhPoFM6t8PZIEXOBxT64=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Pou8i58M+1Pw5lWxythU5IS7tbdLTLyoSKz8oG42AFP1QYeOV6YQkmtArpunzrAkp
-	 qKrc+axaoi9YyleWCOAd11sc4jMxZhoWG5q0Z07f6slRroDla0keQODc3lTiJIXNTV
-	 Y0jvmfvpFsQWbYB1L6j9Wz5BDLx/iDX4OgfB4Y+8=
-Date: Tue, 27 Feb 2024 09:52:11 +0100
+	b=V/pYRzbSH9Pdg/QmEM+Gtrs3g2yj1pcVAikNAby9zhrrrvIKgCOSQUmzUEo6PTMaA
+	 bIBlkVi3bLrJ9QF4Mu2vnbFKFoRm+m7PdxNSxeqZYfJBLDDiLrDAmiR4xd3jAGyX9a
+	 ED9PkgsPSfoZasvqSJQB0gNBhyyLHgyekLvXvxw0=
+Date: Tue, 27 Feb 2024 09:54:00 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Yue Hu <zbestahu@gmail.com>
-Cc: stable@vger.kernel.org, hsiangkao@linux.alibaba.com,
-	linux-erofs@lists.ozlabs.org, zhangwen@coolpad.com,
-	Yue Hu <huyue2@coolpad.com>
-Subject: Re: [PATCH 6.1.y 1/2] erofs: simplify compression configuration
- parser
-Message-ID: <2024022703-skied-tassel-cfc6@gregkh>
-References: <5216b503054dbbb9fccf8faa280647c728e82726.1709000322.git.huyue2@coolpad.com>
+To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Cc: stable@vger.kernel.org, Dave Hansen <dave.hansen@linux.intel.com>,
+	Alyssa Milburn <alyssa.milburn@intel.com>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Nikolay Borisov <nik.borisov@suse.com>
+Subject: Re: [PATCH 6.6.y 0/6] Delay VERW - 6.6.y backport
+Message-ID: <2024022740-smugness-cone-e80c@gregkh>
+References: <20240226-delay-verw-backport-6-6-y-v1-0-aa17b2922725@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,25 +59,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <5216b503054dbbb9fccf8faa280647c728e82726.1709000322.git.huyue2@coolpad.com>
+In-Reply-To: <20240226-delay-verw-backport-6-6-y-v1-0-aa17b2922725@linux.intel.com>
 
-On Tue, Feb 27, 2024 at 10:22:38AM +0800, Yue Hu wrote:
-> From: Gao Xiang <hsiangkao@linux.alibaba.com>
+On Mon, Feb 26, 2024 at 09:34:14PM -0800, Pawan Gupta wrote:
+> This is the backport of recently upstreamed series that moves VERW
+> execution to a later point in exit-to-user path. This is needed because
+> in some cases it may be possible for data accessed after VERW executions
+> may end into MDS affected CPU buffers. Moving VERW closer to ring
+> transition reduces the attack surface.
 > 
-> [ Upstream commit efb4fb02cef3ab410b603c8f0e1c67f61d55f542 ]
-> 
-> Move erofs_load_compr_cfgs() into decompressor.c as well as introduce
-> a callback instead of a hard-coded switch for each algorithm for
-> simplicity.
-> 
-> Reviewed-by: Chao Yu <chao@kernel.org>
-> Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-> Link: https://lore.kernel.org/r/20231022130957.11398-1-xiang@kernel.org
-> Stable-dep-of: 118a8cf504d7 ("erofs: fix inconsistent per-file compression format")
-> Signed-off-by: Yue Hu <huyue2@coolpad.com>
-> ---
+> Patch 1/6 includes a minor fix that is queued for upstream:
+> https://lore.kernel.org/lkml/170899674562.398.6398007479766564897.tip-bot2@tip-bot2/
 
-Both queued up, thanks.
+Obviously I can't take this, you know that :(
+
+Please include the actual commit in the series, when it hits Linus's
+tree.
+
+I'm dropping all of these backports from my review queue, please resend
+the fixed up series when they are ready.
+
+thanks,
 
 greg k-h
 
