@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A8BE869587
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:02:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF7D5869450
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D39FA1F2A8A4
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:02:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A5412860CD
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDDE613B7AB;
-	Tue, 27 Feb 2024 14:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C781448D7;
+	Tue, 27 Feb 2024 13:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ewDLS0TR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y76NP9cK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA2778B61;
-	Tue, 27 Feb 2024 14:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75FFA13B29B;
+	Tue, 27 Feb 2024 13:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042556; cv=none; b=uNzzh9uGUz/8S9U0odco3yHrPa1IfZkkug2282cNHQ3AGsItHpTy7ZCYmEVFs2kHMrFM3MT/Z4uTNekhnv5yeodGuXoGl7U6LE/pd5YAOH3WMxtj5ZuoPO0w4/o2zD1hQpANkj6G73xGMZqBzMzO0j62mIGKxyg3V4kMhfNwTKU=
+	t=1709041923; cv=none; b=KpeKkJ4epYXAm2QvBcl7lbH9zIJhY8gf42zsp9z/0fDK7RXQixaRzaSPCh6OiKQbY9VQPaFIa1tvfUxwIFBjoul3f0EOMnFJE+2ffol3YwNgZmNVPmkSReaXu3WCv01b689TQUyM+DwhXgTS6kiux9Sqq6Gly6Oau+OMyHTLnmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042556; c=relaxed/simple;
-	bh=xibtZyiCRPu3aaIgIYbqRKWG7Ui1gtSFbowFcgimuMQ=;
+	s=arc-20240116; t=1709041923; c=relaxed/simple;
+	bh=WuZgNhYEutUfzvM+sm6RXj51q03hUbuF8hja8zgA6qw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qxp3wqB1IHZKhRgk0U1N44E2L7rfkOcx5yOC4hdCcnkaiS68kheK4k2WG6RCbcDjv7ArdwWgBP2AXUpIcu4qboBuyKJRQl9pokbVijrBZlN47ejflHkLldqDAt8UcQWd3UvN09cczhriCudw5JZn+eFFno0KtIxD+EfFdHNOOU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ewDLS0TR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D43C433F1;
-	Tue, 27 Feb 2024 14:02:36 +0000 (UTC)
+	 MIME-Version; b=UBgrXu2f6x+3HaZVQDLtgXBISXNLQQ07Tb0LRa/8p1ojp7hxfhcQ1DAgV6o3sKYlhkKQLYbyyS71Yh9vz9jFLrkoolQCD+m/LXNRwyJzTgpM8XwjNaLJm9GV3jDvzkMTBnR3+B8jw2T9iVMQ36USf6ywfV8vKs8TNH3lh/uHHMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y76NP9cK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06B8AC43390;
+	Tue, 27 Feb 2024 13:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042556;
-	bh=xibtZyiCRPu3aaIgIYbqRKWG7Ui1gtSFbowFcgimuMQ=;
+	s=korg; t=1709041923;
+	bh=WuZgNhYEutUfzvM+sm6RXj51q03hUbuF8hja8zgA6qw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ewDLS0TRdAnSCzlIJzA1c3maFxDb2wd4B14HHOOlu9X81CuCYA2evU1eDCrIgHobb
-	 yBI70Y8SoyhTMqWm1a4PLRDCGyv8xldIkE3EJloEnQ8bCvqbn2shGi3mAx+gdg7Zg/
-	 v2/TDOmxDe1TFVEeCgzDDeA3uQn962+t5hmqBXBk=
+	b=y76NP9cKLRKgEZyhXIBrWsixeJKNwatjc93GrglIXL2JXToP2QGQ0tFRyyoqdf/Or
+	 Tpl453/g3c0rkGLlojjMVqYT6wOJ/daoAT8T6VPiEFq8nYbJlxjmTLVWzkajnpSPwy
+	 dLMzbs3Nx/RSe1cXWhokOWXLJ9StfQ2YE33sExvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brenton Simpson <appsforartists@google.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Yi Sun <yi.sun@unisoc.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 039/245] Input: xpad - add Lenovo Legion Go controllers
+Subject: [PATCH 6.6 116/299] virtio-blk: Ensure no requests in virtqueues before deleting vqs.
 Date: Tue, 27 Feb 2024 14:23:47 +0100
-Message-ID: <20240227131616.391059957@linuxfoundation.org>
+Message-ID: <20240227131629.599588545@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brenton Simpson <appsforartists@google.com>
+From: Yi Sun <yi.sun@unisoc.com>
 
-[ Upstream commit 80441f76ee67002437db61f3b317ed80cce085d2 ]
+[ Upstream commit 4ce6e2db00de8103a0687fb0f65fd17124a51aaa ]
 
-The Lenovo Legion Go is a handheld gaming system, similar to a Steam Deck.
-It has a gamepad (including rear paddles), 3 gyroscopes, a trackpad,
-volume buttons, a power button, and 2 LED ring lights.
+Ensure no remaining requests in virtqueues before resetting vdev and
+deleting virtqueues. Otherwise these requests will never be completed.
+It may cause the system to become unresponsive.
 
-The Legion Go firmware presents these controls as a USB hub with various
-devices attached.  In its default state, the gamepad is presented as an
-Xbox controller connected to this hub.  (By holding a combination of
-buttons, it can be changed to use the older DirectInput API.)
+Function blk_mq_quiesce_queue() can ensure that requests have become
+in_flight status, but it cannot guarantee that requests have been
+processed by the device. Virtqueues should never be deleted before
+all requests become complete status.
 
-This patch teaches the existing Xbox controller module `xpad` to bind to
-the controller in the Legion Go, which enables support for the:
+Function blk_mq_freeze_queue() ensure that all requests in virtqueues
+become complete status. And no requests can enter in virtqueues.
 
-- directional pad,
-- analog sticks (including clicks),
-- X, Y, A, B,
-- start and select (or menu and capture),
-- shoulder buttons, and
-- rumble.
-
-The trackpad, touchscreen, volume controls, and power button are already
-supported via existing kernel modules.  Two of the face buttons, the
-gyroscopes, rear paddles, and LEDs are not.
-
-After this patch lands, the Legion Go will be mostly functional in Linux,
-out-of-the-box.  The various components of the USB hub can be synthesized
-into a single logical controller (including the additional buttons) in
-userspace with [Handheld Daemon](https://github.com/hhd-dev/hhd), which
-makes the Go fully functional.
-
-Signed-off-by: Brenton Simpson <appsforartists@google.com>
-Link: https://lore.kernel.org/r/20240118183546.418064-1-appsforartists@google.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Yi Sun <yi.sun@unisoc.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Link: https://lore.kernel.org/r/20240129085250.1550594-1-yi.sun@unisoc.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/block/virtio_blk.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
-index 1ff0d4e24fe68..f0b1dac938222 100644
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -276,6 +276,7 @@ static const struct xpad_device {
- 	{ 0x1689, 0xfd00, "Razer Onza Tournament Edition", 0, XTYPE_XBOX360 },
- 	{ 0x1689, 0xfd01, "Razer Onza Classic Edition", 0, XTYPE_XBOX360 },
- 	{ 0x1689, 0xfe00, "Razer Sabertooth", 0, XTYPE_XBOX360 },
-+	{ 0x17ef, 0x6182, "Lenovo Legion Controller for Windows", 0, XTYPE_XBOX360 },
- 	{ 0x1949, 0x041a, "Amazon Game Controller", 0, XTYPE_XBOX360 },
- 	{ 0x1bad, 0x0002, "Harmonix Rock Band Guitar", 0, XTYPE_XBOX360 },
- 	{ 0x1bad, 0x0003, "Harmonix Rock Band Drumkit", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360 },
-@@ -464,6 +465,7 @@ static const struct usb_device_id xpad_table[] = {
- 	XPAD_XBOX360_VENDOR(0x15e4),		/* Numark X-Box 360 controllers */
- 	XPAD_XBOX360_VENDOR(0x162e),		/* Joytech X-Box 360 controllers */
- 	XPAD_XBOX360_VENDOR(0x1689),		/* Razer Onza */
-+	XPAD_XBOX360_VENDOR(0x17ef),		/* Lenovo */
- 	XPAD_XBOX360_VENDOR(0x1949),		/* Amazon controllers */
- 	XPAD_XBOX360_VENDOR(0x1bad),		/* Harminix Rock Band Guitar and Drums */
- 	XPAD_XBOX360_VENDOR(0x20d6),		/* PowerA Controllers */
+diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
+index 225c86c74d4e9..41b2fd7e1b9e5 100644
+--- a/drivers/block/virtio_blk.c
++++ b/drivers/block/virtio_blk.c
+@@ -1629,14 +1629,15 @@ static int virtblk_freeze(struct virtio_device *vdev)
+ {
+ 	struct virtio_blk *vblk = vdev->priv;
+ 
++	/* Ensure no requests in virtqueues before deleting vqs. */
++	blk_mq_freeze_queue(vblk->disk->queue);
++
+ 	/* Ensure we don't receive any more interrupts */
+ 	virtio_reset_device(vdev);
+ 
+ 	/* Make sure no work handler is accessing the device. */
+ 	flush_work(&vblk->config_work);
+ 
+-	blk_mq_quiesce_queue(vblk->disk->queue);
+-
+ 	vdev->config->del_vqs(vdev);
+ 	kfree(vblk->vqs);
+ 
+@@ -1654,7 +1655,7 @@ static int virtblk_restore(struct virtio_device *vdev)
+ 
+ 	virtio_device_ready(vdev);
+ 
+-	blk_mq_unquiesce_queue(vblk->disk->queue);
++	blk_mq_unfreeze_queue(vblk->disk->queue);
+ 	return 0;
+ }
+ #endif
 -- 
 2.43.0
 
