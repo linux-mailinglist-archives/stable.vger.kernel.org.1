@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-24429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DA15869473
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:54:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B90B8695B3
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:04:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8ECC71C23D76
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:54:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E13A1C22993
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:04:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBC1D13B7A2;
-	Tue, 27 Feb 2024 13:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA80313B2BA;
+	Tue, 27 Feb 2024 14:04:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ue5bLjt6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZQKYmV8f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B4B913AA55;
-	Tue, 27 Feb 2024 13:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8FB513B2B9;
+	Tue, 27 Feb 2024 14:04:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041975; cv=none; b=cWagAVIr7vOmAESn1E0gyGQSSVpbsz/8zTBAB8PU4KhW7B0R/l/ID9KQN1OlJybUNQq5RdYhvQNs6q8otvBKVge+r/40qxuF05Qi+2AGpbNdJYVGBoRRh0dXcCBEKFzMwlRXvkdMRObvPV7PGsy417TrKCWQ5nBex8AHFc+MUX8=
+	t=1709042668; cv=none; b=jQNesmENxhbgXMP+1dhx1X6aLf91q0FIihmrTW/ifWvz9jZ92Tv/uwytHDbuA6+hgVvWLfmEcFXeS69l75Ue5F0atRYXRjQRVpFyFj9hWVriTSm9tR8l58GuUMWux3ytvCKaEB4LyNnhTWOpM7k5pTxcebbLsBpxbtKSSNyR3u8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041975; c=relaxed/simple;
-	bh=aawsmxtdGl8GOsWd+deZxtzShsgBBhbi4FMink25SyU=;
+	s=arc-20240116; t=1709042668; c=relaxed/simple;
+	bh=NeDzPS/Gy8vNwEXXiK7bMIRfDVUrhBaUXRVsGAIb12E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HbeOSoW/nZobcV5zFr8VVKNqZju2TL816xeAGNd28PoB/g55SndZvpPO6ayt/pGrhg3OQ7zhqjgKF6Ale3dOBecfAbmtYBsdYehSQ6VtckotyX/jE078uGiqcq4km8MtG54H9HhNM6wDuXNiRxMiG66msKr3TGrCI9plCHwyxqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ue5bLjt6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01936C433F1;
-	Tue, 27 Feb 2024 13:52:54 +0000 (UTC)
+	 MIME-Version; b=fuIhQyo7rpH3uxO8wlzg6yvTR+BHui7cvhDr897bX+4xgkoIcXC+D6W/4FUV9K5vxD7DYp3LF8eFSpDBKafLiPyZqjURjvTqdJYPMBCN5XBUViIFBEyKPqHpKpaeLf7WYGPMmrzYL0Dndi7ieQ3cGBNGCWoHndLVPLJuR+dqctw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZQKYmV8f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 390D6C433C7;
+	Tue, 27 Feb 2024 14:04:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041975;
-	bh=aawsmxtdGl8GOsWd+deZxtzShsgBBhbi4FMink25SyU=;
+	s=korg; t=1709042668;
+	bh=NeDzPS/Gy8vNwEXXiK7bMIRfDVUrhBaUXRVsGAIb12E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ue5bLjt69zcoQRY7kTYNUK6uqaCNozY8JZPS2FuuvfOJFwUssPoKQHUOXdfbK5tEJ
-	 R7FSXA1/S5/nbbHpjfedI5NvpQTmfD2JVVxg/kUUhsiDPX9Kmgw55o90kRnRBw4BpF
-	 iuiR3g1Kf/irrRCdwSlVMmTjyZA6pppMArRqJJ3A=
+	b=ZQKYmV8fEra8ZQf/1gZINvoXNFFIHl/70ekLMOkQnCEtzymOBRKJdc6UuiJaBQsxa
+	 vk+uHZNkMLMKI5UAbXCY28APqOydHGJ8r3rPF3qniQtim/gZwUntpIPQXJWAFzZbjk
+	 0wkENvIj/62Pj4RSEvXnfY1dE4e4+W3Be1XxRFJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oreoluwa Babatunde <quic_obabatun@quicinc.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 136/299] LoongArch: Call early_init_fdt_scan_reserved_mem() earlier
-Date: Tue, 27 Feb 2024 14:24:07 +0100
-Message-ID: <20240227131630.235324623@linuxfoundation.org>
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 060/245] fs/ntfs3: Prevent generic message "attempt to access beyond end of device"
+Date: Tue, 27 Feb 2024 14:24:08 +0100
+Message-ID: <20240227131617.193290634@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +61,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit 9fa304b9f8ec440e614af6d35826110c633c4074 upstream.
+[ Upstream commit 5ca87d01eba7bdfe9536a157ca33c1455bb8d16c ]
 
-The unflatten_and_copy_device_tree() function contains a call to
-memblock_alloc(). This means that memblock is allocating memory before
-any of the reserved memory regions are set aside in the arch_mem_init()
-function which calls early_init_fdt_scan_reserved_mem(). Therefore,
-there is a possibility for memblock to allocate from any of the
-reserved memory regions.
+It used in test environment.
 
-Hence, move the call to early_init_fdt_scan_reserved_mem() to be earlier
-in the init sequence, so that the reserved memory regions are set aside
-before any allocations are done using memblock.
-
-Cc: stable@vger.kernel.org
-Fixes: 88d4d957edc707e ("LoongArch: Add FDT booting support from efi system table")
-Signed-off-by: Oreoluwa Babatunde <quic_obabatun@quicinc.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/kernel/setup.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ntfs3/fsntfs.c  | 24 ++++++++++++++++++++++++
+ fs/ntfs3/ntfs_fs.h | 14 +-------------
+ 2 files changed, 25 insertions(+), 13 deletions(-)
 
---- a/arch/loongarch/kernel/setup.c
-+++ b/arch/loongarch/kernel/setup.c
-@@ -367,6 +367,8 @@ void __init platform_init(void)
- 	acpi_gbl_use_default_register_widths = false;
- 	acpi_boot_table_init();
- #endif
+diff --git a/fs/ntfs3/fsntfs.c b/fs/ntfs3/fsntfs.c
+index 110690edbf621..1b082b7a67ee2 100644
+--- a/fs/ntfs3/fsntfs.c
++++ b/fs/ntfs3/fsntfs.c
+@@ -981,6 +981,30 @@ static inline __le32 security_hash(const void *sd, size_t bytes)
+ 	return cpu_to_le32(hash);
+ }
+ 
++/*
++ * simple wrapper for sb_bread_unmovable.
++ */
++struct buffer_head *ntfs_bread(struct super_block *sb, sector_t block)
++{
++	struct ntfs_sb_info *sbi = sb->s_fs_info;
++	struct buffer_head *bh;
 +
-+	early_init_fdt_scan_reserved_mem();
- 	unflatten_and_copy_device_tree();
++	if (unlikely(block >= sbi->volume.blocks)) {
++		/* prevent generic message "attempt to access beyond end of device" */
++		ntfs_err(sb, "try to read out of volume at offset 0x%llx",
++			 (u64)block << sb->s_blocksize_bits);
++		return NULL;
++	}
++
++	bh = sb_bread_unmovable(sb, block);
++	if (bh)
++		return bh;
++
++	ntfs_err(sb, "failed to read volume at offset 0x%llx",
++		 (u64)block << sb->s_blocksize_bits);
++	return NULL;
++}
++
+ int ntfs_sb_read(struct super_block *sb, u64 lbo, size_t bytes, void *buffer)
+ {
+ 	struct block_device *bdev = sb->s_bdev;
+diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
+index ffc8dfbb310ff..12a3b41d351c9 100644
+--- a/fs/ntfs3/ntfs_fs.h
++++ b/fs/ntfs3/ntfs_fs.h
+@@ -581,6 +581,7 @@ bool check_index_header(const struct INDEX_HDR *hdr, size_t bytes);
+ int log_replay(struct ntfs_inode *ni, bool *initialized);
  
- #ifdef CONFIG_NUMA
-@@ -400,8 +402,6 @@ static void __init arch_mem_init(char **
+ /* Globals from fsntfs.c */
++struct buffer_head *ntfs_bread(struct super_block *sb, sector_t block);
+ bool ntfs_fix_pre_write(struct NTFS_RECORD_HEADER *rhdr, size_t bytes);
+ int ntfs_fix_post_read(struct NTFS_RECORD_HEADER *rhdr, size_t bytes,
+ 		       bool simple);
+@@ -1011,19 +1012,6 @@ static inline u64 bytes_to_block(const struct super_block *sb, u64 size)
+ 	return (size + sb->s_blocksize - 1) >> sb->s_blocksize_bits;
+ }
  
- 	check_kernel_sections_mem();
- 
--	early_init_fdt_scan_reserved_mem();
+-static inline struct buffer_head *ntfs_bread(struct super_block *sb,
+-					     sector_t block)
+-{
+-	struct buffer_head *bh = sb_bread_unmovable(sb, block);
 -
- 	/*
- 	 * In order to reduce the possibility of kernel panic when failed to
- 	 * get IO TLB memory under CONFIG_SWIOTLB, it is better to allocate
+-	if (bh)
+-		return bh;
+-
+-	ntfs_err(sb, "failed to read volume at offset 0x%llx",
+-		 (u64)block << sb->s_blocksize_bits);
+-	return NULL;
+-}
+-
+ static inline struct ntfs_inode *ntfs_i(struct inode *inode)
+ {
+ 	return container_of(inode, struct ntfs_inode, vfs_inode);
+-- 
+2.43.0
+
 
 
 
