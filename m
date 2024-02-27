@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-24624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E3AA86957B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:02:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0907186942D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:52:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E27B91F2A42B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:02:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B074828DC08
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:52:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7496213B798;
-	Tue, 27 Feb 2024 14:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22BCE145345;
+	Tue, 27 Feb 2024 13:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WT4ZupY4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZuVVXb/V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30BB116423;
-	Tue, 27 Feb 2024 14:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D631B14533F;
+	Tue, 27 Feb 2024 13:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042534; cv=none; b=UPxoL4xMXNx7RVxgRnZzp/wMN3Mklin60JwNPTU/LHhoc715RJzUa60pcB0NFd/J6aLMczKMjA7ZP9nBL/mK5LwCT95O9930IGrdT4uQpuY7D7QORG02aj1PMBwtza9iDqd5we0HrRUepkqiscWu74CuCGX7lxkQKikYzWCF1OU=
+	t=1709041829; cv=none; b=Hi40W1knhCEEfmxajsoD5GGhV1IfwkaOmHa2cGd1SFU3BcFUFS9Bb/YavYHlJtBa5m4YK000/V9auq5oDCpoJz7vZTRF6PVjn1AGets0953F/ly4S5174nKyMDA9A2/ZWEpC4m2uk/MQtX4l7/g/N9JGD4pz6F+PGbM2U7AFNkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042534; c=relaxed/simple;
-	bh=r2mZJXi6wUp84amlDF5MqoDKH+RLOFydfxK7uXXPC2o=;
+	s=arc-20240116; t=1709041829; c=relaxed/simple;
+	bh=dG9vs8dgF/GJI7msYmFpMrH7uB64/BPp9S1SlZmdfjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TT9okkZrYqwvXBANCIp29EqFmJTkW9zPdI88/k4FwqiWchIrvBEPu4qAsv7msifqI91YQOH/P4MkShVSwmZ7uXZDCunWdpW50W76PxfXhXvWWm5oK32RtH+CGLcozORrHn6eUYhnWZ54tVWaOqAG5rRLcZbJEb95Z+Cj6A0teEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WT4ZupY4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60B03C433F1;
-	Tue, 27 Feb 2024 14:02:13 +0000 (UTC)
+	 MIME-Version; b=LBo0q0Ae0iTQ+qBxv0wXpwRzY+J0JROLSvgnE48Nk2XRxeD6NbGrvkE0xOQh4FUAu3nJS26AcF2jQ+rt8tUbyMlyOViuKI8AvjkAYiv5hAeilzWJP2f0lXxs33FM6qs22NfLa1lwS3X5NY9cFH0Xx3XzuMs3ebBlUUIF2LhgqeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZuVVXb/V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D7CC43390;
+	Tue, 27 Feb 2024 13:50:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042533;
-	bh=r2mZJXi6wUp84amlDF5MqoDKH+RLOFydfxK7uXXPC2o=;
+	s=korg; t=1709041829;
+	bh=dG9vs8dgF/GJI7msYmFpMrH7uB64/BPp9S1SlZmdfjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WT4ZupY4P09Fd/36kGwG8+9bL23S1ufhtKbsK1OiCJjbEyszC6JXPZmkdLxBDuR3E
-	 ePpe0071NMEPyWcrFCI6QqFuLEIlF7Uo7yoBYKMb9AoEuRmucIopfoQ00SdWStvtwV
-	 evu79IKTzKMyXyIc6p+FPlAEpHvXTritw9T9FLjc=
+	b=ZuVVXb/VFiYbkaMBQ4WXEOn2OTrFHx+LbjrYV1mnUbNEKCsuc4V+PTEk63rqyBOvy
+	 9OBdmYAOqVA009Pg8fwegsx3aCOvCZanaqkZf2vPNTfeGm27nAtcydr6Q+btxhNrYw
+	 HTu0TPiQoHF3Z3mxnRJQ1D9R8iLCIzuMZryGSyt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paulo Alcantara <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
-	Guruswamy Basavaiah <guruswamy.basavaiah@broadcom.com>
-Subject: [PATCH 5.15 006/245] smb: client: fix parsing of SMB3.1.1 POSIX create context
-Date: Tue, 27 Feb 2024 14:23:14 +0100
-Message-ID: <20240227131615.314529804@linuxfoundation.org>
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 084/299] fs/ntfs3: Use kvfree to free memory allocated by kvmalloc
+Date: Tue, 27 Feb 2024 14:23:15 +0100
+Message-ID: <20240227131628.623246529@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 76025cc2285d9ede3d717fe4305d66f8be2d9346 ]
+[ Upstream commit ddb17dc880eeaac37b5a6e984de07b882de7d78d ]
 
-The data offset for the SMB3.1.1 POSIX create context will always be
-8-byte aligned so having the check 'noff + nlen >= doff' in
-smb2_parse_contexts() is wrong as it will lead to -EINVAL because noff
-+ nlen == doff.
-
-Fix the sanity check to correctly handle aligned create context data.
-
-Fixes: af1689a9b770 ("smb: client: fix potential OOBs in smb2_parse_contexts()")
-Signed-off-by: Paulo Alcantara <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[Guru:smb2_parse_contexts()  is present in file smb2ops.c,
-smb2ops.c file location is changed, modified patch accordingly.]
-Signed-off-by: Guruswamy Basavaiah <guruswamy.basavaiah@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/smb2pdu.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ntfs3/attrlist.c | 4 ++--
+ fs/ntfs3/bitmap.c   | 4 ++--
+ fs/ntfs3/frecord.c  | 4 ++--
+ fs/ntfs3/super.c    | 2 +-
+ 4 files changed, 7 insertions(+), 7 deletions(-)
 
---- a/fs/cifs/smb2pdu.c
-+++ b/fs/cifs/smb2pdu.c
-@@ -2094,7 +2094,7 @@ int smb2_parse_contexts(struct TCP_Serve
+diff --git a/fs/ntfs3/attrlist.c b/fs/ntfs3/attrlist.c
+index 48e7da47c6b71..9f4bd8d260901 100644
+--- a/fs/ntfs3/attrlist.c
++++ b/fs/ntfs3/attrlist.c
+@@ -29,7 +29,7 @@ static inline bool al_is_valid_le(const struct ntfs_inode *ni,
+ void al_destroy(struct ntfs_inode *ni)
+ {
+ 	run_close(&ni->attr_list.run);
+-	kfree(ni->attr_list.le);
++	kvfree(ni->attr_list.le);
+ 	ni->attr_list.le = NULL;
+ 	ni->attr_list.size = 0;
+ 	ni->attr_list.dirty = false;
+@@ -318,7 +318,7 @@ int al_add_le(struct ntfs_inode *ni, enum ATTR_TYPE type, const __le16 *name,
+ 		memcpy(ptr, al->le, off);
+ 		memcpy(Add2Ptr(ptr, off + sz), le, old_size - off);
+ 		le = Add2Ptr(ptr, off);
+-		kfree(al->le);
++		kvfree(al->le);
+ 		al->le = ptr;
+ 	} else {
+ 		memmove(Add2Ptr(le, sz), le, old_size - off);
+diff --git a/fs/ntfs3/bitmap.c b/fs/ntfs3/bitmap.c
+index 63f14a0232f6a..845f9b22deef0 100644
+--- a/fs/ntfs3/bitmap.c
++++ b/fs/ntfs3/bitmap.c
+@@ -124,7 +124,7 @@ void wnd_close(struct wnd_bitmap *wnd)
+ {
+ 	struct rb_node *node, *next;
  
- 		noff = le16_to_cpu(cc->NameOffset);
- 		nlen = le16_to_cpu(cc->NameLength);
--		if (noff + nlen >= doff)
-+		if (noff + nlen > doff)
- 			return -EINVAL;
+-	kfree(wnd->free_bits);
++	kvfree(wnd->free_bits);
+ 	wnd->free_bits = NULL;
+ 	run_close(&wnd->run);
  
- 		name = (char *)cc + noff;
+@@ -1360,7 +1360,7 @@ int wnd_extend(struct wnd_bitmap *wnd, size_t new_bits)
+ 		memcpy(new_free, wnd->free_bits, wnd->nwnd * sizeof(short));
+ 		memset(new_free + wnd->nwnd, 0,
+ 		       (new_wnd - wnd->nwnd) * sizeof(short));
+-		kfree(wnd->free_bits);
++		kvfree(wnd->free_bits);
+ 		wnd->free_bits = new_free;
+ 	}
+ 
+diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
+index 86b43051f39cd..a918d7283aca5 100644
+--- a/fs/ntfs3/frecord.c
++++ b/fs/ntfs3/frecord.c
+@@ -778,7 +778,7 @@ static int ni_try_remove_attr_list(struct ntfs_inode *ni)
+ 	run_deallocate(sbi, &ni->attr_list.run, true);
+ 	run_close(&ni->attr_list.run);
+ 	ni->attr_list.size = 0;
+-	kfree(ni->attr_list.le);
++	kvfree(ni->attr_list.le);
+ 	ni->attr_list.le = NULL;
+ 	ni->attr_list.dirty = false;
+ 
+@@ -927,7 +927,7 @@ int ni_create_attr_list(struct ntfs_inode *ni)
+ 	return 0;
+ 
+ out:
+-	kfree(ni->attr_list.le);
++	kvfree(ni->attr_list.le);
+ 	ni->attr_list.le = NULL;
+ 	ni->attr_list.size = 0;
+ 	return err;
+diff --git a/fs/ntfs3/super.c b/fs/ntfs3/super.c
+index 378e261e23b04..eb50602297406 100644
+--- a/fs/ntfs3/super.c
++++ b/fs/ntfs3/super.c
+@@ -625,7 +625,7 @@ static void ntfs3_free_sbi(struct ntfs_sb_info *sbi)
+ {
+ 	kfree(sbi->new_rec);
+ 	kvfree(ntfs_put_shared(sbi->upcase));
+-	kfree(sbi->def_table);
++	kvfree(sbi->def_table);
+ 	kfree(sbi->compress.lznt);
+ #ifdef CONFIG_NTFS3_LZX_XPRESS
+ 	xpress_free_decompressor(sbi->compress.xpress);
+-- 
+2.43.0
+
 
 
 
