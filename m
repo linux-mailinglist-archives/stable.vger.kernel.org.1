@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B881869523
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:59:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FFF586965A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:10:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCF4C1C22EA5
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:59:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE95A293AC8
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:10:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2735513B791;
-	Tue, 27 Feb 2024 13:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF1913B78E;
+	Tue, 27 Feb 2024 14:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0s8sq+5d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ofpgDhMp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18D3140391;
-	Tue, 27 Feb 2024 13:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7E413A259;
+	Tue, 27 Feb 2024 14:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042349; cv=none; b=eDdql4thc+IAmHy71+Yv6KfvB+YvaBS7OYrxSQICnCCNLsbVYGky0v6yJ88juCdBgWc5/m7hiR4VYc3OigBOnJT0AJwxVvLScVdeNNe+zpBz6bJtTPlVTIVVf6tOAq0D+ZDQHFL9u6D5MLoJSpfqe90o0BDpea33j6kONpLcSy8=
+	t=1709043047; cv=none; b=KL33zLeH2J44PmobiA1mcfzWCd2qJNS3EHLrYX8dwhWULqp9vn8T8aCCpIhPxMZta8+d8auqU28xCemm0oqvX0LXpOp0yTGWOhqACkyGqDMFJUStp/Vkiq01uuc+8UKQdsq93bdzPCxBGu6GwI0xzzRLiJ0H6GD0bATKI9SLYBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042349; c=relaxed/simple;
-	bh=UoJAD0sEb3xlUCye/bxqDEVNmMIFy4pNrwGRlwaX3r8=;
+	s=arc-20240116; t=1709043047; c=relaxed/simple;
+	bh=+LUwQZ/7D2WYRleohF/twUmiax93TN96cTz6e5ZLMi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=plZG31egpXxFtYHFfp0hQTMJLklp9mgLyPfYf6ZlI/mnOacYA7BU5BxcoSKWVGeVOUbY3WpXxj4e1VFQW+Av3jABepuWuFVoMdpuAZRrDEhCVlWbEolqCiEPWjVlUZZmPiEbxtd8xpiTAMT05n4gl8KJtgMbpaqCPgAtA45bPlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0s8sq+5d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52292C433C7;
-	Tue, 27 Feb 2024 13:59:09 +0000 (UTC)
+	 MIME-Version; b=SDav4xA4nT7jJykKrJTcB6jYf9dnEptVkGH9/diqvhN5ZOwb1T9wNXwyi6n7Jx+SIRtZCjx4iW0BJyJc4tW3DcjQd6OkBQWpx9XnomQ/QQPGV+NEDGnU+XV7ZTAO7p1X3zsKg6OsxYkYanIgJzHGo+6+D0zpxUQdafLFODIyaa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ofpgDhMp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D77D2C433C7;
+	Tue, 27 Feb 2024 14:10:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042349;
-	bh=UoJAD0sEb3xlUCye/bxqDEVNmMIFy4pNrwGRlwaX3r8=;
+	s=korg; t=1709043047;
+	bh=+LUwQZ/7D2WYRleohF/twUmiax93TN96cTz6e5ZLMi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0s8sq+5d418qa0NkMCKyL0J/YOM5qP2HEUuNwLOnzOMcEmn7XhhPzr+1yEqTQBbRA
-	 Ze2iSHA1b0q8Dtl1qWYps57n7yepfmaX38Kn6dx6WYqYP/SnD9hzUaePtxaVa2RGI/
-	 qllbs+NVn3uLz+W2u3FtihRM/uhcULn5oaTNCe9g=
+	b=ofpgDhMpaVSm8BWHAz2cVvdJuOCVhjtvuZsA1tHiNE0I+6mNdQRWg9SnS9eWMEovR
+	 Thv8fNLzZETxF4bF2btPsiPxyWKvExdUzUyjGLgTHNfo+y6lJN8+TnDLXjFBcvb9N+
+	 Oqy2X1L6ohnmF1ZtEmZCH7U0c9XaBw4po81C+hwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Elder <elder@linaro.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Alex Bee <knaerzche@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 263/299] net: ipa: dont overrun IPA suspend interrupt registers
+Subject: [PATCH 5.15 186/245] arm64: dts: rockchip: add SPDIF node for ROCK Pi 4
 Date: Tue, 27 Feb 2024 14:26:14 +0100
-Message-ID: <20240227131634.159895367@linuxfoundation.org>
+Message-ID: <20240227131621.246843646@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Elder <elder@linaro.org>
+From: Alex Bee <knaerzche@gmail.com>
 
-[ Upstream commit d80f8e96d47d7374794a30fbed69be43f3388afc ]
+[ Upstream commit 697dd494cb1cf56acfb764214a1e4788e4d1a983 ]
 
-In newer hardware, IPA supports more than 32 endpoints.  Some
-registers--such as IPA interrupt registers--represent endpoints
-as bits in a 4-byte register, and such registers are repeated as
-needed to represent endpoints beyond the first 32.
+Add a SPDIF audio-graph-card to ROCK Pi 4 device tree.
 
-In ipa_interrupt_suspend_clear_all(), we clear all pending IPA
-suspend interrupts by reading all status register(s) and writing
-corresponding registers to clear interrupt conditions.
+It's not enabled by default since all dma channels are used by
+the (already) enabled i2s0/1/2 and the pin is muxed with GPIO4_C5
+which might be in use already.
+If enabled SPDIF_TX will be available at pin #15.
 
-Unfortunately the number of registers to read/write is calculated
-incorrectly, and as a result we access *many* more registers than
-intended.  This bug occurs only when the IPA hardware signals a
-SUSPEND interrupt, which happens when a packet is received for an
-endpoint (or its underlying GSI channel) that is suspended.  This
-situation is difficult to reproduce, but possible.
-
-Fix this by correctly computing the number of interrupt registers to
-read and write.  This is the only place in the code where registers
-that map endpoints or channels this way perform this calculation.
-
-Fixes: f298ba785e2d ("net: ipa: add a parameter to suspend registers")
-Signed-off-by: Alex Elder <elder@linaro.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Alex Bee <knaerzche@gmail.com>
+Link: https://lore.kernel.org/r/20210618181256.27992-6-knaerzche@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ipa/ipa_interrupt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../boot/dts/rockchip/rk3399-rock-pi-4.dtsi   | 26 +++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-diff --git a/drivers/net/ipa/ipa_interrupt.c b/drivers/net/ipa/ipa_interrupt.c
-index 4bc05948f772d..a78c692f2d3c5 100644
---- a/drivers/net/ipa/ipa_interrupt.c
-+++ b/drivers/net/ipa/ipa_interrupt.c
-@@ -212,7 +212,7 @@ void ipa_interrupt_suspend_clear_all(struct ipa_interrupt *interrupt)
- 	u32 unit_count;
- 	u32 unit;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
+index 0af694540c1eb..382bb0734cb74 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
+@@ -42,6 +42,23 @@ sound {
+ 		dais = <&i2s0_p0>;
+ 	};
  
--	unit_count = roundup(ipa->endpoint_count, 32);
-+	unit_count = DIV_ROUND_UP(ipa->endpoint_count, 32);
- 	for (unit = 0; unit < unit_count; unit++) {
- 		const struct reg *reg;
- 		u32 val;
++	sound-dit {
++		compatible = "audio-graph-card";
++		label = "SPDIF";
++		dais = <&spdif_p0>;
++	};
++
++	spdif-dit {
++		compatible = "linux,spdif-dit";
++		#sound-dai-cells = <0>;
++
++		port {
++			dit_p0_0: endpoint {
++				remote-endpoint = <&spdif_p0_0>;
++			};
++		};
++	};
++
+ 	vcc12v_dcin: dc-12v {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "vcc12v_dcin";
+@@ -631,6 +648,15 @@ &sdhci {
+ 	status = "okay";
+ };
+ 
++&spdif {
++
++	spdif_p0: port {
++		spdif_p0_0: endpoint {
++			remote-endpoint = <&dit_p0_0>;
++		};
++	};
++};
++
+ &tcphy0 {
+ 	status = "okay";
+ };
 -- 
 2.43.0
 
