@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-24984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F4AC86972A
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:18:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADD5986967C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:12:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43A3F1F24922
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:18:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15BE1B27300
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:12:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA10C13DBBC;
-	Tue, 27 Feb 2024 14:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 867C31420A0;
+	Tue, 27 Feb 2024 14:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07uOFTuZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sKYITz2/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2A578B61;
-	Tue, 27 Feb 2024 14:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 183B21419B3;
+	Tue, 27 Feb 2024 14:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043533; cv=none; b=Y79kPdirogpNV+DJjeoPRQPG8NnWI1sSTv6e6/NygJ6xXCam1dUWhe9VyVHrm5LgXWmXSXv+Jjx7niLMiGPnFgPxBufXFRb1d1+DXXsqw8+eFDSZH033+AOJTXlO1kD3XkHGUWHNJVc9YGlJ8koEO5vFwFuLNKvDpAlKfPU8xSk=
+	t=1709043127; cv=none; b=dQMvTjj/+b+EMKj6QLLUc4N7PzE26z1McnT2pIySEcx1UyUjfp75+Nuqj9NLx+tzzCKuQlk2tN57gdivZ6tg+FdQlhKjW7/+WgL+6TCXTF4tre434f0D7mU/Qz2DM5EcrJW+JkfSJg8tB+uaqm+TdauRc9Wq0CkU/UaiDzyFGY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043533; c=relaxed/simple;
-	bh=abSmuRp/gPjt/PakOOPXFqKQBtPWBqw5oEEZj2UZvTA=;
+	s=arc-20240116; t=1709043127; c=relaxed/simple;
+	bh=bqxgm4oBKc9vgV7Wo+EMpXj4A+YEfvqp8z4myplcmZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jV27PteqvAm4kWV6WiQTHJhgkQJmBz8W5DmbhPLWtrFabZCUtRP1SSaF4FXtIcPOElSa9yxcqBIqPDh/PztgAfoX3zuGpg0T7WTCHs4trAFAmKRz8U4yVjmHNr9kLal9IENNewZqXt2mVSt5m5CuKNFB5X6Kbu+ZUXvOjJAS7W0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=07uOFTuZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19710C433F1;
-	Tue, 27 Feb 2024 14:18:52 +0000 (UTC)
+	 MIME-Version; b=VYqidyqeF7qH9KQBMh5eVaIxe4MZXF9Q6JX4ftRGGwdivN24pwWLiJ47t05A1Pgvnua6mDenAJ8X2i86dDuWZPMnqW44upTF3w0j2Id+IR058zHGUVRuhJanuenT6jzp2DXzdxWwGk/IIk3/eDQU5o6p4CrIqrA9VF5OgWV+pEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sKYITz2/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4263EC433C7;
+	Tue, 27 Feb 2024 14:12:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043533;
-	bh=abSmuRp/gPjt/PakOOPXFqKQBtPWBqw5oEEZj2UZvTA=;
+	s=korg; t=1709043126;
+	bh=bqxgm4oBKc9vgV7Wo+EMpXj4A+YEfvqp8z4myplcmZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=07uOFTuZD5KcyXNC+i5JVrOk6PJ1l5bXLvkvZpiouxFl1CetDDa2kpF/wJF8cAIje
-	 Zf9xr15BV4YOAxHMOXu35+rzckQ1iFz050fmmG1Yqqi/xnhYy5Up8ukdgKhu7KpyTE
-	 WQpFBjuVHeMHcZ17q4OD+IRv8sFNslTcBO+zWzHc=
+	b=sKYITz2/8kxSTkTkUL91SxKXJaqeXYl+2f9fVuGYN/CX9cVePAjQpl0zGROwcbT7Q
+	 1na8VJX3s6RBPgF8P6+/aRok9441jiNyiefpp+m/PaGxkTDYX+sjuGT7G8KHTfrtSs
+	 BKPN0lXriiUJOiiRbe5713AG6DMYD71iVnoFfn6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gianmarco Lusvardi <glusvardi@posteo.net>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Quentin Monnet <quentin@isovalent.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 143/195] bpf, scripts: Correct GPL license name
+Subject: [PATCH 5.15 216/245] ipv6: properly combine dev_base_seq and ipv6.dev_addr_genid
 Date: Tue, 27 Feb 2024 14:26:44 +0100
-Message-ID: <20240227131615.149857706@linuxfoundation.org>
+Message-ID: <20240227131622.225347410@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gianmarco Lusvardi <glusvardi@posteo.net>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit e37243b65d528a8a9f8b9a57a43885f8e8dfc15c ]
+[ Upstream commit e898e4cd1aab271ca414f9ac6e08e4c761f6913c ]
 
-The bpf_doc script refers to the GPL as the "GNU Privacy License".
-I strongly suspect that the author wanted to refer to the GNU General
-Public License, under which the Linux kernel is released, as, to the
-best of my knowledge, there is no license named "GNU Privacy License".
-This patch corrects the license name in the script accordingly.
+net->dev_base_seq and ipv6.dev_addr_genid are monotonically increasing.
 
-Fixes: 56a092c89505 ("bpf: add script and prepare bpf.h for new helpers documentation")
-Signed-off-by: Gianmarco Lusvardi <glusvardi@posteo.net>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Quentin Monnet <quentin@isovalent.com>
-Link: https://lore.kernel.org/bpf/20240213230544.930018-3-glusvardi@posteo.net
+If we XOR their values, we could miss to detect if both values
+were changed with the same amount.
+
+Fixes: 63998ac24f83 ("ipv6: provide addr and netconf dump consistency info")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/bpf_doc.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/addrconf.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/bpf_doc.py b/scripts/bpf_doc.py
-index d5c389df6045e..4de98b7bbea95 100755
---- a/scripts/bpf_doc.py
-+++ b/scripts/bpf_doc.py
-@@ -495,7 +495,7 @@ eBPF programs can have an associated license, passed along with the bytecode
- instructions to the kernel when the programs are loaded. The format for that
- string is identical to the one in use for kernel modules (Dual licenses, such
- as "Dual BSD/GPL", may be used). Some helper functions are only accessible to
--programs that are compatible with the GNU Privacy License (GPL).
-+programs that are compatible with the GNU General Public License (GNU GPL).
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index 1e4eedf7f2129..c52317184e3e2 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -707,6 +707,22 @@ static int inet6_netconf_get_devconf(struct sk_buff *in_skb,
+ 	return err;
+ }
  
- In order to use such helpers, the eBPF program must be loaded with the correct
- license string passed (via **attr**) to the **bpf**\ () system call, and this
++/* Combine dev_addr_genid and dev_base_seq to detect changes.
++ */
++static u32 inet6_base_seq(const struct net *net)
++{
++	u32 res = atomic_read(&net->ipv6.dev_addr_genid) +
++		  net->dev_base_seq;
++
++	/* Must not return 0 (see nl_dump_check_consistent()).
++	 * Chose a value far away from 0.
++	 */
++	if (!res)
++		res = 0x80000000;
++	return res;
++}
++
++
+ static int inet6_netconf_dump_devconf(struct sk_buff *skb,
+ 				      struct netlink_callback *cb)
+ {
+@@ -740,8 +756,7 @@ static int inet6_netconf_dump_devconf(struct sk_buff *skb,
+ 		idx = 0;
+ 		head = &net->dev_index_head[h];
+ 		rcu_read_lock();
+-		cb->seq = atomic_read(&net->ipv6.dev_addr_genid) ^
+-			  net->dev_base_seq;
++		cb->seq = inet6_base_seq(net);
+ 		hlist_for_each_entry_rcu(dev, head, index_hlist) {
+ 			if (idx < s_idx)
+ 				goto cont;
+@@ -5316,7 +5331,7 @@ static int inet6_dump_addr(struct sk_buff *skb, struct netlink_callback *cb,
+ 	}
+ 
+ 	rcu_read_lock();
+-	cb->seq = atomic_read(&tgt_net->ipv6.dev_addr_genid) ^ tgt_net->dev_base_seq;
++	cb->seq = inet6_base_seq(tgt_net);
+ 	for (h = s_h; h < NETDEV_HASHENTRIES; h++, s_idx = 0) {
+ 		idx = 0;
+ 		head = &tgt_net->dev_index_head[h];
 -- 
 2.43.0
 
