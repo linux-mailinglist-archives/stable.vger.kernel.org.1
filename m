@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-24154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65B138692E8
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:39:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53DEB8692DE
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:39:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 067AC1F2D262
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:39:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B57DEB2F380
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF7F13DB9B;
-	Tue, 27 Feb 2024 13:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C86D713DBBC;
+	Tue, 27 Feb 2024 13:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TuzntUO5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vrV9iNsi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A9178B61;
-	Tue, 27 Feb 2024 13:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D3313B293;
+	Tue, 27 Feb 2024 13:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041181; cv=none; b=dTJJKnyyc0eZXpDZXAChqgQoEbrs5UVBZpWWo31oj8Alr9pH3ss+DURPGGzw4M3cba8djzcvlua2Gmeg8gnEp2zMl6fHsDH53/2x/eQXhzPbjRjs3AM2goqOkA/KmVitGMo2/N8iE0aPSBxzGG6Uu7RnELtvpzAVxjkALszi4E8=
+	t=1709041096; cv=none; b=BmTgWtrJCt83r34rF/8EZ+vfZEXyG+Ip+xbkPrZHglMk43eEH1HSKrTBXlxtDbvxbAAkFjjtsFeMn9Qbf0MtTOKicSxiTdJ+JmG49VVTx74M6icc9RAs8R5KWu38VdLAP5B5T4Dvyzbb6zh3c1z1WdOfVkS0HHy+98rEFtn67O0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041181; c=relaxed/simple;
-	bh=pbGQGIp2nH+S292YhpunuhqGMxxdzJpzUTLSu6xY0Q0=;
+	s=arc-20240116; t=1709041096; c=relaxed/simple;
+	bh=V6Ma8Y+nIObyWiuq4eR984RK1raEjW45gjFrXHusESA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=edUMEtjW5EoZ9TGyMpXPKnfQMuoZFlEXS7eN/peQz4B/9XckpAswhRJ4b10vsVAg17ReaYrmrqQW6lk54/k17PLbR9H7yu22cRi2MGuqO8TmzFsAZDJO2Pw78akNEDX8PKxLDqcV+TiOde63aFi05XpCM4M2lfXD2VhXARnuWtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TuzntUO5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC4CC433F1;
-	Tue, 27 Feb 2024 13:39:41 +0000 (UTC)
+	 MIME-Version; b=aHd6KTyvwgRA6H0avePSMUU8vDN3jx1CVbWLh2aZWjL3MUFZVpLu1rSx5o9UceMBCItKmzItSrAaLc7DsOaQBbt6sPpeIOtE8K2hjUZuHvzjx3zXXBUCbr5tRAywoMkla25ykrxN7XLCIRgmzgw6isvY9X0Fw8o+UsMMtETgDEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vrV9iNsi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19887C433F1;
+	Tue, 27 Feb 2024 13:38:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041181;
-	bh=pbGQGIp2nH+S292YhpunuhqGMxxdzJpzUTLSu6xY0Q0=;
+	s=korg; t=1709041096;
+	bh=V6Ma8Y+nIObyWiuq4eR984RK1raEjW45gjFrXHusESA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TuzntUO5nFpdK6M8PCGyay1yOzr8Jr9A6mbz9GafpDDoBktSfaYhMvY5DWRZgDyEU
-	 4UI8JHl79hGCbEJagfR0gFe5aoEatXiczS6p7xtXMTRKAHrcZujAcx7Eo99X13KH5Z
-	 yispetne8LqFFEwijNqRr6FdilhG5A3JyPPeRZqo=
+	b=vrV9iNsixCoegoeVkveym1F6XSzyYcsbYSdsCdR6EZ8IueT8Fp+56hHJcOc9aZgJY
+	 7C0et7sGnaMOFo8HkiFd92/LeXlHKoABI2uiREn2dXfYbVNO+ZjpoSB2dZgfyt4/15
+	 D9sbf1EzwZ9nxaUw8KW6lUbqJe7bpZPquO2F4QKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 6.7 210/334] usb: gadget: omap_udc: fix USB gadget regression on Palm TE
-Date: Tue, 27 Feb 2024 14:21:08 +0100
-Message-ID: <20240227131637.555422261@linuxfoundation.org>
+	Xu Yang <xu.yang_2@nxp.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.7 211/334] usb: roles: fix NULL pointer issue when put modules reference
+Date: Tue, 27 Feb 2024 14:21:09 +0100
+Message-ID: <20240227131637.585783698@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
 References: <20240227131630.636392135@linuxfoundation.org>
@@ -66,38 +65,97 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Aaro Koskinen <aaro.koskinen@iki.fi>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit 858a74cb512833e276d96a72acb560ce8c138bec upstream.
+commit 1c9be13846c0b2abc2480602f8ef421360e1ad9e upstream.
 
-When upgrading from 6.1 LTS to 6.6 LTS, I noticed the ethernet gadget
-stopped working on Palm TE.
+In current design, usb role class driver will get usb_role_switch parent's
+module reference after the user get usb_role_switch device and put the
+reference after the user put the usb_role_switch device. However, the
+parent device of usb_role_switch may be removed before the user put the
+usb_role_switch. If so, then, NULL pointer issue will be met when the user
+put the parent module's reference.
 
-Commit 8825acd7cc8a ("ARM: omap1: remove dead code") deleted Palm TE from
-machine_without_vbus_sense(), although the board is still used. Fix that.
+This will save the module pointer in structure of usb_role_switch. Then,
+we don't need to find module by iterating long relations.
 
-Fixes: 8825acd7cc8a ("ARM: omap1: remove dead code")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Aaro Koskinen <aaro.koskinen@iki.fi>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20240217192042.GA372205@darkstar.musicnaut.iki.fi
+Fixes: 5c54fcac9a9d ("usb: roles: Take care of driver module reference counting")
+cc: stable@vger.kernel.org
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240129093739.2371530-1-xu.yang_2@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/omap_udc.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/roles/class.c |   17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/gadget/udc/omap_udc.c
-+++ b/drivers/usb/gadget/udc/omap_udc.c
-@@ -2036,7 +2036,8 @@ static irqreturn_t omap_udc_iso_irq(int
+--- a/drivers/usb/roles/class.c
++++ b/drivers/usb/roles/class.c
+@@ -21,6 +21,7 @@ static const struct class role_class = {
+ struct usb_role_switch {
+ 	struct device dev;
+ 	struct mutex lock; /* device lock*/
++	struct module *module; /* the module this device depends on */
+ 	enum usb_role role;
  
- static inline int machine_without_vbus_sense(void)
- {
--	return  machine_is_omap_osk() || machine_is_sx1();
-+	return  machine_is_omap_osk() || machine_is_omap_palmte() ||
-+		machine_is_sx1();
+ 	/* From descriptor */
+@@ -135,7 +136,7 @@ struct usb_role_switch *usb_role_switch_
+ 						  usb_role_switch_match);
+ 
+ 	if (!IS_ERR_OR_NULL(sw))
+-		WARN_ON(!try_module_get(sw->dev.parent->driver->owner));
++		WARN_ON(!try_module_get(sw->module));
+ 
+ 	return sw;
  }
+@@ -157,7 +158,7 @@ struct usb_role_switch *fwnode_usb_role_
+ 		sw = fwnode_connection_find_match(fwnode, "usb-role-switch",
+ 						  NULL, usb_role_switch_match);
+ 	if (!IS_ERR_OR_NULL(sw))
+-		WARN_ON(!try_module_get(sw->dev.parent->driver->owner));
++		WARN_ON(!try_module_get(sw->module));
  
- static int omap_udc_start(struct usb_gadget *g,
+ 	return sw;
+ }
+@@ -172,7 +173,7 @@ EXPORT_SYMBOL_GPL(fwnode_usb_role_switch
+ void usb_role_switch_put(struct usb_role_switch *sw)
+ {
+ 	if (!IS_ERR_OR_NULL(sw)) {
+-		module_put(sw->dev.parent->driver->owner);
++		module_put(sw->module);
+ 		put_device(&sw->dev);
+ 	}
+ }
+@@ -189,15 +190,18 @@ struct usb_role_switch *
+ usb_role_switch_find_by_fwnode(const struct fwnode_handle *fwnode)
+ {
+ 	struct device *dev;
++	struct usb_role_switch *sw = NULL;
+ 
+ 	if (!fwnode)
+ 		return NULL;
+ 
+ 	dev = class_find_device_by_fwnode(&role_class, fwnode);
+-	if (dev)
+-		WARN_ON(!try_module_get(dev->parent->driver->owner));
++	if (dev) {
++		sw = to_role_switch(dev);
++		WARN_ON(!try_module_get(sw->module));
++	}
+ 
+-	return dev ? to_role_switch(dev) : NULL;
++	return sw;
+ }
+ EXPORT_SYMBOL_GPL(usb_role_switch_find_by_fwnode);
+ 
+@@ -338,6 +342,7 @@ usb_role_switch_register(struct device *
+ 	sw->set = desc->set;
+ 	sw->get = desc->get;
+ 
++	sw->module = parent->driver->owner;
+ 	sw->dev.parent = parent;
+ 	sw->dev.fwnode = desc->fwnode;
+ 	sw->dev.class = &role_class;
 
 
 
