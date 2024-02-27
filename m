@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-24691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D81738695E0
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:06:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB108869693
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:13:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1715B2231F
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:06:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BAC51F2E50A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:13:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50AAA142623;
-	Tue, 27 Feb 2024 14:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17165145351;
+	Tue, 27 Feb 2024 14:13:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ayh3GjtC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="04RtqUE6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA0D13EFE4;
-	Tue, 27 Feb 2024 14:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FB6145350;
+	Tue, 27 Feb 2024 14:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042724; cv=none; b=tGKVMPjqRkSmibZNAEt3Z0KX5ja+fDtOaeb4mbF85K+FpGPY4ZsRiNfo9b14TXDM5J9J4XJEo4YgAfbu7TsIfQkJqyaDFwYkskCBW2MnmvKk8Sctq8pXrnM3H04d1rG7y5MoDiXDUfI2C3NBh9mcuSKLKJzmKTeRQHemgcVL3i0=
+	t=1709043179; cv=none; b=AIgdYxTAQChLJqnD2wfn3pC6xs8Ir54XnUrtkfd5h/1qdhZhLmyryUDgHOGrmQ7BNrELDZ9iaeghQOaanGwbIZRdXPG9yUcIfGRDlVVMnfzoJ4fL+5Iq9SYUI5B0QBn3EQCEpA871Vut7Km2IOseiR4Y2FQlbXnX/zFJzGFmSgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042724; c=relaxed/simple;
-	bh=Jh+b6TCfAgioBFXuto7ERJtyfjVTWR85Pd/Tx9iU98o=;
+	s=arc-20240116; t=1709043179; c=relaxed/simple;
+	bh=bGRrmA5MWwqaeR465HDLTADZ4jnZ4+3uw1SH0rhfFRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aah1eHpNHDPCGsx98ejDwA4HhMgFDMzGk0B5FzbwWcpBK1nB6V1fcH0JeAj+GGYGVGA2BgBMqKACx0xtdGfLJSzcNLTvTAyt2vZCb/t8Cc7AffZCNeTW77IQ7aPUU7eErBOfZYAHHZQPJ/12/0VJlG5MjStwCSpS7wGRI4/bwpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ayh3GjtC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91C15C433F1;
-	Tue, 27 Feb 2024 14:05:23 +0000 (UTC)
+	 MIME-Version; b=AI50Ca2bWey4OKnPiVN1PgSXUvlSnEjaVokNXVCjmpResSGL6AA9B6BdbebUGwqsWZcqbCiRRnGZDLLFPIMb5kW5MOd1n9rLipyxn5r31ozHxDuD+PBtqDtd229qIYqguoavXCMToUGilgWk4y4op4CXmV777oMY7BSsKDCRM08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=04RtqUE6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 543D9C433C7;
+	Tue, 27 Feb 2024 14:12:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042723;
-	bh=Jh+b6TCfAgioBFXuto7ERJtyfjVTWR85Pd/Tx9iU98o=;
+	s=korg; t=1709043179;
+	bh=bGRrmA5MWwqaeR465HDLTADZ4jnZ4+3uw1SH0rhfFRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ayh3GjtCs27O8PhxLtPLVBMHAtalLz0b0H+td/LEEueGMhy1x/ZNLhHE8HawyyXni
-	 YPMEAm7gdqcrvlfAZi3pRSwanN123FxU/uFmB0tAiXg797LQuJUud1MeS/RWWzwrfO
-	 Z1PYYPksdj9DQ7tuWqxTZommslfxS8a2g5tCDJos=
+	b=04RtqUE6KNa/kVnlJQPUR9IKQvPA+M0UkdFkKeztncLfdXxjQsiN79Cc0uYGCuxSE
+	 cf+sNVEla4jxU1gUWeFzeUMdmaH5xQLv4s8oQ0FS5KpIRfHkrc8DIIlKnkOtt8LhNi
+	 XtnNU6HLulOVAfPAzQlWCE9x4nszfiP9SBPvZKdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Josh Poimboeuf <jpoimboe@redhat.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 5.15 090/245] x86/ibt,paravirt: Use text_gen_insn() for paravirt_patch()
+	Devyn Liu <liudingyuan@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 017/195] spi: hisi-sfc-v3xx: Return IRQ_NONE if no interrupts were detected
 Date: Tue, 27 Feb 2024 14:24:38 +0100
-Message-ID: <20240227131618.152566601@linuxfoundation.org>
+Message-ID: <20240227131610.966359720@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+References: <20240227131610.391465389@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,110 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Devyn Liu <liudingyuan@huawei.com>
 
-Upstream commit: ba27d1a80871eb8dbeddf34ec7d396c149cbb8d7
+[ Upstream commit de8b6e1c231a95abf95ad097b993d34b31458ec9 ]
 
-Less duplication is more better.
+Return IRQ_NONE from the interrupt handler when no interrupt was
+detected. Because an empty interrupt will cause a null pointer error:
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Link: https://lore.kernel.org/r/20220308154317.697253958@infradead.org
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Unable to handle kernel NULL pointer dereference at virtual
+  address 0000000000000008
+    Call trace:
+        complete+0x54/0x100
+        hisi_sfc_v3xx_isr+0x2c/0x40 [spi_hisi_sfc_v3xx]
+        __handle_irq_event_percpu+0x64/0x1e0
+        handle_irq_event+0x7c/0x1cc
+
+Signed-off-by: Devyn Liu <liudingyuan@huawei.com>
+Link: https://msgid.link/r/20240123071149.917678-1-liudingyuan@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/text-patching.h |   20 ++++++++++++++------
- arch/x86/kernel/paravirt.c           |   23 +++--------------------
- 2 files changed, 17 insertions(+), 26 deletions(-)
+ drivers/spi/spi-hisi-sfc-v3xx.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/arch/x86/include/asm/text-patching.h
-+++ b/arch/x86/include/asm/text-patching.h
-@@ -96,32 +96,40 @@ union text_poke_insn {
- };
- 
- static __always_inline
--void *text_gen_insn(u8 opcode, const void *addr, const void *dest)
-+void __text_gen_insn(void *buf, u8 opcode, const void *addr, const void *dest, int size)
+diff --git a/drivers/spi/spi-hisi-sfc-v3xx.c b/drivers/spi/spi-hisi-sfc-v3xx.c
+index d3a23b1c2a4c5..61bf00dfe9c33 100644
+--- a/drivers/spi/spi-hisi-sfc-v3xx.c
++++ b/drivers/spi/spi-hisi-sfc-v3xx.c
+@@ -377,6 +377,11 @@ static const struct spi_controller_mem_ops hisi_sfc_v3xx_mem_ops = {
+ static irqreturn_t hisi_sfc_v3xx_isr(int irq, void *data)
  {
--	static union text_poke_insn insn; /* per instance */
--	int size = text_opcode_size(opcode);
-+	union text_poke_insn *insn = buf;
+ 	struct hisi_sfc_v3xx_host *host = data;
++	u32 reg;
 +
-+	BUG_ON(size < text_opcode_size(opcode));
++	reg = readl(host->regbase + HISI_SFC_V3XX_INT_STAT);
++	if (!reg)
++		return IRQ_NONE;
  
- 	/*
- 	 * Hide the addresses to avoid the compiler folding in constants when
- 	 * referencing code, these can mess up annotations like
- 	 * ANNOTATE_NOENDBR.
- 	 */
-+	OPTIMIZER_HIDE_VAR(insn);
- 	OPTIMIZER_HIDE_VAR(addr);
- 	OPTIMIZER_HIDE_VAR(dest);
+ 	hisi_sfc_v3xx_disable_int(host);
  
--	insn.opcode = opcode;
-+	insn->opcode = opcode;
- 
- 	if (size > 1) {
--		insn.disp = (long)dest - (long)(addr + size);
-+		insn->disp = (long)dest - (long)(addr + size);
- 		if (size == 2) {
- 			/*
- 			 * Ensure that for JMP8 the displacement
- 			 * actually fits the signed byte.
- 			 */
--			BUG_ON((insn.disp >> 31) != (insn.disp >> 7));
-+			BUG_ON((insn->disp >> 31) != (insn->disp >> 7));
- 		}
- 	}
-+}
- 
-+static __always_inline
-+void *text_gen_insn(u8 opcode, const void *addr, const void *dest)
-+{
-+	static union text_poke_insn insn; /* per instance */
-+	__text_gen_insn(&insn, opcode, addr, dest, text_opcode_size(opcode));
- 	return &insn.text;
- }
- 
---- a/arch/x86/kernel/paravirt.c
-+++ b/arch/x86/kernel/paravirt.c
-@@ -58,29 +58,12 @@ static void paravirt_BUG(void)
- 	BUG();
- }
- 
--struct branch {
--	unsigned char opcode;
--	u32 delta;
--} __attribute__((packed));
--
- static unsigned paravirt_patch_call(void *insn_buff, const void *target,
- 				    unsigned long addr, unsigned len)
- {
--	const int call_len = 5;
--	struct branch *b = insn_buff;
--	unsigned long delta = (unsigned long)target - (addr+call_len);
--
--	if (len < call_len) {
--		pr_warn("paravirt: Failed to patch indirect CALL at %ps\n", (void *)addr);
--		/* Kernel might not be viable if patching fails, bail out: */
--		BUG_ON(1);
--	}
--
--	b->opcode = 0xe8; /* call */
--	b->delta = delta;
--	BUILD_BUG_ON(sizeof(*b) != call_len);
--
--	return call_len;
-+	__text_gen_insn(insn_buff, CALL_INSN_OPCODE,
-+			(void *)addr, target, CALL_INSN_SIZE);
-+	return CALL_INSN_SIZE;
- }
- 
- #ifdef CONFIG_PARAVIRT_XXL
+-- 
+2.43.0
+
 
 
 
