@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-24306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A74E8693D4
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:49:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C35286939E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:47:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE6E91F22446
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:49:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A9FFB24161
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:40:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB07E1474C9;
-	Tue, 27 Feb 2024 13:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37DE413B7A2;
+	Tue, 27 Feb 2024 13:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BKL01f96"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nIALdujm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860FA13EFEC;
-	Tue, 27 Feb 2024 13:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D8E78B61;
+	Tue, 27 Feb 2024 13:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041621; cv=none; b=sMOxpSMoQAO03ev6bqnzjy4LcIzxv4/ryNMjO6UXO8JatjcR5dWbvaWCOuBv4yERpXGrW1FrV2hsXUBeqKrMo+BuA+oVZcbcG3RJ80/sYHWToAgwj9tF1wfFcQlSk3ZtaOstlzqk537zJUTg3IXgKgL1VAp2Gi84pKBDzw4y1SQ=
+	t=1709041229; cv=none; b=Y3yUAX4OiUMKfCGR6TDW28X31z2bgv+lejMv19u6cVZEL5Y0P1lWL7siyxVFb6J0fi6mURwkfn84Rp+WzXouqcbTokMISgKdSRc2/Ak4YwWbY3kAbBCXuEvTcbHrRkSo1bT0PEWWO5sxMCoGM62+pPblWa6inyuEtZm66AAcaiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041621; c=relaxed/simple;
-	bh=ULbGG5mqEsmilHVZEINh/xAFzKVv4lglBB8soxXNcvg=;
+	s=arc-20240116; t=1709041229; c=relaxed/simple;
+	bh=pLPV24Om/zQsUQe4OKr3OyLqVm4uIfNKpNoff9/H2NM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TA8WPNrx21Epa5P/AkG2w6ZG0Jks0yG6PhcuL40hbVzSWQGBv6qeRNPFCQD/LXBDWPPewrzItrM5rceaRMIg4WglgYoIL6wc4NrZA9E97YAeuvfEQV7Sls/0Pyfy4BnfOa+bvCi3g8GvwVa4P4mc5ImV4bOPm3C56LyHcqAj4+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BKL01f96; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1060DC433C7;
-	Tue, 27 Feb 2024 13:47:00 +0000 (UTC)
+	 MIME-Version; b=Hg1W0kOhq/Z6QgjZ2rHxA+xj0/PM4MBaOrzSnTqPasgDDgLeNGb5R3piD/iJil3aR9nCihZPO2DavCPg6BAPBlo2CrVPwwRRfYju3VX5cO7+CXl7Y3YP6dthZ4IjYOZhW1k/5LerlcbffI5ZjN4UYYg4/XSnHxhfNtxeIskbrc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nIALdujm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753E5C433F1;
+	Tue, 27 Feb 2024 13:40:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041621;
-	bh=ULbGG5mqEsmilHVZEINh/xAFzKVv4lglBB8soxXNcvg=;
+	s=korg; t=1709041228;
+	bh=pLPV24Om/zQsUQe4OKr3OyLqVm4uIfNKpNoff9/H2NM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BKL01f96UiTHzdeAQwXDBJg8101UacxB7TQ/MM5R6y5Aze+inylUMMoWl831DNrM6
-	 mLRd6Hgb0GLGA7FO53aLJVDz3cN1py6P7IYh/fx7QuW3XtcFI7MtnYBa5TJ3xhaDnb
-	 ojRN7Ier+p0n87g6bt8SepHgg8xn/Ic+jIb6KHuE=
+	b=nIALdujm/CRBrkyZo3CDb0ezBT1XvdFYEjmDP/tNbNREmwN0jkc6YXazipli5RkUp
+	 Yr8aUAKqtfZ+K/+0BXFWiwfZAFKmOl2Td/QrHsYP/1USj5IxpZVI5D1vone+v2s9UC
+	 TxQHgspt1QQ0d++/nWXnffulsY3zQgdsxDbLIZ90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vinod Koul <vkoul@kernel.org>,
+	Alison Schofield <alison.schofield@intel.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 013/299] dmaengine: dw-edma: increase size of name in debugfs code
+Subject: [PATCH 6.7 266/334] x86/numa: Fix the address overlap check in numa_fill_memblks()
 Date: Tue, 27 Feb 2024 14:22:04 +0100
-Message-ID: <20240227131626.263137880@linuxfoundation.org>
+Message-ID: <20240227131639.546482764@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,85 +62,120 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinod Koul <vkoul@kernel.org>
+From: Alison Schofield <alison.schofield@intel.com>
 
-[ Upstream commit cb95a4fa50bbc1262bfb7fea482388a50b12948f ]
+[ Upstream commit 9b99c17f7510bed2adbe17751fb8abddba5620bc ]
 
-We seem to have hit warnings of 'output may be truncated' which is fixed
-by increasing the size of 'name'
+numa_fill_memblks() fills in the gaps in numa_meminfo memblks over a
+physical address range. To do so, it first creates a list of existing
+memblks that overlap that address range. The issue is that it is off
+by one when comparing to the end of the address range, so memblks
+that do not overlap are selected.
 
-drivers/dma/dw-edma/dw-hdma-v0-debugfs.c: In function ‘dw_hdma_v0_debugfs_on’:
-drivers/dma/dw-edma/dw-hdma-v0-debugfs.c:125:50: error: ‘%d’ directive output may be truncated writing between 1 and 11 bytes into a region of size 8 [-Werror=format-truncation=]
-  125 |                 snprintf(name, sizeof(name), "%s:%d", CHANNEL_STR, i);
-      |                                                  ^~
+The impact of selecting a memblk that does not actually overlap is
+that an existing memblk may be filled when the expected action is to
+do nothing and return NUMA_NO_MEMBLK to the caller. The caller can
+then add a new NUMA node and memblk.
 
-drivers/dma/dw-edma/dw-hdma-v0-debugfs.c: In function ‘dw_hdma_v0_debugfs_on’:
-drivers/dma/dw-edma/dw-hdma-v0-debugfs.c:142:50: error: ‘%d’ directive output may be truncated writing between 1 and 11 bytes into a region of size 8 [-Werror=format-truncation=]
-  142 |                 snprintf(name, sizeof(name), "%s:%d", CHANNEL_STR, i);
-      |                                                  ^~
-drivers/dma/dw-edma/dw-edma-v0-debugfs.c: In function ‘dw_edma_debugfs_regs_wr’:
-drivers/dma/dw-edma/dw-edma-v0-debugfs.c:193:50: error: ‘%d’ directive output may be truncated writing between 1 and 11 bytes into a region of size 8 [-Werror=format-truncation=]
-  193 |                 snprintf(name, sizeof(name), "%s:%d", CHANNEL_STR, i);
-      |                                                  ^~
+Replace the broken open-coded search for address overlap with the
+memblock helper memblock_addrs_overlap(). Update the kernel doc
+and in code comments.
 
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Suggested by: "Huang, Ying" <ying.huang@intel.com>
+
+Fixes: 8f012db27c95 ("x86/numa: Introduce numa_fill_memblks()")
+Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+Link: https://lore.kernel.org/r/10a3e6109c34c21a8dd4c513cf63df63481a2b07.1705085543.git.alison.schofield@intel.com
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/dw-edma/dw-edma-v0-debugfs.c | 4 ++--
- drivers/dma/dw-edma/dw-hdma-v0-debugfs.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/mm/numa.c       | 19 +++++++------------
+ include/linux/memblock.h |  2 ++
+ mm/memblock.c            |  5 +++--
+ 3 files changed, 12 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/dma/dw-edma/dw-edma-v0-debugfs.c b/drivers/dma/dw-edma/dw-edma-v0-debugfs.c
-index 0745d9e7d259b..406f169b09a75 100644
---- a/drivers/dma/dw-edma/dw-edma-v0-debugfs.c
-+++ b/drivers/dma/dw-edma/dw-edma-v0-debugfs.c
-@@ -176,7 +176,7 @@ dw_edma_debugfs_regs_wr(struct dw_edma *dw, struct dentry *dent)
- 	};
- 	struct dentry *regs_dent, *ch_dent;
- 	int nr_entries, i;
--	char name[16];
-+	char name[32];
+diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+index b29ceb19e46ec..efc5f1be8d3af 100644
+--- a/arch/x86/mm/numa.c
++++ b/arch/x86/mm/numa.c
+@@ -974,14 +974,12 @@ static struct numa_memblk *numa_memblk_list[NR_NODE_MEMBLKS] __initdata;
+  * @start: address to begin fill
+  * @end: address to end fill
+  *
+- * Find and extend numa_meminfo memblks to cover the @start-@end
+- * physical address range, such that the first memblk includes
+- * @start, the last memblk includes @end, and any gaps in between
+- * are filled.
++ * Find and extend numa_meminfo memblks to cover the physical
++ * address range @start-@end
+  *
+  * RETURNS:
+  * 0		  : Success
+- * NUMA_NO_MEMBLK : No memblk exists in @start-@end range
++ * NUMA_NO_MEMBLK : No memblks exist in address range @start-@end
+  */
  
- 	regs_dent = debugfs_create_dir(WRITE_STR, dent);
+ int __init numa_fill_memblks(u64 start, u64 end)
+@@ -993,17 +991,14 @@ int __init numa_fill_memblks(u64 start, u64 end)
  
-@@ -239,7 +239,7 @@ static noinline_for_stack void dw_edma_debugfs_regs_rd(struct dw_edma *dw,
- 	};
- 	struct dentry *regs_dent, *ch_dent;
- 	int nr_entries, i;
--	char name[16];
-+	char name[32];
+ 	/*
+ 	 * Create a list of pointers to numa_meminfo memblks that
+-	 * overlap start, end. Exclude (start == bi->end) since
+-	 * end addresses in both a CFMWS range and a memblk range
+-	 * are exclusive.
+-	 *
+-	 * This list of pointers is used to make in-place changes
+-	 * that fill out the numa_meminfo memblks.
++	 * overlap start, end. The list is used to make in-place
++	 * changes that fill out the numa_meminfo memblks.
+ 	 */
+ 	for (int i = 0; i < mi->nr_blks; i++) {
+ 		struct numa_memblk *bi = &mi->blk[i];
  
- 	regs_dent = debugfs_create_dir(READ_STR, dent);
- 
-diff --git a/drivers/dma/dw-edma/dw-hdma-v0-debugfs.c b/drivers/dma/dw-edma/dw-hdma-v0-debugfs.c
-index 520c81978b085..dcdc57fe976c1 100644
---- a/drivers/dma/dw-edma/dw-hdma-v0-debugfs.c
-+++ b/drivers/dma/dw-edma/dw-hdma-v0-debugfs.c
-@@ -116,7 +116,7 @@ static void dw_hdma_debugfs_regs_ch(struct dw_edma *dw, enum dw_edma_dir dir,
- static void dw_hdma_debugfs_regs_wr(struct dw_edma *dw, struct dentry *dent)
+-		if (start < bi->end && end >= bi->start) {
++		if (memblock_addrs_overlap(start, end - start, bi->start,
++					   bi->end - bi->start)) {
+ 			blk[count] = &mi->blk[i];
+ 			count++;
+ 		}
+diff --git a/include/linux/memblock.h b/include/linux/memblock.h
+index ae3bde302f704..ccf0176ba3681 100644
+--- a/include/linux/memblock.h
++++ b/include/linux/memblock.h
+@@ -121,6 +121,8 @@ int memblock_reserve(phys_addr_t base, phys_addr_t size);
+ int memblock_physmem_add(phys_addr_t base, phys_addr_t size);
+ #endif
+ void memblock_trim_memory(phys_addr_t align);
++unsigned long memblock_addrs_overlap(phys_addr_t base1, phys_addr_t size1,
++				     phys_addr_t base2, phys_addr_t size2);
+ bool memblock_overlaps_region(struct memblock_type *type,
+ 			      phys_addr_t base, phys_addr_t size);
+ int memblock_mark_hotplug(phys_addr_t base, phys_addr_t size);
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 1572956c5e31e..9a5248fe9cf97 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -180,8 +180,9 @@ static inline phys_addr_t memblock_cap_size(phys_addr_t base, phys_addr_t *size)
+ /*
+  * Address comparison utilities
+  */
+-static unsigned long __init_memblock memblock_addrs_overlap(phys_addr_t base1, phys_addr_t size1,
+-				       phys_addr_t base2, phys_addr_t size2)
++unsigned long __init_memblock
++memblock_addrs_overlap(phys_addr_t base1, phys_addr_t size1, phys_addr_t base2,
++		       phys_addr_t size2)
  {
- 	struct dentry *regs_dent, *ch_dent;
--	char name[16];
-+	char name[32];
- 	int i;
- 
- 	regs_dent = debugfs_create_dir(WRITE_STR, dent);
-@@ -133,7 +133,7 @@ static void dw_hdma_debugfs_regs_wr(struct dw_edma *dw, struct dentry *dent)
- static void dw_hdma_debugfs_regs_rd(struct dw_edma *dw, struct dentry *dent)
- {
- 	struct dentry *regs_dent, *ch_dent;
--	char name[16];
-+	char name[32];
- 	int i;
- 
- 	regs_dent = debugfs_create_dir(READ_STR, dent);
+ 	return ((base1 < (base2 + size2)) && (base2 < (base1 + size1)));
+ }
 -- 
 2.43.0
 
