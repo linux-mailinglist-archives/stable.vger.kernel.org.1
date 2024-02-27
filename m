@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-24030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3072186924B
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:34:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF8AC86925A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:34:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE4F5293DE7
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:34:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DA4E1C211BF
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:34:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5740C13B2BA;
-	Tue, 27 Feb 2024 13:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6AA713B7A3;
+	Tue, 27 Feb 2024 13:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9eKiK+i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="znmKFHkW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D071CFA9;
-	Tue, 27 Feb 2024 13:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D6A2F2D;
+	Tue, 27 Feb 2024 13:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709040835; cv=none; b=SZx6DbaFuQco4U4Yu0OznWuynk1qOTpYxENmc3QDK4yAS39391T+/zGIo0YDjw16Vst8K6R/qgdhrTVM19DfM6pGhMSCr/L+G9IvA7s2PVS06LR9OL1Rs7YLJMNjP7FL2UtbYoECq/VW4N7UHcAC85Cu6DTIEBViBlgZcHowbDo=
+	t=1709040865; cv=none; b=cmD/sJt+k1DIgC2ONeiD1kdKf8vMeNXrC+SvxL2rKGcB8qZM4dT+RlE0LYegKxC5s1KHb8D8/UyXEO8Oxj8EZUG5nejS2iygTN4aYHw5Bj3VGN9dOOPBHqGx2OJknXofpTtuPmc+FF6S7kO6gG9xRjccIwD7GU1VFpfjhFMET9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709040835; c=relaxed/simple;
-	bh=7gpn9XE7ltb/25wyE5+pkRSOttAOUsSYrRUDsm/lhRI=;
+	s=arc-20240116; t=1709040865; c=relaxed/simple;
+	bh=afDtefiCTx/ZGK4L389FhIre8wI5SNLNcGGRhynmu+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i7OE4s2i3nyiHzWs2OGVtZHuqHqueBMndRr5i3+foED1u7xzm7asmHSrcV00g8fbc2ESUHSqOQiT5atY9hTQq/VKia2gX8BW1Z+2BMhtiabar4bKviJDT2LIcEuIzhpnm1JE59tv25CIUbI+i+00YGI0wXGIjFlz7WEO3D2+n90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9eKiK+i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98335C433A6;
-	Tue, 27 Feb 2024 13:33:54 +0000 (UTC)
+	 MIME-Version; b=VPWHdjvY9kfreWG7iyhcdoEXbyEwMpXcqmwFOGVFGSyGF9kv+661Ct+iI0ba9xTUGap+kkN8Gdbt2tG0MNrrXPFa4ghMUOIELJJyXnzNF7bAfSGFGvZRdRq6QFga5cH5Bbpaax671Wi45f56WavZ41/Pb+3eMO0nGbThdV6fJzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=znmKFHkW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12625C433C7;
+	Tue, 27 Feb 2024 13:34:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709040835;
-	bh=7gpn9XE7ltb/25wyE5+pkRSOttAOUsSYrRUDsm/lhRI=;
+	s=korg; t=1709040865;
+	bh=afDtefiCTx/ZGK4L389FhIre8wI5SNLNcGGRhynmu+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g9eKiK+ioftSwaiZkWmnKJlaa1Pt4r9GI53rYFPjqCTm59+/qDsMpZgzFcTsSrPwI
-	 5LpXvUgigR+6gNWsioXLD41snM9rGL2qeEswjc36xy2gNjGL6YDfItiNaxEpg6ozLg
-	 UvTXi0W1vKu7h+VAzurDLL3DCKQKjqmdn3GDrYkk=
+	b=znmKFHkWesYd4JhpzkX93Dt6+OY+HohsMeKlWXHUM+yrxQZI9tdDqPkTEBP68Z/Aw
+	 LCLJj4JyZ5PZkxSZgmGo0sbXkRnHeG0t/izyZkzzt/fpKzFL5BPGHdN2PPtslvtpot
+	 C6//JUjvYsyignDeKdhc4MnHcqUIlMMm2sRduLGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Wachowski, Karol" <karol.wachowski@intel.com>,
 	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
 	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>, Wachowski@web.codeaurora.org
-Subject: [PATCH 6.7 118/334] accel/ivpu: Force snooping for MMU writes
-Date: Tue, 27 Feb 2024 14:19:36 +0100
-Message-ID: <20240227131634.283285607@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 119/334] accel/ivpu: Disable d3hot_delay on all NPU generations
+Date: Tue, 27 Feb 2024 14:19:37 +0100
+Message-ID: <20240227131634.313803033@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
 References: <20240227131630.636392135@linuxfoundation.org>
@@ -67,75 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wachowski, Karol <karol.wachowski@intel.com>
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
 
-[ Upstream commit c9da9a1f17bf4fa96b115950fd389c917b583c1c ]
+[ Upstream commit a7f31091ddf457352e3dd7ac183fdbd26b4dcd04 ]
 
-Set AW_SNOOP_OVERRIDE bit in VPU_37/40XX_HOST_IF_TCU_PTW_OVERRIDES
-to force snooping for MMU write accesses (setting event queue events).
+NPU does not require this delay regardless of the generation.
+All generations are integrated into the SOC.
 
-MMU event queue buffer is the only buffer written by MMU and
-mapped as write-back which break cache coherency. Force write
-transactions to be snooped solving the problem.
-
-Signed-off-by: Wachowski, Karol <karol.wachowski@intel.com>
 Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
 Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240126122804.2169129-2-jacek.lawrynowicz@linux.intel.com
+Link: https://patchwork.freedesktop.org/patch/msgid/20240126122804.2169129-4-jacek.lawrynowicz@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ivpu/ivpu_hw_37xx.c | 2 +-
- drivers/accel/ivpu/ivpu_hw_40xx.c | 2 +-
- drivers/accel/ivpu/ivpu_mmu.c     | 3 ---
- 3 files changed, 2 insertions(+), 5 deletions(-)
+ drivers/accel/ivpu/ivpu_drv.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/accel/ivpu/ivpu_hw_37xx.c b/drivers/accel/ivpu/ivpu_hw_37xx.c
-index d530384f8d607..e658fcf849f7a 100644
---- a/drivers/accel/ivpu/ivpu_hw_37xx.c
-+++ b/drivers/accel/ivpu/ivpu_hw_37xx.c
-@@ -523,7 +523,7 @@ static void ivpu_boot_no_snoop_enable(struct ivpu_device *vdev)
- 	u32 val = REGV_RD32(VPU_37XX_HOST_IF_TCU_PTW_OVERRIDES);
+diff --git a/drivers/accel/ivpu/ivpu_drv.c b/drivers/accel/ivpu/ivpu_drv.c
+index 7906030176538..c856c417a1451 100644
+--- a/drivers/accel/ivpu/ivpu_drv.c
++++ b/drivers/accel/ivpu/ivpu_drv.c
+@@ -479,9 +479,8 @@ static int ivpu_pci_init(struct ivpu_device *vdev)
+ 	/* Clear any pending errors */
+ 	pcie_capability_clear_word(pdev, PCI_EXP_DEVSTA, 0x3f);
  
- 	val = REG_SET_FLD(VPU_37XX_HOST_IF_TCU_PTW_OVERRIDES, NOSNOOP_OVERRIDE_EN, val);
--	val = REG_SET_FLD(VPU_37XX_HOST_IF_TCU_PTW_OVERRIDES, AW_NOSNOOP_OVERRIDE, val);
-+	val = REG_CLR_FLD(VPU_37XX_HOST_IF_TCU_PTW_OVERRIDES, AW_NOSNOOP_OVERRIDE, val);
- 	val = REG_SET_FLD(VPU_37XX_HOST_IF_TCU_PTW_OVERRIDES, AR_NOSNOOP_OVERRIDE, val);
+-	/* VPU 37XX does not require 10m D3hot delay */
+-	if (ivpu_hw_gen(vdev) == IVPU_HW_37XX)
+-		pdev->d3hot_delay = 0;
++	/* NPU does not require 10m D3hot delay */
++	pdev->d3hot_delay = 0;
  
- 	REGV_WR32(VPU_37XX_HOST_IF_TCU_PTW_OVERRIDES, val);
-diff --git a/drivers/accel/ivpu/ivpu_hw_40xx.c b/drivers/accel/ivpu/ivpu_hw_40xx.c
-index e691c49c98410..8a7440bcd6df6 100644
---- a/drivers/accel/ivpu/ivpu_hw_40xx.c
-+++ b/drivers/accel/ivpu/ivpu_hw_40xx.c
-@@ -526,7 +526,7 @@ static void ivpu_boot_no_snoop_enable(struct ivpu_device *vdev)
- 	u32 val = REGV_RD32(VPU_40XX_HOST_IF_TCU_PTW_OVERRIDES);
- 
- 	val = REG_SET_FLD(VPU_40XX_HOST_IF_TCU_PTW_OVERRIDES, SNOOP_OVERRIDE_EN, val);
--	val = REG_CLR_FLD(VPU_40XX_HOST_IF_TCU_PTW_OVERRIDES, AW_SNOOP_OVERRIDE, val);
-+	val = REG_SET_FLD(VPU_40XX_HOST_IF_TCU_PTW_OVERRIDES, AW_SNOOP_OVERRIDE, val);
- 	val = REG_CLR_FLD(VPU_40XX_HOST_IF_TCU_PTW_OVERRIDES, AR_SNOOP_OVERRIDE, val);
- 
- 	REGV_WR32(VPU_40XX_HOST_IF_TCU_PTW_OVERRIDES, val);
-diff --git a/drivers/accel/ivpu/ivpu_mmu.c b/drivers/accel/ivpu/ivpu_mmu.c
-index 2538c78fbebe2..9898946174fd9 100644
---- a/drivers/accel/ivpu/ivpu_mmu.c
-+++ b/drivers/accel/ivpu/ivpu_mmu.c
-@@ -533,7 +533,6 @@ static int ivpu_mmu_reset(struct ivpu_device *vdev)
- 	mmu->cmdq.cons = 0;
- 
- 	memset(mmu->evtq.base, 0, IVPU_MMU_EVTQ_SIZE);
--	clflush_cache_range(mmu->evtq.base, IVPU_MMU_EVTQ_SIZE);
- 	mmu->evtq.prod = 0;
- 	mmu->evtq.cons = 0;
- 
-@@ -847,8 +846,6 @@ static u32 *ivpu_mmu_get_event(struct ivpu_device *vdev)
- 	if (!CIRC_CNT(IVPU_MMU_Q_IDX(evtq->prod), IVPU_MMU_Q_IDX(evtq->cons), IVPU_MMU_Q_COUNT))
- 		return NULL;
- 
--	clflush_cache_range(evt, IVPU_MMU_EVTQ_CMD_SIZE);
--
- 	evtq->cons = (evtq->cons + 1) & IVPU_MMU_Q_WRAP_MASK;
- 	REGV_WR32(IVPU_MMU_REG_EVTQ_CONS_SEC, evtq->cons);
- 
+ 	ret = pcim_enable_device(pdev);
+ 	if (ret) {
 -- 
 2.43.0
 
