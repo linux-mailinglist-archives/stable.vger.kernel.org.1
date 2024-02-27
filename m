@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-24914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 290758696F5
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:17:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BD938695ED
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47FE8B298F1
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:15:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5F9728DBB4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:06:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA60878B61;
-	Tue, 27 Feb 2024 14:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A461813DBA4;
+	Tue, 27 Feb 2024 14:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iPt6wy1N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AhTd0IJJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988EC13B29C;
-	Tue, 27 Feb 2024 14:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6459E13A26F;
+	Tue, 27 Feb 2024 14:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043340; cv=none; b=JuPTYbsV+z+xrNpqM+fDqskN8vZaLQ2Wf5SplsPa5T5Eh5O+nc3+uu8cRE08R0Wr70wJGpokEY2u6aJn4k+hEqTPD09VCI4CvIhUcq1XhDgz4XjWkpUYR2V4KkxopUxnVWuY0vhaivFnJVs7TpfDL4bDnebaZKQQuIwpyErRsCc=
+	t=1709042779; cv=none; b=DIbQuOl6kjpvRKvJOlL69++NwaiikrRFkFck9Ibsn0+rL5HuJPavahEQez8rEfFXhX37LJ6BdOZkxlUjJo1J9ZeG0zEb/SAlq2TMloJNMQ86ICT2loCYxWoN3xRVfHcuZ0+/j94lR5qsk9BscRAGHc3D3DnUztYpS6QDG4P2Qj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043340; c=relaxed/simple;
-	bh=KAUnaH1ago2jZlk2+izKrN4UXc3k1TE4Xsj1IRs9GRY=;
+	s=arc-20240116; t=1709042779; c=relaxed/simple;
+	bh=YKknOHQda/mbDQ6xQJLZwEq6je9bbcVtaRGfBrRskj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pMBGwmXRyBlkkLw95AVAJV5Ap11riPlxMrEYUzLabMIWwy1KE73UTyG5mSdPUh7FEe6Q3C6cEMrR4cwfH/Dp/WK3+GENwoQbr8R/s8apgcZJfmTzs43xPxP848JdxX6qG5pXH67pENzbVDrhXib/1EBWYPCgnTiUYGxg50fD02M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iPt6wy1N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 188DAC433C7;
-	Tue, 27 Feb 2024 14:15:39 +0000 (UTC)
+	 MIME-Version; b=dGG1jydElR3LbeRZtWyONGE3+BZgnHtg1aBb+CaT7KTu+nD5M7d8fxTc315vF6vsew1dvEIu1nywE6Dg1A5Eoy6rb6iiV64CE0JY/RPtgze/RbediIpu7L4MH/q95iVI8dw/9sOBcPQ0xiWItcs2A4Tx2R9tjKQSNmO1cSomR9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AhTd0IJJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D291C433F1;
+	Tue, 27 Feb 2024 14:06:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043340;
-	bh=KAUnaH1ago2jZlk2+izKrN4UXc3k1TE4Xsj1IRs9GRY=;
+	s=korg; t=1709042779;
+	bh=YKknOHQda/mbDQ6xQJLZwEq6je9bbcVtaRGfBrRskj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iPt6wy1NNGaBAEG0/PgE5DFKuFCZOCJBHELYJ3l0LYCuWTS6tn+FpShT47Gvo/ezk
-	 XIamVdS4DLNgabg4Bxfw2B90fsNa22iwi2YgCN0hhVXFrnAvoVdVemFcwbMydB3STT
-	 RvSwJp1eJtcm943P0ZgKetDWpstEmOkh1nwypWRM=
+	b=AhTd0IJJebDsqqxBqxVkoqZ1pPLJvYPjwB6zQKH48/GKZQF71ITin1wdCD1MQG9Zy
+	 vu2CVaTqbq9rf8t2ZSq/T5oguOWjWlDxQAsp8klKQRZblz5DNW10axOJqaAJ1r3D/c
+	 vzsSie7Rsu8z8uLljO96vUJX0CS3pqZyfPZ8fBN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	Daniel Wagner <dwagner@suse.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Luca Ellero <l.ellero@asem.it>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 044/195] nvmet-fcloop: swap the list_add_tail arguments
+Subject: [PATCH 5.15 117/245] Input: ads7846 - always set last command to PWRDOWN
 Date: Tue, 27 Feb 2024 14:25:05 +0100
-Message-ID: <20240227131611.843966680@linuxfoundation.org>
+Message-ID: <20240227131619.033496768@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <dwagner@suse.de>
+From: Luca Ellero <l.ellero@asem.it>
 
-[ Upstream commit dcfad4ab4d6733f2861cd241d8532a0004fc835a ]
+[ Upstream commit 13f82ca3878db8284a70ef9711d7f710a31eb562 ]
 
-The first argument of list_add_tail function is the new element which
-should be added to the list which is the second argument. Swap the
-arguments to allow processing more than one element at a time.
+Controllers that report pressure (e.g. ADS7846) use 5 commands and the
+correct sequence is READ_X, READ_Y, READ_Z1, READ_Z2, PWRDOWN.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Daniel Wagner <dwagner@suse.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Controllers that don't report pressure (e.g. ADS7845/ADS7843) use only 3
+commands and the correct sequence should be READ_X, READ_Y, PWRDOWN. But
+the sequence sent was incorrect: READ_X, READ_Y, READ_Z1.
+
+Fix this by setting the third (and last) command to PWRDOWN.
+
+Fixes: ffa458c1bd9b ("spi: ads7846 driver")
+Signed-off-by: Luca Ellero <l.ellero@asem.it>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20230126105227.47648-3-l.ellero@asem.it
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/fcloop.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/input/touchscreen/ads7846.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/target/fcloop.c b/drivers/nvme/target/fcloop.c
-index c780af36c1d4a..f5b8442b653db 100644
---- a/drivers/nvme/target/fcloop.c
-+++ b/drivers/nvme/target/fcloop.c
-@@ -358,7 +358,7 @@ fcloop_h2t_ls_req(struct nvme_fc_local_port *localport,
- 	if (!rport->targetport) {
- 		tls_req->status = -ECONNREFUSED;
- 		spin_lock(&rport->lock);
--		list_add_tail(&rport->ls_list, &tls_req->ls_list);
-+		list_add_tail(&tls_req->ls_list, &rport->ls_list);
- 		spin_unlock(&rport->lock);
- 		queue_work(nvmet_wq, &rport->ls_work);
- 		return ret;
-@@ -391,7 +391,7 @@ fcloop_h2t_xmt_ls_rsp(struct nvmet_fc_target_port *targetport,
- 	if (remoteport) {
- 		rport = remoteport->private;
- 		spin_lock(&rport->lock);
--		list_add_tail(&rport->ls_list, &tls_req->ls_list);
-+		list_add_tail(&tls_req->ls_list, &rport->ls_list);
- 		spin_unlock(&rport->lock);
- 		queue_work(nvmet_wq, &rport->ls_work);
- 	}
-@@ -446,7 +446,7 @@ fcloop_t2h_ls_req(struct nvmet_fc_target_port *targetport, void *hosthandle,
- 	if (!tport->remoteport) {
- 		tls_req->status = -ECONNREFUSED;
- 		spin_lock(&tport->lock);
--		list_add_tail(&tport->ls_list, &tls_req->ls_list);
-+		list_add_tail(&tls_req->ls_list, &tport->ls_list);
- 		spin_unlock(&tport->lock);
- 		queue_work(nvmet_wq, &tport->ls_work);
- 		return ret;
+diff --git a/drivers/input/touchscreen/ads7846.c b/drivers/input/touchscreen/ads7846.c
+index ef04988edf0c2..f416a4bcd72bf 100644
+--- a/drivers/input/touchscreen/ads7846.c
++++ b/drivers/input/touchscreen/ads7846.c
+@@ -1074,6 +1074,9 @@ static int ads7846_setup_spi_msg(struct ads7846 *ts,
+ 		struct ads7846_buf_layout *l = &packet->l[cmd_idx];
+ 		unsigned int max_count;
+ 
++		if (cmd_idx == packet->cmds - 1)
++			cmd_idx = ADS7846_PWDOWN;
++
+ 		if (ads7846_cmd_need_settle(cmd_idx))
+ 			max_count = packet->count + packet->count_skip;
+ 		else
+@@ -1110,7 +1113,12 @@ static int ads7846_setup_spi_msg(struct ads7846 *ts,
+ 
+ 	for (cmd_idx = 0; cmd_idx < packet->cmds; cmd_idx++) {
+ 		struct ads7846_buf_layout *l = &packet->l[cmd_idx];
+-		u8 cmd = ads7846_get_cmd(cmd_idx, vref);
++		u8 cmd;
++
++		if (cmd_idx == packet->cmds - 1)
++			cmd_idx = ADS7846_PWDOWN;
++
++		cmd = ads7846_get_cmd(cmd_idx, vref);
+ 
+ 		for (b = 0; b < l->count; b++)
+ 			packet->tx[l->offset + b].cmd = cmd;
 -- 
 2.43.0
 
