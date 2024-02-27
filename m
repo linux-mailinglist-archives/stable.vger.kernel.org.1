@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-25078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17C108697B5
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:24:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF15E86953E
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:00:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8509BB2CD16
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:23:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F134282D11
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93FB21420A0;
-	Tue, 27 Feb 2024 14:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E56D513DB98;
+	Tue, 27 Feb 2024 14:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bo0+7wbx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJmolzBP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B461419A0;
-	Tue, 27 Feb 2024 14:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2DCD13AA50;
+	Tue, 27 Feb 2024 14:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043799; cv=none; b=cRdYoi9ZJgnObNfsPy3nBIE5RO4QKk3P+W66HO+xf7P0pm7Si+9rOwppCHTAfLs6qHmsVU/JGa1b/U12SdAWp3+OV1FuYYZh9CJJD+SIKEPVHKvRHEdCa8UkU1MQ56G5gZMvrcJfeMmpEFrlk6JnbnEP/myAW7jTq7zObR93ltM=
+	t=1709042418; cv=none; b=bqS09JzQnDa6l4xKtNQpoAtinmQj/xAt1eYSQ9O4Gn8ZMojPN1d9tsmr/NgQeQ7jYUQqSydT25iWuxYG8Hl1WgB2xQ41rQSlO3xAHEP3tAIrh/h0C5aDfu2RCZ0jKM1nZTEW74QaUCKotKXMtjBmeybkGSLcadFmXG9ceM0Gugc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043799; c=relaxed/simple;
-	bh=f7TsVGPoT+63nwD1sxpv7irgCyhzYpaLC9x6WGtpIlk=;
+	s=arc-20240116; t=1709042418; c=relaxed/simple;
+	bh=SD15WUtworu67RdKTJfSTOitXNUYsVhF4YSypO0IAtk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JorTySmnWpikddH4IWq2wKQZs4mY6nCNu5XSco+NS55w4mheGM1071Q4YWYeuGiNqLptETyCyletwhaZpuTl9Bc0SUio3N1xqjFjtlEiL4HpAZtESzXwWFOqOS66zAUDPwyEOuXr4Dz9jFqEr9yqPE4egtHO4miesiEsvcppYMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bo0+7wbx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4972C433F1;
-	Tue, 27 Feb 2024 14:23:18 +0000 (UTC)
+	 MIME-Version; b=hPgfDW25GyApriR2omlC9Qx94OQbu1LKxaMIIzAtEfiwQKSdr1MZa/Uebt+J6+14wnbuWVKFd/yOmvU0B8Gozxs11ktImhDCvums0O93NgTEQhCuJKqMGRZRqHxIEJat39q948e6llb5JkMwaxW4gNLwIFeuCBLeiVzDdloETq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJmolzBP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E4EFC433C7;
+	Tue, 27 Feb 2024 14:00:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043799;
-	bh=f7TsVGPoT+63nwD1sxpv7irgCyhzYpaLC9x6WGtpIlk=;
+	s=korg; t=1709042418;
+	bh=SD15WUtworu67RdKTJfSTOitXNUYsVhF4YSypO0IAtk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bo0+7wbx/nv+nSmRXjsKczYiCy+PLnL4Em69A3+sKCOcAEjBiDeoVefURxNcDEG9k
-	 U1sulF0i8w99WzV7QyeXhvJU1EJLCNBJ+QgYbSbP9+TYgHQ1RuGOR14ipYfvetX4SP
-	 3i0dwDkOm0G4nFrIiyKWfF4+0dFwZuKOEL/0/exs=
+	b=pJmolzBPoyis7jS8RHizxOMrju2GnNKGU2aVCtXajNHYcdaUUNhOntnMcSoppWI30
+	 8iyQWKQwy89lxxXrjot/NlV+7/uu4TRLAuf73oZx7ZG0O/eSad9sdks0SUBE3gtseJ
+	 DFliIxHk9iQPKFFZfdATCF407nC7/kMVpv0AIemg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Bogdanov <d.bogdanov@yadro.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 12/84] scsi: target: core: Add TMF to tmr_list handling
-Date: Tue, 27 Feb 2024 14:26:39 +0100
-Message-ID: <20240227131553.272081026@linuxfoundation.org>
+Subject: [PATCH 6.6 289/299] drm/amd/display: Fix memory leak in dm_sw_fini()
+Date: Tue, 27 Feb 2024 14:26:40 +0100
+Message-ID: <20240227131634.973839157@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
-References: <20240227131552.864701583@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Bogdanov <d.bogdanov@yadro.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 83ab68168a3d990d5ff39ab030ad5754cbbccb25 ]
+[ Upstream commit bae67893578d608e35691dcdfa90c4957debf1d3 ]
 
-An abort that is responded to by iSCSI itself is added to tmr_list but does
-not go to target core. A LUN_RESET that goes through tmr_list takes a
-refcounter on the abort and waits for completion. However, the abort will
-be never complete because it was not started in target core.
+After destroying dmub_srv, the memory associated with it is
+not freed, causing a memory leak:
 
- Unable to locate ITT: 0x05000000 on CID: 0
- Unable to locate RefTaskTag: 0x05000000 on CID: 0.
- wait_for_tasks: Stopping tmf LUN_RESET with tag 0x0 ref_task_tag 0x0 i_state 34 t_state ISTATE_PROCESSING refcnt 2 transport_state active,stop,fabric_stop
- wait for tasks: tmf LUN_RESET with tag 0x0 ref_task_tag 0x0 i_state 34 t_state ISTATE_PROCESSING refcnt 2 transport_state active,stop,fabric_stop
-...
- INFO: task kworker/0:2:49 blocked for more than 491 seconds.
- task:kworker/0:2     state:D stack:    0 pid:   49 ppid:     2 flags:0x00000800
- Workqueue: events target_tmr_work [target_core_mod]
-Call Trace:
- __switch_to+0x2c4/0x470
- _schedule+0x314/0x1730
- schedule+0x64/0x130
- schedule_timeout+0x168/0x430
- wait_for_completion+0x140/0x270
- target_put_cmd_and_wait+0x64/0xb0 [target_core_mod]
- core_tmr_lun_reset+0x30/0xa0 [target_core_mod]
- target_tmr_work+0xc8/0x1b0 [target_core_mod]
- process_one_work+0x2d4/0x5d0
- worker_thread+0x78/0x6c0
+unreferenced object 0xffff896302b45800 (size 1024):
+  comm "(udev-worker)", pid 222, jiffies 4294894636
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace (crc 6265fd77):
+    [<ffffffff993495ed>] kmalloc_trace+0x29d/0x340
+    [<ffffffffc0ea4a94>] dm_dmub_sw_init+0xb4/0x450 [amdgpu]
+    [<ffffffffc0ea4e55>] dm_sw_init+0x15/0x2b0 [amdgpu]
+    [<ffffffffc0ba8557>] amdgpu_device_init+0x1417/0x24e0 [amdgpu]
+    [<ffffffffc0bab285>] amdgpu_driver_load_kms+0x15/0x190 [amdgpu]
+    [<ffffffffc0ba09c7>] amdgpu_pci_probe+0x187/0x4e0 [amdgpu]
+    [<ffffffff9968fd1e>] local_pci_probe+0x3e/0x90
+    [<ffffffff996918a3>] pci_device_probe+0xc3/0x230
+    [<ffffffff99805872>] really_probe+0xe2/0x480
+    [<ffffffff99805c98>] __driver_probe_device+0x78/0x160
+    [<ffffffff99805daf>] driver_probe_device+0x1f/0x90
+    [<ffffffff9980601e>] __driver_attach+0xce/0x1c0
+    [<ffffffff99803170>] bus_for_each_dev+0x70/0xc0
+    [<ffffffff99804822>] bus_add_driver+0x112/0x210
+    [<ffffffff99807245>] driver_register+0x55/0x100
+    [<ffffffff990012d1>] do_one_initcall+0x41/0x300
 
-To fix this, only add abort to tmr_list if it will be handled by target
-core.
+Fix this by freeing dmub_srv after destroying it.
 
-Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
-Link: https://lore.kernel.org/r/20240111125941.8688-1-d.bogdanov@yadro.com
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 743b9786b14a ("drm/amd/display: Hook up the DMUB service in DM")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/target_core_device.c    | 5 -----
- drivers/target/target_core_transport.c | 4 ++++
- 2 files changed, 4 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
-index 8ba134ccd3b9c..edddc66ad1337 100644
---- a/drivers/target/target_core_device.c
-+++ b/drivers/target/target_core_device.c
-@@ -151,7 +151,6 @@ int transport_lookup_tmr_lun(struct se_cmd *se_cmd, u64 unpacked_lun)
- 	struct se_session *se_sess = se_cmd->se_sess;
- 	struct se_node_acl *nacl = se_sess->se_node_acl;
- 	struct se_tmr_req *se_tmr = se_cmd->se_tmr_req;
--	unsigned long flags;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 3194c10f345fc..50444ab7b3cc0 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2247,6 +2247,7 @@ static int dm_sw_fini(void *handle)
  
- 	rcu_read_lock();
- 	deve = target_nacl_find_deve(nacl, unpacked_lun);
-@@ -182,10 +181,6 @@ int transport_lookup_tmr_lun(struct se_cmd *se_cmd, u64 unpacked_lun)
- 	se_cmd->se_dev = rcu_dereference_raw(se_lun->lun_se_dev);
- 	se_tmr->tmr_dev = rcu_dereference_raw(se_lun->lun_se_dev);
+ 	if (adev->dm.dmub_srv) {
+ 		dmub_srv_destroy(adev->dm.dmub_srv);
++		kfree(adev->dm.dmub_srv);
+ 		adev->dm.dmub_srv = NULL;
+ 	}
  
--	spin_lock_irqsave(&se_tmr->tmr_dev->se_tmr_lock, flags);
--	list_add_tail(&se_tmr->tmr_list, &se_tmr->tmr_dev->dev_tmr_list);
--	spin_unlock_irqrestore(&se_tmr->tmr_dev->se_tmr_lock, flags);
--
- 	return 0;
- }
- EXPORT_SYMBOL(transport_lookup_tmr_lun);
-diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
-index f52fe40002259..82d9e2659abe3 100644
---- a/drivers/target/target_core_transport.c
-+++ b/drivers/target/target_core_transport.c
-@@ -3392,6 +3392,10 @@ int transport_generic_handle_tmr(
- 	unsigned long flags;
- 	bool aborted = false;
- 
-+	spin_lock_irqsave(&cmd->se_dev->se_tmr_lock, flags);
-+	list_add_tail(&cmd->se_tmr_req->tmr_list, &cmd->se_dev->dev_tmr_list);
-+	spin_unlock_irqrestore(&cmd->se_dev->se_tmr_lock, flags);
-+
- 	spin_lock_irqsave(&cmd->t_state_lock, flags);
- 	if (cmd->transport_state & CMD_T_ABORTED) {
- 		aborted = true;
 -- 
 2.43.0
 
