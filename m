@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-25141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 151E18697EE
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:26:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 644EF869529
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:59:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46AD31C2277D
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:26:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 964871C24537
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:59:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E161419A1;
-	Tue, 27 Feb 2024 14:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB57513DB9B;
+	Tue, 27 Feb 2024 13:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kiXyvb0l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2pZQHFZX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213FE13B7AB;
-	Tue, 27 Feb 2024 14:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8978F13AA50;
+	Tue, 27 Feb 2024 13:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043979; cv=none; b=k4uW1MRUG2hqE65BnDfUsrFEyi1uELP/iB6BwIYWlnaULTcY9DRvKMzm/R1G1/kF65yLBSi4t9XC9sJMHVjjmBgPwvfMARhieQaBBnfGggA5xFrWm1lQXwnLXZ3lSoMEyo4I5kfiNn+Kllt74Y/up+GGPxFZ4aes2tZT7w9NhVo=
+	t=1709042366; cv=none; b=X8hbrxd9vbNs9PC1c6R5oKNFO4HSlu4ZAUHVM7jbRNokzju+ryyfnIiw7C+czKcDAXoFrFyiyB7IVXp8mSa9DpxB9ajJZNRQP0DTocn78zHXoy7B/5iB5KRCUwoMkSraXc0mHTHBOiX0FPyYZ898UraCjI/tVZAwZAwJIdmdDI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043979; c=relaxed/simple;
-	bh=fb6syoblvWzbaUbkPZQfanFW1SvNXK65ofjzplMK3No=;
+	s=arc-20240116; t=1709042366; c=relaxed/simple;
+	bh=piaMy1mgF9R7hcsBK8a3F0xMdl7BYb2zL0n5wq4tfPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u5XKWvUL+KZI4jm7SsmGK360L6+c8VF9+0CgTf7bNu0TwY8ANBQyRrrY/W6gUAfvXgDR1grcNOagVM9PriOQI6HpsVjmmJeYjWz9r++c4WmDrWkQwfOamKFuzZSKaXYyOt2ixawxn6A968K6Hv6HL2D+xGmhrIAlW4MFJuX6clw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kiXyvb0l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A03EDC43390;
-	Tue, 27 Feb 2024 14:26:18 +0000 (UTC)
+	 MIME-Version; b=ka3cdNXXsYyXtnXoiBWWCLymf9gHZsaEmMjuOj8Gfa91gNqehO68WbkOt7dHQ8Xz3v7pE14n7IiWsOKN5rK8J4ysTOsuc6My0SOxc1UdlE5ClG11JbDZIifLcKLyz1JzaXW1myCzvBmLQO5RicqzMEDxP0C8rXWiOKl/Y5VpYto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2pZQHFZX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3201C433F1;
+	Tue, 27 Feb 2024 13:59:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043979;
-	bh=fb6syoblvWzbaUbkPZQfanFW1SvNXK65ofjzplMK3No=;
+	s=korg; t=1709042366;
+	bh=piaMy1mgF9R7hcsBK8a3F0xMdl7BYb2zL0n5wq4tfPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kiXyvb0lEYgvktaW6yGA9p5aXzvN1OWjEcUl5SrNsr6zGp7djJSDB4yxsr4fTFNzL
-	 j6CdURkGRtybc8bcocwXRs09yDkNllvI3s38J24+aMTGmphrSVDhzkyAGHwDEh/vbM
-	 tF3/VdpGTcF3ZMbknwSwDonSGpIkHUXMrrI1dTyM=
+	b=2pZQHFZXG+IJSY9BjIsi0f7nCeVZjzJuPPVGriTGgolPv/G2oJHpZM5WcNbBg3B2U
+	 nqWdwze5jfqSflTXUlKHYFwFBBCGqYeIiIUY+not/ta1CrcvyM9PW26PZnfWUl+Ll/
+	 HCbTyh71RoUbW1hSOxq9cDXZdmfkK6/2Lgc9k9G4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Devyn Liu <liudingyuan@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 019/122] spi: hisi-sfc-v3xx: Return IRQ_NONE if no interrupts were detected
+Subject: [PATCH 6.6 269/299] tls: stop recv() if initial process_rx_list gave us non-DATA
 Date: Tue, 27 Feb 2024 14:26:20 +0100
-Message-ID: <20240227131559.334779733@linuxfoundation.org>
+Message-ID: <20240227131634.341203243@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131558.694096204@linuxfoundation.org>
-References: <20240227131558.694096204@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Devyn Liu <liudingyuan@huawei.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit de8b6e1c231a95abf95ad097b993d34b31458ec9 ]
+[ Upstream commit fdfbaec5923d9359698cbb286bc0deadbb717504 ]
 
-Return IRQ_NONE from the interrupt handler when no interrupt was
-detected. Because an empty interrupt will cause a null pointer error:
+If we have a non-DATA record on the rx_list and another record of the
+same type still on the queue, we will end up merging them:
+ - process_rx_list copies the non-DATA record
+ - we start the loop and process the first available record since it's
+   of the same type
+ - we break out of the loop since the record was not DATA
 
-    Unable to handle kernel NULL pointer dereference at virtual
-  address 0000000000000008
-    Call trace:
-        complete+0x54/0x100
-        hisi_sfc_v3xx_isr+0x2c/0x40 [spi_hisi_sfc_v3xx]
-        __handle_irq_event_percpu+0x64/0x1e0
-        handle_irq_event+0x7c/0x1cc
+Just check the record type and jump to the end in case process_rx_list
+did some work.
 
-Signed-off-by: Devyn Liu <liudingyuan@huawei.com>
-Link: https://msgid.link/r/20240123071149.917678-1-liudingyuan@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 692d7b5d1f91 ("tls: Fix recvmsg() to be able to peek across multiple records")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/bd31449e43bd4b6ff546f5c51cf958c31c511deb.1708007371.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-hisi-sfc-v3xx.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/tls/tls_sw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-hisi-sfc-v3xx.c b/drivers/spi/spi-hisi-sfc-v3xx.c
-index 4650b483a33d3..e0c3ad73c576d 100644
---- a/drivers/spi/spi-hisi-sfc-v3xx.c
-+++ b/drivers/spi/spi-hisi-sfc-v3xx.c
-@@ -365,6 +365,11 @@ static const struct spi_controller_mem_ops hisi_sfc_v3xx_mem_ops = {
- static irqreturn_t hisi_sfc_v3xx_isr(int irq, void *data)
- {
- 	struct hisi_sfc_v3xx_host *host = data;
-+	u32 reg;
-+
-+	reg = readl(host->regbase + HISI_SFC_V3XX_INT_STAT);
-+	if (!reg)
-+		return IRQ_NONE;
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 67c8323b7cd11..a83b6119f3826 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -1971,7 +1971,7 @@ int tls_sw_recvmsg(struct sock *sk,
+ 		goto end;
  
- 	hisi_sfc_v3xx_disable_int(host);
+ 	copied = err;
+-	if (len <= copied)
++	if (len <= copied || (copied && control != TLS_RECORD_TYPE_DATA))
+ 		goto end;
  
+ 	target = sock_rcvlowat(sk, flags & MSG_WAITALL, len);
 -- 
 2.43.0
 
