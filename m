@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-24164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D2F08692F6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:40:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 313998693F4
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33FE71F2D7EE
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:40:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E047029311C
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5A4F13DBBF;
-	Tue, 27 Feb 2024 13:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9815143C48;
+	Tue, 27 Feb 2024 13:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L6+PT4Md"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCFRp2CQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90DFF13B2B8;
-	Tue, 27 Feb 2024 13:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75E9F1420DE;
+	Tue, 27 Feb 2024 13:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041209; cv=none; b=JlX4LQieDMRMvT0XuirtBogTadeBWMK7Xe78ffgSDPY/x1gbV5dEZ7o+udJAOQMkd6lMvlP4hR3zDLfnG3jQmqnFyg6k6HHacz8/fRSAPdRFu+A7gYkLJUDE2wAW2Daw2ZZJUa1ktBA7J0GQ2KDRq3yk52JtCv8ODVkZEqYYjuQ=
+	t=1709041687; cv=none; b=HJsELgFN7UnyDmm8q4b2v8V21o/cky4rHXdYO5pMO+ODcc/6TYY/AwE2dmbI2uOggYa5xtdZWCwIvaUG/sJQhOvZ6g9O10PTjKu8jxomFG42nMN4Kaa1BNhWB6kk2y30mVmM+UgHFrlXXhSgDLbn9kEcCXMM/RrA0p6FUM+YhJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041209; c=relaxed/simple;
-	bh=MAf/yw3Qdn5tKkz2mk2dHRhx+P6zgmGPFRzO5hW5dig=;
+	s=arc-20240116; t=1709041687; c=relaxed/simple;
+	bh=wvAaclIUPMbZdkw+FdEQ/DbxI61Jd4z2gCJV3qI6sqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SDhBEujSNF9znNHfnMQl9KQbYI09Wl36om2OXNH7SZpXnV/ufzaLf4KMjcMFScPeBCZIitxdTyVAb8vxKyKewWWlc0vtoaoHjq3gHGK9RT+GXpIWj5JP0gfeEbRwD+frEYKjAnCPcRKv7gY6L+uYGJXvrjO9qK7BMjcyxlE9ENk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L6+PT4Md; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E44F5C433C7;
-	Tue, 27 Feb 2024 13:40:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VzYtupPFdEDztY6HAtwrrd1nOZ+9c8r5sT+jY09ZOpZMsRl3eZ55/WOlplBvHJ/gg7v1jGSmPMeaU7/gEMQk1h33D3bDVMjN7fFvLN8iPfaXt/nUdDCX4cRww/4rPEQiKCo/GIyVJ7TIiULiNjgYW+Uku8diABxVtAphUoU8Ijo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCFRp2CQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0121DC433C7;
+	Tue, 27 Feb 2024 13:48:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041209;
-	bh=MAf/yw3Qdn5tKkz2mk2dHRhx+P6zgmGPFRzO5hW5dig=;
+	s=korg; t=1709041687;
+	bh=wvAaclIUPMbZdkw+FdEQ/DbxI61Jd4z2gCJV3qI6sqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L6+PT4MdD5Rmw75M5NdV8dmf+svXjiW+FfYOzqveaLnTefMxblhexFGThlc625Jbv
-	 ZwE5lhaecQBa2BQkslJWzIldrhwZgLqzskpd+0J5Rb46ZLU91FeansYeb/oewqoBhS
-	 MAHs6ByxnyLY86QX1PYpPFFB3sgBA3p3yveYExvQ=
+	b=GCFRp2CQkAqr0clAq2QrQrPdd5qhP6aMr+t4e72wlpryDaMhY4C2En2onam+ZHuFp
+	 TQ48ogcZaYM0zxQhtNaGkI3398Gut4bpADYiW9Ufs2euQ9z7neHoTkxoPksexIvymE
+	 Q1WCOChaKc7m/WnKJAkqTU6Jb5JNPeftuA/QxV0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	kernel test robot <lkp@intel.com>,
-	Lennart Franzen <lennart@lfdomain.com>,
-	Alexandru Tachici <alexandru.tachici@analog.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	Nuno Sa <nuno.sa@analog.com>,
+	=?UTF-8?q?Christoph=20M=C3=BCllner?= <christoph.muellner@vrull.eu>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 260/334] net: ethernet: adi: requires PHYLIB support
+Subject: [PATCH 6.6 007/299] tools: selftests: riscv: Fix compile warnings in vector tests
 Date: Tue, 27 Feb 2024 14:21:58 +0100
-Message-ID: <20240227131639.320153289@linuxfoundation.org>
+Message-ID: <20240227131626.080301657@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,73 +62,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Christoph Müllner <christoph.muellner@vrull.eu>
 
-[ Upstream commit a9f80df4f51440303d063b55bb98720857693821 ]
+[ Upstream commit e1baf5e68ed128c1e22ba43e5190526d85de323c ]
 
-This driver uses functions that are supplied by the Kconfig symbol
-PHYLIB, so select it to ensure that they are built as needed.
+GCC prints a couple of format string warnings when compiling
+the vector tests. Let's follow the recommendation in
+Documentation/printk-formats.txt to fix these warnings.
 
-When CONFIG_ADIN1110=y and CONFIG_PHYLIB=m, there are multiple build
-(linker) errors that are resolved by this Kconfig change:
-
-   ld: drivers/net/ethernet/adi/adin1110.o: in function `adin1110_net_open':
-   drivers/net/ethernet/adi/adin1110.c:933: undefined reference to `phy_start'
-   ld: drivers/net/ethernet/adi/adin1110.o: in function `adin1110_probe_netdevs':
-   drivers/net/ethernet/adi/adin1110.c:1603: undefined reference to `get_phy_device'
-   ld: drivers/net/ethernet/adi/adin1110.c:1609: undefined reference to `phy_connect'
-   ld: drivers/net/ethernet/adi/adin1110.o: in function `adin1110_disconnect_phy':
-   drivers/net/ethernet/adi/adin1110.c:1226: undefined reference to `phy_disconnect'
-   ld: drivers/net/ethernet/adi/adin1110.o: in function `devm_mdiobus_alloc':
-   include/linux/phy.h:455: undefined reference to `devm_mdiobus_alloc_size'
-   ld: drivers/net/ethernet/adi/adin1110.o: in function `adin1110_register_mdiobus':
-   drivers/net/ethernet/adi/adin1110.c:529: undefined reference to `__devm_mdiobus_register'
-   ld: drivers/net/ethernet/adi/adin1110.o: in function `adin1110_net_stop':
-   drivers/net/ethernet/adi/adin1110.c:958: undefined reference to `phy_stop'
-   ld: drivers/net/ethernet/adi/adin1110.o: in function `adin1110_disconnect_phy':
-   drivers/net/ethernet/adi/adin1110.c:1226: undefined reference to `phy_disconnect'
-   ld: drivers/net/ethernet/adi/adin1110.o: in function `adin1110_adjust_link':
-   drivers/net/ethernet/adi/adin1110.c:1077: undefined reference to `phy_print_status'
-   ld: drivers/net/ethernet/adi/adin1110.o: in function `adin1110_ioctl':
-   drivers/net/ethernet/adi/adin1110.c:790: undefined reference to `phy_do_ioctl'
-   ld: drivers/net/ethernet/adi/adin1110.o:(.rodata+0xf60): undefined reference to `phy_ethtool_get_link_ksettings'
-   ld: drivers/net/ethernet/adi/adin1110.o:(.rodata+0xf68): undefined reference to `phy_ethtool_set_link_ksettings'
-
-Fixes: bc93e19d088b ("net: ethernet: adi: Add ADIN1110 support")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202402070626.eZsfVHG5-lkp@intel.com/
-Cc: Lennart Franzen <lennart@lfdomain.com>
-Cc: Alexandru Tachici <alexandru.tachici@analog.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Christoph Müllner <christoph.muellner@vrull.eu>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Link: https://lore.kernel.org/r/20231123185821.2272504-5-christoph.muellner@vrull.eu
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/adi/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/riscv/vector/v_initval_nolibc.c | 2 +-
+ tools/testing/selftests/riscv/vector/vstate_prctl.c     | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/adi/Kconfig b/drivers/net/ethernet/adi/Kconfig
-index da3bdd3025022..c91b4dcef4ec2 100644
---- a/drivers/net/ethernet/adi/Kconfig
-+++ b/drivers/net/ethernet/adi/Kconfig
-@@ -7,6 +7,7 @@ config NET_VENDOR_ADI
- 	bool "Analog Devices devices"
- 	default y
- 	depends on SPI
-+	select PHYLIB
- 	help
- 	  If you have a network (Ethernet) card belonging to this class, say Y.
+diff --git a/tools/testing/selftests/riscv/vector/v_initval_nolibc.c b/tools/testing/selftests/riscv/vector/v_initval_nolibc.c
+index 66764edb0d526..1dd94197da30c 100644
+--- a/tools/testing/selftests/riscv/vector/v_initval_nolibc.c
++++ b/tools/testing/selftests/riscv/vector/v_initval_nolibc.c
+@@ -27,7 +27,7 @@ int main(void)
+ 
+ 	datap = malloc(MAX_VSIZE);
+ 	if (!datap) {
+-		ksft_test_result_fail("fail to allocate memory for size = %lu\n", MAX_VSIZE);
++		ksft_test_result_fail("fail to allocate memory for size = %d\n", MAX_VSIZE);
+ 		exit(-1);
+ 	}
+ 
+diff --git a/tools/testing/selftests/riscv/vector/vstate_prctl.c b/tools/testing/selftests/riscv/vector/vstate_prctl.c
+index b348b475be570..8ad94e08ff4d0 100644
+--- a/tools/testing/selftests/riscv/vector/vstate_prctl.c
++++ b/tools/testing/selftests/riscv/vector/vstate_prctl.c
+@@ -68,7 +68,7 @@ int test_and_compare_child(long provided, long expected, int inherit)
+ 	}
+ 	rc = launch_test(inherit);
+ 	if (rc != expected) {
+-		ksft_test_result_fail("Test failed, check %d != %d\n", rc,
++		ksft_test_result_fail("Test failed, check %d != %ld\n", rc,
+ 				      expected);
+ 		return -2;
+ 	}
+@@ -87,7 +87,7 @@ int main(void)
+ 	pair.key = RISCV_HWPROBE_KEY_IMA_EXT_0;
+ 	rc = riscv_hwprobe(&pair, 1, 0, NULL, 0);
+ 	if (rc < 0) {
+-		ksft_test_result_fail("hwprobe() failed with %d\n", rc);
++		ksft_test_result_fail("hwprobe() failed with %ld\n", rc);
+ 		return -1;
+ 	}
  
 -- 
 2.43.0
