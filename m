@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-24330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B33B28693F6
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:50:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C57218692FB
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:40:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B28F41C213BD
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:50:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65DFD1F2D7E0
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:40:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97957143C4B;
-	Tue, 27 Feb 2024 13:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F61413B78A;
+	Tue, 27 Feb 2024 13:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y3gV+Veo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9kJEDHU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491F954BD4;
-	Tue, 27 Feb 2024 13:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D15013AA50;
+	Tue, 27 Feb 2024 13:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041693; cv=none; b=I3B2wx2jCDvoNw6GBNeskK3EOZm2Ltjncf895rT9x0NVtwXrNOOwjFHkAslJgXvvmZBt2LF54DbAMRFG96tW2RfUEZsRe2oAhJkROJy8ihN3HTMf7YFBGU6a/zlGZeTQOMZWB7VNmw4P3zOjGD1kokCPNyRkWFPD7AhGyxq3eIk=
+	t=1709041218; cv=none; b=of8HNA75BMum67qvfdvJdhq6hzCxsZ4DS5KIEji0/ABBzfxUGToUr2c082RQD0baFnNeNa5ay2J6oByO5PxOeWXnG5I6vL1W0LQwJYcsz02Wcvgu2UTvuIQOUFzXpL3ShdRJZprnY5XiZA6f9V4j/6YZs17ygfv7Rcdw4fng/nU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041693; c=relaxed/simple;
-	bh=bvGcDNjITsuVu8s3/W0VFuuNGb5az1u8R2DQCD3LzS0=;
+	s=arc-20240116; t=1709041218; c=relaxed/simple;
+	bh=gr7RyQkUOgyUiRmeZO5jwGc2dRzZsy2J3T0qOnrE644=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fs6KlnK30QPLKxZDpAsZEJIpcxzmW6oav5dXWJtkj0ZlKtrbVk0LsWSc0BF/SOdV6aSTaRv9HLzGEO3drDQRR5O11bw+HmgxeyIIflVQEzNZs8e3RyVRB7nazJt2Rld7BNB1MvdphyIbbpGeah5MzZVyiicHy3/ouyAVq2AjJ7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y3gV+Veo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 626DAC433C7;
-	Tue, 27 Feb 2024 13:48:12 +0000 (UTC)
+	 MIME-Version; b=sUcmvz5n3By1hTBGo2qBqLWJivZMMFKcB+XvXRnoNE9Q8sexASC1OcSpyk6XIwkS9I5AOsT3zsUyyTh1Ul+DsvDU1CZqd6xDtzTgeEKsjBxk1mN/RbiWgG1+/tZ3pIDa58bU8L+l+n5lk5HwqSF/kD8+gquLnnrlCuGMgIE+nYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9kJEDHU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B89AC433F1;
+	Tue, 27 Feb 2024 13:40:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041692;
-	bh=bvGcDNjITsuVu8s3/W0VFuuNGb5az1u8R2DQCD3LzS0=;
+	s=korg; t=1709041217;
+	bh=gr7RyQkUOgyUiRmeZO5jwGc2dRzZsy2J3T0qOnrE644=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y3gV+Veo/VP9H6IpGqOxqfkVddoHCq5NCVtJiGZ5xAORClPVBHMxQpjrV/+13ouj1
-	 /0RJhN7+rN476fah05RO10LpSPZkgBgcydcVrtlqU5EwmKXkH4QPlDMueRyP3jMo5c
-	 ysAynWAvbV1pUIkIfcgDOXv/ObXnNm+GB50tfiaA=
+	b=N9kJEDHUb2pwnVH2IG9lSH3ZEARvu1aSoeu5v3LJi38hxXVFI0pusrZRyv7OGIZ+H
+	 Fzir4TmWbyYlfV61jVyVDdw6GgmiW7iPctINY8g3WftsheFqHK0fZqXpKp9Rl5Nrv9
+	 WaPZFGiQIQFg1ruHDyikVv0mYQzFW3UNpuV1ezCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Bogdanov <d.bogdanov@yadro.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Davide Caratti <dcaratti@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 009/299] scsi: target: core: Add TMF to tmr_list handling
+Subject: [PATCH 6.7 262/334] net/sched: act_mirred: use the backlog for mirred ingress
 Date: Tue, 27 Feb 2024 14:22:00 +0100
-Message-ID: <20240227131626.141975022@linuxfoundation.org>
+Message-ID: <20240227131639.404290354@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+References: <20240227131630.636392135@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +65,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Bogdanov <d.bogdanov@yadro.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 83ab68168a3d990d5ff39ab030ad5754cbbccb25 ]
+[ Upstream commit 52f671db18823089a02f07efc04efdb2272ddc17 ]
 
-An abort that is responded to by iSCSI itself is added to tmr_list but does
-not go to target core. A LUN_RESET that goes through tmr_list takes a
-refcounter on the abort and waits for completion. However, the abort will
-be never complete because it was not started in target core.
+The test Davide added in commit ca22da2fbd69 ("act_mirred: use the backlog
+for nested calls to mirred ingress") hangs our testing VMs every 10 or so
+runs, with the familiar tcp_v4_rcv -> tcp_v4_rcv deadlock reported by
+lockdep.
 
- Unable to locate ITT: 0x05000000 on CID: 0
- Unable to locate RefTaskTag: 0x05000000 on CID: 0.
- wait_for_tasks: Stopping tmf LUN_RESET with tag 0x0 ref_task_tag 0x0 i_state 34 t_state ISTATE_PROCESSING refcnt 2 transport_state active,stop,fabric_stop
- wait for tasks: tmf LUN_RESET with tag 0x0 ref_task_tag 0x0 i_state 34 t_state ISTATE_PROCESSING refcnt 2 transport_state active,stop,fabric_stop
-...
- INFO: task kworker/0:2:49 blocked for more than 491 seconds.
- task:kworker/0:2     state:D stack:    0 pid:   49 ppid:     2 flags:0x00000800
- Workqueue: events target_tmr_work [target_core_mod]
-Call Trace:
- __switch_to+0x2c4/0x470
- _schedule+0x314/0x1730
- schedule+0x64/0x130
- schedule_timeout+0x168/0x430
- wait_for_completion+0x140/0x270
- target_put_cmd_and_wait+0x64/0xb0 [target_core_mod]
- core_tmr_lun_reset+0x30/0xa0 [target_core_mod]
- target_tmr_work+0xc8/0x1b0 [target_core_mod]
- process_one_work+0x2d4/0x5d0
- worker_thread+0x78/0x6c0
+The problem as previously described by Davide (see Link) is that
+if we reverse flow of traffic with the redirect (egress -> ingress)
+we may reach the same socket which generated the packet. And we may
+still be holding its socket lock. The common solution to such deadlocks
+is to put the packet in the Rx backlog, rather than run the Rx path
+inline. Do that for all egress -> ingress reversals, not just once
+we started to nest mirred calls.
 
-To fix this, only add abort to tmr_list if it will be handled by target
-core.
+In the past there was a concern that the backlog indirection will
+lead to loss of error reporting / less accurate stats. But the current
+workaround does not seem to address the issue.
 
-Signed-off-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
-Link: https://lore.kernel.org/r/20240111125941.8688-1-d.bogdanov@yadro.com
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 53592b364001 ("net/sched: act_mirred: Implement ingress actions")
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Suggested-by: Davide Caratti <dcaratti@redhat.com>
+Link: https://lore.kernel.org/netdev/33dc43f587ec1388ba456b4915c75f02a8aae226.1663945716.git.dcaratti@redhat.com/
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/target_core_device.c    | 5 -----
- drivers/target/target_core_transport.c | 4 ++++
- 2 files changed, 4 insertions(+), 5 deletions(-)
+ net/sched/act_mirred.c                             | 14 +++++---------
+ .../testing/selftests/net/forwarding/tc_actions.sh |  3 ---
+ 2 files changed, 5 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/target/target_core_device.c b/drivers/target/target_core_device.c
-index b6523d4b9259e..86590a7e29f6a 100644
---- a/drivers/target/target_core_device.c
-+++ b/drivers/target/target_core_device.c
-@@ -147,7 +147,6 @@ int transport_lookup_tmr_lun(struct se_cmd *se_cmd)
- 	struct se_session *se_sess = se_cmd->se_sess;
- 	struct se_node_acl *nacl = se_sess->se_node_acl;
- 	struct se_tmr_req *se_tmr = se_cmd->se_tmr_req;
--	unsigned long flags;
- 
- 	rcu_read_lock();
- 	deve = target_nacl_find_deve(nacl, se_cmd->orig_fe_lun);
-@@ -178,10 +177,6 @@ int transport_lookup_tmr_lun(struct se_cmd *se_cmd)
- 	se_cmd->se_dev = rcu_dereference_raw(se_lun->lun_se_dev);
- 	se_tmr->tmr_dev = rcu_dereference_raw(se_lun->lun_se_dev);
- 
--	spin_lock_irqsave(&se_tmr->tmr_dev->se_tmr_lock, flags);
--	list_add_tail(&se_tmr->tmr_list, &se_tmr->tmr_dev->dev_tmr_list);
--	spin_unlock_irqrestore(&se_tmr->tmr_dev->se_tmr_lock, flags);
--
- 	return 0;
+diff --git a/net/sched/act_mirred.c b/net/sched/act_mirred.c
+index 6f2544c1e3961..bab090bb5e80a 100644
+--- a/net/sched/act_mirred.c
++++ b/net/sched/act_mirred.c
+@@ -206,18 +206,14 @@ static int tcf_mirred_init(struct net *net, struct nlattr *nla,
+ 	return err;
  }
- EXPORT_SYMBOL(transport_lookup_tmr_lun);
-diff --git a/drivers/target/target_core_transport.c b/drivers/target/target_core_transport.c
-index 0686882bcbda3..fb93d74c5d0b2 100644
---- a/drivers/target/target_core_transport.c
-+++ b/drivers/target/target_core_transport.c
-@@ -3627,6 +3627,10 @@ int transport_generic_handle_tmr(
- 	unsigned long flags;
- 	bool aborted = false;
  
-+	spin_lock_irqsave(&cmd->se_dev->se_tmr_lock, flags);
-+	list_add_tail(&cmd->se_tmr_req->tmr_list, &cmd->se_dev->dev_tmr_list);
-+	spin_unlock_irqrestore(&cmd->se_dev->se_tmr_lock, flags);
-+
- 	spin_lock_irqsave(&cmd->t_state_lock, flags);
- 	if (cmd->transport_state & CMD_T_ABORTED) {
- 		aborted = true;
+-static bool is_mirred_nested(void)
+-{
+-	return unlikely(__this_cpu_read(mirred_nest_level) > 1);
+-}
+-
+-static int tcf_mirred_forward(bool want_ingress, struct sk_buff *skb)
++static int
++tcf_mirred_forward(bool at_ingress, bool want_ingress, struct sk_buff *skb)
+ {
+ 	int err;
+ 
+ 	if (!want_ingress)
+ 		err = tcf_dev_queue_xmit(skb, dev_queue_xmit);
+-	else if (is_mirred_nested())
++	else if (!at_ingress)
+ 		err = netif_rx(skb);
+ 	else
+ 		err = netif_receive_skb(skb);
+@@ -293,9 +289,9 @@ static int tcf_mirred_to_dev(struct sk_buff *skb, struct tcf_mirred *m,
+ 
+ 		skb_set_redirected(skb_to_send, skb_to_send->tc_at_ingress);
+ 
+-		err = tcf_mirred_forward(want_ingress, skb_to_send);
++		err = tcf_mirred_forward(at_ingress, want_ingress, skb_to_send);
+ 	} else {
+-		err = tcf_mirred_forward(want_ingress, skb_to_send);
++		err = tcf_mirred_forward(at_ingress, want_ingress, skb_to_send);
+ 	}
+ 
+ 	if (err) {
+diff --git a/tools/testing/selftests/net/forwarding/tc_actions.sh b/tools/testing/selftests/net/forwarding/tc_actions.sh
+index b0f5e55d2d0b2..5896296365022 100755
+--- a/tools/testing/selftests/net/forwarding/tc_actions.sh
++++ b/tools/testing/selftests/net/forwarding/tc_actions.sh
+@@ -235,9 +235,6 @@ mirred_egress_to_ingress_tcp_test()
+ 	check_err $? "didn't mirred redirect ICMP"
+ 	tc_check_packets "dev $h1 ingress" 102 10
+ 	check_err $? "didn't drop mirred ICMP"
+-	local overlimits=$(tc_rule_stats_get ${h1} 101 egress .overlimits)
+-	test ${overlimits} = 10
+-	check_err $? "wrong overlimits, expected 10 got ${overlimits}"
+ 
+ 	tc filter del dev $h1 egress protocol ip pref 100 handle 100 flower
+ 	tc filter del dev $h1 egress protocol ip pref 101 handle 101 flower
 -- 
 2.43.0
 
