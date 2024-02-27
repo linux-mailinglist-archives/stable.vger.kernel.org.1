@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-24742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AFB3869610
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:07:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B28F98694E5
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:57:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA3B2289294
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:07:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE27C1C24A8D
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:57:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B5C213B2B9;
-	Tue, 27 Feb 2024 14:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9226E1420D0;
+	Tue, 27 Feb 2024 13:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qm3euMCE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cp8d7F3I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28CF013A26F;
-	Tue, 27 Feb 2024 14:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5248C1420B3;
+	Tue, 27 Feb 2024 13:57:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709042865; cv=none; b=NANDWwV5fid+r1zAEzEFfOG0bh2N+NXSpPo+3q2MfXBtb3S9dNhLNokPLfFrCH55AbPevmbM3YY0AjshoWZgk85ILsUr73Avg3OrXNUFJAziS3QbHeTMrJLGMbacT6orkSsbeptbyd0pHFlArPRTa5g03m3mFAq46b9zgpti2Ow=
+	t=1709042231; cv=none; b=NRHMkibZhjzjW7X5WQHGGHs+bRe5+TdYa76mSc6ymyixE29rXSA5c38Sr0fJSFq7PJ1RRp0Azi+onaM+OZXff4/iBzSo5Qk5lP4W0wTHg8VgzXE7EJXGsgJ0LQIdCMKH6kpfcHh3S4zrCi8MvbFKsTaCipjWP6aQmUX+vIOeM0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709042865; c=relaxed/simple;
-	bh=k5YHenF/TkGz+yuyYqMCVvRCC0BlB/qaFyLmNmour0M=;
+	s=arc-20240116; t=1709042231; c=relaxed/simple;
+	bh=DWDViA5tC9cYEJrC/aTYPxXg3sQgC/zzrd1hnhblR0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZA+gtROvlqOe5pjFcIm2rxuGuXO4w7JRv8SRRbypjjpjIfxltM9psDLZ4buHfKIDqyE5Gs5VnHJxk+AIeDibkVl7q6NBkzArNadFngOcRKXFf4rs2yeAdCJAGUUIDpQ48xkursRKaBjFkKTih1fKR9jfR3HWdF9LBV/094PzxT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qm3euMCE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC786C433F1;
-	Tue, 27 Feb 2024 14:07:44 +0000 (UTC)
+	 MIME-Version; b=TV2S/DVDRAQg8k1fMX4hPaaUchtHGnWWR5FrKdV2bWNkmd/G8waOFaW4uCP1BNm7gZ+Ejnwg0tiYoaHSVVlRbUuILnoUbYCNjSWh5tul9EsPr0gNnvK2byz3wGHsckMnBZwnTvajgU7UhqokNEWDUMNpwy5YuMdAvQCN/WAKxOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cp8d7F3I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D317DC43394;
+	Tue, 27 Feb 2024 13:57:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709042865;
-	bh=k5YHenF/TkGz+yuyYqMCVvRCC0BlB/qaFyLmNmour0M=;
+	s=korg; t=1709042231;
+	bh=DWDViA5tC9cYEJrC/aTYPxXg3sQgC/zzrd1hnhblR0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qm3euMCEcfAbxr1BukEQf92UZ4/GB7dHOV85EFW9Q3ts2VgbD+x+KHiB3z/U2m/YU
-	 ADbNKTX+5e9DJC/lBn3OyuXWyYg+EdG/D7rW9/kJF1jyvcKBa/eZxzEM0Kc0aoWvpf
-	 2SI89e/5I/iLey8DsebtXQTDZo6PtlR2eZaDF28o=
+	b=cp8d7F3I31f9eTQem0lPxX/3CNLOtsouYrsXGOeMBJ/BBlga97VEgodzuSKlNdi0d
+	 +GfUqecpUygwaMZIlHQFafxRQlDOCWjMY/jfpHmoyD8L71ZoFuHaR6qfelT7Oz+657
+	 3tiJdRJpr3aJOjE7An2bxRc7lXLUl3neKOJGX+yI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Abel Vesa <abel.vesa@nxp.com>,
+	Joao Martins <joao.m.martins@oracle.com>,
+	Avihai Horon <avihaih@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 148/245] clk: imx8mp: add clkout1/2 support
+Subject: [PATCH 6.6 225/299] iommufd/iova_bitmap: Consider page offset for the pages to be pinned
 Date: Tue, 27 Feb 2024 14:25:36 +0100
-Message-ID: <20240227131620.024285823@linuxfoundation.org>
+Message-ID: <20240227131632.999235638@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
-References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas Stach <l.stach@pengutronix.de>
+From: Joao Martins <joao.m.martins@oracle.com>
 
-[ Upstream commit 43896f56b59eeaf08687fa976257ae7083d01b41 ]
+[ Upstream commit 4bbcbc6ea2fa379632a24c14cfb47aa603816ac6 ]
 
-clkout1 and clkout2 allow to supply clocks from the SoC to the board,
-which is used by some board designs to provide reference clocks.
+For small bitmaps that aren't PAGE_SIZE aligned *and* that are less than
+512 pages in bitmap length, use an extra page to be able to cover the
+entire range e.g. [1M..3G] which would be iterated more efficiently in a
+single iteration, rather than two.
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Reviewed-by: Abel Vesa <abel.vesa@nxp.com>
-Link: https://lore.kernel.org/r/20220427162131.3127303-1-l.stach@pengutronix.de
-Signed-off-by: Abel Vesa <abel.vesa@nxp.com>
-Stable-dep-of: 5c1f7f109094 ("dt-bindings: clocks: imx8mp: Add ID for usb suspend clock")
+Fixes: b058ea3ab5af ("vfio/iova_bitmap: refactor iova_bitmap_set() to better handle page boundaries")
+Link: https://lore.kernel.org/r/20240202133415.23819-10-joao.m.martins@oracle.com
+Signed-off-by: Joao Martins <joao.m.martins@oracle.com>
+Tested-by: Avihai Horon <avihaih@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx8mp.c             | 14 ++++++++++++++
- include/dt-bindings/clock/imx8mp-clock.h |  9 +++++++--
- 2 files changed, 21 insertions(+), 2 deletions(-)
+ drivers/vfio/iova_bitmap.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx8mp.c
-index b1c83f9809123..cdeacdc143b5c 100644
---- a/drivers/clk/imx/clk-imx8mp.c
-+++ b/drivers/clk/imx/clk-imx8mp.c
-@@ -396,6 +396,11 @@ static const char * const imx8mp_sai7_sels[] = {"osc_24m", "audio_pll1_out", "au
+diff --git a/drivers/vfio/iova_bitmap.c b/drivers/vfio/iova_bitmap.c
+index 26ad0912cfea4..7af5b204990bb 100644
+--- a/drivers/vfio/iova_bitmap.c
++++ b/drivers/vfio/iova_bitmap.c
+@@ -175,18 +175,19 @@ static int iova_bitmap_get(struct iova_bitmap *bitmap)
+ 			       bitmap->mapped_base_index) *
+ 			       sizeof(*bitmap->bitmap), PAGE_SIZE);
  
- static const char * const imx8mp_dram_core_sels[] = {"dram_pll_out", "dram_alt_root", };
- 
-+static const char * const imx8mp_clkout_sels[] = {"audio_pll1_out", "audio_pll2_out", "video_pll1_out",
-+						  "dummy", "dummy", "gpu_pll_out", "vpu_pll_out",
-+						  "arm_pll_out", "sys_pll1", "sys_pll2", "sys_pll3",
-+						  "dummy", "dummy", "osc_24m", "dummy", "osc_32k"};
-+
- static struct clk_hw **hws;
- static struct clk_hw_onecell_data *clk_hw_data;
- 
-@@ -514,6 +519,15 @@ static int imx8mp_clocks_probe(struct platform_device *pdev)
- 	hws[IMX8MP_SYS_PLL2_500M] = imx_clk_hw_fixed_factor("sys_pll2_500m", "sys_pll2_500m_cg", 1, 2);
- 	hws[IMX8MP_SYS_PLL2_1000M] = imx_clk_hw_fixed_factor("sys_pll2_1000m", "sys_pll2_out", 1, 1);
- 
-+	hws[IMX8MP_CLK_CLKOUT1_SEL] = imx_clk_hw_mux2("clkout1_sel", anatop_base + 0x128, 4, 4,
-+						      imx8mp_clkout_sels, ARRAY_SIZE(imx8mp_clkout_sels));
-+	hws[IMX8MP_CLK_CLKOUT1_DIV] = imx_clk_hw_divider("clkout1_div", "clkout1_sel", anatop_base + 0x128, 0, 4);
-+	hws[IMX8MP_CLK_CLKOUT1] = imx_clk_hw_gate("clkout1", "clkout1_div", anatop_base + 0x128, 8);
-+	hws[IMX8MP_CLK_CLKOUT2_SEL] = imx_clk_hw_mux2("clkout2_sel", anatop_base + 0x128, 20, 4,
-+						      imx8mp_clkout_sels, ARRAY_SIZE(imx8mp_clkout_sels));
-+	hws[IMX8MP_CLK_CLKOUT2_DIV] = imx_clk_hw_divider("clkout2_div", "clkout2_sel", anatop_base + 0x128, 16, 4);
-+	hws[IMX8MP_CLK_CLKOUT2] = imx_clk_hw_gate("clkout2", "clkout2_div", anatop_base + 0x128, 24);
-+
- 	hws[IMX8MP_CLK_A53_DIV] = imx8m_clk_hw_composite_core("arm_a53_div", imx8mp_a53_sels, ccm_base + 0x8000);
- 	hws[IMX8MP_CLK_A53_SRC] = hws[IMX8MP_CLK_A53_DIV];
- 	hws[IMX8MP_CLK_A53_CG] = hws[IMX8MP_CLK_A53_DIV];
-diff --git a/include/dt-bindings/clock/imx8mp-clock.h b/include/dt-bindings/clock/imx8mp-clock.h
-index 4fff3e57f460b..a02fd723168cc 100644
---- a/include/dt-bindings/clock/imx8mp-clock.h
-+++ b/include/dt-bindings/clock/imx8mp-clock.h
-@@ -318,10 +318,15 @@
- #define IMX8MP_CLK_AUDIO_AXI			310
- #define IMX8MP_CLK_HSIO_AXI			311
- #define IMX8MP_CLK_MEDIA_ISP			312
+-	/*
+-	 * We always cap at max number of 'struct page' a base page can fit.
+-	 * This is, for example, on x86 means 2M of bitmap data max.
+-	 */
+-	npages = min(npages,  PAGE_SIZE / sizeof(struct page *));
 -
- #define IMX8MP_CLK_MEDIA_DISP2_PIX		313
-+#define IMX8MP_CLK_CLKOUT1_SEL			314
-+#define IMX8MP_CLK_CLKOUT1_DIV			315
-+#define IMX8MP_CLK_CLKOUT1			316
-+#define IMX8MP_CLK_CLKOUT2_SEL			317
-+#define IMX8MP_CLK_CLKOUT2_DIV			318
-+#define IMX8MP_CLK_CLKOUT2			319
+ 	/*
+ 	 * Bitmap address to be pinned is calculated via pointer arithmetic
+ 	 * with bitmap u64 word index.
+ 	 */
+ 	addr = bitmap->bitmap + bitmap->mapped_base_index;
  
--#define IMX8MP_CLK_END				314
-+#define IMX8MP_CLK_END				320
- 
- #define IMX8MP_CLK_AUDIOMIX_SAI1_IPG		0
- #define IMX8MP_CLK_AUDIOMIX_SAI1_MCLK1		1
++	/*
++	 * We always cap at max number of 'struct page' a base page can fit.
++	 * This is, for example, on x86 means 2M of bitmap data max.
++	 */
++	npages = min(npages + !!offset_in_page(addr),
++		     PAGE_SIZE / sizeof(struct page *));
++
+ 	ret = pin_user_pages_fast((unsigned long)addr, npages,
+ 				  FOLL_WRITE, mapped->pages);
+ 	if (ret <= 0)
 -- 
 2.43.0
 
