@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-24869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E6A48696CE
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:15:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9E018695DB
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 15:06:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D784B275EE
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:14:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 279F71C23594
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:06:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2C8A1419B4;
-	Tue, 27 Feb 2024 14:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C119143C75;
+	Tue, 27 Feb 2024 14:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d22Fp733"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cs0dGn6w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1118145341;
-	Tue, 27 Feb 2024 14:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFB413EFF4;
+	Tue, 27 Feb 2024 14:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709043218; cv=none; b=as62lcKCL+hT3ASHTP+cYdQQtyST+Jfo6AYgvPSOj49BCnlNaftDf190JWoVOxYyJwtkOsTIRADPOUSshcfvEGSrhxfR/a6CIpbHDwiz6iP/hPa8IzeQWXTQQl/jjINKLsE1Kl2Ke2RsQCQ7C18RrqEhVZM0BB2iT0Wn+kbNe+I=
+	t=1709042735; cv=none; b=hEEXFYLfCZVdYgnb3FU5W3xViG9G/Eyz4Mh3jcubPm8vHrg6dzzr8+kqR8GGiih156cC38NwAGfjeVRwcC70fSVKKD3035W+N08XF5PRZYzbDAC0SDxGd9hEEYH5QpfOT1pUMxXJATLVieRUdntx814wjzi4hFLUMOZUVEtBd4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709043218; c=relaxed/simple;
-	bh=U+aRSMF8r1eJ5QXKppsi4f0P6HK93Lo+6lVCUoOWfcg=;
+	s=arc-20240116; t=1709042735; c=relaxed/simple;
+	bh=Qp36fLL6cD0uPjQATxA20II6tHrWI4S21U9d/j81oOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k91/JNLEC3qO0pBlwRCO1jZ4QEiUXvyQCwPSIew4cs3qid9tTQdbFNrmZyngBs7NzVwxgCkr+NnoZ+fProX+460CYIT7LWBEP7ECtqx9GpGOhAdD/IKZKImxaNkJTRLGvJxJeIbikQkw7QTIrulUvr3qu0lR88MRWNLg02SxpI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d22Fp733; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D361C433C7;
-	Tue, 27 Feb 2024 14:13:38 +0000 (UTC)
+	 MIME-Version; b=EXKGWYIu9s5nlk38dEmZVxkyYv4zOq1sttjTTuzKQkWvWuUcEqgu5AlV1pJM1XB/HsS67TdK7lBgouZ+O2Ws3JQ93GAtS8X2ZGwqL4e/xNnPv9tJxpe2C/tkfUwg5pTSUofeb9DRH+kSS9dxpUNWPH41O4fj6AFw/yTgS2Ls9sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cs0dGn6w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ABFEC433C7;
+	Tue, 27 Feb 2024 14:05:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709043218;
-	bh=U+aRSMF8r1eJ5QXKppsi4f0P6HK93Lo+6lVCUoOWfcg=;
+	s=korg; t=1709042734;
+	bh=Qp36fLL6cD0uPjQATxA20II6tHrWI4S21U9d/j81oOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d22Fp733rYzYUgJzHoTxNvYY5+txXPwa/mf3xOxMIgJO7H+IrsmztZY5G3rpfLgtY
-	 +ejoEKKZeQUKQflKXDjxbRmoU3FSj5K1t3Sc5H9jJbo76CRZmMslc2FcufX1/MKetA
-	 OCyd3QNPMtEusBu1d22fRtqTJkubzRcZXYKJKBhk=
+	b=Cs0dGn6wQKzmTDBEWtVKOLrG5++iv7cQMUoTQkJmaTtAf5A5/P56j9WW0GGoA+G60
+	 INI9TfIay/4Xjqic8NhjKkC47E6NZcXbv+oflP+AUvxHw9zzXixWtFEnJAzfyoFwYR
+	 gBZCIiT/mZgzs1uby93PpT6TSgHN7fDnIbnghOOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 028/195] ext4: avoid allocating blocks from corrupted group in ext4_mb_find_by_goal()
-Date: Tue, 27 Feb 2024 14:24:49 +0100
-Message-ID: <20240227131611.323219314@linuxfoundation.org>
+	Xu Yang <xu.yang_2@nxp.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.15 102/245] usb: roles: fix NULL pointer issue when put modules reference
+Date: Tue, 27 Feb 2024 14:24:50 +0100
+Message-ID: <20240227131618.529249007@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+References: <20240227131615.098467438@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +61,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit 832698373a25950942c04a512daa652c18a9b513 ]
+commit 1c9be13846c0b2abc2480602f8ef421360e1ad9e upstream.
 
-Places the logic for checking if the group's block bitmap is corrupt under
-the protection of the group lock to avoid allocating blocks from the group
-with a corrupted block bitmap.
+In current design, usb role class driver will get usb_role_switch parent's
+module reference after the user get usb_role_switch device and put the
+reference after the user put the usb_role_switch device. However, the
+parent device of usb_role_switch may be removed before the user put the
+usb_role_switch. If so, then, NULL pointer issue will be met when the user
+put the parent module's reference.
 
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240104142040.2835097-8-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This will save the module pointer in structure of usb_role_switch. Then,
+we don't need to find module by iterating long relations.
+
+Fixes: 5c54fcac9a9d ("usb: roles: Take care of driver module reference counting")
+cc: stable@vger.kernel.org
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240129093739.2371530-1-xu.yang_2@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/usb/roles/class.c |   17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 744472c0b6fa5..6a3e27771df73 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -2215,12 +2215,10 @@ int ext4_mb_find_by_goal(struct ext4_allocation_context *ac,
- 	if (err)
- 		return err;
+--- a/drivers/usb/roles/class.c
++++ b/drivers/usb/roles/class.c
+@@ -19,6 +19,7 @@ static struct class *role_class;
+ struct usb_role_switch {
+ 	struct device dev;
+ 	struct mutex lock; /* device lock*/
++	struct module *module; /* the module this device depends on */
+ 	enum usb_role role;
  
--	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info))) {
--		ext4_mb_unload_buddy(e4b);
--		return 0;
--	}
--
- 	ext4_lock_group(ac->ac_sb, group);
-+	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)))
-+		goto out;
-+
- 	max = mb_find_extent(e4b, ac->ac_g_ex.fe_start,
- 			     ac->ac_g_ex.fe_len, &ex);
- 	ex.fe_logical = 0xDEADFA11; /* debug value */
-@@ -2253,6 +2251,7 @@ int ext4_mb_find_by_goal(struct ext4_allocation_context *ac,
- 		ac->ac_b_ex = ex;
- 		ext4_mb_use_best_found(ac, e4b);
+ 	/* From descriptor */
+@@ -133,7 +134,7 @@ struct usb_role_switch *usb_role_switch_
+ 						  usb_role_switch_match);
+ 
+ 	if (!IS_ERR_OR_NULL(sw))
+-		WARN_ON(!try_module_get(sw->dev.parent->driver->owner));
++		WARN_ON(!try_module_get(sw->module));
+ 
+ 	return sw;
+ }
+@@ -155,7 +156,7 @@ struct usb_role_switch *fwnode_usb_role_
+ 		sw = fwnode_connection_find_match(fwnode, "usb-role-switch",
+ 						  NULL, usb_role_switch_match);
+ 	if (!IS_ERR_OR_NULL(sw))
+-		WARN_ON(!try_module_get(sw->dev.parent->driver->owner));
++		WARN_ON(!try_module_get(sw->module));
+ 
+ 	return sw;
+ }
+@@ -170,7 +171,7 @@ EXPORT_SYMBOL_GPL(fwnode_usb_role_switch
+ void usb_role_switch_put(struct usb_role_switch *sw)
+ {
+ 	if (!IS_ERR_OR_NULL(sw)) {
+-		module_put(sw->dev.parent->driver->owner);
++		module_put(sw->module);
+ 		put_device(&sw->dev);
  	}
-+out:
- 	ext4_unlock_group(ac->ac_sb, group);
- 	ext4_mb_unload_buddy(e4b);
+ }
+@@ -187,15 +188,18 @@ struct usb_role_switch *
+ usb_role_switch_find_by_fwnode(const struct fwnode_handle *fwnode)
+ {
+ 	struct device *dev;
++	struct usb_role_switch *sw = NULL;
  
--- 
-2.43.0
-
+ 	if (!fwnode)
+ 		return NULL;
+ 
+ 	dev = class_find_device_by_fwnode(role_class, fwnode);
+-	if (dev)
+-		WARN_ON(!try_module_get(dev->parent->driver->owner));
++	if (dev) {
++		sw = to_role_switch(dev);
++		WARN_ON(!try_module_get(sw->module));
++	}
+ 
+-	return dev ? to_role_switch(dev) : NULL;
++	return sw;
+ }
+ EXPORT_SYMBOL_GPL(usb_role_switch_find_by_fwnode);
+ 
+@@ -337,6 +341,7 @@ usb_role_switch_register(struct device *
+ 	sw->set = desc->set;
+ 	sw->get = desc->get;
+ 
++	sw->module = parent->driver->owner;
+ 	sw->dev.parent = parent;
+ 	sw->dev.fwnode = desc->fwnode;
+ 	sw->dev.class = role_class;
 
 
 
