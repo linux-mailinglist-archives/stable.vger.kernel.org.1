@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-24296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-24564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA8678694C1
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:56:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0AC486952A
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 14:59:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1BB5BB31781
-	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:48:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 001281C246EA
+	for <lists+stable@lfdr.de>; Tue, 27 Feb 2024 13:59:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CE01145B19;
-	Tue, 27 Feb 2024 13:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3444613B7A0;
+	Tue, 27 Feb 2024 13:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ugPh0+VZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sHpH3AIg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498E8145B16;
-	Tue, 27 Feb 2024 13:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75FD13AA50;
+	Tue, 27 Feb 2024 13:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709041594; cv=none; b=I/vZMV++KEneB+tblxKfvCHdePhbCgKZoAOsuO61JMCEHYXpOXx8YHadJDjE9e3O43T7xHh76FF6L/llVTyrT7lCsfr1R4IvBXAbugFzSVYfrpSGJoVmGkIRt5FlJy+FvRIlmDhZ1T5b9S+yzNUv5bidmAp7nf5HaPVWZXz2RTs=
+	t=1709042369; cv=none; b=kH4cupjWwFyLrO8ZSpF8mN4ia+AyNXGVF7uU+MiKZ7v6DGTE3+vk00pwdOm7KkPAnvZ1Dfrzq2A63cuJz0K3O+rG04kFIwqmTz1l8s2lpseNZgkpIz+hMyr0Jqs8cp806/C9bkCKRuqi15fdm6oG3kPoPc4yc0NCs/M7Bjr5FHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709041594; c=relaxed/simple;
-	bh=HMLYxvFstwsiaHCnlPCIJcYpKJW46H54BNaYSOlpDtg=;
+	s=arc-20240116; t=1709042369; c=relaxed/simple;
+	bh=CPW019nt9ho2LkIKO8U+mFT7rUfuZDsv0z3Cesby+Kw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JGc1giPJifCerpgQqxremXIEbOX7dJFsEzQqV6gYgPRBK/ykDyfxJJTgJyRFVWIRTgEMrP6tYcWCpsa86X7KvGQLYllhBvTdBPMcymyWtdwzbvR/Ebqcrdb7b7opJwLRjlMVnupPND42DX2roR0j5AIntWYDT+NjU5Jq75NaRsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ugPh0+VZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F54C43394;
-	Tue, 27 Feb 2024 13:46:33 +0000 (UTC)
+	 MIME-Version; b=FSUH+CYWZNPwcjfOSn2e1FoxEKKHg7QxeBQoMdKJoEy+oa7FJzgzKTT2y9Z+cbcPlq753M3kx39gyhrid/sVQjMOS5VYdITAXeJz3ikHc+IyqMLL2LQi4WycSePk16Um6PBpCowQsi/J5uUzlhhz7a2w/C21aoUUA1JSnKBE2Q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sHpH3AIg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76002C433C7;
+	Tue, 27 Feb 2024 13:59:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709041594;
-	bh=HMLYxvFstwsiaHCnlPCIJcYpKJW46H54BNaYSOlpDtg=;
+	s=korg; t=1709042368;
+	bh=CPW019nt9ho2LkIKO8U+mFT7rUfuZDsv0z3Cesby+Kw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ugPh0+VZ23An11mcz7Ha1Q7iZPJ1hDwmyFoZ6PKdT+ExlyplBZYXcInyZ0xGpanXQ
-	 y/JRFOXBUD+sMoN3OkOSnc695pidLaUxG+22cOOP9RhVfGSFQgTNLDuecW4Gx4On1I
-	 HEOuI4eJmxq1wLG99W5hNH/5CyjQ4SpFvEpSSXlw=
+	b=sHpH3AIgOsPxEcqT503P8qezGZnTaCwzDAz7WE1NZWox2+LY8pRuM6KTu64Mq73sG
+	 tPQuw8P96z+0s3I9avXKMS+1UJ7Y6yKWQ2RiVkvYQrtDd9Ee+Y6dWQ0qwyBkxu6dSm
+	 cV/Fl43ip3NF9kMkblzdBstjXua3d4l7pJIQfT78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 4.19 34/52] usb: roles: dont get/set_role() when usb_role_switch is unregistered
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 270/299] tls: dont skip over different type records from the rx_list
 Date: Tue, 27 Feb 2024 14:26:21 +0100
-Message-ID: <20240227131549.652999750@linuxfoundation.org>
+Message-ID: <20240227131634.370440987@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240227131548.514622258@linuxfoundation.org>
-References: <20240227131548.514622258@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+References: <20240227131625.847743063@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +62,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-commit b787a3e781759026a6212736ef8e52cf83d1821a upstream.
+[ Upstream commit ec823bf3a479d42c589dc0f28ef4951c49cd2d2a ]
 
-There is a possibility that usb_role_switch device is unregistered before
-the user put usb_role_switch. In this case, the user may still want to
-get/set_role() since the user can't sense the changes of usb_role_switch.
+If we queue 3 records:
+ - record 1, type DATA
+ - record 2, some other type
+ - record 3, type DATA
+and do a recv(PEEK), the rx_list will contain the first two records.
 
-This will add a flag to show if usb_role_switch is already registered and
-avoid unwanted behaviors.
+The next large recv will walk through the rx_list and copy data from
+record 1, then stop because record 2 is a different type. Since we
+haven't filled up our buffer, we will process the next available
+record. It's also DATA, so we can merge it with the current read.
 
-Fixes: fde0aa6c175a ("usb: common: Small class for USB role switches")
-cc: stable@vger.kernel.org
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240129093739.2371530-2-xu.yang_2@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+We shouldn't do that, since there was a record in between that we
+ignored.
+
+Add a flag to let process_rx_list inform tls_sw_recvmsg that it had
+more data available.
+
+Fixes: 692d7b5d1f91 ("tls: Fix recvmsg() to be able to peek across multiple records")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/f00c0c0afa080c60f016df1471158c1caf983c34.1708007371.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/roles/class.c |   12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ net/tls/tls_sw.c | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
 
---- a/drivers/usb/roles/class.c
-+++ b/drivers/usb/roles/class.c
-@@ -19,6 +19,7 @@ struct usb_role_switch {
- 	struct device dev;
- 	struct mutex lock; /* device lock*/
- 	enum usb_role role;
-+	bool registered;
- 
- 	/* From descriptor */
- 	struct device *usb2_port;
-@@ -45,6 +46,9 @@ int usb_role_switch_set_role(struct usb_
- 	if (IS_ERR_OR_NULL(sw))
- 		return 0;
- 
-+	if (!sw->registered)
-+		return -EOPNOTSUPP;
-+
- 	mutex_lock(&sw->lock);
- 
- 	ret = sw->set(sw->dev.parent, role);
-@@ -68,7 +72,7 @@ enum usb_role usb_role_switch_get_role(s
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index a83b6119f3826..5238886e61860 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -1772,7 +1772,8 @@ static int process_rx_list(struct tls_sw_context_rx *ctx,
+ 			   u8 *control,
+ 			   size_t skip,
+ 			   size_t len,
+-			   bool is_peek)
++			   bool is_peek,
++			   bool *more)
  {
- 	enum usb_role role;
+ 	struct sk_buff *skb = skb_peek(&ctx->rx_list);
+ 	struct tls_msg *tlm;
+@@ -1785,7 +1786,7 @@ static int process_rx_list(struct tls_sw_context_rx *ctx,
  
--	if (IS_ERR_OR_NULL(sw))
-+	if (IS_ERR_OR_NULL(sw) || !sw->registered)
- 		return USB_ROLE_NONE;
+ 		err = tls_record_content_type(msg, tlm, control);
+ 		if (err <= 0)
+-			goto out;
++			goto more;
  
- 	mutex_lock(&sw->lock);
-@@ -276,6 +280,8 @@ usb_role_switch_register(struct device *
- 		return ERR_PTR(ret);
+ 		if (skip < rxm->full_len)
+ 			break;
+@@ -1803,12 +1804,12 @@ static int process_rx_list(struct tls_sw_context_rx *ctx,
+ 
+ 		err = tls_record_content_type(msg, tlm, control);
+ 		if (err <= 0)
+-			goto out;
++			goto more;
+ 
+ 		err = skb_copy_datagram_msg(skb, rxm->offset + skip,
+ 					    msg, chunk);
+ 		if (err < 0)
+-			goto out;
++			goto more;
+ 
+ 		len = len - chunk;
+ 		copied = copied + chunk;
+@@ -1844,6 +1845,10 @@ static int process_rx_list(struct tls_sw_context_rx *ctx,
+ 
+ out:
+ 	return copied ? : err;
++more:
++	if (more)
++		*more = true;
++	goto out;
+ }
+ 
+ static bool
+@@ -1947,6 +1952,7 @@ int tls_sw_recvmsg(struct sock *sk,
+ 	int target, err;
+ 	bool is_kvec = iov_iter_is_kvec(&msg->msg_iter);
+ 	bool is_peek = flags & MSG_PEEK;
++	bool rx_more = false;
+ 	bool released = true;
+ 	bool bpf_strp_enabled;
+ 	bool zc_capable;
+@@ -1966,12 +1972,12 @@ int tls_sw_recvmsg(struct sock *sk,
+ 		goto end;
+ 
+ 	/* Process pending decrypted records. It must be non-zero-copy */
+-	err = process_rx_list(ctx, msg, &control, 0, len, is_peek);
++	err = process_rx_list(ctx, msg, &control, 0, len, is_peek, &rx_more);
+ 	if (err < 0)
+ 		goto end;
+ 
+ 	copied = err;
+-	if (len <= copied || (copied && control != TLS_RECORD_TYPE_DATA))
++	if (len <= copied || (copied && control != TLS_RECORD_TYPE_DATA) || rx_more)
+ 		goto end;
+ 
+ 	target = sock_rcvlowat(sk, flags & MSG_WAITALL, len);
+@@ -2130,10 +2136,10 @@ int tls_sw_recvmsg(struct sock *sk,
+ 		/* Drain records from the rx_list & copy if required */
+ 		if (is_peek || is_kvec)
+ 			err = process_rx_list(ctx, msg, &control, copied,
+-					      decrypted, is_peek);
++					      decrypted, is_peek, NULL);
+ 		else
+ 			err = process_rx_list(ctx, msg, &control, 0,
+-					      async_copy_bytes, is_peek);
++					      async_copy_bytes, is_peek, NULL);
  	}
  
-+	sw->registered = true;
-+
- 	/* TODO: Symlinks for the host port and the device controller. */
- 
- 	return sw;
-@@ -290,8 +296,10 @@ EXPORT_SYMBOL_GPL(usb_role_switch_regist
-  */
- void usb_role_switch_unregister(struct usb_role_switch *sw)
- {
--	if (!IS_ERR_OR_NULL(sw))
-+	if (!IS_ERR_OR_NULL(sw)) {
-+		sw->registered = false;
- 		device_unregister(&sw->dev);
-+	}
- }
- EXPORT_SYMBOL_GPL(usb_role_switch_unregister);
- 
+ 	copied += decrypted;
+-- 
+2.43.0
+
 
 
 
