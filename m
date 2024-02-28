@@ -1,160 +1,158 @@
-Return-Path: <stable+bounces-25375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 048B786B1DB
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 15:33:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E23286B33C
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 16:37:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE9361F27EED
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 14:33:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F4A21F2397A
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 15:37:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D67215B116;
-	Wed, 28 Feb 2024 14:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2697E15A4BA;
+	Wed, 28 Feb 2024 15:36:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="SYKdGNXZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [203.110.167.99])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF1141C73
-	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 14:32:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.110.167.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696CF73515;
+	Wed, 28 Feb 2024 15:36:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709130783; cv=none; b=aP6qUGYnKgzTKzjCTbHJvGZK3Gc8E5plph2BUV2EllOeJbZC4uK8UWnDzy+knNQHWm7U8tQar50vHxH2VVjJr0I5egQ4iO/FQB04iZIF5lT7LTjoTLcOlWd5QiJ8tRf1MQ/3FHqh7F0El8LqrmgIXYi6Yv4e5SEdautuClM0V6A=
+	t=1709134615; cv=none; b=gezZtcPHObskQFCyTByU62cybkwltmFp83cNXQEHNyazQdpAw3un6Ayx+QA7X/y3VOv106qkX284KVL4BrK/qd2trjoEFkBcWIaPUmWklDJrypiAnSiCZmhvZ/wrB8f03Lw/H9WkT21PTyGepl3doYGyBc7+fAr+D+LEbjnK25Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709130783; c=relaxed/simple;
-	bh=wqoB8zcfxjW73Uldj3tr5z78Zp+ZJv8D2kVrXyMTshI=;
+	s=arc-20240116; t=1709134615; c=relaxed/simple;
+	bh=oppvgGkmN+5BSfIdEQzSl7am8hiJSjwTgH3zq3ioVBc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=f1acojzJx9clRqOZZbgzKUhIsvOJ7YO3B8Dr6ZZLfpbNSRYeIvBj6IHWS2jQQwnjf7p6pq591UQY7d8JYfZLlw1DvARutsPUUnlc8Okg6KBiw43dJeR8EX/Zo4+c0bBE6GQPHqhR/Htc4Y+p2SU7dnbJMMdncR/R7g9TurfUGcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=203.110.167.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
-X-ASG-Debug-ID: 1709130771-1eb14e0c7e4c120001-OJig3u
-Received: from ZXSHMBX2.zhaoxin.com (ZXSHMBX2.zhaoxin.com [10.28.252.164]) by mx2.zhaoxin.com with ESMTP id wblIV0teK9jWjlKG (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Wed, 28 Feb 2024 22:32:51 +0800 (CST)
-X-Barracuda-Envelope-From: WeitaoWang-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
-Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHMBX2.zhaoxin.com
- (10.28.252.164) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 28 Feb
- 2024 22:32:51 +0800
-Received: from [10.29.8.21] (10.29.8.21) by zxbjmbx1.zhaoxin.com
- (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Wed, 28 Feb
- 2024 22:32:50 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
-Message-ID: <07e80d55-d766-1781-ffc9-fab9ddcd33e3@zhaoxin.com>
-X-Barracuda-RBL-Trusted-Forwarder: 10.29.8.21
-Date: Thu, 29 Feb 2024 06:32:48 +0800
+	 In-Reply-To:Content-Type; b=CtyHZAmYRd9LaVYvWbFxXzlqy3sBe56AliZP1qG60LpXdcSTW2AAqjlrZ5Nt6xRxhTV+G+ds3ytqlQbJ2y41zBE0S7+Edu37oiJySQuj2RhnbMKWRZ8sO6A0IWNGZBqA7MUIERBuqj36ncNc3fvVp9mMTK1p5s1Hetpuvxp3Uac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=SYKdGNXZ; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41SDd9vi008537;
+	Wed, 28 Feb 2024 15:36:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=rzh7fFKDHPXXBiFPuiszpKYf6i6kw5PNZfcDhIT104g=; b=SY
+	KdGNXZgrPZXVr+9BRHFyUy78XbJmIkyTvZ7gXMjPeu/SFyoVJjxC1ESOY6FobeiT
+	I4Tfkug2ynU9bUZkt07rm8K75dYfX38boPkRbHJZEj9rFsNprDSd10ngubbeKCDM
+	jt7MShm1QfQk83GucwGKdxoJFWT1Kt6rB2KxO3OfUByaswDLgYFDxlC4ZmBadJND
+	jkeTOc2Cub8svfkhQqIW8hgpYZD0N7FJxBgA3e3Pe/VxXUKuF9jvY/2G8oaKtDnz
+	wccOeIdftI01zvXsImb2t/sJmJQWtR6lMnVze7g52WrWQcrwi10TpwSFTcScUX4k
+	XqX/v42Xcw08GhQQKO0w==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wj5wc8a9w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 28 Feb 2024 15:36:28 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41SFaRXo005518
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 28 Feb 2024 15:36:27 GMT
+Received: from [10.216.4.223] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 28 Feb
+ 2024 07:36:23 -0800
+Message-ID: <acdf3d44-b20e-8491-6302-bfb1b354bc62@quicinc.com>
+Date: Wed, 28 Feb 2024 21:06:19 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v2] USB:UAS:return ENODEV when submit urbs fail with
- device not attached.
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] mm/huge_memory: fix swap entry values of tail pages of
+ THP
 Content-Language: en-US
-X-ASG-Orig-Subj: Re: [PATCH v2] USB:UAS:return ENODEV when submit urbs fail with
- device not attached.
-To: Oliver Neukum <oneukum@suse.com>, <stern@rowland.harvard.edu>,
-	<gregkh@linuxfoundation.org>, <linux-usb@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
-	<usb-storage@lists.one-eyed-alien.net>
-CC: <WeitaoWang@zhaoxin.com>, <stable@vger.kernel.org>
-References: <20240228111521.3864-1-WeitaoWang-oc@zhaoxin.com>
- <e8c4e8a3-bfc3-463f-afce-b9f600b588b2@suse.com>
-From: "WeitaoWang-oc@zhaoxin.com" <WeitaoWang-oc@zhaoxin.com>
-In-Reply-To: <e8c4e8a3-bfc3-463f-afce-b9f600b588b2@suse.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: ZXSHCAS2.zhaoxin.com (10.28.252.162) To
- zxbjmbx1.zhaoxin.com (10.29.252.163)
-X-Barracuda-Connect: ZXSHMBX2.zhaoxin.com[10.28.252.164]
-X-Barracuda-Start-Time: 1709130771
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 2490
-X-Barracuda-BRTS-Status: 0
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: 1.09
-X-Barracuda-Spam-Status: No, SCORE=1.09 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=DATE_IN_FUTURE_06_12, DATE_IN_FUTURE_06_12_2
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.121446
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------------------------
-	0.01 DATE_IN_FUTURE_06_12   Date: is 6 to 12 hours after Received: date
-	3.10 DATE_IN_FUTURE_06_12_2 DATE_IN_FUTURE_06_12_2
+To: Zi Yan <ziy@nvidia.com>, David Hildenbrand <david@redhat.com>
+CC: Matthew Wilcox <willy@infradead.org>, <gregkh@linuxfoundation.org>,
+        <akpm@linux-foundation.org>, <vbabka@suse.cz>, <dhowells@redhat.com>,
+        <surenb@google.com>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>,
+        #
+ see patch description <stable@vger.kernel.org>,
+        Huang Ying
+	<ying.huang@intel.com>,
+        Naoya Horiguchi <naoya.horiguchi@linux.dev>
+References: <1707814102-22682-1-git-send-email-quic_charante@quicinc.com>
+ <a683e199-ce8a-4534-a21e-65f2528415a6@redhat.com>
+ <8620c1a0-e091-46e9-418a-db66e621b9c4@quicinc.com>
+ <845ca78f-913b-4a92-8b40-ff772a7ad333@redhat.com>
+ <bc1a5e36-1983-1a39-4d06-8062993a4ca4@quicinc.com>
+ <ZczLoOqdpMJpkO5N@casper.infradead.org>
+ <f2ad5918-7e36-4a7c-a619-c6807cfca5ec@redhat.com>
+ <30ea073d-0ccf-46e1-954d-e22f5cbf69f7@redhat.com>
+ <1ABD022A-35FC-4A6E-ADAD-36F3D745FB91@nvidia.com>
+ <42be658c-cb13-4001-aae4-8d8275a84038@redhat.com>
+ <ECEF5EF8-3328-43AD-9E0B-7AE325368CB7@nvidia.com>
+ <07A26237-B17E-4418-9A19-E86F450B9695@nvidia.com>
+From: Charan Teja Kalla <quic_charante@quicinc.com>
+In-Reply-To: <07A26237-B17E-4418-9A19-E86F450B9695@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 3DgsQ5K6CdeE7HoNgVxwNN7q32GPa0T7
+X-Proofpoint-ORIG-GUID: 3DgsQ5K6CdeE7HoNgVxwNN7q32GPa0T7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-28_07,2024-02-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1011
+ priorityscore=1501 mlxlogscore=999 mlxscore=0 phishscore=0 bulkscore=0
+ suspectscore=0 impostorscore=0 spamscore=0 malwarescore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2402120000 definitions=main-2402280121
 
-On 2024/2/28 16:00, Oliver Neukum wrote:
+Thanks David/Zi Yan,
+
+On 2/27/2024 9:45 PM, Zi Yan wrote:
+> So likely we'd have to fix the stable kernels:
 > 
->> @@ -562,9 +561,9 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
->>
->>       lockdep_assert_held(&devinfo->lock);
->>       if (cmdinfo->state & SUBMIT_STATUS_URB) {
->> -             urb = uas_submit_sense_urb(cmnd, GFP_ATOMIC);
->> -             if (!urb)
->> -                     return SCSI_MLQUEUE_DEVICE_BUSY;
->> +             err = uas_submit_sense_urb(cmnd, GFP_ATOMIC);
->> +             if (err)
->> +                     return (err == -ENODEV) ? -ENODEV : SCSI_MLQUEUE_DEVICE_BUSY;
+> 4.19
+> 5.4
+> 5.10
+> 5.15
+> 6.1
 > 
-> Either we ought to use SCSI error codes or generic error codes.
-> There is no need to translate all but one error condition here.
+> That's a lot of pre-folio code. A backport of my series likely won't really make any sense.
+
+So, I assume this is a consensus to have stable-only fix for this issue.
+
 > 
+> For v6.1, the fix would like below?
+> 
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index c93dd6a31c31..c5968021fde0 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -423,8 +423,12 @@ int folio_migrate_mapping(struct address_space *mapping,
+>         if (folio_test_swapbacked(folio)) {
+>                 __folio_set_swapbacked(newfolio);
+>                 if (folio_test_swapcache(folio)) {
+> +                       int i;
+> +
+>                         folio_set_swapcache(newfolio);
+> -                       newfolio->private = folio_get_private(folio);
+> +                       for (i = 0; i < nr; i++)
+> +                               set_page_private(folio_page(newfolio, i),
+> +                                       page_private(folio_page(folio, i)));
+>                 }
+>                 entries = nr;
+>         } else {
 
-  static int uas_submit_urbs(struct scsi_cmnd *cmnd,
-@@ -562,10 +561,13 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
+Similar to this is what we had tested[1] internally and observed no issues.
 
-  	lockdep_assert_held(&devinfo->lock);
-  	if (cmdinfo->state & SUBMIT_STATUS_URB) {
--		urb = uas_submit_sense_urb(cmnd, GFP_ATOMIC);
--		if (!urb)
-+		err = uas_submit_sense_urb(cmnd, GFP_ATOMIC);
-+		if (!err)
-+			cmdinfo->state &= ~SUBMIT_STATUS_URB;
-+		else if (err == -ENODEV)
-+			return -ENODEV;
-+		else
-  			return SCSI_MLQUEUE_DEVICE_BUSY;
--		cmdinfo->state &= ~SUBMIT_STATUS_URB;
-  	}
+Can this be taken to 6.1, please?
 
-  	if (cmdinfo->state & ALLOC_DATA_IN_URB) {
-@@ -582,6 +584,8 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
-  		if (err) {
-  			usb_unanchor_urb(cmdinfo->data_in_urb);
-  			uas_log_cmd_state(cmnd, "data in submit err", err);
-+			if (err == -ENODEV)
-+				return -ENODEV;
-  			return SCSI_MLQUEUE_DEVICE_BUSY;
-  		}
-  		cmdinfo->state &= ~SUBMIT_DATA_IN_URB;
-@@ -602,6 +606,8 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
-  		if (err) {
-  			usb_unanchor_urb(cmdinfo->data_out_urb);
-  			uas_log_cmd_state(cmnd, "data out submit err", err);
-+			if (err == -ENODEV)
-+				return -ENODEV;
-  			return SCSI_MLQUEUE_DEVICE_BUSY;
-  		}
-  		cmdinfo->state &= ~SUBMIT_DATA_OUT_URB;
-@@ -621,6 +627,8 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
-  		if (err) {
-  			usb_unanchor_urb(cmdinfo->cmd_urb);
-  			uas_log_cmd_state(cmnd, "cmd submit err", err);
-+			if (err == -ENODEV)
-+				return -ENODEV;
-  			return SCSI_MLQUEUE_DEVICE_BUSY;
-  		}
+[1]https://lore.kernel.org/linux-mm/8620c1a0-e091-46e9-418a-db66e621b9c4@quicinc.com/
 
-I'm not sure I fully understand what your mean.
-Whether the above code is more reasonable? If not,could you give me some
-suggestion? Thanks for your help!
-
-Weitao
-
-
+Thanks,
+Charan
 
