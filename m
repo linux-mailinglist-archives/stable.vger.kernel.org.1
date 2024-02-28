@@ -1,153 +1,131 @@
-Return-Path: <stable+bounces-25317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ED5886A480
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 01:32:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81CEB86A48D
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 01:48:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12A711F2419E
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 00:32:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B066A1C23EE3
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 00:48:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48129A2A;
-	Wed, 28 Feb 2024 00:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D475A34;
+	Wed, 28 Feb 2024 00:48:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Vwoby5bU"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="n2Yibytp"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2068.outbound.protection.outlook.com [40.107.220.68])
+Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B3B36D;
-	Wed, 28 Feb 2024 00:32:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709080348; cv=fail; b=mIBhReghhUR0sE2vPQcifCh+stTM1l20PiuqwIgNlh5WCpZ3gLsxvS13wW/xM2aCkpnN+jFwVnkl5/FhvWtYuz2X6dpAvajUyBW05dJyVslCI9GRVEOKDVkWDk8ImVmfciWKlxgYVoJMPCYnlfOSSzN0LdiLQQRO3DRBYuxM3sE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709080348; c=relaxed/simple;
-	bh=04crYxxA8yx0KXUQq9CPGUsc2Rb/B4CN3Yh36ZOy6V0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A/E/WluctLGtbCTVKdSyEE9Nr4uoHPxP75OTDtHxaIt6Gfoyhda4/R7OnRppd7crlYlTOun0XpBFSxWwi8715GzsnIGtO4t+LiplKtNMJbsDRjvwkWstfm2glGnsTGTehnJi7x92yLbML9U89x/FTL25hatgyveecRPRfwjLA4Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Vwoby5bU; arc=fail smtp.client-ip=40.107.220.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ki3c1KRH0x3s0vgK8dgBPJVJ3SyuQ4ilxm2A9Gu883kzVIKnODb6CeFsVYBbhl2af5xfRF4L26eGQgvZA7X5aaWjqcDTVtz6DsxKc90GiaPreTdmfc509qTKMUFeYug8NTc0Y/geX16nfEvqJ5trgDBV7CZhvqhTUY0A1NrbASgeXKih0ID9wjcXwXz1Dc5JqQgikmRWBulHoXE3YmW3fFyeIX0T/w23/z6KdMAakDiCrO682kA6Cm5LdjsRFWNHSknoLtMj5keIiuRNMYXAeHEw72GiX1AIRjaCOBNtGJ1NZsiE+Ln0aNLw5mcIECmfU2wgx0trqukRcSWWPGWwIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YFTi1v3imxhCyek6/WfUKUpku6ct66CU+XUsMrHwZMM=;
- b=cVeVboID2579P86P1F4JQskGkk8VRYy4ztWzueF9q6MKs3lSWAQ7hX0+0G3vdcvotWm5/kzA9W/W2VqZUYLd41lI29kn9bOTwDS1wixVWQRUGvT7p5lyqkazpWrsWECuJi8+tdCHVc3ZG7Fvq4zBTImyoAwW47WlUqe6CG5Dv3v7VF8h9wh0eFVlH8icS/RDrgCrtrdU+ABvfyW5loWyaXKoXd92yvZzpGSlwp8a/hECfgpsv3lMRUrFD0NODXqYUauH5Ow9FgjxAXky4ndrB9FVe2F9VrF96+3pkoGM+ImdawUgc5x3fq/olg77p9dJXURGiRflaWwkYwIB+2wJuQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=ziepe.ca smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YFTi1v3imxhCyek6/WfUKUpku6ct66CU+XUsMrHwZMM=;
- b=Vwoby5bUWZZ4xbbtqlNDgUqBfA7UV38havHR5Bejm6mgWERctOKJz8vwMBDiMvuVrjZM22ePmpoT34gWPM07l6k0zB3OAiC0uOZ/wJGCZ/sHHIgX7TA/w7tP/+roX8pUuXF3PE2f3E37TbHcCTWMgyZLpnwq+gjc578biinQ248=
-Received: from SJ0PR05CA0031.namprd05.prod.outlook.com (2603:10b6:a03:33f::6)
- by CY8PR12MB7364.namprd12.prod.outlook.com (2603:10b6:930:50::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.36; Wed, 28 Feb
- 2024 00:32:24 +0000
-Received: from CO1PEPF000044EE.namprd05.prod.outlook.com
- (2603:10b6:a03:33f:cafe::52) by SJ0PR05CA0031.outlook.office365.com
- (2603:10b6:a03:33f::6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.27 via Frontend
- Transport; Wed, 28 Feb 2024 00:32:23 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1PEPF000044EE.mail.protection.outlook.com (10.167.241.68) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7292.25 via Frontend Transport; Wed, 28 Feb 2024 00:32:23 +0000
-Received: from driver-dev1.pensando.io (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 27 Feb
- 2024 18:32:22 -0600
-From: Brett Creeley <brett.creeley@amd.com>
-To: <jgg@ziepe.ca>, <yishaih@nvidia.com>,
-	<shameerali.kolothum.thodi@huawei.com>, <kevin.tian@intel.com>,
-	<alex.williamson@redhat.com>, <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-CC: <shannon.nelson@amd.com>, <brett.creeley@amd.com>,
-	<stable@vger.kernel.org>
-Subject: [PATCH v2 vfio 1/2] vfio/pds: Always clear the save/restore FDs on reset
-Date: Tue, 27 Feb 2024 16:32:04 -0800
-Message-ID: <20240228003205.47311-2-brett.creeley@amd.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20240228003205.47311-1-brett.creeley@amd.com>
-References: <20240228003205.47311-1-brett.creeley@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C547F6
+	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 00:48:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709081304; cv=none; b=DQ1V+2fSOqYVXrIIjo9RKdLYeNaWhxEiYJBqd8evW+yOJT0B9ef3DPhLPImnSnja5AcIg8ZV20zNnS1mNaE0jBjoc5jka0DejH91bI8y/Y69SO4uZ1+T0bOuznVm7DLFT4rar7L6QfoFQceiT3dGmGS/PtcqZb6gQE0u03dp/Ko=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709081304; c=relaxed/simple;
+	bh=AJPIpmjeaInQHB01RZF5ZU1nHM3PWmVoh0vs7h35A1U=;
+	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
+	 MIME-Version:Content-Type; b=vBkqL2hHaHyCKkWZdCHZYHjBsHj5Z7GAyZ7bg780TS+ieWoBjcqVuMgelD/nweIgLrRXpYcRJ0cG3ROUanHC4IsVa5fXwAnBJJr+QG2a45qEePKIxlp8vkXgVJb7vNg+lreYmxgDVi+r2q5xEmGEmY/zhWA+DYHJg9hJT47ogqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=n2Yibytp; arc=none smtp.client-ip=44.202.169.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5003a.ext.cloudfilter.net ([10.0.29.159])
+	by cmsmtp with ESMTPS
+	id f4H5rVmp9Qr4Sf87Kr2SOD; Wed, 28 Feb 2024 00:48:14 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id f87Jrt1Zokw1Zf87JrPpzm; Wed, 28 Feb 2024 00:48:14 +0000
+X-Authority-Analysis: v=2.4 cv=aKf2q69m c=1 sm=1 tr=0 ts=65de82ce
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=k7vzHIieQBIA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=KyoLkmSyMt9Nb96WE4AA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=035y5fzBy+OFW5grlBii3SIEJYQxRB6XZGhrXsV9Bok=; b=n2YibytpIZ+NHpkGnLl1Gadu8Y
+	K5vxWibXBF6P+fLKbLGeBRctmHu1QJTBeHA1uzw/YGAHlXlS4n3s85LZdlb5WaMA/xF2B4vw0qiac
+	bQkhV+wTMHeCJW2p7V9rXzAXmok/q0DoUamlzMVRcYAUqNLKiiyGWqUTAlB0p75o5zZ2waMPGltLJ
+	Z98a+LW+IZ37RbFZnLZ4Ur63XNCv7AVtSfbIWWwTSHiDrXUzN/CNe0/o8pQofUXMJMwhpT/FzZc5k
+	OebJZ0q3zBcb89b3ezYxTKoU08WSUKFzeuqPoiEod3GQExNI0ueNFfObfNsxE7+V5DLdLW1eQtFZr
+	Muf3wcrw==;
+Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:48182 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1rf87H-003C44-13;
+	Tue, 27 Feb 2024 17:48:11 -0700
+Subject: Re: [PATCH 6.7 000/334] 6.7.7-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+References: <20240227131630.636392135@linuxfoundation.org>
+In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <f3bced01-facb-fb34-655e-0230292e686d@w6rz.net>
+Date: Tue, 27 Feb 2024 16:48:08 -0800
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000044EE:EE_|CY8PR12MB7364:EE_
-X-MS-Office365-Filtering-Correlation-Id: d5a8086e-6f0c-4490-d1ed-08dc37f4bb8c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	F+TbxPeKXbJFTgjH1S+H+Fb9w7rZflP1KXE9sq9kR/QtbCqG56K00x482YDUytj23BmwdNaHKm3eEcYtheTfY5a1PNzagvWasEFSoA7ScwRAHFx1J6QUaPvLZjZdQqYMCm3U3YyjHueV8V896oYPJsbPjZlxsJLSFuw6wfE+BIpH/q2rt+izwd6nM5t7oGPUWiW0mAfEGNL7ftfzkj6QA3R9LqcKstWQcuxurBK63bTWFw+sHPbIk80ECzciKd3PNE53lmo0LHsTJcXlZxPU43gDRRWjcbYKqfK1rGeuVg/o0O/Qeiz7iqz4w3MhkuBPNlb2bJwjHnJ4UD11l+TldDLCf12LQktdIK+lc3QtTqMHEp3dTZlHpcg9bsjzq39rxsHNlKtEH0I2dNZkmO9CQ5WmAOgX/ddnB1KyarCs+/Slzr7eY8zvVzytnHroylKI9QLUYd4JzCwzuTfYcPQ1dSfeTdCRp/ol0ZpHi61TSyJ9wkCc5x+LkWSCi7Y2Zg7fkCcwFoFI7j0RjnwNULRlJn8G4OlZnphOhdN8HoVyOD0h7wvw6QJJzmUbQAEGnlaozHJMMCA+pbv0UZC8ZXPdLGNwARrtl4yhk4+KuvQPi1m/JPE9dl4CzCMi5MEuz7o2RJ+RhRO7SCeQALEexr79N83ameFvP2NWA3jNe6OHtPuRwrbbBHMMTLm9yw8Oetud9X8DGy5i9BQellbdpW0xhzj85nTWaHhDAJlUxy7QN0zF/slfU5B6BGOukJtZWrhc
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(82310400014)(36860700004);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2024 00:32:23.6165
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d5a8086e-6f0c-4490-d1ed-08dc37f4bb8c
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000044EE.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7364
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 98.207.139.8
+X-Source-L: No
+X-Exim-ID: 1rf87H-003C44-13
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:48182
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfBG8O3F5nMeW7FNnd54g0wc+tULj1fozUZmDkpRWL8PUBpDkCltV498Ne6m5NyaUgZ4Iajq2k/wLiTltljU32CQgD5baDKep1bzaX01APcjWZlQphKfp
+ 0o4PArO6t1dYwXbPrnwmqE/7drADLmRbqMMNMu6sHcdbWBT23nB5Os7SZYZi0gR12pIpxax4T70LTA==
 
-After reset the VFIO device state will always be put in
-VFIO_DEVICE_STATE_RUNNING, but the save/restore files will only be
-cleared if the previous state was VFIO_DEVICE_STATE_ERROR. This
-can/will cause the restore/save files to be leaked if/when the
-migration state machine transitions through the states that
-re-allocates these files. Fix this by always clearing the
-restore/save files for resets.
+On 2/27/24 5:17 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.7.7 release.
+> There are 334 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 29 Feb 2024 13:15:36 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.7-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Fixes: 7dabb1bcd177 ("vfio/pds: Add support for firmware recovery")
-Cc: stable@vger.kernel.org
-Signed-off-by: Brett Creeley <brett.creeley@amd.com>
-Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
----
- drivers/vfio/pci/pds/vfio_dev.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-diff --git a/drivers/vfio/pci/pds/vfio_dev.c b/drivers/vfio/pci/pds/vfio_dev.c
-index 4c351c59d05a..a286ebcc7112 100644
---- a/drivers/vfio/pci/pds/vfio_dev.c
-+++ b/drivers/vfio/pci/pds/vfio_dev.c
-@@ -32,9 +32,9 @@ void pds_vfio_state_mutex_unlock(struct pds_vfio_pci_device *pds_vfio)
- 	mutex_lock(&pds_vfio->reset_mutex);
- 	if (pds_vfio->deferred_reset) {
- 		pds_vfio->deferred_reset = false;
-+		pds_vfio_put_restore_file(pds_vfio);
-+		pds_vfio_put_save_file(pds_vfio);
- 		if (pds_vfio->state == VFIO_DEVICE_STATE_ERROR) {
--			pds_vfio_put_restore_file(pds_vfio);
--			pds_vfio_put_save_file(pds_vfio);
- 			pds_vfio_dirty_disable(pds_vfio, false);
- 		}
- 		pds_vfio->state = pds_vfio->deferred_reset_state;
--- 
-2.17.1
+Tested-by: Ron Economos <re@w6rz.net>
 
 
