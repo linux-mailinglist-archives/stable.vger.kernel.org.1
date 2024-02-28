@@ -1,126 +1,100 @@
-Return-Path: <stable+bounces-25350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE2986ABFB
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 11:14:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1409386ABF9
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 11:14:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 889532828C3
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 10:14:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45E091C21509
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 10:14:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80635381D2;
-	Wed, 28 Feb 2024 10:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F9A37714;
+	Wed, 28 Feb 2024 10:13:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sYQM1lxm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B73D3770C
-	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 10:13:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38A63770B;
+	Wed, 28 Feb 2024 10:13:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709115238; cv=none; b=nA/vZnHfgqrtqAIN97u9NUiYSUfQCjCYlfwVvFoSzxF2dRXd7UtDLdOSwn3T0CfYV/9XuSaM4rReurUzxefx7qfGv8wNpqkbABHyTVdfe1jbFrb4kVEN5cpoyzZznpPy7cecIHfRVBM+kYL9Q+p4BfIw51o/DTp0hWwNq3a1UVU=
+	t=1709115236; cv=none; b=Sr6/66lqrD6sTdu7LFfVwss9B1dlGFwNmtY8gi2L+/nvT+WEor/jv457lJHPJ1gcI/4Uh7Z98QBxLJsl3yntLXqr8ixxlk2cKzfWCLUFjCGGrDYPJHmDKgTWcK4mfxzo+AeDe4fkYBehddIrIH2C9W9zL6brcxUzL4wzRvDLI7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709115238; c=relaxed/simple;
-	bh=14hXcN/pmzBveu368LN55D75J7WvTTeDWA9NxgE0OFM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Tt0rbCWsQNaddGx+B02ha6XPjfQSBdXXE9bYstPkq77Woxq6RAqvZCRxqQpX3ySg8Dep2Nby5v/MeubkUHZwP+TMNVIqycfAGlKiv/15krON1Jy6iribXjRfLTWSJtY+9y1xiyq85StqmnWRKK064MeUs+FNGrhtqL1cJ33ZlVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; arc=none smtp.client-ip=54.254.200.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-X-QQ-mid: bizesmtp62t1709115208trocn87m
-X-QQ-Originating-IP: uUjka9UhITDP7iDTrIHmRHuOAbTk4TgE8jMpLxt6AAw=
-Received: from localhost.localdomain ( [113.57.152.160])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 28 Feb 2024 18:13:26 +0800 (CST)
-X-QQ-SSF: 01400000000000C0B000000A0000000
-X-QQ-FEAT: znfcQSa1hKZ1OQVbZm+fYQPI766XCh6aUqJjjI3UFo6bHEOOYrK8E6ZzzpNis
-	ycaJcFnW7c2mXQJwc+RqnVogWPbYMcSAv8hA8efuy/WRWupRkx3ZWoUN1CKpsMkyIYOlClg
-	BZODt/hGk0/WtBdkbW8w5Wzr0PMkLTZZOPbG5W82KGr01PTYu06sOuO6zTw3xeLcvfWSgLR
-	IphPH5ln9CRwC8PZI8NqyNJdPkQOy+DgcALgtEiPGy/9zFs0+NKiRkTqbIFeCi4YGsFvJ4g
-	MFpj/eCArxgqV4y6V5xIzrQ7nD1HxksrJ/S86wnz4+0GSnW7HkVYYeysrGmx1DYO7YByuCf
-	vkOrlaeNXkrFCkxcsG7x05NJftxLRd8i09aIFezP65YkmfvZmmo80PGCGmxTDNSmsRkh9uz
-	VA5jfZmnplQ=
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 16063273281454352206
-From: WangYuli <wangyuli@uniontech.com>
-To: wangyuli@uniontech.com,
-	guanwentao@uniontech.com
-Cc: stable@vger.kernel.org,
-	Larry Finger <Larry.Finger@lwfinger.net>
-Subject: [PATCH] Bluetooth: Add device 0bda:4853 to blacklist/quirk table
-Date: Wed, 28 Feb 2024 18:13:23 +0800
-Message-ID: <A3926852489BE409+20240228101324.18086-1-wangyuli@uniontech.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1709115236; c=relaxed/simple;
+	bh=Aw6MTellXqHFmH4oHAwG/lZE8WzOhLwzBazP1CZOc3U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NOIJU0JCPr2I3hhwL5HcEbfmJ/2B6nZpEREKIEzLMdCqQdzT6tA8m7uiMhAsJjwXQJ52QjTQRJ0VDPOQfQoBlziqugCYsvGd/2LquM68OtSrWQeY9bqVGzrY8vKks9PZi8uxRWryZOdpjsW/ds+uQKeUoNnGd1L7JOc3yGQRor4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sYQM1lxm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C372FC433C7;
+	Wed, 28 Feb 2024 10:13:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709115236;
+	bh=Aw6MTellXqHFmH4oHAwG/lZE8WzOhLwzBazP1CZOc3U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sYQM1lxmkxNt120hTaJP/7wOwZev0uQR715A6QnDoDDYlidkOBaA3qtqAdy6LcI8D
+	 x4NmbNvlmUcC4fLeIvUTA7xbR9MZGPuKXvhwOjqZvj/tGkGpTeGJIs66+2PJkPxun8
+	 FgdyrIVH/qijkwwNPFaEOWgSrz2Mx+1XyfVdMpoL0N/V0wSbTolbOJKgcNTD3AlQ9u
+	 8dRu6JEYamSBWfpYetisMVpvSkNYOqcyvH4BQ3od9+kHnfCc8WO5rHQFIKfhecykWI
+	 AUvpJ4wlS0GEaEYKTpYniOE2BhQWuujT5cx6TF/4JX56+4fSDsOdhw3M8GRxYfqqc7
+	 HktFy5Lic9W8A==
+Date: Wed, 28 Feb 2024 10:13:52 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Samuel Holland <samuel.holland@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	linux-kernel@vger.kernel.org, Alexandre Ghiti <alex@ghiti.fr>,
+	linux-riscv@lists.infradead.org,
+	Stefan O'Rear <sorear@fastmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH -fixes v4 1/3] riscv: Fix enabling cbo.zero when running
+ in M-mode
+Message-ID: <20240228-rarity-underuse-4ea0ceaa9688@spud>
+References: <20240228065559.3434837-1-samuel.holland@sifive.com>
+ <20240228065559.3434837-2-samuel.holland@sifive.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="RYUaLBvwPMLmjhGg"
+Content-Disposition: inline
+In-Reply-To: <20240228065559.3434837-2-samuel.holland@sifive.com>
 
-This new device is part of a Realtek RTW8852BE chip. Without this change
-the device utilizes an obsolete version of the firmware that is encoded
-in it rather than the updated Realtek firmware and config files from
-the firmware directory. The latter files implement many new features.
 
-The device table is as follows:
+--RYUaLBvwPMLmjhGg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-T: Bus=03 Lev=01 Prnt=01 Port=09 Cnt=03 Dev#= 4 Spd=12 MxCh= 0
-D: Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs= 1
-P: Vendor=0bda ProdID=4853 Rev= 0.00
-S: Manufacturer=Realtek
-S: Product=Bluetooth Radio
-S: SerialNumber=00e04c000001
-C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=81(I) Atr=03(Int.) MxPS= 16 Ivl=1ms
-E: Ad=02(O) Atr=02(Bulk) MxPS= 64 Ivl=0ms
-E: Ad=82(I) Atr=02(Bulk) MxPS= 64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=03(O) Atr=01(Isoc) MxPS= 0 Ivl=1ms
-E: Ad=83(I) Atr=01(Isoc) MxPS= 0 Ivl=1ms
-I: If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=03(O) Atr=01(Isoc) MxPS= 9 Ivl=1ms
-E: Ad=83(I) Atr=01(Isoc) MxPS= 9 Ivl=1ms
-I: If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=03(O) Atr=01(Isoc) MxPS= 17 Ivl=1ms
-E: Ad=83(I) Atr=01(Isoc) MxPS= 17 Ivl=1ms
-I: If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=03(O) Atr=01(Isoc) MxPS= 25 Ivl=1ms
-E: Ad=83(I) Atr=01(Isoc) MxPS= 25 Ivl=1ms
-I: If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=03(O) Atr=01(Isoc) MxPS= 33 Ivl=1ms
-E: Ad=83(I) Atr=01(Isoc) MxPS= 33 Ivl=1ms
-I: If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E: Ad=03(O) Atr=01(Isoc) MxPS= 49 Ivl=1ms
-E: Ad=83(I) Atr=01(Isoc) MxPS= 49 Ivl=1ms
+On Tue, Feb 27, 2024 at 10:55:33PM -0800, Samuel Holland wrote:
+> When the kernel is running in M-mode, the CBZE bit must be set in the
+> menvcfg CSR, not in senvcfg.
+>=20
+> Cc: <stable@vger.kernel.org>
+> Fixes: 43c16d51a19b ("RISC-V: Enable cbo.zero in usermode")
+> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
 
-Link: https://lore.kernel.org/all/20230810144507.9599-1-Larry.Finger@lwfinger.net/
-Cc: stable@vger.kernel.org
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
----
- drivers/bluetooth/btusb.c | 2 ++
- 1 file changed, 2 insertions(+)
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index edfb49bbaa28..5225a6075626 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -542,6 +542,8 @@ static const struct usb_device_id quirks_table[] = {
- 	/* Realtek 8852BE Bluetooth devices */
- 	{ USB_DEVICE(0x0cb8, 0xc559), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0bda, 0x4853), .driver_info = BTUSB_REALTEK |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0bda, 0x887b), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0bda, 0xb85b), .driver_info = BTUSB_REALTEK |
--- 
-2.43.0
+Cheers,
+Conor.
 
+--RYUaLBvwPMLmjhGg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZd8HYAAKCRB4tDGHoIJi
+0qirAQDYy7d+sylmhikfmo2GXMnmIUPyHkY+kHBctTx2ItI1sgEA9XOfdZ8oy6/R
+EurTtub65SmrnNrgrVNCv60+b4ljXAw=
+=9KZG
+-----END PGP SIGNATURE-----
+
+--RYUaLBvwPMLmjhGg--
 
