@@ -1,158 +1,195 @@
-Return-Path: <stable+bounces-25390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3132A86B515
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 17:34:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7669186B539
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 17:44:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1EE91F243DD
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 16:34:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F9A928B694
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 16:44:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D3E6EF02;
-	Wed, 28 Feb 2024 16:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD5F51E890;
+	Wed, 28 Feb 2024 16:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.fm header.i=@fastmail.fm header.b="O4QKIlwr";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="k9RmYnAu"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="YmRLWnyh"
 X-Original-To: stable@vger.kernel.org
-Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821001EA99;
-	Wed, 28 Feb 2024 16:33:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98A376EEFD;
+	Wed, 28 Feb 2024 16:43:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709138040; cv=none; b=d/NqzcFQPKb2je96cX2Q8gXEYWJ2xyRmrJk66EJauUtVSpc7IHKBBgPzlYjtMZ4oLTbD/99IDgLK/QsHBgZfRd3JRB6hTTOFmMlYCRR+Ikgq92SrBlWp7/lfYdP9FKEHKC1eWUucY8ZvrF2+IohEjF4g9gH2GLIWxGZqH18VhtQ=
+	t=1709138635; cv=none; b=hunHZ4Wd/biEcZ+SI1bv8V40P2fGYoF2soZmHk27wiM5z6wAc1r5jUvHcrmNkm0+nIuhEIlabfZ46RpCZCAnHzc+sJCOyjxeOkZ4CgWyNzOXI6bHv9KF2F3sS7EEYWbxWXoemXDmixz4nf6PdTtK+au4u9YsV6rBNjgEXqnPFVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709138040; c=relaxed/simple;
-	bh=fKyv3eOUkZmPNDLrZFIM2iMJCLNonlLzph3MZvWKl4s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JRHEyyzthBwA9vS/aR0Kz6U64ZZINbAPoZoJh8hi/PZqUcHHJEVuuGtW+mOPlrNL/igyod/fX/HLn8jGJHmbGgGR99F8VeHJpAQk4XJlWHtIULMH0Nv4Bv8UxSKxCYAnYkKRlGFE5BUxlMwzP8X4g0+AOmJ+KA2LZNecd1ngEWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.fm; spf=pass smtp.mailfrom=fastmail.fm; dkim=pass (2048-bit key) header.d=fastmail.fm header.i=@fastmail.fm header.b=O4QKIlwr; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=k9RmYnAu; arc=none smtp.client-ip=64.147.123.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.fm
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.fm
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailout.west.internal (Postfix) with ESMTP id E75393200AF4;
-	Wed, 28 Feb 2024 11:33:56 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Wed, 28 Feb 2024 11:33:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.fm; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1709138036;
-	 x=1709224436; bh=5Mknzk9SCmZIEgGb6ZRq5OcLE39Ejl1tkweLomEHib0=; b=
-	O4QKIlwre9w04a7q4cn8ymssclR3llpG2XlqiwHZox/2/djrsh0ey7S+33ABP7GD
-	DCzqR3pUqEYzkxLpo23SGp8PiyCJakK6dYLbHcHIBDoOM2zuDGnKe7mbgJ6SyV2v
-	qASGKxW6PzrjIf+WkhvHGKMnAPLlC2kXJWn02fGdzl6eVz2NHCLQuLWd6siHTeok
-	pK4LPqCRGWGIirJCo9sTOQ2eawgLsXkRMLVWrLzUy0n+4sFVNYGfnSWfKaGswUII
-	fz0EefECn9BwMznsTlkSM9NltMiYmO5XDi9zCaIUykvPlA6EdV0X2+Y7QPWwbizn
-	YsZHGZJK+qe1sZHtEUd+4Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1709138036; x=
-	1709224436; bh=5Mknzk9SCmZIEgGb6ZRq5OcLE39Ejl1tkweLomEHib0=; b=k
-	9RmYnAuybbNKTJUXzDUPYbXLzM6n1rxsBRuKds+TlG0cB+/d60E38TcvD1REUccW
-	uAYMPSA32zmWWLC7M15mYe8cny9kbaCcooLITLUsG+QEzgEHsKk7b0DwE5SA+ISL
-	QnryhAzDSQz0hLveSPGYz3LGTW5edI8XuokAn84PJsSFLnLZzbGpDMVQI9qavcQx
-	Tviv2jkSSdIGpp3Y50/Ir+8RFYbioMGkKRp9k0fjiEXe70My/EAPwwHduWy/RLnC
-	919VmjLEcGBBvqestxCAJLYF1X+FtBP0gmsBFlr+xDyTKm0w2wZc/PbIm7Wit2QJ
-	0LQSDUK846uD1fgPo+Agw==
-X-ME-Sender: <xms:dGDfZWKE46g-OYQ47dwc6__pTdZBOSiSQQwsPLkAoUOfP5cQSp4QNQ>
-    <xme:dGDfZeKFHaCLO4i7ZP99B6xATvf44ow2ArHrg6DZHgRiI_ui8UExU4k91jBGNz0xu
-    6sNx3WDln4tySKE>
-X-ME-Received: <xmr:dGDfZWtlkxJYGgrupClfJdaNuVijzhvzpTzhEAUJyKemgtbF7Gc0CDHuedcUCpiRj_soRHqTBYHXKp_eO5e0cfeQZPODJgy95e3LrM_k_7j1eh1ew5j5>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrgeejgdekhecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomhepuegvrhhn
-    ugcuufgthhhusggvrhhtuceosggvrhhnugdrshgthhhusggvrhhtsehfrghsthhmrghilh
-    drfhhmqeenucggtffrrghtthgvrhhnpeevhffgvdeltddugfdtgfegleefvdehfeeiveej
-    ieefveeiteeggffggfeulefgjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpegsvghrnhgurdhstghhuhgsvghrthesfhgrshhtmhgrihhlrdhf
-    mh
-X-ME-Proxy: <xmx:dGDfZba8Z-OmV3a9AAdBhS7IvvfWn0N8gdAFWkZJPMZNksnck186sw>
-    <xmx:dGDfZdahwg4N1Drk946vlZCh76OaUBSxzgiYydP4a6oNRAExXeFN0Q>
-    <xmx:dGDfZXDIc2z88XlzjLYI7Z-hHtSbD9gC5QPyphxB-JYw3oC9HZI6DA>
-    <xmx:dGDfZRHMQlIJSpz6sNWzJ1EDALtC98NbzTf6yIWy2F6t_Jtry6TpIQ>
-Feedback-ID: id8a24192:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 28 Feb 2024 11:33:55 -0500 (EST)
-Message-ID: <fa6cd2cc-252c-492f-adb5-7a0d09c20799@fastmail.fm>
-Date: Wed, 28 Feb 2024 17:33:54 +0100
+	s=arc-20240116; t=1709138635; c=relaxed/simple;
+	bh=FYKCx/CB7lBAZml9S7q6VnA/X2Dc69iuw7PNmS0oyIY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e7I0DLjDMG3iaHDU4kN1iY0XMKltMydv6hoIDfxb4LCmHoRKjyMnq6N30n7y5YEH8HFQMFffbCeC45EomwoU5N3liNvogLlPdvGGkp+qNcChyaxNQ6eBo/YAubb3byObPiLTGpDSVwqSRoI3XJ8ZcelsSbCXQpTUJAGx5/UT9nk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=YmRLWnyh; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from localhost.ispras.ru (unknown [10.10.165.5])
+	by mail.ispras.ru (Postfix) with ESMTPSA id ABD2140B2789;
+	Wed, 28 Feb 2024 16:43:41 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru ABD2140B2789
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1709138622;
+	bh=8Kapx+kuKpDoK4A4QmaYAHOJUYLKDxYZDCpVP7uvsw8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=YmRLWnyh6WTPq/1NtKnORSTnFTdNK0XBXz/JSesuPeJ/UQOd50aBB4vhpf1sWpoPS
+	 Tr78j7iRNgy1AhFUrp4q6Rejc7APf7S8uVsxZ/fCxADORifj6TkwcgVsP3uoBXvoL/
+	 7tTwO71wdrhvoTvkiYudjlDnsw5k/KEryMG38+8U=
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Alexander Aring <alex.aring@gmail.com>,
+	Stefan Schmidt <stefan@datenfreihafen.org>
+Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Phoebe Buckheister <phoebe.buckheister@itwm.fraunhofer.de>,
+	linux-wpan@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Alexey Khoroshilov <khoroshilov@ispras.ru>,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: [PATCH wpan] mac802154: fix llsec key resources release in mac802154_llsec_key_del
+Date: Wed, 28 Feb 2024 19:38:39 +0300
+Message-ID: <20240228163840.6667-1-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/4] fuse: don't unhash root
-To: Miklos Szeredi <mszeredi@redhat.com>
-Cc: linux-fsdevel@vger.kernel.org, Amir Goldstein <amir73il@gmail.com>,
- stable@vger.kernel.org
-References: <20240228160213.1988854-1-mszeredi@redhat.com>
- <20240228160213.1988854-3-mszeredi@redhat.com>
-Content-Language: en-US, de-DE, fr
-From: Bernd Schubert <bernd.schubert@fastmail.fm>
-In-Reply-To: <20240228160213.1988854-3-mszeredi@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+mac802154_llsec_key_del() can free resources of a key directly without
+following the RCU rules for waiting before the end of a grace period. This
+may lead to use-after-free in case llsec_lookup_key() is traversing the
+list of keys in parallel with a key deletion:
 
+refcount_t: addition on 0; use-after-free.
+WARNING: CPU: 4 PID: 16000 at lib/refcount.c:25 refcount_warn_saturate+0x162/0x2a0
+Modules linked in:
+CPU: 4 PID: 16000 Comm: wpan-ping Not tainted 6.7.0 #19
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+RIP: 0010:refcount_warn_saturate+0x162/0x2a0
+Call Trace:
+ <TASK>
+ llsec_lookup_key.isra.0+0x890/0x9e0
+ mac802154_llsec_encrypt+0x30c/0x9c0
+ ieee802154_subif_start_xmit+0x24/0x1e0
+ dev_hard_start_xmit+0x13e/0x690
+ sch_direct_xmit+0x2ae/0xbc0
+ __dev_queue_xmit+0x11dd/0x3c20
+ dgram_sendmsg+0x90b/0xd60
+ __sys_sendto+0x466/0x4c0
+ __x64_sys_sendto+0xe0/0x1c0
+ do_syscall_64+0x45/0xf0
+ entry_SYSCALL_64_after_hwframe+0x6e/0x76
 
-On 2/28/24 17:02, Miklos Szeredi wrote:
-> The root inode is assumed to be always hashed.  Do not unhash the root
-> inode even if it is marked BAD.
-> 
-> Fixes: 5d069dbe8aaf ("fuse: fix bad inode")
-> Cc: <stable@vger.kernel.org> # v5.11
-> Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-> ---
->  fs/fuse/fuse_i.h | 1 -
->  fs/fuse/inode.c  | 7 +++++--
->  2 files changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/fs/fuse/fuse_i.h b/fs/fuse/fuse_i.h
-> index 7bd3552b1e80..4ef6087f0e5c 100644
-> --- a/fs/fuse/fuse_i.h
-> +++ b/fs/fuse/fuse_i.h
-> @@ -994,7 +994,6 @@ static inline bool fuse_stale_inode(const struct inode *inode, int generation,
->  
->  static inline void fuse_make_bad(struct inode *inode)
->  {
-> -	remove_inode_hash(inode);
->  	set_bit(FUSE_I_BAD, &get_fuse_inode(inode)->state);
->  }
+Also, ieee802154_llsec_key_entry structures are not freed by
+mac802154_llsec_key_del():
 
-Hmm, what about callers like fuse_direntplus_link? It now never removes
-the inode hash for these? Depend on lookup/revalidate?
+unreferenced object 0xffff8880613b6980 (size 64):
+  comm "iwpan", pid 2176, jiffies 4294761134 (age 60.475s)
+  hex dump (first 32 bytes):
+    78 0d 8f 18 80 88 ff ff 22 01 00 00 00 00 ad de  x.......".......
+    00 00 00 00 00 00 00 00 03 00 cd ab 00 00 00 00  ................
+  backtrace:
+    [<ffffffff81dcfa62>] __kmem_cache_alloc_node+0x1e2/0x2d0
+    [<ffffffff81c43865>] kmalloc_trace+0x25/0xc0
+    [<ffffffff88968b09>] mac802154_llsec_key_add+0xac9/0xcf0
+    [<ffffffff8896e41a>] ieee802154_add_llsec_key+0x5a/0x80
+    [<ffffffff8892adc6>] nl802154_add_llsec_key+0x426/0x5b0
+    [<ffffffff86ff293e>] genl_family_rcv_msg_doit+0x1fe/0x2f0
+    [<ffffffff86ff46d1>] genl_rcv_msg+0x531/0x7d0
+    [<ffffffff86fee7a9>] netlink_rcv_skb+0x169/0x440
+    [<ffffffff86ff1d88>] genl_rcv+0x28/0x40
+    [<ffffffff86fec15c>] netlink_unicast+0x53c/0x820
+    [<ffffffff86fecd8b>] netlink_sendmsg+0x93b/0xe60
+    [<ffffffff86b91b35>] ____sys_sendmsg+0xac5/0xca0
+    [<ffffffff86b9c3dd>] ___sys_sendmsg+0x11d/0x1c0
+    [<ffffffff86b9c65a>] __sys_sendmsg+0xfa/0x1d0
+    [<ffffffff88eadbf5>] do_syscall_64+0x45/0xf0
+    [<ffffffff890000ea>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
 
+Handle the proper resource release in the RCU callback function
+mac802154_llsec_key_del_rcu().
 
-Thanks,
-Bernd
+Note that if llsec_lookup_key() finds a key, it gets a refcount via
+llsec_key_get() and locally copies key id from key_entry (which is a
+list element). So it's safe to call llsec_key_put() and free the list
+entry after the RCU grace period elapses.
 
->  
-> diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
-> index c26a84439934..aa0614e8791c 100644
-> --- a/fs/fuse/inode.c
-> +++ b/fs/fuse/inode.c
-> @@ -475,8 +475,11 @@ struct inode *fuse_iget(struct super_block *sb, u64 nodeid,
->  	} else if (fuse_stale_inode(inode, generation, attr)) {
->  		/* nodeid was reused, any I/O on the old inode should fail */
->  		fuse_make_bad(inode);
-> -		iput(inode);
-> -		goto retry;
-> +		if (inode != d_inode(sb->s_root)) {
-> +			remove_inode_hash(inode);
-> +			iput(inode);
-> +			goto retry;
-> +		}
->  	}
->  	fi = get_fuse_inode(inode);
->  	spin_lock(&fi->lock);
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 5d637d5aabd8 ("mac802154: add llsec structures and mutators")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+---
+Should the patch be targeted to "net" tree directly?
+
+ include/net/cfg802154.h |  1 +
+ net/mac802154/llsec.c   | 18 +++++++++++++-----
+ 2 files changed, 14 insertions(+), 5 deletions(-)
+
+diff --git a/include/net/cfg802154.h b/include/net/cfg802154.h
+index cd95711b12b8..76d2cd2e2b30 100644
+--- a/include/net/cfg802154.h
++++ b/include/net/cfg802154.h
+@@ -401,6 +401,7 @@ struct ieee802154_llsec_key {
+ 
+ struct ieee802154_llsec_key_entry {
+ 	struct list_head list;
++	struct rcu_head rcu;
+ 
+ 	struct ieee802154_llsec_key_id id;
+ 	struct ieee802154_llsec_key *key;
+diff --git a/net/mac802154/llsec.c b/net/mac802154/llsec.c
+index 8d2eabc71bbe..f13b07ebfb98 100644
+--- a/net/mac802154/llsec.c
++++ b/net/mac802154/llsec.c
+@@ -265,19 +265,27 @@ int mac802154_llsec_key_add(struct mac802154_llsec *sec,
+ 	return -ENOMEM;
+ }
+ 
++static void mac802154_llsec_key_del_rcu(struct rcu_head *rcu)
++{
++	struct ieee802154_llsec_key_entry *pos;
++	struct mac802154_llsec_key *mkey;
++
++	pos = container_of(rcu, struct ieee802154_llsec_key_entry, rcu);
++	mkey = container_of(pos->key, struct mac802154_llsec_key, key);
++
++	llsec_key_put(mkey);
++	kfree_sensitive(pos);
++}
++
+ int mac802154_llsec_key_del(struct mac802154_llsec *sec,
+ 			    const struct ieee802154_llsec_key_id *key)
+ {
+ 	struct ieee802154_llsec_key_entry *pos;
+ 
+ 	list_for_each_entry(pos, &sec->table.keys, list) {
+-		struct mac802154_llsec_key *mkey;
+-
+-		mkey = container_of(pos->key, struct mac802154_llsec_key, key);
+-
+ 		if (llsec_key_id_equal(&pos->id, key)) {
+ 			list_del_rcu(&pos->list);
+-			llsec_key_put(mkey);
++			call_rcu(&pos->rcu, mac802154_llsec_key_del_rcu);
+ 			return 0;
+ 		}
+ 	}
+-- 
+2.43.2
 
 
