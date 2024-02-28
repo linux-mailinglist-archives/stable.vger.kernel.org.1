@@ -1,157 +1,194 @@
-Return-Path: <stable+bounces-25401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A76FF86B5EF
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 18:26:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CAF786B606
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 18:32:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7BA4B2607F
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 17:26:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3671C1C227D6
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 17:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0ABB15B97C;
-	Wed, 28 Feb 2024 17:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F82E1369B1;
+	Wed, 28 Feb 2024 17:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f3n8Kt8f"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ffxH3PGZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E57C315A4A2;
-	Wed, 28 Feb 2024 17:26:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF06B3FBA2;
+	Wed, 28 Feb 2024 17:32:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709141171; cv=none; b=YLCCbeTMgIieIMiIis4311PqUGlL1jNp4aJlTxO7kSybY+ZTMOJzc8oyKTL21u6ScThsVbYyBWLx9OnC+h5mFOy1CW/n2+MhU3fuUV6z8K4i0xakdtSeydPs8UpzTJa0cYTkGDyNaDwh3TL+4BlMK/xcZOTI0JKD7Fdj5bSyZNQ=
+	t=1709141538; cv=none; b=Bgom47G0KluZoEyvw89sbuoSW8RPnCcz+PgC2Cj9sXqVQhnWckYwtNubeyysnTHZ7GayDvH22PWT61dDKmEbtEhJU5huP6YAwUTaVz6OoH078WRcncCmGtxoZilXTF+lu59y0riEhvEgbAv9TgMp8vZLzxZb89+NzmtTysbzehY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709141171; c=relaxed/simple;
-	bh=UNTgcEBBg73DjZmytlJ3R7l8+M00JW1cu/+Tjop0kzs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YgI27yG1PjraJwcPyQt4ISTXqPi0cpp5qtL25Gdt/ZfS5vvlVZN4WEbl8ZRRL1Ti/zuwGsgy3Vm7jTsmktawc8xLwicJ9ITJiocieAq3mW3tVJQzfIjjEBpS+jr7Wdk7LoZWkVS4mfJR7sc8vjTFOAKq4X1trLEC1ZvGKTmASlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f3n8Kt8f; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2d28e465655so47399831fa.0;
-        Wed, 28 Feb 2024 09:26:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709141168; x=1709745968; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=UNTgcEBBg73DjZmytlJ3R7l8+M00JW1cu/+Tjop0kzs=;
-        b=f3n8Kt8f3Mfk2/rg6mfpV9FjOeCL+EUjGNlB58HlWl07I9TBsbc5MzUgJmYCQNrKjF
-         f/yE2GpsB2gsR/IIimruiK6LG5McQ1AuvMnTslgrOPG/8HC3aLDk0ex33+vR8wuWUvMu
-         1S0EVQbAN0QNwt3xthjWEuzMqS+vQGJsRI7VOjLlKxWmTWmHFhsla/dpMBtYkqap9l0r
-         2xmEMVu4F1j44gNVTbRLPmw/58oyuFIyKvPhagnU/6BtmF8dCS7xfof9DEwKOqVhg2cw
-         8VU+QfznfIoBjvoR1E7wep/pNIaHe0iYpli/hGQtwfbULxOAr7o1cleZaNYQBXEkgxQ7
-         rJbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709141168; x=1709745968;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UNTgcEBBg73DjZmytlJ3R7l8+M00JW1cu/+Tjop0kzs=;
-        b=EM6kjJwNbNsxFgQ12hQs8Qa+HQsMHu2Dc2S1qDVCmrFAzS28GjO5t7A3bh6+2cwHEa
-         8Juj6fQIiwmTUO9dapJw/S/YuNItF5Y4PVdXPl/PkmCj8zMoUv45ZuH5qbhSVbGMjtXJ
-         lhopXgwzOanXj/+CJrQT9wJKLGjLoCIMLkIvbLCq7ckZJxcIrI4oH4ANxAo3+3FECzSF
-         QmXHXedecm0vRYH3KYGSh4HNFG2KTMp2NjAn3ug3bRzju7FxHDy+FIBe42DvPtF7XIsT
-         8+TjbfWwUkFW7JnptzWQVeeeBJ1Z3MrUMSXSCj6AMcEmZgpZIF7UXEVBSYE8FUYS7zwr
-         rNjw==
-X-Forwarded-Encrypted: i=1; AJvYcCWGjrlnB+V5OeouG2yZtlVpyZ6ndtu31I3PPCVQwFpoMVl0A4hnXEfK8zX9aGLoOSpUC2ITzJJZNywoSEEVvon/8KwaMt4rOcpvuJ0aBrwLF/LrHgdHth4t7tzCXHGUPkImJae1WeBAWVc=
-X-Gm-Message-State: AOJu0YwWh/gX1Nfqcm3hkuGLnT5r+yyyH4PT6LEWWlXffRSU1b1zUIN2
-	gIf22uf+QZRqGu+CAswnBOSYopQNclX8jfdSpBb0RrP3TkN8itOE1wQ0eVpBhDYgWkykSwQXqrE
-	PyahzcqRF+C4WBiHrblGnoQ5f6wT8+Uqn0733FA==
-X-Google-Smtp-Source: AGHT+IH1rWoewQvMELMlYHG8fdSakqFW164fjWcxkcHfJKS1Eql5fp55rbAcnXR8nYl+LnUARZaIVQMv/On3PTITdrk=
-X-Received: by 2002:a05:651c:4d3:b0:2d2:c8ee:c99b with SMTP id
- e19-20020a05651c04d300b002d2c8eec99bmr2003504lji.29.1709141167712; Wed, 28
- Feb 2024 09:26:07 -0800 (PST)
+	s=arc-20240116; t=1709141538; c=relaxed/simple;
+	bh=HXQD3ppL4EL8Ki24QEE/lfTFWgkyD42Xf2IPB4zj8oE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tMz0Viy/n3O2aZz11/YITf+5slYPdx5Djg0hYDpJSivNoEP7wKm8n+N1aBGIkGR2z0v8c9jhpMck/7zorswv0ypMk0MlGHWZJrudGq/sFqBlAaXOKERGMLpifjA8D/vqxHZSlgsEHiKT7IKD+kjuaLdoctyqijeg64eTxkZAPcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ffxH3PGZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F3DAC433C7;
+	Wed, 28 Feb 2024 17:32:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709141538;
+	bh=HXQD3ppL4EL8Ki24QEE/lfTFWgkyD42Xf2IPB4zj8oE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ffxH3PGZ3jbqmXx6vkqlH6hAaggbgiMrDgXGeARlCzv3xcJeE3iS6RoaAYfrXUDzn
+	 LurkyA+2FU7FlrV1zl1QK+HbiFjxON7OfsCGf62MLL5Ke07b1RPbgIaphADXXmgudL
+	 p5MvgI9jT2Pa5qaLn7db5kFxA8czLF+TU0MG5do7nxuwQWgI7O+i8YvtdhzClQNfl2
+	 /So3OOijfwx+kT0gTw9pPoc2LS+WGu3brj008lhcZZV8EkEAKnA/X611iguPEghFVS
+	 9oLLZTQ+PPOEj2GpOaLjwAHmQxYgAIFXYFRcwA1M9DaHx5Q78FwKoGxj69cDKBGyDR
+	 wv1qR1bm3fZLA==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	Matthieu Baerts <matthieu.baerts@tessares.net>,
+	"David S . Miller" <davem@davemloft.net>,
+	Matthieu Baerts <matttbe@kernel.org>
+Subject: [PATCH 5.15.y] mptcp: move __mptcp_error_report in protocol.c
+Date: Wed, 28 Feb 2024 18:31:58 +0100
+Message-ID: <20240228173157.255719-2-matttbe@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2023100421-divisible-bacterium-18b5@gregkh>
+References: <2023100421-divisible-bacterium-18b5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAOCpoWc_HQy4UJzTi9pqtJdO740Wx5Yd702O-mwXBE6RVBX1Eg@mail.gmail.com>
- <CAOCpoWf3TSQkUUo-qsj0LVEOm-kY0hXdmttLE82Ytc0hjpTSPw@mail.gmail.com>
-In-Reply-To: <CAOCpoWf3TSQkUUo-qsj0LVEOm-kY0hXdmttLE82Ytc0hjpTSPw@mail.gmail.com>
-From: Patrick Plenefisch <simonpatp@gmail.com>
-Date: Wed, 28 Feb 2024 12:25:57 -0500
-Message-ID: <CAOCpoWeNYsMfzh8TSnFqwAG1BhAYnNt_J+AcUNqRLF7zmJGEFA@mail.gmail.com>
-Subject: Re: [REGRESSION] LVM-on-LVM: error while submitting device barriers
-To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>, 
-	Mikulas Patocka <mpatocka@redhat.com>, Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>, 
-	David Sterba <dsterba@suse.com>, regressions@lists.linux.dev, dm-devel@lists.linux.dev, 
-	linux-btrfs@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3978; i=matttbe@kernel.org; h=from:subject; bh=JXhbeOmplUmQsPUC0JVUwMuQr3vY4d2rPo0BZgOVKLA=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBl324Nz9GcwCNOqfxny4Kwwna0HO3EuCrwD7xQR LnttC0CimmJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZd9uDQAKCRD2t4JPQmmg c+CED/0Yl4xyn0y2io+QvFG2podXuUq+iMnfYEEnftkU85mT+jyl+IbFSJt4CvMU+INRr2c8duX DVOIgh/Nidr4uK0DpmDpoOjLkMEZ9pdTS+e1FJvM1eJAH6mZRBWgzhizwsYT7KMSyp8bhDDAF3L SK/V6+tzCTG7QXdFYC63rKxFnKDAOly16HMT7iPp1QQwmeWu1HQKnFI57yZ7y4+AOdx9mHGRygu Cf7rrGUOw+zbUmU+xldQOzNgXNO9ulItePpbxCK1/oXEILTUxvtcAZ5HUrBPzClbfXh9e/V3Wp4 pUJ93e78uEuCLrDfYZSxvbILxjhPXKcREiCb+eOrfAGA9tL2oiW5308T3fXlhXR/uJWP3fL3nWQ AbuG67X0KKnprJ5W2YoouC7JbUzfw2li8rsx1RcFnpXD6hZlK1l7mXgds39r/VG0XXNk8Qcxk0C oUtVaSNQcROKATVRWdqgFETGHMkQpkxRBplMs27i0/pX4INLTaPogot5tKKJoaz9pkaN3RuPW5M x0YZugxqPtp0/RkxRhbBwwPacl2iONJLI9sfZ3COHLR73+r6HwMoho6BLIrALyLSmMU6863viAd wf5hjK0B94A2977Qc1lRIbNTBD/lkKGsnlvWMlkxSmDg02eQ5VSfUXIgJ1wTkRSLrymlg44x+xT bjw7UYuf1LHfSaQ==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
 
-I'm unsure if this is just an LVM bug, or a BTRFS+LVM interaction bug,
-but LVM is definitely involved somehow.
-Upgrading from 5.10 to 6.1, I noticed one of my filesystems was
-read-only. In dmesg, I found:
+From: Paolo Abeni <pabeni@redhat.com>
 
-BTRFS error (device dm-75): bdev /dev/mapper/lvm-brokenDisk errs: wr
-0, rd 0, flush 1, corrupt 0, gen 0
-BTRFS warning (device dm-75): chunk 13631488 missing 1 devices, max
-tolerance is 0 for writable mount
-BTRFS: error (device dm-75) in write_all_supers:4379: errno=-5 IO
-failure (errors while submitting device barriers.)
-BTRFS info (device dm-75: state E): forced readonly
-BTRFS warning (device dm-75: state E): Skipping commit of aborted transaction.
-BTRFS: error (device dm-75: state EA) in cleanup_transaction:1992:
-errno=-5 IO failure
+This will simplify the next patch ("mptcp: process pending subflow error
+on close").
 
-At first I suspected a btrfs error, but a scrub found no errors, and
-it continued to be read-write on 5.10 kernels.
+No functional change intended.
 
-Here is my setup:
+Cc: stable@vger.kernel.org # v5.12+
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+(cherry picked from commit d5fbeff1ab812b6c473b6924bee8748469462e2c)
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+Notes:
+ - A simple conflict because in v5.15, we don't have 9ae8e5ad99b8
+   ("mptcp: annotate lockless accesses to sk->sk_err"), and one line
+   from __mptcp_error_report() is different.
+ - Note that the version of __mptcp_error_report() from after
+   9ae8e5ad99b8 ("mptcp: annotate lockless accesses to sk->sk_err") has
+   been taken -- with the WRITE_ONCE(sk->sk_err, -err); -- to ease the
+   future backports.
+---
+ net/mptcp/protocol.c | 36 ++++++++++++++++++++++++++++++++++++
+ net/mptcp/subflow.c  | 36 ------------------------------------
+ 2 files changed, 36 insertions(+), 36 deletions(-)
 
-/dev/lvm/brokenDisk is a lvm-on-lvm volume. I have /dev/sd{a,b,c,d}
-(of varying sizes) in a lower VG, which has three LVs, all raid1
-volumes. Two of the volumes are further used as PV's for an upper VGs.
-One of the upper VGs has no issues. The non-PV LV has no issue. The
-remaining one, /dev/lowerVG/lvmPool, hosting nested LVM, is used as a
-PV for VG "lvm", and has 3 volumes inside. Two of those volumes have
-no issues (and are btrfs), but the last one is /dev/lvm/brokenDisk.
-This volume is the only one that exhibits this behavior, so something
-is special.
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 8d3afa99ef653..8382345af1d86 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -688,6 +688,42 @@ static bool __mptcp_ofo_queue(struct mptcp_sock *msk)
+ 	return moved;
+ }
+ 
++void __mptcp_error_report(struct sock *sk)
++{
++	struct mptcp_subflow_context *subflow;
++	struct mptcp_sock *msk = mptcp_sk(sk);
++
++	mptcp_for_each_subflow(msk, subflow) {
++		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
++		int err = sock_error(ssk);
++		int ssk_state;
++
++		if (!err)
++			continue;
++
++		/* only propagate errors on fallen-back sockets or
++		 * on MPC connect
++		 */
++		if (sk->sk_state != TCP_SYN_SENT && !__mptcp_check_fallback(msk))
++			continue;
++
++		/* We need to propagate only transition to CLOSE state.
++		 * Orphaned socket will see such state change via
++		 * subflow_sched_work_if_closed() and that path will properly
++		 * destroy the msk as needed.
++		 */
++		ssk_state = inet_sk_state_load(ssk);
++		if (ssk_state == TCP_CLOSE && !sock_flag(sk, SOCK_DEAD))
++			inet_sk_state_store(sk, ssk_state);
++		WRITE_ONCE(sk->sk_err, -err);
++
++		/* This barrier is coupled with smp_rmb() in mptcp_poll() */
++		smp_wmb();
++		sk_error_report(sk);
++		break;
++	}
++}
++
+ /* In most cases we will be able to lock the mptcp socket.  If its already
+  * owned, we need to defer to the work queue to avoid ABBA deadlock.
+  */
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index 099bdfc12da96..80230787554ed 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -1269,42 +1269,6 @@ void mptcp_space(const struct sock *ssk, int *space, int *full_space)
+ 	*full_space = tcp_full_space(sk);
+ }
+ 
+-void __mptcp_error_report(struct sock *sk)
+-{
+-	struct mptcp_subflow_context *subflow;
+-	struct mptcp_sock *msk = mptcp_sk(sk);
+-
+-	mptcp_for_each_subflow(msk, subflow) {
+-		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
+-		int err = sock_error(ssk);
+-		int ssk_state;
+-
+-		if (!err)
+-			continue;
+-
+-		/* only propagate errors on fallen-back sockets or
+-		 * on MPC connect
+-		 */
+-		if (sk->sk_state != TCP_SYN_SENT && !__mptcp_check_fallback(msk))
+-			continue;
+-
+-		/* We need to propagate only transition to CLOSE state.
+-		 * Orphaned socket will see such state change via
+-		 * subflow_sched_work_if_closed() and that path will properly
+-		 * destroy the msk as needed.
+-		 */
+-		ssk_state = inet_sk_state_load(ssk);
+-		if (ssk_state == TCP_CLOSE && !sock_flag(sk, SOCK_DEAD))
+-			inet_sk_state_store(sk, ssk_state);
+-		sk->sk_err = -err;
+-
+-		/* This barrier is coupled with smp_rmb() in mptcp_poll() */
+-		smp_wmb();
+-		sk_error_report(sk);
+-		break;
+-	}
+-}
+-
+ static void subflow_error_report(struct sock *ssk)
+ {
+ 	struct sock *sk = mptcp_subflow_ctx(ssk)->conn;
+-- 
+2.43.0
 
-Or described as layers:
-/dev/sd{a,b,c,d} => PV => VG "lowerVG"
-/dev/lowerVG/single (RAID1 LV) => BTRFS, works fine
-/dev/lowerVG/works (RAID1 LV) => PV => VG "workingUpper"
-/dev/workingUpper/{a,b,c} => BTRFS, works fine
-/dev/lowerVG/lvmPool (RAID1 LV) => PV => VG "lvm"
-/dev/lvm/{a,b} => BTRFS, works fine
-/dev/lvm/brokenDisk => BTRFS, Exhibits errors
-
-After some investigation, here is what I've found:
-
-1. This regression was introduced in 5.19. 5.18 and earlier kernels I
-can keep this filesystem rw and everything works as expected, while
-5.19.0 and later the filesystem is immediately ro on any write
-attempt. I couldn't build rc1, but I did confirm rc2 already has this
-regression.
-2. Passing /dev/lvm/brokenDisk to a KVM VM as /dev/vdb with an
-unaffected kernel inside the vm exhibits the ro barrier problem on
-unaffected kernels.
-3. Passing /dev/lowerVG/lvmPool to a KVM VM as /dev/vdb with an
-affected kernel inside the VM and using LVM inside the VM exhibits
-correct behavior (I can keep the filesystem rw, no barrier errors on
-host or guest)
-4. A discussion in IRC with BTRFS folks, and they think the BTRFS
-filesystem is fine (btrfs check and btrfs scrub also agree)
-5. The dmesg error can be delayed indefinitely by not writing to the
-disk, or reading with noatime
-6. This affects Debian, Ubuntu, NixOS, and Solus, so I'm fairly
-certain it's distro-agnostic, and purely a kernel issue.
-7. I can't reproduce this with other LVM-on-LVM setups, so I think the
-asymmetric nature of the raid1 volume is potentially contributing
-8. There are no new smart errors/failures on any of the disks, disks are healthy
-9. I previously had raidintegrity=y and caching enabled. They didn't
-affect the issue
-
-
-#regzbot introduced v5.18..v5.19-rc2
-
-Patrick
 
