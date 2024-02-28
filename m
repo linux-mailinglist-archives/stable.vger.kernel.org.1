@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-25432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A87D586B79B
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 19:47:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F64486B7A0
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 19:48:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA88A1C211DC
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 18:47:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2A6A1C21D80
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 18:48:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041C871EAE;
-	Wed, 28 Feb 2024 18:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FE4D71EAE;
+	Wed, 28 Feb 2024 18:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="YGSMnthN"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="BjOEwj7b"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2083.outbound.protection.outlook.com [40.107.92.83])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D73579B7A
-	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 18:47:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D68F79B7A
+	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 18:48:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.41
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709146051; cv=fail; b=PN29T9irprxRJWruLgpA7AevbhqVJ8Lgnzw/xbGcqP30CSREJdZTyh9ngUanmGCg79doKEPxr0jb1hzKkdYZEtu7CcVxAgyW71cK+DGKds0qfwFoegupvOD8D33cE55PF/QKDYExatQv3h3oNnPx0kmNQANr8zH9qciZUWcHxNQ=
+	t=1709146085; cv=fail; b=Xis1vAWRVihur8sbBRuPzqQPLWx+DCx8PapmNKn2NYdyZAbu3AZdPDDlq2wI45JCRPQcsyehqiSw24chnHSkEegsgWhu/rU6yMwIypnJABdhKKpOfyEp53U+QBjrYWImbk6glYhkcCEs2PTslLqF7Jyh5KSoDOK0oVfrcRp+yiw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709146051; c=relaxed/simple;
-	bh=OG0AucLoY9Ym7PtFA9U63WiprdO1fr/iHoIMq2Lt1n8=;
+	s=arc-20240116; t=1709146085; c=relaxed/simple;
+	bh=sh8H9Mn7exw4RM/m1Nm1ERb9RxUF85ndC+tMCJXFxFY=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OZVVoedqSkPuRoMB5PBTavhVRO+EEMPjMqpEDIeJDWNk6ySx6f4dzQijwOt7xBs2zOQEpeFV/bQ3hPnXpkGUMKuCm36n3HFfE2qfQtb0q3VJx3OegYa1ETai8ay1KifcLw2Dyz9yQFTkIIMgN+/u5jvA2Bz9YzqSme/ClZLYG6s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=YGSMnthN; arc=fail smtp.client-ip=40.107.92.83
+	 MIME-Version:Content-Type; b=cB2ITdc++qw+HKi2i6LRIf22Q6MtKV7M1NHOv63jJ5x1Lwt1gFkkt5MPApYPS4yef6EH8Hwx9ux6NQRERypijOB/WzzjFALqWpY4lw1Uyd8zyL/jxjdeYCmljOMaht21Zbm+5BAX9RgRTjKxC9i6YRPKaACkN2P6ZbKNtXz2FTo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=BjOEwj7b; arc=fail smtp.client-ip=40.107.236.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PEa1KhX1qOVtPIdBRLQFm5NsO4siomVR9B7M984veJZ+VU8VGpcmqDpzTkNzfQ39mDOF1479Sojbn6mCuFO75cMOE1gjkrgZjsEs2qtXUSe6pBZCTvWUa2CkzV/cKBS9izOIyPSx9x9UJzuf2eAR8rbgA3RGjWIpvnhLigQ2IBE0VeXgWwZlBaAVMSJpIvln7W7cZLMDjjY2fzdC5orq0gckVQk7W1NPxvthkJObqYRcU18ES1yZ02r7qE46UcO7NWVUrWQoRplIYxYgD+PJZ6p+SjoT32Mv+lDCtCO4ptvPBq5A5PYNNCNzQeicQbsW3oAu+ZLjA/ONaNxZaf1B3A==
+ b=nP2D9mtLbmFVvjVVImdEeHf+mSXje/8t3UaX4wISt+WeBGh+EVHIgrU+l4/66IsFaxAtQTxlbnL6f7EcTcOmaWZ7Be91WoWzXxIR2sKRmyf0d2XwPzkzJ98nh4nFbTbvkDAcCntg+PUXzFwQC+gAva9DjGQ5wJf3GA77XzZdINHx8OIlRj9dKhXvyAJ8vMxu5AI/82Xl9Qve9X25Q9WPdn1n2EvEfWnG/na+yDg9h7qajf3Hy831fyQQWwqh35ERtQjB8a/HpDbeFIIfV0UUnw03oF1pJPgKTgSrppu2Snqg0CY9ZFMEVredKsnubRDpsyePeIScWnjVqWswpNRFcQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=d6817TsJkLnxpIzyMUqXP8IlNaUCBcWfC1ntIIgy4RA=;
- b=ZJFnQTxzEcPFK1FOkPz69m0wB58RQYLBDfiTw8bO5XxfzpnZeU1bRc8GCyKtUCxZxDoCWxFJvzkx2q9d0V1GIl3Ex172GlIg+M9ur5jIE9sqSYl3dJ7uegI83Dg7l7Xy9SNxyzw+KTdrdk19/UTNo8J7bn2ueD+LYpgCGC7zmHrzocJ+JM8I0LkM9/ov8fLEA3q/ZU5cVbYcHdPjNtLTH7H4eEvY/EEhpoovTkf8/4jghL4eRMC1EcCWDneiUIbMzLhc4NbrComJIKGhQRR1B4SxZqsdhqdIlkqEJnIskHJkyZLkh5LDLk3VFhq7zceqh13BlpGcbRARvm9OgZy38w==
+ bh=o36Off8MngEu0k9piwvAta/VvNrdcXfW2XYzWi4WaLQ=;
+ b=eOufuPRw/o/79L+/dI4auTMTAIos/8s0sWpglLOPSkFSivy6AnbRCHzvUw7R3xll6k51iY/qRxU7S/JAbYZsrvz6Z4sDFRTL4MNl/T7R9Cg3g8hcWAWYWzXkOjMsO4/2c9URPqyBi1HXIsN9Om/u7fQb37MHRGvDHqCwouqNbBTT7C/v3/7wX4Y08laaj3eFRH4Rb449TjNyW9be9LZIgFvS8t/H3QeV22OsVVxCIjpERycqKUgWLzm0cwp6dGnbMxOorCu225TdZb9eePinKPNtMdwMVCQhm9tXpDuWKqEDTADzLZpgluR26RkZGuvPbQQjnn8taGSQZvHChPSVrA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=d6817TsJkLnxpIzyMUqXP8IlNaUCBcWfC1ntIIgy4RA=;
- b=YGSMnthNjLA7ylbxKYbQ4/tCJx2dXfhf0jFkowjBLSgMyBfwU20S/0L+rHDOugpNaDs4HHOMhAZREwIBoajqc+ZMpRdCf1mRzbzZldnKMwzLheI+p2rU4Wt1VtftoFSUUxCWtHWr1vqsN6iTfju+i9wO8M9MMMya5J08pyukziY=
-Received: from PH8PR07CA0035.namprd07.prod.outlook.com (2603:10b6:510:2cf::22)
- by SJ1PR12MB6147.namprd12.prod.outlook.com (2603:10b6:a03:45a::22) with
+ bh=o36Off8MngEu0k9piwvAta/VvNrdcXfW2XYzWi4WaLQ=;
+ b=BjOEwj7bPEcWqynFdYZE0kz6U8y8xT0K5nheNL32w345c5O2M/egCgL7Wpbwdi0w5RL5dY6kHdUIBDYvJfgU1InqZoM7xpw5c8+qmG2abKalExeuTG0zL7i4zkLpJfkxjZYABVOgXW1oBjrMUw50w8Ufpzis/Sa89XWr5Ms9PsQ=
+Received: from SA9PR13CA0066.namprd13.prod.outlook.com (2603:10b6:806:23::11)
+ by SN7PR12MB7155.namprd12.prod.outlook.com (2603:10b6:806:2a6::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.23; Wed, 28 Feb
- 2024 18:47:25 +0000
-Received: from SN1PEPF000252A2.namprd05.prod.outlook.com
- (2603:10b6:510:2cf:cafe::3c) by PH8PR07CA0035.outlook.office365.com
- (2603:10b6:510:2cf::22) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.28 via Frontend
- Transport; Wed, 28 Feb 2024 18:47:20 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.39; Wed, 28 Feb
+ 2024 18:48:00 +0000
+Received: from SN1PEPF0002529E.namprd05.prod.outlook.com
+ (2603:10b6:806:23:cafe::b1) by SA9PR13CA0066.outlook.office365.com
+ (2603:10b6:806:23::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.12 via Frontend
+ Transport; Wed, 28 Feb 2024 18:48:00 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -63,25 +63,24 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SN1PEPF000252A2.mail.protection.outlook.com (10.167.242.9) with Microsoft
+ SN1PEPF0002529E.mail.protection.outlook.com (10.167.242.5) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7292.25 via Frontend Transport; Wed, 28 Feb 2024 18:47:20 +0000
+ 15.20.7292.25 via Frontend Transport; Wed, 28 Feb 2024 18:48:00 +0000
 Received: from dev.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 28 Feb
- 2024 12:47:17 -0600
+ 2024 12:47:58 -0600
 From: Alex Hung <alex.hung@amd.com>
 To: <amd-gfx@lists.freedesktop.org>
 CC: <Harry.Wentland@amd.com>, <Sunpeng.Li@amd.com>,
 	<Rodrigo.Siqueira@amd.com>, <Aurabindo.Pillai@amd.com>, <roman.li@amd.com>,
 	<wayne.lin@amd.com>, <agustin.gutierrez@amd.com>, <chiahsuan.chung@amd.com>,
-	<hersenxs.wu@amd.com>, <jerry.zuo@amd.com>, Allen Pan <allen.pan@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>, Alex Deucher
-	<alexander.deucher@amd.com>, <stable@vger.kernel.org>, Charlene Liu
-	<charlene.liu@amd.com>, Alex Hung <alex.hung@amd.com>
-Subject: [PATCH 29/34] drm/amd/display: Add a dc_state NULL check in dc_state_release
-Date: Wed, 28 Feb 2024 11:39:35 -0700
-Message-ID: <20240228183940.1883742-30-alex.hung@amd.com>
+	<hersenxs.wu@amd.com>, <jerry.zuo@amd.com>, Mario Limonciello
+	<mario.limonciello@amd.com>, Alex Deucher <alexander.deucher@amd.com>,
+	<stable@vger.kernel.org>, Alex Hung <alex.hung@amd.com>
+Subject: [PATCH 32/34] drm/amd/display: Return the correct HDCP error code
+Date: Wed, 28 Feb 2024 11:39:38 -0700
+Message-ID: <20240228183940.1883742-33-alex.hung@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240228183940.1883742-1-alex.hung@amd.com>
 References: <20240228183940.1883742-1-alex.hung@amd.com>
@@ -97,56 +96,56 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF000252A2:EE_|SJ1PR12MB6147:EE_
-X-MS-Office365-Filtering-Correlation-Id: 41322116-9209-45da-17c9-08dc388db1ae
+X-MS-TrafficTypeDiagnostic: SN1PEPF0002529E:EE_|SN7PR12MB7155:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7deacb79-f535-46aa-fd70-08dc388dc9c3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	VWdyOPDG/FYFn+rsT7OVafeC4pu11Lz+GeqJUR44e/uA8N7mAnPRu5pTTz+u4CBsi/4gdONDf8YtTaQ79O9dDnUHrXkOEXCriGV5h24zkCgP4x/Oks+TApxyX+B5+UxYkBS6e6cbXiL7TZa/48JQRtWaK5QwtacR1TuFSxSdH3IOxowF2YvLM2pTpRVsoXNmat083RSOXgbUxKj9uj3vno/UkbQBbe2rMzaKky+8LWfOPcQXu9xTZMnuxBuf0IGBgZO+zBZfV/t7+0ev7VMZhXL0hcxSzawSTxGSuc3+n7viWeyrhaEXd2xCaK/yQPQ8v37O+aR7nFoR5BnPd3F75RbbcxUbrOByziSnLBGB35rQHCzZMlK7+CwRGaorQS8L2y+iMg6kKepxvkH7BJBoRhoJPCZqmMF82sFW3+3kpPDuaKJ4HRwMqPnl/hAR2VH1oCRnJJVHCl+Il+hi1Cmf/YR9Jfe6AgTLEHV2aojIIuJIIrQo5eYrVNvuDY9wH12j1eYI+n1CcAdBZZvosuTfZWlQUMjCduH71exeLzt0BKNcbXwQQiuzzIkIKeie9qZIkUE8bH+oBkYYBJAPmsodiQH5cCRuwQwQ9uaoXnYGPo/9SzoG3T9Oac2tBzBDxM+d/2gR2HkXVfSpUZQWA+uX7EQvyMsGnzFrOMxLH5spaT6oAUpPKhqwv7L+fc0MVyko+dHY27DWMUJqHTLgllOhNCDYurxlV7PNtsLyneHA263SIo86LqMAIuakmemRwJeK
+	SnivGSjbz/eK4kkLb9MjEkNl5nlDySHC1/eIM1cgpsAHMkMX575ZnZxojNSUZwebOFGVV3oo0ePkgFE5vot2aKV7ZFuFsSrFEHBx6MNhle7SHeijrS3A+Aw9Vu2xVIA9YR9uyH3X/9eLic+Jl4bQD8iybnImfzbFyNUPHJsErGpI6ir8m0yuqhv/4I3//qn4wPXJaARG8SiRaDj3vaJVeYPZgib5M7kjbzU6Xf/prW/IHh7m6oZh4abIc3t4aTS2QeweIoK0nr81BtAYVdO/jUkq29dd30900tgEbWXbyUwNNBgyGLnBWEI5ArbmKQDq0qOMljWb9OPIFhj6CTYM+aNhauOAdf9BU9qNP22etzP0ff3PASV6RQ4oLtkpUCm8WCBL51LM+G6wk53OsEFt32ld2lfxroBjGltFnB7E/Qw/eu1ZVSGaeAGmd1sBq2YgFUhE0t5B0g1tkSPJ5hD0y++/2SIHxCG5vDSQPP3ue/tcPXOmmNVXnxldY8curh/C16AZn8gnjWKdoVx+w/NVqj3rvVoAG9ybzdlvst1alGcXAjaML6ZWn2ZjB1/MgXAX9WrT6/1pV6ZnEW+1c49fsz9/peUpXQlYYF4uOvp/BCePE0M7HfoPqrtkOqk1B8gZqUiNQybVK/IPnow79746oInR6B1Dx/7NRJwofsTIiJi/7ioey2EiQn0blchGTrApiKr4x6onXCZX/xC4eCBt544yex9FoOAyq+N0dgg7cKSJIFpkegesI7DUZHDPM7cc
 X-Forefront-Antispam-Report:
 	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(36860700004)(82310400014);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2024 18:47:20.1663
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2024 18:48:00.5751
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 41322116-9209-45da-17c9-08dc388db1ae
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7deacb79-f535-46aa-fd70-08dc388dc9c3
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF000252A2.namprd05.prod.outlook.com
+	SN1PEPF0002529E.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6147
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7155
 
-From: Allen Pan <allen.pan@amd.com>
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 
-[How]
-Check wheather state is NULL before releasing it.
+[WHY & HOW]
+If the display is null when creating an HDCP session, return a proper
+error code.
 
 Cc: Mario Limonciello <mario.limonciello@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
 Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Allen Pan <allen.pan@amd.com>
+Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_state.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_state.c b/drivers/gpu/drm/amd/display/dc/core/dc_state.c
-index 180ac47868c2..5cc7f8da209c 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_state.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_state.c
-@@ -334,7 +334,8 @@ static void dc_state_free(struct kref *kref)
+diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
+index 8c137d7c032e..7c9805705fd3 100644
+--- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
++++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
+@@ -513,6 +513,9 @@ enum mod_hdcp_status mod_hdcp_hdcp2_create_session(struct mod_hdcp *hdcp)
+ 	hdcp_cmd = (struct ta_hdcp_shared_memory *)psp->hdcp_context.context.mem_context.shared_buf;
+ 	memset(hdcp_cmd, 0, sizeof(struct ta_hdcp_shared_memory));
  
- void dc_state_release(struct dc_state *state)
- {
--	kref_put(&state->refcount, dc_state_free);
-+	if (state != NULL)
-+		kref_put(&state->refcount, dc_state_free);
- }
- /*
-  * dc_state_add_stream() - Add a new dc_stream_state to a dc_state.
++	if (!display)
++		return MOD_HDCP_STATUS_DISPLAY_NOT_FOUND;
++
+ 	hdcp_cmd->in_msg.hdcp2_create_session_v2.display_handle = display->index;
+ 
+ 	if (hdcp->connection.link.adjust.hdcp2.force_type == MOD_HDCP_FORCE_TYPE_0)
 -- 
 2.34.1
 
