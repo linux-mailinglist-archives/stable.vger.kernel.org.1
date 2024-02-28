@@ -1,96 +1,83 @@
-Return-Path: <stable+bounces-25313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15F1886A457
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 01:19:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C82586A463
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 01:25:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 482471C237A8
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 00:19:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEE021F2C16F
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 00:25:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40ED0363;
-	Wed, 28 Feb 2024 00:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5830023CB;
+	Wed, 28 Feb 2024 00:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Wgm1Q/ej"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="TAEJ8tYb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E724210D
-	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 00:19:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E1011370;
+	Wed, 28 Feb 2024 00:25:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709079551; cv=none; b=FrE08thmJg8dl1r6jqcN3sULFa+z+D1/7Gvrx6PNDCTvFYLTk9Ol+SXrmknODMoohvXuDHVDt/G/f3SmCtaK+5oAF4FW8mOTDQHo3dfiWI1xBZGt5+OP6PLwhdZNkLB9kXrz9LPchV8kAKNy71XzUWzx1vSGZq0PyQjTAa5hiss=
+	t=1709079935; cv=none; b=Z4Dyebqn5LJqgSrc4aeU11Cp9Wjmf+pB9F2y+bUDu3iw1vMOQzwPzd8pe+i48uvZBXL357j5TG9suHiN6l5FRo5j+S/w5LKqLn63QrtCQABDxcJs2vYJIvl7qqFXPyw9svQ5rUHlwnWDn1pQzKGBGTJVYosMLWxtk/wsgRTESa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709079551; c=relaxed/simple;
-	bh=j5Rz9witw9DFiiGNFw7bHEa/CoGSxtGq6qJE7xkOgTk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=t4gZSDo8LdaH4KbWZdVqvL42iyk712NFmvrEmpUbaB4xmwSZjPf1W8RpBQhSq2elouNkRgqL2c7WAkW9NIPrpU98S1nLGaYQJXkAOzar5OsHwgXv9I6iQ3r9xFzupmGXycTlR5A+qDgXXmaq1ubYN0cfs9BumQwhQ7lEUgfkutQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Wgm1Q/ej; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1dbd32cff0bso37555515ad.0
-        for <stable@vger.kernel.org>; Tue, 27 Feb 2024 16:19:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1709079548; x=1709684348; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=j5Rz9witw9DFiiGNFw7bHEa/CoGSxtGq6qJE7xkOgTk=;
-        b=Wgm1Q/ejrl/pTeN1X56UwwZr98W88gSdVVLqa+5ziXBRE591O2r/buMYzxPpEIZS7o
-         SsiE7KhBmo3L9UFF8IE3cqXtTwuQrGapAAsEchopq1BKaFBXxAE/rJq53wtkhEZRT3Cg
-         2L4DZv5OIPgPzFB3EJbbDy0zW6ERpYZDkRYXA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709079548; x=1709684348;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=j5Rz9witw9DFiiGNFw7bHEa/CoGSxtGq6qJE7xkOgTk=;
-        b=tt/rjPAqLINhdvnZdW//ARyFjc/rme8DRtwCaA1S9GpNdksc0BJigD1a8Uv65jyVVk
-         iqCsZsrSAVRW1YTA7c8e5ZsOEwOUCk/nHWtYJCRPgDWpX/Z1c3vznf+1Y73H75b5/4xi
-         42jIZpxNpoDILBNiaLXz3BQG0Us9yqUUKOaUMIQXKRlUpO2pmYiMpjAjBqvQLM4m6IYu
-         litIwNJEt1gTMeGNaskiUcpo4oFqZdICLUVAdpjGUJbUDUsFX12J1W+dw/YOI694zwjs
-         l7fd/tFo4CYIzIUhe4sXIL2rnbdEuZInGO8AOenZQoqhMCeOGFuEgGK02p/ow6o3bHtu
-         VRxQ==
-X-Gm-Message-State: AOJu0Yy9HWHAdV7ZmlyI8DAeyXY5yG0GQzxtC6fIYlTxwBb0evvTllwQ
-	cz8oKM4PPHgcozCml/z7MfHLfiSsx55nYX3eRmqWbA4xZdQRexH+gKJ7xutqLUS8CMo8IWkiGUW
-	Oz9ObYvn8izEmt8L+DPhTHWPwwcxxtvONo3UYQjzIxZKRDEf512ETICq+FS1v3/60PsB4gMMdyo
-	YuAQ658qxbK4PZaMNBhDmkPvl1tX1dYcoXALo+iJIUwsCgCjENUTqnH9Q=
-X-Google-Smtp-Source: AGHT+IHwobVDYZ16IGSaZiROsNB8NQfGfacykwpIn7j2X9S03xEkZe9CQg13ZNM9ynokRJ2Kei7bRA==
-X-Received: by 2002:a17:902:f804:b0:1db:f372:a93c with SMTP id ix4-20020a170902f80400b001dbf372a93cmr8708337plb.43.1709079548045;
-        Tue, 27 Feb 2024 16:19:08 -0800 (PST)
-Received: from patch-virtual-machine.eng.vmware.com ([66.170.99.2])
-        by smtp.gmail.com with ESMTPSA id x18-20020a170902821200b001d949393c50sm2086719pln.187.2024.02.27.16.19.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Feb 2024 16:19:07 -0800 (PST)
-From: Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>
-To: stable@vger.kernel.org
-Cc: phaddad@nvidia.com,
-	shiraz.saleem@intel.com,
-	ajay.kaher@broadcom.com
-Subject: Backport fix for CVE-2023-2176 (8d037973 and 0e158630) to v6.1
-Date: Tue, 27 Feb 2024 16:15:06 -0800
-Message-Id: <20240228001506.3693-1-brennan.lamoreaux@broadcom.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1709079935; c=relaxed/simple;
+	bh=9PkFuAQnvHLgybqYTSuG4miDXpSkxYeaVLIU3V8OPXc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VXDQiyA8rvJD4oRVZcRxA61fi9yXQmdM7KluiZn5km3AB0jaJHOK9yH2Agr6j06S4p7cc3TDfOC8B43ftU0e9xJi8t21mDmsKG5uxt76on8AeYaKtp3Kk+WQQ/onITtdftoIvkkm9FvkRaHjO6ZS2RVchmXVsg5QBFHtyupqmxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=TAEJ8tYb; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1131)
+	id C07CF20B74C0; Tue, 27 Feb 2024 16:25:32 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C07CF20B74C0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1709079932;
+	bh=/XtuIasPbJ+pa8jkpkpOnHa9UC5OeliChPUOffyAgm4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TAEJ8tYb2k+C87Sr6K8P1CHW6PPqCqH0+HOsis+93dQB0CtTb3oFzSp4nrQsFbnkM
+	 4qByworn2L2nOAWrWxJ6shC8ZxbdGvSry3ftKycBquHWNoiQaciNDMH7qjaizngDGC
+	 fQaQjUo2dqIBJjNipGE/J4a+VwdK6fCSSxBc1MhI=
+Date: Tue, 27 Feb 2024 16:25:32 -0800
+From: Kelsey Steele <kelseysteele@linux.microsoft.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 6.1 000/195] 6.1.80-rc1 review
+Message-ID: <20240228002532.GA24086@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <20240227131610.391465389@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-Hi stable maintainers,
+On Tue, Feb 27, 2024 at 02:24:21PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.80 release.
+> There are 195 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 29 Feb 2024 13:15:36 +0000.
+> Anything received after that time might be too late.
 
-The following patch in mainline is listed as a fix for CVE-2023-2176:
-8d037973d48c026224ab285e6a06985ccac6f7bf (RDMA/core: Refactor rdma_bind_addr)
+No regressions found on WSL (x86 and arm64).
 
-And the following is a fix for a regression in the above patch:
-0e15863015d97c1ee2cc29d599abcc7fa2dc3e95 (RDMA/core: Update CMA destination address on rdma_resolve_addr)
+Built, booted, and reviewed dmesg.
 
-To my knowledge, at least back to v6.1 is vulnerable to this same bug.
-Since these should apply directly to 6.1.y, can these be picked up for that branch?
+Thank you. :)
 
-Regards,
-Brennan
+Tested-by: Kelsey Steele <kelseysteele@linux.microsoft.com>
+ 
 
