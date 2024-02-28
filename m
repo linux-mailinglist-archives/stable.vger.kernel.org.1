@@ -1,284 +1,226 @@
-Return-Path: <stable+bounces-25440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 777C386B83B
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 20:34:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FBE486B865
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 20:40:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EECE51F259E5
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 19:34:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AE511C20C6D
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 19:40:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 997DA15F30E;
-	Wed, 28 Feb 2024 19:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D838715DBC7;
+	Wed, 28 Feb 2024 19:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="KqpWX0wX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X4DXfilV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E3E15F304
-	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 19:33:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5712CA8;
+	Wed, 28 Feb 2024 19:37:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709148833; cv=none; b=scMIMtNCbTJ3OGeAWvBuzNacBwvRAW2kz0wAH17zrmmyk8eylap4MW+YdoPSqhPeTgXxAUyz0eW9JK62Cy2pEQ+QTrQGQmYbBwZGVoP235aVcvbuKeU0K8JaJN0lvxMINrfqtH0F9dAJZOWxZI1vA7R8TOLea3aJ8qy7ZNn/iDM=
+	t=1709149080; cv=none; b=NT8TbNMVHYM/vfJWnJCbl3bNQLIN2ZKv2fBtH8cGp3fDwZ/KjwN4mMfhxqIy7aSCh0rmFbWVNeOBWst0xbCaSQWSIvRb/vIoCZML29QLb3k/ayg2AeeEEsWNUcNeAEf4swm8mT+fqig3MWwnQC5kEFL6ZPcDY3Isw4t7iPzjGuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709148833; c=relaxed/simple;
-	bh=rHtUr07NXBMCSzgyNiFib3qptNPUiCmpA1avywuSbrs=;
+	s=arc-20240116; t=1709149080; c=relaxed/simple;
+	bh=EFmB4lWDphV8+EpOjlrT5HS+VlJ+NqK1Vzka+3xudRI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=makb3xwFt7WfW4OMKVFyKOyseBrQ35N82udttDBeuL8y4Q5VbrYdbY3iUxk31F9cwUKF5ITPiUWrnm0NtHoQ0gYtJTaDsc4Zx0+iYWpT1KEY/XQLLPeERO78lllKqsF1Q12r8ve07HzdB0Y/zCWO4uGMPU7W+fJt8I2gSd1iCN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=KqpWX0wX; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-33d118a181fso89842f8f.1
-        for <stable@vger.kernel.org>; Wed, 28 Feb 2024 11:33:51 -0800 (PST)
+	 To:Cc:Content-Type; b=uJBJbLpAhsd49PQbIrD//UtsCbaNTQXMirO62mYfIh/4rUPqZCf93epUI4z1lo/rOzIawQTDPzCLtkYyAgQugJgfw7sETA9LX0nODtk+hZTmhh5sXm3nYLPUR/RJ3wq484vYmh/sLIM2q/4ugb3M9mdGWIykGqq9tzJlF+EH3ZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X4DXfilV; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2d220e39907so1330011fa.1;
+        Wed, 28 Feb 2024 11:37:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1709148830; x=1709753630; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1709149077; x=1709753877; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lT04GCfSayZ/NG1YfdCVrXwolvgh0gSX9xKT3OophFQ=;
-        b=KqpWX0wXQ99WhpCCJ3E3KfNuFhK9da/LR8d0s7yfOBekz4WR9dG4eEZpzV80NbUJ76
-         xB2Pb2Mj5h1BLM2Shg2o9MHwmrd1j7U18EBxvNw9DSTC3wfdTYvs8NFY4NjevLX7Q+8C
-         OCbr8xDXws56/smwVmSkWGjR1uScyFNrJsl8A=
+        bh=qyl4cRu1qlUcGFJZjiydTaxtRFK5CrOEvpLgHrcgqZA=;
+        b=X4DXfilV0PhI7TAOGQo0dS8kf6kB+PaKk/R/xcT/DvlZgxG/4F4SlTBVm3AM5cp/6M
+         T6TgST5HcdagWIAMI77d1kuhxXAkIzq6Y1s39ppF4P+GB1fS8nwQ83Sv7QC1wRelp9Yr
+         qM+ZKzuYqtVVIyGVlQsc4mO1FiB0mb57qQKEvGRq76lhpHMXTutC5k55ICcaRR9eLJMe
+         iURWyzK5x7LO64aNFzHXbG9KX+y7zndTeMJ1Y6IwDZW1/vWfnlPKfJxxpb2QIVKSrMZA
+         cY6CSI4HqTVyohbUmzQiY/qGmYHZG0r51vLI7R/R2EmpPEqQ3Ru5s2UOOqmQ9t8e43k0
+         /kiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709148830; x=1709753630;
+        d=1e100.net; s=20230601; t=1709149077; x=1709753877;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lT04GCfSayZ/NG1YfdCVrXwolvgh0gSX9xKT3OophFQ=;
-        b=UeAIJQJAafQ8ulDalm8kDG6nTL+vVnCUo092GKxn8WHRfPJN2zn+3BMgmc0LvhBAli
-         k9N9GjYDpDhN0UpxLFzoT+5sH98Stwa4YiSuhM2w0RIevC1zNWHLVbAHXbHs7SG1vARF
-         1PtbCo2Htkj2Ln2PU+OYyjm3eZv4KxfXxgGnGAzlN80smms/7cmx6gWkSIrHB14CYmmD
-         wMZQuNQSoTTlhe4WfVRzz9UZla42DKsQHsCxs4mUTiuAH8ri4/ioHa/y89UruQ2rIC+w
-         d7/rldnyoKseWZ4QtIFMPg6+ICDzcFXy45ncTNOapoP6iPM4wFqaxZlX8W7znjmXqXtx
-         g9vg==
-X-Forwarded-Encrypted: i=1; AJvYcCW3TQRInd0uUXl5eHQJcncGNEWICm0raoz9mCM+yi04O4+5/FjeOphokzVzvlvoztAmGrZGs2Vz+YmSHzO2tjnQrD+GabOl
-X-Gm-Message-State: AOJu0Yz4WjpUYOtbAz/eYqjo+I1XIAt4NvHdPznN+KJvH05ucXFWe5pk
-	oLj6MWEANwJSqB6iGAvVwzBBjayNxAWFLFKpT9y3E7K1wyyu/eKHkCPbRO3kthCEb0GMAMVCfRF
-	GF/KhBSj2KiNqqeV7orbB86VHoXsNNFaTcSEQ
-X-Google-Smtp-Source: AGHT+IHi0a9VVTiFwIdkF5FnWuaSceqJNfODPnjKL5knq0jzCOUubnV9I4KXVitnKYMcQsXNcnfJC9GeIga63VcV/x8=
-X-Received: by 2002:adf:f848:0:b0:33d:88c1:31b8 with SMTP id
- d8-20020adff848000000b0033d88c131b8mr399831wrq.60.1709148829737; Wed, 28 Feb
- 2024 11:33:49 -0800 (PST)
+        bh=qyl4cRu1qlUcGFJZjiydTaxtRFK5CrOEvpLgHrcgqZA=;
+        b=YKLVEQkfdFBPNWjb04lYHeRCd6bB2w+we5bU5XhruMSU4zFNFgpldJXByO+zTcAnUW
+         H6rW/Gs5Dt/bwsStLwBtc0jLs8HmLwGUHNNpohFCxDjyrtCKViZkNaHHsijLn9A9iimc
+         iBVNXE1DYGpV4TcdvkpIb7Ylm1AQiUY7Ig0sm7OD9zTDFssiHpBhY7swFzojx4OGLUDo
+         nqku3rRTdm+WybqCf4GYo/Dj+7sK/LYUYn+JD3nTZ6RPVee00zmukMNR+gFWqNo9k6qK
+         y443bAcTudT2ikknDH+KedI+dWxx+KfgtQiqkHHxCtfDIzvkvLGJV1zruKI05WvyeaDf
+         M03w==
+X-Forwarded-Encrypted: i=1; AJvYcCWIrjUcq4k+ap8X7PkkLJZab0WHsXIRphTTYviOKLiLjEwex4l1ljdH9m8gVfaI8qHQ7TBG/HWBp2BJ7nzhpEjdadP8yvhG4dBq4PNoCDT34bVEa1DGxUp8lx9pkTonbNQMpX5pHfiB+Ok=
+X-Gm-Message-State: AOJu0YwlJQo59OyTpNGcl1ZBDeaK7iitMWySO5T7FRiJA08noOsyaxs4
+	ykj/fAsvwzAfM4KR9tDPP5vfhkEv17N3jlxxiEBQeMjvWaGH51C17NrnDUCzMOr6GhgdVXGi+M0
+	c76og/d1939qeuqrNVHKyaRs4Na8=
+X-Google-Smtp-Source: AGHT+IFr8Dy0vd+CWwPk6/6vxQc4Lc0pIfgo9F4ScipgWNlM+NiqFebxiO0hpCqIsRTpWsBoy5CcS04jzTzjwy6WBdE=
+X-Received: by 2002:a2e:92c9:0:b0:2d2:393d:91b7 with SMTP id
+ k9-20020a2e92c9000000b002d2393d91b7mr8098184ljh.52.1709149076723; Wed, 28 Feb
+ 2024 11:37:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAG-rBihs_xMKb3wrMO1+-+p4fowP9oy1pa_OTkfxBzPUVOZF+g@mail.gmail.com>
- <20240221114357.13655-2-vbabka@suse.cz>
-In-Reply-To: <20240221114357.13655-2-vbabka@suse.cz>
-From: Karthikeyan Ramasubramanian <kramasub@chromium.org>
-Date: Wed, 28 Feb 2024 12:33:38 -0700
-Message-ID: <CAJZwx_niaTD+n7mvKbzBQeEEki591Rg=W1cJpJew-iTo8P8X8g@mail.gmail.com>
-Subject: Re: [PATCH] mm, vmscan: prevent infinite loop for costly GFP_NOIO |
- __GFP_RETRY_MAYFAIL allocations
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>, svenva@chromium.org, bgeffon@google.com, 
-	cujomalainey@chromium.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-sound@vger.kernel.org, perex@perex.cz, stable@vger.kernel.org, 
-	tiwai@suse.com, tiwai@suse.de, Michal Hocko <mhocko@kernel.org>, 
-	Mel Gorman <mgorman@techsingularity.net>
+References: <CAOCpoWc_HQy4UJzTi9pqtJdO740Wx5Yd702O-mwXBE6RVBX1Eg@mail.gmail.com>
+ <CAOCpoWf3TSQkUUo-qsj0LVEOm-kY0hXdmttLE82Ytc0hjpTSPw@mail.gmail.com>
+ <CAOCpoWeNYsMfzh8TSnFqwAG1BhAYnNt_J+AcUNqRLF7zmJGEFA@mail.gmail.com> <672e88f2-8ac3-45fe-a2e9-730800017f53@libero.it>
+In-Reply-To: <672e88f2-8ac3-45fe-a2e9-730800017f53@libero.it>
+From: Patrick Plenefisch <simonpatp@gmail.com>
+Date: Wed, 28 Feb 2024 14:37:45 -0500
+Message-ID: <CAOCpoWexiuYLu0fpPr71+Uzxw_tw3q4HGF9tKgx5FM4xMx9fWA@mail.gmail.com>
+Subject: Re: [REGRESSION] LVM-on-LVM: error while submitting device barriers
+To: kreijack@inwind.it
+Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>, 
+	Mikulas Patocka <mpatocka@redhat.com>, Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>, 
+	David Sterba <dsterba@suse.com>, regressions@lists.linux.dev, dm-devel@lists.linux.dev, 
+	linux-btrfs@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 21, 2024 at 4:44=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
-ote:
+On Wed, Feb 28, 2024 at 2:19=E2=80=AFPM Goffredo Baroncelli <kreijack@liber=
+o.it> wrote:
 >
-> Sven reports an infinite loop in __alloc_pages_slowpath() for costly
-> order __GFP_RETRY_MAYFAIL allocations that are also GFP_NOIO. Such
-> combination can happen in a suspend/resume context where a GFP_KERNEL
-> allocation can have __GFP_IO masked out via gfp_allowed_mask.
+> On 28/02/2024 18.25, Patrick Plenefisch wrote:
+> > I'm unsure if this is just an LVM bug, or a BTRFS+LVM interaction bug,
+> > but LVM is definitely involved somehow.
+> > Upgrading from 5.10 to 6.1, I noticed one of my filesystems was
+> > read-only. In dmesg, I found:
+> >
+> > BTRFS error (device dm-75): bdev /dev/mapper/lvm-brokenDisk errs: wr
+> > 0, rd 0, flush 1, corrupt 0, gen 0
+> > BTRFS warning (device dm-75): chunk 13631488 missing 1 devices, max
+> > tolerance is 0 for writable mount
+> > BTRFS: error (device dm-75) in write_all_supers:4379: errno=3D-5 IO
+> > failure (errors while submitting device barriers.)
+> > BTRFS info (device dm-75: state E): forced readonly
+> > BTRFS warning (device dm-75: state E): Skipping commit of aborted trans=
+action.
+> > BTRFS: error (device dm-75: state EA) in cleanup_transaction:1992:
+> > errno=3D-5 IO failure
+> >
+> > At first I suspected a btrfs error, but a scrub found no errors, and
+> > it continued to be read-write on 5.10 kernels.
+> >
+> > Here is my setup:
+> >
+> > /dev/lvm/brokenDisk is a lvm-on-lvm volume. I have /dev/sd{a,b,c,d}
+> > (of varying sizes) in a lower VG, which has three LVs, all raid1
+> > volumes. Two of the volumes are further used as PV's for an upper VGs.
+> > One of the upper VGs has no issues. The non-PV LV has no issue. The
+> > remaining one, /dev/lowerVG/lvmPool, hosting nested LVM, is used as a
+> > PV for VG "lvm", and has 3 volumes inside. Two of those volumes have
+> > no issues (and are btrfs), but the last one is /dev/lvm/brokenDisk.
+> > This volume is the only one that exhibits this behavior, so something
+> > is special.
+> >
+> > Or described as layers:
+> > /dev/sd{a,b,c,d} =3D> PV =3D> VG "lowerVG"
+> > /dev/lowerVG/single (RAID1 LV) =3D> BTRFS, works fine
+> > /dev/lowerVG/works (RAID1 LV) =3D> PV =3D> VG "workingUpper"
+> > /dev/workingUpper/{a,b,c} =3D> BTRFS, works fine
+> > /dev/lowerVG/lvmPool (RAID1 LV) =3D> PV =3D> VG "lvm"
+> > /dev/lvm/{a,b} =3D> BTRFS, works fine
+> > /dev/lvm/brokenDisk =3D> BTRFS, Exhibits errors
 >
-> Quoting Sven:
+> I am a bit curious about the reasons of this setup.
+
+The lowerVG is supposed to be a pool of storage for several VM's &
+containers. [workingUpper] is for one VM, and [lvm] is for another VM.
+However right now I'm still trying to organize the files directly
+because I don't have all the VM's fully setup yet
+
+> However I understood that:
 >
-> 1. try to do a "costly" allocation (order > PAGE_ALLOC_COSTLY_ORDER)
->    with __GFP_RETRY_MAYFAIL set.
+> /dev/sda -+                +-- single (RAID1) -> ok             +-> a   o=
+k
+> /dev/sdb  |                |                                    |-> b   o=
+k
+> /dev/sdc  +--> [lowerVG]>--+-- works (RAID1) -> [workingUpper] -+-> c   o=
+k
+> /dev/sdd -+                |
+>                             |                       +-> a          -> ok
+>                             +-- lvmPool -> [lvm] ->-|
+>                                                     +-> b          -> ok
+>                                                     |
+>                                                     +->brokenDisk  -> fai=
+l
 >
-> 2. page alloc's __alloc_pages_slowpath tries to get a page from the
->    freelist. This fails because there is nothing free of that costly
->    order.
+> [xxx] means VG, the others are LVs that may act also as PV in
+> an upper VG
+
+Note that lvmPool is also RAID1, but yes
+
 >
-> 3. page alloc tries to reclaim by calling __alloc_pages_direct_reclaim,
->    which bails out because a zone is ready to be compacted; it pretends
->    to have made a single page of progress.
+> So, it seems that
 >
-> 4. page alloc tries to compact, but this always bails out early because
->    __GFP_IO is not set (it's not passed by the snd allocator, and even
->    if it were, we are suspending so the __GFP_IO flag would be cleared
->    anyway).
+> 1) lowerVG/lvmPool/lvm/a
+> 2) lowerVG/lvmPool/lvm/a
+> 3) lowerVG/lvmPool/lvm/brokenDisk
 >
-> 5. page alloc believes reclaim progress was made (because of the
->    pretense in item 3) and so it checks whether it should retry
->    compaction. The compaction retry logic thinks it should try again,
->    because:
->     a) reclaim is needed because of the early bail-out in item 4
->     b) a zonelist is suitable for compaction
+> are equivalent ... so I don't understand how 1) and 2) are fine but 3) is
+> problematic.
+
+I assume you meant  lvm/b for 2?
+
 >
-> 6. goto 2. indefinite stall.
+> Is my understanding of the LVM layouts correct ?
+
+Your understanding is correct. The only thing that comes to my mind to
+cause the problem is asymmetry of the SATA devices. I have one 8TB
+device, plus a 1.5TB, 3TB, and 3TB drives. Doing math on the actual
+extents, lowerVG/single spans (3TB+3TB), and
+lowerVG/lvmPool/lvm/brokenDisk spans (3TB+1.5TB). Both obviously have
+the other leg of raid1 on the 8TB drive, but my thought was that the
+jump across the 1.5+3TB drive gap was at least "interesting"
+
 >
-> (end quote)
 >
-> The immediate root cause is confusing the COMPACT_SKIPPED returned from
-> __alloc_pages_direct_compact() (step 4) due to lack of __GFP_IO to be
-> indicating a lack of order-0 pages, and in step 5 evaluating that in
-> should_compact_retry() as a reason to retry, before incrementing and
-> limiting the number of retries. There are however other places that
-> wrongly assume that compaction can happen while we lack __GFP_IO.
+> >
+> > After some investigation, here is what I've found:
+> >
+> > 1. This regression was introduced in 5.19. 5.18 and earlier kernels I
+> > can keep this filesystem rw and everything works as expected, while
+> > 5.19.0 and later the filesystem is immediately ro on any write
+> > attempt. I couldn't build rc1, but I did confirm rc2 already has this
+> > regression.
+> > 2. Passing /dev/lvm/brokenDisk to a KVM VM as /dev/vdb with an
+> > unaffected kernel inside the vm exhibits the ro barrier problem on
+> > unaffected kernels.
 >
-> To fix this, introduce gfp_compaction_allowed() to abstract the __GFP_IO
-> evaluation and switch the open-coded test in try_to_compact_pages() to
-> use it.
+> Is /dev/lvm/brokenDisk *always* problematic with affected ( >=3D 5.19 ) a=
+nd
+> UNaffected ( < 5.19 ) kernel ?
+
+Yes, I didn't test it in as much depth, but 5.15 and 6.1 in the VM
+(and 6.1 on the host) are identically problematic
+
 >
-> Also use the new helper in:
-> - compaction_ready(), which will make reclaim not bail out in step 3, so
->   there's at least one attempt to actually reclaim, even if chances are
->   small for a costly order
-> - in_reclaim_compaction() which will make should_continue_reclaim()
->   return false and we don't over-reclaim unnecessarily
-> - in __alloc_pages_slowpath() to set a local variable can_compact,
->   which is then used to avoid retrying reclaim/compaction for costly
->   allocations (step 5) if we can't compact and also to skip the early
->   compaction attempt that we do in some cases
+> > 3. Passing /dev/lowerVG/lvmPool to a KVM VM as /dev/vdb with an
+> > affected kernel inside the VM and using LVM inside the VM exhibits
+> > correct behavior (I can keep the filesystem rw, no barrier errors on
+> > host or guest)
 >
-> Reported-by: Sven van Ashbrook <svenva@chromium.org>
-> Closes: https://lore.kernel.org/all/CAG-rBihs_xMKb3wrMO1%2B-%2Bp4fowP9oy1=
-pa_OTkfxBzPUVOZF%2Bg@mail.gmail.com/
-> Fixes: 3250845d0526 ("Revert "mm, oom: prevent premature OOM killer invoc=
-ation for high order request"")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Tested-by: Karthikeyan Ramasubramanian <kramasub@chromium.org>
-> ---
->  include/linux/gfp.h |  9 +++++++++
->  mm/compaction.c     |  7 +------
->  mm/page_alloc.c     | 10 ++++++----
->  mm/vmscan.c         |  5 ++++-
->  4 files changed, 20 insertions(+), 11 deletions(-)
+> Is /dev/lowerVG/lvmPool problematic with only "affected" kernel ?
+
+Uh, passing lvmPool directly to the VM is never problematic. I tested
+5.10 and 6.1 in the VM (and 6.1 on the host), and neither setup throws
+barrier errors.
+
+> [...]
 >
-> diff --git a/include/linux/gfp.h b/include/linux/gfp.h
-> index de292a007138..e2a916cf29c4 100644
-> --- a/include/linux/gfp.h
-> +++ b/include/linux/gfp.h
-> @@ -353,6 +353,15 @@ static inline bool gfp_has_io_fs(gfp_t gfp)
->         return (gfp & (__GFP_IO | __GFP_FS)) =3D=3D (__GFP_IO | __GFP_FS)=
-;
->  }
->
-> +/*
-> + * Check if the gfp flags allow compaction - GFP_NOIO is a really
-> + * tricky context because the migration might require IO.
-> + */
-> +static inline bool gfp_compaction_allowed(gfp_t gfp_mask)
-> +{
-> +       return IS_ENABLED(CONFIG_COMPACTION) && (gfp_mask & __GFP_IO);
-> +}
-> +
->  extern gfp_t vma_thp_gfp_mask(struct vm_area_struct *vma);
->
->  #ifdef CONFIG_CONTIG_ALLOC
-> diff --git a/mm/compaction.c b/mm/compaction.c
-> index 4add68d40e8d..b961db601df4 100644
-> --- a/mm/compaction.c
-> +++ b/mm/compaction.c
-> @@ -2723,16 +2723,11 @@ enum compact_result try_to_compact_pages(gfp_t gf=
-p_mask, unsigned int order,
->                 unsigned int alloc_flags, const struct alloc_context *ac,
->                 enum compact_priority prio, struct page **capture)
->  {
-> -       int may_perform_io =3D (__force int)(gfp_mask & __GFP_IO);
->         struct zoneref *z;
->         struct zone *zone;
->         enum compact_result rc =3D COMPACT_SKIPPED;
->
-> -       /*
-> -        * Check if the GFP flags allow compaction - GFP_NOIO is really
-> -        * tricky context because the migration might require IO
-> -        */
-> -       if (!may_perform_io)
-> +       if (!gfp_compaction_allowed(gfp_mask))
->                 return COMPACT_SKIPPED;
->
->         trace_mm_compaction_try_to_compact_pages(order, gfp_mask, prio);
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index 150d4f23b010..a663202045dc 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -4041,6 +4041,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int=
- order,
->                                                 struct alloc_context *ac)
->  {
->         bool can_direct_reclaim =3D gfp_mask & __GFP_DIRECT_RECLAIM;
-> +       bool can_compact =3D gfp_compaction_allowed(gfp_mask);
->         const bool costly_order =3D order > PAGE_ALLOC_COSTLY_ORDER;
->         struct page *page =3D NULL;
->         unsigned int alloc_flags;
-> @@ -4111,7 +4112,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int=
- order,
->          * Don't try this for allocations that are allowed to ignore
->          * watermarks, as the ALLOC_NO_WATERMARKS attempt didn't yet happ=
-en.
->          */
-> -       if (can_direct_reclaim &&
-> +       if (can_direct_reclaim && can_compact &&
->                         (costly_order ||
->                            (order > 0 && ac->migratetype !=3D MIGRATE_MOV=
-ABLE))
->                         && !gfp_pfmemalloc_allowed(gfp_mask)) {
-> @@ -4209,9 +4210,10 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned in=
-t order,
->
->         /*
->          * Do not retry costly high order allocations unless they are
-> -        * __GFP_RETRY_MAYFAIL
-> +        * __GFP_RETRY_MAYFAIL and we can compact
->          */
-> -       if (costly_order && !(gfp_mask & __GFP_RETRY_MAYFAIL))
-> +       if (costly_order && (!can_compact ||
-> +                            !(gfp_mask & __GFP_RETRY_MAYFAIL)))
->                 goto nopage;
->
->         if (should_reclaim_retry(gfp_mask, order, ac, alloc_flags,
-> @@ -4224,7 +4226,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int=
- order,
->          * implementation of the compaction depends on the sufficient amo=
-unt
->          * of free memory (see __compaction_suitable)
->          */
-> -       if (did_some_progress > 0 &&
-> +       if (did_some_progress > 0 && can_compact &&
->                         should_compact_retry(ac, order, alloc_flags,
->                                 compact_result, &compact_priority,
->                                 &compaction_retries))
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 4f9c854ce6cc..4255619a1a31 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -5753,7 +5753,7 @@ static void shrink_lruvec(struct lruvec *lruvec, st=
-ruct scan_control *sc)
->  /* Use reclaim/compaction for costly allocs or under memory pressure */
->  static bool in_reclaim_compaction(struct scan_control *sc)
->  {
-> -       if (IS_ENABLED(CONFIG_COMPACTION) && sc->order &&
-> +       if (gfp_compaction_allowed(sc->gfp_mask) && sc->order &&
->                         (sc->order > PAGE_ALLOC_COSTLY_ORDER ||
->                          sc->priority < DEF_PRIORITY - 2))
->                 return true;
-> @@ -5998,6 +5998,9 @@ static inline bool compaction_ready(struct zone *zo=
-ne, struct scan_control *sc)
->  {
->         unsigned long watermark;
->
-> +       if (!gfp_compaction_allowed(sc->gfp_mask))
-> +               return false;
-> +
->         /* Allocation can already succeed, nothing to do */
->         if (zone_watermark_ok(zone, sc->order, min_wmark_pages(zone),
->                               sc->reclaim_idx, 0))
 > --
-> 2.43.1
+> gpg @keyserver.linux.it: Goffredo Baroncelli <kreijackATinwind.it>
+> Key fingerprint BBF5 1610 0B64 DAC6 5F7D  17B2 0EDA 9B37 8B82 E0B5
 >
 
