@@ -1,145 +1,122 @@
-Return-Path: <stable+bounces-25337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2BC886A981
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 09:06:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50B9386AA27
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 09:36:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F4511C233B8
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 08:06:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA86F28B8AE
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 08:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E09432563F;
-	Wed, 28 Feb 2024 08:06:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C3B2E64F;
+	Wed, 28 Feb 2024 08:34:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="psrwFdSc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20ABE23763;
-	Wed, 28 Feb 2024 08:06:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A74E2DF92;
+	Wed, 28 Feb 2024 08:34:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709107585; cv=none; b=gW3keHvrTTc9ceDr9rfRpISHmd2hDql9Y7PTzj/MUnfzj6Qd3EqdiiWDnpVLTeObSYBv9g1b0S3VqUw7Q/k1dzPXW0kCrlO3Dyd2UeadyVI2aC+h81y2wIQeAIVFbBb6FXld6Yj2MW50eHUsQmqAi4waNO7t6EkJWXvrbqZSslY=
+	t=1709109242; cv=none; b=TjphOOAohBUFGmNcV8uDqKYd3vLcpdWen2ezl2TclRddt+8klLr7wbXoxsR9eSHF7wZQIA+WI0GybRB2JFWku+We61iHhQXHqCPfyDjvF95pKYFK4y+0noMs6PinqWZzYMIf8n86HKVL/S9bc2DUMZbXrJcIWPBRurj9E4ozLPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709107585; c=relaxed/simple;
-	bh=Zrb1Im0gyCJMmIpkGfi7j9ua8LfAnbVRAV3y1zOnEVw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LpDnrVp/fnxdxgD7LlvggP8U4rtAzJ1C1UTbnT/PcJ8NKbmKKIE0L/owvoKxL1Lm8ljN31rhvbx7rU6Xpj1MTWBbQtA3SHX1kFdSneJTkAXT3EdwpDpTSedDCnMXbPtBaKzsl/sQkUX+OBVK5k3eYqto6a5E6HSM6NzsB+jN5S4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-563bb51c36eso5859411a12.2;
-        Wed, 28 Feb 2024 00:06:23 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709107582; x=1709712382;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VTt0UEcuAb9psXmCcUBx6ZOtMfL5OgqRETrZ6CLppsE=;
-        b=UX6hEgzj7QsGrIzw06cyxwdyAhKA/mUuBHDjDrKwJgKevs15n7SW5RkI2uYeSi4jYy
-         PqKTHEFFUcXLOeDeJIskrzlz0Tj1Tm+NFiJ0Jt+EKQo0zMbl+1b9Pa9su5qjC1TvrySx
-         zs8n8ny7qgV7P46c8O16M19+JVJxQqpRKyNpoj/tFsfsSU/yFYPUk7zYhyucuC8x0FdE
-         X56nUEyR9taxm7nVagXFO/FIktpNIfcyP/aR5oTsaTt6n2ofdm8+cFXCwT2EafqR5y0K
-         h1VmAOdhagMxMSwrPlR9kKy7FX++i5Bw2oNB9siHd1mlOHf3dWfKNUL9EcvyTEXrZQTU
-         vo1g==
-X-Forwarded-Encrypted: i=1; AJvYcCXmV9p+oE2JVZ1btkReEKxcixt33Os/WDtmA6y0Iue0p5QBbrUciJqj0ZXVaDg9cKUNQv8SRc8oElgygJu8+Mgn7v6Gk/qaliD2FKB6nurYCruF3HfrUIkr3LNlDmpH
-X-Gm-Message-State: AOJu0Yw6jnBeR1NQyHzTPdgl459SC7K7pbi6p0KwI5aJtv4XPGk8Wdd3
-	yAmnIoLuPCJlGB8NSrVyKXItr22RCQ2xVlevjCmN3LY0ylvl6PNq
-X-Google-Smtp-Source: AGHT+IH1JBpt+MdWDNLhuquh077VbpRCP+RvoNk0YOGGWWk/NTyCcSBOj4ByQKislWyBOROgMCgCCg==
-X-Received: by 2002:a05:6402:1ca4:b0:565:a5bb:cc4c with SMTP id cz4-20020a0564021ca400b00565a5bbcc4cmr7014988edb.42.1709107582272;
-        Wed, 28 Feb 2024 00:06:22 -0800 (PST)
-Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:59? ([2a0b:e7c0:0:107::aaaa:59])
-        by smtp.gmail.com with ESMTPSA id r3-20020aa7c143000000b0056676b80a38sm153757edp.3.2024.02.28.00.06.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Feb 2024 00:06:21 -0800 (PST)
-Message-ID: <66b4f46f-bcbd-42da-b4d6-0ecd507f8bd8@kernel.org>
-Date: Wed, 28 Feb 2024 09:06:20 +0100
+	s=arc-20240116; t=1709109242; c=relaxed/simple;
+	bh=aOlzv2ms+slQM3Izb/zjipw0Sn3ySfHbf+ICKPL9UTo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dif73JPuq0yZQMEYXwl4E56y3gaKY7TVK+kTwJYZBFHehOLs/f9Pc2oz6fk7fObSDdkpqX5MkRBIZ6d3XLajDwBTc8e+0LK0dvFrWA+qJYlUHFRZJkVzW8ZyvxtsDjMTvqJISWS6WTJonWEzh5pyuJj0yZMY1cuyEAz4fEEdORM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=psrwFdSc; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41S4KI1Q007196;
+	Wed, 28 Feb 2024 08:33:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=SY4ByAm
+	QqkjRwFRnacQzAJoXNdftSjJlDeUuGPnHpDY=; b=psrwFdSc2dFSEwZIKuspgY8
+	xWcLDAs2vHB6eQXFF4uHBbQPlAxxVPRPg7llCThraphFnQlAqAayHbYftvbglpPd
+	v0jtc2+lhMyPLIZNSimurh/OEqXbJeLR0hPcoclrVw1CKymIJ3fefVEajGXM1T6A
+	0/vdoU1Wi/VxV/DddobVdlqtsd+kikR6fO6vGbjuTMHAzHgWjueqbuOF1Lrycg/s
+	rtRI7URBCc2a2Wu0KqffE1eThsFTU/p0JSQrcT5DCtZqn5sGuVyooo4vRxzHXLkA
+	ItHKn1Sq+ogIPZdwvrNSQjSNuBleRhwJf+ksECVlg6mS/FJE8VJFMbylpsnK+MA=
+	=
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3whtbw8rsh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 28 Feb 2024 08:33:58 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41S8XvHI004655
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 28 Feb 2024 08:33:57 GMT
+Received: from hu-prashk-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Wed, 28 Feb 2024 00:33:55 -0800
+From: Prashanth K <quic_prashk@quicinc.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mathias Nyman
+	<mathias.nyman@intel.com>
+CC: <linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
+        Prashanth K
+	<quic_prashk@quicinc.com>, <stable@vger.kernel.org>
+Subject: [PATCH] usb: xhci: Add error handling in  xhci_map_urb_for_dma
+Date: Wed, 28 Feb 2024 14:03:43 +0530
+Message-ID: <20240228083343.3101303-1-quic_prashk@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.7 260/334] net: ethernet: adi: requires PHYLIB support
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
- kernel test robot <lkp@intel.com>, Lennart Franzen <lennart@lfdomain.com>,
- Alexandru Tachici <alexandru.tachici@analog.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, Nuno Sa <nuno.sa@analog.com>,
- Sasha Levin <sashal@kernel.org>
-References: <20240227131630.636392135@linuxfoundation.org>
- <20240227131639.320153289@linuxfoundation.org>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <20240227131639.320153289@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: Pj9u1zt1yPLALrxqoIal9qM1qezI6nCc
+X-Proofpoint-ORIG-GUID: Pj9u1zt1yPLALrxqoIal9qM1qezI6nCc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-28_04,2024-02-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 phishscore=0
+ suspectscore=0 priorityscore=1501 impostorscore=0 malwarescore=0
+ spamscore=0 mlxlogscore=636 lowpriorityscore=0 mlxscore=0 bulkscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2402120000 definitions=main-2402280066
 
-On 27. 02. 24, 14:21, Greg Kroah-Hartman wrote:
-> 6.7-stable review patch.  If anyone has any objections, please let me know.
+Currently xhci_map_urb_for_dma() creates a temporary buffer
+and copies the SG list to the new linear buffer. But if the
+kzalloc_node() fails, then the following sg_pcopy_to_buffer()
+can lead to crash since it tries to memcpy to NULL pointer.
+So return -EAGAIN if kzalloc returns null pointer.
 
-This patch is not nice and should wait for its fixup IMO:
-https://lore.kernel.org/all/20240226074820.29250-1-rdunlap@infradead.org/
+Cc: <stable@vger.kernel.org> # 5.11
+Fixes: 2017a1e58472 ("usb: xhci: Use temporary buffer to consolidate SG")
+Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
+---
+ drivers/usb/host/xhci.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-It makes PHYLIB=y even when not needed to be actually built in.
-
-> From: Randy Dunlap <rdunlap@infradead.org>
-> 
-> [ Upstream commit a9f80df4f51440303d063b55bb98720857693821 ]
-> 
-> This driver uses functions that are supplied by the Kconfig symbol
-> PHYLIB, so select it to ensure that they are built as needed.
-
-thanks,
+diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
+index c057c42c36f4..0597a60bec34 100644
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -1218,6 +1218,9 @@ static int xhci_map_temp_buffer(struct usb_hcd *hcd, struct urb *urb)
+ 	temp = kzalloc_node(buf_len, GFP_ATOMIC,
+ 			    dev_to_node(hcd->self.sysdev));
+ 
++	if (!temp)
++		return -EAGAIN;
++
+ 	if (usb_urb_dir_out(urb))
+ 		sg_pcopy_to_buffer(urb->sg, urb->num_sgs,
+ 				   temp, buf_len, 0);
 -- 
-js
-suse labs
+2.25.1
 
 
