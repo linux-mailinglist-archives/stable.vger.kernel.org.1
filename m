@@ -1,186 +1,145 @@
-Return-Path: <stable+bounces-25330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0B4C86A84D
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 07:20:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB82586A894
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 07:56:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B06E284C74
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 06:20:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB31F1C24045
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 06:56:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B46A22098;
-	Wed, 28 Feb 2024 06:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64CA222F1E;
+	Wed, 28 Feb 2024 06:56:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="a7ASRwun"
+	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="dxpPXuGc"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF41320DC8;
-	Wed, 28 Feb 2024 06:20:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B586D219FC
+	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 06:56:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709101222; cv=none; b=EyJ8ezycKddmLd0I13ZbLi9P//IyouAiDpxdDbhmhpFZqkJFoAbpYKA3KxUq6VxaBjVYBQMa+OaBoKTylHdbbSFcaclAfVc1ODzbLZreMIAFzZ9na9ii0q40miFEVR92yJhW7wK9KBY4tZ234LaCgZKGBh0P42rJGMnbZJ7um9c=
+	t=1709103365; cv=none; b=nqiULOgcHI52o06/d1KciPBt3VQw9qjoN4EIXTYDPo2yse4+6cbGQc1XLzXYk8YsmxQ/JjrXZmOK6ld4vqGF357vUu5NqfZpSgNzCwXEvjHz7EAJ0W6VEtOLPI0MhyEKdHCXgukg8OsQHwUzZwG4pjIdYrfWpSiX3/XX62+T7Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709101222; c=relaxed/simple;
-	bh=KM3IFL7VBvfv0H/qsM6GNcfHmm/qg0ho1w04RZ/MwvM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oWU9aI6zVkNujIHgRdrEBrZsAIyCd86s2mvjbMIr8b+5dwn6Emoh70IDa4OaejD4dlnMjyVq16qHBvxBSFAfK8s2wzCjHxMoMkwzPQCsz351tUszmNHscnJfWhnPgFzeaOMXm6bXsnl0KCqjupJF2Ix4kBSgkjJWn1bSbW/xXew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=a7ASRwun; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:Reply-To:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=Tis/Y5P1c6986WEgqGUJ7LAnUXHIukbiwL2Ll2OtVE0=;
-	t=1709101219; x=1709533219; b=a7ASRwuniBuydrELW5EpoamZweLc4G/Bq45P+Mwhoz5Owgu
-	928gKnc/f4z5XX2jvr6840/CVJEU64ZH1J7FRf7gZ37lGJfSA6JdGjxJKXQyTOp6uUNShX7OcZm45
-	ac+s5osril0pRk1jnkCrkQW9AT8fwN0DECm0QuZT/S+Fh7BlU94qpoHyH0x3nsWwXp9Vblcc+xOBW
-	LeXjVT1E/QJFOVS/HBpMF27MDjdMk2Z8B2NkgCMl4mOItG7E4wlNbhxxaEdnKEX7bWlBJVAzSgq/9
-	L2hr5C+Ava/VlZWygSUiOxaJVKrR7D57OKYgvH803yuKrAw4kyZj/ngR4LPFbj2Q==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1rfDIN-0008F8-3u; Wed, 28 Feb 2024 07:19:59 +0100
-Message-ID: <a3749d3f-ced1-4c48-adaf-348c8dee7610@leemhuis.info>
-Date: Wed, 28 Feb 2024 07:19:56 +0100
+	s=arc-20240116; t=1709103365; c=relaxed/simple;
+	bh=DS0otXxBIAg/AMim69yUhYg9b3z+zSXh8HjudQ+pVJo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=V/t/l7xjOk9PnthL4dOX/CrXFSFWov75dLrJoSjnBXxu8R0pGvSwwRpg51OM5SDv0oS7Ec2bRVlJPYRUs6Yik6n0F1XaxpGEvdu+RFDrdsiDseYf4lnUat+Co/uejjO4Ivgd2NVcB+ZfjsYgUOKKJaAukNBTpkPBggJDxi5W/SQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=dxpPXuGc; arc=none smtp.client-ip=209.85.167.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-3c19dd9ade5so1694371b6e.3
+        for <stable@vger.kernel.org>; Tue, 27 Feb 2024 22:56:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google; t=1709103363; x=1709708163; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=b1cp6XMBopp3tzzHV/G51+rKShiExWAPZnHAB8vVY2k=;
+        b=dxpPXuGcq3+WrgWE8Yq5E9zD7FeffDa0Xic+iFOo6HYQ5vZ711HhbF+2HRSEgAMvo/
+         eodWK3e9GwQiJx/eucWVD8yInRFgqQpQlYaYnPPU4/qJ8Sqeuad5tI68egIPGze1p9ar
+         T7JU9DKUu98mtel+SNhpvVQ10vMLxR0ad4lSxsxr6jzs0nf42gB4TGLH4UQMYCdEn1fo
+         lnyBHoQzLh83FonyN6eQ2d5LqoM0xD/H7hR2LI5SYOhbA+kDZXNzAtCy/vncdtE8q7CU
+         yo5jd3KYHbBBm04HzKpI0HMk6Mr9HOt/r9Sak/Emfim4n+u3PUSkscalIPe9dAeiJX9V
+         bMmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709103363; x=1709708163;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=b1cp6XMBopp3tzzHV/G51+rKShiExWAPZnHAB8vVY2k=;
+        b=vdBJwJeYlzoHEPGukj16ozMw+Ih9W7C/yojW/4KWmkr2nJeTb5OhCegW8CmAqzcIK0
+         9t7rdLHA6/0M4I5iTo6Q0qPG00rMggyXrPY5OuLBAZqWGDP0KNG09bViIcL6CCTRoq7Q
+         6mxfZCAIvffa/rrgINmIflyRcZ0x7MZoqlsfhfHJ+QYB8Dggg7fQuVmR7wlhi+SXeGx/
+         XxXtYxhDZu+9Zpl0R6JpKBOqlRgJje88F7HxyJLKU/c0ENGJolsQEvH8iJ3RrK+10cHo
+         eyytYte3nJ9Ln8P2vWA5oCVjL4HYQqbpvHqGlYq0+A/xMywGbrZW8OfyrqkOd3b4RNtZ
+         97zQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW8rrxfermHLbnyVLvkEImBVuIjGHxl9zNd3vTJv/EhGUCcw7DaIOctyLUijSQIqt66nFc+JWgC1gh+PgRVxz0qLcw2qbGz
+X-Gm-Message-State: AOJu0Yw2zS+iUrEkxnUZMAvDJXendIHvGQe95xU9U+LNP3VWAKiO57FZ
+	3Wc+0uX4wObEZRKPAEMqYYQQfTi5/WW1bS71/RXSa7O6wBrAMn5xQpT5fdV3sNw=
+X-Google-Smtp-Source: AGHT+IFXIsSjDWuHRYBUZ4nH4ci0C53IjlWATHbpl7/aaCUY4gxiRH0rXlKJl12edB4xIX1p9ussRA==
+X-Received: by 2002:a05:6808:8b:b0:3c1:5b63:579b with SMTP id s11-20020a056808008b00b003c15b63579bmr3629169oic.49.1709103362812;
+        Tue, 27 Feb 2024 22:56:02 -0800 (PST)
+Received: from sw06.internal.sifive.com ([4.53.31.132])
+        by smtp.gmail.com with ESMTPSA id e12-20020a62aa0c000000b006e5590729aasm1010112pff.89.2024.02.27.22.56.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Feb 2024 22:56:02 -0800 (PST)
+From: Samuel Holland <samuel.holland@sifive.com>
+To: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Andrew Jones <ajones@ventanamicro.com>,
+	linux-kernel@vger.kernel.org,
+	Conor Dooley <conor@kernel.org>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	linux-riscv@lists.infradead.org,
+	Stefan O'Rear <sorear@fastmail.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	stable@vger.kernel.org
+Subject: [PATCH -fixes v4 1/3] riscv: Fix enabling cbo.zero when running in M-mode
+Date: Tue, 27 Feb 2024 22:55:33 -0800
+Message-ID: <20240228065559.3434837-2-samuel.holland@sifive.com>
+X-Mailer: git-send-email 2.43.1
+In-Reply-To: <20240228065559.3434837-1-samuel.holland@sifive.com>
+References: <20240228065559.3434837-1-samuel.holland@sifive.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Subject: Re: [PATCH net v3] net: stmmac: protect updates of 64-bit statistics
- counters
-Content-Language: en-US, de-DE
-To: Eric Dumazet <edumazet@google.com>, "David S. Miller"
- <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
- Jakub Kicinski <kuba@kernel.org>
-Cc: Jisheng Zhang <jszhang@kernel.org>, Petr Tesarik <petr@tesarici.cz>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Jose Abreu <joabreu@synopsys.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, Chen-Yu Tsai <wens@csie.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>,
- "open list:STMMAC ETHERNET DRIVER" <netdev@vger.kernel.org>,
- "moderated list:ARM/STM32 ARCHITECTURE"
- <linux-stm32@st-md-mailman.stormreply.com>,
- "moderated list:ARM/STM32 ARCHITECTURE"
- <linux-arm-kernel@lists.infradead.org>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
- Marc Haber <mh+netdev@zugschlus.de>, Andrew Lunn <andrew@lunn.ch>,
- Florian Fainelli <f.fainelli@gmail.com>, stable@vger.kernel.org,
- Linux kernel regressions list <regressions@lists.linux.dev>,
- alexis.lothore@bootlin.com, Guenter Roeck <linux@roeck-us.net>
-References: <20240203190927.19669-1-petr@tesarici.cz>
- <ea1567d9-ce66-45e6-8168-ac40a47d1821@roeck-us.net>
- <Zct5qJcZw0YKx54r@xhacker>
- <CANn89i+4tVWezqr=BYZ5AF=9EgV2EPqhdHun=u=ga32CEJ4BXQ@mail.gmail.com>
- <20d94512-c4f2-49f7-ac97-846dc24a6730@roeck-us.net>
- <CANn89iL1piwsbsBx4Z=kySUfmPa9LbZn-SNthgA+W6NEnojgSQ@mail.gmail.com>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-In-Reply-To: <CANn89iL1piwsbsBx4Z=kySUfmPa9LbZn-SNthgA+W6NEnojgSQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1709101219;0a885a42;
-X-HE-SMSGID: 1rfDIN-0008F8-3u
 
-Net maintainers, chiming in here, as it seems handling this regression
-stalled.
+When the kernel is running in M-mode, the CBZE bit must be set in the
+menvcfg CSR, not in senvcfg.
 
-On 13.02.24 16:52, Eric Dumazet wrote:
-> On Tue, Feb 13, 2024 at 4:26 PM Guenter Roeck <linux@roeck-us.net> wrote:
->> On Tue, Feb 13, 2024 at 03:51:35PM +0100, Eric Dumazet wrote:
->>> On Tue, Feb 13, 2024 at 3:29 PM Jisheng Zhang <jszhang@kernel.org> wrote:
->>>> On Sun, Feb 11, 2024 at 08:30:21PM -0800, Guenter Roeck wrote:
->>>>> On Sat, Feb 03, 2024 at 08:09:27PM +0100, Petr Tesarik wrote:
->>>>>> As explained by a comment in <linux/u64_stats_sync.h>, write side of struct
->>>>>> u64_stats_sync must ensure mutual exclusion, or one seqcount update could
->>>>>> be lost on 32-bit platforms, thus blocking readers forever. Such lockups
->>>>>> have been observed in real world after stmmac_xmit() on one CPU raced with
->>>>>> stmmac_napi_poll_tx() on another CPU.
->>>>>>
->>>>>> To fix the issue without introducing a new lock, split the statics into
->>>>>> three parts:
->>>>>>
->>>>>> 1. fields updated only under the tx queue lock,
->>>>>> 2. fields updated only during NAPI poll,
->>>>>> 3. fields updated only from interrupt context,
->>>>>>
->>>>>> Updates to fields in the first two groups are already serialized through
->>>>>> other locks. It is sufficient to split the existing struct u64_stats_sync
->>>>>> so that each group has its own.
->>>>>>
->>>>>> Note that tx_set_ic_bit is updated from both contexts. Split this counter
->>>>>> so that each context gets its own, and calculate their sum to get the total
->>>>>> value in stmmac_get_ethtool_stats().
->>>>>>
->>>>>> For the third group, multiple interrupts may be processed by different CPUs
->>>>>> at the same time, but interrupts on the same CPU will not nest. Move fields
->>>>>> from this group to a newly created per-cpu struct stmmac_pcpu_stats.
->>>>>>
->>>>>> Fixes: 133466c3bbe1 ("net: stmmac: use per-queue 64 bit statistics where necessary")
->>>>>> Link: https://lore.kernel.org/netdev/Za173PhviYg-1qIn@torres.zugschlus.de/t/
->>>>>> Cc: stable@vger.kernel.org
->>>>>> Signed-off-by: Petr Tesarik <petr@tesarici.cz>
->>>>>
->>>>> This patch results in a lockdep splat. Backtrace and bisect results attached.
->>>>>
->>>>> ---
->>>>> [   33.736728] ================================
->>>>> [   33.736805] WARNING: inconsistent lock state
->>>>> [   33.736953] 6.8.0-rc4 #1 Tainted: G                 N
->>>>> [   33.737080] --------------------------------
->>>>> [   33.737155] inconsistent {HARDIRQ-ON-W} -> {IN-HARDIRQ-W} usage.
->>>>> [   33.737309] kworker/0:2/39 [HC1[1]:SC0[2]:HE0:SE0] takes:
->>>>> [   33.737459] ef792074 (&syncp->seq#2){?...}-{0:0}, at: sun8i_dwmac_dma_interrupt+0x9c/0x28c
->>>>> [   33.738206] {HARDIRQ-ON-W} state was registered at:
->>>>> [   33.738318]   lock_acquire+0x11c/0x368
->>>>> [   33.738431]   __u64_stats_update_begin+0x104/0x1ac
->>>>> [   33.738525]   stmmac_xmit+0x4d0/0xc58
->>>>
->>>> interesting lockdep splat...
->>>> stmmac_xmit() operates on txq_stats->q_syncp, while the
->>>> sun8i_dwmac_dma_interrupt() operates on pcpu's priv->xstats.pcpu_stats
->>>> they are different syncp. so how does lockdep splat happen.
->>>
->>> Right, I do not see anything obvious yet.
->>
->> Wild guess: I think it maybe saying that due to
->>
->>         inconsistent {HARDIRQ-ON-W} -> {IN-HARDIRQ-W} usage.
->>
->> the critical code may somehow be interrupted and, while handling the
->> interrupt, try to acquire the same lock again.
-> 
-> This should not happen, the 'syncp' are different. They have different
-> lockdep classes.
-> 
-> One is exclusively used from hard irq context.
-> 
-> The second one only used from BH context.
+Cc: <stable@vger.kernel.org>
+Fixes: 43c16d51a19b ("RISC-V: Enable cbo.zero in usermode")
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+---
 
-Alexis Lothoré hit this now as well, see yesterday report in this
-thread; apart from that nothing seem to have happened for two weeks now.
-The change recently made it to some stable/longterm kernels, too. Makes
-me wonder:
+(no changes since v1)
 
-What's the plan forward here? Is this considered to be a false positive?
-Or a real problem? Or a kind of situation along the lines of "that
-commit should not cause the problem we are seeing, so it might have
-exposed a older bug in the code, but nobody looked closer yet to check"?
-Or something else?
+ arch/riscv/include/asm/csr.h   | 2 ++
+ arch/riscv/kernel/cpufeature.c | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+diff --git a/arch/riscv/include/asm/csr.h b/arch/riscv/include/asm/csr.h
+index 510014051f5d..2468c55933cd 100644
+--- a/arch/riscv/include/asm/csr.h
++++ b/arch/riscv/include/asm/csr.h
+@@ -424,6 +424,7 @@
+ # define CSR_STATUS	CSR_MSTATUS
+ # define CSR_IE		CSR_MIE
+ # define CSR_TVEC	CSR_MTVEC
++# define CSR_ENVCFG	CSR_MENVCFG
+ # define CSR_SCRATCH	CSR_MSCRATCH
+ # define CSR_EPC	CSR_MEPC
+ # define CSR_CAUSE	CSR_MCAUSE
+@@ -448,6 +449,7 @@
+ # define CSR_STATUS	CSR_SSTATUS
+ # define CSR_IE		CSR_SIE
+ # define CSR_TVEC	CSR_STVEC
++# define CSR_ENVCFG	CSR_SENVCFG
+ # define CSR_SCRATCH	CSR_SSCRATCH
+ # define CSR_EPC	CSR_SEPC
+ # define CSR_CAUSE	CSR_SCAUSE
+diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
+index 89920f84d0a3..c5b13f7dd482 100644
+--- a/arch/riscv/kernel/cpufeature.c
++++ b/arch/riscv/kernel/cpufeature.c
+@@ -950,7 +950,7 @@ arch_initcall(check_unaligned_access_all_cpus);
+ void riscv_user_isa_enable(void)
+ {
+ 	if (riscv_cpu_has_extension_unlikely(smp_processor_id(), RISCV_ISA_EXT_ZICBOZ))
+-		csr_set(CSR_SENVCFG, ENVCFG_CBZE);
++		csr_set(CSR_ENVCFG, ENVCFG_CBZE);
+ }
+ 
+ #ifdef CONFIG_RISCV_ALTERNATIVE
+-- 
+2.43.1
+
 
