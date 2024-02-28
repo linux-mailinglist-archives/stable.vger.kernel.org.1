@@ -1,131 +1,77 @@
-Return-Path: <stable+bounces-25318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81CEB86A48D
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 01:48:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A054C86A61A
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 02:52:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B066A1C23EE3
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 00:48:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B487287709
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 01:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D475A34;
-	Wed, 28 Feb 2024 00:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7962033A;
+	Wed, 28 Feb 2024 01:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="n2Yibytp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k1o2nvXp"
 X-Original-To: stable@vger.kernel.org
-Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C547F6
-	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 00:48:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CDE54A32;
+	Wed, 28 Feb 2024 01:45:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709081304; cv=none; b=DQ1V+2fSOqYVXrIIjo9RKdLYeNaWhxEiYJBqd8evW+yOJT0B9ef3DPhLPImnSnja5AcIg8ZV20zNnS1mNaE0jBjoc5jka0DejH91bI8y/Y69SO4uZ1+T0bOuznVm7DLFT4rar7L6QfoFQceiT3dGmGS/PtcqZb6gQE0u03dp/Ko=
+	t=1709084758; cv=none; b=S4s72JEc0X6R1glFsZlxsWsDutax+cinKwBeWZW48fRUF3RCK1zpySM3yapJ+4pQMNtGXGRSLxHv5icrsnPPobaoJyQGTCshjVJaaEzA7TLnAw06zJfPUrQUMQapu71sopWpieS3XPtVy8cu49Bf+Bo514wiPEVzu7kQ+x2avjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709081304; c=relaxed/simple;
-	bh=AJPIpmjeaInQHB01RZF5ZU1nHM3PWmVoh0vs7h35A1U=;
-	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
-	 MIME-Version:Content-Type; b=vBkqL2hHaHyCKkWZdCHZYHjBsHj5Z7GAyZ7bg780TS+ieWoBjcqVuMgelD/nweIgLrRXpYcRJ0cG3ROUanHC4IsVa5fXwAnBJJr+QG2a45qEePKIxlp8vkXgVJb7vNg+lreYmxgDVi+r2q5xEmGEmY/zhWA+DYHJg9hJT47ogqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=n2Yibytp; arc=none smtp.client-ip=44.202.169.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-5003a.ext.cloudfilter.net ([10.0.29.159])
-	by cmsmtp with ESMTPS
-	id f4H5rVmp9Qr4Sf87Kr2SOD; Wed, 28 Feb 2024 00:48:14 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id f87Jrt1Zokw1Zf87JrPpzm; Wed, 28 Feb 2024 00:48:14 +0000
-X-Authority-Analysis: v=2.4 cv=aKf2q69m c=1 sm=1 tr=0 ts=65de82ce
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=k7vzHIieQBIA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=KyoLkmSyMt9Nb96WE4AA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=035y5fzBy+OFW5grlBii3SIEJYQxRB6XZGhrXsV9Bok=; b=n2YibytpIZ+NHpkGnLl1Gadu8Y
-	K5vxWibXBF6P+fLKbLGeBRctmHu1QJTBeHA1uzw/YGAHlXlS4n3s85LZdlb5WaMA/xF2B4vw0qiac
-	bQkhV+wTMHeCJW2p7V9rXzAXmok/q0DoUamlzMVRcYAUqNLKiiyGWqUTAlB0p75o5zZ2waMPGltLJ
-	Z98a+LW+IZ37RbFZnLZ4Ur63XNCv7AVtSfbIWWwTSHiDrXUzN/CNe0/o8pQofUXMJMwhpT/FzZc5k
-	OebJZ0q3zBcb89b3ezYxTKoU08WSUKFzeuqPoiEod3GQExNI0ueNFfObfNsxE7+V5DLdLW1eQtFZr
-	Muf3wcrw==;
-Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:48182 helo=[10.0.1.47])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1rf87H-003C44-13;
-	Tue, 27 Feb 2024 17:48:11 -0700
-Subject: Re: [PATCH 6.7 000/334] 6.7.7-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-References: <20240227131630.636392135@linuxfoundation.org>
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
-From: Ron Economos <re@w6rz.net>
-Message-ID: <f3bced01-facb-fb34-655e-0230292e686d@w6rz.net>
-Date: Tue, 27 Feb 2024 16:48:08 -0800
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+	s=arc-20240116; t=1709084758; c=relaxed/simple;
+	bh=xklcXaT4eTFbG1Se3wPnwYyKUpa9I+yjQPpHl5UYWHk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=U42L5V+ZoINwEBJ5FioJsdU82a2etmclOaNz+fBPck9iyxPRll1UCgbADASJIYJWhcL4mE7Jku+cLZ23m9bN5HpoFgNQFyEOck0m2EMSiTxFfSAXDvT6ED1J75/dhJ+bG2qE8Ofm/BbAL4fAkNhgsVAzMn0/5gN6oJtBkR4756Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k1o2nvXp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B25EC433F1;
+	Wed, 28 Feb 2024 01:45:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709084757;
+	bh=xklcXaT4eTFbG1Se3wPnwYyKUpa9I+yjQPpHl5UYWHk=;
+	h=Date:From:To:Cc:Subject:From;
+	b=k1o2nvXp5EtvIzAJsZdS4HVaUtlu2Q+gBiNAqnYIRCBT+FydDt1frqGHPHoGMtFVS
+	 b9YOisZu6kY4XeHewr6V+b4+d01/ZiFM49wqxzdaJkdKg4m3dP09Yb08o269aDG9Kg
+	 JMNXu33I0T+oxNzJedrVag+hiODUTlLDBAO4fRwMUCAgu0Y88hmrUr/Uwsm2JTgRvJ
+	 jknM1xzdEpYoPNfvT2BQcFyRi+pRM21RQqOta/GDrE6ah9/lfNZdpTbAGXeYcuoAsn
+	 0JZvT5xG9AULMyYf7WEsKWAnHH+URMn9Ge8623Rp26DsRdkkBEQiHKweoIG/V/Ik5S
+	 zDewdYhP+DSow==
+Date: Tue, 27 Feb 2024 18:45:55 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Cc: amd-gfx@lists.freedesktop.org, stable@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: Please apply commit 5b750b22530fe53bf7fd6a30baacd53ada26911b to
+ linux-6.1.y
+Message-ID: <20240228014555.GA2678858@dev-arch.thelio-3990X>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 98.207.139.8
-X-Source-L: No
-X-Exim-ID: 1rf87H-003C44-13
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:48182
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfBG8O3F5nMeW7FNnd54g0wc+tULj1fozUZmDkpRWL8PUBpDkCltV498Ne6m5NyaUgZ4Iajq2k/wLiTltljU32CQgD5baDKep1bzaX01APcjWZlQphKfp
- 0o4PArO6t1dYwXbPrnwmqE/7drADLmRbqMMNMu6sHcdbWBT23nB5Os7SZYZi0gR12pIpxax4T70LTA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 2/27/24 5:17 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.7.7 release.
-> There are 334 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 29 Feb 2024 13:15:36 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.7-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Hi Greg and Sasha,
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+Please apply upstream commit 5b750b22530f ("drm/amd/display: Increase
+frame warning limit with KASAN or KCSAN in dml") to linux-6.1.y, as it
+is needed to avoid instances of -Wframe-larger-than in allmodconfig,
+which has -Werror enabled. It applies cleanly for me and it is already
+in 6.6 and 6.7. The fixes tag is not entirely accurate and commit
+e63e35f0164c ("drm/amd/display: Increase frame-larger-than for all
+display_mode_vba files"), which was recently applied to that tree,
+depends on it (I should have made that clearer in the patch).
 
-Tested-by: Ron Economos <re@w6rz.net>
+If there are any issues, please let me know.
 
+Cheers,
+Nathan
 
