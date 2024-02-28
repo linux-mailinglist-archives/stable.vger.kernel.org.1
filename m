@@ -1,114 +1,231 @@
-Return-Path: <stable+bounces-25362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C143886AFBD
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 14:02:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B82186AFEB
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 14:07:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F23001C23280
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 13:02:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B364A287E56
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 13:07:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0C8149E0B;
-	Wed, 28 Feb 2024 13:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E4414A4D6;
+	Wed, 28 Feb 2024 13:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hCg28rL8"
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="NaRc1nr8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5B1148FFC
-	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 13:02:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF1D208C5
+	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 13:07:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709125371; cv=none; b=ilDGCsgUy1nIjlPha91TBT+1BYXQ+CNPX4Uw5/RcH2CyiO6ZhL8YJCQuWmv58TVfPaXOpPGapIWZo0VPOvXEdNzIA4Az/Bljo/mweuAobKmmQeLiRSdwhJoFa6R0sWYIzFa0nwLPxAkpspYCB6fakIGMZRa66UOL65/L7K+QVow=
+	t=1709125669; cv=none; b=rfsJWvMwF5NCG9JYWNBUgRQ4QywSdqXRni0i6sR+yorTeWXBjapUaidxG9NCYZcCx90bnF1KKRyMkLRN4xzjjqYVlQEXi5F/mkP7ZQZo4YdB8F1M/Jq7CHcHG65QXXWrkAEqY2jNb400AxsgYsnWXhpex4kil8WhAmd6ep66qTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709125371; c=relaxed/simple;
-	bh=3cYG7GaJLaJHPFKTz6+fE0NqWzsbSwHco8JoDUKQEQY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hsFA9eCN8PMGTKqHtZG5PoncsHzaXVwcxPIYuwHwO8M9XduQFRv9rRaGEy4hpmcUxBh/MdxCJD2n//JxNn3K9aZ9Vv1htfOuz7r5PZ6+xWECIqGv9WRt8Dswx69uZzZ4V1h7PSmRiWgayhHp5lfvlsNgUwQqH7D4l90pSqJqYA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hCg28rL8; arc=none smtp.client-ip=209.85.219.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-dcbc6a6808fso4867629276.2
-        for <stable@vger.kernel.org>; Wed, 28 Feb 2024 05:02:49 -0800 (PST)
+	s=arc-20240116; t=1709125669; c=relaxed/simple;
+	bh=VQmgSmjY24QmAlPhVkark0CkaMkACTSy+vcYg2Cpvgc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tgFv9/0TgNmx/5hRLoNjwaEl/hbvoNAB+79qytQYWtn+GC2RRdE7KWsuAZYaE25QLNIIGZs2//fhFXxHz0E4UFC7vwpqi4zg7IHWbKmvWW1VqYsGXqrTjweyoL4+3GeDxr2HmGuk227bvnQ8PUaNpXIUbKqnZeTBE3h64JaNnbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=NaRc1nr8; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-33d568fbf62so3138336f8f.3
+        for <stable@vger.kernel.org>; Wed, 28 Feb 2024 05:07:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709125369; x=1709730169; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=x6lSKguAFNJlnGwYnPcXJDGp7aYh6GWsOXe6nAyiYVg=;
-        b=hCg28rL8oQhsqzK4oYJZsSxvYvmljTITpK5k0wS+vfNH+vKG9z8H8l5pp4r41mYF+9
-         p510o9l1WIA8Wm7T2r7h9/mLz4CKHFsNRJMgKj+qmuxzkae8EV6/HWFyRNPzuPZ9SmEV
-         ZIRGSRmM2X1v7AVwcX0W432l6Y7VrBQ+JpLoXLVyFEhXIECUyUfUSsGZweEpmqQBbJnS
-         npv0fQnT12bn58e6iJOQuzd/Lyyz8WvczN9nn8lQMSlDEZi7u/6/Z/FFB72Dh9XxQ2Jh
-         ArmuL0uyavKLdZorcCRUuOASszDvpDEzvOjBs6U/pgfHnSXTdEo5tqmNGwpzdrmOBbie
-         C27Q==
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1709125665; x=1709730465; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ds6k2OGgjr+66jCurt8bfyj79IHMsZPOvgk2Z6jYguY=;
+        b=NaRc1nr81YxTKxvC3HjZHiNMZPLFG/4Pfd0JTsEmXFi5rW2GdkKceQHg/8pw5fBYPI
+         LeF/KRZMwfdfNcRJBYih1tnxhLjsZa6wQV/CFjtJmj5OPqrJ1GwTlNJzE9ssE5C5L5aR
+         yhtJzIq/LXP/UtCE7sQxFjJi88jRPWQlGyicYvBFT6gf4q1fkE2QLPIIFzVUZyum6v0/
+         UD4DtSjf0DYXPseMnJsTG3igvJ94C8sn+wjSgpsiqxftFeepiSMFQJzH8XFiX8g+MgD5
+         GANlvy3/MqVHjaT0EjpX3G/ShqO6NQaNQKmjREUdYCebbgtXFR7MJIfxmEbp0JiSA+RZ
+         KTxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709125369; x=1709730169;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=x6lSKguAFNJlnGwYnPcXJDGp7aYh6GWsOXe6nAyiYVg=;
-        b=FS3E1Sn/qX5qVDlMxY7iiSlIuxGL6Fzj8+uVeOHjmKNWVdJzjeMkS/9LCT/RR3kGIa
-         E+ubwnftrPRDVyAWBXvqDdKQtAgJQWqUAfxHbK749tFAYJvnUQ4PlbbILFBo1ZuFGI9q
-         KY4KBzKi8I4TSeeqYUHFjkA/5jBfr/sZCwCA48ohqzcep8vQGEgweJCXo7OE2J6Wr60j
-         IMPbBdgCaaY7/FB2mZtZiufmOh6joAQbFRDqk78Q5kE8VIPRTCC7ECU9xw+iABUxmgtz
-         pqgVztLKdTKA1Sza10NsxTVplCwXjhpz1CWuSjzN7iOWjBO4L4QdqxfelCARLXPkdmwR
-         0kDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXmV3Av6hAlzchVsd4dg2MXzl5GCycJwuavVyw8JvhcQ+eLKG4x/HFiqJIxuellfRXzaSGK2Stwm4YGzzinV+8sOJhI3ssm
-X-Gm-Message-State: AOJu0YwShR49h9rcQENvBasLp/NlF6lq4EhT1MoBsFuXRmhYx88BEbmS
-	L012VGhWbm82uny8XGdNQJ1cgt4rEVIeKlKfXCg9MsiP2Slds4Ufq08obtdH2N45t+uqTAMD0U5
-	IvxhPn0VmGvBCRXDNaPntUe+Wx4aCGCL28OJm3w==
-X-Google-Smtp-Source: AGHT+IHt515XwjEFX2Talx1MabYfeTXhLsH0vACvt9NK8SBc6/4ePgqNHrqmsK6WApAXc6SEFfgq73kQu0EE4nMTs0E=
-X-Received: by 2002:a05:6902:1b09:b0:dcc:53c6:113a with SMTP id
- eh9-20020a0569021b0900b00dcc53c6113amr2580289ybb.59.1709125368961; Wed, 28
- Feb 2024 05:02:48 -0800 (PST)
+        d=1e100.net; s=20230601; t=1709125665; x=1709730465;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ds6k2OGgjr+66jCurt8bfyj79IHMsZPOvgk2Z6jYguY=;
+        b=kZQx5IqnmDWgoQCZ0LbSdRJB2vS0WBfROF6muMYiPT05WLoZFLpdeSCvThdeOm41UF
+         jm8tkIzp1NhJcjHct8zdRjRfsUYi/9Car7JsydcOCyXdex8s0gkSgrnoeyU9hCYwtRLA
+         Hs57rfPSCA6v/vXC5QPWLKIxJj2d3hEpOCu/RswggEPUogT69qnx/hi1rZjsNrARFLiU
+         hvShZslQpo6VHIFjykyXqI8/6Af4j1A8npIhmEcNxps03mY99/rbiDTI4yDFkeZixHFa
+         cQZQe8Un8GL/9XZtlqKSeGNVvQzvmrQcx0kp7Ae3gN8H3PtUFz4lxIo9RpKGEQXycY5h
+         Wd9A==
+X-Forwarded-Encrypted: i=1; AJvYcCVbiYI4p1OU34PEdm141/97bIRa28ggjtEqrd+2Fx5Yy3ib7fM0SmJG2aoAuzI+2nwfLrC+tLNurn7fAobkmfkgyUW6ntKa
+X-Gm-Message-State: AOJu0YyxyAvdNlsD0qTDgetPyuN3rEerQ5BRNasoEOtAiphWiyIidIlX
+	WWtBIldQJn0TrErINtthnr5EFbdxEDuGSrI2n1r+5pF8F5soue+qasILFmtA9GeWnbi2JqKBb5/
+	s
+X-Google-Smtp-Source: AGHT+IEzohgPC0Sma7dMAYNpX/Dsy4kHDmtryX7DdCeZVa+F22ZZdWGJvDH8qqYsAxciG9U3WQUuLg==
+X-Received: by 2002:adf:ea88:0:b0:33d:d251:9220 with SMTP id s8-20020adfea88000000b0033dd2519220mr6885228wrm.17.1709125664871;
+        Wed, 28 Feb 2024 05:07:44 -0800 (PST)
+Received: from localhost ([193.47.165.251])
+        by smtp.gmail.com with ESMTPSA id bq1-20020a5d5a01000000b0033e05499cd6sm225875wrb.59.2024.02.28.05.07.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Feb 2024 05:07:44 -0800 (PST)
+Date: Wed, 28 Feb 2024 14:07:41 +0100
+From: Jiri Pirko <jiri@resnulli.us>
+To: Alexander Ofitserov <oficerovas@altlinux.org>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	edumazet@google.com, pablo@netfilter.org, laforge@gnumonks.org,
+	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+	kovalev@altlinux.org, nickel@altlinux.org, dutyrok@altlinux.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net] gtp: fix use-after-free and null-ptr-deref in
+ gtp_newlink()
+Message-ID: <Zd8wHT5bclgLvJld@nanopsycho>
+References: <20240228114703.465107-1-oficerovas@altlinux.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240218-msm8996-fix-ufs-v3-0-40aab49899a3@linaro.org> <yq1o7c24oyt.fsf@ca-mkp.ca.oracle.com>
-In-Reply-To: <yq1o7c24oyt.fsf@ca-mkp.ca.oracle.com>
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Wed, 28 Feb 2024 15:02:37 +0200
-Message-ID: <CAA8EJpqUrvzU_=EGcXdpLjVetSkCv0vfnc1hNhPQdyUQvY7UzQ@mail.gmail.com>
-Subject: Re: [PATCH v3 0/5] scsi: ufs: qcom: fix UFSDHCD support on MSM8996 platform
-To: "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
-	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
-	"James E.J. Bottomley" <jejb@linux.ibm.com>, Nitin Rawat <quic_nitirawa@quicinc.com>, 
-	Can Guo <quic_cang@quicinc.com>, 
-	Naveen Kumar Goud Arepalli <quic_narepall@quicinc.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>, 
-	Bart Van Assche <bvanassche@acm.org>, Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org, 
-	linux-scsi@vger.kernel.org, devicetree@vger.kernel.org, 
-	stable@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240228114703.465107-1-oficerovas@altlinux.org>
 
-On Tue, 27 Feb 2024 at 04:33, Martin K. Petersen
-<martin.petersen@oracle.com> wrote:
+Wed, Feb 28, 2024 at 12:47:03PM CET, oficerovas@altlinux.org wrote:
+>The gtp_link_ops operations structure for the subsystem must be
+>registered after registering the gtp_net_ops pernet operations structure.
 >
+>Syzkaller hit 'general protection fault in gtp_genl_dump_pdp' bug:
 >
-> Dmitry,
+>[ 1010.702740] gtp: GTP module unloaded
+>[ 1010.715877] general protection fault, probably for non-canonical addres=
+s 0xdffffc0000000001: 0000 [#1] SMP KASAN NOPTI
+>[ 1010.715888] KASAN: null-ptr-deref in range [0x0000000000000008-0x000000=
+000000000f]
+>[ 1010.715895] CPU: 1 PID: 128616 Comm: a.out Not tainted 6.8.0-rc6-std-de=
+f-alt1 #1
+>[ 1010.715899] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.=
+16.0-alt1 04/01/2014
+>[ 1010.715908] RIP: 0010:gtp_newlink+0x4d7/0x9c0 [gtp]
+>[ 1010.715915] Code: 80 3c 02 00 0f 85 41 04 00 00 48 8b bb d8 05 00 00 e8=
+ ed f6 ff ff 48 89 c2 48 89 c5 48 b8 00 00 00 00 00 fc ff df 48 c1 ea 03 <8=
+0> 3c 02 00 0f 85 4f 04 00 00 4c 89 e2 4c 8b 6d 00 48 b8 00 00 00
+>[ 1010.715920] RSP: 0018:ffff888020fbf180 EFLAGS: 00010203
+>[ 1010.715929] RAX: dffffc0000000000 RBX: ffff88800399c000 RCX: 0000000000=
+000000
+>[ 1010.715933] RDX: 0000000000000001 RSI: ffffffff84805280 RDI: 0000000000=
+000282
+>[ 1010.715938] RBP: 000000000000000d R08: 0000000000000001 R09: 0000000000=
+000000
+>[ 1010.715942] R10: 0000000000000001 R11: 0000000000000001 R12: ffff888003=
+99cc80
+>[ 1010.715947] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000=
+000400
+>[ 1010.715953] FS:  00007fd1509ab5c0(0000) GS:ffff88805b300000(0000) knlGS=
+:0000000000000000
+>[ 1010.715958] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>[ 1010.715962] CR2: 0000000000000000 CR3: 000000001c07a000 CR4: 0000000000=
+750ee0
+>[ 1010.715968] PKRU: 55555554
+>[ 1010.715972] Call Trace:
+>[ 1010.715985]  ? __die_body.cold+0x1a/0x1f
+>[ 1010.715995]  ? die_addr+0x43/0x70
+>[ 1010.716002]  ? exc_general_protection+0x199/0x2f0
+>[ 1010.716016]  ? asm_exc_general_protection+0x1e/0x30
+>[ 1010.716026]  ? gtp_newlink+0x4d7/0x9c0 [gtp]
+>[ 1010.716034]  ? gtp_net_exit+0x150/0x150 [gtp]
+>[ 1010.716042]  __rtnl_newlink+0x1063/0x1700
+>[ 1010.716051]  ? rtnl_setlink+0x3c0/0x3c0
+>[ 1010.716063]  ? is_bpf_text_address+0xc0/0x1f0
+>[ 1010.716070]  ? kernel_text_address.part.0+0xbb/0xd0
+>[ 1010.716076]  ? __kernel_text_address+0x56/0xa0
+>[ 1010.716084]  ? unwind_get_return_address+0x5a/0xa0
+>[ 1010.716091]  ? create_prof_cpu_mask+0x30/0x30
+>[ 1010.716098]  ? arch_stack_walk+0x9e/0xf0
+>[ 1010.716106]  ? stack_trace_save+0x91/0xd0
+>[ 1010.716113]  ? stack_trace_consume_entry+0x170/0x170
+>[ 1010.716121]  ? __lock_acquire+0x15c5/0x5380
+>[ 1010.716139]  ? mark_held_locks+0x9e/0xe0
+>[ 1010.716148]  ? kmem_cache_alloc_trace+0x35f/0x3c0
+>[ 1010.716155]  ? __rtnl_newlink+0x1700/0x1700
+>[ 1010.716160]  rtnl_newlink+0x69/0xa0
+>[ 1010.716166]  rtnetlink_rcv_msg+0x43b/0xc50
+>[ 1010.716172]  ? rtnl_fdb_dump+0x9f0/0x9f0
+>[ 1010.716179]  ? lock_acquire+0x1fe/0x560
+>[ 1010.716188]  ? netlink_deliver_tap+0x12f/0xd50
+>[ 1010.716196]  netlink_rcv_skb+0x14d/0x440
+>[ 1010.716202]  ? rtnl_fdb_dump+0x9f0/0x9f0
+>[ 1010.716208]  ? netlink_ack+0xab0/0xab0
+>[ 1010.716213]  ? netlink_deliver_tap+0x202/0xd50
+>[ 1010.716220]  ? netlink_deliver_tap+0x218/0xd50
+>[ 1010.716226]  ? __virt_addr_valid+0x30b/0x590
+>[ 1010.716233]  netlink_unicast+0x54b/0x800
+>[ 1010.716240]  ? netlink_attachskb+0x870/0x870
+>[ 1010.716248]  ? __check_object_size+0x2de/0x3b0
+>[ 1010.716254]  netlink_sendmsg+0x938/0xe40
+>[ 1010.716261]  ? netlink_unicast+0x800/0x800
+>[ 1010.716269]  ? __import_iovec+0x292/0x510
+>[ 1010.716276]  ? netlink_unicast+0x800/0x800
+>[ 1010.716284]  __sock_sendmsg+0x159/0x190
+>[ 1010.716290]  ____sys_sendmsg+0x712/0x880
+>[ 1010.716297]  ? sock_write_iter+0x3d0/0x3d0
+>[ 1010.716304]  ? __ia32_sys_recvmmsg+0x270/0x270
+>[ 1010.716309]  ? lock_acquire+0x1fe/0x560
+>[ 1010.716315]  ? drain_array_locked+0x90/0x90
+>[ 1010.716324]  ___sys_sendmsg+0xf8/0x170
+>[ 1010.716331]  ? sendmsg_copy_msghdr+0x170/0x170
+>[ 1010.716337]  ? lockdep_init_map_type+0x2c7/0x860
+>[ 1010.716343]  ? lockdep_hardirqs_on_prepare+0x430/0x430
+>[ 1010.716350]  ? debug_mutex_init+0x33/0x70
+>[ 1010.716360]  ? percpu_counter_add_batch+0x8b/0x140
+>[ 1010.716367]  ? lock_acquire+0x1fe/0x560
+>[ 1010.716373]  ? find_held_lock+0x2c/0x110
+>[ 1010.716384]  ? __fd_install+0x1b6/0x6f0
+>[ 1010.716389]  ? lock_downgrade+0x810/0x810
+>[ 1010.716396]  ? __fget_light+0x222/0x290
+>[ 1010.716403]  __sys_sendmsg+0xea/0x1b0
+>[ 1010.716409]  ? __sys_sendmsg_sock+0x40/0x40
+>[ 1010.716419]  ? lockdep_hardirqs_on_prepare+0x2b3/0x430
+>[ 1010.716425]  ? syscall_enter_from_user_mode+0x1d/0x60
+>[ 1010.716432]  do_syscall_64+0x30/0x40
+>[ 1010.716438]  entry_SYSCALL_64_after_hwframe+0x62/0xc7
+>[ 1010.716444] RIP: 0033:0x7fd1508cbd49
+>[ 1010.716452] Code: 00 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48=
+ 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <4=
+8> 3d 01 f0 ff ff 73 01 c3 48 8b 0d ef 70 0d 00 f7 d8 64 89 01 48
+>[ 1010.716456] RSP: 002b:00007fff18872348 EFLAGS: 00000202 ORIG_RAX: 00000=
+0000000002e
+>[ 1010.716463] RAX: ffffffffffffffda RBX: 000055f72bf0eac0 RCX: 00007fd150=
+8cbd49
+>[ 1010.716468] RDX: 0000000000000000 RSI: 0000000020000280 RDI: 0000000000=
+000006
+>[ 1010.716473] RBP: 00007fff18872360 R08: 00007fff18872360 R09: 00007fff18=
+872360
+>[ 1010.716478] R10: 00007fff18872360 R11: 0000000000000202 R12: 000055f72b=
+f0e1b0
+>[ 1010.716482] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000=
+000000
+>[ 1010.716491] Modules linked in: gtp(+) udp_tunnel ib_core uinput af_pack=
+et rfkill qrtr joydev hid_generic usbhid hid kvm_intel iTCO_wdt intel_pmc_b=
+xt iTCO_vendor_support kvm snd_hda_codec_generic ledtrig_audio irqbypass cr=
+ct10dif_pclmul crc32_pclmul crc32c_intel ghash_clmulni_intel snd_hda_intel =
+nls_utf8 snd_intel_dspcfg nls_cp866 psmouse aesni_intel vfat crypto_simd fa=
+t cryptd glue_helper snd_hda_codec pcspkr snd_hda_core i2c_i801 snd_hwdep i=
+2c_smbus xhci_pci snd_pcm lpc_ich xhci_pci_renesas xhci_hcd qemu_fw_cfg tin=
+y_power_button button sch_fq_codel vboxvideo drm_vram_helper drm_ttm_helper=
+ ttm vboxsf vboxguest snd_seq_midi snd_seq_midi_event snd_seq snd_rawmidi s=
+nd_seq_device snd_timer snd soundcore msr fuse efi_pstore dm_mod ip_tables =
+x_tables autofs4 virtio_gpu virtio_dma_buf drm_kms_helper cec rc_core drm v=
+irtio_rng virtio_scsi rng_core virtio_balloon virtio_blk virtio_net virtio_=
+console net_failover failover ahci libahci libata evdev scsi_mod input_leds=
+ serio_raw virtio_pci intel_agp
+>[ 1010.716674]  virtio_ring intel_gtt virtio [last unloaded: gtp]
+>[ 1010.716693] ---[ end trace 04990a4ce61e174b ]---
 >
-> > First several patches target fixing the UFS support on the Qualcomm
-> > MSM8996 / APQ8096 platforms, broken by the commit b4e13e1ae95e ("scsi:
-> > ufs: qcom: Add multiple frequency support for
-> > MAX_CORE_CLK_1US_CYCLES"). Last two patches clean up the UFS DT device
-> > on that platform to follow the bindings on other MSM8969 platforms. If
-> > such breaking change is unacceptable, they can be simply ignored,
-> > merging fixes only.
->
-> Does not apply to 6.9/scsi-staging. Please rebase if you want this
-> series to go through the SCSI tree.
+>Cc: stable@vger.kernel.org
+>Signed-off-by: Alexander Ofitserov <oficerovas@altlinux.org>
+>Fixes: 459aa660eb1d ("gtp: add initial driver for datapath of GPRS Tunneli=
+ng Protocol (GTP-U)")
 
-Please pick up just the UFS patch. DT patches should go through arm-soc tree.
-
--- 
-With best wishes
-Dmitry
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
 
