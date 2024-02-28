@@ -1,113 +1,110 @@
-Return-Path: <stable+bounces-25426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBE4686B780
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 19:45:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0DA586B7B0
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 19:51:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DD311F292B3
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 18:45:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BEB52892DB
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 18:51:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B044D71EDB;
-	Wed, 28 Feb 2024 18:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F03A171EBD;
+	Wed, 28 Feb 2024 18:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="gVAFa/wF"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4fFdpTz0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696CB71EC6
-	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 18:45:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5B079B7A
+	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 18:51:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709145914; cv=none; b=IWDgZTeEtwbEwD3LJCudhbCGKQHXeTddPORP1TmP6cRdG9FL+4Tc+yNi2RwYzMwzhOUtGRgdtDh3DUgw3gmfPGPky4VwrYSp4ryPWUlanCeO5KD0Iyp93mEXgVO9HFaXLXSL659XUuRV3cKWW0Qt8D3nR+AO/AllHtPD3MqBr5Q=
+	t=1709146285; cv=none; b=BTsyR0A6UdmHNLq0nWJKSTB0v9hv/Xx9c25DmAyo+wCbIh3z3Dh8RT1n5ULCAMcYYgQB/aOATxOzt2TMy0aMnPk2cFk94z9Uf7hLf3pnQZTnmKl+zqRrSJ/CLBdUYudCtsgto7MVQ/XMoHKcz8vB0wK3sMMDHZyiHdcxGlKSTSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709145914; c=relaxed/simple;
-	bh=JtRdfLpzL/ZV8ADjgH1+r8boDnPhsaWyXxdUuNrJxxE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lyWIdjsOMbiZlLEG8YxklU5w3vqh2O8LFayhe67tLde4LVRPEa/QbgpL334RI2FZNeXIn9Ngz6l2GTsucmSwr9Dc//ujguLFpz1Ag4zdFNe2T35VFL0byPWa8mAi/vWZhgG4/PsqXqPSpeQ+MNjT5vEJdlmL+h1OSvqbrxzYu64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=gVAFa/wF; arc=none smtp.client-ip=209.85.160.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-204235d0913so3806599fac.1
-        for <stable@vger.kernel.org>; Wed, 28 Feb 2024 10:45:12 -0800 (PST)
+	s=arc-20240116; t=1709146285; c=relaxed/simple;
+	bh=74xrWMGlTWlkqjlt9MN9TpLqx1sShodBXiCj0AvmP38=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Ru6KobZgsKke9Ol4u8f6QZptVcFPfj7i7iRh5QSeAxWkHsKzKoAAMvibybi6d2bgDsKh5Y29tGRUaxsY/E9OJKwGksEaWY8cgFziE6QKy+vPMKALTNlSaarFtRB/IvVwVQxGU5/+U8V5YtyfMqozVvYnDeLgstIMB6mUFpcAvQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--vamshigajjela.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4fFdpTz0; arc=none smtp.client-ip=209.85.219.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--vamshigajjela.bounces.google.com
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dc6b2682870so222988276.0
+        for <stable@vger.kernel.org>; Wed, 28 Feb 2024 10:51:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1709145911; x=1709750711; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WYSW/dDZJk0AWK1P14MQeXGDy5+2acJ2m/1QBAbC748=;
-        b=gVAFa/wFdMxQbDTeclC7fl0CYTq9w4oaagSQkL2qso/BECg6lnrjnbfywz5TLSrWIh
-         BOjGyUg1XtTzrA6VvxuwK9xYQKdy3HGaPR6X8EPsMX7AjnutodsymY0t2SdKe+cCd95U
-         BSMPTVAmK21LIsnZtdTtSBYPv5/UodDlIyVXM=
+        d=google.com; s=20230601; t=1709146283; x=1709751083; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=q995VDUT1rCWamECeHTo++lWCTqa/WTcSCUgzRaXW40=;
+        b=4fFdpTz0jZsGXDB2XeKVNB4Ld/y696qu1FM6CnC3OQ36xJJRIixw1uif0KTXX+OfTZ
+         DaZbU/7uNpbZxwqNv2PV+Q1C03VJZElU+uRntihu+kkOiQiiVqCR0udTr7/o4ZiX8j67
+         CYkBaaL66K819azaiLcSwr8v6PvnCp44ku8Cs2yNLThzs1vvTofW+VqmTe0zf688KzZd
+         qa27wLQMKHzpehYRxiiWfSE26Yf/Wj6loVzfamU+smLq4rSpV5VdwOOGEvB7iX2HTEyB
+         UEwzswJuJBEQ8FbnlgH5lQ3QHXmVxOqb8wD72A3KSgWQL6105s4Gc+MVUICOuYzisJAf
+         NZtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709145911; x=1709750711;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WYSW/dDZJk0AWK1P14MQeXGDy5+2acJ2m/1QBAbC748=;
-        b=OOw/QWqp9EsI3pFI6WFAjd3InycEzme71HSl5q6oWQ+cqllxbDq1rGbwU8+Avk0y5S
-         JqKE87Dq8jX45cTriQQgO/wsi01C/L3Ya6xwj2XuXqRyinbz6HM1MVc03e0kSxxJeZl2
-         Y/XO18vTDZPFSZs5Vus4gxSde6Nk12emJC3b3BO85e0C/RXFPLsYmlp+zSlxTVjqUVjT
-         VT5Eiu1jOdMiVtxwuyLavsrrvE3HhZJ2UxsGYSi5Qo0bADKHAFTGIX3W9mqNQ1kWONdC
-         PfDn7IcHyoCxgOtIM0rnamPHM1CyuRqhLugnQNChm62yby5Cq4eCwjcSFJf1D13I/gS6
-         8xhA==
-X-Gm-Message-State: AOJu0Yzx4zekqq+zDQkaHpsEPiWGxLnAH0a3lSuXuoqoCxemtLeulsoz
-	88tCBEWnzBcB8Pyk5ffDUAUnfrv4I7SZSmIWHPhZSGXFlScsigYqP8zt2M7dwg==
-X-Google-Smtp-Source: AGHT+IHwJyaRoEm/YQfCjyx+WogJ05QIwcidCk3H5iKaBfOekKEk67mfRLlcJEz6WQoDdGUJrI9xmQ==
-X-Received: by 2002:a05:6871:750c:b0:21f:aa57:4637 with SMTP id ny12-20020a056871750c00b0021faa574637mr546894oac.58.1709145911442;
-        Wed, 28 Feb 2024 10:45:11 -0800 (PST)
-Received: from fedora64.linuxtx.org ([99.47.93.78])
-        by smtp.gmail.com with ESMTPSA id nf3-20020a056871460300b0022027f66c2csm12942oab.24.2024.02.28.10.45.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Feb 2024 10:45:11 -0800 (PST)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date: Wed, 28 Feb 2024 12:45:09 -0600
-From: Justin Forbes <jforbes@fedoraproject.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com
-Subject: Re: [PATCH 6.7 000/334] 6.7.7-rc1 review
-Message-ID: <Zd9_NbbahAGDqscb@fedora64.linuxtx.org>
-References: <20240227131630.636392135@linuxfoundation.org>
+        d=1e100.net; s=20230601; t=1709146283; x=1709751083;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=q995VDUT1rCWamECeHTo++lWCTqa/WTcSCUgzRaXW40=;
+        b=W2KUexnrMEz46rLeiQpMVBkLo3AklP418AUGsQZTVumYUSqQMIVgBPLXj6S61rf3nt
+         XywV+vh65us9PL16gD8OVS6D36GmnGZ2n679mH46PtDhAIpgtqy9N6+sP8bMTAJgaM4Q
+         XkUpcYk+kgpWKtBnBDdY99oJulw+ahSI6yO8bMHfLNceQS1wAk2LOSvWzlucGrNmDGCZ
+         9np/8arkS+NhPS28EudG8YjgYz0opunUc3fThStWD3DbE0glry9yQ/baDubPXPPp0cZw
+         IkU24MeSaTeSTwNPZWyljTRiTkeodKQyWJCSFKhhzT2U0tTuw5z+TFGEbVG/VxY1v6sZ
+         SlNA==
+X-Forwarded-Encrypted: i=1; AJvYcCVTIxi+vr4CLfOZXrxGAx5AtEIoRxnL3A0o1f2oXT2S3tELLc84ZlpzQ+WvA43UjpUaao/CN+8klWHXSchXqoe56uCYJUaY
+X-Gm-Message-State: AOJu0YztWk//XvpDYkbpwGBAu8AyyQ2YMY8afm487diinXocmgFlnsfO
+	bjplnXwUoqHo2419Lmvg05b3PSze8FI8aROrPodLBfDlmjUND5/YkZwZeZ9gqvxFd9GW34xZdpf
+	XwAeg14aKmQ+8o/bl5uYH/XcUBvydbw==
+X-Google-Smtp-Source: AGHT+IGnnmWYe3kzdu/ZFn7IzaatprsDRrYZpULNetR7ouB2Ba0CntgRLWuFHTTETzBJffD/BE1RNdgRwXmu5DK9wX8U
+X-Received: from vamshig51.c.googlers.com ([fda3:e722:ac3:cc00:3:22c1:c0a8:70c])
+ (user=vamshigajjela job=sendgmr) by 2002:a05:6902:1885:b0:dc6:fec4:1c26 with
+ SMTP id cj5-20020a056902188500b00dc6fec41c26mr8000ybb.1.1709146283403; Wed,
+ 28 Feb 2024 10:51:23 -0800 (PST)
+Date: Thu, 29 Feb 2024 00:21:16 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240227131630.636392135@linuxfoundation.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.44.0.rc1.240.g4c46232300-goog
+Message-ID: <20240228185116.1269-1-vamshigajjela@google.com>
+Subject: [PATCH] spmi: hisi-spmi-controller: Do not override device identifier
+From: Vamshi Gajjela <vamshigajjela@google.com>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
+	Johan Hovold <johan+linaro@kernel.org>
+Cc: Caleb Connolly <caleb.connolly@linaro.org>, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Vamshi Gajjela <vamshigajjela@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Feb 27, 2024 at 02:17:38PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.7.7 release.
-> There are 334 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 29 Feb 2024 13:15:36 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.7-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+'nr' member of struct spmi_controller, which serves as an identifier
+for the controller/bus. This value is a dynamic ID assigned in
+spmi_controller_alloc, and overriding it from the driver results in an
+ida_free error "ida_free called for id=xx which is not allocated".
 
-Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
+Signed-off-by: Vamshi Gajjela <vamshigajjela@google.com>
+Fixes: 70f59c90c819 ("staging: spmi: add Hikey 970 SPMI controller driver")
+Cc: stable@vger.kernel.org
+---
+ drivers/spmi/hisi-spmi-controller.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+diff --git a/drivers/spmi/hisi-spmi-controller.c b/drivers/spmi/hisi-spmi-controller.c
+index 674a350cc676..fa068b34b040 100644
+--- a/drivers/spmi/hisi-spmi-controller.c
++++ b/drivers/spmi/hisi-spmi-controller.c
+@@ -300,7 +300,6 @@ static int spmi_controller_probe(struct platform_device *pdev)
+ 
+ 	spin_lock_init(&spmi_controller->lock);
+ 
+-	ctrl->nr = spmi_controller->channel;
+ 	ctrl->dev.parent = pdev->dev.parent;
+ 	ctrl->dev.of_node = of_node_get(pdev->dev.of_node);
+ 
+-- 
+2.44.0.rc1.240.g4c46232300-goog
+
 
