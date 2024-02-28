@@ -1,162 +1,165 @@
-Return-Path: <stable+bounces-25366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D392F86B046
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 14:27:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 311DA86B084
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 14:39:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01BD71C2313A
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 13:27:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE8571F283F1
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 13:39:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF6A214E2CD;
-	Wed, 28 Feb 2024 13:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEBCA14EFC5;
+	Wed, 28 Feb 2024 13:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b="DqPURRkb"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="NQYnhJXZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2077.outbound.protection.outlook.com [40.107.243.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF7E14C58E
-	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 13:27:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709126857; cv=none; b=IxZRSCmZj+wQo6RdnkMVHu10hDEH8Fh3ikYEt0jth+onwWmHHEa6AuVHRsc0iAj9YPHs9ghNDMEKifOokf6FuH3JKHl5IOQ6uQnbE/kNs2YVCUb/GGaQflf2iuCuB5vO86r85x9xPfNz0/6K0+JROjg5LoMQ/PnMvA2sBxUHod0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709126857; c=relaxed/simple;
-	bh=OhYQ1wbcM/5cvGzllyuLV9iLeLmBj6Hy+kF8PqKuACg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lrR386w8ttxTqOnzhvUvWbrHBo27WKaIE1Al2r2D7cl/zEBlmoFvhZRjzryI9MsVvMCThjdGqBmMXMqr2nOl8ODQOjf1CukGzvpVcIG/qBOMY5M/dwmnls1SnwbjPRn9kyXrRgEZJA1Z+mef15ZPZZUkZY99dISE5mckNWKGE8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com; spf=pass smtp.mailfrom=ventanamicro.com; dkim=pass (2048-bit key) header.d=ventanamicro.com header.i=@ventanamicro.com header.b=DqPURRkb; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ventanamicro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ventanamicro.com
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2d29111272eso37497821fa.0
-        for <stable@vger.kernel.org>; Wed, 28 Feb 2024 05:27:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ventanamicro.com; s=google; t=1709126852; x=1709731652; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=085e3STycEqrCsNI0U1fWcxzFfs9YgyshKRlsnEMVpE=;
-        b=DqPURRkb6hziyydRjm1NTpxoO99SRwdH4lYJyrGZKRIYpic99fqvujiFQH8ZW6uq+u
-         DEk4CkpO6uZpiiQWp5mj1S0Vjz+XNtGBtaNq0gxfECjfzOpMU0OjqFT5MnUjNr0ktWyq
-         gz2xnORAvq4krmjXOPDi8tgktMAghEPYbrVzvK/3xc3XH13aOKmh2+PYEywCosUn8QS+
-         OM/uBWLYNI+w3e2yxYS8C0ZWae/hKZiOCWxc/tcj758z0GUCyZZ1isgUOELMeC89fVwm
-         D5l1u28Paa2uiE/ytGuUADdRhKj07bIy9oj4IUYzf0Z4SbKdsFUj/5Zlm6Do9MkDTI1O
-         gn8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709126852; x=1709731652;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=085e3STycEqrCsNI0U1fWcxzFfs9YgyshKRlsnEMVpE=;
-        b=Zr0kpMQtoyxHQ51mKdavFmRVxT51+tCnxzKkY0W0iC2ZpXK6nF0w3NkvbIpHZlzf8W
-         5Un0NLmi+nazKbv3jWLv4P0qv0HPRnp2ITrvQMGIeYScdF+e3BylKxIPhvRC/2tViC8r
-         h7m29teUeiuAqzww5pN9mhMdbERpVz/2Oz5KM8GKUJwcAMQndMeRaR/P2NumgU0cIDFU
-         QdV+RW8bepQ9w4i2SuTV3QH7q3PjXN0102eGgCkEx9OA0avbVVwfdim4ev76CIJGpObp
-         HkFb7q0+anJWLfIGqryAkf1UGgbISMd06QwFkMB2elwyHd4OzhCsQmEM5cVH4riFhbPP
-         Semg==
-X-Forwarded-Encrypted: i=1; AJvYcCXz4qcsZAdikZrSBXsZYYObh28f6RZV6Y6bXZNBfWxfxx4mhaF0gbQH0gqM0JqgcBUuTobxaEERTxCjJxBK/wyqRr881KLd
-X-Gm-Message-State: AOJu0YzPjksGQmOoqnLVPJzVoypZ1+gQZOC44Q8f00uotE8JhqyLFBjN
-	dWiR1OfI2L1q/bYVGKkH3cL8UsxuFO9lW082ZtW8UbEaKJWIRYrYFUEj7+FyoRY=
-X-Google-Smtp-Source: AGHT+IFC0XXC3H5qzKW/aZa5LVkLGjCH85nXFOY7PAeqSwrdiOpz48eXurJvLKthpHRi5VSbPhLa+g==
-X-Received: by 2002:a2e:9614:0:b0:2d2:acef:6aca with SMTP id v20-20020a2e9614000000b002d2acef6acamr2443164ljh.41.1709126852478;
-        Wed, 28 Feb 2024 05:27:32 -0800 (PST)
-Received: from localhost (2001-1ae9-1c2-4c00-20f-c6b4-1e57-7965.ip6.tmcz.cz. [2001:1ae9:1c2:4c00:20f:c6b4:1e57:7965])
-        by smtp.gmail.com with ESMTPSA id n17-20020a5d4211000000b0033d97bd5ddasm14525870wrq.85.2024.02.28.05.27.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Feb 2024 05:27:32 -0800 (PST)
-Date: Wed, 28 Feb 2024 14:27:31 +0100
-From: Andrew Jones <ajones@ventanamicro.com>
-To: Samuel Holland <samuel.holland@sifive.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>, linux-kernel@vger.kernel.org, 
-	Conor Dooley <conor@kernel.org>, Alexandre Ghiti <alex@ghiti.fr>, linux-riscv@lists.infradead.org, 
-	Stefan O'Rear <sorear@fastmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH -fixes v4 3/3] riscv: Save/restore envcfg CSR during CPU
- suspend
-Message-ID: <20240228-4bb96d297dcbe43ed85a9760@orel>
-References: <20240228065559.3434837-1-samuel.holland@sifive.com>
- <20240228065559.3434837-4-samuel.holland@sifive.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C4B14D452;
+	Wed, 28 Feb 2024 13:38:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.77
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709127535; cv=fail; b=aLl+t8QAu/Ma6yCm0dQjSy7XHi7fIjGZ4Pm89r3PEiWAaqQKicszAyIBr5GDkyF85sQDUFYevyXSVj4Mnn8X26A/dwnJfvczqODUDO/bs0ynp3XF+WbaPfSHc/A8creaB6WbfmeZBmKMU4cQhtZ7mFq4/J0TCxDIPdyH5zHAeIc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709127535; c=relaxed/simple;
+	bh=KvTFSRC+DIXmWo/EzHFEe4f1FYqQrFqAPtA86BYIOWI=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=VJNOLbTcx78aWf4vtJNr9/iJdou7NiOr73/Zsuk6KVdQ3I8rwBOVIHbKY+1ZPW5EXm46iUpxD+gfkeyEmnPipvz5lo0UviyJGchWU69LQczVjiDgqBFbPMjejrlFSahLj6s2/9GW+R6/VUFW9Hr00wKnQN5Ay5yGNZylXLqnGRw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=NQYnhJXZ; arc=fail smtp.client-ip=40.107.243.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=QQ1LvsZC+3eWMwNJ5++TYtES2d1U6tISkPgYpY7nuSXay+Nmnn8NOcHqrQT54TvLLWkK3X6eS3M7ECdOU8M1kQdZc3utQRD0XPPvJ5xo2Dmn8ieeymRseEugB9Z+SY7AAhoWaEVrGiEt+odWbECwJmhqQ7ijXNKzm7Do/8J6SYXPzpGVC8ULad2dmARLWFAJCodv4s3wXfEpDSu9PXBAp1rlNdEKaw7P0mmfdnbQN6uJN7Mr1bKJH/fdxVJPAivZV2/x3iItZHane0AT3OFvDfaO9kw2cZJxJA8wqAn0W5FM6OUffN2oWoFeYWNsHzNJVsXuOjo+gGHg4prso48Lkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wS/nCNaa/+cslLswHT0ya19BZF8M6qIAJRKr4FLdidE=;
+ b=ob5yYbR0OaMpAJadraZVfiaPjUyqb35GauduOFkJN6hQiaRUXka6f3jRF6ScwR4U/NzvveYb0gfQntIdHQRyTMR/UTUvlJBmJzpTJncFiTCTnjc4mrTcuTuz9Fq8/7I5GEqDS30DcC+VNZNbIvJaHCl4Z1exfZ5gxiIuwYmshwS6aFxp0NKuqgpWp/7lBTUeb2YG/G3CZ+AGhCTPmEeAL7VjaFk+Z6gqH1LRfoAY0HH14UQPywdynS0NJ9ER5hf9mxHlvTN3KUdiB2IIndn0V/L2b+4P1CFhBA/Wny9oDNQRfV1OiVfLXK2aAAU4+XLQgEPQo8DcCTxUoRqhqW7trQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wS/nCNaa/+cslLswHT0ya19BZF8M6qIAJRKr4FLdidE=;
+ b=NQYnhJXZeQ7dVk3rFNSAfuFLGIpSQQa0cUGxZIgUwWmSnDDir9F4O1NGvspLG1fUbtnbIctwNifPDlVwgqCvgwgY0ssVVV09dgHGyWvhXynsVM3H2Fr1MspHPCYeXRz/hJheRO5uS7imxZsuvECkD9s2uE+KdEdzd++XGLyz/0zWdxEGi8e+dR4BdDwlogGolfYQHomLAGOT310xMYhsoq+5BgYPfPjh3Wm9R/8xp3tdNkDGBik2H4WDuBDbjg6MDmCTDDtoqMoaQ1dzjqSGAsB76B5mxswF/aDmOAfKOggcRBtfKNk3xHAFq14KzA+eQ+2iskLvSjGc7qiwsNEtHQ==
+Received: from DM6PR02CA0078.namprd02.prod.outlook.com (2603:10b6:5:1f4::19)
+ by DM4PR12MB9070.namprd12.prod.outlook.com (2603:10b6:8:bc::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.34; Wed, 28 Feb
+ 2024 13:38:51 +0000
+Received: from DS2PEPF00003444.namprd04.prod.outlook.com
+ (2603:10b6:5:1f4:cafe::b2) by DM6PR02CA0078.outlook.office365.com
+ (2603:10b6:5:1f4::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.28 via Frontend
+ Transport; Wed, 28 Feb 2024 13:38:51 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ DS2PEPF00003444.mail.protection.outlook.com (10.167.17.71) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7292.25 via Frontend Transport; Wed, 28 Feb 2024 13:38:51 +0000
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Wed, 28 Feb
+ 2024 05:38:37 -0800
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail202.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Wed, 28 Feb
+ 2024 05:38:37 -0800
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12 via Frontend
+ Transport; Wed, 28 Feb 2024 05:38:37 -0800
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+	<rwarsow@gmx.de>, <conor@kernel.org>, <allen.lkml@gmail.com>,
+	<linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 5.4 00/84] 5.4.270-rc1 review
+In-Reply-To: <20240227131552.864701583@linuxfoundation.org>
+References: <20240227131552.864701583@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240228065559.3434837-4-samuel.holland@sifive.com>
+Message-ID: <f4a5fe3d-1f17-43f5-887a-f76a3909ad81@rnnvmail204.nvidia.com>
+Date: Wed, 28 Feb 2024 05:38:37 -0800
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS2PEPF00003444:EE_|DM4PR12MB9070:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9bd6e43e-5cd5-43be-71c5-08dc38629982
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	4xc7s99RO5ViFfshQYuWp86Ao0rzYPlhEZnGaf8Ug7lmY1AkCDpj6364nQmPbztAGAkbSCT+FKB0Ns0Lk19F8vuJzEhWg3fIKpKYINemW3s4kpVegPIGWaeaUcxCpT8N+QO+QIIyRQTMdlTDsKHkKQVxYzt1VIDFBPU7UIeAEk34ZR0adK23p3/EeZkgPzap1Fp9FEXQpyCQJ82Tn6zXkFXC50UNpQb6rrbNnHF54NezPK7GWoHFKjQGUMY1CrXZhJgcE/6+2SyBq3CwyFCN/XAnkjzUwlIovE3HQynFa6NxcnNzrpLNKGC2YxN4782R0KtM7HRZSaIF3kPqNJhy/PTI30M+NQ8piq2ljYfJ2wS3gQDbwAaZW5wuquSRlk+6vLgJ9iEEuSmCTUh8rJ1yFfluX/uhPL3Bx3GwzyBqa7o0lxHXZLWBJG8MAiV+yVsOBYz9406s3xjd0YlxCpHsPWhRzvZf8zw7Nng1pkULbKBlF3Z61s231Zkn2Am8wjdSb5SqfhuluJWF4Oz163gXDTZG0jRMfWecIy25lPz6g0UuH1E1DcdHnybAjOoDynf2eKSYUPd+RCKBkJl7mA0pmqW/JG+6QzQQazGpZ82LAxMKHQLR70fWfJhBMbefxgdP+5x6em3Wc2db2y1RHiNqIcwwAzQ45phchtnYc/Fodxb/9LpoMuPN1IM8RVWG7JAC7ZDzq1ik+w/3TfKpKYX8sTdvxVtf71Mk+mm2WVjtESc/D9mhDIF9UoKMbpwfhX01AOGqCg/zAQPif2G0MsBd3O+ZsKPAw7d8JMHcEMOH7V8=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230031)(36860700004)(82310400014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2024 13:38:51.1618
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9bd6e43e-5cd5-43be-71c5-08dc38629982
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS2PEPF00003444.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB9070
 
-On Tue, Feb 27, 2024 at 10:55:35PM -0800, Samuel Holland wrote:
-> The value of the [ms]envcfg CSR is lost when entering a nonretentive
-> idle state, so the CSR must be rewritten when resuming the CPU.
+On Tue, 27 Feb 2024 14:26:27 +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.4.270 release.
+> There are 84 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Cc: <stable@vger.kernel.org> # v6.7+
-> Fixes: 43c16d51a19b ("RISC-V: Enable cbo.zero in usermode")
-> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-> ---
+> Responses should be made by Thu, 29 Feb 2024 13:15:36 +0000.
+> Anything received after that time might be too late.
 > 
-> Changes in v4:
->  - Check for Xlinuxenvcfg instead of Zicboz
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.270-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+> and the diffstat can be found below.
 > 
-> Changes in v3:
->  - Check for Zicboz instead of the privileged ISA version
+> thanks,
 > 
-> Changes in v2:
->  - Check for privileged ISA v1.12 instead of the specific CSR
->  - Use riscv_has_extension_likely() instead of new ALTERNATIVE()s
-> 
->  arch/riscv/include/asm/suspend.h | 1 +
->  arch/riscv/kernel/suspend.c      | 4 ++++
->  2 files changed, 5 insertions(+)
-> 
-> diff --git a/arch/riscv/include/asm/suspend.h b/arch/riscv/include/asm/suspend.h
-> index 02f87867389a..491296a335d0 100644
-> --- a/arch/riscv/include/asm/suspend.h
-> +++ b/arch/riscv/include/asm/suspend.h
-> @@ -14,6 +14,7 @@ struct suspend_context {
->  	struct pt_regs regs;
->  	/* Saved and restored by high-level functions */
->  	unsigned long scratch;
-> +	unsigned long envcfg;
->  	unsigned long tvec;
->  	unsigned long ie;
->  #ifdef CONFIG_MMU
-> diff --git a/arch/riscv/kernel/suspend.c b/arch/riscv/kernel/suspend.c
-> index 239509367e42..299795341e8a 100644
-> --- a/arch/riscv/kernel/suspend.c
-> +++ b/arch/riscv/kernel/suspend.c
-> @@ -15,6 +15,8 @@
->  void suspend_save_csrs(struct suspend_context *context)
->  {
->  	context->scratch = csr_read(CSR_SCRATCH);
-> +	if (riscv_cpu_has_extension_unlikely(smp_processor_id(), RISCV_ISA_EXT_XLINUXENVCFG))
-> +		context->envcfg = csr_read(CSR_ENVCFG);
->  	context->tvec = csr_read(CSR_TVEC);
->  	context->ie = csr_read(CSR_IE);
->  
-> @@ -36,6 +38,8 @@ void suspend_save_csrs(struct suspend_context *context)
->  void suspend_restore_csrs(struct suspend_context *context)
->  {
->  	csr_write(CSR_SCRATCH, context->scratch);
-> +	if (riscv_cpu_has_extension_unlikely(smp_processor_id(), RISCV_ISA_EXT_XLINUXENVCFG))
-> +		csr_write(CSR_ENVCFG, context->envcfg);
->  	csr_write(CSR_TVEC, context->tvec);
->  	csr_write(CSR_IE, context->ie);
->  
-> -- 
-> 2.43.1
->
+> greg k-h
 
-Picking _likely vs. _unlikely sometimes feels like flipping a coin, but
-we'll presumably be increasing the likelihood of xlinuxenvcfg being
-present as we add more and more envcfg using extensions, so maybe we
-should use _likely here now, lest we forget to change it someday. But,
-either way,
+All tests passing for Tegra ...
 
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Test results for stable-v5.4:
+    10 builds:	10 pass, 0 fail
+    24 boots:	24 pass, 0 fail
+    54 tests:	54 pass, 0 fail
 
-Thanks,
-drew
+Linux version:	5.4.270-rc1-g331c26fedbd3
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra20-ventana,
+                tegra210-p2371-2180, tegra210-p3450-0000,
+                tegra30-cardhu-a04
 
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+
+Jon
 
