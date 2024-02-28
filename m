@@ -1,96 +1,142 @@
-Return-Path: <stable+bounces-25309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BECB786A433
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 01:03:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F89A86A43A
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 01:05:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 255E9B2AA7C
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 00:03:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B212B22FE9
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 00:05:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583E7363;
-	Wed, 28 Feb 2024 00:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C730363;
+	Wed, 28 Feb 2024 00:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H3DikvmA"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ECLElM3H"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80DA1FC4
-	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 00:01:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7CD81865
+	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 00:05:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709078482; cv=none; b=RqPM01G3cmK4Csvx+GnzWv0WiZiLoUOH5Cv/D1gwde+5thQrYcwogdN2oXAtgvQFnQ9HbkPQsDjupjYnOgi8MEA4bG/1x6sowbxcfQ1+k/02cfgTdCGxXc33cDAO1khRhe34AJ4tbjM82dG89mSnut2YYUM+jNep0ZwO9fU1pZM=
+	t=1709078717; cv=none; b=ntiG1DZzYTEQUeAKzCu4GVy0gHx8s6dWse0EGykn1BbuSw9IbTSB+mBbNFyUZ5ZGO4te9A8k0/gl8dzRnjulusrtfYQ44DmhgWc07U00NjIqZrp86FOOc7uwYiW0EvXrT57atd0ji5+J37rdc1s5Ht9RMO2WtBSXOc1+io6QjZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709078482; c=relaxed/simple;
-	bh=UXjOkNZvkQAVDVd2jZEbdOY8MJ/Ova4bIjlZT8eQVO4=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=QiC5zC7hllrr7GjgSy7/dnW499mJ4eS2XerAroHCQbgDI4MfePz1JsdlQ9N4SrBThfwemqOXlGtz6Nb8SQBRDHarvvxc21SUg0IZAp5Xl0M57U5W1dfGEXB8gPL7LWhtRJ6tnDohiyXMb6xmFCzno+5e5dovEu1rdEkRHocD4y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H3DikvmA; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709078481; x=1740614481;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=UXjOkNZvkQAVDVd2jZEbdOY8MJ/Ova4bIjlZT8eQVO4=;
-  b=H3DikvmAgWHNIpHjspijcBpT8ouIa+KNo3QrkoyXLOwZk3YC1cccd2Kh
-   giKjbWxqqC2fOiS8IlwhwpbENpwfJCx2DC8HYi+2jfFLNmSpiqzMv4h+9
-   Lg5MRMvhNU9qHom+qBD0BUXAwwxPNQT/Zf/5cacEp5cFlWs/9a0812YQu
-   8bLcMJXRRafgooZBS1/sfmf0ROuKKdOx7rcpKgrP85CuZnVihG+3QdByM
-   Ys6t5n8aGB+/5MVYKH0eyg3rjPGcHxs3+MNcCXpxhzl2QTPJiptatC6im
-   4pWovwp8aAMVTA146cmYTRpd9zsrNWxjGbBl9uBnGoPO/9JRiiDFVfbIf
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10996"; a="14876731"
-X-IronPort-AV: E=Sophos;i="6.06,189,1705392000"; 
-   d="scan'208";a="14876731"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2024 16:01:20 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.06,189,1705392000"; 
-   d="scan'208";a="38044511"
-Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
-  by orviesa002.jf.intel.com with ESMTP; 27 Feb 2024 16:01:18 -0800
-Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rf7Ns-000BcN-1i;
-	Wed, 28 Feb 2024 00:01:16 +0000
-Date: Wed, 28 Feb 2024 08:00:29 +0800
-From: kernel test robot <lkp@intel.com>
-To: Badhri Jagan Sridharan <badhri@google.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v1] usb: typec: tpcm: Fix PORT_RESET behavior for self
- powered devices
-Message-ID: <Zd53nWRnXBECCAbd@fdb2c0c3c270>
+	s=arc-20240116; t=1709078717; c=relaxed/simple;
+	bh=MNl2a9+9wniw0DL7pfu1Gvnvl1U5VZVdbJpueNcd744=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=BZo2UzuUhOI+iTfBfBi4noEFkb3oC6BfTqwhGp9phRu4jRlDhApOt/1fY4/aGOyLUSZ2zbGxwZOvxZY62NujM5BjmSO1bxr4Ttm8aKDQWhdJmJeWKu/PHKw+vzPNO25B6++EHqrvnBvKGBbOBJdovU1KXqPqaVXxBSjLQFCe8Z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--badhri.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ECLElM3H; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--badhri.bounces.google.com
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-608cf88048eso66456667b3.0
+        for <stable@vger.kernel.org>; Tue, 27 Feb 2024 16:05:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1709078715; x=1709683515; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=3QynGLk1qlXS/b5BsO1d0j20dFGFaWGNAGl6bHTYfKo=;
+        b=ECLElM3HQkvcm62xB5Xva3Vuz5+IoziuYtMtZzylSjPHH//vXeyiZ+Ks2wdGHWvlwX
+         VK4hGLThu212pF9+EESz9NeZnh/uPAIRtu5jEzoJOazrkdwXkOJgqnhZaE0twESWbmNr
+         BlmKfRMa/Wa3j6RXePNl4OGwueRZ6yM9prV7P+HxaqfODUNyx5I2a8DSq22Mi45531IO
+         xpgFnOkKwuImqPUy5LO2mK/HB1/pGMAssdxYXsHdDYmk1HYb3MPbIFF93ofCeTf1BIqT
+         OvGJdX4ENLK/e/2UYFcVXwEpIGthKWmuJ3BldxrB/AvcYUBZ5N8iL7nEE6wkmzf/Sa3J
+         ISAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709078715; x=1709683515;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3QynGLk1qlXS/b5BsO1d0j20dFGFaWGNAGl6bHTYfKo=;
+        b=XARBtw6XAv/NjNEvsvRz0BKKPUplI3s2S84XdZzwpCM2chlYkB0xPkqgvXzXZwgjrc
+         4TM5w1JaVdF+BaJZxXiUzbTscsr1dbkYgoxZLqOqRQYdE/5YOSvjPyhyH02Oymy9ZtCV
+         2OBGR7BBWiiRtDQieG5t4/5wyd7kPfXZn6dR33n8fmNF8j4J6YABuu3W20XM+lxphdrI
+         LV9DoEcuJcOvJU6JQOLvc4zdfONQ0Q3QbUImf+Ae1BN87z7S17LBzsqR0+wO7fC7JR17
+         7pHCVI/pzHOK5/NT064jsTvgBdxk4yiKdsGsiWWVvNbmu98cdlO+8KyEa5izsGMIrtOg
+         /hEw==
+X-Forwarded-Encrypted: i=1; AJvYcCUOMaSWXwNHHjwOZHSJHC3H5Vqdh3YpvIDSG+8eAwyz+gpRtFNdN2fVTlaRXXvNmI+Yfd4LdpEZIxo1/QXT9rnk3di0g6R5
+X-Gm-Message-State: AOJu0Yz1RVBnyRgWZHNGkHfhwkcDfBSlM0UtMRN5j0gULZKaP3tUx91d
+	xVEDcJ00iGJMr3ndAmbM71/jXo+z49JXGQvSSpLCYOvYbZdkxfhKD10wxWvyS2lC7ZNG2ZIoeR7
+	mpg==
+X-Google-Smtp-Source: AGHT+IEcTqr5Mo3qPu3T4l2gV/YiU1cSUvm6btQ2z1PV6ifgWkRvqJZxe/4/UzBvKLHXBCdu2ZjX8X+6Vck=
+X-Received: from badhri.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:6442])
+ (user=badhri job=sendgmr) by 2002:a0d:cb86:0:b0:609:2693:bb33 with SMTP id
+ n128-20020a0dcb86000000b006092693bb33mr704963ywd.8.1709078714754; Tue, 27 Feb
+ 2024 16:05:14 -0800 (PST)
+Date: Wed, 28 Feb 2024 00:05:12 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240227235832.744908-1-badhri@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.44.0.rc1.240.g4c46232300-goog
+Message-ID: <20240228000512.746252-1-badhri@google.com>
+Subject: [PATCH v2] usb: typec: tpcm: Fix PORT_RESET behavior for self powered devices
+From: Badhri Jagan Sridharan <badhri@google.com>
+To: gregkh@linuxfoundation.org, linux@roeck-us.net, 
+	heikki.krogerus@linux.intel.com
+Cc: kyletso@google.com, linux-usb@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rdbabiera@google.com, amitsd@google.com, 
+	stable@vger.kernel.org, frank.wang@rock-chips.com, broonie@kernel.org, 
+	Badhri Jagan Sridharan <badhri@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+While commit 69f89168b310 ("usb: typec: tpcm: Fix issues with power being
+removed during reset") fixes the boot issues for bus powered devices such
+as LibreTech Renegade Elite/Firefly, it trades off the CC pins NOT being
+Hi-Zed during errory recovery (i.e PORT_RESET) for devices which are NOT
+bus powered(a.k.a self powered). This change Hi-Zs the CC pins only for
+self powered devices, thus preventing brown out for bus powered devices
 
-Thanks for your patch.
+Adhering to spec is gaining more importance due to the Common charger
+initiative enforced by the European Union.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Quoting from the spec:
+    4.5.2.2.2.1 ErrorRecovery State Requirements
+    The port shall not drive VBUS or VCONN, and shall present a
+    high-impedance to ground (above zOPEN) on its CC1 and CC2 pins.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Hi-Zing the CC pins is the inteded behavior for PORT_RESET.
+CC pins are set to default state after tErrorRecovery in
+PORT_RESET_WAIT_OFF.
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v1] usb: typec: tpcm: Fix PORT_RESET behavior for self powered devices
-Link: https://lore.kernel.org/stable/20240227235832.744908-1-badhri%40google.com
+    4.5.2.2.2.2 Exiting From ErrorRecovery State
+    A Sink shall transition to Unattached.SNK after tErrorRecovery.
+    A Source shall transition to Unattached.SRC after tErrorRecovery.
 
+Fixes: 69f89168b310 ("usb: typec: tpcm: Fix issues with power being removed during reset")
+Cc: stable@vger.kernel.org
+Cc: Mark Brown <broonie@kernel.org>
+Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+---
+Changes since V1:
+* Fix CC for linux stable
+---
+ drivers/usb/typec/tcpm/tcpm.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+index c9a78f55ca48..bbe1381232eb 100644
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -5593,8 +5593,11 @@ static void run_state_machine(struct tcpm_port *port)
+ 		break;
+ 	case PORT_RESET:
+ 		tcpm_reset_port(port);
+-		tcpm_set_cc(port, tcpm_default_state(port) == SNK_UNATTACHED ?
+-			    TYPEC_CC_RD : tcpm_rp_cc(port));
++		if (port->self_powered)
++			tcpm_set_cc(port, TYPEC_CC_OPEN);
++		else
++			tcpm_set_cc(port, tcpm_default_state(port) == SNK_UNATTACHED ?
++				    TYPEC_CC_RD : tcpm_rp_cc(port));
+ 		tcpm_set_state(port, PORT_RESET_WAIT_OFF,
+ 			       PD_T_ERROR_RECOVERY);
+ 		break;
+
+base-commit: a560a5672826fc1e057068bda93b3d4c98d037a2
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.44.0.rc1.240.g4c46232300-goog
 
 
