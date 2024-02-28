@@ -1,117 +1,178 @@
-Return-Path: <stable+bounces-25436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 801CE86B7E3
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 20:05:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D675086B807
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 20:22:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B4D4289D65
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 19:05:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0A191C21310
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 19:22:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5A571EC0;
-	Wed, 28 Feb 2024 19:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF1974413;
+	Wed, 28 Feb 2024 19:21:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ck4oQstW"
+	dkim=pass (2048-bit key) header.d=libero.it header.i=@libero.it header.b="dJ8ixu9x"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from libero.it (smtp-18.italiaonline.it [213.209.10.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7687E7441A
-	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 19:05:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EADBA74412
+	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 19:21:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.209.10.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709147133; cv=none; b=hH59Q1ysqMhGvKOgkrpmnSWF0HyPpvGi6hfiA9BIC+9dRxrPsSw+m+wx0bF60Gdf1fkPizg99YBmgLILHH2YMmva7BuZ0N3oc0pQ9QWL2xSsJpZXkQjLRs5WYTQLEvb1QTChADorMHUMep2D94KL/d7CzLbj31jNF0lzM165CrQ=
+	t=1709148115; cv=none; b=RnFTsxgjY4D6rs7OQUEGh/pvM9EJrlMHIYQHzB813Wkf9TwDAElhnmsNTNaLd/E9TfkWZG1EB5r+qNoKUW+zDzlKdZDfAUnsfKvgfAA6CtMF+giNgPMdWQbZB3UyYXbQXLW+T32ENIBYFzH6x78oNZgDaiWYT/+Vd4LH1TWMDdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709147133; c=relaxed/simple;
-	bh=KaB0o15QcxAJuDwbyWWEXp4xm4+9e6vAMCuWsrGK0EQ=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Xehq9fkuSusAQOpdIDKHMI2/DRGHl/h20hEycv4TyGLsYWn3dbI8SDUm5LLrzqYnhC8mpa3i7rDN9/3SS4ZroIwO2iuW3LeCkFMd8onLWVUB1aKFzOcjHAFZg0H2Fc3iN5sD99vAKvFYDK5jCdNLOdqTiKyV5fwK3xrIRHKnSs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--vamshigajjela.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ck4oQstW; arc=none smtp.client-ip=209.85.128.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--vamshigajjela.bounces.google.com
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6093c69afafso1451647b3.2
-        for <stable@vger.kernel.org>; Wed, 28 Feb 2024 11:05:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1709147130; x=1709751930; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=VVIW5BWDLxsObFFWPOJ5xbNTd0o4JPD6uXro2iUXPvE=;
-        b=Ck4oQstWBSKIGIxOi0albw5eHUoktwTJUkIsmut8HfL7duLmFUQt5ZCbYxnxafRjiY
-         wpLxHrvoyH7ajS4B5cRSIKaKVPYcRUlfG5jVgrWtOvu9GiZzNTPPspJfJqSg8Xt/ApUr
-         1Bb2irPctZBxUqQ7VZQ5t3bVb0JapXXQBZoS1DFQpbOzOZvpHSsfGDQFUYyxxT6J2wej
-         xsP66bu5qTQ1Gxzm/E19QqiQB772hWxXK3wfQNR7gDA3p2xLrayQoXMT52OEWzI8Lkyj
-         KeugkcbpjMQTuRDVjHfzCTjAMBJ2odKVj2dMphOHKlI40rQZFA3My54fCyEAKnNg3a4J
-         e+SA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709147130; x=1709751930;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VVIW5BWDLxsObFFWPOJ5xbNTd0o4JPD6uXro2iUXPvE=;
-        b=iDrTiyy+DAhVEoEyIvM/bszUreY2QZv3jnqfYolhMhCNJ2nl9FFJkQei07w1fQHQiy
-         PhXChNOKbBM8gwCtYgO1rvbGCXyntKSe9vCBJ7L2SddSqTycIB6loG2JVMrcuyLOo6aY
-         mQmWwTO1aIVHA+RUW1cpmqlHrVw3pm6ePWMB7u+kXdbV2QypqvrvP586pvOV3IPiOmyh
-         DfWXLIJe4Ji+0668gQF0v7I9FJRGwP3V51fGkXhYY/N2aeX1s9XI/zKYltUv05Gl1gFk
-         SzQGp/PvlegwC5NzjG1RGxA0WMKSZVu5JVcrYSaWagjBbf9O3g1wwWTMvPRmD1HZEEW1
-         +I3w==
-X-Forwarded-Encrypted: i=1; AJvYcCVW6VmD8QlANutw/16ld2YCU8gMH1zW4wiKgVwzuTJo/DJhSfQphz1FJAnY6iJEWhba/R7ok/kN0ntLRNoECYFQt8njsndF
-X-Gm-Message-State: AOJu0YzOiAbn5roujnbJU7muPUqicDvtNAFyNcsxsX3jRU7LSQeanBlr
-	bXgIaYqk6iqufLTR1BAkyxAIs5yEpC6Hlk4uvjkX4+KdwB/8Q+45z9XlPP+qTUG6b2GqUF9UQyh
-	8lrOCdytsPVEsmJjtl0XniqUQQVENgQ==
-X-Google-Smtp-Source: AGHT+IH1AhAesxvlkBalEeQQZ+SI7ym9xb7nQdJfiP8EDMhCX7nsBoAIT2pad/v5zgT7MG3Caqe+s+cFYpIpe+1HfJ1Y
-X-Received: from vamshig51.c.googlers.com ([fda3:e722:ac3:cc00:3:22c1:c0a8:70c])
- (user=vamshigajjela job=sendgmr) by 2002:a05:690c:9d:b0:609:254f:85ae with
- SMTP id be29-20020a05690c009d00b00609254f85aemr1080823ywb.1.1709147130454;
- Wed, 28 Feb 2024 11:05:30 -0800 (PST)
-Date: Thu, 29 Feb 2024 00:35:23 +0530
+	s=arc-20240116; t=1709148115; c=relaxed/simple;
+	bh=2/xQVcpUfKY89HPCRFaCviw7T/ATDKBu5ZO5Q6qlbv4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mDV6LqBECzbimWAubPk4HNSGCvnmBMISmFhSvt8oiGJayR7uwlfpGDdt5ACLzgpoqDltox6kDKun3XBWEMns4PIZ+rubJhK3GLelqwgF+KuvrAvbr7U6OW0u5Z5VkXRQvWhOCM5btK/j107Er/rg8JrFN4rVfuz7lzLUFe3tuvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=libero.it; spf=pass smtp.mailfrom=libero.it; dkim=pass (2048-bit key) header.d=libero.it header.i=@libero.it header.b=dJ8ixu9x; arc=none smtp.client-ip=213.209.10.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=libero.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=libero.it
+Received: from [192.168.1.27] ([84.220.171.3])
+	by smtp-18.iol.local with ESMTPA
+	id fPSSrAlQ5L93EfPSSrxO42; Wed, 28 Feb 2024 20:19:13 +0100
+x-libjamoibt: 1601
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=libero.it; s=s2021;
+	t=1709147953; bh=QnVc41Vw/MytZeyexdJ1gTgi6wR39ywRKKBoBHj680w=;
+	h=From;
+	b=dJ8ixu9xmNhsLcqXVychkqIhappcQAp8glpWGeYRKdwFeH7Qnu1f+lggBVk7Jc2c4
+	 ky7YbRyfElBUT15VypuHso/LKUBa+EIMbA3tjGuMFgcNZJLq1Tq9vrVPl4J3L2vP2Z
+	 NehP7krhNrKYvJ2IR6ZBxkTvyPhF+gSWcnmm4kveXSzfPQ80w+Ke2+HDL05yTEJYzl
+	 XwKvJ4OYl2H0mKoICG4MUNB7vTxUvY4r+eWcazBU3eekdu/wFY3W3f0d62gNfePP0B
+	 pD4z+X12Do+KtYv0GqhpSBWolL+CwPteo/zDuWPDfb/wVSnbrNGC4rJIdVsCn1gDmf
+	 73jB/KlppweZg==
+X-CNFS-Analysis: v=2.4 cv=B7Ia0/tM c=1 sm=1 tr=0 ts=65df8731 cx=a_exe
+ a=hciw9o01/L1eIHAASTHaSw==:117 a=hciw9o01/L1eIHAASTHaSw==:17
+ a=IkcTkHD0fZMA:10 a=zCnXDZGV-rsmL1SA_eoA:9 a=QEXdDO2ut3YA:10
+Message-ID: <672e88f2-8ac3-45fe-a2e9-730800017f53@libero.it>
+Date: Wed, 28 Feb 2024 20:19:12 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.44.0.rc1.240.g4c46232300-goog
-Message-ID: <20240228190523.8377-1-vamshigajjela@google.com>
-Subject: [PATCH v2] spmi: hisi-spmi-controller: Fix kernel panic on rmmod
-From: Vamshi Gajjela <vamshigajjela@google.com>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, Stephen Boyd <sboyd@kernel.org>, 
-	Johan Hovold <johan+linaro@kernel.org>
-Cc: Caleb Connolly <caleb.connolly@linaro.org>, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Vamshi Gajjela <vamshigajjela@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Reply-To: kreijack@inwind.it
+Subject: Re: [REGRESSION] LVM-on-LVM: error while submitting device barriers
+Content-Language: en-US
+To: Patrick Plenefisch <simonpatp@gmail.com>, stable@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
+ Mikulas Patocka <mpatocka@redhat.com>, Chris Mason <clm@fb.com>,
+ Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
+ regressions@lists.linux.dev, dm-devel@lists.linux.dev,
+ linux-btrfs@vger.kernel.org
+References: <CAOCpoWc_HQy4UJzTi9pqtJdO740Wx5Yd702O-mwXBE6RVBX1Eg@mail.gmail.com>
+ <CAOCpoWf3TSQkUUo-qsj0LVEOm-kY0hXdmttLE82Ytc0hjpTSPw@mail.gmail.com>
+ <CAOCpoWeNYsMfzh8TSnFqwAG1BhAYnNt_J+AcUNqRLF7zmJGEFA@mail.gmail.com>
+From: Goffredo Baroncelli <kreijack@libero.it>
+In-Reply-To: <CAOCpoWeNYsMfzh8TSnFqwAG1BhAYnNt_J+AcUNqRLF7zmJGEFA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CMAE-Envelope: MS4xfOO9Lg10Vh7tBG+9Jztc8Unc4rdDDgR6F/QFGXRd/XEj/mZa1KA/dgldmapSAy81XrNXTTQP8r1n+By0Gxmdm/c/BH0AhwKBI3pIC+9d50HIB7NvNX3O
+ v/WArD0gmEWPm5D5Whpz0j3+XBQtpOsinXkJIJzqdusMkcLEnnqKYgiX58/eQFV6zvxC4FpnLvaZSqqAyijnCF9D9eMkFHfXGUMDpXN/YDElPUSn0af/nrBG
+ rLFeStdBZ4TgS3EUV+W0Omn+cq6c/XRd66BUpLv28H+6CUDazT0QXLoDcDplCp0U29zQLMavNy3fSTrwt3uG0ZE2p3X9VsQVTOrgVvSjBdaZdrN9rSb+oPuw
+ dhlOY5UO7nv355jUDip50bIVRU089ePxpGLSdt9kvuWCLkBGGdU+NeoB9ZD4AxK8COSDiZF9BBHcV/sMPKAy7YojKFgVWAwEFeO6iDzIZ/OLVP78qOU09/Vq
+ FgzAO9/usFFKZvdd1fAbSxj23FP0SKJcF+vyQYgppy1bIjZPIPrLI/Klgs9nbQf6sCwDF6QKLgnd+5pX
 
-Ensure consistency in spmi_controller pointers between
-spmi_controller_remove/put and driver spmi_del_controller functions.
-The former requires a pointer to struct spmi_controller, while the
-latter passes a pointer of struct spmi_controller_dev, leading to a
-"Null pointer exception".
+On 28/02/2024 18.25, Patrick Plenefisch wrote:
+> I'm unsure if this is just an LVM bug, or a BTRFS+LVM interaction bug,
+> but LVM is definitely involved somehow.
+> Upgrading from 5.10 to 6.1, I noticed one of my filesystems was
+> read-only. In dmesg, I found:
+> 
+> BTRFS error (device dm-75): bdev /dev/mapper/lvm-brokenDisk errs: wr
+> 0, rd 0, flush 1, corrupt 0, gen 0
+> BTRFS warning (device dm-75): chunk 13631488 missing 1 devices, max
+> tolerance is 0 for writable mount
+> BTRFS: error (device dm-75) in write_all_supers:4379: errno=-5 IO
+> failure (errors while submitting device barriers.)
+> BTRFS info (device dm-75: state E): forced readonly
+> BTRFS warning (device dm-75: state E): Skipping commit of aborted transaction.
+> BTRFS: error (device dm-75: state EA) in cleanup_transaction:1992:
+> errno=-5 IO failure
+> 
+> At first I suspected a btrfs error, but a scrub found no errors, and
+> it continued to be read-write on 5.10 kernels.
+> 
+> Here is my setup:
+> 
+> /dev/lvm/brokenDisk is a lvm-on-lvm volume. I have /dev/sd{a,b,c,d}
+> (of varying sizes) in a lower VG, which has three LVs, all raid1
+> volumes. Two of the volumes are further used as PV's for an upper VGs.
+> One of the upper VGs has no issues. The non-PV LV has no issue. The
+> remaining one, /dev/lowerVG/lvmPool, hosting nested LVM, is used as a
+> PV for VG "lvm", and has 3 volumes inside. Two of those volumes have
+> no issues (and are btrfs), but the last one is /dev/lvm/brokenDisk.
+> This volume is the only one that exhibits this behavior, so something
+> is special.
+> 
+> Or described as layers:
+> /dev/sd{a,b,c,d} => PV => VG "lowerVG"
+> /dev/lowerVG/single (RAID1 LV) => BTRFS, works fine
+> /dev/lowerVG/works (RAID1 LV) => PV => VG "workingUpper"
+> /dev/workingUpper/{a,b,c} => BTRFS, works fine
+> /dev/lowerVG/lvmPool (RAID1 LV) => PV => VG "lvm"
+> /dev/lvm/{a,b} => BTRFS, works fine
+> /dev/lvm/brokenDisk => BTRFS, Exhibits errors
 
-Signed-off-by: Vamshi Gajjela <vamshigajjela@google.com>
-Fixes: 70f59c90c819 ("staging: spmi: add Hikey 970 SPMI controller driver")
-Cc: stable@vger.kernel.org
----
-v2:
-- Split into two separate patches
-- add Fixes and Cc stable
+I am a bit curious about the reasons of this setup. However I understood that:
 
- drivers/spmi/hisi-spmi-controller.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+/dev/sda -+                +-- single (RAID1) -> ok             +-> a   ok
+/dev/sdb  |                |                                    |-> b   ok
+/dev/sdc  +--> [lowerVG]>--+-- works (RAID1) -> [workingUpper] -+-> c   ok
+/dev/sdd -+                |
+                            |                       +-> a          -> ok
+                            +-- lvmPool -> [lvm] ->-|
+                                                    +-> b          -> ok
+                                                    |
+                                                    +->brokenDisk  -> fail
 
-diff --git a/drivers/spmi/hisi-spmi-controller.c b/drivers/spmi/hisi-spmi-controller.c
-index 9cbd473487cb..4b6189d8cc4d 100644
---- a/drivers/spmi/hisi-spmi-controller.c
-+++ b/drivers/spmi/hisi-spmi-controller.c
-@@ -326,7 +326,8 @@ static int spmi_controller_probe(struct platform_device *pdev)
- 
- static void spmi_del_controller(struct platform_device *pdev)
- {
--	struct spmi_controller *ctrl = platform_get_drvdata(pdev);
-+	struct spmi_controller_dev *spmi_controller = platform_get_drvdata(pdev);
-+	struct spmi_controller *ctrl = spmi_controller->controller;
- 
- 	spmi_controller_remove(ctrl);
- 	spmi_controller_put(ctrl);
+[xxx] means VG, the others are LVs that may act also as PV in
+an upper VG
+
+So, it seems that
+
+1) lowerVG/lvmPool/lvm/a
+2) lowerVG/lvmPool/lvm/a
+3) lowerVG/lvmPool/lvm/brokenDisk
+
+are equivalent ... so I don't understand how 1) and 2) are fine but 3) is
+problematic.
+
+Is my understanding of the LVM layouts correct ?
+
+
+> 
+> After some investigation, here is what I've found:
+> 
+> 1. This regression was introduced in 5.19. 5.18 and earlier kernels I
+> can keep this filesystem rw and everything works as expected, while
+> 5.19.0 and later the filesystem is immediately ro on any write
+> attempt. I couldn't build rc1, but I did confirm rc2 already has this
+> regression.
+> 2. Passing /dev/lvm/brokenDisk to a KVM VM as /dev/vdb with an
+> unaffected kernel inside the vm exhibits the ro barrier problem on
+> unaffected kernels.
+
+Is /dev/lvm/brokenDisk *always* problematic with affected ( >= 5.19 ) and
+UNaffected ( < 5.19 ) kernel ?
+
+> 3. Passing /dev/lowerVG/lvmPool to a KVM VM as /dev/vdb with an
+> affected kernel inside the VM and using LVM inside the VM exhibits
+> correct behavior (I can keep the filesystem rw, no barrier errors on
+> host or guest)
+
+Is /dev/lowerVG/lvmPool problematic with only "affected" kernel ?
+
+[...]
+
 -- 
-2.44.0.rc1.240.g4c46232300-goog
+gpg @keyserver.linux.it: Goffredo Baroncelli <kreijackATinwind.it>
+Key fingerprint BBF5 1610 0B64 DAC6 5F7D  17B2 0EDA 9B37 8B82 E0B5
 
 
