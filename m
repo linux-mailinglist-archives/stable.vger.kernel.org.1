@@ -1,158 +1,166 @@
-Return-Path: <stable+bounces-25382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E23286B33C
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 16:37:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B255886B343
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 16:37:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F4A21F2397A
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 15:37:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3EC71C20F59
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 15:37:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2697E15A4BA;
-	Wed, 28 Feb 2024 15:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2354A15CD6A;
+	Wed, 28 Feb 2024 15:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="SYKdGNXZ"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TUKVQzDh"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696CF73515;
-	Wed, 28 Feb 2024 15:36:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A2D115D5A7
+	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 15:37:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709134615; cv=none; b=gezZtcPHObskQFCyTByU62cybkwltmFp83cNXQEHNyazQdpAw3un6Ayx+QA7X/y3VOv106qkX284KVL4BrK/qd2trjoEFkBcWIaPUmWklDJrypiAnSiCZmhvZ/wrB8f03Lw/H9WkT21PTyGepl3doYGyBc7+fAr+D+LEbjnK25Q=
+	t=1709134631; cv=none; b=qPcXNjGenKRa6lz0rh/IwDflMJcNWJiBhMxqjn91Ttm1Dbsnz2SG/+cSAp1Dpvwa3HQWfoKU3tQVS3+bTEteHG6FwaEzweU1fORnLiMO0e1lDbSjI03blm2//7u5gAtjPSJpidEHKMvbCGvkPh5/3r+U6XWkmNJ7mMxXLkERY5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709134615; c=relaxed/simple;
-	bh=oppvgGkmN+5BSfIdEQzSl7am8hiJSjwTgH3zq3ioVBc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=CtyHZAmYRd9LaVYvWbFxXzlqy3sBe56AliZP1qG60LpXdcSTW2AAqjlrZ5Nt6xRxhTV+G+ds3ytqlQbJ2y41zBE0S7+Edu37oiJySQuj2RhnbMKWRZ8sO6A0IWNGZBqA7MUIERBuqj36ncNc3fvVp9mMTK1p5s1Hetpuvxp3Uac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=SYKdGNXZ; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41SDd9vi008537;
-	Wed, 28 Feb 2024 15:36:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=rzh7fFKDHPXXBiFPuiszpKYf6i6kw5PNZfcDhIT104g=; b=SY
-	KdGNXZgrPZXVr+9BRHFyUy78XbJmIkyTvZ7gXMjPeu/SFyoVJjxC1ESOY6FobeiT
-	I4Tfkug2ynU9bUZkt07rm8K75dYfX38boPkRbHJZEj9rFsNprDSd10ngubbeKCDM
-	jt7MShm1QfQk83GucwGKdxoJFWT1Kt6rB2KxO3OfUByaswDLgYFDxlC4ZmBadJND
-	jkeTOc2Cub8svfkhQqIW8hgpYZD0N7FJxBgA3e3Pe/VxXUKuF9jvY/2G8oaKtDnz
-	wccOeIdftI01zvXsImb2t/sJmJQWtR6lMnVze7g52WrWQcrwi10TpwSFTcScUX4k
-	XqX/v42Xcw08GhQQKO0w==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wj5wc8a9w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 28 Feb 2024 15:36:28 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41SFaRXo005518
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 28 Feb 2024 15:36:27 GMT
-Received: from [10.216.4.223] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 28 Feb
- 2024 07:36:23 -0800
-Message-ID: <acdf3d44-b20e-8491-6302-bfb1b354bc62@quicinc.com>
-Date: Wed, 28 Feb 2024 21:06:19 +0530
+	s=arc-20240116; t=1709134631; c=relaxed/simple;
+	bh=zGa+IyFAz8kwIE7x38Wl0fe/t7lkIR01+L6mE1MqudM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HKxKF1b3teml8ZcnJ9Jcv8X82Cs7TGouVHcr1H0ZRBeTUeLJL7B0ESt4HG+rB5+rXNKIzEDzVfgO9HYyWNx7/vEdTUT3Bo+M3Hsaqn09pH69I4Y3Z5Y3m+lsGKyI/O/klI50UBl6zS9RzkqTYSZF22/diI84LIA69Mz6cHr5Ye8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TUKVQzDh; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-55a179f5fa1so7268773a12.0
+        for <stable@vger.kernel.org>; Wed, 28 Feb 2024 07:37:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1709134628; x=1709739428; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=8dVCImcIlLLiITmfEBgBjhdVxqWWMzlc8Dv1nyWSOGo=;
+        b=TUKVQzDhnvGkhODw3ShNo58Wb7gAODf+QVCs7R7LbdhcBr0/Mw1AVlyMs3ZoulFJWd
+         YggH7IsV3h8mzUYvY/4FsOxcxyqgYf71gNNkrxYJyNgjfEVNdRuopE/r1wFjYv9KyeSz
+         Vv7c2kZV7sprdNuc3FMsYw4t9LCjc7eBrV4kjpSsoC2gzwJ/6s519UyKuvKZmn27Lqe8
+         c7bOhv8h7DGN3iXo6jbjgncU3aIVkfSexCEzRCjc2aFTpNuSmoF8dpnEnZqf1Bk0jxsu
+         gCAW9KpiwyjWQl0d4YHCV6Pky+PqMn/TgEQ3pZhJfUFKHSygIRYIWjafunFdbpAroape
+         TYHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709134628; x=1709739428;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8dVCImcIlLLiITmfEBgBjhdVxqWWMzlc8Dv1nyWSOGo=;
+        b=YY+ukwbiFwco9faaCDzR9jM7g6XZTae2Ll44iJuYJcsckW0PTUSaDSvmqCdJAmIMH1
+         VMr3SwBLbqpxYTR0zEKT7qVEc+zrdKi/nv08rrWgOy3el9iX8I1BRXEx13C4n+U5QyZ1
+         WPK/FB46qesrR77rsLFVLxi0YqN44s5XayIiFAyTRWRCsyBzxveqTNXXdkTJD5su1kzw
+         whh8sW7wYGOGJsFZbgZWWcpCyhFpZsrWnVRjbtBXyYsvPwq+pADOt/SCZd3k48OVk8Xc
+         DQnDmTTogq19YvwHDIKlGrWhvjO9DDha4dBkv+JoUkCvG2bZBIPyhaemfePQ6NvEYFx0
+         rXZA==
+X-Forwarded-Encrypted: i=1; AJvYcCUEzBOsjcALwHwH90+TLDAbdpvM7/aQZyYb8jBbiEQZ46uSshhIob2fkYGAV2uqdg9NkZhJhcgYk8WoYxFooAzG+GxBeT/Q
+X-Gm-Message-State: AOJu0YwNr3sljzRQNA5cuE98wJrfCmSdqmS+uTdLyI0zW3v2IsRx5Ari
+	2bFoJ0UMf42VXJbnGopgF0gjl5bBgFBnlf3Jegu7uqPNrUAZa6BsJfO7opSpK9qraq21TMvmrxk
+	LpZyFVwUjIHeRgdjNI68YaOCz3lfOHqi3Jw40eg==
+X-Google-Smtp-Source: AGHT+IEQVtJyu0GYHAWdmf+6eoRlVi/P3F2RUBvk49c7M8VZVlNSEYmKA5V/4aGFP0UZhJeY+ePLjPp6XOoBzr5CUX0=
+X-Received: by 2002:aa7:d982:0:b0:565:fb4c:7707 with SMTP id
+ u2-20020aa7d982000000b00565fb4c7707mr5488857eds.26.1709134628391; Wed, 28 Feb
+ 2024 07:37:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] mm/huge_memory: fix swap entry values of tail pages of
- THP
-Content-Language: en-US
-To: Zi Yan <ziy@nvidia.com>, David Hildenbrand <david@redhat.com>
-CC: Matthew Wilcox <willy@infradead.org>, <gregkh@linuxfoundation.org>,
-        <akpm@linux-foundation.org>, <vbabka@suse.cz>, <dhowells@redhat.com>,
-        <surenb@google.com>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>,
-        #
- see patch description <stable@vger.kernel.org>,
-        Huang Ying
-	<ying.huang@intel.com>,
-        Naoya Horiguchi <naoya.horiguchi@linux.dev>
-References: <1707814102-22682-1-git-send-email-quic_charante@quicinc.com>
- <a683e199-ce8a-4534-a21e-65f2528415a6@redhat.com>
- <8620c1a0-e091-46e9-418a-db66e621b9c4@quicinc.com>
- <845ca78f-913b-4a92-8b40-ff772a7ad333@redhat.com>
- <bc1a5e36-1983-1a39-4d06-8062993a4ca4@quicinc.com>
- <ZczLoOqdpMJpkO5N@casper.infradead.org>
- <f2ad5918-7e36-4a7c-a619-c6807cfca5ec@redhat.com>
- <30ea073d-0ccf-46e1-954d-e22f5cbf69f7@redhat.com>
- <1ABD022A-35FC-4A6E-ADAD-36F3D745FB91@nvidia.com>
- <42be658c-cb13-4001-aae4-8d8275a84038@redhat.com>
- <ECEF5EF8-3328-43AD-9E0B-7AE325368CB7@nvidia.com>
- <07A26237-B17E-4418-9A19-E86F450B9695@nvidia.com>
-From: Charan Teja Kalla <quic_charante@quicinc.com>
-In-Reply-To: <07A26237-B17E-4418-9A19-E86F450B9695@nvidia.com>
+References: <20240226-rpmhpd-enable-corner-fix-v1-1-68c004cec48c@quicinc.com>
+In-Reply-To: <20240226-rpmhpd-enable-corner-fix-v1-1-68c004cec48c@quicinc.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Wed, 28 Feb 2024 16:36:30 +0100
+Message-ID: <CAPDyKFodDx7evDGiJChDohv8qK+9QMpwp6+Z6DrJUWOtMhYfsA@mail.gmail.com>
+Subject: Re: [PATCH] pmdomain: qcom: rpmhpd: Fix enabled_corner aggregation
+To: quic_bjorande@quicinc.com
+Cc: Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+	Stephen Boyd <swboyd@chromium.org>, Johan Hovold <johan+linaro@kernel.org>, 
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, linux-arm-msm@vger.kernel.org, 
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Johan Hovold <johan@kernel.org>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 3DgsQ5K6CdeE7HoNgVxwNN7q32GPa0T7
-X-Proofpoint-ORIG-GUID: 3DgsQ5K6CdeE7HoNgVxwNN7q32GPa0T7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-28_07,2024-02-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1011
- priorityscore=1501 mlxlogscore=999 mlxscore=0 phishscore=0 bulkscore=0
- suspectscore=0 impostorscore=0 spamscore=0 malwarescore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2402120000 definitions=main-2402280121
 
-Thanks David/Zi Yan,
+On Tue, 27 Feb 2024 at 02:45, Bjorn Andersson via B4 Relay
+<devnull+quic_bjorande.quicinc.com@kernel.org> wrote:
+>
+> From: Bjorn Andersson <quic_bjorande@quicinc.com>
+>
+> Commit 'e3e56c050ab6 ("soc: qcom: rpmhpd: Make power_on actually enable
+> the domain")' aimed to make sure that a power-domain that is being
+> enabled without any particular performance-state requested will at least
+> turn the rail on, to avoid filling DeviceTree with otherwise unnecessary
+> required-opps properties.
+>
+> But in the event that aggregation happens on a disabled power-domain, with
+> an enabled peer without performance-state, both the local and peer
+> corner are 0. The peer's enabled_corner is not considered, with the
+> result that the underlying (shared) resource is disabled.
+>
+> One case where this can be observed is when the display stack keeps mmcx
+> enabled (but without a particular performance-state vote) in order to
+> access registers and sync_state happens in the rpmhpd driver. As mmcx_ao
+> is flushed the state of the peer (mmcx) is not considered and mmcx_ao
+> ends up turning off "mmcx.lvl" underneath mmcx. This has been observed
+> several times, but has been painted over in DeviceTree by adding an
+> explicit vote for the lowest non-disabled performance-state.
+>
+> Fixes: e3e56c050ab6 ("soc: qcom: rpmhpd: Make power_on actually enable the domain")
+> Reported-by: Johan Hovold <johan@kernel.org>
+> Closes: https://lore.kernel.org/linux-arm-msm/ZdMwZa98L23mu3u6@hovoldconsulting.com/
+> Cc:  <stable@vger.kernel.org>
+> Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
 
-On 2/27/2024 9:45 PM, Zi Yan wrote:
-> So likely we'd have to fix the stable kernels:
-> 
-> 4.19
-> 5.4
-> 5.10
-> 5.15
-> 6.1
-> 
-> That's a lot of pre-folio code. A backport of my series likely won't really make any sense.
+Applied for fixes, thanks!
 
-So, I assume this is a consensus to have stable-only fix for this issue.
+Kind regards
+Uffe
 
-> 
-> For v6.1, the fix would like below?
-> 
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index c93dd6a31c31..c5968021fde0 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -423,8 +423,12 @@ int folio_migrate_mapping(struct address_space *mapping,
->         if (folio_test_swapbacked(folio)) {
->                 __folio_set_swapbacked(newfolio);
->                 if (folio_test_swapcache(folio)) {
-> +                       int i;
-> +
->                         folio_set_swapcache(newfolio);
-> -                       newfolio->private = folio_get_private(folio);
-> +                       for (i = 0; i < nr; i++)
-> +                               set_page_private(folio_page(newfolio, i),
-> +                                       page_private(folio_page(folio, i)));
->                 }
->                 entries = nr;
->         } else {
 
-Similar to this is what we had tested[1] internally and observed no issues.
-
-Can this be taken to 6.1, please?
-
-[1]https://lore.kernel.org/linux-mm/8620c1a0-e091-46e9-418a-db66e621b9c4@quicinc.com/
-
-Thanks,
-Charan
+> ---
+> This issue is the root cause of a display regression on SC8280XP boards,
+> resulting in the system often resetting during boot. It was exposed by
+> the refactoring of the DisplayPort driver in v6.8-rc1.
+> ---
+>  drivers/pmdomain/qcom/rpmhpd.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/pmdomain/qcom/rpmhpd.c b/drivers/pmdomain/qcom/rpmhpd.c
+> index 3078896b1300..47df910645f6 100644
+> --- a/drivers/pmdomain/qcom/rpmhpd.c
+> +++ b/drivers/pmdomain/qcom/rpmhpd.c
+> @@ -692,6 +692,7 @@ static int rpmhpd_aggregate_corner(struct rpmhpd *pd, unsigned int corner)
+>         unsigned int active_corner, sleep_corner;
+>         unsigned int this_active_corner = 0, this_sleep_corner = 0;
+>         unsigned int peer_active_corner = 0, peer_sleep_corner = 0;
+> +       unsigned int peer_enabled_corner;
+>
+>         if (pd->state_synced) {
+>                 to_active_sleep(pd, corner, &this_active_corner, &this_sleep_corner);
+> @@ -701,9 +702,11 @@ static int rpmhpd_aggregate_corner(struct rpmhpd *pd, unsigned int corner)
+>                 this_sleep_corner = pd->level_count - 1;
+>         }
+>
+> -       if (peer && peer->enabled)
+> -               to_active_sleep(peer, peer->corner, &peer_active_corner,
+> +       if (peer && peer->enabled) {
+> +               peer_enabled_corner = max(peer->corner, peer->enable_corner);
+> +               to_active_sleep(peer, peer_enabled_corner, &peer_active_corner,
+>                                 &peer_sleep_corner);
+> +       }
+>
+>         active_corner = max(this_active_corner, peer_active_corner);
+>
+>
+> ---
+> base-commit: b401b621758e46812da61fa58a67c3fd8d91de0d
+> change-id: 20240226-rpmhpd-enable-corner-fix-c5e07fe7b986
+>
+> Best regards,
+> --
+> Bjorn Andersson <quic_bjorande@quicinc.com>
+>
 
