@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-25427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE99C86B789
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 19:46:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DD4086B791
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 19:46:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D97791C26289
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 18:46:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05E5728420E
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 18:46:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68E271EB9;
-	Wed, 28 Feb 2024 18:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2076471EB9;
+	Wed, 28 Feb 2024 18:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ZreOoyfa"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="2bacwFjk"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2067.outbound.protection.outlook.com [40.107.100.67])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2066.outbound.protection.outlook.com [40.107.237.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9929671EC0
-	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 18:45:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA87B40849
+	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 18:46:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.66
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709145952; cv=fail; b=NhVqR5xHoFC3GwjTmpV2HMY8/Nsb7oeWoqtLZyUd9pzOyFxak2DH75KU4nlanQ4NIthfFDS2L01GBa6CIkQDKe0RdkGjTtZw8EquhzrlfwLcwzK8Cn+Jqy+jsB00sTRHJJgdUP+SHq5vvXbvyDoyBZBxA+6UPPt5XgUBpq1frHc=
+	t=1709145977; cv=fail; b=V4CCOhSdbaiad86xzq5rCArxqR6XFAruSWmOyyYBCYRGh1+N/cUL4YEyHA7vT8KKSwazMIQH/ktyToJOtS0BEWMlewe+Td+2IJefdgyoYE+L+Ia0sXKM4/7YHdA02FwUNMkUfUrYa9aFvvuObbi5KHGSjdZwN35XrDA9fBma3Fc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709145952; c=relaxed/simple;
-	bh=aWRSF5Q5Y4ar/rKWtOF6qa6Kg7ba74O61P1ZsFFl1/Q=;
+	s=arc-20240116; t=1709145977; c=relaxed/simple;
+	bh=3IZtiCfG/mv7WG+MOSx2I9a66TUDDBg3FyBxfTAAVzY=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LPAZszHX+K2SkDnlvLBP7miX2V13gWMbTeD5GVuLX7HV3Twzxd3rDFcapGCaGrqGSeUSBwCnRmfpiqK1Y0vOq0wpuB9VRNIvVi0PjSbMS4rMWCZtAu5XXviz6W8Kw6F7hiO7EHYCCRp46c2cYJHBQmrY0rwPkZ/Qbjv/Ay9qf/w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ZreOoyfa; arc=fail smtp.client-ip=40.107.100.67
+	 MIME-Version:Content-Type; b=e0PC8fIgIaYchBYQkOS/Xq+90esmslDQ+vNs+FL32flKihTvJ/LIVlZvBbfWPO5MCNQ+vP9duoW2GYPJboBbIf6ldQtAMQuuanMHHzFODVxYd9S+DBYa4Qzbl2n//qq7lxZzMCnUalk2DgIk5Y9Y4oTcGzGq2iuY7s6GR7UT/Iw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=2bacwFjk; arc=fail smtp.client-ip=40.107.237.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=V2sHBt7jBcHer2TRdd7QTJ7doXRcUTAVAbS3RJcnWf1SwMc103I0OGe26eItF6mLHXFGNS2CgW/RkIHKqE0/gIFdUrIcPmV1mcQpDjUReq6KcBNXFFe+9aNj71TZlWvDmAm89NkQ67GlvoAtmt0CbugVOwNYsYQaAaAVkEDovVBOHP435107vp216ZhhOR/zTrs+yf1bbMmrTZSyHWnUx2Wwc2IlDTtEp0F1XdxoeYKtZKMzFfymicOSQ50vf88KZVsC8h9kaVzjhj0Xy+MSMIpsJ5Jh/r1qh2HHfDSr2JOb7b7QSDqx+l8Uho9MlQzNtfRS0GoWGhjJu+7HC8450g==
+ b=LkLiPBxTEhJAL+tc8/dOGIpfz/sRCWK/zMR6YEW4eYAB8ss7MXaok7K8Syr/d/yn3ETRBS6EUNotozBsTghanvgIQ8+YsG24NPfMJqd6VIJ58WrQv3ip8Bz9ZM7w3WzhsHfHQ54g9nTJuokpYgs/SqmB+Gkl9y/X/6VMk+402ZMzgcW5najnWNfH+KP0XDeMo+VDpsl3uzP6xIGHTJZzl0ydf7wf2Hd2WEyejxGm46AXZC5YwhzklJqJorarJZz6FKfzNpyZGr8OPrD+Xlizkg/w4EiB3Fz1ZDGdm60FCbFKBL3XIR6kQAxvdJ/3s9dXXwzyufZnKfkO5a1XRoAvjQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Zj/SUxtIvhkYDNWMkUgTCSS56csMTDbb9UlbNt4GR08=;
- b=KNEn2qLSxiuuQ2SfdePvF/wy662ygDVuPeJ6EWyrCbaHx0F6FNyQZlvSu5HDMgHZ+v3DTCKeFrc0tKNHDYzurKQazB2e69WhfqIXEa1N/Su7nDh/PC5omaC3TDCp1vAjC3BkA8eOBkzYbaH5g8WE7iRUES9Sc8bUqDz/PuK5/TTQeIzXl7txhPrCf16oTMw69TBzYTvVN2qIS90vNpm5kAUQNkbRnszlziAtvxzv0AUIYB/A6JFLBcMaQNmnt5TbtAElKFPVCXprbP6seZTs8N/0yQbdF0KafF1zXnm1k6XBI7za/rrGV+oKeLnzBHOm7DXsAl5Wv8wR1qReXoZa7g==
+ bh=BUPB6FoieJGyqvsTVhqTHNfftWH2h4F9VmUwwlEEJvE=;
+ b=JPUqa+N3biW2wkL7H3adnUffe13IItqWWFkFbaywIMe4ZetCYicbG8HnfrAyoIg4vp+NR78e+pVpwEeBBZ7p/Au+50sv7ZKKKxl7iH1BbW8Apj9ZTHAZJD4qETviirT4EHej/dKRxQk49ObJRbWt3i6N+H2cluT3uTQpgWiksBP9589sweeLxpOr2GF0K4XLYq7O0dARrGbH81VZZ5pPEM1+VT3MJL+xunFrICOeu2GJLTW2PKZU6oKZEs+4oXrHaIc8+maPfFC3Ousm9uTMG7rR39JD8uxpacqy91bGKYEaCTnKlmEnpNwsgM5bHkqp23y56HqmcgY2DuZWx7Rvrw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Zj/SUxtIvhkYDNWMkUgTCSS56csMTDbb9UlbNt4GR08=;
- b=ZreOoyfa/jEQkW9rvUohx48ojYnD3e1OQDvd7c5T8/uw6Sb0PwmXDwC6L1pHGbZ6GSkV+VKWfvQfxpM8FQCIUBU8x4XTFqmiSa9wYJx5kVWYAPCpb7zEPgLXNTez8eK9tTDDZHmXtnSmeC/+bDq7A1UrQPeCWP2yyJMwlTGC1zU=
-Received: from CY5P221CA0161.NAMP221.PROD.OUTLOOK.COM (2603:10b6:930:6a::15)
- by PH7PR12MB7282.namprd12.prod.outlook.com (2603:10b6:510:209::7) with
+ bh=BUPB6FoieJGyqvsTVhqTHNfftWH2h4F9VmUwwlEEJvE=;
+ b=2bacwFjk9inHWeWeiG/81cJcxdudHDSYzmuzGVwVhD3GNQZrfAReF9UK1y8L/XClQ4ehdlBZC22LCr6/qwWSHmkIDHbeM53qSUACBrvoKuf8VkrHYNzZ9HiFOWc6hy03O73fjnAAwXroeuf5ihODn4q7tba6BtTrGUqUqzCLGaA=
+Received: from SA9PR10CA0020.namprd10.prod.outlook.com (2603:10b6:806:a7::25)
+ by SJ1PR12MB6266.namprd12.prod.outlook.com (2603:10b6:a03:457::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.34; Wed, 28 Feb
- 2024 18:45:45 +0000
-Received: from CY4PEPF0000E9DA.namprd05.prod.outlook.com
- (2603:10b6:930:6a:cafe::9c) by CY5P221CA0161.outlook.office365.com
- (2603:10b6:930:6a::15) with Microsoft SMTP Server (version=TLS1_2,
+ 2024 18:46:07 +0000
+Received: from SN1PEPF000252A3.namprd05.prod.outlook.com
+ (2603:10b6:806:a7:cafe::34) by SA9PR10CA0020.outlook.office365.com
+ (2603:10b6:806:a7::25) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.28 via Frontend
- Transport; Wed, 28 Feb 2024 18:45:45 +0000
+ Transport; Wed, 28 Feb 2024 18:46:06 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -63,25 +63,25 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000E9DA.mail.protection.outlook.com (10.167.241.79) with Microsoft
+ SN1PEPF000252A3.mail.protection.outlook.com (10.167.242.10) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7292.25 via Frontend Transport; Wed, 28 Feb 2024 18:45:44 +0000
+ 15.20.7292.25 via Frontend Transport; Wed, 28 Feb 2024 18:46:06 +0000
 Received: from dev.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 28 Feb
- 2024 12:45:42 -0600
+ 2024 12:45:55 -0600
 From: Alex Hung <alex.hung@amd.com>
 To: <amd-gfx@lists.freedesktop.org>
 CC: <Harry.Wentland@amd.com>, <Sunpeng.Li@amd.com>,
 	<Rodrigo.Siqueira@amd.com>, <Aurabindo.Pillai@amd.com>, <roman.li@amd.com>,
 	<wayne.lin@amd.com>, <agustin.gutierrez@amd.com>, <chiahsuan.chung@amd.com>,
-	<hersenxs.wu@amd.com>, <jerry.zuo@amd.com>, George Shen
-	<george.shen@amd.com>, Mario Limonciello <mario.limonciello@amd.com>, "Alex
+	<hersenxs.wu@amd.com>, <jerry.zuo@amd.com>, ChunTao Tso
+	<chuntao.tso@amd.com>, Mario Limonciello <mario.limonciello@amd.com>, "Alex
  Deucher" <alexander.deucher@amd.com>, <stable@vger.kernel.org>, Alvin Lee
 	<alvin.lee2@amd.com>, Alex Hung <alex.hung@amd.com>
-Subject: [PATCH 22/34] drm/amd/display: Add left edge pixel for YCbCr422/420 + ODM pipe split
-Date: Wed, 28 Feb 2024 11:39:28 -0700
-Message-ID: <20240228183940.1883742-23-alex.hung@amd.com>
+Subject: [PATCH 23/34] drm/amd/display: Amend coasting vtotal for replay low hz
+Date: Wed, 28 Feb 2024 11:39:29 -0700
+Message-ID: <20240228183940.1883742-24-alex.hung@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240228183940.1883742-1-alex.hung@amd.com>
 References: <20240228183940.1883742-1-alex.hung@amd.com>
@@ -97,194 +97,173 @@ X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9DA:EE_|PH7PR12MB7282:EE_
-X-MS-Office365-Filtering-Correlation-Id: f1e8d508-73f1-4892-df77-08dc388d78ea
+X-MS-TrafficTypeDiagnostic: SN1PEPF000252A3:EE_|SJ1PR12MB6266:EE_
+X-MS-Office365-Filtering-Correlation-Id: 505302f1-b424-429b-2dc2-08dc388d85a3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	WbnBqtyw6aYj7luKs7oerLkkDcebq/vYisN28hBACDXX9WbVa1KVPUIXoqObipUtnOEvzG/8jDJ4ga4ANcajZ91tIhySObP77A7ZZBBCj9DVYGj15fSea6pJg2weHKHSs+EL1hGFi8CGXatBTL5i8AazKnvsfnW2zzmObsNTS3H1Sa84p5O9nmc/q1Ayqv15Fggme7XRx4v5YLF844amxEm5BDjh6lBFUunxm6f/2HojoOvV8aqgCdpRdUdV/P6czvw8W9RgPUIL34E6zE6TcPP/xRJXZ3W17IA0bJua2Yqsw4OatUabk9gcKfWn6pl4ptBGguBn22BOKyz8uF77ZgRnuf6G0Iihq0OpSR3qUoKo25/XfOmYx1HrczQuocp1XWDoftCDIoECJwI5KW/x0oT+9bFqmb7nE6aHhjPniEamQuAZ6aQ8S/LB+IntlpCq19SbniMy0syE3pBJeZQA5l+XfvPg1wdf6mhi/dBrOcdrMT2LaSQtVjl3mDNfxN8s26ruN7eyf/Vwl8j06mQZCDgtVsUbl9MS1Uv7p+p7LH/C6p+eKM/sPbevpxisA/rD0Pff5H3HfpLNT2fEat0Ija7pWAWP7HMtwF9AaFHUQjyrNSq61t1XpeIoNHkFHYwnUQYh5DDLCBp/s9Pq2usokLHz5ZcH714vu8dE4t9i3Oj7R4Ao9lldJQLDyZzwn+9otcTNEY5T0EvXqX1DCCyeLlpKJHfCsOjvn8jTdh1nv7ydKtcTFTOjwti8ylrnleoq
+	6a1yzyUx1W6eQi6ZkVLZ4+WJIWRVb96RiAkEsyAAwUUCz5Z0dA+p7W/Zgj06aDCjkTg6w8/Njs0h5rhSvJv6x72tBemw2mQLVweK+N/a/SQrfAEou3ARmIRFC3k/S8oJJOYQSmGHepJ24syrFY81nszzcblKlAPfnxkT60wQfkQ9JWxGNGjJ8Z7nUP1U+MGRjByYVa9LXazY9tt/u644S/ulsxvmNhMlfnlPEhsaUSMlAOPhthzxg0ggjYqWv76DagCetf0nA4JLGIYQyNh2hejLllpT2TE98YKhcY17bRvxC+XuIsg8q4l1UXCHqrLvCmwbsFk99iFUwPKBe6L27BIagniS2jNePLXeL+JWWabgMqEFYOQxESWRyHglpJaHUvQdD29U+SlcUyJWfH0I4i3tcx4YJ/6aqNhzOJPZadmoe3YbyuebBY7VkMKvK7NTlAASJUmF0QCbC8r8xhlO7YBZJnahZcw0b/Bvula8vvj7yLst6yhyoOZMdJzIF3Mw9xPN+XFl0pEQV2NaydrfDnTzjLZ4rRp08y0vmVEcQAP2VtI9lNO+1V+QeCGQfGNFmRAXIPQ1Mvy3svBu/4o2Ff47B+b96qp3zuhtB0CUENY9JuJXHs8leSQxi0+PIds73VSFsAufmtw1T80oBlRhdXyT91rVqACraMhw8gQIcuKJZc41G5yMsZK9eEcl1AdsCgIm1SpRexJoluZ0PAUMJqtLd6Nc6mKzJGoeEfEZ8RElY/qTCJlWqjd0DKXunWXX
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(82310400014)(36860700004);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(36860700004)(82310400014);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2024 18:45:44.9033
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2024 18:46:06.2750
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f1e8d508-73f1-4892-df77-08dc388d78ea
+X-MS-Exchange-CrossTenant-Network-Message-Id: 505302f1-b424-429b-2dc2-08dc388d85a3
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000E9DA.namprd05.prod.outlook.com
+	SN1PEPF000252A3.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7282
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6266
 
-From: George Shen <george.shen@amd.com>
+From: ChunTao Tso <chuntao.tso@amd.com>
 
 [WHY]
-Currently 3-tap chroma subsampling is used for YCbCr422/420. When ODM
-pipesplit is used, pixels on the left edge of ODM slices need one extra
-pixel from the right edge of the previous slice to calculate the correct
-chroma value.
-
-Without this change, the chroma value is slightly different than
-expected. This is usually imperceptible visually, but it impacts test
-pattern CRCs for compliance test automation.
+The original coasting vtotal is 2 bytes, and it need to
+be amended to 4 bytes because low hz case.
 
 [HOW]
-Update logic to use the register for adding extra left edge pixel for
-YCbCr422/420 ODM cases.
+Amend coasting vtotal from 2 bytes to 4 bytes.
 
 Cc: Mario Limonciello <mario.limonciello@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
 Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
 Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: George Shen <george.shen@amd.com>
+Signed-off-by: ChunTao Tso <chuntao.tso@amd.com>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c      |  4 ++
- .../gpu/drm/amd/display/dc/core/dc_resource.c | 37 +++++++++++++++++++
- .../amd/display/dc/hwss/dcn20/dcn20_hwseq.c   | 10 +++++
- .../gpu/drm/amd/display/dc/inc/core_types.h   |  2 +
- drivers/gpu/drm/amd/display/dc/inc/resource.h |  4 ++
- 5 files changed, 57 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dc_types.h                 | 4 ++--
+ drivers/gpu/drm/amd/display/dc/inc/link.h                 | 4 ++--
+ .../display/dc/link/protocols/link_edp_panel_control.c    | 4 ++--
+ .../display/dc/link/protocols/link_edp_panel_control.h    | 4 ++--
+ drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h           | 8 ++++++++
+ drivers/gpu/drm/amd/display/modules/power/power_helpers.c | 2 +-
+ drivers/gpu/drm/amd/display/modules/power/power_helpers.h | 2 +-
+ 7 files changed, 18 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index acd8f1257ade..ed6579633a58 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -3147,6 +3147,10 @@ static bool update_planes_and_stream_state(struct dc *dc,
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_types.h b/drivers/gpu/drm/amd/display/dc/dc_types.h
+index 9900dda2eef5..be2ac5c442a4 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_types.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_types.h
+@@ -1085,9 +1085,9 @@ struct replay_settings {
+ 	/* SMU optimization is enabled */
+ 	bool replay_smu_opt_enable;
+ 	/* Current Coasting vtotal */
+-	uint16_t coasting_vtotal;
++	uint32_t coasting_vtotal;
+ 	/* Coasting vtotal table */
+-	uint16_t coasting_vtotal_table[PR_COASTING_TYPE_NUM];
++	uint32_t coasting_vtotal_table[PR_COASTING_TYPE_NUM];
+ 	/* Maximum link off frame count */
+ 	enum replay_link_off_frame_count_level link_off_frame_count_level;
+ 	/* Replay pseudo vtotal for abm + ips on full screen video which can improve ips residency */
+diff --git a/drivers/gpu/drm/amd/display/dc/inc/link.h b/drivers/gpu/drm/amd/display/dc/inc/link.h
+index 26fe81f213da..bf29fc58ea6a 100644
+--- a/drivers/gpu/drm/amd/display/dc/inc/link.h
++++ b/drivers/gpu/drm/amd/display/dc/inc/link.h
+@@ -285,12 +285,12 @@ struct link_service {
+ 			enum replay_FW_Message_type msg,
+ 			union dmub_replay_cmd_set *cmd_data);
+ 	bool (*edp_set_coasting_vtotal)(
+-			struct dc_link *link, uint16_t coasting_vtotal);
++			struct dc_link *link, uint32_t coasting_vtotal);
+ 	bool (*edp_replay_residency)(const struct dc_link *link,
+ 			unsigned int *residency, const bool is_start,
+ 			const bool is_alpm);
+ 	bool (*edp_set_replay_power_opt_and_coasting_vtotal)(struct dc_link *link,
+-			const unsigned int *power_opts, uint16_t coasting_vtotal);
++			const unsigned int *power_opts, uint32_t coasting_vtotal);
  
- 			if (otg_master && otg_master->stream->test_pattern.type != DP_TEST_PATTERN_VIDEO_MODE)
- 				resource_build_test_pattern_params(&context->res_ctx, otg_master);
-+
-+			if (otg_master && (otg_master->stream->timing.pixel_encoding == PIXEL_ENCODING_YCBCR422 ||
-+					otg_master->stream->timing.pixel_encoding == PIXEL_ENCODING_YCBCR420))
-+				resource_build_subsampling_params(&context->res_ctx, otg_master);
- 		}
- 	}
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-index 1b7765bc5e5e..96ea283bd169 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-@@ -822,6 +822,16 @@ static struct rect calculate_odm_slice_in_timing_active(struct pipe_ctx *pipe_ct
- 			stream->timing.v_border_bottom +
- 			stream->timing.v_border_top;
- 
-+	/* Recout for ODM slices after the first slice need one extra left edge pixel
-+	 * for 3-tap chroma subsampling.
-+	 */
-+	if (odm_slice_idx > 0 &&
-+			(pipe_ctx->stream->timing.pixel_encoding == PIXEL_ENCODING_YCBCR422 ||
-+				pipe_ctx->stream->timing.pixel_encoding == PIXEL_ENCODING_YCBCR420)) {
-+		odm_rec.x -= 1;
-+		odm_rec.width += 1;
-+	}
-+
- 	return odm_rec;
+ 	bool (*edp_wait_for_t12)(struct dc_link *link);
+ 	bool (*edp_is_ilr_optimization_required)(struct dc_link *link,
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
+index acfbbc638cc6..3baa2bdd6dd6 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
+@@ -1034,7 +1034,7 @@ bool edp_send_replay_cmd(struct dc_link *link,
+ 	return true;
  }
  
-@@ -1438,6 +1448,7 @@ void resource_build_test_pattern_params(struct resource_context *res_ctx,
- 	enum controller_dp_test_pattern controller_test_pattern;
- 	enum controller_dp_color_space controller_color_space;
- 	enum dc_color_depth color_depth = otg_master->stream->timing.display_color_depth;
-+	enum dc_pixel_encoding pixel_encoding = otg_master->stream->timing.pixel_encoding;
- 	int h_active = otg_master->stream->timing.h_addressable +
- 		otg_master->stream->timing.h_border_left +
- 		otg_master->stream->timing.h_border_right;
-@@ -1469,10 +1480,36 @@ void resource_build_test_pattern_params(struct resource_context *res_ctx,
- 		else
- 			params->width = last_odm_slice_width;
- 
-+		/* Extra left edge pixel is required for 3-tap chroma subsampling. */
-+		if (i != 0 && (pixel_encoding == PIXEL_ENCODING_YCBCR422 ||
-+				pixel_encoding == PIXEL_ENCODING_YCBCR420)) {
-+			params->offset -= 1;
-+			params->width += 1;
-+		}
-+
- 		offset += odm_slice_width;
- 	}
- }
- 
-+void resource_build_subsampling_params(struct resource_context *res_ctx,
-+	struct pipe_ctx *otg_master)
-+{
-+	struct pipe_ctx *opp_heads[MAX_PIPES];
-+	int odm_cnt = 1;
-+	int i;
-+
-+	odm_cnt = resource_get_opp_heads_for_otg_master(otg_master, res_ctx, opp_heads);
-+
-+	/* For ODM slices after the first slice, extra left edge pixel is required
-+	 * for 3-tap chroma subsampling.
-+	 */
-+	if (otg_master->stream->timing.pixel_encoding == PIXEL_ENCODING_YCBCR422 ||
-+			otg_master->stream->timing.pixel_encoding == PIXEL_ENCODING_YCBCR420) {
-+		for (i = 0; i < odm_cnt; i++)
-+			opp_heads[i]->stream_res.left_edge_extra_pixel = (i == 0) ? false : true;
-+	}
-+}
-+
- bool resource_build_scaling_params(struct pipe_ctx *pipe_ctx)
+-bool edp_set_coasting_vtotal(struct dc_link *link, uint16_t coasting_vtotal)
++bool edp_set_coasting_vtotal(struct dc_link *link, uint32_t coasting_vtotal)
  {
- 	const struct dc_plane_state *plane_state = pipe_ctx->plane_state;
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-index 40098d9f70cb..a698f026198c 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-@@ -1579,6 +1579,11 @@ static void dcn20_detect_pipe_changes(struct dc_state *old_state,
- 	if (old_pipe->stream_res.tg != new_pipe->stream_res.tg)
- 		new_pipe->update_flags.bits.tg_changed = 1;
+ 	struct dc *dc = link->ctx->dc;
+ 	struct dmub_replay *replay = dc->res_pool->replay;
+@@ -1073,7 +1073,7 @@ bool edp_replay_residency(const struct dc_link *link,
+ }
  
-+	if (resource_is_pipe_type(new_pipe, OPP_HEAD)) {
-+		if (old_pipe->stream_res.left_edge_extra_pixel != new_pipe->stream_res.left_edge_extra_pixel)
-+			new_pipe->update_flags.bits.opp_changed = 1;
-+	}
-+
- 	/*
- 	 * Detect mpcc blending changes, only dpp inst and opp matter here,
- 	 * mpccs getting removed/inserted update connected ones during their own
-@@ -1962,6 +1967,11 @@ static void dcn20_program_pipe(
- 			pipe_ctx->stream_res.opp,
- 			&pipe_ctx->stream->bit_depth_params,
- 			&pipe_ctx->stream->clamping);
-+
-+		if (resource_is_pipe_type(pipe_ctx, OPP_HEAD))
-+			pipe_ctx->stream_res.opp->funcs->opp_program_left_edge_extra_pixel(
-+				pipe_ctx->stream_res.opp,
-+				pipe_ctx->stream_res.left_edge_extra_pixel);
- 	}
- 
- 	/* Set ABM pipe after other pipe configurations done */
-diff --git a/drivers/gpu/drm/amd/display/dc/inc/core_types.h b/drivers/gpu/drm/amd/display/dc/inc/core_types.h
-index b1b72e688f74..e034cbb40620 100644
---- a/drivers/gpu/drm/amd/display/dc/inc/core_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/inc/core_types.h
-@@ -333,6 +333,8 @@ struct stream_resource {
- 	uint8_t gsl_group;
- 
- 	struct test_pattern_params test_pattern_params;
-+
-+	bool left_edge_extra_pixel;
+ bool edp_set_replay_power_opt_and_coasting_vtotal(struct dc_link *link,
+-	const unsigned int *power_opts, uint16_t coasting_vtotal)
++	const unsigned int *power_opts, uint32_t coasting_vtotal)
+ {
+ 	struct dc  *dc = link->ctx->dc;
+ 	struct dmub_replay *replay = dc->res_pool->replay;
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.h b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.h
+index 34e521af7bb4..a158c6234d42 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.h
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.h
+@@ -59,12 +59,12 @@ bool edp_setup_replay(struct dc_link *link,
+ bool edp_send_replay_cmd(struct dc_link *link,
+ 			enum replay_FW_Message_type msg,
+ 			union dmub_replay_cmd_set *cmd_data);
+-bool edp_set_coasting_vtotal(struct dc_link *link, uint16_t coasting_vtotal);
++bool edp_set_coasting_vtotal(struct dc_link *link, uint32_t coasting_vtotal);
+ bool edp_replay_residency(const struct dc_link *link,
+ 	unsigned int *residency, const bool is_start, const bool is_alpm);
+ bool edp_get_replay_state(const struct dc_link *link, uint64_t *state);
+ bool edp_set_replay_power_opt_and_coasting_vtotal(struct dc_link *link,
+-	const unsigned int *power_opts, uint16_t coasting_vtotal);
++	const unsigned int *power_opts, uint32_t coasting_vtotal);
+ bool edp_wait_for_t12(struct dc_link *link);
+ bool edp_is_ilr_optimization_required(struct dc_link *link,
+        struct dc_crtc_timing *crtc_timing);
+diff --git a/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h b/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
+index 02ad641bd8df..4a650ac571d7 100644
+--- a/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
++++ b/drivers/gpu/drm/amd/display/dmub/inc/dmub_cmd.h
+@@ -3244,6 +3244,14 @@ struct dmub_cmd_replay_set_coasting_vtotal_data {
+ 	 * Currently the support is only for 0 or 1
+ 	 */
+ 	uint8_t panel_inst;
++	/**
++	 * 16-bit value dicated by driver that indicates the coasting vtotal high byte part.
++	 */
++	uint16_t coasting_vtotal_high;
++	/**
++	 * Explicit padding to 4 byte boundary.
++	 */
++	uint8_t pad[2];
  };
  
- struct plane_resource {
-diff --git a/drivers/gpu/drm/amd/display/dc/inc/resource.h b/drivers/gpu/drm/amd/display/dc/inc/resource.h
-index 77a60aa9f27b..b14d52e52fa2 100644
---- a/drivers/gpu/drm/amd/display/dc/inc/resource.h
-+++ b/drivers/gpu/drm/amd/display/dc/inc/resource.h
-@@ -107,6 +107,10 @@ void resource_build_test_pattern_params(
- 		struct resource_context *res_ctx,
- 		struct pipe_ctx *pipe_ctx);
+ /**
+diff --git a/drivers/gpu/drm/amd/display/modules/power/power_helpers.c b/drivers/gpu/drm/amd/display/modules/power/power_helpers.c
+index e304e8435fb8..2a3698fd2dc2 100644
+--- a/drivers/gpu/drm/amd/display/modules/power/power_helpers.c
++++ b/drivers/gpu/drm/amd/display/modules/power/power_helpers.c
+@@ -975,7 +975,7 @@ bool psr_su_set_dsc_slice_height(struct dc *dc, struct dc_link *link,
  
-+void resource_build_subsampling_params(
-+		struct resource_context *res_ctx,
-+		struct pipe_ctx *pipe_ctx);
-+
- bool resource_build_scaling_params(struct pipe_ctx *pipe_ctx);
- 
- enum dc_status resource_build_scaling_params_for_context(
+ void set_replay_coasting_vtotal(struct dc_link *link,
+ 	enum replay_coasting_vtotal_type type,
+-	uint16_t vtotal)
++	uint32_t vtotal)
+ {
+ 	link->replay_settings.coasting_vtotal_table[type] = vtotal;
+ }
+diff --git a/drivers/gpu/drm/amd/display/modules/power/power_helpers.h b/drivers/gpu/drm/amd/display/modules/power/power_helpers.h
+index bef4815e1703..ff7e6f3cd6be 100644
+--- a/drivers/gpu/drm/amd/display/modules/power/power_helpers.h
++++ b/drivers/gpu/drm/amd/display/modules/power/power_helpers.h
+@@ -56,7 +56,7 @@ bool dmub_init_abm_config(struct resource_pool *res_pool,
+ void init_replay_config(struct dc_link *link, struct replay_config *pr_config);
+ void set_replay_coasting_vtotal(struct dc_link *link,
+ 	enum replay_coasting_vtotal_type type,
+-	uint16_t vtotal);
++	uint32_t vtotal);
+ void set_replay_ips_full_screen_video_src_vtotal(struct dc_link *link, uint16_t vtotal);
+ void calculate_replay_link_off_frame_count(struct dc_link *link,
+ 	uint16_t vtotal, uint16_t htotal);
 -- 
 2.34.1
 
