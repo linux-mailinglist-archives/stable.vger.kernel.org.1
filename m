@@ -1,74 +1,61 @@
-Return-Path: <stable+bounces-25336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F168C86A969
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 09:00:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2BC886A981
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 09:06:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 910D91F28F66
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 08:00:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F4511C233B8
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 08:06:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7088125626;
-	Wed, 28 Feb 2024 08:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="KfwIIbFT"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E09432563F;
+	Wed, 28 Feb 2024 08:06:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E065B25620
-	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 08:00:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20ABE23763;
+	Wed, 28 Feb 2024 08:06:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709107235; cv=none; b=BI/T9wU4u/yi4Ks2Y60tywcenGEI3LNKrjixBH2U0cY19xFo8c9YDP371NAsBGYpUrCAV1pPPcFJCmoQzz23S6LhnuCAQFhXiQ8zo9jjZPfsAPjgddlxG23Ahbla8bGDyLT4XMbVO6jaOJR+gXiHq0YEE+5LQlpAXn0mfWquvCY=
+	t=1709107585; cv=none; b=gW3keHvrTTc9ceDr9rfRpISHmd2hDql9Y7PTzj/MUnfzj6Qd3EqdiiWDnpVLTeObSYBv9g1b0S3VqUw7Q/k1dzPXW0kCrlO3Dyd2UeadyVI2aC+h81y2wIQeAIVFbBb6FXld6Yj2MW50eHUsQmqAi4waNO7t6EkJWXvrbqZSslY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709107235; c=relaxed/simple;
-	bh=yPfz2sin32rZiQP+8BH+34YmroVrlOsfX9BevnQRkz4=;
+	s=arc-20240116; t=1709107585; c=relaxed/simple;
+	bh=Zrb1Im0gyCJMmIpkGfi7j9ua8LfAnbVRAV3y1zOnEVw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rkxinNAVVmAuPEqp+8pTlROBAvu54WX78m93lg2TCCJb4mBJjJPEGKwXJLg5+h2Jq2pzWe1dZlt9xCrG2zc0k8GsaGHZg+9vUyT8EJPMxJw0eGQY4vokpToQc0EsuBuBLXAumlxoeJFe2cAsHXNnKijms7wnD/JX5ooOJTMMm5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=KfwIIbFT; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2d29111272eso33285711fa.0
-        for <stable@vger.kernel.org>; Wed, 28 Feb 2024 00:00:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1709107231; x=1709712031; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RMPPuq20bTo2IvgrEDXMIqv+e5KFkAdYGzZyeqGK2xU=;
-        b=KfwIIbFTXDjTieixXQiuqEvlvfAlswNXHP2DnYTXUy1Q1feQt8VFetkHepBbbwShC1
-         JRrMlfkkm90G7gtP9Dfu9H5YQcKS4Nky1CYscVy7upWbULilflySfU0/a2+xSCnVAqN1
-         PEDfDsXK2/6L6psfNx/jomWY8aIs+LRF6I0SfV0WhLy9ASFXptQ3LhGSuT3anIqKRCC5
-         LHYwb7URpAvqgglNnG+MDywnbGTvLq/TD0YImBJVoCtumr/vF+TzNLmlTU1/mJ8FPRa9
-         8DqRHCfeqrVL4iPWy75F++TNgF3XX+qE7ZcC6UlusVKG/ioZjkFuAYXAS7Yn1TOP7CjJ
-         fGdQ==
+	 In-Reply-To:Content-Type; b=LpDnrVp/fnxdxgD7LlvggP8U4rtAzJ1C1UTbnT/PcJ8NKbmKKIE0L/owvoKxL1Lm8ljN31rhvbx7rU6Xpj1MTWBbQtA3SHX1kFdSneJTkAXT3EdwpDpTSedDCnMXbPtBaKzsl/sQkUX+OBVK5k3eYqto6a5E6HSM6NzsB+jN5S4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-563bb51c36eso5859411a12.2;
+        Wed, 28 Feb 2024 00:06:23 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709107231; x=1709712031;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RMPPuq20bTo2IvgrEDXMIqv+e5KFkAdYGzZyeqGK2xU=;
-        b=w9pUWGF//G1D8Frss6wVnzIK407LhmZqXWxgjaCrmC2hRrHgvQttHtZ7pSxPAMAFUL
-         SqnkCHt1lYDfsfuvm9HlctvohMK/YLO5DBquOjePQaWrPYg5BuPFY7z9Ll8Pkf9FE8ty
-         vqrSASO06zBTfKxz7wtB0DcZHGH9EWB4x50VxD3m2gbAbpgrTVRbd8gVpmXu2puOXBYf
-         w7tvqrsTazBYqECQ2zBOpT8YCCuAo/aoITOCqPbPjcm8uIO79ZTJMyEt7dQuUROTk62Y
-         4aRlDyAWLAk4Yc1lxMH5jstibwVKx4i6nw/z/mu9VAzgTbVL/cXxXXCSetgnBHERH+i/
-         Flsg==
-X-Forwarded-Encrypted: i=1; AJvYcCW9NKyc4IEsA/zpzOp1fh9sd9xxo6YAqrwtGpewGEyBwz7/LKYyY8H03eITXZ4AH5hKu2cS66dZrdS7lVLMPwXLS/7zfWIZ
-X-Gm-Message-State: AOJu0YwFDsEgh8JV2odmLtnHev5CM34shx31z8Gat7xM/T+tR8wFoh50
-	WbNniARyw7pKF5nQz7/+ug4pZIh2Xi0BcT4BwZW77SXrKp69Um5KAnsilgJsTT8=
-X-Google-Smtp-Source: AGHT+IHG9JuMT1frUWRx1Ja5QCluLAjVs4eLsTOezZ62w6SZ6+YmOaVvsQnaqY8lTACXTFTdwBRzYQ==
-X-Received: by 2002:a2e:a54a:0:b0:2d2:3915:cfc4 with SMTP id e10-20020a2ea54a000000b002d23915cfc4mr9991963ljn.4.1709107231035;
-        Wed, 28 Feb 2024 00:00:31 -0800 (PST)
-Received: from ?IPV6:2001:a61:1366:6801:d8:8490:cf1a:3274? ([2001:a61:1366:6801:d8:8490:cf1a:3274])
-        by smtp.gmail.com with ESMTPSA id bn21-20020a056000061500b0033e033898c5sm387989wrb.20.2024.02.28.00.00.30
+        d=1e100.net; s=20230601; t=1709107582; x=1709712382;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VTt0UEcuAb9psXmCcUBx6ZOtMfL5OgqRETrZ6CLppsE=;
+        b=UX6hEgzj7QsGrIzw06cyxwdyAhKA/mUuBHDjDrKwJgKevs15n7SW5RkI2uYeSi4jYy
+         PqKTHEFFUcXLOeDeJIskrzlz0Tj1Tm+NFiJ0Jt+EKQo0zMbl+1b9Pa9su5qjC1TvrySx
+         zs8n8ny7qgV7P46c8O16M19+JVJxQqpRKyNpoj/tFsfsSU/yFYPUk7zYhyucuC8x0FdE
+         X56nUEyR9taxm7nVagXFO/FIktpNIfcyP/aR5oTsaTt6n2ofdm8+cFXCwT2EafqR5y0K
+         h1VmAOdhagMxMSwrPlR9kKy7FX++i5Bw2oNB9siHd1mlOHf3dWfKNUL9EcvyTEXrZQTU
+         vo1g==
+X-Forwarded-Encrypted: i=1; AJvYcCXmV9p+oE2JVZ1btkReEKxcixt33Os/WDtmA6y0Iue0p5QBbrUciJqj0ZXVaDg9cKUNQv8SRc8oElgygJu8+Mgn7v6Gk/qaliD2FKB6nurYCruF3HfrUIkr3LNlDmpH
+X-Gm-Message-State: AOJu0Yw6jnBeR1NQyHzTPdgl459SC7K7pbi6p0KwI5aJtv4XPGk8Wdd3
+	yAmnIoLuPCJlGB8NSrVyKXItr22RCQ2xVlevjCmN3LY0ylvl6PNq
+X-Google-Smtp-Source: AGHT+IH1JBpt+MdWDNLhuquh077VbpRCP+RvoNk0YOGGWWk/NTyCcSBOj4ByQKislWyBOROgMCgCCg==
+X-Received: by 2002:a05:6402:1ca4:b0:565:a5bb:cc4c with SMTP id cz4-20020a0564021ca400b00565a5bbcc4cmr7014988edb.42.1709107582272;
+        Wed, 28 Feb 2024 00:06:22 -0800 (PST)
+Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:59? ([2a0b:e7c0:0:107::aaaa:59])
+        by smtp.gmail.com with ESMTPSA id r3-20020aa7c143000000b0056676b80a38sm153757edp.3.2024.02.28.00.06.20
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Feb 2024 00:00:30 -0800 (PST)
-Message-ID: <e8c4e8a3-bfc3-463f-afce-b9f600b588b2@suse.com>
-Date: Wed, 28 Feb 2024 09:00:29 +0100
+        Wed, 28 Feb 2024 00:06:21 -0800 (PST)
+Message-ID: <66b4f46f-bcbd-42da-b4d6-0ecd507f8bd8@kernel.org>
+Date: Wed, 28 Feb 2024 09:06:20 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,65 +63,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] USB:UAS:return ENODEV when submit urbs fail with
- device not attached.
-To: Weitao Wang <WeitaoWang-oc@zhaoxin.com>, oneukum@suse.com,
- stern@rowland.harvard.edu, gregkh@linuxfoundation.org,
- linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-scsi@vger.kernel.org, usb-storage@lists.one-eyed-alien.net
-Cc: WeitaoWang@zhaoxin.com, stable@vger.kernel.org
-References: <20240228111521.3864-1-WeitaoWang-oc@zhaoxin.com>
+Subject: Re: [PATCH 6.7 260/334] net: ethernet: adi: requires PHYLIB support
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+ kernel test robot <lkp@intel.com>, Lennart Franzen <lennart@lfdomain.com>,
+ Alexandru Tachici <alexandru.tachici@analog.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org, Nuno Sa <nuno.sa@analog.com>,
+ Sasha Levin <sashal@kernel.org>
+References: <20240227131630.636392135@linuxfoundation.org>
+ <20240227131639.320153289@linuxfoundation.org>
 Content-Language: en-US
-From: Oliver Neukum <oneukum@suse.com>
-In-Reply-To: <20240228111521.3864-1-WeitaoWang-oc@zhaoxin.com>
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <20240227131639.320153289@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 28.02.24 12:15, Weitao Wang wrote:
+On 27. 02. 24, 14:21, Greg Kroah-Hartman wrote:
+> 6.7-stable review patch.  If anyone has any objections, please let me know.
 
-Hi,
+This patch is not nice and should wait for its fixup IMO:
+https://lore.kernel.org/all/20240226074820.29250-1-rdunlap@infradead.org/
 
-sorry for going at this again, but there are a few technical issues left.
+It makes PHYLIB=y even when not needed to be actually built in.
 
-	Regards
-		Oliver
-
-> ---
-> v1->v2
->   - Modify the description of this patch.
+> From: Randy Dunlap <rdunlap@infradead.org>
 > 
->   drivers/usb/storage/uas.c | 21 ++++++++++-----------
->   1 file changed, 10 insertions(+), 11 deletions(-)
+> [ Upstream commit a9f80df4f51440303d063b55bb98720857693821 ]
 > 
-> diff --git a/drivers/usb/storage/uas.c b/drivers/usb/storage/uas.c
-> index 9707f53cfda9..967f18db525a 100644
-> --- a/drivers/usb/storage/uas.c
-> +++ b/drivers/usb/storage/uas.c
-   
-> @@ -562,9 +561,9 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
->   
->   	lockdep_assert_held(&devinfo->lock);
->   	if (cmdinfo->state & SUBMIT_STATUS_URB) {
-> -		urb = uas_submit_sense_urb(cmnd, GFP_ATOMIC);
-> -		if (!urb)
-> -			return SCSI_MLQUEUE_DEVICE_BUSY;
-> +		err = uas_submit_sense_urb(cmnd, GFP_ATOMIC);
-> +		if (err)
-> +			return (err == -ENODEV) ? -ENODEV : SCSI_MLQUEUE_DEVICE_BUSY;
+> This driver uses functions that are supplied by the Kconfig symbol
+> PHYLIB, so select it to ensure that they are built as needed.
 
-Either we ought to use SCSI error codes or generic error codes.
-There is no need to translate all but one error condition here.
-
->   		cmdinfo->state &= ~SUBMIT_STATUS_URB;
->   	}
->   
-> @@ -582,7 +581,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
->   		if (err) {
->   			usb_unanchor_urb(cmdinfo->data_in_urb);
->   			uas_log_cmd_state(cmnd, "data in submit err", err);
-> -			return SCSI_MLQUEUE_DEVICE_BUSY;
-> +			return (err == -ENODEV) ? -ENODEV : SCSI_MLQUEUE_DEVICE_BUSY;
-
-Same as above and below.
+thanks,
+-- 
+js
+suse labs
 
 
