@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-25410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15D7386B652
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 18:46:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A38286B653
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 18:46:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA61B1F29278
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 17:46:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DC071C225FB
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 17:46:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8354115CD42;
-	Wed, 28 Feb 2024 17:46:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3B2915DBA1;
+	Wed, 28 Feb 2024 17:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C/N62xO+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MYwLr5qk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4399715D5DE
-	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 17:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F9315D5B7
+	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 17:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709142388; cv=none; b=PXioXrNjRB/nG3kG0LMOfA1hm2dyOF7xzeUwdRwg0C8F3xj/QFLGC7HR1etjLbIYJr85WSRnqWptp093+JHISovkXYWC15elNeDeJnn/9EyughhlIgwoZlreE0+4A1wh522UFoqGTO5uJOstyw2pct6dzdgfZfJjX8F5e2wrKuY=
+	t=1709142390; cv=none; b=ewSR9cgIkr0sWiZuQmDB6l/6hbq2R6dFprXQn2dFFXcu3x/aVlAg9UBhtZR2f53ajDkouYJeJwc5vBiKjg2NnI3afSyMGTTH6FwShpIU8lnz/vifCMVSIlPvUEW496j3p1lUi3efJqhOUv6AQ0M8jJNal7urS788Cq7vVCzByw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709142388; c=relaxed/simple;
-	bh=5LL6WGSdPxxAJpu8nK2XpD1UPa3fDqynvf5qXRX67us=;
+	s=arc-20240116; t=1709142390; c=relaxed/simple;
+	bh=RNiAJSR8HzUP7osCHjX2jdlTzOLpWadd3gxK7DmUyjo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lh0L8BiTYeQ7B4gLusH+bDaDdTZONZJxCvI0hYD2YQK8yqIK4usj8brtEP+KLw2RSBlcQGXWfLb8vsrV41WUWnqYkzlesVHczvbtYPMTiMJB0uDP/A7GVDmKQUt5eSr/Lk5MIlIGEVhfYufRfMqQKrvZWovaviWbcM9Z27GWFaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C/N62xO+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60804C433F1;
-	Wed, 28 Feb 2024 17:46:26 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=uEXvVHt5wosLzay7E6kLtprN6gsM8+wdOYr7PApWHyNv+mdlVoOrMC4VkrPO1AXUzVmNc1GeYBiO+jp+VVOi5ipIkaRcqLkDYkzDzwD8KzVr5kxFoc96+4tGOnrStXXor6n6EUeGUSqHqIYKDKYLGxEwMDOKtvNfNh5Hw384prc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MYwLr5qk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20561C433F1;
+	Wed, 28 Feb 2024 17:46:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709142387;
-	bh=5LL6WGSdPxxAJpu8nK2XpD1UPa3fDqynvf5qXRX67us=;
+	s=k20201202; t=1709142390;
+	bh=RNiAJSR8HzUP7osCHjX2jdlTzOLpWadd3gxK7DmUyjo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=C/N62xO+mbkRexw7z3+YBnO+N/RRVju3uZnlANoV9mGwAaKI+4GmHbelrjnSKrTHl
-	 ITqiUycHuRN1uQkFOo3t8l12XckUQk6nwC9e9Ly67890E4Pb0c/uQsF+CY+YP9d8PL
-	 r/4Iy2xbNYDpME9WS8TLTvqB46cD/GRNtES3J8dWMSw6Sw2uiH9Ebe7g/QnDDp6Cp4
-	 Mxrpl/xgEZP34TNslZxFF+kiHH8dMvcxtii/jnFFILHkqU8FEEiPOdJCow5UvCjIum
-	 kzDhtORTYm2GYM6vLupOrVyiGezRsv+rr0IbDW5sXVqOhYk9L2JcEC+ahEXxZKHztM
-	 bsZdAXj8pjGCA==
-Message-ID: <a9a7b0d9-ca9a-4233-b8b2-95bcdb7ab53c@kernel.org>
-Date: Wed, 28 Feb 2024 18:46:24 +0100
+	b=MYwLr5qkCh+sS8X0TUpfR2DEii7R+rTpaE7c5NkMOgg2zwJ1qLM6O24fn70R3Av8N
+	 JGxTg6w3gdLFN7GlLZ7HSnwKOgz8jf1B/yqdns9lCkW0E8Nju19v5YGYC/HVkGSgqA
+	 t2QCiyrKPOSWOvgGtxhcsYA26hbRJKZ79Lz+M6VTSKqeQb4P61BNzE8C+3eo3iru+l
+	 xz6ICHkJYrQGrwCxk5bWCgg3f0+dPuh/77I0oQhX03CMuNw4Dbu8rT41nhR8vayrPg
+	 /h9/wtfCBg2nWtKvyw9LvlImDvmFx13FbzKM8tD+jbpyW5ljUYOPGo0bo7bVCJIfbY
+	 QS1KU2dOHW0Ag==
+Message-ID: <783e0cc9-9d8e-40d2-a4d1-a2f5547a1035@kernel.org>
+Date: Wed, 28 Feb 2024 18:46:27 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,13 +50,13 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: patch "[PATCH] mptcp: fix data races on local_id" failed
- to apply to 5.15-stable tree
+Subject: Re: FAILED: patch "[PATCH] mptcp: fix duplicate subflow creation"
+ failed to apply to 5.15-stable tree
 Content-Language: en-GB, fr-BE
 To: gregkh@linuxfoundation.org, pabeni@redhat.com, davem@davemloft.net,
  martineau@kernel.org
 Cc: stable@vger.kernel.org
-References: <2024022610-approval-winking-e3d7@gregkh>
+References: <2024022602-extended-buffer-5cf7@gregkh>
 From: Matthieu Baerts <matttbe@kernel.org>
 Autocrypt: addr=matttbe@kernel.org; keydata=
  xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
@@ -102,13 +102,13 @@ Autocrypt: addr=matttbe@kernel.org; keydata=
  JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
  lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
 Organization: NGI0 Core
-In-Reply-To: <2024022610-approval-winking-e3d7@gregkh>
+In-Reply-To: <2024022602-extended-buffer-5cf7@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 Hi Greg,
 
-On 26/02/2024 14:17, gregkh@linuxfoundation.org wrote:
+On 26/02/2024 14:18, gregkh@linuxfoundation.org wrote:
 > 
 > The patch below does not apply to the 5.15-stable tree.
 
@@ -116,35 +116,44 @@ On 26/02/2024 14:17, gregkh@linuxfoundation.org wrote:
 
 > Possible dependencies:
 > 
-> a7cfe7766370 ("mptcp: fix data races on local_id")
-> 84c531f54ad9 ("mptcp: userspace pm send RM_ADDR for ID 0")
-> f1f26512a9bf ("mptcp: use plain bool instead of custom binary enum")
-> 1e07938e29c5 ("net: mptcp: rename netlink handlers to mptcp_pm_nl_<blah>_{doit,dumpit}")
-> 1d0507f46843 ("net: mptcp: convert netlink from small_ops to ops")
-> fce68b03086f ("mptcp: add scheduled in mptcp_subflow_context")
-> 1730b2b2c5a5 ("mptcp: add sched in mptcp_sock")
-> 740ebe35bd3f ("mptcp: add struct mptcp_sched_ops")
-> a7384f391875 ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
+> 045e9d812868 ("mptcp: fix duplicate subflow creation")
+> b9d69db87fb7 ("mptcp: let the in-kernel PM use mixed IPv4 and IPv6 addresses")
+> bedee0b56113 ("mptcp: address lookup improvements")
+> 4638de5aefe5 ("mptcp: handle local addrs announced by userspace PMs")
+> c682bf536cf4 ("mptcp: add pm_nl_pernet helpers")
+> 4cf86ae84c71 ("mptcp: strict local address ID selection")
+> d045b9eb95a9 ("mptcp: introduce implicit endpoints")
+> aaa25a2fa796 ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
 
 (...)
 
-> From a7cfe776637004a4c938fde78be4bd608c32c3ef Mon Sep 17 00:00:00 2001
+> From 045e9d812868a2d80b7a57b224ce8009444b7bbc Mon Sep 17 00:00:00 2001
 > From: Paolo Abeni <pabeni@redhat.com>
-> Date: Thu, 15 Feb 2024 19:25:31 +0100
-> Subject: [PATCH] mptcp: fix data races on local_id
+> Date: Thu, 15 Feb 2024 19:25:33 +0100
+> Subject: [PATCH] mptcp: fix duplicate subflow creation
 > 
-> The local address id is accessed lockless by the NL PM, add
-> all the required ONCE annotation. There is a caveat: the local
-> id can be initialized late in the subflow life-cycle, and its
-> validity is controlled by the local_id_valid flag.
+> Fullmesh endpoints could end-up unexpectedly generating duplicate
+> subflows - same local and remote addresses - when multiple incoming
+> ADD_ADDR are processed before the PM creates the subflow for the local
+> endpoints.
 > 
-> Remove such flag and encode the validity in the local_id field
-> itself with negative value before initialization. That allows
-> accessing the field consistently with a single read operation.
+> Address the issue explicitly checking for duplicates at subflow
+> creation time.
+> 
+> To avoid a quadratic computational complexity, track the unavailable
+> remote address ids in a temporary bitmap and initialize such bitmap
+> with the remote ids of all the existing subflows matching the local
+> address currently processed.
+> 
+> The above allows additionally replacing the existing code checking
+> for duplicate entry in the current set with a simple bit test
+> operation.
 
-FYI, because of the various conflicts, and because the issue seems
-unlikely is quite harmless -- e.g. a duplicated subflow is created --, I
-think it is better not to try to backport this patch to v5.15 and older.
+FYI, because of the various conflicts, and because the issue is quite
+harmless -- duplicated subflows are created, but only when trying to
+create a high number of subflows, limited to 8 in v5.15, almost
+unnoticed bug so far --, I think it is better not to try to backport
+this patch to v5.15.
 
 Cheers,
 Matt
