@@ -1,132 +1,145 @@
-Return-Path: <stable+bounces-25357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 536FA86AEB3
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 13:04:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B0086AF35
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 13:31:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84E471C246C5
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 12:04:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 066E81C24270
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 12:31:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6673073501;
-	Wed, 28 Feb 2024 12:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD754145341;
+	Wed, 28 Feb 2024 12:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b="PfRjmuDA"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="RTBCD2TG";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="RTBCD2TG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7719373535
-	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 12:04:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B4413B29F
+	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 12:31:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709121864; cv=none; b=UEazy5Lfm5CUE8rrQ2+a7ykrB1U0xtQoKrCXc7RBCGXe6lzoBhYeMDmqgWjKwmN+k8OJUg0l3gObPeNmY6GgmNPEYWHcBEZGXEHAJtBgRPbBC5nuC7RqpfUAwRgXtw1lAFALlQmmCicrCEQs43hqm68/VKewU3ynE0tgG/X3kC4=
+	t=1709123470; cv=none; b=UiaJhR5RAgnfstGAj2RPvlyp86PFlp5GJaI4yWOqNvH4DDeltSluNFoJ9FhOj+qZYBHTCSkUs1LUv39EcjbGhH5MhIkZI8Q0q91GKOxQKtKfTNFVxUbvWxI76A5Y4dB4xZYWb+TfciRpLkBGRIO7byvRwU1BpwS85fpuw+GYfvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709121864; c=relaxed/simple;
-	bh=Mnm19xaAQ5kCIohrvHCI7K09SSPAvZEzrSgRiBgDsiI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VwDQd8sjibfy5jE9Ske0zkX2L4ijsfK4b59bUT9oHsAerVExJi0NTlnL3k0wvjhCCGrqOW0BAwp9BfBTEI/WR9+NcJ+8nalXK3I3L1p8gR49eHkCm4o2RnpH3uSnV/A2xvceCCzizsBHt6DDf2GmobRh2YhxtIjk4CcoQ1UqOJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b=PfRjmuDA; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-33dd2f0a0c4so2342770f8f.0
-        for <stable@vger.kernel.org>; Wed, 28 Feb 2024 04:04:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1709121861; x=1709726661; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xHFmDVf9X2LvHVAYveT1OfX2Grk6oRfK60r+9cQf5wo=;
-        b=PfRjmuDAl48et6QpgIcex3oluOFuBf93H4hG2x5nmINdW2DfojRnGPbQ2gtJ2dFHZD
-         7Rt8VaErZtr5env53Q/TH2FrEWbIVnZYkjhkFU11W9R/G244miASKO2NRpVae13FzkC8
-         vgVrQAYfTZcejptx667fRMcsbxK91WAQsh9m+ZmH8Ky+dehABV6W3L8C6jBgiHYd5Nm0
-         wHvLi5h3ilnjlbhwlymsmx4iT6AyCHRlDwLNbXEpBo7fQX2/RYGiUx6oPGAby0TzyeUW
-         7XYXhl9Yx3gqlsoRH9CH/Mw2sJl3ZJVcIDtzEwlV+PiWE+1EqT7hJ8/SN8feW5Um6xmp
-         IyCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709121861; x=1709726661;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xHFmDVf9X2LvHVAYveT1OfX2Grk6oRfK60r+9cQf5wo=;
-        b=S0TSTHhNj8IAA/JL/0ZeO4JqXVdtuvrED8FMhlTl2/4GCIiIiPUQeF/rXlkgMCsgWb
-         43NBsOiQRDdAb1GMvCoihs10EnmOaRGiTpaOTz8gCC7FE+lYTW62kwNQszxtsQn7EnfH
-         BQtfaCHsZN6Cb4lIx1RZygTQRZz7ejKoXnThKgG/ifwXQD/pNM/cr2yqeUFckYuZMAXy
-         VKym5PQD/mzfK6+xV1uVk5oEilBQwP1nzWkMZSJwvlrYxE0pjn0gwAQ5xpWSzDt98oJK
-         PZNwgK4jRIxVBuvocm+rZg4A7TfmB4TozqjrOBany1UJuI4tdTFFTyjX1v9tAW0spzwk
-         OX7g==
-X-Gm-Message-State: AOJu0YwCoX41z+nNwyWSBeSb6OABrcb4MMMH7WYXYznFzqC6HIRM4Vwk
-	48FbU2OhuCB6SEKPl4rhP9MU14J3qy5/+d9I3ec472Ewc6wmUSaGIi3LqeRppN6mYFJI4sP5hvJ
-	F1tTdilwFvq2/QmMtoml0GmKZGg6gBwtgOTEQIA==
-X-Google-Smtp-Source: AGHT+IEKUemO53QKCZd3tRoOdZknznfHKFG5vUI9UV3SBjGBuFo5hqu0XZiHYJ7iAivhB0gd63HXegceEP2Br4EYKOs=
-X-Received: by 2002:a5d:5692:0:b0:33d:2071:9b85 with SMTP id
- f18-20020a5d5692000000b0033d20719b85mr7813274wrv.19.1709121860313; Wed, 28
- Feb 2024 04:04:20 -0800 (PST)
+	s=arc-20240116; t=1709123470; c=relaxed/simple;
+	bh=B6B5qbwsu02wLwk7JqcnhaNSetR2oVpqkqUFAl1Y6ys=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A97Ro4CU6gFUXUIYgarKnYuOQCpHhs5gLLBNQjZ/pyytdt1WiMZ77EU+hf2xuSTeb49YRsjUEzUCXmsS3CsXJ+4eOBF53yF/8s5z5oa5YD811cXfUZMpSsQRhXSqBIO1kMY5wJu2TrT05prSrHAKYAhv9DFZWich+Qh6C0D9lyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=RTBCD2TG; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=RTBCD2TG; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 9F3B521EF4;
+	Wed, 28 Feb 2024 12:31:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1709123466; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FvGUREEPpmxQWTsLz8XuGTyDXHJu/eo1aXg75bkSMmE=;
+	b=RTBCD2TGarpeTNhEx/iGBvxWWnWkNz/t/uY1ZNeM7gUU4fYcEioF/aOajzGJAVwJaycWlK
+	tcoEA7D7buv9e6I8GUGwBmdRyShhauxAQkOcfy8bYw4L959qJmDalNV7fHDzjswUShnHCU
+	vCfM5D6I2uLg+Yq+U2WokkbDzdwV3P0=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1709123466; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FvGUREEPpmxQWTsLz8XuGTyDXHJu/eo1aXg75bkSMmE=;
+	b=RTBCD2TGarpeTNhEx/iGBvxWWnWkNz/t/uY1ZNeM7gUU4fYcEioF/aOajzGJAVwJaycWlK
+	tcoEA7D7buv9e6I8GUGwBmdRyShhauxAQkOcfy8bYw4L959qJmDalNV7fHDzjswUShnHCU
+	vCfM5D6I2uLg+Yq+U2WokkbDzdwV3P0=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7F1C013A58;
+	Wed, 28 Feb 2024 12:31:06 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ZfZbHIon32VYVwAAD6G6ig
+	(envelope-from <mhocko@suse.com>); Wed, 28 Feb 2024 12:31:06 +0000
+Date: Wed, 28 Feb 2024 13:31:05 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: akpm@linux-foundation.org, guro@fb.com, hannes@cmpxchg.org,
+	hughd@google.com, shakeelb@google.com,
+	torvalds@linux-foundation.org, stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] memcg: fix use-after-free in
+ uncharge_batch" failed to apply to 5.4-stable tree
+Message-ID: <Zd8niX5-e2cAth2X@tiehlicka>
+References: <2024022759-crave-busily-bef7@gregkh>
+ <Zd3jqLMSktEpZPM4@tiehlicka>
+ <2024022704-overjoyed-display-b5cb@gregkh>
+ <Zd4EnXYVbZilQR_M@tiehlicka>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240227131625.847743063@linuxfoundation.org>
-In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
-From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date: Wed, 28 Feb 2024 21:04:09 +0900
-Message-ID: <CAKL4bV4OKYiBS3Op-Eny2PpMgsg1R8sK+BN0so8mjVOk4ixChg@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/299] 6.6.19-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zd4EnXYVbZilQR_M@tiehlicka>
+X-Spam-Level: 
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=RTBCD2TG
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-2.68 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
+	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 MIME_GOOD(-0.10)[text/plain];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	 DKIM_TRACE(0.00)[suse.com:+];
+	 MX_GOOD(-0.01)[];
+	 RCPT_COUNT_SEVEN(0.00)[8];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 MID_RHS_NOT_FQDN(0.50)[];
+	 RCVD_TLS_ALL(0.00)[];
+	 BAYES_HAM(-1.67)[92.91%]
+X-Spam-Score: -2.68
+X-Rspamd-Queue-Id: 9F3B521EF4
+X-Spam-Flag: NO
 
-Hi Greg
+On Tue 27-02-24 16:49:50, Michal Hocko wrote:
+> On Tue 27-02-24 14:32:20, Greg KH wrote:
+> > On Tue, Feb 27, 2024 at 02:29:12PM +0100, Michal Hocko wrote:
+> > > Why is this applied to 5.4?
+> > > $ git describe-ver 1a3e1f40962c
+> > > v5.9-rc1~97^2~97
+> > > 
+> > > I do not see 1a3e1f40962c in 5.4 stable tree. What am I missing?
+> > 
+> > It is queued up for this next round of releases in the 5.4.y and 4.19.y
+> > trees.
+> 
+> OK, now I remember the partial backport of 1a3e1f40962c
+> (http://lkml.kernel.org/r/20240222030237.82486-1-gongruiqi1@huawei.com)
+> but I need to have a look whether the follow up patch is really needed.
 
-On Tue, Feb 27, 2024 at 10:50=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.6.19 release.
-> There are 299 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 29 Feb 2024 13:15:36 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.6.19-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
-
-6.6.19-rc1 tested.
-
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
-
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
-
-[    0.000000] Linux version 6.6.19-rc1rv
-(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 13.2.1 20230801, GNU ld (GNU
-Binutils) 2.42.0) #1 SMP PREEMPT_DYNAMIC Wed Feb 28 20:10:55 JST 2024
+AFAICS f1796544a0ca ("memcg: fix use-after-free in uncharge_batch") is
+only needed if the full 1a3e1f40962c is backported. The one staged for
+5.4 shouldn't need a follow up as it only touches the pcp cache. I would
+feel safer if other maintainers double check my thinking though.
 
 Thanks
-
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+-- 
+Michal Hocko
+SUSE Labs
 
