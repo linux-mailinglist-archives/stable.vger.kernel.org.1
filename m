@@ -1,133 +1,126 @@
-Return-Path: <stable+bounces-25348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBBD186ABF4
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 11:12:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBE2986ABFB
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 11:14:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FECF28280A
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 10:12:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 889532828C3
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 10:14:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6AA3771E;
-	Wed, 28 Feb 2024 10:12:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="WF0LN4nb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80635381D2;
+	Wed, 28 Feb 2024 10:13:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A01BB3770C;
-	Wed, 28 Feb 2024 10:12:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B73D3770C
+	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 10:13:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709115166; cv=none; b=X+YunkdejUYXkEJK5tuK6+NIhdQRIrHNDWAO+65lsgpw5c5t6aReu3eijrQ83+5qowVbK8TaxQN3j8TwV8mqHAcHavjJHi17ZmD13NMBROCz+YR2V20JW9ueOAwGT6WS7VHArE/DOz3ZLR/0Ubvhi1WN5vQCcGWlxdgskjX6qKM=
+	t=1709115238; cv=none; b=nA/vZnHfgqrtqAIN97u9NUiYSUfQCjCYlfwVvFoSzxF2dRXd7UtDLdOSwn3T0CfYV/9XuSaM4rReurUzxefx7qfGv8wNpqkbABHyTVdfe1jbFrb4kVEN5cpoyzZznpPy7cecIHfRVBM+kYL9Q+p4BfIw51o/DTp0hWwNq3a1UVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709115166; c=relaxed/simple;
-	bh=QtkybHA+dLfb/QVzUjDEIMZVXhkak6pmXpwwKXRPt+U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=YKXp+wSetyphyUvgbel7FWbAys2ioYoAO9D6eU22qdQBO5QjNKwt+w5EWE4Z22215pxCGLX8UIpMm9g9ESJKUCJAX8zOt00Q8+1SVRjclmWgjwwbQoU7D1OReHlU/bxP/7418S/nUbzXhcjsGHKSx2vbJ9Y4hiDdrFfgJkPIKDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=WF0LN4nb; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41S6KrNo022821;
-	Wed, 28 Feb 2024 10:12:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=eDhRFVyysNsDGN+FMhkZ93Dyyc7lx1J5zTtYdxW8Axo=; b=WF
-	0LN4nbgJEokwn9Uy7ycFHIrs2p5K5ffHcwRvmYTkPvGD4dJbLxBsoK6RTAYrzXmd
-	Nqfs46lrWE0UKe74b/7pVCs4cmx3hvcCj/JsPKJFYbK2yHnBChHuKYV+YNgFiF06
-	/rARxo03EqRQiQhkkusP0HP6RG9+hcmGzdy7nLQsKDlfM9Dq8factDCd7rHqcgzG
-	jXL2sVE3o5keoYXWLs7adIKB9XX0e8gunHoTLPypCH0y5JP00nP8AL7FJap8cz4o
-	cQ3Lan/zTSFD1akBS8TMvxZ6UicPtiVXljNNPlgl4QIwJzWsHQ26Up4PZQIx2mu5
-	LhfaWsLAnelcVth/1tVg==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3whuksruj2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 28 Feb 2024 10:12:41 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41SACe1Q020988
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 28 Feb 2024 10:12:40 GMT
-Received: from [10.218.35.239] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 28 Feb
- 2024 02:12:37 -0800
-Message-ID: <e216ce10-c345-811a-2279-0ef248c9485f@quicinc.com>
-Date: Wed, 28 Feb 2024 15:42:34 +0530
+	s=arc-20240116; t=1709115238; c=relaxed/simple;
+	bh=14hXcN/pmzBveu368LN55D75J7WvTTeDWA9NxgE0OFM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Tt0rbCWsQNaddGx+B02ha6XPjfQSBdXXE9bYstPkq77Woxq6RAqvZCRxqQpX3ySg8Dep2Nby5v/MeubkUHZwP+TMNVIqycfAGlKiv/15krON1Jy6iribXjRfLTWSJtY+9y1xiyq85StqmnWRKK064MeUs+FNGrhtqL1cJ33ZlVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; arc=none smtp.client-ip=54.254.200.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+X-QQ-mid: bizesmtp62t1709115208trocn87m
+X-QQ-Originating-IP: uUjka9UhITDP7iDTrIHmRHuOAbTk4TgE8jMpLxt6AAw=
+Received: from localhost.localdomain ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 28 Feb 2024 18:13:26 +0800 (CST)
+X-QQ-SSF: 01400000000000C0B000000A0000000
+X-QQ-FEAT: znfcQSa1hKZ1OQVbZm+fYQPI766XCh6aUqJjjI3UFo6bHEOOYrK8E6ZzzpNis
+	ycaJcFnW7c2mXQJwc+RqnVogWPbYMcSAv8hA8efuy/WRWupRkx3ZWoUN1CKpsMkyIYOlClg
+	BZODt/hGk0/WtBdkbW8w5Wzr0PMkLTZZOPbG5W82KGr01PTYu06sOuO6zTw3xeLcvfWSgLR
+	IphPH5ln9CRwC8PZI8NqyNJdPkQOy+DgcALgtEiPGy/9zFs0+NKiRkTqbIFeCi4YGsFvJ4g
+	MFpj/eCArxgqV4y6V5xIzrQ7nD1HxksrJ/S86wnz4+0GSnW7HkVYYeysrGmx1DYO7YByuCf
+	vkOrlaeNXkrFCkxcsG7x05NJftxLRd8i09aIFezP65YkmfvZmmo80PGCGmxTDNSmsRkh9uz
+	VA5jfZmnplQ=
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 16063273281454352206
+From: WangYuli <wangyuli@uniontech.com>
+To: wangyuli@uniontech.com,
+	guanwentao@uniontech.com
+Cc: stable@vger.kernel.org,
+	Larry Finger <Larry.Finger@lwfinger.net>
+Subject: [PATCH] Bluetooth: Add device 0bda:4853 to blacklist/quirk table
+Date: Wed, 28 Feb 2024 18:13:23 +0800
+Message-ID: <A3926852489BE409+20240228101324.18086-1-wangyuli@uniontech.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [PATCH] usb: xhci: Add error handling in xhci_map_urb_for_dma
-Content-Language: en-US
-To: Sergei Shtylyov <sergei.shtylyov@gmail.com>,
-        Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>,
-        Mathias Nyman <mathias.nyman@intel.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
-        <stable@vger.kernel.org>
-References: <20240228083343.3101303-1-quic_prashk@quicinc.com>
- <e4f87b6b-4561-8058-3449-2ff9086c81a4@gmail.com>
-From: Prashanth K <quic_prashk@quicinc.com>
-In-Reply-To: <e4f87b6b-4561-8058-3449-2ff9086c81a4@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 8Mnyt1hv2vzWnDYJ_Yp88sZJ_-e3o_Gc
-X-Proofpoint-ORIG-GUID: 8Mnyt1hv2vzWnDYJ_Yp88sZJ_-e3o_Gc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-28_04,2024-02-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- impostorscore=0 mlxlogscore=659 clxscore=1011 malwarescore=0 phishscore=0
- adultscore=0 priorityscore=1501 spamscore=0 bulkscore=0 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2402120000 definitions=main-2402280080
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
 
+This new device is part of a Realtek RTW8852BE chip. Without this change
+the device utilizes an obsolete version of the firmware that is encoded
+in it rather than the updated Realtek firmware and config files from
+the firmware directory. The latter files implement many new features.
 
+The device table is as follows:
 
-On 28-02-24 02:31 pm, Sergei Shtylyov wrote:
-> On 2/28/24 11:33 AM, Prashanth K wrote:
-> 
->> Currently xhci_map_urb_for_dma() creates a temporary buffer
->> and copies the SG list to the new linear buffer. But if the
->> kzalloc_node() fails, then the following sg_pcopy_to_buffer()
->> can lead to crash since it tries to memcpy to NULL pointer.
->> So return -EAGAIN if kzalloc returns null pointer.
->>
->> Cc: <stable@vger.kernel.org> # 5.11
->> Fixes: 2017a1e58472 ("usb: xhci: Use temporary buffer to consolidate SG")
->> Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
->> ---
->>   drivers/usb/host/xhci.c | 3 +++
->>   1 file changed, 3 insertions(+)
->>
->> diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
->> index c057c42c36f4..0597a60bec34 100644
->> --- a/drivers/usb/host/xhci.c
->> +++ b/drivers/usb/host/xhci.c
->> @@ -1218,6 +1218,9 @@ static int xhci_map_temp_buffer(struct usb_hcd *hcd, struct urb *urb)
->>   	temp = kzalloc_node(buf_len, GFP_ATOMIC,
->>   			    dev_to_node(hcd->self.sysdev));
->>   
-> 
->     I don't think we need an empty line here.
-> 
->> +	if (!temp)
->> +		return -EAGAIN;
-> 
->     Not -ENOMEM?
-Yea that sounds better, will update in next patch.
-Thanks!
+T: Bus=03 Lev=01 Prnt=01 Port=09 Cnt=03 Dev#= 4 Spd=12 MxCh= 0
+D: Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs= 1
+P: Vendor=0bda ProdID=4853 Rev= 0.00
+S: Manufacturer=Realtek
+S: Product=Bluetooth Radio
+S: SerialNumber=00e04c000001
+C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=81(I) Atr=03(Int.) MxPS= 16 Ivl=1ms
+E: Ad=02(O) Atr=02(Bulk) MxPS= 64 Ivl=0ms
+E: Ad=82(I) Atr=02(Bulk) MxPS= 64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 0 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 0 Ivl=1ms
+I: If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 9 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 9 Ivl=1ms
+I: If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 17 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 17 Ivl=1ms
+I: If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 25 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 25 Ivl=1ms
+I: If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 33 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 33 Ivl=1ms
+I: If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E: Ad=03(O) Atr=01(Isoc) MxPS= 49 Ivl=1ms
+E: Ad=83(I) Atr=01(Isoc) MxPS= 49 Ivl=1ms
+
+Link: https://lore.kernel.org/all/20230810144507.9599-1-Larry.Finger@lwfinger.net/
+Cc: stable@vger.kernel.org
+Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+---
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index edfb49bbaa28..5225a6075626 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -542,6 +542,8 @@ static const struct usb_device_id quirks_table[] = {
+ 	/* Realtek 8852BE Bluetooth devices */
+ 	{ USB_DEVICE(0x0cb8, 0xc559), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x0bda, 0x4853), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0bda, 0x887b), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0bda, 0xb85b), .driver_info = BTUSB_REALTEK |
+-- 
+2.43.0
+
 
