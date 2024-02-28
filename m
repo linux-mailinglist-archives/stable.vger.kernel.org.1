@@ -1,124 +1,114 @@
-Return-Path: <stable+bounces-25361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 495D386AF98
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 13:58:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C143886AFBD
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 14:02:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 049E7287A6A
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 12:58:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F23001C23280
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 13:02:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD566149DE5;
-	Wed, 28 Feb 2024 12:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0C8149E0B;
+	Wed, 28 Feb 2024 13:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="GRZKI6KV"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hCg28rL8"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D126E145B3F;
-	Wed, 28 Feb 2024 12:58:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5B1148FFC
+	for <stable@vger.kernel.org>; Wed, 28 Feb 2024 13:02:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709125085; cv=none; b=MfQUJB8maxUiQ8dFkTCp+gS/aHjIDhMkMDUPg3bSUPbRHsJ+io9jq2fQncEiD3uj/4RLDE6LX5rufB82tYpw3Sv7W5jUzSVAnOAFhla/ruhf2ITRB6lCrufjjMYVhsAyAhuLxFv52+hfY2wkSs+Tk3gWurzH50qpiimpyLJXE78=
+	t=1709125371; cv=none; b=ilDGCsgUy1nIjlPha91TBT+1BYXQ+CNPX4Uw5/RcH2CyiO6ZhL8YJCQuWmv58TVfPaXOpPGapIWZo0VPOvXEdNzIA4Az/Bljo/mweuAobKmmQeLiRSdwhJoFa6R0sWYIzFa0nwLPxAkpspYCB6fakIGMZRa66UOL65/L7K+QVow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709125085; c=relaxed/simple;
-	bh=xCd9FCuV0P6I+DGvJ2VP4AxODq0+yihzQbQZWXqZEcQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cKXmt15TCWWBND7fsvKN8Slf80CNtkI3datIbiX8NH8PpVqmZGAkapjqHvVFh7bwroDIoNNnxBE2ZVywMwzu59mS9XVBfiwCNk6F4s0jWzF07RsqvtPkxwu0HuweLPAXZVzzFkzJq9uQJ+qIzycDdA1D52L9avX3WOuj7BVYtb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=GRZKI6KV; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41S9EgMl015857;
-	Wed, 28 Feb 2024 12:58:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding:content-type; s=qcppdkim1; bh=kulUHZQ
-	+sWUZhWg1oiTqSixzXqPkzM/P81bT+Eqkzbk=; b=GRZKI6KVWYHooG7yUAAXDCo
-	KJZtl3v4CXO1H/nqNTrlytWXdG7f7u0kU6yPzkdIhyVpHoHzwv7xN/demDL5JbIZ
-	DRlNsINsl9PMe/hmuGg+oBTXf/7IVPe0jLsln0eSMZpZ7LbkRRWKfiq9gTYw1b6X
-	9scCCnN655vcsxp671PnD3fRe/8ua+nxc22uYYvzn1vk9jDHgmW13R/vfIvKKbKC
-	1/uqAzR8Nt1H6ThTcV/b4qd95/IaQba1EGrCzRXidk7zetpyzhfAcMM+D9mZocqL
-	gNegcKHV70PVw/nZJW4GKzVMimXXBT+gf1SnUBRFueT7vjQOXdv2hLEgrFrW2pQ=
-	=
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wj2148hdw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 28 Feb 2024 12:58:00 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41SCvh5p014995
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 28 Feb 2024 12:57:43 GMT
-Received: from hu-prashk-hyd.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Wed, 28 Feb 2024 04:57:40 -0800
-From: Prashanth K <quic_prashk@quicinc.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mathias Nyman
-	<mathias.nyman@intel.com>
-CC: Sergei Shtylyov <sergei.shtylyov@gmail.com>,
-        <linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
-        Prashanth K
-	<quic_prashk@quicinc.com>, <stable@vger.kernel.org>
-Subject: [v2] usb: xhci: Add error handling in  xhci_map_urb_for_dma
-Date: Wed, 28 Feb 2024 18:27:24 +0530
-Message-ID: <20240228125724.1527491-1-quic_prashk@quicinc.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1709125371; c=relaxed/simple;
+	bh=3cYG7GaJLaJHPFKTz6+fE0NqWzsbSwHco8JoDUKQEQY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hsFA9eCN8PMGTKqHtZG5PoncsHzaXVwcxPIYuwHwO8M9XduQFRv9rRaGEy4hpmcUxBh/MdxCJD2n//JxNn3K9aZ9Vv1htfOuz7r5PZ6+xWECIqGv9WRt8Dswx69uZzZ4V1h7PSmRiWgayhHp5lfvlsNgUwQqH7D4l90pSqJqYA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hCg28rL8; arc=none smtp.client-ip=209.85.219.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-dcbc6a6808fso4867629276.2
+        for <stable@vger.kernel.org>; Wed, 28 Feb 2024 05:02:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1709125369; x=1709730169; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=x6lSKguAFNJlnGwYnPcXJDGp7aYh6GWsOXe6nAyiYVg=;
+        b=hCg28rL8oQhsqzK4oYJZsSxvYvmljTITpK5k0wS+vfNH+vKG9z8H8l5pp4r41mYF+9
+         p510o9l1WIA8Wm7T2r7h9/mLz4CKHFsNRJMgKj+qmuxzkae8EV6/HWFyRNPzuPZ9SmEV
+         ZIRGSRmM2X1v7AVwcX0W432l6Y7VrBQ+JpLoXLVyFEhXIECUyUfUSsGZweEpmqQBbJnS
+         npv0fQnT12bn58e6iJOQuzd/Lyyz8WvczN9nn8lQMSlDEZi7u/6/Z/FFB72Dh9XxQ2Jh
+         ArmuL0uyavKLdZorcCRUuOASszDvpDEzvOjBs6U/pgfHnSXTdEo5tqmNGwpzdrmOBbie
+         C27Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709125369; x=1709730169;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=x6lSKguAFNJlnGwYnPcXJDGp7aYh6GWsOXe6nAyiYVg=;
+        b=FS3E1Sn/qX5qVDlMxY7iiSlIuxGL6Fzj8+uVeOHjmKNWVdJzjeMkS/9LCT/RR3kGIa
+         E+ubwnftrPRDVyAWBXvqDdKQtAgJQWqUAfxHbK749tFAYJvnUQ4PlbbILFBo1ZuFGI9q
+         KY4KBzKi8I4TSeeqYUHFjkA/5jBfr/sZCwCA48ohqzcep8vQGEgweJCXo7OE2J6Wr60j
+         IMPbBdgCaaY7/FB2mZtZiufmOh6joAQbFRDqk78Q5kE8VIPRTCC7ECU9xw+iABUxmgtz
+         pqgVztLKdTKA1Sza10NsxTVplCwXjhpz1CWuSjzN7iOWjBO4L4QdqxfelCARLXPkdmwR
+         0kDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXmV3Av6hAlzchVsd4dg2MXzl5GCycJwuavVyw8JvhcQ+eLKG4x/HFiqJIxuellfRXzaSGK2Stwm4YGzzinV+8sOJhI3ssm
+X-Gm-Message-State: AOJu0YwShR49h9rcQENvBasLp/NlF6lq4EhT1MoBsFuXRmhYx88BEbmS
+	L012VGhWbm82uny8XGdNQJ1cgt4rEVIeKlKfXCg9MsiP2Slds4Ufq08obtdH2N45t+uqTAMD0U5
+	IvxhPn0VmGvBCRXDNaPntUe+Wx4aCGCL28OJm3w==
+X-Google-Smtp-Source: AGHT+IHt515XwjEFX2Talx1MabYfeTXhLsH0vACvt9NK8SBc6/4ePgqNHrqmsK6WApAXc6SEFfgq73kQu0EE4nMTs0E=
+X-Received: by 2002:a05:6902:1b09:b0:dcc:53c6:113a with SMTP id
+ eh9-20020a0569021b0900b00dcc53c6113amr2580289ybb.59.1709125368961; Wed, 28
+ Feb 2024 05:02:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: w9uZjln_i_-dGx8q_D9E4qnlsdSeQOJ6
-X-Proofpoint-GUID: w9uZjln_i_-dGx8q_D9E4qnlsdSeQOJ6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-28_05,2024-02-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 malwarescore=0
- lowpriorityscore=0 suspectscore=0 bulkscore=0 spamscore=0 adultscore=0
- priorityscore=1501 mlxscore=0 mlxlogscore=543 clxscore=1015
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2402120000 definitions=main-2402280103
+References: <20240218-msm8996-fix-ufs-v3-0-40aab49899a3@linaro.org> <yq1o7c24oyt.fsf@ca-mkp.ca.oracle.com>
+In-Reply-To: <yq1o7c24oyt.fsf@ca-mkp.ca.oracle.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Wed, 28 Feb 2024 15:02:37 +0200
+Message-ID: <CAA8EJpqUrvzU_=EGcXdpLjVetSkCv0vfnc1hNhPQdyUQvY7UzQ@mail.gmail.com>
+Subject: Re: [PATCH v3 0/5] scsi: ufs: qcom: fix UFSDHCD support on MSM8996 platform
+To: "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+	"James E.J. Bottomley" <jejb@linux.ibm.com>, Nitin Rawat <quic_nitirawa@quicinc.com>, 
+	Can Guo <quic_cang@quicinc.com>, 
+	Naveen Kumar Goud Arepalli <quic_narepall@quicinc.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Alim Akhtar <alim.akhtar@samsung.com>, Avri Altman <avri.altman@wdc.com>, 
+	Bart Van Assche <bvanassche@acm.org>, Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org, 
+	linux-scsi@vger.kernel.org, devicetree@vger.kernel.org, 
+	stable@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Currently xhci_map_urb_for_dma() creates a temporary buffer
-and copies the SG list to the new linear buffer. But if the
-kzalloc_node() fails, then the following sg_pcopy_to_buffer()
-can lead to crash since it tries to memcpy to NULL pointer.
-So return -ENOMEM if kzalloc returns null pointer.
+On Tue, 27 Feb 2024 at 04:33, Martin K. Petersen
+<martin.petersen@oracle.com> wrote:
+>
+>
+> Dmitry,
+>
+> > First several patches target fixing the UFS support on the Qualcomm
+> > MSM8996 / APQ8096 platforms, broken by the commit b4e13e1ae95e ("scsi:
+> > ufs: qcom: Add multiple frequency support for
+> > MAX_CORE_CLK_1US_CYCLES"). Last two patches clean up the UFS DT device
+> > on that platform to follow the bindings on other MSM8969 platforms. If
+> > such breaking change is unacceptable, they can be simply ignored,
+> > merging fixes only.
+>
+> Does not apply to 6.9/scsi-staging. Please rebase if you want this
+> series to go through the SCSI tree.
 
-Cc: <stable@vger.kernel.org> # 5.11
-Fixes: 2017a1e58472 ("usb: xhci: Use temporary buffer to consolidate SG")
-Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
----
-v2: Updated -EAGAIN to -ENOMEM
+Please pick up just the UFS patch. DT patches should go through arm-soc tree.
 
- drivers/usb/host/xhci.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-index c057c42c36f4..35e9efdee3b2 100644
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -1217,6 +1217,8 @@ static int xhci_map_temp_buffer(struct usb_hcd *hcd, struct urb *urb)
- 
- 	temp = kzalloc_node(buf_len, GFP_ATOMIC,
- 			    dev_to_node(hcd->self.sysdev));
-+	if (!temp)
-+		return -ENOMEM;
- 
- 	if (usb_urb_dir_out(urb))
- 		sg_pcopy_to_buffer(urb->sg, urb->num_sgs,
 -- 
-2.25.1
-
+With best wishes
+Dmitry
 
