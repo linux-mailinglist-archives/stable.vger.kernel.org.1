@@ -1,173 +1,113 @@
-Return-Path: <stable+bounces-25408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C9A886B62A
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 18:37:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4EC286B639
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 18:40:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 848331F284C0
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 17:37:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AF4C1F284F9
+	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 17:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 872AA15DBAF;
-	Wed, 28 Feb 2024 17:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AFAD15CD59;
+	Wed, 28 Feb 2024 17:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dttrbc5R"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FOwcFido"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E2B15A4A6;
-	Wed, 28 Feb 2024 17:37:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CD13FBB0;
+	Wed, 28 Feb 2024 17:40:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709141862; cv=none; b=QzC3hCxTlMFTTYQV0ZKgiQ11VG+CY+e+LMBp5jF6E1dUD/Su7vCsB9oEQT1nkjWl4rGxaE9/RF/lcYBOBbVu5RSNuP04n6Y3REB6IJXVEk45qLUXXmoR+GUblwtTktr0JZxoMQJKSnk4drHbfeDPFhvSrgx4RavThAg2fRfpFMk=
+	t=1709142045; cv=none; b=K971NcC23SQO0OzwUX9BiIQwB7i0bsmTHA0jt59XJbqjsZEiuc+rWNtYM/2OJVEJYmUBbdnZWCvIsvRJqgzGh7FmHkl52RuzC+OL/CuXGmP4H0t51dVYTd4NSBi3Gdecnj1rN/y6ZTAEhArwbUi0OnfqOgPWRYx9BmV4/wQSn3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709141862; c=relaxed/simple;
-	bh=DOUUPgHf0MranEJRXLW71fXNx0rR1Unte6CenbNAFig=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T8WdS4oxg0CaIba4beiHyGtaRK/4+DnEtrC7E3oV9vk4KExxKHXz+v7VnX9pG+RBygOOHqUFN8g/P4u4Tq9SCpwMFXDPyp4ChQxnseeDaY6/wRTGj7Mv23Xz+QCaB29m1hBwtqgM9fUjF/gTdK1Wwr4bCXZ7EdNfCMkm3V7ZovY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dttrbc5R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A533AC433C7;
-	Wed, 28 Feb 2024 17:37:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709141861;
-	bh=DOUUPgHf0MranEJRXLW71fXNx0rR1Unte6CenbNAFig=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dttrbc5RPvXUb4muTvUrwDaWMREdfeN4TFWV2Zrv9PlPOSZPbh74jc/Jz69dBVHly
-	 Wn606cxzB2ztCXJo1HfWfxst6FtVrxWiew1NmICNIQZqYX1i4BFIvhZx5pn0+WvP2Q
-	 4lZYFlrKsNau1EZSRId9lbRFp1DZCAjL/mPgoA3pgW+x4PJleCcXqZT6bqpFJL/w12
-	 cxEcKIyqpB11Lj8/BuXO91j+q3dE3rIjA0fAQi0AoKCfsc2sWEQS8k8MQnNlL0+h6H
-	 A6s0zTD6s1j07GU0BM5/vv7HUhf8nJoXHt5a1/UufJsMZgxVLI8qRIERu9wf5421Fb
-	 9Un687zFu1t8g==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	Mat Martineau <martineau@kernel.org>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>
-Subject: [PATCH 5.15.y 2/2] mptcp: add needs_id for netlink appending addr
-Date: Wed, 28 Feb 2024 18:37:16 +0100
-Message-ID: <20240228173714.262012-4-matttbe@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240228173714.262012-3-matttbe@kernel.org>
-References: <2024022732-wrought-cardiac-a27a@gregkh>
- <20240228173714.262012-3-matttbe@kernel.org>
+	s=arc-20240116; t=1709142045; c=relaxed/simple;
+	bh=48CGxSL0nimyBR7hV1JMGOPtSOuj21Q9ZvH3thQgDzA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=R/aBY6Gvcr0yf9QKnQdO60FdJhnY0DrXN74ybMY9gMxF6eINL/fTRz12ucNRv4VMO129aAwdpUgwhIAqaRvZBv+QXl5LAyZG1KUVr060lS5+juu4A+RY8ft3gUGD7Sd+GE2o2Wo4kXUr7k+uOkPMdz38HZioK50o3eiIS3cxJ+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FOwcFido; arc=none smtp.client-ip=209.85.217.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-471e18cd6e3so1115547137.3;
+        Wed, 28 Feb 2024 09:40:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709142043; x=1709746843; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=iUJmtckHKi/1Ij75fGxk5wcnwB8ZABZ/vlRQjgqtgfQ=;
+        b=FOwcFidooo7NUaAp/+FDFPxPCJMOQa6cE8sNtyF2mUuy8VqkO167IbgNN2bG5KQKk/
+         DOZEMl5bTWtpiDgSnm8iHRojMhJdDouVQWdDce9bqtkTLm6oh+5L4VKVdMUKiuTfrCr6
+         8nmLnkv5E2lG3x/KywTi9CtzzL4rVztF2veOIKgFLZc2y1i3QrthXx04wCwvCqOs6Dvs
+         LaKIzX0fngqcnRQoMY9Dz5dRbbtxlOVJIqyZMiih7SGOYyI6ncIrVio5Q7IJMu0tT1aE
+         AA99tP9zUz9KLzXlL55XlgR1KV9fbBSGKgY3U72TQJAa484DX98diZJJUvfNREA0U5mM
+         710g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709142043; x=1709746843;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iUJmtckHKi/1Ij75fGxk5wcnwB8ZABZ/vlRQjgqtgfQ=;
+        b=BsnQFIaRPATiEd1U2z/uajk1NhC7jiufcui8CzsMo4hbD24tLAQG9AQiqGuzghS1pF
+         qRiUqdyRgYOLJQSgi0KVc8zdPWByJn9FVac1xNThABg4XWamAQbG/HRC7EgM6A3F0/cU
+         egzNvV3Ib+swsHQq59VaiOFqNedCy94/5jIC4ACiEVMmHgrsXPdIoFb4sQMB7CSSgJ5v
+         X+95j8uLlWMkUSJa7aBvjCD44KUpQSVwfJ33Dno9YT5+bl96Jcn7GZtMLNYAxaRILSb6
+         cmeuWqJi9vzBON6/P2v3RDXg7KKPSAXAsSbBaMklznpRNjOyKl+wsB8cc1rvuPj9JRQw
+         qBJg==
+X-Forwarded-Encrypted: i=1; AJvYcCUDJqQZUZBdFpgfiHc+heY2ASK555H65eLyuxNENibQbpUebJosURC3n2BRQg9UYR1naERefwlMcSru6GFfwVa2xMwZSc686UDnI9oO
+X-Gm-Message-State: AOJu0Yx1Wh055uG0q8DpC0X/A4QBo0Gul+p2NU4JgfUJpMyf612+r71G
+	07W7ORk6t+aZQHFwvTk0+H3md+rD4otg6Kn0kW/+d3Hjey8e//6u7BxpZ/Sa635bLnqa9k78jkF
+	2TdLusSkkAUdeQSRHHMpccHLX1oc=
+X-Google-Smtp-Source: AGHT+IFwbYwjbm+Zvkg0glMifQIhcw6NDLseE5sVvTj2Yw269u2BoSy382YAUgvL+7/vpr5MJiVjRPe3m5FpskF/+mY=
+X-Received: by 2002:a67:f490:0:b0:471:e1ac:57a8 with SMTP id
+ o16-20020a67f490000000b00471e1ac57a8mr259470vsn.12.1709142042595; Wed, 28 Feb
+ 2024 09:40:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3537; i=matttbe@kernel.org; h=from:subject; bh=clILGqR2qC8WWu/V5O7pVk1vCEaeGwqdLSWaJoGeVHk=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBl329KRe9EpmqlJAWMlSlrOwgKBB0mPkE7IrxRS erYfCS1SeqJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZd9vSgAKCRD2t4JPQmmg cyEzD/419kjovw5Rt7Vogpuw9XhtS4ZxPT+0mISexWZH4hH42tOlstObybuhT9SvdhZdwtHzylB ftjChnRSKoPxW1V5Wy0TeWyasy+rRr36+psV6crekVnrn+2g/exew/Udiy2i6Fj8msu0pYtvpV7 kTNwL/6zq1Fo3JM7VhO89Bu22WynsIDECGQYfdc511vOt/SGjUTxaDNpW88M68FOCliuNd3y5Fh 4buBB1UaHfwznbr7Z4iXD0+yy57OwSsK1x0bKJpchpdQnTwngDbPAk9qzmGzXdYy+6SswtHCsEK ck/t3Kb6PHlJmd/ydENHIwSROAmnH2cy6U7fp6NpCAYwDdPbwgI0T0SeuV4O+RksfzHjKr1PF9J sZ8MwGR5xBVl2pYCOFr7gr2bntelIpx3DO+BqlvmGevFjM3sZySdv3yYSrTJYNV26c3AG82K6bU W+tZdN60tipeTUaFCnD22wuAnF81ZPxSW1db7ERwhpVJ7LGdRRgatL9ETQHTyz68jKjSD0ZVONq ePT2Fr4FOTd5kHaSM3VyCD55EpD7xQripeyYqiH8CFCiLN9iiQnzzvxSIrrJ34kKfzoWDD07S6D xo+BHGsxm7aLSnziRURPBEu8TIxqpyO4fn9iYgvudIKBwRsGO2f/1GjuUEtuARTF+gWzXjzsspB nlYKaCfPkDN//5Q==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-Content-Transfer-Encoding: 8bit
+References: <20240227131615.098467438@linuxfoundation.org>
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+From: Allen <allen.lkml@gmail.com>
+Date: Wed, 28 Feb 2024 09:40:24 -0800
+Message-ID: <CAOMdWSKV9H_F6gD0jkNzM0P4XkBax3ZONk9K1xPx+vWQdm7-vA@mail.gmail.com>
+Subject: Re: [PATCH 5.15 000/245] 5.15.150-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+> This is the start of the stable review cycle for the 5.15.150 release.
+> There are 245 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 29 Feb 2024 13:15:36 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.150-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-commit 584f3894262634596532cf43a5e782e34a0ce374 upstream.
+Compiled and booted on my x86_64 and ARM64 test systems. No errors or
+regressions.
 
-Just the same as userspace PM, a new parameter needs_id is added for
-in-kernel PM mptcp_pm_nl_append_new_local_addr() too.
+Tested-by: Allen Pais <apais@linux.microsoft.com>
 
-Add a new helper mptcp_pm_has_addr_attr_id() to check whether an address
-ID is set from PM or not.
-
-In mptcp_pm_nl_get_local_id(), needs_id is always true, but in
-mptcp_pm_nl_add_addr_doit(), pass mptcp_pm_has_addr_attr_id() to
-needs_it.
-
-Fixes: efd5a4c04e18 ("mptcp: add the address ID assignment bitmap")
-Cc: stable@vger.kernel.org
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- - Notes:
-   - no more conflicts after having backported 59060a47ca50 ("mptcp:
-     clean up harmless false expressions") and taken the version from
-     v6.1.
----
- net/mptcp/pm_netlink.c | 24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
-
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 6018d9641e0b0..651f2c158637c 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -823,7 +823,8 @@ static bool address_use_port(struct mptcp_pm_addr_entry *entry)
- }
- 
- static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
--					     struct mptcp_pm_addr_entry *entry)
-+					     struct mptcp_pm_addr_entry *entry,
-+					     bool needs_id)
- {
- 	struct mptcp_pm_addr_entry *cur;
- 	unsigned int addr_max;
-@@ -850,7 +851,7 @@ static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
- 			goto out;
- 	}
- 
--	if (!entry->addr.id) {
-+	if (!entry->addr.id && needs_id) {
- find_next:
- 		entry->addr.id = find_next_zero_bit(pernet->id_bitmap,
- 						    MAX_ADDR_ID + 1,
-@@ -861,7 +862,7 @@ static int mptcp_pm_nl_append_new_local_addr(struct pm_nl_pernet *pernet,
- 		}
- 	}
- 
--	if (!entry->addr.id)
-+	if (!entry->addr.id && needs_id)
- 		goto out;
- 
- 	__set_bit(entry->addr.id, pernet->id_bitmap);
-@@ -1001,7 +1002,7 @@ int mptcp_pm_nl_get_local_id(struct mptcp_sock *msk, struct sock_common *skc)
- 	entry->ifindex = 0;
- 	entry->flags = 0;
- 	entry->lsk = NULL;
--	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry);
-+	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry, true);
- 	if (ret < 0)
- 		kfree(entry);
- 
-@@ -1202,6 +1203,18 @@ static int mptcp_nl_add_subflow_or_signal_addr(struct net *net)
- 	return 0;
- }
- 
-+static bool mptcp_pm_has_addr_attr_id(const struct nlattr *attr,
-+				      struct genl_info *info)
-+{
-+	struct nlattr *tb[MPTCP_PM_ADDR_ATTR_MAX + 1];
-+
-+	if (!nla_parse_nested_deprecated(tb, MPTCP_PM_ADDR_ATTR_MAX, attr,
-+					 mptcp_pm_addr_policy, info->extack) &&
-+	    tb[MPTCP_PM_ADDR_ATTR_ID])
-+		return true;
-+	return false;
-+}
-+
- static int mptcp_nl_cmd_add_addr(struct sk_buff *skb, struct genl_info *info)
- {
- 	struct nlattr *attr = info->attrs[MPTCP_PM_ATTR_ADDR];
-@@ -1228,7 +1241,8 @@ static int mptcp_nl_cmd_add_addr(struct sk_buff *skb, struct genl_info *info)
- 			return ret;
- 		}
- 	}
--	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry);
-+	ret = mptcp_pm_nl_append_new_local_addr(pernet, entry,
-+						!mptcp_pm_has_addr_attr_id(attr, info));
- 	if (ret < 0) {
- 		GENL_SET_ERR_MSG(info, "too many addresses or duplicate one");
- 		if (entry->lsk)
--- 
-2.43.0
-
+Thanks.
 
