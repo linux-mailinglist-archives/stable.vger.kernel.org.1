@@ -1,58 +1,66 @@
-Return-Path: <stable+bounces-25688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70DD086D55F
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 22:01:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A25C86D561
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 22:01:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BC57B255F5
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 21:01:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4AA4282A39
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 21:01:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00C016CA1C;
-	Thu, 29 Feb 2024 20:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74201143733;
+	Thu, 29 Feb 2024 20:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aoesQCew"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yn4EFSTV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB98151CE5;
-	Thu, 29 Feb 2024 20:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C5814372B;
+	Thu, 29 Feb 2024 20:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709239311; cv=none; b=E6qFdgZTSe+uEjCC94jkullMR78hp7c+7lUzAwFnBn9Gl6ZqunWyc1bGlLgbjjMLV1UcMJi3JUUpgKRQBaapne+l6nSJthH9GXmtQnEditpHaYi9ZnVloeyTWfmDu2vYOjkJdPbGeUtCFY0KfH557UfOidTFI/6//aU1XNPPkZ4=
+	t=1709239315; cv=none; b=l0CF5iirkpDdljnZVAsO7lVJF2wyGjjWLZbnsTRLItUQBj9SxY9/BJfpFD64rq7cJve6A1ohdSzg9gasa81AYzCBVcWhDYkUSoi4QfrwY5zE8VihYsIpUy2abcdYIf8xrd1kgrjpglYmmre+5PLf7fjTM5bkkuewOnk5+J4emBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709239311; c=relaxed/simple;
-	bh=q/zQI/aVAcj6DReUdBtfbzpmGks9RLFWREZi7JOicZU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SXb+ZuJYaBJhUrhGkMeL6OaR04PGE9vSmBRsp215yZRiAzZpbNAE2enTlBBaCPxqiamfdNa+vh4soRXLFFKAdnrZxKYqQJSBs+CWtf38snBAm5WZAU+EeHJSqrH/U3H8/YOwoGKBfeUGIU0jZT6DSjeUgJs5YXs1bsBV1IlT+QI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aoesQCew; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23E52C433C7;
-	Thu, 29 Feb 2024 20:41:50 +0000 (UTC)
+	s=arc-20240116; t=1709239315; c=relaxed/simple;
+	bh=F+AdCZ1zPpXuCR3PFJRaPWix4/L1kyIbcRn6BWE6gcw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ODj3EdlDaUibNY36TswcoIDD6kLvF84uMs/HA80Bvm0uIkkk/mfNdQAWl98IYAXoQbX9OMwH0cUHAr0LQIDlAdjNzRCPvAeKvgpZntkTafZP4BPXsLT3bLR7BDoKw4JndJcNc/4jqzgbsTpH8dq3TJ867gBZNAgz6K9NoEPjeFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yn4EFSTV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 318D2C43390;
+	Thu, 29 Feb 2024 20:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709239311;
-	bh=q/zQI/aVAcj6DReUdBtfbzpmGks9RLFWREZi7JOicZU=;
-	h=From:To:Cc:Subject:Date:From;
-	b=aoesQCewSTX1XHY4tDQwo3Td0/tA5g9CcpGUg0DVep+iZ/51RHM2Fs267zn0A0KO1
-	 08dmTPEfmMsNMVAx6vrm+kCuq0CqRHW/fuuhizg0Ci1XWq1DBzW4qSnCvwqPdnkJu4
-	 1PnuPY6E5CgDSD1C/h5oqXcOeLAFqM5SwAzJqNwzJmg0HojyeHFt7EoY60gL+N2C8j
-	 x1vMtAvUxCxE/1Y/jvUwYsfCO0SJ8KkjeRGDzTvVxMjz1ZFeqSaQvV78CnjmMPELg0
-	 pAd+RryXtzuVQBuzt6Iahe7rgygtsc5qweaokguw6z0ZBMs3tkf+XpKrToZeiflcRO
-	 UXQkpZF/2QiuA==
+	s=k20201202; t=1709239314;
+	bh=F+AdCZ1zPpXuCR3PFJRaPWix4/L1kyIbcRn6BWE6gcw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Yn4EFSTVWR+yob4YkrwF+Y/zHHLTFKB/ld6FVGT2UdzMg5M3+6Tkr3LZg/jR37VTY
+	 M7qQ7bRheH67SJ1IEUjdozUQaY84Arfb1PfhITYoGyWpy31zhIxnQ75fLEsWtGLkl4
+	 4q3wCCaMADIBsJScbf3VdZay4ujXZVzu/7qgO/tT5gZ8EvfEQQSEMOf4bzcwW0EzuR
+	 oqp/vbWGUOIeWy2/uW+DZfVSkHbLE4HmVahvOp7lktIJbbtcMgQVnMht43AzlcSa9G
+	 goGA2AQ9Oa+qh2NQrIwT/tLqAbyNFqBMWeLGj8PdnvGqF4tgEYaE4n1XA/d46U0N/E
+	 vx8zC9ynCN21g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yishai Hadas <yishaih@nvidia.com>,
-	Tamar Mashiah <tmashiah@nvidia.com>,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+Cc: Hou Tao <houtao1@huawei.com>,
+	Sohil Mehta <sohil.mehta@intel.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 1/6] RDMA/mlx5: Relax DEVX access upon modify commands
-Date: Thu, 29 Feb 2024 15:41:41 -0500
-Message-ID: <20240229204150.2862196-1-sashal@kernel.org>
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	luto@kernel.org,
+	peterz@infradead.org
+Subject: [PATCH AUTOSEL 5.4 2/6] x86/mm: Move is_vsyscall_vaddr() into asm/vsyscall.h
+Date: Thu, 29 Feb 2024 15:41:42 -0500
+Message-ID: <20240229204150.2862196-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240229204150.2862196-1-sashal@kernel.org>
+References: <20240229204150.2862196-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,45 +72,69 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.269
 Content-Transfer-Encoding: 8bit
 
-From: Yishai Hadas <yishaih@nvidia.com>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit be551ee1574280ef8afbf7c271212ac3e38933ef ]
+[ Upstream commit ee0e39a63b78849f8abbef268b13e4838569f646 ]
 
-Relax DEVX access upon modify commands to be UVERBS_ACCESS_READ.
+Move is_vsyscall_vaddr() into asm/vsyscall.h to make it available for
+copy_from_kernel_nofault_allowed() in arch/x86/mm/maccess.c.
 
-The kernel doesn't need to protect what firmware protects, or what
-causes no damage to anyone but the user.
-
-As firmware needs to protect itself from parallel access to the same
-object, don't block parallel modify/query commands on the same object in
-the kernel side.
-
-This change will allow user space application to run parallel updates to
-different entries in the same bulk object.
-
-Tested-by: Tamar Mashiah <tmashiah@nvidia.com>
-Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
-Reviewed-by: Michael Guralnik <michaelgur@nvidia.com>
-Link: https://lore.kernel.org/r/7407d5ed35dc427c1097699e12b49c01e1073406.1706433934.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20240202103935.3154011-2-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/devx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/vsyscall.h | 10 ++++++++++
+ arch/x86/mm/fault.c             |  9 ---------
+ 2 files changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/devx.c b/drivers/infiniband/hw/mlx5/devx.c
-index 26cc7bbcdfe6a..7a3b56c150799 100644
---- a/drivers/infiniband/hw/mlx5/devx.c
-+++ b/drivers/infiniband/hw/mlx5/devx.c
-@@ -2811,7 +2811,7 @@ DECLARE_UVERBS_NAMED_METHOD(
- 	MLX5_IB_METHOD_DEVX_OBJ_MODIFY,
- 	UVERBS_ATTR_IDR(MLX5_IB_ATTR_DEVX_OBJ_MODIFY_HANDLE,
- 			UVERBS_IDR_ANY_OBJECT,
--			UVERBS_ACCESS_WRITE,
-+			UVERBS_ACCESS_READ,
- 			UA_MANDATORY),
- 	UVERBS_ATTR_PTR_IN(
- 		MLX5_IB_ATTR_DEVX_OBJ_MODIFY_CMD_IN,
+diff --git a/arch/x86/include/asm/vsyscall.h b/arch/x86/include/asm/vsyscall.h
+index ab60a71a8dcb9..472f0263dbc61 100644
+--- a/arch/x86/include/asm/vsyscall.h
++++ b/arch/x86/include/asm/vsyscall.h
+@@ -4,6 +4,7 @@
+ 
+ #include <linux/seqlock.h>
+ #include <uapi/asm/vsyscall.h>
++#include <asm/page_types.h>
+ 
+ #ifdef CONFIG_X86_VSYSCALL_EMULATION
+ extern void map_vsyscall(void);
+@@ -24,4 +25,13 @@ static inline bool emulate_vsyscall(unsigned long error_code,
+ }
+ #endif
+ 
++/*
++ * The (legacy) vsyscall page is the long page in the kernel portion
++ * of the address space that has user-accessible permissions.
++ */
++static inline bool is_vsyscall_vaddr(unsigned long vaddr)
++{
++	return unlikely((vaddr & PAGE_MASK) == VSYSCALL_ADDR);
++}
++
+ #endif /* _ASM_X86_VSYSCALL_H */
+diff --git a/arch/x86/mm/fault.c b/arch/x86/mm/fault.c
+index c494c8c058241..a8b0c678bb096 100644
+--- a/arch/x86/mm/fault.c
++++ b/arch/x86/mm/fault.c
+@@ -875,15 +875,6 @@ show_signal_msg(struct pt_regs *regs, unsigned long error_code,
+ 	show_opcodes(regs, loglvl);
+ }
+ 
+-/*
+- * The (legacy) vsyscall page is the long page in the kernel portion
+- * of the address space that has user-accessible permissions.
+- */
+-static bool is_vsyscall_vaddr(unsigned long vaddr)
+-{
+-	return unlikely((vaddr & PAGE_MASK) == VSYSCALL_ADDR);
+-}
+-
+ static void
+ __bad_area_nosemaphore(struct pt_regs *regs, unsigned long error_code,
+ 		       unsigned long address, u32 pkey, int si_code)
 -- 
 2.43.0
 
