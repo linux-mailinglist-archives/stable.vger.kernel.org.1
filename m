@@ -1,231 +1,182 @@
-Return-Path: <stable+bounces-25608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1B3786D3CF
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 20:59:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BFB086D3E6
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 21:05:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5EB31C216CC
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 19:59:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17B441F2393C
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 20:05:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E68E613F436;
-	Thu, 29 Feb 2024 19:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E03C13F444;
+	Thu, 29 Feb 2024 20:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=inwind.it header.i=@inwind.it header.b="mBjgJsd2"
+	dkim=pass (1024-bit key) header.d=ddn.com header.i=@ddn.com header.b="oTLih9Uu"
 X-Original-To: stable@vger.kernel.org
-Received: from libero.it (smtp-16.italiaonline.it [213.209.10.16])
+Received: from outbound-ip168b.ess.barracuda.com (outbound-ip168b.ess.barracuda.com [209.222.82.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B707E7CF05
-	for <stable@vger.kernel.org>; Thu, 29 Feb 2024 19:59:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.209.10.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709236745; cv=none; b=OQjuVfu1Th/bx+uOAhYGmf1kIPQrpnJww71LHqbESBL4KSUwOET3GxuCgVe5qujdYK8NcZ+xqMCW/OvXA0KATEu7Ujurc1+73yyy3fIdcTnfxJTqe7c9LQA/UjIyG3R8MJPv5I/W9jN9b2WtSxdYqm+4CFV+ojh+5iBKbonImXk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709236745; c=relaxed/simple;
-	bh=+/0AdQcFnCfKSegEZy9hvrIJ2WMIF7WuqRskgOhMmvQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g2v16WXYTc8Ln8n00fLZ+jCmbraGuYdxS0SVF94lv+P9GyK35aud1mgciCPcfWtg2CjuzJzmgy3K7MXqO+XEt7ZmnZv4VH1BmdReIKUi8VorOKB0JHbcU3CAOjtZ6KovT7YidjR4lS9OCVu/xonbQBwDedxi7JEoFnpAPCLNw/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=inwind.it; spf=pass smtp.mailfrom=inwind.it; dkim=pass (2048-bit key) header.d=inwind.it header.i=@inwind.it header.b=mBjgJsd2; arc=none smtp.client-ip=213.209.10.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=inwind.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inwind.it
-Received: from [192.168.1.27] ([84.220.171.3])
-	by smtp-16.iol.local with ESMTPA
-	id fmVzrGLJ8Qc3jfmVzrPC4e; Thu, 29 Feb 2024 20:56:24 +0100
-x-libjamoibt: 1601
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=inwind.it; s=s2014;
-	t=1709236584; bh=KNMmVtwjCgAMs7Ls0x332y2Nu0DyVg7DMv03VS4jYnw=;
-	h=From;
-	b=mBjgJsd2FOM5gF2X3VPG0AuVkNN6Bm8VfgzC0+ewg4jEWxiSA1A5QXp/H2hb89RHa
-	 bgfOVBAAV19uFqXAqfL8eol3Hbmq1DmxiNyhPK22ojbAApB2pzizRcrVvnUd56/nNg
-	 cRis+zv4GThU+oS9Y/MkfK3uhf1PEir76RU6bJwm8ZZQj2SK+c2N8sObqEvYcnfPJs
-	 DMeLI+Y/8ItwwZ/cLvPhI9SGgpDLVCuNMZvWwkePjF5FKtaw0v569VKBigaQHtyh+X
-	 vW8Uhv4zOvxjhu84QdVIzN9LtHdURh0/RHMGJXW5re2loQ/csVbBZj4p+tIkL4QUx7
-	 /ARychO+EPSbQ==
-X-CNFS-Analysis: v=2.4 cv=eux8zZpX c=1 sm=1 tr=0 ts=65e0e168 cx=a_exe
- a=hciw9o01/L1eIHAASTHaSw==:117 a=hciw9o01/L1eIHAASTHaSw==:17
- a=IkcTkHD0fZMA:10 a=9R-lXduunLBbFm3wDKoA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-Message-ID: <a1e30dab-dfde-418e-a0dd-3e294838e839@inwind.it>
-Date: Thu, 29 Feb 2024 20:56:23 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B84313C9F7;
+	Thu, 29 Feb 2024 20:05:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=209.222.82.102
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709237134; cv=fail; b=nohZkOJLaZQET6abXj326d8rXqvZ9+YHc4X9J/nqF/ixOAecPwfpTnood2Sr++rN8SnkI94A8Z6n0ION7vqO+yeH+h4UppIilG6VMEmeAF230VP8njyVqvQhwG/acJ36lIfqGHD2KDEQXXtS/MDRdpsLp9JaEFD+gQsA32BrbOQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709237134; c=relaxed/simple;
+	bh=ytWBX9mnTLujTSg48WZJ4SuNViTfXI6IJIQLfvw/a2A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=KLI9ogsQ97Pd7FHiuLIHYcjIEhn4zOFTsTLLQkWW7Ihueou4cPqXns0P73V3N7XFeuQeZQngEOpeZ/EPrv0RyND/jPw1bzUVrY7SIeOTAcUMcAxBkhe/g4BP42+FTfuVWLMAaDKHux5WVHQ7Q721v8PVFWSfO4or6apmrRcG3NQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ddn.com; spf=pass smtp.mailfrom=ddn.com; dkim=pass (1024-bit key) header.d=ddn.com header.i=@ddn.com header.b=oTLih9Uu; arc=fail smtp.client-ip=209.222.82.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ddn.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ddn.com
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04lp2041.outbound.protection.outlook.com [104.47.73.41]) by mx-outbound22-148.us-east-2b.ess.aws.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO); Thu, 29 Feb 2024 20:05:09 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Kz5B0WimP1jW86YGRmdCvjLBWeqy6T01dv5vEYxBlORqLGVYCsH3cY4JfRyTA0w2BijuS84bADA+5wBsFo1pmjk68UwWXj3TnsAV1Z3PaKehYGSnFyGc1PMTJEXs2eirIpnFCcACzDtfTR2gI9rSgATl4Y/dntqPk/CsHchL1TSNWAP0hQ4yPOtmOkQh+2RY+Hs9bCxCEfyE+6be7qo1Pxp9T8l1wyIs1CTdz17Zm2dPb+Ta87i8NTU2NIAiaTVVRMqXI9vb4+ca/6vteQaztOAU8QVxyJsgjHZ+c5ie9Uhr84PpOc9trSoBtcnjImwCF1D7OWNLkXp22K1j8Tgzzg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NM9GDr5F4YESR/Tguk90YK+8co5a0C/wrXg5QShdB+M=;
+ b=llaLETU+qO2WhnEXUNsHfXT7XmrF4tJixdpzgI9Zr+VVc0L9GUCCKLMzKeS/Cztggn7Kmxbde6y8JliRSaO2RFV0OezVC2Qn0BDeyQL7vshCkabXqZEc+qVAH9OMKXTSjx/sP+FQIm2ci2I89Jfz4mrAZWW2+yvG6cAQu8yy0dRJE9gQc0W/KpvaIkT4Nlbzj3lyXIoEd2PlRTFbllocsFYAIFFSIEWyvVfUok8ntYx2d40bxtTqayZFwxZ34e1t+/kCF6nP9XXuw3pGVU0wTMxOg0hM7867D/gSXC5m2gSqHW9F4rxZDiM1wtiGDr10Vv2WQmH8nrzaTaLTwRtBwA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=ddn.com; dmarc=pass action=none header.from=ddn.com; dkim=pass
+ header.d=ddn.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ddn.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NM9GDr5F4YESR/Tguk90YK+8co5a0C/wrXg5QShdB+M=;
+ b=oTLih9UulBXdvUcpHXSkpxcIAOvoOFkYezlRXqiCWETsRa/ONX1jFtAaQY95E6EYAjtdWm/BXhtLv+vjRooXj9LbV301Vp0TMwPNDYLMK1d0iLIaUGgCiz2blbfIkzY+pBs15R/653beAfB3EMaBQTdQOym/BmsZmTsFNZECp1g=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=ddn.com;
+Received: from SA3PR19MB8193.namprd19.prod.outlook.com (2603:10b6:806:37e::18)
+ by SA1PR19MB6645.namprd19.prod.outlook.com (2603:10b6:806:258::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.41; Thu, 29 Feb
+ 2024 20:05:06 +0000
+Received: from SA3PR19MB8193.namprd19.prod.outlook.com
+ ([fe80::6eed:df87:b510:6c5]) by SA3PR19MB8193.namprd19.prod.outlook.com
+ ([fe80::6eed:df87:b510:6c5%7]) with mapi id 15.20.7316.039; Thu, 29 Feb 2024
+ 20:05:06 +0000
+Date: Thu, 29 Feb 2024 13:05:02 -0700
+From: Greg Edwards <gedwards@ddn.com>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Jens Axboe <axboe@kernel.dk>, Andrew Morton <akpm@linux-foundation.org>,
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+	Hugh Dickins <hughd@google.com>, linux-mm@kvack.org,
+	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	qemu-devel@nongnu.org
+Subject: Re: [PATCH] block: Remove special-casing of compound pages
+Message-ID: <20240229200502.GA20814@bobdog.home.arpa>
+References: <20230814144100.596749-1-willy@infradead.org>
+ <170198306635.1954272.10907610290128291539.b4-ty@kernel.dk>
+ <20240229182513.GA17355@bobdog.home.arpa>
+ <ZeDc50LQSItEeXY8@casper.infradead.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZeDc50LQSItEeXY8@casper.infradead.org>
+X-ClientProxiedBy: SN7PR04CA0062.namprd04.prod.outlook.com
+ (2603:10b6:806:121::7) To SA3PR19MB8193.namprd19.prod.outlook.com
+ (2603:10b6:806:37e::18)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: kreijack@inwind.it
-Subject: Re: [REGRESSION] LVM-on-LVM: error while submitting device barriers
-To: Patrick Plenefisch <simonpatp@gmail.com>
-Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
- Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>,
- Mikulas Patocka <mpatocka@redhat.com>, Chris Mason <clm@fb.com>,
- Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
- regressions@lists.linux.dev, dm-devel@lists.linux.dev,
- linux-btrfs@vger.kernel.org
-References: <CAOCpoWc_HQy4UJzTi9pqtJdO740Wx5Yd702O-mwXBE6RVBX1Eg@mail.gmail.com>
- <CAOCpoWf3TSQkUUo-qsj0LVEOm-kY0hXdmttLE82Ytc0hjpTSPw@mail.gmail.com>
- <CAOCpoWeNYsMfzh8TSnFqwAG1BhAYnNt_J+AcUNqRLF7zmJGEFA@mail.gmail.com>
- <672e88f2-8ac3-45fe-a2e9-730800017f53@libero.it>
- <CAOCpoWexiuYLu0fpPr71+Uzxw_tw3q4HGF9tKgx5FM4xMx9fWA@mail.gmail.com>
-Content-Language: en-US
-From: Goffredo Baroncelli <kreijack@inwind.it>
-In-Reply-To: <CAOCpoWexiuYLu0fpPr71+Uzxw_tw3q4HGF9tKgx5FM4xMx9fWA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CMAE-Envelope: MS4xfFFPqikg0kgTh/gIJQWHawLgDrsbPCU3GCW7mI9p9TSSqH9ewwJnrsRrMdphS9tkBIF5fOvJni9wo8Gah+BIW7X+kkX5zc6NSs3NqYbBFaiquGYpqp+/
- kezzOE5v/asqjI4k/ZfXiQC/iciMe0oDQCZOdqceT4R+QNdO76S+w6I39N+czryMoJMIZQW2ViS2RJd4D6OhdHfLpyoOPEa7d+I37byQMUvwLTwLkVbD4Yi5
- MdyTy9Dr0PZA66HKuRZKIIH3Y6Fdbo1dJIdi5bkHEVAIUSPRnYGePlWlzY2Hzf/s6tajwwmxFTjjF14t1UfQOlhtbEBWmXZevo+t7kgvyfF6iuBFzBcAF382
- 7otqpKvUDLut7JHTiGQBuOkiwiD00LGAbYJocSh/Aoq/7zOmwzdMg2a2YRtkP3hlM3rZZoqtVXX+tu8f68NSHfEGFy1+GwgTHW3DpF/PVuNfHx3JBv5pB2Zz
- 9A26lW/pGrfxGMQIBNyTtrljGtrtjQzb5q8MagRRNIZFt2yzW6Ww/V2CL1HWW1X2yrcXsJk/xqNz48tP
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA3PR19MB8193:EE_|SA1PR19MB6645:EE_
+X-MS-Office365-Filtering-Correlation-Id: 16a6d1a4-5fd2-479b-52de-08dc3961b921
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	t2B67p/nBNVSlqiIjId2W/RWSF34/hgo1fv+9mO/fwYsIK8+u69Z4AzSE6vUxxH3meYsSe/UCH6uWwwiM3V9hOl+S0z2gH4U5amY6bwy3VFIKmbuWli8HD9yF/VNX1vqBpcKnK64qssvVX+HMIB0s5pN8f8P4JQxI3lwTvs7x66tesJpSxl1FldMybSzEmJygDWKeNpeF0RCFraww2N1KFgMIDeF75A80JzrfJnbGvynhlMhm0P7A/OW4tqF6eNbwtmw3zutl+XIodubrZn6OAxCNwsKPiGIPWML1jGg6IiQ9d6+JTa8wDnTEnubqvKf67K67stYwbqX0E5ylKq0tXJjhrp27UfpuV0hxPRkqt+C5P3Mr/TIEZoThznv4zR34XOlXR6E7GZcIoiOLNat13BSRAqlDlT26o0aQx3WXW5PZgzHAnj5YJ5NgZkhxsJNyr1C/+C0Mpde1sTgOecE/sS9gR0onSNK8OciH9o8wlQewl3iOL7NowiJ8BCRN4EcZaETh0tj4pj0QQKvSMOV9G8S44zF2Mj+cJHr6hfgc5Oy0Km4VFlv5IOmgzQeF2Nh
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR19MB8193.namprd19.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?1QhV6nL8CcMrwZ13cZaL26DAtA4VKjBNlnuSQNiEx75BdTC0FGluhz0gq5Ww?=
+ =?us-ascii?Q?HDjnhD4i3z4qt09R1cHw45HF1iSWmto/M2R0FBTFJgX30jIjQYHHNKs0qyoj?=
+ =?us-ascii?Q?juUV0BkEs07kbMVOkAgYj55wcrNNtSK1jPDpDlKOhs5cT4/K8EjWagxait85?=
+ =?us-ascii?Q?4URtXkgUr/f9d6VaedT+engVpWYd7ujtCyVcpN7S/q02f3uJ8lp0bwWWbjP9?=
+ =?us-ascii?Q?6JxznjZOvv5Orfvt+f1H9l5SGqrXlkk07ioPQIhkw5Ijz3vCTvVLQ151NRV7?=
+ =?us-ascii?Q?A7LLXo2ERZKT6U8iDgmJZ3boFT7ArnG5PWWI5LDPO8Tyiy1l5qkIyCyfNQ88?=
+ =?us-ascii?Q?1Narw5+tMSfvpJZ8lTW47QWhRQcbQN5lwLP2Aoew3dxZNjbR4Q2TrqQLSuc6?=
+ =?us-ascii?Q?ani5vSUfyUS2YPHjtN9fF+pTUqj8qS2zqPSx0b1NBkCNJbIV9k0ejzICS0uy?=
+ =?us-ascii?Q?OnXMRbI92LLcd5vZ72n1z3BUdUy5DQQ32xKYf5ZJedUb7vbyFWI6JOoMqwsd?=
+ =?us-ascii?Q?NX8PcuRaXa3pIVwrUS/grFUct6KWxSfUwxi0PDQL1dtHeyvuG48VKSPZneM0?=
+ =?us-ascii?Q?AZrx1RO4prhthr+MBQCIwn+BWSegCvEppZmGkJdCGTz1swaDefXC2pwhFbu0?=
+ =?us-ascii?Q?3zdORvH3215szOWahLvVvEkJaW2XVA/w3zJu9QMvHFNA6gD5xE1zpKHBUTN0?=
+ =?us-ascii?Q?oTgBu9Z8s32GTN63KtGDH56F92wDlkBuAYMtUTGhO1nU6vfMbutY1V0/YBsj?=
+ =?us-ascii?Q?chdDFZfr0QAB0fASo2hz4xeEFUX0vlITzGQ6NGPEy3g4SMLN42ou+oG1aGIA?=
+ =?us-ascii?Q?IeCyPGn6QT5vGypCCjDZd97AAdFI2rTyGK3FHGs1id8f66hNofSFX21Mtawq?=
+ =?us-ascii?Q?Z1YyAyTeHnNxNAo9BxCKPfAesYa/muIXPjuhDnACOOMDeQaxS7Y0PAEn8SZl?=
+ =?us-ascii?Q?iVVja8MplAYy+MTjkrM8h6IRZSA71DUhjNFQAblANnIo1DasYh1Btn+qiKjX?=
+ =?us-ascii?Q?//P6cEBEiPg88YXQaije1lJVphY4m/hnXPkTUjYID+lp/F2ncXRVl27qhwnO?=
+ =?us-ascii?Q?qrIOS2VJ7N+wJjEwiFIb+0nJUINiZKqIMBkX0Jysy/CY3LBEx7TL/O5a2Flt?=
+ =?us-ascii?Q?gV35DvggDJlDMyVYMs4hmERjsArDmcJRgxa2lSJQwLOIWDGSCw78u1l/2oQ1?=
+ =?us-ascii?Q?aE1QXMRIvX8d2liSILetKSvuvKEX5OzGlLASZSDBhjB42MmutaWUG3Fcg6iB?=
+ =?us-ascii?Q?fb2sBUkgQZzwrr16f6pRssGMR+PAjTh8rK2CJVxM/8mLWIjMVjozlnoANwsi?=
+ =?us-ascii?Q?stgPNnOYZJuhIFqVzLQmF6B0pL/qd7eL8H33KbC9ZAoovG/obYZzXB0e8SML?=
+ =?us-ascii?Q?z2FSO8D/+M/FCWbkaEY7LusuhsrTxMjjg2ENQWWWBp2X7bcfgJBICRLjHPaT?=
+ =?us-ascii?Q?HG7EFxF4CEdtm2krmceIY7Yy5IAPxJRdAWSkOHvxLHRc7y1VEUSG9zO6s5kg?=
+ =?us-ascii?Q?pFfkXnp5dnhLzO38u7fygxYE9vd4uXyNheCc8LiF3FJWnh/jg1UAEN2+9m7J?=
+ =?us-ascii?Q?UzI2P0sC9scXcizq9u50OhEdCtSnmjoVm/Ehpg3OWqRydHnIL/1JNhI/q+s1?=
+ =?us-ascii?Q?Aw=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	SMBBtk9Ixfp3RZECiaCnnk5W883k4p9vi5HC7T4MUISmbpSlvbPToluJ0w+AFIlH16NFo4+2+FdCImx4rmvHAI0wxiyuA5oecWa7nK+Q8lurPJzmmMIlcaP1N64JzC1lwZlrrqJ+mKtcge2vkoA63aEM3/tBGhvUhMhUaU5vtkDqF1tlKseqaPkPrZ/KC3c2Fpq+vOQXz4HDLipZuIZO+O5TKZMzBD23NFQawe8TI4hz1C5uXfBiG/KFcE4O/XY5ocDZgvNQoELROENGbeiaARKatFwbD0/pwJ+CRrjqV71BCj7L4d47sBwl4O6XSClKturaoqkQSyYcsmCiReoo0rmL88evXBvESQW72+a6iCdXdbGNqBltRzjcUyH77QxZF+izwjtkix65/qP+zVt9g0MyIbFyynmS3sug93pJlFyApLNLnHsrdxvei6TYcg7CpUzxDnQiK1YQS3Zhd1OQGr+9VIIIGY8s383H1FnOeuSJTBnK3ViZ3oNxzShPbr3XCKcoEB1CoBMu1HnFezk4umN3U04Hisd9x09GyxcuYJ0ahjT/98UwHjEifOWY3yi0lbORbExAy2UQIUpICYrIzSDvrQVhWenPlnK5JhOTgLd2P6hGav3YIJLh0vEiJgHxF2/VdcWPG+iOihrrVEFKWA==
+X-OriginatorOrg: ddn.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 16a6d1a4-5fd2-479b-52de-08dc3961b921
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR19MB8193.namprd19.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Feb 2024 20:05:06.2028
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 753b6e26-6fd3-43e6-8248-3f1735d59bb4
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Q+s23MY/4h6Nr8BRqZeLNVf0Ek5a4g2R+wL5He6Ggz83ynqikNWpn2ABZ1M2tv1kdyVVVoZS77gv7lB7gncqCA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR19MB6645
+X-BESS-ID: 1709237109-105780-11268-6-1
+X-BESS-VER: 2019.1_20240227.2356
+X-BESS-Apparent-Source-IP: 104.47.73.41
+X-BESS-Parts: H4sIAAAAAAACA4uuVkqtKFGyUioBkjpK+cVKVoYG5qZAVgZQMNXIwtTE0DjV0N
+	TSyNTU3Nwy2SAtNckw2cLU0sTU1NhIqTYWABfRfzVBAAAA
+X-BESS-Outbound-Spam-Score: 0.40
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.254556 [from 
+	cloudscan21-235.us-east-2b.ess.aws.cudaops.com]
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------
+	0.40 BSF_SC0_SA085b         META: Custom Rule SA085b 
+	0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.40 using account:ESS124931 scores of KILL_LEVEL=7.0 tests=BSF_SC0_SA085b, BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status:1
 
-On 28/02/2024 20.37, Patrick Plenefisch wrote:
-> On Wed, Feb 28, 2024 at 2:19 PM Goffredo Baroncelli <kreijack@libero.it> wrote:
+On Thu, Feb 29, 2024 at 07:37:11PM +0000, Matthew Wilcox wrote:
+> On Thu, Feb 29, 2024 at 11:25:13AM -0700, Greg Edwards wrote:
+>>> [1/1] block: Remove special-casing of compound pages
+>>>       commit: 1b151e2435fc3a9b10c8946c6aebe9f3e1938c55
 >>
->> On 28/02/2024 18.25, Patrick Plenefisch wrote:
->>> I'm unsure if this is just an LVM bug, or a BTRFS+LVM interaction bug,
->>> but LVM is definitely involved somehow.
->>> Upgrading from 5.10 to 6.1, I noticed one of my filesystems was
->>> read-only. In dmesg, I found:
->>>
->>> BTRFS error (device dm-75): bdev /dev/mapper/lvm-brokenDisk errs: wr
->>> 0, rd 0, flush 1, corrupt 0, gen 0
->>> BTRFS warning (device dm-75): chunk 13631488 missing 1 devices, max
->>> tolerance is 0 for writable mount
->>> BTRFS: error (device dm-75) in write_all_supers:4379: errno=-5 IO
->>> failure (errors while submitting device barriers.)
->>> BTRFS info (device dm-75: state E): forced readonly
->>> BTRFS warning (device dm-75: state E): Skipping commit of aborted transaction.
->>> BTRFS: error (device dm-75: state EA) in cleanup_transaction:1992:
->>> errno=-5 IO failure
->>>
->>> At first I suspected a btrfs error, but a scrub found no errors, and
->>> it continued to be read-write on 5.10 kernels.
->>>
->>> Here is my setup:
->>>
->>> /dev/lvm/brokenDisk is a lvm-on-lvm volume. I have /dev/sd{a,b,c,d}
->>> (of varying sizes) in a lower VG, which has three LVs, all raid1
->>> volumes. Two of the volumes are further used as PV's for an upper VGs.
->>> One of the upper VGs has no issues. The non-PV LV has no issue. The
->>> remaining one, /dev/lowerVG/lvmPool, hosting nested LVM, is used as a
->>> PV for VG "lvm", and has 3 volumes inside. Two of those volumes have
->>> no issues (and are btrfs), but the last one is /dev/lvm/brokenDisk.
->>> This volume is the only one that exhibits this behavior, so something
->>> is special.
->>>
->>> Or described as layers:
->>> /dev/sd{a,b,c,d} => PV => VG "lowerVG"
->>> /dev/lowerVG/single (RAID1 LV) => BTRFS, works fine
->>> /dev/lowerVG/works (RAID1 LV) => PV => VG "workingUpper"
->>> /dev/workingUpper/{a,b,c} => BTRFS, works fine
->>> /dev/lowerVG/lvmPool (RAID1 LV) => PV => VG "lvm"
->>> /dev/lvm/{a,b} => BTRFS, works fine
->>> /dev/lvm/brokenDisk => BTRFS, Exhibits errors
->>
->> I am a bit curious about the reasons of this setup.
-> 
-> The lowerVG is supposed to be a pool of storage for several VM's &
-> containers. [workingUpper] is for one VM, and [lvm] is for another VM.
-> However right now I'm still trying to organize the files directly
-> because I don't have all the VM's fully setup yet
-> 
->> However I understood that:
->>
->> /dev/sda -+                +-- single (RAID1) -> ok             +-> a   ok
->> /dev/sdb  |                |                                    |-> b   ok
->> /dev/sdc  +--> [lowerVG]>--+-- works (RAID1) -> [workingUpper] -+-> c   ok
->> /dev/sdd -+                |
->>                              |                       +-> a          -> ok
->>                              +-- lvmPool (raid1)-> [lvm] ->-|
->>                                                      +-> b          -> ok
->>                                                      |
->>                                                      +->brokenDisk  -> fail
->>
->> [xxx] means VG, the others are LVs that may act also as PV in
->> an upper VG
-> 
-> Note that lvmPool is also RAID1, but yes
-> 
->>
->> So, it seems that
->>
->> 1) lowerVG/lvmPool/lvm/a
->> 2) lowerVG/lvmPool/lvm/a
->> 3) lowerVG/lvmPool/lvm/brokenDisk
->>
->> are equivalent ... so I don't understand how 1) and 2) are fine but 3) is
->> problematic.
-> 
-> I assume you meant  lvm/b for 2?
+>> This commit results in a change of behavior for QEMU VMs backed by hugepages
+>> that open their VM disk image file with O_DIRECT (QEMU cache=none or
+>> cache.direct=on options).  When the VM shuts down and the QEMU process exits,
+>> one or two hugepages may fail to free correctly.  It appears to be a race, as
+>> it doesn't happen every time.
+>
+> By sheer coincidence the very next email after this one was:
+>
+> https://lore.kernel.org/linux-mm/86e592a9-98d4-4cff-a646-0c0084328356@cybernetics.com/T/#u
+>
+> Can you try Tony's patch and see if it fixes your problem?
+> I haven't even begun to analyse either your email or his patch,
+> but there's a strong likelihood that they're the same thing.
 
-Yes
+This does appear to fix it.  Thank you!
 
->>
->> Is my understanding of the LVM layouts correct ?
-> 
-> Your understanding is correct. The only thing that comes to my mind to
-> cause the problem is asymmetry of the SATA devices. I have one 8TB
-> device, plus a 1.5TB, 3TB, and 3TB drives. Doing math on the actual
-> extents, lowerVG/single spans (3TB+3TB), and
-> lowerVG/lvmPool/lvm/brokenDisk spans (3TB+1.5TB). Both obviously have
-> the other leg of raid1 on the 8TB drive, but my thought was that the
-> jump across the 1.5+3TB drive gap was at least "interesting"
+I'll do some more testing on it today, then add a Tested-by: tag if it
+holds up.
 
-
-what about lowerVG/works ?
-
-However yes, I agree that the pair of disks involved may be the answer
-of the problem.
-
-Could you show us the output of
-
-$ sudo pvdisplay -m
-
-> 
->>
->>
->>>
->>> After some investigation, here is what I've found:
->>>
->>> 1. This regression was introduced in 5.19. 5.18 and earlier kernels I
->>> can keep this filesystem rw and everything works as expected, while
->>> 5.19.0 and later the filesystem is immediately ro on any write
->>> attempt. I couldn't build rc1, but I did confirm rc2 already has this
->>> regression.
->>> 2. Passing /dev/lvm/brokenDisk to a KVM VM as /dev/vdb with an
->>> unaffected kernel inside the vm exhibits the ro barrier problem on
->>> unaffected kernels.
->>
->> Is /dev/lvm/brokenDisk *always* problematic with affected ( >= 5.19 ) and
->> UNaffected ( < 5.19 ) kernel ?
-> 
-> Yes, I didn't test it in as much depth, but 5.15 and 6.1 in the VM
-> (and 6.1 on the host) are identically problematic
-> 
->>
->>> 3. Passing /dev/lowerVG/lvmPool to a KVM VM as /dev/vdb with an
->>> affected kernel inside the VM and using LVM inside the VM exhibits
->>> correct behavior (I can keep the filesystem rw, no barrier errors on
->>> host or guest)
->>
->> Is /dev/lowerVG/lvmPool problematic with only "affected" kernel ?
-> 
-> Uh, passing lvmPool directly to the VM is never problematic. I tested
-> 5.10 and 6.1 in the VM (and 6.1 on the host), and neither setup throws
-> barrier errors.
-> 
->> [...]
->>
->> --
->> gpg @keyserver.linux.it: Goffredo Baroncelli <kreijackATinwind.it>
->> Key fingerprint BBF5 1610 0B64 DAC6 5F7D  17B2 0EDA 9B37 8B82 E0B5
->>
-
--- 
-gpg @keyserver.linux.it: Goffredo Baroncelli <kreijackATinwind.it>
-Key fingerprint BBF5 1610 0B64 DAC6 5F7D  17B2 0EDA 9B37 8B82 E0B5
-
+Greg
 
