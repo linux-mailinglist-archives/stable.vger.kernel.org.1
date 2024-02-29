@@ -1,139 +1,159 @@
-Return-Path: <stable+bounces-25475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7487486C5EC
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 10:45:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DB6886C5DB
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 10:44:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 262D1289588
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 09:45:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0F171F22E27
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 09:44:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9385E62143;
-	Thu, 29 Feb 2024 09:45:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32AE4612DF;
+	Thu, 29 Feb 2024 09:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OmuBrjBQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U/+zdONQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E24260DF2;
-	Thu, 29 Feb 2024 09:45:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB1B612C6;
+	Thu, 29 Feb 2024 09:44:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709199913; cv=none; b=qN4cLqbSnFEV/zLPBR4glkQV13H2btPF8Gsv0GwzF8Wm+YdCc37em2YBmoCGeGD80Jr0vgZ96hfxCb2gzWydTqgasHA37si+3ocPKiBiRx+64s+tmc8ghvyvFzLr632Usljz5I6FkIAQiieA/GFP7sor4inFbt+5mVoXa6Ch7Bg=
+	t=1709199850; cv=none; b=QRSGiaUdu7cJCSMHU1nNLptHiQrtCjwZABHMdjBdNbi7pJNCWMQmNlp5R4JC8VlhFKXpSSFcPiHqTFJISWOIdl9L8XFehCmS1KTAPvs/ZWcOv7xyzSIQ7PlXafmzTDIdrbdtqKhVf0MpDw1txlsQhZXxmnMKFVPUZB5JJY747Gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709199913; c=relaxed/simple;
-	bh=N4ExwYK4obzpBCaotNTjUlxJUXpLOasw+lbaXcE8vr4=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:From:Subject:
-	 In-Reply-To:Content-Type; b=hm4vI/0gQjOKu8ZfHe1w5bXAwvk5Lbi3IigPWm1k6bUPrBWW1+ToVuKwLl7ZmXCe1cdeAPd61BpeFzB3Pzm3OwG0N1M697Ul7I7QLsPlTFr87RqZbR9iY/fwZ0IAmUIGGByYL+yoF4sR8X0tXo5orjLOLtqoPFcT9ekZyB+SIB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OmuBrjBQ; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709199912; x=1740735912;
-  h=message-id:date:mime-version:to:cc:references:from:
-   subject:in-reply-to:content-transfer-encoding;
-  bh=N4ExwYK4obzpBCaotNTjUlxJUXpLOasw+lbaXcE8vr4=;
-  b=OmuBrjBQw6PtbALOt6RXp5iJW1fGLyBEC8pQowrce1qaKchqPS3NY6ir
-   7kY62pB+4uUKfZtg+QEwP8vF3412RDwKOZ7cwXcV4BRbmMjaSYE9OPwJb
-   7RQ3VeKmvUQr0bohxkiY9CI24LsAGMM3jn5mHOCakGV2T8NtIN11zcUKS
-   Cs9GXXl+Vs8OarEmUVYtv1cRz5AbfnMQMxkK17D6uyR+wRV3ts1p9PBxV
-   G5M6zPyj/zrBDA1oXo2Frn2XNrpzvJj0ib2rECwlAvzYqZp3F18RAri8B
-   8JL1bPkMzTG4qAhHWMddTlCigfGVsFfmIyaB3pTk++aylsl5JCJRkHhnW
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="21200864"
-X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
-   d="scan'208";a="21200864"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 01:45:09 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="937035547"
-X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
-   d="scan'208";a="937035547"
-Received: from mattu-haswell.fi.intel.com (HELO [10.237.72.199]) ([10.237.72.199])
-  by fmsmga001.fm.intel.com with ESMTP; 29 Feb 2024 01:45:06 -0800
-Message-ID: <a1274e8a-c761-a39f-20a4-06989e8144c6@linux.intel.com>
-Date: Thu, 29 Feb 2024 11:46:47 +0200
+	s=arc-20240116; t=1709199850; c=relaxed/simple;
+	bh=ESNGO2IXUgzrFIeskrANYbU6PHVWkCUz3+MPORBNKcY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=pWlaInj+CE4GNN0bXVWeXsZ/ZHrVYn3NWtaon3F35eASnrsHWcoyQUJUVIAflagMfXUOGYmV0FxCZf7q443RjGoSYcc+uSiQCI193PZtwSqWTgo+mf9/2GVaoFtNF7dYA+yBfOnsBwiuBjdB27KWfb4LHqd/Xc8rE57g/3BgOSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U/+zdONQ; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a3f3d0d2787so99914766b.3;
+        Thu, 29 Feb 2024 01:44:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709199846; x=1709804646; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=JMs6V3SRmaiLH9E8OpJqGhJQdLFZcXEpx0tmvAjRDjk=;
+        b=U/+zdONQ5pJRpiBnD4MXeqEh9GKkme+el3UX4g0gusSXLnRwfGNvuq7Ga0RnNZIP4B
+         HfiRQr3z1YE3vNuZR1ObKPgm1RkIIcxXHCnJz9RKO/3savnhnlHuAw6hIRR0ix241s2i
+         oSdHHWCdswnUSOFsYPXOwSs6nWfGHUuVNIwWEk+BulslQhW4Nf7plZVQGxeEsxOLFsK4
+         R5cie88wPFHTzLQ2PVf0qxAZgb4iiqJ6eIMJkph72mfPI8b8vcOuZmvdy1JAwxZhd5T2
+         TgHipvS9JshLH5MEpvb7/5UpvPiApSgSjJ/5/mbHI32Lk9EGRgGi/Qyc7c0YDv08vxBH
+         rZFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709199846; x=1709804646;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JMs6V3SRmaiLH9E8OpJqGhJQdLFZcXEpx0tmvAjRDjk=;
+        b=sUSnANUgtlZ7S1CWMiUcEe5r4+jOWFs81tC50jNts1pXwRHwnhHMHpHRCLDUviW5TA
+         75sA//oFJhe+3SrVwJg8NLDsd9L3WFtKxfNN6PEtq11GTadvfDBfC9jIm/voNlXWQYH/
+         6In9moixdKPcw1R4o+OCv4Gdm8vem+y7gyTnar2IW2tozhcqi0G9ejhqxdcwhANogZRe
+         2VOgZMcbNe/q68pm11PFWXW/WuFtMNQzIzdK3ehEKS87zIkNspjkbkIqoqtHUf29gLr8
+         U5Ze3NTTXoxQKGQvvwBlYeb4VhLPBvqpBz/iMWkAEquqQQajTQYUYn4RFJem3vH8lW3/
+         OOCA==
+X-Forwarded-Encrypted: i=1; AJvYcCWZiVg93Zv/B5TrlLlAKK6VTckIh4QFupJzV1TtZQXsIvsukx96Ene3FLtBBkUL62KWfGIL7NTAr0JI1jZOnTGOuVe09dEe3RG274aKpIeSglm8u7wi1g0Lui13emyOJGXJAo8yYur1+6v2H86IpZQ19JUeI6Bb61wx92otxomokQ==
+X-Gm-Message-State: AOJu0YyK5AvNfWMGyNWrpJjNfKhyRBRJCwtuVj/Obp3NYHF2qMBdPC90
+	j0GQjKDLQarFNYLNVsd3WJJK1NXnLEJ9OW3ZC6p6oiAQPpMSKF01
+X-Google-Smtp-Source: AGHT+IHzuluh58/095WHr4Vcz7H7bRFywSky7I3lIIrmGML8SUFZovx2fcM3Sa6RmEzNDDQgUK9OiA==
+X-Received: by 2002:a17:906:4917:b0:a44:4f9f:1270 with SMTP id b23-20020a170906491700b00a444f9f1270mr577476ejq.37.1709199846155;
+        Thu, 29 Feb 2024 01:44:06 -0800 (PST)
+Received: from ?IPv6:2003:f6:ef1b:2000:15d4:fc17:481e:8afe? (p200300f6ef1b200015d4fc17481e8afe.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:15d4:fc17:481e:8afe])
+        by smtp.gmail.com with ESMTPSA id vi10-20020a170907d40a00b00a445db55f39sm30850ejc.156.2024.02.29.01.44.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Feb 2024 01:44:05 -0800 (PST)
+Message-ID: <7eb7453244edace460f8c6fb91cb92a86fe2fc58.camel@gmail.com>
+Subject: Re: [PATCH v2 2/2] of: overlay: Synchronize of_overlay_remove()
+ with the devlink removals
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Herve Codina <herve.codina@bootlin.com>, Greg Kroah-Hartman
+	 <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Rob
+	Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>
+Cc: Lizhi Hou <lizhi.hou@amd.com>, Max Zhen <max.zhen@amd.com>, Sonal Santan
+ <sonal.santan@amd.com>, Stefano Stabellini <stefano.stabellini@xilinx.com>,
+  Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Nuno Sa <nuno.sa@analog.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>,  stable@vger.kernel.org
+Date: Thu, 29 Feb 2024 10:47:29 +0100
+In-Reply-To: <20240229083953.607569-3-herve.codina@bootlin.com>
+References: <20240229083953.607569-1-herve.codina@bootlin.com>
+	 <20240229083953.607569-3-herve.codina@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.13.0
-Content-Language: en-US
-To: Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
- gregkh@linuxfoundation.org, mathias.nyman@intel.com,
- linux-usb@vger.kernel.org
-Cc: mario.limonciello@amd.com, stable@vger.kernel.org,
- Oleksandr Natalenko <oleksandr@natalenko.name>
-References: <20240226152831.2147932-1-Basavaraj.Natikar@amd.com>
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: Re: [PATCH v2] xhci: Allow RPM on the USB controller (1022:43f7) by
- default
-In-Reply-To: <20240226152831.2147932-1-Basavaraj.Natikar@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 26.2.2024 17.28, Basavaraj Natikar wrote:
-> The AMD USB host controller (1022:43f7) does not enter PCI D3 by default
-> when nothing is connected. This is due to the policy introduced by
-> 'commit a611bf473d1f ("xhci-pci: Set runtime PM as default policy on all
-> xHC 1.2 or later devices")', which only covers 1.2 or later devices.
-
-This makes it seem like commit a611bf473d1 somehow restricted default runtime
-PM when in fact it enabled it for all xHCI 1.2 hosts.
-
-Before that only a few selected ones had runtime PM enabled by default.
-
-How about something like:
-
-Enable runtime PM by default for older AMD 1022:43f7 xHCI 1.1 host as it is
-proven to work.
-Driver enables runtime PM by default for newer xHCI 1.2 host.
-
-> 
-> Therefore, by default, allow RPM on the AMD USB controller [1022:43f7].
-> 
-> Fixes: 4baf12181509 ("xhci: Loosen RPM as default policy to cover for AMD xHC 1.1")
-
-This was already reverted as it caused regression on some systems.
-24be0b3c4059 Revert "xhci: Loosen RPM as default policy to cover for AMD xHC 1.1"
-
-> Link: https://lore.kernel.org/all/12335218.O9o76ZdvQC@natalenko.name/
-> Cc: Mario Limonciello <mario.limonciello@amd.com>
+On Thu, 2024-02-29 at 09:39 +0100, Herve Codina wrote:
+> In the following sequence:
+> =C2=A0 1) of_platform_depopulate()
+> =C2=A0 2) of_overlay_remove()
+>=20
+> During the step 1, devices are destroyed and devlinks are removed.
+> During the step 2, OF nodes are destroyed but
+> __of_changeset_entry_destroy() can raise warnings related to missing
+> of_node_put():
+> =C2=A0 ERROR: memory leak, expected refcount 1 instead of 2 ...
+>=20
+> Indeed, during the devlink removals performed at step 1, the removal
+> itself releasing the device (and the attached of_node) is done by a job
+> queued in a workqueue and so, it is done asynchronously with respect to
+> function calls.
+> When the warning is present, of_node_put() will be called but wrongly
+> too late from the workqueue job.
+>=20
+> In order to be sure that any ongoing devlink removals are done before
+> the of_node destruction, synchronize the of_overlay_remove() with the
+> devlink removals.
+>=20
+> Fixes: 80dd33cf72d1 ("drivers: base: Fix device link removal")
 > Cc: stable@vger.kernel.org
-
-I'd skip Fixes and stable tags and add this as a feature to usb-next.
-
-> Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
-> Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 > ---
-> Changes in v2:
-> 	- Added Cc: stable@vger.kernel.org
-> 
->   drivers/usb/host/xhci-pci.c | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-> index b534ca9752be..1eb7a41a75d7 100644
-> --- a/drivers/usb/host/xhci-pci.c
-> +++ b/drivers/usb/host/xhci-pci.c
-> @@ -473,6 +473,8 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
->   	/* xHC spec requires PCI devices to support D3hot and D3cold */
->   	if (xhci->hci_version >= 0x120)
->   		xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
-> +	else if (pdev->vendor == PCI_VENDOR_ID_AMD && pdev->device == 0x43f7)
-> +		xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
+> =C2=A0drivers/of/overlay.c | 9 ++++++++-
+> =C2=A01 file changed, 8 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
+> index 2ae7e9d24a64..99659ae9fb28 100644
+> --- a/drivers/of/overlay.c
+> +++ b/drivers/of/overlay.c
+> @@ -853,6 +853,14 @@ static void free_overlay_changeset(struct
+> overlay_changeset *ovcs)
+> =C2=A0{
+> =C2=A0	int i;
+> =C2=A0
+> +	/*
+> +	 * Wait for any ongoing device link removals before removing some of
+> +	 * nodes. Drop the global lock while waiting
+> +	 */
+> +	mutex_unlock(&of_mutex);
+> +	device_link_wait_removal();
+> +	mutex_lock(&of_mutex);
 
-This would fit better earlier in the code among the rest of the AMD quirks.
-See how this flag is set for some other hosts.
+I'm still not convinced we need to drop the lock. What happens if someone e=
+lse
+grabs the lock while we are in device_link_wait_removal()? Can we guarantee=
+ that
+we can't screw things badly?
 
-Thanks
-Mathias
+The question is, do you have a system/use case where you can really see the
+deadlock happening? Until I see one, I'm very skeptical about this. And if =
+we
+have one, I'm not really sure this is also the right solution for it.
+
+- Nuno S=C3=A1
 
 
