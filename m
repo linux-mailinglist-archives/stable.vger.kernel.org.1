@@ -1,149 +1,97 @@
-Return-Path: <stable+bounces-25487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D65A886C762
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 11:52:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 968C786C773
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 11:55:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 151991C22AD9
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 10:52:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 386731F26660
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 10:55:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F4367B3C8;
-	Thu, 29 Feb 2024 10:52:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="A3ZE4+ob"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7DD27B3C8;
+	Thu, 29 Feb 2024 10:54:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279007AE73;
-	Thu, 29 Feb 2024 10:52:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27DFB7AE68;
+	Thu, 29 Feb 2024 10:54:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709203941; cv=none; b=fE9ZQ0pl9P8ev6Kp0SH7dDBDKtSRsKie96Ew6OcfJxCqDWWCwD0cAWk3Tie0wPh5cp8rTXBnyLjtFo9naMhYiBWb62ObOpILepk8g+DM8SMv4cZOp33gfqZLZGN2UAA4lmmIMs5ika0tbPMbrqjJ++8BTvwffZRp/qnJ5i/079U=
+	t=1709204056; cv=none; b=nO2TzEpsh3GWDcTrAzaIApmZGi2qh52obIHr0ItC6Qi3cJeU45CzVwSG5ev0uqkd4wgPtENKsCRxlQ6m7OGooCBoWgy58QJ1Mrl3S3juotkZyz4mgC63PSOUcJZkvow8K1njhxARRwcG0jZVV5RrCfLqcNLiym0Gy+43QBJBBD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709203941; c=relaxed/simple;
-	bh=zfGeDfyRmaFp1JOEzDfUGcjVtP7tQN/s50BcDdDqvD0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D2RK6mIXr2WcN++WtosjSXQ4yIzRBIlaQpAGDILuuDQWk7IZmt759c9/364ZwtMpsCpMsa74xe4xSdEVYsXNJQruFhnFeOxurSOHkvv1R0ENuzs54SasiDwywTuklyTxrTXNHcJ0MhFcT8BjNqyPk6P4H9H39Dkpa4nXJDEZSng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=A3ZE4+ob; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPA id 821C9C0003;
-	Thu, 29 Feb 2024 10:52:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1709203937;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yCXysWU34VdlLu8PHd2qD3CH0eUBVQ9+sisrVNEEJMU=;
-	b=A3ZE4+obaUKBUYrzYYpw7/+4tzUBwLP3K+U4Z+PkVz+LyIlBL0SEinir8alS1UsUr7QYu2
-	1+okgDWJFW+K4k8eZYmxcbmfl4vihNEvnKl402+rm1RWHb+4TNnm7K/RaoGmrAWj6BGSHB
-	bY2bT4f+1yJj9EP1cD2ujhBJRG64iu8yzudkCRBeuNpF6+IpDoG/KBrqERFPRfmY/65nSF
-	hgyuLNA5+HSCUBqQk4B2AW8m+g7TyJv2Z0uZxR9IlKhCYdtaSErIBVIh4fxWgdX5G/DciB
-	hbkIcOoZF8FXonqU7Z+fYaSGqu2AZqI7YA0bwgXBnHF41MZ2jzVK1WaXb4BfeQ==
-From: Herve Codina <herve.codina@bootlin.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Frank Rowand <frowand.list@gmail.com>
-Cc: Lizhi Hou <lizhi.hou@amd.com>,
-	Max Zhen <max.zhen@amd.com>,
-	Sonal Santan <sonal.santan@amd.com>,
-	Stefano Stabellini <stefano.stabellini@xilinx.com>,
-	Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 2/2] of: overlay: Synchronize of_overlay_remove() with the devlink removals
-Date: Thu, 29 Feb 2024 11:52:03 +0100
-Message-ID: <20240229105204.720717-3-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240229105204.720717-1-herve.codina@bootlin.com>
-References: <20240229105204.720717-1-herve.codina@bootlin.com>
+	s=arc-20240116; t=1709204056; c=relaxed/simple;
+	bh=VLuJ/1dp9fBz+UVjbLAoAC913Ohwh/ZMiEdFJ/NSt70=;
+	h=From:In-Reply-To:Content-Type:References:Date:Cc:To:MIME-Version:
+	 Message-ID:Subject; b=B+JMXcfnNXsZUmvEV5qEz5ADogWvRMMJC8CcVdo85UpM8wuvO+VAYf6N6BOCDg3qox4aTcc4ztjxo2gPR1S3d3BPOEsRZyhpXqJq6jIz/Zp0pcwndLxFnOczkWmgry/luB82qHb5bmBy5sZHBEgOhmFxAKWYHYHG9Y2/YRqmBOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+Received: from harlem.collaboradmins.com (harlem.collaboradmins.com [IPv6:2a01:4f8:1c0c:5936::1])
+	by madrid.collaboradmins.com (Postfix) with ESMTP id 978253780029;
+	Thu, 29 Feb 2024 10:54:11 +0000 (UTC)
+From: "Shreeya Patel" <shreeya.patel@collabora.com>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+Content-Type: text/plain; charset="utf-8"
+X-Forward: 127.0.0.1
+References: <20240227131625.847743063@linuxfoundation.org>
+Date: Thu, 29 Feb 2024 10:54:11 +0000
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, "Gustavo Padovan" <gustavo.padovan@collabora.com>, "kernelci-regressions mailing list" <kernelci-regressions@lists.collabora.co.uk>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
+Message-ID: <95bf-65e06280-19-20e5b800@156243285>
+Subject: =?utf-8?q?Re=3A?= [PATCH =?utf-8?q?6=2E6?= 000/299] 
+ =?utf-8?q?6=2E6=2E19-rc1?= review
+User-Agent: SOGoMail 5.10.0
+Content-Transfer-Encoding: quoted-printable
 
-In the following sequence:
-  1) of_platform_depopulate()
-  2) of_overlay_remove()
+On Tuesday, February 27, 2024 18:51 IST, Greg Kroah-Hartman <gregkh@lin=
+uxfoundation.org> wrote:
 
-During the step 1, devices are destroyed and devlinks are removed.
-During the step 2, OF nodes are destroyed but
-__of_changeset_entry_destroy() can raise warnings related to missing
-of_node_put():
-  ERROR: memory leak, expected refcount 1 instead of 2 ...
+> This is the start of the stable review cycle for the 6.6.19 release.
+> There are 299 patches in this series, all will be posted as a respons=
+e
+> to this one.  If anyone has any issues with these being applied, plea=
+se
+> let me know.
+>=20
+> Responses should be made by Thu, 29 Feb 2024 13:15:36 +0000.
+> Anything received after that time might be too late.
+>=20
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6=
+.19-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc=
+.git linux-6.6.y
+> and the diffstat can be found below.
+>=20
 
-Indeed, during the devlink removals performed at step 1, the removal
-itself releasing the device (and the attached of_node) is done by a job
-queued in a workqueue and so, it is done asynchronously with respect to
-function calls.
-When the warning is present, of_node_put() will be called but wrongly
-too late from the workqueue job.
+KernelCI report for stable-rc/linux-6.6.y for this week :-
 
-In order to be sure that any ongoing devlink removals are done before
-the of_node destruction, synchronize the of_overlay_remove() with the
-devlink removals.
+## stable-rc HEAD for linux-6.6.y:
 
-Fixes: 80dd33cf72d1 ("drivers: base: Fix device link removal")
-Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
----
- drivers/of/overlay.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+Date: 2024-02-27
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.=
+git/log/?h=3D3c05aa9775af6258ef849f6db3539689f244d3c8
 
-diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
-index 2ae7e9d24a64..7a010a62b9d8 100644
---- a/drivers/of/overlay.c
-+++ b/drivers/of/overlay.c
-@@ -8,6 +8,7 @@
- 
- #define pr_fmt(fmt)	"OF: overlay: " fmt
- 
-+#include <linux/device.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/of.h>
-@@ -853,6 +854,14 @@ static void free_overlay_changeset(struct overlay_changeset *ovcs)
- {
- 	int i;
- 
-+	/*
-+	 * Wait for any ongoing device link removals before removing some of
-+	 * nodes. Drop the global lock while waiting
-+	 */
-+	mutex_unlock(&of_mutex);
-+	device_link_wait_removal();
-+	mutex_lock(&of_mutex);
-+
- 	if (ovcs->cset.entries.next)
- 		of_changeset_destroy(&ovcs->cset);
- 
-@@ -862,7 +871,6 @@ static void free_overlay_changeset(struct overlay_changeset *ovcs)
- 		ovcs->id = 0;
- 	}
- 
--
- 	for (i = 0; i < ovcs->count; i++) {
- 		of_node_put(ovcs->fragments[i].target);
- 		of_node_put(ovcs->fragments[i].overlay);
--- 
-2.43.0
+## Build failures:
+No build failures seen for the stable-rc/linux-6.6.y commit head \o/
+
+## Boot failures:
+No **new** boot failures seen for the stable-rc/linux-6.6.y commit head=
+ \o/
+
+Tested-by: kernelci.org bot <bot@kernelci.org>
+
+Thanks,
+Shreeya Patel
 
 
