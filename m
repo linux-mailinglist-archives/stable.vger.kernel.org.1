@@ -1,224 +1,211 @@
-Return-Path: <stable+bounces-25493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A249186C81A
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 12:34:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E61FE86C9D6
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 14:11:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D54E7B2327F
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 11:34:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1074E1C20C1F
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 13:11:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96DF97C0A2;
-	Thu, 29 Feb 2024 11:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD5A7E104;
+	Thu, 29 Feb 2024 13:11:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [203.110.167.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3557B3F7
-	for <stable@vger.kernel.org>; Thu, 29 Feb 2024 11:33:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.110.167.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCB167C71;
+	Thu, 29 Feb 2024 13:11:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709206437; cv=none; b=RonpA4Xg+jwSx+6VfkurS31Lac/9lyKPbF5zXxGYctmD2OPV7bF77PQjzy3zNErAR6syhcO0E5hFiph1fG0AlLPk1KKoeXMdT/Anah6HCNmjbSSrNQ/xcteTh5UR3EQ5AA1tw3bkeaQkLuZyZvEPfWHhbCoTQElIcQE2Yzwzh1Y=
+	t=1709212272; cv=none; b=FY+Ucn/f9KhBfB3bKJNSJ8VgchVAUfMXpuqhdCiGs0UCyJIHcCNDzsLUlfJke3Y5KpCyAgGJbfOZpmm49XnsnqUbd1KlfzOCnerTZFpyRQrXOarzg031vWJ4rX1ig59iFruzRbfL+JgDoLSM7GYAEs3yD6o7Ecu0+LS10DfM/I8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709206437; c=relaxed/simple;
-	bh=NJBMQPGpGQBOOoy6SUBMN4VmZHinHKU9LqzKRUr6sJI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Xv5qj4l/PW1PrfZ+i0sP8gPyVylB44eGMEpeROTxAoyKHT0lMIF/LancBNGpU7jg3Du/4gOjvcRT6Ofo7HSno/d4qfNwUEiYuJd2a4knOIvT3y2grau+ER6f/g9ray8chwCsrZreXL0+v7TakLJZCHegw9xcPj4mwbab5CQUouQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=203.110.167.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
-X-ASG-Debug-ID: 1709206430-1eb14e0c7d4d010001-OJig3u
-Received: from ZXSHMBX3.zhaoxin.com (ZXSHMBX3.zhaoxin.com [10.28.252.165]) by mx2.zhaoxin.com with ESMTP id ndFs2NYkvZzLuoYN (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Thu, 29 Feb 2024 19:33:50 +0800 (CST)
-X-Barracuda-Envelope-From: WeitaoWang-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
-Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHMBX3.zhaoxin.com
- (10.28.252.165) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 29 Feb
- 2024 19:33:50 +0800
-Received: from L440.zhaoxin.com (10.29.8.21) by zxbjmbx1.zhaoxin.com
- (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 29 Feb
- 2024 19:33:50 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.165
-From: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
-X-Barracuda-RBL-Trusted-Forwarder: 10.29.252.163
-To: <oneukum@suse.com>, <stern@rowland.harvard.edu>,
-	<gregkh@linuxfoundation.org>, <linux-usb@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
-	<usb-storage@lists.one-eyed-alien.net>
-CC: <WeitaoWang@zhaoxin.com>, <stable@vger.kernel.org>
-Subject: [PATCH v3] USB:UAS:return ENODEV when submit urbs fail with device not attached
-Date: Fri, 1 Mar 2024 03:33:49 +0800
-X-ASG-Orig-Subj: [PATCH v3] USB:UAS:return ENODEV when submit urbs fail with device not attached
-Message-ID: <20240229193349.5407-1-WeitaoWang-oc@zhaoxin.com>
-X-Mailer: git-send-email 2.32.0
+	s=arc-20240116; t=1709212272; c=relaxed/simple;
+	bh=LVt5hPd25B281TRLtTutKKX5US2y0TKwkmdiBT+P8IE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oV4QJLr/TCwE/Hwn3Vmvk9qq4BQ1XD+H0eIMh2Dq2insDPqC78Bven9iFzFCAYPKKLuwyQbLMF8h5aHDvAS+2bNzKlc9Sqk8iSiT+acetNCmsQ1Mxsmh/6itv0f7DiUm2QRWjET1ZaUH10QR4E2TNq/2mGOqJxSy1pZh2BpDLU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-6e447c39525so170507a34.0;
+        Thu, 29 Feb 2024 05:11:10 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709212270; x=1709817070;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tvvRk2gFQ4DOAmG0ZAXvnWf5WKlifEzlcrpvhWJNSEM=;
+        b=B9u5nsnhVRdwgQgYkwj/bMb3uBgedQDw5bQC0QiuLLv6+5x148uc1eM6K1TmRG1IZI
+         khb7cj07NEUCGo2/WW4XEE5dTIbmgJUMRKUt36QHDYsgatXE7QAJUP/5iQRfx8Shouxh
+         Dzpu7NHOTT73NzBJH9H2C3rZSxQkBzunD9F8U9PjW/Ktk6P03CjqDAEcLhBapYPU/MPA
+         5uLo78EYhLAEPVbWES7lozLDtxNLZXFU5MJ8jkFJv6U0BtTxe2qJYnm8FrlQMdUGWSz4
+         zYxNqoQU9ED6S9m3U4Xu2+A+nGF96bdqys7AJ6EhAhx0ZcfWqoPU+dfPFDXLTlskY2Kc
+         5ysw==
+X-Forwarded-Encrypted: i=1; AJvYcCXZJcD+ESU2VsoOVwqd8fDifnXEiyrwbcZAcmmAPIQg+IqQNkX+EOksyFS2T2eXX5EbCeYPecS8HMTlFkavS65vkBoSXOOWhi92ENI0IIdo1CEYPKmsl7/DOGNIINrN1QBcYlftufUN+/ukFTbQOi/KXftnbU5qWG7JVhN+qVqY/w==
+X-Gm-Message-State: AOJu0YwBqiZrLUWHN2fSK1laOMha7UQJX5RFttrcbx+/Op1lcfop8yr3
+	VeGwl+fMEOaahdKrus8wBl7979+zRlk41P0+wfMweniI5pkKodaDbbq/KjPIaMwI3MuEpZSylHS
+	EVQasvo+j+v6BhScTbggyIlPUmvI=
+X-Google-Smtp-Source: AGHT+IHi3c3RgO2A1VH16z4qbN2kTgJY1571Ukf5IEcJB1p5nBjZ6clv6ctv3wxEJuFdMZE7W4nhzwDuQXoFachzwOc=
+X-Received: by 2002:a4a:d091:0:b0:5a0:4216:c5f0 with SMTP id
+ i17-20020a4ad091000000b005a04216c5f0mr1921598oor.0.1709212269855; Thu, 29 Feb
+ 2024 05:11:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
- zxbjmbx1.zhaoxin.com (10.29.252.163)
-X-Barracuda-Connect: ZXSHMBX3.zhaoxin.com[10.28.252.165]
-X-Barracuda-Start-Time: 1709206430
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 5162
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: 1.09
-X-Barracuda-Spam-Status: No, SCORE=1.09 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=DATE_IN_FUTURE_06_12, DATE_IN_FUTURE_06_12_2
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.121482
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------------------------
-	0.01 DATE_IN_FUTURE_06_12   Date: is 6 to 12 hours after Received: date
-	3.10 DATE_IN_FUTURE_06_12_2 DATE_IN_FUTURE_06_12_2
+References: <20240229105204.720717-1-herve.codina@bootlin.com>
+ <20240229105204.720717-2-herve.codina@bootlin.com> <9cc3d11bc3e1bb89a1c725f865d0c8d1494111c5.camel@gmail.com>
+ <CAJZ5v0hGfqrczS1Si8Bu67vTSkTKO_gO7ftO2R7CQxGKGWsbAA@mail.gmail.com> <af8a97f3a187cc403b6184948d3e335ee83f44ec.camel@gmail.com>
+In-Reply-To: <af8a97f3a187cc403b6184948d3e335ee83f44ec.camel@gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 29 Feb 2024 14:10:58 +0100
+Message-ID: <CAJZ5v0jwXiJU6SMwHZUJ0RVhGTmiwX1ijx4UcgbYdM6SnftSfA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] driver core: Introduce device_link_wait_removal()
+To: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Herve Codina <herve.codina@bootlin.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Rob Herring <robh+dt@kernel.org>, 
+	Frank Rowand <frowand.list@gmail.com>, Lizhi Hou <lizhi.hou@amd.com>, Max Zhen <max.zhen@amd.com>, 
+	Sonal Santan <sonal.santan@amd.com>, Stefano Stabellini <stefano.stabellini@xilinx.com>, 
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>, 
+	Horatiu Vultur <horatiu.vultur@microchip.com>, 
+	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
+	Nuno Sa <nuno.sa@analog.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In the scenario of entering hibernation with udisk in the system, if the
-udisk was gone or resume fail in the thaw phase of hibernation. Its state
-will be set to NOTATTACHED. At this point, usb_hub_wq was already freezed
-and can't not handle disconnect event. Next, in the poweroff phase of
-hibernation, SYNCHRONIZE_CACHE SCSI command will be sent to this udisk
-when poweroff this scsi device, which will cause uas_submit_urbs to be
-called to submit URB for sense/data/cmd pipe. However, these URBs will
-submit fail as device was set to NOTATTACHED state. Then, uas_submit_urbs
-will return a value SCSI_MLQUEUE_DEVICE_BUSY to the caller. That will lead
-the SCSI layer go into an ugly loop and system fail to go into hibernation.
+On Thu, Feb 29, 2024 at 2:03=E2=80=AFPM Nuno S=C3=A1 <noname.nuno@gmail.com=
+> wrote:
+>
+> On Thu, 2024-02-29 at 14:01 +0100, Rafael J. Wysocki wrote:
+> > On Thu, Feb 29, 2024 at 12:13=E2=80=AFPM Nuno S=C3=A1 <noname.nuno@gmai=
+l.com> wrote:
+> > >
+> > > Hi,
+> > >
+> > > Just copy pasting my previous comments :)
+> > >
+> > > On Thu, 2024-02-29 at 11:52 +0100, Herve Codina wrote:
+> > > > The commit 80dd33cf72d1 ("drivers: base: Fix device link removal")
+> > > > introduces a workqueue to release the consumer and supplier devices=
+ used
+> > > > in the devlink.
+> > > > In the job queued, devices are release and in turn, when all the
+> > > > references to these devices are dropped, the release function of th=
+e
+> > > > device itself is called.
+> > > >
+> > > > Nothing is present to provide some synchronisation with this workqu=
+eue
+> > > > in order to ensure that all ongoing releasing operations are done a=
+nd
+> > > > so, some other operations can be started safely.
+> > > >
+> > > > For instance, in the following sequence:
+> > > >   1) of_platform_depopulate()
+> > > >   2) of_overlay_remove()
+> > > >
+> > > > During the step 1, devices are released and related devlinks are re=
+moved
+> > > > (jobs pushed in the workqueue).
+> > > > During the step 2, OF nodes are destroyed but, without any
+> > > > synchronisation with devlink removal jobs, of_overlay_remove() can =
+raise
+> > > > warnings related to missing of_node_put():
+> > > >   ERROR: memory leak, expected refcount 1 instead of 2
+> > > >
+> > > > Indeed, the missing of_node_put() call is going to be done, too lat=
+e,
+> > > > from the workqueue job execution.
+> > > >
+> > > > Introduce device_link_wait_removal() to offer a way to synchronize
+> > > > operations waiting for the end of devlink removals (i.e. end of
+> > > > workqueue jobs).
+> > > > Also, as a flushing operation is done on the workqueue, the workque=
+ue
+> > > > used is moved from a system-wide workqueue to a local one.
+> > > >
+> > > > Fixes: 80dd33cf72d1 ("drivers: base: Fix device link removal")
+> > > > Cc: stable@vger.kernel.org
+> > > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> > > > ---
+> > > >  drivers/base/core.c    | 26 +++++++++++++++++++++++---
+> > > >  include/linux/device.h |  1 +
+> > > >  2 files changed, 24 insertions(+), 3 deletions(-)
+> > > >
+> > > > diff --git a/drivers/base/core.c b/drivers/base/core.c
+> > > > index d5f4e4aac09b..80d9430856a8 100644
+> > > > --- a/drivers/base/core.c
+> > > > +++ b/drivers/base/core.c
+> > > > @@ -44,6 +44,7 @@ static bool fw_devlink_is_permissive(void);
+> > > >  static void __fw_devlink_link_to_consumers(struct device *dev);
+> > > >  static bool fw_devlink_drv_reg_done;
+> > > >  static bool fw_devlink_best_effort;
+> > > > +static struct workqueue_struct *device_link_wq;
+> > > >
+> > > >  /**
+> > > >   * __fwnode_link_add - Create a link between two fwnode_handles.
+> > > > @@ -532,12 +533,26 @@ static void devlink_dev_release(struct device=
+ *dev)
+> > > >       /*
+> > > >        * It may take a while to complete this work because of the S=
+RCU
+> > > >        * synchronization in device_link_release_fn() and if the con=
+sumer
+> > > > or
+> > > > -      * supplier devices get deleted when it runs, so put it into =
+the
+> > > > "long"
+> > > > -      * workqueue.
+> > > > +      * supplier devices get deleted when it runs, so put it into =
+the
+> > > > +      * dedicated workqueue.
+> > > >        */
+> > > > -     queue_work(system_long_wq, &link->rm_work);
+> > > > +     queue_work(device_link_wq, &link->rm_work);
+> > > >  }
+> > > >
+> > > > +/**
+> > > > + * device_link_wait_removal - Wait for ongoing devlink removal job=
+s to
+> > > > terminate
+> > > > + */
+> > > > +void device_link_wait_removal(void)
+> > > > +{
+> > > > +     /*
+> > > > +      * devlink removal jobs are queued in the dedicated work queu=
+e.
+> > > > +      * To be sure that all removal jobs are terminated, ensure th=
+at any
+> > > > +      * scheduled work has run to completion.
+> > > > +      */
+> > > > +     drain_workqueue(device_link_wq);
+> > > > +}
+> > >
+> > > I'm still not convinced we can have a recursive call into devlinks re=
+moval
+> > > so I
+> > > do think flush_workqueue() is enough. I will defer to Saravana though=
+...
+> >
+> > AFAICS, the difference betwee flush_workqueue() and drain_workqueue()
+> > is the handling of the case when a given work item can queue up itself
+> > again.  This does not happen here.
+>
+>
+> Yeah, that's also my understanding...
 
-On the other hand, when we specially check for -ENODEV in function
-uas_queuecommand_lck, returning DID_ERROR to SCSI layer will cause device
-poweroff fail and system shutdown instead of entering hibernation.
+Moreover, IIUC this is called after dropping the last reference to the
+device link in question and so after queuing up the link removal work.
+Because that work does not requeue itself, flush_workqueue() is
+sufficient to ensure that the removal work has been completed.
 
-To fix this issue, let uas_submit_urbs to return original generic error
-when submitting URB failed. At the same time, we need to translate -ENODEV
-to DID_NOT_CONNECT for the SCSI layer.
-
-Suggested-by: Oliver Neukum <oneukum@suse.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Weitao Wang <WeitaoWang-oc@zhaoxin.com>
----
-v2->v3
- - Modify the description of this patch.
- - An error is returned directly when submitting URB fails.
-
- drivers/usb/storage/uas.c | 27 +++++++++++++--------------
- 1 file changed, 13 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/usb/storage/uas.c b/drivers/usb/storage/uas.c
-index 9707f53cfda9..689396777b6f 100644
---- a/drivers/usb/storage/uas.c
-+++ b/drivers/usb/storage/uas.c
-@@ -533,7 +533,7 @@ static struct urb *uas_alloc_cmd_urb(struct uas_dev_info *devinfo, gfp_t gfp,
-  * daft to me.
-  */
- 
--static struct urb *uas_submit_sense_urb(struct scsi_cmnd *cmnd, gfp_t gfp)
-+static int uas_submit_sense_urb(struct scsi_cmnd *cmnd, gfp_t gfp)
- {
- 	struct uas_dev_info *devinfo = cmnd->device->hostdata;
- 	struct urb *urb;
-@@ -541,16 +541,15 @@ static struct urb *uas_submit_sense_urb(struct scsi_cmnd *cmnd, gfp_t gfp)
- 
- 	urb = uas_alloc_sense_urb(devinfo, gfp, cmnd);
- 	if (!urb)
--		return NULL;
-+		return -ENOMEM;
- 	usb_anchor_urb(urb, &devinfo->sense_urbs);
- 	err = usb_submit_urb(urb, gfp);
- 	if (err) {
- 		usb_unanchor_urb(urb);
- 		uas_log_cmd_state(cmnd, "sense submit err", err);
- 		usb_free_urb(urb);
--		return NULL;
- 	}
--	return urb;
-+	return err;
- }
- 
- static int uas_submit_urbs(struct scsi_cmnd *cmnd,
-@@ -562,9 +561,9 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
- 
- 	lockdep_assert_held(&devinfo->lock);
- 	if (cmdinfo->state & SUBMIT_STATUS_URB) {
--		urb = uas_submit_sense_urb(cmnd, GFP_ATOMIC);
--		if (!urb)
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+		err = uas_submit_sense_urb(cmnd, GFP_ATOMIC);
-+		if (err)
-+			return err;
- 		cmdinfo->state &= ~SUBMIT_STATUS_URB;
- 	}
- 
-@@ -572,7 +571,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
- 		cmdinfo->data_in_urb = uas_alloc_data_urb(devinfo, GFP_ATOMIC,
- 							cmnd, DMA_FROM_DEVICE);
- 		if (!cmdinfo->data_in_urb)
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return -ENOMEM;
- 		cmdinfo->state &= ~ALLOC_DATA_IN_URB;
- 	}
- 
-@@ -582,7 +581,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
- 		if (err) {
- 			usb_unanchor_urb(cmdinfo->data_in_urb);
- 			uas_log_cmd_state(cmnd, "data in submit err", err);
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return err;
- 		}
- 		cmdinfo->state &= ~SUBMIT_DATA_IN_URB;
- 		cmdinfo->state |= DATA_IN_URB_INFLIGHT;
-@@ -592,7 +591,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
- 		cmdinfo->data_out_urb = uas_alloc_data_urb(devinfo, GFP_ATOMIC,
- 							cmnd, DMA_TO_DEVICE);
- 		if (!cmdinfo->data_out_urb)
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return -ENOMEM;
- 		cmdinfo->state &= ~ALLOC_DATA_OUT_URB;
- 	}
- 
-@@ -602,7 +601,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
- 		if (err) {
- 			usb_unanchor_urb(cmdinfo->data_out_urb);
- 			uas_log_cmd_state(cmnd, "data out submit err", err);
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return err;
- 		}
- 		cmdinfo->state &= ~SUBMIT_DATA_OUT_URB;
- 		cmdinfo->state |= DATA_OUT_URB_INFLIGHT;
-@@ -611,7 +610,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
- 	if (cmdinfo->state & ALLOC_CMD_URB) {
- 		cmdinfo->cmd_urb = uas_alloc_cmd_urb(devinfo, GFP_ATOMIC, cmnd);
- 		if (!cmdinfo->cmd_urb)
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return -ENOMEM;
- 		cmdinfo->state &= ~ALLOC_CMD_URB;
- 	}
- 
-@@ -621,7 +620,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
- 		if (err) {
- 			usb_unanchor_urb(cmdinfo->cmd_urb);
- 			uas_log_cmd_state(cmnd, "cmd submit err", err);
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return err;
- 		}
- 		cmdinfo->cmd_urb = NULL;
- 		cmdinfo->state &= ~SUBMIT_CMD_URB;
-@@ -698,7 +697,7 @@ static int uas_queuecommand_lck(struct scsi_cmnd *cmnd)
- 	 * of queueing, no matter how fatal the error
- 	 */
- 	if (err == -ENODEV) {
--		set_host_byte(cmnd, DID_ERROR);
-+		set_host_byte(cmnd, DID_NO_CONNECT);
- 		scsi_done(cmnd);
- 		goto zombie;
- 	}
--- 
-2.32.0
-
+If anyone thinks that it may not be sufficient, please explain to me
+why you think so.  Otherwise, don't do stuff to prevent things you
+cannot explain.
 
