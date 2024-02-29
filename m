@@ -1,131 +1,145 @@
-Return-Path: <stable+bounces-25460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 565A286BFF1
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 05:42:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B6E086BF63
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 04:20:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBD0E1F2543E
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 04:42:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1FB15B23085
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 03:20:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BB2D383AC;
-	Thu, 29 Feb 2024 04:42:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="Vlse2Mbf"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27707374EF;
+	Thu, 29 Feb 2024 03:20:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
+Received: from mx1.zhaoxin.com (MX1.ZHAOXIN.COM [210.0.225.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AFE1383A3
-	for <stable@vger.kernel.org>; Thu, 29 Feb 2024 04:42:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7878C36AE5
+	for <stable@vger.kernel.org>; Thu, 29 Feb 2024 03:20:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.0.225.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709181744; cv=none; b=bI8IU2X3UP3tneFNLasO8mRT3Ot6JDwOFIbn4sR/cdiR+KCjvK6gZyjiIpGCsG7sM2RTwv54XWxG4waWUX683uHE9QpHfY3axSWNzpF4l7Yi08Ay1SlvWoeLZhCS737XCHpQfJEvTvf2grqNe8tEx1zaSTzvz+ZttBZeBBxrfjI=
+	t=1709176808; cv=none; b=b//c7Z3vlbTd01zmc+0YiCafxzXtQvjEzIAPXdUm+nx8LxNnSUfznO4yU5iEOd74qlIt7BHOZIuoBJ6ukUqw8FWmHzT0D58f+ujWjKYEQVFePKlmFNP3BkQFlncGV+gUqWTGwUUSj5/fot/FN0GkHapmXYWurK6ZcEghbchISTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709181744; c=relaxed/simple;
-	bh=7MdowiYFtd1YVdbQPrEzPUsEd/NWiP+n7PYwa3sOkvQ=;
-	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
-	 MIME-Version:Content-Type; b=GRWeUwacwFM2JF2QPoMylZ95gKpL8vqi9WTGFB+mRYOIyh1mUxCfRbnNdgUsWzUKW7CFjFt7v71JU7TPNInyHplcRwgH4y8eem9VnLvZk5lsHrjuDBKYRh/VhHcsXhJc9EBa3AnPUIF7gBpdNl02GiHyc5MychBa9Vzyib6Ldv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=Vlse2Mbf; arc=none smtp.client-ip=44.202.169.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-5005a.ext.cloudfilter.net ([10.0.29.234])
-	by cmsmtp with ESMTPS
-	id fX40rdhjFQr4SfYFQrFQrk; Thu, 29 Feb 2024 04:42:20 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id fYFPrZZ8FpHqAfYFPrnKVw; Thu, 29 Feb 2024 04:42:20 +0000
-X-Authority-Analysis: v=2.4 cv=W6w+VwWk c=1 sm=1 tr=0 ts=65e00b2c
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=k7vzHIieQBIA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=KyoLkmSyMt9Nb96WE4AA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=TqFmvHG+z+uzSLFLtBkJ2F44Thyw1ppS6+xzDkfk1W8=; b=Vlse2MbfSBM27PGyIBxpZjHGEm
-	oVkHIefNnEiXZLm02rVvzHsa4tT44fyy9Yz61F3jAQXRkS0Os7PECmol2zqTIngQXqy/T47yAIIKh
-	pgH/bG+Mzw9qU0IHse/1hddYnq4ymyg7NIwUXRZlyPcTms6s1/Nx17Fx5AE3PVIumlE4w9z8kH7Gc
-	8UkOCe2a8ZNwTzmOu76hRxzz7COyZ+Hk+5518UV/L7HaO5XrydVsZ9Swg/c1dWQtN8GVez+F5t0+G
-	knhEFjdXasODBFd7AJ/ATe14kNViFtCkkNegExKSCqqfHEKZvwqk/FjuAyG8V2hm4Wl/ibG1966es
-	bd/3UIdA==;
-Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:48354 helo=[10.0.1.47])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1rfYFN-000KVl-1E;
-	Wed, 28 Feb 2024 21:42:17 -0700
-Subject: Re: [PATCH 6.1 000/195] 6.1.80-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-References: <20240227131610.391465389@linuxfoundation.org>
-In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
-From: Ron Economos <re@w6rz.net>
-Message-ID: <1cfaf521-fef8-bfb6-060f-8f69d96396d2@w6rz.net>
-Date: Wed, 28 Feb 2024 20:42:14 -0800
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+	s=arc-20240116; t=1709176808; c=relaxed/simple;
+	bh=nWI0xfyfsyOczyWzPno9G0ANgOD4EpWps6XT4tWG26c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=JY9feEQz0r6uqYiPnqfCffjSQcS4V1ej9Z3fzWvHdUk0CNNRGOiUsJ8/7is+E4DMJbbg/pPNQmMK6qvVxHqKcE3Oga6fzT2rx8ma+NSh8XlPdmoPxZpp5Dazw60ABiA6EyyJZ8Sntxea5YuEoUwABtwEW8vj6VnGyFAViwVVZn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=210.0.225.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
+X-ASG-Debug-ID: 1709176794-086e2316ed02390001-OJig3u
+Received: from ZXSHMBX2.zhaoxin.com (ZXSHMBX2.zhaoxin.com [10.28.252.164]) by mx1.zhaoxin.com with ESMTP id 1NWDjwmQUgYZ1sxI (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Thu, 29 Feb 2024 11:19:54 +0800 (CST)
+X-Barracuda-Envelope-From: WeitaoWang-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
+Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHMBX2.zhaoxin.com
+ (10.28.252.164) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 29 Feb
+ 2024 11:19:54 +0800
+Received: from [10.29.8.21] (10.29.8.21) by zxbjmbx1.zhaoxin.com
+ (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 29 Feb
+ 2024 11:19:52 +0800
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.164
+Message-ID: <0b0eefa5-71b6-dc08-d103-72b9aebd9237@zhaoxin.com>
+X-Barracuda-RBL-Trusted-Forwarder: 10.29.8.21
+Date: Thu, 29 Feb 2024 19:19:49 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH v2] USB:UAS:return ENODEV when submit urbs fail with
+ device not attached.
 Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 98.207.139.8
-X-Source-L: No
-X-Exim-ID: 1rfYFN-000KVl-1E
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:48354
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfLIk05NmvQ6uLaiDWMgahTSvOsm6OeKggFjmWXnVxYODTpNWs7HUJunL148FzlTKWhfa7bIRRUTYgHjr9YIt36MFfC6fEbgXT52utf3aqL5W3o0mN4p2
- qHSEkM/oAaW+xbV7mnk6d/i6sGXR6Drfpj01FR5AISn12ABPAyu7x/tQAGcNRug61PbDEuWbpwjqkQ==
+X-ASG-Orig-Subj: Re: [PATCH v2] USB:UAS:return ENODEV when submit urbs fail with
+ device not attached.
+To: Oliver Neukum <oneukum@suse.com>, <stern@rowland.harvard.edu>,
+	<gregkh@linuxfoundation.org>, <linux-usb@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
+	<usb-storage@lists.one-eyed-alien.net>
+CC: <WeitaoWang@zhaoxin.com>, <stable@vger.kernel.org>
+References: <20240228111521.3864-1-WeitaoWang-oc@zhaoxin.com>
+ <e8c4e8a3-bfc3-463f-afce-b9f600b588b2@suse.com>
+ <07e80d55-d766-1781-ffc9-fab9ddcd33e3@zhaoxin.com>
+ <49a365a7-199a-42cd-b8d3-86d72fe5bca6@suse.com>
+From: "WeitaoWang-oc@zhaoxin.com" <WeitaoWang-oc@zhaoxin.com>
+In-Reply-To: <49a365a7-199a-42cd-b8d3-86d72fe5bca6@suse.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: ZXSHCAS2.zhaoxin.com (10.28.252.162) To
+ zxbjmbx1.zhaoxin.com (10.29.252.163)
+X-Barracuda-Connect: ZXSHMBX2.zhaoxin.com[10.28.252.164]
+X-Barracuda-Start-Time: 1709176794
+X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
+X-Barracuda-URL: https://10.28.252.35:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 1699
+X-Barracuda-BRTS-Status: 0
+X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
+X-Barracuda-Spam-Score: 1.09
+X-Barracuda-Spam-Status: No, SCORE=1.09 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=DATE_IN_FUTURE_06_12, DATE_IN_FUTURE_06_12_2
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.121467
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------------------------
+	0.01 DATE_IN_FUTURE_06_12   Date: is 6 to 12 hours after Received: date
+	3.10 DATE_IN_FUTURE_06_12_2 DATE_IN_FUTURE_06_12_2
 
-On 2/27/24 5:24 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.80 release.
-> There are 195 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 29 Feb 2024 13:15:36 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.80-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On 2024/2/28 22:47, Oliver Neukum wrote:
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+>> I'm not sure I fully understand what your mean.
+>> Whether the above code is more reasonable? If not,could you give me some
+>> suggestion? Thanks for your help!
+> 
+> You want to change uas_submit_urbs() to return the reason for
+> errors, because -ENODEV needs to be handled differently. That
+> is good.
+> But why don't you just do
+> 
+> return err;
+> 
+> unconditionally? There is no point in using SCSI_MLQUEUE_DEVICE_BUSY
 
-Tested-by: Ron Economos <re@w6rz.net>
+I got it, Thanks. New patch would like this sample:
 
+@@ -562,9 +561,9 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
+
+  	lockdep_assert_held(&devinfo->lock);
+  	if (cmdinfo->state & SUBMIT_STATUS_URB) {
+-		urb = uas_submit_sense_urb(cmnd, GFP_ATOMIC);
+-		if (!urb)
+-			return SCSI_MLQUEUE_DEVICE_BUSY;
++		err = uas_submit_sense_urb(cmnd, GFP_ATOMIC);
++		if (err)
++			return err;
+  		cmdinfo->state &= ~SUBMIT_STATUS_URB;
+  	}
+@@ -582,7 +581,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
+  		if (err) {
+  			usb_unanchor_urb(cmdinfo->data_in_urb);
+  			uas_log_cmd_state(cmnd, "data in submit err", err);
+-			return SCSI_MLQUEUE_DEVICE_BUSY;
++			return err;
+  		}
+
+When alloc urb fail in the same function uas_submit_urbs,
+whether we should replace SCSI_MLQUEUE_DEVICE_BUSY with generic
+error code -ENOMEM? Such like this:
+
+@@ -572,7 +571,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
+  		cmdinfo->data_in_urb = uas_alloc_data_urb(devinfo, GFP_ATOMIC,
+  							cmnd, DMA_FROM_DEVICE);
+  		if (!cmdinfo->data_in_urb)
+-			return SCSI_MLQUEUE_DEVICE_BUSY;
++			return -ENOMEM;
+  		cmdinfo->state &= ~ALLOC_DATA_IN_URB;
+  	}
+
+Thanks and Best regards,
+Weitao
 
