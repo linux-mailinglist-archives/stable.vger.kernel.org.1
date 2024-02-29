@@ -1,128 +1,147 @@
-Return-Path: <stable+bounces-25456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCDF886BE8F
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 02:52:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85CD386BEE3
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 03:23:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 518211F22BD9
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 01:52:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27486B2411C
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 02:23:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4602634545;
-	Thu, 29 Feb 2024 01:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1775D36B0E;
+	Thu, 29 Feb 2024 02:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="r3Odmy4w"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="OH+LSqhQ";
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="ihh1gmTk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78DB736B00
-	for <stable@vger.kernel.org>; Thu, 29 Feb 2024 01:52:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAED933CF1;
+	Thu, 29 Feb 2024 02:23:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.121.71.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709171563; cv=none; b=vGqe4IEdrOsPKQ3H1QKqpS019MzV83sFTaW/q3BrRydLswp/3AbNDr3uHJjEpLG+bGOIgTLIeXSgsIEvlUjeraUBHtzGlb+L3IA7vysRPCVVVwSJq4ZEisSg+Hn1fBht0B2wIwDHBUzo4O4rrXgpMrHLtjsRaSPeIonEkXUUMSM=
+	t=1709173392; cv=none; b=MRIODshIR/7b3ocLPYc3dfqZ9Ru5WjsCBeDeBzAeeotbEaCqwC70vLnOc0At9cjR9O2YfGGM5nQUsLUn8IvYpQvTXwi4KvD7get22l60s5THUdZ0/6rR3MeY9N9CmNxKGApNZAGw4HDRhR1VS1BsrMeHu/DlT11aVkw2mW7Tlps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709171563; c=relaxed/simple;
-	bh=7tJEoT7UeieYnDrUIelxhTjT/DTW8yYe3f7+9yRHQ0g=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=rYrJZz3cbjTJxnOKPzxS9QVTDY44BQVU6pbahcE4SoFVCu2ELPxEwdgzol8Bu7MhbL9W1RPGK2FtmJBce3L5pTsRpqpUil2hKvBfOHrJ8jC3/Dc4JOugfRuVGflO0xpFeCSR9ZQyVB0iN/mapaKmT5XBV2BKouuUh6ZQv4DeFvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jthies.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=r3Odmy4w; arc=none smtp.client-ip=209.85.219.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jthies.bounces.google.com
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dc693399655so814460276.1
-        for <stable@vger.kernel.org>; Wed, 28 Feb 2024 17:52:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1709171560; x=1709776360; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=E3VOyu5h5VNnqIC5C1wAkPY2R8kjBMsntg/JOJOAxJU=;
-        b=r3Odmy4w9nUoBFuT8uHtW8oR/jEYDSJB3qjSnrlPntvaLFhLvkowp9zdVwSSniuExn
-         i40Udw7lMUFLwMpqpFaXHT5n8EV77mXhFu4L1PbqFTVII7E1FA2BS52lc/9jmVD7l9TS
-         ss7wlGWGzqhucQOnIjvJkvvI5eWYw7NqARi1ZKP+JCJ2k/pqBUj31CtLCwaF0Bo6Y+gJ
-         a80aOSCAdTqZFQBWknxpE3wG4WIKgHugdfOrfNFbVUQk6wiX6sbxKBGaE0JuCgM4H7ou
-         NBnentahKIQHoirFBJcRIIAFLwGPYpq/c4Prue4jfuT0u6WDeU8HJw5nuyQCF81qmEC9
-         yEmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709171560; x=1709776360;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=E3VOyu5h5VNnqIC5C1wAkPY2R8kjBMsntg/JOJOAxJU=;
-        b=Wnaw5m4NizfoLcUEZcBA74E/dZ5hLJbtkIa+9PqjC7XJHc/qRCytCmQ6rjGBJftEW/
-         dL6TqgtP0p7kY3Mv5oXRhtdRmXi6dIM5gYKOMtKRq8k5hLO1t/9GmOjCjdfetmihSx/8
-         eMHooSV17Dnlfp5wU1Pdiv4SSOBUP8HQVjvvwQefe+/FpvCoMB8mfqVZm8xNFkah0+Co
-         ReK1Vl+AfFYRW/Rl/D46QKlGevUIHyD6FB3ikq/YEM6MaCm+6jSY5r10H8WZdvIP+qth
-         qN2uZ0icJJh2YaUtJOvfQvaPsz5DCnmBuKqpLp9XRgSSSzBDOxB8vNa9XhF4jYpO9gC9
-         OBZw==
-X-Forwarded-Encrypted: i=1; AJvYcCWygo+E/bRbIMIraSWFGbqgrsIWYdEcjxd3FM15XOEm6aC2N/NoEkP96ix+ce9DLCd8hRFOc7o8t+aAaFdOgX3ULpBtzFP4
-X-Gm-Message-State: AOJu0YwzklI5RiexLrgxa1ULB3e55dx2BpF7c3CvuCgrkRlHjsCRB/tb
-	uqrg83NeO/lZBSHfmx/H6lfroCRgMqrXQefaUjiG9ssOr2j7wGwH3LQJbpcDNzARo6GHIQ5q4Z6
-	INQ==
-X-Google-Smtp-Source: AGHT+IEEVeZo1PJjoBdtLbZi7QC6z28ER8EtOUgYeV01NYjBTS89wq1lQoJnDGaUjcpDYkcPSDEvQYEBbm4=
-X-Received: from jthies.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:23db])
- (user=jthies job=sendgmr) by 2002:a25:dc0c:0:b0:dcd:25be:aefb with SMTP id
- y12-20020a25dc0c000000b00dcd25beaefbmr233082ybe.13.1709171560541; Wed, 28 Feb
- 2024 17:52:40 -0800 (PST)
-Date: Thu, 29 Feb 2024 01:52:21 +0000
+	s=arc-20240116; t=1709173392; c=relaxed/simple;
+	bh=0Fbi5ZAg7Uf7prUv2XS6xmsOLyEbnEHlNUw6NlOeY9c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r+ao2vRSsflGGgGeRuyL1DOjKddUxMP4M8Ak3eN0YP4ZUAHgHjFist89davhM/XaEpnyLkwCJYNs3oNAi6ADPQsugJ5NCXT4JhN5hKOJlg8kDMaZaNsgg88UXbBD4cqN2ssthMPjmFWrsRuneNJsJZhk291eLgQAFZkP1AsErSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=OH+LSqhQ; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=ihh1gmTk; arc=none smtp.client-ip=91.121.71.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: by nautica.notk.org (Postfix, from userid 108)
+	id 6592AC01C; Thu, 29 Feb 2024 03:23:02 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1709173382; bh=kHqYKpzkFMSrtvJ6fyOrRsaNmM72iJYg8f1LNIssPbI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OH+LSqhQo7hIHUT3o7cRs7jCL9VUq6kbaz+k+0lj4eXEL7WYEcwokoXapW9o/ZJxt
+	 iv1zOIE7Z0HDOr1sVWAWN07XBfa4ku5I4PTnQdzHCppek1r0mKZE24yrjCbOcg4FTv
+	 aXiRQ8+VrrT4Deez/gyX4W5RlIjrNHcKTHcrWptw+LvPmm4/ZQ23qHB4CretMmljOy
+	 nRMDO7jcjxQ6fvOQxGpBBqyYnTzCjq8X79/Z8GnoQPnjzAHOVn3T1Y238Yh/Y6MYdP
+	 +clKQO0LrIlabv3AVH5X+05qmAPuRa5WmtYcrsNv593+vH1GWb8JYqoZgSqQnAXmvY
+	 IxpZUAZT0eXug==
+X-Spam-Level: 
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by nautica.notk.org (Postfix) with ESMTPS id 5A98DC009;
+	Thu, 29 Feb 2024 03:22:55 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1709173380; bh=kHqYKpzkFMSrtvJ6fyOrRsaNmM72iJYg8f1LNIssPbI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ihh1gmTk1f1wUHyWQLFRPjxL+nUJBOK893eWBUjJzucPyOEL09wCcsxKMjptcWAq8
+	 WhkmwHMjNxlUiuxvnVxFw4VAuQgKghZ+PjjxcbM3YGoy5BDMm30uteyuRiFdxdHFte
+	 haCy2l5YJdduAelXfHpUtJ4w6eVlUXlevXw9aG65HtzOhupWtT/5V/K5vY+s+1IOtH
+	 S2g4gjVgA7nzpV7qBs2fbKqSbzRd2DfWl/4iaUH/ViVtFQX5LVQpPAOTHs3K6PXuPk
+	 4uesdBoLkdalD2QD0kz1U24Ea9+HUSKTbXn+DGLNtbAQZAZgJ5RLcvNFK4c0P/E5BH
+	 8ku6nkWBGqzyA==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id f503bea0;
+	Thu, 29 Feb 2024 02:22:50 +0000 (UTC)
+Date: Thu, 29 Feb 2024 11:22:35 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Kees Cook <keescook@chromium.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com
+Subject: Re: [PATCH 5.10 000/122] 5.10.211-rc1 review
+Message-ID: <Zd_qaxKc9V6dMkOA@codewreck.org>
+References: <20240227131558.694096204@linuxfoundation.org>
+ <Zd53aNc1aFrCYxFd@codewreck.org>
+ <2024022804-askew-stung-cba8@gregkh>
+ <202402281231.F7A20FCE@keescook>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.44.0.rc1.240.g4c46232300-goog
-Message-ID: <20240229015221.3668955-1-jthies@google.com>
-Subject: [PATCH v3 1/4] usb: typec: ucsi: Clean up UCSI_CABLE_PROP macros
-From: Jameson Thies <jthies@google.com>
-To: heikki.krogerus@linux.intel.com, linux-usb@vger.kernel.org
-Cc: jthies@google.com, pmalani@chromium.org, bleung@google.com, 
-	abhishekpandit@chromium.org, andersson@kernel.org, 
-	dmitry.baryshkov@linaro.org, fabrice.gasnier@foss.st.com, 
-	gregkh@linuxfoundation.org, hdegoede@redhat.com, neil.armstrong@linaro.org, 
-	rajaram.regupathy@intel.com, saranya.gopal@intel.com, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Benson Leung <bleung@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <202402281231.F7A20FCE@keescook>
 
-Clean up UCSI_CABLE_PROP macros by fixing a bitmask shifting error for
-plug type and updating the modal support macro for consistent naming.
+Kees Cook wrote on Wed, Feb 28, 2024 at 12:39:42PM -0800:
+> > > This commit breaks build of some 3rd party wireless module we use here
+> > > (because sizeof(sa->sa_data) no longer works and needs to use
+> > > sa_data_min)
+> 
+> Just FYI, it's possible that things using sizeof(sa->sa_data) were buggy
+> to begin with since the struct size isn't actually dictated by that size
+> (it's only the minimum possible size).
 
-Fixes: 3cf657f07918 ("usb: typec: ucsi: Remove all bit-fields")
-Cc: stable@vger.kernel.org
-Reviewed-by: Benson Leung <bleung@chromium.org>
-Reviewed-by: Prashant Malani <pmalani@chromium.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Jameson Thies <jthies@google.com>
----
-Changes in v3:
-- Fixed CC stable.
+Yes, I definitely agree with this.
+As it's "vendor stuff" I just replaced with sa_data_min because that
+preserves the values, but it ought to get a second look.
+I'd love to pretend that driver's upstream will do the right thing and
+use proper values here on newer kernel but upon checking its >6.2 tree
+support now they apparently did the same instead of getting the size
+properly.
 
-Changes in v2:
-- Tested on usb-testing branch merged with chromeOS 6.8-rc2 kernel.
+> > We NEVER preserve in-kernel APIs for any out-of-tree code as obviously,
+> > we have no idea what out-of-tree code is actually using, so it would be
+> > impossible to do so.
 
- drivers/usb/typec/ucsi/ucsi.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Right, I just don't see much "common struct" changes in stable tree
+patches -- stuff like livepatches or weak modules and whatsnot don't
+like these so some downstreams (redhat to name them) try very hard to
+keep these constants for the lifetime of a given stable release... iirc
+they go as far as adding some padding fields to some structs that are
+likely to need fiddling so they can do this while preserving binary
+compatibility.
 
-diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
-index 7e35ffbe0a6f2..469a2baf472e4 100644
---- a/drivers/usb/typec/ucsi/ucsi.h
-+++ b/drivers/usb/typec/ucsi/ucsi.h
-@@ -259,12 +259,12 @@ struct ucsi_cable_property {
- #define UCSI_CABLE_PROP_FLAG_VBUS_IN_CABLE	BIT(0)
- #define UCSI_CABLE_PROP_FLAG_ACTIVE_CABLE	BIT(1)
- #define UCSI_CABLE_PROP_FLAG_DIRECTIONALITY	BIT(2)
--#define UCSI_CABLE_PROP_FLAG_PLUG_TYPE(_f_)	((_f_) & GENMASK(3, 0))
-+#define UCSI_CABLE_PROP_FLAG_PLUG_TYPE(_f_)	(((_f_) & GENMASK(4, 3)) >> 3)
- #define   UCSI_CABLE_PROPERTY_PLUG_TYPE_A	0
- #define   UCSI_CABLE_PROPERTY_PLUG_TYPE_B	1
- #define   UCSI_CABLE_PROPERTY_PLUG_TYPE_C	2
- #define   UCSI_CABLE_PROPERTY_PLUG_OTHER	3
--#define UCSI_CABLE_PROP_MODE_SUPPORT		BIT(5)
-+#define UCSI_CABLE_PROP_FLAG_MODE_SUPPORT	BIT(5)
- 	u8 latency;
- } __packed;
- 
+I understand the upstream stable kernels don't make such promise (and
+given the amount of work that probably goes into it, rightfully so! I
+wouldn't exect you or anyone to do this here), just pointed it out
+as part of my usual test round for anyone else who'd care.
+
+> Out of curiosity, which drivers broke and what's needed to get them into
+> upstream (or at least staging)?
+
+Sure, it was NXP's wifi chips driver:
+https://github.com/nxp-imx/mwifiex/
+
+It's mostly based on drivers/net/wireless/marvell/mwifiex but has since
+been quite extensively modified, so it'd take quite a bit of effort to
+upstream as a separate entity (changing a few names to avoid conflcts so
+both can be built together... Add to that the requirement for a
+compatible firmware with a restrictive license... And that NXP isn't
+exactly focused on upstreaming); I have little hope of seeing it
+upstream at this point unfortunately and gave up on it as part of
+maintaining an embedded kernel "port" as it's sadly far from being
+only one :/
+
+(I especially don't get it as I consider maintaining a bunch of
+spaghetti ifdef on kernel versions to be much more work than getting the
+driver upstream once, but I guess I'm barking at the wrong tree here)
+
+
+Thanks,
 -- 
-2.44.0.rc1.240.g4c46232300-goog
-
+Dominique Martinet | Asmadeus
 
