@@ -1,144 +1,122 @@
-Return-Path: <stable+bounces-25476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD51F86C5F4
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 10:47:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12C9986C612
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 10:53:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFDAE1C223C2
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 09:47:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A42C91F25CEC
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 09:53:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A936626C6;
-	Thu, 29 Feb 2024 09:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBF6D627FE;
+	Thu, 29 Feb 2024 09:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fXZS2Fr8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XIzt+9JU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2E1626A1;
-	Thu, 29 Feb 2024 09:46:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558FD62154
+	for <stable@vger.kernel.org>; Thu, 29 Feb 2024 09:53:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709200021; cv=none; b=iyuMCC+XgHBZXKTqLphe2NXfk1qmkh6d9VR/RA5Fo5Z32trSH6c2U2UAgdCohHZoPj+4TFbEwXjwFMJjaGE2w8EAfStEkq6jtJf57SH03ctiy8w2IAeWBv8Nv/OytEbF57BsesE9Y9jrEE/fO8Wgkk6igss3LPhakwh6CyfFMjY=
+	t=1709200405; cv=none; b=Z3rO1EGQHuPaHboBmm3wEOtKNaFwSxet8FTHwf8XPTtSJwGXfbey/E6yAsay9e8F61dHBqYImHm9Rv3dk3FkJWEaYIzA2mRbGz5/m99b+A3wtfO8mElHebRgU7xzy39PSjaZ8u3dfQbgZ/hYXDcsYrgpfF81WUSXL0lmUgPWliE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709200021; c=relaxed/simple;
-	bh=ZKF6CGDxJo7aTCOVRYbPvZuJuMOfRD8zOUkDxs6+UMc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dJlWhsBDf5P3JfOwq4T+gsZ5KaPL5M+ljjACnpl8mBSyDecedOIjEAL+pWnx+Wa/3vo9XaP8Zj2YWC/ZCmMx1sXQ/O016fFjJj2GOgRia7Mxtvyl0fCApUB8YkvY8eeiJ+q301CuwNFNlKlVnzgXlVk05S50hScJvQrqrc7HZ5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fXZS2Fr8; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5654f700705so1088941a12.1;
-        Thu, 29 Feb 2024 01:46:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709200018; x=1709804818; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ZKF6CGDxJo7aTCOVRYbPvZuJuMOfRD8zOUkDxs6+UMc=;
-        b=fXZS2Fr8GU6zZmElBl0wcyJq/8r7yc3OkayucqHxD03QSf5zVizvf7p2VZzEishF0h
-         r9Vd/a2xrvIG7vHW7ckX3w0BlezkPiiPcLZLsW44EiAavGhbph/3iJk9SoJc6LVh2v/C
-         JYFXQCz1e424kQSRUf7psF1k5Zr3t6rnh+2KOQ1TtHwNmIdrts5fyyTq65Jb58hYRM5x
-         5VmT44hUg71Xz7/6D81uC5sAWR2dN8AYo/tJ/PfevNGGQ15JQvF4a6t/WEDaFhdGH2Uw
-         rNh/ARLm60AzI9aiSOHOoUs1wrx3T+OoeoNLB5w/wKpFzsjp83o0QiNqsQZuiRmXF+it
-         54Jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709200018; x=1709804818;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZKF6CGDxJo7aTCOVRYbPvZuJuMOfRD8zOUkDxs6+UMc=;
-        b=Cm6TmziVUidAN8bSfn5Zwo+c/nOC07+YnzQwa3GopPUhn0qFYA0xgkrsxp2V3Sd8Jw
-         9yL2tyH6wKFcHpQZOKmvi97++19JwD8BoTDnLb3aFWKgEp5B3WJM212qqzAcHl6Tq+Ie
-         6pb2qZ4FI3dey7Z0a2PY/cUljk6M3SDIzuzAlCfpwqNhx6VuNSeEXUevR1Mg0qor7osK
-         bnqhJYEEiz2G5Puf3tfvpN+hz3NU1VK4CcGytoFzeoCronq1JRcgKwqERhNl1VoKerqA
-         mdNtUxq9FMpuhRO+1MFTUOuuMvgzQfReLRjYLwtIEh2mxrVY7eEpFBIDtEHXjPMidIpW
-         6YnA==
-X-Forwarded-Encrypted: i=1; AJvYcCXLcsJ3IRrDBRXfZ0TQKmkG+/rDsfkZ47+7uMRKvqlWpQIwFvoC/dZ+uWoNlr7xHhCrm+oA4FkMRPcVeMKIG0EcsSVr9RP8Yg37QqGIiwvmJbS4JAhGMtiM7uthaduEVlnLT3L9Qc2fkG5q4sXf3UStiDybo+9S6pXaE7tbJFG7qQ==
-X-Gm-Message-State: AOJu0YyNi3vsXlUMBiNg5j3F7twhnt/MnvvhHjR8oufkBaVYSZv0arIG
-	0lbza+NQuhA1vUFZgxqFXOJxvHuJE2R0yIE7nF5ai6jy5+j9F0Tm
-X-Google-Smtp-Source: AGHT+IGYn6hgKhooP5suk6LbV9V/eMI1wmp/BB2frmjgHS/QPCx3g8SNZ5X3gedy+bkNYy/MkSi2qQ==
-X-Received: by 2002:a05:6402:26d3:b0:566:6e4e:cb8c with SMTP id x19-20020a05640226d300b005666e4ecb8cmr1379117edd.38.1709200017706;
-        Thu, 29 Feb 2024 01:46:57 -0800 (PST)
-Received: from ?IPv6:2003:f6:ef1b:2000:15d4:fc17:481e:8afe? (p200300f6ef1b200015d4fc17481e8afe.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:15d4:fc17:481e:8afe])
-        by smtp.gmail.com with ESMTPSA id d19-20020a05640208d300b0056650cd0156sm446013edz.66.2024.02.29.01.46.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Feb 2024 01:46:57 -0800 (PST)
-Message-ID: <c2b830bb4a4cf76dec8783f38b2477120edb1a15.camel@gmail.com>
-Subject: Re: [PATCH v2 2/2] of: overlay: Synchronize of_overlay_remove()
- with the devlink removals
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Herve Codina <herve.codina@bootlin.com>, Greg Kroah-Hartman
-	 <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Rob
-	Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>
-Cc: Lizhi Hou <lizhi.hou@amd.com>, Max Zhen <max.zhen@amd.com>, Sonal Santan
- <sonal.santan@amd.com>, Stefano Stabellini <stefano.stabellini@xilinx.com>,
-  Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, Allan Nielsen
- <allan.nielsen@microchip.com>, Horatiu Vultur
- <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Nuno Sa <nuno.sa@analog.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>,  stable@vger.kernel.org
-Date: Thu, 29 Feb 2024 10:50:21 +0100
-In-Reply-To: <20240229083953.607569-3-herve.codina@bootlin.com>
-References: <20240229083953.607569-1-herve.codina@bootlin.com>
-	 <20240229083953.607569-3-herve.codina@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 
+	s=arc-20240116; t=1709200405; c=relaxed/simple;
+	bh=ytj3cdkx97dAuk3gEuj3SCojz6k1VkMX4nyrBboQXXY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jsKKp+ApS8OiCo2k80cYSB+uNe0vz3o9k8SBjAlpVzmwxODlWnp2rAyEtRriuqxIa7vc64Pht3Iou6yb5aq6kVgfVK6Y5PRxUcn1HpHb7KbNbf0fAJHsAl0ZZTQ/AogeJULxeQBNz4GnCPY+kDGtoVfvDwzrGtoNPCbgU+veYi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XIzt+9JU; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709200404; x=1740736404;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ytj3cdkx97dAuk3gEuj3SCojz6k1VkMX4nyrBboQXXY=;
+  b=XIzt+9JUeIaVFb/K9JhF09onHtfeCaZJ7V8PLlDnCkcq09W9JCGLD2sc
+   LCzbAkHUCYNm+sokmFvIJjTWK/RIh5kyYZSvYaKFwNYB/WamnIVt0XVQH
+   mwzserRg+UeDA9Ej25G7BLR6m51cUPT/OfJeQzqrv6TjpjzMXlaP8KUF5
+   MO4y///0QUiN0t45sSIoHpVXeEX6R1FMu0z0hQmlBi++iJMYid0Tpey7y
+   MBvfZQ8nRms7n5AjA6DppdM/Q24H5+C1Q9+pAea5SewOtiE411LUY1ef3
+   HUknpsZQVhd7IBhcIflN3kEi2mnZGKmotFkZCYj6USe/zJGKoUhSMinUU
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="14366941"
+X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
+   d="scan'208";a="14366941"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 01:53:24 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
+   d="scan'208";a="38811204"
+Received: from vyalavar-mobl1.amr.corp.intel.com (HELO desk) ([10.209.79.44])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 01:53:23 -0800
+Date: Thu, 29 Feb 2024 01:53:22 -0800
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Jiri Slaby <jirislaby@kernel.org>, stable@vger.kernel.org,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Alyssa Milburn <alyssa.milburn@intel.com>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Nikolay Borisov <nik.borisov@suse.com>
+Subject: Re: [PATCH 6.1.y 0/6] Delay VERW - 6.1.y backport
+Message-ID: <20240229095322.uaogvei6amclumkz@desk>
+References: <20240226-delay-verw-backport-6-1-y-v1-0-b3a2c5b9b0cb@linux.intel.com>
+ <7f75bfa1-03a1-4802-bf5d-3d7dfff281c2@kernel.org>
+ <20240227085638.plb5gvunrjqgj7yp@desk>
+ <2024022716-undiluted-donor-17cb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2024022716-undiluted-donor-17cb@gregkh>
 
-On Thu, 2024-02-29 at 09:39 +0100, Herve Codina wrote:
-> In the following sequence:
-> =C2=A0 1) of_platform_depopulate()
-> =C2=A0 2) of_overlay_remove()
->=20
-> During the step 1, devices are destroyed and devlinks are removed.
-> During the step 2, OF nodes are destroyed but
-> __of_changeset_entry_destroy() can raise warnings related to missing
-> of_node_put():
-> =C2=A0 ERROR: memory leak, expected refcount 1 instead of 2 ...
->=20
-> Indeed, during the devlink removals performed at step 1, the removal
-> itself releasing the device (and the attached of_node) is done by a job
-> queued in a workqueue and so, it is done asynchronously with respect to
-> function calls.
-> When the warning is present, of_node_put() will be called but wrongly
-> too late from the workqueue job.
->=20
-> In order to be sure that any ongoing devlink removals are done before
-> the of_node destruction, synchronize the of_overlay_remove() with the
-> devlink removals.
->=20
-> Fixes: 80dd33cf72d1 ("drivers: base: Fix device link removal")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> ---
-> =C2=A0drivers/of/overlay.c | 9 ++++++++-
-> =C2=A01 file changed, 8 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
-> index 2ae7e9d24a64..99659ae9fb28 100644
-> --- a/drivers/of/overlay.c
-> +++ b/drivers/of/overlay.c
+On Tue, Feb 27, 2024 at 10:09:06AM +0100, Greg KH wrote:
+> On Tue, Feb 27, 2024 at 12:56:38AM -0800, Pawan Gupta wrote:
+> > On Tue, Feb 27, 2024 at 09:21:33AM +0100, Jiri Slaby wrote:
+> > > On 27. 02. 24, 9:00, Pawan Gupta wrote:
+> > > > This is the backport of recently upstreamed series that moves VERW
+> > > > execution to a later point in exit-to-user path. This is needed because
+> > > > in some cases it may be possible for data accessed after VERW executions
+> > > > may end into MDS affected CPU buffers. Moving VERW closer to ring
+> > > > transition reduces the attack surface.
+> > > > 
+> > > > Patch 1/6 includes a minor fix that is queued for upstream:
+> > > > https://lore.kernel.org/lkml/170899674562.398.6398007479766564897.tip-bot2@tip-bot2/
+> > > 
+> > > Ah, you note it here.
+> > > 
+> > > But you should include this patch on its own instead of merging it to 1/6.
+> > 
+> > Thats exactly what I would have done ideally, but the backports to
+> > stable kernels < 6.6 wont work without this patch. And this patch is
+> > going to take some time before it can be merged upstream.
+> 
+> It's in the tip-urgent branch, doesn't that mean it will go to Linus
+> this week?  If it's in linux-next, and you _KNOW_ it will go to Linus
+> this week, and the git id is stable, then we can consider the
+> application of it to the stable tree now.
 
-In the cover, you mention device.h inclusion but I'm not seeing it? This is
-clearly up to the DT maintainers to decide but, IMHO, I would very much pre=
-fer
-to see fwnode.h included in here rather than directly device.h (so yeah,
-renaming the function to fwnode_*). But yeah, I might be biased by own seri=
-es :)
+If we use the approach in Nikolay's backport, we can avoid dependency on
+any other patch. Basically alternative patching jmp instead of VERW:
 
-- Nuno S=C3=A1
++.macro CLEAR_CPU_BUFFERS
++       ALTERNATIVE "jmp .Lskip_verw_\@", "", X86_FEATURE_CLEAR_CPU_BUF
++       verw _ASM_RIP(mds_verw_sel)
++.Lskip_verw_\@:
++.endm
 
+https://lore.kernel.org/stable/20240226122237.198921-3-nik.borisov@suse.com/
 
+I will send the backports with this approach.
 
