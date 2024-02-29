@@ -1,177 +1,213 @@
-Return-Path: <stable+bounces-25472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5AA886C4DB
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 10:21:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05E8386C594
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 10:40:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B0F41F267E0
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 09:21:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70C651F26F43
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 09:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A82E459B49;
-	Thu, 29 Feb 2024 09:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C439047F77;
+	Thu, 29 Feb 2024 09:40:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hcH5MkOe"
 X-Original-To: stable@vger.kernel.org
-Received: from air.basealt.ru (air.basealt.ru [194.107.17.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAEAE5A4D4;
-	Thu, 29 Feb 2024 09:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5EA95D730;
+	Thu, 29 Feb 2024 09:40:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709198425; cv=none; b=fvz7QMCerVq6grc+X6NISrKnzjePQjh5i3fe/o51/50MEwqQ0EGuX6eTDcF2KXzVRTJ3ggDbfMW9x9cMrd0WUBVUpGOM3NsBC7MjsCM6eDR/qt7hwWEueh3KbY5XyF5FQqFyrjgkycnDCAielkgA6LjYbRyLf3ymPTT6/0BQtPQ=
+	t=1709199604; cv=none; b=mGZ8YsE/WxhKB1Qopf/xGGNbJjQH4Yf2FRqcOEukVRfaTtIiQtvCpMSgFZCErbPqZUZTT50LXK77QTTEa6rFLnQJ5Z9Rg57FuPR1HLdAPEtkAxk9H/VeA3V/BuGPo7qiYrqlcr4Hh/z8R2w32B1i05krHXwM98r8bfjlB1n23dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709198425; c=relaxed/simple;
-	bh=4F/X5Z6QsULNfoSYXx+VhyVs0V627xYO/1kLOHJm/zU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=buCX5YUqJZCIEUy109cdNxk+vF5wFqHllAvu5DEmFGRBGCqM13Gxz0Smc8F2g34MlYS89m2sPtmsV4GaTeb27cvzlIK/XTPPTx28nITGD14VIbSotbDH0KyMrBy7xpZP05P5Goxae/Byjj8WwX6oJUvRwr0HU8vTLauBKF88mXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: by air.basealt.ru (Postfix, from userid 490)
-	id AF09C2F2025F; Thu, 29 Feb 2024 09:20:20 +0000 (UTC)
-X-Spam-Level: 
-Received: from [10.88.144.178] (obninsk.basealt.ru [217.15.195.17])
-	by air.basealt.ru (Postfix) with ESMTPSA id A8BA72F20251;
-	Thu, 29 Feb 2024 09:20:18 +0000 (UTC)
-Message-ID: <077c8417-03bf-8d61-5d3a-0aef91b55659@basealt.ru>
-Date: Thu, 29 Feb 2024 12:20:18 +0300
+	s=arc-20240116; t=1709199604; c=relaxed/simple;
+	bh=0UKCb2lsR+XxnPaxGeZX/DBqYYTPVJe9H29vJBMK504=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=eHV8Rq15vcIoqzscU52g7lL8UsNCYRHcANjwTAGB620cgjkSFrJWP+K2MCKSkV63pd1w/x1kgLq6uvoXXdMyvsS7rgXSlTQ1XiasclPO7yDIUwFdHS9CE7WHZJGUxZd0i5FBfoNCecXtpBHAXc1sfuLH8fcImpcK/xqOUFFOuEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hcH5MkOe; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a4348aaa705so102590266b.0;
+        Thu, 29 Feb 2024 01:40:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709199601; x=1709804401; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=W5RaMz9HxkBQ/QHEsUPFP9mvPuXWXa71kO8GRgXAWv0=;
+        b=hcH5MkOevdmuQJHXrItLjLsoCzzgG56NlJq3XZAG3lmg605mFbC0qDUDASRkJR9FaR
+         7Ai73Rn1Pqr9yg0Ftq0ypFmPkjVkrw/ONCPIM15AbJGj/JuCclMtyU+Qpzyyk0wk1Wsp
+         ER+kNNW0dQfeBE3P4if+n4NkaH/jUPnGUQqviiTuaNHZ48pfu3dfCupebgJZ3rHxXHLn
+         3zGEbyXj5+8BNrmMhIjF8gwDaEmN9KzOGbKP2GfhqK1uolVCrOQQ73N9tix0Od302H6r
+         qghIk3M3Dp+IQ+gFYCsQduwz3/jR9Vvw+MGcDEuE7sHhYZbS6ZbOhxpqBuJK108qvdqg
+         Ui3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709199601; x=1709804401;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=W5RaMz9HxkBQ/QHEsUPFP9mvPuXWXa71kO8GRgXAWv0=;
+        b=nmT6SRa+x8iK6PxYQZFhQ0vw49KJVZLR+XLD8/1tagi3+b28f2rJ3hOm/1jkhbvs9r
+         v/KnOtEA37hw3+BdSVUGzsNnNZC1qw4GClQLpwIe59s8ufT7eIl7QN8FJ0qrmaTvRrfA
+         8AiP0B4YlJ8xoKWOtLXNlgHRRjY3ZagNQ9CRPRx79IRlesnklvPwuuTrhMURgXF4bmV+
+         2uwKokEUEX5z+bFEuqosz2u430zdlnxyl0BVL5Px4229kfrF6mSOImNZIvhdMSnAnR2X
+         iQN2CZwP2mmkQ0QWuaTtoAxuNRv8xYZX0xMPOykJCUvYma7LGEnmkMeJVmTRDSVTcHqc
+         NY9A==
+X-Forwarded-Encrypted: i=1; AJvYcCUBPeiEVYkZ5YKahnw7Z7ZkHVwo3WieZd6iet5wXrSjI+6JVUjaZi6CPES7F7VTqBfn4W+p6nMxdIo0P49tkyyqoYm+BiGVxE9rQ7Ijj7t69518RDvcxK5rmcf7mLR7SE2dDn5Y3biY50RVMRmJYcNZrQ0jwTWu6g+nPuN87kl75A==
+X-Gm-Message-State: AOJu0YyNO+NQmGOsKtWvTejut2bB4kYX2zN7Sd+CNnR+sIOotsnDqrTE
+	BtOP/1XTqZ2CbvREUwc1R8BvSFyImEEvUcxfUDGaJsg/t1wWQXpd+vG6MDh+e+i8GQ==
+X-Google-Smtp-Source: AGHT+IEx1bdt9xdFXjYVJpodkVY8N8Wlwq6xxgxsW4QcuPFlKd3xWJnzzdX6sT/izTTeTXpQtF2HXg==
+X-Received: by 2002:a17:906:a411:b0:a44:442d:89b3 with SMTP id l17-20020a170906a41100b00a44442d89b3mr761919ejz.48.1709199600765;
+        Thu, 29 Feb 2024 01:40:00 -0800 (PST)
+Received: from ?IPv6:2003:f6:ef1b:2000:15d4:fc17:481e:8afe? (p200300f6ef1b200015d4fc17481e8afe.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:15d4:fc17:481e:8afe])
+        by smtp.gmail.com with ESMTPSA id ty8-20020a170907c70800b00a3ed975968esm500653ejc.28.2024.02.29.01.39.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Feb 2024 01:40:00 -0800 (PST)
+Message-ID: <1265e6ed0e0f5030d633290062f7267621b5bec2.camel@gmail.com>
+Subject: Re: [PATCH v2 1/2] driver core: Introduce device_link_wait_removal()
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Herve Codina <herve.codina@bootlin.com>, Greg Kroah-Hartman
+	 <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Rob
+	Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>
+Cc: Lizhi Hou <lizhi.hou@amd.com>, Max Zhen <max.zhen@amd.com>, Sonal Santan
+ <sonal.santan@amd.com>, Stefano Stabellini <stefano.stabellini@xilinx.com>,
+  Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, Allan Nielsen
+ <allan.nielsen@microchip.com>, Horatiu Vultur
+ <horatiu.vultur@microchip.com>, Steen Hegelund
+ <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+ Nuno Sa <nuno.sa@analog.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>,  stable@vger.kernel.org
+Date: Thu, 29 Feb 2024 10:43:24 +0100
+In-Reply-To: <20240229083953.607569-2-herve.codina@bootlin.com>
+References: <20240229083953.607569-1-herve.codina@bootlin.com>
+	 <20240229083953.607569-2-herve.codina@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH net] gtp: fix use-after-free and null-ptr-deref in
- gtp_newlink()
-Content-Language: en-US
-To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20240228114703.465107-1-oficerovas@altlinux.org>
- <Zd_HAGqXSE6Nwcag@calendula>
-From: Vasiliy Kovalev <kovalev@altlinux.org>
-In-Reply-To: <Zd_HAGqXSE6Nwcag@calendula>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-Hi,
+Hi Herve,
 
-29.02.2024 02:51, Pablo Neira Ayuso wrote:
-> On Wed, Feb 28, 2024 at 02:47:03PM +0300, Alexander Ofitserov wrote:
->> The gtp_link_ops operations structure for the subsystem must be
->> registered after registering the gtp_net_ops pernet operations structure.
-> 
-> A fix for this was already applied, see:
-> 
-> commit 136cfaca22567a03bbb3bf53a43d8cb5748b80ec
-> Author: Vasiliy Kovalev <kovalev@altlinux.org>
-> Date:   Wed Feb 14 19:27:33 2024 +0300
-> 
->      gtp: fix use-after-free and null-ptr-deref in gtp_genl_dump_pdp()
-> 
->> diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
->> index 2129ae42c7030..0ddec4cc84093 100644
->> --- a/drivers/net/gtp.c
->> +++ b/drivers/net/gtp.c
->> @@ -1903,26 +1903,26 @@ static int __init gtp_init(void)
->>   
->>   	get_random_bytes(&gtp_h_initval, sizeof(gtp_h_initval));
->>   
->> -	err = rtnl_link_register(&gtp_link_ops);
->> +	err = register_pernet_subsys(&gtp_net_ops);
->>   	if (err < 0)
->>   		goto error_out;
-> 
-> BTW, I like that this calls register_pernet_subsys() before
-> rtnl_link_register(), where a rtnetlink request could come before
-> pernet is set up.
-> 
->> -	err = register_pernet_subsys(&gtp_net_ops);
->> +	err = rtnl_link_register(&gtp_link_ops);
->>   	if (err < 0)
->> -		goto unreg_rtnl_link;
->> +		goto unreg_pernet_subsys;
->>   
->>   	err = genl_register_family(&gtp_genl_family);
->>   	if (err < 0)
->> -		goto unreg_pernet_subsys;
->> +		goto unreg_rtnl_link;
->>   
->>   	pr_info("GTP module loaded (pdp ctx size %zd bytes)\n",
->>   		sizeof(struct pdp_ctx));
->>   	return 0;
->>   
->> -unreg_pernet_subsys:
->> -	unregister_pernet_subsys(&gtp_net_ops);
->>   unreg_rtnl_link:
->>   	rtnl_link_unregister(&gtp_link_ops);
->> +unreg_pernet_subsys:
->> +	unregister_pernet_subsys(&gtp_net_ops);
->>   error_out:
->>   	pr_err("error loading GTP module loaded\n");
->>   	return err;
->> -- 
->> 2.42.1
->>
->>
+Thanks for moving this forward... Couple of comment
 
-This patch fixes another problem, but a similar one, since the sequence 
-is incorrect when registering subsystems.
+On Thu, 2024-02-29 at 09:39 +0100, Herve Codina wrote:
+> The commit 80dd33cf72d1 ("drivers: base: Fix device link removal")
+> introduces a workqueue to release the consumer and supplier devices used
+> in the devlink.
+> In the job queued, devices are release and in turn, when all the
+> references to these devices are dropped, the release function of the
+> device itself is called.
+>=20
+> Nothing is present to provide some synchronisation with this workqueue
+> in order to ensure that all ongoing releasing operations are done and
+> so, some other operations can be started safely.
+>=20
+> For instance, in the following sequence:
+> =C2=A0 1) of_platform_depopulate()
+> =C2=A0 2) of_overlay_remove()
+>=20
+> During the step 1, devices are released and related devlinks are removed
+> (jobs pushed in the workqueue).
+> During the step 2, OF nodes are destroyed but, without any
+> synchronisation with devlink removal jobs, of_overlay_remove() can raise
+> warnings related to missing of_node_put():
+> =C2=A0 ERROR: memory leak, expected refcount 1 instead of 2
+>=20
+> Indeed, the missing of_node_put() call is going to be done, too late,
+> from the workqueue job execution.
+>=20
+> Introduce device_link_wait_removal() to offer a way to synchronize
+> operations waiting for the end of devlink removals (i.e. end of
+> workqueue jobs).
+> Also, as a flushing operation is done on the workqueue, the workqueue
+> used is moved from a system-wide workqueue to a local one.
+>=20
+> Fixes: 80dd33cf72d1 ("drivers: base: Fix device link removal")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> ---
+> =C2=A0drivers/base/core.c=C2=A0=C2=A0=C2=A0 | 26 +++++++++++++++++++++++-=
+--
+> =C2=A0include/linux/device.h |=C2=A0 1 +
+> =C2=A02 files changed, 24 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/base/core.c b/drivers/base/core.c
+> index d5f4e4aac09b..80d9430856a8 100644
+> --- a/drivers/base/core.c
+> +++ b/drivers/base/core.c
+> @@ -44,6 +44,7 @@ static bool fw_devlink_is_permissive(void);
+> =C2=A0static void __fw_devlink_link_to_consumers(struct device *dev);
+> =C2=A0static bool fw_devlink_drv_reg_done;
+> =C2=A0static bool fw_devlink_best_effort;
+> +static struct workqueue_struct *device_link_wq;
+> =C2=A0
+> =C2=A0/**
+> =C2=A0 * __fwnode_link_add - Create a link between two fwnode_handles.
+> @@ -532,12 +533,26 @@ static void devlink_dev_release(struct device *dev)
+> =C2=A0	/*
+> =C2=A0	 * It may take a while to complete this work because of the SRCU
+> =C2=A0	 * synchronization in device_link_release_fn() and if the consumer=
+ or
+> -	 * supplier devices get deleted when it runs, so put it into the
+> "long"
+> -	 * workqueue.
+> +	 * supplier devices get deleted when it runs, so put it into the
+> +	 * dedicated workqueue.
+> =C2=A0	 */
+> -	queue_work(system_long_wq, &link->rm_work);
+> +	queue_work(device_link_wq, &link->rm_work);
+> =C2=A0}
+> =C2=A0
+> +/**
+> + * device_link_wait_removal - Wait for ongoing devlink removal jobs to
+> terminate
+> + */
+> +void device_link_wait_removal(void)
+> +{
+> +	/*
+> +	 * devlink removal jobs are queued in the dedicated work queue.
+> +	 * To be sure that all removal jobs are terminated, ensure that any
+> +	 * scheduled work has run to completion.
+> +	 */
+> +	drain_workqueue(device_link_wq);
 
-Initially, the registration sequence in the gtp module was as follows:
+I'm still not convinced we can have a recursive call into devlinks removal =
+so I
+do think flush_workqueue() is enough. I will defer to Saravana though...
 
-1) rtnl_link_register();
+> +}
+> +EXPORT_SYMBOL_GPL(device_link_wait_removal);
+> +
+> =C2=A0static struct class devlink_class =3D {
+> =C2=A0	.name =3D "devlink",
+> =C2=A0	.dev_groups =3D devlink_groups,
+> @@ -4099,9 +4114,14 @@ int __init devices_init(void)
+> =C2=A0	sysfs_dev_char_kobj =3D kobject_create_and_add("char", dev_kobj);
+> =C2=A0	if (!sysfs_dev_char_kobj)
+> =C2=A0		goto char_kobj_err;
+> +	device_link_wq =3D alloc_workqueue("device_link_wq", 0, 0);
+> +	if (!device_link_wq)
+> +		goto wq_err;
 
-2) genl_register_family();
+I still think this makes more sense in devlink_class_init() as this really
+device link specific. Moreover, as I said to Saravana, we need to "convince=
+"
+Rafael about this as he (in my series) did not agreed with erroring out in =
+case
+we fail to allocate the queue.
 
-3) register_pernet_subsys();
+Rafael?
 
-During debugging of the module, when starting the syzkaller reproducer, 
-it turned out that after genl_register_family() (2),
+- Nuno S=C3=A1
 
-without waiting for register_pernet_subsys()(3), the .dumpit  event is 
-triggered, in which the data of the unregistered pernet subsystem is 
-accessed.
-
-That is, the bug was fixed by the commit
-
-136cfaca2256 ("gtp: fix use-after-free and null-ptr-deref in 
-gtp_genl_dump_pdp()") [1]
-
-and the registration sequence became as follows:
-
-1) rtnl_link_register();
-
-2) register_pernet_subsys();
-
-3) genl_register_family();
-
-However, syzkaller has discovered another problem:
-
-after registering rtnl_link_register, the .newlink event is triggered, 
-in which the data of the unregistered pernet subsystem is accessed.
-
-This problem is reproducible on current stable kernels and the latest 
-upstream kernel 6.8-rc6, in which the patch 136cfaca2256 [1] is applied.
-
-Therefore, the correct sequence should be as follows:
-
-1) register_pernet_subsys();
-
-2) rtnl_link_register();
-
-3) genl_register_family();
-
-The proposed patch is developed on top of the commit changes [1], does 
-not conflict with it and fixes the described bug.
-
-[1] 
-https://lore.kernel.org/lkml/20240220160434.29bcaf43@kernel.org/T/#mb1f72c2ad57b7ea6d47333e8616beccf8bce0e23
-
--- 
-Regards,
-Vasiliy Kovalev
 
