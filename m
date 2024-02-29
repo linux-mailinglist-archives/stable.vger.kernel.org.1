@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-25687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B20D186D559
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 22:00:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70DD086D55F
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 22:01:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C1B82865B4
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 21:00:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BC57B255F5
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 21:01:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9ACC16B052;
-	Thu, 29 Feb 2024 20:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00C016CA1C;
+	Thu, 29 Feb 2024 20:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bHUeyqQw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aoesQCew"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E7716B048;
-	Thu, 29 Feb 2024 20:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB98151CE5;
+	Thu, 29 Feb 2024 20:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709239304; cv=none; b=PTbaefoSrZAvFsEBdMEOxRxVtihR9C3h9v7KkZaEkmHJ2WssX2b0nRR7qRmn6SV3aebszgNjAyiEXcj6t7Vd1wM/Pbfeg3dOEYpcOkYP1sWPcjvz4AZOinIgXXfvkL8QObJoOXycJESLlQod6GP+cJo+TWxFJTSiGGl3/bXrXFA=
+	t=1709239311; cv=none; b=E6qFdgZTSe+uEjCC94jkullMR78hp7c+7lUzAwFnBn9Gl6ZqunWyc1bGlLgbjjMLV1UcMJi3JUUpgKRQBaapne+l6nSJthH9GXmtQnEditpHaYi9ZnVloeyTWfmDu2vYOjkJdPbGeUtCFY0KfH557UfOidTFI/6//aU1XNPPkZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709239304; c=relaxed/simple;
-	bh=ZxIx9z3r2Fy0pXEj0UY8qczYhkBfaOAySFHgWRpmokM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jkRi3go6f2oelgxXt1jp4goYkUzFg1mtejCCJ1dyaILqW8GhodEtyeDQHJIzkQFFk6liDxmUUIjwhzbDHjJRRzVFluR2Tf7B0f/d6TGabXtu1NEQqr+Hzioo0zc5Wylh0wybL2E2rwW5hDkjf6AINDpGCn23YSNTIen6PiFFPrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bHUeyqQw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8934FC433C7;
-	Thu, 29 Feb 2024 20:41:43 +0000 (UTC)
+	s=arc-20240116; t=1709239311; c=relaxed/simple;
+	bh=q/zQI/aVAcj6DReUdBtfbzpmGks9RLFWREZi7JOicZU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SXb+ZuJYaBJhUrhGkMeL6OaR04PGE9vSmBRsp215yZRiAzZpbNAE2enTlBBaCPxqiamfdNa+vh4soRXLFFKAdnrZxKYqQJSBs+CWtf38snBAm5WZAU+EeHJSqrH/U3H8/YOwoGKBfeUGIU0jZT6DSjeUgJs5YXs1bsBV1IlT+QI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aoesQCew; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23E52C433C7;
+	Thu, 29 Feb 2024 20:41:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709239304;
-	bh=ZxIx9z3r2Fy0pXEj0UY8qczYhkBfaOAySFHgWRpmokM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bHUeyqQw3m+TB+h7Y//gUzemdleBCdrx0jnQ2yEoOS/+azD3WFpmAE210MRdbjGmX
-	 RvVXeCwnQ0nVoOxYEOWRGIRSF6ptwlomcVJW02cIaypZERqGd0e4NP+GmAyRn/3L74
-	 6vvaS0+lrpzsMcSSZNEp6rw8Hda5qvYss9pFYYo1QHucX3C94l3Aq1T9TpYHPuBElN
-	 mYOGCrwg+1AlfEMcF6y7X3fWJANRoRMyBh6VYgQ0iwQ3FnlCok5kSYnQzl1SD4hMFN
-	 2yymtQyRF1wSJo2cN5U0vbSb7dxY8KqWvSQ9D3TiyVOI67W2W+pgSlbtjkbG29wJS7
-	 H9Bq3ISQ/ydZw==
+	s=k20201202; t=1709239311;
+	bh=q/zQI/aVAcj6DReUdBtfbzpmGks9RLFWREZi7JOicZU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=aoesQCewSTX1XHY4tDQwo3Td0/tA5g9CcpGUg0DVep+iZ/51RHM2Fs267zn0A0KO1
+	 08dmTPEfmMsNMVAx6vrm+kCuq0CqRHW/fuuhizg0Ci1XWq1DBzW4qSnCvwqPdnkJu4
+	 1PnuPY6E5CgDSD1C/h5oqXcOeLAFqM5SwAzJqNwzJmg0HojyeHFt7EoY60gL+N2C8j
+	 x1vMtAvUxCxE/1Y/jvUwYsfCO0SJ8KkjeRGDzTvVxMjz1ZFeqSaQvV78CnjmMPELg0
+	 pAd+RryXtzuVQBuzt6Iahe7rgygtsc5qweaokguw6z0ZBMs3tkf+XpKrToZeiflcRO
+	 UXQkpZF/2QiuA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mikulas Patocka <mpatocka@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
+Cc: Yishai Hadas <yishaih@nvidia.com>,
+	Tamar Mashiah <tmashiah@nvidia.com>,
+	Michael Guralnik <michaelgur@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	agk@redhat.com,
-	dm-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 5.10 8/8] dm-verity, dm-crypt: align "struct bvec_iter" correctly
-Date: Thu, 29 Feb 2024 15:41:25 -0500
-Message-ID: <20240229204127.2861980-8-sashal@kernel.org>
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 1/6] RDMA/mlx5: Relax DEVX access upon modify commands
+Date: Thu, 29 Feb 2024 15:41:41 -0500
+Message-ID: <20240229204150.2862196-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240229204127.2861980-1-sashal@kernel.org>
-References: <20240229204127.2861980-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,71 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.210
+X-stable-base: Linux 5.4.269
 Content-Transfer-Encoding: 8bit
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Yishai Hadas <yishaih@nvidia.com>
 
-[ Upstream commit 787f1b2800464aa277236a66eb3c279535edd460 ]
+[ Upstream commit be551ee1574280ef8afbf7c271212ac3e38933ef ]
 
-"struct bvec_iter" is defined with the __packed attribute, so it is
-aligned on a single byte. On X86 (and on other architectures that support
-unaligned addresses in hardware), "struct bvec_iter" is accessed using the
-8-byte and 4-byte memory instructions, however these instructions are less
-efficient if they operate on unaligned addresses.
+Relax DEVX access upon modify commands to be UVERBS_ACCESS_READ.
 
-(on RISC machines that don't have unaligned access in hardware, GCC
-generates byte-by-byte accesses that are very inefficient - see [1])
+The kernel doesn't need to protect what firmware protects, or what
+causes no damage to anyone but the user.
 
-This commit reorders the entries in "struct dm_verity_io" and "struct
-convert_context", so that "struct bvec_iter" is aligned on 8 bytes.
+As firmware needs to protect itself from parallel access to the same
+object, don't block parallel modify/query commands on the same object in
+the kernel side.
 
-[1] https://lore.kernel.org/all/ZcLuWUNRZadJr0tQ@fedora/T/
+This change will allow user space application to run parallel updates to
+different entries in the same bulk object.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Tested-by: Tamar Mashiah <tmashiah@nvidia.com>
+Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
+Reviewed-by: Michael Guralnik <michaelgur@nvidia.com>
+Link: https://lore.kernel.org/r/7407d5ed35dc427c1097699e12b49c01e1073406.1706433934.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-crypt.c  | 4 ++--
- drivers/md/dm-verity.h | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/infiniband/hw/mlx5/devx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm-crypt.c b/drivers/md/dm-crypt.c
-index 5d772f322a245..bed685969ad49 100644
---- a/drivers/md/dm-crypt.c
-+++ b/drivers/md/dm-crypt.c
-@@ -48,11 +48,11 @@
- struct convert_context {
- 	struct completion restart;
- 	struct bio *bio_in;
--	struct bio *bio_out;
- 	struct bvec_iter iter_in;
-+	struct bio *bio_out;
- 	struct bvec_iter iter_out;
--	u64 cc_sector;
- 	atomic_t cc_pending;
-+	u64 cc_sector;
- 	union {
- 		struct skcipher_request *req;
- 		struct aead_request *req_aead;
-diff --git a/drivers/md/dm-verity.h b/drivers/md/dm-verity.h
-index 78d1e51195ada..f61c89c79cf5b 100644
---- a/drivers/md/dm-verity.h
-+++ b/drivers/md/dm-verity.h
-@@ -74,11 +74,11 @@ struct dm_verity_io {
- 	/* original value of bio->bi_end_io */
- 	bio_end_io_t *orig_bi_end_io;
- 
-+	struct bvec_iter iter;
-+
- 	sector_t block;
- 	unsigned n_blocks;
- 
--	struct bvec_iter iter;
--
- 	struct work_struct work;
- 
- 	/*
+diff --git a/drivers/infiniband/hw/mlx5/devx.c b/drivers/infiniband/hw/mlx5/devx.c
+index 26cc7bbcdfe6a..7a3b56c150799 100644
+--- a/drivers/infiniband/hw/mlx5/devx.c
++++ b/drivers/infiniband/hw/mlx5/devx.c
+@@ -2811,7 +2811,7 @@ DECLARE_UVERBS_NAMED_METHOD(
+ 	MLX5_IB_METHOD_DEVX_OBJ_MODIFY,
+ 	UVERBS_ATTR_IDR(MLX5_IB_ATTR_DEVX_OBJ_MODIFY_HANDLE,
+ 			UVERBS_IDR_ANY_OBJECT,
+-			UVERBS_ACCESS_WRITE,
++			UVERBS_ACCESS_READ,
+ 			UA_MANDATORY),
+ 	UVERBS_ATTR_PTR_IN(
+ 		MLX5_IB_ATTR_DEVX_OBJ_MODIFY_CMD_IN,
 -- 
 2.43.0
 
