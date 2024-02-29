@@ -1,145 +1,93 @@
-Return-Path: <stable+bounces-25612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94BBA86D441
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 21:31:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DFF486D455
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 21:37:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 466321F23F53
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 20:31:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 158691C2137C
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 20:37:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46F8B1428F1;
-	Thu, 29 Feb 2024 20:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BD4B1420DB;
+	Thu, 29 Feb 2024 20:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1YbtChL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U78kPCWe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D9B7BAEB;
-	Thu, 29 Feb 2024 20:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC24160644;
+	Thu, 29 Feb 2024 20:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709238668; cv=none; b=g/d6PDfzFrB8vgzYEwqBcCdeGeQz9Fp1nIysTxHycMCIHqWVB4oGac4Gf3OgCrbQ61VnQMEisgwSKDJVRMWJTJugDWPqgyaLLBtKqK61hoWTu/uSxB4Fdq4rZ9GW8cxKTiajTMPY1VrvSDVDTMY0nvmRKaKN6W1INfdxZRmRZDs=
+	t=1709239051; cv=none; b=i7Jic3rLrEYigIAOBJnJ+Bb43Lvy+u8c31rIYkKr8SCiLSoBSfSWqa+9m1RB/tvk/Kh9DMqgnkAJ+Hxy+hDG4qqyBl3OL/8KMc1xWZGH74DpOv2C7VkU4NqwhZAvNSIKtjA/RNA1RLxGzFB8OLUbzG5+4yugwkHZyFQ/rwdwMWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709238668; c=relaxed/simple;
-	bh=M4+6vQFkD+CYyHpmKhFMZOuZsQkEWvXMWLciVnbbYrA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p1ZDE4oQaWFsqGREBK78XDJOIUBCMG8uCv23LQ6gTtYi28PVjaVgPOAYJzTgkqh8CCU8+H7XY+Vk17uUTe3ymNx9B35AHOm4+uq7eH8rLX9zga+xLxHvIr965XgLhEwTg13nVLAmX2xozkC/yEBu4bftQf0UL2K4YqOQMIRBfPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1YbtChL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDF60C433F1;
-	Thu, 29 Feb 2024 20:31:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709238667;
-	bh=M4+6vQFkD+CYyHpmKhFMZOuZsQkEWvXMWLciVnbbYrA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=z1YbtChLPxbWtp5lARHdveXbF//APjjq3sKO2oW7h6SARgdWdLmMXJDhqLOMai56C
-	 qXG3/zWQhqYf/PEfHYOOUxKvle47M3Z1EpwBF8gqwnGhRqdkJhJGDEHtbLz3Feljkh
-	 G2wxTxt1bfuy5odd/agjuZXDTG8rTNcsiDjl7uJY=
-Date: Thu, 29 Feb 2024 21:31:04 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Daniel =?iso-8859-1?Q?D=EDaz?= <daniel.diaz@linaro.org>,
-	stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com, paul@crapouillou.net
-Subject: Re: [PATCH 5.15 000/245] 5.15.150-rc1 review
-Message-ID: <2024022927-bluish-anime-d70a@gregkh>
-References: <20240227131615.098467438@linuxfoundation.org>
- <ac2c579e-4ff0-42e2-ab70-efb8ded2d257@linaro.org>
- <2024022905-skinny-making-7852@gregkh>
- <1223812f-1dc3-40c2-a58a-2485d68e92b6@roeck-us.net>
+	s=arc-20240116; t=1709239051; c=relaxed/simple;
+	bh=FkzDlT8ctDyCauDA5oCuwo7gENN9bz4/MUbxBdnuFjM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gXXcWC0KDuCoUtHkVgHQEBMzALs2Jrshfo02D961OUGXiqhaiY/iIUeRIaLT06acb2y7SBV2+kHlSL5D0jIer5/6FmeHQwoxDvso4ENQOuBtsFm0rYDaGkB35Nl1m0W2KXIbLND75p1EZAWrB+KdYHweN0jIFB4cz8lLbuk1f+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U78kPCWe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC05C433F1;
+	Thu, 29 Feb 2024 20:37:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709239050;
+	bh=FkzDlT8ctDyCauDA5oCuwo7gENN9bz4/MUbxBdnuFjM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=U78kPCWe17ueHfW80zt17rGFznSzQ+41f4dFSROM9JJhhh1flohp1rwyRp+RR89Ya
+	 otZVD2NhwNRsqOxvV6UFGGf37ncnxrwFaYad4PwU8eUtG8uI7GZhzLNCsCizL7O+QC
+	 UJ83UoBbUsq28I2FMekqjnwLiSAzpW/FeVhXQfou3tg8Spztb1xwL2qQ8MGe1P40Hk
+	 eBT2erpaUXImRGTb7MAY6y85bJsHn8g9IM6I77asXkUEpW3nEQ5rNNWWlQYscLsqmP
+	 YLucy5MSTyJK81KdVxFkzCkI4Jae4TPvdy1RZhPbFSPIv3G+Paj4GCrycVi0vbyhYO
+	 s+up7axmVhySQ==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Sasha Levin <sashal@kernel.org>,
+	conor@kernel.org
+Subject: [PATCH AUTOSEL 6.7 01/24] soc: microchip: Fix POLARFIRE_SOC_SYS_CTRL input prompt
+Date: Thu, 29 Feb 2024 15:36:41 -0500
+Message-ID: <20240229203729.2860356-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.7.6
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <1223812f-1dc3-40c2-a58a-2485d68e92b6@roeck-us.net>
 
-On Thu, Feb 29, 2024 at 12:19:40PM -0800, Guenter Roeck wrote:
-> On 2/29/24 11:54, Greg Kroah-Hartman wrote:
-> > On Tue, Feb 27, 2024 at 12:56:32PM -0600, Daniel Díaz wrote:
-> > > Hello!
-> > > 
-> > > On 27/02/24 7:23 a. m., Greg Kroah-Hartman wrote:
-> > > > This is the start of the stable review cycle for the 5.15.150 release.
-> > > > There are 245 patches in this series, all will be posted as a response
-> > > > to this one.  If anyone has any issues with these being applied, please
-> > > > let me know.
-> > > > 
-> > > > Responses should be made by Thu, 29 Feb 2024 13:15:36 +0000.
-> > > > Anything received after that time might be too late.
-> > > > 
-> > > > The whole patch series can be found in one patch at:
-> > > > 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.150-rc1.gz
-> > > > or in the git tree and branch at:
-> > > > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> > > > and the diffstat can be found below.
-> > > > 
-> > > > thanks,
-> > > > 
-> > > > greg k-h
-> > > 
-> > > We're seeing build regressions here with RISC-V, with GCC 8, GCC 12, and Clang 17:
-> > > 
-> > > -----8<-----
-> > >    In file included from /builds/linux/include/linux/list.h:9,
-> > >                     from /builds/linux/include/linux/module.h:12,
-> > >                     from /builds/linux/drivers/net/ethernet/realtek/r8169_main.c:12:
-> > >    /builds/linux/drivers/net/ethernet/realtek/r8169_main.c:5512:35: error: 'rtl8169_pm_ops' undeclared here (not in a function); did you mean 'rtl8169_poll'?
-> > >     5512 |         .driver.pm      = pm_ptr(&rtl8169_pm_ops),
-> > >          |                                   ^~~~~~~~~~~~~~
-> > >    /builds/linux/include/linux/kernel.h:46:44: note: in definition of macro 'PTR_IF'
-> > >       46 | #define PTR_IF(cond, ptr)       ((cond) ? (ptr) : NULL)
-> > >          |                                            ^~~
-> > >    /builds/linux/drivers/net/ethernet/realtek/r8169_main.c:5512:27: note: in expansion of macro 'pm_ptr'
-> > >     5512 |         .driver.pm      = pm_ptr(&rtl8169_pm_ops),
-> > >          |                           ^~~~~~
-> > >    make[5]: *** [/builds/linux/scripts/Makefile.build:289: drivers/net/ethernet/realtek/r8169_main.o] Error 1
-> > > ----->8-----
-> > > 
-> > > Bisection points to:
-> > > 
-> > >    commit ac2871f646a8f556203f5b6be875ce406d855ddb
-> > >    Author: Paul Cercueil <paul@crapouillou.net>
-> > >    Date:   Tue Dec 7 00:20:59 2021 +0000
-> > >        PM: core: Redefine pm_ptr() macro
-> > >        [ Upstream commit c06ef740d401d0f4ab188882bf6f8d9cf0f75eaf ]
-> > > 
-> > > A revert could not be done cleanly.
-> > > 
-> > > Tuxmake reproducer:
-> > > 
-> > >    tuxmake --runtime podman --target-arch riscv --toolchain gcc-12 --kconfig defconfig
-> > > 
-> > > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> > 
-> > I've been beating on this for a while and I really don't know what is
-> > happening, sorry.  The driver looks fine, something is "odd" with riscv
-> 
-> No, the driver is not fine. Upstream has commit 8fe6e670640e ("r8169: use new
-> PM macros") which makes rtl8169_pm_ops unconditional. That commit is missing
-> in v5.15.y. Applying it makes the problem disappear.
-> 
-> In other words, the problem is not riscv specific, but will be seen if the
-> realtek driver is built with CONFIG_PM=n (which happens to be the case with
-> riscv:defconfig).
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Ugh, that wasn't obvious, I was thinking that the CONFIG_PM thing would
-have worked properly there and was digging in riscv code all over the
-place...
+[ Upstream commit 6dd9a236042e305d7b69ee92db7347bf5943e7d3 ]
 
-Thanks for this, now queued up.
+The symbol's prompt should be a one-line description, instead of just
+duplicating the symbol name.
 
-greg k-h
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/soc/microchip/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/soc/microchip/Kconfig b/drivers/soc/microchip/Kconfig
+index eb656b33156ba..f19e74d342aa2 100644
+--- a/drivers/soc/microchip/Kconfig
++++ b/drivers/soc/microchip/Kconfig
+@@ -1,5 +1,5 @@
+ config POLARFIRE_SOC_SYS_CTRL
+-	tristate "POLARFIRE_SOC_SYS_CTRL"
++	tristate "Microchip PolarFire SoC (MPFS) system controller support"
+ 	depends on POLARFIRE_SOC_MAILBOX
+ 	help
+ 	  This driver adds support for the PolarFire SoC (MPFS) system controller.
+-- 
+2.43.0
+
 
