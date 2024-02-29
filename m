@@ -1,167 +1,172 @@
-Return-Path: <stable+bounces-25591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49D0D86CFB1
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 17:51:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C11B86CFF7
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 18:02:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B37C1C210C9
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 16:51:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF355B255EC
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 17:01:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E08193770C;
-	Thu, 29 Feb 2024 16:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F335B78266;
+	Thu, 29 Feb 2024 16:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="bJuiE59u"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="RwWqCEwa"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E937C2033A
-	for <stable@vger.kernel.org>; Thu, 29 Feb 2024 16:51:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 337034AECA
+	for <stable@vger.kernel.org>; Thu, 29 Feb 2024 16:57:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709225489; cv=none; b=O520Pm5ObGgOnOoq+mXLYhkyvD1IPU+Q+DisqX+G2Xx/hcQRnuCUkYBFWTKQUIIbYmGrA4i4EIP39lOOxKjWdj0IScs6UpYwfCIxALqa1qTDrEeIedhXTltgrMna1tNrMo1FYgwuBem5PAJgMk8fcLf2YBCY92eaphS+CvtnuLQ=
+	t=1709225875; cv=none; b=t0uZzsg+DrtWg6lfzBHe7XLU5rsLRigZqGp+D3GLycnsIRC4gV+3wWH05iGSblazB9YjiQzbbM3jSXcdtIMt+EP97hssp3tTJRgPg9EHGjndgaqlKdxYUpWTgzsSZWp7I+6N7IyU2KPdphEd8EMPRsxlCpLUpzxnykAXlZBhhBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709225489; c=relaxed/simple;
-	bh=jeB0jLSy8q+eh9qYQtqC3QlywNP/Xfpi3Eu7iYzC4es=;
+	s=arc-20240116; t=1709225875; c=relaxed/simple;
+	bh=/iw69Wo9b7FEqCXecpxEQgFw9ugs5Mjc606tFUFxMt8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=k9YRy31GPofdSKt0UVEJ18DxIXVIufnI949TSJwE3n6KLB2kRMtOPU/qx++g0q95WOoNWhExoOsqggmPxjWFpQLAe9hRA7GpRHWk+XIex1V4ObUg+zvzricqcGXLMVW3sOSj77zCye1q7+ydpJoOCsrduupCBJgoUxyz9x4DHAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=bJuiE59u; arc=none smtp.client-ip=209.85.208.41
+	 To:Cc:Content-Type; b=rnvmqiQQTpzb/mqQyL4+sIKiPm4RvIS8abYv5S4C1sV75uJQhtEA0aJLNfm+tUg+FuaXLY+4X/wlPn3GOkWU3ZulllovUg5VIcBKgIh+RIoWvGBYnk4cxHQ6oMrR/pAf96sXHk75+Ngt8HhfOihaJgRS7ID23CpyeKH7ra+ezyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=RwWqCEwa; arc=none smtp.client-ip=209.85.210.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-564647bcdbfso1565734a12.2
-        for <stable@vger.kernel.org>; Thu, 29 Feb 2024 08:51:27 -0800 (PST)
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-6e4953d801bso575886a34.2
+        for <stable@vger.kernel.org>; Thu, 29 Feb 2024 08:57:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1709225485; x=1709830285; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KAGKZhcS7Vcqv+9qUnLEagGLoWPuyfJ/EEdRmEE/75w=;
-        b=bJuiE59uBnxLDLwmJHZCpz8l2z13AQsOVqU3GKcWKlowbC3YkfjaV31Bwff90H+ssM
-         h02luHq2+ECyGOBoj1jgmBokKY/fOF5oZ5TPzjjgmTR835WE+ioNeJ/ZDY+mvg1q1asw
-         GAEb+dOStFXUu6F4zPQ5sAs02jB7KLSCHcuNg=
+        d=chromium.org; s=google; t=1709225873; x=1709830673; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=wIQGu3rSrz7XnTQlEMgB0HP/EAY1ehgeyK1F+l2GXOk=;
+        b=RwWqCEwa7i3XY5L79QT61EhFpmWOExPkAvv1qBNe1ppoEB+VO+eFEeqasTTHyo4dM5
+         iaCasV6IySwvysO66r0W2FfIh9v734+ZYgARzqs9OMPCSXgY9noOjBvcE58xK1/Ls2ha
+         +bBh0j7Tp0n1jQctmYLZJRt747HS9ae/Pyi6w=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709225485; x=1709830285;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KAGKZhcS7Vcqv+9qUnLEagGLoWPuyfJ/EEdRmEE/75w=;
-        b=wIO4sQ2VTwhWiEQQaGVJGxVi92UcT1xR/9xIwIbiuz/tp/uV+9HUc6gL1Zez6hSBGV
-         NMAEoX9X8nkBiN3VIx1JWUiJR1RPvKPIQEKJPTo3CvBvRYyThKWq1qBHJO/mLiROFAJ/
-         qAKJ8tkNxRxy2FkLYH1UHSAObqXGLrAD5tLVadxBadaNJwK7efP9uSU9+8ejlA15u2Jp
-         dkx/KcukFeKzKKYc8RrpuhXfpUGHoLcGBmx3z2VHLrvH0tfJ0Ypzzb4so6PDRwnjrGVl
-         ZoVaV/fokHrw+kZfC32fMWyLtZE/OGTn/axR4yGjr2Z1h8Izxi/EMpTw/mbsryzXSzFN
-         ws2w==
-X-Forwarded-Encrypted: i=1; AJvYcCXWQtokNNdi2dCUBNX+As0iFdLXjFcSP2UpDzT6T6ChHunmyX5qgnzJTNrzDnvh5Rcgk+QCxG/GIQK4jV8bIhtCmyIo2Zi7
-X-Gm-Message-State: AOJu0YxGmuCkgtVdTSP08OjZKDRlOcjR0lIW7RMTcLVREPhGoL/566pk
-	/Yl6eV0fFSseZ7ey8/chO/mrgpd6M2Nb3H5KHVfGGk4MP3n6CkNIqjNR6Fyb5Q69Xtde7TPmVua
-	jqMTG
-X-Google-Smtp-Source: AGHT+IEqGj7tqNoqfalsjojX98fkw8+rj/IQSs8RMvxz0ppOJzz0KtMvnO3bOYoGGNLk/S6KzFzGgw==
-X-Received: by 2002:a17:906:11d2:b0:a44:3056:1ed0 with SMTP id o18-20020a17090611d200b00a4430561ed0mr1890147eja.62.1709225485256;
-        Thu, 29 Feb 2024 08:51:25 -0800 (PST)
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com. [209.85.208.48])
-        by smtp.gmail.com with ESMTPSA id s15-20020a170906bc4f00b00a433634ba03sm855180ejv.43.2024.02.29.08.51.24
+        d=1e100.net; s=20230601; t=1709225873; x=1709830673;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wIQGu3rSrz7XnTQlEMgB0HP/EAY1ehgeyK1F+l2GXOk=;
+        b=RF17Iq4Xs8e9Sa6xojBJwGpNNl9RzQKNE3zRjLRrTHlXA3M/Of+Q5irfKxEaFmu+ZU
+         cbHo4hXVVRMAFT+ksyJdZDZwuWyVgITIyfmQSsomyDZY20l6zNBC1Q0kaSrsD4VG2AbH
+         R8lNiFuR5J9gBjDiD0+EkSO4eNayVAO9jDoR9SCyOD70HEC446vOhbtbx76pw2IjJLE8
+         PTJQacVtPEjIkundZOyWrqMPsnCE7MxPwoknvg7M7ad+iqYX9gvpnFp5Siht7C+l0pqr
+         yxa/dl8tWyhqg9JW5DBGjgZUxdph7bJW3x2cjNXnU9OKHn3a82o3e/QN4l14HGqeRjtH
+         7NzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUqgfZR71tbBNewK7dWdhYQACv4C/oxrRGBOqMg3WNo6Ho3hVTbCUZd4z+Abe2TEgv7/tmax+eVMz6nyfHW75vuXM1x6J1d
+X-Gm-Message-State: AOJu0Yyy1xT4t68THaM8iG9TyqE/WCvEemFmSWL5XIdKFfXVGmBY6Mfe
+	a9dP/BRZ4BM0XMyRemHHnAdG7jBZL0ajpZP4CkzyMZRQYKI8ZMoRIcjczG0zPCOEUXkZS00N5qw
+	=
+X-Google-Smtp-Source: AGHT+IEDMLahJV9oiMrFMhXO52srRhtE4QMnqm9fId0mIZJSYHCivli3QRSDAPRVpy0BxfQ5p5cIog==
+X-Received: by 2002:a05:6870:1493:b0:21e:b778:dc5c with SMTP id k19-20020a056870149300b0021eb778dc5cmr2695758oab.44.1709225872809;
+        Thu, 29 Feb 2024 08:57:52 -0800 (PST)
+Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com. [209.85.161.46])
+        by smtp.gmail.com with ESMTPSA id gl7-20020a0568703c8700b0021fb37e33e5sm513682oab.19.2024.02.29.08.57.51
         for <stable@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Feb 2024 08:51:24 -0800 (PST)
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-566b160f6eeso6892a12.1
-        for <stable@vger.kernel.org>; Thu, 29 Feb 2024 08:51:24 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUdCfTvdHD9XVYbXB5STp1yH7jg5SOFu/EtIOaP2vsuxSlQzg1wGmKvScN6BDIc88Vn9PODcjUnRv5zEcaufhDeBFYEVafq
-X-Received: by 2002:a05:6402:34cc:b0:565:d0e4:d8a0 with SMTP id
- w12-20020a05640234cc00b00565d0e4d8a0mr153095edc.3.1709225484579; Thu, 29 Feb
- 2024 08:51:24 -0800 (PST)
+        Thu, 29 Feb 2024 08:57:52 -0800 (PST)
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-5a027fda5aeso515434eaf.1
+        for <stable@vger.kernel.org>; Thu, 29 Feb 2024 08:57:51 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXxB/ydU1HyXW93DbZHX2+YDlH7qA9pGWp9JyMW9mzM/WivXI9t1okUvYVrWa8QyEt6Qbrs13U+UjPmDO30MptVTbUCW5Kx
+X-Received: by 2002:a05:6358:441e:b0:17b:5c4b:90a with SMTP id
+ z30-20020a056358441e00b0017b5c4b090amr3320345rwc.5.1709225871313; Thu, 29 Feb
+ 2024 08:57:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240229154946.2850012-1-sashal@kernel.org> <20240229154946.2850012-21-sashal@kernel.org>
-In-Reply-To: <20240229154946.2850012-21-sashal@kernel.org>
-From: Doug Anderson <dianders@chromium.org>
-Date: Thu, 29 Feb 2024 08:51:09 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=Wb4meRvghR00LTzXRAobgioGo5g2oYqMLuO8nYWDa7Rg@mail.gmail.com>
-Message-ID: <CAD=FV=Wb4meRvghR00LTzXRAobgioGo5g2oYqMLuO8nYWDa7Rg@mail.gmail.com>
-Subject: Re: [PATCH AUTOSEL 6.6 21/21] arm64/sve: Lower the maximum allocation
- for the SVE ptrace regset
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Mark Brown <broonie@kernel.org>, Will Deacon <will@kernel.org>, catalin.marinas@arm.com, 
-	oleg@redhat.com, mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org
+References: <20240108-rallybar-v4-1-a7450641e41b@chromium.org>
+ <20240204105227.GB25334@pendragon.ideasonboard.com> <ca89eb86-a566-422c-9448-d8d5254d54b8@suse.com>
+ <6aade777-d97c-4c65-b542-14ce5b39abb6@rowland.harvard.edu>
+ <20240213104725.GC5012@pendragon.ideasonboard.com> <CANiDSCvqEkzD_-pUExT2Aci9t_tfFPWusnjST5iF-5N9yiob4g@mail.gmail.com>
+In-Reply-To: <CANiDSCvqEkzD_-pUExT2Aci9t_tfFPWusnjST5iF-5N9yiob4g@mail.gmail.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
+Date: Thu, 29 Feb 2024 17:57:38 +0100
+X-Gmail-Original-Message-ID: <CANiDSCsqER=3OqzxRKYR_vs4as5aO1bfSXmFJtNmzw1kznd_wQ@mail.gmail.com>
+Message-ID: <CANiDSCsqER=3OqzxRKYR_vs4as5aO1bfSXmFJtNmzw1kznd_wQ@mail.gmail.com>
+Subject: Re: [PATCH v4] media: ucvideo: Add quirk for Logitech Rally Bar
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Oliver Neukum <oneukum@suse.com>
+Cc: Alan Stern <stern@rowland.harvard.edu>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-media@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi,
+Oliver, friendly ping
+
+On Mon, 19 Feb 2024 at 16:13, Ricardo Ribalda <ribalda@chromium.org> wrote:
+>
+> Hi Oliver
+>
+> Would you prefer a version like this?
+>
+> https://lore.kernel.org/all/20231222-rallybar-v2-1-5849d62a9514@chromium.org/
+>
+> If so I can re-submit a version with the 3 vid/pids.  Alan, would you
+> be happy with that?
+>
+> Regards!
+>
+> On Tue, 13 Feb 2024 at 11:47, Laurent Pinchart
+> <laurent.pinchart@ideasonboard.com> wrote:
+> >
+> > On Mon, Feb 12, 2024 at 02:04:31PM -0500, Alan Stern wrote:
+> > > On Mon, Feb 12, 2024 at 01:22:42PM +0100, Oliver Neukum wrote:
+> > > > On 04.02.24 11:52, Laurent Pinchart wrote:
+> > > > > Hi Ricardo,
+> > > > >
+> > > > > Thank you for the patch.
+> > > >
+> > > > Hi,
+> > > >
+> > > > sorry for commenting on this late, but this patch has
+> > > > a fundamental issue. In fact this issue is the reason the
+> > > > handling for quirks is in usbcore at all.
+> > > >
+> > > > If you leave the setting/clearing of this flag to a driver you
+> > > > are introducing a race condition. The driver may or may not be
+> > > > present at the time a device is enumerated. And you have
+> > > > no idea how long the autosuspend delay is on a system
+> > > > and what its default policy is regarding suspending
+> > > > devices.
+> > > > That means that a device can have been suspended and
+> > > > resumed before it is probed. On a device that needs
+> > > > RESET_RESUME, we are in trouble.
+> > >
+> > > Not necessarily.  If the driver knows that one of these devices may
+> > > already have been suspend and resumed, it can issue its own preemptive
+> > > reset at probe time.
+> > >
+> > > > The inverse issue will arise if a device does not react
+> > > > well to RESET_RESUME. You cannot rule out that a device
+> > > > that must not be reset will be reset.
+> > >
+> > > That's a separate issue, with its own list of potential problems.
+> > >
+> > > > I am sorry, but it seems to me that the exceptions need
+> > > > to go into usbcore.
+> > >
+> > > If we do then we may want to come up with a better scheme for seeing
+> > > which devices need to have a quirk flag set.  A static listing probably
+> > > won't be good enough; the decision may have to be made dynamically.
+> >
+> > I don't mind either way personally. Oliver, could you try to find a good
+> > solution with Ricardo ? I'll merge the outcome.
+> >
+> > --
+> > Regards,
+> >
+> > Laurent Pinchart
+>
+>
+>
+> --
+> Ricardo Ribalda
 
 
-On Thu, Feb 29, 2024 at 7:50=E2=80=AFAM Sasha Levin <sashal@kernel.org> wro=
-te:
->
-> From: Mark Brown <broonie@kernel.org>
->
-> [ Upstream commit 2813926261e436d33bc74486b51cce60b76edf78 ]
->
-> Doug Anderson observed that ChromeOS crashes are being reported which
-> include failing allocations of order 7 during core dumps due to ptrace
-> allocating storage for regsets:
->
->   chrome: page allocation failure: order:7,
->           mode:0x40dc0(GFP_KERNEL|__GFP_COMP|__GFP_ZERO),
->           nodemask=3D(null),cpuset=3Durgent,mems_allowed=3D0
->    ...
->   regset_get_alloc+0x1c/0x28
->   elf_core_dump+0x3d8/0xd8c
->   do_coredump+0xeb8/0x1378
->
-> with further investigation showing that this is:
->
->    [   66.957385] DOUG: Allocating 279584 bytes
->
-> which is the maximum size of the SVE regset. As Doug observes it is not
-> entirely surprising that such a large allocation of contiguous memory mig=
-ht
-> fail on a long running system.
->
-> The SVE regset is currently sized to hold SVE registers with a VQ of
-> SVE_VQ_MAX which is 512, substantially more than the architectural maximu=
-m
-> of 16 which we might see even in a system emulating the limits of the
-> architecture. Since we don't expose the size we tell the regset core
-> externally let's define ARCH_SVE_VQ_MAX with the actual architectural
-> maximum and use that for the regset, we'll still overallocate most of the
-> time but much less so which will be helpful even if the core is fixed to
-> not require contiguous allocations.
->
-> Specify ARCH_SVE_VQ_MAX in terms of the maximum value that can be written
-> into ZCR_ELx.LEN (where this is set in the hardware). For consistency
-> update the maximum SME vector length to be specified in the same style
-> while we are at it.
->
-> We could also teach the ptrace core about runtime discoverable regset siz=
-es
-> but that would be a more invasive change and this is being observed in
-> practical systems.
->
-> Reported-by: Doug Anderson <dianders@chromium.org>
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> Tested-by: Douglas Anderson <dianders@chromium.org>
-> Link: https://lore.kernel.org/r/20240213-arm64-sve-ptrace-regset-size-v2-=
-1-c7600ca74b9b@kernel.org
-> Signed-off-by: Will Deacon <will@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  arch/arm64/include/asm/fpsimd.h | 12 ++++++------
->  arch/arm64/kernel/ptrace.c      |  3 ++-
->  2 files changed, 8 insertions(+), 7 deletions(-)
 
-As I mentioned [1], there's a hidden dependency here and without it
-the patch doesn't actually do anything useful in kernel 6.6 nor kernel
-6.1. Maybe the right answer is to backport this with the hardcoded
-value of "16" for those older kernels? Maybe Mark has a better
-suggestion?
-
-[1] https://lore.kernel.org/r/CAD=3DFV=3DWSi=3D9V-Oe5eq0J-Uew45cX9JfgB8me-N=
-w-iFRfXm59Xg@mail.gmail.com
+-- 
+Ricardo Ribalda
 
