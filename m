@@ -1,120 +1,90 @@
-Return-Path: <stable+bounces-25604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 317D986D33D
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 20:34:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E49C86D34E
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 20:37:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E28C6286164
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 19:34:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8BF71F2446C
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 19:37:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC2E513C9DF;
-	Thu, 29 Feb 2024 19:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C2F13C9E4;
+	Thu, 29 Feb 2024 19:37:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="LfHiOuS3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1557A13C9CC;
-	Thu, 29 Feb 2024 19:34:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F14813774B;
+	Thu, 29 Feb 2024 19:37:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709235267; cv=none; b=lzL1g44yzB6leFcne7HceYnQ6saGZwswvoDXLoOpuWdomUhsRRtO5//VfbvMiGBuAItXT7AoxwFaKmukfGusX1VbNMWfhYU9MD0vpq4cWRWDMq8aruQD2MhS4t9tHOuS26ZRb/cZUlcB+vXWXznQxuIRPHXlQ4sJweSjqqyfJD8=
+	t=1709235443; cv=none; b=FvAwoAIkQUHv1hCNqD7/4Q0dhPpBkjSj4OHR9IfGZS0wbH2jjGpG4dB/Ir18N15PZWTqKkeX+44vvGporCabw1kjLJ7M5POpQokAe3+7IXDnA85927aVV1R06pMZPFqF3EEnoWCBN2+snJhZaUKmnpIbsEPDlkZdREHmb6Qe+bE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709235267; c=relaxed/simple;
-	bh=BayzEVfXNPRBxrY3TA8t49QRKHW7tGfeWTgiPEh7jo8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pbWsDuqZ3fs+8wtHGLKkEpFP2M9+g1PE/SPEIGFFTEJkfV2OgPH5pL9BxhUoJ1RaJVrAp/b7XvFv/toRsVdiowjUwfi/vFxnQh7a/gKk/x+k9meu/nGkp6Uq8l4YCc7JZZ/si7qFahGoUt1v9Vdd7zxqHJIbDJHyYH2a3O9erBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-6e4aa4877a9so118569a34.0;
-        Thu, 29 Feb 2024 11:34:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709235265; x=1709840065;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GIAd28SmAv9IBBwlBfkFg/XlwEHMj2K+MeQKKpCbJyM=;
-        b=OgCvvcJXoahVPlJrpoGMI6SRfmxXwS2hUi8GRGTfuGe7W4ej2+j2myxfA1Ckw01GiZ
-         jRqjDQ67oBGG7EisahIyZqHY2htB1UoWcxGFaI3vtnIln5l1BxE52mM5JJAMQvnNc42/
-         pg4oCvIMzG0y+nMGLmkdmzyv4PyOSaDPNjO2AFZqz1j7VNHdKZWtlAZzCms57B8a0U+i
-         Gmer+mTY+AoUDV2w9LZ0CnIu8dIFVo0hSAcTss/YocAv4jL88bcNnZYZwi4DN2bscJe8
-         N1o0BKArVW2JBHI3ihBRscWk6UBBevRKgr6bj5FKqA0oOp6uX2sJEZSFW2TGaoobxd5N
-         Yw5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWZIAyq9z9sKV2sBA/aJIb/Urr9650HLsX6981azbRdvK+pwiMiJgi8Xjw8XCYOFoWOkFgpNbf4aPV5rosMgvIrQQ6zLD2Tn7A4DIjUWEJ5pySTNrk5Al8OuRDExyUL3PezIZFGWBl+6+eB16KY+gedJr/TWodNxKC39wt3h7knu+3n7qCpRySIvjMMLD+t591g5D8qDcr0kl37Hqhp
-X-Gm-Message-State: AOJu0YxIFALlujgb767oUWAc2E4nOEN8zWLWoNPw0M/Q3ytKZfSmUstW
-	qZ5FJlOrgl2dzH4kzWghToTWLyT3u6Jm6Q8bKSG9XQA+uJTFn7HLF0Z0mOMgTFaNboILuW89mWF
-	qZGMH2/+XntSI1oav31XlcA9Yqfk=
-X-Google-Smtp-Source: AGHT+IFrwvgAc0ISoztnG436NPqz4iJfmmtZTg/ZbF0R2tLMfqoYvGtemVRgaqjKCK/uTdzV46XgjyMdtCfWOLOX1hk=
-X-Received: by 2002:a4a:a543:0:b0:5a0:ec66:b56b with SMTP id
- s3-20020a4aa543000000b005a0ec66b56bmr2225901oom.0.1709235265041; Thu, 29 Feb
- 2024 11:34:25 -0800 (PST)
+	s=arc-20240116; t=1709235443; c=relaxed/simple;
+	bh=32yj74/3vEglgYQz1Og4De9ujIVTdpiMAur4jWBgQXU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=by0vYNNZLE0MOulOGqRAN0E9Z/ulZwWumEca1rd8gwJapHHC7mWbM537Q4KAENkPRT//4uTboAG9bQsnPjj5boukEFaBTZNXJQ9Duk6DrqyQ8ooOMYHSmRM3o6gKu9aSaXLB3O17igFg4Drq2kQCsjNo0pApez5elFA7+J4PA78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=LfHiOuS3; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=8uNmGuKJqG0ZLwvelugqTwty9eAp95ps/IXd1VUbjRE=; b=LfHiOuS377ugSXr21HSPLjoGds
+	rRHRotHB6Z2K+UknnXnK+QSxqb+aTii8MgmSzXW1sRNBptAvRcgkCTNz6J+ZbnsCs2gOL69/7CQwh
+	HbpeH4t5yDhGvqmnlTjCTBFsDyp9akGVrkIGj6y3BedRK3Vygt5msrjSPEYVN6VtIWpZchOzssQ/V
+	WR1aOx0+dyY/SjdSpU3JUwI4U2i/3gjC67frvRbY1ZlyHhnna281LjFJ9s/SzckoOzX+rHWRnRD4q
+	DbfpzdwBNaELy6OKw8HL8OqWb7AQNPVnsIkMg3yiwsLXR6E9Xx/G6dwkxCxOWFcKJ/oDRVozID8PI
+	7uk/dp4Q==;
+Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rfmDP-00000008qqb-3bC7;
+	Thu, 29 Feb 2024 19:37:11 +0000
+Date: Thu, 29 Feb 2024 19:37:11 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Greg Edwards <gedwards@ddn.com>
+Cc: Jens Axboe <axboe@kernel.dk>, Andrew Morton <akpm@linux-foundation.org>,
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+	Hugh Dickins <hughd@google.com>, linux-mm@kvack.org,
+	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	qemu-devel@nongnu.org
+Subject: Re: [PATCH] block: Remove special-casing of compound pages
+Message-ID: <ZeDc50LQSItEeXY8@casper.infradead.org>
+References: <20230814144100.596749-1-willy@infradead.org>
+ <170198306635.1954272.10907610290128291539.b4-ty@kernel.dk>
+ <20240229182513.GA17355@bobdog.home.arpa>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240229-suspend_ops_late_init-v2-1-34852c61a5fa@quicinc.com>
-In-Reply-To: <20240229-suspend_ops_late_init-v2-1-34852c61a5fa@quicinc.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 29 Feb 2024 20:34:13 +0100
-Message-ID: <CAJZ5v0g_Cb-zPDD6z_C_HEewvsZJA_4FRiOnmhzX=KsRAL8daA@mail.gmail.com>
-Subject: Re: [PATCH v2] PM: suspend: Set mem_sleep_current during kernel
- command line setup
-To: Maulik Shah <quic_mkshah@quicinc.com>
-Cc: Mark Rutland <mark.rutland@arm.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>, andersson@kernel.org, 
-	ulf.hansson@linaro.org, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <len.brown@intel.com>, 
-	Pavel Machek <pavel@ucw.cz>, Sudeep Holla <Sudeep.Holla@arm.com>, linux-arm-msm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-pm@vger.kernel.org, quic_lsrao@quicinc.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240229182513.GA17355@bobdog.home.arpa>
 
-On Thu, Feb 29, 2024 at 7:45=E2=80=AFAM Maulik Shah <quic_mkshah@quicinc.co=
-m> wrote:
->
-> psci_init_system_suspend() invokes suspend_set_ops() very early during
-> bootup even before kernel command line for mem_sleep_default is setup.
-> This leads to kernel command line mem_sleep_default=3Ds2idle not working
-> as mem_sleep_current gets changed to deep via suspend_set_ops() and never
-> changes back to s2idle.
->
-> Set mem_sleep_current along with mem_sleep_default during kernel command
-> line setup as default suspend mode.
->
-> Fixes: faf7ec4a92c0 ("drivers: firmware: psci: add system suspend support=
-")
-> CC: stable@vger.kernel.org # 5.4+
-> Signed-off-by: Maulik Shah <quic_mkshah@quicinc.com>
-> ---
-> Changes in v2:
-> - Set mem_sleep_current during mem_sleep_default kernel command line setu=
-p
-> - Update commit message accordingly
-> - Retain Fixes: tag
-> - Link to v1: https://lore.kernel.org/r/20240219-suspend_ops_late_init-v1=
--1-6330ca9597fa@quicinc.com
-> ---
->  kernel/power/suspend.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/kernel/power/suspend.c b/kernel/power/suspend.c
-> index 742eb26618cc..e3ae93bbcb9b 100644
-> --- a/kernel/power/suspend.c
-> +++ b/kernel/power/suspend.c
-> @@ -192,6 +192,7 @@ static int __init mem_sleep_default_setup(char *str)
->                 if (mem_sleep_labels[state] &&
->                     !strcmp(str, mem_sleep_labels[state])) {
->                         mem_sleep_default =3D state;
-> +                       mem_sleep_current =3D state;
->                         break;
->                 }
->
->
-> ---
+On Thu, Feb 29, 2024 at 11:25:13AM -0700, Greg Edwards wrote:
+> > [1/1] block: Remove special-casing of compound pages
+> >       commit: 1b151e2435fc3a9b10c8946c6aebe9f3e1938c55
+> 
+> This commit results in a change of behavior for QEMU VMs backed by hugepages
+> that open their VM disk image file with O_DIRECT (QEMU cache=none or
+> cache.direct=on options).  When the VM shuts down and the QEMU process exits,
+> one or two hugepages may fail to free correctly.  It appears to be a race, as
+> it doesn't happen every time.
 
-Applied as 6.9 material, thanks!
+Hi Greg,
+
+By sheer coincidence the very next email after this one was:
+
+https://lore.kernel.org/linux-mm/86e592a9-98d4-4cff-a646-0c0084328356@cybernetics.com/T/#u
+
+Can you try Tony's patch and see if it fixes your problem?
+I haven't even begun to analyse either your email or his patch,
+but there's a strong likelihood that they're the same thing.
 
