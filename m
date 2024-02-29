@@ -1,90 +1,132 @@
-Return-Path: <stable+bounces-25605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E49C86D34E
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 20:37:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7EF186D3C4
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 20:54:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8BF71F2446C
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 19:37:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7911B1F23D87
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 19:54:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C2F13C9E4;
-	Thu, 29 Feb 2024 19:37:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6074E13F44E;
+	Thu, 29 Feb 2024 19:54:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="LfHiOuS3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XikPLy5N"
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F14813774B;
-	Thu, 29 Feb 2024 19:37:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E684C13C9F0;
+	Thu, 29 Feb 2024 19:54:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709235443; cv=none; b=FvAwoAIkQUHv1hCNqD7/4Q0dhPpBkjSj4OHR9IfGZS0wbH2jjGpG4dB/Ir18N15PZWTqKkeX+44vvGporCabw1kjLJ7M5POpQokAe3+7IXDnA85927aVV1R06pMZPFqF3EEnoWCBN2+snJhZaUKmnpIbsEPDlkZdREHmb6Qe+bE=
+	t=1709236450; cv=none; b=bN6NbpkA8wsHhGm1GJGzh97Co0JIhIjqvyfSaUyLECWDAunkNa0XueaL9g7kFbBjNoh5TJgIKwgkrCCB3dYUyC49TTdngYc9jKu8vO6iSbRW0u4uyYRBKvn/X0O6UYTZZPYv4Qj5we4qwiExb0ZMDRxmIYU/p0QaI+Bj9Ppxnz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709235443; c=relaxed/simple;
-	bh=32yj74/3vEglgYQz1Og4De9ujIVTdpiMAur4jWBgQXU=;
+	s=arc-20240116; t=1709236450; c=relaxed/simple;
+	bh=zWQt1iQ4/+xGXNV8nMzVwEapO4EgGz7oXUPhT66Bbso=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=by0vYNNZLE0MOulOGqRAN0E9Z/ulZwWumEca1rd8gwJapHHC7mWbM537Q4KAENkPRT//4uTboAG9bQsnPjj5boukEFaBTZNXJQ9Duk6DrqyQ8ooOMYHSmRM3o6gKu9aSaXLB3O17igFg4Drq2kQCsjNo0pApez5elFA7+J4PA78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=LfHiOuS3; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=8uNmGuKJqG0ZLwvelugqTwty9eAp95ps/IXd1VUbjRE=; b=LfHiOuS377ugSXr21HSPLjoGds
-	rRHRotHB6Z2K+UknnXnK+QSxqb+aTii8MgmSzXW1sRNBptAvRcgkCTNz6J+ZbnsCs2gOL69/7CQwh
-	HbpeH4t5yDhGvqmnlTjCTBFsDyp9akGVrkIGj6y3BedRK3Vygt5msrjSPEYVN6VtIWpZchOzssQ/V
-	WR1aOx0+dyY/SjdSpU3JUwI4U2i/3gjC67frvRbY1ZlyHhnna281LjFJ9s/SzckoOzX+rHWRnRD4q
-	DbfpzdwBNaELy6OKw8HL8OqWb7AQNPVnsIkMg3yiwsLXR6E9Xx/G6dwkxCxOWFcKJ/oDRVozID8PI
-	7uk/dp4Q==;
-Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rfmDP-00000008qqb-3bC7;
-	Thu, 29 Feb 2024 19:37:11 +0000
-Date: Thu, 29 Feb 2024 19:37:11 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Greg Edwards <gedwards@ddn.com>
-Cc: Jens Axboe <axboe@kernel.dk>, Andrew Morton <akpm@linux-foundation.org>,
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
-	Hugh Dickins <hughd@google.com>, linux-mm@kvack.org,
-	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	qemu-devel@nongnu.org
-Subject: Re: [PATCH] block: Remove special-casing of compound pages
-Message-ID: <ZeDc50LQSItEeXY8@casper.infradead.org>
-References: <20230814144100.596749-1-willy@infradead.org>
- <170198306635.1954272.10907610290128291539.b4-ty@kernel.dk>
- <20240229182513.GA17355@bobdog.home.arpa>
+	 Content-Type:Content-Disposition:In-Reply-To; b=UbQwuZLIHaCK6SZ89t5GGNlW2SC5+M3uAGwfjb2H2fTvHTsrUTg/r0C5MAcUK9ldVB5y+1UgOeWGt1umeUODBmKH1Kr739u1EgE+4U0AEFozGvxYfBs6pdRwkFUFeQ2tLsBAn02kdFpPr3077HiDX52puubNgcZdFn0DKq+dbhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XikPLy5N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9EBEC433C7;
+	Thu, 29 Feb 2024 19:54:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1709236449;
+	bh=zWQt1iQ4/+xGXNV8nMzVwEapO4EgGz7oXUPhT66Bbso=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XikPLy5N4w7KUwQ5Ux1ncrrvWUuorVCkIAiQLMmsrfZ4vQdP0llWj9glBu0CBlUNy
+	 5birv+2EM4Yk3qgb0Oym/CTF8spTo+1hvplKkwbQPqtRhHAUNB0GhrzT7WXBdQtvfQ
+	 Tgu4h75hgkDQ6UvqP+O/Vt17wsLs1quz14TonNxo=
+Date: Thu, 29 Feb 2024 20:54:06 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Daniel =?iso-8859-1?Q?D=EDaz?= <daniel.diaz@linaro.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, paul@crapouillou.net
+Subject: Re: [PATCH 5.15 000/245] 5.15.150-rc1 review
+Message-ID: <2024022905-skinny-making-7852@gregkh>
+References: <20240227131615.098467438@linuxfoundation.org>
+ <ac2c579e-4ff0-42e2-ab70-efb8ded2d257@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20240229182513.GA17355@bobdog.home.arpa>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ac2c579e-4ff0-42e2-ab70-efb8ded2d257@linaro.org>
 
-On Thu, Feb 29, 2024 at 11:25:13AM -0700, Greg Edwards wrote:
-> > [1/1] block: Remove special-casing of compound pages
-> >       commit: 1b151e2435fc3a9b10c8946c6aebe9f3e1938c55
+On Tue, Feb 27, 2024 at 12:56:32PM -0600, Daniel Díaz wrote:
+> Hello!
 > 
-> This commit results in a change of behavior for QEMU VMs backed by hugepages
-> that open their VM disk image file with O_DIRECT (QEMU cache=none or
-> cache.direct=on options).  When the VM shuts down and the QEMU process exits,
-> one or two hugepages may fail to free correctly.  It appears to be a race, as
-> it doesn't happen every time.
+> On 27/02/24 7:23 a. m., Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 5.15.150 release.
+> > There are 245 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Thu, 29 Feb 2024 13:15:36 +0000.
+> > Anything received after that time might be too late.
+> > 
+> > The whole patch series can be found in one patch at:
+> > 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.150-rc1.gz
+> > or in the git tree and branch at:
+> > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> > and the diffstat can be found below.
+> > 
+> > thanks,
+> > 
+> > greg k-h
+> 
+> We're seeing build regressions here with RISC-V, with GCC 8, GCC 12, and Clang 17:
+> 
+> -----8<-----
+>   In file included from /builds/linux/include/linux/list.h:9,
+>                    from /builds/linux/include/linux/module.h:12,
+>                    from /builds/linux/drivers/net/ethernet/realtek/r8169_main.c:12:
+>   /builds/linux/drivers/net/ethernet/realtek/r8169_main.c:5512:35: error: 'rtl8169_pm_ops' undeclared here (not in a function); did you mean 'rtl8169_poll'?
+>    5512 |         .driver.pm      = pm_ptr(&rtl8169_pm_ops),
+>         |                                   ^~~~~~~~~~~~~~
+>   /builds/linux/include/linux/kernel.h:46:44: note: in definition of macro 'PTR_IF'
+>      46 | #define PTR_IF(cond, ptr)       ((cond) ? (ptr) : NULL)
+>         |                                            ^~~
+>   /builds/linux/drivers/net/ethernet/realtek/r8169_main.c:5512:27: note: in expansion of macro 'pm_ptr'
+>    5512 |         .driver.pm      = pm_ptr(&rtl8169_pm_ops),
+>         |                           ^~~~~~
+>   make[5]: *** [/builds/linux/scripts/Makefile.build:289: drivers/net/ethernet/realtek/r8169_main.o] Error 1
+> ----->8-----
+> 
+> Bisection points to:
+> 
+>   commit ac2871f646a8f556203f5b6be875ce406d855ddb
+>   Author: Paul Cercueil <paul@crapouillou.net>
+>   Date:   Tue Dec 7 00:20:59 2021 +0000
+>       PM: core: Redefine pm_ptr() macro
+>       [ Upstream commit c06ef740d401d0f4ab188882bf6f8d9cf0f75eaf ]
+> 
+> A revert could not be done cleanly.
+> 
+> Tuxmake reproducer:
+> 
+>   tuxmake --runtime podman --target-arch riscv --toolchain gcc-12 --kconfig defconfig
+> 
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Hi Greg,
+I've been beating on this for a while and I really don't know what is
+happening, sorry.  The driver looks fine, something is "odd" with riscv
+here that is not "odd" with other arches.
 
-By sheer coincidence the very next email after this one was:
+I'll leave this as-is for now and hopefully someone who relies on riscv
+can help track it down.
 
-https://lore.kernel.org/linux-mm/86e592a9-98d4-4cff-a646-0c0084328356@cybernetics.com/T/#u
+thanks,
 
-Can you try Tony's patch and see if it fixes your problem?
-I haven't even begun to analyse either your email or his patch,
-but there's a strong likelihood that they're the same thing.
+greg k-h
 
