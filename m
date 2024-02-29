@@ -1,173 +1,225 @@
-Return-Path: <stable+bounces-25481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 080B286C6BB
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 11:22:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A50D86C71F
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 11:42:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B649C286431
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 10:22:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD36D1F22AA9
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 10:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7447B651A1;
-	Thu, 29 Feb 2024 10:21:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FC8A79DB0;
+	Thu, 29 Feb 2024 10:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gy02jnUV"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="5KR4gYti"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam02on2055.outbound.protection.outlook.com [40.107.212.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821F364AB6;
-	Thu, 29 Feb 2024 10:21:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709202110; cv=none; b=S1zBuQb6a4Ag5IL89sKwHFsYWkOYcxc2OnHstrsxLtxH7S7YHIiHKB+0CobxrzbMxjzDdW7O9YwyyG9FpDAffJD9kNi/K9J7ab7GoenECO4Lz0jijNbvCVVMfQkrirftv6oegIlvnR/ria1xiZIXRLU2ra3A6Zh4O23KYw4ePIg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709202110; c=relaxed/simple;
-	bh=w3kEVFOrvKCGNI2O50JnYc2GqcNbmvQBLSVNxFfrY9A=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=p7rDbTMkwCY+C9xLdBnZ0oQNA5r+db/I77bJ0JImoHXu0iS3SzchhPNM8h/KqlhOkHrlfvuxrh94t7YwAO+g0VzJ2IlfqSAcfjLhNm315oFu6l8BbIZyQS1ofI6SmbXBT19QZT5ukBuRYd765oX1zRmy9Y1j4G5gLK9o3n706So=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gy02jnUV; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a28a6cef709so113550866b.1;
-        Thu, 29 Feb 2024 02:21:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709202107; x=1709806907; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=w3kEVFOrvKCGNI2O50JnYc2GqcNbmvQBLSVNxFfrY9A=;
-        b=Gy02jnUVGtgp4N1pW3VrDdxMQFyb9rg2ej5AjZotG7ohA6M6Z8D7jxvJ6xdNTQ8MXI
-         rfQ663lm+J1uC9WhcLeM6bpTgTbbbeN9cAkWD2ppLJrYuuaUmd48ssN+0UvL8pJbi7I6
-         STuJKxKcGQlEYMzPqtEhOWOMI1prDB3aggBoTkcnLlflLajMnMPf7MswSXthlDCAc/LO
-         YcwmIzHcgXoE5oR0+sRACDHljZjycnX5Y+3QEMs1HnY1uYVoRm88/VaSNunVa46ARyPR
-         9ZKDLBjPNTaJ750vZFl3efhIldxJ55XErR9WAexne7EApZU4SF0zU6RbNpRdUg0RD97c
-         h54Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709202107; x=1709806907;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=w3kEVFOrvKCGNI2O50JnYc2GqcNbmvQBLSVNxFfrY9A=;
-        b=Dc5SVTddsfp6AgoLAgiSaj4V6/Sji567QBZ/RMUVLqBAUHMjJyy8NTuP2WEoO2+tle
-         eOI4a5whDfcsDjlTqphIkdrikPPDY5dHtZ2vIdZbHSLWF69AzD1LG08Eq9AgEX8mZhj/
-         f7YIwiouZxeUwTGNqeIogZyeHeu50DKJcjAtIMox+FJWDpDNMFVzWWzfJN5NaZ12Im4l
-         IJFv6ML9n3qg5r8iz6YHrw07wcUWjePEDUkrT6pBiEp758/ACYIRgM6oij2rviXinMZy
-         jIUAOqevdxIA0HVovqHBE/rXeBCIXOTYbRlTezLnJ3UOnFt5FdlIUs4heoYLHokafALl
-         GN+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWgT+6yDFtqqOmoVWfGT2jHfGyLnT/hrM4ak2DQXadgZWZRPGCR3A18I3kfsiqytXbgnS7ArTVPUBVlc0Zn9nVIjwYsOKunRjLfKdsVtNsPllqBrlB4Gcx1Yh65Z2SlijsNIOwTef6Tw1mbWpPybt0/0pbeej8rgl5kObdNucgSgQ==
-X-Gm-Message-State: AOJu0YyliJZ18ngfubmbA0CmosKR+INDGPBqleISak3+jSAie9M9Znb5
-	v8Gg2ZoYwlrjcMjIBPOYr/PDHFhznEMTghiY3CjkeZ+VHv6vPAxj
-X-Google-Smtp-Source: AGHT+IHP6SnZ+t4Rm6KnZQyLCPnDHrCVu8cAcZaXXcHYjJTCsFL5UqAxZ1do7itkDcPWR4ldQU/9Mw==
-X-Received: by 2002:a17:906:b247:b0:a3f:5e8c:8a34 with SMTP id ce7-20020a170906b24700b00a3f5e8c8a34mr1300997ejb.9.1709202106581;
-        Thu, 29 Feb 2024 02:21:46 -0800 (PST)
-Received: from ?IPv6:2003:f6:ef1b:2000:15d4:fc17:481e:8afe? (p200300f6ef1b200015d4fc17481e8afe.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:15d4:fc17:481e:8afe])
-        by smtp.gmail.com with ESMTPSA id lf12-20020a170906ae4c00b00a3f27031d7bsm530358ejb.104.2024.02.29.02.21.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Feb 2024 02:21:46 -0800 (PST)
-Message-ID: <581fb060128519d29c06f797ee8ec7c8d0e60ca0.camel@gmail.com>
-Subject: Re: [PATCH v2 2/2] of: overlay: Synchronize of_overlay_remove()
- with the devlink removals
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Herve Codina <herve.codina@bootlin.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
- <rafael@kernel.org>, Rob Herring <robh+dt@kernel.org>, Frank Rowand
- <frowand.list@gmail.com>, Lizhi Hou <lizhi.hou@amd.com>, Max Zhen
- <max.zhen@amd.com>, Sonal Santan <sonal.santan@amd.com>, Stefano Stabellini
- <stefano.stabellini@xilinx.com>, Jonathan Cameron
- <Jonathan.Cameron@Huawei.com>,  linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>,
- Horatiu Vultur <horatiu.vultur@microchip.com>,  Steen Hegelund
- <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Nuno Sa <nuno.sa@analog.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>,  stable@vger.kernel.org
-Date: Thu, 29 Feb 2024 11:25:09 +0100
-In-Reply-To: <20240229111430.54bdb6b1@bootlin.com>
-References: <20240229083953.607569-1-herve.codina@bootlin.com>
-	 <20240229083953.607569-3-herve.codina@bootlin.com>
-	 <c2b830bb4a4cf76dec8783f38b2477120edb1a15.camel@gmail.com>
-	 <20240229111430.54bdb6b1@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0F365194;
+	Thu, 29 Feb 2024 10:42:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.212.55
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709203362; cv=fail; b=lPoAaSOS5cjasX5Y2AYu8vSLVKcuLgqMlh25iuX8GsE/CLsfDNofpI7yT3Aa3tCbd6ArYXGc9kv59kCnGX52918BKxTJyxBsuIw80FqS2Y5YbpojHK6tllBeN4IKYkp5Q3ZuoZuNNEO3aBbaS8NoaQwz4IO9TYikZQYmqP9/jHg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709203362; c=relaxed/simple;
+	bh=5vnUgc346TA7TYyb0SU+VsCG2O5u2p4D1FGfWhXB4hg=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=HtmAZgfiVyeBn3GJFT6JMmzt4DqLvdmabN1TqknMk/iYAd/3CBo+GipwZv7Aop5XngvES7Rg5Phzph1c7OpNg9hwJDd0/WRjH4nWwt7oSqGHrs/fDiBORsC5hukGeBoJUT4ZTHpiBhXUyPxL6vwz3n1vaqgMINoCwGAOv+bmK/E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=5KR4gYti; arc=fail smtp.client-ip=40.107.212.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=dv87DWmCBz8x+wrFkhxGm5o4OHbLnkfHJFalrUAjQc4zcVeyBA2PEnpRM+64BRBQK+JH/jAdJS5JRHSefE8fOqnhfXZOoM0nsiW0lzr6+1I9qAuSCovktkeaM0OT/0a4lIiLiqgJ5n8ut47JnlX2C+OBuwMR3g+Ov0EuuR24O0xoKGvGpnYuBCMK8JeKu3PnMG/2OgG0AXxZwlZg5bKE3TpWZeu/XEiUI+VXlY0L9VMUP0y0prp8QSGOcX5gbfGwiVQFjhseXdynaU+ewowmVFyFNvr/mDsPwnTHeAnX0/71YtVAYzuZ5rvQn0fJ0ZKK6H2bL9+P4Xo+vwtoPSo2dA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5vnUgc346TA7TYyb0SU+VsCG2O5u2p4D1FGfWhXB4hg=;
+ b=SSQcFHYIU6xpUH02T6drdyx82l1VqCzYMuJ/sI4rQhT7q+cNFBeqMN/oLdi38tLHFZJS8OrU4sDN8yL270XJtatZI+C8pxqPpsPOiXPxjWmX5qvZgmHJ6Pq/j+3lH6Va8fv7sSa9I4vGg1HYa8prMcXyePnJFBImhF0awSR3y6QU/HEoNP2cW3F7hfeSu0bvR+ZVqSxyn3EKHGzHFiNlsxHh2LtDU4DljQwKUvHseZgibcTrvqsvRvv2h2WHJ0jrxy0j0M9i8QPqcdi2a9iwrRLyiBvh1SEBot+adlalE1JkBsehl0AlreZ7ginQoAWG+4J++aRVNtV7T1aRM82wIQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5vnUgc346TA7TYyb0SU+VsCG2O5u2p4D1FGfWhXB4hg=;
+ b=5KR4gYtiTjDT9Ym6ziy1jqX5fColwrb1quioGgFmFyWkSLLJl4zBOe+lmo0SR9u+K8HMdHi1sal06V0nEX+UikiXZpnftsuZjD96B5stC6kBq86IQRYwjUGVu3XMPOkxZgxw2Sx0UTQek5XsAKNxwITZvzy5ypa1+zX+noUTLxk=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB5040.namprd12.prod.outlook.com (2603:10b6:5:38b::19)
+ by SJ0PR12MB6735.namprd12.prod.outlook.com (2603:10b6:a03:479::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.41; Thu, 29 Feb
+ 2024 10:42:37 +0000
+Received: from DM4PR12MB5040.namprd12.prod.outlook.com
+ ([fe80::50af:9438:576b:51a1]) by DM4PR12MB5040.namprd12.prod.outlook.com
+ ([fe80::50af:9438:576b:51a1%3]) with mapi id 15.20.7316.039; Thu, 29 Feb 2024
+ 10:42:37 +0000
+Message-ID: <0c8f1292-fbbf-4555-bd6c-ca6d704eb99f@amd.com>
+Date: Thu, 29 Feb 2024 16:12:28 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] xhci: Allow RPM on the USB controller (1022:43f7) by
+ default
+To: Mathias Nyman <mathias.nyman@linux.intel.com>,
+ Basavaraj Natikar <Basavaraj.Natikar@amd.com>, gregkh@linuxfoundation.org,
+ mathias.nyman@intel.com, linux-usb@vger.kernel.org
+Cc: mario.limonciello@amd.com, stable@vger.kernel.org,
+ Oleksandr Natalenko <oleksandr@natalenko.name>
+References: <20240226152831.2147932-1-Basavaraj.Natikar@amd.com>
+ <a1274e8a-c761-a39f-20a4-06989e8144c6@linux.intel.com>
+Content-Language: en-US
+From: Basavaraj Natikar <bnatikar@amd.com>
+In-Reply-To: <a1274e8a-c761-a39f-20a4-06989e8144c6@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PN2PR01CA0186.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:e8::13) To DM4PR12MB5040.namprd12.prod.outlook.com
+ (2603:10b6:5:38b::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5040:EE_|SJ0PR12MB6735:EE_
+X-MS-Office365-Filtering-Correlation-Id: 22c65426-ec2c-481f-471e-08dc39132555
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	jjuldX37fSpG6CgAHzD503Tj8MtZenDtDLxrCsfylL9A/QYPsAQ5t4My76gFNfr41pX7EuKoF/Wo3KkWfLLs46xai8uwGbXAgo+Kj20r5QpVnVcsTMvrfFsXgDBiQBGTMUdF40Ln9NkbKDx/lmtI1tb4Kr14xhZOCE6iSK+sB7tWivQoVYsVvFZ0TE0qTIwHHjWQ7ObQDPQUDGHGg478SCg6WPjujRQpdMFQcP4Irr1e1g0kkGzj36MfFd0SwNwiRixUjXxdFCKqV9qdb9pU0l9KSulZJ4XBZoQYrk7KSuSzLdFv+KkfhgPUEaOAvMqIUp90Q1+SOxv4iGYySto8aVOD3vO7GEqKnKMhFUlO3Wx7yDu+aN9tmUpGIdSdwSVTxq1CcikBKNtCAx4UpZ+Y5mLO1mbSQh0bgH9mOl29B5p2GtVfDj8OzQJXXjWAMpfKybvF4eVvzDAUUIrbcg1/TNus9DnrjTnZeyTpuD1h5K3IYqMk1BnX7222EYiuLpOkbwW53eNZgK0EhnN3LNMxXjaPUm1Fjsga6SUqwcBNqXTlyV6CK9f1ysrGFt1L0kI2ZtYenB2Ikzc3qXdqHAddrw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5040.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Y1VtNTJ2TjNTT21KMVRucThQRHlwSmI2ajFOdDdjdWZnMzd1ZHlQaXFGRkxD?=
+ =?utf-8?B?Uk1TZ1gySldRLzBoYlVVL2h1QUVhOENtVFFXS1pYMUt6Z0syOFhUNmw3eVRT?=
+ =?utf-8?B?T3RaSGJoZTUzNnVzaXZwYURGSWxWMXhwOFlZNmgxRnZ0ejVSdEZoS1JzVkdx?=
+ =?utf-8?B?eXJQaFR4TW1OdHIyaWZGRW1LZ2JtdG9DUHFEeFA4TWYvUEhGZEpQd3VTbnBG?=
+ =?utf-8?B?cU9ZeEVXOVQrK3pWc1RuazBqeDhvcmxScTc3anI5QkpIUUdGSTF3Rks4eU53?=
+ =?utf-8?B?TThBQTJUbVhQQ3FBK3dpWGxBdHZPYmxidlNMNlFrcklBaFlyY21xRGxTdWlH?=
+ =?utf-8?B?RE9vOExBVmFtN2duaElCOCtlOWlEajZVR3ZIQUt1cjgwMG5oSlVGa0FzZE54?=
+ =?utf-8?B?STNHb3p0RmkzWTJGRzZLUGh6Q29FcDcrVXhqak00akZPcVRvVlRDalUzQkVo?=
+ =?utf-8?B?aU1QYWNtQjZhS2NxZm1XdVZCNWdTYzhOdWxrRmJlK0JVaDI4dkxJd0JpZ0FR?=
+ =?utf-8?B?Si84RG5xMkZ2aGhWejhUNXF2M0dCazNlSVh4NDgvUWZxanBJaml2QjlGZkZU?=
+ =?utf-8?B?bXRvdTJKakk2Tmc0azBGbEVUWnVUTEYwZlNhMUVvK1I3d2N0YXhSWVV1cTVO?=
+ =?utf-8?B?ZzVYODZpbVNmaXZRODMwc0daenJIVjFhSngybzl4QlkwQllKVWNJSzBubGxs?=
+ =?utf-8?B?VjgzMW5OVXRXblhTcTFVN2ZvbWcrNWN3cm9JV0dKYnpZS3gzcEZPaENkOFZh?=
+ =?utf-8?B?eWlscCtrUXNKZm1KUWVqeStkTStKMkNOOVZpd0RIUFdFci9WcWFVT2g3cVBZ?=
+ =?utf-8?B?MzJoYWtXYkZYRm1ONGdRVXJnbTFGQ1l6SnRjdnJUNUcyVUF1VDZqWmx0dGpT?=
+ =?utf-8?B?dkl0UzdzVjJYYllROE1xaEkrSnRDTTh5L0UvZUNiSVdIc2RDU2toWVdYczlC?=
+ =?utf-8?B?cDYreGpMUnFDS3lPYU1SRjJXbjlaQ0Q5Z2xGUk1lYW9pa2NzcnZGUC8vT1FP?=
+ =?utf-8?B?MlYyRWprMFQ5OGR0b2FDeXovS1JyOWF4NlZBeDZaaFVGaCtaVzg1akFTSnhq?=
+ =?utf-8?B?dVVSVEtwdzBtWlRxa05WT3dQRFg2WTdGcTlhdm9hZ202elNwZm4yUitDdzJH?=
+ =?utf-8?B?dUZNcmZ0b3Zxc3AxbTZYZllNZWVPcHRNenJ3ZUVXWktIaXFaNG9JTWM5RUNr?=
+ =?utf-8?B?Nmxjc2ZVclNNdGZiU3gwY0JFZkN4MXN1azAwa0VtMVR6Tmo1M2FyTW9SeXBy?=
+ =?utf-8?B?OHdmR25HbHI3M1ZuZStuQXFrQUwwT0xLaWdTaVNLajJvMWxvMzNPcmEwR1VK?=
+ =?utf-8?B?ajlLdmNibEJsYWlUcWpxMHgyeDlnV2pQMHhqYjVWL1VJeTFMNzRBVXNBMHJz?=
+ =?utf-8?B?N3NVbFcwKzVHNmdRNTBwK3E0blBscG9qckpFTHZRSlUwcjBsYWhRS202ZFdv?=
+ =?utf-8?B?RlFEY0FISGZXdk85YnFCbUt5SVFYcVZudEl1QVFxSCtEMlc2ZWxiUTVDODBC?=
+ =?utf-8?B?NjhlMUtPN0tlRFkxSnphbDNyMHRpeXhybURNUmIxb0t4eFRGRlJWWFJxdnBY?=
+ =?utf-8?B?M3BXWS94eWpISzFGQWVLY3BzWWlwL043RTA1V3Z3S3lwdGZtQmJCQUo0bEUr?=
+ =?utf-8?B?WmN4cmtVOFdJT2x3emtXczhZbjhSZWhsL2loanhSQUN5RTZ6NkdIbCtGd1BU?=
+ =?utf-8?B?WUFyNUFTWXF5VEU3RithMW1pczRNSW9Ua0RYNklDQ0NuK21LTmFlNktXZHBz?=
+ =?utf-8?B?UmF2cC94cWFsUjR0elRPcS9QeC8zaFcydG9lbnBsSUtjVHdWY1RKRG4wZjky?=
+ =?utf-8?B?QzRnZXQyZkJIeW1GemloaHBZREZxZjkzb3QveFVzbnJBMHphYXVuenhHbDJN?=
+ =?utf-8?B?SG43RHlHaTV2L3BPWjdVNnc0TGd6RDRrZnhaRWo0Tm5QaFJiYXlycnZuVmJB?=
+ =?utf-8?B?SVFrY0oraDJaaDM3cGtmQmJUaXhKaVQ3bklRVUorUjFWKzhuSXcvaVp4UWFz?=
+ =?utf-8?B?WmNudm5RY0MzYzZKeUg1NUJTeUxmRm51NGNhaE5rbWJJazRtd2xvQ2xLOTgw?=
+ =?utf-8?B?REwyZE5XOElRZDdXcDVwa0VuZzdTTEVWSDYxTlRzMWgyTll4STBabzBHUy80?=
+ =?utf-8?Q?G4CUAoCS81sykOGH1e1xR+HG8?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 22c65426-ec2c-481f-471e-08dc39132555
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5040.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Feb 2024 10:42:37.6883
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: lTqVV8xQC0j8FLO5Kx9guaB3Xdd9V5eklZ2b5ZSDw0usymBjralwPWZaeJdprzBgF130OHzfdzfeCCWwbma1Yg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6735
 
-On Thu, 2024-02-29 at 11:14 +0100, Herve Codina wrote:
-> On Thu, 29 Feb 2024 10:50:21 +0100
-> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
->=20
-> > On Thu, 2024-02-29 at 09:39 +0100, Herve Codina wrote:
-> > > In the following sequence:
-> > > =C2=A0 1) of_platform_depopulate()
-> > > =C2=A0 2) of_overlay_remove()
-> > >=20
-> > > During the step 1, devices are destroyed and devlinks are removed.
-> > > During the step 2, OF nodes are destroyed but
-> > > __of_changeset_entry_destroy() can raise warnings related to missing
-> > > of_node_put():
-> > > =C2=A0 ERROR: memory leak, expected refcount 1 instead of 2 ...
-> > >=20
-> > > Indeed, during the devlink removals performed at step 1, the removal
-> > > itself releasing the device (and the attached of_node) is done by a j=
-ob
-> > > queued in a workqueue and so, it is done asynchronously with respect =
-to
-> > > function calls.
-> > > When the warning is present, of_node_put() will be called but wrongly
-> > > too late from the workqueue job.
-> > >=20
-> > > In order to be sure that any ongoing devlink removals are done before
-> > > the of_node destruction, synchronize the of_overlay_remove() with the
-> > > devlink removals.
-> > >=20
-> > > Fixes: 80dd33cf72d1 ("drivers: base: Fix device link removal")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > > ---
-> > > =C2=A0drivers/of/overlay.c | 9 ++++++++-
-> > > =C2=A01 file changed, 8 insertions(+), 1 deletion(-)
-> > >=20
-> > > diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
-> > > index 2ae7e9d24a64..99659ae9fb28 100644
-> > > --- a/drivers/of/overlay.c
-> > > +++ b/drivers/of/overlay.c=C2=A0=20
-> >=20
-> > In the cover, you mention device.h inclusion but I'm not seeing it? Thi=
-s is
-> > clearly up to the DT maintainers to decide but, IMHO, I would very much
-> > prefer
-> > to see fwnode.h included in here rather than directly device.h (so yeah=
-,
-> > renaming the function to fwnode_*). But yeah, I might be biased by own
-> > series :)
-> >=20
->=20
-> Damned. I missed device.h in this patch.
-> Without this one, the patch do not compile :(
->=20
-> A fixup commit I missed to squash before sending.
->=20
-> A v3 is planned to add this device.h.
->=20
-> Nuno, do you prefer I wait few days before sending this v3 waiting for mo=
-re
-> replies
-> or I send it right now and you re-do your comment on the v3 ?
->=20
-> I would really prefer to send it now :)
->=20
 
-Typically maintainers don't like much of re-spinning versions too fast. Tha=
-t
-said, up to you :). I can copy paste my comments in v3.
+On 2/29/2024 3:16 PM, Mathias Nyman wrote:
+> On 26.2.2024 17.28, Basavaraj Natikar wrote:
+>> The AMD USB host controller (1022:43f7) does not enter PCI D3 by default
+>> when nothing is connected. This is due to the policy introduced by
+>> 'commit a611bf473d1f ("xhci-pci: Set runtime PM as default policy on all
+>> xHC 1.2 or later devices")', which only covers 1.2 or later devices.
+>
+> This makes it seem like commit a611bf473d1 somehow restricted default
+> runtime
+> PM when in fact it enabled it for all xHCI 1.2 hosts.
+>
+> Before that only a few selected ones had runtime PM enabled by default.
+>
+> How about something like:
+>
+> Enable runtime PM by default for older AMD 1022:43f7 xHCI 1.1 host as
+> it is
+> proven to work.
+> Driver enables runtime PM by default for newer xHCI 1.2 host.
 
-- Nuno S=C3=A1
+Thank you for the rewording. I will change accordingly.
+
+>
+>>
+>> Therefore, by default, allow RPM on the AMD USB controller [1022:43f7].
+>>
+>> Fixes: 4baf12181509 ("xhci: Loosen RPM as default policy to cover for
+>> AMD xHC 1.1")
+>
+> This was already reverted as it caused regression on some systems.
+> 24be0b3c4059 Revert "xhci: Loosen RPM as default policy to cover for
+> AMD xHC 1.1"
+>
+>> Link: https://lore.kernel.org/all/12335218.O9o76ZdvQC@natalenko.name/
+>> Cc: Mario Limonciello <mario.limonciello@amd.com>
+>> Cc: stable@vger.kernel.org
+>
+> I'd skip Fixes and stable tags and add this as a feature to usb-next.
+
+Sure, I will remove the above Fixes and Cc tag in the v3 patch.
+
+>
+>> Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
+>> Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+>> ---
+>> Changes in v2:
+>>     - Added Cc: stable@vger.kernel.org
+>>
+>>   drivers/usb/host/xhci-pci.c | 2 ++
+>>   1 file changed, 2 insertions(+)
+>>
+>> diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+>> index b534ca9752be..1eb7a41a75d7 100644
+>> --- a/drivers/usb/host/xhci-pci.c
+>> +++ b/drivers/usb/host/xhci-pci.c
+>> @@ -473,6 +473,8 @@ static void xhci_pci_quirks(struct device *dev,
+>> struct xhci_hcd *xhci)
+>>       /* xHC spec requires PCI devices to support D3hot and D3cold */
+>>       if (xhci->hci_version >= 0x120)
+>>           xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
+>> +    else if (pdev->vendor == PCI_VENDOR_ID_AMD && pdev->device ==
+>> 0x43f7)
+>> +        xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
+>
+> This would fit better earlier in the code among the rest of the AMD
+> quirks.
+> See how this flag is set for some other hosts.
+
+Sure, I will make the necessary changes accordingly and send v3.
+
+Thanks,
+--
+Basavaraj
+
+>
+> Thanks
+> Mathias
+>
 
 
