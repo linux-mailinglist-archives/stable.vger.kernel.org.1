@@ -1,116 +1,131 @@
-Return-Path: <stable+bounces-25459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74C4E86BFD8
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 05:22:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 565A286BFF1
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 05:42:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E8F31C21396
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 04:22:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBD0E1F2543E
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 04:42:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13BA6381DD;
-	Thu, 29 Feb 2024 04:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BB2D383AC;
+	Thu, 29 Feb 2024 04:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Fla8tDzR"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="Vlse2Mbf"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFAD1224DC
-	for <stable@vger.kernel.org>; Thu, 29 Feb 2024 04:22:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AFE1383A3
+	for <stable@vger.kernel.org>; Thu, 29 Feb 2024 04:42:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709180532; cv=none; b=hDNho17Km/aUi6ckjiR400Ggke9DaW1ohG7ji9hx222GirxiroAOvgGgFyY93dVp6YVexbM0/rDWbGOsIzWRlRrYEZ+WoLQw/UUkvtwomkyqTjTZuP2z3+kMS3227hYvQ2vKzqkU2tEu/Wi8wfsRPogV8mfbFe2YgAn9okpFOxo=
+	t=1709181744; cv=none; b=bI8IU2X3UP3tneFNLasO8mRT3Ot6JDwOFIbn4sR/cdiR+KCjvK6gZyjiIpGCsG7sM2RTwv54XWxG4waWUX683uHE9QpHfY3axSWNzpF4l7Yi08Ay1SlvWoeLZhCS737XCHpQfJEvTvf2grqNe8tEx1zaSTzvz+ZttBZeBBxrfjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709180532; c=relaxed/simple;
-	bh=kKaaxdsU82qdSqRsR3fpq8hi38e/VeQJB9GbIdITGGo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t3EuF+aeKLCyI1LceaLHN24pqVLWVsXdloNDe0kuzVOQ0pANWE6pXcdEjFaGRE5T15mFPn44YgCkIwPdbix9Q4SzBXHk87r6SACyU5d0lWW3Vo4HUSwh36f1gWR6fG4wfnm0I5E/DVsC+uxkLyMK03FS2ctbmnMF0NBQxP1mfzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Fla8tDzR; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709180529;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=wX2/lKIfWZcCklNHF8a+xGBkRbnPqe+dovfkPOWmCCY=;
-	b=Fla8tDzRgPOgCkraUyjQVWffbUmVT+thvruMkVi8J6BDq5i0ZYobe7fFQwtEzuH8kYd/O5
-	U9m+kAsyWM7BputfmFo7cBu9UylUgwcKKOUM4wHDWHgB3zxBvjj3KuvzN+HQ/EGVxqIykb
-	3cytp4vDeWDDB0FsDRG1ZSucD8OkquI=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-384-ofWSeSjdMbeSRDGeOk3qAQ-1; Wed,
- 28 Feb 2024 23:22:07 -0500
-X-MC-Unique: ofWSeSjdMbeSRDGeOk3qAQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B8CF33C0ED45;
-	Thu, 29 Feb 2024 04:22:06 +0000 (UTC)
-Received: from li-a71a4dcc-35d1-11b2-a85c-951838863c8d.ibm.com.com (unknown [10.72.112.85])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 3504D400D783;
-	Thu, 29 Feb 2024 04:22:02 +0000 (UTC)
-From: xiubli@redhat.com
-To: ceph-devel@vger.kernel.org
-Cc: idryomov@gmail.com,
-	jlayton@kernel.org,
-	vshankar@redhat.com,
-	mchangir@redhat.com,
-	Xiubo Li <xiubli@redhat.com>,
-	stable@vger.kernel.org,
-	Luis Henriques <lhenriques@suse.de>
-Subject: [PATCH] libceph: init the cursor when preparing the sparse read
-Date: Thu, 29 Feb 2024 12:19:50 +0800
-Message-ID: <20240229041950.738878-1-xiubli@redhat.com>
+	s=arc-20240116; t=1709181744; c=relaxed/simple;
+	bh=7MdowiYFtd1YVdbQPrEzPUsEd/NWiP+n7PYwa3sOkvQ=;
+	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
+	 MIME-Version:Content-Type; b=GRWeUwacwFM2JF2QPoMylZ95gKpL8vqi9WTGFB+mRYOIyh1mUxCfRbnNdgUsWzUKW7CFjFt7v71JU7TPNInyHplcRwgH4y8eem9VnLvZk5lsHrjuDBKYRh/VhHcsXhJc9EBa3AnPUIF7gBpdNl02GiHyc5MychBa9Vzyib6Ldv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=Vlse2Mbf; arc=none smtp.client-ip=44.202.169.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5005a.ext.cloudfilter.net ([10.0.29.234])
+	by cmsmtp with ESMTPS
+	id fX40rdhjFQr4SfYFQrFQrk; Thu, 29 Feb 2024 04:42:20 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id fYFPrZZ8FpHqAfYFPrnKVw; Thu, 29 Feb 2024 04:42:20 +0000
+X-Authority-Analysis: v=2.4 cv=W6w+VwWk c=1 sm=1 tr=0 ts=65e00b2c
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=k7vzHIieQBIA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=KyoLkmSyMt9Nb96WE4AA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=TqFmvHG+z+uzSLFLtBkJ2F44Thyw1ppS6+xzDkfk1W8=; b=Vlse2MbfSBM27PGyIBxpZjHGEm
+	oVkHIefNnEiXZLm02rVvzHsa4tT44fyy9Yz61F3jAQXRkS0Os7PECmol2zqTIngQXqy/T47yAIIKh
+	pgH/bG+Mzw9qU0IHse/1hddYnq4ymyg7NIwUXRZlyPcTms6s1/Nx17Fx5AE3PVIumlE4w9z8kH7Gc
+	8UkOCe2a8ZNwTzmOu76hRxzz7COyZ+Hk+5518UV/L7HaO5XrydVsZ9Swg/c1dWQtN8GVez+F5t0+G
+	knhEFjdXasODBFd7AJ/ATe14kNViFtCkkNegExKSCqqfHEKZvwqk/FjuAyG8V2hm4Wl/ibG1966es
+	bd/3UIdA==;
+Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:48354 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1rfYFN-000KVl-1E;
+	Wed, 28 Feb 2024 21:42:17 -0700
+Subject: Re: [PATCH 6.1 000/195] 6.1.80-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+References: <20240227131610.391465389@linuxfoundation.org>
+In-Reply-To: <20240227131610.391465389@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <1cfaf521-fef8-bfb6-060f-8f69d96396d2@w6rz.net>
+Date: Wed, 28 Feb 2024 20:42:14 -0800
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 98.207.139.8
+X-Source-L: No
+X-Exim-ID: 1rfYFN-000KVl-1E
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:48354
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfLIk05NmvQ6uLaiDWMgahTSvOsm6OeKggFjmWXnVxYODTpNWs7HUJunL148FzlTKWhfa7bIRRUTYgHjr9YIt36MFfC6fEbgXT52utf3aqL5W3o0mN4p2
+ qHSEkM/oAaW+xbV7mnk6d/i6sGXR6Drfpj01FR5AISn12ABPAyu7x/tQAGcNRug61PbDEuWbpwjqkQ==
 
-From: Xiubo Li <xiubli@redhat.com>
+On 2/27/24 5:24 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.80 release.
+> There are 195 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 29 Feb 2024 13:15:36 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.80-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-The osd code has remove cursor initilizing code and this will make
-the sparse read state into a infinite loop. We should initialize
-the cursor just before each sparse-read in messnger v2.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Cc: stable@vger.kernel.org
-URL: https://tracker.ceph.com/issues/64607
-Fixes: 8e46a2d068c9 ("libceph: just wait for more data to be available on the socket")
-Reported-by: Luis Henriques <lhenriques@suse.de>
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
----
- net/ceph/messenger_v2.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/net/ceph/messenger_v2.c b/net/ceph/messenger_v2.c
-index a0ca5414b333..7ae0f80100f4 100644
---- a/net/ceph/messenger_v2.c
-+++ b/net/ceph/messenger_v2.c
-@@ -2025,6 +2025,7 @@ static int prepare_sparse_read_cont(struct ceph_connection *con)
- static int prepare_sparse_read_data(struct ceph_connection *con)
- {
- 	struct ceph_msg *msg = con->in_msg;
-+	u64 len = con->in_msg->sparse_read_total ? : data_len(con->in_msg);
- 
- 	dout("%s: starting sparse read\n", __func__);
- 
-@@ -2034,6 +2035,8 @@ static int prepare_sparse_read_data(struct ceph_connection *con)
- 	if (!con_secure(con))
- 		con->in_data_crc = -1;
- 
-+	ceph_msg_data_cursor_init(&con->v2.in_cursor, con->in_msg, len);
-+
- 	reset_in_kvecs(con);
- 	con->v2.in_state = IN_S_PREPARE_SPARSE_DATA_CONT;
- 	con->v2.data_len_remain = data_len(msg);
--- 
-2.43.0
+Tested-by: Ron Economos <re@w6rz.net>
 
 
