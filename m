@@ -1,235 +1,177 @@
-Return-Path: <stable+bounces-25470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5058786C3E8
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 09:42:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5AA886C4DB
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 10:21:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2CAA1F25F18
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 08:42:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B0F41F267E0
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 09:21:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C7725026B;
-	Thu, 29 Feb 2024 08:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A82E459B49;
+	Thu, 29 Feb 2024 09:20:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [203.110.167.99])
+Received: from air.basealt.ru (air.basealt.ru [194.107.17.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31E94F1F9
-	for <stable@vger.kernel.org>; Thu, 29 Feb 2024 08:40:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.110.167.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAEAE5A4D4;
+	Thu, 29 Feb 2024 09:20:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709196053; cv=none; b=ulDq/p5U9u8QfZrtc8A6q6TMIBMBDHdoJCf+HQekiiOgE8hbbSw165MqxvrdWQXowpKmMDUISQgwWJHXmBlYIOgnoHSsjKe3r4P7EiotUTVp4JWhRGtUcG4VgVMPnZljgJALBWLxlKxT2Nx+wWNsJxvkmjRveuH14WXiCcI9+g4=
+	t=1709198425; cv=none; b=fvz7QMCerVq6grc+X6NISrKnzjePQjh5i3fe/o51/50MEwqQ0EGuX6eTDcF2KXzVRTJ3ggDbfMW9x9cMrd0WUBVUpGOM3NsBC7MjsCM6eDR/qt7hwWEueh3KbY5XyF5FQqFyrjgkycnDCAielkgA6LjYbRyLf3ymPTT6/0BQtPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709196053; c=relaxed/simple;
-	bh=FLBMpOnUYTtHFFdZlsSLuXW6H+PMwcHf+HhPg0BQiiU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=dcdJDY2SP3fFBwHPE7NO77R0FRGtjpqO5ERa4jAW3CYfGPjmWht2fwiz3FC05tqPm3KetvNGaDW1XYix/dWEDTMLdmymwXTsA+af2l5jZRIV1HNQhtw4MKgPq5mkzavxJIEMHzNm+SaImwokzZuB4wHwEijMxvrnlrTda2SMwFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=203.110.167.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
-X-ASG-Debug-ID: 1709196046-1eb14e0c7c4cd80001-OJig3u
-Received: from ZXSHMBX1.zhaoxin.com (ZXSHMBX1.zhaoxin.com [10.28.252.163]) by mx2.zhaoxin.com with ESMTP id IFq8M5OlV5QskFli (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Thu, 29 Feb 2024 16:40:46 +0800 (CST)
-X-Barracuda-Envelope-From: WeitaoWang-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
-Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHMBX1.zhaoxin.com
- (10.28.252.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 29 Feb
- 2024 16:40:46 +0800
-Received: from [10.29.8.21] (10.29.8.21) by zxbjmbx1.zhaoxin.com
- (10.29.252.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 29 Feb
- 2024 16:40:44 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
-Message-ID: <bb269ab0-128b-1988-acf1-8df05f08cf86@zhaoxin.com>
-X-Barracuda-RBL-Trusted-Forwarder: 10.29.8.21
-Date: Fri, 1 Mar 2024 00:40:43 +0800
+	s=arc-20240116; t=1709198425; c=relaxed/simple;
+	bh=4F/X5Z6QsULNfoSYXx+VhyVs0V627xYO/1kLOHJm/zU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=buCX5YUqJZCIEUy109cdNxk+vF5wFqHllAvu5DEmFGRBGCqM13Gxz0Smc8F2g34MlYS89m2sPtmsV4GaTeb27cvzlIK/XTPPTx28nITGD14VIbSotbDH0KyMrBy7xpZP05P5Goxae/Byjj8WwX6oJUvRwr0HU8vTLauBKF88mXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: by air.basealt.ru (Postfix, from userid 490)
+	id AF09C2F2025F; Thu, 29 Feb 2024 09:20:20 +0000 (UTC)
+X-Spam-Level: 
+Received: from [10.88.144.178] (obninsk.basealt.ru [217.15.195.17])
+	by air.basealt.ru (Postfix) with ESMTPSA id A8BA72F20251;
+	Thu, 29 Feb 2024 09:20:18 +0000 (UTC)
+Message-ID: <077c8417-03bf-8d61-5d3a-0aef91b55659@basealt.ru>
+Date: Thu, 29 Feb 2024 12:20:18 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH v2] USB:UAS:return ENODEV when submit urbs fail with
- device not attached.
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH net] gtp: fix use-after-free and null-ptr-deref in
+ gtp_newlink()
 Content-Language: en-US
-X-ASG-Orig-Subj: Re: [PATCH v2] USB:UAS:return ENODEV when submit urbs fail with
- device not attached.
-To: Oliver Neukum <oneukum@suse.com>, <stern@rowland.harvard.edu>,
-	<gregkh@linuxfoundation.org>, <linux-usb@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
-	<usb-storage@lists.one-eyed-alien.net>
-CC: <WeitaoWang@zhaoxin.com>, <stable@vger.kernel.org>
-References: <20240228111521.3864-1-WeitaoWang-oc@zhaoxin.com>
- <e8c4e8a3-bfc3-463f-afce-b9f600b588b2@suse.com>
- <07e80d55-d766-1781-ffc9-fab9ddcd33e3@zhaoxin.com>
- <49a365a7-199a-42cd-b8d3-86d72fe5bca6@suse.com>
- <0b0eefa5-71b6-dc08-d103-72b9aebd9237@zhaoxin.com>
- <9263b77e-9ebe-4987-bf7f-8f9fafcf06b3@suse.com>
-From: "WeitaoWang-oc@zhaoxin.com" <WeitaoWang-oc@zhaoxin.com>
-In-Reply-To: <9263b77e-9ebe-4987-bf7f-8f9fafcf06b3@suse.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: ZXSHCAS2.zhaoxin.com (10.28.252.162) To
- zxbjmbx1.zhaoxin.com (10.29.252.163)
-X-Barracuda-Connect: ZXSHMBX1.zhaoxin.com[10.28.252.163]
-X-Barracuda-Start-Time: 1709196046
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 4700
-X-Barracuda-BRTS-Status: 0
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: 1.09
-X-Barracuda-Spam-Status: No, SCORE=1.09 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=DATE_IN_FUTURE_06_12, DATE_IN_FUTURE_06_12_2
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.121476
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------------------------
-	0.01 DATE_IN_FUTURE_06_12   Date: is 6 to 12 hours after Received: date
-	3.10 DATE_IN_FUTURE_06_12_2 DATE_IN_FUTURE_06_12_2
+To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20240228114703.465107-1-oficerovas@altlinux.org>
+ <Zd_HAGqXSE6Nwcag@calendula>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
+In-Reply-To: <Zd_HAGqXSE6Nwcag@calendula>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 2024/2/29 16:08, Oliver Neukum wrote:
-> 
+Hi,
 
-> On 29.02.24 12:19, WeitaoWang-oc@zhaoxin.com wrote:
+29.02.2024 02:51, Pablo Neira Ayuso wrote:
+> On Wed, Feb 28, 2024 at 02:47:03PM +0300, Alexander Ofitserov wrote:
+>> The gtp_link_ops operations structure for the subsystem must be
+>> registered after registering the gtp_net_ops pernet operations structure.
 > 
->> When alloc urb fail in the same function uas_submit_urbs,
->> whether we should replace SCSI_MLQUEUE_DEVICE_BUSY with generic
->> error code -ENOMEM? Such like this:
+> A fix for this was already applied, see:
+> 
+> commit 136cfaca22567a03bbb3bf53a43d8cb5748b80ec
+> Author: Vasiliy Kovalev <kovalev@altlinux.org>
+> Date:   Wed Feb 14 19:27:33 2024 +0300
+> 
+>      gtp: fix use-after-free and null-ptr-deref in gtp_genl_dump_pdp()
+> 
+>> diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+>> index 2129ae42c7030..0ddec4cc84093 100644
+>> --- a/drivers/net/gtp.c
+>> +++ b/drivers/net/gtp.c
+>> @@ -1903,26 +1903,26 @@ static int __init gtp_init(void)
+>>   
+>>   	get_random_bytes(&gtp_h_initval, sizeof(gtp_h_initval));
+>>   
+>> -	err = rtnl_link_register(&gtp_link_ops);
+>> +	err = register_pernet_subsys(&gtp_net_ops);
+>>   	if (err < 0)
+>>   		goto error_out;
+> 
+> BTW, I like that this calls register_pernet_subsys() before
+> rtnl_link_register(), where a rtnetlink request could come before
+> pernet is set up.
+> 
+>> -	err = register_pernet_subsys(&gtp_net_ops);
+>> +	err = rtnl_link_register(&gtp_link_ops);
+>>   	if (err < 0)
+>> -		goto unreg_rtnl_link;
+>> +		goto unreg_pernet_subsys;
+>>   
+>>   	err = genl_register_family(&gtp_genl_family);
+>>   	if (err < 0)
+>> -		goto unreg_pernet_subsys;
+>> +		goto unreg_rtnl_link;
+>>   
+>>   	pr_info("GTP module loaded (pdp ctx size %zd bytes)\n",
+>>   		sizeof(struct pdp_ctx));
+>>   	return 0;
+>>   
+>> -unreg_pernet_subsys:
+>> -	unregister_pernet_subsys(&gtp_net_ops);
+>>   unreg_rtnl_link:
+>>   	rtnl_link_unregister(&gtp_link_ops);
+>> +unreg_pernet_subsys:
+>> +	unregister_pernet_subsys(&gtp_net_ops);
+>>   error_out:
+>>   	pr_err("error loading GTP module loaded\n");
+>>   	return err;
+>> -- 
+>> 2.42.1
 >>
->> @@ -572,7 +571,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
->>           cmdinfo->data_in_urb = uas_alloc_data_urb(devinfo, GFP_ATOMIC,
->>                               cmnd, DMA_FROM_DEVICE);
->>           if (!cmdinfo->data_in_urb)
->> -            return SCSI_MLQUEUE_DEVICE_BUSY;
->> +            return -ENOMEM;
->>           cmdinfo->state &= ~ALLOC_DATA_IN_URB;
->>       }
-> 
-> Hi,
-> 
-> yes, and then you translate in one central place for the SCSI layer
-> into DID_ERROR or DID_NO_CONNECT.
-> 
+>>
 
-OK, I'll submit a new version after you help to review the following patch.
+This patch fixes another problem, but a similar one, since the sequence 
+is incorrect when registering subsystems.
 
+Initially, the registration sequence in the gtp module was as follows:
 
-diff --git a/drivers/usb/storage/uas.c b/drivers/usb/storage/uas.c
-index 9707f53cfda9..689396777b6f 100644
---- a/drivers/usb/storage/uas.c
-+++ b/drivers/usb/storage/uas.c
-@@ -533,7 +533,7 @@ static struct urb *uas_alloc_cmd_urb(struct uas_dev_info *devinfo, 
-gfp_t gfp,
-   * daft to me.
-   */
+1) rtnl_link_register();
 
--static struct urb *uas_submit_sense_urb(struct scsi_cmnd *cmnd, gfp_t gfp)
-+static int uas_submit_sense_urb(struct scsi_cmnd *cmnd, gfp_t gfp)
-  {
-  	struct uas_dev_info *devinfo = cmnd->device->hostdata;
-  	struct urb *urb;
-@@ -541,16 +541,15 @@ static struct urb *uas_submit_sense_urb(struct scsi_cmnd *cmnd, 
-gfp_t gfp)
+2) genl_register_family();
 
-  	urb = uas_alloc_sense_urb(devinfo, gfp, cmnd);
-  	if (!urb)
--		return NULL;
-+		return -ENOMEM;
-  	usb_anchor_urb(urb, &devinfo->sense_urbs);
-  	err = usb_submit_urb(urb, gfp);
-  	if (err) {
-  		usb_unanchor_urb(urb);
-  		uas_log_cmd_state(cmnd, "sense submit err", err);
-  		usb_free_urb(urb);
--		return NULL;
-  	}
--	return urb;
-+	return err;
-  }
+3) register_pernet_subsys();
 
-  static int uas_submit_urbs(struct scsi_cmnd *cmnd,
-@@ -562,9 +561,9 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
+During debugging of the module, when starting the syzkaller reproducer, 
+it turned out that after genl_register_family() (2),
 
-  	lockdep_assert_held(&devinfo->lock);
-  	if (cmdinfo->state & SUBMIT_STATUS_URB) {
--		urb = uas_submit_sense_urb(cmnd, GFP_ATOMIC);
--		if (!urb)
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+		err = uas_submit_sense_urb(cmnd, GFP_ATOMIC);
-+		if (err)
-+			return err;
-  		cmdinfo->state &= ~SUBMIT_STATUS_URB;
-  	}
+without waiting for register_pernet_subsys()(3), the .dumpit  event is 
+triggered, in which the data of the unregistered pernet subsystem is 
+accessed.
 
-@@ -572,7 +571,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
-  		cmdinfo->data_in_urb = uas_alloc_data_urb(devinfo, GFP_ATOMIC,
-  							cmnd, DMA_FROM_DEVICE);
-  		if (!cmdinfo->data_in_urb)
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return -ENOMEM;
-  		cmdinfo->state &= ~ALLOC_DATA_IN_URB;
-  	}
+That is, the bug was fixed by the commit
 
-@@ -582,7 +581,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
-  		if (err) {
-  			usb_unanchor_urb(cmdinfo->data_in_urb);
-  			uas_log_cmd_state(cmnd, "data in submit err", err);
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return err;
-  		}
-  		cmdinfo->state &= ~SUBMIT_DATA_IN_URB;
-  		cmdinfo->state |= DATA_IN_URB_INFLIGHT;
-@@ -592,7 +591,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
-  		cmdinfo->data_out_urb = uas_alloc_data_urb(devinfo, GFP_ATOMIC,
-  							cmnd, DMA_TO_DEVICE);
-  		if (!cmdinfo->data_out_urb)
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return -ENOMEM;
-  		cmdinfo->state &= ~ALLOC_DATA_OUT_URB;
-  	}
+136cfaca2256 ("gtp: fix use-after-free and null-ptr-deref in 
+gtp_genl_dump_pdp()") [1]
 
-@@ -602,7 +601,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
-  		if (err) {
-  			usb_unanchor_urb(cmdinfo->data_out_urb);
-  			uas_log_cmd_state(cmnd, "data out submit err", err);
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return err;
-  		}
-  		cmdinfo->state &= ~SUBMIT_DATA_OUT_URB;
-  		cmdinfo->state |= DATA_OUT_URB_INFLIGHT;
-@@ -611,7 +610,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
-  	if (cmdinfo->state & ALLOC_CMD_URB) {
-  		cmdinfo->cmd_urb = uas_alloc_cmd_urb(devinfo, GFP_ATOMIC, cmnd);
-  		if (!cmdinfo->cmd_urb)
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return -ENOMEM;
-  		cmdinfo->state &= ~ALLOC_CMD_URB;
-  	}
+and the registration sequence became as follows:
 
-@@ -621,7 +620,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
-  		if (err) {
-  			usb_unanchor_urb(cmdinfo->cmd_urb);
-  			uas_log_cmd_state(cmnd, "cmd submit err", err);
--			return SCSI_MLQUEUE_DEVICE_BUSY;
-+			return err;
-  		}
-  		cmdinfo->cmd_urb = NULL;
-  		cmdinfo->state &= ~SUBMIT_CMD_URB;
-@@ -698,7 +697,7 @@ static int uas_queuecommand_lck(struct scsi_cmnd *cmnd)
-  	 * of queueing, no matter how fatal the error
-  	 */
-  	if (err == -ENODEV) {
--		set_host_byte(cmnd, DID_ERROR);
-+		set_host_byte(cmnd, DID_NO_CONNECT);
-  		scsi_done(cmnd);
-  		goto zombie;
-  	}
+1) rtnl_link_register();
 
-Thanks and best regards,
-weitao
+2) register_pernet_subsys();
+
+3) genl_register_family();
+
+However, syzkaller has discovered another problem:
+
+after registering rtnl_link_register, the .newlink event is triggered, 
+in which the data of the unregistered pernet subsystem is accessed.
+
+This problem is reproducible on current stable kernels and the latest 
+upstream kernel 6.8-rc6, in which the patch 136cfaca2256 [1] is applied.
+
+Therefore, the correct sequence should be as follows:
+
+1) register_pernet_subsys();
+
+2) rtnl_link_register();
+
+3) genl_register_family();
+
+The proposed patch is developed on top of the commit changes [1], does 
+not conflict with it and fixes the described bug.
+
+[1] 
+https://lore.kernel.org/lkml/20240220160434.29bcaf43@kernel.org/T/#mb1f72c2ad57b7ea6d47333e8616beccf8bce0e23
+
+-- 
+Regards,
+Vasiliy Kovalev
 
