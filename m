@@ -1,100 +1,133 @@
-Return-Path: <stable+bounces-25502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FAB086CB19
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 15:13:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9F8A86CBB1
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 15:36:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D619A1F23EEA
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 14:13:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34D5728274A
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 14:36:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6134B12FB0B;
-	Thu, 29 Feb 2024 14:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39C8135A4D;
+	Thu, 29 Feb 2024 14:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Bni4TUGv"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="GBo5Z4Dk"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53D612A177;
-	Thu, 29 Feb 2024 14:13:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69283E489;
+	Thu, 29 Feb 2024 14:36:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709216016; cv=none; b=nsv88/XW57MpGFf6w/1bM849kk+OgIWgsUhO2PlA2zFf5ZtE7roCNKCg/Us6WeWIynJM+rBUhgzc7owADaoqNGQpLP5hnHo/wHrvPR0eHkhJ8RZS60P1qyYta8fcmrNNf5KyZP0qrsOqjUhDnJJ2rcW8rb+zz0ldJICC1LK+k3c=
+	t=1709217411; cv=none; b=n/+LQS/wE9aCQWy9GY3KeEiQKozqQVlzEc5ohT+xrsUNzq3ET0JSBGl3PkCaBw3seIgXN5CTcDQBX8l2gO+QYbStqLHSVFe/FgxdQziS+bgj3p+o9vyRuMz6rT7O8jBAbQae8cSipE5j9WRYWPgrGdCy+w7irxc7IjTQbnonJL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709216016; c=relaxed/simple;
-	bh=iCZdo/s1EV0f2wP+WPv++bHWWJIugZid5cGsPf+2lMo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=arHVp/4nX8Ovz4t2VRB9NuzwB/faNAblf4QwKlCetve+3D/mjchDDwQib9dhLQ/a6b1pqnfZeDPd3JsRK4QjqlqfVkkZXu6R1oO/Y8C8BuJvPeZXGTGYjZigzjbMy8fSiDILLOql11AAN26XJm5Jq7wWDtSuLeewfx3OWMkZo4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Bni4TUGv; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709216015; x=1740752015;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=iCZdo/s1EV0f2wP+WPv++bHWWJIugZid5cGsPf+2lMo=;
-  b=Bni4TUGvyXJHLmZa6MlnfpFXimgkjjf5J9IUkmuX60Z1zihoywd5RBsI
-   LXYZ9Xu6+OHKsaGt8QX3Ha2jUzfcayPE1gIYOD2ogTDQRYR8hTfCyfVvs
-   WhRtu/8QlPVN3GfW/9dG6G91/e+UlVhCVwd5Ye3tsp/igyCuFWdwZpzUY
-   9URy8tmq/1RZeEU5PGJl9rsdu9d5pkGVPhsad6qWIGEd0mojakDrYmTLS
-   1d4xWwqCW1ERyLe7rtbMQCGFuGoOXIJNXQfhzldoIXRuiWf4ZLDcOnsAi
-   vuEIRj+3OHyQGyz555S4JvfK+Y3iZMYBFm36YR8PbVVI5bcnVT5WHoNiL
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3609436"
-X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
-   d="scan'208";a="3609436"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 06:13:34 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="937036000"
-X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
-   d="scan'208";a="937036000"
-Received: from mattu-haswell.fi.intel.com (HELO [10.237.72.199]) ([10.237.72.199])
-  by fmsmga001.fm.intel.com with ESMTP; 29 Feb 2024 06:13:32 -0800
-Message-ID: <97824098-21a6-8dd9-8be5-e2a40debe0f8@linux.intel.com>
-Date: Thu, 29 Feb 2024 16:15:12 +0200
+	s=arc-20240116; t=1709217411; c=relaxed/simple;
+	bh=ShkOrOceasbzr+t0dTg3xM/G0Ce9lc06tQ+L5rDgUFE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f7I9Gyjem/R9ZuBZOBCXJjdHaj2GovZZ+lWCPazTBzGj5CWlKKuo1BQ/GehP0U1WR5wvubhX9NuTLOpHyyB5kGI8Ey8qBKcHDDT0M8hmnJiOjJWX1LKYlveXhFx2Y+uKTkySDuwpXHxzj1ptTNjA+dZ4UCKGMTUoiXyYLJKDu/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=GBo5Z4Dk; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=Yg7gA0jcv4W0xVz47D8GBOwfwX0WK4Erjbho1nblId0=; t=1709217408; x=1710427008; 
+	b=GBo5Z4DkLB+CEbgGiAMfSSDsvM4tI0p2LTFfXQ9nMp1cM/oiQv4Z/QLF7LCuso1ZoZXV8YSXUHV
+	tUKKl6H4FJg3Y+w7+YGFWSpTKO5W8Xz7TE6bMG7/sNegpRKF8zQ7mhhXGkvJFudlgQ2sMUX2w7eQj
+	2ZGTQUV/3p5mIIaI9kLG0Zi+vyBknWpiv8cYjN+ZUPRyoleL0g3OmotYgaYY30x0MVJ71MjCTBLkM
+	ksKOjzQxhrzq4qZgKX2whaehhe7OB9QN82RpnhAQAPUMSL9c1d6kuIXWV3K2GqBgPfZDW/EzOYoVF
+	FIVcYE2+KOiEBndlG7Mu29M694Od+4Ikja5w==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rfhWX-0000000Ddei-2Zad;
+	Thu, 29 Feb 2024 15:36:37 +0100
+From: Johannes Berg <johannes@sipsolutions.net>
+To: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	stable@vger.kernel.org,
+	Ben Greear <greearb@candelatech.com>,
+	Madhan Sai <madhan.singaraju@candelatech.com>
+Subject: [PATCH] debugfs: fix wait/cancellation handling during remove
+Date: Thu, 29 Feb 2024 15:36:20 +0100
+Message-ID: <20240229153635.6bfab7eb34d3.I6c7aeff8c9d6628a8bc1ddcf332205a49d801f17@changeid>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.13.0
-Subject: Re: [v2] usb: xhci: Add error handling in xhci_map_urb_for_dma
-Content-Language: en-US
-To: Prashanth K <quic_prashk@quicinc.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Mathias Nyman <mathias.nyman@intel.com>
-Cc: Sergei Shtylyov <sergei.shtylyov@gmail.com>,
- linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
- stable@vger.kernel.org
-References: <20240228125724.1527491-1-quic_prashk@quicinc.com>
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-In-Reply-To: <20240228125724.1527491-1-quic_prashk@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 28.2.2024 14.57, Prashanth K wrote:
-> Currently xhci_map_urb_for_dma() creates a temporary buffer
-> and copies the SG list to the new linear buffer. But if the
-> kzalloc_node() fails, then the following sg_pcopy_to_buffer()
-> can lead to crash since it tries to memcpy to NULL pointer.
-> So return -ENOMEM if kzalloc returns null pointer.
-> 
-> Cc: <stable@vger.kernel.org> # 5.11
-> Fixes: 2017a1e58472 ("usb: xhci: Use temporary buffer to consolidate SG")
-> Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
-> ---
+From: Johannes Berg <johannes.berg@intel.com>
 
-Thanks.
+Ben Greear further reports deadlocks during concurrent debugfs
+remove while files are being accessed, even though the code in
+question now uses debugfs cancellations. Turns out that despite
+all the review on the locking, we missed completely that the
+logic is wrong: if the refcount hits zero we can finish (and
+need not wait for the completion), but if it doesn't we have
+to trigger all the cancellations. As written, we can _never_
+get into the loop triggering the cancellations. Fix this, and
+explain it better while at it.
 
-Added
+Cc: stable@vger.kernel.org
+Fixes: 8c88a474357e ("debugfs: add API to allow debugfs operations cancellation")
+Reported-by: Ben Greear <greearb@candelatech.com>
+Closes: https://lore.kernel.org/r/1c9fa9e5-09f1-0522-fdbc-dbcef4d255ca@candelatech.com
+Tested-by: Madhan Sai <madhan.singaraju@candelatech.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ fs/debugfs/inode.c | 25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
--Mathias
+diff --git a/fs/debugfs/inode.c b/fs/debugfs/inode.c
+index 034a617cb1a5..a40da0065433 100644
+--- a/fs/debugfs/inode.c
++++ b/fs/debugfs/inode.c
+@@ -751,13 +751,28 @@ static void __debugfs_file_removed(struct dentry *dentry)
+ 	if ((unsigned long)fsd & DEBUGFS_FSDATA_IS_REAL_FOPS_BIT)
+ 		return;
+ 
+-	/* if we hit zero, just wait for all to finish */
+-	if (!refcount_dec_and_test(&fsd->active_users)) {
+-		wait_for_completion(&fsd->active_users_drained);
++	/* if this was the last reference, we're done */
++	if (refcount_dec_and_test(&fsd->active_users))
+ 		return;
+-	}
+ 
+-	/* if we didn't hit zero, try to cancel any we can */
++	/*
++	 * If there's still a reference, the code that obtained it can
++	 * be in different states:
++	 *  - The common case of not using cancellations, or already
++	 *    after debugfs_leave_cancellation(), where we just need
++	 *    to wait for debugfs_file_put() which signals the completion;
++	 *  - inside a cancellation section, i.e. between
++	 *    debugfs_enter_cancellation() and debugfs_leave_cancellation(),
++	 *    in which case we need to trigger the ->cancel() function,
++	 *    and then wait for debugfs_file_put() just like in the
++	 *    previous case;
++	 *  - before debugfs_enter_cancellation() (but obviously after
++	 *    debugfs_file_get()), in which case we may not see the
++	 *    cancellation in the list on the first round of the loop,
++	 *    but debugfs_enter_cancellation() signals the completion
++	 *    after adding it, so this code gets woken up to call the
++	 *    ->cancel() function.
++	 */
+ 	while (refcount_read(&fsd->active_users)) {
+ 		struct debugfs_cancellation *c;
+ 
+-- 
+2.43.2
 
 
