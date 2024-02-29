@@ -1,213 +1,139 @@
-Return-Path: <stable+bounces-25473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05E8386C594
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 10:40:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7487486C5EC
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 10:45:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70C651F26F43
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 09:40:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 262D1289588
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 09:45:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C439047F77;
-	Thu, 29 Feb 2024 09:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9385E62143;
+	Thu, 29 Feb 2024 09:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hcH5MkOe"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OmuBrjBQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5EA95D730;
-	Thu, 29 Feb 2024 09:40:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E24260DF2;
+	Thu, 29 Feb 2024 09:45:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709199604; cv=none; b=mGZ8YsE/WxhKB1Qopf/xGGNbJjQH4Yf2FRqcOEukVRfaTtIiQtvCpMSgFZCErbPqZUZTT50LXK77QTTEa6rFLnQJ5Z9Rg57FuPR1HLdAPEtkAxk9H/VeA3V/BuGPo7qiYrqlcr4Hh/z8R2w32B1i05krHXwM98r8bfjlB1n23dc=
+	t=1709199913; cv=none; b=qN4cLqbSnFEV/zLPBR4glkQV13H2btPF8Gsv0GwzF8Wm+YdCc37em2YBmoCGeGD80Jr0vgZ96hfxCb2gzWydTqgasHA37si+3ocPKiBiRx+64s+tmc8ghvyvFzLr632Usljz5I6FkIAQiieA/GFP7sor4inFbt+5mVoXa6Ch7Bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709199604; c=relaxed/simple;
-	bh=0UKCb2lsR+XxnPaxGeZX/DBqYYTPVJe9H29vJBMK504=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=eHV8Rq15vcIoqzscU52g7lL8UsNCYRHcANjwTAGB620cgjkSFrJWP+K2MCKSkV63pd1w/x1kgLq6uvoXXdMyvsS7rgXSlTQ1XiasclPO7yDIUwFdHS9CE7WHZJGUxZd0i5FBfoNCecXtpBHAXc1sfuLH8fcImpcK/xqOUFFOuEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hcH5MkOe; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a4348aaa705so102590266b.0;
-        Thu, 29 Feb 2024 01:40:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709199601; x=1709804401; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=W5RaMz9HxkBQ/QHEsUPFP9mvPuXWXa71kO8GRgXAWv0=;
-        b=hcH5MkOevdmuQJHXrItLjLsoCzzgG56NlJq3XZAG3lmg605mFbC0qDUDASRkJR9FaR
-         7Ai73Rn1Pqr9yg0Ftq0ypFmPkjVkrw/ONCPIM15AbJGj/JuCclMtyU+Qpzyyk0wk1Wsp
-         ER+kNNW0dQfeBE3P4if+n4NkaH/jUPnGUQqviiTuaNHZ48pfu3dfCupebgJZ3rHxXHLn
-         3zGEbyXj5+8BNrmMhIjF8gwDaEmN9KzOGbKP2GfhqK1uolVCrOQQ73N9tix0Od302H6r
-         qghIk3M3Dp+IQ+gFYCsQduwz3/jR9Vvw+MGcDEuE7sHhYZbS6ZbOhxpqBuJK108qvdqg
-         Ui3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709199601; x=1709804401;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=W5RaMz9HxkBQ/QHEsUPFP9mvPuXWXa71kO8GRgXAWv0=;
-        b=nmT6SRa+x8iK6PxYQZFhQ0vw49KJVZLR+XLD8/1tagi3+b28f2rJ3hOm/1jkhbvs9r
-         v/KnOtEA37hw3+BdSVUGzsNnNZC1qw4GClQLpwIe59s8ufT7eIl7QN8FJ0qrmaTvRrfA
-         8AiP0B4YlJ8xoKWOtLXNlgHRRjY3ZagNQ9CRPRx79IRlesnklvPwuuTrhMURgXF4bmV+
-         2uwKokEUEX5z+bFEuqosz2u430zdlnxyl0BVL5Px4229kfrF6mSOImNZIvhdMSnAnR2X
-         iQN2CZwP2mmkQ0QWuaTtoAxuNRv8xYZX0xMPOykJCUvYma7LGEnmkMeJVmTRDSVTcHqc
-         NY9A==
-X-Forwarded-Encrypted: i=1; AJvYcCUBPeiEVYkZ5YKahnw7Z7ZkHVwo3WieZd6iet5wXrSjI+6JVUjaZi6CPES7F7VTqBfn4W+p6nMxdIo0P49tkyyqoYm+BiGVxE9rQ7Ijj7t69518RDvcxK5rmcf7mLR7SE2dDn5Y3biY50RVMRmJYcNZrQ0jwTWu6g+nPuN87kl75A==
-X-Gm-Message-State: AOJu0YyNO+NQmGOsKtWvTejut2bB4kYX2zN7Sd+CNnR+sIOotsnDqrTE
-	BtOP/1XTqZ2CbvREUwc1R8BvSFyImEEvUcxfUDGaJsg/t1wWQXpd+vG6MDh+e+i8GQ==
-X-Google-Smtp-Source: AGHT+IEx1bdt9xdFXjYVJpodkVY8N8Wlwq6xxgxsW4QcuPFlKd3xWJnzzdX6sT/izTTeTXpQtF2HXg==
-X-Received: by 2002:a17:906:a411:b0:a44:442d:89b3 with SMTP id l17-20020a170906a41100b00a44442d89b3mr761919ejz.48.1709199600765;
-        Thu, 29 Feb 2024 01:40:00 -0800 (PST)
-Received: from ?IPv6:2003:f6:ef1b:2000:15d4:fc17:481e:8afe? (p200300f6ef1b200015d4fc17481e8afe.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:15d4:fc17:481e:8afe])
-        by smtp.gmail.com with ESMTPSA id ty8-20020a170907c70800b00a3ed975968esm500653ejc.28.2024.02.29.01.39.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Feb 2024 01:40:00 -0800 (PST)
-Message-ID: <1265e6ed0e0f5030d633290062f7267621b5bec2.camel@gmail.com>
-Subject: Re: [PATCH v2 1/2] driver core: Introduce device_link_wait_removal()
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Herve Codina <herve.codina@bootlin.com>, Greg Kroah-Hartman
-	 <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Rob
-	Herring <robh+dt@kernel.org>, Frank Rowand <frowand.list@gmail.com>
-Cc: Lizhi Hou <lizhi.hou@amd.com>, Max Zhen <max.zhen@amd.com>, Sonal Santan
- <sonal.santan@amd.com>, Stefano Stabellini <stefano.stabellini@xilinx.com>,
-  Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, Allan Nielsen
- <allan.nielsen@microchip.com>, Horatiu Vultur
- <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>,
- Nuno Sa <nuno.sa@analog.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>,  stable@vger.kernel.org
-Date: Thu, 29 Feb 2024 10:43:24 +0100
-In-Reply-To: <20240229083953.607569-2-herve.codina@bootlin.com>
-References: <20240229083953.607569-1-herve.codina@bootlin.com>
-	 <20240229083953.607569-2-herve.codina@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 
+	s=arc-20240116; t=1709199913; c=relaxed/simple;
+	bh=N4ExwYK4obzpBCaotNTjUlxJUXpLOasw+lbaXcE8vr4=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:From:Subject:
+	 In-Reply-To:Content-Type; b=hm4vI/0gQjOKu8ZfHe1w5bXAwvk5Lbi3IigPWm1k6bUPrBWW1+ToVuKwLl7ZmXCe1cdeAPd61BpeFzB3Pzm3OwG0N1M697Ul7I7QLsPlTFr87RqZbR9iY/fwZ0IAmUIGGByYL+yoF4sR8X0tXo5orjLOLtqoPFcT9ekZyB+SIB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OmuBrjBQ; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709199912; x=1740735912;
+  h=message-id:date:mime-version:to:cc:references:from:
+   subject:in-reply-to:content-transfer-encoding;
+  bh=N4ExwYK4obzpBCaotNTjUlxJUXpLOasw+lbaXcE8vr4=;
+  b=OmuBrjBQw6PtbALOt6RXp5iJW1fGLyBEC8pQowrce1qaKchqPS3NY6ir
+   7kY62pB+4uUKfZtg+QEwP8vF3412RDwKOZ7cwXcV4BRbmMjaSYE9OPwJb
+   7RQ3VeKmvUQr0bohxkiY9CI24LsAGMM3jn5mHOCakGV2T8NtIN11zcUKS
+   Cs9GXXl+Vs8OarEmUVYtv1cRz5AbfnMQMxkK17D6uyR+wRV3ts1p9PBxV
+   G5M6zPyj/zrBDA1oXo2Frn2XNrpzvJj0ib2rECwlAvzYqZp3F18RAri8B
+   8JL1bPkMzTG4qAhHWMddTlCigfGVsFfmIyaB3pTk++aylsl5JCJRkHhnW
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="21200864"
+X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
+   d="scan'208";a="21200864"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 01:45:09 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="937035547"
+X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
+   d="scan'208";a="937035547"
+Received: from mattu-haswell.fi.intel.com (HELO [10.237.72.199]) ([10.237.72.199])
+  by fmsmga001.fm.intel.com with ESMTP; 29 Feb 2024 01:45:06 -0800
+Message-ID: <a1274e8a-c761-a39f-20a4-06989e8144c6@linux.intel.com>
+Date: Thu, 29 Feb 2024 11:46:47 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.13.0
+Content-Language: en-US
+To: Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+ gregkh@linuxfoundation.org, mathias.nyman@intel.com,
+ linux-usb@vger.kernel.org
+Cc: mario.limonciello@amd.com, stable@vger.kernel.org,
+ Oleksandr Natalenko <oleksandr@natalenko.name>
+References: <20240226152831.2147932-1-Basavaraj.Natikar@amd.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: Re: [PATCH v2] xhci: Allow RPM on the USB controller (1022:43f7) by
+ default
+In-Reply-To: <20240226152831.2147932-1-Basavaraj.Natikar@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Herve,
+On 26.2.2024 17.28, Basavaraj Natikar wrote:
+> The AMD USB host controller (1022:43f7) does not enter PCI D3 by default
+> when nothing is connected. This is due to the policy introduced by
+> 'commit a611bf473d1f ("xhci-pci: Set runtime PM as default policy on all
+> xHC 1.2 or later devices")', which only covers 1.2 or later devices.
 
-Thanks for moving this forward... Couple of comment
+This makes it seem like commit a611bf473d1 somehow restricted default runtime
+PM when in fact it enabled it for all xHCI 1.2 hosts.
 
-On Thu, 2024-02-29 at 09:39 +0100, Herve Codina wrote:
-> The commit 80dd33cf72d1 ("drivers: base: Fix device link removal")
-> introduces a workqueue to release the consumer and supplier devices used
-> in the devlink.
-> In the job queued, devices are release and in turn, when all the
-> references to these devices are dropped, the release function of the
-> device itself is called.
->=20
-> Nothing is present to provide some synchronisation with this workqueue
-> in order to ensure that all ongoing releasing operations are done and
-> so, some other operations can be started safely.
->=20
-> For instance, in the following sequence:
-> =C2=A0 1) of_platform_depopulate()
-> =C2=A0 2) of_overlay_remove()
->=20
-> During the step 1, devices are released and related devlinks are removed
-> (jobs pushed in the workqueue).
-> During the step 2, OF nodes are destroyed but, without any
-> synchronisation with devlink removal jobs, of_overlay_remove() can raise
-> warnings related to missing of_node_put():
-> =C2=A0 ERROR: memory leak, expected refcount 1 instead of 2
->=20
-> Indeed, the missing of_node_put() call is going to be done, too late,
-> from the workqueue job execution.
->=20
-> Introduce device_link_wait_removal() to offer a way to synchronize
-> operations waiting for the end of devlink removals (i.e. end of
-> workqueue jobs).
-> Also, as a flushing operation is done on the workqueue, the workqueue
-> used is moved from a system-wide workqueue to a local one.
->=20
-> Fixes: 80dd33cf72d1 ("drivers: base: Fix device link removal")
+Before that only a few selected ones had runtime PM enabled by default.
+
+How about something like:
+
+Enable runtime PM by default for older AMD 1022:43f7 xHCI 1.1 host as it is
+proven to work.
+Driver enables runtime PM by default for newer xHCI 1.2 host.
+
+> 
+> Therefore, by default, allow RPM on the AMD USB controller [1022:43f7].
+> 
+> Fixes: 4baf12181509 ("xhci: Loosen RPM as default policy to cover for AMD xHC 1.1")
+
+This was already reverted as it caused regression on some systems.
+24be0b3c4059 Revert "xhci: Loosen RPM as default policy to cover for AMD xHC 1.1"
+
+> Link: https://lore.kernel.org/all/12335218.O9o76ZdvQC@natalenko.name/
+> Cc: Mario Limonciello <mario.limonciello@amd.com>
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+
+I'd skip Fixes and stable tags and add this as a feature to usb-next.
+
+> Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
+> Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
 > ---
-> =C2=A0drivers/base/core.c=C2=A0=C2=A0=C2=A0 | 26 +++++++++++++++++++++++-=
---
-> =C2=A0include/linux/device.h |=C2=A0 1 +
-> =C2=A02 files changed, 24 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/base/core.c b/drivers/base/core.c
-> index d5f4e4aac09b..80d9430856a8 100644
-> --- a/drivers/base/core.c
-> +++ b/drivers/base/core.c
-> @@ -44,6 +44,7 @@ static bool fw_devlink_is_permissive(void);
-> =C2=A0static void __fw_devlink_link_to_consumers(struct device *dev);
-> =C2=A0static bool fw_devlink_drv_reg_done;
-> =C2=A0static bool fw_devlink_best_effort;
-> +static struct workqueue_struct *device_link_wq;
-> =C2=A0
-> =C2=A0/**
-> =C2=A0 * __fwnode_link_add - Create a link between two fwnode_handles.
-> @@ -532,12 +533,26 @@ static void devlink_dev_release(struct device *dev)
-> =C2=A0	/*
-> =C2=A0	 * It may take a while to complete this work because of the SRCU
-> =C2=A0	 * synchronization in device_link_release_fn() and if the consumer=
- or
-> -	 * supplier devices get deleted when it runs, so put it into the
-> "long"
-> -	 * workqueue.
-> +	 * supplier devices get deleted when it runs, so put it into the
-> +	 * dedicated workqueue.
-> =C2=A0	 */
-> -	queue_work(system_long_wq, &link->rm_work);
-> +	queue_work(device_link_wq, &link->rm_work);
-> =C2=A0}
-> =C2=A0
-> +/**
-> + * device_link_wait_removal - Wait for ongoing devlink removal jobs to
-> terminate
-> + */
-> +void device_link_wait_removal(void)
-> +{
-> +	/*
-> +	 * devlink removal jobs are queued in the dedicated work queue.
-> +	 * To be sure that all removal jobs are terminated, ensure that any
-> +	 * scheduled work has run to completion.
-> +	 */
-> +	drain_workqueue(device_link_wq);
+> Changes in v2:
+> 	- Added Cc: stable@vger.kernel.org
+> 
+>   drivers/usb/host/xhci-pci.c | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+> index b534ca9752be..1eb7a41a75d7 100644
+> --- a/drivers/usb/host/xhci-pci.c
+> +++ b/drivers/usb/host/xhci-pci.c
+> @@ -473,6 +473,8 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
+>   	/* xHC spec requires PCI devices to support D3hot and D3cold */
+>   	if (xhci->hci_version >= 0x120)
+>   		xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
+> +	else if (pdev->vendor == PCI_VENDOR_ID_AMD && pdev->device == 0x43f7)
+> +		xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
 
-I'm still not convinced we can have a recursive call into devlinks removal =
-so I
-do think flush_workqueue() is enough. I will defer to Saravana though...
+This would fit better earlier in the code among the rest of the AMD quirks.
+See how this flag is set for some other hosts.
 
-> +}
-> +EXPORT_SYMBOL_GPL(device_link_wait_removal);
-> +
-> =C2=A0static struct class devlink_class =3D {
-> =C2=A0	.name =3D "devlink",
-> =C2=A0	.dev_groups =3D devlink_groups,
-> @@ -4099,9 +4114,14 @@ int __init devices_init(void)
-> =C2=A0	sysfs_dev_char_kobj =3D kobject_create_and_add("char", dev_kobj);
-> =C2=A0	if (!sysfs_dev_char_kobj)
-> =C2=A0		goto char_kobj_err;
-> +	device_link_wq =3D alloc_workqueue("device_link_wq", 0, 0);
-> +	if (!device_link_wq)
-> +		goto wq_err;
-
-I still think this makes more sense in devlink_class_init() as this really
-device link specific. Moreover, as I said to Saravana, we need to "convince=
-"
-Rafael about this as he (in my series) did not agreed with erroring out in =
-case
-we fail to allocate the queue.
-
-Rafael?
-
-- Nuno S=C3=A1
+Thanks
+Mathias
 
 
