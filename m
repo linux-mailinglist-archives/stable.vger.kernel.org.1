@@ -1,104 +1,52 @@
-Return-Path: <stable+bounces-25589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D817D86CEA5
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 17:19:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E11D86CE88
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 17:16:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75689B264FE
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 16:19:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 992D428ADBE
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 16:16:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 719A213442D;
-	Thu, 29 Feb 2024 15:59:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="VNP3auhV";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="v9Swsebb";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="VNP3auhV";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="v9Swsebb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A047870AEC;
+	Thu, 29 Feb 2024 15:56:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808BC13442A;
-	Thu, 29 Feb 2024 15:59:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E6270AD6;
+	Thu, 29 Feb 2024 15:56:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709222358; cv=none; b=GUGRzdGxNLg/tN+yrcWyuvaiB/Rmo2D0PlRHQzg4PASkTjc10z5SYgUqD0G6q5kgSgCrZWdlXHUPIy2uz0ojTXhmmdLuDDRSbYRA9bP7R0ehZOK2Qb+vqLQnQ9YreJb1C6MMJbtkmBjUWJsHpPac1q1cAuYrxsMNIInLEGgR6g4=
+	t=1709222210; cv=none; b=XK46t64yDjZrBaE823AqliVeg5Kba//QrizNNnzRCoysWuRLrvT7DKYs/tSz8YVvA1VtuZAX7bIJRikz4uk6ruwnhdJqwGA1NS+cHD+oHfk70tLxP/7PT2FzOnlbe/dXmS+gr9ufq63VAUNGuTJcSs5hTya1Uzihmio1AaELi9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709222358; c=relaxed/simple;
-	bh=K9Fpeh3sdJ+G4Wuq+GdGrrJ4JISy6co0YpZVHKQ/UT4=;
+	s=arc-20240116; t=1709222210; c=relaxed/simple;
+	bh=NSsjwYacVaMu1w7Lnxw+r+og5NN001gTRxc21cDBn5Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I+Vpetx7hlV16/CpiuIVadmmra7doNh2PD7WZjchAwSCuvU6in8tOC2CDH8yOJ0IqgoyJGSuwTyO3qv6Tfu8vjAynApdCE5sB2mWI2S6szyaBGMUrHezpS17VXCqkUJhFOd94k1dV35Lw8kOWkf+ts0W6x2+hdynAkXTqLsYink=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=VNP3auhV; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=v9Swsebb; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=VNP3auhV; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=v9Swsebb; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 747E321227;
-	Thu, 29 Feb 2024 15:59:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1709222354;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jIdEnYpHZmcsGwhfQfdpgrGo6yqv0axPmnBxwJinK4I=;
-	b=VNP3auhV4Lz/0p6UVstn8dPkV0yn/+bf3Y+Jcoe6Was6QeWfVMxiiOzAZWG9hk31/+GUru
-	hN1wwGKlV/JQ/DE9jaf+zFzntbIboEuMm6vnCUWXaSM9bVQwwYHVntfzuXFLum+kC6VABY
-	qFuu2N6O+jiJInu+PpNhhNgOkxGUKDA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1709222354;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jIdEnYpHZmcsGwhfQfdpgrGo6yqv0axPmnBxwJinK4I=;
-	b=v9SwsebbqqDi1dNAz8HufuZpU+isTwzPifGAhe9vT+fsFftmEkBLKt65SkGm0O6fc4rUCa
-	fAneXOabUhnEtmBQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1709222354;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jIdEnYpHZmcsGwhfQfdpgrGo6yqv0axPmnBxwJinK4I=;
-	b=VNP3auhV4Lz/0p6UVstn8dPkV0yn/+bf3Y+Jcoe6Was6QeWfVMxiiOzAZWG9hk31/+GUru
-	hN1wwGKlV/JQ/DE9jaf+zFzntbIboEuMm6vnCUWXaSM9bVQwwYHVntfzuXFLum+kC6VABY
-	qFuu2N6O+jiJInu+PpNhhNgOkxGUKDA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1709222354;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jIdEnYpHZmcsGwhfQfdpgrGo6yqv0axPmnBxwJinK4I=;
-	b=v9SwsebbqqDi1dNAz8HufuZpU+isTwzPifGAhe9vT+fsFftmEkBLKt65SkGm0O6fc4rUCa
-	fAneXOabUhnEtmBQ==
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 55B9A13451;
-	Thu, 29 Feb 2024 15:59:14 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id nOq0FNKp4GXcTgAAn2gu4w
-	(envelope-from <dsterba@suse.cz>); Thu, 29 Feb 2024 15:59:14 +0000
-Date: Thu, 29 Feb 2024 16:52:07 +0100
-From: David Sterba <dsterba@suse.cz>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ASTZXkp8Uft2kF1w9RY3giqKR1kseQU8wjGnobydA4Ghd0oqG5XzQibJitQZR+TE0yX+WBfw81Z+H2c4WY4OunbU39kPwMAiP/7GD7U2jI40Dfrd+F6+O3eqbKkwq7EyOdqltXI1JCOtCoWunaS2Ldlr2UnuGxmnlMJYQ7MovNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D93441FB;
+	Thu, 29 Feb 2024 07:57:26 -0800 (PST)
+Received: from FVFF77S0Q05N (unknown [10.57.68.196])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D02F33F6C4;
+	Thu, 29 Feb 2024 07:56:45 -0800 (PST)
+Date: Thu, 29 Feb 2024 15:56:40 +0000
+From: Mark Rutland <mark.rutland@arm.com>
 To: Sasha Levin <sashal@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Filipe Manana <fdmanana@suse.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Josef Bacik <josef@toxicpanda.com>, Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>, clm@fb.com,
-	linux-btrfs@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.7 09/26] btrfs: add and use helper to check if
- block group is used
-Message-ID: <20240229155207.GA2604@suse.cz>
-Reply-To: dsterba@suse.cz
+	Fangrui Song <maskray@google.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Will Deacon <will@kernel.org>, peterz@infradead.org,
+	jpoimboe@kernel.org, jbaron@akamai.com, catalin.marinas@arm.com,
+	nathan@kernel.org, linux-arm-kernel@lists.infradead.org,
+	llvm@lists.linux.dev
+Subject: Re: [PATCH AUTOSEL 6.7 07/26] arm64: jump_label: use constraints
+ "Si" instead of "i"
+Message-ID: <ZeCpOPDi18OBEclz@FVFF77S0Q05N>
 References: <20240229154851.2849367-1-sashal@kernel.org>
- <20240229154851.2849367-9-sashal@kernel.org>
+ <20240229154851.2849367-7-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -107,50 +55,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240229154851.2849367-9-sashal@kernel.org>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VNP3auhV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=v9Swsebb
-X-Spamd-Result: default: False [-0.39 / 50.00];
-	 ARC_NA(0.00)[];
-	 HAS_REPLYTO(0.30)[dsterba@suse.cz];
-	 R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 BAYES_HAM(-0.38)[77.11%];
-	 MIME_GOOD(-0.10)[text/plain];
-	 REPLYTO_ADDR_EQ_FROM(0.00)[];
-	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:98:from];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 DKIM_TRACE(0.00)[suse.cz:+];
-	 MX_GOOD(-0.01)[];
-	 RCPT_COUNT_SEVEN(0.00)[10];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[];
-	 MID_RHS_MATCH_FROM(0.00)[]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Score: -0.39
-X-Rspamd-Queue-Id: 747E321227
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spamd-Bar: /
+In-Reply-To: <20240229154851.2849367-7-sashal@kernel.org>
 
-On Thu, Feb 29, 2024 at 10:48:28AM -0500, Sasha Levin wrote:
-> From: Filipe Manana <fdmanana@suse.com>
+On Thu, Feb 29, 2024 at 10:48:26AM -0500, Sasha Levin wrote:
+> From: Fangrui Song <maskray@google.com>
 > 
-> [ Upstream commit 1693d5442c458ae8d5b0d58463b873cd879569ed ]
-> 
-> Add a helper function to determine if a block group is being used and make
-> use of it at btrfs_delete_unused_bgs(). This helper will also be used in
-> future code changes.
+> [ Upstream commit f9daab0ad01cf9d165dbbbf106ca4e61d06e7fe8 ]
 
-The patch is not a prerequisite for any other stable patch, right? Then
-please drop if from all versions, it's a simple cleanup.
+That upstream patch caused issues and was subsequently reverted in commit:
+
+  a6b3eb304a82c29665a0ab947cfe276f6d29f523
+  ("Revert "arm64: jump_label: use constraints "Si" instead of "i""")
+
+Please drop this; it'll break stable in the same way, and it wasn't necessary
+to backport in the first place.
+
+As an aside, that revert has been upstream since v6.8-rc4, ~2.5 weeks ago; it's
+unfortunate for the broken patch to be AUTOSEL'd now! It'd be good if something
+could automatically check for reverts in mainline...
+
+Mark.
+
+> The generic constraint "i" seems to be copied from x86 or arm (and with
+> a redundant generic operand modifier "c"). It works with -fno-PIE but
+> not with -fPIE/-fPIC in GCC's aarch64 port.
+> 
+> The machine constraint "S", which denotes a symbol or label reference
+> with a constant offset, supports PIC and has been available in GCC since
+> 2012 and in Clang since 7.0. However, Clang before 19 does not support
+> "S" on a symbol with a constant offset [1] (e.g.
+> `static_key_false(&nf_hooks_needed[pf][hook])` in
+> include/linux/netfilter.h), so we use "i" as a fallback.
+> 
+> Suggested-by: Ard Biesheuvel <ardb@kernel.org>
+> Signed-off-by: Fangrui Song <maskray@google.com>
+> Link: https://github.com/llvm/llvm-project/pull/80255 [1]
+> Acked-by: Mark Rutland <mark.rutland@arm.com>
+> Link: https://lore.kernel.org/r/20240206074552.541154-1-maskray@google.com
+> Signed-off-by: Will Deacon <will@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  arch/arm64/include/asm/jump_label.h | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/jump_label.h b/arch/arm64/include/asm/jump_label.h
+> index 48ddc0f45d228..b7716b215f91a 100644
+> --- a/arch/arm64/include/asm/jump_label.h
+> +++ b/arch/arm64/include/asm/jump_label.h
+> @@ -15,6 +15,10 @@
+>  
+>  #define JUMP_LABEL_NOP_SIZE		AARCH64_INSN_SIZE
+>  
+> +/*
+> + * Prefer the constraint "S" to support PIC with GCC. Clang before 19 does not
+> + * support "S" on a symbol with a constant offset, so we use "i" as a fallback.
+> + */
+>  static __always_inline bool arch_static_branch(struct static_key * const key,
+>  					       const bool branch)
+>  {
+> @@ -23,9 +27,9 @@ static __always_inline bool arch_static_branch(struct static_key * const key,
+>  		 "	.pushsection	__jump_table, \"aw\"	\n\t"
+>  		 "	.align		3			\n\t"
+>  		 "	.long		1b - ., %l[l_yes] - .	\n\t"
+> -		 "	.quad		%c0 - .			\n\t"
+> +		 "	.quad		(%[key] - .) + %[bit0]  \n\t"
+>  		 "	.popsection				\n\t"
+> -		 :  :  "i"(&((char *)key)[branch]) :  : l_yes);
+> +		 :  :  [key]"Si"(key), [bit0]"i"(branch) :  : l_yes);
+>  
+>  	return false;
+>  l_yes:
+> @@ -40,9 +44,9 @@ static __always_inline bool arch_static_branch_jump(struct static_key * const ke
+>  		 "	.pushsection	__jump_table, \"aw\"	\n\t"
+>  		 "	.align		3			\n\t"
+>  		 "	.long		1b - ., %l[l_yes] - .	\n\t"
+> -		 "	.quad		%c0 - .			\n\t"
+> +		 "	.quad		(%[key] - .) + %[bit0]  \n\t"
+>  		 "	.popsection				\n\t"
+> -		 :  :  "i"(&((char *)key)[branch]) :  : l_yes);
+> +		 :  :  [key]"Si"(key), [bit0]"i"(branch) :  : l_yes);
+>  
+>  	return false;
+>  l_yes:
+> -- 
+> 2.43.0
+> 
 
