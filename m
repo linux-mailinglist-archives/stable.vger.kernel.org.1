@@ -1,482 +1,168 @@
-Return-Path: <stable+bounces-25596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF1AD86D119
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 18:49:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2913E86D1D7
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 19:16:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31E321F258C3
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 17:49:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D71A6288248
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 18:16:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D0B670AF4;
-	Thu, 29 Feb 2024 17:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D5E78261;
+	Thu, 29 Feb 2024 18:15:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D81rIspO"
 X-Original-To: stable@vger.kernel.org
-Received: from peace.netnation.com (peace.netnation.com [204.174.223.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f44.google.com (mail-io1-f44.google.com [209.85.166.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C544E70AEA;
-	Thu, 29 Feb 2024 17:49:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=204.174.223.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B136D7829A;
+	Thu, 29 Feb 2024 18:15:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709228954; cv=none; b=NHunfu1sG5W7HOuQQA31rk67gV/qpF4E1TqngO8BTylM8oGp8EK3I6NhvOiyC7LPPPy5PMM8PufjgYFLPsM8W1OJjq1YkxOTsN2SU2gPXlG3QjcLnARdp8Zutqsx/tEl44SzTOKT8VWKi/KL2deNXKOk2RHDI6BYJI3Z/lyyrUM=
+	t=1709230555; cv=none; b=sVws2OjYxpydAvUuR70OquH3ciRRx9qDfpiAhxOSKngQnjkN6agcqm8AzSTNzyQEUMcMguQcagfEFDpSARLy3XfVvrLPXitCJWFHnN6OMoZGlj1Ih5cAgM0ZpnuHkZ03coUUOgSLqeZboEPWC+I6Pc01jRzCt4HFb/OtHLcT7/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709228954; c=relaxed/simple;
-	bh=9OkH4Y8/niEmrvOa1pKphy5rxgqNk/7DOO5q2UEPH/A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PNiVuJ7rtcHV4OQ8RQjF1UiYHt4Yo+4tS77xCiir48Pjsjfv3ihA29wi12meFQ91ij+2881Ho6+yXkoFin4PGeXKTRfdzrLfh3kqWcAPCRSbC5dowF+Q6Uxf5/lYfaPkLWHWGfdpvEeIfHrIYl0ZOHUjMKW/I/0H3Y2zJaR9u88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hostway.ca; spf=pass smtp.mailfrom=hostway.ca; arc=none smtp.client-ip=204.174.223.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hostway.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hostway.ca
-Received: from sim by peace.netnation.com with local (Exim 4.92)
-	(envelope-from <sim@hostway.ca>)
-	id 1rfkWm-0002Fj-HA; Thu, 29 Feb 2024 09:49:04 -0800
-Date: Thu, 29 Feb 2024 09:49:04 -0800
-From: Simon Kirby <sim@hostway.ca>
-To: Thorsten Leemhuis <regressions@leemhuis.info>
-Cc: linux-bluetooth@vger.kernel.org, Hyunwoo Kim <v4bel@theori.io>,
-	stable@vger.kernel.org, regressions@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	Marcel Holtmann <marcel@holtmann.org>
-Subject: Re: Bluetooth: af_bluetooth: Fix Use-After-Free in bt_sock_recvmsg
-Message-ID: <20240229174904.GA8827@hostway.ca>
-References: <20240226213855.GB3202@hostway.ca>
- <0a45771f-3fd3-446c-a5eb-dffc9eac53eb@leemhuis.info>
+	s=arc-20240116; t=1709230555; c=relaxed/simple;
+	bh=COo3G373l+Iz+717JUiLnEmx4+RH+rBRTGRjnlnmL44=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KS097MKI++S35JaXuYgpVd+op/nDcznrbM2HVCY+JppwtVOfIVTTUfAWj7tOLoq8zLR7VlFX3f+sTgcNxd6SjGXc/1Q5D2Ndh38sHwyvQX0WAV9J4bhYtfjAHmjCPjJHgm7TqX/a+2DSak5tzNJECHT3YglLa1f1v8R3jjlpIsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D81rIspO; arc=none smtp.client-ip=209.85.166.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-io1-f44.google.com with SMTP id ca18e2360f4ac-7c7c9846910so56667139f.1;
+        Thu, 29 Feb 2024 10:15:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709230553; x=1709835353; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=p/l7wuwerQx+PxQWBuAAIrGrI7y+fDmA/KYc8Dv6blA=;
+        b=D81rIspOvzJ367CS+rzOVoxybg8HnlQMn3ktgUTnypW/jR7+g82S1zWRG5jXf8Sq8T
+         7MkEQT9vQtTsJsxX1FSHdpCoRfIO8jrTAWBP0qtL8wJ+8dLFddExdxJeMaCJ1Msdp6v5
+         PBJYgTzFN7QbwJWVel9rlidPkAJAQw3+QC/O1DLbExPpGQFKUKpo7NrWtb0WI4PWTF7S
+         mb/m9r+cGH7MI8HOzWqdXXTRBqg8cRb9oSY5WAZ+naNTQUR44PeCUspnWP2/4vCfDu1q
+         fEn1ljydyonQfdUlm1wcgqQcJGZahFKvtki1GDQCb9WVmI6KkHWx6SJEH3DPhakWiWid
+         aQPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709230553; x=1709835353;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=p/l7wuwerQx+PxQWBuAAIrGrI7y+fDmA/KYc8Dv6blA=;
+        b=O2J9/JnWGOVRVPqpT2w2GenCnEzf0LDtFFsoob1U6elAhhPcJi/i1WxeX+zlwGK0HY
+         4p0vkvokhPFqGcamZGyRuJRXC0x3QIO2DB243d39cAFyk1T2hxmIKVBiaSG3DYmsVmlh
+         yHJYQOJAjHSd3+63RC9H4023v72kwiJ9xoPKEafrRVEnOH963LLfNaAImg+2bTBC5AME
+         BGpBkOkDV9690M1XSifsHqYlq1pbHHubiqr2W9W2nbidaV4eawBGM67yNlt7E41mqWJp
+         l0W5rhksDbKMC/gm0YPZU/iidTNfmHHXz6Pm39A19Int8T+Ehyk1cBmC4EHsEgsVwbt5
+         QqoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXADQx37cN6/W3jxesGmL+nHWM6gQBbVVi2GIfyo/eVnKWvyWQNJi5345ME/h4P83mJTIGP8E7MCAuHT12R403bD/toGMIoXStNx4ZGNMKWCjOTK2F/4h5fVgzauDaDnW3+0aGC
+X-Gm-Message-State: AOJu0Yya0uJCmPlj2738wBp6oZxCc3I+d4fzBCbt/fXLQoacpOPyrlDB
+	nNV/fyHBx9tm2Uqx6jdtia7R6KtfUR4J0OA7R+K0iFCmkeTnJM6j
+X-Google-Smtp-Source: AGHT+IG6uA4BRrA6enQQJhJ39hOePhadyZHZvqMo8a/3FRtiMAeCcIjgpc/fCtzRgJEamSoqP2d8cw==
+X-Received: by 2002:a5d:961a:0:b0:7c8:729:69b0 with SMTP id w26-20020a5d961a000000b007c8072969b0mr3052292iol.3.1709230552746;
+        Thu, 29 Feb 2024 10:15:52 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id c59-20020a029641000000b00474a3a31ef8sm430038jai.60.2024.02.29.10.15.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Feb 2024 10:15:51 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <03a17f2d-ab8f-4241-8912-ebd903fb2c43@roeck-us.net>
+Date: Thu, 29 Feb 2024 10:15:49 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0a45771f-3fd3-446c-a5eb-dffc9eac53eb@leemhuis.info>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15 000/245] 5.15.150-rc1 review
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org, shuah@kernel.org,
+ patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+ jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+ srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+References: <20240227131615.098467438@linuxfoundation.org>
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <20240227131615.098467438@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Feb 29, 2024 at 09:40:42AM +0100, Thorsten Leemhuis wrote:
-
-> [CCing the bluetooth maintainers]
+On 2/27/24 05:23, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.150 release.
+> There are 245 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> On 26.02.24 22:38, Simon Kirby wrote:
-> > 
-> > I bisected a regression where reading from a Bluetooth device gets stuck
-> > in recvfrom() calls. The device here is a Wii Balance Board, using
-> > https://github.com/initialstate/beerfridge/blob/master/wiiboard_test.py;
-> > this worked fine in v6.6.1 and v6.6.8, but when I tried on a v6.6.14
-> > build, the script no longer outputs any readings.
-> > 
-> > 1d576c3a5af850bf11fbd103f9ba11aa6d6061fb is the first bad commit
-> > 
-> > which maps to upstream commit 2e07e8348ea454615e268222ae3fc240421be768:
+> Responses should be made by Thu, 29 Feb 2024 13:15:36 +0000.
+> Anything received after that time might be too late.
 > 
-> Could you please check if this problem only occurs with the latest 6.6.y
-> versions, or also with mainline (6.8-rc8)? That's important to know, as
-> that in the end determines who and how this needs to be is handled.
 
-It occurs with 6.6.14, 6.6.18, and also with Linus head (805d849d7c3cc1).
+$ git grep dma_fence_allocate_private_stub
+drivers/dma-buf/dma-fence-unwrap.c:             return dma_fence_allocate_private_stub(timestamp);
+                                                                                        ^^^^^^^^^
+drivers/dma-buf/dma-fence-unwrap.c:             tmp = dma_fence_allocate_private_stub(ktime_get());
+                                                                                       ^^^^^^^^^^^
+drivers/dma-buf/dma-fence.c: * dma_fence_allocate_private_stub - return a private, signaled fence
+drivers/dma-buf/dma-fence.c:struct dma_fence *dma_fence_allocate_private_stub(void)
+                                                                               ^^^^
+drivers/dma-buf/dma-fence.c:EXPORT_SYMBOL(dma_fence_allocate_private_stub);
+drivers/gpu/drm/drm_syncobj.c:  struct dma_fence *fence = dma_fence_allocate_private_stub();
+include/linux/dma-fence.h:struct dma_fence *dma_fence_allocate_private_stub(void);
+                                                                             ^^^^
 
-The lockdep output below was from 6.8-rc6; the behaviour is the same.
+This was introduced with commit 4e82b9c11d3cd ("dma-buf: add dma_fence_timestamp helper") in
+v5.15.149. The additional parameter to dma_fence_allocate_private_stub() was introduced in the
+upstream kernel with commit f781f661e8c99 ("dma-buf: keep the signaling time of merged fences
+v3") which is missing in v5.15.y.
 
-Simon-
+Guenter
 
-> Ciao, Thorsten
-> 
-> > Bluetooth: af_bluetooth: Fix Use-After-Free in bt_sock_recvmsg
-> > 
-> > With this commit in place, as also in v6.7 and v6.7.6, the script does
-> > not output anything _unless_ I strace the process, in which case a bunch
-> > of recvmsg() syscalls are shown, and then it hangs again. If I ^C the
-> > strace and run it a few times, eventually the script will get enough data
-> > and output a reading.
-> > 
-> > If I don't strace the script, a hung task warning appears:
-> > 
-> > INFO: task kworker/u9:1:121 blocked for more than 30 seconds.
-> >       Not tainted 6.7.6-lemon #183
-> > "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-> > task:kworker/u9:1    state:D stack:0     pid:121   tgid:121   ppid:2      flags:0x00004000
-> > Workqueue: hci0 hci_rx_work
-> > Call Trace:
-> >  <TASK>
-> >  __schedule+0x37d/0xa00
-> >  schedule+0x32/0xe0
-> >  __lock_sock+0x68/0xa0
-> >  ? __pfx_autoremove_wake_function+0x10/0x10
-> >  lock_sock_nested+0x43/0x50
-> >  l2cap_sock_recv_cb+0x21/0xa0
-> >  l2cap_recv_frame+0x55b/0x30a0
-> >  ? psi_task_switch+0xeb/0x270
-> >  ? finish_task_switch.isra.0+0x93/0x2a0
-> >  hci_rx_work+0x33a/0x3f0               
-> >  process_one_work+0x13a/0x2f0
-> >  worker_thread+0x2f0/0x410
-> >  ? __pfx_worker_thread+0x10/0x10
-> >  kthread+0xe0/0x110
-> >  ? __pfx_kthread+0x10/0x10
-> >  ret_from_fork+0x2c/0x50
-> >  ? __pfx_kthread+0x10/0x10
-> >  ret_from_fork_asm+0x1b/0x30
-> >  </TASK>
-> > 
-> > On 6.8-rc6 with lockdep enabled, I get the following output:
-> > 
-> > [   22.122337] wlan0: associated
-> > [ 4547.622339] INFO: task kworker/u9:1:3528 blocked for more than 30 seconds.
-> > 
-> > [ 4547.622530] =====================================================
-> > [ 4547.622531] WARNING: SOFTIRQ-safe -> SOFTIRQ-unsafe lock order detected
-> > [ 4547.622535] 6.8.0-rc6-lemon #190 Not tainted
-> > [ 4547.622538] -----------------------------------------------------
-> > [ 4547.622540] khungtaskd/39 [HC0[0]:SC0[0]:HE0:SE1] is trying to acquire:
-> > [ 4547.622546] ffff888101554cf8 ((work_completion)(&(&ops->cursor_work)->work)){+.+.}-{0:0}, at: __flush_work+0x4b/0x3f0
-> > [ 4547.622569] 
-> >                and this task is already holding:
-> > [ 4547.622571] ffffffff8367e600 (console_owner){....}-{0:0}, at: console_flush_all+0x1c9/0x4e0
-> > [ 4547.622586] which would create a new lock dependency:
-> > [ 4547.622587]  (console_owner){....}-{0:0} -> ((work_completion)(&(&ops->cursor_work)->work)){+.+.}-{0:0}
-> > [ 4547.622596] 
-> >                but this new dependency connects a SOFTIRQ-irq-safe lock:
-> > [ 4547.622598]  (&trans_pcie->irq_lock){+.-.}-{3:3}
-> > [ 4547.622601] 
-> >                ... which became SOFTIRQ-irq-safe at:
-> > [ 4547.622603]   lock_acquire+0xb0/0x280
-> > [ 4547.622611]   _raw_spin_lock+0x2b/0x40
-> > [ 4547.622618]   iwl_pcie_napi_poll+0x7a/0x130
-> > [ 4547.622627]   __napi_poll.constprop.0+0x23/0x1e0
-> > [ 4547.622634]   net_rx_action+0x137/0x2a0
-> > [ 4547.622639]   __do_softirq+0xc7/0x402
-> > [ 4547.622645]   do_softirq+0x42/0xa0
-> > [ 4547.622651]   __local_bh_enable_ip+0xb8/0xd0
-> > [ 4547.622657]   iwl_pcie_irq_handler+0x539/0xb70
-> > [ 4547.622665]   irq_thread_fn+0x1b/0x60
-> > [ 4547.622670]   irq_thread+0xe0/0x190
-> > [ 4547.622675]   kthread+0xe3/0x120
-> > [ 4547.622679]   ret_from_fork+0x2c/0x50
-> > [ 4547.622684]   ret_from_fork_asm+0x1b/0x30
-> > [ 4547.622692] 
-> >                to a SOFTIRQ-irq-unsafe lock:
-> > [ 4547.622694]  ((work_completion)(&(&ops->cursor_work)->work)){+.+.}-{0:0}
-> > [ 4547.622698] 
-> >                ... which became SOFTIRQ-irq-unsafe at:
-> > [ 4547.622699] ...
-> > [ 4547.622700]   lock_acquire+0xb0/0x280
-> > [ 4547.622706]   process_one_work+0x199/0x480
-> > [ 4547.622713]   worker_thread+0x1be/0x3b0
-> > [ 4547.622719]   kthread+0xe3/0x120
-> > [ 4547.622722]   ret_from_fork+0x2c/0x50
-> > [ 4547.622725]   ret_from_fork_asm+0x1b/0x30
-> > [ 4547.622731] 
-> >                other info that might help us debug this:
-> > 
-> > [ 4547.622732] Chain exists of:
-> >                  &trans_pcie->irq_lock --> console_owner --> (work_completion)(&(&ops->cursor_work)->work)
-> > 
-> > [ 4547.622739]  Possible interrupt unsafe locking scenario:
-> > 
-> > [ 4547.622741]        CPU0                    CPU1
-> > [ 4547.622742]        ----                    ----
-> > [ 4547.622742]   lock((work_completion)(&(&ops->cursor_work)->work));
-> > [ 4547.622745]                                local_irq_disable();
-> > [ 4547.622746]                                lock(&trans_pcie->irq_lock);
-> > [ 4547.622749]                                lock(console_owner);
-> > [ 4547.622751]   <Interrupt>
-> > [ 4547.622752]     lock(&trans_pcie->irq_lock);
-> > [ 4547.622754] 
-> >                 *** DEADLOCK ***
-> > 
-> > [ 4547.622755] 5 locks held by khungtaskd/39:
-> > [ 4547.622759]  #0: ffffffff836f14e0 (rcu_read_lock){....}-{1:3}, at: watchdog+0xd8/0x7b0
-> > [ 4547.622778]  #1: ffffffff836ee820 (console_lock){+.+.}-{0:0}, at: _printk+0x47/0x50
-> > [ 4547.622789]  #2: ffffffff836ee870 (console_srcu){....}-{0:0}, at: console_flush_all+0x74/0x4e0
-> > [ 4547.622800]  #3: ffffffff8367e600 (console_owner){....}-{0:0}, at: console_flush_all+0x1c9/0x4e0
-> > [ 4547.622810]  #4: ffffffff837d8758 (printing_lock){....}-{3:3}, at: vt_console_print+0x47/0x430
-> > [ 4547.622822] 
-> >                the dependencies between SOFTIRQ-irq-safe lock and the holding lock:
-> > [ 4547.622824]   -> (&trans_pcie->irq_lock){+.-.}-{3:3} {
-> > [ 4547.622830]      HARDIRQ-ON-W at:
-> > [ 4547.622833]                         lock_acquire+0xb0/0x280
-> > [ 4547.622839]                         _raw_spin_lock_bh+0x33/0x40
-> > [ 4547.622845]                         iwl_trans_pcie_alloc+0x2fd/0x990
-> > [ 4547.622853]                         iwl_pci_probe+0x28/0x810
-> > [ 4547.622859]                         pci_device_probe+0x94/0x120
-> > [ 4547.622865]                         really_probe+0x15e/0x2f0
-> > [ 4547.622872]                         __driver_probe_device+0x6e/0x110
-> > [ 4547.622878]                         driver_probe_device+0x1a/0xe0
-> > [ 4547.622884]                         __driver_attach+0x87/0x190
-> > [ 4547.622890]                         bus_for_each_dev+0x66/0xb0
-> > [ 4547.622894]                         bus_add_driver+0xea/0x1f0
-> > [ 4547.622898]                         driver_register+0x54/0x100
-> > [ 4547.622905]                         iwl_pci_register_driver+0x1a/0x40
-> > [ 4547.622911]                         do_one_initcall+0x50/0x250
-> > [ 4547.622918]                         kernel_init_freeable+0x243/0x3e0
-> > [ 4547.622927]                         kernel_init+0x15/0x1a0
-> > [ 4547.622931]                         ret_from_fork+0x2c/0x50
-> > [ 4547.622935]                         ret_from_fork_asm+0x1b/0x30
-> > [ 4547.622941]      IN-SOFTIRQ-W at:
-> > [ 4547.622943]                         lock_acquire+0xb0/0x280
-> > [ 4547.622948]                         _raw_spin_lock+0x2b/0x40
-> > [ 4547.622953]                         iwl_pcie_napi_poll+0x7a/0x130
-> > [ 4547.622961]                         __napi_poll.constprop.0+0x23/0x1e0
-> > [ 4547.622966]                         net_rx_action+0x137/0x2a0
-> > [ 4547.622971]                         __do_softirq+0xc7/0x402
-> > [ 4547.622978]                         do_softirq+0x42/0xa0
-> > [ 4547.622983]                         __local_bh_enable_ip+0xb8/0xd0
-> > [ 4547.622989]                         iwl_pcie_irq_handler+0x539/0xb70
-> > [ 4547.622996]                         irq_thread_fn+0x1b/0x60
-> > [ 4547.623002]                         irq_thread+0xe0/0x190
-> > [ 4547.623006]                         kthread+0xe3/0x120
-> > [ 4547.623011]                         ret_from_fork+0x2c/0x50
-> > [ 4547.623014]                         ret_from_fork_asm+0x1b/0x30
-> > [ 4547.623020]      INITIAL USE at:
-> > [ 4547.623022]                        lock_acquire+0xb0/0x280
-> > [ 4547.623027]                        _raw_spin_lock_bh+0x33/0x40
-> > [ 4547.623032]                        iwl_trans_pcie_alloc+0x2fd/0x990
-> > [ 4547.623038]                        iwl_pci_probe+0x28/0x810
-> > [ 4547.623043]                        pci_device_probe+0x94/0x120
-> > [ 4547.623047]                        really_probe+0x15e/0x2f0
-> > [ 4547.623053]                        __driver_probe_device+0x6e/0x110
-> > [ 4547.623059]                        driver_probe_device+0x1a/0xe0
-> > [ 4547.623064]                        __driver_attach+0x87/0x190
-> > [ 4547.623070]                        bus_for_each_dev+0x66/0xb0
-> > [ 4547.623073]                        bus_add_driver+0xea/0x1f0
-> > [ 4547.623077]                        driver_register+0x54/0x100
-> > [ 4547.623084]                        iwl_pci_register_driver+0x1a/0x40
-> > [ 4547.623090]                        do_one_initcall+0x50/0x250
-> > [ 4547.623096]                        kernel_init_freeable+0x243/0x3e0
-> > [ 4547.623103]                        kernel_init+0x15/0x1a0
-> > [ 4547.623107]                        ret_from_fork+0x2c/0x50
-> > [ 4547.623110]                        ret_from_fork_asm+0x1b/0x30
-> > [ 4547.623116]    }
-> > [ 4547.623118]    ... key      at: [<ffffffff8502fe90>] __key.20+0x0/0x10
-> > [ 4547.623129]  -> (&trans_pcie->reg_lock){+...}-{3:3} {
-> > [ 4547.623134]     HARDIRQ-ON-W at:
-> > [ 4547.623137]                       lock_acquire+0xb0/0x280
-> > [ 4547.623142]                       _raw_spin_lock_bh+0x33/0x40
-> > [ 4547.623147]                       iwl_trans_pcie_set_bits_mask+0x25/0x60
-> > [ 4547.623151]                       iwl_pcie_set_hw_ready+0x1e/0xa0
-> > [ 4547.623160]                       iwl_pcie_prepare_card_hw+0x33/0x100
-> > [ 4547.623165]                       iwl_pci_probe+0x42/0x810
-> > [ 4547.623171]                       pci_device_probe+0x94/0x120
-> > [ 4547.623175]                       really_probe+0x15e/0x2f0
-> > [ 4547.623181]                       __driver_probe_device+0x6e/0x110
-> > [ 4547.623186]                       driver_probe_device+0x1a/0xe0
-> > [ 4547.623192]                       __driver_attach+0x87/0x190
-> > [ 4547.623197]                       bus_for_each_dev+0x66/0xb0
-> > [ 4547.623201]                       bus_add_driver+0xea/0x1f0
-> > [ 4547.623205]                       driver_register+0x54/0x100
-> > [ 4547.623211]                       iwl_pci_register_driver+0x1a/0x40
-> > [ 4547.623217]                       do_one_initcall+0x50/0x250
-> > [ 4547.623223]                       kernel_init_freeable+0x243/0x3e0
-> > [ 4547.623229]                       kernel_init+0x15/0x1a0
-> > [ 4547.623233]                       ret_from_fork+0x2c/0x50
-> > [ 4547.623236]                       ret_from_fork_asm+0x1b/0x30
-> > [ 4547.623242]     INITIAL USE at:
-> > [ 4547.623244]                      lock_acquire+0xb0/0x280
-> > [ 4547.623249]                      _raw_spin_lock_bh+0x33/0x40
-> > [ 4547.623254]                      iwl_trans_pcie_set_bits_mask+0x25/0x60
-> > [ 4547.623257]                      iwl_pcie_set_hw_ready+0x1e/0xa0
-> > [ 4547.623266]                      iwl_pcie_prepare_card_hw+0x33/0x100
-> > [ 4547.623271]                      iwl_pci_probe+0x42/0x810
-> > [ 4547.623277]                      pci_device_probe+0x94/0x120
-> > [ 4547.623281]                      really_probe+0x15e/0x2f0
-> > [ 4547.623286]                      __driver_probe_device+0x6e/0x110
-> > [ 4547.623292]                      driver_probe_device+0x1a/0xe0
-> > [ 4547.623297]                      __driver_attach+0x87/0x190
-> > [ 4547.623303]                      bus_for_each_dev+0x66/0xb0
-> > [ 4547.623306]                      bus_add_driver+0xea/0x1f0
-> > [ 4547.623310]                      driver_register+0x54/0x100
-> > [ 4547.623316]                      iwl_pci_register_driver+0x1a/0x40
-> > [ 4547.623323]                      do_one_initcall+0x50/0x250
-> > [ 4547.623328]                      kernel_init_freeable+0x243/0x3e0
-> > [ 4547.623334]                      kernel_init+0x15/0x1a0
-> > [ 4547.623338]                      ret_from_fork+0x2c/0x50
-> > [ 4547.623342]                      ret_from_fork_asm+0x1b/0x30
-> > [ 4547.623347]   }
-> > [ 4547.623348]   ... key      at: [<ffffffff8502fe80>] __key.19+0x0/0x10
-> > [ 4547.623358]   ... acquired at:
-> > [ 4547.623359]    _raw_spin_lock_bh+0x33/0x40
-> > [ 4547.623364]    iwl_trans_pcie_set_bits_mask+0x25/0x60
-> > [ 4547.623368]    iwl_pcie_apm_init+0x6e/0x1c0
-> > [ 4547.623372]    iwl_trans_pcie_start_fw+0x224/0x670
-> > [ 4547.623377]    iwl_mvm_load_ucode_wait_alive+0xd3/0x5a0
-> > [ 4547.623383]    iwl_run_init_mvm_ucode+0x8c/0x3a0
-> > [ 4547.623387]    iwl_mvm_start_get_nvm+0x87/0x210
-> > [ 4547.623393]    iwl_op_mode_mvm_start+0x962/0xb30
-> > [ 4547.623399]    _iwl_op_mode_start.isra.0+0x72/0xb0
-> > [ 4547.623403]    iwl_opmode_register+0x6a/0xe0
-> > [ 4547.623408]    iwl_mvm_init+0x21/0x60
-> > [ 4547.623413]    do_one_initcall+0x50/0x250
-> > [ 4547.623419]    kernel_init_freeable+0x243/0x3e0
-> > [ 4547.623425]    kernel_init+0x15/0x1a0
-> > [ 4547.623429]    ret_from_fork+0x2c/0x50
-> > [ 4547.623432]    ret_from_fork_asm+0x1b/0x30
-> > 
-> > [ 4547.623441] -> (console_owner){....}-{0:0} {
-> > [ 4547.623446]    INITIAL USE at:
-> > [ 4547.623452]                    lock_acquire+0xb0/0x280
-> > [ 4547.623457]                    console_flush_all+0x1f2/0x4e0
-> > [ 4547.623463]                    console_unlock+0x33/0x110
-> > [ 4547.623469]                    vprintk_emit+0x9f/0x320
-> > [ 4547.623475]                    _printk+0x47/0x50
-> > [ 4547.623479]                    register_console+0x34b/0x4d0
-> > [ 4547.623485]                    con_init+0x200/0x270
-> > [ 4547.623494]                    console_init+0x4a/0x1e0
-> > [ 4547.623504]                    start_kernel+0x2b9/0x660
-> > [ 4547.623510]                    x86_64_start_reservations+0x18/0x30
-> > [ 4547.623517]                    x86_64_start_kernel+0xad/0xc0
-> > [ 4547.623522]                    secondary_startup_64_no_verify+0x170/0x17b
-> > [ 4547.623528]  }
-> > [ 4547.623529]  ... key      at: [<ffffffff8367e600>] console_owner_dep_map+0x0/0x28
-> > [ 4547.623538]  ... acquired at:
-> > [ 4547.623540]    console_flush_all+0x1f2/0x4e0
-> > [ 4547.623545]    console_unlock+0x33/0x110
-> > [ 4547.623551]    vprintk_emit+0x9f/0x320
-> > [ 4547.623557]    dev_vprintk_emit+0xce/0x160
-> > [ 4547.623562]    dev_printk_emit+0x3d/0x50
-> > [ 4547.623566]    _dev_info+0x5b/0x70
-> > [ 4547.623572]    __iwl_info+0x58/0x60
-> > [ 4547.623576]    iwl_pci_probe+0x11c/0x810
-> > [ 4547.623582]    pci_device_probe+0x94/0x120
-> > [ 4547.623587]    really_probe+0x15e/0x2f0
-> > [ 4547.623592]    __driver_probe_device+0x6e/0x110
-> > [ 4547.623598]    driver_probe_device+0x1a/0xe0
-> > [ 4547.623603]    __driver_attach+0x87/0x190
-> > [ 4547.623609]    bus_for_each_dev+0x66/0xb0
-> > [ 4547.623612]    bus_add_driver+0xea/0x1f0
-> > [ 4547.623616]    driver_register+0x54/0x100
-> > [ 4547.623622]    iwl_pci_register_driver+0x1a/0x40
-> > [ 4547.623629]    do_one_initcall+0x50/0x250
-> > [ 4547.623634]    kernel_init_freeable+0x243/0x3e0
-> > [ 4547.623640]    kernel_init+0x15/0x1a0
-> > [ 4547.623644]    ret_from_fork+0x2c/0x50
-> > [ 4547.623648]    ret_from_fork_asm+0x1b/0x30
-> > 
-> > [ 4547.623654] 
-> >                the dependencies between the lock to be acquired
-> > [ 4547.623655]  and SOFTIRQ-irq-unsafe lock:
-> > [ 4547.623665] -> ((work_completion)(&(&ops->cursor_work)->work)){+.+.}-{0:0} {
-> > [ 4547.623670]    HARDIRQ-ON-W at:
-> > [ 4547.623672]                     lock_acquire+0xb0/0x280
-> > [ 4547.623677]                     process_one_work+0x199/0x480
-> > [ 4547.623684]                     worker_thread+0x1be/0x3b0
-> > [ 4547.623690]                     kthread+0xe3/0x120
-> > [ 4547.623694]                     ret_from_fork+0x2c/0x50
-> > [ 4547.623698]                     ret_from_fork_asm+0x1b/0x30
-> > [ 4547.623704]    SOFTIRQ-ON-W at:
-> > [ 4547.623705]                     lock_acquire+0xb0/0x280
-> > [ 4547.623710]                     process_one_work+0x199/0x480
-> > [ 4547.623716]                     worker_thread+0x1be/0x3b0
-> > [ 4547.623722]                     kthread+0xe3/0x120
-> > [ 4547.623725]                     ret_from_fork+0x2c/0x50
-> > [ 4547.623729]                     ret_from_fork_asm+0x1b/0x30
-> > [ 4547.623734]    INITIAL USE at:
-> > [ 4547.623736]                    lock_acquire+0xb0/0x280
-> > [ 4547.623741]                    process_one_work+0x199/0x480
-> > [ 4547.623747]                    worker_thread+0x1be/0x3b0
-> > [ 4547.623753]                    kthread+0xe3/0x120
-> > [ 4547.623757]                    ret_from_fork+0x2c/0x50
-> > [ 4547.623760]                    ret_from_fork_asm+0x1b/0x30
-> > [ 4547.623766]  }
-> > [ 4547.623767]  ... key      at: [<ffffffff850211b0>] __key.1+0x0/0x10
-> > [ 4547.623775]  ... acquired at:
-> > [ 4547.623777]    lock_acquire+0xb0/0x280
-> > [ 4547.623781]    __flush_work+0x56/0x3f0
-> > [ 4547.623789]    __cancel_work_timer+0xd3/0x160
-> > [ 4547.623796]    fbcon_cursor+0x138/0x170
-> > [ 4547.623802]    hide_cursor+0x26/0xc0
-> > [ 4547.623807]    vt_console_print+0x41e/0x430
-> > [ 4547.623814]    console_flush_all+0x206/0x4e0
-> > [ 4547.623820]    console_unlock+0x33/0x110
-> > [ 4547.623825]    vprintk_emit+0x9f/0x320
-> > [ 4547.623831]    _printk+0x47/0x50
-> > [ 4547.623834]    watchdog+0x53a/0x7b0
-> > [ 4547.623838]    kthread+0xe3/0x120
-> > [ 4547.623841]    ret_from_fork+0x2c/0x50
-> > [ 4547.623845]    ret_from_fork_asm+0x1b/0x30
-> > 
-> > [ 4547.623851] 
-> >                stack backtrace:
-> > [ 4547.623854] CPU: 2 PID: 39 Comm: khungtaskd Not tainted 6.8.0-rc6-lemon #190
-> > [ 4547.623860] Hardware name: LENOVO 80MK/VIUU4, BIOS C6CN29WW 09/02/2015
-> > [ 4547.623862] Call Trace:
-> > [ 4547.623865]  <TASK>
-> > [ 4547.623867]  dump_stack_lvl+0x4a/0x80
-> > [ 4547.623879]  check_irq_usage+0x8aa/0xb10
-> > [ 4547.623886]  ? check_path.constprop.0+0x24/0x50
-> > [ 4547.623896]  ? check_noncircular+0x6d/0x120
-> > [ 4547.623902]  ? __lock_acquire+0x146a/0x25c0
-> > [ 4547.623907]  __lock_acquire+0x146a/0x25c0
-> > [ 4547.623913]  lock_acquire+0xb0/0x280
-> > [ 4547.623918]  ? __flush_work+0x4b/0x3f0
-> > [ 4547.623925]  ? __flush_work+0x4b/0x3f0
-> > [ 4547.623932]  __flush_work+0x56/0x3f0
-> > [ 4547.623939]  ? __flush_work+0x4b/0x3f0
-> > [ 4547.623946]  ? __lock_acquire+0x3ef/0x25c0
-> > [ 4547.623952]  __cancel_work_timer+0xd3/0x160
-> > [ 4547.623960]  fbcon_cursor+0x138/0x170
-> > [ 4547.623965]  hide_cursor+0x26/0xc0
-> > [ 4547.623971]  vt_console_print+0x41e/0x430
-> > [ 4547.623977]  ? lock_release+0xb5/0x230
-> > [ 4547.623982]  ? console_flush_all+0x1c9/0x4e0
-> > [ 4547.623988]  console_flush_all+0x206/0x4e0
-> > [ 4547.623994]  ? console_flush_all+0x1c9/0x4e0
-> > [ 4547.624001]  console_unlock+0x33/0x110
-> > [ 4547.624007]  vprintk_emit+0x9f/0x320
-> > [ 4547.624013]  _printk+0x47/0x50
-> > [ 4547.624017]  watchdog+0x53a/0x7b0
-> > [ 4547.624021]  ? __pfx_watchdog+0x10/0x10
-> > [ 4547.624025]  kthread+0xe3/0x120
-> > [ 4547.624029]  ? __pfx_kthread+0x10/0x10
-> > [ 4547.624033]  ret_from_fork+0x2c/0x50
-> > [ 4547.624037]  ? __pfx_kthread+0x10/0x10
-> > [ 4547.624041]  ret_from_fork_asm+0x1b/0x30
-> > [ 4547.624049]  </TASK>
-> > [ 4548.028173]       Not tainted 6.8.0-rc6-lemon #190
-> > [ 4548.029491] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-> > [ 4548.031047] task:kworker/u9:1    state:D stack:0     pid:3528  tgid:3528  ppid:2      flags:0x00004000
-> > [ 4548.032620] Workqueue: hci0 hci_rx_work
-> > [ 4548.034099] Call Trace:
-> > [ 4548.035572]  <TASK>
-> > [ 4548.036925]  __schedule+0x427/0xd10
-> > [ 4548.038382]  ? schedule+0xf7/0x140
-> > [ 4548.039822]  schedule+0x45/0x140
-> > [ 4548.041201]  __lock_sock+0x86/0xf0
-> > [ 4548.042601]  ? __pfx_autoremove_wake_function+0x10/0x10
-> > [ 4548.044030]  lock_sock_nested+0x61/0x70
-> > [ 4548.045390]  l2cap_sock_recv_cb+0x21/0xa0
-> > [ 4548.046842]  l2cap_recv_frame+0x5be/0x2e70
-> > [ 4548.048283]  ? hci_rx_work+0x431/0x830
-> > [ 4548.049701]  ? lock_release+0xb5/0x230
-> > [ 4548.051145]  ? __mutex_unlock_slowpath+0x25/0x270
-> > [ 4548.052524]  hci_rx_work+0x457/0x830
-> > [ 4548.053945]  ? process_one_work+0x157/0x480
-> > [ 4548.055460]  process_one_work+0x1ca/0x480
-> > [ 4548.056862]  worker_thread+0x1be/0x3b0
-> > [ 4548.058281]  ? __pfx_worker_thread+0x10/0x10
-> > [ 4548.059783]  kthread+0xe3/0x120
-> > [ 4548.061141]  ? __pfx_kthread+0x10/0x10
-> > [ 4548.062600]  ret_from_fork+0x2c/0x50
-> > [ 4548.064064]  ? __pfx_kthread+0x10/0x10
-> > [ 4548.065436]  ret_from_fork_asm+0x1b/0x30
-> > [ 4548.066867]  </TASK>
-> > [ 4548.068313] INFO: lockdep is turned off.
-> > 
-> > # cat /proc/3526/stack
-> > [<0>] __skb_wait_for_more_packets+0xfa/0x150
-> > [<0>] __skb_recv_datagram+0x59/0xa0
-> > [<0>] skb_recv_datagram+0x29/0x40
-> > [<0>] bt_sock_recvmsg+0x42/0x1c0
-> > [<0>] l2cap_sock_recvmsg+0x5d/0x170
-> > [<0>] __sys_recvfrom+0x14e/0x160
-> > [<0>] __x64_sys_recvfrom+0x1f/0x30
-> > [<0>] do_syscall_64+0x75/0x150
-> > [<0>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
-> > 
-> > This is on my laptop with iwlwifi, but at first I saw it on my desktop
-> > with Ethernet (and Intel 9260 Bluetooth). I can get another lockdep
-> > capture if that would be helpful.
-> > 
-> > Simon-
 
