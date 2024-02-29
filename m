@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-25495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45C9386C995
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 13:57:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45FFA86C99F
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 14:01:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 950C7B23C4E
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 12:57:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6953A1C20C30
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 13:01:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56117D416;
-	Thu, 29 Feb 2024 12:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 532C57E0E5;
+	Thu, 29 Feb 2024 13:01:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE3C7D410;
-	Thu, 29 Feb 2024 12:57:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC1C33FE;
+	Thu, 29 Feb 2024 13:01:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709211441; cv=none; b=fCpqb+BS/rJrMlGfaFohDHfBneZ8wn+0QEv3GCJciC6OPussRn+4oRDurhcRfwcMLp3AWnikVyB5pFpXXPwaRejMWp1MX5SPrLFcmj5gwwi1LQTDTswU6n/nonEOQBQF3eoUEwulC0xbFgxp2vwiitxXPLgCO8b98fJp77b5MCc=
+	t=1709211683; cv=none; b=dPQkIXjPnxP+0Vv/fPfT6tog2cCZKj3ijxuFaaGVtQN4vML6nkQ0ebXD+crtJpM4+mVDJmqkSHxpM4OlosHEdDft4stHHU2xMymNTpKVloQR+cDoYYi7ZV5JZjUvlBG8338SgqY2WD1Ghjy46MvmETci+cGuk1JjYYmTjRgIM/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709211441; c=relaxed/simple;
-	bh=NV3Lexd1I215GFCfOKf6e+kUNlEsB4HcsnZBbnMzknI=;
+	s=arc-20240116; t=1709211683; c=relaxed/simple;
+	bh=lMqrM9gYMNpSkF93F+HZGHWPCYKJY8hNtsupE3Iox4s=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dYBUq0HtSDmhfFvO2lhKyZv9y3+4r2BdP6wIftypO07chqRDbzjfke0YCoDAkDcJVeojvqb6dslFcbi0nVrTM/nxolLh8UohFUxD1VpQwpDMMgL2oGJDxGwB4l0dI6D0SA2XWA1MxNcwLAZ4FA25E9sQ72ms/0swqJXQ6GjTvrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.161.49
+	 To:Cc:Content-Type; b=rL/al8FawT3/1/LxAPBryXVJR4tWSsD/liPfCMcEKJiOmYA4l6QuIM8dAEdfFXipdrv7exfvYQjmN8c2+FukuWvWrFnOtRQi/U+UGbA7zeZPzLIj/9+y55j/1YOKQrqECscYSfFDvrqGh/FpSoD/qHnpHZ+51nXYkihq6OLI8JI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-5a04665952eso7716eaf.1;
-        Thu, 29 Feb 2024 04:57:19 -0800 (PST)
+Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-6e45f7c63f4so88758a34.1;
+        Thu, 29 Feb 2024 05:01:21 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709211439; x=1709816239;
+        d=1e100.net; s=20230601; t=1709211680; x=1709816480;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lmxLHqXEDN1UeIR2OAQOlz0mDPHOUy1z0W0gmKcx3LM=;
-        b=gg6zkeax6QsIDYSiZxvLUXT1C+zznxF2i/12F3T09DQX9OJ/r+heeDCC5CS8W1Us4s
-         4MRtN4ZnPU5EtZ5oR/tyaCFWHDoTMhOK8c9roQ0VdSO3EocvY65pF7V0agT2/wAesL1S
-         79pKHYsOFPdVjTUp6S2BYLBwwL2HQKI19WmNAyX1AJkW8EYEiXb9EQwKqIjhpLbJoNCh
-         FFhpGd163jxUUD1k7JgAb5F8+7NaltAohxdgmSyZkBURXtf3nKscV5fucHZt5ITlKCDV
-         dcDwg+Wpa25u5Z8vJf8cbZ5z5ifPMDoWV2rp6Lrci7CBV7hz4sJukrdtgQ9tuImTMDHn
-         sJng==
-X-Forwarded-Encrypted: i=1; AJvYcCUst4duC1/5xA/viiQZ69EQsG+L7MkbJMYeUHyiC6Uz7q+vGzHqVj0WgBovyJVIWolTqw4illWOeVLNeqc8TXAFsaaQfgriMzZp/eHyb4SaeEC5IvIjIhMXjK6KUuGXIvInQAL2D2R/XPq59VEtOIGlxfsg9g7/4a8HE5HQlCB64Q==
-X-Gm-Message-State: AOJu0Yy4PCIwphbu1YENBEoNB1CDJu4/xmjZAnWgI7hPi7TmcP9s7AbD
-	pkuSfwrDcUqQ36EITwc+qu+K1wtFnrCVn1DkwDjXZoKmHOGulux26Ga69xAKlodQxiF09OMjAm8
-	QjcJfg77YBL0mPiiPmhLGLUYs1SHN519N
-X-Google-Smtp-Source: AGHT+IGED+M5hFzTkwZYRVdQHZ8ABuM4bQYwA4kCbUfVaiZ5BhWxbJYorfpzyQC0QmeWmWRaMozuorYlfBG1jlNYNWo=
-X-Received: by 2002:a4a:625e:0:b0:5a0:4d78:975d with SMTP id
- y30-20020a4a625e000000b005a04d78975dmr1990060oog.1.1709211439116; Thu, 29 Feb
- 2024 04:57:19 -0800 (PST)
+        bh=+iMLcQ0gRcQTa5GCHQismTR06jDMxmx5ybe9Si/LvkM=;
+        b=GKYjbV6v8pTCSrhQjI0cW4TaZ99cLFVWyO4MAjHNoLogmtXeW+Ki+H0ExIpBLU1Xp7
+         bG9vemLhIRdyzaIG3sNmi+SrOWYjb/Quk+QrJXL7yTBiG9S3/pBOPB2d5IKAfZBNqgth
+         MC0lU9std8PXsKKdcRusQHl5FCi4HEZj/ndY/hHKT5cXmro0aLjPd5MEjBNPb2j06HaY
+         8EZHgWJ0Sk0PfN8csJwyhCTu5ee/iZLhRWLAY5+pKIgzmq1nUznwLB63v59narrHiD29
+         4vGlzDyeYvIEHFIJyERYT/L9kQ9efsB9woWL3ncG/L/mANMmuQ2LGPCB3D82dx33lUx+
+         QCDg==
+X-Forwarded-Encrypted: i=1; AJvYcCXRxM1DaNKCoQJmx27W7tjc3NGfn5sji41IcxuSCiYI+a3OlOFqbE2KPnlNUUM+uE3hlwHWDQsuPsAVrpbkOBqutITB+0htiuj6nGlFvqo3ektwIlKOfNYq6/Rjfigc31miA+b0ZSSKTwo0vD9NH/JH2oJK/dXTlh2wRhfgOYydSg==
+X-Gm-Message-State: AOJu0YyNmrEphJU6g99XJuWvYZ+Uel14zagZQWhISvnlEQTqlHDyho6v
+	MPwyR9xfaJCtCCj8TqXSnFBOoCBDGdWSyMSkW8AYXHSpzm/o23Eyurxjh+xvf0gkDa6mDgxZrv0
+	Uki0j9AJUxSkLICCnodfa6jeQwws=
+X-Google-Smtp-Source: AGHT+IFXmjtRjpw9aUeeINGMuBRauYkXsJDiIT5AGWtbB1kIwpbPBTb/5/e9wLPNL8xXwmwQTeMb/kU2p+WqpskvYzA=
+X-Received: by 2002:a4a:a543:0:b0:5a0:ec66:b56b with SMTP id
+ s3-20020a4aa543000000b005a0ec66b56bmr1030953oom.0.1709211680321; Thu, 29 Feb
+ 2024 05:01:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,8 +61,8 @@ References: <20240229105204.720717-1-herve.codina@bootlin.com>
  <20240229105204.720717-2-herve.codina@bootlin.com> <9cc3d11bc3e1bb89a1c725f865d0c8d1494111c5.camel@gmail.com>
 In-Reply-To: <9cc3d11bc3e1bb89a1c725f865d0c8d1494111c5.camel@gmail.com>
 From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 29 Feb 2024 13:57:07 +0100
-Message-ID: <CAJZ5v0iNiRKo=sem_OmwTxnkSz-raWOk0vKVuHQc31Q9r+D1UA@mail.gmail.com>
+Date: Thu, 29 Feb 2024 14:01:08 +0100
+Message-ID: <CAJZ5v0hGfqrczS1Si8Bu67vTSkTKO_gO7ftO2R7CQxGKGWsbAA@mail.gmail.com>
 Subject: Re: [PATCH v3 1/2] driver core: Introduce device_link_wait_removal()
 To: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
 Cc: Herve Codina <herve.codina@bootlin.com>, 
@@ -175,30 +175,8 @@ ny
 > I'm still not convinced we can have a recursive call into devlinks remova=
 l so I
 > do think flush_workqueue() is enough. I will defer to Saravana though...
->
-> > +EXPORT_SYMBOL_GPL(device_link_wait_removal);
-> > +
-> >  static struct class devlink_class =3D {
-> >       .name =3D "devlink",
-> >       .dev_groups =3D devlink_groups,
-> > @@ -4099,9 +4114,14 @@ int __init devices_init(void)
-> >       sysfs_dev_char_kobj =3D kobject_create_and_add("char", dev_kobj);
-> >       if (!sysfs_dev_char_kobj)
-> >               goto char_kobj_err;
-> > +     device_link_wq =3D alloc_workqueue("device_link_wq", 0, 0);
-> > +     if (!device_link_wq)
-> > +             goto wq_err;
-> >
->
-> I still think this makes more sense in devlink_class_init() as this reall=
-y
-> device link specific. Moreover, as I said to Saravana, we need to "convin=
-ce"
-> Rafael about this as he (in my series) did not agreed with erroring out i=
-n case
-> we fail to allocate the queue.
->
-> Rafael?
 
-I don't really think it matters in practice, so this is fine with me too.
+AFAICS, the difference betwee flush_workqueue() and drain_workqueue()
+is the handling of the case when a given work item can queue up itself
+again.  This does not happen here.
 
