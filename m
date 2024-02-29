@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-25529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED8C886CDBE
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 16:56:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07E6886CDC3
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 16:56:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3E3428597B
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 15:56:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B696B286543
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 15:56:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D5A670AD6;
-	Thu, 29 Feb 2024 15:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9EE61509BE;
+	Thu, 29 Feb 2024 15:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ff/ATHq0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t/1NhnRD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D7D70AD1;
-	Thu, 29 Feb 2024 15:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95CF670AD9;
+	Thu, 29 Feb 2024 15:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709221779; cv=none; b=LqzsUkgtleH4+TcdJhByRY3mL31yCp8JKEN/MqixrhkJgIWqq8tLHsajLrJjol2Kh95QCVpugg/3YnohQU6urLqxc/Ns4o1bu5XEje+iw0fC2osDf1qCVISbBlJP/6Qk0e/zvO/3ppf0y/AWIpN9/dDU2/DNkCl0Ah0WVbdFYmI=
+	t=1709221788; cv=none; b=FJ6YlEpd/eu+V8cjEOnz/66aFN1U3ut2XvscmFihGJ4TjgE3gqmedfp7fgL4KI/UJIMeOS4jNkrrg+1HDPifPVLE7n4Vy7OwsX+TYnl57FbGQ36cta99TrfZZKqJ9o9lVHliEbHI98azGqFvvZnT8FuSnEuTA8kWEey7UwgTW0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709221779; c=relaxed/simple;
-	bh=Tseinlvmqp5vCxuctSBmykceQSTnTUWV+OgUL9iO97k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T4yZPLhQMTh7XzDgMzLaqsHHiQ/d8TyCHJPQU0+f2Bnf6YqhuUbr4TP0s3eSjFpMdjWd022fTPs4sSfSId0rNhQRei56ejH1vaPW+y1tgtXxXJdYznTDvZk2OmknIwVYl+ND+T33E1T9aFl/e2o5oH7uDGwDGGr1EncvhGYjbvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ff/ATHq0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 309AAC433C7;
-	Thu, 29 Feb 2024 15:49:38 +0000 (UTC)
+	s=arc-20240116; t=1709221788; c=relaxed/simple;
+	bh=WjyUUH4IyA8kfmC6HN4ybuY6b7RS7b5tdCPSoD9L/Bk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N/DPa3Qq8Nq9AadTYXqHfkT7RRn7ihQNRqiKa3AivNWDARDEW8exGWxFbGG1n+pKHfe+6Cv5xZvzxJKCSN8u8dhs9q1F1Dw2+zVphvatBlSaW/aLLrBHDMmS3+8d+apVBTAy8EvZPmayL0cJbZZZoePs4TMkjNSEFSuoPk34rek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t/1NhnRD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A39ADC433C7;
+	Thu, 29 Feb 2024 15:49:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709221779;
-	bh=Tseinlvmqp5vCxuctSBmykceQSTnTUWV+OgUL9iO97k=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ff/ATHq0+sj2yR5Q3jrtHd2fr93pgaW77/2tsaEUPsi0Ko93wqnTWHFVJ1wMjOtFK
-	 8SACZv/buyyNI6u3cEBJWZqc8DHx+GaWay+lsY6pSGJGCFKEpAXHul2S6aN6RqNyVM
-	 vpR+cKNOWkcciR6r8ISTnsbZ9cPoiHmBY2xjvAuhTQ3G8x1ddHXMG8NqJxG/vXvWSJ
-	 XW7hUmnUKJifSPRV1Ov8eU3EGuVlnNcB1722Yp9mze0erzHgrdWDjOQEpBldLCIkkf
-	 fkrqZ/5epQfipL1Co1JmYaQbYm5LRtu+bqiniCuOCcyBkBWTeFNsFDQYo3T3qxk5+4
-	 KjqsOrUNMBSyg==
+	s=k20201202; t=1709221788;
+	bh=WjyUUH4IyA8kfmC6HN4ybuY6b7RS7b5tdCPSoD9L/Bk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=t/1NhnRDEz+m+mps36X0hOseC+DJOSA++I5U8nRDkc6/I4VDZoSk5dAnBzeYZmp0h
+	 SeHP++XE8Z1K0Eydmlbv2umUjr1SwrrLkaOFvNF4vLzBvdA4TLyFOFizRosVlzq7jH
+	 WZ9HGejqsrdtBjnq5AgBVQGByuu8VUh88zoEj7lcNXvZsnNMGcocdmqjyHdvStDwzv
+	 51aQax1Jpz0Khvg+hQ4CQe2ypa0CrbcefEFGC3/ks1X2uefOk66bQDnwG66Y4txNwK
+	 BQC8u0CZNyDEEvgGrxILer3NiuSOv/EchFXzJLMXPV3IQMHFwO5W6PQwRoBt8iVj2W
+	 EHY6P8HXgEF3Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mark Brown <broonie@kernel.org>,
-	Doug Anderson <dianders@chromium.org>,
-	Will Deacon <will@kernel.org>,
+Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Mikhail Rudenko <mike.rudenko@gmail.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	catalin.marinas@arm.com,
-	oleg@redhat.com,
-	mark.rutland@arm.com,
+	dafna@fastmail.com,
+	heiko@sntech.de,
+	linux-media@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.7 26/26] arm64/sve: Lower the maximum allocation for the SVE ptrace regset
-Date: Thu, 29 Feb 2024 10:48:45 -0500
-Message-ID: <20240229154851.2849367-26-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 01/21] media: Revert "media: rkisp1: Drop IRQF_SHARED"
+Date: Thu, 29 Feb 2024 10:49:21 -0500
+Message-ID: <20240229154946.2850012-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240229154851.2849367-1-sashal@kernel.org>
-References: <20240229154851.2849367-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,100 +65,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.7.6
+X-stable-base: Linux 6.6.18
 Content-Transfer-Encoding: 8bit
 
-From: Mark Brown <broonie@kernel.org>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 2813926261e436d33bc74486b51cce60b76edf78 ]
+[ Upstream commit a107d643b2a3382e0a2d2c4ef08bf8c6bff4561d ]
 
-Doug Anderson observed that ChromeOS crashes are being reported which
-include failing allocations of order 7 during core dumps due to ptrace
-allocating storage for regsets:
+This reverts commit 85d2a31fe4d9be1555f621ead7a520d8791e0f74.
 
-  chrome: page allocation failure: order:7,
-          mode:0x40dc0(GFP_KERNEL|__GFP_COMP|__GFP_ZERO),
-          nodemask=(null),cpuset=urgent,mems_allowed=0
-   ...
-  regset_get_alloc+0x1c/0x28
-  elf_core_dump+0x3d8/0xd8c
-  do_coredump+0xeb8/0x1378
+The rkisp1 does share interrupt lines on some platforms, after all. Thus
+we need to revert this, and implement a fix for the rkisp1 shared irq
+handling in a follow-up patch.
 
-with further investigation showing that this is:
+Closes: https://lore.kernel.org/all/87o7eo8vym.fsf@gmail.com/
+Link: https://lore.kernel.org/r/20231218-rkisp-shirq-fix-v1-1-173007628248@ideasonboard.com
 
-   [   66.957385] DOUG: Allocating 279584 bytes
-
-which is the maximum size of the SVE regset. As Doug observes it is not
-entirely surprising that such a large allocation of contiguous memory might
-fail on a long running system.
-
-The SVE regset is currently sized to hold SVE registers with a VQ of
-SVE_VQ_MAX which is 512, substantially more than the architectural maximum
-of 16 which we might see even in a system emulating the limits of the
-architecture. Since we don't expose the size we tell the regset core
-externally let's define ARCH_SVE_VQ_MAX with the actual architectural
-maximum and use that for the regset, we'll still overallocate most of the
-time but much less so which will be helpful even if the core is fixed to
-not require contiguous allocations.
-
-Specify ARCH_SVE_VQ_MAX in terms of the maximum value that can be written
-into ZCR_ELx.LEN (where this is set in the hardware). For consistency
-update the maximum SME vector length to be specified in the same style
-while we are at it.
-
-We could also teach the ptrace core about runtime discoverable regset sizes
-but that would be a more invasive change and this is being observed in
-practical systems.
-
-Reported-by: Doug Anderson <dianders@chromium.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Tested-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20240213-arm64-sve-ptrace-regset-size-v2-1-c7600ca74b9b@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
+Reported-by: Mikhail Rudenko <mike.rudenko@gmail.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/fpsimd.h | 12 ++++++------
- arch/arm64/kernel/ptrace.c      |  3 ++-
- 2 files changed, 8 insertions(+), 7 deletions(-)
+ drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/fpsimd.h b/arch/arm64/include/asm/fpsimd.h
-index 50e5f25d3024c..481d94416d696 100644
---- a/arch/arm64/include/asm/fpsimd.h
-+++ b/arch/arm64/include/asm/fpsimd.h
-@@ -62,13 +62,13 @@ static inline void cpacr_restore(unsigned long cpacr)
-  * When we defined the maximum SVE vector length we defined the ABI so
-  * that the maximum vector length included all the reserved for future
-  * expansion bits in ZCR rather than those just currently defined by
-- * the architecture. While SME follows a similar pattern the fact that
-- * it includes a square matrix means that any allocations that attempt
-- * to cover the maximum potential vector length (such as happen with
-- * the regset used for ptrace) end up being extremely large. Define
-- * the much lower actual limit for use in such situations.
-+ * the architecture.  Using this length to allocate worst size buffers
-+ * results in excessively large allocations, and this effect is even
-+ * more pronounced for SME due to ZA.  Define more suitable VLs for
-+ * these situations.
-  */
--#define SME_VQ_MAX	16
-+#define ARCH_SVE_VQ_MAX ((ZCR_ELx_LEN_MASK >> ZCR_ELx_LEN_SHIFT) + 1)
-+#define SME_VQ_MAX	((SMCR_ELx_LEN_MASK >> SMCR_ELx_LEN_SHIFT) + 1)
+diff --git a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
+index f96f821a7b50d..acc559652d6eb 100644
+--- a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
++++ b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
+@@ -559,7 +559,7 @@ static int rkisp1_probe(struct platform_device *pdev)
+ 				rkisp1->irqs[il] = irq;
+ 		}
  
- struct task_struct;
- 
-diff --git a/arch/arm64/kernel/ptrace.c b/arch/arm64/kernel/ptrace.c
-index b3f64144b5cd9..c94c0f8c9a737 100644
---- a/arch/arm64/kernel/ptrace.c
-+++ b/arch/arm64/kernel/ptrace.c
-@@ -1499,7 +1499,8 @@ static const struct user_regset aarch64_regsets[] = {
- #ifdef CONFIG_ARM64_SVE
- 	[REGSET_SVE] = { /* Scalable Vector Extension */
- 		.core_note_type = NT_ARM_SVE,
--		.n = DIV_ROUND_UP(SVE_PT_SIZE(SVE_VQ_MAX, SVE_PT_REGS_SVE),
-+		.n = DIV_ROUND_UP(SVE_PT_SIZE(ARCH_SVE_VQ_MAX,
-+					      SVE_PT_REGS_SVE),
- 				  SVE_VQ_BYTES),
- 		.size = SVE_VQ_BYTES,
- 		.align = SVE_VQ_BYTES,
+-		ret = devm_request_irq(dev, irq, info->isrs[i].isr, 0,
++		ret = devm_request_irq(dev, irq, info->isrs[i].isr, IRQF_SHARED,
+ 				       dev_driver_string(dev), dev);
+ 		if (ret) {
+ 			dev_err(dev, "request irq failed: %d\n", ret);
 -- 
 2.43.0
 
