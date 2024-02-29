@@ -1,116 +1,131 @@
-Return-Path: <stable+bounces-25452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E59B086BC58
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 00:51:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0873886BC84
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 01:07:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83A541F245FB
-	for <lists+stable@lfdr.de>; Wed, 28 Feb 2024 23:51:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AABE4288550
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 00:07:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059957441C;
-	Wed, 28 Feb 2024 23:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C629C7E5;
+	Thu, 29 Feb 2024 00:06:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="zZ9VfmoK"
 X-Original-To: stable@vger.kernel.org
-Received: from ganesha.gnumonks.org (ganesha.gnumonks.org [213.95.27.120])
+Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F66972931;
-	Wed, 28 Feb 2024 23:51:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.27.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B5B1106
+	for <stable@vger.kernel.org>; Thu, 29 Feb 2024 00:06:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709164305; cv=none; b=mGHVcB4iTF/k+J1fcv5zxJc0wMZF3GqaDxAlS3V0TJhLsj509cfuKlg+47KBvZLOOylGZLNumPVdiOUpKsiXXKoKr1Tp8ZkckSrv3OEHsjTZn4a0ylcJBOagYbhiOvAjlpkXu8HhISE5z7UW9SRE+SxCjB1qEOa3BV+A8mwDU2Y=
+	t=1709165218; cv=none; b=WuKqzniaOwX36xqEcElEGrZM/z8RqXsENm1LlnQpr+XQ+iglwULH4jSNBRci+SPkiLyu8t/U54oenDFPezwhbLLu3FR4M2gyX//FAofbgTi7ze6eOdorcxNf8hxP/nJTuofhXN9fiJWg9A1cpRM3NCX72zHNTMrS+7/leeFfcF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709164305; c=relaxed/simple;
-	bh=e56CFHFkLiBHp65hwLBvKm7eKWDnSCWhNsYtrm/tC/E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GM40lVpDYF9OLGhpA5nTZHE1ixXfL8eTOJsLok0BWtEH9nVYzzNJ/4zSBxg8WGbjTyYgw76/+kB8A4dUu+0l2jvQr5gaNooY5XFVf3I5Q46YBSnK+BcmDJP5K0qXscdyWfIS36ZW9zJGj0vcEMrkP4h93hJXzeEG/leiWQWHoSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=gnumonks.org; arc=none smtp.client-ip=213.95.27.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gnumonks.org
-Received: from [78.30.41.52] (port=54716 helo=gnumonks.org)
-	by ganesha.gnumonks.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <pablo@gnumonks.org>)
-	id 1rfThx-0053eL-7N; Thu, 29 Feb 2024 00:51:31 +0100
-Date: Thu, 29 Feb 2024 00:51:28 +0100
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Alexander Ofitserov <oficerovas@altlinux.org>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	edumazet@google.com, laforge@gnumonks.org, davem@davemloft.net,
-	kuba@kernel.org, pabeni@redhat.com, kovalev@altlinux.org,
-	nickel@altlinux.org, dutyrok@altlinux.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] gtp: fix use-after-free and null-ptr-deref in
- gtp_newlink()
-Message-ID: <Zd_HAGqXSE6Nwcag@calendula>
-References: <20240228114703.465107-1-oficerovas@altlinux.org>
+	s=arc-20240116; t=1709165218; c=relaxed/simple;
+	bh=Hnv/otnAsfc6vNy+N/u39sTj2ipyfCftgZFmMPzENQw=;
+	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
+	 MIME-Version:Content-Type; b=QirfHUeYuso6vh5GBXdlzTloo9K7NPflOg/EuI+36eBXVpL8nff/Z7gqs7AIw23zfes4ohJOHahjyldYQ5wamhLCPTvnQxRD3Kw3Lz7GCzpPFHX4N5UNwgpxMyUAJm/o4wPeF3NJxoEX5nj+17B2m0zGHsjGH+xcHdnYc/6nXrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=zZ9VfmoK; arc=none smtp.client-ip=44.202.169.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6007a.ext.cloudfilter.net ([10.0.30.247])
+	by cmsmtp with ESMTPS
+	id fS4irqUmMl9dRfTwnrFJBn; Thu, 29 Feb 2024 00:06:49 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id fTwlrKutMGrOKfTwmrS3QE; Thu, 29 Feb 2024 00:06:48 +0000
+X-Authority-Analysis: v=2.4 cv=b8y04MGx c=1 sm=1 tr=0 ts=65dfca98
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=k7vzHIieQBIA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=KyoLkmSyMt9Nb96WE4AA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=g1vl0B9haMY9iM8RKMvJ67dO1Zo7xoSVRan/r6FUn88=; b=zZ9VfmoKaaNjuaZHADX4QbixOb
+	BGcOnUy7Q2CIf8G0pJM1m38mUgdB8vDDkJ7KO1BCcyrMRhBH9cB7V1//qpd/KDWXhnPcGlm9rGzh2
+	BK3v8aXK15JkGeExTdh5xqh4AWpklqC54GCO6VeKfEQV3CZVwQUJzwBUlsHXDZm3Zk/Hz4wtRIpes
+	zPu7vW/ZK0KDPGAonBKdup/UM+vwDF0b07nnvgMJaAxXzQD35TNsEffUl9nT+jx8gJaAFrKC9cb9O
+	eJmrFlCaXakN4faIbFBKw+kSnbV3c69uFLwIWVFFtAGkFo6T6bfq9IU1TmbTnJw7hxMakRJFCLM4P
+	Ms+/y19Q==;
+Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:48316 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1rfTwj-0035q7-27;
+	Wed, 28 Feb 2024 17:06:45 -0700
+Subject: Re: [PATCH 6.6 000/299] 6.6.19-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+References: <20240227131625.847743063@linuxfoundation.org>
+In-Reply-To: <20240227131625.847743063@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <d63582e3-5480-e50c-fbad-95bbf639f9e1@w6rz.net>
+Date: Wed, 28 Feb 2024 16:06:43 -0800
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240228114703.465107-1-oficerovas@altlinux.org>
-X-Spam-Score: -1.9 (-)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 98.207.139.8
+X-Source-L: No
+X-Exim-ID: 1rfTwj-0035q7-27
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:48316
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfMH5qf0cTvA1O2tGKGAMxyV02Op2EULs5n3ViobJo7cuFr0n0tJhV6bmpcL3Qyn3vzkkDCaCV09PPv4jTBYLgduldpuYFHoOGq1IbrMRHqKEcfBaDbUQ
+ 6B5nVQC0MaSTTHbnxV35rdjYi75257lcdiDAbbxTcoe7/RrCATeznrwAjc8tyIuZUrm7qsVolQsWOg==
 
-On Wed, Feb 28, 2024 at 02:47:03PM +0300, Alexander Ofitserov wrote:
-> The gtp_link_ops operations structure for the subsystem must be
-> registered after registering the gtp_net_ops pernet operations structure.
+On 2/27/24 5:21 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.19 release.
+> There are 299 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 29 Feb 2024 13:15:36 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.19-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-A fix for this was already applied, see:
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-commit 136cfaca22567a03bbb3bf53a43d8cb5748b80ec
-Author: Vasiliy Kovalev <kovalev@altlinux.org>
-Date:   Wed Feb 14 19:27:33 2024 +0300
+Tested-by: Ron Economos <re@w6rz.net>
 
-    gtp: fix use-after-free and null-ptr-deref in gtp_genl_dump_pdp()
-
-> diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
-> index 2129ae42c7030..0ddec4cc84093 100644
-> --- a/drivers/net/gtp.c
-> +++ b/drivers/net/gtp.c
-> @@ -1903,26 +1903,26 @@ static int __init gtp_init(void)
->  
->  	get_random_bytes(&gtp_h_initval, sizeof(gtp_h_initval));
->  
-> -	err = rtnl_link_register(&gtp_link_ops);
-> +	err = register_pernet_subsys(&gtp_net_ops);
->  	if (err < 0)
->  		goto error_out;
-
-BTW, I like that this calls register_pernet_subsys() before
-rtnl_link_register(), where a rtnetlink request could come before
-pernet is set up.
-
-> -	err = register_pernet_subsys(&gtp_net_ops);
-> +	err = rtnl_link_register(&gtp_link_ops);
->  	if (err < 0)
-> -		goto unreg_rtnl_link;
-> +		goto unreg_pernet_subsys;
->  
->  	err = genl_register_family(&gtp_genl_family);
->  	if (err < 0)
-> -		goto unreg_pernet_subsys;
-> +		goto unreg_rtnl_link;
->  
->  	pr_info("GTP module loaded (pdp ctx size %zd bytes)\n",
->  		sizeof(struct pdp_ctx));
->  	return 0;
->  
-> -unreg_pernet_subsys:
-> -	unregister_pernet_subsys(&gtp_net_ops);
->  unreg_rtnl_link:
->  	rtnl_link_unregister(&gtp_link_ops);
-> +unreg_pernet_subsys:
-> +	unregister_pernet_subsys(&gtp_net_ops);
->  error_out:
->  	pr_err("error loading GTP module loaded\n");
->  	return err;
-> -- 
-> 2.42.1
-> 
-> 
 
