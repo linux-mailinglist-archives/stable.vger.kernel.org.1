@@ -1,90 +1,152 @@
-Return-Path: <stable+bounces-25461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7B8F86C06B
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 06:52:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52F3086C135
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 07:46:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1B971C21A5C
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 05:52:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F8761C20CE1
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 06:46:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 308F53BBF0;
-	Thu, 29 Feb 2024 05:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C1B846449;
+	Thu, 29 Feb 2024 06:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X+6Lwhft"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="elo/ByeJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77443FB81;
-	Thu, 29 Feb 2024 05:52:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B94C3446B3;
+	Thu, 29 Feb 2024 06:45:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709185950; cv=none; b=pY0GK+SUGHjUQD4rBRvnPU7eyP2XNPfYBMei75jHG1y/jd4rEnLtxVtJpdPHhqCDdFEsypnsIGBwnIY5q294Xg2ZXbve6gkWFbCjyoQik0NxFx8rgWAXsQH1kSvmepUvRtewL2hpLlCGBw+o1m+ConZwkZeFyRxYcZ92dwW1JnM=
+	t=1709189125; cv=none; b=c1yWNiV7OAAlUl6vlTqTN/22ie0wVdr2zQFEA9YCIikcIxMcT+HRQ/Q937WwBpr/sLhnrBem5WbE39sPnrVzeuVT2vDFgkbUT3/drRNrO8me4JE7rOBi5aGnmX38aferWIFgJXKYMhIXDiT1d+wWm529IaKSjBjNuDlan0hoJTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709185950; c=relaxed/simple;
-	bh=ClWBYfdOHZndAjih59+049MxeygzaZ/Q0HJGSyqUcmQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qLSYksvOnlCmCZXh+5FP+mANOCGUQSoJS7jEKh7j/x8c5yBuOSn6dfDmfGTxcpvwtKm/ZsNqDkbHIRfDmen/T2YS0Duer3tSCM7WqlFrrrAtZDSQB+6ShXgEcdMVdape4UsrCC1TbBse1Nn6jKGPmxwpDKZra5NdpldlV2rjUok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X+6Lwhft; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD08BC433F1;
-	Thu, 29 Feb 2024 05:52:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709185949;
-	bh=ClWBYfdOHZndAjih59+049MxeygzaZ/Q0HJGSyqUcmQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=X+6LwhftCApccpVbIMe9dTDkJt+Ep1DHq10zu5cdn6VnAQewg9B6hBXdRO168wnVF
-	 dR2Tre0Elw0Kd9p3tJgaMCTS8OqT63sTUkpwipbAAhcTlPiIPgu+v2oRxFPWu/ituM
-	 1IFG7U2MlGqv8FB8CBwkDCMwKfzpz6OxnZsrb6uM=
-Date: Thu, 29 Feb 2024 06:52:26 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jameson Thies <jthies@google.com>
-Cc: heikki.krogerus@linux.intel.com, linux-usb@vger.kernel.org,
-	pmalani@chromium.org, bleung@google.com,
-	abhishekpandit@chromium.org, andersson@kernel.org,
-	dmitry.baryshkov@linaro.org, fabrice.gasnier@foss.st.com,
-	hdegoede@redhat.com, neil.armstrong@linaro.org,
-	rajaram.regupathy@intel.com, saranya.gopal@intel.com,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Benson Leung <bleung@chromium.org>
-Subject: Re: [PATCH v3 1/4] usb: typec: ucsi: Clean up UCSI_CABLE_PROP macros
-Message-ID: <2024022923-disloyal-tactless-09ca@gregkh>
-References: <20240229015221.3668955-1-jthies@google.com>
+	s=arc-20240116; t=1709189125; c=relaxed/simple;
+	bh=0buapzlXS8Ejb7a/3Ux3/lyjLsR/FLcFCfrhtlks/tU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=sxEvfG2Vqmy0BhEfbZ0oH5jvT3MXYxr2MMwaNqM8LsGPaJYfjanAWCDNiKzLUEm9QjbT8bfXX3oJEXa7MS4dIcXryGQzLmkOy2xi3IV8QN2Phf0MlRj1ysZtlTKWWA8ial/3mDfwWAgO0HIHinJMpk04FO0Rw3w0S8dlz1omGr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=elo/ByeJ; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41T62Plr015559;
+	Thu, 29 Feb 2024 06:45:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:date:subject:mime-version:content-type
+	:content-transfer-encoding:message-id:to:cc; s=qcppdkim1; bh=emc
+	n0d2LH07w89hcfQ+HA5r9ZWQUNqouPMcNxEHPBB8=; b=elo/ByeJupaMlKELTh4
+	t6f2i8E30mKBpVoKUEZA62qXVvPl0LVp9KUZ+1Q09r96h+DBGje3+318b1npk0Mt
+	xcLBrmKMAiza6d6A5azgh7SlQxE6A1uZhzyt2HuafSHcyUXN/c0bV2cBA1LrGSJS
+	Fbwe7OpIjBXWwopk57Buy47FjsUM/PLCJfsmV8CdXYgSYgs7ZnYwjvBbDCed00z4
+	o3umJ7JVqw8hwPX7cbyiEnT4+GWP+baZJr6rRUGZ9u9l4lHX+Gmd5hKmhK9IUmKq
+	OCNFyw4PktM0WC99rFD6Z4QJ3jZ7LAHotuJmqyP+MR1Pmpsg5e2PZIO5ktTVMrgm
+	O5g==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wjm9mg2xx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Feb 2024 06:45:08 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41T6j6gU005435
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Feb 2024 06:45:06 GMT
+Received: from hu-mkshah-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Wed, 28 Feb 2024 22:45:02 -0800
+From: Maulik Shah <quic_mkshah@quicinc.com>
+Date: Thu, 29 Feb 2024 12:14:59 +0530
+Subject: [PATCH v2] PM: suspend: Set mem_sleep_current during kernel
+ command line setup
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240229015221.3668955-1-jthies@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20240229-suspend_ops_late_init-v2-1-34852c61a5fa@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIAOon4GUC/4WNQQ6CMBBFr0JmbU1bRIIr72EIKWUqk2iLHSAa0
+ rtbuYDL95L//gaMkZDhUmwQcSWm4DPoQwF2NP6OgobMoKU+Sa0awQtP6IcuTNw9zIwdeZqFrl0
+ ve1X1BhHydoro6L13b23mkXgO8bPfrOpn/xVXJZQ4l6W0pqma2pnrayFL3h5teEKbUvoCbD7iE
+ LwAAAA=
+To: Mark Rutland <mark.rutland@arm.com>,
+        Lorenzo Pieralisi
+	<lpieralisi@kernel.org>, <andersson@kernel.org>,
+        <ulf.hansson@linaro.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        Sudeep Holla <Sudeep.Holla@arm.com>
+CC: <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-pm@vger.kernel.org>,
+        <quic_lsrao@quicinc.com>, <stable@vger.kernel.org>,
+        Maulik Shah
+	<quic_mkshah@quicinc.com>
+X-Mailer: b4 0.12.5-dev-2aabd
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1709189102; l=1510;
+ i=quic_mkshah@quicinc.com; s=20240109; h=from:subject:message-id;
+ bh=0buapzlXS8Ejb7a/3Ux3/lyjLsR/FLcFCfrhtlks/tU=;
+ b=WWcHkAudwd4SllibZe3KiNF+5OlTg+CorqCafl88Xb10qD5gu73SIPuDLX/G7i4dzhCejW1rl
+ gCqKo4QakZGBYg1eDJbm4ci+XfsDEWoMYGzmqnH4tOGkOl5+5fgAtex
+X-Developer-Key: i=quic_mkshah@quicinc.com; a=ed25519;
+ pk=bd9h5FIIliUddIk8p3BlQWBlzKEQ/YW5V+fe759hTWQ=
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: MCNXFFn5pYu6e0fJ6Ok17OiI1CT3bNnd
+X-Proofpoint-ORIG-GUID: MCNXFFn5pYu6e0fJ6Ok17OiI1CT3bNnd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-28_08,2024-02-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 spamscore=0
+ lowpriorityscore=0 impostorscore=0 malwarescore=0 clxscore=1011
+ adultscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=999 suspectscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2402120000 definitions=main-2402290051
 
-On Thu, Feb 29, 2024 at 01:52:21AM +0000, Jameson Thies wrote:
-> Clean up UCSI_CABLE_PROP macros by fixing a bitmask shifting error for
-> plug type and updating the modal support macro for consistent naming.
-> 
-> Fixes: 3cf657f07918 ("usb: typec: ucsi: Remove all bit-fields")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Benson Leung <bleung@chromium.org>
-> Reviewed-by: Prashant Malani <pmalani@chromium.org>
-> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> Signed-off-by: Jameson Thies <jthies@google.com>
-> ---
-> Changes in v3:
-> - Fixed CC stable.
+psci_init_system_suspend() invokes suspend_set_ops() very early during
+bootup even before kernel command line for mem_sleep_default is setup.
+This leads to kernel command line mem_sleep_default=s2idle not working
+as mem_sleep_current gets changed to deep via suspend_set_ops() and never
+changes back to s2idle.
 
-I see two different copies of this patch on the list, which one is
-correct?
+Set mem_sleep_current along with mem_sleep_default during kernel command
+line setup as default suspend mode.
 
-And none of them are properly "threaded", so that our tools can't pick
-them up at once, can you use 'git send-email' to do this, or do replies
-by hand if you aren't using it, so that things will work properly on our
-end?  Right now all of these look like individual changes :(
+Fixes: faf7ec4a92c0 ("drivers: firmware: psci: add system suspend support")
+CC: stable@vger.kernel.org # 5.4+
+Signed-off-by: Maulik Shah <quic_mkshah@quicinc.com>
+---
+Changes in v2:
+- Set mem_sleep_current during mem_sleep_default kernel command line setup
+- Update commit message accordingly
+- Retain Fixes: tag
+- Link to v1: https://lore.kernel.org/r/20240219-suspend_ops_late_init-v1-1-6330ca9597fa@quicinc.com
+---
+ kernel/power/suspend.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-thanks,
+diff --git a/kernel/power/suspend.c b/kernel/power/suspend.c
+index 742eb26618cc..e3ae93bbcb9b 100644
+--- a/kernel/power/suspend.c
++++ b/kernel/power/suspend.c
+@@ -192,6 +192,7 @@ static int __init mem_sleep_default_setup(char *str)
+ 		if (mem_sleep_labels[state] &&
+ 		    !strcmp(str, mem_sleep_labels[state])) {
+ 			mem_sleep_default = state;
++			mem_sleep_current = state;
+ 			break;
+ 		}
+ 
 
-greg k-h
+---
+base-commit: d37e1e4c52bc60578969f391fb81f947c3e83118
+change-id: 20240219-suspend_ops_late_init-27fb0b15baee
+
+Best regards,
+-- 
+Maulik Shah <quic_mkshah@quicinc.com>
+
 
