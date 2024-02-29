@@ -1,211 +1,184 @@
-Return-Path: <stable+bounces-25498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E61FE86C9D6
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 14:11:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54DB686CA15
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 14:20:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1074E1C20C1F
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 13:11:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F5611C20E66
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 13:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD5A7E104;
-	Thu, 29 Feb 2024 13:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060E57E11F;
+	Thu, 29 Feb 2024 13:20:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HxxatgB/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCB167C71;
-	Thu, 29 Feb 2024 13:11:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAED760EDC;
+	Thu, 29 Feb 2024 13:20:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709212272; cv=none; b=FY+Ucn/f9KhBfB3bKJNSJ8VgchVAUfMXpuqhdCiGs0UCyJIHcCNDzsLUlfJke3Y5KpCyAgGJbfOZpmm49XnsnqUbd1KlfzOCnerTZFpyRQrXOarzg031vWJ4rX1ig59iFruzRbfL+JgDoLSM7GYAEs3yD6o7Ecu0+LS10DfM/I8=
+	t=1709212828; cv=none; b=W7DHxVFyqGPmjro0Y3kooW53IR1Qju4unc6fSb5OJ2jg+Y4cw3j0KJId177FIYs53aQxi7l5ZqjilPoHgPhh6cfuhEO6BHAOOc8soVYQzQAKTZ5e4KYQe0eljicGWGfG5XYgPMP+F/r31QkT1d06ojbki8Rsio9+pQS8uw3B1VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709212272; c=relaxed/simple;
-	bh=LVt5hPd25B281TRLtTutKKX5US2y0TKwkmdiBT+P8IE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oV4QJLr/TCwE/Hwn3Vmvk9qq4BQ1XD+H0eIMh2Dq2insDPqC78Bven9iFzFCAYPKKLuwyQbLMF8h5aHDvAS+2bNzKlc9Sqk8iSiT+acetNCmsQ1Mxsmh/6itv0f7DiUm2QRWjET1ZaUH10QR4E2TNq/2mGOqJxSy1pZh2BpDLU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-6e447c39525so170507a34.0;
-        Thu, 29 Feb 2024 05:11:10 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709212270; x=1709817070;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tvvRk2gFQ4DOAmG0ZAXvnWf5WKlifEzlcrpvhWJNSEM=;
-        b=B9u5nsnhVRdwgQgYkwj/bMb3uBgedQDw5bQC0QiuLLv6+5x148uc1eM6K1TmRG1IZI
-         khb7cj07NEUCGo2/WW4XEE5dTIbmgJUMRKUt36QHDYsgatXE7QAJUP/5iQRfx8Shouxh
-         Dzpu7NHOTT73NzBJH9H2C3rZSxQkBzunD9F8U9PjW/Ktk6P03CjqDAEcLhBapYPU/MPA
-         5uLo78EYhLAEPVbWES7lozLDtxNLZXFU5MJ8jkFJv6U0BtTxe2qJYnm8FrlQMdUGWSz4
-         zYxNqoQU9ED6S9m3U4Xu2+A+nGF96bdqys7AJ6EhAhx0ZcfWqoPU+dfPFDXLTlskY2Kc
-         5ysw==
-X-Forwarded-Encrypted: i=1; AJvYcCXZJcD+ESU2VsoOVwqd8fDifnXEiyrwbcZAcmmAPIQg+IqQNkX+EOksyFS2T2eXX5EbCeYPecS8HMTlFkavS65vkBoSXOOWhi92ENI0IIdo1CEYPKmsl7/DOGNIINrN1QBcYlftufUN+/ukFTbQOi/KXftnbU5qWG7JVhN+qVqY/w==
-X-Gm-Message-State: AOJu0YwBqiZrLUWHN2fSK1laOMha7UQJX5RFttrcbx+/Op1lcfop8yr3
-	VeGwl+fMEOaahdKrus8wBl7979+zRlk41P0+wfMweniI5pkKodaDbbq/KjPIaMwI3MuEpZSylHS
-	EVQasvo+j+v6BhScTbggyIlPUmvI=
-X-Google-Smtp-Source: AGHT+IHi3c3RgO2A1VH16z4qbN2kTgJY1571Ukf5IEcJB1p5nBjZ6clv6ctv3wxEJuFdMZE7W4nhzwDuQXoFachzwOc=
-X-Received: by 2002:a4a:d091:0:b0:5a0:4216:c5f0 with SMTP id
- i17-20020a4ad091000000b005a04216c5f0mr1921598oor.0.1709212269855; Thu, 29 Feb
- 2024 05:11:09 -0800 (PST)
+	s=arc-20240116; t=1709212828; c=relaxed/simple;
+	bh=3o9ZCKEWx1uwHV9n0/7XRzWyr48MSOodxXI+/MVbGzY=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=f3GCeJznTQcmPGioiNLZlnAHcOOGl3+dQUJ8E2uEdi/kYxpGhw6y6D39W3v5T9Lbswo5FdyEwgIenLnNpRpkhB5j7W7Qoh+KSLMz6xKKe1HTaw6ANaJRR26JKlxIXRhBVQwp1f0NVFjzDURbMlfebQl9fCM6VJOC+JMwcYDPHkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HxxatgB/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0ED88C433C7;
+	Thu, 29 Feb 2024 13:20:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709212828;
+	bh=3o9ZCKEWx1uwHV9n0/7XRzWyr48MSOodxXI+/MVbGzY=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=HxxatgB/k9lPyz4wVFI589MyuvO6a/Pm2Nlmx/gNO3qIG+c0giYy+b4EuiOnhOsZL
+	 HR1QZJ2+4bt8L5xe/yrM/toCx1ZJIlnTjKdKX4jkwMTnEFX85kVwkRLmrUhvs9hGAS
+	 3SgfBA2ivwMyusXr++OQNuQqSX7Abh/oUMN/W1srnw1FQuoMEpygSjmvGVUMSFhNjq
+	 Y0x2iSumj3BFYoZq2wdRgzoKm152bbvauKat9HwvraUgSyxnS4gX1ieLTNQ2tcrzvB
+	 uTkOIkdQ5phSpwCr0n6+Mg+7IhY9EuFEK5qhkivTwjYnhSc7piv2Gy1FMCocYWS+LJ
+	 COp5r4cSpnVEw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id E27F7D84BBA;
+	Thu, 29 Feb 2024 13:20:27 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240229105204.720717-1-herve.codina@bootlin.com>
- <20240229105204.720717-2-herve.codina@bootlin.com> <9cc3d11bc3e1bb89a1c725f865d0c8d1494111c5.camel@gmail.com>
- <CAJZ5v0hGfqrczS1Si8Bu67vTSkTKO_gO7ftO2R7CQxGKGWsbAA@mail.gmail.com> <af8a97f3a187cc403b6184948d3e335ee83f44ec.camel@gmail.com>
-In-Reply-To: <af8a97f3a187cc403b6184948d3e335ee83f44ec.camel@gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Thu, 29 Feb 2024 14:10:58 +0100
-Message-ID: <CAJZ5v0jwXiJU6SMwHZUJ0RVhGTmiwX1ijx4UcgbYdM6SnftSfA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] driver core: Introduce device_link_wait_removal()
-To: =?UTF-8?B?TnVubyBTw6E=?= <noname.nuno@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Herve Codina <herve.codina@bootlin.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Rob Herring <robh+dt@kernel.org>, 
-	Frank Rowand <frowand.list@gmail.com>, Lizhi Hou <lizhi.hou@amd.com>, Max Zhen <max.zhen@amd.com>, 
-	Sonal Santan <sonal.santan@amd.com>, Stefano Stabellini <stefano.stabellini@xilinx.com>, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org, Allan Nielsen <allan.nielsen@microchip.com>, 
-	Horatiu Vultur <horatiu.vultur@microchip.com>, 
-	Steen Hegelund <steen.hegelund@microchip.com>, Luca Ceresoli <luca.ceresoli@bootlin.com>, 
-	Nuno Sa <nuno.sa@analog.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] gtp: fix use-after-free and null-ptr-deref in
+ gtp_newlink()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <170921282792.3692.2017750155322648868.git-patchwork-notify@kernel.org>
+Date: Thu, 29 Feb 2024 13:20:27 +0000
+References: <20240228114703.465107-1-oficerovas@altlinux.org>
+In-Reply-To: <20240228114703.465107-1-oficerovas@altlinux.org>
+To: Alexander Ofitserov <oficerovas@altlinux.org>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, edumazet@google.com,
+ pablo@netfilter.org, laforge@gnumonks.org, davem@davemloft.net,
+ kuba@kernel.org, pabeni@redhat.com, kovalev@altlinux.org,
+ nickel@altlinux.org, dutyrok@altlinux.org, stable@vger.kernel.org
 
-On Thu, Feb 29, 2024 at 2:03=E2=80=AFPM Nuno S=C3=A1 <noname.nuno@gmail.com=
-> wrote:
->
-> On Thu, 2024-02-29 at 14:01 +0100, Rafael J. Wysocki wrote:
-> > On Thu, Feb 29, 2024 at 12:13=E2=80=AFPM Nuno S=C3=A1 <noname.nuno@gmai=
-l.com> wrote:
-> > >
-> > > Hi,
-> > >
-> > > Just copy pasting my previous comments :)
-> > >
-> > > On Thu, 2024-02-29 at 11:52 +0100, Herve Codina wrote:
-> > > > The commit 80dd33cf72d1 ("drivers: base: Fix device link removal")
-> > > > introduces a workqueue to release the consumer and supplier devices=
- used
-> > > > in the devlink.
-> > > > In the job queued, devices are release and in turn, when all the
-> > > > references to these devices are dropped, the release function of th=
-e
-> > > > device itself is called.
-> > > >
-> > > > Nothing is present to provide some synchronisation with this workqu=
-eue
-> > > > in order to ensure that all ongoing releasing operations are done a=
-nd
-> > > > so, some other operations can be started safely.
-> > > >
-> > > > For instance, in the following sequence:
-> > > >   1) of_platform_depopulate()
-> > > >   2) of_overlay_remove()
-> > > >
-> > > > During the step 1, devices are released and related devlinks are re=
-moved
-> > > > (jobs pushed in the workqueue).
-> > > > During the step 2, OF nodes are destroyed but, without any
-> > > > synchronisation with devlink removal jobs, of_overlay_remove() can =
-raise
-> > > > warnings related to missing of_node_put():
-> > > >   ERROR: memory leak, expected refcount 1 instead of 2
-> > > >
-> > > > Indeed, the missing of_node_put() call is going to be done, too lat=
-e,
-> > > > from the workqueue job execution.
-> > > >
-> > > > Introduce device_link_wait_removal() to offer a way to synchronize
-> > > > operations waiting for the end of devlink removals (i.e. end of
-> > > > workqueue jobs).
-> > > > Also, as a flushing operation is done on the workqueue, the workque=
-ue
-> > > > used is moved from a system-wide workqueue to a local one.
-> > > >
-> > > > Fixes: 80dd33cf72d1 ("drivers: base: Fix device link removal")
-> > > > Cc: stable@vger.kernel.org
-> > > > Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> > > > ---
-> > > >  drivers/base/core.c    | 26 +++++++++++++++++++++++---
-> > > >  include/linux/device.h |  1 +
-> > > >  2 files changed, 24 insertions(+), 3 deletions(-)
-> > > >
-> > > > diff --git a/drivers/base/core.c b/drivers/base/core.c
-> > > > index d5f4e4aac09b..80d9430856a8 100644
-> > > > --- a/drivers/base/core.c
-> > > > +++ b/drivers/base/core.c
-> > > > @@ -44,6 +44,7 @@ static bool fw_devlink_is_permissive(void);
-> > > >  static void __fw_devlink_link_to_consumers(struct device *dev);
-> > > >  static bool fw_devlink_drv_reg_done;
-> > > >  static bool fw_devlink_best_effort;
-> > > > +static struct workqueue_struct *device_link_wq;
-> > > >
-> > > >  /**
-> > > >   * __fwnode_link_add - Create a link between two fwnode_handles.
-> > > > @@ -532,12 +533,26 @@ static void devlink_dev_release(struct device=
- *dev)
-> > > >       /*
-> > > >        * It may take a while to complete this work because of the S=
-RCU
-> > > >        * synchronization in device_link_release_fn() and if the con=
-sumer
-> > > > or
-> > > > -      * supplier devices get deleted when it runs, so put it into =
-the
-> > > > "long"
-> > > > -      * workqueue.
-> > > > +      * supplier devices get deleted when it runs, so put it into =
-the
-> > > > +      * dedicated workqueue.
-> > > >        */
-> > > > -     queue_work(system_long_wq, &link->rm_work);
-> > > > +     queue_work(device_link_wq, &link->rm_work);
-> > > >  }
-> > > >
-> > > > +/**
-> > > > + * device_link_wait_removal - Wait for ongoing devlink removal job=
-s to
-> > > > terminate
-> > > > + */
-> > > > +void device_link_wait_removal(void)
-> > > > +{
-> > > > +     /*
-> > > > +      * devlink removal jobs are queued in the dedicated work queu=
-e.
-> > > > +      * To be sure that all removal jobs are terminated, ensure th=
-at any
-> > > > +      * scheduled work has run to completion.
-> > > > +      */
-> > > > +     drain_workqueue(device_link_wq);
-> > > > +}
-> > >
-> > > I'm still not convinced we can have a recursive call into devlinks re=
-moval
-> > > so I
-> > > do think flush_workqueue() is enough. I will defer to Saravana though=
-...
-> >
-> > AFAICS, the difference betwee flush_workqueue() and drain_workqueue()
-> > is the handling of the case when a given work item can queue up itself
-> > again.  This does not happen here.
->
->
-> Yeah, that's also my understanding...
+Hello:
 
-Moreover, IIUC this is called after dropping the last reference to the
-device link in question and so after queuing up the link removal work.
-Because that work does not requeue itself, flush_workqueue() is
-sufficient to ensure that the removal work has been completed.
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-If anyone thinks that it may not be sufficient, please explain to me
-why you think so.  Otherwise, don't do stuff to prevent things you
-cannot explain.
+On Wed, 28 Feb 2024 14:47:03 +0300 you wrote:
+> The gtp_link_ops operations structure for the subsystem must be
+> registered after registering the gtp_net_ops pernet operations structure.
+> 
+> Syzkaller hit 'general protection fault in gtp_genl_dump_pdp' bug:
+> 
+> [ 1010.702740] gtp: GTP module unloaded
+> [ 1010.715877] general protection fault, probably for non-canonical address 0xdffffc0000000001: 0000 [#1] SMP KASAN NOPTI
+> [ 1010.715888] KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+> [ 1010.715895] CPU: 1 PID: 128616 Comm: a.out Not tainted 6.8.0-rc6-std-def-alt1 #1
+> [ 1010.715899] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.0-alt1 04/01/2014
+> [ 1010.715908] RIP: 0010:gtp_newlink+0x4d7/0x9c0 [gtp]
+> [ 1010.715915] Code: 80 3c 02 00 0f 85 41 04 00 00 48 8b bb d8 05 00 00 e8 ed f6 ff ff 48 89 c2 48 89 c5 48 b8 00 00 00 00 00 fc ff df 48 c1 ea 03 <80> 3c 02 00 0f 85 4f 04 00 00 4c 89 e2 4c 8b 6d 00 48 b8 00 00 00
+> [ 1010.715920] RSP: 0018:ffff888020fbf180 EFLAGS: 00010203
+> [ 1010.715929] RAX: dffffc0000000000 RBX: ffff88800399c000 RCX: 0000000000000000
+> [ 1010.715933] RDX: 0000000000000001 RSI: ffffffff84805280 RDI: 0000000000000282
+> [ 1010.715938] RBP: 000000000000000d R08: 0000000000000001 R09: 0000000000000000
+> [ 1010.715942] R10: 0000000000000001 R11: 0000000000000001 R12: ffff88800399cc80
+> [ 1010.715947] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000400
+> [ 1010.715953] FS:  00007fd1509ab5c0(0000) GS:ffff88805b300000(0000) knlGS:0000000000000000
+> [ 1010.715958] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [ 1010.715962] CR2: 0000000000000000 CR3: 000000001c07a000 CR4: 0000000000750ee0
+> [ 1010.715968] PKRU: 55555554
+> [ 1010.715972] Call Trace:
+> [ 1010.715985]  ? __die_body.cold+0x1a/0x1f
+> [ 1010.715995]  ? die_addr+0x43/0x70
+> [ 1010.716002]  ? exc_general_protection+0x199/0x2f0
+> [ 1010.716016]  ? asm_exc_general_protection+0x1e/0x30
+> [ 1010.716026]  ? gtp_newlink+0x4d7/0x9c0 [gtp]
+> [ 1010.716034]  ? gtp_net_exit+0x150/0x150 [gtp]
+> [ 1010.716042]  __rtnl_newlink+0x1063/0x1700
+> [ 1010.716051]  ? rtnl_setlink+0x3c0/0x3c0
+> [ 1010.716063]  ? is_bpf_text_address+0xc0/0x1f0
+> [ 1010.716070]  ? kernel_text_address.part.0+0xbb/0xd0
+> [ 1010.716076]  ? __kernel_text_address+0x56/0xa0
+> [ 1010.716084]  ? unwind_get_return_address+0x5a/0xa0
+> [ 1010.716091]  ? create_prof_cpu_mask+0x30/0x30
+> [ 1010.716098]  ? arch_stack_walk+0x9e/0xf0
+> [ 1010.716106]  ? stack_trace_save+0x91/0xd0
+> [ 1010.716113]  ? stack_trace_consume_entry+0x170/0x170
+> [ 1010.716121]  ? __lock_acquire+0x15c5/0x5380
+> [ 1010.716139]  ? mark_held_locks+0x9e/0xe0
+> [ 1010.716148]  ? kmem_cache_alloc_trace+0x35f/0x3c0
+> [ 1010.716155]  ? __rtnl_newlink+0x1700/0x1700
+> [ 1010.716160]  rtnl_newlink+0x69/0xa0
+> [ 1010.716166]  rtnetlink_rcv_msg+0x43b/0xc50
+> [ 1010.716172]  ? rtnl_fdb_dump+0x9f0/0x9f0
+> [ 1010.716179]  ? lock_acquire+0x1fe/0x560
+> [ 1010.716188]  ? netlink_deliver_tap+0x12f/0xd50
+> [ 1010.716196]  netlink_rcv_skb+0x14d/0x440
+> [ 1010.716202]  ? rtnl_fdb_dump+0x9f0/0x9f0
+> [ 1010.716208]  ? netlink_ack+0xab0/0xab0
+> [ 1010.716213]  ? netlink_deliver_tap+0x202/0xd50
+> [ 1010.716220]  ? netlink_deliver_tap+0x218/0xd50
+> [ 1010.716226]  ? __virt_addr_valid+0x30b/0x590
+> [ 1010.716233]  netlink_unicast+0x54b/0x800
+> [ 1010.716240]  ? netlink_attachskb+0x870/0x870
+> [ 1010.716248]  ? __check_object_size+0x2de/0x3b0
+> [ 1010.716254]  netlink_sendmsg+0x938/0xe40
+> [ 1010.716261]  ? netlink_unicast+0x800/0x800
+> [ 1010.716269]  ? __import_iovec+0x292/0x510
+> [ 1010.716276]  ? netlink_unicast+0x800/0x800
+> [ 1010.716284]  __sock_sendmsg+0x159/0x190
+> [ 1010.716290]  ____sys_sendmsg+0x712/0x880
+> [ 1010.716297]  ? sock_write_iter+0x3d0/0x3d0
+> [ 1010.716304]  ? __ia32_sys_recvmmsg+0x270/0x270
+> [ 1010.716309]  ? lock_acquire+0x1fe/0x560
+> [ 1010.716315]  ? drain_array_locked+0x90/0x90
+> [ 1010.716324]  ___sys_sendmsg+0xf8/0x170
+> [ 1010.716331]  ? sendmsg_copy_msghdr+0x170/0x170
+> [ 1010.716337]  ? lockdep_init_map_type+0x2c7/0x860
+> [ 1010.716343]  ? lockdep_hardirqs_on_prepare+0x430/0x430
+> [ 1010.716350]  ? debug_mutex_init+0x33/0x70
+> [ 1010.716360]  ? percpu_counter_add_batch+0x8b/0x140
+> [ 1010.716367]  ? lock_acquire+0x1fe/0x560
+> [ 1010.716373]  ? find_held_lock+0x2c/0x110
+> [ 1010.716384]  ? __fd_install+0x1b6/0x6f0
+> [ 1010.716389]  ? lock_downgrade+0x810/0x810
+> [ 1010.716396]  ? __fget_light+0x222/0x290
+> [ 1010.716403]  __sys_sendmsg+0xea/0x1b0
+> [ 1010.716409]  ? __sys_sendmsg_sock+0x40/0x40
+> [ 1010.716419]  ? lockdep_hardirqs_on_prepare+0x2b3/0x430
+> [ 1010.716425]  ? syscall_enter_from_user_mode+0x1d/0x60
+> [ 1010.716432]  do_syscall_64+0x30/0x40
+> [ 1010.716438]  entry_SYSCALL_64_after_hwframe+0x62/0xc7
+> [ 1010.716444] RIP: 0033:0x7fd1508cbd49
+> [ 1010.716452] Code: 00 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d ef 70 0d 00 f7 d8 64 89 01 48
+> [ 1010.716456] RSP: 002b:00007fff18872348 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+> [ 1010.716463] RAX: ffffffffffffffda RBX: 000055f72bf0eac0 RCX: 00007fd1508cbd49
+> [ 1010.716468] RDX: 0000000000000000 RSI: 0000000020000280 RDI: 0000000000000006
+> [ 1010.716473] RBP: 00007fff18872360 R08: 00007fff18872360 R09: 00007fff18872360
+> [ 1010.716478] R10: 00007fff18872360 R11: 0000000000000202 R12: 000055f72bf0e1b0
+> [ 1010.716482] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+> [ 1010.716491] Modules linked in: gtp(+) udp_tunnel ib_core uinput af_packet rfkill qrtr joydev hid_generic usbhid hid kvm_intel iTCO_wdt intel_pmc_bxt iTCO_vendor_support kvm snd_hda_codec_generic ledtrig_audio irqbypass crct10dif_pclmul crc32_pclmul crc32c_intel ghash_clmulni_intel snd_hda_intel nls_utf8 snd_intel_dspcfg nls_cp866 psmouse aesni_intel vfat crypto_simd fat cryptd glue_helper snd_hda_codec pcspkr snd_hda_core i2c_i801 snd_hwdep i2c_smbus xhci_pci snd_pcm lpc_ich xhci_pci_renesas xhci_hcd qemu_fw_cfg tiny_power_button button sch_fq_codel vboxvideo drm_vram_helper drm_ttm_helper ttm vboxsf vboxguest snd_seq_midi snd_seq_midi_event snd_seq snd_rawmidi snd_seq_device snd_timer snd soundcore msr fuse efi_pstore dm_mod ip_tables x_tables autofs4 virtio_gpu virtio_dma_buf drm_kms_helper cec rc_core drm virtio_rng virtio_scsi rng_core virtio_balloon virtio_blk virtio_net virtio_console net_failover failover ahci libahci libata evdev scsi_mod input_leds serio_raw virtio_pci 
+ intel_agp
+> [ 1010.716674]  virtio_ring intel_gtt virtio [last unloaded: gtp]
+> [ 1010.716693] ---[ end trace 04990a4ce61e174b ]---
+> 
+> [...]
+
+Here is the summary with links:
+  - [net] gtp: fix use-after-free and null-ptr-deref in gtp_newlink()
+    https://git.kernel.org/netdev/net/c/616d82c3cfa2
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
