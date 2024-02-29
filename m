@@ -1,133 +1,109 @@
-Return-Path: <stable+bounces-25503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9F8A86CBB1
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 15:36:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D7F286CD63
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 16:48:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34D5728274A
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 14:36:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 117BD286078
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 15:48:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39C8135A4D;
-	Thu, 29 Feb 2024 14:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16F1014A4CE;
+	Thu, 29 Feb 2024 15:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="GBo5Z4Dk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u2jb0bAH"
 X-Original-To: stable@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69283E489;
-	Thu, 29 Feb 2024 14:36:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54201361B5;
+	Thu, 29 Feb 2024 15:48:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709217411; cv=none; b=n/+LQS/wE9aCQWy9GY3KeEiQKozqQVlzEc5ohT+xrsUNzq3ET0JSBGl3PkCaBw3seIgXN5CTcDQBX8l2gO+QYbStqLHSVFe/FgxdQziS+bgj3p+o9vyRuMz6rT7O8jBAbQae8cSipE5j9WRYWPgrGdCy+w7irxc7IjTQbnonJL8=
+	t=1709221733; cv=none; b=R5PqNqprAj1kN6vZTZEZAv169i3JZ+hxUpleqS7GPYkjFay3iF5R7cGM+eWuwAc63c8/YGHY5xyJFPvzxsGXPz6/bbx+bDF8RbsCCY5Ut7Cdy67XJXZnyy+XulX0QSw8hbOnMOd5Sn5SeanybBEAQjEowrPJPNlQupyh7Ifyppw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709217411; c=relaxed/simple;
-	bh=ShkOrOceasbzr+t0dTg3xM/G0Ce9lc06tQ+L5rDgUFE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f7I9Gyjem/R9ZuBZOBCXJjdHaj2GovZZ+lWCPazTBzGj5CWlKKuo1BQ/GehP0U1WR5wvubhX9NuTLOpHyyB5kGI8Ey8qBKcHDDT0M8hmnJiOjJWX1LKYlveXhFx2Y+uKTkySDuwpXHxzj1ptTNjA+dZ4UCKGMTUoiXyYLJKDu/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=GBo5Z4Dk; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=Yg7gA0jcv4W0xVz47D8GBOwfwX0WK4Erjbho1nblId0=; t=1709217408; x=1710427008; 
-	b=GBo5Z4DkLB+CEbgGiAMfSSDsvM4tI0p2LTFfXQ9nMp1cM/oiQv4Z/QLF7LCuso1ZoZXV8YSXUHV
-	tUKKl6H4FJg3Y+w7+YGFWSpTKO5W8Xz7TE6bMG7/sNegpRKF8zQ7mhhXGkvJFudlgQ2sMUX2w7eQj
-	2ZGTQUV/3p5mIIaI9kLG0Zi+vyBknWpiv8cYjN+ZUPRyoleL0g3OmotYgaYY30x0MVJ71MjCTBLkM
-	ksKOjzQxhrzq4qZgKX2whaehhe7OB9QN82RpnhAQAPUMSL9c1d6kuIXWV3K2GqBgPfZDW/EzOYoVF
-	FIVcYE2+KOiEBndlG7Mu29M694Od+4Ikja5w==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rfhWX-0000000Ddei-2Zad;
-	Thu, 29 Feb 2024 15:36:37 +0100
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	stable@vger.kernel.org,
-	Ben Greear <greearb@candelatech.com>,
-	Madhan Sai <madhan.singaraju@candelatech.com>
-Subject: [PATCH] debugfs: fix wait/cancellation handling during remove
-Date: Thu, 29 Feb 2024 15:36:20 +0100
-Message-ID: <20240229153635.6bfab7eb34d3.I6c7aeff8c9d6628a8bc1ddcf332205a49d801f17@changeid>
-X-Mailer: git-send-email 2.43.2
+	s=arc-20240116; t=1709221733; c=relaxed/simple;
+	bh=WjyUUH4IyA8kfmC6HN4ybuY6b7RS7b5tdCPSoD9L/Bk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r5/RIwiAMOgPSdFtz/96FiuJLERN10qJWEIOhukoXIyGtAOVPFGXDC7zN1uG28EkwViYQZ87OZHAZIajMQnyvIq009TyXkysu3ey61GrK7uUo8z4iQbm1NoUdngyZdVmi0+Q7t0oxzAEBEsUkLAh9REgLZi3FzbhaT8GXYIS0FU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u2jb0bAH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDC3BC433C7;
+	Thu, 29 Feb 2024 15:48:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709221733;
+	bh=WjyUUH4IyA8kfmC6HN4ybuY6b7RS7b5tdCPSoD9L/Bk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=u2jb0bAHVqlJE86AcYWAj3UVdMyOiHUmPLvKlVgj9cVltWy1N2+63d5VkvMyyDXV6
+	 /EUtV+X2Y42Phr4H9zKi91Yg6b+UBGYZisSSoJoAGaAkZm/eIXalD+Ot528b9lhRKz
+	 X9hsq6ENJYEEWTcwsuGIJbtu0TrC/znwVnCk32bh8I2hLTcrXoNY7zBIfqIEqCnKpz
+	 CQz0CQdrCbGOAHK/aGUcFDsQLvBL1IJeXMFIp+mk3I9vuasnoN4zw8dbVEkCW0Y7z4
+	 D9IHvQHMoqNNOJB37ODVkvfTINIWrFAXgXPVk3XyqheA3mKQj7CYk3y6gbxDJF8xO5
+	 V0bECdxNeFaQA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Mikhail Rudenko <mike.rudenko@gmail.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	dafna@fastmail.com,
+	heiko@sntech.de,
+	linux-media@vger.kernel.org,
+	linux-rockchip@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.7 01/26] media: Revert "media: rkisp1: Drop IRQF_SHARED"
+Date: Thu, 29 Feb 2024 10:48:20 -0500
+Message-ID: <20240229154851.2849367-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.7.6
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-Ben Greear further reports deadlocks during concurrent debugfs
-remove while files are being accessed, even though the code in
-question now uses debugfs cancellations. Turns out that despite
-all the review on the locking, we missed completely that the
-logic is wrong: if the refcount hits zero we can finish (and
-need not wait for the completion), but if it doesn't we have
-to trigger all the cancellations. As written, we can _never_
-get into the loop triggering the cancellations. Fix this, and
-explain it better while at it.
+[ Upstream commit a107d643b2a3382e0a2d2c4ef08bf8c6bff4561d ]
 
-Cc: stable@vger.kernel.org
-Fixes: 8c88a474357e ("debugfs: add API to allow debugfs operations cancellation")
-Reported-by: Ben Greear <greearb@candelatech.com>
-Closes: https://lore.kernel.org/r/1c9fa9e5-09f1-0522-fdbc-dbcef4d255ca@candelatech.com
-Tested-by: Madhan Sai <madhan.singaraju@candelatech.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+This reverts commit 85d2a31fe4d9be1555f621ead7a520d8791e0f74.
+
+The rkisp1 does share interrupt lines on some platforms, after all. Thus
+we need to revert this, and implement a fix for the rkisp1 shared irq
+handling in a follow-up patch.
+
+Closes: https://lore.kernel.org/all/87o7eo8vym.fsf@gmail.com/
+Link: https://lore.kernel.org/r/20231218-rkisp-shirq-fix-v1-1-173007628248@ideasonboard.com
+
+Reported-by: Mikhail Rudenko <mike.rudenko@gmail.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/debugfs/inode.c | 25 ++++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+ drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/debugfs/inode.c b/fs/debugfs/inode.c
-index 034a617cb1a5..a40da0065433 100644
---- a/fs/debugfs/inode.c
-+++ b/fs/debugfs/inode.c
-@@ -751,13 +751,28 @@ static void __debugfs_file_removed(struct dentry *dentry)
- 	if ((unsigned long)fsd & DEBUGFS_FSDATA_IS_REAL_FOPS_BIT)
- 		return;
+diff --git a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
+index f96f821a7b50d..acc559652d6eb 100644
+--- a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
++++ b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
+@@ -559,7 +559,7 @@ static int rkisp1_probe(struct platform_device *pdev)
+ 				rkisp1->irqs[il] = irq;
+ 		}
  
--	/* if we hit zero, just wait for all to finish */
--	if (!refcount_dec_and_test(&fsd->active_users)) {
--		wait_for_completion(&fsd->active_users_drained);
-+	/* if this was the last reference, we're done */
-+	if (refcount_dec_and_test(&fsd->active_users))
- 		return;
--	}
- 
--	/* if we didn't hit zero, try to cancel any we can */
-+	/*
-+	 * If there's still a reference, the code that obtained it can
-+	 * be in different states:
-+	 *  - The common case of not using cancellations, or already
-+	 *    after debugfs_leave_cancellation(), where we just need
-+	 *    to wait for debugfs_file_put() which signals the completion;
-+	 *  - inside a cancellation section, i.e. between
-+	 *    debugfs_enter_cancellation() and debugfs_leave_cancellation(),
-+	 *    in which case we need to trigger the ->cancel() function,
-+	 *    and then wait for debugfs_file_put() just like in the
-+	 *    previous case;
-+	 *  - before debugfs_enter_cancellation() (but obviously after
-+	 *    debugfs_file_get()), in which case we may not see the
-+	 *    cancellation in the list on the first round of the loop,
-+	 *    but debugfs_enter_cancellation() signals the completion
-+	 *    after adding it, so this code gets woken up to call the
-+	 *    ->cancel() function.
-+	 */
- 	while (refcount_read(&fsd->active_users)) {
- 		struct debugfs_cancellation *c;
- 
+-		ret = devm_request_irq(dev, irq, info->isrs[i].isr, 0,
++		ret = devm_request_irq(dev, irq, info->isrs[i].isr, IRQF_SHARED,
+ 				       dev_driver_string(dev), dev);
+ 		if (ret) {
+ 			dev_err(dev, "request irq failed: %d\n", ret);
 -- 
-2.43.2
+2.43.0
 
 
