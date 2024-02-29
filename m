@@ -1,133 +1,106 @@
-Return-Path: <stable+bounces-25600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0433686D24F
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 19:30:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDD2B86D280
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 19:42:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A4551F26F89
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 18:30:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 642D2B25D48
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 18:42:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A653C082;
-	Thu, 29 Feb 2024 18:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29C37D099;
+	Thu, 29 Feb 2024 18:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ni84BdSM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qYNCfL5i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 046F1383BC;
-	Thu, 29 Feb 2024 18:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77504405F9;
+	Thu, 29 Feb 2024 18:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709231415; cv=none; b=arkLhTQ8mrC3lWLsFENfMcIoYU5T7QdEMuKE/wzfosz4kEwMJ8ZWOktk5I9nGnuLT8hJ6MhpMjDTMbZInQQmj4beacZDBPjslUNgIwyttLbdd0lYmcIv0WlL+umTc78wotmQKPKFRWpY+R/DYzthDafXCZ1wddy8X6aL2xfzeas=
+	t=1709232127; cv=none; b=oGOY65SboqY4cD7r0FYq1689Hie9UQnk19nXqetJFSL03Gv4GwIGRd0yjxeTXAjEbbRSjSPwEFAjknCQwI0jl1Ybh7ebL8OmQoxdCvyTosOrqZt7PNb5I0vbM2hn2nWq7OOtqjqB/OOtpY0iPkmfm+Z85mU30tGPPb0vSzLJKf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709231415; c=relaxed/simple;
-	bh=2HgWWLtX9NUghm/JjXanG4wu76srdSHYfyF5THzKR88=;
+	s=arc-20240116; t=1709232127; c=relaxed/simple;
+	bh=6Q9YQ5JrvV5TT6WigJ4rpB2hWZ0gwkmwK4ue/OTgeDE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X+91HoVhuwcySb2gQoqKzbG8uPF/i2H9TuVv4KsmulLd6WOnylfwjphte/MHkDh9bz1sXQeesZYZYa5SNo62MvEtxFSGimx7P+nZz2md9In/lBSPqphZwDlNB7GZLgo0MAmlWizuK2BhLlgi9tavKFJSXKr/uWBywMXCzs2Oldo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ni84BdSM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC719C433F1;
-	Thu, 29 Feb 2024 18:30:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709231414;
-	bh=2HgWWLtX9NUghm/JjXanG4wu76srdSHYfyF5THzKR88=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=MIPLIo0YqlDf+uxfFr5zVEKtoY8Ky39HYHpBNi/VHEz1aipWhLfRSB7Dm8d8C8ORnGkv2/AeAysyZ72FKoHGYErhARcUAMy50tWnftvIkCizgcl/Y7QIfAvC6uphAEupC/w2/uvwHB+rpdn6nmwDcU/6bmelo4AnxAVv5T/20Q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qYNCfL5i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7468FC433C7;
+	Thu, 29 Feb 2024 18:42:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1709232127;
+	bh=6Q9YQ5JrvV5TT6WigJ4rpB2hWZ0gwkmwK4ue/OTgeDE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ni84BdSM7Em3xnOJzG6vi0AKZYqeNW7xAwZ5Us57psuqfBpI4UveM8rnKCRxxlS2h
-	 VlQ80j+REd4wrXfVuNNNLx22ew0i4roVR7r5j35knJUrf5ZtrE7rZiUlhL4zrXLn2e
-	 3MAwsvG+s3myp+TYpk0LLThNRVxEgai4HsbzQ79ulyOYh6SEjn9pPgcqu1iJytUC0Q
-	 cKYwYNl1mMm49OHc0WiK3WHAGHwOkfvBGiI1RrL7op5eLtMRAn1dM4tXZnEQ4lC4We
-	 rNaCRRkY3kx0Ah14xmQgM228rVzhXRR3tx6cliaKsWsSoZqetYk9+l4CT/v44ALhlt
-	 TNFlaVoEQobdQ==
-Date: Thu, 29 Feb 2024 18:30:10 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: samuel.holland@sifive.com, ajones@ventanamicro.com,
-	linux-kernel@vger.kernel.org, alex@ghiti.fr,
-	linux-riscv@lists.infradead.org, sorear@fastmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH -fixes v4 2/3] riscv: Add a custom ISA extension for the
- [ms]envcfg CSR
-Message-ID: <20240229-establish-itinerary-5d08f6c3ee43@spud>
-References: <20240228-goldsmith-shrine-97fc4610e0bc@spud>
- <mhng-94e8034f-eda3-45df-bcf0-1bd5bd9cb869@palmer-ri-x1c9a>
+	b=qYNCfL5iUEJh5Vs4iY3aFLrDrVD/sF4EAiaLf5jJhIppNNRT29nJrpiZhHQLcu8oX
+	 D8AIXFId6eiOW+TSCG3flvrVJ6hGcijI4K09+MWIrPO1KP7Bjbd/z5VH0Bx2pB74Fi
+	 jvapwf1Fiw13fN+T7d9v2vT9Gv29PvdBmFNavqPs=
+Date: Thu, 29 Feb 2024 19:42:03 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com
+Subject: Re: [PATCH 5.15 000/245] 5.15.150-rc1 review
+Message-ID: <2024022911-eatery-woven-f882@gregkh>
+References: <20240227131615.098467438@linuxfoundation.org>
+ <03a17f2d-ab8f-4241-8912-ebd903fb2c43@roeck-us.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="ch+3PeRyra/9QFRf"
-Content-Disposition: inline
-In-Reply-To: <mhng-94e8034f-eda3-45df-bcf0-1bd5bd9cb869@palmer-ri-x1c9a>
-
-
---ch+3PeRyra/9QFRf
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <03a17f2d-ab8f-4241-8912-ebd903fb2c43@roeck-us.net>
 
-On Thu, Feb 29, 2024 at 10:23:39AM -0800, Palmer Dabbelt wrote:
-> On Wed, 28 Feb 2024 02:12:14 PST (-0800), Conor Dooley wrote:
-> > On Tue, Feb 27, 2024 at 10:55:34PM -0800, Samuel Holland wrote:
-> > > The [ms]envcfg CSR was added in version 1.12 of the RISC-V privileged
-> > > ISA (aka S[ms]1p12). However, bits in this CSR are defined by several
-> > > other extensions which may be implemented separately from any particu=
-lar
-> > > version of the privileged ISA (for example, some unrelated errata may
-> > > prevent an implementation from claiming conformance with Ss1p12). As a
-> > > result, Linux cannot simply use the privileged ISA version to determi=
-ne
-> > > if the CSR is present. It must also check if any of these other
-> > > extensions are implemented. It also cannot probe the existence of the
-> > > CSR at runtime, because Linux does not require Sstrict, so (in the
-> > > absence of additional information) it cannot know if a CSR at that
-> > > address is [ms]envcfg or part of some non-conforming vendor extension.
-> > >=20
-> > > Since there are several standard extensions that imply the existence =
-of
-> > > the [ms]envcfg CSR, it becomes unwieldy to check for all of them
-> > > wherever the CSR is accessed. Instead, define a custom Xlinuxenvcfg I=
-SA
-> > > extension bit that is implied by the other extensions and denotes that
-> > > the CSR exists as defined in the privileged ISA, containing at least =
-one
-> > > of the fields common between menvcfg and senvcfg.
-> >=20
-> > > This extension does not need to be parsed from the devicetree or ISA
-> > > string because it can only be implemented as a subset of some other
-> > > standard extension.
-> >=20
-> > NGL, every time I look at the superset stuff I question whether or not
-> > it is a good implementation, but it is nice to see that it at least
-> > makes the creation of quasi-extension flags like this straightforward.
->=20
-> We can always add it to the DT list as a proper extension, but I think for
-> this sort of stuff it's good enough for now
+On Thu, Feb 29, 2024 at 10:15:49AM -0800, Guenter Roeck wrote:
+> On 2/27/24 05:23, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 5.15.150 release.
+> > There are 245 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Thu, 29 Feb 2024 13:15:36 +0000.
+> > Anything received after that time might be too late.
+> > 
+> 
+> $ git grep dma_fence_allocate_private_stub
+> drivers/dma-buf/dma-fence-unwrap.c:             return dma_fence_allocate_private_stub(timestamp);
+>                                                                                        ^^^^^^^^^
+> drivers/dma-buf/dma-fence-unwrap.c:             tmp = dma_fence_allocate_private_stub(ktime_get());
+>                                                                                       ^^^^^^^^^^^
+> drivers/dma-buf/dma-fence.c: * dma_fence_allocate_private_stub - return a private, signaled fence
+> drivers/dma-buf/dma-fence.c:struct dma_fence *dma_fence_allocate_private_stub(void)
+>                                                                               ^^^^
+> drivers/dma-buf/dma-fence.c:EXPORT_SYMBOL(dma_fence_allocate_private_stub);
+> drivers/gpu/drm/drm_syncobj.c:  struct dma_fence *fence = dma_fence_allocate_private_stub();
+> include/linux/dma-fence.h:struct dma_fence *dma_fence_allocate_private_stub(void);
+>                                                                             ^^^^
 
-Perhaps good enough forever. I was not advocating for adding it as a
-permitted DT property - I was just saying that I didn't the complexity
-that you mention below, but I was pleasantly surprised that the stuff
-?Evan? and I came up with allows for this kind of inferred "extension"
-without any changes.
+How is any of this building then?  Does no one actually use
+dma-fence-unwrap.c?
 
-> -- we've already got a bunch of
-> complexity for the proper ISA-defined extension dependencies, so it's not
-> like we could really get away from it entirely.
+> This was introduced with commit 4e82b9c11d3cd ("dma-buf: add dma_fence_timestamp helper") in
+> v5.15.149. The additional parameter to dma_fence_allocate_private_stub() was introduced in the
+> upstream kernel with commit f781f661e8c99 ("dma-buf: keep the signaling time of merged fences
+> v3") which is missing in v5.15.y.
 
---ch+3PeRyra/9QFRf
-Content-Type: application/pgp-signature; name="signature.asc"
+f781f661e8c99 still uses an option to dma_fence_allocate_private_stub():
+-               return dma_fence_get_stub();
++               return dma_fence_allocate_private_stub(timestamp);
 
------BEGIN PGP SIGNATURE-----
+So backporting that will continue the breakage, right?
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZeDNMgAKCRB4tDGHoIJi
-0phyAPkBd+aPNH1/saAdNEh6ILJZUG6mCtcyhkUgdb1752vlrAD/RIO8+81FcJN+
-11exmk/RMWj7ZuE4xehnYEvsq43w5w4=
-=t2I+
------END PGP SIGNATURE-----
+confused,
 
---ch+3PeRyra/9QFRf--
+greg k-h
 
