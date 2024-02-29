@@ -1,178 +1,96 @@
-Return-Path: <stable+bounces-25705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D2D586D7DC
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 00:30:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6F6486D7DE
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 00:31:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0FFE285B6A
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 23:30:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5354B28384C
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 23:31:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA1D975814;
-	Thu, 29 Feb 2024 23:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ED3474BF0;
+	Thu, 29 Feb 2024 23:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g4BuR+jn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B1NACDo8"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D456574BFE
-	for <stable@vger.kernel.org>; Thu, 29 Feb 2024 23:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42132446AC
+	for <stable@vger.kernel.org>; Thu, 29 Feb 2024 23:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709249374; cv=none; b=D2jwoyITZozzg5uqKVwxC5gFCkMJ6l/azsoBRq2HhZqyVorittfAUN8DNmb9UsBLSZ8kDXQWvrWLHcWTEAnPSXMOTumA7FL9+n01V/gGkVwfOdgZPYtpo7Ky4E/QInmP5FvhtmrzhITj4sj9nklLw8j50eOaBCXlp4l5Tfx66Vg=
+	t=1709249487; cv=none; b=RSDf8TuaTfNckH/nMInPF6MaRyur1qyZrb0RkwV+ZRHL/1q3U5BSUtX3Xr/LeBNhZlxXdnOQNTnlLEMB87b9ywWvn0Z6yDZPhjQM0m4D1EC8TE1RlmbpUsWvFVjY3qxdF3gJP0T8tb/ovwkVcO+AKb+LxDekAnJ5kQvORNHUX1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709249374; c=relaxed/simple;
-	bh=gU3OHmO6IF/EGUQHAuPHNM5rzqqQB5fMs1yZsPWWH1M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JCGWHHZKUgZ26RCi6KlNNal5z9llzOHbRYLP7/g46Hb4T1jY/I4gwql4d1YQGTGzv3zsIEmBWCiIbNFbMJ5PlJTyFis5M2PwxzjNBQEeHy8P8tcIBqZIhIx+n1HPIJN3x5B7yBbx84gMzNSD+1XFYVNEcE00ukGx40IKpYm+IHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g4BuR+jn; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+	s=arc-20240116; t=1709249487; c=relaxed/simple;
+	bh=9rcMuYIAB+/3roOxSn7rcaNKoCwJLMpbYrjbDa2WiyU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=MpRZcAcaJTV4YNChR/wh79ksyMzaSw9C+HhYE6L/oknZ/lKYTWq6drIduXqRJv288C5QrecRnYbqlpC8XHQFxIjinT7drKaPCZYeHVY87GxcSaDZsiMm1psgZonebC2cIBBoHiVwzsI107dyUpuBk98vCB5VnoOUcz3hq2eaDtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B1NACDo8; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709249373; x=1740785373;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=gU3OHmO6IF/EGUQHAuPHNM5rzqqQB5fMs1yZsPWWH1M=;
-  b=g4BuR+jnLnUa4Scl+fWkNdeW/6g2LZCW7l+TIgAuDIS7gj6LoOVUB8rU
-   Rvv50erVBYLQyfrt2sOOiV1G/1MPKpwvCFuOQq9W2fQsA64ZnBRy/wD+7
-   N7oY2m5ng3bv0JragKODQfFQusYNzKYgBc+dbaLuss95MpP0l1MDOrxAN
-   5rCh2rHlKSc8TEIvSulYw/EmB1uMNu2a9yuMwz43z3qBLmwEGG8cw7lK5
-   ehF/AY32PXCvHIgV/iuGowFp1V4l6Ut8ID1rnou1C8jbp39L+jLz+NzFP
-   Zx4mDWABIY/AHcKrZ4hkLxBusMopEUNS8j+vgR3z6JfgX6lVlw94r7FED
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10999"; a="29193515"
+  t=1709249486; x=1740785486;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=9rcMuYIAB+/3roOxSn7rcaNKoCwJLMpbYrjbDa2WiyU=;
+  b=B1NACDo8NFXLrt9wZpMMFARZikjjK+/vrESY3w3R+f7vmPv0wIYsELVK
+   fQwCM1tbxb1IYbUg2Amd/v5PAOHz0hOOMtsV+asYw/iWdD8HnGJ3vxA+o
+   543yKxJI3PUKLGYmlpRrBvX14hp97Gr7qSsCuKZztWvMV3rNyJP1lB52f
+   LFMCf6L6+UVwuTPmxopYIahJ65fcfw8qNQRGS6xRKSJF8tYsKRtJ0mCzq
+   BPFsuwBLlhhQpgH2l9guqzeUudX7YwRvPPUvbbXtpV3+wN/jaxzVMNS/q
+   lJ0TB3nhA/zoNAGrHnFe1xlLAG8EWScnHmkChjODClAJuzo7Ggb7b84p2
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10999"; a="29193691"
 X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
-   d="scan'208";a="29193515"
+   d="scan'208";a="29193691"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 15:29:32 -0800
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 15:31:23 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
-   d="scan'208";a="38836138"
-Received: from syhu-mobl2.ccr.corp.intel.com (HELO intel.com) ([10.94.248.193])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 15:29:26 -0800
-From: Andi Shyti <andi.shyti@linux.intel.com>
-To: intel-gfx <intel-gfx@lists.freedesktop.org>,
-	dri-devel <dri-devel@lists.freedesktop.org>
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
-	stable@vger.kernel.org,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH v3 4/4] drm/i915/gt: Enable only one CCS for compute workload
-Date: Fri,  1 Mar 2024 00:28:59 +0100
-Message-ID: <20240229232859.70058-5-andi.shyti@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240229232859.70058-1-andi.shyti@linux.intel.com>
-References: <20240229232859.70058-1-andi.shyti@linux.intel.com>
+   d="scan'208";a="38836440"
+Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
+  by orviesa002.jf.intel.com with ESMTP; 29 Feb 2024 15:31:22 -0800
+Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rfprW-000DMF-2E;
+	Thu, 29 Feb 2024 23:30:58 +0000
+Date: Fri, 1 Mar 2024 07:29:44 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v3 1/4] drm/i915/gt: Refactor uabi engine class/instance
+ list creation
+Message-ID: <ZeETaFIQEtSmkKB9@fdb2c0c3c270>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240229232859.70058-2-andi.shyti@linux.intel.com>
 
-Enable only one CCS engine by default with all the compute sices
-allocated to it.
+Hi,
 
-While generating the list of UABI engines to be exposed to the
-user, exclude any additional CCS engines beyond the first
-instance.
+Thanks for your patch.
 
-This change can be tested with igt i915_query.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Fixes: d2eae8e98d59 ("drm/i915/dg2: Drop force_probe requirement")
-Requires: 4e4f77d74878 ("drm/i915/gt: Refactor uabi engine class/instance list creation")
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Chris Wilson <chris.p.wilson@linux.intel.com>
-Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: <stable@vger.kernel.org> # v6.2+
----
- drivers/gpu/drm/i915/gt/intel_engine_user.c | 11 +++++++++++
- drivers/gpu/drm/i915/gt/intel_gt.c          | 11 +++++++++++
- drivers/gpu/drm/i915/gt/intel_gt_regs.h     |  2 ++
- 3 files changed, 24 insertions(+)
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_engine_user.c b/drivers/gpu/drm/i915/gt/intel_engine_user.c
-index ec5bcd1c1ec4..6d6ef11f55e5 100644
---- a/drivers/gpu/drm/i915/gt/intel_engine_user.c
-+++ b/drivers/gpu/drm/i915/gt/intel_engine_user.c
-@@ -208,6 +208,7 @@ void intel_engines_driver_register(struct drm_i915_private *i915)
- 	struct list_head *it, *next;
- 	struct rb_node **p, *prev;
- 	LIST_HEAD(engines);
-+	u16 uabi_ccs = 0;
- 
- 	sort_engines(i915, &engines);
- 
-@@ -256,6 +257,16 @@ void intel_engines_driver_register(struct drm_i915_private *i915)
- 		      BIT(_CCS(engine->uabi_instance))))
- 			continue;
- 
-+		/*
-+		 * The load is balanced among all the available compute
-+		 * slices. Expose only the first instance of the compute
-+		 * engine.
-+		 */
-+		if (IS_DG2(i915) &&
-+		    uabi_class == I915_ENGINE_CLASS_COMPUTE &&
-+		    uabi_ccs++)
-+			continue;
-+
- 		GEM_BUG_ON(uabi_class >=
- 			   ARRAY_SIZE(i915->engine_uabi_class_count));
- 		i915->engine_uabi_class_count[uabi_class]++;
-diff --git a/drivers/gpu/drm/i915/gt/intel_gt.c b/drivers/gpu/drm/i915/gt/intel_gt.c
-index a425db5ed3a2..e19df4ef47f6 100644
---- a/drivers/gpu/drm/i915/gt/intel_gt.c
-+++ b/drivers/gpu/drm/i915/gt/intel_gt.c
-@@ -168,6 +168,14 @@ static void init_unused_rings(struct intel_gt *gt)
- 	}
- }
- 
-+static void intel_gt_apply_ccs_mode(struct intel_gt *gt)
-+{
-+	if (!IS_DG2(gt->i915))
-+		return;
-+
-+	intel_uncore_write(gt->uncore, XEHP_CCS_MODE, 0);
-+}
-+
- int intel_gt_init_hw(struct intel_gt *gt)
- {
- 	struct drm_i915_private *i915 = gt->i915;
-@@ -195,6 +203,9 @@ int intel_gt_init_hw(struct intel_gt *gt)
- 
- 	intel_gt_init_swizzling(gt);
- 
-+	/* Configure CCS mode */
-+	intel_gt_apply_ccs_mode(gt);
-+
- 	/*
- 	 * At least 830 can leave some of the unused rings
- 	 * "active" (ie. head != tail) after resume which
-diff --git a/drivers/gpu/drm/i915/gt/intel_gt_regs.h b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-index cf709f6c05ae..c148113770ea 100644
---- a/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-+++ b/drivers/gpu/drm/i915/gt/intel_gt_regs.h
-@@ -1605,6 +1605,8 @@
- #define   GEN12_VOLTAGE_MASK			REG_GENMASK(10, 0)
- #define   GEN12_CAGF_MASK			REG_GENMASK(19, 11)
- 
-+#define XEHP_CCS_MODE                          _MMIO(0x14804)
-+
- #define GEN11_GT_INTR_DW(x)			_MMIO(0x190018 + ((x) * 4))
- #define   GEN11_CSME				(31)
- #define   GEN12_HECI_2				(30)
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH v3 1/4] drm/i915/gt: Refactor uabi engine class/instance list creation
+Link: https://lore.kernel.org/stable/20240229232859.70058-2-andi.shyti%40linux.intel.com
+
 -- 
-2.43.0
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
