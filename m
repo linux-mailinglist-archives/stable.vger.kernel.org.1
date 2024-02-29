@@ -1,85 +1,121 @@
-Return-Path: <stable+bounces-25464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0083286C31B
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 09:08:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD04486C323
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 09:09:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6CF51F212A3
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 08:08:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEFC71C21F04
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 08:09:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C53D94CDE5;
-	Thu, 29 Feb 2024 08:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7259750260;
+	Thu, 29 Feb 2024 08:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u0m3krLQ"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="cHDNc0b6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 768C0481DF;
-	Thu, 29 Feb 2024 08:08:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD0F4EB3F
+	for <stable@vger.kernel.org>; Thu, 29 Feb 2024 08:09:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709194093; cv=none; b=BOkIFZWivb+qUpPKOuq0Hr3JqRhBuuKPiDSr1ozTC2Uj+F+rwM22L5TxHNXcqLzQJF7zlQ6P0E7EFqq74hxkiC7WFI0/T7gSEzn+UzHujpLltk7JwuNEaOLXAhgYBn8/pLbBvjlns5xm8/A8pRn0d0fOIJlxBMv+7m4dkHUMDHc=
+	t=1709194145; cv=none; b=gYVMe7c7JwOjF1NNds58RpKwivIjsl1CaLdoCTdkuyC9+5pnbrOx+YJQUgzjmwTNNkg76PLWs4LgGFfg/h7YlLsTX3zEhCUWVRnvIqmtukQiTsb6MpPTVbq6QNLZfix337ZP97mmxP8jKG27ItAv7ou06Nd7mJnIO47lvh/OGS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709194093; c=relaxed/simple;
-	bh=/UXXFqYle1FvcWueLqKYM/ySMplJRb44Qq0V1oGp/jw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LTZ92hvfdgVYrajGSGNAo1ybB2d0432ZrXuFTFEl2NazFFiGw2UyPtwJpAjx/3tVUE+DRrsXfq3h1JmXUU2tlvPtfogJsr7mlcga4tawsvSmeBiqlWqNSmgOE90RsspBbM36Uxu0Ak0PT4Qys3Ds4koSVac9QeMSzZycsFsjX54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u0m3krLQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006CBC433C7;
-	Thu, 29 Feb 2024 08:08:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709194093;
-	bh=/UXXFqYle1FvcWueLqKYM/ySMplJRb44Qq0V1oGp/jw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=u0m3krLQ2X0tassVGfTrEkYEbwrz+UXrcWqWYd8mf+75aMEucMwh1ETfzp5RLTXMs
-	 bJMUu7/8zPg6rbEiZFU9XNc/ijUSVd09z2aq3MfKZGUhZO3IUmC+gTXOv9EXfl3CdQ
-	 1nHHG2Q9a0u9UZlJJJMKFToCb4qMDN6SptoBTXAUE6PUBaGIP1FnEJKnrjEnn9AgVe
-	 ZQzqhlJZYLrzZcr6pOf6AaDOuc6HhmKKE8wkMeZB518VPa0GBis5vB3IaWFhQczyaX
-	 go4mHJniPv5vsGWo+IJLi2iCP4f0XWIbE/o7VhH+SjEfXQ8Ri08UZ8Xt9nrGZAfHb2
-	 4WR4gMP51VBow==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1rfbSn-000000000OV-1qEx;
-	Thu, 29 Feb 2024 09:08:21 +0100
-Date: Thu, 29 Feb 2024 09:08:21 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Vamshi Gajjela <vamshigajjela@google.com>
-Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Caleb Connolly <caleb.connolly@linaro.org>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] spmi: hisi-spmi-controller: Do not override device
- identifier
-Message-ID: <ZeA7dVBmm1yuf6F9@hovoldconsulting.com>
-References: <20240228185116.1269-1-vamshigajjela@google.com>
+	s=arc-20240116; t=1709194145; c=relaxed/simple;
+	bh=kurHTtq2rspvJgMv43M46KVUb0L5q+U22TYTVcEIAOs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Nbu3vfXOZQnk4vgnXMgUq+7wEy5EjRfqTZIJBp1LRUu2/3U25Z5OiCzDrVr48WZEFqj0RMnaGCa7f5w4PoMTXQegbWVU+iVOJYmBnEujADHi8hxzD90sVfKCi33HNypJbMg9m8/IJkzQ+XJociuZqeDimYewCSe87v6380Cr6MM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=cHDNc0b6; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2d24a727f78so6796571fa.0
+        for <stable@vger.kernel.org>; Thu, 29 Feb 2024 00:09:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1709194141; x=1709798941; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=+6fUyesk9XtuEUwAKGfVFcYKYn8nCxiz5t4vTL0pI4o=;
+        b=cHDNc0b6X2W23utcpiCwLBIqvSth4LUen5f9nw77arxlFGQBjpPQ5ivkrduHmTigXF
+         cHLxCZtjh8n/2QvtIUVLmTsVgIUdIt5ljDko64YcwP4X3K9XOBnOta4REycdFwlusVHi
+         mvSy0SjFToBz6RdCd+hMdpF1ZNjT7AjmlbMBL2iL6EpnYwaOKPC6ZSbKqdsPZJX2xtUo
+         JDKrdRW0F6jENZJ/9SD/Akvxlb1acvsVNIMSepB6ynsCV8kQaxpC7PWu+mdG4qutEixq
+         rZNfYdJbs2ZQrB23pZWW13wD1Sim9ceJBxZZFkDhyfzMBPNi6TJpDUVJOAVaOuEQTjI3
+         4/sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709194141; x=1709798941;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+6fUyesk9XtuEUwAKGfVFcYKYn8nCxiz5t4vTL0pI4o=;
+        b=qUKCjDrksPYtwuQzQX8cVoRVbkHUIZZZ47s8UayxTqggd1q4uwtl8fLTsmf7Q7CmMV
+         PzVp8U4ggSuqn+ipuhXM/Sivna/5pXLVoKQhOb22fCFJxP5vFvngMrU+2/8y41AtwfF5
+         fFVor3CCsebqqJ8geQD9C3Z8jAf5wt8YWjG1QIpWAapZcpf3l4eU4syqHWKm+XE4xKiL
+         2UzSSG1ntcmX6MTZo1cbJGUQ0cD+o8loMGUvwbYBoD1HpdC7q0hV3yZyCHSCTBFKLluz
+         JsVO7b700vYgzoXTgHVdhPESYmtRPkofjXVP43kg/eqAQ+DkxSOshjb07osHSowCAo27
+         f4Yw==
+X-Forwarded-Encrypted: i=1; AJvYcCVqN3y4NN/tD7QNlW1BOTVpOdgs8jkriZjgkEOwPqhEV+kuib9N4Csy7jUA8enku6UZrYtZHjzeV/0mcAw1puQdrJzmU81n
+X-Gm-Message-State: AOJu0YwEgtQ8Pa1yektFOzO5bOrtOnZdz0GEgzjiJ+7ViU2d+qooljzb
+	a+9GL3helt9i+mksSJYhieL7erUB1Ak99bwWt6C7OZE/eFaaKwblp82eIw8DDNU=
+X-Google-Smtp-Source: AGHT+IEioEBenaGBregM2gF1RR+HQbJWqUnI/Hp2B6pwGbY54Du2S+X2nxQx2LKNChi6zePmii8/pQ==
+X-Received: by 2002:a2e:bc1f:0:b0:2d2:8290:46ff with SMTP id b31-20020a2ebc1f000000b002d2829046ffmr971230ljf.50.1709194141302;
+        Thu, 29 Feb 2024 00:09:01 -0800 (PST)
+Received: from ?IPV6:2001:a61:1366:6801:d8:8490:cf1a:3274? ([2001:a61:1366:6801:d8:8490:cf1a:3274])
+        by smtp.gmail.com with ESMTPSA id jn3-20020a05600c6b0300b004128e903b2csm4375201wmb.39.2024.02.29.00.09.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Feb 2024 00:09:01 -0800 (PST)
+Message-ID: <9263b77e-9ebe-4987-bf7f-8f9fafcf06b3@suse.com>
+Date: Thu, 29 Feb 2024 09:08:59 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240228185116.1269-1-vamshigajjela@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] USB:UAS:return ENODEV when submit urbs fail with
+ device not attached.
+To: "WeitaoWang-oc@zhaoxin.com" <WeitaoWang-oc@zhaoxin.com>,
+ Oliver Neukum <oneukum@suse.com>, stern@rowland.harvard.edu,
+ gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org,
+ usb-storage@lists.one-eyed-alien.net
+Cc: WeitaoWang@zhaoxin.com, stable@vger.kernel.org
+References: <20240228111521.3864-1-WeitaoWang-oc@zhaoxin.com>
+ <e8c4e8a3-bfc3-463f-afce-b9f600b588b2@suse.com>
+ <07e80d55-d766-1781-ffc9-fab9ddcd33e3@zhaoxin.com>
+ <49a365a7-199a-42cd-b8d3-86d72fe5bca6@suse.com>
+ <0b0eefa5-71b6-dc08-d103-72b9aebd9237@zhaoxin.com>
+Content-Language: en-US
+From: Oliver Neukum <oneukum@suse.com>
+In-Reply-To: <0b0eefa5-71b6-dc08-d103-72b9aebd9237@zhaoxin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Feb 29, 2024 at 12:21:16AM +0530, Vamshi Gajjela wrote:
-> 'nr' member of struct spmi_controller, which serves as an identifier
-> for the controller/bus. This value is a dynamic ID assigned in
-> spmi_controller_alloc, and overriding it from the driver results in an
-> ida_free error "ida_free called for id=xx which is not allocated".
+On 29.02.24 12:19, WeitaoWang-oc@zhaoxin.com wrote:
+
+> When alloc urb fail in the same function uas_submit_urbs,
+> whether we should replace SCSI_MLQUEUE_DEVICE_BUSY with generic
+> error code -ENOMEM? Such like this:
 > 
-> Signed-off-by: Vamshi Gajjela <vamshigajjela@google.com>
-> Fixes: 70f59c90c819 ("staging: spmi: add Hikey 970 SPMI controller driver")
-> Cc: stable@vger.kernel.org
-> ---
+> @@ -572,7 +571,7 @@ static int uas_submit_urbs(struct scsi_cmnd *cmnd,
+>           cmdinfo->data_in_urb = uas_alloc_data_urb(devinfo, GFP_ATOMIC,
+>                               cmnd, DMA_FROM_DEVICE);
+>           if (!cmdinfo->data_in_urb)
+> -            return SCSI_MLQUEUE_DEVICE_BUSY;
+> +            return -ENOMEM;
+>           cmdinfo->state &= ~ALLOC_DATA_IN_URB;
+>       }
 
-This is v2, which should be indicated in the patch subject and with a
-short changelog here (e.g. mentioning the split and rebase on 6.8-rc).
+Hi,
 
-Johan
+yes, and then you translate in one central place for the SCSI layer
+into DID_ERROR or DID_NO_CONNECT.
+
+	Regards
+		Oliver
+
 
