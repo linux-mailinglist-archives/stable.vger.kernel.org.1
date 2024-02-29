@@ -1,152 +1,95 @@
-Return-Path: <stable+bounces-25462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52F3086C135
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 07:46:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 845C886C308
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 09:05:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F8761C20CE1
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 06:46:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8958C1C211FA
+	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 08:05:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C1B846449;
-	Thu, 29 Feb 2024 06:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF1647F7F;
+	Thu, 29 Feb 2024 08:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="elo/ByeJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y1B5+yJ3"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B94C3446B3;
-	Thu, 29 Feb 2024 06:45:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E4A47F73;
+	Thu, 29 Feb 2024 08:05:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709189125; cv=none; b=c1yWNiV7OAAlUl6vlTqTN/22ie0wVdr2zQFEA9YCIikcIxMcT+HRQ/Q937WwBpr/sLhnrBem5WbE39sPnrVzeuVT2vDFgkbUT3/drRNrO8me4JE7rOBi5aGnmX38aferWIFgJXKYMhIXDiT1d+wWm529IaKSjBjNuDlan0hoJTk=
+	t=1709193939; cv=none; b=NSunH6yEmbJiFTR7aZBcSqe/hHQnMl3C75HBDOGs+6NzHo2ukkXR7R+JHVhdlk6yK7iQI78uBCyWfs+ud6miHil+v5unsk3c6nY1H6ZBFZ3611bOnXYBgEWaTB9oM+1GagxV39iwZ7wYYwDRUk61+ulPmxkIFJa56m0OKPsthQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709189125; c=relaxed/simple;
-	bh=0buapzlXS8Ejb7a/3Ux3/lyjLsR/FLcFCfrhtlks/tU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=sxEvfG2Vqmy0BhEfbZ0oH5jvT3MXYxr2MMwaNqM8LsGPaJYfjanAWCDNiKzLUEm9QjbT8bfXX3oJEXa7MS4dIcXryGQzLmkOy2xi3IV8QN2Phf0MlRj1ysZtlTKWWA8ial/3mDfwWAgO0HIHinJMpk04FO0Rw3w0S8dlz1omGr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=elo/ByeJ; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41T62Plr015559;
-	Thu, 29 Feb 2024 06:45:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:date:subject:mime-version:content-type
-	:content-transfer-encoding:message-id:to:cc; s=qcppdkim1; bh=emc
-	n0d2LH07w89hcfQ+HA5r9ZWQUNqouPMcNxEHPBB8=; b=elo/ByeJupaMlKELTh4
-	t6f2i8E30mKBpVoKUEZA62qXVvPl0LVp9KUZ+1Q09r96h+DBGje3+318b1npk0Mt
-	xcLBrmKMAiza6d6A5azgh7SlQxE6A1uZhzyt2HuafSHcyUXN/c0bV2cBA1LrGSJS
-	Fbwe7OpIjBXWwopk57Buy47FjsUM/PLCJfsmV8CdXYgSYgs7ZnYwjvBbDCed00z4
-	o3umJ7JVqw8hwPX7cbyiEnT4+GWP+baZJr6rRUGZ9u9l4lHX+Gmd5hKmhK9IUmKq
-	OCNFyw4PktM0WC99rFD6Z4QJ3jZ7LAHotuJmqyP+MR1Pmpsg5e2PZIO5ktTVMrgm
-	O5g==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wjm9mg2xx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Feb 2024 06:45:08 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41T6j6gU005435
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 29 Feb 2024 06:45:06 GMT
-Received: from hu-mkshah-hyd.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Wed, 28 Feb 2024 22:45:02 -0800
-From: Maulik Shah <quic_mkshah@quicinc.com>
-Date: Thu, 29 Feb 2024 12:14:59 +0530
-Subject: [PATCH v2] PM: suspend: Set mem_sleep_current during kernel
- command line setup
+	s=arc-20240116; t=1709193939; c=relaxed/simple;
+	bh=O4ub08fowVUJaSCtr9/z+v7hMyHt9QpQVsdHz/1JMqw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ltqmJzviQP2iwTVtN+s5Ta4TkJeQqBefXasPg0m70fSmU/CNaLnWUwxyd8doQn+Sjfn8lXLhR4yCUa6Z+c8r5vH9i0HdlgSqI9uo4Tx3ATYpJ+FWdlsBdCyVMqwXbYAgF02AT1ygVHcwM6lcGkhsvvfeBfrKf4Wz/2mYvqMooDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y1B5+yJ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99F5BC43394;
+	Thu, 29 Feb 2024 08:05:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709193938;
+	bh=O4ub08fowVUJaSCtr9/z+v7hMyHt9QpQVsdHz/1JMqw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Y1B5+yJ3SgmYuJ6GHA3l/OPcShytoL5/tVWLvfE8DziynpyMrPYETuIKsxtSFm6Ki
+	 16dPttpf6r4NW9U/ty8u1YJC0IcfmyAwqNv8uXN6OSYSvEKgP0oexVbKNNfMhCrJ54
+	 tb7KDEKBjghWDthbU7TDmdT1u/hC5z5j3pSl8GLwEYVjEMbfJq0bJTWpHs6oJ2w3u3
+	 ZYqJVIAzDyqPyzRVv6VKIHIt69yw/2H4LqeZvaU5QEtN2Flfo3yRN8iFeGRBTpczuZ
+	 vuM/A9C8JXzb+dHyCoMn2eFnpJqxdFD+Qmk1yMfBzxuVZarfdzpUlEe10wxAWPfF4u
+	 /woioTw/skcsQ==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1rfbQI-000000000NL-37JJ;
+	Thu, 29 Feb 2024 09:05:46 +0100
+Date: Thu, 29 Feb 2024 09:05:46 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Vamshi Gajjela <vamshigajjela@google.com>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Caleb Connolly <caleb.connolly@linaro.org>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] spmi: hisi-spmi-controller: Fix kernel panic on rmmod
+Message-ID: <ZeA62vK1QB0xfjmX@hovoldconsulting.com>
+References: <20240228190523.8377-1-vamshigajjela@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20240229-suspend_ops_late_init-v2-1-34852c61a5fa@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIAOon4GUC/4WNQQ6CMBBFr0JmbU1bRIIr72EIKWUqk2iLHSAa0
- rtbuYDL95L//gaMkZDhUmwQcSWm4DPoQwF2NP6OgobMoKU+Sa0awQtP6IcuTNw9zIwdeZqFrl0
- ve1X1BhHydoro6L13b23mkXgO8bPfrOpn/xVXJZQ4l6W0pqma2pnrayFL3h5teEKbUvoCbD7iE
- LwAAAA=
-To: Mark Rutland <mark.rutland@arm.com>,
-        Lorenzo Pieralisi
-	<lpieralisi@kernel.org>, <andersson@kernel.org>,
-        <ulf.hansson@linaro.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
-        Sudeep Holla <Sudeep.Holla@arm.com>
-CC: <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-pm@vger.kernel.org>,
-        <quic_lsrao@quicinc.com>, <stable@vger.kernel.org>,
-        Maulik Shah
-	<quic_mkshah@quicinc.com>
-X-Mailer: b4 0.12.5-dev-2aabd
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1709189102; l=1510;
- i=quic_mkshah@quicinc.com; s=20240109; h=from:subject:message-id;
- bh=0buapzlXS8Ejb7a/3Ux3/lyjLsR/FLcFCfrhtlks/tU=;
- b=WWcHkAudwd4SllibZe3KiNF+5OlTg+CorqCafl88Xb10qD5gu73SIPuDLX/G7i4dzhCejW1rl
- gCqKo4QakZGBYg1eDJbm4ci+XfsDEWoMYGzmqnH4tOGkOl5+5fgAtex
-X-Developer-Key: i=quic_mkshah@quicinc.com; a=ed25519;
- pk=bd9h5FIIliUddIk8p3BlQWBlzKEQ/YW5V+fe759hTWQ=
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: MCNXFFn5pYu6e0fJ6Ok17OiI1CT3bNnd
-X-Proofpoint-ORIG-GUID: MCNXFFn5pYu6e0fJ6Ok17OiI1CT3bNnd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-28_08,2024-02-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 spamscore=0
- lowpriorityscore=0 impostorscore=0 malwarescore=0 clxscore=1011
- adultscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=999 suspectscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2402120000 definitions=main-2402290051
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240228190523.8377-1-vamshigajjela@google.com>
 
-psci_init_system_suspend() invokes suspend_set_ops() very early during
-bootup even before kernel command line for mem_sleep_default is setup.
-This leads to kernel command line mem_sleep_default=s2idle not working
-as mem_sleep_current gets changed to deep via suspend_set_ops() and never
-changes back to s2idle.
+On Thu, Feb 29, 2024 at 12:35:23AM +0530, Vamshi Gajjela wrote:
+> Ensure consistency in spmi_controller pointers between
+> spmi_controller_remove/put and driver spmi_del_controller functions.
+> The former requires a pointer to struct spmi_controller, while the
+> latter passes a pointer of struct spmi_controller_dev, leading to a
+> "Null pointer exception".
+> 
+> Signed-off-by: Vamshi Gajjela <vamshigajjela@google.com>
+> Fixes: 70f59c90c819 ("staging: spmi: add Hikey 970 SPMI controller driver")
+> Cc: stable@vger.kernel.org
+> ---
+> v2:
+> - Split into two separate patches
+> - add Fixes and Cc stable
 
-Set mem_sleep_current along with mem_sleep_default during kernel command
-line setup as default suspend mode.
+You need to mark this patch more clearly as a stable backport (e.g.
+using a "[PATCH-stable]" prefix), and explain that the corresponding
+issue has already been fixed upstream by commits:
 
-Fixes: faf7ec4a92c0 ("drivers: firmware: psci: add system suspend support")
-CC: stable@vger.kernel.org # 5.4+
-Signed-off-by: Maulik Shah <quic_mkshah@quicinc.com>
----
-Changes in v2:
-- Set mem_sleep_current during mem_sleep_default kernel command line setup
-- Update commit message accordingly
-- Retain Fixes: tag
-- Link to v1: https://lore.kernel.org/r/20240219-suspend_ops_late_init-v1-1-6330ca9597fa@quicinc.com
----
- kernel/power/suspend.c | 1 +
- 1 file changed, 1 insertion(+)
+	490d88ef548d ("spmi: hisi-spmi-controller: Use devm_spmi_controller_add()")
+	ffdfbafdc4f4 ("spmi: Use devm_spmi_controller_alloc()")
 
-diff --git a/kernel/power/suspend.c b/kernel/power/suspend.c
-index 742eb26618cc..e3ae93bbcb9b 100644
---- a/kernel/power/suspend.c
-+++ b/kernel/power/suspend.c
-@@ -192,6 +192,7 @@ static int __init mem_sleep_default_setup(char *str)
- 		if (mem_sleep_labels[state] &&
- 		    !strcmp(str, mem_sleep_labels[state])) {
- 			mem_sleep_default = state;
-+			mem_sleep_current = state;
- 			break;
- 		}
- 
+but that those commits (and their dependencies) are too intrusive to
+backport.
 
----
-base-commit: d37e1e4c52bc60578969f391fb81f947c3e83118
-change-id: 20240219-suspend_ops_late_init-27fb0b15baee
-
-Best regards,
--- 
-Maulik Shah <quic_mkshah@quicinc.com>
-
+Johan
 
