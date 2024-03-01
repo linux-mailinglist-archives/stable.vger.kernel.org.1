@@ -1,97 +1,86 @@
-Return-Path: <stable+bounces-25729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F5ED86E0D9
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 13:08:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC23586E111
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 13:31:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 233B62876AA
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 12:08:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 089BA1C2274F
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 12:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F112C6D505;
-	Fri,  1 Mar 2024 12:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF5B480B;
+	Fri,  1 Mar 2024 12:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="c/u4satZ";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="L1YNooUy";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="c/u4satZ";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="L1YNooUy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D9+IIolr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3BD6D1A1;
-	Fri,  1 Mar 2024 12:08:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7768386;
+	Fri,  1 Mar 2024 12:31:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709294925; cv=none; b=IPhn05hhD67DzW3ohETeAxnLCqVEzahqyNY4FljzcmGzQ+yN0Tgi+32HkqYXLbX89p8yFkpC51AxrC8bxndM1ZfluGVGIaNtwjr9YTOq0b8Hs//ZtrHooRQ+FxFfRNp3NWs5m939HFaWfOu3RX77riTU5yPikZONk3rIKSFeZRQ=
+	t=1709296275; cv=none; b=Ud7jB2atGXp9WlE3QG8FWgYyIN3Rbsj9sxzNcWQ1gl+GXMcUch1c4pI8hNrNuoQPeNnpbpl2kmjevH93zSkdDPgW2MLQTkm4/cCr8L0NZyIy59OVEsiicfUHByg1RiteqemjNwqYd8PMO6HhontAmgsgjqMBY8yUHrJpT+fmNpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709294925; c=relaxed/simple;
-	bh=orc32+uI5+mRb/3dCFQ8K8TCeKWSOPfc2luLPCtkSrQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hrTGgmI1j09ksirXtIqDny2346eg2B+nBW6S18/licFoBGwnrep4D68qYgjHiMGjeOjl6N54dtBX40vQMyIoIVfBEdie1pAwtdr/SgZ5+mgdq+fhqwqZ1lSbv3gbRNLzd7vgZyKsSfiB9VRSquqb0PNYB0frrYXkeBJLasbMOt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=c/u4satZ; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=L1YNooUy; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=c/u4satZ; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=L1YNooUy; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 34FE5338BC;
-	Fri,  1 Mar 2024 12:08:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1709294922;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZYbF9WBe9cyR9dD8QFu7d2TbmL2WiuAvy0rBmNz8f4g=;
-	b=c/u4satZKusd9cmeK07TcsuVvMQBvWaYXmzppwg90KhexWHwSUKxtEV3dDkmhtIRXp9d3i
-	O2VjllA6rYXS7Op3fwy0v+4jDbQeUl6NQjUhiVGsP7mbul3BikDnkGdwOlvlb/JXc/ZVjq
-	u8eD0PeyWopZ+Zg2JEgQyMBazVFGi9c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1709294922;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZYbF9WBe9cyR9dD8QFu7d2TbmL2WiuAvy0rBmNz8f4g=;
-	b=L1YNooUyGJAD9pZ2LYd5bdAZxpwC9ORWhZTMfUULEpmhnTB8DtcOQmrPzF2MRD3cav9K6F
-	sxjGT1/vdU5CUZBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1709294922;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZYbF9WBe9cyR9dD8QFu7d2TbmL2WiuAvy0rBmNz8f4g=;
-	b=c/u4satZKusd9cmeK07TcsuVvMQBvWaYXmzppwg90KhexWHwSUKxtEV3dDkmhtIRXp9d3i
-	O2VjllA6rYXS7Op3fwy0v+4jDbQeUl6NQjUhiVGsP7mbul3BikDnkGdwOlvlb/JXc/ZVjq
-	u8eD0PeyWopZ+Zg2JEgQyMBazVFGi9c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1709294922;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZYbF9WBe9cyR9dD8QFu7d2TbmL2WiuAvy0rBmNz8f4g=;
-	b=L1YNooUyGJAD9pZ2LYd5bdAZxpwC9ORWhZTMfUULEpmhnTB8DtcOQmrPzF2MRD3cav9K6F
-	sxjGT1/vdU5CUZBA==
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 16A8013581;
-	Fri,  1 Mar 2024 12:08:42 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id zhNXBUrF4WVWPwAAn2gu4w
-	(envelope-from <dsterba@suse.cz>); Fri, 01 Mar 2024 12:08:42 +0000
-Date: Fri, 1 Mar 2024 13:01:38 +0100
-From: David Sterba <dsterba@suse.cz>
-To: Qu Wenruo <wqu@suse.com>
-Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] btrfs: qgroup: verify btrfs_qgroup_inherit parameter
-Message-ID: <20240301120138.GJ2604@twin.jikos.cz>
-Reply-To: dsterba@suse.cz
-References: <bde2887da38aaa473ca60801b37ac735b3ab2d6d.1709003728.git.wqu@suse.com>
+	s=arc-20240116; t=1709296275; c=relaxed/simple;
+	bh=8RnPvClv7KQ+Hc7khmpr12985u/duy/3v/TKfh9A88M=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=M7bl3P6q36aolLpPvgUoJbp3sr32b7aa7AtRWtFJhhE9/WzqsB2oNZBY1lYYPODuQ+7nV1rteeaweuBJAb+gAuPXhkd9cFra2I4E2fCUwV/0nOvsG02weewWlQO4FZOIgUWn0XIbP5peEVIdc3yMiF38IXR3q47lqEdzhqiar9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D9+IIolr; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a44ad785a44so33663866b.3;
+        Fri, 01 Mar 2024 04:31:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709296272; x=1709901072; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=qOvH3P5HGSrpjjPMuyCiz1PZ+rc7XO0ytGp7zjRcMjA=;
+        b=D9+IIolrOZn1OMYjdvDPv+KaOQ3NJN8dZmRvhfSp5S8bL3aUlmzGIiI5Uf9HrAAWNJ
+         voF2UvLvHtLLecuig44i1zJoh2iJzbCpKpJqDO+CNWZb93XG1GUk5+kicw0VkB5/LbMO
+         fvexk1/KtHD8Qh8W7tflzvA58qWX29rZfDNmt+gi9FpBHmJUphGByxNrzxVVthbfU3fm
+         t3KqafE2GN8W1ZLFwf0NcryB+Bf8dXeLGdBB1e57jlUpLOTanaO9vDQ2hgous4E3gjmb
+         5Vem/4suECsS91Ay51fqiOxqwX3WMSVFV85qMWHog8Z0JwzA352YrroIZz4HDRc+fiUw
+         uepw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709296272; x=1709901072;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qOvH3P5HGSrpjjPMuyCiz1PZ+rc7XO0ytGp7zjRcMjA=;
+        b=USIx4UpJlBDxyWA/XSPv1G6Lg+ur56Qky4LObvdIhMHpeNnIiKkbDf7GjMii1J/K6r
+         aEppudlIyeUl9Pc9IVPvzRpoldWkpLz4YHmbYr0N9nmK0yoC2DsPEZWcn4cMYxDSGGh+
+         BeEV7vybqqeiAxWiWZS3cSH23LvMkEsC4/sjtR/SGzIy9HxkUnpvLyrlw8QIr79wbXk5
+         f7BOL7R0zI+2yD/PlO70eoaW2MHeoTn9SIMsWCM2BLPbAirStv673L6kS7PM9uUGya6a
+         etMrt94IUZVsjcshwNe+TFUzbsRe9AZXAkjTk+jK07ismN4QzJ56+JS6SivqogOVr1dy
+         7STg==
+X-Forwarded-Encrypted: i=1; AJvYcCW7weBHJLLEjTB1IwxjYEoWAUCWXJxfh88kj+WNpnGGr6cUJ5S/tK++g9krv1vin4mPjuKFsuhCRESFJ1SERFwC+/1xLtDwF8iRb8rSE2UhwAo12bqOA/pCd+ACWDoiu4LYhNhzaIArG8q1DKVnby0ier7l+oGDyxho4zAmRVOh
+X-Gm-Message-State: AOJu0Ywd/09w2y40AbIhcbuNAQZCkuvHGVRWtgExtGaMqUVBhWrVPjn7
+	Gf3i5Q+miJp3ANrv1FNAfw1jL2RkvB9eNc2V4QeXIIC38fOTghDzV2ExrilxzZA=
+X-Google-Smtp-Source: AGHT+IFd140UexM9EOnEMJHomFWLoVYeGO7aw8HyZ/c5klK42r+DtIXPre1WNqulSOjeGkGfj4x07w==
+X-Received: by 2002:a17:906:ccc8:b0:a44:1a51:a1fd with SMTP id ot8-20020a170906ccc800b00a441a51a1fdmr1069869ejb.64.1709296272204;
+        Fri, 01 Mar 2024 04:31:12 -0800 (PST)
+Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
+        by smtp.gmail.com with ESMTPSA id mp7-20020a1709071b0700b00a440ceb4110sm1673266ejc.183.2024.03.01.04.31.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Mar 2024 04:31:11 -0800 (PST)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id D1E30BE2EE8; Fri,  1 Mar 2024 13:31:10 +0100 (CET)
+Date: Fri, 1 Mar 2024 13:31:10 +0100
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: regressions@lists.linux.dev, stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ben Hutchings <ben@decadent.org.uk>,
+	Kees Cook <keescook@chromium.org>, Jonathan Corbet <corbet@lwn.net>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Aditya Srivastava <yashsri421@gmail.com>, 1064035@bugs.debian.org
+Subject: [regression 5.10.y] linux-doc builds: Global symbol "$args" requires
+ explicit package name (did you forget to declare "my $args"?) at
+ ./scripts/kernel-doc line 1236.
+Message-ID: <ZeHKjjPGoyv_b2Tg@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,79 +89,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <bde2887da38aaa473ca60801b37ac735b3ab2d6d.1709003728.git.wqu@suse.com>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spamd-Result: default: False [-1.13 / 50.00];
-	 ARC_NA(0.00)[];
-	 HAS_REPLYTO(0.30)[dsterba@suse.cz];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 RCPT_COUNT_THREE(0.00)[3];
-	 TO_DN_SOME(0.00)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 REPLYTO_ADDR_EQ_FROM(0.00)[];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-1.33)[90.34%]
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spam-Score: -1.13
 
-On Tue, Feb 27, 2024 at 01:45:35PM +1030, Qu Wenruo wrote:
-> [BUG]
-> Currently btrfs can create subvolume with an invalid qgroup inherit
-> without triggering any error:
-> 
->  # mkfs.btrfs -O quota -f $dev
->  # mount $dev $mnt
->  # btrfs subvolume create -i 2/0 $mnt/subv1
->  # btrfs qgroup show -prce --sync $mnt
->  Qgroupid    Referenced    Exclusive   Path
->  --------    ----------    ---------   ----
->  0/5           16.00KiB     16.00KiB   <toplevel>
->  0/256         16.00KiB     16.00KiB   subv1
-> 
-> [CAUSE]
-> We only do a very basic size check for btrfs_qgroup_inherit structure,
-> but never really verify if the values are correct.
-> 
-> Thus in btrfs_qgroup_inherit() function, we have to skip non-existing
-> qgroups, and never return any error.
-> 
-> [FIX]
-> Fix the behavior and introduce extra checks:
-> 
-> - Introduce early check for btrfs_qgroup_inherit structure
->   Not only the size, but also all the qgroup ids would be verifyed.
-> 
->   And the timing is very early, so we can return error early.
->   This early check is very important for snapshot creation, as snapshot
->   is delayed to transaction commit.
-> 
-> - Drop support for btrfs_qgroup_inherit::num_ref_copies and
->   num_excl_copies
->   Those two members are used to specify to copy refr/excl numbers from
->   other qgroups.
->   This would definitely mark qgroup inconsistent, and btrfs-progs has
->   dropped the support for them for a long time.
->   It's time to drop the support for kernel.
-> 
-> - Verify the supported btrfs_qgroup_inherit::flags
->   Just in case we want to add extra flags for btrfs_qgroup_inherit.
-> 
-> Now above subvolume creation would fail with -ENOENT other than silently
-> ignore the non-existing qgroup.
-> 
-> CC: stable@vger.kernel.org
-> Signed-off-by: Qu Wenruo <wqu@suse.com>
+Hi,
 
-Reviewed-by: David Sterba <dsterba@suse.com>
+Ben Hutchings reported in https://bugs.debian.org/1064035 a problem
+with the kernel-doc builds once 3080ea5553cc ("stddef: Introduce
+DECLARE_FLEX_ARRAY() helper") got applied in 5.10.210 (as
+prerequisite of another fix in 5.10.y):
+
+> The backport of commit 3080ea5553cc "stddef: Introduce
+> DECLARE_FLEX_ARRAY() helper" modified scripts/kernel-doc and
+> introduced a syntax error:
+> 
+> Global symbol "$args" requires explicit package name (did you forget to declare "my $args"?) at ./scripts/kernel-doc line 1236.
+> Global symbol "$args" requires explicit package name (did you forget to declare "my $args"?) at ./scripts/kernel-doc line 1236.
+> Execution of ./scripts/kernel-doc aborted due to compilation errors.
+> 
+> This doesn't stop the documentation build process, but causes the
+> documentation that should be extracted by kernel-doc to be missing
+> from linux-doc-5.10.
+> 
+> We should be able to fix this by eithering backport commit
+> e86bdb24375a "scripts: kernel-doc: reduce repeated regex expressions
+> into variables" or replacing /$args/ with /([^,)]+)/.
+> 
+> Ben.
+
+What would be prefered here from stable maintainers point of view?
+AFAICS e86bdb24375a ("scripts: kernel-doc: reduce repeated regex
+expressions into variables") won't apply cleanly and needs some
+refactoring. The alternative pointed out by Ben would be to replace
+the /$args/ with  /([^,)]+)/.
+
+# 5.10.y specific regression
+#regzbot introduced: 443b16ee3d9ce0a3ece0e3526a5af883e5b16eaf
+#regzbot link: https://bugs.debian.org/1064035
+
+Regards,
+Salvatore
 
