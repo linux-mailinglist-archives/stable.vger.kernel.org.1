@@ -1,105 +1,290 @@
-Return-Path: <stable+bounces-25724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A257B86DB44
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 06:53:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 800F086DBDD
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 08:09:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD2E21C2129D
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 05:53:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E53D71F268A9
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 07:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F9451C2C;
-	Fri,  1 Mar 2024 05:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4801069943;
+	Fri,  1 Mar 2024 07:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="fg9cY+vd"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Vx+h9Zso"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f195.google.com (mail-pl1-f195.google.com [209.85.214.195])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF51C3FE23;
-	Fri,  1 Mar 2024 05:53:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57A8469311
+	for <stable@vger.kernel.org>; Fri,  1 Mar 2024 07:09:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709272403; cv=none; b=DClwS/FvRRKvhMLT9glWZ6G+BwY1NerM2fR6dhMRb/4Rui91FuMGMSqMHEvQf7lBY0LIKLlBb2kRtWu/hEc0FtNBJotZ9QTG2vtmySjTsuRPc9QuW30qOdf8b0ssf0UZu9WvM9oSCEQLBovriTIKywam80Ezn4i88jVqUHrcBy8=
+	t=1709276979; cv=none; b=Lm0fKdPi4etjstYLtRugBpyV8ezRHOd1WxMdlFSTahZqZMW0w9XIwMh9mwF3GIN+fRPY5DuG8q7CuOw8ClBd4gGlcqquJi2gqBmlWetTKPWnslgFhjvqCFgOw76wXxQWzyhaFP0mXGCD9P1YXJkttrbcOujPz1bv0KWyVJ36up8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709272403; c=relaxed/simple;
-	bh=5TgWZb4/KOE0mCOVJEt0Xmql79Rk7IHFG+Z2FeL2hOM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lWrJcjFe16zWiftiXDWMEjBeJkOggDyowiwFA3Fjxdfos9kWxKsiuhdu4Ropx33AX3lkwuNPIMvi4ll/Bug8K1E/hvB5mjC00TeLBTb6Vd+wKpF/aVUzdeI/OAPWVxnvOF7rMY+hGTq5lefssUNcwe9gv+WQOt33Zu96nFOY7Hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=fg9cY+vd; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=ncXBQX+kSqn2nKAzLMBhXZ/NTpGfNX4QeH2wgUJQDLU=;
-	t=1709272401; x=1709704401; b=fg9cY+vdRQ/5I1wx0xTsG4qDZg1EbxfVpZh9frGXqmf4pOa
-	fYvJSOqMLW4UxAasulNfqeSkEwrtUYob0CLjYXE8m+sOotSN8n9Tlgz2onrfheEh5vsUDkv+PZkGB
-	VUYonlLGxcsf6yWwUiS274ztj18gvzPIoGE8mq1QGJbDw9Pl07PK0is2FRv+ip2hi0h61I1sldYiI
-	WkRaKPoic0lv8ZchRhgfCDUWsxPrPwBqOV5lGTERizWI7UiksEeGDTeTA/JBh2IuuatI+EWnIAFd8
-	6Esvk+tgvpjiiSZa/h7NFIza2/dIqvjdM61zakYY21m2e41Hd/A7/g92g/nwcy2w==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1rfvpd-00044Z-Up; Fri, 01 Mar 2024 06:53:18 +0100
-Message-ID: <7639639c-7c63-44a9-81bc-f9093b70559f@leemhuis.info>
-Date: Fri, 1 Mar 2024 06:53:17 +0100
+	s=arc-20240116; t=1709276979; c=relaxed/simple;
+	bh=kgk2nvusG+z+3AvVHeRTkQo6J8AXdDSEWPdDUgX44Lw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IdgJXoB7yPlFP3NPegCY9S0aZxTfou7LcxGMn2LZDBeS+UXoMRj/doVpIaAnvaSL9cVqr1cc3ullig3nnBti/+T7AN2/tsy0PTdTVqH+siwa4GaQjIx7twx6MUUmXKfuLEDk9tQi3gLKIaPoFycInbkJo3cVih4BlBuA1jPsYZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Vx+h9Zso; arc=none smtp.client-ip=209.85.214.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pl1-f195.google.com with SMTP id d9443c01a7336-1dc49afb495so17453065ad.2
+        for <stable@vger.kernel.org>; Thu, 29 Feb 2024 23:09:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1709276976; x=1709881776; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JOssgKB7XaCifvuhcs7Kh7kifGJ3OYhTaXeLDavmy28=;
+        b=Vx+h9ZsoPuEpEmGoSQU8ElyYS+Dk5qQH6BToVTVXT88euHmEBLKdbzXi5LffI01qEE
+         VrO6eV49aYbmlJoyzxSN9BITf1EQXQ8UDHRpvbGEqD4/f28Hv9o89rN6a+C/8dBEbUrx
+         s4GEAoag4P50ziwOolPU0uR8V2UO+qTmTf5K8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709276976; x=1709881776;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JOssgKB7XaCifvuhcs7Kh7kifGJ3OYhTaXeLDavmy28=;
+        b=kZtuIpmV463/cgog50lbd7tqbr1Jf7b8JAdtgmDatYZF7iUWJMp21X857DseCZyd68
+         63e3gRd3M2qWcCCwiYZLR3psdGNdSTIJk/Y1xaI6z/f2E93TkbDOT+epsGB1lvgzZ5zX
+         0QAm61RxGHEeRs57uIP69QebPr1Wf6HzbcT8zA/RIpNRGaq24dgMyWTxO4XdHk1sqt+S
+         fotzDDwHHd7EvJYK8ECQYgiLcaGlWYseCrY7HUyV0iD6TRgPJslrCBOpyJriTaAgzyRi
+         sWAriu1IzvWtUAclAJ5gRXcscZVpCT85ZBsCyeOHZffRU9+7i05VJbiPRb1CbGjMRcjT
+         wAwA==
+X-Gm-Message-State: AOJu0YxCtNAwlV+UPHMQk3QSgCbp0+r+dUGgVTvV4pUTXkggEP0W2YEM
+	PdfymRKY78G3R92GLZocUkC5UhgXuq/k7qOVRcH+OHaae8NE4riwVQk89KL8ILj0MI2Okn8Y1/8
+	4UWt8TNZaae0Y9JOi4Yjo9Rm1Bud5FtsibqVEc2gEE2E6pTIcKL2nRip3CT7JRn7MmyzWZkECNe
+	/vfaBHBkOVniFDPT9GMm0JDMu2cXreGU/xKcGGsj1wxoUQfkj+7U8JatP6rXqcctubRcD7wIU=
+X-Google-Smtp-Source: AGHT+IHTEsA3e1i6SOlIOf+6B+BFRqXmFi6kvtybw6I/ClAabVS8Q+xiDWe6nx9BZ4DGBfTrEPcM9w==
+X-Received: by 2002:a17:902:ed54:b0:1dc:1379:213b with SMTP id y20-20020a170902ed5400b001dc1379213bmr742125plb.35.1709276976205;
+        Thu, 29 Feb 2024 23:09:36 -0800 (PST)
+Received: from fedora.eng.vmware.com ([66.170.99.2])
+        by smtp.gmail.com with ESMTPSA id i9-20020a170902c94900b001dcc09487e8sm2673428pla.50.2024.02.29.23.09.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Feb 2024 23:09:35 -0800 (PST)
+From: Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: mike.kravetz@oracle.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	kafai@fb.com,
+	songliubraving@fb.com,
+	yhs@fb.com,
+	john.fastabend@gmail.com,
+	kpsingh@kernel.org,
+	dhowells@redhat.com,
+	viro@zeniv.linux.org.uk,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	vasavi.sirnapalli@broadcom.com,
+	Oscar Salvador <osalvador@suse.de>,
+	Michal Hocko <mhocko@suse.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
+Subject: [PATCH v5.15-v5.4] fs,hugetlb: fix NULL pointer dereference in hugetlbs_fill_super
+Date: Fri,  1 Mar 2024 01:09:10 -0600
+Message-ID: <20240301070910.1287862-1-vamsi-krishna.brahmajosyula@broadcom.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Bluetooth: af_bluetooth: Fix Use-After-Free in bt_sock_recvmsg
-Content-Language: en-US, de-DE
-To: linux-bluetooth@vger.kernel.org
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev
-References: <20240226213855.GB3202@hostway.ca>
-From: "Linux regression tracking #adding (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <20240226213855.GB3202@hostway.ca>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1709272401;a6bacc60;
-X-HE-SMSGID: 1rfvpd-00044Z-Up
+Content-Transfer-Encoding: quoted-printable
 
-On 26.02.24 22:38, Simon Kirby wrote:
-> 
-> I bisected a regression where reading from a Bluetooth device gets stuck
-> in recvfrom() calls. The device here is a Wii Balance Board, using
-> https://github.com/initialstate/beerfridge/blob/master/wiiboard_test.py;
-> this worked fine in v6.6.1 and v6.6.8, but when I tried on a v6.6.14
-> build, the script no longer outputs any readings.
-> 
-> 1d576c3a5af850bf11fbd103f9ba11aa6d6061fb is the first bad commit
-> 
-> which maps to upstream commit 2e07e8348ea454615e268222ae3fc240421be768:
-> 
-> Bluetooth: af_bluetooth: Fix Use-After-Free in bt_sock_recvmsg
-> 
-> With this commit in place, as also in v6.7 and v6.7.6, the script does
-> not output anything _unless_ I strace the process, in which case a bunch
-> of recvmsg() syscalls are shown, and then it hangs again. If I ^C the
-> strace and run it a few times, eventually the script will get enough data
-> and output a reading.
+From: Oscar Salvador <osalvador@suse.de>
 
-Thanks for the report. To be sure the issue doesn't fall through the
-cracks unnoticed, I'm adding it to regzbot, the Linux kernel regression
-tracking bot:
+commit 79d72c68c58784a3e1cd2378669d51bfd0cb7498 upstream.
 
-#regzbot ^introduced 2e07e8348ea454
-#regzbot title af_bluetooth: reading from a device gets stuck in
-recvfrom() calls
-#regzbot ignore-activity
+When configuring a hugetlb filesystem via the fsconfig() syscall, there is
+a possible NULL dereference in hugetlbfs_fill_super() caused by assigning
+NULL to ctx->hstate in hugetlbfs_parse_param() when the requested pagesize
+is non valid.
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-That page also explains what to do if mails like this annoy you.
+E.g: Taking the following steps:
+
+     fd =3D fsopen("hugetlbfs", FSOPEN_CLOEXEC);
+     fsconfig(fd, FSCONFIG_SET_STRING, "pagesize", "1024", 0);
+     fsconfig(fd, FSCONFIG_CMD_CREATE, NULL, NULL, 0);
+
+Given that the requested "pagesize" is invalid, ctxt->hstate will be replac=
+ed
+with NULL, losing its previous value, and we will print an error:
+
+ ...
+ ...
+ case Opt_pagesize:
+ ps =3D memparse(param->string, &rest);
+ ctx->hstate =3D h;
+ if (!ctx->hstate) {
+         pr_err("Unsupported page size %lu MB\n", ps / SZ_1M);
+         return -EINVAL;
+ }
+ return 0;
+ ...
+ ...
+
+This is a problem because later on, we will dereference ctxt->hstate in
+hugetlbfs_fill_super()
+
+ ...
+ ...
+ sb->s_blocksize =3D huge_page_size(ctx->hstate);
+ ...
+ ...
+
+Causing below Oops.
+
+Fix this by replacing cxt->hstate value only when then pagesize is known
+to be valid.
+
+ kernel: hugetlbfs: Unsupported page size 0 MB
+ kernel: BUG: kernel NULL pointer dereference, address: 0000000000000028
+ kernel: #PF: supervisor read access in kernel mode
+ kernel: #PF: error_code(0x0000) - not-present page
+ kernel: PGD 800000010f66c067 P4D 800000010f66c067 PUD 1b22f8067 PMD 0
+ kernel: Oops: 0000 [#1] PREEMPT SMP PTI
+ kernel: CPU: 4 PID: 5659 Comm: syscall Tainted: G            E      6.8.0-=
+rc2-default+ #22 5a47c3fef76212addcc6eb71344aabc35190ae8f
+ kernel: Hardware name: Intel Corp. GROVEPORT/GROVEPORT, BIOS GVPRCRB1.86B.=
+0016.D04.1705030402 05/03/2017
+ kernel: RIP: 0010:hugetlbfs_fill_super+0xb4/0x1a0
+ kernel: Code: 48 8b 3b e8 3e c6 ed ff 48 85 c0 48 89 45 20 0f 84 d6 00 00 =
+00 48 b8 ff ff ff ff ff ff ff 7f 4c 89 e7 49 89 44 24 20 48 8b 03 <8b> 48 2=
+8 b8 00 10 00 00 48 d3 e0 49 89 44 24 18 48 8b 03 8b 40 28
+ kernel: RSP: 0018:ffffbe9960fcbd48 EFLAGS: 00010246
+ kernel: RAX: 0000000000000000 RBX: ffff9af5272ae780 RCX: 0000000000372004
+ kernel: RDX: ffffffffffffffff RSI: ffffffffffffffff RDI: ffff9af555e9b000
+ kernel: RBP: ffff9af52ee66b00 R08: 0000000000000040 R09: 0000000000370004
+ kernel: R10: ffffbe9960fcbd48 R11: 0000000000000040 R12: ffff9af555e9b000
+ kernel: R13: ffffffffa66b86c0 R14: ffff9af507d2f400 R15: ffff9af507d2f400
+ kernel: FS:  00007ffbc0ba4740(0000) GS:ffff9b0bd7000000(0000) knlGS:000000=
+0000000000
+ kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ kernel: CR2: 0000000000000028 CR3: 00000001b1ee0000 CR4: 00000000001506f0
+ kernel: Call Trace:
+ kernel:  <TASK>
+ kernel:  ? __die_body+0x1a/0x60
+ kernel:  ? page_fault_oops+0x16f/0x4a0
+ kernel:  ? search_bpf_extables+0x65/0x70
+ kernel:  ? fixup_exception+0x22/0x310
+ kernel:  ? exc_page_fault+0x69/0x150
+ kernel:  ? asm_exc_page_fault+0x22/0x30
+ kernel:  ? __pfx_hugetlbfs_fill_super+0x10/0x10
+ kernel:  ? hugetlbfs_fill_super+0xb4/0x1a0
+ kernel:  ? hugetlbfs_fill_super+0x28/0x1a0
+ kernel:  ? __pfx_hugetlbfs_fill_super+0x10/0x10
+ kernel:  vfs_get_super+0x40/0xa0
+ kernel:  ? __pfx_bpf_lsm_capable+0x10/0x10
+ kernel:  vfs_get_tree+0x25/0xd0
+ kernel:  vfs_cmd_create+0x64/0xe0
+ kernel:  __x64_sys_fsconfig+0x395/0x410
+ kernel:  do_syscall_64+0x80/0x160
+ kernel:  ? syscall_exit_to_user_mode+0x82/0x240
+ kernel:  ? do_syscall_64+0x8d/0x160
+ kernel:  ? syscall_exit_to_user_mode+0x82/0x240
+ kernel:  ? do_syscall_64+0x8d/0x160
+ kernel:  ? exc_page_fault+0x69/0x150
+ kernel:  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+ kernel: RIP: 0033:0x7ffbc0cb87c9
+ kernel: Code: 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 90 48 89 f8 =
+48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 0=
+1 f0 ff ff 73 01 c3 48 8b 0d 97 96 0d 00 f7 d8 64 89 01 48
+ kernel: RSP: 002b:00007ffc29d2f388 EFLAGS: 00000206 ORIG_RAX: 000000000000=
+01af
+ kernel: RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007ffbc0cb87c9
+ kernel: RDX: 0000000000000000 RSI: 0000000000000006 RDI: 0000000000000003
+ kernel: RBP: 00007ffc29d2f3b0 R08: 0000000000000000 R09: 0000000000000000
+ kernel: R10: 0000000000000000 R11: 0000000000000206 R12: 0000000000000000
+ kernel: R13: 00007ffc29d2f4c0 R14: 0000000000000000 R15: 0000000000000000
+ kernel:  </TASK>
+ kernel: Modules linked in: rpcsec_gss_krb5(E) auth_rpcgss(E) nfsv4(E) dns_=
+resolver(E) nfs(E) lockd(E) grace(E) sunrpc(E) netfs(E) af_packet(E) bridge=
+(E) stp(E) llc(E) iscsi_ibft(E) iscsi_boot_sysfs(E) intel_rapl_msr(E) intel=
+_rapl_common(E) iTCO_wdt(E) intel_pmc_bxt(E) sb_edac(E) iTCO_vendor_support=
+(E) x86_pkg_temp_thermal(E) intel_powerclamp(E) coretemp(E) kvm_intel(E) rf=
+kill(E) ipmi_ssif(E) kvm(E) acpi_ipmi(E) irqbypass(E) pcspkr(E) igb(E) ipmi=
+_si(E) mei_me(E) i2c_i801(E) joydev(E) intel_pch_thermal(E) i2c_smbus(E) dc=
+a(E) lpc_ich(E) mei(E) ipmi_devintf(E) ipmi_msghandler(E) acpi_pad(E) tiny_=
+power_button(E) button(E) fuse(E) efi_pstore(E) configfs(E) ip_tables(E) x_=
+tables(E) ext4(E) mbcache(E) jbd2(E) hid_generic(E) usbhid(E) sd_mod(E) t10=
+_pi(E) crct10dif_pclmul(E) crc32_pclmul(E) crc32c_intel(E) polyval_clmulni(=
+E) ahci(E) xhci_pci(E) polyval_generic(E) gf128mul(E) ghash_clmulni_intel(E=
+) sha512_ssse3(E) sha256_ssse3(E) xhci_pci_renesas(E) libahci(E) ehci_pci(E=
+) sha1_ssse3(E) xhci_hcd(E) ehci_hcd(E) libata(E)
+ kernel:  mgag200(E) i2c_algo_bit(E) usbcore(E) wmi(E) sg(E) dm_multipath(E=
+) dm_mod(E) scsi_dh_rdac(E) scsi_dh_emc(E) scsi_dh_alua(E) scsi_mod(E) scsi=
+_common(E) aesni_intel(E) crypto_simd(E) cryptd(E)
+ kernel: Unloaded tainted modules: acpi_cpufreq(E):1 fjes(E):1
+ kernel: CR2: 0000000000000028
+ kernel: ---[ end trace 0000000000000000 ]---
+ kernel: RIP: 0010:hugetlbfs_fill_super+0xb4/0x1a0
+ kernel: Code: 48 8b 3b e8 3e c6 ed ff 48 85 c0 48 89 45 20 0f 84 d6 00 00 =
+00 48 b8 ff ff ff ff ff ff ff 7f 4c 89 e7 49 89 44 24 20 48 8b 03 <8b> 48 2=
+8 b8 00 10 00 00 48 d3 e0 49 89 44 24 18 48 8b 03 8b 40 28
+ kernel: RSP: 0018:ffffbe9960fcbd48 EFLAGS: 00010246
+ kernel: RAX: 0000000000000000 RBX: ffff9af5272ae780 RCX: 0000000000372004
+ kernel: RDX: ffffffffffffffff RSI: ffffffffffffffff RDI: ffff9af555e9b000
+ kernel: RBP: ffff9af52ee66b00 R08: 0000000000000040 R09: 0000000000370004
+ kernel: R10: ffffbe9960fcbd48 R11: 0000000000000040 R12: ffff9af555e9b000
+ kernel: R13: ffffffffa66b86c0 R14: ffff9af507d2f400 R15: ffff9af507d2f400
+ kernel: FS:  00007ffbc0ba4740(0000) GS:ffff9b0bd7000000(0000) knlGS:000000=
+0000000000
+ kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ kernel: CR2: 0000000000000028 CR3: 00000001b1ee0000 CR4: 00000000001506f0
+
+Link: https://lkml.kernel.org/r/20240130210418.3771-1-osalvador@suse.de
+Fixes: 32021982a324 ("hugetlbfs: Convert to fs_context")
+Signed-off-by: Michal Hocko <mhocko@suse.com>
+Signed-off-by: Oscar Salvador <osalvador@suse.de>
+Acked-by: Muchun Song <muchun.song@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@bro=
+adcom.com>
+---
+ fs/hugetlbfs/inode.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index 54379ee573b1..9b6004bc96de 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -1234,6 +1234,7 @@ static int hugetlbfs_parse_param(struct fs_context *f=
+c, struct fs_parameter *par
+ {
+ 	struct hugetlbfs_fs_context *ctx =3D fc->fs_private;
+ 	struct fs_parse_result result;
++	struct hstate *h;
+ 	char *rest;
+ 	unsigned long ps;
+ 	int opt;
+@@ -1278,11 +1279,12 @@ static int hugetlbfs_parse_param(struct fs_context =
+*fc, struct fs_parameter *par
+=20
+ 	case Opt_pagesize:
+ 		ps =3D memparse(param->string, &rest);
+-		ctx->hstate =3D size_to_hstate(ps);
+-		if (!ctx->hstate) {
++		h =3D size_to_hstate(ps);
++		if (!h) {
+ 			pr_err("Unsupported page size %lu MB\n", ps >> 20);
+ 			return -EINVAL;
+ 		}
++		ctx->hstate =3D h;
+ 		return 0;
+=20
+ 	case Opt_min_size:
+--=20
+2.43.2
+
 
