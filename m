@@ -1,130 +1,263 @@
-Return-Path: <stable+bounces-25730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC23586E111
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 13:31:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BAC586E1B0
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 14:16:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 089BA1C2274F
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 12:31:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D87A1C227A2
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 13:16:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF5B480B;
-	Fri,  1 Mar 2024 12:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBAAA6F06F;
+	Fri,  1 Mar 2024 13:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D9+IIolr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yobEm+G1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7768386;
-	Fri,  1 Mar 2024 12:31:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853076D1C7;
+	Fri,  1 Mar 2024 13:15:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709296275; cv=none; b=Ud7jB2atGXp9WlE3QG8FWgYyIN3Rbsj9sxzNcWQ1gl+GXMcUch1c4pI8hNrNuoQPeNnpbpl2kmjevH93zSkdDPgW2MLQTkm4/cCr8L0NZyIy59OVEsiicfUHByg1RiteqemjNwqYd8PMO6HhontAmgsgjqMBY8yUHrJpT+fmNpw=
+	t=1709298933; cv=none; b=gP0FD1VS0P3o1VdyICLutAPsMkiUag5vKsrOUqrgAUSthpSnVxHC5TmSSbkFr1wl6GNU2pBBxtiT5dPB86tECnDrqDUYpRFuq6OTEbXUrcQLEcG21A8Se5bMJMnYQ54+cd8FYR+W8QCwc6b/Dkagt6/fZyFc/0ueu5jGHjL5TKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709296275; c=relaxed/simple;
-	bh=8RnPvClv7KQ+Hc7khmpr12985u/duy/3v/TKfh9A88M=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=M7bl3P6q36aolLpPvgUoJbp3sr32b7aa7AtRWtFJhhE9/WzqsB2oNZBY1lYYPODuQ+7nV1rteeaweuBJAb+gAuPXhkd9cFra2I4E2fCUwV/0nOvsG02weewWlQO4FZOIgUWn0XIbP5peEVIdc3yMiF38IXR3q47lqEdzhqiar9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D9+IIolr; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a44ad785a44so33663866b.3;
-        Fri, 01 Mar 2024 04:31:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709296272; x=1709901072; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=qOvH3P5HGSrpjjPMuyCiz1PZ+rc7XO0ytGp7zjRcMjA=;
-        b=D9+IIolrOZn1OMYjdvDPv+KaOQ3NJN8dZmRvhfSp5S8bL3aUlmzGIiI5Uf9HrAAWNJ
-         voF2UvLvHtLLecuig44i1zJoh2iJzbCpKpJqDO+CNWZb93XG1GUk5+kicw0VkB5/LbMO
-         fvexk1/KtHD8Qh8W7tflzvA58qWX29rZfDNmt+gi9FpBHmJUphGByxNrzxVVthbfU3fm
-         t3KqafE2GN8W1ZLFwf0NcryB+Bf8dXeLGdBB1e57jlUpLOTanaO9vDQ2hgous4E3gjmb
-         5Vem/4suECsS91Ay51fqiOxqwX3WMSVFV85qMWHog8Z0JwzA352YrroIZz4HDRc+fiUw
-         uepw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709296272; x=1709901072;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qOvH3P5HGSrpjjPMuyCiz1PZ+rc7XO0ytGp7zjRcMjA=;
-        b=USIx4UpJlBDxyWA/XSPv1G6Lg+ur56Qky4LObvdIhMHpeNnIiKkbDf7GjMii1J/K6r
-         aEppudlIyeUl9Pc9IVPvzRpoldWkpLz4YHmbYr0N9nmK0yoC2DsPEZWcn4cMYxDSGGh+
-         BeEV7vybqqeiAxWiWZS3cSH23LvMkEsC4/sjtR/SGzIy9HxkUnpvLyrlw8QIr79wbXk5
-         f7BOL7R0zI+2yD/PlO70eoaW2MHeoTn9SIMsWCM2BLPbAirStv673L6kS7PM9uUGya6a
-         etMrt94IUZVsjcshwNe+TFUzbsRe9AZXAkjTk+jK07ismN4QzJ56+JS6SivqogOVr1dy
-         7STg==
-X-Forwarded-Encrypted: i=1; AJvYcCW7weBHJLLEjTB1IwxjYEoWAUCWXJxfh88kj+WNpnGGr6cUJ5S/tK++g9krv1vin4mPjuKFsuhCRESFJ1SERFwC+/1xLtDwF8iRb8rSE2UhwAo12bqOA/pCd+ACWDoiu4LYhNhzaIArG8q1DKVnby0ier7l+oGDyxho4zAmRVOh
-X-Gm-Message-State: AOJu0Ywd/09w2y40AbIhcbuNAQZCkuvHGVRWtgExtGaMqUVBhWrVPjn7
-	Gf3i5Q+miJp3ANrv1FNAfw1jL2RkvB9eNc2V4QeXIIC38fOTghDzV2ExrilxzZA=
-X-Google-Smtp-Source: AGHT+IFd140UexM9EOnEMJHomFWLoVYeGO7aw8HyZ/c5klK42r+DtIXPre1WNqulSOjeGkGfj4x07w==
-X-Received: by 2002:a17:906:ccc8:b0:a44:1a51:a1fd with SMTP id ot8-20020a170906ccc800b00a441a51a1fdmr1069869ejb.64.1709296272204;
-        Fri, 01 Mar 2024 04:31:12 -0800 (PST)
-Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
-        by smtp.gmail.com with ESMTPSA id mp7-20020a1709071b0700b00a440ceb4110sm1673266ejc.183.2024.03.01.04.31.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Mar 2024 04:31:11 -0800 (PST)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id D1E30BE2EE8; Fri,  1 Mar 2024 13:31:10 +0100 (CET)
-Date: Fri, 1 Mar 2024 13:31:10 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: regressions@lists.linux.dev, stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ben Hutchings <ben@decadent.org.uk>,
-	Kees Cook <keescook@chromium.org>, Jonathan Corbet <corbet@lwn.net>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Aditya Srivastava <yashsri421@gmail.com>, 1064035@bugs.debian.org
-Subject: [regression 5.10.y] linux-doc builds: Global symbol "$args" requires
- explicit package name (did you forget to declare "my $args"?) at
- ./scripts/kernel-doc line 1236.
-Message-ID: <ZeHKjjPGoyv_b2Tg@eldamar.lan>
+	s=arc-20240116; t=1709298933; c=relaxed/simple;
+	bh=jFCD2ydHrGro9XnbM8BQ5+gpbO4DPT/CxeUtNKh29Sc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hnQN04HiA4alxHpUvWylA6BLOck2lsFIkVa//DERr1990JhtYZOa1unmO7L8Dzgq8/0pznCCmOOnfj61sLTbCTOuvjsitmBFqfsV/NeIjsXq+/fS2a62e4y58J63JhJKW+d2VN14JlMZz8Abl4/P88/h16TL3kPT4OUoZ+l6hyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yobEm+G1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3095C433F1;
+	Fri,  1 Mar 2024 13:15:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1709298933;
+	bh=jFCD2ydHrGro9XnbM8BQ5+gpbO4DPT/CxeUtNKh29Sc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=yobEm+G1XXnCYacSKpTp5cwk0va0j67IHQPsV7IdHJCLHGu02KgMYRl+8uzwsPHg8
+	 ME/SOyE4XQ76v9Q5IXuSSdGryOsZaKrs+gcWHIfGE5KjHiNyNGQD4IPp8JIe0dIgP2
+	 80Qz1Z0/dx03de+gr+pXfzypliljU2Na7OEzH6j0=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	torvalds@linux-foundation.org,
+	stable@vger.kernel.org
+Cc: lwn@lwn.net,
+	jslaby@suse.cz,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Linux 4.19.308
+Date: Fri,  1 Mar 2024 14:15:28 +0100
+Message-ID: <2024030128-recharger-bullwhip-fa3f@gregkh>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Hi,
+I'm announcing the release of the 4.19.308 kernel.
 
-Ben Hutchings reported in https://bugs.debian.org/1064035 a problem
-with the kernel-doc builds once 3080ea5553cc ("stddef: Introduce
-DECLARE_FLEX_ARRAY() helper") got applied in 5.10.210 (as
-prerequisite of another fix in 5.10.y):
+All users of the 4.19 kernel series must upgrade.
 
-> The backport of commit 3080ea5553cc "stddef: Introduce
-> DECLARE_FLEX_ARRAY() helper" modified scripts/kernel-doc and
-> introduced a syntax error:
-> 
-> Global symbol "$args" requires explicit package name (did you forget to declare "my $args"?) at ./scripts/kernel-doc line 1236.
-> Global symbol "$args" requires explicit package name (did you forget to declare "my $args"?) at ./scripts/kernel-doc line 1236.
-> Execution of ./scripts/kernel-doc aborted due to compilation errors.
-> 
-> This doesn't stop the documentation build process, but causes the
-> documentation that should be extracted by kernel-doc to be missing
-> from linux-doc-5.10.
-> 
-> We should be able to fix this by eithering backport commit
-> e86bdb24375a "scripts: kernel-doc: reduce repeated regex expressions
-> into variables" or replacing /$args/ with /([^,)]+)/.
-> 
-> Ben.
+The updated 4.19.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-4.19.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
 
-What would be prefered here from stable maintainers point of view?
-AFAICS e86bdb24375a ("scripts: kernel-doc: reduce repeated regex
-expressions into variables") won't apply cleanly and needs some
-refactoring. The alternative pointed out by Ben would be to replace
-the /$args/ with  /([^,)]+)/.
+thanks,
 
-# 5.10.y specific regression
-#regzbot introduced: 443b16ee3d9ce0a3ece0e3526a5af883e5b16eaf
-#regzbot link: https://bugs.debian.org/1064035
+greg k-h
 
-Regards,
-Salvatore
+------------
+
+ Makefile                                          |    2 
+ arch/arm/mach-ep93xx/core.c                       |    1 
+ arch/s390/pci/pci.c                               |    2 
+ drivers/ata/ahci.c                                |    5 
+ drivers/block/virtio_blk.c                        |    7 
+ drivers/dma/sh/shdma.h                            |    2 
+ drivers/firewire/core-card.c                      |   18 
+ drivers/gpu/drm/nouveau/nvkm/subdev/bios/shadow.c |    8 
+ drivers/hwmon/coretemp.c                          |    2 
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c          |    5 
+ drivers/infiniband/hw/hfi1/pio.c                  |    6 
+ drivers/infiniband/hw/hfi1/sdma.c                 |    2 
+ drivers/infiniband/ulp/ipoib/ipoib_verbs.c        |    2 
+ drivers/infiniband/ulp/iser/iser_verbs.c          |    9 
+ drivers/infiniband/ulp/isert/ib_isert.c           |    2 
+ drivers/infiniband/ulp/opa_vnic/opa_vnic_vema.c   |    3 
+ drivers/infiniband/ulp/srp/ib_srp.c               |   10 
+ drivers/infiniband/ulp/srpt/ib_srpt.c             |   52 
+ drivers/md/dm-crypt.c                             |    6 
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h      |    2 
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |   65 
+ drivers/net/gtp.c                                 |   10 
+ drivers/pci/msi.c                                 |    2 
+ drivers/regulator/pwm-regulator.c                 |    3 
+ drivers/s390/net/qeth_l3_main.c                   |    9 
+ drivers/scsi/Kconfig                              |    2 
+ drivers/soc/renesas/r8a77980-sysc.c               |    3 
+ drivers/target/target_core_device.c               |    5 
+ drivers/target/target_core_transport.c            |    4 
+ drivers/usb/gadget/function/f_ncm.c               |   10 
+ drivers/usb/roles/class.c                         |   12 
+ drivers/video/fbdev/savage/savagefb_driver.c      |    3 
+ drivers/video/fbdev/sis/sis_main.c                |    2 
+ fs/aio.c                                          |    9 
+ fs/ext4/mballoc.c                                 |   13 
+ fs/nilfs2/dat.c                                   |   27 
+ include/linux/fs.h                                |    2 
+ include/rdma/rdma_vt.h                            |    2 
+ kernel/sched/rt.c                                 |   10 
+ kernel/sysctl.c                                   |    5 
+ mm/memcontrol.c                                   |   23 
+ mm/userfaultfd.c                                  |   14 
+ net/ipv6/seg6.c                                   |   20 
+ net/l2tp/l2tp_ip6.c                               |    2 
+ net/mac80211/sta_info.c                           |    2 
+ net/mac80211/tx.c                                 |    2 
+ net/packet/af_packet.c                            |    4 
+ net/sched/Kconfig                                 |   42 
+ net/sched/Makefile                                |    3 
+ net/sched/sch_atm.c                               |  708 --------
+ net/sched/sch_cbq.c                               | 1823 ----------------------
+ net/sched/sch_dsmark.c                            |  519 ------
+ net/wireless/nl80211.c                            |    1 
+ scripts/bpf_helpers_doc.py                        |  157 +
+ virt/kvm/arm/vgic/vgic-its.c                      |    5 
+ 55 files changed, 411 insertions(+), 3258 deletions(-)
+
+Aaro Koskinen (1):
+      net: stmmac: fix notifier registration
+
+Alexandra Winter (1):
+      s390/qeth: Fix potential loss of L3-IP@ in case of network issues
+
+Andrii Nakryiko (2):
+      scripts/bpf: teach bpf_helpers_doc.py to dump BPF helper definitions
+      scripts/bpf: Fix xdp_md forward declaration typo
+
+Arnd Bergmann (2):
+      RDMA/srpt: fix function pointer cast warnings
+      nouveau: fix function cast warnings
+
+Baokun Li (2):
+      ext4: avoid allocating blocks from corrupted group in ext4_mb_try_best_found()
+      ext4: avoid allocating blocks from corrupted group in ext4_mb_find_by_goal()
+
+Bart Van Assche (3):
+      RDMA/srpt: Support specifying the srpt_service_guid parameter
+      RDMA/srpt: Make debug output more detailed
+      fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via libaio
+
+Conrad Kostecki (1):
+      ahci: asm1166: correct count of reported ports
+
+Cyril Hrubis (3):
+      sched/rt: Fix sysctl_sched_rr_timeslice intial value
+      sched/rt: sysctl_sched_rr_timeslice show default timeslice after reset
+      sched/rt: Disallow writing invalid values to sched_rt_period_us
+
+Daniel Vacek (1):
+      IB/hfi1: Fix sdma.h tx->num_descs off-by-one error
+
+Dmitry Bogdanov (1):
+      scsi: target: core: Add TMF to tmr_list handling
+
+Felix Fietkau (1):
+      wifi: mac80211: fix race condition on enabling fast-xmit
+
+Fullway Wang (2):
+      fbdev: savage: Error out if pixclock equals zero
+      fbdev: sis: Error out if pixclock equals zero
+
+GONG, Ruiqi (1):
+      memcg: add refcnt for pcpu stock to avoid UAF problem in drain_all_stock()
+
+Geert Uytterhoeven (1):
+      pmdomain: renesas: r8a77980-sysc: CR7 must be always on
+
+Gianmarco Lusvardi (1):
+      bpf, scripts: Correct GPL license name
+
+Greg Kroah-Hartman (2):
+      stmmac: no need to check return value of debugfs_create functions
+      Linux 4.19.308
+
+Jamal Hadi Salim (3):
+      net/sched: Retire CBQ qdisc
+      net/sched: Retire ATM qdisc
+      net/sched: Retire dsmark qdisc
+
+Jason Gunthorpe (2):
+      RDMA/ulp: Use dev_name instead of ibdev->name
+      s390: use the correct count for __iowrite64_copy()
+
+Kalesh AP (1):
+      RDMA/bnxt_re: Return error for SRQ resize
+
+Krishna Kurapati (1):
+      usb: gadget: ncm: Avoid dropping datagrams of properly parsed NTBs
+
+Lokesh Gidra (1):
+      userfaultfd: fix mmap_changing checking in mfill_atomic_hugetlb
+
+Martin Blumenstingl (1):
+      regulator: pwm-regulator: Add validity checks in continuous .get_voltage
+
+Michal Kazior (1):
+      wifi: cfg80211: fix missing interfaces when dumping
+
+Mikulas Patocka (1):
+      dm-crypt: don't modify the data when using authenticated encryption
+
+Nikita Shubin (1):
+      ARM: ep93xx: Add terminator to gpiod_lookup_table
+
+Oliver Upton (2):
+      KVM: arm64: vgic-its: Test for valid IRQ in its_sync_lpi_pending_table()
+      KVM: arm64: vgic-its: Test for valid IRQ in MOVALL handler
+
+Randy Dunlap (1):
+      scsi: jazz_esp: Only build if SCSI core is builtin
+
+Roman Gushchin (1):
+      mm: memcontrol: switch to rcu protection in drain_all_stock()
+
+Ryusuke Konishi (1):
+      nilfs2: replace WARN_ONs for invalid DAT metadata block requests
+
+Takashi Sakamoto (1):
+      firewire: core: send bus reset promptly on gap count error
+
+Tom Parkin (1):
+      l2tp: pass correct message length to ip6_append_data
+
+Vasiliy Kovalev (2):
+      gtp: fix use-after-free and null-ptr-deref in gtp_genl_dump_pdp()
+      ipv6: sr: fix possible use-after-free and null-ptr-deref
+
+Vidya Sagar (1):
+      PCI/MSI: Prevent MSI hardware interrupt number truncation
+
+Vinod Koul (1):
+      dmaengine: shdma: increase size of 'dev_id'
+
+Wolfram Sang (1):
+      packet: move from strlcpy with unused retval to strscpy
+
+Xu Yang (1):
+      usb: roles: don't get/set_role() when usb_role_switch is unregistered
+
+Yi Sun (1):
+      virtio-blk: Ensure no requests in virtqueues before deleting vqs.
+
+Zhang Rui (1):
+      hwmon: (coretemp) Enlarge per package core count limit
+
+Zhipeng Lu (1):
+      IB/hfi1: Fix a memleak in init_credit_return
+
 
