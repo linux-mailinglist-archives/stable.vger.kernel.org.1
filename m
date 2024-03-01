@@ -1,129 +1,106 @@
-Return-Path: <stable+bounces-25709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A564E86D8B7
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 02:24:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5929286D8B5
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 02:24:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 943FCB226DC
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 01:24:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE149B223C2
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 01:24:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA18C2B9C6;
-	Fri,  1 Mar 2024 01:24:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="llhdVEWl"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4C892B9D6;
+	Fri,  1 Mar 2024 01:24:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.6])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2059D2E3F9
-	for <stable@vger.kernel.org>; Fri,  1 Mar 2024 01:24:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.6
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F5F2B9B9;
+	Fri,  1 Mar 2024 01:24:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709256286; cv=none; b=QTIT4J2t2Vsc3ygebNE5dPwZliKgbQ936w3x8diTQ4NNCBcYjmPHQNnD4k7CwVlFjzqMvy7+rBMYn7QJjHc4mU1EBZSAiGUAg37yNUqRL7goIXgPhNvZg7bOFOtdmBvkmEWEW0ltxd6ccSCVlKTtnM/yGAqVtCD3/HjhDd1Cvo4=
+	t=1709256246; cv=none; b=cJfSjWAM+3nNu0tuVFikj6GJFQU5OTOy12BZT49h6rcomP42dxUJJmQaWnPdF2+o7tcgmauluE6h6MpH34upaLD7Tz/3i62sizzHruvhXB5zRPicuegJucu1z0l07RIw8OZ+zXKO9vZobIBX1PPq2PhrKQkbou5yhnvSH6ltwds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709256286; c=relaxed/simple;
-	bh=ddO+vaPFr8wczH7Xw3KlmXH+rU3xHKclnerM9eMBgFQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Y6LH8kyFOL+GHW89BUCZPwePBTku3sFa1BjZAQqP2qPHMjS+W1GZxxYNfSonkgAHvOXuDpQY1NyDzGinzZjb/uJgZRwWp8iGTs8Cy1RjGr9cxef1sqiV83bCbl9P8OkDW0kT8wkvwHZtWLOQGYuHEuNrHy5LguacHizAg7GMrgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=llhdVEWl; arc=none smtp.client-ip=220.197.31.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=RQsxh
-	LQeP7zTe9uqV+xUV9NFx2bDBH1Lqec4fhz8SUY=; b=llhdVEWl1zWbYrSpKPJKn
-	w1q8v87RWwjxcpXciUa++phleyyt6ShsL9AnXLDzAZiUu54n2FbY66USZBZzCcGZ
-	3exkk+x/IOR/ZKjWGMmqLea7aW0jCFl6dXkftKKeOpC6DEzwYw/3woWQ4U/4kvIX
-	K78IOqZAlvua3J3Ykp+wLM=
-Received: from localhost.localdomain (unknown [116.128.244.171])
-	by gzga-smtp-mta-g0-0 (Coremail) with SMTP id _____wDHr7+NLeFlC0ffBA--.60409S12;
-	Fri, 01 Mar 2024 09:22:11 +0800 (CST)
-From: Genjian <zhanggenjian@126.com>
-To: 1192843200@qq.com
-Cc: Siddh Raman Pant <code@siddh.me>,
-	syzbot+a8e049cd3abd342936b6@syzkaller.appspotmail.com,
-	stable@vger.kernel.org,
-	Matthew Wilcox <willy@infradead.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Genjian Zhang <zhanggenjian@kylinos.cn>
-Subject: [PATCH 4.19.y 8/9] loop: Check for overflow while configuring loop
-Date: Fri,  1 Mar 2024 09:19:43 +0800
-Message-Id: <20240301011944.2197153-9-zhanggenjian@126.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240301011944.2197153-1-zhanggenjian@126.com>
-References: <20240301011944.2197153-1-zhanggenjian@126.com>
+	s=arc-20240116; t=1709256246; c=relaxed/simple;
+	bh=XBpVTizpGtxnNmFfrxzIv8+FmfNwz48diAaegGnbCBY=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=jkqfTD4VzbxhKVI26luiq3g52pPetKJE5Aenn6ihVZ+shHtmvONsV07B/lkXmQchnJQlv5HoHglJbWgyDC/vvTGM3y2k4QkLwOHoxaNuL6CKT8HSoytyIZWsOcUjJooDMnR80sLEEZzz3vKHVsxeOaKoQ/MsPIbTfGLIqKlMVvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Tm9Km5P9GzvW3L;
+	Fri,  1 Mar 2024 09:21:48 +0800 (CST)
+Received: from kwepemm600013.china.huawei.com (unknown [7.193.23.68])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6D65F14037F;
+	Fri,  1 Mar 2024 09:24:00 +0800 (CST)
+Received: from [10.174.178.46] (10.174.178.46) by
+ kwepemm600013.china.huawei.com (7.193.23.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 1 Mar 2024 09:23:58 +0800
+Subject: Re: [PATCH] ubi: eba: properly rollback inside self_check_eba
+To: Fedor Pchelkin <pchelkin@ispras.ru>, Richard Weinberger <richard@nod.at>
+CC: Miquel Raynal <miquel.raynal@bootlin.com>, Vignesh Raghavendra
+	<vigneshr@ti.com>, Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+	<linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>, Alexey
+ Khoroshilov <khoroshilov@ispras.ru>, <lvc-project@linuxtesting.org>,
+	<stable@vger.kernel.org>
+References: <20240229204237.30453-1-pchelkin@ispras.ru>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
+Message-ID: <1421503e-b1d2-87f2-e33e-1a0428100be2@huawei.com>
+Date: Fri, 1 Mar 2024 09:23:58 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <20240229204237.30453-1-pchelkin@ispras.ru>
+Content-Type: text/plain; charset="gbk"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDHr7+NLeFlC0ffBA--.60409S12
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Zr1xur4Utw4DAF45AFW5Wrg_yoW8Kw18pF
-	43WryUZ3yrKF4UCFsrt34kXryrW3WDGFy3G39Fy345u390vrnavry7Cr93ur95JryUZFWS
-	gFn3Jry8Z3WUZrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07b7g4hUUUUU=
-X-CM-SenderInfo: x2kd0wxjhqyxldq6ij2wof0z/1tbiyAiUfmWWf0l6ZQABsx
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ kwepemm600013.china.huawei.com (7.193.23.68)
 
-From: Siddh Raman Pant <code@siddh.me>
+ÔÚ 2024/3/1 4:42, Fedor Pchelkin Ð´µÀ:
+> In case of a memory allocation failure in the volumes loop we can only
+> process the already allocated scan_eba and fm_eba array elements on the
+> error path - others are still uninitialized.
+> 
+> Found by Linux Verification Center (linuxtesting.org).
+> 
+> Fixes: 00abf3041590 ("UBI: Add self_check_eba()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+> ---
+>   drivers/mtd/ubi/eba.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 
-[ Upstream commit c490a0b5a4f36da3918181a8acdc6991d967c5f3 ]
-
-The userspace can configure a loop using an ioctl call, wherein
-a configuration of type loop_config is passed (see lo_ioctl()'s
-case on line 1550 of drivers/block/loop.c). This proceeds to call
-loop_configure() which in turn calls loop_set_status_from_info()
-(see line 1050 of loop.c), passing &config->info which is of type
-loop_info64*. This function then sets the appropriate values, like
-the offset.
-
-loop_device has lo_offset of type loff_t (see line 52 of loop.c),
-which is typdef-chained to long long, whereas loop_info64 has
-lo_offset of type __u64 (see line 56 of include/uapi/linux/loop.h).
-
-The function directly copies offset from info to the device as
-follows (See line 980 of loop.c):
-	lo->lo_offset = info->lo_offset;
-
-This results in an overflow, which triggers a warning in iomap_iter()
-due to a call to iomap_iter_done() which has:
-	WARN_ON_ONCE(iter->iomap.offset > iter->pos);
-
-Thus, check for negative value during loop_set_status_from_info().
-
-Bug report: https://syzkaller.appspot.com/bug?id=c620fe14aac810396d3c3edc9ad73848bf69a29e
-
-Reported-and-tested-by: syzbot+a8e049cd3abd342936b6@syzkaller.appspotmail.com
-Cc: stable@vger.kernel.org
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Siddh Raman Pant <code@siddh.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20220823160810.181275-1-code@siddh.me
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Genjian Zhang <zhanggenjian@kylinos.cn>
----
- drivers/block/loop.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index 0fefd21f0c71..c1caa3e2355f 100644
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -1271,6 +1271,11 @@ loop_set_status_from_info(struct loop_device *lo,
- 
- 	lo->lo_offset = info->lo_offset;
- 	lo->lo_sizelimit = info->lo_sizelimit;
-+
-+	/* loff_t vars have been assigned __u64 */
-+	if (lo->lo_offset < 0 || lo->lo_sizelimit < 0)
-+		return -EOVERFLOW;
-+
- 	memcpy(lo->lo_file_name, info->lo_file_name, LO_NAME_SIZE);
- 	memcpy(lo->lo_crypt_name, info->lo_crypt_name, LO_NAME_SIZE);
- 	lo->lo_file_name[LO_NAME_SIZE-1] = 0;
--- 
-2.25.1
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+> 
+> diff --git a/drivers/mtd/ubi/eba.c b/drivers/mtd/ubi/eba.c
+> index 8d1f0e05892c..6f5eadb1598d 100644
+> --- a/drivers/mtd/ubi/eba.c
+> +++ b/drivers/mtd/ubi/eba.c
+> @@ -1557,6 +1557,7 @@ int self_check_eba(struct ubi_device *ubi, struct ubi_attach_info *ai_fastmap,
+>   					  GFP_KERNEL);
+>   		if (!fm_eba[i]) {
+>   			ret = -ENOMEM;
+> +			kfree(scan_eba[i]);
+>   			goto out_free;
+>   		}
+>   
+> @@ -1592,7 +1593,7 @@ int self_check_eba(struct ubi_device *ubi, struct ubi_attach_info *ai_fastmap,
+>   	}
+>   
+>   out_free:
+> -	for (i = 0; i < num_volumes; i++) {
+> +	while (--i >= 0) {
+>   		if (!ubi->volumes[i])
+>   			continue;
+>   
+> 
 
 
