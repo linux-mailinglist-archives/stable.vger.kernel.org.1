@@ -1,158 +1,129 @@
-Return-Path: <stable+bounces-25722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23B0186DAFD
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 06:21:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CAF386DB3B
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 06:44:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 550D51C235AB
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 05:21:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBCFCB20F09
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 05:44:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F7CF5026C;
-	Fri,  1 Mar 2024 05:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9605251037;
+	Fri,  1 Mar 2024 05:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="Wapk/aCW"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="iYMwGkDD"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C79B3FE3F;
-	Fri,  1 Mar 2024 05:21:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2FAE2AEEE;
+	Fri,  1 Mar 2024 05:44:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709270468; cv=none; b=A2/8poOEqJ5kTsI2yDO0RdqrES9eFkIYCXVxIModKLmhJCWBB5gs/gxED4IX1yTl/zqwWp9S2CPig1Dv9DK4Vjh5H+5IwAN/JFaVlriNYM99T9ofrdA/uA3qk7u/PLfECCTnyau60aU4K6WeO2qC73WvdCqHrRNaTP4vSrvskFg=
+	t=1709271868; cv=none; b=M2f8ZEz/z52inu26tQSslaeacck7aC30LyCL6lmPrcqRON8X/c3BFQfAX+UGdIhFC0ltNCIwfAcuFVlUr90wTpthySin2nqKzZzE7GfC70D7/lCxq4+MWo4AJ586KWBwpxd1W9eaUsI2OPtPVpNaTsrtMdkqRk9etBnHd9jYkWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709270468; c=relaxed/simple;
-	bh=hYkXkTirDR6JozbmGZTEpu69g7CUbtqTAq7OcMqZhOc=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Iocq4dxRhnaoFM7L4PQg7dxU+e/w+RjhzLqVggpcMmhGGtII5aIZqF6kAOvfE7/0G9eeiJlY+PWnjIoeWhZg7eFZts8QAFiou3sR4HFBdu6miCCZzUyvVt+lTAUfLwUdhyvXaNl9v7mYhm2sEppRQS9LZonLSgDIhLW+h33BrFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=Wapk/aCW; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:References:Reply-To:Cc:To:From:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=TGGFXxkdaHkpLZsjv4M/o7SAoLYzqZm3P9d/C+KSKlg=;
-	t=1709270466; x=1709702466; b=Wapk/aCWBSGkwEKCmS3HWS/GqmYRwlzO0aQLvfxbgyWM6Ga
-	vkWI7f0EsQSJKupe2IXnrnwB0RMsGnYRy/ugpzXxVPZWqOy39fiSopr0GspzDyuWXTWFCaKel918q
-	Laq5Vcxuja0lvkt8mAjp7p8ppur6k3rBd1zRbKXzWSkjElJ7HhSsObbbdhQxqYNFqk4liDGN9yWh8
-	elLt8eikCTDvX5859ptvjwnxuvB41IOx5fuDguuPf42YdGndMX3IHX4yha7fZp9ZE+H51kXs4pk2Y
-	Mzu6Rlk4kTQXrBFGE24qz2PgXw5uj0JuqC++XliOT5cdM5lM97PS0W0ulR8VtcEQ==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1rfvKI-0005dh-Vv; Fri, 01 Mar 2024 06:20:55 +0100
-Message-ID: <d2465271-1e4b-4bae-9399-4d49d3938048@leemhuis.info>
-Date: Fri, 1 Mar 2024 06:20:52 +0100
+	s=arc-20240116; t=1709271868; c=relaxed/simple;
+	bh=x0RYsqPoQe7Py7qVG6iE+FyNJ5qnSlT7pe837V0tbtg=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rCr3crl0o7B4rKCmAc5VB6l8oMl/zrxej7OkgmxFOFwZjOeHyXNkYiwHJz1RIaandCb8LWUZWz4DoIVDKiE2YiuGYEOtJUcHYljSQubRmGd9uoXKUO+n/fsaZQ4c/cHlkO07PXG5LP0iA/yeSerPBmFDun00z9Cnu978yvKECgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=iYMwGkDD; arc=none smtp.client-ip=198.47.19.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4215hxqf081979;
+	Thu, 29 Feb 2024 23:43:59 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1709271839;
+	bh=Ax8wDou/i0Ij3YdyTyGYeuq8MJb/3HgD1UFnkReb0vA=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To;
+	b=iYMwGkDDnBLEOok5A1DLYm8QBUlSlEI69ZCXBqPYkERZyxZJGEqCLXeThETm0acrm
+	 pWQtSiYS0VTngf5sydy6PdTYzK4jb4+8GGv+8tb77nyqSxqj2FraN+P6icjPK+u7yS
+	 kEecdkAYGy5xqWSYwXlgBC06lsmMKrnuE2gsH0iY=
+Received: from DLEE107.ent.ti.com (dlee107.ent.ti.com [157.170.170.37])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4215hxWV065949
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 29 Feb 2024 23:43:59 -0600
+Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE107.ent.ti.com
+ (157.170.170.37) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 29
+ Feb 2024 23:43:59 -0600
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE102.ent.ti.com
+ (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 29 Feb 2024 23:43:59 -0600
+Received: from localhost (dhruva.dhcp.ti.com [172.24.227.68])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4215hwno059467;
+	Thu, 29 Feb 2024 23:43:58 -0600
+Date: Fri, 1 Mar 2024 11:13:57 +0530
+From: Dhruva Gole <d-gole@ti.com>
+To: Maulik Shah <quic_mkshah@quicinc.com>
+CC: Mark Rutland <mark.rutland@arm.com>,
+        Lorenzo Pieralisi
+	<lpieralisi@kernel.org>, <andersson@kernel.org>,
+        <ulf.hansson@linaro.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        Sudeep Holla <Sudeep.Holla@arm.com>, <linux-arm-msm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-pm@vger.kernel.org>, <quic_lsrao@quicinc.com>,
+        <stable@vger.kernel.org>
+Subject: Re: [PATCH v2] PM: suspend: Set mem_sleep_current during kernel
+ command line setup
+Message-ID: <20240301054357.hgbvbcywbxclebus@dhruva>
+References: <20240229-suspend_ops_late_init-v2-1-34852c61a5fa@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH regression fix] misc: lis3lv02d_i2c: Fix regulators
- getting en-/dis-abled twice on suspend/resume
-Content-Language: en-US, de-DE
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-To: Hans de Goede <hdegoede@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, Eric Piel <eric.piel@tremplin-utc.net>,
- linux-kernel@vger.kernel.org, Paul Menzel <pmenzel@molgen.mpg.de>,
- stable@vger.kernel.org, regressions@lists.linux.dev
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>,
- Linux regressions mailing list <regressions@lists.linux.dev>
-References: <20240220190035.53402-1-hdegoede@redhat.com>
- <1d8226cd-df43-4ef6-8425-2db01d513b32@leemhuis.info>
-In-Reply-To: <1d8226cd-df43-4ef6-8425-2db01d513b32@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1709270466;28c93d34;
-X-HE-SMSGID: 1rfvKI-0005dh-Vv
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240229-suspend_ops_late_init-v2-1-34852c61a5fa@quicinc.com>
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-On 27.02.24 17:25, Linux regression tracking (Thorsten Leemhuis) wrote:
-> On 20.02.24 20:00, Hans de Goede wrote:
->> When not configured for wakeup lis3lv02d_i2c_suspend() will call
->> lis3lv02d_poweroff() even if the device has already been turned off
->> by the runtime-suspend handler and if configured for wakeup and
->> the device is runtime-suspended at this point then it is not turned
->> back on to serve as a wakeup source.
->>
->> [...]
->>
->> Fixes: b1b9f7a49440 ("misc: lis3lv02d_i2c: Add missing setting of the reg_ctrl callback")
->> Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
->> Closes: https://lore.kernel.org/regressions/5fc6da74-af0a-4aac-b4d5-a000b39a63a5@molgen.mpg.de/
->> Cc: stable@vger.kernel.org
->> Cc: regressions@lists.linux.dev
+Hi,
+
+On Feb 29, 2024 at 12:14:59 +0530, Maulik Shah wrote:
+> psci_init_system_suspend() invokes suspend_set_ops() very early during
+> bootup even before kernel command line for mem_sleep_default is setup.
+> This leads to kernel command line mem_sleep_default=s2idle not working
+> as mem_sleep_current gets changed to deep via suspend_set_ops() and never
+> changes back to s2idle.
 > 
-> Paul, did you maybe test this? I suppose Greg had no time to review this
-> yet due to all the CVE stuff and stable tree maintenance; but with a bit
-> of luck a "Tested-by" from your side might motivate him or somebody else
-> to look into this.
-
-Hmmm, Greg seems to be pretty busy with other stuff. Hans, is there
-maybe someone we can motivate into reviewing this to make it easier for
-Greg to pick this up and send it to Linus before -rc8/the final?
-
-Sure, it's "just" a warning fix, still would have been nice to get this
-into -rc7. But I guess time has already run out on that. :-/
-
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
-
->> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->> ---
->>  drivers/misc/lis3lv02d/lis3lv02d_i2c.c | 21 +++++++++++++--------
->>  1 file changed, 13 insertions(+), 8 deletions(-)
->>
->> diff --git a/drivers/misc/lis3lv02d/lis3lv02d_i2c.c b/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
->> index c6eb27d46cb0..15119584473c 100644
->> --- a/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
->> +++ b/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
->> @@ -198,8 +198,14 @@ static int lis3lv02d_i2c_suspend(struct device *dev)
->>  	struct i2c_client *client = to_i2c_client(dev);
->>  	struct lis3lv02d *lis3 = i2c_get_clientdata(client);
->>  
->> -	if (!lis3->pdata || !lis3->pdata->wakeup_flags)
->> +	/* Turn on for wakeup if turned off by runtime suspend */
->> +	if (lis3->pdata && lis3->pdata->wakeup_flags) {
->> +		if (pm_runtime_suspended(dev))
->> +			lis3lv02d_poweron(lis3);
->> +	/* For non wakeup turn off if not already turned off by runtime suspend */
->> +	} else if (!pm_runtime_suspended(dev))
->>  		lis3lv02d_poweroff(lis3);
->> +
->>  	return 0;
->>  }
->>  
->> @@ -208,13 +214,12 @@ static int lis3lv02d_i2c_resume(struct device *dev)
->>  	struct i2c_client *client = to_i2c_client(dev);
->>  	struct lis3lv02d *lis3 = i2c_get_clientdata(client);
->>  
->> -	/*
->> -	 * pm_runtime documentation says that devices should always
->> -	 * be powered on at resume. Pm_runtime turns them off after system
->> -	 * wide resume is complete.
->> -	 */
->> -	if (!lis3->pdata || !lis3->pdata->wakeup_flags ||
->> -		pm_runtime_suspended(dev))
->> +	/* Turn back off if turned on for wakeup and runtime suspended*/
->> +	if (lis3->pdata && lis3->pdata->wakeup_flags) {
->> +		if (pm_runtime_suspended(dev))
->> +			lis3lv02d_poweroff(lis3);
->> +	/* For non wakeup turn back on if not runtime suspended */
->> +	} else if (!pm_runtime_suspended(dev))
->>  		lis3lv02d_poweron(lis3);
->>  
->>  	return 0;
+> Set mem_sleep_current along with mem_sleep_default during kernel command
+> line setup as default suspend mode.
 > 
+> Fixes: faf7ec4a92c0 ("drivers: firmware: psci: add system suspend support")
+> CC: stable@vger.kernel.org # 5.4+
+> Signed-off-by: Maulik Shah <quic_mkshah@quicinc.com>
+> ---
+> Changes in v2:
+> - Set mem_sleep_current during mem_sleep_default kernel command line setup
+> - Update commit message accordingly
+> - Retain Fixes: tag
+> - Link to v1: https://lore.kernel.org/r/20240219-suspend_ops_late_init-v1-1-6330ca9597fa@quicinc.com
+> ---
+>  kernel/power/suspend.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
+> diff --git a/kernel/power/suspend.c b/kernel/power/suspend.c
+> index 742eb26618cc..e3ae93bbcb9b 100644
+> --- a/kernel/power/suspend.c
+> +++ b/kernel/power/suspend.c
+> @@ -192,6 +192,7 @@ static int __init mem_sleep_default_setup(char *str)
+>  		if (mem_sleep_labels[state] &&
+>  		    !strcmp(str, mem_sleep_labels[state])) {
+>  			mem_sleep_default = state;
+> +			mem_sleep_current = state;
+
+I could've missed this patch. Please CC people who are involved in
+the previous discussions :)
+
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+
+-- 
+Best regards,
+Dhruva Gole <d-gole@ti.com>
 
