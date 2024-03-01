@@ -1,167 +1,178 @@
-Return-Path: <stable+bounces-25728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C15786E0B1
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 12:51:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F5ED86E0D9
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 13:08:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61DFCB241EE
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 11:50:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 233B62876AA
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 12:08:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C076D1A6;
-	Fri,  1 Mar 2024 11:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F112C6D505;
+	Fri,  1 Mar 2024 12:08:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="c/u4satZ";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="L1YNooUy";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="c/u4satZ";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="L1YNooUy"
 X-Original-To: stable@vger.kernel.org
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323186CDD0;
-	Fri,  1 Mar 2024 11:50:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3BD6D1A1;
+	Fri,  1 Mar 2024 12:08:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709293847; cv=none; b=GYDoQI/XZLllZUFqjk1aaEwIlh8LdDPqAAK7Q6QVhgUfSWQMkiI+Ulk/GFzIhK2fAt/DwYX/7oBSQfmtG0s7zLsqqZAgWpIA8yUrjLBEnFXtZ9ygzEcih9OBArhth6jdllMuFklWQ7oea/LoLTgzzj5N4vqq4NgB3lPy+98NeMw=
+	t=1709294925; cv=none; b=IPhn05hhD67DzW3ohETeAxnLCqVEzahqyNY4FljzcmGzQ+yN0Tgi+32HkqYXLbX89p8yFkpC51AxrC8bxndM1ZfluGVGIaNtwjr9YTOq0b8Hs//ZtrHooRQ+FxFfRNp3NWs5m939HFaWfOu3RX77riTU5yPikZONk3rIKSFeZRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709293847; c=relaxed/simple;
-	bh=ZyOdMMu8KP6WhIKw+knptD9Cm6F09MQ4QMVz6tu/0BQ=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=FQcdei8ivH66QN/dmb4z07hZkdl+EBzhMwgwL4+mjWgNA/KxLB6itDtzUWm0dcS58o+3vE6xpfUWBdcPCXppIYO61jfCB+Jkpa2xAy8nLfOyhUchMUa5Vg6NAzaowNArh0s0yZC+8EAP1ISN5mUx9xOvybR+t8FsEgM/TLHc8Wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [141.14.220.34] (g34.guest.molgen.mpg.de [141.14.220.34])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	s=arc-20240116; t=1709294925; c=relaxed/simple;
+	bh=orc32+uI5+mRb/3dCFQ8K8TCeKWSOPfc2luLPCtkSrQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hrTGgmI1j09ksirXtIqDny2346eg2B+nBW6S18/licFoBGwnrep4D68qYgjHiMGjeOjl6N54dtBX40vQMyIoIVfBEdie1pAwtdr/SgZ5+mgdq+fhqwqZ1lSbv3gbRNLzd7vgZyKsSfiB9VRSquqb0PNYB0frrYXkeBJLasbMOt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=c/u4satZ; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=L1YNooUy; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=c/u4satZ; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=L1YNooUy; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 097B161E5FE01;
-	Fri,  1 Mar 2024 12:50:08 +0100 (CET)
-Message-ID: <38c07228-639f-4082-b09a-ffe62fe14b71@molgen.mpg.de>
-Date: Fri, 1 Mar 2024 12:50:07 +0100
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 34FE5338BC;
+	Fri,  1 Mar 2024 12:08:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1709294922;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZYbF9WBe9cyR9dD8QFu7d2TbmL2WiuAvy0rBmNz8f4g=;
+	b=c/u4satZKusd9cmeK07TcsuVvMQBvWaYXmzppwg90KhexWHwSUKxtEV3dDkmhtIRXp9d3i
+	O2VjllA6rYXS7Op3fwy0v+4jDbQeUl6NQjUhiVGsP7mbul3BikDnkGdwOlvlb/JXc/ZVjq
+	u8eD0PeyWopZ+Zg2JEgQyMBazVFGi9c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1709294922;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZYbF9WBe9cyR9dD8QFu7d2TbmL2WiuAvy0rBmNz8f4g=;
+	b=L1YNooUyGJAD9pZ2LYd5bdAZxpwC9ORWhZTMfUULEpmhnTB8DtcOQmrPzF2MRD3cav9K6F
+	sxjGT1/vdU5CUZBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1709294922;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZYbF9WBe9cyR9dD8QFu7d2TbmL2WiuAvy0rBmNz8f4g=;
+	b=c/u4satZKusd9cmeK07TcsuVvMQBvWaYXmzppwg90KhexWHwSUKxtEV3dDkmhtIRXp9d3i
+	O2VjllA6rYXS7Op3fwy0v+4jDbQeUl6NQjUhiVGsP7mbul3BikDnkGdwOlvlb/JXc/ZVjq
+	u8eD0PeyWopZ+Zg2JEgQyMBazVFGi9c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1709294922;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZYbF9WBe9cyR9dD8QFu7d2TbmL2WiuAvy0rBmNz8f4g=;
+	b=L1YNooUyGJAD9pZ2LYd5bdAZxpwC9ORWhZTMfUULEpmhnTB8DtcOQmrPzF2MRD3cav9K6F
+	sxjGT1/vdU5CUZBA==
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 16A8013581;
+	Fri,  1 Mar 2024 12:08:42 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id zhNXBUrF4WVWPwAAn2gu4w
+	(envelope-from <dsterba@suse.cz>); Fri, 01 Mar 2024 12:08:42 +0000
+Date: Fri, 1 Mar 2024 13:01:38 +0100
+From: David Sterba <dsterba@suse.cz>
+To: Qu Wenruo <wqu@suse.com>
+Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] btrfs: qgroup: verify btrfs_qgroup_inherit parameter
+Message-ID: <20240301120138.GJ2604@twin.jikos.cz>
+Reply-To: dsterba@suse.cz
+References: <bde2887da38aaa473ca60801b37ac735b3ab2d6d.1709003728.git.wqu@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-Subject: Re: [PATCH regression fix] misc: lis3lv02d_i2c: Fix regulators
- getting en-/dis-abled twice on suspend/resume
-To: Hans de Goede <hdegoede@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Arnd Bergmann <arnd@arndb.de>, Eric Piel <eric.piel@tremplin-utc.net>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- regressions@lists.linux.dev
-References: <20240220190035.53402-1-hdegoede@redhat.com>
-Content-Language: en-US
-In-Reply-To: <20240220190035.53402-1-hdegoede@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bde2887da38aaa473ca60801b37ac735b3ab2d6d.1709003728.git.wqu@suse.com>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spamd-Result: default: False [-1.13 / 50.00];
+	 ARC_NA(0.00)[];
+	 HAS_REPLYTO(0.30)[dsterba@suse.cz];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 RCPT_COUNT_THREE(0.00)[3];
+	 TO_DN_SOME(0.00)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 REPLYTO_ADDR_EQ_FROM(0.00)[];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_TLS_ALL(0.00)[];
+	 BAYES_HAM(-1.33)[90.34%]
+X-Spam-Level: 
+X-Spam-Flag: NO
+X-Spam-Score: -1.13
 
-Dear Hans,
-
-
-Thank you for the patch.
-
-Am 20.02.24 um 20:00 schrieb Hans de Goede:
-> When not configured for wakeup lis3lv02d_i2c_suspend() will call
-> lis3lv02d_poweroff() even if the device has already been turned off
-> by the runtime-suspend handler and if configured for wakeup and
-> the device is runtime-suspended at this point then it is not turned
-> back on to serve as a wakeup source.
+On Tue, Feb 27, 2024 at 01:45:35PM +1030, Qu Wenruo wrote:
+> [BUG]
+> Currently btrfs can create subvolume with an invalid qgroup inherit
+> without triggering any error:
 > 
-> Before commit b1b9f7a49440 ("misc: lis3lv02d_i2c: Add missing setting
-> of the reg_ctrl callback"), lis3lv02d_poweroff() failed to disable
-> the regulators which as a side effect made calling poweroff() twice ok.
+>  # mkfs.btrfs -O quota -f $dev
+>  # mount $dev $mnt
+>  # btrfs subvolume create -i 2/0 $mnt/subv1
+>  # btrfs qgroup show -prce --sync $mnt
+>  Qgroupid    Referenced    Exclusive   Path
+>  --------    ----------    ---------   ----
+>  0/5           16.00KiB     16.00KiB   <toplevel>
+>  0/256         16.00KiB     16.00KiB   subv1
 > 
-> Now that poweroff() correctly disables the regulators, doing this twice
-> triggers a WARN() in the regulator core:
+> [CAUSE]
+> We only do a very basic size check for btrfs_qgroup_inherit structure,
+> but never really verify if the values are correct.
 > 
-> unbalanced disables for regulator-dummy
-> WARNING: CPU: 1 PID: 92 at drivers/regulator/core.c:2999 _regulator_disable
-> ...
+> Thus in btrfs_qgroup_inherit() function, we have to skip non-existing
+> qgroups, and never return any error.
 > 
-> Fix lis3lv02d_i2c_suspend() to not call poweroff() a second time if
-> already runtime-suspended and add a poweron() call when necessary to
-> make wakeup work.
+> [FIX]
+> Fix the behavior and introduce extra checks:
 > 
-> lis3lv02d_i2c_resume() has similar issues, with an added weirness that
-> it always powers on the device if it is runtime suspended, after which
-> the first runtime-resume will call poweron() again, causing the enabled
-> count for the regulator to increase by 1 every suspend/resume. These
-> unbalanced regulator_enable() calls cause the regulator to never
-> be turned off and trigger the following WARN() on driver unbind:
+> - Introduce early check for btrfs_qgroup_inherit structure
+>   Not only the size, but also all the qgroup ids would be verifyed.
 > 
-> WARNING: CPU: 1 PID: 1724 at drivers/regulator/core.c:2396 _regulator_put
+>   And the timing is very early, so we can return error early.
+>   This early check is very important for snapshot creation, as snapshot
+>   is delayed to transaction commit.
 > 
-> Fix this by making lis3lv02d_i2c_resume() mirror the new suspend().
+> - Drop support for btrfs_qgroup_inherit::num_ref_copies and
+>   num_excl_copies
+>   Those two members are used to specify to copy refr/excl numbers from
+>   other qgroups.
+>   This would definitely mark qgroup inconsistent, and btrfs-progs has
+>   dropped the support for them for a long time.
+>   It's time to drop the support for kernel.
 > 
-> Fixes: b1b9f7a49440 ("misc: lis3lv02d_i2c: Add missing setting of the reg_ctrl callback")
-> Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
-> Closes: https://lore.kernel.org/regressions/5fc6da74-af0a-4aac-b4d5-a000b39a63a5@molgen.mpg.de/
-> Cc: stable@vger.kernel.org
-> Cc: regressions@lists.linux.dev
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
->   drivers/misc/lis3lv02d/lis3lv02d_i2c.c | 21 +++++++++++++--------
->   1 file changed, 13 insertions(+), 8 deletions(-)
+> - Verify the supported btrfs_qgroup_inherit::flags
+>   Just in case we want to add extra flags for btrfs_qgroup_inherit.
 > 
-> diff --git a/drivers/misc/lis3lv02d/lis3lv02d_i2c.c b/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
-> index c6eb27d46cb0..15119584473c 100644
-> --- a/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
-> +++ b/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
-> @@ -198,8 +198,14 @@ static int lis3lv02d_i2c_suspend(struct device *dev)
->   	struct i2c_client *client = to_i2c_client(dev);
->   	struct lis3lv02d *lis3 = i2c_get_clientdata(client);
->   
-> -	if (!lis3->pdata || !lis3->pdata->wakeup_flags)
-> +	/* Turn on for wakeup if turned off by runtime suspend */
-> +	if (lis3->pdata && lis3->pdata->wakeup_flags) {
-> +		if (pm_runtime_suspended(dev))
-> +			lis3lv02d_poweron(lis3);
-> +	/* For non wakeup turn off if not already turned off by runtime suspend */
-> +	} else if (!pm_runtime_suspended(dev))
->   		lis3lv02d_poweroff(lis3);
-> +
->   	return 0;
->   }
->   
-> @@ -208,13 +214,12 @@ static int lis3lv02d_i2c_resume(struct device *dev)
->   	struct i2c_client *client = to_i2c_client(dev);
->   	struct lis3lv02d *lis3 = i2c_get_clientdata(client);
->   
-> -	/*
-> -	 * pm_runtime documentation says that devices should always
-> -	 * be powered on at resume. Pm_runtime turns them off after system
-> -	 * wide resume is complete.
-> -	 */
-> -	if (!lis3->pdata || !lis3->pdata->wakeup_flags ||
-> -		pm_runtime_suspended(dev))
-> +	/* Turn back off if turned on for wakeup and runtime suspended*/
-> +	if (lis3->pdata && lis3->pdata->wakeup_flags) {
-> +		if (pm_runtime_suspended(dev))
-> +			lis3lv02d_poweroff(lis3);
-> +	/* For non wakeup turn back on if not runtime suspended */
-> +	} else if (!pm_runtime_suspended(dev))
->   		lis3lv02d_poweron(lis3);
->   
->   	return 0;
+> Now above subvolume creation would fail with -ENOENT other than silently
+> ignore the non-existing qgroup.
+> 
+> CC: stable@vger.kernel.org
+> Signed-off-by: Qu Wenruo <wqu@suse.com>
 
-I applied this commit on top of Linus’ master branch, and successfully 
-tested with S0ix and ACPI S3, that the warning is gone.
-
-Tested-by: Paul Menzel <pmenzel@molgen.mpg.de> # Dell XPS 15 7590
-
-Looking at the diff, this also looks good. Thank you for writing the 
-helpful commit message.
-
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-
-Thank you for addressing this so quickly, and sorry for the late reply.
-
-
-Kind regards,
-
-Paul
+Reviewed-by: David Sterba <dsterba@suse.com>
 
