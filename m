@@ -1,142 +1,167 @@
-Return-Path: <stable+bounces-25748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA96486E365
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 15:37:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C65D686E3AF
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 15:46:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBD1CB20F34
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 14:37:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A9081F2532C
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 14:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E005A1FA1;
-	Fri,  1 Mar 2024 14:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0F7F38DC3;
+	Fri,  1 Mar 2024 14:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TV4qXrW6"
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="kG7feM5K"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AFF61C17
-	for <stable@vger.kernel.org>; Fri,  1 Mar 2024 14:37:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B27B76EB4C
+	for <stable@vger.kernel.org>; Fri,  1 Mar 2024 14:45:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709303864; cv=none; b=Z8H0DdGthyWH9ZTj3yzvzSohBDCDS5rq51eNCejAKuLM14nOhnOrthNLjsQwaGv3yhXUCTaYmwntk8rmBYUmInZ87bs9MhrZgvqK6OzAZeU6A1ugb3i/yzWY1B7eDQia4fyTldPnsSS+bKweZ1Gf/kBFcBKNpvOBD7J7axCG0iY=
+	t=1709304322; cv=none; b=IWLWj60nFulAE5jnWxSphuH3vXi2zxH7TvBGnGIey0qQ2BnNSUfHG2mkcnBC4XZDKzwD7266fGzKnMWS8bYSkWzmxVDrYm53tQiV8iWv2piphJaQt+ZGv6+/+RvDjC4djptkMjDPRXob9SNOMZFjbYrW2wPdq4yHsd2uLYdQYzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709303864; c=relaxed/simple;
-	bh=Tu1IhSm5ytRoCYM2NUIGoUQfc9tPBjeGnKpUrWBIzS4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=eeBm8RKZKPtI4mU/6WHrjpmyBzTwWJ10utvu8nnr2tFSuGoc38GH3sXvbKoZcBD0/CdTmRkubYma98qYmBC9/apDH5RTbgqQfAKX01QSZQ1beX2x5+GvI2LspD1kVzP2FYDHsyG4vcM4TsNk7bsSkrorauw6qeG1g7u4aZHVjFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TV4qXrW6; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1d911c2103aso6072355ad.0
-        for <stable@vger.kernel.org>; Fri, 01 Mar 2024 06:37:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709303862; x=1709908662; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=oVtdCDkncAEjYp5VDfB0TkA+iNPQzbJhtZQ9XlyWAes=;
-        b=TV4qXrW63j5bHEgVYRDL5i5MnfUy4QudFtwBnXK5JBFifgyAyzNscdLpFUhh40SdYO
-         QsEqUAU9WT4kPyHqgZMsSrkAIBj/7EUdVcujrgssNMabe9khIAb5TleYStqMC6mMFXY2
-         +ovfR4q1D5pWeZGSTz+e+tExb6CzLLrS+4C0MO6pMMoVDz08WrtMVSYtRLhQ4TI7kQb9
-         EiZk9vv+mss9H61A0HrOp2jf5pg7edESrxqqcPc+48+jq8Gx88Z4kZwJ4AT3n+Y+w23y
-         tts8axSVuIH9A648mO3cZzEZFLRYCG8jqyE2CAiGjIGAerPwkFXCdPdvkcsCRnJP71Gp
-         lBEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709303862; x=1709908662;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oVtdCDkncAEjYp5VDfB0TkA+iNPQzbJhtZQ9XlyWAes=;
-        b=gA5MS69eSH5ZuzYRP1ERgtFoAeIlsG/PF+A4pNHFNsJEw32kdELJz1KCCdl2Ehci4d
-         5bjtu9pXBzJgM4YsCCReFL3/Y4ciyU8pg3Z6HIBGd2uEU+x/+OtascCtNQQyTCHF6WWA
-         4RuSUfRYVLINteOXcC5+2456YzCsAJpEYf2w7xqAe4Xjq/KJ953yVGBZkO+Hfk6QDJuu
-         oK0jqyukSCHUQzSLDYujWugM1Xdu2h1gEDfTZcJGsVdORjSvsX6jkHILYBl9ScDOdJVc
-         RjOsS1syomSGPCmTHzgK4HyYtfKBrhPMFr61CpnnBd+eZKKJgWHGOWyoaGpTaAVlNgdN
-         /fWA==
-X-Forwarded-Encrypted: i=1; AJvYcCWZHVbNwgzesVYK0oDLHbfAi4upq2acrreQDncbO79gyz4ljSBo08IYRwV6PlaWiBq1cBGGzlhERSD7KRyGGjVxUBNnVppv
-X-Gm-Message-State: AOJu0Yyekci3spduLTk1CcUCPydzZ33muaXEEZ41mDuBM1bSm0aCJXgE
-	Ryo4SOttm19r1nMecDHRT9fVWaSps4Nr7FYnToUFANKb0lYUwxkKxs5gjdcQkpg=
-X-Google-Smtp-Source: AGHT+IEc0VYmCsFGtKuNFZxqUlC22U6RVuMYWS58KkWVcBcHQtJsz9h797yn3Q9ko08aW7bsTmOwSQ==
-X-Received: by 2002:a17:902:d3c4:b0:1dc:5d9d:6eb3 with SMTP id w4-20020a170902d3c400b001dc5d9d6eb3mr1641483plb.21.1709303862445;
-        Fri, 01 Mar 2024 06:37:42 -0800 (PST)
-Received: from sumit-X1.. ([223.178.213.98])
-        by smtp.gmail.com with ESMTPSA id c3-20020a170902d90300b001db94bead0asm3497899plz.193.2024.03.01.06.37.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Mar 2024 06:37:42 -0800 (PST)
-From: Sumit Garg <sumit.garg@linaro.org>
-To: op-tee@lists.trustedfirmware.org
-Cc: jens.wiklander@linaro.org,
-	ilias.apalodimas@linaro.org,
-	jerome.forissier@linaro.org,
-	linux-kernel@vger.kernel.org,
-	mikko.rapeli@linaro.org,
-	Sumit Garg <sumit.garg@linaro.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] tee: optee: Fix kernel panic caused by incorrect error handling
-Date: Fri,  1 Mar 2024 20:07:31 +0530
-Message-Id: <20240301143731.3494455-1-sumit.garg@linaro.org>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1709304322; c=relaxed/simple;
+	bh=pbeGoTrS6YnV5hrTovkgSHfnq+aGXzRi2Qk5uXMxLv0=;
+	h=To:From:Subject:Message-ID:Date:MIME-Version:Content-Type; b=FIeTDuZTs5n33BFeLrtSpjcQ8sG6AgF0DB2bkqo5qa6xG9SZ61pRGzsIB3wuZ5Y+fT3HvuzDJINI1nvN5nkvg3A35QtPHqDqkL9IhusAm5waHlIouYAi/jc3Sp3z8iJrcssFLH2+h8VsNSVerWbndCYJWEG+fgP11CltGRB/JBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=kG7feM5K; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4TmW8k4qp2z9t4g
+	for <stable@vger.kernel.org>; Fri,  1 Mar 2024 15:45:10 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1709304310;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
+	bh=iJCp30pqblMWh0x8d35VWAYtZu9bQxAsYfhcFpjjCvo=;
+	b=kG7feM5Kk1SVDiVnYDBPe1Pej9U9g3D3XrYs3C77piFcYbTKOJ63xyhSgeAWfowpVpRw1j
+	kFeatlVknlGA37+Z7KDm1fSos3GgIrc9iJ2i6IhR35vA49hN0JYwO8odHZYADwzVy8+kpl
+	xW35euoe2c3Vb+36H9zv0QphV16/FDV2IwzU9S6uHphKi7h0QCP6S0g87WHlx5n7G1PIuM
+	cNfbAiErAjgWIphwF0uw4gHj/Jqc2cR2zUVl8DCzLis85QaDOOcKfEgjutMe8eLuK0ekLi
+	1hZhewT50/e4yZ7d1fAKQxRyHynjadR2+F3XdMOOfdvu8QLgxSvcO9SBYtRFOA==
+To: "stable@vger.kernel.org" <stable@vger.kernel.org>
+From: Rainer Fiebig <jrf@mailbox.org>
+Subject: 6.6.19 won't compile with " [*] Compile the kernel with warnings as
+ errors"
+Autocrypt: addr=jrf@mailbox.org; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <339c80e4-66bc-818d-89c2-2e89cb41c4b7@mailbox.org>
+Date: Fri, 1 Mar 2024 15:42:17 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
+X-MBO-RS-META: csxsn8iznot13thie7f5j7qd8tinkxjw
+X-MBO-RS-ID: d0a4ee0851ad7850fca
 
-The error path while failing to register devices on the TEE bus has a
-bug leading to kernel panic as follows:
+The problem seems to be in fs/ntfs3/frecord.c.  Original messages were
+in German, so here's my translation (original at the end of the post):
 
-[   15.398930] Unable to handle kernel paging request at virtual address ffff07ed00626d7c
-[   15.406913] Mem abort info:
-[   15.409722]   ESR = 0x0000000096000005
-[   15.413490]   EC = 0x25: DABT (current EL), IL = 32 bits
-[   15.418814]   SET = 0, FnV = 0
-[   15.421878]   EA = 0, S1PTW = 0
-[   15.425031]   FSC = 0x05: level 1 translation fault
-[   15.429922] Data abort info:
-[   15.432813]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
-[   15.438310]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[   15.443372]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[   15.448697] swapper pgtable: 4k pages, 48-bit VAs, pgdp=00000000d9e3e000
-[   15.455413] [ffff07ed00626d7c] pgd=1800000bffdf9003, p4d=1800000bffdf9003, pud=0000000000000000
-[   15.464146] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
+[...]
+  CC      lib/zstd/common/zstd_common.o
+  CC      arch/x86/kernel/cpu/feat_ctl.o
+fs/ntfs3/frecord.c: In Funktion »ni_read_frame«:
+fs/ntfs3/frecord.c:2460:16: Error: variable >>i_size<< is not used"
+[-Werror=unused-variable]
+ 2460 |         loff_t i_size = i_size_read(&ni->vfs_inode);
+      |                ^~~~~~
+  AR      lib/zstd/built-in.a
+[...]
+cc1: All warnings are treated as errors
+make[4]: *** [scripts/Makefile.build:243: fs/ntfs3/frecord.o] error 1
+make[3]: *** [scripts/Makefile.build:480: fs/ntfs3] error 2
+make[3]: *** Waiting for not yet finished processes....
+[...]
 
-Commit 7269cba53d90 ("tee: optee: Fix supplicant based device enumeration")
-lead to the introduction of this bug. So fix it appropriately.
+Let me know if you need further information.  Thanks.
 
-Reported-by: Mikko Rapeli <mikko.rapeli@linaro.org>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218542
-Fixes: 7269cba53d90 ("tee: optee: Fix supplicant based device enumeration")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
----
- drivers/tee/optee/device.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Rainer
 
-diff --git a/drivers/tee/optee/device.c b/drivers/tee/optee/device.c
-index 9d2afac96acc..d296c70ddfdc 100644
---- a/drivers/tee/optee/device.c
-+++ b/drivers/tee/optee/device.c
-@@ -90,13 +90,14 @@ static int optee_register_device(const uuid_t *device_uuid, u32 func)
- 	if (rc) {
- 		pr_err("device registration failed, err: %d\n", rc);
- 		put_device(&optee_device->dev);
-+		return rc;
- 	}
- 
- 	if (func == PTA_CMD_GET_DEVICES_SUPP)
- 		device_create_file(&optee_device->dev,
- 				   &dev_attr_need_supplicant);
- 
--	return rc;
-+	return 0;
- }
- 
- static int __optee_enumerate_devices(u32 func)
+
+--
+Original messages:
+[...]
+  CC      lib/zstd/common/zstd_common.o
+  CC      arch/x86/kernel/cpu/feat_ctl.o
+fs/ntfs3/frecord.c: In Funktion »ni_read_frame«:
+fs/ntfs3/frecord.c:2460:16: Fehler: Variable »i_size« wird nicht
+verwendet [-Werror=unused-variable]
+ 2460 |         loff_t i_size = i_size_read(&ni->vfs_inode);
+      |                ^~~~~~
+  AR      lib/zstd/built-in.a
+  CC      lib/bug.o
+  CC      fs/udf/inode.o
+  CC      arch/x86/kernel/cpu/intel.o
+  CC      arch/x86/kernel/process_64.o
+  CC      kernel/events/callchain.o
+  CC      lib/buildid.o
+cc1: Alle Warnungen werden als Fehler behandelt
+make[4]: *** [scripts/Makefile.build:243: fs/ntfs3/frecord.o] Fehler 1
+make[3]: *** [scripts/Makefile.build:480: fs/ntfs3] Fehler 2
+make[3]: *** Es wird auf noch nicht beendete Prozesse gewartet....
+  CC      kernel/events/hw_breakpoint.o
+  CC      lib/clz_tab.o
+  CC      lib/cmdline.o
+  CC      fs/udf/lowlevel.o
+[...]
+
+
+
+
 -- 
-2.34.1
-
+The truth always turns out to be simpler than you thought.
+Richard Feynman
 
