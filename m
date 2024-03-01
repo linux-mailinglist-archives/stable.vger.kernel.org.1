@@ -1,154 +1,167 @@
-Return-Path: <stable+bounces-25727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D51C386DEF8
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 11:08:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C15786E0B1
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 12:51:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83F08288C8D
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 10:08:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61DFCB241EE
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 11:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4912469D28;
-	Fri,  1 Mar 2024 10:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48C076D1A6;
+	Fri,  1 Mar 2024 11:50:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBF9482C1
-	for <stable@vger.kernel.org>; Fri,  1 Mar 2024 10:08:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323186CDD0;
+	Fri,  1 Mar 2024 11:50:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709287734; cv=none; b=uEvGfzZ3y2cUDIhexX6w5Is3JRu4RezG99kh5QvuweFnh4B1vbafEEgvJgtPfKIzxpdjbSYI6YPSNI0QSSp9K9Al9GOmv6OvOV+R8XugMvxiHNkwJlyvqSZyyvS3eGbm4ymOi8HNiMczB2Dh+WoeypyoH4z7xPaSjJhPqdTOzLE=
+	t=1709293847; cv=none; b=GYDoQI/XZLllZUFqjk1aaEwIlh8LdDPqAAK7Q6QVhgUfSWQMkiI+Ulk/GFzIhK2fAt/DwYX/7oBSQfmtG0s7zLsqqZAgWpIA8yUrjLBEnFXtZ9ygzEcih9OBArhth6jdllMuFklWQ7oea/LoLTgzzj5N4vqq4NgB3lPy+98NeMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709287734; c=relaxed/simple;
-	bh=cfhI4adbzcjp8NkNHtD4wblqg/sRFVZlM616n37Agb0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HpL5eKdJyHfW0dBCItF5fWMXp0HcUOpoJw2sHBmN0Iw3PnHlpD+8AMFhYUD+4ZXE8txp96P0vI1vDOpiSat60YbCH4/kysBEYN5wTy/iBPtZWWE9jjf+x3eK1Q8OpbBSfAFCzMuevj4YE/RZoGzN2L1vxOpdS2E6HRF7Az7SEg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <l.stach@pengutronix.de>)
-	id 1rfzou-00053s-Tf; Fri, 01 Mar 2024 11:08:48 +0100
-Message-ID: <2d65be7ae251221bd7524871e0cbf4b22d16a9f9.camel@pengutronix.de>
-Subject: Re: [PATCH] etnaviv: Restore some id values
-From: Lucas Stach <l.stach@pengutronix.de>
-To: Christian Gmeiner <christian.gmeiner@gmail.com>, Russell King
-	 <linux+etnaviv@armlinux.org.uk>, David Airlie <airlied@gmail.com>, Daniel
-	Vetter <daniel@ffwll.ch>
-Cc: Christian Gmeiner <cgmeiner@igalia.com>, stable@vger.kernel.org, 
-	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org
-Date: Fri, 01 Mar 2024 11:08:48 +0100
-In-Reply-To: <20240229195532.7815-1-christian.gmeiner@gmail.com>
-References: <20240229195532.7815-1-christian.gmeiner@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+	s=arc-20240116; t=1709293847; c=relaxed/simple;
+	bh=ZyOdMMu8KP6WhIKw+knptD9Cm6F09MQ4QMVz6tu/0BQ=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=FQcdei8ivH66QN/dmb4z07hZkdl+EBzhMwgwL4+mjWgNA/KxLB6itDtzUWm0dcS58o+3vE6xpfUWBdcPCXppIYO61jfCB+Jkpa2xAy8nLfOyhUchMUa5Vg6NAzaowNArh0s0yZC+8EAP1ISN5mUx9xOvybR+t8FsEgM/TLHc8Wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [141.14.220.34] (g34.guest.molgen.mpg.de [141.14.220.34])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 097B161E5FE01;
+	Fri,  1 Mar 2024 12:50:08 +0100 (CET)
+Message-ID: <38c07228-639f-4082-b09a-ffe62fe14b71@molgen.mpg.de>
+Date: Fri, 1 Mar 2024 12:50:07 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: l.stach@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+Subject: Re: [PATCH regression fix] misc: lis3lv02d_i2c: Fix regulators
+ getting en-/dis-abled twice on suspend/resume
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Arnd Bergmann <arnd@arndb.de>, Eric Piel <eric.piel@tremplin-utc.net>,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ regressions@lists.linux.dev
+References: <20240220190035.53402-1-hdegoede@redhat.com>
+Content-Language: en-US
+In-Reply-To: <20240220190035.53402-1-hdegoede@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Christian,
+Dear Hans,
 
-prefix for etnaviv kernel patches should be "drm/etnaviv: ..."
 
-Am Donnerstag, dem 29.02.2024 um 20:55 +0100 schrieb Christian Gmeiner:
-> From: Christian Gmeiner <cgmeiner@igalia.com>
->=20
-> The hwdb selection logic as a feature that allows it to mark some fields
-> as 'don't care'. If we match with such a field we memcpy(..)
-> the current etnaviv_chip_identity into ident.
->=20
-> This step can overwrite some id values read from the GPU with the
-> 'don't care' value.
->=20
-> Fix this issue by restoring the affected values after the memcpy(..).
->=20
-> As this is crucial for user space to know when this feature works as
-> expected increment the minor version too.
+Thank you for the patch.
 
-Uh, right. Lying to userspace about the GPU identity doesn't seem like
-a good idea.
-
->=20
-> Fixes: 4078a1186dd3 ("drm/etnaviv: update hwdb selection logic")
+Am 20.02.24 um 20:00 schrieb Hans de Goede:
+> When not configured for wakeup lis3lv02d_i2c_suspend() will call
+> lis3lv02d_poweroff() even if the device has already been turned off
+> by the runtime-suspend handler and if configured for wakeup and
+> the device is runtime-suspended at this point then it is not turned
+> back on to serve as a wakeup source.
+> 
+> Before commit b1b9f7a49440 ("misc: lis3lv02d_i2c: Add missing setting
+> of the reg_ctrl callback"), lis3lv02d_poweroff() failed to disable
+> the regulators which as a side effect made calling poweroff() twice ok.
+> 
+> Now that poweroff() correctly disables the regulators, doing this twice
+> triggers a WARN() in the regulator core:
+> 
+> unbalanced disables for regulator-dummy
+> WARNING: CPU: 1 PID: 92 at drivers/regulator/core.c:2999 _regulator_disable
+> ...
+> 
+> Fix lis3lv02d_i2c_suspend() to not call poweroff() a second time if
+> already runtime-suspended and add a poweron() call when necessary to
+> make wakeup work.
+> 
+> lis3lv02d_i2c_resume() has similar issues, with an added weirness that
+> it always powers on the device if it is runtime suspended, after which
+> the first runtime-resume will call poweron() again, causing the enabled
+> count for the regulator to increase by 1 every suspend/resume. These
+> unbalanced regulator_enable() calls cause the regulator to never
+> be turned off and trigger the following WARN() on driver unbind:
+> 
+> WARNING: CPU: 1 PID: 1724 at drivers/regulator/core.c:2396 _regulator_put
+> 
+> Fix this by making lis3lv02d_i2c_resume() mirror the new suspend().
+> 
+> Fixes: b1b9f7a49440 ("misc: lis3lv02d_i2c: Add missing setting of the reg_ctrl callback")
+> Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+> Closes: https://lore.kernel.org/regressions/5fc6da74-af0a-4aac-b4d5-a000b39a63a5@molgen.mpg.de/
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Christian Gmeiner <cgmeiner@igalia.com>
+> Cc: regressions@lists.linux.dev
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 > ---
->  drivers/gpu/drm/etnaviv/etnaviv_drv.c  |  2 +-
->  drivers/gpu/drm/etnaviv/etnaviv_hwdb.c | 14 ++++++++++++++
->  2 files changed, 15 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/gpu/drm/etnaviv/etnaviv_drv.c b/drivers/gpu/drm/etna=
-viv/etnaviv_drv.c
-> index 6228ce603248..9a2965741dab 100644
-> --- a/drivers/gpu/drm/etnaviv/etnaviv_drv.c
-> +++ b/drivers/gpu/drm/etnaviv/etnaviv_drv.c
-> @@ -494,7 +494,7 @@ static const struct drm_driver etnaviv_drm_driver =3D=
- {
->  	.desc               =3D "etnaviv DRM",
->  	.date               =3D "20151214",
->  	.major              =3D 1,
-> -	.minor              =3D 3,
-> +	.minor              =3D 4,
->  };
-> =20
->  /*
-> diff --git a/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c b/drivers/gpu/drm/etn=
-aviv/etnaviv_hwdb.c
-> index 67201242438b..1e38d66702f1 100644
-> --- a/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c
-> +++ b/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c
-> @@ -265,6 +265,9 @@ static const struct etnaviv_chip_identity etnaviv_chi=
-p_identities[] =3D {
->  bool etnaviv_fill_identity_from_hwdb(struct etnaviv_gpu *gpu)
->  {
->  	struct etnaviv_chip_identity *ident =3D &gpu->identity;
-> +	const u32 product_id =3D ident->product_id;
-> +	const u32 customer_id =3D ident->customer_id;
-> +	const u32 eco_id =3D ident->eco_id;
->  	int i;
-> =20
->  	for (i =3D 0; i < ARRAY_SIZE(etnaviv_chip_identities); i++) {
-> @@ -278,6 +281,17 @@ bool etnaviv_fill_identity_from_hwdb(struct etnaviv_=
-gpu *gpu)
->  			 etnaviv_chip_identities[i].eco_id =3D=3D ~0U)) {
->  			memcpy(ident, &etnaviv_chip_identities[i],
->  			       sizeof(*ident));
+>   drivers/misc/lis3lv02d/lis3lv02d_i2c.c | 21 +++++++++++++--------
+>   1 file changed, 13 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/misc/lis3lv02d/lis3lv02d_i2c.c b/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
+> index c6eb27d46cb0..15119584473c 100644
+> --- a/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
+> +++ b/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
+> @@ -198,8 +198,14 @@ static int lis3lv02d_i2c_suspend(struct device *dev)
+>   	struct i2c_client *client = to_i2c_client(dev);
+>   	struct lis3lv02d *lis3 = i2c_get_clientdata(client);
+>   
+> -	if (!lis3->pdata || !lis3->pdata->wakeup_flags)
+> +	/* Turn on for wakeup if turned off by runtime suspend */
+> +	if (lis3->pdata && lis3->pdata->wakeup_flags) {
+> +		if (pm_runtime_suspended(dev))
+> +			lis3lv02d_poweron(lis3);
+> +	/* For non wakeup turn off if not already turned off by runtime suspend */
+> +	} else if (!pm_runtime_suspended(dev))
+>   		lis3lv02d_poweroff(lis3);
 > +
-> +			/* Restore some id values if ~0U aka 'don't care' is used. */
-> +			if (etnaviv_chip_identities[i].product_id =3D=3D ~0U)
+>   	return 0;
+>   }
+>   
+> @@ -208,13 +214,12 @@ static int lis3lv02d_i2c_resume(struct device *dev)
+>   	struct i2c_client *client = to_i2c_client(dev);
+>   	struct lis3lv02d *lis3 = i2c_get_clientdata(client);
+>   
+> -	/*
+> -	 * pm_runtime documentation says that devices should always
+> -	 * be powered on at resume. Pm_runtime turns them off after system
+> -	 * wide resume is complete.
+> -	 */
+> -	if (!lis3->pdata || !lis3->pdata->wakeup_flags ||
+> -		pm_runtime_suspended(dev))
+> +	/* Turn back off if turned on for wakeup and runtime suspended*/
+> +	if (lis3->pdata && lis3->pdata->wakeup_flags) {
+> +		if (pm_runtime_suspended(dev))
+> +			lis3lv02d_poweroff(lis3);
+> +	/* For non wakeup turn back on if not runtime suspended */
+> +	} else if (!pm_runtime_suspended(dev))
+>   		lis3lv02d_poweron(lis3);
+>   
+>   	return 0;
 
-You can drop all those if clauses. Either the hwdb value is an exact
-match and the value is the same or it's the don't care value and you
-want to restore it, so a simple unconditional assignment would make
-this a bit more compact.
+I applied this commit on top of Linus’ master branch, and successfully 
+tested with S0ix and ACPI S3, that the warning is gone.
 
-Regards,
-Lucas
+Tested-by: Paul Menzel <pmenzel@molgen.mpg.de> # Dell XPS 15 7590
 
-> +				ident->product_id =3D product_id;
-> +
-> +			if (etnaviv_chip_identities[i].customer_id =3D=3D ~0U)
-> +				ident->customer_id =3D customer_id;
-> +
-> +			if (etnaviv_chip_identities[i].eco_id =3D=3D ~0U)
-> +				ident->eco_id =3D eco_id;
-> +
->  			return true;
->  		}
->  	}
+Looking at the diff, this also looks good. Thank you for writing the 
+helpful commit message.
 
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+
+Thank you for addressing this so quickly, and sorry for the late reply.
+
+
+Kind regards,
+
+Paul
 
