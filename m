@@ -1,135 +1,129 @@
-Return-Path: <stable+bounces-25707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7640A86D7F3
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 00:40:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A564E86D8B7
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 02:24:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8744D1C215CE
-	for <lists+stable@lfdr.de>; Thu, 29 Feb 2024 23:40:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 943FCB226DC
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 01:24:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7865F7B3E9;
-	Thu, 29 Feb 2024 23:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA18C2B9C6;
+	Fri,  1 Mar 2024 01:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.b="L1dXKeSD"
+	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="llhdVEWl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FBC225765
-	for <stable@vger.kernel.org>; Thu, 29 Feb 2024 23:40:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.6])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2059D2E3F9
+	for <stable@vger.kernel.org>; Fri,  1 Mar 2024 01:24:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709250041; cv=none; b=NaQBEWIFCObvNhGtBfRe1i79KznIfs+pNMGvPgs5vdBxfPwi+KaDY0RBkYNwUFiHHyWQEz5qCMIj65RY5QGOdnUJX5PUHYr8oLMrF+6aNmBvd4k3HxQAdqXBeOohcL22uhstAwJ22lRxO43GViSoo6+HgkukWatjtUNlSIpv24Q=
+	t=1709256286; cv=none; b=QTIT4J2t2Vsc3ygebNE5dPwZliKgbQ936w3x8diTQ4NNCBcYjmPHQNnD4k7CwVlFjzqMvy7+rBMYn7QJjHc4mU1EBZSAiGUAg37yNUqRL7goIXgPhNvZg7bOFOtdmBvkmEWEW0ltxd6ccSCVlKTtnM/yGAqVtCD3/HjhDd1Cvo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709250041; c=relaxed/simple;
-	bh=YINVBLnxrq+l39FJyQ3fbITB0i0PTuuWS+US1jLsYZQ=;
-	h=Date:Subject:In-Reply-To:CC:From:To:Message-ID:Mime-Version:
-	 Content-Type; b=sNRIj8kmOdBQmeS57wNLG9fagKaKrbFwtqeK8xh9l3RdIB2GqeApOlZvyE8YEk4jeqwGhVA5UD1+KX0Sogjbo6ArIen6J2iXZmtL0LHUdRZtUDLcKxBgYCrl7uIh/ESn+8TaIqVXm1u9XnpiQAi46NFQP5/UOuEiY98iWxLZe/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dabbelt.com; spf=pass smtp.mailfrom=dabbelt.com; dkim=pass (2048-bit key) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.b=L1dXKeSD; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dabbelt.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dabbelt.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-6e46dcd8feaso909705b3a.2
-        for <stable@vger.kernel.org>; Thu, 29 Feb 2024 15:40:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20230601.gappssmtp.com; s=20230601; t=1709250039; x=1709854839; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lx8BWhywoDIgpgt+e03ZrIqlEHq0YVesZbrDMn3IG9M=;
-        b=L1dXKeSDFIjfvffS2m5a1b8sh4JIj+PRoGkPaID2+IzmK/qxjuEYU81sc7sIC5F74+
-         AMB10CZJyCUT2y5/uYfODUt+82yZX7jxEmHJY/u9uitrsmVRaqG8VkUARKWdT0Q7eSeM
-         twggHu2Rfr9YS0swOoZaj4EgYlhuW/vHruS1TNvtA38PW3KxIEDmrD4bDLfjl5hvdxiF
-         nsecFpa2qhO6ezebLH/LVxelsxNR0CqdXyQoqLHIKUw2uI58tJg0HAGpV8hlNy05/xjt
-         9dQN69M8CdwHOMd34IHMmnf8YkdBtjIqWIe9FQvplRhrEQX/iWzdWoDt47pjY8aH01QY
-         hgvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709250039; x=1709854839;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lx8BWhywoDIgpgt+e03ZrIqlEHq0YVesZbrDMn3IG9M=;
-        b=IJU4LIaVrFadTxyGoJVtzvQZZhG+g/KqXcK6c01dKBjbDE3i6jIRydgHaj6pY1TrUb
-         qNSM+1EbfHv7iAJ3NQnOrDIDJA5yXFcHAERi/KJZKTyymbhpCK96DNDb3ufgjSIHqGB4
-         3drb3LDjoscaDmYPKXOY9hqaV6/SD62OjHd35gHs5VVAh5vhHFPb3OdlLR8TvdkmxZ9g
-         1W6CcsWJ0uOpiL25QJOTfjwXaglRL6oIuzo+rY5PyDQb9215fJ+mFqG2KfctTJ3nZGbo
-         F/AilsTyv8+28OJwS3q7iH9t4bOwnt69CMHDZIZ+SDPjcA1pr5I9fePV1+4CA+oqmIKN
-         XZxA==
-X-Forwarded-Encrypted: i=1; AJvYcCVZdlusIHU13m11e9wPmXMnRvK71Z64Cm2LLlVXhJIZv61qTQdwqMD74HnCK3ldFxgB4EL0inyyxXOArSPG8dBGhVryVLxb
-X-Gm-Message-State: AOJu0YzBkbTd0EZ+d/Bl5ja7XBsn9QJHU+O/cMivPi+m8R/YMdD56gHh
-	ujxympzMsWPAXW/adxY025t++uZ/EeSAAsJcNJ3NcX1W2steOkNBbrCK+XgM41Q=
-X-Google-Smtp-Source: AGHT+IEP0KUN5vieOSkjcb6f/9wrtZCWTiS6hFvutEkB79kR+hMPoz0zBj3WKb8OwHFOckN1Bdptdw==
-X-Received: by 2002:a05:6a00:188b:b0:6e5:9698:7cb9 with SMTP id x11-20020a056a00188b00b006e596987cb9mr278229pfh.4.1709250038519;
-        Thu, 29 Feb 2024 15:40:38 -0800 (PST)
-Received: from localhost ([192.184.165.199])
-        by smtp.gmail.com with ESMTPSA id k16-20020aa79990000000b006e59615812fsm1693015pfh.213.2024.02.29.15.40.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Feb 2024 15:40:37 -0800 (PST)
-Date: Thu, 29 Feb 2024 15:40:37 -0800 (PST)
-X-Google-Original-Date: Thu, 29 Feb 2024 15:40:31 PST (-0800)
-Subject:     Re: [PATCH -fixes v4 2/3] riscv: Add a custom ISA extension for the [ms]envcfg CSR
-In-Reply-To: <20240229-establish-itinerary-5d08f6c3ee43@spud>
-CC: samuel.holland@sifive.com, ajones@ventanamicro.com, linux-kernel@vger.kernel.org,
-  alex@ghiti.fr, linux-riscv@lists.infradead.org, sorear@fastmail.com, stable@vger.kernel.org
-From: Palmer Dabbelt <palmer@dabbelt.com>
-To: Conor Dooley <conor@kernel.org>
-Message-ID: <mhng-0128d165-88ba-4952-b875-c35b06ce9224@palmer-ri-x1c9>
+	s=arc-20240116; t=1709256286; c=relaxed/simple;
+	bh=ddO+vaPFr8wczH7Xw3KlmXH+rU3xHKclnerM9eMBgFQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Y6LH8kyFOL+GHW89BUCZPwePBTku3sFa1BjZAQqP2qPHMjS+W1GZxxYNfSonkgAHvOXuDpQY1NyDzGinzZjb/uJgZRwWp8iGTs8Cy1RjGr9cxef1sqiV83bCbl9P8OkDW0kT8wkvwHZtWLOQGYuHEuNrHy5LguacHizAg7GMrgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=llhdVEWl; arc=none smtp.client-ip=220.197.31.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=RQsxh
+	LQeP7zTe9uqV+xUV9NFx2bDBH1Lqec4fhz8SUY=; b=llhdVEWl1zWbYrSpKPJKn
+	w1q8v87RWwjxcpXciUa++phleyyt6ShsL9AnXLDzAZiUu54n2FbY66USZBZzCcGZ
+	3exkk+x/IOR/ZKjWGMmqLea7aW0jCFl6dXkftKKeOpC6DEzwYw/3woWQ4U/4kvIX
+	K78IOqZAlvua3J3Ykp+wLM=
+Received: from localhost.localdomain (unknown [116.128.244.171])
+	by gzga-smtp-mta-g0-0 (Coremail) with SMTP id _____wDHr7+NLeFlC0ffBA--.60409S12;
+	Fri, 01 Mar 2024 09:22:11 +0800 (CST)
+From: Genjian <zhanggenjian@126.com>
+To: 1192843200@qq.com
+Cc: Siddh Raman Pant <code@siddh.me>,
+	syzbot+a8e049cd3abd342936b6@syzkaller.appspotmail.com,
+	stable@vger.kernel.org,
+	Matthew Wilcox <willy@infradead.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Genjian Zhang <zhanggenjian@kylinos.cn>
+Subject: [PATCH 4.19.y 8/9] loop: Check for overflow while configuring loop
+Date: Fri,  1 Mar 2024 09:19:43 +0800
+Message-Id: <20240301011944.2197153-9-zhanggenjian@126.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240301011944.2197153-1-zhanggenjian@126.com>
+References: <20240301011944.2197153-1-zhanggenjian@126.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDHr7+NLeFlC0ffBA--.60409S12
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Zr1xur4Utw4DAF45AFW5Wrg_yoW8Kw18pF
+	43WryUZ3yrKF4UCFsrt34kXryrW3WDGFy3G39Fy345u390vrnavry7Cr93ur95JryUZFWS
+	gFn3Jry8Z3WUZrUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07b7g4hUUUUU=
+X-CM-SenderInfo: x2kd0wxjhqyxldq6ij2wof0z/1tbiyAiUfmWWf0l6ZQABsx
 
-On Thu, 29 Feb 2024 10:30:10 PST (-0800), Conor Dooley wrote:
-> On Thu, Feb 29, 2024 at 10:23:39AM -0800, Palmer Dabbelt wrote:
->> On Wed, 28 Feb 2024 02:12:14 PST (-0800), Conor Dooley wrote:
->> > On Tue, Feb 27, 2024 at 10:55:34PM -0800, Samuel Holland wrote:
->> > > The [ms]envcfg CSR was added in version 1.12 of the RISC-V privileged
->> > > ISA (aka S[ms]1p12). However, bits in this CSR are defined by several
->> > > other extensions which may be implemented separately from any particular
->> > > version of the privileged ISA (for example, some unrelated errata may
->> > > prevent an implementation from claiming conformance with Ss1p12). As a
->> > > result, Linux cannot simply use the privileged ISA version to determine
->> > > if the CSR is present. It must also check if any of these other
->> > > extensions are implemented. It also cannot probe the existence of the
->> > > CSR at runtime, because Linux does not require Sstrict, so (in the
->> > > absence of additional information) it cannot know if a CSR at that
->> > > address is [ms]envcfg or part of some non-conforming vendor extension.
->> > > 
->> > > Since there are several standard extensions that imply the existence of
->> > > the [ms]envcfg CSR, it becomes unwieldy to check for all of them
->> > > wherever the CSR is accessed. Instead, define a custom Xlinuxenvcfg ISA
->> > > extension bit that is implied by the other extensions and denotes that
->> > > the CSR exists as defined in the privileged ISA, containing at least one
->> > > of the fields common between menvcfg and senvcfg.
->> > 
->> > > This extension does not need to be parsed from the devicetree or ISA
->> > > string because it can only be implemented as a subset of some other
->> > > standard extension.
->> > 
->> > NGL, every time I look at the superset stuff I question whether or not
->> > it is a good implementation, but it is nice to see that it at least
->> > makes the creation of quasi-extension flags like this straightforward.
->> 
->> We can always add it to the DT list as a proper extension, but I think for
->> this sort of stuff it's good enough for now
->
-> Perhaps good enough forever. I was not advocating for adding it as a
-> permitted DT property - I was just saying that I didn't the complexity
-> that you mention below, but I was pleasantly surprised that the stuff
-> ?Evan? and I came up with allows for this kind of inferred "extension"
-> without any changes.
+From: Siddh Raman Pant <code@siddh.me>
 
-Ya, I'm in the same boat.  I think we can get away without putting these 
-into DT until we end up with something odd going on, like some other 
-flavor of *envcf from some vendor being weird.
+[ Upstream commit c490a0b5a4f36da3918181a8acdc6991d967c5f3 ]
 
->> -- we've already got a bunch of
->> complexity for the proper ISA-defined extension dependencies, so it's not
->> like we could really get away from it entirely.
+The userspace can configure a loop using an ioctl call, wherein
+a configuration of type loop_config is passed (see lo_ioctl()'s
+case on line 1550 of drivers/block/loop.c). This proceeds to call
+loop_configure() which in turn calls loop_set_status_from_info()
+(see line 1050 of loop.c), passing &config->info which is of type
+loop_info64*. This function then sets the appropriate values, like
+the offset.
+
+loop_device has lo_offset of type loff_t (see line 52 of loop.c),
+which is typdef-chained to long long, whereas loop_info64 has
+lo_offset of type __u64 (see line 56 of include/uapi/linux/loop.h).
+
+The function directly copies offset from info to the device as
+follows (See line 980 of loop.c):
+	lo->lo_offset = info->lo_offset;
+
+This results in an overflow, which triggers a warning in iomap_iter()
+due to a call to iomap_iter_done() which has:
+	WARN_ON_ONCE(iter->iomap.offset > iter->pos);
+
+Thus, check for negative value during loop_set_status_from_info().
+
+Bug report: https://syzkaller.appspot.com/bug?id=c620fe14aac810396d3c3edc9ad73848bf69a29e
+
+Reported-and-tested-by: syzbot+a8e049cd3abd342936b6@syzkaller.appspotmail.com
+Cc: stable@vger.kernel.org
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Siddh Raman Pant <code@siddh.me>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20220823160810.181275-1-code@siddh.me
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Genjian Zhang <zhanggenjian@kylinos.cn>
+---
+ drivers/block/loop.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index 0fefd21f0c71..c1caa3e2355f 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -1271,6 +1271,11 @@ loop_set_status_from_info(struct loop_device *lo,
+ 
+ 	lo->lo_offset = info->lo_offset;
+ 	lo->lo_sizelimit = info->lo_sizelimit;
++
++	/* loff_t vars have been assigned __u64 */
++	if (lo->lo_offset < 0 || lo->lo_sizelimit < 0)
++		return -EOVERFLOW;
++
+ 	memcpy(lo->lo_file_name, info->lo_file_name, LO_NAME_SIZE);
+ 	memcpy(lo->lo_crypt_name, info->lo_crypt_name, LO_NAME_SIZE);
+ 	lo->lo_file_name[LO_NAME_SIZE-1] = 0;
+-- 
+2.25.1
+
 
