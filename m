@@ -1,170 +1,133 @@
-Return-Path: <stable+bounces-25746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 409B986E213
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 14:31:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0C1086E329
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 15:18:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE2121F23A65
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 13:31:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E10B81C21CF7
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 14:18:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A878370AEA;
-	Fri,  1 Mar 2024 13:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D15B6E5EB;
+	Fri,  1 Mar 2024 14:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FmdJHaBd"
+	dkim=pass (1024-bit key) header.d=pavinjoseph.com header.i=@pavinjoseph.com header.b="nFIBZhEu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay-us1.mymailcheap.com (relay-us1.mymailcheap.com [51.81.35.219])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4B26F06D;
-	Fri,  1 Mar 2024 13:30:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A8C6D1A3
+	for <stable@vger.kernel.org>; Fri,  1 Mar 2024 14:18:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.81.35.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709299815; cv=none; b=CWtgbQPyt08pWP2cgclO5dEw7TGo/67xvyv3md+VEbGkcqOmDU3Q29NBfP+Etmc4rEy1lmbJHDtzHU3D5dgX/w2Krl6X7AFVVN0hi/dQhFSvRoIZFyCGCDCytwDgcJtZ+tpRZF6tysS7voB/nxFn7kNoBgrcMhuiIlZNhMdoIws=
+	t=1709302685; cv=none; b=Ov3PUOyZYI4tmV4s58RdKVCVEzkjKJDo05Y3tDk5g/4jtWI4j39TvHV4Lc1nQffEQGZK+SHZYiJqG1fmNlSGFun+HXMCEMfBcLvpm6MXVRNbBO7NlRF+iKjAwjnuFpxyim/rgVAu1w/gYio7SaCgIiL6XLdJLPTqYBpfRfi+TMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709299815; c=relaxed/simple;
-	bh=Cb3N2rHpFtZQNAnh8qaVDyGADLlBDepE3AHgVkfB5/w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eSWVwQfdmsXQcU1nkU4ds9pYRL1tXrj6paBrwwlgftTaTgpe8uN1xHO1u5gSQOF7bTifWz8e0uWRBu4JCs5DRoVugok8Dttf0b78W30pZgxihItyij681/xnl5LkpdCL6sVupfV7ZYKRkLhH9sZDFfqi9vVnkZmpymJ1tP/oWow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FmdJHaBd; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-5e4613f2b56so1843292a12.1;
-        Fri, 01 Mar 2024 05:30:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709299813; x=1709904613; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=HHckA948ZmaGkyMViYat8ojP3Slv0abWxwkHxBmiobA=;
-        b=FmdJHaBd+vm+05n71QyKuZTU4jegTE23JLXB0hhpdwJla4DAv7K/z/mK67HBd3kDWp
-         UtHKCFGEwAZRbcL2VLQCDXGrnU0X7W4fqMagEsHux11BjwDCLKoNCmLS/TwsTZQIbWV9
-         ccSe2AMPj8e0fNbwgV8kZNCk4zjBMR46IchgqEVBKKmdNELTk4L1S2cx3OceAZczq+2p
-         m2xVpszc65nVTKgth/qPhIkO+irkoYIatBBrM3YlmhCazS6lyJGV/XczExkCnijA/AUS
-         MKuhjnkOsTlbf658LhymSF07V7LMheWe9EwzCwIHD69yw7XMpHhzx5S3wFT8DnGOv8OF
-         ENyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709299813; x=1709904613;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HHckA948ZmaGkyMViYat8ojP3Slv0abWxwkHxBmiobA=;
-        b=K0WRQ8aAKSoDc2Co1K6aRDPtDJ5LxHDi3dP4S4GgQD6UQk1PAlRL6qfUNyu6W507PZ
-         Wj+qCtbXzB1Pi1YFtyJ2dwqJppjVs11KzhE66AkkrgbH9abU0FD9C6Bb0cAZ6ARgui1t
-         lXtLnpoGE3joCh/ReqHzFjJvzfj6MdlOD75RRj5j5atopaXzL//W31i1v+fTHoBwOPIy
-         J+qqXCB+sSXoNr8fIbAkL/o2AqvpqbFiHA13gCFTwIKiBZ7Km5xO1x2z+m9+4xfyp8mS
-         IIYOlBNmGlSdSs2pV/3AUMKz1vAAT1ZRXtXCl/tQCmJZWzfICbi3Xq4Br41jMHD0ArRX
-         TtdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWf0rd0RI7szp35qJ2WnMhKPGnkpSdk5vBwnupu+42QhwupsWLM1+rdwlzt4GgMWyX3GnNIVuxgQRAeOoYgrdCBFGPCXQP2CWH2gEpECqRSBAlJADo8iMclvClh/hh1PnAs8foR
-X-Gm-Message-State: AOJu0Yw8PhpgtWoVAjTA/kd02MC7TTEpl0Qv4YEQHorP+oVNGExwef//
-	6XQPdFtXdW/BWSz55G/DORQWmZpBaM4rfkj28Be4AyzGNtCcY0CcqjSghuv9I1Pxh2VcP42D/dL
-	CJxEZc3svICdReKDFQoSemN4Tp+bmJyJ8CG90fw==
-X-Google-Smtp-Source: AGHT+IFjPiaNvT7Wmp/5bfnXXjIvPQWaa0U3BGSTH5v/V1+baHlSVrYfIKXQxO+DT5ucIicUHZPSIsOYQ1+VUT2jHHs=
-X-Received: by 2002:a17:90a:4981:b0:29b:6a7:c52c with SMTP id
- d1-20020a17090a498100b0029b06a7c52cmr1588418pjh.38.1709299812985; Fri, 01 Mar
- 2024 05:30:12 -0800 (PST)
+	s=arc-20240116; t=1709302685; c=relaxed/simple;
+	bh=eRHjrkdrsJg43/9heYvQDxEKsE5N6/ROvqRBnivHrb8=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=CSZIS8FFcU8uwZnVok8t07EklZpy5WRfJl2S3V2JJOe7axXvl7nN4r3L2rmnkbHaZNJrSybV5YwgS/3QEuOX+oThNZIRBPnsWOsr996YADDozheaBgFOpQch/TR04y2dKnfPeaccRg1NLyFrzHhGX8VhFGfUm9ymfJP3BfQJ9f8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pavinjoseph.com; spf=pass smtp.mailfrom=pavinjoseph.com; dkim=pass (1024-bit key) header.d=pavinjoseph.com header.i=@pavinjoseph.com header.b=nFIBZhEu; arc=none smtp.client-ip=51.81.35.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pavinjoseph.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pavinjoseph.com
+Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.241.64])
+	by relay-us1.mymailcheap.com (Postfix) with ESMTPS id 6A640217AA
+	for <stable@vger.kernel.org>; Fri,  1 Mar 2024 14:10:30 +0000 (UTC)
+Received: from relay4.mymailcheap.com (relay4.mymailcheap.com [137.74.80.154])
+	by relay5.mymailcheap.com (Postfix) with ESMTPS id B99CF2009A
+	for <stable@vger.kernel.org>; Fri,  1 Mar 2024 14:10:21 +0000 (UTC)
+Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
+	by relay4.mymailcheap.com (Postfix) with ESMTPS id 6EB6C203D6;
+	Fri,  1 Mar 2024 14:10:14 +0000 (UTC)
+Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
+	by nf1.mymailcheap.com (Postfix) with ESMTPSA id 5E79F4007F;
+	Fri,  1 Mar 2024 14:10:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=pavinjoseph.com;
+	s=default; t=1709302213;
+	bh=eRHjrkdrsJg43/9heYvQDxEKsE5N6/ROvqRBnivHrb8=;
+	h=Date:To:Cc:From:Subject:From;
+	b=nFIBZhEujakHkeU1+NlkID5+4hvTFQLvIGv4elPMwOIuQiRAXsiLssb/qOPudCqg3
+	 IB+IS7rF73O/3/Wu1U9+MrVu13X2GrrVosV/oIU5I5U0bEfq+VieKkAjpbP86O09U2
+	 mOZiGsaMbTjG1Niy/lHWGsqOIN4c3gtEwHtO02rY=
+Received: from [10.66.66.8] (unknown [139.59.64.216])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 12D0B40CE5;
+	Fri,  1 Mar 2024 14:10:11 +0000 (UTC)
+Message-ID: <3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com>
+Date: Fri, 1 Mar 2024 19:40:09 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240229195532.7815-1-christian.gmeiner@gmail.com> <2d65be7ae251221bd7524871e0cbf4b22d16a9f9.camel@pengutronix.de>
-In-Reply-To: <2d65be7ae251221bd7524871e0cbf4b22d16a9f9.camel@pengutronix.de>
-From: Christian Gmeiner <christian.gmeiner@gmail.com>
-Date: Fri, 1 Mar 2024 14:30:01 +0100
-Message-ID: <CAH9NwWe3r1sbB7BqW1zmFGxjnzOOg8Z-LBzhAP7x_kq=o9T=0A@mail.gmail.com>
-Subject: Re: [PATCH] etnaviv: Restore some id values
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: Russell King <linux+etnaviv@armlinux.org.uk>, David Airlie <airlied@gmail.com>, 
-	Daniel Vetter <daniel@ffwll.ch>, Christian Gmeiner <cgmeiner@igalia.com>, stable@vger.kernel.org, 
-	etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: stable@vger.kernel.org
+Cc: regressions@lists.linux.dev
+From: Pavin Joseph <me@pavinjoseph.com>
+Subject: [REGRESSION] kexec does firmware reboot in kernel v6.7.6
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.09 / 10.00];
+	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
+	ARC_NA(0.00)[];
+	RCVD_COUNT_ONE(0.00)[1];
+	RCVD_TLS_ALL(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_NONE(0.00)[];
+	MIME_TRACE(0.00)[0:+]
+X-Rspamd-Server: nf1.mymailcheap.com
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 5E79F4007F
 
-Hi Lucas,
+Hello everyone,
 
->
-> prefix for etnaviv kernel patches should be "drm/etnaviv: ..."
+#regzbot introduced v6.7.5..v6.7.6
 
-Ah yeah .. corrected in v2.
+I'm experiencing an issue where kexec does a full firmware reboot 
+instead of kexec reboot.
 
->
-> Am Donnerstag, dem 29.02.2024 um 20:55 +0100 schrieb Christian Gmeiner:
-> > From: Christian Gmeiner <cgmeiner@igalia.com>
-> >
-> > The hwdb selection logic as a feature that allows it to mark some fields
-> > as 'don't care'. If we match with such a field we memcpy(..)
-> > the current etnaviv_chip_identity into ident.
-> >
-> > This step can overwrite some id values read from the GPU with the
-> > 'don't care' value.
-> >
-> > Fix this issue by restoring the affected values after the memcpy(..).
-> >
-> > As this is crucial for user space to know when this feature works as
-> > expected increment the minor version too.
->
-> Uh, right. Lying to userspace about the GPU identity doesn't seem like
-> a good idea.
->
-> >
-> > Fixes: 4078a1186dd3 ("drm/etnaviv: update hwdb selection logic")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Christian Gmeiner <cgmeiner@igalia.com>
-> > ---
-> >  drivers/gpu/drm/etnaviv/etnaviv_drv.c  |  2 +-
-> >  drivers/gpu/drm/etnaviv/etnaviv_hwdb.c | 14 ++++++++++++++
-> >  2 files changed, 15 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/gpu/drm/etnaviv/etnaviv_drv.c b/drivers/gpu/drm/etnaviv/etnaviv_drv.c
-> > index 6228ce603248..9a2965741dab 100644
-> > --- a/drivers/gpu/drm/etnaviv/etnaviv_drv.c
-> > +++ b/drivers/gpu/drm/etnaviv/etnaviv_drv.c
-> > @@ -494,7 +494,7 @@ static const struct drm_driver etnaviv_drm_driver = {
-> >       .desc               = "etnaviv DRM",
-> >       .date               = "20151214",
-> >       .major              = 1,
-> > -     .minor              = 3,
-> > +     .minor              = 4,
-> >  };
-> >
-> >  /*
-> > diff --git a/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c b/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c
-> > index 67201242438b..1e38d66702f1 100644
-> > --- a/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c
-> > +++ b/drivers/gpu/drm/etnaviv/etnaviv_hwdb.c
-> > @@ -265,6 +265,9 @@ static const struct etnaviv_chip_identity etnaviv_chip_identities[] = {
-> >  bool etnaviv_fill_identity_from_hwdb(struct etnaviv_gpu *gpu)
-> >  {
-> >       struct etnaviv_chip_identity *ident = &gpu->identity;
-> > +     const u32 product_id = ident->product_id;
-> > +     const u32 customer_id = ident->customer_id;
-> > +     const u32 eco_id = ident->eco_id;
-> >       int i;
-> >
-> >       for (i = 0; i < ARRAY_SIZE(etnaviv_chip_identities); i++) {
-> > @@ -278,6 +281,17 @@ bool etnaviv_fill_identity_from_hwdb(struct etnaviv_gpu *gpu)
-> >                        etnaviv_chip_identities[i].eco_id == ~0U)) {
-> >                       memcpy(ident, &etnaviv_chip_identities[i],
-> >                              sizeof(*ident));
-> > +
-> > +                     /* Restore some id values if ~0U aka 'don't care' is used. */
-> > +                     if (etnaviv_chip_identities[i].product_id == ~0U)
->
-> You can drop all those if clauses. Either the hwdb value is an exact
-> match and the value is the same or it's the don't care value and you
-> want to restore it, so a simple unconditional assignment would make
-> this a bit more compact.
->
+Issue first submitted at OpenSuse bugzilla [0].
 
-Makes sense - thanks for your review!
+OS details as follows:
+Distributor ID:	openSUSE
+Description:	openSUSE Tumbleweed-Slowroll
+Release:	20240213
 
--- 
-greets
---
-Christian Gmeiner, MSc
+Issue has been reproduced by building kernel from source.
 
-https://christian-gmeiner.info/privacypolicy
+kexec works as expected in kernel v6.7.5.
+kexec does full firmware reboot in kernel v6.7.6.
+
+I followed the docs here [1] to perform git bisect and find the culprit, 
+hope it's alright as I'm quite out of my depth here.
+
+Git bisect logs:
+git bisect start
+# status: waiting for both good and bad commits
+# bad: [b631f5b445dc3379f67ff63a2e4c58f22d4975dc] Linux 6.7.6
+git bisect bad b631f5b445dc3379f67ff63a2e4c58f22d4975dc
+# status: waiting for good commit(s), bad commit known
+# good: [004dcea13dc10acaf1486d9939be4c793834c13c] Linux 6.7.5
+git bisect good 004dcea13dc10acaf1486d9939be4c793834c13c
+
+Let me know if there's anything else I can do to help troubleshoot the 
+issue.
+
+[0]: https://bugzilla.suse.com/show_bug.cgi?id=1220541
+[1]: https://docs.kernel.org/admin-guide/bug-bisect.html
+
+Kind regards,
+Pavin Joseph.
 
