@@ -1,133 +1,142 @@
-Return-Path: <stable+bounces-25747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0C1086E329
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 15:18:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA96486E365
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 15:37:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E10B81C21CF7
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 14:18:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBD1CB20F34
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 14:37:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D15B6E5EB;
-	Fri,  1 Mar 2024 14:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E005A1FA1;
+	Fri,  1 Mar 2024 14:37:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=pavinjoseph.com header.i=@pavinjoseph.com header.b="nFIBZhEu"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="TV4qXrW6"
 X-Original-To: stable@vger.kernel.org
-Received: from relay-us1.mymailcheap.com (relay-us1.mymailcheap.com [51.81.35.219])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96A8C6D1A3
-	for <stable@vger.kernel.org>; Fri,  1 Mar 2024 14:18:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.81.35.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AFF61C17
+	for <stable@vger.kernel.org>; Fri,  1 Mar 2024 14:37:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709302685; cv=none; b=Ov3PUOyZYI4tmV4s58RdKVCVEzkjKJDo05Y3tDk5g/4jtWI4j39TvHV4Lc1nQffEQGZK+SHZYiJqG1fmNlSGFun+HXMCEMfBcLvpm6MXVRNbBO7NlRF+iKjAwjnuFpxyim/rgVAu1w/gYio7SaCgIiL6XLdJLPTqYBpfRfi+TMc=
+	t=1709303864; cv=none; b=Z8H0DdGthyWH9ZTj3yzvzSohBDCDS5rq51eNCejAKuLM14nOhnOrthNLjsQwaGv3yhXUCTaYmwntk8rmBYUmInZ87bs9MhrZgvqK6OzAZeU6A1ugb3i/yzWY1B7eDQia4fyTldPnsSS+bKweZ1Gf/kBFcBKNpvOBD7J7axCG0iY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709302685; c=relaxed/simple;
-	bh=eRHjrkdrsJg43/9heYvQDxEKsE5N6/ROvqRBnivHrb8=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=CSZIS8FFcU8uwZnVok8t07EklZpy5WRfJl2S3V2JJOe7axXvl7nN4r3L2rmnkbHaZNJrSybV5YwgS/3QEuOX+oThNZIRBPnsWOsr996YADDozheaBgFOpQch/TR04y2dKnfPeaccRg1NLyFrzHhGX8VhFGfUm9ymfJP3BfQJ9f8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pavinjoseph.com; spf=pass smtp.mailfrom=pavinjoseph.com; dkim=pass (1024-bit key) header.d=pavinjoseph.com header.i=@pavinjoseph.com header.b=nFIBZhEu; arc=none smtp.client-ip=51.81.35.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pavinjoseph.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pavinjoseph.com
-Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.241.64])
-	by relay-us1.mymailcheap.com (Postfix) with ESMTPS id 6A640217AA
-	for <stable@vger.kernel.org>; Fri,  1 Mar 2024 14:10:30 +0000 (UTC)
-Received: from relay4.mymailcheap.com (relay4.mymailcheap.com [137.74.80.154])
-	by relay5.mymailcheap.com (Postfix) with ESMTPS id B99CF2009A
-	for <stable@vger.kernel.org>; Fri,  1 Mar 2024 14:10:21 +0000 (UTC)
-Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
-	by relay4.mymailcheap.com (Postfix) with ESMTPS id 6EB6C203D6;
-	Fri,  1 Mar 2024 14:10:14 +0000 (UTC)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf1.mymailcheap.com (Postfix) with ESMTPSA id 5E79F4007F;
-	Fri,  1 Mar 2024 14:10:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=pavinjoseph.com;
-	s=default; t=1709302213;
-	bh=eRHjrkdrsJg43/9heYvQDxEKsE5N6/ROvqRBnivHrb8=;
-	h=Date:To:Cc:From:Subject:From;
-	b=nFIBZhEujakHkeU1+NlkID5+4hvTFQLvIGv4elPMwOIuQiRAXsiLssb/qOPudCqg3
-	 IB+IS7rF73O/3/Wu1U9+MrVu13X2GrrVosV/oIU5I5U0bEfq+VieKkAjpbP86O09U2
-	 mOZiGsaMbTjG1Niy/lHWGsqOIN4c3gtEwHtO02rY=
-Received: from [10.66.66.8] (unknown [139.59.64.216])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 12D0B40CE5;
-	Fri,  1 Mar 2024 14:10:11 +0000 (UTC)
-Message-ID: <3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com>
-Date: Fri, 1 Mar 2024 19:40:09 +0530
+	s=arc-20240116; t=1709303864; c=relaxed/simple;
+	bh=Tu1IhSm5ytRoCYM2NUIGoUQfc9tPBjeGnKpUrWBIzS4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=eeBm8RKZKPtI4mU/6WHrjpmyBzTwWJ10utvu8nnr2tFSuGoc38GH3sXvbKoZcBD0/CdTmRkubYma98qYmBC9/apDH5RTbgqQfAKX01QSZQ1beX2x5+GvI2LspD1kVzP2FYDHsyG4vcM4TsNk7bsSkrorauw6qeG1g7u4aZHVjFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=TV4qXrW6; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-1d911c2103aso6072355ad.0
+        for <stable@vger.kernel.org>; Fri, 01 Mar 2024 06:37:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1709303862; x=1709908662; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oVtdCDkncAEjYp5VDfB0TkA+iNPQzbJhtZQ9XlyWAes=;
+        b=TV4qXrW63j5bHEgVYRDL5i5MnfUy4QudFtwBnXK5JBFifgyAyzNscdLpFUhh40SdYO
+         QsEqUAU9WT4kPyHqgZMsSrkAIBj/7EUdVcujrgssNMabe9khIAb5TleYStqMC6mMFXY2
+         +ovfR4q1D5pWeZGSTz+e+tExb6CzLLrS+4C0MO6pMMoVDz08WrtMVSYtRLhQ4TI7kQb9
+         EiZk9vv+mss9H61A0HrOp2jf5pg7edESrxqqcPc+48+jq8Gx88Z4kZwJ4AT3n+Y+w23y
+         tts8axSVuIH9A648mO3cZzEZFLRYCG8jqyE2CAiGjIGAerPwkFXCdPdvkcsCRnJP71Gp
+         lBEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709303862; x=1709908662;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oVtdCDkncAEjYp5VDfB0TkA+iNPQzbJhtZQ9XlyWAes=;
+        b=gA5MS69eSH5ZuzYRP1ERgtFoAeIlsG/PF+A4pNHFNsJEw32kdELJz1KCCdl2Ehci4d
+         5bjtu9pXBzJgM4YsCCReFL3/Y4ciyU8pg3Z6HIBGd2uEU+x/+OtascCtNQQyTCHF6WWA
+         4RuSUfRYVLINteOXcC5+2456YzCsAJpEYf2w7xqAe4Xjq/KJ953yVGBZkO+Hfk6QDJuu
+         oK0jqyukSCHUQzSLDYujWugM1Xdu2h1gEDfTZcJGsVdORjSvsX6jkHILYBl9ScDOdJVc
+         RjOsS1syomSGPCmTHzgK4HyYtfKBrhPMFr61CpnnBd+eZKKJgWHGOWyoaGpTaAVlNgdN
+         /fWA==
+X-Forwarded-Encrypted: i=1; AJvYcCWZHVbNwgzesVYK0oDLHbfAi4upq2acrreQDncbO79gyz4ljSBo08IYRwV6PlaWiBq1cBGGzlhERSD7KRyGGjVxUBNnVppv
+X-Gm-Message-State: AOJu0Yyekci3spduLTk1CcUCPydzZ33muaXEEZ41mDuBM1bSm0aCJXgE
+	Ryo4SOttm19r1nMecDHRT9fVWaSps4Nr7FYnToUFANKb0lYUwxkKxs5gjdcQkpg=
+X-Google-Smtp-Source: AGHT+IEc0VYmCsFGtKuNFZxqUlC22U6RVuMYWS58KkWVcBcHQtJsz9h797yn3Q9ko08aW7bsTmOwSQ==
+X-Received: by 2002:a17:902:d3c4:b0:1dc:5d9d:6eb3 with SMTP id w4-20020a170902d3c400b001dc5d9d6eb3mr1641483plb.21.1709303862445;
+        Fri, 01 Mar 2024 06:37:42 -0800 (PST)
+Received: from sumit-X1.. ([223.178.213.98])
+        by smtp.gmail.com with ESMTPSA id c3-20020a170902d90300b001db94bead0asm3497899plz.193.2024.03.01.06.37.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Mar 2024 06:37:42 -0800 (PST)
+From: Sumit Garg <sumit.garg@linaro.org>
+To: op-tee@lists.trustedfirmware.org
+Cc: jens.wiklander@linaro.org,
+	ilias.apalodimas@linaro.org,
+	jerome.forissier@linaro.org,
+	linux-kernel@vger.kernel.org,
+	mikko.rapeli@linaro.org,
+	Sumit Garg <sumit.garg@linaro.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] tee: optee: Fix kernel panic caused by incorrect error handling
+Date: Fri,  1 Mar 2024 20:07:31 +0530
+Message-Id: <20240301143731.3494455-1-sumit.garg@linaro.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: stable@vger.kernel.org
-Cc: regressions@lists.linux.dev
-From: Pavin Joseph <me@pavinjoseph.com>
-Subject: [REGRESSION] kexec does firmware reboot in kernel v6.7.6
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.09 / 10.00];
-	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
-	ARC_NA(0.00)[];
-	RCVD_COUNT_ONE(0.00)[1];
-	RCVD_TLS_ALL(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_NONE(0.00)[];
-	MIME_TRACE(0.00)[0:+]
-X-Rspamd-Server: nf1.mymailcheap.com
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 5E79F4007F
+Content-Transfer-Encoding: 8bit
 
-Hello everyone,
+The error path while failing to register devices on the TEE bus has a
+bug leading to kernel panic as follows:
 
-#regzbot introduced v6.7.5..v6.7.6
+[   15.398930] Unable to handle kernel paging request at virtual address ffff07ed00626d7c
+[   15.406913] Mem abort info:
+[   15.409722]   ESR = 0x0000000096000005
+[   15.413490]   EC = 0x25: DABT (current EL), IL = 32 bits
+[   15.418814]   SET = 0, FnV = 0
+[   15.421878]   EA = 0, S1PTW = 0
+[   15.425031]   FSC = 0x05: level 1 translation fault
+[   15.429922] Data abort info:
+[   15.432813]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
+[   15.438310]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[   15.443372]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+[   15.448697] swapper pgtable: 4k pages, 48-bit VAs, pgdp=00000000d9e3e000
+[   15.455413] [ffff07ed00626d7c] pgd=1800000bffdf9003, p4d=1800000bffdf9003, pud=0000000000000000
+[   15.464146] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
 
-I'm experiencing an issue where kexec does a full firmware reboot 
-instead of kexec reboot.
+Commit 7269cba53d90 ("tee: optee: Fix supplicant based device enumeration")
+lead to the introduction of this bug. So fix it appropriately.
 
-Issue first submitted at OpenSuse bugzilla [0].
+Reported-by: Mikko Rapeli <mikko.rapeli@linaro.org>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218542
+Fixes: 7269cba53d90 ("tee: optee: Fix supplicant based device enumeration")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+---
+ drivers/tee/optee/device.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-OS details as follows:
-Distributor ID:	openSUSE
-Description:	openSUSE Tumbleweed-Slowroll
-Release:	20240213
+diff --git a/drivers/tee/optee/device.c b/drivers/tee/optee/device.c
+index 9d2afac96acc..d296c70ddfdc 100644
+--- a/drivers/tee/optee/device.c
++++ b/drivers/tee/optee/device.c
+@@ -90,13 +90,14 @@ static int optee_register_device(const uuid_t *device_uuid, u32 func)
+ 	if (rc) {
+ 		pr_err("device registration failed, err: %d\n", rc);
+ 		put_device(&optee_device->dev);
++		return rc;
+ 	}
+ 
+ 	if (func == PTA_CMD_GET_DEVICES_SUPP)
+ 		device_create_file(&optee_device->dev,
+ 				   &dev_attr_need_supplicant);
+ 
+-	return rc;
++	return 0;
+ }
+ 
+ static int __optee_enumerate_devices(u32 func)
+-- 
+2.34.1
 
-Issue has been reproduced by building kernel from source.
-
-kexec works as expected in kernel v6.7.5.
-kexec does full firmware reboot in kernel v6.7.6.
-
-I followed the docs here [1] to perform git bisect and find the culprit, 
-hope it's alright as I'm quite out of my depth here.
-
-Git bisect logs:
-git bisect start
-# status: waiting for both good and bad commits
-# bad: [b631f5b445dc3379f67ff63a2e4c58f22d4975dc] Linux 6.7.6
-git bisect bad b631f5b445dc3379f67ff63a2e4c58f22d4975dc
-# status: waiting for good commit(s), bad commit known
-# good: [004dcea13dc10acaf1486d9939be4c793834c13c] Linux 6.7.5
-git bisect good 004dcea13dc10acaf1486d9939be4c793834c13c
-
-Let me know if there's anything else I can do to help troubleshoot the 
-issue.
-
-[0]: https://bugzilla.suse.com/show_bug.cgi?id=1220541
-[1]: https://docs.kernel.org/admin-guide/bug-bisect.html
-
-Kind regards,
-Pavin Joseph.
 
