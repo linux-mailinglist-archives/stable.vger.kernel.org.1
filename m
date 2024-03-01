@@ -1,189 +1,158 @@
-Return-Path: <stable+bounces-25721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 504C686DA89
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 05:09:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23B0186DAFD
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 06:21:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06035285F7D
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 04:09:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 550D51C235AB
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 05:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B5AB481A3;
-	Fri,  1 Mar 2024 04:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F7CF5026C;
+	Fri,  1 Mar 2024 05:21:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="SWQoA8yv"
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="Wapk/aCW"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A55847F54;
-	Fri,  1 Mar 2024 04:09:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C79B3FE3F;
+	Fri,  1 Mar 2024 05:21:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709266178; cv=none; b=mk960xKWnNzSR5aSIBcbjs62XUxVeGTz+QdAFjTn+Q49EbQGEsh9fachZI0tt6f4isnlBYCw1QWv8TqehK+GNFi0THMDbqE9IpXScYh/ubtRrLM0UymmuxkpCQn3PTQhcv6GctBtXgXv36P49UlZek31iPpL0PBKqXs9k5hi3dw=
+	t=1709270468; cv=none; b=A2/8poOEqJ5kTsI2yDO0RdqrES9eFkIYCXVxIModKLmhJCWBB5gs/gxED4IX1yTl/zqwWp9S2CPig1Dv9DK4Vjh5H+5IwAN/JFaVlriNYM99T9ofrdA/uA3qk7u/PLfECCTnyau60aU4K6WeO2qC73WvdCqHrRNaTP4vSrvskFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709266178; c=relaxed/simple;
-	bh=sNWAXgHYKNn8YPbGhQ36rxyCN8OCQlMk1eMAZ69y28U=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Tz0WG0KWOqCy96K67Gxwmcs77mnAoyp1wTEht8Sg0bqUGkOeXJDcNewO+gmmSb6PNNktWMLm64x1ee3jyKm7HSiJjQMzxh8Mnoz2NlHTDW/NdPoIO4agBR3eq5pREkISnJQwYKRDh5s20fEWpNdzBjNTmyDfkByBLZD0lBfJmqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=SWQoA8yv; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42145vlK000988;
-	Fri, 1 Mar 2024 04:09:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding:content-type; s=qcppdkim1; bh=uF5QC2T
-	TNjSpqnVNU/KNC6VIdKhgi0qvbXfeSBNURwU=; b=SWQoA8yvr4hy/WXvu0vfESg
-	JLP/lPRc9K2vI/m0D2BZkaXHp9Ovwjnv9XLEdeSI/CcQF224ZR9bnArHYjZJAP/z
-	wZ4VOrNB3yGcSuflKBPWrp9IMNGgOTFJP9UCIV9LItfwuZGxaDQ0tPNj6p/xI4oz
-	jJ2pfbt+MMvUoybebzXEa6gaFUqi9EddozyHTPRSPo0cIVU9BnLsF/lCHE3MlZVx
-	sWZZxpQNcnt3gTUHTPWm4XoMrITeb/BpVxTqJR6l1Q4xibX4YkXb7SQagsgDarHT
-	DZHHrwgcb05xLUHFnH4iGLPGjB40ANgvQg8eSjJZCCtvajOfHwdbVCW0Btc0l/w=
-	=
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wjupp22qq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Mar 2024 04:09:29 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42149ToU021776
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 1 Mar 2024 04:09:29 GMT
-Received: from hu-kriskura-hyd.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Thu, 29 Feb 2024 20:09:23 -0800
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
-To: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        "Dmitry
- Baryshkov" <dmitry.baryshkov@linaro.org>,
-        Johan Hovold
-	<johan+linaro@kernel.org>, Rob Herring <robh@kernel.org>,
-        Min-Hua Chen
-	<minhuadotchen@gmail.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>
-CC: <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <quic_ppratap@quicinc.com>, <quic_jackp@quicinc.com>,
-        <quic_wcheng@quicinc.com>, <quic_subbaram@quicinc.com>,
-        Krishna Kurapati
-	<quic_kriskura@quicinc.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH] usb: typec: ucsi: Fix race between typec_switch and role_switch
-Date: Fri, 1 Mar 2024 09:39:14 +0530
-Message-ID: <20240301040914.458492-1-quic_kriskura@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1709270468; c=relaxed/simple;
+	bh=hYkXkTirDR6JozbmGZTEpu69g7CUbtqTAq7OcMqZhOc=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Iocq4dxRhnaoFM7L4PQg7dxU+e/w+RjhzLqVggpcMmhGGtII5aIZqF6kAOvfE7/0G9eeiJlY+PWnjIoeWhZg7eFZts8QAFiou3sR4HFBdu6miCCZzUyvVt+lTAUfLwUdhyvXaNl9v7mYhm2sEppRQS9LZonLSgDIhLW+h33BrFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=Wapk/aCW; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:References:Reply-To:Cc:To:From:Subject:MIME-Version:Date:
+	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+	In-Reply-To:References; bh=TGGFXxkdaHkpLZsjv4M/o7SAoLYzqZm3P9d/C+KSKlg=;
+	t=1709270466; x=1709702466; b=Wapk/aCWBSGkwEKCmS3HWS/GqmYRwlzO0aQLvfxbgyWM6Ga
+	vkWI7f0EsQSJKupe2IXnrnwB0RMsGnYRy/ugpzXxVPZWqOy39fiSopr0GspzDyuWXTWFCaKel918q
+	Laq5Vcxuja0lvkt8mAjp7p8ppur6k3rBd1zRbKXzWSkjElJ7HhSsObbbdhQxqYNFqk4liDGN9yWh8
+	elLt8eikCTDvX5859ptvjwnxuvB41IOx5fuDguuPf42YdGndMX3IHX4yha7fZp9ZE+H51kXs4pk2Y
+	Mzu6Rlk4kTQXrBFGE24qz2PgXw5uj0JuqC++XliOT5cdM5lM97PS0W0ulR8VtcEQ==;
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rfvKI-0005dh-Vv; Fri, 01 Mar 2024 06:20:55 +0100
+Message-ID: <d2465271-1e4b-4bae-9399-4d49d3938048@leemhuis.info>
+Date: Fri, 1 Mar 2024 06:20:52 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: m-9ZUAEmMu4UC56HHXhKjG3qoDiPrGu4
-X-Proofpoint-GUID: m-9ZUAEmMu4UC56HHXhKjG3qoDiPrGu4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-01_01,2024-02-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 spamscore=0
- lowpriorityscore=0 impostorscore=0 bulkscore=0 phishscore=0 suspectscore=0
- mlxlogscore=999 mlxscore=0 malwarescore=0 adultscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2402120000
- definitions=main-2403010031
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH regression fix] misc: lis3lv02d_i2c: Fix regulators
+ getting en-/dis-abled twice on suspend/resume
+Content-Language: en-US, de-DE
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+To: Hans de Goede <hdegoede@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Eric Piel <eric.piel@tremplin-utc.net>,
+ linux-kernel@vger.kernel.org, Paul Menzel <pmenzel@molgen.mpg.de>,
+ stable@vger.kernel.org, regressions@lists.linux.dev
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>,
+ Linux regressions mailing list <regressions@lists.linux.dev>
+References: <20240220190035.53402-1-hdegoede@redhat.com>
+ <1d8226cd-df43-4ef6-8425-2db01d513b32@leemhuis.info>
+In-Reply-To: <1d8226cd-df43-4ef6-8425-2db01d513b32@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1709270466;28c93d34;
+X-HE-SMSGID: 1rfvKI-0005dh-Vv
 
-When orientation switch is enabled in ucsi glink, there is a xhci
-probe failure seen when booting up in host mode in reverse
-orientation.
+On 27.02.24 17:25, Linux regression tracking (Thorsten Leemhuis) wrote:
+> On 20.02.24 20:00, Hans de Goede wrote:
+>> When not configured for wakeup lis3lv02d_i2c_suspend() will call
+>> lis3lv02d_poweroff() even if the device has already been turned off
+>> by the runtime-suspend handler and if configured for wakeup and
+>> the device is runtime-suspended at this point then it is not turned
+>> back on to serve as a wakeup source.
+>>
+>> [...]
+>>
+>> Fixes: b1b9f7a49440 ("misc: lis3lv02d_i2c: Add missing setting of the reg_ctrl callback")
+>> Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+>> Closes: https://lore.kernel.org/regressions/5fc6da74-af0a-4aac-b4d5-a000b39a63a5@molgen.mpg.de/
+>> Cc: stable@vger.kernel.org
+>> Cc: regressions@lists.linux.dev
+> 
+> Paul, did you maybe test this? I suppose Greg had no time to review this
+> yet due to all the CVE stuff and stable tree maintenance; but with a bit
+> of luck a "Tested-by" from your side might motivate him or somebody else
+> to look into this.
 
-During bootup the following things happen in multiple drivers:
+Hmmm, Greg seems to be pretty busy with other stuff. Hans, is there
+maybe someone we can motivate into reviewing this to make it easier for
+Greg to pick this up and send it to Linus before -rc8/the final?
 
-a) DWC3 controller driver initializes the core in device mode when the
-dr_mode is set to DRD. It relies on role_switch call to change role to
-host.
+Sure, it's "just" a warning fix, still would have been nice to get this
+into -rc7. But I guess time has already run out on that. :-/
 
-b) QMP driver initializes the lanes to TYPEC_ORIENTATION_NORMAL as a
-normal routine. It relies on the typec_switch_set call to get notified
-of orientation changes.
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
 
-c) UCSI core reads the UCSI_GET_CONNECTOR_STATUS via the glink and
-provides initial role switch to dwc3 controller.
-
-When booting up in host mode with orientation TYPEC_ORIENTATION_REVERSE,
-then we see the following things happening in order:
-
-a) UCSI gives initial role as host to dwc3 controller ucsi_register_port.
-Upon receiving this notification, the dwc3 core needs to program GCTL from
-PRTCAP_DEVICE to PRTCAP_HOST and as part of this change, it asserts GCTL
-Core soft reset and waits for it to be  completed before shifting it to
-host. Only after the reset is done will the dwc3_host_init be invoked and
-xhci is probed. DWC3 controller expects that the usb phy's are stable
-during this process i.e., the phy init is already done.
-
-b) During the 100ms wait for GCTL core soft reset, the actual notification
-from PPM is received by ucsi_glink via pmic glink for changing role to
-host. The pmic_glink_ucsi_notify routine first sends the orientation
-change to QMP and then sends role to dwc3 via ucsi framework. This is
-happening exactly at the time GCTL core soft reset is being processed.
-
-c) When QMP driver receives typec switch to TYPEC_ORIENTATION_REVERSE, it
-then re-programs the phy at the instant GCTL core soft reset has been
-asserted by dwc3 controller due to which the QMP PLL lock fails in
-qmp_combo_usb_power_on.
-
-d) After the 100ms of GCTL core soft reset is completed, the dwc3 core
-goes for initializing the host mode and invokes xhci probe. But at this
-point the QMP is non-responsive and as a result, the xhci plat probe fails
-during xhci_reset.
-
-Fix this by passing orientation switch to available ucsi instances if
-their gpio configuration is available before ucsi_register is invoked so
-that by the time, the pmic_glink_ucsi_notify provides typec_switch to QMP,
-the lane is already configured and the call would be a NOP thus not racing
-with role switch.
-
-Cc: <stable@vger.kernel.org>
-Fixes: c6165ed2f425 ("usb: ucsi: glink: use the connector orientation GPIO to provide switch events")
-Suggested-by: Wesley Cheng <quic_wcheng@quicinc.com>
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
----
- drivers/usb/typec/ucsi/ucsi_glink.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
-
-diff --git a/drivers/usb/typec/ucsi/ucsi_glink.c b/drivers/usb/typec/ucsi/ucsi_glink.c
-index 0bd3f6dee678..466df7b9f953 100644
---- a/drivers/usb/typec/ucsi/ucsi_glink.c
-+++ b/drivers/usb/typec/ucsi/ucsi_glink.c
-@@ -255,6 +255,20 @@ static void pmic_glink_ucsi_notify(struct work_struct *work)
- static void pmic_glink_ucsi_register(struct work_struct *work)
- {
- 	struct pmic_glink_ucsi *ucsi = container_of(work, struct pmic_glink_ucsi, register_work);
-+	int orientation;
-+	int i;
-+
-+	for (i = 0; i < PMIC_GLINK_MAX_PORTS; i++) {
-+		if (!ucsi->port_orientation[i])
-+			continue;
-+		orientation = gpiod_get_value(ucsi->port_orientation[i]);
-+
-+		if (orientation >= 0) {
-+			typec_switch_set(ucsi->port_switch[i],
-+					 orientation ? TYPEC_ORIENTATION_REVERSE
-+					     : TYPEC_ORIENTATION_NORMAL);
-+		}
-+	}
- 
- 	ucsi_register(ucsi->ucsi);
- }
--- 
-2.34.1
-
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>> ---
+>>  drivers/misc/lis3lv02d/lis3lv02d_i2c.c | 21 +++++++++++++--------
+>>  1 file changed, 13 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/drivers/misc/lis3lv02d/lis3lv02d_i2c.c b/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
+>> index c6eb27d46cb0..15119584473c 100644
+>> --- a/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
+>> +++ b/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
+>> @@ -198,8 +198,14 @@ static int lis3lv02d_i2c_suspend(struct device *dev)
+>>  	struct i2c_client *client = to_i2c_client(dev);
+>>  	struct lis3lv02d *lis3 = i2c_get_clientdata(client);
+>>  
+>> -	if (!lis3->pdata || !lis3->pdata->wakeup_flags)
+>> +	/* Turn on for wakeup if turned off by runtime suspend */
+>> +	if (lis3->pdata && lis3->pdata->wakeup_flags) {
+>> +		if (pm_runtime_suspended(dev))
+>> +			lis3lv02d_poweron(lis3);
+>> +	/* For non wakeup turn off if not already turned off by runtime suspend */
+>> +	} else if (!pm_runtime_suspended(dev))
+>>  		lis3lv02d_poweroff(lis3);
+>> +
+>>  	return 0;
+>>  }
+>>  
+>> @@ -208,13 +214,12 @@ static int lis3lv02d_i2c_resume(struct device *dev)
+>>  	struct i2c_client *client = to_i2c_client(dev);
+>>  	struct lis3lv02d *lis3 = i2c_get_clientdata(client);
+>>  
+>> -	/*
+>> -	 * pm_runtime documentation says that devices should always
+>> -	 * be powered on at resume. Pm_runtime turns them off after system
+>> -	 * wide resume is complete.
+>> -	 */
+>> -	if (!lis3->pdata || !lis3->pdata->wakeup_flags ||
+>> -		pm_runtime_suspended(dev))
+>> +	/* Turn back off if turned on for wakeup and runtime suspended*/
+>> +	if (lis3->pdata && lis3->pdata->wakeup_flags) {
+>> +		if (pm_runtime_suspended(dev))
+>> +			lis3lv02d_poweroff(lis3);
+>> +	/* For non wakeup turn back on if not runtime suspended */
+>> +	} else if (!pm_runtime_suspended(dev))
+>>  		lis3lv02d_poweron(lis3);
+>>  
+>>  	return 0;
+> 
+> 
 
