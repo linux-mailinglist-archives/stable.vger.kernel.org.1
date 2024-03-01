@@ -1,164 +1,189 @@
-Return-Path: <stable+bounces-25720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8E9586D93B
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 02:53:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 504C686DA89
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 05:09:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FC2A285A20
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 01:53:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06035285F7D
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 04:09:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C35B036137;
-	Fri,  1 Mar 2024 01:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B5AB481A3;
+	Fri,  1 Mar 2024 04:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DW3ZYV6P"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="SWQoA8yv"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB2D2E3F9
-	for <stable@vger.kernel.org>; Fri,  1 Mar 2024 01:53:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A55847F54;
+	Fri,  1 Mar 2024 04:09:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709258003; cv=none; b=cZk/1ghhz5VDmgwH1wCrkZ+1MKDwHL5C1KEH8rTNgwidbdeeETv9ZyMLh8i+5kH/YeYml0yqjTtQh9RhZYtVF4xpL3bT5qWWWJD9AX47/3KnXjI+0hBxBC1lz72FLEpk4UyLj5k4o/T25sUQL/Y/MB6Ko6o2J12Uxc+d9wT/Vno=
+	t=1709266178; cv=none; b=mk960xKWnNzSR5aSIBcbjs62XUxVeGTz+QdAFjTn+Q49EbQGEsh9fachZI0tt6f4isnlBYCw1QWv8TqehK+GNFi0THMDbqE9IpXScYh/ubtRrLM0UymmuxkpCQn3PTQhcv6GctBtXgXv36P49UlZek31iPpL0PBKqXs9k5hi3dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709258003; c=relaxed/simple;
-	bh=nIihlmgW+uwhT9twu/+xEC5jEg7HHf0+JI2opq3SmnI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=I2jtQo/aw6zC8iy7c63HrPcsBFAqz3LqprU0tFnqEzYIKr4xkGA2QqnCufs5jWd1+uX1K8Fj4Fa2jDdF4cCHUMzzZsIH6xPZ8pLkocVJsvcB3lXiwXo/IZafZvBKSD08ajgZvj1gU8wZcvOlqy28sAk+KsqZvUdF2VdTboTuAQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DW3ZYV6P; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709258000;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H2f+zUV1B6Erfx6sDWIeH2uAfVkZLUavK8muqCOy4L8=;
-	b=DW3ZYV6PR2NLDJLELcdEVFDl6aVWtP7j/9BpgMPtaE5u4AvUKzUIix6ExQqKgxDvcNqs1C
-	jXkgUM1etqWqJ+n2NXBSlbnRjdte4tMO04reREgL8DhhF1LVkn2ATDdW6FjS50tZWmqj+1
-	I8e0IhAlR6nY3DoVf8ax7sx8EtP7VKw=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-66-qLBb1ZwPNWSyGGQhWkrctQ-1; Thu, 29 Feb 2024 20:53:18 -0500
-X-MC-Unique: qLBb1ZwPNWSyGGQhWkrctQ-1
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-1dcabec8fddso17147835ad.2
-        for <stable@vger.kernel.org>; Thu, 29 Feb 2024 17:53:18 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709257998; x=1709862798;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=H2f+zUV1B6Erfx6sDWIeH2uAfVkZLUavK8muqCOy4L8=;
-        b=WiMt79nelQ0kFFdpsHVzaONLjxZMH4YJqWpUTv2xbOwUNqQ2+NNiAaYZ+ZiHYqFpZB
-         eKcFL8l6yHOBg66GcpjLM2eKdufuFxoRIA6OwjZUOwBrm4ciLZVtNWY25VDtBerno+JW
-         3gUmuIoaThST6che9NjeTAESUmx9IpIRhL4sFQ2ZlTg+w3Mmo5rCmXhpqp16Vt2CHPGq
-         6b0eVZrgvKKBdCHAofWhtVD1SbVle6TeFcye9nxIxPR1iCpVroShm2wBVg680fI9hhLx
-         eOw/KEcHIAHyqbddwkrkan/HQIKBXwpEm0Ib7mSkopJzrJA53r8wCw/f9d8OXuSR8UUf
-         AmaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXj0/KqO9RanaCvBKrTtYgSHmHqhofUSsiShKwOYwNhd48KRl2pF6qbYTFiY3C8+1CX72rYedJrCLUdwl+Qtmc6NL4HiBxa
-X-Gm-Message-State: AOJu0YwvwDqn/8MC9jEEA5Gfc36HL0R5XGHcYVzcW6QUgXbNlmAN3pdQ
-	VHTd+rtqzBS8JHzDR9QlCTXcbelTkLVIeGln61CePU3o2GPiiV9sbputzDsV3mFgMTouLFVc+Wm
-	fgdZcWu6xEFL87/aBg4LFmYe8PiGikK7nIyx0/RTx6RhjV2LUwp+l8A==
-X-Received: by 2002:a17:902:ecd1:b0:1db:f372:a93c with SMTP id a17-20020a170902ecd100b001dbf372a93cmr309547plh.43.1709257997772;
-        Thu, 29 Feb 2024 17:53:17 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFgxp8KpJKH+5MY8w2F/PB5Ot/ZUK5Av/ZaZV4KJP/g83TZi3+n+/NnGn+HsPorVx5PFMYwYQ==
-X-Received: by 2002:a17:902:ecd1:b0:1db:f372:a93c with SMTP id a17-20020a170902ecd100b001dbf372a93cmr309530plh.43.1709257997437;
-        Thu, 29 Feb 2024 17:53:17 -0800 (PST)
-Received: from [10.72.112.28] ([43.228.180.230])
-        by smtp.gmail.com with ESMTPSA id z17-20020a170903019100b001db4433ef95sm2184312plg.152.2024.02.29.17.53.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Feb 2024 17:53:17 -0800 (PST)
-Message-ID: <6c3f5ef9-e350-4a1e-81dd-6ab63e7e5ef3@redhat.com>
-Date: Fri, 1 Mar 2024 09:53:12 +0800
+	s=arc-20240116; t=1709266178; c=relaxed/simple;
+	bh=sNWAXgHYKNn8YPbGhQ36rxyCN8OCQlMk1eMAZ69y28U=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Tz0WG0KWOqCy96K67Gxwmcs77mnAoyp1wTEht8Sg0bqUGkOeXJDcNewO+gmmSb6PNNktWMLm64x1ee3jyKm7HSiJjQMzxh8Mnoz2NlHTDW/NdPoIO4agBR3eq5pREkISnJQwYKRDh5s20fEWpNdzBjNTmyDfkByBLZD0lBfJmqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=SWQoA8yv; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42145vlK000988;
+	Fri, 1 Mar 2024 04:09:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=uF5QC2T
+	TNjSpqnVNU/KNC6VIdKhgi0qvbXfeSBNURwU=; b=SWQoA8yvr4hy/WXvu0vfESg
+	JLP/lPRc9K2vI/m0D2BZkaXHp9Ovwjnv9XLEdeSI/CcQF224ZR9bnArHYjZJAP/z
+	wZ4VOrNB3yGcSuflKBPWrp9IMNGgOTFJP9UCIV9LItfwuZGxaDQ0tPNj6p/xI4oz
+	jJ2pfbt+MMvUoybebzXEa6gaFUqi9EddozyHTPRSPo0cIVU9BnLsF/lCHE3MlZVx
+	sWZZxpQNcnt3gTUHTPWm4XoMrITeb/BpVxTqJR6l1Q4xibX4YkXb7SQagsgDarHT
+	DZHHrwgcb05xLUHFnH4iGLPGjB40ANgvQg8eSjJZCCtvajOfHwdbVCW0Btc0l/w=
+	=
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wjupp22qq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 01 Mar 2024 04:09:29 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42149ToU021776
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 1 Mar 2024 04:09:29 GMT
+Received: from hu-kriskura-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Thu, 29 Feb 2024 20:09:23 -0800
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
+To: Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        "Dmitry
+ Baryshkov" <dmitry.baryshkov@linaro.org>,
+        Johan Hovold
+	<johan+linaro@kernel.org>, Rob Herring <robh@kernel.org>,
+        Min-Hua Chen
+	<minhuadotchen@gmail.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>
+CC: <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <quic_ppratap@quicinc.com>, <quic_jackp@quicinc.com>,
+        <quic_wcheng@quicinc.com>, <quic_subbaram@quicinc.com>,
+        Krishna Kurapati
+	<quic_kriskura@quicinc.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH] usb: typec: ucsi: Fix race between typec_switch and role_switch
+Date: Fri, 1 Mar 2024 09:39:14 +0530
+Message-ID: <20240301040914.458492-1-quic_kriskura@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] libceph: init the cursor when preparing the sparse read
-Content-Language: en-US
-To: Ilya Dryomov <idryomov@gmail.com>
-Cc: ceph-devel@vger.kernel.org, jlayton@kernel.org, vshankar@redhat.com,
- mchangir@redhat.com, stable@vger.kernel.org,
- Luis Henriques <lhenriques@suse.de>
-References: <20240229041950.738878-1-xiubli@redhat.com>
- <CAOi1vP-n34TCcKoLLKe3yXRqS93qT4nc5pkM8Byo-D4zH-KZWA@mail.gmail.com>
-From: Xiubo Li <xiubli@redhat.com>
-In-Reply-To: <CAOi1vP-n34TCcKoLLKe3yXRqS93qT4nc5pkM8Byo-D4zH-KZWA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: m-9ZUAEmMu4UC56HHXhKjG3qoDiPrGu4
+X-Proofpoint-GUID: m-9ZUAEmMu4UC56HHXhKjG3qoDiPrGu4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-01_01,2024-02-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 spamscore=0
+ lowpriorityscore=0 impostorscore=0 bulkscore=0 phishscore=0 suspectscore=0
+ mlxlogscore=999 mlxscore=0 malwarescore=0 adultscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2402120000
+ definitions=main-2403010031
 
+When orientation switch is enabled in ucsi glink, there is a xhci
+probe failure seen when booting up in host mode in reverse
+orientation.
 
-On 2/29/24 18:48, Ilya Dryomov wrote:
-> On Thu, Feb 29, 2024 at 5:22 AM <xiubli@redhat.com> wrote:
->> From: Xiubo Li <xiubli@redhat.com>
->>
->> The osd code has remove cursor initilizing code and this will make
->> the sparse read state into a infinite loop. We should initialize
->> the cursor just before each sparse-read in messnger v2.
->>
->> Cc: stable@vger.kernel.org
->> URL: https://tracker.ceph.com/issues/64607
->> Fixes: 8e46a2d068c9 ("libceph: just wait for more data to be available on the socket")
->> Reported-by: Luis Henriques <lhenriques@suse.de>
->> Signed-off-by: Xiubo Li <xiubli@redhat.com>
->> ---
->>   net/ceph/messenger_v2.c | 3 +++
->>   1 file changed, 3 insertions(+)
->>
->> diff --git a/net/ceph/messenger_v2.c b/net/ceph/messenger_v2.c
->> index a0ca5414b333..7ae0f80100f4 100644
->> --- a/net/ceph/messenger_v2.c
->> +++ b/net/ceph/messenger_v2.c
->> @@ -2025,6 +2025,7 @@ static int prepare_sparse_read_cont(struct ceph_connection *con)
->>   static int prepare_sparse_read_data(struct ceph_connection *con)
->>   {
->>          struct ceph_msg *msg = con->in_msg;
->> +       u64 len = con->in_msg->sparse_read_total ? : data_len(con->in_msg);
->>
->>          dout("%s: starting sparse read\n", __func__);
->>
->> @@ -2034,6 +2035,8 @@ static int prepare_sparse_read_data(struct ceph_connection *con)
->>          if (!con_secure(con))
->>                  con->in_data_crc = -1;
->>
->> +       ceph_msg_data_cursor_init(&con->v2.in_cursor, con->in_msg, len);
->> +
->>          reset_in_kvecs(con);
->>          con->v2.in_state = IN_S_PREPARE_SPARSE_DATA_CONT;
->>          con->v2.data_len_remain = data_len(msg);
->> --
->> 2.43.0
->>
-> Hi Xiubo,
->
-> How did this get missed?  Was generic/580 not paired with msgr2 in crc
-> mode or are we not running generic/580 at all?
->
-> Multiple runs have happened since the patch was staged so if the matrix
-> is set up correctly ms_mode=crc should have been in effect for xfstests
-> at least a couple of times.
+During bootup the following things happen in multiple drivers:
 
-I just found that my test script is incorrect and missed this case.
+a) DWC3 controller driver initializes the core in device mode when the
+dr_mode is set to DRD. It relies on role_switch call to change role to
+host.
 
-The test locally is covered the msgr1 mostly and I think the qa test 
-suite also doesn't cover it too. I will try to improve the qa tests later.
+b) QMP driver initializes the lanes to TYPEC_ORIENTATION_NORMAL as a
+normal routine. It relies on the typec_switch_set call to get notified
+of orientation changes.
 
-Thanks
+c) UCSI core reads the UCSI_GET_CONNECTOR_STATUS via the glink and
+provides initial role switch to dwc3 controller.
 
-- Xiubo
+When booting up in host mode with orientation TYPEC_ORIENTATION_REVERSE,
+then we see the following things happening in order:
 
+a) UCSI gives initial role as host to dwc3 controller ucsi_register_port.
+Upon receiving this notification, the dwc3 core needs to program GCTL from
+PRTCAP_DEVICE to PRTCAP_HOST and as part of this change, it asserts GCTL
+Core soft reset and waits for it to be  completed before shifting it to
+host. Only after the reset is done will the dwc3_host_init be invoked and
+xhci is probed. DWC3 controller expects that the usb phy's are stable
+during this process i.e., the phy init is already done.
 
-> Thanks,
->
->                  Ilya
->
+b) During the 100ms wait for GCTL core soft reset, the actual notification
+from PPM is received by ucsi_glink via pmic glink for changing role to
+host. The pmic_glink_ucsi_notify routine first sends the orientation
+change to QMP and then sends role to dwc3 via ucsi framework. This is
+happening exactly at the time GCTL core soft reset is being processed.
+
+c) When QMP driver receives typec switch to TYPEC_ORIENTATION_REVERSE, it
+then re-programs the phy at the instant GCTL core soft reset has been
+asserted by dwc3 controller due to which the QMP PLL lock fails in
+qmp_combo_usb_power_on.
+
+d) After the 100ms of GCTL core soft reset is completed, the dwc3 core
+goes for initializing the host mode and invokes xhci probe. But at this
+point the QMP is non-responsive and as a result, the xhci plat probe fails
+during xhci_reset.
+
+Fix this by passing orientation switch to available ucsi instances if
+their gpio configuration is available before ucsi_register is invoked so
+that by the time, the pmic_glink_ucsi_notify provides typec_switch to QMP,
+the lane is already configured and the call would be a NOP thus not racing
+with role switch.
+
+Cc: <stable@vger.kernel.org>
+Fixes: c6165ed2f425 ("usb: ucsi: glink: use the connector orientation GPIO to provide switch events")
+Suggested-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+---
+ drivers/usb/typec/ucsi/ucsi_glink.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/drivers/usb/typec/ucsi/ucsi_glink.c b/drivers/usb/typec/ucsi/ucsi_glink.c
+index 0bd3f6dee678..466df7b9f953 100644
+--- a/drivers/usb/typec/ucsi/ucsi_glink.c
++++ b/drivers/usb/typec/ucsi/ucsi_glink.c
+@@ -255,6 +255,20 @@ static void pmic_glink_ucsi_notify(struct work_struct *work)
+ static void pmic_glink_ucsi_register(struct work_struct *work)
+ {
+ 	struct pmic_glink_ucsi *ucsi = container_of(work, struct pmic_glink_ucsi, register_work);
++	int orientation;
++	int i;
++
++	for (i = 0; i < PMIC_GLINK_MAX_PORTS; i++) {
++		if (!ucsi->port_orientation[i])
++			continue;
++		orientation = gpiod_get_value(ucsi->port_orientation[i]);
++
++		if (orientation >= 0) {
++			typec_switch_set(ucsi->port_switch[i],
++					 orientation ? TYPEC_ORIENTATION_REVERSE
++					     : TYPEC_ORIENTATION_NORMAL);
++		}
++	}
+ 
+ 	ucsi_register(ucsi->ucsi);
+ }
+-- 
+2.34.1
 
 
