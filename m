@@ -1,169 +1,185 @@
-Return-Path: <stable+bounces-25755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF31686E704
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 18:16:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E57486E7B9
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 18:51:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0C981C23DF9
-	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 17:16:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5634FB25A69
+	for <lists+stable@lfdr.de>; Fri,  1 Mar 2024 17:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1285A5224;
-	Fri,  1 Mar 2024 17:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D53A9C2C7;
+	Fri,  1 Mar 2024 17:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dzC5V90F"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="KAL1IhSb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5863C3F;
-	Fri,  1 Mar 2024 17:16:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B2F16FF5F
+	for <stable@vger.kernel.org>; Fri,  1 Mar 2024 17:50:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709313368; cv=none; b=OZz1+y3LPh620eTQlQ6u5SdJl87tDbxgCV33r+CScinR9ojCJqNFqWnuCTRWJhGUkvcdmNGjKePtIhglXWSDSPYNi+vM3EUFaCEb37q2bjcBjQGb6bDcaQqKaQ/LG8octWf1p+Kwr+b/u7EUiQK1cardjBrbkepojKbLzgZdaqw=
+	t=1709315450; cv=none; b=TXXVyGtLnLxKd/pgdngxpH+BuqClDAHDRXBTssCN/K8leCBtEwsKV15NdG0zZXI4Ua44JPnQGz1D5eAseFDyfKO37ygd6iAO6rTUZin8xsATYF/L1IX3I7z8qLCNhVcuUSZLfv01c40VipVuf4nd8zhQvShS50JOwIl2DbWuAC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709313368; c=relaxed/simple;
-	bh=XMVOYBRfT+HrAgV/eTDRRuEKjfYUhfleOi5dPNbhvYY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=owL1OTmDpsMmISvUjN1uJDCV6tueyg0oVCHpMMicaq0DAk30cON0iTn6W0I+0ZjT2YmhPQi3Wacdy0PPrZvAvHo3nqdKr5v+cvT9rIav7hXmGDuYRN5VrJt9PHyjp943xdyRv8SmES/og2uRIP0RXKaPKVAJ/3uW1oSEgBQOdlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dzC5V90F; arc=none smtp.client-ip=209.85.161.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-5a0e9baaab4so1007182eaf.3;
-        Fri, 01 Mar 2024 09:16:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709313366; x=1709918166; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8Zi2SksqhAVYxU/4yxtVr9LwsZmmgo0bbQNXm0oTExU=;
-        b=dzC5V90F2ICNzUF7jTdec0/Hc/dE//f5LBzWitMaoaVAXvJKp8VjqFo+zmZRahCpfq
-         +j1lsl0Lu7O7Tq1fFf7zsz9F6m/e0cgXhhXisdWdLKPQQIVxP7HQH/F4iyEk7vfw9YzL
-         vTEHkHWiJ4uW42Su2zDSTXsiogZfOs6loe1RtcizppWN4gbXXrpmQalwATHV58x45ZSk
-         Ki49YgV4B0oIEt8hn/r5RgjAu4L4cEXO8acwMwiHXODoPIY8l9kAVXCw9npgFC7m8X6F
-         NqQ4XhSArGdCAPGeCI2X0SjlR6Q0fchznekFBot1YvetgAf4O8i37e1KUlYg3HnrV15K
-         vnYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709313366; x=1709918166;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8Zi2SksqhAVYxU/4yxtVr9LwsZmmgo0bbQNXm0oTExU=;
-        b=YOai6xB/K8B/Z2Vz+Kk7wCC3y8TpLZyYC7vDS6mgALH/xlJj11yCb0zPt+Pnga7VdN
-         EPunCi0hyapJWGYkgbJ43vCTGdiIQU3w/ndnlV0GcEpBSKShBsviLye4h71QAbMfBlQM
-         x1CpCgzcvggqpjuA5MtScZou/eU5lINUtkzUtWp+FYncOqJhd5OGYgY37AxNwB9a2xZc
-         FyVtoXcCMaaT7P+u5+laNBDk/A7OvUaqTRp+PnZSBHh3WDNc+nhibEq3at/DYOWd+07Y
-         EsJcD6KXfdOAscYRTVvXRa1x+xXYGxiLlOv/y5Ae9TwXRi/UDKRjEAIjj9eL9I2H83lC
-         m8nQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVRoN0bM/YFyAuWiV9wvTKCH2dDFeOkunOjCAVF6mJauOYD+yw/YmE+UPEFdwdh2G5rEq2v/G2RbGIfzcfo7z7naU4ArBFp
-X-Gm-Message-State: AOJu0YwgOR1BekFp1Nz7jZG7jI0TDXncRgNMFpy1YPXsZaMw27Llzpam
-	un9dxxZiveX5SLz9GMfzCcBrhMyj8/qp9Fqz37fANQc7hoIMKNolKiIXrYH5wTFu14WMWSGcv2j
-	kJK9u2SSORR+V9rRUxr6MS5SgGNs=
-X-Google-Smtp-Source: AGHT+IGbXqnXMDbnS8IWbH4oJ+F6hGyOtuyQrhD/wd6zlGPCGq83lc2oE3/XXgoaFJm1NBaJKyasvcjFhihXC5QuLa0=
-X-Received: by 2002:a4a:650e:0:b0:5a0:ec91:74c3 with SMTP id
- y14-20020a4a650e000000b005a0ec9174c3mr2300613ooc.6.1709313366388; Fri, 01 Mar
- 2024 09:16:06 -0800 (PST)
+	s=arc-20240116; t=1709315450; c=relaxed/simple;
+	bh=YDXYlNXbMEeqdRXT/18RnuNoGU0ezsOy7LCKbJ9Je78=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=MW3h3jkG64T4qCC8yvr8acBGjTagyXOCSAjep4ZqV1+HzKfggtxnUcoQ6zc9VP9m8KEizgQ4yjS4F9t+/E8gWcuVdvY174GnNarJbLIR2oPT0G/BZDLejGFVs+HBmhIaaW2BRgk8n2xwc8RVD1giC0lc+ev5eXaZsF2Qg7UDSYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=KAL1IhSb; arc=none smtp.client-ip=91.207.212.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 421AwvQv022493;
+	Fri, 1 Mar 2024 18:49:51 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	selector1; bh=pX880VHAiAcKRls7BPjtfXjDb7SpOtdl+UFZ3qPxx60=; b=KA
+	L1IhSbUxXIkHg+U5/kqU4BHlgD8eexB8iJCuhy+yYWXbrrNGD3/BNP4fU223ECvE
+	pbigtTe6NHusoBW9ODNgRMhxwg5Mj6T2wuVjXEtsE1a4oooO9UrJsfvxC66Qlr9L
+	a9rz0JLHd89T9o7hxnMsp4fKKSG8iq7xqlxJMtXHncGnrawE5IQ1lKhoyeL28yFd
+	cJsKdXXBvSN9OpXtxYpB1wXGlXOetgkod4brXW/fF25uetrcsMlc+EE1a3HjIsyE
+	cSZ+y/ztFRyB1lZNTS6SZN3v9QXIMjNvB7NGm5eIwN0zRw4cWRJnYTWJTricY73g
+	Fcw/Rvj18/g3UposTNFg==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3whf4e8q8h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 01 Mar 2024 18:49:50 +0100 (CET)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 1CD384002D;
+	Fri,  1 Mar 2024 18:49:43 +0100 (CET)
+Received: from Webmail-eu.st.com (shfdag1node3.st.com [10.75.129.71])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 1277F2B0123;
+	Fri,  1 Mar 2024 18:48:33 +0100 (CET)
+Received: from [10.201.21.177] (10.201.21.177) by SHFDAG1NODE3.st.com
+ (10.75.129.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 1 Mar
+ 2024 18:48:32 +0100
+Message-ID: <ffdb0f72-5e49-4e41-9801-399035c0bdce@foss.st.com>
+Date: Fri, 1 Mar 2024 18:48:31 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240229041950.738878-1-xiubli@redhat.com> <CAOi1vP-n34TCcKoLLKe3yXRqS93qT4nc5pkM8Byo-D4zH-KZWA@mail.gmail.com>
- <6c3f5ef9-e350-4a1e-81dd-6ab63e7e5ef3@redhat.com>
-In-Reply-To: <6c3f5ef9-e350-4a1e-81dd-6ab63e7e5ef3@redhat.com>
-From: Ilya Dryomov <idryomov@gmail.com>
-Date: Fri, 1 Mar 2024 18:15:54 +0100
-Message-ID: <CAOi1vP_WGs4yQz62UaVBDWk-vkcAQ7=SgQG37Zu86Q2QusMgOw@mail.gmail.com>
-Subject: Re: [PATCH] libceph: init the cursor when preparing the sparse read
-To: Xiubo Li <xiubli@redhat.com>
-Cc: ceph-devel@vger.kernel.org, jlayton@kernel.org, vshankar@redhat.com, 
-	mchangir@redhat.com, stable@vger.kernel.org, 
-	Luis Henriques <lhenriques@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] mtd: rawnand: Fix and simplify again the continuous
+ read derivations
+Content-Language: en-US
+To: Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger
+	<richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Tudor Ambarus
+	<tudor.ambarus@linaro.org>,
+        Pratyush Yadav <pratyush@kernel.org>,
+        Michael
+ Walle <michael@walle.cc>, <linux-mtd@lists.infradead.org>
+CC: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Julien Su
+	<juliensu@mxic.com.tw>, Jaime Liao <jaimeliao@mxic.com.tw>,
+        Jaime Liao
+	<jaimeliao.tw@gmail.com>,
+        Alvin Zhou <alvinzhou@mxic.com.tw>, <eagle.alexander923@gmail.com>,
+        <mans@mansr.com>, <martin@geanix.com>,
+        =?UTF-8?Q?Sean_Nyekj=C3=A6r?= <sean@geanix.com>,
+        <stable@vger.kernel.org>
+References: <20240223115545.354541-1-miquel.raynal@bootlin.com>
+ <20240223115545.354541-2-miquel.raynal@bootlin.com>
+From: Christophe Kerello <christophe.kerello@foss.st.com>
+In-Reply-To: <20240223115545.354541-2-miquel.raynal@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SHFDAG1NODE3.st.com
+ (10.75.129.71)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-01_20,2024-03-01_02,2023-05-22_02
 
-On Fri, Mar 1, 2024 at 2:53=E2=80=AFAM Xiubo Li <xiubli@redhat.com> wrote:
->
->
-> On 2/29/24 18:48, Ilya Dryomov wrote:
-> > On Thu, Feb 29, 2024 at 5:22=E2=80=AFAM <xiubli@redhat.com> wrote:
-> >> From: Xiubo Li <xiubli@redhat.com>
-> >>
-> >> The osd code has remove cursor initilizing code and this will make
-> >> the sparse read state into a infinite loop. We should initialize
-> >> the cursor just before each sparse-read in messnger v2.
-> >>
-> >> Cc: stable@vger.kernel.org
-> >> URL: https://tracker.ceph.com/issues/64607
-> >> Fixes: 8e46a2d068c9 ("libceph: just wait for more data to be available=
- on the socket")
-> >> Reported-by: Luis Henriques <lhenriques@suse.de>
-> >> Signed-off-by: Xiubo Li <xiubli@redhat.com>
-> >> ---
-> >>   net/ceph/messenger_v2.c | 3 +++
-> >>   1 file changed, 3 insertions(+)
-> >>
-> >> diff --git a/net/ceph/messenger_v2.c b/net/ceph/messenger_v2.c
-> >> index a0ca5414b333..7ae0f80100f4 100644
-> >> --- a/net/ceph/messenger_v2.c
-> >> +++ b/net/ceph/messenger_v2.c
-> >> @@ -2025,6 +2025,7 @@ static int prepare_sparse_read_cont(struct ceph_=
-connection *con)
-> >>   static int prepare_sparse_read_data(struct ceph_connection *con)
-> >>   {
-> >>          struct ceph_msg *msg =3D con->in_msg;
-> >> +       u64 len =3D con->in_msg->sparse_read_total ? : data_len(con->i=
-n_msg);
-> >>
-> >>          dout("%s: starting sparse read\n", __func__);
-> >>
-> >> @@ -2034,6 +2035,8 @@ static int prepare_sparse_read_data(struct ceph_=
-connection *con)
-> >>          if (!con_secure(con))
-> >>                  con->in_data_crc =3D -1;
-> >>
-> >> +       ceph_msg_data_cursor_init(&con->v2.in_cursor, con->in_msg, len=
-);
-> >> +
-> >>          reset_in_kvecs(con);
-> >>          con->v2.in_state =3D IN_S_PREPARE_SPARSE_DATA_CONT;
-> >>          con->v2.data_len_remain =3D data_len(msg);
-> >> --
-> >> 2.43.0
-> >>
-> > Hi Xiubo,
-> >
-> > How did this get missed?  Was generic/580 not paired with msgr2 in crc
-> > mode or are we not running generic/580 at all?
-> >
-> > Multiple runs have happened since the patch was staged so if the matrix
-> > is set up correctly ms_mode=3Dcrc should have been in effect for xfstes=
-ts
-> > at least a couple of times.
->
-> I just found that my test script is incorrect and missed this case.
->
-> The test locally is covered the msgr1 mostly and I think the qa test
-> suite also doesn't cover it too. I will try to improve the qa tests later=
-.
+Hi Miquel,
 
-Could you please provide some details on the fixes needed to address
-the coverage gap in the fs suite?  I'm lost because you marked [1] for
-backporting to reef as (part of?) the solution, however Venky's job [2]
-that is linked there in the tracker is based on main and therefore has
-everything.
+On 2/23/24 12:55, Miquel Raynal wrote:
+> We need to avoid the first page if we don't read it entirely.
+> We need to avoid the last page if we don't read it entirely.
+> While rather simple, this logic has been failed in the previous
+> fix. This time I wrote about 30 unit tests locally to check each
+> possible condition, hopefully I covered them all.
+> 
+> Reported-by: Christophe Kerello <christophe.kerello@foss.st.com>
+> Closes: https://lore.kernel.org/linux-mtd/20240221175327.42f7076d@xps-13/T/#m399bacb10db8f58f6b1f0149a1df867ec086bb0a
+> Suggested-by: Christophe Kerello <christophe.kerello@foss.st.com>
+> Fixes: 828f6df1bcba ("mtd: rawnand: Clarify conditions to enable continuous reads")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 
-Additionally, [2] seems to be have failed when installing packages, so
-the relationship to [1] isn't obvious to me.
+Tested-by: Christophe Kerello <christophe.kerello@foss.st.com>
 
-[1] https://tracker.ceph.com/issues/59195
-[2] https://pulpito.ceph.com/vshankar-2024-02-27_04:05:06-fs-wip-vshankar-t=
-esting-20240226.124304-testing-default-smithi/7574417/
+Regards,
+Christophe Kerello.
 
-Thanks,
-
-                Ilya
+> ---
+>   drivers/mtd/nand/raw/nand_base.c | 38 ++++++++++++++++++--------------
+>   1 file changed, 22 insertions(+), 16 deletions(-)
+> 
+> diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
+> index 3b3ce2926f5d..bcfd99a1699f 100644
+> --- a/drivers/mtd/nand/raw/nand_base.c
+> +++ b/drivers/mtd/nand/raw/nand_base.c
+> @@ -3466,30 +3466,36 @@ static void rawnand_enable_cont_reads(struct nand_chip *chip, unsigned int page,
+>   				      u32 readlen, int col)
+>   {
+>   	struct mtd_info *mtd = nand_to_mtd(chip);
+> -	unsigned int end_page, end_col;
+> +	unsigned int first_page, last_page;
+>   
+>   	chip->cont_read.ongoing = false;
+>   
+>   	if (!chip->controller->supported_op.cont_read)
+>   		return;
+>   
+> -	end_page = DIV_ROUND_UP(col + readlen, mtd->writesize);
+> -	end_col = (col + readlen) % mtd->writesize;
+> +	/*
+> +	 * Don't bother making any calculations if the length is too small.
+> +	 * Side effect: avoids possible integer underflows below.
+> +	 */
+> +	if (readlen < (2 * mtd->writesize))
+> +		return;
+>   
+> +	/* Derive the page where continuous read should start (the first full page read) */
+> +	first_page = page;
+>   	if (col)
+> -		page++;
+> -
+> -	if (end_col && end_page)
+> -		end_page--;
+> -
+> -	if (page + 1 > end_page)
+> -		return;
+> -
+> -	chip->cont_read.first_page = page;
+> -	chip->cont_read.last_page = end_page;
+> -	chip->cont_read.ongoing = true;
+> -
+> -	rawnand_cap_cont_reads(chip);
+> +		first_page++;
+> +
+> +	/* Derive the page where continuous read should stop (the last full page read) */
+> +	last_page = page + ((col + readlen) / mtd->writesize) - 1;
+> +
+> +	/* Configure and enable continuous read when suitable */
+> +	if (first_page < last_page) {
+> +		chip->cont_read.first_page = first_page;
+> +		chip->cont_read.last_page = last_page;
+> +		chip->cont_read.ongoing = true;
+> +		/* May reset the ongoing flag */
+> +		rawnand_cap_cont_reads(chip);
+> +	}
+>   }
+>   
+>   static void rawnand_cont_read_skip_first_page(struct nand_chip *chip, unsigned int page)
 
