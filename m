@@ -1,131 +1,251 @@
-Return-Path: <stable+bounces-25784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3A5286F204
-	for <lists+stable@lfdr.de>; Sat,  2 Mar 2024 20:10:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C2EF86F26A
+	for <lists+stable@lfdr.de>; Sat,  2 Mar 2024 21:48:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 313141C20B1E
-	for <lists+stable@lfdr.de>; Sat,  2 Mar 2024 19:10:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12FFE2824EC
+	for <lists+stable@lfdr.de>; Sat,  2 Mar 2024 20:48:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41A5D2BB1E;
-	Sat,  2 Mar 2024 19:10:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A2651F16B;
+	Sat,  2 Mar 2024 20:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPgQMPgS"
-X-Original-To: Stable@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H0WKFuZP"
+X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015561DA22
-	for <Stable@vger.kernel.org>; Sat,  2 Mar 2024 19:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2C914010;
+	Sat,  2 Mar 2024 20:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709406626; cv=none; b=A7CJTAbmP9EBV4Tf0DPZOyE/Cq6AGyHzi4D8BiWKyItzRCI/SZNPzDzqX7vHFPa19OYkGvu76vwbP1/ZV+dF69ZZN2tlxyhePHQucKw+F99hsMwGXmU5rhDCgpZ7uS00/O9gxzcj/eYSOXif5BDBeyHi3hGUjs3W9jYlEpzLOTs=
+	t=1709412523; cv=none; b=A9kEwNdAhzmAX789BTtOqMu1vKTRIjWMsjLxzovnHKzuHEYVH4dtmDOrXuWnj8XGyLNa9rDnQyErTuZ5LfxAy+oq7aOrfrMYHigOaplE9PE8g37oupa9PENAy1fxQNxZQsdIXwRr71d2G4EoTvbkPBLtHwblZSmt3G/Z4oSUCwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709406626; c=relaxed/simple;
-	bh=5ZD8JSVee1nLKNQp+yg8vFfhEfJWTPWzCvGAx6u5GoA=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=cGWNcFYZLu99lQiDIx/AvJZdPnS/aOycluwzdil4s2N6C08dEoO0V9Hjj2PZmj/8aMvkQOpKowjbhvJMnuvsFLBygrOC3t95MAmtZgBv2EEs7MtB3u7z3syJaMyHqOPzGFeut63oEZtTRrQmauIO0/B5EF3/KBFisw3RqWL7EcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPgQMPgS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71FB3C433F1;
-	Sat,  2 Mar 2024 19:10:25 +0000 (UTC)
+	s=arc-20240116; t=1709412523; c=relaxed/simple;
+	bh=KkrDPfDl9MTHCtUdGHigMdKyuR/xnsZt/Vhf4rD7NXs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kzR0zA33Fv56hxfPRaK2e3kLjR9SY7ECgoUO4hBZt655ZybVj9TwxNQYIsDUD/ry7u6AAcTx7FA8wgS/EOCNtdaX0YMtNzsyw/xH3sLFbWMm2uZ+DZaW2kz2iLsB+m6uAiFwPIsa0hFQi9tgH0LN68HE3x+8hmGbCaeYRViD3aE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H0WKFuZP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FCFAC433F1;
+	Sat,  2 Mar 2024 20:48:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709406625;
-	bh=5ZD8JSVee1nLKNQp+yg8vFfhEfJWTPWzCvGAx6u5GoA=;
-	h=Subject:To:From:Date:From;
-	b=tPgQMPgSB1ONYQUTahFBfYBloUeQybtnqlZg6FcETRdxFHTKlaoEoCdTxL2Csd3FR
-	 GAGkS0USPV/qffaZK1FGA26+gT8qM5F6viK84kUDwjRZX7w1PsWxjgPd5MWvbJHBQD
-	 3D4ci+IVoy80NCB1ZOASrL5+SbQ+Au3s220S1tOs=
-Subject: patch "iio: adc: rockchip_saradc: use mask for write_enable bitfield" added to char-misc-next
-To: quentin.schulz@theobroma-systems.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,heiko@sntech.de
-From: <gregkh@linuxfoundation.org>
-Date: Sat, 02 Mar 2024 20:08:25 +0100
-Message-ID: <2024030225-preppy-cocoa-140d@gregkh>
+	s=korg; t=1709412522;
+	bh=KkrDPfDl9MTHCtUdGHigMdKyuR/xnsZt/Vhf4rD7NXs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=H0WKFuZPFiFTFwjASROakBdIJ5w39aA7rfgBSeTUhklxqZP08rOwt3ihpoOLg7X0L
+	 xYsQ+GvhhGoHSCCHyy9AGEjqKleVe7dUzC4hne+rJfDhO+IdeK7LEMA/GiCVWl604X
+	 TouQ8TlOJ9Fmf1lqvXb5Hxx7BuiP4+9UDSJySd08=
+Date: Sat, 2 Mar 2024 21:48:39 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Peter Collingbourne <pcc@google.com>
+Cc: Jiri Slaby <jirislaby@kernel.org>, Petr Mladek <pmladek@suse.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	John Ogness <john.ogness@linutronix.de>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] serial: Lock console when calling into driver before
+ registration
+Message-ID: <2024030214-buffing-obtuse-8dc8@gregkh>
+References: <20240226192329.3281301-1-pcc@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240226192329.3281301-1-pcc@google.com>
+
+On Mon, Feb 26, 2024 at 11:23:26AM -0800, Peter Collingbourne wrote:
+> During the handoff from earlycon to the real console driver, we have
+> two separate drivers operating on the same device concurrently. In the
+> case of the 8250 driver these concurrent accesses cause problems due
+> to the driver's use of banked registers, controlled by LCR.DLAB. It is
+> possible for the setup(), config_port(), pm() and set_mctrl() callbacks
+> to set DLAB, which can cause the earlycon code that intends to access
+> TX to instead access DLL, leading to missed output and corruption on
+> the serial line due to unintended modifications to the baud rate.
+> 
+> In particular, for setup() we have:
+> 
+> univ8250_console_setup()
+> -> serial8250_console_setup()
+> -> uart_set_options()
+> -> serial8250_set_termios()
+> -> serial8250_do_set_termios()
+> -> serial8250_do_set_divisor()
+> 
+> For config_port() we have:
+> 
+> serial8250_config_port()
+> -> autoconfig()
+> 
+> For pm() we have:
+> 
+> serial8250_pm()
+> -> serial8250_do_pm()
+> -> serial8250_set_sleep()
+> 
+> For set_mctrl() we have (for some devices):
+> 
+> serial8250_set_mctrl()
+> -> omap8250_set_mctrl()
+> -> __omap8250_set_mctrl()
+> 
+> To avoid such problems, let's make it so that the console is locked
+> during pre-registration calls to these callbacks, which will prevent
+> the earlycon driver from running concurrently.
+> 
+> Remove the partial solution to this problem in the 8250 driver
+> that locked the console only during autoconfig_irq(), as this would
+> result in a deadlock with the new approach. The console continues
+> to be locked during autoconfig_irq() because it can only be called
+> through uart_configure_port().
+> 
+> Although this patch introduces more locking than strictly necessary
+> (and in particular it also locks during the call to rs485_config()
+> which is not affected by this issue as far as I can tell), it follows
+> the principle that it is the responsibility of the generic console
+> code to manage the earlycon handoff by ensuring that earlycon and real
+> console driver code cannot run concurrently, and not the individual
+> drivers.
+> 
+> Signed-off-by: Peter Collingbourne <pcc@google.com>
+> Reviewed-by: John Ogness <john.ogness@linutronix.de>
+> Link: https://linux-review.googlesource.com/id/I7cf8124dcebf8618e6b2ee543fa5b25532de55d8
+
+Why is a link to a gerrit review with no context other than this same
+commit needed here?
+
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> ---
+>  drivers/tty/serial/8250/8250_port.c |  6 ------
+>  drivers/tty/serial/serial_core.c    | 12 ++++++++++++
+>  kernel/printk/printk.c              | 21 ++++++++++++++++++---
+>  3 files changed, 30 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
+> index 8ca061d3bbb9..1d65055dde27 100644
+> --- a/drivers/tty/serial/8250/8250_port.c
+> +++ b/drivers/tty/serial/8250/8250_port.c
+> @@ -1329,9 +1329,6 @@ static void autoconfig_irq(struct uart_8250_port *up)
+>  		inb_p(ICP);
+>  	}
+>  
+> -	if (uart_console(port))
+> -		console_lock();
+> -
+>  	/* forget possible initially masked and pending IRQ */
+>  	probe_irq_off(probe_irq_on());
+>  	save_mcr = serial8250_in_MCR(up);
+> @@ -1371,9 +1368,6 @@ static void autoconfig_irq(struct uart_8250_port *up)
+>  	if (port->flags & UPF_FOURPORT)
+>  		outb_p(save_ICP, ICP);
+>  
+> -	if (uart_console(port))
+> -		console_unlock();
+> -
+>  	port->irq = (irq > 0) ? irq : 0;
+>  }
+>  
+> diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+> index d6a58a9e072a..ff85ebd3a007 100644
+> --- a/drivers/tty/serial/serial_core.c
+> +++ b/drivers/tty/serial/serial_core.c
+> @@ -2608,7 +2608,12 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
+>  			port->type = PORT_UNKNOWN;
+>  			flags |= UART_CONFIG_TYPE;
+>  		}
+> +		/* Synchronize with possible boot console. */
+> +		if (uart_console(port))
+> +			console_lock();
+>  		port->ops->config_port(port, flags);
+> +		if (uart_console(port))
+> +			console_unlock();
+>  	}
+>  
+>  	if (port->type != PORT_UNKNOWN) {
+> @@ -2616,6 +2621,10 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
+>  
+>  		uart_report_port(drv, port);
+>  
+> +		/* Synchronize with possible boot console. */
+> +		if (uart_console(port))
+> +			console_lock();
+> +
+>  		/* Power up port for set_mctrl() */
+>  		uart_change_pm(state, UART_PM_STATE_ON);
+>  
+> @@ -2632,6 +2641,9 @@ uart_configure_port(struct uart_driver *drv, struct uart_state *state,
+>  
+>  		uart_rs485_config(port);
+>  
+> +		if (uart_console(port))
+> +			console_unlock();
+> +
+>  		/*
+>  		 * If this driver supports console, and it hasn't been
+>  		 * successfully registered yet, try to re-register it.
+> diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+> index f2444b581e16..f51e4e5a869d 100644
+> --- a/kernel/printk/printk.c
+> +++ b/kernel/printk/printk.c
+> @@ -3263,6 +3263,21 @@ static int __init keep_bootcon_setup(char *str)
+>  
+>  early_param("keep_bootcon", keep_bootcon_setup);
+>  
+> +static int console_call_setup(struct console *newcon, char *options)
+> +{
+> +	int err;
+> +
+> +	if (!newcon->setup)
+> +		return 0;
+> +
+> +	/* Synchronize with possible boot console. */
+> +	console_lock();
+> +	err = newcon->setup(newcon, options);
+> +	console_unlock();
+> +
+> +	return err;
+> +}
+> +
+>  /*
+>   * This is called by register_console() to try to match
+>   * the newly registered console with any of the ones selected
+> @@ -3298,8 +3313,8 @@ static int try_enable_preferred_console(struct console *newcon,
+>  			if (_braille_register_console(newcon, c))
+>  				return 0;
+>  
+> -			if (newcon->setup &&
+> -			    (err = newcon->setup(newcon, c->options)) != 0)
+> +			err = console_call_setup(newcon, c->options);
+> +			if (err != 0)
+
+Didn't checkpatch complain about this?  It should be:
+			if (err)
+right?
 
 
-This is a note to let you know that I've just added the patch titled
+>  				return err;
+>  		}
+>  		newcon->flags |= CON_ENABLED;
+> @@ -3325,7 +3340,7 @@ static void try_enable_default_console(struct console *newcon)
+>  	if (newcon->index < 0)
+>  		newcon->index = 0;
+>  
+> -	if (newcon->setup && newcon->setup(newcon, NULL) != 0)
+> +	if (console_call_setup(newcon, NULL) != 0)
+>  		return;
 
-    iio: adc: rockchip_saradc: use mask for write_enable bitfield
+No way to pass an error back here?
 
-to my char-misc git tree which can be found at
-    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
-in the char-misc-next branch.
+thanks,
 
-The patch will show up in the next release of the linux-next tree
-(usually sometime within the next 24 hours during the week.)
-
-The patch will also be merged in the next major kernel release
-during the merge window.
-
-If you have any questions about this process, please let me know.
-
-
-From 5b4e4b72034f85f7a0cdd147d3d729c5a22c8764 Mon Sep 17 00:00:00 2001
-From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Date: Fri, 23 Feb 2024 13:45:22 +0100
-Subject: iio: adc: rockchip_saradc: use mask for write_enable bitfield
-
-Some of the registers on the SARADCv2 have bits write protected except
-if another bit is set. This is usually done by having the lowest 16 bits
-store the data to write and the highest 16 bits specify which of the 16
-lowest bits should have their value written to the hardware block.
-
-The write_enable mask for the channel selection was incorrect because it
-was just the value shifted by 16 bits, which means it would only ever
-write bits and never clear them. So e.g. if someone starts a conversion
-on channel 5, the lowest 4 bits would be 0x5, then starts a conversion
-on channel 0, it would still be 5.
-
-Instead of shifting the value by 16 as the mask, let's use the OR'ing of
-the appropriate masks shifted by 16.
-
-Note that this is not an issue currently because the only SARADCv2
-currently supported has a reset defined in its Device Tree, that reset
-resets the SARADC controller before starting a conversion on a channel.
-However, this reset is handled as optional by the probe function and
-thus proper masking should be used in the event an SARADCv2 without a
-reset ever makes it upstream.
-
-Fixes: 757953f8ec69 ("iio: adc: rockchip_saradc: Add support for RK3588")
-Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20240223-saradcv2-chan-mask-v1-2-84b06a0f623a@theobroma-systems.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/iio/adc/rockchip_saradc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/iio/adc/rockchip_saradc.c b/drivers/iio/adc/rockchip_saradc.c
-index 2da8d6f3241a..1c0042fbbb54 100644
---- a/drivers/iio/adc/rockchip_saradc.c
-+++ b/drivers/iio/adc/rockchip_saradc.c
-@@ -102,12 +102,12 @@ static void rockchip_saradc_start_v2(struct rockchip_saradc *info, int chn)
- 	writel_relaxed(0xc, info->regs + SARADC_T_DAS_SOC);
- 	writel_relaxed(0x20, info->regs + SARADC_T_PD_SOC);
- 	val = FIELD_PREP(SARADC2_EN_END_INT, 1);
--	val |= val << 16;
-+	val |= SARADC2_EN_END_INT << 16;
- 	writel_relaxed(val, info->regs + SARADC2_END_INT_EN);
- 	val = FIELD_PREP(SARADC2_START, 1) |
- 	      FIELD_PREP(SARADC2_SINGLE_MODE, 1) |
- 	      FIELD_PREP(SARADC2_CONV_CHANNELS, chn);
--	val |= val << 16;
-+	val |= (SARADC2_START | SARADC2_SINGLE_MODE | SARADC2_CONV_CHANNELS) << 16;
- 	writel(val, info->regs + SARADC2_CONV_CON);
- }
- 
--- 
-2.44.0
-
-
+greg k-h
 
