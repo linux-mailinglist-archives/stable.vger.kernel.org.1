@@ -1,160 +1,187 @@
-Return-Path: <stable+bounces-25770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9B1C86F0CD
-	for <lists+stable@lfdr.de>; Sat,  2 Mar 2024 16:17:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49C3886F0FD
+	for <lists+stable@lfdr.de>; Sat,  2 Mar 2024 16:55:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DC032840C2
-	for <lists+stable@lfdr.de>; Sat,  2 Mar 2024 15:17:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D03F71F21EDB
+	for <lists+stable@lfdr.de>; Sat,  2 Mar 2024 15:55:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482E417C62;
-	Sat,  2 Mar 2024 15:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88DCA18C01;
+	Sat,  2 Mar 2024 15:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="Sq+zqYLl"
+	dkim=pass (2048-bit key) header.d=totalphase-com.20230601.gappssmtp.com header.i=@totalphase-com.20230601.gappssmtp.com header.b="BVphM/uX"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f97.google.com (mail-io1-f97.google.com [209.85.166.97])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEEE1877;
-	Sat,  2 Mar 2024 15:17:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CDC118643
+	for <stable@vger.kernel.org>; Sat,  2 Mar 2024 15:55:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.97
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709392653; cv=none; b=gTZyegPxU/IUCL+ZOfLDhG7mzJHPZn+eVrt11NiVapRwOt9/BeUuUdPzVIqX182VzHD+hIJuysRpc4UVu9/9j89CHAIu3uckUPBuklHDKOHnpKW6D00uOA4bxgs11GAStUXuY1exnACGL+ThJs2l22nuWlydiBBl3nPFZkvUi9A=
+	t=1709394912; cv=none; b=Wgpev5uFffwWcCaQ72ZqQaU4fD70NNPdgSJo1u1s/MLBeNdcksv/MXThvuOQ7ZYkwNUQvblbFNOURKRlHwvgM1pLWmBpuvJnS7ljvE/DV4uNDDLIY6blXsKWAxSI5ovR0NkaVHYyyxbtoq5w/RYdEnl5gTRAoczPlajkQvhwdFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709392653; c=relaxed/simple;
-	bh=5aa3JwbAJ7HqcOVbevqDDtinVe43s9Jaky7ezA/pLAo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
-	 In-Reply-To:Content-Type; b=A350Mb0sJ6JBGoPd3Cj8dDLbnyJ2puM9spwPNpwe7AlBNpAZcNHBjwZSMBee3OisNgEOQPw6go6Q9XMbmTVeEE/konHtLFRMOS2DrWpJA1CvNZEPXh7CR3rp+elYhFbpkWFM4VXZ9uNoBOLAVvy8icTDfCPYDF92Ceo4FpLygvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=Sq+zqYLl; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:Cc:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=ZbdqKHxuRKEi81jBudXJdZ1j0bHvXwlxCvfOIjtR3mg=;
-	t=1709392650; x=1709824650; b=Sq+zqYLlK0n8/+K2jE9PFiBqWmijNZfHozxCmkAWgSH3cO2
-	TYVnRmrHJvcczHC1SyzhBP1sXrjyZe04suYRiWNgEMB9FJlTtDiZ86IbxMxBZYOLhSK1IGm7wYalF
-	+n+Y41jocb/Gvj1bJ3ga0b7JjcYcYVUV+QuSdbgAvZzbRMRb30Rqlo8fihv1y7AFoiVxXr2P5d/zV
-	TTsOZron2nnyxQGYdYDme3fMBmLY49SgrJc7etGLP/U2YmOIPsXGbalXANj8g2n3mRDv4Gms5BPwy
-	rL73CxzOhnL+rICvIMZDBqRaBZ/fSJnNrJXRi1Ggr2X2yWqbNWEx/ztjgM6espKw==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1rgR72-0007eG-Rg; Sat, 02 Mar 2024 16:17:20 +0100
-Message-ID: <a84c1a5d-3a8a-4eea-9f66-0402c983ccbb@leemhuis.info>
-Date: Sat, 2 Mar 2024 16:17:20 +0100
+	s=arc-20240116; t=1709394912; c=relaxed/simple;
+	bh=+lZd/t3aeJFOJkO3SAmJV5Dp1Qi1wNboqehWKCeKblw=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=iNF8Kqya1L/ekHv1WfzTjR8hC7SbmU8otkjCfEDHqgJH0vrJrI6K6NAmTnHZVTOnB7+S97cDZ2/e9FVkyX71oixsP4AbXSbQmGF+s9QCq/gSgVB5b19cig83AmeKonrenhkjRUMZjbAwSvzpDeSyjb6z8HSsmkVuvhaaR/Vii8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mail.totalphase.com; spf=pass smtp.mailfrom=totalphase.com; dkim=pass (2048-bit key) header.d=totalphase-com.20230601.gappssmtp.com header.i=@totalphase-com.20230601.gappssmtp.com header.b=BVphM/uX; arc=none smtp.client-ip=209.85.166.97
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mail.totalphase.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=totalphase.com
+Received: by mail-io1-f97.google.com with SMTP id ca18e2360f4ac-7c835cfbff3so24128239f.2
+        for <stable@vger.kernel.org>; Sat, 02 Mar 2024 07:55:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=totalphase-com.20230601.gappssmtp.com; s=20230601; t=1709394909; x=1709999709; darn=vger.kernel.org;
+        h=thread-index:thread-topic:content-transfer-encoding:mime-version
+         :subject:references:in-reply-to:message-id:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=OV8vY35zr5cSwjKz+HhAMZSUpAUv0QIiybaMeTV+MCk=;
+        b=BVphM/uXtK7dRzzJcGHeCBx6S+UP4iJ4/PbEtbE4qkEnerR1b68bvD+OFiCAH8FDvV
+         3M16l9xqdis4SBzJLDh5BeC54ecUyfBC5rfl34hiJ6UV2WSvs91HjHNLs7iJvFzuL0xR
+         hGeWkdJ6/dcF3t7RM/9ygEEiIS1QimK3upJ5wG9dGfnKFw80XS4rotW/bPusHkcXZr/z
+         A6GQzGfLF34Q1tYjKmeJOsFt8wpztM1NouALaeprf7XxQOpesKiqtED7JaukriOQrcSs
+         qmhvL27RuLmI2fYCU8unOn3uKF/qjUznKcQjJ8BztI05uodh/KkOhB9wfQhVeB6VADFA
+         4GGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709394909; x=1709999709;
+        h=thread-index:thread-topic:content-transfer-encoding:mime-version
+         :subject:references:in-reply-to:message-id:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OV8vY35zr5cSwjKz+HhAMZSUpAUv0QIiybaMeTV+MCk=;
+        b=bLyOiotN4JRiKRF/Lm2l5un2Vz0SV6VQZwFuPFnNFqKAwjh0Xnrq5p2qzdf4frnr/G
+         wEPVItosl7cy0/sKRW9lUajZ/JZAWrzU/1+xtkeAkmYv+VvGE4PJo52LS83jc1lOkPrx
+         XJ2/wF5Fvr2vf+7lWZSr5SAEyBCGRYH25Wk6LHLw8OOeVabCATHOvFecz9qpdC54fcB5
+         lrjRD1AjOUK+c9dGbYQ/1uvB7+BBLi3qsb5HXUvhS7wz2fbDJflU/STiyfKB2Cvt/Kgk
+         SHEB1bbYauU6qj4v0mUQyH9Qwde6NyGLZGC+CfXVKHbXzHGLUhOfGkQ2fClLFYdV9Aax
+         EfmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUv7XcXRFQ//ex9jGmOLmjEsVNCFwPynLF44fhzefJ4083Dr1H86kWGq/n/trM51FrFh9OiLbdduTX8wGra6PHywEgLqq74
+X-Gm-Message-State: AOJu0YwXnmkHqd8eqm1ReXepJZ1OAyMNJGCJvJqA2bCFGNQeMACJSWYm
+	qRnygxUd/6pQx5/E8wBq5CUwYxZRmKwpG+RT4VXOlco86KMR4B8chbzhPr66k0nRqoMTYv/Hn/z
+	lh//WDOWxpXQjdpay2H6baS0PF6ER34Az
+X-Google-Smtp-Source: AGHT+IEASUmJ8UX4EjiNghHA7OE6AVyT7bJS2HDj85FgxhLV3wyehvk9DvNqHnVTE9Zro9Fv4jBRg/drfrEl
+X-Received: by 2002:a5e:db4d:0:b0:7c8:2702:404 with SMTP id r13-20020a5edb4d000000b007c827020404mr3980889iop.16.1709394909546;
+        Sat, 02 Mar 2024 07:55:09 -0800 (PST)
+Received: from postfix.totalphase.com ([65.19.189.126])
+        by smtp-relay.gmail.com with ESMTPS id u8-20020a05663825c800b00474d7f5aac1sm56404jat.57.2024.03.02.07.55.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 02 Mar 2024 07:55:09 -0800 (PST)
+X-Relaying-Domain: totalphase.com
+Date: Sat, 2 Mar 2024 07:55:06 -0800 (PST)
+From: Chris Yokum <linux-usb@mail.totalphase.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Linux regressions mailing list <regressions@lists.linux.dev>, 
+	Mathias Nyman <mathias.nyman@linux.intel.com>, 
+	Chris Yokum <linux-usb@mail.totalphase.com>, 
+	stable <stable@vger.kernel.org>, linux-usb@vger.kernel.org
+Message-ID: <278587422.841245.1709394906640.JavaMail.zimbra@totalphase.com>
+In-Reply-To: <2024030246-wife-detoxify-08c0@gregkh>
+References: <949223224.833962.1709339266739.JavaMail.zimbra@totalphase.com> <50f3ca53-40e3-41f2-8f7a-7ad07c681eea@leemhuis.info> <2024030246-wife-detoxify-08c0@gregkh>
+Subject: Re: 6.5.0 broke XHCI URB submissions for count >512
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] kexec does firmware reboot in kernel v6.7.6
-Content-Language: en-US, de-DE
-To: Steve Wahl <steve.wahl@hpe.com>, Dave Hansen <dave.hansen@linux.intel.com>
-References: <3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com>
- <7ebb1c90-544d-4540-87c0-b18dea963004@leemhuis.info>
- <3a8453e8-03a3-462f-81a2-e9366466b990@pavinjoseph.com>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Cc: Pavin Joseph <me@pavinjoseph.com>,
- Linux regressions mailing list <regressions@lists.linux.dev>,
- stable@vger.kernel.org
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <3a8453e8-03a3-462f-81a2-e9366466b990@pavinjoseph.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1709392650;2fc99635;
-X-HE-SMSGID: 1rgR72-0007eG-Rg
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Thread-Topic: 6.5.0 broke XHCI URB submissions for count >512
+Thread-Index: U7u/lEsn8LBuZiRKVfQo3d1lBXRc5Q==
 
-[adding the people involved in developing and applying the culprit to
-the list of recipients]
+Hi Greg,
 
-FWIW, thread starts here:
-https://lore.kernel.org/all/3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com/
+Thank you for the quick follow-up!
 
-On 02.03.24 09:24, Pavin Joseph wrote:
-> On 3/1/24 20:15, Linux regression tracking (Thorsten Leemhuis) wrote:
->> Does mainline show the same problem? The answer determines who later
->> will have to look into this.
-> Yes, I reproduced the issue on mainline and the latest stable version
-> 6.7.7 using your excellent guide.
+The submission of >512 URBs is via usbfs, yes. This worked forever, and still works on EHCI, it's just been failing on xHCI once the indicated change was applied.
 
-Thx for testing and glad to hear. Still: if you have any feedback how to
-make that guide even better, please let me know!
+We see failures of our products due to this, which use usbfs. In order to create a simple repro case, we picked a few USB-to-serial devices that we assumed you would have in your possession, removed the kernel function driver, and accessed it in this way via usbfs.
 
->> With a bit of luck somebody might have heard about problems like yours.
->> But if nobody comes up with an idea up within a few days we almost
->> certainly need a bisection to get down to the root of the problem.
-> 
-> Full bisection done, culprit identified, and validated by reverting
-> commit on mainline.
+There is no specific xHCI controller or USB-to-Serial adapter that always works or always fails. This is quite easy to make fail for us though. I primarily note this because the fail is not 100%, but it is pervasive.
 
-I assume the latter meant "reverting the culprit on mainline fixed the
-problem"; if you meant something else, please let us know.
+We could reproduce within qemu, plus on older Celeron systems, i5-1240p, AMD Ryzen 7 5700U, and many other reported failures from the field.
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+Here is the output related to a failing case:
 
-> Attached bisection log and config used.
-> 
-> Bisection final results:
-> 7143c5f4cf2073193eb27c9cdb84fd4655d1802d is the first bad commit
-> commit 7143c5f4cf2073193eb27c9cdb84fd4655d1802d
-> Author: Steve Wahl <steve.wahl@hpe.com>
-> Date:   Fri Jan 26 10:48:41 2024 -0600
-> 
->     x86/mm/ident_map: Use gbpages only where full GB page should be mapped.
-> 
->     commit d794734c9bbfe22f86686dc2909c25f5ffe1a572 upstream.
-> 
->     When ident_pud_init() uses only gbpages to create identity maps, large
->     ranges of addresses not actually requested can be included in the
->     resulting table; a 4K request will map a full GB.  On UV systems, this
->     ends up including regions that will cause hardware to halt the system
->     if accessed (these are marked "reserved" by BIOS).  Even processor
->     speculation into these regions is enough to trigger the system halt.
-> 
->     Only use gbpages when map creation requests include the full GB page
->     of space.  Fall back to using smaller 2M pages when only portions of a
->     GB page are included in the request.
-> 
->     No attempt is made to coalesce mapping requests. If a request requires
->     a map entry at the 2M (pmd) level, subsequent mapping requests within
->     the same 1G region will also be at the pmd level, even if adjacent or
->     overlapping such requests could have been combined to map a full
->     gbpage.  Existing usage starts with larger regions and then adds
->     smaller regions, so this should not have any great consequence.
-> 
->     [ dhansen: fix up comment formatting, simplifty changelog ]
-> 
->     Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
->     Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
->     Cc: stable@vger.kernel.org
->     Link:
-> https://lore.kernel.org/all/20240126164841.170866-1-steve.wahl%40hpe.com
->     Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> 
->  arch/x86/mm/ident_map.c | 23 ++++++++++++++++++-----
->  1 file changed, 18 insertions(+), 5 deletions(-)
-> 
-> ----------
-> 
-> Btw, the issue appears on LTS kernel 6.6.18 as well. I didn't build this
-> one from the source and test, but installed it a while back from
-> OpenSuse Tumbleweed repos as "kernel-longterm" is a new addition and is
-> being actively tested over there.
+user@linux1:~/xhci_bug$ lsusb
+Bus 002 Device 001: ID 1d6b:0003 Linux Foundation 3.0 root hub
+Bus 001 Device 006: ID 10c4:ea60 Silicon Labs CP210x UART Bridge
+Bus 001 Device 005: ID 0403:6001 Future Technology Devices International, Ltd FT232 Serial (UART) IC
+Bus 001 Device 003: ID 0424:2514 Microchip Technology, Inc. (formerly SMSC) USB 2.0 Hub
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+user@linux1:~/xhci_bug$ sudo ./xhci_bug cp210x 1 6 1024
+Before URB submission:
+512 /sys/kernel/debug/usb/xhci/0000:00:14.0/devices/05/ep04/trbs
 
-P.S.:
+Submitting 1024 URBs
 
-#regzbot introduced d794734c9bbfe22f86686dc2909c25f5ffe1a572
-#regzbot title x86/mm/ident_map: kexec now leads to reboot
+After URB submission:
+512 /sys/kernel/debug/usb/xhci/0000:00:14.0/devices/05/ep04/trbs
+
+user@linux1:~/xhci_bug$ uname -a
+Linux linux1 6.8.0-060800rc6-generic #202402251933 SMP PREEMPT_DYNAMIC Mon Feb 26 00:46:39 UTC 2024 x86_64 x86_64 x86_64 GNU/Linux
+user@linux1:~/xhci_bug$ 
+
+
+
+----- Original Message -----
+From: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+To: "Linux regressions mailing list" <regressions@lists.linux.dev>
+Cc: "Mathias Nyman" <mathias.nyman@linux.intel.com>, "Chris Yokum" <linux-usb@mail.totalphase.com>, "stable" <stable@vger.kernel.org>, linux-usb@vger.kernel.org
+Sent: Friday, March 1, 2024 11:14:50 PM
+Subject: Re: 6.5.0 broke XHCI URB submissions for count >512
+
+On Sat, Mar 02, 2024 at 07:53:12AM +0100, Linux regression tracking (Thorsten Leemhuis) wrote:
+> [adding the people involved in developing and applying the culprit to
+> the list of recipients]
+> 
+> Hi! Thx for the report.
+> 
+> On 02.03.24 01:27, Chris Yokum wrote:
+> > We have found a regression bug, where more than 512 URBs cannot be
+> > reliably submitted to XHCI. URBs beyond that return 0x00 instead of
+> > valid data in the buffer.
+
+You mean 512 outstanding URBS that are not completed?  What in-kernel
+driver does this?
+
+> > Our software works reliably on kernel versions through 6.4.x and fails
+> > on versions 6.5, 6.6, 6.7, and 6.8.0-rc6. This was discovered when
+> > Ubuntu recently updated their latest kernel package to version 6.5.
+> > 
+> > The issue is limited to the XHCI driver and appears to be isolated to
+> > this specific commit:
+> > 
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/usb?h=v6.5&id=f5af638f0609af889f15c700c60b93c06cc76675 <https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/usb?h=v6.5&id=f5af638f0609af889f15c700c60b93c06cc76675>
+> 
+> FWIW, that's f5af638f0609af ("xhci: Fix transfer ring expansion size
+> calculation") [v6.5-rc1] from Mathias.
+> 
+> > Attached is a test program that demonstrates the problem. We used a few
+> > different USB-to-Serial adapters with no driver installed as a
+> > convenient way to reproduce. We check the TRB debug information before
+> > and after to verify the actual number of allocated TRBs.
+
+Ah, so this is just through usbfs?
+
+> > With some adapters on unaffected kernels, the TRB map gets expanded
+> > correctly. This directly corresponds to correct functional behavior. On
+> > affected kernels, the TRB ring does not expand, and our functional tests
+> > also will fail.
+> > 
+> > We don't know exactly why this happens. Some adapters do work correctly,
+> > so there seems to also be some subtle problem that was being masked by
+> > the liberal expansion of the TRB ring in older kernels. We also saw on
+> > one system that the TRB expansion did work correctly with one particular
+> > adapter. However, on all systems at least two adapters did exhibit the
+> > problem and fail.
+
+Any chance you can provide the 'lspci' output for the controllers that
+work and those that do not?
+
+thanks,
+
+greg k-h
 
