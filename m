@@ -1,109 +1,81 @@
-Return-Path: <stable+bounces-25774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC3C486F17E
-	for <lists+stable@lfdr.de>; Sat,  2 Mar 2024 17:55:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 808F386F18D
+	for <lists+stable@lfdr.de>; Sat,  2 Mar 2024 18:03:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7CD91C21135
-	for <lists+stable@lfdr.de>; Sat,  2 Mar 2024 16:55:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43526280D2C
+	for <lists+stable@lfdr.de>; Sat,  2 Mar 2024 17:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 214BD2421F;
-	Sat,  2 Mar 2024 16:55:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D79F2576E;
+	Sat,  2 Mar 2024 17:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=danm.net header.i=@danm.net header.b="TDf4a8ID"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2SKMTF/V"
 X-Original-To: stable@vger.kernel.org
-Received: from mr85p00im-zteg06011601.me.com (mr85p00im-zteg06011601.me.com [17.58.23.186])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433C32BAEE
-	for <stable@vger.kernel.org>; Sat,  2 Mar 2024 16:55:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBAA1B298
+	for <stable@vger.kernel.org>; Sat,  2 Mar 2024 17:03:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709398544; cv=none; b=u/FiVZrY5wMD+8GVkdt9x0FUyByxP/o7EDnDcV52D8BGSlWKFr0G+K6FdiSILNVYfMrd5Y1wsSYOMwUqZSgE0k+aWVLWSmA2h1gd86KnEYnUbrIVOo3gaudPiXPtaW+DV/Fc1vrVY6H4Mc2iVNPFPQne5ehS9wYQSe8/5tJTu/Y=
+	t=1709399014; cv=none; b=kpVVuUjfYzq9rSO/QNMte210yk6ONTOZ4WUY+wAq6tEWjvt+1Wb9KuZEsjLvT/YKO74n/nt+L4Aj9o6nWyk7oksVnnuw4vDeAeyJAxqk03a7aUrF8xM6IYpyMIMq5M38nNMNocia8/gZKO8G+FPjTJQis89rpO9MNKjcBd8oSz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709398544; c=relaxed/simple;
-	bh=r1hdEvOvTGAyYI2NDiZwnAMIDbGJLBZ33WTBhZkrnjM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YtFahOD0lX6sqUh2wSnZY7Uk+Ac0GfrIXxgAzV69EmBWoR5p/vAHQUnBC8zQIp7p6DFUzfKQzxkLbCm1GW2BGmG5ZRiCGoELM8tUpeLZGP4YN2RKe9GcS2LM73uRG1FBbyVwYFqyAkJ/35ckD78Wwr3Wqk5sX/bR6ULS4ckxwjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=danm.net; spf=pass smtp.mailfrom=danm.net; dkim=pass (2048-bit key) header.d=danm.net header.i=@danm.net header.b=TDf4a8ID; arc=none smtp.client-ip=17.58.23.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=danm.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=danm.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=danm.net; s=sig1;
-	t=1709398542; bh=FPJi0KKilosGRHeh4YPOA99JZNRJDTi/69AY3tYVgS0=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=TDf4a8IDxq2gQlVap0Wk3kfwJ5WcxRYxP4IPhPWORKWLVepQU7Oha3FduDhdHXaOe
-	 6XGVhxkvA7NZFH4wYhKYJeLTZ6/wRHYoQvwrwExdTQVDZXhH1ND9IQ5SreiOWcqkXZ
-	 G5rLpZuhxYRUmdxHng7YJvsAwKOD2ZP/hhaf5wYRUt3et4vL/LHFGUpXAkEpJ5YkdA
-	 gs2jGor9O7vl22du6hmgoMuwj4Cn80kIPBTNhZZZPI3ch4isRse7Gp6FVtpdMqD6yY
-	 /FOvRKumMMMKb67fzkSjngAbzaAB01pm/iut6AaJ+Q5ROmvIW0oDO/wJuNhG14xRyP
-	 ztC/a3GncVqGA==
-Received: from hitch.danm.net (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
-	by mr85p00im-zteg06011601.me.com (Postfix) with ESMTPSA id A175B180384;
-	Sat,  2 Mar 2024 16:55:40 +0000 (UTC)
-From: Dan Moulding <dan@danm.net>
-To: junxiao.bi@oracle.com
-Cc: dan@danm.net,
-	gregkh@linuxfoundation.org,
-	linux-kernel@vger.kernel.org,
-	linux-raid@vger.kernel.org,
-	regressions@lists.linux.dev,
-	song@kernel.org,
-	stable@vger.kernel.org,
-	logang@deltatee.com
-Subject: Re: [REGRESSION] 6.7.1: md: raid5 hang and unresponsive system; successfully bisected
-Date: Sat,  2 Mar 2024 09:55:38 -0700
-Message-ID: <20240302165538.30761-1-dan@danm.net>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <739634c3-3e21-44dd-abb1-356cf54e54fd@oracle.com>
-References: <739634c3-3e21-44dd-abb1-356cf54e54fd@oracle.com>
+	s=arc-20240116; t=1709399014; c=relaxed/simple;
+	bh=PAnj89f+8PdKa5RSI4KEbH4Ar/phx4dnFU+/C6iQrCg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EQIdfQFm9rbUNT7SJIqzwnM2PsJid5KT10whFm9hsRl7jeSGiz55kFRZ8O1fC8cCFwQUO4CQ8gdWvXBUhtTNLH0Qfh1uwiUL6caRImgiWPn2kESb6CIoGlFIjxefP8OED3BHD5KGV8uEoptcVJzz8at1I8KqW68hLsd6q2N5spc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2SKMTF/V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F14AC433C7;
+	Sat,  2 Mar 2024 17:03:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1709399013;
+	bh=PAnj89f+8PdKa5RSI4KEbH4Ar/phx4dnFU+/C6iQrCg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=2SKMTF/VpCJC3x6mK/UN5N+sFl5SBYGURsarI83Nx4Y8/1YkGeVzPAma6jiA456eX
+	 eTJSIjEH+GRDIIsH91Xzx784srBm0DV7+G2zDnH9/kBKsI0WMrPrrNXvUB/Z4qWdD3
+	 1qpOwY6zklFHzJblGXsR8fm04gd09pA6W+xFGtjY=
+Date: Sat, 2 Mar 2024 18:03:31 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Rainer Fiebig <jrf@mailbox.org>
+Cc: Nathan Chancellor <nathan@kernel.org>, Sasha Levin <sashal@kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: 6.6.19 won't compile with " [*] Compile the kernel with warnings
+ as errors"
+Message-ID: <2024030214-scratch-compactly-638f@gregkh>
+References: <339c80e4-66bc-818d-89c2-2e89cb41c4b7@mailbox.org>
+ <20240301175621.GA2789855@dev-arch.thelio-3990X>
+ <b0f08ff8-bddf-309d-4c30-1246e80f3f44@mailbox.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: JofO4N5HXtQWGery86c83noqRzdmhkBP
-X-Proofpoint-GUID: JofO4N5HXtQWGery86c83noqRzdmhkBP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-02_04,2024-03-01_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0 malwarescore=0
- mlxlogscore=515 bulkscore=0 clxscore=1030 mlxscore=0 suspectscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2403020146
+In-Reply-To: <b0f08ff8-bddf-309d-4c30-1246e80f3f44@mailbox.org>
 
-> I have not root cause this yet, but would like share some findings from 
-> the vmcore Dan shared. From what i can see, this doesn't look like a md 
-> issue, but something wrong with block layer or below.
+On Sat, Mar 02, 2024 at 10:30:54AM +0100, Rainer Fiebig wrote:
+> Am 01.03.24 um 18:56 schrieb Nathan Chancellor:
+> > On Fri, Mar 01, 2024 at 03:42:17PM +0100, Rainer Fiebig wrote:
+> >> fs/ntfs3/frecord.c: In Funktion »ni_read_frame«:
+> >> fs/ntfs3/frecord.c:2460:16: Error: variable >>i_size<< is not used"
+> >> [-Werror=unused-variable]
+> >>  2460 |         loff_t i_size = i_size_read(&ni->vfs_inode);
+> >>       |                ^~~~~~
+> > 
+> > This is a regression that was inherited from mainline because
+> > commit 4fd6c08a16d7 ("fs/ntfs3: Use i_size_read and i_size_write") was
+> > applied to stable without commit c8e314624a16 ("fs/ntfs3: fix build
+> > without CONFIG_NTFS3_LZX_XPRESS").
+> With  CONFIG_NTFS3_LZX_XPRESS=y  the build was fine.
 
-Below is one other thing I found that might be of interest. This is
-from the original email thread [1] that was linked to in the original
-issue from 2022, which the change in question reverts:
+Thanks for the report, will go do a new release with this fix in it.
 
-On 2022-09-02 17:46, Logan Gunthorpe wrote:
-> I've made some progress on this nasty bug. I've got far enough to know it's not
-> related to the blk-wbt or the block layer.
-> 
-> Turns out a bunch of bios are stuck queued in a blk_plug in the md_raid5 
-> thread while that thread appears to be stuck in an infinite loop (so it never
-> schedules or does anything to flush the plug). 
-> 
-> I'm still debugging to try and find out the root cause of that infinite loop, 
-> but I just wanted to send an update that the previous place I was stuck at
-> was not correct.
-> 
-> Logan
-
-This certainly sounds like it has some similarities to what we are
-seeing when that change is reverted. The md0_raid5 thread appears to be
-in an infinite loop, consuming 100% CPU, but not actually doing any
-work.
-
--- Dan
-
-[1] https://lore.kernel.org/r/7f3b87b6-b52a-f737-51d7-a4eec5c44112@deltatee.com
+greg k-h
 
