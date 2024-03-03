@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-25793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E16E986F3E6
-	for <lists+stable@lfdr.de>; Sun,  3 Mar 2024 08:35:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8224986F3E7
+	for <lists+stable@lfdr.de>; Sun,  3 Mar 2024 08:36:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85D8E1F220C7
-	for <lists+stable@lfdr.de>; Sun,  3 Mar 2024 07:35:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DB151F22051
+	for <lists+stable@lfdr.de>; Sun,  3 Mar 2024 07:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 542E68F40;
-	Sun,  3 Mar 2024 07:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27C98F40;
+	Sun,  3 Mar 2024 07:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17eq9m3+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cwJaNKUd"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11CB91877
-	for <Stable@vger.kernel.org>; Sun,  3 Mar 2024 07:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A03A81877
+	for <Stable@vger.kernel.org>; Sun,  3 Mar 2024 07:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709451352; cv=none; b=WgNc1ZifQmOHb2m6PrxkZSeKVoSir1VS0NzH4+0YaAdNPsfimO8WqLTRfidwXqQUQI+odqb1hGl3eV2Wr0hY5HcFpQGCbn3oXtkF3Zsy1ZFppIrv12lwCT3yH2oWohCs4jN6XnJKwOEdvEFAJPy2HrxzjMrHTmwkeqtTjdlQwEY=
+	t=1709451359; cv=none; b=B81kWOvHzcd3XoqNfOsw+7o1ye195aMxC9ULWXrCJbNHbHGOcEW8Yew5uk5o2iX/3HCKhM1/ws3PbrPR0AhVUhEmNq6K5GO7I/VPxCjrY20VpUkXBHTINZaez0YyEbfdWBIfgiPm0OC4hsb6lCoUpBWfJ5y8jV9q3DZQICqcQ88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709451352; c=relaxed/simple;
-	bh=Dy/YM/pxUOzyYV4GOMwW8wHsjMkFBat6hev5VG3TJPM=;
-	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=nIOJ5RuPqtKDdAORGYDyavSkAQr0aeEic+PrMGunsGvuVnlGE9hTXcaG6l3xMcGSPPaCLLjzHy9imWMrAdHZtNRGG1UmxG6cV9P035wzf014HDbRpBE9dxrCXndFyPQ0+ul6SAzcNpRZzZOlUOAlLYh3LJQus6IW9hR/9srt5Bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17eq9m3+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8222FC433F1;
-	Sun,  3 Mar 2024 07:35:51 +0000 (UTC)
+	s=arc-20240116; t=1709451359; c=relaxed/simple;
+	bh=L+kBnoprjwOiWawwAgAVYkdK4YCX2oCd+GY6ExsuySs=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=uITog5TdF0mrEfGRHqjZfBd8rHE9bniazx0kNtgOJYmXYWxge++bsT12gKU02ewGCh4aijmEAOXr5rPOWHHIrvp0qST8CuxMOorlGQFZ3OzHy0xShc0JD81WsE4yWSIuyAzzXyU0vUhVPzQIH1qbi7eplaPmP10BgqvJCFpcoBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cwJaNKUd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7604C433C7;
+	Sun,  3 Mar 2024 07:35:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709451351;
-	bh=Dy/YM/pxUOzyYV4GOMwW8wHsjMkFBat6hev5VG3TJPM=;
+	s=korg; t=1709451359;
+	bh=L+kBnoprjwOiWawwAgAVYkdK4YCX2oCd+GY6ExsuySs=;
 	h=Subject:To:From:Date:From;
-	b=17eq9m3+YorGmGb482yvlvIwEYA7pNMJ7N9N+A5AA5GLF7RhmgIElz1LwhvLgsG23
-	 BwyGBgQDRtNJwwvWMIGdNz+13LPHEwuhu+lnG8lkBZtRBYzqiFqslVOQkBDb7/jvc1
-	 kyFVoOhplewhjwCe3ocWvWwgmnsDov2C5WyMGGUI=
-Subject: patch "iio: accel: adxl367: fix DEVID read after reset" added to char-misc-linus
+	b=cwJaNKUdOfVrdml1NiufLpoSaAWN/armMnp0OLi2MEXRgcs9Qb4PQH8PpU6fAN5PC
+	 evkBvfxVVsvPUt55nN5OtyTxOuYLTUK2Ar8VeMKgqAHITlWsu9owaHkCZQSfxdWexp
+	 TPPfzVWlwrX0yQjoHLegWSe+pNaMb5aOR3K/p6iY=
+Subject: patch "iio: accel: adxl367: fix I2C FIFO data register" added to char-misc-linus
 To: demonsingur@gmail.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,nuno.sa@analog.com
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 03 Mar 2024 08:35:42 +0100
-Message-ID: <2024030342-delegate-guise-f573@gregkh>
+Date: Sun, 03 Mar 2024 08:35:43 +0100
+Message-ID: <2024030343-hassle-deviator-2550@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,7 +54,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: accel: adxl367: fix DEVID read after reset
+    iio: accel: adxl367: fix I2C FIFO data register
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -69,58 +69,40 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From 1b926914bbe4e30cb32f268893ef7d82a85275b8 Mon Sep 17 00:00:00 2001
+From 11dadb631007324c7a8bcb2650eda88ed2b9eed0 Mon Sep 17 00:00:00 2001
 From: Cosmin Tanislav <demonsingur@gmail.com>
-Date: Wed, 7 Feb 2024 05:36:50 +0200
-Subject: iio: accel: adxl367: fix DEVID read after reset
+Date: Wed, 7 Feb 2024 05:36:51 +0200
+Subject: iio: accel: adxl367: fix I2C FIFO data register
 
-regmap_read_poll_timeout() will not sleep before reading,
-causing the first read to return -ENXIO on I2C, since the
-chip does not respond to it while it is being reset.
+As specified in the datasheet, the I2C FIFO data register is
+0x18, not 0x42. 0x42 was used by mistake when adapting the
+ADXL372 driver.
 
-The datasheet specifies that a soft reset operation has a
-latency of 7.5ms.
-
-Add a 15ms sleep between reset and reading the DEVID register,
-and switch to a simple regmap_read() call.
+Fix this mistake.
 
 Fixes: cbab791c5e2a ("iio: accel: add ADXL367 driver")
 Signed-off-by: Cosmin Tanislav <demonsingur@gmail.com>
 Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20240207033657.206171-1-demonsingur@gmail.com
+Link: https://lore.kernel.org/r/20240207033657.206171-2-demonsingur@gmail.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/accel/adxl367.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/iio/accel/adxl367_i2c.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/accel/adxl367.c b/drivers/iio/accel/adxl367.c
-index 90b7ae6d42b7..484fe2e9fb17 100644
---- a/drivers/iio/accel/adxl367.c
-+++ b/drivers/iio/accel/adxl367.c
-@@ -1429,9 +1429,11 @@ static int adxl367_verify_devid(struct adxl367_state *st)
- 	unsigned int val;
- 	int ret;
+diff --git a/drivers/iio/accel/adxl367_i2c.c b/drivers/iio/accel/adxl367_i2c.c
+index b595fe94f3a3..62c74bdc0d77 100644
+--- a/drivers/iio/accel/adxl367_i2c.c
++++ b/drivers/iio/accel/adxl367_i2c.c
+@@ -11,7 +11,7 @@
  
--	ret = regmap_read_poll_timeout(st->regmap, ADXL367_REG_DEVID, val,
--				       val == ADXL367_DEVID_AD, 1000, 10000);
-+	ret = regmap_read(st->regmap, ADXL367_REG_DEVID, &val);
- 	if (ret)
-+		return dev_err_probe(st->dev, ret, "Failed to read dev id\n");
-+
-+	if (val != ADXL367_DEVID_AD)
- 		return dev_err_probe(st->dev, -ENODEV,
- 				     "Invalid dev id 0x%02X, expected 0x%02X\n",
- 				     val, ADXL367_DEVID_AD);
-@@ -1510,6 +1512,8 @@ int adxl367_probe(struct device *dev, const struct adxl367_ops *ops,
- 	if (ret)
- 		return ret;
+ #include "adxl367.h"
  
-+	fsleep(15000);
-+
- 	ret = adxl367_verify_devid(st);
- 	if (ret)
- 		return ret;
+-#define ADXL367_I2C_FIFO_DATA	0x42
++#define ADXL367_I2C_FIFO_DATA	0x18
+ 
+ struct adxl367_i2c_state {
+ 	struct regmap *regmap;
 -- 
 2.44.0
 
