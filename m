@@ -1,239 +1,235 @@
-Return-Path: <stable+bounces-25788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BE2586F336
-	for <lists+stable@lfdr.de>; Sun,  3 Mar 2024 01:08:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 416DD86F3A3
+	for <lists+stable@lfdr.de>; Sun,  3 Mar 2024 05:40:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 927C41C20D8E
-	for <lists+stable@lfdr.de>; Sun,  3 Mar 2024 00:08:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBFDFB21FAA
+	for <lists+stable@lfdr.de>; Sun,  3 Mar 2024 04:40:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B25197;
-	Sun,  3 Mar 2024 00:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E73D4C8C;
+	Sun,  3 Mar 2024 04:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="g3PCavdO"
+	dkim=pass (1024-bit key) header.d=auristor.com header.i=jaltman@auristor.com header.b="J/XWLOGr"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-002e3701.pphosted.com (mx0b-002e3701.pphosted.com [148.163.143.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sequoia-grove.ad.secure-endpoints.com (sequoia-grove.ad.secure-endpoints.com [208.125.0.235])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4347D7F;
-	Sun,  3 Mar 2024 00:08:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.143.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA41376
+	for <stable@vger.kernel.org>; Sun,  3 Mar 2024 04:40:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=208.125.0.235
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709424495; cv=none; b=Lbl1oRIGvaqj3ZJZT4eeFrTJ+VDOpmJ4zT8xrtMifljdaBVNaItiqsDHYgRPcPtidT0ZyUUkZ1uWziG6xedY2i38/xAIaWUgiOlFNTAAvsbspp7gtuIh9SyCKVLIply4QsvNmm+V4LEEhuRGV4cTWl7Xb5zY94s0Z3sAotf9zEE=
+	t=1709440819; cv=none; b=H+U74lfCwvhDzTXTJVYWEaZklz4z58kqw1+81d8v2OPz9gIr9ld86zvVFupQE4ROPq4pdTPfGkmtr+JHf+x4eQexk3b8sHECGyedI5bzqVX25ENutOcd8IB2a0NVuNT4xnKUIHrVX7apqjjkry/YR5lDYwFNGPgIVQ0Mg3EVz3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709424495; c=relaxed/simple;
-	bh=0hxhne77JDOLEpa6IW5J7+kRFyIxiuDO/E1gJbovLDg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=jDV14vmcSwNkeWxKwAdBvKvwigJBS+NeLI+x6kMHLvEyEAkH24DIQtJxDo9yM1Wfe8nLYuJSV4qLe8/pCDU3DkCre3zAnMzwYcrFhANTb2qkIpoz6Mbvk1lRlO5L25qrfu3K+JxZzrsVEPGh9/m8I8rZdW4i4UKOIq+3dRzUPps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=g3PCavdO; arc=none smtp.client-ip=148.163.143.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hpe.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
-Received: from pps.filterd (m0134423.ppops.net [127.0.0.1])
-	by mx0b-002e3701.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 422GWgZk016853;
-	Sun, 3 Mar 2024 00:00:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=date : from : to : cc :
- subject : message-id : references : content-type : in-reply-to :
- content-transfer-encoding : mime-version; s=pps0720;
- bh=3m+UYNMt8ETxWgy5M3AArHzDpmCY5jCJlJnGcdC2HfM=;
- b=g3PCavdOr+pF6hIDz+6VOTm4Z9fQ3FYVp+T9P72eJmhGXp/SndBn1B3Xt4nMXHQtnOiz
- Smz3z7sePVxli/8bW4qfrmAJVSJxk+nVaS09fgisuYpp2fIpmmWwLn6uX5exNn3wlAZx
- lJROVQcbj+AiZMWLkkyQQtbT3Vta+dtYeyoiBkMpDHGYicajwb4SsALHL6MvXd98nIjv
- AS6iwo5BhHvVFzosPt3c9oAb6Ctr7CyJfWEVe4ohsMnMwavVp7mBPV7+PQ7rI01ddYUf
- 0gxnf/kPRc+prp5/v8oioVXO8iQqOgL5wPx0pXHOACPQQdF74iodaWTQR6mOMLGlGRyk Ow== 
-Received: from p1lg14879.it.hpe.com ([16.230.97.200])
-	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 3wksmbuqjd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 03 Mar 2024 00:00:45 +0000
-Received: from p1lg14886.dc01.its.hpecorp.net (unknown [10.119.18.237])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by p1lg14879.it.hpe.com (Postfix) with ESMTPS id C33751308C;
-	Sun,  3 Mar 2024 00:00:34 +0000 (UTC)
-Received: from swahl-home.5wahls.com (unknown [16.231.227.39])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by p1lg14886.dc01.its.hpecorp.net (Postfix) with ESMTPS id 71AA4802BAE;
-	Sun,  3 Mar 2024 00:00:33 +0000 (UTC)
-Date: Sat, 2 Mar 2024 18:00:31 -0600
-From: Steve Wahl <steve.wahl@hpe.com>
-To: Pavin Joseph <me@pavinjoseph.com>
-Cc: Linux regressions mailing list <regressions@lists.linux.dev>,
-        Steve Wahl <steve.wahl@hpe.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>, stable@vger.kernel.org
-Subject: Re: [REGRESSION] kexec does firmware reboot in kernel v6.7.6
-Message-ID: <ZeO9n6oqXosX1I6C@swahl-home.5wahls.com>
-References: <3a1b9909-45ac-4f97-ad68-d16ef1ce99db@pavinjoseph.com>
- <7ebb1c90-544d-4540-87c0-b18dea963004@leemhuis.info>
- <3a8453e8-03a3-462f-81a2-e9366466b990@pavinjoseph.com>
- <a84c1a5d-3a8a-4eea-9f66-0402c983ccbb@leemhuis.info>
- <806629e6-c228-4046-828a-68d397eb8dbc@pavinjoseph.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <806629e6-c228-4046-828a-68d397eb8dbc@pavinjoseph.com>
-X-Proofpoint-GUID: xAWpGMjvdjduSw06SLjHeYb1yP1y3PXj
-X-Proofpoint-ORIG-GUID: xAWpGMjvdjduSw06SLjHeYb1yP1y3PXj
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+	s=arc-20240116; t=1709440819; c=relaxed/simple;
+	bh=FvXZT3aP0YJuyc5mq7uVkvwzJ66FUPvvfrtvSLCcv/0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ifjyNbjR1SEzSQ9ATfWB1nw4GviwsHBEOhYl4cx7I3HpQAbgYSgdVT9DgWUUV6pCZ9ze6otlLKupF0iFKQVLKR0Xex2FXAFXYOUqwD6o+BY8/MO3/Wq2Y+OKIAklucA1gq7G7eKgZaEtpNSRvj1UmVpO9YZY77onGby2jEy+vAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=auristor.com; spf=pass smtp.mailfrom=auristor.com; dkim=pass (1024-bit key) header.d=auristor.com header.i=jaltman@auristor.com header.b=J/XWLOGr; arc=none smtp.client-ip=208.125.0.235
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=auristor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=auristor.com
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/relaxed;
+	d=auristor.com; s=MDaemon; r=y; t=1709440344; x=1710045144;
+	i=jaltman@auristor.com; q=dns/txt; h=Message-ID:Date:
+	MIME-Version:User-Agent:Subject:To:Cc:References:
+	Content-Language:From:Organization:In-Reply-To:Content-Type;
+	bh=Tfppcvk/trxUNCOEYE+khfCTNvI1PYi5jvhZkUpEovo=; b=J/XWLOGrVXc44
+	5pZ55Y7Cd09tszcw23ZXRAx6tSwHNblSNpoN6X6tQzisAdusEf9zxI1kh/g3ZUUU
+	9HfTuI3E73ll/BO/zUeU3c2SSk8NxN3FQHfvd0KpsYK1Q5Qd4OACafP4hQj44/L9
+	jQd+BriYlsw3TxIioHysvd+5XB+ZoY=
+X-MDAV-Result: clean
+X-MDAV-Processed: sequoia-grove.ad.secure-endpoints.com, Sat, 02 Mar 2024 23:32:24 -0500
+Received: from [IPV6:2603:7000:73c:bb00:4852:92b1:dedf:53d7] by auristor.com (IPv6:2001:470:1f07:f77:28d9:68fb:855d:c2a5) (MDaemon PRO v23.5.3a) 
+	with ESMTPSA id md5001003817062.msg; Sat, 02 Mar 2024 23:32:22 -0500
+X-Spam-Processed: sequoia-grove.ad.secure-endpoints.com, Sat, 02 Mar 2024 23:32:22 -0500
+	(not processed: message from trusted or authenticated source)
+X-MDRemoteIP: 2603:7000:73c:bb00:4852:92b1:dedf:53d7
+X-MDHelo: [IPV6:2603:7000:73c:bb00:4852:92b1:dedf:53d7]
+X-MDArrival-Date: Sat, 02 Mar 2024 23:32:22 -0500
+X-MDOrigin-Country: US, NA
+X-Authenticated-Sender: jaltman@auristor.com
+X-Return-Path: prvs=1792303f1e=jaltman@auristor.com
+X-Envelope-From: jaltman@auristor.com
+X-MDaemon-Deliver-To: stable@vger.kernel.org
+Message-ID: <03aa52e3-7ab9-484e-9ad2-b03938d2019b@auristor.com>
+Date: Sat, 2 Mar 2024 23:32:04 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-HPE-SCL: -1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-02_06,2024-03-01_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 impostorscore=0
- priorityscore=1501 spamscore=0 suspectscore=0 phishscore=0 mlxscore=0
- mlxlogscore=999 malwarescore=0 bulkscore=0 lowpriorityscore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2403020207
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.4 032/267] afs: Hide silly-rename files from userspace
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, David Howells <dhowells@redhat.com>,
+ Marc Dionne <marc.dionne@auristor.com>, linux-afs@lists.infradead.org,
+ Sasha Levin <sashal@kernel.org>
+References: <20240221125940.058369148@linuxfoundation.org>
+ <20240221125941.044302264@linuxfoundation.org>
+Content-Language: en-US
+From: Jeffrey E Altman <jaltman@auristor.com>
+Organization: AuriStor, Inc.
+In-Reply-To: <20240221125941.044302264@linuxfoundation.org>
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256; boundary="------------ms030606090609000403070803"
+X-MDCFSigsAdded: auristor.com
 
-On Sat, Mar 02, 2024 at 09:40:06PM +0530, Pavin Joseph wrote:
-> Hello everyone,
-> 
-> On 3/2/24 20:47, Linux regression tracking (Thorsten Leemhuis) wrote> Thx
-> for testing and glad to hear. Still: if you have any feedback how to
-> > make that guide even better, please let me know!
-> 
-> Yes, I have some improvements in mind.
-> Don't know if there is a Github repo where I can make a PR, but if not
-> here's the gist:
-> 
-> 1. The git clone/fetch instructions in the TLDR is easy to follow, but there
-> are conflicting information later on in the main section and reference that
-> taken together does not work. I think it would be better to not perform
-> shallow clones or such advanced topics could be relegated to its own
-> reference section.
-> 
-> Here's what I ended up using:
-> git clone -o mainline --no-checkout \
->   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-> ~/linux/
-> cd ~/linux/
-> git remote add -t master stable \
->   https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
-> git checkout --detach v6.0
-> git checkout --force --detach mainline/master
-> git remote set-branches --add stable linux-6.7.y
-> git fetch --verbose stable
-> git checkout --force --detach v6.7.7
-> git checkout --force --detach v6.7.5
-> 
-> 2. The "installkernel" command is called "kernel-install" in OpenSuse, and
-> it doesn't really perform all the steps to install kernel. It calls dracut
-> to create initramfs though, but that's hardly much help.
-> 
-> I ended up doing:
-> sudo make modules_install
-> sudo install -m 0600 $(make -s image_name) /usr/lib/modules/$(make -s
-> kernelrelease)/vmlinuz
-> sudo install -m 0600 System.map /usr/lib/modules/$(make -s
-> kernelrelease)/System.map
-> sudo kernel-install add $(make -s kernelrelease) /usr/lib/modules/$(make -s
-> kernelrelease)/vmlinuz
-> sudo ln -sf /boot/initrd-$(make -s kernelrelease) /boot/initrd
-> sudo ln -sf /usr/lib/modules/$(make -s kernelrelease)/vmlinuz
-> /boot/vmlinuz-$(make -s kernelrelease)
-> sudo ln -sf /boot/vmlinuz-$(make -s kernelrelease) /boot/vmlinuz
-> sudo ln -sf /usr/lib/modules/$(make -s kernelrelease)/System.map
-> /boot/System.map-$(make -s kernelrelease)
-> sudo update-bootloader
-> 
-> 3. The dependencies for kernel building in OpenSuse and other major distros
-> are incomplete, most of them have some form of package collection that can
-> be provided as an alternative.
-> For example in OpenSuse, I installed the following patterns (collection of
-> packages):
-> sudo zypper in -t pattern devel_basis devel_kernel devel_osc_build
-> devel_rpm_build
-> 
-> 4. The command to build RPM package (make binrpm-pkg) fails as the modules
-> are installed into "/home/<user>/linux/.../lib" while depmod checks for
-> modules in "/home/<user>/linux/.../usr/lib".
-> 
-> I think that's it, turned out not to be a gist after all. 🙂
-> Thank you very much for writing the updated guide, it was very helpful
-> without which I don't think it would have been possible for someone like me
-> to find/report this bug.
-> 
-> > > Full bisection done, culprit identified, and validated by reverting
-> > > commit on mainline.
-> > 
-> > I assume the latter meant "reverting the culprit on mainline fixed the
-> > problem"; if you meant something else, please let us know.
-> 
-> Clarification: reverting culprit commit on mainline fixed the problem.
-> 
-> Kind regards,
-> Pavin Joseph.
+This is a cryptographically signed message in MIME format.
 
+--------------ms030606090609000403070803
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Pavin,
+Greg,
 
-I have just now built and installed 6.7.7 and succesfully kexec'd in
-this fashion:
+If its not too late it would be best not to backport this change to 6.7, 
+6.6, 6.1, 5.15, 5.10, and 5.4.
 
-------------------------------
-sph-185:~ # kexec -l /boot/vmlinuz-6.7.7-wahl --initrd=/boot/initrd-6.7.7-wahl --reuse-cmdline
-sph-185:~ # systemctl kexec
-...
-[  OK  ] Reached target Late Shutdown Services.
-         Starting Reboot via kexec...
-[  493.056708][    T1] systemd-shutdown[1]: Sending SIGKILL to remaining processes...
-[  493.089271][    T1] systemd-shutdown[1]: Unmounting file systems.
-[  493.096285][T14707] (sd-remount)[14707]: Remounting '/' read-only in with options 'attr2,inode64,logbufs=8,logbsize=32k,noquota'.
-[  493.113587][    T1] systemd-shutdown[1]: All filesystems unmounted.
-[  493.119913][    T1] systemd-shutdown[1]: Deactivating swaps.
-[  493.126612][    T1] systemd-shutdown[1]: All swaps deactivated.
-[  493.132584][    T1] systemd-shutdown[1]: Detaching loop devices.
-[  493.138718][    T1] systemd-shutdown[1]: All loop devices detached.
-[  493.145036][    T1] systemd-shutdown[1]: Stopping MD devices.
-[  493.150838][    T1] systemd-shutdown[1]: All MD devices stopped.
-[  493.156894][    T1] systemd-shutdown[1]: Detaching DM devices.
-[  493.162785][    T1] systemd-shutdown[1]: All DM devices detached.
-[  493.168930][    T1] systemd-shutdown[1]: All filesystems, swaps, loop devices, MD devices and DM devices detached.
-[  493.221975][    T1] systemd-shutdown[1]: Syncing filesystems and block devices.
-[  493.229354][    T1] systemd-shutdown[1]: Rebooting with kexec.
-[  493.303438][T14716] qla2xxx [0003:61:00.0]-fffa:14: Adapter shutdown
-[  493.309930][T14716] qla2xxx [0003:61:00.0]-00af:14: Performing ISP error recovery - ha=00000000ae891d2f.
-[  493.330535][T14716] qla2xxx [0003:61:00.0]-fffe:14: Adapter shutdown successfully.
-[  494.114055][T14716] mana 0000:61:00.1: Shutdown was called
-[  494.643693][T14716] kvm: exiting hardware virtualization
-[  494.649419][T14716] kexec_core: Starting new kernel
+This change can result in an infinite loop in directory parsing and the 
+fix for that has yet to be merged by Linus.
 
+Sorry for the additional work.
 
-Invalid physical address chosen!
+Thank you.
 
+Jeffrey Altman
 
+On 2/21/2024 8:06 AM, Greg Kroah-Hartman wrote:
+> 5.4-stable review patch.  If anyone has any objections, please let me know.
+>
+> ------------------
+>
+> From: David Howells <dhowells@redhat.com>
+>
+> [ Upstream commit 57e9d49c54528c49b8bffe6d99d782ea051ea534 ]
+>
+> There appears to be a race between silly-rename files being created/removed
+> and various userspace tools iterating over the contents of a directory,
+> leading to such errors as:
+>
+> 	find: './kernel/.tmp_cpio_dir/include/dt-bindings/reset/.__afs2080': No such file or directory
+> 	tar: ./include/linux/greybus/.__afs3C95: File removed before we read it
+>
+> when building a kernel.
+>
+> Fix afs_readdir() so that it doesn't return .__afsXXXX silly-rename files
+> to userspace.  This doesn't stop them being looked up directly by name as
+> we need to be able to look them up from within the kernel as part of the
+> silly-rename algorithm.
+>
+> Fixes: 79ddbfa500b3 ("afs: Implement sillyrename for unlink and rename")
+> Signed-off-by: David Howells <dhowells@redhat.com>
+> cc: Marc Dionne <marc.dionne@auristor.com>
+> cc: linux-afs@lists.infradead.org
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>   fs/afs/dir.c | 8 ++++++++
+>   1 file changed, 8 insertions(+)
+>
+> diff --git a/fs/afs/dir.c b/fs/afs/dir.c
+> index 43f5b972fcea..8bed9df09230 100644
+> --- a/fs/afs/dir.c
+> +++ b/fs/afs/dir.c
+> @@ -421,6 +421,14 @@ static int afs_dir_iterate_block(struct afs_vnode *dvnode,
+>   			continue;
+>   		}
+>   
+> +		/* Don't expose silly rename entries to userspace. */
+> +		if (nlen > 6 &&
+> +		    dire->u.name[0] == '.' &&
+> +		    ctx->actor != afs_lookup_filldir &&
+> +		    ctx->actor != afs_lookup_one_filldir &&
+> +		    memcmp(dire->u.name, ".__afs", 6) == 0)
+> +			continue;
+> +
+>   		/* found the next entry */
+>   		if (!dir_emit(ctx, dire->u.name, nlen,
+>   			      ntohl(dire->u.vnode),
 
+--------------ms030606090609000403070803
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
 
-Physical KASLR disabled: no suitable memory region!
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCC
+DHEwggXSMIIEuqADAgECAhBAAYJpmi/rPn/F0fJyDlzMMA0GCSqGSIb3DQEBCwUAMDoxCzAJ
+BgNVBAYTAlVTMRIwEAYDVQQKEwlJZGVuVHJ1c3QxFzAVBgNVBAMTDlRydXN0SUQgQ0EgQTEz
+MB4XDTIyMDgwNDE2MDQ0OFoXDTI1MTAzMTE2MDM0OFowcDEvMC0GCgmSJomT8ixkAQETH0Ew
+MTQxMEQwMDAwMDE4MjY5OUEyRkQyMDAwMjMzQ0QxGTAXBgNVBAMTEEplZmZyZXkgRSBBbHRt
+YW4xFTATBgNVBAoTDEF1cmlTdG9yIEluYzELMAkGA1UEBhMCVVMwggEiMA0GCSqGSIb3DQEB
+AQUAA4IBDwAwggEKAoIBAQCkC7PKBBZnQqDKPtZPMLAy77zo2DPvwtGnd1hNjPvbXrpGxUb3
+xHZRtv179LHKAOcsY2jIctzieMxf82OMyhpBziMPsFAG/ukihBMFj3/xEeZVso3K27pSAyyN
+fO/wJ0rX7G+ges22Dd7goZul8rPaTJBIxbZDuaykJMGpNq4PQ8VPcnYZx+6b+nJwJJoJ46kI
+EEfNh3UKvB/vM0qtxS690iAdgmQIhTl+qfXq4IxWB6b+3NeQxgR6KLU4P7v88/tvJTpxIKkg
+9xj89ruzeThyRFd2DSe3vfdnq9+g4qJSHRXyTft6W3Lkp7UWTM4kMqOcc4VSRdufVKBQNXjG
+IcnhAgMBAAGjggKcMIICmDAOBgNVHQ8BAf8EBAMCBPAwgYQGCCsGAQUFBwEBBHgwdjAwBggr
+BgEFBQcwAYYkaHR0cDovL2NvbW1lcmNpYWwub2NzcC5pZGVudHJ1c3QuY29tMEIGCCsGAQUF
+BzAChjZodHRwOi8vdmFsaWRhdGlvbi5pZGVudHJ1c3QuY29tL2NlcnRzL3RydXN0aWRjYWEx
+My5wN2MwHwYDVR0jBBgwFoAULbfeG1l+KpguzeHUG+PFEBJe6RQwCQYDVR0TBAIwADCCASsG
+A1UdIASCASIwggEeMIIBGgYLYIZIAYb5LwAGAgEwggEJMEoGCCsGAQUFBwIBFj5odHRwczov
+L3NlY3VyZS5pZGVudHJ1c3QuY29tL2NlcnRpZmljYXRlcy9wb2xpY3kvdHMvaW5kZXguaHRt
+bDCBugYIKwYBBQUHAgIwga0MgapUaGlzIFRydXN0SUQgQ2VydGlmaWNhdGUgaGFzIGJlZW4g
+aXNzdWVkIGluIGFjY29yZGFuY2Ugd2l0aCBJZGVuVHJ1c3QncyBUcnVzdElEIENlcnRpZmlj
+YXRlIFBvbGljeSBmb3VuZCBhdCBodHRwczovL3NlY3VyZS5pZGVudHJ1c3QuY29tL2NlcnRp
+ZmljYXRlcy9wb2xpY3kvdHMvaW5kZXguaHRtbDBFBgNVHR8EPjA8MDqgOKA2hjRodHRwOi8v
+dmFsaWRhdGlvbi5pZGVudHJ1c3QuY29tL2NybC90cnVzdGlkY2FhMTMuY3JsMB8GA1UdEQQY
+MBaBFGphbHRtYW5AYXVyaXN0b3IuY29tMB0GA1UdDgQWBBQB+nzqgljLocLTsiUn2yWqEc2s
+gjAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwDQYJKoZIhvcNAQELBQADggEBAJwV
+eycprp8Ox1npiTyfwc5QaVaqtoe8Dcg2JXZc0h4DmYGW2rRLHp8YL43snEV93rPJVk6B2v4c
+WLeQfaMrnyNeEuvHx/2CT44cdLtaEk5zyqo3GYJYlLcRVz6EcSGHv1qPXgDT0xB/25etwGYq
+utYF4Chkxu4KzIpq90eDMw5ajkexw+8ARQz4N5+d6NRbmMCovd7wTGi8th/BZvz8hgKUiUJo
+Qle4wDxrdXdnIhCP7g87InXKefWgZBF4VX21t2+hkc04qrhIJlHrocPG9mRSnnk2WpsY0MXt
+a8ivbVKtfpY7uSNDZSKTDi1izEFH5oeQdYRkgIGb319a7FjslV8wggaXMIIEf6ADAgECAhBA
+AXA7OrqBjMk8rp4OuNQSMA0GCSqGSIb3DQEBCwUAMEoxCzAJBgNVBAYTAlVTMRIwEAYDVQQK
+EwlJZGVuVHJ1c3QxJzAlBgNVBAMTHklkZW5UcnVzdCBDb21tZXJjaWFsIFJvb3QgQ0EgMTAe
+Fw0yMDAyMTIyMTA3NDlaFw0zMDAyMTIyMTA3NDlaMDoxCzAJBgNVBAYTAlVTMRIwEAYDVQQK
+EwlJZGVuVHJ1c3QxFzAVBgNVBAMTDlRydXN0SUQgQ0EgQTEzMIIBIjANBgkqhkiG9w0BAQEF
+AAOCAQ8AMIIBCgKCAQEAu6sUO01SDD99PM+QdZkNxKxJNt0NgQE+Zt6ixaNP0JKSjTd+SG5L
+wqxBWjnOgI/3dlwgtSNeN77AgSs+rA4bK4GJ75cUZZANUXRKw/et8pf9Qn6iqgB63OdHxBN/
+15KbM3HR+PyiHXQoUVIevCKW8nnlWnnZabT1FejOhRRKVUg5HACGOTfnCOONrlxlg+m1Vjgn
+o1uNqNuLM/jkD1z6phNZ/G9IfZGI0ppHX5AA/bViWceX248VmefNhSR14ADZJtlAAWOi2un0
+3bqrBPHA9nDyXxI8rgWLfUP5rDy8jx2hEItg95+ORF5wfkGUq787HBjspE86CcaduLka/Bk2
+VwIDAQABo4IChzCCAoMwEgYDVR0TAQH/BAgwBgEB/wIBADAOBgNVHQ8BAf8EBAMCAYYwgYkG
+CCsGAQUFBwEBBH0wezAwBggrBgEFBQcwAYYkaHR0cDovL2NvbW1lcmNpYWwub2NzcC5pZGVu
+dHJ1c3QuY29tMEcGCCsGAQUFBzAChjtodHRwOi8vdmFsaWRhdGlvbi5pZGVudHJ1c3QuY29t
+L3Jvb3RzL2NvbW1lcmNpYWxyb290Y2ExLnA3YzAfBgNVHSMEGDAWgBTtRBnA0/AGi+6ke75C
+5yZUyI42djCCASQGA1UdIASCARswggEXMIIBEwYEVR0gADCCAQkwSgYIKwYBBQUHAgEWPmh0
+dHBzOi8vc2VjdXJlLmlkZW50cnVzdC5jb20vY2VydGlmaWNhdGVzL3BvbGljeS90cy9pbmRl
+eC5odG1sMIG6BggrBgEFBQcCAjCBrQyBqlRoaXMgVHJ1c3RJRCBDZXJ0aWZpY2F0ZSBoYXMg
+YmVlbiBpc3N1ZWQgaW4gYWNjb3JkYW5jZSB3aXRoIElkZW5UcnVzdCdzIFRydXN0SUQgQ2Vy
+dGlmaWNhdGUgUG9saWN5IGZvdW5kIGF0IGh0dHBzOi8vc2VjdXJlLmlkZW50cnVzdC5jb20v
+Y2VydGlmaWNhdGVzL3BvbGljeS90cy9pbmRleC5odG1sMEoGA1UdHwRDMEEwP6A9oDuGOWh0
+dHA6Ly92YWxpZGF0aW9uLmlkZW50cnVzdC5jb20vY3JsL2NvbW1lcmNpYWxyb290Y2ExLmNy
+bDAdBgNVHQ4EFgQULbfeG1l+KpguzeHUG+PFEBJe6RQwHQYDVR0lBBYwFAYIKwYBBQUHAwIG
+CCsGAQUFBwMEMA0GCSqGSIb3DQEBCwUAA4ICAQB/7BKcygLX6Nl4a03cDHt7TLdPxCzFvDF2
+bkVYCFTRX47UfeomF1gBPFDee3H/IPlLRmuTPoNt0qjdpfQzmDWN95jUXLdLPRToNxyaoB5s
+0hOhcV6H08u3FHACBif55i0DTDzVSaBv0AZ9h1XeuGx4Fih1Vm3Xxz24GBqqVudvPRLyMJ7u
+6hvBqTIKJ53uCs3dyQLZT9DXnp+kJv8y7ZSAY+QVrI/dysT8avtn8d7k7azNBkfnbRq+0e88
+QoBnel6u+fpwbd5NLRHywXeH+phbzULCa+bLPRMqJaW2lbhvSWrMHRDy3/d8HvgnLCBFK2s4
+Spns4YCN4xVcbqlGWzgolHCKUH39vpcsDo1ymZFrJ8QR6ihIn8FmJ5oKwAnnd/G6ADXFC9bu
+db9+532phSAXOZrrecIQn+vtP366PC+aClAPsIIDJDsotS5z4X2JUFsNIuEgXGqhiKE7SuZb
+rFG9sdcLprSlJN7TsRDc0W2b9nqwD+rj/5MN0C+eKwha+8ydv0+qzTyxPP90KRgaegGowC4d
+UsZyTk2n4Z3MuAHX5nAZL/Vh/SyDj/ajorV44yqZBzQ3ChKhXbfUSwe2xMmygA2Z5DRwMRJn
+p/BscizYdNk2WXJMTnH+wVLN8sLEwEtQR4eTLoFmQvrK2AMBS9kW5sBkMzINt/ZbbcZ3F+eA
+MDGCAxQwggMQAgEBME4wOjELMAkGA1UEBhMCVVMxEjAQBgNVBAoTCUlkZW5UcnVzdDEXMBUG
+A1UEAxMOVHJ1c3RJRCBDQSBBMTMCEEABgmmaL+s+f8XR8nIOXMwwDQYJYIZIAWUDBAIBBQCg
+ggGXMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI0MDMwMzA0
+MzIwNFowLwYJKoZIhvcNAQkEMSIEIK6VhGzZaovCcfnIY3g7T2xXqGpjTTsmZ5DMn0nAzxT/
+MF0GCSsGAQQBgjcQBDFQME4wOjELMAkGA1UEBhMCVVMxEjAQBgNVBAoTCUlkZW5UcnVzdDEX
+MBUGA1UEAxMOVHJ1c3RJRCBDQSBBMTMCEEABgmmaL+s+f8XR8nIOXMwwXwYLKoZIhvcNAQkQ
+AgsxUKBOMDoxCzAJBgNVBAYTAlVTMRIwEAYDVQQKEwlJZGVuVHJ1c3QxFzAVBgNVBAMTDlRy
+dXN0SUQgQ0EgQTEzAhBAAYJpmi/rPn/F0fJyDlzMMGwGCSqGSIb3DQEJDzFfMF0wCwYJYIZI
+AWUDBAEqMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzAOBggqhkiG9w0DAgICAIAwDQYIKoZI
+hvcNAwICAUAwBwYFKw4DAgcwDQYIKoZIhvcNAwICASgwDQYJKoZIhvcNAQEBBQAEggEAXrvl
+RmDpvsrcaMjB5IaIcqlUzs1pb5WTW3yxx/rVdjUFPX/rPzz/nofE7HmtS2ya6Qg0N4xr14Sx
+UkVZocz1MejRof3ynj8ZEt3cgiyWFxjJsiXJl46zvEqJvnSrYsB6AgUXpI+vxwmbsz3oNxru
+SzHq2D+UwFBThy84YOzCOK0izcZvVrnLsqaidRW/dgOlA3Wt6D5F9CrRzCgFhfs/hU/faII7
+v8gouRz2AjbB4FM26ibJPkdSmYB4dpqnWHc9P3FQnSq8JBMBT25PgqcGqRFPDen+ksWod34q
+R1ElNtei1/JoU4b6Jozi0TdR0S5wWWKnVGtPv5lV+YddO20wpQAAAAAAAA==
+--------------ms030606090609000403070803--
 
-[    0.000000][    T0] Linux version 6.7.7-wahl (root@sph-185) (gcc (SUSE Linux) 7.5.0, GNU ld (GNU Binutils; SUSE Linux Enterprise 15) 2.41.0.20230908-150100.7.46) #1 SMP PREEMPT_DYNAMIC Sat Mar  2 17:22:28 CST 2024
-------------------------------
-
-This was on SLES, not open Suse.
-
-The machines I work on are large, though.  Can you give specifics on
-exactly how you are performing your kexec, and what hardware you are
-using when you hit this (especially memory size)?  Have you made any
-special arrangements for the size of memory reserved for kexec on your
-system?
-
-The patch can use slightly more memory to create the identity maps,
-and the only thing I can think of right now is that little bit causing
-you to run out of memory.
-
-Thank you!
-
---> Steve Wahl
--- 
-Steve Wahl, Hewlett Packard Enterprise
 
