@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3B90870EE4
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:48:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA693870D34
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C842E1C2134B
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:48:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A651328DED0
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0064446BA0;
-	Mon,  4 Mar 2024 21:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 056C37D095;
+	Mon,  4 Mar 2024 21:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+AnJhv4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oyUECQYt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28B71EB5A;
-	Mon,  4 Mar 2024 21:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7828482DA;
+	Mon,  4 Mar 2024 21:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588921; cv=none; b=jj4EbCtny0zD9M/cH6ekJOxTWtd4BLTa8RM8b0GMonX4IH4LOv+4F3ok5ZQWRfG9jbKnJqmSAbgZNwaRzU6ZYgMjff30MMLY9wnMcGpfIucaDwvB3BoXnE14Yn9BDzI5FpgvXh+FpdzGzJumyrAxr3WUt/azYGJt8jAiaA7QgzM=
+	t=1709587899; cv=none; b=DkwqU+1Rxc8BIULSyas26FzUuDBVCIOnkxddNL0GuDacXqU2ayZf1aylG4jlkziF/AFazfyoTIoendWb/eiNF6qNQ/tUB9fdAP4etIMTj+Sbpiwgz+4M3O7KGm6RjbjURG60Wnz/qebCGUIVYXZYZSHBLdsZXx/XelL8KjGfynw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588921; c=relaxed/simple;
-	bh=Yeo7rpshA2XOmrPvOu5ux0TrxL4plwmM2IRqA0wwvKo=;
+	s=arc-20240116; t=1709587899; c=relaxed/simple;
+	bh=xmpEc3uVHZT9rZzYTnF9Ibb1ioO6Fn6uV3nE3OlXGpw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B9aAr4CjGi38tcBmiVBBhstfPTQaTAizMKeLueJWDxt1r6XmCsaZGvZc/fPYdZ3Z5jWaBAlD3FucGIphToVy2Lbx8jXKlYgwE5LEr429SkvjEwbtUgXJv5x4NOhh1TKsNPRyfJeLK2Hunnc6Z6mx9ZmzPzfdrTlxKEa8KShYy9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+AnJhv4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48634C433C7;
-	Mon,  4 Mar 2024 21:48:41 +0000 (UTC)
+	 MIME-Version; b=P//+HhD/+/EWofMkqhkjPBP9yxuLz0rcJgVjuwa1OidjD698+xWwJHYFIca39oyeo3XbppQSTYch37TIHVW+mf0ASiini2/n3BtM/azaHTioWRelc2fNQejNuzICFTpzyPTto33YyMnuqMiifr8Tkkk2zfs6lY00lNbSvbkL/J8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oyUECQYt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3DACC433F1;
+	Mon,  4 Mar 2024 21:31:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588921;
-	bh=Yeo7rpshA2XOmrPvOu5ux0TrxL4plwmM2IRqA0wwvKo=;
+	s=korg; t=1709587899;
+	bh=xmpEc3uVHZT9rZzYTnF9Ibb1ioO6Fn6uV3nE3OlXGpw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u+AnJhv4JtwFTExfim+BVvswCbHJHup11OdNf/hXVFW5tsrpw+D0Zd5NqvZKUgjPt
-	 rYxWd31EW8m8F5uhgANpzcuwVUcvIYUq2ttlJQUCyG03QpMAHDALPWxHL/IVdGpU+A
-	 BtPv3+2srDY3k8XeAArTT5sK2eC8FSpsMz87yWyo=
+	b=oyUECQYt6+8N1a5NPoafFOlwJ9hn4mNBhJinPYDs91EMDh1l9keoYKtm87KcddcPy
+	 GydhvGAAX8j/UV6hu0HeAMZSRPh5WhOZQ85vY9a8iDwpy3LOS6Wvet7VsN5lMv6L83
+	 HZOd7xSlTS2kRtLTn4xUwroo2C7mhwRMQrIQI5g4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCH 6.1 135/215] x86/decompressor: Call trampoline directly from C code
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	syzbot+ecab4d36f920c3574bf9@syzkaller.appspotmail.com
+Subject: [PATCH 6.7 133/162] af_unix: Drop oob_skb ref before purging queue in GC.
 Date: Mon,  4 Mar 2024 21:23:18 +0000
-Message-ID: <20240304211601.356424867@linuxfoundation.org>
+Message-ID: <20240304211555.983949547@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,194 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 64ef578b6b6866bec012544416946533444036c8 upstream.
+commit aa82ac51d63328714645c827775d64dbfd9941f3 upstream.
 
-Instead of returning to the asm calling code to invoke the trampoline,
-call it straight from the C code that sets it up. That way, the struct
-return type is no longer needed for returning two values, and the call
-can be made conditional more cleanly in a subsequent patch.
+syzbot reported another task hung in __unix_gc().  [0]
 
-This means that all callee save 64-bit registers need to be preserved
-and restored, as their contents may not survive the legacy mode switch.
+The current while loop assumes that all of the left candidates
+have oob_skb and calling kfree_skb(oob_skb) releases the remaining
+candidates.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Link: https://lore.kernel.org/r/20230807162720.545787-13-ardb@kernel.org
+However, I missed a case that oob_skb has self-referencing fd and
+another fd and the latter sk is placed before the former in the
+candidate list.  Then, the while loop never proceeds, resulting
+the task hung.
+
+__unix_gc() has the same loop just before purging the collected skb,
+so we can call kfree_skb(oob_skb) there and let __skb_queue_purge()
+release all inflight sockets.
+
+[0]:
+Sending NMI from CPU 0 to CPUs 1:
+NMI backtrace for cpu 1
+CPU: 1 PID: 2784 Comm: kworker/u4:8 Not tainted 6.8.0-rc4-syzkaller-01028-g71b605d32017 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/25/2024
+Workqueue: events_unbound __unix_gc
+RIP: 0010:__sanitizer_cov_trace_pc+0x0/0x70 kernel/kcov.c:200
+Code: 89 fb e8 23 00 00 00 48 8b 3d 84 f5 1a 0c 48 89 de 5b e9 43 26 57 00 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 <f3> 0f 1e fa 48 8b 04 24 65 48 8b 0d 90 52 70 7e 65 8b 15 91 52 70
+RSP: 0018:ffffc9000a17fa78 EFLAGS: 00000287
+RAX: ffffffff8a0a6108 RBX: ffff88802b6c2640 RCX: ffff88802c0b3b80
+RDX: 0000000000000000 RSI: 0000000000000002 RDI: 0000000000000000
+RBP: ffffc9000a17fbf0 R08: ffffffff89383f1d R09: 1ffff1100ee5ff84
+R10: dffffc0000000000 R11: ffffed100ee5ff85 R12: 1ffff110056d84ee
+R13: ffffc9000a17fae0 R14: 0000000000000000 R15: ffffffff8f47b840
+FS:  0000000000000000(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffef5687ff8 CR3: 0000000029b34000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <NMI>
+ </NMI>
+ <TASK>
+ __unix_gc+0xe69/0xf40 net/unix/garbage.c:343
+ process_one_work kernel/workqueue.c:2633 [inline]
+ process_scheduled_works+0x913/0x1420 kernel/workqueue.c:2706
+ worker_thread+0xa5f/0x1000 kernel/workqueue.c:2787
+ kthread+0x2ef/0x390 kernel/kthread.c:388
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1b/0x30 arch/x86/entry/entry_64.S:242
+ </TASK>
+
+Reported-and-tested-by: syzbot+ecab4d36f920c3574bf9@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ecab4d36f920c3574bf9
+Fixes: 25236c91b5ab ("af_unix: Fix task hung while purging oob_skb in GC.")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/compressed/head_64.S    |   31 +++++++++++++------------------
- arch/x86/boot/compressed/pgtable_64.c |   32 +++++++++++++-------------------
- 2 files changed, 26 insertions(+), 37 deletions(-)
+ net/unix/garbage.c |   22 +++++++++-------------
+ 1 file changed, 9 insertions(+), 13 deletions(-)
 
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -433,25 +433,14 @@ SYM_CODE_START(startup_64)
- #endif
- 
- 	/*
--	 * paging_prepare() sets up the trampoline and checks if we need to
--	 * enable 5-level paging.
--	 *
--	 * paging_prepare() returns a two-quadword structure which lands
--	 * into RDX:RAX:
--	 *   - Address of the trampoline is returned in RAX.
--	 *   - Non zero RDX means trampoline needs to enable 5-level
--	 *     paging.
-+	 * configure_5level_paging() updates the number of paging levels using
-+	 * a trampoline in 32-bit addressable memory if the current number does
-+	 * not match the desired number.
- 	 *
- 	 * Pass the boot_params pointer as the first argument.
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -284,9 +284,17 @@ void unix_gc(void)
+ 	 * which are creating the cycle(s).
  	 */
- 	movq	%r15, %rdi
--	call	paging_prepare
+ 	skb_queue_head_init(&hitlist);
+-	list_for_each_entry(u, &gc_candidates, link)
++	list_for_each_entry(u, &gc_candidates, link) {
+ 		scan_children(&u->sk, inc_inflight, &hitlist);
+ 
++#if IS_ENABLED(CONFIG_AF_UNIX_OOB)
++		if (u->oob_skb) {
++			kfree_skb(u->oob_skb);
++			u->oob_skb = NULL;
++		}
++#endif
++	}
++
+ 	/* not_cycle_list contains those sockets which do not make up a
+ 	 * cycle.  Restore these to the inflight list.
+ 	 */
+@@ -314,18 +322,6 @@ void unix_gc(void)
+ 	/* Here we are. Hitlist is filled. Die. */
+ 	__skb_queue_purge(&hitlist);
+ 
+-#if IS_ENABLED(CONFIG_AF_UNIX_OOB)
+-	while (!list_empty(&gc_candidates)) {
+-		u = list_entry(gc_candidates.next, struct unix_sock, link);
+-		if (u->oob_skb) {
+-			struct sk_buff *skb = u->oob_skb;
 -
--	/* Pass the trampoline address and boolean flag as args #1 and #2 */
--	movq	%rax, %rdi
--	movq	%rdx, %rsi
--	leaq	TRAMPOLINE_32BIT_CODE_OFFSET(%rax), %rax
--	call	*%rax
-+	call	configure_5level_paging
- 
- 	/*
- 	 * cleanup_trampoline() would restore trampoline memory.
-@@ -561,11 +550,14 @@ SYM_FUNC_END(.Lrelocated)
- 	.section ".rodata", "a", @progbits
- SYM_CODE_START(trampoline_32bit_src)
- 	/*
--	 * Preserve live 64-bit registers on the stack: this is necessary
--	 * because the architecture does not guarantee that GPRs will retain
--	 * their full 64-bit values across a 32-bit mode switch.
-+	 * Preserve callee save 64-bit registers on the stack: this is
-+	 * necessary because the architecture does not guarantee that GPRs will
-+	 * retain their full 64-bit values across a 32-bit mode switch.
- 	 */
- 	pushq	%r15
-+	pushq	%r14
-+	pushq	%r13
-+	pushq	%r12
- 	pushq	%rbp
- 	pushq	%rbx
- 
-@@ -592,6 +584,9 @@ SYM_CODE_START(trampoline_32bit_src)
- 	/* Restore the preserved 64-bit registers */
- 	popq	%rbx
- 	popq	%rbp
-+	popq	%r12
-+	popq	%r13
-+	popq	%r14
- 	popq	%r15
- 	retq
- 
---- a/arch/x86/boot/compressed/pgtable_64.c
-+++ b/arch/x86/boot/compressed/pgtable_64.c
-@@ -16,11 +16,6 @@ unsigned int __section(".data") pgdir_sh
- unsigned int __section(".data") ptrs_per_p4d = 1;
- #endif
- 
--struct paging_config {
--	unsigned long trampoline_start;
--	unsigned long l5_required;
--};
+-			u->oob_skb = NULL;
+-			kfree_skb(skb);
+-		}
+-	}
+-#endif
 -
- /* Buffer to preserve trampoline memory */
- static char trampoline_save[TRAMPOLINE_32BIT_SIZE];
+ 	spin_lock(&unix_gc_lock);
  
-@@ -29,7 +24,7 @@ static char trampoline_save[TRAMPOLINE_3
-  * purposes.
-  *
-  * Avoid putting the pointer into .bss as it will be cleared between
-- * paging_prepare() and extract_kernel().
-+ * configure_5level_paging() and extract_kernel().
-  */
- unsigned long *trampoline_32bit __section(".data");
- 
-@@ -106,13 +101,13 @@ static unsigned long find_trampoline_pla
- 	return bios_start - TRAMPOLINE_32BIT_SIZE;
- }
- 
--struct paging_config paging_prepare(void *rmode)
-+asmlinkage void configure_5level_paging(struct boot_params *bp)
- {
--	struct paging_config paging_config = {};
--	void *tramp_code;
-+	void (*toggle_la57)(void *trampoline, bool enable_5lvl);
-+	bool l5_required = false;
- 
- 	/* Initialize boot_params. Required for cmdline_find_option_bool(). */
--	boot_params = rmode;
-+	boot_params = bp;
- 
- 	/*
- 	 * Check if LA57 is desired and supported.
-@@ -130,7 +125,7 @@ struct paging_config paging_prepare(void
- 			!cmdline_find_option_bool("no5lvl") &&
- 			native_cpuid_eax(0) >= 7 &&
- 			(native_cpuid_ecx(7) & (1 << (X86_FEATURE_LA57 & 31)))) {
--		paging_config.l5_required = 1;
-+		l5_required = true;
- 
- 		/* Initialize variables for 5-level paging */
- 		__pgtable_l5_enabled = 1;
-@@ -138,9 +133,7 @@ struct paging_config paging_prepare(void
- 		ptrs_per_p4d = 512;
- 	}
- 
--	paging_config.trampoline_start = find_trampoline_placement();
--
--	trampoline_32bit = (unsigned long *)paging_config.trampoline_start;
-+	trampoline_32bit = (unsigned long *)find_trampoline_placement();
- 
- 	/* Preserve trampoline memory */
- 	memcpy(trampoline_save, trampoline_32bit, TRAMPOLINE_32BIT_SIZE);
-@@ -149,7 +142,7 @@ struct paging_config paging_prepare(void
- 	memset(trampoline_32bit, 0, TRAMPOLINE_32BIT_SIZE);
- 
- 	/* Copy trampoline code in place */
--	tramp_code = memcpy(trampoline_32bit +
-+	toggle_la57 = memcpy(trampoline_32bit +
- 			TRAMPOLINE_32BIT_CODE_OFFSET / sizeof(unsigned long),
- 			&trampoline_32bit_src, TRAMPOLINE_32BIT_CODE_SIZE);
- 
-@@ -159,7 +152,8 @@ struct paging_config paging_prepare(void
- 	 * immediate absolute address, which needs to be adjusted based on the
- 	 * placement of the trampoline.
- 	 */
--	*(u32 *)(tramp_code + trampoline_ljmp_imm_offset) += (unsigned long)tramp_code;
-+	*(u32 *)((u8 *)toggle_la57 + trampoline_ljmp_imm_offset) +=
-+						(unsigned long)toggle_la57;
- 
- 	/*
- 	 * The code below prepares page table in trampoline memory.
-@@ -175,10 +169,10 @@ struct paging_config paging_prepare(void
- 	 * We are not going to use the page table in trampoline memory if we
- 	 * are already in the desired paging mode.
- 	 */
--	if (paging_config.l5_required == !!(native_read_cr4() & X86_CR4_LA57))
-+	if (l5_required == !!(native_read_cr4() & X86_CR4_LA57))
- 		goto out;
- 
--	if (paging_config.l5_required) {
-+	if (l5_required) {
- 		/*
- 		 * For 4- to 5-level paging transition, set up current CR3 as
- 		 * the first and the only entry in a new top-level page table.
-@@ -201,7 +195,7 @@ struct paging_config paging_prepare(void
- 	}
- 
- out:
--	return paging_config;
-+	toggle_la57(trampoline_32bit, l5_required);
- }
- 
- void cleanup_trampoline(void *pgtable)
+ 	/* There could be io_uring registered files, just push them back to
 
 
 
