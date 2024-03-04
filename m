@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-26106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70931870D20
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74C25870EC4
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:47:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1E5B1F2366C
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D535AB274D0
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:47:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BED878B69;
-	Mon,  4 Mar 2024 21:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F3E78B69;
+	Mon,  4 Mar 2024 21:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mly2NmCR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XwDRHjT5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7371F5FA;
-	Mon,  4 Mar 2024 21:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3478200CD;
+	Mon,  4 Mar 2024 21:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587858; cv=none; b=ZZUAsbE8akvMwlrr/6lF0GxlwtTrCkQGTqtJtAkJBaE+q5kTG6M7G+sBEwS+s0042tjPSvr5jP8uFQ69wKsLZtehaqWpOolDuSNlXO2k3mBHLpo6KlgeFoImub18fLyx+7shcNTIE7EJv+qe6k0t+0O4mCwE9RHIl0567Y0bu7Y=
+	t=1709588800; cv=none; b=MGonKdUua5frwETWVfV6Y8oIrlZH9gT0AADPt/FDqGcONQd2vetEfJlkDqTr5oVm1Cw1DeiyxKUp7qYqspX6jWuUnTeDiQxaCf0wYbUEnfjXidSdjzfWakrRb+IFaWxRziYKkHFm9ZOg51oXbIGVfqcofZJyyRd7ucEqN8xIuDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587858; c=relaxed/simple;
-	bh=OjWG5efRpnMQWRxRfx8+jsyLsymzjsSY5ugN9oI8x2c=;
+	s=arc-20240116; t=1709588800; c=relaxed/simple;
+	bh=VJ79eTZs803+ErDCET0EG91fdCfmotpfRHISLkMxLbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CHTzyHUahOICutcQrvMueNVk+nzh30hqwISb50Rm8oxrRxqrnjbHYcmFF4gDtwxHHZwW7vVjAniHSWXUjCxhuIpL36Cmh6H86LBD7SkhbLDAacgDZrXjD+928ATPeNxzSxbTeicjlHmhrmX+td0XO0LDgMPncLcyvVEfM+018XU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mly2NmCR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 712D1C433F1;
-	Mon,  4 Mar 2024 21:30:57 +0000 (UTC)
+	 MIME-Version; b=qoIoiV4CLVoEeMqsj0GvR5ed3EXT2gepmtfUN8lKYBwDw8QF3a+ZcCluJ9Y+WPQRz81aUQ4bWohZPN0pAFEf+ZN64khf5vst7CgMvaaYeXZDh8BxndEHEncC4Gh9+BrKveRCSZk0Mhocf9tH7C2ApSuUts6ToScZEq+wruw1LqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XwDRHjT5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35ED7C433F1;
+	Mon,  4 Mar 2024 21:46:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587857;
-	bh=OjWG5efRpnMQWRxRfx8+jsyLsymzjsSY5ugN9oI8x2c=;
+	s=korg; t=1709588800;
+	bh=VJ79eTZs803+ErDCET0EG91fdCfmotpfRHISLkMxLbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mly2NmCRAjyvau2Ign7IwXMJB7hEEZbeZADYlbYA5ks03dg3Ee1wbgVDZKIi5i41L
-	 rwraAS6/amfzFoHs1lieyCSxiD0ArJiOHZ8tx2V1ZY4AuqXnA/sBB7xlzZMYp8a0Bm
-	 nABcmP5vFzAdKj0adeGaWu53EPl6BOE6uT1apUS0=
+	b=XwDRHjT5wP5CYjCI1+e0reqDdmzXtR6XX8v+k+1oo+cnGf2ZvKzYt00UaUASWlL/c
+	 CWwJ/cGhg9AW8J86kaPLev9gRnVtRedxua2LIIGPsjuNagaIedIS7oonO7ZEIJAVd2
+	 O6UlAtDUNEjVVYjLmdB1eC2xngSBHoMzHq3VMRR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
-Subject: [PATCH 6.7 092/162] drm/amdgpu/pm: Fix the power1_min_cap value
+	Johan Hovold <johan@kernel.org>,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 094/215] pmdomain: qcom: rpmhpd: Fix enabled_corner aggregation
 Date: Mon,  4 Mar 2024 21:22:37 +0000
-Message-ID: <20240304211554.787630174@linuxfoundation.org>
+Message-ID: <20240304211559.999813751@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,136 +65,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Bjorn Andersson <quic_bjorande@quicinc.com>
 
-commit 7968e9748fbbd7ae49770d9f8a8231d8bce2aebb upstream.
+commit 2a93c6cbd5a703d44c414a3c3945a87ce11430ba upstream.
 
-It's unreasonable to use 0 as the power1_min_cap when
-OD is disabled. So, use the same lower limit as the value
-used when OD is enabled.
+Commit 'e3e56c050ab6 ("soc: qcom: rpmhpd: Make power_on actually enable
+the domain")' aimed to make sure that a power-domain that is being
+enabled without any particular performance-state requested will at least
+turn the rail on, to avoid filling DeviceTree with otherwise unnecessary
+required-opps properties.
 
-Fixes: 1958946858a6 ("drm/amd/pm: Support for getting power1_cap_min value")
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Acked-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+But in the event that aggregation happens on a disabled power-domain, with
+an enabled peer without performance-state, both the local and peer
+corner are 0. The peer's enabled_corner is not considered, with the
+result that the underlying (shared) resource is disabled.
+
+One case where this can be observed is when the display stack keeps mmcx
+enabled (but without a particular performance-state vote) in order to
+access registers and sync_state happens in the rpmhpd driver. As mmcx_ao
+is flushed the state of the peer (mmcx) is not considered and mmcx_ao
+ends up turning off "mmcx.lvl" underneath mmcx. This has been observed
+several times, but has been painted over in DeviceTree by adding an
+explicit vote for the lowest non-disabled performance-state.
+
+Fixes: e3e56c050ab6 ("soc: qcom: rpmhpd: Make power_on actually enable the domain")
+Reported-by: Johan Hovold <johan@kernel.org>
+Closes: https://lore.kernel.org/linux-arm-msm/ZdMwZa98L23mu3u6@hovoldconsulting.com/
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20240226-rpmhpd-enable-corner-fix-v1-1-68c004cec48c@quicinc.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c       |    9 ++++-----
- drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c         |    9 ++++-----
- drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c |    9 ++++-----
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c    |    9 ++++-----
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c    |    9 ++++-----
- 5 files changed, 20 insertions(+), 25 deletions(-)
+ drivers/soc/qcom/rpmhpd.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
-@@ -1303,13 +1303,12 @@ static int arcturus_get_power_limit(stru
- 	if (default_power_limit)
- 		*default_power_limit = power_limit;
+--- a/drivers/soc/qcom/rpmhpd.c
++++ b/drivers/soc/qcom/rpmhpd.c
+@@ -492,12 +492,15 @@ static int rpmhpd_aggregate_corner(struc
+ 	unsigned int active_corner, sleep_corner;
+ 	unsigned int this_active_corner = 0, this_sleep_corner = 0;
+ 	unsigned int peer_active_corner = 0, peer_sleep_corner = 0;
++	unsigned int peer_enabled_corner;
  
--	if (smu->od_enabled) {
-+	if (smu->od_enabled)
- 		od_percent_upper = le32_to_cpu(powerplay_table->overdrive_table.max[SMU_11_0_ODSETTING_POWERPERCENTAGE]);
--		od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_11_0_ODSETTING_POWERPERCENTAGE]);
--	} else {
-+	else
- 		od_percent_upper = 0;
--		od_percent_lower = 100;
--	}
-+
-+	od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_11_0_ODSETTING_POWERPERCENTAGE]);
+ 	to_active_sleep(pd, corner, &this_active_corner, &this_sleep_corner);
  
- 	dev_dbg(smu->adev->dev, "od percent upper:%d, od percent lower:%d (default power: %d)\n",
- 							od_percent_upper, od_percent_lower, power_limit);
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
-@@ -2357,13 +2357,12 @@ static int navi10_get_power_limit(struct
- 		*default_power_limit = power_limit;
+-	if (peer && peer->enabled)
+-		to_active_sleep(peer, peer->corner, &peer_active_corner,
++	if (peer && peer->enabled) {
++		peer_enabled_corner = max(peer->corner, peer->enable_corner);
++		to_active_sleep(peer, peer_enabled_corner, &peer_active_corner,
+ 				&peer_sleep_corner);
++	}
  
- 	if (smu->od_enabled &&
--		    navi10_od_feature_is_supported(od_settings, SMU_11_0_ODCAP_POWER_LIMIT)) {
-+		    navi10_od_feature_is_supported(od_settings, SMU_11_0_ODCAP_POWER_LIMIT))
- 		od_percent_upper = le32_to_cpu(powerplay_table->overdrive_table.max[SMU_11_0_ODSETTING_POWERPERCENTAGE]);
--		od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_11_0_ODSETTING_POWERPERCENTAGE]);
--	} else {
-+	else
- 		od_percent_upper = 0;
--		od_percent_lower = 100;
--	}
-+
-+	od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_11_0_ODSETTING_POWERPERCENTAGE]);
+ 	active_corner = max(this_active_corner, peer_active_corner);
  
- 	dev_dbg(smu->adev->dev, "od percent upper:%d, od percent lower:%d (default power: %d)\n",
- 					od_percent_upper, od_percent_lower, power_limit);
---- a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
-@@ -640,13 +640,12 @@ static int sienna_cichlid_get_power_limi
- 	if (default_power_limit)
- 		*default_power_limit = power_limit;
- 
--	if (smu->od_enabled) {
-+	if (smu->od_enabled)
- 		od_percent_upper = le32_to_cpu(powerplay_table->overdrive_table.max[SMU_11_0_7_ODSETTING_POWERPERCENTAGE]);
--		od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_11_0_7_ODSETTING_POWERPERCENTAGE]);
--	} else {
-+	else
- 		od_percent_upper = 0;
--		od_percent_lower = 100;
--	}
-+
-+	od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_11_0_7_ODSETTING_POWERPERCENTAGE]);
- 
- 	dev_dbg(smu->adev->dev, "od percent upper:%d, od percent lower:%d (default power: %d)\n",
- 					od_percent_upper, od_percent_lower, power_limit);
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-@@ -2364,13 +2364,12 @@ static int smu_v13_0_0_get_power_limit(s
- 	if (default_power_limit)
- 		*default_power_limit = power_limit;
- 
--	if (smu->od_enabled) {
-+	if (smu->od_enabled)
- 		od_percent_upper = le32_to_cpu(powerplay_table->overdrive_table.max[SMU_13_0_0_ODSETTING_POWERPERCENTAGE]);
--		od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_13_0_0_ODSETTING_POWERPERCENTAGE]);
--	} else {
-+	else
- 		od_percent_upper = 0;
--		od_percent_lower = 100;
--	}
-+
-+	od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_13_0_0_ODSETTING_POWERPERCENTAGE]);
- 
- 	dev_dbg(smu->adev->dev, "od percent upper:%d, od percent lower:%d (default power: %d)\n",
- 					od_percent_upper, od_percent_lower, power_limit);
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-@@ -2328,13 +2328,12 @@ static int smu_v13_0_7_get_power_limit(s
- 	if (default_power_limit)
- 		*default_power_limit = power_limit;
- 
--	if (smu->od_enabled) {
-+	if (smu->od_enabled)
- 		od_percent_upper = le32_to_cpu(powerplay_table->overdrive_table.max[SMU_13_0_7_ODSETTING_POWERPERCENTAGE]);
--		od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_13_0_7_ODSETTING_POWERPERCENTAGE]);
--	} else {
-+	else
- 		od_percent_upper = 0;
--		od_percent_lower = 100;
--	}
-+
-+	od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_13_0_7_ODSETTING_POWERPERCENTAGE]);
- 
- 	dev_dbg(smu->adev->dev, "od percent upper:%d, od percent lower:%d (default power: %d)\n",
- 					od_percent_upper, od_percent_lower, power_limit);
 
 
 
