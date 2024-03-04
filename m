@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-26178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC1FB870D71
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:34:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB283870D4C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8B3F28F4CA
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:34:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90F6D1F20FB0
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11BB847A5D;
-	Mon,  4 Mar 2024 21:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9698A7CF3E;
+	Mon,  4 Mar 2024 21:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rzLcNrmr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cBcofz/u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C38B81C687;
-	Mon,  4 Mar 2024 21:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545F07CF0B;
+	Mon,  4 Mar 2024 21:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588044; cv=none; b=AXyHb6LX+I2JlXJoQs+a4k5M6JENGaA5boFh5b2NaPaGxuPvVl6+NWUDGje/3Dy2km8vmDikznN0I1oiqlrT2rqzj82QlJWES36YAGGirEbN6C4/C69hw2EQpTRUCJltaRQFMIq9bUOWWs0mA05/meJXTrOVOqHtRofcX2AIrkU=
+	t=1709587956; cv=none; b=McOcKmFFj6rHtEDE02oTigMnj31PI6bDMeZle1e5J7fyGab0gOr/UJf0m1w4VBOc50X+yZCM64smEQZdx1XJ+Yf/EqvzSCSldULa3+mkDLxL2g9Z9RISmc72qKt/PBb7mR1WD9B2BSAPAZWwBQD9RRFWWMbQzP773k4MVGldVSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588044; c=relaxed/simple;
-	bh=AmnEXfjY2hLrm/npFDMPGzfcQF17ni69WO6KiXnovi8=;
+	s=arc-20240116; t=1709587956; c=relaxed/simple;
+	bh=mMLo5M9pM2toNcB0EmbvcU2eVStiAouRXUSxCOJuPH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AzP2IjGBtnvoRh0Wi+PGpgVL3hhuzBdYwctWdw5OA5VPXuoKBVCix9ao93e4kY2ctkMXUwgJsI9dezeRPk2Lj8PBpZYeQJawPj3x4UR0cmA9dmGsdgefmycYTrGCZd+dlLlikVbck8pN2J52kmx741gh+cwTW6D1+1GNb29P0OM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rzLcNrmr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57DC9C433F1;
-	Mon,  4 Mar 2024 21:34:04 +0000 (UTC)
+	 MIME-Version; b=kYtWgpbTJF793aUqkM6a+vt/6SpYvNKTBOgwBD0UhkSdAG+Fdz2fA8pttepE3KXGmuQ27j+JDc3Cu39ut15OJxKsVIh56QK1XMNxl4EE/84D8X8w+3EYLrzd3l+7mpq+rfY+5e7RGfnkAcW7n91hus+ld72wEwKQab2GVjVcz68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cBcofz/u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF0BC433F1;
+	Mon,  4 Mar 2024 21:32:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588044;
-	bh=AmnEXfjY2hLrm/npFDMPGzfcQF17ni69WO6KiXnovi8=;
+	s=korg; t=1709587956;
+	bh=mMLo5M9pM2toNcB0EmbvcU2eVStiAouRXUSxCOJuPH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rzLcNrmrJNvwk4MHJnBdxb61JqLWEH9D51RdgtnVb0IkJsh2oy8eaBU725pqQfi1b
-	 JfREodCLgmvAgVFNeP2CqRWUrp+k3VLeKYTa4iWv9M6PKDRDF56J1uPVOcXr1hGzcm
-	 fQRYJl+IXJ4F8IbtiUEEo9VZAZ6JWYcQ4XP4iZpU=
+	b=cBcofz/ugkFzHCfiwTLWdq7v9aFjfhrLWYuVEMssErdwK1L0C8aN7CN5JFChxPgMn
+	 g6fLFRzA3RMywcZOOj4I0iYYkhUsMuPd+43C2sIVd7bZn+V0Kgo1ihmQCCj/xb+Rl4
+	 kJS2PO+PLX8CfJGPOl24+wYMB5AGieW3++ly/aTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Christian Brauner <brauner@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 04/25] ipv6: fix potential "struct net" leak in inet6_rtm_getaddr()
+	Sean Christopherson <seanjc@google.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Nikolay Borisov <nik.borisov@suse.com>
+Subject: [PATCH 6.7 155/162] KVM/VMX: Use BT+JNC, i.e. EFLAGS.CF to select VMRESUME vs. VMLAUNCH
 Date: Mon,  4 Mar 2024 21:23:40 +0000
-Message-ID: <20240304211535.893182620@linuxfoundation.org>
+Message-ID: <20240304211556.629159990@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211535.741936181@linuxfoundation.org>
-References: <20240304211535.741936181@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-[ Upstream commit 10bfd453da64a057bcfd1a49fb6b271c48653cdb ]
+From: Sean Christopherson <seanjc@google.com>
 
-It seems that if userspace provides a correct IFA_TARGET_NETNSID value
-but no IFA_ADDRESS and IFA_LOCAL attributes, inet6_rtm_getaddr()
-returns -EINVAL with an elevated "struct net" refcount.
+commit 706a189dcf74d3b3f955e9384785e726ed6c7c80 upstream.
 
-Fixes: 6ecf4c37eb3e ("ipv6: enable IFA_TARGET_NETNSID for RTM_GETADDR")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: David Ahern <dsahern@kernel.org>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Use EFLAGS.CF instead of EFLAGS.ZF to track whether to use VMRESUME versus
+VMLAUNCH.  Freeing up EFLAGS.ZF will allow doing VERW, which clobbers ZF,
+for MDS mitigations as late as possible without needing to duplicate VERW
+for both paths.
+
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+Link: https://lore.kernel.org/all/20240213-delay-verw-v8-5-a6216d83edb7%40linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/addrconf.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/x86/kvm/vmx/run_flags.h |    7 +++++--
+ arch/x86/kvm/vmx/vmenter.S   |    6 +++---
+ 2 files changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 6fcbe8912b431..974e650e749e6 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -5380,9 +5380,10 @@ static int inet6_rtm_getaddr(struct sk_buff *in_skb, struct nlmsghdr *nlh,
- 	}
+--- a/arch/x86/kvm/vmx/run_flags.h
++++ b/arch/x86/kvm/vmx/run_flags.h
+@@ -2,7 +2,10 @@
+ #ifndef __KVM_X86_VMX_RUN_FLAGS_H
+ #define __KVM_X86_VMX_RUN_FLAGS_H
  
- 	addr = extract_addr(tb[IFA_ADDRESS], tb[IFA_LOCAL], &peer);
--	if (!addr)
--		return -EINVAL;
--
-+	if (!addr) {
-+		err = -EINVAL;
-+		goto errout;
-+	}
- 	ifm = nlmsg_data(nlh);
- 	if (ifm->ifa_index)
- 		dev = dev_get_by_index(tgt_net, ifm->ifa_index);
--- 
-2.43.0
-
+-#define VMX_RUN_VMRESUME	(1 << 0)
+-#define VMX_RUN_SAVE_SPEC_CTRL	(1 << 1)
++#define VMX_RUN_VMRESUME_SHIFT		0
++#define VMX_RUN_SAVE_SPEC_CTRL_SHIFT	1
++
++#define VMX_RUN_VMRESUME		BIT(VMX_RUN_VMRESUME_SHIFT)
++#define VMX_RUN_SAVE_SPEC_CTRL		BIT(VMX_RUN_SAVE_SPEC_CTRL_SHIFT)
+ 
+ #endif /* __KVM_X86_VMX_RUN_FLAGS_H */
+--- a/arch/x86/kvm/vmx/vmenter.S
++++ b/arch/x86/kvm/vmx/vmenter.S
+@@ -139,7 +139,7 @@ SYM_FUNC_START(__vmx_vcpu_run)
+ 	mov (%_ASM_SP), %_ASM_AX
+ 
+ 	/* Check if vmlaunch or vmresume is needed */
+-	test $VMX_RUN_VMRESUME, %ebx
++	bt   $VMX_RUN_VMRESUME_SHIFT, %ebx
+ 
+ 	/* Load guest registers.  Don't clobber flags. */
+ 	mov VCPU_RCX(%_ASM_AX), %_ASM_CX
+@@ -161,8 +161,8 @@ SYM_FUNC_START(__vmx_vcpu_run)
+ 	/* Load guest RAX.  This kills the @regs pointer! */
+ 	mov VCPU_RAX(%_ASM_AX), %_ASM_AX
+ 
+-	/* Check EFLAGS.ZF from 'test VMX_RUN_VMRESUME' above */
+-	jz .Lvmlaunch
++	/* Check EFLAGS.CF from the VMX_RUN_VMRESUME bit test above. */
++	jnc .Lvmlaunch
+ 
+ 	/*
+ 	 * After a successful VMRESUME/VMLAUNCH, control flow "magically"
 
 
 
