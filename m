@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-26523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DBF8870EF8
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:49:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91841870D57
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19829280C7E
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:49:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4707D28EEEA
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C315578B4C;
-	Mon,  4 Mar 2024 21:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE807BAF5;
+	Mon,  4 Mar 2024 21:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DMG6eqEd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tc3NV/hP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836571EB5A;
-	Mon,  4 Mar 2024 21:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9471C687;
+	Mon,  4 Mar 2024 21:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588978; cv=none; b=uyaV6kEAPSRmqMNvMvBveiKUrS3HNKpwukEIyKsQ5Lq7AThd3ryX1qmThtetnTRjdo9wBppdWDWcsssj0aus/V9BBwRUk82m1R1Hv0PtwoLlsaBFZm0BaDQRM1vlfsbmBWSsEi45LqFWyYorkS/H3gzXmV7sWFXusTVelDgdxmM=
+	t=1709587979; cv=none; b=FTdT8HmSM4GWVZGxpX3louD7Xovjqhe/Cs4buKUIqI5NiqdWoZNsur5thsPcquvSYKaNVoigAqeJ34wPVdhLYO/qQjYKVGGeA3AfvE89AOt3FIuQv4lmuyyXDtdOZpNwdLE7Uow7k4EZGAOWk6j6lXkwPXM4Oik+UDayd/rM1yM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588978; c=relaxed/simple;
-	bh=UgV2RbI9WqhbWQrJyvoJUGMHP7ryRBBvqtTylzxDU4k=;
+	s=arc-20240116; t=1709587979; c=relaxed/simple;
+	bh=iNnD38wF5N3vTnN2Bf8W/6DCM83991BG6nRRBiHGjko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qx+SOc5qMeIbXrQkKSlCo4G9QW+M3XBjhgivU3R5l4dFNaOhJiXz2mySkiw/Jitv25SBN1We9to1Cs+hiGAT4gW1n8ohwmwq87nhKt2Cw57AwdIq211QnVGaPik7gIceMUGl2sHdh8p6VZhYUraCZdi++K0Pc4qvOhRcY/laZIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DMG6eqEd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1417DC433C7;
-	Mon,  4 Mar 2024 21:49:37 +0000 (UTC)
+	 MIME-Version; b=tnh31AVqIfAkyT+S/4E/ucpwiBkzsAfZG4qx5TrEKMSlmtROdhwPboXlzJFtQVS/n/ltDjmbTOOOw1Wn8ijuuAgA1AL9bXaXrgZHQ20Z7T85WcA1sL2SrYDYN6KTYiV6vzIH9Otx1Va7PSBJH/tLrD56UkXwjlhiyLWfsTG3UvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tc3NV/hP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55AC0C433C7;
+	Mon,  4 Mar 2024 21:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588978;
-	bh=UgV2RbI9WqhbWQrJyvoJUGMHP7ryRBBvqtTylzxDU4k=;
+	s=korg; t=1709587979;
+	bh=iNnD38wF5N3vTnN2Bf8W/6DCM83991BG6nRRBiHGjko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DMG6eqEdQ90aoAqSVZkUgwaDPdeA7U3mHnwRR62jWfkEXnT2IlI7HIs12bLOehI4k
-	 huU8tNsx6kGxTm6yq3DWZemrp+qVBCNAyd4lB0A/vakbcGagqhRe3cziY70IqOczyZ
-	 1VruSjt6qvJTDfD2sBqFOPvqEHtBlnJuscQcULpA=
+	b=Tc3NV/hP+Pwjn6auLbmw/NXEL0NavgXut9kOA2hFLweN25bad3QWrQ2pg8sIuD3lL
+	 6kiyamAzVuh2bZVKj2+0qFSER0uvZ7py1/xHaD/f0KP/kxiITCr7lMtk60mVSZaeJA
+	 6U7MaeIj0W//3PhPSW0PEnW+TtG+MPtFKo7N6moM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Tom Talpey <tom@talpey.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 147/215] nfsd: allow disabling NFSv2 at compile time
+	Tony Zhu <tony.zhu@intel.com>,
+	Fenghua Yu <fenghua.yu@intel.com>,
+	Lijun Pan <lijun.pan@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 145/162] dmaengine: idxd: Ensure safe user copy of completion record
 Date: Mon,  4 Mar 2024 21:23:30 +0000
-Message-ID: <20240304211601.695835654@linuxfoundation.org>
+Message-ID: <20240304211556.341819199@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,148 +65,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Fenghua Yu <fenghua.yu@intel.com>
 
-[ Upstream commit 2f3a4b2ac2f28b9be78ad21f401f31e263845214 ]
+[ Upstream commit d3ea125df37dc37972d581b74a5d3785c3f283ab ]
 
-rpc.nfsd stopped supporting NFSv2 a year ago. Take the next logical
-step toward deprecating it and allow NFSv2 support to be compiled out.
+If CONFIG_HARDENED_USERCOPY is enabled, copying completion record from
+event log cache to user triggers a kernel bug.
 
-Add a new CONFIG_NFSD_V2 option that can be turned off and rework the
-CONFIG_NFSD_V?_ACL option dependencies. Add a description that
-discourages enabling it.
+[ 1987.159822] usercopy: Kernel memory exposure attempt detected from SLUB object 'dsa0' (offset 74, size 31)!
+[ 1987.170845] ------------[ cut here ]------------
+[ 1987.176086] kernel BUG at mm/usercopy.c:102!
+[ 1987.180946] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+[ 1987.186866] CPU: 17 PID: 528 Comm: kworker/17:1 Not tainted 6.8.0-rc2+ #5
+[ 1987.194537] Hardware name: Intel Corporation AvenueCity/AvenueCity, BIOS BHSDCRB1.86B.2492.D03.2307181620 07/18/2023
+[ 1987.206405] Workqueue: wq0.0 idxd_evl_fault_work [idxd]
+[ 1987.212338] RIP: 0010:usercopy_abort+0x72/0x90
+[ 1987.217381] Code: 58 65 9c 50 48 c7 c2 17 85 61 9c 57 48 c7 c7 98 fd 6b 9c 48 0f 44 d6 48 c7 c6 b3 08 62 9c 4c 89 d1 49 0f 44 f3 e8 1e 2e d5 ff <0f> 0b 49 c7 c1 9e 42 61 9c 4c 89 cf 4d 89 c8 eb a9 66 66 2e 0f 1f
+[ 1987.238505] RSP: 0018:ff62f5cf20607d60 EFLAGS: 00010246
+[ 1987.244423] RAX: 000000000000005f RBX: 000000000000001f RCX: 0000000000000000
+[ 1987.252480] RDX: 0000000000000000 RSI: ffffffff9c61429e RDI: 00000000ffffffff
+[ 1987.260538] RBP: ff62f5cf20607d78 R08: ff2a6a89ef3fffe8 R09: 00000000fffeffff
+[ 1987.268595] R10: ff2a6a89eed00000 R11: 0000000000000003 R12: ff2a66934849c89a
+[ 1987.276652] R13: 0000000000000001 R14: ff2a66934849c8b9 R15: ff2a66934849c899
+[ 1987.284710] FS:  0000000000000000(0000) GS:ff2a66b22fe40000(0000) knlGS:0000000000000000
+[ 1987.293850] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 1987.300355] CR2: 00007fe291a37000 CR3: 000000010fbd4005 CR4: 0000000000f71ef0
+[ 1987.308413] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[ 1987.316470] DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
+[ 1987.324527] PKRU: 55555554
+[ 1987.327622] Call Trace:
+[ 1987.330424]  <TASK>
+[ 1987.332826]  ? show_regs+0x6e/0x80
+[ 1987.336703]  ? die+0x3c/0xa0
+[ 1987.339988]  ? do_trap+0xd4/0xf0
+[ 1987.343662]  ? do_error_trap+0x75/0xa0
+[ 1987.347922]  ? usercopy_abort+0x72/0x90
+[ 1987.352277]  ? exc_invalid_op+0x57/0x80
+[ 1987.356634]  ? usercopy_abort+0x72/0x90
+[ 1987.360988]  ? asm_exc_invalid_op+0x1f/0x30
+[ 1987.365734]  ? usercopy_abort+0x72/0x90
+[ 1987.370088]  __check_heap_object+0xb7/0xd0
+[ 1987.374739]  __check_object_size+0x175/0x2d0
+[ 1987.379588]  idxd_copy_cr+0xa9/0x130 [idxd]
+[ 1987.384341]  idxd_evl_fault_work+0x127/0x390 [idxd]
+[ 1987.389878]  process_one_work+0x13e/0x300
+[ 1987.394435]  ? __pfx_worker_thread+0x10/0x10
+[ 1987.399284]  worker_thread+0x2f7/0x420
+[ 1987.403544]  ? _raw_spin_unlock_irqrestore+0x2b/0x50
+[ 1987.409171]  ? __pfx_worker_thread+0x10/0x10
+[ 1987.414019]  kthread+0x107/0x140
+[ 1987.417693]  ? __pfx_kthread+0x10/0x10
+[ 1987.421954]  ret_from_fork+0x3d/0x60
+[ 1987.426019]  ? __pfx_kthread+0x10/0x10
+[ 1987.430281]  ret_from_fork_asm+0x1b/0x30
+[ 1987.434744]  </TASK>
 
-Also, change the description of CONFIG_NFSD to state that the always-on
-version is now 3 instead of 2.
+The issue arises because event log cache is created using
+kmem_cache_create() which is not suitable for user copy.
 
-Finally, add an #ifdef around "case 2:" in __write_versions. When NFSv2
-is disabled at compile time, this should make the kernel ignore attempts
-to disable it at runtime, but still error out when trying to enable it.
+Fix the issue by creating event log cache with
+kmem_cache_create_usercopy(), ensuring safe user copy.
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Tom Talpey <tom@talpey.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c2f156bf168f ("dmaengine: idxd: create kmem cache for event log fault items")
+Reported-by: Tony Zhu <tony.zhu@intel.com>
+Tested-by: Tony Zhu <tony.zhu@intel.com>
+Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
+Reviewed-by: Lijun Pan <lijun.pan@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20240209191412.1050270-1-fenghua.yu@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/Kconfig  |   19 +++++++++++++++----
- fs/nfsd/Makefile |    5 +++--
- fs/nfsd/nfsctl.c |    2 ++
- fs/nfsd/nfsd.h   |    3 +--
- fs/nfsd/nfssvc.c |    6 ++++++
- 5 files changed, 27 insertions(+), 8 deletions(-)
+ drivers/dma/idxd/init.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
---- a/fs/nfsd/Kconfig
-+++ b/fs/nfsd/Kconfig
-@@ -8,6 +8,7 @@ config NFSD
- 	select SUNRPC
- 	select EXPORTFS
- 	select NFS_ACL_SUPPORT if NFSD_V2_ACL
-+	select NFS_ACL_SUPPORT if NFSD_V3_ACL
- 	depends on MULTIUSER
- 	help
- 	  Choose Y here if you want to allow other computers to access
-@@ -26,19 +27,29 @@ config NFSD
+diff --git a/drivers/dma/idxd/init.c b/drivers/dma/idxd/init.c
+index 0eb1c827a215f..d09a8553ea71d 100644
+--- a/drivers/dma/idxd/init.c
++++ b/drivers/dma/idxd/init.c
+@@ -342,7 +342,9 @@ static void idxd_cleanup_internals(struct idxd_device *idxd)
+ static int idxd_init_evl(struct idxd_device *idxd)
+ {
+ 	struct device *dev = &idxd->pdev->dev;
++	unsigned int evl_cache_size;
+ 	struct idxd_evl *evl;
++	const char *idxd_name;
  
- 	  Below you can choose which versions of the NFS protocol are
- 	  available to clients mounting the NFS server on this system.
--	  Support for NFS version 2 (RFC 1094) is always available when
-+	  Support for NFS version 3 (RFC 1813) is always available when
- 	  CONFIG_NFSD is selected.
+ 	if (idxd->hw.gen_cap.evl_support == 0)
+ 		return 0;
+@@ -354,9 +356,16 @@ static int idxd_init_evl(struct idxd_device *idxd)
+ 	spin_lock_init(&evl->lock);
+ 	evl->size = IDXD_EVL_SIZE_MIN;
  
- 	  If unsure, say N.
- 
--config NFSD_V2_ACL
--	bool
-+config NFSD_V2
-+	bool "NFS server support for NFS version 2 (DEPRECATED)"
- 	depends on NFSD
-+	default n
-+	help
-+	  NFSv2 (RFC 1094) was the first publicly-released version of NFS.
-+	  Unless you are hosting ancient (1990's era) NFS clients, you don't
-+	  need this.
-+
-+	  If unsure, say N.
-+
-+config NFSD_V2_ACL
-+	bool "NFS server support for the NFSv2 ACL protocol extension"
-+	depends on NFSD_V2
- 
- config NFSD_V3_ACL
- 	bool "NFS server support for the NFSv3 ACL protocol extension"
- 	depends on NFSD
--	select NFSD_V2_ACL
- 	help
- 	  Solaris NFS servers support an auxiliary NFSv3 ACL protocol that
- 	  never became an official part of the NFS version 3 protocol.
---- a/fs/nfsd/Makefile
-+++ b/fs/nfsd/Makefile
-@@ -10,9 +10,10 @@ obj-$(CONFIG_NFSD)	+= nfsd.o
- # this one should be compiled first, as the tracing macros can easily blow up
- nfsd-y			+= trace.o
- 
--nfsd-y 			+= nfssvc.o nfsctl.o nfsproc.o nfsfh.o vfs.o \
--			   export.o auth.o lockd.o nfscache.o nfsxdr.o \
-+nfsd-y 			+= nfssvc.o nfsctl.o nfsfh.o vfs.o \
-+			   export.o auth.o lockd.o nfscache.o \
- 			   stats.o filecache.o nfs3proc.o nfs3xdr.o
-+nfsd-$(CONFIG_NFSD_V2) += nfsproc.o nfsxdr.o
- nfsd-$(CONFIG_NFSD_V2_ACL) += nfs2acl.o
- nfsd-$(CONFIG_NFSD_V3_ACL) += nfs3acl.o
- nfsd-$(CONFIG_NFSD_V4)	+= nfs4proc.o nfs4xdr.o nfs4state.o nfs4idmap.o \
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -581,7 +581,9 @@ static ssize_t __write_versions(struct f
- 
- 			cmd = sign == '-' ? NFSD_CLEAR : NFSD_SET;
- 			switch(num) {
-+#ifdef CONFIG_NFSD_V2
- 			case 2:
-+#endif
- 			case 3:
- 				nfsd_vers(nn, num, cmd);
- 				break;
---- a/fs/nfsd/nfsd.h
-+++ b/fs/nfsd/nfsd.h
-@@ -64,8 +64,7 @@ struct readdir_cd {
- 
- 
- extern struct svc_program	nfsd_program;
--extern const struct svc_version	nfsd_version2, nfsd_version3,
--				nfsd_version4;
-+extern const struct svc_version	nfsd_version2, nfsd_version3, nfsd_version4;
- extern struct mutex		nfsd_mutex;
- extern spinlock_t		nfsd_drc_lock;
- extern unsigned long		nfsd_drc_max_mem;
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -91,8 +91,12 @@ unsigned long	nfsd_drc_mem_used;
- #if defined(CONFIG_NFSD_V2_ACL) || defined(CONFIG_NFSD_V3_ACL)
- static struct svc_stat	nfsd_acl_svcstats;
- static const struct svc_version *nfsd_acl_version[] = {
-+# if defined(CONFIG_NFSD_V2_ACL)
- 	[2] = &nfsd_acl_version2,
-+# endif
-+# if defined(CONFIG_NFSD_V3_ACL)
- 	[3] = &nfsd_acl_version3,
-+# endif
- };
- 
- #define NFSD_ACL_MINVERS            2
-@@ -116,7 +120,9 @@ static struct svc_stat	nfsd_acl_svcstats
- #endif /* defined(CONFIG_NFSD_V2_ACL) || defined(CONFIG_NFSD_V3_ACL) */
- 
- static const struct svc_version *nfsd_version[] = {
-+#if defined(CONFIG_NFSD_V2)
- 	[2] = &nfsd_version2,
-+#endif
- 	[3] = &nfsd_version3,
- #if defined(CONFIG_NFSD_V4)
- 	[4] = &nfsd_version4,
+-	idxd->evl_cache = kmem_cache_create(dev_name(idxd_confdev(idxd)),
+-					    sizeof(struct idxd_evl_fault) + evl_ent_size(idxd),
+-					    0, 0, NULL);
++	idxd_name = dev_name(idxd_confdev(idxd));
++	evl_cache_size = sizeof(struct idxd_evl_fault) + evl_ent_size(idxd);
++	/*
++	 * Since completion record in evl_cache will be copied to user
++	 * when handling completion record page fault, need to create
++	 * the cache suitable for user copy.
++	 */
++	idxd->evl_cache = kmem_cache_create_usercopy(idxd_name, evl_cache_size,
++						     0, 0, 0, evl_cache_size,
++						     NULL);
+ 	if (!idxd->evl_cache) {
+ 		kfree(evl);
+ 		return -ENOMEM;
+-- 
+2.43.0
+
 
 
 
