@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-26103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 315AE870D1D
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E250870ED1
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:47:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 614411C2442F
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B057D1F2473D
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:47:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6865B7992E;
-	Mon,  4 Mar 2024 21:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A2C1F92C;
+	Mon,  4 Mar 2024 21:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mYepjdnv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iWOqmksC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235982C689;
-	Mon,  4 Mar 2024 21:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 318E21EB5A;
+	Mon,  4 Mar 2024 21:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587850; cv=none; b=d6LUyr1aQmah55GM0UCeC9E1nuhUig5o8go8JJl9O1Q4R6ZpSET4cMiUNK94hoMnTr/5UmfuQfoT8N1M6Uq638fex8KTkhX9MxaGnh8rK4NsegiX2PtibRNFWpXWWkMNstK/tF6Pw3BNfSF3zJmd00SQ/a+SwgMlRKVld7bn+4Q=
+	t=1709588837; cv=none; b=maqBTM2c4jUYqtJW6QCXBRQKzUxFalCz3YZKcJH/W6wWvfkkoUKLyV6ROx6uSaceLC7hDw4uIDvWnf/5mk69icHtVr/8L3A0vkIpRsm+9R/bMAS64u7UaeDNHp1N3+4bhBlooPzwaVL4UnwAALpMHIzWldsbhacO2D/Q3dRO7WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587850; c=relaxed/simple;
-	bh=xjxSSIbESFa5LgeDFWCwewUHd8SLBJhbVPJW/aF8HSM=;
+	s=arc-20240116; t=1709588837; c=relaxed/simple;
+	bh=MP0mlCYyCVmZ9oCNnQ8jw/MKt37Qcmnp65mS7Giz8XA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cg0TTuZmTElHaOZ7U7hrhen55/Ju2BH0hW/X55nKn+ygD87Qmp+V7KUY47XGzYR2l5RA+7CH/iFZTY2RuZLjgZd1NwoLrdJzNzA1dUev8iOBp3u5DHSXKxtMDZ+PfaSul0qEKIDgsW5+2rddSZLEGcP+OBRhRcE2YUE+GAi5MeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mYepjdnv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2A87C433F1;
-	Mon,  4 Mar 2024 21:30:49 +0000 (UTC)
+	 MIME-Version; b=k3+r2irMykEIbr1BXKhodjQDYGJk/CfdY0XJ5oH5i6LezYd9yu/D9ZKdFqmT5K3vKkzJJhLswh1T9dKN+ax+PojXIra+0vFScNCU9xshZoLSI8SWtNNqvNvHuKtDvMa7hG09gs1kHU9QOB98S+trYI3QZWFqoM8QIsBGa4xsYWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iWOqmksC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7291C433C7;
+	Mon,  4 Mar 2024 21:47:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587850;
-	bh=xjxSSIbESFa5LgeDFWCwewUHd8SLBJhbVPJW/aF8HSM=;
+	s=korg; t=1709588837;
+	bh=MP0mlCYyCVmZ9oCNnQ8jw/MKt37Qcmnp65mS7Giz8XA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mYepjdnvxJjsyrpCE8rnwR4JZ3uqnVSYBet609Q8wsuxIGdp1o9pqPgjIjnRdVc5N
-	 lNfUk9y12OiUIPrIbB7a4mqQxAqiB9D56KKFOkh9/UzWhxKBKujnxRfcFlUz1mXCz7
-	 4qfQJH0kR7jgrYctjr6UOPY+aNvOcqoRhgjZSqF0=
+	b=iWOqmksCQ2iZbpk/kUUlKFDqbfuM4zVohR2mrxrs6DTbdL36ZmzrS+YjjaN4rScRT
+	 QxcWaFPiamuaUZzrZY6wAZzy04afc67EeJfdli2pUY/s3kE6iga40GRe8+5xaVF9MO
+	 4S0crecU+GGFsDTDXpCTkRYMqgR/WhzubDxwLt18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Schumacher <timschumi@gmx.de>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.7 113/162] efivarfs: Request at most 512 bytes for variable names
+	Ard Biesheuvel <ardb@kernel.org>,
+	Borislav Petkov <bp@suse.de>
+Subject: [PATCH 6.1 115/215] x86/boot/compressed: Move efi32_pe_entry() out of head_64.S
 Date: Mon,  4 Mar 2024 21:22:58 +0000
-Message-ID: <20240304211555.395376674@linuxfoundation.org>
+Message-ID: <20240304211600.694163987@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +61,221 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Schumacher <timschumi@gmx.de>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit f45812cc23fb74bef62d4eb8a69fe7218f4b9f2a upstream.
+commit 7f22ca396778fea9332d83ec2359dbe8396e9a06 upstream.
 
-Work around a quirk in a few old (2011-ish) UEFI implementations, where
-a call to `GetNextVariableName` with a buffer size larger than 512 bytes
-will always return EFI_INVALID_PARAMETER.
+Move the implementation of efi32_pe_entry() into efi-mixed.S, which is a
+more suitable location that only gets built if EFI mixed mode is
+actually enabled.
 
-There is some lore around EFI variable names being up to 1024 bytes in
-size, but this has no basis in the UEFI specification, and the upper
-bounds are typically platform specific, and apply to the entire variable
-(name plus payload).
-
-Given that Linux does not permit creating files with names longer than
-NAME_MAX (255) bytes, 512 bytes (== 256 UTF-16 characters) is a
-reasonable limit.
-
-Cc: <stable@vger.kernel.org> # 6.1+
-Signed-off-by: Tim Schumacher <timschumi@gmx.de>
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/20221122161017.2426828-7-ardb@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/efivarfs/vars.c |   17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ arch/x86/boot/compressed/efi_mixed.S |   82 ++++++++++++++++++++++++++++++++
+ arch/x86/boot/compressed/head_64.S   |   87 -----------------------------------
+ 2 files changed, 83 insertions(+), 86 deletions(-)
 
---- a/fs/efivarfs/vars.c
-+++ b/fs/efivarfs/vars.c
-@@ -372,7 +372,7 @@ static void dup_variable_bug(efi_char16_
- int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *),
- 		void *data, bool duplicates, struct list_head *head)
- {
--	unsigned long variable_name_size = 1024;
-+	unsigned long variable_name_size = 512;
- 	efi_char16_t *variable_name;
- 	efi_status_t status;
- 	efi_guid_t vendor_guid;
-@@ -389,12 +389,13 @@ int efivar_init(int (*func)(efi_char16_t
- 		goto free;
+--- a/arch/x86/boot/compressed/efi_mixed.S
++++ b/arch/x86/boot/compressed/efi_mixed.S
+@@ -257,6 +257,88 @@ SYM_FUNC_START(efi32_entry)
+ 	jmp	startup_32
+ SYM_FUNC_END(efi32_entry)
  
- 	/*
--	 * Per EFI spec, the maximum storage allocated for both
--	 * the variable name and variable data is 1024 bytes.
-+	 * A small set of old UEFI implementations reject sizes
-+	 * above a certain threshold, the lowest seen in the wild
-+	 * is 512.
- 	 */
++#define ST32_boottime		60 // offsetof(efi_system_table_32_t, boottime)
++#define BS32_handle_protocol	88 // offsetof(efi_boot_services_32_t, handle_protocol)
++#define LI32_image_base		32 // offsetof(efi_loaded_image_32_t, image_base)
++
++/*
++ * efi_status_t efi32_pe_entry(efi_handle_t image_handle,
++ *			       efi_system_table_32_t *sys_table)
++ */
++SYM_FUNC_START(efi32_pe_entry)
++	pushl	%ebp
++	movl	%esp, %ebp
++	pushl	%eax				// dummy push to allocate loaded_image
++
++	pushl	%ebx				// save callee-save registers
++	pushl	%edi
++
++	call	verify_cpu			// check for long mode support
++	testl	%eax, %eax
++	movl	$0x80000003, %eax		// EFI_UNSUPPORTED
++	jnz	2f
++
++	call	1f
++1:	pop	%ebx
++
++	/* Get the loaded image protocol pointer from the image handle */
++	leal	-4(%ebp), %eax
++	pushl	%eax				// &loaded_image
++	leal	(loaded_image_proto - 1b)(%ebx), %eax
++	pushl	%eax				// pass the GUID address
++	pushl	8(%ebp)				// pass the image handle
++
++	/*
++	 * Note the alignment of the stack frame.
++	 *   sys_table
++	 *   handle             <-- 16-byte aligned on entry by ABI
++	 *   return address
++	 *   frame pointer
++	 *   loaded_image       <-- local variable
++	 *   saved %ebx		<-- 16-byte aligned here
++	 *   saved %edi
++	 *   &loaded_image
++	 *   &loaded_image_proto
++	 *   handle             <-- 16-byte aligned for call to handle_protocol
++	 */
++
++	movl	12(%ebp), %eax			// sys_table
++	movl	ST32_boottime(%eax), %eax	// sys_table->boottime
++	call	*BS32_handle_protocol(%eax)	// sys_table->boottime->handle_protocol
++	addl	$12, %esp			// restore argument space
++	testl	%eax, %eax
++	jnz	2f
++
++	movl	8(%ebp), %ecx			// image_handle
++	movl	12(%ebp), %edx			// sys_table
++	movl	-4(%ebp), %esi			// loaded_image
++	movl	LI32_image_base(%esi), %esi	// loaded_image->image_base
++	leal	(startup_32 - 1b)(%ebx), %ebp	// runtime address of startup_32
++	/*
++	 * We need to set the image_offset variable here since startup_32() will
++	 * use it before we get to the 64-bit efi_pe_entry() in C code.
++	 */
++	subl	%esi, %ebp			// calculate image_offset
++	movl	%ebp, (image_offset - 1b)(%ebx)	// save image_offset
++	xorl	%esi, %esi
++	jmp	efi32_entry			// pass %ecx, %edx, %esi
++						// no other registers remain live
++
++2:	popl	%edi				// restore callee-save registers
++	popl	%ebx
++	leave
++	RET
++SYM_FUNC_END(efi32_pe_entry)
++
++	.section ".rodata"
++	/* EFI loaded image protocol GUID */
++	.balign 4
++SYM_DATA_START_LOCAL(loaded_image_proto)
++	.long	0x5b1b31a1
++	.word	0x9562, 0x11d2
++	.byte	0x8e, 0x3f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b
++SYM_DATA_END(loaded_image_proto)
++
+ 	.data
+ 	.balign	8
+ SYM_DATA_START_LOCAL(efi32_boot_gdt)
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -689,6 +689,7 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lno_longmo
+ 	jmp     1b
+ SYM_FUNC_END(.Lno_longmode)
  
- 	do {
--		variable_name_size = 1024;
-+		variable_name_size = 512;
++	.globl	verify_cpu
+ #include "../../kernel/verify_cpu.S"
  
- 		status = efivar_get_next_variable(&variable_name_size,
- 						  variable_name,
-@@ -431,9 +432,13 @@ int efivar_init(int (*func)(efi_char16_t
- 			break;
- 		case EFI_NOT_FOUND:
- 			break;
-+		case EFI_BUFFER_TOO_SMALL:
-+			pr_warn("efivars: Variable name size exceeds maximum (%lu > 512)\n",
-+				variable_name_size);
-+			status = EFI_NOT_FOUND;
-+			break;
- 		default:
--			printk(KERN_WARNING "efivars: get_next_variable: status=%lx\n",
--				status);
-+			pr_warn("efivars: get_next_variable: status=%lx\n", status);
- 			status = EFI_NOT_FOUND;
- 			break;
- 		}
+ 	.data
+@@ -736,92 +737,6 @@ SYM_DATA_END_LABEL(boot32_idt, SYM_L_GLO
+ #ifdef CONFIG_EFI_STUB
+ SYM_DATA(image_offset, .long 0)
+ #endif
+-#ifdef CONFIG_EFI_MIXED
+-#define ST32_boottime		60 // offsetof(efi_system_table_32_t, boottime)
+-#define BS32_handle_protocol	88 // offsetof(efi_boot_services_32_t, handle_protocol)
+-#define LI32_image_base		32 // offsetof(efi_loaded_image_32_t, image_base)
+-
+-	.text
+-	.code32
+-SYM_FUNC_START(efi32_pe_entry)
+-/*
+- * efi_status_t efi32_pe_entry(efi_handle_t image_handle,
+- *			       efi_system_table_32_t *sys_table)
+- */
+-
+-	pushl	%ebp
+-	movl	%esp, %ebp
+-	pushl	%eax				// dummy push to allocate loaded_image
+-
+-	pushl	%ebx				// save callee-save registers
+-	pushl	%edi
+-
+-	call	verify_cpu			// check for long mode support
+-	testl	%eax, %eax
+-	movl	$0x80000003, %eax		// EFI_UNSUPPORTED
+-	jnz	2f
+-
+-	call	1f
+-1:	pop	%ebx
+-
+-	/* Get the loaded image protocol pointer from the image handle */
+-	leal	-4(%ebp), %eax
+-	pushl	%eax				// &loaded_image
+-	leal	(loaded_image_proto - 1b)(%ebx), %eax
+-	pushl	%eax				// pass the GUID address
+-	pushl	8(%ebp)				// pass the image handle
+-
+-	/*
+-	 * Note the alignment of the stack frame.
+-	 *   sys_table
+-	 *   handle             <-- 16-byte aligned on entry by ABI
+-	 *   return address
+-	 *   frame pointer
+-	 *   loaded_image       <-- local variable
+-	 *   saved %ebx		<-- 16-byte aligned here
+-	 *   saved %edi
+-	 *   &loaded_image
+-	 *   &loaded_image_proto
+-	 *   handle             <-- 16-byte aligned for call to handle_protocol
+-	 */
+-
+-	movl	12(%ebp), %eax			// sys_table
+-	movl	ST32_boottime(%eax), %eax	// sys_table->boottime
+-	call	*BS32_handle_protocol(%eax)	// sys_table->boottime->handle_protocol
+-	addl	$12, %esp			// restore argument space
+-	testl	%eax, %eax
+-	jnz	2f
+-
+-	movl	8(%ebp), %ecx			// image_handle
+-	movl	12(%ebp), %edx			// sys_table
+-	movl	-4(%ebp), %esi			// loaded_image
+-	movl	LI32_image_base(%esi), %esi	// loaded_image->image_base
+-	leal	(startup_32 - 1b)(%ebx), %ebp	// runtime address of startup_32
+-	/*
+-	 * We need to set the image_offset variable here since startup_32() will
+-	 * use it before we get to the 64-bit efi_pe_entry() in C code.
+-	 */
+-	subl	%esi, %ebp			// calculate image_offset
+-	movl	%ebp, (image_offset - 1b)(%ebx)	// save image_offset
+-	xorl	%esi, %esi
+-	jmp	efi32_entry			// pass %ecx, %edx, %esi
+-						// no other registers remain live
+-
+-2:	popl	%edi				// restore callee-save registers
+-	popl	%ebx
+-	leave
+-	RET
+-SYM_FUNC_END(efi32_pe_entry)
+-
+-	.section ".rodata"
+-	/* EFI loaded image protocol GUID */
+-	.balign 4
+-SYM_DATA_START_LOCAL(loaded_image_proto)
+-	.long	0x5b1b31a1
+-	.word	0x9562, 0x11d2
+-	.byte	0x8e, 0x3f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b
+-SYM_DATA_END(loaded_image_proto)
+-#endif
+ 
+ #ifdef CONFIG_AMD_MEM_ENCRYPT
+ 	__HEAD
 
 
 
