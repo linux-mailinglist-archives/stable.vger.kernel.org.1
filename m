@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-26448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 417B2870EA4
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:45:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC4C1870DCF
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:38:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6A2FB257F2
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:45:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6314D1F25D86
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:38:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84AC41F92C;
-	Mon,  4 Mar 2024 21:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAD741F92C;
+	Mon,  4 Mar 2024 21:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v+2gpb83"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="krmHydgp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450D67992E;
-	Mon,  4 Mar 2024 21:45:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A60B8F58;
+	Mon,  4 Mar 2024 21:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588743; cv=none; b=lTUv2Q7pDhYFltuOrpggwoG8K5lIlfcZjvTzLFAIozrMmNMZn7YEKi81EK5gmL7sNmDKTPdPz0BsL+ShupGze789bN2t0CC15dQrY3sfTWSE61Qpt1TjcHpRPxoKBbK280fhj8aLcvtTNSE74FY5IQtO36EoZUsqBUaK/hq6Nvg=
+	t=1709588281; cv=none; b=IgAFdv4C7hnMz+J4NfeLAzNphay+uAZkM0mpVFEhGAXataHMvzaeyjbINsYawwr/1vAKTjnUqN8YHCXi9y9fcn15ngiLv1o51i+xpXiTt1G81Oh7ncrzUZzgJ9hI83kQfwsd8pP0aTR6M0AfwSYrC7S6kHguOo646kKnEGrzXE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588743; c=relaxed/simple;
-	bh=RoQZ9JMi9k8TPjEiknTVmdyntJGED1DA4Xd1OidI5hw=;
+	s=arc-20240116; t=1709588281; c=relaxed/simple;
+	bh=5JVm5yE9Nrs9wqydhYF32nzzLsp3olNWn2r59JoNyqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eqnifBhMSyc2sETyNJPBJ+4+GSqZw3753rw2R2suAnzZonOiJgZA0ws6aP/E9/J9qg/W3VaA2hQJ1XLgBxAJJj0V5ZfvuOSFOb948YcgmmOiUa8wcfqAV0QytQZZsOKMcb9GLeSF0h94LGvw4VBeDpVkGrfXHt0xZvndC4C4aGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v+2gpb83; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA925C433C7;
-	Mon,  4 Mar 2024 21:45:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SBW4XPn2Q7M0QR1mRqGgEPYvZAuqWJf9rel2Zjplck/bMBGf2yZhZssWtAqKWobuZt7lK0USAlYo4eBbt9eHVHQHzi7gorA1jRKaLeni1/GPxLO/J52BBRqpCtfV/OeLxwbu37KzhnK/PEi6wDqDDTTyYGHQEcFnKE9C0gAQO2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=krmHydgp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2469EC433C7;
+	Mon,  4 Mar 2024 21:38:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588743;
-	bh=RoQZ9JMi9k8TPjEiknTVmdyntJGED1DA4Xd1OidI5hw=;
+	s=korg; t=1709588281;
+	bh=5JVm5yE9Nrs9wqydhYF32nzzLsp3olNWn2r59JoNyqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v+2gpb83yJcn7LcbM87q7QiPPqSuoG8DI8WB5qtnSoDmeFw8CjlMN7qin/KmN2vZk
-	 QTDfA3y5hIZjNv0x7ggWXrNxnbTp5eC9PQOvVcM4Hx38hiSdwMAvJiqB3/Dkf54xV9
-	 41hqaTKxvCEvGj7K3IU2pfv3mK0Al8z+j+wifu6U=
+	b=krmHydgpH+yCzPgc+97+OQDAJ6pM1Wh5+bb5dZ6y4ba5iVIjBcGcQdR+dvk16/6t6
+	 ZHc/5irhfmsVXJ3CRV6mF5/3Y4buTXGcpSl6S91uxpadnwtFZPAqdTBt0Yn6pPetGR
+	 3FzdkdaoYcJiADMkKltjidQiR8tE/zUzS+Kp/pPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
-	syzbot+33f23b49ac24f986c9e8@syzkaller.appspotmail.com
-Subject: [PATCH 6.1 080/215] btrfs: dev-replace: properly validate device names
+	=?UTF-8?q?Jonas=20Dre=C3=9Fler?= <verdre@v0yd.nl>,
+	Simon Horman <horms@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 023/143] Bluetooth: hci_sync: Check the correct flag before starting a scan
 Date: Mon,  4 Mar 2024 21:22:23 +0000
-Message-ID: <20240304211559.522549482@linuxfoundation.org>
+Message-ID: <20240304211550.687669718@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Jonas Dreßler <verdre@v0yd.nl>
 
-commit 9845664b9ee47ce7ee7ea93caf47d39a9d4552c4 upstream.
+[ Upstream commit 6b3899be24b16ff8ee0cb25f0bd59b01b15ba1d1 ]
 
-There's a syzbot report that device name buffers passed to device
-replace are not properly checked for string termination which could lead
-to a read out of bounds in getname_kernel().
+There's a very confusing mistake in the code starting a HCI inquiry: We're
+calling hci_dev_test_flag() to test for HCI_INQUIRY, but hci_dev_test_flag()
+checks hdev->dev_flags instead of hdev->flags. HCI_INQUIRY is a bit that's
+set on hdev->flags, not on hdev->dev_flags though.
 
-Add a helper that validates both source and target device name buffers.
-For devid as the source initialize the buffer to empty string in case
-something tries to read it later.
+HCI_INQUIRY equals the integer 7, and in hdev->dev_flags, 7 means
+HCI_BONDABLE, so we were actually checking for HCI_BONDABLE here.
 
-This was originally analyzed and fixed in a different way by Edward Adam
-Davis (see links).
+The mistake is only present in the synchronous code for starting an inquiry,
+not in the async one. Also devices are typically bondable while doing an
+inquiry, so that might be the reason why nobody noticed it so far.
 
-Link: https://lore.kernel.org/linux-btrfs/000000000000d1a1d1060cc9c5e7@google.com/
-Link: https://lore.kernel.org/linux-btrfs/tencent_44CA0665C9836EF9EEC80CB9E7E206DF5206@qq.com/
-CC: stable@vger.kernel.org # 4.19+
-CC: Edward Adam Davis <eadavis@qq.com>
-Reported-and-tested-by: syzbot+33f23b49ac24f986c9e8@syzkaller.appspotmail.com
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: abfeea476c68 ("Bluetooth: hci_sync: Convert MGMT_OP_START_DISCOVERY")
+Signed-off-by: Jonas Dreßler <verdre@v0yd.nl>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/dev-replace.c |   24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ net/bluetooth/hci_sync.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/dev-replace.c
-+++ b/fs/btrfs/dev-replace.c
-@@ -740,6 +740,23 @@ leave:
- 	return ret;
- }
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 5c4efa6246256..497b12e0374e0 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -5633,7 +5633,7 @@ static int hci_inquiry_sync(struct hci_dev *hdev, u8 length)
  
-+static int btrfs_check_replace_dev_names(struct btrfs_ioctl_dev_replace_args *args)
-+{
-+	if (args->start.srcdevid == 0) {
-+		if (memchr(args->start.srcdev_name, 0,
-+			   sizeof(args->start.srcdev_name)) == NULL)
-+			return -ENAMETOOLONG;
-+	} else {
-+		args->start.srcdev_name[0] = 0;
-+	}
-+
-+	if (memchr(args->start.tgtdev_name, 0,
-+		   sizeof(args->start.tgtdev_name)) == NULL)
-+	    return -ENAMETOOLONG;
-+
-+	return 0;
-+}
-+
- int btrfs_dev_replace_by_ioctl(struct btrfs_fs_info *fs_info,
- 			    struct btrfs_ioctl_dev_replace_args *args)
- {
-@@ -752,10 +769,9 @@ int btrfs_dev_replace_by_ioctl(struct bt
- 	default:
- 		return -EINVAL;
- 	}
--
--	if ((args->start.srcdevid == 0 && args->start.srcdev_name[0] == '\0') ||
--	    args->start.tgtdev_name[0] == '\0')
--		return -EINVAL;
-+	ret = btrfs_check_replace_dev_names(args);
-+	if (ret < 0)
-+		return ret;
+ 	bt_dev_dbg(hdev, "");
  
- 	ret = btrfs_dev_replace_start(fs_info, args->start.tgtdev_name,
- 					args->start.srcdevid,
+-	if (hci_dev_test_flag(hdev, HCI_INQUIRY))
++	if (test_bit(HCI_INQUIRY, &hdev->flags))
+ 		return 0;
+ 
+ 	hci_dev_lock(hdev);
+-- 
+2.43.0
+
 
 
 
