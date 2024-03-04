@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-26390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A88B870E5F
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:43:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 159E6870C95
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:27:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3DBCB261D1
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:43:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74916282187
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:27:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C04A57B3E7;
-	Mon,  4 Mar 2024 21:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B857A736;
+	Mon,  4 Mar 2024 21:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dz8WHoQM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AAyUGe+z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D78C61675;
-	Mon,  4 Mar 2024 21:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161EE7A124;
+	Mon,  4 Mar 2024 21:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588596; cv=none; b=lz3fTKRwIHKvv3ICwebSAux+1hV10S089l7OrN7k+EkIrj0J305aWnIfZUdk7VvzmWzknnIJmsyGMRdXZFigLXydHHDd1ePeMeI2rpvGjY0ofCesY60EJnmzDtt6Pzq3YelLMCZ1Ep0uNAEAJ2k21ZjUuIvhvmai+eZxxiI4Lr0=
+	t=1709587610; cv=none; b=qKIhE0CZLSleZm5y6CE80ltoYvcmZ/VgCd5Mm9vI/PTtG4PdVIiyUqidenZuL/xNa+nN0QxvufO3yDLBYazdCVJiN3L/x9mK6rg/j3ivWX6O+qO7X8otxyGdA8pldR7EXtKHsG01fOuLjgGnYASRwi0ACnA4WBO2VwIerf2T+DU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588596; c=relaxed/simple;
-	bh=Emw8bCTRGQsH1HUR1Fp9Tl1/oRwbmzrUNgq5xfRBF0A=;
+	s=arc-20240116; t=1709587610; c=relaxed/simple;
+	bh=ApLvzvvlDkvIkumfw+29NxJpI1MkyhODOO4YdWsSEak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LnjRqxM01LOWBCve9ucGTIBMJZ8r4trEcZclKn0EoQ18DpfLNOtb5sM4nAqDewKX1gM9y6FmbuTBLlqqZv44NSlEoZFlA2CllDpVHKqUAIwzndcyej6fd2mZAZzj3Qc2AG1z1V91baKMz9Fpk8i2vfOq3oW5c6/WSdqd1veN/YY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dz8WHoQM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1185AC43390;
-	Mon,  4 Mar 2024 21:43:15 +0000 (UTC)
+	 MIME-Version; b=PRtQVFyspP9JrKuBv/GTyeTVeXyzpwsIuCFCX05WahmkeBft/mTc0EyprPdRfksQ1Pz1BPUbkL8o0swX4o2aIlcT9G5jlFmBN+KRE15rLD4IumNp7iM/8t5CcVIzLBlXehu1Cmv2EmSCa2upaAzvCvjkVJkFljiovVP0TNUkAu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AAyUGe+z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C51FC433F1;
+	Mon,  4 Mar 2024 21:26:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588596;
-	bh=Emw8bCTRGQsH1HUR1Fp9Tl1/oRwbmzrUNgq5xfRBF0A=;
+	s=korg; t=1709587610;
+	bh=ApLvzvvlDkvIkumfw+29NxJpI1MkyhODOO4YdWsSEak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dz8WHoQMQVgS5Ra1A75tXLfqltMgacxpgm4lpOVkgFK2nU5V75n2e+9gj+XIpUCgg
-	 jeuGn1novCOSVFtGH8x1iIOdf7bw9gxwPi8LyvF/mF6LOYgvqrEXc3/jMuuwmXnukX
-	 e9Vl5fhVmpxDKYK0AcMPLd15AZUY0PZaPrTOQouQ=
+	b=AAyUGe+ztm7/77E6V8DfTp0jl/g4z3uBU1BLt5xpwvgte2QJrTxSFnI7aTX+lIzmn
+	 I+XlFczHgJAWIaBrKzhjWq7mnjBezDHytpP5rrLZT7ft2iBOjLOyTClKjFZHELbZFG
+	 MzBnawgcAFb9m5MQ9ZFDeVKk3IhjpGHddxNg6BcY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Will Deacon <will@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 024/215] iommu/arm-smmu-qcom: Limit the SMR groups to 128
+Subject: [PATCH 6.7 022/162] net: lan78xx: fix "softirq work is pending" error
 Date: Mon,  4 Mar 2024 21:21:27 +0000
-Message-ID: <20240304211557.763092952@linuxfoundation.org>
+Message-ID: <20240304211552.541138802@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-[ Upstream commit 12261134732689b7e30c59db9978f81230965181 ]
+[ Upstream commit e3d5d70cb483df8296dd44e9ae3b6355ef86494c ]
 
-Some platforms support more than 128 stream matching groups than what is
-defined by the ARM SMMU architecture specification. But due to some unknown
-reasons, those additional groups don't exhibit the same behavior as the
-architecture supported ones.
+Disable BH around the call to napi_schedule() to avoid following
+error:
+NOHZ tick-stop error: local softirq work is pending, handler #08!!!
 
-For instance, the additional groups will not detect the quirky behavior of
-some firmware versions intercepting writes to S2CR register, thus skipping
-the quirk implemented in the driver and causing boot crash.
-
-So let's limit the groups to 128 for now until the issue with those groups
-are fixed and issue a notice to users in that case.
-
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20230327080029.11584-1-manivannan.sadhasivam@linaro.org
-[will: Reworded the comment slightly]
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: ec4c7e12396b ("lan78xx: Introduce NAPI polling support")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://lore.kernel.org/r/20240226110820.2113584-1-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ drivers/net/usb/lan78xx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-index d80065c8105af..f15dcb9e4175c 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-@@ -267,12 +267,26 @@ static int qcom_smmu_init_context(struct arm_smmu_domain *smmu_domain,
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index 2e6d423f3a016..a2dde84499fdd 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -1501,7 +1501,9 @@ static int lan78xx_link_reset(struct lan78xx_net *dev)
  
- static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
- {
--	unsigned int last_s2cr = ARM_SMMU_GR0_S2CR(smmu->num_mapping_groups - 1);
- 	struct qcom_smmu *qsmmu = to_qcom_smmu(smmu);
-+	unsigned int last_s2cr;
- 	u32 reg;
- 	u32 smr;
- 	int i;
+ 		lan78xx_rx_urb_submit_all(dev);
  
-+	/*
-+	 * Some platforms support more than the Arm SMMU architected maximum of
-+	 * 128 stream matching groups. For unknown reasons, the additional
-+	 * groups don't exhibit the same behavior as the architected registers,
-+	 * so limit the groups to 128 until the behavior is fixed for the other
-+	 * groups.
-+	 */
-+	if (smmu->num_mapping_groups > 128) {
-+		dev_notice(smmu->dev, "\tLimiting the stream matching groups to 128\n");
-+		smmu->num_mapping_groups = 128;
-+	}
-+
-+	last_s2cr = ARM_SMMU_GR0_S2CR(smmu->num_mapping_groups - 1);
-+
- 	/*
- 	 * With some firmware versions writes to S2CR of type FAULT are
- 	 * ignored, and writing BYPASS will end up written as FAULT in the
++		local_bh_disable();
+ 		napi_schedule(&dev->napi);
++		local_bh_enable();
+ 	}
+ 
+ 	return 0;
 -- 
 2.43.0
 
