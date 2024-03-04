@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F7EF870E9C
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:45:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC5B5870CB5
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:28:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 107A6B23F8A
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:45:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8FB7288F6A
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEFA746BA0;
-	Mon,  4 Mar 2024 21:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1215E41202;
+	Mon,  4 Mar 2024 21:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="euw2l1Lc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11vZN8lj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7E77AE47;
-	Mon,  4 Mar 2024 21:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C57C21EB5A;
+	Mon,  4 Mar 2024 21:27:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588722; cv=none; b=LdwtIh6lwqWAttFztgqmJ5prBLgHbtd/lx2h8cjLIdD1uP10A7KqgseIegO0ohhqXrgaU6Zovl0EzWXjhR9WsGmG44wKqng6k1/Vbmrm0SaxmfbbB7m+fZgjdlAmjltqYNRcJdq9hpUJILil+LoqOKFZ2F4RL59Qw3BvZDQ4ASw=
+	t=1709587669; cv=none; b=IefrDGHLgly3NJqVF2XUPt3F73rtjx3d04FDdmYy6WJ5Fb4H1RYeovfexklB0+UdwuKaLrN+Jn1dpU+Gy7cEEHzjBIQaUDT/Rw7PssI+HeKmFX2V9Z5rWeaBQ/z2wWr6rTFJWjIll6vZZtJ7qAvrDXtl9EY3PIbhqrBy+kXCoVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588722; c=relaxed/simple;
-	bh=X8lv+qsX69SE/WMCB/8RdPLIArmDJHXrI2sb2xakqS8=;
+	s=arc-20240116; t=1709587669; c=relaxed/simple;
+	bh=8g0gtRXL8yiiy92QCebRXWUdeJ+XX+ruZcEnxgomZUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gv+H48zOgSMQFaTZSGVz3TG9RiWJrsKe8Y8PI/xEtZd0G/hhOuAL56nDpk4BkM91ab993Qhx6ys411Hzc+ZCFwkDXbXLtIIjVf8vGt87nMXLiHXcRjEnETHJp1AFZMzJ7UBm5g4obxYwsqM21k1VkvR3p2rvZsTSKCzgipJ04+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=euw2l1Lc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C044C433C7;
-	Mon,  4 Mar 2024 21:45:21 +0000 (UTC)
+	 MIME-Version; b=Yay8pUkAmsq+icbOLMdICGf644y4jp84K1MhewRzdOUjv45zIBu0HXjYO5/JLrGHiar3iTA1lybOHQ5cS1ZY9sT4M6GE7ttiGj4OLTTHLS6HX+N+DYHq/5n4bRvp4HmPl6Awfl2XN40driy8KGRW9YCZ1KqRZ+QrTNOPB5QTOe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11vZN8lj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575E6C433F1;
+	Mon,  4 Mar 2024 21:27:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588722;
-	bh=X8lv+qsX69SE/WMCB/8RdPLIArmDJHXrI2sb2xakqS8=;
+	s=korg; t=1709587669;
+	bh=8g0gtRXL8yiiy92QCebRXWUdeJ+XX+ruZcEnxgomZUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=euw2l1LcsJ5n2GdU/4dZZ9P6UJLiyEQ4TtAIUmSliEnn0Nc7fngE8xuFra+TTEi9j
-	 LEnGbbYdtC6+Vbf5H0KIZyJc8o5WUPTnCGWLnYEwHb+oFH4xv9fcyz+3g7y0ogVcpk
-	 LfF0uE7Oxc9NEmuQleY0FM7O8zSf4wUe9f2jCjo4=
+	b=11vZN8ljq1T9WYXaQ7xey5d3iuUV33VuNCoygjX+fikCC5ztf9HFRcwe6ugyp1rx8
+	 lLy7ZhN7MDhmTgg7Mkkb+tz+BrMTX7UlVAmHS+eDaMRKjo9avW2MocBpER5ULMWeso
+	 S45xuGzR8yaBqGQG/YryfRyuuI5oiUFBvzxrg+Dk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 047/215] Bluetooth: Enforce validation on max value of connection interval
+Subject: [PATCH 6.7 045/162] efi/capsule-loader: fix incorrect allocation size
 Date: Mon,  4 Mar 2024 21:21:50 +0000
-Message-ID: <20240304211558.490961930@linuxfoundation.org>
+Message-ID: <20240304211553.292581639@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit e4b019515f950b4e6e5b74b2e1bb03a90cb33039 ]
+[ Upstream commit fccfa646ef3628097d59f7d9c1a3e84d4b6bb45e ]
 
-Right now Linux BT stack cannot pass test case "GAP/CONN/CPUP/BV-05-C
-'Connection Parameter Update Procedure Invalid Parameters Central
-Responder'" in Bluetooth Test Suite revision GAP.TS.p44. [0]
+gcc-14 notices that the allocation with sizeof(void) on 32-bit architectures
+is not enough for a 64-bit phys_addr_t:
 
-That was revoled by commit c49a8682fc5d ("Bluetooth: validate BLE
-connection interval updates"), but later got reverted due to devices
-like keyboards and mice may require low connection interval.
+drivers/firmware/efi/capsule-loader.c: In function 'efi_capsule_open':
+drivers/firmware/efi/capsule-loader.c:295:24: error: allocation of insufficient size '4' for type 'phys_addr_t' {aka 'long long unsigned int'} with size '8' [-Werror=alloc-size]
+  295 |         cap_info->phys = kzalloc(sizeof(void *), GFP_KERNEL);
+      |                        ^
 
-So only validate the max value connection interval to pass the Test
-Suite, and let devices to request low connection interval if needed.
+Use the correct type instead here.
 
-[0] https://www.bluetooth.org/docman/handlers/DownloadDoc.ashx?doc_id=229869
-
-Fixes: 68d19d7d9957 ("Revert "Bluetooth: validate BLE connection interval updates"")
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: f24c4d478013 ("efi/capsule-loader: Reinstate virtual capsule mapping")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c  | 4 ++++
- net/bluetooth/l2cap_core.c | 8 +++++++-
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ drivers/firmware/efi/capsule-loader.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index f79aaef5a276d..452d839c152fc 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -6719,6 +6719,10 @@ static void hci_le_remote_conn_param_req_evt(struct hci_dev *hdev, void *data,
- 		return send_conn_param_neg_reply(hdev, handle,
- 						 HCI_ERROR_UNKNOWN_CONN_ID);
+diff --git a/drivers/firmware/efi/capsule-loader.c b/drivers/firmware/efi/capsule-loader.c
+index 3e8d4b51a8140..97bafb5f70389 100644
+--- a/drivers/firmware/efi/capsule-loader.c
++++ b/drivers/firmware/efi/capsule-loader.c
+@@ -292,7 +292,7 @@ static int efi_capsule_open(struct inode *inode, struct file *file)
+ 		return -ENOMEM;
+ 	}
  
-+	if (max > hcon->le_conn_max_interval)
-+		return send_conn_param_neg_reply(hdev, handle,
-+						 HCI_ERROR_INVALID_LL_PARAMS);
-+
- 	if (hci_check_conn_params(min, max, latency, timeout))
- 		return send_conn_param_neg_reply(hdev, handle,
- 						 HCI_ERROR_INVALID_LL_PARAMS);
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 81f5974e5eb5a..b4cba55be5ad9 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -5614,7 +5614,13 @@ static inline int l2cap_conn_param_update_req(struct l2cap_conn *conn,
- 
- 	memset(&rsp, 0, sizeof(rsp));
- 
--	err = hci_check_conn_params(min, max, latency, to_multiplier);
-+	if (max > hcon->le_conn_max_interval) {
-+		BT_DBG("requested connection interval exceeds current bounds.");
-+		err = -EINVAL;
-+	} else {
-+		err = hci_check_conn_params(min, max, latency, to_multiplier);
-+	}
-+
- 	if (err)
- 		rsp.result = cpu_to_le16(L2CAP_CONN_PARAM_REJECTED);
- 	else
+-	cap_info->phys = kzalloc(sizeof(void *), GFP_KERNEL);
++	cap_info->phys = kzalloc(sizeof(phys_addr_t), GFP_KERNEL);
+ 	if (!cap_info->phys) {
+ 		kfree(cap_info->pages);
+ 		kfree(cap_info);
 -- 
 2.43.0
 
