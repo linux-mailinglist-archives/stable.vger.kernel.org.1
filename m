@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-26321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9002C870E0B
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:40:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86103870F53
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:53:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C27C31C21143
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:40:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E491B215AD
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:53:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB50F7A124;
-	Mon,  4 Mar 2024 21:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6781F78B69;
+	Mon,  4 Mar 2024 21:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+KSuyjQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FgOnCnk6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B4146BA0;
-	Mon,  4 Mar 2024 21:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2799A1C6AB;
+	Mon,  4 Mar 2024 21:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588418; cv=none; b=Huy0nGuvzcqHoNKNsl6QPeR+6QIJrQ2e+xctTP48lVv3f93Bap/jQ/ndSjpy+eha4Xttsxjj5nwSFXnRaOb6NXOAv1gSKOKYg11cWmoL+HB9WSo1SNFwbjAu5FhSf+RC96PUqS6ROTdkbgEJcQN3smHjIKEBuj3xCpYhI5U1kxY=
+	t=1709589205; cv=none; b=ZFRrjyo5/oFsQkgAQsnd6z1zxFct9wQSAdYxswF4z11HRCXfRe5Ph50XT3pT9LbCOSoAlWYFhNG8iZeLIMvlIX/sz35fvLQUOt8wfEF4VOTUsSMi9/7NMYD5xNg7MiZXTM1+VS/FGpHcC5CCCDe2fYjrNpP9vzZORWXmNh24O6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588418; c=relaxed/simple;
-	bh=tTN2LMswi9DtaiV/YI3ThWz7nxgMFMtQKYDkpaIt//k=;
+	s=arc-20240116; t=1709589205; c=relaxed/simple;
+	bh=GIfmwm1qXucXVaNSeewpJ47FMmvR5vW4qVF1+2jDmy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e3Yx1e1yaNGedXm2wgJRUVk106+o2uX8Sa+q12vJcXRh7gAii8WoH3AxCEdagk71TdoIBiGxm+los6DfbFz+F75UGJj4Kl+FhAm3j3NAlh6ffgUgt04hzM7dgH8H32opQH3XSr5I5YieYg7xSOYDAvZ1dxyeFxxHpnFZtK70o70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+KSuyjQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DE92C433F1;
-	Mon,  4 Mar 2024 21:40:18 +0000 (UTC)
+	 MIME-Version; b=rAgTGaRTavOm97QQKVKeUEfMdcpU7U7XpGfPrUNxChtp5H5AOkAGX+KROzKe2s/+Fh6eVqiNgQVKpWnItdWN/NX8SMOI3a62l8tmYb3aHm09bYu57/bJ/8RFU3m6for7+HwyJ4WEoxqvdQvFYErPB3DvyRnAXnoQEKa8Dydkh+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FgOnCnk6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB78BC433F1;
+	Mon,  4 Mar 2024 21:53:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588418;
-	bh=tTN2LMswi9DtaiV/YI3ThWz7nxgMFMtQKYDkpaIt//k=;
+	s=korg; t=1709589205;
+	bh=GIfmwm1qXucXVaNSeewpJ47FMmvR5vW4qVF1+2jDmy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e+KSuyjQHXUGnnP/84sbzofmCuKz3hPw+y1/RTjQfdFarWtIiiq252pgXPOj4afmR
-	 QFYc7mWEGPpK95iIPr+LwCXmaME+wL/OCW8UbvNf2uTFrl22cEuBmvN56XYwro4+0S
-	 S07GnC1Sme5rkFsS6lrY6mWYZe+FoJZMeGFiSNb8=
+	b=FgOnCnk652KWrR6L/R3Fx2UaZKYttB1OT3+hzD+6hwxZmSbCIBotzII+PKkv4J3iz
+	 S/6avfdP3oqi/vNnSd7Cn7YTrB7WSye39bH9EWSRNJUO87cFGUJY9NuxPgTTzDorWD
+	 Zbx97nCj1aWmrLdjoL9RgRcq6YF/3FuX77xxhKP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Eric Biggers <ebiggers@google.com>,
-	Andy Chiu <andybnac@gmail.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.6 099/143] kbuild: Add -Wa,--fatal-warnings to as-instr invocation
+	Doug Smythies <dsmythies@telus.net>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 06/84] cpufreq: intel_pstate: fix pstate limits enforcement for adjust_perf call back
 Date: Mon,  4 Mar 2024 21:23:39 +0000
-Message-ID: <20240304211553.078275708@linuxfoundation.org>
+Message-ID: <20240304211542.551466117@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
+References: <20240304211542.332206551@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,65 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Doug Smythies <dsmythies@telus.net>
 
-commit 0ee695a471a750cad4fff22286d91e038b1ef62f upstream.
+[ Upstream commit f0a0fc10abb062d122db5ac4ed42f6d1ca342649 ]
 
-Certain assembler instruction tests may only induce warnings from the
-assembler on an unsupported instruction or option, which causes as-instr
-to succeed when it was expected to fail. Some tests workaround this
-limitation by additionally testing that invalid input fails as expected.
-However, this is fragile if the assembler is changed to accept the
-invalid input, as it will cause the instruction/option to be unavailable
-like it was unsupported even when it is.
+There is a loophole in pstate limit clamping for the intel_cpufreq CPU
+frequency scaling driver (intel_pstate in passive mode), schedutil CPU
+frequency scaling governor, HWP (HardWare Pstate) control enabled, when
+the adjust_perf call back path is used.
 
-Use '-Wa,--fatal-warnings' in the as-instr macro to turn these warnings
-into hard errors, which avoids this fragility and makes tests more
-robust and well formed.
+Fix it.
 
-Cc: stable@vger.kernel.org
-Suggested-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Eric Biggers <ebiggers@google.com>
-Tested-by: Andy Chiu <andybnac@gmail.com>
-Reviewed-by: Andy Chiu <andybnac@gmail.com>
-Tested-by: Conor Dooley <conor.dooley@microchip.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Acked-by: Masahiro Yamada <masahiroy@kernel.org>
-Link: https://lore.kernel.org/r/20240125-fix-riscv-option-arch-llvm-18-v1-1-390ac9cc3cd0@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a365ab6b9dfb cpufreq: intel_pstate: Implement the ->adjust_perf() callback
+Signed-off-by: Doug Smythies <dsmythies@telus.net>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Kconfig.include   |    2 +-
- scripts/Makefile.compiler |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/cpufreq/intel_pstate.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/scripts/Kconfig.include
-+++ b/scripts/Kconfig.include
-@@ -33,7 +33,7 @@ ld-option = $(success,$(LD) -v $(1))
+diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
+index dd5f4eee9ffb6..4de71e772f514 100644
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -2787,6 +2787,9 @@ static void intel_cpufreq_adjust_perf(unsigned int cpunum,
+ 	if (min_pstate < cpu->min_perf_ratio)
+ 		min_pstate = cpu->min_perf_ratio;
  
- # $(as-instr,<instr>)
- # Return y if the assembler supports <instr>, n otherwise
--as-instr = $(success,printf "%b\n" "$(1)" | $(CC) $(CLANG_FLAGS) -c -x assembler-with-cpp -o /dev/null -)
-+as-instr = $(success,printf "%b\n" "$(1)" | $(CC) $(CLANG_FLAGS) -Wa$(comma)--fatal-warnings -c -x assembler-with-cpp -o /dev/null -)
- 
- # check if $(CC) and $(LD) exist
- $(error-if,$(failure,command -v $(CC)),C compiler '$(CC)' not found)
---- a/scripts/Makefile.compiler
-+++ b/scripts/Makefile.compiler
-@@ -38,7 +38,7 @@ as-option = $(call try-run,\
- # Usage: aflags-y += $(call as-instr,instr,option1,option2)
- 
- as-instr = $(call try-run,\
--	printf "%b\n" "$(1)" | $(CC) -Werror $(CLANG_FLAGS) $(KBUILD_AFLAGS) -c -x assembler-with-cpp -o "$$TMP" -,$(2),$(3))
-+	printf "%b\n" "$(1)" | $(CC) -Werror $(CLANG_FLAGS) $(KBUILD_AFLAGS) -Wa$(comma)--fatal-warnings -c -x assembler-with-cpp -o "$$TMP" -,$(2),$(3))
- 
- # __cc-option
- # Usage: MY_CFLAGS += $(call __cc-option,$(CC),$(MY_CFLAGS),-march=winchip-c6,-march=i586)
++	if (min_pstate > cpu->max_perf_ratio)
++		min_pstate = cpu->max_perf_ratio;
++
+ 	max_pstate = min(cap_pstate, cpu->max_perf_ratio);
+ 	if (max_pstate < min_pstate)
+ 		max_pstate = min_pstate;
+-- 
+2.43.0
+
 
 
 
