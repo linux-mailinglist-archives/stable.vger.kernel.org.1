@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-26541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8F92870F0C
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:50:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FB6B870E1D
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:41:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E5571F2121F
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:50:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A26831C23AA7
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:41:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEFAB79950;
-	Mon,  4 Mar 2024 21:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D1C37BAF5;
+	Mon,  4 Mar 2024 21:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ti7r85t7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E6PD4oAy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBA7200D4;
-	Mon,  4 Mar 2024 21:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E951F92C;
+	Mon,  4 Mar 2024 21:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589024; cv=none; b=fJTQC21VzXRf4aY9n3MXvCJ9TIv14N0UE1TsXx+tyyQPYPT8HgSYlC1sYnUfyznZpXtxIsjOxpODZa/+JpZ4Yw8+1KakTMS7mrwJ8EZFCcZ0v+3qX/jq19xOXKNCyitWkqGpQGYjEuLmen6ogIRBkVx6iVa5ptXl2+kn6Qqc6l4=
+	t=1709588456; cv=none; b=Yzsc4kl+cBSYykabb8FpUy1VX9eOuVmgqbWHOz7LeatD2ngkwayFVyff66vAHAIdT9lA9ux8NbAmKNWXwhn9F43uDUbcWrfUAzKX1Hdlo4gqYd8iJyg73dWNjrnrK8n3f/+qE/VlHLwqhzZyKyv8pWXa11GSurcDTH8pHG/yts4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589024; c=relaxed/simple;
-	bh=l4lPkSUzxhjtsRKM5mDiH7AO3RikjRcBA1iHhqCx6sM=;
+	s=arc-20240116; t=1709588456; c=relaxed/simple;
+	bh=I0gefTOGqK87RJsPA/7fWF38MbflvvGzmBmFBxPq7bs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u4d25DoDO8LTZlKzctWQGjhTegpp2vWFTFumDGWrFC/gZXeITQvqiGo3Q+5nYnHm/M6LpUJmraS5/RL3InSLUxL3QW07Jo8tX6FeSvTGyrktk60Td/QVKKPjry+v88ezanh+Fz+yQJezedu8LFfHnD/9EdB6VyTigOKn3O63Bws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ti7r85t7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375E0C433F1;
-	Mon,  4 Mar 2024 21:50:23 +0000 (UTC)
+	 MIME-Version; b=kLHP+vYICr7UuvNsSI8ow62+OGw5sUekLlogndPplvUMMkHqBUjdXYlRUqVYrSD+Xe/R/jj/eYMyQopkQcipLa9h0XpmKVQfToQkxZ6N3ZGMFUT6xpJmFvRYyxDEmdfwBFrC+AnKbX6tE8XKuSzDcdtnMhbczW90GaMM60uBvUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E6PD4oAy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E053C433F1;
+	Mon,  4 Mar 2024 21:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589023;
-	bh=l4lPkSUzxhjtsRKM5mDiH7AO3RikjRcBA1iHhqCx6sM=;
+	s=korg; t=1709588455;
+	bh=I0gefTOGqK87RJsPA/7fWF38MbflvvGzmBmFBxPq7bs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ti7r85t71WFSqAVA773l9cj6XnuA+15oudGgmKQfC8rnfpY7e+J0K1R2pK5+jvyZl
-	 36F0/fnvOv+yleAqObhzB/bkRq//V5jUQScgWV9fVvmDOX3uOGNw+JeA8INWrYi3A8
-	 fx/ggWW+v450L7PMpzPpG6e8HLD+ai6YVGiOXgD8=
+	b=E6PD4oAyXyARYS0whvIBbiUT06sCvZwcw3fTUYQmK+w470Lxcsk9bps66KxP3Do5p
+	 vcVSqCZi5sWi1jOQPSa9r3oQA9Y7hyNkKQ0fD+6KMt9R/XFsomc1YI2lasBAhgSCms
+	 bx1jNxC2D6Erb3v0o/iUPEWWpzrBR/6K1a5Re3ds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 171/215] NFSD: add support for sending CB_RECALL_ANY
+	linux-nfs@vger.kernel.org,
+	NeilBrown <neilb@suse.de>,
+	Jacek Tomaka <Jacek.Tomaka@poczta.fm>
+Subject: [PATCH 6.6 114/143] NFS: Fix data corruption caused by congestion.
 Date: Mon,  4 Mar 2024 21:23:54 +0000
-Message-ID: <20240304211602.378276537@linuxfoundation.org>
+Message-ID: <20240304211553.557826912@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,170 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dai Ngo <dai.ngo@oracle.com>
+when AOP_WRITEPAGE_ACTIVATE is returned (as NFS does when it detects
+congestion) it is important that the folio is redirtied.
+nfs_writepage_locked() doesn't do this, so files can become corrupted as
+writes can be lost.
 
-[ Upstream commit 3959066b697b5dfbb7141124ae9665337d4bc638 ]
+Note that this is not needed in v6.8 as AOP_WRITEPAGE_ACTIVATE cannot be
+returned.  It is needed for kernels v5.18..v6.7.  Prior to 6.3 the patch
+is different as it needs to mention "page", not "folio".
 
-Add XDR encode and decode function for CB_RECALL_ANY.
-
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reported-and-tested-by: Jacek Tomaka <Jacek.Tomaka@poczta.fm>
+Fixes: 6df25e58532b ("nfs: remove reliance on bdi congestion")
+Signed-off-by: NeilBrown <neilb@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4callback.c |   72 +++++++++++++++++++++++++++++++++++++++++++++++++
- fs/nfsd/state.h        |    1 
- fs/nfsd/xdr4.h         |    5 +++
- fs/nfsd/xdr4cb.h       |    6 ++++
- 4 files changed, 84 insertions(+)
+ fs/nfs/write.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/nfsd/nfs4callback.c
-+++ b/fs/nfsd/nfs4callback.c
-@@ -76,6 +76,17 @@ static __be32 *xdr_encode_empty_array(__
-  * 1 Protocol"
-  */
+--- a/fs/nfs/write.c
++++ b/fs/nfs/write.c
+@@ -668,8 +668,10 @@ static int nfs_writepage_locked(struct f
+ 	int err;
  
-+static void encode_uint32(struct xdr_stream *xdr, u32 n)
-+{
-+	WARN_ON_ONCE(xdr_stream_encode_u32(xdr, n) < 0);
-+}
-+
-+static void encode_bitmap4(struct xdr_stream *xdr, const __u32 *bitmap,
-+			   size_t len)
-+{
-+	WARN_ON_ONCE(xdr_stream_encode_uint32_array(xdr, bitmap, len) < 0);
-+}
-+
- /*
-  *	nfs_cb_opnum4
-  *
-@@ -329,6 +340,24 @@ static void encode_cb_recall4args(struct
- }
+ 	if (wbc->sync_mode == WB_SYNC_NONE &&
+-	    NFS_SERVER(inode)->write_congested)
++	    NFS_SERVER(inode)->write_congested) {
++		folio_redirty_for_writepage(wbc, folio);
+ 		return AOP_WRITEPAGE_ACTIVATE;
++	}
  
- /*
-+ * CB_RECALLANY4args
-+ *
-+ *	struct CB_RECALLANY4args {
-+ *		uint32_t	craa_objects_to_keep;
-+ *		bitmap4		craa_type_mask;
-+ *	};
-+ */
-+static void
-+encode_cb_recallany4args(struct xdr_stream *xdr,
-+	struct nfs4_cb_compound_hdr *hdr, struct nfsd4_cb_recall_any *ra)
-+{
-+	encode_nfs_cb_opnum4(xdr, OP_CB_RECALL_ANY);
-+	encode_uint32(xdr, ra->ra_keep);
-+	encode_bitmap4(xdr, ra->ra_bmval, ARRAY_SIZE(ra->ra_bmval));
-+	hdr->nops++;
-+}
-+
-+/*
-  * CB_SEQUENCE4args
-  *
-  *	struct CB_SEQUENCE4args {
-@@ -482,6 +511,26 @@ static void nfs4_xdr_enc_cb_recall(struc
- 	encode_cb_nops(&hdr);
- }
- 
-+/*
-+ * 20.6. Operation 8: CB_RECALL_ANY - Keep Any N Recallable Objects
-+ */
-+static void
-+nfs4_xdr_enc_cb_recall_any(struct rpc_rqst *req,
-+		struct xdr_stream *xdr, const void *data)
-+{
-+	const struct nfsd4_callback *cb = data;
-+	struct nfsd4_cb_recall_any *ra;
-+	struct nfs4_cb_compound_hdr hdr = {
-+		.ident = cb->cb_clp->cl_cb_ident,
-+		.minorversion = cb->cb_clp->cl_minorversion,
-+	};
-+
-+	ra = container_of(cb, struct nfsd4_cb_recall_any, ra_cb);
-+	encode_cb_compound4args(xdr, &hdr);
-+	encode_cb_sequence4args(xdr, cb, &hdr);
-+	encode_cb_recallany4args(xdr, &hdr, ra);
-+	encode_cb_nops(&hdr);
-+}
- 
- /*
-  * NFSv4.0 and NFSv4.1 XDR decode functions
-@@ -520,6 +569,28 @@ static int nfs4_xdr_dec_cb_recall(struct
- 	return decode_cb_op_status(xdr, OP_CB_RECALL, &cb->cb_status);
- }
- 
-+/*
-+ * 20.6. Operation 8: CB_RECALL_ANY - Keep Any N Recallable Objects
-+ */
-+static int
-+nfs4_xdr_dec_cb_recall_any(struct rpc_rqst *rqstp,
-+				  struct xdr_stream *xdr,
-+				  void *data)
-+{
-+	struct nfsd4_callback *cb = data;
-+	struct nfs4_cb_compound_hdr hdr;
-+	int status;
-+
-+	status = decode_cb_compound4res(xdr, &hdr);
-+	if (unlikely(status))
-+		return status;
-+	status = decode_cb_sequence4res(xdr, cb);
-+	if (unlikely(status || cb->cb_seq_status))
-+		return status;
-+	status =  decode_cb_op_status(xdr, OP_CB_RECALL_ANY, &cb->cb_status);
-+	return status;
-+}
-+
- #ifdef CONFIG_NFSD_PNFS
- /*
-  * CB_LAYOUTRECALL4args
-@@ -783,6 +854,7 @@ static const struct rpc_procinfo nfs4_cb
- #endif
- 	PROC(CB_NOTIFY_LOCK,	COMPOUND,	cb_notify_lock,	cb_notify_lock),
- 	PROC(CB_OFFLOAD,	COMPOUND,	cb_offload,	cb_offload),
-+	PROC(CB_RECALL_ANY,	COMPOUND,	cb_recall_any,	cb_recall_any),
- };
- 
- static unsigned int nfs4_cb_counts[ARRAY_SIZE(nfs4_cb_procedures)];
---- a/fs/nfsd/state.h
-+++ b/fs/nfsd/state.h
-@@ -636,6 +636,7 @@ enum nfsd4_cb_op {
- 	NFSPROC4_CLNT_CB_OFFLOAD,
- 	NFSPROC4_CLNT_CB_SEQUENCE,
- 	NFSPROC4_CLNT_CB_NOTIFY_LOCK,
-+	NFSPROC4_CLNT_CB_RECALL_ANY,
- };
- 
- /* Returns true iff a is later than b: */
---- a/fs/nfsd/xdr4.h
-+++ b/fs/nfsd/xdr4.h
-@@ -896,5 +896,10 @@ struct nfsd4_operation {
- 			union nfsd4_op_u *);
- };
- 
-+struct nfsd4_cb_recall_any {
-+	struct nfsd4_callback	ra_cb;
-+	u32			ra_keep;
-+	u32			ra_bmval[1];
-+};
- 
- #endif
---- a/fs/nfsd/xdr4cb.h
-+++ b/fs/nfsd/xdr4cb.h
-@@ -48,3 +48,9 @@
- #define NFS4_dec_cb_offload_sz		(cb_compound_dec_hdr_sz  +      \
- 					cb_sequence_dec_sz +            \
- 					op_dec_sz)
-+#define NFS4_enc_cb_recall_any_sz	(cb_compound_enc_hdr_sz +       \
-+					cb_sequence_enc_sz +            \
-+					1 + 1 + 1)
-+#define NFS4_dec_cb_recall_any_sz	(cb_compound_dec_hdr_sz  +      \
-+					cb_sequence_dec_sz +            \
-+					op_dec_sz)
+ 	nfs_inc_stats(inode, NFSIOS_VFSWRITEPAGE);
+ 	nfs_pageio_init_write(&pgio, inode, 0, false,
 
 
 
