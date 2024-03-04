@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-26662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F09FB870F8F
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:55:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87019870F40
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:52:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91F041F22E6D
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:55:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27D711F2229C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 678D07B3C3;
-	Mon,  4 Mar 2024 21:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83237992E;
+	Mon,  4 Mar 2024 21:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQ4BRYEq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MOCg9k6N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2596F79DCA;
-	Mon,  4 Mar 2024 21:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73AF5200D4;
+	Mon,  4 Mar 2024 21:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589353; cv=none; b=mQDH+bUkDlCuwbjJjcCDAr+ZBXQNdns68UWW8yPoCkGJqD6PIctdvtqiuEs1ThTSQEO23ClyoVN7+VwqkYs1QOdKelGsNwlN+AMGNSA2vaqeApisH7f3MSReqnWhh/K5i0NMyGa0p6fXKjQac275UU+rX72s5o0a1WWTIdw+lHQ=
+	t=1709589158; cv=none; b=jDYOXLdWKqO1GCzwRbDN+dbF3/hGOPN+q1mqPOcuXfcNaqzTN74f2cob67F4rfcSIN0gnNqlSCWCpTy6+3GlxyvxvjxVOSYuqpxGY3Hp92P8O64LquoFKGn+YD04tsDOaG5CryWdk2XGDjcM6ZdePoYiu92yICnbGNUdZk1hiKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589353; c=relaxed/simple;
-	bh=WOWt2kdJRqoiE+1nID2C05CwC8SUip7SQPJenFW8CCU=;
+	s=arc-20240116; t=1709589158; c=relaxed/simple;
+	bh=LtqysbC8seZlfiMJLrVfwFofplIcSgb23mZV+z866os=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r+Fgce0SiFcJdH2GI6Pk6kIhePP7sOCFiEfyw6XWdBwLopstntTmDnFMfvC8NRP4PBSzgCQhIH8bgF55+rxyyKtOtE6OXGIDsS+Ue0hePd76gvm2tfVASaRZhHGILnZJ1hwYxhWIh0iSg9zqvl/uZ+Ph5f2u2NzVKdxV2a76xik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQ4BRYEq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB35AC433C7;
-	Mon,  4 Mar 2024 21:55:52 +0000 (UTC)
+	 MIME-Version; b=hF9DmjYnbeSE+KiOkjtdVd6S6IfKSTQl0hlnZ5pLx1CH9wNvZnEDD5Ks/jwcrMZuITB8FksrmsfG/B+Mg2tKNxLLv5LevU+SFp84pTmn3aYt0NJDUNE5jZywnP+g5XwrDRGszzvjHBBil192janmlEbDaJdNJOxJeZGdo+pV4kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MOCg9k6N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06599C433C7;
+	Mon,  4 Mar 2024 21:52:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589353;
-	bh=WOWt2kdJRqoiE+1nID2C05CwC8SUip7SQPJenFW8CCU=;
+	s=korg; t=1709589158;
+	bh=LtqysbC8seZlfiMJLrVfwFofplIcSgb23mZV+z866os=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HQ4BRYEqJSpU6U5fbA7Rpibzqm9vayoFPeYzx3k9nVW/hj56aZg9Qn5MlkP9SyjaQ
-	 RSKe1MvCeU4goaflye0Yc9HxsyaQ5TqorFO0sKISK7Vqk2buA6vWErHKeKOpDwWo9V
-	 HTGV5vB9+mhYbwX7iqxySBDqcAJJlqaVRYXdW+L4=
+	b=MOCg9k6NQfEbfh+O70WlZO8IkNHK5WFyXmlEstxc/AQ8Dj569CQfRgCBDnuM2FLFA
+	 NWsgj1s3e1ddPL0Dt4GM5yIfIFs1/gtjwnpwjFcVWPwv1kPOzcL35Ae7jPPjJwvaDd
+	 CxBQRGcMS7QMuNU852a7JJp3h/9JeaIFiagE+nvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Ma <peng.ma@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.15 52/84] dmaengine: fsl-qdma: fix SoC may hang on 16 byte unaligned read
-Date: Mon,  4 Mar 2024 21:24:25 +0000
-Message-ID: <20240304211544.105837323@linuxfoundation.org>
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Ming Lei <ming.lei@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 203/215] block: define bvec_iter as __packed __aligned(4)
+Date: Mon,  4 Mar 2024 21:24:26 +0000
+Message-ID: <20240304211603.434290163@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Ma <peng.ma@nxp.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-commit 9d739bccf261dd93ec1babf82f5c5d71dd4caa3e upstream.
+[ Upstream commit 7838b4656110d950afdd92a081cc0f33e23e0ea8 ]
 
-There is chip (ls1028a) errata:
+In commit 19416123ab3e ("block: define 'struct bvec_iter' as packed"),
+what we need is to save the 4byte padding, and avoid `bio` to spread on
+one extra cache line.
 
-The SoC may hang on 16 byte unaligned read transactions by QDMA.
+It is enough to define it as '__packed __aligned(4)', as '__packed'
+alone means byte aligned, and can cause compiler to generate horrible
+code on architectures that don't support unaligned access in case that
+bvec_iter is embedded in other structures.
 
-Unaligned read transactions initiated by QDMA may stall in the NOC
-(Network On-Chip), causing a deadlock condition. Stalled transactions will
-trigger completion timeouts in PCIe controller.
-
-Workaround:
-Enable prefetch by setting the source descriptor prefetchable bit
-( SD[PF] = 1 ).
-
-Implement this workaround.
-
-Cc: stable@vger.kernel.org
-Fixes: b092529e0aa0 ("dmaengine: fsl-qdma: Add qDMA controller driver for Layerscape SoCs")
-Signed-off-by: Peng Ma <peng.ma@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20240201215007.439503-1-Frank.Li@nxp.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Mikulas Patocka <mpatocka@redhat.com>
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: 19416123ab3e ("block: define 'struct bvec_iter' as packed")
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/fsl-qdma.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/linux/bvec.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/dma/fsl-qdma.c
-+++ b/drivers/dma/fsl-qdma.c
-@@ -109,6 +109,7 @@
- #define FSL_QDMA_CMD_WTHROTL_OFFSET	20
- #define FSL_QDMA_CMD_DSEN_OFFSET	19
- #define FSL_QDMA_CMD_LWC_OFFSET		16
-+#define FSL_QDMA_CMD_PF			BIT(17)
+diff --git a/include/linux/bvec.h b/include/linux/bvec.h
+index 9e3dac51eb26b..d4dbaae8b5218 100644
+--- a/include/linux/bvec.h
++++ b/include/linux/bvec.h
+@@ -59,7 +59,7 @@ struct bvec_iter {
  
- /* Field definition for Descriptor status */
- #define QDMA_CCDF_STATUS_RTE		BIT(5)
-@@ -384,7 +385,8 @@ static void fsl_qdma_comp_fill_memcpy(st
- 	qdma_csgf_set_f(csgf_dest, len);
- 	/* Descriptor Buffer */
- 	cmd = cpu_to_le32(FSL_QDMA_CMD_RWTTYPE <<
--			  FSL_QDMA_CMD_RWTTYPE_OFFSET);
-+			  FSL_QDMA_CMD_RWTTYPE_OFFSET) |
-+			  FSL_QDMA_CMD_PF;
- 	sdf->data = QDMA_SDDF_CMD(cmd);
+ 	unsigned int            bi_bvec_done;	/* number of bytes completed in
+ 						   current bvec */
+-} __packed;
++} __packed __aligned(4);
  
- 	cmd = cpu_to_le32(FSL_QDMA_CMD_RWTTYPE <<
+ struct bvec_iter_all {
+ 	struct bio_vec	bv;
+-- 
+2.43.0
+
 
 
 
