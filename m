@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-26042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83177870CBE
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:28:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7C32870E84
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:44:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2393B1F276B3
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:28:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05F1D1C21A76
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:44:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89C0779DCA;
-	Mon,  4 Mar 2024 21:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14491C6AB;
+	Mon,  4 Mar 2024 21:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C3t/aufc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/QnODJP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479467868F;
-	Mon,  4 Mar 2024 21:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC648F58;
+	Mon,  4 Mar 2024 21:44:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587693; cv=none; b=KpEcLl82YI4FtYMN9HGLXlJgBjqYQqklfw4Ma2CgnzUKUUkaXVM7Levtt1rxdOcTZfGCaRTVJvB6Fem+igo8PcOdYWEaMpRfHeEqRAbReUOrmURUrtLoL9uIXzrWfY4bQM3ZRHPhp3s7HVU0xUqddkzRBUPsZvH2v5fnvCc/4s4=
+	t=1709588680; cv=none; b=Wjeqmc8MfKsRjRrFjDidHwBJ+0OVvv9TnbsXHTjhbQFiqSLbhXM8x5ab4lIm0bKA8nFVDU3tsxBj0CkUM4qfsiWIaFpWSCgmpVPY10/3jvF/d3Ff93vUL1GQMMIZ2lnRM+in63/B3VJN0xsd9bo//tFV0BWAz2lsK1QhT/3LDBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587693; c=relaxed/simple;
-	bh=AUWTc7BI5lXOb7jv1k8ukISmwwG+l+xAssiC1fpoblw=;
+	s=arc-20240116; t=1709588680; c=relaxed/simple;
+	bh=WMkBKNQ3EVAh4ceP+BjOQ6tJtvXWw+JCR9Pr4BjqnwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QkWbM4CIIPvYd5jtMXibAqoSTv1wrOJQRG6EaaZTX3CJeIGLkhcS95KQl/VgTQQjGxIKNgAf+MAfe1rBuaLHf6PdFjgrPo8z/5s5rcQ1sw6iSbf4J1y4Td1l13X2eabo2epWIvONkNJV2K0qobU1ce5xlN5c/Dk/qBdK2r5w0Gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C3t/aufc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCAE3C433F1;
-	Mon,  4 Mar 2024 21:28:12 +0000 (UTC)
+	 MIME-Version; b=ioQAEqQt31JimyZjYfjxcJ+wODQuQiL1wtOfcTw4WpgU3SISE+rcsPqnNmbQEvmv2hMOCgHX6EX7d6aZZ+nXUk4NUQ9zDs3jGmIDh51im2lvSf1wQQ7DOp2+fbeHe18uZ5ljHxNDQzdcQgaTvYA9A/dp1P/9WWzr2saxSj5UYTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T/QnODJP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE0A5C433F1;
+	Mon,  4 Mar 2024 21:44:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587693;
-	bh=AUWTc7BI5lXOb7jv1k8ukISmwwG+l+xAssiC1fpoblw=;
+	s=korg; t=1709588680;
+	bh=WMkBKNQ3EVAh4ceP+BjOQ6tJtvXWw+JCR9Pr4BjqnwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C3t/aufc0kjoeGnfvmvJ621eP4FAiHmxOJSQVYPY47kHBUIO1anRYpu6rfbdLsMPn
-	 i+QVtBqePrDePl9OmTgArUo1hQY3OTExFpOOABZc8e2xjFxFZ3/ohUeK8X5QVmTmLK
-	 5wRoJi/tq7u7jJw6q5O9WnbczzmhmFbH9wNJKEA0=
+	b=T/QnODJP5tlvO7pHbfUbfHPiVfIdUTFBFNlCoUeCfAJb7VY6CtlXxFdM26FmuocQb
+	 btFFq+V43OZMu/h7uNdHuDRf130rhQ2jxP3M8KErLWiW2pvy3Iw38wmjAOaSa6JkO0
+	 z2XmcaW++gDhlWDPglE2o3kKQ51yT2m1HjR6S+Qk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jordan Griege <jgriege@cloudflare.com>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 054/162] ASoC: cs35l56: cs35l56_component_remove() must clean up wm_adsp
+Subject: [PATCH 6.1 056/215] netfilter: nf_tables: allow NFPROTO_INET in nft_(match/target)_validate()
 Date: Mon,  4 Mar 2024 21:21:59 +0000
-Message-ID: <20240304211553.584061918@linuxfoundation.org>
+Message-ID: <20240304211558.759633730@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Ignat Korchagin <ignat@cloudflare.com>
 
-[ Upstream commit cd38ccbecdace1469b4e0cfb3ddeec72a3fad226 ]
+[ Upstream commit 7e0f122c65912740327e4c54472acaa5f85868cb ]
 
-cs35l56_component_remove() must call wm_adsp_power_down() and
-wm_adsp2_component_remove().
+Commit d0009effa886 ("netfilter: nf_tables: validate NFPROTO_* family") added
+some validation of NFPROTO_* families in the nft_compat module, but it broke
+the ability to use legacy iptables modules in dual-stack nftables.
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: e49611252900 ("ASoC: cs35l56: Add driver for Cirrus Logic CS35L56")
-Link: https://msgid.link/r/20240129162737.497-5-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: eba2eb2495f4 ("ASoC: soc-card: Fix missing locking in snd_soc_card_get_kcontrol()")
+While with legacy iptables one had to independently manage IPv4 and IPv6
+tables, with nftables it is possible to have dual-stack tables sharing the
+rules. Moreover, it was possible to use rules based on legacy iptables
+match/target modules in dual-stack nftables.
+
+As an example, the program from [2] creates an INET dual-stack family table
+using an xt_bpf based rule, which looks like the following (the actual output
+was generated with a patched nft tool as the current nft tool does not parse
+dual stack tables with legacy match rules, so consider it for illustrative
+purposes only):
+
+table inet testfw {
+  chain input {
+    type filter hook prerouting priority filter; policy accept;
+    bytecode counter packets 0 bytes 0 accept
+  }
+}
+
+After d0009effa886 ("netfilter: nf_tables: validate NFPROTO_* family") we get
+EOPNOTSUPP for the above program.
+
+Fix this by allowing NFPROTO_INET for nft_(match/target)_validate(), but also
+restrict the functions to classic iptables hooks.
+
+Changes in v3:
+  * clarify that upstream nft will not display such configuration properly and
+    that the output was generated with a patched nft tool
+  * remove example program from commit description and link to it instead
+  * no code changes otherwise
+
+Changes in v2:
+  * restrict nft_(match/target)_validate() to classic iptables hooks
+  * rewrite example program to use unmodified libnftnl
+
+Fixes: d0009effa886 ("netfilter: nf_tables: validate NFPROTO_* family")
+Link: https://lore.kernel.org/all/Zc1PfoWN38UuFJRI@calendula/T/#mc947262582c90fec044c7a3398cc92fac7afea72 [1]
+Link: https://lore.kernel.org/all/20240220145509.53357-1-ignat@cloudflare.com/ [2]
+Reported-by: Jordan Griege <jgriege@cloudflare.com>
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs35l56.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/netfilter/nft_compat.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/sound/soc/codecs/cs35l56.c b/sound/soc/codecs/cs35l56.c
-index 09944db4db30d..491da77112c34 100644
---- a/sound/soc/codecs/cs35l56.c
-+++ b/sound/soc/codecs/cs35l56.c
-@@ -810,6 +810,11 @@ static void cs35l56_component_remove(struct snd_soc_component *component)
+diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
+index e1623fbf36548..e4b8c02c5e6ae 100644
+--- a/net/netfilter/nft_compat.c
++++ b/net/netfilter/nft_compat.c
+@@ -358,10 +358,20 @@ static int nft_target_validate(const struct nft_ctx *ctx,
  
- 	cancel_work_sync(&cs35l56->dsp_work);
+ 	if (ctx->family != NFPROTO_IPV4 &&
+ 	    ctx->family != NFPROTO_IPV6 &&
++	    ctx->family != NFPROTO_INET &&
+ 	    ctx->family != NFPROTO_BRIDGE &&
+ 	    ctx->family != NFPROTO_ARP)
+ 		return -EOPNOTSUPP;
  
-+	if (cs35l56->dsp.cs_dsp.booted)
-+		wm_adsp_power_down(&cs35l56->dsp);
++	ret = nft_chain_validate_hooks(ctx->chain,
++				       (1 << NF_INET_PRE_ROUTING) |
++				       (1 << NF_INET_LOCAL_IN) |
++				       (1 << NF_INET_FORWARD) |
++				       (1 << NF_INET_LOCAL_OUT) |
++				       (1 << NF_INET_POST_ROUTING));
++	if (ret)
++		return ret;
 +
-+	wm_adsp2_component_remove(&cs35l56->dsp, component);
-+
- 	cs35l56->component = NULL;
- }
+ 	if (nft_is_base_chain(ctx->chain)) {
+ 		const struct nft_base_chain *basechain =
+ 						nft_base_chain(ctx->chain);
+@@ -607,10 +617,20 @@ static int nft_match_validate(const struct nft_ctx *ctx,
  
+ 	if (ctx->family != NFPROTO_IPV4 &&
+ 	    ctx->family != NFPROTO_IPV6 &&
++	    ctx->family != NFPROTO_INET &&
+ 	    ctx->family != NFPROTO_BRIDGE &&
+ 	    ctx->family != NFPROTO_ARP)
+ 		return -EOPNOTSUPP;
+ 
++	ret = nft_chain_validate_hooks(ctx->chain,
++				       (1 << NF_INET_PRE_ROUTING) |
++				       (1 << NF_INET_LOCAL_IN) |
++				       (1 << NF_INET_FORWARD) |
++				       (1 << NF_INET_LOCAL_OUT) |
++				       (1 << NF_INET_POST_ROUTING));
++	if (ret)
++		return ret;
++
+ 	if (nft_is_base_chain(ctx->chain)) {
+ 		const struct nft_base_chain *basechain =
+ 						nft_base_chain(ctx->chain);
 -- 
 2.43.0
 
