@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-26375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A155870E4C
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:42:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A99B6870E52
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:43:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B92E1C21258
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:42:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2147DB283D8
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB6E77B3C3;
-	Mon,  4 Mar 2024 21:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34EBC7B3FD;
+	Mon,  4 Mar 2024 21:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mRbt9uyj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/eCMmEL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986857868F;
-	Mon,  4 Mar 2024 21:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E647E7868F;
+	Mon,  4 Mar 2024 21:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588557; cv=none; b=C3sUywkbbNAHsF5neCQ8xTlQY7FjR1lvXs5ou9dsPdOPY0qwxi17Wf0qXNUPOjIrW+TGuejKHVWS0NHnstswv0z0GidofnzgHm8hhJWb4sTsojrwvRVyvld5Jl2O9okX1FaXDNV33u7QNXTAxc1OdtHRjXRwYCdz7ua5as49yr8=
+	t=1709588568; cv=none; b=a1tz1RQbC/i5cGi2zsPg21Z5s9pTYZ7fcaIiGaUmIMYId7YZUzBBV8vPxaRM3bzM0cCqF9DU/e67N5JLFxcq3/o3HaPTW1SpdYoKjDK+iZrMgeFrL4Eyo2zJprSTFtJOX4iuLrdsN7X9YjuHhVCSQQTSiJVu5h0oinQVk5vi6og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588557; c=relaxed/simple;
-	bh=xQifYyR6YVaXRGob2JEoJD+PsWZ9SGlF1UKn3xNYc6U=;
+	s=arc-20240116; t=1709588568; c=relaxed/simple;
+	bh=WfB/zP/onUdsxTVqGtx1bN3WbeWA+Fe9O54UmSyzyzk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aPe9bWlWRsvMwB3279UNmKR9D8XJXBCw6RzLLQQINwpyLenE5UwhhsEQB7IqzkDrvpxRvvUTniAg4y/keT9ItSyg7Mp/YZ2/rc400G8YmIFLj62wixiWSz8FNRkEWOqkJnwDSNBfcqDbhRYkbKjolxnK/AmwqXeRGz7rSMRSuQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mRbt9uyj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A36C433F1;
-	Mon,  4 Mar 2024 21:42:37 +0000 (UTC)
+	 MIME-Version; b=Osab6dAAyHRW1a3Oz/uKejMZlJ1ezvekRwkpF1hlr20LfeaOJBOA5RUrX8j96c1zyUurWvhoPnuX0niqntALf3QncZE5x1RLSwDIqX5Z0s/BD/HUxyO8O6x4XA419aJtOGNXJ7lxND7O4c4HCTPbCT5Dpnm4nA2qlleRr0HXJzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/eCMmEL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7898DC433F1;
+	Mon,  4 Mar 2024 21:42:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588557;
-	bh=xQifYyR6YVaXRGob2JEoJD+PsWZ9SGlF1UKn3xNYc6U=;
+	s=korg; t=1709588567;
+	bh=WfB/zP/onUdsxTVqGtx1bN3WbeWA+Fe9O54UmSyzyzk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mRbt9uyjsSI+1fd4/5f6jP85ruXnyvWtPmz61nXmCDtbSCJj6eyf20uEj0l+ZOdhQ
-	 HOCRlQv+1kLNZ9KYpHgs5ILTdgCRlyeUnPVK/iJJyxJ1spLGzep7fIzE8NX5tjgIBn
-	 43EmG3aV3nGVqLb38/vXYK++pZjrlRQr3fTYO+oU=
+	b=i/eCMmELloFGEpZ1SQf0K0++6ksMSdE9UGHj8K2f45cNLgtOeUlWHw7GJPuf8Q/0o
+	 uHruFP1Qiq/QBUIhYm7edsvDwcA3GgQQ6JnpNRIliGKLdvNSZ7DoCMgLAdm3Z5T3+y
+	 cI6JW19CgajLRFw3AEpIAw2JzzAQU5qda5UDaG74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.1 001/215] netfilter: nf_tables: disallow timeout for anonymous sets
-Date: Mon,  4 Mar 2024 21:21:04 +0000
-Message-ID: <20240304211557.045931635@linuxfoundation.org>
+	Nicolas Belin <nbelin@baylibre.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 002/215] drm/meson: fix unbind path if HDMI fails to bind
+Date: Mon,  4 Mar 2024 21:21:05 +0000
+Message-ID: <20240304211557.074706993@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
 References: <20240304211556.993132804@linuxfoundation.org>
@@ -64,41 +66,97 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-commit e26d3009efda338f19016df4175f354a9bd0a4ab upstream.
+[ Upstream commit 6a044642988b5f8285f3173b8e88784bef2bc306 ]
 
-Never used from userspace, disallow these parameters.
+If the case the HDMI controller fails to bind, we try to unbind
+all components before calling drm_dev_put() which makes drm_bridge_detach()
+crash because unbinding the HDMI controller frees the bridge memory.
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The solution is the unbind all components at the end like in the remove
+path.
+
+Reviewed-by: Nicolas Belin <nbelin@baylibre.com>
+Tested-by: Nicolas Belin <nbelin@baylibre.com>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230512-amlogic-v6-4-upstream-dsi-ccf-vim3-v5-8-56eb7a4d5b8e@linaro.org
+Stable-dep-of: bd915ae73a2d ("drm/meson: Don't remove bridges which are created by other drivers")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/gpu/drm/meson/meson_drv.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4752,6 +4752,9 @@ static int nf_tables_newset(struct sk_bu
- 		if (!(flags & NFT_SET_TIMEOUT))
- 			return -EINVAL;
+diff --git a/drivers/gpu/drm/meson/meson_drv.c b/drivers/gpu/drm/meson/meson_drv.c
+index 119544d88b586..fbac39aa38cc4 100644
+--- a/drivers/gpu/drm/meson/meson_drv.c
++++ b/drivers/gpu/drm/meson/meson_drv.c
+@@ -316,32 +316,34 @@ static int meson_drv_bind_master(struct device *dev, bool has_components)
+ 		goto exit_afbcd;
  
-+		if (flags & NFT_SET_ANONYMOUS)
-+			return -EOPNOTSUPP;
-+
- 		err = nf_msecs_to_jiffies64(nla[NFTA_SET_TIMEOUT], &desc.timeout);
- 		if (err)
- 			return err;
-@@ -4760,6 +4763,10 @@ static int nf_tables_newset(struct sk_bu
- 	if (nla[NFTA_SET_GC_INTERVAL] != NULL) {
- 		if (!(flags & NFT_SET_TIMEOUT))
- 			return -EINVAL;
-+
-+		if (flags & NFT_SET_ANONYMOUS)
-+			return -EOPNOTSUPP;
-+
- 		desc.gc_int = ntohl(nla_get_be32(nla[NFTA_SET_GC_INTERVAL]));
+ 	if (has_components) {
+-		ret = component_bind_all(drm->dev, drm);
++		ret = component_bind_all(dev, drm);
+ 		if (ret) {
+ 			dev_err(drm->dev, "Couldn't bind all components\n");
++			/* Do not try to unbind */
++			has_components = false;
+ 			goto exit_afbcd;
+ 		}
  	}
  
+ 	ret = meson_encoder_hdmi_init(priv);
+ 	if (ret)
+-		goto unbind_all;
++		goto exit_afbcd;
+ 
+ 	ret = meson_plane_create(priv);
+ 	if (ret)
+-		goto unbind_all;
++		goto exit_afbcd;
+ 
+ 	ret = meson_overlay_create(priv);
+ 	if (ret)
+-		goto unbind_all;
++		goto exit_afbcd;
+ 
+ 	ret = meson_crtc_create(priv);
+ 	if (ret)
+-		goto unbind_all;
++		goto exit_afbcd;
+ 
+ 	ret = request_irq(priv->vsync_irq, meson_irq, 0, drm->driver->name, drm);
+ 	if (ret)
+-		goto unbind_all;
++		goto exit_afbcd;
+ 
+ 	drm_mode_config_reset(drm);
+ 
+@@ -359,15 +361,18 @@ static int meson_drv_bind_master(struct device *dev, bool has_components)
+ 
+ uninstall_irq:
+ 	free_irq(priv->vsync_irq, drm);
+-unbind_all:
+-	if (has_components)
+-		component_unbind_all(drm->dev, drm);
+ exit_afbcd:
+ 	if (priv->afbcd.ops)
+ 		priv->afbcd.ops->exit(priv);
+ free_drm:
+ 	drm_dev_put(drm);
+ 
++	meson_encoder_hdmi_remove(priv);
++	meson_encoder_cvbs_remove(priv);
++
++	if (has_components)
++		component_unbind_all(dev, drm);
++
+ 	return ret;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
