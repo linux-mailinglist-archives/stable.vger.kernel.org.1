@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-26030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55475870CB2
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:28:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76BCA870E75
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:44:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAE6F1F27488
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:28:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A88381C2112D
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:44:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6707C085;
-	Mon,  4 Mar 2024 21:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A9579DCA;
+	Mon,  4 Mar 2024 21:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PuipqNuB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmJarOr0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0905B7BB1E;
-	Mon,  4 Mar 2024 21:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D497A706;
+	Mon,  4 Mar 2024 21:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587662; cv=none; b=B9wx0rUNuTsa3vl3atoWWP41owoP2RWtK8Df8BMYKRdnvj7x6yWfhexATBXWcB8xXe65UD9vmlvt0FW/k1bktY6eBQw3Hplqg1ZgXqwbUa/Uv8KZ8X5ayhqPrydbJMt7f9Tj8fQg9D0T5jXFURN1p5UBl943R/WxDk01zW5KJ6M=
+	t=1709588646; cv=none; b=UqGvwEpNZdwRhskqwqpHj81wO5ehtVQPvDJc82Ubv/8bARPsN394sxd6660cl9FGjDw4R6FhG49htPj66lUJJ4RA54RcCNDydvs/XTiv4QzbaT+Xm574+//TDqE+jI0TuGyJ8WGYokeKKTwSftI4qzqECxZbJ/+gyhh1LBtZ9s4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587662; c=relaxed/simple;
-	bh=EY64b2cAbcDHIDxigeSfopfMk/1XOwtPK1bSiYSjYlw=;
+	s=arc-20240116; t=1709588646; c=relaxed/simple;
+	bh=cZErp8feoudr9ZXJw1B7wnRbjMBU72DcdbLHXYqJ6Q8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=onPoEDkBPAMuRbuRnb/iUM7xOpKq3iOxEtOamG/MyOpiDNvGOM3DW5GTaqI2LiXVujyUbhG8sYqtEx/GMw9ZRRYoSMi7DBr/A86cyvtlO3NZyaDT86QzIynWsqG2uojCC/NefOQ3Qo+VvI2JrAPBOALiGcLexrmzg8FKRrzbnGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PuipqNuB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 913C6C433C7;
-	Mon,  4 Mar 2024 21:27:41 +0000 (UTC)
+	 MIME-Version; b=K5Lh3t4SfWHO6lCW2hEcKH2keMUFQltPGWNQ3b4/dH5gWejR7pAQhu8f+p5X9/z4jvJcSyUsAaWTR+TAdJ0YWlk1JwrJb3JHorgv+IYVeTQFKmpDa8bSqfouWITjdu1WuSJNNbq+TYg/zAB/4Qn1pMgWdjEoAZF5/+5GEaKNhkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmJarOr0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BBE4C433C7;
+	Mon,  4 Mar 2024 21:44:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587661;
-	bh=EY64b2cAbcDHIDxigeSfopfMk/1XOwtPK1bSiYSjYlw=;
+	s=korg; t=1709588646;
+	bh=cZErp8feoudr9ZXJw1B7wnRbjMBU72DcdbLHXYqJ6Q8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PuipqNuB8aHvrJ75kPsqPE/cat4L4O0sqCFqK8Lq45z1dJZpMzh4MYbMp5ccEB6aN
-	 EaYC6BWZ9EU+NgPmhp1h3rkhfkWVPsizqxROVrInNMha9LT6mPcDKQSzHWLTRMOHiJ
-	 CxLwRl1xMFzlSOa2q6EyCVVMDFOlNNhKmGLQZqrg=
+	b=mmJarOr0lIdpSSnFOyn4YF0ETte0jleXPRGQ6rX2+7JkYxiy4Xv99n6zKfmSiE7jH
+	 hw3/k46tFmgCVGpOYJEHGt9TrJJMz0u+iFfYAArq8w2FiLU+qy1isIHf0kjAgXlwHO
+	 O/a+0+0GLkWAY30pC5873bFeWCjmsfT0Fh/zZ+ck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	syzbot+039399a9b96297ddedca@syzkaller.appspotmail.com,
-	Jakub Kicinski <kuba@kernel.org>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jia-Ju Bai <baijiaju1990@gmail.com>,
+	TOTE Robot <oslab@tsinghua.edu.cn>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 017/162] net: veth: clear GRO when clearing XDP even when down
+Subject: [PATCH 6.1 019/215] fs/ntfs3: Fix a possible null-pointer dereference in ni_clear()
 Date: Mon,  4 Mar 2024 21:21:22 +0000
-Message-ID: <20240304211552.383910205@linuxfoundation.org>
+Message-ID: <20240304211557.610324346@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,123 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Jia-Ju Bai <baijiaju1990@gmail.com>
 
-[ Upstream commit fe9f801355f0b47668419f30f1fac1cf4539e736 ]
+[ Upstream commit ec275bf9693d19cc0fdce8436f4c425ced86f6e7 ]
 
-veth sets NETIF_F_GRO automatically when XDP is enabled,
-because both features use the same NAPI machinery.
+In a previous commit c1006bd13146, ni->mi.mrec in ni_write_inode()
+could be NULL, and thus a NULL check is added for this variable.
 
-The logic to clear NETIF_F_GRO sits in veth_disable_xdp() which
-is called both on ndo_stop and when XDP is turned off.
-To avoid the flag from being cleared when the device is brought
-down, the clearing is skipped when IFF_UP is not set.
-Bringing the device down should indeed not modify its features.
+However, in the same call stack, ni->mi.mrec can be also dereferenced
+in ni_clear():
 
-Unfortunately, this means that clearing is also skipped when
-XDP is disabled _while_ the device is down. And there's nothing
-on the open path to bring the device features back into sync.
-IOW if user enables XDP, disables it and then brings the device
-up we'll end up with a stray GRO flag set but no NAPI instances.
+ntfs_evict_inode(inode)
+  ni_write_inode(inode, ...)
+    ni = ntfs_i(inode);
+    is_rec_inuse(ni->mi.mrec) -> Add a NULL check by previous commit
+  ni_clear(ntfs_i(inode))
+    is_rec_inuse(ni->mi.mrec) -> No check
 
-We don't depend on the GRO flag on the datapath, so the datapath
-won't crash. We will crash (or hang), however, next time features
-are sync'ed (either by user via ethtool or peer changing its config).
-The GRO flag will go away, and veth will try to disable the NAPIs.
-But the open path never created them since XDP was off, the GRO flag
-was a stray. If NAPI was initialized before we'll hang in napi_disable().
-If it never was we'll crash trying to stop uninitialized hrtimer.
+Thus, a possible null-pointer dereference may exist in ni_clear().
+To fix it, a NULL check is added in this function.
 
-Move the GRO flag updates to the XDP enable / disable paths,
-instead of mixing them with the ndo_open / ndo_close paths.
-
-Fixes: d3256efd8e8b ("veth: allow enabling NAPI even without XDP")
-Reported-by: Thomas Gleixner <tglx@linutronix.de>
-Reported-by: syzbot+039399a9b96297ddedca@syzkaller.appspotmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Jia-Ju Bai <baijiaju1990@gmail.com>
+Reported-by: TOTE Robot <oslab@tsinghua.edu.cn>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/veth.c | 35 +++++++++++++++++------------------
- 1 file changed, 17 insertions(+), 18 deletions(-)
+ fs/ntfs3/frecord.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-index 977861c46b1fe..bf4da315ae01c 100644
---- a/drivers/net/veth.c
-+++ b/drivers/net/veth.c
-@@ -1208,14 +1208,6 @@ static int veth_enable_xdp(struct net_device *dev)
- 				veth_disable_xdp_range(dev, 0, dev->real_num_rx_queues, true);
- 				return err;
- 			}
--
--			if (!veth_gro_requested(dev)) {
--				/* user-space did not require GRO, but adding XDP
--				 * is supposed to get GRO working
--				 */
--				dev->features |= NETIF_F_GRO;
--				netdev_features_change(dev);
--			}
- 		}
- 	}
+diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
+index bb7e33c240737..1f0e230ec9e2c 100644
+--- a/fs/ntfs3/frecord.c
++++ b/fs/ntfs3/frecord.c
+@@ -102,7 +102,7 @@ void ni_clear(struct ntfs_inode *ni)
+ {
+ 	struct rb_node *node;
  
-@@ -1235,18 +1227,9 @@ static void veth_disable_xdp(struct net_device *dev)
- 	for (i = 0; i < dev->real_num_rx_queues; i++)
- 		rcu_assign_pointer(priv->rq[i].xdp_prog, NULL);
+-	if (!ni->vfs_inode.i_nlink && is_rec_inuse(ni->mi.mrec))
++	if (!ni->vfs_inode.i_nlink && ni->mi.mrec && is_rec_inuse(ni->mi.mrec))
+ 		ni_delete_all(ni);
  
--	if (!netif_running(dev) || !veth_gro_requested(dev)) {
-+	if (!netif_running(dev) || !veth_gro_requested(dev))
- 		veth_napi_del(dev);
- 
--		/* if user-space did not require GRO, since adding XDP
--		 * enabled it, clear it now
--		 */
--		if (!veth_gro_requested(dev) && netif_running(dev)) {
--			dev->features &= ~NETIF_F_GRO;
--			netdev_features_change(dev);
--		}
--	}
--
- 	veth_disable_xdp_range(dev, 0, dev->real_num_rx_queues, false);
- }
- 
-@@ -1654,6 +1637,14 @@ static int veth_xdp_set(struct net_device *dev, struct bpf_prog *prog,
- 		}
- 
- 		if (!old_prog) {
-+			if (!veth_gro_requested(dev)) {
-+				/* user-space did not require GRO, but adding
-+				 * XDP is supposed to get GRO working
-+				 */
-+				dev->features |= NETIF_F_GRO;
-+				netdev_features_change(dev);
-+			}
-+
- 			peer->hw_features &= ~NETIF_F_GSO_SOFTWARE;
- 			peer->max_mtu = max_mtu;
- 		}
-@@ -1669,6 +1660,14 @@ static int veth_xdp_set(struct net_device *dev, struct bpf_prog *prog,
- 			if (dev->flags & IFF_UP)
- 				veth_disable_xdp(dev);
- 
-+			/* if user-space did not require GRO, since adding XDP
-+			 * enabled it, clear it now
-+			 */
-+			if (!veth_gro_requested(dev)) {
-+				dev->features &= ~NETIF_F_GRO;
-+				netdev_features_change(dev);
-+			}
-+
- 			if (peer) {
- 				peer->hw_features |= NETIF_F_GSO_SOFTWARE;
- 				peer->max_mtu = ETH_MAX_MTU;
+ 	al_destroy(ni);
 -- 
 2.43.0
 
