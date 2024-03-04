@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FB6B870E1D
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:41:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8329A870F6D
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:54:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A26831C23AA7
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:41:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A2751F22953
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:54:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D1C37BAF5;
-	Mon,  4 Mar 2024 21:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B03DC78B4C;
+	Mon,  4 Mar 2024 21:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E6PD4oAy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oPCh62IQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E951F92C;
-	Mon,  4 Mar 2024 21:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE221C6AB;
+	Mon,  4 Mar 2024 21:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588456; cv=none; b=Yzsc4kl+cBSYykabb8FpUy1VX9eOuVmgqbWHOz7LeatD2ngkwayFVyff66vAHAIdT9lA9ux8NbAmKNWXwhn9F43uDUbcWrfUAzKX1Hdlo4gqYd8iJyg73dWNjrnrK8n3f/+qE/VlHLwqhzZyKyv8pWXa11GSurcDTH8pHG/yts4=
+	t=1709589272; cv=none; b=EJd2y6nf0A6Ort/YCD4GQ3IqIRLMC5rinUck3t7eup3RtWpAC3Plr7mgO5ipUVRTnaWCP5FnIFPiWD6mqKCYp8Kl2xdUiLzCP6/Z+Vm8hJMMUxcda9Ocey+Ei8Z6jvf1cszjyTBVGiENYriL4SCsnWUjVju+cSDGPhbdqs/ecTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588456; c=relaxed/simple;
-	bh=I0gefTOGqK87RJsPA/7fWF38MbflvvGzmBmFBxPq7bs=;
+	s=arc-20240116; t=1709589272; c=relaxed/simple;
+	bh=/GXAYuuDJyFPyuMIP/gyKTtJlvPILWjlL236n/SCyN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kLHP+vYICr7UuvNsSI8ow62+OGw5sUekLlogndPplvUMMkHqBUjdXYlRUqVYrSD+Xe/R/jj/eYMyQopkQcipLa9h0XpmKVQfToQkxZ6N3ZGMFUT6xpJmFvRYyxDEmdfwBFrC+AnKbX6tE8XKuSzDcdtnMhbczW90GaMM60uBvUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E6PD4oAy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E053C433F1;
-	Mon,  4 Mar 2024 21:40:55 +0000 (UTC)
+	 MIME-Version; b=uLshYs416FDt3d7t+ep054xxuCvFlmP1xKLAZd4aUGjZwgoLegzaSYCLiaoNqNnruql591kZH9X6RzgDCpdZlJbupaeJYgeQPt73+0KeQEcsH9JcQ3JGRocG/GdRh4e3FjAU58WeMIAPHMt3bVw0ZVXh6foAzGi6q8D2ZlHJS/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oPCh62IQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01989C433C7;
+	Mon,  4 Mar 2024 21:54:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588455;
-	bh=I0gefTOGqK87RJsPA/7fWF38MbflvvGzmBmFBxPq7bs=;
+	s=korg; t=1709589272;
+	bh=/GXAYuuDJyFPyuMIP/gyKTtJlvPILWjlL236n/SCyN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E6PD4oAyXyARYS0whvIBbiUT06sCvZwcw3fTUYQmK+w470Lxcsk9bps66KxP3Do5p
-	 vcVSqCZi5sWi1jOQPSa9r3oQA9Y7hyNkKQ0fD+6KMt9R/XFsomc1YI2lasBAhgSCms
-	 bx1jNxC2D6Erb3v0o/iUPEWWpzrBR/6K1a5Re3ds=
+	b=oPCh62IQvAJLSUFDvelPz4ORREfzfvXiObMrrBAXGc8A5H0jVf3hrFxZgAO1yRICD
+	 qBkUdrmUsHdH3kEdAKCtfsqlsdcgd7/+Ab4r6xz0GklCxX3LIGPg45wFIlSv6yyjIo
+	 vY5NVZOkKaj2kbhvVbSeBHTov++tXjwpcS/V/DBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-nfs@vger.kernel.org,
-	NeilBrown <neilb@suse.de>,
-	Jacek Tomaka <Jacek.Tomaka@poczta.fm>
-Subject: [PATCH 6.6 114/143] NFS: Fix data corruption caused by congestion.
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 21/84] netfilter: core: move ip_ct_attach indirection to struct nf_ct_hook
 Date: Mon,  4 Mar 2024 21:23:54 +0000
-Message-ID: <20240304211553.557826912@linuxfoundation.org>
+Message-ID: <20240304211543.036981811@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
+References: <20240304211542.332206551@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-when AOP_WRITEPAGE_ACTIVATE is returned (as NFS does when it detects
-congestion) it is important that the folio is redirtied.
-nfs_writepage_locked() doesn't do this, so files can become corrupted as
-writes can be lost.
+From: Florian Westphal <fw@strlen.de>
 
-Note that this is not needed in v6.8 as AOP_WRITEPAGE_ACTIVATE cannot be
-returned.  It is needed for kernels v5.18..v6.7.  Prior to 6.3 the patch
-is different as it needs to mention "page", not "folio".
+[ Upstream commit 3fce16493dc1aa2c9af3d7e7bd360dfe203a3e6a ]
 
-Reported-and-tested-by: Jacek Tomaka <Jacek.Tomaka@poczta.fm>
-Fixes: 6df25e58532b ("nfs: remove reliance on bdi congestion")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ip_ct_attach predates struct nf_ct_hook, we can place it there and
+remove the exported symbol.
+
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: 62e7151ae3eb ("netfilter: bridge: confirm multicast packets before passing them up the stack")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/write.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/linux/netfilter.h         |  2 +-
+ net/netfilter/core.c              | 19 ++++++++-----------
+ net/netfilter/nf_conntrack_core.c |  4 +---
+ 3 files changed, 10 insertions(+), 15 deletions(-)
 
---- a/fs/nfs/write.c
-+++ b/fs/nfs/write.c
-@@ -668,8 +668,10 @@ static int nfs_writepage_locked(struct f
- 	int err;
+diff --git a/include/linux/netfilter.h b/include/linux/netfilter.h
+index e20c2db0f2c16..64acdf22eb4fa 100644
+--- a/include/linux/netfilter.h
++++ b/include/linux/netfilter.h
+@@ -435,7 +435,6 @@ nf_nat_decode_session(struct sk_buff *skb, struct flowi *fl, u_int8_t family)
+ #if IS_ENABLED(CONFIG_NF_CONNTRACK)
+ #include <linux/netfilter/nf_conntrack_zones_common.h>
  
- 	if (wbc->sync_mode == WB_SYNC_NONE &&
--	    NFS_SERVER(inode)->write_congested)
-+	    NFS_SERVER(inode)->write_congested) {
-+		folio_redirty_for_writepage(wbc, folio);
- 		return AOP_WRITEPAGE_ACTIVATE;
-+	}
+-extern void (*ip_ct_attach)(struct sk_buff *, const struct sk_buff *) __rcu;
+ void nf_ct_attach(struct sk_buff *, const struct sk_buff *);
+ struct nf_conntrack_tuple;
+ bool nf_ct_get_tuple_skb(struct nf_conntrack_tuple *dst_tuple,
+@@ -458,6 +457,7 @@ struct nf_ct_hook {
+ 	void (*destroy)(struct nf_conntrack *);
+ 	bool (*get_tuple_skb)(struct nf_conntrack_tuple *,
+ 			      const struct sk_buff *);
++	void (*attach)(struct sk_buff *nskb, const struct sk_buff *skb);
+ };
+ extern struct nf_ct_hook __rcu *nf_ct_hook;
  
- 	nfs_inc_stats(inode, NFSIOS_VFSWRITEPAGE);
- 	nfs_pageio_init_write(&pgio, inode, 0, false,
+diff --git a/net/netfilter/core.c b/net/netfilter/core.c
+index ffa84cafb746b..5396d27ba6a71 100644
+--- a/net/netfilter/core.c
++++ b/net/netfilter/core.c
+@@ -639,25 +639,22 @@ struct nf_ct_hook __rcu *nf_ct_hook __read_mostly;
+ EXPORT_SYMBOL_GPL(nf_ct_hook);
+ 
+ #if IS_ENABLED(CONFIG_NF_CONNTRACK)
+-/* This does not belong here, but locally generated errors need it if connection
+-   tracking in use: without this, connection may not be in hash table, and hence
+-   manufactured ICMP or RST packets will not be associated with it. */
+-void (*ip_ct_attach)(struct sk_buff *, const struct sk_buff *)
+-		__rcu __read_mostly;
+-EXPORT_SYMBOL(ip_ct_attach);
+-
+ struct nf_nat_hook __rcu *nf_nat_hook __read_mostly;
+ EXPORT_SYMBOL_GPL(nf_nat_hook);
+ 
++/* This does not belong here, but locally generated errors need it if connection
++ * tracking in use: without this, connection may not be in hash table, and hence
++ * manufactured ICMP or RST packets will not be associated with it.
++ */
+ void nf_ct_attach(struct sk_buff *new, const struct sk_buff *skb)
+ {
+-	void (*attach)(struct sk_buff *, const struct sk_buff *);
++	const struct nf_ct_hook *ct_hook;
+ 
+ 	if (skb->_nfct) {
+ 		rcu_read_lock();
+-		attach = rcu_dereference(ip_ct_attach);
+-		if (attach)
+-			attach(new, skb);
++		ct_hook = rcu_dereference(nf_ct_hook);
++		if (ct_hook)
++			ct_hook->attach(new, skb);
+ 		rcu_read_unlock();
+ 	}
+ }
+diff --git a/net/netfilter/nf_conntrack_core.c b/net/netfilter/nf_conntrack_core.c
+index 10622760f894a..779e41d1afdce 100644
+--- a/net/netfilter/nf_conntrack_core.c
++++ b/net/netfilter/nf_conntrack_core.c
+@@ -2518,7 +2518,6 @@ static int kill_all(struct nf_conn *i, void *data)
+ void nf_conntrack_cleanup_start(void)
+ {
+ 	conntrack_gc_work.exiting = true;
+-	RCU_INIT_POINTER(ip_ct_attach, NULL);
+ }
+ 
+ void nf_conntrack_cleanup_end(void)
+@@ -2838,12 +2837,11 @@ static struct nf_ct_hook nf_conntrack_hook = {
+ 	.update		= nf_conntrack_update,
+ 	.destroy	= nf_ct_destroy,
+ 	.get_tuple_skb  = nf_conntrack_get_tuple_skb,
++	.attach		= nf_conntrack_attach,
+ };
+ 
+ void nf_conntrack_init_end(void)
+ {
+-	/* For use by REJECT target */
+-	RCU_INIT_POINTER(ip_ct_attach, nf_conntrack_attach);
+ 	RCU_INIT_POINTER(nf_ct_hook, &nf_conntrack_hook);
+ }
+ 
+-- 
+2.43.0
+
 
 
 
