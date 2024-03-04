@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-26156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61411870D5A
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B5AA870D87
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:35:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93C931C246F7
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C69A528FBA5
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:35:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7DFA7BB10;
-	Mon,  4 Mar 2024 21:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8BA46BA0;
+	Mon,  4 Mar 2024 21:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NJxrVfZa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oTjo7m2n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FAB7BAE6;
-	Mon,  4 Mar 2024 21:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1731C687;
+	Mon,  4 Mar 2024 21:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587987; cv=none; b=gsuiO1wvIkv6gVjE78Jcbpl8SaQKXQut4fFj8gOZqRGyqnS+W8f8OgG5ld3EyFbkQECIytj4DUrSdBvClCh9K23P0bSjXiVkwv1CL2cICDFXfFUG2TB97I5DPceNlwEjvnKQgF+FCdhTQ33GgWukh37pL8Ia9nV6kUQ9mABSoPs=
+	t=1709588100; cv=none; b=cVm47lszyQbcOgL18mIxrQ/e3EjuMMDCz7Lw1U3A+ErExY+MG9N5Vm6DA5aMr14VmFXacLAfmDStkjkAaUoBaVdLojHyAbQTu+YbkU9zuia84C30/IPsQ5++vJgoleg7ndlVUFRTEQ2aFfc5a1k1coSYSNkaurwef7e8xDXhqsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587987; c=relaxed/simple;
-	bh=wvkvUyZ7uBfnz5dYg/HXDZW3NWpCebAP5nOH1sjPscY=;
+	s=arc-20240116; t=1709588100; c=relaxed/simple;
+	bh=svmogWmW20ZqBniXVomlcdpuaMdhCwvYxOJlUIboH7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nfcF+2EVhLdudAVGc9C3m1Cv3tSNEIbSwN6NOHdX2WwvgjQYG2mlWzkK2d4m2/6PTwwNCW8MI224rp5Gdvs3mEq3+KF91AM1rODnZv4IrAneqVLu28uzmDEHVUhCTvpNuAPmBr2a00ZZbt4/tPtBoo084e/ZVqBIORi1f4PldUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NJxrVfZa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 186D5C43394;
-	Mon,  4 Mar 2024 21:33:06 +0000 (UTC)
+	 MIME-Version; b=P9JUYuLhuQd+S83iAiRkMqIW2+KFXa5Sf4LNZQrFC5waT14YomyBN5GtQB72KONvXSo/li5CA73O6EUyHD1jwR/XL7s7dMkDzw0nO6nL1BiB900BSBuoKvz4xStWGRvKNTd7iop7XLxKl88p5nOcShSgVzLdpSs//5WpPWXQ5CE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oTjo7m2n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9838BC433F1;
+	Mon,  4 Mar 2024 21:34:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587987;
-	bh=wvkvUyZ7uBfnz5dYg/HXDZW3NWpCebAP5nOH1sjPscY=;
+	s=korg; t=1709588099;
+	bh=svmogWmW20ZqBniXVomlcdpuaMdhCwvYxOJlUIboH7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NJxrVfZa0cIPYv2faxtyxaII6xXsyMZvZbhDGs62e42QZyfwjVQdd3+M1w/7AAqaP
-	 D9dJivWAeinRJkphwBhvvE8lztUhbj6vrtmQHJZj5Ig7qBEwO92rRcLAfH9Why2J+M
-	 Lbwibdo499Rs4XKPX22S8t54UhNZt0XaOUFN6YDE=
+	b=oTjo7m2np3Wz6khqgFcoEPfnOc4Sy6pEtHvFc5S+BaHR3yPRp/G1IYkHjNlwUdfvq
+	 A6bde0YIQq9fhdkfFU1CgsAdyQgkyK01EQcos9yi5A6DysHRVJAFfoIzrEeCoGcZwr
+	 GY0rasYQqVFum9Ve0nkN5gtX8biyhJr6rIYG28Yc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arturas Moskvinas <arturas.moskvinas@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 148/162] gpio: 74x164: Enable output pins after registers are reset
+	Florian Westphal <fw@strlen.de>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+bfde3bef047a81b8fde6@syzkaller.appspotmail.com
+Subject: [PATCH 5.10 06/42] net: ip_tunnel: prevent perpetual headroom growth
 Date: Mon,  4 Mar 2024 21:23:33 +0000
-Message-ID: <20240304211556.430759114@linuxfoundation.org>
+Message-ID: <20240304211537.849143103@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
+References: <20240304211537.631764077@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +64,183 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arturas Moskvinas <arturas.moskvinas@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 530b1dbd97846b110ea8a94c7cc903eca21786e5 ]
+[ Upstream commit 5ae1e9922bbdbaeb9cfbe91085ab75927488ac0f ]
 
-Chip outputs are enabled[1] before actual reset is performed[2] which might
-cause pin output value to flip flop if previous pin value was set to 1.
-Fix that behavior by making sure chip is fully reset before all outputs are
-enabled.
+syzkaller triggered following kasan splat:
+BUG: KASAN: use-after-free in __skb_flow_dissect+0x19d1/0x7a50 net/core/flow_dissector.c:1170
+Read of size 1 at addr ffff88812fb4000e by task syz-executor183/5191
+[..]
+ kasan_report+0xda/0x110 mm/kasan/report.c:588
+ __skb_flow_dissect+0x19d1/0x7a50 net/core/flow_dissector.c:1170
+ skb_flow_dissect_flow_keys include/linux/skbuff.h:1514 [inline]
+ ___skb_get_hash net/core/flow_dissector.c:1791 [inline]
+ __skb_get_hash+0xc7/0x540 net/core/flow_dissector.c:1856
+ skb_get_hash include/linux/skbuff.h:1556 [inline]
+ ip_tunnel_xmit+0x1855/0x33c0 net/ipv4/ip_tunnel.c:748
+ ipip_tunnel_xmit+0x3cc/0x4e0 net/ipv4/ipip.c:308
+ __netdev_start_xmit include/linux/netdevice.h:4940 [inline]
+ netdev_start_xmit include/linux/netdevice.h:4954 [inline]
+ xmit_one net/core/dev.c:3548 [inline]
+ dev_hard_start_xmit+0x13d/0x6d0 net/core/dev.c:3564
+ __dev_queue_xmit+0x7c1/0x3d60 net/core/dev.c:4349
+ dev_queue_xmit include/linux/netdevice.h:3134 [inline]
+ neigh_connected_output+0x42c/0x5d0 net/core/neighbour.c:1592
+ ...
+ ip_finish_output2+0x833/0x2550 net/ipv4/ip_output.c:235
+ ip_finish_output+0x31/0x310 net/ipv4/ip_output.c:323
+ ..
+ iptunnel_xmit+0x5b4/0x9b0 net/ipv4/ip_tunnel_core.c:82
+ ip_tunnel_xmit+0x1dbc/0x33c0 net/ipv4/ip_tunnel.c:831
+ ipgre_xmit+0x4a1/0x980 net/ipv4/ip_gre.c:665
+ __netdev_start_xmit include/linux/netdevice.h:4940 [inline]
+ netdev_start_xmit include/linux/netdevice.h:4954 [inline]
+ xmit_one net/core/dev.c:3548 [inline]
+ dev_hard_start_xmit+0x13d/0x6d0 net/core/dev.c:3564
+ ...
 
-Flip-flop can be noticed when module is removed and inserted again and one of
-the pins was changed to 1 before removal. 100 microsecond flipping is
-noticeable on oscilloscope (100khz SPI bus).
+The splat occurs because skb->data points past skb->head allocated area.
+This is because neigh layer does:
+  __skb_pull(skb, skb_network_offset(skb));
 
-For a properly reset chip - output is enabled around 100 microseconds (on 100khz
-SPI bus) later during probing process hence should be irrelevant behavioral
-change.
+... but skb_network_offset() returns a negative offset and __skb_pull()
+arg is unsigned.  IOW, we skb->data gets "adjusted" by a huge value.
 
-Fixes: 7ebc194d0fd4 (gpio: 74x164: Introduce 'enable-gpios' property)
-Link: https://elixir.bootlin.com/linux/v6.7.4/source/drivers/gpio/gpio-74x164.c#L130 [1]
-Link: https://elixir.bootlin.com/linux/v6.7.4/source/drivers/gpio/gpio-74x164.c#L150 [2]
-Signed-off-by: Arturas Moskvinas <arturas.moskvinas@gmail.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+The negative value is returned because skb->head and skb->data distance is
+more than 64k and skb->network_header (u16) has wrapped around.
+
+The bug is in the ip_tunnel infrastructure, which can cause
+dev->needed_headroom to increment ad infinitum.
+
+The syzkaller reproducer consists of packets getting routed via a gre
+tunnel, and route of gre encapsulated packets pointing at another (ipip)
+tunnel.  The ipip encapsulation finds gre0 as next output device.
+
+This results in the following pattern:
+
+1). First packet is to be sent out via gre0.
+Route lookup found an output device, ipip0.
+
+2).
+ip_tunnel_xmit for gre0 bumps gre0->needed_headroom based on the future
+output device, rt.dev->needed_headroom (ipip0).
+
+3).
+ip output / start_xmit moves skb on to ipip0. which runs the same
+code path again (xmit recursion).
+
+4).
+Routing step for the post-gre0-encap packet finds gre0 as output device
+to use for ipip0 encapsulated packet.
+
+tunl0->needed_headroom is then incremented based on the (already bumped)
+gre0 device headroom.
+
+This repeats for every future packet:
+
+gre0->needed_headroom gets inflated because previous packets' ipip0 step
+incremented rt->dev (gre0) headroom, and ipip0 incremented because gre0
+needed_headroom was increased.
+
+For each subsequent packet, gre/ipip0->needed_headroom grows until
+post-expand-head reallocations result in a skb->head/data distance of
+more than 64k.
+
+Once that happens, skb->network_header (u16) wraps around when
+pskb_expand_head tries to make sure that skb_network_offset() is unchanged
+after the headroom expansion/reallocation.
+
+After this skb_network_offset(skb) returns a different (and negative)
+result post headroom expansion.
+
+The next trip to neigh layer (or anything else that would __skb_pull the
+network header) makes skb->data point to a memory location outside
+skb->head area.
+
+v2: Cap the needed_headroom update to an arbitarily chosen upperlimit to
+prevent perpetual increase instead of dropping the headroom increment
+completely.
+
+Reported-and-tested-by: syzbot+bfde3bef047a81b8fde6@syzkaller.appspotmail.com
+Closes: https://groups.google.com/g/syzkaller-bugs/c/fL9G6GtWskY/m/VKk_PR5FBAAJ
+Fixes: 243aad830e8a ("ip_gre: include route header_len in max_headroom calculation")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240220135606.4939-1-fw@strlen.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-74x164.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/ip_tunnel.c | 28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpio/gpio-74x164.c b/drivers/gpio/gpio-74x164.c
-index e00c333105170..753e7be039e4d 100644
---- a/drivers/gpio/gpio-74x164.c
-+++ b/drivers/gpio/gpio-74x164.c
-@@ -127,8 +127,6 @@ static int gen_74x164_probe(struct spi_device *spi)
- 	if (IS_ERR(chip->gpiod_oe))
- 		return PTR_ERR(chip->gpiod_oe);
+diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
+index 99f70b990eb13..50f8231e9daec 100644
+--- a/net/ipv4/ip_tunnel.c
++++ b/net/ipv4/ip_tunnel.c
+@@ -540,6 +540,20 @@ static int tnl_update_pmtu(struct net_device *dev, struct sk_buff *skb,
+ 	return 0;
+ }
  
--	gpiod_set_value_cansleep(chip->gpiod_oe, 1);
--
- 	spi_set_drvdata(spi, chip);
- 
- 	chip->gpio_chip.label = spi->modalias;
-@@ -153,6 +151,8 @@ static int gen_74x164_probe(struct spi_device *spi)
- 		goto exit_destroy;
++static void ip_tunnel_adj_headroom(struct net_device *dev, unsigned int headroom)
++{
++	/* we must cap headroom to some upperlimit, else pskb_expand_head
++	 * will overflow header offsets in skb_headers_offset_update().
++	 */
++	static const unsigned int max_allowed = 512;
++
++	if (headroom > max_allowed)
++		headroom = max_allowed;
++
++	if (headroom > READ_ONCE(dev->needed_headroom))
++		WRITE_ONCE(dev->needed_headroom, headroom);
++}
++
+ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+ 		       u8 proto, int tunnel_hlen)
+ {
+@@ -613,13 +627,13 @@ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
  	}
  
-+	gpiod_set_value_cansleep(chip->gpiod_oe, 1);
+ 	headroom += LL_RESERVED_SPACE(rt->dst.dev) + rt->dst.header_len;
+-	if (headroom > READ_ONCE(dev->needed_headroom))
+-		WRITE_ONCE(dev->needed_headroom, headroom);
+-
+-	if (skb_cow_head(skb, READ_ONCE(dev->needed_headroom))) {
++	if (skb_cow_head(skb, headroom)) {
+ 		ip_rt_put(rt);
+ 		goto tx_dropped;
+ 	}
 +
- 	ret = gpiochip_add_data(&chip->gpio_chip, chip);
- 	if (!ret)
- 		return 0;
++	ip_tunnel_adj_headroom(dev, headroom);
++
+ 	iptunnel_xmit(NULL, rt, skb, fl4.saddr, fl4.daddr, proto, tos, ttl,
+ 		      df, !net_eq(tunnel->net, dev_net(dev)));
+ 	return;
+@@ -797,16 +811,16 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+ 
+ 	max_headroom = LL_RESERVED_SPACE(rt->dst.dev) + sizeof(struct iphdr)
+ 			+ rt->dst.header_len + ip_encap_hlen(&tunnel->encap);
+-	if (max_headroom > READ_ONCE(dev->needed_headroom))
+-		WRITE_ONCE(dev->needed_headroom, max_headroom);
+ 
+-	if (skb_cow_head(skb, READ_ONCE(dev->needed_headroom))) {
++	if (skb_cow_head(skb, max_headroom)) {
+ 		ip_rt_put(rt);
+ 		dev->stats.tx_dropped++;
+ 		kfree_skb(skb);
+ 		return;
+ 	}
+ 
++	ip_tunnel_adj_headroom(dev, max_headroom);
++
+ 	iptunnel_xmit(NULL, rt, skb, fl4.saddr, fl4.daddr, protocol, tos, ttl,
+ 		      df, !net_eq(tunnel->net, dev_net(dev)));
+ 	return;
 -- 
 2.43.0
 
