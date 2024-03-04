@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-26621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 323AE870F63
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:54:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C298870E1A
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:41:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC7181F2235D
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:54:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B51C8289A97
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:41:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8C597868F;
-	Mon,  4 Mar 2024 21:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1990200CD;
+	Mon,  4 Mar 2024 21:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EAQG46as"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aMjRw0ca"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F391C6AB;
-	Mon,  4 Mar 2024 21:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD761F92C;
+	Mon,  4 Mar 2024 21:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589246; cv=none; b=AnHH+QcGNOWOUi9T/yQomUvTlkvMeLCpIbCmabb3xjT7R6ioF/690u2CyDYFrEiUpCNkr4UU6qgvb+mIJwuI/V5hPddKLSRFSIHzpUdv7DB3BMF33uRtEV4HvTMu7E+frfopW074ZMPvwvaYiXQdhmLX/qECOWEZ7aMx2N6wmO4=
+	t=1709588447; cv=none; b=TB8R5juIJiPbuGR8QWIvnG/hsV1p8T5YarBVom7Z0bsUnCDeY3qRebRA5uK/8MEOJDrR2kDb15+oimOkM6Xxgd42RdwtjKP3SpR61MnPL9lht0K20pgKRJf8ffu4l8mEfNq6O2TA65246cTnLgIRfVL/e0j6LhLsgvFlokEflBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589246; c=relaxed/simple;
-	bh=PGCQauisv7pqXXrFtklwo+DziZUXnJkxYv1o12Vls/k=;
+	s=arc-20240116; t=1709588447; c=relaxed/simple;
+	bh=Ex5JVjpSPnYqGGOD9KyWueq0bH50AR8a3ENVpkN9zso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=msM7TNQYF65v22ZybLdC5dnUolt/p9WjBSOYf1FbYEYlX4qeuvBzL7R6YKy+Tug7g3dFeKdg0uBbbPtYx5bkqjDt1i6zwG0t1BBcfD5fk10hI8VE4fUku1lbUXPCnCT5O9/3t/l32H7itaQaErbE5OpxPdL9jdkXrSftoXQEwrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EAQG46as; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 106E9C433F1;
-	Mon,  4 Mar 2024 21:54:05 +0000 (UTC)
+	 MIME-Version; b=WtpNhriF+1dItmnf+ZAdjqMZizOW3nG7M8q0zuQ72Yyda3BoMwl4pSap86dLsud47GvxeHYZiAGoy/JYvrJJzLgZ21XqhK7oo/+mf1XOe+PyT8rmQIbzCW9XNFwrkTklpwcbxJ72CX/qIKZYTJ98xBPpruYgRa93qAKiipNro0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aMjRw0ca; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6EB1C433F1;
+	Mon,  4 Mar 2024 21:40:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589246;
-	bh=PGCQauisv7pqXXrFtklwo+DziZUXnJkxYv1o12Vls/k=;
+	s=korg; t=1709588447;
+	bh=Ex5JVjpSPnYqGGOD9KyWueq0bH50AR8a3ENVpkN9zso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EAQG46asCcoC7kXkTRsZHRar6aVkox5NriI5Ithx2bfp8hS10UYW5rl3WfpisRfB1
-	 VAqZL3XOMOS0QtU+qFs+JYjolIx/1Fpqe0ALEpai5EGPg/L+N51pKCHcMSstl66zr4
-	 uhFmaAU/mR+C5O2z5KCIANjGxn9EjnZqygkXCs94=
+	b=aMjRw0ca14+C109+WWljVNdF9aaRrnArK1KWn+by0JjauBd1MEjI4HJJV8bii5j5M
+	 ecHTUjFlBTHfeA4ua/463qc4ujzwb8ycHJ5PgOE9jtA7mZDZhrXVdeGA39h3eKaadr
+	 4s6UUoZVWQF0RrQJF7s/epCh04XdARy+FjzjpqMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 18/84] Bluetooth: Enforce validation on max value of connection interval
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 111/143] mptcp: fix potential wake-up event loss
 Date: Mon,  4 Mar 2024 21:23:51 +0000
-Message-ID: <20240304211542.940753261@linuxfoundation.org>
+Message-ID: <20240304211553.472250724@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit e4b019515f950b4e6e5b74b2e1bb03a90cb33039 ]
+commit b111d8fbd2cbc63e05f3adfbbe0d4df655dfcc5b upstream.
 
-Right now Linux BT stack cannot pass test case "GAP/CONN/CPUP/BV-05-C
-'Connection Parameter Update Procedure Invalid Parameters Central
-Responder'" in Bluetooth Test Suite revision GAP.TS.p44. [0]
+After the blamed commit below, the send buffer auto-tuning can
+happen after that the mptcp_propagate_sndbuf() completes - via
+the delegated action infrastructure.
 
-That was revoled by commit c49a8682fc5d ("Bluetooth: validate BLE
-connection interval updates"), but later got reverted due to devices
-like keyboards and mice may require low connection interval.
+We must check for write space even after such change or we risk
+missing the wake-up event.
 
-So only validate the max value connection interval to pass the Test
-Suite, and let devices to request low connection interval if needed.
-
-[0] https://www.bluetooth.org/docman/handlers/DownloadDoc.ashx?doc_id=229869
-
-Fixes: 68d19d7d9957 ("Revert "Bluetooth: validate BLE connection interval updates"")
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8005184fd1ca ("mptcp: refactor sndbuf auto-tuning")
+Cc: stable@vger.kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240223-upstream-net-20240223-misc-fixes-v1-6-162e87e48497@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c  | 4 ++++
- net/bluetooth/l2cap_core.c | 8 +++++++-
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ net/mptcp/protocol.h |   21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 0bfd856d079d5..ba7242729a8fb 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -6058,6 +6058,10 @@ static void hci_le_remote_conn_param_req_evt(struct hci_dev *hdev,
- 		return send_conn_param_neg_reply(hdev, handle,
- 						 HCI_ERROR_UNKNOWN_CONN_ID);
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -772,6 +772,16 @@ static inline bool mptcp_data_fin_enable
+ 	       READ_ONCE(msk->write_seq) == READ_ONCE(msk->snd_nxt);
+ }
  
-+	if (max > hcon->le_conn_max_interval)
-+		return send_conn_param_neg_reply(hdev, handle,
-+						 HCI_ERROR_INVALID_LL_PARAMS);
-+
- 	if (hci_check_conn_params(min, max, latency, timeout))
- 		return send_conn_param_neg_reply(hdev, handle,
- 						 HCI_ERROR_INVALID_LL_PARAMS);
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 850b6aab73779..11bfc8737e6ce 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -5614,7 +5614,13 @@ static inline int l2cap_conn_param_update_req(struct l2cap_conn *conn,
- 
- 	memset(&rsp, 0, sizeof(rsp));
- 
--	err = hci_check_conn_params(min, max, latency, to_multiplier);
-+	if (max > hcon->le_conn_max_interval) {
-+		BT_DBG("requested connection interval exceeds current bounds.");
-+		err = -EINVAL;
-+	} else {
-+		err = hci_check_conn_params(min, max, latency, to_multiplier);
++static inline void mptcp_write_space(struct sock *sk)
++{
++	if (sk_stream_is_writeable(sk)) {
++		/* pairs with memory barrier in mptcp_poll */
++		smp_mb();
++		if (test_and_clear_bit(MPTCP_NOSPACE, &mptcp_sk(sk)->flags))
++			sk_stream_write_space(sk);
 +	}
++}
 +
- 	if (err)
- 		rsp.result = cpu_to_le16(L2CAP_CONN_PARAM_REJECTED);
- 	else
--- 
-2.43.0
-
+ static inline void __mptcp_sync_sndbuf(struct sock *sk)
+ {
+ 	struct mptcp_subflow_context *subflow;
+@@ -790,6 +800,7 @@ static inline void __mptcp_sync_sndbuf(s
+ 
+ 	/* the msk max wmem limit is <nr_subflows> * tcp wmem[2] */
+ 	WRITE_ONCE(sk->sk_sndbuf, new_sndbuf);
++	mptcp_write_space(sk);
+ }
+ 
+ /* The called held both the msk socket and the subflow socket locks,
+@@ -820,16 +831,6 @@ static inline void mptcp_propagate_sndbu
+ 	local_bh_enable();
+ }
+ 
+-static inline void mptcp_write_space(struct sock *sk)
+-{
+-	if (sk_stream_is_writeable(sk)) {
+-		/* pairs with memory barrier in mptcp_poll */
+-		smp_mb();
+-		if (test_and_clear_bit(MPTCP_NOSPACE, &mptcp_sk(sk)->flags))
+-			sk_stream_write_space(sk);
+-	}
+-}
+-
+ void mptcp_destroy_common(struct mptcp_sock *msk, unsigned int flags);
+ 
+ #define MPTCP_TOKEN_MAX_RETRIES	4
 
 
 
