@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-26049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E53C870CC5
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:28:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 870FC870E90
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:45:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE77928934B
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:28:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D9281F2135F
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:45:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0FD341202;
-	Mon,  4 Mar 2024 21:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07DDD7BAF7;
+	Mon,  4 Mar 2024 21:44:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0oni/Nm8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vavsoGlL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB0D10A1F;
-	Mon,  4 Mar 2024 21:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B93377BAEE;
+	Mon,  4 Mar 2024 21:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587711; cv=none; b=HCEiCaT7bI3sRCpGrjppZZ3qJmkaqi+w1Dfo6/bGvYzavJWRP/1ToizcnZKv4B0U77w6lPwILRtGt+3F/AHVYnABOOGrUN9gcoECmZwAJwsfPYKT9TY5jv6OSTMKeeu2v9lg3m+eVnNM4m5DNO8wH+gj3NVAdiKRwwu1xZEmOBY=
+	t=1709588698; cv=none; b=eEOPKlZNUL/ZfVxBYvlMsKKbnCaOZP+CAlC1S6AFPMEGJnZDsx91EFJsTV6sGyfmTxiErQsvdeJvqubNyT4Gxs/NiOXhQBpwBVOiGZC6AIcmY+ef+GWdugqj5t4NyzVmtqymaoDAIO9U4q2Rhq5fjF46smbj3WR24d0FLALOUTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587711; c=relaxed/simple;
-	bh=65EmYOa3J/V2C/PXlLoH+5VIoQCDx7fiY95fijBZhuo=;
+	s=arc-20240116; t=1709588698; c=relaxed/simple;
+	bh=ti0H7dU2hmqdOcgLjganOQ9Pg9ntidTNkJLuuI4T1JI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pXrW8GcHZdZhfM3YMldOl3+CYe4A7/wa5ll++bPnDiOthqoH964fq4xsbU3dr0hWzsQXEtMfX6MMpxxcFJOFxsSo7pPPsD2+fdfuTAK5g/dUjMCyiXHvhHPvXrAoXekAWCJK9DXOIxYACgF9V/EoRsQBBaqNBp7LAJyJdaVGQs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0oni/Nm8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4CA0C433F1;
-	Mon,  4 Mar 2024 21:28:30 +0000 (UTC)
+	 MIME-Version; b=ukNBsYs5WcVP4YzteF5ywP1NJFtgV/8cElVmRXza22LLIBMHRy6AvGmDwMi87dI9FPGr/v3ZY8JuhS1eBUed9apalGGozhsGmqdTRUn9hG76SD2NTPGofujwzRit3YMk3h06MaPYjt1RkXQg+V/zoPEWJ/iNOWJs8QlTvFUVze8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vavsoGlL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EA20C43390;
+	Mon,  4 Mar 2024 21:44:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587711;
-	bh=65EmYOa3J/V2C/PXlLoH+5VIoQCDx7fiY95fijBZhuo=;
+	s=korg; t=1709588698;
+	bh=ti0H7dU2hmqdOcgLjganOQ9Pg9ntidTNkJLuuI4T1JI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0oni/Nm8tMajgu+Nc3kQtdZt+c07BMZePi9a6JN9Abm6HW+v85KbXu0NabtkGBuEu
-	 zvIvKIKO72RhMV0T8oPFYTUUU7LzL0l1qw6nBe0RCG6QcUBX/slF2q4EZct6GLkbaY
-	 2W2pvrGuQO+o6LFbrUruSVkCn++i44P1EsE5Wexg=
+	b=vavsoGlLGbMzzwJ224YZJQfZRqqv0R9sCBTIeEbIREHBV2mC0oMI5HfYJPa/KrW7w
+	 0kf/1zXNY218KffMsUhiM3JGNpVRPkCCiiQ5M5DUzEEJWR96l039Yy9vpBLp0dtMUG
+	 H7RooPKOFWtbS33wQRqRYJn5Vp5kVSOZeKrWHcMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Guo Ren <guoren@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 060/162] RISC-V: Ignore V from the riscv,isa DT property on older T-Head CPUs
+Subject: [PATCH 6.1 062/215] tls: decrement decrypt_pending if no async completion will be called
 Date: Mon,  4 Mar 2024 21:22:05 +0000
-Message-ID: <20240304211553.770897868@linuxfoundation.org>
+Message-ID: <20240304211558.946021614@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Conor Dooley <conor@kernel.org>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit d82f32202e0df7bf40d4b67c8a4ff9cea32df4d9 ]
+[ Upstream commit f7fa16d49837f947ee59492958f9e6f0e51d9a78 ]
 
-Before attempting to support the pre-ratification version of vector
-found on older T-Head CPUs, disallow "v" in riscv,isa on these
-platforms. The deprecated property has no clear way to communicate
-the specific version of vector that is supported and much of the vendor
-provided software puts "v" in the isa string. riscv,isa-extensions
-should be used instead. This should not be too much of a burden for
-these systems, as the vendor shipped devicetrees and firmware do not
-work with a mainline kernel and will require updating.
+With mixed sync/async decryption, or failures of crypto_aead_decrypt,
+we increment decrypt_pending but we never do the corresponding
+decrement since tls_decrypt_done will not be called. In this case, we
+should decrement decrypt_pending immediately to avoid getting stuck.
 
-We can limit this restriction to only ignore v in riscv,isa on CPUs
-that report T-Head's vendor ID and a zero marchid. Newer T-Head CPUs
-that support the ratified version of vector should report non-zero
-marchid, according to Guo Ren [1].
+For example, the prequeue prequeue test gets stuck with mixed
+modes (one async decrypt + one sync decrypt).
 
-Link: https://lore.kernel.org/linux-riscv/CAJF2gTRy5eK73=d6s7CVy9m9pB8p4rAoMHM3cZFwzg=AuF7TDA@mail.gmail.com/ [1]
-Fixes: dc6667a4e7e3 ("riscv: Extending cpufeature.c to detect V-extension")
-Co-developed-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Acked-by: Guo Ren <guoren@kernel.org>
-Link: https://lore.kernel.org/r/20240223-tidings-shabby-607f086cb4d7@spud
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 94524d8fc965 ("net/tls: Add support for async decryption of tls records")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/c56d5fc35543891d5319f834f25622360e1bfbec.1709132643.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/cpufeature.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ net/tls/tls_sw.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
-index b3785ffc15703..92a26f8b18450 100644
---- a/arch/riscv/kernel/cpufeature.c
-+++ b/arch/riscv/kernel/cpufeature.c
-@@ -22,6 +22,7 @@
- #include <asm/hwprobe.h>
- #include <asm/patch.h>
- #include <asm/processor.h>
-+#include <asm/sbi.h>
- #include <asm/vector.h>
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 93e1bfa72d791..c6ad435a44218 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -273,6 +273,8 @@ static int tls_do_decryption(struct sock *sk,
+ 			return 0;
  
- #include "copy-unaligned.h"
-@@ -401,6 +402,20 @@ static void __init riscv_fill_hwcap_from_isa_string(unsigned long *isa2hwcap)
- 			set_bit(RISCV_ISA_EXT_ZIHPM, isainfo->isa);
- 		}
+ 		ret = crypto_wait_req(ret, &ctx->async_wait);
++	} else if (darg->async) {
++		atomic_dec(&ctx->decrypt_pending);
+ 	}
+ 	darg->async = false;
  
-+		/*
-+		 * "V" in ISA strings is ambiguous in practice: it should mean
-+		 * just the standard V-1.0 but vendors aren't well behaved.
-+		 * Many vendors with T-Head CPU cores which implement the 0.7.1
-+		 * version of the vector specification put "v" into their DTs.
-+		 * CPU cores with the ratified spec will contain non-zero
-+		 * marchid.
-+		 */
-+		if (acpi_disabled && riscv_cached_mvendorid(cpu) == THEAD_VENDOR_ID &&
-+		    riscv_cached_marchid(cpu) == 0x0) {
-+			this_hwcap &= ~isa2hwcap[RISCV_ISA_EXT_v];
-+			clear_bit(RISCV_ISA_EXT_v, isainfo->isa);
-+		}
-+
- 		/*
- 		 * All "okay" hart should have same isa. Set HWCAP based on
- 		 * common capabilities of every "okay" hart, in case they don't
 -- 
 2.43.0
 
