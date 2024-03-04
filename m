@@ -1,107 +1,164 @@
-Return-Path: <stable+bounces-25889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8750086FFA0
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 11:58:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5813D86FFB7
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 12:02:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8D3C1C22732
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 10:58:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1372A2852FA
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 11:02:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3D9381B4;
-	Mon,  4 Mar 2024 10:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3656E381CF;
+	Mon,  4 Mar 2024 11:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M/Hs7qr0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Frv8mNhq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD226376FD
-	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 10:58:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789671B814;
+	Mon,  4 Mar 2024 11:02:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709549924; cv=none; b=rhHSaCId0Q5u1lByXt9+dNAmJGluh3CYgBr3rnF2jVGCSB0p9MNBJgVmk0KjT/ByWvUMI+oYIuOujcawE188HsaX6ZTu73fd6sPXGhdUYtEvVHfr0v5YasJURgqibyhd1WXs6gjIGjNZK86aOvjz/j67d/dm4NAT1VxQ8wE/WUw=
+	t=1709550139; cv=none; b=H6aRONdXkwt9dsEfgZC/l4Ejl7cHGNxdH4igTIbXyip4m0U53v095TVt7DKYa62N4nlzO3IN8/jYSRO2GIfZ4ZL+jXXwRjkqp5eBXeqAk7FfGBtpJ0JawbCxLPlHdwzgp/yCHukUIAhwJJKzrmpmrwcAk7DV1SSB4joi8EJdL4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709549924; c=relaxed/simple;
-	bh=aJ8Nrqr6WZf4ma76x9JqXiXKw9DPFgf44RecgW681iQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tUaWd4NXnyyoB12xtaPR8QPuRJ/Gjs0GefJWhdTpxRY26LkD01bVgKhIZiJVermS1g/dgBe6WhQ50wYvn7yKmbNoM+PEftS2uEd2CdUqYO/izQMAHc1bEF+zl4Bsq/QAeU5I6qDq6loGdGvuhDJgZfaqSFMGLxcyVleyXY0BTYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M/Hs7qr0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB685C433F1;
-	Mon,  4 Mar 2024 10:58:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709549924;
-	bh=aJ8Nrqr6WZf4ma76x9JqXiXKw9DPFgf44RecgW681iQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=M/Hs7qr0THn0qXdnQIPuNAeFoOA8RPqU3JVuPOHgljyW2fFB1Q0hagjycEfqo++nn
-	 +woLSX6AcKTUukrxHkAz5qogL+YL0/uiTFVWWrvqknYInj4lVCM5ELSn9nFrWUcPM9
-	 8Km7lCRJxaVW/r1LQ3wh5H8lYHdTzsmIm+Vd/Z9I=
-Date: Mon, 4 Mar 2024 11:58:41 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: tanggeliang@kylinos.cn, kuba@kernel.org, martineau@kernel.org,
-	stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] selftests: mptcp: rm subflow with
- v4/v4mapped addr" failed to apply to 6.1-stable tree
-Message-ID: <2024030453-spotter-undermine-b600@gregkh>
-References: <2024030422-dinner-rotten-5ef3@gregkh>
- <0991a6b7-2d74-4f26-9959-68d745086902@kernel.org>
- <2024030430-pessimism-unveiling-715f@gregkh>
- <79f149f6-e5aa-455e-832e-8ae3356cb690@kernel.org>
+	s=arc-20240116; t=1709550139; c=relaxed/simple;
+	bh=Oo/rFWJcixpRf2/WwehXFRWrzD2gkyR2NzR9XmWmaNQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sMz4vudf4x38vP6d1Q/MovpjUPCEYZCs2ZUWlQpbz1rnsFOpz5IKkO8tA20BuJJDMNSIDI8QlHl4cTFi4OyD+rAjnQHa0RBW/Hjiz7bBLDICcIl7WOEupguIc56DBRCMJHxnRyksYXEldQxOMB2ieRBTXX82Ka5z0LucrkCO0Sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Frv8mNhq; arc=none smtp.client-ip=209.85.161.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-59fc2d22cfaso1421437eaf.3;
+        Mon, 04 Mar 2024 03:02:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709550136; x=1710154936; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KEQEcIRITkDJdwdBYFSb2DlZavvyvEzESUuUHNPqnXM=;
+        b=Frv8mNhqKgu4eklBeizrWpfyxbVWxp66uBDGY00IOggCp/W8wtp7GosU8QFPBSG9Ko
+         qJDh9hYnsXktzvsAbegVBTqUl95T3oFqZRWE99q9R7ZtYOU9yyVi2houN76rWzMTMUQp
+         l+vrtSkG0Pg2gSSUvlZViZQAvq0mOmvRVs1QcIubBk1mlOgYzIuhvIcVYrYaue9kXL6s
+         fKqbv0UFTuZjnnAppAsA2oEw5JmXDQo+1fFRwcZB/4jebtFhCkMOCzfMi/FQje36GLPR
+         l4rPu/9knVe9xPEMWiZxKT/azF5fuT8lG3MvXqV7j1Avo6Htd7L9agJs8+YHfcRWIb1a
+         AqFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709550136; x=1710154936;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KEQEcIRITkDJdwdBYFSb2DlZavvyvEzESUuUHNPqnXM=;
+        b=ptyQs7RIygnMw/JCedx8ZX4/XvowtRWWb7otPwX2VdbHTtk2HB1jP73eLMjJiY3MwD
+         8nx0ZC79JOvN/s1wsk/6/YteGOLgFmhdmkMFa93YTDzL1scuIseMILxeo0Cxm+aj+Nrs
+         EtVlTVm6HwvSi2xx93lDN8CYZQpYc1qw+TUDECH0K4vWM0SWeV66zus5Pcdz9sXDjvmJ
+         ljmuXL2WzasuyQLcFe1EzGS4DgIr4CUmBVKYa8ZA5JLFLx3u+F08UDcI6K2Gr7mFkPwN
+         15jQYtbipPBg0mtR0nPNxBUA4nOQGx2i+6bCSxqnxusBSYoIfcVRzPS99L9zncgS37Ot
+         vW7w==
+X-Forwarded-Encrypted: i=1; AJvYcCWeA8kcAETPfzrmEzzd64gR0a9PTKnuv1itr1KMtWRCq9UmoBD2FYUkLvBY0L5aFAu7q1ARRU9p0d/j/+rBwcmP53UsLw6k
+X-Gm-Message-State: AOJu0Yzzkv3GpESItnoFq/NmtQTXzv7XsMi/pLG3mogWV27/nhe/+IRG
+	BpR3l2JNUAfxMiEHDb1+QpetqqZrELOOIIqjuJD5RgB6cgI4SAv1x2da4Jo3Vwx/Bu0coD19ALa
+	Y0GJlasPf77rexNWngGeVX19tmJU=
+X-Google-Smtp-Source: AGHT+IHvahgzeBUUX4hz/RUp4Upi1wtnuxBy9GoDVguowxMVD0/mod1bCS/jaOMscbexoMQXSs9Ivs1glo+qGKR4lrQ=
+X-Received: by 2002:a4a:dfc3:0:b0:5a1:2059:5763 with SMTP id
+ p3-20020a4adfc3000000b005a120595763mr3245670ood.5.1709550136126; Mon, 04 Mar
+ 2024 03:02:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <79f149f6-e5aa-455e-832e-8ae3356cb690@kernel.org>
+References: <20240229041950.738878-1-xiubli@redhat.com> <CAOi1vP-hp7jmECXP4WNDT801qmBBZJjnUm0ic61Pw-JgipOyNw@mail.gmail.com>
+ <10abc117-a0e8-47ab-b9e2-05424c358c4e@redhat.com>
+In-Reply-To: <10abc117-a0e8-47ab-b9e2-05424c358c4e@redhat.com>
+From: Ilya Dryomov <idryomov@gmail.com>
+Date: Mon, 4 Mar 2024 12:02:03 +0100
+Message-ID: <CAOi1vP_=qP0EQTEAaJ2teA8PE1cBXDO0bc_KoRBYxf9jwA4iwA@mail.gmail.com>
+Subject: Re: [PATCH] libceph: init the cursor when preparing the sparse read
+To: Xiubo Li <xiubli@redhat.com>
+Cc: ceph-devel@vger.kernel.org, jlayton@kernel.org, vshankar@redhat.com, 
+	mchangir@redhat.com, stable@vger.kernel.org, 
+	Luis Henriques <lhenriques@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 04, 2024 at 11:40:49AM +0100, Matthieu Baerts wrote:
-> On 04/03/2024 11:32, Greg KH wrote:
-> > On Mon, Mar 04, 2024 at 11:07:01AM +0100, Matthieu Baerts wrote:
-> >> On 04/03/2024 09:30, gregkh@linuxfoundation.org wrote:
-> 
-> (...)
-> 
-> >>> ------------------ original commit in Linus's tree ------------------
-> >>>
-> >>> From 7092dbee23282b6fcf1313fc64e2b92649ee16e8 Mon Sep 17 00:00:00 2001
-> >>> From: Geliang Tang <tanggeliang@kylinos.cn>
-> >>> Date: Fri, 23 Feb 2024 17:14:12 +0100
-> >>> Subject: [PATCH] selftests: mptcp: rm subflow with v4/v4mapped addr
-> >>>
-> >>> Now both a v4 address and a v4-mapped address are supported when
-> >>> destroying a userspace pm subflow, this patch adds a second subflow
-> >>> to "userspace pm add & remove address" test, and two subflows could
-> >>> be removed two different ways, one with the v4mapped and one with v4.
-> >> I don't think it is worth having this patch backported to v6.1: there
-> >> are a lot of conflicts because this patch depends on many others. Also,
-> >> many CIs validating stable trees will use the selftests from the last
-> >> stable version, I suppose. So this new test will be validated on older
-> >> versions.
+On Mon, Mar 4, 2024 at 2:02=E2=80=AFAM Xiubo Li <xiubli@redhat.com> wrote:
+>
+>
+> On 3/2/24 00:16, Ilya Dryomov wrote:
+> > On Thu, Feb 29, 2024 at 5:22=E2=80=AFAM <xiubli@redhat.com> wrote:
+> >> From: Xiubo Li <xiubli@redhat.com>
 > >>
-> >> For v6.6 and v6.7, I can help to fix conflicts. I will just wait for the
-> >> "queue/6.6" and "queue/6.7" branches to be updated with the latest
-> >> patches :)
-> > 
-> > Should all now be up to date,
-> 
-> Maybe we are not talking about the same thing: are the "queue/X.Y"
-> branches from the "linux-stable-rc" repo [1] not updated automatically
-> when patches are added to the "stable-queue" repo [2]?
+> >> The osd code has remove cursor initilizing code and this will make
+> >> the sparse read state into a infinite loop. We should initialize
+> >> the cursor just before each sparse-read in messnger v2.
+> >>
+> >> Cc: stable@vger.kernel.org
+> >> URL: https://tracker.ceph.com/issues/64607
+> >> Fixes: 8e46a2d068c9 ("libceph: just wait for more data to be available=
+ on the socket")
+> >> Reported-by: Luis Henriques <lhenriques@suse.de>
+> >> Signed-off-by: Xiubo Li <xiubli@redhat.com>
+> >> ---
+> >>   net/ceph/messenger_v2.c | 3 +++
+> >>   1 file changed, 3 insertions(+)
+> >>
+> >> diff --git a/net/ceph/messenger_v2.c b/net/ceph/messenger_v2.c
+> >> index a0ca5414b333..7ae0f80100f4 100644
+> >> --- a/net/ceph/messenger_v2.c
+> >> +++ b/net/ceph/messenger_v2.c
+> >> @@ -2025,6 +2025,7 @@ static int prepare_sparse_read_cont(struct ceph_=
+connection *con)
+> >>   static int prepare_sparse_read_data(struct ceph_connection *con)
+> >>   {
+> >>          struct ceph_msg *msg =3D con->in_msg;
+> >> +       u64 len =3D con->in_msg->sparse_read_total ? : data_len(con->i=
+n_msg);
+> > Hi Xiubo,
+> >
+> > Why is sparse_read_total being tested here?  Isn't this function
+> > supposed to be called only for sparse reads, after the state is set to
+> > IN_S_PREPARE_SPARSE_DATA based on a similar test:
+> >
+> >      if (msg->sparse_read_total)
+> >              con->v2.in_state =3D IN_S_PREPARE_SPARSE_DATA;
+> >      else
+> >              con->v2.in_state =3D IN_S_PREPARE_READ_DATA;
+>
+> Then the patch could be simplified and just be:
+>
+> diff --git a/net/ceph/messenger_v2.c b/net/ceph/messenger_v2.c
+> index a0ca5414b333..ab3ab130a911 100644
+> --- a/net/ceph/messenger_v2.c
+> +++ b/net/ceph/messenger_v2.c
+> @@ -2034,6 +2034,9 @@ static int prepare_sparse_read_data(struct
+> ceph_connection *con)
+>          if (!con_secure(con))
+>                  con->in_data_crc =3D -1;
+>
+> +       ceph_msg_data_cursor_init(&con->v2.in_cursor, con->in_msg,
+> + con->in_msg->sparse_read_total);
+> +
+>          reset_in_kvecs(con);
+>          con->v2.in_state =3D IN_S_PREPARE_SPARSE_DATA_CONT;
+>          con->v2.data_len_remain =3D data_len(msg);
+>
+> Else where should we do the test like this ?
 
-Ah, that, yeah, it somehow automagically works, I have no idea how it
-does it or what controls it or who uses it, sorry :)
+Hi Xiubo,
 
-> It is just to know which base I use to resolve conflicts :)
+I suspect you copied this test from prepare_message_data() in msgr1,
+where that function is called unconditionally for all reads.  In msgr2,
+prepare_sparse_read_data() is called conditionally, so the test just
+seems bogus.
 
-If it works for you, great!
+That said, CephFS is the only user of sparse read code, so you should
+know better at this point ;)
 
-thanks
+Thanks,
 
-greg k-h
+                Ilya
 
