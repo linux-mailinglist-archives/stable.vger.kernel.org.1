@@ -1,140 +1,170 @@
-Return-Path: <stable+bounces-25845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C57B186FACF
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 08:30:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FF7686FAF4
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 08:37:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 676071F21FAD
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 07:30:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08CC62829E7
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 07:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 727D714ABC;
-	Mon,  4 Mar 2024 07:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 068F813FF0;
+	Mon,  4 Mar 2024 07:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oltmanns.dev header.i=@oltmanns.dev header.b="l8NQhouH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zyUSdKxs"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE6D14013;
-	Mon,  4 Mar 2024 07:30:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98DF15AE0
+	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 07:36:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709537418; cv=none; b=Do5Ao4BADEL1X/y9JjUl/vIdJGhVYXEV6pC4RD2tAS064YZCDl1YSgkoW9PC/BUtQETRgui9lIYYKstOw7EvWQUFlLtBjdPxkyYiDLLFLTxkjSR9/9hNG6L2QktMpwjnw8DcldghkENtPUAaQwhxFm2e/Aehg7cmwCeUoALeUx0=
+	t=1709537818; cv=none; b=EUYu75Irg3Nybuq9Cq/Ynua821q/CFWJevfDbG3bOxkD8fN60oA22D8uXNmxkQv2I9khQYIalI91fjFSQzpPogYWwxi/zG9eolYN8fhgThONsr2zE3gP8H3FiTAv8QU0MBTyF/t/+/0YEWP2WKUu69Sity3rZNR4MbeHB0SPYL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709537418; c=relaxed/simple;
-	bh=kDpws4iby8ib+0jukh7K9mXcEL8OMyePEolpMUL5c7o=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=L66meiy0AseUQCgNA8xPnpix2DzxfqivntjZB8LSEFACKualO7cqZwrwKReLJHjdSoWTbUZ8HPFA69ysXAARopt7PU5ACKy3bMb0s9NbPNdtFh+m1AYWndQJD72dxtjLJ9ufNNrOlmD1jeVdfy7PWjgFLijStju0GdG6Mgt5KVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oltmanns.dev; spf=pass smtp.mailfrom=oltmanns.dev; dkim=pass (2048-bit key) header.d=oltmanns.dev header.i=@oltmanns.dev header.b=l8NQhouH; arc=none smtp.client-ip=80.241.56.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oltmanns.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oltmanns.dev
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4Tp9MS4RGFz9stR;
-	Mon,  4 Mar 2024 08:30:12 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oltmanns.dev;
-	s=MBO0001; t=1709537412;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UgpgzV2Q/GbIWREFNI+aQD05ef1VFT6JlXRe9heDTVQ=;
-	b=l8NQhouHHw02zPiTPi8CTZt2BeXjrl2oCRomvK5kD34eSkkb7kG1pZQzb6XkyYNJfWrQDg
-	4eBe0rijvramhPIZKQXWJZxYusiy2oGxBjEtRySfBvmXvlrb03fhZtY6h+MQSxM2M9c4RB
-	fo2eGErHtXOpSXtV9NQauTzBIkQPezQrbzQqac43IjSENN9kSbyw5zRSO5+H7uSZ/rvNDN
-	DdLMpSG1q8i8bKprRsfAJHwDvVpBLiUTFK37W+fGR8KjomsoOA1iNbn3lL6fN2ID8LeyP7
-	toYasuIckywR9/yEi91m/ikvhHwSuaavJ9XjgKKPxzLU9y+CFyw7bm9r0iW3+w==
-From: Frank Oltmanns <frank@oltmanns.dev>
-Date: Mon, 04 Mar 2024 08:29:18 +0100
-Subject: [PATCH v3 2/5] clk: sunxi-ng: a64: Set minimum and maximum rate
- for PLL-MIPI
+	s=arc-20240116; t=1709537818; c=relaxed/simple;
+	bh=6Q4RuIKOjCURVgJ23tm1/m5YK3k3VyZlKBfW0hT4Uxg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bvcFkJIGaSqOJrOqZEOA5uo+ycbj5leobNFiNUpxlhmA7DHNFsF09/EYMhovPISG3uKHQuAd8xFIZ6okgBqwPeWOAyJeu82FLYgzUWw50W2wSuTD0kRFkAOrep4h3x2CFw9XhY8QdHU8NAsX46+53Kf2yj0Der+cvsssPFRt6FQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zyUSdKxs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5195C433F1;
+	Mon,  4 Mar 2024 07:36:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1709537818;
+	bh=6Q4RuIKOjCURVgJ23tm1/m5YK3k3VyZlKBfW0hT4Uxg=;
+	h=Subject:To:Cc:From:Date:From;
+	b=zyUSdKxsY/+mSX1pqaLZIvuHSot/UJ4KvoP/Yu6QrfIOfIdOuFDUw79GVbIeF+Wng
+	 OZUmtDfIR1O7srOI7tgmaGN+C0WI1QJdTy5yx8zK1HPdSNIHh3VN0NKCHM/3jDJbKv
+	 x9mo3mAz/LC6OnVmShFklLlkNVSjNzMMpW6X9u+4=
+Subject: FAILED: patch "[PATCH] mm/vmscan: fix a bug calling wakeup_kswapd() with a wrong" failed to apply to 6.6-stable tree
+To: byungchul@sk.com,akpm@linux-foundation.org,baolin.wang@linux.alibaba.com,hannes@cmpxchg.org,hyeongtak.ji@sk.com,osalvador@suse.de,stable@vger.kernel.org,ying.huang@intel.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 04 Mar 2024 08:36:55 +0100
+Message-ID: <2024030455-recite-camera-0413@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240304-pinephone-pll-fixes-v3-2-94ab828f269a@oltmanns.dev>
-References: <20240304-pinephone-pll-fixes-v3-0-94ab828f269a@oltmanns.dev>
-In-Reply-To: <20240304-pinephone-pll-fixes-v3-0-94ab828f269a@oltmanns.dev>
-To: Michael Turquette <mturquette@baylibre.com>, 
- Stephen Boyd <sboyd@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
- Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Samuel Holland <samuel@sholland.org>, 
- =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>, 
- Purism Kernel Team <kernel@puri.sm>, Ondrej Jirman <megi@xff.cz>, 
- Neil Armstrong <neil.armstrong@linaro.org>, 
- Jessica Zhang <quic_jesszhan@quicinc.com>, Sam Ravnborg <sam@ravnborg.org>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
- Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
- Frank Oltmanns <frank@oltmanns.dev>, Diego Roversi <diegor@tiscali.it>, 
- stable@vger.kernel.org
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1471; i=frank@oltmanns.dev;
- h=from:subject:message-id; bh=kDpws4iby8ib+0jukh7K9mXcEL8OMyePEolpMUL5c7o=;
- b=owEB7QES/pANAwAIAZppogiUStPHAcsmYgBl5XhwgX3a4/s+n5hG05HBi6whjKEoqn9VxH3hT
- kU0ltspgoWJAbMEAAEIAB0WIQQC/SV7f5DmuaVET5aaaaIIlErTxwUCZeV4cAAKCRCaaaIIlErT
- x4QCC/9XbbJOFIoX2zdz6xo2rY0S6JXjrsQNk3zEBcedF7tVA3C9NOEGeThCxeRGBwyEM0G1Jm/
- 6b9GqpMRi0NcAEpIiaVMK71o59Z/S0DXxbkPTa9oYkpkq1KzehEcGS0K7dNtE5LfwRYFPUVYjyi
- gDEGQkO+ncjBo9uXbdpFNHeLg/j0Hah4k8lFJfSoQwK3m4/Dz7nZ3tC1Ul/iDHluuchD/3F0Fu8
- q/4Due10vh8EHiDO7K0lZpbE6a2oL4EZXSL/YWlJo3EPufvOQzVNmX0dEsEbf/0Cv3bdDylPsPT
- m2Rw0gzhMjLvudqz96hBz30qgVA+bmUyx2ENM9ME7jhu0wmgwqww2PCFJwTUtaYyq5v+R5LbxzC
- 6dMobEI5ahAEJZypeV5yc+kZGa+uok8d6f0qGs7ZVOlWfjeob8vzEgv1GqLkRkA6Fn5W17vOuya
- 8rKnEmKvmA1XVqI1XacEtkXDFpLjYF1+Ab4b51STuQCNx+POYQWvRTh4dCrS7C9hdLoQU=
-X-Developer-Key: i=frank@oltmanns.dev; a=openpgp;
- fpr=02FD257B7F90E6B9A5444F969A69A208944AD3C7
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-When the Allwinner A64's TCON0 searches the ideal rate for the connected
-panel, it may happen that it requests a rate from its parent PLL-MIPI
-which PLL-MIPI does not support.
 
-This happens for example on the Olimex TERES-I laptop where TCON0
-requests PLL-MIPI to change to a rate of several GHz which causes the
-panel to stay blank. It also happens on the pinephone where a rate of
-less than 500 MHz is requested which causes instabilities on some
-phones.
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Set the minimum and maximum rate of Allwinner A64's PLL-MIPI according
-to the Allwinner User Manual.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Fixes: ca1170b69968 ("clk: sunxi-ng: a64: force select PLL_MIPI in TCON0 mux")
-Reported-by: Diego Roversi <diegor@tiscali.it>
-Closes: https://groups.google.com/g/linux-sunxi/c/Rh-Uqqa66bw
-Signed-off-by: Frank Oltmanns <frank@oltmanns.dev>
-Tested-by: Diego Roversi <diegor@tiscali.it>
-Cc: stable@vger.kernel.org
----
- drivers/clk/sunxi-ng/ccu-sun50i-a64.c | 2 ++
- 1 file changed, 2 insertions(+)
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 2774f256e7c0219e2b0a0894af1c76bdabc4f974
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024030455-recite-camera-0413@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-diff --git a/drivers/clk/sunxi-ng/ccu-sun50i-a64.c b/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
-index 8951ffc14ff5..6a4b2b9ef30a 100644
---- a/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
-+++ b/drivers/clk/sunxi-ng/ccu-sun50i-a64.c
-@@ -182,6 +182,8 @@ static struct ccu_nkm pll_mipi_clk = {
- 					      &ccu_nkm_ops,
- 					      CLK_SET_RATE_UNGATE | CLK_SET_RATE_PARENT),
- 		.features	= CCU_FEATURE_CLOSEST_RATE,
-+		.min_rate	= 500000000,
-+		.max_rate	= 1400000000,
- 	},
- };
- 
+Possible dependencies:
 
--- 
-2.44.0
+2774f256e7c0 ("mm/vmscan: fix a bug calling wakeup_kswapd() with a wrong zone index")
+2ac9e99f3b21 ("mm: migrate: convert numamigrate_isolate_page() to numamigrate_isolate_folio()")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 2774f256e7c0219e2b0a0894af1c76bdabc4f974 Mon Sep 17 00:00:00 2001
+From: Byungchul Park <byungchul@sk.com>
+Date: Fri, 16 Feb 2024 20:15:02 +0900
+Subject: [PATCH] mm/vmscan: fix a bug calling wakeup_kswapd() with a wrong
+ zone index
+
+With numa balancing on, when a numa system is running where a numa node
+doesn't have its local memory so it has no managed zones, the following
+oops has been observed.  It's because wakeup_kswapd() is called with a
+wrong zone index, -1.  Fixed it by checking the index before calling
+wakeup_kswapd().
+
+> BUG: unable to handle page fault for address: 00000000000033f3
+> #PF: supervisor read access in kernel mode
+> #PF: error_code(0x0000) - not-present page
+> PGD 0 P4D 0
+> Oops: 0000 [#1] PREEMPT SMP NOPTI
+> CPU: 2 PID: 895 Comm: masim Not tainted 6.6.0-dirty #255
+> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+>    rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+> RIP: 0010:wakeup_kswapd (./linux/mm/vmscan.c:7812)
+> Code: (omitted)
+> RSP: 0000:ffffc90004257d58 EFLAGS: 00010286
+> RAX: ffffffffffffffff RBX: ffff88883fff0480 RCX: 0000000000000003
+> RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88883fff0480
+> RBP: ffffffffffffffff R08: ff0003ffffffffff R09: ffffffffffffffff
+> R10: ffff888106c95540 R11: 0000000055555554 R12: 0000000000000003
+> R13: 0000000000000000 R14: 0000000000000000 R15: ffff88883fff0940
+> FS:  00007fc4b8124740(0000) GS:ffff888827c00000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00000000000033f3 CR3: 000000026cc08004 CR4: 0000000000770ee0
+> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+> PKRU: 55555554
+> Call Trace:
+>  <TASK>
+> ? __die
+> ? page_fault_oops
+> ? __pte_offset_map_lock
+> ? exc_page_fault
+> ? asm_exc_page_fault
+> ? wakeup_kswapd
+> migrate_misplaced_page
+> __handle_mm_fault
+> handle_mm_fault
+> do_user_addr_fault
+> exc_page_fault
+> asm_exc_page_fault
+> RIP: 0033:0x55b897ba0808
+> Code: (omitted)
+> RSP: 002b:00007ffeefa821a0 EFLAGS: 00010287
+> RAX: 000055b89983acd0 RBX: 00007ffeefa823f8 RCX: 000055b89983acd0
+> RDX: 00007fc2f8122010 RSI: 0000000000020000 RDI: 000055b89983acd0
+> RBP: 00007ffeefa821a0 R08: 0000000000000037 R09: 0000000000000075
+> R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
+> R13: 00007ffeefa82410 R14: 000055b897ba5dd8 R15: 00007fc4b8340000
+>  </TASK>
+
+Link: https://lkml.kernel.org/r/20240216111502.79759-1-byungchul@sk.com
+Signed-off-by: Byungchul Park <byungchul@sk.com>
+Reported-by: Hyeongtak Ji <hyeongtak.ji@sk.com>
+Fixes: c574bbe917036 ("NUMA balancing: optimize page placement for memory tiering system")
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: "Huang, Ying" <ying.huang@intel.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/mm/migrate.c b/mm/migrate.c
+index cc9f2bcd73b4..c27b1f8097d4 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -2519,6 +2519,14 @@ static int numamigrate_isolate_folio(pg_data_t *pgdat, struct folio *folio)
+ 			if (managed_zone(pgdat->node_zones + z))
+ 				break;
+ 		}
++
++		/*
++		 * If there are no managed zones, it should not proceed
++		 * further.
++		 */
++		if (z < 0)
++			return 0;
++
+ 		wakeup_kswapd(pgdat->node_zones + z, 0,
+ 			      folio_order(folio), ZONE_MOVABLE);
+ 		return 0;
 
 
