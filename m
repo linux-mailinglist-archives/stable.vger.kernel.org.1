@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-26542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78E0A870F0D
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:50:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75615870E1E
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:41:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A9541C21C64
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:50:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E17D31F219FD
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:41:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D11D879DCE;
-	Mon,  4 Mar 2024 21:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001D67BB00;
+	Mon,  4 Mar 2024 21:40:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eugjhjb4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mVzPNZNZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90CC961675;
-	Mon,  4 Mar 2024 21:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1FDA7B3DE;
+	Mon,  4 Mar 2024 21:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589026; cv=none; b=HGkF1qONtq4N2sfOmZ9pBTMRzJrXUXKKJssY4JWIIRf/A44Wdi/36tEwnf+ocYJmuNIcLU7xlt/sPAWRdbsZIfHXeMnhpmV9Cj41MTEA9RYpBgcw2WJKhTOhxNXHUhLbbRkqcbnjdYeB+sR/jx5VKJ14Im+2dlDUiMXfXEmxZ/U=
+	t=1709588458; cv=none; b=qKvR+q9Sih6bmfvoTdQQOzYB9a8vzDBeKimcf8wtrxOrTdE4iPVxaktp41lxRn/nOb5dangg6ctHkUO6y0cg4LI6sjliDVSKtYW531vI+kKH2ktjEP/muOntLw4mhxeLIfIuiXqgkmFKQAVlD2sta0VETa1CbkPjkmHor5lZzuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589026; c=relaxed/simple;
-	bh=CFq+jH0VuAi6Zwm4fzf3LsVJPQ/cARGDxntFadrIhOE=;
+	s=arc-20240116; t=1709588458; c=relaxed/simple;
+	bh=rfmcSsz5t/2zhNKvUv6EuCecz4lRWxN9NaIZ52TPtYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A/MmvCkXdMucxR/OTkc5xmvSsoHu8ofJOdbQauZuxmASTHTooV5XotIwjOc8SCcBqkAHqmFmTFZWOQHHdnm43DKuO/4w7e2p/wFJAyuoqxbhpGz7bg+lw/MVXf5Ld2vDbyV/rfoJ4rfAcpokydMCpt8TQulRZ/InHV38X6FBJsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eugjhjb4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC717C43394;
-	Mon,  4 Mar 2024 21:50:25 +0000 (UTC)
+	 MIME-Version; b=gvCsrMjzsQpptodVEgY8MdGvBeKtcsVO6DswCL7KEdgavZqai5CWCIvHprKhJO/exOdcVOpNGkXhq3tLth80YxcBVdDnzEgSJGXQo6lMeaarynej7pcIoqd7kWvE1DQqpEwgReOomYJ/6L8LcytDUtEC9VyEX/zYuJhQuT2Ul4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mVzPNZNZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0085EC433F1;
+	Mon,  4 Mar 2024 21:40:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589026;
-	bh=CFq+jH0VuAi6Zwm4fzf3LsVJPQ/cARGDxntFadrIhOE=;
+	s=korg; t=1709588458;
+	bh=rfmcSsz5t/2zhNKvUv6EuCecz4lRWxN9NaIZ52TPtYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eugjhjb4+zU2CKlzfI7EEchrdlZsSeuHwpAw9Zax9yY+UaHXOOG2d1kXCwzzLn5PM
-	 XjxtfQxiTdcrRK8K1/xOvrlsRxFS5sngFPqIUJu0HKXxkj7DLblqauTVpENxkUxO2i
-	 cozIZ+riRrYE7OLmCx8HRGYtTWAgZUeDxI6GlVyQ=
+	b=mVzPNZNZBujMU1rMxtlSZWj3A0OUxji1QOJ+4ULvlliCgyHTbMcIxlVZzuXjcQcU7
+	 xC6xMILG+E+780h8FX7+e8mXrImypTbuzjnaVFYVA4RE7fCdve4YumMTN5DZFTU063
+	 KCmX047YLvyEEgK31NPHqvqZFLUkqwnEeJPfv5Qs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 172/215] NFSD: add delegation reaper to react to low memory condition
+	syzbot+4fa4a2d1f5a5ee06f006@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 115/143] af_unix: Fix task hung while purging oob_skb in GC.
 Date: Mon,  4 Mar 2024 21:23:55 +0000
-Message-ID: <20240304211602.406889518@linuxfoundation.org>
+Message-ID: <20240304211553.594139184@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,209 +62,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dai Ngo <dai.ngo@oracle.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 44df6f439a1790a5f602e3842879efa88f346672 ]
+commit 25236c91b5ab4a26a56ba2e79b8060cf4e047839 upstream.
 
-The delegation reaper is called by nfsd memory shrinker's on
-the 'count' callback. It scans the client list and sends the
-courtesy CB_RECALL_ANY to the clients that hold delegations.
+syzbot reported a task hung; at the same time, GC was looping infinitely
+in list_for_each_entry_safe() for OOB skb.  [0]
 
-To avoid flooding the clients with CB_RECALL_ANY requests, the
-delegation reaper sends only one CB_RECALL_ANY request to each
-client per 5 seconds.
+syzbot demonstrated that the list_for_each_entry_safe() was not actually
+safe in this case.
 
-Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
-[ cel: moved definition of RCA4_TYPE_MASK_RDATA_DLG ]
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+A single skb could have references for multiple sockets.  If we free such
+a skb in the list_for_each_entry_safe(), the current and next sockets could
+be unlinked in a single iteration.
+
+unix_notinflight() uses list_del_init() to unlink the socket, so the
+prefetched next socket forms a loop itself and list_for_each_entry_safe()
+never stops.
+
+Here, we must use while() and make sure we always fetch the first socket.
+
+[0]:
+Sending NMI from CPU 0 to CPUs 1:
+NMI backtrace for cpu 1
+CPU: 1 PID: 5065 Comm: syz-executor236 Not tainted 6.8.0-rc3-syzkaller-00136-g1f719a2f3fa6 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/25/2024
+RIP: 0010:preempt_count arch/x86/include/asm/preempt.h:26 [inline]
+RIP: 0010:check_kcov_mode kernel/kcov.c:173 [inline]
+RIP: 0010:__sanitizer_cov_trace_pc+0xd/0x60 kernel/kcov.c:207
+Code: cc cc cc cc 66 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 65 48 8b 14 25 40 c2 03 00 <65> 8b 05 b4 7c 78 7e a9 00 01 ff 00 48 8b 34 24 74 0f f6 c4 01 74
+RSP: 0018:ffffc900033efa58 EFLAGS: 00000283
+RAX: ffff88807b077800 RBX: ffff88807b077800 RCX: 1ffffffff27b1189
+RDX: ffff88802a5a3b80 RSI: ffffffff8968488d RDI: ffff88807b077f70
+RBP: ffffc900033efbb0 R08: 0000000000000001 R09: fffffbfff27a900c
+R10: ffffffff93d48067 R11: ffffffff8ae000eb R12: ffff88807b077800
+R13: dffffc0000000000 R14: ffff88807b077e40 R15: 0000000000000001
+FS:  0000000000000000(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000564f4fc1e3a8 CR3: 000000000d57a000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <NMI>
+ </NMI>
+ <TASK>
+ unix_gc+0x563/0x13b0 net/unix/garbage.c:319
+ unix_release_sock+0xa93/0xf80 net/unix/af_unix.c:683
+ unix_release+0x91/0xf0 net/unix/af_unix.c:1064
+ __sock_release+0xb0/0x270 net/socket.c:659
+ sock_close+0x1c/0x30 net/socket.c:1421
+ __fput+0x270/0xb80 fs/file_table.c:376
+ task_work_run+0x14f/0x250 kernel/task_work.c:180
+ exit_task_work include/linux/task_work.h:38 [inline]
+ do_exit+0xa8a/0x2ad0 kernel/exit.c:871
+ do_group_exit+0xd4/0x2a0 kernel/exit.c:1020
+ __do_sys_exit_group kernel/exit.c:1031 [inline]
+ __se_sys_exit_group kernel/exit.c:1029 [inline]
+ __x64_sys_exit_group+0x3e/0x50 kernel/exit.c:1029
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xd5/0x270 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x6f/0x77
+RIP: 0033:0x7f9d6cbdac09
+Code: Unable to access opcode bytes at 0x7f9d6cbdabdf.
+RSP: 002b:00007fff5952feb8 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f9d6cbdac09
+RDX: 000000000000003c RSI: 00000000000000e7 RDI: 0000000000000000
+RBP: 00007f9d6cc552b0 R08: ffffffffffffffb8 R09: 0000000000000006
+R10: 0000000000000006 R11: 0000000000000246 R12: 00007f9d6cc552b0
+R13: 0000000000000000 R14: 00007f9d6cc55d00 R15: 00007f9d6cbabe70
+ </TASK>
+
+Reported-by: syzbot+4fa4a2d1f5a5ee06f006@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4fa4a2d1f5a5ee06f006
+Fixes: 1279f9d9dec2 ("af_unix: Call kfree_skb() for dead unix_(sk)->oob_skb in GC.")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240209220453.96053-1-kuniyu@amazon.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c  |   88 ++++++++++++++++++++++++++++++++++++++++++++++++---
- fs/nfsd/state.h      |    5 ++
- include/linux/nfs4.h |   13 +++++++
- 3 files changed, 102 insertions(+), 4 deletions(-)
+ net/unix/garbage.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -2145,6 +2145,7 @@ static void __free_client(struct kref *k
- 	kfree(clp->cl_nii_domain.data);
- 	kfree(clp->cl_nii_name.data);
- 	idr_destroy(&clp->cl_stateids);
-+	kfree(clp->cl_ra);
- 	kmem_cache_free(client_slab, clp);
- }
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -315,10 +315,11 @@ void unix_gc(void)
+ 	__skb_queue_purge(&hitlist);
  
-@@ -2872,6 +2873,36 @@ static const struct tree_descr client_fi
- 	[3] = {""},
- };
+ #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
+-	list_for_each_entry_safe(u, next, &gc_candidates, link) {
+-		struct sk_buff *skb = u->oob_skb;
++	while (!list_empty(&gc_candidates)) {
++		u = list_entry(gc_candidates.next, struct unix_sock, link);
++		if (u->oob_skb) {
++			struct sk_buff *skb = u->oob_skb;
  
-+static int
-+nfsd4_cb_recall_any_done(struct nfsd4_callback *cb,
-+				struct rpc_task *task)
-+{
-+	switch (task->tk_status) {
-+	case -NFS4ERR_DELAY:
-+		rpc_delay(task, 2 * HZ);
-+		return 0;
-+	default:
-+		return 1;
-+	}
-+}
-+
-+static void
-+nfsd4_cb_recall_any_release(struct nfsd4_callback *cb)
-+{
-+	struct nfs4_client *clp = cb->cb_clp;
-+	struct nfsd_net *nn = net_generic(clp->net, nfsd_net_id);
-+
-+	spin_lock(&nn->client_lock);
-+	clear_bit(NFSD4_CLIENT_CB_RECALL_ANY, &clp->cl_flags);
-+	put_client_renew_locked(clp);
-+	spin_unlock(&nn->client_lock);
-+}
-+
-+static const struct nfsd4_callback_ops nfsd4_cb_recall_any_ops = {
-+	.done		= nfsd4_cb_recall_any_done,
-+	.release	= nfsd4_cb_recall_any_release,
-+};
-+
- static struct nfs4_client *create_client(struct xdr_netobj name,
- 		struct svc_rqst *rqstp, nfs4_verifier *verf)
- {
-@@ -2909,6 +2940,14 @@ static struct nfs4_client *create_client
- 		free_client(clp);
- 		return NULL;
- 	}
-+	clp->cl_ra = kzalloc(sizeof(*clp->cl_ra), GFP_KERNEL);
-+	if (!clp->cl_ra) {
-+		free_client(clp);
-+		return NULL;
-+	}
-+	clp->cl_ra_time = 0;
-+	nfsd4_init_cb(&clp->cl_ra->ra_cb, clp, &nfsd4_cb_recall_any_ops,
-+			NFSPROC4_CLNT_CB_RECALL_ANY);
- 	return clp;
- }
- 
-@@ -4364,14 +4403,16 @@ out:
- static unsigned long
- nfsd4_state_shrinker_count(struct shrinker *shrink, struct shrink_control *sc)
- {
--	int cnt;
-+	int count;
- 	struct nfsd_net *nn = container_of(shrink,
- 			struct nfsd_net, nfsd_client_shrinker);
- 
--	cnt = atomic_read(&nn->nfsd_courtesy_clients);
--	if (cnt > 0)
-+	count = atomic_read(&nn->nfsd_courtesy_clients);
-+	if (!count)
-+		count = atomic_long_read(&num_delegations);
-+	if (count)
- 		mod_delayed_work(laundry_wq, &nn->nfsd_shrinker_work, 0);
--	return (unsigned long)cnt;
-+	return (unsigned long)count;
- }
- 
- static unsigned long
-@@ -6180,6 +6221,44 @@ courtesy_client_reaper(struct nfsd_net *
- }
- 
- static void
-+deleg_reaper(struct nfsd_net *nn)
-+{
-+	struct list_head *pos, *next;
-+	struct nfs4_client *clp;
-+	struct list_head cblist;
-+
-+	INIT_LIST_HEAD(&cblist);
-+	spin_lock(&nn->client_lock);
-+	list_for_each_safe(pos, next, &nn->client_lru) {
-+		clp = list_entry(pos, struct nfs4_client, cl_lru);
-+		if (clp->cl_state != NFSD4_ACTIVE ||
-+			list_empty(&clp->cl_delegations) ||
-+			atomic_read(&clp->cl_delegs_in_recall) ||
-+			test_bit(NFSD4_CLIENT_CB_RECALL_ANY, &clp->cl_flags) ||
-+			(ktime_get_boottime_seconds() -
-+				clp->cl_ra_time < 5)) {
-+			continue;
-+		}
-+		list_add(&clp->cl_ra_cblist, &cblist);
-+
-+		/* release in nfsd4_cb_recall_any_release */
-+		atomic_inc(&clp->cl_rpc_users);
-+		set_bit(NFSD4_CLIENT_CB_RECALL_ANY, &clp->cl_flags);
-+		clp->cl_ra_time = ktime_get_boottime_seconds();
-+	}
-+	spin_unlock(&nn->client_lock);
-+
-+	while (!list_empty(&cblist)) {
-+		clp = list_first_entry(&cblist, struct nfs4_client,
-+					cl_ra_cblist);
-+		list_del_init(&clp->cl_ra_cblist);
-+		clp->cl_ra->ra_keep = 0;
-+		clp->cl_ra->ra_bmval[0] = BIT(RCA4_TYPE_MASK_RDATA_DLG);
-+		nfsd4_run_cb(&clp->cl_ra->ra_cb);
-+	}
-+}
-+
-+static void
- nfsd4_state_shrinker_worker(struct work_struct *work)
- {
- 	struct delayed_work *dwork = to_delayed_work(work);
-@@ -6187,6 +6266,7 @@ nfsd4_state_shrinker_worker(struct work_
- 				nfsd_shrinker_work);
- 
- 	courtesy_client_reaper(nn);
-+	deleg_reaper(nn);
- }
- 
- static inline __be32 nfs4_check_fh(struct svc_fh *fhp, struct nfs4_stid *stp)
---- a/fs/nfsd/state.h
-+++ b/fs/nfsd/state.h
-@@ -368,6 +368,7 @@ struct nfs4_client {
- #define NFSD4_CLIENT_UPCALL_LOCK	(5)	/* upcall serialization */
- #define NFSD4_CLIENT_CB_FLAG_MASK	(1 << NFSD4_CLIENT_CB_UPDATE | \
- 					 1 << NFSD4_CLIENT_CB_KILL)
-+#define NFSD4_CLIENT_CB_RECALL_ANY	(6)
- 	unsigned long		cl_flags;
- 	const struct cred	*cl_cb_cred;
- 	struct rpc_clnt		*cl_cb_client;
-@@ -411,6 +412,10 @@ struct nfs4_client {
- 
- 	unsigned int		cl_state;
- 	atomic_t		cl_delegs_in_recall;
-+
-+	struct nfsd4_cb_recall_any	*cl_ra;
-+	time64_t		cl_ra_time;
-+	struct list_head	cl_ra_cblist;
- };
- 
- /* struct nfs4_client_reset
---- a/include/linux/nfs4.h
-+++ b/include/linux/nfs4.h
-@@ -732,4 +732,17 @@ enum nfs4_setxattr_options {
- 	SETXATTR4_CREATE	= 1,
- 	SETXATTR4_REPLACE	= 2,
- };
-+
-+enum {
-+	RCA4_TYPE_MASK_RDATA_DLG	= 0,
-+	RCA4_TYPE_MASK_WDATA_DLG	= 1,
-+	RCA4_TYPE_MASK_DIR_DLG		= 2,
-+	RCA4_TYPE_MASK_FILE_LAYOUT	= 3,
-+	RCA4_TYPE_MASK_BLK_LAYOUT	= 4,
-+	RCA4_TYPE_MASK_OBJ_LAYOUT_MIN	= 8,
-+	RCA4_TYPE_MASK_OBJ_LAYOUT_MAX	= 9,
-+	RCA4_TYPE_MASK_OTHER_LAYOUT_MIN	= 12,
-+	RCA4_TYPE_MASK_OTHER_LAYOUT_MAX	= 15,
-+};
-+
- #endif
+-		if (skb) {
+ 			u->oob_skb = NULL;
+ 			kfree_skb(skb);
+ 		}
 
 
 
