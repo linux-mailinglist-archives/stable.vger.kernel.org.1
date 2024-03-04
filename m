@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-26016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27691870C9F
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:27:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DED5A870E4F
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:42:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB3961F267BD
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:27:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8020D1F21260
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:42:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 018497C094;
-	Mon,  4 Mar 2024 21:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91BF37992D;
+	Mon,  4 Mar 2024 21:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1jOlZZi7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCWSrVfu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB8E47C08C;
-	Mon,  4 Mar 2024 21:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50ACF10A35;
+	Mon,  4 Mar 2024 21:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587625; cv=none; b=MK54QsyedEIGoUvl1xV54YznAPaY7KXDmaR5PuWIdVeDVBlRjO/Yvc7R7OEeSWe0CLM095ld2Hvdf5Z5y5WpAAKlr/Z9rXODPONJpNSlNN+lBDy/+h+GaEJxkbtfTzZaoxfy8LyfuwIUAqyNPr75wWGoveP3I+zZtKNV5uRiz8g=
+	t=1709588565; cv=none; b=ArFFWmhT0dmYJ5XCYiIMqa6Ac0TVt+xYXzCUmRSJyIzuQp8ZcyKh6sFEbASO9a49hFfw4HGyPJqinIaBaoNTRMX2+I1fqA2aMe9Uu7005bjL3hPNY1rNvdYIFQ6wucE/siTFg3VkOIb2RlQnEavQmsM0iGGlLv6Oag3OHYMTVZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587625; c=relaxed/simple;
-	bh=dIWYceK7kv6N2g02tC/KnOaS1B3715c2V/HRASyVuCk=;
+	s=arc-20240116; t=1709588565; c=relaxed/simple;
+	bh=cMvXeMxi+1Ny7eKpZgMxL/Ri0w+GdZ6H4+PEg//PlxA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T2TBrqCTumQrlfe0miueDys459XpoMfTTtufvHoSqx6QCSjztJO1Et0HMSmmgXg9tXJPrHJEae8NJQwSbz/uc0Fzj5JKq0bnWJ2AD0Tw0I6LDZapkSbucve/81KxOGQeibk63ReOvo4o6KcBI2o+D/hD9hPC31R69bHwGFtNx28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1jOlZZi7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C28EC433B2;
-	Mon,  4 Mar 2024 21:27:05 +0000 (UTC)
+	 MIME-Version; b=CpuS2IEHQRh07gQeTuzBMs+mi52Xl6Ru/REUN2sYJVPQbRmMyiqfO/a1Sz0vYzNIjui1/I19XVlAVgE5wcgRhFYfIoVwwTjnKRv1BLqpZboJWxW+D7e681nqA7TgpSkQYlk/laI88U2oODLwWBKkD/W3fX7WeNwZX5M73DVaWr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCWSrVfu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6BE8C433F1;
+	Mon,  4 Mar 2024 21:42:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587625;
-	bh=dIWYceK7kv6N2g02tC/KnOaS1B3715c2V/HRASyVuCk=;
+	s=korg; t=1709588565;
+	bh=cMvXeMxi+1Ny7eKpZgMxL/Ri0w+GdZ6H4+PEg//PlxA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1jOlZZi7yKb97R+idXOg+pgxzXKUPVYIJanuUq891f21oN1yKu+x4PAjdvm4ldirV
-	 dWEs5YdgM89OLQj1sc3omjfdBqOZs+hEnyKUsydzXOGAKfPUQ5EpzXquz/9/YTs534
-	 x1pIXDTOPYa+ytcUmd7OUw1wcl64ZC2QszTXStJE=
+	b=GCWSrVfuOiQ5BhBRvQZJ14DdjH1qcfRebtyi2X5FDlQtv0MhMroAZPDX/VXlI99Jz
+	 pfABFNZB/KQZwWGUOXPIgPDQhKtuKWm2UCLX3iuuHuJaYGK06V+/FQ9aXu1RExVQGa
+	 8xI0nw1RxQSKtkiVQkTQzjxDWeUpR6vfbnqXAos8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryosuke Yasuoka <ryasuoka@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+34ad5fab48f7bf510349@syzkaller.appspotmail.com
-Subject: [PATCH 6.7 010/162] netlink: Fix kernel-infoleak-after-free in __skb_datagram_iter
+	Xiaowei Bao <xiaowei.bao@nxp.com>,
+	Hou Zhiqiang <Zhiqiang.Hou@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 012/215] PCI: layerscape: Add workaround for lost link capabilities during reset
 Date: Mon,  4 Mar 2024 21:21:15 +0000
-Message-ID: <20240304211552.154631507@linuxfoundation.org>
+Message-ID: <20240304211557.406756063@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,136 +65,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryosuke Yasuoka <ryasuoka@redhat.com>
+From: Xiaowei Bao <xiaowei.bao@nxp.com>
 
-[ Upstream commit 661779e1fcafe1b74b3f3fe8e980c1e207fea1fd ]
+[ Upstream commit 17cf8661ee0f065c08152e611a568dd1fb0285f1 ]
 
-syzbot reported the following uninit-value access issue [1]:
+The endpoint controller loses the Maximum Link Width and Supported Link Speed
+value from the Link Capabilities Register - initially configured by the Reset
+Configuration Word (RCW) - during a link-down or hot reset event.
 
-netlink_to_full_skb() creates a new `skb` and puts the `skb->data`
-passed as a 1st arg of netlink_to_full_skb() onto new `skb`. The data
-size is specified as `len` and passed to skb_put_data(). This `len`
-is based on `skb->end` that is not data offset but buffer offset. The
-`skb->end` contains data and tailroom. Since the tailroom is not
-initialized when the new `skb` created, KMSAN detects uninitialized
-memory area when copying the data.
+Address this issue in the endpoint event handler.
 
-This patch resolved this issue by correct the len from `skb->end` to
-`skb->len`, which is the actual data offset.
-
-BUG: KMSAN: kernel-infoleak-after-free in instrument_copy_to_user include/linux/instrumented.h:114 [inline]
-BUG: KMSAN: kernel-infoleak-after-free in copy_to_user_iter lib/iov_iter.c:24 [inline]
-BUG: KMSAN: kernel-infoleak-after-free in iterate_ubuf include/linux/iov_iter.h:29 [inline]
-BUG: KMSAN: kernel-infoleak-after-free in iterate_and_advance2 include/linux/iov_iter.h:245 [inline]
-BUG: KMSAN: kernel-infoleak-after-free in iterate_and_advance include/linux/iov_iter.h:271 [inline]
-BUG: KMSAN: kernel-infoleak-after-free in _copy_to_iter+0x364/0x2520 lib/iov_iter.c:186
- instrument_copy_to_user include/linux/instrumented.h:114 [inline]
- copy_to_user_iter lib/iov_iter.c:24 [inline]
- iterate_ubuf include/linux/iov_iter.h:29 [inline]
- iterate_and_advance2 include/linux/iov_iter.h:245 [inline]
- iterate_and_advance include/linux/iov_iter.h:271 [inline]
- _copy_to_iter+0x364/0x2520 lib/iov_iter.c:186
- copy_to_iter include/linux/uio.h:197 [inline]
- simple_copy_to_iter+0x68/0xa0 net/core/datagram.c:532
- __skb_datagram_iter+0x123/0xdc0 net/core/datagram.c:420
- skb_copy_datagram_iter+0x5c/0x200 net/core/datagram.c:546
- skb_copy_datagram_msg include/linux/skbuff.h:3960 [inline]
- packet_recvmsg+0xd9c/0x2000 net/packet/af_packet.c:3482
- sock_recvmsg_nosec net/socket.c:1044 [inline]
- sock_recvmsg net/socket.c:1066 [inline]
- sock_read_iter+0x467/0x580 net/socket.c:1136
- call_read_iter include/linux/fs.h:2014 [inline]
- new_sync_read fs/read_write.c:389 [inline]
- vfs_read+0x8f6/0xe00 fs/read_write.c:470
- ksys_read+0x20f/0x4c0 fs/read_write.c:613
- __do_sys_read fs/read_write.c:623 [inline]
- __se_sys_read fs/read_write.c:621 [inline]
- __x64_sys_read+0x93/0xd0 fs/read_write.c:621
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x44/0x110 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-
-Uninit was stored to memory at:
- skb_put_data include/linux/skbuff.h:2622 [inline]
- netlink_to_full_skb net/netlink/af_netlink.c:181 [inline]
- __netlink_deliver_tap_skb net/netlink/af_netlink.c:298 [inline]
- __netlink_deliver_tap+0x5be/0xc90 net/netlink/af_netlink.c:325
- netlink_deliver_tap net/netlink/af_netlink.c:338 [inline]
- netlink_deliver_tap_kernel net/netlink/af_netlink.c:347 [inline]
- netlink_unicast_kernel net/netlink/af_netlink.c:1341 [inline]
- netlink_unicast+0x10f1/0x1250 net/netlink/af_netlink.c:1368
- netlink_sendmsg+0x1238/0x13d0 net/netlink/af_netlink.c:1910
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg net/socket.c:745 [inline]
- ____sys_sendmsg+0x9c2/0xd60 net/socket.c:2584
- ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2638
- __sys_sendmsg net/socket.c:2667 [inline]
- __do_sys_sendmsg net/socket.c:2676 [inline]
- __se_sys_sendmsg net/socket.c:2674 [inline]
- __x64_sys_sendmsg+0x307/0x490 net/socket.c:2674
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x44/0x110 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-
-Uninit was created at:
- free_pages_prepare mm/page_alloc.c:1087 [inline]
- free_unref_page_prepare+0xb0/0xa40 mm/page_alloc.c:2347
- free_unref_page_list+0xeb/0x1100 mm/page_alloc.c:2533
- release_pages+0x23d3/0x2410 mm/swap.c:1042
- free_pages_and_swap_cache+0xd9/0xf0 mm/swap_state.c:316
- tlb_batch_pages_flush mm/mmu_gather.c:98 [inline]
- tlb_flush_mmu_free mm/mmu_gather.c:293 [inline]
- tlb_flush_mmu+0x6f5/0x980 mm/mmu_gather.c:300
- tlb_finish_mmu+0x101/0x260 mm/mmu_gather.c:392
- exit_mmap+0x49e/0xd30 mm/mmap.c:3321
- __mmput+0x13f/0x530 kernel/fork.c:1349
- mmput+0x8a/0xa0 kernel/fork.c:1371
- exit_mm+0x1b8/0x360 kernel/exit.c:567
- do_exit+0xd57/0x4080 kernel/exit.c:858
- do_group_exit+0x2fd/0x390 kernel/exit.c:1021
- __do_sys_exit_group kernel/exit.c:1032 [inline]
- __se_sys_exit_group kernel/exit.c:1030 [inline]
- __x64_sys_exit_group+0x3c/0x50 kernel/exit.c:1030
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x44/0x110 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-
-Bytes 3852-3903 of 3904 are uninitialized
-Memory access of size 3904 starts at ffff88812ea1e000
-Data copied to user address 0000000020003280
-
-CPU: 1 PID: 5043 Comm: syz-executor297 Not tainted 6.7.0-rc5-syzkaller-00047-g5bd7ef53ffe5 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/10/2023
-
-Fixes: 1853c9496460 ("netlink, mmap: transform mmap skb into full skb on taps")
-Reported-and-tested-by: syzbot+34ad5fab48f7bf510349@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=34ad5fab48f7bf510349 [1]
-Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240221074053.1794118-1-ryasuoka@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/20230720135834.1977616-2-Frank.Li@nxp.com
+Fixes: a805770d8a22 ("PCI: layerscape: Add EP mode support")
+Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
+Signed-off-by: Hou Zhiqiang <Zhiqiang.Hou@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Acked-by: Manivannan Sadhasivam <mani@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlink/af_netlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../pci/controller/dwc/pci-layerscape-ep.c    | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index d9107b545d360..6ae782efb1ee3 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -167,7 +167,7 @@ static inline u32 netlink_group_mask(u32 group)
- static struct sk_buff *netlink_to_full_skb(const struct sk_buff *skb,
- 					   gfp_t gfp_mask)
- {
--	unsigned int len = skb_end_offset(skb);
-+	unsigned int len = skb->len;
- 	struct sk_buff *new;
+diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+index 5b27554e071a1..dd7d74fecc48e 100644
+--- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
++++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
+@@ -45,6 +45,7 @@ struct ls_pcie_ep {
+ 	struct pci_epc_features		*ls_epc;
+ 	const struct ls_pcie_ep_drvdata *drvdata;
+ 	int				irq;
++	u32				lnkcap;
+ 	bool				big_endian;
+ };
  
- 	new = alloc_skb(len, gfp_mask);
+@@ -73,6 +74,7 @@ static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
+ 	struct ls_pcie_ep *pcie = dev_id;
+ 	struct dw_pcie *pci = pcie->pci;
+ 	u32 val, cfg;
++	u8 offset;
+ 
+ 	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_DR);
+ 	ls_lut_writel(pcie, PEX_PF0_PME_MES_DR, val);
+@@ -81,6 +83,19 @@ static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
+ 		return IRQ_NONE;
+ 
+ 	if (val & PEX_PF0_PME_MES_DR_LUD) {
++
++		offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
++
++		/*
++		 * The values of the Maximum Link Width and Supported Link
++		 * Speed from the Link Capabilities Register will be lost
++		 * during link down or hot reset. Restore initial value
++		 * that configured by the Reset Configuration Word (RCW).
++		 */
++		dw_pcie_dbi_ro_wr_en(pci);
++		dw_pcie_writel_dbi(pci, offset + PCI_EXP_LNKCAP, pcie->lnkcap);
++		dw_pcie_dbi_ro_wr_dis(pci);
++
+ 		cfg = ls_lut_readl(pcie, PEX_PF0_CONFIG);
+ 		cfg |= PEX_PF0_CFG_READY;
+ 		ls_lut_writel(pcie, PEX_PF0_CONFIG, cfg);
+@@ -214,6 +229,7 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
+ 	struct ls_pcie_ep *pcie;
+ 	struct pci_epc_features *ls_epc;
+ 	struct resource *dbi_base;
++	u8 offset;
+ 	int ret;
+ 
+ 	pcie = devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
+@@ -250,6 +266,9 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
+ 
+ 	platform_set_drvdata(pdev, pcie);
+ 
++	offset = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
++	pcie->lnkcap = dw_pcie_readl_dbi(pci, offset + PCI_EXP_LNKCAP);
++
+ 	ret = dw_pcie_ep_init(&pci->ep);
+ 	if (ret)
+ 		return ret;
 -- 
 2.43.0
 
