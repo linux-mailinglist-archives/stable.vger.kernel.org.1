@@ -1,243 +1,174 @@
-Return-Path: <stable+bounces-25979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDCDC870C5A
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:22:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A3C6870CA7
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:27:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DB8C1C239E2
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:22:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4060D1F21C1C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:27:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7246D10A3E;
-	Mon,  4 Mar 2024 21:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C8E77994A;
+	Mon,  4 Mar 2024 21:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="Kj8vWBpt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCPCKEj6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-52005.amazon.com (smtp-fw-52005.amazon.com [52.119.213.156])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8D41F5FA;
-	Mon,  4 Mar 2024 21:21:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF1AC43AAE;
+	Mon,  4 Mar 2024 21:27:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587315; cv=none; b=SouT7TXVrG7a/AhfpZW/io9PIqlM/yJ5KNXog8bukkCqwcYxlsatSfmMHMQV50sBRplWeyLju+rCqGnK9OnJTt7HIQISD/RDlQ8wvwF60+0Pnt+xBnhebC/kdQb5QmqlXv2eeTvQyuthobkwlpVc/j7CtiYGMl5Z4OJO9lMhBXU=
+	t=1709587644; cv=none; b=ahfCrMXKwaQ4Cbg9s83dbs/HTO8CcbNMfs/VHgK9NhnLdWsrIke+u+z8K0SGGoZ00xCBqD3GN6qPPWAGUD4Ef6jO6FD0xXmtII9cgtZ+29hB49BCwCA7IvI75G+2jeNaXZ7fbgxTHHgJhMCmQnuAqg6GsA9E4uAW1ibK0DdXyI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587315; c=relaxed/simple;
-	bh=+Uw688kr3sFUV/JRZ0dwhqYglG3zdxJv4LleOWUj+aE=;
-	h=Date:From:To:CC:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=OfcY9aT3/1DUM56m31GFdI+ip4NM+Oy2lpMKsceScSKqdJiSmNYNri22TTCxPj8gM0QWt8tBVWwF1GFLRzOUht+Q4XqXDiv0BQPqffXVxpPSISKBPikhBzx1D2lqoG9bnRP2+8R0UMxynXPUCMpqsYUispWP8Kr7ln12TosKn4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=Kj8vWBpt; arc=none smtp.client-ip=52.119.213.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1709587314; x=1741123314;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=6zwWcPAYAWHQfzlWhyN0qe/pCFOF7SDZ5bS/wSSOiVg=;
-  b=Kj8vWBpt2BG+l+Q4LZ5dp6EffkB4XujZ8SRSyESOYkwsS4O02PaFk6pr
-   jXKHA1eS8ryTQZSrj+9IisorEvcW1ptfb2KeIpR/CJqPdkQWMVg736kVH
-   Q4nUGhE6CSFxdLbC1f8bUZC9piKuWI0SViMYQQfMcfuAdSItJw+paHN7M
-   A=;
-X-IronPort-AV: E=Sophos;i="6.06,204,1705363200"; 
-   d="scan'208";a="638522381"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-52005.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2024 21:21:52 +0000
-Received: from EX19MTAEUB002.ant.amazon.com [10.0.10.100:20127]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.42.123:2525] with esmtp (Farcaster)
- id d57f359e-8ff9-4dd4-a86f-6f9c3864b2ec; Mon, 4 Mar 2024 21:21:50 +0000 (UTC)
-X-Farcaster-Flow-ID: d57f359e-8ff9-4dd4-a86f-6f9c3864b2ec
-Received: from EX19D026EUB004.ant.amazon.com (10.252.61.64) by
- EX19MTAEUB002.ant.amazon.com (10.252.51.79) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Mon, 4 Mar 2024 21:21:46 +0000
-Received: from uc3ecf78c6baf56.ant.amazon.com (10.187.170.53) by
- EX19D026EUB004.ant.amazon.com (10.252.61.64) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Mon, 4 Mar 2024 21:21:43 +0000
-Date: Mon, 4 Mar 2024 13:21:39 -0800
-From: Andrew Panyakin <apanyaki@amazon.com>
-To: <stable@vger.kernel.org>
-CC: Boris Ostrovsky <boris.ostrovsky@oracle.com>, Juergen Gross
-	<jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>, "Oleksandr
- Tyshchenko" <oleksandr_tyshchenko@epam.com>, Marc Zyngier <maz@kernel.org>,
-	Samuel Holland <samuel@sholland.org>, Sasha Levin <sashal@kernel.org>,
-	Maximilian Heyne <mheyne@amazon.de>, Jeremy Fitzhardinge
-	<jeremy.fitzhardinge@citrix.com>, Konrad Rzeszutek Wilk
-	<konrad.wilk@oracle.com>, "xen-devel@lists.xenproject.org"
-	<xen-devel@lists.xenproject.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH 5.15] xen/events: close evtchn after mapping cleanup
-Message-ID: <20240304212139.GA3585816@uc3ecf78c6baf56.ant.amazon.com>
+	s=arc-20240116; t=1709587644; c=relaxed/simple;
+	bh=p8+G76tAsExwd6qu1lKexgY1nx5sHn9ucmnSSDhGaGg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GisYvQKaW7IiV9BWf3Qh82M9Gx96NXKvEWUBvKD6RYL6Of9RxPJqvGl2Qt3vwQTG0btH6uDQsYnyTI8wsGB7waz/F9DrlZfKuP2XBsjVPg9LXcPaMlWcYNg/+vBh2U/acVwjMLExe8Okqn2IhS4NQ5gNrOVOtg0pgHCDbu9a6uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCPCKEj6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C97C43390;
+	Mon,  4 Mar 2024 21:27:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1709587643;
+	bh=p8+G76tAsExwd6qu1lKexgY1nx5sHn9ucmnSSDhGaGg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=GCPCKEj6Kvi6MSkMHcZ4XvqcaiMV8w1Q3jdtPmOAWW1jFtiu0IzuHPIhwe7zqYkHi
+	 ujp9XAZJv67/oNFtWG52cnTTiAc0CuSykYKOkLRY8vNIMWwe/dHoDIKRoDKctaAULM
+	 JWxjnYagTxP429BHDg01fvhkN91nm2wlYc/MuKG4=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Jordan Griege <jgriege@cloudflare.com>,
+	Ignat Korchagin <ignat@cloudflare.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 034/162] netfilter: nf_tables: allow NFPROTO_INET in nft_(match/target)_validate()
+Date: Mon,  4 Mar 2024 21:21:39 +0000
+Message-ID: <20240304211552.927718876@linuxfoundation.org>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-X-ClientProxiedBy: EX19D039UWB001.ant.amazon.com (10.13.138.119) To
- EX19D026EUB004.ant.amazon.com (10.252.61.64)
+Content-Transfer-Encoding: 8bit
 
-From: Maximilian Heyne <mheyne@amazon.de>
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
-Commit fa765c4b4aed2d64266b694520ecb025c862c5a9 upstream
+------------------
 
-shutdown_pirq and startup_pirq are not taking the
-irq_mapping_update_lock because they can't due to lock inversion. Both
-are called with the irq_desc->lock being taking. The lock order,
-however, is first irq_mapping_update_lock and then irq_desc->lock.
+From: Ignat Korchagin <ignat@cloudflare.com>
 
-This opens multiple races:
-- shutdown_pirq can be interrupted by a function that allocates an event
-  channel:
+[ Upstream commit 7e0f122c65912740327e4c54472acaa5f85868cb ]
 
-  CPU0                        CPU1
-  shutdown_pirq {
-    xen_evtchn_close(e)
-                              __startup_pirq {
-                                EVTCHNOP_bind_pirq
-                                  -> returns just freed evtchn e
-                                set_evtchn_to_irq(e, irq)
-                              }
-    xen_irq_info_cleanup() {
-      set_evtchn_to_irq(e, -1)
-    }
+Commit d0009effa886 ("netfilter: nf_tables: validate NFPROTO_* family") added
+some validation of NFPROTO_* families in the nft_compat module, but it broke
+the ability to use legacy iptables modules in dual-stack nftables.
+
+While with legacy iptables one had to independently manage IPv4 and IPv6
+tables, with nftables it is possible to have dual-stack tables sharing the
+rules. Moreover, it was possible to use rules based on legacy iptables
+match/target modules in dual-stack nftables.
+
+As an example, the program from [2] creates an INET dual-stack family table
+using an xt_bpf based rule, which looks like the following (the actual output
+was generated with a patched nft tool as the current nft tool does not parse
+dual stack tables with legacy match rules, so consider it for illustrative
+purposes only):
+
+table inet testfw {
+  chain input {
+    type filter hook prerouting priority filter; policy accept;
+    bytecode counter packets 0 bytes 0 accept
   }
+}
 
-  Assume here event channel e refers here to the same event channel
-  number.
-  After this race the evtchn_to_irq mapping for e is invalid (-1).
+After d0009effa886 ("netfilter: nf_tables: validate NFPROTO_* family") we get
+EOPNOTSUPP for the above program.
 
-- __startup_pirq races with __unbind_from_irq in a similar way. Because
-  __startup_pirq doesn't take irq_mapping_update_lock it can grab the
-  evtchn that __unbind_from_irq is currently freeing and cleaning up. In
-  this case even though the event channel is allocated, its mapping can
-  be unset in evtchn_to_irq.
+Fix this by allowing NFPROTO_INET for nft_(match/target)_validate(), but also
+restrict the functions to classic iptables hooks.
 
-The fix is to first cleanup the mappings and then close the event
-channel. In this way, when an event channel gets allocated it's
-potential previous evtchn_to_irq mappings are guaranteed to be unset already.
-This is also the reverse order of the allocation where first the event
-channel is allocated and then the mappings are setup.
+Changes in v3:
+  * clarify that upstream nft will not display such configuration properly and
+    that the output was generated with a patched nft tool
+  * remove example program from commit description and link to it instead
+  * no code changes otherwise
 
-On a 5.10 kernel prior to commit 3fcdaf3d7634 ("xen/events: modify internal
-[un]bind interfaces"), we hit a BUG like the following during probing of NVMe
-devices. The issue is that during nvme_setup_io_queues, pci_free_irq
-is called for every device which results in a call to shutdown_pirq.
-With many nvme devices it's therefore likely to hit this race during
-boot because there will be multiple calls to shutdown_pirq and
-startup_pirq are running potentially in parallel.
+Changes in v2:
+  * restrict nft_(match/target)_validate() to classic iptables hooks
+  * rewrite example program to use unmodified libnftnl
 
-  ------------[ cut here ]------------
-  blkfront: xvda: barrier or flush: disabled; persistent grants: enabled; indirect descriptors: enabled; bounce buffer: enabled
-  kernel BUG at drivers/xen/events/events_base.c:499!
-  invalid opcode: 0000 [#1] SMP PTI
-  CPU: 44 PID: 375 Comm: kworker/u257:23 Not tainted 5.10.201-191.748.amzn2.x86_64 #1
-  Hardware name: Xen HVM domU, BIOS 4.11.amazon 08/24/2006
-  Workqueue: nvme-reset-wq nvme_reset_work
-  RIP: 0010:bind_evtchn_to_cpu+0xdf/0xf0
-  Code: 5d 41 5e c3 cc cc cc cc 44 89 f7 e8 2b 55 ad ff 49 89 c5 48 85 c0 0f 84 64 ff ff ff 4c 8b 68 30 41 83 fe ff 0f 85 60 ff ff ff <0f> 0b 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 0f 1f 44 00 00
-  RSP: 0000:ffffc9000d533b08 EFLAGS: 00010046
-  RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000006
-  RDX: 0000000000000028 RSI: 00000000ffffffff RDI: 00000000ffffffff
-  RBP: ffff888107419680 R08: 0000000000000000 R09: ffffffff82d72b00
-  R10: 0000000000000000 R11: 0000000000000000 R12: 00000000000001ed
-  R13: 0000000000000000 R14: 00000000ffffffff R15: 0000000000000002
-  FS:  0000000000000000(0000) GS:ffff88bc8b500000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 0000000000000000 CR3: 0000000002610001 CR4: 00000000001706e0
-  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-  Call Trace:
-   ? show_trace_log_lvl+0x1c1/0x2d9
-   ? show_trace_log_lvl+0x1c1/0x2d9
-   ? set_affinity_irq+0xdc/0x1c0
-   ? __die_body.cold+0x8/0xd
-   ? die+0x2b/0x50
-   ? do_trap+0x90/0x110
-   ? bind_evtchn_to_cpu+0xdf/0xf0
-   ? do_error_trap+0x65/0x80
-   ? bind_evtchn_to_cpu+0xdf/0xf0
-   ? exc_invalid_op+0x4e/0x70
-   ? bind_evtchn_to_cpu+0xdf/0xf0
-   ? asm_exc_invalid_op+0x12/0x20
-   ? bind_evtchn_to_cpu+0xdf/0xf0
-   ? bind_evtchn_to_cpu+0xc5/0xf0
-   set_affinity_irq+0xdc/0x1c0
-   irq_do_set_affinity+0x1d7/0x1f0
-   irq_setup_affinity+0xd6/0x1a0
-   irq_startup+0x8a/0xf0
-   __setup_irq+0x639/0x6d0
-   ? nvme_suspend+0x150/0x150
-   request_threaded_irq+0x10c/0x180
-   ? nvme_suspend+0x150/0x150
-   pci_request_irq+0xa8/0xf0
-   ? __blk_mq_free_request+0x74/0xa0
-   queue_request_irq+0x6f/0x80
-   nvme_create_queue+0x1af/0x200
-   nvme_create_io_queues+0xbd/0xf0
-   nvme_setup_io_queues+0x246/0x320
-   ? nvme_irq_check+0x30/0x30
-   nvme_reset_work+0x1c8/0x400
-   process_one_work+0x1b0/0x350
-   worker_thread+0x49/0x310
-   ? process_one_work+0x350/0x350
-   kthread+0x11b/0x140
-   ? __kthread_bind_mask+0x60/0x60
-   ret_from_fork+0x22/0x30
-  Modules linked in:
-  ---[ end trace a11715de1eee1873 ]---
-
-Fixes: d46a78b05c0e ("xen: implement pirq type event channels")
-Cc: stable@vger.kernel.org
-Co-debugged-by: Andrew Panyakin <apanyaki@amazon.com>
-Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
-[apanyaki: backport to v5.15-stable]
-Signed-off-by: Andrew Paniakin <apanyaki@amazon.com>
+Fixes: d0009effa886 ("netfilter: nf_tables: validate NFPROTO_* family")
+Link: https://lore.kernel.org/all/Zc1PfoWN38UuFJRI@calendula/T/#mc947262582c90fec044c7a3398cc92fac7afea72 [1]
+Link: https://lore.kernel.org/all/20240220145509.53357-1-ignat@cloudflare.com/ [2]
+Reported-by: Jordan Griege <jgriege@cloudflare.com>
+Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-Compare to upstream patch this one does not have close_evtchn flag
-because there is no need to handle static event channels.
-This feature was added only in 58f6259b7a08f ("xen/evtchn: Introduce new
-IOCTL to bind static evtchn")
+ net/netfilter/nft_compat.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
- drivers/xen/events/events_base.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
-index ee691b20d4a3..04ff194fecf4 100644
---- a/drivers/xen/events/events_base.c
-+++ b/drivers/xen/events/events_base.c
-@@ -936,8 +936,8 @@ static void shutdown_pirq(struct irq_data *data)
- 		return;
+diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
+index 1f9474fefe849..d3d11dede5450 100644
+--- a/net/netfilter/nft_compat.c
++++ b/net/netfilter/nft_compat.c
+@@ -359,10 +359,20 @@ static int nft_target_validate(const struct nft_ctx *ctx,
  
- 	do_mask(info, EVT_MASK_REASON_EXPLICIT);
--	xen_evtchn_close(evtchn);
- 	xen_irq_info_cleanup(info);
-+	xen_evtchn_close(evtchn);
- }
+ 	if (ctx->family != NFPROTO_IPV4 &&
+ 	    ctx->family != NFPROTO_IPV6 &&
++	    ctx->family != NFPROTO_INET &&
+ 	    ctx->family != NFPROTO_BRIDGE &&
+ 	    ctx->family != NFPROTO_ARP)
+ 		return -EOPNOTSUPP;
  
- static void enable_pirq(struct irq_data *data)
-@@ -981,8 +981,6 @@ static void __unbind_from_irq(unsigned int irq)
- 		unsigned int cpu = cpu_from_irq(irq);
- 		struct xenbus_device *dev;
++	ret = nft_chain_validate_hooks(ctx->chain,
++				       (1 << NF_INET_PRE_ROUTING) |
++				       (1 << NF_INET_LOCAL_IN) |
++				       (1 << NF_INET_FORWARD) |
++				       (1 << NF_INET_LOCAL_OUT) |
++				       (1 << NF_INET_POST_ROUTING));
++	if (ret)
++		return ret;
++
+ 	if (nft_is_base_chain(ctx->chain)) {
+ 		const struct nft_base_chain *basechain =
+ 						nft_base_chain(ctx->chain);
+@@ -610,10 +620,20 @@ static int nft_match_validate(const struct nft_ctx *ctx,
  
--		xen_evtchn_close(evtchn);
--
- 		switch (type_from_irq(irq)) {
- 		case IRQT_VIRQ:
- 			per_cpu(virq_to_irq, cpu)[virq_from_irq(irq)] = -1;
-@@ -1000,6 +998,7 @@ static void __unbind_from_irq(unsigned int irq)
- 		}
+ 	if (ctx->family != NFPROTO_IPV4 &&
+ 	    ctx->family != NFPROTO_IPV6 &&
++	    ctx->family != NFPROTO_INET &&
+ 	    ctx->family != NFPROTO_BRIDGE &&
+ 	    ctx->family != NFPROTO_ARP)
+ 		return -EOPNOTSUPP;
  
- 		xen_irq_info_cleanup(info);
-+		xen_evtchn_close(evtchn);
- 	}
- 
- 	xen_free_irq(irq);
++	ret = nft_chain_validate_hooks(ctx->chain,
++				       (1 << NF_INET_PRE_ROUTING) |
++				       (1 << NF_INET_LOCAL_IN) |
++				       (1 << NF_INET_FORWARD) |
++				       (1 << NF_INET_LOCAL_OUT) |
++				       (1 << NF_INET_POST_ROUTING));
++	if (ret)
++		return ret;
++
+ 	if (nft_is_base_chain(ctx->chain)) {
+ 		const struct nft_base_chain *basechain =
+ 						nft_base_chain(ctx->chain);
 -- 
-2.40.1
+2.43.0
+
+
 
 
