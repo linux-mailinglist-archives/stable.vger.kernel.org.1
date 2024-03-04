@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-25854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29E4886FBE3
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 09:30:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2227D86FBE6
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 09:31:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA38F2826D6
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 08:30:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1E5828257B
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 08:30:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2C34C2C4;
-	Mon,  4 Mar 2024 08:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD09917BA8;
+	Mon,  4 Mar 2024 08:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xCwy+3KP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dbdx11bk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931E818629
-	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 08:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE9317BAB
+	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 08:30:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709541023; cv=none; b=revVeqRFqosmxMQ4Fag0QHuAh0f5EUSrm00bN8eYy66jANcOeZbobk6szXiMvOnfm7rDWSMMqajf3K/+Az8yeu1/+9GFQfQVkKMB0IQXyVLBoX76hVU9SFuTUEbxHPqLbZDaw4PK+don4Zbgy+XM1mN9a04V3E0K++EbYTbcCcY=
+	t=1709541032; cv=none; b=gFDTtpoo7NdNqbJvvvaKy/ah/YhHv5nGTISkHK4wCamMo2sUBh6JNfA+56+app16ut75GWFRMHhjVS5X+3zKzGo7S+aoLJvoO6c62j6fegn4Zdjve8N4tlQvq/v8jX1pOUye99yxvCFjwq0978SuEOjgaPvRZh/BJ8rCOjlsO8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709541023; c=relaxed/simple;
-	bh=PzZc7bBog2wRHyTIPo6VFAHQtdLH95zh0/9y+wmR9VI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mOBpxViUnRBJWEVJsAYbU+YgBF5VzOYzeQ22qtHvk9aIvXR7ssdiMz05nLXOMZG0QMnbEzD7AdF9VA8w65iegoICWAFvhQHe7D40nWW9cT5X5fpPxNtDEcIJB+UZardeRLRad+K1eSbTe7CHkrtTt1O2zeIK878OQm2AernBVgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xCwy+3KP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9401C433F1;
-	Mon,  4 Mar 2024 08:30:22 +0000 (UTC)
+	s=arc-20240116; t=1709541032; c=relaxed/simple;
+	bh=jWNflW3OEtbJ7k+DPTok1AF/nYAovVUJ4QZZpAWTZH4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=d40PwJ/y/zYDbungw6TdsPoZpQZQi/EL1ZvRqbNkEDnmu32j7fbWMUJ6205yoUtDDdS7RI/oLV4btUjBwMRR5Z6jNpK8flGGV9rPBNSDWNzXBY33/l5w7X5o1uO4KneYlI6pAiQuamkekUVQs3KNZFDNfnkI4ps5+nKBxyfgZ9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dbdx11bk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A70A1C433F1;
+	Mon,  4 Mar 2024 08:30:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709541023;
-	bh=PzZc7bBog2wRHyTIPo6VFAHQtdLH95zh0/9y+wmR9VI=;
+	s=korg; t=1709541032;
+	bh=jWNflW3OEtbJ7k+DPTok1AF/nYAovVUJ4QZZpAWTZH4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=xCwy+3KPJR9TD6NCKGzgNSxfQT6Vq+/QI5Qjxmfv/Y3awB2rkVKlfh+NeiveGI0rN
-	 A/TxzhVDSjAJR868dec98bNBs6nAhrnYRk3nGmWB+9GQ/KGTKs28DwNPMtpmUoebQU
-	 0JcRoSk30sIYbBjmGdymK0gK7m04jlKt5NJ0mD1o=
-Subject: FAILED: patch "[PATCH] selftests: mptcp: rm subflow with v4/v4mapped addr" failed to apply to 6.7-stable tree
+	b=dbdx11bkYaGF4svm31eZLfttLhduIywHeZIpiYPiyo/BWRetYsedIFsSakSLKVS2S
+	 PmUUwp+Z1Z/sOR/ykYUlLJ90rfLfLRUpdnvTf5Mrx0uBTbBteRDVLNcMUJViFKwfLd
+	 qOnnK3ylq7nIZsKg1jpOOkvqhwA/L60w1oP/SqkA=
+Subject: FAILED: patch "[PATCH] selftests: mptcp: rm subflow with v4/v4mapped addr" failed to apply to 6.6-stable tree
 To: tanggeliang@kylinos.cn,kuba@kernel.org,martineau@kernel.org,matttbe@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 04 Mar 2024 09:30:20 +0100
-Message-ID: <2024030420-swimsuit-antacid-a0dd@gregkh>
+Date: Mon, 04 Mar 2024 09:30:21 +0100
+Message-ID: <2024030421-badly-bucket-6555@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.7-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 7092dbee23282b6fcf1313fc64e2b92649ee16e8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024030420-swimsuit-antacid-a0dd@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024030421-badly-bucket-6555@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,6 +75,8 @@ bdbef0a6ff10 ("selftests: mptcp: add mptcp_lib_kill_wait")
 757c828ce949 ("selftests: mptcp: update userspace pm test helpers")
 80775412882e ("selftests: mptcp: add chk_subflows_total helper")
 06848c0f341e ("selftests: mptcp: add evts_get_info helper")
+9168ea02b898 ("selftests: mptcp: fix wait_rm_addr/sf parameters")
+f4a75e9d1100 ("selftests: mptcp: run userspace pm tests slower")
 
 thanks,
 
