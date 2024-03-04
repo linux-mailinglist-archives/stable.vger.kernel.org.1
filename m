@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-26137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51595870D42
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B6F1870EF3
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:49:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0827A1F212B7
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DE1E1C21E78
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:49:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9818F7BAF4;
-	Mon,  4 Mar 2024 21:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF0D57868F;
+	Mon,  4 Mar 2024 21:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tGm/Z6Xu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQfTYcp/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567C07B3FA;
-	Mon,  4 Mar 2024 21:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1501EB5A;
+	Mon,  4 Mar 2024 21:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587938; cv=none; b=WEMSup/8xGbchasIAHqWg6tY8Jc/aMdWEBv4/G/c9TNk99ITmvYloT2yjju/02F6OhMvtCaTTjb8RoffC/6pTbQC+dp6SBaYBA2fFcDEerUJP6nVuW5aR9bzw/5T9XMGBjHVGH1X8RR/um/ZY03PgHlD1kjzeh0i+iukel73qhQ=
+	t=1709588965; cv=none; b=lp8xzrXBlt2FLge8HMJ6Wy9uhYj/w2yMeBdHps7d73a8elGFqDfWK2OqzbWngzZxWVy8tNSNM6NJxubpKi5zB+v9d5Dsjxea/RfovjPkawD8kPhCDoZendpg9xp10US0/7ioonXjvGXfYk23xhTDKynA+VaHREgPmT9GjHo6+qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587938; c=relaxed/simple;
-	bh=AOWPsOyynpCaS7Ghuj+1m4LIzvm5O4YWusneJ9YzQhE=;
+	s=arc-20240116; t=1709588965; c=relaxed/simple;
+	bh=QoPyVRp97RCT31iPScySNQ5ZXBfETowU8X+e7+W/ktw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LrG5EjXiDyYMJvVe2zq93LzbnE4145EpMfVfrgKc+Qz3089CanHpz80WMbWx2exEt9s4VoE5S5ONlsoAVXQe75+aghzOx/F5diRd9eUD45Yj9v/bngjsuVc6g5W6tObJsA0A5ju7u80e5pqhkiXbLJLjx5fb+VECyESgjIi0d/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tGm/Z6Xu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF64CC433C7;
-	Mon,  4 Mar 2024 21:32:17 +0000 (UTC)
+	 MIME-Version; b=sCoRS/HmJBuCjnFraOH6HerPR402pVqErKSKGsBn9d0o6GBGW9VnvqbBMdq0vRtrsrBhoUzIcyHXOgHkVUDu7fB6tByRJnTs5TTyF3yB8prY8ClOj8y+dDBAgcHej++Fgys+wlLrSoP8fVNw7Ksih0xw1EhQV2mamgt/YbIEOzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQfTYcp/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D975C433C7;
+	Mon,  4 Mar 2024 21:49:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587938;
-	bh=AOWPsOyynpCaS7Ghuj+1m4LIzvm5O4YWusneJ9YzQhE=;
+	s=korg; t=1709588965;
+	bh=QoPyVRp97RCT31iPScySNQ5ZXBfETowU8X+e7+W/ktw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tGm/Z6XuGeokKYa1lulJGnJIxZo9QJctTcZ1sMHuJfUjfUkxzH7j5Jw+/wDCm0K02
-	 OTZ8etGGwbvSdzxgOXpS7d8S+UTsTOtRlfaR7gcgFF2TYVVHAVatvOFBDN/5beIVqw
-	 ouE2rXuIVYsp4vs8lN6yHQvQpEIjfrF64ilefb1c=
+	b=iQfTYcp/3bhc/3hqfDpCEJMeBjPyifgGi0Cs4XX91pmS7vrgP1tY8Wuboj9+N0Tlg
+	 1gNM/TxB/H+ZIK1OUgpaIz+cGX1b2BpbmlGBoS7gbDgwT41lGez1gaoiNja7X2rWrC
+	 RZac46gl/KX+5YgyjFc3uMSBVQ2BQ2g7tbsIQ1GQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.7 123/162] mptcp: avoid printing warning once on client side
+	Ard Biesheuvel <ardb@kernel.org>,
+	Borislav Petkov <bp@suse.de>
+Subject: [PATCH 6.1 125/215] x86/boot/compressed: Only build mem_encrypt.S if AMD_MEM_ENCRYPT=y
 Date: Mon,  4 Mar 2024 21:23:08 +0000
-Message-ID: <20240304211555.683796804@linuxfoundation.org>
+Message-ID: <20240304211601.033041105@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit 5b49c41ac8f27aa3a63a1712b1f54f91015c18f2 upstream.
+commit 61de13df95901bc58456bc5acdbd3c18c66cf859 upstream.
 
-After the 'Fixes' commit mentioned below, the client side might print
-the following warning once when a subflow is fully established at the
-reception of any valid additional ack:
+Avoid building the mem_encrypt.o object if memory encryption support is
+not enabled to begin with.
 
-  MPTCP: bogus mpc option on established client sk
-
-That's a normal situation, and no warning should be printed for that. We
-can then skip the check when the label is used.
-
-Fixes: e4a0fa47e816 ("mptcp: corner case locking for rx path fields initialization")
-Cc: stable@vger.kernel.org
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240223-upstream-net-20240223-misc-fixes-v1-3-162e87e48497@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/20221122161017.2426828-17-ardb@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/options.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/boot/compressed/Makefile      |    2 +-
+ arch/x86/boot/compressed/mem_encrypt.S |    2 --
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -981,10 +981,10 @@ static bool check_fully_established(stru
- 	if (mp_opt->deny_join_id0)
- 		WRITE_ONCE(msk->pm.remote_deny_join_id0, true);
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -100,7 +100,7 @@ vmlinux-objs-$(CONFIG_RANDOMIZE_BASE) +=
+ ifdef CONFIG_X86_64
+ 	vmlinux-objs-y += $(obj)/ident_map_64.o
+ 	vmlinux-objs-y += $(obj)/idt_64.o $(obj)/idt_handlers_64.o
+-	vmlinux-objs-y += $(obj)/mem_encrypt.o
++	vmlinux-objs-$(CONFIG_AMD_MEM_ENCRYPT) += $(obj)/mem_encrypt.o
+ 	vmlinux-objs-y += $(obj)/pgtable_64.o
+ 	vmlinux-objs-$(CONFIG_AMD_MEM_ENCRYPT) += $(obj)/sev.o
+ endif
+--- a/arch/x86/boot/compressed/mem_encrypt.S
++++ b/arch/x86/boot/compressed/mem_encrypt.S
+@@ -307,7 +307,6 @@ SYM_FUNC_END(startup32_check_sev_cbit)
  
--set_fully_established:
- 	if (unlikely(!READ_ONCE(msk->pm.server_side)))
- 		pr_warn_once("bogus mpc option on established client sk");
+ 	.data
  
-+set_fully_established:
- 	mptcp_data_lock((struct sock *)msk);
- 	__mptcp_subflow_fully_established(msk, subflow, mp_opt);
- 	mptcp_data_unlock((struct sock *)msk);
+-#ifdef CONFIG_AMD_MEM_ENCRYPT
+ 	.balign	8
+ SYM_DATA(sme_me_mask,		.quad 0)
+ SYM_DATA(sev_status,		.quad 0)
+@@ -323,4 +322,3 @@ SYM_DATA_START_LOCAL(boot32_idt_desc)
+ 	.word	. - boot32_idt - 1
+ 	.long	0
+ SYM_DATA_END(boot32_idt_desc)
+-#endif
 
 
 
