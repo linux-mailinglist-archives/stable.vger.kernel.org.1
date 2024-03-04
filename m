@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-26220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C66CF870D9D
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:35:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C156870E43
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:42:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67335B26F6F
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:35:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 508001C213DC
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:42:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8935846BA0;
-	Mon,  4 Mar 2024 21:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C9B79DDE;
+	Mon,  4 Mar 2024 21:42:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AWxEZb/t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UkyBhUlP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475CE1C6AB;
-	Mon,  4 Mar 2024 21:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5CE07BAED;
+	Mon,  4 Mar 2024 21:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588154; cv=none; b=jTknj6l7S9lDrdlF3uXl2N5eQKuCIJBMb9VfVxPf3HQa14Y2DCKUArfHGTB2OFC6AUEBYXvV09R4r42MNbGaJ+Yj5mftgyd7YcrZBe4v3yIB/6slckNCm2BEj3Y+I9Ke084MMI6wC/jv9mIf5Y7E4eo1hAefGs7jso2/Zzp8Dcs=
+	t=1709588536; cv=none; b=GsrSs9PZuh2jWGowE0+EpZalo+3BV+lv6+wJB+qBSgSeHDude8ZOgxxl+Dwr22AcQ7LQy7G7svXp+CoGLktW2DsMvmFu164CPz4reqzZ3oxSvC/P9DcjtHsqGmmzKcIse1vr25p3wKVVvvk05KXNgSVAm2Hdnj0C7Qo3rxu8sL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588154; c=relaxed/simple;
-	bh=1ilBn9BjHUPKqwhgpHu/1GX8j++bvmapU14ZoiKBJVQ=;
+	s=arc-20240116; t=1709588536; c=relaxed/simple;
+	bh=VyQIwEXCC2zGOCj/yHCsovob5n4HEKoxw/uL931+C2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gs7wwYOybWaddQLJuiz8MJ2/BuxXyToOzpvo1Wh58sMYPhnUy9a6PH2MTEwPOHrMmJBYaAIdj6DZLaNbYQJg7K95jTKX64mEoEJ02BdXuoHITQ9ZraQKMgpv5BnC6jvolRs0rwVZBeEiGTy/+TVHEyvn73N87OzR81zI+MyBYd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AWxEZb/t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD220C433F1;
-	Mon,  4 Mar 2024 21:35:53 +0000 (UTC)
+	 MIME-Version; b=Oj9BZ4dAT1oTTr27McSc57gvvBkhY7N1wTw/2EW3U7h5ke0l7RUVRdDS5VgkzOxdCyubcuu/E3oAgJERtex50G+LZrtDEajbjiiH6xLG4zML1r9KaL9oerAgkbK7D+5/7wlT94v5YpGysht/av+Djh4P3zAmTX/h8onj+h9fdd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UkyBhUlP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58028C433F1;
+	Mon,  4 Mar 2024 21:42:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588154;
-	bh=1ilBn9BjHUPKqwhgpHu/1GX8j++bvmapU14ZoiKBJVQ=;
+	s=korg; t=1709588536;
+	bh=VyQIwEXCC2zGOCj/yHCsovob5n4HEKoxw/uL931+C2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AWxEZb/tTxhXhZOAORZc/1A9C4oRiZZjmvjiXvpI6F/m8rgM+bBqM8DLw+Q4P31yW
-	 XHPMmGbm4y9RExOMAYigo9yvKltoXGTclG9qw0aHAMhXd60k/SrtD3nl5hW1lkpwK7
-	 LmybFqR1YDqK1osmvT2mgIhby+MuQoZyxnKj5RZQ=
+	b=UkyBhUlPHhuayZH8rnf2vwaLwFKXYL0ezJI7O1hUEULeaHSftgcbs63jyjhygVuUw
+	 lDwqQcu5n31ZOZRATvcZyVapNWpKwZnIkxYEAQ4WFHtbdQe2ixFtWoPZ9TaecosRYd
+	 hiKy2Sj7feCV8hrjRaNRe4jQtP14PYeVE1ZGABJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuanhong Guo <gch981213@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.10 41/42] mtd: spinand: gigadevice: fix Quad IO for GD5F1GQ5UExxG
-Date: Mon,  4 Mar 2024 21:24:08 +0000
-Message-ID: <20240304211539.032009668@linuxfoundation.org>
+	Arturas Moskvinas <arturas.moskvinas@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 129/143] gpio: 74x164: Enable output pins after registers are reset
+Date: Mon,  4 Mar 2024 21:24:09 +0000
+Message-ID: <20240304211554.028598749@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
-References: <20240304211537.631764077@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuanhong Guo <gch981213@gmail.com>
+From: Arturas Moskvinas <arturas.moskvinas@gmail.com>
 
-commit a4f9dd55c5e1bb951db6f1dee20e62e0103f3438 upstream.
+[ Upstream commit 530b1dbd97846b110ea8a94c7cc903eca21786e5 ]
 
-Read From Cache Quad IO (EBH) uses 2 dummy bytes on this chip according
-to page 23 of the datasheet[0].
+Chip outputs are enabled[1] before actual reset is performed[2] which might
+cause pin output value to flip flop if previous pin value was set to 1.
+Fix that behavior by making sure chip is fully reset before all outputs are
+enabled.
 
-[0]: https://www.gigadevice.com/datasheet/gd5f1gq5xexxg/
+Flip-flop can be noticed when module is removed and inserted again and one of
+the pins was changed to 1 before removal. 100 microsecond flipping is
+noticeable on oscilloscope (100khz SPI bus).
 
-Fixes: 469b99248985 ("mtd: spinand: gigadevice: Support GD5F1GQ5UExxG")
-Signed-off-by: Chuanhong Guo <gch981213@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20220320100001.247905-2-gch981213@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For a properly reset chip - output is enabled around 100 microseconds (on 100khz
+SPI bus) later during probing process hence should be irrelevant behavioral
+change.
+
+Fixes: 7ebc194d0fd4 (gpio: 74x164: Introduce 'enable-gpios' property)
+Link: https://elixir.bootlin.com/linux/v6.7.4/source/drivers/gpio/gpio-74x164.c#L130 [1]
+Link: https://elixir.bootlin.com/linux/v6.7.4/source/drivers/gpio/gpio-74x164.c#L150 [2]
+Signed-off-by: Arturas Moskvinas <arturas.moskvinas@gmail.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/spi/gigadevice.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/gpio/gpio-74x164.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/mtd/nand/spi/gigadevice.c
-+++ b/drivers/mtd/nand/spi/gigadevice.c
-@@ -39,6 +39,14 @@ static SPINAND_OP_VARIANTS(read_cache_va
- 		SPINAND_PAGE_READ_FROM_CACHE_OP_3A(true, 0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_OP_3A(false, 0, 0, NULL, 0));
+diff --git a/drivers/gpio/gpio-74x164.c b/drivers/gpio/gpio-74x164.c
+index e00c333105170..753e7be039e4d 100644
+--- a/drivers/gpio/gpio-74x164.c
++++ b/drivers/gpio/gpio-74x164.c
+@@ -127,8 +127,6 @@ static int gen_74x164_probe(struct spi_device *spi)
+ 	if (IS_ERR(chip->gpiod_oe))
+ 		return PTR_ERR(chip->gpiod_oe);
  
-+static SPINAND_OP_VARIANTS(read_cache_variants_1gq5,
-+		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 2, NULL, 0),
-+		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
-+		SPINAND_PAGE_READ_FROM_CACHE_DUALIO_OP(0, 1, NULL, 0),
-+		SPINAND_PAGE_READ_FROM_CACHE_X2_OP(0, 1, NULL, 0),
-+		SPINAND_PAGE_READ_FROM_CACHE_OP(true, 0, 1, NULL, 0),
-+		SPINAND_PAGE_READ_FROM_CACHE_OP(false, 0, 1, NULL, 0));
+-	gpiod_set_value_cansleep(chip->gpiod_oe, 1);
+-
+ 	spi_set_drvdata(spi, chip);
+ 
+ 	chip->gpio_chip.label = spi->modalias;
+@@ -153,6 +151,8 @@ static int gen_74x164_probe(struct spi_device *spi)
+ 		goto exit_destroy;
+ 	}
+ 
++	gpiod_set_value_cansleep(chip->gpiod_oe, 1);
 +
- static SPINAND_OP_VARIANTS(write_cache_variants,
- 		SPINAND_PROG_LOAD_X4(true, 0, NULL, 0),
- 		SPINAND_PROG_LOAD(true, 0, NULL, 0));
-@@ -341,7 +349,7 @@ static const struct spinand_info gigadev
- 		     SPINAND_ID(SPINAND_READID_METHOD_OPCODE_DUMMY, 0x51),
- 		     NAND_MEMORG(1, 2048, 128, 64, 1024, 20, 1, 1, 1),
- 		     NAND_ECCREQ(4, 512),
--		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
-+		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants_1gq5,
- 					      &write_cache_variants,
- 					      &update_cache_variants),
- 		     SPINAND_HAS_QE_BIT,
+ 	ret = gpiochip_add_data(&chip->gpio_chip, chip);
+ 	if (!ret)
+ 		return 0;
+-- 
+2.43.0
+
 
 
 
