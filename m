@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-26515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FDEF870EF0
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:49:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4328870DE5
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:38:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A54D31F21297
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:49:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 223361C20C61
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:38:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13F8B78B4C;
-	Mon,  4 Mar 2024 21:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA12200CD;
+	Mon,  4 Mar 2024 21:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8+scesX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VNcMfPWp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75451EB5A;
-	Mon,  4 Mar 2024 21:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA238F58;
+	Mon,  4 Mar 2024 21:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588957; cv=none; b=OCIW22fG3SMO1yrBx2n4buptCKp17xl5eZ0/QofV+bshZYMawXcjbxHcnQxCm9E1VXpITUpC97QEsEJpRx7rb7yZ1j4BbKg24fFiusBH51YY6aOx9TQFJqcvbV98MbqChedouy/LToKiTi7nY+BnwyrEWC8Ztl3lN1E/kSivp3Q=
+	t=1709588326; cv=none; b=AXYx00FE9VUGUUr0eDyrrZDG+PBGfv5OF1FT5c0gGG1WOPPGNFYn1gRsxDERQrWFebhQ6Wr1qla3LmLOwozFkBEBgfCdSn28Thjq/RvMmEL+rTFIG1p526bRWuz+y/+9KBrRm88sCqIfPO+D9y2mTQPUC7blNrUKe0zpSYiqcgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588957; c=relaxed/simple;
-	bh=ug9Q1OLOXAdYUackhr1tHbldcMlXf4aQqIgFPVkA4pY=;
+	s=arc-20240116; t=1709588326; c=relaxed/simple;
+	bh=jT09ICd4onNnL2IPV7X0/ixKsQcM7hfm/+saMCCSwAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q1nUPoHzIiWs9ImRBmNLyEk4FfYUB+6JJl4dLW0c0sdAac8phvhE3Ww+JqmLtbKsI/5tee094H3ZoR5i0TZ9vdn1XsJnEtkiug+7GYUiSebZrScKt6PEd0a4c3KkNiK2j6M1VzCgCfyQgIcP/l1oGdBN9enPUVadHs9MrxT+5j0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8+scesX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AEB9C433C7;
-	Mon,  4 Mar 2024 21:49:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZE76MdrsJBb/OOa+Dr78oB10N6v35EVgW3LSwYo3G3Al3Ds3ce+iNjVbMe4fWf4Cz1vf0FTcEmmEpi7dikkYsxksOzSQRvqDTatIcmakgHE85wv6YMBPiibCGlEXKqc04k6SRf9sXF8jKoxrRyEx7A9f82i2BTY0sNE7HKkvmcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VNcMfPWp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE4BC433F1;
+	Mon,  4 Mar 2024 21:38:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588957;
-	bh=ug9Q1OLOXAdYUackhr1tHbldcMlXf4aQqIgFPVkA4pY=;
+	s=korg; t=1709588325;
+	bh=jT09ICd4onNnL2IPV7X0/ixKsQcM7hfm/+saMCCSwAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d8+scesXLEJOzJEx9jUsEaO7+9xwI9T5N+niMEhH0VwIDsEjcr/0JIMLk864vkKn3
-	 NvhueQsUZ7+V+Xk9v0n6ONiBNDVJ+UBrKKSlKLKyA03VkO7V1LwAHOCVS57/9gG32c
-	 gH5PnOmbr2uVkA58QMJKhuiblUoRCTfqs0xDBKL0=
+	b=VNcMfPWpkaqM8jRu6/8OU5XqTVyHNttNRHiuU5e6RePjZYsbL7VP3QSEcYaTLIXHk
+	 qX4m4WFXKLtOCtddZg6dWp7Ak4nOW6G5SDPCSxBfDydMW8dRRdgoRXq8vZ481cpbrD
+	 2AC5GRWkQENNRKHHvrDbWmHb5TezM6qItDvxE5bA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Borislav Petkov <bp@suse.de>
-Subject: [PATCH 6.1 122/215] x86/boot/compressed: Move startup32_check_sev_cbit() into .text
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Dimitris Vlachos <dvlachos@ics.forth.gr>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 065/143] riscv: Sparse-Memory/vmemmap out-of-bounds fix
 Date: Mon,  4 Mar 2024 21:23:05 +0000
-Message-ID: <20240304211600.939894033@linuxfoundation.org>
+Message-ID: <20240304211552.004822952@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,120 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Dimitris Vlachos <dvlachos@ics.forth.gr>
 
-commit b5d854cd4b6a314edd6c15dabc4233b84a0f8e5e upstream.
+[ Upstream commit a11dd49dcb9376776193e15641f84fcc1e5980c9 ]
 
-Move startup32_check_sev_cbit() into the .text section and turn it into
-an ordinary function using the ordinary 32-bit calling convention,
-instead of saving/restoring the registers that are known to be live at
-the only call site. This improves maintainability, and makes it possible
-to move this function out of head_64.S and into a separate compilation
-unit that is specific to memory encryption.
+Offset vmemmap so that the first page of vmemmap will be mapped
+to the first page of physical memory in order to ensure that
+vmemmap’s bounds will be respected during
+pfn_to_page()/page_to_pfn() operations.
+The conversion macros will produce correct SV39/48/57 addresses
+for every possible/valid DRAM_BASE inside the physical memory limits.
 
-Note that this requires the call site to be moved before the mixed mode
-check, as %eax will be live otherwise.
+v2:Address Alex's comments
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20221122161017.2426828-14-ardb@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Dimitris Vlachos <dvlachos@ics.forth.gr>
+Reported-by: Dimitris Vlachos <dvlachos@ics.forth.gr>
+Closes: https://lore.kernel.org/linux-riscv/20240202135030.42265-1-csd4492@csd.uoc.gr
+Fixes: d95f1a542c3d ("RISC-V: Implement sparsemem")
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240229191723.32779-1-dvlachos@ics.forth.gr
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/compressed/head_64.S |   35 +++++++++++++++++++----------------
- 1 file changed, 19 insertions(+), 16 deletions(-)
+ arch/riscv/include/asm/pgtable.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -251,6 +251,11 @@ SYM_FUNC_START(startup_32)
- 	movl    $__BOOT_TSS, %eax
- 	ltr	%ax
- 
-+#ifdef CONFIG_AMD_MEM_ENCRYPT
-+	/* Check if the C-bit position is correct when SEV is active */
-+	call	startup32_check_sev_cbit
-+#endif
-+
- 	/*
- 	 * Setup for the jump to 64bit mode
- 	 *
-@@ -268,8 +273,6 @@ SYM_FUNC_START(startup_32)
- 	leal	rva(startup_64_mixed_mode)(%ebp), %eax
- 1:
- #endif
--	/* Check if the C-bit position is correct when SEV is active */
--	call	startup32_check_sev_cbit
- 
- 	pushl	$__KERNEL_CS
- 	pushl	%eax
-@@ -740,16 +743,17 @@ SYM_DATA_END_LABEL(boot_idt, SYM_L_GLOBA
-  * succeed. An incorrect C-bit position will map all memory unencrypted, so that
-  * the compare will use the encrypted random data and fail.
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+index 93c1664361143..c00bd5377db9a 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -84,7 +84,7 @@
+  * Define vmemmap for pfn_to_page & page_to_pfn calls. Needed if kernel
+  * is configured with CONFIG_SPARSEMEM_VMEMMAP enabled.
   */
--	__HEAD
--SYM_FUNC_START(startup32_check_sev_cbit)
- #ifdef CONFIG_AMD_MEM_ENCRYPT
--	pushl	%eax
-+	.text
-+SYM_FUNC_START(startup32_check_sev_cbit)
- 	pushl	%ebx
--	pushl	%ecx
--	pushl	%edx
-+	pushl	%ebp
-+
-+	call	0f
-+0:	popl	%ebp
+-#define vmemmap		((struct page *)VMEMMAP_START)
++#define vmemmap		((struct page *)VMEMMAP_START - (phys_ram_base >> PAGE_SHIFT))
  
- 	/* Check for non-zero sev_status */
--	movl	rva(sev_status)(%ebp), %eax
-+	movl	(sev_status - 0b)(%ebp), %eax
- 	testl	%eax, %eax
- 	jz	4f
- 
-@@ -764,17 +768,18 @@ SYM_FUNC_START(startup32_check_sev_cbit)
- 	jnc	2b
- 
- 	/* Store to memory and keep it in the registers */
--	movl	%eax, rva(sev_check_data)(%ebp)
--	movl	%ebx, rva(sev_check_data+4)(%ebp)
-+	leal	(sev_check_data - 0b)(%ebp), %ebp
-+	movl	%eax, 0(%ebp)
-+	movl	%ebx, 4(%ebp)
- 
- 	/* Enable paging to see if encryption is active */
- 	movl	%cr0, %edx			 /* Backup %cr0 in %edx */
- 	movl	$(X86_CR0_PG | X86_CR0_PE), %ecx /* Enable Paging and Protected mode */
- 	movl	%ecx, %cr0
- 
--	cmpl	%eax, rva(sev_check_data)(%ebp)
-+	cmpl	%eax, 0(%ebp)
- 	jne	3f
--	cmpl	%ebx, rva(sev_check_data+4)(%ebp)
-+	cmpl	%ebx, 4(%ebp)
- 	jne	3f
- 
- 	movl	%edx, %cr0	/* Restore previous %cr0 */
-@@ -786,13 +791,11 @@ SYM_FUNC_START(startup32_check_sev_cbit)
- 	jmp	3b
- 
- 4:
--	popl	%edx
--	popl	%ecx
-+	popl	%ebp
- 	popl	%ebx
--	popl	%eax
--#endif
- 	RET
- SYM_FUNC_END(startup32_check_sev_cbit)
-+#endif
- 
- /*
-  * Stack and heap for uncompression
+ #define PCI_IO_SIZE      SZ_16M
+ #define PCI_IO_END       VMEMMAP_START
+-- 
+2.43.0
+
 
 
 
