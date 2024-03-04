@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-26164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19DA7870D62
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9121C870DA0
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B95E1C23999
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D6EDB27096
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA91679DCA;
-	Mon,  4 Mar 2024 21:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7175279950;
+	Mon,  4 Mar 2024 21:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWqyxoSq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="khGNq9IM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6810F46BA0;
-	Mon,  4 Mar 2024 21:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F119DDCB;
+	Mon,  4 Mar 2024 21:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588008; cv=none; b=BcdABIXi1jqsDK12hbyIqPwT+wVVUIGQqtw0DE/2J/cJxzTmaKzgLjXlUOtRT88HxxUHXb4k6nXeJOsFG5Q6eAQ7/mAnXw8vDS26dV4lmYnjVNPmUGfFiuC1IH7NnIAW5/xifppVBI/RXWKZBkBtKE//9lGb1vrqFRlk4soEnAc=
+	t=1709588162; cv=none; b=eO54MvxqsePeRnxjtVVgAPk3CLZrR1kJMqyPCcEJZcLjKZiouaDm2/NybgbRehORqncfTBURtWGGUUcpvvLnW8atA2LGGA8O5cTK6FaIx94++YU7h9Qz3mrRnEAoBB6GQ8aBpsSRl1DwVNBy8XjrGrmjRZ+q1MJvGZu3i68nF48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588008; c=relaxed/simple;
-	bh=j0qgxw7OeYVUY79yhC7WH4Gl3xEqyNw8yckMxFcvwFA=;
+	s=arc-20240116; t=1709588162; c=relaxed/simple;
+	bh=XXCQWMb2LuZsWQ9t+gNKfIjpgAAgL8VwO93HjfyGUIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HwXtFHW6+2FiU/OSgaNnsxqGzqFkh+1jG9aVHke4E82W2pdHsjtFkD+UXaghkRxIBNIwizApsJObaDYIvWtCac+x07jDyRv614JDjXNvASmf/7I9/Q1KLiYT+SqllDVCubosRQbWs7FEJZiaAEXRAzghc+AvmLtSHgOvJUuUK2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PWqyxoSq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF53DC433F1;
-	Mon,  4 Mar 2024 21:33:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bFZqn57PS8O8JT/BObBu2Y/K718JprqSJmbJ51p3Q/voI70qSw8NlshR5Tmub0jOFJ5aBrEDvKNeFFDly+mO7i8VOgKJ36+vMY+FuJqGi81wwbaKgpYY2tpvn1+LGOV8YnTLzEpnTW5WfxzafhhVm16ugdPs0RggIfwp9ldvNxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=khGNq9IM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6342C433C7;
+	Mon,  4 Mar 2024 21:36:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588008;
-	bh=j0qgxw7OeYVUY79yhC7WH4Gl3xEqyNw8yckMxFcvwFA=;
+	s=korg; t=1709588162;
+	bh=XXCQWMb2LuZsWQ9t+gNKfIjpgAAgL8VwO93HjfyGUIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PWqyxoSqjMaQDDXraAuoM9QAR/FFXZW2Mp5uDe2tzIkz0iHxYRhDdfxh/x4yYKJ2t
-	 JJQC6g1G34l8XnWuIq3FEUnOcKQu1R2+uEo6TlHn44zxcWc2q6oATVY9mSvahkhEkG
-	 wS8JhbkoKdt5z0+lFmi50Tqdg7lQ0o+JpM69jmoE=
+	b=khGNq9IMXoNrJZGsTLwk2InkH6UktXp0ygGdp9Vs1AhwH4CGyXIM5hsRwc+yybwYW
+	 RZVsQEO2arVDD89Wap8WrFi4MM3ZB6mfcddho+mj8rFg5vXwZIInsM6oDHVtmK4T7s
+	 P9MGVGBUMH+qW1DSWKUoDhxqdxtSDLg5Lh4Y6Qnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Dimitris Vlachos <dvlachos@ics.forth.gr>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 12/25] efi/capsule-loader: fix incorrect allocation size
+Subject: [PATCH 5.10 21/42] riscv: Sparse-Memory/vmemmap out-of-bounds fix
 Date: Mon,  4 Mar 2024 21:23:48 +0000
-Message-ID: <20240304211536.152680968@linuxfoundation.org>
+Message-ID: <20240304211538.340100085@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211535.741936181@linuxfoundation.org>
-References: <20240304211535.741936181@linuxfoundation.org>
+In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
+References: <20240304211537.631764077@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Dimitris Vlachos <dvlachos@ics.forth.gr>
 
-[ Upstream commit fccfa646ef3628097d59f7d9c1a3e84d4b6bb45e ]
+[ Upstream commit a11dd49dcb9376776193e15641f84fcc1e5980c9 ]
 
-gcc-14 notices that the allocation with sizeof(void) on 32-bit architectures
-is not enough for a 64-bit phys_addr_t:
+Offset vmemmap so that the first page of vmemmap will be mapped
+to the first page of physical memory in order to ensure that
+vmemmap’s bounds will be respected during
+pfn_to_page()/page_to_pfn() operations.
+The conversion macros will produce correct SV39/48/57 addresses
+for every possible/valid DRAM_BASE inside the physical memory limits.
 
-drivers/firmware/efi/capsule-loader.c: In function 'efi_capsule_open':
-drivers/firmware/efi/capsule-loader.c:295:24: error: allocation of insufficient size '4' for type 'phys_addr_t' {aka 'long long unsigned int'} with size '8' [-Werror=alloc-size]
-  295 |         cap_info->phys = kzalloc(sizeof(void *), GFP_KERNEL);
-      |                        ^
+v2:Address Alex's comments
 
-Use the correct type instead here.
-
-Fixes: f24c4d478013 ("efi/capsule-loader: Reinstate virtual capsule mapping")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Suggested-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Dimitris Vlachos <dvlachos@ics.forth.gr>
+Reported-by: Dimitris Vlachos <dvlachos@ics.forth.gr>
+Closes: https://lore.kernel.org/linux-riscv/20240202135030.42265-1-csd4492@csd.uoc.gr
+Fixes: d95f1a542c3d ("RISC-V: Implement sparsemem")
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240229191723.32779-1-dvlachos@ics.forth.gr
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/capsule-loader.c | 2 +-
+ arch/riscv/include/asm/pgtable.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/capsule-loader.c b/drivers/firmware/efi/capsule-loader.c
-index b82cc8beac671..78c02717c368d 100644
---- a/drivers/firmware/efi/capsule-loader.c
-+++ b/drivers/firmware/efi/capsule-loader.c
-@@ -291,7 +291,7 @@ static int efi_capsule_open(struct inode *inode, struct file *file)
- 		return -ENOMEM;
- 	}
+diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+index b16304fdf4489..5ab13570daa53 100644
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -44,7 +44,7 @@
+  * Define vmemmap for pfn_to_page & page_to_pfn calls. Needed if kernel
+  * is configured with CONFIG_SPARSEMEM_VMEMMAP enabled.
+  */
+-#define vmemmap		((struct page *)VMEMMAP_START)
++#define vmemmap		((struct page *)VMEMMAP_START - (phys_ram_base >> PAGE_SHIFT))
  
--	cap_info->phys = kzalloc(sizeof(void *), GFP_KERNEL);
-+	cap_info->phys = kzalloc(sizeof(phys_addr_t), GFP_KERNEL);
- 	if (!cap_info->phys) {
- 		kfree(cap_info->pages);
- 		kfree(cap_info);
+ #define PCI_IO_SIZE      SZ_16M
+ #define PCI_IO_END       VMEMMAP_START
 -- 
 2.43.0
 
