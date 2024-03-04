@@ -1,159 +1,79 @@
-Return-Path: <stable+bounces-26686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1BBC87110A
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 00:31:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1B8487114D
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 00:46:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A43928404E
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 23:31:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E5C1281238
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 23:46:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992407C6E9;
-	Mon,  4 Mar 2024 23:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D25E7D3F5;
+	Mon,  4 Mar 2024 23:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="1C1h287R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EIevkZqK"
 X-Original-To: stable@vger.kernel.org
-Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6757C6CC
-	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 23:31:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566807D3EC;
+	Mon,  4 Mar 2024 23:46:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709595069; cv=none; b=TJddGVd9FJsO87hpD0nJg0xyoMkO8hoKW/NabK9f0sTT3eO56QIG9y+LhdN6ueypMAGxke4HZoYvjNk8k4luVrGV6T3hkMf8brNLIc58eXxlWgpsJXS3LU7CJ1w5TirWtuEj0LrE2THIoIm8Lh/A92LCpLR5iF1sOIdgT47kydE=
+	t=1709595994; cv=none; b=Ch2o5TCJvZe94/wf6/ivsWbp5JOurmr8fP15kJWyq2H7mZJdra3czE49U04meGC789RuvUbl9Au5HJ5nzQju3QSRWSzTh6pZz+29YzBAaag8KDRu05Rn2lmvhu1tn10Sk5Z4Rk4GcNrqH2eVWDqOKYv/evad8mDJCvUHDNpC73E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709595069; c=relaxed/simple;
-	bh=nHa8DwC8bpEcB5DaG4EAgwujyIfuWHXzqJpn/5Qkqrg=;
-	h=Subject:To:Cc:References:From:In-Reply-To:Message-ID:Date:
-	 MIME-Version:Content-Type; b=h9WWG9zfyJTkeUYYIaaGVeAg6xahx4ZAYwra6Kw/hdf/QE5l8pJ8vAGNbsihMzdEXpIgNT2ggixvD4AEWRDO9qZU1rnyUGHNOobK8HntSJ3e7zkYuXjr5R7SzhuzEl96PoU1OqdY1lr5XnNldElTeWEyv/s54X3uHdLwfnVPmGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=1C1h287R; arc=none smtp.client-ip=35.89.44.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6001a.ext.cloudfilter.net ([10.0.30.140])
-	by cmsmtp with ESMTPS
-	id hG2nrVDHwDI6fhHlxrPQdY; Mon, 04 Mar 2024 23:31:05 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id hHlxr2daXiykKhHlxrn2Sg; Mon, 04 Mar 2024 23:31:05 +0000
-X-Authority-Analysis: v=2.4 cv=RKy1HZi+ c=1 sm=1 tr=0 ts=65e659b9
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=IkcTkHD0fZMA:10 a=K6JAEmCyrfEA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=1GQxe75yrw9fIeUcjpcA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-	Message-ID:In-Reply-To:From:References:Cc:To:Subject:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=kkKXkaHiVwHFeTtq12t1/Zf9Z0FrNBJx40HZVh0CcXg=; b=1C1h287RIj9G1MTNAvlWvHaDG2
-	LTLJJGchb1J6Nln1UdFrU9WEr06HiZsdZaigQ6RZeSYSGu1EDxG6P/yAYb58sNvpmNrYRNwV1N5C0
-	l+wXpHwEM6gnXsxYOlKz+8pHMl/gpj9GYMgUx8PGF+eBNEV14QGTj0mvkoBmPk/m392JVX50U77x8
-	OkNbE2v27wNZ44R98sa02hcCvH+NJyJJPjSKt2hNMxKH0P5ezPce5X190hJxHOMxtVRKoOPVajxHr
-	837E2jHsh20RyvKOQxrRTlcc9stT5wdKgD4kQNokyX/RJd1I2iTSY8DQqeS5pyAvoblvyyN2goOgq
-	Dcb280Pw==;
-Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:49056 helo=[10.0.1.47])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1rhHlu-000CFb-2Z;
-	Mon, 04 Mar 2024 16:31:02 -0700
-Subject: Re: [PATCH 6.7 000/162] 6.7.9-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-References: <20240304211551.833500257@linuxfoundation.org>
-From: Ron Economos <re@w6rz.net>
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-Message-ID: <dcc13107-8e7e-12c9-e9f0-d0fa96ea9c39@w6rz.net>
-Date: Mon, 4 Mar 2024 15:31:00 -0800
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+	s=arc-20240116; t=1709595994; c=relaxed/simple;
+	bh=LSAKc3FQgIkO0qXl+59tXDH4qtEfz5/s1oe9x85k24c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fNyg7XqBic4mJmpe8RHF3dPfQBZAyuz8M1PLSi2YTFI3jOBP1XbJJ1duui1D6ECJTarFPrTxQF989J0uxG8Z5gEKmuTRBkwFPF7A/qcXk3DT3thk5iZ3uIikLwx/GhvyMtpC4i0WzMsRelhm023SA+5tvqAvYsqdvpdwyi2nuWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EIevkZqK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C8CC43390;
+	Mon,  4 Mar 2024 23:46:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1709595993;
+	bh=LSAKc3FQgIkO0qXl+59tXDH4qtEfz5/s1oe9x85k24c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EIevkZqKMSim3nbnE9VCzWvUECit4Q+FraGLwyuHlgkgdzGMcGN5Pt03aBTe+vnoB
+	 wpo/nQHiWMQAXY6Lam3ZjynldkUz369vgyshosUmcKvgFLvlGujaq7usSmfMO/1r/H
+	 uQEpIgGl7T0IWKVwuLHimlfewAOk0j7j17xbMEPg=
+Date: Mon, 4 Mar 2024 23:46:31 +0000
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Arnav Kansal <rnv@google.com>
+Cc: akpm@linux-foundation.org, bp@alien8.de, dave.hansen@linux.intel.com,
+	dvyukov@google.com, elver@google.com, glider@google.com,
+	hpa@zytor.com, mingo@redhat.com, patches@lists.linux.dev,
+	quic_charante@quicinc.com, stable@vger.kernel.org,
+	syzbot+93a9e8a3dea8d6085e12@syzkaller.appspotmail.com,
+	tglx@linutronix.de
+Subject: Re: [PATCH 6.1 214/219] mm, kmsan: fix infinite recursion due to RCU
+ critical section
+Message-ID: <2024030457-aware-trusting-9e48@gregkh>
+References: <20240203035346.771599322@linuxfoundation.org>
+ <20240304222011.2221862-1-rnv@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 98.207.139.8
-X-Source-L: No
-X-Exim-ID: 1rhHlu-000CFb-2Z
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:49056
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfLG6DbbNn+yyWp5jnYgb7OuOrwq/jbp4XlnGBSYjpySKM13BecC+ppTL5XyNRWTh+2MiriCWQRTsyF8HUwOqjZpLZH/WpSs9RLSh3B50482ot3gI0N40
- yTfCiHV6lKncOaQ9Yk+C3SqXTw4KzwH7vxXF49s76zPG70xsokaY4ZXyuLVCmT1BkZeJjuxS7m5oVw==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240304222011.2221862-1-rnv@google.com>
 
-On 3/4/24 1:21 PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.7.9 release.
-> There are 162 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 06 Mar 2024 21:15:26 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.9-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Mon, Mar 04, 2024 at 10:20:11PM +0000, Arnav Kansal wrote:
+> Are there any plans to backport this to 5.15, or 5.10?
+> 
+> The buggy commit (commit id: 5ec8e8ea8b77 "mm/sparsemem: fix race in
+> accessing memory_section->usage") this commit fixes was backported to
+> 5.10 and 5.15 and wondering if there are any plans of backporting the
+> fix to 5.10, or 5.15?
 
-The build fails on RISC-V RV64 with:
+Does it apply cleanly there?  If not, can you provide a working
+backport?  If so, can you send the tested commit as well?
 
-arch/riscv/kernel/suspend.c: In function ‘suspend_save_csrs’:
-arch/riscv/kernel/suspend.c:14:66: error: ‘RISCV_ISA_EXT_XLINUXENVCFG’ 
-undeclared (first use in this function); did you mean 
-‘RISCV_ISA_EXT_ZIFENCEI’?
-    14 |         if 
-(riscv_cpu_has_extension_unlikely(smp_processor_id(), 
-RISCV_ISA_EXT_XLINUXENVCFG))
-| ^~~~~~~~~~~~~~~~~~~~~~~~~~
-| RISCV_ISA_EXT_ZIFENCEI
-arch/riscv/kernel/suspend.c:14:66: note: each undeclared identifier is 
-reported only once for each function it appears in
-arch/riscv/kernel/suspend.c: In function ‘suspend_restore_csrs’:
-arch/riscv/kernel/suspend.c:37:66: error: ‘RISCV_ISA_EXT_XLINUXENVCFG’ 
-undeclared (first use in this function); did you mean 
-‘RISCV_ISA_EXT_ZIFENCEI’?
-    37 |         if 
-(riscv_cpu_has_extension_unlikely(smp_processor_id(), 
-RISCV_ISA_EXT_XLINUXENVCFG))
-| ^~~~~~~~~~~~~~~~~~~~~~~~~~
-| RISCV_ISA_EXT_ZIFENCEI
-make[4]: *** [scripts/Makefile.build:243: arch/riscv/kernel/suspend.o] 
-Error 1
-make[3]: *** [scripts/Makefile.build:480: arch/riscv/kernel] Error 2
-make[2]: *** [scripts/Makefile.build:480: arch/riscv] Error 2
+thanks,
 
-The patch "riscv: Save/restore envcfg CSR during CPU suspend" (commit 
-64e54f78d9f2dc30ac399a632922bb1fe036778a) requires patch "riscv: Add a 
-custom ISA extension for the [ms]envcfg CSR" (upstream commit 
-4774848fef6041716a4883217eb75f6b10eb183b).
-
+greg k-h
 
