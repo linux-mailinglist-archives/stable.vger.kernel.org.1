@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86103870F53
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:53:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BBDC870EF9
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:49:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E491B215AD
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:53:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E5611C21E4B
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6781F78B69;
-	Mon,  4 Mar 2024 21:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6251561675;
+	Mon,  4 Mar 2024 21:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FgOnCnk6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u5mVjEK2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2799A1C6AB;
-	Mon,  4 Mar 2024 21:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B4B1EB5A;
+	Mon,  4 Mar 2024 21:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589205; cv=none; b=ZFRrjyo5/oFsQkgAQsnd6z1zxFct9wQSAdYxswF4z11HRCXfRe5Ph50XT3pT9LbCOSoAlWYFhNG8iZeLIMvlIX/sz35fvLQUOt8wfEF4VOTUsSMi9/7NMYD5xNg7MiZXTM1+VS/FGpHcC5CCCDe2fYjrNpP9vzZORWXmNh24O6M=
+	t=1709588981; cv=none; b=Trp6kpLJ8hK9NdgCzPwP2Heu8OSQYQciR2w8N/LNr3y8rqtox70Pyu8W7st9xEPMFwb/hjTQVMzzM2x9hNifTpM/uUSyytL/h4QtdwFgXXhWCU8r1Kq0q9zurJrZwtEU8DZ3j/3SqlTkMKwTJSRfflYwRt/J7YNq/NmgrDLird8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589205; c=relaxed/simple;
-	bh=GIfmwm1qXucXVaNSeewpJ47FMmvR5vW4qVF1+2jDmy4=;
+	s=arc-20240116; t=1709588981; c=relaxed/simple;
+	bh=/PVlykqlVZg4H4VF5GDUWtbTiq9tKZPDD4JVi90h0jM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rAgTGaRTavOm97QQKVKeUEfMdcpU7U7XpGfPrUNxChtp5H5AOkAGX+KROzKe2s/+Fh6eVqiNgQVKpWnItdWN/NX8SMOI3a62l8tmYb3aHm09bYu57/bJ/8RFU3m6for7+HwyJ4WEoxqvdQvFYErPB3DvyRnAXnoQEKa8Dydkh+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FgOnCnk6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB78BC433F1;
-	Mon,  4 Mar 2024 21:53:24 +0000 (UTC)
+	 MIME-Version; b=dI2Z2cOS3/ABP7FZjFt9s63l1CvEwKopPEB/BlPYYEulioTnDX4aEzChD2gnJpr3VfN5goTVR8qrAhOC/PYdl0oBuWF+LiSw+UFvLhLUqlT0+3rsTsvkuIV3QunkL0zLI2yRLP6JSRty/scm0GzwXd85WEEgOVs+5RUzHbTA5Gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u5mVjEK2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6400C433C7;
+	Mon,  4 Mar 2024 21:49:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589205;
-	bh=GIfmwm1qXucXVaNSeewpJ47FMmvR5vW4qVF1+2jDmy4=;
+	s=korg; t=1709588981;
+	bh=/PVlykqlVZg4H4VF5GDUWtbTiq9tKZPDD4JVi90h0jM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FgOnCnk652KWrR6L/R3Fx2UaZKYttB1OT3+hzD+6hwxZmSbCIBotzII+PKkv4J3iz
-	 S/6avfdP3oqi/vNnSd7Cn7YTrB7WSye39bH9EWSRNJUO87cFGUJY9NuxPgTTzDorWD
-	 Zbx97nCj1aWmrLdjoL9RgRcq6YF/3FuX77xxhKP8=
+	b=u5mVjEK2vIb+7Umb+UeMmfTonhIZIEUBYrqIo6lteo9BNzoNfsXlA6mmBFQsT8pVh
+	 q6G09MsHK/rk95JDgRiyjfRm9PA9vV49Vv7OwI21NuFrxeSkbpBrvOr4Jq1gJX99At
+	 eT8tmze3qhtskMxcSudQ47XI7ZLB1ezSie4AEcME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Smythies <dsmythies@telus.net>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 06/84] cpufreq: intel_pstate: fix pstate limits enforcement for adjust_perf call back
+	Chuck Lever <chuck.lever@oracle.com>,
+	NeilBrown <neilb@suse.de>,
+	Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH 6.1 156/215] NFSD: Add a nfsd4_file_hash_remove() helper
 Date: Mon,  4 Mar 2024 21:23:39 +0000
-Message-ID: <20240304211542.551466117@linuxfoundation.org>
+Message-ID: <20240304211601.957144377@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doug Smythies <dsmythies@telus.net>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit f0a0fc10abb062d122db5ac4ed42f6d1ca342649 ]
+[ Upstream commit 3341678f2fd6106055cead09e513fad6950a0d19 ]
 
-There is a loophole in pstate limit clamping for the intel_cpufreq CPU
-frequency scaling driver (intel_pstate in passive mode), schedutil CPU
-frequency scaling governor, HWP (HardWare Pstate) control enabled, when
-the adjust_perf call back path is used.
+Refactor to relocate hash deletion operation to a helper function
+that is close to most other nfs4_file data structure operations.
 
-Fix it.
+The "noinline" annotation will become useful in a moment when the
+hlist_del_rcu() is replaced with a more complex rhash remove
+operation. It also guarantees that hash remove operations can be
+traced with "-p function -l remove_nfs4_file_locked".
 
-Fixes: a365ab6b9dfb cpufreq: intel_pstate: Implement the ->adjust_perf() callback
-Signed-off-by: Doug Smythies <dsmythies@telus.net>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This also simplifies the organization of forward declarations: the
+to-be-added rhashtable and its param structure will be defined
+/after/ put_nfs4_file().
+
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/intel_pstate.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/nfsd/nfs4state.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index dd5f4eee9ffb6..4de71e772f514 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -2787,6 +2787,9 @@ static void intel_cpufreq_adjust_perf(unsigned int cpunum,
- 	if (min_pstate < cpu->min_perf_ratio)
- 		min_pstate = cpu->min_perf_ratio;
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -84,6 +84,7 @@ static bool check_for_locks(struct nfs4_
+ static void nfs4_free_ol_stateid(struct nfs4_stid *stid);
+ void nfsd4_end_grace(struct nfsd_net *nn);
+ static void _free_cpntf_state_locked(struct nfsd_net *nn, struct nfs4_cpntf_state *cps);
++static void nfsd4_file_hash_remove(struct nfs4_file *fi);
  
-+	if (min_pstate > cpu->max_perf_ratio)
-+		min_pstate = cpu->max_perf_ratio;
+ /* Locking: */
+ 
+@@ -591,7 +592,7 @@ put_nfs4_file(struct nfs4_file *fi)
+ 	might_lock(&state_lock);
+ 
+ 	if (refcount_dec_and_lock(&fi->fi_ref, &state_lock)) {
+-		hlist_del_rcu(&fi->fi_hash);
++		nfsd4_file_hash_remove(fi);
+ 		spin_unlock(&state_lock);
+ 		WARN_ON_ONCE(!list_empty(&fi->fi_clnt_odstate));
+ 		WARN_ON_ONCE(!list_empty(&fi->fi_delegations));
+@@ -4750,6 +4751,11 @@ find_or_add_file(struct nfs4_file *new,
+ 	return insert_file(new, fh, hashval);
+ }
+ 
++static noinline_for_stack void nfsd4_file_hash_remove(struct nfs4_file *fi)
++{
++	hlist_del_rcu(&fi->fi_hash);
++}
 +
- 	max_pstate = min(cap_pstate, cpu->max_perf_ratio);
- 	if (max_pstate < min_pstate)
- 		max_pstate = min_pstate;
--- 
-2.43.0
-
+ /*
+  * Called to check deny when READ with all zero stateid or
+  * WRITE with all zero or all one stateid
 
 
 
