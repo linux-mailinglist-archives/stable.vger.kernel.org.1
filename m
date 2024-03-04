@@ -1,134 +1,212 @@
-Return-Path: <stable+bounces-26318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECB92870E07
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:40:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 795ED870D77
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:34:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DB4E1F216BB
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:40:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A1481F21A60
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 215C64086B;
-	Mon,  4 Mar 2024 21:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A60B4CE0E;
+	Mon,  4 Mar 2024 21:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nmnju7S1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtrSXnDM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D170B8F58;
-	Mon,  4 Mar 2024 21:40:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46BDB1C687;
+	Mon,  4 Mar 2024 21:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588410; cv=none; b=tRIapdBhckK2/waDY7dMPVr09pH4QpeHo/uWA+3aaZXA1YYjLWtdXGH9q/OqFNjo6eHyRGEkYKR8Zjmgtzf9/oIdMyUxdJG4i184F96qGowLUXDggJ+9jZjZKcGlbUPIFK3Yc6/w1IKgzWZR3DP6SLRCHE/fartSTkR0nWehk7k=
+	t=1709588060; cv=none; b=U9Mx69LEz5b3C4lDHHNS8aeo1s6FB8+lIIfDApw/7OJcx2dzWoRxsGD4C8qJ8VhSB2A+x+fK7aqUE7E4tPz7qUXjk7Uo5jGlSpumYuCd4VQCLWSEtN13ZUOCqPKrEIBMOP43PlT1Jier/1oqlrE2bOgWf7+E9OoS4z6k3BOZd6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588410; c=relaxed/simple;
-	bh=BC1ZP65sRGxp4kbtbzN0oTgr8wk4cAMIl86/UZAfxKg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yz8o+VUUIG6hmIqfBzbjKxIcJrWSA4OfDZKlDESDOrP2gyRo26aKMByEMLfmx55u1agXjnvjDm1Vi26b4vt7hIt8gn8+BssaXVk9dqvURooDEoONMvVaInwh1Ksaapw42pwRUMmlcmeM2MQUAcu/+iWItmegXOlDdPukdLQZV/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nmnju7S1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64049C433F1;
-	Mon,  4 Mar 2024 21:40:10 +0000 (UTC)
+	s=arc-20240116; t=1709588060; c=relaxed/simple;
+	bh=VnKqfkwyAFyA+ZRicMXYrGEZ/VrBK3sumHKGFquZuN8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hl31QioWqD3GeP4elnPtpKd0g4B/gRggxqycftXvsGzD6fh/5e8S6hW5MmIEBBL1p7P0sHorCQW3IfFz/QwbTfmRxE4noY66NlQl0b9VINbJo/Oqoa9j/W7CGM3+XKbLxcP2B/yQeO/PoEsdC+m4IFabUXoBxsPt1IIiDzXn6d4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtrSXnDM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7520C433C7;
+	Mon,  4 Mar 2024 21:34:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588410;
-	bh=BC1ZP65sRGxp4kbtbzN0oTgr8wk4cAMIl86/UZAfxKg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nmnju7S1EStXpMAB0zsProz0FRyoxehZYNfDm9XfjXd4/7KKW8SAgtRmYD2JAdmKN
-	 BEoAeAMVRQ1218nxmTCO23DTLtzeH7lE0smTc/TjTY6YtM03ISiT0071ySPQmpKjAT
-	 ajKsc4h3i0zM9zXyygcBLzPUDQc7iXl1YdaHB4a4=
+	s=korg; t=1709588060;
+	bh=VnKqfkwyAFyA+ZRicMXYrGEZ/VrBK3sumHKGFquZuN8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=dtrSXnDMDQhEXh00AEjpMmutlYIUlTUUdNtNtLImxTzN03F7wBksL5kPTgIQgjC+2
+	 c2eYRoilj9asdZkcKgR6GDGDZGmafHjGqdH2UkwekroypSDyhZz0Npcbg5ExBxD+kC
+	 6LFsmlm7E68O7gBvNwfTfyLn5sp5PSqXBkaUYBPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Elad Nachman <enachman@marvell.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 096/143] mmc: sdhci-xenon: fix PHY init clock stability
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com
+Subject: [PATCH 5.4 00/25] 5.4.271-rc1 review
 Date: Mon,  4 Mar 2024 21:23:36 +0000
-Message-ID: <20240304211552.988301836@linuxfoundation.org>
+Message-ID: <20240304211535.741936181@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.271-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-5.4.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 5.4.271-rc1
+X-KernelTest-Deadline: 2024-03-06T21:15+00:00
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 5.4.271 release.
+There are 25 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Wed, 06 Mar 2024 21:15:26 +0000.
+Anything received after that time might be too late.
 
-From: Elad Nachman <enachman@marvell.com>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.271-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+and the diffstat can be found below.
 
-commit 8e9f25a290ae0016353c9ea13314c95fb3207812 upstream.
+thanks,
 
-Each time SD/mmc phy is initialized, at times, in some of
-the attempts, phy fails to completes its initialization
-which results into timeout error. Per the HW spec, it is
-a pre-requisite to ensure a stable SD clock before a phy
-initialization is attempted.
+greg k-h
 
-Fixes: 06c8b667ff5b ("mmc: sdhci-xenon: Add support to PHYs of Marvell Xenon SDHC")
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Elad Nachman <enachman@marvell.com>
-Link: https://lore.kernel.org/r/20240222200930.1277665-1-enachman@marvell.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/mmc/host/sdhci-xenon-phy.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+-------------
+Pseudo-Shortlog of commits:
 
---- a/drivers/mmc/host/sdhci-xenon-phy.c
-+++ b/drivers/mmc/host/sdhci-xenon-phy.c
-@@ -11,6 +11,7 @@
- #include <linux/slab.h>
- #include <linux/delay.h>
- #include <linux/ktime.h>
-+#include <linux/iopoll.h>
- #include <linux/of_address.h>
- 
- #include "sdhci-pltfm.h"
-@@ -218,6 +219,19 @@ static int xenon_alloc_emmc_phy(struct s
- 	return 0;
- }
- 
-+static int xenon_check_stability_internal_clk(struct sdhci_host *host)
-+{
-+	u32 reg;
-+	int err;
-+
-+	err = read_poll_timeout(sdhci_readw, reg, reg & SDHCI_CLOCK_INT_STABLE,
-+				1100, 20000, false, host, SDHCI_CLOCK_CONTROL);
-+	if (err)
-+		dev_err(mmc_dev(host->mmc), "phy_init: Internal clock never stabilized.\n");
-+
-+	return err;
-+}
-+
- /*
-  * eMMC 5.0/5.1 PHY init/re-init.
-  * eMMC PHY init should be executed after:
-@@ -234,6 +248,11 @@ static int xenon_emmc_phy_init(struct sd
- 	struct xenon_priv *priv = sdhci_pltfm_priv(pltfm_host);
- 	struct xenon_emmc_phy_regs *phy_regs = priv->emmc_phy_regs;
- 
-+	int ret = xenon_check_stability_internal_clk(host);
-+
-+	if (ret)
-+		return ret;
-+
- 	reg = sdhci_readl(host, phy_regs->timing_adj);
- 	reg |= XENON_PHY_INITIALIZAION;
- 	sdhci_writel(host, reg, phy_regs->timing_adj);
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 5.4.271-rc1
+
+Arturas Moskvinas <arturas.moskvinas@gmail.com>
+    gpio: 74x164: Enable output pins after registers are reset
+
+Oscar Salvador <osalvador@suse.de>
+    fs,hugetlb: fix NULL pointer dereference in hugetlbs_fill_super
+
+Baokun Li <libaokun1@huawei.com>
+    cachefiles: fix memory leak in cachefiles_add_cache()
+
+Paolo Bonzini <pbonzini@redhat.com>
+    x86/cpu/intel: Detect TME keyid bits before setting MTRR mask registers
+
+Ivan Semenov <ivan@semenov.dev>
+    mmc: core: Fix eMMC initialization with 1-bit bus connection
+
+Curtis Klein <curtis.klein@hpe.com>
+    dmaengine: fsl-qdma: init irq after reg initialization
+
+Peng Ma <peng.ma@nxp.com>
+    dmaengine: fsl-qdma: fix SoC may hang on 16 byte unaligned read
+
+David Sterba <dsterba@suse.com>
+    btrfs: dev-replace: properly validate device names
+
+Johannes Berg <johannes.berg@intel.com>
+    wifi: nl80211: reject iftype change with mesh ID change
+
+Alexander Ofitserov <oficerovas@altlinux.org>
+    gtp: fix use-after-free and null-ptr-deref in gtp_newlink()
+
+David Howells <dhowells@redhat.com>
+    afs: Fix endless loop in directory parsing
+
+Takashi Iwai <tiwai@suse.de>
+    ALSA: Drop leftover snd-rtctimer stuff from Makefile
+
+Hans de Goede <hdegoede@redhat.com>
+    power: supply: bq27xxx-i2c: Do not free non existing IRQ
+
+Arnd Bergmann <arnd@arndb.de>
+    efi/capsule-loader: fix incorrect allocation size
+
+Lin Ma <linma@zju.edu.cn>
+    rtnetlink: fix error logic of IFLA_BRIDGE_FLAGS writing back
+
+Ignat Korchagin <ignat@cloudflare.com>
+    netfilter: nf_tables: allow NFPROTO_INET in nft_(match/target)_validate()
+
+Kai-Heng Feng <kai.heng.feng@canonical.com>
+    Bluetooth: Enforce validation on max value of connection interval
+
+Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+    Bluetooth: hci_event: Fix handling of HCI_EV_IO_CAPA_REQUEST
+
+Ying Hsu <yinghsu@chromium.org>
+    Bluetooth: Avoid potential use-after-free in hci_error_reset
+
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
+    net: usb: dm9601: fix wrong return value in dm9601_mdio_read
+
+Oleksij Rempel <linux@rempel-privat.de>
+    lan78xx: enable auto speed configuration for LAN7850 if no EEPROM is detected
+
+Eric Dumazet <edumazet@google.com>
+    ipv6: fix potential "struct net" leak in inet6_rtm_getaddr()
+
+Yunjian Wang <wangyunjian@huawei.com>
+    tun: Fix xdp_rxq_info's queue_index when detaching
+
+Florian Westphal <fw@strlen.de>
+    net: ip_tunnel: prevent perpetual headroom growth
+
+Ryosuke Yasuoka <ryasuoka@redhat.com>
+    netlink: Fix kernel-infoleak-after-free in __skb_datagram_iter
+
+
+-------------
+
+Diffstat:
+
+ Makefile                                   |   4 +-
+ arch/x86/kernel/cpu/intel.c                | 178 +++++++++++++++--------------
+ drivers/dma/fsl-qdma.c                     |  25 ++--
+ drivers/firmware/efi/capsule-loader.c      |   2 +-
+ drivers/gpio/gpio-74x164.c                 |   4 +-
+ drivers/mmc/core/mmc.c                     |   2 +
+ drivers/net/gtp.c                          |  12 +-
+ drivers/net/tun.c                          |   1 +
+ drivers/net/usb/dm9601.c                   |   2 +-
+ drivers/net/usb/lan78xx.c                  |   3 +-
+ drivers/power/supply/bq27xxx_battery_i2c.c |   4 +-
+ fs/afs/dir.c                               |   4 +-
+ fs/btrfs/dev-replace.c                     |  24 +++-
+ fs/cachefiles/bind.c                       |   3 +
+ fs/hugetlbfs/inode.c                       |   6 +-
+ net/bluetooth/hci_core.c                   |   7 +-
+ net/bluetooth/hci_event.c                  |   9 +-
+ net/bluetooth/l2cap_core.c                 |   8 +-
+ net/core/rtnetlink.c                       |  11 +-
+ net/ipv4/ip_tunnel.c                       |  28 +++--
+ net/ipv6/addrconf.c                        |   7 +-
+ net/netfilter/nft_compat.c                 |  20 ++++
+ net/netlink/af_netlink.c                   |   2 +-
+ net/wireless/nl80211.c                     |   2 +
+ sound/core/Makefile                        |   1 -
+ 25 files changed, 226 insertions(+), 143 deletions(-)
 
 
 
