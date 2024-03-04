@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-26247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46CCE870DB9
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:37:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B172870EC2
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:47:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2823B273AD
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:37:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36F9B281AE0
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABBFF1EA99;
-	Mon,  4 Mar 2024 21:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A707F7A70D;
+	Mon,  4 Mar 2024 21:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ms+B3Zrw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AfJRwAv8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A44F8F58;
-	Mon,  4 Mar 2024 21:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6281446BA0;
+	Mon,  4 Mar 2024 21:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588224; cv=none; b=EDXM116pRA763ivU2edNxK62uQ1stg7tn8U6RkG0/FFftgeHLjnkX1XH7YFMzNYYALSjBw9BKkylNSRvD2mKC1iC2vPPE/QBzLdfLI3uIb1krczyzIf4/aTvJzdRLx8x3AMjRE+qXRZX2VZvyL5wjJCVKuwvFmL98Rd5Q7PS9d4=
+	t=1709588798; cv=none; b=ZkhbLElxEmPC8JfmmIKG8HSnBDsEn9eHA49VvxSOecX7HNFSVbjcRZXhjub732GayF7aiIl6jqPkiEg1a4HBjl8+JzLkDt2BWRL/GETi+C65nmiYG4PSpnYFF7SXBhRvfZ4YoTyzG956NZdnp95L7pJdHBYYh+9kuyRmH3ukPUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588224; c=relaxed/simple;
-	bh=Gu6spSEpQyazEKktTZ8pYkvTWieyE2vuby4eTFWGUXY=;
+	s=arc-20240116; t=1709588798; c=relaxed/simple;
+	bh=RO1AQAJVoCUEBSUiqRGY5k+J2hXvipa/o8dkd41hnu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pk9T9Ix2nSgwCWaRHO4LA6j/ZIpgLkHWSgjC2CL/OYyUvcakPCQHkk8Sc3BKBuPU22sSpENYBoEXr+dWemCfjw51Spei9M1mD+cclGfWsp0Iy9W8WFfUeSEs4kGM9+YsstsARwARMWcPSiYCKhkNEZ/159RTHJxWtts09PDK91g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ms+B3Zrw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC3BC433C7;
-	Mon,  4 Mar 2024 21:37:03 +0000 (UTC)
+	 MIME-Version; b=HmMEQtTrd9nfUR3LsPB0OqcuS4nuGA9T7XKDKdPyPeUY3GYb5tFo3j60crzSnjQNcS7rpHKaMA9cFoQYTBZj3YmCtI5O0tm96kfLCZb3t9rp/7HA+ebn1ECrSf+RXRihrWLUg/z7XN9TUocMhhTHA5SOGY2vNgsEN4Ugamf82Ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AfJRwAv8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94612C43394;
+	Mon,  4 Mar 2024 21:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588224;
-	bh=Gu6spSEpQyazEKktTZ8pYkvTWieyE2vuby4eTFWGUXY=;
+	s=korg; t=1709588797;
+	bh=RO1AQAJVoCUEBSUiqRGY5k+J2hXvipa/o8dkd41hnu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ms+B3ZrwJAUqlg8N753NDcQQk0LitPOo1D7H636N8+KxeaOWGo8avKxWn47204OkL
-	 BMwypZBYmnfA0neQkXUz73q+BySgPgMwkwgYLRuw4KnlfY3jckwH4+VAhgUkyW9i+5
-	 S19SU4iufo4K7ITcRtUJYvbhhrCG5oaXLQIFMmDA=
+	b=AfJRwAv8GuPpZ5ab+GiryGhFFjIrdOqYWOePe4ALRiU5xMCu95VIFlpkAKy6zN5NM
+	 TKisMchhowxgpEjGFTKy0efX0dCoHa+XbjyNzV0bmn09sBFiUiagpGja790F09kkOl
+	 bESUSS6tDxA2SooljPPkBT871VKovJIiH/CBwpQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3f497b07aa3baf2fb4d0@syzkaller.appspotmail.com,
-	xingwei lee <xrivendell7@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 009/143] netlink: add nla be16/32 types to minlen array
+Subject: [PATCH 6.1 066/215] ALSA: Drop leftover snd-rtctimer stuff from Makefile
 Date: Mon,  4 Mar 2024 21:22:09 +0000
-Message-ID: <20240304211550.209653395@linuxfoundation.org>
+Message-ID: <20240304211559.078257377@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 9a0d18853c280f6a0ee99f91619f2442a17a323a ]
+[ Upstream commit 4df49712eb54141be00a9312547436d55677f092 ]
 
-BUG: KMSAN: uninit-value in nla_validate_range_unsigned lib/nlattr.c:222 [inline]
-BUG: KMSAN: uninit-value in nla_validate_int_range lib/nlattr.c:336 [inline]
-BUG: KMSAN: uninit-value in validate_nla lib/nlattr.c:575 [inline]
-BUG: KMSAN: uninit-value in __nla_validate_parse+0x2e20/0x45c0 lib/nlattr.c:631
- nla_validate_range_unsigned lib/nlattr.c:222 [inline]
- nla_validate_int_range lib/nlattr.c:336 [inline]
- validate_nla lib/nlattr.c:575 [inline]
-...
+We forgot to remove the line for snd-rtctimer from Makefile while
+dropping the functionality.  Get rid of the stale line.
 
-The message in question matches this policy:
-
- [NFTA_TARGET_REV]       = NLA_POLICY_MAX(NLA_BE32, 255),
-
-but because NLA_BE32 size in minlen array is 0, the validation
-code will read past the malformed (too small) attribute.
-
-Note: Other attributes, e.g. BITFIELD32, SINT, UINT.. are also missing:
-those likely should be added too.
-
-Reported-by: syzbot+3f497b07aa3baf2fb4d0@syzkaller.appspotmail.com
-Reported-by: xingwei lee <xrivendell7@gmail.com>
-Closes: https://lore.kernel.org/all/CABOYnLzFYHSnvTyS6zGa-udNX55+izqkOt2sB9WDqUcEGW6n8w@mail.gmail.com/raw
-Fixes: ecaf75ffd5f5 ("netlink: introduce bigendian integer types")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Link: https://lore.kernel.org/r/20240221172740.5092-1-fw@strlen.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 34ce71a96dcb ("ALSA: timer: remove legacy rtctimer")
+Link: https://lore.kernel.org/r/20240221092156.28695-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/nlattr.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/core/Makefile | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/lib/nlattr.c b/lib/nlattr.c
-index 7a2b6c38fd597..ba698a097fc81 100644
---- a/lib/nlattr.c
-+++ b/lib/nlattr.c
-@@ -30,6 +30,8 @@ static const u8 nla_attr_len[NLA_TYPE_MAX+1] = {
- 	[NLA_S16]	= sizeof(s16),
- 	[NLA_S32]	= sizeof(s32),
- 	[NLA_S64]	= sizeof(s64),
-+	[NLA_BE16]	= sizeof(__be16),
-+	[NLA_BE32]	= sizeof(__be32),
- };
+diff --git a/sound/core/Makefile b/sound/core/Makefile
+index 2762f03d9b7bc..a7a1590b29526 100644
+--- a/sound/core/Makefile
++++ b/sound/core/Makefile
+@@ -30,7 +30,6 @@ snd-ctl-led-objs  := control_led.o
+ snd-rawmidi-objs  := rawmidi.o
+ snd-timer-objs    := timer.o
+ snd-hrtimer-objs  := hrtimer.o
+-snd-rtctimer-objs := rtctimer.o
+ snd-hwdep-objs    := hwdep.o
+ snd-seq-device-objs := seq_device.o
  
- static const u8 nla_attr_minlen[NLA_TYPE_MAX+1] = {
-@@ -43,6 +45,8 @@ static const u8 nla_attr_minlen[NLA_TYPE_MAX+1] = {
- 	[NLA_S16]	= sizeof(s16),
- 	[NLA_S32]	= sizeof(s32),
- 	[NLA_S64]	= sizeof(s64),
-+	[NLA_BE16]	= sizeof(__be16),
-+	[NLA_BE32]	= sizeof(__be32),
- };
- 
- /*
 -- 
 2.43.0
 
