@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-26188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A784870D7C
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:34:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91C25870F16
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:51:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CF641C236FE
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:34:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 328A91F21B62
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9C6778B4C;
-	Mon,  4 Mar 2024 21:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E97A7BB14;
+	Mon,  4 Mar 2024 21:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u4bplZzr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v6lpWuyf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994BA1C687;
-	Mon,  4 Mar 2024 21:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BBD87BAFB;
+	Mon,  4 Mar 2024 21:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588070; cv=none; b=j/uUmdVMF+yYVT3DxfAMxf/FZZfA6rnIoWHdzfEb/PFxJy28SoxGeoKLDgQ6Nh+VTWGzJpC1PeiwFKwPEaN1WHO1qQ7IU5vy6hJp35rrQnSL6vd+NRobK5nbI61dTDFHJKyM4q3+y8lAmuGqDNdJA6rvLlAIt86V7srOA3mB3e4=
+	t=1709589042; cv=none; b=IvczZaeNRmDchFlW/ddwlYpQLpalUzkMSeuAx9QSY9aEFZiX2u/JO8dFTNVwmacmH+z6dwyEzV5JAB0AKAHsrKdyfpMe6d1HNVqvitDlPUH7XriMJJqyYl62R1G+rTnnfpbzCL22lOYfN54SAdspBfC0hEDudWxRWKOJ2nyL8B8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588070; c=relaxed/simple;
-	bh=GcaKPwPJpjo2njfe60qvqSJ2cA8XHbsRhYjUPH0b6y4=;
+	s=arc-20240116; t=1709589042; c=relaxed/simple;
+	bh=O0LnXOoRfkoS9erxmMKAxdBxYdSTcCeNYVIPneUr2Cs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IHwuSWHgYT2RxS/JC5hD0t7dFN21JJuVAYQfkdNOYgO9s258w6HENLmZ2IHXvQOgIokzE7WrxbkE1uIx74+tHYy5/Vhy5Cq1mu9iWsKql9ix26AfEAxwSe9KQAT72QYjTRVjWgug42vss9BgqH9cTMNbajLwLgSqGgfrjuLb5Lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u4bplZzr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFF8C433C7;
-	Mon,  4 Mar 2024 21:34:30 +0000 (UTC)
+	 MIME-Version; b=Ki3bC7WdNNS0l8XplE5YRSANaYA95qoGpTS2X3fcCtiYYUIvEtRDqiAvkoiOp+sO/+ZgXE5q4af972NK8DLr1wXfBfXwXu+oJRfZ7NAM4PXipbNGMFsEiw9NT9IzFjFNhppvQZDO4onXnLV0s8+DLIY88A5j9uBhwB8AhpCfHXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v6lpWuyf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59D43C433C7;
+	Mon,  4 Mar 2024 21:50:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588070;
-	bh=GcaKPwPJpjo2njfe60qvqSJ2cA8XHbsRhYjUPH0b6y4=;
+	s=korg; t=1709589041;
+	bh=O0LnXOoRfkoS9erxmMKAxdBxYdSTcCeNYVIPneUr2Cs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u4bplZzrmVs/ZP08cfouZ9VFzx8v1hB0x1oecTEFnjDQvizGXRgiF1MUJGuroOslJ
-	 Kflp7bT0W2y2s/5oRN+RwTqDU7Sa1Nuvh1XMQxoLjzw2OAJ9uxfwXx3AsA3QmEddnX
-	 co010Uw5K/yK1lW8lTr4m/rr56FsnHx5KMS28Qj8=
+	b=v6lpWuyfLN9/FBKXluKLpsBExWAiScKOkJWGaf80Yh7dfK2RkWoJLy7kPClfNm1ZF
+	 npyfwBoG2t16y5qfP/rp0XBbLY3hShw6ZkEK58cUwLOY7wZSNPUA7g9Q9jILMASa7o
+	 72QIBNH016fBhkmFv4J97re3zwwzrfGefzW+8wtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Peter Korsgaard <peter@korsgaard.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 10/42] net: usb: dm9601: fix wrong return value in dm9601_mdio_read
+	Chuck Lever <chuck.lever@oracle.com>,
+	NeilBrown <neilb@suse.de>,
+	Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH 6.1 154/215] NFSD: Update file_hashtbl() helpers
 Date: Mon,  4 Mar 2024 21:23:37 +0000
-Message-ID: <20240304211537.987910802@linuxfoundation.org>
+Message-ID: <20240304211601.902879558@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
-References: <20240304211537.631764077@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit c68b2c9eba38ec3f60f4894b189090febf4d8d22 ]
+[ Upstream commit 3fe828caddd81e68e9d29353c6e9285a658ca056 ]
 
-The MII code does not check the return value of mdio_read (among
-others), and therefore no error code should be sent. A previous fix to
-the use of an uninitialized variable propagates negative error codes,
-that might lead to wrong operations by the MII library.
+Enable callers to use const pointers for type safety.
 
-An example of such issues is the use of mii_nway_restart by the dm9601
-driver. The mii_nway_restart function does not check the value returned
-by mdio_read, which in this case might be a negative number which could
-contain the exact bit the function checks (BMCR_ANENABLE = 0x1000).
-
-Return zero in case of error, as it is common practice in users of
-mdio_read to avoid wrong uses of the return value.
-
-Fixes: 8f8abb863fa5 ("net: usb: dm9601: fix uninitialized variable use in dm9601_mdio_read")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Peter Korsgaard <peter@korsgaard.com>
-Link: https://lore.kernel.org/r/20240225-dm9601_ret_err-v1-1-02c1d959ea59@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/dm9601.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/nfs4state.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/usb/dm9601.c b/drivers/net/usb/dm9601.c
-index 5aad26600b03e..9b7db5fd9e08f 100644
---- a/drivers/net/usb/dm9601.c
-+++ b/drivers/net/usb/dm9601.c
-@@ -231,7 +231,7 @@ static int dm9601_mdio_read(struct net_device *netdev, int phy_id, int loc)
- 	err = dm_read_shared_word(dev, 1, loc, &res);
- 	if (err < 0) {
- 		netdev_err(dev->net, "MDIO read error: %d\n", err);
--		return err;
-+		return 0;
- 	}
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -721,7 +721,7 @@ static unsigned int ownerstr_hashval(str
+ #define FILE_HASH_BITS                   8
+ #define FILE_HASH_SIZE                  (1 << FILE_HASH_BITS)
  
- 	netdev_dbg(dev->net,
--- 
-2.43.0
-
+-static unsigned int file_hashval(struct svc_fh *fh)
++static unsigned int file_hashval(const struct svc_fh *fh)
+ {
+ 	struct inode *inode = d_inode(fh->fh_dentry);
+ 
+@@ -4687,7 +4687,7 @@ move_to_close_lru(struct nfs4_ol_stateid
+ 
+ /* search file_hashtbl[] for file */
+ static struct nfs4_file *
+-find_file_locked(struct svc_fh *fh, unsigned int hashval)
++find_file_locked(const struct svc_fh *fh, unsigned int hashval)
+ {
+ 	struct nfs4_file *fp;
+ 
 
 
 
