@@ -1,222 +1,235 @@
-Return-Path: <stable+bounces-25797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5D4D86F7D7
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 00:20:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC48C86F7ED
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 01:04:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 580FA28132C
-	for <lists+stable@lfdr.de>; Sun,  3 Mar 2024 23:20:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EDC628159C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 00:04:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B04467AE66;
-	Sun,  3 Mar 2024 23:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C48625;
+	Mon,  4 Mar 2024 00:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QHFFKZvE"
+	dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b="pInqJJhN"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from gate2.alliedtelesis.co.nz (gate2.alliedtelesis.co.nz [202.36.163.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96EC26CBEE
-	for <stable@vger.kernel.org>; Sun,  3 Mar 2024 23:20:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B333A38B
+	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 00:04:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.36.163.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709508016; cv=none; b=OUxKow7vAV8shtCpOdNgUZX0GrdYcILgjhc0ExjsnF401PdmFF3AOxGLH0y8hB6PcmsqXNPJg/oYVi+V7UbnZ+6ULm14hFfuBVT6jEvAMtYVIcOFWpmC9k72lpxtIOfUkYtC6SelGK95z9PIMwRaeEPUiXaOElmHMp1EwVXqqTI=
+	t=1709510649; cv=none; b=bow/n8OjY7XnqRzvw7LDbCzM+m8YEMz2yZM74AOeYcWeztqU3ie4aFVo8WdHIRaK49oI5/3CWnadsxuaLQ4jYuiUSSeKStpQ1qRTfnwGRhk28RUQpdbBwlfWmO227h+NneRNSBZZUrPN3lWMtIYi4g4GJQQWqNc7QBtw63uaZkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709508016; c=relaxed/simple;
-	bh=zjXtMwgm/eHxKWyvHY2jbG2xbcJeROt0u/i/F9exbPI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PwU3fRUCfiFI02guGC9K9Spyd+noxZwXN22FD3pvn7uwuw+BX+hMzBhOp2sOkQjAygLT/nEv8gdhvU4WWncd+n07ee9tp1IeYWlcjrvjj1dbafHoX9K3EgSKxWFInqw+LOltk7Jt0m1yo/t1UueeNKCele3MOF/nyw7HXbf87j0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QHFFKZvE; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709508013;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QIpQyIQBDU9IOQzSfvK3GFtVhA/ANBUgz5c/8nKdj3g=;
-	b=QHFFKZvEJLML3yj2zp0W21dgjdiNWVgTbYdXEr8Cc5YJfLVPOWKWSu6zIAnf5hMc090pRP
-	nwm9zaXTCaX885BkRu9V/k705molyR2Taag0TcOk8x01j15ul5kkPP1Mt1p/i+y8owjDeO
-	GFj21xjCU5tbkYG2nEoden+0fFmGGuM=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-244-9gNfsHiCMAyzCKzXa6AvMg-1; Sun, 03 Mar 2024 18:20:11 -0500
-X-MC-Unique: 9gNfsHiCMAyzCKzXa6AvMg-1
-Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-2d3c2feed43so2601701fa.3
-        for <stable@vger.kernel.org>; Sun, 03 Mar 2024 15:20:11 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709508010; x=1710112810;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QIpQyIQBDU9IOQzSfvK3GFtVhA/ANBUgz5c/8nKdj3g=;
-        b=bvQmc/TO1kbNKHzDAbhbihSV54ctulHqAyFEinaBeDdVDhmb+bamSBpH1kMbrrlPtW
-         0m2m/ea8dVwvB5C4anX5+STpE0asN7FZ5Xg5b3gQNGEUGNEI3LpH481j3JFprCU6bwT0
-         xKLypep7IHLWUAh/5av96oV5KSzr9cRHW+tlRmC4jahNEYblFUlyESSgKbNMRuHfRmZ8
-         Bc92WAO3SngqrouCBxsAxIPT+6jJcWqOrITcA2FXnBc3aLCdUSRvyzRh97A2M9qYNC1Y
-         QA2gYrhopwCy7ZJJzC5VxycEoMo4NKM1sMJj+to0efSaTMHEz62KnMzNC8s26xeKOjc1
-         Z0jQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXte/g6aSe8V6V1vmknPIf+5Z/4C0ggCRxpKSk6geVSP/53zb1EHBQGnWUf3fLepeV0Tw9WQu9fxRbnKbPSFI576LD/35ft
-X-Gm-Message-State: AOJu0YzU7dRDUERMxtjNjt90QKArnpqmpASZJpB/asIkYjm6YYEfI/X9
-	3cOOWPUkLkJpbqhfzQNrnr3jqe4XL1R5cv1zDy9zrYoyWnxMhQqCyiBbZwWPr2IWLchwx2M36rU
-	WcFFgsGjbP6YIXBvQIsqCrZGwW+nHt6sAY35ENvnGpiH8OmiMWOYaRTl9h6pdRzKmCWTq2xeuiZ
-	CBXNYIzxWZ9MNZs0x9q+cB5+rTPHHd
-X-Received: by 2002:a2e:3e1a:0:b0:2d2:4108:72a with SMTP id l26-20020a2e3e1a000000b002d24108072amr5378109lja.12.1709508010310;
-        Sun, 03 Mar 2024 15:20:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHqegTjHz0uMNE/MlJaVD6yU0I6oHvQsWJ6t6xo+KrbnXqRSt7ZzmH16ZBM718PcaVKMvelDgT3zIbuWZOy9Co=
-X-Received: by 2002:a2e:3e1a:0:b0:2d2:4108:72a with SMTP id
- l26-20020a2e3e1a000000b002d24108072amr5378101lja.12.1709508009972; Sun, 03
- Mar 2024 15:20:09 -0800 (PST)
+	s=arc-20240116; t=1709510649; c=relaxed/simple;
+	bh=uR/5rwCV7vZtbBypIlzw4jSV9DGTLsBJUh5lyOcCPDA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TmOHhKQgDHQGKL4f/LnVgRDWrLzxX28f2GVVBVBx4yBT+OLMCqo4uQ1aiY6AuKivQhTDZXrMvvO50YjfH9zPQBTfoBGF46bOUleQSpXOiIvdxRKdMHXLr6msMRWck2EHEEYYSvHyTJfnNzOVHm7pujW1qRVtXlsbKqNkaTwV6Ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz; spf=pass smtp.mailfrom=alliedtelesis.co.nz; dkim=pass (2048-bit key) header.d=alliedtelesis.co.nz header.i=@alliedtelesis.co.nz header.b=pInqJJhN; arc=none smtp.client-ip=202.36.163.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alliedtelesis.co.nz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alliedtelesis.co.nz
+Received: from svr-chch-seg1.atlnz.lc (mmarshal3.atlnz.lc [10.32.18.43])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by gate2.alliedtelesis.co.nz (Postfix) with ESMTPS id 7105F2C049D;
+	Mon,  4 Mar 2024 13:04:02 +1300 (NZDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alliedtelesis.co.nz;
+	s=mail181024; t=1709510642;
+	bh=rmB6Gec5j5p042fORdevP4/2N+Rmqi8YKHFNq2L9YZE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=pInqJJhN+vIbhqbS+u7AYmtHFhSP6N3BJNnVWflGVbFsLjf/aDlkZMc8XC3w/XVx8
+	 /itAQEuEdUwxNkfRrHAOuL9URofRX2AeTdipb+jvVSNN3IoEBbe8tMIPdzspJDX8eQ
+	 qsVBZkkJkLxUBWrPZw3cxmR4ed6l99caFN14Td2C398VRRFzU7BjvNWyhJQfT3wEmx
+	 KzB/hgZr6Qv5cxKwuwbXPNnp6sibFk+Nhwkp3Am5XXONz4f47MIzaoopUaMD85HJmy
+	 w66Z6qSafMCN4cHtHhWlABmlzoAuXfY8tt+rjXTCKCZl0q6ET8IrNbHxMy6hlElVpw
+	 58YFk035Uk7rg==
+Received: from pat.atlnz.lc (Not Verified[10.32.16.33]) by svr-chch-seg1.atlnz.lc with Trustwave SEG (v8,2,6,11305)
+	id <B65e50ff20000>; Mon, 04 Mar 2024 13:04:02 +1300
+Received: from hamishm-dl.ws.atlnz.lc (hamishm-dl.ws.atlnz.lc [10.33.24.13])
+	by pat.atlnz.lc (Postfix) with ESMTP id 45BB813ED8D;
+	Mon,  4 Mar 2024 13:04:02 +1300 (NZDT)
+Received: by hamishm-dl.ws.atlnz.lc (Postfix, from userid 1133)
+	id 3C05B241719; Mon,  4 Mar 2024 13:04:02 +1300 (NZDT)
+From: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+To: mika.westerberg@linux.intel.com,
+	wsa+renesas@sang-engineering.com
+Cc: linux-i2c@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	Hamish Martin <hamish.martin@alliedtelesis.co.nz>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] i2c: acpi: Unbind mux adapters before delete
+Date: Mon,  4 Mar 2024 13:03:55 +1300
+Message-ID: <20240304000355.2614421-1-hamish.martin@alliedtelesis.co.nz>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240228163840.6667-1-pchelkin@ispras.ru>
-In-Reply-To: <20240228163840.6667-1-pchelkin@ispras.ru>
-From: Alexander Aring <aahringo@redhat.com>
-Date: Sun, 3 Mar 2024 18:19:58 -0500
-Message-ID: <CAK-6q+i4v94uF9BEeZ0zNWtutOn35pzstiY7jMBetCJ0PHOD3w@mail.gmail.com>
-Subject: Re: [PATCH wpan] mac802154: fix llsec key resources release in mac802154_llsec_key_del
-To: Fedor Pchelkin <pchelkin@ispras.ru>
-Cc: Alexander Aring <alex.aring@gmail.com>, Stefan Schmidt <stefan@datenfreihafen.org>, 
-	Miquel Raynal <miquel.raynal@bootlin.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Phoebe Buckheister <phoebe.buckheister@itwm.fraunhofer.de>, linux-wpan@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Alexey Khoroshilov <khoroshilov@ispras.ru>, lvc-project@linuxtesting.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-SEG-SpamProfiler-Analysis: v=2.4 cv=BKkQr0QG c=1 sm=1 tr=0 ts=65e50ff2 a=KLBiSEs5mFS1a/PbTCJxuA==:117 a=K6JAEmCyrfEA:10 a=QyXUC8HyAAAA:8 a=VwQbUJbxAAAA:8 a=1q8fwcNTFP7Op90FAO0A:9 a=3ZKOabzyN94A:10 a=AjGcO6oz07-iQ99wixmX:22
+X-SEG-SpamProfiler-Score: 0
+x-atlnz-ls: pat
 
-Hi,
+There is an issue with ACPI overlay table removal specifically related
+to I2C multiplexers.
 
-On Wed, Feb 28, 2024 at 11:44=E2=80=AFAM Fedor Pchelkin <pchelkin@ispras.ru=
-> wrote:
->
-> mac802154_llsec_key_del() can free resources of a key directly without
-> following the RCU rules for waiting before the end of a grace period. Thi=
-s
-> may lead to use-after-free in case llsec_lookup_key() is traversing the
-> list of keys in parallel with a key deletion:
->
-> refcount_t: addition on 0; use-after-free.
-> WARNING: CPU: 4 PID: 16000 at lib/refcount.c:25 refcount_warn_saturate+0x=
-162/0x2a0
-> Modules linked in:
-> CPU: 4 PID: 16000 Comm: wpan-ping Not tainted 6.7.0 #19
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian=
--1.16.2-1 04/01/2014
-> RIP: 0010:refcount_warn_saturate+0x162/0x2a0
-> Call Trace:
->  <TASK>
->  llsec_lookup_key.isra.0+0x890/0x9e0
->  mac802154_llsec_encrypt+0x30c/0x9c0
->  ieee802154_subif_start_xmit+0x24/0x1e0
->  dev_hard_start_xmit+0x13e/0x690
->  sch_direct_xmit+0x2ae/0xbc0
->  __dev_queue_xmit+0x11dd/0x3c20
->  dgram_sendmsg+0x90b/0xd60
->  __sys_sendto+0x466/0x4c0
->  __x64_sys_sendto+0xe0/0x1c0
->  do_syscall_64+0x45/0xf0
->  entry_SYSCALL_64_after_hwframe+0x6e/0x76
->
-> Also, ieee802154_llsec_key_entry structures are not freed by
-> mac802154_llsec_key_del():
->
-> unreferenced object 0xffff8880613b6980 (size 64):
->   comm "iwpan", pid 2176, jiffies 4294761134 (age 60.475s)
->   hex dump (first 32 bytes):
->     78 0d 8f 18 80 88 ff ff 22 01 00 00 00 00 ad de  x.......".......
->     00 00 00 00 00 00 00 00 03 00 cd ab 00 00 00 00  ................
->   backtrace:
->     [<ffffffff81dcfa62>] __kmem_cache_alloc_node+0x1e2/0x2d0
->     [<ffffffff81c43865>] kmalloc_trace+0x25/0xc0
->     [<ffffffff88968b09>] mac802154_llsec_key_add+0xac9/0xcf0
->     [<ffffffff8896e41a>] ieee802154_add_llsec_key+0x5a/0x80
->     [<ffffffff8892adc6>] nl802154_add_llsec_key+0x426/0x5b0
->     [<ffffffff86ff293e>] genl_family_rcv_msg_doit+0x1fe/0x2f0
->     [<ffffffff86ff46d1>] genl_rcv_msg+0x531/0x7d0
->     [<ffffffff86fee7a9>] netlink_rcv_skb+0x169/0x440
->     [<ffffffff86ff1d88>] genl_rcv+0x28/0x40
->     [<ffffffff86fec15c>] netlink_unicast+0x53c/0x820
->     [<ffffffff86fecd8b>] netlink_sendmsg+0x93b/0xe60
->     [<ffffffff86b91b35>] ____sys_sendmsg+0xac5/0xca0
->     [<ffffffff86b9c3dd>] ___sys_sendmsg+0x11d/0x1c0
->     [<ffffffff86b9c65a>] __sys_sendmsg+0xfa/0x1d0
->     [<ffffffff88eadbf5>] do_syscall_64+0x45/0xf0
->     [<ffffffff890000ea>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
->
-> Handle the proper resource release in the RCU callback function
-> mac802154_llsec_key_del_rcu().
->
-> Note that if llsec_lookup_key() finds a key, it gets a refcount via
-> llsec_key_get() and locally copies key id from key_entry (which is a
-> list element). So it's safe to call llsec_key_put() and free the list
-> entry after the RCU grace period elapses.
->
-> Found by Linux Verification Center (linuxtesting.org).
->
-> Fixes: 5d637d5aabd8 ("mac802154: add llsec structures and mutators")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-> ---
-> Should the patch be targeted to "net" tree directly?
->
->  include/net/cfg802154.h |  1 +
->  net/mac802154/llsec.c   | 18 +++++++++++++-----
->  2 files changed, 14 insertions(+), 5 deletions(-)
->
-> diff --git a/include/net/cfg802154.h b/include/net/cfg802154.h
-> index cd95711b12b8..76d2cd2e2b30 100644
-> --- a/include/net/cfg802154.h
-> +++ b/include/net/cfg802154.h
-> @@ -401,6 +401,7 @@ struct ieee802154_llsec_key {
->
->  struct ieee802154_llsec_key_entry {
->         struct list_head list;
-> +       struct rcu_head rcu;
->
->         struct ieee802154_llsec_key_id id;
->         struct ieee802154_llsec_key *key;
-> diff --git a/net/mac802154/llsec.c b/net/mac802154/llsec.c
-> index 8d2eabc71bbe..f13b07ebfb98 100644
-> --- a/net/mac802154/llsec.c
-> +++ b/net/mac802154/llsec.c
-> @@ -265,19 +265,27 @@ int mac802154_llsec_key_add(struct mac802154_llsec =
-*sec,
->         return -ENOMEM;
->  }
->
-> +static void mac802154_llsec_key_del_rcu(struct rcu_head *rcu)
-> +{
-> +       struct ieee802154_llsec_key_entry *pos;
-> +       struct mac802154_llsec_key *mkey;
-> +
-> +       pos =3D container_of(rcu, struct ieee802154_llsec_key_entry, rcu)=
-;
-> +       mkey =3D container_of(pos->key, struct mac802154_llsec_key, key);
-> +
-> +       llsec_key_put(mkey);
-> +       kfree_sensitive(pos);
+Consider an ACPI SSDT Overlay that defines a PCA9548 I2C mux on an
+existing I2C bus. When this table is loaded we see the creation of a
+device for the overall PCA9548 chip and 8 further devices - one
+i2c_adapter each for the mux channels. These are all bound to their
+ACPI equivalents via an eventual invocation of acpi_bind_one().
 
-I don't think this kfree is right, "struct ieee802154_llsec_key_entry"
-is declared as "non pointer" in "struct mac802154_llsec_key". The
-memory that is part of "struct ieee802154_llsec_key_entry" should be
-freed when llsec_key_put(), llsec_key_release() hits.
+When we unload the SSDT overlay we run into the problem. The ACPI
+devices are deleted as normal via acpi_device_del_work_fn() and the
+acpi_device_del_list.
 
-Or is there something I am missing here?
+However, the following warning and stack trace is output as the
+deletion does not go smoothly:
+------------[ cut here ]------------
+kernfs: can not remove 'physical_node', no directory
+WARNING: CPU: 1 PID: 11 at fs/kernfs/dir.c:1674 kernfs_remove_by_name_ns+=
+0xb9/0xc0
+Modules linked in:
+CPU: 1 PID: 11 Comm: kworker/u128:0 Not tainted 6.8.0-rc6+ #1
+Hardware name: congatec AG conga-B7E3/conga-B7E3, BIOS 5.13 05/16/2023
+Workqueue: kacpi_hotplug acpi_device_del_work_fn
+RIP: 0010:kernfs_remove_by_name_ns+0xb9/0xc0
+Code: e4 00 48 89 ef e8 07 71 db ff 5b b8 fe ff ff ff 5d 41 5c 41 5d e9 a=
+7 55 e4 00 0f 0b eb a6 48 c7 c7 f0 38 0d 9d e8 97 0a d5 ff <0f> 0b eb dc =
+0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90
+RSP: 0018:ffff9f864008fb28 EFLAGS: 00010286
+RAX: 0000000000000000 RBX: ffff8ef90a8d4940 RCX: 0000000000000000
+RDX: ffff8f000e267d10 RSI: ffff8f000e25c780 RDI: ffff8f000e25c780
+RBP: ffff8ef9186f9870 R08: 0000000000013ffb R09: 00000000ffffbfff
+R10: 00000000ffffbfff R11: ffff8f000e0a0000 R12: ffff9f864008fb50
+R13: ffff8ef90c93dd60 R14: ffff8ef9010d0958 R15: ffff8ef9186f98c8
+FS:  0000000000000000(0000) GS:ffff8f000e240000(0000) knlGS:0000000000000=
+000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f48f5253a08 CR3: 00000003cb82e000 CR4: 00000000003506f0
+Call Trace:
+ <TASK>
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ ? __warn+0x7c/0x130
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ ? report_bug+0x171/0x1a0
+ ? handle_bug+0x3c/0x70
+ ? exc_invalid_op+0x17/0x70
+ ? asm_exc_invalid_op+0x1a/0x20
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ ? kernfs_remove_by_name_ns+0xb9/0xc0
+ acpi_unbind_one+0x108/0x180
+ device_del+0x18b/0x490
+ ? srso_return_thunk+0x5/0x5f
+ ? srso_return_thunk+0x5/0x5f
+ device_unregister+0xd/0x30
+ i2c_del_adapter.part.0+0x1bf/0x250
+ i2c_mux_del_adapters+0xa1/0xe0
+ i2c_device_remove+0x1e/0x80
+ device_release_driver_internal+0x19a/0x200
+ bus_remove_device+0xbf/0x100
+ device_del+0x157/0x490
+ ? __pfx_device_match_fwnode+0x10/0x10
+ ? srso_return_thunk+0x5/0x5f
+ device_unregister+0xd/0x30
+ i2c_acpi_notify+0x10f/0x140
+ notifier_call_chain+0x58/0xd0
+ blocking_notifier_call_chain+0x3a/0x60
+ acpi_device_del_work_fn+0x85/0x1d0
+ process_one_work+0x134/0x2f0
+ worker_thread+0x2f0/0x410
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0xe3/0x110
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x2f/0x50
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1b/0x30
+ </TASK>
+---[ end trace 0000000000000000 ]---
+...
+repeated 7 more times, 1 for each channel of the mux
+...
 
-Thanks.
+The issue is that the binding of the ACPI devices to their peer I2C
+adapters is not correctly cleaned up. Digging deeper into the issue we
+see that the deletion order is such that the ACPI devices matching the
+mux channel i2c adapters are deleted first during the SSDT overlay
+removal. For each of the channels we see a call to i2c_acpi_notify()
+with ACPI_RECONFIG_DEVICE_REMOVE but, because these devices are not
+actually i2c_clients, nothing is done for them.
 
-Otherwise the patch looks correct to me.
+Later on, after each of the mux channels has been dealt with, we come
+to delete the i2c_client representing the PCA9548 device. This is the
+call stack we see above, whereby the kernel cleans up the i2c_client
+including destruction of the mux and its channel adapters. At this
+point we do attempt to unbind from the ACPI peers but those peers no
+longer exist and so we hit the kernfs errors.
 
-- Alex
+The fix is to augment i2c_acpi_notify() to handle i2c_adapters. But,
+given that the life cycle of the adapters is linked to the i2c_client,
+instead of deleting the i2c_adapters during the i2c_acpi_notify(), we
+just trigger unbinding of the ACPI device from the adapter device, and
+allow the clean up of the adapter to continue in the way it always has.
+
+Signed-off-by: Hamish Martin <hamish.martin@alliedtelesis.co.nz>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Fixes: 525e6fabeae2 ("i2c / ACPI: add support for ACPI reconfigure notifi=
+cations")
+Cc: <stable@vger.kernel.org> # v4.8+
+---
+ drivers/i2c/i2c-core-acpi.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/i2c/i2c-core-acpi.c b/drivers/i2c/i2c-core-acpi.c
+index d6037a328669..67fa8deccef6 100644
+--- a/drivers/i2c/i2c-core-acpi.c
++++ b/drivers/i2c/i2c-core-acpi.c
+@@ -445,6 +445,11 @@ static struct i2c_client *i2c_acpi_find_client_by_ad=
+ev(struct acpi_device *adev)
+ 	return i2c_find_device_by_fwnode(acpi_fwnode_handle(adev));
+ }
+=20
++static struct i2c_adapter *i2c_acpi_find_adapter_by_adev(struct acpi_dev=
+ice *adev)
++{
++	return i2c_find_adapter_by_fwnode(acpi_fwnode_handle(adev));
++}
++
+ static int i2c_acpi_notify(struct notifier_block *nb, unsigned long valu=
+e,
+ 			   void *arg)
+ {
+@@ -471,11 +476,17 @@ static int i2c_acpi_notify(struct notifier_block *n=
+b, unsigned long value,
+ 			break;
+=20
+ 		client =3D i2c_acpi_find_client_by_adev(adev);
+-		if (!client)
+-			break;
++		if (client) {
++			i2c_unregister_device(client);
++			put_device(&client->dev);
++		}
++
++		adapter =3D i2c_acpi_find_adapter_by_adev(adev);
++		if (adapter) {
++			acpi_device_notify_remove(&adapter->dev);
++			put_device(&adapter->dev);
++		}
+=20
+-		i2c_unregister_device(client);
+-		put_device(&client->dev);
+ 		break;
+ 	}
+=20
+--=20
+2.43.0
 
 
