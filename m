@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-25827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4678D86FA4A
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 07:54:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B922386FA4B
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 07:54:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 019692810A7
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 06:54:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA8711C20BAE
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 06:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D038911716;
-	Mon,  4 Mar 2024 06:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4062311713;
+	Mon,  4 Mar 2024 06:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRrzSOS9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wY6CYuUt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9048DB667
-	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 06:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024D6B667
+	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 06:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709535240; cv=none; b=pU765V6RrvZJ0DGPZ2MN3m1WdzUqBvLfhdL8hxU0/f7WZb93cjvMP8deiRHIzEk25HVLUw9RxKNESvRjCKhMitdBSXn+Le3KHwsptjbPeOFBcDe64fD4n0dZ6Lz6GOcyjAE8pmfX4T/JcejsLzETahqKOz3p7nPty5lMmUro9nM=
+	t=1709535244; cv=none; b=FN02lqkEAHZRJQFC3Ao2rB3QvthqmuNf/a82CV9JUc6TGL60rb635F1OYKCFzE6ttIrSZsCo7NZDRLw9xvl5qm7wh4YGYMuc0hqaLZwgXF/hQwvg1mSJcVDWyC27GckRciuRXkxbF0PDjhbUbzm8L5ASdcB8vODOhpkGL1zIio4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709535240; c=relaxed/simple;
-	bh=sbX8KfpF6KuF6+t9L0zFKrThsjj/2O8iPlfS7w7eNnQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fukH9SdKV5YdWq0bqL+3gxQ6iP4ABflU5dj/pM5hnuvRRFAtQNr+6/z/Ick09RaIf4NSjHHnCbUoMChc+hoUfurjhhneTFH2CT5J2pLjlyq9FzOcUsTjHd+G0d09cPrS/9qOQ28rym4vHkmf4FYm/hx1OYyuM2GBzdE4IueSz9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRrzSOS9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3424C433F1;
-	Mon,  4 Mar 2024 06:53:59 +0000 (UTC)
+	s=arc-20240116; t=1709535244; c=relaxed/simple;
+	bh=PmuF1v1xXsHzoQc6by29+8zbAsTZKcW964WhGFgocFk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sF4OdMpDCFSfT2mmwZKjYHXwEaBrAy+DG4lG0/L3mwML2mqM1CZy/VJAjbN0G3Inlx1ltnjwHVlqred11dMUUgd4T/zuKgWKNmAJi8GGR2gUUm7g+Mzq29odXtcEQPyCWrf5rjs+VVZba5ng7SJGCB0hI4DxcgsKPyV4KSQHFok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wY6CYuUt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5983DC43390;
+	Mon,  4 Mar 2024 06:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709535240;
-	bh=sbX8KfpF6KuF6+t9L0zFKrThsjj/2O8iPlfS7w7eNnQ=;
+	s=korg; t=1709535243;
+	bh=PmuF1v1xXsHzoQc6by29+8zbAsTZKcW964WhGFgocFk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=LRrzSOS9zYbA1oeB78SBp0z2441V3foLrlHBL3tD9KjXKylbCy42ctGNhEazJKXuL
-	 UY3zrEoSGWv6huMvfH9gH0TsK078YZjEqBVtimqwCY13cp62P3df7eky1iPOiPTOkt
-	 QEseaahEm2CA+k8CQWx/uF8XVDqfvfA/eGIts/8o=
-Subject: FAILED: patch "[PATCH] mmc: mmci: stm32: fix DMA API overlapping mappings warning" failed to apply to 5.10-stable tree
+	b=wY6CYuUtnz6USpq0HkL6mamIqBw+VnKf1YN5v4aRY13dZF9K1Arq+hpl1XnTf+zgE
+	 5d5rPnSoDv/SAaBEY0Q0oSThjlWmXHpR5jeO5n9Xk2+buKn43cvUShpLnxyHfwusPg
+	 FVJETO+8k+UKgSoKvxmzRr40NRojzJc0oxhWQMC0=
+Subject: FAILED: patch "[PATCH] mmc: mmci: stm32: fix DMA API overlapping mappings warning" failed to apply to 5.4-stable tree
 To: christophe.kerello@foss.st.com,ulf.hansson@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 04 Mar 2024 07:53:55 +0100
-Message-ID: <2024030455-crudeness-popcorn-ce16@gregkh>
+Date: Mon, 04 Mar 2024 07:53:57 +0100
+Message-ID: <2024030457-stalemate-feast-3b12@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,27 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 6b1ba3f9040be5efc4396d86c9752cdc564730be
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024030455-crudeness-popcorn-ce16@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024030457-stalemate-feast-3b12@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
 6b1ba3f9040b ("mmc: mmci: stm32: fix DMA API overlapping mappings warning")
 970dc9c11a17 ("mmc: mmci: stm32: use a buffer for unaligned DMA requests")
 0d319dd5a271 ("mmc: mmci: stm32: correctly check all elements of sg list")
+fe8d33bd33d5 ("mmc: mmci_sdmmc: fix DMA API warning overlapping mappings")
+127e6e98ca9b ("mmc: mmci_sdmmc: Replace sg_dma_xxx macros")
 
 thanks,
 
