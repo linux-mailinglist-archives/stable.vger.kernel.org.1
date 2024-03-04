@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-26229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB89B870DA6
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C028A870F49
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:53:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDF2F1C209F6
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CA9A282B62
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:53:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1914B78B4C;
-	Mon,  4 Mar 2024 21:36:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 233A378B69;
+	Mon,  4 Mar 2024 21:53:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7C0hkj6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BmgQDztX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB362DDCB;
-	Mon,  4 Mar 2024 21:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D332D1C6AB;
+	Mon,  4 Mar 2024 21:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588177; cv=none; b=WVYXBomg8IjfwDczE0FuR2yuvjOaIquZmNgNe0Rme4Ik0w6zJXI99vHtODghMuRz6+2qPhZFaMtsmrjP8uB6TPJEv9BrodS6uL/1FUOCTWcc7nZQ4ArLR2dpbBZ6qamLsu2MCvvkOsKMoBRUhXnaXJqsig+lEqb/9FIK+HqlGEc=
+	t=1709589181; cv=none; b=rZLDLJfoMCfzKFbql3iGVg86KsmpneTke/rkSAROxhfr6QJ4imLFAipItGHhcigobmd+N3/jJose/pJ8tU/mpi867Ngf3xTkKQhIZ3vEUgu+Wx+v92qAYk7vSmYgcxJT+fMbbE/tNuODtL+xs7Dl2VyYPRPwmWufa2J5J6Wd5sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588177; c=relaxed/simple;
-	bh=Z+TPzIEDI66XMpXtp2F0k/6fux700NlBs4U89uoL3j4=;
+	s=arc-20240116; t=1709589181; c=relaxed/simple;
+	bh=nFW0o9edDUgCj/m6Hd9SR0QOuvdoErUcrMQs5WRWScs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K27Q1zKGzx8ilPlJ5XQ+7vSpCogHE0K5ZSSbI1QskPBtr3u69Bdrt72f5xqdEyn2AICOfz2jD7xSkWcvztg0u4lCQfOelMV0CIXP1nF1HmKBPw878Yr119AyOEQVXD60TeujhvE5HFfwvN87+/dRkLv6EA/Q4amo+u0pH3XIGkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7C0hkj6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53284C433F1;
-	Mon,  4 Mar 2024 21:36:17 +0000 (UTC)
+	 MIME-Version; b=Uh0tqv1JW5ObYFrlLrjKtK5i0lyfNJgDDW1O7f/5KakuXpRxlvjn9GDsGb0uLkiHR4t0gDWE93mXIUCP71O7d90V86gLQStKcGT2ulNEhMKdMMylGZdr905s/s2+JyubcheKDK1zyEEyzfo7ilf2juonbgBTE+uZIFSj73oCOG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BmgQDztX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 652B1C43390;
+	Mon,  4 Mar 2024 21:53:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588177;
-	bh=Z+TPzIEDI66XMpXtp2F0k/6fux700NlBs4U89uoL3j4=;
+	s=korg; t=1709589181;
+	bh=nFW0o9edDUgCj/m6Hd9SR0QOuvdoErUcrMQs5WRWScs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O7C0hkj6anWYNzOMrhjnJ8Q7il23eYY4W10KpIlJIzIOsVtFFLJo6ZbeFEBSVciig
-	 V8aDldID2YdzdZMQK8AXlZ/96SApy9A1KK8UU7c2qbUqGPEG9t3KS9N5pW+GUZUASj
-	 79zqjZsOFJpD8qLc9NpimWBREiCtzUwgozUzKOGg=
+	b=BmgQDztXFsA+jWL9tiyKiqKPqD4aAq/mtyyBT8zgoTIKWsP60TxaabtQJrWojL7ZD
+	 YOrCrBXFeuCiek4BMbj7uZjxHeFgzxFwIok3aVq4BKflwA13TS/6J23KN4KPruPLg0
+	 72sgkp+tch06HnFPddW+CjgARc5NQIDZVVwRo7YI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 17/42] efi/capsule-loader: fix incorrect allocation size
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Miao Wang <shankerwangmiao@gmail.com>
+Subject: [PATCH 5.15 11/84] veth: try harder when allocating queue memory
 Date: Mon,  4 Mar 2024 21:23:44 +0000
-Message-ID: <20240304211538.209136295@linuxfoundation.org>
+Message-ID: <20240304211542.721162865@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
-References: <20240304211537.631764077@linuxfoundation.org>
+In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
+References: <20240304211542.332206551@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit fccfa646ef3628097d59f7d9c1a3e84d4b6bb45e ]
+[ Upstream commit 1ce7d306ea63f3e379557c79abd88052e0483813 ]
 
-gcc-14 notices that the allocation with sizeof(void) on 32-bit architectures
-is not enough for a 64-bit phys_addr_t:
+struct veth_rq is pretty large, 832B total without debug
+options enabled. Since commit under Fixes we try to pre-allocate
+enough queues for every possible CPU. Miao Wang reports that
+this may lead to order-5 allocations which will fail in production.
 
-drivers/firmware/efi/capsule-loader.c: In function 'efi_capsule_open':
-drivers/firmware/efi/capsule-loader.c:295:24: error: allocation of insufficient size '4' for type 'phys_addr_t' {aka 'long long unsigned int'} with size '8' [-Werror=alloc-size]
-  295 |         cap_info->phys = kzalloc(sizeof(void *), GFP_KERNEL);
-      |                        ^
+Let the allocation fallback to vmalloc() and try harder.
+These are the same flags we pass to netdev queue allocation.
 
-Use the correct type instead here.
-
-Fixes: f24c4d478013 ("efi/capsule-loader: Reinstate virtual capsule mapping")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Reported-and-tested-by: Miao Wang <shankerwangmiao@gmail.com>
+Fixes: 9d3684c24a52 ("veth: create by default nr_possible_cpus queues")
+Link: https://lore.kernel.org/all/5F52CAE2-2FB7-4712-95F1-3312FBBFA8DD@gmail.com/
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240223235908.693010-1-kuba@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/capsule-loader.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/veth.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/efi/capsule-loader.c b/drivers/firmware/efi/capsule-loader.c
-index 3e8d4b51a8140..97bafb5f70389 100644
---- a/drivers/firmware/efi/capsule-loader.c
-+++ b/drivers/firmware/efi/capsule-loader.c
-@@ -292,7 +292,7 @@ static int efi_capsule_open(struct inode *inode, struct file *file)
- 		return -ENOMEM;
- 	}
+diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+index 87cee614618ca..0102f86d48676 100644
+--- a/drivers/net/veth.c
++++ b/drivers/net/veth.c
+@@ -1303,7 +1303,8 @@ static int veth_alloc_queues(struct net_device *dev)
+ 	struct veth_priv *priv = netdev_priv(dev);
+ 	int i;
  
--	cap_info->phys = kzalloc(sizeof(void *), GFP_KERNEL);
-+	cap_info->phys = kzalloc(sizeof(phys_addr_t), GFP_KERNEL);
- 	if (!cap_info->phys) {
- 		kfree(cap_info->pages);
- 		kfree(cap_info);
+-	priv->rq = kcalloc(dev->num_rx_queues, sizeof(*priv->rq), GFP_KERNEL_ACCOUNT);
++	priv->rq = kvcalloc(dev->num_rx_queues, sizeof(*priv->rq),
++			    GFP_KERNEL_ACCOUNT | __GFP_RETRY_MAYFAIL);
+ 	if (!priv->rq)
+ 		return -ENOMEM;
+ 
+@@ -1319,7 +1320,7 @@ static void veth_free_queues(struct net_device *dev)
+ {
+ 	struct veth_priv *priv = netdev_priv(dev);
+ 
+-	kfree(priv->rq);
++	kvfree(priv->rq);
+ }
+ 
+ static int veth_dev_init(struct net_device *dev)
 -- 
 2.43.0
 
