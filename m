@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-26579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C3EE870F37
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:52:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BFDC870F7D
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:55:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEC5F1C21C17
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:52:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EA191C21A77
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:55:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C7747868F;
-	Mon,  4 Mar 2024 21:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED77B78B4C;
+	Mon,  4 Mar 2024 21:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eVz20OqN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FRma801x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE3831C6AB;
-	Mon,  4 Mar 2024 21:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3F01C6AB;
+	Mon,  4 Mar 2024 21:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589137; cv=none; b=Yss22l4D0I+vyx/dVlhIPit71Nh5nx4vDGfriNbEcoUV0Mlr1VZJgC4JxGqaTXb1D3lCwYuGTAi+Lg6v8BfHH/jOT2gQzxdetVu9+qQ5WjNyLDlLLKBc9j+kUFBDwLstm/k+bhUlYnwOStsTn/EinWEgpHRMpSTc+bb4oD5uuwQ=
+	t=1709589311; cv=none; b=DecKV8luEVNTtK8BgDyWyL/IO5pez0/6/3amIx2RgwyQiizSiU4HH3Odxa/EBPWBNwwD77uca1Cpfa5FKA2VOoUkXcO/aU5rDKi9Ucqtu9qmwOp0Q23ypGxrnVXJCqSI01WXVNhmiWpfMDEsw5afKCRyOz0idoFs10XLbtLObO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589137; c=relaxed/simple;
-	bh=12rtFWloHpi3YGUvsu9maMdceuOSyo0MZCziqP2EYwY=;
+	s=arc-20240116; t=1709589311; c=relaxed/simple;
+	bh=YbkC/R/S200rTxdLi8Sn3KUb3pTkPwkqMvMemGqTmkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AYXcrd8QB49bbnmagPV0+2UosbPxasE/jL5na3a57L9ACYICtqrhWTrRG7a0eeCVAMscw/gOaa5DsyPeQBm2BRIbx91lGMYS0/pk+KvXMvbjRjjkSy7iMhodPSvXu91SH7JKDd0cQiIoH3q1hwWTcYig5cjlj9O319/EiAOBrak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eVz20OqN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 627AFC433F1;
-	Mon,  4 Mar 2024 21:52:17 +0000 (UTC)
+	 MIME-Version; b=GOtOYmnMBSk0WMH2+yNQeV9sZhGU4uFS+0qpU2rz+nmOlCkvMVTYipLdBFuHm/mgRJUNSk18JumIToBDh3y1aDRiimetL0eZxuOGV4CxxvzSN2KI3QOXzyx5HKMxSSRa/P6sVH7ivR1lwS/86+5G/u4Mr9x46OvaCJuhuIR7gm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FRma801x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CE59C433F1;
+	Mon,  4 Mar 2024 21:55:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589137;
-	bh=12rtFWloHpi3YGUvsu9maMdceuOSyo0MZCziqP2EYwY=;
+	s=korg; t=1709589311;
+	bh=YbkC/R/S200rTxdLi8Sn3KUb3pTkPwkqMvMemGqTmkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eVz20OqNgkijCzieKmXi7RMmZMxjYB6nTjW5u/hOOhMN61ikjEevIlLkpsLDo1PnX
-	 aYwwPUdwCXS8H6XBkHzmQOLktwJkhWlNHfrzf1r0epU3AUgZBbkY9rvdDHM3T5NpoM
-	 YL56TmU5PicH/4DsdqkemHVbjLYd9Xo99Bo7AxYU=
+	b=FRma801xPH5qiSksTIyn5AqtjcMSZ8AOBAESabVP27I1Lelgw4Gek4/4tPxFPdBng
+	 IkjnliK4nuM1ByU9eCzBqRHAUk52OR4NwiSYLahM4b/x/dutx8zc29T4upbOAfrLLL
+	 ZCSc5igO43UNUO+rJeppZyzbm8KmuQDyfCLITG/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Nikolay Borisov <nik.borisov@suse.com>
-Subject: [PATCH 6.1 210/215] KVM/VMX: Use BT+JNC, i.e. EFLAGS.CF to select VMRESUME vs. VMLAUNCH
-Date: Mon,  4 Mar 2024 21:24:33 +0000
-Message-ID: <20240304211603.653169324@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	Matthieu Baerts <matthieu.baerts@tessares.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 5.15 61/84] mptcp: move __mptcp_error_report in protocol.c
+Date: Mon,  4 Mar 2024 21:24:34 +0000
+Message-ID: <20240304211544.421455305@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
+References: <20240304211542.332206551@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +64,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-From: Sean Christopherson <seanjc@google.com>
+commit d5fbeff1ab812b6c473b6924bee8748469462e2c upstream.
 
-commit 706a189dcf74d3b3f955e9384785e726ed6c7c80 upstream.
+This will simplify the next patch ("mptcp: process pending subflow error
+on close").
 
-Use EFLAGS.CF instead of EFLAGS.ZF to track whether to use VMRESUME versus
-VMLAUNCH.  Freeing up EFLAGS.ZF will allow doing VERW, which clobbers ZF,
-for MDS mitigations as late as possible without needing to duplicate VERW
-for both paths.
+No functional change intended.
 
-  [ pawan: resolved merge conflict in __vmx_vcpu_run in backport. ]
-
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Link: https://lore.kernel.org/all/20240213-delay-verw-v8-5-a6216d83edb7%40linux.intel.com
+Cc: stable@vger.kernel.org # v5.12+
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/vmx/run_flags.h |    7 +++++--
- arch/x86/kvm/vmx/vmenter.S   |    6 +++---
- 2 files changed, 8 insertions(+), 5 deletions(-)
+ net/mptcp/protocol.c |   36 ++++++++++++++++++++++++++++++++++++
+ net/mptcp/subflow.c  |   36 ------------------------------------
+ 2 files changed, 36 insertions(+), 36 deletions(-)
 
---- a/arch/x86/kvm/vmx/run_flags.h
-+++ b/arch/x86/kvm/vmx/run_flags.h
-@@ -2,7 +2,10 @@
- #ifndef __KVM_X86_VMX_RUN_FLAGS_H
- #define __KVM_X86_VMX_RUN_FLAGS_H
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -688,6 +688,42 @@ static bool __mptcp_ofo_queue(struct mpt
+ 	return moved;
+ }
  
--#define VMX_RUN_VMRESUME	(1 << 0)
--#define VMX_RUN_SAVE_SPEC_CTRL	(1 << 1)
-+#define VMX_RUN_VMRESUME_SHIFT		0
-+#define VMX_RUN_SAVE_SPEC_CTRL_SHIFT	1
++void __mptcp_error_report(struct sock *sk)
++{
++	struct mptcp_subflow_context *subflow;
++	struct mptcp_sock *msk = mptcp_sk(sk);
 +
-+#define VMX_RUN_VMRESUME		BIT(VMX_RUN_VMRESUME_SHIFT)
-+#define VMX_RUN_SAVE_SPEC_CTRL		BIT(VMX_RUN_SAVE_SPEC_CTRL_SHIFT)
++	mptcp_for_each_subflow(msk, subflow) {
++		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
++		int err = sock_error(ssk);
++		int ssk_state;
++
++		if (!err)
++			continue;
++
++		/* only propagate errors on fallen-back sockets or
++		 * on MPC connect
++		 */
++		if (sk->sk_state != TCP_SYN_SENT && !__mptcp_check_fallback(msk))
++			continue;
++
++		/* We need to propagate only transition to CLOSE state.
++		 * Orphaned socket will see such state change via
++		 * subflow_sched_work_if_closed() and that path will properly
++		 * destroy the msk as needed.
++		 */
++		ssk_state = inet_sk_state_load(ssk);
++		if (ssk_state == TCP_CLOSE && !sock_flag(sk, SOCK_DEAD))
++			inet_sk_state_store(sk, ssk_state);
++		WRITE_ONCE(sk->sk_err, -err);
++
++		/* This barrier is coupled with smp_rmb() in mptcp_poll() */
++		smp_wmb();
++		sk_error_report(sk);
++		break;
++	}
++}
++
+ /* In most cases we will be able to lock the mptcp socket.  If its already
+  * owned, we need to defer to the work queue to avoid ABBA deadlock.
+  */
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -1269,42 +1269,6 @@ void mptcp_space(const struct sock *ssk,
+ 	*full_space = tcp_full_space(sk);
+ }
  
- #endif /* __KVM_X86_VMX_RUN_FLAGS_H */
---- a/arch/x86/kvm/vmx/vmenter.S
-+++ b/arch/x86/kvm/vmx/vmenter.S
-@@ -106,7 +106,7 @@ SYM_FUNC_START(__vmx_vcpu_run)
- 	mov (%_ASM_SP), %_ASM_AX
- 
- 	/* Check if vmlaunch or vmresume is needed */
--	testb $VMX_RUN_VMRESUME, %bl
-+	bt   $VMX_RUN_VMRESUME_SHIFT, %bx
- 
- 	/* Load guest registers.  Don't clobber flags. */
- 	mov VCPU_RCX(%_ASM_AX), %_ASM_CX
-@@ -128,8 +128,8 @@ SYM_FUNC_START(__vmx_vcpu_run)
- 	/* Load guest RAX.  This kills the @regs pointer! */
- 	mov VCPU_RAX(%_ASM_AX), %_ASM_AX
- 
--	/* Check EFLAGS.ZF from 'testb' above */
--	jz .Lvmlaunch
-+	/* Check EFLAGS.CF from the VMX_RUN_VMRESUME bit test above. */
-+	jnc .Lvmlaunch
- 
- 	/*
- 	 * After a successful VMRESUME/VMLAUNCH, control flow "magically"
+-void __mptcp_error_report(struct sock *sk)
+-{
+-	struct mptcp_subflow_context *subflow;
+-	struct mptcp_sock *msk = mptcp_sk(sk);
+-
+-	mptcp_for_each_subflow(msk, subflow) {
+-		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
+-		int err = sock_error(ssk);
+-		int ssk_state;
+-
+-		if (!err)
+-			continue;
+-
+-		/* only propagate errors on fallen-back sockets or
+-		 * on MPC connect
+-		 */
+-		if (sk->sk_state != TCP_SYN_SENT && !__mptcp_check_fallback(msk))
+-			continue;
+-
+-		/* We need to propagate only transition to CLOSE state.
+-		 * Orphaned socket will see such state change via
+-		 * subflow_sched_work_if_closed() and that path will properly
+-		 * destroy the msk as needed.
+-		 */
+-		ssk_state = inet_sk_state_load(ssk);
+-		if (ssk_state == TCP_CLOSE && !sock_flag(sk, SOCK_DEAD))
+-			inet_sk_state_store(sk, ssk_state);
+-		sk->sk_err = -err;
+-
+-		/* This barrier is coupled with smp_rmb() in mptcp_poll() */
+-		smp_wmb();
+-		sk_error_report(sk);
+-		break;
+-	}
+-}
+-
+ static void subflow_error_report(struct sock *ssk)
+ {
+ 	struct sock *sk = mptcp_subflow_ctx(ssk)->conn;
 
 
 
