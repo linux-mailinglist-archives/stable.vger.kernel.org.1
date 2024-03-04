@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-26201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D829870D89
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:35:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F235870D5C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD090B22D1D
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:35:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70F381C241FA
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E3047A5D;
-	Mon,  4 Mar 2024 21:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 117917BAFE;
+	Mon,  4 Mar 2024 21:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pv33rsAQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MM0jxeBG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8721A1C687;
-	Mon,  4 Mar 2024 21:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C256A1C687;
+	Mon,  4 Mar 2024 21:33:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588105; cv=none; b=C6YceoRUtIy7pWtbrp33GYIJ2a72ovaR1jkMexfGN+EP26mDhWo6fUh721OPnj5fN7fW1iQWPjslgs6cpBJEnBFEgnRCXWt6v/Mnbc5R06mpU6ynQ58JHRPYSObLRy0ULf5Vcr+KNkGB/iwBLINyJT/objiCQtyirTJaeSLtD20=
+	t=1709587992; cv=none; b=C/MyU1kJnEWp6nuTWUZNEovp4ms21mAyiCyDfLT1c/NDJiFIsvSS/2rOVIttNvfmQnWsBAj9ddxYb8++cuoolc18VTl8IYojnjVQ/5ZPPZZ5a+h5hp6VExKSNossHDyPR9iouHjm1vlzPpg9qix0EFtGmFmsBry9qauXp06VYX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588105; c=relaxed/simple;
-	bh=mMRkkQWrjE5Yd3N38l36W7hE6fTchs7mcDbdodcD8d0=;
+	s=arc-20240116; t=1709587992; c=relaxed/simple;
+	bh=UYtwNh9wzJFUuC7IRLvv1p/WOz5DRSyTg4a3MnAyf1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=faNWr5Fhkaqgg8YfuvFF//1D0DuG9w72NVzrhvQl3bCr7GgGzjkWtOnWYoNr0xiNVAesugn5E8aDr51s9VT/rqiN0+r7rs/LSy3c64liUtK3cDjyZey29fseH2cRPjn+mYHnI7eLankjFN9BAns1kGeNcGzhg4wxq1iW9vkfWu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pv33rsAQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADA55C433C7;
-	Mon,  4 Mar 2024 21:35:04 +0000 (UTC)
+	 MIME-Version; b=rqc5mjrlMnNpUGqaBVIJ2nKb/H6IaGU/0DcRJUjiWsEJTjwdFuYmXb8X07xBSXkvq9cGsUPsGp/+F722+tiTV1xrooRQDcVaPiYhN7gx4DIVx3c/kkiKdEOEiDstqbtilcgMhLnl894mcrxhlNuylyvWoiSXkjxc2UKoLz4NOBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MM0jxeBG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FDCC433F1;
+	Mon,  4 Mar 2024 21:33:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588105;
-	bh=mMRkkQWrjE5Yd3N38l36W7hE6fTchs7mcDbdodcD8d0=;
+	s=korg; t=1709587992;
+	bh=UYtwNh9wzJFUuC7IRLvv1p/WOz5DRSyTg4a3MnAyf1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pv33rsAQ+m5UeDte8G8Pasd+JNx6BZGbtj7ozvBpEg8Z1zkiELDvxVwTSN/dcBzE/
-	 Tn1+b6vNGpxNgqGBXgE8hQG6hoC/MznfsUuZlX3VKkzIpaPSLqs9g3Y6zlW1VJ/thp
-	 b9Q/ZWMOYSfCSuG3FhUJrbtb+2a+1WBvS22SpGHc=
+	b=MM0jxeBGdLC9Pcr4RE2y1gN867fpTeOcEX8kSeaMj9mJt6mgK1IgUAtH/ViZ3Nv/C
+	 q/eZL+FWXg1HbuJy4RxMCsEywHWAyHr9vW9FBVFV98eQu5dQ38/ffMdh78SaGTsyix
+	 R5ArAjlBDQsmuh3SlWmrHIiT5zDnvM2zJxksaNJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Christian Brauner <brauner@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 08/42] ipv6: fix potential "struct net" leak in inet6_rtm_getaddr()
+Subject: [PATCH 6.7 150/162] gpio: fix resource unwinding order in error path
 Date: Mon,  4 Mar 2024 21:23:35 +0000
-Message-ID: <20240304211537.914894383@linuxfoundation.org>
+Message-ID: <20240304211556.487739317@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
-References: <20240304211537.631764077@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 10bfd453da64a057bcfd1a49fb6b271c48653cdb ]
+[ Upstream commit ec5c54a9d3c4f9c15e647b049fea401ee5258696 ]
 
-It seems that if userspace provides a correct IFA_TARGET_NETNSID value
-but no IFA_ADDRESS and IFA_LOCAL attributes, inet6_rtm_getaddr()
-returns -EINVAL with an elevated "struct net" refcount.
+Hogs are added *after* ACPI so should be removed *before* in error path.
 
-Fixes: 6ecf4c37eb3e ("ipv6: enable IFA_TARGET_NETNSID for RTM_GETADDR")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: David Ahern <dsahern@kernel.org>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: a411e81e61df ("gpiolib: add hogs support for machine code")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/addrconf.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpio/gpiolib.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 150c2f71ec89f..0429c1d50fc92 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -5436,9 +5436,10 @@ static int inet6_rtm_getaddr(struct sk_buff *in_skb, struct nlmsghdr *nlh,
- 	}
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index e8dc706fd7979..1d033106cf396 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -972,11 +972,11 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
  
- 	addr = extract_addr(tb[IFA_ADDRESS], tb[IFA_LOCAL], &peer);
--	if (!addr)
--		return -EINVAL;
--
-+	if (!addr) {
-+		err = -EINVAL;
-+		goto errout;
-+	}
- 	ifm = nlmsg_data(nlh);
- 	if (ifm->ifa_index)
- 		dev = dev_get_by_index(tgt_net, ifm->ifa_index);
+ 	ret = gpiochip_irqchip_init_valid_mask(gc);
+ 	if (ret)
+-		goto err_remove_acpi_chip;
++		goto err_free_hogs;
+ 
+ 	ret = gpiochip_irqchip_init_hw(gc);
+ 	if (ret)
+-		goto err_remove_acpi_chip;
++		goto err_remove_irqchip_mask;
+ 
+ 	ret = gpiochip_add_irqchip(gc, lock_key, request_key);
+ 	if (ret)
+@@ -1001,11 +1001,11 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+ 	gpiochip_irqchip_remove(gc);
+ err_remove_irqchip_mask:
+ 	gpiochip_irqchip_free_valid_mask(gc);
+-err_remove_acpi_chip:
++err_free_hogs:
++	gpiochip_free_hogs(gc);
+ 	acpi_gpiochip_remove(gc);
+ 	gpiochip_remove_pin_ranges(gc);
+ err_remove_of_chip:
+-	gpiochip_free_hogs(gc);
+ 	of_gpiochip_remove(gc);
+ err_free_gpiochip_mask:
+ 	gpiochip_free_valid_mask(gc);
 -- 
 2.43.0
 
