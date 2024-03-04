@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-26487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B96A870ED3
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:47:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CF44870DE2
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:38:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D7B9281B70
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:47:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D60FAB27C78
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CCE761675;
-	Mon,  4 Mar 2024 21:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F2061675;
+	Mon,  4 Mar 2024 21:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WxG5dzc6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFFfpxPE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2901EB5A;
-	Mon,  4 Mar 2024 21:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A2C1C6AB;
+	Mon,  4 Mar 2024 21:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588845; cv=none; b=i/9kgpVQkPm2eKEZvPC9N3te24NVZFbMq9TGgTI/na7H0xUpRO+CnSeCad8zBUmY8j9sMahBKjC53RyeEjwTkDkhy9mvR7Mi2biDk5mzmtcRd305U5ZQwqznkKKJOO6EkALdoU/dBFUgi6y90YMRHXgTW+452dGDHTWd4k5tmj0=
+	t=1709588315; cv=none; b=ubgkexSlg2v+JQma8vi4BpaDn+t6WMpeuJqHr+iy69Veatz4Z6nRR8GqPj7Bz9b+dZmYeNw1DpZmwgKc99RzPxSMfboUO41jw+QTvAbIVXubZON+bQJEoN2cMHX3hZV4oLyzztwYu8BitfZkGZR8W/LFqnBCLjsEsgKlDJovi7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588845; c=relaxed/simple;
-	bh=oK3b/c/Ns91vcAvJA51OKQr+QD2Zfijc+i3svCXslmM=;
+	s=arc-20240116; t=1709588315; c=relaxed/simple;
+	bh=KRK8sSuKJgaZt3Mne677eF5ocvjk/emfbleeXwCjQ7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mekyX5mNNfa+XkikScOC94wKTT9jk4fptqtB+a7Gn+k14FDGLwktSutgiT8Q29ldkh9i0B8c7wTQb7Ts8U103Rca68b12Ja7wHVvhk9y9tkql6PT6EiXKm19ZmhuZc+Id1796HBiYDkPaLxzMAPdt0thihke09olojvd55jmcgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WxG5dzc6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 721E1C433C7;
-	Mon,  4 Mar 2024 21:47:24 +0000 (UTC)
+	 MIME-Version; b=HloQfxLX5YIPu+axUclbA29BmztCEzoCLL/3K8JULszeV/BVbdMXpj60qTFTXSJ5DQhVSvVmZ9L5rEPjgLE6c2L+zbr+sVOcFDFrp6oZDM2NPaGf+NochNIuhvxu4tTPboAx4EcRdGemtjgCwzZ9WUSPR+kRl8Idrx6u20bfRCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFFfpxPE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08BE4C43390;
+	Mon,  4 Mar 2024 21:38:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588844;
-	bh=oK3b/c/Ns91vcAvJA51OKQr+QD2Zfijc+i3svCXslmM=;
+	s=korg; t=1709588315;
+	bh=KRK8sSuKJgaZt3Mne677eF5ocvjk/emfbleeXwCjQ7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WxG5dzc68WdlXB/3gS2BCqScz3jrVZzxiKbGe3X7mAe7+x6V2ytRzh2Bnp/sau4T1
-	 /lh3uD7fysdwxTS5uJLqI7FE8OfV0EKxyQX6ou0Df+Go8AEqrKo6ZIpfmWwcWOjGQV
-	 4wa58F9vjEDUti/5sls8DHNX+I8GHnHU6tTvJL90=
+	b=lFFfpxPEv0J5WtqROlsLMqrhbGxcv9VWzTu8pFYLvbxGK7EIxgIYsUVQQBtr8FEMa
+	 HlhppSGYJ8BDn4HsNUIpBHDpRGcGEe3cdqgaDtsakDm0V8l1ORrflfiAH95KGMu+IN
+	 bdhF2JXxYrlznzSGbzrxuQK/leVLzxHfsYC4XFik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Borislav Petkov <bp@suse.de>
-Subject: [PATCH 6.1 118/215] x86/boot/compressed: Avoid touching ECX in startup32_set_idt_entry()
+	Atish Patra <atishp@rivosinc.com>,
+	Vadim Shakirov <vadim.shakirov@syntacore.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 061/143] drivers: perf: added capabilities for legacy PMU
 Date: Mon,  4 Mar 2024 21:23:01 +0000
-Message-ID: <20240304211600.800656241@linuxfoundation.org>
+Message-ID: <20240304211551.878049190@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Vadim Shakirov <vadim.shakirov@syntacore.com>
 
-commit 6aac80a8da46d70f2ae7ff97c9f45a15c7c9b3ef upstream.
+[ Upstream commit 65730fe8f4fb039683d76fa8ea7e8d18a53c6cc6 ]
 
-Avoid touching register %ecx in startup32_set_idt_entry(), by folding
-the MOV, SHL and ORL instructions into a single ORL which no longer
-requires a temp register.
+Added the PERF_PMU_CAP_NO_INTERRUPT flag because the legacy pmu driver
+does not provide sampling capabilities
 
-This permits ECX to be used as a function argument in a subsequent
-patch.
+Added the PERF_PMU_CAP_NO_EXCLUDE flag because the legacy pmu driver
+does not provide the ability to disable counter incrementation in
+different privilege modes
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20221122161017.2426828-10-ardb@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Atish Patra <atishp@rivosinc.com>
+Signed-off-by: Vadim Shakirov <vadim.shakirov@syntacore.com>
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
+Fixes: 9b3e150e310e ("RISC-V: Add a simple platform driver for RISC-V  legacy perf")
+Link: https://lore.kernel.org/r/20240227170002.188671-2-vadim.shakirov@syntacore.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/compressed/head_64.S |    8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/perf/riscv_pmu_legacy.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -749,7 +749,6 @@ SYM_DATA_END_LABEL(boot32_idt, SYM_L_GLO
-  */
- SYM_FUNC_START(startup32_set_idt_entry)
- 	push    %ebx
--	push    %ecx
+diff --git a/drivers/perf/riscv_pmu_legacy.c b/drivers/perf/riscv_pmu_legacy.c
+index 79fdd667922e8..a85fc9a15f039 100644
+--- a/drivers/perf/riscv_pmu_legacy.c
++++ b/drivers/perf/riscv_pmu_legacy.c
+@@ -117,6 +117,8 @@ static void pmu_legacy_init(struct riscv_pmu *pmu)
+ 	pmu->event_mapped = pmu_legacy_event_mapped;
+ 	pmu->event_unmapped = pmu_legacy_event_unmapped;
+ 	pmu->csr_index = pmu_legacy_csr_index;
++	pmu->pmu.capabilities |= PERF_PMU_CAP_NO_INTERRUPT;
++	pmu->pmu.capabilities |= PERF_PMU_CAP_NO_EXCLUDE;
  
- 	/* IDT entry address to %ebx */
- 	leal    rva(boot32_idt)(%ebp), %ebx
-@@ -758,10 +757,8 @@ SYM_FUNC_START(startup32_set_idt_entry)
- 
- 	/* Build IDT entry, lower 4 bytes */
- 	movl    %eax, %edx
--	andl    $0x0000ffff, %edx	# Target code segment offset [15:0]
--	movl    $__KERNEL32_CS, %ecx	# Target code segment selector
--	shl     $16, %ecx
--	orl     %ecx, %edx
-+	andl    $0x0000ffff, %edx		# Target code segment offset [15:0]
-+	orl	$(__KERNEL32_CS << 16), %edx	# Target code segment selector
- 
- 	/* Store lower 4 bytes to IDT */
- 	movl    %edx, (%ebx)
-@@ -774,7 +771,6 @@ SYM_FUNC_START(startup32_set_idt_entry)
- 	/* Store upper 4 bytes to IDT */
- 	movl    %edx, 4(%ebx)
- 
--	pop     %ecx
- 	pop     %ebx
- 	RET
- SYM_FUNC_END(startup32_set_idt_entry)
+ 	perf_pmu_register(&pmu->pmu, "cpu", PERF_TYPE_RAW);
+ }
+-- 
+2.43.0
+
 
 
 
