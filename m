@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-26204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68DE5870D8D
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:35:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60EDA870F4A
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:53:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FA9E1F20ECE
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:35:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C62D282D88
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:53:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B67B7BAFE;
-	Mon,  4 Mar 2024 21:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF03A7992E;
+	Mon,  4 Mar 2024 21:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s2dqwgMQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cE4fCi4m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3791A7BAF5;
-	Mon,  4 Mar 2024 21:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4541C6AB;
+	Mon,  4 Mar 2024 21:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588113; cv=none; b=Y+PAKx6UK7DbzaXtCRH4rkkyqkNnwVa/I7ekAcZV+f9mWhFKBiNBVoz60IFL9J5xxpioxm9DDbEHG0Ti2gSRskFJgMssLqH3sdRJbS5HDrWqw+YS7EjWX9S9abjcg4p3xrrxxHpg4Uyhs/ZoYwI34oMiX08TgR7+MYbv37lLrI0=
+	t=1709589184; cv=none; b=SmKCQswaNAuQC0zHknRgpUF6HGiZn/Av+A5bm9RUyV4PYANJcrpwvAvUsZLDyCSzdsa1pbmyQjbRFYyjlaDxwwAPhZxrUpF5pPneUcA9vaYwd7ZgZCr6iinvyTt+XRjiYRMGTzm8QtTzf1rdXDseesdlY0ZQZxQqAfOncf2o47c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588113; c=relaxed/simple;
-	bh=Yy5TPoqDrUjXWRAOrA3qYS7mEcZtszQ7a2f+KQxtUKk=;
+	s=arc-20240116; t=1709589184; c=relaxed/simple;
+	bh=Ls8lR0TshEflgtA+J/sIXzKN+9O7kw8KMqUfmPw5Amg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RYpQaolqkW9eNqLqPT1JdyiysLlkP19WUjPUASNtnGsBAaeAuoFymv2L82TRfywRIPLNp0hQelEEQO/NLZTe57mWZve04puRnE1x9XgoEyZQC/udP6DTAXyZnIZkev/M+v2NjWyK0DgE3X6NBSN1K8exrliEvHLBSwtYJN6BrUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s2dqwgMQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68727C433F1;
-	Mon,  4 Mar 2024 21:35:12 +0000 (UTC)
+	 MIME-Version; b=FZWKjmksYL+Mf9oihTd0wZrZrsdZ1wg5D0cEcPbmpmTAE7f0YXyxkGWTXiuGrQRwyAAjJThHlUQJQzyBwIfFF0YX9bl9tkK0uHRLzlE/K3IIR9t9sxmBu13v1xwGoV4GuJWHL5a5JW9ZVWi3tTRFkaciYA0I0qdUFTxam7r6GSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cE4fCi4m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0113FC433C7;
+	Mon,  4 Mar 2024 21:53:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588112;
-	bh=Yy5TPoqDrUjXWRAOrA3qYS7mEcZtszQ7a2f+KQxtUKk=;
+	s=korg; t=1709589184;
+	bh=Ls8lR0TshEflgtA+J/sIXzKN+9O7kw8KMqUfmPw5Amg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s2dqwgMQWlVB7fzCL5+/YslkO8nUniWVj/DeInLH6i27aaN8cI36F/tbvHp8cFA7C
-	 39n8f9+NUFl9r2AfJf4jiAI9OpVnzrNHNNfGM7VgIRsung8K6+S660J2t1iqk2fMy/
-	 tbSRjVimrS7aEfxUha/4MUw6s3oAXavGGsqrqnEw=
+	b=cE4fCi4mJsXlVObf+KfIhpP9rPhwuMPN5OzoLJCwLTNbgVegeYP6bjesQ1N1Y9VYK
+	 pD047vSZFk2X9RdQXJMHzD3nVh4DS31HyOtHZ8yIMzNqnk5oSX8Kg4/qEw1cQ/1Kmr
+	 nxUDpcIlwU9irOHWvQ9+H59J4ZSzdus56tj/mrYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Peter Korsgaard <peter@korsgaard.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 18/42] power: supply: bq27xxx-i2c: Do not free non existing IRQ
+Subject: [PATCH 5.15 12/84] net: usb: dm9601: fix wrong return value in dm9601_mdio_read
 Date: Mon,  4 Mar 2024 21:23:45 +0000
-Message-ID: <20240304211538.240722720@linuxfoundation.org>
+Message-ID: <20240304211542.756525600@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
-References: <20240304211537.631764077@linuxfoundation.org>
+In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
+References: <20240304211542.332206551@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 2df70149e73e79783bcbc7db4fa51ecef0e2022c ]
+[ Upstream commit c68b2c9eba38ec3f60f4894b189090febf4d8d22 ]
 
-The bq27xxx i2c-client may not have an IRQ, in which case
-client->irq will be 0. bq27xxx_battery_i2c_probe() already has
-an if (client->irq) check wrapping the request_threaded_irq().
+The MII code does not check the return value of mdio_read (among
+others), and therefore no error code should be sent. A previous fix to
+the use of an uninitialized variable propagates negative error codes,
+that might lead to wrong operations by the MII library.
 
-But bq27xxx_battery_i2c_remove() unconditionally calls
-free_irq(client->irq) leading to:
+An example of such issues is the use of mii_nway_restart by the dm9601
+driver. The mii_nway_restart function does not check the value returned
+by mdio_read, which in this case might be a negative number which could
+contain the exact bit the function checks (BMCR_ANENABLE = 0x1000).
 
-[  190.310742] ------------[ cut here ]------------
-[  190.310843] Trying to free already-free IRQ 0
-[  190.310861] WARNING: CPU: 2 PID: 1304 at kernel/irq/manage.c:1893 free_irq+0x1b8/0x310
+Return zero in case of error, as it is common practice in users of
+mdio_read to avoid wrong uses of the return value.
 
-Followed by a backtrace when unbinding the driver. Add
-an if (client->irq) to bq27xxx_battery_i2c_remove() mirroring
-probe() to fix this.
-
-Fixes: 444ff00734f3 ("power: supply: bq27xxx: Fix I2C IRQ race on remove")
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240215155133.70537-1-hdegoede@redhat.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 8f8abb863fa5 ("net: usb: dm9601: fix uninitialized variable use in dm9601_mdio_read")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Peter Korsgaard <peter@korsgaard.com>
+Link: https://lore.kernel.org/r/20240225-dm9601_ret_err-v1-1-02c1d959ea59@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/bq27xxx_battery_i2c.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/usb/dm9601.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/bq27xxx_battery_i2c.c b/drivers/power/supply/bq27xxx_battery_i2c.c
-index 0e32efb10ee78..6fbae8fc2e501 100644
---- a/drivers/power/supply/bq27xxx_battery_i2c.c
-+++ b/drivers/power/supply/bq27xxx_battery_i2c.c
-@@ -209,7 +209,9 @@ static int bq27xxx_battery_i2c_remove(struct i2c_client *client)
- {
- 	struct bq27xxx_device_info *di = i2c_get_clientdata(client);
+diff --git a/drivers/net/usb/dm9601.c b/drivers/net/usb/dm9601.c
+index 1959e12a3ff8a..f7357d884d6aa 100644
+--- a/drivers/net/usb/dm9601.c
++++ b/drivers/net/usb/dm9601.c
+@@ -232,7 +232,7 @@ static int dm9601_mdio_read(struct net_device *netdev, int phy_id, int loc)
+ 	err = dm_read_shared_word(dev, 1, loc, &res);
+ 	if (err < 0) {
+ 		netdev_err(dev->net, "MDIO read error: %d\n", err);
+-		return err;
++		return 0;
+ 	}
  
--	free_irq(client->irq, di);
-+	if (client->irq)
-+		free_irq(client->irq, di);
-+
- 	bq27xxx_battery_teardown(di);
- 
- 	mutex_lock(&battery_mutex);
+ 	netdev_dbg(dev->net,
 -- 
 2.43.0
 
