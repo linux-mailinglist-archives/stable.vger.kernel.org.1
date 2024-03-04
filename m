@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-26349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9684D870E2C
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:41:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB89B870DA6
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 432EEB25315
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:41:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDF2F1C209F6
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9165E1F93F;
-	Mon,  4 Mar 2024 21:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1914B78B4C;
+	Mon,  4 Mar 2024 21:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jAm86MOW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7C0hkj6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE4F8F58;
-	Mon,  4 Mar 2024 21:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB362DDCB;
+	Mon,  4 Mar 2024 21:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588492; cv=none; b=Ry5OsFzeueBrFxyoip1S7WDa9YwR05+FS87mwEnF/zKBfLl9uYHHyezNDjISe3cea15aPBVLNdnUu3Db/1luEpzuBjrSrjI+0ROnVvNmfvA3m/sDpahyKy1cyATt0MWKs8qa2TOnjwDUipceynmXFFr7ZKCNGB+UNdbYcHJj08Y=
+	t=1709588177; cv=none; b=WVYXBomg8IjfwDczE0FuR2yuvjOaIquZmNgNe0Rme4Ik0w6zJXI99vHtODghMuRz6+2qPhZFaMtsmrjP8uB6TPJEv9BrodS6uL/1FUOCTWcc7nZQ4ArLR2dpbBZ6qamLsu2MCvvkOsKMoBRUhXnaXJqsig+lEqb/9FIK+HqlGEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588492; c=relaxed/simple;
-	bh=CL4xP+jcV3wo/j8YAqQIdtBg3DWfdUhli5ha4rz5MHQ=;
+	s=arc-20240116; t=1709588177; c=relaxed/simple;
+	bh=Z+TPzIEDI66XMpXtp2F0k/6fux700NlBs4U89uoL3j4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jWBHKrI+EOrj0dYpd8Of9R2ygjVmcN44rKL+Pxv5DDO2VwFdxOjyovwTxYNGeTkEs/TZW2PvF871P6lnMq9SipeGOQVw1WB3jSU2Ut7XdGmRaNPfg6iRVaqKPQ45+ooI/N6LOv7Z1pjoA8mBzlXgPteqQu9SSZCpSf6UVG63oqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jAm86MOW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5BA6C433C7;
-	Mon,  4 Mar 2024 21:41:31 +0000 (UTC)
+	 MIME-Version; b=K27Q1zKGzx8ilPlJ5XQ+7vSpCogHE0K5ZSSbI1QskPBtr3u69Bdrt72f5xqdEyn2AICOfz2jD7xSkWcvztg0u4lCQfOelMV0CIXP1nF1HmKBPw878Yr119AyOEQVXD60TeujhvE5HFfwvN87+/dRkLv6EA/Q4amo+u0pH3XIGkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7C0hkj6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53284C433F1;
+	Mon,  4 Mar 2024 21:36:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588492;
-	bh=CL4xP+jcV3wo/j8YAqQIdtBg3DWfdUhli5ha4rz5MHQ=;
+	s=korg; t=1709588177;
+	bh=Z+TPzIEDI66XMpXtp2F0k/6fux700NlBs4U89uoL3j4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jAm86MOWZObMzpHjO8wrF/v+dz7CkH/1BI74PlcLHCMS7zgcCxeLN30viQTBP0YUu
-	 4On/7tQSLWAKPW/5wRGPStoj/ooMh62xQ2wk5PTs2el1Fq6y25978agixKu3PLw7lu
-	 eW+t4oVsoxZqm5w2fTk2xzNWEkbSnERuPHBpHJXE=
+	b=O7C0hkj6anWYNzOMrhjnJ8Q7il23eYY4W10KpIlJIzIOsVtFFLJo6ZbeFEBSVciig
+	 V8aDldID2YdzdZMQK8AXlZ/96SApy9A1KK8UU7c2qbUqGPEG9t3KS9N5pW+GUZUASj
+	 79zqjZsOFJpD8qLc9NpimWBREiCtzUwgozUzKOGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Bohac <jbohac@suse.cz>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	stable@kernel.org
-Subject: [PATCH 6.6 104/143] x86/e820: Dont reserve SETUP_RNG_SEED in e820
+	Arnd Bergmann <arnd@arndb.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 17/42] efi/capsule-loader: fix incorrect allocation size
 Date: Mon,  4 Mar 2024 21:23:44 +0000
-Message-ID: <20240304211553.233094846@linuxfoundation.org>
+Message-ID: <20240304211538.209136295@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
+References: <20240304211537.631764077@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Bohac <jbohac@suse.cz>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 7fd817c906503b6813ea3b41f5fdf4192449a707 upstream.
+[ Upstream commit fccfa646ef3628097d59f7d9c1a3e84d4b6bb45e ]
 
-SETUP_RNG_SEED in setup_data is supplied by kexec and should
-not be reserved in the e820 map.
+gcc-14 notices that the allocation with sizeof(void) on 32-bit architectures
+is not enough for a 64-bit phys_addr_t:
 
-Doing so reserves 16 bytes of RAM when booting with kexec.
-(16 bytes because data->len is zeroed by parse_setup_data so only
-sizeof(setup_data) is reserved.)
+drivers/firmware/efi/capsule-loader.c: In function 'efi_capsule_open':
+drivers/firmware/efi/capsule-loader.c:295:24: error: allocation of insufficient size '4' for type 'phys_addr_t' {aka 'long long unsigned int'} with size '8' [-Werror=alloc-size]
+  295 |         cap_info->phys = kzalloc(sizeof(void *), GFP_KERNEL);
+      |                        ^
 
-When kexec is used repeatedly, each boot adds two entries in the
-kexec-provided e820 map as the 16-byte range splits a larger
-range of usable memory. Eventually all of the 128 available entries
-get used up. The next split will result in losing usable memory
-as the new entries cannot be added to the e820 map.
+Use the correct type instead here.
 
-Fixes: 68b8e9713c8e ("x86/setup: Use rng seeds from setup_data")
-Signed-off-by: Jiri Bohac <jbohac@suse.cz>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/ZbmOjKnARGiaYBd5@dwarf.suse.cz
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f24c4d478013 ("efi/capsule-loader: Reinstate virtual capsule mapping")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/e820.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/firmware/efi/capsule-loader.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/e820.c
-+++ b/arch/x86/kernel/e820.c
-@@ -1017,10 +1017,12 @@ void __init e820__reserve_setup_data(voi
- 		e820__range_update(pa_data, sizeof(*data)+data->len, E820_TYPE_RAM, E820_TYPE_RESERVED_KERN);
+diff --git a/drivers/firmware/efi/capsule-loader.c b/drivers/firmware/efi/capsule-loader.c
+index 3e8d4b51a8140..97bafb5f70389 100644
+--- a/drivers/firmware/efi/capsule-loader.c
++++ b/drivers/firmware/efi/capsule-loader.c
+@@ -292,7 +292,7 @@ static int efi_capsule_open(struct inode *inode, struct file *file)
+ 		return -ENOMEM;
+ 	}
  
- 		/*
--		 * SETUP_EFI and SETUP_IMA are supplied by kexec and do not need
--		 * to be reserved.
-+		 * SETUP_EFI, SETUP_IMA and SETUP_RNG_SEED are supplied by
-+		 * kexec and do not need to be reserved.
- 		 */
--		if (data->type != SETUP_EFI && data->type != SETUP_IMA)
-+		if (data->type != SETUP_EFI &&
-+		    data->type != SETUP_IMA &&
-+		    data->type != SETUP_RNG_SEED)
- 			e820__range_update_kexec(pa_data,
- 						 sizeof(*data) + data->len,
- 						 E820_TYPE_RAM, E820_TYPE_RESERVED_KERN);
+-	cap_info->phys = kzalloc(sizeof(void *), GFP_KERNEL);
++	cap_info->phys = kzalloc(sizeof(phys_addr_t), GFP_KERNEL);
+ 	if (!cap_info->phys) {
+ 		kfree(cap_info->pages);
+ 		kfree(cap_info);
+-- 
+2.43.0
+
 
 
 
