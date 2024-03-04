@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-26377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FBE1870E4E
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:42:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1248E870C8F
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:27:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 448131C2138E
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:42:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 910821C2108D
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:27:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 121627B3E6;
-	Mon,  4 Mar 2024 21:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 558837BAED;
+	Mon,  4 Mar 2024 21:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F+Brq4Fj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3jjlMZp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF981200D4;
-	Mon,  4 Mar 2024 21:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102A8200CD;
+	Mon,  4 Mar 2024 21:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588562; cv=none; b=L5sRq8YicJbGElSCy0tPi/vjVKzg0kRwluym7pmK+/3z4poEV6gUJ6n4S/BDIaCGLHoJ73DDDuGHrreGcJLYrbpCVuBzEIdjDuOTiCYA7wP6/53KFO9fWojBzx71RMhSJsCjtt0yHPTHlGZKNImeb7GAKkORJ/UHxUR2Ph3xyoE=
+	t=1709587597; cv=none; b=k9VI1tFLs9dhL4X6EH2p17ts6aLnlKVBYi+2e3pqrzm30MMdI6DbNlcqNHIjkkMJChMIBqVa6Gn2Hl4U5Cq6byN5vDyJy8EGCdup2qNpA5GEkxaRioxs3AehhlQE+0lwaKKhMkvqO5tVtAK4hZ6oRqLjzF/xBHbmowLJ8yZpAqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588562; c=relaxed/simple;
-	bh=RPOAnwBOKlnpmNFuUaCStGiEW82rYN87j/KibdMBOuI=;
+	s=arc-20240116; t=1709587597; c=relaxed/simple;
+	bh=pTDTeZ/uiYPR5wGv0KCfOx6++bzXqq86Jfef6lCfATs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rhGil6Q63fPePV1qhV/YoSHTdRv6eRRLjJFzjepFyQdbO+EPXTHdXdnVs/s8VMLpdHiMyJxGlUCyMWP0SJ4B/9APsJsilxFADfTZUEX6/w2UPlc+WgIuHXnt53UDqUok3DIg43WWhKnazLDrwrm2nQqAu25ojQX18R9eca2ie8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F+Brq4Fj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B567C433F1;
-	Mon,  4 Mar 2024 21:42:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IwgpjsiHG9BKoJDOLZcGJdagVK+UA4tjP39LOi345WxhMVpkz9o6ObkAfGiRZ3RU8k8Ew1R1W4OSLqek4gRUZ2fpxWWwZgjSyvAGR3Q0Zgbkr4GTq2NZaylrggkeo/YM3mGnt2xyB067DujcYqZv6LD6osxA4G0gTKeAUE6WYOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3jjlMZp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D15C433C7;
+	Mon,  4 Mar 2024 21:26:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588562;
-	bh=RPOAnwBOKlnpmNFuUaCStGiEW82rYN87j/KibdMBOuI=;
+	s=korg; t=1709587596;
+	bh=pTDTeZ/uiYPR5wGv0KCfOx6++bzXqq86Jfef6lCfATs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F+Brq4FjgX9Szt122FOVR6vcpmtbl+bih5cpBYONCqHBBmsNk0H+H4M4auXJASdKC
-	 fRUgJnGse1FRYqSmJm/bMpvx/dG437kyf+JJPvD75GEPyYPwLtDK57nSqYILnmSguI
-	 6MPeu5zVmgQgy1GUAgpPDb10QvwRn3MZztDQMTjI=
+	b=O3jjlMZpdFwSoDFoIqEe13Bsx9Y71rPqImgsJUkSv9E7MVJ/YmkcMflxeqSUvXWQf
+	 vpWgPdPbmYB0Kl0gbJxV9dRJh9YMMtqLiuRKAj8iytJSPnMHNY+62vIkSRR8PIdunL
+	 bmT/ptUpx5BLW8gBO6F+0wLQnzyk/fPwY7LZQVV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaowei Bao <xiaowei.bao@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 011/215] PCI: layerscape: Add the endpoint linkup notifier support
+Subject: [PATCH 6.7 009/162] spi: cadence-qspi: remove system-wide suspend helper calls from runtime PM hooks
 Date: Mon,  4 Mar 2024 21:21:14 +0000
-Message-ID: <20240304211557.374314189@linuxfoundation.org>
+Message-ID: <20240304211552.125642394@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,174 +60,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Théo Lebrun <theo.lebrun@bootlin.com>
 
-[ Upstream commit 061cbfab09fb35898f2907d42f936cf9ae271d93 ]
+[ Upstream commit 959043afe53ae80633e810416cee6076da6e91c6 ]
 
-Layerscape has PME interrupt, which can be used as linkup notifier.  Set
-CFG_READY bit of PEX_PF0_CONFIG to enable accesses from root complex when
-linkup detected.
+The ->runtime_suspend() and ->runtime_resume() callbacks are not
+expected to call spi_controller_suspend() and spi_controller_resume().
+Remove calls to those in the cadence-qspi driver.
 
-Link: https://lore.kernel.org/r/20230515151049.2797105-1-Frank.Li@nxp.com
-Signed-off-by: Xiaowei Bao <xiaowei.bao@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Those helpers have two roles currently:
+ - They stop/start the queue, including dealing with the kworker.
+ - They toggle the SPI controller SPI_CONTROLLER_SUSPENDED flag. It
+   requires acquiring ctlr->bus_lock_mutex.
+
+Step one is irrelevant because cadence-qspi is not queued. Step two
+however has two implications:
+ - A deadlock occurs, because ->runtime_resume() is called in a context
+   where the lock is already taken (in the ->exec_op() callback, where
+   the usage count is incremented).
+ - It would disallow all operations once the device is auto-suspended.
+
+Here is a brief call tree highlighting the mutex deadlock:
+
+spi_mem_exec_op()
+        ...
+        spi_mem_access_start()
+                mutex_lock(&ctlr->bus_lock_mutex)
+
+        cqspi_exec_mem_op()
+                pm_runtime_resume_and_get()
+                        cqspi_resume()
+                                spi_controller_resume()
+                                        mutex_lock(&ctlr->bus_lock_mutex)
+                ...
+
+        spi_mem_access_end()
+                mutex_unlock(&ctlr->bus_lock_mutex)
+        ...
+
+Fixes: 0578a6dbfe75 ("spi: spi-cadence-quadspi: add runtime pm support")
+Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Link: https://msgid.link/r/20240222-cdns-qspi-pm-fix-v4-2-6b6af8bcbf59@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../pci/controller/dwc/pci-layerscape-ep.c    | 100 +++++++++++++++++-
- 1 file changed, 99 insertions(+), 1 deletion(-)
+ drivers/spi/spi-cadence-quadspi.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-layerscape-ep.c b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-index ad99707b3b994..5b27554e071a1 100644
---- a/drivers/pci/controller/dwc/pci-layerscape-ep.c
-+++ b/drivers/pci/controller/dwc/pci-layerscape-ep.c
-@@ -18,6 +18,20 @@
- 
- #include "pcie-designware.h"
- 
-+#define PEX_PF0_CONFIG			0xC0014
-+#define PEX_PF0_CFG_READY		BIT(0)
-+
-+/* PEX PFa PCIE PME and message interrupt registers*/
-+#define PEX_PF0_PME_MES_DR		0xC0020
-+#define PEX_PF0_PME_MES_DR_LUD		BIT(7)
-+#define PEX_PF0_PME_MES_DR_LDD		BIT(9)
-+#define PEX_PF0_PME_MES_DR_HRD		BIT(10)
-+
-+#define PEX_PF0_PME_MES_IER		0xC0028
-+#define PEX_PF0_PME_MES_IER_LUDIE	BIT(7)
-+#define PEX_PF0_PME_MES_IER_LDDIE	BIT(9)
-+#define PEX_PF0_PME_MES_IER_HRDIE	BIT(10)
-+
- #define to_ls_pcie_ep(x)	dev_get_drvdata((x)->dev)
- 
- struct ls_pcie_ep_drvdata {
-@@ -30,8 +44,84 @@ struct ls_pcie_ep {
- 	struct dw_pcie			*pci;
- 	struct pci_epc_features		*ls_epc;
- 	const struct ls_pcie_ep_drvdata *drvdata;
-+	int				irq;
-+	bool				big_endian;
- };
- 
-+static u32 ls_lut_readl(struct ls_pcie_ep *pcie, u32 offset)
-+{
-+	struct dw_pcie *pci = pcie->pci;
-+
-+	if (pcie->big_endian)
-+		return ioread32be(pci->dbi_base + offset);
-+	else
-+		return ioread32(pci->dbi_base + offset);
-+}
-+
-+static void ls_lut_writel(struct ls_pcie_ep *pcie, u32 offset, u32 value)
-+{
-+	struct dw_pcie *pci = pcie->pci;
-+
-+	if (pcie->big_endian)
-+		iowrite32be(value, pci->dbi_base + offset);
-+	else
-+		iowrite32(value, pci->dbi_base + offset);
-+}
-+
-+static irqreturn_t ls_pcie_ep_event_handler(int irq, void *dev_id)
-+{
-+	struct ls_pcie_ep *pcie = dev_id;
-+	struct dw_pcie *pci = pcie->pci;
-+	u32 val, cfg;
-+
-+	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_DR);
-+	ls_lut_writel(pcie, PEX_PF0_PME_MES_DR, val);
-+
-+	if (!val)
-+		return IRQ_NONE;
-+
-+	if (val & PEX_PF0_PME_MES_DR_LUD) {
-+		cfg = ls_lut_readl(pcie, PEX_PF0_CONFIG);
-+		cfg |= PEX_PF0_CFG_READY;
-+		ls_lut_writel(pcie, PEX_PF0_CONFIG, cfg);
-+		dw_pcie_ep_linkup(&pci->ep);
-+
-+		dev_dbg(pci->dev, "Link up\n");
-+	} else if (val & PEX_PF0_PME_MES_DR_LDD) {
-+		dev_dbg(pci->dev, "Link down\n");
-+	} else if (val & PEX_PF0_PME_MES_DR_HRD) {
-+		dev_dbg(pci->dev, "Hot reset\n");
-+	}
-+
-+	return IRQ_HANDLED;
-+}
-+
-+static int ls_pcie_ep_interrupt_init(struct ls_pcie_ep *pcie,
-+				     struct platform_device *pdev)
-+{
-+	u32 val;
-+	int ret;
-+
-+	pcie->irq = platform_get_irq_byname(pdev, "pme");
-+	if (pcie->irq < 0)
-+		return pcie->irq;
-+
-+	ret = devm_request_irq(&pdev->dev, pcie->irq, ls_pcie_ep_event_handler,
-+			       IRQF_SHARED, pdev->name, pcie);
-+	if (ret) {
-+		dev_err(&pdev->dev, "Can't register PCIe IRQ\n");
-+		return ret;
-+	}
-+
-+	/* Enable interrupts */
-+	val = ls_lut_readl(pcie, PEX_PF0_PME_MES_IER);
-+	val |=  PEX_PF0_PME_MES_IER_LDDIE | PEX_PF0_PME_MES_IER_HRDIE |
-+		PEX_PF0_PME_MES_IER_LUDIE;
-+	ls_lut_writel(pcie, PEX_PF0_PME_MES_IER, val);
-+
-+	return 0;
-+}
-+
- static const struct pci_epc_features*
- ls_pcie_ep_get_features(struct dw_pcie_ep *ep)
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 0d184d65dce76..731775d34d393 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -1930,14 +1930,10 @@ static void cqspi_remove(struct platform_device *pdev)
+ static int cqspi_suspend(struct device *dev)
  {
-@@ -124,6 +214,7 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
- 	struct ls_pcie_ep *pcie;
- 	struct pci_epc_features *ls_epc;
- 	struct resource *dbi_base;
-+	int ret;
+ 	struct cqspi_st *cqspi = dev_get_drvdata(dev);
+-	int ret;
  
- 	pcie = devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
- 	if (!pcie)
-@@ -143,6 +234,7 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
- 	pci->ops = pcie->drvdata->dw_pcie_ops;
- 
- 	ls_epc->bar_fixed_64bit = (1 << BAR_2) | (1 << BAR_4);
-+	ls_epc->linkup_notifier = true;
- 
- 	pcie->pci = pci;
- 	pcie->ls_epc = ls_epc;
-@@ -154,9 +246,15 @@ static int __init ls_pcie_ep_probe(struct platform_device *pdev)
- 
- 	pci->ep.ops = &ls_pcie_ep_ops;
- 
-+	pcie->big_endian = of_property_read_bool(dev->of_node, "big-endian");
-+
- 	platform_set_drvdata(pdev, pcie);
- 
--	return dw_pcie_ep_init(&pci->ep);
-+	ret = dw_pcie_ep_init(&pci->ep);
-+	if (ret)
-+		return ret;
-+
-+	return ls_pcie_ep_interrupt_init(pcie, pdev);
+-	ret = spi_controller_suspend(cqspi->host);
+ 	cqspi_controller_enable(cqspi, 0);
+-
+ 	clk_disable_unprepare(cqspi->clk);
+-
+-	return ret;
++	return 0;
  }
  
- static struct platform_driver ls_pcie_ep_driver = {
+ static int cqspi_resume(struct device *dev)
+@@ -1950,8 +1946,7 @@ static int cqspi_resume(struct device *dev)
+ 
+ 	cqspi->current_cs = -1;
+ 	cqspi->sclk = 0;
+-
+-	return spi_controller_resume(cqspi->host);
++	return 0;
+ }
+ 
+ static DEFINE_RUNTIME_DEV_PM_OPS(cqspi_dev_pm_ops, cqspi_suspend,
 -- 
 2.43.0
 
