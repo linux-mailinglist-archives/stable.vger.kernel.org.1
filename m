@@ -1,254 +1,148 @@
-Return-Path: <stable+bounces-25955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DD338707DB
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 18:02:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 623F28707F7
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 18:05:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 606321C221DE
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 17:02:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 190F41F23914
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 17:05:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6415FEE4;
-	Mon,  4 Mar 2024 17:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE9A75FF0E;
+	Mon,  4 Mar 2024 17:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dFOREVO3"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="jKIXvk/q";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="QL3Ydt+C"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from fout7-smtp.messagingengine.com (fout7-smtp.messagingengine.com [103.168.172.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3F35D73A
-	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 17:02:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7137B5D46B;
+	Mon,  4 Mar 2024 17:05:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709571754; cv=none; b=E81aQ2Kb79G1FMnaKIurIJjT1HcvQlQ5JjjYhBFu+CDYRN3excOX26o/CIY2tG+TGUt1YzG9ijRybrZwP/nf7fS74W2Rp4grfQCLq0RdGYgYTFOn+Uc4CHa4szRIsX8RdbI45xCVRa5uadMJ/duhG1aFUnA9eTcPye7w1OlzBzs=
+	t=1709571938; cv=none; b=ex45MhTmhz7/sTzu+Gulgqv9LxKuNnS330sGjFX2lfDCJu86yeLQQOY2uSYvRMRrGFAKg0KoLBzj/5R/27QG6UtM07HtamJRYX6Kx073nqUrvskiwLFLhJ7o8HK5sTa8jxkdm8Mr/TMGYDxcf5wDXpWbLupRFnb8GNJiKsiK8Cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709571754; c=relaxed/simple;
-	bh=kmvnz27dzJcpiaOuri4yLruOBlg8ue+RnmBTTY2eS6o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g7BZlFw+RlP0Qz86NKlAv1JRiU0jJyDaTCi8l7QkcMSsEo7JW+5ecw4Gs/iLIqC1P+6zDCzPlJdMWI9JpSnMZlhRnx0WcvBbcUYoYeA+2yVlLOmmp0R2KFO+4k3josqyc02rUrpwVPl6j6iUWg6JpwsqD+K/qn5S//LUtcF9AIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dFOREVO3; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1709571750;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=bRb2G3rGVCWNmjR6j8Y0jK9sd42QWUsDe6AfIQJkqsw=;
-	b=dFOREVO3ONSNOsSGLitbgIVeMQ9k67TuiRoqbTqb4mxnOKVaPB8nCYOul5kbIbJ+CUD1Hm
-	MRWQ54iPb89oMFBwI/Wk4EyYBlJfXj21SdAxjrVoSPPOb06MGEuuTMn4fq0+qRTdauhyQI
-	BL/85H5rfmv6+KV/gAzU078/ANlnmBU=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-335-3DjiKfwuPLKcYBbGoy4npQ-1; Mon, 04 Mar 2024 12:02:28 -0500
-X-MC-Unique: 3DjiKfwuPLKcYBbGoy4npQ-1
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-a447baf1eb0so197041466b.1
-        for <stable@vger.kernel.org>; Mon, 04 Mar 2024 09:02:27 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709571746; x=1710176546;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bRb2G3rGVCWNmjR6j8Y0jK9sd42QWUsDe6AfIQJkqsw=;
-        b=p8lTT0mR7L2lmvBc4Lbk0apdC341mx/GTyBcOVAb/B660tX+Z1L/EGeRtjsEZEcIT5
-         vhDofwR5wX8UA3eaybmvBnUeVJZc76i9o03583ASL//cgQs5InNGUHQno4iUIapuaSms
-         xTOYxjTIWAumDgg0IFBwVRTnf0IuwLAsK0mm+rw/if7EUhsyxP6CkK7/iHDx4WzxPZpS
-         8JiGN2lQpywKo7t7xy0owivPIg8L7/9vkkvpbsGNy7TT7DT6YGkQTclZlcAyr7MrQ0L8
-         70Q5Ef19X4KEhppKWq9GongO/OInNQyt6lh5xQhgkfV50a2rSiU4YA4dwpSQ/gPkaAZm
-         Xc9Q==
-X-Gm-Message-State: AOJu0YyryUgQYeY+bwOw5JTxni84Q8AzTOHEZKTiYi5M834+j3KKSYMJ
-	ULsyNFZfCOXm7qMPOGQ5rcGXWDTN70sMYLVpENZvzD4YihSv34dDKvt4C7HnIofHLw7TscKRy6c
-	Odzln2iqn6qutvKwhxb/iQZPplBrZ3tVuNmWOhnLwxiR8tTWjI5u9D0m9JbBVBctnR0Rmx4MEro
-	KEE7WC2ZN/QSqy2me/TiSyTGH4G+XQiKoY
-X-Received: by 2002:a17:906:34d7:b0:a45:29f3:6cc9 with SMTP id h23-20020a17090634d700b00a4529f36cc9mr2924252ejb.20.1709571746373;
-        Mon, 04 Mar 2024 09:02:26 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGEXK6MgN54UtOiHFSF4R6S0QqKf3vQjkdthql3Vdr45tKN/JnSK4chUqihHQ930YEbFsgjVA==
-X-Received: by 2002:a17:906:34d7:b0:a45:29f3:6cc9 with SMTP id h23-20020a17090634d700b00a4529f36cc9mr2924219ejb.20.1709571745935;
-        Mon, 04 Mar 2024 09:02:25 -0800 (PST)
-Received: from altair.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a15c])
-        by smtp.gmail.com with ESMTPSA id gl11-20020a170906e0cb00b00a448fab02easm3913637ejb.37.2024.03.04.09.02.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Mar 2024 09:02:25 -0800 (PST)
-From: Danilo Krummrich <dakr@redhat.com>
-To: stable@vger.kernel.org,
-	nouveau@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Danilo Krummrich <dakr@redhat.com>,
-	Karol Herbst <kherbst@redhat.com>
-Subject: [PATCH stable v6.7] drm/nouveau: don't fini scheduler before entity flush
-Date: Mon,  4 Mar 2024 18:01:46 +0100
-Message-ID: <20240304170158.4206-1-dakr@redhat.com>
-X-Mailer: git-send-email 2.44.0
+	s=arc-20240116; t=1709571938; c=relaxed/simple;
+	bh=bAxF3+bDIcfrGGelILj1Qq9m8KuwIsrpvnjfbPcYWv4=;
+	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
+	 Subject:Content-Type; b=GNUY0DybEdIafUmZWuuFromYYAqsKaGiy3lgovNXMoluX5nyr8H6G556HzqVjEZMm6BCN3nJBvloSZFy1ySXZ9D2S/X7GcRyqreGr8AHH/qnoSgB3Yn3X4hKi6BhPvPfoVC/sqEd3ZTsnMyzB1f8r5hwmc8y/oO4HPUulHNdLek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=jKIXvk/q; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=QL3Ydt+C; arc=none smtp.client-ip=103.168.172.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfout.nyi.internal (Postfix) with ESMTP id 8548213800D4;
+	Mon,  4 Mar 2024 12:05:35 -0500 (EST)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Mon, 04 Mar 2024 12:05:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1709571935; x=1709658335; bh=xj0q1W803R
+	TENWNzmNaubc8SeyqQDOk+5c2s3TShtxQ=; b=jKIXvk/q5Bumjt8wHs5FDI0Ivi
+	F+YZpm94Bg2PN/W3gwy0ODgD0nQ1puN5cG3BGyu2I90fAKEVe+d+DPiHCD9OQRIh
+	TmtlfUxn6ZhnqLjB+xVe3Rw5Z8eQ5hKOcDzURPUBdnwYn2Rzq2rlJ40NwLhbg0Xq
+	xTq9tFlpXWEH0irzqX8zvqeBaZMPr9K9ITHQYAz1d1ppI5KoTc0PKPtWeNfZWkjC
+	gZjVrK8Ix50ZRgtZcU5MxxgbpB4+rd2z089+n/s1P/ye63KXn9+QzBtMeXVZhQ8S
+	Z0ljLfyTBpViv9hjYmCZFrp6lI2VYqSzz3Yq1qQ3yuhWtPMO5YmMQcscLKww==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1709571935; x=1709658335; bh=xj0q1W803RTENWNzmNaubc8SeyqQ
+	DOk+5c2s3TShtxQ=; b=QL3Ydt+CTYREz2EGuMAt1VeOUWZDxLytD+P84Q3LwUqt
+	WtAK1o+9A4hAEaOMEhZwMEuPHAkuSJwH48DUi2oVbLMWIteRCBx6gwPT1NHwepKc
+	Ph4REDtGFrORK1444QBcalG+nDLLwwkxGCuPsGfOxEHgVnaoySzc92mZXtHqgbRN
+	8vhJu6xo3zYj8tE8arXqMdFcAtJA3EuEWDVgNfpr3lV1lPd5xpn3jY8QGMVfZVJd
+	RGuJUXAB7d8xayUXpV1qIW1vq8kWIj9iCcnoiGbsgQMsdR21wT7Ghl5TxH3dF9RD
+	fwrBC4Ai1UIuksTKO/DGLhJV46ltHUAhbCONTxWFYw==
+X-ME-Sender: <xms:X__lZT3r7n892uvsXlUT-4Xfto46P8jMXI5UJPDFmuC3Ovh8fCVkxg>
+    <xme:X__lZSETRSp37fZUlxswgaQJxJAFopPx9PP0uTEe_Tw0Rszmx7Sa8EhipXcHrey7t
+    95D7Dgh6_nk9k7h56w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrheejgdelhecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
+    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
+    gvrhhnpeevhfffledtgeehfeffhfdtgedvheejtdfgkeeuvefgudffteettdekkeeufeeh
+    udenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:X__lZT4jZUaLo2T6DO6VC47R6hmyr-6zUHAXA98ecaTBsWNGTqwmYQ>
+    <xmx:X__lZY0hxVzKuOw--XVUyCb1p4R2X06ijjnS-KKgL3Icd-OPog3sZQ>
+    <xmx:X__lZWG7UwzHV1YBeQpMJq2E0Dj8N2GiaI0uD_6hhgTzN4pt7ZoZ3g>
+    <xmx:X__lZZ2nDUO-3D04bb7mORJF3RQFBR1w1vEtvCdZ-3yTs81Ui0C7Hg>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id 3BFCEB6008D; Mon,  4 Mar 2024 12:05:35 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.11.0-alpha0-208-g3f1d79aedb-fm-20240301.002-g3f1d79ae
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-Id: <f539dd73-96bd-41e7-8227-fbf1ffba068b@app.fastmail.com>
+In-Reply-To: 
+ <CAFA6WYOdyPG8xNCwchSzGW+KiaXZJ8LTYuKpyEbhV=tdYz=gUg@mail.gmail.com>
+References: <20240301143731.3494455-1-sumit.garg@linaro.org>
+ <CAFA6WYOdyPG8xNCwchSzGW+KiaXZJ8LTYuKpyEbhV=tdYz=gUg@mail.gmail.com>
+Date: Mon, 04 Mar 2024 18:05:13 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Sumit Garg" <sumit.garg@linaro.org>,
+ "Jens Wiklander" <jens.wiklander@linaro.org>
+Cc: op-tee@lists.trustedfirmware.org,
+ "Ilias Apalodimas" <ilias.apalodimas@linaro.org>,
+ jerome.forissier@linaro.org, linux-kernel@vger.kernel.org,
+ mikko.rapeli@linaro.org, stable@vger.kernel.org
+Subject: Re: [PATCH] tee: optee: Fix kernel panic caused by incorrect error handling
+Content-Type: text/plain
 
-This bug is present in v6.7 only, since the scheduler design has been
-re-worked in v6.8.
+On Mon, Mar 4, 2024, at 06:45, Sumit Garg wrote:
+> + Arnd
+>
+> On Fri, 1 Mar 2024 at 20:07, Sumit Garg <sumit.garg@linaro.org> wrote:
+>>
+>> The error path while failing to register devices on the TEE bus has a
+>> bug leading to kernel panic as follows:
+>>
+>> [   15.398930] Unable to handle kernel paging request at virtual address ffff07ed00626d7c
+>> [   15.406913] Mem abort info:
+>> [   15.409722]   ESR = 0x0000000096000005
+>> [   15.413490]   EC = 0x25: DABT (current EL), IL = 32 bits
+>> [   15.418814]   SET = 0, FnV = 0
+>> [   15.421878]   EA = 0, S1PTW = 0
+>> [   15.425031]   FSC = 0x05: level 1 translation fault
+>> [   15.429922] Data abort info:
+>> [   15.432813]   ISV = 0, ISS = 0x00000005, ISS2 = 0x00000000
+>> [   15.438310]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+>> [   15.443372]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+>> [   15.448697] swapper pgtable: 4k pages, 48-bit VAs, pgdp=00000000d9e3e000
+>> [   15.455413] [ffff07ed00626d7c] pgd=1800000bffdf9003, p4d=1800000bffdf9003, pud=0000000000000000
+>> [   15.464146] Internal error: Oops: 0000000096000005 [#1] PREEMPT SMP
+>>
+>> Commit 7269cba53d90 ("tee: optee: Fix supplicant based device enumeration")
+>> lead to the introduction of this bug. So fix it appropriately.
+>>
+>> Reported-by: Mikko Rapeli <mikko.rapeli@linaro.org>
+>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218542
+>> Fixes: 7269cba53d90 ("tee: optee: Fix supplicant based device enumeration")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+>> ---
+>>  drivers/tee/optee/device.c | 3 ++-
+>>  1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>
+> Jens, Arnd,
+>
+> Is there any chance for this fix to make it into v6.8 release?
 
-Client scheduler entities must be flushed before an associated GPU
-scheduler is teared down. Otherwise the entitiy might still hold a
-pointer to the scheduler's runqueue which is freed at scheduler tear
-down already.
+I merged the pull request into my arm/fixes branch now, will
+send the branch on once it passes CI.
 
-[  305.224293] ==================================================================
-[  305.224297] BUG: KASAN: slab-use-after-free in drm_sched_entity_flush+0x6c4/0x7b0 [gpu_sched]
-[  305.224310] Read of size 8 at addr ffff8881440a8f48 by task rmmod/4436
-
-[  305.224317] CPU: 10 PID: 4436 Comm: rmmod Tainted: G     U             6.7.6-100.fc38.x86_64+debug #1
-[  305.224321] Hardware name: Dell Inc. Precision 7550/01PXFR, BIOS 1.27.0 11/08/2023
-[  305.224324] Call Trace:
-[  305.224327]  <TASK>
-[  305.224329]  dump_stack_lvl+0x76/0xd0
-[  305.224336]  print_report+0xcf/0x670
-[  305.224342]  ? drm_sched_entity_flush+0x6c4/0x7b0 [gpu_sched]
-[  305.224352]  ? __virt_addr_valid+0x215/0x410
-[  305.224359]  ? drm_sched_entity_flush+0x6c4/0x7b0 [gpu_sched]
-[  305.224368]  kasan_report+0xa6/0xe0
-[  305.224373]  ? drm_sched_entity_flush+0x6c4/0x7b0 [gpu_sched]
-[  305.224385]  drm_sched_entity_flush+0x6c4/0x7b0 [gpu_sched]
-[  305.224395]  ? __pfx_drm_sched_entity_flush+0x10/0x10 [gpu_sched]
-[  305.224406]  ? rcu_is_watching+0x15/0xb0
-[  305.224413]  drm_sched_entity_destroy+0x17/0x20 [gpu_sched]
-[  305.224422]  nouveau_cli_fini+0x6c/0x120 [nouveau]
-[  305.224658]  nouveau_drm_device_fini+0x2ac/0x490 [nouveau]
-[  305.224871]  nouveau_drm_remove+0x18e/0x220 [nouveau]
-[  305.225082]  ? __pfx_nouveau_drm_remove+0x10/0x10 [nouveau]
-[  305.225290]  ? rcu_is_watching+0x15/0xb0
-[  305.225295]  ? _raw_spin_unlock_irqrestore+0x66/0x80
-[  305.225299]  ? trace_hardirqs_on+0x16/0x100
-[  305.225304]  ? _raw_spin_unlock_irqrestore+0x4f/0x80
-[  305.225310]  pci_device_remove+0xa3/0x1d0
-[  305.225316]  device_release_driver_internal+0x379/0x540
-[  305.225322]  driver_detach+0xc5/0x180
-[  305.225327]  bus_remove_driver+0x11e/0x2a0
-[  305.225333]  pci_unregister_driver+0x2a/0x250
-[  305.225339]  nouveau_drm_exit+0x1f/0x970 [nouveau]
-[  305.225548]  __do_sys_delete_module+0x350/0x580
-[  305.225554]  ? __pfx___do_sys_delete_module+0x10/0x10
-[  305.225562]  ? syscall_enter_from_user_mode+0x26/0x90
-[  305.225567]  ? rcu_is_watching+0x15/0xb0
-[  305.225571]  ? syscall_enter_from_user_mode+0x26/0x90
-[  305.225575]  ? trace_hardirqs_on+0x16/0x100
-[  305.225580]  do_syscall_64+0x61/0xe0
-[  305.225584]  ? rcu_is_watching+0x15/0xb0
-[  305.225587]  ? syscall_exit_to_user_mode+0x1f/0x50
-[  305.225592]  ? trace_hardirqs_on_prepare+0xe3/0x100
-[  305.225596]  ? do_syscall_64+0x70/0xe0
-[  305.225600]  ? trace_hardirqs_on_prepare+0xe3/0x100
-[  305.225604]  entry_SYSCALL_64_after_hwframe+0x6e/0x76
-[  305.225609] RIP: 0033:0x7f6148f3592b
-[  305.225650] Code: 73 01 c3 48 8b 0d dd 04 0c 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 b0 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d ad 04 0c 00 f7 d8 64 89 01 48
-[  305.225653] RSP: 002b:00007ffe89986f08 EFLAGS: 00000206 ORIG_RAX: 00000000000000b0
-[  305.225659] RAX: ffffffffffffffda RBX: 000055cbb036e900 RCX: 00007f6148f3592b
-[  305.225662] RDX: 0000000000000000 RSI: 0000000000000800 RDI: 000055cbb036e968
-[  305.225664] RBP: 00007ffe89986f30 R08: 1999999999999999 R09: 0000000000000000
-[  305.225667] R10: 00007f6148fa6ac0 R11: 0000000000000206 R12: 0000000000000000
-[  305.225670] R13: 00007ffe89987190 R14: 000055cbb036e900 R15: 0000000000000000
-[  305.225678]  </TASK>
-
-[  305.225683] Allocated by task 484:
-[  305.225685]  kasan_save_stack+0x33/0x60
-[  305.225690]  kasan_set_track+0x25/0x30
-[  305.225693]  __kasan_kmalloc+0x8f/0xa0
-[  305.225696]  drm_sched_init+0x3c7/0xce0 [gpu_sched]
-[  305.225705]  nouveau_sched_init+0xd2/0x110 [nouveau]
-[  305.225913]  nouveau_drm_device_init+0x130/0x3290 [nouveau]
-[  305.226121]  nouveau_drm_probe+0x1ab/0x6b0 [nouveau]
-[  305.226329]  local_pci_probe+0xda/0x190
-[  305.226333]  pci_device_probe+0x23a/0x780
-[  305.226337]  really_probe+0x3df/0xb80
-[  305.226341]  __driver_probe_device+0x18c/0x450
-[  305.226345]  driver_probe_device+0x4a/0x120
-[  305.226348]  __driver_attach+0x1e5/0x4a0
-[  305.226351]  bus_for_each_dev+0x106/0x190
-[  305.226355]  bus_add_driver+0x2a1/0x570
-[  305.226358]  driver_register+0x134/0x460
-[  305.226361]  do_one_initcall+0xd3/0x430
-[  305.226366]  do_init_module+0x238/0x770
-[  305.226370]  load_module+0x5581/0x6f10
-[  305.226374]  __do_sys_init_module+0x1f2/0x220
-[  305.226377]  do_syscall_64+0x61/0xe0
-[  305.226381]  entry_SYSCALL_64_after_hwframe+0x6e/0x76
-
-[  305.226387] Freed by task 4436:
-[  305.226389]  kasan_save_stack+0x33/0x60
-[  305.226392]  kasan_set_track+0x25/0x30
-[  305.226396]  kasan_save_free_info+0x2b/0x50
-[  305.226399]  __kasan_slab_free+0x10b/0x1a0
-[  305.226402]  slab_free_freelist_hook+0x12b/0x1e0
-[  305.226406]  __kmem_cache_free+0xd4/0x1d0
-[  305.226410]  drm_sched_fini+0x178/0x320 [gpu_sched]
-[  305.226418]  nouveau_drm_device_fini+0x2a0/0x490 [nouveau]
-[  305.226624]  nouveau_drm_remove+0x18e/0x220 [nouveau]
-[  305.226832]  pci_device_remove+0xa3/0x1d0
-[  305.226836]  device_release_driver_internal+0x379/0x540
-[  305.226840]  driver_detach+0xc5/0x180
-[  305.226843]  bus_remove_driver+0x11e/0x2a0
-[  305.226847]  pci_unregister_driver+0x2a/0x250
-[  305.226850]  nouveau_drm_exit+0x1f/0x970 [nouveau]
-[  305.227056]  __do_sys_delete_module+0x350/0x580
-[  305.227060]  do_syscall_64+0x61/0xe0
-[  305.227064]  entry_SYSCALL_64_after_hwframe+0x6e/0x76
-
-[  305.227070] The buggy address belongs to the object at ffff8881440a8f00
-                which belongs to the cache kmalloc-128 of size 128
-[  305.227073] The buggy address is located 72 bytes inside of
-                freed 128-byte region [ffff8881440a8f00, ffff8881440a8f80)
-
-[  305.227078] The buggy address belongs to the physical page:
-[  305.227081] page:00000000627efa0a refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1440a8
-[  305.227085] head:00000000627efa0a order:1 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-[  305.227088] flags: 0x17ffffc0000840(slab|head|node=0|zone=2|lastcpupid=0x1fffff)
-[  305.227093] page_type: 0xffffffff()
-[  305.227097] raw: 0017ffffc0000840 ffff8881000428c0 ffffea0005b33500 dead000000000002
-[  305.227100] raw: 0000000000000000 0000000000200020 00000001ffffffff 0000000000000000
-[  305.227102] page dumped because: kasan: bad access detected
-
-[  305.227106] Memory state around the buggy address:
-[  305.227109]  ffff8881440a8e00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[  305.227112]  ffff8881440a8e80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  305.227114] >ffff8881440a8f00: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[  305.227117]                                               ^
-[  305.227120]  ffff8881440a8f80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  305.227122]  ffff8881440a9000: 00 00 00 00 00 00 00 00 00 00 00 00 00 fc fc fc
-[  305.227125] ==================================================================
-
-Cc: <stable@vger.kernel.org> # v6.7 only
-Reported-by: Karol Herbst <kherbst@redhat.com>
-Closes: https://gist.githubusercontent.com/karolherbst/a20eb0f937a06ed6aabe2ac2ca3d11b5/raw/9cd8b1dc5894872d0eeebbee3dd0fdd28bb576bc/gistfile1.txt
-Fixes: b88baab82871 ("drm/nouveau: implement new VM_BIND uAPI")
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
----
- drivers/gpu/drm/nouveau/nouveau_drm.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/nouveau/nouveau_drm.c b/drivers/gpu/drm/nouveau/nouveau_drm.c
-index 50589f982d1a..75545da9d1e9 100644
---- a/drivers/gpu/drm/nouveau/nouveau_drm.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
-@@ -708,10 +708,11 @@ nouveau_drm_device_fini(struct drm_device *dev)
- 	}
- 	mutex_unlock(&drm->clients_lock);
- 
--	nouveau_sched_fini(drm);
--
- 	nouveau_cli_fini(&drm->client);
- 	nouveau_cli_fini(&drm->master);
-+
-+	nouveau_sched_fini(drm);
-+
- 	nvif_parent_dtor(&drm->parent);
- 	mutex_destroy(&drm->clients_lock);
- 	kfree(drm);
--- 
-2.44.0
-
+     Arnd
 
