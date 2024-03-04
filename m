@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-26083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DE13870CFE
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:30:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6F02870CD1
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:29:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC4B71C2361A
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:30:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 709142896F1
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2519278B4C;
-	Mon,  4 Mar 2024 21:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 288C4200CD;
+	Mon,  4 Mar 2024 21:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tlJnsZUD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M9jNrgkI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D5861675;
-	Mon,  4 Mar 2024 21:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAEEC1EB5A;
+	Mon,  4 Mar 2024 21:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587800; cv=none; b=nhifQ2xwcnIDsnCEtMLHmnXbI+U7UN9OLpGNv8gEcGpEbrUrgDsFc2KX/8pY8YdyI+USqWpaBDfXSTxaHjZW3ZQdM0N8wz91dTiKR/oyoAWTn9Okn1VE2EkZJd+VdCDepZZy9qNLnRGGZJsjzcIY0wgoMhJrFQPiR4bdX9zFo3I=
+	t=1709587740; cv=none; b=NWeETvLdQbgjKrs0UNEv8Xu5W94G5iEP83i0+KaGdu0G4SA2g308mEJdANUCJpQ80kPy4zQIuSZW801I0J4KDFUMvJltD9jqew6chMML2g5WxfU9QNI96ECKas288YsZqoFiRdnh65taSgGJ1hNAQPQEfC3NQHZuu8ZYtoSCxq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587800; c=relaxed/simple;
-	bh=yb030ubKD9mJbGQE//r285ACHyo31kfXg+lI+EcZOKY=;
+	s=arc-20240116; t=1709587740; c=relaxed/simple;
+	bh=+CuEoE4rIrKTqsNvObVCNo6MO+gqlavnz82tg6IR1Zk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TVc9KHuc5Mk9r/iz/93B/wODRwkpBf3hEXzrLlJT17q9u3iOugznhyIq+Nuk26FuOMoTiMuMYK9nmvUuOtpkqPmmjc06RlVYozQf61Pt0Bc9xKrPDWIcT5z7fde9v0hAsgTRSaXCbJ4ioPA7Z+H0aiha/ew2vlpqJOBvbCl+qzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tlJnsZUD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69358C433C7;
-	Mon,  4 Mar 2024 21:30:00 +0000 (UTC)
+	 MIME-Version; b=QuJCGEhk9vc4hU6AH/xTQVHc3YQVtsfDi254eZHbnEhw6++0iN7GmlUY+zRJNU7uiuqpAzh9+yTVSykRes213i2TFvog3D9TW23bii5jM2MWLzb8ZHvRGLmT4PN7QzvtRjvOvHlQy6YTCrxxtJnfq5g8vYznltpOm2nnCn2xWuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M9jNrgkI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AAA4C433F1;
+	Mon,  4 Mar 2024 21:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587800;
-	bh=yb030ubKD9mJbGQE//r285ACHyo31kfXg+lI+EcZOKY=;
+	s=korg; t=1709587740;
+	bh=+CuEoE4rIrKTqsNvObVCNo6MO+gqlavnz82tg6IR1Zk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tlJnsZUDpPMjvKO25Fn7ctgHpvfAPQjwbLIhsiuN3LGrTDcO90dDWI1JNCPp4hpeT
-	 XqSUG7S2URZHnR6Ot0PxYbr+Y9mvFrot+aqMpgiNdqVpDiGSFuFjiLSEARhkNV1P08
-	 +P96w3u98tCUjVBkfLzL9aqV+Eol7ef1kGv/dDPU=
+	b=M9jNrgkIifVj/FbBO3p2/ZL1w3rWmHVpQt0fILMi4HtbdtDgVLqvBh2CJ3T1sUQ5Z
+	 gXCfIBN9BvG7IV258BlTFcsOry1vRK1lxInaIVZRhmMueNSH3I/4GmT13wNQsUHI6L
+	 b4wuJ/HDyUiXaYbxurlxhCrlK6o6BuVUMbuLawjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sid Pranjale <sidpranjale127@protonmail.com>,
-	Dave Airlie <airlied@redhat.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Rob Herring <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 071/162] drm/nouveau: keep DMA buffers required for suspend/resume
-Date: Mon,  4 Mar 2024 21:22:16 +0000
-Message-ID: <20240304211554.129164305@linuxfoundation.org>
+Subject: [PATCH 6.7 072/162] of: property: fw_devlink: Fix stupid bug in remote-endpoint parsing
+Date: Mon,  4 Mar 2024 21:22:17 +0000
+Message-ID: <20240304211554.162740231@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
 References: <20240304211551.833500257@linuxfoundation.org>
@@ -66,45 +68,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sid Pranjale <sidpranjale127@protonmail.com>
+From: Saravana Kannan <saravanak@google.com>
 
-[ Upstream commit f6ecfdad359a01c7fd8a3bcfde3ef0acdf107e6e ]
+[ Upstream commit 7cb50f6c9fbaa1c0b80100b8971bf13db5d75d06 ]
 
-Nouveau deallocates a few buffers post GPU init which are required for GPU suspend/resume to function correctly.
-This is likely not as big an issue on systems where the NVGPU is the only GPU, but on multi-GPU set ups it leads to a regression where the kernel module errors and results in a system-wide rendering freeze.
+Introduced a stupid bug in commit 782bfd03c3ae ("of: property: Improve
+finding the supplier of a remote-endpoint property") due to a last minute
+incorrect edit of "index !=0" into "!index". This patch fixes it to be
+"index > 0" to match the comment right next to it.
 
-This commit addresses that regression by moving the two buffers required for suspend and resume to be deallocated at driver unload instead of post init.
-
-Fixes: 042b5f83841fb ("drm/nouveau: fix several DMA buffer leaks")
-Signed-off-by: Sid Pranjale <sidpranjale127@protonmail.com>
-Signed-off-by: Dave Airlie <airlied@redhat.com>
+Reported-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://lore.kernel.org/lkml/20240223171849.10f9901d@booty/
+Fixes: 782bfd03c3ae ("of: property: Improve finding the supplier of a remote-endpoint property")
+Signed-off-by: Saravana Kannan <saravanak@google.com>
+Reviewed-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://lore.kernel.org/r/20240224052436.3552333-1-saravanak@google.com
+Signed-off-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/of/property.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
-index a41735ab60683..d66fc3570642b 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
-@@ -1054,8 +1054,6 @@ r535_gsp_postinit(struct nvkm_gsp *gsp)
- 	/* Release the DMA buffers that were needed only for boot and init */
- 	nvkm_gsp_mem_dtor(gsp, &gsp->boot.fw);
- 	nvkm_gsp_mem_dtor(gsp, &gsp->libos);
--	nvkm_gsp_mem_dtor(gsp, &gsp->rmargs);
--	nvkm_gsp_mem_dtor(gsp, &gsp->wpr_meta);
+diff --git a/drivers/of/property.c b/drivers/of/property.c
+index 885ee040ee2b3..15d1156843256 100644
+--- a/drivers/of/property.c
++++ b/drivers/of/property.c
+@@ -1303,7 +1303,7 @@ static struct device_node *parse_remote_endpoint(struct device_node *np,
+ 						 int index)
+ {
+ 	/* Return NULL for index > 0 to signify end of remote-endpoints. */
+-	if (!index || strcmp(prop_name, "remote-endpoint"))
++	if (index > 0 || strcmp(prop_name, "remote-endpoint"))
+ 		return NULL;
  
- 	return ret;
- }
-@@ -2163,6 +2161,8 @@ r535_gsp_dtor(struct nvkm_gsp *gsp)
- 
- 	r535_gsp_dtor_fws(gsp);
- 
-+	nvkm_gsp_mem_dtor(gsp, &gsp->rmargs);
-+	nvkm_gsp_mem_dtor(gsp, &gsp->wpr_meta);
- 	nvkm_gsp_mem_dtor(gsp, &gsp->shm.mem);
- 	nvkm_gsp_mem_dtor(gsp, &gsp->loginit);
- 	nvkm_gsp_mem_dtor(gsp, &gsp->logintr);
+ 	return of_graph_get_remote_port_parent(np);
 -- 
 2.43.0
 
