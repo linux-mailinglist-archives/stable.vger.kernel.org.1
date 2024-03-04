@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D83DB870DD5
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:38:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5971E870EAC
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:46:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DFAE1F22F13
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:38:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FFAF1F21AAD
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:46:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97212200D4;
-	Mon,  4 Mar 2024 21:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 667847BAF8;
+	Mon,  4 Mar 2024 21:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HV4wPBam"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GxRmlFDa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A9979DCE;
-	Mon,  4 Mar 2024 21:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A2D46BA0;
+	Mon,  4 Mar 2024 21:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588289; cv=none; b=BLZ3FTQEu1859MJOJUMekrjEXC7cxO6ZQSKIBAJY6VdEnMX+jiIdBDboC6L0OIWP3srzAeJrKVRAUrFpGB41U/8dNC3WXqyWfGKmLUWIcY0u6OQGGV3ohuPx0Zo4Wi2BW4aiIVorRxIDg40cnydEwh1bFtYgPwNw4999LQnmIwQ=
+	t=1709588751; cv=none; b=r0+QLyQKAo5q7nOM43KH9oXulv8mNXo9GUo4Y8n09wDYNIdkTjNHw4dclJ//NGYUgLKfsr48yg8MpGC0oZpeQofmr1PP1Nd4Piwu69iwPUafRNNKUW51KtxOYNH2rMt55YhDn3Hy4RnqB5OGRhvXcox5ySaBNSyLw5K6gKG0WlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588289; c=relaxed/simple;
-	bh=z9piTKs2+ha47E9GqOogUN1WWyjE35nlumQRhvM+KNc=;
+	s=arc-20240116; t=1709588751; c=relaxed/simple;
+	bh=kuWTSYl4ns7yzT2c7YRnddgDr8SwgUaKFvMp/ONC480=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o4QqYPBGacV6NeL3UEBvpjUZnMv0LSRDqB94Mj2+f33jnHZqoQlGpyOC6fxdU3Pg1Fr1bIlXAmXjghVGKhw5XIxLVQdOyfk8p2bDDNZockGYa5M9h+vR1VSbeHQOI7jtNiyvzmW42uL6pSvYMXmDJG9+mK7roO4JdXT9yQmdJ34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HV4wPBam; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8DEC433C7;
-	Mon,  4 Mar 2024 21:38:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s2J7v0OxeG/Opk8pmJWl2bI7KtiNdyznzdms+UGKiF2gXxi7HTIZvx/2f2H+SlwPQpQmRJbs8Uafl3ppC2jBa/D59edWkmtHTTLmWgMfn++pNMU7olqfJiCJluN99hkBG0cBTl6dZ2697nEPeB41f9gyRTMM7xRfia8u+Zkzwnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GxRmlFDa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AACEEC433F1;
+	Mon,  4 Mar 2024 21:45:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588289;
-	bh=z9piTKs2+ha47E9GqOogUN1WWyjE35nlumQRhvM+KNc=;
+	s=korg; t=1709588751;
+	bh=kuWTSYl4ns7yzT2c7YRnddgDr8SwgUaKFvMp/ONC480=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HV4wPBam6RMe4hzK28JlvUnFo3JPYzjkEFWOM7ryTehHjM1HQCpLyTnxJD0gJQwbj
-	 h6HhZsT8BwV/r49mY2loZr8mSQkqtxCgLwKfNIcgRG7dLCT94YBSH6dw6PH27wS/J8
-	 WdkuOTBnT99LEioWQzK4B/mAiWyWmMy3xzp/ZkFs=
+	b=GxRmlFDauFnEHExxshg9ZLURepY6srS5wWSbInjLw5K4bkR4Uz83IZn1stP2udOEj
+	 zKfEEOmpQCbcjwgft1TykJK8Ue4oClBr+qskrgqQjm44z0Vj6T882VkZm/PwEnrmlQ
+	 aUHlCsFxI46K6ZiwFkn+Uzs0DA98p30PukXDLa14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 026/143] Bluetooth: hci_event: Fix wrongly recorded wakeup BD_ADDR
+	Matthew Auld <matthew.auld@intel.com>,
+	Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Subject: [PATCH 6.1 083/215] drm/buddy: fix range bias
 Date: Mon,  4 Mar 2024 21:22:26 +0000
-Message-ID: <20240304211550.783154823@linuxfoundation.org>
+Message-ID: <20240304211559.624588947@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +60,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Matthew Auld <matthew.auld@intel.com>
 
-[ Upstream commit 61a5ab72edea7ebc3ad2c6beea29d966f528ebfb ]
+commit f41900e4a6ef019d64a70394b0e0c3bd048d4ec8 upstream.
 
-hci_store_wake_reason() wrongly parses event HCI_Connection_Request
-as HCI_Connection_Complete and HCI_Connection_Complete as
-HCI_Connection_Request, so causes recording wakeup BD_ADDR error and
-potential stability issue, fix it by using the correct field.
+There is a corner case here where start/end is after/before the block
+range we are currently checking. If so we need to be sure that splitting
+the block will eventually give use the block size we need. To do that we
+should adjust the block range to account for the start/end, and only
+continue with the split if the size/alignment will fit the requested
+size. Not doing so can result in leaving split blocks unmerged when it
+eventually fails.
 
-Fixes: 2f20216c1d6f ("Bluetooth: Emit controller suspend and resume events")
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: afea229fe102 ("drm: improve drm_buddy_alloc function")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: <stable@vger.kernel.org> # v5.18+
+Reviewed-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240219121851.25774-4-matthew.auld@intel.com
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_buddy.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 16e442773229b..2c5b321806b3f 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -7430,10 +7430,10 @@ static void hci_store_wake_reason(struct hci_dev *hdev, u8 event,
- 	 * keep track of the bdaddr of the connection event that woke us up.
- 	 */
- 	if (event == HCI_EV_CONN_REQUEST) {
--		bacpy(&hdev->wake_addr, &conn_complete->bdaddr);
-+		bacpy(&hdev->wake_addr, &conn_request->bdaddr);
- 		hdev->wake_addr_type = BDADDR_BREDR;
- 	} else if (event == HCI_EV_CONN_COMPLETE) {
--		bacpy(&hdev->wake_addr, &conn_request->bdaddr);
-+		bacpy(&hdev->wake_addr, &conn_complete->bdaddr);
- 		hdev->wake_addr_type = BDADDR_BREDR;
- 	} else if (event == HCI_EV_LE_META) {
- 		struct hci_ev_le_meta *le_ev = (void *)skb->data;
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/drm_buddy.c
++++ b/drivers/gpu/drm/drm_buddy.c
+@@ -332,6 +332,7 @@ alloc_range_bias(struct drm_buddy *mm,
+ 		 u64 start, u64 end,
+ 		 unsigned int order)
+ {
++	u64 req_size = mm->chunk_size << order;
+ 	struct drm_buddy_block *block;
+ 	struct drm_buddy_block *buddy;
+ 	LIST_HEAD(dfs);
+@@ -367,6 +368,15 @@ alloc_range_bias(struct drm_buddy *mm,
+ 		if (drm_buddy_block_is_allocated(block))
+ 			continue;
+ 
++		if (block_start < start || block_end > end) {
++			u64 adjusted_start = max(block_start, start);
++			u64 adjusted_end = min(block_end, end);
++
++			if (round_down(adjusted_end + 1, req_size) <=
++			    round_up(adjusted_start, req_size))
++				continue;
++		}
++
+ 		if (contains(start, end, block_start, block_end) &&
+ 		    order == drm_buddy_block_order(block)) {
+ 			/*
 
 
 
