@@ -1,239 +1,152 @@
-Return-Path: <stable+bounces-25970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 959E3870A8F
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 20:20:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8C8A870ABD
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 20:32:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C6591F22502
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 19:20:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 748CF281207
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 19:32:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD0A79939;
-	Mon,  4 Mar 2024 19:20:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EBD479941;
+	Mon,  4 Mar 2024 19:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="NPDwU+G/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HL9BNOn9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-80007.amazon.com (smtp-fw-80007.amazon.com [99.78.197.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9EA07992E;
-	Mon,  4 Mar 2024 19:20:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09A37869E;
+	Mon,  4 Mar 2024 19:31:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709580019; cv=none; b=S7WS5NdEueZRvGjcAEaEi+mo/rC1+UVDXezswK3uMSGUgBukgvKZxQcFiURQq2pW46ckq4lLBhCcw6xuX9/Vy8pEVeWwgOtVw8KpdSMDD4I2lMVHdPThMJD6PvlDnJdAJvdh8wMU2J2nQ10hrLE/2lnOKilgQpyhFmJwLqCS7kg=
+	t=1709580716; cv=none; b=m2JJ0HJANmG4TMHPQwkO1lxcp/CaNgNxaNVtSNzfE5J0FpRAib8HG+28GUoHvMaO/EPzmCmeGFOwmsv7ks/VyUuVRXt9k8t7fTDP7CDBtSvGgf3o34xzvv1KkTGX8+f7M9ue642UqsQu6tOBvK22XReRlWQw4F2X2bGtS+dGTfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709580019; c=relaxed/simple;
-	bh=KMZ17CS97Wx1dyNNC561RxoogvvvOrIxCQIZ7jfuiLA=;
-	h=Date:From:To:CC:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=crp6gKQyXYKIIBDMouv9ZI7kLp1gYTSFasFYT0EOiMDB9CCnlNsSsjq2X9VXPtkwg0yHyOnvO5WPW0/ZfOdVtctlmaRQ+68Bk1bCx7Hrs+YfG9ZDf3seh9HT2Adc9mzd+c0NSMzvdJ+GkfA7m6K7q0nUHZREMgUSN5OxVHYMdyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=NPDwU+G/; arc=none smtp.client-ip=99.78.197.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1709580018; x=1741116018;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=Hp/Pxo/mK3yvk0cAXe1HmgajLOcF/spYOUraUsiYG28=;
-  b=NPDwU+G/kaGboT5VNUgH/3ALJNxcGJejqjEY9QjHgikIM0PanjsaRp0L
-   FZ6GXpcW+hPGKu5HK5GoCrBsp9HuT6z6nfd0ChrHWAI3Pq+PIS9Nc6Pvs
-   o01Q+a1a+w4v32Eap53qRd6fJSiKiAS9++76txdKbJIUnK9UqR1bTi8pA
-   w=;
-X-IronPort-AV: E=Sophos;i="6.06,204,1705363200"; 
-   d="scan'208";a="278517762"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-80007.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2024 19:20:13 +0000
-Received: from EX19MTAEUB002.ant.amazon.com [10.0.10.100:13445]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.11.111:2525] with esmtp (Farcaster)
- id b368db1f-8b69-4baf-b72b-e07fa55b7192; Mon, 4 Mar 2024 19:20:12 +0000 (UTC)
-X-Farcaster-Flow-ID: b368db1f-8b69-4baf-b72b-e07fa55b7192
-Received: from EX19D026EUB004.ant.amazon.com (10.252.61.64) by
- EX19MTAEUB002.ant.amazon.com (10.252.51.79) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Mon, 4 Mar 2024 19:20:12 +0000
-Received: from uc3ecf78c6baf56.ant.amazon.com (10.187.170.53) by
- EX19D026EUB004.ant.amazon.com (10.252.61.64) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.28; Mon, 4 Mar 2024 19:20:09 +0000
-Date: Mon, 4 Mar 2024 11:20:06 -0800
-From: Andrew Panyakin <apanyaki@amazon.com>
-To: <stable@vger.kernel.org>
-CC: Andrew Panyakin <apanyaki@amazon.com>, Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>, Julien Grall
-	<jgrall@amazon.com>, Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Maximilian Heyne <mheyne@amazon.de>, Benjamin Herrenschmidt
-	<benh@amazon.com>, Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-	"xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: [PATCH 6.1] xen/events: close evtchn after mapping cleanup
-Message-ID: <20240304192006.GA3517973@uc3ecf78c6baf56.ant.amazon.com>
+	s=arc-20240116; t=1709580716; c=relaxed/simple;
+	bh=/7r2yABS70a2BV6XpcMn72U5TYLEICOD6PuGQ6u/XDI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o6iwOTnYHru8fzzwBX9NpESVwJjLpAXWAOqSqqqpnnTDU25EpFz71VqEX4QmsohL/pepiYyfdhyig/64ezUIIrRukFXc4ovWICQvitLKLMgQanETjDU4F62rM+I8WnvjLoL0a2L12+oNJwdXwoX5lNTLcNQ+cmT1IO1AVldRj9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HL9BNOn9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 206BFC433F1;
+	Mon,  4 Mar 2024 19:31:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709580715;
+	bh=/7r2yABS70a2BV6XpcMn72U5TYLEICOD6PuGQ6u/XDI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HL9BNOn9j3nsV+vEwAQlzNMLVlrtDdXS4J70mNXFp/uhEqJNvhwYWN/WvW4mZzKHG
+	 UIXYq+hr5UgxJAoLvD7sSeWUOP438JXs/NOicgbWXu8zeLCtLyjIJRGU5918hNnMmb
+	 SXLFapzROq83bPtEHBJUGBY3RLgCJQjxchAmRLbrDybSp4r/pNdBqAVXN1nF3WrYfi
+	 YGVPJ3xN46B9mZ1LQHMh4yWUfJY5SMwpoNxJZf2+AsJTCjuCvhhy/J8Gnph+tl+tw/
+	 jmDhc5fk/Ep3wMIUNS7vQSP9ruXaT9W2VgfT43DjOD0v4003LRSn/W7pzwIC61xhof
+	 judK6rA9UFsiw==
+Date: Mon, 4 Mar 2024 11:31:53 -0800
+From: Eric Biggers <ebiggers@kernel.org>
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: Christian Brauner <brauner@kernel.org>, linux-fsdevel@vger.kernel.org,
+	Christoph Hellwig <hch@lst.de>,
+	Benjamin LaHaise <ben@communityfibre.ca>,
+	Avi Kivity <avi@scylladb.com>, Sandeep Dhavale <dhavale@google.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Kent Overstreet <kent.overstreet@linux.dev>, stable@vger.kernel.org,
+	syzbot+b91eb2ed18f599dd3c31@syzkaller.appspotmail.com
+Subject: Re: [PATCH] Revert "fs/aio: Make io_cancel() generate completions
+ again"
+Message-ID: <20240304193153.GC1195@sol.localdomain>
+References: <20240304182945.3646109-1-bvanassche@acm.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-ClientProxiedBy: EX19D031UWC002.ant.amazon.com (10.13.139.212) To
- EX19D026EUB004.ant.amazon.com (10.252.61.64)
+In-Reply-To: <20240304182945.3646109-1-bvanassche@acm.org>
 
-From: Maximilian Heyne <mheyne@amazon.de>
+On Mon, Mar 04, 2024 at 10:29:44AM -0800, Bart Van Assche wrote:
+> Patch "fs/aio: Make io_cancel() generate completions again" is based on the
+> assumption that calling kiocb->ki_cancel() does not complete R/W requests.
+> This is incorrect: the two drivers that call kiocb_set_cancel_fn() callers
+> set a cancellation function that calls usb_ep_dequeue(). According to its
+> documentation, usb_ep_dequeue() calls the completion routine with status
+> -ECONNRESET. Hence this revert.
+> 
+> Cc: Benjamin LaHaise <ben@communityfibre.ca>
+> Cc: Eric Biggers <ebiggers@google.com>
+> Cc: Christoph Hellwig <hch@lst.de>
+> Cc: Avi Kivity <avi@scylladb.com>
+> Cc: Sandeep Dhavale <dhavale@google.com>
+> Cc: Jens Axboe <axboe@kernel.dk>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Kent Overstreet <kent.overstreet@linux.dev>
+> Cc: stable@vger.kernel.org
+> Reported-by: syzbot+b91eb2ed18f599dd3c31@syzkaller.appspotmail.com
+> Fixes: 54cbc058d86b ("fs/aio: Make io_cancel() generate completions again")
+> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+> ---
+>  fs/aio.c | 27 ++++++++++++++++-----------
+>  1 file changed, 16 insertions(+), 11 deletions(-)
+> 
+> diff --git a/fs/aio.c b/fs/aio.c
+> index 28223f511931..da18dbcfcb22 100644
+> --- a/fs/aio.c
+> +++ b/fs/aio.c
+> @@ -2165,11 +2165,14 @@ COMPAT_SYSCALL_DEFINE3(io_submit, compat_aio_context_t, ctx_id,
+>  #endif
+>  
+>  /* sys_io_cancel:
+> - *	Attempts to cancel an iocb previously passed to io_submit(). If the
+> - *	operation is successfully cancelled 0 is returned. May fail with
+> - *	-EFAULT if any of the data structures pointed to are invalid. May
+> - *	fail with -EINVAL if aio_context specified by ctx_id is invalid. Will
+> - *	fail with -ENOSYS if not implemented.
+> + *	Attempts to cancel an iocb previously passed to io_submit.  If
+> + *	the operation is successfully cancelled, the resulting event is
+> + *	copied into the memory pointed to by result without being placed
+> + *	into the completion queue and 0 is returned.  May fail with
+> + *	-EFAULT if any of the data structures pointed to are invalid.
+> + *	May fail with -EINVAL if aio_context specified by ctx_id is
+> + *	invalid.  May fail with -EAGAIN if the iocb specified was not
+> + *	cancelled.  Will fail with -ENOSYS if not implemented.
+>   */
+>  SYSCALL_DEFINE3(io_cancel, aio_context_t, ctx_id, struct iocb __user *, iocb,
+>  		struct io_event __user *, result)
+> @@ -2200,12 +2203,14 @@ SYSCALL_DEFINE3(io_cancel, aio_context_t, ctx_id, struct iocb __user *, iocb,
+>  	}
+>  	spin_unlock_irq(&ctx->ctx_lock);
+>  
+> -	/*
+> -	 * The result argument is no longer used - the io_event is always
+> -	 * delivered via the ring buffer.
+> -	 */
+> -	if (ret == 0 && kiocb->rw.ki_flags & IOCB_AIO_RW)
+> -		aio_complete_rw(&kiocb->rw, -EINTR);
+> +	if (!ret) {
+> +		/*
+> +		 * The result argument is no longer used - the io_event is
+> +		 * always delivered via the ring buffer. -EINPROGRESS indicates
+> +		 * cancellation is progress:
+> +		 */
+> +		ret = -EINPROGRESS;
+> +	}
 
-Commit fa765c4b4aed2d64266b694520ecb025c862c5a9 upstream
+Acked-by: Eric Biggers <ebiggers@google.com>
 
-shutdown_pirq and startup_pirq are not taking the
-irq_mapping_update_lock because they can't due to lock inversion. Both
-are called with the irq_desc->lock being taking. The lock order,
-however, is first irq_mapping_update_lock and then irq_desc->lock.
+It does look like all the ->ki_cancel functions complete the request already, so
+this patch was unnecessary and just introduced a bug.
 
-This opens multiple races:
-- shutdown_pirq can be interrupted by a function that allocates an event
-  channel:
+Note that IOCB_CMD_POLL installs a ->ki_cancel function too, and that's how
+syzbot hit the use-after-free so easily.
 
-  CPU0                        CPU1
-  shutdown_pirq {
-    xen_evtchn_close(e)
-                              __startup_pirq {
-                                EVTCHNOP_bind_pirq
-                                  -> returns just freed evtchn e
-                                set_evtchn_to_irq(e, irq)
-                              }
-    xen_irq_info_cleanup() {
-      set_evtchn_to_irq(e, -1)
-    }
-  }
+I assume that the patch just wasn't tested?  Or did you find that it actually
+fixed something (how)?
 
-  Assume here event channel e refers here to the same event channel
-  number.
-  After this race the evtchn_to_irq mapping for e is invalid (-1).
+By the way, libaio (https://pagure.io/libaio) has a test suite for these system
+calls.  How about adding a test case that cancels an IOCB_CMD_POLL request and
+verifies that the completion event is received?
 
-- __startup_pirq races with __unbind_from_irq in a similar way. Because
-  __startup_pirq doesn't take irq_mapping_update_lock it can grab the
-  evtchn that __unbind_from_irq is currently freeing and cleaning up. In
-  this case even though the event channel is allocated, its mapping can
-  be unset in evtchn_to_irq.
-
-The fix is to first cleanup the mappings and then close the event
-channel. In this way, when an event channel gets allocated it's
-potential previous evtchn_to_irq mappings are guaranteed to be unset already.
-This is also the reverse order of the allocation where first the event
-channel is allocated and then the mappings are setup.
-
-On a 5.10 kernel prior to commit 3fcdaf3d7634 ("xen/events: modify internal
-[un]bind interfaces"), we hit a BUG like the following during probing of NVMe
-devices. The issue is that during nvme_setup_io_queues, pci_free_irq
-is called for every device which results in a call to shutdown_pirq.
-With many nvme devices it's therefore likely to hit this race during
-boot because there will be multiple calls to shutdown_pirq and
-startup_pirq are running potentially in parallel.
-
-  ------------[ cut here ]------------
-  blkfront: xvda: barrier or flush: disabled; persistent grants: enabled; indirect descriptors: enabled; bounce buffer: enabled
-  kernel BUG at drivers/xen/events/events_base.c:499!
-  invalid opcode: 0000 [#1] SMP PTI
-  CPU: 44 PID: 375 Comm: kworker/u257:23 Not tainted 5.10.201-191.748.amzn2.x86_64 #1
-  Hardware name: Xen HVM domU, BIOS 4.11.amazon 08/24/2006
-  Workqueue: nvme-reset-wq nvme_reset_work
-  RIP: 0010:bind_evtchn_to_cpu+0xdf/0xf0
-  Code: 5d 41 5e c3 cc cc cc cc 44 89 f7 e8 2b 55 ad ff 49 89 c5 48 85 c0 0f 84 64 ff ff ff 4c 8b 68 30 41 83 fe ff 0f 85 60 ff ff ff <0f> 0b 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 0f 1f 44 00 00
-  RSP: 0000:ffffc9000d533b08 EFLAGS: 00010046
-  RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000006
-  RDX: 0000000000000028 RSI: 00000000ffffffff RDI: 00000000ffffffff
-  RBP: ffff888107419680 R08: 0000000000000000 R09: ffffffff82d72b00
-  R10: 0000000000000000 R11: 0000000000000000 R12: 00000000000001ed
-  R13: 0000000000000000 R14: 00000000ffffffff R15: 0000000000000002
-  FS:  0000000000000000(0000) GS:ffff88bc8b500000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 0000000000000000 CR3: 0000000002610001 CR4: 00000000001706e0
-  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-  Call Trace:
-   ? show_trace_log_lvl+0x1c1/0x2d9
-   ? show_trace_log_lvl+0x1c1/0x2d9
-   ? set_affinity_irq+0xdc/0x1c0
-   ? __die_body.cold+0x8/0xd
-   ? die+0x2b/0x50
-   ? do_trap+0x90/0x110
-   ? bind_evtchn_to_cpu+0xdf/0xf0
-   ? do_error_trap+0x65/0x80
-   ? bind_evtchn_to_cpu+0xdf/0xf0
-   ? exc_invalid_op+0x4e/0x70
-   ? bind_evtchn_to_cpu+0xdf/0xf0
-   ? asm_exc_invalid_op+0x12/0x20
-   ? bind_evtchn_to_cpu+0xdf/0xf0
-   ? bind_evtchn_to_cpu+0xc5/0xf0
-   set_affinity_irq+0xdc/0x1c0
-   irq_do_set_affinity+0x1d7/0x1f0
-   irq_setup_affinity+0xd6/0x1a0
-   irq_startup+0x8a/0xf0
-   __setup_irq+0x639/0x6d0
-   ? nvme_suspend+0x150/0x150
-   request_threaded_irq+0x10c/0x180
-   ? nvme_suspend+0x150/0x150
-   pci_request_irq+0xa8/0xf0
-   ? __blk_mq_free_request+0x74/0xa0
-   queue_request_irq+0x6f/0x80
-   nvme_create_queue+0x1af/0x200
-   nvme_create_io_queues+0xbd/0xf0
-   nvme_setup_io_queues+0x246/0x320
-   ? nvme_irq_check+0x30/0x30
-   nvme_reset_work+0x1c8/0x400
-   process_one_work+0x1b0/0x350
-   worker_thread+0x49/0x310
-   ? process_one_work+0x350/0x350
-   kthread+0x11b/0x140
-   ? __kthread_bind_mask+0x60/0x60
-   ret_from_fork+0x22/0x30
-  Modules linked in:
-  ---[ end trace a11715de1eee1873 ]---
-
-Fixes: d46a78b05c0e ("xen: implement pirq type event channels")
-Cc: stable@vger.kernel.org
-Co-debugged-by: Andrew Panyakin <apanyaki@amazon.com>
-Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
----
-Compare to upstream patch this one does not have close_evtchn flag
-because there is no need to handle static event channels.
-This feature was added only in 58f6259b7a08f ("xen/evtchn: Introduce new
-IOCTL to bind static evtchn")
-
- drivers/xen/events/events_base.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
-index 00f8e349921d..96b96516c980 100644
---- a/drivers/xen/events/events_base.c
-+++ b/drivers/xen/events/events_base.c
-@@ -937,8 +937,8 @@ static void shutdown_pirq(struct irq_data *data)
- 		return;
- 
- 	do_mask(info, EVT_MASK_REASON_EXPLICIT);
--	xen_evtchn_close(evtchn);
- 	xen_irq_info_cleanup(info);
-+	xen_evtchn_close(evtchn);
- }
- 
- static void enable_pirq(struct irq_data *data)
-@@ -982,8 +982,6 @@ static void __unbind_from_irq(unsigned int irq)
- 		unsigned int cpu = cpu_from_irq(irq);
- 		struct xenbus_device *dev;
- 
--		xen_evtchn_close(evtchn);
--
- 		switch (type_from_irq(irq)) {
- 		case IRQT_VIRQ:
- 			per_cpu(virq_to_irq, cpu)[virq_from_irq(irq)] = -1;
-@@ -1001,6 +999,7 @@ static void __unbind_from_irq(unsigned int irq)
- 		}
- 
- 		xen_irq_info_cleanup(info);
-+		xen_evtchn_close(evtchn);
- 	}
- 
- 	xen_free_irq(irq);
--- 
-2.40.1
-
+- Eric
 
