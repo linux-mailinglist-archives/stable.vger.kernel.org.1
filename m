@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D92D8870D76
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:34:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68DE5870D8D
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:35:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A4CD1F2166D
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:34:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FA9E1F20ECE
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:35:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019A0626B2;
-	Mon,  4 Mar 2024 21:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B67B7BAFE;
+	Mon,  4 Mar 2024 21:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jKFA6n+4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s2dqwgMQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B45091C687;
-	Mon,  4 Mar 2024 21:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3791A7BAF5;
+	Mon,  4 Mar 2024 21:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588057; cv=none; b=eutHh6RY30OTyU5J56GWEDSSdHGP2YYMbiGxOn/MMMA1sTgWdYyX2OE6g1uonVQEJghXMR7LFH7qQUNowX3xECoDmbF6vAziwA4EpxKlMqlGfZu3kreBdAayYiQpldGDTU3eqdfxqgUrUjyfyIwCj6n5IaShsoRT5yk4KPbv8Gg=
+	t=1709588113; cv=none; b=Y+PAKx6UK7DbzaXtCRH4rkkyqkNnwVa/I7ekAcZV+f9mWhFKBiNBVoz60IFL9J5xxpioxm9DDbEHG0Ti2gSRskFJgMssLqH3sdRJbS5HDrWqw+YS7EjWX9S9abjcg4p3xrrxxHpg4Uyhs/ZoYwI34oMiX08TgR7+MYbv37lLrI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588057; c=relaxed/simple;
-	bh=p4S53VepP7xT1CLxnieYXQl5NvuRz0K/0lJrBu2Um6Y=;
+	s=arc-20240116; t=1709588113; c=relaxed/simple;
+	bh=Yy5TPoqDrUjXWRAOrA3qYS7mEcZtszQ7a2f+KQxtUKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nAOCQBMpUy7TYDWUwe+tSlmQXQ3aRwx8pJf18haauOOBfjU5/orqe1SssUfp8cnbpO6dS6DGy6uxy2IDUKk02bBkvCXRdeQXlridVrLPsX8dxZvUqc2HJIxFT9tYJr3NJ5al64EIgqcB0XU7pDPgglvvJkJrptVSyJPmAfNfpNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jKFA6n+4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46DA6C433C7;
-	Mon,  4 Mar 2024 21:34:17 +0000 (UTC)
+	 MIME-Version; b=RYpQaolqkW9eNqLqPT1JdyiysLlkP19WUjPUASNtnGsBAaeAuoFymv2L82TRfywRIPLNp0hQelEEQO/NLZTe57mWZve04puRnE1x9XgoEyZQC/udP6DTAXyZnIZkev/M+v2NjWyK0DgE3X6NBSN1K8exrliEvHLBSwtYJN6BrUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s2dqwgMQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68727C433F1;
+	Mon,  4 Mar 2024 21:35:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588057;
-	bh=p4S53VepP7xT1CLxnieYXQl5NvuRz0K/0lJrBu2Um6Y=;
+	s=korg; t=1709588112;
+	bh=Yy5TPoqDrUjXWRAOrA3qYS7mEcZtszQ7a2f+KQxtUKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jKFA6n+4SCJ4vocA/mxCb+9Mx3IyYPF+ZWQo+muEIsMx5TPjSYgMXzN80Y15Oy6qU
-	 1Dnc7ghOoLJjMcR9kXckY7uvxvRim8yqWmRQuhFPrIFZ+APUHlq9FwVA3GH0kfAxQQ
-	 RlM51wTtzpC/H8jdYYtpIWusTBEV2iFG4BYBu36k=
+	b=s2dqwgMQWlVB7fzCL5+/YslkO8nUniWVj/DeInLH6i27aaN8cI36F/tbvHp8cFA7C
+	 39n8f9+NUFl9r2AfJf4jiAI9OpVnzrNHNNfGM7VgIRsung8K6+S660J2t1iqk2fMy/
+	 tbSRjVimrS7aEfxUha/4MUw6s3oAXavGGsqrqnEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 09/25] Bluetooth: Enforce validation on max value of connection interval
+Subject: [PATCH 5.10 18/42] power: supply: bq27xxx-i2c: Do not free non existing IRQ
 Date: Mon,  4 Mar 2024 21:23:45 +0000
-Message-ID: <20240304211536.060034780@linuxfoundation.org>
+Message-ID: <20240304211538.240722720@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211535.741936181@linuxfoundation.org>
-References: <20240304211535.741936181@linuxfoundation.org>
+In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
+References: <20240304211537.631764077@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit e4b019515f950b4e6e5b74b2e1bb03a90cb33039 ]
+[ Upstream commit 2df70149e73e79783bcbc7db4fa51ecef0e2022c ]
 
-Right now Linux BT stack cannot pass test case "GAP/CONN/CPUP/BV-05-C
-'Connection Parameter Update Procedure Invalid Parameters Central
-Responder'" in Bluetooth Test Suite revision GAP.TS.p44. [0]
+The bq27xxx i2c-client may not have an IRQ, in which case
+client->irq will be 0. bq27xxx_battery_i2c_probe() already has
+an if (client->irq) check wrapping the request_threaded_irq().
 
-That was revoled by commit c49a8682fc5d ("Bluetooth: validate BLE
-connection interval updates"), but later got reverted due to devices
-like keyboards and mice may require low connection interval.
+But bq27xxx_battery_i2c_remove() unconditionally calls
+free_irq(client->irq) leading to:
 
-So only validate the max value connection interval to pass the Test
-Suite, and let devices to request low connection interval if needed.
+[  190.310742] ------------[ cut here ]------------
+[  190.310843] Trying to free already-free IRQ 0
+[  190.310861] WARNING: CPU: 2 PID: 1304 at kernel/irq/manage.c:1893 free_irq+0x1b8/0x310
 
-[0] https://www.bluetooth.org/docman/handlers/DownloadDoc.ashx?doc_id=229869
+Followed by a backtrace when unbinding the driver. Add
+an if (client->irq) to bq27xxx_battery_i2c_remove() mirroring
+probe() to fix this.
 
-Fixes: 68d19d7d9957 ("Revert "Bluetooth: validate BLE connection interval updates"")
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 444ff00734f3 ("power: supply: bq27xxx: Fix I2C IRQ race on remove")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240215155133.70537-1-hdegoede@redhat.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c  | 4 ++++
- net/bluetooth/l2cap_core.c | 8 +++++++-
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ drivers/power/supply/bq27xxx_battery_i2c.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 6d1c7ec051a20..32793d22ba61c 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -5769,6 +5769,10 @@ static void hci_le_remote_conn_param_req_evt(struct hci_dev *hdev,
- 		return send_conn_param_neg_reply(hdev, handle,
- 						 HCI_ERROR_UNKNOWN_CONN_ID);
+diff --git a/drivers/power/supply/bq27xxx_battery_i2c.c b/drivers/power/supply/bq27xxx_battery_i2c.c
+index 0e32efb10ee78..6fbae8fc2e501 100644
+--- a/drivers/power/supply/bq27xxx_battery_i2c.c
++++ b/drivers/power/supply/bq27xxx_battery_i2c.c
+@@ -209,7 +209,9 @@ static int bq27xxx_battery_i2c_remove(struct i2c_client *client)
+ {
+ 	struct bq27xxx_device_info *di = i2c_get_clientdata(client);
  
-+	if (max > hcon->le_conn_max_interval)
-+		return send_conn_param_neg_reply(hdev, handle,
-+						 HCI_ERROR_INVALID_LL_PARAMS);
+-	free_irq(client->irq, di);
++	if (client->irq)
++		free_irq(client->irq, di);
 +
- 	if (hci_check_conn_params(min, max, latency, timeout))
- 		return send_conn_param_neg_reply(hdev, handle,
- 						 HCI_ERROR_INVALID_LL_PARAMS);
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 61bf489265505..9c06f5ffd1b5f 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -5331,7 +5331,13 @@ static inline int l2cap_conn_param_update_req(struct l2cap_conn *conn,
+ 	bq27xxx_battery_teardown(di);
  
- 	memset(&rsp, 0, sizeof(rsp));
- 
--	err = hci_check_conn_params(min, max, latency, to_multiplier);
-+	if (max > hcon->le_conn_max_interval) {
-+		BT_DBG("requested connection interval exceeds current bounds.");
-+		err = -EINVAL;
-+	} else {
-+		err = hci_check_conn_params(min, max, latency, to_multiplier);
-+	}
-+
- 	if (err)
- 		rsp.result = cpu_to_le16(L2CAP_CONN_PARAM_REJECTED);
- 	else
+ 	mutex_lock(&battery_mutex);
 -- 
 2.43.0
 
