@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-26021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 138AA870CA4
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:27:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F06DB870E6A
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:43:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C34A7288355
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:27:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 903871F20F93
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38E554D117;
-	Mon,  4 Mar 2024 21:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3478546BA0;
+	Mon,  4 Mar 2024 21:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i8Wm6uXK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fq9TmdOr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED24B482DA;
-	Mon,  4 Mar 2024 21:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73E6200CD;
+	Mon,  4 Mar 2024 21:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587639; cv=none; b=Yuirbd4FHuLj23EJIH+kXNCDbbaEkwljHb73mcPd0PRLPKn3yYPGJOzwwyZSW8HWID0ZEXvVjMvj+qonySKb8QvH5s4uvgp2FSkfIdU/2VsKgV99GerLvYGmgrn1vh55ZS/sg+8XB3kbUcdIlW3wxdo6vgVxiLLHFusVLAluPBo=
+	t=1709588625; cv=none; b=qZOB64ndK1B46mhqbAQBniZGH2lv2YGUqefc6zhSboJprRXT42RNkCS/wZuG6bYYyD0TGEbik7CYUbvkWheyzOcm9/Ne3FM482H10ZKYswveFW/4klq3WV8lyEBZczH79bTwt3hl1YBRkBa7snKhs4hhfb+2ZXxZGXPwdjXa710=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587639; c=relaxed/simple;
-	bh=rj31HVGAxnQkBh/EB63q7RIZkpZLlUm/ysa+FQdvk9Q=;
+	s=arc-20240116; t=1709588625; c=relaxed/simple;
+	bh=o+y+y+34/+0xrOe4B+4lj1gdLvk/hzFbvs/A6Maw8QU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iochzYFnJLRZHgc8k0fiEL8/KF0u9PylU3MuVq2wFoqTUDgLcXMC72XWXkxxOm4O4/sHPhL3fyBmJ3HvhndhhWwP8zbTV+lEZ6OEvcPMxVburBI+fb6RCtperevbsGliWOnTKrMMUMIBKuTOGzIZ5rBnDoNMFa9EUw3qDHab46k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i8Wm6uXK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BE74C433C7;
-	Mon,  4 Mar 2024 21:27:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=n8zPxJlyR0i4jF8v29VptbNAdMWvYKBXCVEhEo7Z7r5/XFuKyXMSUYmFGkX5wswS3AUJJESFRgXRNIWpJB0sMRMyOu7I5hUiXx1cwUoKsM0LjLq8mF3t2TINAYpYGVK6DlzzSAZC9eHAzMjVk9h1MD10r9A89uOcMLPlw8L0WW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fq9TmdOr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 794E5C433C7;
+	Mon,  4 Mar 2024 21:43:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587638;
-	bh=rj31HVGAxnQkBh/EB63q7RIZkpZLlUm/ysa+FQdvk9Q=;
+	s=korg; t=1709588624;
+	bh=o+y+y+34/+0xrOe4B+4lj1gdLvk/hzFbvs/A6Maw8QU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i8Wm6uXKdQ4CspRaUfVhElcdkbWuEH7AvAIkh4ikzZ1wlStdC9Gi3qVHxtiy9r24X
-	 H5R/j+OKwCWcfTNl8j2YyZBaywckxZ5AnLcIZMZtFS7hprxbAPW3UqWQTagcRcLLIm
-	 GKNfSc61CyBbApBggRCwsNdFQihRMtAJUoK2RNJ4=
+	b=fq9TmdOrU13kcDlrinVDSUgo/HU0jFE+bP+tC+VQDjLMWQvOC5qscJNhpzIeDSfR3
+	 1jmz0i441UuPsoP3LhxSPQw1Xqr0BpLoqjGKfz+lUFE4HJTOivNCVjfOKAbfB+QIOx
+	 6yVqPN/ZKVQDmR0S/Aw4kKi8XPbUC/U8VPDZTCnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janaki Ramaiah Thota <quic_janathot@quicinc.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	syzbot+039399a9b96297ddedca@syzkaller.appspotmail.com,
+	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 032/162] Bluetooth: hci_qca: Set BDA quirk bit if fwnode exists in DT
+Subject: [PATCH 6.1 034/215] net: veth: clear GRO when clearing XDP even when down
 Date: Mon,  4 Mar 2024 21:21:37 +0000
-Message-ID: <20240304211552.859937045@linuxfoundation.org>
+Message-ID: <20240304211558.069392239@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +63,123 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 7dcd3e014aa7faeeaf4047190b22d8a19a0db696 ]
+[ Upstream commit fe9f801355f0b47668419f30f1fac1cf4539e736 ]
 
-BT adapter going into UNCONFIGURED state during BT turn ON when
-devicetree has no local-bd-address node.
+veth sets NETIF_F_GRO automatically when XDP is enabled,
+because both features use the same NAPI machinery.
 
-Bluetooth will not work out of the box on such devices, to avoid this
-problem, added check to set HCI_QUIRK_USE_BDADDR_PROPERTY based on
-local-bd-address node entry.
+The logic to clear NETIF_F_GRO sits in veth_disable_xdp() which
+is called both on ndo_stop and when XDP is turned off.
+To avoid the flag from being cleared when the device is brought
+down, the clearing is skipped when IFF_UP is not set.
+Bringing the device down should indeed not modify its features.
 
-When this quirk is not set, the public Bluetooth address read by host
-from controller though HCI Read BD Address command is
-considered as valid.
+Unfortunately, this means that clearing is also skipped when
+XDP is disabled _while_ the device is down. And there's nothing
+on the open path to bring the device features back into sync.
+IOW if user enables XDP, disables it and then brings the device
+up we'll end up with a stray GRO flag set but no NAPI instances.
 
-Fixes: e668eb1e1578 ("Bluetooth: hci_core: Don't stop BT if the BD address missing in dts")
-Signed-off-by: Janaki Ramaiah Thota <quic_janathot@quicinc.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+We don't depend on the GRO flag on the datapath, so the datapath
+won't crash. We will crash (or hang), however, next time features
+are sync'ed (either by user via ethtool or peer changing its config).
+The GRO flag will go away, and veth will try to disable the NAPIs.
+But the open path never created them since XDP was off, the GRO flag
+was a stray. If NAPI was initialized before we'll hang in napi_disable().
+If it never was we'll crash trying to stop uninitialized hrtimer.
+
+Move the GRO flag updates to the XDP enable / disable paths,
+instead of mixing them with the ndo_open / ndo_close paths.
+
+Fixes: d3256efd8e8b ("veth: allow enabling NAPI even without XDP")
+Reported-by: Thomas Gleixner <tglx@linutronix.de>
+Reported-by: syzbot+039399a9b96297ddedca@syzkaller.appspotmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_qca.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/net/veth.c | 35 +++++++++++++++++------------------
+ 1 file changed, 17 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index 35f74f209d1fc..cc6dabf6884d7 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -7,6 +7,7 @@
-  *
-  *  Copyright (C) 2007 Texas Instruments, Inc.
-  *  Copyright (c) 2010, 2012, 2018 The Linux Foundation. All rights reserved.
-+ *  Copyright (c) 2023 Qualcomm Innovation Center, Inc. All rights reserved.
-  *
-  *  Acknowledgements:
-  *  This file is based on hci_ll.c, which was...
-@@ -1886,7 +1887,17 @@ static int qca_setup(struct hci_uart *hu)
- 	case QCA_WCN6750:
- 	case QCA_WCN6855:
- 	case QCA_WCN7850:
--		set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
-+
-+		/* Set BDA quirk bit for reading BDA value from fwnode property
-+		 * only if that property exist in DT.
-+		 */
-+		if (fwnode_property_present(dev_fwnode(hdev->dev.parent), "local-bd-address")) {
-+			set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
-+			bt_dev_info(hdev, "setting quirk bit to read BDA from fwnode later");
-+		} else {
-+			bt_dev_dbg(hdev, "local-bd-address` is not present in the devicetree so not setting quirk bit for BDA");
-+		}
-+
- 		hci_set_aosp_capable(hdev);
+diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+index 36c5a41f84e44..dea9cc8c39f7a 100644
+--- a/drivers/net/veth.c
++++ b/drivers/net/veth.c
+@@ -1135,14 +1135,6 @@ static int veth_enable_xdp(struct net_device *dev)
+ 				veth_disable_xdp_range(dev, 0, dev->real_num_rx_queues, true);
+ 				return err;
+ 			}
+-
+-			if (!veth_gro_requested(dev)) {
+-				/* user-space did not require GRO, but adding XDP
+-				 * is supposed to get GRO working
+-				 */
+-				dev->features |= NETIF_F_GRO;
+-				netdev_features_change(dev);
+-			}
+ 		}
+ 	}
  
- 		ret = qca_read_soc_version(hdev, &ver, soc_type);
+@@ -1162,18 +1154,9 @@ static void veth_disable_xdp(struct net_device *dev)
+ 	for (i = 0; i < dev->real_num_rx_queues; i++)
+ 		rcu_assign_pointer(priv->rq[i].xdp_prog, NULL);
+ 
+-	if (!netif_running(dev) || !veth_gro_requested(dev)) {
++	if (!netif_running(dev) || !veth_gro_requested(dev))
+ 		veth_napi_del(dev);
+ 
+-		/* if user-space did not require GRO, since adding XDP
+-		 * enabled it, clear it now
+-		 */
+-		if (!veth_gro_requested(dev) && netif_running(dev)) {
+-			dev->features &= ~NETIF_F_GRO;
+-			netdev_features_change(dev);
+-		}
+-	}
+-
+ 	veth_disable_xdp_range(dev, 0, dev->real_num_rx_queues, false);
+ }
+ 
+@@ -1558,6 +1541,14 @@ static int veth_xdp_set(struct net_device *dev, struct bpf_prog *prog,
+ 		}
+ 
+ 		if (!old_prog) {
++			if (!veth_gro_requested(dev)) {
++				/* user-space did not require GRO, but adding
++				 * XDP is supposed to get GRO working
++				 */
++				dev->features |= NETIF_F_GRO;
++				netdev_features_change(dev);
++			}
++
+ 			peer->hw_features &= ~NETIF_F_GSO_SOFTWARE;
+ 			peer->max_mtu = max_mtu;
+ 		}
+@@ -1568,6 +1559,14 @@ static int veth_xdp_set(struct net_device *dev, struct bpf_prog *prog,
+ 			if (dev->flags & IFF_UP)
+ 				veth_disable_xdp(dev);
+ 
++			/* if user-space did not require GRO, since adding XDP
++			 * enabled it, clear it now
++			 */
++			if (!veth_gro_requested(dev)) {
++				dev->features &= ~NETIF_F_GRO;
++				netdev_features_change(dev);
++			}
++
+ 			if (peer) {
+ 				peer->hw_features |= NETIF_F_GSO_SOFTWARE;
+ 				peer->max_mtu = ETH_MAX_MTU;
 -- 
 2.43.0
 
