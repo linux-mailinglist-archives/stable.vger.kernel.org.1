@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-26233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D8C2870DAA
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DE1D870EBA
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:46:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 521571C20BAA
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E954B272B4
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7306078B69;
-	Mon,  4 Mar 2024 21:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57ECF7B3C3;
+	Mon,  4 Mar 2024 21:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JbRL1ipa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sVm1W46s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3253D1C6AB;
-	Mon,  4 Mar 2024 21:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1002B11193;
+	Mon,  4 Mar 2024 21:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588188; cv=none; b=q39x3YoF8PJDj72/FSZi+CN2olO1265mA2uctdewYtEIjfAN8BWVxUiqosUOJhTRYg6PaZARJpuUYbFuZ0w6jvf/B+TxvCTUbMHfdMw9UkXCOXfLxqx5WX+QqWLBamtIFCHLMGL949fUcdWNltwyXueoBM2fpVqrcuNmNWjCVbw=
+	t=1709588780; cv=none; b=h9ClsBZvunEGIEMMeplG2/UK1yorFz8uIyLFuL89oO2tYX+AQxcjXZ2K1uUmV0WAXuQKMFy6On2caVPnoPp5nGB+Yw4iTe+z3aUGUwxhzEszLNSrYE0HXEej/QDXXGDXikR0wS64JKaKVZaeW2Cm0CpnUByXieUBmzWa4xO+ctc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588188; c=relaxed/simple;
-	bh=pPANHrBK7DKAHEV66DcrsxlFW32VG/r3psHd6bNsJqU=;
+	s=arc-20240116; t=1709588780; c=relaxed/simple;
+	bh=XX9L2IUUK7RZbJ4dC0uSa7cp809IDGOZpGaFKhr6zHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FxglrPxtZ5JUS+7M5EhdOZidHIT21qDeBBZwGWOgx1cqSC0WFZIwX7JA8UkoCBvYMviAhPFfBJyccexzURvgnSX904oid1Ehh3SidDDEsEdlMc4qQ+yRQTBa1uj5ryJvyRVHrMbzHlzAVogMbAgZuRaln000ZrBVihk/u0fRVZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JbRL1ipa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9805C433C7;
-	Mon,  4 Mar 2024 21:36:27 +0000 (UTC)
+	 MIME-Version; b=ERMEAqMrQ5hAY1WhE3jCabNGqZgPWwr6JL9LoryFmpbf/ITP+Zf2lEZz2SzODYzyiyoFj3Z/pNmBYAUSixCN8OxJj+45X/QOJ4dHBfO6B569wWuVdiH/IdkzvETveb5b+M+k9O4sp09v4BpxgUifqft7RQo8tgbmQonUf54i3Lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sVm1W46s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED83C433F1;
+	Mon,  4 Mar 2024 21:46:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588188;
-	bh=pPANHrBK7DKAHEV66DcrsxlFW32VG/r3psHd6bNsJqU=;
+	s=korg; t=1709588779;
+	bh=XX9L2IUUK7RZbJ4dC0uSa7cp809IDGOZpGaFKhr6zHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JbRL1ipa01CxjvyaMA0tPw+yDnZhPPJ1jYBXlwD6JNRT+1Sv6bk2yz9YAcoYUcp5d
-	 thgv8KIA9gnF71HZwY1XetXlAj/660dRROkQ9bwYsOWGtNQKdiPAfeebYDe/3PNIt3
-	 alFSZIaT/0JDxn/ZH/Zp/sVI8grqhRjDjNLjnz8Q=
+	b=sVm1W46sD488e/zamdKqlu7elXsHML28pcywk8thKCITYpfW3N+Oo97m4jNZW1qk4
+	 Cw2iSzHf582jqwQS4nc4fSPmas/Tmk0wFSPHnBGqtXj8ZO/vfUv/Aw1DhtCKdPqpOE
+	 ft9nfkv37Mv7kCImrb7D/ZZfvcbt/ghfz0W9EfXk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Sean Anderson <sean.anderson@seco.com>,
-	Madalin Bucur <madalin.bucur@oss.nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Markus Suvanto <markus.suvanto@gmail.com>,
+	linux-afs@lists.infradead.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 012/143] net: dpaa: fman_memac: accept phy-interface-type = "10gbase-r" in the device tree
+Subject: [PATCH 6.1 069/215] afs: Fix endless loop in directory parsing
 Date: Mon,  4 Mar 2024 21:22:12 +0000
-Message-ID: <20240304211550.318210029@linuxfoundation.org>
+Message-ID: <20240304211559.173681925@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,132 +65,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 734f06db599f66d6a159c78abfdbadfea3b7d43b ]
+[ Upstream commit 5f7a07646655fb4108da527565dcdc80124b14c4 ]
 
-Since commit 5d93cfcf7360 ("net: dpaa: Convert to phylink"), we support
-the "10gbase-r" phy-mode through a driver-based conversion of "xgmii",
-but we still don't actually support it when the device tree specifies
-"10gbase-r" proper.
+If a directory has a block with only ".__afsXXXX" files in it (from
+uncompleted silly-rename), these .__afsXXXX files are skipped but without
+advancing the file position in the dir_context.  This leads to
+afs_dir_iterate() repeating the block again and again.
 
-This is because boards such as LS1046A-RDB do not define pcs-handle-names
-(for whatever reason) in the ethernet@f0000 device tree node, and the
-code enters through this code path:
+Fix this by making the code that skips the .__afsXXXX file also manually
+advance the file position.
 
-	err = of_property_match_string(mac_node, "pcs-handle-names", "xfi");
-	// code takes neither branch and falls through
-	if (err >= 0) {
-		(...)
-	} else if (err != -EINVAL && err != -ENODATA) {
-		goto _return_fm_mac_free;
-	}
+The symptoms are a soft lookup:
 
-	(...)
+        watchdog: BUG: soft lockup - CPU#3 stuck for 52s! [check:5737]
+        ...
+        RIP: 0010:afs_dir_iterate_block+0x39/0x1fd
+        ...
+         ? watchdog_timer_fn+0x1a6/0x213
+        ...
+         ? asm_sysvec_apic_timer_interrupt+0x16/0x20
+         ? afs_dir_iterate_block+0x39/0x1fd
+         afs_dir_iterate+0x10a/0x148
+         afs_readdir+0x30/0x4a
+         iterate_dir+0x93/0xd3
+         __do_sys_getdents64+0x6b/0xd4
 
-	/* For compatibility, if pcs-handle-names is missing, we assume this
-	 * phy is the first one in pcsphy-handle
-	 */
-	err = of_property_match_string(mac_node, "pcs-handle-names", "sgmii");
-	if (err == -EINVAL || err == -ENODATA)
-		pcs = memac_pcs_create(mac_node, 0); // code takes this branch
-	else if (err < 0)
-		goto _return_fm_mac_free;
-	else
-		pcs = memac_pcs_create(mac_node, err);
+This is almost certainly the actual fix for:
 
-	// A default PCS is created and saved in "pcs"
+        https://bugzilla.kernel.org/show_bug.cgi?id=218496
 
-	// This determination fails and mistakenly saves the default PCS
-	// memac->sgmii_pcs instead of memac->xfi_pcs, because at this
-	// stage, mac_dev->phy_if == PHY_INTERFACE_MODE_10GBASER.
-	if (err && mac_dev->phy_if == PHY_INTERFACE_MODE_XGMII)
-		memac->xfi_pcs = pcs;
-	else
-		memac->sgmii_pcs = pcs;
-
-In other words, in the absence of pcs-handle-names, the default
-xfi_pcs assignment logic only works when in the device tree we have
-PHY_INTERFACE_MODE_XGMII.
-
-By reversing the order between the fallback xfi_pcs assignment and the
-"xgmii" overwrite with "10gbase-r", we are able to support both values
-in the device tree, with identical behavior.
-
-Currently, it is impossible to make the s/xgmii/10gbase-r/ device tree
-conversion, because it would break forward compatibility (new device
-tree with old kernel). The only way to modify existing device trees to
-phy-interface-mode = "10gbase-r" is to fix stable kernels to accept this
-value and handle it properly.
-
-One reason why the conversion is desirable is because with pre-phylink
-kernels, the Aquantia PHY driver used to warn about the improper use
-of PHY_INTERFACE_MODE_XGMII [1]. It is best to have a single (latest)
-device tree that works with all supported stable kernel versions.
-
-Note that the blamed commit does not constitute a regression per se.
-Older stable kernels like 6.1 still do not work with "10gbase-r", but
-for a different reason. That is a battle for another time.
-
-[1] https://lore.kernel.org/netdev/20240214-ls1046-dts-use-10gbase-r-v1-1-8c2d68547393@concurrent-rt.com/
-
-Fixes: 5d93cfcf7360 ("net: dpaa: Convert to phylink")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Sean Anderson <sean.anderson@seco.com>
-Acked-by: Madalin Bucur <madalin.bucur@oss.nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 57e9d49c5452 ("afs: Hide silly-rename files from userspace")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/786185.1708694102@warthog.procyon.org.uk
+Reviewed-by: Marc Dionne <marc.dionne@auristor.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Markus Suvanto <markus.suvanto@gmail.com>
+cc: linux-afs@lists.infradead.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/freescale/fman/fman_memac.c   | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ fs/afs/dir.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/fman/fman_memac.c b/drivers/net/ethernet/freescale/fman/fman_memac.c
-index 3b75cc543be93..76e5181789cb9 100644
---- a/drivers/net/ethernet/freescale/fman/fman_memac.c
-+++ b/drivers/net/ethernet/freescale/fman/fman_memac.c
-@@ -1074,6 +1074,14 @@ int memac_initialization(struct mac_device *mac_dev,
- 	unsigned long		 capabilities;
- 	unsigned long		*supported;
+diff --git a/fs/afs/dir.c b/fs/afs/dir.c
+index cf811b77ee671..6e2c967fae6fc 100644
+--- a/fs/afs/dir.c
++++ b/fs/afs/dir.c
+@@ -478,8 +478,10 @@ static int afs_dir_iterate_block(struct afs_vnode *dvnode,
+ 		    dire->u.name[0] == '.' &&
+ 		    ctx->actor != afs_lookup_filldir &&
+ 		    ctx->actor != afs_lookup_one_filldir &&
+-		    memcmp(dire->u.name, ".__afs", 6) == 0)
++		    memcmp(dire->u.name, ".__afs", 6) == 0) {
++			ctx->pos = blkoff + next * sizeof(union afs_xdr_dirent);
+ 			continue;
++		}
  
-+	/* The internal connection to the serdes is XGMII, but this isn't
-+	 * really correct for the phy mode (which is the external connection).
-+	 * However, this is how all older device trees say that they want
-+	 * 10GBASE-R (aka XFI), so just convert it for them.
-+	 */
-+	if (mac_dev->phy_if == PHY_INTERFACE_MODE_XGMII)
-+		mac_dev->phy_if = PHY_INTERFACE_MODE_10GBASER;
-+
- 	mac_dev->phylink_ops		= &memac_mac_ops;
- 	mac_dev->set_promisc		= memac_set_promiscuous;
- 	mac_dev->change_addr		= memac_modify_mac_address;
-@@ -1140,7 +1148,7 @@ int memac_initialization(struct mac_device *mac_dev,
- 	 * (and therefore that xfi_pcs cannot be set). If we are defaulting to
- 	 * XGMII, assume this is for XFI. Otherwise, assume it is for SGMII.
- 	 */
--	if (err && mac_dev->phy_if == PHY_INTERFACE_MODE_XGMII)
-+	if (err && mac_dev->phy_if == PHY_INTERFACE_MODE_10GBASER)
- 		memac->xfi_pcs = pcs;
- 	else
- 		memac->sgmii_pcs = pcs;
-@@ -1154,14 +1162,6 @@ int memac_initialization(struct mac_device *mac_dev,
- 		goto _return_fm_mac_free;
- 	}
- 
--	/* The internal connection to the serdes is XGMII, but this isn't
--	 * really correct for the phy mode (which is the external connection).
--	 * However, this is how all older device trees say that they want
--	 * 10GBASE-R (aka XFI), so just convert it for them.
--	 */
--	if (mac_dev->phy_if == PHY_INTERFACE_MODE_XGMII)
--		mac_dev->phy_if = PHY_INTERFACE_MODE_10GBASER;
--
- 	/* TODO: The following interface modes are supported by (some) hardware
- 	 * but not by this driver:
- 	 * - 1000BASE-KX
+ 		/* found the next entry */
+ 		if (!dir_emit(ctx, dire->u.name, nlen,
 -- 
 2.43.0
 
