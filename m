@@ -1,188 +1,186 @@
-Return-Path: <stable+bounces-25917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43090870268
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 14:15:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC964870294
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 14:24:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7541A1C20294
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 13:15:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8378EB25973
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 13:24:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4C873D542;
-	Mon,  4 Mar 2024 13:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67BD83D578;
+	Mon,  4 Mar 2024 13:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i+OEh+t4"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DD1UAvfe"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115643D3B4;
-	Mon,  4 Mar 2024 13:14:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642F33D560
+	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 13:24:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709558101; cv=none; b=rZwvNlqaBogXGS+B16dcp2E515uD/BpXW+WQBjTPdxuYm1dnvcV+E/lNSq2ypj8CpzLULhLx2Ni1hFuzv/Uklg8+tTT1nueIS+xeXzGeRyzfEg0Oeye4jgiv3Xa7ZyWXr8BTKqDHmlkqjowG6LPrzUmsvHwsM3V5GZp7fWQ/3Ls=
+	t=1709558649; cv=none; b=HfuAzGXu5nczBTJxNB4KUX6f4sbwR7lkORUl7MYN8xSRcJYSswc/sXF2wmIjNaQlQQ6eI6qIndwUHGRLNm5eRId+Sa6+nilmm38u7cbZZYYDFw4Y1EmSPo8JlLwZTTZDLfR4Zax7Ogg7Lf9uoH2rGp/8yxZmxmmwI/gnjhwNFP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709558101; c=relaxed/simple;
-	bh=my4sJhUKSsXBtRhKes0rW4/YTKXdCpClyjKDr1rq0YE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=GaBXAXmtbODLCG1Pjwzdn4yHvxLLitwyGd4SIWs0tVqR4EQLZSMXKpw/MLTFiGMmoo8BjdJpNWTcLfKvbCqx3pjuhO20lOCNAbfCiKPpdsfHadJD3CMSvk3ZmMTbzjbAHp/rsH8dvGiAGw7TiIxNv5qeLuyVCmLn5xPAHbDdx/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i+OEh+t4; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-565ef8af2f5so5776632a12.3;
-        Mon, 04 Mar 2024 05:14:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709558098; x=1710162898; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qSY+0FJnRKGhhIo9ghINQ55bg6BnVBP3EupnZ+W3FO8=;
-        b=i+OEh+t4Dv14E31IrPnlpAbVMWnn/5lTuwCojMO9IGAYcA+XbFqpV5CZV/gnWS0L0O
-         IO54jTP+kXhuAMix+UfdwmThXIRdq3bzWDm/YyZfIfDkgjW1a44fUALQdUI1cjFAXA/O
-         Y3aCT2d0KFSBopyfPxFUoKwA+AsCeJE40Y8/DX2WxXSHzydAnYaptD6ehyDY1B38PTnO
-         XNs/twi2WTT89NhoqVXuNLgq03XgJNujE9JGT+xAn+PdK7s3urS1e2r2BFe7ErUfHpIA
-         Acfp/UlG2YLrOYDZEKHa9jPVa7jIXL2rdSiFhfOovUurK5UZUjTDvUS9N8coLjJoQ5RZ
-         s3mg==
+	s=arc-20240116; t=1709558649; c=relaxed/simple;
+	bh=bxq3CiHzJRGANTeCS3Lik8MxNKEU5wk57JGAtLp6kt8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BqzPn6u3EHQCVdBqLpo55H6loloBXx/BEMymIVzwQszxqnMAdiG8F0wFQt7O/yc75nUoTWNM7qeAJ118tbn+Y2IP3dgxuAmdj94Gg1Uc2qsP3NTu8SNwl7mkgXQ04vGk77ifP3CABeXbUQkYvEMHZVdwNAgcdYWI82mQ0fdbPc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DD1UAvfe; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1709558646;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0e0aVBH8Bbwp/svtEKmKZLJTI4f+E4WaUIjl97DqXSU=;
+	b=DD1UAvfe0mIT2qFZ6BjAvXaU3R8Md++tSasDA4F0JRXvwdcl8Z9sCP5a6ul7WKdezOMdNY
+	Wy1DQ/yPb1cAAMRAEdYAN+8HwnEkGH3F5pQA85wGXoDiOHMdVan62I0p5ntU88ikp9/JLd
+	hVYmTj1/7ck4DtOPcC7z0EEQWOh+Bv4=
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com
+ [209.85.214.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-642-QJAY1Go8PzO87LZmzyXvyA-1; Mon, 04 Mar 2024 08:24:04 -0500
+X-MC-Unique: QJAY1Go8PzO87LZmzyXvyA-1
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-1dbe41ad98cso45622035ad.3
+        for <stable@vger.kernel.org>; Mon, 04 Mar 2024 05:24:04 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709558098; x=1710162898;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qSY+0FJnRKGhhIo9ghINQ55bg6BnVBP3EupnZ+W3FO8=;
-        b=kdElYyX6zGBEbxjIaKfS830CF3wAk6dD1q+N3duV2dIPcK6eHHqmkfIrLvfXHh/aHo
-         PE9zwitEWucX/Q2GStIj/ryh7sPkQbRHTEKXtkx6PvX/zd5rtEq+TYzN/RWmFixun5hb
-         fGuPF0qevvqWSRg48vNQukVrkVbVkxKAI5NTUVm/bTGV2XJIghN/bUPq62TxYsSeAeZG
-         m/Dg7tNvLowQ0/8TMtnLFiHBUG/xIUZt7atBTy0o5ATrh5aYwe6786OGQUH4BPWpt8QH
-         RyQ42Du++tKlV6LT2663ccYS1v19XWrzP81Va9q8BgOQn7p5YGZ8y236eP2fNFVEGDMU
-         zKTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXf2vXIHWVR0UrVp+NlWeKzwhQEdJucy/0fDSqbjm9huBH0RLCpn044TSbkufqBkOKUVK2poQ3Sk68BEF6fUQg5YIUSwEdnOxRV2O9hAgTMZ15pMEjo5LNwWSZYqHH2wIyJOVwX
-X-Gm-Message-State: AOJu0YyYxQeixB/qnKGAhPyJGFYreHTougq13Vg3YUKLzGqhQlYJ6FpX
-	uOYpdMwSjQHUOVXIF859T8jUQtv+vUpFHIs7K3Hu10rIoKYL1/id
-X-Google-Smtp-Source: AGHT+IG/dHnH6tSConVbuE0bqMVDVg8iYE+f1uNWUntd0gl7R8U1AZk7sAWSJA91AKlGmuEixDIp1g==
-X-Received: by 2002:a05:6402:2152:b0:566:ef8:a81a with SMTP id bq18-20020a056402215200b005660ef8a81amr6732285edb.7.1709558098243;
-        Mon, 04 Mar 2024 05:14:58 -0800 (PST)
-Received: from [192.168.20.102] (57657817.catv.pool.telekom.hu. [87.101.120.23])
-        by smtp.googlemail.com with ESMTPSA id fj10-20020a0564022b8a00b00563f8233ba8sm4595285edb.7.2024.03.04.05.14.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Mar 2024 05:14:57 -0800 (PST)
-From: Gabor Juhos <j4g8y7@gmail.com>
-Date: Mon, 04 Mar 2024 14:14:53 +0100
-Subject: [PATCH] firmware: qcom_scm: disable clocks if qcom_scm_bw_enable()
- fails
+        d=1e100.net; s=20230601; t=1709558643; x=1710163443;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0e0aVBH8Bbwp/svtEKmKZLJTI4f+E4WaUIjl97DqXSU=;
+        b=TxzVTQA8VlTr6jR/UEV2ZXUc/exQyLCEM2EPRxoom5xz4E0sArt/OHGWhXgXKI400f
+         SrkrHD/+xk9JV3UTyOToizyL1ngpM9tsDejm//8RermVCRODFOXXcSPkrorYy4901d+U
+         zEnVO0kOsGEq+FG1Z+GIyTYpX5KPf63WQbO2PBlExXj/+GoyGjh7y+qaeNiEvvthTGSO
+         gwUYzUFn9Cd4HLC1TGcG+XVzlq8XDY7M46oqYQ2yziRlo6RCS8blXeYRt382g6GC2Vng
+         +N8lM9Q9ANYEUqrYnzENn8wot4wxOHlvmQfK33Cq3EeH1U2F5LtY/x45FHkOCc26L3bo
+         MF8g==
+X-Forwarded-Encrypted: i=1; AJvYcCWo7TDCEAEcbra/OxHoh0CGI6iWu+zzuEIX9lS1zMO4pTnlIQ2usz0jEfplucPN6jFnDWTrf6/jCnnZw4tI57G/QVJXhvT3
+X-Gm-Message-State: AOJu0Yx57Lm4JdegzOnCWyvdf1Nhicn/7HNR8OPo+LuVqGX4pybygV/C
+	MaU40OUWDFUrcNQlc+UXvJ3Sg4TlnkYQHmmPZmc443S8FAY/OsRprS+aoiUT1bnp+HWrog0XBvp
+	/ktGKnRw/K/9qClR5tNfrIqt4r4YycsChPJv8/Wui/mMrfIqzPyYciQ==
+X-Received: by 2002:a17:902:fe82:b0:1db:8fd9:ba0d with SMTP id x2-20020a170902fe8200b001db8fd9ba0dmr6802820plm.23.1709558643336;
+        Mon, 04 Mar 2024 05:24:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEJv5/sMWjUl805F2QTGqPcxSDc7h/6Kqp1/yxqlGlU3EtvZznDtzI9+Zpf8qSHe+ESsR2KWQ==
+X-Received: by 2002:a17:902:fe82:b0:1db:8fd9:ba0d with SMTP id x2-20020a170902fe8200b001db8fd9ba0dmr6802808plm.23.1709558643049;
+        Mon, 04 Mar 2024 05:24:03 -0800 (PST)
+Received: from [10.72.112.93] ([43.228.180.230])
+        by smtp.gmail.com with ESMTPSA id u10-20020a170903124a00b001dc944299acsm8464378plh.217.2024.03.04.05.24.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 Mar 2024 05:24:02 -0800 (PST)
+Message-ID: <4db59457-d2d7-42f9-b0d9-6719a10e2a3b@redhat.com>
+Date: Mon, 4 Mar 2024 21:23:49 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240304-qcom-scm-disable-clk-v1-1-b36e51577ca1@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAEzJ5WUC/x3MSwqAMAwA0atI1gaqVRSvIi5qm2rw34AIxbtbX
- L7FTAShwCTQZREC3Sx87AlFnoGdzT4RskuGUpWV0qrCyx4bit3QsZhxJbTrgqqlxri21t4UkNI
- zkOfn3/bD+344dc1UZgAAAA==
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, 
- Sibi Sankar <quic_sibis@quicinc.com>
-Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Gabor Juhos <j4g8y7@gmail.com>
-X-Mailer: b4 0.12.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] libceph: init the cursor when preparing the sparse read
+Content-Language: en-US
+To: Ilya Dryomov <idryomov@gmail.com>
+Cc: ceph-devel@vger.kernel.org, jlayton@kernel.org, vshankar@redhat.com,
+ mchangir@redhat.com, stable@vger.kernel.org,
+ Luis Henriques <lhenriques@suse.de>
+References: <20240229041950.738878-1-xiubli@redhat.com>
+ <CAOi1vP-n34TCcKoLLKe3yXRqS93qT4nc5pkM8Byo-D4zH-KZWA@mail.gmail.com>
+ <6c3f5ef9-e350-4a1e-81dd-6ab63e7e5ef3@redhat.com>
+ <CAOi1vP_WGs4yQz62UaVBDWk-vkcAQ7=SgQG37Zu86Q2QusMgOw@mail.gmail.com>
+ <256b4b68-87e6-4686-9c51-e00712add8b3@redhat.com>
+ <CAOi1vP-LFKzij5pYz+HLWAUiBZ-6+UYpoND08ceDofhN7xN-zw@mail.gmail.com>
+From: Xiubo Li <xiubli@redhat.com>
+In-Reply-To: <CAOi1vP-LFKzij5pYz+HLWAUiBZ-6+UYpoND08ceDofhN7xN-zw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-There are several functions which are calling qcom_scm_bw_enable()
-then returns immediately if the call fails and leaves the clocks
-enabled.
 
-Change the code of these functions to disable clocks when the
-qcom_scm_bw_enable() call fails. This also fixes a possible dma
-buffer leak in the qcom_scm_pas_init_image() function.
+On 3/4/24 19:12, Ilya Dryomov wrote:
+> On Mon, Mar 4, 2024 at 1:43 AM Xiubo Li <xiubli@redhat.com> wrote:
+>>
+>> On 3/2/24 01:15, Ilya Dryomov wrote:
+>>> On Fri, Mar 1, 2024 at 2:53 AM Xiubo Li <xiubli@redhat.com> wrote:
+>>>> On 2/29/24 18:48, Ilya Dryomov wrote:
+>>>>> On Thu, Feb 29, 2024 at 5:22 AM <xiubli@redhat.com> wrote:
+>>>>>> From: Xiubo Li <xiubli@redhat.com>
+>>>>>>
+>>>>>> The osd code has remove cursor initilizing code and this will make
+>>>>>> the sparse read state into a infinite loop. We should initialize
+>>>>>> the cursor just before each sparse-read in messnger v2.
+>>>>>>
+>>>>>> Cc: stable@vger.kernel.org
+>>>>>> URL: https://tracker.ceph.com/issues/64607
+>>>>>> Fixes: 8e46a2d068c9 ("libceph: just wait for more data to be available on the socket")
+>>>>>> Reported-by: Luis Henriques <lhenriques@suse.de>
+>>>>>> Signed-off-by: Xiubo Li <xiubli@redhat.com>
+>>>>>> ---
+>>>>>>     net/ceph/messenger_v2.c | 3 +++
+>>>>>>     1 file changed, 3 insertions(+)
+>>>>>>
+>>>>>> diff --git a/net/ceph/messenger_v2.c b/net/ceph/messenger_v2.c
+>>>>>> index a0ca5414b333..7ae0f80100f4 100644
+>>>>>> --- a/net/ceph/messenger_v2.c
+>>>>>> +++ b/net/ceph/messenger_v2.c
+>>>>>> @@ -2025,6 +2025,7 @@ static int prepare_sparse_read_cont(struct ceph_connection *con)
+>>>>>>     static int prepare_sparse_read_data(struct ceph_connection *con)
+>>>>>>     {
+>>>>>>            struct ceph_msg *msg = con->in_msg;
+>>>>>> +       u64 len = con->in_msg->sparse_read_total ? : data_len(con->in_msg);
+>>>>>>
+>>>>>>            dout("%s: starting sparse read\n", __func__);
+>>>>>>
+>>>>>> @@ -2034,6 +2035,8 @@ static int prepare_sparse_read_data(struct ceph_connection *con)
+>>>>>>            if (!con_secure(con))
+>>>>>>                    con->in_data_crc = -1;
+>>>>>>
+>>>>>> +       ceph_msg_data_cursor_init(&con->v2.in_cursor, con->in_msg, len);
+>>>>>> +
+>>>>>>            reset_in_kvecs(con);
+>>>>>>            con->v2.in_state = IN_S_PREPARE_SPARSE_DATA_CONT;
+>>>>>>            con->v2.data_len_remain = data_len(msg);
+>>>>>> --
+>>>>>> 2.43.0
+>>>>>>
+>>>>> Hi Xiubo,
+>>>>>
+>>>>> How did this get missed?  Was generic/580 not paired with msgr2 in crc
+>>>>> mode or are we not running generic/580 at all?
+>>>>>
+>>>>> Multiple runs have happened since the patch was staged so if the matrix
+>>>>> is set up correctly ms_mode=crc should have been in effect for xfstests
+>>>>> at least a couple of times.
+>>>> I just found that my test script is incorrect and missed this case.
+>>>>
+>>>> The test locally is covered the msgr1 mostly and I think the qa test
+>>>> suite also doesn't cover it too. I will try to improve the qa tests later.
+>>> Could you please provide some details on the fixes needed to address
+>>> the coverage gap in the fs suite?
+>> Mainly to support the msgr v2 for fscrypt, before we only tested the
+>> fscrypt based on the msgr v1 for kclient. In ceph upstream we have
+>> support this while not backport it to reef yet.
+> I'm even more confused now...  If the fs suite in main covers msgr2 +
+> fscrypt (I'm taking your "in ceph upstream we have support" to mean
+> that), how did this bug get missed by runs on main?  At least a dozen
+> of them must have gone through in the form of Venky's integration
+> branches.
 
-Compile tested only due to lack of hardware with interconnect
-support.
+Maybe some other known issues have masked this bug, before the qa tests 
+didn't behave well for a long time for some reasons.
 
-Cc: stable@vger.kernel.org
-Fixes: 65b7ebda5028 ("firmware: qcom_scm: Add bw voting support to the SCM interface")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
----
-Based on v6.8-rc7.
+And many test will run base on reef branch, which hasn't backport it yet.
 
-Note: Removing the two empty lines from qcom_scm_pas_init_image()
-and fomr qcom_scm_pas_shutdown() functions is intentional to make
-those consistent with the other two functions.
----
- drivers/firmware/qcom/qcom_scm.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+Thanks
 
-diff --git a/drivers/firmware/qcom/qcom_scm.c b/drivers/firmware/qcom/qcom_scm.c
-index 520de9b5633ab..e8460626fb0c4 100644
---- a/drivers/firmware/qcom/qcom_scm.c
-+++ b/drivers/firmware/qcom/qcom_scm.c
-@@ -569,13 +569,14 @@ int qcom_scm_pas_init_image(u32 peripheral, const void *metadata, size_t size,
- 
- 	ret = qcom_scm_bw_enable();
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	desc.args[1] = mdata_phys;
- 
- 	ret = qcom_scm_call(__scm->dev, &desc, &res);
--
- 	qcom_scm_bw_disable();
-+
-+disable_clk:
- 	qcom_scm_clk_disable();
- 
- out:
-@@ -637,10 +638,12 @@ int qcom_scm_pas_mem_setup(u32 peripheral, phys_addr_t addr, phys_addr_t size)
- 
- 	ret = qcom_scm_bw_enable();
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	ret = qcom_scm_call(__scm->dev, &desc, &res);
- 	qcom_scm_bw_disable();
-+
-+disable_clk:
- 	qcom_scm_clk_disable();
- 
- 	return ret ? : res.result[0];
-@@ -672,10 +675,12 @@ int qcom_scm_pas_auth_and_reset(u32 peripheral)
- 
- 	ret = qcom_scm_bw_enable();
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	ret = qcom_scm_call(__scm->dev, &desc, &res);
- 	qcom_scm_bw_disable();
-+
-+disable_clk:
- 	qcom_scm_clk_disable();
- 
- 	return ret ? : res.result[0];
-@@ -706,11 +711,12 @@ int qcom_scm_pas_shutdown(u32 peripheral)
- 
- 	ret = qcom_scm_bw_enable();
- 	if (ret)
--		return ret;
-+		goto disable_clk;
- 
- 	ret = qcom_scm_call(__scm->dev, &desc, &res);
--
- 	qcom_scm_bw_disable();
-+
-+disable_clk:
- 	qcom_scm_clk_disable();
- 
- 	return ret ? : res.result[0];
+- Xiubo
 
----
-base-commit: 90d35da658da8cff0d4ecbb5113f5fac9d00eb72
-change-id: 20240304-qcom-scm-disable-clk-08e7ad853fa1
-
-Best regards,
--- 
-Gabor Juhos <j4g8y7@gmail.com>
+> Thanks,
+>
+>                  Ilya
+>
 
 
