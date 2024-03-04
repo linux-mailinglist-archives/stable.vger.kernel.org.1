@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94D79870F3F
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:52:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F09FB870F8F
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:55:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C751B1C21010
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:52:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91F041F22E6D
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:55:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EEAD78B47;
-	Mon,  4 Mar 2024 21:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 678D07B3C3;
+	Mon,  4 Mar 2024 21:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VaSOQqyF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQ4BRYEq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2F701C6AB;
-	Mon,  4 Mar 2024 21:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2596F79DCA;
+	Mon,  4 Mar 2024 21:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589155; cv=none; b=INiVyOO9HMIBlacoZuNtHCGqr9AAmRRfY4SsoL2FW88v8Z7qUvAXjiBRsd69tDk505xl1QAuUSnRfqOwAQgJtN9ZjL4zLxECDoKwhBQVNnL7TGC1MHJCbTtet65POIL7oxtrgbGi+rA+sDIJ++u7y00xprvCQc7/Y2952gnZQ6o=
+	t=1709589353; cv=none; b=mQDH+bUkDlCuwbjJjcCDAr+ZBXQNdns68UWW8yPoCkGJqD6PIctdvtqiuEs1ThTSQEO23ClyoVN7+VwqkYs1QOdKelGsNwlN+AMGNSA2vaqeApisH7f3MSReqnWhh/K5i0NMyGa0p6fXKjQac275UU+rX72s5o0a1WWTIdw+lHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589155; c=relaxed/simple;
-	bh=9rDK3VRFr3EYfAGWF4eT1W5tN/uYbKJX+1jeG0rLEGs=;
+	s=arc-20240116; t=1709589353; c=relaxed/simple;
+	bh=WOWt2kdJRqoiE+1nID2C05CwC8SUip7SQPJenFW8CCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MPWHUvmbejrSYGbMjwR4ziI97tj3LhkuXMK3HqhXWYHXBG4vCMo6KYT8DwAIMGX2Rx1SvchpaxDpRBboWQvxulE3nRhR1Fq5SpLzC9KAP6f8uRreCNy+k3yZQLVYTV+UFQlKOIDFhhYb0FbuNwKZBxYu6HsrJ4EitrxbptwJi9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VaSOQqyF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64615C433C7;
-	Mon,  4 Mar 2024 21:52:35 +0000 (UTC)
+	 MIME-Version; b=r+Fgce0SiFcJdH2GI6Pk6kIhePP7sOCFiEfyw6XWdBwLopstntTmDnFMfvC8NRP4PBSzgCQhIH8bgF55+rxyyKtOtE6OXGIDsS+Ue0hePd76gvm2tfVASaRZhHGILnZJ1hwYxhWIh0iSg9zqvl/uZ+Ph5f2u2NzVKdxV2a76xik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQ4BRYEq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB35AC433C7;
+	Mon,  4 Mar 2024 21:55:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589155;
-	bh=9rDK3VRFr3EYfAGWF4eT1W5tN/uYbKJX+1jeG0rLEGs=;
+	s=korg; t=1709589353;
+	bh=WOWt2kdJRqoiE+1nID2C05CwC8SUip7SQPJenFW8CCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VaSOQqyFbiTNiWABEwpe9vrh87ZJmAfsi4HoXh5uzc/K414FYPel8Rc5Hek1g+d8t
-	 a6/BJrHVh+J/u/iUQGHXilvORKttnIGLlBWpzhV+m7sqsxEApzhzCzQeTkNUpwSZeP
-	 lDAxyGm85UCBzzBvbS4N6qGUdeYzUiVpLN/91ISQ=
+	b=HQ4BRYEqJSpU6U5fbA7Rpibzqm9vayoFPeYzx3k9nVW/hj56aZg9Qn5MlkP9SyjaQ
+	 RSKe1MvCeU4goaflye0Yc9HxsyaQ5TqorFO0sKISK7Vqk2buA6vWErHKeKOpDwWo9V
+	 HTGV5vB9+mhYbwX7iqxySBDqcAJJlqaVRYXdW+L4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 202/215] gpio: fix resource unwinding order in error path
+	Peng Ma <peng.ma@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.15 52/84] dmaengine: fsl-qdma: fix SoC may hang on 16 byte unaligned read
 Date: Mon,  4 Mar 2024 21:24:25 +0000
-Message-ID: <20240304211603.398651331@linuxfoundation.org>
+Message-ID: <20240304211544.105837323@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
+References: <20240304211542.332206551@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Peng Ma <peng.ma@nxp.com>
 
-[ Upstream commit ec5c54a9d3c4f9c15e647b049fea401ee5258696 ]
+commit 9d739bccf261dd93ec1babf82f5c5d71dd4caa3e upstream.
 
-Hogs are added *after* ACPI so should be removed *before* in error path.
+There is chip (ls1028a) errata:
 
-Fixes: a411e81e61df ("gpiolib: add hogs support for machine code")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The SoC may hang on 16 byte unaligned read transactions by QDMA.
+
+Unaligned read transactions initiated by QDMA may stall in the NOC
+(Network On-Chip), causing a deadlock condition. Stalled transactions will
+trigger completion timeouts in PCIe controller.
+
+Workaround:
+Enable prefetch by setting the source descriptor prefetchable bit
+( SD[PF] = 1 ).
+
+Implement this workaround.
+
+Cc: stable@vger.kernel.org
+Fixes: b092529e0aa0 ("dmaengine: fsl-qdma: Add qDMA controller driver for Layerscape SoCs")
+Signed-off-by: Peng Ma <peng.ma@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20240201215007.439503-1-Frank.Li@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/dma/fsl-qdma.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index f646df7f1b41a..9d8c783124033 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -784,11 +784,11 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+--- a/drivers/dma/fsl-qdma.c
++++ b/drivers/dma/fsl-qdma.c
+@@ -109,6 +109,7 @@
+ #define FSL_QDMA_CMD_WTHROTL_OFFSET	20
+ #define FSL_QDMA_CMD_DSEN_OFFSET	19
+ #define FSL_QDMA_CMD_LWC_OFFSET		16
++#define FSL_QDMA_CMD_PF			BIT(17)
  
- 	ret = gpiochip_irqchip_init_valid_mask(gc);
- 	if (ret)
--		goto err_remove_acpi_chip;
-+		goto err_free_hogs;
+ /* Field definition for Descriptor status */
+ #define QDMA_CCDF_STATUS_RTE		BIT(5)
+@@ -384,7 +385,8 @@ static void fsl_qdma_comp_fill_memcpy(st
+ 	qdma_csgf_set_f(csgf_dest, len);
+ 	/* Descriptor Buffer */
+ 	cmd = cpu_to_le32(FSL_QDMA_CMD_RWTTYPE <<
+-			  FSL_QDMA_CMD_RWTTYPE_OFFSET);
++			  FSL_QDMA_CMD_RWTTYPE_OFFSET) |
++			  FSL_QDMA_CMD_PF;
+ 	sdf->data = QDMA_SDDF_CMD(cmd);
  
- 	ret = gpiochip_irqchip_init_hw(gc);
- 	if (ret)
--		goto err_remove_acpi_chip;
-+		goto err_remove_irqchip_mask;
- 
- 	ret = gpiochip_add_irqchip(gc, lock_key, request_key);
- 	if (ret)
-@@ -813,11 +813,11 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
- 	gpiochip_irqchip_remove(gc);
- err_remove_irqchip_mask:
- 	gpiochip_irqchip_free_valid_mask(gc);
--err_remove_acpi_chip:
-+err_free_hogs:
-+	gpiochip_free_hogs(gc);
- 	acpi_gpiochip_remove(gc);
- 	gpiochip_remove_pin_ranges(gc);
- err_remove_of_chip:
--	gpiochip_free_hogs(gc);
- 	of_gpiochip_remove(gc);
- err_free_gpiochip_mask:
- 	gpiochip_free_valid_mask(gc);
--- 
-2.43.0
-
+ 	cmd = cpu_to_le32(FSL_QDMA_CMD_RWTTYPE <<
 
 
 
