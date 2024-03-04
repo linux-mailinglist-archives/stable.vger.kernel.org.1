@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-26649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E5E2870F81
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:55:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A7B2870F3C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:52:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90C251C20ECB
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:55:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07EE61F212B7
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:52:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40A87992E;
-	Mon,  4 Mar 2024 21:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ED267B3E7;
+	Mon,  4 Mar 2024 21:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/0Y8V2Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oYu5b2Da"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9358D1C6AB;
-	Mon,  4 Mar 2024 21:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4FC1C6AB;
+	Mon,  4 Mar 2024 21:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589319; cv=none; b=M8x7kRAdkJh38ckkdwxKtQJ/b0rJcHqM8pKoXiAQdWOmEUxJW4YpdQwtfWdOTrg70mKdlyrL6AZ7GAdPmwUAZfswGnUwLlwXphtRqjen2Um7MUeKgNXsBpjHmmPf/fG2g4IdDbT6rxhchhUPUG0AHzJwLXys69f9d3SP23NU2gs=
+	t=1709589148; cv=none; b=j+aedvrhSxWTmJiQXqcKHvG/o/025IAkvQG5Y5ML0MqM/rBPc1dWhEC3K6SLkahs4xSb84H3PgbBV9OtK/rQH5hWXo0h4km9oKF3Z/dnUsOac3sBm+quFk3HCpUEKClMxJ8PU5jtYiztF8ki8mU/S9u0tPrMfQEafyw1Rk10GXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589319; c=relaxed/simple;
-	bh=CUXFRVnxq1WWOGPzEh5D5kMSTT/btEWHR6xpkPzJTkI=;
+	s=arc-20240116; t=1709589148; c=relaxed/simple;
+	bh=yBDwWNjRTsrD0euOLwiVQrlMxKsrQnt9XWrqBBO4PIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Olgn7WWkpOnbnad3TDI7MPzyZKVcXMT2i31lWITRYVMFfzf9WwpQLT7tzEl525hDYe3Q+Pj6WzZnDrv606vQXrbhOBwSoxNDbpGljdkJ8bXDYAY3rDbnXqZw9kKZqpDEaqOdp114jyCaKH0qJpTmZ6NaxguU0XU2QFhV26hORHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/0Y8V2Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 264C5C433F1;
-	Mon,  4 Mar 2024 21:55:18 +0000 (UTC)
+	 MIME-Version; b=QEZTO6pFb2GKNbYJ93wkj6ebrML7Fq8rXut/YsIpZGrWcAMDWBBpSOUFl5JaFW0+s5uSRQvtTmXJmRgZJEQFaedk6c9x3bXDJsPN9n/SuUPfJUGCVXkKZUJR2dG9gqnM8+2vHD9tKojZufKx8WlziE/B0kRIZidjnx1Yqwruj04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oYu5b2Da; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B38ADC433F1;
+	Mon,  4 Mar 2024 21:52:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589319;
-	bh=CUXFRVnxq1WWOGPzEh5D5kMSTT/btEWHR6xpkPzJTkI=;
+	s=korg; t=1709589148;
+	bh=yBDwWNjRTsrD0euOLwiVQrlMxKsrQnt9XWrqBBO4PIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e/0Y8V2Y8Z4SmRM2/cUO1OpyBjJjAgYI7Um6+QqNen3x/8N/oNrwrwUsYM/lCjtBN
-	 Yl8GX6S/8zegK33zso0fYSIxgaezwwLbYFWsD2N/V86BrfEhhEnOI72YYtuLUmO7Al
-	 OpO2laKE174yWVOcbX/42YwrR2ZYVY6FlWuth0MA=
+	b=oYu5b2DaJ3jRn5rrKXLS4nXov0hxX+Pm5/F8hmEgyvcFuDsRIeeZ93J3ZGI3Z3wyp
+	 ch2onpQXMTcxuSOFVgX/BTeK96BaHs+lh4kgKZKe0eVj9/kFr52KGhniGG3M7Xyi9J
+	 GwGtrshU0UnB5Dh0pEgmWBLxW04REuME9MPDc+yg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Matthieu Baerts <matthieu.baerts@tessares.net>,
-	Mat Martineau <martineau@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 5.15 63/84] mptcp: rename timer related helper to less confusing names
-Date: Mon,  4 Mar 2024 21:24:36 +0000
-Message-ID: <20240304211544.486431553@linuxfoundation.org>
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.1 214/215] x86/efistub: Give up if memory attribute protocol returns an error
+Date: Mon,  4 Mar 2024 21:24:37 +0000
+Message-ID: <20240304211603.773167945@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,139 +60,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit f6909dc1c1f4452879278128012da6c76bc186a5 upstream.
+commit a7a6a01f88e87dec4bf2365571dd2dc7403d52d0 upstream.
 
-The msk socket uses to different timeout to track close related
-events and retransmissions. The existing helpers do not indicate
-clearly which timer they actually touch, making the related code
-quite confusing.
+The recently introduced EFI memory attributes protocol should be used
+if it exists to ensure that the memory allocation created for the kernel
+permits execution. This is needed for compatibility with tightened
+requirements related to Windows logo certification for x86 PCs.
 
-Change the existing helpers name to avoid such confusion. No
-functional change intended.
+Currently, we simply strip the execute protect (XP) attribute from the
+entire range, but this might be rejected under some firmware security
+policies, and so in a subsequent patch, this will be changed to only
+strip XP from the executable region that runs early, and make it
+read-only (RO) as well.
 
-This patch is linked to the next one ("mptcp: fix dangling connection
-hang-up"). The two patches are supposed to be backported together.
+In order to catch any issues early, ensure that the memory attribute
+protocol works as intended, and give up if it produces spurious errors.
 
-Cc: stable@vger.kernel.org # v5.11+
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Note that the DXE services based fallback was always based on best
+effort, so don't propagate any errors returned by that API.
+
+Fixes: a1b87d54f4e4 ("x86/efistub: Avoid legacy decompressor when doing EFI boot")
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ drivers/firmware/efi/libstub/x86-stub.c |   24 ++++++++++++++----------
+ drivers/firmware/efi/libstub/x86-stub.h |    4 ++--
+ 2 files changed, 16 insertions(+), 12 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -330,7 +330,7 @@ drop:
- 	return false;
- }
- 
--static void mptcp_stop_timer(struct sock *sk)
-+static void mptcp_stop_rtx_timer(struct sock *sk)
- {
- 	struct inet_connection_sock *icsk = inet_csk(sk);
- 
-@@ -830,12 +830,12 @@ static void mptcp_flush_join_list(struct
- 	mptcp_sockopt_sync_all(msk);
- }
- 
--static bool mptcp_timer_pending(struct sock *sk)
-+static bool mptcp_rtx_timer_pending(struct sock *sk)
- {
- 	return timer_pending(&inet_csk(sk)->icsk_retransmit_timer);
- }
- 
--static void mptcp_reset_timer(struct sock *sk)
-+static void mptcp_reset_rtx_timer(struct sock *sk)
- {
- 	struct inet_connection_sock *icsk = inet_csk(sk);
- 	unsigned long tout;
-@@ -1145,10 +1145,10 @@ out:
- 		__mptcp_mem_reclaim_partial(sk);
- 
- 	if (snd_una == READ_ONCE(msk->snd_nxt) && !msk->recovery) {
--		if (mptcp_timer_pending(sk) && !mptcp_data_fin_enabled(msk))
--			mptcp_stop_timer(sk);
-+		if (mptcp_rtx_timer_pending(sk) && !mptcp_data_fin_enabled(msk))
-+			mptcp_stop_rtx_timer(sk);
- 	} else {
--		mptcp_reset_timer(sk);
-+		mptcp_reset_rtx_timer(sk);
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -212,8 +212,8 @@ static void retrieve_apple_device_proper
  	}
  }
  
-@@ -1640,8 +1640,8 @@ void __mptcp_push_pending(struct sock *s
- 
- out:
- 	/* ensure the rtx timer is running */
--	if (!mptcp_timer_pending(sk))
--		mptcp_reset_timer(sk);
-+	if (!mptcp_rtx_timer_pending(sk))
-+		mptcp_reset_rtx_timer(sk);
- 	if (copied)
- 		mptcp_check_send_data_fin(sk);
- }
-@@ -1700,8 +1700,8 @@ out:
- 	if (copied) {
- 		tcp_push(ssk, 0, info.mss_now, tcp_sk(ssk)->nonagle,
- 			 info.size_goal);
--		if (!mptcp_timer_pending(sk))
--			mptcp_reset_timer(sk);
-+		if (!mptcp_rtx_timer_pending(sk))
-+			mptcp_reset_rtx_timer(sk);
- 
- 		if (msk->snd_data_fin_enable &&
- 		    msk->snd_nxt + 1 == msk->write_seq)
-@@ -2173,7 +2173,7 @@ static void mptcp_retransmit_timer(struc
- 	sock_put(sk);
- }
- 
--static void mptcp_timeout_timer(struct timer_list *t)
-+static void mptcp_tout_timer(struct timer_list *t)
+-void efi_adjust_memory_range_protection(unsigned long start,
+-					unsigned long size)
++efi_status_t efi_adjust_memory_range_protection(unsigned long start,
++						unsigned long size)
  {
- 	struct sock *sk = from_timer(sk, t, sk_timer);
+ 	efi_status_t status;
+ 	efi_gcd_memory_space_desc_t desc;
+@@ -225,13 +225,17 @@ void efi_adjust_memory_range_protection(
+ 	rounded_end = roundup(start + size, EFI_PAGE_SIZE);
  
-@@ -2465,8 +2465,8 @@ static void __mptcp_retrans(struct sock
- 	release_sock(ssk);
+ 	if (memattr != NULL) {
+-		efi_call_proto(memattr, clear_memory_attributes, rounded_start,
+-			       rounded_end - rounded_start, EFI_MEMORY_XP);
+-		return;
++		status = efi_call_proto(memattr, clear_memory_attributes,
++					rounded_start,
++					rounded_end - rounded_start,
++					EFI_MEMORY_XP);
++		if (status != EFI_SUCCESS)
++			efi_warn("Failed to clear EFI_MEMORY_XP attribute\n");
++		return status;
+ 	}
  
- reset_timer:
--	if (!mptcp_timer_pending(sk))
--		mptcp_reset_timer(sk);
-+	if (!mptcp_rtx_timer_pending(sk))
-+		mptcp_reset_rtx_timer(sk);
- }
+ 	if (efi_dxe_table == NULL)
+-		return;
++		return EFI_SUCCESS;
  
- static void mptcp_worker(struct work_struct *work)
-@@ -2543,7 +2543,7 @@ static int __mptcp_init_sock(struct sock
+ 	/*
+ 	 * Don't modify memory region attributes, they are
+@@ -244,7 +248,7 @@ void efi_adjust_memory_range_protection(
+ 		status = efi_dxe_call(get_memory_space_descriptor, start, &desc);
  
- 	/* re-use the csk retrans timer for MPTCP-level retrans */
- 	timer_setup(&msk->sk.icsk_retransmit_timer, mptcp_retransmit_timer, 0);
--	timer_setup(&sk->sk_timer, mptcp_timeout_timer, 0);
-+	timer_setup(&sk->sk_timer, mptcp_tout_timer, 0);
+ 		if (status != EFI_SUCCESS)
+-			return;
++			break;
  
- 	return 0;
- }
-@@ -2629,8 +2629,8 @@ void mptcp_subflow_shutdown(struct sock
- 		} else {
- 			pr_debug("Sending DATA_FIN on subflow %p", ssk);
- 			tcp_send_ack(ssk);
--			if (!mptcp_timer_pending(sk))
--				mptcp_reset_timer(sk);
-+			if (!mptcp_rtx_timer_pending(sk))
-+				mptcp_reset_rtx_timer(sk);
+ 		next = desc.base_address + desc.length;
+ 
+@@ -269,8 +273,10 @@ void efi_adjust_memory_range_protection(
+ 				 unprotect_start,
+ 				 unprotect_start + unprotect_size,
+ 				 status);
++			break;
  		}
- 		break;
  	}
++	return EFI_SUCCESS;
+ }
+ 
+ static efi_char16_t *efistub_fw_vendor(void)
+@@ -800,9 +806,7 @@ static efi_status_t efi_decompress_kerne
+ 
+ 	*kernel_entry = addr + entry;
+ 
+-	efi_adjust_memory_range_protection(addr, kernel_total_size);
+-
+-	return EFI_SUCCESS;
++	return efi_adjust_memory_range_protection(addr, kernel_total_size);
+ }
+ 
+ static void __noreturn enter_kernel(unsigned long kernel_addr,
+--- a/drivers/firmware/efi/libstub/x86-stub.h
++++ b/drivers/firmware/efi/libstub/x86-stub.h
+@@ -5,8 +5,8 @@
+ extern void trampoline_32bit_src(void *, bool);
+ extern const u16 trampoline_ljmp_imm_offset;
+ 
+-void efi_adjust_memory_range_protection(unsigned long start,
+-					unsigned long size);
++efi_status_t efi_adjust_memory_range_protection(unsigned long start,
++						unsigned long size);
+ 
+ #ifdef CONFIG_X86_64
+ efi_status_t efi_setup_5level_paging(void);
 
 
 
