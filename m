@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFB3F870E67
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:43:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A95D870CA1
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:27:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FAF71F21071
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:43:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A4551C2470C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:27:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C143946BA0;
-	Mon,  4 Mar 2024 21:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB9B77BAF0;
+	Mon,  4 Mar 2024 21:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2sp2OUJF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcnGCVdU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ECEA10A35;
-	Mon,  4 Mar 2024 21:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8778C47F79;
+	Mon,  4 Mar 2024 21:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588617; cv=none; b=m+kltkr3yO04oGC3hS6k4r8qV/bcjQsZ15KLCwdoPw6ps+raEKrqT1yGTkrEmKKCihs+dgouCUdbYNuZZGrqt1GOa5p6dPvnLCddU/ciZjzQjOjvU4Kz56Tefv4V+g5wciIdWvzTDNtMy1r4asSEywWz8nLTG/2+e5sBHBPf4SY=
+	t=1709587633; cv=none; b=HtxyDU+M8BjLUE+yIFNE/472bIHtvZkBjly6q3MdFOIXXSy/g4pZVUovOwD234nD0S+thM6QCcYqCak/gpfn5Mfo3M1pqpjqVZz7zsDINZra7wjh03v6FXw2z1ZzQX4ujkSLcVGUStdeIpRu9VEJUKRCzRd1UI3hQl34DAVKK1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588617; c=relaxed/simple;
-	bh=X5W4Vy5vmNj8/XcR3hHA+DA5OkOO0MKXA0AbSQBe0P8=;
+	s=arc-20240116; t=1709587633; c=relaxed/simple;
+	bh=SanJR20lDoCMRWWzCsD9fMq8hlLd89rk2cXWUzwrgVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fo2/Zdzu28iZfc1zQzneGhpRcMkVeKI3MVbAL+TSpWT8xOSL6PkZHZS2IUG5s4Phcj83Qzjc6Qlr0CTspvfgjZGGZppAaZq5KXy+QEhkRBSgKPEW8zyJW7bJCB1RFyXknJMB0c8wKdqEPLO1wXW8gTL5e1TBMxYpqF45OrRXDkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2sp2OUJF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0959C433F1;
-	Mon,  4 Mar 2024 21:43:36 +0000 (UTC)
+	 MIME-Version; b=LZ/hZ4L07uRuNghPINoNKrf8vkJINzzuUmAZhgH1a2t4Abp3VMwGFqnzVn6qF5STEGtDCaNO+k9eYfB1aclHLzf2J6nqG/hmGlXAO/Mzkcw9Jg6eTHmezRtl3dJfM384M1B8Htdllgst4Hu25uItMEnOpF3tITuurH6AKg+Tv0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcnGCVdU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14BE0C433F1;
+	Mon,  4 Mar 2024 21:27:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588617;
-	bh=X5W4Vy5vmNj8/XcR3hHA+DA5OkOO0MKXA0AbSQBe0P8=;
+	s=korg; t=1709587633;
+	bh=SanJR20lDoCMRWWzCsD9fMq8hlLd89rk2cXWUzwrgVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2sp2OUJFq47pRVuP8sKocsVHLN4e37VdP1qWN9HaA/Bb7LDEU5ds3yn43jvtJDAwn
-	 K3sRL1vviWXJcSqv0C0EWvwgrNCAqjuufDLFRu7K7b+UdN8jK7UgzJXvhZQbYml9di
-	 7nxE2U2KklQuVqZYTL5/muIjc4c8BZ8+WWdqTfn0=
+	b=gcnGCVdUlS4DgR4+7pVfCiD8xzDswvdlJw4J9JNJ3+fSploXFizXCwwx5K+TzlKlS
+	 ShVwADta3X8cCHaU/y0/nzZm6hD6A6DXfgX1fwaYVr2xjXRt2Ad3+fqcdlWqrhkdPj
+	 FAUK62cSv1M34dZ8cDDK0i27gNOosl7mdOW1fgEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunjian Wang <wangyunjian@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kai-Heng Feng <kai.heng.feng@canonical.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 032/215] tun: Fix xdp_rxq_infos queue_index when detaching
+Subject: [PATCH 6.7 030/162] Bluetooth: Enforce validation on max value of connection interval
 Date: Mon,  4 Mar 2024 21:21:35 +0000
-Message-ID: <20240304211558.009490281@linuxfoundation.org>
+Message-ID: <20240304211552.798438738@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunjian Wang <wangyunjian@huawei.com>
+From: Kai-Heng Feng <kai.heng.feng@canonical.com>
 
-[ Upstream commit 2a770cdc4382b457ca3d43d03f0f0064f905a0d0 ]
+[ Upstream commit e4b019515f950b4e6e5b74b2e1bb03a90cb33039 ]
 
-When a queue(tfile) is detached, we only update tfile's queue_index,
-but do not update xdp_rxq_info's queue_index. This patch fixes it.
+Right now Linux BT stack cannot pass test case "GAP/CONN/CPUP/BV-05-C
+'Connection Parameter Update Procedure Invalid Parameters Central
+Responder'" in Bluetooth Test Suite revision GAP.TS.p44. [0]
 
-Fixes: 8bf5c4ee1889 ("tun: setup xdp_rxq_info")
-Signed-off-by: Yunjian Wang <wangyunjian@huawei.com>
-Link: https://lore.kernel.org/r/1708398727-46308-1-git-send-email-wangyunjian@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+That was revoled by commit c49a8682fc5d ("Bluetooth: validate BLE
+connection interval updates"), but later got reverted due to devices
+like keyboards and mice may require low connection interval.
+
+So only validate the max value connection interval to pass the Test
+Suite, and let devices to request low connection interval if needed.
+
+[0] https://www.bluetooth.org/docman/handlers/DownloadDoc.ashx?doc_id=229869
+
+Fixes: 68d19d7d9957 ("Revert "Bluetooth: validate BLE connection interval updates"")
+Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/tun.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/bluetooth/hci_event.c  | 4 ++++
+ net/bluetooth/l2cap_core.c | 8 +++++++-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 367255bb44cdc..922d6f16d99d1 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -653,6 +653,7 @@ static void __tun_detach(struct tun_file *tfile, bool clean)
- 				   tun->tfiles[tun->numqueues - 1]);
- 		ntfile = rtnl_dereference(tun->tfiles[index]);
- 		ntfile->queue_index = index;
-+		ntfile->xdp_rxq.queue_index = index;
- 		rcu_assign_pointer(tun->tfiles[tun->numqueues - 1],
- 				   NULL);
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 613f2fd0bcc1e..2a5f5a7d2412b 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -6797,6 +6797,10 @@ static void hci_le_remote_conn_param_req_evt(struct hci_dev *hdev, void *data,
+ 		return send_conn_param_neg_reply(hdev, handle,
+ 						 HCI_ERROR_UNKNOWN_CONN_ID);
  
++	if (max > hcon->le_conn_max_interval)
++		return send_conn_param_neg_reply(hdev, handle,
++						 HCI_ERROR_INVALID_LL_PARAMS);
++
+ 	if (hci_check_conn_params(min, max, latency, timeout))
+ 		return send_conn_param_neg_reply(hdev, handle,
+ 						 HCI_ERROR_INVALID_LL_PARAMS);
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 60298975d5c45..656f49b299d20 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -5613,7 +5613,13 @@ static inline int l2cap_conn_param_update_req(struct l2cap_conn *conn,
+ 
+ 	memset(&rsp, 0, sizeof(rsp));
+ 
+-	err = hci_check_conn_params(min, max, latency, to_multiplier);
++	if (max > hcon->le_conn_max_interval) {
++		BT_DBG("requested connection interval exceeds current bounds.");
++		err = -EINVAL;
++	} else {
++		err = hci_check_conn_params(min, max, latency, to_multiplier);
++	}
++
+ 	if (err)
+ 		rsp.result = cpu_to_le16(L2CAP_CONN_PARAM_REJECTED);
+ 	else
 -- 
 2.43.0
 
