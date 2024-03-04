@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-26392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82844870E62
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:43:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E0C2870C99
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:27:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED723B20B79
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:43:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EECF1F26281
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:27:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF2A47992E;
-	Mon,  4 Mar 2024 21:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B16E7BB1A;
+	Mon,  4 Mar 2024 21:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ddd0MvAS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bSHODg1h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A878F8F58;
-	Mon,  4 Mar 2024 21:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 490337B3C3;
+	Mon,  4 Mar 2024 21:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588601; cv=none; b=fEu7dwnDhEV/DdgFQe1YKdJAerodlMQ4hizjEv8fvfUnsB9oygxQ7slR3wMYP4qQ5FkJ+zdIe0cU6k4xsOcYMGA2rykEUNPWHRPbmXQxGlSOCUsEOeCw7Y4NA1bzgklcnV+7YqyVDFYEDgPygEYjLNQwrYqaTJOB7iuVxia4iOE=
+	t=1709587615; cv=none; b=qewXpjKmSGvhRsMxYsSxESIuSekFFoHMMnLpyz5ptZBAm3P9Ecyd5xtUcxgmYBHJ032YNhSYD+3YTAGtHbyvrBmu7/maSPaWfeNUVhO6/sk1EJX8butLmPBBKQCzvBY/NBrvl1L+jVsuQZ84tTnOJbhkNAgeb2CSCwBUeTZlaUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588601; c=relaxed/simple;
-	bh=/2Yfgar3zcEnJNjnzUDxoh68GxLopP2sZh3ERpj7jF0=;
+	s=arc-20240116; t=1709587615; c=relaxed/simple;
+	bh=krZckaA767xjOA0B0zP/5hKZJelyyRhc83UGw2lnKp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TmWEGoDlQVJeNEUXSv/APjUFKhif+j/DIAd0Jjcp1DxMuOY1bHLllHOCQQjjWf4+GvbFTdS2HKAypadnpzSydMvFYvriJhyW89+mUZCQ37lYV+cy3yV1LvVY7Jv7Uyl3iIkCjssvQNfhFVKlPxZUC8u3IzY/KOvA6tWN1fxoxK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ddd0MvAS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B2A4C433C7;
-	Mon,  4 Mar 2024 21:43:21 +0000 (UTC)
+	 MIME-Version; b=AhKxkFTvB9FBUky1PAjgmophuV3PohVNSmjT0aMjZjzQB/ab+H4vijSUnQ/5tjiddVA/0P38IOCZ1IdzTkd4DnjrJm3wM7lXFrAxW2zgyPhW6aaT6HTF1jAD9bx8uk2Dr9oV5GwQkh7UYRRuY6AEDSY4mitzLwJzBv2p7rNN4f4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bSHODg1h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8171C433C7;
+	Mon,  4 Mar 2024 21:26:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588601;
-	bh=/2Yfgar3zcEnJNjnzUDxoh68GxLopP2sZh3ERpj7jF0=;
+	s=korg; t=1709587615;
+	bh=krZckaA767xjOA0B0zP/5hKZJelyyRhc83UGw2lnKp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ddd0MvASxJDbMufzKzeq+KOhDBBSiHUvNUQBHUaYcMNPuQEFe7xIwyztaI6PbmHCO
-	 uUifGioKR5L07e/sDKWlpRAOJKIJV8aV7VIEpB//HMxulAoHIGs4i6Yu2FD74MDZuF
-	 RxkZ0FvQxSc7xkiELh+lCrX9Ph9ZoBAAsKpmv3EA=
+	b=bSHODg1hDTvv4K0DRGQx4md3+v6ekiaRtV6sjR4jrETKqOc5baY0W0OWQYqNtwUTn
+	 /GTSpE0ez4/1I3C+wCNfvvjqOl156IPHkMks6Aq9CoiI8s06n58uDLNl8q0fhBY7xN
+	 p4ABW5VVd8icll/uoJpYPXnvddpaJB/14CA87ZHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Rik van Riel <riel@surriel.com>,
-	Christopher Lameter <cl@linux.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 026/215] mm: huge_memory: dont force huge page alignment on 32 bit
+	Jakub Raczynski <j.raczynski@samsung.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 024/162] stmmac: Clear variable when destroying workqueue
 Date: Mon,  4 Mar 2024 21:21:29 +0000
-Message-ID: <20240304211557.822818739@linuxfoundation.org>
+Message-ID: <20240304211552.604099475@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,60 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Shi <yang@os.amperecomputing.com>
+From: Jakub Raczynski <j.raczynski@samsung.com>
 
-commit 4ef9ad19e17676b9ef071309bc62020e2373705d upstream.
+[ Upstream commit 8af411bbba1f457c33734795f024d0ef26d0963f ]
 
-commit efa7df3e3bb5 ("mm: align larger anonymous mappings on THP
-boundaries") caused two issues [1] [2] reported on 32 bit system or compat
-userspace.
+Currently when suspending driver and stopping workqueue it is checked whether
+workqueue is not NULL and if so, it is destroyed.
+Function destroy_workqueue() does drain queue and does clear variable, but
+it does not set workqueue variable to NULL. This can cause kernel/module
+panic if code attempts to clear workqueue that was not initialized.
 
-It doesn't make too much sense to force huge page alignment on 32 bit
-system due to the constrained virtual address space.
+This scenario is possible when resuming suspended driver in stmmac_resume(),
+because there is no handling for failed stmmac_hw_setup(),
+which can fail and return if DMA engine has failed to initialize,
+and workqueue is initialized after DMA engine.
+Should DMA engine fail to initialize, resume will proceed normally,
+but interface won't work and TX queue will eventually timeout,
+causing 'Reset adapter' error.
+This then does destroy workqueue during reset process.
+And since workqueue is initialized after DMA engine and can be skipped,
+it will cause kernel/module panic.
 
-[1] https://lore.kernel.org/linux-mm/d0a136a0-4a31-46bc-adf4-2db109a61672@kernel.org/
-[2] https://lore.kernel.org/linux-mm/CAJuCfpHXLdQy1a2B6xN2d7quTYwg2OoZseYPZTRpU0eHHKD-sQ@mail.gmail.com/
+To secure against this possible crash, set workqueue variable to NULL when
+destroying workqueue.
 
-Link: https://lkml.kernel.org/r/20240118180505.2914778-1-shy828301@gmail.com
-Fixes: efa7df3e3bb5 ("mm: align larger anonymous mappings on THP boundaries")
-Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
-Reported-by: Jiri Slaby <jirislaby@kernel.org>
-Reported-by: Suren Baghdasaryan <surenb@google.com>
-Tested-by: Jiri Slaby <jirislaby@kernel.org>
-Tested-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Christopher Lameter <cl@linux.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Log/backtrace from crash goes as follows:
+[88.031977]------------[ cut here ]------------
+[88.031985]NETDEV WATCHDOG: eth0 (sxgmac): transmit queue 1 timed out
+[88.032017]WARNING: CPU: 0 PID: 0 at net/sched/sch_generic.c:477 dev_watchdog+0x390/0x398
+           <Skipping backtrace for watchdog timeout>
+[88.032251]---[ end trace e70de432e4d5c2c0 ]---
+[88.032282]sxgmac 16d88000.ethernet eth0: Reset adapter.
+[88.036359]------------[ cut here ]------------
+[88.036519]Call trace:
+[88.036523] flush_workqueue+0x3e4/0x430
+[88.036528] drain_workqueue+0xc4/0x160
+[88.036533] destroy_workqueue+0x40/0x270
+[88.036537] stmmac_fpe_stop_wq+0x4c/0x70
+[88.036541] stmmac_release+0x278/0x280
+[88.036546] __dev_close_many+0xcc/0x158
+[88.036551] dev_close_many+0xbc/0x190
+[88.036555] dev_close.part.0+0x70/0xc0
+[88.036560] dev_close+0x24/0x30
+[88.036564] stmmac_service_task+0x110/0x140
+[88.036569] process_one_work+0x1d8/0x4a0
+[88.036573] worker_thread+0x54/0x408
+[88.036578] kthread+0x164/0x170
+[88.036583] ret_from_fork+0x10/0x20
+[88.036588]---[ end trace e70de432e4d5c2c1 ]---
+[88.036597]Unable to handle kernel NULL pointer dereference at virtual address 0000000000000004
+
+Fixes: 5a5586112b929 ("net: stmmac: support FPE link partner hand-shaking procedure")
+Signed-off-by: Jakub Raczynski <j.raczynski@samsung.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/huge_memory.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -37,6 +37,7 @@
- #include <linux/page_owner.h>
- #include <linux/sched/sysctl.h>
- #include <linux/memory-tiers.h>
-+#include <linux/compat.h>
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index e9a1b60ebb503..de4d769195174 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -3942,8 +3942,10 @@ static void stmmac_fpe_stop_wq(struct stmmac_priv *priv)
+ {
+ 	set_bit(__FPE_REMOVING, &priv->fpe_task_state);
  
- #include <asm/tlb.h>
- #include <asm/pgalloc.h>
-@@ -607,6 +608,9 @@ static unsigned long __thp_get_unmapped_
- 	loff_t off_align = round_up(off, size);
- 	unsigned long len_pad, ret;
+-	if (priv->fpe_wq)
++	if (priv->fpe_wq) {
+ 		destroy_workqueue(priv->fpe_wq);
++		priv->fpe_wq = NULL;
++	}
  
-+	if (IS_ENABLED(CONFIG_32BIT) || in_compat_syscall())
-+		return 0;
-+
- 	if (off_end <= off_align || (off_end - off_align) < size)
- 		return 0;
- 
+ 	netdev_info(priv->dev, "FPE workqueue stop");
+ }
+-- 
+2.43.0
+
 
 
 
