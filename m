@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-26558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9444870F20
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:51:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3916E870E47
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:42:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10AD71C240E9
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:51:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E42C91F20FB0
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2195179F2;
-	Mon,  4 Mar 2024 21:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3DFD78B69;
+	Mon,  4 Mar 2024 21:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uLrJpwJN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZybFAmOD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31EC200D4;
-	Mon,  4 Mar 2024 21:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909C21EB5A;
+	Mon,  4 Mar 2024 21:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589067; cv=none; b=P2kVtBZzN/kt3/Gz8JE4t6qC4YL2X7kIpHe0SkCSPNOWUQ0ImLYzFydVAjd6jEgaVr9rUNjyV/m4qvwi9gMqY79nA7w+JZS66e8AapAv8WBuNMtm0G3Psbtj2wTh+8lv9L58bsBi23hzQZ4OsBuuwYR/jhWNB8BlgR5KyJss9ro=
+	t=1709588544; cv=none; b=DqdFQ8kX+YrTmrxcaTy4cokX1Q1elNJmXXrPvKfsxgl6GikKmgj3rX9gAvXPAEBE8MOrLmxlI60s+j+GeTgvI51vZkVs86oAXjBi6iOrNlOykqnOwDwm9MQK44w0Mj9ylv1rQkewGQa0epUiuxF4Qu9YmHBbKZFKUEYEh+Ls0UA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589067; c=relaxed/simple;
-	bh=Dm+2gRMaGF4cEzhAdNZY10p4+zmSwQLFEfrYJicga6s=;
+	s=arc-20240116; t=1709588544; c=relaxed/simple;
+	bh=KPYmoPK8mjAOoMiaD1RcoG0DkkbIgpptzJCw1HHnnog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MCaU/W1mBsWclGzlOrQda+BUo//pAiNIKlehMCBFQJ5p0BlIB+mAjmINqjF+7gS8Nl8i4GsGFC+KvpbT5HcC51iff0xfuwZYNrij+dS5oT+7VZjuu2FV21SD2CiorEAQRcTS1hTsPsmbz/LV3GiSNCQkj3wR31dY80ZRRyeCx10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uLrJpwJN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D05C433C7;
-	Mon,  4 Mar 2024 21:51:07 +0000 (UTC)
+	 MIME-Version; b=vGOVoPnq/SU8SmYssBVd9vKmXI/QYj41Nhcbwni5Cm3i/qHcrZBvfECU6y76X3Yoff120FwD+bDQnkzBwvC3poyUWLfuPT7eg0CNt9cCNufEbhw/ckzpoEWNUuwA7qc2rwuuiMtjyI2V7G+xr13a4iTAhZZpjU8aDukG1xroVyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZybFAmOD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D80C433F1;
+	Mon,  4 Mar 2024 21:42:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589067;
-	bh=Dm+2gRMaGF4cEzhAdNZY10p4+zmSwQLFEfrYJicga6s=;
+	s=korg; t=1709588544;
+	bh=KPYmoPK8mjAOoMiaD1RcoG0DkkbIgpptzJCw1HHnnog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uLrJpwJNtqMPUCMKlk69EO88ZY/NLDdxn/qdnKr0Iy/8Oj/TLoA9CtDB/9jjr/Hv/
-	 u8OtQaamVMCBKfckP3R4oxId1OV+6BUAT78vn95feg7y21dlRR0BztT65Ntt8B9WRY
-	 4S/5jWUrzlOHHj9cNpBqVkmSXMtFFDUW5bCf24VI=
+	b=ZybFAmOD5U/DvYDR2Dmn7SlmG5sRs248vOisGJeZCVXxL2mBwQd5W9qxXMFTI+xu/
+	 VxFx0b7lI9jPjIPhGKYQ7Mha0Y5TVzN5ZD8XtxX9hRoINnsT6+zu56at2883Tl/fH1
+	 fxc3Jr9PDdhBh+G9AibVK4o4JNCoMhKFwoQpkzUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.1 189/215] x86/efistub: Prefer EFI memory attributes protocol over DXE services
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Ming Lei <ming.lei@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 132/143] block: define bvec_iter as __packed __aligned(4)
 Date: Mon,  4 Mar 2024 21:24:12 +0000
-Message-ID: <20240304211602.954811000@linuxfoundation.org>
+Message-ID: <20240304211554.127282606@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,98 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb+git@google.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-From: Ard Biesheuvel <ardb@kernel.org>
+[ Upstream commit 7838b4656110d950afdd92a081cc0f33e23e0ea8 ]
 
-[ Commit 11078876b7a6a1b7226344fecab968945c806832 upstream ]
+In commit 19416123ab3e ("block: define 'struct bvec_iter' as packed"),
+what we need is to save the 4byte padding, and avoid `bio` to spread on
+one extra cache line.
 
-Currently, the EFI stub relies on DXE services in some cases to clear
-non-execute restrictions from page allocations that need to be
-executable. This is dodgy, because DXE services are not specified by
-UEFI but by PI, and they are not intended for consumption by OS loaders.
-However, no alternative existed at the time.
+It is enough to define it as '__packed __aligned(4)', as '__packed'
+alone means byte aligned, and can cause compiler to generate horrible
+code on architectures that don't support unaligned access in case that
+bvec_iter is embedded in other structures.
 
-Now, there is a new UEFI protocol that should be used instead, so if it
-exists, prefer it over the DXE services calls.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230807162720.545787-18-ardb@kernel.org
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Mikulas Patocka <mpatocka@redhat.com>
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: 19416123ab3e ("block: define 'struct bvec_iter' as packed")
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/libstub/x86-stub.c |   29 +++++++++++++++++++++--------
- 1 file changed, 21 insertions(+), 8 deletions(-)
+ include/linux/bvec.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -26,6 +26,7 @@ const efi_system_table_t *efi_system_tab
- const efi_dxe_services_table_t *efi_dxe_table;
- u32 image_offset __section(".data");
- static efi_loaded_image_t *image = NULL;
-+static efi_memory_attribute_protocol_t *memattr;
+diff --git a/include/linux/bvec.h b/include/linux/bvec.h
+index 555aae5448ae4..bd1e361b351c5 100644
+--- a/include/linux/bvec.h
++++ b/include/linux/bvec.h
+@@ -83,7 +83,7 @@ struct bvec_iter {
  
- static efi_status_t
- preserve_pci_rom_image(efi_pci_io_protocol_t *pci, struct pci_setup_rom **__rom)
-@@ -222,12 +223,18 @@ void efi_adjust_memory_range_protection(
- 	unsigned long rounded_start, rounded_end;
- 	unsigned long unprotect_start, unprotect_size;
+ 	unsigned int            bi_bvec_done;	/* number of bytes completed in
+ 						   current bvec */
+-} __packed;
++} __packed __aligned(4);
  
--	if (efi_dxe_table == NULL)
--		return;
--
- 	rounded_start = rounddown(start, EFI_PAGE_SIZE);
- 	rounded_end = roundup(start + size, EFI_PAGE_SIZE);
- 
-+	if (memattr != NULL) {
-+		efi_call_proto(memattr, clear_memory_attributes, rounded_start,
-+			       rounded_end - rounded_start, EFI_MEMORY_XP);
-+		return;
-+	}
-+
-+	if (efi_dxe_table == NULL)
-+		return;
-+
- 	/*
- 	 * Don't modify memory region attributes, they are
- 	 * already suitable, to lower the possibility to
-@@ -758,6 +765,7 @@ void __noreturn efi_stub_entry(efi_handl
- 			       efi_system_table_t *sys_table_arg,
- 			       struct boot_params *boot_params)
- {
-+	efi_guid_t guid = EFI_MEMORY_ATTRIBUTE_PROTOCOL_GUID;
- 	unsigned long bzimage_addr = (unsigned long)startup_32;
- 	unsigned long buffer_start, buffer_end;
- 	struct setup_header *hdr = &boot_params->hdr;
-@@ -769,13 +777,18 @@ void __noreturn efi_stub_entry(efi_handl
- 	if (efi_system_table->hdr.signature != EFI_SYSTEM_TABLE_SIGNATURE)
- 		efi_exit(handle, EFI_INVALID_PARAMETER);
- 
--	efi_dxe_table = get_efi_config_table(EFI_DXE_SERVICES_TABLE_GUID);
--	if (efi_dxe_table &&
--	    efi_dxe_table->hdr.signature != EFI_DXE_SERVICES_TABLE_SIGNATURE) {
--		efi_warn("Ignoring DXE services table: invalid signature\n");
--		efi_dxe_table = NULL;
-+	if (IS_ENABLED(CONFIG_EFI_DXE_MEM_ATTRIBUTES)) {
-+		efi_dxe_table = get_efi_config_table(EFI_DXE_SERVICES_TABLE_GUID);
-+		if (efi_dxe_table &&
-+		    efi_dxe_table->hdr.signature != EFI_DXE_SERVICES_TABLE_SIGNATURE) {
-+			efi_warn("Ignoring DXE services table: invalid signature\n");
-+			efi_dxe_table = NULL;
-+		}
- 	}
- 
-+	/* grab the memory attributes protocol if it exists */
-+	efi_bs_call(locate_protocol, &guid, NULL, (void **)&memattr);
-+
- 	status = efi_setup_5level_paging();
- 	if (status != EFI_SUCCESS) {
- 		efi_err("efi_setup_5level_paging() failed!\n");
+ struct bvec_iter_all {
+ 	struct bio_vec	bv;
+-- 
+2.43.0
+
 
 
 
