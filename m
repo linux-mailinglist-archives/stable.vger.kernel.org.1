@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A74D2870F5C
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:53:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50672870F2E
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:51:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09C08B21B62
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:53:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCA58B279C2
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:51:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6D27AE47;
-	Mon,  4 Mar 2024 21:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 308F178B47;
+	Mon,  4 Mar 2024 21:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vQq/rekf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gioU+J2F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A87D78B47;
-	Mon,  4 Mar 2024 21:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E28931EB5A;
+	Mon,  4 Mar 2024 21:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589223; cv=none; b=L8FnAYAq3vao33ZTXLLJ8UHFia0mh6zR5TyyEhepue4Hay2VgwMNYIvWdoDswUGmr7cEFa8CRh71fNdZuufqWX03t8l3CpQeRfpCMmCKjWnSAopMHTUwtYKeyxgqqkzPXlX7lp21yj85eFzgThwJ1sIybL329DT9k2yYI4CB5yk=
+	t=1709589101; cv=none; b=SNWQbY8skoSIfGdl7Sfsal9xV87mSyPvKSXUHGUWFBl7FvZW17fdahiMlA7W1/kyLPSFZee3YIMhE0OONcc01IC8N/ATwMm9b+haI1dX4BXi6dVhO3yq0ymwxc/ISR3lfrPwXu6/PJqFo32GV2QnOvHUi86FnBa9xE46XJcdNXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589223; c=relaxed/simple;
-	bh=2X4ui7l1VwZclMlCUt4Xlxu72giX+WdlWDxSKgbEglU=;
+	s=arc-20240116; t=1709589101; c=relaxed/simple;
+	bh=Xyq2BaZYuyPZ63iGBiPlwPmjZRP7fTn0l5lRCqs6+58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y+S/cL7FDgkkMS7z6gM2MJEUy3TlXEvtFUAhFG90HP1uP6dz9trlQY04a8yCF/A2OqDlbnRXRr4QH4PkwCygEcd1AsLXj7sS1HiupLDv3Qb1aUUHHDiU9ex6mq29Tc0w7DG4JE8GN7/NW4IWo7Tr3RyeUS4atxAMOdZOhDJ9zek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vQq/rekf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1728C433F1;
-	Mon,  4 Mar 2024 21:53:42 +0000 (UTC)
+	 MIME-Version; b=A03et2gBcxF/O3WOo9tQlaAdkbMo5ZZRMTGtR3lweOnObgMdi7ldtAJlWAQa2N+8Hvwsc7ee65Rw8zgMiAEr0+wd2ntw/Mp2ArMdushQDsmtt94EAAaly6X0wNmuwbin1mAX/aNDuJJBV+eFpaSIELdR0Q0pVwxZ0gdl2liZxy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gioU+J2F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72A67C433F1;
+	Mon,  4 Mar 2024 21:51:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589223;
-	bh=2X4ui7l1VwZclMlCUt4Xlxu72giX+WdlWDxSKgbEglU=;
+	s=korg; t=1709589100;
+	bh=Xyq2BaZYuyPZ63iGBiPlwPmjZRP7fTn0l5lRCqs6+58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vQq/rekfv33jRQ1w5GYYQJYa06lsRj2typ84QOy3RsD55r9RWq4Qyjzoky0lqYxWi
-	 Ucx/HvI3Ovz0DrljzdMduCkmQik99xpq5SubWHXfevJo4+bIkuVMiIa9Ti6HPiVrjw
-	 ZdW+98uvo1/YBdzmmapAoK+lAWqCmJTxJSBzV/l8=
+	b=gioU+J2FNHEmVrpqkXIyKigWqxuvZI331/QClPqXkDuaegUaVQhMswneMhp/lJtWo
+	 Dg+ZlYYLkgzOz1lBaUCC0v0VZ25IigijiQ+w54yr4dBBmIxAmoKhx6YhC5kZJSvuFD
+	 UArMEOtptwbqnp1ZHo9ejdMKKp6Wvoe3nlIYmM9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 27/84] tls: rx: dont store the record type in socket context
+	Mike Galbraith <efault@gmx.de>,
+	Dai Ngo <dai.ngo@oracle.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.1 177/215] NFSD: register/unregister of nfsd-client shrinker at nfsd startup/shutdown time
 Date: Mon,  4 Mar 2024 21:24:00 +0000
-Message-ID: <20240304211543.237236688@linuxfoundation.org>
+Message-ID: <20240304211602.558700036@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,246 +62,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Dai Ngo <dai.ngo@oracle.com>
 
-[ Upstream commit c3f6bb74137c68b515b7e2ff123a80611e801013 ]
+[ Upstream commit f385f7d244134246f984975ed34cd75f77de479f ]
 
-Original TLS implementation was handling one record at a time.
-It stashed the type of the record inside tls context (per socket
-structure) for convenience. When async crypto support was added
-[1] the author had to use skb->cb to store the type per-message.
+Currently the nfsd-client shrinker is registered and unregistered at
+the time the nfsd module is loaded and unloaded. The problem with this
+is the shrinker is being registered before all of the relevant fields
+in nfsd_net are initialized when nfsd is started. This can lead to an
+oops when memory is low and the shrinker is called while nfsd is not
+running.
 
-The use of skb->cb overlaps with strparser, however, so a hybrid
-approach was taken where type is stored in context while parsing
-(since we parse a message at a time) but once parsed its copied
-to skb->cb.
+This patch moves the  register/unregister of nfsd-client shrinker from
+module load/unload time to nfsd startup/shutdown time.
 
-Recently a workaround for sockmaps [2] exposed the previously
-private struct _strp_msg and started a trend of adding user
-fields directly in strparser's header. This is cleaner than
-storing information about an skb in the context.
-
-This change is not strictly necessary, but IMHO the ownership
-of the context field is confusing. Information naturally
-belongs to the skb.
-
-[1] commit 94524d8fc965 ("net/tls: Add support for async decryption of tls records")
-[2] commit b2c4618162ec ("bpf, sockmap: sk_skb data_end access incorrect when src_reg = dst_reg")
-
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: f7fa16d49837 ("tls: decrement decrypt_pending if no async completion will be called")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 44df6f439a17 ("NFSD: add delegation reaper to react to low memory condition")
+Reported-by: Mike Galbraith <efault@gmx.de>
+Signed-off-by: Dai Ngo <dai.ngo@oracle.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/strparser.h |  3 +++
- include/net/tls.h       | 10 +++-------
- net/tls/tls_sw.c        | 38 +++++++++++++++++---------------------
- 3 files changed, 23 insertions(+), 28 deletions(-)
+ fs/nfsd/nfs4state.c |   22 +++++++++++-----------
+ fs/nfsd/nfsctl.c    |    7 +------
+ fs/nfsd/nfsd.h      |    6 ++----
+ 3 files changed, 14 insertions(+), 21 deletions(-)
 
-diff --git a/include/net/strparser.h b/include/net/strparser.h
-index 732b7097d78e4..c271543076cf8 100644
---- a/include/net/strparser.h
-+++ b/include/net/strparser.h
-@@ -70,6 +70,9 @@ struct sk_skb_cb {
- 	 * when dst_reg == src_reg.
- 	 */
- 	u64 temp_reg;
-+	struct tls_msg {
-+		u8 control;
-+	} tls;
- };
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -4422,7 +4422,7 @@ nfsd4_state_shrinker_scan(struct shrinke
+ 	return SHRINK_STOP;
+ }
  
- static inline struct strp_msg *strp_msg(struct sk_buff *skb)
-diff --git a/include/net/tls.h b/include/net/tls.h
-index eda0015c5c592..24c1b718ceacc 100644
---- a/include/net/tls.h
-+++ b/include/net/tls.h
-@@ -116,11 +116,6 @@ struct tls_rec {
- 	u8 aead_req_ctx[];
- };
+-int
++void
+ nfsd4_init_leases_net(struct nfsd_net *nn)
+ {
+ 	struct sysinfo si;
+@@ -4444,16 +4444,6 @@ nfsd4_init_leases_net(struct nfsd_net *n
+ 	nn->nfs4_max_clients = max_t(int, max_clients, NFS4_CLIENTS_PER_GB);
  
--struct tls_msg {
--	struct strp_msg rxm;
--	u8 control;
--};
+ 	atomic_set(&nn->nfsd_courtesy_clients, 0);
+-	nn->nfsd_client_shrinker.scan_objects = nfsd4_state_shrinker_scan;
+-	nn->nfsd_client_shrinker.count_objects = nfsd4_state_shrinker_count;
+-	nn->nfsd_client_shrinker.seeks = DEFAULT_SEEKS;
+-	return register_shrinker(&nn->nfsd_client_shrinker, "nfsd-client");
+-}
 -
- struct tx_work {
- 	struct delayed_work work;
- 	struct sock *sk;
-@@ -151,7 +146,6 @@ struct tls_sw_context_rx {
- 	void (*saved_data_ready)(struct sock *sk);
+-void
+-nfsd4_leases_net_shutdown(struct nfsd_net *nn)
+-{
+-	unregister_shrinker(&nn->nfsd_client_shrinker);
+ }
  
- 	struct sk_buff *recv_pkt;
--	u8 control;
- 	u8 async_capable:1;
- 	u8 decrypted:1;
- 	atomic_t decrypt_pending;
-@@ -410,7 +404,9 @@ void tls_free_partial_record(struct sock *sk, struct tls_context *ctx);
+ static void init_nfs4_replay(struct nfs4_replay *rp)
+@@ -8099,8 +8089,17 @@ static int nfs4_state_create_net(struct
+ 	INIT_DELAYED_WORK(&nn->nfsd_shrinker_work, nfsd4_state_shrinker_worker);
+ 	get_net(net);
  
- static inline struct tls_msg *tls_msg(struct sk_buff *skb)
- {
--	return (struct tls_msg *)strp_msg(skb);
-+	struct sk_skb_cb *scb = (struct sk_skb_cb *)skb->cb;
++	nn->nfsd_client_shrinker.scan_objects = nfsd4_state_shrinker_scan;
++	nn->nfsd_client_shrinker.count_objects = nfsd4_state_shrinker_count;
++	nn->nfsd_client_shrinker.seeks = DEFAULT_SEEKS;
 +
-+	return &scb->tls;
++	if (register_shrinker(&nn->nfsd_client_shrinker, "nfsd-client"))
++		goto err_shrinker;
+ 	return 0;
+ 
++err_shrinker:
++	put_net(net);
++	kfree(nn->sessionid_hashtbl);
+ err_sessionid:
+ 	kfree(nn->unconf_id_hashtbl);
+ err_unconf_id:
+@@ -8193,6 +8192,7 @@ nfs4_state_shutdown_net(struct net *net)
+ 	struct list_head *pos, *next, reaplist;
+ 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
+ 
++	unregister_shrinker(&nn->nfsd_client_shrinker);
+ 	cancel_delayed_work_sync(&nn->laundromat_work);
+ 	locks_end_grace(&nn->nfsd4_manager);
+ 
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -1452,9 +1452,7 @@ static __net_init int nfsd_init_net(stru
+ 		goto out_idmap_error;
+ 	nn->nfsd_versions = NULL;
+ 	nn->nfsd4_minorversions = NULL;
+-	retval = nfsd4_init_leases_net(nn);
+-	if (retval)
+-		goto out_drc_error;
++	nfsd4_init_leases_net(nn);
+ 	retval = nfsd_reply_cache_init(nn);
+ 	if (retval)
+ 		goto out_cache_error;
+@@ -1464,8 +1462,6 @@ static __net_init int nfsd_init_net(stru
+ 	return 0;
+ 
+ out_cache_error:
+-	nfsd4_leases_net_shutdown(nn);
+-out_drc_error:
+ 	nfsd_idmap_shutdown(net);
+ out_idmap_error:
+ 	nfsd_export_shutdown(net);
+@@ -1481,7 +1477,6 @@ static __net_exit void nfsd_exit_net(str
+ 	nfsd_idmap_shutdown(net);
+ 	nfsd_export_shutdown(net);
+ 	nfsd_netns_free_versions(net_generic(net, nfsd_net_id));
+-	nfsd4_leases_net_shutdown(nn);
  }
  
- static inline bool tls_is_partially_sent_record(struct tls_context *ctx)
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index e6f700f67c010..82d7c9b036bc7 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -128,10 +128,10 @@ static int skb_nsg(struct sk_buff *skb, int offset, int len)
-         return __skb_nsg(skb, offset, len, 0);
+ static struct pernet_operations nfsd_net_ops = {
+--- a/fs/nfsd/nfsd.h
++++ b/fs/nfsd/nfsd.h
+@@ -504,8 +504,7 @@ extern void unregister_cld_notifier(void
+ extern void nfsd4_ssc_init_umount_work(struct nfsd_net *nn);
+ #endif
+ 
+-extern int nfsd4_init_leases_net(struct nfsd_net *nn);
+-extern void nfsd4_leases_net_shutdown(struct nfsd_net *nn);
++extern void nfsd4_init_leases_net(struct nfsd_net *nn);
+ 
+ #else /* CONFIG_NFSD_V4 */
+ static inline int nfsd4_is_junction(struct dentry *dentry)
+@@ -513,8 +512,7 @@ static inline int nfsd4_is_junction(stru
+ 	return 0;
  }
  
--static int padding_length(struct tls_sw_context_rx *ctx,
--			  struct tls_prot_info *prot, struct sk_buff *skb)
-+static int padding_length(struct tls_prot_info *prot, struct sk_buff *skb)
- {
- 	struct strp_msg *rxm = strp_msg(skb);
-+	struct tls_msg *tlm = tls_msg(skb);
- 	int sub = 0;
+-static inline int nfsd4_init_leases_net(struct nfsd_net *nn) { return 0; };
+-static inline void nfsd4_leases_net_shutdown(struct nfsd_net *nn) {};
++static inline void nfsd4_init_leases_net(struct nfsd_net *nn) { };
  
- 	/* Determine zero-padding length */
-@@ -153,7 +153,7 @@ static int padding_length(struct tls_sw_context_rx *ctx,
- 			sub++;
- 			back++;
- 		}
--		ctx->control = content_type;
-+		tlm->control = content_type;
- 	}
- 	return sub;
- }
-@@ -187,7 +187,7 @@ static void tls_decrypt_done(struct crypto_async_request *req, int err)
- 		struct strp_msg *rxm = strp_msg(skb);
- 		int pad;
- 
--		pad = padding_length(ctx, prot, skb);
-+		pad = padding_length(prot, skb);
- 		if (pad < 0) {
- 			ctx->async_wait.err = pad;
- 			tls_err_abort(skb->sk, pad);
-@@ -1423,6 +1423,7 @@ static int decrypt_internal(struct sock *sk, struct sk_buff *skb,
- 	struct tls_sw_context_rx *ctx = tls_sw_ctx_rx(tls_ctx);
- 	struct tls_prot_info *prot = &tls_ctx->prot_info;
- 	struct strp_msg *rxm = strp_msg(skb);
-+	struct tls_msg *tlm = tls_msg(skb);
- 	int n_sgin, n_sgout, nsg, mem_size, aead_size, err, pages = 0;
- 	struct aead_request *aead_req;
- 	struct sk_buff *unused;
-@@ -1500,7 +1501,7 @@ static int decrypt_internal(struct sock *sk, struct sk_buff *skb,
- 	/* Prepare AAD */
- 	tls_make_aad(aad, rxm->full_len - prot->overhead_size +
- 		     prot->tail_size,
--		     tls_ctx->rx.rec_seq, ctx->control, prot);
-+		     tls_ctx->rx.rec_seq, tlm->control, prot);
- 
- 	/* Prepare sgin */
- 	sg_init_table(sgin, n_sgin);
-@@ -1585,7 +1586,7 @@ static int decrypt_skb_update(struct sock *sk, struct sk_buff *skb,
- 			*zc = false;
- 		}
- 
--		pad = padding_length(ctx, prot, skb);
-+		pad = padding_length(prot, skb);
- 		if (pad < 0)
- 			return pad;
- 
-@@ -1817,26 +1818,21 @@ int tls_sw_recvmsg(struct sock *sk,
- 				}
- 			}
- 			goto recv_end;
--		} else {
--			tlm = tls_msg(skb);
--			if (prot->version == TLS_1_3_VERSION)
--				tlm->control = 0;
--			else
--				tlm->control = ctx->control;
- 		}
- 
- 		rxm = strp_msg(skb);
-+		tlm = tls_msg(skb);
- 
- 		to_decrypt = rxm->full_len - prot->overhead_size;
- 
- 		if (to_decrypt <= len && !is_kvec && !is_peek &&
--		    ctx->control == TLS_RECORD_TYPE_DATA &&
-+		    tlm->control == TLS_RECORD_TYPE_DATA &&
- 		    prot->version != TLS_1_3_VERSION &&
- 		    !bpf_strp_enabled)
- 			zc = true;
- 
- 		/* Do not use async mode if record is non-data */
--		if (ctx->control == TLS_RECORD_TYPE_DATA && !bpf_strp_enabled)
-+		if (tlm->control == TLS_RECORD_TYPE_DATA && !bpf_strp_enabled)
- 			async_capable = ctx->async_capable;
- 		else
- 			async_capable = false;
-@@ -1851,8 +1847,6 @@ int tls_sw_recvmsg(struct sock *sk,
- 		if (err == -EINPROGRESS) {
- 			async = true;
- 			num_async++;
--		} else if (prot->version == TLS_1_3_VERSION) {
--			tlm->control = ctx->control;
- 		}
- 
- 		/* If the type of records being processed is not known yet,
-@@ -1999,6 +1993,7 @@ ssize_t tls_sw_splice_read(struct socket *sock,  loff_t *ppos,
- 	struct tls_sw_context_rx *ctx = tls_sw_ctx_rx(tls_ctx);
- 	struct strp_msg *rxm = NULL;
- 	struct sock *sk = sock->sk;
-+	struct tls_msg *tlm;
- 	struct sk_buff *skb;
- 	ssize_t copied = 0;
- 	bool from_queue;
-@@ -2027,14 +2022,15 @@ ssize_t tls_sw_splice_read(struct socket *sock,  loff_t *ppos,
- 		}
- 	}
- 
-+	rxm = strp_msg(skb);
-+	tlm = tls_msg(skb);
-+
- 	/* splice does not support reading control messages */
--	if (ctx->control != TLS_RECORD_TYPE_DATA) {
-+	if (tlm->control != TLS_RECORD_TYPE_DATA) {
- 		err = -EINVAL;
- 		goto splice_read_end;
- 	}
- 
--	rxm = strp_msg(skb);
--
- 	chunk = min_t(unsigned int, rxm->full_len, len);
- 	copied = skb_splice_bits(skb, sk, rxm->offset, pipe, chunk, flags);
- 	if (copied < 0)
-@@ -2077,10 +2073,10 @@ bool tls_sw_sock_is_readable(struct sock *sk)
- static int tls_read_size(struct strparser *strp, struct sk_buff *skb)
- {
- 	struct tls_context *tls_ctx = tls_get_ctx(strp->sk);
--	struct tls_sw_context_rx *ctx = tls_sw_ctx_rx(tls_ctx);
- 	struct tls_prot_info *prot = &tls_ctx->prot_info;
- 	char header[TLS_HEADER_SIZE + MAX_IV_SIZE];
- 	struct strp_msg *rxm = strp_msg(skb);
-+	struct tls_msg *tlm = tls_msg(skb);
- 	size_t cipher_overhead;
- 	size_t data_len = 0;
- 	int ret;
-@@ -2101,7 +2097,7 @@ static int tls_read_size(struct strparser *strp, struct sk_buff *skb)
- 	if (ret < 0)
- 		goto read_failure;
- 
--	ctx->control = header[0];
-+	tlm->control = header[0];
- 
- 	data_len = ((header[4] & 0xFF) | (header[3] << 8));
- 
--- 
-2.43.0
-
+ #define register_cld_notifier() 0
+ #define unregister_cld_notifier() do { } while(0)
 
 
 
