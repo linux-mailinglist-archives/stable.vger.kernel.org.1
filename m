@@ -1,149 +1,96 @@
-Return-Path: <stable+bounces-25966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BB0E87098A
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 19:30:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88FCF8709D7
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 19:49:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00C3D1F271F8
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 18:30:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2774B23CBE
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 18:47:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF2A626C0;
-	Mon,  4 Mar 2024 18:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39A717869A;
+	Mon,  4 Mar 2024 18:47:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="NOA8+81x"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989DB4C62E;
-	Mon,  4 Mar 2024 18:30:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D1B62147;
+	Mon,  4 Mar 2024 18:47:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.21.196.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709577012; cv=none; b=BCba9YdtBDtRMPgNhXVNyJjj+7QNIaiEpjOBCGln2ApcfF2Y61BqxYtLmMqLdLUkiLC3PdwKQsh6/cxHL8VRdv3Hv2jCFMsYQ9frPc0GZB5ZrBKoT389ZOif5A2gugm6iGRMBn6TiXSudPqQnrEM3CjomW0x7UK93NWiWRGa4dg=
+	t=1709578060; cv=none; b=qVfl0x57FDbA4Cq43F7TEbtuhTy0Ol/nEr9Mmvu3KDJVNeMoyrtrS4kGl9ngmN00fjqSMKGmiWyZc2droHcuXnDlmIHEVtmt0QAO6JJ9YelUrc0YtJ9QY4xDAkc58shLQzW7oO9UxJqcS7YJ+IeQqCRYTf+TMHR6iXBPd2UrIf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709577012; c=relaxed/simple;
-	bh=X/MGLe5h6l3DNtO6errxCkK0EeaAfLTak8qw38yQRQg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nM//q9Tnm7DsxVAqfcm88HuHLVpM9QJYE3DlyJlLfGJNG1d8HyHd6ZQ/lnSupSfV5bqJmAu7+e99pcw8lEmYRNZ7QieCFimW52zRdWFG+WNpFOE6nfGRCaBntObazQlIQpzSBL1oFjF8+cFmMNmK5tDNXCmVP+yjGNf9hIjWt4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1dc5d0162bcso40993915ad.0;
-        Mon, 04 Mar 2024 10:30:10 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709577010; x=1710181810;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xPhxviojLOo7bBw1srG77XjwgTU6YRGtCNTQjTnUSqk=;
-        b=lFa7NR36bqmSGP1UZn5+uMg5zs3xpppAOPJJwfz2elOm6xlGak2cZ8czrS7x79nwpG
-         0ujq6uZkCpzn4cUB3k0h3nYqXgXQ80+lx1tTfQRhIt4gyTVj3vL23IzTYPOIuY9JtdMk
-         oy1DLMUsDc0PZxUhqQvJqMlpOQjLZ1HBJyE8ejb3Zjbryhgvnlqf9JT7TQza19/EUBZq
-         aTkanYhhN9tJv7Bu7as3tJ8/Z/V0QMRCMNR5mQ1CB0Vtt1GWl+H8N0TZozyrf3Pj0QWZ
-         5bO1T8TLjqZgFCB45ijbjhvBhPgv2E9F+/LxZObMTleVIb5nqwglf5S7zaGo4JYbOc87
-         /XAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUAzuwo5/G5NwMjGs2iE253pePIwPE4Ku78B97Cjj5yuk60F/aD4GyxdyHYnjMqvdBIg0VAl9WPgTpO/gVwG0nKvDzyyZ7h
-X-Gm-Message-State: AOJu0YyvsMuPaKzg+8j1a+vp/JKXymYIxa1yBXU+lQtrm+gIW22XpDQQ
-	P3uo5BvGvoOX1aXWV7NfsNSprWd7JBrOTVyzZZwGowjptqOYigdp
-X-Google-Smtp-Source: AGHT+IGe4p8GgeQfUCvs/RHa5w28WSioYarmrnQosUZu7GMD1KFcH7zs8KcQCR+J6ZgqacdkMRqH2A==
-X-Received: by 2002:a17:902:b688:b0:1d9:7095:7e3c with SMTP id c8-20020a170902b68800b001d970957e3cmr8254937pls.57.1709577009750;
-        Mon, 04 Mar 2024 10:30:09 -0800 (PST)
-Received: from bvanassche-linux.mtv.corp.google.com ([2620:0:1000:8411:9ba8:35e8:4ec5:44d1])
-        by smtp.gmail.com with ESMTPSA id n4-20020a170903110400b001dc391cc28fsm8791507plh.121.2024.03.04.10.30.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Mar 2024 10:30:09 -0800 (PST)
-From: Bart Van Assche <bvanassche@acm.org>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org,
-	Christoph Hellwig <hch@lst.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Benjamin LaHaise <ben@communityfibre.ca>,
-	Eric Biggers <ebiggers@google.com>,
-	Avi Kivity <avi@scylladb.com>,
-	Sandeep Dhavale <dhavale@google.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	stable@vger.kernel.org,
-	syzbot+b91eb2ed18f599dd3c31@syzkaller.appspotmail.com
-Subject: [PATCH] Revert "fs/aio: Make io_cancel() generate completions again"
-Date: Mon,  4 Mar 2024 10:29:44 -0800
-Message-ID: <20240304182945.3646109-1-bvanassche@acm.org>
-X-Mailer: git-send-email 2.44.0.rc1.240.g4c46232300-goog
+	s=arc-20240116; t=1709578060; c=relaxed/simple;
+	bh=kbd0JOxZAv7pXQq1VfK/EidocvkZPARJYB9xxm+7BAw=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PgRQfwCYh8FVJJKwiDu/DGagzS9saaMBJhRZR5IAxowJlMCa66/5P03mBoqJR5Hkl9zq3ZhtNxcA2NR95X+jiyFWTIkxVKa5UTGcjkY8apBAwyfTV3k29PRwrABKTRgsbeyHtmkq0At5ihyzrmyHuz2LgfFZqG0yTQ3HRfANM/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=NOA8+81x; arc=none smtp.client-ip=72.21.196.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1709578058; x=1741114058;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=9wd9WUH4whGwXp0eHXVUdDwqcrqNWWjri6sAP3vphCI=;
+  b=NOA8+81x7UlfsFakR5IQbhS9SIv1BV3DF9n9KdxaBU5FAJbEDtY1IDX6
+   raXjT/iehSw87DSk4ijD0o1xPqxd86k0XEhuRUWQQEAs2hlg9NXfyApE7
+   v4n1u4q6M3M8QYTqFaLUS2K2M3lPDYlXyTT94QdamYf1ia6gZy2DoFtbO
+   g=;
+X-IronPort-AV: E=Sophos;i="6.06,204,1705363200"; 
+   d="scan'208";a="385374124"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2024 18:47:35 +0000
+Received: from EX19MTAEUC002.ant.amazon.com [10.0.43.254:47643]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.42.5:2525] with esmtp (Farcaster)
+ id abeaadb9-70cd-4744-b817-67fa8b437c78; Mon, 4 Mar 2024 18:47:33 +0000 (UTC)
+X-Farcaster-Flow-ID: abeaadb9-70cd-4744-b817-67fa8b437c78
+Received: from EX19D026EUB004.ant.amazon.com (10.252.61.64) by
+ EX19MTAEUC002.ant.amazon.com (10.252.51.245) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Mon, 4 Mar 2024 18:47:33 +0000
+Received: from uc3ecf78c6baf56.ant.amazon.com (10.187.170.53) by
+ EX19D026EUB004.ant.amazon.com (10.252.61.64) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.28; Mon, 4 Mar 2024 18:47:30 +0000
+Date: Mon, 4 Mar 2024 10:47:26 -0800
+From: Andrew Panyakin <apanyaki@amazon.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+CC: <apanyaki@amazon.com>, <benh@amazon.com>, <boris.ostrovsky@oracle.com>,
+	<jeremy.fitzhardinge@citrix.com>, <jgrall@amazon.com>, <jgross@suse.com>,
+	<konrad.wilk@oracle.com>, <linux-kernel@vger.kernel.org>, <mheyne@amazon.de>,
+	<oleksandr_tyshchenko@epam.com>, <sashal@kernel.org>,
+	<sstabellini@kernel.org>, <stable@vger.kernel.org>,
+	<xen-devel@lists.xenproject.org>
+Subject: Re: [PATCH 5.10] xen/events: close evtchn after mapping cleanup
+Message-ID: <20240304184726.GA3441283@uc3ecf78c6baf56.ant.amazon.com>
+References: <20240302160357.GA2232656@uc3ecf78c6baf56.ant.amazon.com>
+ <2024030433-legacy-unrivaled-f5fc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <2024030433-legacy-unrivaled-f5fc@gregkh>
+X-ClientProxiedBy: EX19D031UWC002.ant.amazon.com (10.13.139.212) To
+ EX19D026EUB004.ant.amazon.com (10.252.61.64)
 
-Patch "fs/aio: Make io_cancel() generate completions again" is based on the
-assumption that calling kiocb->ki_cancel() does not complete R/W requests.
-This is incorrect: the two drivers that call kiocb_set_cancel_fn() callers
-set a cancellation function that calls usb_ep_dequeue(). According to its
-documentation, usb_ep_dequeue() calls the completion routine with status
--ECONNRESET. Hence this revert.
+On 04/03/2024, Greg KH wrote:
+> On Sat, Mar 02, 2024 at 08:03:57AM -0800, Andrew Panyakin wrote:
+> > From: Maximilian Heyne <mheyne@amazon.de>
+> >
+> > Commit fa765c4b4aed2d64266b694520ecb025c862c5a9 upstream
+[...] 
+> Where is the 5.15.y version of this commit?  We have to have that before
+> we can take a 5.10.y version, right?
 
-Cc: Benjamin LaHaise <ben@communityfibre.ca>
-Cc: Eric Biggers <ebiggers@google.com>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Avi Kivity <avi@scylladb.com>
-Cc: Sandeep Dhavale <dhavale@google.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+b91eb2ed18f599dd3c31@syzkaller.appspotmail.com
-Fixes: 54cbc058d86b ("fs/aio: Make io_cancel() generate completions again")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
----
- fs/aio.c | 27 ++++++++++++++++-----------
- 1 file changed, 16 insertions(+), 11 deletions(-)
-
-diff --git a/fs/aio.c b/fs/aio.c
-index 28223f511931..da18dbcfcb22 100644
---- a/fs/aio.c
-+++ b/fs/aio.c
-@@ -2165,11 +2165,14 @@ COMPAT_SYSCALL_DEFINE3(io_submit, compat_aio_context_t, ctx_id,
- #endif
- 
- /* sys_io_cancel:
-- *	Attempts to cancel an iocb previously passed to io_submit(). If the
-- *	operation is successfully cancelled 0 is returned. May fail with
-- *	-EFAULT if any of the data structures pointed to are invalid. May
-- *	fail with -EINVAL if aio_context specified by ctx_id is invalid. Will
-- *	fail with -ENOSYS if not implemented.
-+ *	Attempts to cancel an iocb previously passed to io_submit.  If
-+ *	the operation is successfully cancelled, the resulting event is
-+ *	copied into the memory pointed to by result without being placed
-+ *	into the completion queue and 0 is returned.  May fail with
-+ *	-EFAULT if any of the data structures pointed to are invalid.
-+ *	May fail with -EINVAL if aio_context specified by ctx_id is
-+ *	invalid.  May fail with -EAGAIN if the iocb specified was not
-+ *	cancelled.  Will fail with -ENOSYS if not implemented.
-  */
- SYSCALL_DEFINE3(io_cancel, aio_context_t, ctx_id, struct iocb __user *, iocb,
- 		struct io_event __user *, result)
-@@ -2200,12 +2203,14 @@ SYSCALL_DEFINE3(io_cancel, aio_context_t, ctx_id, struct iocb __user *, iocb,
- 	}
- 	spin_unlock_irq(&ctx->ctx_lock);
- 
--	/*
--	 * The result argument is no longer used - the io_event is always
--	 * delivered via the ring buffer.
--	 */
--	if (ret == 0 && kiocb->rw.ki_flags & IOCB_AIO_RW)
--		aio_complete_rw(&kiocb->rw, -EINTR);
-+	if (!ret) {
-+		/*
-+		 * The result argument is no longer used - the io_event is
-+		 * always delivered via the ring buffer. -EINPROGRESS indicates
-+		 * cancellation is progress:
-+		 */
-+		ret = -EINPROGRESS;
-+	}
- 
- 	percpu_ref_put(&ctx->users);
- 
+Remaining patches for 5.15 and 6.1 ready, will send once analyze test
+results.
 
