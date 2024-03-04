@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-26585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F5BF870F3E
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:52:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1356870F8E
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:55:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 414E81F21A86
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:52:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D8A5281377
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:55:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80533200D4;
-	Mon,  4 Mar 2024 21:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D60AB7B3D8;
+	Mon,  4 Mar 2024 21:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6u8Y8Wj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B8qckFQo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EFB01C6AB;
-	Mon,  4 Mar 2024 21:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925D37868F;
+	Mon,  4 Mar 2024 21:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589153; cv=none; b=Aabo1v0cv/9eRETu3yh7MYF19QO7TmHiRPNllF6fZNzIm4FZNMa/7V2oOHcV0azmLxnCUjOXgHGeuB44CrN9FNUyCrfOTU2B1wZQOtNZQqViMtJ7n87bON9rQoKSwV1mheeOf+OJuvkr6RFhGk/QdtaCxo915JptpPwGRkdPJgw=
+	t=1709589350; cv=none; b=WTG3rxKIfAOrtoyk1+hezuJY5zI6TSx4xlYexBk62RdSWEyESVzXQwgVm7BIUFqND/ttie/8PFaxfzR378cWwktjx9rTJ95reg9BGTVFo4DZelHQWGrWy+jLjGrXoazp4z8hq/T5i39chR4x4QkPBa+gXA2PH37R+bDKEn6fd54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589153; c=relaxed/simple;
-	bh=1qf9R1f4p3N4OigGpuIM1kJod+muvuZLe3mnOYRkxwI=;
+	s=arc-20240116; t=1709589350; c=relaxed/simple;
+	bh=9AlQ1D7Ir3nBoTE76zeTP+rZIv/Vg+xYLIYn+4bwrr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KDeosD7SBC9zybTyoLHwkatPTr6/zVLc+GqyaUL04i0bgY3ZFxBV6Br14/3EAmDArmm2G83o+Llj/LqebrydNEa1SRpDyyIO7JMbr62EO1rB15787vK2gj5S6lxDL6VdHBcItv21bKb7mrZ+HTkpa5AuIJcghIZOOXcWKGBp9cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6u8Y8Wj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3538C433C7;
-	Mon,  4 Mar 2024 21:52:32 +0000 (UTC)
+	 MIME-Version; b=jtZaawT7FLh/TkhPYVvSTH0PmBA3apC+mRZzJX9JqjAaSiJeo5Rfp5Asakuaac8uwiPJja1Lf3zwa/GvTGw8p6/BQegdURThr1+fyW9fOzQUz29p4TNr1NnLKZt2ltfTwKkCakrI7Df7bxA1tkO8Q9X5/w1ehfknS3PAL1wwlU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B8qckFQo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 265C8C433F1;
+	Mon,  4 Mar 2024 21:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589153;
-	bh=1qf9R1f4p3N4OigGpuIM1kJod+muvuZLe3mnOYRkxwI=;
+	s=korg; t=1709589350;
+	bh=9AlQ1D7Ir3nBoTE76zeTP+rZIv/Vg+xYLIYn+4bwrr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e6u8Y8Wj78Ggn60bsAYNHMYgSxkEjyhCLbfwfv7W5dfnuUG1ChC/cEMzE0eLJ16Ub
-	 CEUNGMGpwAUDm8R6d84qk7paHVnMOVV4/jp2YcyspUPmH4DpURbyTym+yIgFERVqjo
-	 IU8bxBzU5I8oAAVsTFPeWeaDjaDlduFdylJvKNkc=
+	b=B8qckFQoK+njlhqNPexSdR6bzm+dZWcOzanU0bTPf+a8B+1Y0bVEQbi39u/Dh3vZ3
+	 oygJ3Fo28ogfSxNJCO4DtCxObVjjlv8/8o05efAlcBBY5I/NMb6oCP1K0m/UCrHBFZ
+	 lUKzF70S/+kXzeSubeE74Po6cX51CeiOc7js8aGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 201/215] gpiolib: Fix the error path order in gpiochip_add_data_with_key()
+	Edward Adam Davis <eadavis@qq.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>,
+	syzbot+33f23b49ac24f986c9e8@syzkaller.appspotmail.com
+Subject: [PATCH 5.15 51/84] btrfs: dev-replace: properly validate device names
 Date: Mon,  4 Mar 2024 21:24:24 +0000
-Message-ID: <20240304211603.362214436@linuxfoundation.org>
+Message-ID: <20240304211544.067154481@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
+References: <20240304211542.332206551@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit e4aec4daa8c009057b5e063db1b7322252c92dc8 ]
+commit 9845664b9ee47ce7ee7ea93caf47d39a9d4552c4 upstream.
 
-After shuffling the code, error path wasn't updated correctly.
-Fix it here.
+There's a syzbot report that device name buffers passed to device
+replace are not properly checked for string termination which could lead
+to a read out of bounds in getname_kernel().
 
-Fixes: 2f4133bb5f14 ("gpiolib: No need to call gpiochip_remove_pin_ranges() twice")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add a helper that validates both source and target device name buffers.
+For devid as the source initialize the buffer to empty string in case
+something tries to read it later.
+
+This was originally analyzed and fixed in a different way by Edward Adam
+Davis (see links).
+
+Link: https://lore.kernel.org/linux-btrfs/000000000000d1a1d1060cc9c5e7@google.com/
+Link: https://lore.kernel.org/linux-btrfs/tencent_44CA0665C9836EF9EEC80CB9E7E206DF5206@qq.com/
+CC: stable@vger.kernel.org # 4.19+
+CC: Edward Adam Davis <eadavis@qq.com>
+Reported-and-tested-by: syzbot+33f23b49ac24f986c9e8@syzkaller.appspotmail.com
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/dev-replace.c |   24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 6d3e3454a6ed6..f646df7f1b41a 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -815,11 +815,11 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
- 	gpiochip_irqchip_free_valid_mask(gc);
- err_remove_acpi_chip:
- 	acpi_gpiochip_remove(gc);
-+	gpiochip_remove_pin_ranges(gc);
- err_remove_of_chip:
- 	gpiochip_free_hogs(gc);
- 	of_gpiochip_remove(gc);
- err_free_gpiochip_mask:
--	gpiochip_remove_pin_ranges(gc);
- 	gpiochip_free_valid_mask(gc);
- 	if (gdev->dev.release) {
- 		/* release() has been registered by gpiochip_setup_dev() */
--- 
-2.43.0
-
+--- a/fs/btrfs/dev-replace.c
++++ b/fs/btrfs/dev-replace.c
+@@ -763,6 +763,23 @@ leave:
+ 	return ret;
+ }
+ 
++static int btrfs_check_replace_dev_names(struct btrfs_ioctl_dev_replace_args *args)
++{
++	if (args->start.srcdevid == 0) {
++		if (memchr(args->start.srcdev_name, 0,
++			   sizeof(args->start.srcdev_name)) == NULL)
++			return -ENAMETOOLONG;
++	} else {
++		args->start.srcdev_name[0] = 0;
++	}
++
++	if (memchr(args->start.tgtdev_name, 0,
++		   sizeof(args->start.tgtdev_name)) == NULL)
++	    return -ENAMETOOLONG;
++
++	return 0;
++}
++
+ int btrfs_dev_replace_by_ioctl(struct btrfs_fs_info *fs_info,
+ 			    struct btrfs_ioctl_dev_replace_args *args)
+ {
+@@ -775,10 +792,9 @@ int btrfs_dev_replace_by_ioctl(struct bt
+ 	default:
+ 		return -EINVAL;
+ 	}
+-
+-	if ((args->start.srcdevid == 0 && args->start.srcdev_name[0] == '\0') ||
+-	    args->start.tgtdev_name[0] == '\0')
+-		return -EINVAL;
++	ret = btrfs_check_replace_dev_names(args);
++	if (ret < 0)
++		return ret;
+ 
+ 	ret = btrfs_dev_replace_start(fs_info, args->start.tgtdev_name,
+ 					args->start.srcdevid,
 
 
 
