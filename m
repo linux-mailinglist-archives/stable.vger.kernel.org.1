@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-26234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5939E870DAB
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0468870EBB
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:46:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2534B27248
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CD4B28099A
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:46:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF4246BA0;
-	Mon,  4 Mar 2024 21:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 182A578B69;
+	Mon,  4 Mar 2024 21:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ObXkq7Cd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yEzwmfal"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEDE2DDCB;
-	Mon,  4 Mar 2024 21:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA1761675;
+	Mon,  4 Mar 2024 21:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588190; cv=none; b=RrS8hMNcKnkTbfZf7U9cuubnJE3XdkBSmvtGRcOJrs8nLOEi2NfTCi9oaIwEu33UYFM5WM7gjx3KYzT7T7YNZkfeQIGExD5xPFgHivcvpuvgW3mFz5GRO/f4wpWRHwzQ4LcaTWQdvNYoZBLQaVR4JOYkiQMqR2SY9PIf0QvnXp4=
+	t=1709588784; cv=none; b=tl5I6r6VT0UTN0oP7BqfcOz37skC0qgR9HaTfxf9rY0x1pPfXYzRmc7BNggpX2gmj3bVHwbn8VIX3nVsJtDr09lq2+ke2OtZ30Q2/tyvVNvSLff0pppjeZVsaZDQMpRCULiHRQu3ulNguZkh9xGFkggC+1Zp9dzSawU0yZ6MkxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588190; c=relaxed/simple;
-	bh=id8/kLCkDxfH+W8XWaiqc/GJvWJb5bn3O84BPZS8AJ8=;
+	s=arc-20240116; t=1709588784; c=relaxed/simple;
+	bh=/M08V7ypiaVQXObtpKoKIpbgmZX0mpYx0J+1S78BAck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FNtHb/47frXSXp9QYO/dx6Im6qjNuythhK6ewu1IMosdfu30lkSzrR+T844Pi4WlYPu4Z4hLzgaH9wI864nu3uy62cdepv0C+E6B/1aFeFU+zJtQ8z1iX3+Qd2QdvCEf8mv6aG9BVYZmpE4I+9xHytt1eXcY+KzhGmmPei4+dh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ObXkq7Cd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5836FC433F1;
-	Mon,  4 Mar 2024 21:36:30 +0000 (UTC)
+	 MIME-Version; b=kzVospiN+h09aV8ivXcMIcmlhQU5jYjZ/CpAmg9skyaL0rlJOyhPaow8HwMmSaNyg6RnFUpNzwePQfKIrVHJYQkrcEScpugp+nuX0JjPbFpZD4ljBZ7swCO8jb3Bt4qmup98+FhZ5eIJ9FqIFe1i7bmGiiqgaX1P4uwaI16C4E4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yEzwmfal; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D6CCC433F1;
+	Mon,  4 Mar 2024 21:46:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588190;
-	bh=id8/kLCkDxfH+W8XWaiqc/GJvWJb5bn3O84BPZS8AJ8=;
+	s=korg; t=1709588784;
+	bh=/M08V7ypiaVQXObtpKoKIpbgmZX0mpYx0J+1S78BAck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ObXkq7CdSFi0bemgRLpZYhpPnnp0vjsQxKolu/IhfpWg9VfmeQ5rZ4cQ68jOerCKO
-	 sS1GPk+qeuihS9rMz3gvw16P+XUgE28hR1U82080yW8LPggxpvRCKl8olvfPuh56jm
-	 iO3Qvre00LRNis6qj8NppMP+S5oLU56GFxvGZ2Zg=
+	b=yEzwmfal7x7Yi8ENZTWWldVYU8dP5v0T7nw/a3t73hEqXDNxaPE5tX4vq/2bSj+Du
+	 wVsDHwigVeGii8ss4oLtx1UZxGflphF/UKMhE5CTuUgMDQdQLdV2kteGnnxszO5FNv
+	 w/B8WahhXI5yLq19+mrmgb9xwPOXFybJB71s27OA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunjian Wang <wangyunjian@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Saravana Kannan <saravanak@google.com>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Rob Herring <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 013/143] tun: Fix xdp_rxq_infos queue_index when detaching
-Date: Mon,  4 Mar 2024 21:22:13 +0000
-Message-ID: <20240304211550.359230920@linuxfoundation.org>
+Subject: [PATCH 6.1 071/215] of: property: fw_devlink: Fix stupid bug in remote-endpoint parsing
+Date: Mon,  4 Mar 2024 21:22:14 +0000
+Message-ID: <20240304211559.233592708@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunjian Wang <wangyunjian@huawei.com>
+From: Saravana Kannan <saravanak@google.com>
 
-[ Upstream commit 2a770cdc4382b457ca3d43d03f0f0064f905a0d0 ]
+[ Upstream commit 7cb50f6c9fbaa1c0b80100b8971bf13db5d75d06 ]
 
-When a queue(tfile) is detached, we only update tfile's queue_index,
-but do not update xdp_rxq_info's queue_index. This patch fixes it.
+Introduced a stupid bug in commit 782bfd03c3ae ("of: property: Improve
+finding the supplier of a remote-endpoint property") due to a last minute
+incorrect edit of "index !=0" into "!index". This patch fixes it to be
+"index > 0" to match the comment right next to it.
 
-Fixes: 8bf5c4ee1889 ("tun: setup xdp_rxq_info")
-Signed-off-by: Yunjian Wang <wangyunjian@huawei.com>
-Link: https://lore.kernel.org/r/1708398727-46308-1-git-send-email-wangyunjian@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://lore.kernel.org/lkml/20240223171849.10f9901d@booty/
+Fixes: 782bfd03c3ae ("of: property: Improve finding the supplier of a remote-endpoint property")
+Signed-off-by: Saravana Kannan <saravanak@google.com>
+Reviewed-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://lore.kernel.org/r/20240224052436.3552333-1-saravanak@google.com
+Signed-off-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/tun.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/of/property.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 4a4f8c8e79fa1..8f95a562b8d0c 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -653,6 +653,7 @@ static void __tun_detach(struct tun_file *tfile, bool clean)
- 				   tun->tfiles[tun->numqueues - 1]);
- 		ntfile = rtnl_dereference(tun->tfiles[index]);
- 		ntfile->queue_index = index;
-+		ntfile->xdp_rxq.queue_index = index;
- 		rcu_assign_pointer(tun->tfiles[tun->numqueues - 1],
- 				   NULL);
+diff --git a/drivers/of/property.c b/drivers/of/property.c
+index 33d5f16c81204..da5d712197704 100644
+--- a/drivers/of/property.c
++++ b/drivers/of/property.c
+@@ -1332,7 +1332,7 @@ static struct device_node *parse_remote_endpoint(struct device_node *np,
+ 						 int index)
+ {
+ 	/* Return NULL for index > 0 to signify end of remote-endpoints. */
+-	if (!index || strcmp(prop_name, "remote-endpoint"))
++	if (index > 0 || strcmp(prop_name, "remote-endpoint"))
+ 		return NULL;
  
+ 	return of_graph_get_remote_port_parent(np);
 -- 
 2.43.0
 
