@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-26418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3622D870E7F
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:44:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3E58870CB9
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:28:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB8501F21379
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:44:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60BAF2890D6
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:28:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA0FB7AE47;
-	Mon,  4 Mar 2024 21:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72EA446BA0;
+	Mon,  4 Mar 2024 21:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TfKC7LlM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PJuKR6L2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694BD10A35;
-	Mon,  4 Mar 2024 21:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3019810A35;
+	Mon,  4 Mar 2024 21:28:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588667; cv=none; b=brIDJZK8brydZ1QVQvA7SCGOduQ46Ag6cmXEMSaPXSxoF/iBQz/1gaub3DcnmtFbxDjKaR1ZWHLl9YYpwoRgTxvEO8cbhUnu/32f17S6T/NbmQRitOsd7YzrMShek8LHqD0W0AlQCHlvYcTbV3TBg/OqEFYC5gxNyJ5isrF4bDs=
+	t=1709587680; cv=none; b=WsLhGrnWY4el5qNsppsYoOaHiyEk4/HQ0UWD2AIjoodDo9LpYlOE5AdSThSouLGr/BHRccSKeU7MmNqoln51BYb/efssq2AAGLKBq8xt8ZA8uo8msILvnJcyNUT1D7Qdi5dSwnS9VfsPf2o1l6w3JFgL9barKQbMPyVrtkYHKQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588667; c=relaxed/simple;
-	bh=nT01G+E9YAnmxbzjD10OTN3RVqn90KAgJnPQaOLh9Gc=;
+	s=arc-20240116; t=1709587680; c=relaxed/simple;
+	bh=my7UClLIM/L9rqnVpGEdWJM2N0osWu9a0UUFOL4m7IU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uQysWPsRPmTZfQGyLL6OTvdrCK13iVi6tUbJpPrV57fuUTk4fJfhkwNQSaxWuZHG9Zco888IUWu2Ol0jVg91iQtmpckpn1NrWuW7RWJL2a9+TGdfjKlMfTg/dLbnFYAvfEbYscUkqk0WeQETUJrnJNZ+LMyK5RnaGvUfwOV+ULY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TfKC7LlM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF2F3C43390;
-	Mon,  4 Mar 2024 21:44:26 +0000 (UTC)
+	 MIME-Version; b=rkSuYuxf/URkURszbZFFpeBicHBi12h6zZHE8KDLh3TOFftE4tpuB4Eo6C+PepTGhUeqgz+bI8pPzPCP9Rpl+EVafq1ge2LyxdmQgWOBl5Ydhz9orR4ZofcSGlnfnfFlTaJ3vq+25Jo0fNPzhejc7B5kYkhdOSLTI/Ti7IunjWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PJuKR6L2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5923C433F1;
+	Mon,  4 Mar 2024 21:27:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588667;
-	bh=nT01G+E9YAnmxbzjD10OTN3RVqn90KAgJnPQaOLh9Gc=;
+	s=korg; t=1709587680;
+	bh=my7UClLIM/L9rqnVpGEdWJM2N0osWu9a0UUFOL4m7IU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TfKC7LlMk1K/lZH1kkrjt6tg25rci9EJEB/Q+s3eB06dIWAbv8WO+i3L4S5VmcmVK
-	 EJ/uZoVYImnhf0ORUEbTjK/igIMDYG1Wyj8EF0efguqcPVUZS1HAyDgKcsTblXrWdh
-	 gthgSKnTwC6dIfINAP3ym8/1kzOFMkA/ucswzgqs=
+	b=PJuKR6L2lF1qHgw4mSFZhiHC1qFNSo7+NQ7T4vPsNA3D9vwVXe9/d+6PfvCRFmscp
+	 UEgJI2sAXD5UxVZYKjM5vNa+X9jfdAfZrA31Z4lMkbDd3/UwwmwHZxxm0+kBInktHo
+	 KZxxzLyf23edD9wvJf3RxM2Lr+oftV1Fb7GWCy8E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Min-Hua Chen <minhuadotchen@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 051/215] Bluetooth: btqca: use le32_to_cpu for ver.soc_id
+Subject: [PATCH 6.7 049/162] ASoC: qcom: Fix uninitialized pointer dmactl
 Date: Mon,  4 Mar 2024 21:21:54 +0000
-Message-ID: <20240304211558.606413574@linuxfoundation.org>
+Message-ID: <20240304211553.422228984@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Min-Hua Chen <minhuadotchen@gmail.com>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-[ Upstream commit 8153b738bc547878a017889d2b1cf8dd2de0e0c6 ]
+[ Upstream commit 1382d8b55129875b2e07c4d2a7ebc790183769ee ]
 
-Use le32_to_cpu for ver.soc_id to fix the following
-sparse warning.
+In the case where __lpass_get_dmactl_handle is called and the driver
+id dai_id is invalid the pointer dmactl is not being assigned a value,
+and dmactl contains a garbage value since it has not been initialized
+and so the null check may not work. Fix this to initialize dmactl to
+NULL. One could argue that modern compilers will set this to zero, but
+it is useful to keep this initialized as per the same way in functions
+__lpass_platform_codec_intf_init and lpass_cdc_dma_daiops_hw_params.
 
-drivers/bluetooth/btqca.c:640:24: sparse: warning: restricted
-__le32 degrades to integer
+Cleans up clang scan build warning:
+sound/soc/qcom/lpass-cdc-dma.c:275:7: warning: Branch condition
+evaluates to a garbage value [core.uninitialized.Branch]
 
-Signed-off-by: Min-Hua Chen <minhuadotchen@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 7dcd3e014aa7 ("Bluetooth: hci_qca: Set BDA quirk bit if fwnode exists in DT")
+Fixes: b81af585ea54 ("ASoC: qcom: Add lpass CPU driver for codec dma control")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Link: https://msgid.link/r/20240221134804.3475989-1-colin.i.king@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btqca.c | 2 +-
+ sound/soc/qcom/lpass-cdc-dma.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
-index 4cb541096b934..d40a6041c48cd 100644
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -637,7 +637,7 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
- 		snprintf(config.fwname, sizeof(config.fwname),
- 			 "qca/%s", firmware_name);
- 	else if (qca_is_wcn399x(soc_type)) {
--		if (ver.soc_id == QCA_WCN3991_SOC_ID) {
-+		if (le32_to_cpu(ver.soc_id) == QCA_WCN3991_SOC_ID) {
- 			snprintf(config.fwname, sizeof(config.fwname),
- 				 "qca/crnv%02xu.bin", rom_ver);
- 		} else {
+diff --git a/sound/soc/qcom/lpass-cdc-dma.c b/sound/soc/qcom/lpass-cdc-dma.c
+index 48b03e60e3a3d..8106c586f68a4 100644
+--- a/sound/soc/qcom/lpass-cdc-dma.c
++++ b/sound/soc/qcom/lpass-cdc-dma.c
+@@ -259,7 +259,7 @@ static int lpass_cdc_dma_daiops_trigger(struct snd_pcm_substream *substream,
+ 				    int cmd, struct snd_soc_dai *dai)
+ {
+ 	struct snd_soc_pcm_runtime *soc_runtime = snd_soc_substream_to_rtd(substream);
+-	struct lpaif_dmactl *dmactl;
++	struct lpaif_dmactl *dmactl = NULL;
+ 	int ret = 0, id;
+ 
+ 	switch (cmd) {
 -- 
 2.43.0
 
