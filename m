@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-26611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 576B3870F5A
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:53:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 069F4870D92
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:35:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7090B21D72
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:53:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AE0A1C2042D
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:35:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434787BAF8;
-	Mon,  4 Mar 2024 21:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 704E67AE6B;
+	Mon,  4 Mar 2024 21:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T07Lz6/z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S+V+5t1H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016041C6AB;
-	Mon,  4 Mar 2024 21:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F78E1C687;
+	Mon,  4 Mar 2024 21:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589221; cv=none; b=Z+SfUlIvrqMISbZDF2WvAcSKSAG2JNnPcP/sBIG4EKl+p+nIi9/6k09nEzCEPwviUmvTmuflPz8iwX1TBSSoc6+LTpdD8+tiYUWcQ7p4ht2bRN0PW3h7kbAHBWssXHxbjXnhYFAv3cROezcupgDY7riBQNJ8O8TaLtegW5XpCwA=
+	t=1709588131; cv=none; b=JA9wc6o+P/UcG/kXBfkWjMc0+XZ3KSrHJpBUxtLCKlu/WbePN+USpCxqjZTPOZ27daK5EAENA6vjBAgyzYQT8cGkHnTJ9fs72m7Y+ZGeR41bLoAS8wg59JsNn5l4T8CNHKSR2TYsOfZBMprz3MzB9mzAXGu79RLWRfuHI2e3zg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589221; c=relaxed/simple;
-	bh=ybaH3riilrI6k2vdcY7OtCoj6O5NDh/eJRNhtMCCKRY=;
+	s=arc-20240116; t=1709588131; c=relaxed/simple;
+	bh=DI5iYntnIlkLAOGpByQPf7o0qy0G53f9lSrMthxPABo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mw8leZS0tFHceiDcL2K3YhEkPiNvXuAVfbU1z+g8btGbelCHJZ5wJ4jeTrcBs5TlZYWwkO7qoZa+akLkEISY4YOEy9V6uWJoQBA5l1KVT3d2IT02p0Jl2rmd0NJJXif4nSf3AH/u+sbXi9RVB4sbkcf5m2svcoKMBdd0/9JJutw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T07Lz6/z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8BBC43394;
-	Mon,  4 Mar 2024 21:53:40 +0000 (UTC)
+	 MIME-Version; b=fNglQBmbuAgh1aJx/BySKpfT8oNc/0tx+R3h6g3vlkUN9sy3kM1M9DXYF6K+B5/3M1egZYa1aBB+Fc8uXf2urmj9bt+uQwBBzcLGduvF3SFD/H3k5gpkNNTQuohK38lYjPTG+RbI/JuBxeLyWiFOy+aAtDrQv5pSTIgh7gDhcM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S+V+5t1H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C867C433F1;
+	Mon,  4 Mar 2024 21:35:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589220;
-	bh=ybaH3riilrI6k2vdcY7OtCoj6O5NDh/eJRNhtMCCKRY=;
+	s=korg; t=1709588130;
+	bh=DI5iYntnIlkLAOGpByQPf7o0qy0G53f9lSrMthxPABo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T07Lz6/zAexEQZsyj9GuyagJHuDLiblMq+p14n2bzPv8J4GqiHTlVrVXcpMkBR2kX
-	 QDt/d3KXYk7ZuIwV4xPC3kIQ9B+4yQo7QRM1+QBwolo155X5veDZ9WrkOVAl+MD8jc
-	 VJ0+1VfqckaJubo7HIQKUNKgyylr4yfeTk9Q/+7s=
+	b=S+V+5t1HIGbswjJlYr6++GYVyIWpTJd4VnO+z3D10E5mxILZ5J7bK3yvZUjPBsq2Q
+	 UJ14ABJofOEIh5mfGmCMOMERIhPcZ1mK1P7vYKLV4d3DksP757A+Uq9MgvuGXnWTHS
+	 LcFwzmqThumux/KPHCkaRKlw6ZEG85n0W/ak3+38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 5.15 26/84] igb: extend PTP timestamp adjustments to i211
-Date: Mon,  4 Mar 2024 21:23:59 +0000
-Message-ID: <20240304211543.207855594@linuxfoundation.org>
+	Zixi Chen <zixchen@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH 5.10 33/42] x86/cpu/intel: Detect TME keyid bits before setting MTRR mask registers
+Date: Mon,  4 Mar 2024 21:24:00 +0000
+Message-ID: <20240304211538.750907899@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
+References: <20240304211537.631764077@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,67 +62,248 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-[ Upstream commit 0bb7b09392eb74b152719ae87b1ba5e4bf910ef0 ]
+commit 6890cb1ace350b4386c8aee1343dc3b3ddd214da upstream.
 
-The i211 requires the same PTP timestamp adjustments as the i210,
-according to its datasheet. To ensure consistent timestamping across
-different platforms, this change extends the existing adjustments to
-include the i211.
+MKTME repurposes the high bit of physical address to key id for encryption
+key and, even though MAXPHYADDR in CPUID[0x80000008] remains the same,
+the valid bits in the MTRR mask register are based on the reduced number
+of physical address bits.
 
-The adjustment result are tested and comparable for i210 and i211 based
-systems.
+detect_tme() in arch/x86/kernel/cpu/intel.c detects TME and subtracts
+it from the total usable physical bits, but it is called too late.
+Move the call to early_init_intel() so that it is called in setup_arch(),
+before MTRRs are setup.
 
-Fixes: 3f544d2a4d5c ("igb: adjust PTP timestamps for Tx/Rx latency")
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://lore.kernel.org/r/20240227184942.362710-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This fixes boot on TDX-enabled systems, which until now only worked with
+"disable_mtrr_cleanup".  Without the patch, the values written to the
+MTRRs mask registers were 52-bit wide (e.g. 0x000fffff_80000800) and
+the writes failed; with the patch, the values are 46-bit wide, which
+matches the reduced MAXPHYADDR that is shown in /proc/cpuinfo.
+
+Reported-by: Zixi Chen <zixchen@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240131230902.1867092-3-pbonzini%40redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igb/igb_ptp.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/intel.c |  178 ++++++++++++++++++++++----------------------
+ 1 file changed, 91 insertions(+), 87 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_ptp.c b/drivers/net/ethernet/intel/igb/igb_ptp.c
-index 9cdb7a856ab6c..1a1575e8577af 100644
---- a/drivers/net/ethernet/intel/igb/igb_ptp.c
-+++ b/drivers/net/ethernet/intel/igb/igb_ptp.c
-@@ -826,7 +826,7 @@ static void igb_ptp_tx_hwtstamp(struct igb_adapter *adapter)
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -178,6 +178,90 @@ static bool bad_spectre_microcode(struct
+ 	return false;
+ }
  
- 	igb_ptp_systim_to_hwtstamp(adapter, &shhwtstamps, regval);
- 	/* adjust timestamp for the TX latency based on link speed */
--	if (adapter->hw.mac.type == e1000_i210) {
-+	if (hw->mac.type == e1000_i210 || hw->mac.type == e1000_i211) {
- 		switch (adapter->link_speed) {
- 		case SPEED_10:
- 			adjust = IGB_I210_TX_LATENCY_10;
-@@ -872,6 +872,7 @@ int igb_ptp_rx_pktstamp(struct igb_q_vector *q_vector, void *va,
- 			ktime_t *timestamp)
++#define MSR_IA32_TME_ACTIVATE		0x982
++
++/* Helpers to access TME_ACTIVATE MSR */
++#define TME_ACTIVATE_LOCKED(x)		(x & 0x1)
++#define TME_ACTIVATE_ENABLED(x)		(x & 0x2)
++
++#define TME_ACTIVATE_POLICY(x)		((x >> 4) & 0xf)	/* Bits 7:4 */
++#define TME_ACTIVATE_POLICY_AES_XTS_128	0
++
++#define TME_ACTIVATE_KEYID_BITS(x)	((x >> 32) & 0xf)	/* Bits 35:32 */
++
++#define TME_ACTIVATE_CRYPTO_ALGS(x)	((x >> 48) & 0xffff)	/* Bits 63:48 */
++#define TME_ACTIVATE_CRYPTO_AES_XTS_128	1
++
++/* Values for mktme_status (SW only construct) */
++#define MKTME_ENABLED			0
++#define MKTME_DISABLED			1
++#define MKTME_UNINITIALIZED		2
++static int mktme_status = MKTME_UNINITIALIZED;
++
++static void detect_tme_early(struct cpuinfo_x86 *c)
++{
++	u64 tme_activate, tme_policy, tme_crypto_algs;
++	int keyid_bits = 0, nr_keyids = 0;
++	static u64 tme_activate_cpu0 = 0;
++
++	rdmsrl(MSR_IA32_TME_ACTIVATE, tme_activate);
++
++	if (mktme_status != MKTME_UNINITIALIZED) {
++		if (tme_activate != tme_activate_cpu0) {
++			/* Broken BIOS? */
++			pr_err_once("x86/tme: configuration is inconsistent between CPUs\n");
++			pr_err_once("x86/tme: MKTME is not usable\n");
++			mktme_status = MKTME_DISABLED;
++
++			/* Proceed. We may need to exclude bits from x86_phys_bits. */
++		}
++	} else {
++		tme_activate_cpu0 = tme_activate;
++	}
++
++	if (!TME_ACTIVATE_LOCKED(tme_activate) || !TME_ACTIVATE_ENABLED(tme_activate)) {
++		pr_info_once("x86/tme: not enabled by BIOS\n");
++		mktme_status = MKTME_DISABLED;
++		return;
++	}
++
++	if (mktme_status != MKTME_UNINITIALIZED)
++		goto detect_keyid_bits;
++
++	pr_info("x86/tme: enabled by BIOS\n");
++
++	tme_policy = TME_ACTIVATE_POLICY(tme_activate);
++	if (tme_policy != TME_ACTIVATE_POLICY_AES_XTS_128)
++		pr_warn("x86/tme: Unknown policy is active: %#llx\n", tme_policy);
++
++	tme_crypto_algs = TME_ACTIVATE_CRYPTO_ALGS(tme_activate);
++	if (!(tme_crypto_algs & TME_ACTIVATE_CRYPTO_AES_XTS_128)) {
++		pr_err("x86/mktme: No known encryption algorithm is supported: %#llx\n",
++				tme_crypto_algs);
++		mktme_status = MKTME_DISABLED;
++	}
++detect_keyid_bits:
++	keyid_bits = TME_ACTIVATE_KEYID_BITS(tme_activate);
++	nr_keyids = (1UL << keyid_bits) - 1;
++	if (nr_keyids) {
++		pr_info_once("x86/mktme: enabled by BIOS\n");
++		pr_info_once("x86/mktme: %d KeyIDs available\n", nr_keyids);
++	} else {
++		pr_info_once("x86/mktme: disabled by BIOS\n");
++	}
++
++	if (mktme_status == MKTME_UNINITIALIZED) {
++		/* MKTME is usable */
++		mktme_status = MKTME_ENABLED;
++	}
++
++	/*
++	 * KeyID bits effectively lower the number of physical address
++	 * bits.  Update cpuinfo_x86::x86_phys_bits accordingly.
++	 */
++	c->x86_phys_bits -= keyid_bits;
++}
++
+ static void early_init_intel(struct cpuinfo_x86 *c)
  {
- 	struct igb_adapter *adapter = q_vector->adapter;
-+	struct e1000_hw *hw = &adapter->hw;
- 	struct skb_shared_hwtstamps ts;
- 	__le64 *regval = (__le64 *)va;
- 	int adjust = 0;
-@@ -891,7 +892,7 @@ int igb_ptp_rx_pktstamp(struct igb_q_vector *q_vector, void *va,
- 	igb_ptp_systim_to_hwtstamp(adapter, &ts, le64_to_cpu(regval[1]));
+ 	u64 misc_enable;
+@@ -329,6 +413,13 @@ static void early_init_intel(struct cpui
+ 	 */
+ 	if (detect_extended_topology_early(c) < 0)
+ 		detect_ht_early(c);
++
++	/*
++	 * Adjust the number of physical bits early because it affects the
++	 * valid bits of the MTRR mask registers.
++	 */
++	if (cpu_has(c, X86_FEATURE_TME))
++		detect_tme_early(c);
+ }
  
- 	/* adjust timestamp for the RX latency based on link speed */
--	if (adapter->hw.mac.type == e1000_i210) {
-+	if (hw->mac.type == e1000_i210 || hw->mac.type == e1000_i211) {
- 		switch (adapter->link_speed) {
- 		case SPEED_10:
- 			adjust = IGB_I210_RX_LATENCY_10;
--- 
-2.43.0
-
+ static void bsp_init_intel(struct cpuinfo_x86 *c)
+@@ -489,90 +580,6 @@ static void srat_detect_node(struct cpui
+ #endif
+ }
+ 
+-#define MSR_IA32_TME_ACTIVATE		0x982
+-
+-/* Helpers to access TME_ACTIVATE MSR */
+-#define TME_ACTIVATE_LOCKED(x)		(x & 0x1)
+-#define TME_ACTIVATE_ENABLED(x)		(x & 0x2)
+-
+-#define TME_ACTIVATE_POLICY(x)		((x >> 4) & 0xf)	/* Bits 7:4 */
+-#define TME_ACTIVATE_POLICY_AES_XTS_128	0
+-
+-#define TME_ACTIVATE_KEYID_BITS(x)	((x >> 32) & 0xf)	/* Bits 35:32 */
+-
+-#define TME_ACTIVATE_CRYPTO_ALGS(x)	((x >> 48) & 0xffff)	/* Bits 63:48 */
+-#define TME_ACTIVATE_CRYPTO_AES_XTS_128	1
+-
+-/* Values for mktme_status (SW only construct) */
+-#define MKTME_ENABLED			0
+-#define MKTME_DISABLED			1
+-#define MKTME_UNINITIALIZED		2
+-static int mktme_status = MKTME_UNINITIALIZED;
+-
+-static void detect_tme(struct cpuinfo_x86 *c)
+-{
+-	u64 tme_activate, tme_policy, tme_crypto_algs;
+-	int keyid_bits = 0, nr_keyids = 0;
+-	static u64 tme_activate_cpu0 = 0;
+-
+-	rdmsrl(MSR_IA32_TME_ACTIVATE, tme_activate);
+-
+-	if (mktme_status != MKTME_UNINITIALIZED) {
+-		if (tme_activate != tme_activate_cpu0) {
+-			/* Broken BIOS? */
+-			pr_err_once("x86/tme: configuration is inconsistent between CPUs\n");
+-			pr_err_once("x86/tme: MKTME is not usable\n");
+-			mktme_status = MKTME_DISABLED;
+-
+-			/* Proceed. We may need to exclude bits from x86_phys_bits. */
+-		}
+-	} else {
+-		tme_activate_cpu0 = tme_activate;
+-	}
+-
+-	if (!TME_ACTIVATE_LOCKED(tme_activate) || !TME_ACTIVATE_ENABLED(tme_activate)) {
+-		pr_info_once("x86/tme: not enabled by BIOS\n");
+-		mktme_status = MKTME_DISABLED;
+-		return;
+-	}
+-
+-	if (mktme_status != MKTME_UNINITIALIZED)
+-		goto detect_keyid_bits;
+-
+-	pr_info("x86/tme: enabled by BIOS\n");
+-
+-	tme_policy = TME_ACTIVATE_POLICY(tme_activate);
+-	if (tme_policy != TME_ACTIVATE_POLICY_AES_XTS_128)
+-		pr_warn("x86/tme: Unknown policy is active: %#llx\n", tme_policy);
+-
+-	tme_crypto_algs = TME_ACTIVATE_CRYPTO_ALGS(tme_activate);
+-	if (!(tme_crypto_algs & TME_ACTIVATE_CRYPTO_AES_XTS_128)) {
+-		pr_err("x86/mktme: No known encryption algorithm is supported: %#llx\n",
+-				tme_crypto_algs);
+-		mktme_status = MKTME_DISABLED;
+-	}
+-detect_keyid_bits:
+-	keyid_bits = TME_ACTIVATE_KEYID_BITS(tme_activate);
+-	nr_keyids = (1UL << keyid_bits) - 1;
+-	if (nr_keyids) {
+-		pr_info_once("x86/mktme: enabled by BIOS\n");
+-		pr_info_once("x86/mktme: %d KeyIDs available\n", nr_keyids);
+-	} else {
+-		pr_info_once("x86/mktme: disabled by BIOS\n");
+-	}
+-
+-	if (mktme_status == MKTME_UNINITIALIZED) {
+-		/* MKTME is usable */
+-		mktme_status = MKTME_ENABLED;
+-	}
+-
+-	/*
+-	 * KeyID bits effectively lower the number of physical address
+-	 * bits.  Update cpuinfo_x86::x86_phys_bits accordingly.
+-	 */
+-	c->x86_phys_bits -= keyid_bits;
+-}
+-
+ static void init_cpuid_fault(struct cpuinfo_x86 *c)
+ {
+ 	u64 msr;
+@@ -708,9 +715,6 @@ static void init_intel(struct cpuinfo_x8
+ 
+ 	init_ia32_feat_ctl(c);
+ 
+-	if (cpu_has(c, X86_FEATURE_TME))
+-		detect_tme(c);
+-
+ 	init_intel_misc_features(c);
+ 
+ 	if (tsx_ctrl_state == TSX_CTRL_ENABLE)
 
 
 
