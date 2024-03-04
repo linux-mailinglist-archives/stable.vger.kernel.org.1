@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-26421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36215870E83
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:44:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A0F9870CBC
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:28:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 500961C213B5
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:44:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AB0B1C24F56
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721557B3E7;
-	Mon,  4 Mar 2024 21:44:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB2F78B4C;
+	Mon,  4 Mar 2024 21:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yt7hutPm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmkLEDHV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB0511193;
-	Mon,  4 Mar 2024 21:44:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DCF310A35;
+	Mon,  4 Mar 2024 21:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588675; cv=none; b=Uw5KYytmWvRpTsQOyRF6PNi/bxUlBrv0Q4d26HP+q/rlNUnIBANtiy0KPUF3QNgZnil8vpWILeX7clly1Pr2i03sja8OaU+L3TGOKw0syDy037hMfnP5saaTkUhvm6ocamGml1ZAdD/gVcfAKLOIwRY742yRpiUHoMDVMQPRMuU=
+	t=1709587688; cv=none; b=OU49KyiDxGEpywDtRXNT11hx7p6kb1GqvekwXmF5+6Wiy2d/jNv1wQ0cFYg/XkhhqFyLdFZilNqlq5iKta/LrnPBZj3bamdKqUHCzIlqKFF+s1w9XKpDo9n//Xva+R8l4SZIctN++DlhBVl+kcR1PS12UOIgWQ4r3A5WPI+kFa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588675; c=relaxed/simple;
-	bh=Qp3YTnZHeuBI73ILo9qpY+AzlIj/v9nDzakzl4Cx3u0=;
+	s=arc-20240116; t=1709587688; c=relaxed/simple;
+	bh=30kZtix8Hk4hQ4XZlKPNOu9JdsjMu85d5TJ6GVRJS7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=igeWHt9MvW0g3aDrmobHolYTPSbxhR4b66a7YmX9/FsCAq8uLvYTh5BKfxy9rPn4JYRDVtHc6M307DmvbsPYbg3/tTHctlL+Q6eoQ5xVNARy3ok+dZRbk4uX+f44/haGNKPL+02mQ4K5BfGLae+kgXQpvj+IrsCrjAHh7QEiHyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yt7hutPm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B76EAC433F1;
-	Mon,  4 Mar 2024 21:44:34 +0000 (UTC)
+	 MIME-Version; b=STQ5Y+RyEJK6Ato0cAHooi8PKIYE486yrKpjWivo/CHG47nAkEJMN/xvMoYbvTKJCOuw67lq0/KHAo00kyL+WVYpuAym4xtFRxUuOOVBcaOzXGPdzoxqYYCb3ITxnXSpLu7r6kHw2AQCLnDPs6MyPDiL0W1//kUAC58EsrB+bUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmkLEDHV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 936B6C433F1;
+	Mon,  4 Mar 2024 21:28:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588675;
-	bh=Qp3YTnZHeuBI73ILo9qpY+AzlIj/v9nDzakzl4Cx3u0=;
+	s=korg; t=1709587687;
+	bh=30kZtix8Hk4hQ4XZlKPNOu9JdsjMu85d5TJ6GVRJS7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yt7hutPmjAh0+3Rb4DRBKPDvzx/HKU4duCCrGRmPPxdLG/MIlusUyZXzGPAu6k/Vm
-	 XT+lTEQyaaOZHBu5WSCRIK3IQ4xjlmDEov7H9R6pjYLVpAOzH/1QIM/RdIR5WrCIfX
-	 zKlRbEnSeyZMNM22p0w0PvVjJOWXsWGlqVFBLjRA=
+	b=CmkLEDHVqCn+jGWXcKpawWPW6imJHxhhZRXKga5+xdFytC2gKtJeet2kyjmTYt3+T
+	 mHf1anoZl/gbYeR3DVXcBA/9cPSzUZB5SBFPeCEfjqw9mLoLCkcAZE0tqLVzK9c1PY
+	 WU1Fbur5uZcjvHerf9OrxCo7niWTxACHAVkpEBFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	kernel test robot <lkp@intel.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 054/215] Bluetooth: qca: add support for WCN7850
+Subject: [PATCH 6.7 052/162] riscv: Fix build error if !CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION
 Date: Mon,  4 Mar 2024 21:21:57 +0000
-Message-ID: <20240304211558.699571531@linuxfoundation.org>
+Message-ID: <20240304211553.524231649@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,208 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit e0c1278ac89b0390fe9a74f673b6f25172292db2 ]
+[ Upstream commit fc325b1a915f6d0c821bfcea21fb3f1354c4323b ]
 
-Add support for the WCN7850 Bluetooth chipset.
+The new riscv specific arch_hugetlb_migration_supported() must be
+guarded with a #ifdef CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION to avoid
+the following build error:
 
-Tested on the SM8550 QRD platform.
+In file included from include/linux/hugetlb.h:851,
+                    from kernel/fork.c:52:
+>> arch/riscv/include/asm/hugetlb.h:15:42: error: static declaration of 'arch_hugetlb_migration_supported' follows non-static declaration
+      15 | #define arch_hugetlb_migration_supported arch_hugetlb_migration_supported
+         |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/hugetlb.h:916:20: note: in expansion of macro 'arch_hugetlb_migration_supported'
+     916 | static inline bool arch_hugetlb_migration_supported(struct hstate *h)
+         |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   arch/riscv/include/asm/hugetlb.h:14:6: note: previous declaration of 'arch_hugetlb_migration_supported' with type 'bool(struct hstate *)' {aka '_Bool(struct hstate *)'}
+      14 | bool arch_hugetlb_migration_supported(struct hstate *h);
+         |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: 7dcd3e014aa7 ("Bluetooth: hci_qca: Set BDA quirk bit if fwnode exists in DT")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202402110258.CV51JlEI-lkp@intel.com/
+Fixes: ce68c035457b ("riscv: Fix arch_hugetlb_migration_supported() for NAPOT")
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240211083640.756583-1-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btqca.c   | 10 ++++++++++
- drivers/bluetooth/btqca.h   |  1 +
- drivers/bluetooth/hci_qca.c | 31 ++++++++++++++++++++++++++++++-
- 3 files changed, 41 insertions(+), 1 deletion(-)
+ arch/riscv/include/asm/hugetlb.h | 2 ++
+ arch/riscv/mm/hugetlbpage.c      | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
-index 8331090af86ea..0211f704a358b 100644
---- a/drivers/bluetooth/btqca.c
-+++ b/drivers/bluetooth/btqca.c
-@@ -631,6 +631,10 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
- 		snprintf(config.fwname, sizeof(config.fwname),
- 			 "qca/hpbtfw%02x.tlv", rom_ver);
- 		break;
-+	case QCA_WCN7850:
-+		snprintf(config.fwname, sizeof(config.fwname),
-+			 "qca/hmtbtfw%02x.tlv", rom_ver);
-+		break;
- 	default:
- 		snprintf(config.fwname, sizeof(config.fwname),
- 			 "qca/rampatch_%08x.bin", soc_ver);
-@@ -679,6 +683,10 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
- 			snprintf(config.fwname, sizeof(config.fwname),
- 				 "qca/hpnv%02x.bin", rom_ver);
- 			break;
-+		case QCA_WCN7850:
-+			snprintf(config.fwname, sizeof(config.fwname),
-+				 "qca/hmtnv%02x.bin", rom_ver);
-+			break;
+diff --git a/arch/riscv/include/asm/hugetlb.h b/arch/riscv/include/asm/hugetlb.h
+index 20f9c3ba23414..22deb7a2a6ec4 100644
+--- a/arch/riscv/include/asm/hugetlb.h
++++ b/arch/riscv/include/asm/hugetlb.h
+@@ -11,8 +11,10 @@ static inline void arch_clear_hugepage_flags(struct page *page)
+ }
+ #define arch_clear_hugepage_flags arch_clear_hugepage_flags
  
- 		default:
- 			snprintf(config.fwname, sizeof(config.fwname),
-@@ -697,6 +705,7 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
- 	case QCA_QCA6390:
- 	case QCA_WCN6750:
- 	case QCA_WCN6855:
-+	case QCA_WCN7850:
- 		err = qca_disable_soc_logging(hdev);
- 		if (err < 0)
- 			return err;
-@@ -731,6 +740,7 @@ int qca_uart_setup(struct hci_dev *hdev, uint8_t baudrate,
- 	case QCA_WCN3991:
- 	case QCA_WCN6750:
- 	case QCA_WCN6855:
-+	case QCA_WCN7850:
- 		/* get fw build info */
- 		err = qca_read_fw_build_info(hdev);
- 		if (err < 0)
-diff --git a/drivers/bluetooth/btqca.h b/drivers/bluetooth/btqca.h
-index fe51c632d7720..03bff5c0059de 100644
---- a/drivers/bluetooth/btqca.h
-+++ b/drivers/bluetooth/btqca.h
-@@ -149,6 +149,7 @@ enum qca_btsoc_type {
- 	QCA_QCA6390,
- 	QCA_WCN6750,
- 	QCA_WCN6855,
-+	QCA_WCN7850,
- };
++#ifdef CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION
+ bool arch_hugetlb_migration_supported(struct hstate *h);
+ #define arch_hugetlb_migration_supported arch_hugetlb_migration_supported
++#endif
  
- #if IS_ENABLED(CONFIG_BT_QCA)
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index e6ead996948a8..43abdaf92a0ed 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -1330,6 +1330,7 @@ static int qca_set_baudrate(struct hci_dev *hdev, uint8_t baudrate)
- 	case QCA_WCN3998:
- 	case QCA_WCN6750:
- 	case QCA_WCN6855:
-+	case QCA_WCN7850:
- 		usleep_range(1000, 10000);
- 		break;
+ #ifdef CONFIG_RISCV_ISA_SVNAPOT
+ #define __HAVE_ARCH_HUGE_PTE_CLEAR
+diff --git a/arch/riscv/mm/hugetlbpage.c b/arch/riscv/mm/hugetlbpage.c
+index e7b69281875b2..fbe918801667d 100644
+--- a/arch/riscv/mm/hugetlbpage.c
++++ b/arch/riscv/mm/hugetlbpage.c
+@@ -426,10 +426,12 @@ bool __init arch_hugetlb_valid_size(unsigned long size)
+ 	return __hugetlb_valid_size(size);
+ }
  
-@@ -1415,6 +1416,7 @@ static int qca_check_speeds(struct hci_uart *hu)
- 	case QCA_WCN3998:
- 	case QCA_WCN6750:
- 	case QCA_WCN6855:
-+	case QCA_WCN7850:
- 		if (!qca_get_speed(hu, QCA_INIT_SPEED) &&
- 		    !qca_get_speed(hu, QCA_OPER_SPEED))
- 			return -EINVAL;
-@@ -1456,6 +1458,7 @@ static int qca_set_speed(struct hci_uart *hu, enum qca_speed_type speed_type)
- 		case QCA_WCN3998:
- 		case QCA_WCN6750:
- 		case QCA_WCN6855:
-+		case QCA_WCN7850:
- 			hci_uart_set_flow_control(hu, true);
- 			break;
- 
-@@ -1489,6 +1492,7 @@ static int qca_set_speed(struct hci_uart *hu, enum qca_speed_type speed_type)
- 		case QCA_WCN3998:
- 		case QCA_WCN6750:
- 		case QCA_WCN6855:
-+		case QCA_WCN7850:
- 			hci_uart_set_flow_control(hu, false);
- 			break;
- 
-@@ -1756,6 +1760,7 @@ static int qca_power_on(struct hci_dev *hdev)
- 	case QCA_WCN3998:
- 	case QCA_WCN6750:
- 	case QCA_WCN6855:
-+	case QCA_WCN7850:
- 		ret = qca_regulator_init(hu);
- 		break;
- 
-@@ -1813,6 +1818,10 @@ static int qca_setup(struct hci_uart *hu)
- 		soc_name = "wcn6855";
- 		break;
- 
-+	case QCA_WCN7850:
-+		soc_name = "wcn7850";
-+		break;
-+
- 	default:
- 		soc_name = "ROME/QCA6390";
- 	}
-@@ -1834,6 +1843,7 @@ static int qca_setup(struct hci_uart *hu)
- 	case QCA_WCN3998:
- 	case QCA_WCN6750:
- 	case QCA_WCN6855:
-+	case QCA_WCN7850:
- 		set_bit(HCI_QUIRK_USE_BDADDR_PROPERTY, &hdev->quirks);
- 		hci_set_aosp_capable(hdev);
- 
-@@ -1863,6 +1873,7 @@ static int qca_setup(struct hci_uart *hu)
- 	case QCA_WCN3998:
- 	case QCA_WCN6750:
- 	case QCA_WCN6855:
-+	case QCA_WCN7850:
- 		break;
- 
- 	default:
-@@ -2016,6 +2027,20 @@ static const struct qca_device_data qca_soc_data_wcn6855 = {
- 	.capabilities = QCA_CAP_WIDEBAND_SPEECH | QCA_CAP_VALID_LE_STATES,
- };
- 
-+static const struct qca_device_data qca_soc_data_wcn7850 __maybe_unused = {
-+	.soc_type = QCA_WCN7850,
-+	.vregs = (struct qca_vreg []) {
-+		{ "vddio", 5000 },
-+		{ "vddaon", 26000 },
-+		{ "vdddig", 126000 },
-+		{ "vddrfa0p8", 102000 },
-+		{ "vddrfa1p2", 257000 },
-+		{ "vddrfa1p9", 302000 },
-+	},
-+	.num_vregs = 6,
-+	.capabilities = QCA_CAP_WIDEBAND_SPEECH | QCA_CAP_VALID_LE_STATES,
-+};
-+
- static void qca_power_shutdown(struct hci_uart *hu)
++#ifdef CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION
+ bool arch_hugetlb_migration_supported(struct hstate *h)
  {
- 	struct qca_serdev *qcadev;
-@@ -2199,6 +2224,7 @@ static int qca_serdev_probe(struct serdev_device *serdev)
- 	case QCA_WCN3998:
- 	case QCA_WCN6750:
- 	case QCA_WCN6855:
-+	case QCA_WCN7850:
- 		qcadev->bt_power = devm_kzalloc(&serdev->dev,
- 						sizeof(struct qca_power),
- 						GFP_KERNEL);
-@@ -2228,7 +2254,8 @@ static int qca_serdev_probe(struct serdev_device *serdev)
- 					       GPIOD_IN);
- 		if (IS_ERR_OR_NULL(qcadev->sw_ctrl) &&
- 		    (data->soc_type == QCA_WCN6750 ||
--		     data->soc_type == QCA_WCN6855))
-+		     data->soc_type == QCA_WCN6855 ||
-+		     data->soc_type == QCA_WCN7850))
- 			dev_warn(&serdev->dev, "failed to acquire SW_CTRL gpio\n");
+ 	return __hugetlb_valid_size(huge_page_size(h));
+ }
++#endif
  
- 		qcadev->susclk = devm_clk_get_optional(&serdev->dev, NULL);
-@@ -2307,6 +2334,7 @@ static void qca_serdev_remove(struct serdev_device *serdev)
- 	case QCA_WCN3998:
- 	case QCA_WCN6750:
- 	case QCA_WCN6855:
-+	case QCA_WCN7850:
- 		if (power->vregs_on) {
- 			qca_power_shutdown(&qcadev->serdev_hu);
- 			break;
-@@ -2499,6 +2527,7 @@ static const struct of_device_id qca_bluetooth_of_match[] = {
- 	{ .compatible = "qcom,wcn3998-bt", .data = &qca_soc_data_wcn3998},
- 	{ .compatible = "qcom,wcn6750-bt", .data = &qca_soc_data_wcn6750},
- 	{ .compatible = "qcom,wcn6855-bt", .data = &qca_soc_data_wcn6855},
-+	{ .compatible = "qcom,wcn7850-bt", .data = &qca_soc_data_wcn7850},
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, qca_bluetooth_of_match);
+ #ifdef CONFIG_CONTIG_ALLOC
+ static __init int gigantic_pages_init(void)
 -- 
 2.43.0
 
