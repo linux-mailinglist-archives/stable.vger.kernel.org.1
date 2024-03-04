@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-26111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21560870D28
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 305E1870ED9
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:47:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF2EF28DB96
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BFC5EB2767F
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:47:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C3E27C0AB;
-	Mon,  4 Mar 2024 21:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45933200D4;
+	Mon,  4 Mar 2024 21:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qAHqwycE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zHvQRUwJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358F87C081;
-	Mon,  4 Mar 2024 21:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030091EB5A;
+	Mon,  4 Mar 2024 21:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587871; cv=none; b=o6lYu/U7lJl4wdeeB1scrkZLaAg4LkkUU6LOCZh9DqfogYOYYm2QUjL9iQc8+1Yc4OAM7TB0qrSzFWxDf1iOK40BVtp820FJGqkq9QoMF/y46SI46c73nKl+YZ0PWQeH4+qhz4SKgcJeSOYHnsuTmmc5OfgyWEEcLVmGm9rRbYM=
+	t=1709588858; cv=none; b=uKs7NO4wK//qFwYWvi/wbwYhVaGf9O1+RkuB0H5XLyn9fHZ23h5K6I8ud4gbf6apIL47xkqzg6S2zVrHX52AviPRt6vbnoJdzBbzy3alGJUFs83KNER0eV3OA1HknvPELG/BUsXm7LZXKIQIeZ/lymc15+NA7vKL3CL9qqcH7JM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587871; c=relaxed/simple;
-	bh=e/sDbBwnN/kvzg7RtasP2Pvq2iwQZzCeDVid1W691F8=;
+	s=arc-20240116; t=1709588858; c=relaxed/simple;
+	bh=DBQhIyxAiatgLWisGUKuuddHyqF5Rp6Hm/DFuz8pPmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WhZ7nh8zD140le8+lKrs/VBMXlrSIOXjZD1H9ECnwMoApwakpR5m7Wzc1DxF0g9eFwb9qCopRzcQL6UlR3cXnN7ez6z0wcAHp8FS3Jw2vt4ywZCcrSl3sJn8Q1nxPhaTrZ955ImsJDFNI0htjJ/bfUT9AP/CQZFlM/faSK9B72M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qAHqwycE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F6D1C43390;
-	Mon,  4 Mar 2024 21:31:10 +0000 (UTC)
+	 MIME-Version; b=PvwlK6naYQ26dMf/yAM8sB8hWGunT/712YFDobxPKT0aYb78J0aB2h3XYbotXmC2z+rm4vSt/myFzbVwvumUvIpFS8PagyMkGy6KSYqt9rOLZ774zJ/LuzShBVPzDLvjQyKWZ0gEl/QsPCGfvIsUjmlTmjs7oQvnzrIEXHr2hT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zHvQRUwJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851DAC433F1;
+	Mon,  4 Mar 2024 21:47:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587870;
-	bh=e/sDbBwnN/kvzg7RtasP2Pvq2iwQZzCeDVid1W691F8=;
+	s=korg; t=1709588857;
+	bh=DBQhIyxAiatgLWisGUKuuddHyqF5Rp6Hm/DFuz8pPmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qAHqwycEVjN0m1sdjYr+6xKIic66UYt2SGEvAGaDFMY2tFStCWbW7aJS9ZBRInwfN
-	 6M9mSz8cxfF5KCTgusqoqiS4CpcxKexAjSP2oYQj1dCA0BOcml1Kucj7G5suoaZ8DG
-	 UcGxJ1uf61EMGPRlLoOBYLZ+NBL+UmJOwVxjBxP8=
+	b=zHvQRUwJy6PMfUa9gfnVh64188tHOi8+O84FsBWQ2U2okH+ULrlCfAuBAwS/JyJUN
+	 JU7TftuVPXbXKBysdvNHf5JwY2WjN1USY6eKQ6ZakN9nCu99mpxzmrEm78DGW0IP/g
+	 uXpBWAX07UvLg241XAa61c4zBKBCLZudvm8qZIdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
-	Tadeusz Struk <tstruk@gigaio.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.7 097/162] dmaengine: ptdma: use consistent DMA masks
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 099/215] mptcp: fix duplicate subflow creation
 Date: Mon,  4 Mar 2024 21:22:42 +0000
-Message-ID: <20240304211554.942902966@linuxfoundation.org>
+Message-ID: <20240304211600.175818877@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tadeusz Struk <tstruk@gigaio.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit df2515a17914ecfc2a0594509deaf7fcb8d191ac upstream.
+commit 045e9d812868a2d80b7a57b224ce8009444b7bbc upstream.
 
-The PTDMA driver sets DMA masks in two different places for the same
-device inconsistently. First call is in pt_pci_probe(), where it uses
-48bit mask. The second call is in pt_dmaengine_register(), where it
-uses a 64bit mask. Using 64bit dma mask causes IO_PAGE_FAULT errors
-on DMA transfers between main memory and other devices.
-Without the extra call it works fine. Additionally the second call
-doesn't check the return value so it can silently fail.
-Remove the superfluous dma_set_mask() call and only use 48bit mask.
+Fullmesh endpoints could end-up unexpectedly generating duplicate
+subflows - same local and remote addresses - when multiple incoming
+ADD_ADDR are processed before the PM creates the subflow for the local
+endpoints.
 
+Address the issue explicitly checking for duplicates at subflow
+creation time.
+
+To avoid a quadratic computational complexity, track the unavailable
+remote address ids in a temporary bitmap and initialize such bitmap
+with the remote ids of all the existing subflows matching the local
+address currently processed.
+
+The above allows additionally replacing the existing code checking
+for duplicate entry in the current set with a simple bit test
+operation.
+
+Fixes: 2843ff6f36db ("mptcp: remote addresses fullmesh")
 Cc: stable@vger.kernel.org
-Fixes: b0b4a6b10577 ("dmaengine: ptdma: register PTDMA controller as a DMA resource")
-Reviewed-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
-Signed-off-by: Tadeusz Struk <tstruk@gigaio.com>
-Link: https://lore.kernel.org/r/20240222163053.13842-1-tstruk@gigaio.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/435
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/ptdma/ptdma-dmaengine.c |    2 --
- 1 file changed, 2 deletions(-)
+ net/mptcp/pm_netlink.c |   36 +++++++++++++++++++-----------------
+ 1 file changed, 19 insertions(+), 17 deletions(-)
 
---- a/drivers/dma/ptdma/ptdma-dmaengine.c
-+++ b/drivers/dma/ptdma/ptdma-dmaengine.c
-@@ -385,8 +385,6 @@ int pt_dmaengine_register(struct pt_devi
- 	chan->vc.desc_free = pt_do_cleanup;
- 	vchan_init(&chan->vc, dma_dev);
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -407,23 +407,12 @@ void mptcp_pm_free_anno_list(struct mptc
+ 	}
+ }
  
--	dma_set_mask_and_coherent(pt->dev, DMA_BIT_MASK(64));
+-static bool lookup_address_in_vec(const struct mptcp_addr_info *addrs, unsigned int nr,
+-				  const struct mptcp_addr_info *addr)
+-{
+-	int i;
 -
- 	ret = dma_async_device_register(dma_dev);
- 	if (ret)
- 		goto err_reg;
+-	for (i = 0; i < nr; i++) {
+-		if (addrs[i].id == addr->id)
+-			return true;
+-	}
+-
+-	return false;
+-}
+-
+ /* Fill all the remote addresses into the array addrs[],
+  * and return the array size.
+  */
+-static unsigned int fill_remote_addresses_vec(struct mptcp_sock *msk, bool fullmesh,
++static unsigned int fill_remote_addresses_vec(struct mptcp_sock *msk,
++					      struct mptcp_addr_info *local,
++					      bool fullmesh,
+ 					      struct mptcp_addr_info *addrs)
+ {
+ 	bool deny_id0 = READ_ONCE(msk->pm.remote_deny_join_id0);
+@@ -446,6 +435,16 @@ static unsigned int fill_remote_addresse
+ 		msk->pm.subflows++;
+ 		addrs[i++] = remote;
+ 	} else {
++		DECLARE_BITMAP(unavail_id, MPTCP_PM_MAX_ADDR_ID + 1);
++
++		/* Forbid creation of new subflows matching existing
++		 * ones, possibly already created by incoming ADD_ADDR
++		 */
++		bitmap_zero(unavail_id, MPTCP_PM_MAX_ADDR_ID + 1);
++		mptcp_for_each_subflow(msk, subflow)
++			if (READ_ONCE(subflow->local_id) == local->id)
++				__set_bit(subflow->remote_id, unavail_id);
++
+ 		mptcp_for_each_subflow(msk, subflow) {
+ 			ssk = mptcp_subflow_tcp_sock(subflow);
+ 			remote_address((struct sock_common *)ssk, &addrs[i]);
+@@ -453,8 +452,11 @@ static unsigned int fill_remote_addresse
+ 			if (deny_id0 && !addrs[i].id)
+ 				continue;
+ 
+-			if (!lookup_address_in_vec(addrs, i, &addrs[i]) &&
+-			    msk->pm.subflows < subflows_max) {
++			if (msk->pm.subflows < subflows_max) {
++				/* forbid creating multiple address towards
++				 * this id
++				 */
++				__set_bit(addrs[i].id, unavail_id);
+ 				msk->pm.subflows++;
+ 				i++;
+ 			}
+@@ -603,7 +605,7 @@ static void mptcp_pm_create_subflow_or_s
+ 		fullmesh = !!(local->flags & MPTCP_PM_ADDR_FLAG_FULLMESH);
+ 
+ 		msk->pm.local_addr_used++;
+-		nr = fill_remote_addresses_vec(msk, fullmesh, addrs);
++		nr = fill_remote_addresses_vec(msk, &local->addr, fullmesh, addrs);
+ 		if (nr)
+ 			__clear_bit(local->addr.id, msk->pm.id_avail_bitmap);
+ 		spin_unlock_bh(&msk->pm.lock);
 
 
 
