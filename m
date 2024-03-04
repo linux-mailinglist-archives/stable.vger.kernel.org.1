@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-26386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 745B8870E5B
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:43:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64237870C85
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:26:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 122A4B26397
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:43:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F08FDB24E7C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85FFE8F58;
-	Mon,  4 Mar 2024 21:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0426C7A736;
+	Mon,  4 Mar 2024 21:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZHzehI0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aXHBxQqp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EA8200D4;
-	Mon,  4 Mar 2024 21:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60B27994A;
+	Mon,  4 Mar 2024 21:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588586; cv=none; b=UjyyhTshGng3wf+zUdX3sLwZYob3NyHFofEAWT9LMl6cfQbrrRawPJfIATP3roiN7txLGzLFChBQWqVbl+eFC6N/zpL4U9DnTJds8BkT3AIdm6oTikftE4eWTEsnuKpjlJaHlccDdm3Ep2l45ubVWnDl4lrITgxsMVxeKvrwmAo=
+	t=1709587591; cv=none; b=fEZBfYZNPbC3v5dYqi0/mirIRaP0yk7O+Mor5y//0zCBcvUhVoDx+zd9agrQqEw1R5fEBzR3W4MtdfIkt6Cm6nzoaJckuW8MMNJuxOx4hQ1f2yVHOdehGFHi9IlbxI1BQOrDDhgmv05Vc43JSL0DUUEWFWMxco+6hufcWKtnGG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588586; c=relaxed/simple;
-	bh=SJiYvQhR0fX4uIAb4jttxf/CsuGsjzRtLXL8SdbbN28=;
+	s=arc-20240116; t=1709587591; c=relaxed/simple;
+	bh=Yy4ksJBnad2P4DFIerOIZXziqoSSBaZGg/HStVAm4ew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dFJ66DBp/cHWRSG7f7DenH3S73HMOhWXw8YIri3+ngZmfCSQy1mW/9x/W12dZ9pufV+aNLJ+AOZCQH0T3QbtpvVTRpkqdrzriJXV9JOpMPbl3CbaBkjZICP3Dh9pEw5XPuoP5FbxAfRLx44uBW/czU5FUsXs+noaO1kuF/BFs5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZHzehI0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86271C433C7;
-	Mon,  4 Mar 2024 21:43:05 +0000 (UTC)
+	 MIME-Version; b=eBSDg50sRsdHKWk68OofnxoGFlZ2C4NA36EiqAlVS3eSpZml+soLzp0VNfWtaCN50/FYLbd3VLHs5mtSxvFUkm8+VwqRwByaKQZpd3R/H+zOJW/6i4PKYncWo2h4SQtCth6MmHJMtmWrQQdVmo+a72G7lUfXDFZBYau/Bju1nig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aXHBxQqp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 401B5C43390;
+	Mon,  4 Mar 2024 21:26:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588585;
-	bh=SJiYvQhR0fX4uIAb4jttxf/CsuGsjzRtLXL8SdbbN28=;
+	s=korg; t=1709587591;
+	bh=Yy4ksJBnad2P4DFIerOIZXziqoSSBaZGg/HStVAm4ew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YZHzehI0l5/F9mJNh+28AJM0t2z3ZFcRSsQw+8NhxwCT4yxG5mFpxJCijhO6A/FWT
-	 vd9bSfUNbz/wkhbrdH5OjipYCJIFygjZAxKnprWb/8LwW5VkqacOxIo9TYpALCszcZ
-	 dk48lQVR86XkXp6LEckzOdOKpHVc3hX0IOwhJndE=
+	b=aXHBxQqp4o47Z/a1Vh/G1FOnAZ0hfu3uMnOhUvaaGfDPt1ulEzlTcj/pNk+7kTgFP
+	 1VdDKoFyyA2W1LX7Z5fm8RRGWPX7xDRKrwUWLGRP7bSQqa17Mm6r+gDyaJJ80TH/cg
+	 XwYBTU70wDry6aPMVD4i4hCeWnPsUTnFIK81jgRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 009/215] mlxsw: spectrum_acl_tcam: Make fini symmetric to init
+	Igor Bagnucki <igor.bagnucki@intel.com>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.7 007/162] ice: fix pin phase adjust updates on PF reset
 Date: Mon,  4 Mar 2024 21:21:12 +0000
-Message-ID: <20240304211557.307078428@linuxfoundation.org>
+Message-ID: <20240304211552.070585503@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,43 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
 
-[ Upstream commit 61fe3b9102ac84ba479ab84d8f5454af2e21e468 ]
+[ Upstream commit ee89921da471edcb4b1e67f5bbfedddf39749782 ]
 
-Move mutex_destroy() to the end to make the function symmetric with
-mlxsw_sp_acl_tcam_init(). No functional changes.
+Do not allow to set phase adjust value for a pin if PF reset is in
+progress, this would cause confusing netlink extack errors as the firmware
+cannot process the request properly during the reset time.
 
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Return (-EBUSY) and report extack error for the user who tries configure
+pin phase adjust during the reset time.
+
+Test by looping execution of below steps until netlink error appears:
+- perform PF reset
+$ echo 1 > /sys/class/net/<ice PF>/device/reset
+- change pin phase adjust value:
+$ ./tools/net/ynl/cli.py --spec Documentation/netlink/specs/dpll.yaml \
+	--do pin-set --json '{"id":0, "phase-adjust":1000}'
+
+Fixes: 90e1c90750d7 ("ice: dpll: implement phase related callbacks")
+Reviewed-by: Igor Bagnucki <igor.bagnucki@intel.com>
+Signed-off-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_dpll.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-index dc2e204bcd727..2107de4e9d99b 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
-@@ -86,10 +86,10 @@ void mlxsw_sp_acl_tcam_fini(struct mlxsw_sp *mlxsw_sp,
- {
- 	const struct mlxsw_sp_acl_tcam_ops *ops = mlxsw_sp->acl_tcam_ops;
+diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+index bcb9b9c13aabc..2b657d43c769d 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dpll.c
++++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+@@ -988,6 +988,9 @@ ice_dpll_pin_phase_adjust_set(const struct dpll_pin *pin, void *pin_priv,
+ 	u8 flag, flags_en = 0;
+ 	int ret;
  
--	mutex_destroy(&tcam->lock);
- 	ops->fini(mlxsw_sp, tcam->priv);
- 	bitmap_free(tcam->used_groups);
- 	bitmap_free(tcam->used_regions);
-+	mutex_destroy(&tcam->lock);
- }
- 
- int mlxsw_sp_acl_tcam_priority_get(struct mlxsw_sp *mlxsw_sp,
++	if (ice_dpll_is_reset(pf, extack))
++		return -EBUSY;
++
+ 	mutex_lock(&pf->dplls.lock);
+ 	switch (type) {
+ 	case ICE_DPLL_PIN_TYPE_INPUT:
 -- 
 2.43.0
 
