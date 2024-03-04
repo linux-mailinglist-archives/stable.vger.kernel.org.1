@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-26070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EC08870CE3
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:29:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9327870E9E
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:45:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 549CE1F2315D
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:29:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D00AA1C21AFB
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:45:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF6813B795;
-	Mon,  4 Mar 2024 21:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF2A7BAF5;
+	Mon,  4 Mar 2024 21:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eilz6cps"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zU8qPbi/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DBD71F60A;
-	Mon,  4 Mar 2024 21:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C68978B47;
+	Mon,  4 Mar 2024 21:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587766; cv=none; b=jS8S8q9xkKtj7u9K/dF11EZUc7jtrsiKUshzACVpoiq2xiCPEw2IFhN6AqqYZTjTWb/c4N6uvtHsZakuA2PKcgAQZCpA/k5yb0M8+a/DrUmFElQhhveRVKo/avwLEZp9fEFLWXV1cGueFxj2PK9eJga25NIC66WJUCijeBc8hlc=
+	t=1709588730; cv=none; b=bWB9NHFzk5aZqxvOo9FWgw3hcDbpaXRuqJdBIRFkjBRDza4zGjk8nO2JYzf57hggfd7+poLMOPFnLI6UEDHb4tWDjMTo0nGZcjz8T+CUvxUxscBjjv6IRZ84l6eYvehsOHLEfxbNHhxaeXfqPUjv9SKWbHbaoDJAfwo+GIbjoBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587766; c=relaxed/simple;
-	bh=tTCTzMgLzAIkStGicEz0hSjAZhzOg5ZbnYM/KjFpto4=;
+	s=arc-20240116; t=1709588730; c=relaxed/simple;
+	bh=nN9/CObQss8LsizPgNZ82hvmTHj+X2XHJuZSNETqySc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pE0c9u7QnAifLLiYqksnNUSeLE9Zp+gX2bSnHje3zMCsPZ7yqSoJGEfZ8ZfXVaGDdoS9/mbGHwLRoItHXpBbK+Qr7IAy7aEshd6VVVgJUzTtNFQ/2HQ3uh36ka1SIHvkbOz216FmQ9Am3WFB1/YJfqAB6RP60iNy/CcFDVU+Kyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eilz6cps; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 204F7C433F1;
-	Mon,  4 Mar 2024 21:29:25 +0000 (UTC)
+	 MIME-Version; b=YZXk8AzzSi8krbCep5qauan997+DuCDvnhBBUm5xYz/GbhSlv5xc0TCxxa0eHNpmRgatSDYYDubJtxgmIylp3hGEpYWGhAmDzVM2soE3mmr129dheaNW3dbsdbGjTQGh3PPYyizOInnyjTv6oyjhYY72SMnwc9cqzJZoBzumSnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zU8qPbi/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2898C433C7;
+	Mon,  4 Mar 2024 21:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587766;
-	bh=tTCTzMgLzAIkStGicEz0hSjAZhzOg5ZbnYM/KjFpto4=;
+	s=korg; t=1709588730;
+	bh=nN9/CObQss8LsizPgNZ82hvmTHj+X2XHJuZSNETqySc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eilz6cpsnQt66f3rPmszU8GSOTxJBdrp8LXufAlyfOr0Xxsaur0KJmz1XS5T3F76X
-	 U39M9STxyTMt6SqqhGFUUeba7o4/CHAvEFjhDlJqKmWm4EJOHyMgvigkP8HsRc2V2z
-	 Lvp7Y1PBDXV0hqDjAAbsOchUYZGaKx6ItaF9VGrI=
+	b=zU8qPbi/ELzLmRr09jKGUCeWA3mzjaQ7viURTBVacRj/bNJk9vU/kI6d/N8AeDcGi
+	 zJKfgS24Jh+goX527GxHgonpt0YeRxHTNHOWjDGW1wdzj2zFYZZjS82QSb1XnrFS1T
+	 7xyKNoIiPStmVVWLtkIkOQyyi9UNwfiOlB69sYdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Qingqing Zhuo <Qingqing.Zhuo@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 064/162] drm/amd/display: Prevent potential buffer overflow in map_hw_resources
-Date: Mon,  4 Mar 2024 21:22:09 +0000
-Message-ID: <20240304211553.900522211@linuxfoundation.org>
+Subject: [PATCH 6.1 067/215] drm/tegra: Remove existing framebuffer only if we support display
+Date: Mon,  4 Mar 2024 21:22:10 +0000
+Message-ID: <20240304211559.109048773@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,60 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Thierry Reding <treding@nvidia.com>
 
-[ Upstream commit 0f8ca019544a252d1afb468ce840c6dcbac73af4 ]
+[ Upstream commit 86bf8cfda6d2a6720fa2e6e676c98f0882c9d3d7 ]
 
-Adds a check in the map_hw_resources function to prevent a potential
-buffer overflow. The function was accessing arrays using an index that
-could potentially be greater than the size of the arrays, leading to a
-buffer overflow.
+Tegra DRM doesn't support display on Tegra234 and later, so make sure
+not to remove any existing framebuffers in that case.
 
-Adds a check to ensure that the index is within the bounds of the
-arrays. If the index is out of bounds, an error message is printed and
-break it will continue execution with just ignoring extra data early to
-prevent the buffer overflow.
+v2: - add comments explaining how this situation can come about
+    - clear DRIVER_MODESET and DRIVER_ATOMIC feature bits
 
-Reported by smatch:
-drivers/gpu/drm/amd/amdgpu/../display/dc/dml2/dml2_wrapper.c:79 map_hw_resources() error: buffer overflow 'dml2->v20.scratch.dml_to_dc_pipe_mapping.disp_cfg_to_stream_id' 6 <= 7
-drivers/gpu/drm/amd/amdgpu/../display/dc/dml2/dml2_wrapper.c:81 map_hw_resources() error: buffer overflow 'dml2->v20.scratch.dml_to_dc_pipe_mapping.disp_cfg_to_plane_id' 6 <= 7
-
-Fixes: 7966f319c66d ("drm/amd/display: Introduce DML2")
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Qingqing Zhuo <Qingqing.Zhuo@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Suggested-by: Roman Li <roman.li@amd.com>
-Reviewed-by: Roman Li <roman.li@amd.com>
-Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 6848c291a54f ("drm/aperture: Convert drivers to aperture interfaces")
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240223150333.1401582-1-thierry.reding@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/tegra/drm.c | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
-index 8f231418870f2..c62b61ac45d27 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
-@@ -76,6 +76,11 @@ static void map_hw_resources(struct dml2_context *dml2,
- 			in_out_display_cfg->hw.DLGRefClkFreqMHz = 50;
- 		}
- 		for (j = 0; j < mode_support_info->DPPPerSurface[i]; j++) {
-+			if (i >= __DML2_WRAPPER_MAX_STREAMS_PLANES__) {
-+				dml_print("DML::%s: Index out of bounds: i=%d, __DML2_WRAPPER_MAX_STREAMS_PLANES__=%d\n",
-+					  __func__, i, __DML2_WRAPPER_MAX_STREAMS_PLANES__);
-+				break;
-+			}
- 			dml2->v20.scratch.dml_to_dc_pipe_mapping.dml_pipe_idx_to_stream_id[num_pipes] = dml2->v20.scratch.dml_to_dc_pipe_mapping.disp_cfg_to_stream_id[i];
- 			dml2->v20.scratch.dml_to_dc_pipe_mapping.dml_pipe_idx_to_stream_id_valid[num_pipes] = true;
- 			dml2->v20.scratch.dml_to_dc_pipe_mapping.dml_pipe_idx_to_plane_id[num_pipes] = dml2->v20.scratch.dml_to_dc_pipe_mapping.disp_cfg_to_plane_id[i];
+diff --git a/drivers/gpu/drm/tegra/drm.c b/drivers/gpu/drm/tegra/drm.c
+index 5fc55b9777cbf..6806779f8ecce 100644
+--- a/drivers/gpu/drm/tegra/drm.c
++++ b/drivers/gpu/drm/tegra/drm.c
+@@ -1252,9 +1252,26 @@ static int host1x_drm_probe(struct host1x_device *dev)
+ 
+ 	drm_mode_config_reset(drm);
+ 
+-	err = drm_aperture_remove_framebuffers(&tegra_drm_driver);
+-	if (err < 0)
+-		goto hub;
++	/*
++	 * Only take over from a potential firmware framebuffer if any CRTCs
++	 * have been registered. This must not be a fatal error because there
++	 * are other accelerators that are exposed via this driver.
++	 *
++	 * Another case where this happens is on Tegra234 where the display
++	 * hardware is no longer part of the host1x complex, so this driver
++	 * will not expose any modesetting features.
++	 */
++	if (drm->mode_config.num_crtc > 0) {
++		err = drm_aperture_remove_framebuffers(&tegra_drm_driver);
++		if (err < 0)
++			goto hub;
++	} else {
++		/*
++		 * Indicate to userspace that this doesn't expose any display
++		 * capabilities.
++		 */
++		drm->driver_features &= ~(DRIVER_MODESET | DRIVER_ATOMIC);
++	}
+ 
+ 	err = tegra_drm_fb_init(drm);
+ 	if (err < 0)
 -- 
 2.43.0
 
