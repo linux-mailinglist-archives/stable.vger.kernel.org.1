@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-26295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5441B870DEE
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:39:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D74B870D09
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:30:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C06321F21423
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:39:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECCE128BF62
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:30:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 012604086B;
-	Mon,  4 Mar 2024 21:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC287BB10;
+	Mon,  4 Mar 2024 21:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZNlvyZ0I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PF2HYhJ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4AC68F58;
-	Mon,  4 Mar 2024 21:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C227A70D;
+	Mon,  4 Mar 2024 21:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588350; cv=none; b=m+KX6ReepRNJZJV2rWQ1Laa9Jap5ZYxvJFH7Hj+pP2W9mPLqXqJf9xfMncMFQBKVRHp5RubPWuXzCACh9xn1GgC0VrqFwNrlMLeRQmeb7DxgPXKSDQNH2y8Qla7ezrNvwuRAxTrtXly9S8D5SvV0fTUlk2z83XlP7Rum0aTmmIQ=
+	t=1709587826; cv=none; b=ofnIbtapvX/IiIk++bDPamaLgxv9Zq5EGbJ/KEz0wxmMIpsY4XJRqQYSrjmG0lorwUUbu0Q33E4pDByBf2JtmUqUzs9Ir4AZ5jGrud5xNYSWSWQSVZUALdDdILl3xsYkrKQsCnZD5KgfJsvtrbsFM2wr9PVWT7Il5sYSOcidDm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588350; c=relaxed/simple;
-	bh=DbwPAvBXqGCtNHcdP7WfSnRAsbynOSQ9VmkHtuvkcQE=;
+	s=arc-20240116; t=1709587826; c=relaxed/simple;
+	bh=cNkDu4OpqAtoLVP6cmdAV2Ytn5A0SuIwmevq4Z8JRjU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m8rR+iW6bxNggFL+CCjFUUQPIya8KZRtJjJObtjFdCH5XG7qaj94QkFi+ABByLFH0lc1dnqH3UBg6fdDAX5Efys/krl5Ag+L8HmNLrxOqskXs8mQQou3Y4rJqoed+UP9gV2hVyYJgRNl1LjZ1EPxfSAUGd9ZdgjCVkN7s8xRtLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZNlvyZ0I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48D42C433F1;
-	Mon,  4 Mar 2024 21:39:10 +0000 (UTC)
+	 MIME-Version; b=GArnm3mgH7kXOolQOCPpOToWl1VFjnEz4RguRWxSXWIkv3dlsXeJ5KNkey1PmatMfhjpGfVhtZstoqouxO/QvJOjuDtzG2c2gGuhupewQUB3J5njPrHHl9Z3GPAuDPeOMQ8ByouDlsd0RZ3DugZJbXdLlGyyIwZPr8nV5nijCEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PF2HYhJ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A2C1C433F1;
+	Mon,  4 Mar 2024 21:30:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588350;
-	bh=DbwPAvBXqGCtNHcdP7WfSnRAsbynOSQ9VmkHtuvkcQE=;
+	s=korg; t=1709587826;
+	bh=cNkDu4OpqAtoLVP6cmdAV2Ytn5A0SuIwmevq4Z8JRjU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZNlvyZ0IgvLtrvm6A7Opfn2hKaQeW1XFlBHLz+OXOtAIkhqNyd/9/ttDxSfjFa9L9
-	 J+vZwghMowdqXKg3c9DiD/+G+3seIIntbeZc0YIzddsICeDEYHXxYBFcwFn2lZYxuv
-	 Vj7Ykb+efJvjsj6yMhzJ7YjTL9cfDUl1xREilUq8=
+	b=PF2HYhJ0a/tSqGQyhH/BegA1SHXMqo3IH5P/UhPQRcKBcTnpJNUDJg7ntJp5+v4yP
+	 mJ4uHTJTs5HnUfNrGh2tzdvFD9/WjMvwbB67sxillU8DcAn5wN+VDdf6+cTsagzUCF
+	 xvehAZ7523yzGiiUbmpWc+DzJqFv4MONM2J5+wUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 049/143] riscv: Fix build error if !CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION
-Date: Mon,  4 Mar 2024 21:22:49 +0000
-Message-ID: <20240304211551.495243218@linuxfoundation.org>
+	Eric Biggers <ebiggers@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Eric Biggers <ebiggers@google.com>,
+	Andy Chiu <andybnac@gmail.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.7 105/162] RISC-V: Drop invalid test from CONFIG_AS_HAS_OPTION_ARCH
+Date: Mon,  4 Mar 2024 21:22:50 +0000
+Message-ID: <20240304211555.161958348@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +66,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit fc325b1a915f6d0c821bfcea21fb3f1354c4323b ]
+commit 3aff0c459e77ac0fb1c4d6884433467f797f7357 upstream.
 
-The new riscv specific arch_hugetlb_migration_supported() must be
-guarded with a #ifdef CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION to avoid
-the following build error:
+Commit e4bb020f3dbb ("riscv: detect assembler support for .option arch")
+added two tests, one for a valid value to '.option arch' that should
+succeed and one for an invalid value that is expected to fail to make
+sure that support for '.option arch' is properly detected because Clang
+does not error when '.option arch' is not supported:
 
-In file included from include/linux/hugetlb.h:851,
-                    from kernel/fork.c:52:
->> arch/riscv/include/asm/hugetlb.h:15:42: error: static declaration of 'arch_hugetlb_migration_supported' follows non-static declaration
-      15 | #define arch_hugetlb_migration_supported arch_hugetlb_migration_supported
-         |                                          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/hugetlb.h:916:20: note: in expansion of macro 'arch_hugetlb_migration_supported'
-     916 | static inline bool arch_hugetlb_migration_supported(struct hstate *h)
-         |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   arch/riscv/include/asm/hugetlb.h:14:6: note: previous declaration of 'arch_hugetlb_migration_supported' with type 'bool(struct hstate *)' {aka '_Bool(struct hstate *)'}
-      14 | bool arch_hugetlb_migration_supported(struct hstate *h);
-         |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  $ clang --target=riscv64-linux-gnu -Werror -x assembler -c -o /dev/null <(echo '.option arch, +m')
+  /dev/fd/63:1:9: warning: unknown option, expected 'push', 'pop', 'rvc', 'norvc', 'relax' or 'norelax'
+  .option arch, +m
+          ^
+  $ echo $?
+  0
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202402110258.CV51JlEI-lkp@intel.com/
-Fixes: ce68c035457b ("riscv: Fix arch_hugetlb_migration_supported() for NAPOT")
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20240211083640.756583-1-alexghiti@rivosinc.com
+Unfortunately, the invalid test started being accepted by Clang after
+the linked llvm-project change, which causes CONFIG_AS_HAS_OPTION_ARCH
+and configurations that depend on it to be silently disabled, even
+though those versions do support '.option arch'.
+
+The invalid test can be avoided altogether by using
+'-Wa,--fatal-warnings', which will turn all assembler warnings into
+errors, like '-Werror' does for the compiler:
+
+  $ clang --target=riscv64-linux-gnu -Werror -Wa,--fatal-warnings -x assembler -c -o /dev/null <(echo '.option arch, +m')
+  /dev/fd/63:1:9: error: unknown option, expected 'push', 'pop', 'rvc', 'norvc', 'relax' or 'norelax'
+  .option arch, +m
+          ^
+  $ echo $?
+  1
+
+The as-instr macros have been updated to make use of this flag, so
+remove the invalid test, which allows CONFIG_AS_HAS_OPTION_ARCH to work
+for all compiler versions.
+
+Cc: stable@vger.kernel.org
+Fixes: e4bb020f3dbb ("riscv: detect assembler support for .option arch")
+Link: https://github.com/llvm/llvm-project/commit/3ac9fe69f70a2b3541266daedbaaa7dc9c007a2a
+Reported-by: Eric Biggers <ebiggers@kernel.org>
+Closes: https://lore.kernel.org/r/20240121011341.GA97368@sol.localdomain/
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Eric Biggers <ebiggers@google.com>
+Tested-by: Andy Chiu <andybnac@gmail.com>
+Reviewed-by: Andy Chiu <andybnac@gmail.com>
+Tested-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Acked-by: Masahiro Yamada <masahiroy@kernel.org>
+Link: https://lore.kernel.org/r/20240125-fix-riscv-option-arch-llvm-18-v1-2-390ac9cc3cd0@kernel.org
 Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/hugetlb.h | 2 ++
- arch/riscv/mm/hugetlbpage.c      | 2 ++
- 2 files changed, 4 insertions(+)
+ arch/riscv/Kconfig |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/riscv/include/asm/hugetlb.h b/arch/riscv/include/asm/hugetlb.h
-index 20f9c3ba23414..22deb7a2a6ec4 100644
---- a/arch/riscv/include/asm/hugetlb.h
-+++ b/arch/riscv/include/asm/hugetlb.h
-@@ -11,8 +11,10 @@ static inline void arch_clear_hugepage_flags(struct page *page)
- }
- #define arch_clear_hugepage_flags arch_clear_hugepage_flags
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -294,7 +294,6 @@ config AS_HAS_OPTION_ARCH
+ 	# https://reviews.llvm.org/D123515
+ 	def_bool y
+ 	depends on $(as-instr, .option arch$(comma) +m)
+-	depends on !$(as-instr, .option arch$(comma) -i)
  
-+#ifdef CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION
- bool arch_hugetlb_migration_supported(struct hstate *h);
- #define arch_hugetlb_migration_supported arch_hugetlb_migration_supported
-+#endif
- 
- #ifdef CONFIG_RISCV_ISA_SVNAPOT
- #define __HAVE_ARCH_HUGE_PTE_CLEAR
-diff --git a/arch/riscv/mm/hugetlbpage.c b/arch/riscv/mm/hugetlbpage.c
-index e7b69281875b2..fbe918801667d 100644
---- a/arch/riscv/mm/hugetlbpage.c
-+++ b/arch/riscv/mm/hugetlbpage.c
-@@ -426,10 +426,12 @@ bool __init arch_hugetlb_valid_size(unsigned long size)
- 	return __hugetlb_valid_size(size);
- }
- 
-+#ifdef CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION
- bool arch_hugetlb_migration_supported(struct hstate *h)
- {
- 	return __hugetlb_valid_size(huge_page_size(h));
- }
-+#endif
- 
- #ifdef CONFIG_CONTIG_ALLOC
- static __init int gigantic_pages_init(void)
--- 
-2.43.0
-
+ source "arch/riscv/Kconfig.socs"
+ source "arch/riscv/Kconfig.errata"
 
 
 
