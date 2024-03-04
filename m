@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-26626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AF93870F68
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:54:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15C0D870F21
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:51:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 366E02816BB
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:54:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27C0B1C240E9
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:51:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88CF79DCE;
-	Mon,  4 Mar 2024 21:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 129C37992E;
+	Mon,  4 Mar 2024 21:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rnk1CKOk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ouR7TufZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 766661C6AB;
-	Mon,  4 Mar 2024 21:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDABC7868F;
+	Mon,  4 Mar 2024 21:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589259; cv=none; b=NjftJVNs3nn4Nsk4ubBPGroAeDbMVCyP7mqqSPccK9I2M00HGQbaHIQ6XEx2G+R63sXP2XiGweyOIbHk7T8VeOHxl0B9GyQvfZVIk+keEkxFVIMbrCjXlLVM95g2knk06MBa88GnaUF6tY1G504UV92CMjYiT8kC5vW9kvTJeXk=
+	t=1709589070; cv=none; b=GKm02iltvt6Dph3zG/N13bLX+ZIdVxVf51/u2BQ6XNPUe+wvha9sBXOTizmTXLBGNt7LFlW9augW21Ycd4VBn/6ekIcTPmUrg/jH+luPjFVdDR+n6zpRnThuS75KE8Rv/fNQZpXYd8SU9nh02BFCiMjtWIKvsPdR9CdtgwJNzGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589259; c=relaxed/simple;
-	bh=2rlpYyX30ZenpOoatbhqqU53mwJDCFTB68kvOMqeulY=;
+	s=arc-20240116; t=1709589070; c=relaxed/simple;
+	bh=Jp+34Y4bMlSzDxBq33V5KL73nLDL5sujOjsGkMeDoNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MvD5JggCAcyE7jnEX78qmNUZ6OLRPMcqO9hLSaCcEvn6yb4TfTNvr1kK2S5syDdAURpvvjDJYgGL00ofyu4+nvFEtUYVs8AnesNuSP0YKgmvbb5zL2g4oHmyxTQYm7C/9qxqpdGEgpYsGLeTWN9wfZrDCRet4iFEJSUBHQuZAGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rnk1CKOk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08A2EC43390;
-	Mon,  4 Mar 2024 21:54:18 +0000 (UTC)
+	 MIME-Version; b=AVQFI8ybSNTix1zfDRfpR/0nJ5tminGonauJGKeek1/XfPMc1ZlhHJGVPLku7xShRk9Wxc5qzPz2Bz9++RvQZMcb+TsOWKSYAXr6yuzJwJaB8LLal0hhj9NibJ9AWrdM4w/7NLIdmVWMzfLYX4SkFKZvYN6NaMTjAKZA6t/3W8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ouR7TufZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03288C433C7;
+	Mon,  4 Mar 2024 21:51:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589259;
-	bh=2rlpYyX30ZenpOoatbhqqU53mwJDCFTB68kvOMqeulY=;
+	s=korg; t=1709589070;
+	bh=Jp+34Y4bMlSzDxBq33V5KL73nLDL5sujOjsGkMeDoNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rnk1CKOkKYGcryQ8i/QDJ55th8OdP3B8LuTz+ipl4XjBEpUWa4/D6kFCnJ4pufo+C
-	 HErVV6sL6AOZBOtmohg8ZoaFhdEd8TypZCgJ2vMisnWBPLHELup84c1+PRFeorFqwD
-	 u4j64nPWb4PUgXLtQAYJw3Pd9Oitx8tZ9aoygZto=
+	b=ouR7TufZOAt1FWDclEXt04+sYJE1/nxg+iLKot0fMYhsa6gZT3bXrWtyTWTIfO3XA
+	 fDltExki7hnmgDOrV6oWT74yA4W1rJ1l3c1to/Vbm5pddiQwtg7b0t37NQHcUSi4jo
+	 PM8w87O4pTrwpAzInCv/G63NGElUnKH5aI79/E/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 40/84] tls: decrement decrypt_pending if no async completion will be called
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.1 190/215] x86/efistub: Perform SNP feature test while running in the firmware
 Date: Mon,  4 Mar 2024 21:24:13 +0000
-Message-ID: <20240304211543.671086904@linuxfoundation.org>
+Message-ID: <20240304211602.991618627@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,264 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Ard Biesheuvel <ardb+git@google.com>
 
-[ Upstream commit f7fa16d49837f947ee59492958f9e6f0e51d9a78 ]
+From: Ard Biesheuvel <ardb@kernel.org>
 
-With mixed sync/async decryption, or failures of crypto_aead_decrypt,
-we increment decrypt_pending but we never do the corresponding
-decrement since tls_decrypt_done will not be called. In this case, we
-should decrement decrypt_pending immediately to avoid getting stuck.
+[ Commit 31c77a50992e8dd136feed7b67073bb5f1f978cc upstream ]
 
-For example, the prequeue prequeue test gets stuck with mixed
-modes (one async decrypt + one sync decrypt).
+Before refactoring the EFI stub boot flow to avoid the legacy bare metal
+decompressor, duplicate the SNP feature check in the EFI stub before
+handing over to the kernel proper.
 
-Fixes: 94524d8fc965 ("net/tls: Add support for async decryption of tls records")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/r/c56d5fc35543891d5319f834f25622360e1bfbec.1709132643.git.sd@queasysnail.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The SNP feature check can be performed while running under the EFI boot
+services, which means it can force the boot to fail gracefully and
+return an error to the bootloader if the loaded kernel does not
+implement support for all the features that the hypervisor enabled.
+
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230807162720.545787-23-ardb@kernel.org
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tls/tls_sw.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/boot/compressed/sev.c          |  112 ++++++++++++++++++--------------
+ arch/x86/include/asm/sev.h              |    5 +
+ drivers/firmware/efi/libstub/x86-stub.c |   17 ++++
+ 3 files changed, 88 insertions(+), 46 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index a1a99f9f093b1..83319a3b8bdd1 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -273,6 +273,8 @@ static int tls_do_decryption(struct sock *sk,
- 			return 0;
+--- a/arch/x86/boot/compressed/sev.c
++++ b/arch/x86/boot/compressed/sev.c
+@@ -327,20 +327,25 @@ static void enforce_vmpl0(void)
+  */
+ #define SNP_FEATURES_PRESENT (0)
  
- 		ret = crypto_wait_req(ret, &ctx->async_wait);
-+	} else if (darg->async) {
-+		atomic_dec(&ctx->decrypt_pending);
++u64 snp_get_unsupported_features(u64 status)
++{
++	if (!(status & MSR_AMD64_SEV_SNP_ENABLED))
++		return 0;
++
++	return status & SNP_FEATURES_IMPL_REQ & ~SNP_FEATURES_PRESENT;
++}
++
+ void snp_check_features(void)
+ {
+ 	u64 unsupported;
+ 
+-	if (!(sev_status & MSR_AMD64_SEV_SNP_ENABLED))
+-		return;
+-
+ 	/*
+ 	 * Terminate the boot if hypervisor has enabled any feature lacking
+ 	 * guest side implementation. Pass on the unsupported features mask through
+ 	 * EXIT_INFO_2 of the GHCB protocol so that those features can be reported
+ 	 * as part of the guest boot failure.
+ 	 */
+-	unsupported = sev_status & SNP_FEATURES_IMPL_REQ & ~SNP_FEATURES_PRESENT;
++	unsupported = snp_get_unsupported_features(sev_status);
+ 	if (unsupported) {
+ 		if (ghcb_version < 2 || (!boot_ghcb && !early_setup_ghcb()))
+ 			sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SNP_UNSUPPORTED);
+@@ -350,35 +355,22 @@ void snp_check_features(void)
  	}
- 	darg->async = false;
+ }
  
--- 
-2.43.0
-
+-void sev_enable(struct boot_params *bp)
++/*
++ * sev_check_cpu_support - Check for SEV support in the CPU capabilities
++ *
++ * Returns < 0 if SEV is not supported, otherwise the position of the
++ * encryption bit in the page table descriptors.
++ */
++static int sev_check_cpu_support(void)
+ {
+ 	unsigned int eax, ebx, ecx, edx;
+-	struct msr m;
+-	bool snp;
+-
+-	/*
+-	 * bp->cc_blob_address should only be set by boot/compressed kernel.
+-	 * Initialize it to 0 to ensure that uninitialized values from
+-	 * buggy bootloaders aren't propagated.
+-	 */
+-	if (bp)
+-		bp->cc_blob_address = 0;
+-
+-	/*
+-	 * Do an initial SEV capability check before snp_init() which
+-	 * loads the CPUID page and the same checks afterwards are done
+-	 * without the hypervisor and are trustworthy.
+-	 *
+-	 * If the HV fakes SEV support, the guest will crash'n'burn
+-	 * which is good enough.
+-	 */
+ 
+ 	/* Check for the SME/SEV support leaf */
+ 	eax = 0x80000000;
+ 	ecx = 0;
+ 	native_cpuid(&eax, &ebx, &ecx, &edx);
+ 	if (eax < 0x8000001f)
+-		return;
++		return -ENODEV;
+ 
+ 	/*
+ 	 * Check for the SME/SEV feature:
+@@ -393,6 +385,35 @@ void sev_enable(struct boot_params *bp)
+ 	native_cpuid(&eax, &ebx, &ecx, &edx);
+ 	/* Check whether SEV is supported */
+ 	if (!(eax & BIT(1)))
++		return -ENODEV;
++
++	return ebx & 0x3f;
++}
++
++void sev_enable(struct boot_params *bp)
++{
++	struct msr m;
++	int bitpos;
++	bool snp;
++
++	/*
++	 * bp->cc_blob_address should only be set by boot/compressed kernel.
++	 * Initialize it to 0 to ensure that uninitialized values from
++	 * buggy bootloaders aren't propagated.
++	 */
++	if (bp)
++		bp->cc_blob_address = 0;
++
++	/*
++	 * Do an initial SEV capability check before snp_init() which
++	 * loads the CPUID page and the same checks afterwards are done
++	 * without the hypervisor and are trustworthy.
++	 *
++	 * If the HV fakes SEV support, the guest will crash'n'burn
++	 * which is good enough.
++	 */
++
++	if (sev_check_cpu_support() < 0)
+ 		return;
+ 
+ 	/*
+@@ -403,26 +424,8 @@ void sev_enable(struct boot_params *bp)
+ 
+ 	/* Now repeat the checks with the SNP CPUID table. */
+ 
+-	/* Recheck the SME/SEV support leaf */
+-	eax = 0x80000000;
+-	ecx = 0;
+-	native_cpuid(&eax, &ebx, &ecx, &edx);
+-	if (eax < 0x8000001f)
+-		return;
+-
+-	/*
+-	 * Recheck for the SME/SEV feature:
+-	 *   CPUID Fn8000_001F[EAX]
+-	 *   - Bit 0 - Secure Memory Encryption support
+-	 *   - Bit 1 - Secure Encrypted Virtualization support
+-	 *   CPUID Fn8000_001F[EBX]
+-	 *   - Bits 5:0 - Pagetable bit position used to indicate encryption
+-	 */
+-	eax = 0x8000001f;
+-	ecx = 0;
+-	native_cpuid(&eax, &ebx, &ecx, &edx);
+-	/* Check whether SEV is supported */
+-	if (!(eax & BIT(1))) {
++	bitpos = sev_check_cpu_support();
++	if (bitpos < 0) {
+ 		if (snp)
+ 			error("SEV-SNP support indicated by CC blob, but not CPUID.");
+ 		return;
+@@ -454,7 +457,24 @@ void sev_enable(struct boot_params *bp)
+ 	if (snp && !(sev_status & MSR_AMD64_SEV_SNP_ENABLED))
+ 		error("SEV-SNP supported indicated by CC blob, but not SEV status MSR.");
+ 
+-	sme_me_mask = BIT_ULL(ebx & 0x3f);
++	sme_me_mask = BIT_ULL(bitpos);
++}
++
++/*
++ * sev_get_status - Retrieve the SEV status mask
++ *
++ * Returns 0 if the CPU is not SEV capable, otherwise the value of the
++ * AMD64_SEV MSR.
++ */
++u64 sev_get_status(void)
++{
++	struct msr m;
++
++	if (sev_check_cpu_support() < 0)
++		return 0;
++
++	boot_rdmsr(MSR_AMD64_SEV, &m);
++	return m.q;
+ }
+ 
+ /* Search for Confidential Computing blob in the EFI config table. */
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -202,6 +202,8 @@ void snp_set_wakeup_secondary_cpu(void);
+ bool snp_init(struct boot_params *bp);
+ void __init __noreturn snp_abort(void);
+ int snp_issue_guest_request(u64 exit_code, struct snp_req_data *input, struct snp_guest_request_ioctl *rio);
++u64 snp_get_unsupported_features(u64 status);
++u64 sev_get_status(void);
+ #else
+ static inline void sev_es_ist_enter(struct pt_regs *regs) { }
+ static inline void sev_es_ist_exit(void) { }
+@@ -225,6 +227,9 @@ static inline int snp_issue_guest_reques
+ {
+ 	return -ENOTTY;
+ }
++
++static inline u64 snp_get_unsupported_features(u64 status) { return 0; }
++static inline u64 sev_get_status(void) { return 0; }
+ #endif
+ 
+ #endif
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -15,6 +15,7 @@
+ #include <asm/setup.h>
+ #include <asm/desc.h>
+ #include <asm/boot.h>
++#include <asm/sev.h>
+ 
+ #include "efistub.h"
+ #include "x86-stub.h"
+@@ -747,6 +748,19 @@ static efi_status_t exit_boot(struct boo
+ 	return EFI_SUCCESS;
+ }
+ 
++static bool have_unsupported_snp_features(void)
++{
++	u64 unsupported;
++
++	unsupported = snp_get_unsupported_features(sev_get_status());
++	if (unsupported) {
++		efi_err("Unsupported SEV-SNP features detected: 0x%llx\n",
++			unsupported);
++		return true;
++	}
++	return false;
++}
++
+ static void __noreturn enter_kernel(unsigned long kernel_addr,
+ 				    struct boot_params *boot_params)
+ {
+@@ -777,6 +791,9 @@ void __noreturn efi_stub_entry(efi_handl
+ 	if (efi_system_table->hdr.signature != EFI_SYSTEM_TABLE_SIGNATURE)
+ 		efi_exit(handle, EFI_INVALID_PARAMETER);
+ 
++	if (have_unsupported_snp_features())
++		efi_exit(handle, EFI_UNSUPPORTED);
++
+ 	if (IS_ENABLED(CONFIG_EFI_DXE_MEM_ATTRIBUTES)) {
+ 		efi_dxe_table = get_efi_config_table(EFI_DXE_SERVICES_TABLE_GUID);
+ 		if (efi_dxe_table &&
 
 
 
