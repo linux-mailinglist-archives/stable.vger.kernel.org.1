@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-26123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF9C6870D35
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16798870E10
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:40:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B63628DF05
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C610E2875A4
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:40:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C57A7D098;
-	Mon,  4 Mar 2024 21:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D22D7BAFE;
+	Mon,  4 Mar 2024 21:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bJzg7fOC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2jGeG1Ir"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2B07D08F;
-	Mon,  4 Mar 2024 21:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 488277A70D;
+	Mon,  4 Mar 2024 21:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587902; cv=none; b=isIym9+8t/scFIwfEXZL/73EUGt8Z1sce/HABaokVS7/2+MUCC4WwwuO9FpgMAjeak0j9q9MkbaQlCY9rMYojkHVcSJFuZWNVKtY4HLNk60ctXT2O1DeVpaXn81hw0M2OO5UBo8iBRHEHvA1dymkEfI0PKU2yA4O5aJQX+d1FY0=
+	t=1709588429; cv=none; b=uKGNexPoFqeWgnXmvmHo1Z33OAII6MxMGimOrBHTdDDSf6lbwPeb/rYanf/3t8qDB87D2jQtE4P35buLLcwUfcxhLCPg30mYI4HzoWNYgex9oGHyTy8qtF/whkQB8DwzFwMERtmv6zIOwGhMlYNX1L2LXj+K69NjtSL5yjaHBNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587902; c=relaxed/simple;
-	bh=zl252ctplfA2cLZq520kPwnZQj6UB5eikx6YLwMbNSc=;
+	s=arc-20240116; t=1709588429; c=relaxed/simple;
+	bh=VUaq+fMGKeZ2C7PNGY0Hm7stQrLe3JhwRT9TfxPBeNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C6uDa4rBzuOSHQEAW6QabtfEJjUFiY8jmXp7Eg1CzmK7yaEacLATTYqDEU/750a3agt04gJoAIFM4xIKFDpEUaY7sG9iY1NP1uIP2tgVhE/LDn7PYP93a/mq845gefb7j12F7onGT4PhXIJG1QUOSryZMzVtWYoIJAbOLhDAV6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bJzg7fOC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D743C433F1;
-	Mon,  4 Mar 2024 21:31:41 +0000 (UTC)
+	 MIME-Version; b=SqxCaQ6kMe5266OBg9/it88PWiYgok6FJkV96SCbMZJItfKvnnfvyK87/ADFwlczw/+SvN7Wo6e0ZsMtGt6wwDZil8MYNU24+sBjlgsSwBLB/rv9J4BtLJQyUvYrme1fpvNsb24QFgYTEGZHuCMivAEgnfPOSI1rQx0mPFFr2FE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2jGeG1Ir; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D851C433F1;
+	Mon,  4 Mar 2024 21:40:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587901;
-	bh=zl252ctplfA2cLZq520kPwnZQj6UB5eikx6YLwMbNSc=;
+	s=korg; t=1709588428;
+	bh=VUaq+fMGKeZ2C7PNGY0Hm7stQrLe3JhwRT9TfxPBeNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bJzg7fOCv+ey+HUJMzC5br+SuYsb7t0ybw0EojyvDutyyAiQffUVQMsI5ZewxR++a
-	 cYYVi4GAJW07owe+kcWffz/OEHAlIOw3704DN4I6peM6zvBP6qm9DWZcgYh/D4ox4j
-	 RXSJFadEAPzYyCt+yfNTQtmLt6975jQ525EjQlSo=
+	b=2jGeG1IrveUGLAorTQ0OWEIHHvV2L3Vx8MI2zl3fbEKlMuw/lu3EYAjWKP948h/WP
+	 Y4kfWU/XPNrbu9nfBDch/DZStwR3gOqx9u3PzKrCR17GzO1Ll6dyV27xvFvZjjLqJT
+	 9BrqwftXiR6uEIEgruIo+BgL7lqyFoXhJ3AT6hAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.7 134/162] ASoC: cs35l56: fix reversed if statement in cs35l56_dspwait_asp1tx_put()
+	Elad Nachman <enachman@marvell.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.6 079/143] mtd: rawnand: marvell: fix layouts
 Date: Mon,  4 Mar 2024 21:23:19 +0000
-Message-ID: <20240304211556.013515702@linuxfoundation.org>
+Message-ID: <20240304211552.454950620@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Elad Nachman <enachman@marvell.com>
 
-commit 4703b014f28bf7a2e56d1da238ee95ef6c5ce76b upstream.
+commit e6a30d0c48a1e8a68f1cc413bee65302ab03ddfb upstream.
 
-It looks like the "!" character was added accidentally.  The
-regmap_update_bits_check() function is normally going to succeed.  This
-means the rest of the function is unreachable and we don't handle the
-situation where "changed" is true correctly.
+The check in nand_base.c, nand_scan_tail() : has the following code:
+(ecc->steps * ecc->size != mtd->writesize) which fails for some NAND chips.
+Remove ECC entries in this driver which are not integral multiplications,
+and adjust the number of chunks for entries which fails the above
+calculation so it will calculate correctly (this was previously done
+automatically before the check and was removed in a later commit).
 
-Fixes: 07f7d6e7a124 ("ASoC: cs35l56: Fix for initializing ASP1 mixer registers")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/0c254c07-d1c0-4a5c-a22b-7e135cab032c@moroto.mountain
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 68c18dae6888 ("mtd: rawnand: marvell: add missing layouts")
+Cc: stable@vger.kernel.org
+Signed-off-by: Elad Nachman <enachman@marvell.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/cs35l56.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/raw/marvell_nand.c |   13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
---- a/sound/soc/codecs/cs35l56.c
-+++ b/sound/soc/codecs/cs35l56.c
-@@ -175,7 +175,7 @@ static int cs35l56_dspwait_asp1tx_put(st
+--- a/drivers/mtd/nand/raw/marvell_nand.c
++++ b/drivers/mtd/nand/raw/marvell_nand.c
+@@ -290,16 +290,13 @@ static const struct marvell_hw_ecc_layou
+ 	MARVELL_LAYOUT( 2048,   512,  4,  1,  1, 2048, 32, 30,  0,  0,  0),
+ 	MARVELL_LAYOUT( 2048,   512,  8,  2,  1, 1024,  0, 30,1024,32, 30),
+ 	MARVELL_LAYOUT( 2048,   512,  8,  2,  1, 1024,  0, 30,1024,64, 30),
+-	MARVELL_LAYOUT( 2048,   512,  12, 3,  2, 704,   0, 30,640,  0, 30),
+-	MARVELL_LAYOUT( 2048,   512,  16, 5,  4, 512,   0, 30,  0, 32, 30),
++	MARVELL_LAYOUT( 2048,   512,  16, 4,  4, 512,   0, 30,  0, 32, 30),
+ 	MARVELL_LAYOUT( 4096,   512,  4,  2,  2, 2048, 32, 30,  0,  0,  0),
+-	MARVELL_LAYOUT( 4096,   512,  8,  5,  4, 1024,  0, 30,  0, 64, 30),
+-	MARVELL_LAYOUT( 4096,   512,  12, 6,  5, 704,   0, 30,576, 32, 30),
+-	MARVELL_LAYOUT( 4096,   512,  16, 9,  8, 512,   0, 30,  0, 32, 30),
++	MARVELL_LAYOUT( 4096,   512,  8,  4,  4, 1024,  0, 30,  0, 64, 30),
++	MARVELL_LAYOUT( 4096,   512,  16, 8,  8, 512,   0, 30,  0, 32, 30),
+ 	MARVELL_LAYOUT( 8192,   512,  4,  4,  4, 2048,  0, 30,  0,  0,  0),
+-	MARVELL_LAYOUT( 8192,   512,  8,  9,  8, 1024,  0, 30,  0, 160, 30),
+-	MARVELL_LAYOUT( 8192,   512,  12, 12, 11, 704,  0, 30,448,  64, 30),
+-	MARVELL_LAYOUT( 8192,   512,  16, 17, 16, 512,  0, 30,  0,  32, 30),
++	MARVELL_LAYOUT( 8192,   512,  8,  8,  8, 1024,  0, 30,  0, 160, 30),
++	MARVELL_LAYOUT( 8192,   512,  16, 16, 16, 512,  0, 30,  0,  32, 30),
+ };
  
- 	ret = regmap_update_bits_check(cs35l56->base.regmap, addr,
- 				       CS35L56_ASP_TXn_SRC_MASK, val, &changed);
--	if (!ret)
-+	if (ret)
- 		return ret;
- 
- 	if (changed)
+ /**
 
 
 
