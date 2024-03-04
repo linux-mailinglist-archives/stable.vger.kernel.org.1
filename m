@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-26169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05509870D68
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75CA4870D8E
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:35:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37E2C1C23D12
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99E3E1C20AF2
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:35:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AECFA7B3C3;
-	Mon,  4 Mar 2024 21:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B489C79DCE;
+	Mon,  4 Mar 2024 21:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oEgQyJnA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2u8OOBcU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E9B21C687;
-	Mon,  4 Mar 2024 21:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CFB1C687;
+	Mon,  4 Mar 2024 21:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588021; cv=none; b=cpvCPF9yKiDtwc5waABYrp/VSqnrV8OsAlwVDanOeyXXiTiTTHd9EMT4eDLrOKNqnNi8RNUZk6fNNRbL+pdVRxm+bc2Ic5EGcNu9azdadwnJUNuouYj/O4NUjHrMB2D9g66ljS0mswMvuVGoIEUH6OSuuZ3trNeQ/TDB7P9tv3U=
+	t=1709588115; cv=none; b=WioRugqpjugNwRi8Kufzvf5kAHSZkpAh4e1e9+cp9xC0I0R7mWrApWJgkuQgfTaT/ASxAzB2m29/y1DaQnx/Wv/soOJyd4wtWc8L3JaDyC64TwqielynXZciDtxgU2DkFO40hmdZDJ6ar/L2kUzYXTT+pQeCaySKyJlJY2vDw70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588021; c=relaxed/simple;
-	bh=r7Wsww/v8sFmbEHdIdD5M9Uk49ClXFNrA6hWrwc++AA=;
+	s=arc-20240116; t=1709588115; c=relaxed/simple;
+	bh=JwSo3bHjgsZFJA79pCypt98drCsDZpD19vima9wIjTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qgzoV+kECyZeFBVlRs+lupScMusRZIJ58ePFoEHUnbFBklgWYbid9lCOW5DZhsPxqdUC0kAY2K7RkVW3aVAzP6ydp0Wg7lyGyGx0OEI/df6hbLa4KjrIG4hyaVzLdz80DDY0jRMtkJXaNS/R89PFNpU7hgPxuejPQ6uxLbbWD4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oEgQyJnA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F401FC433C7;
-	Mon,  4 Mar 2024 21:33:40 +0000 (UTC)
+	 MIME-Version; b=MPjqTroC/mV8C5VJn/CIXCdqdMOhczMzNDDM7Sh6KxuHQCbswVbbNfzWMmXafv0NhkenP0R2Idla0H+rb88kkmhaL9oWHUi1Ftvu0muyo2MDYeohQd6YMTQsmdXcW4CBsAdmdLGDGlgYlhUj1ZOvsPApDfPGFHv5Xmro7UtgEhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2u8OOBcU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 061C0C433F1;
+	Mon,  4 Mar 2024 21:35:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588021;
-	bh=r7Wsww/v8sFmbEHdIdD5M9Uk49ClXFNrA6hWrwc++AA=;
+	s=korg; t=1709588115;
+	bh=JwSo3bHjgsZFJA79pCypt98drCsDZpD19vima9wIjTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oEgQyJnAkSlZ4iNZxHH2/qPhAtWss0wYrJs63uBhVhpaoAZkh4Bh4DeIbdkKCxRDE
-	 +MyYmhHttI7ABtyiLb44jgnp9MM2Of/Dj8vffYSWyKhYNGXVSFpntzsc78FgwZ2X05
-	 oOA7xEMARSV6hp6pKuFlUbATA11j7I90L8SPKUwI=
+	b=2u8OOBcUJpPE6X29Em++wrT+ICdCnZezSjtKcCnPNfxzqNIjyZLHTFjHfNnEdhG7k
+	 KF1i/nBIMBIqawsZZdf+0DiVxe54I4vgkPdaaSwZ4n0m1FaI3PSseDAqPWFTUcfND9
+	 RAnuPjkpeb9LGrv55sNrxbhjdxYQ4J9IMtqk9CVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+dd4779978217b1973180@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.4 17/25] wifi: nl80211: reject iftype change with mesh ID change
-Date: Mon,  4 Mar 2024 21:23:53 +0000
-Message-ID: <20240304211536.325580573@linuxfoundation.org>
+	Curtis Klein <curtis.klein@hpe.com>,
+	Yi Zhao <yi.zhao@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.10 27/42] dmaengine: fsl-qdma: init irq after reg initialization
+Date: Mon,  4 Mar 2024 21:23:54 +0000
+Message-ID: <20240304211538.551765232@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211535.741936181@linuxfoundation.org>
-References: <20240304211535.741936181@linuxfoundation.org>
+In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
+References: <20240304211537.631764077@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Curtis Klein <curtis.klein@hpe.com>
 
-commit f78c1375339a291cba492a70eaf12ec501d28a8e upstream.
+commit 87a39071e0b639f45e05d296cc0538eef44ec0bd upstream.
 
-It's currently possible to change the mesh ID when the
-interface isn't yet in mesh mode, at the same time as
-changing it into mesh mode. This leads to an overwrite
-of data in the wdev->u union for the interface type it
-currently has, causing cfg80211_change_iface() to do
-wrong things when switching.
+Initialize the qDMA irqs after the registers are configured so that
+interrupts that may have been pending from a primary kernel don't get
+processed by the irq handler before it is ready to and cause panic with
+the following trace:
 
-We could probably allow setting an interface to mesh
-while setting the mesh ID at the same time by doing a
-different order of operations here, but realistically
-there's no userspace that's going to do this, so just
-disallow changes in iftype when setting mesh ID.
+  Call trace:
+   fsl_qdma_queue_handler+0xf8/0x3e8
+   __handle_irq_event_percpu+0x78/0x2b0
+   handle_irq_event_percpu+0x1c/0x68
+   handle_irq_event+0x44/0x78
+   handle_fasteoi_irq+0xc8/0x178
+   generic_handle_irq+0x24/0x38
+   __handle_domain_irq+0x90/0x100
+   gic_handle_irq+0x5c/0xb8
+   el1_irq+0xb8/0x180
+   _raw_spin_unlock_irqrestore+0x14/0x40
+   __setup_irq+0x4bc/0x798
+   request_threaded_irq+0xd8/0x190
+   devm_request_threaded_irq+0x74/0xe8
+   fsl_qdma_probe+0x4d4/0xca8
+   platform_drv_probe+0x50/0xa0
+   really_probe+0xe0/0x3f8
+   driver_probe_device+0x64/0x130
+   device_driver_attach+0x6c/0x78
+   __driver_attach+0xbc/0x158
+   bus_for_each_dev+0x5c/0x98
+   driver_attach+0x20/0x28
+   bus_add_driver+0x158/0x220
+   driver_register+0x60/0x110
+   __platform_driver_register+0x44/0x50
+   fsl_qdma_driver_init+0x18/0x20
+   do_one_initcall+0x48/0x258
+   kernel_init_freeable+0x1a4/0x23c
+   kernel_init+0x10/0xf8
+   ret_from_fork+0x10/0x18
 
 Cc: stable@vger.kernel.org
-Fixes: 29cbe68c516a ("cfg80211/mac80211: add mesh join/leave commands")
-Reported-by: syzbot+dd4779978217b1973180@syzkaller.appspotmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: b092529e0aa0 ("dmaengine: fsl-qdma: Add qDMA controller driver for Layerscape SoCs")
+Signed-off-by: Curtis Klein <curtis.klein@hpe.com>
+Signed-off-by: Yi Zhao <yi.zhao@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20240201220406.440145-1-Frank.Li@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/nl80211.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/dma/fsl-qdma.c |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -3527,6 +3527,8 @@ static int nl80211_set_interface(struct
+--- a/drivers/dma/fsl-qdma.c
++++ b/drivers/dma/fsl-qdma.c
+@@ -1203,10 +1203,6 @@ static int fsl_qdma_probe(struct platfor
+ 	if (!fsl_qdma->queue)
+ 		return -ENOMEM;
  
- 		if (ntype != NL80211_IFTYPE_MESH_POINT)
- 			return -EINVAL;
-+		if (otype != NL80211_IFTYPE_MESH_POINT)
-+			return -EINVAL;
- 		if (netif_running(dev))
- 			return -EBUSY;
+-	ret = fsl_qdma_irq_init(pdev, fsl_qdma);
+-	if (ret)
+-		return ret;
+-
+ 	fsl_qdma->irq_base = platform_get_irq_byname(pdev, "qdma-queue0");
+ 	if (fsl_qdma->irq_base < 0)
+ 		return fsl_qdma->irq_base;
+@@ -1245,16 +1241,19 @@ static int fsl_qdma_probe(struct platfor
+ 
+ 	platform_set_drvdata(pdev, fsl_qdma);
+ 
+-	ret = dma_async_device_register(&fsl_qdma->dma_dev);
++	ret = fsl_qdma_reg_init(fsl_qdma);
+ 	if (ret) {
+-		dev_err(&pdev->dev,
+-			"Can't register NXP Layerscape qDMA engine.\n");
++		dev_err(&pdev->dev, "Can't Initialize the qDMA engine.\n");
+ 		return ret;
+ 	}
+ 
+-	ret = fsl_qdma_reg_init(fsl_qdma);
++	ret = fsl_qdma_irq_init(pdev, fsl_qdma);
++	if (ret)
++		return ret;
++
++	ret = dma_async_device_register(&fsl_qdma->dma_dev);
+ 	if (ret) {
+-		dev_err(&pdev->dev, "Can't Initialize the qDMA engine.\n");
++		dev_err(&pdev->dev, "Can't register NXP Layerscape qDMA engine.\n");
+ 		return ret;
+ 	}
  
 
 
