@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-26497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B342870EDE
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:48:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5E32870DED
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:39:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 113B01F21268
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:48:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6277CB27E13
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:39:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7872200D4;
-	Mon,  4 Mar 2024 21:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC8D2C689;
+	Mon,  4 Mar 2024 21:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LW8OCllL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F31ZiDH+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668021EB5A;
-	Mon,  4 Mar 2024 21:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2138F58;
+	Mon,  4 Mar 2024 21:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588894; cv=none; b=NB4n4dD9lAgx9LOARMLqIlvGEldzgDRRMzjVanXKjQY51Ru6aoenOU2o8SH+nLY3xnCP/6mzz83qfyV65zvGspb6YfNYCen/o5qIL3QQHp4eKWAEWZtN2QYM+PRQY6dHPtZW0Sglu5A5W12TB+58vNQbO46oDjEgSVKwJzLPg8c=
+	t=1709588348; cv=none; b=bBg/aOP3evBSu6eKqQ4Hwo2YCDekHiMaOb2DlO1CjPcOGPy0ovi28vwjD0ZZL/K8eCBxd+C5JqONI/L5wkh2peKc2myAVIOg1fPG/aHt13CVrH8t210HYkPjzj5R+faE360nuZbYQ5GCZbIAymfatoQYGQ69s33rFcHR74gNN8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588894; c=relaxed/simple;
-	bh=iXCK+tO3GkclWl0c0ZcvbvmoEEkjIUUCrctvYlzH39w=;
+	s=arc-20240116; t=1709588348; c=relaxed/simple;
+	bh=aD0Ty8AAbX6uX+K1n/nMNSchdFYp7eWpRGjvF+Frh6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RYJGK1KkjtFxi02U1JLFzKgpjPEPLLEpV0MWaWt1+rdon7WwQQlwCQzWNO91wSIXzp+imtTqU6GJ40F0JAE7tgGFFifTWE1lWxgXiKxoV/bLQJFHvyhQPUJpyPy5mJXjO8Skn9ccFY7Khd4vNl41PDJ17d+/0OpFE3jBRXq2NnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LW8OCllL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 032CBC433C7;
-	Mon,  4 Mar 2024 21:48:12 +0000 (UTC)
+	 MIME-Version; b=Ocb0Amt6Ed1H+xx7QXtIWcAx03HyAAwE+SbnBrsxyK1N6OSxwdbH4nx53SjRce5QHP2Lo34s24Wq8Vdz1idWfiXYmOD1P0MkdiFrjTIshyy2+FZ2qtRlnaw+xf5F3EwUqxtpZ2QuXYebIszRuvNujz3HmPKCVT3afyMa3kvJz18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F31ZiDH+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEA3FC433F1;
+	Mon,  4 Mar 2024 21:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588894;
-	bh=iXCK+tO3GkclWl0c0ZcvbvmoEEkjIUUCrctvYlzH39w=;
+	s=korg; t=1709588348;
+	bh=aD0Ty8AAbX6uX+K1n/nMNSchdFYp7eWpRGjvF+Frh6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LW8OCllLVI5aDIgss49u+IQX9vxNhUXygYs7Opz45X4w7wVETE3dUwdiPdr3fsF24
-	 1x+v6Y0WEVMjZqtlAMlaRboWV8uDLPviPYlbmD9xN6gPR19wlcBnwkmLLlsoICzQu8
-	 VWaGUfxTY43rpUXiIxKy/AtOHhM1UUTlT5I9lh7Q=
+	b=F31ZiDH+bkcwpEfAwJaWMty026GTnUl9eIBhpT9qKnE7mbiC3lBvrp8WqU0NcJSFi
+	 w8kygpYfly5hL99mMy74zxhj68InecmAuOFQVlzVjId8nxxpaOtKrtXfqHSM12QKwM
+	 P/K5ACy59cq9kITdYgghIiKPJkm9wi72qRu+k8uA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.1 129/215] x86/efistub: Branch straight to kernel entry point from C code
+	Hans Peter <flurry123@gmx.ch>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 072/143] ALSA: hda/realtek: Enable Mute LED on HP 840 G8 (MB 8AB8)
 Date: Mon,  4 Mar 2024 21:23:12 +0000
-Message-ID: <20240304211601.166350284@linuxfoundation.org>
+Message-ID: <20240304211552.224661754@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Hans Peter <flurry123@gmx.ch>
 
-commit d2d7a54f69b67cd0a30e0ebb5307cb2de625baac upstream.
+commit 1fdf4e8be7059e7784fec11d30cd32784f0bdc83 upstream.
 
-Instead of returning to the calling code in assembler that does nothing
-more than perform an indirect call with the boot_params pointer in
-register ESI/RSI, perform the jump directly from the EFI stub C code.
-This will allow the asm entrypoint code to be dropped entirely in
-subsequent patches.
+On my EliteBook 840 G8 Notebook PC (ProdId 5S7R6EC#ABD; built 2022 for
+german market) the Mute LED is always on. The mute button itself works
+as expected. alsa-info.sh shows a different subsystem-id 0x8ab9 for
+Realtek ALC285 Codec, thus the existing quirks for HP 840 G8 don't work.
+Therefore, add a new quirk for this type of EliteBook.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230807162720.545787-4-ardb@kernel.org
+Signed-off-by: Hans Peter <flurry123@gmx.ch>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240219164518.4099-1-flurry123@gmx.ch
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/efi/libstub/x86-stub.c |   22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -279,7 +279,7 @@ adjust_memory_range_protection(unsigned
- #define TRAMPOLINE_PLACEMENT_BASE ((128 - 8)*1024)
- #define TRAMPOLINE_PLACEMENT_SIZE (640*1024 - (128 - 8)*1024)
- 
--void startup_32(struct boot_params *boot_params);
-+extern const u8 startup_32[], startup_64[];
- 
- static void
- setup_memory_protection(unsigned long image_base, unsigned long image_size)
-@@ -760,10 +760,19 @@ static efi_status_t exit_boot(struct boo
- 	return EFI_SUCCESS;
- }
- 
-+static void __noreturn enter_kernel(unsigned long kernel_addr,
-+				    struct boot_params *boot_params)
-+{
-+	/* enter decompressed kernel with boot_params pointer in RSI/ESI */
-+	asm("jmp *%0"::"r"(kernel_addr), "S"(boot_params));
-+
-+	unreachable();
-+}
-+
- /*
-- * On success, we return the address of startup_32, which has potentially been
-- * relocated by efi_relocate_kernel.
-- * On failure, we exit to the firmware via efi_exit instead of returning.
-+ * On success, this routine will jump to the relocated image directly and never
-+ * return.  On failure, it will exit to the firmware via efi_exit() instead of
-+ * returning.
-  */
- asmlinkage unsigned long efi_main(efi_handle_t handle,
- 				  efi_system_table_t *sys_table_arg,
-@@ -905,7 +914,10 @@ asmlinkage unsigned long efi_main(efi_ha
- 		goto fail;
- 	}
- 
--	return bzimage_addr;
-+	if (IS_ENABLED(CONFIG_X86_64))
-+		bzimage_addr += startup_64 - startup_32;
-+
-+	enter_kernel(bzimage_addr, boot_params);
- fail:
- 	efi_err("efi_main() failed!\n");
- 
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9820,6 +9820,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x8aa3, "HP ProBook 450 G9 (MB 8AA1)", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8aa8, "HP EliteBook 640 G9 (MB 8AA6)", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8aab, "HP EliteBook 650 G9 (MB 8AA9)", ALC236_FIXUP_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8ab9, "HP EliteBook 840 G8 (MB 8AB8)", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8abb, "HP ZBook Firefly 14 G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8ad1, "HP EliteBook 840 14 inch G9 Notebook PC", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8ad2, "HP EliteBook 860 16 inch G9 Notebook PC", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
 
 
 
