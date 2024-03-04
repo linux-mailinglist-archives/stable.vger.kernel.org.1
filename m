@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-26597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60EDA870F4A
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:53:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1162F870D53
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C62D282D88
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:53:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1B6028EDBD
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF03A7992E;
-	Mon,  4 Mar 2024 21:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346447A124;
+	Mon,  4 Mar 2024 21:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cE4fCi4m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k5u1Hdiw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D4541C6AB;
-	Mon,  4 Mar 2024 21:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E478B1C680;
+	Mon,  4 Mar 2024 21:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589184; cv=none; b=SmKCQswaNAuQC0zHknRgpUF6HGiZn/Av+A5bm9RUyV4PYANJcrpwvAvUsZLDyCSzdsa1pbmyQjbRFYyjlaDxwwAPhZxrUpF5pPneUcA9vaYwd7ZgZCr6iinvyTt+XRjiYRMGTzm8QtTzf1rdXDseesdlY0ZQZxQqAfOncf2o47c=
+	t=1709587972; cv=none; b=IjZ5lpmQnZ6Qrso8b5MxVTCA7M51spf/DJmgRQL3bT+QGTL0W9rFc0rZeG6HXgiLBobv75j4mqK0hxMW9pePAtRZrtkXEGZOuHTsJMviQQ0eNbvqTqymfzKbJcHQhBZGyC+49LV1FuU0KvS9McL8208Zb7LVfd4iucORU+/I9LM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589184; c=relaxed/simple;
-	bh=Ls8lR0TshEflgtA+J/sIXzKN+9O7kw8KMqUfmPw5Amg=;
+	s=arc-20240116; t=1709587972; c=relaxed/simple;
+	bh=DDYqF/roflMhPyP8P/yE2tasV7ay+E2z5mdXK3IwV4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FZWKjmksYL+Mf9oihTd0wZrZrsdZ1wg5D0cEcPbmpmTAE7f0YXyxkGWTXiuGrQRwyAAjJThHlUQJQzyBwIfFF0YX9bl9tkK0uHRLzlE/K3IIR9t9sxmBu13v1xwGoV4GuJWHL5a5JW9ZVWi3tTRFkaciYA0I0qdUFTxam7r6GSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cE4fCi4m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0113FC433C7;
-	Mon,  4 Mar 2024 21:53:03 +0000 (UTC)
+	 MIME-Version; b=IRlC2sFp4sVKuVsAjzRWQnB/q2CfrDtvSclqtbvRE+o5oz4xtPqCr4KjdGIXwW+hWna+f3ljoexGn3P19zZzk4SKTFIgs5NhX/PaMe8Axoh9/9dTMCjqPDk+w64NRkRQalPscN1n94rT9UrshIQH4fIACm3ZxGWi06t9nbEJQeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k5u1Hdiw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 776A4C433C7;
+	Mon,  4 Mar 2024 21:32:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589184;
-	bh=Ls8lR0TshEflgtA+J/sIXzKN+9O7kw8KMqUfmPw5Amg=;
+	s=korg; t=1709587971;
+	bh=DDYqF/roflMhPyP8P/yE2tasV7ay+E2z5mdXK3IwV4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cE4fCi4mJsXlVObf+KfIhpP9rPhwuMPN5OzoLJCwLTNbgVegeYP6bjesQ1N1Y9VYK
-	 pD047vSZFk2X9RdQXJMHzD3nVh4DS31HyOtHZ8yIMzNqnk5oSX8Kg4/qEw1cQ/1Kmr
-	 nxUDpcIlwU9irOHWvQ9+H59J4ZSzdus56tj/mrYQ=
+	b=k5u1HdiwfRtbZM8BcRaOOihd4xUr5P1bt4TvHaauho3MU3sF/faB8sGxzHwivu+c2
+	 0TSXcK1be4W0j49bnnUPpbQsPIX7ODbfS5MvwhiJJXBtAyRD5G4U6JMJeT0NFjc8kY
+	 mH4lVhaKqjX1ryWBZpuQjAIqkhWu2sRE7ikTEnpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Peter Korsgaard <peter@korsgaard.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 12/84] net: usb: dm9601: fix wrong return value in dm9601_mdio_read
-Date: Mon,  4 Mar 2024 21:23:45 +0000
-Message-ID: <20240304211542.756525600@linuxfoundation.org>
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.7 161/162] selftests: mptcp: rm subflow with v4/v4mapped addr
+Date: Mon,  4 Mar 2024 21:23:46 +0000
+Message-ID: <20240304211556.812012901@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +63,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-[ Upstream commit c68b2c9eba38ec3f60f4894b189090febf4d8d22 ]
+commit 7092dbee23282b6fcf1313fc64e2b92649ee16e8 upstream.
 
-The MII code does not check the return value of mdio_read (among
-others), and therefore no error code should be sent. A previous fix to
-the use of an uninitialized variable propagates negative error codes,
-that might lead to wrong operations by the MII library.
+Now both a v4 address and a v4-mapped address are supported when
+destroying a userspace pm subflow, this patch adds a second subflow
+to "userspace pm add & remove address" test, and two subflows could
+be removed two different ways, one with the v4mapped and one with v4.
 
-An example of such issues is the use of mii_nway_restart by the dm9601
-driver. The mii_nway_restart function does not check the value returned
-by mdio_read, which in this case might be a negative number which could
-contain the exact bit the function checks (BMCR_ANENABLE = 0x1000).
-
-Return zero in case of error, as it is common practice in users of
-mdio_read to avoid wrong uses of the return value.
-
-Fixes: 8f8abb863fa5 ("net: usb: dm9601: fix uninitialized variable use in dm9601_mdio_read")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Peter Korsgaard <peter@korsgaard.com>
-Link: https://lore.kernel.org/r/20240225-dm9601_ret_err-v1-1-02c1d959ea59@gmail.com
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/387
+Fixes: 48d73f609dcc ("selftests: mptcp: update userspace pm addr tests")
+Cc: stable@vger.kernel.org
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240223-upstream-net-20240223-misc-fixes-v1-2-162e87e48497@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/dm9601.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   28 +++++++++++++-----------
+ tools/testing/selftests/net/mptcp/mptcp_lib.sh  |    4 +--
+ 2 files changed, 18 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/usb/dm9601.c b/drivers/net/usb/dm9601.c
-index 1959e12a3ff8a..f7357d884d6aa 100644
---- a/drivers/net/usb/dm9601.c
-+++ b/drivers/net/usb/dm9601.c
-@@ -232,7 +232,7 @@ static int dm9601_mdio_read(struct net_device *netdev, int phy_id, int loc)
- 	err = dm_read_shared_word(dev, 1, loc, &res);
- 	if (err < 0) {
- 		netdev_err(dev->net, "MDIO read error: %d\n", err);
--		return err;
-+		return 0;
- 	}
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3328,16 +3328,17 @@ userspace_pm_rm_sf()
+ {
+ 	local evts=$evts_ns1
+ 	local t=${3:-1}
+-	local ip=4
++	local ip
+ 	local tk da dp sp
+ 	local cnt
  
- 	netdev_dbg(dev->net,
--- 
-2.43.0
-
+ 	[ "$1" == "$ns2" ] && evts=$evts_ns2
+-	if mptcp_lib_is_v6 $2; then ip=6; fi
++	[ -n "$(mptcp_lib_evts_get_info "saddr4" "$evts" $t)" ] && ip=4
++	[ -n "$(mptcp_lib_evts_get_info "saddr6" "$evts" $t)" ] && ip=6
+ 	tk=$(mptcp_lib_evts_get_info token "$evts")
+-	da=$(mptcp_lib_evts_get_info "daddr$ip" "$evts" $t)
+-	dp=$(mptcp_lib_evts_get_info dport "$evts" $t)
+-	sp=$(mptcp_lib_evts_get_info sport "$evts" $t)
++	da=$(mptcp_lib_evts_get_info "daddr$ip" "$evts" $t $2)
++	dp=$(mptcp_lib_evts_get_info dport "$evts" $t $2)
++	sp=$(mptcp_lib_evts_get_info sport "$evts" $t $2)
+ 
+ 	cnt=$(rm_sf_count ${1})
+ 	ip netns exec $1 ./pm_nl_ctl dsf lip $2 lport $sp \
+@@ -3424,20 +3425,23 @@ userspace_tests()
+ 	if reset_with_events "userspace pm add & remove address" &&
+ 	   continue_if mptcp_lib_has_file '/proc/sys/net/mptcp/pm_type'; then
+ 		set_userspace_pm $ns1
+-		pm_nl_set_limits $ns2 1 1
++		pm_nl_set_limits $ns2 2 2
+ 		speed=5 \
+ 			run_tests $ns1 $ns2 10.0.1.1 &
+ 		local tests_pid=$!
+ 		wait_mpj $ns1
+ 		userspace_pm_add_addr $ns1 10.0.2.1 10
+-		chk_join_nr 1 1 1
+-		chk_add_nr 1 1
+-		chk_mptcp_info subflows 1 subflows 1
+-		chk_subflows_total 2 2
+-		chk_mptcp_info add_addr_signal 1 add_addr_accepted 1
++		userspace_pm_add_addr $ns1 10.0.3.1 20
++		chk_join_nr 2 2 2
++		chk_add_nr 2 2
++		chk_mptcp_info subflows 2 subflows 2
++		chk_subflows_total 3 3
++		chk_mptcp_info add_addr_signal 2 add_addr_accepted 2
+ 		userspace_pm_rm_addr $ns1 10
+ 		userspace_pm_rm_sf $ns1 "::ffff:10.0.2.1" $SUB_ESTABLISHED
+-		chk_rm_nr 1 1 invert
++		userspace_pm_rm_addr $ns1 20
++		userspace_pm_rm_sf $ns1 10.0.3.1 $SUB_ESTABLISHED
++		chk_rm_nr 2 2 invert
+ 		chk_mptcp_info subflows 0 subflows 0
+ 		chk_subflows_total 1 1
+ 		kill_events_pids
+--- a/tools/testing/selftests/net/mptcp/mptcp_lib.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
+@@ -213,9 +213,9 @@ mptcp_lib_get_info_value() {
+ 	grep "${2}" | sed -n 's/.*\('"${1}"':\)\([0-9a-f:.]*\).*$/\2/p;q'
+ }
+ 
+-# $1: info name ; $2: evts_ns ; $3: event type
++# $1: info name ; $2: evts_ns ; [$3: event type; [$4: addr]]
+ mptcp_lib_evts_get_info() {
+-	mptcp_lib_get_info_value "${1}" "^type:${3:-1}," < "${2}"
++	grep "${4:-}" "${2}" | mptcp_lib_get_info_value "${1}" "^type:${3:-1},"
+ }
+ 
+ # $1: PID
 
 
 
