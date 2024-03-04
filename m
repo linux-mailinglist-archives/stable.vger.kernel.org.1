@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-26363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 478D5870E40
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:42:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9276A870F8C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:55:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DA88B25EA3
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:42:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B68FC1C21952
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:55:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A016B46BA0;
-	Mon,  4 Mar 2024 21:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B2A1C6AB;
+	Mon,  4 Mar 2024 21:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z90I1JRr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ue0TZIQ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E54C11193;
-	Mon,  4 Mar 2024 21:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F837868F;
+	Mon,  4 Mar 2024 21:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588526; cv=none; b=dwVyOfHNYlIeuSbSrcZTEbUn0cc/S7/gfa7SaCBXvbmjRbrQ2PGCX752PJJLtiSNV7CMXUsa2lpqilHBYHm6GXvd0ZeC4aHthIQ8SO82Avoxw+vrDR+2SWSseACTnwBT7y6gF8SXp4kGfrsiJRJYPlqojYh/NyU+VcD+CTuqx9g=
+	t=1709589345; cv=none; b=eqYBBj4jXdlWFAFco5yTk+bMqldBHW2y4oRgjLBqLkU1E7BefVHWq27YbkTP380Z4kLCRmBwv9tstkWKkV6OxgnodG87VKzIR/Yprv41X+ab52eMUdu4w8RisMbpJdexh23oM7C1UxW1tm00rWe7zDAT7nUGwupNEEwymVwlNVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588526; c=relaxed/simple;
-	bh=nR4NkVU914d+XjYNdrQK4X3oxWThKwhU1j7Dpx7DLvs=;
+	s=arc-20240116; t=1709589345; c=relaxed/simple;
+	bh=VRhw4AyIUrqbNbqHaFJzSnhtudH3a68n2tSt5wfjjD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fRenShZrJoSYfkyQgINRatiNt29IZPG81gf6GDjL263Zv933k3GZ4z/b/EPIlrfEPpw02Gai8pfeipHdavFfXDmjgN7ySGU6NSySUmD/P+OfRD95upQcec36nCkeOfJScmlFDbHhSZoK6f4fRFYSjlIsdTUtSTH7+i3umZo7OL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z90I1JRr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E345FC433F1;
-	Mon,  4 Mar 2024 21:42:05 +0000 (UTC)
+	 MIME-Version; b=BX/KBDxx5Y2/RPOn0W4tA+eeXNgYd/iACj5y5qMB0VEvgJIHjWtwSCKSciyWFbhp4/di5aIWgav5QLXrHx/Rmlrf6withIxg7ZIVC4eVrrqICxW7QBGBi5qfNt5yQSTPqopdQPjiW2tNpMNmZfNXQGb6eTMzwqGv5bHDVjq3QgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ue0TZIQ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDCFEC433F1;
+	Mon,  4 Mar 2024 21:55:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588526;
-	bh=nR4NkVU914d+XjYNdrQK4X3oxWThKwhU1j7Dpx7DLvs=;
+	s=korg; t=1709589345;
+	bh=VRhw4AyIUrqbNbqHaFJzSnhtudH3a68n2tSt5wfjjD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z90I1JRr27BHxehKAXJt/bwZLfNGVcvWDF/d4rYeACfxDUoJMallA3uw9PVzhijPn
-	 qb2aWPepliPstMzExmn1HamzHQ/l6VSMY/4hMV8D3sjJudbP76GzcU5bka6nJW0vM1
-	 sLC98VN3C2TJI6TYuo8+WiRA9jG4CLfV5c2WDo18=
+	b=ue0TZIQ4pIPL3nKGPhivyUrKJ4J1CoRcALUZrT5t1VJJmxhinrUMnkFcgACrKbOaC
+	 oj6u/H5x8nvipXngAcqrzS9YaRrG4WHnDoTi75S9pKgt9rB60nWi6H9o//+N0ZGdqc
+	 9nuB5pojG+WmM7jUwM3NFn6FtU8dK8Meee4cTap4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Geliang Tang <geliang.tang@suse.com>,
-	Mat Martineau <martineau@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 141/143] selftests: mptcp: add mptcp_lib_is_v6
-Date: Mon,  4 Mar 2024 21:24:21 +0000
-Message-ID: <20240304211554.413250012@linuxfoundation.org>
+	Alexander Ofitserov <oficerovas@altlinux.org>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 49/84] gtp: fix use-after-free and null-ptr-deref in gtp_newlink()
+Date: Mon,  4 Mar 2024 21:24:22 +0000
+Message-ID: <20240304211543.999254925@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
+References: <20240304211542.332206551@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,183 +60,194 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <geliang.tang@suse.com>
+From: Alexander Ofitserov <oficerovas@altlinux.org>
 
-commit b850f2c7dd85ecd14a333685c4ffd23f12665e94 upstream.
+commit 616d82c3cfa2a2146dd7e3ae47bda7e877ee549e upstream.
 
-To avoid duplicated code in different MPTCP selftests, we can add
-and use helpers defined in mptcp_lib.sh.
+The gtp_link_ops operations structure for the subsystem must be
+registered after registering the gtp_net_ops pernet operations structure.
 
-is_v6() helper is defined in mptcp_connect.sh, mptcp_join.sh and
-mptcp_sockopt.sh, so export it into mptcp_lib.sh and rename it as
-mptcp_lib_is_v6(). Use this new helper in all scripts.
+Syzkaller hit 'general protection fault in gtp_genl_dump_pdp' bug:
 
-Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
-Signed-off-by: Geliang Tang <geliang.tang@suse.com>
-Signed-off-by: Mat Martineau <martineau@kernel.org>
-Link: https://lore.kernel.org/r/20231128-send-net-next-2023107-v4-10-8d6b94150f6b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+[ 1010.702740] gtp: GTP module unloaded
+[ 1010.715877] general protection fault, probably for non-canonical address=
+ 0xdffffc0000000001: 0000 [#1] SMP KASAN NOPTI
+[ 1010.715888] KASAN: null-ptr-deref in range [0x0000000000000008-0x0000000=
+00000000f]
+[ 1010.715895] CPU: 1 PID: 128616 Comm: a.out Not tainted 6.8.0-rc6-std-def=
+-alt1 #1
+[ 1010.715899] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.1=
+6.0-alt1 04/01/2014
+[ 1010.715908] RIP: 0010:gtp_newlink+0x4d7/0x9c0 [gtp]
+[ 1010.715915] Code: 80 3c 02 00 0f 85 41 04 00 00 48 8b bb d8 05 00 00 e8 =
+ed f6 ff ff 48 89 c2 48 89 c5 48 b8 00 00 00 00 00 fc ff df 48 c1 ea 03 <80=
+> 3c 02 00 0f 85 4f 04 00 00 4c 89 e2 4c 8b 6d 00 48 b8 00 00 00
+[ 1010.715920] RSP: 0018:ffff888020fbf180 EFLAGS: 00010203
+[ 1010.715929] RAX: dffffc0000000000 RBX: ffff88800399c000 RCX: 00000000000=
+00000
+[ 1010.715933] RDX: 0000000000000001 RSI: ffffffff84805280 RDI: 00000000000=
+00282
+[ 1010.715938] RBP: 000000000000000d R08: 0000000000000001 R09: 00000000000=
+00000
+[ 1010.715942] R10: 0000000000000001 R11: 0000000000000001 R12: ffff8880039=
+9cc80
+[ 1010.715947] R13: 0000000000000000 R14: 0000000000000000 R15: 00000000000=
+00400
+[ 1010.715953] FS:  00007fd1509ab5c0(0000) GS:ffff88805b300000(0000) knlGS:=
+0000000000000000
+[ 1010.715958] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 1010.715962] CR2: 0000000000000000 CR3: 000000001c07a000 CR4: 00000000007=
+50ee0
+[ 1010.715968] PKRU: 55555554
+[ 1010.715972] Call Trace:
+[ 1010.715985]  ? __die_body.cold+0x1a/0x1f
+[ 1010.715995]  ? die_addr+0x43/0x70
+[ 1010.716002]  ? exc_general_protection+0x199/0x2f0
+[ 1010.716016]  ? asm_exc_general_protection+0x1e/0x30
+[ 1010.716026]  ? gtp_newlink+0x4d7/0x9c0 [gtp]
+[ 1010.716034]  ? gtp_net_exit+0x150/0x150 [gtp]
+[ 1010.716042]  __rtnl_newlink+0x1063/0x1700
+[ 1010.716051]  ? rtnl_setlink+0x3c0/0x3c0
+[ 1010.716063]  ? is_bpf_text_address+0xc0/0x1f0
+[ 1010.716070]  ? kernel_text_address.part.0+0xbb/0xd0
+[ 1010.716076]  ? __kernel_text_address+0x56/0xa0
+[ 1010.716084]  ? unwind_get_return_address+0x5a/0xa0
+[ 1010.716091]  ? create_prof_cpu_mask+0x30/0x30
+[ 1010.716098]  ? arch_stack_walk+0x9e/0xf0
+[ 1010.716106]  ? stack_trace_save+0x91/0xd0
+[ 1010.716113]  ? stack_trace_consume_entry+0x170/0x170
+[ 1010.716121]  ? __lock_acquire+0x15c5/0x5380
+[ 1010.716139]  ? mark_held_locks+0x9e/0xe0
+[ 1010.716148]  ? kmem_cache_alloc_trace+0x35f/0x3c0
+[ 1010.716155]  ? __rtnl_newlink+0x1700/0x1700
+[ 1010.716160]  rtnl_newlink+0x69/0xa0
+[ 1010.716166]  rtnetlink_rcv_msg+0x43b/0xc50
+[ 1010.716172]  ? rtnl_fdb_dump+0x9f0/0x9f0
+[ 1010.716179]  ? lock_acquire+0x1fe/0x560
+[ 1010.716188]  ? netlink_deliver_tap+0x12f/0xd50
+[ 1010.716196]  netlink_rcv_skb+0x14d/0x440
+[ 1010.716202]  ? rtnl_fdb_dump+0x9f0/0x9f0
+[ 1010.716208]  ? netlink_ack+0xab0/0xab0
+[ 1010.716213]  ? netlink_deliver_tap+0x202/0xd50
+[ 1010.716220]  ? netlink_deliver_tap+0x218/0xd50
+[ 1010.716226]  ? __virt_addr_valid+0x30b/0x590
+[ 1010.716233]  netlink_unicast+0x54b/0x800
+[ 1010.716240]  ? netlink_attachskb+0x870/0x870
+[ 1010.716248]  ? __check_object_size+0x2de/0x3b0
+[ 1010.716254]  netlink_sendmsg+0x938/0xe40
+[ 1010.716261]  ? netlink_unicast+0x800/0x800
+[ 1010.716269]  ? __import_iovec+0x292/0x510
+[ 1010.716276]  ? netlink_unicast+0x800/0x800
+[ 1010.716284]  __sock_sendmsg+0x159/0x190
+[ 1010.716290]  ____sys_sendmsg+0x712/0x880
+[ 1010.716297]  ? sock_write_iter+0x3d0/0x3d0
+[ 1010.716304]  ? __ia32_sys_recvmmsg+0x270/0x270
+[ 1010.716309]  ? lock_acquire+0x1fe/0x560
+[ 1010.716315]  ? drain_array_locked+0x90/0x90
+[ 1010.716324]  ___sys_sendmsg+0xf8/0x170
+[ 1010.716331]  ? sendmsg_copy_msghdr+0x170/0x170
+[ 1010.716337]  ? lockdep_init_map_type+0x2c7/0x860
+[ 1010.716343]  ? lockdep_hardirqs_on_prepare+0x430/0x430
+[ 1010.716350]  ? debug_mutex_init+0x33/0x70
+[ 1010.716360]  ? percpu_counter_add_batch+0x8b/0x140
+[ 1010.716367]  ? lock_acquire+0x1fe/0x560
+[ 1010.716373]  ? find_held_lock+0x2c/0x110
+[ 1010.716384]  ? __fd_install+0x1b6/0x6f0
+[ 1010.716389]  ? lock_downgrade+0x810/0x810
+[ 1010.716396]  ? __fget_light+0x222/0x290
+[ 1010.716403]  __sys_sendmsg+0xea/0x1b0
+[ 1010.716409]  ? __sys_sendmsg_sock+0x40/0x40
+[ 1010.716419]  ? lockdep_hardirqs_on_prepare+0x2b3/0x430
+[ 1010.716425]  ? syscall_enter_from_user_mode+0x1d/0x60
+[ 1010.716432]  do_syscall_64+0x30/0x40
+[ 1010.716438]  entry_SYSCALL_64_after_hwframe+0x62/0xc7
+[ 1010.716444] RIP: 0033:0x7fd1508cbd49
+[ 1010.716452] Code: 00 c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 =
+89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48=
+> 3d 01 f0 ff ff 73 01 c3 48 8b 0d ef 70 0d 00 f7 d8 64 89 01 48
+[ 1010.716456] RSP: 002b:00007fff18872348 EFLAGS: 00000202 ORIG_RAX: 000000=
+000000002e
+[ 1010.716463] RAX: ffffffffffffffda RBX: 000055f72bf0eac0 RCX: 00007fd1508=
+cbd49
+[ 1010.716468] RDX: 0000000000000000 RSI: 0000000020000280 RDI: 00000000000=
+00006
+[ 1010.716473] RBP: 00007fff18872360 R08: 00007fff18872360 R09: 00007fff188=
+72360
+[ 1010.716478] R10: 00007fff18872360 R11: 0000000000000202 R12: 000055f72bf=
+0e1b0
+[ 1010.716482] R13: 0000000000000000 R14: 0000000000000000 R15: 00000000000=
+00000
+[ 1010.716491] Modules linked in: gtp(+) udp_tunnel ib_core uinput af_packe=
+t rfkill qrtr joydev hid_generic usbhid hid kvm_intel iTCO_wdt intel_pmc_bx=
+t iTCO_vendor_support kvm snd_hda_codec_generic ledtrig_audio irqbypass crc=
+t10dif_pclmul crc32_pclmul crc32c_intel ghash_clmulni_intel snd_hda_intel n=
+ls_utf8 snd_intel_dspcfg nls_cp866 psmouse aesni_intel vfat crypto_simd fat=
+ cryptd glue_helper snd_hda_codec pcspkr snd_hda_core i2c_i801 snd_hwdep i2=
+c_smbus xhci_pci snd_pcm lpc_ich xhci_pci_renesas xhci_hcd qemu_fw_cfg tiny=
+_power_button button sch_fq_codel vboxvideo drm_vram_helper drm_ttm_helper =
+ttm vboxsf vboxguest snd_seq_midi snd_seq_midi_event snd_seq snd_rawmidi sn=
+d_seq_device snd_timer snd soundcore msr fuse efi_pstore dm_mod ip_tables x=
+_tables autofs4 virtio_gpu virtio_dma_buf drm_kms_helper cec rc_core drm vi=
+rtio_rng virtio_scsi rng_core virtio_balloon virtio_blk virtio_net virtio_c=
+onsole net_failover failover ahci libahci libata evdev scsi_mod input_leds =
+serio_raw virtio_pci intel_agp
+[ 1010.716674]  virtio_ring intel_gtt virtio [last unloaded: gtp]
+[ 1010.716693] ---[ end trace 04990a4ce61e174b ]---
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexander Ofitserov <oficerovas@altlinux.org>
+Fixes: 459aa660eb1d ("gtp: add initial driver for datapath of GPRS Tunnelin=
+g Protocol (GTP-U)")
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/20240228114703.465107-1-oficerovas@altlinux=
+.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_connect.sh |   16 +++++-----------
- tools/testing/selftests/net/mptcp/mptcp_join.sh    |   14 ++++----------
- tools/testing/selftests/net/mptcp/mptcp_lib.sh     |    5 +++++
- tools/testing/selftests/net/mptcp/mptcp_sockopt.sh |    8 +-------
- 4 files changed, 15 insertions(+), 28 deletions(-)
+ drivers/net/gtp.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.sh
-@@ -310,12 +310,6 @@ check_mptcp_disabled()
- 	return 0
- }
- 
--# $1: IP address
--is_v6()
--{
--	[ -z "${1##*:*}" ]
--}
--
- do_ping()
- {
- 	local listener_ns="$1"
-@@ -324,7 +318,7 @@ do_ping()
- 	local ping_args="-q -c 1"
- 	local rc=0
- 
--	if is_v6 "${connect_addr}"; then
-+	if mptcp_lib_is_v6 "${connect_addr}"; then
- 		$ipv6 || return 0
- 		ping_args="${ping_args} -6"
- 	fi
-@@ -620,12 +614,12 @@ run_tests_lo()
- 	fi
- 
- 	# skip if we don't want v6
--	if ! $ipv6 && is_v6 "${connect_addr}"; then
-+	if ! $ipv6 && mptcp_lib_is_v6 "${connect_addr}"; then
- 		return 0
- 	fi
- 
- 	local local_addr
--	if is_v6 "${connect_addr}"; then
-+	if mptcp_lib_is_v6 "${connect_addr}"; then
- 		local_addr="::"
- 	else
- 		local_addr="0.0.0.0"
-@@ -693,7 +687,7 @@ run_test_transparent()
- 	TEST_GROUP="${msg}"
- 
- 	# skip if we don't want v6
--	if ! $ipv6 && is_v6 "${connect_addr}"; then
-+	if ! $ipv6 && mptcp_lib_is_v6 "${connect_addr}"; then
- 		return 0
- 	fi
- 
-@@ -726,7 +720,7 @@ EOF
- 	fi
- 
- 	local local_addr
--	if is_v6 "${connect_addr}"; then
-+	if mptcp_lib_is_v6 "${connect_addr}"; then
- 		local_addr="::"
- 		r6flag="-6"
- 	else
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -592,12 +592,6 @@ link_failure()
- 	done
- }
- 
--# $1: IP address
--is_v6()
--{
--	[ -z "${1##*:*}" ]
--}
--
- # $1: ns, $2: port
- wait_local_port_listen()
- {
-@@ -877,7 +871,7 @@ pm_nl_set_endpoint()
- 		local id=10
- 		while [ $add_nr_ns1 -gt 0 ]; do
- 			local addr
--			if is_v6 "${connect_addr}"; then
-+			if mptcp_lib_is_v6 "${connect_addr}"; then
- 				addr="dead:beef:$counter::1"
- 			else
- 				addr="10.0.$counter.1"
-@@ -929,7 +923,7 @@ pm_nl_set_endpoint()
- 		local id=20
- 		while [ $add_nr_ns2 -gt 0 ]; do
- 			local addr
--			if is_v6 "${connect_addr}"; then
-+			if mptcp_lib_is_v6 "${connect_addr}"; then
- 				addr="dead:beef:$counter::2"
- 			else
- 				addr="10.0.$counter.2"
-@@ -971,7 +965,7 @@ pm_nl_set_endpoint()
- 			pm_nl_flush_endpoint ${connector_ns}
- 		elif [ $rm_nr_ns2 -eq 9 ]; then
- 			local addr
--			if is_v6 "${connect_addr}"; then
-+			if mptcp_lib_is_v6 "${connect_addr}"; then
- 				addr="dead:beef:1::2"
- 			else
- 				addr="10.0.1.2"
-@@ -3336,7 +3330,7 @@ userspace_pm_rm_sf()
- 	local cnt
- 
- 	[ "$1" == "$ns2" ] && evts=$evts_ns2
--	if is_v6 $2; then ip=6; fi
-+	if mptcp_lib_is_v6 $2; then ip=6; fi
- 	tk=$(mptcp_lib_evts_get_info token "$evts")
- 	da=$(mptcp_lib_evts_get_info "daddr$ip" "$evts" $t)
- 	dp=$(mptcp_lib_evts_get_info dport "$evts" $t)
---- a/tools/testing/selftests/net/mptcp/mptcp_lib.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
-@@ -227,6 +227,11 @@ mptcp_lib_kill_wait() {
- 	wait "${1}" 2>/dev/null
- }
- 
-+# $1: IP address
-+mptcp_lib_is_v6() {
-+	[ -z "${1##*:*}" ]
-+}
-+
- # $1: ns, $2: MIB counter
- mptcp_lib_get_counter() {
- 	local ns="${1}"
---- a/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_sockopt.sh
-@@ -162,12 +162,6 @@ check_transfer()
- 	return 0
- }
- 
--# $1: IP address
--is_v6()
--{
--	[ -z "${1##*:*}" ]
--}
--
- do_transfer()
- {
- 	local listener_ns="$1"
-@@ -184,7 +178,7 @@ do_transfer()
- 	local mptcp_connect="./mptcp_connect -r 20"
- 
- 	local local_addr ip
--	if is_v6 "${connect_addr}"; then
-+	if mptcp_lib_is_v6 "${connect_addr}"; then
- 		local_addr="::"
- 		ip=ipv6
- 	else
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -1422,26 +1422,26 @@ static int __init gtp_init(void)
+=20
+ 	get_random_bytes(&gtp_h_initval, sizeof(gtp_h_initval));
+=20
+-	err =3D rtnl_link_register(&gtp_link_ops);
++	err =3D register_pernet_subsys(&gtp_net_ops);
+ 	if (err < 0)
+ 		goto error_out;
+=20
+-	err =3D register_pernet_subsys(&gtp_net_ops);
++	err =3D rtnl_link_register(&gtp_link_ops);
+ 	if (err < 0)
+-		goto unreg_rtnl_link;
++		goto unreg_pernet_subsys;
+=20
+ 	err =3D genl_register_family(&gtp_genl_family);
+ 	if (err < 0)
+-		goto unreg_pernet_subsys;
++		goto unreg_rtnl_link;
+=20
+ 	pr_info("GTP module loaded (pdp ctx size %zd bytes)\n",
+ 		sizeof(struct pdp_ctx));
+ 	return 0;
+=20
+-unreg_pernet_subsys:
+-	unregister_pernet_subsys(&gtp_net_ops);
+ unreg_rtnl_link:
+ 	rtnl_link_unregister(&gtp_link_ops);
++unreg_pernet_subsys:
++	unregister_pernet_subsys(&gtp_net_ops);
+ error_out:
+ 	pr_err("error loading GTP module loaded\n");
+ 	return err;
 
 
 
