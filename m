@@ -1,115 +1,163 @@
-Return-Path: <stable+bounces-25972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F384870AD8
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 20:43:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D71EF870B19
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:00:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB4E61F23018
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 19:43:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DD291F23337
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 20:00:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4234379957;
-	Mon,  4 Mar 2024 19:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D107A14B;
+	Mon,  4 Mar 2024 20:00:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="adHhjFIK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC55E4653A;
-	Mon,  4 Mar 2024 19:43:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B0779DDC;
+	Mon,  4 Mar 2024 20:00:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709581393; cv=none; b=klvcMObzAuu0H/RCJLTwHegnsClStLQ3LvRWyu6mslb/9P8fGQYVb0Eg0sbF5hDb2L6oKuZw+E2Yo2hmazTO5k9XPkHyZjWzp4sOFNWa/1NUK8YmfHThZwGUOIg+XJRBKB1eeqCfMsSR/w5SNkuux9BEKNphMhm8j86yandpY8o=
+	t=1709582443; cv=none; b=aDzLB6rqq5RiGgPgwahz5CHqF2sxoQ2OQipdPvfrLPBt9K50w7gS6Xl4UcGXJ2M7ixHmYkwkRZ4ZzDbgMMhvUAHh5yeFA3a/6tP/7ST0mHLkI9Pv/WvajScnfFuNut9M25izaahK14LMjihsEbrBV/O8/0FMivXytDx2qbqp7A4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709581393; c=relaxed/simple;
-	bh=g4BE9SgKCtefxG89FH1WH3YUWls3hEfAM41n89RBJ9I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pCvN5WZlfXxhO1Bevp+N6z+RU4L705Bt5o/t/soFCk4wARL8W/Px/Adai/iy1fL8UGFtA3ZlqOzrnLPZeTPW6aQ4awlNml875mYBKChGSykvax3KQR/eCpNTpTDTmL9TaWBuKyZ1/LYdkmenXRmZ3FL7xUVjUTzAYnjdZXNkS8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.215.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org
+	s=arc-20240116; t=1709582443; c=relaxed/simple;
+	bh=XvM+66VhbbeNHen8cDDRkVqqLC5Yo36gqh2E2nY94W8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z2umr7jkIOvi60dCSSRzsB2GjHcuJglFQJDhqLgNKFxVV2j/DfO5lvYolGWpuWUhah9KgC4h6GHGNNDtBECynIPv3H+wo+hBuuZNN9hbxJQOLjSAI2JzI5DNjoQ6EUehaT/pJC2j9acr4lHXDBnejUUk/5bl2h374ZGOdv61UXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=adHhjFIK; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-5cf2d73a183so4304549a12.1;
-        Mon, 04 Mar 2024 11:43:11 -0800 (PST)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-412e7fe4497so6242165e9.1;
+        Mon, 04 Mar 2024 12:00:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709582440; x=1710187240; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qgHCyC+Ikfdy07nvjol19ApsqbmdnmuhNond4BBAt+Y=;
+        b=adHhjFIKterQ/D3wdaFNB4olqMlOZzaCE5jH/5OwX3h4nKC7erINpOOHd4kZXvfS29
+         uq8tFVO6LpfNSKUBrKPAfsmFPvIrdTzpTpQktVsfEdRl5dfsBs/rH2Up+FTOhPlCdFRM
+         8IhqJ/jA9ZLtJHi9PqYS5HqFNJbTVbDztfEgIBKkqxhRvWwGi64LroF/blqsM0d/e+8x
+         WXGx/he0dOiccJOzOEBJVTXeFXINxLsVeP34mDRKNUOlZZhAgDCJcQ6KMQ2VU/lN9dP7
+         k4i7eodXk3qdo+/Aa3lfwd+t6WnDvDX11u9Fdbus6z0Ywo7YWE64HFOYThjs4BcpcX/e
+         4wZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709581391; x=1710186191;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lOJxNPPzSVXqD3aagskQD2Ydr+bCaePzg4Tv2ZpuDdI=;
-        b=a6dRe+O2iO/xo0I4zZftI8VSoSQwvAAIm6cGqFpz3Uqsazyqr4szsDGwdHxtfMrOMB
-         vkKjoZC3QEkdrOAX9vDNvaWnn2OepigTR62bxfRpl1kFqqlXGeUXtD6YGnBJaz306iff
-         gy2yH7AUaFj3MHpzk7IvruJd3ADZr1IxtrOsCrlHu9dm83F+MGS7S8k5DOcV4cLMMdXC
-         iaCh2TrwkGLlXgTfdpEuO4LN/zFQLqhDdmS0Bf7YsuqXVTbr4NiWbzyOeqo6GCXc33H/
-         5NR9Geb06HCSGnbRDFGhdUj6S0bbmUiHfYj8aKhAB4725QnyVd8NyXjlAB7TRU/GA6ue
-         NYjw==
-X-Forwarded-Encrypted: i=1; AJvYcCV6/xO1eeFQQWDjMSsKw66l+GOyrDLV5rY2+9awfAVnrWbZRq/JcSNgjW7wTCGvqky/imtayW1Pdom1puiPJmts+hRRUMiisEzwsT8u+pGlSOzCmmMEtRWn4IevoDzX6Txh2I8F+Q==
-X-Gm-Message-State: AOJu0YzrgzwIibl/k4xTWifk05agWMtEegnk6AhC9V1qgeed70Jl0J0b
-	7ZCHWXKZtHHHmsj5I80BoGJkH3Lk+0x9xucRdK+IH2PhfLmqxqFB
-X-Google-Smtp-Source: AGHT+IGGtb3+zcEUDFEGBym9/lHtcgKiWmjGgpb4yuKXaoo3nJv91szPGYzRL8fLTXFcrSHtJ1OziA==
-X-Received: by 2002:a17:90a:b107:b0:29a:f199:1647 with SMTP id z7-20020a17090ab10700b0029af1991647mr555668pjq.1.1709581390965;
-        Mon, 04 Mar 2024 11:43:10 -0800 (PST)
-Received: from ?IPV6:2620:0:1000:8411:9ba8:35e8:4ec5:44d1? ([2620:0:1000:8411:9ba8:35e8:4ec5:44d1])
-        by smtp.gmail.com with ESMTPSA id kn11-20020a17090b480b00b00299101c1341sm8326806pjb.18.2024.03.04.11.43.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Mar 2024 11:43:10 -0800 (PST)
-Message-ID: <90c96981-cd7a-4a4c-aade-7a5cfc3fd617@acm.org>
-Date: Mon, 4 Mar 2024 11:43:08 -0800
+        d=1e100.net; s=20230601; t=1709582440; x=1710187240;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qgHCyC+Ikfdy07nvjol19ApsqbmdnmuhNond4BBAt+Y=;
+        b=ckYGJ85Na1jK/MnUmTdf1MBt627CS9tE6i0qMs+3pi+qEaEYmxvfnZjwpmtJxJwSeU
+         c4AnBGdFEpLfJf74gan2EE4MkS00Ka16uk8joEbQwUYC0JySkB2SiQ3wwsiDE3JRRZjF
+         DhKuNXVuwYLwK4Cw5+57DLPN2U8LYKpOrCYEJwfLulCdlRKxWoi/h8em5wYl/Wsuq+q6
+         DHnyWXIqThVTEHErKLQOvOkSJd1umnVJW/8NXIi6/y4mn8WxphRTuNeZt5eJVE/cmIah
+         YXh9+iWGuw0aDMProKDZJSfHRZR9rpDBG+fG2RSjCZbh7amlBidIR/lEK19LDOpi3HPe
+         FKjA==
+X-Forwarded-Encrypted: i=1; AJvYcCUnxZm1pt1eSgFcHTj/z5bUAuBiVdFfzupE4vEQz3rkTna/NijVAbzJY1tUlvFV3j7ppX2xWrkBQZnzdL5Y7cMofdwttuz09Zuw4xoJM43HVG75C6Rr8UIcUoTIIWndb0JIejnVSVGgeVYm7S20D8RjLomyY94hq+JU/ZNhocHF
+X-Gm-Message-State: AOJu0YzX7YySpUEznzgbQMVxKr3wcXIO18E8Lg6O+gldjTDP1Lo7apFc
+	Wpu0MaE+aYCLXZVSRd9sym1YD5JKJCl2B4TtOvIp8dyDiQpwmVJT
+X-Google-Smtp-Source: AGHT+IEG6VFBumkdiKt3bV/gFyaWTxyNPWjZ8t9eO9T+jnNpADN4tBLH9fymg1RHv/pFVFu+3LqEsw==
+X-Received: by 2002:a05:600c:4e8b:b0:412:b83c:d97d with SMTP id f11-20020a05600c4e8b00b00412b83cd97dmr8154909wmq.16.1709582439907;
+        Mon, 04 Mar 2024 12:00:39 -0800 (PST)
+Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
+        by smtp.gmail.com with ESMTPSA id m11-20020a7bcb8b000000b00412dd56e0desm2428259wmi.1.2024.03.04.12.00.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Mar 2024 12:00:37 -0800 (PST)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id C6ECABE2EE8; Mon,  4 Mar 2024 21:00:36 +0100 (CET)
+Date: Mon, 4 Mar 2024 21:00:36 +0100
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Jonathan Corbet <corbet@lwn.net>
+Cc: regressions@lists.linux.dev, stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ben Hutchings <ben@decadent.org.uk>,
+	Kees Cook <keescook@chromium.org>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Aditya Srivastava <yashsri421@gmail.com>, 1064035@bugs.debian.org
+Subject: Re: [regression 5.10.y] linux-doc builds: Global symbol "$args"
+ requires explicit package name (did you forget to declare "my $args"?) at
+ ./scripts/kernel-doc line 1236.
+Message-ID: <ZeYoZNJaZ4ejONTZ@eldamar.lan>
+References: <ZeHKjjPGoyv_b2Tg@eldamar.lan>
+ <877ciiw1yp.fsf@meer.lwn.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/2] fs/aio: Restrict kiocb_set_cancel_fn() to I/O
- submitted via libaio
-Content-Language: en-US
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org,
- Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
- Avi Kivity <avi@scylladb.com>, Sandeep Dhavale <dhavale@google.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Kent Overstreet <kent.overstreet@linux.dev>, stable@vger.kernel.org
-References: <20240215204739.2677806-1-bvanassche@acm.org>
- <20240215204739.2677806-2-bvanassche@acm.org>
- <20240304191047.GB1195@sol.localdomain>
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20240304191047.GB1195@sol.localdomain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <877ciiw1yp.fsf@meer.lwn.net>
 
-On 3/4/24 11:10, Eric Biggers wrote:
-> If I understand correctly, this patch is supposed to fix a memory safety bug
-> when kiocb_set_cancel_fn() is called on a kiocb that is owned by io_uring
-> instead of legacy AIO.  However, the kiocb still gets accessed as an aio_kiocb
-> at the very beginning of the function, so it's still broken:
+Hi Jonathan,
+
+On Mon, Mar 04, 2024 at 06:39:26AM -0700, Jonathan Corbet wrote:
+> Salvatore Bonaccorso <carnil@debian.org> writes:
 > 
-> 	struct aio_kiocb *req = container_of(iocb, struct aio_kiocb, rw);
-> 	struct kioctx *ctx = req->ki_ctx;
+> > Hi,
+> >
+> > Ben Hutchings reported in https://bugs.debian.org/1064035 a problem
+> > with the kernel-doc builds once 3080ea5553cc ("stddef: Introduce
+> > DECLARE_FLEX_ARRAY() helper") got applied in 5.10.210 (as
+> > prerequisite of another fix in 5.10.y):
+> >
+> >> The backport of commit 3080ea5553cc "stddef: Introduce
+> >> DECLARE_FLEX_ARRAY() helper" modified scripts/kernel-doc and
+> >> introduced a syntax error:
+> >> 
+> >> Global symbol "$args" requires explicit package name (did you forget to declare "my $args"?) at ./scripts/kernel-doc line 1236.
+> >> Global symbol "$args" requires explicit package name (did you forget to declare "my $args"?) at ./scripts/kernel-doc line 1236.
+> >> Execution of ./scripts/kernel-doc aborted due to compilation errors.
+> >> 
+> >> This doesn't stop the documentation build process, but causes the
+> >> documentation that should be extracted by kernel-doc to be missing
+> >> from linux-doc-5.10.
+> >> 
+> >> We should be able to fix this by eithering backport commit
+> >> e86bdb24375a "scripts: kernel-doc: reduce repeated regex expressions
+> >> into variables" or replacing /$args/ with /([^,)]+)/.
+> >> 
+> >> Ben.
+> >
+> > What would be prefered here from stable maintainers point of view?
+> > AFAICS e86bdb24375a ("scripts: kernel-doc: reduce repeated regex
+> > expressions into variables") won't apply cleanly and needs some
+> > refactoring. The alternative pointed out by Ben would be to replace
+> > the /$args/ with  /([^,)]+)/.
+> 
+> Hmm...this is the first I see of any of this...
+> 
+> The latter fix seems like the more straightforward of the two.  The only
+> concern might be if there are other kernel-doc backports that might run
+> afoul of the same problem, hopefully not.
 
-Hi Eric,
+Ok. In the sprit of the stable series rules we might try the later and
+if it's not feasible pick the first variant?
 
-Thanks for having reported this. I agree that this needs to be fixed.
+> But this makes me wonder if there are other stable kernels that are
+> affected as well.  I guess that, despite all of the testing being done
+> on stable updates, nobody is testing the docs build?
 
-> I'm also wondering why "ignore" is the right fix.  The USB gadget driver sees
-> that it has asynchronous I/O (kiocb::ki_complete != NULL) and then tries to set
-> a cancellation function.  What is the expected behavior when the I/O is owned by
-> io_uring?  Should it perhaps call into io_uring to set a cancellation function
-> with io_uring?  Or is the concept of cancellation functions indeed specific to
-> legacy AIO, and nothing should be done with io_uring I/O?
+Only 5.10.y is affected AFAICT, and the reaso nis that the cherry-pick
+of ("stddef: Introduce DECLARE_FLEX_ARRAY() helper") in 5.10.y (as
+requisite of the smb fixes) requires as well e86bdb24375a ("scripts:
+kernel-doc: reduce repeated regex expressions into variables").
 
-As far as I know no Linux user space interface for submitting I/O 
-supports cancellation of read or write requests other than the AIO
-io_cancel() system call.
+3080ea5553cc ("stddef: Introduce DECLARE_FLEX_ARRAY() helper") is in 
+5.10.210, 5.15.54 and 5.16-rc1.
 
-It would make it easier to maintain the kernel if I/O cancellation
-support would be removed. However, there is existing user space code
-that depends on USB I/O cancellation so I'm not sure how to proceed to 
-remove AIO io_cancel() support from the kernel.
+e86bdb24375a ("scripts: kernel-doc: reduce repeated regex expressions
+into variables") is in 5.14-rc1.
 
-Thanks,
+So it's covered for the later series, but causes problems in the
+5.10.y.
 
-Bart.
+Regards,
+Salvatore
 
