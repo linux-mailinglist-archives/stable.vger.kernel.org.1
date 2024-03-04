@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-26329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB52B870E16
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:41:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6B46870D2F
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19CD51C233CF
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:41:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CAB328DD76
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA12B7868F;
-	Mon,  4 Mar 2024 21:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED3D7D084;
+	Mon,  4 Mar 2024 21:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y51r8TzQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LElH3cZX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6492A8F58;
-	Mon,  4 Mar 2024 21:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB097C6CC;
+	Mon,  4 Mar 2024 21:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588439; cv=none; b=tmHYSERlgIgQXpsiRu6shVBuUbUdxiTcPy+ugpq2XKxFXTN4XuzWj1AxOmWU8Cl4ux1+7qlwbUYq5Ea+X27Gjnn0w6N4hsdv3l5/IRfqKBlb/hYUfBPJEXIG/WTwsYlp+hwWZiUu9qzYpqhD6KXARXFPB1wUkvvJQxg7jCDP+hI=
+	t=1709587889; cv=none; b=Xiu850cHR5exoTq+dBrX4mxVuzhS4cBbGufyn6PhK8ZWxxbaWmQSYPR2FGMZVr03L4/FmPsEqFbcKZtzsoM7e3H0MCDa1h/e//LR8x0vMN5ik0YRO7NvCS1wLUShwMOKl2Th8lFNsUxPiCne+JubnFkdGscDTBkEwxOnpK0uWFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588439; c=relaxed/simple;
-	bh=j4QY9YBwAtMxf9gGaDXnHiljf5bHlfRT+ldHVeTizrY=;
+	s=arc-20240116; t=1709587889; c=relaxed/simple;
+	bh=wc78RnSXPAMDVuX014FlhhImKYVqP9zbTQf30xTU+aE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mvExF1GaWnyGLQIgS66d9sjZq6hCyTGo+H5vFeoG698kgI0+trl3AavFLHIhvraYGrZg/THnasV1XuicyJBnTjkdUmjl7ix9BK6oX9yxzvmJcdxKYZBwBiepRl6+gaoqxguYAY/GOhTzjHN1MJheqINsE6bkoSzzv+tSs2QG+eU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y51r8TzQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FD3C433F1;
-	Mon,  4 Mar 2024 21:40:38 +0000 (UTC)
+	 MIME-Version; b=H8/yj1ryaDWYfKcvlIfVqf6OMOILqhOAvyH17XNMxDV8l6lJOpA8YCt85v3OdbiNucU0d55a2M+qlVgevVjcMxy6HtnTn8JeidM4b2v5SLk+RPfEOMbGcjeeGTZmZxerJWHPPDX6dU/LXx2EmenTEFDlGVD0DL7JrnTlW/mUY6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LElH3cZX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 968A7C433F1;
+	Mon,  4 Mar 2024 21:31:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588439;
-	bh=j4QY9YBwAtMxf9gGaDXnHiljf5bHlfRT+ldHVeTizrY=;
+	s=korg; t=1709587888;
+	bh=wc78RnSXPAMDVuX014FlhhImKYVqP9zbTQf30xTU+aE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y51r8TzQ/hVmUpKcGshv0rm+4xupFbXSDNY8pcTX/jNn1fHpvXCZaKTiRr+JPo7ru
-	 eHMzBXgisrDhccSRV2OVP0CCgW+h8ynLAapsJFUZb9xo+Z5ydQqAZe2SV4lGgUnFXH
-	 GoDUI0Jx8HN1YXiKSmokHV6ozd4DgZXn6y0/ZIgA=
+	b=LElH3cZXf/i/fypekVysyfAEYfztfZ5XMiDUKe3yXmvm6qTAJfb/TifDKd9UlXhe9
+	 MA4bEpRMNBeEpKGYRsLCrTsx7vUQn0+1Pv++IFLu2n3MYsAmGGWsPVG06Oet8+VlZY
+	 ZVzyPybONlS6G7WiUpVBTPR/KhAI5e+rWNEU1bqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eniac Zhang <eniac-xw.zhang@hp.com>,
-	Alexandru Gagniuc <alexandru.gagniuc@hp.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 073/143] ALSA: hda/realtek: fix mute/micmute LED For HP mt440
-Date: Mon,  4 Mar 2024 21:23:13 +0000
-Message-ID: <20240304211552.255737307@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.7 129/162] mptcp: fix possible deadlock in subflow diag
+Date: Mon,  4 Mar 2024 21:23:14 +0000
+Message-ID: <20240304211555.864039983@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eniac Zhang <eniac-xw.zhang@hp.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 67c3d7717efbd46092f217b1f811df1b205cce06 upstream.
+commit d6a9608af9a75d13243d217f6ce1e30e57d56ffe upstream.
 
-The HP mt440 Thin Client uses an ALC236 codec and needs the
-ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF quirk to make the mute and
-micmute LEDs work.
+Syzbot and Eric reported a lockdep splat in the subflow diag:
 
-There are two variants of the USB-C PD chip on this device. Each uses
-a different BIOS and board ID, hence the two entries.
+   WARNING: possible circular locking dependency detected
+   6.8.0-rc4-syzkaller-00212-g40b9385dd8e6 #0 Not tainted
 
-Signed-off-by: Eniac Zhang <eniac-xw.zhang@hp.com>
-Signed-off-by: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240220175812.782687-1-alexandru.gagniuc@hp.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+   syz-executor.2/24141 is trying to acquire lock:
+   ffff888045870130 (k-sk_lock-AF_INET6){+.+.}-{0:0}, at:
+   tcp_diag_put_ulp net/ipv4/tcp_diag.c:100 [inline]
+   ffff888045870130 (k-sk_lock-AF_INET6){+.+.}-{0:0}, at:
+   tcp_diag_get_aux+0x738/0x830 net/ipv4/tcp_diag.c:137
+
+   but task is already holding lock:
+   ffffc9000135e488 (&h->lhash2[i].lock){+.+.}-{2:2}, at: spin_lock
+   include/linux/spinlock.h:351 [inline]
+   ffffc9000135e488 (&h->lhash2[i].lock){+.+.}-{2:2}, at:
+   inet_diag_dump_icsk+0x39f/0x1f80 net/ipv4/inet_diag.c:1038
+
+   which lock already depends on the new lock.
+
+   the existing dependency chain (in reverse order) is:
+
+   -> #1 (&h->lhash2[i].lock){+.+.}-{2:2}:
+   lock_acquire+0x1e3/0x530 kernel/locking/lockdep.c:5754
+   __raw_spin_lock include/linux/spinlock_api_smp.h:133 [inline]
+   _raw_spin_lock+0x2e/0x40 kernel/locking/spinlock.c:154
+   spin_lock include/linux/spinlock.h:351 [inline]
+   __inet_hash+0x335/0xbe0 net/ipv4/inet_hashtables.c:743
+   inet_csk_listen_start+0x23a/0x320 net/ipv4/inet_connection_sock.c:1261
+   __inet_listen_sk+0x2a2/0x770 net/ipv4/af_inet.c:217
+   inet_listen+0xa3/0x110 net/ipv4/af_inet.c:239
+   rds_tcp_listen_init+0x3fd/0x5a0 net/rds/tcp_listen.c:316
+   rds_tcp_init_net+0x141/0x320 net/rds/tcp.c:577
+   ops_init+0x352/0x610 net/core/net_namespace.c:136
+   __register_pernet_operations net/core/net_namespace.c:1214 [inline]
+   register_pernet_operations+0x2cb/0x660 net/core/net_namespace.c:1283
+   register_pernet_device+0x33/0x80 net/core/net_namespace.c:1370
+   rds_tcp_init+0x62/0xd0 net/rds/tcp.c:735
+   do_one_initcall+0x238/0x830 init/main.c:1236
+   do_initcall_level+0x157/0x210 init/main.c:1298
+   do_initcalls+0x3f/0x80 init/main.c:1314
+   kernel_init_freeable+0x42f/0x5d0 init/main.c:1551
+   kernel_init+0x1d/0x2a0 init/main.c:1441
+   ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+   ret_from_fork_asm+0x1b/0x30 arch/x86/entry/entry_64.S:242
+
+   -> #0 (k-sk_lock-AF_INET6){+.+.}-{0:0}:
+   check_prev_add kernel/locking/lockdep.c:3134 [inline]
+   check_prevs_add kernel/locking/lockdep.c:3253 [inline]
+   validate_chain+0x18ca/0x58e0 kernel/locking/lockdep.c:3869
+   __lock_acquire+0x1345/0x1fd0 kernel/locking/lockdep.c:5137
+   lock_acquire+0x1e3/0x530 kernel/locking/lockdep.c:5754
+   lock_sock_fast include/net/sock.h:1723 [inline]
+   subflow_get_info+0x166/0xd20 net/mptcp/diag.c:28
+   tcp_diag_put_ulp net/ipv4/tcp_diag.c:100 [inline]
+   tcp_diag_get_aux+0x738/0x830 net/ipv4/tcp_diag.c:137
+   inet_sk_diag_fill+0x10ed/0x1e00 net/ipv4/inet_diag.c:345
+   inet_diag_dump_icsk+0x55b/0x1f80 net/ipv4/inet_diag.c:1061
+   __inet_diag_dump+0x211/0x3a0 net/ipv4/inet_diag.c:1263
+   inet_diag_dump_compat+0x1c1/0x2d0 net/ipv4/inet_diag.c:1371
+   netlink_dump+0x59b/0xc80 net/netlink/af_netlink.c:2264
+   __netlink_dump_start+0x5df/0x790 net/netlink/af_netlink.c:2370
+   netlink_dump_start include/linux/netlink.h:338 [inline]
+   inet_diag_rcv_msg_compat+0x209/0x4c0 net/ipv4/inet_diag.c:1405
+   sock_diag_rcv_msg+0xe7/0x410
+   netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2543
+   sock_diag_rcv+0x2a/0x40 net/core/sock_diag.c:280
+   netlink_unicast_kernel net/netlink/af_netlink.c:1341 [inline]
+   netlink_unicast+0x7ea/0x980 net/netlink/af_netlink.c:1367
+   netlink_sendmsg+0xa3b/0xd70 net/netlink/af_netlink.c:1908
+   sock_sendmsg_nosec net/socket.c:730 [inline]
+   __sock_sendmsg+0x221/0x270 net/socket.c:745
+   ____sys_sendmsg+0x525/0x7d0 net/socket.c:2584
+   ___sys_sendmsg net/socket.c:2638 [inline]
+   __sys_sendmsg+0x2b0/0x3a0 net/socket.c:2667
+   do_syscall_64+0xf9/0x240
+   entry_SYSCALL_64_after_hwframe+0x6f/0x77
+
+As noted by Eric we can break the lock dependency chain avoid
+dumping any extended info for the mptcp subflow listener:
+nothing actually useful is presented there.
+
+Fixes: b8adb69a7d29 ("mptcp: fix lockless access in subflow ULP diag")
+Cc: stable@vger.kernel.org
+Reported-by: Eric Dumazet <edumazet@google.com>
+Closes: https://lore.kernel.org/netdev/CANn89iJ=Oecw6OZDwmSYc9HJKQ_G32uN11L+oUcMu+TOD5Xiaw@mail.gmail.com/
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240223-upstream-net-20240223-misc-fixes-v1-9-162e87e48497@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/mptcp/diag.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9795,6 +9795,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8973, "HP EliteBook 860 G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8974, "HP EliteBook 840 Aero G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8975, "HP EliteBook x360 840 Aero G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x897d, "HP mt440 Mobile Thin Client U74", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8981, "HP Elite Dragonfly G3", ALC245_FIXUP_CS35L41_SPI_4),
- 	SND_PCI_QUIRK(0x103c, 0x898e, "HP EliteBook 835 G9", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x898f, "HP EliteBook 835 G9", ALC287_FIXUP_CS35L41_I2C_2),
-@@ -9826,6 +9827,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8ad2, "HP EliteBook 860 16 inch G9 Notebook PC", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8b0f, "HP Elite mt645 G7 Mobile Thin Client U81", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8b2f, "HP 255 15.6 inch G10 Notebook PC", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
-+	SND_PCI_QUIRK(0x103c, 0x8b3f, "HP mt440 Mobile Thin Client U91", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8b42, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8b43, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8b44, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+--- a/net/mptcp/diag.c
++++ b/net/mptcp/diag.c
+@@ -21,6 +21,9 @@ static int subflow_get_info(struct sock
+ 	bool slow;
+ 	int err;
+ 
++	if (inet_sk_state_load(sk) == TCP_LISTEN)
++		return 0;
++
+ 	start = nla_nest_start_noflag(skb, INET_ULP_INFO_MPTCP);
+ 	if (!start)
+ 		return -EMSGSIZE;
 
 
 
