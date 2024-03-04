@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-26521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C552870EF6
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:49:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B342870EDE
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:48:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05E531F210C1
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:49:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 113B01F21268
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:48:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2C7661675;
-	Mon,  4 Mar 2024 21:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7872200D4;
+	Mon,  4 Mar 2024 21:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kpKEJ0pq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LW8OCllL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B1A1EB5A;
-	Mon,  4 Mar 2024 21:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668021EB5A;
+	Mon,  4 Mar 2024 21:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588973; cv=none; b=CVe5MuGmuZCnZJd4UowsDDYeh/qYoxIDRbbv7Ge3JTP4/UAuoy05h0+uvaph3PSJ6wYH4kpekceQfWE8tdmlC2RE/pg6BJf+tLvRoJVUXjzLUwzI6rh3LPQYIG0i1QrNfpsUFthnDtsTjdswWBfIgFDa8+lz8cUaMq7yzxuwJ28=
+	t=1709588894; cv=none; b=NB4n4dD9lAgx9LOARMLqIlvGEldzgDRRMzjVanXKjQY51Ru6aoenOU2o8SH+nLY3xnCP/6mzz83qfyV65zvGspb6YfNYCen/o5qIL3QQHp4eKWAEWZtN2QYM+PRQY6dHPtZW0Sglu5A5W12TB+58vNQbO46oDjEgSVKwJzLPg8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588973; c=relaxed/simple;
-	bh=UFOkhs73GcUliKPV+efJqr4BoJa5t3z80OLs/b7RNN8=;
+	s=arc-20240116; t=1709588894; c=relaxed/simple;
+	bh=iXCK+tO3GkclWl0c0ZcvbvmoEEkjIUUCrctvYlzH39w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D+rI/09SBg2v1UB5djJf2AvsWR+4qWE2N+YTArdWoN2fTTLpN+LqF04v/ieD70LwNaNf5NFMhTqc9DgsfaLBMwkU3+BGQuYFuFh/uItkN/XiEL0yYHDXClAvJkJs/r7OrF9kWRLFX8icxDh1BOfmFoISZu64UJgxIUMEHC35VSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kpKEJ0pq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF728C433F1;
-	Mon,  4 Mar 2024 21:49:32 +0000 (UTC)
+	 MIME-Version; b=RYJGK1KkjtFxi02U1JLFzKgpjPEPLLEpV0MWaWt1+rdon7WwQQlwCQzWNO91wSIXzp+imtTqU6GJ40F0JAE7tgGFFifTWE1lWxgXiKxoV/bLQJFHvyhQPUJpyPy5mJXjO8Skn9ccFY7Khd4vNl41PDJ17d+/0OpFE3jBRXq2NnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LW8OCllL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 032CBC433C7;
+	Mon,  4 Mar 2024 21:48:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588973;
-	bh=UFOkhs73GcUliKPV+efJqr4BoJa5t3z80OLs/b7RNN8=;
+	s=korg; t=1709588894;
+	bh=iXCK+tO3GkclWl0c0ZcvbvmoEEkjIUUCrctvYlzH39w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kpKEJ0pqCepVxlTAkY/m8M4r/IWVJO8IYOuaPurojgd5rzZPHZ6vgLRhChNXbwrvx
-	 lMT8m6dpQBRN16MQL8aRXEzSo4+liLivbab/QOqWP6Mw6P1xDg4I11C0jwYicbRhav
-	 mXOEShls5B4RE4yZ/sj0Lb+QzlarFU0w6kezpxZU=
+	b=LW8OCllLVI5aDIgss49u+IQX9vxNhUXygYs7Opz45X4w7wVETE3dUwdiPdr3fsF24
+	 1x+v6Y0WEVMjZqtlAMlaRboWV8uDLPviPYlbmD9xN6gPR19wlcBnwkmLLlsoICzQu8
+	 VWaGUfxTY43rpUXiIxKy/AtOHhM1UUTlT5I9lh7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Lobakin <alexandr.lobakin@intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.1 128/215] x86/boot: Robustify calling startup_{32,64}() from the decompressor code
-Date: Mon,  4 Mar 2024 21:23:11 +0000
-Message-ID: <20240304211601.130294874@linuxfoundation.org>
+	Ard Biesheuvel <ardb@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.1 129/215] x86/efistub: Branch straight to kernel entry point from C code
+Date: Mon,  4 Mar 2024 21:23:12 +0000
+Message-ID: <20240304211601.166350284@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
 References: <20240304211556.993132804@linuxfoundation.org>
@@ -68,142 +65,70 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexander Lobakin <alexandr.lobakin@intel.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit 7734a0f31e99c433df3063bbb7e8ee5a16a2cb82 upstream.
+commit d2d7a54f69b67cd0a30e0ebb5307cb2de625baac upstream.
 
-After commit ce697ccee1a8 ("kbuild: remove head-y syntax"), I
-started digging whether x86 is ready for removing this old cruft.
-Removing its objects from the list makes the kernel unbootable.
-This applies only to bzImage, vmlinux still works correctly.
-The reason is that with no strict object order determined by the
-linker arguments, not the linker script, startup_64 can be placed
-not right at the beginning of the kernel.
-Here's vmlinux.map's beginning before removing:
+Instead of returning to the calling code in assembler that does nothing
+more than perform an indirect call with the boot_params pointer in
+register ESI/RSI, perform the jump directly from the EFI stub C code.
+This will allow the asm entrypoint code to be dropped entirely in
+subsequent patches.
 
-  ffffffff81000000         vmlinux.o:(.head.text)
-  ffffffff81000000                 startup_64
-  ffffffff81000070                 secondary_startup_64
-  ffffffff81000075                 secondary_startup_64_no_verify
-  ffffffff81000160                 verify_cpu
-
-and after:
-
-  ffffffff81000000         vmlinux.o:(.head.text)
-  ffffffff81000000                 pvh_start_xen
-  ffffffff81000080                 startup_64
-  ffffffff810000f0                 secondary_startup_64
-  ffffffff810000f5                 secondary_startup_64_no_verify
-
-Not a problem itself, but the self-extractor code has the address of
-that function hardcoded the beginning, not looking onto the ELF
-header, which always contains the address of startup_{32,64}().
-
-So, instead of doing an "act of blind faith", just take the address
-from the ELF header and extract a relative offset to the entry
-point. The decompressor function already returns a pointer to the
-beginning of the kernel to the Asm code, which then jumps to it,
-so add that offset to the return value.
-This doesn't change anything for now, but allows to resign from the
-"head object list" for x86 and makes sure valid Kbuild or any other
-improvements won't break anything here in general.
-
-Signed-off-by: Alexander Lobakin <alexandr.lobakin@intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Jiri Slaby <jirislaby@kernel.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20230109170403.4117105-2-alexandr.lobakin@intel.com
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230807162720.545787-4-ardb@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/compressed/head_32.S |    2 +-
- arch/x86/boot/compressed/head_64.S |    2 +-
- arch/x86/boot/compressed/misc.c    |   18 +++++++++++-------
- 3 files changed, 13 insertions(+), 9 deletions(-)
+ drivers/firmware/efi/libstub/x86-stub.c |   22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
---- a/arch/x86/boot/compressed/head_32.S
-+++ b/arch/x86/boot/compressed/head_32.S
-@@ -187,7 +187,7 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated
- 	leal	boot_heap@GOTOFF(%ebx), %eax
- 	pushl	%eax			/* heap area */
- 	pushl	%esi			/* real mode pointer */
--	call	extract_kernel		/* returns kernel location in %eax */
-+	call	extract_kernel		/* returns kernel entry point in %eax */
- 	addl	$24, %esp
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -279,7 +279,7 @@ adjust_memory_range_protection(unsigned
+ #define TRAMPOLINE_PLACEMENT_BASE ((128 - 8)*1024)
+ #define TRAMPOLINE_PLACEMENT_SIZE (640*1024 - (128 - 8)*1024)
  
+-void startup_32(struct boot_params *boot_params);
++extern const u8 startup_32[], startup_64[];
+ 
+ static void
+ setup_memory_protection(unsigned long image_base, unsigned long image_size)
+@@ -760,10 +760,19 @@ static efi_status_t exit_boot(struct boo
+ 	return EFI_SUCCESS;
+ }
+ 
++static void __noreturn enter_kernel(unsigned long kernel_addr,
++				    struct boot_params *boot_params)
++{
++	/* enter decompressed kernel with boot_params pointer in RSI/ESI */
++	asm("jmp *%0"::"r"(kernel_addr), "S"(boot_params));
++
++	unreachable();
++}
++
  /*
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -580,7 +580,7 @@ SYM_FUNC_START_LOCAL_NOALIGN(.Lrelocated
- 	movl	input_len(%rip), %ecx	/* input_len */
- 	movq	%rbp, %r8		/* output target address */
- 	movl	output_len(%rip), %r9d	/* decompressed length, end of relocs */
--	call	extract_kernel		/* returns kernel location in %rax */
-+	call	extract_kernel		/* returns kernel entry point in %rax */
- 	popq	%rsi
- 
- /*
---- a/arch/x86/boot/compressed/misc.c
-+++ b/arch/x86/boot/compressed/misc.c
-@@ -277,7 +277,7 @@ static inline void handle_relocations(vo
- { }
- #endif
- 
--static void parse_elf(void *output)
-+static size_t parse_elf(void *output)
- {
- #ifdef CONFIG_X86_64
- 	Elf64_Ehdr ehdr;
-@@ -293,10 +293,8 @@ static void parse_elf(void *output)
- 	if (ehdr.e_ident[EI_MAG0] != ELFMAG0 ||
- 	   ehdr.e_ident[EI_MAG1] != ELFMAG1 ||
- 	   ehdr.e_ident[EI_MAG2] != ELFMAG2 ||
--	   ehdr.e_ident[EI_MAG3] != ELFMAG3) {
-+	   ehdr.e_ident[EI_MAG3] != ELFMAG3)
- 		error("Kernel is not a valid ELF file");
--		return;
--	}
- 
- 	debug_putstr("Parsing ELF... ");
- 
-@@ -328,6 +326,8 @@ static void parse_elf(void *output)
+- * On success, we return the address of startup_32, which has potentially been
+- * relocated by efi_relocate_kernel.
+- * On failure, we exit to the firmware via efi_exit instead of returning.
++ * On success, this routine will jump to the relocated image directly and never
++ * return.  On failure, it will exit to the firmware via efi_exit() instead of
++ * returning.
+  */
+ asmlinkage unsigned long efi_main(efi_handle_t handle,
+ 				  efi_system_table_t *sys_table_arg,
+@@ -905,7 +914,10 @@ asmlinkage unsigned long efi_main(efi_ha
+ 		goto fail;
  	}
  
- 	free(phdrs);
+-	return bzimage_addr;
++	if (IS_ENABLED(CONFIG_X86_64))
++		bzimage_addr += startup_64 - startup_32;
 +
-+	return ehdr.e_entry - LOAD_PHYSICAL_ADDR;
- }
++	enter_kernel(bzimage_addr, boot_params);
+ fail:
+ 	efi_err("efi_main() failed!\n");
  
- /*
-@@ -356,6 +356,7 @@ asmlinkage __visible void *extract_kerne
- 	const unsigned long kernel_total_size = VO__end - VO__text;
- 	unsigned long virt_addr = LOAD_PHYSICAL_ADDR;
- 	unsigned long needed_size;
-+	size_t entry_offset;
- 
- 	/* Retain x86 boot parameters pointer passed from startup_32/64. */
- 	boot_params = rmode;
-@@ -456,14 +457,17 @@ asmlinkage __visible void *extract_kerne
- 	debug_putstr("\nDecompressing Linux... ");
- 	__decompress(input_data, input_len, NULL, NULL, output, output_len,
- 			NULL, error);
--	parse_elf(output);
-+	entry_offset = parse_elf(output);
- 	handle_relocations(output, output_len, virt_addr);
--	debug_putstr("done.\nBooting the kernel.\n");
-+
-+	debug_putstr("done.\nBooting the kernel (entry_offset: 0x");
-+	debug_puthex(entry_offset);
-+	debug_putstr(").\n");
- 
- 	/* Disable exception handling before booting the kernel */
- 	cleanup_exception_handling();
- 
--	return output;
-+	return output + entry_offset;
- }
- 
- void fortify_panic(const char *name)
 
 
 
