@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-26088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7297F870D04
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:30:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F142870DF7
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:39:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A44F71C239C7
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:30:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00A0C1F21082
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:39:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A184CE0E;
-	Mon,  4 Mar 2024 21:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DD39200D4;
+	Mon,  4 Mar 2024 21:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V7Gfcr3D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U3P3w3LR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D3B200CD;
-	Mon,  4 Mar 2024 21:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC5B8F58;
+	Mon,  4 Mar 2024 21:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587813; cv=none; b=ddQf+NQmnMfrbM2NZmJB3MoGK/3+WashUj7SQsQh1a7misZuyVdHPWNVX6Kg7CG0lkp10d2LhxWM1WyIaJTKl3IpOI22PHNBQYJw3DxX5fWMwpqrohxtZGJ4FkyNk/z1/waayYmhv5ig8TpwJnjOgcCK8yD8uw+XC5ZJfnRB2HI=
+	t=1709588369; cv=none; b=aAy1YB4+Ru9Kj/PFaczCHOHa5FGqgm3JlobSNwG6b6g/1Zd8IjRjnH7DX2IYFc2zmyjaaox34FmneSPwjW6v39r46anFloW0VsuQDQOhPbVu2H9V/vdazHx35vSt6l2EP9fFWpl4cs1/m1MpKydU+rK+qwLcC3JGo2TiD223A8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587813; c=relaxed/simple;
-	bh=zPuifXDPTZFhS5lH7VIFc7N5v0EjEGrHo+jtDx6HZUE=;
+	s=arc-20240116; t=1709588369; c=relaxed/simple;
+	bh=ov//4nn9LVKjc8M5Loex2QhDVVm4/D3QgCZYYNuEoCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N1M0Hh7a4QRRqWM66o9jnjn4TluXDCyDv7aaJY9kA2oCI9zbkEitN+Fs3xxvpjtX5cT0uHhchAQTXMDk0ErXpSR7b6be3Vpl60siuhBeUy62kk6Cvk6gnPJgEtIsm1Knu4BDNXZyQ0gqQ82X6HY0zfVt9hM/iYszhnXaIHKbmMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V7Gfcr3D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67F8AC433F1;
-	Mon,  4 Mar 2024 21:30:13 +0000 (UTC)
+	 MIME-Version; b=qSdglYtj0Voa8xN3KeYUYjh+Yy+TFkzs5tkfc7X1iEFBPAfWctLYVTlMwfpP/Wb8knNhJnEWASaNEszEQVqEZh0ldETv6zcAPFYRQiwQwzFWIX0TVToryxeYo19w4uKiofCZtJCEDbJCMnPa+k48sT9NMPGV8bGjZbuvTg+jsOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U3P3w3LR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F98C433C7;
+	Mon,  4 Mar 2024 21:39:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587813;
-	bh=zPuifXDPTZFhS5lH7VIFc7N5v0EjEGrHo+jtDx6HZUE=;
+	s=korg; t=1709588368;
+	bh=ov//4nn9LVKjc8M5Loex2QhDVVm4/D3QgCZYYNuEoCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V7Gfcr3DrvUl47PMZvCTTix58vjHTqjOfwwzMW+AcJ4mOm12MUIHlF4C4OhHYmlHO
-	 R3qO7rROpmav42piPAnZDz4UvofNQSij/4wS6PBdHfiaHzwqO4ITtlmeZw7SiadiaQ
-	 qFvnA7Di6qGdz4oRFjGF5RWloz7HBkmBuTGxh2yU=
+	b=U3P3w3LRAPMncmn2WUXvKtnlJlFCOwLsbKXimdNo5YRwFomn3e/fCVwhLuTXl1edZ
+	 Pps+Z93oHHMNuow+sTUBfBc9AXcEH/VJux0m9As0zkvld5WWp2J8AnBSCXhJb4LwxC
+	 qH21UuC/bSEsBqI8Axxg2JrHrRyu1PnJ4kwgxrYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Kerello <christophe.kerello@foss.st.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.7 100/162] mmc: mmci: stm32: fix DMA API overlapping mappings warning
-Date: Mon,  4 Mar 2024 21:22:45 +0000
-Message-ID: <20240304211555.029157469@linuxfoundation.org>
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 046/143] ASoC: soc.h: convert asoc_xxx() to snd_soc_xxx()
+Date: Mon,  4 Mar 2024 21:22:46 +0000
+Message-ID: <20240304211551.401468525@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,111 +62,181 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Kerello <christophe.kerello@foss.st.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-commit 6b1ba3f9040be5efc4396d86c9752cdc564730be upstream.
+[ Upstream commit 1d5a2b5dd0a8d2b2b535b5266699429dbd48e62f ]
 
-Turning on CONFIG_DMA_API_DEBUG_SG results in the following warning:
+ASoC is using 2 type of prefix (asoc_xxx() vs snd_soc_xxx()), but there
+is no particular reason about that [1].
+To reduce confusing, standarding these to snd_soc_xxx() is sensible.
 
-DMA-API: mmci-pl18x 48220000.mmc: cacheline tracking EEXIST,
-overlapping mappings aren't supported
-WARNING: CPU: 1 PID: 51 at kernel/dma/debug.c:568
-add_dma_entry+0x234/0x2f4
-Modules linked in:
-CPU: 1 PID: 51 Comm: kworker/1:2 Not tainted 6.1.28 #1
-Hardware name: STMicroelectronics STM32MP257F-EV1 Evaluation Board (DT)
-Workqueue: events_freezable mmc_rescan
-Call trace:
-add_dma_entry+0x234/0x2f4
-debug_dma_map_sg+0x198/0x350
-__dma_map_sg_attrs+0xa0/0x110
-dma_map_sg_attrs+0x10/0x2c
-sdmmc_idma_prep_data+0x80/0xc0
-mmci_prep_data+0x38/0x84
-mmci_start_data+0x108/0x2dc
-mmci_request+0xe4/0x190
-__mmc_start_request+0x68/0x140
-mmc_start_request+0x94/0xc0
-mmc_wait_for_req+0x70/0x100
-mmc_send_tuning+0x108/0x1ac
-sdmmc_execute_tuning+0x14c/0x210
-mmc_execute_tuning+0x48/0xec
-mmc_sd_init_uhs_card.part.0+0x208/0x464
-mmc_sd_init_card+0x318/0x89c
-mmc_attach_sd+0xe4/0x180
-mmc_rescan+0x244/0x320
+This patch adds asoc_xxx() macro to keep compatible for a while.
+It will be removed if all drivers were switched to new style.
 
-DMA API debug brings to light leaking dma-mappings as dma_map_sg and
-dma_unmap_sg are not correctly balanced.
-
-If an error occurs in mmci_cmd_irq function, only mmci_dma_error
-function is called and as this API is not managed on stm32 variant,
-dma_unmap_sg is never called in this error path.
-
-Signed-off-by: Christophe Kerello <christophe.kerello@foss.st.com>
-Fixes: 46b723dd867d ("mmc: mmci: add stm32 sdmmc variant")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240207143951.938144-1-christophe.kerello@foss.st.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/87h6td3hus.wl-kuninori.morimoto.gx@renesas.com [1]
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://lore.kernel.org/r/87fs3ks26i.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 1382d8b55129 ("ASoC: qcom: Fix uninitialized pointer dmactl")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/mmci_stm32_sdmmc.c |   24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ include/sound/soc-card.h |  4 ++--
+ include/sound/soc.h      | 42 ++++++++++++++++++++++++++--------------
+ sound/soc/soc-utils.c    |  4 ++--
+ 3 files changed, 32 insertions(+), 18 deletions(-)
 
---- a/drivers/mmc/host/mmci_stm32_sdmmc.c
-+++ b/drivers/mmc/host/mmci_stm32_sdmmc.c
-@@ -225,6 +225,8 @@ static int sdmmc_idma_start(struct mmci_
- 	struct scatterlist *sg;
- 	int i;
+diff --git a/include/sound/soc-card.h b/include/sound/soc-card.h
+index e8ff2e089cd00..ecc02e955279f 100644
+--- a/include/sound/soc-card.h
++++ b/include/sound/soc-card.h
+@@ -115,8 +115,8 @@ struct snd_soc_dai *snd_soc_card_get_codec_dai(struct snd_soc_card *card,
+ 	struct snd_soc_pcm_runtime *rtd;
  
-+	host->dma_in_progress = true;
+ 	for_each_card_rtds(card, rtd) {
+-		if (!strcmp(asoc_rtd_to_codec(rtd, 0)->name, dai_name))
+-			return asoc_rtd_to_codec(rtd, 0);
++		if (!strcmp(snd_soc_rtd_to_codec(rtd, 0)->name, dai_name))
++			return snd_soc_rtd_to_codec(rtd, 0);
+ 	}
+ 
+ 	return NULL;
+diff --git a/include/sound/soc.h b/include/sound/soc.h
+index 49ec688eed606..c1acc46529b9d 100644
+--- a/include/sound/soc.h
++++ b/include/sound/soc.h
+@@ -774,37 +774,42 @@ struct snd_soc_dai_link {
+ #endif
+ };
+ 
++/* REMOVE ME */
++#define asoc_link_to_cpu	snd_soc_link_to_cpu
++#define asoc_link_to_codec	snd_soc_link_to_codec
++#define asoc_link_to_platform	snd_soc_link_to_platform
 +
- 	if (!host->variant->dma_lli || data->sg_len == 1 ||
- 	    idma->use_bounce_buffer) {
- 		u32 dma_addr;
-@@ -263,9 +265,30 @@ static int sdmmc_idma_start(struct mmci_
- 	return 0;
+ static inline struct snd_soc_dai_link_component*
+-asoc_link_to_cpu(struct snd_soc_dai_link *link, int n) {
++snd_soc_link_to_cpu(struct snd_soc_dai_link *link, int n) {
+ 	return &(link)->cpus[n];
  }
  
-+static void sdmmc_idma_error(struct mmci_host *host)
-+{
-+	struct mmc_data *data = host->data;
-+	struct sdmmc_idma *idma = host->dma_priv;
-+
-+	if (!dma_inprogress(host))
-+		return;
-+
-+	writel_relaxed(0, host->base + MMCI_STM32_IDMACTRLR);
-+	host->dma_in_progress = false;
-+	data->host_cookie = 0;
-+
-+	if (!idma->use_bounce_buffer)
-+		dma_unmap_sg(mmc_dev(host->mmc), data->sg, data->sg_len,
-+			     mmc_get_dma_dir(data));
-+}
-+
- static void sdmmc_idma_finalize(struct mmci_host *host, struct mmc_data *data)
- {
-+	if (!dma_inprogress(host))
-+		return;
-+
- 	writel_relaxed(0, host->base + MMCI_STM32_IDMACTRLR);
-+	host->dma_in_progress = false;
+ static inline struct snd_soc_dai_link_component*
+-asoc_link_to_codec(struct snd_soc_dai_link *link, int n) {
++snd_soc_link_to_codec(struct snd_soc_dai_link *link, int n) {
+ 	return &(link)->codecs[n];
+ }
  
- 	if (!data->host_cookie)
- 		sdmmc_idma_unprep_data(host, data, 0);
-@@ -676,6 +699,7 @@ static struct mmci_host_ops sdmmc_varian
- 	.dma_setup = sdmmc_idma_setup,
- 	.dma_start = sdmmc_idma_start,
- 	.dma_finalize = sdmmc_idma_finalize,
-+	.dma_error = sdmmc_idma_error,
- 	.set_clkreg = mmci_sdmmc_set_clkreg,
- 	.set_pwrreg = mmci_sdmmc_set_pwrreg,
- 	.busy_complete = sdmmc_busy_complete,
+ static inline struct snd_soc_dai_link_component*
+-asoc_link_to_platform(struct snd_soc_dai_link *link, int n) {
++snd_soc_link_to_platform(struct snd_soc_dai_link *link, int n) {
+ 	return &(link)->platforms[n];
+ }
+ 
+ #define for_each_link_codecs(link, i, codec)				\
+ 	for ((i) = 0;							\
+ 	     ((i) < link->num_codecs) &&				\
+-		     ((codec) = asoc_link_to_codec(link, i));		\
++		     ((codec) = snd_soc_link_to_codec(link, i));		\
+ 	     (i)++)
+ 
+ #define for_each_link_platforms(link, i, platform)			\
+ 	for ((i) = 0;							\
+ 	     ((i) < link->num_platforms) &&				\
+-		     ((platform) = asoc_link_to_platform(link, i));	\
++		     ((platform) = snd_soc_link_to_platform(link, i));	\
+ 	     (i)++)
+ 
+ #define for_each_link_cpus(link, i, cpu)				\
+ 	for ((i) = 0;							\
+ 	     ((i) < link->num_cpus) &&					\
+-		     ((cpu) = asoc_link_to_cpu(link, i));		\
++		     ((cpu) = snd_soc_link_to_cpu(link, i));		\
+ 	     (i)++)
+ 
+ /*
+@@ -894,8 +899,11 @@ asoc_link_to_platform(struct snd_soc_dai_link *link, int n) {
+ #define COMP_CODEC_CONF(_name)		{ .name = _name }
+ #define COMP_DUMMY()			{ .name = "snd-soc-dummy", .dai_name = "snd-soc-dummy-dai", }
+ 
++/* REMOVE ME */
++#define asoc_dummy_dlc		snd_soc_dummy_dlc
++
+ extern struct snd_soc_dai_link_component null_dailink_component[0];
+-extern struct snd_soc_dai_link_component asoc_dummy_dlc;
++extern struct snd_soc_dai_link_component snd_soc_dummy_dlc;
+ 
+ 
+ struct snd_soc_codec_conf {
+@@ -1113,8 +1121,8 @@ struct snd_soc_pcm_runtime {
+ 	 * dais = cpu_dai + codec_dai
+ 	 * see
+ 	 *	soc_new_pcm_runtime()
+-	 *	asoc_rtd_to_cpu()
+-	 *	asoc_rtd_to_codec()
++	 *	snd_soc_rtd_to_cpu()
++	 *	snd_soc_rtd_to_codec()
+ 	 */
+ 	struct snd_soc_dai **dais;
+ 
+@@ -1142,10 +1150,16 @@ struct snd_soc_pcm_runtime {
+ 	int num_components;
+ 	struct snd_soc_component *components[]; /* CPU/Codec/Platform */
+ };
++
++/* REMOVE ME */
++#define asoc_rtd_to_cpu		snd_soc_rtd_to_cpu
++#define asoc_rtd_to_codec	snd_soc_rtd_to_codec
++#define asoc_substream_to_rtd	snd_soc_substream_to_rtd
++
+ /* see soc_new_pcm_runtime()  */
+-#define asoc_rtd_to_cpu(rtd, n)   (rtd)->dais[n]
+-#define asoc_rtd_to_codec(rtd, n) (rtd)->dais[n + (rtd)->dai_link->num_cpus]
+-#define asoc_substream_to_rtd(substream) \
++#define snd_soc_rtd_to_cpu(rtd, n)   (rtd)->dais[n]
++#define snd_soc_rtd_to_codec(rtd, n) (rtd)->dais[n + (rtd)->dai_link->num_cpus]
++#define snd_soc_substream_to_rtd(substream) \
+ 	(struct snd_soc_pcm_runtime *)snd_pcm_substream_chip(substream)
+ 
+ #define for_each_rtd_components(rtd, i, component)			\
+@@ -1154,11 +1168,11 @@ struct snd_soc_pcm_runtime {
+ 	     (i)++)
+ #define for_each_rtd_cpu_dais(rtd, i, dai)				\
+ 	for ((i) = 0;							\
+-	     ((i) < rtd->dai_link->num_cpus) && ((dai) = asoc_rtd_to_cpu(rtd, i)); \
++	     ((i) < rtd->dai_link->num_cpus) && ((dai) = snd_soc_rtd_to_cpu(rtd, i)); \
+ 	     (i)++)
+ #define for_each_rtd_codec_dais(rtd, i, dai)				\
+ 	for ((i) = 0;							\
+-	     ((i) < rtd->dai_link->num_codecs) && ((dai) = asoc_rtd_to_codec(rtd, i)); \
++	     ((i) < rtd->dai_link->num_codecs) && ((dai) = snd_soc_rtd_to_codec(rtd, i)); \
+ 	     (i)++)
+ #define for_each_rtd_dais(rtd, i, dai)					\
+ 	for ((i) = 0;							\
+diff --git a/sound/soc/soc-utils.c b/sound/soc/soc-utils.c
+index 9c746e4edef71..941ba0639a4e6 100644
+--- a/sound/soc/soc-utils.c
++++ b/sound/soc/soc-utils.c
+@@ -225,12 +225,12 @@ int snd_soc_component_is_dummy(struct snd_soc_component *component)
+ 		(component->driver == &dummy_codec));
+ }
+ 
+-struct snd_soc_dai_link_component asoc_dummy_dlc = {
++struct snd_soc_dai_link_component snd_soc_dummy_dlc = {
+ 	.of_node	= NULL,
+ 	.dai_name	= "snd-soc-dummy-dai",
+ 	.name		= "snd-soc-dummy",
+ };
+-EXPORT_SYMBOL_GPL(asoc_dummy_dlc);
++EXPORT_SYMBOL_GPL(snd_soc_dummy_dlc);
+ 
+ static int snd_soc_dummy_probe(struct platform_device *pdev)
+ {
+-- 
+2.43.0
+
 
 
 
