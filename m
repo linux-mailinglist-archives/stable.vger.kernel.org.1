@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-26152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D253870D56
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10F15870D9F
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 818021C23DCF
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAB751F219AE
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72E257BAFB;
-	Mon,  4 Mar 2024 21:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA76A200CD;
+	Mon,  4 Mar 2024 21:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CJdHlmZ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lVWDnUGf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327C57B3C3;
-	Mon,  4 Mar 2024 21:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97DDBDDCB;
+	Mon,  4 Mar 2024 21:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587977; cv=none; b=Mn9MUC6Lhf4OsjExNF+ijCmW1Ch/0ZYI/HVVxUiAga2r/di8lHbvqiu1kiD2g+jv2jigk+FgAnaFUGS4QTWarADs0LdMpebYMeXlB/Sux/lPpb2li2PM8Y7w9I62zP2nSvMY5vK8QTMzp+stK1tI33EEWKtF5L7V3peSctyPdSs=
+	t=1709588159; cv=none; b=UCsqjd5DdESlj1d1zIhTgtzyIS4EZoDeAOGa6Imf76M5soliPpm4OOSTXhzei+q07Hkx91nYcGCmjTeNl+mvb5cw6YEgwtUT1vsa057x+o6tCmtgUOZL5+1JZWn0T/r/K+Mf36BuoGJmS3dMkBevorbTVm9Rs2TcTeWSzfOMUeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587977; c=relaxed/simple;
-	bh=RC4dI96SHwLeyFGAagAoJM9ELEXr8kRv5TCS4eZsJuc=;
+	s=arc-20240116; t=1709588159; c=relaxed/simple;
+	bh=XbqnIOR8Wk1BxkGOTZWLme08juygevCxKLu/yTSlx90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aaq0+3WVqQFo7lhLLH+eg3a12oy82UGqykXF7qIzddTvSFFftZqJ/o9XjijDMA9KD47axPLVFL7plTpdX20BkIuwx9O3B7sMCJm9Lbc2Jikgl3NRfTpITA12jWV1j+iXVrldv3mhrKoU9x8Qchr10yCCpQEi9cR7e5YsUwcchdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CJdHlmZ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B897CC43394;
-	Mon,  4 Mar 2024 21:32:56 +0000 (UTC)
+	 MIME-Version; b=dgt4xykzGbjIkWRQNVQRGpz4lI9QG0xFVKAK+cCinCAaSBzBzeS+fYExF9E0xmIluUx9smkOWVFEQ1furpW3JjxSv2MF1+WcriZ7XxbcQxBibjKrAzh+wMzm5743sEQTzHbwffU8tDZmTwQSNapu8qoDptlbGz2JGduYW+ydOqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lVWDnUGf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A19DC433C7;
+	Mon,  4 Mar 2024 21:35:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587977;
-	bh=RC4dI96SHwLeyFGAagAoJM9ELEXr8kRv5TCS4eZsJuc=;
+	s=korg; t=1709588159;
+	bh=XbqnIOR8Wk1BxkGOTZWLme08juygevCxKLu/yTSlx90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CJdHlmZ/DH1cSRhwXYjQgXfXxX2pfKwvUvf23bD9h6mz8eUaURYzdPAJdXQJBvztC
-	 xfiA0zZtsUn9mlGJv9TZzLjZuOPt2FAdpEEPDNmlWh9AYpaZ0DaProV9zkDOZZg2O9
-	 9Smm6lW3+G1bRm2IoFBWEJBzO5iAf/vTIsDQRFuE=
+	b=lVWDnUGfaPVfvaPolklnnVDySvZgHpK8xiNNqKIX2nwzxegly/NqclmWfNv9ulcU/
+	 7RRVrU5SlpgLkuq2F3K4ntmH2yJxiDtxxW0cjyRhudBrSZwsKIWbpYXbuN+Q2Uo0jB
+	 6V66JrUDgfFT9b2tXUXyqVyUbTVxJZzg590NnlSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karol Herbst <kherbst@redhat.com>,
-	Danilo Krummrich <dakr@redhat.com>
-Subject: [PATCH 6.7 162/162] drm/nouveau: dont fini scheduler before entity flush
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Markus Suvanto <markus.suvanto@gmail.com>,
+	linux-afs@lists.infradead.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 20/42] afs: Fix endless loop in directory parsing
 Date: Mon,  4 Mar 2024 21:23:47 +0000
-Message-ID: <20240304211556.845360309@linuxfoundation.org>
+Message-ID: <20240304211538.309402720@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
+References: <20240304211537.631764077@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,169 +65,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@redhat.com>
+From: David Howells <dhowells@redhat.com>
 
-This bug is present in v6.7 only, since the scheduler design has been
-re-worked in v6.8.
+[ Upstream commit 5f7a07646655fb4108da527565dcdc80124b14c4 ]
 
-Client scheduler entities must be flushed before an associated GPU
-scheduler is teared down. Otherwise the entitiy might still hold a
-pointer to the scheduler's runqueue which is freed at scheduler tear
-down already.
+If a directory has a block with only ".__afsXXXX" files in it (from
+uncompleted silly-rename), these .__afsXXXX files are skipped but without
+advancing the file position in the dir_context.  This leads to
+afs_dir_iterate() repeating the block again and again.
 
-[  305.224293] ==================================================================
-[  305.224297] BUG: KASAN: slab-use-after-free in drm_sched_entity_flush+0x6c4/0x7b0 [gpu_sched]
-[  305.224310] Read of size 8 at addr ffff8881440a8f48 by task rmmod/4436
+Fix this by making the code that skips the .__afsXXXX file also manually
+advance the file position.
 
-[  305.224317] CPU: 10 PID: 4436 Comm: rmmod Tainted: G     U             6.7.6-100.fc38.x86_64+debug #1
-[  305.224321] Hardware name: Dell Inc. Precision 7550/01PXFR, BIOS 1.27.0 11/08/2023
-[  305.224324] Call Trace:
-[  305.224327]  <TASK>
-[  305.224329]  dump_stack_lvl+0x76/0xd0
-[  305.224336]  print_report+0xcf/0x670
-[  305.224342]  ? drm_sched_entity_flush+0x6c4/0x7b0 [gpu_sched]
-[  305.224352]  ? __virt_addr_valid+0x215/0x410
-[  305.224359]  ? drm_sched_entity_flush+0x6c4/0x7b0 [gpu_sched]
-[  305.224368]  kasan_report+0xa6/0xe0
-[  305.224373]  ? drm_sched_entity_flush+0x6c4/0x7b0 [gpu_sched]
-[  305.224385]  drm_sched_entity_flush+0x6c4/0x7b0 [gpu_sched]
-[  305.224395]  ? __pfx_drm_sched_entity_flush+0x10/0x10 [gpu_sched]
-[  305.224406]  ? rcu_is_watching+0x15/0xb0
-[  305.224413]  drm_sched_entity_destroy+0x17/0x20 [gpu_sched]
-[  305.224422]  nouveau_cli_fini+0x6c/0x120 [nouveau]
-[  305.224658]  nouveau_drm_device_fini+0x2ac/0x490 [nouveau]
-[  305.224871]  nouveau_drm_remove+0x18e/0x220 [nouveau]
-[  305.225082]  ? __pfx_nouveau_drm_remove+0x10/0x10 [nouveau]
-[  305.225290]  ? rcu_is_watching+0x15/0xb0
-[  305.225295]  ? _raw_spin_unlock_irqrestore+0x66/0x80
-[  305.225299]  ? trace_hardirqs_on+0x16/0x100
-[  305.225304]  ? _raw_spin_unlock_irqrestore+0x4f/0x80
-[  305.225310]  pci_device_remove+0xa3/0x1d0
-[  305.225316]  device_release_driver_internal+0x379/0x540
-[  305.225322]  driver_detach+0xc5/0x180
-[  305.225327]  bus_remove_driver+0x11e/0x2a0
-[  305.225333]  pci_unregister_driver+0x2a/0x250
-[  305.225339]  nouveau_drm_exit+0x1f/0x970 [nouveau]
-[  305.225548]  __do_sys_delete_module+0x350/0x580
-[  305.225554]  ? __pfx___do_sys_delete_module+0x10/0x10
-[  305.225562]  ? syscall_enter_from_user_mode+0x26/0x90
-[  305.225567]  ? rcu_is_watching+0x15/0xb0
-[  305.225571]  ? syscall_enter_from_user_mode+0x26/0x90
-[  305.225575]  ? trace_hardirqs_on+0x16/0x100
-[  305.225580]  do_syscall_64+0x61/0xe0
-[  305.225584]  ? rcu_is_watching+0x15/0xb0
-[  305.225587]  ? syscall_exit_to_user_mode+0x1f/0x50
-[  305.225592]  ? trace_hardirqs_on_prepare+0xe3/0x100
-[  305.225596]  ? do_syscall_64+0x70/0xe0
-[  305.225600]  ? trace_hardirqs_on_prepare+0xe3/0x100
-[  305.225604]  entry_SYSCALL_64_after_hwframe+0x6e/0x76
-[  305.225609] RIP: 0033:0x7f6148f3592b
-[  305.225650] Code: 73 01 c3 48 8b 0d dd 04 0c 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 b0 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d ad 04 0c 00 f7 d8 64 89 01 48
-[  305.225653] RSP: 002b:00007ffe89986f08 EFLAGS: 00000206 ORIG_RAX: 00000000000000b0
-[  305.225659] RAX: ffffffffffffffda RBX: 000055cbb036e900 RCX: 00007f6148f3592b
-[  305.225662] RDX: 0000000000000000 RSI: 0000000000000800 RDI: 000055cbb036e968
-[  305.225664] RBP: 00007ffe89986f30 R08: 1999999999999999 R09: 0000000000000000
-[  305.225667] R10: 00007f6148fa6ac0 R11: 0000000000000206 R12: 0000000000000000
-[  305.225670] R13: 00007ffe89987190 R14: 000055cbb036e900 R15: 0000000000000000
-[  305.225678]  </TASK>
+The symptoms are a soft lookup:
 
-[  305.225683] Allocated by task 484:
-[  305.225685]  kasan_save_stack+0x33/0x60
-[  305.225690]  kasan_set_track+0x25/0x30
-[  305.225693]  __kasan_kmalloc+0x8f/0xa0
-[  305.225696]  drm_sched_init+0x3c7/0xce0 [gpu_sched]
-[  305.225705]  nouveau_sched_init+0xd2/0x110 [nouveau]
-[  305.225913]  nouveau_drm_device_init+0x130/0x3290 [nouveau]
-[  305.226121]  nouveau_drm_probe+0x1ab/0x6b0 [nouveau]
-[  305.226329]  local_pci_probe+0xda/0x190
-[  305.226333]  pci_device_probe+0x23a/0x780
-[  305.226337]  really_probe+0x3df/0xb80
-[  305.226341]  __driver_probe_device+0x18c/0x450
-[  305.226345]  driver_probe_device+0x4a/0x120
-[  305.226348]  __driver_attach+0x1e5/0x4a0
-[  305.226351]  bus_for_each_dev+0x106/0x190
-[  305.226355]  bus_add_driver+0x2a1/0x570
-[  305.226358]  driver_register+0x134/0x460
-[  305.226361]  do_one_initcall+0xd3/0x430
-[  305.226366]  do_init_module+0x238/0x770
-[  305.226370]  load_module+0x5581/0x6f10
-[  305.226374]  __do_sys_init_module+0x1f2/0x220
-[  305.226377]  do_syscall_64+0x61/0xe0
-[  305.226381]  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+        watchdog: BUG: soft lockup - CPU#3 stuck for 52s! [check:5737]
+        ...
+        RIP: 0010:afs_dir_iterate_block+0x39/0x1fd
+        ...
+         ? watchdog_timer_fn+0x1a6/0x213
+        ...
+         ? asm_sysvec_apic_timer_interrupt+0x16/0x20
+         ? afs_dir_iterate_block+0x39/0x1fd
+         afs_dir_iterate+0x10a/0x148
+         afs_readdir+0x30/0x4a
+         iterate_dir+0x93/0xd3
+         __do_sys_getdents64+0x6b/0xd4
 
-[  305.226387] Freed by task 4436:
-[  305.226389]  kasan_save_stack+0x33/0x60
-[  305.226392]  kasan_set_track+0x25/0x30
-[  305.226396]  kasan_save_free_info+0x2b/0x50
-[  305.226399]  __kasan_slab_free+0x10b/0x1a0
-[  305.226402]  slab_free_freelist_hook+0x12b/0x1e0
-[  305.226406]  __kmem_cache_free+0xd4/0x1d0
-[  305.226410]  drm_sched_fini+0x178/0x320 [gpu_sched]
-[  305.226418]  nouveau_drm_device_fini+0x2a0/0x490 [nouveau]
-[  305.226624]  nouveau_drm_remove+0x18e/0x220 [nouveau]
-[  305.226832]  pci_device_remove+0xa3/0x1d0
-[  305.226836]  device_release_driver_internal+0x379/0x540
-[  305.226840]  driver_detach+0xc5/0x180
-[  305.226843]  bus_remove_driver+0x11e/0x2a0
-[  305.226847]  pci_unregister_driver+0x2a/0x250
-[  305.226850]  nouveau_drm_exit+0x1f/0x970 [nouveau]
-[  305.227056]  __do_sys_delete_module+0x350/0x580
-[  305.227060]  do_syscall_64+0x61/0xe0
-[  305.227064]  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+This is almost certainly the actual fix for:
 
-[  305.227070] The buggy address belongs to the object at ffff8881440a8f00
-                which belongs to the cache kmalloc-128 of size 128
-[  305.227073] The buggy address is located 72 bytes inside of
-                freed 128-byte region [ffff8881440a8f00, ffff8881440a8f80)
+        https://bugzilla.kernel.org/show_bug.cgi?id=218496
 
-[  305.227078] The buggy address belongs to the physical page:
-[  305.227081] page:00000000627efa0a refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1440a8
-[  305.227085] head:00000000627efa0a order:1 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-[  305.227088] flags: 0x17ffffc0000840(slab|head|node=0|zone=2|lastcpupid=0x1fffff)
-[  305.227093] page_type: 0xffffffff()
-[  305.227097] raw: 0017ffffc0000840 ffff8881000428c0 ffffea0005b33500 dead000000000002
-[  305.227100] raw: 0000000000000000 0000000000200020 00000001ffffffff 0000000000000000
-[  305.227102] page dumped because: kasan: bad access detected
-
-[  305.227106] Memory state around the buggy address:
-[  305.227109]  ffff8881440a8e00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[  305.227112]  ffff8881440a8e80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  305.227114] >ffff8881440a8f00: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-[  305.227117]                                               ^
-[  305.227120]  ffff8881440a8f80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[  305.227122]  ffff8881440a9000: 00 00 00 00 00 00 00 00 00 00 00 00 00 fc fc fc
-[  305.227125] ==================================================================
-
-Cc: <stable@vger.kernel.org> # v6.7 only
-Reported-by: Karol Herbst <kherbst@redhat.com>
-Closes: https://gist.githubusercontent.com/karolherbst/a20eb0f937a06ed6aabe2ac2ca3d11b5/raw/9cd8b1dc5894872d0eeebbee3dd0fdd28bb576bc/gistfile1.txt
-Fixes: b88baab82871 ("drm/nouveau: implement new VM_BIND uAPI")
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 57e9d49c5452 ("afs: Hide silly-rename files from userspace")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/786185.1708694102@warthog.procyon.org.uk
+Reviewed-by: Marc Dionne <marc.dionne@auristor.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Markus Suvanto <markus.suvanto@gmail.com>
+cc: linux-afs@lists.infradead.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_drm.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/afs/dir.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/nouveau/nouveau_drm.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
-@@ -708,10 +708,11 @@ nouveau_drm_device_fini(struct drm_devic
- 	}
- 	mutex_unlock(&drm->clients_lock);
+diff --git a/fs/afs/dir.c b/fs/afs/dir.c
+index 0b927736ca728..88f0e719c6ac0 100644
+--- a/fs/afs/dir.c
++++ b/fs/afs/dir.c
+@@ -423,8 +423,10 @@ static int afs_dir_iterate_block(struct afs_vnode *dvnode,
+ 		    dire->u.name[0] == '.' &&
+ 		    ctx->actor != afs_lookup_filldir &&
+ 		    ctx->actor != afs_lookup_one_filldir &&
+-		    memcmp(dire->u.name, ".__afs", 6) == 0)
++		    memcmp(dire->u.name, ".__afs", 6) == 0) {
++			ctx->pos = blkoff + next * sizeof(union afs_xdr_dirent);
+ 			continue;
++		}
  
--	nouveau_sched_fini(drm);
--
- 	nouveau_cli_fini(&drm->client);
- 	nouveau_cli_fini(&drm->master);
-+
-+	nouveau_sched_fini(drm);
-+
- 	nvif_parent_dtor(&drm->parent);
- 	mutex_destroy(&drm->clients_lock);
- 	kfree(drm);
+ 		/* found the next entry */
+ 		if (!dir_emit(ctx, dire->u.name, nlen,
+-- 
+2.43.0
+
 
 
 
