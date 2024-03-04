@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-26240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5412870DB1
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8275E870E89
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:45:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 454001F21D46
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B43F61C20B50
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:45:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9E81F92C;
-	Mon,  4 Mar 2024 21:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB37200D4;
+	Mon,  4 Mar 2024 21:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aPMADYMa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EAFca2/g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C7BE10A35;
-	Mon,  4 Mar 2024 21:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C23D711193;
+	Mon,  4 Mar 2024 21:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588206; cv=none; b=D9+Z3u0q6Q6FRbOTtx3hhEj2Q8Fw5MRn+pg7gRLBWnN4sASF9gtThU1ope5iYnry80cPXO4TBB0cYC6QpWKkueP1LW0VaOhLwJr8rMUzFFQ+CXp9epYXBY3tEfvSnDK9bCpVM3lYsJjG7FK9ggPJouPeIuUhm48bSfOYDEJxyyE=
+	t=1709588690; cv=none; b=Hl900s3ajPIdzCvurfGf3Cu1oFOZhapp16Mke3OKG8oBOKGbSDw+4C6J7xhaTLLNbSlLKKEM9IdpAxhjKtLx+mZL5/fPKCqxFtuvsQaNqD0I9vBMp2kq2G9LuZBRhPkAxgPZLRf04VZWMG9fNqoieysN5gvDhQJi3buQdwcUZxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588206; c=relaxed/simple;
-	bh=tJa10jaGz3oj8ZHfCg6mbbeRqCUZp18s8qwTogxWCww=;
+	s=arc-20240116; t=1709588690; c=relaxed/simple;
+	bh=xNqjunxuknNlgL2R0jKRLQ+xlXpampVRalacxBuvlUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bzgBESR8f9I1aUQ1S7BjICm9Rtsg3mDRNeyuLfedN0yZgUJYSb15F/CnCuf/tWKgHyMxjmhR0FwXHSVyxLURTAVEaRRvnElioHhHiGAPvE9eNtgClaXK5frDp+nWpHt/KUT/Krl27MuzEGJ/v53+Qekm/48udnLSYsKFGeUHexs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aPMADYMa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2AD0C433F1;
-	Mon,  4 Mar 2024 21:36:45 +0000 (UTC)
+	 MIME-Version; b=R1JgbQwMTq3b2PGST8fWwR+Lj6QRglgDj80h7f4DRxxF54gzvhIEtKEbMYYu8zl46XpiQz2+jislY8Kx+vyGsz+PuIxUFvvCGKa4JZOkdXnxuOWKepJXZoEiTLjxqtI11T9JyDa6eB8rulb/ZMefV+YOuyrFavSVSdJCVmio+go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EAFca2/g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C2FDC433F1;
+	Mon,  4 Mar 2024 21:44:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588206;
-	bh=tJa10jaGz3oj8ZHfCg6mbbeRqCUZp18s8qwTogxWCww=;
+	s=korg; t=1709588690;
+	bh=xNqjunxuknNlgL2R0jKRLQ+xlXpampVRalacxBuvlUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aPMADYMajHfN8Bz8TXh0+J/9VgeV8Cpboef7xIdfGONTZzHEVSwdYefX/iLgVxelJ
-	 mMiW94vNcxZ6TTCcEOlnP7Foup781fHOZ4k1RKZnQHQQfWUNk9TuZgcfBdYtTfNd7X
-	 sgUuxyFW/dRu35JBH6At00pVaoO9RchTXyUBFKac=
+	b=EAFca2/gx/tC2akskAYku3KxGfkXnZlvCeHyOciEUBM2u9n+C8+xa+Ft7lhPgfMf0
+	 AJ6A/oA+c3A4ZgUOa9ovfu9Aj/F5GU99Sucfu3nNv3d+f6EU4uBP6O5Vreai4VciEK
+	 qyE8tf/iln8p1A84PbNM+0cX2T8BVSqYer79zh88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Richard Weinberger <richard@nod.at>,
-	Sasha Levin <sashal@kernel.org>,
-	Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
-Subject: [PATCH 6.6 002/143] ubifs: fix possible dereference after free
+	Lin Ma <linma@zju.edu.cn>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 059/215] rtnetlink: fix error logic of IFLA_BRIDGE_FLAGS writing back
 Date: Mon,  4 Mar 2024 21:22:02 +0000
-Message-ID: <20240304211549.965375707@linuxfoundation.org>
+Message-ID: <20240304211558.853871242@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,39 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit d81efd66106c03771ffc8637855a6ec24caa6350 ]
+[ Upstream commit 743ad091fb46e622f1b690385bb15e3cd3daf874 ]
 
-'old_idx' could be dereferenced after free via 'rb_link_node' function
-call.
+In the commit d73ef2d69c0d ("rtnetlink: let rtnl_bridge_setlink checks
+IFLA_BRIDGE_MODE length"), an adjustment was made to the old loop logic
+in the function `rtnl_bridge_setlink` to enable the loop to also check
+the length of the IFLA_BRIDGE_MODE attribute. However, this adjustment
+removed the `break` statement and led to an error logic of the flags
+writing back at the end of this function.
 
-Fixes: b5fda08ef213 ("ubifs: Fix memleak when insert_old_idx() failed")
-Co-developed-by: Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
-Signed-off-by: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+if (have_flags)
+    memcpy(nla_data(attr), &flags, sizeof(flags));
+    // attr should point to IFLA_BRIDGE_FLAGS NLA !!!
+
+Before the mentioned commit, the `attr` is granted to be IFLA_BRIDGE_FLAGS.
+However, this is not necessarily true fow now as the updated loop will let
+the attr point to the last NLA, even an invalid NLA which could cause
+overflow writes.
+
+This patch introduces a new variable `br_flag` to save the NLA pointer
+that points to IFLA_BRIDGE_FLAGS and uses it to resolve the mentioned
+error logic.
+
+Fixes: d73ef2d69c0d ("rtnetlink: let rtnl_bridge_setlink checks IFLA_BRIDGE_MODE length")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/20240227121128.608110-1-linma@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ubifs/tnc.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/core/rtnetlink.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/fs/ubifs/tnc.c b/fs/ubifs/tnc.c
-index 6b7d95b65f4b6..f4728e65d1bda 100644
---- a/fs/ubifs/tnc.c
-+++ b/fs/ubifs/tnc.c
-@@ -65,6 +65,7 @@ static void do_insert_old_idx(struct ubifs_info *c,
- 		else {
- 			ubifs_err(c, "old idx added twice!");
- 			kfree(old_idx);
-+			return;
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 7cf1e42d7f93b..ac379e4590f8d 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -5026,10 +5026,9 @@ static int rtnl_bridge_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	struct net *net = sock_net(skb->sk);
+ 	struct ifinfomsg *ifm;
+ 	struct net_device *dev;
+-	struct nlattr *br_spec, *attr = NULL;
++	struct nlattr *br_spec, *attr, *br_flags_attr = NULL;
+ 	int rem, err = -EOPNOTSUPP;
+ 	u16 flags = 0;
+-	bool have_flags = false;
+ 
+ 	if (nlmsg_len(nlh) < sizeof(*ifm))
+ 		return -EINVAL;
+@@ -5047,11 +5046,11 @@ static int rtnl_bridge_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	br_spec = nlmsg_find_attr(nlh, sizeof(struct ifinfomsg), IFLA_AF_SPEC);
+ 	if (br_spec) {
+ 		nla_for_each_nested(attr, br_spec, rem) {
+-			if (nla_type(attr) == IFLA_BRIDGE_FLAGS && !have_flags) {
++			if (nla_type(attr) == IFLA_BRIDGE_FLAGS && !br_flags_attr) {
+ 				if (nla_len(attr) < sizeof(flags))
+ 					return -EINVAL;
+ 
+-				have_flags = true;
++				br_flags_attr = attr;
+ 				flags = nla_get_u16(attr);
+ 			}
+ 
+@@ -5095,8 +5094,8 @@ static int rtnl_bridge_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
  		}
  	}
- 	rb_link_node(&old_idx->rb, parent, p);
+ 
+-	if (have_flags)
+-		memcpy(nla_data(attr), &flags, sizeof(flags));
++	if (br_flags_attr)
++		memcpy(nla_data(br_flags_attr), &flags, sizeof(flags));
+ out:
+ 	return err;
+ }
 -- 
 2.43.0
 
