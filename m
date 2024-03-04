@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-26210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C275870D94
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:35:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 576B3870F5A
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:53:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4A8DB25AA9
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:35:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7090B21D72
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87377BAF0;
-	Mon,  4 Mar 2024 21:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434787BAF8;
+	Mon,  4 Mar 2024 21:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2tN801A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T07Lz6/z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D5A91C687;
-	Mon,  4 Mar 2024 21:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016041C6AB;
+	Mon,  4 Mar 2024 21:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588128; cv=none; b=c4JKyWVvmuisYaHmgZ7TOZQs7mV7u6vURGeDIsPfwHqW8LUp2WwOJ4DJY0UTtRAVJ3bOmIhRw3T3IBV3qOrk+4EaXCIPFjXhEryF9MPw0LApL7VwLgOxM006tzfTDv3eZDEgPd1FAJGYFA3U7gjCnDmvGsHgxVpTW7owcw4Laqk=
+	t=1709589221; cv=none; b=Z+SfUlIvrqMISbZDF2WvAcSKSAG2JNnPcP/sBIG4EKl+p+nIi9/6k09nEzCEPwviUmvTmuflPz8iwX1TBSSoc6+LTpdD8+tiYUWcQ7p4ht2bRN0PW3h7kbAHBWssXHxbjXnhYFAv3cROezcupgDY7riBQNJ8O8TaLtegW5XpCwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588128; c=relaxed/simple;
-	bh=uw0HVyf3jX7kFfZ2aakVPCgH/SIuehr8fljh33Qsne0=;
+	s=arc-20240116; t=1709589221; c=relaxed/simple;
+	bh=ybaH3riilrI6k2vdcY7OtCoj6O5NDh/eJRNhtMCCKRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=reFADbvOyxeAM67RuEXredBo2Qa7CiieEskH0OTlGYL86joDhuWhCb8FmU3mThxKBp3WW4+NBFS1TwniD8HJDlqeZkL04VpG1vlHzRaGTz+3QIcxmdArdlHAb8GfgYBgeLwvUSTYK03PwHLGBj4nVPXYwC2v9zrZfHGOaFEILbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2tN801A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 059D3C433F1;
-	Mon,  4 Mar 2024 21:35:27 +0000 (UTC)
+	 MIME-Version; b=Mw8leZS0tFHceiDcL2K3YhEkPiNvXuAVfbU1z+g8btGbelCHJZ5wJ4jeTrcBs5TlZYWwkO7qoZa+akLkEISY4YOEy9V6uWJoQBA5l1KVT3d2IT02p0Jl2rmd0NJJXif4nSf3AH/u+sbXi9RVB4sbkcf5m2svcoKMBdd0/9JJutw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T07Lz6/z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8BBC43394;
+	Mon,  4 Mar 2024 21:53:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588128;
-	bh=uw0HVyf3jX7kFfZ2aakVPCgH/SIuehr8fljh33Qsne0=;
+	s=korg; t=1709589220;
+	bh=ybaH3riilrI6k2vdcY7OtCoj6O5NDh/eJRNhtMCCKRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f2tN801Aw/uoEzpCRtZ+EF1N3Y/2BT02ApI+cZRl5PJv3gjo8+XXImufHoLWS7eoV
-	 73R/edQwb9icVx8abFynwhFyeLO7Vo81YEW+jcWYfYbhYz0AJPrhrxB2mfQfKvWs3I
-	 spu3+qzr6vIA8K8hbOkC1S15WWSKFkI66/h2sOds=
+	b=T07Lz6/zAexEQZsyj9GuyagJHuDLiblMq+p14n2bzPv8J4GqiHTlVrVXcpMkBR2kX
+	 QDt/d3KXYk7ZuIwV4xPC3kIQ9B+4yQo7QRM1+QBwolo155X5veDZ9WrkOVAl+MD8jc
+	 VJ0+1VfqckaJubo7HIQKUNKgyylr4yfeTk9Q/+7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Bjorn Andersson <quic_bjorande@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Stephen Boyd <swboyd@chromium.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.10 32/42] pmdomain: qcom: rpmhpd: Fix enabled_corner aggregation
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 5.15 26/84] igb: extend PTP timestamp adjustments to i211
 Date: Mon,  4 Mar 2024 21:23:59 +0000
-Message-ID: <20240304211538.720993499@linuxfoundation.org>
+Message-ID: <20240304211543.207855594@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
-References: <20240304211537.631764077@linuxfoundation.org>
+In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
+References: <20240304211542.332206551@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,71 +65,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <quic_bjorande@quicinc.com>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit 2a93c6cbd5a703d44c414a3c3945a87ce11430ba upstream.
+[ Upstream commit 0bb7b09392eb74b152719ae87b1ba5e4bf910ef0 ]
 
-Commit 'e3e56c050ab6 ("soc: qcom: rpmhpd: Make power_on actually enable
-the domain")' aimed to make sure that a power-domain that is being
-enabled without any particular performance-state requested will at least
-turn the rail on, to avoid filling DeviceTree with otherwise unnecessary
-required-opps properties.
+The i211 requires the same PTP timestamp adjustments as the i210,
+according to its datasheet. To ensure consistent timestamping across
+different platforms, this change extends the existing adjustments to
+include the i211.
 
-But in the event that aggregation happens on a disabled power-domain, with
-an enabled peer without performance-state, both the local and peer
-corner are 0. The peer's enabled_corner is not considered, with the
-result that the underlying (shared) resource is disabled.
+The adjustment result are tested and comparable for i210 and i211 based
+systems.
 
-One case where this can be observed is when the display stack keeps mmcx
-enabled (but without a particular performance-state vote) in order to
-access registers and sync_state happens in the rpmhpd driver. As mmcx_ao
-is flushed the state of the peer (mmcx) is not considered and mmcx_ao
-ends up turning off "mmcx.lvl" underneath mmcx. This has been observed
-several times, but has been painted over in DeviceTree by adding an
-explicit vote for the lowest non-disabled performance-state.
-
-Fixes: e3e56c050ab6 ("soc: qcom: rpmhpd: Make power_on actually enable the domain")
-Reported-by: Johan Hovold <johan@kernel.org>
-Closes: https://lore.kernel.org/linux-arm-msm/ZdMwZa98L23mu3u6@hovoldconsulting.com/
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20240226-rpmhpd-enable-corner-fix-v1-1-68c004cec48c@quicinc.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3f544d2a4d5c ("igb: adjust PTP timestamps for Tx/Rx latency")
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lore.kernel.org/r/20240227184942.362710-1-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/rpmhpd.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/igb/igb_ptp.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/soc/qcom/rpmhpd.c
-+++ b/drivers/soc/qcom/rpmhpd.c
-@@ -261,12 +261,15 @@ static int rpmhpd_aggregate_corner(struc
- 	unsigned int active_corner, sleep_corner;
- 	unsigned int this_active_corner = 0, this_sleep_corner = 0;
- 	unsigned int peer_active_corner = 0, peer_sleep_corner = 0;
-+	unsigned int peer_enabled_corner;
+diff --git a/drivers/net/ethernet/intel/igb/igb_ptp.c b/drivers/net/ethernet/intel/igb/igb_ptp.c
+index 9cdb7a856ab6c..1a1575e8577af 100644
+--- a/drivers/net/ethernet/intel/igb/igb_ptp.c
++++ b/drivers/net/ethernet/intel/igb/igb_ptp.c
+@@ -826,7 +826,7 @@ static void igb_ptp_tx_hwtstamp(struct igb_adapter *adapter)
  
- 	to_active_sleep(pd, corner, &this_active_corner, &this_sleep_corner);
+ 	igb_ptp_systim_to_hwtstamp(adapter, &shhwtstamps, regval);
+ 	/* adjust timestamp for the TX latency based on link speed */
+-	if (adapter->hw.mac.type == e1000_i210) {
++	if (hw->mac.type == e1000_i210 || hw->mac.type == e1000_i211) {
+ 		switch (adapter->link_speed) {
+ 		case SPEED_10:
+ 			adjust = IGB_I210_TX_LATENCY_10;
+@@ -872,6 +872,7 @@ int igb_ptp_rx_pktstamp(struct igb_q_vector *q_vector, void *va,
+ 			ktime_t *timestamp)
+ {
+ 	struct igb_adapter *adapter = q_vector->adapter;
++	struct e1000_hw *hw = &adapter->hw;
+ 	struct skb_shared_hwtstamps ts;
+ 	__le64 *regval = (__le64 *)va;
+ 	int adjust = 0;
+@@ -891,7 +892,7 @@ int igb_ptp_rx_pktstamp(struct igb_q_vector *q_vector, void *va,
+ 	igb_ptp_systim_to_hwtstamp(adapter, &ts, le64_to_cpu(regval[1]));
  
--	if (peer && peer->enabled)
--		to_active_sleep(peer, peer->corner, &peer_active_corner,
-+	if (peer && peer->enabled) {
-+		peer_enabled_corner = max(peer->corner, peer->enable_corner);
-+		to_active_sleep(peer, peer_enabled_corner, &peer_active_corner,
- 				&peer_sleep_corner);
-+	}
- 
- 	active_corner = max(this_active_corner, peer_active_corner);
- 
+ 	/* adjust timestamp for the RX latency based on link speed */
+-	if (adapter->hw.mac.type == e1000_i210) {
++	if (hw->mac.type == e1000_i210 || hw->mac.type == e1000_i211) {
+ 		switch (adapter->link_speed) {
+ 		case SPEED_10:
+ 			adjust = IGB_I210_RX_LATENCY_10;
+-- 
+2.43.0
+
 
 
 
