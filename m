@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-26285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51620870DE4
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:38:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45FFD870EE8
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:48:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B6F1288108
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:38:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C767C1F2135F
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:48:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F5E210A35;
-	Mon,  4 Mar 2024 21:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 676F17868F;
+	Mon,  4 Mar 2024 21:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wNp6tFqr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X7/98JdE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F75B8F58;
-	Mon,  4 Mar 2024 21:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2792D1EB5A;
+	Mon,  4 Mar 2024 21:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588323; cv=none; b=YiUde3w7fSPvPVpqAD2ClSBIsWWVNrP7TFpvdr8Uuytd3vpAn48b4i/+abl6xkIYte/bj46m4vEoHWGCgoUEqu/Hqil5n6c7mtD0mDQqj5TmkR8nJHkoF4iu6qOGXxPORyOm82HQWlDgHev7h3Tz/D0tZ7//tv5O7s6dftGLmig=
+	t=1709588932; cv=none; b=FI0q03cy9uCxtv0b1lWzsH+0ZuyaeDvhRqCKv5Ak0tvbGE/bKNRUgjESomzlZBLw+9Butb3U0VJjkmylkCLRC8ZhEK4gKBYrjsdjfMOqN/SIb04wGNj1pAkwe82UVVeW3v4lBlWwd+2tUhZ4cfDotSuu2RIRGVPxhZPN6rlL/7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588323; c=relaxed/simple;
-	bh=PEExZG/kGN8hjv6g/VjgPiVkwnKrkiO46Sw1BmaRsJA=;
+	s=arc-20240116; t=1709588932; c=relaxed/simple;
+	bh=EQIy65j4UDkwaKe3UV5x1GVcj7fljQzP0WOI26hFNc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=enRm/ldJTVgeGLFQSCgc2v6L8ylp+cJ2QzbYFvrENQr6FFaShvaUZITFmNR/c0cg2DtHbtB11rsSyXPGsQBfaJ00dftXLlDBx/z1Rb2gkaVjCyIIZi7Lb8mP7DMhoQ6WYWy/6O43kgS8BSwYNQaiOpLnpnVFU4G0NtJBKC4sbn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wNp6tFqr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C52E7C433C7;
-	Mon,  4 Mar 2024 21:38:42 +0000 (UTC)
+	 MIME-Version; b=ctdhltjvhwumBUANKRSxQKr+w0Pga7UrbdaIw3mIktWxK2zaXHeQ+giH/1OfYGSIuVhWQ/t37xPQe67cC+q/mrtg2VsYwnDKtgR8OE/vttAZJ5esZ05+fA9sgtaNKkhvhxDn106M+si+Ab1B1GVP+GXXas+KtrwgKnsVBgP9G8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X7/98JdE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADA69C43390;
+	Mon,  4 Mar 2024 21:48:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588323;
-	bh=PEExZG/kGN8hjv6g/VjgPiVkwnKrkiO46Sw1BmaRsJA=;
+	s=korg; t=1709588932;
+	bh=EQIy65j4UDkwaKe3UV5x1GVcj7fljQzP0WOI26hFNc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wNp6tFqrzsA9S3IOVXcR7ggt2UYb7MAw1Q7MwzF7yfOs1DcOWDGnO9VVq68kNPCvK
-	 pmz/2TyUlQKdH/u9bsftlOC9p0PxNZWy7onCERscUP74QsHatHcoHSCRrBMw+ZPg52
-	 J2/wWpL9U1YYb80oms0TrBJGNwjrY2e0eIRQgwUw=
+	b=X7/98JdEz+TImdID8KLHvokszJ7PzQUQu+vuYxUCf8w+vQCN5+VL4fPKFwpZuLajh
+	 V/uqILKZi/evFDqaSSkhJuVKqmW+QzfGycF1GND9f0a28bBOyiWvihijwrNpNAngFq
+	 K0ZloXdHjz2zddkQbHzRDAwSMziIGYOytcOC9qMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 064/143] riscv: Fix pte_leaf_size() for NAPOT
+	Ard Biesheuvel <ardb@kernel.org>,
+	Borislav Petkov <bp@suse.de>
+Subject: [PATCH 6.1 121/215] x86/boot/compressed: Move startup32_load_idt() out of head_64.S
 Date: Mon,  4 Mar 2024 21:23:04 +0000
-Message-ID: <20240304211551.976338121@linuxfoundation.org>
+Message-ID: <20240304211600.909620964@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,207 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit e0fe5ab4192c171c111976dbe90bbd37d3976be0 ]
+commit 9ea813be3d345dfb8ac5bf6fbb29e6a63647a39d upstream.
 
-pte_leaf_size() must be reimplemented to add support for NAPOT mappings.
+Now that startup32_load_idt() has been refactored into an ordinary
+callable function, move it into mem-encrypt.S where it belongs.
 
-Fixes: 82a1a1f3bfb6 ("riscv: mm: support Svnapot in hugetlb page")
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20240227205016.121901-3-alexghiti@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/20221122161017.2426828-13-ardb@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/pgtable.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/boot/compressed/head_64.S     |   72 ---------------------------------
+ arch/x86/boot/compressed/mem_encrypt.S |   72 ++++++++++++++++++++++++++++++++-
+ 2 files changed, 71 insertions(+), 73 deletions(-)
 
-diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
-index 511cb385be96b..93c1664361143 100644
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -438,6 +438,10 @@ static inline pte_t pte_mkhuge(pte_t pte)
- 	return pte;
- }
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -723,78 +723,6 @@ SYM_DATA_START(boot_idt)
+ 	.endr
+ SYM_DATA_END_LABEL(boot_idt, SYM_L_GLOBAL, boot_idt_end)
  
-+#define pte_leaf_size(pte)	(pte_napot(pte) ?				\
-+					napot_cont_size(napot_cont_order(pte)) :\
-+					PAGE_SIZE)
-+
- #ifdef CONFIG_NUMA_BALANCING
+-#ifdef CONFIG_AMD_MEM_ENCRYPT
+-SYM_DATA_START(boot32_idt_desc)
+-	.word   boot32_idt_end - boot32_idt - 1
+-	.long   0
+-SYM_DATA_END(boot32_idt_desc)
+-	.balign 8
+-SYM_DATA_START(boot32_idt)
+-	.rept 32
+-	.quad 0
+-	.endr
+-SYM_DATA_END_LABEL(boot32_idt, SYM_L_GLOBAL, boot32_idt_end)
+-
+-	.text
+-	.code32
+-/*
+- * Write an IDT entry into boot32_idt
+- *
+- * Parameters:
+- *
+- * %eax:	Handler address
+- * %edx:	Vector number
+- * %ecx:	IDT address
+- */
+-SYM_FUNC_START_LOCAL(startup32_set_idt_entry)
+-	/* IDT entry address to %ecx */
+-	leal	(%ecx, %edx, 8), %ecx
+-
+-	/* Build IDT entry, lower 4 bytes */
+-	movl    %eax, %edx
+-	andl    $0x0000ffff, %edx		# Target code segment offset [15:0]
+-	orl	$(__KERNEL32_CS << 16), %edx	# Target code segment selector
+-
+-	/* Store lower 4 bytes to IDT */
+-	movl    %edx, (%ecx)
+-
+-	/* Build IDT entry, upper 4 bytes */
+-	movl    %eax, %edx
+-	andl    $0xffff0000, %edx	# Target code segment offset [31:16]
+-	orl     $0x00008e00, %edx	# Present, Type 32-bit Interrupt Gate
+-
+-	/* Store upper 4 bytes to IDT */
+-	movl    %edx, 4(%ecx)
+-
+-	RET
+-SYM_FUNC_END(startup32_set_idt_entry)
+-
+-SYM_FUNC_START(startup32_load_idt)
+-	push	%ebp
+-	push	%ebx
+-
+-	call	1f
+-1:	pop	%ebp
+-
+-	leal    (boot32_idt - 1b)(%ebp), %ebx
+-
+-	/* #VC handler */
+-	leal    (startup32_vc_handler - 1b)(%ebp), %eax
+-	movl    $X86_TRAP_VC, %edx
+-	movl	%ebx, %ecx
+-	call    startup32_set_idt_entry
+-
+-	/* Load IDT */
+-	leal	(boot32_idt_desc - 1b)(%ebp), %ecx
+-	movl	%ebx, 2(%ecx)
+-	lidt    (%ecx)
+-
+-	pop	%ebx
+-	pop	%ebp
+-	RET
+-SYM_FUNC_END(startup32_load_idt)
+-#endif
+-
  /*
-  * See the comment in include/asm-generic/pgtable.h
--- 
-2.43.0
-
+  * Check for the correct C-bit position when the startup_32 boot-path is used.
+  *
+--- a/arch/x86/boot/compressed/mem_encrypt.S
++++ b/arch/x86/boot/compressed/mem_encrypt.S
+@@ -12,6 +12,8 @@
+ #include <asm/processor-flags.h>
+ #include <asm/msr.h>
+ #include <asm/asm-offsets.h>
++#include <asm/segment.h>
++#include <asm/trapnr.h>
+ 
+ 	.text
+ 	.code32
+@@ -98,7 +100,7 @@ SYM_CODE_START_LOCAL(sev_es_req_cpuid)
+ 	jmp	1b
+ SYM_CODE_END(sev_es_req_cpuid)
+ 
+-SYM_CODE_START(startup32_vc_handler)
++SYM_CODE_START_LOCAL(startup32_vc_handler)
+ 	pushl	%eax
+ 	pushl	%ebx
+ 	pushl	%ecx
+@@ -184,6 +186,63 @@ SYM_CODE_START(startup32_vc_handler)
+ 	jmp .Lfail
+ SYM_CODE_END(startup32_vc_handler)
+ 
++/*
++ * Write an IDT entry into boot32_idt
++ *
++ * Parameters:
++ *
++ * %eax:	Handler address
++ * %edx:	Vector number
++ * %ecx:	IDT address
++ */
++SYM_FUNC_START_LOCAL(startup32_set_idt_entry)
++	/* IDT entry address to %ecx */
++	leal	(%ecx, %edx, 8), %ecx
++
++	/* Build IDT entry, lower 4 bytes */
++	movl    %eax, %edx
++	andl    $0x0000ffff, %edx		# Target code segment offset [15:0]
++	orl	$(__KERNEL32_CS << 16), %edx	# Target code segment selector
++
++	/* Store lower 4 bytes to IDT */
++	movl    %edx, (%ecx)
++
++	/* Build IDT entry, upper 4 bytes */
++	movl    %eax, %edx
++	andl    $0xffff0000, %edx	# Target code segment offset [31:16]
++	orl     $0x00008e00, %edx	# Present, Type 32-bit Interrupt Gate
++
++	/* Store upper 4 bytes to IDT */
++	movl    %edx, 4(%ecx)
++
++	RET
++SYM_FUNC_END(startup32_set_idt_entry)
++
++SYM_FUNC_START(startup32_load_idt)
++	push	%ebp
++	push	%ebx
++
++	call	1f
++1:	pop	%ebp
++
++	leal    (boot32_idt - 1b)(%ebp), %ebx
++
++	/* #VC handler */
++	leal    (startup32_vc_handler - 1b)(%ebp), %eax
++	movl    $X86_TRAP_VC, %edx
++	movl	%ebx, %ecx
++	call    startup32_set_idt_entry
++
++	/* Load IDT */
++	leal	(boot32_idt_desc - 1b)(%ebp), %ecx
++	movl	%ebx, 2(%ecx)
++	lidt    (%ecx)
++
++	pop	%ebx
++	pop	%ebp
++	RET
++SYM_FUNC_END(startup32_load_idt)
++
+ 	.code64
+ 
+ #include "../../kernel/sev_verify_cbit.S"
+@@ -195,4 +254,15 @@ SYM_CODE_END(startup32_vc_handler)
+ SYM_DATA(sme_me_mask,		.quad 0)
+ SYM_DATA(sev_status,		.quad 0)
+ SYM_DATA(sev_check_data,	.quad 0)
++
++SYM_DATA_START_LOCAL(boot32_idt)
++	.rept	32
++	.quad	0
++	.endr
++SYM_DATA_END(boot32_idt)
++
++SYM_DATA_START_LOCAL(boot32_idt_desc)
++	.word	. - boot32_idt - 1
++	.long	0
++SYM_DATA_END(boot32_idt_desc)
+ #endif
 
 
 
