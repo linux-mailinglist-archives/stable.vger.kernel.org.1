@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-26526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 321A3870EFB
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:49:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 035ED870F54
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:53:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFD80280BE3
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:49:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3616A1C20DF1
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:53:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9598F7868F;
-	Mon,  4 Mar 2024 21:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D19A78B69;
+	Mon,  4 Mar 2024 21:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VkGdKcOv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zbqqEDh3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C3E1EB5A;
-	Mon,  4 Mar 2024 21:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2EE1C6AB;
+	Mon,  4 Mar 2024 21:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588986; cv=none; b=Amp9I8jxyKiJy2e/00frdxNhjBAX2dZQrXtnYRm5O02NJ10Qd9vZtEnaam0SF9XHWDoJlc0C3Iwk/mQ8PdREXCqKyQi4J3oxd50Rwh9SFwr9s3GlhV73V4l+iLSlajNnFwl9xL56DE84fIOXHInRiike2KPoBvHpRd8iUxYCEcg=
+	t=1709589210; cv=none; b=AGaHU4emXxnrrrR+cCdFW3VeljXaXkdDTAjr53hY6B6WzDR0Y7UUqlBHyXn2C1g0lsRPtgZfQDz1IqFTQi0agkHxsQyAC0tayq5Ix8b0bw5CIC21xw1szR7bnNQ9p33CHBAzveTTC9Z0Bn8Wmvg1Uqf4RZVmYZy1CoapeJ0g9Yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588986; c=relaxed/simple;
-	bh=G3/zD0RvUt+GwNVpCiqANitI+a4u6d/19WqKy2GMl0Q=;
+	s=arc-20240116; t=1709589210; c=relaxed/simple;
+	bh=8CHpIqK/rpacUGC+m4xbwkBq8N/MGtg8SjQlKGBIOlg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tTD4nvnVkgcN6xZGPXEU/2O+jH13rbqh7Aaq6kgXpVwc6Ma2+t/1KJz1XHTE9SvdOfrP2bfxmhWX8EmHvaW1kFky8TjcV7QAD5zsja7k8vRfSZztHMT1mnOT9J690D0RTH8LqUJQYDLj5H3akKt56QqI96BI8pntRD/xMpzcNrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VkGdKcOv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC0C5C433C7;
-	Mon,  4 Mar 2024 21:49:45 +0000 (UTC)
+	 MIME-Version; b=c7U1aLhxbs0Rr+OkA7nXisRHhNEq5gsMXdnOJhuH5PStZziR80kvqo+vczqPr10lu3E++jJRlI3ARKXg9LPauWuzWeY0pb9FWW2TfrwsoRZ3F4EWtOUr1RxkBFvdu7Ui7Izz3skor6/H2HIFElsjkruOITjCaQLTHJBxK+QrcjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zbqqEDh3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF5C0C433C7;
+	Mon,  4 Mar 2024 21:53:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588986;
-	bh=G3/zD0RvUt+GwNVpCiqANitI+a4u6d/19WqKy2GMl0Q=;
+	s=korg; t=1709589210;
+	bh=8CHpIqK/rpacUGC+m4xbwkBq8N/MGtg8SjQlKGBIOlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VkGdKcOv5TgDXhRuzM0SAD0oANWYERrJb+pHSEwD3DS3Ggua/ogMVy4B0gRg3Vm7p
-	 i1hljgg9MKu3Y4Sh85TTkHusl2Zy7m+wWSrVHy+nwxPPn413swhnyaJzjQgmRLoLRf
-	 bmHkK2zDig7OAJkL3F25I1gb1JPIjMx2trP6/hZY=
+	b=zbqqEDh3yZ5agOucUbH2dH1IyRh9idQV3DJvXGfBba//3+UtZ11gJ43/oH5O9nqLP
+	 l2mus3KvASKiZOxOJxPsW3K8YLteT0MHgAC/FAd+ceRYalbGDDhzyelYzNm6VGMDMW
+	 PFsZ2vLV5TY4nYSCADd91S+yWjv3NF+BPQJmCA8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	NeilBrown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>
-Subject: [PATCH 6.1 158/215] NFSD: Refactor find_file()
+	Eric Dumazet <edumazet@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 08/84] ipv6: fix potential "struct net" leak in inet6_rtm_getaddr()
 Date: Mon,  4 Mar 2024 21:23:41 +0000
-Message-ID: <20240304211602.011227934@linuxfoundation.org>
+Message-ID: <20240304211542.617966502@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
+References: <20240304211542.332206551@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 15424748001a9b5ea62b3e6ad45f0a8b27f01df9 ]
+[ Upstream commit 10bfd453da64a057bcfd1a49fb6b271c48653cdb ]
 
-find_file() is now the only caller of find_file_locked(), so just
-fold these two together.
+It seems that if userspace provides a correct IFA_TARGET_NETNSID value
+but no IFA_ADDRESS and IFA_LOCAL attributes, inet6_rtm_getaddr()
+returns -EINVAL with an elevated "struct net" refcount.
 
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Reviewed-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6ecf4c37eb3e ("ipv6: enable IFA_TARGET_NETNSID for RTM_GETADDR")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: David Ahern <dsahern@kernel.org>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c |   36 +++++++++++++++---------------------
- 1 file changed, 15 insertions(+), 21 deletions(-)
+ net/ipv6/addrconf.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -4683,31 +4683,24 @@ move_to_close_lru(struct nfs4_ol_stateid
- 		nfs4_put_stid(&last->st_stid);
- }
- 
--/* search file_hashtbl[] for file */
--static struct nfs4_file *
--find_file_locked(const struct svc_fh *fh, unsigned int hashval)
-+static noinline_for_stack struct nfs4_file *
-+nfsd4_file_hash_lookup(const struct svc_fh *fhp)
- {
--	struct nfs4_file *fp;
-+	unsigned int hashval = file_hashval(fhp);
-+	struct nfs4_file *fi;
- 
--	hlist_for_each_entry_rcu(fp, &file_hashtbl[hashval], fi_hash,
--				lockdep_is_held(&state_lock)) {
--		if (fh_match(&fp->fi_fhandle, &fh->fh_handle)) {
--			if (refcount_inc_not_zero(&fp->fi_ref))
--				return fp;
-+	rcu_read_lock();
-+	hlist_for_each_entry_rcu(fi, &file_hashtbl[hashval], fi_hash,
-+				 lockdep_is_held(&state_lock)) {
-+		if (fh_match(&fi->fi_fhandle, &fhp->fh_handle)) {
-+			if (refcount_inc_not_zero(&fi->fi_ref)) {
-+				rcu_read_unlock();
-+				return fi;
-+			}
- 		}
+diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
+index c52317184e3e2..968ca078191cd 100644
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -5463,9 +5463,10 @@ static int inet6_rtm_getaddr(struct sk_buff *in_skb, struct nlmsghdr *nlh,
  	}
--	return NULL;
--}
--
--static struct nfs4_file * find_file(struct svc_fh *fh)
--{
--	struct nfs4_file *fp;
--	unsigned int hashval = file_hashval(fh);
--
--	rcu_read_lock();
--	fp = find_file_locked(fh, hashval);
- 	rcu_read_unlock();
--	return fp;
-+	return NULL;
- }
  
- /*
-@@ -4758,9 +4751,10 @@ nfs4_share_conflict(struct svc_fh *curre
- 	struct nfs4_file *fp;
- 	__be32 ret = nfs_ok;
- 
--	fp = find_file(current_fh);
-+	fp = nfsd4_file_hash_lookup(current_fh);
- 	if (!fp)
- 		return ret;
-+
- 	/* Check for conflicting share reservations */
- 	spin_lock(&fp->fi_lock);
- 	if (fp->fi_share_deny & deny_type)
+ 	addr = extract_addr(tb[IFA_ADDRESS], tb[IFA_LOCAL], &peer);
+-	if (!addr)
+-		return -EINVAL;
+-
++	if (!addr) {
++		err = -EINVAL;
++		goto errout;
++	}
+ 	ifm = nlmsg_data(nlh);
+ 	if (ifm->ifa_index)
+ 		dev = dev_get_by_index(tgt_net, ifm->ifa_index);
+-- 
+2.43.0
+
 
 
 
