@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29810870F64
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:54:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E679870E44
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:42:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C01E1C21B5A
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:54:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FCC31C20C81
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:42:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C3A77992E;
-	Mon,  4 Mar 2024 21:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A81DE7BAED;
+	Mon,  4 Mar 2024 21:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z3C5lsSX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vFS/R4A/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1973B1C6AB;
-	Mon,  4 Mar 2024 21:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6752378B69;
+	Mon,  4 Mar 2024 21:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589249; cv=none; b=owcHxMJlYPmnVyJITrW0W0anq90s3oNds2ZpbWeDlc9fqVr+sYXDSq61+el0o/GzGwtO8pW2bvmmK1XMU6Z8mimOOlbjOeYE1zBbV/9WZ6xU97L1WviJEdRJ8iO3QzaUwvr7Ob8Mm0srwAa12CNNVNCscdhP5qmr6qvvHfGFO2c=
+	t=1709588539; cv=none; b=GicPeRktD+yEDHUhzGhx1YJhytgfs+ouFux4KAqI0imwAppvLEeFjVHIEbgNpk6S5kXCAs0KE/bAd55YfW7wtB0ZUlkIIwYcYwxyvQfPHp/t+REzqf0QvyIxLHn9t15PZgxYKnxQAVhVp2Wro+9aUMLevejYgKBQC6yKnL30NNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589249; c=relaxed/simple;
-	bh=LfhvCYunYY0JhLj8kmoHK48qXpWi+dj3JO6SHLh0koM=;
+	s=arc-20240116; t=1709588539; c=relaxed/simple;
+	bh=TtdtlpgJIz82AehYFF1Co87yb/FV0VUmVgeyoX2oFvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BR8NOe4UXTDSZ3zo5C2h2bR2TGA7fxotVgjwb25Et0n09w+Oe1RjS6Ze+iItm2xKBMnquNPLkFMt/Zuk053w5FK7m3Xd83oGooVnW3jep8mlUuFY0TRGFzfb9NOBHxHSy9j4O/qZuui7tDl41infOSces+/Xhfx0dxzRuloemAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z3C5lsSX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1DE5C433C7;
-	Mon,  4 Mar 2024 21:54:08 +0000 (UTC)
+	 MIME-Version; b=CjgcMidRHw68ge++ho4eVIHDX1oF7cnhm901WM2vW6kpbubqRO5n3Og/Jv7xgovyK9ytgHDwORUwA5tg3stm+LGri07tKB+xREoIQlXmaEDwQfHx6vJ9DsinSXfn1AusqcACjrLUNqVvY9JsSTdzs+vZT6Xahqi/NGQgbiTqAsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vFS/R4A/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A23C433C7;
+	Mon,  4 Mar 2024 21:42:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589249;
-	bh=LfhvCYunYY0JhLj8kmoHK48qXpWi+dj3JO6SHLh0koM=;
+	s=korg; t=1709588539;
+	bh=TtdtlpgJIz82AehYFF1Co87yb/FV0VUmVgeyoX2oFvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z3C5lsSXmd/c0o22jAgv3Zn121ckHt6yPhxpLKFxp4QEK4vdv1eA4e2buxY0Lqd+/
-	 5X2glUV8N8ZeHfDNp0NWSqtAwcu5AJAvanmVngHjyjkyW7eEjCTcIa1mOoZAdxQqAA
-	 Gs97ybsiHPpF4OVeRmS3tOIkWgA0+Df8UYFrRRvs=
+	b=vFS/R4A/BkCuntiSBHgZrDt4wU86er84UF0OupGmABU7lfKnyjF8T4gROlVG/qI1A
+	 wCeB0pKZBwWY5qQjKQgojTjTK+bIAjqODr0IzF6Fh6bPeSPtT8zn1X4I6GBWBsGm9I
+	 Adj9pMpIvvnFjuAnOR/mfuLzk8jUe5sIgC5ltYKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 36/84] tls: rx: dont track the async count
-Date: Mon,  4 Mar 2024 21:24:09 +0000
-Message-ID: <20240304211543.544299632@linuxfoundation.org>
+Subject: [PATCH 6.6 130/143] gpiolib: Fix the error path order in gpiochip_add_data_with_key()
+Date: Mon,  4 Mar 2024 21:24:10 +0000
+Message-ID: <20240304211554.067199768@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 7da18bcc5e4cfd14ea520367546c5697e64ae592 ]
+[ Upstream commit e4aec4daa8c009057b5e063db1b7322252c92dc8 ]
 
-We track both if the last record was handled by async crypto
-and how many records were async. This is not necessary. We
-implicitly assume once crypto goes async it will stay that
-way, otherwise we'd reorder records. So just track if we're
-in async mode, the exact number of records is not necessary.
+After shuffling the code, error path wasn't updated correctly.
+Fix it here.
 
-This change also forces us into "async" mode more consistently
-in case crypto ever decided to interleave async and sync.
-
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: f7fa16d49837 ("tls: decrement decrypt_pending if no async completion will be called")
+Fixes: 2f4133bb5f14 ("gpiolib: No need to call gpiochip_remove_pin_ranges() twice")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/gpio/gpiolib.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index ca71a9f559b37..d3bbae9af9f41 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -1753,13 +1753,13 @@ int tls_sw_recvmsg(struct sock *sk,
- 	struct tls_sw_context_rx *ctx = tls_sw_ctx_rx(tls_ctx);
- 	struct tls_prot_info *prot = &tls_ctx->prot_info;
- 	struct sk_psock *psock;
--	int num_async, pending;
- 	unsigned char control = 0;
- 	ssize_t decrypted = 0;
- 	struct strp_msg *rxm;
- 	struct tls_msg *tlm;
- 	struct sk_buff *skb;
- 	ssize_t copied = 0;
-+	bool async = false;
- 	int target, err = 0;
- 	long timeo;
- 	bool is_kvec = iov_iter_is_kvec(&msg->msg_iter);
-@@ -1791,12 +1791,10 @@ int tls_sw_recvmsg(struct sock *sk,
- 	timeo = sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
- 
- 	decrypted = 0;
--	num_async = 0;
- 	while (len && (decrypted + copied < target || ctx->recv_pkt)) {
- 		struct tls_decrypt_arg darg = {};
- 		bool retain_skb = false;
- 		int to_decrypt, chunk;
--		bool async;
- 
- 		skb = tls_wait_data(sk, psock, flags & MSG_DONTWAIT, timeo, &err);
- 		if (!skb) {
-@@ -1836,10 +1834,8 @@ int tls_sw_recvmsg(struct sock *sk,
- 			goto recv_end;
- 		}
- 
--		if (err == -EINPROGRESS) {
-+		if (err == -EINPROGRESS)
- 			async = true;
--			num_async++;
--		}
- 
- 		/* If the type of records being processed is not known yet,
- 		 * set it to record type just dequeued. If it is already known,
-@@ -1914,7 +1910,9 @@ int tls_sw_recvmsg(struct sock *sk,
- 	}
- 
- recv_end:
--	if (num_async) {
-+	if (async) {
-+		int pending;
-+
- 		/* Wait for all previously submitted records to be decrypted */
- 		spin_lock_bh(&ctx->decrypt_compl_lock);
- 		ctx->async_notify = true;
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 71492d213ef4d..53ab4e62503fd 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -925,11 +925,11 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+ 	gpiochip_irqchip_free_valid_mask(gc);
+ err_remove_acpi_chip:
+ 	acpi_gpiochip_remove(gc);
++	gpiochip_remove_pin_ranges(gc);
+ err_remove_of_chip:
+ 	gpiochip_free_hogs(gc);
+ 	of_gpiochip_remove(gc);
+ err_free_gpiochip_mask:
+-	gpiochip_remove_pin_ranges(gc);
+ 	gpiochip_free_valid_mask(gc);
+ 	if (gdev->dev.release) {
+ 		/* release() has been registered by gpiochip_setup_dev() */
 -- 
 2.43.0
 
