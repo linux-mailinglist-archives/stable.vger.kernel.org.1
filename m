@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-26604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F571870F51
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:53:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DE3B870D4A
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A5A9283819
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:53:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D691828E7D2
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBCB478B4C;
-	Mon,  4 Mar 2024 21:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C1127C6D5;
+	Mon,  4 Mar 2024 21:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6sFBU3v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u5UnvQ6v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F491C6AB;
-	Mon,  4 Mar 2024 21:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F2B7BAF0;
+	Mon,  4 Mar 2024 21:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589202; cv=none; b=bj3snowzX1afeBz5udh3liHVqLR0RzAs+EISPOaGy4TnEqQNHLaedEFupCtYNABaRuwlWMZfRrEXaTRiad6WVrDJjuyDN2CSrXrxPDLldYhH69GvdPdaJXgk5LakY+1j+oN8ZRZ8TX/1LxSX/sLr0SuAa7TRatZd/u63n/xxRt8=
+	t=1709587951; cv=none; b=HHWe4BmFwj+EVpQoAL9fsf2OsGH+Gm04/67Fm8/+R1uA5/2Bh8136yWR++HaQg2bz5ey3Hfu+pc+gm2oSIkKXdgDB65FgBPmCSXvNKFOAsv1ZA/mu209hyQcOB/PHYPFENUpH/iq63QMJM1cxOA4vded1yXyFC1W4vwdN0Zh7a4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589202; c=relaxed/simple;
-	bh=eb3slK7H1to/tnGqqimTI/D/pAP9VfftVmW8h7+aaC8=;
+	s=arc-20240116; t=1709587951; c=relaxed/simple;
+	bh=gBJAgclUbicNQl4spYCJE57r/etdGnzI8t1vjQvW1Ag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hSjt8cZNVOUkuY5yXlAY14FVHofH2J1eKnV9+bEautJ1FamoCHhKTpW+ORincz1E0GSxNUesv0LGL6D2QNuCrT95/3/d0i8a6peD+B3pli9iJ6aZ+jgrMRKX66aVLQQH9tPs1NGwWB0AIEGOTETYLn1dLx3sDYLHTbvPIlEu5zk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6sFBU3v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF44C433F1;
-	Mon,  4 Mar 2024 21:53:21 +0000 (UTC)
+	 MIME-Version; b=mUl5adtyktzLW/uQn6KYdnjKF2sEtceYdRaDDwypuq4PdukMpoI2a6PVVph6MM0vucKN5NB8dkJxt/VEQ5mXKGHvRNhwEH+B3wa/bGL241iV0Uqy8sQJMfgmGnQSIx9P4+rZZFtfnjG3kFPFQeMy2CHsFaLvlLrM3lEbbRW/rTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u5UnvQ6v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C10C1C433C7;
+	Mon,  4 Mar 2024 21:32:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589202;
-	bh=eb3slK7H1to/tnGqqimTI/D/pAP9VfftVmW8h7+aaC8=;
+	s=korg; t=1709587951;
+	bh=gBJAgclUbicNQl4spYCJE57r/etdGnzI8t1vjQvW1Ag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X6sFBU3vhHvN6aoFEbGCDACOymc0InCGbWLqio1PurkQ9J4jLkVG13uoXuxH2JRwU
-	 X2jUCCe11LotCgWhjcw9ITt/4JnA6Fzsj2XTWlcTqcKv+TfCwwaDt8PyskGx/SpWPc
-	 WTYcGSVc2AJCw5hKCOWMVBRMf9/hYZ9kzBwdZUZg=
+	b=u5UnvQ6vAr+fh+byt6E0P1Do/XMQ5dqz7VN1b2qxYKAg0TlQfjddJspqc0fqSdssT
+	 Cc2Zl4RsKPtQvlou+25D/dRTnnpF7FqpaG7tnfb4iIKzjRU2Z7LeIAySdi3hhhTX4u
+	 hxYtYzBHYoAmtY9jQe/HOU3t+BZ0bxMrtgjS0Un4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunjian Wang <wangyunjian@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 05/84] tun: Fix xdp_rxq_infos queue_index when detaching
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Subject: [PATCH 6.7 153/162] x86/entry_32: Add VERW just before userspace transition
 Date: Mon,  4 Mar 2024 21:23:38 +0000
-Message-ID: <20240304211542.521978825@linuxfoundation.org>
+Message-ID: <20240304211556.574180035@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunjian Wang <wangyunjian@huawei.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-[ Upstream commit 2a770cdc4382b457ca3d43d03f0f0064f905a0d0 ]
+commit a0e2dab44d22b913b4c228c8b52b2a104434b0b3 upstream.
 
-When a queue(tfile) is detached, we only update tfile's queue_index,
-but do not update xdp_rxq_info's queue_index. This patch fixes it.
+As done for entry_64, add support for executing VERW late in exit to
+user path for 32-bit mode.
 
-Fixes: 8bf5c4ee1889 ("tun: setup xdp_rxq_info")
-Signed-off-by: Yunjian Wang <wangyunjian@huawei.com>
-Link: https://lore.kernel.org/r/1708398727-46308-1-git-send-email-wangyunjian@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/all/20240213-delay-verw-v8-3-a6216d83edb7%40linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/tun.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/entry/entry_32.S |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 603530e6cd7b9..42bf0a3ec632e 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -654,6 +654,7 @@ static void __tun_detach(struct tun_file *tfile, bool clean)
- 				   tun->tfiles[tun->numqueues - 1]);
- 		ntfile = rtnl_dereference(tun->tfiles[index]);
- 		ntfile->queue_index = index;
-+		ntfile->xdp_rxq.queue_index = index;
- 		rcu_assign_pointer(tun->tfiles[tun->numqueues - 1],
- 				   NULL);
+--- a/arch/x86/entry/entry_32.S
++++ b/arch/x86/entry/entry_32.S
+@@ -885,6 +885,7 @@ SYM_FUNC_START(entry_SYSENTER_32)
+ 	BUG_IF_WRONG_CR3 no_user_check=1
+ 	popfl
+ 	popl	%eax
++	CLEAR_CPU_BUFFERS
  
--- 
-2.43.0
-
+ 	/*
+ 	 * Return back to the vDSO, which will pop ecx and edx.
+@@ -954,6 +955,7 @@ restore_all_switch_stack:
+ 
+ 	/* Restore user state */
+ 	RESTORE_REGS pop=4			# skip orig_eax/error_code
++	CLEAR_CPU_BUFFERS
+ .Lirq_return:
+ 	/*
+ 	 * ARCH_HAS_MEMBARRIER_SYNC_CORE rely on IRET core serialization
+@@ -1146,6 +1148,7 @@ SYM_CODE_START(asm_exc_nmi)
+ 
+ 	/* Not on SYSENTER stack. */
+ 	call	exc_nmi
++	CLEAR_CPU_BUFFERS
+ 	jmp	.Lnmi_return
+ 
+ .Lnmi_from_sysenter_stack:
 
 
 
