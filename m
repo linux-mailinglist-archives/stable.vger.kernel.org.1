@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-26018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2903870CA3
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:27:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3640C870E66
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:43:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E905B25B8F
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:27:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68A621C20E56
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:43:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86BC44086B;
-	Mon,  4 Mar 2024 21:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C07E7A706;
+	Mon,  4 Mar 2024 21:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dfXo+ZCk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MvAdGKbz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FF910A35;
-	Mon,  4 Mar 2024 21:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAFC0200CD;
+	Mon,  4 Mar 2024 21:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587631; cv=none; b=iKxwFSJWl8xMap7JN5/TjKF1opnmZS9sNFjBMePuyAIL+tMxpJbqelGR5XDZAuEA22IbiJj3CzF8Wcg7DEKqISFrbGmiHNmKX5Mt3ofHY1NzbkC+kn+uI5l5ESSZWf89efer64jXDqITaZo69QC2EY17+MGg9j/4Zx+Z8J/KozQ=
+	t=1709588615; cv=none; b=iQ5XLwHVWP02sl1fd0IIs50XnsQSX1RJtXIb34R2IDHtvFLZCTSLq0xCkEl5UgXnJpBUP10npBwCVsqKghhOOCg8QssOrlO+Yzr+HVoB3O+WZw6j8l80VLtjImb0iB4Nna2Z8f61c92B8mMqM5xsQx3vKH2ed/54bRxCVOPJc/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587631; c=relaxed/simple;
-	bh=RYGq+/P5kb8a3+EdErzsK5OoHnw8jH+H249wXl/NTC0=;
+	s=arc-20240116; t=1709588615; c=relaxed/simple;
+	bh=MdSSscs0t1VE4nADz72uUvQn1WHA3a4KloL++VCzj/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lpYq5WIduU6gJZAXCdBhS7DDgnehrJFDamBbUW1G93RSfvVf+h6edJu5oYrZF86TuB/KTUVO7hj8m5AVXnIyqPdw8Hp1edBoBkyX+Jav0UVBgDlNddPWU5X5H1/RuBjAPPSlQKJCabsSOszM/4Pes2Qrlard+oqVwHdB5jU9oM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dfXo+ZCk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71AD9C433F1;
-	Mon,  4 Mar 2024 21:27:10 +0000 (UTC)
+	 MIME-Version; b=edZanrPioSM+0ZfkYDyfXNVCNImakSDmJm/CkEi1K84/QZ99cMH6gQqKgSvjQOLwWhR5o26WQxMgNDOjSh/igJ2u/8JCWvUGZXEmFZ9xLqz4XyMmwDb07wsGq5mVVNuJDL1uf+pM14zEEocUwLy8Ir4e+0CnsGNOiN0XW1Li3wA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MvAdGKbz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27C5EC433C7;
+	Mon,  4 Mar 2024 21:43:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587630;
-	bh=RYGq+/P5kb8a3+EdErzsK5OoHnw8jH+H249wXl/NTC0=;
+	s=korg; t=1709588614;
+	bh=MdSSscs0t1VE4nADz72uUvQn1WHA3a4KloL++VCzj/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dfXo+ZCkNiYOgaj22yIif6qKufPCh80g6g0IX6aJFjMMX4024H0meaaD/IJ1oUoQO
-	 xKpvRWow2zpD6EyvkMPf9aHZtY5qUFHdFFNlgcycwnc82nbdnDpmEzxbnWvlZACWvp
-	 FYv8tFVC0vLcwvPAXJnxG8YZhZ/ysEg634RS9Dug=
+	b=MvAdGKbzx9sl5hRc63+cZ2YbB2VRhhYwzL33JMbXtjepiBrif4Ytf+HNCrx0kSFzJ
+	 i1dOSfDl8tsVEpMOcaGx92REcEKMgjykoA75hzKY0Y0isTdhzxzA2UEVQIw2KEq6HX
+	 KhZoXLVrxmmo2QQDsLRvGi8LTR/5fiIX8wuoOBrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Jeremy Kerr <jk@codeconstruct.com.au>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 029/162] Bluetooth: hci_event: Fix handling of HCI_EV_IO_CAPA_REQUEST
+Subject: [PATCH 6.1 031/215] net: mctp: take ownership of skb in mctp_local_output
 Date: Mon,  4 Mar 2024 21:21:34 +0000
-Message-ID: <20240304211552.767088918@linuxfoundation.org>
+Message-ID: <20240304211557.979155254@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Jeremy Kerr <jk@codeconstruct.com.au>
 
-[ Upstream commit 7e74aa53a68bf60f6019bd5d9a9a1406ec4d4865 ]
+[ Upstream commit 3773d65ae5154ed7df404b050fd7387a36ab5ef3 ]
 
-If we received HCI_EV_IO_CAPA_REQUEST while
-HCI_OP_READ_REMOTE_EXT_FEATURES is yet to be responded assume the remote
-does support SSP since otherwise this event shouldn't be generated.
+Currently, mctp_local_output only takes ownership of skb on success, and
+we may leak an skb if mctp_local_output fails in specific states; the
+skb ownership isn't transferred until the actual output routing occurs.
 
-Link: https://lore.kernel.org/linux-bluetooth/CABBYNZ+9UdG1cMZVmdtN3U2aS16AKMCyTARZZyFX7xTEDWcMOw@mail.gmail.com/T/#t
-Fixes: c7f59461f5a7 ("Bluetooth: Fix a refcnt underflow problem for hci_conn")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Instead, make mctp_local_output free the skb on all error paths up to
+the route action, so it always consumes the passed skb.
+
+Fixes: 833ef3b91de6 ("mctp: Populate socket implementation")
+Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240220081053.1439104-1-jk@codeconstruct.com.au
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/net/mctp.h |  1 +
+ net/mctp/route.c   | 10 ++++++++--
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 22b22c264c2a5..613f2fd0bcc1e 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -5329,9 +5329,12 @@ static void hci_io_capa_request_evt(struct hci_dev *hdev, void *data,
- 	hci_dev_lock(hdev);
+diff --git a/include/net/mctp.h b/include/net/mctp.h
+index 82800d521c3de..7ed84054f4623 100644
+--- a/include/net/mctp.h
++++ b/include/net/mctp.h
+@@ -249,6 +249,7 @@ struct mctp_route {
+ struct mctp_route *mctp_route_lookup(struct net *net, unsigned int dnet,
+ 				     mctp_eid_t daddr);
  
- 	conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK, &ev->bdaddr);
--	if (!conn || !hci_conn_ssp_enabled(conn))
-+	if (!conn || !hci_dev_test_flag(hdev, HCI_SSP_ENABLED))
- 		goto unlock;
++/* always takes ownership of skb */
+ int mctp_local_output(struct sock *sk, struct mctp_route *rt,
+ 		      struct sk_buff *skb, mctp_eid_t daddr, u8 req_tag);
  
-+	/* Assume remote supports SSP since it has triggered this event */
-+	set_bit(HCI_CONN_SSP_ENABLED, &conn->flags);
+diff --git a/net/mctp/route.c b/net/mctp/route.c
+index 256bf0b89e6ca..0144d8ebdaefb 100644
+--- a/net/mctp/route.c
++++ b/net/mctp/route.c
+@@ -888,7 +888,7 @@ int mctp_local_output(struct sock *sk, struct mctp_route *rt,
+ 		dev = dev_get_by_index_rcu(sock_net(sk), cb->ifindex);
+ 		if (!dev) {
+ 			rcu_read_unlock();
+-			return rc;
++			goto out_free;
+ 		}
+ 		rt->dev = __mctp_dev_get(dev);
+ 		rcu_read_unlock();
+@@ -903,7 +903,8 @@ int mctp_local_output(struct sock *sk, struct mctp_route *rt,
+ 		rt->mtu = 0;
+ 
+ 	} else {
+-		return -EINVAL;
++		rc = -EINVAL;
++		goto out_free;
+ 	}
+ 
+ 	spin_lock_irqsave(&rt->dev->addrs_lock, flags);
+@@ -966,12 +967,17 @@ int mctp_local_output(struct sock *sk, struct mctp_route *rt,
+ 		rc = mctp_do_fragment_route(rt, skb, mtu, tag);
+ 	}
+ 
++	/* route output functions consume the skb, even on error */
++	skb = NULL;
 +
- 	hci_conn_hold(conn);
+ out_release:
+ 	if (!ext_rt)
+ 		mctp_route_release(rt);
  
- 	if (!hci_dev_test_flag(hdev, HCI_MGMT))
+ 	mctp_dev_put(tmp_rt.dev);
+ 
++out_free:
++	kfree_skb(skb);
+ 	return rc;
+ }
+ 
 -- 
 2.43.0
 
