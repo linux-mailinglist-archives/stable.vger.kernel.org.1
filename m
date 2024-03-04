@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B61E870F72
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:54:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 650B2870D64
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DF361C2132F
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:54:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B4B81F212A2
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A06179950;
-	Mon,  4 Mar 2024 21:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47FCE7BAED;
+	Mon,  4 Mar 2024 21:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yUmffyxJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MY8htPMY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB131C6AB;
-	Mon,  4 Mar 2024 21:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 073EB7A70D;
+	Mon,  4 Mar 2024 21:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589285; cv=none; b=JWd+XetD3h+6YSDHDN9loqVpY0y+XNyuN/DItT4AOa++9TwVZRafoMSwGKmt7J4fatkc5vas3y2mtENEZq3TtUspo33TnCXRStBPXFPxoAFT1Ptkg366kxamyqEbLe8PoAsyaLYopZnaQuOi+u7o3iALYU1R/I6UDXl0XQYdOMA=
+	t=1709588011; cv=none; b=MZLmoRBooVAcwECv1MPv7iDkSUYtWsDcQyMWAKFEpbnfAxMIfWUV/jAe7btUYDbPUPk1SGQIJCyqjLDaQoQECdv+L/g3/PfcGTY+vBEr1HdMwIv1oLNqs/JcEPfeyZtnVGHWzUjPB5zKBYgIulGFHIi17CkMkHPMO5Bhj1sQhXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589285; c=relaxed/simple;
-	bh=obIPPpPoMMtqQHJgE+QgNxjGlngAetdlPMzxXZweF1w=;
+	s=arc-20240116; t=1709588011; c=relaxed/simple;
+	bh=qbzMEdXzfpsClOOS0f5aYuMmfRES68n6ZOBcLtp9P/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lz2gzFZYGRXhoTTBSu1GGYYLRv8OAnuHXouhJ+oG7rmJMT/pX1s1mLWWH5uQoNJheqWJueT2Ns6CJZR84tUoJKreqL6L8UHM9oVaoTuFaWsFQmO0W5vrKahh0GIQ+d4i2hXO7qnswcWPRMXda/+Mtrp6/oFAltlkoyedDx6tNi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yUmffyxJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A9BC43390;
-	Mon,  4 Mar 2024 21:54:44 +0000 (UTC)
+	 MIME-Version; b=K9+1DtShMVQeSs6RzWrg/KY2+cb8giIwOkcMbN1/QX4tHThY1JuONrM8dgYKPdBKs3mZ49h+8BhDs+SZuRwrmx5mf2r95c5ZrpSbBAf55uJOXhSoOraG7Uy060SKiXqdg9Fp4hJaSPd33cayugP/QrR7K4bXlub4sKtrisZQGws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MY8htPMY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D955C433C7;
+	Mon,  4 Mar 2024 21:33:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589285;
-	bh=obIPPpPoMMtqQHJgE+QgNxjGlngAetdlPMzxXZweF1w=;
+	s=korg; t=1709588010;
+	bh=qbzMEdXzfpsClOOS0f5aYuMmfRES68n6ZOBcLtp9P/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yUmffyxJPQBJyFYL2qQlmBQJYrXLeTGJgr02CObIti6xvI+gYamJ404MxHR+ghtS1
-	 pIyAmH88tkc9qnXx3eXxAsiS1FSHAQLR7doUlTl8RwTSHl2BN3RsItYkMTyVOkeKC2
-	 zCFNqcpZOe0aWR+3337fO+asj4FD1tdqfvIN4zOc=
+	b=MY8htPMYQit6tqvmdWk8wpHioEUvD7fD2RufmoJnmJOsxC3Z+aR305R+VEUIz6tlC
+	 P7F1c+QdeRhLfknmbuXcRVr1ODNr8tiqPRHMuu1mm+LBPr9KlHRAQU4wa3IOKLqkk7
+	 5vyeWVO+tW3qutsh+3zsr+UR0cnaSsGypL2hyIKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 16/84] Bluetooth: hci_event: Fix wrongly recorded wakeup BD_ADDR
+Subject: [PATCH 5.4 13/25] power: supply: bq27xxx-i2c: Do not free non existing IRQ
 Date: Mon,  4 Mar 2024 21:23:49 +0000
-Message-ID: <20240304211542.881729927@linuxfoundation.org>
+Message-ID: <20240304211536.185565393@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211535.741936181@linuxfoundation.org>
+References: <20240304211535.741936181@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 61a5ab72edea7ebc3ad2c6beea29d966f528ebfb ]
+[ Upstream commit 2df70149e73e79783bcbc7db4fa51ecef0e2022c ]
 
-hci_store_wake_reason() wrongly parses event HCI_Connection_Request
-as HCI_Connection_Complete and HCI_Connection_Complete as
-HCI_Connection_Request, so causes recording wakeup BD_ADDR error and
-potential stability issue, fix it by using the correct field.
+The bq27xxx i2c-client may not have an IRQ, in which case
+client->irq will be 0. bq27xxx_battery_i2c_probe() already has
+an if (client->irq) check wrapping the request_threaded_irq().
 
-Fixes: 2f20216c1d6f ("Bluetooth: Emit controller suspend and resume events")
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+But bq27xxx_battery_i2c_remove() unconditionally calls
+free_irq(client->irq) leading to:
+
+[  190.310742] ------------[ cut here ]------------
+[  190.310843] Trying to free already-free IRQ 0
+[  190.310861] WARNING: CPU: 2 PID: 1304 at kernel/irq/manage.c:1893 free_irq+0x1b8/0x310
+
+Followed by a backtrace when unbinding the driver. Add
+an if (client->irq) to bq27xxx_battery_i2c_remove() mirroring
+probe() to fix this.
+
+Fixes: 444ff00734f3 ("power: supply: bq27xxx: Fix I2C IRQ race on remove")
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240215155133.70537-1-hdegoede@redhat.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/power/supply/bq27xxx_battery_i2c.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 2ad2f4647847c..c4a35d4612b05 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -6272,10 +6272,10 @@ static void hci_store_wake_reason(struct hci_dev *hdev, u8 event,
- 	 * keep track of the bdaddr of the connection event that woke us up.
- 	 */
- 	if (event == HCI_EV_CONN_REQUEST) {
--		bacpy(&hdev->wake_addr, &conn_complete->bdaddr);
-+		bacpy(&hdev->wake_addr, &conn_request->bdaddr);
- 		hdev->wake_addr_type = BDADDR_BREDR;
- 	} else if (event == HCI_EV_CONN_COMPLETE) {
--		bacpy(&hdev->wake_addr, &conn_request->bdaddr);
-+		bacpy(&hdev->wake_addr, &conn_complete->bdaddr);
- 		hdev->wake_addr_type = BDADDR_BREDR;
- 	} else if (event == HCI_EV_LE_META) {
- 		struct hci_ev_le_meta *le_ev = (void *)skb->data;
+diff --git a/drivers/power/supply/bq27xxx_battery_i2c.c b/drivers/power/supply/bq27xxx_battery_i2c.c
+index 01800cd97e3af..08c7e2b4155ad 100644
+--- a/drivers/power/supply/bq27xxx_battery_i2c.c
++++ b/drivers/power/supply/bq27xxx_battery_i2c.c
+@@ -217,7 +217,9 @@ static int bq27xxx_battery_i2c_remove(struct i2c_client *client)
+ {
+ 	struct bq27xxx_device_info *di = i2c_get_clientdata(client);
+ 
+-	free_irq(client->irq, di);
++	if (client->irq)
++		free_irq(client->irq, di);
++
+ 	bq27xxx_battery_teardown(di);
+ 
+ 	mutex_lock(&battery_mutex);
 -- 
 2.43.0
 
