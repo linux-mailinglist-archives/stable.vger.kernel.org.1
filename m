@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-26366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75817870E45
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:42:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81E2E870F1B
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:51:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 053BCB25F96
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:42:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38183280CEA
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:51:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DE5B1EA99;
-	Mon,  4 Mar 2024 21:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B87737A70D;
+	Mon,  4 Mar 2024 21:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CZdJnKhv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IJZk6NOb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7257BB10;
-	Mon,  4 Mar 2024 21:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7626379F2;
+	Mon,  4 Mar 2024 21:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588534; cv=none; b=gdBfukh+x1e3gRpT65uTxH8a9tNEgqk8sJMdF0l2skONHj05QOOfU88FfJgsFd/NM8cQQFYOBfL+ELvXR9A4nb1ge4UV93Ef/uoXCOxkyoz4ALOy42DbmmVhCdOsnzSRmi0J3K1gwGCBoBkx2ViXx6X4b+xIu7HWDCPdOSwdQVc=
+	t=1709589057; cv=none; b=Nh+uMpVxLbUJRBiHU3Os6//IsjcRoTTeV/s7EKD0A2LcbzuDlCV1SZ93eBdeJ3ISys0+g94RrFW4UZx8LOuUnpGKMR5jWCGv5blb4nNwGtaPVEiaNid/BSwCl3uJIIOyQRH+lzh9LzobaaEujZzVRLU4+sP3DMUFqy3OUTFZo/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588534; c=relaxed/simple;
-	bh=KxhWlXRKQ83dyo7+sEb2vSdgw2YZqLbI/qZ97WQhCV0=;
+	s=arc-20240116; t=1709589057; c=relaxed/simple;
+	bh=QRzo8M9o0AF7DOCo78y0QnU2g9IKqTz/At0DTEXQVVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YpwDNPWfTJYklH9+XjAMYPd71acMCTMA1XiQDvexQQYGuPf3nVzB2cT6H26nnVevfMw9dWhwyFi5qzGVjHMqHSSDYyHdeaxqrDZ891Um5eC0BE+LD7aCFjaAKQr9G9HCH6JUZ9wcgf9hpqah+hX+vnHDRG/rdncCfxK73UaxNnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CZdJnKhv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BADEEC433F1;
-	Mon,  4 Mar 2024 21:42:13 +0000 (UTC)
+	 MIME-Version; b=h+9VCTvAiYIlgY9R+syKIbBwEgFSH62pvj71OJf49Yl+6yXR3hcp5HGd0YlFBL/YcO7Nxq1/Lx0hQ1wGwCQAPEF6WuHOvB6C/5L4lc/nGVKJar2BTbmsjo/ZZQqBOltw4nW5rr3vO8PrVblwJqB1pwu0PBFEffH5Zw6+c9l01v8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IJZk6NOb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C32C433C7;
+	Mon,  4 Mar 2024 21:50:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588534;
-	bh=KxhWlXRKQ83dyo7+sEb2vSdgw2YZqLbI/qZ97WQhCV0=;
+	s=korg; t=1709589057;
+	bh=QRzo8M9o0AF7DOCo78y0QnU2g9IKqTz/At0DTEXQVVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CZdJnKhvpK/32PtIJOTOG4/n1WnEufci1uGe0dteOAaFBoxST+eYIiFzdNkIZBk75
-	 TilbyBXJ2NOq0tETkp126HHIW5vsz8kNxvwfgnMXDBfESk546YisTZAVtl9/5NXtnS
-	 SO0M3/qn/4X46XYK+z+Iu4ZV7JWatLKBLab3fX04=
+	b=IJZk6NObv+KNMWtoRiR8wIfABOVAfpozV88/miwNfX+GNuPIpUT2r1iR53jM3ISnx
+	 narwrwCIQBO0le8wyy260ee+Y1kvhbl110yKpi1pqglCC50q3SlX8s8gvzgAN86S0Y
+	 xR+4Z4Z4s4k1qJ4inCeuzNoIAb1OEyIOK74Z1+9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Lynch <nathanl@linux.ibm.com>,
-	Gaurav Batra <gbatra@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 128/143] powerpc/rtas: use correct function name for resetting TCE tables
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Evgeniy Baskov <baskov@ispras.ru>,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: [PATCH 6.1 185/215] efi/libstub: Add memory attribute protocol definitions
 Date: Mon,  4 Mar 2024 21:24:08 +0000
-Message-ID: <20240304211553.991085876@linuxfoundation.org>
+Message-ID: <20240304211602.825483765@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: Ard Biesheuvel <ardb+git@google.com>
 
-[ Upstream commit fad87dbd48156ab940538f052f1820f4b6ed2819 ]
+From: Evgeniy Baskov <baskov@ispras.ru>
 
-The PAPR spec spells the function name as
+[ Commit 79729f26b074a5d2722c27fa76cc45ef721e65cd upstream ]
 
-  "ibm,reset-pe-dma-windows"
+EFI_MEMORY_ATTRIBUTE_PROTOCOL servers as a better alternative to
+DXE services for setting memory attributes in EFI Boot Services
+environment. This protocol is better since it is a part of UEFI
+specification itself and not UEFI PI specification like DXE
+services.
 
-but in practice firmware uses the singular form:
+Add EFI_MEMORY_ATTRIBUTE_PROTOCOL definitions.
+Support mixed mode properly for its calls.
 
-  "ibm,reset-pe-dma-window"
-
-in the device tree. Since we have the wrong spelling in the RTAS
-function table, reverse lookups (token -> name) fail and warn:
-
-  unexpected failed lookup for token 86
-  WARNING: CPU: 1 PID: 545 at arch/powerpc/kernel/rtas.c:659 __do_enter_rtas_trace+0x2a4/0x2b4
-  CPU: 1 PID: 545 Comm: systemd-udevd Not tainted 6.8.0-rc4 #30
-  Hardware name: IBM,9105-22A POWER10 (raw) 0x800200 0xf000006 of:IBM,FW1060.00 (NL1060_028) hv:phyp pSeries
-  NIP [c0000000000417f0] __do_enter_rtas_trace+0x2a4/0x2b4
-  LR [c0000000000417ec] __do_enter_rtas_trace+0x2a0/0x2b4
-  Call Trace:
-   __do_enter_rtas_trace+0x2a0/0x2b4 (unreliable)
-   rtas_call+0x1f8/0x3e0
-   enable_ddw.constprop.0+0x4d0/0xc84
-   dma_iommu_dma_supported+0xe8/0x24c
-   dma_set_mask+0x5c/0xd8
-   mlx5_pci_init.constprop.0+0xf0/0x46c [mlx5_core]
-   probe_one+0xfc/0x32c [mlx5_core]
-   local_pci_probe+0x68/0x12c
-   pci_call_probe+0x68/0x1ec
-   pci_device_probe+0xbc/0x1a8
-   really_probe+0x104/0x570
-   __driver_probe_device+0xb8/0x224
-   driver_probe_device+0x54/0x130
-   __driver_attach+0x158/0x2b0
-   bus_for_each_dev+0xa8/0x120
-   driver_attach+0x34/0x48
-   bus_add_driver+0x174/0x304
-   driver_register+0x8c/0x1c4
-   __pci_register_driver+0x68/0x7c
-   mlx5_init+0xb8/0x118 [mlx5_core]
-   do_one_initcall+0x60/0x388
-   do_init_module+0x7c/0x2a4
-   init_module_from_file+0xb4/0x108
-   idempotent_init_module+0x184/0x34c
-   sys_finit_module+0x90/0x114
-
-And oopses are possible when lockdep is enabled or the RTAS
-tracepoints are active, since those paths dereference the result of
-the lookup.
-
-Use the correct spelling to match firmware's behavior, adjusting the
-related constants to match.
-
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Fixes: 8252b88294d2 ("powerpc/rtas: improve function information lookups")
-Reported-by: Gaurav Batra <gbatra@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240222-rtas-fix-ibm-reset-pe-dma-window-v1-1-7aaf235ac63c@linux.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Tested-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Evgeniy Baskov <baskov@ispras.ru>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/rtas.h | 4 ++--
- arch/powerpc/kernel/rtas.c      | 9 +++++++--
- 2 files changed, 9 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/efi.h             |    7 +++++++
+ drivers/firmware/efi/libstub/efistub.h |   20 ++++++++++++++++++++
+ include/linux/efi.h                    |    1 +
+ 3 files changed, 28 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/rtas.h b/arch/powerpc/include/asm/rtas.h
-index c697c3c746946..33024a2874a69 100644
---- a/arch/powerpc/include/asm/rtas.h
-+++ b/arch/powerpc/include/asm/rtas.h
-@@ -68,7 +68,7 @@ enum rtas_function_index {
- 	RTAS_FNIDX__IBM_READ_SLOT_RESET_STATE,
- 	RTAS_FNIDX__IBM_READ_SLOT_RESET_STATE2,
- 	RTAS_FNIDX__IBM_REMOVE_PE_DMA_WINDOW,
--	RTAS_FNIDX__IBM_RESET_PE_DMA_WINDOWS,
-+	RTAS_FNIDX__IBM_RESET_PE_DMA_WINDOW,
- 	RTAS_FNIDX__IBM_SCAN_LOG_DUMP,
- 	RTAS_FNIDX__IBM_SET_DYNAMIC_INDICATOR,
- 	RTAS_FNIDX__IBM_SET_EEH_OPTION,
-@@ -163,7 +163,7 @@ typedef struct {
- #define RTAS_FN_IBM_READ_SLOT_RESET_STATE         rtas_fn_handle(RTAS_FNIDX__IBM_READ_SLOT_RESET_STATE)
- #define RTAS_FN_IBM_READ_SLOT_RESET_STATE2        rtas_fn_handle(RTAS_FNIDX__IBM_READ_SLOT_RESET_STATE2)
- #define RTAS_FN_IBM_REMOVE_PE_DMA_WINDOW          rtas_fn_handle(RTAS_FNIDX__IBM_REMOVE_PE_DMA_WINDOW)
--#define RTAS_FN_IBM_RESET_PE_DMA_WINDOWS          rtas_fn_handle(RTAS_FNIDX__IBM_RESET_PE_DMA_WINDOWS)
-+#define RTAS_FN_IBM_RESET_PE_DMA_WINDOW           rtas_fn_handle(RTAS_FNIDX__IBM_RESET_PE_DMA_WINDOW)
- #define RTAS_FN_IBM_SCAN_LOG_DUMP                 rtas_fn_handle(RTAS_FNIDX__IBM_SCAN_LOG_DUMP)
- #define RTAS_FN_IBM_SET_DYNAMIC_INDICATOR         rtas_fn_handle(RTAS_FNIDX__IBM_SET_DYNAMIC_INDICATOR)
- #define RTAS_FN_IBM_SET_EEH_OPTION                rtas_fn_handle(RTAS_FNIDX__IBM_SET_EEH_OPTION)
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index 87d65bdd3ecae..46b9476d75824 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -310,8 +310,13 @@ static struct rtas_function rtas_function_table[] __ro_after_init = {
- 	[RTAS_FNIDX__IBM_REMOVE_PE_DMA_WINDOW] = {
- 		.name = "ibm,remove-pe-dma-window",
- 	},
--	[RTAS_FNIDX__IBM_RESET_PE_DMA_WINDOWS] = {
--		.name = "ibm,reset-pe-dma-windows",
-+	[RTAS_FNIDX__IBM_RESET_PE_DMA_WINDOW] = {
-+		/*
-+		 * Note: PAPR+ v2.13 7.3.31.4.1 spells this as
-+		 * "ibm,reset-pe-dma-windows" (plural), but RTAS
-+		 * implementations use the singular form in practice.
-+		 */
-+		.name = "ibm,reset-pe-dma-window",
- 	},
- 	[RTAS_FNIDX__IBM_SCAN_LOG_DUMP] = {
- 		.name = "ibm,scan-log-dump",
--- 
-2.43.0
-
+--- a/arch/x86/include/asm/efi.h
++++ b/arch/x86/include/asm/efi.h
+@@ -325,6 +325,13 @@ static inline u32 efi64_convert_status(e
+ #define __efi64_argmap_set_memory_space_attributes(phys, size, flags) \
+ 	(__efi64_split(phys), __efi64_split(size), __efi64_split(flags))
+ 
++/* Memory Attribute Protocol */
++#define __efi64_argmap_set_memory_attributes(protocol, phys, size, flags) \
++	((protocol), __efi64_split(phys), __efi64_split(size), __efi64_split(flags))
++
++#define __efi64_argmap_clear_memory_attributes(protocol, phys, size, flags) \
++	((protocol), __efi64_split(phys), __efi64_split(size), __efi64_split(flags))
++
+ /*
+  * The macros below handle the plumbing for the argument mapping. To add a
+  * mapping for a specific EFI method, simply define a macro
+--- a/drivers/firmware/efi/libstub/efistub.h
++++ b/drivers/firmware/efi/libstub/efistub.h
+@@ -419,6 +419,26 @@ union efi_dxe_services_table {
+ 	} mixed_mode;
+ };
+ 
++typedef union efi_memory_attribute_protocol efi_memory_attribute_protocol_t;
++
++union efi_memory_attribute_protocol {
++	struct {
++		efi_status_t (__efiapi *get_memory_attributes)(
++			efi_memory_attribute_protocol_t *, efi_physical_addr_t, u64, u64 *);
++
++		efi_status_t (__efiapi *set_memory_attributes)(
++			efi_memory_attribute_protocol_t *, efi_physical_addr_t, u64, u64);
++
++		efi_status_t (__efiapi *clear_memory_attributes)(
++			efi_memory_attribute_protocol_t *, efi_physical_addr_t, u64, u64);
++	};
++	struct {
++		u32 get_memory_attributes;
++		u32 set_memory_attributes;
++		u32 clear_memory_attributes;
++	} mixed_mode;
++};
++
+ typedef union efi_uga_draw_protocol efi_uga_draw_protocol_t;
+ 
+ union efi_uga_draw_protocol {
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -390,6 +390,7 @@ void efi_native_runtime_setup(void);
+ #define EFI_RT_PROPERTIES_TABLE_GUID		EFI_GUID(0xeb66918a, 0x7eef, 0x402a,  0x84, 0x2e, 0x93, 0x1d, 0x21, 0xc3, 0x8a, 0xe9)
+ #define EFI_DXE_SERVICES_TABLE_GUID		EFI_GUID(0x05ad34ba, 0x6f02, 0x4214,  0x95, 0x2e, 0x4d, 0xa0, 0x39, 0x8e, 0x2b, 0xb9)
+ #define EFI_SMBIOS_PROTOCOL_GUID		EFI_GUID(0x03583ff6, 0xcb36, 0x4940,  0x94, 0x7e, 0xb9, 0xb3, 0x9f, 0x4a, 0xfa, 0xf7)
++#define EFI_MEMORY_ATTRIBUTE_PROTOCOL_GUID	EFI_GUID(0xf4560cf6, 0x40ec, 0x4b4a,  0xa1, 0x92, 0xbf, 0x1d, 0x57, 0xd0, 0xb1, 0x89)
+ 
+ #define EFI_IMAGE_SECURITY_DATABASE_GUID	EFI_GUID(0xd719b2cb, 0x3d3a, 0x4596,  0xa3, 0xbc, 0xda, 0xd0, 0x0e, 0x67, 0x65, 0x6f)
+ #define EFI_SHIM_LOCK_GUID			EFI_GUID(0x605dab50, 0xe046, 0x4300,  0xab, 0xb6, 0x3d, 0xd8, 0x10, 0xdd, 0x8b, 0x23)
 
 
 
