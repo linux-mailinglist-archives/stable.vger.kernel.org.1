@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-26486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1262870ED4
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:47:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44DF5870DE0
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:38:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42C09B275C3
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:47:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7735D1C20C61
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9352A46BA0;
-	Mon,  4 Mar 2024 21:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ED34200D4;
+	Mon,  4 Mar 2024 21:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IJwW+9Rz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+MAIuK2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50AE01EB5A;
-	Mon,  4 Mar 2024 21:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA64010A35;
+	Mon,  4 Mar 2024 21:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588842; cv=none; b=dcuyvciKKaiBueTcLArFaynW/hO/P782ApwjQlyokF7AiJ+E5tuUqVl+7ZzmwzRK3QxkEV2yFCx9oL5MIOQivNms4FuHKs1AQbTgM7SrXdW8N5Qm+mVz13m5HaJTodghRkwBKi0T1FvtT+5yBO+wrm9Ex3hKzpSwK25MpiY6zPU=
+	t=1709588313; cv=none; b=ec8NP9YFPt/XuBnRH2+Gh+q5BL1yJBQUdkXcAKk6OcV1z5bHZeC9sL9hco5NnWBb6Xypg2jfx78UHHsB82rXLZLpgotJrChaTPu7rS+y/Nyh6pPrr/fngrYL2ZjlSC3YGuFMRSKsLtL4A2ZTQUgyCyL3v7D65Etss1kpIwBPeq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588842; c=relaxed/simple;
-	bh=YC83cLOF+zyVlW/htIyVrrvGj4X+vsf1DblTYDCUcSE=;
+	s=arc-20240116; t=1709588313; c=relaxed/simple;
+	bh=z+hXGgrEuNL9CEjlpPMXqlwFIy3gj0fLfb+DBll0y5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TFdUCSxBaTVTgTbQKkCvym4Bp/12qPjdS55IjIFcMOkxjXHkLRWKZqXbI7zFHEsMrIYSlEQQCSkf77wDsJ6qfcLiIlALsO4da3MVvKpu0D/DaCbUG0s+BElmLEMkSbqcqefLn2gc9EklRwt5f60U3N/6ZwLfjB5b/FNe4zknCPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IJwW+9Rz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D549FC433F1;
-	Mon,  4 Mar 2024 21:47:21 +0000 (UTC)
+	 MIME-Version; b=h+pOFvDdOL8Lzn+AQ1VyhNA764Kg1vaUb4NnAYTI4r3PEgoF5QSZtvjrQU7nQO3DDIAFsqrh+H04hfXmH0vVKXGzHwPynb886HwwrRU81hz5Bg3s8b09x53mOtFPSJHS9Xn3v+lkBl1wuwjj5mteHWcHSSZXyEUAmgL81iz5OeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+MAIuK2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CDA7C433F1;
+	Mon,  4 Mar 2024 21:38:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588842;
-	bh=YC83cLOF+zyVlW/htIyVrrvGj4X+vsf1DblTYDCUcSE=;
+	s=korg; t=1709588312;
+	bh=z+hXGgrEuNL9CEjlpPMXqlwFIy3gj0fLfb+DBll0y5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IJwW+9RzKl5atU32AP3E5mqacC4u/f2AZP9Q7eLw6dzs0eTXhO5IyoND2kt+AO2Qz
-	 RFpvIujUwyGvKu7iHwDpaRXa3maKky3sfWzU/kvuoB7q05XV73UuZdPOmHglohNSyL
-	 aBaZmYCADXeSb5TW2bTX4yF1eW91Kfl+PKxrdu9Y=
+	b=P+MAIuK2b5BcHIIz5340D3KJYYZzkNQbQO8egMVttCp7oImxCGo82bEnkOyEZyqjW
+	 7QyWVc+HRkIeFhJWX/OWCOkK/xldjI92eczseeswIMVpT5VWVwolY1onACA09Ydqw5
+	 lzIGelPulSqet8FnkqyDEm4PVtUqMG6/EnUJkF78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Borislav Petkov <bp@suse.de>
-Subject: [PATCH 6.1 117/215] x86/boot/compressed: Simplify IDT/GDT preserve/restore in the EFI thunk
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Markus Suvanto <markus.suvanto@gmail.com>,
+	linux-afs@lists.infradead.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 060/143] afs: Fix endless loop in directory parsing
 Date: Mon,  4 Mar 2024 21:23:00 +0000
-Message-ID: <20240304211600.762763988@linuxfoundation.org>
+Message-ID: <20240304211551.845551694@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +65,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: David Howells <dhowells@redhat.com>
 
-commit 630f337f0c4fd80390e8600adcab31550aea33df upstream.
+[ Upstream commit 5f7a07646655fb4108da527565dcdc80124b14c4 ]
 
-Tweak the asm and remove some redundant instructions. While at it,
-fix the associated comment for style and correctness.
+If a directory has a block with only ".__afsXXXX" files in it (from
+uncompleted silly-rename), these .__afsXXXX files are skipped but without
+advancing the file position in the dir_context.  This leads to
+afs_dir_iterate() repeating the block again and again.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20221122161017.2426828-9-ardb@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by making the code that skips the .__afsXXXX file also manually
+advance the file position.
+
+The symptoms are a soft lookup:
+
+        watchdog: BUG: soft lockup - CPU#3 stuck for 52s! [check:5737]
+        ...
+        RIP: 0010:afs_dir_iterate_block+0x39/0x1fd
+        ...
+         ? watchdog_timer_fn+0x1a6/0x213
+        ...
+         ? asm_sysvec_apic_timer_interrupt+0x16/0x20
+         ? afs_dir_iterate_block+0x39/0x1fd
+         afs_dir_iterate+0x10a/0x148
+         afs_readdir+0x30/0x4a
+         iterate_dir+0x93/0xd3
+         __do_sys_getdents64+0x6b/0xd4
+
+This is almost certainly the actual fix for:
+
+        https://bugzilla.kernel.org/show_bug.cgi?id=218496
+
+Fixes: 57e9d49c5452 ("afs: Hide silly-rename files from userspace")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/786185.1708694102@warthog.procyon.org.uk
+Reviewed-by: Marc Dionne <marc.dionne@auristor.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: Markus Suvanto <markus.suvanto@gmail.com>
+cc: linux-afs@lists.infradead.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/compressed/efi_mixed.S |   20 +++++++-------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
+ fs/afs/dir.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/x86/boot/compressed/efi_mixed.S
-+++ b/arch/x86/boot/compressed/efi_mixed.S
-@@ -96,24 +96,20 @@ SYM_FUNC_START(__efi64_thunk)
+diff --git a/fs/afs/dir.c b/fs/afs/dir.c
+index 2df2e9ee130d8..e222fa68be847 100644
+--- a/fs/afs/dir.c
++++ b/fs/afs/dir.c
+@@ -479,8 +479,10 @@ static int afs_dir_iterate_block(struct afs_vnode *dvnode,
+ 		    dire->u.name[0] == '.' &&
+ 		    ctx->actor != afs_lookup_filldir &&
+ 		    ctx->actor != afs_lookup_one_filldir &&
+-		    memcmp(dire->u.name, ".__afs", 6) == 0)
++		    memcmp(dire->u.name, ".__afs", 6) == 0) {
++			ctx->pos = blkoff + next * sizeof(union afs_xdr_dirent);
+ 			continue;
++		}
  
- 	leaq	0x20(%rsp), %rbx
- 	sgdt	(%rbx)
--
--	addq	$16, %rbx
--	sidt	(%rbx)
-+	sidt	16(%rbx)
- 
- 	leaq	1f(%rip), %rbp
- 
- 	/*
--	 * Switch to IDT and GDT with 32-bit segments. This is the firmware GDT
--	 * and IDT that was installed when the kernel started executing. The
--	 * pointers were saved by the efi32_entry() routine below.
-+	 * Switch to IDT and GDT with 32-bit segments. These are the firmware
-+	 * GDT and IDT that were installed when the kernel started executing.
-+	 * The pointers were saved by the efi32_entry() routine below.
- 	 *
- 	 * Pass the saved DS selector to the 32-bit code, and use far return to
- 	 * restore the saved CS selector.
- 	 */
--	leaq	efi32_boot_idt(%rip), %rax
--	lidt	(%rax)
--	leaq	efi32_boot_gdt(%rip), %rax
--	lgdt	(%rax)
-+	lidt	efi32_boot_idt(%rip)
-+	lgdt	efi32_boot_gdt(%rip)
- 
- 	movzwl	efi32_boot_ds(%rip), %edx
- 	movzwq	efi32_boot_cs(%rip), %rax
-@@ -187,9 +183,7 @@ SYM_FUNC_START_LOCAL(efi_enter32)
- 	 */
- 	cli
- 
--	lidtl	(%ebx)
--	subl	$16, %ebx
--
-+	lidtl	16(%ebx)
- 	lgdtl	(%ebx)
- 
- 	movl	%cr4, %eax
+ 		/* found the next entry */
+ 		if (!dir_emit(ctx, dire->u.name, nlen,
+-- 
+2.43.0
+
 
 
 
