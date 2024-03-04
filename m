@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-26414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C729B870E7A
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:44:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79B43870CA9
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:27:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8319E287EC1
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:44:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 824541C20803
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:27:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49AC778B69;
-	Mon,  4 Mar 2024 21:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C2C97AE6B;
+	Mon,  4 Mar 2024 21:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XgONsmQZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D10UxI2y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07BC246BA0;
-	Mon,  4 Mar 2024 21:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3D047A6C;
+	Mon,  4 Mar 2024 21:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588657; cv=none; b=pOlgLEhWa2VkeGsJsWC/fq/e8tezRqX7wF5ZS47wAV3k3uVYFynKdNzFPfvMPK87R7Ci2k42lSkfO+GM8ndPmV7+EImiIvZ76vlCuRBo31SzMi4mj4EWZKLl4qdeZwXBISi+BgyLjsEXCLKxCYuE7zDi1K1gMnC3mey4nQwf5jE=
+	t=1709587649; cv=none; b=idQLjg+F49Sy5szd5S/9GZXyctYAuozUxjt668bZSGx9FqF5501KzHi0aOD9R7wHCGlNofPtPTFXjwURhZqo2stE62w9fd6wizNwuLxHpgtBG35uKm3sPQyVnAS+FqvJwyqSbZB8xHtW/3Ni+RwMC/10zCIuVz3fAKh5yBGaiDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588657; c=relaxed/simple;
-	bh=C7BfHZTF8qLHwX36pUAm4qK/hZCwc6j5V1FAQA0Bg/s=;
+	s=arc-20240116; t=1709587649; c=relaxed/simple;
+	bh=LdLjnkUBp+1nCeUymG9ZwYAqx/FaCcAfoSG3r/enA60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RWucQfprBmq0XYsbTJNsp8tW/AX2Hvp+7JvenCicTyWI6KIJlZJn/6uKf/lbX/QxS6dO91AqlVD5/a5VyIhD4mnjSWlVk3wMl5lbxz7g52ooWhE5/zLH5r3OQhEeZQi/IRPQ1LACU4d7bLY0q9TYmTsfXipgnFHNF6WZWXOnfXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XgONsmQZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8F2C43390;
-	Mon,  4 Mar 2024 21:44:16 +0000 (UTC)
+	 MIME-Version; b=rzT0/r2RVA+dwUmWl+s+hTvrFbMfW9AYMJeKLLIg1vhXsoEDx3qQ6zlFb8oscS2YYjlEB/8+YHS2z1+6vgBqTn5x9ylA9HIyobg3/PZDH1kO9+fW+BUI/zwP1poMq2iE7QVT7ScJyfgBtRgjAoyIzMGyoJLQL+oL1nj1jFD0LuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D10UxI2y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91DBCC433C7;
+	Mon,  4 Mar 2024 21:27:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588656;
-	bh=C7BfHZTF8qLHwX36pUAm4qK/hZCwc6j5V1FAQA0Bg/s=;
+	s=korg; t=1709587648;
+	bh=LdLjnkUBp+1nCeUymG9ZwYAqx/FaCcAfoSG3r/enA60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XgONsmQZHKWT/gZzQ3izwQnm3NrocvBctcTz8Say6wTTzL6Sw6nCHThj1gv7Zt1kJ
-	 6M1rPaNbD8CUuUwv0mWB7GzfTYKd5zvqeJiZDwydnbznXTJMTjtSofOgyAlwvviJwi
-	 iHzpr4OVt7DzZ60FXxAYWIzg5Yb4PLfMiIWafQw0=
+	b=D10UxI2yduum1qgNxvFTv19nphToOqyailungjmKAIgAT9ZKulRyPX26mPlNb22Pq
+	 Hlj7jNIZw07R5cLdTHIvmbFMbzj2QKQ8gOIgPKnl8x5mrCNFOiHb76Q10eXRk6yI6+
+	 vk6e9ntwJ/LrFGmLxDOHSke0qN5b8JkUhL8XZl54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <stefan.wahren@i2se.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 013/215] ARM: dts: imx: Adjust dma-apbh node name
-Date: Mon,  4 Mar 2024 21:21:16 +0000
-Message-ID: <20240304211557.438955760@linuxfoundation.org>
+	Florian Westphal <fw@strlen.de>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+bfde3bef047a81b8fde6@syzkaller.appspotmail.com
+Subject: [PATCH 6.7 012/162] net: ip_tunnel: prevent perpetual headroom growth
+Date: Mon,  4 Mar 2024 21:21:17 +0000
+Message-ID: <20240304211552.231312630@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,110 +64,183 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <stefan.wahren@i2se.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit e9f5cd85f1f931bb7b64031492f7051187ccaac7 ]
+[ Upstream commit 5ae1e9922bbdbaeb9cfbe91085ab75927488ac0f ]
 
-Currently the dtbs_check generates warnings like this:
+syzkaller triggered following kasan splat:
+BUG: KASAN: use-after-free in __skb_flow_dissect+0x19d1/0x7a50 net/core/flow_dissector.c:1170
+Read of size 1 at addr ffff88812fb4000e by task syz-executor183/5191
+[..]
+ kasan_report+0xda/0x110 mm/kasan/report.c:588
+ __skb_flow_dissect+0x19d1/0x7a50 net/core/flow_dissector.c:1170
+ skb_flow_dissect_flow_keys include/linux/skbuff.h:1514 [inline]
+ ___skb_get_hash net/core/flow_dissector.c:1791 [inline]
+ __skb_get_hash+0xc7/0x540 net/core/flow_dissector.c:1856
+ skb_get_hash include/linux/skbuff.h:1556 [inline]
+ ip_tunnel_xmit+0x1855/0x33c0 net/ipv4/ip_tunnel.c:748
+ ipip_tunnel_xmit+0x3cc/0x4e0 net/ipv4/ipip.c:308
+ __netdev_start_xmit include/linux/netdevice.h:4940 [inline]
+ netdev_start_xmit include/linux/netdevice.h:4954 [inline]
+ xmit_one net/core/dev.c:3548 [inline]
+ dev_hard_start_xmit+0x13d/0x6d0 net/core/dev.c:3564
+ __dev_queue_xmit+0x7c1/0x3d60 net/core/dev.c:4349
+ dev_queue_xmit include/linux/netdevice.h:3134 [inline]
+ neigh_connected_output+0x42c/0x5d0 net/core/neighbour.c:1592
+ ...
+ ip_finish_output2+0x833/0x2550 net/ipv4/ip_output.c:235
+ ip_finish_output+0x31/0x310 net/ipv4/ip_output.c:323
+ ..
+ iptunnel_xmit+0x5b4/0x9b0 net/ipv4/ip_tunnel_core.c:82
+ ip_tunnel_xmit+0x1dbc/0x33c0 net/ipv4/ip_tunnel.c:831
+ ipgre_xmit+0x4a1/0x980 net/ipv4/ip_gre.c:665
+ __netdev_start_xmit include/linux/netdevice.h:4940 [inline]
+ netdev_start_xmit include/linux/netdevice.h:4954 [inline]
+ xmit_one net/core/dev.c:3548 [inline]
+ dev_hard_start_xmit+0x13d/0x6d0 net/core/dev.c:3564
+ ...
 
-$nodename:0: 'dma-apbh@110000' does not match '^dma-controller(@.*)?$'
+The splat occurs because skb->data points past skb->head allocated area.
+This is because neigh layer does:
+  __skb_pull(skb, skb_network_offset(skb));
 
-So fix all affected dma-apbh node names.
+... but skb_network_offset() returns a negative offset and __skb_pull()
+arg is unsigned.  IOW, we skb->data gets "adjusted" by a huge value.
 
-Signed-off-by: Stefan Wahren <stefan.wahren@i2se.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+The negative value is returned because skb->head and skb->data distance is
+more than 64k and skb->network_header (u16) has wrapped around.
+
+The bug is in the ip_tunnel infrastructure, which can cause
+dev->needed_headroom to increment ad infinitum.
+
+The syzkaller reproducer consists of packets getting routed via a gre
+tunnel, and route of gre encapsulated packets pointing at another (ipip)
+tunnel.  The ipip encapsulation finds gre0 as next output device.
+
+This results in the following pattern:
+
+1). First packet is to be sent out via gre0.
+Route lookup found an output device, ipip0.
+
+2).
+ip_tunnel_xmit for gre0 bumps gre0->needed_headroom based on the future
+output device, rt.dev->needed_headroom (ipip0).
+
+3).
+ip output / start_xmit moves skb on to ipip0. which runs the same
+code path again (xmit recursion).
+
+4).
+Routing step for the post-gre0-encap packet finds gre0 as output device
+to use for ipip0 encapsulated packet.
+
+tunl0->needed_headroom is then incremented based on the (already bumped)
+gre0 device headroom.
+
+This repeats for every future packet:
+
+gre0->needed_headroom gets inflated because previous packets' ipip0 step
+incremented rt->dev (gre0) headroom, and ipip0 incremented because gre0
+needed_headroom was increased.
+
+For each subsequent packet, gre/ipip0->needed_headroom grows until
+post-expand-head reallocations result in a skb->head/data distance of
+more than 64k.
+
+Once that happens, skb->network_header (u16) wraps around when
+pskb_expand_head tries to make sure that skb_network_offset() is unchanged
+after the headroom expansion/reallocation.
+
+After this skb_network_offset(skb) returns a different (and negative)
+result post headroom expansion.
+
+The next trip to neigh layer (or anything else that would __skb_pull the
+network header) makes skb->data point to a memory location outside
+skb->head area.
+
+v2: Cap the needed_headroom update to an arbitarily chosen upperlimit to
+prevent perpetual increase instead of dropping the headroom increment
+completely.
+
+Reported-and-tested-by: syzbot+bfde3bef047a81b8fde6@syzkaller.appspotmail.com
+Closes: https://groups.google.com/g/syzkaller-bugs/c/fL9G6GtWskY/m/VKk_PR5FBAAJ
+Fixes: 243aad830e8a ("ip_gre: include route header_len in max_headroom calculation")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240220135606.4939-1-fw@strlen.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx23.dtsi   | 2 +-
- arch/arm/boot/dts/imx28.dtsi   | 2 +-
- arch/arm/boot/dts/imx6qdl.dtsi | 2 +-
- arch/arm/boot/dts/imx6sx.dtsi  | 2 +-
- arch/arm/boot/dts/imx6ul.dtsi  | 2 +-
- arch/arm/boot/dts/imx7s.dtsi   | 2 +-
- 6 files changed, 6 insertions(+), 6 deletions(-)
+ net/ipv4/ip_tunnel.c | 28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx23.dtsi b/arch/arm/boot/dts/imx23.dtsi
-index ec476b1596496..b236d23f80715 100644
---- a/arch/arm/boot/dts/imx23.dtsi
-+++ b/arch/arm/boot/dts/imx23.dtsi
-@@ -59,7 +59,7 @@ icoll: interrupt-controller@80000000 {
- 				reg = <0x80000000 0x2000>;
- 			};
+diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
+index beeae624c412d..2d29fce7c5606 100644
+--- a/net/ipv4/ip_tunnel.c
++++ b/net/ipv4/ip_tunnel.c
+@@ -554,6 +554,20 @@ static int tnl_update_pmtu(struct net_device *dev, struct sk_buff *skb,
+ 	return 0;
+ }
  
--			dma_apbh: dma-apbh@80004000 {
-+			dma_apbh: dma-controller@80004000 {
- 				compatible = "fsl,imx23-dma-apbh";
- 				reg = <0x80004000 0x2000>;
- 				interrupts = <0 14 20 0
-diff --git a/arch/arm/boot/dts/imx28.dtsi b/arch/arm/boot/dts/imx28.dtsi
-index b15df16ecb01a..b81592a613112 100644
---- a/arch/arm/boot/dts/imx28.dtsi
-+++ b/arch/arm/boot/dts/imx28.dtsi
-@@ -78,7 +78,7 @@ hsadc: hsadc@80002000 {
- 				status = "disabled";
- 			};
++static void ip_tunnel_adj_headroom(struct net_device *dev, unsigned int headroom)
++{
++	/* we must cap headroom to some upperlimit, else pskb_expand_head
++	 * will overflow header offsets in skb_headers_offset_update().
++	 */
++	static const unsigned int max_allowed = 512;
++
++	if (headroom > max_allowed)
++		headroom = max_allowed;
++
++	if (headroom > READ_ONCE(dev->needed_headroom))
++		WRITE_ONCE(dev->needed_headroom, headroom);
++}
++
+ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+ 		       u8 proto, int tunnel_hlen)
+ {
+@@ -632,13 +646,13 @@ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+ 	}
  
--			dma_apbh: dma-apbh@80004000 {
-+			dma_apbh: dma-controller@80004000 {
- 				compatible = "fsl,imx28-dma-apbh";
- 				reg = <0x80004000 0x2000>;
- 				interrupts = <82 83 84 85
-diff --git a/arch/arm/boot/dts/imx6qdl.dtsi b/arch/arm/boot/dts/imx6qdl.dtsi
-index ff1e0173b39be..2c6eada01d792 100644
---- a/arch/arm/boot/dts/imx6qdl.dtsi
-+++ b/arch/arm/boot/dts/imx6qdl.dtsi
-@@ -150,7 +150,7 @@ soc: soc {
- 		interrupt-parent = <&gpc>;
- 		ranges;
+ 	headroom += LL_RESERVED_SPACE(rt->dst.dev) + rt->dst.header_len;
+-	if (headroom > READ_ONCE(dev->needed_headroom))
+-		WRITE_ONCE(dev->needed_headroom, headroom);
+-
+-	if (skb_cow_head(skb, READ_ONCE(dev->needed_headroom))) {
++	if (skb_cow_head(skb, headroom)) {
+ 		ip_rt_put(rt);
+ 		goto tx_dropped;
+ 	}
++
++	ip_tunnel_adj_headroom(dev, headroom);
++
+ 	iptunnel_xmit(NULL, rt, skb, fl4.saddr, fl4.daddr, proto, tos, ttl,
+ 		      df, !net_eq(tunnel->net, dev_net(dev)));
+ 	return;
+@@ -818,16 +832,16 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
  
--		dma_apbh: dma-apbh@110000 {
-+		dma_apbh: dma-controller@110000 {
- 			compatible = "fsl,imx6q-dma-apbh", "fsl,imx28-dma-apbh";
- 			reg = <0x00110000 0x2000>;
- 			interrupts = <0 13 IRQ_TYPE_LEVEL_HIGH>,
-diff --git a/arch/arm/boot/dts/imx6sx.dtsi b/arch/arm/boot/dts/imx6sx.dtsi
-index 1f1053a898fbf..67d344ae76b51 100644
---- a/arch/arm/boot/dts/imx6sx.dtsi
-+++ b/arch/arm/boot/dts/imx6sx.dtsi
-@@ -209,7 +209,7 @@ gpu: gpu@1800000 {
- 			power-domains = <&pd_pu>;
- 		};
+ 	max_headroom = LL_RESERVED_SPACE(rt->dst.dev) + sizeof(struct iphdr)
+ 			+ rt->dst.header_len + ip_encap_hlen(&tunnel->encap);
+-	if (max_headroom > READ_ONCE(dev->needed_headroom))
+-		WRITE_ONCE(dev->needed_headroom, max_headroom);
  
--		dma_apbh: dma-apbh@1804000 {
-+		dma_apbh: dma-controller@1804000 {
- 			compatible = "fsl,imx6sx-dma-apbh", "fsl,imx28-dma-apbh";
- 			reg = <0x01804000 0x2000>;
- 			interrupts = <GIC_SPI 13 IRQ_TYPE_LEVEL_HIGH>,
-diff --git a/arch/arm/boot/dts/imx6ul.dtsi b/arch/arm/boot/dts/imx6ul.dtsi
-index 2b5996395701a..aac081b6daaac 100644
---- a/arch/arm/boot/dts/imx6ul.dtsi
-+++ b/arch/arm/boot/dts/imx6ul.dtsi
-@@ -164,7 +164,7 @@ intc: interrupt-controller@a01000 {
- 			      <0x00a06000 0x2000>;
- 		};
+-	if (skb_cow_head(skb, READ_ONCE(dev->needed_headroom))) {
++	if (skb_cow_head(skb, max_headroom)) {
+ 		ip_rt_put(rt);
+ 		DEV_STATS_INC(dev, tx_dropped);
+ 		kfree_skb(skb);
+ 		return;
+ 	}
  
--		dma_apbh: dma-apbh@1804000 {
-+		dma_apbh: dma-controller@1804000 {
- 			compatible = "fsl,imx6q-dma-apbh", "fsl,imx28-dma-apbh";
- 			reg = <0x01804000 0x2000>;
- 			interrupts = <0 13 IRQ_TYPE_LEVEL_HIGH>,
-diff --git a/arch/arm/boot/dts/imx7s.dtsi b/arch/arm/boot/dts/imx7s.dtsi
-index 4b23630fc738d..2940dacaa56fc 100644
---- a/arch/arm/boot/dts/imx7s.dtsi
-+++ b/arch/arm/boot/dts/imx7s.dtsi
-@@ -1267,7 +1267,7 @@ fec1: ethernet@30be0000 {
- 			};
- 		};
- 
--		dma_apbh: dma-apbh@33000000 {
-+		dma_apbh: dma-controller@33000000 {
- 			compatible = "fsl,imx7d-dma-apbh", "fsl,imx28-dma-apbh";
- 			reg = <0x33000000 0x2000>;
- 			interrupts = <GIC_SPI 12 IRQ_TYPE_LEVEL_HIGH>,
++	ip_tunnel_adj_headroom(dev, max_headroom);
++
+ 	iptunnel_xmit(NULL, rt, skb, fl4.saddr, fl4.daddr, protocol, tos, ttl,
+ 		      df, !net_eq(tunnel->net, dev_net(dev)));
+ 	return;
 -- 
 2.43.0
 
