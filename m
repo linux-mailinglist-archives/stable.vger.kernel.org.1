@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-26351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFA1C870E2D
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:41:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3675870F02
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:50:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4631C1F20F7C
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:41:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1151E1C2247B
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:50:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8AAE200CD;
-	Mon,  4 Mar 2024 21:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26C67BAFB;
+	Mon,  4 Mar 2024 21:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rUCP7c0+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F9yZmEcC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DBC10A35;
-	Mon,  4 Mar 2024 21:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606A97BAF5;
+	Mon,  4 Mar 2024 21:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588497; cv=none; b=DKQsoQY+/7rW1pqJrBC0l0KA+Fudp6V/CzsCqZHxpk/V/YNoMHaYgAll0orKyFS7xvj66pGgkpIs0TcjICy2liHeZAt2aC8jL4PYxt44oXxhGcoi1aRhK6suMvzuisCIeKDdVMEZJCsLnvqmy9OOKNqjXC301U1X1JSZzhjzTBc=
+	t=1709588999; cv=none; b=LpqnYjblhGQrGEk91kEW68ejAoyTUsA7/QepxH3n8XzpNMXcVQ7v0LYyJsDW1DRXHmdN5zf4NxwrKlbJYT5G+phkvwipSt4i3yZD9Ql4l3WgJdxlNxp640iTan318H4JTpCglpSXmSh3k/Zb14R19o7/Famctmk9CKnWIxlLgNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588497; c=relaxed/simple;
-	bh=iaP9KWH8Nu1cJCyP/GHLSky4KfVjoZHDKcuVjz+F8hI=;
+	s=arc-20240116; t=1709588999; c=relaxed/simple;
+	bh=Sb/X1zJUcPLaYnkvjllOPMHQwKmHga6t6UjtExXj244=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ovyWIiDf5BdDRztJPzJ2gJ0yPhWSbyVNIfuit3053+W+FTE0XAhowlkkLCnV83tk/j4cff4SZ34mve1KxoX3rdA40UIk9Oh5UUul6j+y5ZboH4BMo0a+e+AqngIAJcL3m2BQl1Jhkhzl9LF0ovyXkxLD59jDTh971Ix3ADbvPxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rUCP7c0+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B1BEC433C7;
-	Mon,  4 Mar 2024 21:41:36 +0000 (UTC)
+	 MIME-Version; b=CnWMCEFplL7mDqcMrPJG7hNEtz2l3Di+UqHE/In2P3Ap0nE7PdlKGPvUxS/ryxa9/9NIrGE19fs2M9qGcUWfw2mzuphlP6aXsRSGmiIou72G3QUjxJ9RIc/Rb0kval0HkAb7qvpdvLKxq0I4lV2uwVO6PIY7lHcsTbkKEWEMks0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F9yZmEcC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD3D4C433C7;
+	Mon,  4 Mar 2024 21:49:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588497;
-	bh=iaP9KWH8Nu1cJCyP/GHLSky4KfVjoZHDKcuVjz+F8hI=;
+	s=korg; t=1709588999;
+	bh=Sb/X1zJUcPLaYnkvjllOPMHQwKmHga6t6UjtExXj244=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rUCP7c0+exfaMHs1uQRkfv2bYf04jU8owFcj+Y/4t71yXyn3nWHi8G2kuiuGDZ+Wk
-	 GZwioMpXZFdVH/Fvp3A7VTK/XwvYoOiWeJb94kBPeXBfeMlSQhLPrSZPoXuhae/btB
-	 zd8T0CJ7rVW4lVkokh6sebNKuXbTTemtIchHNqek=
+	b=F9yZmEcC/EG6B9jPjdWbLpLRiUiNAVcqAQv65UEE0CX2vBkrFX5X1Mmjk4xSVWi60
+	 Lt1dIWAT7XfnC9v83Y9ZSEC+c8GGJfeqPQc11CgMzwnicT3kAxBbDfCG14KqNIVaU1
+	 p0wBxWrTZFuIMlXxtR4zY36wJxMl0QZ6XVpgHZu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <tanggeliang@kylinos.cn>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 106/143] mptcp: map v4 address to v6 when destroying subflow
+	Chuck Lever <chuck.lever@oracle.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH 6.1 163/215] nfsd: use locks_inode_context helper
 Date: Mon,  4 Mar 2024 21:23:46 +0000
-Message-ID: <20240304211553.304313665@linuxfoundation.org>
+Message-ID: <20240304211602.145845880@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit 535d620ea5ff1a033dc64ee3d912acadc7470619 upstream.
+[ Upstream commit 77c67530e1f95ac25c7075635f32f04367380894 ]
 
-Address family of server side mismatches with that of client side, like
-in "userspace pm add & remove address" test:
+nfsd currently doesn't access i_flctx safely everywhere. This requires a
+smp_load_acquire, as the pointer is set via cmpxchg (a release
+operation).
 
-    userspace_pm_add_addr $ns1 10.0.2.1 10
-    userspace_pm_rm_sf $ns1 "::ffff:10.0.2.1" $SUB_ESTABLISHED
-
-That's because on the server side, the family is set to AF_INET6 and the
-v4 address is mapped in a v6 one.
-
-This patch fixes this issue. In mptcp_pm_nl_subflow_destroy_doit(), before
-checking local address family with remote address family, map an IPv4
-address to an IPv6 address if the pair is a v4-mapped address.
-
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/387
-Fixes: 702c2f646d42 ("mptcp: netlink: allow userspace-driven subflow establishment")
-Cc: stable@vger.kernel.org
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240223-upstream-net-20240223-misc-fixes-v1-1-162e87e48497@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Acked-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_userspace.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/nfsd/nfs4state.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/net/mptcp/pm_userspace.c
-+++ b/net/mptcp/pm_userspace.c
-@@ -487,6 +487,16 @@ int mptcp_nl_cmd_sf_destroy(struct sk_bu
- 		goto destroy_err;
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -4784,7 +4784,7 @@ nfs4_share_conflict(struct svc_fh *curre
+ 
+ static bool nfsd4_deleg_present(const struct inode *inode)
+ {
+-	struct file_lock_context *ctx = smp_load_acquire(&inode->i_flctx);
++	struct file_lock_context *ctx = locks_inode_context(inode);
+ 
+ 	return ctx && !list_empty_careful(&ctx->flc_lease);
+ }
+@@ -5944,7 +5944,7 @@ nfs4_lockowner_has_blockers(struct nfs4_
+ 
+ 	list_for_each_entry(stp, &lo->lo_owner.so_stateids, st_perstateowner) {
+ 		nf = stp->st_stid.sc_file;
+-		ctx = nf->fi_inode->i_flctx;
++		ctx = locks_inode_context(nf->fi_inode);
+ 		if (!ctx)
+ 			continue;
+ 		if (locks_owner_has_blockers(ctx, lo))
+@@ -7761,7 +7761,7 @@ check_for_locks(struct nfs4_file *fp, st
  	}
  
-+#if IS_ENABLED(CONFIG_MPTCP_IPV6)
-+	if (addr_l.family == AF_INET && ipv6_addr_v4mapped(&addr_r.addr6)) {
-+		ipv6_addr_set_v4mapped(addr_l.addr.s_addr, &addr_l.addr6);
-+		addr_l.family = AF_INET6;
-+	}
-+	if (addr_r.family == AF_INET && ipv6_addr_v4mapped(&addr_l.addr6)) {
-+		ipv6_addr_set_v4mapped(addr_r.addr.s_addr, &addr_r.addr6);
-+		addr_r.family = AF_INET6;
-+	}
-+#endif
- 	if (addr_l.family != addr_r.family) {
- 		GENL_SET_ERR_MSG(info, "address families do not match");
- 		err = -EINVAL;
+ 	inode = locks_inode(nf->nf_file);
+-	flctx = inode->i_flctx;
++	flctx = locks_inode_context(inode);
+ 
+ 	if (flctx && !list_empty_careful(&flctx->flc_posix)) {
+ 		spin_lock(&flctx->flc_lock);
 
 
 
