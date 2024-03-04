@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20DB7870CE1
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:29:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 373C0870DD1
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:38:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 525FF1C250E2
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:29:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69DFB1C20C8A
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:38:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16604482DA;
-	Mon,  4 Mar 2024 21:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E17C2C689;
+	Mon,  4 Mar 2024 21:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CRcAs5rg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJq9p3GQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C777A1EB5A;
-	Mon,  4 Mar 2024 21:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D81B8F58;
+	Mon,  4 Mar 2024 21:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587758; cv=none; b=lkl2uKFpMnT5b7SbXbYr+M4cmpiwPKmHnFaW6tfPqhChpVOtUodQCiW2e4VClUtN0d33BhIhCdrlUGRKIuMYm420o6aKLC71EYXEjOOMbMvcOYFPlYS9VMdrAofuMwpzZJ2+vjaIjhPyCTUbyoLzCO+EkfTvNSSaqCZxVR5NFUo=
+	t=1709588284; cv=none; b=H6n4yvClZmj40uAKsB/boqHxMHSUuYxv+L2sH+dOmLqyvbLF+5zgjYDh3pIR3lnpkmY+HLjSC3RArjYXBbrKZJhtYrrc21ERG61yEXz3EPGxcHyX6qPiTD7QA6osQ1mYDrSRpbMorDijtJhtzgEDi+F+6awjXNOK2wKMgMZvqHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587758; c=relaxed/simple;
-	bh=eKT316BK8tRgAT6gTla6vnz2jX4OMj9jWUJa88ohqzE=;
+	s=arc-20240116; t=1709588284; c=relaxed/simple;
+	bh=bPwx5gg5J8+9gGuWmpUP+1uIGXlZZOUD+FFxH+dwaoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T3o0nlMZf7zOsJvZnKAGOjuRHAagMqQpviRbTdUK3gXx/sY3JEESTU6ALuvMaY1caHmo3/8rqBOPIU0vg/0YS0E9DrEa4N+Uoo0ZRjt7sVGvSF4l27L1AG9HYq8yQF/YJu4/kSDRB69jy6hIrRGU1Khf0JEg+l7WrUicuxhutDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CRcAs5rg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C28DC433B1;
-	Mon,  4 Mar 2024 21:29:18 +0000 (UTC)
+	 MIME-Version; b=jyNCXlvN0YUrEOylzOvt7C2/VeV9yjA/4vB5Sw4KkyQdEVGwOQnw2f0IZR6QsL9Ffm/pcfh1NoadtItfdIBDmIKxiuNv+7P5notjVZUnvam/WePHl8K4ck8Okd9jgUS3RRbINn0G99Ql3tGzHL3NgogXIc5nqKWJfeo6t/UAugY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJq9p3GQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A416EC433C7;
+	Mon,  4 Mar 2024 21:38:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587758;
-	bh=eKT316BK8tRgAT6gTla6vnz2jX4OMj9jWUJa88ohqzE=;
+	s=korg; t=1709588284;
+	bh=bPwx5gg5J8+9gGuWmpUP+1uIGXlZZOUD+FFxH+dwaoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CRcAs5rgz8GW3F7aUp5/6/6++JJjCo71dft1IG/lC46EOZOVDY4agXIjEbJDJ9FG2
-	 Yb/B8G8YYXKVwYojfhgzNKvDHIinWolIvEHNbW3+gqinlX+5gAQCxebSQ/X2kBdvVU
-	 ccmSXGInlmEk9wWJtS1PYY80H3nm4L/2SnG/cYHg=
+	b=AJq9p3GQqcNx8i46FO7PmUXSWY35MgJy0ulJ5ZqXmM+60gagiRdehPTDRbQGwBkp4
+	 T3/MBXh3MnVNEo37ocaQaA1CuhTtkFPx6MMUPXCQ67axRqljaLrcCYVxRSVvFFM8Ta
+	 RoxH0DD4dd6pSk7dJmKgEotkuptCxUFn5s3R74uY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eniac Zhang <eniac-xw.zhang@hp.com>,
-	Alexandru Gagniuc <alexandru.gagniuc@hp.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.7 079/162] ALSA: hda/realtek: fix mute/micmute LED For HP mt440
+	Ying Hsu <yinghsu@chromium.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 024/143] Bluetooth: Avoid potential use-after-free in hci_error_reset
 Date: Mon,  4 Mar 2024 21:22:24 +0000
-Message-ID: <20240304211554.376157891@linuxfoundation.org>
+Message-ID: <20240304211550.718590902@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eniac Zhang <eniac-xw.zhang@hp.com>
+From: Ying Hsu <yinghsu@chromium.org>
 
-commit 67c3d7717efbd46092f217b1f811df1b205cce06 upstream.
+[ Upstream commit 2449007d3f73b2842c9734f45f0aadb522daf592 ]
 
-The HP mt440 Thin Client uses an ALC236 codec and needs the
-ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF quirk to make the mute and
-micmute LEDs work.
+While handling the HCI_EV_HARDWARE_ERROR event, if the underlying
+BT controller is not responding, the GPIO reset mechanism would
+free the hci_dev and lead to a use-after-free in hci_error_reset.
 
-There are two variants of the USB-C PD chip on this device. Each uses
-a different BIOS and board ID, hence the two entries.
+Here's the call trace observed on a ChromeOS device with Intel AX201:
+   queue_work_on+0x3e/0x6c
+   __hci_cmd_sync_sk+0x2ee/0x4c0 [bluetooth <HASH:3b4a6>]
+   ? init_wait_entry+0x31/0x31
+   __hci_cmd_sync+0x16/0x20 [bluetooth <HASH:3b4a 6>]
+   hci_error_reset+0x4f/0xa4 [bluetooth <HASH:3b4a 6>]
+   process_one_work+0x1d8/0x33f
+   worker_thread+0x21b/0x373
+   kthread+0x13a/0x152
+   ? pr_cont_work+0x54/0x54
+   ? kthread_blkcg+0x31/0x31
+    ret_from_fork+0x1f/0x30
 
-Signed-off-by: Eniac Zhang <eniac-xw.zhang@hp.com>
-Signed-off-by: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240220175812.782687-1-alexandru.gagniuc@hp.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch holds the reference count on the hci_dev while processing
+a HCI_EV_HARDWARE_ERROR event to avoid potential crash.
+
+Fixes: c7741d16a57c ("Bluetooth: Perform a power cycle when receiving hardware error event")
+Signed-off-by: Ying Hsu <yinghsu@chromium.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/bluetooth/hci_core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9890,6 +9890,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8973, "HP EliteBook 860 G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8974, "HP EliteBook 840 Aero G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8975, "HP EliteBook x360 840 Aero G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x897d, "HP mt440 Mobile Thin Client U74", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8981, "HP Elite Dragonfly G3", ALC245_FIXUP_CS35L41_SPI_4),
- 	SND_PCI_QUIRK(0x103c, 0x898e, "HP EliteBook 835 G9", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x898f, "HP EliteBook 835 G9", ALC287_FIXUP_CS35L41_I2C_2),
-@@ -9921,6 +9922,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8ad2, "HP EliteBook 860 16 inch G9 Notebook PC", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8b0f, "HP Elite mt645 G7 Mobile Thin Client U81", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8b2f, "HP 255 15.6 inch G10 Notebook PC", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
-+	SND_PCI_QUIRK(0x103c, 0x8b3f, "HP mt440 Mobile Thin Client U91", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8b42, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8b43, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8b44, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index 65601aa52e0d8..2821a42cefdc6 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -1049,6 +1049,7 @@ static void hci_error_reset(struct work_struct *work)
+ {
+ 	struct hci_dev *hdev = container_of(work, struct hci_dev, error_reset);
+ 
++	hci_dev_hold(hdev);
+ 	BT_DBG("%s", hdev->name);
+ 
+ 	if (hdev->hw_error)
+@@ -1056,10 +1057,10 @@ static void hci_error_reset(struct work_struct *work)
+ 	else
+ 		bt_dev_err(hdev, "hardware error 0x%2.2x", hdev->hw_error_code);
+ 
+-	if (hci_dev_do_close(hdev))
+-		return;
++	if (!hci_dev_do_close(hdev))
++		hci_dev_do_open(hdev);
+ 
+-	hci_dev_do_open(hdev);
++	hci_dev_put(hdev);
+ }
+ 
+ void hci_uuids_clear(struct hci_dev *hdev)
+-- 
+2.43.0
+
 
 
 
