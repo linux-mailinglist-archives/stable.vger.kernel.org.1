@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-26385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E2F7870E56
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:43:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98916870C82
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:26:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C11511C21727
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:43:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 503D51F26FA6
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31DB46BA0;
-	Mon,  4 Mar 2024 21:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593C246BA0;
+	Mon,  4 Mar 2024 21:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EemNW8bK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TapBc6+s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717618F58;
-	Mon,  4 Mar 2024 21:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158411F5FD;
+	Mon,  4 Mar 2024 21:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588583; cv=none; b=fZ2UqDOeYsB4SYJKK+wqvWul7avxovf3bkO3RWaApxSRSv9mifiA/xBaqMVQ4Of9SuGVdYLbPT+cka9UASa6RC9Pj/EqXhh8LO9oqHwT9vE6IMoQMSS4wo6EyAUTNsaabfdyAkqpYrjHGYc0mvceMUeip7pCOi0U6vf4ZS6BrYc=
+	t=1709587589; cv=none; b=ZQjVXJs2tJB8x79exXhuK0chTcxcq87My2WLnvovTBW7JtLyhVFVhjuOG3Kg7JI2At408J35GHTvlR2Pz6jO4R0sQ2tL2aH75x64ofh5W/UPq1Us8L++e7ZAnKtB+Qp1lk8zMTBe4d7N82t/IxurCrWhTNfdewV4XM8tcxEDL/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588583; c=relaxed/simple;
-	bh=/OZBvx3U/oh2XvEK6YNMWcsGhC4BvcByIfeSsXkmT54=;
+	s=arc-20240116; t=1709587589; c=relaxed/simple;
+	bh=953cv5A9yd1ap6C3pCE8hbVFD2VVSET6sC7owSfQdY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OXg4A8+udEACWkiyH3wrWjq88dJyva2GP03PxzB4mWGr8HqPUTV6KIxArPYxsv88ihx2hdVkz0R7l/lnoRV4VTNxPhCxRJskTqWKI7i8kJJHPqunpmM+QoYyfUwKkiQjqadwzS47Zz8MwIyK8U9cOfomDs6E2Etfd/vkh9kZZsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EemNW8bK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02F5EC433F1;
-	Mon,  4 Mar 2024 21:43:02 +0000 (UTC)
+	 MIME-Version; b=e0+Ep0Id4nwuYDpP63mX6IrBKEeVxon27b/acCilBnHPeS8cFAdb8p/0gUk54zV/i6vw5h8IrLbYbHjrfdDzMYcLMKPYBRm/LLsYEqvPPmsKcyqSpRfq2FARQUMfcjAr6e0odFOavkFqrmxSnM8MkEbk6mXHl/RuAmOy46rAAqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TapBc6+s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C7D0C433F1;
+	Mon,  4 Mar 2024 21:26:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588583;
-	bh=/OZBvx3U/oh2XvEK6YNMWcsGhC4BvcByIfeSsXkmT54=;
+	s=korg; t=1709587589;
+	bh=953cv5A9yd1ap6C3pCE8hbVFD2VVSET6sC7owSfQdY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EemNW8bKB9nWXAXU/bOJRxbtZSA0Yhr5Pyai9GFzzOgiDNWWRA5oeN6e6rGmd+5Lb
-	 9zoviJtcHXZIC2oMWeciMcDui3WLYK8udqD834n1vpP9slFmuX4UxFN1cFHkoJBpd+
-	 hr7ua7ZRIT91gXL3bDn3z1H/QOlS907uBBU+m24k=
+	b=TapBc6+sGJ/ERxw9ztZ/5TDJk+ClNSM3I/T02XSsSx+W/r9RFboEvXWt3AemX36I2
+	 sG/Cj+aL2GFgLq+1UM7/IT/vktfOP0IYeK8o7+IxhaMtke3hJ+SUa/dTOi7LM1XyPa
+	 PqPz/IqFEXCLT4tGplQ1Emga4VxavzudAuFiqviw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 008/215] net: restore alpha order to Ethernet devices in config
+	Igor Bagnucki <igor.bagnucki@intel.com>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.7 006/162] ice: fix dpll periodic work data updates on PF reset
 Date: Mon,  4 Mar 2024 21:21:11 +0000
-Message-ID: <20240304211557.275181275@linuxfoundation.org>
+Message-ID: <20240304211552.041076822@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
 
-[ Upstream commit a1331535aeb41b08fe0c2c78af51885edc93615b ]
+[ Upstream commit 9a8385fe14bcb250a3889e744dc54e9c411d8400 ]
 
-The filename "wangxun" sorts between "intel" and "xscale", but
-xscale/Kconfig contains "Intel XScale" prompts, so Wangxun ends up in the
-wrong place in the config front-ends.
+Do not allow dpll periodic work function to acquire data from firmware
+if PF reset is in progress. Acquiring data will cause dmesg errors as the
+firmware cannot respond or process the request properly during the reset
+time.
 
-Move wangxun/Kconfig so the Wangxun devices appear in order in the user
-interface.
+Test by looping execution of below step until dmesg error appears:
+- perform PF reset
+$ echo 1 > /sys/class/net/<ice PF>/device/reset
 
-Fixes: 3ce7547e5b71 ("net: txgbe: Add build support for txgbe")
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://lore.kernel.org/r/20230307221051.890135-1-helgaas@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d7999f5ea64b ("ice: implement dpll interface to control cgu")
+Reviewed-by: Igor Bagnucki <igor.bagnucki@intel.com>
+Signed-off-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_dpll.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/Kconfig b/drivers/net/ethernet/Kconfig
-index 1917da7841919..5a274b99f2992 100644
---- a/drivers/net/ethernet/Kconfig
-+++ b/drivers/net/ethernet/Kconfig
-@@ -84,7 +84,6 @@ source "drivers/net/ethernet/huawei/Kconfig"
- source "drivers/net/ethernet/i825xx/Kconfig"
- source "drivers/net/ethernet/ibm/Kconfig"
- source "drivers/net/ethernet/intel/Kconfig"
--source "drivers/net/ethernet/wangxun/Kconfig"
- source "drivers/net/ethernet/xscale/Kconfig"
+diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+index 9c8be237c7e50..bcb9b9c13aabc 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dpll.c
++++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+@@ -1390,8 +1390,10 @@ static void ice_dpll_periodic_work(struct kthread_work *work)
+ 	struct ice_pf *pf = container_of(d, struct ice_pf, dplls);
+ 	struct ice_dpll *de = &pf->dplls.eec;
+ 	struct ice_dpll *dp = &pf->dplls.pps;
+-	int ret;
++	int ret = 0;
  
- config JME
-@@ -189,6 +188,7 @@ source "drivers/net/ethernet/toshiba/Kconfig"
- source "drivers/net/ethernet/tundra/Kconfig"
- source "drivers/net/ethernet/vertexcom/Kconfig"
- source "drivers/net/ethernet/via/Kconfig"
-+source "drivers/net/ethernet/wangxun/Kconfig"
- source "drivers/net/ethernet/wiznet/Kconfig"
- source "drivers/net/ethernet/xilinx/Kconfig"
- source "drivers/net/ethernet/xircom/Kconfig"
++	if (ice_is_reset_in_progress(pf->state))
++		goto resched;
+ 	mutex_lock(&pf->dplls.lock);
+ 	ret = ice_dpll_update_state(pf, de, false);
+ 	if (!ret)
+@@ -1411,6 +1413,7 @@ static void ice_dpll_periodic_work(struct kthread_work *work)
+ 	ice_dpll_notify_changes(de);
+ 	ice_dpll_notify_changes(dp);
+ 
++resched:
+ 	/* Run twice a second or reschedule if update failed */
+ 	kthread_queue_delayed_work(d->kworker, &d->work,
+ 				   ret ? msecs_to_jiffies(10) :
 -- 
 2.43.0
 
