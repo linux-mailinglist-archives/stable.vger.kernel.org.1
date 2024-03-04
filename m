@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BDD2870D9A
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:35:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 880CF870F5F
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:54:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EAAD1C2096E
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:35:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BC831F2168A
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:54:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EA0746BA0;
-	Mon,  4 Mar 2024 21:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D1E97BAF5;
+	Mon,  4 Mar 2024 21:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BCTS2bfe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M2JdXoYN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03611C687;
-	Mon,  4 Mar 2024 21:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 429AC7BAE6;
+	Mon,  4 Mar 2024 21:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588147; cv=none; b=Q/LbIKDFLVefLEyBXmhUv8ZtMvGn7tEijfBD1ulMK5UkeciTchsanju/7H7X+vXh5YJSR2xglTul5ezX47Jg14Nj92H5xW/jxpqZDcBiurSAcauUXrZ1pKgbc+OKEKbV9bR+vOQq8IPqp0eZrFs8IL3cPvCXUJJJReJMdWv1Fwk=
+	t=1709589236; cv=none; b=gBdSoaItFmqLZDtMTNckbqCN8fRO5vG+TURZH0czy9WbDVWyi5zigdfRvP3BBM2fNImZXaZHGGnTe64VeSWLv5cOJIbc66eDqZ4RtBmWzeXwSUVm/vfO1gNPyA0Zmif22/gSMwC0C7D6a9sTpeJwnkXVht2sPxuz4hLBKheI+yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588147; c=relaxed/simple;
-	bh=RNBYVDNRBh/vlmNfxUQ/7DR+595fWmRNueKzu2UogZg=;
+	s=arc-20240116; t=1709589236; c=relaxed/simple;
+	bh=TgAXctvB+AkODeXepa9e10RNlQ+6JsTjP5tDCCz1U94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ljfohNYqbOqOcPk3SqQjXH5z6r7TxW9tRGVipar25JLH4kLllkq/VNDv6B+2KRaksiHnWIvqaTon9k4ClLLJuP7V2CKRCO/8kV5iVBYxZy11LRfzt3OStW4n94yO5hkUlsDhbuGDJFnnSX1TzcDKvT46vEceZFOSzRA0RhJCBzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BCTS2bfe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 089CAC433F1;
-	Mon,  4 Mar 2024 21:35:45 +0000 (UTC)
+	 MIME-Version; b=HlttT0HslTTcGET/srk+H3ue4r1CV7Jc557h2dLQszc7Asigtdgh6lBUMDhUYtC+6aQEbt921ejH2nq1mVosA02iYM4jZ2sil7/M6Y3ps8JCF8i2L4P2h2QC59+9uXQgT5LBzx11xuyBK/v/JIkt0j563Fkb9TeRNhy6tvbnuCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M2JdXoYN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8571C433F1;
+	Mon,  4 Mar 2024 21:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588146;
-	bh=RNBYVDNRBh/vlmNfxUQ/7DR+595fWmRNueKzu2UogZg=;
+	s=korg; t=1709589236;
+	bh=TgAXctvB+AkODeXepa9e10RNlQ+6JsTjP5tDCCz1U94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BCTS2bfeDqnjtmVael9bYGVGPCHFYd53CePDenSR97+I+lLInrK30xo9xyHAk704z
-	 LY5f9tPI9l2waK5GKbY43cbqYPctn4SIeCb5k8iiMKz/1+t5s6zK2XjupGXn/zERbf
-	 kIe7jLmkMGloLE/Lz8DGxZDRyGPTD7z1tz+D3qPE=
+	b=M2JdXoYN6dgQdg14Gy2YsTENytUMUNrg2qK+Y7v31Mo4Vm0lhzlaMaXNgTMbzNsrg
+	 mPyNqdWN2VUdpT5q27oKowcmZ/PaYqMsV4Gk762x5I8MJJzIJ7Qj1eBkqUTo8rMX8k
+	 QxsjvBkhbwNOUAwTJnrsI9yIzAPJ+dnXTiCKltpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arturas Moskvinas <arturas.moskvinas@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 38/42] gpio: 74x164: Enable output pins after registers are reset
+Subject: [PATCH 5.15 32/84] tls: rx: drop unnecessary arguments from tls_setup_from_iter()
 Date: Mon,  4 Mar 2024 21:24:05 +0000
-Message-ID: <20240304211538.936947207@linuxfoundation.org>
+Message-ID: <20240304211543.401104359@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
-References: <20240304211537.631764077@linuxfoundation.org>
+In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
+References: <20240304211542.332206551@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arturas Moskvinas <arturas.moskvinas@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 530b1dbd97846b110ea8a94c7cc903eca21786e5 ]
+[ Upstream commit d4bd88e67666c73cfa9d75c282e708890d4f10a7 ]
 
-Chip outputs are enabled[1] before actual reset is performed[2] which might
-cause pin output value to flip flop if previous pin value was set to 1.
-Fix that behavior by making sure chip is fully reset before all outputs are
-enabled.
+sk is unused, remove it to make it clear the function
+doesn't poke at the socket.
 
-Flip-flop can be noticed when module is removed and inserted again and one of
-the pins was changed to 1 before removal. 100 microsecond flipping is
-noticeable on oscilloscope (100khz SPI bus).
+size_used is always 0 on input and @length on success.
 
-For a properly reset chip - output is enabled around 100 microseconds (on 100khz
-SPI bus) later during probing process hence should be irrelevant behavioral
-change.
-
-Fixes: 7ebc194d0fd4 (gpio: 74x164: Introduce 'enable-gpios' property)
-Link: https://elixir.bootlin.com/linux/v6.7.4/source/drivers/gpio/gpio-74x164.c#L130 [1]
-Link: https://elixir.bootlin.com/linux/v6.7.4/source/drivers/gpio/gpio-74x164.c#L150 [2]
-Signed-off-by: Arturas Moskvinas <arturas.moskvinas@gmail.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: f7fa16d49837 ("tls: decrement decrypt_pending if no async completion will be called")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-74x164.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/tls/tls_sw.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpio/gpio-74x164.c b/drivers/gpio/gpio-74x164.c
-index 05637d5851526..1b50470c4e381 100644
---- a/drivers/gpio/gpio-74x164.c
-+++ b/drivers/gpio/gpio-74x164.c
-@@ -127,8 +127,6 @@ static int gen_74x164_probe(struct spi_device *spi)
- 	if (IS_ERR(chip->gpiod_oe))
- 		return PTR_ERR(chip->gpiod_oe);
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index eed32ef3ca4a0..cf09f147f5a09 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -1348,15 +1348,14 @@ static struct sk_buff *tls_wait_data(struct sock *sk, struct sk_psock *psock,
+ 	return skb;
+ }
  
--	gpiod_set_value_cansleep(chip->gpiod_oe, 1);
--
- 	spi_set_drvdata(spi, chip);
+-static int tls_setup_from_iter(struct sock *sk, struct iov_iter *from,
++static int tls_setup_from_iter(struct iov_iter *from,
+ 			       int length, int *pages_used,
+-			       unsigned int *size_used,
+ 			       struct scatterlist *to,
+ 			       int to_max_pages)
+ {
+ 	int rc = 0, i = 0, num_elem = *pages_used, maxpages;
+ 	struct page *pages[MAX_SKB_FRAGS];
+-	unsigned int size = *size_used;
++	unsigned int size = 0;
+ 	ssize_t copied, use;
+ 	size_t offset;
  
- 	chip->gpio_chip.label = spi->modalias;
-@@ -153,6 +151,8 @@ static int gen_74x164_probe(struct spi_device *spi)
- 		goto exit_destroy;
- 	}
+@@ -1399,8 +1398,7 @@ static int tls_setup_from_iter(struct sock *sk, struct iov_iter *from,
+ 		sg_mark_end(&to[num_elem - 1]);
+ out:
+ 	if (rc)
+-		iov_iter_revert(from, size - *size_used);
+-	*size_used = size;
++		iov_iter_revert(from, size);
+ 	*pages_used = num_elem;
  
-+	gpiod_set_value_cansleep(chip->gpiod_oe, 1);
-+
- 	ret = gpiochip_add_data(&chip->gpio_chip, chip);
- 	if (!ret)
- 		return 0;
+ 	return rc;
+@@ -1519,12 +1517,12 @@ static int decrypt_internal(struct sock *sk, struct sk_buff *skb,
+ 			sg_init_table(sgout, n_sgout);
+ 			sg_set_buf(&sgout[0], aad, prot->aad_size);
+ 
+-			*chunk = 0;
+-			err = tls_setup_from_iter(sk, out_iov, data_len,
+-						  &pages, chunk, &sgout[1],
++			err = tls_setup_from_iter(out_iov, data_len,
++						  &pages, &sgout[1],
+ 						  (n_sgout - 1));
+ 			if (err < 0)
+ 				goto fallback_to_reg_recv;
++			*chunk = data_len;
+ 		} else if (out_sg) {
+ 			memcpy(sgout, out_sg, n_sgout * sizeof(*sgout));
+ 		} else {
 -- 
 2.43.0
 
