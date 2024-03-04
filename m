@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27521870CCD
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:28:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F7EF870E9C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:45:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA69D1F21C45
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:28:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 107A6B23F8A
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:45:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DA5C41202;
-	Mon,  4 Mar 2024 21:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEFA746BA0;
+	Mon,  4 Mar 2024 21:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2sjjLgBy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="euw2l1Lc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF8511EB5A;
-	Mon,  4 Mar 2024 21:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7E77AE47;
+	Mon,  4 Mar 2024 21:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587733; cv=none; b=nEXOrNk26E7QtMnXbf8Z8nrLMj3jyokS6+9t+LRHBZ2tOZALEi6Yr8w8iCxSwT3XqI8aUXqQjxH84uYHJT9iNSBVIfF5mRHe0HKZOeM0yoG8YJMRQfcLt0ZRkuEzmCGSa8UMY+2gMaxBMgukneAlKmki43ntph8MdnoTS4gNcO8=
+	t=1709588722; cv=none; b=LdwtIh6lwqWAttFztgqmJ5prBLgHbtd/lx2h8cjLIdD1uP10A7KqgseIegO0ohhqXrgaU6Zovl0EzWXjhR9WsGmG44wKqng6k1/Vbmrm0SaxmfbbB7m+fZgjdlAmjltqYNRcJdq9hpUJILil+LoqOKFZ2F4RL59Qw3BvZDQ4ASw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587733; c=relaxed/simple;
-	bh=m2vgb9fgz0nic+IWMy5ttjj+N51fVnvDJ3RFhEDCEoA=;
+	s=arc-20240116; t=1709588722; c=relaxed/simple;
+	bh=X8lv+qsX69SE/WMCB/8RdPLIArmDJHXrI2sb2xakqS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aQYz2TRrXzrlQfQ461SX+cCLeU8PBkD+SmOU0G9dXH9SWpQRG5i3CieTeucvK0wUdFKXgKOSkbL7t8YG8MatsXzSOlMOKx3xZD13yo+aTKuHCyf4m5SzPBoZa+9MSZRmIYagKsuGu4VIRUeR227RWdQr8wsg2Y5LixCZ26ZtgIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2sjjLgBy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 720AAC433C7;
-	Mon,  4 Mar 2024 21:28:52 +0000 (UTC)
+	 MIME-Version; b=Gv+H48zOgSMQFaTZSGVz3TG9RiWJrsKe8Y8PI/xEtZd0G/hhOuAL56nDpk4BkM91ab993Qhx6ys411Hzc+ZCFwkDXbXLtIIjVf8vGt87nMXLiHXcRjEnETHJp1AFZMzJ7UBm5g4obxYwsqM21k1VkvR3p2rvZsTSKCzgipJ04+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=euw2l1Lc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C044C433C7;
+	Mon,  4 Mar 2024 21:45:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587732;
-	bh=m2vgb9fgz0nic+IWMy5ttjj+N51fVnvDJ3RFhEDCEoA=;
+	s=korg; t=1709588722;
+	bh=X8lv+qsX69SE/WMCB/8RdPLIArmDJHXrI2sb2xakqS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2sjjLgBy8uesf5l6YEdbHlxLRY799s+VDDsdesx+qo5GEdxj5Zp06pGQtcDWQaf6M
-	 QJWBt8WktEdzrjK17MkJZsM7T/nfkNprn5sDqXkMjEmWJYVnPMpF4Vy5KwzeiK1umv
-	 Se2r3b455em1KmiWKFxPh2j7uWYUgwv3H8m2j9Es=
+	b=euw2l1LcsJ5n2GdU/4dZZ9P6UJLiyEQ4TtAIUmSliEnn0Nc7fngE8xuFra+TTEi9j
+	 LEnGbbYdtC6+Vbf5H0KIZyJc8o5WUPTnCGWLnYEwHb+oFH4xv9fcyz+3g7y0ogVcpk
+	 LfF0uE7Oxc9NEmuQleY0FM7O8zSf4wUe9f2jCjo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jisheng Zhang <jszhang@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Kai-Heng Feng <kai.heng.feng@canonical.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 044/162] riscv: tlb: fix __p*d_free_tlb()
-Date: Mon,  4 Mar 2024 21:21:49 +0000
-Message-ID: <20240304211553.263786488@linuxfoundation.org>
+Subject: [PATCH 6.1 047/215] Bluetooth: Enforce validation on max value of connection interval
+Date: Mon,  4 Mar 2024 21:21:50 +0000
+Message-ID: <20240304211558.490961930@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jisheng Zhang <jszhang@kernel.org>
+From: Kai-Heng Feng <kai.heng.feng@canonical.com>
 
-[ Upstream commit 8246601a7d391ce8207408149d65732f28af81a1 ]
+[ Upstream commit e4b019515f950b4e6e5b74b2e1bb03a90cb33039 ]
 
-If non-leaf PTEs I.E pmd, pud or p4d is modified, a sfence.vma is
-a must for safe, imagine if an implementation caches the non-leaf
-translation in TLB, although I didn't meet this HW so far, but it's
-possible in theory.
+Right now Linux BT stack cannot pass test case "GAP/CONN/CPUP/BV-05-C
+'Connection Parameter Update Procedure Invalid Parameters Central
+Responder'" in Bluetooth Test Suite revision GAP.TS.p44. [0]
 
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Fixes: c5e9b2c2ae82 ("riscv: Improve tlb_flush()")
-Link: https://lore.kernel.org/r/20231219175046.2496-2-jszhang@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+That was revoled by commit c49a8682fc5d ("Bluetooth: validate BLE
+connection interval updates"), but later got reverted due to devices
+like keyboards and mice may require low connection interval.
+
+So only validate the max value connection interval to pass the Test
+Suite, and let devices to request low connection interval if needed.
+
+[0] https://www.bluetooth.org/docman/handlers/DownloadDoc.ashx?doc_id=229869
+
+Fixes: 68d19d7d9957 ("Revert "Bluetooth: validate BLE connection interval updates"")
+Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/pgalloc.h | 20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ net/bluetooth/hci_event.c  | 4 ++++
+ net/bluetooth/l2cap_core.c | 8 +++++++-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/include/asm/pgalloc.h b/arch/riscv/include/asm/pgalloc.h
-index d169a4f41a2e7..c80bb9990d32e 100644
---- a/arch/riscv/include/asm/pgalloc.h
-+++ b/arch/riscv/include/asm/pgalloc.h
-@@ -95,7 +95,13 @@ static inline void pud_free(struct mm_struct *mm, pud_t *pud)
- 		__pud_free(mm, pud);
- }
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index f79aaef5a276d..452d839c152fc 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -6719,6 +6719,10 @@ static void hci_le_remote_conn_param_req_evt(struct hci_dev *hdev, void *data,
+ 		return send_conn_param_neg_reply(hdev, handle,
+ 						 HCI_ERROR_UNKNOWN_CONN_ID);
  
--#define __pud_free_tlb(tlb, pud, addr)  pud_free((tlb)->mm, pud)
-+#define __pud_free_tlb(tlb, pud, addr)					\
-+do {									\
-+	if (pgtable_l4_enabled) {					\
-+		pagetable_pud_dtor(virt_to_ptdesc(pud));		\
-+		tlb_remove_page_ptdesc((tlb), virt_to_ptdesc(pud));	\
-+	}								\
-+} while (0)
++	if (max > hcon->le_conn_max_interval)
++		return send_conn_param_neg_reply(hdev, handle,
++						 HCI_ERROR_INVALID_LL_PARAMS);
++
+ 	if (hci_check_conn_params(min, max, latency, timeout))
+ 		return send_conn_param_neg_reply(hdev, handle,
+ 						 HCI_ERROR_INVALID_LL_PARAMS);
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 81f5974e5eb5a..b4cba55be5ad9 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -5614,7 +5614,13 @@ static inline int l2cap_conn_param_update_req(struct l2cap_conn *conn,
  
- #define p4d_alloc_one p4d_alloc_one
- static inline p4d_t *p4d_alloc_one(struct mm_struct *mm, unsigned long addr)
-@@ -124,7 +130,11 @@ static inline void p4d_free(struct mm_struct *mm, p4d_t *p4d)
- 		__p4d_free(mm, p4d);
- }
+ 	memset(&rsp, 0, sizeof(rsp));
  
--#define __p4d_free_tlb(tlb, p4d, addr)  p4d_free((tlb)->mm, p4d)
-+#define __p4d_free_tlb(tlb, p4d, addr)					\
-+do {									\
-+	if (pgtable_l5_enabled)						\
-+		tlb_remove_page_ptdesc((tlb), virt_to_ptdesc(p4d));	\
-+} while (0)
- #endif /* __PAGETABLE_PMD_FOLDED */
- 
- static inline void sync_kernel_mappings(pgd_t *pgd)
-@@ -149,7 +159,11 @@ static inline pgd_t *pgd_alloc(struct mm_struct *mm)
- 
- #ifndef __PAGETABLE_PMD_FOLDED
- 
--#define __pmd_free_tlb(tlb, pmd, addr)  pmd_free((tlb)->mm, pmd)
-+#define __pmd_free_tlb(tlb, pmd, addr)				\
-+do {								\
-+	pagetable_pmd_dtor(virt_to_ptdesc(pmd));		\
-+	tlb_remove_page_ptdesc((tlb), virt_to_ptdesc(pmd));	\
-+} while (0)
- 
- #endif /* __PAGETABLE_PMD_FOLDED */
- 
+-	err = hci_check_conn_params(min, max, latency, to_multiplier);
++	if (max > hcon->le_conn_max_interval) {
++		BT_DBG("requested connection interval exceeds current bounds.");
++		err = -EINVAL;
++	} else {
++		err = hci_check_conn_params(min, max, latency, to_multiplier);
++	}
++
+ 	if (err)
+ 		rsp.result = cpu_to_le16(L2CAP_CONN_PARAM_REJECTED);
+ 	else
 -- 
 2.43.0
 
