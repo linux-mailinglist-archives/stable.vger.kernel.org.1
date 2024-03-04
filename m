@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-26647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EAE7870F7F
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:55:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDC58870F3A
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:52:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C9791C21ADF
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:55:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 855D3281980
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:52:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71FB79950;
-	Mon,  4 Mar 2024 21:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E01D27992E;
+	Mon,  4 Mar 2024 21:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l87swLaf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kCmlWKFL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CE31C6AB;
-	Mon,  4 Mar 2024 21:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936B71EB5A;
+	Mon,  4 Mar 2024 21:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589314; cv=none; b=aaAYhA3ssufsDH+id1icCJQxckrWoR345H+EEr8Ox8iMPii7vRAo698vrpvdToHk9zxEbv+6cRU4Fr2cyHYoJCsWye7fHOkgmPVt0Yv2mJWDVSoX1MvJZJ0ACeYvCikZZWHtyh8yICDkpVKHftfJkhQf8gVwVaYovfZVFMFGUDQ=
+	t=1709589145; cv=none; b=UG6k8xxRupTrX9MAH3vcFiSDOBvKBPxeU9nHH5ySRFGSjk4AMWigVXGzQ1inDGMA1fagpRG8AHPaawByE/hJs2LjNl4aCYy/H/85OLCPTQ2yB7EramWKoDOzAQJhmFyBSJVc3lzQEDrMvMYC6H/psNvUvWFLgCkgj2YTo3oPtMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589314; c=relaxed/simple;
-	bh=T7gaADTT4eo2O41DLS+pOJk22Iz01nFDGH/itpPyJcE=;
+	s=arc-20240116; t=1709589145; c=relaxed/simple;
+	bh=hMRi/NVCfiO2nxmaN92Bo8booXrwHr2rULJRWlpFwH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KJCaGMjHYhxZAyuCiJR3gp2BnGnlujBYXlsaSjYsWNILo581YJ/RWMmGNJMX35yvovwuYSYUHIJFfNfaFVJtRFryZSDcuVR77ZcJBZU9uQ0PN6xoiRzkvarqMumMV68Fdnn7a4fKRT31Kx8zBv6Ko0dTIFEt3HZZhmTxzDfGgIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l87swLaf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE3DFC433F1;
-	Mon,  4 Mar 2024 21:55:13 +0000 (UTC)
+	 MIME-Version; b=pwEykCL1cKWCMJtczES6A5Ai3ZGe+IGI22L1VrjU2fRK/c2j/DGcWETARGQ1w5BAAVM4gkwigIT+lK1aUopPf50r1Qq0+C+42psepefdkTjN4STEIvx/LSB1k+Fw2CexKRxdG8wABi8cX+uc2/BEubKXXyYPfqdFiOj1nDjdu2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kCmlWKFL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D82C433F1;
+	Mon,  4 Mar 2024 21:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589314;
-	bh=T7gaADTT4eo2O41DLS+pOJk22Iz01nFDGH/itpPyJcE=;
+	s=korg; t=1709589145;
+	bh=hMRi/NVCfiO2nxmaN92Bo8booXrwHr2rULJRWlpFwH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l87swLafH7U5k+Mt/YQzqLORli7u6e3Y833Sbd4tFgdVEn714pBOcyc8t2oDflfX+
-	 iz+XRoHVQ22smph1u4qQUaPUOmFnJd/ZUmCOnnAAsdKCBbQUG4Vta0R0IJFiXZLfTn
-	 gSi6snFaWCkTHHyDfZ0liR9zSxwf0UbA7DBe/15g=
+	b=kCmlWKFLYWHwTzKNJ+FKB1vqPVaf2LCKYextCg2swika/ULuaRQRwCm9P+9ShEilW
+	 0/C+cPRy0R/7//z3pBLSCfeprtwrcUZ5tGbL1uTMVWoIB9t5/GHSiGxnccH+MMWqEx
+	 3S4Ibm3pqAqpg9ryP9kT2aQXRhLHkjErB552yHyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	Matthieu Baerts <matthieu.baerts@tessares.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 5.15 62/84] mptcp: process pending subflow error on close
-Date: Mon,  4 Mar 2024 21:24:35 +0000
-Message-ID: <20240304211544.457489273@linuxfoundation.org>
+	Martynas Pumputis <m@lambda.lt>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>
+Subject: [PATCH 6.1 213/215] bpf: Derive source IP addr via bpf_*_fib_lookup()
+Date: Mon,  4 Mar 2024 21:24:36 +0000
+Message-ID: <20240304211603.738799034@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,119 +62,204 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Martynas Pumputis <m@lambda.lt>
 
-commit 9f1a98813b4b686482e5ef3c9d998581cace0ba6 upstream.
+commit dab4e1f06cabb6834de14264394ccab197007302 upstream.
 
-On incoming TCP reset, subflow closing could happen before error
-propagation. That in turn could cause the socket error being ignored,
-and a missing socket state transition, as reported by Daire-Byrne.
+Extend the bpf_fib_lookup() helper by making it to return the source
+IPv4/IPv6 address if the BPF_FIB_LOOKUP_SRC flag is set.
 
-Address the issues explicitly checking for subflow socket error at
-close time. To avoid code duplication, factor-out of __mptcp_error_report()
-a new helper implementing the relevant bits.
+For example, the following snippet can be used to derive the desired
+source IP address:
 
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/429
-Fixes: 15cc10453398 ("mptcp: deliver ssk errors to msk")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts <matthieu.baerts@tessares.net>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+    struct bpf_fib_lookup p = { .ipv4_dst = ip4->daddr };
+
+    ret = bpf_skb_fib_lookup(skb, p, sizeof(p),
+            BPF_FIB_LOOKUP_SRC | BPF_FIB_LOOKUP_SKIP_NEIGH);
+    if (ret != BPF_FIB_LKUP_RET_SUCCESS)
+        return TC_ACT_SHOT;
+
+    /* the p.ipv4_src now contains the source address */
+
+The inability to derive the proper source address may cause malfunctions
+in BPF-based dataplanes for hosts containing netdevs with more than one
+routable IP address or for multi-homed hosts.
+
+For example, Cilium implements packet masquerading in BPF. If an
+egressing netdev to which the Cilium's BPF prog is attached has
+multiple IP addresses, then only one [hardcoded] IP address can be used for
+masquerading. This breaks connectivity if any other IP address should have
+been selected instead, for example, when a public and private addresses
+are attached to the same egress interface.
+
+The change was tested with Cilium [1].
+
+Nikolay Aleksandrov helped to figure out the IPv6 addr selection.
+
+[1]: https://github.com/cilium/cilium/pull/28283
+
+Signed-off-by: Martynas Pumputis <m@lambda.lt>
+Link: https://lore.kernel.org/r/20231007081415.33502-2-m@lambda.lt
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   63 +++++++++++++++++++++++++++------------------------
- 1 file changed, 34 insertions(+), 29 deletions(-)
+ include/net/ipv6_stubs.h       |    5 +++++
+ include/uapi/linux/bpf.h       |   10 ++++++++++
+ net/core/filter.c              |   18 +++++++++++++++++-
+ net/ipv6/af_inet6.c            |    1 +
+ tools/include/uapi/linux/bpf.h |   10 ++++++++++
+ 5 files changed, 43 insertions(+), 1 deletion(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -688,40 +688,44 @@ static bool __mptcp_ofo_queue(struct mpt
- 	return moved;
- }
+--- a/include/net/ipv6_stubs.h
++++ b/include/net/ipv6_stubs.h
+@@ -85,6 +85,11 @@ struct ipv6_bpf_stub {
+ 			       sockptr_t optval, unsigned int optlen);
+ 	int (*ipv6_getsockopt)(struct sock *sk, int level, int optname,
+ 			       sockptr_t optval, sockptr_t optlen);
++	int (*ipv6_dev_get_saddr)(struct net *net,
++				  const struct net_device *dst_dev,
++				  const struct in6_addr *daddr,
++				  unsigned int prefs,
++				  struct in6_addr *saddr);
+ };
+ extern const struct ipv6_bpf_stub *ipv6_bpf_stub __read_mostly;
  
--void __mptcp_error_report(struct sock *sk)
-+static bool __mptcp_subflow_error_report(struct sock *sk, struct sock *ssk)
- {
--	struct mptcp_subflow_context *subflow;
--	struct mptcp_sock *msk = mptcp_sk(sk);
-+	int err = sock_error(ssk);
-+	int ssk_state;
+--- a/include/uapi/linux/bpf.h
++++ b/include/uapi/linux/bpf.h
+@@ -3121,6 +3121,11 @@ union bpf_attr {
+  *			and *params*->smac will not be set as output. A common
+  *			use case is to call **bpf_redirect_neigh**\ () after
+  *			doing **bpf_fib_lookup**\ ().
++ *		**BPF_FIB_LOOKUP_SRC**
++ *			Derive and set source IP addr in *params*->ipv{4,6}_src
++ *			for the nexthop. If the src addr cannot be derived,
++ *			**BPF_FIB_LKUP_RET_NO_SRC_ADDR** is returned. In this
++ *			case, *params*->dmac and *params*->smac are not set either.
+  *
+  *		*ctx* is either **struct xdp_md** for XDP programs or
+  *		**struct sk_buff** tc cls_act programs.
+@@ -6692,6 +6697,7 @@ enum {
+ 	BPF_FIB_LOOKUP_OUTPUT  = (1U << 1),
+ 	BPF_FIB_LOOKUP_SKIP_NEIGH = (1U << 2),
+ 	BPF_FIB_LOOKUP_TBID    = (1U << 3),
++	BPF_FIB_LOOKUP_SRC     = (1U << 4),
+ };
  
--	mptcp_for_each_subflow(msk, subflow) {
--		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
--		int err = sock_error(ssk);
--		int ssk_state;
-+	if (!err)
-+		return false;
+ enum {
+@@ -6704,6 +6710,7 @@ enum {
+ 	BPF_FIB_LKUP_RET_UNSUPP_LWT,   /* fwd requires encapsulation */
+ 	BPF_FIB_LKUP_RET_NO_NEIGH,     /* no neighbor entry for nh */
+ 	BPF_FIB_LKUP_RET_FRAG_NEEDED,  /* fragmentation required to fwd */
++	BPF_FIB_LKUP_RET_NO_SRC_ADDR,  /* failed to derive IP src addr */
+ };
  
--		if (!err)
--			continue;
-+	/* only propagate errors on fallen-back sockets or
-+	 * on MPC connect
+ struct bpf_fib_lookup {
+@@ -6738,6 +6745,9 @@ struct bpf_fib_lookup {
+ 		__u32	rt_metric;
+ 	};
+ 
++	/* input: source address to consider for lookup
++	 * output: source address result from lookup
 +	 */
-+	if (sk->sk_state != TCP_SYN_SENT && !__mptcp_check_fallback(mptcp_sk(sk)))
-+		return false;
+ 	union {
+ 		__be32		ipv4_src;
+ 		__u32		ipv6_src[4];  /* in6_addr; network order */
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -5809,6 +5809,9 @@ static int bpf_ipv4_fib_lookup(struct ne
+ 	params->rt_metric = res.fi->fib_priority;
+ 	params->ifindex = dev->ifindex;
  
--		/* only propagate errors on fallen-back sockets or
--		 * on MPC connect
--		 */
--		if (sk->sk_state != TCP_SYN_SENT && !__mptcp_check_fallback(msk))
--			continue;
-+	/* We need to propagate only transition to CLOSE state.
-+	 * Orphaned socket will see such state change via
-+	 * subflow_sched_work_if_closed() and that path will properly
-+	 * destroy the msk as needed.
++	if (flags & BPF_FIB_LOOKUP_SRC)
++		params->ipv4_src = fib_result_prefsrc(net, &res);
++
+ 	/* xdp and cls_bpf programs are run in RCU-bh so
+ 	 * rcu_read_lock_bh is not needed here
+ 	 */
+@@ -5951,6 +5954,18 @@ static int bpf_ipv6_fib_lookup(struct ne
+ 	params->rt_metric = res.f6i->fib6_metric;
+ 	params->ifindex = dev->ifindex;
+ 
++	if (flags & BPF_FIB_LOOKUP_SRC) {
++		if (res.f6i->fib6_prefsrc.plen) {
++			*src = res.f6i->fib6_prefsrc.addr;
++		} else {
++			err = ipv6_bpf_stub->ipv6_dev_get_saddr(net, dev,
++								&fl6.daddr, 0,
++								src);
++			if (err)
++				return BPF_FIB_LKUP_RET_NO_SRC_ADDR;
++		}
++	}
++
+ 	if (flags & BPF_FIB_LOOKUP_SKIP_NEIGH)
+ 		goto set_fwd_params;
+ 
+@@ -5969,7 +5984,8 @@ set_fwd_params:
+ #endif
+ 
+ #define BPF_FIB_LOOKUP_MASK (BPF_FIB_LOOKUP_DIRECT | BPF_FIB_LOOKUP_OUTPUT | \
+-			     BPF_FIB_LOOKUP_SKIP_NEIGH | BPF_FIB_LOOKUP_TBID)
++			     BPF_FIB_LOOKUP_SKIP_NEIGH | BPF_FIB_LOOKUP_TBID | \
++			     BPF_FIB_LOOKUP_SRC)
+ 
+ BPF_CALL_4(bpf_xdp_fib_lookup, struct xdp_buff *, ctx,
+ 	   struct bpf_fib_lookup *, params, int, plen, u32, flags)
+--- a/net/ipv6/af_inet6.c
++++ b/net/ipv6/af_inet6.c
+@@ -1077,6 +1077,7 @@ static const struct ipv6_bpf_stub ipv6_b
+ 	.udp6_lib_lookup = __udp6_lib_lookup,
+ 	.ipv6_setsockopt = do_ipv6_setsockopt,
+ 	.ipv6_getsockopt = do_ipv6_getsockopt,
++	.ipv6_dev_get_saddr = ipv6_dev_get_saddr,
+ };
+ 
+ static int __init inet6_init(void)
+--- a/tools/include/uapi/linux/bpf.h
++++ b/tools/include/uapi/linux/bpf.h
+@@ -3121,6 +3121,11 @@ union bpf_attr {
+  *			and *params*->smac will not be set as output. A common
+  *			use case is to call **bpf_redirect_neigh**\ () after
+  *			doing **bpf_fib_lookup**\ ().
++ *		**BPF_FIB_LOOKUP_SRC**
++ *			Derive and set source IP addr in *params*->ipv{4,6}_src
++ *			for the nexthop. If the src addr cannot be derived,
++ *			**BPF_FIB_LKUP_RET_NO_SRC_ADDR** is returned. In this
++ *			case, *params*->dmac and *params*->smac are not set either.
+  *
+  *		*ctx* is either **struct xdp_md** for XDP programs or
+  *		**struct sk_buff** tc cls_act programs.
+@@ -6692,6 +6697,7 @@ enum {
+ 	BPF_FIB_LOOKUP_OUTPUT  = (1U << 1),
+ 	BPF_FIB_LOOKUP_SKIP_NEIGH = (1U << 2),
+ 	BPF_FIB_LOOKUP_TBID    = (1U << 3),
++	BPF_FIB_LOOKUP_SRC     = (1U << 4),
+ };
+ 
+ enum {
+@@ -6704,6 +6710,7 @@ enum {
+ 	BPF_FIB_LKUP_RET_UNSUPP_LWT,   /* fwd requires encapsulation */
+ 	BPF_FIB_LKUP_RET_NO_NEIGH,     /* no neighbor entry for nh */
+ 	BPF_FIB_LKUP_RET_FRAG_NEEDED,  /* fragmentation required to fwd */
++	BPF_FIB_LKUP_RET_NO_SRC_ADDR,  /* failed to derive IP src addr */
+ };
+ 
+ struct bpf_fib_lookup {
+@@ -6738,6 +6745,9 @@ struct bpf_fib_lookup {
+ 		__u32	rt_metric;
+ 	};
+ 
++	/* input: source address to consider for lookup
++	 * output: source address result from lookup
 +	 */
-+	ssk_state = inet_sk_state_load(ssk);
-+	if (ssk_state == TCP_CLOSE && !sock_flag(sk, SOCK_DEAD))
-+		inet_sk_state_store(sk, ssk_state);
-+	WRITE_ONCE(sk->sk_err, -err);
-+
-+	/* This barrier is coupled with smp_rmb() in mptcp_poll() */
-+	smp_wmb();
-+	sk_error_report(sk);
-+	return true;
-+}
- 
--		/* We need to propagate only transition to CLOSE state.
--		 * Orphaned socket will see such state change via
--		 * subflow_sched_work_if_closed() and that path will properly
--		 * destroy the msk as needed.
--		 */
--		ssk_state = inet_sk_state_load(ssk);
--		if (ssk_state == TCP_CLOSE && !sock_flag(sk, SOCK_DEAD))
--			inet_sk_state_store(sk, ssk_state);
--		WRITE_ONCE(sk->sk_err, -err);
--
--		/* This barrier is coupled with smp_rmb() in mptcp_poll() */
--		smp_wmb();
--		sk_error_report(sk);
--		break;
--	}
-+void __mptcp_error_report(struct sock *sk)
-+{
-+	struct mptcp_subflow_context *subflow;
-+	struct mptcp_sock *msk = mptcp_sk(sk);
-+
-+	mptcp_for_each_subflow(msk, subflow)
-+		if (__mptcp_subflow_error_report(sk, mptcp_subflow_tcp_sock(subflow)))
-+			break;
- }
- 
- /* In most cases we will be able to lock the mptcp socket.  If its already
-@@ -2309,6 +2313,7 @@ static void __mptcp_close_ssk(struct soc
- 		/* close acquired an extra ref */
- 		__sock_put(ssk);
- 	}
-+	__mptcp_subflow_error_report(sk, ssk);
- 	release_sock(ssk);
- 
- 	sock_put(ssk);
+ 	union {
+ 		__be32		ipv4_src;
+ 		__u32		ipv6_src[4];  /* in6_addr; network order */
 
 
 
