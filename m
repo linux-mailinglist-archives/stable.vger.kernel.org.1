@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-26437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CEE7870E99
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:45:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04A72870CCC
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:28:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21768B26C44
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:45:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3545A1C2109E
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:28:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED2A178B69;
-	Mon,  4 Mar 2024 21:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 911053D0BA;
+	Mon,  4 Mar 2024 21:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ixChFI7e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HhdqZ+nv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC03510A35;
-	Mon,  4 Mar 2024 21:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5015C1EB5A;
+	Mon,  4 Mar 2024 21:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588714; cv=none; b=IQe+jaJBn1lIV/ez9g3PRT8E2e8F4IG9rLafVgP94DZTIh1oFKPM4nwGcDI2/U99j06Yk1/13/IHYZIX+9i5r2qGgR0P9zJJ62Q1AzGuMk3k52TmKv7p7/KXb09tqLBvWj3V2stnNZhvj/AzRYhMbgFAnu0Hv5M5dUP9FsljUYU=
+	t=1709587730; cv=none; b=ctEB3CoVOjaYkI14L5B3s8eV/XmYbjaXtrB3nVdFtaG4xV8RbGgVOATd7j9WGY2E6kUbDQVZCdHLRwk8ZcSFMkVTwtm6JDAfTIw4a1AOFPp3fUiUbCRniDsRZSLvvaus/44w0cu6QWogo1On+WhT13GleqaCIewzAF9eNMFfTyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588714; c=relaxed/simple;
-	bh=bi0kqbDY8Vwo1GpuWG3ZfIyKJrTQdAKt5B42qOmWG/I=;
+	s=arc-20240116; t=1709587730; c=relaxed/simple;
+	bh=DqscbMLRXJKD5CVHXWZ25lS8c1Bd+J1QohE+udHEBws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PG9ypJN+/GBd6Ri2wHtAdsxTOlWXe+ijafNFawvOmNY6+DV7MvZCkWMRGTTVfO+xylwlRTuSQ278WWrOK4FgEDgefpzqww6zjHPkLNbL/RN7EjJBJtyxxEBi+EBzf2JWKGKjxD8VY8Mu0Z93jzGAwt4GPZxh06BSCPIGETd6O+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ixChFI7e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E31AC433F1;
-	Mon,  4 Mar 2024 21:45:14 +0000 (UTC)
+	 MIME-Version; b=G8m3e3SQurpaX19ZkmszaGAufp9elo18Ah1lnXbh1N9wJCWxjTW6AgSKZ0eNxt8Z89Pm4vFaOoKm5B9HSEuOlT+1v7tR53jWV5O0bSU8FiOqSygU5fSnVxnb7V/jBWnFYcFplYuj14rcjfvhFXuiqsxZA8iBh59Y2A4uPk/vADo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HhdqZ+nv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8611C433F1;
+	Mon,  4 Mar 2024 21:28:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588714;
-	bh=bi0kqbDY8Vwo1GpuWG3ZfIyKJrTQdAKt5B42qOmWG/I=;
+	s=korg; t=1709587730;
+	bh=DqscbMLRXJKD5CVHXWZ25lS8c1Bd+J1QohE+udHEBws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ixChFI7ef5YGcZRH/1cMi3YpAxDfZLjPtcloNyGWrzWyBrIxspqFbFku67Y5/DPz9
-	 5z7lAYwA6zYJ3DxtGrRL91Lft1HbqI4ySPdKci+KDSZ9oBxppf49tOsjc2lLVBSV3N
-	 moBPkBDlJMOBmzcl0gyK2ABFm5ltasZEOMbk53IY=
+	b=HhdqZ+nvfIp2jGdRhLhbOt4tHE7d2b0QggEsfQ3gTHLWCZug7sN2aX7ruYQ1rvp+3
+	 BTuoUccjFFTPw+kDybWNLGO6PfGgf9Vzh3hmKakQ0Su/mgAoNfxP+M8+Uf7nWygdp2
+	 1hfD9sRopfwAtjTqy1j0dlJSC5H5CXpRmW+A9x/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Clancy Shang <clancy.shang@quectel.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 044/215] Bluetooth: hci_sync: Fix accept_list when attempting to suspend
-Date: Mon,  4 Mar 2024 21:21:47 +0000
-Message-ID: <20240304211558.401218030@linuxfoundation.org>
+Subject: [PATCH 6.7 043/162] tls: fix use-after-free on failed backlog decryption
+Date: Mon,  4 Mar 2024 21:21:48 +0000
+Message-ID: <20240304211553.230745558@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit e5469adb2a7e930d96813316592302d9f8f1df4e ]
+[ Upstream commit 13114dc5543069f7b97991e3b79937b6da05f5b0 ]
 
-During suspend, only wakeable devices can be in acceptlist, so if the
-device was previously added it needs to be removed otherwise the device
-can end up waking up the system prematurely.
+When the decrypt request goes to the backlog and crypto_aead_decrypt
+returns -EBUSY, tls_do_decryption will wait until all async
+decryptions have completed. If one of them fails, tls_do_decryption
+will return -EBADMSG and tls_decrypt_sg jumps to the error path,
+releasing all the pages. But the pages have been passed to the async
+callback, and have already been released by tls_decrypt_done.
 
-Fixes: 3b42055388c3 ("Bluetooth: hci_sync: Fix attempting to suspend with unfiltered passive scan")
-Signed-off-by: Clancy Shang <clancy.shang@quectel.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+The only true async case is when crypto_aead_decrypt returns
+ -EINPROGRESS. With -EBUSY, we already waited so we can tell
+tls_sw_recvmsg that the data is available for immediate copy, but we
+need to notify tls_decrypt_sg (via the new ->async_done flag) that the
+memory has already been released.
+
+Fixes: 859054147318 ("net: tls: handle backlogging of crypto requests")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/4755dd8d9bebdefaa19ce1439b833d6199d4364c.1709132643.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sync.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/tls/tls_sw.c | 24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 13ed6cbfade3e..a337340464567 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -2251,8 +2251,11 @@ static int hci_le_add_accept_list_sync(struct hci_dev *hdev,
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 1fd37fe13ffd8..211f57164cb61 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -52,6 +52,7 @@ struct tls_decrypt_arg {
+ 	struct_group(inargs,
+ 	bool zc;
+ 	bool async;
++	bool async_done;
+ 	u8 tail;
+ 	);
  
- 	/* During suspend, only wakeable devices can be in acceptlist */
- 	if (hdev->suspended &&
--	    !(params->flags & HCI_CONN_FLAG_REMOTE_WAKEUP))
-+	    !(params->flags & HCI_CONN_FLAG_REMOTE_WAKEUP)) {
-+		hci_le_del_accept_list_sync(hdev, &params->addr,
-+					    params->addr_type);
- 		return 0;
+@@ -286,15 +287,18 @@ static int tls_do_decryption(struct sock *sk,
+ 	}
+ 
+ 	ret = crypto_aead_decrypt(aead_req);
++	if (ret == -EINPROGRESS)
++		return 0;
++
+ 	if (ret == -EBUSY) {
+ 		ret = tls_decrypt_async_wait(ctx);
+-		ret = ret ?: -EINPROGRESS;
+-	}
+-	if (ret == -EINPROGRESS) {
+-		return 0;
+-	} else if (darg->async) {
+-		atomic_dec(&ctx->decrypt_pending);
++		darg->async_done = true;
++		/* all completions have run, we're not doing async anymore */
++		darg->async = false;
++		return ret;
+ 	}
++
++	atomic_dec(&ctx->decrypt_pending);
+ 	darg->async = false;
+ 
+ 	return ret;
+@@ -1593,8 +1597,11 @@ static int tls_decrypt_sg(struct sock *sk, struct iov_iter *out_iov,
+ 	/* Prepare and submit AEAD request */
+ 	err = tls_do_decryption(sk, sgin, sgout, dctx->iv,
+ 				data_len + prot->tail_size, aead_req, darg);
+-	if (err)
++	if (err) {
++		if (darg->async_done)
++			goto exit_free_skb;
+ 		goto exit_free_pages;
 +	}
  
- 	/* Select filter policy to accept all advertising */
- 	if (*num_entries >= hdev->le_accept_list_size)
+ 	darg->skb = clear_skb ?: tls_strp_msg(ctx);
+ 	clear_skb = NULL;
+@@ -1606,6 +1613,9 @@ static int tls_decrypt_sg(struct sock *sk, struct iov_iter *out_iov,
+ 		return err;
+ 	}
+ 
++	if (unlikely(darg->async_done))
++		return 0;
++
+ 	if (prot->tail_size)
+ 		darg->tail = dctx->tail;
+ 
 -- 
 2.43.0
 
