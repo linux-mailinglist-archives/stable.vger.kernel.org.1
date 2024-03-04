@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-26013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBE1C870C9A
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:27:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D16C0870E61
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:43:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C22D1F262A8
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:27:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 101A31C20E34
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:43:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 241187B3E7;
-	Mon,  4 Mar 2024 21:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83D7478B4C;
+	Mon,  4 Mar 2024 21:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FpNpmrpF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YqgTTzGb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D336C200D4;
-	Mon,  4 Mar 2024 21:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408EF11193;
+	Mon,  4 Mar 2024 21:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587617; cv=none; b=oDNh+RqLpUEKO69kwqcIkAzu7/Qp2GuX41wgqqJVQ4gDTS7niqt909DIFpvk77glHMAOToHV2afgtHOfPDl6c1UqaSA/pOSgJBNytwFDMSiYlfLC522mN8dg4FvRZKWjEXTkblZNnAvlNLbeJBWvl60pdIM17N5skbFpPBgSb7w=
+	t=1709588604; cv=none; b=APAkMGaRYqs/m5EYRrfFG0ZN0RSL8CDXfsFTLk8CTIeCE/WTBebM4sYqNIEk+nYOd3E8rvP8hjvTehbvJLyr6dPyHYP6kh6afVYGisXnMHRUI8vxKoQVrclASw98+NCAFbmmpOGAvDNlXFrYugYk01qoxvnXeR9jwTtEtegx1qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587617; c=relaxed/simple;
-	bh=7lQDGiH+NCeKc4Gd5uDuWrpF/UJnLgtAf7V9kMcLBBQ=;
+	s=arc-20240116; t=1709588604; c=relaxed/simple;
+	bh=3Nej5BOsFOl0JdURz2Tm7t7Vw3O6pBSN1J/nEIeo6tM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=STJPssmSd8ePEsF88sVxmOXtlUQbBtozVI/pnkhQqR3nSrLNFg8PNzcaP6dDkWW6xr/kDpF68EiWB8olT25Quu41FWIC7WkqBiAvkgMPYU1azHJdWljXGprY+DFudZbJjESQzItF3elLvNceC1WwEisuY5jM9IdWp2CpMB8L0PU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FpNpmrpF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64F02C433F1;
-	Mon,  4 Mar 2024 21:26:57 +0000 (UTC)
+	 MIME-Version; b=WikzKWIV1XLl623mFu4ZabLBVIwYLEPX4eutZbaMWFhRWAt/o+oQNxAx9fjpMZA/1oOuwcDMibaDykuXn/OUWQcEwvZHD+vmD69bPubqTOcehAcgAYo0nDF0CzFz6x2couTttLW+faQmnu+8wdBOZ5ArNEuiEFBcKiC1H3FdRRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YqgTTzGb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6CD0C433C7;
+	Mon,  4 Mar 2024 21:43:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587617;
-	bh=7lQDGiH+NCeKc4Gd5uDuWrpF/UJnLgtAf7V9kMcLBBQ=;
+	s=korg; t=1709588604;
+	bh=3Nej5BOsFOl0JdURz2Tm7t7Vw3O6pBSN1J/nEIeo6tM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FpNpmrpFODSnTCp9U8TO2Mi5U+++ljVaoZ3NS9jW+tnaat6agEnsfzAU04Hqti4Fx
-	 983Z58cTREg44CVAlbhatIFj7HFewrC+kU69b5/uYDA0U8RxhDfpbvysJvrWQ1+/ip
-	 QZ66xqzdKA+xvv/HuDSIlMfnlcqDHB54suHlck7Q=
+	b=YqgTTzGb3gnFPSEXssAieTXZf0ZsKEFK7DZwoOTTEOV3GgWB+hxMFd4DWiMVcGGx+
+	 KczjV/pqVlufW5vdv5+ld0Ms9AnV5BoAYOx0TaxI/ppZSQRBQH15Jk3kanlunihYIU
+	 Xp3fqv0yyElOG3kt4vP7NK6VYy47k7Z4MB79TV/I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jonas=20Dre=C3=9Fler?= <verdre@v0yd.nl>,
-	Simon Horman <horms@kernel.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Han Xu <han.xu@nxp.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 025/162] Bluetooth: hci_sync: Check the correct flag before starting a scan
+Subject: [PATCH 6.1 027/215] mtd: spinand: gigadevice: Fix the get ecc status issue
 Date: Mon,  4 Mar 2024 21:21:30 +0000
-Message-ID: <20240304211552.637478542@linuxfoundation.org>
+Message-ID: <20240304211557.853171772@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +60,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Dreßler <verdre@v0yd.nl>
+From: Han Xu <han.xu@nxp.com>
 
-[ Upstream commit 6b3899be24b16ff8ee0cb25f0bd59b01b15ba1d1 ]
+[ Upstream commit 59950610c0c00c7a06d8a75d2ee5d73dba4274cf ]
 
-There's a very confusing mistake in the code starting a HCI inquiry: We're
-calling hci_dev_test_flag() to test for HCI_INQUIRY, but hci_dev_test_flag()
-checks hdev->dev_flags instead of hdev->flags. HCI_INQUIRY is a bit that's
-set on hdev->flags, not on hdev->dev_flags though.
+Some GigaDevice ecc_get_status functions use on-stack buffer for
+spi_mem_op causes spi_mem_check_op failing, fix the issue by using
+spinand scratchbuf.
 
-HCI_INQUIRY equals the integer 7, and in hdev->dev_flags, 7 means
-HCI_BONDABLE, so we were actually checking for HCI_BONDABLE here.
-
-The mistake is only present in the synchronous code for starting an inquiry,
-not in the async one. Also devices are typically bondable while doing an
-inquiry, so that might be the reason why nobody noticed it so far.
-
-Fixes: abfeea476c68 ("Bluetooth: hci_sync: Convert MGMT_OP_START_DISCOVERY")
-Signed-off-by: Jonas Dreßler <verdre@v0yd.nl>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: c40c7a990a46 ("mtd: spinand: Add support for GigaDevice GD5F1GQ4UExxG")
+Signed-off-by: Han Xu <han.xu@nxp.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20231108150701.593912-1-han.xu@nxp.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sync.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/spi/gigadevice.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 97284d9b2a2e3..39ccbb1be24c3 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -5629,7 +5629,7 @@ static int hci_inquiry_sync(struct hci_dev *hdev, u8 length)
+diff --git a/drivers/mtd/nand/spi/gigadevice.c b/drivers/mtd/nand/spi/gigadevice.c
+index 6b043e24855fb..9116ee7f023ed 100644
+--- a/drivers/mtd/nand/spi/gigadevice.c
++++ b/drivers/mtd/nand/spi/gigadevice.c
+@@ -186,7 +186,7 @@ static int gd5fxgq4uexxg_ecc_get_status(struct spinand_device *spinand,
+ {
+ 	u8 status2;
+ 	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(GD5FXGQXXEXXG_REG_STATUS2,
+-						      &status2);
++						      spinand->scratchbuf);
+ 	int ret;
  
- 	bt_dev_dbg(hdev, "");
+ 	switch (status & STATUS_ECC_MASK) {
+@@ -207,6 +207,7 @@ static int gd5fxgq4uexxg_ecc_get_status(struct spinand_device *spinand,
+ 		 * report the maximum of 4 in this case
+ 		 */
+ 		/* bits sorted this way (3...0): ECCS1,ECCS0,ECCSE1,ECCSE0 */
++		status2 = *(spinand->scratchbuf);
+ 		return ((status & STATUS_ECC_MASK) >> 2) |
+ 			((status2 & STATUS_ECC_MASK) >> 4);
  
--	if (hci_dev_test_flag(hdev, HCI_INQUIRY))
-+	if (test_bit(HCI_INQUIRY, &hdev->flags))
- 		return 0;
+@@ -228,7 +229,7 @@ static int gd5fxgq5xexxg_ecc_get_status(struct spinand_device *spinand,
+ {
+ 	u8 status2;
+ 	struct spi_mem_op op = SPINAND_GET_FEATURE_OP(GD5FXGQXXEXXG_REG_STATUS2,
+-						      &status2);
++						      spinand->scratchbuf);
+ 	int ret;
  
- 	hci_dev_lock(hdev);
+ 	switch (status & STATUS_ECC_MASK) {
+@@ -248,6 +249,7 @@ static int gd5fxgq5xexxg_ecc_get_status(struct spinand_device *spinand,
+ 		 * 1 ... 4 bits are flipped (and corrected)
+ 		 */
+ 		/* bits sorted this way (1...0): ECCSE1, ECCSE0 */
++		status2 = *(spinand->scratchbuf);
+ 		return ((status2 & STATUS_ECC_MASK) >> 4) + 1;
+ 
+ 	case STATUS_ECC_UNCOR_ERROR:
 -- 
 2.43.0
 
