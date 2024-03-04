@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-26430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D8E870E8E
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:45:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A634F870DB4
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:36:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6CCEB23C92
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:45:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45F451F22259
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:36:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B69A79DDE;
-	Mon,  4 Mar 2024 21:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14621F93F;
+	Mon,  4 Mar 2024 21:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CFESQ8MQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7fYwRhV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F4A7B3E7;
-	Mon,  4 Mar 2024 21:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F789DDCB;
+	Mon,  4 Mar 2024 21:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588696; cv=none; b=Xg/50kpC/ZH/V92yh2DQdDF8SO4O2v0SjKmwsuDzNVWXZpd4f9VTI/axjwOPMDapYM9RFEUSvSNSSvpTAVWPmoBHmE+Ag/Ht4vZBUQiCZuIN6yNiLNvRxvcUVEGrFPGu20JlG5HoJphuw/trmpgMz3juFCpxQ6PgYtctPpe2HXc=
+	t=1709588211; cv=none; b=VO7ko/aRDf9vlRBAVlPD6pQfZa/O4OL+Rx+5TVN3UQBk3WY8R4/mHHUYlfdO8lafH/WYJGqy5fEmH0zyx36JKaDuI8cgaik7VcAEPp6NqovB1v077loA0L0xChMMcJpYndAEFxPn/l4P/3oHQ/xWJyLlo6h70Pl+ID58h8J7c14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588696; c=relaxed/simple;
-	bh=t2UHTZZ/nNBDwjFyyZNsd9PxvVFFsHklIpQRBV142IA=;
+	s=arc-20240116; t=1709588211; c=relaxed/simple;
+	bh=0tPqminUxoUDDDTuAuOgWsLODCBKsviktsnOP+PftzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UOtWauWOW1LkpNxWaOxYHLkNepv909Zp26iuQsn1bFGqYXqQkYZqqLJAbWJf+0F1cTo4Hl23uh7zfjPDRJ96h88+KGhzN5yopi842RM6I/21E3b4cntaiYbYqPIu1b3QKUogm8oVzW6ZMKFVmjTjm/QXI2aKMsqPbMOZyCfTDaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CFESQ8MQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 823D0C433C7;
-	Mon,  4 Mar 2024 21:44:55 +0000 (UTC)
+	 MIME-Version; b=SRiRWZFl10IxMKu6nx/AutchqGLwYYjkW7XsO6O+FtwR/5ctluiouRSvWxKPa0CNsR9Ps2c6Hpm8pKcYpcU3kER9JAKM6p3MTWaDUZG8eNQG5nCJRpjoWPII0MLgepsY60K5pp/inMNM0rzQ9/dydP91axt9L48GCI44aQ0QlDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7fYwRhV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D1FFC433C7;
+	Mon,  4 Mar 2024 21:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588695;
-	bh=t2UHTZZ/nNBDwjFyyZNsd9PxvVFFsHklIpQRBV142IA=;
+	s=korg; t=1709588211;
+	bh=0tPqminUxoUDDDTuAuOgWsLODCBKsviktsnOP+PftzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CFESQ8MQHgMZkk9RBiW8ZiFbthgVO9tCMLjaH21TUhoiTtulyLVE9kn3fzksNsJYv
-	 560PNm6f8KkH8F5b/xAQYJl5DEjksGsof7UneuOEs/OrF0eSSNw4U2RZgAD+vS2IBs
-	 ukCpp3C5fPjbLpZ1fZhsyZ3odSEzU5Poyt878onE=
+	b=O7fYwRhV0nqd8tGvnqZdoGY7dRbPPYfqv/D7p4Whq8yMADSUo695HbUnG+yNilRzA
+	 MPEGJq+i8Au17GbbopfzY0J1LWnpjNRNwhKtBqzLll9CrKFyUuHZ9/OL61sCe3E6Mt
+	 T7GDzrGZ8fgeKplo2uciTQBJIZoAXLcNCUysjy/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Majewski <lukma@denx.de>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 061/215] net: hsr: Use correct offset for HSR TLV values in supervisory HSR frames
+Subject: [PATCH 6.6 004/143] ksmbd: fix wrong allocation size update in smb2_open()
 Date: Mon,  4 Mar 2024 21:22:04 +0000
-Message-ID: <20240304211558.913669980@linuxfoundation.org>
+Message-ID: <20240304211550.034312021@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Majewski <lukma@denx.de>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 51dd4ee0372228ffb0f7709fa7aa0678d4199d06 ]
+[ Upstream commit a9f106c765c12d2f58aa33431bd8ce8e9d8a404a ]
 
-Current HSR implementation uses following supervisory frame (even for
-HSRv1 the HSR tag is not is not present):
+When client send SMB2_CREATE_ALLOCATION_SIZE create context, ksmbd update
+old size to ->AllocationSize in smb2 create response. ksmbd_vfs_getattr()
+should be called after it to get updated stat result.
 
-00000000: 01 15 4e 00 01 2d XX YY ZZ 94 77 10 88 fb 00 01
-00000010: 7e 1c 17 06 XX YY ZZ 94 77 10 1e 06 XX YY ZZ 94
-00000020: 77 10 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-00000030: 00 00 00 00 00 00 00 00 00 00 00 00
-
-The current code adds extra two bytes (i.e. sizeof(struct hsr_sup_tlv))
-when offset for skb_pull() is calculated.
-This is wrong, as both 'struct hsrv1_ethhdr_sp' and 'hsrv0_ethhdr_sp'
-already have 'struct hsr_sup_tag' defined in them, so there is no need
-for adding extra two bytes.
-
-This code was working correctly as with no RedBox support, the check for
-HSR_TLV_EOT (0x00) was off by two bytes, which were corresponding to
-zeroed padded bytes for minimal packet size.
-
-Fixes: eafaa88b3eb7 ("net: hsr: Add support for redbox supervision frames")
-Signed-off-by: Lukasz Majewski <lukma@denx.de>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://lore.kernel.org/r/20240228085644.3618044-1-lukma@denx.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/hsr/hsr_forward.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c | 36 ++++++++++++++++++------------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
-index 80cdc6f6b34c9..0323ab5023c69 100644
---- a/net/hsr/hsr_forward.c
-+++ b/net/hsr/hsr_forward.c
-@@ -83,7 +83,7 @@ static bool is_supervision_frame(struct hsr_priv *hsr, struct sk_buff *skb)
- 		return false;
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 3e885cdc5ffc7..e8c03445271d0 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2529,7 +2529,7 @@ static void smb2_new_xattrs(struct ksmbd_tree_connect *tcon, const struct path *
+ 	da.flags = XATTR_DOSINFO_ATTRIB | XATTR_DOSINFO_CREATE_TIME |
+ 		XATTR_DOSINFO_ITIME;
  
- 	/* Get next tlv */
--	total_length += sizeof(struct hsr_sup_tlv) + hsr_sup_tag->tlv.HSR_TLV_length;
-+	total_length += hsr_sup_tag->tlv.HSR_TLV_length;
- 	if (!pskb_may_pull(skb, total_length))
- 		return false;
- 	skb_pull(skb, total_length);
+-	rc = ksmbd_vfs_set_dos_attrib_xattr(mnt_idmap(path->mnt), path, &da, false);
++	rc = ksmbd_vfs_set_dos_attrib_xattr(mnt_idmap(path->mnt), path, &da, true);
+ 	if (rc)
+ 		ksmbd_debug(SMB, "failed to store file attribute into xattr\n");
+ }
+@@ -3198,23 +3198,6 @@ int smb2_open(struct ksmbd_work *work)
+ 		goto err_out;
+ 	}
+ 
+-	rc = ksmbd_vfs_getattr(&path, &stat);
+-	if (rc)
+-		goto err_out;
+-
+-	if (stat.result_mask & STATX_BTIME)
+-		fp->create_time = ksmbd_UnixTimeToNT(stat.btime);
+-	else
+-		fp->create_time = ksmbd_UnixTimeToNT(stat.ctime);
+-	if (req->FileAttributes || fp->f_ci->m_fattr == 0)
+-		fp->f_ci->m_fattr =
+-			cpu_to_le32(smb2_get_dos_mode(&stat, le32_to_cpu(req->FileAttributes)));
+-
+-	if (!created)
+-		smb2_update_xattrs(tcon, &path, fp);
+-	else
+-		smb2_new_xattrs(tcon, &path, fp);
+-
+ 	if (file_present || created)
+ 		ksmbd_vfs_kern_path_unlock(&parent_path, &path);
+ 
+@@ -3315,6 +3298,23 @@ int smb2_open(struct ksmbd_work *work)
+ 		}
+ 	}
+ 
++	rc = ksmbd_vfs_getattr(&path, &stat);
++	if (rc)
++		goto err_out1;
++
++	if (stat.result_mask & STATX_BTIME)
++		fp->create_time = ksmbd_UnixTimeToNT(stat.btime);
++	else
++		fp->create_time = ksmbd_UnixTimeToNT(stat.ctime);
++	if (req->FileAttributes || fp->f_ci->m_fattr == 0)
++		fp->f_ci->m_fattr =
++			cpu_to_le32(smb2_get_dos_mode(&stat, le32_to_cpu(req->FileAttributes)));
++
++	if (!created)
++		smb2_update_xattrs(tcon, &path, fp);
++	else
++		smb2_new_xattrs(tcon, &path, fp);
++
+ 	memcpy(fp->client_guid, conn->ClientGUID, SMB2_CLIENT_GUID_SIZE);
+ 
+ 	rsp->StructureSize = cpu_to_le16(89);
 -- 
 2.43.0
 
