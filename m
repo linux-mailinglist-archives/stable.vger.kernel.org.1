@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-26075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F337D870CEB
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:29:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 824A8870DBF
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:37:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF12F28B3C9
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:29:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2254A1F2459F
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:37:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A64617BAEF;
-	Mon,  4 Mar 2024 21:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA0579DCE;
+	Mon,  4 Mar 2024 21:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dDNY49kE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X0aPMrBI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650E27BAE1;
-	Mon,  4 Mar 2024 21:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF5078B4C;
+	Mon,  4 Mar 2024 21:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587779; cv=none; b=VeuDAuE4FlXgQAXnMCx/7eCu4j1MdtC1wZkEMvuAyg0yS/DqcmE/3/6OHHQ2JdwfqeoNozZhpefRgYcYYqq2Nyi16WtCwj/evxxrJV2/PRcpjuTxYuEwhlaypqrlXL+vKqTawbsm5sFYW95stAManxKPStppJnmBKmBh25BosPQ=
+	t=1709588237; cv=none; b=Q6AxGXnt+IGMeUmuc79MrrNBke+cV5XCxZ5zOjxURAanSN4zidex+LMyT0Qs7DBzI0XD7UKPDP9A2LDi1gLpHPd4nW8/9VXn7CRstZAbGDGp2AwBoAVkG/qgwY6yMPJW7LLOCoQjwz83hSrUP1gECzWLJAcY2/iTMmuian6I6OQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587779; c=relaxed/simple;
-	bh=dNt8RTh6fm9qUFuaFUOVSOnTqzY2dbap9urTgH2AlhU=;
+	s=arc-20240116; t=1709588237; c=relaxed/simple;
+	bh=MkkW+cAjKMkO0xU08hgbqcjqVsimlvbMSXFiWX43Mmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r2E1vZbkelvYCjV6qNtf88L5KpMjjxR2XxsrBlGevgN9W+pqsSR+x59Pyr9Xyu2kbjHFmA4FTiTrWe/UosR/yWYSgqTp1SEVq3PexrEqXzEEQEVD6XSMS6QkFUIOBnD9eyA7QJhqDoOr0haQGvgoDGrmrGtG4MEPYdlGJ4kzONY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDNY49kE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB853C43390;
-	Mon,  4 Mar 2024 21:29:38 +0000 (UTC)
+	 MIME-Version; b=KicaIUDsWbvwZgSmktCHCq0X9c3qSqIZdqfn0ypwuxGtV+usF0bcbQqGsmZrGoKZY+iShrNfaYxt9GO3W3P3clbhHKzkqWciTQDHHEJLQBXz5nY7ixcJR1qd0osaORpfKVub/j90he5/Sm5t5V/Q7I+vM45HSiTcYYGtaHdAAXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X0aPMrBI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F07C433C7;
+	Mon,  4 Mar 2024 21:37:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587779;
-	bh=dNt8RTh6fm9qUFuaFUOVSOnTqzY2dbap9urTgH2AlhU=;
+	s=korg; t=1709588237;
+	bh=MkkW+cAjKMkO0xU08hgbqcjqVsimlvbMSXFiWX43Mmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dDNY49kEwEXjB6cOc38RJmW6x0msDAte/CkFnFtS5XyVxaNA2MeNuBSDhUryvd9nL
-	 LOyiNbqcJRJ+UqqwrxRPJnF0PvsbIOZphXeK2s4hOoJV/ZPzT1CDOdE856Dh3AiRod
-	 QH6VdP1ZuSz7RvUrsbOO95Cc6fbO1M/C0PRvxF6Q=
+	b=X0aPMrBIqseOhmuLFTRc41U3IwFg0O4CI+B+M1cbja1y7iLNIVuhUIFGBuLdGppUI
+	 5+yqq28IsGPYkci2tuVUlsE0yCmXotuTonJjPF262WhjRvPQ6cEO84RyfIx224wYyu
+	 09qsmOKu7fU3OT99qYwby82g7olqehgnVcwPGwYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+dd4779978217b1973180@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.7 086/162] wifi: nl80211: reject iftype change with mesh ID change
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 031/143] Bluetooth: qca: Fix triggering coredump implementation
 Date: Mon,  4 Mar 2024 21:22:31 +0000
-Message-ID: <20240304211554.581202401@linuxfoundation.org>
+Message-ID: <20240304211550.937333810@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit f78c1375339a291cba492a70eaf12ec501d28a8e upstream.
+[ Upstream commit 6abf9dd26bb1699c17d601b9a292577d01827c0e ]
 
-It's currently possible to change the mesh ID when the
-interface isn't yet in mesh mode, at the same time as
-changing it into mesh mode. This leads to an overwrite
-of data in the wdev->u union for the interface type it
-currently has, causing cfg80211_change_iface() to do
-wrong things when switching.
+hci_coredump_qca() uses __hci_cmd_sync() to send a vendor-specific command
+to trigger firmware coredump, but the command does not have any event as
+its sync response, so it is not suitable to use __hci_cmd_sync(), fixed by
+using __hci_cmd_send().
 
-We could probably allow setting an interface to mesh
-while setting the mesh ID at the same time by doing a
-different order of operations here, but realistically
-there's no userspace that's going to do this, so just
-disallow changes in iftype when setting mesh ID.
-
-Cc: stable@vger.kernel.org
-Fixes: 29cbe68c516a ("cfg80211/mac80211: add mesh join/leave commands")
-Reported-by: syzbot+dd4779978217b1973180@syzkaller.appspotmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 06d3fdfcdf5c ("Bluetooth: hci_qca: Add qcom devcoredump support")
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/bluetooth/hci_qca.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -4185,6 +4185,8 @@ static int nl80211_set_interface(struct
+diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+index f3fe4deee78da..f9abcc13b4bcd 100644
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -1807,13 +1807,12 @@ static int qca_power_on(struct hci_dev *hdev)
  
- 		if (ntype != NL80211_IFTYPE_MESH_POINT)
- 			return -EINVAL;
-+		if (otype != NL80211_IFTYPE_MESH_POINT)
-+			return -EINVAL;
- 		if (netif_running(dev))
- 			return -EBUSY;
+ static void hci_coredump_qca(struct hci_dev *hdev)
+ {
++	int err;
+ 	static const u8 param[] = { 0x26 };
+-	struct sk_buff *skb;
  
+-	skb = __hci_cmd_sync(hdev, 0xfc0c, 1, param, HCI_CMD_TIMEOUT);
+-	if (IS_ERR(skb))
+-		bt_dev_err(hdev, "%s: trigger crash failed (%ld)", __func__, PTR_ERR(skb));
+-	kfree_skb(skb);
++	err = __hci_cmd_send(hdev, 0xfc0c, 1, param);
++	if (err < 0)
++		bt_dev_err(hdev, "%s: trigger crash failed (%d)", __func__, err);
+ }
+ 
+ static int qca_setup(struct hci_uart *hu)
+-- 
+2.43.0
+
 
 
 
