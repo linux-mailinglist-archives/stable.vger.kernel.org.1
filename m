@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-25820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 087CA86FA3B
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 07:50:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A1CF86FA41
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 07:52:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62BE4B20BEB
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 06:50:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B42A4280E35
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 06:52:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F7361171E;
-	Mon,  4 Mar 2024 06:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11BEA11715;
+	Mon,  4 Mar 2024 06:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X72LJqO2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MwU8xlgd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8001170A
-	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 06:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D6710A2E
+	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 06:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709534999; cv=none; b=JJv0xZCsBDzyuR13epiiGCMJaPL+Z9fvnRoclnmfWLedbiXFavELNaIBo862iRDLhfP7KntV/qPNuBmBYgDHVvsoex75+H3bNyPq9JOP1b7DSTQgy/+5wrrAbmOzxy4YdQIcYd+JKZCT9IvI2lbOUSH7xWEx6Zrp26YiDmxXOWM=
+	t=1709535116; cv=none; b=jlkY4rvauI+W1icKZs9XrOCIICfyuolFrMj8aa2nCN1Yy4zezCH/SnLQYlzGIfs0LSazdxG/AKe7LwGQSzDBHSTI2dKLz3I9RSqIlctPpIytumNqg132Jje7rj2TBo6+Ji3C3aJrTPVwjr/zO/5U2vFwLOq3SLoTcv1epwPIdqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709534999; c=relaxed/simple;
-	bh=BDiOlxkH0FyD92yqTPz4hGhk4yImH16xCipdyYO5+H0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=alrgFUPt9E7eYEAhmT019/dSEPBEowPp/qBk9Y3WRwinvYApmaMTBpuV4eICdGwtbQQ5LQR6cInxS+H2ixpyc+fy3KbRRzzBkdoqH2CeoYwKgjesRFUaqTM7HXCFFOQLJ4djLHVV4kVRXhr+4WSUsON+IKESz2lHI5kHs0Xn7PE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X72LJqO2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E524BC433C7;
-	Mon,  4 Mar 2024 06:49:58 +0000 (UTC)
+	s=arc-20240116; t=1709535116; c=relaxed/simple;
+	bh=WKoNDepmIamnORyg1jo2SzW1V20ABIQcWm/XD7bTWwA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=op+2ZoYwRM6+gRA8cuu+8xe4H/H73rFe2lK0Kv8ZSLEQyNRRNzhtiQhFWWevJM+w5DI2ik+eZIlIndA0FngBJdTtEAIteFto4elRsTlIYlm57y/P15DEwXzYheknuXny3y8xQafPNKuZfoqLh+a5hZgls7wFwA9hZiJIjg4T2Lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MwU8xlgd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2464C433F1;
+	Mon,  4 Mar 2024 06:51:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709534999;
-	bh=BDiOlxkH0FyD92yqTPz4hGhk4yImH16xCipdyYO5+H0=;
+	s=korg; t=1709535116;
+	bh=WKoNDepmIamnORyg1jo2SzW1V20ABIQcWm/XD7bTWwA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=X72LJqO2B3Cn74pp9oHPDu+RDTofMoqb1Aa4CL6kgcweshKA5ukjrcA2tk8XWv3Ai
-	 LmD1qEmgTBrbNLg60iQ2+hdtvHInx9hhmxeAsmOUjhvm0WeeLw3tzeDti5jb9b4ph9
-	 qMklmkrSokCyuhNcJMS5Pp0XnxLTlPUcSQKi9LDw=
-Subject: FAILED: patch "[PATCH] btrfs: fix double free of anonymous device after snapshot" failed to apply to 5.10-stable tree
-To: fdmanana@suse.com,dsterba@suse.com
+	b=MwU8xlgdJLJMp/951peiV7F0Ir5I+qjavLH8N/haqSSRitRUuqEa3f/WPUsJMNDfX
+	 7o2od6Xhr3q9gJ+oEcY43bsK2GYEvgJVaLEBdd4jtVk5sZOnuN3oycZRG/YZEwzRTr
+	 5ElYPLc0IMS4AqzuDjRNIosfnYVAOaJ2Y+Cqi7DE=
+Subject: FAILED: patch "[PATCH] soc: qcom: pmic_glink_altmode: fix drm bridge use-after-free" failed to apply to 6.7-stable tree
+To: johan+linaro@kernel.org,andersson@kernel.org,dmitry.baryshkov@linaro.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 04 Mar 2024 07:49:55 +0100
-Message-ID: <2024030455-ensure-outward-f8cc@gregkh>
+Date: Mon, 04 Mar 2024 07:51:53 +0100
+Message-ID: <2024030452-unlatch-jailer-3f13@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.7-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
 git checkout FETCH_HEAD
-git cherry-pick -x e2b54eaf28df0c978626c9736b94f003b523b451
+git cherry-pick -x b979f2d50a099f3402418d7ff5f26c3952fb08bb
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024030455-ensure-outward-f8cc@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024030452-unlatch-jailer-3f13@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
 
 Possible dependencies:
 
-e2b54eaf28df ("btrfs: fix double free of anonymous device after snapshot creation failure")
-e03ee2fe873e ("btrfs: do not ASSERT() if the newly created subvolume already got read")
-caae78e03234 ("btrfs: move common inode creation code into btrfs_create_new_inode()")
-3538d68dbd97 ("btrfs: reserve correct number of items for inode creation")
-5f465bf1f15a ("btrfs: factor out common part of btrfs_{mknod,create,mkdir}()")
-a1fd0c35ffe3 ("btrfs: allocate inode outside of btrfs_new_inode()")
-305eaac00911 ("btrfs: set inode flags earlier in btrfs_new_inode()")
-6437d4583531 ("btrfs: move btrfs_get_free_objectid() call into btrfs_new_inode()")
-23c24ef8e418 ("btrfs: don't pass parent objectid to btrfs_new_inode() explicitly")
-75b993cf4305 ("btrfs: remove unused mnt_userns parameter from __btrfs_set_acl")
-c51fa51190f9 ("btrfs: remove unnecessary set_nlink() in btrfs_create_subvol_root()")
-6d831f7ef9f0 ("btrfs: remove unnecessary inode_set_bytes(0) call")
-9124e15f2798 ("btrfs: remove unnecessary btrfs_i_size_write(0) calls")
-81512e89f2b7 ("btrfs: get rid of btrfs_add_nondir()")
-2256e901f5bd ("btrfs: fix anon_dev leak in create_subvol()")
-c16218714307 ("btrfs: reserve correct number of items for rename")
-1b58ae0e4d3e ("btrfs: skip transaction commit after failure to create subvolume")
-33fab972497a ("btrfs: fix double free of anon_dev after failure to create subvolume")
-b7ef5f3a6f37 ("btrfs: loop only once over data sizes array when inserting an item batch")
-086dcbfa50d3 ("btrfs: insert items in batches when logging a directory when possible")
+b979f2d50a09 ("soc: qcom: pmic_glink_altmode: fix drm bridge use-after-free")
+2bcca96abfbf ("soc: qcom: pmic-glink: switch to DRM_AUX_HPD_BRIDGE")
 
 thanks,
 
@@ -96,214 +78,117 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e2b54eaf28df0c978626c9736b94f003b523b451 Mon Sep 17 00:00:00 2001
-From: Filipe Manana <fdmanana@suse.com>
-Date: Fri, 23 Feb 2024 16:38:43 +0000
-Subject: [PATCH] btrfs: fix double free of anonymous device after snapshot
- creation failure
+From b979f2d50a099f3402418d7ff5f26c3952fb08bb Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan+linaro@kernel.org>
+Date: Sat, 17 Feb 2024 16:02:25 +0100
+Subject: [PATCH] soc: qcom: pmic_glink_altmode: fix drm bridge use-after-free
 
-When creating a snapshot we may do a double free of an anonymous device
-in case there's an error committing the transaction. The second free may
-result in freeing an anonymous device number that was allocated by some
-other subsystem in the kernel or another btrfs filesystem.
+A recent DRM series purporting to simplify support for "transparent
+bridges" and handling of probe deferrals ironically exposed a
+use-after-free issue on pmic_glink_altmode probe deferral.
 
-The steps that lead to this:
+This has manifested itself as the display subsystem occasionally failing
+to initialise and NULL-pointer dereferences during boot of machines like
+the Lenovo ThinkPad X13s.
 
-1) At ioctl.c:create_snapshot() we allocate an anonymous device number
-   and assign it to pending_snapshot->anon_dev;
+Specifically, the dp-hpd bridge is currently registered before all
+resources have been acquired which means that it can also be
+deregistered on probe deferrals.
 
-2) Then we call btrfs_commit_transaction() and end up at
-   transaction.c:create_pending_snapshot();
+In the meantime there is a race window where the new aux bridge driver
+(or PHY driver previously) may have looked up the dp-hpd bridge and
+stored a (non-reference-counted) pointer to the bridge which is about to
+be deallocated.
 
-3) There we call btrfs_get_new_fs_root() and pass it the anonymous device
-   number stored in pending_snapshot->anon_dev;
+When the display controller is later initialised, this triggers a
+use-after-free when attaching the bridges:
 
-4) btrfs_get_new_fs_root() frees that anonymous device number because
-   btrfs_lookup_fs_root() returned a root - someone else did a lookup
-   of the new root already, which could some task doing backref walking;
+	dp -> aux -> dp-hpd (freed)
 
-5) After that some error happens in the transaction commit path, and at
-   ioctl.c:create_snapshot() we jump to the 'fail' label, and after
-   that we free again the same anonymous device number, which in the
-   meanwhile may have been reallocated somewhere else, because
-   pending_snapshot->anon_dev still has the same value as in step 1.
+which may, for example, result in the freed bridge failing to attach:
 
-Recently syzbot ran into this and reported the following trace:
+	[drm:drm_bridge_attach [drm]] *ERROR* failed to attach bridge /soc@0/phy@88eb000 to encoder TMDS-31: -16
 
-  ------------[ cut here ]------------
-  ida_free called for id=51 which is not allocated.
-  WARNING: CPU: 1 PID: 31038 at lib/idr.c:525 ida_free+0x370/0x420 lib/idr.c:525
-  Modules linked in:
-  CPU: 1 PID: 31038 Comm: syz-executor.2 Not tainted 6.8.0-rc4-syzkaller-00410-gc02197fc9076 #0
-  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/25/2024
-  RIP: 0010:ida_free+0x370/0x420 lib/idr.c:525
-  Code: 10 42 80 3c 28 (...)
-  RSP: 0018:ffffc90015a67300 EFLAGS: 00010246
-  RAX: be5130472f5dd000 RBX: 0000000000000033 RCX: 0000000000040000
-  RDX: ffffc90009a7a000 RSI: 000000000003ffff RDI: 0000000000040000
-  RBP: ffffc90015a673f0 R08: ffffffff81577992 R09: 1ffff92002b4cdb4
-  R10: dffffc0000000000 R11: fffff52002b4cdb5 R12: 0000000000000246
-  R13: dffffc0000000000 R14: ffffffff8e256b80 R15: 0000000000000246
-  FS:  00007fca3f4b46c0(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00007f167a17b978 CR3: 000000001ed26000 CR4: 0000000000350ef0
-  Call Trace:
-   <TASK>
-   btrfs_get_root_ref+0xa48/0xaf0 fs/btrfs/disk-io.c:1346
-   create_pending_snapshot+0xff2/0x2bc0 fs/btrfs/transaction.c:1837
-   create_pending_snapshots+0x195/0x1d0 fs/btrfs/transaction.c:1931
-   btrfs_commit_transaction+0xf1c/0x3740 fs/btrfs/transaction.c:2404
-   create_snapshot+0x507/0x880 fs/btrfs/ioctl.c:848
-   btrfs_mksubvol+0x5d0/0x750 fs/btrfs/ioctl.c:998
-   btrfs_mksnapshot+0xb5/0xf0 fs/btrfs/ioctl.c:1044
-   __btrfs_ioctl_snap_create+0x387/0x4b0 fs/btrfs/ioctl.c:1306
-   btrfs_ioctl_snap_create_v2+0x1ca/0x400 fs/btrfs/ioctl.c:1393
-   btrfs_ioctl+0xa74/0xd40
-   vfs_ioctl fs/ioctl.c:51 [inline]
-   __do_sys_ioctl fs/ioctl.c:871 [inline]
-   __se_sys_ioctl+0xfe/0x170 fs/ioctl.c:857
-   do_syscall_64+0xfb/0x240
-   entry_SYSCALL_64_after_hwframe+0x6f/0x77
-  RIP: 0033:0x7fca3e67dda9
-  Code: 28 00 00 00 (...)
-  RSP: 002b:00007fca3f4b40c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-  RAX: ffffffffffffffda RBX: 00007fca3e7abf80 RCX: 00007fca3e67dda9
-  RDX: 00000000200005c0 RSI: 0000000050009417 RDI: 0000000000000003
-  RBP: 00007fca3e6ca47a R08: 0000000000000000 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-  R13: 000000000000000b R14: 00007fca3e7abf80 R15: 00007fff6bf95658
-   </TASK>
+or a NULL-pointer dereference:
 
-Where we get an explicit message where we attempt to free an anonymous
-device number that is not currently allocated. It happens in a different
-code path from the example below, at btrfs_get_root_ref(), so this change
-may not fix the case triggered by syzbot.
+	Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+	...
+	Call trace:
+	  drm_bridge_attach+0x70/0x1a8 [drm]
+	  drm_aux_bridge_attach+0x24/0x38 [aux_bridge]
+	  drm_bridge_attach+0x80/0x1a8 [drm]
+	  dp_bridge_init+0xa8/0x15c [msm]
+	  msm_dp_modeset_init+0x28/0xc4 [msm]
 
-To fix at least the code path from the example above, change
-btrfs_get_root_ref() and its callers to receive a dev_t pointer argument
-for the anonymous device number, so that in case it frees the number, it
-also resets it to 0, so that up in the call chain we don't attempt to do
-the double free.
+The DRM bridge implementation is clearly fragile and implicitly built on
+the assumption that bridges may never go away. In this case, the fix is
+to move the bridge registration in the pmic_glink_altmode driver to
+after all resources have been looked up.
 
-CC: stable@vger.kernel.org # 5.10+
-Link: https://lore.kernel.org/linux-btrfs/000000000000f673a1061202f630@google.com/
-Fixes: e03ee2fe873e ("btrfs: do not ASSERT() if the newly created subvolume already got read")
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Incidentally, with the new dp-hpd bridge implementation, which registers
+child devices, this is also a requirement due to a long-standing issue
+in driver core that can otherwise lead to a probe deferral loop (see
+commit fbc35b45f9f6 ("Add documentation on meaning of -EPROBE_DEFER")).
 
-diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
-index e71ef97d0a7c..c843563914ca 100644
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -1307,12 +1307,12 @@ void btrfs_free_fs_info(struct btrfs_fs_info *fs_info)
-  *
-  * @objectid:	root id
-  * @anon_dev:	preallocated anonymous block device number for new roots,
-- * 		pass 0 for new allocation.
-+ *		pass NULL for a new allocation.
-  * @check_ref:	whether to check root item references, If true, return -ENOENT
-  *		for orphan roots
-  */
- static struct btrfs_root *btrfs_get_root_ref(struct btrfs_fs_info *fs_info,
--					     u64 objectid, dev_t anon_dev,
-+					     u64 objectid, dev_t *anon_dev,
- 					     bool check_ref)
- {
- 	struct btrfs_root *root;
-@@ -1342,9 +1342,9 @@ static struct btrfs_root *btrfs_get_root_ref(struct btrfs_fs_info *fs_info,
- 		 * that common but still possible.  In that case, we just need
- 		 * to free the anon_dev.
- 		 */
--		if (unlikely(anon_dev)) {
--			free_anon_bdev(anon_dev);
--			anon_dev = 0;
-+		if (unlikely(anon_dev && *anon_dev)) {
-+			free_anon_bdev(*anon_dev);
-+			*anon_dev = 0;
+[DB: slightly fixed commit message by adding the word 'commit']
+Fixes: 080b4e24852b ("soc: qcom: pmic_glink: Introduce altmode support")
+Fixes: 2bcca96abfbf ("soc: qcom: pmic-glink: switch to DRM_AUX_HPD_BRIDGE")
+Cc: <stable@vger.kernel.org>      # 6.3
+Cc: Bjorn Andersson <andersson@kernel.org>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240217150228.5788-4-johan+linaro@kernel.org
+
+diff --git a/drivers/soc/qcom/pmic_glink_altmode.c b/drivers/soc/qcom/pmic_glink_altmode.c
+index 5fcd0fdd2faa..b3808fc24c69 100644
+--- a/drivers/soc/qcom/pmic_glink_altmode.c
++++ b/drivers/soc/qcom/pmic_glink_altmode.c
+@@ -76,7 +76,7 @@ struct pmic_glink_altmode_port {
+ 
+ 	struct work_struct work;
+ 
+-	struct device *bridge;
++	struct auxiliary_device *bridge;
+ 
+ 	enum typec_orientation orientation;
+ 	u16 svid;
+@@ -230,7 +230,7 @@ static void pmic_glink_altmode_worker(struct work_struct *work)
+ 	else
+ 		pmic_glink_altmode_enable_usb(altmode, alt_port);
+ 
+-	drm_aux_hpd_bridge_notify(alt_port->bridge,
++	drm_aux_hpd_bridge_notify(&alt_port->bridge->dev,
+ 				  alt_port->hpd_state ?
+ 				  connector_status_connected :
+ 				  connector_status_disconnected);
+@@ -454,7 +454,7 @@ static int pmic_glink_altmode_probe(struct auxiliary_device *adev,
+ 		alt_port->index = port;
+ 		INIT_WORK(&alt_port->work, pmic_glink_altmode_worker);
+ 
+-		alt_port->bridge = drm_dp_hpd_bridge_register(dev, to_of_node(fwnode));
++		alt_port->bridge = devm_drm_dp_hpd_bridge_alloc(dev, to_of_node(fwnode));
+ 		if (IS_ERR(alt_port->bridge)) {
+ 			fwnode_handle_put(fwnode);
+ 			return PTR_ERR(alt_port->bridge);
+@@ -510,6 +510,16 @@ static int pmic_glink_altmode_probe(struct auxiliary_device *adev,
  		}
- 
- 		if (check_ref && btrfs_root_refs(&root->root_item) == 0) {
-@@ -1366,7 +1366,7 @@ static struct btrfs_root *btrfs_get_root_ref(struct btrfs_fs_info *fs_info,
- 		goto fail;
  	}
  
--	ret = btrfs_init_fs_root(root, anon_dev);
-+	ret = btrfs_init_fs_root(root, anon_dev ? *anon_dev : 0);
- 	if (ret)
- 		goto fail;
- 
-@@ -1402,7 +1402,7 @@ static struct btrfs_root *btrfs_get_root_ref(struct btrfs_fs_info *fs_info,
- 	 * root's anon_dev to 0 to avoid a double free, once by btrfs_put_root()
- 	 * and once again by our caller.
- 	 */
--	if (anon_dev)
-+	if (anon_dev && *anon_dev)
- 		root->anon_dev = 0;
- 	btrfs_put_root(root);
- 	return ERR_PTR(ret);
-@@ -1418,7 +1418,7 @@ static struct btrfs_root *btrfs_get_root_ref(struct btrfs_fs_info *fs_info,
- struct btrfs_root *btrfs_get_fs_root(struct btrfs_fs_info *fs_info,
- 				     u64 objectid, bool check_ref)
- {
--	return btrfs_get_root_ref(fs_info, objectid, 0, check_ref);
-+	return btrfs_get_root_ref(fs_info, objectid, NULL, check_ref);
- }
- 
- /*
-@@ -1426,11 +1426,11 @@ struct btrfs_root *btrfs_get_fs_root(struct btrfs_fs_info *fs_info,
-  * the anonymous block device id
-  *
-  * @objectid:	tree objectid
-- * @anon_dev:	if zero, allocate a new anonymous block device or use the
-- *		parameter value
-+ * @anon_dev:	if NULL, allocate a new anonymous block device or use the
-+ *		parameter value if not NULL
-  */
- struct btrfs_root *btrfs_get_new_fs_root(struct btrfs_fs_info *fs_info,
--					 u64 objectid, dev_t anon_dev)
-+					 u64 objectid, dev_t *anon_dev)
- {
- 	return btrfs_get_root_ref(fs_info, objectid, anon_dev, true);
- }
-diff --git a/fs/btrfs/disk-io.h b/fs/btrfs/disk-io.h
-index 9413726b329b..eb3473d1c1ac 100644
---- a/fs/btrfs/disk-io.h
-+++ b/fs/btrfs/disk-io.h
-@@ -61,7 +61,7 @@ void btrfs_free_fs_roots(struct btrfs_fs_info *fs_info);
- struct btrfs_root *btrfs_get_fs_root(struct btrfs_fs_info *fs_info,
- 				     u64 objectid, bool check_ref);
- struct btrfs_root *btrfs_get_new_fs_root(struct btrfs_fs_info *fs_info,
--					 u64 objectid, dev_t anon_dev);
-+					 u64 objectid, dev_t *anon_dev);
- struct btrfs_root *btrfs_get_fs_root_commit_root(struct btrfs_fs_info *fs_info,
- 						 struct btrfs_path *path,
- 						 u64 objectid);
-diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
-index fb2323b323bf..b004e3b75311 100644
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -721,7 +721,7 @@ static noinline int create_subvol(struct mnt_idmap *idmap,
- 	free_extent_buffer(leaf);
- 	leaf = NULL;
- 
--	new_root = btrfs_get_new_fs_root(fs_info, objectid, anon_dev);
-+	new_root = btrfs_get_new_fs_root(fs_info, objectid, &anon_dev);
- 	if (IS_ERR(new_root)) {
- 		ret = PTR_ERR(new_root);
- 		btrfs_abort_transaction(trans, ret);
-diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
-index c52807d97efa..bf8e64c766b6 100644
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -1834,7 +1834,7 @@ static noinline int create_pending_snapshot(struct btrfs_trans_handle *trans,
- 	}
- 
- 	key.offset = (u64)-1;
--	pending->snap = btrfs_get_new_fs_root(fs_info, objectid, pending->anon_dev);
-+	pending->snap = btrfs_get_new_fs_root(fs_info, objectid, &pending->anon_dev);
- 	if (IS_ERR(pending->snap)) {
- 		ret = PTR_ERR(pending->snap);
- 		pending->snap = NULL;
++	for (port = 0; port < ARRAY_SIZE(altmode->ports); port++) {
++		alt_port = &altmode->ports[port];
++		if (!alt_port->bridge)
++			continue;
++
++		ret = devm_drm_dp_hpd_bridge_add(dev, alt_port->bridge);
++		if (ret)
++			return ret;
++	}
++
+ 	altmode->client = devm_pmic_glink_register_client(dev,
+ 							  altmode->owner_id,
+ 							  pmic_glink_altmode_callback,
 
 
