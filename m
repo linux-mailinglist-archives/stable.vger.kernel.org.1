@@ -1,759 +1,313 @@
-Return-Path: <stable+bounces-26004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF0DB870C86
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:26:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65802870C7F
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:26:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56D061F22CAD
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:26:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CA652879C5
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:26:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD70A7B3F3;
-	Mon,  4 Mar 2024 21:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE86078B4C;
+	Mon,  4 Mar 2024 21:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AG6bbSGK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cXLtbNO6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670D31EA99;
-	Mon,  4 Mar 2024 21:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C559626B2;
+	Mon,  4 Mar 2024 21:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587594; cv=none; b=Pnytxoa6vL3OluA2O+swLpXEnKAXS+HXvZhgE7V/up5D9Aonlv+Elzs3iD8461KidVHQEceUkWjsMUnRLYMqLmCC9hslIUS9WErq3w3oCq0ad6DmHSchBGtSeba9sjpQKbkMijXThwZIFL77sLzP4zv3xYl+hnAqTaPOAuzKhYo=
+	t=1709587576; cv=none; b=QnZPCiHHOc3mRI1ylmuPD6ervzoSlxQQhEsD0PxcAtLmnPA3SFdRlXavI1XDtBpSKQnk2MFOU5dazbyYrGitiYNB4/cRVUIPXNLNrRaf9Gef0/PMPNAewItg+YXxmjLiys5c0azluz57LJKIbfYyF5iYWduPZWD7p8NlMJE3ijA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587594; c=relaxed/simple;
-	bh=DsOcLyW5LWey6SvLrmLqbHjnNyQTxitJzNDa6qD9hs0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Mvux86dMNvw+BUu7b3dTmtKpBmCtc3NjhNw6fKB+wlK7JS9k0SajD7BjRIApnciyWhiVV1dYBWnHPi09VfOp7kLk7E0ALlGDCbs0kXO1MunmnCVg7qV/1qPb9MNHmtw0qjKD3QLkB3TkraqPyU4dyIx3HGr3V9IAcLqhKChhcKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AG6bbSGK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A11CAC433F1;
-	Mon,  4 Mar 2024 21:26:33 +0000 (UTC)
+	s=arc-20240116; t=1709587576; c=relaxed/simple;
+	bh=Luzpjhc8Z/c26O6jvwqkDz/cJEwRdFc04qJMqI2i/aQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rBT5x3jn5V6X2xBQ31CcDSM8ipeMxn2XA8Ek2v7+GJEikrWWsJ0311HppBKs7NOc3Dzw4LZ3d41kLvwt7fqZ0KC0MoA0NnYyDRLqQy+PLbcvF2gy3hlAqwMdyCRY6ef8/JD0lFM+ZG7aVJCZEygjukb3RCZje4w2omhLmq5N9zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cXLtbNO6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99F73C433C7;
+	Mon,  4 Mar 2024 21:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587594;
-	bh=DsOcLyW5LWey6SvLrmLqbHjnNyQTxitJzNDa6qD9hs0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=AG6bbSGK+D3VZXXRojTg3wfIiZEg8Wn0KLu9r7PzG4pSa2PKsXy33wJA3cu61ttdY
-	 3doe0+KulkqSAiOXszZFHLIID6lLcVfrKa61WMj1IOGBiMAsJ+YUBrhQF771wvc803
-	 sbsu1+g/mJTrhtXeytnMW68bh4odmHbKFUJalfys=
+	s=korg; t=1709587576;
+	bh=Luzpjhc8Z/c26O6jvwqkDz/cJEwRdFc04qJMqI2i/aQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=cXLtbNO6+DcnzSe1B266od2w3c7sl/f0w6DvjdelzH67iQpIMWfggxMO3sqK63BHG
+	 6CDkmcg4GWjI6LPL9uggGkKZn/Gcl0JNbm8Ma/bEQKLqrbVQASj6ws5G65w9EEGpXo
+	 9hXEDAiNyeYGlS9elJEPSGT0ducl5Btxca0+l78U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	allen.lkml@gmail.com
-Subject: [PATCH 6.7 000/162] 6.7.9-rc1 review
-Date: Mon,  4 Mar 2024 21:21:05 +0000
-Message-ID: <20240304211551.833500257@linuxfoundation.org>
+	Filipe Manana <fdmanana@suse.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 001/162] btrfs: fix deadlock with fiemap and extent locking
+Date: Mon,  4 Mar 2024 21:21:06 +0000
+Message-ID: <20240304211551.880347593@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.9-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.7.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.7.9-rc1
-X-KernelTest-Deadline: 2024-03-06T21:15+00:00
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 6.7.9 release.
-There are 162 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
+
+------------------
+
+From: Josef Bacik <josef@toxicpanda.com>
+
+[ Upstream commit b0ad381fa7690244802aed119b478b4bdafc31dd ]
+
+While working on the patchset to remove extent locking I got a lockdep
+splat with fiemap and pagefaulting with my new extent lock replacement
+lock.
+
+This deadlock exists with our normal code, we just don't have lockdep
+annotations with the extent locking so we've never noticed it.
+
+Since we're copying the fiemap extent to user space on every iteration
+we have the chance of pagefaulting.  Because we hold the extent lock for
+the entire range we could mkwrite into a range in the file that we have
+mmap'ed.  This would deadlock with the following stack trace
+
+[<0>] lock_extent+0x28d/0x2f0
+[<0>] btrfs_page_mkwrite+0x273/0x8a0
+[<0>] do_page_mkwrite+0x50/0xb0
+[<0>] do_fault+0xc1/0x7b0
+[<0>] __handle_mm_fault+0x2fa/0x460
+[<0>] handle_mm_fault+0xa4/0x330
+[<0>] do_user_addr_fault+0x1f4/0x800
+[<0>] exc_page_fault+0x7c/0x1e0
+[<0>] asm_exc_page_fault+0x26/0x30
+[<0>] rep_movs_alternative+0x33/0x70
+[<0>] _copy_to_user+0x49/0x70
+[<0>] fiemap_fill_next_extent+0xc8/0x120
+[<0>] emit_fiemap_extent+0x4d/0xa0
+[<0>] extent_fiemap+0x7f8/0xad0
+[<0>] btrfs_fiemap+0x49/0x80
+[<0>] __x64_sys_ioctl+0x3e1/0xb50
+[<0>] do_syscall_64+0x94/0x1a0
+[<0>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
+
+I wrote an fstest to reproduce this deadlock without my replacement lock
+and verified that the deadlock exists with our existing locking.
+
+To fix this simply don't take the extent lock for the entire duration of
+the fiemap.  This is safe in general because we keep track of where we
+are when we're searching the tree, so if an ordered extent updates in
+the middle of our fiemap call we'll still emit the correct extents
+because we know what offset we were on before.
+
+The only place we maintain the lock is searching delalloc.  Since the
+delalloc stuff can change during writeback we want to lock the extent
+range so we have a consistent view of delalloc at the time we're
+checking to see if we need to set the delalloc flag.
+
+With this patch applied we no longer deadlock with my testcase.
+
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/btrfs/extent_io.c | 62 ++++++++++++++++++++++++++++++++------------
+ 1 file changed, 45 insertions(+), 17 deletions(-)
+
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 8f724c54fc8e9..197b41d02735b 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -2645,16 +2645,34 @@ static int fiemap_process_hole(struct btrfs_inode *inode,
+ 	 * it beyond i_size.
+ 	 */
+ 	while (cur_offset < end && cur_offset < i_size) {
++		struct extent_state *cached_state = NULL;
+ 		u64 delalloc_start;
+ 		u64 delalloc_end;
+ 		u64 prealloc_start;
++		u64 lockstart;
++		u64 lockend;
+ 		u64 prealloc_len = 0;
+ 		bool delalloc;
+ 
++		lockstart = round_down(cur_offset, inode->root->fs_info->sectorsize);
++		lockend = round_up(end, inode->root->fs_info->sectorsize);
++
++		/*
++		 * We are only locking for the delalloc range because that's the
++		 * only thing that can change here.  With fiemap we have a lock
++		 * on the inode, so no buffered or direct writes can happen.
++		 *
++		 * However mmaps and normal page writeback will cause this to
++		 * change arbitrarily.  We have to lock the extent lock here to
++		 * make sure that nobody messes with the tree while we're doing
++		 * btrfs_find_delalloc_in_range.
++		 */
++		lock_extent(&inode->io_tree, lockstart, lockend, &cached_state);
+ 		delalloc = btrfs_find_delalloc_in_range(inode, cur_offset, end,
+ 							delalloc_cached_state,
+ 							&delalloc_start,
+ 							&delalloc_end);
++		unlock_extent(&inode->io_tree, lockstart, lockend, &cached_state);
+ 		if (!delalloc)
+ 			break;
+ 
+@@ -2822,15 +2840,15 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+ 		  u64 start, u64 len)
+ {
+ 	const u64 ino = btrfs_ino(inode);
+-	struct extent_state *cached_state = NULL;
+ 	struct extent_state *delalloc_cached_state = NULL;
+ 	struct btrfs_path *path;
+ 	struct fiemap_cache cache = { 0 };
+ 	struct btrfs_backref_share_check_ctx *backref_ctx;
+ 	u64 last_extent_end;
+ 	u64 prev_extent_end;
+-	u64 lockstart;
+-	u64 lockend;
++	u64 range_start;
++	u64 range_end;
++	const u64 sectorsize = inode->root->fs_info->sectorsize;
+ 	bool stopped = false;
+ 	int ret;
+ 
+@@ -2841,12 +2859,11 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+ 		goto out;
+ 	}
+ 
+-	lockstart = round_down(start, inode->root->fs_info->sectorsize);
+-	lockend = round_up(start + len, inode->root->fs_info->sectorsize);
+-	prev_extent_end = lockstart;
++	range_start = round_down(start, sectorsize);
++	range_end = round_up(start + len, sectorsize);
++	prev_extent_end = range_start;
+ 
+ 	btrfs_inode_lock(inode, BTRFS_ILOCK_SHARED);
+-	lock_extent(&inode->io_tree, lockstart, lockend, &cached_state);
+ 
+ 	ret = fiemap_find_last_extent_offset(inode, path, &last_extent_end);
+ 	if (ret < 0)
+@@ -2854,7 +2871,7 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+ 	btrfs_release_path(path);
+ 
+ 	path->reada = READA_FORWARD;
+-	ret = fiemap_search_slot(inode, path, lockstart);
++	ret = fiemap_search_slot(inode, path, range_start);
+ 	if (ret < 0) {
+ 		goto out_unlock;
+ 	} else if (ret > 0) {
+@@ -2866,7 +2883,7 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+ 		goto check_eof_delalloc;
+ 	}
+ 
+-	while (prev_extent_end < lockend) {
++	while (prev_extent_end < range_end) {
+ 		struct extent_buffer *leaf = path->nodes[0];
+ 		struct btrfs_file_extent_item *ei;
+ 		struct btrfs_key key;
+@@ -2889,19 +2906,19 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+ 		 * The first iteration can leave us at an extent item that ends
+ 		 * before our range's start. Move to the next item.
+ 		 */
+-		if (extent_end <= lockstart)
++		if (extent_end <= range_start)
+ 			goto next_item;
+ 
+ 		backref_ctx->curr_leaf_bytenr = leaf->start;
+ 
+ 		/* We have in implicit hole (NO_HOLES feature enabled). */
+ 		if (prev_extent_end < key.offset) {
+-			const u64 range_end = min(key.offset, lockend) - 1;
++			const u64 hole_end = min(key.offset, range_end) - 1;
+ 
+ 			ret = fiemap_process_hole(inode, fieinfo, &cache,
+ 						  &delalloc_cached_state,
+ 						  backref_ctx, 0, 0, 0,
+-						  prev_extent_end, range_end);
++						  prev_extent_end, hole_end);
+ 			if (ret < 0) {
+ 				goto out_unlock;
+ 			} else if (ret > 0) {
+@@ -2911,7 +2928,7 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+ 			}
+ 
+ 			/* We've reached the end of the fiemap range, stop. */
+-			if (key.offset >= lockend) {
++			if (key.offset >= range_end) {
+ 				stopped = true;
+ 				break;
+ 			}
+@@ -3005,29 +3022,41 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+ 	btrfs_free_path(path);
+ 	path = NULL;
+ 
+-	if (!stopped && prev_extent_end < lockend) {
++	if (!stopped && prev_extent_end < range_end) {
+ 		ret = fiemap_process_hole(inode, fieinfo, &cache,
+ 					  &delalloc_cached_state, backref_ctx,
+-					  0, 0, 0, prev_extent_end, lockend - 1);
++					  0, 0, 0, prev_extent_end, range_end - 1);
+ 		if (ret < 0)
+ 			goto out_unlock;
+-		prev_extent_end = lockend;
++		prev_extent_end = range_end;
+ 	}
+ 
+ 	if (cache.cached && cache.offset + cache.len >= last_extent_end) {
+ 		const u64 i_size = i_size_read(&inode->vfs_inode);
+ 
+ 		if (prev_extent_end < i_size) {
++			struct extent_state *cached_state = NULL;
+ 			u64 delalloc_start;
+ 			u64 delalloc_end;
++			u64 lockstart;
++			u64 lockend;
+ 			bool delalloc;
+ 
++			lockstart = round_down(prev_extent_end, sectorsize);
++			lockend = round_up(i_size, sectorsize);
++
++			/*
++			 * See the comment in fiemap_process_hole as to why
++			 * we're doing the locking here.
++			 */
++			lock_extent(&inode->io_tree, lockstart, lockend, &cached_state);
+ 			delalloc = btrfs_find_delalloc_in_range(inode,
+ 								prev_extent_end,
+ 								i_size - 1,
+ 								&delalloc_cached_state,
+ 								&delalloc_start,
+ 								&delalloc_end);
++			unlock_extent(&inode->io_tree, lockstart, lockend, &cached_state);
+ 			if (!delalloc)
+ 				cache.flags |= FIEMAP_EXTENT_LAST;
+ 		} else {
+@@ -3038,7 +3067,6 @@ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+ 	ret = emit_last_fiemap_cache(fieinfo, &cache);
+ 
+ out_unlock:
+-	unlock_extent(&inode->io_tree, lockstart, lockend, &cached_state);
+ 	btrfs_inode_unlock(inode, BTRFS_ILOCK_SHARED);
+ out:
+ 	free_extent_state(delalloc_cached_state);
+-- 
+2.43.0
 
-Responses should be made by Wed, 06 Mar 2024 21:15:26 +0000.
-Anything received after that time might be too late.
-
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.9-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
-and the diffstat can be found below.
-
-thanks,
-
-greg k-h
-
--------------
-Pseudo-Shortlog of commits:
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.7.9-rc1
-
-Danilo Krummrich <dakr@redhat.com>
-    drm/nouveau: don't fini scheduler before entity flush
-
-Geliang Tang <tanggeliang@kylinos.cn>
-    selftests: mptcp: rm subflow with v4/v4mapped addr
-
-Geliang Tang <geliang.tang@linux.dev>
-    selftests: mptcp: add mptcp_lib_is_v6
-
-Geliang Tang <geliang.tang@linux.dev>
-    selftests: mptcp: update userspace pm test helpers
-
-Geliang Tang <geliang.tang@linux.dev>
-    selftests: mptcp: add chk_subflows_total helper
-
-Geliang Tang <geliang.tang@linux.dev>
-    selftests: mptcp: add evts_get_info helper
-
-Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-    KVM/VMX: Move VERW closer to VMentry for MDS mitigation
-
-Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-    KVM/VMX: Use BT+JNC, i.e. EFLAGS.CF to select VMRESUME vs. VMLAUNCH
-
-Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-    x86/bugs: Use ALTERNATIVE() instead of mds_user_clear static key
-
-Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-    x86/entry_32: Add VERW just before userspace transition
-
-Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-    x86/entry_64: Add VERW just before userspace transition
-
-Ming Lei <ming.lei@redhat.com>
-    block: define bvec_iter as __packed __aligned(4)
-
-Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-    gpio: fix resource unwinding order in error path
-
-Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-    gpiolib: Fix the error path order in gpiochip_add_data_with_key()
-
-Arturas Moskvinas <arturas.moskvinas@gmail.com>
-    gpio: 74x164: Enable output pins after registers are reset
-
-Nathan Lynch <nathanl@linux.ibm.com>
-    powerpc/rtas: use correct function name for resetting TCE tables
-
-Gaurav Batra <gbatra@linux.vnet.ibm.com>
-    powerpc/pseries/iommu: IOMMU table is not initialized for kdump over SR-IOV
-
-Fenghua Yu <fenghua.yu@intel.com>
-    dmaengine: idxd: Ensure safe user copy of completion record
-
-Fenghua Yu <fenghua.yu@intel.com>
-    dmaengine: idxd: Remove shadow Event Log head stored in idxd
-
-Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-    phy: qcom-qmp-usb: fix v3 offsets data
-
-Yang Yingliang <yangyingliang@huawei.com>
-    phy: qcom: phy-qcom-m31: fix wrong pointer pass to PTR_ERR()
-
-Alexander Stein <alexander.stein@ew.tq-group.com>
-    phy: freescale: phy-fsl-imx8-mipi-dphy: Fix alias name to use dashes
-
-Kory Maincent <kory.maincent@bootlin.com>
-    dmaengine: dw-edma: eDMA: Add sync read before starting the DMA transfer in remote setup
-
-Kory Maincent <kory.maincent@bootlin.com>
-    dmaengine: dw-edma: HDMA: Add sync read before starting the DMA transfer in remote setup
-
-Kory Maincent <kory.maincent@bootlin.com>
-    dmaengine: dw-edma: Add HDMA remote interrupt configuration
-
-Kory Maincent <kory.maincent@bootlin.com>
-    dmaengine: dw-edma: HDMA_V0_REMOTEL_STOP_INT_EN typo fix
-
-Kory Maincent <kory.maincent@bootlin.com>
-    dmaengine: dw-edma: Fix wrong interrupt bit set for HDMA
-
-Kory Maincent <kory.maincent@bootlin.com>
-    dmaengine: dw-edma: Fix the ch_count hdma callback
-
-Dan Carpenter <dan.carpenter@linaro.org>
-    ASoC: cs35l56: fix reversed if statement in cs35l56_dspwait_asp1tx_put()
-
-Kuniyuki Iwashima <kuniyu@amazon.com>
-    af_unix: Drop oob_skb ref before purging queue in GC.
-
-Kuniyuki Iwashima <kuniyu@amazon.com>
-    af_unix: Fix task hung while purging oob_skb in GC.
-
-NeilBrown <neilb@suse.de>
-    NFS: Fix data corruption caused by congestion.
-
-Peter Ujfalusi <peter.ujfalusi@gmail.com>
-    mfd: twl6030-irq: Revert to use of_match_device()
-
-Paolo Abeni <pabeni@redhat.com>
-    mptcp: fix possible deadlock in subflow diag
-
-Davide Caratti <dcaratti@redhat.com>
-    mptcp: fix double-free on socket dismantle
-
-Paolo Abeni <pabeni@redhat.com>
-    mptcp: fix potential wake-up event loss
-
-Paolo Abeni <pabeni@redhat.com>
-    mptcp: fix snd_wnd initialization for passive socket
-
-Geliang Tang <tanggeliang@kylinos.cn>
-    selftests: mptcp: join: add ss mptcp support check
-
-Paolo Abeni <pabeni@redhat.com>
-    mptcp: push at DSS boundaries
-
-Matthieu Baerts (NGI0) <matttbe@kernel.org>
-    mptcp: avoid printing warning once on client side
-
-Geliang Tang <tanggeliang@kylinos.cn>
-    mptcp: map v4 address to v6 when destroying subflow
-
-Paolo Bonzini <pbonzini@redhat.com>
-    x86/cpu/intel: Detect TME keyid bits before setting MTRR mask registers
-
-Paolo Bonzini <pbonzini@redhat.com>
-    x86/cpu: Allow reducing x86_phys_bits during early_identify_cpu()
-
-Jiri Bohac <jbohac@suse.cz>
-    x86/e820: Don't reserve SETUP_RNG_SEED in e820
-
-Byungchul Park <byungchul@sk.com>
-    mm/vmscan: fix a bug calling wakeup_kswapd() with a wrong zone index
-
-Aneesh Kumar K.V (IBM) <aneesh.kumar@kernel.org>
-    mm/debug_vm_pgtable: fix BUG_ON with pud advanced test
-
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
-    fprobe: Fix to allocate entry_data_size buffer with rethook instances
-
-Bjorn Andersson <quic_bjorande@quicinc.com>
-    pmdomain: qcom: rpmhpd: Fix enabled_corner aggregation
-
-Cristian Marussi <cristian.marussi@arm.com>
-    pmdomain: arm: Fix NULL dereference on scmi_perf_domain removal
-
-Tim Schumacher <timschumi@gmx.de>
-    efivarfs: Request at most 512 bytes for variable names
-
-Nicolin Chen <nicolinc@nvidia.com>
-    iommufd: Fix protection fault in iommufd_test_syz_conv_iova
-
-Nicolin Chen <nicolinc@nvidia.com>
-    iommufd: Fix iopt_access_list_id overwrite bug
-
-Nathan Chancellor <nathan@kernel.org>
-    kbuild: Add -Wa,--fatal-warnings to as-instr invocation
-
-Thomas Weißschuh <linux@weissschuh.net>
-    power: supply: mm8013: select REGMAP_I2C
-
-Samuel Holland <samuel.holland@sifive.com>
-    riscv: Save/restore envcfg CSR during CPU suspend
-
-Samuel Holland <samuel.holland@sifive.com>
-    riscv: Fix enabling cbo.zero when running in M-mode
-
-Zong Li <zong.li@sifive.com>
-    riscv: add CALLER_ADDRx support
-
-Nathan Chancellor <nathan@kernel.org>
-    RISC-V: Drop invalid test from CONFIG_AS_HAS_OPTION_ARCH
-
-Xiubo Li <xiubli@redhat.com>
-    ceph: switch to corrected encoding of max_xattr_size in mdsmap
-
-Elad Nachman <enachman@marvell.com>
-    mmc: sdhci-xenon: fix PHY init clock stability
-
-Elad Nachman <enachman@marvell.com>
-    mmc: sdhci-xenon: add timeout for PHY init complete
-
-Ivan Semenov <ivan@semenov.dev>
-    mmc: core: Fix eMMC initialization with 1-bit bus connection
-
-Christophe Kerello <christophe.kerello@foss.st.com>
-    mmc: mmci: stm32: fix DMA API overlapping mappings warning
-
-Curtis Klein <curtis.klein@hpe.com>
-    dmaengine: fsl-qdma: init irq after reg initialization
-
-Joy Zou <joy.zou@nxp.com>
-    dmaengine: fsl-edma: correct calculation of 'nbytes' in multi-fifo scenario
-
-Tadeusz Struk <tstruk@gigaio.com>
-    dmaengine: ptdma: use consistent DMA masks
-
-Ard Biesheuvel <ardb@kernel.org>
-    crypto: arm64/neonbs - fix out-of-bounds access on short input
-
-Peng Ma <peng.ma@nxp.com>
-    dmaengine: fsl-qdma: fix SoC may hang on 16 byte unaligned read
-
-Rob Clark <robdclark@chromium.org>
-    soc: qcom: pmic_glink: Fix boot when QRTR=m
-
-Ryan Lin <tsung-hua.lin@amd.com>
-    drm/amd/display: Add monitor patch for specific eDP
-
-Ma Jun <Jun.Ma2@amd.com>
-    drm/amdgpu/pm: Fix the power1_min_cap value
-
-Matthew Auld <matthew.auld@intel.com>
-    drm/buddy: fix range bias
-
-Alex Deucher <alexander.deucher@amd.com>
-    Revert "drm/amd/pm: resolve reboot exception for si oland"
-
-Filipe Manana <fdmanana@suse.com>
-    btrfs: send: don't issue unnecessary zero writes for trailing hole
-
-David Sterba <dsterba@suse.com>
-    btrfs: dev-replace: properly validate device names
-
-Filipe Manana <fdmanana@suse.com>
-    btrfs: fix double free of anonymous device after snapshot creation failure
-
-Johannes Berg <johannes.berg@intel.com>
-    wifi: nl80211: reject iftype change with mesh ID change
-
-Elad Nachman <enachman@marvell.com>
-    mtd: rawnand: marvell: fix layouts
-
-Nhat Pham <nphamcs@gmail.com>
-    mm: cachestat: fix folio read-after-free in cache walk
-
-Alexander Ofitserov <oficerovas@altlinux.org>
-    gtp: fix use-after-free and null-ptr-deref in gtp_newlink()
-
-Mickaël Salaün <mic@digikod.net>
-    landlock: Fix asymmetric private inodes referring
-
-Johan Hovold <johan+linaro@kernel.org>
-    Bluetooth: hci_bcm4377: do not mark valid bd_addr as invalid
-
-Willian Wang <git@willian.wang>
-    ALSA: hda/realtek: Add special fixup for Lenovo 14IRP8
-
-Eniac Zhang <eniac-xw.zhang@hp.com>
-    ALSA: hda/realtek: fix mute/micmute LED For HP mt440
-
-Hans Peter <flurry123@gmx.ch>
-    ALSA: hda/realtek: Enable Mute LED on HP 840 G8 (MB 8AB8)
-
-Gergo Koteles <soyer@irl.hu>
-    ALSA: hda/realtek: tas2781: enable subwoofer volume control
-
-Jay Ajit Mate <jay.mate15@gmail.com>
-    ALSA: hda/realtek: Fix top speaker connection on Dell Inspiron 16 Plus 7630
-
-Takashi Iwai <tiwai@suse.de>
-    ALSA: ump: Fix the discard error code from snd_ump_legacy_open()
-
-Takashi Sakamoto <o-takashi@sakamocchi.jp>
-    ALSA: firewire-lib: fix to check cycle continuity
-
-Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-    tomoyo: fix UAF write bug in tomoyo_write_control()
-
-Saravana Kannan <saravanak@google.com>
-    of: property: fw_devlink: Fix stupid bug in remote-endpoint parsing
-
-Sid Pranjale <sidpranjale127@protonmail.com>
-    drm/nouveau: keep DMA buffers required for suspend/resume
-
-Filipe Manana <fdmanana@suse.com>
-    btrfs: fix race between ordered extent completion and fiemap
-
-Dimitris Vlachos <dvlachos@ics.forth.gr>
-    riscv: Sparse-Memory/vmemmap out-of-bounds fix
-
-Alexandre Ghiti <alexghiti@rivosinc.com>
-    riscv: Fix pte_leaf_size() for NAPOT
-
-Alexandre Ghiti <alexghiti@rivosinc.com>
-    Revert "riscv: mm: support Svnapot in huge vmap"
-
-Vadim Shakirov <vadim.shakirov@syntacore.com>
-    drivers: perf: ctr_get_width function for legacy is not defined
-
-Vadim Shakirov <vadim.shakirov@syntacore.com>
-    drivers: perf: added capabilities for legacy PMU
-
-Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-    drm/amd/display: Prevent potential buffer overflow in map_hw_resources
-
-David Howells <dhowells@redhat.com>
-    afs: Fix endless loop in directory parsing
-
-Jiri Slaby (SUSE) <jirislaby@kernel.org>
-    fbcon: always restore the old font data in fbcon_do_set_font()
-
-Thierry Reding <treding@nvidia.com>
-    drm/tegra: Remove existing framebuffer only if we support display
-
-Conor Dooley <conor@kernel.org>
-    RISC-V: Ignore V from the riscv,isa DT property on older T-Head CPUs
-
-Richard Fitzgerald <rf@opensource.cirrus.com>
-    ASoC: soc-card: Fix missing locking in snd_soc_card_get_kcontrol()
-
-Richard Fitzgerald <rf@opensource.cirrus.com>
-    ASoC: cs35l56: Fix deadlock in ASP1 mixer register initialization
-
-Richard Fitzgerald <rf@opensource.cirrus.com>
-    ASoC: cs35l56: Fix misuse of wm_adsp 'part' string for silicon revision
-
-Richard Fitzgerald <rf@opensource.cirrus.com>
-    ASoC: cs35l56: Fix for initializing ASP1 mixer registers
-
-Richard Fitzgerald <rf@opensource.cirrus.com>
-    ASoC: cs35l56: Don't add the same register patch multiple times
-
-Richard Fitzgerald <rf@opensource.cirrus.com>
-    ASoC: cs35l56: cs35l56_component_remove() must clean up wm_adsp
-
-Richard Fitzgerald <rf@opensource.cirrus.com>
-    ASoC: cs35l56: cs35l56_component_remove() must clear cs35l56->component
-
-Alexandre Ghiti <alexghiti@rivosinc.com>
-    riscv: Fix build error if !CONFIG_ARCH_ENABLE_HUGEPAGE_MIGRATION
-
-Yangyu Chen <cyy@cyyself.name>
-    riscv: mm: fix NOCACHE_THEAD does not set bit[61] correctly
-
-Mikko Perttunen <mperttunen@nvidia.com>
-    gpu: host1x: Skip reset assert on Tegra186
-
-Colin Ian King <colin.i.king@gmail.com>
-    ASoC: qcom: Fix uninitialized pointer dmactl
-
-Takashi Iwai <tiwai@suse.de>
-    ALSA: Drop leftover snd-rtctimer stuff from Makefile
-
-Richard Fitzgerald <rf@opensource.cirrus.com>
-    ASoC: cs35l56: Must clear HALO_STATE before issuing SYSTEM_RESET
-
-Hans de Goede <hdegoede@redhat.com>
-    power: supply: bq27xxx-i2c: Do not free non existing IRQ
-
-Arnd Bergmann <arnd@arndb.de>
-    efi/capsule-loader: fix incorrect allocation size
-
-Jisheng Zhang <jszhang@kernel.org>
-    riscv: tlb: fix __p*d_free_tlb()
-
-Sabrina Dubroca <sd@queasysnail.net>
-    tls: fix use-after-free on failed backlog decryption
-
-Sabrina Dubroca <sd@queasysnail.net>
-    tls: separate no-async decryption request handling from async
-
-Sabrina Dubroca <sd@queasysnail.net>
-    tls: fix peeking with sync+async decryption
-
-Sabrina Dubroca <sd@queasysnail.net>
-    tls: decrement decrypt_pending if no async completion will be called
-
-Lukasz Majewski <lukma@denx.de>
-    net: hsr: Use correct offset for HSR TLV values in supervisory HSR frames
-
-Oleksij Rempel <o.rempel@pengutronix.de>
-    igb: extend PTP timestamp adjustments to i211
-
-Lin Ma <linma@zju.edu.cn>
-    rtnetlink: fix error logic of IFLA_BRIDGE_FLAGS writing back
-
-Jakub Kicinski <kuba@kernel.org>
-    tools: ynl: fix handling of multiple mcast groups
-
-Florian Westphal <fw@strlen.de>
-    netfilter: bridge: confirm multicast packets before passing them up the stack
-
-Ignat Korchagin <ignat@cloudflare.com>
-    netfilter: nf_tables: allow NFPROTO_INET in nft_(match/target)_validate()
-
-Zijun Hu <quic_zijuhu@quicinc.com>
-    Bluetooth: qca: Fix triggering coredump implementation
-
-Janaki Ramaiah Thota <quic_janathot@quicinc.com>
-    Bluetooth: hci_qca: Set BDA quirk bit if fwnode exists in DT
-
-Zijun Hu <quic_zijuhu@quicinc.com>
-    Bluetooth: qca: Fix wrong event type for patch config command
-
-Kai-Heng Feng <kai.heng.feng@canonical.com>
-    Bluetooth: Enforce validation on max value of connection interval
-
-Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-    Bluetooth: hci_event: Fix handling of HCI_EV_IO_CAPA_REQUEST
-
-Zijun Hu <quic_zijuhu@quicinc.com>
-    Bluetooth: hci_event: Fix wrongly recorded wakeup BD_ADDR
-
-Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-    Bluetooth: hci_sync: Fix accept_list when attempting to suspend
-
-Ying Hsu <yinghsu@chromium.org>
-    Bluetooth: Avoid potential use-after-free in hci_error_reset
-
-Jonas Dreßler <verdre@v0yd.nl>
-    Bluetooth: hci_sync: Check the correct flag before starting a scan
-
-Jakub Raczynski <j.raczynski@samsung.com>
-    stmmac: Clear variable when destroying workqueue
-
-Justin Iurman <justin.iurman@uliege.be>
-    uapi: in6: replace temporary label with rfc9486
-
-Oleksij Rempel <o.rempel@pengutronix.de>
-    net: lan78xx: fix "softirq work is pending" error
-
-Javier Carrasco <javier.carrasco.cruz@gmail.com>
-    net: usb: dm9601: fix wrong return value in dm9601_mdio_read
-
-Jakub Kicinski <kuba@kernel.org>
-    veth: try harder when allocating queue memory
-
-Oleksij Rempel <o.rempel@pengutronix.de>
-    lan78xx: enable auto speed configuration for LAN7850 if no EEPROM is detected
-
-Eric Dumazet <edumazet@google.com>
-    ipv6: fix potential "struct net" leak in inet6_rtm_getaddr()
-
-Jakub Kicinski <kuba@kernel.org>
-    net: veth: clear GRO when clearing XDP even when down
-
-Doug Smythies <dsmythies@telus.net>
-    cpufreq: intel_pstate: fix pstate limits enforcement for adjust_perf call back
-
-Yunjian Wang <wangyunjian@huawei.com>
-    tun: Fix xdp_rxq_info's queue_index when detaching
-
-Vladimir Oltean <vladimir.oltean@nxp.com>
-    net: dpaa: fman_memac: accept phy-interface-type = "10gbase-r" in the device tree
-
-Jeremy Kerr <jk@codeconstruct.com.au>
-    net: mctp: take ownership of skb in mctp_local_output
-
-Florian Westphal <fw@strlen.de>
-    net: ip_tunnel: prevent perpetual headroom growth
-
-Florian Westphal <fw@strlen.de>
-    netlink: add nla be16/32 types to minlen array
-
-Ryosuke Yasuoka <ryasuoka@redhat.com>
-    netlink: Fix kernel-infoleak-after-free in __skb_datagram_iter
-
-Théo Lebrun <theo.lebrun@bootlin.com>
-    spi: cadence-qspi: remove system-wide suspend helper calls from runtime PM hooks
-
-Théo Lebrun <theo.lebrun@bootlin.com>
-    spi: cadence-qspi: fix pointer reference in runtime PM hooks
-
-Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-    ice: fix pin phase adjust updates on PF reset
-
-Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-    ice: fix dpll periodic work data updates on PF reset
-
-Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-    ice: fix dpll and dpll_pin data access on PF reset
-
-Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-    ice: fix dpll input pin phase_adjust value updates
-
-Yochai Hagvi <yochai.hagvi@intel.com>
-    ice: fix connection state of DPLL and out pin
-
-Han Xu <han.xu@nxp.com>
-    mtd: spinand: gigadevice: Fix the get ecc status issue
-
-Josef Bacik <josef@toxicpanda.com>
-    btrfs: fix deadlock with fiemap and extent locking
-
-
--------------
-
-Diffstat:
-
- Documentation/arch/x86/mds.rst                     |  34 +++-
- Makefile                                           |   4 +-
- arch/arm64/crypto/aes-neonbs-glue.c                |  11 ++
- arch/powerpc/include/asm/rtas.h                    |   4 +-
- arch/powerpc/kernel/rtas.c                         |   9 +-
- arch/powerpc/platforms/pseries/iommu.c             | 156 +++++++++++------
- arch/riscv/Kconfig                                 |   1 -
- arch/riscv/include/asm/csr.h                       |   2 +
- arch/riscv/include/asm/ftrace.h                    |   5 +
- arch/riscv/include/asm/hugetlb.h                   |   2 +
- arch/riscv/include/asm/pgalloc.h                   |  20 ++-
- arch/riscv/include/asm/pgtable-64.h                |   2 +-
- arch/riscv/include/asm/pgtable.h                   |   6 +-
- arch/riscv/include/asm/suspend.h                   |   1 +
- arch/riscv/include/asm/vmalloc.h                   |  61 +------
- arch/riscv/kernel/Makefile                         |   2 +
- arch/riscv/kernel/cpufeature.c                     |  17 +-
- arch/riscv/kernel/return_address.c                 |  48 +++++
- arch/riscv/kernel/suspend.c                        |   4 +
- arch/riscv/mm/hugetlbpage.c                        |   2 +
- arch/x86/entry/entry_32.S                          |   3 +
- arch/x86/entry/entry_64.S                          |  11 ++
- arch/x86/entry/entry_64_compat.S                   |   1 +
- arch/x86/include/asm/entry-common.h                |   1 -
- arch/x86/include/asm/nospec-branch.h               |  12 --
- arch/x86/kernel/cpu/bugs.c                         |  15 +-
- arch/x86/kernel/cpu/common.c                       |   4 +-
- arch/x86/kernel/cpu/intel.c                        | 178 ++++++++++---------
- arch/x86/kernel/e820.c                             |   8 +-
- arch/x86/kernel/nmi.c                              |   3 -
- arch/x86/kvm/vmx/run_flags.h                       |   7 +-
- arch/x86/kvm/vmx/vmenter.S                         |   9 +-
- arch/x86/kvm/vmx/vmx.c                             |  20 ++-
- drivers/bluetooth/btqca.c                          |   2 +-
- drivers/bluetooth/hci_bcm4377.c                    |   3 +-
- drivers/bluetooth/hci_qca.c                        |  22 ++-
- drivers/cpufreq/intel_pstate.c                     |   3 +
- drivers/dma/dw-edma/dw-edma-v0-core.c              |  17 ++
- drivers/dma/dw-edma/dw-hdma-v0-core.c              |  39 +++--
- drivers/dma/dw-edma/dw-hdma-v0-regs.h              |   2 +-
- drivers/dma/fsl-edma-common.c                      |   2 +-
- drivers/dma/fsl-qdma.c                             |  25 +--
- drivers/dma/idxd/cdev.c                            |   2 +-
- drivers/dma/idxd/debugfs.c                         |   2 +-
- drivers/dma/idxd/idxd.h                            |   1 -
- drivers/dma/idxd/init.c                            |  15 +-
- drivers/dma/idxd/irq.c                             |   3 +-
- drivers/dma/ptdma/ptdma-dmaengine.c                |   2 -
- drivers/firmware/efi/capsule-loader.c              |   2 +-
- drivers/gpio/gpio-74x164.c                         |   4 +-
- drivers/gpio/gpiolib.c                             |  12 +-
- .../drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c  |   6 +-
- drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c |   5 +
- drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c         |  29 +++
- drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c  |   9 +-
- drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c    |   9 +-
- .../drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c    |   9 +-
- .../gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c   |   9 +-
- .../gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c   |   9 +-
- drivers/gpu/drm/drm_buddy.c                        |  10 ++
- drivers/gpu/drm/nouveau/nouveau_drm.c              |   5 +-
- drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c     |   4 +-
- drivers/gpu/drm/tegra/drm.c                        |  23 ++-
- drivers/gpu/host1x/dev.c                           |  15 +-
- drivers/gpu/host1x/dev.h                           |   6 +
- drivers/iommu/iommufd/io_pagetable.c               |   9 +-
- drivers/iommu/iommufd/selftest.c                   |  27 ++-
- drivers/mfd/twl6030-irq.c                          |  10 +-
- drivers/mmc/core/mmc.c                             |   2 +
- drivers/mmc/host/mmci_stm32_sdmmc.c                |  24 +++
- drivers/mmc/host/sdhci-xenon-phy.c                 |  48 ++++-
- drivers/mtd/nand/raw/marvell_nand.c                |  13 +-
- drivers/mtd/nand/spi/gigadevice.c                  |   6 +-
- drivers/net/ethernet/freescale/fman/fman_memac.c   |  18 +-
- drivers/net/ethernet/intel/ice/ice_dpll.c          |  91 ++++++++--
- drivers/net/ethernet/intel/igb/igb_ptp.c           |   5 +-
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  |   4 +-
- drivers/net/gtp.c                                  |  12 +-
- drivers/net/tun.c                                  |   1 +
- drivers/net/usb/dm9601.c                           |   2 +-
- drivers/net/usb/lan78xx.c                          |   5 +-
- drivers/net/veth.c                                 |  40 ++---
- drivers/of/property.c                              |   2 +-
- drivers/perf/riscv_pmu.c                           |  18 +-
- drivers/perf/riscv_pmu_legacy.c                    |  10 +-
- drivers/phy/freescale/phy-fsl-imx8-mipi-dphy.c     |   2 +-
- drivers/phy/qualcomm/phy-qcom-m31.c                |   2 +-
- drivers/phy/qualcomm/phy-qcom-qmp-usb.c            |  10 +-
- drivers/pmdomain/arm/scmi_perf_domain.c            |   3 +
- drivers/pmdomain/qcom/rpmhpd.c                     |   7 +-
- drivers/power/supply/Kconfig                       |   1 +
- drivers/power/supply/bq27xxx_battery_i2c.c         |   4 +-
- drivers/soc/qcom/pmic_glink.c                      |  21 +--
- drivers/spi/spi-cadence-quadspi.c                  |  11 +-
- drivers/video/fbdev/core/fbcon.c                   |   8 +-
- fs/afs/dir.c                                       |   4 +-
- fs/btrfs/dev-replace.c                             |  24 ++-
- fs/btrfs/disk-io.c                                 |  22 +--
- fs/btrfs/disk-io.h                                 |   2 +-
- fs/btrfs/extent_io.c                               | 165 ++++++++++++++---
- fs/btrfs/ioctl.c                                   |   2 +-
- fs/btrfs/send.c                                    |  17 +-
- fs/btrfs/transaction.c                             |   2 +-
- fs/ceph/mdsmap.c                                   |   7 +-
- fs/ceph/mdsmap.h                                   |   6 +-
- fs/efivarfs/vars.c                                 |  17 +-
- fs/nfs/write.c                                     |   4 +-
- include/linux/bvec.h                               |   2 +-
- include/linux/netfilter.h                          |   1 +
- include/net/mctp.h                                 |   1 +
- include/sound/soc-card.h                           |   2 +
- include/uapi/linux/in6.h                           |   2 +-
- kernel/trace/fprobe.c                              |  14 +-
- lib/nlattr.c                                       |   4 +
- mm/debug_vm_pgtable.c                              |   8 +
- mm/filemap.c                                       |  51 +++---
- mm/migrate.c                                       |   8 +
- net/bluetooth/hci_core.c                           |   7 +-
- net/bluetooth/hci_event.c                          |  13 +-
- net/bluetooth/hci_sync.c                           |   7 +-
- net/bluetooth/l2cap_core.c                         |   8 +-
- net/bridge/br_netfilter_hooks.c                    |  96 ++++++++++
- net/bridge/netfilter/nf_conntrack_bridge.c         |  30 ++++
- net/core/rtnetlink.c                               |  11 +-
- net/hsr/hsr_forward.c                              |   2 +-
- net/ipv4/ip_tunnel.c                               |  28 ++-
- net/ipv6/addrconf.c                                |   7 +-
- net/mctp/route.c                                   |  10 +-
- net/mptcp/diag.c                                   |   3 +
- net/mptcp/options.c                                |   2 +-
- net/mptcp/pm_userspace.c                           |  10 ++
- net/mptcp/protocol.c                               |  52 +++++-
- net/mptcp/protocol.h                               |  21 +--
- net/netfilter/nf_conntrack_core.c                  |   1 +
- net/netfilter/nft_compat.c                         |  20 +++
- net/netlink/af_netlink.c                           |   2 +-
- net/tls/tls_sw.c                                   |  40 +++--
- net/unix/garbage.c                                 |  21 +--
- net/wireless/nl80211.c                             |   2 +
- scripts/Kconfig.include                            |   2 +-
- scripts/Makefile.compiler                          |   2 +-
- security/landlock/fs.c                             |   4 +-
- security/tomoyo/common.c                           |   3 +-
- sound/core/Makefile                                |   1 -
- sound/core/ump.c                                   |   4 +-
- sound/firewire/amdtp-stream.c                      |   2 +-
- sound/pci/hda/patch_realtek.c                      |  33 +++-
- sound/soc/codecs/cs35l45.c                         |   2 +-
- sound/soc/codecs/cs35l56-shared.c                  |   8 +-
- sound/soc/codecs/cs35l56.c                         | 195 ++++++++++++++++++---
- sound/soc/codecs/cs35l56.h                         |   1 +
- sound/soc/fsl/fsl_xcvr.c                           |  12 +-
- sound/soc/qcom/lpass-cdc-dma.c                     |   2 +-
- sound/soc/soc-card.c                               |  24 ++-
- tools/net/ynl/lib/ynl.c                            |   1 +
- tools/testing/selftests/net/mptcp/mptcp_connect.sh |  16 +-
- tools/testing/selftests/net/mptcp/mptcp_join.sh    | 192 ++++++++++++--------
- tools/testing/selftests/net/mptcp/mptcp_lib.sh     |  15 ++
- tools/testing/selftests/net/mptcp/mptcp_sockopt.sh |   8 +-
- tools/testing/selftests/net/mptcp/userspace_pm.sh  |  86 +++++----
- 160 files changed, 1927 insertions(+), 829 deletions(-)
 
 
 
