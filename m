@@ -1,177 +1,106 @@
-Return-Path: <stable+bounces-25996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D039A870C7D
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:26:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8201F870D39
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2BCBFB248B3
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:26:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A72E71C24F14
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 226091F92C;
-	Mon,  4 Mar 2024 21:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9412A7C086;
+	Mon,  4 Mar 2024 21:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJTghnHF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uZt/BHTj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18361CA94;
-	Mon,  4 Mar 2024 21:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5216F1C680;
+	Mon,  4 Mar 2024 21:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587573; cv=none; b=iyirjt0p6GOI1MaASR5tPiR4K4xuIw/tBS7hqKy70yxs03nvLjpsbJLlyXzJbBRPIsBecZJbm6ae3xFiAxKptVYrszCVnAlMEHeXFkcsMt5YQ3jheiTLKHlbAHT1P9njJGJTqc7jekBPZFkvlfg4fk8ddE1/4OmiYoorFYf7N8o=
+	t=1709587912; cv=none; b=jem6ygWUPvqJxVkYckOcqjoOsQrxEf2xioD8n/xHYJMz2oh6YwPkpG8xTxPmlsmWz5A9AEx2eSf2dTYJIRgVJuaFTrw1D3rdGrtOUw+dGFR79u0IdXopN9uwTbW9u3yABJfehXEIABNMPgH2vvO8N8tDOl3ChvhrOJsn87nFmf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587573; c=relaxed/simple;
-	bh=j3/VuXcdAAUeB/9osjvAgkL6rASQvBSAah7VCvAx5wg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jvGSFS0I72WqvU+wkH9jONpOb8sPn/DzpZz/q/UeEKGHFl4LE+86E/eaSVyvRWQlQCJWr9kUAKU56oarAan02y8nqj7EYrG00ZCEObgQKlMBbwj/rf+GJB3rZnnmRfVql/Y6hq4XeuZ1mBhB6NgVSzPOAWWdXHAf01hRHetgRzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJTghnHF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1CC1C433C7;
-	Mon,  4 Mar 2024 21:26:12 +0000 (UTC)
+	s=arc-20240116; t=1709587912; c=relaxed/simple;
+	bh=cwVWzSvnpztWNlsDFv+6u8+A+NyXtSLJJdAGTJccr0o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=luJ8ZQDbeCXdAJMc6xUDo6O++xivLCu9dsHOr3MvD23rTZ2uca/R5Iz/efCIY5XvXxLrf1ZXhtVyQDHQVCZu11jrHRZ6G2+F9V4Jte2FrwId+l1vjrSiTMzb95NcxR3yioZFuUfrjyMWcfZkLLq408lZozsl9zTYrzHXC6qhqTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uZt/BHTj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A9DC433F1;
+	Mon,  4 Mar 2024 21:31:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587573;
-	bh=j3/VuXcdAAUeB/9osjvAgkL6rASQvBSAah7VCvAx5wg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=AJTghnHFzAZkVVOP3bTPWb0PI/JGS7hXwJuVBRfdKlN9FgW3WHe3Vz07oRnrljkcp
-	 9cVguoS36kVFCueuuhNdSP66VM/hihp8RmxIaXOqnpnIfT4JJwQuhj4/Vu0cT/YS0r
-	 rCq+wvoEp9w5siDgSdZLKhQZKydWCspuMJoAdlmM=
+	s=korg; t=1709587912;
+	bh=cwVWzSvnpztWNlsDFv+6u8+A+NyXtSLJJdAGTJccr0o=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uZt/BHTjCAAzARdX8RR0bCi2g531mOiuDnbAIx1aItnV2WBaOy3hyx1OgXQl7oABj
+	 GuHn4Ahf0azhnJfVOuOsWnjJCpF1pahyv2PoRZ/7GebxZjyLnLZTnlEfiRXJA1RoDU
+	 8XtNzBZbSeO4v1taE5JUX6MynjLcqG85ZVdlxugI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	allen.lkml@gmail.com
-Subject: [PATCH 4.19 00/16] 4.19.309-rc1 review
-Date: Mon,  4 Mar 2024 21:23:21 +0000
-Message-ID: <20240304211534.328737119@linuxfoundation.org>
+	Serge Semin <fancer.lancer@gmail.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 137/162] dmaengine: dw-edma: HDMA_V0_REMOTEL_STOP_INT_EN typo fix
+Date: Mon,  4 Mar 2024 21:23:22 +0000
+Message-ID: <20240304211556.107982200@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.309-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-4.19.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 4.19.309-rc1
-X-KernelTest-Deadline: 2024-03-06T21:15+00:00
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 4.19.309 release.
-There are 16 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
-Responses should be made by Wed, 06 Mar 2024 21:15:26 +0000.
-Anything received after that time might be too late.
+------------------
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.309-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
-and the diffstat can be found below.
+From: Kory Maincent <kory.maincent@bootlin.com>
 
-thanks,
+[ Upstream commit 930a8a015dcfde4b8906351ff081066dc277748c ]
 
-greg k-h
+Fix "HDMA_V0_REMOTEL_STOP_INT_EN" typo error
 
--------------
-Pseudo-Shortlog of commits:
+Fixes: e74c39573d35 ("dmaengine: dw-edma: Add support for native HDMA")
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+Link: https://lore.kernel.org/r/20240129-b4-feature_hdma_mainline-v7-3-8e8c1acb7a46@bootlin.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/dma/dw-edma/dw-hdma-v0-regs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 4.19.309-rc1
+diff --git a/drivers/dma/dw-edma/dw-hdma-v0-regs.h b/drivers/dma/dw-edma/dw-hdma-v0-regs.h
+index a974abdf8aaf5..eab5fd7177e54 100644
+--- a/drivers/dma/dw-edma/dw-hdma-v0-regs.h
++++ b/drivers/dma/dw-edma/dw-hdma-v0-regs.h
+@@ -15,7 +15,7 @@
+ #define HDMA_V0_LOCAL_ABORT_INT_EN		BIT(6)
+ #define HDMA_V0_REMOTE_ABORT_INT_EN		BIT(5)
+ #define HDMA_V0_LOCAL_STOP_INT_EN		BIT(4)
+-#define HDMA_V0_REMOTEL_STOP_INT_EN		BIT(3)
++#define HDMA_V0_REMOTE_STOP_INT_EN		BIT(3)
+ #define HDMA_V0_ABORT_INT_MASK			BIT(2)
+ #define HDMA_V0_STOP_INT_MASK			BIT(0)
+ #define HDMA_V0_LINKLIST_EN			BIT(0)
+-- 
+2.43.0
 
-Arturas Moskvinas <arturas.moskvinas@gmail.com>
-    gpio: 74x164: Enable output pins after registers are reset
-
-Baokun Li <libaokun1@huawei.com>
-    cachefiles: fix memory leak in cachefiles_add_cache()
-
-Ivan Semenov <ivan@semenov.dev>
-    mmc: core: Fix eMMC initialization with 1-bit bus connection
-
-David Sterba <dsterba@suse.com>
-    btrfs: dev-replace: properly validate device names
-
-Johannes Berg <johannes.berg@intel.com>
-    wifi: nl80211: reject iftype change with mesh ID change
-
-Alexander Ofitserov <oficerovas@altlinux.org>
-    gtp: fix use-after-free and null-ptr-deref in gtp_newlink()
-
-Takashi Iwai <tiwai@suse.de>
-    ALSA: Drop leftover snd-rtctimer stuff from Makefile
-
-Hans de Goede <hdegoede@redhat.com>
-    power: supply: bq27xxx-i2c: Do not free non existing IRQ
-
-Arnd Bergmann <arnd@arndb.de>
-    efi/capsule-loader: fix incorrect allocation size
-
-Kai-Heng Feng <kai.heng.feng@canonical.com>
-    Bluetooth: Enforce validation on max value of connection interval
-
-Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-    Bluetooth: hci_event: Fix handling of HCI_EV_IO_CAPA_REQUEST
-
-Ying Hsu <yinghsu@chromium.org>
-    Bluetooth: Avoid potential use-after-free in hci_error_reset
-
-Javier Carrasco <javier.carrasco.cruz@gmail.com>
-    net: usb: dm9601: fix wrong return value in dm9601_mdio_read
-
-Oleksij Rempel <o.rempel@pengutronix.de>
-    lan78xx: enable auto speed configuration for LAN7850 if no EEPROM is detected
-
-Yunjian Wang <wangyunjian@huawei.com>
-    tun: Fix xdp_rxq_info's queue_index when detaching
-
-Ryosuke Yasuoka <ryasuoka@redhat.com>
-    netlink: Fix kernel-infoleak-after-free in __skb_datagram_iter
-
-
--------------
-
-Diffstat:
-
- Makefile                                   |  4 ++--
- drivers/firmware/efi/capsule-loader.c      |  2 +-
- drivers/gpio/gpio-74x164.c                 |  4 ++--
- drivers/mmc/core/mmc.c                     |  2 ++
- drivers/net/gtp.c                          | 12 ++++++------
- drivers/net/tun.c                          |  1 +
- drivers/net/usb/dm9601.c                   |  2 +-
- drivers/net/usb/lan78xx.c                  |  3 ++-
- drivers/power/supply/bq27xxx_battery_i2c.c |  4 +++-
- fs/btrfs/dev-replace.c                     | 24 ++++++++++++++++++++----
- fs/cachefiles/bind.c                       |  3 +++
- net/bluetooth/hci_core.c                   |  7 ++++---
- net/bluetooth/hci_event.c                  |  9 ++++++++-
- net/bluetooth/l2cap_core.c                 |  8 +++++++-
- net/netlink/af_netlink.c                   |  2 +-
- net/wireless/nl80211.c                     |  2 ++
- sound/core/Makefile                        |  1 -
- 17 files changed, 65 insertions(+), 25 deletions(-)
 
 
 
