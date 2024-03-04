@@ -1,111 +1,142 @@
-Return-Path: <stable+bounces-25914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1A62870095
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 12:43:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 287F48700D7
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 12:56:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 284DDB23E66
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 11:43:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AF621C20A8D
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 11:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2660E3A1D7;
-	Mon,  4 Mar 2024 11:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 921503C067;
+	Mon,  4 Mar 2024 11:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="vVbqPv7c";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="R8R7g7uA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AZJ1cpMh"
 X-Original-To: stable@vger.kernel.org
-Received: from wfout1-smtp.messagingengine.com (wfout1-smtp.messagingengine.com [64.147.123.144])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322B73838B;
-	Mon,  4 Mar 2024 11:43:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.144
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C122C3BB4E;
+	Mon,  4 Mar 2024 11:55:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709552608; cv=none; b=f61FirhPLunGnM22BkeFm8rUuhGb6pdfiELpIPmqeXLsuC7VzG1jhrjeNkhBM3KQobEYxV2X3mFBvdw8aL+XRN0Sif0wCktbJHAC1bRLQy0El1GY5ABYN1ZSaPy1/ASzl+L/gDmIhsRiQP3H8YMEfa+p36xYBl36CWXer82jCC8=
+	t=1709553355; cv=none; b=lLFDB8eT05VqUkLZc9Hqu6tei3kcp2oLw7nX/dVfWiNKr+zsRbnJRuKGr40Vdb17+gtbnYp1h48kGNXB08qgAygMV/LtoVh/3GQERCpIN7bYCefss7a5XvyYA1lyljjOZTLYrBTe2SiWbtqBy86ijKttZSWbH/NWV3K3+dfM/fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709552608; c=relaxed/simple;
-	bh=3udXBRehqBkcrC0yUomfJrS2xBhn8210xOULcGJWHM0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ApHIu0NYC7s0tNEiiimGYPYm4wSGF6Iy1Mk2/fZfIm9+reyUjzovtS4bGRm73p8rYlvoRm8MkBDtzn7vvq8unieXJO9mXcy+8BzVW6vWQ37lHUfs70GPkb2A/vIQM61+HQTzqz3a3rgVUb24tAYWXRN41uKN9D16ZGzaLSxQuOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=vVbqPv7c; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=R8R7g7uA; arc=none smtp.client-ip=64.147.123.144
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailfout.west.internal (Postfix) with ESMTP id C638A1C000A6;
-	Mon,  4 Mar 2024 06:43:25 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Mon, 04 Mar 2024 06:43:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1709552605; x=1709639005; bh=vOSWpqy3V6
-	RbtrkvImNACTXOXX4i5AAPC1ZApf+eTPU=; b=vVbqPv7cjdYdqyV9W+QOnvwlHf
-	JHwlVKeF8SeD+xO6tQlIA18kxvPrpplfO+j/b+c5BQZMQBboPIQjRbQagPgtQk2s
-	1e0hY2jdk1dx10UrugnUKLFgghRwtaJkZp4l4ZQ3COfEWJK/LVBlm1f6cf8Vfheu
-	l4YUBRmXKAzLOFSMtiAmqfGcjKNjsEJTM3fvSop3V1rUf8cgXxU6k5ufAv3HtiEj
-	BRZaPdUXO9/eOrFdkrt7fcIq8aO7lCvGFMWkJAj0r5WU0w7y7+AxigQtYbQmIJ63
-	YFtY7NP4aXcyn82R6akqbOgBfZI2QSwen/x0nQFtqhJXlU0WKSr0ChNVpEGg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1709552605; x=1709639005; bh=vOSWpqy3V6RbtrkvImNACTXOXX4i
-	5AAPC1ZApf+eTPU=; b=R8R7g7uA41jDUEHRA7drSNj6DMRwHbPLARaSu+95JkNB
-	1Fukgsh/Stexc1znPE4718EzCirAn2JC1O5g0x4rwaeYNEtrmajgDGV+ekTn+siF
-	Dl7Pj+NnhCOaFbdRfMO1rpsISTjwKKMObYyvSY0vpZ7Xa4RE9yx6Adr/z2lfmPUi
-	1MV/84U+/Sleu/SULGI76yll/4VJu9HLHB4cTQFkWvq55HFAHAdoNGvZxoh+RJTu
-	ppTdow593xhDv83YiP5iSrZx1KiAR/sqsbJpJ0Ol56oAXDbpdpOwT7mOu2iwTdkF
-	AJQg+J3n5khck4cBndCa1UVCxADfVKpbntbaq/4wKA==
-X-ME-Sender: <xms:3LPlZTKQVkhyp-8kPNQiAPkEoiAOPhypdMilTRTgKM6SjSOIwFiA7Q>
-    <xme:3LPlZXJtdiRj6dxvvZ-ENaKuBNkrC9AhDgSEcN28WNdTbS6TS1yvyMd9ywQZxK29L
-    vwy-VQGbYsOlg>
-X-ME-Received: <xmr:3LPlZbtdOaXK_Lt_bmckPauD05cLo7ruJdqUGgotpsywqq47nZ8qxBjY6tt0lrYD3zK7zayXyqO0jWfF24PynErniOs0KVIpKDJ9gQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrheejgdeftdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
-    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeegheeuhe
-    fgtdeluddtleekfeegjeetgeeikeehfeduieffvddufeefleevtddtvdenucffohhmrghi
-    nhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
-X-ME-Proxy: <xmx:3LPlZcZW6rp0QXySujjsvDQ6XRS8bi-eYmS8yXxoJ6TilwCgs_Jq2g>
-    <xmx:3LPlZaaaiA4mG_prTAKCASmvvWexZQbAenLtWk-hahxOVKyOjbKQ9w>
-    <xmx:3LPlZQCZCfEGtA41qECQcAgcJXp-wVZ0B_edSUtbIGYeQ3NINBvZpg>
-    <xmx:3bPlZQMrtzbsOwoNLwETnPZv1oxzYzxapDz_7yF4nxeUsz1s4ATi2XlDEWc>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 4 Mar 2024 06:43:24 -0500 (EST)
-Date: Mon, 4 Mar 2024 12:42:42 +0100
-From: Greg KH <greg@kroah.com>
-To: Ard Biesheuvel <ardb+git@google.com>
-Cc: stable@vger.kernel.org, linux-efi@vger.kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: Re: [PATCH stable-v6.1 00/18] efistub/x86 changes for secure boot
-Message-ID: <2024030431-giblet-derail-8c7e@gregkh>
-References: <20240304111937.2556102-20-ardb+git@google.com>
+	s=arc-20240116; t=1709553355; c=relaxed/simple;
+	bh=STXcOLTjf1xq1SwKva2e5Epz+VhE7cqnT+3mPxu+aNA=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:From:Subject:
+	 In-Reply-To:Content-Type; b=SlUTVox9NfDXxm2E+WFaWFe8TJYugTSVKTLtLlh8RV+c75bAiP3vQIsxxAEk85B9zkjpba28F+NmJJt9psCpWjKPvZpn6l4l1geW8hE3eg2q90C5j/HtyzybV2pHOc5pfA/k1J6qDOLhS22Fs26TpXMo9vZnboHzucm3IERZgdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AZJ1cpMh; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709553354; x=1741089354;
+  h=message-id:date:mime-version:to:cc:references:from:
+   subject:in-reply-to:content-transfer-encoding;
+  bh=STXcOLTjf1xq1SwKva2e5Epz+VhE7cqnT+3mPxu+aNA=;
+  b=AZJ1cpMhZWrq6eJRZd5OwuUIHr6PIqOlCbr/NEWRFIhKpnABwxoWdxcE
+   CvonFc7DDBciUkx1Fh6D/SLhWuetbKLuz9fhL4jrdRxzP52DaD0ECmmyo
+   w3xzFKN5Bdtsazethez2RMhYRb6lm0ix+eF1aHYm7sDEwAceiZnBy0clr
+   PFoY9sNjf2uu7kGIM8fAe6tj+TbwdeeJqVldOjTxUA4UGSolLZcllGUr9
+   ZcFsaPtm03xln2nvxqWKxl+qxQOQ3mlyToOGpeqzkhPRpZhZSbDao43jW
+   CzkdpDBvPC5giOjflavVJvhWwCz88TvfHvOxPfrzUeshOX4EQlTTYKjzO
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="3898898"
+X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; 
+   d="scan'208";a="3898898"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2024 03:55:52 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="937040376"
+X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; 
+   d="scan'208";a="937040376"
+Received: from mattu-haswell.fi.intel.com (HELO [10.237.72.199]) ([10.237.72.199])
+  by fmsmga001.fm.intel.com with ESMTP; 04 Mar 2024 03:55:50 -0800
+Message-ID: <a6a04009-c3fe-e50d-d792-d075a14ff825@linux.intel.com>
+Date: Mon, 4 Mar 2024 13:57:32 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240304111937.2556102-20-ardb+git@google.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.13.0
+Content-Language: en-US
+To: Chris Yokum <linux-usb@mail.totalphase.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Linux regressions mailing list <regressions@lists.linux.dev>,
+ stable <stable@vger.kernel.org>, linux-usb@vger.kernel.org,
+ Niklas Neronin <niklas.neronin@linux.intel.com>
+References: <949223224.833962.1709339266739.JavaMail.zimbra@totalphase.com>
+ <50f3ca53-40e3-41f2-8f7a-7ad07c681eea@leemhuis.info>
+ <2024030246-wife-detoxify-08c0@gregkh>
+ <278587422.841245.1709394906640.JavaMail.zimbra@totalphase.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: Re: 6.5.0 broke XHCI URB submissions for count >512
+In-Reply-To: <278587422.841245.1709394906640.JavaMail.zimbra@totalphase.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Mar 04, 2024 at 12:19:38PM +0100, Ard Biesheuvel wrote:
-> From: Ard Biesheuvel <ardb@kernel.org>
+On 2.3.2024 17.55, Chris Yokum wrote:
 > 
-> These are the remaining patches that bring v6.1 in sync with v6.6 in
-> terms of support for 4k section alignment and strict separation of
-> executable and writable mappings. More details in [0].
+> The submission of >512 URBs is via usbfs, yes. This worked forever, and still works on EHCI, it's just been failing on xHCI once the indicated change was applied.
 > 
-> [0] https://lkml.kernel.org/r/CAMj1kXE5y%2B6Fef1SqsePO1p8eGEL_qKR9ZkNPNKb-y6P8-7YmQ%40mail.gmail.com
 
-All now queued up, thanks!
+>>> We have found a regression bug, where more than 512 URBs cannot be
+>>> reliably submitted to XHCI. URBs beyond that return 0x00 instead of
+>>> valid data in the buffer.
+> 
+>>
+>> FWIW, that's f5af638f0609af ("xhci: Fix transfer ring expansion size
+>> calculation") [v6.5-rc1] from Mathias.
+>>
+>>> Attached is a test program that demonstrates the problem. We used a few
+>>> different USB-to-Serial adapters with no driver installed as a
+>>> convenient way to reproduce. We check the TRB debug information before
+>>> and after to verify the actual number of allocated TRBs.
+> 
 
-greg k-h
+Could you send me that test program as well?
+
+> Ah, so this is just through usbfs?
+> 
+>>> With some adapters on unaffected kernels, the TRB map gets expanded
+>>> correctly. This directly corresponds to correct functional behavior. On
+>>> affected kernels, the TRB ring does not expand, and our functional tests
+>>> also will fail.
+>>>
+>>> We don't know exactly why this happens. Some adapters do work correctly,
+>>> so there seems to also be some subtle problem that was being masked by
+>>> the liberal expansion of the TRB ring in older kernels. We also saw on
+>>> one system that the TRB expansion did work correctly with one particular
+>>> adapter. However, on all systems at least two adapters did exhibit the
+>>> problem and fail.
+
+Ok, I see, this could be the empty ring exception check in xhci-ring.c:
+
+It could falsely assume ring is empty when it in fact is filled up in one
+go by queuing several small urbs.
+
+static unsigned int xhci_ring_expansion_needed(struct xhci_hcd *xhci, struct xhci_ring *ring,
+                                                unsigned int num_trbs)
+{
+  ...
+         /* Empty ring special case, enqueue stuck on link trb while dequeue advanced */
+         if (trb_is_link(ring->enqueue) && ring->enq_seg->next->trbs == ring->dequeue)
+                 return 0;
+...
+}
+
+https://elixir.bootlin.com/linux/v6.7/source/drivers/usb/host/xhci-ring.c#L333
+
+Can you help me test some patches on your setup?
+
+Thanks
+Mathias
+
+  
 
