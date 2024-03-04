@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0C57870CD2
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:29:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 548AA870EC1
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:47:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DFE61C253F7
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:29:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9328FB27453
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:46:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA6F3B795;
-	Mon,  4 Mar 2024 21:29:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B072F78B47;
+	Mon,  4 Mar 2024 21:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Y2XREdq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GoZ+Psg4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A88E10A1F;
-	Mon,  4 Mar 2024 21:29:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DBF97BB05;
+	Mon,  4 Mar 2024 21:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587743; cv=none; b=OGR8h9t8YsaGCpWlBlm1noJwVypqFw+lXcZ+b788N7K2NrCyRrjJoUY1xGn6cx/F/KfO+rZ3cRGvaN/e5xCVqbqVRJO2WPqEw8eU6RJRSx/aEkGb33gd6mUJyiOATFxVkdFnJI1OP2+KlEjCCTEjZVTF/DSX71f1F9y6lBXERY8=
+	t=1709588795; cv=none; b=FZjux/E8LG3DSz/56KLRhNjybXuUGYLGE06cZLFsZBZKLP4eFm37Eb6jnFmA8cQHIwHLCr7lT4uPg5VGeWF2s7Q8NXs5uR7nRNpLOx/MKWLzBXd9UfZIOuRYQhVQYqCt8IER8L5GpV9puTbhKHwb3nWlj0M7kZwutcd27I2GTzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587743; c=relaxed/simple;
-	bh=Lyyu8PI+uGKCMJtkw2VHzZGflWHvkhZdKRfSOU9O9kM=;
+	s=arc-20240116; t=1709588795; c=relaxed/simple;
+	bh=H7A4eSC3kNN39MHvprhXvNa1MYCdqsJNhp99gdVR5jw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pln30si/yPs1QvwV1I2dVbMDUkbf3HK8uhH81AmYehjA+0xcp1RoCPSZDNL8P31Cb/W+RtkvqjH34Z10QsoRKqFD2s3riAgA6bNBJGE/0kzu4VBiISjMy7moixtkxWP2vMQUr7y3XKl0iQMgqre4iqozxZK/ZlLC8Kf/qrCRSRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Y2XREdq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CACB7C433F1;
-	Mon,  4 Mar 2024 21:29:02 +0000 (UTC)
+	 MIME-Version; b=uXyNzairx7AiSWd7RYOm72r8JNcK4C4Bds9waUKSzVi14+tTiZZbE3B2q7MC/5TT2jhif0HQTKjNKhOops0Ae6XgRRe2q2wYNsqZwbI9pnmMoG2zKJljynGpASIF9JAlEnPg7wXU3XeRoCLWEiNnw8SUueSEbeBFG6WeUkyE4eI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GoZ+Psg4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7D0C433F1;
+	Mon,  4 Mar 2024 21:46:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587743;
-	bh=Lyyu8PI+uGKCMJtkw2VHzZGflWHvkhZdKRfSOU9O9kM=;
+	s=korg; t=1709588795;
+	bh=H7A4eSC3kNN39MHvprhXvNa1MYCdqsJNhp99gdVR5jw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Y2XREdqBJZ9/B6ai0o2iVCW34hcPmktYgoPSF95FguMYkEuqFPoYb5UzIBgFOpka
-	 NusvilE1bBIQWunLqF7NiXugbBGgS9jwOLmc85PvvYTVazsupBcD3WFl6MwGdQodvU
-	 emrdC6vpV1JG/F+7vMKDyS1BFava8PhLzqeR4epg=
+	b=GoZ+Psg436ff2R4DcuK6QlZ4hcCL8dzAkXB/xgGzPGD+q/LHdCQruLYi/XqU164T/
+	 oBteNYJFYRrVj9bHEZZ+azI6jg5dwnlbLVFaaLBxtT9hXQ77709w1w5xzUS2u9Lltb
+	 kVrk+WRcJ3zvDfBD7us3MJAHjbAj3XBx0QUfEkck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Sun <samsun1006219@gmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.7 073/162] tomoyo: fix UAF write bug in tomoyo_write_control()
+	Eniac Zhang <eniac-xw.zhang@hp.com>,
+	Alexandru Gagniuc <alexandru.gagniuc@hp.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 075/215] ALSA: hda/realtek: fix mute/micmute LED For HP mt440
 Date: Mon,  4 Mar 2024 21:22:18 +0000
-Message-ID: <20240304211554.191188897@linuxfoundation.org>
+Message-ID: <20240304211559.356097860@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Eniac Zhang <eniac-xw.zhang@hp.com>
 
-commit 2f03fc340cac9ea1dc63cbf8c93dd2eb0f227815 upstream.
+commit 67c3d7717efbd46092f217b1f811df1b205cce06 upstream.
 
-Since tomoyo_write_control() updates head->write_buf when write()
-of long lines is requested, we need to fetch head->write_buf after
-head->io_sem is held.  Otherwise, concurrent write() requests can
-cause use-after-free-write and double-free problems.
+The HP mt440 Thin Client uses an ALC236 codec and needs the
+ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF quirk to make the mute and
+micmute LEDs work.
 
-Reported-by: Sam Sun <samsun1006219@gmail.com>
-Closes: https://lkml.kernel.org/r/CAEkJfYNDspuGxYx5kym8Lvp--D36CMDUErg4rxfWFJuPbbji8g@mail.gmail.com
-Fixes: bd03a3e4c9a9 ("TOMOYO: Add policy namespace support.")
-Cc:  <stable@vger.kernel.org> # Linux 3.1+
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+There are two variants of the USB-C PD chip on this device. Each uses
+a different BIOS and board ID, hence the two entries.
+
+Signed-off-by: Eniac Zhang <eniac-xw.zhang@hp.com>
+Signed-off-by: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240220175812.782687-1-alexandru.gagniuc@hp.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/tomoyo/common.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/security/tomoyo/common.c
-+++ b/security/tomoyo/common.c
-@@ -2649,13 +2649,14 @@ ssize_t tomoyo_write_control(struct tomo
- {
- 	int error = buffer_len;
- 	size_t avail_len = buffer_len;
--	char *cp0 = head->write_buf;
-+	char *cp0;
- 	int idx;
- 
- 	if (!head->write)
- 		return -EINVAL;
- 	if (mutex_lock_interruptible(&head->io_sem))
- 		return -EINTR;
-+	cp0 = head->write_buf;
- 	head->read_user_buf_avail = 0;
- 	idx = tomoyo_read_lock();
- 	/* Read a line and dispatch it to the policy handler. */
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9662,6 +9662,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x8973, "HP EliteBook 860 G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8974, "HP EliteBook 840 Aero G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8975, "HP EliteBook x360 840 Aero G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x897d, "HP mt440 Mobile Thin Client U74", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8981, "HP Elite Dragonfly G3", ALC245_FIXUP_CS35L41_SPI_4),
+ 	SND_PCI_QUIRK(0x103c, 0x898e, "HP EliteBook 835 G9", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x898f, "HP EliteBook 835 G9", ALC287_FIXUP_CS35L41_I2C_2),
+@@ -9693,6 +9694,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x8ad2, "HP EliteBook 860 16 inch G9 Notebook PC", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8b0f, "HP Elite mt645 G7 Mobile Thin Client U81", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8b2f, "HP 255 15.6 inch G10 Notebook PC", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
++	SND_PCI_QUIRK(0x103c, 0x8b3f, "HP mt440 Mobile Thin Client U91", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8b42, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8b43, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8b44, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
 
 
 
