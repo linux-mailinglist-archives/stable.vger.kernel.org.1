@@ -1,166 +1,174 @@
-Return-Path: <stable+bounces-25891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E008686FFFF
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 12:12:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C9CC870006
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 12:13:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51558B2485D
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 11:12:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D84F1F262D1
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 11:13:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B48838395;
-	Mon,  4 Mar 2024 11:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B1CF37718;
+	Mon,  4 Mar 2024 11:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="NXenhUgW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PYoWSDpY"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A98B46AD;
-	Mon,  4 Mar 2024 11:11:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53FD381A0;
+	Mon,  4 Mar 2024 11:12:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709550703; cv=none; b=rLWkQUI80yxuJKsEiqd4DeCKWgOqwAl8zGTtym++ttr6Ce7lILK48zGSyuwOx+bO1v/z12TrlkBIauRavK4YYT/LXvt9dR2x5QOGW0IKKcoVZLM2zLXfr0equ3hAgBSdFEWniy5qGou1Og2+DW8Kq6bi7qhpWSxb8wIVm2bwP9A=
+	t=1709550781; cv=none; b=InYFGXAYuOPa1rLzZp0v1G2333jv+kkFwJCP2GnqtP67ZXB9zRPVQxRurN0slr8wSWv+Z6u0qt4yFvjmIK5gZXAkbFLD+4fFrxNYLkLVD7N55a46YuL24a4nqQzgdHLEhtvdSyawQ2HyaGeUxBFrjOMou5U5cphNBvZSFCpb5pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709550703; c=relaxed/simple;
-	bh=xVSkuAeo4D9ZElgt/IODeSW5ZINrq3fTsbkPSDyPGmc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Yb+OvbtWbJRcZ3Nf41HH5F7ii6SAnMexh8NfzBLBPAeta6Yh7RgaAocgSipaLum9H+7tNjhRw14W70bYvX4Q8S+NkSSclMu/zV4tLvMIdZTs7wLu+QR0UP/JkT05F6emSxNZbdCarr1xpUMBSOLQ0RA87etTa2BlyM+Fl5KelW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=NXenhUgW; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 424AsnYr019049;
-	Mon, 4 Mar 2024 11:11:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version:content-type; s=
-	qcppdkim1; bh=250lxiVyVhWgGkynbsvy556K2WPzHaat5nPoNu3o7uI=; b=NX
-	enhUgWz8BXddC9wB3akbZsUu/sCKYGBo4ZvPuYtT2dgnp+RKp7J3YCgArmuBpMyN
-	FlqDYq8+U5O641XmzJZ9pXrrsHgL8SpYnAgzWYNxTK2k1RmJJUKHMA+wsh5nwDsy
-	U9CFeB2UTAjzhyfJVs1DJ0EcfNLn074DFeKTyCLRUMGAb8Iyu5EM2DS9moZlpyeg
-	nKnkn/Nfvxwau4DGVBinA4WtVqjTeXdshYl3AP3QOmrFuYCHtpiNDTGeBbZnqBeP
-	wrwhRRrV8H8ZItyy/nyDHhqkZ9GDkBOk7QycbceyaJHcgyczqf2UsYbFtT6xp89u
-	swbxvW+3vTgZm7Pd0U2Q==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wkvb739ed-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 04 Mar 2024 11:11:31 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 424BBUT4007051
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 4 Mar 2024 11:11:30 GMT
-Received: from hu-nprakash-blr.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Mon, 4 Mar 2024 03:11:27 -0800
-From: Nikhil V <quic_nprakash@quicinc.com>
-To: 
-CC: Charan Teja Kalla <quic_charante@quicinc.com>,
-        Joerg Roedel
-	<joro@8bytes.org>, Will Deacon <will@kernel.org>,
-        Robin Murphy
-	<robin.murphy@arm.com>, <linux-kernel@vger.kernel.org>,
-        <iommu@lists.linux.dev>, Nikhil V <quic_nprakash@quicinc.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH RESEND STABLE v6.1] iommu: Avoid races around default domain allocations
-Date: Mon, 4 Mar 2024 16:40:50 +0530
-Message-ID: <cbf1295589bd90083ad6f75a7fbced01f327c047.1708680521.git.quic_nprakash@quicinc.com>
-X-Mailer: git-send-email 2.17.1
+	s=arc-20240116; t=1709550781; c=relaxed/simple;
+	bh=bBFgGv1uzwiSC74/VG1tPVfnABdHIQnAVE5a2/nbY6I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rgYXN/IZLonRPu5h/Xn3NtKxV48gv9SbLjTnyDzJkeluU17EBJmmpxNYd1TW8VX1mU/PBGnaGwB0M06n96+ag8JXUcue72QboS3CLvNI5eFYFI+DTP2XNc2EAz6GsNg92iIuHq2RfI6E+lHx/HpNm9UKflEWJmSuM43QsecQeuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PYoWSDpY; arc=none smtp.client-ip=209.85.160.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-21fdf31a154so2469040fac.3;
+        Mon, 04 Mar 2024 03:12:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709550779; x=1710155579; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vb78VtFyXZfR94b6vTZZCTqsOufZq9YMppe4eS0rkTs=;
+        b=PYoWSDpYMynsV4wQ8pS0sRLvIJhB9GUaGI2gya9WcWn+2QkiLNE8CNq+bZ4ZZS9UDT
+         iQwSzCn8/h0k+Cy3owivbZQUUYoj4DSu6Pj+LjYecWJ0n7sxVqb7P2iHfXcvYcj1eenr
+         kh/jSssURpdqKKdj8jtGNqvNrvIiWDpBwFUgJs+mP2sD7BAiW8Awbw6Bm7cX1Jz8b9Bh
+         xWgvfIfkry4VFv3aGqlEdnvmr0A90vbYOCAFnAGyyiT+E/cXNDUxax/drbKZ3fq14DID
+         xXkshiQnnpq0ijXVg6rUhvrxo3owpAv9ZGCqOEFNFfkrvmILMcvXcqh2uzCRUD5lHNCS
+         ujGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709550779; x=1710155579;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vb78VtFyXZfR94b6vTZZCTqsOufZq9YMppe4eS0rkTs=;
+        b=GeuKi/myjKGvUTEjjWAARkjo0UQSLRDaiJTkl0rennU7E4cyEveHltTMZjTBhiBGEK
+         pWR9xGBREyKPrTOkMk7P37TX/MzoYyVHWGZXUeXDglDhi8p6nWoC75f8x4gBMKH6do1b
+         mxX4K2EMPguTArL9Zgrja7bh40bXTecXE+V/TBAxAD63vK4+Fzaw0HyuAR8BgfhkxFhe
+         eRV9xVVNxrp1AGOBhq4QM3b8shuKcHkaVEecGNreNFxdZ2+xEoLCjiSruI66+rIdKZD6
+         GkWU6kUfPS9+/6lrqznyPt6Oj9YBDd78PAkTC+8Sttc3PQQj/1x3KeisrQdljV4mxb7D
+         EGLg==
+X-Forwarded-Encrypted: i=1; AJvYcCUlUvvMXH0AvhHzW0dVDQmJHofJdouoM6gzZj2tUfd0DaleSxUIHm+Trg9SFKgBxEMgi9DSmA9S2mu6LIuxeHzQx9aCOT5c
+X-Gm-Message-State: AOJu0YxdKgkLKE/2rpXLsYgslMBkYbL2u96YcAsQCZIyBMW3k7OpgWgZ
+	FrMLXI5Lay4qpOOci+PTzrOZ564I15uHYljpRF0nHFfGaQmtJWMGu82nZo9HGnMvBawf3jIDaC8
+	RJczOCTJJmyMPmC4WAR0LrLBxeiw=
+X-Google-Smtp-Source: AGHT+IGyQAnwWpBE4NO+5e2HdYeKv4ioTCChCUX7ltsOCtUuFFv55Qj9xlBleWPOk6VHbn2HgWUfitHPU1bhEdl+1zA=
+X-Received: by 2002:a05:6870:a92a:b0:21f:dc81:1c1a with SMTP id
+ eq42-20020a056870a92a00b0021fdc811c1amr10306502oab.16.1709550778889; Mon, 04
+ Mar 2024 03:12:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: yz3Nelq0fOTemW5jQPryH1pxnJWCrhqt
-X-Proofpoint-ORIG-GUID: yz3Nelq0fOTemW5jQPryH1pxnJWCrhqt
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-04_06,2024-03-04_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- bulkscore=0 adultscore=0 mlxlogscore=999 lowpriorityscore=0 phishscore=0
- malwarescore=0 impostorscore=0 clxscore=1015 spamscore=0 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2402120000 definitions=main-2403040084
+References: <20240229041950.738878-1-xiubli@redhat.com> <CAOi1vP-n34TCcKoLLKe3yXRqS93qT4nc5pkM8Byo-D4zH-KZWA@mail.gmail.com>
+ <6c3f5ef9-e350-4a1e-81dd-6ab63e7e5ef3@redhat.com> <CAOi1vP_WGs4yQz62UaVBDWk-vkcAQ7=SgQG37Zu86Q2QusMgOw@mail.gmail.com>
+ <256b4b68-87e6-4686-9c51-e00712add8b3@redhat.com>
+In-Reply-To: <256b4b68-87e6-4686-9c51-e00712add8b3@redhat.com>
+From: Ilya Dryomov <idryomov@gmail.com>
+Date: Mon, 4 Mar 2024 12:12:47 +0100
+Message-ID: <CAOi1vP-LFKzij5pYz+HLWAUiBZ-6+UYpoND08ceDofhN7xN-zw@mail.gmail.com>
+Subject: Re: [PATCH] libceph: init the cursor when preparing the sparse read
+To: Xiubo Li <xiubli@redhat.com>
+Cc: ceph-devel@vger.kernel.org, jlayton@kernel.org, vshankar@redhat.com, 
+	mchangir@redhat.com, stable@vger.kernel.org, 
+	Luis Henriques <lhenriques@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Charan Teja Kalla <quic_charante@quicinc.com>
+On Mon, Mar 4, 2024 at 1:43=E2=80=AFAM Xiubo Li <xiubli@redhat.com> wrote:
+>
+>
+> On 3/2/24 01:15, Ilya Dryomov wrote:
+> > On Fri, Mar 1, 2024 at 2:53=E2=80=AFAM Xiubo Li <xiubli@redhat.com> wro=
+te:
+> >>
+> >> On 2/29/24 18:48, Ilya Dryomov wrote:
+> >>> On Thu, Feb 29, 2024 at 5:22=E2=80=AFAM <xiubli@redhat.com> wrote:
+> >>>> From: Xiubo Li <xiubli@redhat.com>
+> >>>>
+> >>>> The osd code has remove cursor initilizing code and this will make
+> >>>> the sparse read state into a infinite loop. We should initialize
+> >>>> the cursor just before each sparse-read in messnger v2.
+> >>>>
+> >>>> Cc: stable@vger.kernel.org
+> >>>> URL: https://tracker.ceph.com/issues/64607
+> >>>> Fixes: 8e46a2d068c9 ("libceph: just wait for more data to be availab=
+le on the socket")
+> >>>> Reported-by: Luis Henriques <lhenriques@suse.de>
+> >>>> Signed-off-by: Xiubo Li <xiubli@redhat.com>
+> >>>> ---
+> >>>>    net/ceph/messenger_v2.c | 3 +++
+> >>>>    1 file changed, 3 insertions(+)
+> >>>>
+> >>>> diff --git a/net/ceph/messenger_v2.c b/net/ceph/messenger_v2.c
+> >>>> index a0ca5414b333..7ae0f80100f4 100644
+> >>>> --- a/net/ceph/messenger_v2.c
+> >>>> +++ b/net/ceph/messenger_v2.c
+> >>>> @@ -2025,6 +2025,7 @@ static int prepare_sparse_read_cont(struct cep=
+h_connection *con)
+> >>>>    static int prepare_sparse_read_data(struct ceph_connection *con)
+> >>>>    {
+> >>>>           struct ceph_msg *msg =3D con->in_msg;
+> >>>> +       u64 len =3D con->in_msg->sparse_read_total ? : data_len(con-=
+>in_msg);
+> >>>>
+> >>>>           dout("%s: starting sparse read\n", __func__);
+> >>>>
+> >>>> @@ -2034,6 +2035,8 @@ static int prepare_sparse_read_data(struct cep=
+h_connection *con)
+> >>>>           if (!con_secure(con))
+> >>>>                   con->in_data_crc =3D -1;
+> >>>>
+> >>>> +       ceph_msg_data_cursor_init(&con->v2.in_cursor, con->in_msg, l=
+en);
+> >>>> +
+> >>>>           reset_in_kvecs(con);
+> >>>>           con->v2.in_state =3D IN_S_PREPARE_SPARSE_DATA_CONT;
+> >>>>           con->v2.data_len_remain =3D data_len(msg);
+> >>>> --
+> >>>> 2.43.0
+> >>>>
+> >>> Hi Xiubo,
+> >>>
+> >>> How did this get missed?  Was generic/580 not paired with msgr2 in cr=
+c
+> >>> mode or are we not running generic/580 at all?
+> >>>
+> >>> Multiple runs have happened since the patch was staged so if the matr=
+ix
+> >>> is set up correctly ms_mode=3Dcrc should have been in effect for xfst=
+ests
+> >>> at least a couple of times.
+> >> I just found that my test script is incorrect and missed this case.
+> >>
+> >> The test locally is covered the msgr1 mostly and I think the qa test
+> >> suite also doesn't cover it too. I will try to improve the qa tests la=
+ter.
+> > Could you please provide some details on the fixes needed to address
+> > the coverage gap in the fs suite?
+>
+> Mainly to support the msgr v2 for fscrypt, before we only tested the
+> fscrypt based on the msgr v1 for kclient. In ceph upstream we have
+> support this while not backport it to reef yet.
 
-This fix is applicable for LTS kernel, 6.1.y. In latest kernels, this race
-issue is fixed by the patch series [1] and [2]. The right thing to do here
-would have been propagating these changes from latest kernel to the stable
-branch, 6.1.y. However, these changes seems too intrusive to be picked for
-stable branches. Hence, the fix proposed can be taken as an alternative
-instead of backporting the patch series.
-[1] https://lore.kernel.org/all/0-v8-81230027b2fa+9d-iommu_all_defdom_jgg@nvidia.com/
-[2] https://lore.kernel.org/all/0-v5-1b99ae392328+44574-iommu_err_unwind_jgg@nvidia.com/
+I'm even more confused now...  If the fs suite in main covers msgr2 +
+fscrypt (I'm taking your "in ceph upstream we have support" to mean
+that), how did this bug get missed by runs on main?  At least a dozen
+of them must have gone through in the form of Venky's integration
+branches.
 
-Issue:
-A race condition is observed when arm_smmu_device_probe and
-modprobe of client devices happens in parallel. This results
-in the allocation of a new default domain for the iommu group
-even though it was previously allocated and the respective iova
-domain(iovad) was initialized. However, for this newly allocated
-default domain, iovad will not be initialized. As a result, for
-devices requesting dma allocations, this uninitialized iovad will
-be used, thereby causing NULL pointer dereference issue.
+Thanks,
 
-Flow:
-- During arm_smmu_device_probe, bus_iommu_probe() will be called
-as part of iommu_device_register(). This results in the device probe,
-__iommu_probe_device().
-
-- When the modprobe of the client device happens in parallel, it
-sets up the DMA configuration for the device using of_dma_configure_id(),
-which inturn calls iommu_probe_device(). Later, default domain is
-allocated and attached using iommu_alloc_default_domain() and
-__iommu_attach_device() respectively. It then ends up initializing a
-mapping domain(IOVA domain) and rcaches for the device via
-arch_setup_dma_ops()->iommu_setup_dma_ops().
-
-- Now, in the bus_iommu_probe() path, it again tries to allocate
-a default domain via probe_alloc_default_domain(). This results in
-allocating a new default domain(along with IOVA domain) via
-__iommu_domain_alloc(). However, this newly allocated IOVA domain
-will not be initialized.
-
-- Now, when the same client device tries dma allocations via
-iommu_dma_alloc(), it ends up accessing the rcaches of the newly
-allocated IOVA domain, which is not initialized. This results
-into NULL pointer dereferencing.
-
-Fix this issue by adding a check in probe_alloc_default_domain()
-to see if the iommu_group already has a default domain allocated
-and initialized.
-
-Cc: <stable@vger.kernel.org> # see patch description, fix applicable only for 6.1.y
-Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
-Co-developed-by: Nikhil V <quic_nprakash@quicinc.com>
-Signed-off-by: Nikhil V <quic_nprakash@quicinc.com>
----
- drivers/iommu/iommu.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 8b3897239477..83736824f17d 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -1741,6 +1741,9 @@ static void probe_alloc_default_domain(struct bus_type *bus,
- {
- 	struct __group_domain_type gtype;
- 
-+	if (group->default_domain)
-+		return;
-+
- 	memset(&gtype, 0, sizeof(gtype));
- 
- 	/* Ask for default domain requirements of all devices in the group */
--- 
-2.17.1
-
+                Ilya
 
