@@ -1,190 +1,177 @@
-Return-Path: <stable+bounces-25841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D8AC86FAB9
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 08:28:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CEE986FAC4
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 08:30:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB77E285358
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 07:28:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 494511C2147A
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 07:30:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86FF6134AE;
-	Mon,  4 Mar 2024 07:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0E8D13AD8;
+	Mon,  4 Mar 2024 07:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gEcnElZp"
+	dkim=pass (2048-bit key) header.d=oltmanns.dev header.i=@oltmanns.dev header.b="GMJy/Frx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C4C12E54
-	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 07:28:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F8A134AE;
+	Mon,  4 Mar 2024 07:30:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709537303; cv=none; b=MfKQfoHCioyNIdGHlxFFY/X4hUqDhlqDeX+DPbkFD6Lt7egTmz1BjAEt7rUCPlD5gTbNMyAQyBuEs3klfw/pLDscPX8JpUteHlCB7tTfxlkHNSZYYaspn23r5CF03OX7O330q6fP0OuIngB0af/tDD5vikG9OMmEq+fJcGABYJk=
+	t=1709537413; cv=none; b=R5VOj/81ahYlC6IdedJxL4SKdz6T5xf4mVoieRWHv3ZRKnA6s6OVPrhTdXf98MXGLfCPGCwWYcjQMhAYm2DC/ZfcV9qz79w+gEZvmJwhtyqEjm9xrVwJeaLm7bPciifPBpazN5X1k3oI9dLuEYTyFFDc+1xamCjRXQMz0UnYy0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709537303; c=relaxed/simple;
-	bh=kb3Q1HRILGDEEIrsCA1GKRfgYXRIhEOcLiUcJPYmaB0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ET4xaGPaGkFfkcn12NpJ5QZYvxYDoL2LDC2eYX87f0H13fdXlz3Arss9f+xG/8BRot7vklssrE9n8XRerHsUDzyUvKl5u+ZSgU1/dfyoJO+vAukqwwpwR40YlH+hXDHxGHeVrlCaia1w+na/jCUusnL8QZLwpINGuCUcGoWf6J4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gEcnElZp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9646DC43390;
-	Mon,  4 Mar 2024 07:28:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709537303;
-	bh=kb3Q1HRILGDEEIrsCA1GKRfgYXRIhEOcLiUcJPYmaB0=;
-	h=Subject:To:Cc:From:Date:From;
-	b=gEcnElZpkqMUv2Lr9c9V7ZVionErNpkkS2lonqw23P20p/NZn4Imb3VW9SyINQtUv
-	 ARXFNkdDBB4iut15JxUB75rPxpQZ9gXdrYaf51xu9cDHG0aUXFMZwR2B3JaUQcBAw8
-	 PLnDfzo0WTrioCxNVSxhh3+9GHhE1j6uU0ZwBgMs=
-Subject: FAILED: patch "[PATCH] iommufd/selftest: Fix mock_dev_num bug" failed to apply to 6.6-stable tree
-To: nicolinc@nvidia.com,jgg@nvidia.com,kevin.tian@intel.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 04 Mar 2024 08:28:20 +0100
-Message-ID: <2024030420-fester-semester-873a@gregkh>
+	s=arc-20240116; t=1709537413; c=relaxed/simple;
+	bh=Gjmx1LoCeFmH3HZQN2zSbyKOB5bSkpnKc14O2QudTyc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=XUUGDBpM2vD3OLD7YgfLBojEZKLWqeAYqtEbcOlMLSBkMp+zXcQl3+iXMOlntsL+c0JWgMOqAdICQKbx6TCOe/FSv2xjABpVTvY2tsBE4tQbw6crsSR2nu4GsC07h61QmjDwjgJkTE0hCazK1lLOu4eYBztqTJkCZcJtb3W1yDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oltmanns.dev; spf=pass smtp.mailfrom=oltmanns.dev; dkim=pass (2048-bit key) header.d=oltmanns.dev header.i=@oltmanns.dev header.b=GMJy/Frx; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oltmanns.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oltmanns.dev
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4Tp9MD5Wltz9sp7;
+	Mon,  4 Mar 2024 08:30:00 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oltmanns.dev;
+	s=MBO0001; t=1709537400;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=NoCsY0uVPieE3Bki0yClO1kq6+DglOQe3SGQtQLnjtI=;
+	b=GMJy/FrxoUhe66dmuSip7yLhn85T8/o5Pw4MZOhYaDRt4ckcRkuULKweChYZaDXWdhgr6I
+	4O4PnCij30/5YG9dfZOrjrM0fRaJcwH8MzZQOStZtmUi5+p8V/Q6Ej94Gzg3cEVOw7HD43
+	NrTBoWAVzbFhXlOm9EiElTj9Jyilj9WqnhImvbYxcRxTiRWlBbekJ3xdknOio5IvDB1Ugb
+	61WmDNptyR0lsWVIQuLDEnpHHPjSNd4OToqrfY2m4Plg2z6wRVzH66HE54qps5JNCE3xkk
+	O10pyaI3h4yANsmY7yeqrFcQEzBnnwnMUIo9965KXqmUr10WxIE8qFKtsAbdbQ==
+From: Frank Oltmanns <frank@oltmanns.dev>
+Subject: [PATCH v3 0/5] Pinephone video out fixes (flipping between two
+ frames)
+Date: Mon, 04 Mar 2024 08:29:16 +0100
+Message-Id: <20240304-pinephone-pll-fixes-v3-0-94ab828f269a@oltmanns.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEx45WUC/33NQQ7CIBAF0Ks0rMXAULHtynsYFxSmlqQCgYZom
+ t5d2sSNMS7/n/w3C0kYLSbSVQuJmG2y3pUgDhXRo3J3pNaUTICB4MAbGqzDMHqHNEwTHewTE2V
+ am8EgnAXWpCxDxP1QhtdbyaNNs4+v/UnmW/vfy5wyiiCaXqKRRvOLn+aHci4dDWaykRk+TM2An
+ X4zUJhWqloqMI1u+y9mXdc3KDivswABAAA=
+To: Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
+ Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Samuel Holland <samuel@sholland.org>, 
+ =?utf-8?q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>, 
+ Purism Kernel Team <kernel@puri.sm>, Ondrej Jirman <megi@xff.cz>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Jessica Zhang <quic_jesszhan@quicinc.com>, Sam Ravnborg <sam@ravnborg.org>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
+ Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-sunxi@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, devicetree@vger.kernel.org, 
+ Frank Oltmanns <frank@oltmanns.dev>, stable@vger.kernel.org, 
+ Diego Roversi <diegor@tiscali.it>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3360; i=frank@oltmanns.dev;
+ h=from:subject:message-id; bh=Gjmx1LoCeFmH3HZQN2zSbyKOB5bSkpnKc14O2QudTyc=;
+ b=owEB7QES/pANAwAIAZppogiUStPHAcsmYgBl5XhwsffaJUTjKesrQMFXm9SL0rmYfvGrVtp+e
+ o8WbpVFG1iJAbMEAAEIAB0WIQQC/SV7f5DmuaVET5aaaaIIlErTxwUCZeV4cAAKCRCaaaIIlErT
+ xw1JC/4s83wVFPqgCyLwlwxOrDIhPUUecHpIS8lGXewEMxp/h32L7wyzeW+UxwBCskTIPbbSgZk
+ PYfNUZpk7IOalDYXZMfQeR1HW0oMPQBTS7/YbjMmwz5NB1KpK/WMQ/FJRBI/Xpts4eLjCtPFWAm
+ IyaKjK3f+niwlnuRdV5pVlgkxg+jhj+TueaP1b+DAJOYFWdMzIk+V/hKwPi680FEqLvIwdK9+Ut
+ ByYnzM1BZlYBgy2jUc8b44dTZ5/OvVkRwX1ZAQGBLZwLwPCTjR3tejhmmNBtx8XxioAAVzBU4b2
+ 9xbRYfAyPxfqToJx0nshopXEPRsotlDyVJxORuZE1fJkT/wTvKk8JlOWZhnmeAqBxBw4Dh6id3P
+ vmIQAGU95RWoj6PUm5IcZcMQp70f9RZSMD35KLwXRtpG/y4jWWzQqaRHzsRXvSwJwKp7c9k+EjJ
+ W5CwokuXlcyh+nHidpUSJK9Sck0/D8Rji7HxtSXhDkQ3RkQDPwJn+CaEjgqqchZP5qaTI=
+X-Developer-Key: i=frank@oltmanns.dev; a=openpgp;
+ fpr=02FD257B7F90E6B9A5444F969A69A208944AD3C7
 
+On some pinephones the video output sometimes freezes (flips between two
+frames) [1]. It seems to be that the reason for this behaviour is that
+PLL-MIPI is outside its limits, and the GPU is not running at a fixed
+rate.
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+In this patch series I propose the following changes:
+  1. sunxi-ng: Adhere to the following constraints given in the
+     Allwinner A64 Manual regarding PLL-MIPI:
+      * M/N <= 3
+      * (PLL_VIDEO0)/M >= 24MHz
+      * 500MHz <= clockrate <= 1400MHz
 
-To reproduce the conflict and resubmit, you may use the following commands:
+  2. Remove two operating points from the A64 DTS OPPs, so that the GPU
+     runs at a fixed rate of 432 MHz.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x fde372df96afddcda3ec94944351f2a14f7cd98d
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024030420-fester-semester-873a@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+Note, that when pinning the GPU to 432 MHz the issue [1] completely
+disappears for me. I've searched the BSP and could not find any
+indication that supports the idea of having the three OPPs. The only
+frequency I found in the BPSs for A64 is 432 MHz, which has also proven
+stable for me.
 
-Possible dependencies:
+Another bigger change compared to the previous version is that I've
+removed the patch to adapt the XBD599 panel's timings to Allwinner A64's
+PLL-MIPI new constraints from this series. Mainly, because I'm currently
+evaluationg other options that may or may not work. (It may work at
+least until HDMI support is upstreamed.) I'll probably resend the patch
+at a later point in time.
 
-fde372df96af ("iommufd/selftest: Fix mock_dev_num bug")
-47f2bd2ff382 ("iommufd/selftest: Check the bus type during probe")
-65fe32f7a447 ("iommufd/selftest: Add nested domain allocation for mock domain")
-2bdabb8e82f5 ("iommu: Pass in parent domain with user_data to domain_alloc_user op")
-9744a7ab62cc ("iommufd: Rename IOMMUFD_OBJ_HW_PAGETABLE to IOMMUFD_OBJ_HWPT_PAGING")
-266ce58989ba ("iommufd/selftest: Test IOMMU_HWPT_ALLOC_DIRTY_TRACKING")
-e04b23c8d4ed ("iommufd/selftest: Expand mock_domain with dev_flags")
-421a511a293f ("iommu/amd: Access/Dirty bit support in IOPTEs")
-134288158a41 ("iommu/amd: Add domain_alloc_user based domain allocation")
-e2a4b2947849 ("iommufd: Add IOMMU_HWPT_SET_DIRTY_TRACKING")
-750e2e902b71 ("iommu: Add iommu_domain ops for dirty tracking")
-c97d1b20d383 ("iommu/vt-d: Add domain_alloc_user op")
-408663619fcf ("iommufd/selftest: Add domain_alloc_user() support in iommu mock")
-4ff542163397 ("iommufd: Support allocating nested parent domain")
-89d63875d80e ("iommufd: Flow user flags for domain allocation to domain_alloc_user()")
-7975b722087f ("iommufd: Use the domain_alloc_user() op for domain allocation")
-909f4abd1097 ("iommu: Add new iommu op to create domains owned by userspace")
-bb812e0069ce ("iommufd/selftest: Iterate idev_ids in mock_domain's alloc_hwpt test")
+I very much appreciate your feedback!
 
-thanks,
+[1] https://gitlab.com/postmarketOS/pmaports/-/issues/805
 
-greg k-h
+Signed-off-by: Frank Oltmanns <frank@oltmanns.dev>
+---
+Changes in v3:
+- dts: Pin GPU to 432 MHz.
+- nkm and a64: Move minimum and maximum rate handling to the common part
+  of the sunxi-ng driver.
+- Removed st7703 patch from series.
+- Link to v2: https://lore.kernel.org/r/20240205-pinephone-pll-fixes-v2-0-96a46a2d8c9b@oltmanns.dev
 
------------------- original commit in Linus's tree ------------------
+Changes in v2:
+- dts: Increase minimum GPU frequency to 192 MHz.
+- nkm and a64: Add minimum and maximum rate for PLL-MIPI.
+- nkm: Use the same approach for skipping invalid rates in
+  ccu_nkm_find_best() as in ccu_nkm_find_best_with_parent_adj().
+- nkm: Improve names for ratio struct members and hence get rid of
+  describing comments.
+- nkm and a64: Correct description in the commit messages: M/N <= 3
+- Remove patches for nm as they were not needed.
+- st7703: Rework the commit message to cover more background for the
+  change.
+- Link to v1: https://lore.kernel.org/r/20231218-pinephone-pll-fixes-v1-0-e238b6ed6dc1@oltmanns.dev
 
-From fde372df96afddcda3ec94944351f2a14f7cd98d Mon Sep 17 00:00:00 2001
-From: Nicolin Chen <nicolinc@nvidia.com>
-Date: Thu, 22 Feb 2024 13:23:46 -0800
-Subject: [PATCH] iommufd/selftest: Fix mock_dev_num bug
+---
+Frank Oltmanns (5):
+      clk: sunxi-ng: common: Support minimum and maximum rate
+      clk: sunxi-ng: a64: Set minimum and maximum rate for PLL-MIPI
+      clk: sunxi-ng: nkm: Support constraints on m/n ratio and parent rate
+      clk: sunxi-ng: a64: Add constraints on PLL-MIPI's n/m ratio and parent rate
+      arm64: dts: allwinner: a64: Run GPU at 432 MHz
 
-Syzkaller reported the following bug:
-  sysfs: cannot create duplicate filename '/devices/iommufd_mock4'
+ arch/arm64/boot/dts/allwinner/sun50i-a64.dtsi |  8 --------
+ drivers/clk/sunxi-ng/ccu-sun50i-a64.c         | 14 +++++++++-----
+ drivers/clk/sunxi-ng/ccu_common.c             | 15 +++++++++++++++
+ drivers/clk/sunxi-ng/ccu_common.h             |  3 +++
+ drivers/clk/sunxi-ng/ccu_nkm.c                | 21 +++++++++++++++++++++
+ drivers/clk/sunxi-ng/ccu_nkm.h                |  2 ++
+ 6 files changed, 50 insertions(+), 13 deletions(-)
+---
+base-commit: 216c1282dde38ca87ebdf1ccacee5a0682901574
+change-id: 20231218-pinephone-pll-fixes-0ccdfde273e4
 
-  Call Trace:
-    sysfs_warn_dup+0x71/0x90
-    sysfs_create_dir_ns+0x1ee/0x260
-    ? sysfs_create_mount_point+0x80/0x80
-    ? spin_bug+0x1d0/0x1d0
-    ? do_raw_spin_unlock+0x54/0x220
-    kobject_add_internal+0x221/0x970
-    kobject_add+0x11c/0x1e0
-    ? lockdep_hardirqs_on_prepare+0x273/0x3e0
-    ? kset_create_and_add+0x160/0x160
-    ? kobject_put+0x5d/0x390
-    ? bus_get_dev_root+0x4a/0x60
-    ? kobject_put+0x5d/0x390
-    device_add+0x1d5/0x1550
-    ? __fw_devlink_link_to_consumers.isra.0+0x1f0/0x1f0
-    ? __init_waitqueue_head+0xcb/0x150
-    iommufd_test+0x462/0x3b60
-    ? lock_release+0x1fe/0x640
-    ? __might_fault+0x117/0x170
-    ? reacquire_held_locks+0x4b0/0x4b0
-    ? iommufd_selftest_destroy+0xd0/0xd0
-    ? __might_fault+0xbe/0x170
-    iommufd_fops_ioctl+0x256/0x350
-    ? iommufd_option+0x180/0x180
-    ? __lock_acquire+0x1755/0x45f0
-    __x64_sys_ioctl+0xa13/0x1640
-
-The bug is triggered when Syzkaller created multiple mock devices but
-didn't destroy them in the same sequence, messing up the mock_dev_num
-counter. Replace the atomic with an mock_dev_ida.
-
-Cc: stable@vger.kernel.org
-Fixes: 23a1b46f15d5 ("iommufd/selftest: Make the mock iommu driver into a real driver")
-Link: https://lore.kernel.org/r/5af41d5af6d5c013cc51de01427abb8141b3587e.1708636627.git.nicolinc@nvidia.com
-Reported-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-
-diff --git a/drivers/iommu/iommufd/selftest.c b/drivers/iommu/iommufd/selftest.c
-index 8abf9747773e..2bfe77bd351d 100644
---- a/drivers/iommu/iommufd/selftest.c
-+++ b/drivers/iommu/iommufd/selftest.c
-@@ -36,7 +36,7 @@ static struct mock_bus_type iommufd_mock_bus_type = {
- 	},
- };
- 
--static atomic_t mock_dev_num;
-+static DEFINE_IDA(mock_dev_ida);
- 
- enum {
- 	MOCK_DIRTY_TRACK = 1,
-@@ -123,6 +123,7 @@ enum selftest_obj_type {
- struct mock_dev {
- 	struct device dev;
- 	unsigned long flags;
-+	int id;
- };
- 
- struct selftest_obj {
-@@ -631,7 +632,7 @@ static void mock_dev_release(struct device *dev)
- {
- 	struct mock_dev *mdev = container_of(dev, struct mock_dev, dev);
- 
--	atomic_dec(&mock_dev_num);
-+	ida_free(&mock_dev_ida, mdev->id);
- 	kfree(mdev);
- }
- 
-@@ -653,8 +654,12 @@ static struct mock_dev *mock_dev_create(unsigned long dev_flags)
- 	mdev->dev.release = mock_dev_release;
- 	mdev->dev.bus = &iommufd_mock_bus_type.bus;
- 
--	rc = dev_set_name(&mdev->dev, "iommufd_mock%u",
--			  atomic_inc_return(&mock_dev_num));
-+	rc = ida_alloc(&mock_dev_ida, GFP_KERNEL);
-+	if (rc < 0)
-+		goto err_put;
-+	mdev->id = rc;
-+
-+	rc = dev_set_name(&mdev->dev, "iommufd_mock%u", mdev->id);
- 	if (rc)
- 		goto err_put;
- 
+Best regards,
+-- 
+Frank Oltmanns <frank@oltmanns.dev>
 
 
