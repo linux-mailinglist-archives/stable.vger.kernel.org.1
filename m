@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-26258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87E88870DC5
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:37:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70931870D20
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 288F71F249F3
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:37:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1E5B1F2366C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0E3C200CD;
-	Mon,  4 Mar 2024 21:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BED878B69;
+	Mon,  4 Mar 2024 21:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iZmXlGxE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mly2NmCR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F08647A5D;
-	Mon,  4 Mar 2024 21:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7371F5FA;
+	Mon,  4 Mar 2024 21:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588253; cv=none; b=bhUdQpBZ6InUA5svB1Jkkft74BlZb8Fd1uBfdoM0z1u+GOLCZYNn0CUCsXwBncqV6B4dBXDURrUY1WthlJn9bvEJTN/65+W9DaXRRF6DokFqxr3T4gQO04v15Zq9TX/XwrSkwnOn3We4yE28PxhFQGC6ttxKXGp+XoFJSuXc0Ek=
+	t=1709587858; cv=none; b=ZZUAsbE8akvMwlrr/6lF0GxlwtTrCkQGTqtJtAkJBaE+q5kTG6M7G+sBEwS+s0042tjPSvr5jP8uFQ69wKsLZtehaqWpOolDuSNlXO2k3mBHLpo6KlgeFoImub18fLyx+7shcNTIE7EJv+qe6k0t+0O4mCwE9RHIl0567Y0bu7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588253; c=relaxed/simple;
-	bh=WMn91iR0S8+VoJuSRKDkbOQmGT29gw8kHxgCUZunCF4=;
+	s=arc-20240116; t=1709587858; c=relaxed/simple;
+	bh=OjWG5efRpnMQWRxRfx8+jsyLsymzjsSY5ugN9oI8x2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rTqRz3l1An4IGT9G37Ip3hRylzIZEzYsCzMjy9LVvmIhMNUaky18bDbRLL8G/0eI+13SOQz75SAGomaGEE0tZocqBGnHHnb4XPSaksc8QCq5y8HULu+z2WuXtM09txZVPBiqMBHIgAS8ounInuYwHK7qJByKOoMt8PNhIeRzPg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iZmXlGxE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B172FC433C7;
-	Mon,  4 Mar 2024 21:37:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CHTzyHUahOICutcQrvMueNVk+nzh30hqwISb50Rm8oxrRxqrnjbHYcmFF4gDtwxHHZwW7vVjAniHSWXUjCxhuIpL36Cmh6H86LBD7SkhbLDAacgDZrXjD+928ATPeNxzSxbTeicjlHmhrmX+td0XO0LDgMPncLcyvVEfM+018XU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mly2NmCR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 712D1C433F1;
+	Mon,  4 Mar 2024 21:30:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588253;
-	bh=WMn91iR0S8+VoJuSRKDkbOQmGT29gw8kHxgCUZunCF4=;
+	s=korg; t=1709587857;
+	bh=OjWG5efRpnMQWRxRfx8+jsyLsymzjsSY5ugN9oI8x2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iZmXlGxEsT2tNEeicxgBhUzQ5lhmjPmDyigCix+8gG7ZO4AK3PHTZ3pOpLB30A8u7
-	 Gmpihzo49bgxA9uDWHBBGgOVyvSMHS23eqjThkzJJAM8eJxoAhptAaD3F95knu0GH/
-	 9EDfYPf7UtLuRhFmspvulRridQV/D6GlxsKGWb08=
+	b=mly2NmCRAjyvau2Ign7IwXMJB7hEEZbeZADYlbYA5ks03dg3Ee1wbgVDZKIi5i41L
+	 rwraAS6/amfzFoHs1lieyCSxiD0ArJiOHZ8tx2V1ZY4AuqXnA/sBB7xlzZMYp8a0Bm
+	 nABcmP5vFzAdKj0adeGaWu53EPl6BOE6uT1apUS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Majewski <lukma@denx.de>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 037/143] net: hsr: Use correct offset for HSR TLV values in supervisory HSR frames
+	Ma Jun <Jun.Ma2@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Subject: [PATCH 6.7 092/162] drm/amdgpu/pm: Fix the power1_min_cap value
 Date: Mon,  4 Mar 2024 21:22:37 +0000
-Message-ID: <20240304211551.129426675@linuxfoundation.org>
+Message-ID: <20240304211554.787630174@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +60,136 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Majewski <lukma@denx.de>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-[ Upstream commit 51dd4ee0372228ffb0f7709fa7aa0678d4199d06 ]
+commit 7968e9748fbbd7ae49770d9f8a8231d8bce2aebb upstream.
 
-Current HSR implementation uses following supervisory frame (even for
-HSRv1 the HSR tag is not is not present):
+It's unreasonable to use 0 as the power1_min_cap when
+OD is disabled. So, use the same lower limit as the value
+used when OD is enabled.
 
-00000000: 01 15 4e 00 01 2d XX YY ZZ 94 77 10 88 fb 00 01
-00000010: 7e 1c 17 06 XX YY ZZ 94 77 10 1e 06 XX YY ZZ 94
-00000020: 77 10 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-00000030: 00 00 00 00 00 00 00 00 00 00 00 00
-
-The current code adds extra two bytes (i.e. sizeof(struct hsr_sup_tlv))
-when offset for skb_pull() is calculated.
-This is wrong, as both 'struct hsrv1_ethhdr_sp' and 'hsrv0_ethhdr_sp'
-already have 'struct hsr_sup_tag' defined in them, so there is no need
-for adding extra two bytes.
-
-This code was working correctly as with no RedBox support, the check for
-HSR_TLV_EOT (0x00) was off by two bytes, which were corresponding to
-zeroed padded bytes for minimal packet size.
-
-Fixes: eafaa88b3eb7 ("net: hsr: Add support for redbox supervision frames")
-Signed-off-by: Lukasz Majewski <lukma@denx.de>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://lore.kernel.org/r/20240228085644.3618044-1-lukma@denx.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1958946858a6 ("drm/amd/pm: Support for getting power1_cap_min value")
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Acked-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/hsr/hsr_forward.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c       |    9 ++++-----
+ drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c         |    9 ++++-----
+ drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c |    9 ++++-----
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c    |    9 ++++-----
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c    |    9 ++++-----
+ 5 files changed, 20 insertions(+), 25 deletions(-)
 
-diff --git a/net/hsr/hsr_forward.c b/net/hsr/hsr_forward.c
-index 80cdc6f6b34c9..0323ab5023c69 100644
---- a/net/hsr/hsr_forward.c
-+++ b/net/hsr/hsr_forward.c
-@@ -83,7 +83,7 @@ static bool is_supervision_frame(struct hsr_priv *hsr, struct sk_buff *skb)
- 		return false;
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/arcturus_ppt.c
+@@ -1303,13 +1303,12 @@ static int arcturus_get_power_limit(stru
+ 	if (default_power_limit)
+ 		*default_power_limit = power_limit;
  
- 	/* Get next tlv */
--	total_length += sizeof(struct hsr_sup_tlv) + hsr_sup_tag->tlv.HSR_TLV_length;
-+	total_length += hsr_sup_tag->tlv.HSR_TLV_length;
- 	if (!pskb_may_pull(skb, total_length))
- 		return false;
- 	skb_pull(skb, total_length);
--- 
-2.43.0
-
+-	if (smu->od_enabled) {
++	if (smu->od_enabled)
+ 		od_percent_upper = le32_to_cpu(powerplay_table->overdrive_table.max[SMU_11_0_ODSETTING_POWERPERCENTAGE]);
+-		od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_11_0_ODSETTING_POWERPERCENTAGE]);
+-	} else {
++	else
+ 		od_percent_upper = 0;
+-		od_percent_lower = 100;
+-	}
++
++	od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_11_0_ODSETTING_POWERPERCENTAGE]);
+ 
+ 	dev_dbg(smu->adev->dev, "od percent upper:%d, od percent lower:%d (default power: %d)\n",
+ 							od_percent_upper, od_percent_lower, power_limit);
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/navi10_ppt.c
+@@ -2357,13 +2357,12 @@ static int navi10_get_power_limit(struct
+ 		*default_power_limit = power_limit;
+ 
+ 	if (smu->od_enabled &&
+-		    navi10_od_feature_is_supported(od_settings, SMU_11_0_ODCAP_POWER_LIMIT)) {
++		    navi10_od_feature_is_supported(od_settings, SMU_11_0_ODCAP_POWER_LIMIT))
+ 		od_percent_upper = le32_to_cpu(powerplay_table->overdrive_table.max[SMU_11_0_ODSETTING_POWERPERCENTAGE]);
+-		od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_11_0_ODSETTING_POWERPERCENTAGE]);
+-	} else {
++	else
+ 		od_percent_upper = 0;
+-		od_percent_lower = 100;
+-	}
++
++	od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_11_0_ODSETTING_POWERPERCENTAGE]);
+ 
+ 	dev_dbg(smu->adev->dev, "od percent upper:%d, od percent lower:%d (default power: %d)\n",
+ 					od_percent_upper, od_percent_lower, power_limit);
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+@@ -640,13 +640,12 @@ static int sienna_cichlid_get_power_limi
+ 	if (default_power_limit)
+ 		*default_power_limit = power_limit;
+ 
+-	if (smu->od_enabled) {
++	if (smu->od_enabled)
+ 		od_percent_upper = le32_to_cpu(powerplay_table->overdrive_table.max[SMU_11_0_7_ODSETTING_POWERPERCENTAGE]);
+-		od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_11_0_7_ODSETTING_POWERPERCENTAGE]);
+-	} else {
++	else
+ 		od_percent_upper = 0;
+-		od_percent_lower = 100;
+-	}
++
++	od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_11_0_7_ODSETTING_POWERPERCENTAGE]);
+ 
+ 	dev_dbg(smu->adev->dev, "od percent upper:%d, od percent lower:%d (default power: %d)\n",
+ 					od_percent_upper, od_percent_lower, power_limit);
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+@@ -2364,13 +2364,12 @@ static int smu_v13_0_0_get_power_limit(s
+ 	if (default_power_limit)
+ 		*default_power_limit = power_limit;
+ 
+-	if (smu->od_enabled) {
++	if (smu->od_enabled)
+ 		od_percent_upper = le32_to_cpu(powerplay_table->overdrive_table.max[SMU_13_0_0_ODSETTING_POWERPERCENTAGE]);
+-		od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_13_0_0_ODSETTING_POWERPERCENTAGE]);
+-	} else {
++	else
+ 		od_percent_upper = 0;
+-		od_percent_lower = 100;
+-	}
++
++	od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_13_0_0_ODSETTING_POWERPERCENTAGE]);
+ 
+ 	dev_dbg(smu->adev->dev, "od percent upper:%d, od percent lower:%d (default power: %d)\n",
+ 					od_percent_upper, od_percent_lower, power_limit);
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
+@@ -2328,13 +2328,12 @@ static int smu_v13_0_7_get_power_limit(s
+ 	if (default_power_limit)
+ 		*default_power_limit = power_limit;
+ 
+-	if (smu->od_enabled) {
++	if (smu->od_enabled)
+ 		od_percent_upper = le32_to_cpu(powerplay_table->overdrive_table.max[SMU_13_0_7_ODSETTING_POWERPERCENTAGE]);
+-		od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_13_0_7_ODSETTING_POWERPERCENTAGE]);
+-	} else {
++	else
+ 		od_percent_upper = 0;
+-		od_percent_lower = 100;
+-	}
++
++	od_percent_lower = le32_to_cpu(powerplay_table->overdrive_table.min[SMU_13_0_7_ODSETTING_POWERPERCENTAGE]);
+ 
+ 	dev_dbg(smu->adev->dev, "od percent upper:%d, od percent lower:%d (default power: %d)\n",
+ 					od_percent_upper, od_percent_lower, power_limit);
 
 
 
