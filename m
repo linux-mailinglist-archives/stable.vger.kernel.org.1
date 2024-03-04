@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC5B5870CB5
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:28:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16117870E9B
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:45:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8FB7288F6A
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:28:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 419791C2217D
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:45:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1215E41202;
-	Mon,  4 Mar 2024 21:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590677AE6B;
+	Mon,  4 Mar 2024 21:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11vZN8lj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xINUrTBg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C57C21EB5A;
-	Mon,  4 Mar 2024 21:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187D210A35;
+	Mon,  4 Mar 2024 21:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587669; cv=none; b=IefrDGHLgly3NJqVF2XUPt3F73rtjx3d04FDdmYy6WJ5Fb4H1RYeovfexklB0+UdwuKaLrN+Jn1dpU+Gy7cEEHzjBIQaUDT/Rw7PssI+HeKmFX2V9Z5rWeaBQ/z2wWr6rTFJWjIll6vZZtJ7qAvrDXtl9EY3PIbhqrBy+kXCoVI=
+	t=1709588725; cv=none; b=UjrzTkkRxLxAPf4DOmSZivqZWjaw+hkoRSlkPBtJYegvK5GgDKUM1bDuUcAeASSK9FFCdW9BOp0Ob14ceYOVYVeqQTfd5lrMsIDL1cH7q8PO8HBKqdUGjH85SXDDba4khZyZRWIHMt6/ebxv4bG2D5i23oxLVrXKTSBcYIH8w6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587669; c=relaxed/simple;
-	bh=8g0gtRXL8yiiy92QCebRXWUdeJ+XX+ruZcEnxgomZUc=;
+	s=arc-20240116; t=1709588725; c=relaxed/simple;
+	bh=C34z/KvQp0ZI9vF0aDlVKLw4uvTPRieVUjLo63isnKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yay8pUkAmsq+icbOLMdICGf644y4jp84K1MhewRzdOUjv45zIBu0HXjYO5/JLrGHiar3iTA1lybOHQ5cS1ZY9sT4M6GE7ttiGj4OLTTHLS6HX+N+DYHq/5n4bRvp4HmPl6Awfl2XN40driy8KGRW9YCZ1KqRZ+QrTNOPB5QTOe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11vZN8lj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575E6C433F1;
-	Mon,  4 Mar 2024 21:27:49 +0000 (UTC)
+	 MIME-Version; b=mwU2TAUUd+rBy2yHVuYPSOdXIuYsBmMVw9ome4D38TCY7eCDMYD4HXBRpEtSmuSkdEd9q8QGJwxGk8BmOroOtQ7bUScXVPiv/6n8laFMrAQBJyNt0iT5pXixoP0sit2QnhSLo5SDV3AfYn+hY13Kn3+jAuzeRTXvG2GeyrXKebQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xINUrTBg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D1AC433C7;
+	Mon,  4 Mar 2024 21:45:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587669;
-	bh=8g0gtRXL8yiiy92QCebRXWUdeJ+XX+ruZcEnxgomZUc=;
+	s=korg; t=1709588725;
+	bh=C34z/KvQp0ZI9vF0aDlVKLw4uvTPRieVUjLo63isnKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=11vZN8ljq1T9WYXaQ7xey5d3iuUV33VuNCoygjX+fikCC5ztf9HFRcwe6ugyp1rx8
-	 lLy7ZhN7MDhmTgg7Mkkb+tz+BrMTX7UlVAmHS+eDaMRKjo9avW2MocBpER5ULMWeso
-	 S45xuGzR8yaBqGQG/YryfRyuuI5oiUFBvzxrg+Dk=
+	b=xINUrTBgJ3CcLZN6gn7ypIQf8xwiRv33p7OmarIWeRSWp+iLrex7l+oeaCQ55ip/g
+	 WRWSmexFnkdB0wDqT3jPudy8+BenkwjJaYumxm4m+PMhNjsDN4jAlFwIOPVnLKlhoK
+	 PD9zx/7Pjz3qnvhF5BjaOCqKSv1vfSYKiWE5L4so=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 045/162] efi/capsule-loader: fix incorrect allocation size
-Date: Mon,  4 Mar 2024 21:21:50 +0000
-Message-ID: <20240304211553.292581639@linuxfoundation.org>
+Subject: [PATCH 6.1 048/215] Bluetooth: qca: Fix wrong event type for patch config command
+Date: Mon,  4 Mar 2024 21:21:51 +0000
+Message-ID: <20240304211558.522438770@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit fccfa646ef3628097d59f7d9c1a3e84d4b6bb45e ]
+[ Upstream commit c0dbc56077ae759f2dd602c7561480bc2b1b712c ]
 
-gcc-14 notices that the allocation with sizeof(void) on 32-bit architectures
-is not enough for a 64-bit phys_addr_t:
+Vendor-specific command patch config has HCI_Command_Complete event as
+response, but qca_send_patch_config_cmd() wrongly expects vendor-specific
+event for the command, fixed by using right event type.
 
-drivers/firmware/efi/capsule-loader.c: In function 'efi_capsule_open':
-drivers/firmware/efi/capsule-loader.c:295:24: error: allocation of insufficient size '4' for type 'phys_addr_t' {aka 'long long unsigned int'} with size '8' [-Werror=alloc-size]
-  295 |         cap_info->phys = kzalloc(sizeof(void *), GFP_KERNEL);
-      |                        ^
+Btmon log for the vendor-specific command are shown below:
+< HCI Command: Vendor (0x3f|0x0000) plen 5
+        28 01 00 00 00
+> HCI Event: Command Complete (0x0e) plen 5
+      Vendor (0x3f|0x0000) ncmd 1
+        Status: Success (0x00)
+        28
 
-Use the correct type instead here.
-
-Fixes: f24c4d478013 ("efi/capsule-loader: Reinstate virtual capsule mapping")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: 4fac8a7ac80b ("Bluetooth: btqca: sequential validation")
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/capsule-loader.c | 2 +-
+ drivers/bluetooth/btqca.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/capsule-loader.c b/drivers/firmware/efi/capsule-loader.c
-index 3e8d4b51a8140..97bafb5f70389 100644
---- a/drivers/firmware/efi/capsule-loader.c
-+++ b/drivers/firmware/efi/capsule-loader.c
-@@ -292,7 +292,7 @@ static int efi_capsule_open(struct inode *inode, struct file *file)
- 		return -ENOMEM;
- 	}
+diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
+index c9064d34d8308..d7d0c9de3dc31 100644
+--- a/drivers/bluetooth/btqca.c
++++ b/drivers/bluetooth/btqca.c
+@@ -152,7 +152,7 @@ static int qca_send_patch_config_cmd(struct hci_dev *hdev)
+ 	bt_dev_dbg(hdev, "QCA Patch config");
  
--	cap_info->phys = kzalloc(sizeof(void *), GFP_KERNEL);
-+	cap_info->phys = kzalloc(sizeof(phys_addr_t), GFP_KERNEL);
- 	if (!cap_info->phys) {
- 		kfree(cap_info->pages);
- 		kfree(cap_info);
+ 	skb = __hci_cmd_sync_ev(hdev, EDL_PATCH_CMD_OPCODE, sizeof(cmd),
+-				cmd, HCI_EV_VENDOR, HCI_INIT_TIMEOUT);
++				cmd, 0, HCI_INIT_TIMEOUT);
+ 	if (IS_ERR(skb)) {
+ 		err = PTR_ERR(skb);
+ 		bt_dev_err(hdev, "Sending QCA Patch config failed (%d)", err);
 -- 
 2.43.0
 
