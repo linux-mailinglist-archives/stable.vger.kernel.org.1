@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-26573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D18D2870F31
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:52:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B391870D96
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:35:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 027231C2089A
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:52:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB30428FBA5
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:35:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9696E78B47;
-	Mon,  4 Mar 2024 21:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E4578B69;
+	Mon,  4 Mar 2024 21:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFbw50Cw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hMCT1Lz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5057A1EB5A;
-	Mon,  4 Mar 2024 21:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55501C687;
+	Mon,  4 Mar 2024 21:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589118; cv=none; b=V7a1cL7qDjq5BA5GxzFM70z1k5DODVLT+lFVzGQcpXqXNe+9jtbKQha8bscWzxC6P5BUTcEnCnAXbeBaa6xgqdeFBWD6k8Ys3fzWOLQwkdcLtUk0CZe5/oTY3QhI0LadvUOGJixeRfZxOps0kISjzyBsZ0MXzFd/PKzkuExMzoo=
+	t=1709588138; cv=none; b=VWWCYDTs84jQPCy56U0T3lUHBVWgC0P3ZAazbDVuJZG3EsH7WA5f1T7/4jOdOSpvZtRXLiaKXKe0WIhBl9C+u4/mr+0qvVgPRxye8HiJbuxs5wgKxyYeK4iDC7sTV4RTOn4tzH7YjOfLC258I0A9ZR4DFAu96WSgO0kevZxae1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589118; c=relaxed/simple;
-	bh=Y92VHxA5XzcMJTs3mQQddxw0lkuUlKL1/7C/kBb0Odk=;
+	s=arc-20240116; t=1709588138; c=relaxed/simple;
+	bh=7oop44mxW5ItFViRSPMlQkuLKhb/VM+2sRa+MQcdyhU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IWfG0nUmmvzuqDdKDOQdV49mlwt1TjlIWB2vgK3/qKL0ao5dajENJJiXC3SO1Uz94/m5srZMccsQO8EgSy7lKropVYtq1+lliCYhIIfzqoGlNJhR3rDSrEQS6X6xM83CnyxYwNBj6hH5eJILHeay8nUgp79/nWXytgEcIp8ZTYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFbw50Cw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D1DC433F1;
-	Mon,  4 Mar 2024 21:51:57 +0000 (UTC)
+	 MIME-Version; b=B9AyXnlokFCrHK3cyvpOsr2zWcSpTsVVLBPmEVZ8nWGTNNcbCuctQiddstuTFs4Kb98DZVS/qeQCCSX7vWqcaSD7amcXJHaGwyDx4oaXs4N2TGp3Q6sK+T3cuRJUekX9z99IL6NbtvAzppnVAYSsCUxIdFApJ500Nh74HGpDBo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0hMCT1Lz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 488B4C433F1;
+	Mon,  4 Mar 2024 21:35:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589118;
-	bh=Y92VHxA5XzcMJTs3mQQddxw0lkuUlKL1/7C/kBb0Odk=;
+	s=korg; t=1709588138;
+	bh=7oop44mxW5ItFViRSPMlQkuLKhb/VM+2sRa+MQcdyhU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UFbw50CwxM9bBDsD/Ob5gbmDbQ7jKdvHvSM2dd6azVQNBdQnCmJrSaCUDMNwPKGRK
-	 mqiBq7iduWxoen/GKUPJFIiJn37ZGzpkk9ZYKVeIHz8sUuUPKv3ghF5As+0kLPEOuN
-	 JvdusrEKwjwVJb3qT46r3RXbZ5960GzoX5KQ7BfU=
+	b=0hMCT1LzYdBY4m3BqWPJ2/VOhbX/uFxtTOqHXau/Bzgm4xUyaV4vG+LHrkTsahSSd
+	 t/J3/09r5+yZKXZTSD0htf494OuikWvTMEGFcGCgoBv0v9CzVfxX2OKnOxbHRLR5B0
+	 SyG0M0+n8wUi6+mK9qt8FOxVrcD0k8to2YM9ZVEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"linux-efi@vger.kernel.org, Ard Biesheuvel" <ardb@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.1 180/215] arm64: efi: Limit allocations to 48-bit addressable physical region
+	Baokun Li <libaokun1@huawei.com>,
+	David Howells <dhowells@redhat.com>,
+	Jingbo Xu <jefflexu@linux.alibaba.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.10 36/42] cachefiles: fix memory leak in cachefiles_add_cache()
 Date: Mon,  4 Mar 2024 21:24:03 +0000
-Message-ID: <20240304211602.653003128@linuxfoundation.org>
+Message-ID: <20240304211538.870750093@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
+References: <20240304211537.631764077@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,112 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb+git@google.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-From: Ard Biesheuvel <ardb@kernel.org>
+commit e21a2f17566cbd64926fb8f16323972f7a064444 upstream.
 
-[ Commit a37dac5c5dcfe0f1fd58513c16cdbc280a47f628 upstream ]
+The following memory leak was reported after unbinding /dev/cachefiles:
 
-The UEFI spec does not mention or reason about the configured size of
-the virtual address space at all, but it does mention that all memory
-should be identity mapped using a page size of 4 KiB.
+==================================================================
+unreferenced object 0xffff9b674176e3c0 (size 192):
+  comm "cachefilesd2", pid 680, jiffies 4294881224
+  hex dump (first 32 bytes):
+    01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace (crc ea38a44b):
+    [<ffffffff8eb8a1a5>] kmem_cache_alloc+0x2d5/0x370
+    [<ffffffff8e917f86>] prepare_creds+0x26/0x2e0
+    [<ffffffffc002eeef>] cachefiles_determine_cache_security+0x1f/0x120
+    [<ffffffffc00243ec>] cachefiles_add_cache+0x13c/0x3a0
+    [<ffffffffc0025216>] cachefiles_daemon_write+0x146/0x1c0
+    [<ffffffff8ebc4a3b>] vfs_write+0xcb/0x520
+    [<ffffffff8ebc5069>] ksys_write+0x69/0xf0
+    [<ffffffff8f6d4662>] do_syscall_64+0x72/0x140
+    [<ffffffff8f8000aa>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
+==================================================================
 
-This means that a LPA2 capable system that has any system memory outside
-of the 48-bit addressable physical range and follows the spec to the
-letter may serve page allocation requests from regions of memory that
-the kernel cannot access unless it was built with LPA2 support and
-enables it at runtime.
+Put the reference count of cache_cred in cachefiles_daemon_unbind() to
+fix the problem. And also put cache_cred in cachefiles_add_cache() error
+branch to avoid memory leaks.
 
-So let's ensure that all page allocations are limited to the 48-bit
-range.
-
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: 9ae326a69004 ("CacheFiles: A cache that backs onto a mounted filesystem")
+CC: stable@vger.kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240217081431.796809-1-libaokun1@huawei.com
+Acked-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jingbo Xu <jefflexu@linux.alibaba.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/efi.h               |    1 +
- drivers/firmware/efi/libstub/alignedmem.c  |    2 ++
- drivers/firmware/efi/libstub/arm64-stub.c  |    5 +++--
- drivers/firmware/efi/libstub/efistub.h     |    4 ++++
- drivers/firmware/efi/libstub/mem.c         |    2 ++
- drivers/firmware/efi/libstub/randomalloc.c |    2 +-
- 6 files changed, 13 insertions(+), 3 deletions(-)
+ fs/cachefiles/bind.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/arm64/include/asm/efi.h
-+++ b/arch/arm64/include/asm/efi.h
-@@ -103,6 +103,7 @@ static inline void free_screen_info(stru
+--- a/fs/cachefiles/bind.c
++++ b/fs/cachefiles/bind.c
+@@ -245,6 +245,8 @@ error_open_root:
+ 	kmem_cache_free(cachefiles_object_jar, fsdef);
+ error_root_object:
+ 	cachefiles_end_secure(cache, saved_cred);
++	put_cred(cache->cache_cred);
++	cache->cache_cred = NULL;
+ 	pr_err("Failed to register: %d\n", ret);
+ 	return ret;
  }
+@@ -265,6 +267,7 @@ void cachefiles_daemon_unbind(struct cac
  
- #define EFI_ALLOC_ALIGN		SZ_64K
-+#define EFI_ALLOC_LIMIT		((1UL << 48) - 1)
+ 	dput(cache->graveyard);
+ 	mntput(cache->mnt);
++	put_cred(cache->cache_cred);
  
- /*
-  * On ARM systems, virtually remapped UEFI runtime services are set up in two
---- a/drivers/firmware/efi/libstub/alignedmem.c
-+++ b/drivers/firmware/efi/libstub/alignedmem.c
-@@ -29,6 +29,8 @@ efi_status_t efi_allocate_pages_aligned(
- 	efi_status_t status;
- 	int slack;
- 
-+	max = min(max, EFI_ALLOC_LIMIT);
-+
- 	if (align < EFI_ALLOC_ALIGN)
- 		align = EFI_ALLOC_ALIGN;
- 
---- a/drivers/firmware/efi/libstub/arm64-stub.c
-+++ b/drivers/firmware/efi/libstub/arm64-stub.c
-@@ -191,10 +191,11 @@ efi_status_t handle_kernel_image(unsigne
- 	if (status != EFI_SUCCESS) {
- 		if (!check_image_region((u64)_text, kernel_memsize)) {
- 			efi_err("FIRMWARE BUG: Image BSS overlaps adjacent EFI memory region\n");
--		} else if (IS_ALIGNED((u64)_text, min_kimg_align)) {
-+		} else if (IS_ALIGNED((u64)_text, min_kimg_align) &&
-+			   (u64)_end < EFI_ALLOC_LIMIT) {
- 			/*
- 			 * Just execute from wherever we were loaded by the
--			 * UEFI PE/COFF loader if the alignment is suitable.
-+			 * UEFI PE/COFF loader if the placement is suitable.
- 			 */
- 			*image_addr = (u64)_text;
- 			*reserve_size = 0;
---- a/drivers/firmware/efi/libstub/efistub.h
-+++ b/drivers/firmware/efi/libstub/efistub.h
-@@ -29,6 +29,10 @@
- #define EFI_ALLOC_ALIGN		EFI_PAGE_SIZE
- #endif
- 
-+#ifndef EFI_ALLOC_LIMIT
-+#define EFI_ALLOC_LIMIT		ULONG_MAX
-+#endif
-+
- extern bool efi_nochunk;
- extern bool efi_nokaslr;
- extern int efi_loglevel;
---- a/drivers/firmware/efi/libstub/mem.c
-+++ b/drivers/firmware/efi/libstub/mem.c
-@@ -89,6 +89,8 @@ efi_status_t efi_allocate_pages(unsigned
- 	efi_physical_addr_t alloc_addr;
- 	efi_status_t status;
- 
-+	max = min(max, EFI_ALLOC_LIMIT);
-+
- 	if (EFI_ALLOC_ALIGN > EFI_PAGE_SIZE)
- 		return efi_allocate_pages_aligned(size, addr, max,
- 						  EFI_ALLOC_ALIGN,
---- a/drivers/firmware/efi/libstub/randomalloc.c
-+++ b/drivers/firmware/efi/libstub/randomalloc.c
-@@ -29,7 +29,7 @@ static unsigned long get_entry_num_slots
- 		return 0;
- 
- 	region_end = min(md->phys_addr + md->num_pages * EFI_PAGE_SIZE - 1,
--			 (u64)ULONG_MAX);
-+			 (u64)EFI_ALLOC_LIMIT);
- 	if (region_end < size)
- 		return 0;
- 
+ 	kfree(cache->rootdirname);
+ 	kfree(cache->secctx);
 
 
 
