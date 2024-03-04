@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-25837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEDAB86FAB4
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 08:26:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E68B386FAB5
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 08:26:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BFF11C2037E
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 07:26:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F2E09B20E69
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 07:26:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F31012E54;
-	Mon,  4 Mar 2024 07:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAC7E12E54;
+	Mon,  4 Mar 2024 07:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ensQXkG/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sv9uktC4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108E98F7A
-	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 07:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BACE8F7A
+	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 07:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709537175; cv=none; b=rtjD9GKs2cnHw4QaAdSh39hAXsEYXOpQ30Cl4NfraW/BkCp/ajyo7udmkBVeLgbaZJl9Xtnf+DHDnprwXQ4cLeKp085F8ApX4JZMiYMpxkHoEbYV+WQtXwdepFFqnQKkWUyzalhZp+r/kXaXBNtDCN33rsKrygIwrK6QYyOcU2Q=
+	t=1709537183; cv=none; b=kosMwKn+z5y+KEc5Iwm6IHmy1YO0gh7HcaCCy2afYCV7taR5oa+aIJ03HpMjeCK3ILy5TG+6F5lbVffLt3R91d2iaO+cr86afTNnuIiVZSyMFlIzymNi0ajkfifw3FaCJfxft61GoC7ZySGV5NClD/RaqMLzlCHJpe219P1jJgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709537175; c=relaxed/simple;
-	bh=e4MlcfCtzjk5UuBX9A8w/8JxiJEJlFFITrR7cGvf2sg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=iq5aoDf8ggra4rMly8zpuOtY61u5xq01U/ZKsP+JdZ9sH7HPDhKT/L1PnW6zYKW6ZzWF8PNjy700Z+yo8Xpolb7Le42Hf++SHx78zXvpdSd5dKv91y4tarVKzGaNUinRmAAhrOuCyPcNetOwxO+vONEufnRTEQDP1vxNkqZ2G1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ensQXkG/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24FA9C433F1;
-	Mon,  4 Mar 2024 07:26:13 +0000 (UTC)
+	s=arc-20240116; t=1709537183; c=relaxed/simple;
+	bh=ZbT4AJnSOFRxXx1Y2w04s/2pGPt0YuYzGdq2bCc2isI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PsGvzd/dC4QrLYl6paa8HvoORvXP/ZQCtMbdycLd1X9CojpDdY/2NhxiVBD/q4VfCTvSlUM4b2fhtM569w+JIknBD9QtFHBJbCPTy3zHcG32h5dI2qU9x1+wT0yyFtYCMN75PGA1N2nRjdzH0g+ZiZZHjU689n+9lMktbaw3xOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sv9uktC4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2D55C43390;
+	Mon,  4 Mar 2024 07:26:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709537174;
-	bh=e4MlcfCtzjk5UuBX9A8w/8JxiJEJlFFITrR7cGvf2sg=;
+	s=korg; t=1709537183;
+	bh=ZbT4AJnSOFRxXx1Y2w04s/2pGPt0YuYzGdq2bCc2isI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ensQXkG/uzHHhjZJodOSXWw/1nuUJvArWuyuSIUK3+6eyi+oaoDxKERLBR77LuOuN
-	 K22QfAEhTMfydpk0lXCOAfsRpZ+brUWSyBQvgSImVbClgW5blQ3GoMY7PZ59A1kLXb
-	 IbqZhxQLzlQLKxTmbwHCCDIeDSD1firYlSfgX9rE=
-Subject: FAILED: patch "[PATCH] riscv: add CALLER_ADDRx support" failed to apply to 5.4-stable tree
+	b=Sv9uktC4DpW+K2o5vKu8Ft2mbjxm/s0apoPI5wHIQg6I3dCiAKJWkPUntifx5KAJD
+	 3V38z6NAegezWSetb11HGqcSBWDoPJ3J8LxY75vl0ya2et0RlC1swbS2LZBB6gpc1P
+	 b2X906WMB0fMDoo64YbVPCMcqXsIjGuayzATH5Vw=
+Subject: FAILED: patch "[PATCH] riscv: add CALLER_ADDRx support" failed to apply to 4.19-stable tree
 To: zong.li@sifive.com,alexghiti@rivosinc.com,palmer@rivosinc.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 04 Mar 2024 08:26:11 +0100
-Message-ID: <2024030411-default-joylessly-3437@gregkh>
+Date: Mon, 04 Mar 2024 08:26:12 +0100
+Message-ID: <2024030412-frisbee-unframed-7c15@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 680341382da56bd192ebfa4e58eaf4fec2e5bca7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024030411-default-joylessly-3437@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024030412-frisbee-unframed-7c15@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -78,6 +78,8 @@ Possible dependencies:
 6bd33e1ece52 ("riscv: add nommu support")
 a4c3733d32a7 ("riscv: abstract out CSR names for supervisor vs machine mode")
 0c3ac28931d5 ("riscv: separate MMIO functions into their own header file")
+00a5bf3a8ca3 ("RISC-V: Add PCIe I/O BAR memory mapping")
+1e1ac1cb651a ("Merge branch 'irq-urgent-for-linus' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip")
 
 thanks,
 
