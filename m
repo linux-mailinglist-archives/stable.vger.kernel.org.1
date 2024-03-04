@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-26100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C440870D1A
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:31:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D5CD870ECD
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:47:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E4E71C2039C
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:31:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B08A91C221DC
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE20B7B3C3;
-	Mon,  4 Mar 2024 21:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B4F178B69;
+	Mon,  4 Mar 2024 21:47:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L6qGQk4Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JXIeATZz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BC797C0A0;
-	Mon,  4 Mar 2024 21:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A391C6AB;
+	Mon,  4 Mar 2024 21:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587842; cv=none; b=Txx5H6swFzdErG/N1UAGt2fHEnX2EidWEHAf2ZqiotlMGRu75StcYRUBpEoxPVhl1yQbgkxwPOk8F0iL7X3OUv1GJSWn0u/RLJ0PpKWdl6giP5Loo+kIzqyVL80dyka6U/oGuLY2MW+OW+piFgirC4mPQhyjgCVlkCZq4/44slk=
+	t=1709588826; cv=none; b=W7+cjqgTKJsK3ZZOT38MnKcRyuP4oANODsbMH3Za974hdCiODipEL31/Zk/Awc6WepRrXxIpr8nB+xRxuTUJQGKXeN9Cz8dhj04GebrYbvJBvbmVHLQgWN4goUmerXJHXshIer+oQiXfDhFS1W4oh051n2fcDcvAQYHKW1nTqUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587842; c=relaxed/simple;
-	bh=UmUPL4AiO8kQvLGymU/OFaXnd7KWVYIHAvw+SC2shBg=;
+	s=arc-20240116; t=1709588826; c=relaxed/simple;
+	bh=DR/gZLco72wCgYCCEkBHAi+3C0YGkoggMfXoep5kF/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K1Y6San1VI1Its1naV9mztKkqws96/sAD6sDSyksXw9TueTUFXqSjnwfrq9GVOYXPxJ9S5tJhYIwdWlihqDZaLpR2YXNCwbPhzI14lbKMthb4nix806gYt5Fke0QENejhlWfLTEkuMR6Vfc7lPkDKyuWJPNNWfs+WmWIizx+fRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L6qGQk4Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8663C433C7;
-	Mon,  4 Mar 2024 21:30:41 +0000 (UTC)
+	 MIME-Version; b=Denju8I5H8OJGXS6mS3RGVFXC41j9Rkz2HksAJs2lDBB6YLPCeXnpwUNVgSY3YZlxhl/KjWZ9XYJNAf4vidA4VjIGLtaH0uxSYwGq2RxtHfhKFW4XRnQPXicJdBxCUZxeuTrhgqs1p7esUzB3hFr4DEf/4MGY61qEt8bl1twApc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JXIeATZz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A26C433C7;
+	Mon,  4 Mar 2024 21:47:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587842;
-	bh=UmUPL4AiO8kQvLGymU/OFaXnd7KWVYIHAvw+SC2shBg=;
+	s=korg; t=1709588826;
+	bh=DR/gZLco72wCgYCCEkBHAi+3C0YGkoggMfXoep5kF/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L6qGQk4YKlIXr34ByFYjyNIs9VPW9mpHlZXE4/RmIGTGzNG362yzfq8t3OeYYQK+O
-	 jGAZV8ePZE2KPlM4HYKd59cvfsuuz33NlyofUMOsCdarQcMbA2R9vUxvFToJRe0bAb
-	 HDV80624sqv7HRuUHuPGyIcrwpgpyVfIbnWCK0mI=
+	b=JXIeATZzt4vwXj+Ii5UitfwwzP4miiJMNGHvzBw6Skuj70j7kXvxkxDDlfCNYMDho
+	 WNuQqKcZErcs6/UQr4R25tbhTwilFVHB8V+gN4szUByMTMH7yK19+YNbAeDMzKDd/b
+	 IZel4VMWBgqsvBdKd9TvbdmFrctNb7mxX3hy8u4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Eric Biggers <ebiggers@google.com>,
-	Andy Chiu <andybnac@gmail.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.7 110/162] kbuild: Add -Wa,--fatal-warnings to as-instr invocation
+	Ard Biesheuvel <ardb@kernel.org>,
+	Borislav Petkov <bp@suse.de>
+Subject: [PATCH 6.1 112/215] x86/boot/compressed: Move bootargs parsing out of 32-bit startup code
 Date: Mon,  4 Mar 2024 21:22:55 +0000
-Message-ID: <20240304211555.301711741@linuxfoundation.org>
+Message-ID: <20240304211600.590951755@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,65 +61,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit 0ee695a471a750cad4fff22286d91e038b1ef62f upstream.
+commit 5c3a85f35b583259cf5ca0344cd79c8899ba1bb7 upstream.
 
-Certain assembler instruction tests may only induce warnings from the
-assembler on an unsupported instruction or option, which causes as-instr
-to succeed when it was expected to fail. Some tests workaround this
-limitation by additionally testing that invalid input fails as expected.
-However, this is fragile if the assembler is changed to accept the
-invalid input, as it will cause the instruction/option to be unavailable
-like it was unsupported even when it is.
+Move the logic that chooses between the different EFI entrypoints out of
+the 32-bit boot path, and into a 64-bit helper that can perform the same
+task much more cleanly. While at it, document the mixed mode boot flow
+in a code comment.
 
-Use '-Wa,--fatal-warnings' in the as-instr macro to turn these warnings
-into hard errors, which avoids this fragility and makes tests more
-robust and well formed.
-
-Cc: stable@vger.kernel.org
-Suggested-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Eric Biggers <ebiggers@google.com>
-Tested-by: Andy Chiu <andybnac@gmail.com>
-Reviewed-by: Andy Chiu <andybnac@gmail.com>
-Tested-by: Conor Dooley <conor.dooley@microchip.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Acked-by: Masahiro Yamada <masahiroy@kernel.org>
-Link: https://lore.kernel.org/r/20240125-fix-riscv-option-arch-llvm-18-v1-1-390ac9cc3cd0@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/20221122161017.2426828-4-ardb@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/Kconfig.include   |    2 +-
- scripts/Makefile.compiler |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/boot/compressed/efi_mixed.S |   43 +++++++++++++++++++++++++++++++++++
+ arch/x86/boot/compressed/head_64.S   |   24 +++----------------
+ 2 files changed, 47 insertions(+), 20 deletions(-)
 
---- a/scripts/Kconfig.include
-+++ b/scripts/Kconfig.include
-@@ -33,7 +33,7 @@ ld-option = $(success,$(LD) -v $(1))
+--- a/arch/x86/boot/compressed/efi_mixed.S
++++ b/arch/x86/boot/compressed/efi_mixed.S
+@@ -22,6 +22,49 @@
  
- # $(as-instr,<instr>)
- # Return y if the assembler supports <instr>, n otherwise
--as-instr = $(success,printf "%b\n" "$(1)" | $(CC) $(CLANG_FLAGS) -c -x assembler-with-cpp -o /dev/null -)
-+as-instr = $(success,printf "%b\n" "$(1)" | $(CC) $(CLANG_FLAGS) -Wa$(comma)--fatal-warnings -c -x assembler-with-cpp -o /dev/null -)
+ 	.code64
+ 	.text
++/*
++ * When booting in 64-bit mode on 32-bit EFI firmware, startup_64_mixed_mode()
++ * is the first thing that runs after switching to long mode. Depending on
++ * whether the EFI handover protocol or the compat entry point was used to
++ * enter the kernel, it will either branch to the 64-bit EFI handover
++ * entrypoint at offset 0x390 in the image, or to the 64-bit EFI PE/COFF
++ * entrypoint efi_pe_entry(). In the former case, the bootloader must provide a
++ * struct bootparams pointer as the third argument, so the presence of such a
++ * pointer is used to disambiguate.
++ *
++ *                                                             +--------------+
++ *  +------------------+     +------------+            +------>| efi_pe_entry |
++ *  | efi32_pe_entry   |---->|            |            |       +-----------+--+
++ *  +------------------+     |            |     +------+----------------+  |
++ *                           | startup_32 |---->| startup_64_mixed_mode |  |
++ *  +------------------+     |            |     +------+----------------+  V
++ *  | efi32_stub_entry |---->|            |            |     +------------------+
++ *  +------------------+     +------------+            +---->| efi64_stub_entry |
++ *                                                           +-------------+----+
++ *                           +------------+     +----------+               |
++ *                           | startup_64 |<----| efi_main |<--------------+
++ *                           +------------+     +----------+
++ */
++SYM_FUNC_START(startup_64_mixed_mode)
++	lea	efi32_boot_args(%rip), %rdx
++	mov	0(%rdx), %edi
++	mov	4(%rdx), %esi
++	mov	8(%rdx), %edx		// saved bootparams pointer
++	test	%edx, %edx
++	jnz	efi64_stub_entry
++	/*
++	 * efi_pe_entry uses MS calling convention, which requires 32 bytes of
++	 * shadow space on the stack even if all arguments are passed in
++	 * registers. We also need an additional 8 bytes for the space that
++	 * would be occupied by the return address, and this also results in
++	 * the correct stack alignment for entry.
++	 */
++	sub	$40, %rsp
++	mov	%rdi, %rcx		// MS calling convention
++	mov	%rsi, %rdx
++	jmp	efi_pe_entry
++SYM_FUNC_END(startup_64_mixed_mode)
++
+ SYM_FUNC_START(__efi64_thunk)
+ 	push	%rbp
+ 	push	%rbx
+--- a/arch/x86/boot/compressed/head_64.S
++++ b/arch/x86/boot/compressed/head_64.S
+@@ -261,25 +261,9 @@ SYM_FUNC_START(startup_32)
+ 	 */
+ 	leal	rva(startup_64)(%ebp), %eax
+ #ifdef CONFIG_EFI_MIXED
+-	movl	rva(efi32_boot_args)(%ebp), %edi
+-	testl	%edi, %edi
+-	jz	1f
+-	leal	rva(efi64_stub_entry)(%ebp), %eax
+-	movl	rva(efi32_boot_args+4)(%ebp), %esi
+-	movl	rva(efi32_boot_args+8)(%ebp), %edx	// saved bootparams pointer
+-	testl	%edx, %edx
+-	jnz	1f
+-	/*
+-	 * efi_pe_entry uses MS calling convention, which requires 32 bytes of
+-	 * shadow space on the stack even if all arguments are passed in
+-	 * registers. We also need an additional 8 bytes for the space that
+-	 * would be occupied by the return address, and this also results in
+-	 * the correct stack alignment for entry.
+-	 */
+-	subl	$40, %esp
+-	leal	rva(efi_pe_entry)(%ebp), %eax
+-	movl	%edi, %ecx			// MS calling convention
+-	movl	%esi, %edx
++	cmpb	$1, rva(efi_is64)(%ebp)
++	je	1f
++	leal	rva(startup_64_mixed_mode)(%ebp), %eax
+ 1:
+ #endif
+ 	/* Check if the C-bit position is correct when SEV is active */
+@@ -795,7 +779,7 @@ SYM_DATA_END_LABEL(boot32_idt, SYM_L_GLO
+ SYM_DATA(image_offset, .long 0)
+ #endif
+ #ifdef CONFIG_EFI_MIXED
+-SYM_DATA_LOCAL(efi32_boot_args, .long 0, 0, 0)
++SYM_DATA(efi32_boot_args, .long 0, 0, 0)
+ SYM_DATA(efi_is64, .byte 1)
  
- # check if $(CC) and $(LD) exist
- $(error-if,$(failure,command -v $(CC)),C compiler '$(CC)' not found)
---- a/scripts/Makefile.compiler
-+++ b/scripts/Makefile.compiler
-@@ -38,7 +38,7 @@ as-option = $(call try-run,\
- # Usage: aflags-y += $(call as-instr,instr,option1,option2)
- 
- as-instr = $(call try-run,\
--	printf "%b\n" "$(1)" | $(CC) -Werror $(CLANG_FLAGS) $(KBUILD_AFLAGS) -c -x assembler-with-cpp -o "$$TMP" -,$(2),$(3))
-+	printf "%b\n" "$(1)" | $(CC) -Werror $(CLANG_FLAGS) $(KBUILD_AFLAGS) -Wa$(comma)--fatal-warnings -c -x assembler-with-cpp -o "$$TMP" -,$(2),$(3))
- 
- # __cc-option
- # Usage: MY_CFLAGS += $(call __cc-option,$(CC),$(MY_CFLAGS),-march=winchip-c6,-march=i586)
+ #define ST32_boottime		60 // offsetof(efi_system_table_32_t, boottime)
 
 
 
