@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-26299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E70B2870DF4
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:39:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC574870ECB
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:47:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17A131C20CC5
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:39:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C69A1C2332D
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FADD1F93F;
-	Mon,  4 Mar 2024 21:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22BDF7BAE2;
+	Mon,  4 Mar 2024 21:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TzmFNusN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QMmVvwvs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4228F58;
-	Mon,  4 Mar 2024 21:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D508F7868F;
+	Mon,  4 Mar 2024 21:47:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588361; cv=none; b=aovjrYoNYK2AmgWCzKHcFHZBUHdY6F/ZZ5mDBJWxnT20vOC6yqORVap2G2PbsKZGY5+v+C0uXeQcsjER6n2V5jI7IAS5YShfKvw+iTfqtg/OdKYwAzl0tz+McudmQ/YFLk7PuZejCO0ArJGgA7L7ZSXFywYE4qy18fOw7L7P6jM=
+	t=1709588821; cv=none; b=JpcFxI4OezOJAycr/b4JeHIU9gJo1GWz1pM8oZxCWRm213zwgGqrXNaWmYd116Wi/1tNnGeT7AybKphbhELe7ofpABdrQnzRQptI1isj8iyR3AWqUqmvIdS1zFe4SPjt65fAeoJnP1qSnd8UpSHzbXvnfTa37mSWZHPShe0j/dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588361; c=relaxed/simple;
-	bh=td9shQnZvbVll4hvJeiOAs/tQPKgZs4RfPHEnCCC1FA=;
+	s=arc-20240116; t=1709588821; c=relaxed/simple;
+	bh=Ce/hSECyxaGV5opsgF26cKq5SdwG/3/F7hA1gbfEUy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WEKSFhGO0OY+qlzZrJKTsnyvDcjiD2ykcBIIWzGxU0J7mIFfMzd/glSLd+s3Pq5EaLU2Ud3TTqH2JTJaQJwpo5ehWQErW3LaevGApumHt75T0CFOUfbnre+p7GJeLWPqh4z9iQtdgW3TRu4kb5rpkccY5ccdgd11UaqNX/QON4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TzmFNusN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2C53C433C7;
-	Mon,  4 Mar 2024 21:39:20 +0000 (UTC)
+	 MIME-Version; b=oGt4rjAaI0pwjAjVixEMYdq9eumgw4WyMF4s3CpzC1bZVaYrvfTqgzZ/wohl0KUQUcLQwL9neuHlGLyOBb2HmwlCoCmGyg/PMRZKdkH1HJiR5CWviuRQJCz5+JgbwibAW/sqdkJekIGhqGcW5ntv5+fbxz2JnwF+Lk3o2S4jnBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QMmVvwvs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1747AC433C7;
+	Mon,  4 Mar 2024 21:47:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588361;
-	bh=td9shQnZvbVll4hvJeiOAs/tQPKgZs4RfPHEnCCC1FA=;
+	s=korg; t=1709588821;
+	bh=Ce/hSECyxaGV5opsgF26cKq5SdwG/3/F7hA1gbfEUy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TzmFNusNknrJZZYLu2W4Zy6I5IbU2LPoHcEyjfxH+G5QJbbTdQ6TCsknmuOa/lrzZ
-	 j40MB2Bz5zaqVHgxkLpp8ybG1//rO5lP9UjOyl2j7G41qBPlF2YgHVqkMoZ4/WVG7j
-	 ssA6jZf/AGho9s1i/7AwdMgBZ+97z5IiFHvqUVSw=
+	b=QMmVvwvszQPgQu/kSJrA+FtY4yQLBMAOx/HSbwdko3ztXPcHAz4K5CzagBwwudNqe
+	 2ZXnfHJxgzEFsskbCnAGJlXpL9iSiw/8PAKPUIfZT1n8mf1uuijrnZ27TvU0euxEVP
+	 EHyCXYQvwH5jWVqkwynZXWBnbGZX3ReC7w69b1WE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 053/143] ASoC: cs35l56: Fix for initializing ASP1 mixer registers
+	Ard Biesheuvel <ardb@kernel.org>,
+	Borislav Petkov <bp@suse.de>
+Subject: [PATCH 6.1 110/215] x86/boot/compressed: Rename efi_thunk_64.S to efi-mixed.S
 Date: Mon,  4 Mar 2024 21:22:53 +0000
-Message-ID: <20240304211551.622473839@linuxfoundation.org>
+Message-ID: <20240304211600.524533936@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,337 +61,446 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit 07f7d6e7a124d3e4de36771e2a4926d0e31c2258 ]
+commit cb8bda8ad4438b4bcfcf89697fc84803fb210017 upstream.
 
-Defer initializing the state of the ASP1 mixer registers until
-the firmware has been downloaded and rebooted.
+In preparation for moving the mixed mode specific code out of head_64.S,
+rename the existing file to clarify that it contains more than just the
+mixed mode thunk.
 
-On a SoundWire system the ASP is free for use as a chip-to-chip
-interconnect. This can be either for the firmware on multiple
-CS35L56 to share reference audio; or as a bridge to another
-device. If it is a firmware interconnect it is owned by the
-firmware and the Linux driver should avoid writing the registers.
-However, if it is a bridge then Linux may take over and handle
-it as a normal codec-to-codec link. Even if the ASP is used
-as a firmware-firmware interconnect it is useful to have
-ALSA controls for the ASP mixer. They are at least useful for
-debugging.
+While at it, clean up the Makefile rules that add it to the build.
 
-CS35L56 is designed for SDCA and a generic SDCA driver would
-know nothing about these chip-specific registers. So if the
-ASP is being used on a SoundWire system the firmware sets up the
-ASP mixer registers. This means that we can't assume the default
-state of these registers. But we don't know the initial state
-that the firmware set them to until after the firmware has been
-downloaded and booted, which can take several seconds when
-downloading multiple amps.
-
-DAPM normally reads the initial state of mux registers during
-probe() but this would mean blocking probe() for several seconds
-until the firmware has initialized them. To avoid this, the
-mixer muxes are set SND_SOC_NOPM to prevent DAPM trying to read
-the register state. Custom get/set callbacks are implemented for
-ALSA control access, and these can safely block waiting for the
-firmware download.
-
-After the firmware download has completed, the state of the
-mux registers is known so a work job is queued to call
-snd_soc_dapm_mux_update_power() on each of the mux widgets.
-
-Backport note:
-This won't apply cleanly to kernels older than v6.6.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: e49611252900 ("ASoC: cs35l56: Add driver for Cirrus Logic CS35L56")
-Link: https://msgid.link/r/20240129162737.497-11-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/20221122161017.2426828-2-ardb@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/cs35l56-shared.c |   7 +-
- sound/soc/codecs/cs35l56.c        | 172 +++++++++++++++++++++++++++---
- sound/soc/codecs/cs35l56.h        |   1 +
- 3 files changed, 163 insertions(+), 17 deletions(-)
+ arch/x86/boot/compressed/Makefile                        | 6 +++---
+ arch/x86/boot/compressed/{efi_thunk_64.S => efi_mixed.S} | 0
+ arch/x86/boot/compressed/Makefile       |    6 
+ arch/x86/boot/compressed/efi_mixed.S    |  195 ++++++++++++++++++++++++++++++++
+ arch/x86/boot/compressed/efi_thunk_64.S |  195 --------------------------------
+ 3 files changed, 198 insertions(+), 198 deletions(-)
+ rename arch/x86/boot/compressed/{efi_thunk_64.S => efi_mixed.S} (100%)
 
-diff --git a/sound/soc/codecs/cs35l56-shared.c b/sound/soc/codecs/cs35l56-shared.c
-index a925701f46fc6..afd12d853ce4c 100644
---- a/sound/soc/codecs/cs35l56-shared.c
-+++ b/sound/soc/codecs/cs35l56-shared.c
-@@ -34,10 +34,9 @@ static const struct reg_default cs35l56_reg_defaults[] = {
- 	{ CS35L56_ASP1_FRAME_CONTROL5,		0x00020100 },
- 	{ CS35L56_ASP1_DATA_CONTROL1,		0x00000018 },
- 	{ CS35L56_ASP1_DATA_CONTROL5,		0x00000018 },
--	{ CS35L56_ASP1TX1_INPUT,		0x00000018 },
--	{ CS35L56_ASP1TX2_INPUT,		0x00000019 },
--	{ CS35L56_ASP1TX3_INPUT,		0x00000020 },
--	{ CS35L56_ASP1TX4_INPUT,		0x00000028 },
-+
-+	/* no defaults for ASP1TX mixer */
-+
- 	{ CS35L56_SWIRE_DP3_CH1_INPUT,		0x00000018 },
- 	{ CS35L56_SWIRE_DP3_CH2_INPUT,		0x00000019 },
- 	{ CS35L56_SWIRE_DP3_CH3_INPUT,		0x00000029 },
-diff --git a/sound/soc/codecs/cs35l56.c b/sound/soc/codecs/cs35l56.c
-index 6d42442a29448..d1ef1c5bac580 100644
---- a/sound/soc/codecs/cs35l56.c
-+++ b/sound/soc/codecs/cs35l56.c
-@@ -59,6 +59,135 @@ static int cs35l56_dspwait_put_volsw(struct snd_kcontrol *kcontrol,
- 	return snd_soc_put_volsw(kcontrol, ucontrol);
- }
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -108,11 +108,11 @@ endif
+ vmlinux-objs-$(CONFIG_ACPI) += $(obj)/acpi.o
+ vmlinux-objs-$(CONFIG_INTEL_TDX_GUEST) += $(obj)/tdx.o $(obj)/tdcall.o
  
-+static const unsigned short cs35l56_asp1_mixer_regs[] = {
-+	CS35L56_ASP1TX1_INPUT, CS35L56_ASP1TX2_INPUT,
-+	CS35L56_ASP1TX3_INPUT, CS35L56_ASP1TX4_INPUT,
-+};
+-vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_thunk_$(BITS).o
+ vmlinux-objs-$(CONFIG_EFI) += $(obj)/efi.o
+-efi-obj-$(CONFIG_EFI_STUB) = $(objtree)/drivers/firmware/efi/libstub/lib.a
++vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_mixed.o
++vmlinux-objs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
+ 
+-$(obj)/vmlinux: $(vmlinux-objs-y) $(efi-obj-y) FORCE
++$(obj)/vmlinux: $(vmlinux-objs-y) FORCE
+ 	$(call if_changed,ld)
+ 
+ OBJCOPYFLAGS_vmlinux.bin :=  -R .comment -S
+--- /dev/null
++++ b/arch/x86/boot/compressed/efi_mixed.S
+@@ -0,0 +1,195 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (C) 2014, 2015 Intel Corporation; author Matt Fleming
++ *
++ * Early support for invoking 32-bit EFI services from a 64-bit kernel.
++ *
++ * Because this thunking occurs before ExitBootServices() we have to
++ * restore the firmware's 32-bit GDT and IDT before we make EFI service
++ * calls.
++ *
++ * On the plus side, we don't have to worry about mangling 64-bit
++ * addresses into 32-bits because we're executing with an identity
++ * mapped pagetable and haven't transitioned to 64-bit virtual addresses
++ * yet.
++ */
 +
-+static const char * const cs35l56_asp1_mux_control_names[] = {
-+	"ASP1 TX1 Source", "ASP1 TX2 Source", "ASP1 TX3 Source", "ASP1 TX4 Source"
-+};
++#include <linux/linkage.h>
++#include <asm/msr.h>
++#include <asm/page_types.h>
++#include <asm/processor-flags.h>
++#include <asm/segment.h>
 +
-+static int cs35l56_dspwait_asp1tx_get(struct snd_kcontrol *kcontrol,
-+				      struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct snd_soc_component *component = snd_soc_dapm_kcontrol_component(kcontrol);
-+	struct cs35l56_private *cs35l56 = snd_soc_component_get_drvdata(component);
-+	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
-+	int index = e->shift_l;
-+	unsigned int addr, val;
-+	int ret;
++	.code64
++	.text
++SYM_FUNC_START(__efi64_thunk)
++	push	%rbp
++	push	%rbx
 +
-+	/* Wait for mux to be initialized */
-+	cs35l56_wait_dsp_ready(cs35l56);
-+	flush_work(&cs35l56->mux_init_work);
++	movl	%ds, %eax
++	push	%rax
++	movl	%es, %eax
++	push	%rax
++	movl	%ss, %eax
++	push	%rax
 +
-+	addr = cs35l56_asp1_mixer_regs[index];
-+	ret = regmap_read(cs35l56->base.regmap, addr, &val);
-+	if (ret)
-+		return ret;
-+
-+	val &= CS35L56_ASP_TXn_SRC_MASK;
-+	ucontrol->value.enumerated.item[0] = snd_soc_enum_val_to_item(e, val);
-+
-+	return 0;
-+}
-+
-+static int cs35l56_dspwait_asp1tx_put(struct snd_kcontrol *kcontrol,
-+				      struct snd_ctl_elem_value *ucontrol)
-+{
-+	struct snd_soc_component *component = snd_soc_dapm_kcontrol_component(kcontrol);
-+	struct snd_soc_dapm_context *dapm = snd_soc_dapm_kcontrol_dapm(kcontrol);
-+	struct cs35l56_private *cs35l56 = snd_soc_component_get_drvdata(component);
-+	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
-+	int item = ucontrol->value.enumerated.item[0];
-+	int index = e->shift_l;
-+	unsigned int addr, val;
-+	bool changed;
-+	int ret;
-+
-+	/* Wait for mux to be initialized */
-+	cs35l56_wait_dsp_ready(cs35l56);
-+	flush_work(&cs35l56->mux_init_work);
-+
-+	addr = cs35l56_asp1_mixer_regs[index];
-+	val = snd_soc_enum_item_to_val(e, item);
-+
-+	ret = regmap_update_bits_check(cs35l56->base.regmap, addr,
-+				       CS35L56_ASP_TXn_SRC_MASK, val, &changed);
-+	if (!ret)
-+		return ret;
-+
-+	if (changed)
-+		snd_soc_dapm_mux_update_power(dapm, kcontrol, item, e, NULL);
-+
-+	return changed;
-+}
-+
-+static void cs35l56_mark_asp1_mixer_widgets_dirty(struct cs35l56_private *cs35l56)
-+{
-+	struct snd_soc_dapm_context *dapm = snd_soc_component_get_dapm(cs35l56->component);
-+	const char *prefix = cs35l56->component->name_prefix;
-+	char full_name[SNDRV_CTL_ELEM_ID_NAME_MAXLEN];
-+	const char *name;
-+	struct snd_kcontrol *kcontrol;
-+	struct soc_enum *e;
-+	unsigned int val[4];
-+	int i, item, ret;
++	/* Copy args passed on stack */
++	movq	0x30(%rsp), %rbp
++	movq	0x38(%rsp), %rbx
++	movq	0x40(%rsp), %rax
 +
 +	/*
-+	 * Resume so we can read the registers from silicon if the regmap
-+	 * cache has not yet been populated.
++	 * Convert x86-64 ABI params to i386 ABI
 +	 */
-+	ret = pm_runtime_resume_and_get(cs35l56->base.dev);
-+	if (ret < 0)
-+		return;
++	subq	$64, %rsp
++	movl	%esi, 0x0(%rsp)
++	movl	%edx, 0x4(%rsp)
++	movl	%ecx, 0x8(%rsp)
++	movl	%r8d, 0xc(%rsp)
++	movl	%r9d, 0x10(%rsp)
++	movl	%ebp, 0x14(%rsp)
++	movl	%ebx, 0x18(%rsp)
++	movl	%eax, 0x1c(%rsp)
 +
-+	ret = regmap_bulk_read(cs35l56->base.regmap, CS35L56_ASP1TX1_INPUT,
-+			       val, ARRAY_SIZE(val));
++	leaq	0x20(%rsp), %rbx
++	sgdt	(%rbx)
 +
-+	pm_runtime_mark_last_busy(cs35l56->base.dev);
-+	pm_runtime_put_autosuspend(cs35l56->base.dev);
++	addq	$16, %rbx
++	sidt	(%rbx)
 +
-+	if (ret) {
-+		dev_err(cs35l56->base.dev, "Failed to read ASP1 mixer regs: %d\n", ret);
-+		return;
-+	}
-+
-+	snd_soc_card_mutex_lock(dapm->card);
-+	WARN_ON(!dapm->card->instantiated);
-+
-+	for (i = 0; i < ARRAY_SIZE(cs35l56_asp1_mux_control_names); ++i) {
-+		name = cs35l56_asp1_mux_control_names[i];
-+
-+		if (prefix) {
-+			snprintf(full_name, sizeof(full_name), "%s %s", prefix, name);
-+			name = full_name;
-+		}
-+
-+		kcontrol = snd_soc_card_get_kcontrol(dapm->card, name);
-+		if (!kcontrol) {
-+			dev_warn(cs35l56->base.dev, "Could not find control %s\n", name);
-+			continue;
-+		}
-+
-+		e = (struct soc_enum *)kcontrol->private_value;
-+		item = snd_soc_enum_val_to_item(e, val[i] & CS35L56_ASP_TXn_SRC_MASK);
-+		snd_soc_dapm_mux_update_power(dapm, kcontrol, item, e, NULL);
-+	}
-+
-+	snd_soc_card_mutex_unlock(dapm->card);
-+}
-+
-+static void cs35l56_mux_init_work(struct work_struct *work)
-+{
-+	struct cs35l56_private *cs35l56 = container_of(work,
-+						       struct cs35l56_private,
-+						       mux_init_work);
-+
-+	cs35l56_mark_asp1_mixer_widgets_dirty(cs35l56);
-+}
-+
- static DECLARE_TLV_DB_SCALE(vol_tlv, -10000, 25, 0);
- 
- static const struct snd_kcontrol_new cs35l56_controls[] = {
-@@ -77,40 +206,44 @@ static const struct snd_kcontrol_new cs35l56_controls[] = {
- };
- 
- static SOC_VALUE_ENUM_SINGLE_DECL(cs35l56_asp1tx1_enum,
--				  CS35L56_ASP1TX1_INPUT,
--				  0, CS35L56_ASP_TXn_SRC_MASK,
-+				  SND_SOC_NOPM,
-+				  0, 0,
- 				  cs35l56_tx_input_texts,
- 				  cs35l56_tx_input_values);
- 
- static const struct snd_kcontrol_new asp1_tx1_mux =
--	SOC_DAPM_ENUM("ASP1TX1 SRC", cs35l56_asp1tx1_enum);
-+	SOC_DAPM_ENUM_EXT("ASP1TX1 SRC", cs35l56_asp1tx1_enum,
-+			  cs35l56_dspwait_asp1tx_get, cs35l56_dspwait_asp1tx_put);
- 
- static SOC_VALUE_ENUM_SINGLE_DECL(cs35l56_asp1tx2_enum,
--				  CS35L56_ASP1TX2_INPUT,
--				  0, CS35L56_ASP_TXn_SRC_MASK,
-+				  SND_SOC_NOPM,
-+				  1, 0,
- 				  cs35l56_tx_input_texts,
- 				  cs35l56_tx_input_values);
- 
- static const struct snd_kcontrol_new asp1_tx2_mux =
--	SOC_DAPM_ENUM("ASP1TX2 SRC", cs35l56_asp1tx2_enum);
-+	SOC_DAPM_ENUM_EXT("ASP1TX2 SRC", cs35l56_asp1tx2_enum,
-+			  cs35l56_dspwait_asp1tx_get, cs35l56_dspwait_asp1tx_put);
- 
- static SOC_VALUE_ENUM_SINGLE_DECL(cs35l56_asp1tx3_enum,
--				  CS35L56_ASP1TX3_INPUT,
--				  0, CS35L56_ASP_TXn_SRC_MASK,
-+				  SND_SOC_NOPM,
-+				  2, 0,
- 				  cs35l56_tx_input_texts,
- 				  cs35l56_tx_input_values);
- 
- static const struct snd_kcontrol_new asp1_tx3_mux =
--	SOC_DAPM_ENUM("ASP1TX3 SRC", cs35l56_asp1tx3_enum);
-+	SOC_DAPM_ENUM_EXT("ASP1TX3 SRC", cs35l56_asp1tx3_enum,
-+			  cs35l56_dspwait_asp1tx_get, cs35l56_dspwait_asp1tx_put);
- 
- static SOC_VALUE_ENUM_SINGLE_DECL(cs35l56_asp1tx4_enum,
--				  CS35L56_ASP1TX4_INPUT,
--				  0, CS35L56_ASP_TXn_SRC_MASK,
-+				  SND_SOC_NOPM,
-+				  3, 0,
- 				  cs35l56_tx_input_texts,
- 				  cs35l56_tx_input_values);
- 
- static const struct snd_kcontrol_new asp1_tx4_mux =
--	SOC_DAPM_ENUM("ASP1TX4 SRC", cs35l56_asp1tx4_enum);
-+	SOC_DAPM_ENUM_EXT("ASP1TX4 SRC", cs35l56_asp1tx4_enum,
-+			  cs35l56_dspwait_asp1tx_get, cs35l56_dspwait_asp1tx_put);
- 
- static SOC_VALUE_ENUM_SINGLE_DECL(cs35l56_sdw1tx1_enum,
- 				CS35L56_SWIRE_DP3_CH1_INPUT,
-@@ -764,6 +897,15 @@ static void cs35l56_dsp_work(struct work_struct *work)
- 	else
- 		cs35l56_patch(cs35l56);
- 
++	leaq	1f(%rip), %rbp
 +
 +	/*
-+	 * Set starting value of ASP1 mux widgets. Updating a mux takes
-+	 * the DAPM mutex. Post this to a separate job so that DAPM
-+	 * power-up can wait for dsp_work to complete without deadlocking
-+	 * on the DAPM mutex.
++	 * Switch to IDT and GDT with 32-bit segments. This is the firmware GDT
++	 * and IDT that was installed when the kernel started executing. The
++	 * pointers were saved at the EFI stub entry point in head_64.S.
++	 *
++	 * Pass the saved DS selector to the 32-bit code, and use far return to
++	 * restore the saved CS selector.
 +	 */
-+	queue_work(cs35l56->dsp_wq, &cs35l56->mux_init_work);
++	leaq	efi32_boot_idt(%rip), %rax
++	lidt	(%rax)
++	leaq	efi32_boot_gdt(%rip), %rax
++	lgdt	(%rax)
 +
- 	pm_runtime_mark_last_busy(cs35l56->base.dev);
- 	pm_runtime_put_autosuspend(cs35l56->base.dev);
- }
-@@ -809,6 +951,7 @@ static void cs35l56_component_remove(struct snd_soc_component *component)
- 	struct cs35l56_private *cs35l56 = snd_soc_component_get_drvdata(component);
- 
- 	cancel_work_sync(&cs35l56->dsp_work);
-+	cancel_work_sync(&cs35l56->mux_init_work);
- 
- 	if (cs35l56->dsp.cs_dsp.booted)
- 		wm_adsp_power_down(&cs35l56->dsp);
-@@ -876,8 +1019,10 @@ int cs35l56_system_suspend(struct device *dev)
- 
- 	dev_dbg(dev, "system_suspend\n");
- 
--	if (cs35l56->component)
-+	if (cs35l56->component) {
- 		flush_work(&cs35l56->dsp_work);
-+		cancel_work_sync(&cs35l56->mux_init_work);
-+	}
- 
- 	/*
- 	 * The interrupt line is normally shared, but after we start suspending
-@@ -1028,6 +1173,7 @@ static int cs35l56_dsp_init(struct cs35l56_private *cs35l56)
- 		return -ENOMEM;
- 
- 	INIT_WORK(&cs35l56->dsp_work, cs35l56_dsp_work);
-+	INIT_WORK(&cs35l56->mux_init_work, cs35l56_mux_init_work);
- 
- 	dsp = &cs35l56->dsp;
- 	cs35l56_init_cs_dsp(&cs35l56->base, &dsp->cs_dsp);
-diff --git a/sound/soc/codecs/cs35l56.h b/sound/soc/codecs/cs35l56.h
-index 8159c3e217d93..dc2fe4c91e67b 100644
---- a/sound/soc/codecs/cs35l56.h
-+++ b/sound/soc/codecs/cs35l56.h
-@@ -34,6 +34,7 @@ struct cs35l56_private {
- 	struct wm_adsp dsp; /* must be first member */
- 	struct cs35l56_base base;
- 	struct work_struct dsp_work;
-+	struct work_struct mux_init_work;
- 	struct workqueue_struct *dsp_wq;
- 	struct snd_soc_component *component;
- 	struct regulator_bulk_data supplies[CS35L56_NUM_BULK_SUPPLIES];
--- 
-2.43.0
-
++	movzwl	efi32_boot_ds(%rip), %edx
++	movzwq	efi32_boot_cs(%rip), %rax
++	pushq	%rax
++	leaq	efi_enter32(%rip), %rax
++	pushq	%rax
++	lretq
++
++1:	addq	$64, %rsp
++	movq	%rdi, %rax
++
++	pop	%rbx
++	movl	%ebx, %ss
++	pop	%rbx
++	movl	%ebx, %es
++	pop	%rbx
++	movl	%ebx, %ds
++	/* Clear out 32-bit selector from FS and GS */
++	xorl	%ebx, %ebx
++	movl	%ebx, %fs
++	movl	%ebx, %gs
++
++	/*
++	 * Convert 32-bit status code into 64-bit.
++	 */
++	roll	$1, %eax
++	rorq	$1, %rax
++
++	pop	%rbx
++	pop	%rbp
++	RET
++SYM_FUNC_END(__efi64_thunk)
++
++	.code32
++/*
++ * EFI service pointer must be in %edi.
++ *
++ * The stack should represent the 32-bit calling convention.
++ */
++SYM_FUNC_START_LOCAL(efi_enter32)
++	/* Load firmware selector into data and stack segment registers */
++	movl	%edx, %ds
++	movl	%edx, %es
++	movl	%edx, %fs
++	movl	%edx, %gs
++	movl	%edx, %ss
++
++	/* Reload pgtables */
++	movl	%cr3, %eax
++	movl	%eax, %cr3
++
++	/* Disable paging */
++	movl	%cr0, %eax
++	btrl	$X86_CR0_PG_BIT, %eax
++	movl	%eax, %cr0
++
++	/* Disable long mode via EFER */
++	movl	$MSR_EFER, %ecx
++	rdmsr
++	btrl	$_EFER_LME, %eax
++	wrmsr
++
++	call	*%edi
++
++	/* We must preserve return value */
++	movl	%eax, %edi
++
++	/*
++	 * Some firmware will return with interrupts enabled. Be sure to
++	 * disable them before we switch GDTs and IDTs.
++	 */
++	cli
++
++	lidtl	(%ebx)
++	subl	$16, %ebx
++
++	lgdtl	(%ebx)
++
++	movl	%cr4, %eax
++	btsl	$(X86_CR4_PAE_BIT), %eax
++	movl	%eax, %cr4
++
++	movl	%cr3, %eax
++	movl	%eax, %cr3
++
++	movl	$MSR_EFER, %ecx
++	rdmsr
++	btsl	$_EFER_LME, %eax
++	wrmsr
++
++	xorl	%eax, %eax
++	lldt	%ax
++
++	pushl	$__KERNEL_CS
++	pushl	%ebp
++
++	/* Enable paging */
++	movl	%cr0, %eax
++	btsl	$X86_CR0_PG_BIT, %eax
++	movl	%eax, %cr0
++	lret
++SYM_FUNC_END(efi_enter32)
++
++	.data
++	.balign	8
++SYM_DATA_START(efi32_boot_gdt)
++	.word	0
++	.quad	0
++SYM_DATA_END(efi32_boot_gdt)
++
++SYM_DATA_START(efi32_boot_idt)
++	.word	0
++	.quad	0
++SYM_DATA_END(efi32_boot_idt)
++
++SYM_DATA_START(efi32_boot_cs)
++	.word	0
++SYM_DATA_END(efi32_boot_cs)
++
++SYM_DATA_START(efi32_boot_ds)
++	.word	0
++SYM_DATA_END(efi32_boot_ds)
+--- a/arch/x86/boot/compressed/efi_thunk_64.S
++++ /dev/null
+@@ -1,195 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-/*
+- * Copyright (C) 2014, 2015 Intel Corporation; author Matt Fleming
+- *
+- * Early support for invoking 32-bit EFI services from a 64-bit kernel.
+- *
+- * Because this thunking occurs before ExitBootServices() we have to
+- * restore the firmware's 32-bit GDT and IDT before we make EFI service
+- * calls.
+- *
+- * On the plus side, we don't have to worry about mangling 64-bit
+- * addresses into 32-bits because we're executing with an identity
+- * mapped pagetable and haven't transitioned to 64-bit virtual addresses
+- * yet.
+- */
+-
+-#include <linux/linkage.h>
+-#include <asm/msr.h>
+-#include <asm/page_types.h>
+-#include <asm/processor-flags.h>
+-#include <asm/segment.h>
+-
+-	.code64
+-	.text
+-SYM_FUNC_START(__efi64_thunk)
+-	push	%rbp
+-	push	%rbx
+-
+-	movl	%ds, %eax
+-	push	%rax
+-	movl	%es, %eax
+-	push	%rax
+-	movl	%ss, %eax
+-	push	%rax
+-
+-	/* Copy args passed on stack */
+-	movq	0x30(%rsp), %rbp
+-	movq	0x38(%rsp), %rbx
+-	movq	0x40(%rsp), %rax
+-
+-	/*
+-	 * Convert x86-64 ABI params to i386 ABI
+-	 */
+-	subq	$64, %rsp
+-	movl	%esi, 0x0(%rsp)
+-	movl	%edx, 0x4(%rsp)
+-	movl	%ecx, 0x8(%rsp)
+-	movl	%r8d, 0xc(%rsp)
+-	movl	%r9d, 0x10(%rsp)
+-	movl	%ebp, 0x14(%rsp)
+-	movl	%ebx, 0x18(%rsp)
+-	movl	%eax, 0x1c(%rsp)
+-
+-	leaq	0x20(%rsp), %rbx
+-	sgdt	(%rbx)
+-
+-	addq	$16, %rbx
+-	sidt	(%rbx)
+-
+-	leaq	1f(%rip), %rbp
+-
+-	/*
+-	 * Switch to IDT and GDT with 32-bit segments. This is the firmware GDT
+-	 * and IDT that was installed when the kernel started executing. The
+-	 * pointers were saved at the EFI stub entry point in head_64.S.
+-	 *
+-	 * Pass the saved DS selector to the 32-bit code, and use far return to
+-	 * restore the saved CS selector.
+-	 */
+-	leaq	efi32_boot_idt(%rip), %rax
+-	lidt	(%rax)
+-	leaq	efi32_boot_gdt(%rip), %rax
+-	lgdt	(%rax)
+-
+-	movzwl	efi32_boot_ds(%rip), %edx
+-	movzwq	efi32_boot_cs(%rip), %rax
+-	pushq	%rax
+-	leaq	efi_enter32(%rip), %rax
+-	pushq	%rax
+-	lretq
+-
+-1:	addq	$64, %rsp
+-	movq	%rdi, %rax
+-
+-	pop	%rbx
+-	movl	%ebx, %ss
+-	pop	%rbx
+-	movl	%ebx, %es
+-	pop	%rbx
+-	movl	%ebx, %ds
+-	/* Clear out 32-bit selector from FS and GS */
+-	xorl	%ebx, %ebx
+-	movl	%ebx, %fs
+-	movl	%ebx, %gs
+-
+-	/*
+-	 * Convert 32-bit status code into 64-bit.
+-	 */
+-	roll	$1, %eax
+-	rorq	$1, %rax
+-
+-	pop	%rbx
+-	pop	%rbp
+-	RET
+-SYM_FUNC_END(__efi64_thunk)
+-
+-	.code32
+-/*
+- * EFI service pointer must be in %edi.
+- *
+- * The stack should represent the 32-bit calling convention.
+- */
+-SYM_FUNC_START_LOCAL(efi_enter32)
+-	/* Load firmware selector into data and stack segment registers */
+-	movl	%edx, %ds
+-	movl	%edx, %es
+-	movl	%edx, %fs
+-	movl	%edx, %gs
+-	movl	%edx, %ss
+-
+-	/* Reload pgtables */
+-	movl	%cr3, %eax
+-	movl	%eax, %cr3
+-
+-	/* Disable paging */
+-	movl	%cr0, %eax
+-	btrl	$X86_CR0_PG_BIT, %eax
+-	movl	%eax, %cr0
+-
+-	/* Disable long mode via EFER */
+-	movl	$MSR_EFER, %ecx
+-	rdmsr
+-	btrl	$_EFER_LME, %eax
+-	wrmsr
+-
+-	call	*%edi
+-
+-	/* We must preserve return value */
+-	movl	%eax, %edi
+-
+-	/*
+-	 * Some firmware will return with interrupts enabled. Be sure to
+-	 * disable them before we switch GDTs and IDTs.
+-	 */
+-	cli
+-
+-	lidtl	(%ebx)
+-	subl	$16, %ebx
+-
+-	lgdtl	(%ebx)
+-
+-	movl	%cr4, %eax
+-	btsl	$(X86_CR4_PAE_BIT), %eax
+-	movl	%eax, %cr4
+-
+-	movl	%cr3, %eax
+-	movl	%eax, %cr3
+-
+-	movl	$MSR_EFER, %ecx
+-	rdmsr
+-	btsl	$_EFER_LME, %eax
+-	wrmsr
+-
+-	xorl	%eax, %eax
+-	lldt	%ax
+-
+-	pushl	$__KERNEL_CS
+-	pushl	%ebp
+-
+-	/* Enable paging */
+-	movl	%cr0, %eax
+-	btsl	$X86_CR0_PG_BIT, %eax
+-	movl	%eax, %cr0
+-	lret
+-SYM_FUNC_END(efi_enter32)
+-
+-	.data
+-	.balign	8
+-SYM_DATA_START(efi32_boot_gdt)
+-	.word	0
+-	.quad	0
+-SYM_DATA_END(efi32_boot_gdt)
+-
+-SYM_DATA_START(efi32_boot_idt)
+-	.word	0
+-	.quad	0
+-SYM_DATA_END(efi32_boot_idt)
+-
+-SYM_DATA_START(efi32_boot_cs)
+-	.word	0
+-SYM_DATA_END(efi32_boot_cs)
+-
+-SYM_DATA_START(efi32_boot_ds)
+-	.word	0
+-SYM_DATA_END(efi32_boot_ds)
 
 
 
