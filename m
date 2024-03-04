@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-26087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20E99870D03
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:30:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A02DF870EDA
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:47:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C9AE1F21565
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:30:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F8A6B276AD
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:47:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898857BAF7;
-	Mon,  4 Mar 2024 21:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF44200D4;
+	Mon,  4 Mar 2024 21:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1xMwyouy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EgjO3hKo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479BF78B69;
-	Mon,  4 Mar 2024 21:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD06E1EB5A;
+	Mon,  4 Mar 2024 21:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587811; cv=none; b=pYTf9s32Yx4NFA7nudutOMYHqj3SBWbBAbWFAhQXQxGFZTuMfkHd23ynx0VMjPDcj+Gvso7qGZNAQlGd2Vkor69ajnFv3qeUIkAZ6ua0ZhPuTJkdy/OAPF1rz9GomDijkFykqXCmKKOP3eUYy9Ug3/KD0/1KpauqYrJvQK7WEIQ=
+	t=1709588868; cv=none; b=ACsaRO5LDYWuxhdjxXA0QrFY/UJWg4r4FaoK+GXPPqBbUhHPHSBpKeEskc7X2yWMDzGmWl60+DL0kcBkAagNvy1sVsSrVIILa9t1clJMntiUqmz165iy7Wd6ZYTq9CcR6KzI1OAjM67DN8YbXF19e5Pv1OoXA8s8LZk2gtSqMyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587811; c=relaxed/simple;
-	bh=7iqJs9/rcljyaYg5yQ35cEFoEnlYSkLxmz/W0RoPy/o=;
+	s=arc-20240116; t=1709588868; c=relaxed/simple;
+	bh=9bvQX9zbxX+CxJhzJMp3Zx4hUpW/mOIcPyOP+1yswNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lXuw2i0meSNmxnRhRwLy0bj3W14piofLNQ8upzIplZLUWzrFXd0Ok80Y3hk9Lq3LfFzptsAKuFO7hHGjvmQ4vHarnkpK2145xHtd3ka9PD89pUn6d2lNCEptPQIfvAHWrXoqxVMJfKpR6biXvzc5VzEyIHSUW4TERA4borwXEvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1xMwyouy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD9DFC433C7;
-	Mon,  4 Mar 2024 21:30:10 +0000 (UTC)
+	 MIME-Version; b=Wi0D30Jd5zWE4Ct9dVOqY63Fd9FrvUKORouNMKOpW6cyksGHatm4+zLEMGoVkIMFiIQJs2pBjStZLf4c42+bJQjMn5oW1EAt88JHDQZuepEyQCcIGumAPXkcQUOnyaBcDZITewtBNn+YHR6JaOdqObCxXLOJ8pD3WTbuEFwjgLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EgjO3hKo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72170C43390;
+	Mon,  4 Mar 2024 21:47:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587811;
-	bh=7iqJs9/rcljyaYg5yQ35cEFoEnlYSkLxmz/W0RoPy/o=;
+	s=korg; t=1709588868;
+	bh=9bvQX9zbxX+CxJhzJMp3Zx4hUpW/mOIcPyOP+1yswNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1xMwyouy/CWdELMziTY4m1TfctSpBDW/fz+7Yo8o3yQ8SSy5SccZWrtS4ca866kY8
-	 SqLaQQ2VTWJZ1dFfPoiIglMut7ytePGM8dk3Q4nuT87s7A6/GjYpDIx23/RblxRqzX
-	 JElSYf9944vHoBJJmoqHQrC0ZNqhVI3NODTc4pzA=
+	b=EgjO3hKojB1rib7w5ov3DVU2zjXjFQnKZuMYExixXFE93pzOseiegNLg1WYOJoVId
+	 PnHNXyp3UABvk0l1s7evWjPTjsb5GgKha6hzFQyFjkufViQF1AjZBvucKCYKUYzIRQ
+	 succV6BUbhwO3BVGddnoqUEprn4+p/B0L9U0r42s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Curtis Klein <curtis.klein@hpe.com>,
-	Yi Zhao <yi.zhao@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.7 099/162] dmaengine: fsl-qdma: init irq after reg initialization
+	Geliang Tang <tanggeliang@kylinos.cn>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 101/215] mptcp: map v4 address to v6 when destroying subflow
 Date: Mon,  4 Mar 2024 21:22:44 +0000
-Message-ID: <20240304211554.996781558@linuxfoundation.org>
+Message-ID: <20240304211600.239455280@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Curtis Klein <curtis.klein@hpe.com>
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-commit 87a39071e0b639f45e05d296cc0538eef44ec0bd upstream.
+commit 535d620ea5ff1a033dc64ee3d912acadc7470619 upstream.
 
-Initialize the qDMA irqs after the registers are configured so that
-interrupts that may have been pending from a primary kernel don't get
-processed by the irq handler before it is ready to and cause panic with
-the following trace:
+Address family of server side mismatches with that of client side, like
+in "userspace pm add & remove address" test:
 
-  Call trace:
-   fsl_qdma_queue_handler+0xf8/0x3e8
-   __handle_irq_event_percpu+0x78/0x2b0
-   handle_irq_event_percpu+0x1c/0x68
-   handle_irq_event+0x44/0x78
-   handle_fasteoi_irq+0xc8/0x178
-   generic_handle_irq+0x24/0x38
-   __handle_domain_irq+0x90/0x100
-   gic_handle_irq+0x5c/0xb8
-   el1_irq+0xb8/0x180
-   _raw_spin_unlock_irqrestore+0x14/0x40
-   __setup_irq+0x4bc/0x798
-   request_threaded_irq+0xd8/0x190
-   devm_request_threaded_irq+0x74/0xe8
-   fsl_qdma_probe+0x4d4/0xca8
-   platform_drv_probe+0x50/0xa0
-   really_probe+0xe0/0x3f8
-   driver_probe_device+0x64/0x130
-   device_driver_attach+0x6c/0x78
-   __driver_attach+0xbc/0x158
-   bus_for_each_dev+0x5c/0x98
-   driver_attach+0x20/0x28
-   bus_add_driver+0x158/0x220
-   driver_register+0x60/0x110
-   __platform_driver_register+0x44/0x50
-   fsl_qdma_driver_init+0x18/0x20
-   do_one_initcall+0x48/0x258
-   kernel_init_freeable+0x1a4/0x23c
-   kernel_init+0x10/0xf8
-   ret_from_fork+0x10/0x18
+    userspace_pm_add_addr $ns1 10.0.2.1 10
+    userspace_pm_rm_sf $ns1 "::ffff:10.0.2.1" $SUB_ESTABLISHED
 
+That's because on the server side, the family is set to AF_INET6 and the
+v4 address is mapped in a v6 one.
+
+This patch fixes this issue. In mptcp_pm_nl_subflow_destroy_doit(), before
+checking local address family with remote address family, map an IPv4
+address to an IPv6 address if the pair is a v4-mapped address.
+
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/387
+Fixes: 702c2f646d42 ("mptcp: netlink: allow userspace-driven subflow establishment")
 Cc: stable@vger.kernel.org
-Fixes: b092529e0aa0 ("dmaengine: fsl-qdma: Add qDMA controller driver for Layerscape SoCs")
-Signed-off-by: Curtis Klein <curtis.klein@hpe.com>
-Signed-off-by: Yi Zhao <yi.zhao@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20240201220406.440145-1-Frank.Li@nxp.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240223-upstream-net-20240223-misc-fixes-v1-1-162e87e48497@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/fsl-qdma.c |   17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ net/mptcp/pm_userspace.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/dma/fsl-qdma.c
-+++ b/drivers/dma/fsl-qdma.c
-@@ -1199,10 +1199,6 @@ static int fsl_qdma_probe(struct platfor
- 	if (!fsl_qdma->queue)
- 		return -ENOMEM;
- 
--	ret = fsl_qdma_irq_init(pdev, fsl_qdma);
--	if (ret)
--		return ret;
--
- 	fsl_qdma->irq_base = platform_get_irq_byname(pdev, "qdma-queue0");
- 	if (fsl_qdma->irq_base < 0)
- 		return fsl_qdma->irq_base;
-@@ -1241,16 +1237,19 @@ static int fsl_qdma_probe(struct platfor
- 
- 	platform_set_drvdata(pdev, fsl_qdma);
- 
--	ret = dma_async_device_register(&fsl_qdma->dma_dev);
-+	ret = fsl_qdma_reg_init(fsl_qdma);
- 	if (ret) {
--		dev_err(&pdev->dev,
--			"Can't register NXP Layerscape qDMA engine.\n");
-+		dev_err(&pdev->dev, "Can't Initialize the qDMA engine.\n");
- 		return ret;
+--- a/net/mptcp/pm_userspace.c
++++ b/net/mptcp/pm_userspace.c
+@@ -489,6 +489,16 @@ int mptcp_nl_cmd_sf_destroy(struct sk_bu
+ 		goto destroy_err;
  	}
  
--	ret = fsl_qdma_reg_init(fsl_qdma);
-+	ret = fsl_qdma_irq_init(pdev, fsl_qdma);
-+	if (ret)
-+		return ret;
-+
-+	ret = dma_async_device_register(&fsl_qdma->dma_dev);
- 	if (ret) {
--		dev_err(&pdev->dev, "Can't Initialize the qDMA engine.\n");
-+		dev_err(&pdev->dev, "Can't register NXP Layerscape qDMA engine.\n");
- 		return ret;
- 	}
- 
++#if IS_ENABLED(CONFIG_MPTCP_IPV6)
++	if (addr_l.family == AF_INET && ipv6_addr_v4mapped(&addr_r.addr6)) {
++		ipv6_addr_set_v4mapped(addr_l.addr.s_addr, &addr_l.addr6);
++		addr_l.family = AF_INET6;
++	}
++	if (addr_r.family == AF_INET && ipv6_addr_v4mapped(&addr_l.addr6)) {
++		ipv6_addr_set_v4mapped(addr_r.addr.s_addr, &addr_r.addr6);
++		addr_r.family = AF_INET6;
++	}
++#endif
+ 	if (addr_l.family != addr_r.family) {
+ 		GENL_SET_ERR_MSG(info, "address families do not match");
+ 		err = -EINVAL;
 
 
 
