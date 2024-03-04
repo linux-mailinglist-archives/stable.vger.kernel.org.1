@@ -1,162 +1,111 @@
-Return-Path: <stable+bounces-25913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-25914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C56F870072
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 12:32:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1A62870095
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 12:43:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FB381C216FF
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 11:32:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 284DDB23E66
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 11:43:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DAD738DFA;
-	Mon,  4 Mar 2024 11:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2660E3A1D7;
+	Mon,  4 Mar 2024 11:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q+suZz5c"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="vVbqPv7c";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="R8R7g7uA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wfout1-smtp.messagingengine.com (wfout1-smtp.messagingengine.com [64.147.123.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA1F38DF5
-	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 11:32:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322B73838B;
+	Mon,  4 Mar 2024 11:43:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709551971; cv=none; b=XusLdFjip7JGh9xVGs1KC/lFin+bKeceUYBnmn6DgMWMB51zSCWVP3h+vt3MtwNYD7CbumSCrfHd1SoUOKIT/k78Jsg/1RERQmd/98Trvssb6vfWUaOjAJ+t78Kmhi/L007MRA/ElkYM0cU1F4gpT8OHO8yl0rlZJT/rIn86Wzo=
+	t=1709552608; cv=none; b=f61FirhPLunGnM22BkeFm8rUuhGb6pdfiELpIPmqeXLsuC7VzG1jhrjeNkhBM3KQobEYxV2X3mFBvdw8aL+XRN0Sif0wCktbJHAC1bRLQy0El1GY5ABYN1ZSaPy1/ASzl+L/gDmIhsRiQP3H8YMEfa+p36xYBl36CWXer82jCC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709551971; c=relaxed/simple;
-	bh=izl9yn0m4AWLwGuzSL4Zn/hl63I/OdlJasYuNQ5ij5I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=J5XzbjyTxYA28qbuMib/u7a7sXi8IQgs3jsSr4/gIfDjBdLPQLL7Rx+HtApUV5OzujIRTgW8cPCqCzGRFbQL5M6QICljxvEGImGkJQ2bTzhXAIVdDEGeYIOsTwYInY466C7sIxKDNXVarjL94zAUUkE5JFA8jrb28zxs0kLy/gY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q+suZz5c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13E56C433F1;
-	Mon,  4 Mar 2024 11:32:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709551970;
-	bh=izl9yn0m4AWLwGuzSL4Zn/hl63I/OdlJasYuNQ5ij5I=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Q+suZz5cz3eMg0QXTcpHjOAtaXGQeO7RfpIyRO6NygtnVom1SnytJpM9rknej9Sqe
-	 k5hqzz4yOrlY/eMyUJ60bth+CeE7rtDe/MDedbtuQfy4LgZarZ4avyHMyKtoTxmsSc
-	 ahpHqo6Y6OnSXnL5BiQQ0nSNQAvR3WtJpvw2jTO3JMQYb7sm623jcdraPjcWZkrtZ6
-	 4HLcpEdX6ggP2AOc0IVyGCg5mwNIlNlNn6xYc4L+f4icWwYfsdB79LXrz8CMTAwLh5
-	 iQSLf94XB3HlgAekCcPC5K3Mb68cVDpFTgaItiL9dt7avCWS1yTIXZOsOAOzDRQCU8
-	 ofiMGjnUYjaFg==
-Message-ID: <59ccf1f7-2691-4841-ba3e-25abdadbcfd3@kernel.org>
-Date: Mon, 4 Mar 2024 12:32:46 +0100
+	s=arc-20240116; t=1709552608; c=relaxed/simple;
+	bh=3udXBRehqBkcrC0yUomfJrS2xBhn8210xOULcGJWHM0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ApHIu0NYC7s0tNEiiimGYPYm4wSGF6Iy1Mk2/fZfIm9+reyUjzovtS4bGRm73p8rYlvoRm8MkBDtzn7vvq8unieXJO9mXcy+8BzVW6vWQ37lHUfs70GPkb2A/vIQM61+HQTzqz3a3rgVUb24tAYWXRN41uKN9D16ZGzaLSxQuOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=vVbqPv7c; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=R8R7g7uA; arc=none smtp.client-ip=64.147.123.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailfout.west.internal (Postfix) with ESMTP id C638A1C000A6;
+	Mon,  4 Mar 2024 06:43:25 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Mon, 04 Mar 2024 06:43:26 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1709552605; x=1709639005; bh=vOSWpqy3V6
+	RbtrkvImNACTXOXX4i5AAPC1ZApf+eTPU=; b=vVbqPv7cjdYdqyV9W+QOnvwlHf
+	JHwlVKeF8SeD+xO6tQlIA18kxvPrpplfO+j/b+c5BQZMQBboPIQjRbQagPgtQk2s
+	1e0hY2jdk1dx10UrugnUKLFgghRwtaJkZp4l4ZQ3COfEWJK/LVBlm1f6cf8Vfheu
+	l4YUBRmXKAzLOFSMtiAmqfGcjKNjsEJTM3fvSop3V1rUf8cgXxU6k5ufAv3HtiEj
+	BRZaPdUXO9/eOrFdkrt7fcIq8aO7lCvGFMWkJAj0r5WU0w7y7+AxigQtYbQmIJ63
+	YFtY7NP4aXcyn82R6akqbOgBfZI2QSwen/x0nQFtqhJXlU0WKSr0ChNVpEGg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1709552605; x=1709639005; bh=vOSWpqy3V6RbtrkvImNACTXOXX4i
+	5AAPC1ZApf+eTPU=; b=R8R7g7uA41jDUEHRA7drSNj6DMRwHbPLARaSu+95JkNB
+	1Fukgsh/Stexc1znPE4718EzCirAn2JC1O5g0x4rwaeYNEtrmajgDGV+ekTn+siF
+	Dl7Pj+NnhCOaFbdRfMO1rpsISTjwKKMObYyvSY0vpZ7Xa4RE9yx6Adr/z2lfmPUi
+	1MV/84U+/Sleu/SULGI76yll/4VJu9HLHB4cTQFkWvq55HFAHAdoNGvZxoh+RJTu
+	ppTdow593xhDv83YiP5iSrZx1KiAR/sqsbJpJ0Ol56oAXDbpdpOwT7mOu2iwTdkF
+	AJQg+J3n5khck4cBndCa1UVCxADfVKpbntbaq/4wKA==
+X-ME-Sender: <xms:3LPlZTKQVkhyp-8kPNQiAPkEoiAOPhypdMilTRTgKM6SjSOIwFiA7Q>
+    <xme:3LPlZXJtdiRj6dxvvZ-ENaKuBNkrC9AhDgSEcN28WNdTbS6TS1yvyMd9ywQZxK29L
+    vwy-VQGbYsOlg>
+X-ME-Received: <xmr:3LPlZbtdOaXK_Lt_bmckPauD05cLo7ruJdqUGgotpsywqq47nZ8qxBjY6tt0lrYD3zK7zayXyqO0jWfF24PynErniOs0KVIpKDJ9gQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrheejgdeftdcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeegheeuhe
+    fgtdeluddtleekfeegjeetgeeikeehfeduieffvddufeefleevtddtvdenucffohhmrghi
+    nhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
+X-ME-Proxy: <xmx:3LPlZcZW6rp0QXySujjsvDQ6XRS8bi-eYmS8yXxoJ6TilwCgs_Jq2g>
+    <xmx:3LPlZaaaiA4mG_prTAKCASmvvWexZQbAenLtWk-hahxOVKyOjbKQ9w>
+    <xmx:3LPlZQCZCfEGtA41qECQcAgcJXp-wVZ0B_edSUtbIGYeQ3NINBvZpg>
+    <xmx:3bPlZQMrtzbsOwoNLwETnPZv1oxzYzxapDz_7yF4nxeUsz1s4ATi2XlDEWc>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 4 Mar 2024 06:43:24 -0500 (EST)
+Date: Mon, 4 Mar 2024 12:42:42 +0100
+From: Greg KH <greg@kroah.com>
+To: Ard Biesheuvel <ardb+git@google.com>
+Cc: stable@vger.kernel.org, linux-efi@vger.kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>
+Subject: Re: [PATCH stable-v6.1 00/18] efistub/x86 changes for secure boot
+Message-ID: <2024030431-giblet-derail-8c7e@gregkh>
+References: <20240304111937.2556102-20-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: patch "[PATCH] selftests: mptcp: rm subflow with
- v4/v4mapped addr" failed to apply to 6.1-stable tree
-Content-Language: en-GB, fr-BE
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: tanggeliang@kylinos.cn, kuba@kernel.org, martineau@kernel.org,
- stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-References: <2024030422-dinner-rotten-5ef3@gregkh>
- <0991a6b7-2d74-4f26-9959-68d745086902@kernel.org>
- <2024030430-pessimism-unveiling-715f@gregkh>
- <79f149f6-e5aa-455e-832e-8ae3356cb690@kernel.org>
- <2024030453-spotter-undermine-b600@gregkh>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <2024030453-spotter-undermine-b600@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240304111937.2556102-20-ardb+git@google.com>
 
-On 04/03/2024 11:58, Greg KH wrote:
-> On Mon, Mar 04, 2024 at 11:40:49AM +0100, Matthieu Baerts wrote:
->> On 04/03/2024 11:32, Greg KH wrote:
->>> On Mon, Mar 04, 2024 at 11:07:01AM +0100, Matthieu Baerts wrote:
->>>> On 04/03/2024 09:30, gregkh@linuxfoundation.org wrote:
->>
->> (...)
->>
->>>>> ------------------ original commit in Linus's tree ------------------
->>>>>
->>>>> From 7092dbee23282b6fcf1313fc64e2b92649ee16e8 Mon Sep 17 00:00:00 2001
->>>>> From: Geliang Tang <tanggeliang@kylinos.cn>
->>>>> Date: Fri, 23 Feb 2024 17:14:12 +0100
->>>>> Subject: [PATCH] selftests: mptcp: rm subflow with v4/v4mapped addr
->>>>>
->>>>> Now both a v4 address and a v4-mapped address are supported when
->>>>> destroying a userspace pm subflow, this patch adds a second subflow
->>>>> to "userspace pm add & remove address" test, and two subflows could
->>>>> be removed two different ways, one with the v4mapped and one with v4.
->>>> I don't think it is worth having this patch backported to v6.1: there
->>>> are a lot of conflicts because this patch depends on many others. Also,
->>>> many CIs validating stable trees will use the selftests from the last
->>>> stable version, I suppose. So this new test will be validated on older
->>>> versions.
->>>>
->>>> For v6.6 and v6.7, I can help to fix conflicts. I will just wait for the
->>>> "queue/6.6" and "queue/6.7" branches to be updated with the latest
->>>> patches :)
->>>
->>> Should all now be up to date,
->>
->> Maybe we are not talking about the same thing: are the "queue/X.Y"
->> branches from the "linux-stable-rc" repo [1] not updated automatically
->> when patches are added to the "stable-queue" repo [2]?
+On Mon, Mar 04, 2024 at 12:19:38PM +0100, Ard Biesheuvel wrote:
+> From: Ard Biesheuvel <ardb@kernel.org>
 > 
-> Ah, that, yeah, it somehow automagically works, I have no idea how it
-> does it or what controls it or who uses it, sorry :)
+> These are the remaining patches that bring v6.1 in sync with v6.6 in
+> terms of support for 4k section alignment and strict separation of
+> executable and writable mappings. More details in [0].
+> 
+> [0] https://lkml.kernel.org/r/CAMj1kXE5y%2B6Fef1SqsePO1p8eGEL_qKR9ZkNPNKb-y6P8-7YmQ%40mail.gmail.com
 
-Ah, OK! :)
+All now queued up, thanks!
 
-I have to admit it is quite handy, not to have to apply the patches
-successfully added in the queue manually. But that's OK, I guess it will
-magically work again in the future. For now, I can apply these other
-patches manually, no problem!
-
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
+greg k-h
 
