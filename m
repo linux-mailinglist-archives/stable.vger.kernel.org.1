@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-26181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EA4F870D74
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:34:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB020870D81
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:34:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C05828F5A9
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:34:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 291231C21088
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:34:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF504CE0E;
-	Mon,  4 Mar 2024 21:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E01626B2;
+	Mon,  4 Mar 2024 21:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vyzy1J1D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qJck+M74"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC2F1C687;
-	Mon,  4 Mar 2024 21:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 344321C687;
+	Mon,  4 Mar 2024 21:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588052; cv=none; b=Tsz30vmS1jyRTLPLXA8n+DmjXHN13xsf2/aN+wwFjQ3UfxIlnlCvF0Sm/G3VVwTF7//CuEZv6qwfqnau4srhzeruok8RSVdhVSeIvsZ4S3lI0U9ur9kA5+9+v7GgEK4MGwGkKU78PezwBnKrn4F4Rjfa45Nz/e+ZCJgM9OMVkv4=
+	t=1709588086; cv=none; b=GpdVGHTUlna+h9Wi5rXUuJIQfUzP9F55EJAydHMfE7UfkV934R+FX0MJG0B4aA6yEHydQrIwuux5PHyjVZ0IyKYBA9t2SxpwKOyDOYlSn70VSOtlTtZNA68k41fcpF/myR22rRG7/GIpqBpQ4EfZCgcfGFuw01FxPvHHQkghTvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588052; c=relaxed/simple;
-	bh=bCY8b5QFjuPlpZUK5CUX0AAwej1qLFdJ9uA3wmmmoas=;
+	s=arc-20240116; t=1709588086; c=relaxed/simple;
+	bh=BmDy+IfogujLUPLm7Dzuq6GHwMLy4zh4Z38KNEvAvbM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KB2iKdCAw+xGSnTjrF352zf55pLbxbPeyOChYwssKf19/mSlT80swk+cyuQC1tCoA5iZl4930Ye7o5/ESXLt+PThingUjG/tkofMJhfjoaBwDVwrvt0rfJ/uhQQwKb8tvxR5R1rTNYBDyUFJ1V73293oFcdZECxHTL7oSCYMwx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vyzy1J1D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24189C433F1;
-	Mon,  4 Mar 2024 21:34:11 +0000 (UTC)
+	 MIME-Version; b=PEO/BpO7OlWtDRKl/PDQAvRUpsZV99qLEFEkTdg9nonHm0fNHLdQCUUup5s5qkjWtDVkuKhxzqv54g2W90xdiVgxpJ5BP9UTrLz8CV1TleoHQfP2p/T3CrzCdchmgcHv1oWD70qonh6r+il89pZUWI8E3Z6pAkpOxTSexP5lFbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qJck+M74; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBD12C433F1;
+	Mon,  4 Mar 2024 21:34:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588052;
-	bh=bCY8b5QFjuPlpZUK5CUX0AAwej1qLFdJ9uA3wmmmoas=;
+	s=korg; t=1709588086;
+	bh=BmDy+IfogujLUPLm7Dzuq6GHwMLy4zh4Z38KNEvAvbM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vyzy1J1DX3Ser+DwDHsD36FqJNUoDh/MZsYJcXRToZNrMwDXPfVPhmnj3iLMsQP1s
-	 JI1jVSFObhA67B9GbMtX2y3iXvjMr75FLlsgEYnTQ7KmNiSAejTNrzgNHhfXxCoomT
-	 V9k75u2mR4VCK/FdHcObg9xE7DvJImK5EtLbmAaE=
+	b=qJck+M74nBmEbLFE2CkDgo2TDt2GASyQ2csC5L6yZXyOxU/t4cTKXHWnFZ6t6oPmo
+	 PMunOyC3baRyej4W74+OZ/KGNYKhzL3wBAH+ly2yMr32nmg66OjBmgWu/S6tZawmGz
+	 ViE+SPxATNnAO3odEVxCikAbjpDhe+l1LKux/KN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ying Hsu <yinghsu@chromium.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Lin Ma <linma@zju.edu.cn>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 07/25] Bluetooth: Avoid potential use-after-free in hci_error_reset
+Subject: [PATCH 5.10 16/42] rtnetlink: fix error logic of IFLA_BRIDGE_FLAGS writing back
 Date: Mon,  4 Mar 2024 21:23:43 +0000
-Message-ID: <20240304211535.988605917@linuxfoundation.org>
+Message-ID: <20240304211538.178832501@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211535.741936181@linuxfoundation.org>
-References: <20240304211535.741936181@linuxfoundation.org>
+In-Reply-To: <20240304211537.631764077@linuxfoundation.org>
+References: <20240304211537.631764077@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ying Hsu <yinghsu@chromium.org>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 2449007d3f73b2842c9734f45f0aadb522daf592 ]
+[ Upstream commit 743ad091fb46e622f1b690385bb15e3cd3daf874 ]
 
-While handling the HCI_EV_HARDWARE_ERROR event, if the underlying
-BT controller is not responding, the GPIO reset mechanism would
-free the hci_dev and lead to a use-after-free in hci_error_reset.
+In the commit d73ef2d69c0d ("rtnetlink: let rtnl_bridge_setlink checks
+IFLA_BRIDGE_MODE length"), an adjustment was made to the old loop logic
+in the function `rtnl_bridge_setlink` to enable the loop to also check
+the length of the IFLA_BRIDGE_MODE attribute. However, this adjustment
+removed the `break` statement and led to an error logic of the flags
+writing back at the end of this function.
 
-Here's the call trace observed on a ChromeOS device with Intel AX201:
-   queue_work_on+0x3e/0x6c
-   __hci_cmd_sync_sk+0x2ee/0x4c0 [bluetooth <HASH:3b4a6>]
-   ? init_wait_entry+0x31/0x31
-   __hci_cmd_sync+0x16/0x20 [bluetooth <HASH:3b4a 6>]
-   hci_error_reset+0x4f/0xa4 [bluetooth <HASH:3b4a 6>]
-   process_one_work+0x1d8/0x33f
-   worker_thread+0x21b/0x373
-   kthread+0x13a/0x152
-   ? pr_cont_work+0x54/0x54
-   ? kthread_blkcg+0x31/0x31
-    ret_from_fork+0x1f/0x30
+if (have_flags)
+    memcpy(nla_data(attr), &flags, sizeof(flags));
+    // attr should point to IFLA_BRIDGE_FLAGS NLA !!!
 
-This patch holds the reference count on the hci_dev while processing
-a HCI_EV_HARDWARE_ERROR event to avoid potential crash.
+Before the mentioned commit, the `attr` is granted to be IFLA_BRIDGE_FLAGS.
+However, this is not necessarily true fow now as the updated loop will let
+the attr point to the last NLA, even an invalid NLA which could cause
+overflow writes.
 
-Fixes: c7741d16a57c ("Bluetooth: Perform a power cycle when receiving hardware error event")
-Signed-off-by: Ying Hsu <yinghsu@chromium.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+This patch introduces a new variable `br_flag` to save the NLA pointer
+that points to IFLA_BRIDGE_FLAGS and uses it to resolve the mentioned
+error logic.
+
+Fixes: d73ef2d69c0d ("rtnetlink: let rtnl_bridge_setlink checks IFLA_BRIDGE_MODE length")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/20240227121128.608110-1-linma@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_core.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/core/rtnetlink.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 54c55c30db17b..289fb28529f8c 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -2272,6 +2272,7 @@ static void hci_error_reset(struct work_struct *work)
- {
- 	struct hci_dev *hdev = container_of(work, struct hci_dev, error_reset);
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 021dcfdae2835..8938320f7ba3b 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -4903,10 +4903,9 @@ static int rtnl_bridge_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	struct net *net = sock_net(skb->sk);
+ 	struct ifinfomsg *ifm;
+ 	struct net_device *dev;
+-	struct nlattr *br_spec, *attr = NULL;
++	struct nlattr *br_spec, *attr, *br_flags_attr = NULL;
+ 	int rem, err = -EOPNOTSUPP;
+ 	u16 flags = 0;
+-	bool have_flags = false;
  
-+	hci_dev_hold(hdev);
- 	BT_DBG("%s", hdev->name);
+ 	if (nlmsg_len(nlh) < sizeof(*ifm))
+ 		return -EINVAL;
+@@ -4924,11 +4923,11 @@ static int rtnl_bridge_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	br_spec = nlmsg_find_attr(nlh, sizeof(struct ifinfomsg), IFLA_AF_SPEC);
+ 	if (br_spec) {
+ 		nla_for_each_nested(attr, br_spec, rem) {
+-			if (nla_type(attr) == IFLA_BRIDGE_FLAGS && !have_flags) {
++			if (nla_type(attr) == IFLA_BRIDGE_FLAGS && !br_flags_attr) {
+ 				if (nla_len(attr) < sizeof(flags))
+ 					return -EINVAL;
  
- 	if (hdev->hw_error)
-@@ -2279,10 +2280,10 @@ static void hci_error_reset(struct work_struct *work)
- 	else
- 		bt_dev_err(hdev, "hardware error 0x%2.2x", hdev->hw_error_code);
+-				have_flags = true;
++				br_flags_attr = attr;
+ 				flags = nla_get_u16(attr);
+ 			}
  
--	if (hci_dev_do_close(hdev))
--		return;
-+	if (!hci_dev_do_close(hdev))
-+		hci_dev_do_open(hdev);
+@@ -4972,8 +4971,8 @@ static int rtnl_bridge_setlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 		}
+ 	}
  
--	hci_dev_do_open(hdev);
-+	hci_dev_put(hdev);
+-	if (have_flags)
+-		memcpy(nla_data(attr), &flags, sizeof(flags));
++	if (br_flags_attr)
++		memcpy(nla_data(br_flags_attr), &flags, sizeof(flags));
+ out:
+ 	return err;
  }
- 
- void hci_uuids_clear(struct hci_dev *hdev)
 -- 
 2.43.0
 
