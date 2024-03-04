@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-26499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B28E870EE0
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:48:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 966EF870D30
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40B9F1F21476
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:48:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5244728DDB6
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39DA161675;
-	Mon,  4 Mar 2024 21:48:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F06817D086;
+	Mon,  4 Mar 2024 21:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X5aN9saw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eaOuh8b0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC9C1EB5A;
-	Mon,  4 Mar 2024 21:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8587CF08;
+	Mon,  4 Mar 2024 21:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588906; cv=none; b=hrMo3otqyQUoFbBXz2xqaYXAtN9zUBq1MzP25MNuKGQVEeJ8qVEtWLW038T6zAtgZcNq9JMTz5XWxfvRPiDajnb/nPgABgshSWF/N/IZn7PJyfcX8O470uVwcfdCFiAbhssufqA/XvMYYKt3QDj6SvUUelZbfSX60PAc42QVZ3M=
+	t=1709587891; cv=none; b=b+vdpl2olOkvgSJovVD1UR7LhfcksAyGeN6HWtewzYAe1VM7t9sc/0olhcCPezxi7noz8OnOTZh0hKyqVGoCKFasFa45O3NZ2lisk6Py14vGh38fgoSwKJwdlSDC4k6Y9D/leXn91U5bX/3absUsJYXpbkZjB5yGT67oEODvjmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588906; c=relaxed/simple;
-	bh=Nw43l77qYIqqU2bjoW9TCXmjAb7UrCplKRQwL4eiz64=;
+	s=arc-20240116; t=1709587891; c=relaxed/simple;
+	bh=O97vF2buddLYIf2F+uF0aTHz/dvCeUEffRIzKRQqKhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kscy0Xni1uf1y0Ci0Fz+cofzfaMJw7KN/j1AX2xAyG0Fv8APNTIQnCqKa18LP6CgI+iHp1L/k6ziiNm8P1iW6uGHxiuvEqbsp2cAG/wHFxnA6RBy+0mBc6Yru3EydCqRmFtjRywrAB7ELwxAWeiw/yJZp5fzzs+8t8JRKdx1B7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X5aN9saw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DD1BC433C7;
-	Mon,  4 Mar 2024 21:48:24 +0000 (UTC)
+	 MIME-Version; b=LeD6vhsVheZXU/ysA6gmx96tZ+F0q949/0nCFN+GICeGV2eVSOWHPOvIw8Y2LqFrMFvTwWfSaVTIyz8bublS0ikH00e6PUV0j/Iu9L1FksQ0ZrLhdfWXxelEip4iVL591fcUR5FPEx1Du0JHX8yBrKI4dGahko9mmoeK4/rzWUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eaOuh8b0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A0F6C433C7;
+	Mon,  4 Mar 2024 21:31:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588905;
-	bh=Nw43l77qYIqqU2bjoW9TCXmjAb7UrCplKRQwL4eiz64=;
+	s=korg; t=1709587891;
+	bh=O97vF2buddLYIf2F+uF0aTHz/dvCeUEffRIzKRQqKhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X5aN9sawFQArN+u7lXflWPRkcYOwMoOaJyIVgcq98pld571L5z65Hxn4Ttkc48Phb
-	 lV/ZfDN5W6diFVueqCsEBYUJk1feeEhS/n06U7MAQlndiBiqewFlFWKTfYNnSCaeLI
-	 ejHbZnlDIVyn1wktI+zk+ljqaD+XWRG0Vgen6mHY=
+	b=eaOuh8b0yuUYRMo7/gRSyQSZp3JOpKmptl8yQh/8ZdztUfqNl1rkg8thhbSxc/DZb
+	 /pt9BffUyFxAslYq9m+BAbmDg7R5smlyGD4eRdz5z7NEX4FBxX3W+ek0GSm72qiud6
+	 XZ6epax1jidCzOQxr4jgOAxJpB1Pk1zpvMD4tdKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.1 131/215] x86/decompressor: Assign paging related global variables earlier
-Date: Mon,  4 Mar 2024 21:23:14 +0000
-Message-ID: <20240304211601.238870835@linuxfoundation.org>
+	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.7 130/162] mfd: twl6030-irq: Revert to use of_match_device()
+Date: Mon,  4 Mar 2024 21:23:15 +0000
+Message-ID: <20240304211555.894507166@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Peter Ujfalusi <peter.ujfalusi@gmail.com>
 
-commit 00c6b0978ec182f1a672095930872168b9d5b1e2 upstream.
+commit 7a29fa05aeca2c16193f00a883c56ffc7c25b6c5 upstream.
 
-There is no need to defer the assignment of the paging related global
-variables 'pgdir_shift' and 'ptrs_per_p4d' until after the trampoline is
-cleaned up, so assign them as soon as it is clear that 5-level paging
-will be enabled.
+The core twl chip is probed via i2c and the dev->driver->of_match_table is
+NULL, causing the driver to fail to probe.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230807162720.545787-9-ardb@kernel.org
+This partially reverts:
+
+  commit 1e0c866887f4 ("mfd: Use device_get_match_data() in a bunch of drivers")
+
+Fixes: 1e0c866887f4 ("mfd: Use device_get_match_data() in a bunch of drivers")
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
+Link: https://lore.kernel.org/r/20231029114843.15553-1-peter.ujfalusi@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/compressed/misc.h       |    2 --
- arch/x86/boot/compressed/pgtable_64.c |   14 +++++---------
- 2 files changed, 5 insertions(+), 11 deletions(-)
+ drivers/mfd/twl6030-irq.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/arch/x86/boot/compressed/misc.h
-+++ b/arch/x86/boot/compressed/misc.h
-@@ -170,9 +170,7 @@ static inline int count_immovable_mem_re
- #endif
+--- a/drivers/mfd/twl6030-irq.c
++++ b/drivers/mfd/twl6030-irq.c
+@@ -24,10 +24,10 @@
+ #include <linux/kthread.h>
+ #include <linux/mfd/twl.h>
+ #include <linux/platform_device.h>
+-#include <linux/property.h>
+ #include <linux/suspend.h>
+ #include <linux/of.h>
+ #include <linux/irqdomain.h>
++#include <linux/of_device.h>
  
- /* ident_map_64.c */
--#ifdef CONFIG_X86_5LEVEL
- extern unsigned int __pgtable_l5_enabled, pgdir_shift, ptrs_per_p4d;
--#endif
- extern void kernel_add_identity_map(unsigned long start, unsigned long end);
+ #include "twl-core.h"
  
- /* Used by PAGE_KERN* macros: */
---- a/arch/x86/boot/compressed/pgtable_64.c
-+++ b/arch/x86/boot/compressed/pgtable_64.c
-@@ -130,6 +130,11 @@ struct paging_config paging_prepare(void
- 			native_cpuid_eax(0) >= 7 &&
- 			(native_cpuid_ecx(7) & (1 << (X86_FEATURE_LA57 & 31)))) {
- 		paging_config.l5_required = 1;
-+
-+		/* Initialize variables for 5-level paging */
-+		__pgtable_l5_enabled = 1;
-+		pgdir_shift = 48;
-+		ptrs_per_p4d = 512;
+@@ -368,10 +368,10 @@ int twl6030_init_irq(struct device *dev,
+ 	int			nr_irqs;
+ 	int			status;
+ 	u8			mask[3];
+-	const int		*irq_tbl;
++	const struct of_device_id *of_id;
+ 
+-	irq_tbl = device_get_match_data(dev);
+-	if (!irq_tbl) {
++	of_id = of_match_device(twl6030_of_match, dev);
++	if (!of_id || !of_id->data) {
+ 		dev_err(dev, "Unknown TWL device model\n");
+ 		return -EINVAL;
  	}
+@@ -409,7 +409,7 @@ int twl6030_init_irq(struct device *dev,
  
- 	paging_config.trampoline_start = find_trampoline_placement();
-@@ -206,13 +211,4 @@ void cleanup_trampoline(void *pgtable)
+ 	twl6030_irq->pm_nb.notifier_call = twl6030_irq_pm_notifier;
+ 	atomic_set(&twl6030_irq->wakeirqs, 0);
+-	twl6030_irq->irq_mapping_tbl = irq_tbl;
++	twl6030_irq->irq_mapping_tbl = of_id->data;
  
- 	/* Restore trampoline memory */
- 	memcpy(trampoline_32bit, trampoline_save, TRAMPOLINE_32BIT_SIZE);
--
--	/* Initialize variables for 5-level paging */
--#ifdef CONFIG_X86_5LEVEL
--	if (__read_cr4() & X86_CR4_LA57) {
--		__pgtable_l5_enabled = 1;
--		pgdir_shift = 48;
--		ptrs_per_p4d = 512;
--	}
--#endif
- }
+ 	twl6030_irq->irq_domain =
+ 		irq_domain_add_linear(node, nr_irqs,
 
 
 
