@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-26141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38D8B870D49
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D98CD870F50
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:53:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E555128E789
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 093921C21010
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:53:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E40A87CF03;
-	Mon,  4 Mar 2024 21:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FF1478B69;
+	Mon,  4 Mar 2024 21:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wqPk2ETo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nf1hGLc5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ECB17C0A7;
-	Mon,  4 Mar 2024 21:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20171C6AB;
+	Mon,  4 Mar 2024 21:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587948; cv=none; b=MUtLZosUkmkn4LVNLuBb45Ta1EgcwL/YOJr2ixgnwt0qCh/ZcOTTWVmNze7BQG/LPHnOwSBXY89VX0pMsT89yU5CwOdU8Gverp4CdAMieT8FkTMRj77if+lK7IhTOd1DwyQAvxUWVraWe+XXIXY0bdJ6yb4Xn9C0GqHjcDbIJK8=
+	t=1709589200; cv=none; b=fSzwjdjkXx3RleNz3GEBzS1HBVBbypTWxEC32m7+amy0STndT3T990yQrRU4fktTxHUajTb03pPK84ATiANf74MGcUL5a7KTVq+aVtdpEvGQwhgkZGefDv24eLZbEeYglp3UdCl1BfxQBKbp50CeNud3C3s8eOMx2A9BuIxdILM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587948; c=relaxed/simple;
-	bh=+LlG2SVMsb1AezHtr67PCAGfAUhk3bjR5n2KUCHAuk0=;
+	s=arc-20240116; t=1709589200; c=relaxed/simple;
+	bh=6wVKPU8eR8DfDTRXodPWJUftizJOxRk4zWdfvCwfFGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y6+jCkSMLD5NNuffycNhMX9F80u6axouqwpL6vQ4WquwiJII5Jh+nqMR9F0b7dcGLlBqyEU9nvy09IGmpLUbx9dpuoApF3/0dqBnW/tNODZ/loAeqxAWmBGUWedTXq6hT575Qbsuq0kQPIbDzc6UDn2cItwy9vroGqo3Fm9DSDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wqPk2ETo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3061AC433F1;
-	Mon,  4 Mar 2024 21:32:28 +0000 (UTC)
+	 MIME-Version; b=T8gRyvnp48NwQl0xMlYU5wDMkUJ7ne3+pJ5zRp6OaG4CCzSc0YOVAi3appDORuM/VB8JSuGYYj1wINmxaBdgf1zIdInc6OcrWa6NuC2awyR65uigRV6Bz8Q3OFcKMwwJMTDSMjS1y7FtOoeBAykP3gKAKx/q42ZNB4T/cVQmDJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nf1hGLc5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82506C433C7;
+	Mon,  4 Mar 2024 21:53:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587948;
-	bh=+LlG2SVMsb1AezHtr67PCAGfAUhk3bjR5n2KUCHAuk0=;
+	s=korg; t=1709589199;
+	bh=6wVKPU8eR8DfDTRXodPWJUftizJOxRk4zWdfvCwfFGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wqPk2ETo+n1yKHtOlQu8lJoaZNtaQZqiv/rl1n0Pr8/vvgzHCd9R4Ya182Zz/QK+h
-	 99bAl+zjChZAhphqv8dMYuI3yi6Xxvb6T+s9YHaK/e0M44PzqxJcdM5aCQFujwQKtb
-	 TjmOqEoSzI03GeUQaoQzl8A8cukaSHFr7RK+4Z8M=
+	b=Nf1hGLc5HcuQff+YbjzY/ZKKH5Ys1h6OVPH/pvkwzQqdfhxPqXHhKgxuFfhlfzmZK
+	 ziUjLF8E4CMMif9Iy3QIqmOFAwzX5zhN2sL/cvimnGNtyurECZM9myCMvlY/OrUhTP
+	 O+aj0gw2Yks7auAk6uUzcaQCIc7WuL/mQAaUaKXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Hansen <dave.hansen@intel.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 6.7 152/162] x86/entry_64: Add VERW just before userspace transition
+	Florian Westphal <fw@strlen.de>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+bfde3bef047a81b8fde6@syzkaller.appspotmail.com
+Subject: [PATCH 5.15 04/84] net: ip_tunnel: prevent perpetual headroom growth
 Date: Mon,  4 Mar 2024 21:23:37 +0000
-Message-ID: <20240304211556.543394506@linuxfoundation.org>
+Message-ID: <20240304211542.488402195@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
+References: <20240304211542.332206551@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +64,186 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit 3c7501722e6b31a6e56edd23cea5e77dbb9ffd1a upstream.
+[ Upstream commit 5ae1e9922bbdbaeb9cfbe91085ab75927488ac0f ]
 
-Mitigation for MDS is to use VERW instruction to clear any secrets in
-CPU Buffers. Any memory accesses after VERW execution can still remain
-in CPU buffers. It is safer to execute VERW late in return to user path
-to minimize the window in which kernel data can end up in CPU buffers.
-There are not many kernel secrets to be had after SWITCH_TO_USER_CR3.
+syzkaller triggered following kasan splat:
+BUG: KASAN: use-after-free in __skb_flow_dissect+0x19d1/0x7a50 net/core/flow_dissector.c:1170
+Read of size 1 at addr ffff88812fb4000e by task syz-executor183/5191
+[..]
+ kasan_report+0xda/0x110 mm/kasan/report.c:588
+ __skb_flow_dissect+0x19d1/0x7a50 net/core/flow_dissector.c:1170
+ skb_flow_dissect_flow_keys include/linux/skbuff.h:1514 [inline]
+ ___skb_get_hash net/core/flow_dissector.c:1791 [inline]
+ __skb_get_hash+0xc7/0x540 net/core/flow_dissector.c:1856
+ skb_get_hash include/linux/skbuff.h:1556 [inline]
+ ip_tunnel_xmit+0x1855/0x33c0 net/ipv4/ip_tunnel.c:748
+ ipip_tunnel_xmit+0x3cc/0x4e0 net/ipv4/ipip.c:308
+ __netdev_start_xmit include/linux/netdevice.h:4940 [inline]
+ netdev_start_xmit include/linux/netdevice.h:4954 [inline]
+ xmit_one net/core/dev.c:3548 [inline]
+ dev_hard_start_xmit+0x13d/0x6d0 net/core/dev.c:3564
+ __dev_queue_xmit+0x7c1/0x3d60 net/core/dev.c:4349
+ dev_queue_xmit include/linux/netdevice.h:3134 [inline]
+ neigh_connected_output+0x42c/0x5d0 net/core/neighbour.c:1592
+ ...
+ ip_finish_output2+0x833/0x2550 net/ipv4/ip_output.c:235
+ ip_finish_output+0x31/0x310 net/ipv4/ip_output.c:323
+ ..
+ iptunnel_xmit+0x5b4/0x9b0 net/ipv4/ip_tunnel_core.c:82
+ ip_tunnel_xmit+0x1dbc/0x33c0 net/ipv4/ip_tunnel.c:831
+ ipgre_xmit+0x4a1/0x980 net/ipv4/ip_gre.c:665
+ __netdev_start_xmit include/linux/netdevice.h:4940 [inline]
+ netdev_start_xmit include/linux/netdevice.h:4954 [inline]
+ xmit_one net/core/dev.c:3548 [inline]
+ dev_hard_start_xmit+0x13d/0x6d0 net/core/dev.c:3564
+ ...
 
-Add support for deploying VERW mitigation after user register state is
-restored. This helps minimize the chances of kernel data ending up into
-CPU buffers after executing VERW.
+The splat occurs because skb->data points past skb->head allocated area.
+This is because neigh layer does:
+  __skb_pull(skb, skb_network_offset(skb));
 
-Note that the mitigation at the new location is not yet enabled.
+... but skb_network_offset() returns a negative offset and __skb_pull()
+arg is unsigned.  IOW, we skb->data gets "adjusted" by a huge value.
 
-  Corner case not handled
-  =======================
-  Interrupts returning to kernel don't clear CPUs buffers since the
-  exit-to-user path is expected to do that anyways. But, there could be
-  a case when an NMI is generated in kernel after the exit-to-user path
-  has cleared the buffers. This case is not handled and NMI returning to
-  kernel don't clear CPU buffers because:
+The negative value is returned because skb->head and skb->data distance is
+more than 64k and skb->network_header (u16) has wrapped around.
 
-  1. It is rare to get an NMI after VERW, but before returning to userspace.
-  2. For an unprivileged user, there is no known way to make that NMI
-     less rare or target it.
-  3. It would take a large number of these precisely-timed NMIs to mount
-     an actual attack.  There's presumably not enough bandwidth.
-  4. The NMI in question occurs after a VERW, i.e. when user state is
-     restored and most interesting data is already scrubbed. Whats left
-     is only the data that NMI touches, and that may or may not be of
-     any interest.
+The bug is in the ip_tunnel infrastructure, which can cause
+dev->needed_headroom to increment ad infinitum.
 
-  [ pawan: resolved conflict for hunk swapgs_restore_regs_and_return_to_usermode in backport ]
+The syzkaller reproducer consists of packets getting routed via a gre
+tunnel, and route of gre encapsulated packets pointing at another (ipip)
+tunnel.  The ipip encapsulation finds gre0 as next output device.
 
-Suggested-by: Dave Hansen <dave.hansen@intel.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20240213-delay-verw-v8-2-a6216d83edb7%40linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This results in the following pattern:
+
+1). First packet is to be sent out via gre0.
+Route lookup found an output device, ipip0.
+
+2).
+ip_tunnel_xmit for gre0 bumps gre0->needed_headroom based on the future
+output device, rt.dev->needed_headroom (ipip0).
+
+3).
+ip output / start_xmit moves skb on to ipip0. which runs the same
+code path again (xmit recursion).
+
+4).
+Routing step for the post-gre0-encap packet finds gre0 as output device
+to use for ipip0 encapsulated packet.
+
+tunl0->needed_headroom is then incremented based on the (already bumped)
+gre0 device headroom.
+
+This repeats for every future packet:
+
+gre0->needed_headroom gets inflated because previous packets' ipip0 step
+incremented rt->dev (gre0) headroom, and ipip0 incremented because gre0
+needed_headroom was increased.
+
+For each subsequent packet, gre/ipip0->needed_headroom grows until
+post-expand-head reallocations result in a skb->head/data distance of
+more than 64k.
+
+Once that happens, skb->network_header (u16) wraps around when
+pskb_expand_head tries to make sure that skb_network_offset() is unchanged
+after the headroom expansion/reallocation.
+
+After this skb_network_offset(skb) returns a different (and negative)
+result post headroom expansion.
+
+The next trip to neigh layer (or anything else that would __skb_pull the
+network header) makes skb->data point to a memory location outside
+skb->head area.
+
+v2: Cap the needed_headroom update to an arbitarily chosen upperlimit to
+prevent perpetual increase instead of dropping the headroom increment
+completely.
+
+Reported-and-tested-by: syzbot+bfde3bef047a81b8fde6@syzkaller.appspotmail.com
+Closes: https://groups.google.com/g/syzkaller-bugs/c/fL9G6GtWskY/m/VKk_PR5FBAAJ
+Fixes: 243aad830e8a ("ip_gre: include route header_len in max_headroom calculation")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240220135606.4939-1-fw@strlen.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/entry/entry_64.S        |   11 +++++++++++
- arch/x86/entry/entry_64_compat.S |    1 +
- 2 files changed, 12 insertions(+)
+ net/ipv4/ip_tunnel.c | 28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
---- a/arch/x86/entry/entry_64.S
-+++ b/arch/x86/entry/entry_64.S
-@@ -161,6 +161,7 @@ syscall_return_via_sysret:
- SYM_INNER_LABEL(entry_SYSRETQ_unsafe_stack, SYM_L_GLOBAL)
- 	ANNOTATE_NOENDBR
- 	swapgs
-+	CLEAR_CPU_BUFFERS
- 	sysretq
- SYM_INNER_LABEL(entry_SYSRETQ_end, SYM_L_GLOBAL)
- 	ANNOTATE_NOENDBR
-@@ -601,6 +602,7 @@ SYM_INNER_LABEL(swapgs_restore_regs_and_
- 	/* Restore RDI. */
- 	popq	%rdi
- 	swapgs
-+	CLEAR_CPU_BUFFERS
- 	jmp	.Lnative_iret
+diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
+index 426dc910aaf87..96b7cd3049a33 100644
+--- a/net/ipv4/ip_tunnel.c
++++ b/net/ipv4/ip_tunnel.c
+@@ -540,6 +540,20 @@ static int tnl_update_pmtu(struct net_device *dev, struct sk_buff *skb,
+ 	return 0;
+ }
  
- 
-@@ -712,6 +714,8 @@ native_irq_return_ldt:
- 	 */
- 	popq	%rax				/* Restore user RAX */
- 
-+	CLEAR_CPU_BUFFERS
-+
- 	/*
- 	 * RSP now points to an ordinary IRET frame, except that the page
- 	 * is read-only and RSP[31:16] are preloaded with the userspace
-@@ -1439,6 +1443,12 @@ nmi_restore:
- 	movq	$0, 5*8(%rsp)		/* clear "NMI executing" */
- 
- 	/*
-+	 * Skip CLEAR_CPU_BUFFERS here, since it only helps in rare cases like
-+	 * NMI in kernel after user state is restored. For an unprivileged user
-+	 * these conditions are hard to meet.
++static void ip_tunnel_adj_headroom(struct net_device *dev, unsigned int headroom)
++{
++	/* we must cap headroom to some upperlimit, else pskb_expand_head
++	 * will overflow header offsets in skb_headers_offset_update().
 +	 */
++	static const unsigned int max_allowed = 512;
 +
-+	/*
- 	 * iretq reads the "iret" frame and exits the NMI stack in a
- 	 * single instruction.  We are returning to kernel mode, so this
- 	 * cannot result in a fault.  Similarly, we don't need to worry
-@@ -1455,6 +1465,7 @@ SYM_CODE_START(entry_SYSCALL32_ignore)
- 	UNWIND_HINT_END_OF_STACK
- 	ENDBR
- 	mov	$-ENOSYS, %eax
-+	CLEAR_CPU_BUFFERS
- 	sysretl
- SYM_CODE_END(entry_SYSCALL32_ignore)
++	if (headroom > max_allowed)
++		headroom = max_allowed;
++
++	if (headroom > READ_ONCE(dev->needed_headroom))
++		WRITE_ONCE(dev->needed_headroom, headroom);
++}
++
+ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+ 		       u8 proto, int tunnel_hlen)
+ {
+@@ -613,13 +627,13 @@ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+ 	}
  
---- a/arch/x86/entry/entry_64_compat.S
-+++ b/arch/x86/entry/entry_64_compat.S
-@@ -270,6 +270,7 @@ SYM_INNER_LABEL(entry_SYSRETL_compat_uns
- 	xorl	%r9d, %r9d
- 	xorl	%r10d, %r10d
- 	swapgs
-+	CLEAR_CPU_BUFFERS
- 	sysretl
- SYM_INNER_LABEL(entry_SYSRETL_compat_end, SYM_L_GLOBAL)
- 	ANNOTATE_NOENDBR
+ 	headroom += LL_RESERVED_SPACE(rt->dst.dev) + rt->dst.header_len;
+-	if (headroom > READ_ONCE(dev->needed_headroom))
+-		WRITE_ONCE(dev->needed_headroom, headroom);
+-
+-	if (skb_cow_head(skb, READ_ONCE(dev->needed_headroom))) {
++	if (skb_cow_head(skb, headroom)) {
+ 		ip_rt_put(rt);
+ 		goto tx_dropped;
+ 	}
++
++	ip_tunnel_adj_headroom(dev, headroom);
++
+ 	iptunnel_xmit(NULL, rt, skb, fl4.saddr, fl4.daddr, proto, tos, ttl,
+ 		      df, !net_eq(tunnel->net, dev_net(dev)));
+ 	return;
+@@ -797,16 +811,16 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+ 
+ 	max_headroom = LL_RESERVED_SPACE(rt->dst.dev) + sizeof(struct iphdr)
+ 			+ rt->dst.header_len + ip_encap_hlen(&tunnel->encap);
+-	if (max_headroom > READ_ONCE(dev->needed_headroom))
+-		WRITE_ONCE(dev->needed_headroom, max_headroom);
+ 
+-	if (skb_cow_head(skb, READ_ONCE(dev->needed_headroom))) {
++	if (skb_cow_head(skb, max_headroom)) {
+ 		ip_rt_put(rt);
+ 		dev->stats.tx_dropped++;
+ 		kfree_skb(skb);
+ 		return;
+ 	}
+ 
++	ip_tunnel_adj_headroom(dev, max_headroom);
++
+ 	iptunnel_xmit(NULL, rt, skb, fl4.saddr, fl4.daddr, protocol, tos, ttl,
+ 		      df, !net_eq(tunnel->net, dev_net(dev)));
+ 	return;
+-- 
+2.43.0
+
 
 
 
