@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-26496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27767870EDD
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:48:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43062870D3E
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB526B276E6
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:48:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D60E1C24FA1
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F8D200D4;
-	Mon,  4 Mar 2024 21:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C2F078B4C;
+	Mon,  4 Mar 2024 21:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x8trGnby"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lybQu3gV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F7A81EB5A;
-	Mon,  4 Mar 2024 21:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494A81F60A;
+	Mon,  4 Mar 2024 21:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588887; cv=none; b=JP6PFiKvLurUR3JsKusKHgOpTmrZfKfCmNqKp8pjg/23o+uwCqEwRwoFmUcuxVogzsyxjVtuOIubaHwtok9UKJdsnce++ZPbuV46Fcw1zMgXmmapaYgKQSakhRzQ12FYb2NwBLNh7FeQax4qY7+T4fmwBxW531gVlYAqSsVBK1w=
+	t=1709587925; cv=none; b=FsLd60rs1bebENuTUSBmwZvK+FOm2obCET5WyLdefGN669dq229+V9Z8sixM3Wis8K3zk5jhjxPnSC4tai+OO4UPDN6h9AHZM/ZJl17kYF1nAR6clhC1hTuqwzIDeEJAUfCswOevyrHtu3I4R/xvCJo/Ga40mv7sy8QDRgEr3Sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588887; c=relaxed/simple;
-	bh=jKUnLj1cYMSjmrxE0wLLAtP7jkn3bA9Nv92d7se1XLk=;
+	s=arc-20240116; t=1709587925; c=relaxed/simple;
+	bh=Aa5HiNtXHJvNmTO8J0UFcdrlMVbMsQaMjQePY3qPHzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zah+wgrYeLCkZtYbpXQ3oYIkLF2k4tB/M9Wz68Tlfg7hQZuyoAo/lUcjl5JLu0NWZqs9kvfqYEZp9g1P/Qj3M13R16+HcruZtD9IY4CB1Yu9NjBJ1ZVwmjaqO1dHhvhgFRLLdKqQL/3+8Cp0yRpmkrG1mwfqaD8j6JnAa4ko4JA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x8trGnby; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11FDDC433F1;
-	Mon,  4 Mar 2024 21:48:06 +0000 (UTC)
+	 MIME-Version; b=QQntqerny36fkOSnAdEBZ1hGs1svvl0n1ZqxrzYag8mzGOw0WmwdghjuPAj8X1kHDgkF5aY8v7Tshv8FPRNLnnWE7IeErxQyyEODAmg0XcrfbxNCLA5nzOqqwv289mP+bAtfg+MU0gq4C9f6lxrzSLDDtNZWqiVXwBKiV7jE6Fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lybQu3gV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC4D2C433C7;
+	Mon,  4 Mar 2024 21:32:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588887;
-	bh=jKUnLj1cYMSjmrxE0wLLAtP7jkn3bA9Nv92d7se1XLk=;
+	s=korg; t=1709587925;
+	bh=Aa5HiNtXHJvNmTO8J0UFcdrlMVbMsQaMjQePY3qPHzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x8trGnbyGZI/9+vWs/VS6ziog17koxkU9NUIogSa+U5jRpILCJqqy4aGAW71z5V6p
-	 mp5wINuz1PKiXWx5Sb8C4na/ItrjAW+TmObsbZWVUJ8IQ2e2tLiz+pcI1AXzHFlkOA
-	 Fo6dy8Ujk9s7h+q4CRygiLEieTCSLT7YFBy1X/bo=
+	b=lybQu3gVTPznMVB10nWRgoyBwHXTUYIGuDOHPZUNGLT9U1YmG+SMBE8f3rU2MGAt4
+	 vwDJGoZm8cDMy1Pdjl4lDjR9O0bbVzdHzSy9xMdcxgDYJJ2euvhvTBYOpdjwce5vYJ
+	 zdwp3ni5PvfcoTUa5zQmYTB7B3Ro+gAMYcIPYHuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Borislav Petkov <bp@suse.de>
-Subject: [PATCH 6.1 120/215] x86/boot/compressed: Move startup32_load_idt() into .text section
+	Byungchul Park <byungchul@sk.com>,
+	Hyeongtak Ji <hyeongtak.ji@sk.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Huang, Ying" <ying.huang@intel.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.7 118/162] mm/vmscan: fix a bug calling wakeup_kswapd() with a wrong zone index
 Date: Mon,  4 Mar 2024 21:23:03 +0000
-Message-ID: <20240304211600.876171962@linuxfoundation.org>
+Message-ID: <20240304211555.533847211@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,104 +66,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Byungchul Park <byungchul@sk.com>
 
-commit c6355995ba471d7ad574174e593192ce805c7e1a upstream.
+commit 2774f256e7c0219e2b0a0894af1c76bdabc4f974 upstream.
 
-Convert startup32_load_idt() into an ordinary function and move it into
-the .text section. This involves turning the rva() immediates into ones
-derived from a local label, and preserving/restoring the %ebp and %ebx
-as per the calling convention.
+With numa balancing on, when a numa system is running where a numa node
+doesn't have its local memory so it has no managed zones, the following
+oops has been observed.  It's because wakeup_kswapd() is called with a
+wrong zone index, -1.  Fixed it by checking the index before calling
+wakeup_kswapd().
 
-Also move the #ifdef to the only existing call site. This makes it clear
-that the function call does nothing if support for memory encryption is
-not compiled in.
+> BUG: unable to handle page fault for address: 00000000000033f3
+> #PF: supervisor read access in kernel mode
+> #PF: error_code(0x0000) - not-present page
+> PGD 0 P4D 0
+> Oops: 0000 [#1] PREEMPT SMP NOPTI
+> CPU: 2 PID: 895 Comm: masim Not tainted 6.6.0-dirty #255
+> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+>    rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+> RIP: 0010:wakeup_kswapd (./linux/mm/vmscan.c:7812)
+> Code: (omitted)
+> RSP: 0000:ffffc90004257d58 EFLAGS: 00010286
+> RAX: ffffffffffffffff RBX: ffff88883fff0480 RCX: 0000000000000003
+> RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88883fff0480
+> RBP: ffffffffffffffff R08: ff0003ffffffffff R09: ffffffffffffffff
+> R10: ffff888106c95540 R11: 0000000055555554 R12: 0000000000000003
+> R13: 0000000000000000 R14: 0000000000000000 R15: ffff88883fff0940
+> FS:  00007fc4b8124740(0000) GS:ffff888827c00000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00000000000033f3 CR3: 000000026cc08004 CR4: 0000000000770ee0
+> DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+> DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+> PKRU: 55555554
+> Call Trace:
+>  <TASK>
+> ? __die
+> ? page_fault_oops
+> ? __pte_offset_map_lock
+> ? exc_page_fault
+> ? asm_exc_page_fault
+> ? wakeup_kswapd
+> migrate_misplaced_page
+> __handle_mm_fault
+> handle_mm_fault
+> do_user_addr_fault
+> exc_page_fault
+> asm_exc_page_fault
+> RIP: 0033:0x55b897ba0808
+> Code: (omitted)
+> RSP: 002b:00007ffeefa821a0 EFLAGS: 00010287
+> RAX: 000055b89983acd0 RBX: 00007ffeefa823f8 RCX: 000055b89983acd0
+> RDX: 00007fc2f8122010 RSI: 0000000000020000 RDI: 000055b89983acd0
+> RBP: 00007ffeefa821a0 R08: 0000000000000037 R09: 0000000000000075
+> R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000000
+> R13: 00007ffeefa82410 R14: 000055b897ba5dd8 R15: 00007fc4b8340000
+>  </TASK>
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20221122161017.2426828-12-ardb@kernel.org
+Link: https://lkml.kernel.org/r/20240216111502.79759-1-byungchul@sk.com
+Signed-off-by: Byungchul Park <byungchul@sk.com>
+Reported-by: Hyeongtak Ji <hyeongtak.ji@sk.com>
+Fixes: c574bbe917036 ("NUMA balancing: optimize page placement for memory tiering system")
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: "Huang, Ying" <ying.huang@intel.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/compressed/head_64.S |   31 ++++++++++++++++++++-----------
- 1 file changed, 20 insertions(+), 11 deletions(-)
+ mm/migrate.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -118,7 +118,9 @@ SYM_FUNC_START(startup_32)
- 1:
- 
- 	/* Setup Exception handling for SEV-ES */
-+#ifdef CONFIG_AMD_MEM_ENCRYPT
- 	call	startup32_load_idt
-+#endif
- 
- 	/* Make sure cpu supports long mode. */
- 	call	verify_cpu
-@@ -732,10 +734,8 @@ SYM_DATA_START(boot32_idt)
- 	.quad 0
- 	.endr
- SYM_DATA_END_LABEL(boot32_idt, SYM_L_GLOBAL, boot32_idt_end)
--#endif
- 
--#ifdef CONFIG_AMD_MEM_ENCRYPT
--	__HEAD
-+	.text
- 	.code32
- /*
-  * Write an IDT entry into boot32_idt
-@@ -768,24 +768,32 @@ SYM_FUNC_START_LOCAL(startup32_set_idt_e
- 
- 	RET
- SYM_FUNC_END(startup32_set_idt_entry)
--#endif
- 
- SYM_FUNC_START(startup32_load_idt)
--#ifdef CONFIG_AMD_MEM_ENCRYPT
--	leal    rva(boot32_idt)(%ebp), %ecx
-+	push	%ebp
-+	push	%ebx
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -2517,6 +2517,14 @@ static int numamigrate_isolate_folio(pg_
+ 			if (managed_zone(pgdat->node_zones + z))
+ 				break;
+ 		}
 +
-+	call	1f
-+1:	pop	%ebp
++		/*
++		 * If there are no managed zones, it should not proceed
++		 * further.
++		 */
++		if (z < 0)
++			return 0;
 +
-+	leal    (boot32_idt - 1b)(%ebp), %ebx
- 
- 	/* #VC handler */
--	leal    rva(startup32_vc_handler)(%ebp), %eax
-+	leal    (startup32_vc_handler - 1b)(%ebp), %eax
- 	movl    $X86_TRAP_VC, %edx
-+	movl	%ebx, %ecx
- 	call    startup32_set_idt_entry
- 
- 	/* Load IDT */
--	leal	rva(boot32_idt)(%ebp), %eax
--	movl	%eax, rva(boot32_idt_desc+2)(%ebp)
--	lidt    rva(boot32_idt_desc)(%ebp)
--#endif
-+	leal	(boot32_idt_desc - 1b)(%ebp), %ecx
-+	movl	%ebx, 2(%ecx)
-+	lidt    (%ecx)
-+
-+	pop	%ebx
-+	pop	%ebp
- 	RET
- SYM_FUNC_END(startup32_load_idt)
-+#endif
- 
- /*
-  * Check for the correct C-bit position when the startup_32 boot-path is used.
-@@ -804,6 +812,7 @@ SYM_FUNC_END(startup32_load_idt)
-  * succeed. An incorrect C-bit position will map all memory unencrypted, so that
-  * the compare will use the encrypted random data and fail.
-  */
-+	__HEAD
- SYM_FUNC_START(startup32_check_sev_cbit)
- #ifdef CONFIG_AMD_MEM_ENCRYPT
- 	pushl	%eax
+ 		wakeup_kswapd(pgdat->node_zones + z, 0,
+ 			      folio_order(folio), ZONE_MOVABLE);
+ 		return 0;
 
 
 
