@@ -1,150 +1,132 @@
-Return-Path: <stable+bounces-26688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A439871157
-	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 00:51:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B983B871160
+	for <lists+stable@lfdr.de>; Tue,  5 Mar 2024 00:57:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2683628408F
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 23:51:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B5E2B2291A
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 23:57:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7FB87D3E8;
-	Mon,  4 Mar 2024 23:51:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=totalphase-com.20230601.gappssmtp.com header.i=@totalphase-com.20230601.gappssmtp.com header.b="1IQr9FDy"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 986417D3EA;
+	Mon,  4 Mar 2024 23:57:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f100.google.com (mail-qv1-f100.google.com [209.85.219.100])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8EB7D3E1
-	for <stable@vger.kernel.org>; Mon,  4 Mar 2024 23:51:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039CC7CF18;
+	Mon,  4 Mar 2024 23:57:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709596268; cv=none; b=BepFPUPP7wkmMOutBUXhuqiJfODOgMe1F4Z8fLCpURZNdL4erD1t6DgacmIbTq+oLJqagao1N+aUym319Itx06cGKKdUNK7+a2wYfFoFaVZ/CThf2kDnNVLUN2+Ikkmrq18TrjtYUialKhIVMtgzqlwaczD3MZW6eFiM7c3uC5I=
+	t=1709596666; cv=none; b=dtLM1RP6oh80urEdVpWnitSNmiWxZPlDGpxHIENBIBctsnEyu54FncSvQGmfsLhmZ1TM9yQSy7zO/kMadHQiRVsvq6HIcozrQec50/nwVULhAnvqdLFJzPe68VtH7gs7Q8mU61f5C+DyBV3O4dOtX3sJrUzqJsEBZVo0KGYiI3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709596268; c=relaxed/simple;
-	bh=lZBdGXN3sDOALNhqG18J8ZzeUVL9c1fKKZLxSYGTO8Q=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=sSzNdUf5xMzI9GBGMz98jr1naZ2JFUy2Xxgr1WiUPSjhFbhhT/IizsrJdavG+yyzfP4TdMEecRT6HXB4UWebd5aUJ07zkGzeHFujtYUv69HK2KlZPW1mSTiGicjOisk8OjD/0aJb4QpptdmXroSKQx8R3vfpeMnBU23mzKHO94M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mail.totalphase.com; spf=pass smtp.mailfrom=totalphase.com; dkim=pass (2048-bit key) header.d=totalphase-com.20230601.gappssmtp.com header.i=@totalphase-com.20230601.gappssmtp.com header.b=1IQr9FDy; arc=none smtp.client-ip=209.85.219.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mail.totalphase.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=totalphase.com
-Received: by mail-qv1-f100.google.com with SMTP id 6a1803df08f44-68ffddd89d1so19422826d6.0
-        for <stable@vger.kernel.org>; Mon, 04 Mar 2024 15:51:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=totalphase-com.20230601.gappssmtp.com; s=20230601; t=1709596262; x=1710201062; darn=vger.kernel.org;
-        h=thread-index:thread-topic:content-transfer-encoding:mime-version
-         :subject:references:in-reply-to:message-id:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=wHZdIg82gQhhliIHQKfVKh00PcHpYfuwKdT2lavfKEM=;
-        b=1IQr9FDykymMeDFnRnOzzdMQuCxarYdSBUj5+rUUiex8Mel+ZhTC6qwccMTpDB6r6r
-         CpuAUdTKSClHX4LD5T0lsUgd+eHaLIGdn5PNGosPBOTDsBga5XK2a7q3qGSInnZQd3Fw
-         Sc7qVZHiQPkF3gHs6/8v7WSrTD/7cTLdiKzaV7MYvTwHMMI5be7h3zkM2gLY/0ubJ1sJ
-         BiIHify2qAtjnVhYXKRVPSDXqj4Jl3qHbnwp3nIRj+g6jt9UATTvv3KWKA6dTa/DhVQY
-         eBv3QMRp1zqjTpFLArd2hnSwr4JJqt1cxr/v3d6uG46Fl0/NVqLsuXM+3gqZ3tx45Mlo
-         UtTA==
+	s=arc-20240116; t=1709596666; c=relaxed/simple;
+	bh=joY7OG7UIn3bqxbd1zB9uJBeqBt8fu89bKu/J05OF6g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JPvwfnhuFJBrNRhnIVHeZogvvAgW45yviUasU7q3QX1UPjAckJmDeL0aQhHdT5yW/ZZYUZcLW011BSu/h4/XGuYwRMN5PZp/PEAZyq6xlrQbZJpMMh5ayY5om3VuJTYEJlk8VDUUtEFbiMOkpgSHtc8QpaA3RFo90u8gPoWX7Us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-29a378040daso3380517a91.1;
+        Mon, 04 Mar 2024 15:57:44 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709596262; x=1710201062;
-        h=thread-index:thread-topic:content-transfer-encoding:mime-version
-         :subject:references:in-reply-to:message-id:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wHZdIg82gQhhliIHQKfVKh00PcHpYfuwKdT2lavfKEM=;
-        b=RdJsM3ijDOVsy5rLYTCI9Av3IEhebwNrJ5Es+dyM0oy4+XZ4QML8uOy5hrFdgO0Nka
-         zuQKGMvyrLkFznAiNe4BLXaDwoqL/+Y6DWsFVebhjbzMa5FtiMZp8o/8E5zwvGh7JVJF
-         8w5+oBbUnD3gD/Ihb5WiuEajOliDR0PoonWSv83s6l4h3EcivRZBqWSO+9LKFirbx3Bj
-         JQ6Z8MmMBJDQ2vMNLjBQzxu/H9tqohX4aCxrIZLzrzc1DOrFgdogyTb91V1PkJSc8e7a
-         H5WESuTbxlTK0gD2ZFa6soRlYZJGlOBdxpYSh0PqXF2LP+XPL8flQC1sGQeCwpRCMmWI
-         ilSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWcmWGqFONs/kuTIoplamofPEdhboIF6VmMJhDz1leseyk3D9zjdhO9+fofcTczGLAM7JpicaQwtrZ/3QcQxxLLgtZ48Bfn
-X-Gm-Message-State: AOJu0YypMldUkAA/OE5vlpRjpW+aq5iz6BOUZ+8uzs0cEbPrrbIL7cQF
-	SKM01+tNxeQziWc9nZqv+UdhiqFIjEUDv8XqG3FaziNoVlJUBB2mexOqkWxpctWo2d1Sj+r1pJ5
-	x/bhfwKAJn67NkAvOc+DBtllCr0u0ClO3
-X-Google-Smtp-Source: AGHT+IGjrnpWm32tjepbwSg4ok414e9vCSPGJ/gCDRSDlPlb+tNcp7BCav1jwGVFW7lOL9uJ2BNP02koL33o
-X-Received: by 2002:a0c:e114:0:b0:690:5f74:81a7 with SMTP id w20-20020a0ce114000000b006905f7481a7mr390876qvk.45.1709596261870;
-        Mon, 04 Mar 2024 15:51:01 -0800 (PST)
-Received: from postfix.totalphase.com ([65.19.189.126])
-        by smtp-relay.gmail.com with ESMTPS id ke25-20020a056214301900b0068f732494easm562457qvb.42.2024.03.04.15.51.01
+        d=1e100.net; s=20230601; t=1709596664; x=1710201464;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NNchAcLGNEoVQRiIQolT0ekrjSxf/xSsvda4T8WFAVg=;
+        b=XEQEt84GUDOHbzyW8NpHABYnVFJ/KLqX/wuEzHq9jsfkbhqzb+c8V+G2eO6gFktr50
+         thbwlo4HmS5HYc4Z90LKLwsYUiS3cQOTQ4+9AyY79YTo0qsfEYS/x2saO9YVy6wcnJvy
+         lTT4nPAwITrxI/QZlTTHAr+6eFYJ6VogkFlfX457R+3VtrTgiGUUnjgeiiC5SO9lDxOk
+         EfKaITfvmMxtYp2SuNq7zohWA1fQi6H2FAUR0Mdv4oVtpGQGktaZnirA3nqzVqFy+GDz
+         j8ujYB0Bho1Ra4zd4j3o7azejDVM/8wkl6JwRk9EuaWB5sSBGEcA3IpZKmBOisbEPhwd
+         6l/A==
+X-Forwarded-Encrypted: i=1; AJvYcCXtIPW2a3I5GR1YYzx8sZwFAn3jrFVq14LnkdpG6WT7PNgHeifpDLe1WVsRU0DHqCvumaRAqYVTANLrIwWz7PuClt2KHRmw
+X-Gm-Message-State: AOJu0YwksWasXXgXQ+WJOGLPDWUJzj5IpSZzer+gap/UbABb6Fwotfym
+	G2YccKZNZq7y0OOZHE05CRp/0Wt/YMyP+rJH/hkFyDln2CsKM8qB
+X-Google-Smtp-Source: AGHT+IFTcbyAlas9hiaR2yPLZelINquCk/T2EmyChkVZIasuRGL+rZe9Tyc7IYgYR+fNxQp6beAOHA==
+X-Received: by 2002:a17:90b:4017:b0:29b:294c:831d with SMTP id ie23-20020a17090b401700b0029b294c831dmr8173282pjb.38.1709596664208;
+        Mon, 04 Mar 2024 15:57:44 -0800 (PST)
+Received: from bvanassche-linux.mtv.corp.google.com ([2620:0:1000:8411:9ba8:35e8:4ec5:44d1])
+        by smtp.gmail.com with ESMTPSA id gb2-20020a17090b060200b0029acce2420asm8286417pjb.10.2024.03.04.15.57.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Mar 2024 15:51:01 -0800 (PST)
-X-Relaying-Domain: totalphase.com
-Date: Mon, 4 Mar 2024 15:50:58 -0800 (PST)
-From: Chris Yokum <linux-usb@mail.totalphase.com>
-To: Mathias Nyman <mathias.nyman@linux.intel.com>
-Cc: Chris Yokum <linux-usb@mail.totalphase.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Linux regressions mailing list <regressions@lists.linux.dev>, 
-	stable <stable@vger.kernel.org>, 
-	linux-usb <linux-usb@vger.kernel.org>, 
-	Niklas Neronin <niklas.neronin@linux.intel.com>
-Message-ID: <717413307.861315.1709596258844.JavaMail.zimbra@totalphase.com>
-In-Reply-To: <3a560c60-ffa2-a511-98d3-d29ef807b213@linux.intel.com>
-References: <949223224.833962.1709339266739.JavaMail.zimbra@totalphase.com> <50f3ca53-40e3-41f2-8f7a-7ad07c681eea@leemhuis.info> <2024030246-wife-detoxify-08c0@gregkh> <278587422.841245.1709394906640.JavaMail.zimbra@totalphase.com> <a6a04009-c3fe-e50d-d792-d075a14ff825@linux.intel.com> <3a560c60-ffa2-a511-98d3-d29ef807b213@linux.intel.com>
-Subject: Re: 6.5.0 broke XHCI URB submissions for count >512
+        Mon, 04 Mar 2024 15:57:43 -0800 (PST)
+From: Bart Van Assche <bvanassche@acm.org>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org,
+	Christoph Hellwig <hch@lst.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Benjamin LaHaise <ben@communityfibre.ca>,
+	Eric Biggers <ebiggers@google.com>,
+	Avi Kivity <avi@scylladb.com>,
+	Sandeep Dhavale <dhavale@google.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	stable@vger.kernel.org
+Subject: [PATCH] fs/aio: Check IOCB_AIO_RW before the struct aio_kiocb conversion
+Date: Mon,  4 Mar 2024 15:57:15 -0800
+Message-ID: <20240304235715.3790858-1-bvanassche@acm.org>
+X-Mailer: git-send-email 2.44.0.rc1.240.g4c46232300-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Thread-Topic: 6.5.0 broke XHCI URB submissions for count >512
-Thread-Index: VuTzduXODhc7IqP5hozJk2GPpe5bnA==
+Content-Transfer-Encoding: 8bit
 
-Hello Mathias,
+The first kiocb_set_cancel_fn() argument may point at a struct kiocb
+that is not embedded inside struct aio_kiocb. With the current code,
+depending on the compiler, the req->ki_ctx read happens either before
+the IOCB_AIO_RW test or after that test. Move the req->ki_ctx read such
+that it is guaranteed that the IOCB_AIO_RW test happens first.
 
-Yes! This fixed the problem. I've checked with our repro case as well as our functional tests.
+Reported-by: Eric Biggers <ebiggers@kernel.org>
+Cc: Benjamin LaHaise <ben@communityfibre.ca>
+Cc: Eric Biggers <ebiggers@google.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Avi Kivity <avi@scylladb.com>
+Cc: Sandeep Dhavale <dhavale@google.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: stable@vger.kernel.org
+Fixes: b820de741ae4 ("fs/aio: Restrict kiocb_set_cancel_fn() to I/O submitted via libaio")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+---
+ fs/aio.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-I'll email you the repro code directly, you can compare the unpatched and patched kernel behavior.
-
-Best regards,
-Chris
-
-
------ Original Message -----
-From: "Mathias Nyman" <mathias.nyman@linux.intel.com>
-To: "Chris Yokum" <linux-usb@mail.totalphase.com>, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-Cc: "Linux regressions mailing list" <regressions@lists.linux.dev>, "stable" <stable@vger.kernel.org>, "linux-usb" <linux-usb@vger.kernel.org>, "Niklas Neronin" <niklas.neronin@linux.intel.com>
-Sent: Monday, March 4, 2024 7:53:03 AM
-Subject: Re: 6.5.0 broke XHCI URB submissions for count >512
-
-On 4.3.2024 13.57, Mathias Nyman wrote:
-> On 2.3.2024 17.55, Chris Yokum wrote:
->>>> We have found a regression bug, where more than 512 URBs cannot be
->>>> reliably submitted to XHCI. URBs beyond that return 0x00 instead of
->>>> valid data in the buffer.
->>>
->>> FWIW, that's f5af638f0609af ("xhci: Fix transfer ring expansion size
->>> calculation") [v6.5-rc1] from Mathias.
->>>
-> 
-> Ok, I see, this could be the empty ring exception check in xhci-ring.c:
-> 
-> It could falsely assume ring is empty when it in fact is filled up in one
-> go by queuing several small urbs.
-
-Does this help?
-
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 6a29ebd6682d..52278afea94b 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -332,7 +332,13 @@ static unsigned int xhci_ring_expansion_needed(struct xhci_hcd *xhci, struct xhc
-         /* how many trbs will be queued past the enqueue segment? */
-         trbs_past_seg = enq_used + num_trbs - (TRBS_PER_SEGMENT - 1);
-  
--       if (trbs_past_seg <= 0)
-+       /*
-+        * Consider expanding the ring already if num_trbs fills the current
-+        * segment (i.e. trbs_past_seg == 0), not only when num_trbs goes into
-+        * the next segment. Avoids confusing full ring with special empty ring
-+        * case below
-+        */
-+       if (trbs_past_seg < 0)
-                 return 0;
-
-Thanks
-Mathias
+diff --git a/fs/aio.c b/fs/aio.c
+index da18dbcfcb22..9cdaa2faa536 100644
+--- a/fs/aio.c
++++ b/fs/aio.c
+@@ -589,8 +589,8 @@ static int aio_setup_ring(struct kioctx *ctx, unsigned int nr_events)
+ 
+ void kiocb_set_cancel_fn(struct kiocb *iocb, kiocb_cancel_fn *cancel)
+ {
+-	struct aio_kiocb *req = container_of(iocb, struct aio_kiocb, rw);
+-	struct kioctx *ctx = req->ki_ctx;
++	struct aio_kiocb *req;
++	struct kioctx *ctx;
+ 	unsigned long flags;
+ 
+ 	/*
+@@ -600,9 +600,13 @@ void kiocb_set_cancel_fn(struct kiocb *iocb, kiocb_cancel_fn *cancel)
+ 	if (!(iocb->ki_flags & IOCB_AIO_RW))
+ 		return;
+ 
++	req = container_of(iocb, struct aio_kiocb, rw);
++
+ 	if (WARN_ON_ONCE(!list_empty(&req->ki_list)))
+ 		return;
+ 
++	ctx = req->ki_ctx;
++
+ 	spin_lock_irqsave(&ctx->ctx_lock, flags);
+ 	list_add_tail(&req->ki_list, &ctx->active_reqs);
+ 	req->ki_cancel = cancel;
 
