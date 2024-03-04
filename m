@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-26086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9DEA870D02
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:30:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73796870ED8
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:47:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86DC628BDB3
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:30:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EA00282119
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:47:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0FB179DCE;
-	Mon,  4 Mar 2024 21:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A9E61675;
+	Mon,  4 Mar 2024 21:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a3OtcxgL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iWYwEO4l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA554CE0E;
-	Mon,  4 Mar 2024 21:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483461EB5A;
+	Mon,  4 Mar 2024 21:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587808; cv=none; b=cNaUn0MLMLwivzSQ/7+/4fU90xAdN7gdbzfGBqtixCzltY/NggKEMKxxZjumEHWELplR9HxMfNmnFrsr9NgMDQ0Xno6kVx+NHk3W4QsflMaeXvvEk9PvsptV45Wd4JYWi4d1sULdgp3JnySaThDxVUXZgE/pz54E55vNrKV12Tg=
+	t=1709588863; cv=none; b=bAVrcIYFjm9nRaK8RhGFK9AcmAUR8oxgaOPnTHhtiTLSH3KYxXdTtnBhYd6t/9AGCWDdo5I31BLRPeDa8kFh+9k6pv/aMJ0XLY6TmUv6kkQZrDk63YC5UezrqXNdTgzK0LKRjazJSXHZ/d+2jLtLKe+l+MgYH42RUi/jvc/ZrlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587808; c=relaxed/simple;
-	bh=rq3sEmLH0GGZADYZ9ZLD8nCebluy3fmgHV448YO9wmw=;
+	s=arc-20240116; t=1709588863; c=relaxed/simple;
+	bh=2qyxo47tr94K9NGAKIxrA0jmpTHC1gnHcvjyKOdPsEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V5mGRDh4SNh0UGsj1FF7Z8hNSMumq9ES4rSU3st8QWp5eJGPcYn4uE/o/30rarEi5O972s3KRAZ7Csp2/oJx/eFH3Qvp5sXmGylgGvxjenyDIyXugG0S0qfToDOFh6+4Yj0IDeC9/loVmovA7/NPmbvCtML8rvDjcxCM8Kq+xxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3OtcxgL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 430A2C433C7;
-	Mon,  4 Mar 2024 21:30:08 +0000 (UTC)
+	 MIME-Version; b=PVGUMKuizfKMTTI8NDxcqq/N3JxRmIzJmQzOP6KORUXDytoGKdUYAeFQJ719bLGxL9m1sG1CER6H/viqBaGKbM8/CZeCTOLb9JJHMPjtrflq/WWcKmyBhKyhsEq8DxHvdfSYtfn4uYmUE4exia9Y2UawVBanjjgkR9u4c0Nqtgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iWYwEO4l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50468C433F1;
+	Mon,  4 Mar 2024 21:47:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587808;
-	bh=rq3sEmLH0GGZADYZ9ZLD8nCebluy3fmgHV448YO9wmw=;
+	s=korg; t=1709588863;
+	bh=2qyxo47tr94K9NGAKIxrA0jmpTHC1gnHcvjyKOdPsEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a3OtcxgLUDgbMWN/lwtR7wsXNJ3wKF676jkab8mLDCnYzE8PRCFkiwIjd5DX+V+mf
-	 oWQ/td5fyCZ6hGolnp3E7zeqzrYF0kMMmd9w018nMzl/CcA0weoeKl8XTLiYwm7qWo
-	 v9jPPkQgP58lm+CUERLPSuKLO3G7s+U9HVdHbNc4=
+	b=iWYwEO4lEIk+adFAfNLWQ87g4PgJSD2rl6lMPRP2sgBRvQ2NtqlPryK7p7884lsol
+	 7btpCMFJnch9R2aVzbPFCHaTtcfcsYKw9UZDykFujs9mW+Cw0BvQbJNUopWD13P1pq
+	 FLhWAO3pIQEMJisWEJuYkzrQ3JMFfNLph91fxed8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joy Zou <joy.zou@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.7 098/162] dmaengine: fsl-edma: correct calculation of nbytes in multi-fifo scenario
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH 6.1 100/215] mptcp: continue marking the first subflow as UNCONNECTED
 Date: Mon,  4 Mar 2024 21:22:43 +0000
-Message-ID: <20240304211554.971841163@linuxfoundation.org>
+Message-ID: <20240304211600.206386851@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joy Zou <joy.zou@nxp.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-commit 9ba17defd9edd87970b701085402bc8ecc3a11d4 upstream.
+After the 'Fixes' commit mentioned below, which is a partial backport,
+the MPTCP worker was no longer marking the first subflow as "UNCONNECTED"
+when the socket was transitioning to TCP_CLOSE state.
 
-The 'nbytes' should be equivalent to burst * width in audio multi-fifo
-setups. Given that the FIFO width is fixed at 32 bits, adjusts the burst
-size for multi-fifo configurations to match the slave maxburst in the
-configuration.
+As a result, in v6.1, it was no longer possible to reconnect to the just
+disconnected socket. Continue to do that like before, only for the first
+subflow.
 
-Cc: stable@vger.kernel.org
-Fixes: 72f5801a4e2b ("dmaengine: fsl-edma: integrate v3 support")
-Signed-off-by: Joy Zou <joy.zou@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20240131163318.360315-1-Frank.Li@nxp.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+A few refactoring have been done around the 'msk->subflow' in later
+versions, and it looks like this is not needed to do that there, but
+still needed in v6.1. Without that, the 'disconnect' tests from the
+mptcp_connect.sh selftest fail: they repeat the transfer 3 times by
+reconnecting to the server each time.
+
+Fixes: 7857e35ef10e ("mptcp: get rid of msk->subflow")
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/fsl-edma-common.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/protocol.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/dma/fsl-edma-common.c
-+++ b/drivers/dma/fsl-edma-common.c
-@@ -503,7 +503,7 @@ void fsl_edma_fill_tcd(struct fsl_edma_c
- 	if (fsl_chan->is_multi_fifo) {
- 		/* set mloff to support multiple fifo */
- 		burst = cfg->direction == DMA_DEV_TO_MEM ?
--				cfg->src_addr_width : cfg->dst_addr_width;
-+				cfg->src_maxburst : cfg->dst_maxburst;
- 		nbytes |= EDMA_V3_TCD_NBYTES_MLOFF(-(burst * 4));
- 		/* enable DMLOE/SMLOE */
- 		if (cfg->direction == DMA_MEM_TO_DEV) {
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2440,6 +2440,8 @@ static void __mptcp_close_ssk(struct soc
+ 	need_push = (flags & MPTCP_CF_PUSH) && __mptcp_retransmit_pending_data(sk);
+ 	if (!dispose_it) {
+ 		__mptcp_subflow_disconnect(ssk, subflow, flags);
++		if (msk->subflow && ssk == msk->subflow->sk)
++			msk->subflow->state = SS_UNCONNECTED;
+ 		release_sock(ssk);
+ 
+ 		goto out;
 
 
 
