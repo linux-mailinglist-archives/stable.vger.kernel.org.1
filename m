@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-25980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38574870C87
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:27:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5964870E15
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:41:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A5C81C20B98
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:25:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6E381C2397A
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:41:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC1342071;
-	Mon,  4 Mar 2024 21:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34FF07BAED;
+	Mon,  4 Mar 2024 21:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fi7Y6OJT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="afL8TxbN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1DD1EA99;
-	Mon,  4 Mar 2024 21:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05DE61675;
+	Mon,  4 Mar 2024 21:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587531; cv=none; b=F4ov49d3Sb8kPNbC86Ji5H9Uzuiy+oOPKzylmX9iUatcjNqIvi50fgCkPVOL6O9cqPeVTWbPWLGIqfw04GzSw/VjdXCf6aKA7EEsQR1JSJ8GtmzPFGFjoGxZIkYlRUgRSEI3tLOArI/ZyZTKyDOx++5DxALtoOlb0xiSPa1P2QY=
+	t=1709588437; cv=none; b=eb0Y1z8a8DovZYJ2xzP0pEGN8x3oa+HCTeve96aE+W46dDwYCaIj3mBkZDsEVTLSTIB7HKG5NSl50hK7hM4LEodk0rTkCDbh51R1/KxU4g20PWdvgnIviGC3ZBEiVMVuee3EHGUkv1kRfg4EYOM+urS6JPdpHsgaJne55OqadXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587531; c=relaxed/simple;
-	bh=88RhTYtOf6si+f2YtMsMn6vKJjLVKhqehaY54ltnk1g=;
+	s=arc-20240116; t=1709588437; c=relaxed/simple;
+	bh=IeXHTO6fViGYuLt55sSkSfkVmDeoW+ok0dx+7mpOqfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ArRly4qnR+5FyXGPo8ayF9NHbuOigd47nqXey7/2zVOjlNauPqb3yO6200ddZ6vLYdMCWdEf5VFvW7xkpGYd+DRzYADO8FwiUhFYe9jaILMPYDnPpXBUr8vg6nX3oby7W2otbEVA51SvsUHStfVBdm4yeaNCWCv+0ZFgHApq6cU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fi7Y6OJT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9B4DC433C7;
-	Mon,  4 Mar 2024 21:25:30 +0000 (UTC)
+	 MIME-Version; b=qWjF96QL2P8tqRhBRjTIE8p4FFKujQHKxJnnwYQsbbfYgUzFGfEBwtHAU+CkMwl+kUKyrdf5Z6n5GRITqOUP6hGuIKHHf6kW2q8eK/knjywX4lW+x6zS0+SIqhTUq8Dmbh3oqVqrYMS/J9Id6fBzDvOM3wcMcYy4t16nv89FoyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=afL8TxbN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B9FBC433C7;
+	Mon,  4 Mar 2024 21:40:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587531;
-	bh=88RhTYtOf6si+f2YtMsMn6vKJjLVKhqehaY54ltnk1g=;
+	s=korg; t=1709588436;
+	bh=IeXHTO6fViGYuLt55sSkSfkVmDeoW+ok0dx+7mpOqfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fi7Y6OJTbJPXhWHR1lLVkUSMxkDUfYRD+lGjODgdjg/IK8tVFlmJIiO7sCLhfEP8P
-	 WontZ1rIxD/HrxDIwg4ef0jf1ugJml+enX1Ax5zAzQUlmozGb+s8z1rDGDZWm59qH5
-	 9DvcsoBTg7gG581WE4zyUCo+yndwFRfq8vZ/mexE=
+	b=afL8TxbN4qPxHFkpbwoHTVcF0b8IgXlNiYZDwxKwA7S50F7dC+uqqPO2q1W9A4L+v
+	 RRslIyI4S85i4eVv+VIJN+41qzSjGfKbc3gDP439qHL6UbK1ueAGhMGKer4QSqHnXS
+	 jzJqYLIdZKib4s7Zb4bkZooHMLvWz7vHlFm9siKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryosuke Yasuoka <ryasuoka@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+34ad5fab48f7bf510349@syzkaller.appspotmail.com
-Subject: [PATCH 4.19 01/16] netlink: Fix kernel-infoleak-after-free in __skb_datagram_iter
+	Edward Adam Davis <eadavis@qq.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>,
+	syzbot+33f23b49ac24f986c9e8@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 082/143] btrfs: dev-replace: properly validate device names
 Date: Mon,  4 Mar 2024 21:23:22 +0000
-Message-ID: <20240304211534.374580274@linuxfoundation.org>
+Message-ID: <20240304211552.547334727@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211534.328737119@linuxfoundation.org>
-References: <20240304211534.328737119@linuxfoundation.org>
+In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
+References: <20240304211549.876981797@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,139 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryosuke Yasuoka <ryasuoka@redhat.com>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit 661779e1fcafe1b74b3f3fe8e980c1e207fea1fd ]
+commit 9845664b9ee47ce7ee7ea93caf47d39a9d4552c4 upstream.
 
-syzbot reported the following uninit-value access issue [1]:
+There's a syzbot report that device name buffers passed to device
+replace are not properly checked for string termination which could lead
+to a read out of bounds in getname_kernel().
 
-netlink_to_full_skb() creates a new `skb` and puts the `skb->data`
-passed as a 1st arg of netlink_to_full_skb() onto new `skb`. The data
-size is specified as `len` and passed to skb_put_data(). This `len`
-is based on `skb->end` that is not data offset but buffer offset. The
-`skb->end` contains data and tailroom. Since the tailroom is not
-initialized when the new `skb` created, KMSAN detects uninitialized
-memory area when copying the data.
+Add a helper that validates both source and target device name buffers.
+For devid as the source initialize the buffer to empty string in case
+something tries to read it later.
 
-This patch resolved this issue by correct the len from `skb->end` to
-`skb->len`, which is the actual data offset.
+This was originally analyzed and fixed in a different way by Edward Adam
+Davis (see links).
 
-BUG: KMSAN: kernel-infoleak-after-free in instrument_copy_to_user include/linux/instrumented.h:114 [inline]
-BUG: KMSAN: kernel-infoleak-after-free in copy_to_user_iter lib/iov_iter.c:24 [inline]
-BUG: KMSAN: kernel-infoleak-after-free in iterate_ubuf include/linux/iov_iter.h:29 [inline]
-BUG: KMSAN: kernel-infoleak-after-free in iterate_and_advance2 include/linux/iov_iter.h:245 [inline]
-BUG: KMSAN: kernel-infoleak-after-free in iterate_and_advance include/linux/iov_iter.h:271 [inline]
-BUG: KMSAN: kernel-infoleak-after-free in _copy_to_iter+0x364/0x2520 lib/iov_iter.c:186
- instrument_copy_to_user include/linux/instrumented.h:114 [inline]
- copy_to_user_iter lib/iov_iter.c:24 [inline]
- iterate_ubuf include/linux/iov_iter.h:29 [inline]
- iterate_and_advance2 include/linux/iov_iter.h:245 [inline]
- iterate_and_advance include/linux/iov_iter.h:271 [inline]
- _copy_to_iter+0x364/0x2520 lib/iov_iter.c:186
- copy_to_iter include/linux/uio.h:197 [inline]
- simple_copy_to_iter+0x68/0xa0 net/core/datagram.c:532
- __skb_datagram_iter+0x123/0xdc0 net/core/datagram.c:420
- skb_copy_datagram_iter+0x5c/0x200 net/core/datagram.c:546
- skb_copy_datagram_msg include/linux/skbuff.h:3960 [inline]
- packet_recvmsg+0xd9c/0x2000 net/packet/af_packet.c:3482
- sock_recvmsg_nosec net/socket.c:1044 [inline]
- sock_recvmsg net/socket.c:1066 [inline]
- sock_read_iter+0x467/0x580 net/socket.c:1136
- call_read_iter include/linux/fs.h:2014 [inline]
- new_sync_read fs/read_write.c:389 [inline]
- vfs_read+0x8f6/0xe00 fs/read_write.c:470
- ksys_read+0x20f/0x4c0 fs/read_write.c:613
- __do_sys_read fs/read_write.c:623 [inline]
- __se_sys_read fs/read_write.c:621 [inline]
- __x64_sys_read+0x93/0xd0 fs/read_write.c:621
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x44/0x110 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-
-Uninit was stored to memory at:
- skb_put_data include/linux/skbuff.h:2622 [inline]
- netlink_to_full_skb net/netlink/af_netlink.c:181 [inline]
- __netlink_deliver_tap_skb net/netlink/af_netlink.c:298 [inline]
- __netlink_deliver_tap+0x5be/0xc90 net/netlink/af_netlink.c:325
- netlink_deliver_tap net/netlink/af_netlink.c:338 [inline]
- netlink_deliver_tap_kernel net/netlink/af_netlink.c:347 [inline]
- netlink_unicast_kernel net/netlink/af_netlink.c:1341 [inline]
- netlink_unicast+0x10f1/0x1250 net/netlink/af_netlink.c:1368
- netlink_sendmsg+0x1238/0x13d0 net/netlink/af_netlink.c:1910
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg net/socket.c:745 [inline]
- ____sys_sendmsg+0x9c2/0xd60 net/socket.c:2584
- ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2638
- __sys_sendmsg net/socket.c:2667 [inline]
- __do_sys_sendmsg net/socket.c:2676 [inline]
- __se_sys_sendmsg net/socket.c:2674 [inline]
- __x64_sys_sendmsg+0x307/0x490 net/socket.c:2674
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x44/0x110 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-
-Uninit was created at:
- free_pages_prepare mm/page_alloc.c:1087 [inline]
- free_unref_page_prepare+0xb0/0xa40 mm/page_alloc.c:2347
- free_unref_page_list+0xeb/0x1100 mm/page_alloc.c:2533
- release_pages+0x23d3/0x2410 mm/swap.c:1042
- free_pages_and_swap_cache+0xd9/0xf0 mm/swap_state.c:316
- tlb_batch_pages_flush mm/mmu_gather.c:98 [inline]
- tlb_flush_mmu_free mm/mmu_gather.c:293 [inline]
- tlb_flush_mmu+0x6f5/0x980 mm/mmu_gather.c:300
- tlb_finish_mmu+0x101/0x260 mm/mmu_gather.c:392
- exit_mmap+0x49e/0xd30 mm/mmap.c:3321
- __mmput+0x13f/0x530 kernel/fork.c:1349
- mmput+0x8a/0xa0 kernel/fork.c:1371
- exit_mm+0x1b8/0x360 kernel/exit.c:567
- do_exit+0xd57/0x4080 kernel/exit.c:858
- do_group_exit+0x2fd/0x390 kernel/exit.c:1021
- __do_sys_exit_group kernel/exit.c:1032 [inline]
- __se_sys_exit_group kernel/exit.c:1030 [inline]
- __x64_sys_exit_group+0x3c/0x50 kernel/exit.c:1030
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0x44/0x110 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-
-Bytes 3852-3903 of 3904 are uninitialized
-Memory access of size 3904 starts at ffff88812ea1e000
-Data copied to user address 0000000020003280
-
-CPU: 1 PID: 5043 Comm: syz-executor297 Not tainted 6.7.0-rc5-syzkaller-00047-g5bd7ef53ffe5 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/10/2023
-
-Fixes: 1853c9496460 ("netlink, mmap: transform mmap skb into full skb on taps")
-Reported-and-tested-by: syzbot+34ad5fab48f7bf510349@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=34ad5fab48f7bf510349 [1]
-Signed-off-by: Ryosuke Yasuoka <ryasuoka@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240221074053.1794118-1-ryasuoka@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/linux-btrfs/000000000000d1a1d1060cc9c5e7@google.com/
+Link: https://lore.kernel.org/linux-btrfs/tencent_44CA0665C9836EF9EEC80CB9E7E206DF5206@qq.com/
+CC: stable@vger.kernel.org # 4.19+
+CC: Edward Adam Davis <eadavis@qq.com>
+Reported-and-tested-by: syzbot+33f23b49ac24f986c9e8@syzkaller.appspotmail.com
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netlink/af_netlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/dev-replace.c |   24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index 72936d154c96a..1fe9b4a04b221 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -160,7 +160,7 @@ static inline u32 netlink_group_mask(u32 group)
- static struct sk_buff *netlink_to_full_skb(const struct sk_buff *skb,
- 					   gfp_t gfp_mask)
- {
--	unsigned int len = skb_end_offset(skb);
-+	unsigned int len = skb->len;
- 	struct sk_buff *new;
+--- a/fs/btrfs/dev-replace.c
++++ b/fs/btrfs/dev-replace.c
+@@ -726,6 +726,23 @@ leave:
+ 	return ret;
+ }
  
- 	new = alloc_skb(len, gfp_mask);
--- 
-2.43.0
-
++static int btrfs_check_replace_dev_names(struct btrfs_ioctl_dev_replace_args *args)
++{
++	if (args->start.srcdevid == 0) {
++		if (memchr(args->start.srcdev_name, 0,
++			   sizeof(args->start.srcdev_name)) == NULL)
++			return -ENAMETOOLONG;
++	} else {
++		args->start.srcdev_name[0] = 0;
++	}
++
++	if (memchr(args->start.tgtdev_name, 0,
++		   sizeof(args->start.tgtdev_name)) == NULL)
++	    return -ENAMETOOLONG;
++
++	return 0;
++}
++
+ int btrfs_dev_replace_by_ioctl(struct btrfs_fs_info *fs_info,
+ 			    struct btrfs_ioctl_dev_replace_args *args)
+ {
+@@ -738,10 +755,9 @@ int btrfs_dev_replace_by_ioctl(struct bt
+ 	default:
+ 		return -EINVAL;
+ 	}
+-
+-	if ((args->start.srcdevid == 0 && args->start.srcdev_name[0] == '\0') ||
+-	    args->start.tgtdev_name[0] == '\0')
+-		return -EINVAL;
++	ret = btrfs_check_replace_dev_names(args);
++	if (ret < 0)
++		return ret;
+ 
+ 	ret = btrfs_dev_replace_start(fs_info, args->start.tgtdev_name,
+ 					args->start.srcdevid,
 
 
 
