@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-26053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 595D5870CC9
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:28:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73ACA870E97
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:45:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BA981C250A3
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:28:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0463EB2125D
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:45:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE7B81EB5A;
-	Mon,  4 Mar 2024 21:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2FD7A706;
+	Mon,  4 Mar 2024 21:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IRf1Mrjq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="heRV26BS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B20510A1F;
-	Mon,  4 Mar 2024 21:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CEF01EB5A;
+	Mon,  4 Mar 2024 21:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709587722; cv=none; b=uPbejp7U7+m3frbmb+TrX7KsCcPUyB2QRPYyWPNmw4hnBvFQ2LNaIIWNkreqfE3ZwTRdFTfFC2rt3/xCuyRsJcPIFKq3vwUtmQO2lz40vDYj1V8HmUq8tFYUpZtnD+D3IVHMYAHU5SA1NQO9r8zFO+TRH0OcWHQ7jTxU/+cnrlk=
+	t=1709588712; cv=none; b=OKvnsPaDXFzhHtkR3j8oskzFYzivDrINy2DihgVp7W2LAO64gBOB09p+2jkvyAnN3Px6jsfJZ0mrLE+DLm5lP2sePopLh97Q7wfVfURrLL8x6le8BjYfFBZ08bXRt5sLhA6ybPpO7huZh2aKaeW8KQa9Y3cgujHTlZVk2vZ6shs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709587722; c=relaxed/simple;
-	bh=xm8WhyySrcO1Y6UmIiydfy8YJGDY3Y8SfUqIrkbl/aE=;
+	s=arc-20240116; t=1709588712; c=relaxed/simple;
+	bh=Wp5zuABicsqao2/792ETx/rtmfl502PVTXRjNLVITQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nt1ZF4brsEW7rk81h4tXbkMiztRY48EmuG+gRX3gvwv7pZz9FZUx+szqSw2tjSPYbTfKvQcWY3CgHAIAVYdWU3Nxihmd6AIU6jeyXxHmqAOaBfy/cragAqAjE5/Ov0JO88EgQXmXhHTY0XU0/oBO15mZyj8Hr0D71TR5kseZTfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IRf1Mrjq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F3E5C433C7;
-	Mon,  4 Mar 2024 21:28:41 +0000 (UTC)
+	 MIME-Version; b=YtWKOhHoRWqmSp5JHqWWt+k3mo1cEkjsEPQKdsAavyZIPEVHKYzJ0pvW5ZiuSubk2Uu5YChssklTF+O0+lxSMAWN0tEnFxhI7oF9sYo6JGTlhaxN90jNoY9ovJRpiEPuArhfjME+RhAWcKm12WrJGqhbIr0fmjnwOQ6kNpI/QK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=heRV26BS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5B5EC433C7;
+	Mon,  4 Mar 2024 21:45:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709587722;
-	bh=xm8WhyySrcO1Y6UmIiydfy8YJGDY3Y8SfUqIrkbl/aE=;
+	s=korg; t=1709588712;
+	bh=Wp5zuABicsqao2/792ETx/rtmfl502PVTXRjNLVITQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IRf1MrjqeC1DqqVF0ET9Omdir3y7YlhkmvcJa74UsVhEzHIqFw8hfLCk0pp7eXw3F
-	 48jpfXvhErVFA/nz/UCeB+q8N2S+v7K/3g1YjFGNY3PzTPXRTcV4MdEus5gKvsvOpA
-	 5toiEOY9uj1jgVOOEP5zSGjcZ7E7oEuAVJ2MlrNE=
+	b=heRV26BSg4Zs99gfQi/QYZBxZRergpw6Ik8dBbpA1e8upVVedLfuZaF1ma3SUjtuh
+	 sk0UWjPmqduj1VchNLR6XO094N6KKTOe+WlnvPos0cMm53jobPdEL2GrasMc6qijMK
+	 5v91QPAHd6f858DzuVf5AKjmNBnpFqNMEOnLMEOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ying Hsu <yinghsu@chromium.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 040/162] tls: decrement decrypt_pending if no async completion will be called
-Date: Mon,  4 Mar 2024 21:21:45 +0000
-Message-ID: <20240304211553.128053716@linuxfoundation.org>
+Subject: [PATCH 6.1 043/215] Bluetooth: Avoid potential use-after-free in hci_error_reset
+Date: Mon,  4 Mar 2024 21:21:46 +0000
+Message-ID: <20240304211558.368151477@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
-References: <20240304211551.833500257@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Ying Hsu <yinghsu@chromium.org>
 
-[ Upstream commit f7fa16d49837f947ee59492958f9e6f0e51d9a78 ]
+[ Upstream commit 2449007d3f73b2842c9734f45f0aadb522daf592 ]
 
-With mixed sync/async decryption, or failures of crypto_aead_decrypt,
-we increment decrypt_pending but we never do the corresponding
-decrement since tls_decrypt_done will not be called. In this case, we
-should decrement decrypt_pending immediately to avoid getting stuck.
+While handling the HCI_EV_HARDWARE_ERROR event, if the underlying
+BT controller is not responding, the GPIO reset mechanism would
+free the hci_dev and lead to a use-after-free in hci_error_reset.
 
-For example, the prequeue prequeue test gets stuck with mixed
-modes (one async decrypt + one sync decrypt).
+Here's the call trace observed on a ChromeOS device with Intel AX201:
+   queue_work_on+0x3e/0x6c
+   __hci_cmd_sync_sk+0x2ee/0x4c0 [bluetooth <HASH:3b4a6>]
+   ? init_wait_entry+0x31/0x31
+   __hci_cmd_sync+0x16/0x20 [bluetooth <HASH:3b4a 6>]
+   hci_error_reset+0x4f/0xa4 [bluetooth <HASH:3b4a 6>]
+   process_one_work+0x1d8/0x33f
+   worker_thread+0x21b/0x373
+   kthread+0x13a/0x152
+   ? pr_cont_work+0x54/0x54
+   ? kthread_blkcg+0x31/0x31
+    ret_from_fork+0x1f/0x30
 
-Fixes: 94524d8fc965 ("net/tls: Add support for async decryption of tls records")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/r/c56d5fc35543891d5319f834f25622360e1bfbec.1709132643.git.sd@queasysnail.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This patch holds the reference count on the hci_dev while processing
+a HCI_EV_HARDWARE_ERROR event to avoid potential crash.
+
+Fixes: c7741d16a57c ("Bluetooth: Perform a power cycle when receiving hardware error event")
+Signed-off-by: Ying Hsu <yinghsu@chromium.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/bluetooth/hci_core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index de96959336c48..9f23ba321efe6 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -289,6 +289,8 @@ static int tls_do_decryption(struct sock *sk,
- 			return 0;
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index 6a1db678d032f..a8932d449eb63 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -1049,6 +1049,7 @@ static void hci_error_reset(struct work_struct *work)
+ {
+ 	struct hci_dev *hdev = container_of(work, struct hci_dev, error_reset);
  
- 		ret = crypto_wait_req(ret, &ctx->async_wait);
-+	} else if (darg->async) {
-+		atomic_dec(&ctx->decrypt_pending);
- 	}
- 	darg->async = false;
++	hci_dev_hold(hdev);
+ 	BT_DBG("%s", hdev->name);
  
+ 	if (hdev->hw_error)
+@@ -1056,10 +1057,10 @@ static void hci_error_reset(struct work_struct *work)
+ 	else
+ 		bt_dev_err(hdev, "hardware error 0x%2.2x", hdev->hw_error_code);
+ 
+-	if (hci_dev_do_close(hdev))
+-		return;
++	if (!hci_dev_do_close(hdev))
++		hci_dev_do_open(hdev);
+ 
+-	hci_dev_do_open(hdev);
++	hci_dev_put(hdev);
+ }
+ 
+ void hci_uuids_clear(struct hci_dev *hdev)
 -- 
 2.43.0
 
