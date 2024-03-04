@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-26337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E848870E1F
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:41:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EA77870D6C
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:33:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A79E286FE4
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:41:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE41728F2AC
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59BE77BB02;
-	Mon,  4 Mar 2024 21:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B3D47A5D;
+	Mon,  4 Mar 2024 21:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B6OkhI7j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MUTZA0BR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F7611193;
-	Mon,  4 Mar 2024 21:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D62451C687;
+	Mon,  4 Mar 2024 21:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588461; cv=none; b=RmMRF6iZ1RVZaDMMqLitRM0N2MXEY8dSyzVtVDX74iNm4HHuF+p+ShbRilRkDkmo9ls+8jpVEVVEk+aFe9nP5ZZ321lRPOJCibmVar/VXNqwLLA5AvZPyLzG4sJH4SFjmZAb53GzBE5FC/lOEv9f3QjiJUZXr7O6P3uRNULUQgA=
+	t=1709588031; cv=none; b=NbUXGCQ080rQ0QZSeWx/VDM5DSgjNiTOh1xiXU2B9SrwakogH7gnVriD6vMmXEMs0n3OUx+0Kjb8/jv8Q/LZARcFv850FVFwaO0zw4iSRsMNcxfQZTmaT0KPobeJp/46s54afOPrFqO9B+U7psFkeHqcJhqs/Q1xrVyut0BeWFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588461; c=relaxed/simple;
-	bh=f0Y6sY5XeFUTdgMYKPY/eZmoMKiwXlC3llg1ru3k3cM=;
+	s=arc-20240116; t=1709588031; c=relaxed/simple;
+	bh=HrXtEb3LOsBq79Xc3wAur2nv4fF5+AaQPGenow+GQv4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DSH9HWG7TYA5kDjgbDJ/M30ja7CUYIq5V7L0bLP5/mRiQ0Ey/ciP/nMoWSNcuzQaZ8c9gT1J5wxtGaP/7KH1xemHJ9Pn0KVUk2GxKymFg8gwyA5jRA+B8FJFqZvEuJpItyFFfRSICdU5GlkqIRiQrTdzrOS8NIOIDTU9OCPBLGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B6OkhI7j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF24C433C7;
-	Mon,  4 Mar 2024 21:41:00 +0000 (UTC)
+	 MIME-Version; b=Ez40NH/7HCaLgkD8MZsuYaJ8OffLi/H580Q4OLSwsdvRkOllMtbagws4gURefakkVJ/2te1KD7Zdm1+owAj7xWsaJT+RoQShDShPr4QSbT7+t51gt46cZfRaTyQaHSfxIuKfGUwK3gFHvH87x3CXDXVGvY/h+IEUuI652ictgb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MUTZA0BR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 679C0C433C7;
+	Mon,  4 Mar 2024 21:33:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588461;
-	bh=f0Y6sY5XeFUTdgMYKPY/eZmoMKiwXlC3llg1ru3k3cM=;
+	s=korg; t=1709588031;
+	bh=HrXtEb3LOsBq79Xc3wAur2nv4fF5+AaQPGenow+GQv4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B6OkhI7j02lizP8VbbN6BKw3AWCNaBArYRZqBq3iY42BZLHa9+xVYeJBgYf5cbHWn
-	 WncIySCy1yb3SJd/QN6J4JmHy4sbNZEgZMeVHNvV5A5oK0vbwAXcCaizgRKF9WGx9P
-	 Nqd/hzLugYjJCcQJVZN/2dFhwufsUxA95D3u3RbE=
+	b=MUTZA0BRPVqoMEamiWfc6oCIQmUq/++/sZA0Nvv8coIEv2cLIdsGNlj5qAW7qEjXD
+	 p5FfS8pq3BYC1fhqp1YNM2Jr86fNd+FfBK0dYiECOxPFCp4tyg+At90gHT1LBYvvSO
+	 gxpEXs4tuoKic/CO+3/aaFa0LIBK1yXfN6wO+3z0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	syzbot+ecab4d36f920c3574bf9@syzkaller.appspotmail.com
-Subject: [PATCH 6.6 116/143] af_unix: Drop oob_skb ref before purging queue in GC.
+	Curtis Klein <curtis.klein@hpe.com>,
+	Yi Zhao <yi.zhao@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.4 20/25] dmaengine: fsl-qdma: init irq after reg initialization
 Date: Mon,  4 Mar 2024 21:23:56 +0000
-Message-ID: <20240304211553.628661477@linuxfoundation.org>
+Message-ID: <20240304211536.434173183@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211549.876981797@linuxfoundation.org>
-References: <20240304211549.876981797@linuxfoundation.org>
+In-Reply-To: <20240304211535.741936181@linuxfoundation.org>
+References: <20240304211535.741936181@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Curtis Klein <curtis.klein@hpe.com>
 
-commit aa82ac51d63328714645c827775d64dbfd9941f3 upstream.
+commit 87a39071e0b639f45e05d296cc0538eef44ec0bd upstream.
 
-syzbot reported another task hung in __unix_gc().  [0]
+Initialize the qDMA irqs after the registers are configured so that
+interrupts that may have been pending from a primary kernel don't get
+processed by the irq handler before it is ready to and cause panic with
+the following trace:
 
-The current while loop assumes that all of the left candidates
-have oob_skb and calling kfree_skb(oob_skb) releases the remaining
-candidates.
+  Call trace:
+   fsl_qdma_queue_handler+0xf8/0x3e8
+   __handle_irq_event_percpu+0x78/0x2b0
+   handle_irq_event_percpu+0x1c/0x68
+   handle_irq_event+0x44/0x78
+   handle_fasteoi_irq+0xc8/0x178
+   generic_handle_irq+0x24/0x38
+   __handle_domain_irq+0x90/0x100
+   gic_handle_irq+0x5c/0xb8
+   el1_irq+0xb8/0x180
+   _raw_spin_unlock_irqrestore+0x14/0x40
+   __setup_irq+0x4bc/0x798
+   request_threaded_irq+0xd8/0x190
+   devm_request_threaded_irq+0x74/0xe8
+   fsl_qdma_probe+0x4d4/0xca8
+   platform_drv_probe+0x50/0xa0
+   really_probe+0xe0/0x3f8
+   driver_probe_device+0x64/0x130
+   device_driver_attach+0x6c/0x78
+   __driver_attach+0xbc/0x158
+   bus_for_each_dev+0x5c/0x98
+   driver_attach+0x20/0x28
+   bus_add_driver+0x158/0x220
+   driver_register+0x60/0x110
+   __platform_driver_register+0x44/0x50
+   fsl_qdma_driver_init+0x18/0x20
+   do_one_initcall+0x48/0x258
+   kernel_init_freeable+0x1a4/0x23c
+   kernel_init+0x10/0xf8
+   ret_from_fork+0x10/0x18
 
-However, I missed a case that oob_skb has self-referencing fd and
-another fd and the latter sk is placed before the former in the
-candidate list.  Then, the while loop never proceeds, resulting
-the task hung.
-
-__unix_gc() has the same loop just before purging the collected skb,
-so we can call kfree_skb(oob_skb) there and let __skb_queue_purge()
-release all inflight sockets.
-
-[0]:
-Sending NMI from CPU 0 to CPUs 1:
-NMI backtrace for cpu 1
-CPU: 1 PID: 2784 Comm: kworker/u4:8 Not tainted 6.8.0-rc4-syzkaller-01028-g71b605d32017 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/25/2024
-Workqueue: events_unbound __unix_gc
-RIP: 0010:__sanitizer_cov_trace_pc+0x0/0x70 kernel/kcov.c:200
-Code: 89 fb e8 23 00 00 00 48 8b 3d 84 f5 1a 0c 48 89 de 5b e9 43 26 57 00 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 <f3> 0f 1e fa 48 8b 04 24 65 48 8b 0d 90 52 70 7e 65 8b 15 91 52 70
-RSP: 0018:ffffc9000a17fa78 EFLAGS: 00000287
-RAX: ffffffff8a0a6108 RBX: ffff88802b6c2640 RCX: ffff88802c0b3b80
-RDX: 0000000000000000 RSI: 0000000000000002 RDI: 0000000000000000
-RBP: ffffc9000a17fbf0 R08: ffffffff89383f1d R09: 1ffff1100ee5ff84
-R10: dffffc0000000000 R11: ffffed100ee5ff85 R12: 1ffff110056d84ee
-R13: ffffc9000a17fae0 R14: 0000000000000000 R15: ffffffff8f47b840
-FS:  0000000000000000(0000) GS:ffff8880b9500000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffef5687ff8 CR3: 0000000029b34000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <NMI>
- </NMI>
- <TASK>
- __unix_gc+0xe69/0xf40 net/unix/garbage.c:343
- process_one_work kernel/workqueue.c:2633 [inline]
- process_scheduled_works+0x913/0x1420 kernel/workqueue.c:2706
- worker_thread+0xa5f/0x1000 kernel/workqueue.c:2787
- kthread+0x2ef/0x390 kernel/kthread.c:388
- ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1b/0x30 arch/x86/entry/entry_64.S:242
- </TASK>
-
-Reported-and-tested-by: syzbot+ecab4d36f920c3574bf9@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ecab4d36f920c3574bf9
-Fixes: 25236c91b5ab ("af_unix: Fix task hung while purging oob_skb in GC.")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Cc: stable@vger.kernel.org
+Fixes: b092529e0aa0 ("dmaengine: fsl-qdma: Add qDMA controller driver for Layerscape SoCs")
+Signed-off-by: Curtis Klein <curtis.klein@hpe.com>
+Signed-off-by: Yi Zhao <yi.zhao@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20240201220406.440145-1-Frank.Li@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/garbage.c |   22 +++++++++-------------
- 1 file changed, 9 insertions(+), 13 deletions(-)
+ drivers/dma/fsl-qdma.c |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -284,9 +284,17 @@ void unix_gc(void)
- 	 * which are creating the cycle(s).
- 	 */
- 	skb_queue_head_init(&hitlist);
--	list_for_each_entry(u, &gc_candidates, link)
-+	list_for_each_entry(u, &gc_candidates, link) {
- 		scan_children(&u->sk, inc_inflight, &hitlist);
+--- a/drivers/dma/fsl-qdma.c
++++ b/drivers/dma/fsl-qdma.c
+@@ -1152,10 +1152,6 @@ static int fsl_qdma_probe(struct platfor
+ 	if (!fsl_qdma->queue)
+ 		return -ENOMEM;
  
-+#if IS_ENABLED(CONFIG_AF_UNIX_OOB)
-+		if (u->oob_skb) {
-+			kfree_skb(u->oob_skb);
-+			u->oob_skb = NULL;
-+		}
-+#endif
-+	}
+-	ret = fsl_qdma_irq_init(pdev, fsl_qdma);
+-	if (ret)
+-		return ret;
+-
+ 	fsl_qdma->irq_base = platform_get_irq_byname(pdev, "qdma-queue0");
+ 	if (fsl_qdma->irq_base < 0)
+ 		return fsl_qdma->irq_base;
+@@ -1194,16 +1190,19 @@ static int fsl_qdma_probe(struct platfor
+ 
+ 	platform_set_drvdata(pdev, fsl_qdma);
+ 
+-	ret = dma_async_device_register(&fsl_qdma->dma_dev);
++	ret = fsl_qdma_reg_init(fsl_qdma);
+ 	if (ret) {
+-		dev_err(&pdev->dev,
+-			"Can't register NXP Layerscape qDMA engine.\n");
++		dev_err(&pdev->dev, "Can't Initialize the qDMA engine.\n");
+ 		return ret;
+ 	}
+ 
+-	ret = fsl_qdma_reg_init(fsl_qdma);
++	ret = fsl_qdma_irq_init(pdev, fsl_qdma);
++	if (ret)
++		return ret;
 +
- 	/* not_cycle_list contains those sockets which do not make up a
- 	 * cycle.  Restore these to the inflight list.
- 	 */
-@@ -314,18 +322,6 @@ void unix_gc(void)
- 	/* Here we are. Hitlist is filled. Die. */
- 	__skb_queue_purge(&hitlist);
++	ret = dma_async_device_register(&fsl_qdma->dma_dev);
+ 	if (ret) {
+-		dev_err(&pdev->dev, "Can't Initialize the qDMA engine.\n");
++		dev_err(&pdev->dev, "Can't register NXP Layerscape qDMA engine.\n");
+ 		return ret;
+ 	}
  
--#if IS_ENABLED(CONFIG_AF_UNIX_OOB)
--	while (!list_empty(&gc_candidates)) {
--		u = list_entry(gc_candidates.next, struct unix_sock, link);
--		if (u->oob_skb) {
--			struct sk_buff *skb = u->oob_skb;
--
--			u->oob_skb = NULL;
--			kfree_skb(skb);
--		}
--	}
--#endif
--
- 	spin_lock(&unix_gc_lock);
- 
- 	/* There could be io_uring registered files, just push them back to
 
 
 
