@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-26516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AF94870EF1
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:49:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 052AD870D43
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:32:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18D201F212F2
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:49:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60B0FB2699D
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:32:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7EFB46BA0;
-	Mon,  4 Mar 2024 21:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9E17AE6F;
+	Mon,  4 Mar 2024 21:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j8l77lWi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WkmPumO4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6615B1EB5A;
-	Mon,  4 Mar 2024 21:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289061F60A;
+	Mon,  4 Mar 2024 21:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709588960; cv=none; b=OYdqgqFYv1YM6VgdluiRSPGj+xosqhVFUV+OJjmyXyR1zekgR/QrcMDi8R9PI7kUrtyr0e/U21fIDvcNTFx1fC2lcMhd+81Sdvia2foTPG6SI2WCD5aDld5mE3jNgT+kqbQe6HyRQLhozHH93GtQJQ9lOY1NXzaBAQOwc6jJp/g=
+	t=1709587933; cv=none; b=tHVCHSVVG+kWY8H9w/YWIG+auATDeW099rOlKfO95g555a8wtdLLSMcONu7YV2vb/rWOhDw0mQO90NZbcrCMRpT24i6JWFfcbmXS3+57Cj9Q8+qtapyJdxl0MbgkKq3pIDFPecY9KfQ0B9XojjPNRVEx/kvj237huPDQbkxxZN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709588960; c=relaxed/simple;
-	bh=peXt+e7HEDHXZDBUOvOHNaAO/XcJDLusnexGcz13Aso=;
+	s=arc-20240116; t=1709587933; c=relaxed/simple;
+	bh=3Gi4Ht+66jLH85BWOXGA3WiMWJszz3BAltWd+Uk0SgU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GXbo7cQh6w49Qwby6SEZkHsify3sEK4IGExPc2ZJEinJ5aXhqmlqZstbahseRwMb3Toee4Gv80ek3nNRjuXEaGy3fu2teM6K1U0NTYFUjousfVhIUXbSdqCc6aOHrEXncTfV6A6XHsvTYzyVteCeo7kQJNekmujXQ3oMhayJzls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j8l77lWi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED12CC433C7;
-	Mon,  4 Mar 2024 21:49:19 +0000 (UTC)
+	 MIME-Version; b=r6VHIkaoacXyJHUlG7FGYUF3s71Jdrh1jRwujh0acjuC8VwubuFL0SC3nXUOLJ5CN4tg4XO7T47pVBKGuZdKDhKh7FKaYPmBQzkgvOXAHe25SZ2IP7ZZIkLyOJc/zMHHVMuROZamVWoO7CnIt/R9yECKbgqQxn20wtCXSbdgpsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WkmPumO4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE649C433F1;
+	Mon,  4 Mar 2024 21:32:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709588960;
-	bh=peXt+e7HEDHXZDBUOvOHNaAO/XcJDLusnexGcz13Aso=;
+	s=korg; t=1709587933;
+	bh=3Gi4Ht+66jLH85BWOXGA3WiMWJszz3BAltWd+Uk0SgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j8l77lWi9iVxeZ0t/gPVfJ/ofUGZF9fHThEpsk0TmHQYnpYr7BIvXn42VMs7Uqq4h
-	 GeFRasm9a8rkKaryUbK9P+4fQ5cBah0oZSamuNRuGmQGk2nHnVPt26g3z7u0t7hlZn
-	 HGqlQiY0FWv3VmTP8bhrZDmdFpTE3veTOoMYa6Vc=
+	b=WkmPumO4hMJBu7Hw9fK3c05R7eDGrY97SalM8Re2ZUubzek48guxpGqr+q6VeRbDc
+	 qGMLlaNbObC22+HwUDs1kcFY4jc8nlf0sLwG6SuWm7vZDfUYiXgw4XXHSEi0s93dlo
+	 lRyq6yDGTI6IG2JIVvoBM0u5mvHL5TPRZz+blTcs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Borislav Petkov <bp@suse.de>
-Subject: [PATCH 6.1 123/215] x86/boot/compressed: Move startup32_check_sev_cbit() out of head_64.S
+	Zixi Chen <zixchen@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH 6.7 121/162] x86/cpu/intel: Detect TME keyid bits before setting MTRR mask registers
 Date: Mon,  4 Mar 2024 21:23:06 +0000
-Message-ID: <20240304211600.973938762@linuxfoundation.org>
+Message-ID: <20240304211555.620711704@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
-References: <20240304211556.993132804@linuxfoundation.org>
+In-Reply-To: <20240304211551.833500257@linuxfoundation.org>
+References: <20240304211551.833500257@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,184 +62,248 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-commit 9d7eaae6a071ff1f718e0aa5e610bb712f8cc632 upstream.
+commit 6890cb1ace350b4386c8aee1343dc3b3ddd214da upstream.
 
-Now that the startup32_check_sev_cbit() routine can execute from
-anywhere and behaves like an ordinary function, it can be moved where it
-belongs.
+MKTME repurposes the high bit of physical address to key id for encryption
+key and, even though MAXPHYADDR in CPUID[0x80000008] remains the same,
+the valid bits in the MTRR mask register are based on the reduced number
+of physical address bits.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20221122161017.2426828-15-ardb@kernel.org
+detect_tme() in arch/x86/kernel/cpu/intel.c detects TME and subtracts
+it from the total usable physical bits, but it is called too late.
+Move the call to early_init_intel() so that it is called in setup_arch(),
+before MTRRs are setup.
+
+This fixes boot on TDX-enabled systems, which until now only worked with
+"disable_mtrr_cleanup".  Without the patch, the values written to the
+MTRRs mask registers were 52-bit wide (e.g. 0x000fffff_80000800) and
+the writes failed; with the patch, the values are 46-bit wide, which
+matches the reduced MAXPHYADDR that is shown in /proc/cpuinfo.
+
+Reported-by: Zixi Chen <zixchen@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240131230902.1867092-3-pbonzini%40redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/compressed/head_64.S     |   71 ---------------------------------
- arch/x86/boot/compressed/mem_encrypt.S |   68 +++++++++++++++++++++++++++++++
- 2 files changed, 68 insertions(+), 71 deletions(-)
+ arch/x86/kernel/cpu/intel.c |  178 ++++++++++++++++++++++----------------------
+ 1 file changed, 91 insertions(+), 87 deletions(-)
 
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -727,77 +727,6 @@ SYM_DATA_START(boot_idt)
- SYM_DATA_END_LABEL(boot_idt, SYM_L_GLOBAL, boot_idt_end)
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -184,6 +184,90 @@ static bool bad_spectre_microcode(struct
+ 	return false;
+ }
  
- /*
-- * Check for the correct C-bit position when the startup_32 boot-path is used.
-- *
-- * The check makes use of the fact that all memory is encrypted when paging is
-- * disabled. The function creates 64 bits of random data using the RDRAND
-- * instruction. RDRAND is mandatory for SEV guests, so always available. If the
-- * hypervisor violates that the kernel will crash right here.
-- *
-- * The 64 bits of random data are stored to a memory location and at the same
-- * time kept in the %eax and %ebx registers. Since encryption is always active
-- * when paging is off the random data will be stored encrypted in main memory.
-- *
-- * Then paging is enabled. When the C-bit position is correct all memory is
-- * still mapped encrypted and comparing the register values with memory will
-- * succeed. An incorrect C-bit position will map all memory unencrypted, so that
-- * the compare will use the encrypted random data and fail.
-- */
--#ifdef CONFIG_AMD_MEM_ENCRYPT
--	.text
--SYM_FUNC_START(startup32_check_sev_cbit)
--	pushl	%ebx
--	pushl	%ebp
--
--	call	0f
--0:	popl	%ebp
--
--	/* Check for non-zero sev_status */
--	movl	(sev_status - 0b)(%ebp), %eax
--	testl	%eax, %eax
--	jz	4f
--
--	/*
--	 * Get two 32-bit random values - Don't bail out if RDRAND fails
--	 * because it is better to prevent forward progress if no random value
--	 * can be gathered.
--	 */
--1:	rdrand	%eax
--	jnc	1b
--2:	rdrand	%ebx
--	jnc	2b
--
--	/* Store to memory and keep it in the registers */
--	leal	(sev_check_data - 0b)(%ebp), %ebp
--	movl	%eax, 0(%ebp)
--	movl	%ebx, 4(%ebp)
--
--	/* Enable paging to see if encryption is active */
--	movl	%cr0, %edx			 /* Backup %cr0 in %edx */
--	movl	$(X86_CR0_PG | X86_CR0_PE), %ecx /* Enable Paging and Protected mode */
--	movl	%ecx, %cr0
--
--	cmpl	%eax, 0(%ebp)
--	jne	3f
--	cmpl	%ebx, 4(%ebp)
--	jne	3f
--
--	movl	%edx, %cr0	/* Restore previous %cr0 */
--
--	jmp	4f
--
--3:	/* Check failed - hlt the machine */
--	hlt
--	jmp	3b
--
--4:
--	popl	%ebp
--	popl	%ebx
--	RET
--SYM_FUNC_END(startup32_check_sev_cbit)
--#endif
--
--/*
-  * Stack and heap for uncompression
-  */
- 	.bss
---- a/arch/x86/boot/compressed/mem_encrypt.S
-+++ b/arch/x86/boot/compressed/mem_encrypt.S
-@@ -243,6 +243,74 @@ SYM_FUNC_START(startup32_load_idt)
- 	RET
- SYM_FUNC_END(startup32_load_idt)
- 
-+/*
-+ * Check for the correct C-bit position when the startup_32 boot-path is used.
-+ *
-+ * The check makes use of the fact that all memory is encrypted when paging is
-+ * disabled. The function creates 64 bits of random data using the RDRAND
-+ * instruction. RDRAND is mandatory for SEV guests, so always available. If the
-+ * hypervisor violates that the kernel will crash right here.
-+ *
-+ * The 64 bits of random data are stored to a memory location and at the same
-+ * time kept in the %eax and %ebx registers. Since encryption is always active
-+ * when paging is off the random data will be stored encrypted in main memory.
-+ *
-+ * Then paging is enabled. When the C-bit position is correct all memory is
-+ * still mapped encrypted and comparing the register values with memory will
-+ * succeed. An incorrect C-bit position will map all memory unencrypted, so that
-+ * the compare will use the encrypted random data and fail.
-+ */
-+SYM_FUNC_START(startup32_check_sev_cbit)
-+	pushl	%ebx
-+	pushl	%ebp
++#define MSR_IA32_TME_ACTIVATE		0x982
 +
-+	call	0f
-+0:	popl	%ebp
++/* Helpers to access TME_ACTIVATE MSR */
++#define TME_ACTIVATE_LOCKED(x)		(x & 0x1)
++#define TME_ACTIVATE_ENABLED(x)		(x & 0x2)
 +
-+	/* Check for non-zero sev_status */
-+	movl	(sev_status - 0b)(%ebp), %eax
-+	testl	%eax, %eax
-+	jz	4f
++#define TME_ACTIVATE_POLICY(x)		((x >> 4) & 0xf)	/* Bits 7:4 */
++#define TME_ACTIVATE_POLICY_AES_XTS_128	0
++
++#define TME_ACTIVATE_KEYID_BITS(x)	((x >> 32) & 0xf)	/* Bits 35:32 */
++
++#define TME_ACTIVATE_CRYPTO_ALGS(x)	((x >> 48) & 0xffff)	/* Bits 63:48 */
++#define TME_ACTIVATE_CRYPTO_AES_XTS_128	1
++
++/* Values for mktme_status (SW only construct) */
++#define MKTME_ENABLED			0
++#define MKTME_DISABLED			1
++#define MKTME_UNINITIALIZED		2
++static int mktme_status = MKTME_UNINITIALIZED;
++
++static void detect_tme_early(struct cpuinfo_x86 *c)
++{
++	u64 tme_activate, tme_policy, tme_crypto_algs;
++	int keyid_bits = 0, nr_keyids = 0;
++	static u64 tme_activate_cpu0 = 0;
++
++	rdmsrl(MSR_IA32_TME_ACTIVATE, tme_activate);
++
++	if (mktme_status != MKTME_UNINITIALIZED) {
++		if (tme_activate != tme_activate_cpu0) {
++			/* Broken BIOS? */
++			pr_err_once("x86/tme: configuration is inconsistent between CPUs\n");
++			pr_err_once("x86/tme: MKTME is not usable\n");
++			mktme_status = MKTME_DISABLED;
++
++			/* Proceed. We may need to exclude bits from x86_phys_bits. */
++		}
++	} else {
++		tme_activate_cpu0 = tme_activate;
++	}
++
++	if (!TME_ACTIVATE_LOCKED(tme_activate) || !TME_ACTIVATE_ENABLED(tme_activate)) {
++		pr_info_once("x86/tme: not enabled by BIOS\n");
++		mktme_status = MKTME_DISABLED;
++		return;
++	}
++
++	if (mktme_status != MKTME_UNINITIALIZED)
++		goto detect_keyid_bits;
++
++	pr_info("x86/tme: enabled by BIOS\n");
++
++	tme_policy = TME_ACTIVATE_POLICY(tme_activate);
++	if (tme_policy != TME_ACTIVATE_POLICY_AES_XTS_128)
++		pr_warn("x86/tme: Unknown policy is active: %#llx\n", tme_policy);
++
++	tme_crypto_algs = TME_ACTIVATE_CRYPTO_ALGS(tme_activate);
++	if (!(tme_crypto_algs & TME_ACTIVATE_CRYPTO_AES_XTS_128)) {
++		pr_err("x86/mktme: No known encryption algorithm is supported: %#llx\n",
++				tme_crypto_algs);
++		mktme_status = MKTME_DISABLED;
++	}
++detect_keyid_bits:
++	keyid_bits = TME_ACTIVATE_KEYID_BITS(tme_activate);
++	nr_keyids = (1UL << keyid_bits) - 1;
++	if (nr_keyids) {
++		pr_info_once("x86/mktme: enabled by BIOS\n");
++		pr_info_once("x86/mktme: %d KeyIDs available\n", nr_keyids);
++	} else {
++		pr_info_once("x86/mktme: disabled by BIOS\n");
++	}
++
++	if (mktme_status == MKTME_UNINITIALIZED) {
++		/* MKTME is usable */
++		mktme_status = MKTME_ENABLED;
++	}
 +
 +	/*
-+	 * Get two 32-bit random values - Don't bail out if RDRAND fails
-+	 * because it is better to prevent forward progress if no random value
-+	 * can be gathered.
++	 * KeyID bits effectively lower the number of physical address
++	 * bits.  Update cpuinfo_x86::x86_phys_bits accordingly.
 +	 */
-+1:	rdrand	%eax
-+	jnc	1b
-+2:	rdrand	%ebx
-+	jnc	2b
++	c->x86_phys_bits -= keyid_bits;
++}
 +
-+	/* Store to memory and keep it in the registers */
-+	leal	(sev_check_data - 0b)(%ebp), %ebp
-+	movl	%eax, 0(%ebp)
-+	movl	%ebx, 4(%ebp)
+ static void early_init_intel(struct cpuinfo_x86 *c)
+ {
+ 	u64 misc_enable;
+@@ -322,6 +406,13 @@ static void early_init_intel(struct cpui
+ 	 */
+ 	if (detect_extended_topology_early(c) < 0)
+ 		detect_ht_early(c);
 +
-+	/* Enable paging to see if encryption is active */
-+	movl	%cr0, %edx			 /* Backup %cr0 in %edx */
-+	movl	$(X86_CR0_PG | X86_CR0_PE), %ecx /* Enable Paging and Protected mode */
-+	movl	%ecx, %cr0
-+
-+	cmpl	%eax, 0(%ebp)
-+	jne	3f
-+	cmpl	%ebx, 4(%ebp)
-+	jne	3f
-+
-+	movl	%edx, %cr0	/* Restore previous %cr0 */
-+
-+	jmp	4f
-+
-+3:	/* Check failed - hlt the machine */
-+	hlt
-+	jmp	3b
-+
-+4:
-+	popl	%ebp
-+	popl	%ebx
-+	RET
-+SYM_FUNC_END(startup32_check_sev_cbit)
-+
- 	.code64
++	/*
++	 * Adjust the number of physical bits early because it affects the
++	 * valid bits of the MTRR mask registers.
++	 */
++	if (cpu_has(c, X86_FEATURE_TME))
++		detect_tme_early(c);
+ }
  
- #include "../../kernel/sev_verify_cbit.S"
+ static void bsp_init_intel(struct cpuinfo_x86 *c)
+@@ -482,90 +573,6 @@ static void srat_detect_node(struct cpui
+ #endif
+ }
+ 
+-#define MSR_IA32_TME_ACTIVATE		0x982
+-
+-/* Helpers to access TME_ACTIVATE MSR */
+-#define TME_ACTIVATE_LOCKED(x)		(x & 0x1)
+-#define TME_ACTIVATE_ENABLED(x)		(x & 0x2)
+-
+-#define TME_ACTIVATE_POLICY(x)		((x >> 4) & 0xf)	/* Bits 7:4 */
+-#define TME_ACTIVATE_POLICY_AES_XTS_128	0
+-
+-#define TME_ACTIVATE_KEYID_BITS(x)	((x >> 32) & 0xf)	/* Bits 35:32 */
+-
+-#define TME_ACTIVATE_CRYPTO_ALGS(x)	((x >> 48) & 0xffff)	/* Bits 63:48 */
+-#define TME_ACTIVATE_CRYPTO_AES_XTS_128	1
+-
+-/* Values for mktme_status (SW only construct) */
+-#define MKTME_ENABLED			0
+-#define MKTME_DISABLED			1
+-#define MKTME_UNINITIALIZED		2
+-static int mktme_status = MKTME_UNINITIALIZED;
+-
+-static void detect_tme(struct cpuinfo_x86 *c)
+-{
+-	u64 tme_activate, tme_policy, tme_crypto_algs;
+-	int keyid_bits = 0, nr_keyids = 0;
+-	static u64 tme_activate_cpu0 = 0;
+-
+-	rdmsrl(MSR_IA32_TME_ACTIVATE, tme_activate);
+-
+-	if (mktme_status != MKTME_UNINITIALIZED) {
+-		if (tme_activate != tme_activate_cpu0) {
+-			/* Broken BIOS? */
+-			pr_err_once("x86/tme: configuration is inconsistent between CPUs\n");
+-			pr_err_once("x86/tme: MKTME is not usable\n");
+-			mktme_status = MKTME_DISABLED;
+-
+-			/* Proceed. We may need to exclude bits from x86_phys_bits. */
+-		}
+-	} else {
+-		tme_activate_cpu0 = tme_activate;
+-	}
+-
+-	if (!TME_ACTIVATE_LOCKED(tme_activate) || !TME_ACTIVATE_ENABLED(tme_activate)) {
+-		pr_info_once("x86/tme: not enabled by BIOS\n");
+-		mktme_status = MKTME_DISABLED;
+-		return;
+-	}
+-
+-	if (mktme_status != MKTME_UNINITIALIZED)
+-		goto detect_keyid_bits;
+-
+-	pr_info("x86/tme: enabled by BIOS\n");
+-
+-	tme_policy = TME_ACTIVATE_POLICY(tme_activate);
+-	if (tme_policy != TME_ACTIVATE_POLICY_AES_XTS_128)
+-		pr_warn("x86/tme: Unknown policy is active: %#llx\n", tme_policy);
+-
+-	tme_crypto_algs = TME_ACTIVATE_CRYPTO_ALGS(tme_activate);
+-	if (!(tme_crypto_algs & TME_ACTIVATE_CRYPTO_AES_XTS_128)) {
+-		pr_err("x86/mktme: No known encryption algorithm is supported: %#llx\n",
+-				tme_crypto_algs);
+-		mktme_status = MKTME_DISABLED;
+-	}
+-detect_keyid_bits:
+-	keyid_bits = TME_ACTIVATE_KEYID_BITS(tme_activate);
+-	nr_keyids = (1UL << keyid_bits) - 1;
+-	if (nr_keyids) {
+-		pr_info_once("x86/mktme: enabled by BIOS\n");
+-		pr_info_once("x86/mktme: %d KeyIDs available\n", nr_keyids);
+-	} else {
+-		pr_info_once("x86/mktme: disabled by BIOS\n");
+-	}
+-
+-	if (mktme_status == MKTME_UNINITIALIZED) {
+-		/* MKTME is usable */
+-		mktme_status = MKTME_ENABLED;
+-	}
+-
+-	/*
+-	 * KeyID bits effectively lower the number of physical address
+-	 * bits.  Update cpuinfo_x86::x86_phys_bits accordingly.
+-	 */
+-	c->x86_phys_bits -= keyid_bits;
+-}
+-
+ static void init_cpuid_fault(struct cpuinfo_x86 *c)
+ {
+ 	u64 msr;
+@@ -702,9 +709,6 @@ static void init_intel(struct cpuinfo_x8
+ 
+ 	init_ia32_feat_ctl(c);
+ 
+-	if (cpu_has(c, X86_FEATURE_TME))
+-		detect_tme(c);
+-
+ 	init_intel_misc_features(c);
+ 
+ 	split_lock_init();
 
 
 
