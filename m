@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-26660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-26585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ABD5870F8D
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:55:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F5BF870F3E
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 22:52:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD9761C20AE4
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:55:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 414E81F21A86
+	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 21:52:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8297B3E7;
-	Mon,  4 Mar 2024 21:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80533200D4;
+	Mon,  4 Mar 2024 21:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kWuH1bee"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6u8Y8Wj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA907B3D8;
-	Mon,  4 Mar 2024 21:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EFB01C6AB;
+	Mon,  4 Mar 2024 21:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709589348; cv=none; b=urY9HsG14JT4QqMN42/dwmm+3RIx+KJZdEKezILu65rCQMOcd27Kb7JNOFkWc0WJ/umE12baBrcIpLkkbvfIjr4YiO4zJ+RqlLL8mXrWQY8/hlTZ3dJoz1KON3rBCDT/UA+CxU2JtEdeKd4SPKSdQWOfAz3E12EZwdYz4gAEFbs=
+	t=1709589153; cv=none; b=Aabo1v0cv/9eRETu3yh7MYF19QO7TmHiRPNllF6fZNzIm4FZNMa/7V2oOHcV0azmLxnCUjOXgHGeuB44CrN9FNUyCrfOTU2B1wZQOtNZQqViMtJ7n87bON9rQoKSwV1mheeOf+OJuvkr6RFhGk/QdtaCxo915JptpPwGRkdPJgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709589348; c=relaxed/simple;
-	bh=A9o8AUdEJZo7V5NnkF0ylxIvUvZAC7h8UldQvLFs8Xk=;
+	s=arc-20240116; t=1709589153; c=relaxed/simple;
+	bh=1qf9R1f4p3N4OigGpuIM1kJod+muvuZLe3mnOYRkxwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N1bfqgO7AjhAw4gUNfyYxgKbir5pSVyDR3u0+HAJ4nwPMX6WV/SJCiGuy+TeI+ehhP+Gh9+gE68OCuQgU+LhieVA3qclw3k4dipgmL2DPhMgsJQ6MsmCJKYen1PmFjfG6s3gnKjIrOGtPGyCoFslRvXyld8iNuHBj1Ia4pFXs8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kWuH1bee; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C39C433F1;
-	Mon,  4 Mar 2024 21:55:47 +0000 (UTC)
+	 MIME-Version; b=KDeosD7SBC9zybTyoLHwkatPTr6/zVLc+GqyaUL04i0bgY3ZFxBV6Br14/3EAmDArmm2G83o+Llj/LqebrydNEa1SRpDyyIO7JMbr62EO1rB15787vK2gj5S6lxDL6VdHBcItv21bKb7mrZ+HTkpa5AuIJcghIZOOXcWKGBp9cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6u8Y8Wj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3538C433C7;
+	Mon,  4 Mar 2024 21:52:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1709589347;
-	bh=A9o8AUdEJZo7V5NnkF0ylxIvUvZAC7h8UldQvLFs8Xk=;
+	s=korg; t=1709589153;
+	bh=1qf9R1f4p3N4OigGpuIM1kJod+muvuZLe3mnOYRkxwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kWuH1bee39H5E+Rpdt0LujTHGfQlpICf9U+LeIoN//xxsk7ozkQ065JIoqfMpkXJE
-	 pAFPn+BTx1WvmNoExDwgLVIo0PbJsaZBCT69lZOjzfgvBm97F3jyIZu9tZfapxcD3P
-	 JAI7Dut66ompsZbZB7BeeXOd+oiJNm9YfdzI47Yo=
+	b=e6u8Y8Wj78Ggn60bsAYNHMYgSxkEjyhCLbfwfv7W5dfnuUG1ChC/cEMzE0eLJ16Ub
+	 CEUNGMGpwAUDm8R6d84qk7paHVnMOVV4/jp2YcyspUPmH4DpURbyTym+yIgFERVqjo
+	 IU8bxBzU5I8oAAVsTFPeWeaDjaDlduFdylJvKNkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+dd4779978217b1973180@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.15 50/84] wifi: nl80211: reject iftype change with mesh ID change
-Date: Mon,  4 Mar 2024 21:24:23 +0000
-Message-ID: <20240304211544.029514096@linuxfoundation.org>
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 201/215] gpiolib: Fix the error path order in gpiochip_add_data_with_key()
+Date: Mon,  4 Mar 2024 21:24:24 +0000
+Message-ID: <20240304211603.362214436@linuxfoundation.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240304211542.332206551@linuxfoundation.org>
-References: <20240304211542.332206551@linuxfoundation.org>
+In-Reply-To: <20240304211556.993132804@linuxfoundation.org>
+References: <20240304211556.993132804@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit f78c1375339a291cba492a70eaf12ec501d28a8e upstream.
+[ Upstream commit e4aec4daa8c009057b5e063db1b7322252c92dc8 ]
 
-It's currently possible to change the mesh ID when the
-interface isn't yet in mesh mode, at the same time as
-changing it into mesh mode. This leads to an overwrite
-of data in the wdev->u union for the interface type it
-currently has, causing cfg80211_change_iface() to do
-wrong things when switching.
+After shuffling the code, error path wasn't updated correctly.
+Fix it here.
 
-We could probably allow setting an interface to mesh
-while setting the mesh ID at the same time by doing a
-different order of operations here, but realistically
-there's no userspace that's going to do this, so just
-disallow changes in iftype when setting mesh ID.
-
-Cc: stable@vger.kernel.org
-Fixes: 29cbe68c516a ("cfg80211/mac80211: add mesh join/leave commands")
-Reported-by: syzbot+dd4779978217b1973180@syzkaller.appspotmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2f4133bb5f14 ("gpiolib: No need to call gpiochip_remove_pin_ranges() twice")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpio/gpiolib.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -3914,6 +3914,8 @@ static int nl80211_set_interface(struct
- 
- 		if (ntype != NL80211_IFTYPE_MESH_POINT)
- 			return -EINVAL;
-+		if (otype != NL80211_IFTYPE_MESH_POINT)
-+			return -EINVAL;
- 		if (netif_running(dev))
- 			return -EBUSY;
- 
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 6d3e3454a6ed6..f646df7f1b41a 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -815,11 +815,11 @@ int gpiochip_add_data_with_key(struct gpio_chip *gc, void *data,
+ 	gpiochip_irqchip_free_valid_mask(gc);
+ err_remove_acpi_chip:
+ 	acpi_gpiochip_remove(gc);
++	gpiochip_remove_pin_ranges(gc);
+ err_remove_of_chip:
+ 	gpiochip_free_hogs(gc);
+ 	of_gpiochip_remove(gc);
+ err_free_gpiochip_mask:
+-	gpiochip_remove_pin_ranges(gc);
+ 	gpiochip_free_valid_mask(gc);
+ 	if (gdev->dev.release) {
+ 		/* release() has been registered by gpiochip_setup_dev() */
+-- 
+2.43.0
+
 
 
 
